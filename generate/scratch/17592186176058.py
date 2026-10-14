@@ -159,10 +159,12 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     raw=profile=='raw_unrated'
     prompt,solution=texts(level,template,p,raw)
     evidence_only=profile in ['raw_unrated','radical_observed','fraction_observed']
-    keyparams={k:str(v) for k,v in p.items() if k!='variable'}
-    # Integer shifts are intrinsic to reduction-stage tasks, although they all
-    # share an eventual scalar; variable aliases do not inflate variety.
-    mathfinger=digest({'level':level,'template':template,'parameters':keyparams})
+    keyparams={k:str(v) for k,v in p.items() if k not in ['variable','n']}
+    # All integer-period shifts reduce to the same reflected function. The
+    # demand to remove a period remains assessed, but its integer spelling is
+    # a presentation variant. Direct sampler policies likewise are not skills.
+    assessed_form='direct_oddness' if template.startswith('direct') else template
+    mathfinger=digest({'level':level,'assessed_form':assessed_form,'period_removal_assessed':level!='easy','parameters':keyparams})
     content={'version':VERSION,'difficulty':None if raw else level,'prompt':prompt,'solution':None if raw else solution,'bank':sorted(rendered),'key':None if raw else tex(correct)}
     identity=digest(content);qid=uid(identity);fid=uid(identity+':selection')
     choices=[{':answer/id':uid(fid+':'+s),':answer/type':':answer.type/math',':answer/value':s} for s in rendered]

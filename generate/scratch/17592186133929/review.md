@@ -549,7 +549,7 @@ $$
 - ${\int }_{0}^{1}{\int }_{0}^{1}{\int }_{x^{2}+z^{2}}^{4}\,2xz+12y^{2}\,\text{d}y\,\text{d}z\,\text{d}x$
 - ${\int }_{0}^{1}{\int }_{0}^{1}{\int }_{x^{2}+z^{2}}^{4}\,2xy\,\text{d}y\,\text{d}z\,\text{d}x$
 - ${\int }_{0}^{1}{\int }_{0}^{1}{\int }_{4}^{x^{2}+z^{2}}\,2xz+12y^{2}\,\text{d}y\,\text{d}z\,\text{d}x$
-- ${\int }_{0}^{1}{\int }_{0}^{1}{\int }_{x^{2}+z^{2}}^{0}\,2xy\,\text{d}y\,\text{d}z\,\text{d}x$
+- ${\int }_{0}^{1}{\int }_{0}^{1}{\int }_{0}^{4}\,2xy\,\text{d}y\,\text{d}z\,\text{d}x$
 
 Let $R$ be a simple solid region bounded by a closed surface $S$ with positive (outward) orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $R,$ then the divergence theorem states that
 
@@ -590,7 +590,7 @@ $$
 $$
 
 - ${\int }_{0}^{1}{\int }_{0}^{1}{\int }_{2}^{x^{2}+z^{2}}\,6xy\,\text{d}y\,\text{d}z\,\text{d}x$
-- ${\int }_{0}^{1}{\int }_{0}^{1}{\int }_{x^{2}+z^{2}}^{0}\,6xy\,\text{d}y\,\text{d}z\,\text{d}x$
+- ${\int }_{0}^{1}{\int }_{0}^{1}{\int }_{0}^{2}\,6xy\,\text{d}y\,\text{d}z\,\text{d}x$
 - ${\int }_{0}^{1}{\int }_{0}^{1}{\int }_{2}^{x^{2}+z^{2}}\,6xz+6y^{2}\,\text{d}y\,\text{d}z\,\text{d}x$
 - ${\int }_{0}^{1}{\int }_{0}^{1}{\int }_{x^{2}+z^{2}}^{2}\,6xy\,\text{d}y\,\text{d}z\,\text{d}x$
 - ${\int }_{0}^{1}{\int }_{0}^{1}{\int }_{x^{2}+z^{2}}^{2}\,6xz+6y^{2}\,\text{d}y\,\text{d}z\,\text{d}x$

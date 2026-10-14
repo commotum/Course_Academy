@@ -20,12 +20,12 @@ for case in cases:
  for i in range(2):
   r=g.generate(case['level'],seed=47+i,template=case['template'],profile=case['bank_profile']);records.append(r)
   pages+=['\n### Generated changed-parameter variant '+str(i+1)+' — '+case['template']+'/'+case['bank_profile'],'\nMetadata: '+('**evidence-only; not eligible for learner defaults**' if r['generation']['evidence_only'] else '**eligible generated family**')+'; parameters `'+json.dumps(r['generation']['parameters'],sort_keys=True)+'`',g.markdown(r)]
-pages+=['\n## Normal defaults and authored completions','These examples cover every source-shaped template under its default eligible bank, including completed moderate and authored hard banks.']
+pages+=['\n## Normal defaults and authored completions','These examples cover every source-shaped template under its default eligible bank, including completed moderate and authored hard banks. Canonical mathematical counts are easy 92, moderate 92 and hard 245. Integer-period aliases yield 2,208 moderate and 5,880 hard presentation variants; these do not increase mathematical task counts.']
 for template,level in g.TEMPLATES.items():
  for seed in [71,72]:
   r=g.generate(level,seed=seed,template=template);records.append(r)
   pages+=['\n### '+level+' / '+template+' / '+r['generation']['profile']+' — generated '+str(seed),'\n'+('Authored moderate completion and level assignment.' if level=='moderate' else 'Observed solution structure; '+('authored method-derived whole bank.' if level=='hard' else 'parameterized whole eligible bank.')),g.markdown(r)]
-pages+=['\n## Known limitations','Raw q-136549 omits difficulty, worked solution and correct ref; it cannot run through a keyed native grading fixture. A completed record with identical prompt and bank is separately graded after independent derivation of -1/2. Negative square-root and fractional opaque scalar distractors preserve complete banks in evidence profiles without claims about historical author intent. See validation.json for exact denominators and finite base/shift task counts.']
+pages+=['\n## Known limitations','Raw q-136549 omits difficulty, worked solution and correct ref; it cannot run through a keyed native grading fixture. A completed record with identical prompt and bank is separately graded after independent derivation of -1/2. Negative square-root and fractional opaque scalar distractors preserve complete banks in evidence profiles without claims about historical author intent. See validation.json for exact denominators and canonical meaningful task counts separately from period-shift presentation variants.']
 (ROOT/'review.json').write_text(json.dumps(records,ensure_ascii=False,indent=2)+'\n')
 (ROOT/'review.md').write_text('\n\n'.join(pages).replace(g.IMAGE,'tangent-source.png')+'\n')
 p=ROOT/'template-extraction.md';s=p.read_text();s=s.split('\n## Per-option source recipe appendix')[0];p.write_text(s+'\n'.join(appendix)+'\n')

@@ -90,6 +90,7 @@ def run():
   q0=g.source_q(t);case={'source_id':q0[':question/math-academy-id'],'db_id':q0[':db/id'],'level':c['level'],'template':t,'parameters':{'s':1},'bank_profile':'observed_raw'};cases.append(case)
   r=g.generate(c['level'],template=t,parameters=case['parameters'],profile='observed_raw');q=r['question'];raw_records.append(r);sf=q0[':question/answer-fields'][0];nf=q[':question/answer-fields'][0]
   assert q[':question/problem']==q0[':question/problem'];fidelity['prompt_exact']+=1
+  assert {k for k in q if k.startswith(':question/')}=={k for k in q0 if k.startswith(':question/')}
   for key in (':question/difficulty',':question/worked-solution'):assert (key in q)==(key in q0)
   assert (':answer-field/correct' in sf)==(':answer-field/correct' in nf);fidelity['attribute_presence']+=1
   if ':question/worked-solution' in q:assert q[':question/worked-solution']==q0[':question/worked-solution'];fidelity['solution_exact']+=1
@@ -112,6 +113,16 @@ def run():
   # Changed scale raw replay is an actual recipe, not a literal source sampler.
   changed=g.generate(c['level'],template=t,parameters={'s':3},profile='observed_raw');assert changed['question'][':question/problem']!=q[':question/problem']
   cs=p.field(changed['question'][':question/problem']);assert all(equal(a,3*b) for a,b in zip(cs,c['components']))
+  cf=changed['question'][':question/answer-fields'][0]
+  if c['level']=='easy':
+   assert sorted(str(math(a[':answer/value'])) for a in cf[':answer-field/choices'])==sorted(str(3*math(a[':answer/value'])) for a in sf[':answer-field/choices'])
+  else:
+   parsed=[read_integral(a[':answer/value']) for a in cf[':answer-field/choices']]
+   for original in sf[':answer-field/choices']:
+    obj=read_integral(original[':answer/value']);assert sum(setup_equal(cobj,(3*obj[0],obj[1])) for cobj in parsed)==1
+  if ':question/worked-solution' in changed['question']:
+   blocks=re.findall(r'\$\$\n(.*?)\n\$\$',changed['question'][':question/worked-solution'],re.S);_,inputs=p.derivative_inputs(blocks[1]);assert len(inputs)==3
+   for e,(_,arg,*_) in zip(cs,inputs):assert equal(math(arg),e)
   raw_obj=c['bank']
   for old in sf[':answer-field/choices']:
    if c['level']=='easy':assert any(equal(math(old[':answer/value']),v) for v in raw_obj)
@@ -140,11 +151,13 @@ def run():
  # Mutation checks: a formal held-coordinate change and a balanced control byte
  # must fail even if metadata and final correct selection remain unchanged.
  r=reviews[0]
+ saved_counts=dict(COUNTS)
  for old,new in ((r'\frac{∂}{∂x}',r'\frac{∂}{∂y}'),('Computing','Comp\futing')):
   bad=json.loads(json.dumps(r));bad['question'][':question/worked-solution']=bad['question'][':question/worked-solution'].replace(old,new,1)
   try:check(bad)
   except (AssertionError,ValueError):pass
   else:raise AssertionError('mutation survived')
+  COUNTS.update(saved_counts)
  # Faithful rated source banks grade by IDs; do not fabricate legacy correct ref.
  for r in raw_records:
   f=r['question'][':question/answer-fields'][0]

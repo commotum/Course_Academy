@@ -659,7 +659,7 @@ $$
 
 ## Normal defaults and authored completions
 
-These examples cover every source-shaped template under its default eligible bank, including completed moderate and authored hard banks.
+These examples cover every source-shaped template under its default eligible bank, including completed moderate and authored hard banks. Canonical mathematical counts are easy 92, moderate 92 and hard 245. Integer-period aliases yield 2,208 moderate and 5,880 hard presentation variants; these do not increase mathematical task counts.
 
 
 ### easy / direct_integer / reciprocal_zero — generated 71
@@ -1124,4 +1124,4 @@ $$
 
 ## Known limitations
 
-Raw q-136549 omits difficulty, worked solution and correct ref; it cannot run through a keyed native grading fixture. A completed record with identical prompt and bank is separately graded after independent derivation of -1/2. Negative square-root and fractional opaque scalar distractors preserve complete banks in evidence profiles without claims about historical author intent. See validation.json for exact denominators and finite base/shift task counts.
+Raw q-136549 omits difficulty, worked solution and correct ref; it cannot run through a keyed native grading fixture. A completed record with identical prompt and bank is separately graded after independent derivation of -1/2. Negative square-root and fractional opaque scalar distractors preserve complete banks in evidence profiles without claims about historical author intent. See validation.json for exact denominators and canonical meaningful task counts separately from period-shift presentation variants.

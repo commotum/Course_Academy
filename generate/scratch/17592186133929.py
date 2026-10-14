@@ -42,7 +42,7 @@ def integral(d,outer,inner,style=False):
  v,lo,hi=inner
  s=''.join(r'{\int }_{'+tex(a)+r'}^{'+tex(b)+'}' for _,a,b in outer)+r'{\int }_{'+tex(lo)+r'}^{'+tex(hi)+'}'
  return s+r'\,'+tex(d)+r'\,\text{d}'+str(v)+''.join(r'\,\text{d}'+str(w) for w,_,_ in reversed(outer))
-def triple(d):return r'{∭}_{R}'+tex(d)+r'\,\text{d}V'
+def triple(d):return r'{∭}_{R}'+('('+tex(d)+')' if sp.sympify(d).is_Add else tex(d))+r'\,\text{d}V'
 def field_tex(cs):
  return '+'.join('('+tex(c)+r')\,'+b for c,b in zip(cs,'ijk')).replace('+(-','-(')
 def partials(cs):return tuple(sp.diff(c,v) for c,v in zip(cs,VARS))
@@ -180,6 +180,7 @@ def build(level,seed,t,p,profile):
   question={':question/difficulty':':question.difficulty/'+level}
  payload={'version':VERSION,'level':question.get(':question/difficulty'),'prompt':prompt,'solution':solution,'bank':sorted(values),'presence':has_correct};identity=digest(payload)
  question[':question/id']=uid(identity);question[':question/problem']=prompt
+ if raw and ':question/math-academy-id' in q0:question[':question/math-academy-id']=q0[':question/math-academy-id']
  if solution is not None:question[':question/worked-solution']=solution
  answers=[{':answer/id':uid(identity+':selection:'+v),':answer/type':':answer.type/math',':answer/value':v} for v in values]
  field={':answer-field/id':uid(identity+':selection'),':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers}
@@ -197,6 +198,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  profile=profile or 'authored_method'
  if profile not in ('observed_raw','authored_method'):raise ValueError('unknown profile')
  rng=random.Random(seed);candidates=[t for t,c in CONFIG.items() if c['level']==level and (profile!='observed_raw' or 'index' in c)]
+ if not candidates:raise ValueError('no observed profile at this difficulty')
  t=template or rng.choice(candidates)
  if t not in candidates:raise ValueError('template/level/profile mismatch')
  if parameters is not None:return build(level,seed,t,dict(parameters),profile)

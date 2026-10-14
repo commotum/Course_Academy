@@ -128,7 +128,7 @@ def run():
       records.append(r)
     inferred=g.generate('moderate',template='shifted',profile='output_shift',parameters={'v':'1/2','variable':'x','n':12})
     check(inferred);records.append(inferred)
-    coverage={};allkeys=set();bankkeys=set();counts={}
+    coverage={};counts={};tasks_by_template={};tasks_by_level={l:set() for l in ['easy','moderate','hard']}
     for template,level in g.TEMPLATES.items():
       profiles={'direct_integer':['reciprocal_zero'],'direct_fraction':['numerator_omission','reciprocal_zero'],'direct_positive':['reciprocal_zero','radical_observed'],'shifted':['output_shift','raw_unrated'],'affine_integer':['affine_operations','integer_observed'],'affine_fraction':['affine_operations','fraction_observed']}[template]
       eligible=0;mathtasks=set()
@@ -140,7 +140,9 @@ def run():
        except ValueError as e:
         assert 'collision' in str(e);continue
        check(r);mathtasks.add(r['generation']['mathematical_fingerprint']);eligible+=1
-      counts[template]={'eligible_base_tasks':len(mathtasks),'shift_multiplier':24 if level!='easy' else 1,'meaningful_tasks':len(mathtasks)*(24 if level!='easy' else 1)}
+      counts[template]={'meaningful_tasks':len(mathtasks),'period_shift_presentation_variants_per_task':24 if level!='easy' else 1,'presentation_variants_excluding_variable_letters_and_bank_aliases':len(mathtasks)*(24 if level!='easy' else 1)}
+      tasks_by_template[template]=mathtasks
+      tasks_by_level[level].update(mathtasks)
       for profile in profiles:
        checked=0
        for seed in range(24):
@@ -165,6 +167,31 @@ def run():
        correct_positions.add(next(i for i,a in enumerate(f[':answer-field/choices']) if a[':answer/id']==f[':answer-field/correct'][1]))
     assert all(normalcoverage[l]=={t for t,v in g.TEMPLATES.items() if v==l} for l in normalcoverage)
     assert correct_positions==set(range(5)),'Default choices do not shuffle through all positions'
+    # Different integer periods are aliases of the same assessed function,
+    # while their actual prompts, solutions and complete banks retain identity.
+    alias_regressions=0
+    for template in ['shifted','affine_integer','affine_fraction']:
+      level=g.TEMPLATES[template]
+      base=g.generate(level,3,template=template)['generation']['parameters']
+      r3=g.generate(level,template=template,parameters=dict(base,n=3))
+      r7=g.generate(level,template=template,parameters=dict(base,n=7))
+      check(r3);check(r7)
+      assert r3['generation']['mathematical_fingerprint']==r7['generation']['mathematical_fingerprint']
+      assert r3['generation']['content_fingerprint']!=r7['generation']['content_fingerprint']
+      assert r3['question'][':question/id']!=r7['question'][':question/id']
+      alias_regressions+=1
+    easy_templates=['direct_integer','direct_positive','direct_fraction']
+    easy_overlaps={}
+    for i,a in enumerate(easy_templates):
+      for b in easy_templates[i+1:]:
+        easy_overlaps[a+'/'+b]=len(tasks_by_template[a]&tasks_by_template[b])
+    assert all(n==0 for n in easy_overlaps.values()),'Unexpected overlap among current easy domains'
+    # Banks are presentation, not assessed-task identity.
+    p={'v':'4/5','variable':'a'}
+    r1=g.generate('easy',template='direct_fraction',parameters=p,profile='numerator_omission')
+    r2=g.generate('easy',template='direct_fraction',parameters=p,profile='reciprocal_zero')
+    assert r1['generation']['mathematical_fingerprint']==r2['generation']['mathematical_fingerprint']
+    assert r1['generation']['content_fingerprint']!=r2['generation']['content_fingerprint']
     review=json.loads((ROOT/'review.json').read_text()) if (ROOT/'review.json').exists() else []
     for r in review:
       check(r,':answer-field/correct' in r['question'][':question/answer-fields'][0])
@@ -199,6 +226,9 @@ def run():
     result['plot']={'requirement':'none; exact fixed explanatory asset reused','source_path':g.IMAGE,'local_path':str(plot),'sha256':hashlib.sha256(plot.read_bytes()).hexdigest(),'dimensions':list(Image.open(plot).size),'visual_inspection':'original full-resolution graph inspected; three tangent branches, four asymptotes, origin symmetry; no parameter-dependent geometry'}
     result['review_records_checked']=len(review)
     result['correct_choice_positions_observed']=sorted(correct_positions)
+    result['canonical_meaningful_tasks_by_level']={l:len(tasks) for l,tasks in tasks_by_level.items()}
+    result['easy_sampler_domain_overlap_counts']=easy_overlaps
+    result['period_alias_identity_regressions_passed']=alias_regressions
     (ROOT/'validation.json').write_text(json.dumps(result,indent=2)+'\n')
     print(json.dumps(result,indent=2))
 if __name__=='__main__':run()
