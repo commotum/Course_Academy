@@ -1,6 +1,6 @@
 # Diameter endpoints circle review
 
-All entries are author previews. Original and generated labels, actual difficulty or authored workload, and source-present versus inferred correct designations are explicit.
+All entries are author previews; correct options are explicitly labeled. Raw unrated evidence omits its difficulty and correct ref; review labels show the authored workload assignment.
 
 ## Original raw replay q-15292
 

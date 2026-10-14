@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Local area approximation |J(u0,v0)| deltaA, memory-only review records.
 
-Eleven observed easy function families; each raw five-choice bank has an explicit
+Twelve observed easy function families (q-161886 added at basis 2268); each raw five-choice bank has an explicit
 proportional expression replay profile. Scalar distractor intent is underdetermined:
 these profiles are evidence-only, never default sampled banks. Normal questions
 select a complete authored derivative-operation or area-stage bank before sampling.
@@ -35,6 +35,7 @@ TEMPLATES={
  'log_difference':('easy','q-161877',{'u0':2,'v0':1}),
  'sin_sum':('easy','q-161878',{'u0':-3,'v0':3}),
  'exp_sum':('easy','q-161876',{'u0':-2,'v0':2}),
+ 'cubic_difference':('easy','q-161886',{'u0':3,'v0':1}),
  'canonical_monomial':('moderate',None,{'a':1,'b':1,'c':1,'n':3,'u0':-1,'v0':2}),
  'powers':('hard',None,{'a':1,'b':1,'p':1,'q':1,'r':1,'s':1,'m':3,'n':2,'u0':2,'v0':1})}
 # Explicit replay-only proportional shapes. These are not recovered error intent.
@@ -49,7 +50,8 @@ OBSERVED_FACTORS={
  'sqrt_product':['4','2','3','1','1/2'],
  'log_difference':['4','5/3','1','2','1/3'],
  'sin_sum':['12/5','1','6/5','2/5','7/5'],
- 'exp_sum':['21/11','18/11','13/11','1','17/11']}
+ 'exp_sum':['21/11','18/11','13/11','1','17/11'],
+ 'cubic_difference':['4/13','5/26','9/13','1/2','1']}
 BANK_PROFILES={}
 for t,fs in OBSERVED_FACTORS.items():
  BANK_PROFILES['observed_'+t]={'template':t,'origin':'observed proportional shapes; intent unresolved','factors':fs}
@@ -84,6 +86,7 @@ def functions(t,p):
  if t=='log_difference':return sp.log(u-v),v-u**2
  if t=='sin_sum':return u+v**2,sp.sin(u+v)
  if t=='exp_sum':return sp.exp(u+v),u**3+v
+ if t=='cubic_difference':return u**3-v,v-u
  if t=='canonical_monomial':return p['a']*u*v**p['n'],p['b']*u**2+p['c']*v**2
  if t=='powers':return p['a']*(p['p']*u+p['q']*v)**p['m'],p['b']*(p['r']*u-p['s']*v)**p['n']
  raise ValueError(t)
@@ -157,7 +160,7 @@ def render(t,p,data):
  'cos_sum':[r'-\sin u+2v'], 'quotient_product':[r'\frac{2u^{2}}{v}+\frac{u^{2}}{v}',r'\frac{3u^{2}}{v}'],
  'sqrt_product':[r'v\sqrt{uv}-\frac{1}{2}v\sqrt{uv}',r'\frac{1}{2}v\sqrt{uv}'],
  'log_difference':[r'\frac{1-2u}{u-v}'], 'sin_sum':[r'(1-2v)\cos(u+v)'],
- 'exp_sum':[r'e^{u+v}(1-3u^{2})']}.get(t,[tex(sp.expand(A-B)),tex(j)])
+ 'exp_sum':[r'e^{u+v}(1-3u^{2})'], 'cubic_difference':[r'3u^{2}-1']}.get(t,[tex(sp.expand(A-B)),tex(j)])
  rows=[J+' & ='+matrix(*PARTIALS),r'& ='+matrix(*(tex(z) for z in d)),r'& =('+tex(d[0])+r')\cdot ('+tex(d[3])+r')-('+tex(d[1])+r')\cdot ('+tex(d[2])+')',*[r'& ='+z for z in symbolic_rows],r'\left.'+J+r'\right|_{'+point+'} & ='+r'\left('+tex(j)+r'\right)\big|_{u='+str(u0)+',v='+str(v0)+'}',*([r'& ='+substituted] if t!='log_product' else []),r'& ='+tex(j0)]
  solution=OPENING+'\n\n'+block(r'\text{Area}(T(Δ))\approx\left|'+J+r'\right|\cdot\underbrace{\text{Area}(Δ)}_{\delta A}')+'\n\n'+COMPUTING+'\n\n'+block(r'\begin{aligned}'+r'\\'.join(rows)+r'\end{aligned}')+'\n\n'+ENDING+'\n\n'+block(r'\begin{aligned}\text{Area}(T(Δ)) & \approx|'+tex(j0)+r'|\cdot\delta A\\ & ='+area(C)+r'.\end{aligned}')
  return prompt,solution
@@ -192,7 +195,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   if equivalent(val,C):correct=[':answer/id',aid]
  rng.shuffle(answers)
  question={':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':correct}]}
- return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,'generation':{'version':VERSION,'provenance':PROVENANCE,'seed':seed,'difficulty':level,'template':t,'parameters':p,'bank_profile':profile,'bank_origin':BANK_PROFILES[profile]['origin'],'recipes':recipes,'source_refs':[TEMPLATES[t][1]] if TEMPLATES[t][1] else [],'authored_level':level!='easy','domain':domain(t),'plot':'none','parameter_fingerprint':fp,'exact':{'x':str(data[0]),'y':str(data[1]),'partials':[str(z) for z in data[2]],'ad':str(data[3]),'bc':str(data[4]),'jacobian':str(data[5]),'jacobian_at_point':str(data[6]),'area_scale':str(C)}}}
+ return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,'generation':{'version':VERSION,'provenance':({**PROVENANCE,'basis':2268} if t=='cubic_difference' else PROVENANCE),'seed':seed,'difficulty':level,'template':t,'parameters':p,'bank_profile':profile,'bank_origin':BANK_PROFILES[profile]['origin'],'recipes':recipes,'source_refs':[TEMPLATES[t][1]] if TEMPLATES[t][1] else [],'authored_level':level!='easy','domain':domain(t),'plot':'none','parameter_fingerprint':fp,'exact':{'x':str(data[0]),'y':str(data[1]),'partials':[str(z) for z in data[2]],'ad':str(data[3]),'bc':str(data[4]),'jacobian':str(data[5]),'jacobian_at_point':str(data[6]),'area_scale':str(C)}}}
 def domain(t):return {'log_product':'uv>0','reciprocal_product':'u!=0','sqrt_sum':'u>0','quotient_product':'v!=0','sqrt_product':'u>0,v>0','log_difference':'u-v>0'}.get(t,'R²')
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
 def generate_moderate(seed=0,**kwargs):return generate('moderate',seed,**kwargs)

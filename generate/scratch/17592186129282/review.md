@@ -1494,6 +1494,70 @@ $$
 \begin{aligned}\text{Area}(T(Δ)) & \approx|-47|\cdot\delta A\\ & =47\,\delta A.\end{aligned}
 $$
 
+### easy / cubic_difference / observed_cubic_difference
+
+Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(1,1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by
+
+$$
+T:[\begin{aligned}u \\ v\end{aligned}]\longrightarrow[\begin{aligned}u^{3} - v\\- u + v\end{aligned}]?
+$$
+
+- $\delta A$
+- $\frac{8}{13}\,\delta A$
+- $\frac{18}{13}\,\delta A$
+- $2\,\delta A$ **correct**
+- $\frac{5}{13}\,\delta A$
+
+Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:
+
+$$
+\text{Area}(T(Δ))\approx\left|\frac{\partial(x,y)}{\partial(u,v)}\right|\cdot\underbrace{\text{Area}(Δ)}_{\delta A}
+$$
+
+Computing the corresponding Jacobian determinant, we obtain the following:
+
+$$
+\begin{aligned}\frac{\partial(x,y)}{\partial(u,v)} & =\left|\begin{matrix}\frac{\partial x}{\partial u}&\frac{\partial x}{\partial v}\\\frac{\partial y}{\partial u}&\frac{\partial y}{\partial v}\end{matrix}\right|\\& =\left|\begin{matrix}3 u^{2}&-1\\-1&1\end{matrix}\right|\\& =(3 u^{2})\cdot (1)-(-1)\cdot (-1)\\& =3u^{2}-1\\\left.\frac{\partial(x,y)}{\partial(u,v)}\right|_{(1,1)} & =\left(3 u^{2} - 1\right)\big|_{u=1,v=1}\\& =3 (1)^{2} - 1\\& =2\end{aligned}
+$$
+
+Therefore, we have
+
+$$
+\begin{aligned}\text{Area}(T(Δ)) & \approx|2|\cdot\delta A\\ & =2\,\delta A.\end{aligned}
+$$
+
+### easy / cubic_difference / observed_cubic_difference
+
+Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(4,1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by
+
+$$
+T:[\begin{aligned}u \\ v\end{aligned}]\longrightarrow[\begin{aligned}u^{3} - v\\- u + v\end{aligned}]?
+$$
+
+- $\frac{47}{2}\,\delta A$
+- $47\,\delta A$ **correct**
+- $\frac{188}{13}\,\delta A$
+- $\frac{235}{26}\,\delta A$
+- $\frac{423}{13}\,\delta A$
+
+Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:
+
+$$
+\text{Area}(T(Δ))\approx\left|\frac{\partial(x,y)}{\partial(u,v)}\right|\cdot\underbrace{\text{Area}(Δ)}_{\delta A}
+$$
+
+Computing the corresponding Jacobian determinant, we obtain the following:
+
+$$
+\begin{aligned}\frac{\partial(x,y)}{\partial(u,v)} & =\left|\begin{matrix}\frac{\partial x}{\partial u}&\frac{\partial x}{\partial v}\\\frac{\partial y}{\partial u}&\frac{\partial y}{\partial v}\end{matrix}\right|\\& =\left|\begin{matrix}3 u^{2}&-1\\-1&1\end{matrix}\right|\\& =(3 u^{2})\cdot (1)-(-1)\cdot (-1)\\& =3u^{2}-1\\\left.\frac{\partial(x,y)}{\partial(u,v)}\right|_{(4,1)} & =\left(3 u^{2} - 1\right)\big|_{u=4,v=1}\\& =3 (4)^{2} - 1\\& =47\end{aligned}
+$$
+
+Therefore, we have
+
+$$
+\begin{aligned}\text{Area}(T(Δ)) & \approx|47|\cdot\delta A\\ & =47\,\delta A.\end{aligned}
+$$
+
 ### easy / poly_sum / legacy_poly_sum
 
 Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(1,1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by
@@ -2772,6 +2836,134 @@ Therefore, we have
 
 $$
 \begin{aligned}\text{Area}(T(Δ)) & \approx|-47|\cdot\delta A\\ & =47\,\delta A.\end{aligned}
+$$
+
+### easy / cubic_difference / authored_area_cubic_difference
+
+Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-2,-1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by
+
+$$
+T:[\begin{aligned}u \\ v\end{aligned}]\longrightarrow[\begin{aligned}u^{3} - v\\- u + v\end{aligned}]?
+$$
+
+- $22\,\delta A$
+- $11\,\delta A$ **correct**
+- $\frac{1}{11}\,\delta A$
+- $\frac{11}{2}\,\delta A$
+- $121\,\delta A$
+
+Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:
+
+$$
+\text{Area}(T(Δ))\approx\left|\frac{\partial(x,y)}{\partial(u,v)}\right|\cdot\underbrace{\text{Area}(Δ)}_{\delta A}
+$$
+
+Computing the corresponding Jacobian determinant, we obtain the following:
+
+$$
+\begin{aligned}\frac{\partial(x,y)}{\partial(u,v)} & =\left|\begin{matrix}\frac{\partial x}{\partial u}&\frac{\partial x}{\partial v}\\\frac{\partial y}{\partial u}&\frac{\partial y}{\partial v}\end{matrix}\right|\\& =\left|\begin{matrix}3 u^{2}&-1\\-1&1\end{matrix}\right|\\& =(3 u^{2})\cdot (1)-(-1)\cdot (-1)\\& =3u^{2}-1\\\left.\frac{\partial(x,y)}{\partial(u,v)}\right|_{(-2,-1)} & =\left(3 u^{2} - 1\right)\big|_{u=-2,v=-1}\\& =3 (-2)^{2} - 1\\& =11\end{aligned}
+$$
+
+Therefore, we have
+
+$$
+\begin{aligned}\text{Area}(T(Δ)) & \approx|11|\cdot\delta A\\ & =11\,\delta A.\end{aligned}
+$$
+
+### easy / cubic_difference / authored_area_cubic_difference
+
+Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(4,1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by
+
+$$
+T:[\begin{aligned}u \\ v\end{aligned}]\longrightarrow[\begin{aligned}u^{3} - v\\- u + v\end{aligned}]?
+$$
+
+- $94\,\delta A$
+- $\frac{47}{2}\,\delta A$
+- $47\,\delta A$ **correct**
+- $2209\,\delta A$
+- $\frac{1}{47}\,\delta A$
+
+Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:
+
+$$
+\text{Area}(T(Δ))\approx\left|\frac{\partial(x,y)}{\partial(u,v)}\right|\cdot\underbrace{\text{Area}(Δ)}_{\delta A}
+$$
+
+Computing the corresponding Jacobian determinant, we obtain the following:
+
+$$
+\begin{aligned}\frac{\partial(x,y)}{\partial(u,v)} & =\left|\begin{matrix}\frac{\partial x}{\partial u}&\frac{\partial x}{\partial v}\\\frac{\partial y}{\partial u}&\frac{\partial y}{\partial v}\end{matrix}\right|\\& =\left|\begin{matrix}3 u^{2}&-1\\-1&1\end{matrix}\right|\\& =(3 u^{2})\cdot (1)-(-1)\cdot (-1)\\& =3u^{2}-1\\\left.\frac{\partial(x,y)}{\partial(u,v)}\right|_{(4,1)} & =\left(3 u^{2} - 1\right)\big|_{u=4,v=1}\\& =3 (4)^{2} - 1\\& =47\end{aligned}
+$$
+
+Therefore, we have
+
+$$
+\begin{aligned}\text{Area}(T(Δ)) & \approx|47|\cdot\delta A\\ & =47\,\delta A.\end{aligned}
+$$
+
+### easy / cubic_difference / authored_determinant_cubic_difference
+
+Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(1,1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by
+
+$$
+T:[\begin{aligned}u \\ v\end{aligned}]\longrightarrow[\begin{aligned}u^{3} - v\\- u + v\end{aligned}]?
+$$
+
+- $\delta A$
+- $2\,\delta A$ **correct**
+- $3\,\delta A$
+- $5\,\delta A$
+- $4\,\delta A$
+
+Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:
+
+$$
+\text{Area}(T(Δ))\approx\left|\frac{\partial(x,y)}{\partial(u,v)}\right|\cdot\underbrace{\text{Area}(Δ)}_{\delta A}
+$$
+
+Computing the corresponding Jacobian determinant, we obtain the following:
+
+$$
+\begin{aligned}\frac{\partial(x,y)}{\partial(u,v)} & =\left|\begin{matrix}\frac{\partial x}{\partial u}&\frac{\partial x}{\partial v}\\\frac{\partial y}{\partial u}&\frac{\partial y}{\partial v}\end{matrix}\right|\\& =\left|\begin{matrix}3 u^{2}&-1\\-1&1\end{matrix}\right|\\& =(3 u^{2})\cdot (1)-(-1)\cdot (-1)\\& =3u^{2}-1\\\left.\frac{\partial(x,y)}{\partial(u,v)}\right|_{(1,1)} & =\left(3 u^{2} - 1\right)\big|_{u=1,v=1}\\& =3 (1)^{2} - 1\\& =2\end{aligned}
+$$
+
+Therefore, we have
+
+$$
+\begin{aligned}\text{Area}(T(Δ)) & \approx|2|\cdot\delta A\\ & =2\,\delta A.\end{aligned}
+$$
+
+### easy / cubic_difference / authored_determinant_cubic_difference
+
+Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(4,1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by
+
+$$
+T:[\begin{aligned}u \\ v\end{aligned}]\longrightarrow[\begin{aligned}u^{3} - v\\- u + v\end{aligned}]?
+$$
+
+- $\delta A$
+- $95\,\delta A$
+- $47\,\delta A$ **correct**
+- $49\,\delta A$
+- $48\,\delta A$
+
+Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:
+
+$$
+\text{Area}(T(Δ))\approx\left|\frac{\partial(x,y)}{\partial(u,v)}\right|\cdot\underbrace{\text{Area}(Δ)}_{\delta A}
+$$
+
+Computing the corresponding Jacobian determinant, we obtain the following:
+
+$$
+\begin{aligned}\frac{\partial(x,y)}{\partial(u,v)} & =\left|\begin{matrix}\frac{\partial x}{\partial u}&\frac{\partial x}{\partial v}\\\frac{\partial y}{\partial u}&\frac{\partial y}{\partial v}\end{matrix}\right|\\& =\left|\begin{matrix}3 u^{2}&-1\\-1&1\end{matrix}\right|\\& =(3 u^{2})\cdot (1)-(-1)\cdot (-1)\\& =3u^{2}-1\\\left.\frac{\partial(x,y)}{\partial(u,v)}\right|_{(4,1)} & =\left(3 u^{2} - 1\right)\big|_{u=4,v=1}\\& =3 (4)^{2} - 1\\& =47\end{aligned}
+$$
+
+Therefore, we have
+
+$$
+\begin{aligned}\text{Area}(T(Δ)) & \approx|47|\cdot\delta A\\ & =47\,\delta A.\end{aligned}
 $$
 
 ### moderate / canonical_monomial / authored_area_canonical_monomial

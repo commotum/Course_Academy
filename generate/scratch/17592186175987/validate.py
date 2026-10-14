@@ -222,6 +222,7 @@ def check_normal(rec):
     component=re.sub(r'(\{\\int \}_\{0\}\^\{)'+str(gen.SPECS[template][3])+r'(\})',lambda m:m[1]+str(p['radius'])+m[2],component)
     if template=='cubic_y':component=component.replace(r'\,dx-(y{e}^{y+1}+x)',r'\,dx+(y{e}^{y+1}+x)')
     if template=='square_difference':component=component.replace('{e}^{1/y}','{e}^{y}')
+    if template=='cubic_log':component=component.replace('{∬}_{D}(1-3{y}^{2})','{∬}_{D}(1-2{y}^{2})')
     assert component in solution,('missing source operative component',template,component)
   for stage in re.findall(r'\$\$\n(.*?)\n\$\$',source,re.S):
    if r'\operatorname{sin}⁡(2\theta )' in stage:assert r'\operatorname{sin}⁡(2\theta )' in solution

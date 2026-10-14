@@ -1,0 +1,1362 @@
+[
+  {
+    "label": "adc92b5f-6402-53d1-8666-3baacdfe2c66",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "adc92b5f-6402-53d1-8666-3baacdfe2c66",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Consider a small rectangle $\u0394$ whose bottom-left corner is located at the point $(-2,-1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}2 u v^{3}\\\\u^{2} + v^{2}\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(\u0394))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(\u0394)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}2 v^{3}&6 u v^{2}\\\\2 u&2 v\\end{matrix}\\right|\\\\& =(2 v^{3})\\cdot (2 v)-(6 u v^{2})\\cdot (2 u)\\\\& =- 12 u^{2} v^{2} + 4 v^{4}\\\\& =- 4 v^{2} \\left(3 u^{2} - v^{2}\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-2,-1)} & =\\left(- 4 v^{2} \\left(3 u^{2} - v^{2}\\right)\\right)\\big|_{u=-2,v=-1}\\\\& =- 4 (-1)^{2} \\left(- (-1)^{2} + 3 (-2)^{2}\\right)\\\\& =-44\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(\u0394)) & \\approx|-44|\\cdot\\delta A\\\\ & =44\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "535e0d1f-0eed-5a50-9f3c-40a846b5562f",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "15dbf132-3e31-59b6-b187-892685acc97d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "88\\,\\delta A"
+              },
+              {
+                ":answer/id": "a6d2a6d9-d644-5d45-8bdf-1c1fb6df4980",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "22\\,\\delta A"
+              },
+              {
+                ":answer/id": "83524c04-5468-53fa-bd7d-bb4999cc9585",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "1936\\,\\delta A"
+              },
+              {
+                ":answer/id": "697e6aef-9964-5053-b382-5c88b21c2920",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "44\\,\\delta A"
+              },
+              {
+                ":answer/id": "f639046b-b2fc-5455-96d0-1286ffd8950a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{44}\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "697e6aef-9964-5053-b382-5c88b21c2920"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 21686992,
+        "difficulty": "moderate",
+        "template": "canonical_monomial",
+        "parameters": {
+          "a": 2,
+          "b": 1,
+          "c": 1,
+          "n": 3,
+          "u0": -2,
+          "v0": -1
+        },
+        "bank_profile": "authored_area_canonical_monomial",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [],
+        "authored_level": true,
+        "domain": "R\u00b2",
+        "plot": "none",
+        "parameter_fingerprint": "2450a1bb3b40e91c78550018afd7f3e26ec6d7f0cc39f4c0f8501f14bf389a08",
+        "exact": {
+          "x": "2*u*v**3",
+          "y": "u**2 + v**2",
+          "partials": [
+            "2*v**3",
+            "6*u*v**2",
+            "2*u",
+            "2*v"
+          ],
+          "ad": "4*v**4",
+          "bc": "12*u**2*v**2",
+          "jacobian": "-4*v**2*(3*u**2 - v**2)",
+          "jacobian_at_point": "-44",
+          "area_scale": "44"
+        }
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "15dbf132-3e31-59b6-b187-892685acc97d",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "a6d2a6d9-d644-5d45-8bdf-1c1fb6df4980",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "83524c04-5468-53fa-bd7d-bb4999cc9585",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "697e6aef-9964-5053-b382-5c88b21c2920",
+        "expected": "accepted",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "f639046b-b2fc-5455-96d0-1286ffd8950a",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      }
+    ]
+  },
+  {
+    "label": "14ceb78e-322f-54a1-9174-9de018a820b6",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "14ceb78e-322f-54a1-9174-9de018a820b6",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Consider a small rectangle $\u0394$ whose bottom-left corner is located at the point $(-1,2)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}2 u v^{3}\\\\3 u^{2} + v^{2}\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(\u0394))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(\u0394)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}2 v^{3}&6 u v^{2}\\\\6 u&2 v\\end{matrix}\\right|\\\\& =(2 v^{3})\\cdot (2 v)-(6 u v^{2})\\cdot (6 u)\\\\& =- 36 u^{2} v^{2} + 4 v^{4}\\\\& =- 4 v^{2} \\left(3 u - v\\right) \\left(3 u + v\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-1,2)} & =\\left(- 4 v^{2} \\left(3 u - v\\right) \\left(3 u + v\\right)\\right)\\big|_{u=-1,v=2}\\\\& =- 4 (2)^{2} \\left(3 (-1) - (2)\\right) \\left(3 (-1) + (2)\\right)\\\\& =-80\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(\u0394)) & \\approx|-80|\\cdot\\delta A\\\\ & =80\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "f13aea66-5851-5988-acfe-308733165daa",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "10c25e88-eda6-5994-8669-2fc4e8989223",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{80}\\,\\delta A"
+              },
+              {
+                ":answer/id": "b76da343-223a-5697-a37a-50a8d039196b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "40\\,\\delta A"
+              },
+              {
+                ":answer/id": "3f0938ab-55ed-5367-8d20-ae9cdfd95ae8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "80\\,\\delta A"
+              },
+              {
+                ":answer/id": "2938687d-5d55-5245-8c65-6f9840dccd9b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "160\\,\\delta A"
+              },
+              {
+                ":answer/id": "a3238964-bd1d-5761-80d6-d8671006ef6f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "6400\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "3f0938ab-55ed-5367-8d20-ae9cdfd95ae8"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 21686993,
+        "difficulty": "moderate",
+        "template": "canonical_monomial",
+        "parameters": {
+          "a": 2,
+          "b": 3,
+          "c": 1,
+          "n": 3,
+          "u0": -1,
+          "v0": 2
+        },
+        "bank_profile": "authored_area_canonical_monomial",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [],
+        "authored_level": true,
+        "domain": "R\u00b2",
+        "plot": "none",
+        "parameter_fingerprint": "f29315171dbb4f9f1904cbe82bffc8eaabed701d35f1b78f2e87adc739b30c91",
+        "exact": {
+          "x": "2*u*v**3",
+          "y": "3*u**2 + v**2",
+          "partials": [
+            "2*v**3",
+            "6*u*v**2",
+            "6*u",
+            "2*v"
+          ],
+          "ad": "4*v**4",
+          "bc": "36*u**2*v**2",
+          "jacobian": "-4*v**2*(3*u - v)*(3*u + v)",
+          "jacobian_at_point": "-80",
+          "area_scale": "80"
+        }
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "10c25e88-eda6-5994-8669-2fc4e8989223",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "b76da343-223a-5697-a37a-50a8d039196b",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "3f0938ab-55ed-5367-8d20-ae9cdfd95ae8",
+        "expected": "accepted",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "2938687d-5d55-5245-8c65-6f9840dccd9b",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "a3238964-bd1d-5761-80d6-d8671006ef6f",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      }
+    ]
+  },
+  {
+    "label": "53cbe52b-bde0-5c41-aca4-4e6c21faa397",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "53cbe52b-bde0-5c41-aca4-4e6c21faa397",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Consider a small rectangle $\u0394$ whose bottom-left corner is located at the point $(2,-1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}3 u v^{3}\\\\u^{2} + 2 v^{2}\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(\u0394))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(\u0394)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 v^{3}&9 u v^{2}\\\\2 u&4 v\\end{matrix}\\right|\\\\& =(3 v^{3})\\cdot (4 v)-(9 u v^{2})\\cdot (2 u)\\\\& =- 18 u^{2} v^{2} + 12 v^{4}\\\\& =- 6 v^{2} \\left(3 u^{2} - 2 v^{2}\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(2,-1)} & =\\left(- 6 v^{2} \\left(3 u^{2} - 2 v^{2}\\right)\\right)\\big|_{u=2,v=-1}\\\\& =- 6 (-1)^{2} \\left(- 2 (-1)^{2} + 3 (2)^{2}\\right)\\\\& =-60\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(\u0394)) & \\approx|-60|\\cdot\\delta A\\\\ & =60\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "d336bb06-ff1c-5772-90e6-a62e20ceb52d",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "76383b00-80af-5d97-ab38-8ebc7d2e3bb8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{60}\\,\\delta A"
+              },
+              {
+                ":answer/id": "812363c8-d6ee-5aea-85f6-8c6219b20949",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "120\\,\\delta A"
+              },
+              {
+                ":answer/id": "6037566d-f7b6-50da-a88b-dfbdeeb3fcc0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "60\\,\\delta A"
+              },
+              {
+                ":answer/id": "26961c66-edcd-5145-85c4-6c1fc54d0f34",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "3600\\,\\delta A"
+              },
+              {
+                ":answer/id": "ec0f0246-49a2-593f-b299-8edb618ae39c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "30\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "6037566d-f7b6-50da-a88b-dfbdeeb3fcc0"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 21686994,
+        "difficulty": "moderate",
+        "template": "canonical_monomial",
+        "parameters": {
+          "a": 3,
+          "b": 1,
+          "c": 2,
+          "n": 3,
+          "u0": 2,
+          "v0": -1
+        },
+        "bank_profile": "authored_area_canonical_monomial",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [],
+        "authored_level": true,
+        "domain": "R\u00b2",
+        "plot": "none",
+        "parameter_fingerprint": "3ed20994aabd8a0a32f1b82329508b20ef42cadda8c954640cf298dbd1692ee5",
+        "exact": {
+          "x": "3*u*v**3",
+          "y": "u**2 + 2*v**2",
+          "partials": [
+            "3*v**3",
+            "9*u*v**2",
+            "2*u",
+            "4*v"
+          ],
+          "ad": "12*v**4",
+          "bc": "18*u**2*v**2",
+          "jacobian": "-6*v**2*(3*u**2 - 2*v**2)",
+          "jacobian_at_point": "-60",
+          "area_scale": "60"
+        }
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "76383b00-80af-5d97-ab38-8ebc7d2e3bb8",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "812363c8-d6ee-5aea-85f6-8c6219b20949",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "6037566d-f7b6-50da-a88b-dfbdeeb3fcc0",
+        "expected": "accepted",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "26961c66-edcd-5145-85c4-6c1fc54d0f34",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "ec0f0246-49a2-593f-b299-8edb618ae39c",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      }
+    ]
+  },
+  {
+    "label": "b11a00bf-ad16-5270-bbbf-f403e6fe76c2",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "b11a00bf-ad16-5270-bbbf-f403e6fe76c2",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Consider a small rectangle $\u0394$ whose bottom-left corner is located at the point $(3,1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}3 u v^{3}\\\\u^{2} + 2 v^{2}\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(\u0394))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(\u0394)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 v^{3}&9 u v^{2}\\\\2 u&4 v\\end{matrix}\\right|\\\\& =(3 v^{3})\\cdot (4 v)-(9 u v^{2})\\cdot (2 u)\\\\& =- 18 u^{2} v^{2} + 12 v^{4}\\\\& =- 6 v^{2} \\left(3 u^{2} - 2 v^{2}\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(3,1)} & =\\left(- 6 v^{2} \\left(3 u^{2} - 2 v^{2}\\right)\\right)\\big|_{u=3,v=1}\\\\& =- 6 (1)^{2} \\left(- 2 (1)^{2} + 3 (3)^{2}\\right)\\\\& =-150\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(\u0394)) & \\approx|-150|\\cdot\\delta A\\\\ & =150\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "ae334581-cc02-5854-80ac-65ba5fd211c3",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "22ec1407-5d3e-572e-b894-a96fde5d8e98",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "75\\,\\delta A"
+              },
+              {
+                ":answer/id": "39480101-3dbb-5f98-9d35-a02e91aadd76",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "150\\,\\delta A"
+              },
+              {
+                ":answer/id": "33d42482-34ef-59e1-9d7b-c0a1dcf6db23",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "300\\,\\delta A"
+              },
+              {
+                ":answer/id": "3ffa3aa9-000d-52d4-8910-4d539df8e087",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "22500\\,\\delta A"
+              },
+              {
+                ":answer/id": "3e0670ce-c1db-5e79-a6f4-2e53c985344b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{150}\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "39480101-3dbb-5f98-9d35-a02e91aadd76"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 21686995,
+        "difficulty": "moderate",
+        "template": "canonical_monomial",
+        "parameters": {
+          "a": 3,
+          "b": 1,
+          "c": 2,
+          "n": 3,
+          "u0": 3,
+          "v0": 1
+        },
+        "bank_profile": "authored_area_canonical_monomial",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [],
+        "authored_level": true,
+        "domain": "R\u00b2",
+        "plot": "none",
+        "parameter_fingerprint": "f40460a2b4b09ffa99cc30dbff49f637b8035032d31de577f79c31d52b00f0f7",
+        "exact": {
+          "x": "3*u*v**3",
+          "y": "u**2 + 2*v**2",
+          "partials": [
+            "3*v**3",
+            "9*u*v**2",
+            "2*u",
+            "4*v"
+          ],
+          "ad": "12*v**4",
+          "bc": "18*u**2*v**2",
+          "jacobian": "-6*v**2*(3*u**2 - 2*v**2)",
+          "jacobian_at_point": "-150",
+          "area_scale": "150"
+        }
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "22ec1407-5d3e-572e-b894-a96fde5d8e98",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "39480101-3dbb-5f98-9d35-a02e91aadd76",
+        "expected": "accepted",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "33d42482-34ef-59e1-9d7b-c0a1dcf6db23",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "3ffa3aa9-000d-52d4-8910-4d539df8e087",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "3e0670ce-c1db-5e79-a6f4-2e53c985344b",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      }
+    ]
+  },
+  {
+    "label": "2f65179e-ed0f-5b0a-a190-a9cd8645ec56",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "2f65179e-ed0f-5b0a-a190-a9cd8645ec56",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Consider a small rectangle $\u0394$ whose bottom-left corner is located at the point $(-3,-1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}3 u v^{2}\\\\u^{2} + 2 v^{2}\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(\u0394))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(\u0394)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 v^{2}&6 u v\\\\2 u&4 v\\end{matrix}\\right|\\\\& =(3 v^{2})\\cdot (4 v)-(6 u v)\\cdot (2 u)\\\\& =- 12 u^{2} v + 12 v^{3}\\\\& =- 12 v \\left(u - v\\right) \\left(u + v\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-3,-1)} & =\\left(- 12 v \\left(u - v\\right) \\left(u + v\\right)\\right)\\big|_{u=-3,v=-1}\\\\& =- 12 (-1) \\left(- (-1) + (-3)\\right) \\left((-1) + (-3)\\right)\\\\& =96\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(\u0394)) & \\approx|96|\\cdot\\delta A\\\\ & =96\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "d765db19-5dd7-5fc5-8884-f5f88ec83632",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "68183119-0e35-5d48-af62-a8b0b531100a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "192\\,\\delta A"
+              },
+              {
+                ":answer/id": "a3594f26-df2d-522d-8678-6bd28bc24f8a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "9216\\,\\delta A"
+              },
+              {
+                ":answer/id": "d956c4c8-a269-5eba-9d74-d31be57b55d0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "96\\,\\delta A"
+              },
+              {
+                ":answer/id": "6abf04e2-7547-5fd6-adf1-679bbe9324da",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{96}\\,\\delta A"
+              },
+              {
+                ":answer/id": "b0631b4b-2af0-51ae-9938-eed818a10498",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "48\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "d956c4c8-a269-5eba-9d74-d31be57b55d0"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 21686996,
+        "difficulty": "moderate",
+        "template": "canonical_monomial",
+        "parameters": {
+          "a": 3,
+          "b": 1,
+          "c": 2,
+          "n": 2,
+          "u0": -3,
+          "v0": -1
+        },
+        "bank_profile": "authored_area_canonical_monomial",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [],
+        "authored_level": true,
+        "domain": "R\u00b2",
+        "plot": "none",
+        "parameter_fingerprint": "7917feb616906b8ca3a7eedf1977967fc4de4740f3c8818d41bb010002199af1",
+        "exact": {
+          "x": "3*u*v**2",
+          "y": "u**2 + 2*v**2",
+          "partials": [
+            "3*v**2",
+            "6*u*v",
+            "2*u",
+            "4*v"
+          ],
+          "ad": "12*v**3",
+          "bc": "12*u**2*v",
+          "jacobian": "-12*v*(u - v)*(u + v)",
+          "jacobian_at_point": "96",
+          "area_scale": "96"
+        }
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "68183119-0e35-5d48-af62-a8b0b531100a",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "a3594f26-df2d-522d-8678-6bd28bc24f8a",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "d956c4c8-a269-5eba-9d74-d31be57b55d0",
+        "expected": "accepted",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "6abf04e2-7547-5fd6-adf1-679bbe9324da",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "b0631b4b-2af0-51ae-9938-eed818a10498",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      }
+    ]
+  },
+  {
+    "label": "4bedfcff-a678-5213-96c3-9e61ef2500d0",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "4bedfcff-a678-5213-96c3-9e61ef2500d0",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "Consider a small rectangle $\u0394$ whose bottom-left corner is located at the point $(1,2)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}2 \\left(u + 2 v\\right)^{2}\\\\\\left(u - v\\right)^{3}\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(\u0394))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(\u0394)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}4 \\left(u + 2 v\\right)&8 \\left(u + 2 v\\right)\\\\3 \\left(u - v\\right)^{2}&- 3 \\left(u - v\\right)^{2}\\end{matrix}\\right|\\\\& =(4 \\left(u + 2 v\\right))\\cdot (- 3 \\left(u - v\\right)^{2})-(8 \\left(u + 2 v\\right))\\cdot (3 \\left(u - v\\right)^{2})\\\\& =- 36 u^{3} + 108 u v^{2} - 72 v^{3}\\\\& =- 36 \\left(u - v\\right)^{2} \\left(u + 2 v\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(1,2)} & =\\left(- 36 \\left(u - v\\right)^{2} \\left(u + 2 v\\right)\\right)\\big|_{u=1,v=2}\\\\& =- 36 \\left((1) - (2)\\right)^{2} \\left((1) + 2 (2)\\right)\\\\& =-180\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(\u0394)) & \\approx|-180|\\cdot\\delta A\\\\ & =180\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "9a1f8f25-3418-59b0-ba6b-72dab84b9c04",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ea8be9f3-91f4-5cba-858d-41aaac0aa322",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "360\\,\\delta A"
+              },
+              {
+                ":answer/id": "48539ef9-0109-5101-b692-7f33dca51bb8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "90\\,\\delta A"
+              },
+              {
+                ":answer/id": "43b9aafb-7456-5f41-8063-d0b78c7dd2fe",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{180}\\,\\delta A"
+              },
+              {
+                ":answer/id": "7aa80141-2ce2-5349-94f1-543788e1555c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "32400\\,\\delta A"
+              },
+              {
+                ":answer/id": "57aafb72-bdac-55be-80f7-7b85776228a9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "180\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "57aafb72-bdac-55be-80f7-7b85776228a9"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 21686992,
+        "difficulty": "hard",
+        "template": "powers",
+        "parameters": {
+          "a": 2,
+          "b": 1,
+          "p": 1,
+          "q": 2,
+          "r": 1,
+          "s": 1,
+          "m": 2,
+          "n": 3,
+          "u0": 1,
+          "v0": 2
+        },
+        "bank_profile": "authored_area_powers",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [],
+        "authored_level": true,
+        "domain": "R\u00b2",
+        "plot": "none",
+        "parameter_fingerprint": "e00b68315b841693e44ffcdef144fe883e5670063843402fc8ef3aa3b3d89e52",
+        "exact": {
+          "x": "2*(u + 2*v)**2",
+          "y": "(u - v)**3",
+          "partials": [
+            "4*(u + 2*v)",
+            "8*(u + 2*v)",
+            "3*(u - v)**2",
+            "-3*(u - v)**2"
+          ],
+          "ad": "-12*(u - v)**2*(u + 2*v)",
+          "bc": "24*(u - v)**2*(u + 2*v)",
+          "jacobian": "-36*(u - v)**2*(u + 2*v)",
+          "jacobian_at_point": "-180",
+          "area_scale": "180"
+        }
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "ea8be9f3-91f4-5cba-858d-41aaac0aa322",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "48539ef9-0109-5101-b692-7f33dca51bb8",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "43b9aafb-7456-5f41-8063-d0b78c7dd2fe",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "7aa80141-2ce2-5349-94f1-543788e1555c",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "57aafb72-bdac-55be-80f7-7b85776228a9",
+        "expected": "accepted",
+        "purpose": "Independently validated owned radio selection"
+      }
+    ]
+  },
+  {
+    "label": "a969598c-ea80-5e43-ada9-6b7308b83589",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "a969598c-ea80-5e43-ada9-6b7308b83589",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "Consider a small rectangle $\u0394$ whose bottom-left corner is located at the point $(-2,-1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}2 \\left(2 u + v\\right)^{2}\\\\\\left(u - v\\right)^{3}\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(\u0394))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(\u0394)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}8 \\left(2 u + v\\right)&4 \\left(2 u + v\\right)\\\\3 \\left(u - v\\right)^{2}&- 3 \\left(u - v\\right)^{2}\\end{matrix}\\right|\\\\& =(8 \\left(2 u + v\\right))\\cdot (- 3 \\left(u - v\\right)^{2})-(4 \\left(2 u + v\\right))\\cdot (3 \\left(u - v\\right)^{2})\\\\& =- 72 u^{3} + 108 u^{2} v - 36 v^{3}\\\\& =- 36 \\left(u - v\\right)^{2} \\left(2 u + v\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-2,-1)} & =\\left(- 36 \\left(u - v\\right)^{2} \\left(2 u + v\\right)\\right)\\big|_{u=-2,v=-1}\\\\& =- 36 \\left(- (-1) + (-2)\\right)^{2} \\left((-1) + 2 (-2)\\right)\\\\& =180\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(\u0394)) & \\approx|180|\\cdot\\delta A\\\\ & =180\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "f0f839a4-8628-5b5f-ac1d-b0991c234235",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "93bb489d-c9e5-5d96-b8d7-5033a9c1010a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "90\\,\\delta A"
+              },
+              {
+                ":answer/id": "5ea468ed-e1fe-5ba2-9fa5-fefe32cc95ed",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "32400\\,\\delta A"
+              },
+              {
+                ":answer/id": "5078973b-c6bc-557e-bd48-736bc3b4c202",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{180}\\,\\delta A"
+              },
+              {
+                ":answer/id": "4e43eb16-fd50-58a8-a646-55a7b162847a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "360\\,\\delta A"
+              },
+              {
+                ":answer/id": "69db795c-5742-5b39-9574-c13288983347",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "180\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "69db795c-5742-5b39-9574-c13288983347"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 21686993,
+        "difficulty": "hard",
+        "template": "powers",
+        "parameters": {
+          "a": 2,
+          "b": 1,
+          "p": 2,
+          "q": 1,
+          "r": 1,
+          "s": 1,
+          "m": 2,
+          "n": 3,
+          "u0": -2,
+          "v0": -1
+        },
+        "bank_profile": "authored_area_powers",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [],
+        "authored_level": true,
+        "domain": "R\u00b2",
+        "plot": "none",
+        "parameter_fingerprint": "bcb683d1128b3b6545d5715c48ae9a4c0964258707b5af967b7239d18f3c431c",
+        "exact": {
+          "x": "2*(2*u + v)**2",
+          "y": "(u - v)**3",
+          "partials": [
+            "8*(2*u + v)",
+            "4*(2*u + v)",
+            "3*(u - v)**2",
+            "-3*(u - v)**2"
+          ],
+          "ad": "-24*(u - v)**2*(2*u + v)",
+          "bc": "12*(u - v)**2*(2*u + v)",
+          "jacobian": "-36*(u - v)**2*(2*u + v)",
+          "jacobian_at_point": "180",
+          "area_scale": "180"
+        }
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "93bb489d-c9e5-5d96-b8d7-5033a9c1010a",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "5ea468ed-e1fe-5ba2-9fa5-fefe32cc95ed",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "5078973b-c6bc-557e-bd48-736bc3b4c202",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "4e43eb16-fd50-58a8-a646-55a7b162847a",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "69db795c-5742-5b39-9574-c13288983347",
+        "expected": "accepted",
+        "purpose": "Independently validated owned radio selection"
+      }
+    ]
+  },
+  {
+    "label": "dcaa4bdd-7f4f-5106-9de8-2ca23f1745cd",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "dcaa4bdd-7f4f-5106-9de8-2ca23f1745cd",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "Consider a small rectangle $\u0394$ whose bottom-left corner is located at the point $(1,-1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}2 \\left(2 u + v\\right)^{2}\\\\\\left(u - v\\right)^{3}\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(\u0394))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(\u0394)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}8 \\left(2 u + v\\right)&4 \\left(2 u + v\\right)\\\\3 \\left(u - v\\right)^{2}&- 3 \\left(u - v\\right)^{2}\\end{matrix}\\right|\\\\& =(8 \\left(2 u + v\\right))\\cdot (- 3 \\left(u - v\\right)^{2})-(4 \\left(2 u + v\\right))\\cdot (3 \\left(u - v\\right)^{2})\\\\& =- 72 u^{3} + 108 u^{2} v - 36 v^{3}\\\\& =- 36 \\left(u - v\\right)^{2} \\left(2 u + v\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(1,-1)} & =\\left(- 36 \\left(u - v\\right)^{2} \\left(2 u + v\\right)\\right)\\big|_{u=1,v=-1}\\\\& =- 36 \\left(- (-1) + (1)\\right)^{2} \\left((-1) + 2 (1)\\right)\\\\& =-144\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(\u0394)) & \\approx|-144|\\cdot\\delta A\\\\ & =144\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "e48954b8-5146-577a-919f-6d9a5e7fbd72",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ec16d3f2-9da5-5e85-813f-086fbb3e74c7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "288\\,\\delta A"
+              },
+              {
+                ":answer/id": "3a46dd2e-7844-511c-8225-1d0a51bb3eaf",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "72\\,\\delta A"
+              },
+              {
+                ":answer/id": "421250cd-a2d2-59cf-a6de-47aaded334b2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "20736\\,\\delta A"
+              },
+              {
+                ":answer/id": "549b51aa-02b7-56c9-a3ea-cc9c797d0dfd",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{144}\\,\\delta A"
+              },
+              {
+                ":answer/id": "5c59fc35-b29f-5893-8340-a07c39c6bbb5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "144\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "5c59fc35-b29f-5893-8340-a07c39c6bbb5"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 21686994,
+        "difficulty": "hard",
+        "template": "powers",
+        "parameters": {
+          "a": 2,
+          "b": 1,
+          "p": 2,
+          "q": 1,
+          "r": 1,
+          "s": 1,
+          "m": 2,
+          "n": 3,
+          "u0": 1,
+          "v0": -1
+        },
+        "bank_profile": "authored_area_powers",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [],
+        "authored_level": true,
+        "domain": "R\u00b2",
+        "plot": "none",
+        "parameter_fingerprint": "8ca90269124fb4978bc84ad92a16a774e2b1fcdc30260f3e4d9bda2f7d57a955",
+        "exact": {
+          "x": "2*(2*u + v)**2",
+          "y": "(u - v)**3",
+          "partials": [
+            "8*(2*u + v)",
+            "4*(2*u + v)",
+            "3*(u - v)**2",
+            "-3*(u - v)**2"
+          ],
+          "ad": "-24*(u - v)**2*(2*u + v)",
+          "bc": "12*(u - v)**2*(2*u + v)",
+          "jacobian": "-36*(u - v)**2*(2*u + v)",
+          "jacobian_at_point": "-144",
+          "area_scale": "144"
+        }
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "ec16d3f2-9da5-5e85-813f-086fbb3e74c7",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "3a46dd2e-7844-511c-8225-1d0a51bb3eaf",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "421250cd-a2d2-59cf-a6de-47aaded334b2",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "549b51aa-02b7-56c9-a3ea-cc9c797d0dfd",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "5c59fc35-b29f-5893-8340-a07c39c6bbb5",
+        "expected": "accepted",
+        "purpose": "Independently validated owned radio selection"
+      }
+    ]
+  },
+  {
+    "label": "829d2336-b2c1-5d22-81da-62efc70bcbb3",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "829d2336-b2c1-5d22-81da-62efc70bcbb3",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "Consider a small rectangle $\u0394$ whose bottom-left corner is located at the point $(-1,2)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}\\left(u + 2 v\\right)^{3}\\\\\\left(u - v\\right)^{2}\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(\u0394))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(\u0394)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 \\left(u + 2 v\\right)^{2}&6 \\left(u + 2 v\\right)^{2}\\\\2 \\left(u - v\\right)&- 2 \\left(u - v\\right)\\end{matrix}\\right|\\\\& =(3 \\left(u + 2 v\\right)^{2})\\cdot (- 2 \\left(u - v\\right))-(6 \\left(u + 2 v\\right)^{2})\\cdot (2 \\left(u - v\\right))\\\\& =- 18 u^{3} - 54 u^{2} v + 72 v^{3}\\\\& =- 18 \\left(u - v\\right) \\left(u + 2 v\\right)^{2}\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-1,2)} & =\\left(- 18 \\left(u - v\\right) \\left(u + 2 v\\right)^{2}\\right)\\big|_{u=-1,v=2}\\\\& =- 18 \\left((-1) - (2)\\right) \\left((-1) + 2 (2)\\right)^{2}\\\\& =486\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(\u0394)) & \\approx|486|\\cdot\\delta A\\\\ & =486\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "f515b64d-d940-5cd5-9894-9abe522a7fe6",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "981bec3c-d327-540d-b022-7683af7469d6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "486\\,\\delta A"
+              },
+              {
+                ":answer/id": "1c320d3a-60da-5b71-a776-74db91358bd2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{486}\\,\\delta A"
+              },
+              {
+                ":answer/id": "45580a5e-5bf5-591a-975f-b5c6caffce26",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "243\\,\\delta A"
+              },
+              {
+                ":answer/id": "b5f24ccd-920b-5556-ac5f-da611e02a4e3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "236196\\,\\delta A"
+              },
+              {
+                ":answer/id": "18d61485-2e83-5936-bf4f-bdb56bc3c4ed",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "972\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "981bec3c-d327-540d-b022-7683af7469d6"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 21686995,
+        "difficulty": "hard",
+        "template": "powers",
+        "parameters": {
+          "a": 1,
+          "b": 1,
+          "p": 1,
+          "q": 2,
+          "r": 1,
+          "s": 1,
+          "m": 3,
+          "n": 2,
+          "u0": -1,
+          "v0": 2
+        },
+        "bank_profile": "authored_area_powers",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [],
+        "authored_level": true,
+        "domain": "R\u00b2",
+        "plot": "none",
+        "parameter_fingerprint": "63abe40433442fa79fb4d05f33d4f6d44fb75cb52f3724462268ff497e5cac72",
+        "exact": {
+          "x": "(u + 2*v)**3",
+          "y": "(u - v)**2",
+          "partials": [
+            "3*(u + 2*v)**2",
+            "6*(u + 2*v)**2",
+            "2*(u - v)",
+            "-2*(u - v)"
+          ],
+          "ad": "-6*(u - v)*(u + 2*v)**2",
+          "bc": "12*(u - v)*(u + 2*v)**2",
+          "jacobian": "-18*(u - v)*(u + 2*v)**2",
+          "jacobian_at_point": "486",
+          "area_scale": "486"
+        }
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "981bec3c-d327-540d-b022-7683af7469d6",
+        "expected": "accepted",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "1c320d3a-60da-5b71-a776-74db91358bd2",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "45580a5e-5bf5-591a-975f-b5c6caffce26",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "b5f24ccd-920b-5556-ac5f-da611e02a4e3",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "18d61485-2e83-5936-bf4f-bdb56bc3c4ed",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      }
+    ]
+  },
+  {
+    "label": "8a1a276c-9bc8-5768-90c3-2e3e48e45da7",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "8a1a276c-9bc8-5768-90c3-2e3e48e45da7",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "Consider a small rectangle $\u0394$ whose bottom-left corner is located at the point $(-2,1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}2 \\left(u + v\\right)^{3}\\\\\\left(2 u - v\\right)^{2}\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(\u0394))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(\u0394)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}6 \\left(u + v\\right)^{2}&6 \\left(u + v\\right)^{2}\\\\4 \\left(2 u - v\\right)&- 2 \\left(2 u - v\\right)\\end{matrix}\\right|\\\\& =(6 \\left(u + v\\right)^{2})\\cdot (- 2 \\left(2 u - v\\right))-(6 \\left(u + v\\right)^{2})\\cdot (4 \\left(2 u - v\\right))\\\\& =- 72 u^{3} - 108 u^{2} v + 36 v^{3}\\\\& =- 36 \\left(u + v\\right)^{2} \\left(2 u - v\\right)\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-2,1)} & =\\left(- 36 \\left(u + v\\right)^{2} \\left(2 u - v\\right)\\right)\\big|_{u=-2,v=1}\\\\& =- 36 \\left((-2) + (1)\\right)^{2} \\left(2 (-2) - (1)\\right)\\\\& =180\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(\u0394)) & \\approx|180|\\cdot\\delta A\\\\ & =180\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "7ac21d89-71cb-55af-8bb2-ae949d77431d",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "09aa9167-b044-5501-8f63-4ce19c39ae5b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "180\\,\\delta A"
+              },
+              {
+                ":answer/id": "979d8129-4d6e-5b64-adf3-cad4bb9f306b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "32400\\,\\delta A"
+              },
+              {
+                ":answer/id": "09d9affe-0d42-57ca-8777-3fbb4b43fa8c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "360\\,\\delta A"
+              },
+              {
+                ":answer/id": "d50691b4-12ca-58c1-819c-2360e3254157",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{180}\\,\\delta A"
+              },
+              {
+                ":answer/id": "c371dc56-8562-5f1d-88cd-cbe72dc4bff0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "90\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "09aa9167-b044-5501-8f63-4ce19c39ae5b"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 21686996,
+        "difficulty": "hard",
+        "template": "powers",
+        "parameters": {
+          "a": 2,
+          "b": 1,
+          "p": 1,
+          "q": 1,
+          "r": 2,
+          "s": 1,
+          "m": 3,
+          "n": 2,
+          "u0": -2,
+          "v0": 1
+        },
+        "bank_profile": "authored_area_powers",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [],
+        "authored_level": true,
+        "domain": "R\u00b2",
+        "plot": "none",
+        "parameter_fingerprint": "2dbc522f87080e33b5f12e2cd9f2cb325a046968fc2e3540a5094ecc48fd3fde",
+        "exact": {
+          "x": "2*(u + v)**3",
+          "y": "(2*u - v)**2",
+          "partials": [
+            "6*(u + v)**2",
+            "6*(u + v)**2",
+            "4*(2*u - v)",
+            "-2*(2*u - v)"
+          ],
+          "ad": "-12*(u + v)**2*(2*u - v)",
+          "bc": "24*(u + v)**2*(2*u - v)",
+          "jacobian": "-36*(u + v)**2*(2*u - v)",
+          "jacobian_at_point": "180",
+          "area_scale": "180"
+        }
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "09aa9167-b044-5501-8f63-4ce19c39ae5b",
+        "expected": "accepted",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "979d8129-4d6e-5b64-adf3-cad4bb9f306b",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "09d9affe-0d42-57ca-8777-3fbb4b43fa8c",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "d50691b4-12ca-58c1-819c-2360e3254157",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "c371dc56-8562-5f1d-88cd-cbe72dc4bff0",
+        "expected": "rejected",
+        "purpose": "Independently validated owned radio selection"
+      }
+    ]
+  }
+]

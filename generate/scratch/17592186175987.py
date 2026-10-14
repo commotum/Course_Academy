@@ -19,8 +19,8 @@ import sympy as sp
 from functools import lru_cache
 BASE=Path(__file__).with_suffix('')
 KP_ID=17592186175987
-VERSION='greens-polar-path-3'
-SOURCE=json.loads((BASE/'source.json').read_text())
+VERSION='greens-polar-path-4'
+SOURCE=json.loads((BASE/'source-current.json').read_text())
 KP=SOURCE['record']; TITLE=KP[':knowledge-point/title']
 X,Y,R,T=sp.symbols('x y r theta', real=True)
 SPECS={
@@ -35,6 +35,8 @@ SPECS={
  'affine_y':('q-126708',X+Y,-X*Y,6,sp.pi/2,2*sp.pi),
  'square_difference':('q-126516',Y**3-X,X**3+sp.exp(1/Y),1,-sp.pi/2,sp.pi),
  'polar_blanks':('q-169204',None,None,2,sp.pi/2,2*sp.pi),
+ 'linear_log':('q-126677',Y**2-sp.log(1+sp.cos(X)**2),X**2+3*X*Y,2,sp.pi/2,sp.pi),
+ 'cubic_log':('q-126707',Y+sp.Rational(2,3)*Y**3,sp.log(Y**2+10)+2*X,9,0,3*sp.pi/2),
 }
 # Complete source polynomial objects, in source choice order. Nonnumeric angular
 # integrals are evaluated independently with mpmath when SymPy leaves Integrals.
@@ -50,6 +52,8 @@ BANKS={
  'constant_mixed':[(2*R-R**2*SN,0,3*sp.pi/2,4),(2*R*sp.exp(SN)-R**2*SN,-sp.pi/2,0,4),(R*sp.exp(SN)-R**3*sp.sin(2*T),0,3*sp.pi/2,4),(2*R-R**3*sp.sin(2*T),-sp.pi/2,0,4),(2*R-R**2*sp.sin(2*T),-sp.pi/2,0,4)],
  'affine_y':[(-2*R**2*SN-1,sp.pi/2,2*sp.pi,6),(-R**2*SN-R,sp.pi/2,2*sp.pi,6),(R**3*SN-R,0,sp.pi/2,6),(-R**2*SN-1,sp.pi/2,2*sp.pi,6),(-2*R**2*SN-R,0,sp.pi/2,6)],
  'square_difference':[(2*R**2*C,-sp.pi/2,sp.pi,1),(2*R**2*C,sp.pi/2,2*sp.pi,1),(2*R**2*SN,sp.pi/2,2*sp.pi,1),(3*R**3*sp.sin(2*T),-sp.pi/2,sp.pi,1),(3*R**3*sp.cos(2*T),-sp.pi/2,sp.pi,1)],
+ 'linear_log':[(R**2*(2*SN+C),sp.pi/2,sp.pi,2),(R*(2*C+SN),sp.pi/2,sp.pi,2),(R*(2*SN+C),sp.pi,3*sp.pi/2,2),(R**2*(2*C+SN),sp.pi/2,sp.pi,2),(R**2*(C+SN),sp.pi,3*sp.pi/2,2)],
+ 'cubic_log':[(1-2*R**2*SN**2,-sp.pi/2,0,9),((1-2*R**2*SN**2)*R,-sp.pi/2,0,9),((1-2*R**2*SN**2)*R,0,3*sp.pi/2,9),(R**2-2*SN,0,3*sp.pi/2,9),(1-2*R*SN,0,3*sp.pi/2,9)],
 }
 QS={q[':question/math-academy-id']:q for q in KP[':knowledge-point/questions']}
 
@@ -179,6 +183,7 @@ def source_solution(q,s,radius,original_radius,images,raw):
  if not raw:
   if q[':question/math-academy-id']=='q-125719':text=text.replace(r'\,dx-(y{e}^{y+1}+x)',r'\,dx+(y{e}^{y+1}+x)')
   if q[':question/math-academy-id']=='q-126516':text=text.replace('{e}^{1/y}','{e}^{y}')
+  if q[':question/math-academy-id']=='q-126707':text=text.replace('{∬}_{D}(1-3{y}^{2})','{∬}_{D}(1-2{y}^{2})')
  return text
 
 def authored_solution(P,Q,a,b,radius,plot,expanded=False):
@@ -245,7 +250,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  for attempt in range(100):
   p=dict(parameters) if explicit else {'scale':rng.randint(1,5),'radius':rng.randint(1,4 if template=='constant' else 8)}
   if set(p)!={'scale','radius'} or any(type(p[k])!=int for k in p):raise ValueError('requires integer scale,radius')
-  if not (1<=p['scale']<=5 and 1<=p['radius']<=(4 if template=='constant' else 8)):raise ValueError('moderate workload bounds')
+  if not (1<=p['scale']<=5 and 1<=p['radius']<=(4 if template=='constant' else 9 if template=='cubic_log' else 8)):raise ValueError('moderate workload bounds')
   s,rad=p['scale'],p['radius'];images=get_plots(q,rad,orig,a,b,raw)
   prompt=source_prompt(q,s,images);sol=source_solution(q,s,rad,orig,images,raw)
   if template=='square_difference' and not raw:prompt=prompt.replace('{e}^{1/y}','{e}^{y}')

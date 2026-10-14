@@ -4445,7 +4445,261 @@
     ]
   },
   {
-    "label": "case-35-legacy_poly_sum",
+    "label": "case-35-observed_cubic_difference",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "8923a488-6bac-5562-9406-50237c5f4f29",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(1,1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u^{3} - v\\\\- u + v\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 u^{2}&-1\\\\-1&1\\end{matrix}\\right|\\\\& =(3 u^{2})\\cdot (1)-(-1)\\cdot (-1)\\\\& =3u^{2}-1\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(1,1)} & =\\left(3 u^{2} - 1\\right)\\big|_{u=1,v=1}\\\\& =3 (1)^{2} - 1\\\\& =2\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|2|\\cdot\\delta A\\\\ & =2\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "ab1c9a37-f858-553c-bd75-29b0b58557cc",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "e8621dd3-8c35-578b-8495-38da52bf4159",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\delta A"
+              },
+              {
+                ":answer/id": "35516d17-c989-5c67-a077-948e9eddca8d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{8}{13}\\,\\delta A"
+              },
+              {
+                ":answer/id": "b1ee0c57-8bbe-5436-82ef-986527bc3beb",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{18}{13}\\,\\delta A"
+              },
+              {
+                ":answer/id": "de954c2e-cf01-5e9c-8c8c-9b86b9737503",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2\\,\\delta A"
+              },
+              {
+                ":answer/id": "e614d3ba-c756-55b6-a5ca-5d7bba5efe89",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{5}{13}\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "de954c2e-cf01-5e9c-8c8c-9b86b9737503"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 2268,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 13,
+        "difficulty": "easy",
+        "template": "cubic_difference",
+        "parameters": {
+          "u0": 1,
+          "v0": 1
+        },
+        "bank_profile": "observed_cubic_difference",
+        "bank_origin": "observed proportional shapes; intent unresolved",
+        "recipes": [
+          "scale*(4/13) replay shape; intent unresolved",
+          "scale*(5/26) replay shape; intent unresolved",
+          "scale*(9/13) replay shape; intent unresolved",
+          "scale*(1/2) replay shape; intent unresolved",
+          "scale*(1) replay shape; intent unresolved"
+        ],
+        "source_refs": [
+          "q-161886"
+        ],
+        "authored_level": false,
+        "domain": "R²",
+        "plot": "none",
+        "parameter_fingerprint": "cf3fc06d014bfdf064de5f2341994e3fcfbbc0e8972479cc2b5b056204fa2380",
+        "exact": {
+          "x": "u**3 - v",
+          "y": "-u + v",
+          "partials": [
+            "3*u**2",
+            "-1",
+            "-1",
+            "1"
+          ],
+          "ad": "3*u**2",
+          "bc": "1",
+          "jacobian": "3*u**2 - 1",
+          "jacobian_at_point": "2",
+          "area_scale": "2"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "e8621dd3-8c35-578b-8495-38da52bf4159",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "35516d17-c989-5c67-a077-948e9eddca8d",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "b1ee0c57-8bbe-5436-82ef-986527bc3beb",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "de954c2e-cf01-5e9c-8c8c-9b86b9737503",
+        "expected": "accepted",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "e614d3ba-c756-55b6-a5ca-5d7bba5efe89",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      }
+    ]
+  },
+  {
+    "label": "case-36-observed_cubic_difference",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "0e9eee84-1808-5a0f-a8fb-41a891d4ea3b",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(4,1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u^{3} - v\\\\- u + v\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 u^{2}&-1\\\\-1&1\\end{matrix}\\right|\\\\& =(3 u^{2})\\cdot (1)-(-1)\\cdot (-1)\\\\& =3u^{2}-1\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(4,1)} & =\\left(3 u^{2} - 1\\right)\\big|_{u=4,v=1}\\\\& =3 (4)^{2} - 1\\\\& =47\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|47|\\cdot\\delta A\\\\ & =47\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "c63e73c5-296f-50a9-a02f-3809a6bc43c7",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "da47c8a1-4765-59d3-aa07-98ad628fadaf",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{47}{2}\\,\\delta A"
+              },
+              {
+                ":answer/id": "8b3d95cd-3cea-5be5-b560-ba7e70bb91be",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "47\\,\\delta A"
+              },
+              {
+                ":answer/id": "356192b8-f5b8-5d7a-a7d6-a00b5d941687",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{188}{13}\\,\\delta A"
+              },
+              {
+                ":answer/id": "386ace5e-fa7e-5162-886c-be6dd037a21e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{235}{26}\\,\\delta A"
+              },
+              {
+                ":answer/id": "d7782f57-4167-5f56-86a5-276973aeba1c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{423}{13}\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "8b3d95cd-3cea-5be5-b560-ba7e70bb91be"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 2268,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 27,
+        "difficulty": "easy",
+        "template": "cubic_difference",
+        "parameters": {
+          "u0": 4,
+          "v0": 1
+        },
+        "bank_profile": "observed_cubic_difference",
+        "bank_origin": "observed proportional shapes; intent unresolved",
+        "recipes": [
+          "scale*(4/13) replay shape; intent unresolved",
+          "scale*(5/26) replay shape; intent unresolved",
+          "scale*(9/13) replay shape; intent unresolved",
+          "scale*(1/2) replay shape; intent unresolved",
+          "scale*(1) replay shape; intent unresolved"
+        ],
+        "source_refs": [
+          "q-161886"
+        ],
+        "authored_level": false,
+        "domain": "R²",
+        "plot": "none",
+        "parameter_fingerprint": "07389fd34cae5f6e9598bb34cdace3aad50d3b1199127cace10eb3736dfcda33",
+        "exact": {
+          "x": "u**3 - v",
+          "y": "-u + v",
+          "partials": [
+            "3*u**2",
+            "-1",
+            "-1",
+            "1"
+          ],
+          "ad": "3*u**2",
+          "bc": "1",
+          "jacobian": "3*u**2 - 1",
+          "jacobian_at_point": "47",
+          "area_scale": "47"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "da47c8a1-4765-59d3-aa07-98ad628fadaf",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "8b3d95cd-3cea-5be5-b560-ba7e70bb91be",
+        "expected": "accepted",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "356192b8-f5b8-5d7a-a7d6-a00b5d941687",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "386ace5e-fa7e-5162-886c-be6dd037a21e",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "d7782f57-4167-5f56-86a5-276973aeba1c",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      }
+    ]
+  },
+  {
+    "label": "case-37-legacy_poly_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -4572,7 +4826,7 @@
     ]
   },
   {
-    "label": "case-36-legacy_poly_sum",
+    "label": "case-38-legacy_poly_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -4699,7 +4953,7 @@
     ]
   },
   {
-    "label": "case-37-legacy_exp_product",
+    "label": "case-39-legacy_exp_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -4826,7 +5080,7 @@
     ]
   },
   {
-    "label": "case-38-legacy_exp_product",
+    "label": "case-40-legacy_exp_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -4953,7 +5207,7 @@
     ]
   },
   {
-    "label": "case-39-authored_area_poly_sum",
+    "label": "case-41-authored_area_poly_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -5080,7 +5334,7 @@
     ]
   },
   {
-    "label": "case-40-authored_area_poly_sum",
+    "label": "case-42-authored_area_poly_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -5207,7 +5461,7 @@
     ]
   },
   {
-    "label": "case-41-authored_determinant_poly_sum",
+    "label": "case-43-authored_determinant_poly_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -5334,7 +5588,7 @@
     ]
   },
   {
-    "label": "case-42-authored_determinant_poly_sum",
+    "label": "case-44-authored_determinant_poly_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -5461,7 +5715,7 @@
     ]
   },
   {
-    "label": "case-43-authored_area_log_product",
+    "label": "case-45-authored_area_log_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -5588,7 +5842,7 @@
     ]
   },
   {
-    "label": "case-44-authored_area_log_product",
+    "label": "case-46-authored_area_log_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -5715,7 +5969,7 @@
     ]
   },
   {
-    "label": "case-45-authored_area_exp_product",
+    "label": "case-47-authored_area_exp_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -5842,7 +6096,7 @@
     ]
   },
   {
-    "label": "case-46-authored_area_exp_product",
+    "label": "case-48-authored_area_exp_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -5969,7 +6223,7 @@
     ]
   },
   {
-    "label": "case-47-authored_determinant_exp_product",
+    "label": "case-49-authored_determinant_exp_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -6096,7 +6350,7 @@
     ]
   },
   {
-    "label": "case-48-authored_determinant_exp_product",
+    "label": "case-50-authored_determinant_exp_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -6223,7 +6477,7 @@
     ]
   },
   {
-    "label": "case-49-authored_area_reciprocal_product",
+    "label": "case-51-authored_area_reciprocal_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -6350,7 +6604,7 @@
     ]
   },
   {
-    "label": "case-50-authored_area_reciprocal_product",
+    "label": "case-52-authored_area_reciprocal_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -6477,7 +6731,7 @@
     ]
   },
   {
-    "label": "case-51-authored_determinant_reciprocal_product",
+    "label": "case-53-authored_determinant_reciprocal_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -6604,7 +6858,7 @@
     ]
   },
   {
-    "label": "case-52-authored_determinant_reciprocal_product",
+    "label": "case-54-authored_determinant_reciprocal_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -6731,7 +6985,7 @@
     ]
   },
   {
-    "label": "case-53-authored_area_sqrt_sum",
+    "label": "case-55-authored_area_sqrt_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -6858,7 +7112,7 @@
     ]
   },
   {
-    "label": "case-54-authored_area_sqrt_sum",
+    "label": "case-56-authored_area_sqrt_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -6985,7 +7239,7 @@
     ]
   },
   {
-    "label": "case-55-authored_determinant_sqrt_sum",
+    "label": "case-57-authored_determinant_sqrt_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -7112,7 +7366,7 @@
     ]
   },
   {
-    "label": "case-56-authored_determinant_sqrt_sum",
+    "label": "case-58-authored_determinant_sqrt_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -7239,7 +7493,7 @@
     ]
   },
   {
-    "label": "case-57-authored_area_cos_sum",
+    "label": "case-59-authored_area_cos_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -7366,7 +7620,7 @@
     ]
   },
   {
-    "label": "case-58-authored_area_cos_sum",
+    "label": "case-60-authored_area_cos_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -7493,7 +7747,7 @@
     ]
   },
   {
-    "label": "case-59-authored_area_quotient_product",
+    "label": "case-61-authored_area_quotient_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -7620,7 +7874,7 @@
     ]
   },
   {
-    "label": "case-60-authored_area_quotient_product",
+    "label": "case-62-authored_area_quotient_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -7747,7 +8001,7 @@
     ]
   },
   {
-    "label": "case-61-authored_area_sqrt_product",
+    "label": "case-63-authored_area_sqrt_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -7874,7 +8128,7 @@
     ]
   },
   {
-    "label": "case-62-authored_area_sqrt_product",
+    "label": "case-64-authored_area_sqrt_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -8001,7 +8255,7 @@
     ]
   },
   {
-    "label": "case-63-authored_area_log_difference",
+    "label": "case-65-authored_area_log_difference",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -8128,7 +8382,7 @@
     ]
   },
   {
-    "label": "case-64-authored_area_log_difference",
+    "label": "case-66-authored_area_log_difference",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -8255,7 +8509,7 @@
     ]
   },
   {
-    "label": "case-65-authored_determinant_log_difference",
+    "label": "case-67-authored_determinant_log_difference",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -8382,7 +8636,7 @@
     ]
   },
   {
-    "label": "case-66-authored_determinant_log_difference",
+    "label": "case-68-authored_determinant_log_difference",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -8509,7 +8763,7 @@
     ]
   },
   {
-    "label": "case-67-authored_area_sin_sum",
+    "label": "case-69-authored_area_sin_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -8636,7 +8890,7 @@
     ]
   },
   {
-    "label": "case-68-authored_area_sin_sum",
+    "label": "case-70-authored_area_sin_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -8763,7 +9017,7 @@
     ]
   },
   {
-    "label": "case-69-authored_determinant_sin_sum",
+    "label": "case-71-authored_determinant_sin_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -8890,7 +9144,7 @@
     ]
   },
   {
-    "label": "case-70-authored_determinant_sin_sum",
+    "label": "case-72-authored_determinant_sin_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -9017,7 +9271,7 @@
     ]
   },
   {
-    "label": "case-71-authored_area_exp_sum",
+    "label": "case-73-authored_area_exp_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -9144,7 +9398,7 @@
     ]
   },
   {
-    "label": "case-72-authored_area_exp_sum",
+    "label": "case-74-authored_area_exp_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -9271,7 +9525,7 @@
     ]
   },
   {
-    "label": "case-73-authored_determinant_exp_sum",
+    "label": "case-75-authored_determinant_exp_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -9398,7 +9652,7 @@
     ]
   },
   {
-    "label": "case-74-authored_determinant_exp_sum",
+    "label": "case-76-authored_determinant_exp_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -9525,7 +9779,515 @@
     ]
   },
   {
-    "label": "case-75-authored_area_canonical_monomial",
+    "label": "case-77-authored_area_cubic_difference",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "e6de6b87-44bc-550b-8f03-d0dd38881f42",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-2,-1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u^{3} - v\\\\- u + v\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 u^{2}&-1\\\\-1&1\\end{matrix}\\right|\\\\& =(3 u^{2})\\cdot (1)-(-1)\\cdot (-1)\\\\& =3u^{2}-1\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-2,-1)} & =\\left(3 u^{2} - 1\\right)\\big|_{u=-2,v=-1}\\\\& =3 (-2)^{2} - 1\\\\& =11\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|11|\\cdot\\delta A\\\\ & =11\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "272bc66a-775c-5431-b3a7-1fadcb3b25cf",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "88c3569d-4a2a-5a98-8782-e0be2e6680ed",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "22\\,\\delta A"
+              },
+              {
+                ":answer/id": "7c2ad300-5061-5e3d-baba-2758e4a87247",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "11\\,\\delta A"
+              },
+              {
+                ":answer/id": "3bfa4cd7-ae0d-5d03-837f-3c56b10baa3a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{11}\\,\\delta A"
+              },
+              {
+                ":answer/id": "58467def-9fad-55d8-b6e9-3184efe8c826",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{11}{2}\\,\\delta A"
+              },
+              {
+                ":answer/id": "a543e1c8-88a9-58fa-8e0d-f12eb4ba0819",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "121\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "7c2ad300-5061-5e3d-baba-2758e4a87247"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 2268,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 13,
+        "difficulty": "easy",
+        "template": "cubic_difference",
+        "parameters": {
+          "u0": -2,
+          "v0": -1
+        },
+        "bank_profile": "authored_area_cubic_difference",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [
+          "q-161886"
+        ],
+        "authored_level": false,
+        "domain": "R²",
+        "plot": "none",
+        "parameter_fingerprint": "a37472c0738bdfdb621bba4ca9645fdfdd3c3cd09c144b9c804a2e33b1020d06",
+        "exact": {
+          "x": "u**3 - v",
+          "y": "-u + v",
+          "partials": [
+            "3*u**2",
+            "-1",
+            "-1",
+            "1"
+          ],
+          "ad": "3*u**2",
+          "bc": "1",
+          "jacobian": "3*u**2 - 1",
+          "jacobian_at_point": "11",
+          "area_scale": "11"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "88c3569d-4a2a-5a98-8782-e0be2e6680ed",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "7c2ad300-5061-5e3d-baba-2758e4a87247",
+        "expected": "accepted",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "3bfa4cd7-ae0d-5d03-837f-3c56b10baa3a",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "58467def-9fad-55d8-b6e9-3184efe8c826",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "a543e1c8-88a9-58fa-8e0d-f12eb4ba0819",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      }
+    ]
+  },
+  {
+    "label": "case-78-authored_area_cubic_difference",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "330f0727-4282-513e-bc4e-c25c6b88e8bd",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(4,1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u^{3} - v\\\\- u + v\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 u^{2}&-1\\\\-1&1\\end{matrix}\\right|\\\\& =(3 u^{2})\\cdot (1)-(-1)\\cdot (-1)\\\\& =3u^{2}-1\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(4,1)} & =\\left(3 u^{2} - 1\\right)\\big|_{u=4,v=1}\\\\& =3 (4)^{2} - 1\\\\& =47\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|47|\\cdot\\delta A\\\\ & =47\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "872c949b-b9b2-5942-a6c2-ac2cd68ba7b9",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "82c108b1-8665-5c43-8f61-ffd086fd300a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "94\\,\\delta A"
+              },
+              {
+                ":answer/id": "231632b9-3816-5f24-b1b1-90c2c61cd13f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{47}{2}\\,\\delta A"
+              },
+              {
+                ":answer/id": "e32fcfe1-f45f-53ec-bb46-c87415d3ca56",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "47\\,\\delta A"
+              },
+              {
+                ":answer/id": "e07b89b2-ee40-59c2-bd49-ff48a5ba2230",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2209\\,\\delta A"
+              },
+              {
+                ":answer/id": "dac4e008-5690-5a0d-ae70-9933cd831541",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{47}\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "e32fcfe1-f45f-53ec-bb46-c87415d3ca56"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 2268,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 27,
+        "difficulty": "easy",
+        "template": "cubic_difference",
+        "parameters": {
+          "u0": 4,
+          "v0": 1
+        },
+        "bank_profile": "authored_area_cubic_difference",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [
+          "q-161886"
+        ],
+        "authored_level": false,
+        "domain": "R²",
+        "plot": "none",
+        "parameter_fingerprint": "07389fd34cae5f6e9598bb34cdace3aad50d3b1199127cace10eb3736dfcda33",
+        "exact": {
+          "x": "u**3 - v",
+          "y": "-u + v",
+          "partials": [
+            "3*u**2",
+            "-1",
+            "-1",
+            "1"
+          ],
+          "ad": "3*u**2",
+          "bc": "1",
+          "jacobian": "3*u**2 - 1",
+          "jacobian_at_point": "47",
+          "area_scale": "47"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "82c108b1-8665-5c43-8f61-ffd086fd300a",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "231632b9-3816-5f24-b1b1-90c2c61cd13f",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "e32fcfe1-f45f-53ec-bb46-c87415d3ca56",
+        "expected": "accepted",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "e07b89b2-ee40-59c2-bd49-ff48a5ba2230",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "dac4e008-5690-5a0d-ae70-9933cd831541",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      }
+    ]
+  },
+  {
+    "label": "case-79-authored_determinant_cubic_difference",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "2a2a755b-a69e-5c29-8b66-278a9c03ffd6",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(1,1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u^{3} - v\\\\- u + v\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 u^{2}&-1\\\\-1&1\\end{matrix}\\right|\\\\& =(3 u^{2})\\cdot (1)-(-1)\\cdot (-1)\\\\& =3u^{2}-1\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(1,1)} & =\\left(3 u^{2} - 1\\right)\\big|_{u=1,v=1}\\\\& =3 (1)^{2} - 1\\\\& =2\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|2|\\cdot\\delta A\\\\ & =2\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "cc7b1c85-ff4c-5a81-bcd5-0d4e3157425b",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "e45aa2c0-98b8-5484-a2a4-490322a142de",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\delta A"
+              },
+              {
+                ":answer/id": "437dcf94-753d-5242-a2ef-0aaf84f37789",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2\\,\\delta A"
+              },
+              {
+                ":answer/id": "9801d238-b2e4-5844-92dd-d3fae66163d7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "3\\,\\delta A"
+              },
+              {
+                ":answer/id": "6b22cc69-64b5-5bc2-874a-47a496783992",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "5\\,\\delta A"
+              },
+              {
+                ":answer/id": "34987360-1272-5caa-bc4b-1a19e9e73d2e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "4\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "437dcf94-753d-5242-a2ef-0aaf84f37789"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 2268,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 13,
+        "difficulty": "easy",
+        "template": "cubic_difference",
+        "parameters": {
+          "u0": 1,
+          "v0": 1
+        },
+        "bank_profile": "authored_determinant_cubic_difference",
+        "bank_origin": "authored complete determinant operation bank",
+        "recipes": [
+          "absolute ad-bc",
+          "absolute ad+bc",
+          "omit bc",
+          "omit ad",
+          "double ad"
+        ],
+        "source_refs": [
+          "q-161886"
+        ],
+        "authored_level": false,
+        "domain": "R²",
+        "plot": "none",
+        "parameter_fingerprint": "cf3fc06d014bfdf064de5f2341994e3fcfbbc0e8972479cc2b5b056204fa2380",
+        "exact": {
+          "x": "u**3 - v",
+          "y": "-u + v",
+          "partials": [
+            "3*u**2",
+            "-1",
+            "-1",
+            "1"
+          ],
+          "ad": "3*u**2",
+          "bc": "1",
+          "jacobian": "3*u**2 - 1",
+          "jacobian_at_point": "2",
+          "area_scale": "2"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "e45aa2c0-98b8-5484-a2a4-490322a142de",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "437dcf94-753d-5242-a2ef-0aaf84f37789",
+        "expected": "accepted",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "9801d238-b2e4-5844-92dd-d3fae66163d7",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "6b22cc69-64b5-5bc2-874a-47a496783992",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "34987360-1272-5caa-bc4b-1a19e9e73d2e",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      }
+    ]
+  },
+  {
+    "label": "case-80-authored_determinant_cubic_difference",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "731d0483-3328-51da-a34a-22a1e41ec2fb",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(4,1)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u^{3} - v\\\\- u + v\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 u^{2}&-1\\\\-1&1\\end{matrix}\\right|\\\\& =(3 u^{2})\\cdot (1)-(-1)\\cdot (-1)\\\\& =3u^{2}-1\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(4,1)} & =\\left(3 u^{2} - 1\\right)\\big|_{u=4,v=1}\\\\& =3 (4)^{2} - 1\\\\& =47\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|47|\\cdot\\delta A\\\\ & =47\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "e6689590-358f-5411-aeca-b5452a68b0dd",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "c7e3697c-e6eb-52c3-ba75-d11950c5bdc8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\delta A"
+              },
+              {
+                ":answer/id": "ae400139-182e-5243-a854-796aafd35d90",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "95\\,\\delta A"
+              },
+              {
+                ":answer/id": "d55b153d-8d71-5426-abf7-927f1f7f7696",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "47\\,\\delta A"
+              },
+              {
+                ":answer/id": "19e10364-e9a5-56fd-8d9f-ae72de0523b4",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "49\\,\\delta A"
+              },
+              {
+                ":answer/id": "b9fcce2a-5ba3-507b-8e42-ba03aa987cc8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "48\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "d55b153d-8d71-5426-abf7-927f1f7f7696"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 2268,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 27,
+        "difficulty": "easy",
+        "template": "cubic_difference",
+        "parameters": {
+          "u0": 4,
+          "v0": 1
+        },
+        "bank_profile": "authored_determinant_cubic_difference",
+        "bank_origin": "authored complete determinant operation bank",
+        "recipes": [
+          "absolute ad-bc",
+          "absolute ad+bc",
+          "omit bc",
+          "omit ad",
+          "double ad"
+        ],
+        "source_refs": [
+          "q-161886"
+        ],
+        "authored_level": false,
+        "domain": "R²",
+        "plot": "none",
+        "parameter_fingerprint": "07389fd34cae5f6e9598bb34cdace3aad50d3b1199127cace10eb3736dfcda33",
+        "exact": {
+          "x": "u**3 - v",
+          "y": "-u + v",
+          "partials": [
+            "3*u**2",
+            "-1",
+            "-1",
+            "1"
+          ],
+          "ad": "3*u**2",
+          "bc": "1",
+          "jacobian": "3*u**2 - 1",
+          "jacobian_at_point": "47",
+          "area_scale": "47"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "c7e3697c-e6eb-52c3-ba75-d11950c5bdc8",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "ae400139-182e-5243-a854-796aafd35d90",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "d55b153d-8d71-5426-abf7-927f1f7f7696",
+        "expected": "accepted",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "19e10364-e9a5-56fd-8d9f-ae72de0523b4",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "b9fcce2a-5ba3-507b-8e42-ba03aa987cc8",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      }
+    ]
+  },
+  {
+    "label": "case-81-authored_area_canonical_monomial",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -9654,7 +10416,7 @@
     ]
   },
   {
-    "label": "case-76-authored_area_canonical_monomial",
+    "label": "case-82-authored_area_canonical_monomial",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -9783,7 +10545,7 @@
     ]
   },
   {
-    "label": "case-77-authored_determinant_canonical_monomial",
+    "label": "case-83-authored_determinant_canonical_monomial",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -9912,7 +10674,7 @@
     ]
   },
   {
-    "label": "case-78-authored_determinant_canonical_monomial",
+    "label": "case-84-authored_determinant_canonical_monomial",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -10041,7 +10803,7 @@
     ]
   },
   {
-    "label": "case-79-authored_area_powers",
+    "label": "case-85-authored_area_powers",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -10174,7 +10936,7 @@
     ]
   },
   {
-    "label": "case-80-authored_area_powers",
+    "label": "case-86-authored_area_powers",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -10307,7 +11069,7 @@
     ]
   },
   {
-    "label": "case-81-authored_determinant_powers",
+    "label": "case-87-authored_determinant_powers",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -10440,7 +11202,7 @@
     ]
   },
   {
-    "label": "case-82-authored_determinant_powers",
+    "label": "case-88-authored_determinant_powers",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -10573,7 +11335,7 @@
     ]
   },
   {
-    "label": "case-83-authored_area_poly_sum",
+    "label": "case-89-authored_area_poly_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -10700,7 +11462,7 @@
     ]
   },
   {
-    "label": "case-84-authored_area_poly_sum",
+    "label": "case-90-authored_area_poly_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -10827,7 +11589,7 @@
     ]
   },
   {
-    "label": "case-85-authored_area_poly_sum",
+    "label": "case-91-authored_area_poly_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -10954,7 +11716,7 @@
     ]
   },
   {
-    "label": "case-86-authored_area_poly_sum",
+    "label": "case-92-authored_area_poly_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -11081,7 +11843,7 @@
     ]
   },
   {
-    "label": "case-87-authored_area_poly_sum",
+    "label": "case-93-authored_area_poly_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -11208,7 +11970,7 @@
     ]
   },
   {
-    "label": "case-88-authored_area_poly_sum",
+    "label": "case-94-authored_area_poly_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -11335,7 +12097,7 @@
     ]
   },
   {
-    "label": "case-89-authored_area_poly_sum",
+    "label": "case-95-authored_area_poly_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -11462,7 +12224,7 @@
     ]
   },
   {
-    "label": "case-90-authored_area_poly_sum",
+    "label": "case-96-authored_area_poly_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -11589,7 +12351,7 @@
     ]
   },
   {
-    "label": "case-91-authored_area_poly_sum",
+    "label": "case-97-authored_area_poly_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -11716,7 +12478,7 @@
     ]
   },
   {
-    "label": "case-92-authored_area_poly_sum",
+    "label": "case-98-authored_area_poly_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -11843,7 +12605,7 @@
     ]
   },
   {
-    "label": "case-93-authored_area_poly_sum",
+    "label": "case-99-authored_area_poly_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -11970,7 +12732,7 @@
     ]
   },
   {
-    "label": "case-94-authored_area_poly_sum",
+    "label": "case-100-authored_area_poly_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -12097,7 +12859,7 @@
     ]
   },
   {
-    "label": "case-95-authored_area_log_product",
+    "label": "case-101-authored_area_log_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -12224,7 +12986,7 @@
     ]
   },
   {
-    "label": "case-96-authored_area_log_product",
+    "label": "case-102-authored_area_log_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -12351,7 +13113,7 @@
     ]
   },
   {
-    "label": "case-97-authored_area_log_product",
+    "label": "case-103-authored_area_log_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -12478,7 +13240,7 @@
     ]
   },
   {
-    "label": "case-98-authored_area_log_product",
+    "label": "case-104-authored_area_log_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -12605,7 +13367,7 @@
     ]
   },
   {
-    "label": "case-99-authored_area_log_product",
+    "label": "case-105-authored_area_log_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -12732,7 +13494,7 @@
     ]
   },
   {
-    "label": "case-100-authored_area_log_product",
+    "label": "case-106-authored_area_log_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -12859,7 +13621,7 @@
     ]
   },
   {
-    "label": "case-101-authored_area_log_product",
+    "label": "case-107-authored_area_log_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -12986,7 +13748,7 @@
     ]
   },
   {
-    "label": "case-102-authored_area_log_product",
+    "label": "case-108-authored_area_log_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -13113,7 +13875,7 @@
     ]
   },
   {
-    "label": "case-103-authored_area_log_product",
+    "label": "case-109-authored_area_log_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -13240,7 +14002,7 @@
     ]
   },
   {
-    "label": "case-104-authored_area_log_product",
+    "label": "case-110-authored_area_log_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -13367,7 +14129,7 @@
     ]
   },
   {
-    "label": "case-105-authored_area_log_product",
+    "label": "case-111-authored_area_log_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -13494,7 +14256,7 @@
     ]
   },
   {
-    "label": "case-106-authored_area_log_product",
+    "label": "case-112-authored_area_log_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -13621,7 +14383,7 @@
     ]
   },
   {
-    "label": "case-107-authored_area_exp_product",
+    "label": "case-113-authored_area_exp_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -13748,7 +14510,7 @@
     ]
   },
   {
-    "label": "case-108-authored_area_exp_product",
+    "label": "case-114-authored_area_exp_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -13875,7 +14637,7 @@
     ]
   },
   {
-    "label": "case-109-authored_area_exp_product",
+    "label": "case-115-authored_area_exp_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -14002,7 +14764,7 @@
     ]
   },
   {
-    "label": "case-110-authored_area_exp_product",
+    "label": "case-116-authored_area_exp_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -14129,7 +14891,7 @@
     ]
   },
   {
-    "label": "case-111-authored_area_exp_product",
+    "label": "case-117-authored_area_exp_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -14256,7 +15018,7 @@
     ]
   },
   {
-    "label": "case-112-authored_area_exp_product",
+    "label": "case-118-authored_area_exp_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -14383,7 +15145,7 @@
     ]
   },
   {
-    "label": "case-113-authored_area_exp_product",
+    "label": "case-119-authored_area_exp_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -14510,7 +15272,7 @@
     ]
   },
   {
-    "label": "case-114-authored_area_exp_product",
+    "label": "case-120-authored_area_exp_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -14637,7 +15399,7 @@
     ]
   },
   {
-    "label": "case-115-authored_area_exp_product",
+    "label": "case-121-authored_area_exp_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -14764,7 +15526,7 @@
     ]
   },
   {
-    "label": "case-116-authored_area_exp_product",
+    "label": "case-122-authored_area_exp_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -14891,7 +15653,7 @@
     ]
   },
   {
-    "label": "case-117-authored_area_exp_product",
+    "label": "case-123-authored_area_exp_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -15018,7 +15780,7 @@
     ]
   },
   {
-    "label": "case-118-authored_area_exp_product",
+    "label": "case-124-authored_area_exp_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -15145,7 +15907,7 @@
     ]
   },
   {
-    "label": "case-119-authored_area_reciprocal_product",
+    "label": "case-125-authored_area_reciprocal_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -15272,7 +16034,7 @@
     ]
   },
   {
-    "label": "case-120-authored_area_reciprocal_product",
+    "label": "case-126-authored_area_reciprocal_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -15399,7 +16161,7 @@
     ]
   },
   {
-    "label": "case-121-authored_area_reciprocal_product",
+    "label": "case-127-authored_area_reciprocal_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -15526,7 +16288,7 @@
     ]
   },
   {
-    "label": "case-122-authored_area_reciprocal_product",
+    "label": "case-128-authored_area_reciprocal_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -15653,7 +16415,7 @@
     ]
   },
   {
-    "label": "case-123-authored_area_reciprocal_product",
+    "label": "case-129-authored_area_reciprocal_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -15780,7 +16542,7 @@
     ]
   },
   {
-    "label": "case-124-authored_area_reciprocal_product",
+    "label": "case-130-authored_area_reciprocal_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -15907,7 +16669,7 @@
     ]
   },
   {
-    "label": "case-125-authored_area_reciprocal_product",
+    "label": "case-131-authored_area_reciprocal_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -16034,7 +16796,7 @@
     ]
   },
   {
-    "label": "case-126-authored_area_reciprocal_product",
+    "label": "case-132-authored_area_reciprocal_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -16161,7 +16923,7 @@
     ]
   },
   {
-    "label": "case-127-authored_area_reciprocal_product",
+    "label": "case-133-authored_area_reciprocal_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -16288,7 +17050,7 @@
     ]
   },
   {
-    "label": "case-128-authored_area_reciprocal_product",
+    "label": "case-134-authored_area_reciprocal_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -16415,7 +17177,7 @@
     ]
   },
   {
-    "label": "case-129-authored_area_reciprocal_product",
+    "label": "case-135-authored_area_reciprocal_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -16542,7 +17304,7 @@
     ]
   },
   {
-    "label": "case-130-authored_area_reciprocal_product",
+    "label": "case-136-authored_area_reciprocal_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -16669,7 +17431,7 @@
     ]
   },
   {
-    "label": "case-131-authored_area_sqrt_sum",
+    "label": "case-137-authored_area_sqrt_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -16796,7 +17558,7 @@
     ]
   },
   {
-    "label": "case-132-authored_area_sqrt_sum",
+    "label": "case-138-authored_area_sqrt_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -16923,7 +17685,7 @@
     ]
   },
   {
-    "label": "case-133-authored_area_sqrt_sum",
+    "label": "case-139-authored_area_sqrt_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -17050,7 +17812,7 @@
     ]
   },
   {
-    "label": "case-134-authored_area_sqrt_sum",
+    "label": "case-140-authored_area_sqrt_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -17177,7 +17939,7 @@
     ]
   },
   {
-    "label": "case-135-authored_area_sqrt_sum",
+    "label": "case-141-authored_area_sqrt_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -17304,7 +18066,7 @@
     ]
   },
   {
-    "label": "case-136-authored_area_sqrt_sum",
+    "label": "case-142-authored_area_sqrt_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -17431,7 +18193,7 @@
     ]
   },
   {
-    "label": "case-137-authored_area_sqrt_sum",
+    "label": "case-143-authored_area_sqrt_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -17558,7 +18320,7 @@
     ]
   },
   {
-    "label": "case-138-authored_area_sqrt_sum",
+    "label": "case-144-authored_area_sqrt_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -17685,7 +18447,7 @@
     ]
   },
   {
-    "label": "case-139-authored_area_sqrt_sum",
+    "label": "case-145-authored_area_sqrt_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -17812,7 +18574,7 @@
     ]
   },
   {
-    "label": "case-140-authored_area_sqrt_sum",
+    "label": "case-146-authored_area_sqrt_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -17939,7 +18701,7 @@
     ]
   },
   {
-    "label": "case-141-authored_area_sqrt_sum",
+    "label": "case-147-authored_area_sqrt_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -18066,7 +18828,7 @@
     ]
   },
   {
-    "label": "case-142-authored_area_sqrt_sum",
+    "label": "case-148-authored_area_sqrt_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -18193,7 +18955,7 @@
     ]
   },
   {
-    "label": "case-143-authored_area_cos_sum",
+    "label": "case-149-authored_area_cos_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -18320,7 +19082,7 @@
     ]
   },
   {
-    "label": "case-144-authored_area_cos_sum",
+    "label": "case-150-authored_area_cos_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -18447,7 +19209,7 @@
     ]
   },
   {
-    "label": "case-145-authored_area_cos_sum",
+    "label": "case-151-authored_area_cos_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -18574,7 +19336,7 @@
     ]
   },
   {
-    "label": "case-146-authored_area_cos_sum",
+    "label": "case-152-authored_area_cos_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -18701,7 +19463,7 @@
     ]
   },
   {
-    "label": "case-147-authored_area_cos_sum",
+    "label": "case-153-authored_area_cos_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -18828,7 +19590,7 @@
     ]
   },
   {
-    "label": "case-148-authored_area_cos_sum",
+    "label": "case-154-authored_area_cos_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -18955,7 +19717,7 @@
     ]
   },
   {
-    "label": "case-149-authored_area_cos_sum",
+    "label": "case-155-authored_area_cos_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -19082,7 +19844,7 @@
     ]
   },
   {
-    "label": "case-150-authored_area_cos_sum",
+    "label": "case-156-authored_area_cos_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -19209,7 +19971,7 @@
     ]
   },
   {
-    "label": "case-151-authored_area_cos_sum",
+    "label": "case-157-authored_area_cos_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -19336,7 +20098,7 @@
     ]
   },
   {
-    "label": "case-152-authored_area_cos_sum",
+    "label": "case-158-authored_area_cos_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -19463,7 +20225,7 @@
     ]
   },
   {
-    "label": "case-153-authored_area_cos_sum",
+    "label": "case-159-authored_area_cos_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -19590,7 +20352,7 @@
     ]
   },
   {
-    "label": "case-154-authored_area_cos_sum",
+    "label": "case-160-authored_area_cos_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -19717,7 +20479,7 @@
     ]
   },
   {
-    "label": "case-155-authored_area_quotient_product",
+    "label": "case-161-authored_area_quotient_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -19844,7 +20606,7 @@
     ]
   },
   {
-    "label": "case-156-authored_area_quotient_product",
+    "label": "case-162-authored_area_quotient_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -19971,7 +20733,7 @@
     ]
   },
   {
-    "label": "case-157-authored_area_quotient_product",
+    "label": "case-163-authored_area_quotient_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -20098,7 +20860,7 @@
     ]
   },
   {
-    "label": "case-158-authored_area_quotient_product",
+    "label": "case-164-authored_area_quotient_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -20225,7 +20987,7 @@
     ]
   },
   {
-    "label": "case-159-authored_area_quotient_product",
+    "label": "case-165-authored_area_quotient_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -20352,7 +21114,7 @@
     ]
   },
   {
-    "label": "case-160-authored_area_quotient_product",
+    "label": "case-166-authored_area_quotient_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -20479,7 +21241,7 @@
     ]
   },
   {
-    "label": "case-161-authored_area_quotient_product",
+    "label": "case-167-authored_area_quotient_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -20606,7 +21368,7 @@
     ]
   },
   {
-    "label": "case-162-authored_area_quotient_product",
+    "label": "case-168-authored_area_quotient_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -20733,7 +21495,7 @@
     ]
   },
   {
-    "label": "case-163-authored_area_quotient_product",
+    "label": "case-169-authored_area_quotient_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -20860,7 +21622,7 @@
     ]
   },
   {
-    "label": "case-164-authored_area_quotient_product",
+    "label": "case-170-authored_area_quotient_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -20987,7 +21749,7 @@
     ]
   },
   {
-    "label": "case-165-authored_area_quotient_product",
+    "label": "case-171-authored_area_quotient_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -21114,7 +21876,7 @@
     ]
   },
   {
-    "label": "case-166-authored_area_quotient_product",
+    "label": "case-172-authored_area_quotient_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -21241,7 +22003,7 @@
     ]
   },
   {
-    "label": "case-167-authored_area_sqrt_product",
+    "label": "case-173-authored_area_sqrt_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -21368,7 +22130,7 @@
     ]
   },
   {
-    "label": "case-168-authored_area_sqrt_product",
+    "label": "case-174-authored_area_sqrt_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -21495,7 +22257,7 @@
     ]
   },
   {
-    "label": "case-169-authored_area_sqrt_product",
+    "label": "case-175-authored_area_sqrt_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -21622,7 +22384,7 @@
     ]
   },
   {
-    "label": "case-170-authored_area_sqrt_product",
+    "label": "case-176-authored_area_sqrt_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -21749,7 +22511,7 @@
     ]
   },
   {
-    "label": "case-171-authored_area_sqrt_product",
+    "label": "case-177-authored_area_sqrt_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -21876,7 +22638,7 @@
     ]
   },
   {
-    "label": "case-172-authored_area_sqrt_product",
+    "label": "case-178-authored_area_sqrt_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -22003,7 +22765,7 @@
     ]
   },
   {
-    "label": "case-173-authored_area_sqrt_product",
+    "label": "case-179-authored_area_sqrt_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -22130,7 +22892,7 @@
     ]
   },
   {
-    "label": "case-174-authored_area_sqrt_product",
+    "label": "case-180-authored_area_sqrt_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -22257,7 +23019,7 @@
     ]
   },
   {
-    "label": "case-175-authored_area_sqrt_product",
+    "label": "case-181-authored_area_sqrt_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -22384,7 +23146,7 @@
     ]
   },
   {
-    "label": "case-176-authored_area_sqrt_product",
+    "label": "case-182-authored_area_sqrt_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -22511,7 +23273,7 @@
     ]
   },
   {
-    "label": "case-177-authored_area_sqrt_product",
+    "label": "case-183-authored_area_sqrt_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -22638,7 +23400,7 @@
     ]
   },
   {
-    "label": "case-178-authored_area_sqrt_product",
+    "label": "case-184-authored_area_sqrt_product",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -22765,7 +23527,7 @@
     ]
   },
   {
-    "label": "case-179-authored_area_log_difference",
+    "label": "case-185-authored_area_log_difference",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -22892,7 +23654,7 @@
     ]
   },
   {
-    "label": "case-180-authored_area_log_difference",
+    "label": "case-186-authored_area_log_difference",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -23019,7 +23781,7 @@
     ]
   },
   {
-    "label": "case-181-authored_area_log_difference",
+    "label": "case-187-authored_area_log_difference",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -23146,7 +23908,7 @@
     ]
   },
   {
-    "label": "case-182-authored_area_log_difference",
+    "label": "case-188-authored_area_log_difference",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -23273,7 +24035,7 @@
     ]
   },
   {
-    "label": "case-183-authored_area_log_difference",
+    "label": "case-189-authored_area_log_difference",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -23400,7 +24162,7 @@
     ]
   },
   {
-    "label": "case-184-authored_area_log_difference",
+    "label": "case-190-authored_area_log_difference",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -23527,7 +24289,7 @@
     ]
   },
   {
-    "label": "case-185-authored_area_log_difference",
+    "label": "case-191-authored_area_log_difference",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -23654,7 +24416,7 @@
     ]
   },
   {
-    "label": "case-186-authored_area_log_difference",
+    "label": "case-192-authored_area_log_difference",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -23781,7 +24543,7 @@
     ]
   },
   {
-    "label": "case-187-authored_area_log_difference",
+    "label": "case-193-authored_area_log_difference",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -23908,7 +24670,7 @@
     ]
   },
   {
-    "label": "case-188-authored_area_log_difference",
+    "label": "case-194-authored_area_log_difference",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -24035,7 +24797,7 @@
     ]
   },
   {
-    "label": "case-189-authored_area_log_difference",
+    "label": "case-195-authored_area_log_difference",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -24162,7 +24924,7 @@
     ]
   },
   {
-    "label": "case-190-authored_area_log_difference",
+    "label": "case-196-authored_area_log_difference",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -24289,7 +25051,7 @@
     ]
   },
   {
-    "label": "case-191-authored_area_sin_sum",
+    "label": "case-197-authored_area_sin_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -24416,7 +25178,7 @@
     ]
   },
   {
-    "label": "case-192-authored_area_sin_sum",
+    "label": "case-198-authored_area_sin_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -24543,7 +25305,7 @@
     ]
   },
   {
-    "label": "case-193-authored_area_sin_sum",
+    "label": "case-199-authored_area_sin_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -24670,7 +25432,7 @@
     ]
   },
   {
-    "label": "case-194-authored_area_sin_sum",
+    "label": "case-200-authored_area_sin_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -24797,7 +25559,7 @@
     ]
   },
   {
-    "label": "case-195-authored_area_sin_sum",
+    "label": "case-201-authored_area_sin_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -24924,7 +25686,7 @@
     ]
   },
   {
-    "label": "case-196-authored_area_sin_sum",
+    "label": "case-202-authored_area_sin_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -25051,7 +25813,7 @@
     ]
   },
   {
-    "label": "case-197-authored_area_sin_sum",
+    "label": "case-203-authored_area_sin_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -25178,7 +25940,7 @@
     ]
   },
   {
-    "label": "case-198-authored_area_sin_sum",
+    "label": "case-204-authored_area_sin_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -25305,7 +26067,7 @@
     ]
   },
   {
-    "label": "case-199-authored_area_sin_sum",
+    "label": "case-205-authored_area_sin_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -25432,7 +26194,7 @@
     ]
   },
   {
-    "label": "case-200-authored_area_sin_sum",
+    "label": "case-206-authored_area_sin_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -25559,7 +26321,7 @@
     ]
   },
   {
-    "label": "case-201-authored_area_sin_sum",
+    "label": "case-207-authored_area_sin_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -25686,7 +26448,7 @@
     ]
   },
   {
-    "label": "case-202-authored_area_sin_sum",
+    "label": "case-208-authored_area_sin_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -25813,7 +26575,7 @@
     ]
   },
   {
-    "label": "case-203-authored_area_exp_sum",
+    "label": "case-209-authored_area_exp_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -25940,7 +26702,7 @@
     ]
   },
   {
-    "label": "case-204-authored_area_exp_sum",
+    "label": "case-210-authored_area_exp_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -26067,7 +26829,7 @@
     ]
   },
   {
-    "label": "case-205-authored_area_exp_sum",
+    "label": "case-211-authored_area_exp_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -26194,7 +26956,7 @@
     ]
   },
   {
-    "label": "case-206-authored_area_exp_sum",
+    "label": "case-212-authored_area_exp_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -26321,7 +27083,7 @@
     ]
   },
   {
-    "label": "case-207-authored_area_exp_sum",
+    "label": "case-213-authored_area_exp_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -26448,7 +27210,7 @@
     ]
   },
   {
-    "label": "case-208-authored_area_exp_sum",
+    "label": "case-214-authored_area_exp_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -26575,7 +27337,7 @@
     ]
   },
   {
-    "label": "case-209-authored_area_exp_sum",
+    "label": "case-215-authored_area_exp_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -26702,7 +27464,7 @@
     ]
   },
   {
-    "label": "case-210-authored_area_exp_sum",
+    "label": "case-216-authored_area_exp_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -26829,7 +27591,7 @@
     ]
   },
   {
-    "label": "case-211-authored_area_exp_sum",
+    "label": "case-217-authored_area_exp_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -26956,7 +27718,7 @@
     ]
   },
   {
-    "label": "case-212-authored_area_exp_sum",
+    "label": "case-218-authored_area_exp_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -27083,7 +27845,7 @@
     ]
   },
   {
-    "label": "case-213-authored_area_exp_sum",
+    "label": "case-219-authored_area_exp_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -27210,7 +27972,7 @@
     ]
   },
   {
-    "label": "case-214-authored_area_exp_sum",
+    "label": "case-220-authored_area_exp_sum",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -27337,7 +28099,1531 @@
     ]
   },
   {
-    "label": "case-215-authored_area_canonical_monomial",
+    "label": "case-221-authored_area_cubic_difference",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "f460894c-0852-563e-a0b2-d8d3482b8f4a",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(3,3)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u^{3} - v\\\\- u + v\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 u^{2}&-1\\\\-1&1\\end{matrix}\\right|\\\\& =(3 u^{2})\\cdot (1)-(-1)\\cdot (-1)\\\\& =3u^{2}-1\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(3,3)} & =\\left(3 u^{2} - 1\\right)\\big|_{u=3,v=3}\\\\& =3 (3)^{2} - 1\\\\& =26\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|26|\\cdot\\delta A\\\\ & =26\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "0c7b4335-b1ca-5467-9253-7b7a91b87d99",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "403fd005-0063-503c-949a-62f4d5d5c270",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "13\\,\\delta A"
+              },
+              {
+                ":answer/id": "5722232c-e222-52e5-86fa-82dfae913d15",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "676\\,\\delta A"
+              },
+              {
+                ":answer/id": "af554e1a-fc22-51a9-be72-240045823837",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "52\\,\\delta A"
+              },
+              {
+                ":answer/id": "ea4d5012-d95d-500b-b098-b473532febb8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{26}\\,\\delta A"
+              },
+              {
+                ":answer/id": "fd5720ca-8510-5b54-931b-c5d89c4372ef",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "26\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "fd5720ca-8510-5b54-931b-c5d89c4372ef"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 2268,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 0,
+        "difficulty": "easy",
+        "template": "cubic_difference",
+        "parameters": {
+          "u0": 3,
+          "v0": 3
+        },
+        "bank_profile": "authored_area_cubic_difference",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [
+          "q-161886"
+        ],
+        "authored_level": false,
+        "domain": "R²",
+        "plot": "none",
+        "parameter_fingerprint": "d22785fe3b160deae479f76d63524b1b535b914fb352750fdcd7c54d4ea93931",
+        "exact": {
+          "x": "u**3 - v",
+          "y": "-u + v",
+          "partials": [
+            "3*u**2",
+            "-1",
+            "-1",
+            "1"
+          ],
+          "ad": "3*u**2",
+          "bc": "1",
+          "jacobian": "3*u**2 - 1",
+          "jacobian_at_point": "26",
+          "area_scale": "26"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "403fd005-0063-503c-949a-62f4d5d5c270",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "5722232c-e222-52e5-86fa-82dfae913d15",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "af554e1a-fc22-51a9-be72-240045823837",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "ea4d5012-d95d-500b-b098-b473532febb8",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "fd5720ca-8510-5b54-931b-c5d89c4372ef",
+        "expected": "accepted",
+        "purpose": "Every owned radio selection, independently math-verified"
+      }
+    ]
+  },
+  {
+    "label": "case-222-authored_area_cubic_difference",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "b0d90632-54f7-532f-bbe5-f0836237301f",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-2,-3)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u^{3} - v\\\\- u + v\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 u^{2}&-1\\\\-1&1\\end{matrix}\\right|\\\\& =(3 u^{2})\\cdot (1)-(-1)\\cdot (-1)\\\\& =3u^{2}-1\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-2,-3)} & =\\left(3 u^{2} - 1\\right)\\big|_{u=-2,v=-3}\\\\& =3 (-2)^{2} - 1\\\\& =11\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|11|\\cdot\\delta A\\\\ & =11\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "3414e587-11fd-5e7a-bb8e-bf7921949aef",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "bac8df13-328b-58a4-90b7-3cb213e70364",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "22\\,\\delta A"
+              },
+              {
+                ":answer/id": "3aef0eaf-b2eb-59b2-bff0-3b70158ed58a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{11}{2}\\,\\delta A"
+              },
+              {
+                ":answer/id": "4e6cdd73-a128-54f0-a0d0-a82b943546eb",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "121\\,\\delta A"
+              },
+              {
+                ":answer/id": "dbabae0a-c65e-5816-b716-8118afa80b04",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "11\\,\\delta A"
+              },
+              {
+                ":answer/id": "aa470107-a742-546c-ab51-3824b4614990",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{11}\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "dbabae0a-c65e-5816-b716-8118afa80b04"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 2268,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 1,
+        "difficulty": "easy",
+        "template": "cubic_difference",
+        "parameters": {
+          "u0": -2,
+          "v0": -3
+        },
+        "bank_profile": "authored_area_cubic_difference",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [
+          "q-161886"
+        ],
+        "authored_level": false,
+        "domain": "R²",
+        "plot": "none",
+        "parameter_fingerprint": "fd0d2ff81d45c309eda2c7f96e020e6b4d6b0c36de87d33ecb1c85be34d8cb72",
+        "exact": {
+          "x": "u**3 - v",
+          "y": "-u + v",
+          "partials": [
+            "3*u**2",
+            "-1",
+            "-1",
+            "1"
+          ],
+          "ad": "3*u**2",
+          "bc": "1",
+          "jacobian": "3*u**2 - 1",
+          "jacobian_at_point": "11",
+          "area_scale": "11"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "bac8df13-328b-58a4-90b7-3cb213e70364",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "3aef0eaf-b2eb-59b2-bff0-3b70158ed58a",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "4e6cdd73-a128-54f0-a0d0-a82b943546eb",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "dbabae0a-c65e-5816-b716-8118afa80b04",
+        "expected": "accepted",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "aa470107-a742-546c-ab51-3824b4614990",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      }
+    ]
+  },
+  {
+    "label": "case-223-authored_area_cubic_difference",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "ea84f100-cd84-53d4-bec0-dfc45442e122",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-4,-3)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u^{3} - v\\\\- u + v\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 u^{2}&-1\\\\-1&1\\end{matrix}\\right|\\\\& =(3 u^{2})\\cdot (1)-(-1)\\cdot (-1)\\\\& =3u^{2}-1\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-4,-3)} & =\\left(3 u^{2} - 1\\right)\\big|_{u=-4,v=-3}\\\\& =3 (-4)^{2} - 1\\\\& =47\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|47|\\cdot\\delta A\\\\ & =47\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "4b8eee30-9c73-52f0-8cb5-2c8d2a94e5f8",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "a6085099-c518-5bd4-84da-54bbf4899452",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "94\\,\\delta A"
+              },
+              {
+                ":answer/id": "5f69b317-2d2e-5c80-b65c-b3a80f5f3fb7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2209\\,\\delta A"
+              },
+              {
+                ":answer/id": "c5dbf447-2f5d-5bfd-9f5c-55a8090dc1c4",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{47}{2}\\,\\delta A"
+              },
+              {
+                ":answer/id": "3abec05c-00fa-5ba4-a020-f9fc480be4d1",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{47}\\,\\delta A"
+              },
+              {
+                ":answer/id": "b6a0b3d0-58c4-5867-a415-fbe24b79e97c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "47\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "b6a0b3d0-58c4-5867-a415-fbe24b79e97c"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 2268,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 2,
+        "difficulty": "easy",
+        "template": "cubic_difference",
+        "parameters": {
+          "u0": -4,
+          "v0": -3
+        },
+        "bank_profile": "authored_area_cubic_difference",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [
+          "q-161886"
+        ],
+        "authored_level": false,
+        "domain": "R²",
+        "plot": "none",
+        "parameter_fingerprint": "25a25aa557827164d371e0f6ae4936abb4a2191c4ec8b2745a373c3294f1661e",
+        "exact": {
+          "x": "u**3 - v",
+          "y": "-u + v",
+          "partials": [
+            "3*u**2",
+            "-1",
+            "-1",
+            "1"
+          ],
+          "ad": "3*u**2",
+          "bc": "1",
+          "jacobian": "3*u**2 - 1",
+          "jacobian_at_point": "47",
+          "area_scale": "47"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "a6085099-c518-5bd4-84da-54bbf4899452",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "5f69b317-2d2e-5c80-b65c-b3a80f5f3fb7",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "c5dbf447-2f5d-5bfd-9f5c-55a8090dc1c4",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "3abec05c-00fa-5ba4-a020-f9fc480be4d1",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "b6a0b3d0-58c4-5867-a415-fbe24b79e97c",
+        "expected": "accepted",
+        "purpose": "Every owned radio selection, independently math-verified"
+      }
+    ]
+  },
+  {
+    "label": "case-224-authored_area_cubic_difference",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "9c2b5450-7fd5-55d4-9501-8caa79923026",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-2,2)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u^{3} - v\\\\- u + v\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 u^{2}&-1\\\\-1&1\\end{matrix}\\right|\\\\& =(3 u^{2})\\cdot (1)-(-1)\\cdot (-1)\\\\& =3u^{2}-1\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-2,2)} & =\\left(3 u^{2} - 1\\right)\\big|_{u=-2,v=2}\\\\& =3 (-2)^{2} - 1\\\\& =11\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|11|\\cdot\\delta A\\\\ & =11\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "0d545958-58fa-5def-a18f-0a20dc87543d",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "fde9c58e-26e8-5817-b909-b068d6432f03",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "121\\,\\delta A"
+              },
+              {
+                ":answer/id": "1238c1ba-d302-510a-a6ed-97b834eb2633",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "11\\,\\delta A"
+              },
+              {
+                ":answer/id": "50ca94a7-a879-5bdb-a1e3-3954f99e287d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{11}\\,\\delta A"
+              },
+              {
+                ":answer/id": "6098bac6-dd03-5155-987a-27e17b85ab7b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "22\\,\\delta A"
+              },
+              {
+                ":answer/id": "f34826ab-680b-5df1-906e-d71b88f78a55",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{11}{2}\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "1238c1ba-d302-510a-a6ed-97b834eb2633"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 2268,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 3,
+        "difficulty": "easy",
+        "template": "cubic_difference",
+        "parameters": {
+          "u0": -2,
+          "v0": 2
+        },
+        "bank_profile": "authored_area_cubic_difference",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [
+          "q-161886"
+        ],
+        "authored_level": false,
+        "domain": "R²",
+        "plot": "none",
+        "parameter_fingerprint": "7a7d2fccb0edc54d82f52880b8e5e644649f1eb74be182c872d2e4cd220c7fb6",
+        "exact": {
+          "x": "u**3 - v",
+          "y": "-u + v",
+          "partials": [
+            "3*u**2",
+            "-1",
+            "-1",
+            "1"
+          ],
+          "ad": "3*u**2",
+          "bc": "1",
+          "jacobian": "3*u**2 - 1",
+          "jacobian_at_point": "11",
+          "area_scale": "11"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "fde9c58e-26e8-5817-b909-b068d6432f03",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "1238c1ba-d302-510a-a6ed-97b834eb2633",
+        "expected": "accepted",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "50ca94a7-a879-5bdb-a1e3-3954f99e287d",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "6098bac6-dd03-5155-987a-27e17b85ab7b",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "f34826ab-680b-5df1-906e-d71b88f78a55",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      }
+    ]
+  },
+  {
+    "label": "case-225-authored_area_cubic_difference",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "425b96ba-61ee-5da6-bb24-9e4306984eb1",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-3,3)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u^{3} - v\\\\- u + v\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 u^{2}&-1\\\\-1&1\\end{matrix}\\right|\\\\& =(3 u^{2})\\cdot (1)-(-1)\\cdot (-1)\\\\& =3u^{2}-1\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-3,3)} & =\\left(3 u^{2} - 1\\right)\\big|_{u=-3,v=3}\\\\& =3 (-3)^{2} - 1\\\\& =26\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|26|\\cdot\\delta A\\\\ & =26\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "355479dc-0bf2-58b0-adca-0c57155d7220",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "63dd800e-f17e-554a-a11c-4e0036ec4f54",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "13\\,\\delta A"
+              },
+              {
+                ":answer/id": "c935b5ec-8f4a-58fb-a7c4-b84e6c878bbf",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{26}\\,\\delta A"
+              },
+              {
+                ":answer/id": "0ad334c3-a10c-56e4-9bdd-5e961add8ca2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "26\\,\\delta A"
+              },
+              {
+                ":answer/id": "d8cbf7f2-700b-5f32-a0e9-1f50152a3e63",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "676\\,\\delta A"
+              },
+              {
+                ":answer/id": "8205436a-9c8b-572b-8edc-a833986f2927",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "52\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "0ad334c3-a10c-56e4-9bdd-5e961add8ca2"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 2268,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 4,
+        "difficulty": "easy",
+        "template": "cubic_difference",
+        "parameters": {
+          "u0": -3,
+          "v0": 3
+        },
+        "bank_profile": "authored_area_cubic_difference",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [
+          "q-161886"
+        ],
+        "authored_level": false,
+        "domain": "R²",
+        "plot": "none",
+        "parameter_fingerprint": "ed0e310b6b003967c468b7136c3b8c9e301486405772122d8da8ad87ff0f68bb",
+        "exact": {
+          "x": "u**3 - v",
+          "y": "-u + v",
+          "partials": [
+            "3*u**2",
+            "-1",
+            "-1",
+            "1"
+          ],
+          "ad": "3*u**2",
+          "bc": "1",
+          "jacobian": "3*u**2 - 1",
+          "jacobian_at_point": "26",
+          "area_scale": "26"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "63dd800e-f17e-554a-a11c-4e0036ec4f54",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "c935b5ec-8f4a-58fb-a7c4-b84e6c878bbf",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "0ad334c3-a10c-56e4-9bdd-5e961add8ca2",
+        "expected": "accepted",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "d8cbf7f2-700b-5f32-a0e9-1f50152a3e63",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "8205436a-9c8b-572b-8edc-a833986f2927",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      }
+    ]
+  },
+  {
+    "label": "case-226-authored_area_cubic_difference",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "b76abf02-c3f4-540d-ae97-3f56989331e3",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-4,4)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u^{3} - v\\\\- u + v\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 u^{2}&-1\\\\-1&1\\end{matrix}\\right|\\\\& =(3 u^{2})\\cdot (1)-(-1)\\cdot (-1)\\\\& =3u^{2}-1\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-4,4)} & =\\left(3 u^{2} - 1\\right)\\big|_{u=-4,v=4}\\\\& =3 (-4)^{2} - 1\\\\& =47\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|47|\\cdot\\delta A\\\\ & =47\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "d8d68ffa-ecba-5a56-96d5-78f1fb4b042b",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "42af4a19-646a-5e4a-82c8-a70c14c091b8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{47}{2}\\,\\delta A"
+              },
+              {
+                ":answer/id": "cd5b24d6-617f-5e8c-ba48-89927ffcf133",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{47}\\,\\delta A"
+              },
+              {
+                ":answer/id": "6299fa59-fc6e-55eb-b759-dc295eb6beb2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "94\\,\\delta A"
+              },
+              {
+                ":answer/id": "e33533cd-7f1e-5ae2-8762-6db5f9bc1145",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "47\\,\\delta A"
+              },
+              {
+                ":answer/id": "ca143dbb-774e-59b5-82ce-44dcf1f7deef",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2209\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "e33533cd-7f1e-5ae2-8762-6db5f9bc1145"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 2268,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 5,
+        "difficulty": "easy",
+        "template": "cubic_difference",
+        "parameters": {
+          "u0": -4,
+          "v0": 4
+        },
+        "bank_profile": "authored_area_cubic_difference",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [
+          "q-161886"
+        ],
+        "authored_level": false,
+        "domain": "R²",
+        "plot": "none",
+        "parameter_fingerprint": "4a36cd84e7b718a1684202e1d5f8d357d370ee982fad5f050836e757e0bf3536",
+        "exact": {
+          "x": "u**3 - v",
+          "y": "-u + v",
+          "partials": [
+            "3*u**2",
+            "-1",
+            "-1",
+            "1"
+          ],
+          "ad": "3*u**2",
+          "bc": "1",
+          "jacobian": "3*u**2 - 1",
+          "jacobian_at_point": "47",
+          "area_scale": "47"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "42af4a19-646a-5e4a-82c8-a70c14c091b8",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "cd5b24d6-617f-5e8c-ba48-89927ffcf133",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "6299fa59-fc6e-55eb-b759-dc295eb6beb2",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "e33533cd-7f1e-5ae2-8762-6db5f9bc1145",
+        "expected": "accepted",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "ca143dbb-774e-59b5-82ce-44dcf1f7deef",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      }
+    ]
+  },
+  {
+    "label": "case-227-authored_area_cubic_difference",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "2018b6f8-4c48-5348-9bb5-b9ae0f2ef7eb",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-3,4)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u^{3} - v\\\\- u + v\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 u^{2}&-1\\\\-1&1\\end{matrix}\\right|\\\\& =(3 u^{2})\\cdot (1)-(-1)\\cdot (-1)\\\\& =3u^{2}-1\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-3,4)} & =\\left(3 u^{2} - 1\\right)\\big|_{u=-3,v=4}\\\\& =3 (-3)^{2} - 1\\\\& =26\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|26|\\cdot\\delta A\\\\ & =26\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "f4fd41c6-92a5-5407-a575-cc3840d008b9",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "71438a99-9ca5-521d-8bcf-fe5551f245b3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "676\\,\\delta A"
+              },
+              {
+                ":answer/id": "4a1658a6-00af-511c-933a-ee6363be1705",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "13\\,\\delta A"
+              },
+              {
+                ":answer/id": "76ceae18-8ad2-5694-abee-ad95049dbf93",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "52\\,\\delta A"
+              },
+              {
+                ":answer/id": "b99e205e-5ea2-5280-ae97-2ef83fd6b2c0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "26\\,\\delta A"
+              },
+              {
+                ":answer/id": "36de917f-9f6e-574e-9f21-5c83bda43298",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{26}\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "b99e205e-5ea2-5280-ae97-2ef83fd6b2c0"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 2268,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 6,
+        "difficulty": "easy",
+        "template": "cubic_difference",
+        "parameters": {
+          "u0": -3,
+          "v0": 4
+        },
+        "bank_profile": "authored_area_cubic_difference",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [
+          "q-161886"
+        ],
+        "authored_level": false,
+        "domain": "R²",
+        "plot": "none",
+        "parameter_fingerprint": "05ab0493672b64d56d491b12d26337b4a55ddc3d26a40091cd27eb7554c5b4ed",
+        "exact": {
+          "x": "u**3 - v",
+          "y": "-u + v",
+          "partials": [
+            "3*u**2",
+            "-1",
+            "-1",
+            "1"
+          ],
+          "ad": "3*u**2",
+          "bc": "1",
+          "jacobian": "3*u**2 - 1",
+          "jacobian_at_point": "26",
+          "area_scale": "26"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "71438a99-9ca5-521d-8bcf-fe5551f245b3",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "4a1658a6-00af-511c-933a-ee6363be1705",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "76ceae18-8ad2-5694-abee-ad95049dbf93",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "b99e205e-5ea2-5280-ae97-2ef83fd6b2c0",
+        "expected": "accepted",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "36de917f-9f6e-574e-9f21-5c83bda43298",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      }
+    ]
+  },
+  {
+    "label": "case-228-authored_area_cubic_difference",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "53c7d8ba-812e-5a93-9d90-79aac7a6f30b",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(2,-2)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u^{3} - v\\\\- u + v\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 u^{2}&-1\\\\-1&1\\end{matrix}\\right|\\\\& =(3 u^{2})\\cdot (1)-(-1)\\cdot (-1)\\\\& =3u^{2}-1\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(2,-2)} & =\\left(3 u^{2} - 1\\right)\\big|_{u=2,v=-2}\\\\& =3 (2)^{2} - 1\\\\& =11\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|11|\\cdot\\delta A\\\\ & =11\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "69843191-0718-5f42-bdfb-21d7e54d3ae4",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "29383497-3494-57bc-896f-037316f5b9dc",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "121\\,\\delta A"
+              },
+              {
+                ":answer/id": "ccb2f67a-c5a3-5832-9d50-c77b6211c42d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{11}\\,\\delta A"
+              },
+              {
+                ":answer/id": "cda03467-2b71-5035-b21b-2df53bf361e2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{11}{2}\\,\\delta A"
+              },
+              {
+                ":answer/id": "3cb6074c-52f3-500e-9a4d-aa715fb85efd",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "11\\,\\delta A"
+              },
+              {
+                ":answer/id": "3e487ab6-3f87-5ad8-b61e-0d29e3f1afb0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "22\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "3cb6074c-52f3-500e-9a4d-aa715fb85efd"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 2268,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 7,
+        "difficulty": "easy",
+        "template": "cubic_difference",
+        "parameters": {
+          "u0": 2,
+          "v0": -2
+        },
+        "bank_profile": "authored_area_cubic_difference",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [
+          "q-161886"
+        ],
+        "authored_level": false,
+        "domain": "R²",
+        "plot": "none",
+        "parameter_fingerprint": "5aaaf52d488bfbba76d5c2a9fbc8e567a76c2def4c8e7acdfe547ed8d02af29c",
+        "exact": {
+          "x": "u**3 - v",
+          "y": "-u + v",
+          "partials": [
+            "3*u**2",
+            "-1",
+            "-1",
+            "1"
+          ],
+          "ad": "3*u**2",
+          "bc": "1",
+          "jacobian": "3*u**2 - 1",
+          "jacobian_at_point": "11",
+          "area_scale": "11"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "29383497-3494-57bc-896f-037316f5b9dc",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "ccb2f67a-c5a3-5832-9d50-c77b6211c42d",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "cda03467-2b71-5035-b21b-2df53bf361e2",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "3cb6074c-52f3-500e-9a4d-aa715fb85efd",
+        "expected": "accepted",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "3e487ab6-3f87-5ad8-b61e-0d29e3f1afb0",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      }
+    ]
+  },
+  {
+    "label": "case-229-authored_area_cubic_difference",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "721cd465-05d2-5cf4-80b0-1b077a1c4838",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(3,-2)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u^{3} - v\\\\- u + v\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 u^{2}&-1\\\\-1&1\\end{matrix}\\right|\\\\& =(3 u^{2})\\cdot (1)-(-1)\\cdot (-1)\\\\& =3u^{2}-1\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(3,-2)} & =\\left(3 u^{2} - 1\\right)\\big|_{u=3,v=-2}\\\\& =3 (3)^{2} - 1\\\\& =26\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|26|\\cdot\\delta A\\\\ & =26\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "1b7ece46-4646-5f40-9ca9-afd90db0dec2",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "64b99f66-b679-5c94-8020-820543c4903a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "13\\,\\delta A"
+              },
+              {
+                ":answer/id": "c76e9602-0e94-58ae-a5f7-df5006d3bf8e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{26}\\,\\delta A"
+              },
+              {
+                ":answer/id": "9e5cbf28-95ae-5278-a872-425b6bd27c44",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "52\\,\\delta A"
+              },
+              {
+                ":answer/id": "9d33375f-0454-59ec-b038-921bd0e73816",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "26\\,\\delta A"
+              },
+              {
+                ":answer/id": "897a73d8-a6a2-5a27-bdf1-c173225c7c4c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "676\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "9d33375f-0454-59ec-b038-921bd0e73816"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 2268,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 8,
+        "difficulty": "easy",
+        "template": "cubic_difference",
+        "parameters": {
+          "u0": 3,
+          "v0": -2
+        },
+        "bank_profile": "authored_area_cubic_difference",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [
+          "q-161886"
+        ],
+        "authored_level": false,
+        "domain": "R²",
+        "plot": "none",
+        "parameter_fingerprint": "8b948ab872fe385990178692a6b9e5983346ac28b3416069874e07b51eaf7665",
+        "exact": {
+          "x": "u**3 - v",
+          "y": "-u + v",
+          "partials": [
+            "3*u**2",
+            "-1",
+            "-1",
+            "1"
+          ],
+          "ad": "3*u**2",
+          "bc": "1",
+          "jacobian": "3*u**2 - 1",
+          "jacobian_at_point": "26",
+          "area_scale": "26"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "64b99f66-b679-5c94-8020-820543c4903a",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "c76e9602-0e94-58ae-a5f7-df5006d3bf8e",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "9e5cbf28-95ae-5278-a872-425b6bd27c44",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "9d33375f-0454-59ec-b038-921bd0e73816",
+        "expected": "accepted",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "897a73d8-a6a2-5a27-bdf1-c173225c7c4c",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      }
+    ]
+  },
+  {
+    "label": "case-230-authored_area_cubic_difference",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "d5874ddd-6530-5ea6-82fb-0a1e2a4eb22e",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(4,2)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u^{3} - v\\\\- u + v\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 u^{2}&-1\\\\-1&1\\end{matrix}\\right|\\\\& =(3 u^{2})\\cdot (1)-(-1)\\cdot (-1)\\\\& =3u^{2}-1\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(4,2)} & =\\left(3 u^{2} - 1\\right)\\big|_{u=4,v=2}\\\\& =3 (4)^{2} - 1\\\\& =47\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|47|\\cdot\\delta A\\\\ & =47\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "925da17d-e0dc-5056-9a8f-617114847861",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ead74067-0ef4-5bab-8b45-eb7402998a12",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "94\\,\\delta A"
+              },
+              {
+                ":answer/id": "1d460adc-dcba-5d3d-9442-db62bc8bf1e9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{47}{2}\\,\\delta A"
+              },
+              {
+                ":answer/id": "38eac331-7c31-5137-9972-af11e09b51e9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "47\\,\\delta A"
+              },
+              {
+                ":answer/id": "bbaca0b1-06ca-5b2f-a4e7-7e3d8514ff70",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2209\\,\\delta A"
+              },
+              {
+                ":answer/id": "60d380bd-d37b-5bf3-87a7-30dd7c01ca62",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{47}\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "38eac331-7c31-5137-9972-af11e09b51e9"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 2268,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 9,
+        "difficulty": "easy",
+        "template": "cubic_difference",
+        "parameters": {
+          "u0": 4,
+          "v0": 2
+        },
+        "bank_profile": "authored_area_cubic_difference",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [
+          "q-161886"
+        ],
+        "authored_level": false,
+        "domain": "R²",
+        "plot": "none",
+        "parameter_fingerprint": "238dedb3bd4d7bab1bbb3c58bb0764b85a0b71f547ba1a4831a10e03ca24e74e",
+        "exact": {
+          "x": "u**3 - v",
+          "y": "-u + v",
+          "partials": [
+            "3*u**2",
+            "-1",
+            "-1",
+            "1"
+          ],
+          "ad": "3*u**2",
+          "bc": "1",
+          "jacobian": "3*u**2 - 1",
+          "jacobian_at_point": "47",
+          "area_scale": "47"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "ead74067-0ef4-5bab-8b45-eb7402998a12",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "1d460adc-dcba-5d3d-9442-db62bc8bf1e9",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "38eac331-7c31-5137-9972-af11e09b51e9",
+        "expected": "accepted",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "bbaca0b1-06ca-5b2f-a4e7-7e3d8514ff70",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "60d380bd-d37b-5bf3-87a7-30dd7c01ca62",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      }
+    ]
+  },
+  {
+    "label": "case-231-authored_area_cubic_difference",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "a65d621d-4284-54db-af37-6a3cbe118250",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(-4,3)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u^{3} - v\\\\- u + v\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 u^{2}&-1\\\\-1&1\\end{matrix}\\right|\\\\& =(3 u^{2})\\cdot (1)-(-1)\\cdot (-1)\\\\& =3u^{2}-1\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(-4,3)} & =\\left(3 u^{2} - 1\\right)\\big|_{u=-4,v=3}\\\\& =3 (-4)^{2} - 1\\\\& =47\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|47|\\cdot\\delta A\\\\ & =47\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "8e308974-5a07-592a-885a-13bc2d4cb12a",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "da2a009b-3a50-502b-8a13-42075d6d2ddb",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{47}\\,\\delta A"
+              },
+              {
+                ":answer/id": "b4663c65-d378-599c-ab1d-677ee63066d9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2209\\,\\delta A"
+              },
+              {
+                ":answer/id": "d6b9da5a-126e-5016-a379-94d263ffeca8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{47}{2}\\,\\delta A"
+              },
+              {
+                ":answer/id": "198f3e4d-4bde-5312-b95d-9ab66aaef03a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "47\\,\\delta A"
+              },
+              {
+                ":answer/id": "f0155684-613b-5030-884a-c9146f52587c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "94\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "198f3e4d-4bde-5312-b95d-9ab66aaef03a"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 2268,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 10,
+        "difficulty": "easy",
+        "template": "cubic_difference",
+        "parameters": {
+          "u0": -4,
+          "v0": 3
+        },
+        "bank_profile": "authored_area_cubic_difference",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [
+          "q-161886"
+        ],
+        "authored_level": false,
+        "domain": "R²",
+        "plot": "none",
+        "parameter_fingerprint": "d69b863e082f39da5402632d913ba18fa908a1b4967b26fd9ca8e510182cd6fb",
+        "exact": {
+          "x": "u**3 - v",
+          "y": "-u + v",
+          "partials": [
+            "3*u**2",
+            "-1",
+            "-1",
+            "1"
+          ],
+          "ad": "3*u**2",
+          "bc": "1",
+          "jacobian": "3*u**2 - 1",
+          "jacobian_at_point": "47",
+          "area_scale": "47"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "da2a009b-3a50-502b-8a13-42075d6d2ddb",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "b4663c65-d378-599c-ab1d-677ee63066d9",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "d6b9da5a-126e-5016-a379-94d263ffeca8",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "198f3e4d-4bde-5312-b95d-9ab66aaef03a",
+        "expected": "accepted",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "f0155684-613b-5030-884a-c9146f52587c",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      }
+    ]
+  },
+  {
+    "label": "case-232-authored_area_cubic_difference",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129282,
+        "id": "6d82be73-0720-5267-8698-427641b0e66e",
+        "title": "Identifying the Local Area Scale Factor of a Transformation"
+      },
+      "question": {
+        ":question/id": "b37776a2-ef56-5faf-aa42-d7434002254c",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Consider a small rectangle $Δ$ whose bottom-left corner is located at the point $(4,5)$ with sides parallel to the coordinate axes in the $uv$-plane and whose area is $\\delta A.$ Which of the following gives the best approximation for the area of the image of this rectangle under the action of the transformation $T,$ given by\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\longrightarrow[\\begin{aligned}u^{3} - v\\\\- u + v\\end{aligned}]?\n$$",
+        ":question/worked-solution": "Recall that the absolute value of the Jacobian determinant gives the local area scale factor of the transformation at that point:\n\n$$\n\\text{Area}(T(Δ))\\approx\\left|\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|\\cdot\\underbrace{\\text{Area}(Δ)}_{\\delta A}\n$$\n\nComputing the corresponding Jacobian determinant, we obtain the following:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y)}{\\partial(u,v)} & =\\left|\\begin{matrix}\\frac{\\partial x}{\\partial u}&\\frac{\\partial x}{\\partial v}\\\\\\frac{\\partial y}{\\partial u}&\\frac{\\partial y}{\\partial v}\\end{matrix}\\right|\\\\& =\\left|\\begin{matrix}3 u^{2}&-1\\\\-1&1\\end{matrix}\\right|\\\\& =(3 u^{2})\\cdot (1)-(-1)\\cdot (-1)\\\\& =3u^{2}-1\\\\\\left.\\frac{\\partial(x,y)}{\\partial(u,v)}\\right|_{(4,5)} & =\\left(3 u^{2} - 1\\right)\\big|_{u=4,v=5}\\\\& =3 (4)^{2} - 1\\\\& =47\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}\\text{Area}(T(Δ)) & \\approx|47|\\cdot\\delta A\\\\ & =47\\,\\delta A.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "e452befa-5aed-578a-bb78-00f590bcbe0b",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "10471d5a-9708-514d-993d-9a9dd6daa843",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2209\\,\\delta A"
+              },
+              {
+                ":answer/id": "d38447df-feb2-56b2-84cd-126f673d74bc",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "47\\,\\delta A"
+              },
+              {
+                ":answer/id": "6fc51b54-624b-543f-a38e-fecb17b4fa1b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{47}\\,\\delta A"
+              },
+              {
+                ":answer/id": "27b8560d-feec-5326-9f89-20415b58c3b6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{47}{2}\\,\\delta A"
+              },
+              {
+                ":answer/id": "d65cc2de-164b-5287-906a-b932b64929c9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "94\\,\\delta A"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "d38447df-feb2-56b2-84cd-126f673d74bc"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "local-area-1",
+        "provenance": {
+          "database": "math",
+          "basis": 2268,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 11,
+        "difficulty": "easy",
+        "template": "cubic_difference",
+        "parameters": {
+          "u0": 4,
+          "v0": 5
+        },
+        "bank_profile": "authored_area_cubic_difference",
+        "bank_origin": "authored complete area operation bank",
+        "recipes": [
+          "absolute evaluated determinant",
+          "square area scale",
+          "reciprocal area scale",
+          "double area scale",
+          "halve area scale"
+        ],
+        "source_refs": [
+          "q-161886"
+        ],
+        "authored_level": false,
+        "domain": "R²",
+        "plot": "none",
+        "parameter_fingerprint": "c20edcf384aed34b13fc920b6c3397315465bf3c3cace70c45e56d0d0c01fdea",
+        "exact": {
+          "x": "u**3 - v",
+          "y": "-u + v",
+          "partials": [
+            "3*u**2",
+            "-1",
+            "-1",
+            "1"
+          ],
+          "ad": "3*u**2",
+          "bc": "1",
+          "jacobian": "3*u**2 - 1",
+          "jacobian_at_point": "47",
+          "area_scale": "47"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "10471d5a-9708-514d-993d-9a9dd6daa843",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "d38447df-feb2-56b2-84cd-126f673d74bc",
+        "expected": "accepted",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "6fc51b54-624b-543f-a38e-fecb17b4fa1b",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "27b8560d-feec-5326-9f89-20415b58c3b6",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      },
+      {
+        "submitted_answer_id": "d65cc2de-164b-5287-906a-b932b64929c9",
+        "expected": "rejected",
+        "purpose": "Every owned radio selection, independently math-verified"
+      }
+    ]
+  },
+  {
+    "label": "case-233-authored_area_canonical_monomial",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -27466,7 +29752,7 @@
     ]
   },
   {
-    "label": "case-216-authored_area_canonical_monomial",
+    "label": "case-234-authored_area_canonical_monomial",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -27595,7 +29881,7 @@
     ]
   },
   {
-    "label": "case-217-authored_area_canonical_monomial",
+    "label": "case-235-authored_area_canonical_monomial",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -27724,7 +30010,7 @@
     ]
   },
   {
-    "label": "case-218-authored_area_canonical_monomial",
+    "label": "case-236-authored_area_canonical_monomial",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -27853,7 +30139,7 @@
     ]
   },
   {
-    "label": "case-219-authored_area_canonical_monomial",
+    "label": "case-237-authored_area_canonical_monomial",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -27982,7 +30268,7 @@
     ]
   },
   {
-    "label": "case-220-authored_area_canonical_monomial",
+    "label": "case-238-authored_area_canonical_monomial",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -28111,7 +30397,7 @@
     ]
   },
   {
-    "label": "case-221-authored_area_canonical_monomial",
+    "label": "case-239-authored_area_canonical_monomial",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -28240,7 +30526,7 @@
     ]
   },
   {
-    "label": "case-222-authored_area_canonical_monomial",
+    "label": "case-240-authored_area_canonical_monomial",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -28369,7 +30655,7 @@
     ]
   },
   {
-    "label": "case-223-authored_area_canonical_monomial",
+    "label": "case-241-authored_area_canonical_monomial",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -28498,7 +30784,7 @@
     ]
   },
   {
-    "label": "case-224-authored_area_canonical_monomial",
+    "label": "case-242-authored_area_canonical_monomial",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -28627,7 +30913,7 @@
     ]
   },
   {
-    "label": "case-225-authored_area_canonical_monomial",
+    "label": "case-243-authored_area_canonical_monomial",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -28756,7 +31042,7 @@
     ]
   },
   {
-    "label": "case-226-authored_area_canonical_monomial",
+    "label": "case-244-authored_area_canonical_monomial",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -28885,7 +31171,7 @@
     ]
   },
   {
-    "label": "case-227-authored_area_powers",
+    "label": "case-245-authored_area_powers",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -29018,7 +31304,7 @@
     ]
   },
   {
-    "label": "case-228-authored_area_powers",
+    "label": "case-246-authored_area_powers",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -29151,7 +31437,7 @@
     ]
   },
   {
-    "label": "case-229-authored_area_powers",
+    "label": "case-247-authored_area_powers",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -29284,7 +31570,7 @@
     ]
   },
   {
-    "label": "case-230-authored_area_powers",
+    "label": "case-248-authored_area_powers",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -29417,7 +31703,7 @@
     ]
   },
   {
-    "label": "case-231-authored_area_powers",
+    "label": "case-249-authored_area_powers",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -29550,7 +31836,7 @@
     ]
   },
   {
-    "label": "case-232-authored_area_powers",
+    "label": "case-250-authored_area_powers",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -29683,7 +31969,7 @@
     ]
   },
   {
-    "label": "case-233-authored_area_powers",
+    "label": "case-251-authored_area_powers",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -29816,7 +32102,7 @@
     ]
   },
   {
-    "label": "case-234-authored_area_powers",
+    "label": "case-252-authored_area_powers",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -29949,7 +32235,7 @@
     ]
   },
   {
-    "label": "case-235-authored_area_powers",
+    "label": "case-253-authored_area_powers",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -30082,7 +32368,7 @@
     ]
   },
   {
-    "label": "case-236-authored_area_powers",
+    "label": "case-254-authored_area_powers",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -30215,7 +32501,7 @@
     ]
   },
   {
-    "label": "case-237-authored_area_powers",
+    "label": "case-255-authored_area_powers",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,
@@ -30348,7 +32634,7 @@
     ]
   },
   {
-    "label": "case-238-authored_area_powers",
+    "label": "case-256-authored_area_powers",
     "record": {
       "knowledge_point": {
         "db_id": 17592186129282,

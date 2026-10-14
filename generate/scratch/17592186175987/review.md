@@ -2826,6 +2826,510 @@ $$
 \begin{aligned}5\left({∬}_{D}-6xy\,\text{d}A\right) & =5\left({∬}_{Δ}-6(r\operatorname{cos}⁡\theta )(r\operatorname{sin}⁡\theta )\,r\,\text{d}r\text{d}\theta \right) \\  & =5\left({∬}_{Δ}-3{r}^{3}(2\operatorname{cos}⁡\theta \operatorname{sin}⁡\theta )\,\text{d}r\text{d}\theta \right) \\  & =5\left({\int }_{\pi /2}^{2\pi }\,{\int }_{0}^{2}-3{r}^{3}\operatorname{sin}⁡(2\theta )\,dr\,d\theta .\right)\end{aligned}
 $$
 
+## q-126677 — observed moderate
+
+![](images/eb/eb2da6fbb22b19d027212685ca521f5186a831502617c2089766c5e9fe739696.png)
+
+Consider the path $C$ shown above. Which of the following is equivalent to the line integral 
+
+$$
+{∮}_{C}({y}^{2}-\operatorname{ln}⁡(1+{cos}^{2}⁡x))\,dx+({x}^{2}+3xy)\,dy\,?
+$$
+
+Field selection
+
+${\int }_{\pi /2}^{\pi }\,{\int }_{0}^{2}{r}^{2}(2\operatorname{sin}⁡\theta +\operatorname{cos}⁡\theta )\,dr\,d\theta $
+
+${\int }_{\pi /2}^{\pi }\,{\int }_{0}^{2}r(2\operatorname{cos}⁡\theta +\operatorname{sin}⁡\theta )\,dr\,d\theta $
+
+${\int }_{\pi }^{3\pi /2}\,{\int }_{0}^{2}r(2\operatorname{sin}⁡\theta +\operatorname{cos}⁡\theta )\,dr\,d\theta $
+
+${\int }_{\pi /2}^{\pi }\,{\int }_{0}^{2}{r}^{2}(2\operatorname{cos}⁡\theta +\operatorname{sin}⁡\theta )\,dr\,d\theta $ (keyed correct)
+
+${\int }_{\pi }^{3\pi /2}\,{\int }_{0}^{2}{r}^{2}(\operatorname{cos}⁡\theta +\operatorname{sin}⁡\theta )\,dr\,d\theta $
+
+Green's theorem states that
+
+$$
+{∮}_{C}P\,dx+Q\,dy={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\,\text{d}A.
+$$
+
+In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
+
+![](images/48/4822bfa926feccb0a12c14580ac325f4f10a0e4f815d0247b2231bf08b8c2326.png)
+
+Since $P(x,y)={y}^{2}-\operatorname{ln}⁡(1+{cos}^{2}⁡x)$ and $Q(x,y)={x}^{2}+3xy,$ we obtain
+
+$$
+\begin{aligned}\frac{∂P}{∂y}=2y,\,\frac{∂Q}{∂x}=2x+3y.\end{aligned}
+$$
+
+Applying Green's theorem, we get
+
+$$
+\begin{aligned}{∮}_{C}({y}^{2}-\operatorname{ln}⁡(1+{cos}^{2}⁡x))\,dx+({x}^{2}+3xy)\,dy & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & ={∬}_{D}(2x+3y-2y)\,\text{d}A \\  & ={∬}_{D}(2x+y)\,\text{d}A.\end{aligned}
+$$
+
+Now, notice that the region $D$ can be represented in polar coordinates as
+
+$$
+Δ=\{(r,\theta )\,:\,0\le r\le 2,\,\frac{\pi }{2}\le \theta \le \pi \}.
+$$
+
+The change of variables formula for plane polar coordinates states that 
+
+$$
+{∬}_{D}f(x,y)\text{ }dA={∬}_{Δ}\text{ }f(r\operatorname{cos}⁡\theta ,r\operatorname{sin}⁡\theta )\,r\text{ }drd\theta .
+$$
+
+Therefore, we can write our double integral as 
+
+$$
+\begin{aligned}{∬}_{D}(2x+y)\,\text{d}A & ={∬}_{Δ}(2r\operatorname{cos}⁡\theta +r\operatorname{sin}⁡\theta )\,r\,\text{d}r\text{d}\theta  \\  & ={\int }_{\pi /2}^{\pi }\,{\int }_{0}^{2}{r}^{2}(2\operatorname{cos}⁡\theta +\operatorname{sin}⁡\theta )\,dr\,d\theta .\end{aligned}
+$$
+
+### Generated variation — evidence-only historical bank observed
+
+![](images/eb/eb2da6fbb22b19d027212685ca521f5186a831502617c2089766c5e9fe739696.png)
+
+Consider the path $C$ shown above. Which of the following is equivalent to the line integral 
+
+$$
+2\left({∮}_{C}({y}^{2}-\operatorname{ln}⁡(1+{cos}^{2}⁡x))\,dx+({x}^{2}+3xy)\,dy\,?\right)
+$$
+
+Field selection
+
+$2\left({\int }_{\pi /2}^{\pi }\,{\int }_{0}^{2}{r}^{2}(2\operatorname{cos}⁡\theta +\operatorname{sin}⁡\theta )\,dr\,d\theta \right)$
+
+$2\left({\int }_{\pi /2}^{\pi }\,{\int }_{0}^{2}r(2\operatorname{cos}⁡\theta +\operatorname{sin}⁡\theta )\,dr\,d\theta \right)$
+
+$2\left({\int }_{\pi }^{3\pi /2}\,{\int }_{0}^{2}{r}^{2}(\operatorname{cos}⁡\theta +\operatorname{sin}⁡\theta )\,dr\,d\theta \right)$
+
+$2\left({\int }_{\pi /2}^{\pi }\,{\int }_{0}^{2}{r}^{2}(2\operatorname{sin}⁡\theta +\operatorname{cos}⁡\theta )\,dr\,d\theta \right)$
+
+$2\left({\int }_{\pi }^{3\pi /2}\,{\int }_{0}^{2}r(2\operatorname{sin}⁡\theta +\operatorname{cos}⁡\theta )\,dr\,d\theta \right)$
+
+Green's theorem states that
+
+$$
+{∮}_{C}P\,dx+Q\,dy={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\,\text{d}A.
+$$
+
+In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
+
+![](images/48/4822bfa926feccb0a12c14580ac325f4f10a0e4f815d0247b2231bf08b8c2326.png)
+
+Since $P(x,y)=2\left({y}^{2}-\operatorname{ln}⁡(1+{cos}^{2}⁡x)\right)$ and $Q(x,y)=2\left({x}^{2}+3xy\right),$ we obtain
+
+$$
+\begin{aligned}\frac{∂P}{∂y}=2\left(2y\right),\,\frac{∂Q}{∂x}=2\left(2x+3y\right).\end{aligned}
+$$
+
+Applying Green's theorem, we get
+
+$$
+\begin{aligned}2\left({∮}_{C}({y}^{2}-\operatorname{ln}⁡(1+{cos}^{2}⁡x))\,dx+({x}^{2}+3xy)\,dy\right) & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & =2\left({∬}_{D}(2x+3y-2y)\,\text{d}A\right) \\  & =2\left({∬}_{D}(2x+y)\,\text{d}A.\right)\end{aligned}
+$$
+
+Now, notice that the region $D$ can be represented in polar coordinates as
+
+$$
+Δ=\{(r,\theta )\,:\,0\le r\le 2,\,\frac{\pi }{2}\le \theta \le \pi \}.
+$$
+
+The change of variables formula for plane polar coordinates states that 
+
+$$
+{∬}_{D}f(x,y)\text{ }dA={∬}_{Δ}\text{ }f(r\operatorname{cos}⁡\theta ,r\operatorname{sin}⁡\theta )\,r\text{ }drd\theta .
+$$
+
+Therefore, we can write our double integral as 
+
+$$
+\begin{aligned}2\left({∬}_{D}(2x+y)\,\text{d}A\right) & =2\left({∬}_{Δ}(2r\operatorname{cos}⁡\theta +r\operatorname{sin}⁡\theta )\,r\,\text{d}r\text{d}\theta \right) \\  & =2\left({\int }_{\pi /2}^{\pi }\,{\int }_{0}^{2}{r}^{2}(2\operatorname{cos}⁡\theta +\operatorname{sin}⁡\theta )\,dr\,d\theta .\right)\end{aligned}
+$$
+
+### Generated variation — normal practice authored_method
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175987/plots/054e120203b3990b90b8.png)
+
+Consider the path $C$ shown above. Which of the following is equivalent to the line integral 
+
+$$
+2\left({∮}_{C}({y}^{2}-\operatorname{ln}⁡(1+{cos}^{2}⁡x))\,dx+({x}^{2}+3xy)\,dy\,?\right)
+$$
+
+Field selection
+
+$\int_{\frac{\pi}{2}}^{\pi}\int_{0}^{7}2 r^{2} \left(\sin{\left(\theta \right)} + 2 \cos{\left(\theta \right)}\right)\,dr\,d\theta$
+
+$\int_{\frac{\pi}{2}}^{\pi}\int_{0}^{8}2 r^{2} \left(\sin{\left(\theta \right)} + 2 \cos{\left(\theta \right)}\right)\,dr\,d\theta$
+
+$\int_{\frac{\pi}{2}}^{\pi}\int_{0}^{7}2 r \sin{\left(\theta \right)} + 4 r \cos{\left(\theta \right)}\,dr\,d\theta$
+
+$\int_{\frac{\pi}{2}}^{\pi}\int_{0}^{7}r \left(10 r \sin{\left(\theta \right)} + 4 r \cos{\left(\theta \right)}\right)\,dr\,d\theta$
+
+$\int_{\frac{\pi}{2}}^{\pi}\int_{0}^{7}- 2 r^{2} \left(\sin{\left(\theta \right)} + 2 \cos{\left(\theta \right)}\right)\,dr\,d\theta$
+
+Green's theorem states that
+
+$$
+{∮}_{C}P\,dx+Q\,dy={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\,\text{d}A.
+$$
+
+In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175987/plots/567c604286818ae68423.png)
+
+Since $P(x,y)=2\left({y}^{2}-\operatorname{ln}⁡(1+{cos}^{2}⁡x)\right)$ and $Q(x,y)=2\left({x}^{2}+3xy\right),$ we obtain
+
+$$
+\begin{aligned}\frac{∂P}{∂y}=2\left(2y\right),\,\frac{∂Q}{∂x}=2\left(2x+3y\right).\end{aligned}
+$$
+
+Applying Green's theorem, we get
+
+$$
+\begin{aligned}2\left({∮}_{C}({y}^{2}-\operatorname{ln}⁡(1+{cos}^{2}⁡x))\,dx+({x}^{2}+3xy)\,dy\right) & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & =2\left({∬}_{D}(2x+3y-2y)\,\text{d}A\right) \\  & =2\left({∬}_{D}(2x+y)\,\text{d}A.\right)\end{aligned}
+$$
+
+Now, notice that the region $D$ can be represented in polar coordinates as
+
+$$
+Δ=\{(r,\theta )\,:\,0\le r\le 2,\,\frac{\pi }{2}\le \theta \le \pi \}.
+$$
+
+The change of variables formula for plane polar coordinates states that 
+
+$$
+{∬}_{D}f(x,y)\text{ }dA={∬}_{Δ}\text{ }f(r\operatorname{cos}⁡\theta ,r\operatorname{sin}⁡\theta )\,r\text{ }drd\theta .
+$$
+
+Therefore, we can write our double integral as 
+
+$$
+\begin{aligned}2\left({∬}_{D}(2x+y)\,\text{d}A\right) & =2\left({∬}_{Δ}(2r\operatorname{cos}⁡\theta +r\operatorname{sin}⁡\theta )\,r\,\text{d}r\text{d}\theta \right) \\  & =2\left({\int }_{\pi /2}^{\pi }\,{\int }_{0}^{7}{r}^{2}(2\operatorname{cos}⁡\theta +\operatorname{sin}⁡\theta )\,dr\,d\theta .\right)\end{aligned}
+$$
+
+### Generated variation — normal practice authored_method
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175987/images/eb/eb2da6fbb22b19d027212685ca521f5186a831502617c2089766c5e9fe739696.png)
+
+Consider the path $C$ shown above. Which of the following is equivalent to the line integral 
+
+$$
+5\left({∮}_{C}({y}^{2}-\operatorname{ln}⁡(1+{cos}^{2}⁡x))\,dx+({x}^{2}+3xy)\,dy\,?\right)
+$$
+
+Field selection
+
+$\int_{\frac{\pi}{2}}^{\pi}\int_{0}^{2}- 5 r^{2} \left(\sin{\left(\theta \right)} + 2 \cos{\left(\theta \right)}\right)\,dr\,d\theta$
+
+$\int_{\frac{\pi}{2}}^{\pi}\int_{0}^{2}r \left(25 r \sin{\left(\theta \right)} + 10 r \cos{\left(\theta \right)}\right)\,dr\,d\theta$
+
+$\int_{\frac{\pi}{2}}^{\pi}\int_{0}^{2}5 r \sin{\left(\theta \right)} + 10 r \cos{\left(\theta \right)}\,dr\,d\theta$
+
+$\int_{\frac{\pi}{2}}^{\pi}\int_{0}^{2}5 r^{2} \left(\sin{\left(\theta \right)} + 2 \cos{\left(\theta \right)}\right)\,dr\,d\theta$
+
+$\int_{\frac{\pi}{2}}^{\pi}\int_{0}^{3}5 r^{2} \left(\sin{\left(\theta \right)} + 2 \cos{\left(\theta \right)}\right)\,dr\,d\theta$
+
+Green's theorem states that
+
+$$
+{∮}_{C}P\,dx+Q\,dy={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\,\text{d}A.
+$$
+
+In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175987/images/48/4822bfa926feccb0a12c14580ac325f4f10a0e4f815d0247b2231bf08b8c2326.png)
+
+Since $P(x,y)=5\left({y}^{2}-\operatorname{ln}⁡(1+{cos}^{2}⁡x)\right)$ and $Q(x,y)=5\left({x}^{2}+3xy\right),$ we obtain
+
+$$
+\begin{aligned}\frac{∂P}{∂y}=5\left(2y\right),\,\frac{∂Q}{∂x}=5\left(2x+3y\right).\end{aligned}
+$$
+
+Applying Green's theorem, we get
+
+$$
+\begin{aligned}5\left({∮}_{C}({y}^{2}-\operatorname{ln}⁡(1+{cos}^{2}⁡x))\,dx+({x}^{2}+3xy)\,dy\right) & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & =5\left({∬}_{D}(2x+3y-2y)\,\text{d}A\right) \\  & =5\left({∬}_{D}(2x+y)\,\text{d}A.\right)\end{aligned}
+$$
+
+Now, notice that the region $D$ can be represented in polar coordinates as
+
+$$
+Δ=\{(r,\theta )\,:\,0\le r\le 2,\,\frac{\pi }{2}\le \theta \le \pi \}.
+$$
+
+The change of variables formula for plane polar coordinates states that 
+
+$$
+{∬}_{D}f(x,y)\text{ }dA={∬}_{Δ}\text{ }f(r\operatorname{cos}⁡\theta ,r\operatorname{sin}⁡\theta )\,r\text{ }drd\theta .
+$$
+
+Therefore, we can write our double integral as 
+
+$$
+\begin{aligned}5\left({∬}_{D}(2x+y)\,\text{d}A\right) & =5\left({∬}_{Δ}(2r\operatorname{cos}⁡\theta +r\operatorname{sin}⁡\theta )\,r\,\text{d}r\text{d}\theta \right) \\  & =5\left({\int }_{\pi /2}^{\pi }\,{\int }_{0}^{2}{r}^{2}(2\operatorname{cos}⁡\theta +\operatorname{sin}⁡\theta )\,dr\,d\theta .\right)\end{aligned}
+$$
+
+## q-126707 — observed moderate
+
+![](images/18/184b50ce54b01453d5b645eef7edc186823e8ae34afaefa2527e34122c1722cc.png)
+
+Consider the path $C$ shown above. Given that $F(x,y)=⟨y+\frac{2}{3}{y}^{3},\,\operatorname{ln}⁡({y}^{2}+10)+2x⟩,$ which of the following is equivalent to ${∮}_{C}F\cdot dr\,?$
+
+Field selection
+
+${\int }_{-\pi /2}^{0}\,{\int }_{0}^{9}(1-2{r}^{2}{sin}^{2}⁡\theta )\,dr\,d\theta $
+
+${\int }_{-\pi /2}^{0}\,{\int }_{0}^{9}(1-2{r}^{2}{sin}^{2}⁡\theta )r\,dr\,d\theta $
+
+${\int }_{0}^{3\pi /2}\,{\int }_{0}^{9}(1-2{r}^{2}{sin}^{2}⁡\theta )r\,dr\,d\theta $ (keyed correct)
+
+${\int }_{0}^{3\pi /2}\,{\int }_{0}^{9}({r}^{2}-2\operatorname{sin}⁡\theta )\,dr\,d\theta $
+
+${\int }_{0}^{3\pi /2}\,{\int }_{0}^{9}(1-2r\operatorname{sin}⁡\theta )\,dr\,d\theta $
+
+First, notice that we can rewrite our integral as 
+
+$$
+{∮}_{C}F\cdot dr={∮}_{C}(y+\frac{2}{3}{y}^{3})\,dx+(\operatorname{ln}⁡({y}^{2}+10)+2x)\,dy.
+$$
+
+Green's theorem states that
+
+$$
+{∮}_{C}P\,dx+Q\,dy={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\,\text{d}A.
+$$
+
+In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
+
+![](images/93/93a1c20377ddd0731c6190712d9d6d77551124fa33001334e84f52049bb6b800.png)
+
+Since $P(x,y)=y+\frac{2}{3}{y}^{3}$ and $Q(x,y)=\operatorname{ln}⁡({y}^{2}+10)+2x,$ we obtain
+
+$$
+\begin{aligned}\frac{∂P}{∂y}=1+2{y}^{2},\,\frac{∂Q}{∂x}=2.\end{aligned}
+$$
+
+Applying Green's theorem, we get
+
+$$
+\begin{aligned}{∮}_{C}(y+\frac{2}{3}{y}^{3})\,dx+(\operatorname{ln}⁡({y}^{2}+10)+2x)\,dy & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & ={∬}_{D}(2-(1+2{y}^{2}))\,\text{d}A \\  & ={∬}_{D}(1-2{y}^{2})\,\text{d}A.\end{aligned}
+$$
+
+Now, notice that the region $D$ can be represented in polar coordinates as
+
+$$
+Δ=\{(r,\theta )\,:\,0\le r\le 9,\,0\le \theta \le \frac{3\pi }{2}\}.
+$$
+
+The change of variables formula for plane polar coordinates states that 
+
+$$
+{∬}_{D}f(x,y)\text{ }dA={∬}_{Δ}\text{ }f(r\operatorname{cos}⁡\theta ,r\operatorname{sin}⁡\theta )\,r\text{ }drd\theta .
+$$
+
+Therefore, we can write our double integral as 
+
+$$
+\begin{aligned}{∬}_{D}(1-3{y}^{2})\,\text{d}A & ={∬}_{Δ}(1-2\cdot {r}^{2}{sin}^{2}⁡\theta )\,r\,\text{d}r\text{d}\theta  \\  & ={\int }_{0}^{3\pi /2}\,{\int }_{0}^{9}(1-2{r}^{2}{sin}^{2}⁡\theta )r\,dr\,d\theta .\end{aligned}
+$$
+
+### Generated variation — evidence-only historical bank observed
+
+![](images/18/184b50ce54b01453d5b645eef7edc186823e8ae34afaefa2527e34122c1722cc.png)
+
+Consider the path $C$ shown above. Given that $F(x,y)=⟨2\left(y+\frac{2}{3}{y}^{3}\right),\,2\left(\operatorname{ln}⁡({y}^{2}+10)+2x\right)⟩,$ which of the following is equivalent to ${∮}_{C}F\cdot dr\,?$
+
+Field selection
+
+$2\left({\int }_{0}^{3\pi /2}\,{\int }_{0}^{9}({r}^{2}-2\operatorname{sin}⁡\theta )\,dr\,d\theta \right)$
+
+$2\left({\int }_{-\pi /2}^{0}\,{\int }_{0}^{9}(1-2{r}^{2}{sin}^{2}⁡\theta )r\,dr\,d\theta \right)$
+
+$2\left({\int }_{0}^{3\pi /2}\,{\int }_{0}^{9}(1-2r\operatorname{sin}⁡\theta )\,dr\,d\theta \right)$
+
+$2\left({\int }_{-\pi /2}^{0}\,{\int }_{0}^{9}(1-2{r}^{2}{sin}^{2}⁡\theta )\,dr\,d\theta \right)$
+
+$2\left({\int }_{0}^{3\pi /2}\,{\int }_{0}^{9}(1-2{r}^{2}{sin}^{2}⁡\theta )r\,dr\,d\theta \right)$
+
+First, notice that we can rewrite our integral as 
+
+$$
+{∮}_{C}F\cdot dr=2\left({∮}_{C}(y+\frac{2}{3}{y}^{3})\,dx+(\operatorname{ln}⁡({y}^{2}+10)+2x)\,dy.\right)
+$$
+
+Green's theorem states that
+
+$$
+{∮}_{C}P\,dx+Q\,dy={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\,\text{d}A.
+$$
+
+In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
+
+![](images/93/93a1c20377ddd0731c6190712d9d6d77551124fa33001334e84f52049bb6b800.png)
+
+Since $P(x,y)=2\left(y+\frac{2}{3}{y}^{3}\right)$ and $Q(x,y)=2\left(\operatorname{ln}⁡({y}^{2}+10)+2x\right),$ we obtain
+
+$$
+\begin{aligned}\frac{∂P}{∂y}=2\left(1+2{y}^{2}\right),\,\frac{∂Q}{∂x}=2\left(2\right).\end{aligned}
+$$
+
+Applying Green's theorem, we get
+
+$$
+\begin{aligned}2\left({∮}_{C}(y+\frac{2}{3}{y}^{3})\,dx+(\operatorname{ln}⁡({y}^{2}+10)+2x)\,dy\right) & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & =2\left({∬}_{D}(2-(1+2{y}^{2}))\,\text{d}A\right) \\  & =2\left({∬}_{D}(1-2{y}^{2})\,\text{d}A.\right)\end{aligned}
+$$
+
+Now, notice that the region $D$ can be represented in polar coordinates as
+
+$$
+Δ=\{(r,\theta )\,:\,0\le r\le 9,\,0\le \theta \le \frac{3\pi }{2}\}.
+$$
+
+The change of variables formula for plane polar coordinates states that 
+
+$$
+{∬}_{D}f(x,y)\text{ }dA={∬}_{Δ}\text{ }f(r\operatorname{cos}⁡\theta ,r\operatorname{sin}⁡\theta )\,r\text{ }drd\theta .
+$$
+
+Therefore, we can write our double integral as 
+
+$$
+\begin{aligned}2\left({∬}_{D}(1-3{y}^{2})\,\text{d}A\right) & =2\left({∬}_{Δ}(1-2\cdot {r}^{2}{sin}^{2}⁡\theta )\,r\,\text{d}r\text{d}\theta \right) \\  & =2\left({\int }_{0}^{3\pi /2}\,{\int }_{0}^{9}(1-2{r}^{2}{sin}^{2}⁡\theta )r\,dr\,d\theta .\right)\end{aligned}
+$$
+
+### Generated variation — normal practice authored_method
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175987/plots/2c8d86a7376273300a37.png)
+
+Consider the path $C$ shown above. Given that $F(x,y)=⟨2\left(y+\frac{2}{3}{y}^{3}\right),\,2\left(\operatorname{ln}⁡({y}^{2}+10)+2x\right)⟩,$ which of the following is equivalent to ${∮}_{C}F\cdot dr\,?$
+
+Field selection
+
+$\int_{0}^{\frac{3 \pi}{2}}\int_{0}^{7}r \left(- 4 r^{2} \sin^{2}{\left(\theta \right)} + 2\right)\,dr\,d\theta$
+
+$\int_{0}^{\frac{3 \pi}{2}}\int_{0}^{8}r \left(- 4 r^{2} \sin^{2}{\left(\theta \right)} + 2\right)\,dr\,d\theta$
+
+$\int_{0}^{\frac{3 \pi}{2}}\int_{0}^{7}- 4 r^{2} \sin^{2}{\left(\theta \right)} + 2\,dr\,d\theta$
+
+$\int_{0}^{\frac{3 \pi}{2}}\int_{0}^{7}r \left(4 r^{2} \sin^{2}{\left(\theta \right)} + 6\right)\,dr\,d\theta$
+
+$\int_{0}^{\frac{3 \pi}{2}}\int_{0}^{7}- r \left(- 4 r^{2} \sin^{2}{\left(\theta \right)} + 2\right)\,dr\,d\theta$
+
+First, notice that we can rewrite our integral as 
+
+$$
+{∮}_{C}F\cdot dr=2\left({∮}_{C}(y+\frac{2}{3}{y}^{3})\,dx+(\operatorname{ln}⁡({y}^{2}+10)+2x)\,dy.\right)
+$$
+
+Green's theorem states that
+
+$$
+{∮}_{C}P\,dx+Q\,dy={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\,\text{d}A.
+$$
+
+In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175987/plots/060773a597835670a590.png)
+
+Since $P(x,y)=2\left(y+\frac{2}{3}{y}^{3}\right)$ and $Q(x,y)=2\left(\operatorname{ln}⁡({y}^{2}+10)+2x\right),$ we obtain
+
+$$
+\begin{aligned}\frac{∂P}{∂y}=2\left(1+2{y}^{2}\right),\,\frac{∂Q}{∂x}=2\left(2\right).\end{aligned}
+$$
+
+Applying Green's theorem, we get
+
+$$
+\begin{aligned}2\left({∮}_{C}(y+\frac{2}{3}{y}^{3})\,dx+(\operatorname{ln}⁡({y}^{2}+10)+2x)\,dy\right) & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & =2\left({∬}_{D}(2-(1+2{y}^{2}))\,\text{d}A\right) \\  & =2\left({∬}_{D}(1-2{y}^{2})\,\text{d}A.\right)\end{aligned}
+$$
+
+Now, notice that the region $D$ can be represented in polar coordinates as
+
+$$
+Δ=\{(r,\theta )\,:\,0\le r\le 9,\,0\le \theta \le \frac{3\pi }{2}\}.
+$$
+
+The change of variables formula for plane polar coordinates states that 
+
+$$
+{∬}_{D}f(x,y)\text{ }dA={∬}_{Δ}\text{ }f(r\operatorname{cos}⁡\theta ,r\operatorname{sin}⁡\theta )\,r\text{ }drd\theta .
+$$
+
+Therefore, we can write our double integral as 
+
+$$
+\begin{aligned}2\left({∬}_{D}(1-2{y}^{2})\,\text{d}A\right) & =2\left({∬}_{Δ}(1-2\cdot {r}^{2}{sin}^{2}⁡\theta )\,r\,\text{d}r\text{d}\theta \right) \\  & =2\left({\int }_{0}^{3\pi /2}\,{\int }_{0}^{7}(1-2{r}^{2}{sin}^{2}⁡\theta )r\,dr\,d\theta .\right)\end{aligned}
+$$
+
+### Generated variation — normal practice authored_method
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175987/plots/0d901418fe9394fddfc8.png)
+
+Consider the path $C$ shown above. Given that $F(x,y)=⟨5\left(y+\frac{2}{3}{y}^{3}\right),\,5\left(\operatorname{ln}⁡({y}^{2}+10)+2x\right)⟩,$ which of the following is equivalent to ${∮}_{C}F\cdot dr\,?$
+
+Field selection
+
+$\int_{0}^{\frac{3 \pi}{2}}\int_{0}^{2}- r \left(- 10 r^{2} \sin^{2}{\left(\theta \right)} + 5\right)\,dr\,d\theta$
+
+$\int_{0}^{\frac{3 \pi}{2}}\int_{0}^{2}r \left(10 r^{2} \sin^{2}{\left(\theta \right)} + 15\right)\,dr\,d\theta$
+
+$\int_{0}^{\frac{3 \pi}{2}}\int_{0}^{2}- 10 r^{2} \sin^{2}{\left(\theta \right)} + 5\,dr\,d\theta$
+
+$\int_{0}^{\frac{3 \pi}{2}}\int_{0}^{2}r \left(- 10 r^{2} \sin^{2}{\left(\theta \right)} + 5\right)\,dr\,d\theta$
+
+$\int_{0}^{\frac{3 \pi}{2}}\int_{0}^{3}r \left(- 10 r^{2} \sin^{2}{\left(\theta \right)} + 5\right)\,dr\,d\theta$
+
+First, notice that we can rewrite our integral as 
+
+$$
+{∮}_{C}F\cdot dr=5\left({∮}_{C}(y+\frac{2}{3}{y}^{3})\,dx+(\operatorname{ln}⁡({y}^{2}+10)+2x)\,dy.\right)
+$$
+
+Green's theorem states that
+
+$$
+{∮}_{C}P\,dx+Q\,dy={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\,\text{d}A.
+$$
+
+In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175987/plots/d58ae4b9f1f387839f07.png)
+
+Since $P(x,y)=5\left(y+\frac{2}{3}{y}^{3}\right)$ and $Q(x,y)=5\left(\operatorname{ln}⁡({y}^{2}+10)+2x\right),$ we obtain
+
+$$
+\begin{aligned}\frac{∂P}{∂y}=5\left(1+2{y}^{2}\right),\,\frac{∂Q}{∂x}=5\left(2\right).\end{aligned}
+$$
+
+Applying Green's theorem, we get
+
+$$
+\begin{aligned}5\left({∮}_{C}(y+\frac{2}{3}{y}^{3})\,dx+(\operatorname{ln}⁡({y}^{2}+10)+2x)\,dy\right) & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & =5\left({∬}_{D}(2-(1+2{y}^{2}))\,\text{d}A\right) \\  & =5\left({∬}_{D}(1-2{y}^{2})\,\text{d}A.\right)\end{aligned}
+$$
+
+Now, notice that the region $D$ can be represented in polar coordinates as
+
+$$
+Δ=\{(r,\theta )\,:\,0\le r\le 9,\,0\le \theta \le \frac{3\pi }{2}\}.
+$$
+
+The change of variables formula for plane polar coordinates states that 
+
+$$
+{∬}_{D}f(x,y)\text{ }dA={∬}_{Δ}\text{ }f(r\operatorname{cos}⁡\theta ,r\operatorname{sin}⁡\theta )\,r\text{ }drd\theta .
+$$
+
+Therefore, we can write our double integral as 
+
+$$
+\begin{aligned}5\left({∬}_{D}(1-2{y}^{2})\,\text{d}A\right) & =5\left({∬}_{Δ}(1-2\cdot {r}^{2}{sin}^{2}⁡\theta )\,r\,\text{d}r\text{d}\theta \right) \\  & =5\left({\int }_{0}^{3\pi /2}\,{\int }_{0}^{2}(1-2{r}^{2}{sin}^{2}⁡\theta )r\,dr\,d\theta .\right)\end{aligned}
+$$
+
 ## Authored easy
 
 ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175987/plots/ce7a99f7d19da6969c78.png)
