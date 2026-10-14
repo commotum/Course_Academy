@@ -76,11 +76,11 @@ Which of the following is a first-order homogeneous ordinary differential equati
 
 Field 0 (selection radio), correct reference present.
 
-- $\frac{\text{d}y}{\text{d}x}=\frac{x{y}^{2}}{{x}^{2}+{y}^{2}}$
-- $\frac{\text{d}y}{\text{d}x}=\frac{xy}{x+y}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{2}{y}^{2}}{{x}^{2}+{y}^{2}}$
-- $\frac{\text{d}y}{\text{d}x}=\frac{2xy}{{x}^{2}+{y}^{2}}$ **correct**
+- $\frac{\text{d}y}{\text{d}x}=\frac{xy}{x+y}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{x{y}^{2}}{{x}^{2}+{y}^{2}}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{2}y}{{x}^{2}+{y}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{2xy}{{x}^{2}+{y}^{2}}$ **correct**
 
 A first-order ordinary differential equation that is written in the form
 
@@ -192,11 +192,11 @@ Which of the following is a first-order homogeneous ordinary differential equati
 
 Field 0 (selection radio), correct reference present.
 
-- $\frac{\text{d}y}{\text{d}x}=\frac{{y}^{2}x-{x}^{2}}{{y}^{2}+{x}^{2}}$
-- $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{3}-3{x}^{2}y+x{y}^{2}}{{y}^{3}+{x}^{3}}$ **correct**
 - $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{3}-3xy+xy}{{y}^{2}-{x}^{2}}$
-- $\frac{\text{d}y}{\text{d}x}=\frac{{y}^{3}-{x}^{2}y+{x}^{3}}{{y}^{3}+1}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{3}-3{x}^{2}y+x{y}^{2}}{{y}^{3}+{x}^{3}}$ **correct**
+- $\frac{\text{d}y}{\text{d}x}=\frac{{y}^{2}x-{x}^{2}}{{y}^{2}+{x}^{2}}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{2}-x{y}^{2}+{y}^{2}}{1+{x}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{{y}^{3}-{x}^{2}y+{x}^{3}}{{y}^{3}+1}$
 
 A first-order ordinary differential equation that is written in the form
 
@@ -308,11 +308,11 @@ Which of the following is a first-order homogeneous ordinary differential equati
 
 Field 0 (selection radio), correct reference present.
 
-- $\frac{\text{d}y}{\text{d}x}=\frac{{y}^{2}-{x}^{2}}{{y}^{2}+x}$
-- $\frac{\text{d}y}{\text{d}x}=\frac{{y}^{2}-x}{{y}^{2}+{x}^{2}}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{y}^{2}-{x}^{2}}{{y}^{2}+{x}^{2}}$ **correct**
-- $\frac{\text{d}y}{\text{d}x}=\frac{y-{x}^{2}}{{y}^{2}+{x}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{{y}^{2}-x}{{y}^{2}+{x}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{{y}^{2}-{x}^{2}}{{y}^{2}+x}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{y}^{2}-{x}^{2}}{y-{x}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{y-{x}^{2}}{{y}^{2}+{x}^{2}}$
 
 A first-order ordinary differential equation that is written in the form
 
@@ -424,11 +424,11 @@ Which of the following is NOT a first-order homogeneous ordinary differential eq
 
 Field 0 (selection radio), correct reference present.
 
-- $\frac{\text{d}y}{\text{d}x}=1$
-- $\frac{\text{d}y}{\text{d}x}=\operatorname{ln}⁡y-\operatorname{ln}⁡x$
 - $\frac{\text{d}y}{\text{d}x}=x$ **correct**
-- $\frac{\text{d}y}{\text{d}x}=\operatorname{arctan}⁡(\frac{x}{y})$
+- $\frac{\text{d}y}{\text{d}x}=\operatorname{ln}⁡y-\operatorname{ln}⁡x$
+- $\frac{\text{d}y}{\text{d}x}=1$
 - $\frac{\text{d}y}{\text{d}x}=2$
+- $\frac{\text{d}y}{\text{d}x}=\operatorname{arctan}⁡(\frac{x}{y})$
 
 A first-order ordinary differential equation that is written in the form
 
@@ -550,11 +550,11 @@ Which of the following is NOT a first-order homogeneous ordinary differential eq
 
 Field 0 (selection radio), correct reference present.
 
-- $\frac{\text{d}y}{\text{d}x}=\frac{xy}{{x}^{2}+{y}^{2}}$
-- $\frac{\text{d}y}{\text{d}x}=\operatorname{sin}⁡(\frac{x+y}{y})$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{2}+1}{{y}^{2}+xy}$ **correct**
-- $\frac{\text{d}y}{\text{d}x}={e}^{\operatorname{sin}⁡(\frac{x}{y})}$
+- $\frac{\text{d}y}{\text{d}x}=\operatorname{sin}⁡(\frac{x+y}{y})$
+- $\frac{\text{d}y}{\text{d}x}=\frac{xy}{{x}^{2}+{y}^{2}}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{4{x}^{2}y}{{x}^{3}+x{y}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}={e}^{\operatorname{sin}⁡(\frac{x}{y})}$
 
 A first-order ordinary differential equation that is written in the form
 
@@ -676,11 +676,11 @@ Which of the following is NOT a first-order homogeneous ordinary differential eq
 
 Field 0 (selection radio), correct reference present.
 
-- $\frac{\text{d}y}{\text{d}x}=\frac{{y}^{2}}{{x}^{2}+xy}$
-- $\frac{\text{d}y}{\text{d}x}=\operatorname{cos}⁡(\frac{x}{2y})$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{y}^{2}}{2}$ **correct**
-- $\frac{\text{d}y}{\text{d}x}=\operatorname{sin}⁡(\frac{{x}^{3}}{{y}^{3}})$
+- $\frac{\text{d}y}{\text{d}x}=\operatorname{cos}⁡(\frac{x}{2y})$
+- $\frac{\text{d}y}{\text{d}x}=\frac{{y}^{2}}{{x}^{2}+xy}$
 - $\frac{\text{d}y}{\text{d}x}=9$
+- $\frac{\text{d}y}{\text{d}x}=\operatorname{sin}⁡(\frac{{x}^{3}}{{y}^{3}})$
 
 A first-order ordinary differential equation that is written in the form
 
@@ -734,11 +734,11 @@ Which of the following is a first-order homogeneous ordinary differential equati
 
 Field 0 (selection radio), correct reference present.
 
-- $\frac{\text{d}y}{\text{d}x}=\frac{x{(9y)}^{2}}{{x}^{2}+{(9y)}^{2}}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{x(9y)}{x+(9y)}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{x{(9y)}^{2}}{{x}^{2}+{(9y)}^{2}}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{2}{(9y)}^{2}}{{x}^{2}+{(9y)}^{2}}$
-- $\frac{\text{d}y}{\text{d}x}=\frac{2x(9y)}{{x}^{2}+{(9y)}^{2}}$ **correct**
 - $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{2}(9y)}{{x}^{2}+{(9y)}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{2x(9y)}{{x}^{2}+{(9y)}^{2}}$ **correct**
 
 A first-order ordinary differential equation that is written in the form
 
@@ -792,11 +792,11 @@ Which of the following is a first-order homogeneous ordinary differential equati
 
 Field 0 (selection radio), correct reference present.
 
-- $\frac{\text{d}y}{\text{d}x}=\frac{x{(3y)}^{2}}{{x}^{2}+{(3y)}^{2}}$
-- $\frac{\text{d}y}{\text{d}x}=\frac{x(3y)}{x+(3y)}$
-- $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{2}{(3y)}^{2}}{{x}^{2}+{(3y)}^{2}}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{2x(3y)}{{x}^{2}+{(3y)}^{2}}$ **correct**
+- $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{2}{(3y)}^{2}}{{x}^{2}+{(3y)}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{x{(3y)}^{2}}{{x}^{2}+{(3y)}^{2}}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{2}(3y)}{{x}^{2}+{(3y)}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{x(3y)}{x+(3y)}$
 
 A first-order ordinary differential equation that is written in the form
 
@@ -850,11 +850,11 @@ Which of the following is a first-order homogeneous ordinary differential equati
 
 Field 0 (selection radio), correct reference present.
 
-- $\frac{\text{d}y}{\text{d}x}=\frac{{(9y)}^{2}x-{x}^{2}}{{(9y)}^{2}+{x}^{2}}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{3}-3{x}^{2}(9y)+x{(9y)}^{2}}{{(9y)}^{3}+{x}^{3}}$ **correct**
+- $\frac{\text{d}y}{\text{d}x}=\frac{{(9y)}^{2}x-{x}^{2}}{{(9y)}^{2}+{x}^{2}}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{3}-3x(9y)+x(9y)}{{(9y)}^{2}-{x}^{2}}$
-- $\frac{\text{d}y}{\text{d}x}=\frac{{(9y)}^{3}-{x}^{2}(9y)+{x}^{3}}{{(9y)}^{3}+1}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{2}-x{(9y)}^{2}+{(9y)}^{2}}{1+{x}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{{(9y)}^{3}-{x}^{2}(9y)+{x}^{3}}{{(9y)}^{3}+1}$
 
 A first-order ordinary differential equation that is written in the form
 
@@ -908,11 +908,11 @@ Which of the following is a first-order homogeneous ordinary differential equati
 
 Field 0 (selection radio), correct reference present.
 
-- $\frac{\text{d}y}{\text{d}x}=\frac{{(3y)}^{2}x-{x}^{2}}{{(3y)}^{2}+{x}^{2}}$
-- $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{3}-3{x}^{2}(3y)+x{(3y)}^{2}}{{(3y)}^{3}+{x}^{3}}$ **correct**
-- $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{3}-3x(3y)+x(3y)}{{(3y)}^{2}-{x}^{2}}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{(3y)}^{3}-{x}^{2}(3y)+{x}^{3}}{{(3y)}^{3}+1}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{3}-3x(3y)+x(3y)}{{(3y)}^{2}-{x}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{{(3y)}^{2}x-{x}^{2}}{{(3y)}^{2}+{x}^{2}}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{2}-x{(3y)}^{2}+{(3y)}^{2}}{1+{x}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{3}-3{x}^{2}(3y)+x{(3y)}^{2}}{{(3y)}^{3}+{x}^{3}}$ **correct**
 
 A first-order ordinary differential equation that is written in the form
 
@@ -966,11 +966,11 @@ Which of the following is a first-order homogeneous ordinary differential equati
 
 Field 0 (selection radio), correct reference present.
 
-- $\frac{\text{d}y}{\text{d}x}=\frac{{(9y)}^{2}-{x}^{2}}{{(9y)}^{2}+x}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{(9y)}^{2}-x}{{(9y)}^{2}+{x}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{{(9y)}^{2}-{x}^{2}}{{(9y)}^{2}+x}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{(9y)}^{2}-{x}^{2}}{{(9y)}^{2}+{x}^{2}}$ **correct**
-- $\frac{\text{d}y}{\text{d}x}=\frac{(9y)-{x}^{2}}{{(9y)}^{2}+{x}^{2}}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{(9y)}^{2}-{x}^{2}}{(9y)-{x}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{(9y)-{x}^{2}}{{(9y)}^{2}+{x}^{2}}$
 
 A first-order ordinary differential equation that is written in the form
 
@@ -1024,11 +1024,11 @@ Which of the following is a first-order homogeneous ordinary differential equati
 
 Field 0 (selection radio), correct reference present.
 
-- $\frac{\text{d}y}{\text{d}x}=\frac{{(3y)}^{2}-{x}^{2}}{{(3y)}^{2}+x}$
-- $\frac{\text{d}y}{\text{d}x}=\frac{{(3y)}^{2}-x}{{(3y)}^{2}+{x}^{2}}$
-- $\frac{\text{d}y}{\text{d}x}=\frac{{(3y)}^{2}-{x}^{2}}{{(3y)}^{2}+{x}^{2}}$ **correct**
 - $\frac{\text{d}y}{\text{d}x}=\frac{(3y)-{x}^{2}}{{(3y)}^{2}+{x}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{{(3y)}^{2}-{x}^{2}}{{(3y)}^{2}+{x}^{2}}$ **correct**
+- $\frac{\text{d}y}{\text{d}x}=\frac{{(3y)}^{2}-{x}^{2}}{{(3y)}^{2}+x}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{(3y)}^{2}-{x}^{2}}{(3y)-{x}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{{(3y)}^{2}-x}{{(3y)}^{2}+{x}^{2}}$
 
 A first-order ordinary differential equation that is written in the form
 
@@ -1082,11 +1082,11 @@ Which of the following is NOT a first-order homogeneous ordinary differential eq
 
 Field 0 (selection radio), correct reference present.
 
-- $\frac{\text{d}y}{\text{d}x}=1$
 - $\frac{\text{d}y}{\text{d}x}=\operatorname{ln}⁡(9y)-\operatorname{ln}⁡(8x)$
+- $\frac{\text{d}y}{\text{d}x}=1$
 - $\frac{\text{d}y}{\text{d}x}=(8x)$ **correct**
-- $\frac{\text{d}y}{\text{d}x}=\operatorname{arctan}⁡(\frac{(8x)}{(9y)})$
 - $\frac{\text{d}y}{\text{d}x}=2$
+- $\frac{\text{d}y}{\text{d}x}=\operatorname{arctan}⁡(\frac{(8x)}{(9y)})$
 
 A first-order ordinary differential equation that is written in the form
 
@@ -1140,11 +1140,11 @@ Which of the following is NOT a first-order homogeneous ordinary differential eq
 
 Field 0 (selection radio), correct reference present.
 
-- $\frac{\text{d}y}{\text{d}x}=1$
-- $\frac{\text{d}y}{\text{d}x}=\operatorname{ln}⁡(3y)-\operatorname{ln}⁡(7x)$
-- $\frac{\text{d}y}{\text{d}x}=(7x)$ **correct**
 - $\frac{\text{d}y}{\text{d}x}=\operatorname{arctan}⁡(\frac{(7x)}{(3y)})$
+- $\frac{\text{d}y}{\text{d}x}=(7x)$ **correct**
+- $\frac{\text{d}y}{\text{d}x}=1$
 - $\frac{\text{d}y}{\text{d}x}=2$
+- $\frac{\text{d}y}{\text{d}x}=\operatorname{ln}⁡(3y)-\operatorname{ln}⁡(7x)$
 
 A first-order ordinary differential equation that is written in the form
 
@@ -1198,11 +1198,11 @@ Which of the following is NOT a first-order homogeneous ordinary differential eq
 
 Field 0 (selection radio), correct reference present.
 
+- $\frac{\text{d}y}{\text{d}x}=\frac{4{(2x)}^{2}(2y)}{{(2x)}^{3}+(2x){(2y)}^{2}}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{(2x)(2y)}{{(2x)}^{2}+{(2y)}^{2}}$
-- $\frac{\text{d}y}{\text{d}x}=\operatorname{sin}⁡(\frac{(2x)+(2y)}{(2y)})$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{(2x)}^{2}+1}{{(2y)}^{2}+(2x)(2y)}$ **correct**
 - $\frac{\text{d}y}{\text{d}x}={e}^{\operatorname{sin}⁡(\frac{(2x)}{(2y)})}$
-- $\frac{\text{d}y}{\text{d}x}=\frac{4{(2x)}^{2}(2y)}{{(2x)}^{3}+(2x){(2y)}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}=\operatorname{sin}⁡(\frac{(2x)+(2y)}{(2y)})$
 
 A first-order ordinary differential equation that is written in the form
 
@@ -1266,11 +1266,11 @@ Which of the following is NOT a first-order homogeneous ordinary differential eq
 
 Field 0 (selection radio), correct reference present.
 
+- $\frac{\text{d}y}{\text{d}x}=\frac{4{x}^{2}y}{{x}^{3}+x{y}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}={e}^{\operatorname{sin}⁡(\frac{x}{y})}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{2}+1}{{y}^{2}+xy}$ **correct**
 - $\frac{\text{d}y}{\text{d}x}=\frac{xy}{{x}^{2}+{y}^{2}}$
 - $\frac{\text{d}y}{\text{d}x}=\operatorname{sin}⁡(\frac{x+y}{y})$
-- $\frac{\text{d}y}{\text{d}x}=\frac{{x}^{2}+1}{{y}^{2}+xy}$ **correct**
-- $\frac{\text{d}y}{\text{d}x}={e}^{\operatorname{sin}⁡(\frac{x}{y})}$
-- $\frac{\text{d}y}{\text{d}x}=\frac{4{x}^{2}y}{{x}^{3}+x{y}^{2}}$
 
 A first-order ordinary differential equation that is written in the form
 
@@ -1334,11 +1334,11 @@ Which of the following is NOT a first-order homogeneous ordinary differential eq
 
 Field 0 (selection radio), correct reference present.
 
-- $\frac{\text{d}y}{\text{d}x}=\frac{{(9y)}^{2}}{{(8x)}^{2}+(8x)(9y)}$
 - $\frac{\text{d}y}{\text{d}x}=\operatorname{cos}⁡(\frac{(8x)}{2(9y)})$
+- $\frac{\text{d}y}{\text{d}x}=\frac{{(9y)}^{2}}{{(8x)}^{2}+(8x)(9y)}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{(9y)}^{2}}{2}$ **correct**
-- $\frac{\text{d}y}{\text{d}x}=\operatorname{sin}⁡(\frac{{(8x)}^{3}}{{(9y)}^{3}})$
 - $\frac{\text{d}y}{\text{d}x}=9$
+- $\frac{\text{d}y}{\text{d}x}=\operatorname{sin}⁡(\frac{{(8x)}^{3}}{{(9y)}^{3}})$
 
 A first-order ordinary differential equation that is written in the form
 
@@ -1392,11 +1392,11 @@ Which of the following is NOT a first-order homogeneous ordinary differential eq
 
 Field 0 (selection radio), correct reference present.
 
-- $\frac{\text{d}y}{\text{d}x}=\frac{{(3y)}^{2}}{{(7x)}^{2}+(7x)(3y)}$
-- $\frac{\text{d}y}{\text{d}x}=\operatorname{cos}⁡(\frac{(7x)}{2(3y)})$
-- $\frac{\text{d}y}{\text{d}x}=\frac{{(3y)}^{2}}{2}$ **correct**
 - $\frac{\text{d}y}{\text{d}x}=\operatorname{sin}⁡(\frac{{(7x)}^{3}}{{(3y)}^{3}})$
+- $\frac{\text{d}y}{\text{d}x}=\frac{{(3y)}^{2}}{2}$ **correct**
+- $\frac{\text{d}y}{\text{d}x}=\frac{{(3y)}^{2}}{{(7x)}^{2}+(7x)(3y)}$
 - $\frac{\text{d}y}{\text{d}x}=9$
+- $\frac{\text{d}y}{\text{d}x}=\operatorname{cos}⁡(\frac{(7x)}{2(3y)})$
 
 A first-order ordinary differential equation that is written in the form
 
@@ -1450,11 +1450,11 @@ Which of the following is a first-order homogeneous ordinary differential equati
 
 Field 0 (selection radio), correct reference present.
 
+- $\frac{\text{d}y}{\text{d}x}=\frac{{(9x)}^{3}-3(9x)(9y)+(9x)(9y)}{{(9y)}^{2}-{(9x)}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{{(9x)}^{2}-(9x){(9y)}^{2}+{(9y)}^{2}}{1+{(9x)}^{2}}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{(9y)}^{2}(9x)-{(9x)}^{2}}{{(9y)}^{2}+{(9x)}^{2}}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{(9x)}^{3}-3{(9x)}^{2}(9y)+(9x){(9y)}^{2}}{{(9y)}^{3}+{(9x)}^{3}}$ **correct**
-- $\frac{\text{d}y}{\text{d}x}=\frac{{(9x)}^{3}-3(9x)(9y)+(9x)(9y)}{{(9y)}^{2}-{(9x)}^{2}}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{(9y)}^{3}-{(9x)}^{2}(9y)+{(9x)}^{3}}{{(9y)}^{3}+1}$
-- $\frac{\text{d}y}{\text{d}x}=\frac{{(9x)}^{2}-(9x){(9y)}^{2}+{(9y)}^{2}}{1+{(9x)}^{2}}$
 
 A first-order ordinary differential equation that is written in the form
 
@@ -1508,11 +1508,11 @@ Which of the following is a first-order homogeneous ordinary differential equati
 
 Field 0 (selection radio), correct reference present.
 
-- $\frac{\text{d}y}{\text{d}x}=\frac{{(4y)}^{2}(8x)-{(8x)}^{2}}{{(4y)}^{2}+{(8x)}^{2}}$
-- $\frac{\text{d}y}{\text{d}x}=\frac{{(8x)}^{3}-3{(8x)}^{2}(4y)+(8x){(4y)}^{2}}{{(4y)}^{3}+{(8x)}^{3}}$ **correct**
-- $\frac{\text{d}y}{\text{d}x}=\frac{{(8x)}^{3}-3(8x)(4y)+(8x)(4y)}{{(4y)}^{2}-{(8x)}^{2}}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{(4y)}^{3}-{(8x)}^{2}(4y)+{(8x)}^{3}}{{(4y)}^{3}+1}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{{(8x)}^{3}-3(8x)(4y)+(8x)(4y)}{{(4y)}^{2}-{(8x)}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{{(4y)}^{2}(8x)-{(8x)}^{2}}{{(4y)}^{2}+{(8x)}^{2}}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{(8x)}^{2}-(8x){(4y)}^{2}+{(4y)}^{2}}{1+{(8x)}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{{(8x)}^{3}-3{(8x)}^{2}(4y)+(8x){(4y)}^{2}}{{(4y)}^{3}+{(8x)}^{3}}$ **correct**
 
 A first-order ordinary differential equation that is written in the form
 
@@ -1566,11 +1566,11 @@ Which of the following is a first-order homogeneous ordinary differential equati
 
 Field 0 (selection radio), correct reference present.
 
+- $\frac{\text{d}y}{\text{d}x}=\frac{{(9y)}^{2}-{(9x)}^{2}}{{(9y)}^{2}+{(9x)}^{2}}$ **correct**
+- $\frac{\text{d}y}{\text{d}x}=\frac{{(9y)}^{2}-{(9x)}^{2}}{(9y)-{(9x)}^{2}}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{(9y)}^{2}-{(9x)}^{2}}{{(9y)}^{2}+(9x)}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{(9y)}^{2}-(9x)}{{(9y)}^{2}+{(9x)}^{2}}$
-- $\frac{\text{d}y}{\text{d}x}=\frac{{(9y)}^{2}-{(9x)}^{2}}{{(9y)}^{2}+{(9x)}^{2}}$ **correct**
 - $\frac{\text{d}y}{\text{d}x}=\frac{(9y)-{(9x)}^{2}}{{(9y)}^{2}+{(9x)}^{2}}$
-- $\frac{\text{d}y}{\text{d}x}=\frac{{(9y)}^{2}-{(9x)}^{2}}{(9y)-{(9x)}^{2}}$
 
 A first-order ordinary differential equation that is written in the form
 
@@ -1624,11 +1624,11 @@ Which of the following is a first-order homogeneous ordinary differential equati
 
 Field 0 (selection radio), correct reference present.
 
-- $\frac{\text{d}y}{\text{d}x}=\frac{{(4y)}^{2}-{(8x)}^{2}}{{(4y)}^{2}+(8x)}$
-- $\frac{\text{d}y}{\text{d}x}=\frac{{(4y)}^{2}-(8x)}{{(4y)}^{2}+{(8x)}^{2}}$
-- $\frac{\text{d}y}{\text{d}x}=\frac{{(4y)}^{2}-{(8x)}^{2}}{{(4y)}^{2}+{(8x)}^{2}}$ **correct**
 - $\frac{\text{d}y}{\text{d}x}=\frac{(4y)-{(8x)}^{2}}{{(4y)}^{2}+{(8x)}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{{(4y)}^{2}-{(8x)}^{2}}{{(4y)}^{2}+{(8x)}^{2}}$ **correct**
+- $\frac{\text{d}y}{\text{d}x}=\frac{{(4y)}^{2}-{(8x)}^{2}}{{(4y)}^{2}+(8x)}$
 - $\frac{\text{d}y}{\text{d}x}=\frac{{(4y)}^{2}-{(8x)}^{2}}{(4y)-{(8x)}^{2}}$
+- $\frac{\text{d}y}{\text{d}x}=\frac{{(4y)}^{2}-(8x)}{{(4y)}^{2}+{(8x)}^{2}}$
 
 A first-order ordinary differential equation that is written in the form
 

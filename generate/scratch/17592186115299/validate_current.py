@@ -21,6 +21,8 @@ def sha(p):
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
 def plain_matrices(s):
+    # Algebra adapters discard fencing/augmentation typography, never entries.
+    s = re.sub(r'\\left\[\\begin\{array\}\{[^}]+\}(.*?)\\end\{array\}\\right\]', lambda m:r'[\begin{aligned}'+m[1]+r'\end{aligned}]', s, flags=re.S)
     return re.sub(r'\\begin\{bmatrix\}(.*?)\\end\{bmatrix\}', lambda m:r'[\begin{aligned}'+m[1]+r'\end{aligned}]', s, flags=re.S)
 
 def plain_prompt(s):
@@ -103,7 +105,7 @@ def compare_source(source, rec):
         assert actual == a[':answer-field/correct'][':answer/value']
     # All current source mathematics/layout is retained, apart from recorded
     # TeX normalization and the q-32242 unstated first-row negation repair.
-    clean = lambda s: re.sub(r'\s+', '', v.normalize(plain_matrices(s)))
+    clean = lambda s: re.sub(r'\s+', '', g.normalize_prose(plain_matrices(g.normalize_prose(s))))
     assert clean(plain_prompt(source[':question/problem'])) == clean(plain_prompt(rec['question'][':question/problem']))
     repaired = source[':question/math-academy-id'] == 'q-32242'
     if not repaired:
@@ -156,7 +158,7 @@ def main():
     subprocess.run([str(HERE/'reference/check-engine'), str(HERE/'reference/current-native-input.json'), str(HERE/'reference/current-native-report.json')],check=True)
     (HERE/'reference/current-replays.json').write_text(json.dumps(native,indent=2)+'\n')
     (HERE/'reference/current-review.json').write_text(json.dumps(reviews,indent=2)+'\n')
-    report = {'passed':True, 'source_basis':source['basis'], 'lineage':source['lineage'], 'source_replays':coverage, 'banks_matched':sum(c['fields'] for c in coverage), 'options_matched':sum(c['options'] for c in coverage), 'stress_records':dict(stress), 'distinct_tasks':{l:len(x) for l,x in unique.items()}, 'classification_coverage':{l:sorted(x) for l,x in kinds.items()}, 'slot_checks':slots, 'plots':'none', 'native_report':'reference/current-native-report.json', 'unresolved_findings':[], 'hashes':{str(p.relative_to(ROOT)):sha(p) for p in (HERE.with_suffix('.py'), HERE/'templates.json', HERE/'current-layouts.json', HERE/'validate_current.py', HERE/'source-current.json', HERE/'reference/check-engine')}}
+    report = {'passed':True, 'source_basis':source['basis'], 'lineage':source['lineage'], 'source_replays':coverage, 'banks_matched':sum(c['fields'] for c in coverage), 'options_matched':sum(c['options'] for c in coverage), 'stress_records':dict(stress), 'distinct_tasks':{l:len(x) for l,x in unique.items()}, 'classification_coverage':{l:sorted(x) for l,x in kinds.items()}, 'slot_checks':slots, 'plots':'none', 'native_report':'reference/current-native-report.json', 'unresolved_findings':[], 'hashes':{str(p.relative_to(ROOT)):sha(p) for p in (HERE.with_suffix('.py'), HERE/'templates.json', HERE/'current-layouts.json', HERE/'validate_current.py', HERE/'validate.py', HERE/'source-current.json', HERE/'reference/check-engine', ROOT/'scripts/question_capture/math_format.py')}}
     (HERE/'validation-current.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps({k:report[k] for k in ['passed','banks_matched','options_matched','stress_records','distinct_tasks']}),flush=True)
 

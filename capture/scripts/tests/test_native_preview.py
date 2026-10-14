@@ -66,6 +66,20 @@ class NativePreviewBuildTests(unittest.TestCase):
         os.environ['EDB_CORE_RLIB'] = str(self.library)
         self.assertTrue(preview.preview_executable(self.config, self.stop).is_file())
 
+    def test_submission_build_is_separate_and_follows_source_and_deployed_library(self):
+        source = self.root / 'capture/scripts/database/submission.rs'
+        source.write_text('submission-v1')
+        first = preview.submission_executable(self.config, self.stop)
+        self.assertIn('native-submit-', first.name)
+        self.assertEqual(preview.submission_executable(self.config, self.stop), first)
+        source.write_text('submission-v2')
+        second = preview.submission_executable(self.config, self.stop)
+        self.library.write_bytes(b'new deployed library')
+        third = preview.submission_executable(self.config, self.stop)
+        self.assertEqual(len({first, second, third}), 3)
+        self.assertEqual(len(self.commands), 3)
+        self.assertIn(str(source), self.commands[0])
+
     def test_missing_library_and_wrong_writer_manifest_fail_closed(self):
         self.library.unlink()
         with self.assertRaisesRegex(ValueError, 'existing edb_core'):

@@ -95,9 +95,40 @@ def check(rec):
  return A
 
 def main():
- original_cases=[{'source_id':qid,'template':t,'level':lv,'profile':qid,'parameters':p} for qid,t,lv,p in [('q-122481','semi','easy',{'r':2}),('q-122843','three_quarter','easy',{'r':2}),('q-122484','quarter_closed','moderate',{'r':2}),('q-122828','three_segments','moderate',{'a':3,'b':4}),('q-122845','two_segments','moderate',{'a':3,'b':2,'h':4}),('q-122850','quarter_open','moderate',{'r':4})]]
- (ROOT/'source-cases.json').write_text(json.dumps(original_cases,indent=2)+'\n');records=[];fidelity=[]
- for case in original_cases:
+ normalized_cases=[{'source_id':qid,'template':t,'level':lv,'profile':qid,'parameters':p} for qid,t,lv,p in [('q-122481','semi','easy',{'r':2}),('q-122843','three_quarter','easy',{'r':2}),('q-122484','quarter_closed','moderate',{'r':2}),('q-122828','three_segments','moderate',{'a':3,'b':4}),('q-122845','two_segments','moderate',{'a':3,'b':2,'h':4}),('q-122850','quarter_open','moderate',{'r':4})]]
+ raw_cases=[];raw_records=[];raw_fidelity=[]
+ for case in normalized_cases:
+  source=g.SOURCE_Q[case['source_id']];observed=source.get(':question/difficulty',{}).get(':db/ident');level=observed.rsplit('/',1)[-1] if observed else case['level']
+  raw_case=case|{'level':level,'profile':'raw-'+case['source_id'],'observed_attribute_presence':{'difficulty':observed is not None,'correct_ref':':answer-field/correct' in source[':question/answer-fields'][0],'worked_solution':':question/worked-solution' in source}}
+  raw_cases.append(raw_case);rec=g.generate(level,template=case['template'],profile=raw_case['profile'],parameters=case['parameters']);question=rec['question'];field=question[':question/answer-fields'][0];original_field=source[':question/answer-fields'][0]
+  assert rec['generation']['evidence_only'] and not rec['generation']['eligible_for_normal_generation']
+  assert question[':question/problem']==source[':question/problem']
+  assert question.get(':question/worked-solution')==source.get(':question/worked-solution')
+  assert (':question/difficulty' in question)==(':question/difficulty' in source)
+  assert question.get(':question/difficulty')==observed
+  assert (':question/worked-solution' in question)==(':question/worked-solution' in source)
+  assert (':answer-field/correct' in field)==(':answer-field/correct' in original_field)
+  assert field[':answer-field/type']==original_field[':answer-field/type'][':db/ident']
+  assert field[':answer-field/key']==original_field[':answer-field/key']
+  assert [a[':answer/value'] for a in field[':answer-field/choices']]==[a[':answer/value'] for a in original_field[':answer-field/choices']]
+  assert [a[':answer/id'] for a in field[':answer-field/choices']]==[a[':answer/id'] for a in original_field[':answer-field/choices']]
+  if ':answer-field/correct' in original_field:assert field[':answer-field/correct']==[':answer/id',original_field[':answer-field/correct'][':answer/id']]
+  raw_records.append({'label':'raw-source/'+case['source_id'],'record':rec})
+  changed={k:str(s.Rational(v)*2) for k,v in case['parameters'].items()};variant=g.generate(level,template=case['template'],profile=raw_case['profile'],parameters=changed)
+  assert variant['generation']['preserved_attribute_presence']==rec['generation']['preserved_attribute_presence']
+  if ':question/worked-solution' in question:check(variant)
+  else:
+   # Independent geometry/stage validation uses an explicitly authored completion;
+   # raw evidence remains untouched with no key/rating/solution inserted.
+   completed=g.generate('moderate',template=case['template'],parameters=changed);A=check(completed)
+   assert variant['generation']['assets']['prompt']==completed['generation']['assets']['prompt']
+   vv=[parse(a[':answer/value']) for a in variant['question'][':question/answer-fields'][0][':answer-field/choices']]
+   assert sum(s.simplify(z-A)==0 for z in vv)==1 and all(s.simplify(a-b)!=0 for i,a in enumerate(vv) for b in vv[i+1:])
+  raw_records.append({'label':'raw-variant/'+case['source_id'],'record':variant})
+  raw_fidelity.append({'source_id':case['source_id'],'exact_prompt':True,'exact_solution_if_present':':question/worked-solution' in source,'exact_choice_strings':5,'attribute_presence_preserved':True,'original_asset_references_preserved':True,'correct_ref_present':':answer-field/correct' in original_field,'difficulty_present':observed is not None})
+ (ROOT/'source-cases.json').write_text(json.dumps(raw_cases,indent=2)+'\n');(ROOT/'normalized-source-cases.json').write_text(json.dumps(normalized_cases,indent=2)+'\n');(ROOT/'raw-source-records.json').write_text(json.dumps(raw_records,indent=2)+'\n')
+ records=[];fidelity=[]
+ for case in normalized_cases:
   rec=g.generate(case['level'],parameters=case['parameters'],template=case['template'],profile=case['profile']);check(rec);source=g.SOURCE_Q[case['source_id']];opts=source[':question/answer-fields'][0][':answer-field/choices'];actual=rec['question'][':question/answer-fields'][0][':answer-field/choices']
   for a in opts:assert sum(s.simplify(parse(a[':answer/value'])-parse(b[':answer/value']))==0 for b in actual)==1
   assert normtext(source[':question/problem'])==normtext(rec['question'][':question/problem'])
@@ -130,6 +161,15 @@ def main():
  try:check(corrupted)
  except AssertionError:pass
  else:raise AssertionError('Printed stage corruption escaped independent check')
+ # Exhaust every finite authored hard radius through the public generator.
+ hard_radii=sorted({s.Rational(k,d) for d in (2,3) for k in range(1,12*d+1) if k%d})
+ assert len(hard_radii)==36 and all(0<r<=12 for r in hard_radii)
+ for radius in hard_radii:check(g.generate('hard',template='quarter_open',parameters={'r':str(radius)}))
+ for seed in range(18):
+  for level in ('easy','moderate','hard'):check(g.generate(level,seed=seed))
+ try:g.generate('easy',profile='raw-q-122481',parameters={})
+ except ValueError:pass
+ else:raise AssertionError('Empty explicit raw parameters silently replaced by anchors')
  # Explicit guard checks rather than letting shared broad bounds bypass workload policies.
  for level,t,p in [('easy','semi',{'r':'1/2'}),('hard','quarter_open',{'r':2}),('moderate','three_segments',{'a':3,'b':5}),('hard','semi',{'r':'3/2'}),('moderate','two_segments',{'a':2,'b':3,'h':4})]:
   try:g.generate(level,template=t,parameters=p)
@@ -144,7 +184,8 @@ def main():
    for name in assets.values():assert json.loads(Path(name).with_suffix('.json').read_text())['parameters']['r']==val
   assert not list(Path(temp).glob('render-*'))
  engine=[]
- for label,r in records:
+ gradeable_raw=[(x['label'],x['record']) for x in raw_records if ':answer-field/correct' in x['record']['question'][':question/answer-fields'][0]]
+ for label,r in records+gradeable_raw:
   f=r['question'][':question/answer-fields'][0];correct=f[':answer-field/correct'][1]
   checks=[{'field_index':0,'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==correct else 'rejected','purpose':'Every owned radio option'} for a in f[':answer-field/choices']];engine.append({'label':label,'record':r,'checks':checks})
  (ROOT/'engine-input.json').write_text(json.dumps(engine,indent=2));subprocess.run([str(g.SOURCE.parents[2]/'check-engine'),str(ROOT/'engine-input.json'),str(ROOT/'engine-report.json')],check=True)
@@ -153,6 +194,6 @@ def main():
  # Include every authored family as well as two per level.
  for t in g.TEMPLATES:review += [{'label':label,'record':r} for label,r in generated if '/'+t+'/' in label][:1]
  (ROOT/'review.json').write_text(json.dumps(review,indent=2)+'\n')
- report={'status':'worker-validated; parent independent QA pending','basis':2275,'source_banks':6,'source_choices_matched':30,'source_choices_total':30,'source_wrong_options_matched':24,'source_wrong_options_total':24,'observed_correct_designations_matched':5,'observed_correct_designations_total':5,'inferred_missing_designations':1,'full_available_solutions_prose_and_numeric_sequence_matched':5,'available_solutions_total':5,'raw_exact_solution_strings':sum(x['raw_exact_solution'] is True for x in fidelity),'presentation_normalized_solutions':5,'record_checks':len(records),'source_fidelity':fidelity,'native_engine':json.loads((ROOT/'engine-report.json').read_text()),'fresh_concurrency_calls':4,'database_writes':0,'calculator_requirements':'unknown: absent in all six sources','unresolved':['q122484 difficulty, correct designation and solution absent: authored moderate, derived key and source-shaped solution','No observed hard questions; bounded rational hard policy is authored','Several empirical distractor intentions underidentified; never normal defaults','Matplotlib style differs from source asset, geometry and instructional cues preserved'],'versions':{'python':sys.version,'sympy':s.__version__,'matplotlib':__import__('matplotlib').__version__}}
+ report={'status':'worker-validated; parent independent QA pending','basis':2275,'source_banks':6,'source_choices_matched':30,'source_choices_total':30,'source_wrong_options_matched':24,'source_wrong_options_total':24,'observed_wrong_designations_matched':20,'inferred_missing_key_wrong_choices':4,'observed_correct_designations_matched':5,'observed_correct_designations_total':5,'inferred_missing_designations':1,'full_available_solutions_prose_and_numeric_sequence_matched':5,'available_solutions_total':5,'raw_exact_solution_strings':5,'raw_source_contract':{'exact_prompts':6,'exact_banks':6,'exact_choice_strings':30,'exact_available_solutions':5,'preserved_attribute_presence_cases':6,'missing_key_solution_rating_cases':1,'records':raw_fidelity},'normalized_reconstruction_exact_solution_strings':sum(x['raw_exact_solution'] is True for x in fidelity),'presentation_normalized_solutions':5,'record_checks':len(records),'raw_gradeable_record_checks':len(gradeable_raw),'raw_ungradeable_source_contracts':1,'source_fidelity':fidelity,'native_engine':json.loads((ROOT/'engine-report.json').read_text()),'fresh_concurrency_calls':4,'all_allowed_hard_radii_tested':36,'normal_seed_sweep_each_level':18,'database_writes':0,'calculator_requirements':'unknown: absent in all six sources','unresolved':['q122484 difficulty, correct designation and solution absent: authored moderate, derived key and source-shaped solution','No observed hard questions; bounded rational hard policy is authored','Several empirical distractor intentions underidentified; never normal defaults','Matplotlib style differs from source asset, geometry and instructional cues preserved'],'versions':{'python':sys.version,'sympy':s.__version__,'matplotlib':__import__('matplotlib').__version__}}
  (ROOT/'validation.json').write_text(json.dumps(report,indent=2)+'\n');subprocess.run([sys.executable,str(ROOT/'finalize-evidence.py')],check=True);print(json.dumps({k:v for k,v in report.items() if k not in ('native_engine','source_fidelity')},indent=2))
 if __name__=='__main__':main()

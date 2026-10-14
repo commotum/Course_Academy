@@ -7,10 +7,11 @@ from unittest.mock import patch
 
 from scripts.config import Config
 from scripts.database.client import EDBClient
+from scripts.database.client import EDBCommandError
 from scripts.database.commit import Committer
 from scripts.database.edn import dumps, kw
 from scripts.database.prepare import Preparation
-from scripts.storage import atomic_json
+from scripts.storage import atomic_json, read_json
 from scripts.tests.test_database import FakeClient, question
 
 
@@ -97,6 +98,21 @@ class DurableLineageTests(unittest.TestCase):
         self.assertEqual(self.committer.submit(request), receipt)
         self.assertEqual(self.committer.intent_path.read_bytes(), original)
         self.assertEqual(len([command for command, options in self.client.calls if command == 'transact']), 1)
+
+    def test_failed_submission_preserves_request_and_full_command_diagnostics(self):
+        request = self.request()
+        original = self.committer.intent_path.read_bytes()
+        error = EDBCommandError(1, ['/native-submit', 'transact'], 'retained partial output',
+            'ERROR category=Unavailable code=transport/remote-error\nremote_code=service/unavailable\n')
+        with patch.object(self.client, 'command', side_effect=error):
+            with self.assertRaises(EDBCommandError):
+                self.committer.submit(request)
+        self.assertEqual(self.committer.intent_path.read_bytes(), original)
+        saved = read_json(self.committer.directory / 'submission-error.json')
+        self.assertEqual(saved['request_key'], request['request_key'])
+        self.assertEqual(saved['transaction_sha256'], request['transaction_sha256'])
+        self.assertEqual(saved['stderr'], error.stderr)
+        self.assertEqual(saved['stdout'], error.stdout)
 
     def test_changed_or_unknown_snapshot_lineage_cannot_be_bound_to_new_database(self):
         self.client.lineage = NEW

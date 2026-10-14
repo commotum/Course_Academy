@@ -5,8 +5,10 @@ Magnitude slots shared by their observed literal are intentionally coupled.
 Units, zeros, signs, equation placement and five-choice profiles remain fixed.
 No equation solving, row operations, additional stages or generated plots.
 """
-import argparse, hashlib, json, random, re, uuid
+import argparse, hashlib, json, random, re, uuid, sys
 from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'scripts/question_capture'))
+from math_format import normalize_prose, normalize_tex, checked_math_content
 
 KP_ID=17592186059768
 KP_UUID='3f9ccaa5-d69c-584d-946e-0c57b3050160'
@@ -23,18 +25,13 @@ def slots(q):
     return sorted({int(n) for t in texts for n in re.findall(r'\d+',t) if int(n)>1})
 def render(text,parameters):
     text=re.sub(r'\d+',lambda m:str(parameters.get(m[0],int(m[0]))),text)
-    def system(match):
-        rows=[row.strip().replace('&','') for row in match[1].split(r'\\') if row.strip()]
-        assert all(row.count('=')==1 for row in rows)
-        return r'\left\{\begin{aligned}'+r' \\ '.join(lhs.strip()+' &='+rhs.strip() for lhs,rhs in (row.split('=',1) for row in rows))+r'\end{aligned}\right.'
-    text=re.sub(r'\\begin\{aligned\}\{\\begin\{aligned\}(.*?)\\end\{aligned\}\\end\{aligned\}',system,text,flags=re.S)
-    text=re.sub(r'\\begin\{cases\}(.*?)\\end\{cases\}',system,text,flags=re.S)
-    text=re.sub(r'(?<!\\left)\\\{\\begin\{aligned\}(.*?)\\end\{aligned\}',system,text,flags=re.S)
+    text=normalize_prose(text)
     def coefficient(match):
         paragraph=text[:match.start()].rstrip().split('\n\n')[-1]
         if 'coefficient matrix' not in paragraph.lower() or 'augment' in paragraph.lower():return match[0]
         return re.sub(r'\\left\[\\begin\{array\}\{c+\|c\}(.*?)\\end\{array\}\\right\]',lambda matrix:r'\begin{bmatrix}'+matrix[1]+r'\end{bmatrix}',match[0],flags=re.S)
     return re.sub(r'\$\$.*?\$\$',coefficient,text,flags=re.S)
+@checked_math_content
 def generate(difficulty,seed,template=None,parameters=None,profile=None):
     if difficulty not in SUPPORTED:raise ValueError('Unsupported difficulty: '+difficulty)
     rng=random.Random(seed)
@@ -44,14 +41,14 @@ def generate(difficulty,seed,template=None,parameters=None,profile=None):
     src=PROFILES[name]
     parameters={str(k):int(v) for k,v in (parameters or dict(zip(map(str,slots(src)),rng.sample(range(2,25),len(slots(src)))))).items()}
     assert set(parameters)==set(map(str,slots(src))) and all(2<=n<=24 for n in parameters.values())
-    values=[render(a[':answer/value'],parameters) for a in src[':question/answer-fields'][0][':answer-field/choices']]
+    values=[normalize_tex(render(a[':answer/value'],parameters)) for a in src[':question/answer-fields'][0][':answer-field/choices']]
     assert len(set(parameters.values()))==len(parameters), "Magnitude slots must remain distinct"
     assert len(set(values))==5
     problem=render(src[':question/problem'],parameters)
     qid=str(uuid.uuid5(uuid.UUID(KP_UUID),digest([problem,sorted(values)])))
     fid=str(uuid.uuid5(uuid.UUID(qid),'selection'))
     choices=[{':answer/id':str(uuid.uuid5(uuid.UUID(fid),value)),':answer/type':':answer.type/math',':answer/value':value} for value in values]
-    correct=render(src[':question/answer-fields'][0][':answer-field/correct'][':answer/value'],parameters)
+    correct=normalize_tex(render(src[':question/answer-fields'][0][':answer-field/correct'][':answer/value'],parameters))
     question={':question/id':qid,':question/problem':problem,':question/worked-solution':render(src[':question/worked-solution'],parameters),':question/difficulty':':question.difficulty/'+difficulty,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices,':answer-field/correct':[':answer/id',next(a[':answer/id'] for a in choices if a[':answer/value']==correct)]}]}
     return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,'generation':{'version':VERSION,'seed':seed,'template':name,'bank_profile':name,'parameters':parameters,'source_question_id':src[':db/id'],'source_basis':SOURCE['basis'],'eligible_for_learning':True,'evidence_only':False,'slot_policy':'Observed equal magnitudes coupled; units/zeros/signs/placement fixed; magnitude bounds 2..24'}}
 def markdown(rec):

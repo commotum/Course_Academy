@@ -12,6 +12,8 @@ and pivot/free-variable definitions. Read the evidence README for validation.
 from __future__ import annotations
 import argparse,hashlib,json,random,re,sys,uuid
 from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'scripts/question_capture'))
+from math_format import normalize_prose, matrix_tex as format_matrix, checked_math_content
 import sympy as sp
 from sympy.parsing.sympy_parser import parse_expr,standard_transformations,implicit_multiplication_application
 KP_ID=17592186115299
@@ -55,7 +57,7 @@ def parse_system(s):
  return sp.Matrix(out)
 
 def matrix_tex(m):
- return r'[\begin{aligned}'+r' \\ '.join(' & '.join(tex(v) for v in m.row(i)) for i in range(m.rows))+r'\end{aligned}]'
+ return format_matrix([[tex(v) for v in m.row(i)] for i in range(m.rows)], augmented=True)
 
 def lhs(row,zero=False):
  out=''
@@ -219,6 +221,7 @@ def generate_legacy(level,seed=0,template=None,field_type=None,parameters=None,p
  cid=next(a[':answer/id'] for a in answers if a[':answer/value']==correct);rng.shuffle(answers)
  return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':str(qid),':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[{':answer-field/id':str(fid),':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',cid]}]},'generation':{'version':VERSION,'seed':seed,'template':template,'parameters':p,'bank_profile':profile,'mathematical_fingerprint':mf,'parameter_fingerprint':mf,'content_fingerprint':cf,'authored_extension':level!='moderate','parameter_extension':level=='moderate' and any(v!=1 for v in p['scales']) or level=='moderate' and any(p['translations']),'source_analysis':{'database':'math','basis':1356,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1','question_ids':[template] if level=='moderate' else [],'curriculum_topic':17592186048445},'source_repairs':(['q-32242 unstated R1 negation removed'] if template=='q-32242' else [])+(['Unmatched unescaped system opening brace escaped'] if template in TEMPLATES and any(re.search(r'(?<!\\)\{(?=\\begin\{aligned\})',c) for c in TEMPLATES[template]['math_components']) else []),'plot_rating':'none','plot_assets':{},'operations':ops,'stages':[[[str(v) for v in row] for row in z.tolist()] for z in st],'classification':classify(m)}}
 
+@checked_math_content
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  """Preserve the captured current response contract, with field-owned identities.
 
@@ -237,8 +240,8 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   lines=[s for s in tail.splitlines() if re.match(r'^(?:-|I\.|II\.|III\.) ',s)]
   texts=[re.sub(r'^(?:-|I\.|II\.|III\.)\s*','',s) for s in lines]
   q[':question/problem']=prefix+'Which of the following statements are true?\n\nSelect all that apply.\n\n'+'\n'.join('- **'+roman+'.** '+value for roman,value in zip(ROMAN,texts))
- # Use standard matrix notation as in the current source capture.
- q[':question/worked-solution']=re.sub(MATRIX_RE,lambda m:r'\begin{bmatrix}'+m[1]+r'\end{bmatrix}',q[':question/worked-solution'],flags=re.S)
+ q[':question/problem']=normalize_prose(q[':question/problem'])
+ q[':question/worked-solution']=normalize_prose(q[':question/worked-solution'])
  cf=digest({'version':VERSION,'mathematical_fingerprint':meta['mathematical_fingerprint'],'problem':q[':question/problem'],'solution':q[':question/worked-solution'],'response':kind,'bank':sorted(BANKS[meta['bank_profile']]) if kind=='radio' else ['false','true']})
  qid=uuid.uuid5(uuid.NAMESPACE_URL,KP_UUID+'/'+cf);q[':question/id']=str(qid)
  if kind=='checkbox':

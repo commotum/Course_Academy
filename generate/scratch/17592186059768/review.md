@@ -24,7 +24,9 @@ Variants
 
 What is the augmented matrix for the following system of linear equations?
 
-$$\left\{\begin{aligned}8x+y+z &=20 \\ x+z &=19\end{aligned}\right.$$
+$$
+\left\{\begin{aligned}8x+y+z &=20 \\ x+z &=19\end{aligned}\right.
+$$
 
 $\left[\begin{array}{ccc|c}8 & 1 & 1 & 20 \\ 1 & 1 & 0 & 19\end{array}\right]$
 
@@ -38,7 +40,9 @@ $\left[\begin{array}{cc|c}8 & 1 & 1 \\ 1 & 1 & 1\end{array}\right]$
 
 First, we organize the system so that the variables are ordered $x,y,z$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:
 
-$$\left\{\begin{aligned}8x+y+z &=20 \\ x+0y+z &=19\end{aligned}\right.$$
+$$
+\left\{\begin{aligned}8x+y+z &=20 \\ x+0y+z &=19\end{aligned}\right.
+$$
 
 The coefficient matrix consists of the coefficients of the variables:
 
@@ -54,7 +58,9 @@ $$
 
 What is the augmented matrix for the following system of linear equations?
 
-$$\left\{\begin{aligned}23x+y+z &=6 \\ x+z &=21\end{aligned}\right.$$
+$$
+\left\{\begin{aligned}23x+y+z &=6 \\ x+z &=21\end{aligned}\right.
+$$
 
 $\left[\begin{array}{ccc|c}23 & 1 & 1 & 6 \\ 1 & 1 & 0 & 21\end{array}\right]$
 
@@ -68,7 +74,9 @@ $\left[\begin{array}{cc|c}23 & 1 & 1 \\ 1 & 1 & 1\end{array}\right]$
 
 First, we organize the system so that the variables are ordered $x,y,z$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:
 
-$$\left\{\begin{aligned}23x+y+z &=6 \\ x+0y+z &=21\end{aligned}\right.$$
+$$
+\left\{\begin{aligned}23x+y+z &=6 \\ x+0y+z &=21\end{aligned}\right.
+$$
 
 The coefficient matrix consists of the coefficients of the variables:
 
@@ -113,7 +121,7 @@ Variants
 What is the augmented matrix for the following system of  linear equations?
 
 $$
-\begin{aligned}\left\{\begin{aligned}-x+y &=20 \\ x+y &=8\end{aligned}\right.\end{aligned}
+\left\{\begin{aligned}-x+y &=20 \\ x+y &=8\end{aligned}\right.
 $$
 
 $\left[\begin{array}{cc|c}-1 & 1 & 20 \\ 1 & 1 & 8\end{array}\right]$ (correct)
@@ -145,7 +153,7 @@ $$
 What is the augmented matrix for the following system of  linear equations?
 
 $$
-\begin{aligned}\left\{\begin{aligned}-x+y &=6 \\ x+y &=23\end{aligned}\right.\end{aligned}
+\left\{\begin{aligned}-x+y &=6 \\ x+y &=23\end{aligned}\right.
 $$
 
 $\left[\begin{array}{cc|c}-1 & 1 & 6 \\ 1 & 1 & 23\end{array}\right]$ (correct)
@@ -202,7 +210,9 @@ Variants
 
 What is the augmented matrix for the following system of linear equations?
 
-$$\left\{\begin{aligned}20x-13 &=8y \\ 16+y &=19x\end{aligned}\right.$$
+$$
+\left\{\begin{aligned}20x-13 &=8y \\ 16+y &=19x\end{aligned}\right.
+$$
 
 $\left[\begin{array}{cc|c}20 & -13 & 8 \\ 16 & 1 & 19\end{array}\right]$
 
@@ -216,7 +226,9 @@ $\left[\begin{array}{cc|c}20 & 8 & 13 \\ 16 & 1 & 19\end{array}\right]$
 
 First, we organize the system so that the variables are ordered $x,y$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:
 
-$$\left\{\begin{aligned}20x-8y &=13 \\ -19x+y &=-16\end{aligned}\right.$$
+$$
+\left\{\begin{aligned}20x-8y &=13 \\ -19x+y &=-16\end{aligned}\right.
+$$
 
 The coefficient matrix consists of the coefficients of the variables:
 
@@ -232,7 +244,9 @@ $$
 
 What is the augmented matrix for the following system of linear equations?
 
-$$\left\{\begin{aligned}6x-13 &=23y \\ 7+y &=21x\end{aligned}\right.$$
+$$
+\left\{\begin{aligned}6x-13 &=23y \\ 7+y &=21x\end{aligned}\right.
+$$
 
 $\left[\begin{array}{cc|c}6 & -13 & 23 \\ 7 & 1 & 21\end{array}\right]$
 
@@ -246,7 +260,9 @@ $\left[\begin{array}{cc|c}6 & 23 & 13 \\ 7 & 1 & 21\end{array}\right]$
 
 First, we organize the system so that the variables are ordered $x,y$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:
 
-$$\left\{\begin{aligned}6x-23y &=13 \\ -21x+y &=-7\end{aligned}\right.$$
+$$
+\left\{\begin{aligned}6x-23y &=13 \\ -21x+y &=-7\end{aligned}\right.
+$$
 
 The coefficient matrix consists of the coefficients of the variables:
 
@@ -404,7 +420,9 @@ $\left[\begin{array}{cc|c}20 & -1 & 20 \\ -8 & 0 & 19\end{array}\right]$
 
 First, we organize the system so that the variables are ordered $x,y$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient: 
 
-$$\left\{\begin{aligned}20x-y &=20 \\ 19x+0y &=-8\end{aligned}\right.$$
+$$
+\left\{\begin{aligned}20x-y &=20 \\ 19x+0y &=-8\end{aligned}\right.
+$$
 
 The coefficient matrix consists of the coefficients of the variables:
 
@@ -436,7 +454,9 @@ $\left[\begin{array}{cc|c}6 & -1 & 6 \\ -23 & 0 & 21\end{array}\right]$
 
 First, we organize the system so that the variables are ordered $x,y$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient: 
 
-$$\left\{\begin{aligned}6x-y &=6 \\ 21x+0y &=-23\end{aligned}\right.$$
+$$
+\left\{\begin{aligned}6x-y &=6 \\ 21x+0y &=-23\end{aligned}\right.
+$$
 
 The coefficient matrix consists of the coefficients of the variables:
 

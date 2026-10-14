@@ -15,6 +15,9 @@ import re
 import os
 import sys
 import uuid
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'scripts/question_capture'))
+from math_format import normalize_prose, checked_math_content
 try:
     import sympy as sp
 except ModuleNotFoundError:
@@ -79,6 +82,7 @@ def matrix_latex(matrix):
     return r'\begin{bmatrix}' + r' \\ '.join(' & '.join(map(str, row)) for row in matrix) + r'\end{bmatrix}'
 
 
+@checked_math_content
 def generate(level='easy', seed=0, template=None, parameters=None, profile=None, replay=False):
     if level != 'easy':
         raise ValueError('Unsupported difficulty: only easy source-backed integer leading-entry sums are validated')
@@ -126,6 +130,7 @@ def generate(level='easy', seed=0, template=None, parameters=None, profile=None,
         # Preserve incidental source typography/layout as an explicit replay mode.
         prompt = case['source'][':question/problem']
         solution = case['source'].get(':question/worked-solution', solution)
+    prompt,solution=normalize_prose(prompt),normalize_prose(solution)
     fp = task_fingerprint(parameters)
     # A bank is part of authored identity; it never establishes task distinctness.
     qid = str(uuid.uuid5(uuid.UUID(KP_UUID), VERSION + digest({'prompt': prompt, 'solution': solution, 'bank': sorted(bank), 'profile': profile})))

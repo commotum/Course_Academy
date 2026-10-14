@@ -8,7 +8,19 @@ use edb_core::{
     RuntimeValue, SemanticError, Symbol, TransactionExecutionOptions, TransactionService,
     TransactionServiceConfig, Value, postgres_config_from_env,
 };
-use std::{error::Error, io::Write, time::Duration};
+use std::{error::Error, io::Write, sync::mpsc, time::Duration};
+
+fn wait_for_stop(stop: &mpsc::Receiver<()>, available: impl Fn() -> bool) -> bool {
+    loop {
+        if !available() {
+            return false;
+        }
+        match stop.recv_timeout(Duration::from_millis(250)) {
+            Ok(()) | Err(mpsc::RecvTimeoutError::Disconnected) => return true,
+            Err(mpsc::RecvTimeoutError::Timeout) => {}
+        }
+    }
+}
 
 fn registry() -> Result<NativeRegistry, SemanticError> {
     let mut builder = NativeRegistry::builder();
@@ -102,11 +114,52 @@ fn run() -> Result<(), Box<dyn Error>> {
     }
     println!("READY endpoint={}", server.endpoint().display());
     std::io::stdout().flush()?;
-    let mut stop = String::new();
-    std::io::stdin().read_line(&mut stop)?;
+    let (stop_tx, stop_rx) = mpsc::channel();
+    std::thread::spawn(move || {
+        let mut stop = String::new();
+        let _ = std::io::stdin().read_line(&mut stop);
+        let _ = stop_tx.send(());
+    });
+    let clean_stop = wait_for_stop(&stop_rx, || {
+        service.client().is_available() && server.is_available()
+    });
+    if !clean_stop {
+        let stats = service.background_indexing_stats();
+        for failure in [stats.last_failure, stats.fulltext.last_failure, stats.excision_failure]
+            .into_iter().flatten()
+        {
+            eprintln!("TRANSACTOR_FAILURE category={:?} code={}", failure.category, failure.code);
+        }
+        eprintln!("TRANSACTOR_UNAVAILABLE code=service/unavailable");
+    }
     drop(server);
     service.shutdown();
+    if !clean_stop {
+        return Err(SemanticError::new(edb_core::ErrorCategory::Unavailable,
+            "service/unavailable", "writer lost availability; supervisor must recover it").into());
+    }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn unavailable_service_exits_without_waiting_for_stdin() {
+        let (_sender, receiver) = mpsc::channel();
+        assert!(!wait_for_stop(&receiver, || false));
+    }
+
+    #[test]
+    fn requested_stop_or_closed_stdin_is_clean() {
+        let (sender, receiver) = mpsc::channel();
+        sender.send(()).unwrap();
+        assert!(wait_for_stop(&receiver, || true));
+        let (sender, receiver) = mpsc::channel();
+        drop(sender);
+        assert!(wait_for_stop(&receiver, || true));
+    }
 }
 
 fn main() {

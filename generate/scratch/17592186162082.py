@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Piecewise unity arc length. Basis 2275; local review only, no EDB writes.
-Six faithful empirical banks are public explicit profiles. Default banks are
-separately authored complete operations. Hard is an authored rational-bookkeeping
+Six raw source profiles preserve exact components and attribute omissions.
+Normalized empirical banks are ineligible evidence profiles; normal default
+banks are separately authored complete operations. Hard is an authored rational-bookkeeping
 policy within existing geometry and the same length-sum method, not a new branch.
 Plot renderer runs per-call in a child process using a unique temporary directory.
 """
@@ -10,7 +11,7 @@ import argparse, hashlib, json, os, random, subprocess, sys, tempfile, uuid
 from pathlib import Path
 import sympy as s
 KP=17592186162082; TITLE='Calculating Line Integrals Over Piecewise-Smooth Curves'
-VERSION='piecewise-unity-2'; ROOT=Path(__file__).with_suffix(''); ROOT.mkdir(exist_ok=True)
+VERSION='piecewise-unity-3'; ROOT=Path(__file__).with_suffix(''); ROOT.mkdir(exist_ok=True)
 SOURCE=Path(__file__).resolve().parents[1]/'runs/current/refresh-2026-10-14/sources'/f'{KP}.json'
 SOURCE_DATA=json.loads(SOURCE.read_text()); SOURCE_Q={q[':question/math-academy-id']:q for q in SOURCE_DATA['record'][':knowledge-point/questions']}
 TEMPLATES={'semi':('easy','q-122481'),'three_quarter':('easy','q-122843'),'quarter_closed':('moderate','q-122484'),'three_segments':('moderate','q-122828'),'two_segments':('moderate','q-122845'),'quarter_open':('moderate','q-122850')}
@@ -45,7 +46,7 @@ def guard(level,t,p):
  if level!='hard' and TEMPLATES[t][0]!=level:raise ValueError('Template difficulty mismatch')
 def sample(level,t,rng):
  if t in ('semi','three_quarter','quarter_closed','quarter_open'):
-  vals=range(1,13) if level!='hard' else [s.Rational(k,d) for d in (2,3) for k in range(1,13*d+1) if k%d]
+  vals=range(1,13) if level!='hard' else [s.Rational(k,d) for d in (2,3) for k in range(1,12*d+1) if k%d]
   return {'r':rng.choice(list(vals))}
  if t=='three_segments':
   vals=[{'a':s.Rational(a,d),'b':s.Rational(b,d)} for d in ((2,3) if level=='hard' else (1,)) for a,b in ((3,4),(4,3),(5,12),(12,5),(6,8),(8,6),(9,12),(12,9))]
@@ -66,7 +67,8 @@ def bank(profile,t,p,L):
  # Complete authored bank chosen before any parameter sampling. No pooled fallback.
  if profile=='authored_arc':return [(A,'correct'),(L[0],'omit_segment'),(L[1],'omit_arc'),(2*L[0]+L[1],'double_arc'),(L[0]+2*L[1],'double_segment')]
  return [(A,'correct'),(L[0],'omit_rest'),(sum(L[1:]),'omit_first'),(2*L[0]+sum(L[1:]),'double_first'),(L[0]+2*sum(L[1:]),'double_rest')]
-def prose(t,p,assets,L):
+def prose(t,p,assets,L,value_tex=None):
+ tex=value_tex or globals()['tex']
  n=len(L);count='three' if n==3 else 'two';r=p.get('r')
  problem=r'Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the path shown above.'
  if t=='semi':problem=r'Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is a path that traverses a semicircle of radius $'+tex(r)+r'$ once in the counterclockwise direction, as shown above.'
@@ -140,7 +142,77 @@ def render_native(input_path):
   tmp=Path(input_path).parent/(role+'.png');fig.savefig(tmp,metadata={'Software':'Course Academy '+VERSION});plt.close(fig);os.replace(tmp,final)
   side=Path(input_path).parent/(role+'.json');side.write_text(json.dumps(d|{'role':role,'bounds':[x0-pad,x1+pad,y0-pad,y1+pad],'curves':[c.tolist() for c in curves],'labels':['C_'+str(i+1) for i in range(len(curves))] if role=='solution' else []},indent=2));os.replace(side,Path(final).with_suffix('.json'))
 
+# Immutable source anchors define source evidence, separately from authored completion.
+ANCHORS={'q-122481':{'r':2},'q-122843':{'r':2},'q-122484':{'r':2},'q-122828':{'a':3,'b':4},'q-122845':{'a':3,'b':2,'h':4},'q-122850':{'r':4}}
+RAW_PROFILES={'raw-'+q:PROFILES[q] for q in ANCHORS}
+def compact_tex(x):return tex(x).replace(' ','')
+def pi_term(c,unicode=False):
+ c=s.Rational(c);pi='π' if unicode else r'\pi'
+ if c==1:return pi
+ if c.q!=1:return r'\frac{'+(str(c.p) if c.p!=1 else '')+pi+'}{'+str(c.q)+'}'
+ return str(c)+pi
+
+def radical_term(c,n):
+ c=s.Rational(c);return ('' if c==1 else compact_tex(c))+r'\sqrt{'+str(n)+'}'
+
+def raw_bank_values(qid,p,L):
+ """Complete parameterized expression masks retaining observed factor/order/spacing."""
+ r=p.get('r');A=sum(L)
+ if qid=='q-122481':return [compact_tex(r)+r'(\pi +1)',compact_tex(2*r)+r'(\pi +2)',compact_tex(r)+r'(\pi +2)',compact_tex(r)+r'(2\pi +1)',compact_tex(2*r)+r'(\pi +1)']
+ if qid=='q-122843':return [pi_term(2*r)+' +'+compact_tex(r/2),pi_term(3*r/2)+' +'+compact_tex(r),pi_term(3*r/2)+' +'+compact_tex(2*r),pi_term(r)+' +'+compact_tex(3*r/2),pi_term(r/2)+' +'+compact_tex(r)]
+ if qid=='q-122484':return [pi_term(r/4,True)+' + '+radical_term(r/2,3),pi_term(r/2,True)+' + '+radical_term(r,2),pi_term(r/2,True)+' + '+radical_term(r/2,2),pi_term(r/4,True)+' + '+radical_term(r/2,2),pi_term(r,True)+' + '+radical_term(3*r/2,2)]
+ if qid=='q-122828':return [compact_tex(x) for x,_ in bank(qid,PROFILES[qid],p,L)]
+ if qid=='q-122845':
+  coefficient,radical=s.expand(L[1]).as_coeff_Mul()
+  def factor_mask(first):
+   common=s.gcd(first,coefficient);return compact_tex(common)+'('+compact_tex(first/common)+'+'+compact_tex(L[1]/common)+')'
+  return [compact_tex(p['a']+p['b']+p['h']),factor_mask(p['h']),factor_mask(2*p['a']),compact_tex(L[0])+'+'+compact_tex(L[1]),compact_tex(2*L[0])]
+ if qid=='q-122850':return [r'\frac{'+pi_term(3*r/4)+' +'+radical_term(r,2)+'}{4}',compact_tex(r/2)+r'(2\pi +\sqrt{2})',r'\frac{'+pi_term(r/4)+' +'+radical_term(r,2)+'}{4}',pi_term(r/2)+' +'+radical_term(3*r/4,2),compact_tex(r/2)+r'(\pi +2\sqrt{2})']
+ raise ValueError('Unknown raw bank')
+
+def generate_source(source_id,seed=0,parameters=None,template=None,level=None):
+ """Raw evidence replay through parameterized components, never whole-payload return.
+ At anchors immutable original plot references and UUIDs are retained. Changed
+ dimensions use fresh plots and parameterized prose/banks, while attribute
+ presence remains the source contract (including q122484's missing three attrs).
+ """
+ if source_id not in ANCHORS:raise ValueError('Unknown source')
+ source=SOURCE_Q[source_id];t=PROFILES[source_id]
+ if template is not None and template!=t:raise ValueError('Raw template mismatch')
+ observed=source.get(':question/difficulty',{}).get(':db/ident')
+ observed_level=observed.rsplit('/',1)[-1] if observed else None
+ routing_level=observed_level or TEMPLATES[t][0]
+ if level is not None and level!=routing_level:raise ValueError('Raw replay routing level mismatch')
+ p={k:s.Rational(str(v)) for k,v in (ANCHORS[source_id] if parameters is None else parameters).items()};guard(TEMPLATES[t][0],t,p)
+ anchor=p=={k:s.Rational(v) for k,v in ANCHORS[source_id].items()};L=lengths(t,p);B=bank(source_id,t,p,L);values=raw_bank_values(source_id,p,L)
+ if any(s.simplify(a-b)==0 for i,(a,_) in enumerate(B) for b,_ in B[i+1:]):raise ValueError('Raw complete bank ambiguous')
+ import re
+ source_assets=re.findall(r'images/[^)]+',source[':question/problem']+' '+source.get(':question/worked-solution',''))
+ assets={'prompt':source_assets[0]}
+ if len(source_assets)>1:assets['solution']=source_assets[1]
+ if not anchor:
+  generated=render_plots(t,p);assets['prompt']=generated['prompt']
+  if ':question/worked-solution' in source:assets['solution']=generated['solution']
+ # Same shared-sentence constructor, source-shaped numeric TeX masks; missing
+ # solutions are never completed in this evidence branch.
+ prompt,solution=prose(t,p,{'prompt':assets['prompt'],'solution':assets.get('solution','')},L,value_tex=compact_tex)
+ solution=solution.replace(r'\pi+',r'\pi +')
+ raw={'problem':prompt,'solution':solution if ':question/worked-solution' in source else None,'values':values,'rating':observed}
+ qid=source[':question/id'] if anchor else uid(json.dumps(raw,sort_keys=True));field=source[':question/answer-fields'][0];fid=field[':answer-field/id'] if anchor else uid(qid+'/selection')
+ choices=[{':answer/id':a[':answer/id'] if anchor else uid(fid+'/'+canonical(x)),':answer/type':a[':answer/type'][':db/ident'],':answer/value':value} for a,(x,_),value in zip(field[':answer-field/choices'],B,values)]
+ outfield={':answer-field/id':fid,':answer-field/key':field[':answer-field/key'],':answer-field/type':field[':answer-field/type'][':db/ident'],':answer-field/choices':choices}
+ if ':answer-field/correct' in field:
+  source_correct=field[':answer-field/correct'][':answer/id'];index=next(i for i,a in enumerate(field[':answer-field/choices']) if a[':answer/id']==source_correct);outfield[':answer-field/correct']=[':answer/id',choices[index][':answer/id']]
+ question={':question/id':qid,':question/problem':prompt,':question/answer-fields':[outfield]}
+ if observed:question[':question/difficulty']=observed
+ if ':question/worked-solution' in source:question[':question/worked-solution']=solution
+ return {'knowledge_point':{'db_id':KP,'id':SOURCE_DATA['record'][':knowledge-point/id'],'title':TITLE},'question':question,'generation':{'version':VERSION,'template':t,'profile':'raw-'+source_id,'seed':seed,'parameters':{k:str(v) for k,v in p.items()},'source_refs':[source_id],'source_anchor':anchor,'routing_level':routing_level,'raw_source_contract':True,'evidence_only':True,'eligible_for_normal_generation':False,'preserved_attribute_presence':{'difficulty':observed is not None,'worked_solution':':question/worked-solution' in source,'correct_ref':':answer-field/correct' in field},'assets':assets,'answer':canonical(sum(L)),'lengths':[canonical(x) for x in L],'calculator_requirement':'unknown: source flags absent','provenance':{'database':'math','basis':2275,'lineage':SOURCE_DATA['lineage']}}}
+
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+ if profile in RAW_PROFILES:
+  if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('Only source radio supported')
+  return generate_source(profile[4:],seed,parameters,template,level)
+
  if level not in ('easy','moderate','hard'):raise ValueError('Unknown level')
  if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('Only radio supported')
  rng=random.Random(seed);allowed=['quarter_open','three_segments'] if level=='hard' else [k for k,v in TEMPLATES.items() if v[0]==level]
@@ -162,7 +234,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  content=json.dumps({'version':VERSION,'problem':prompt,'solution':solution,'bank':sorted(values)},sort_keys=True);qid=uid(content);fid=uid(qid+'/selection')
  choices=[{':answer/id':uid(fid+'/'+canonical(x)),':answer/type':':answer.type/math',':answer/value':v} for (x,_),v in zip(B,values)];correct=next(a[':answer/id'] for a,(x,_) in zip(choices,B) if s.simplify(x-A)==0);rng.shuffle(choices)
  mathfinger=hashlib.sha256(json.dumps({'primitive_roles':('arc_and_segment' if 'r' in p else 'segments'),'component_lengths':[canonical(v) for v in L]},sort_keys=True).encode()).hexdigest()
- return {'knowledge_point':{'db_id':KP,'id':SOURCE_DATA['record'][':knowledge-point/id'],'title':TITLE},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices,':answer-field/correct':[':answer/id',correct]}]},'generation':{'version':VERSION,'template':t,'profile':selected,'seed':seed,'parameters':{k:str(v) for k,v in p.items()},'lengths':[canonical(v) for v in L],'answer':canonical(A),'recipes':[{ 'recipe':rec,'value':canonical(x)} for x,rec in B],'source_refs':[TEMPLATES[t][1]],'provenance':{'database':'math','basis':2275,'lineage':SOURCE_DATA['lineage']},'authored_level':level=='hard' or t=='quarter_closed','profile_status':'observed empirical; intention underidentified' if selected.startswith('q-') else 'authored default','mathematical_fingerprint':mathfinger,'assets':assets,'calculator_requirement':'unknown: all source flags absent'}}
+ return {'knowledge_point':{'db_id':KP,'id':SOURCE_DATA['record'][':knowledge-point/id'],'title':TITLE},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices,':answer-field/correct':[':answer/id',correct]}]},'generation':{'version':VERSION,'template':t,'profile':selected,'seed':seed,'parameters':{k:str(v) for k,v in p.items()},'lengths':[canonical(v) for v in L],'answer':canonical(A),'recipes':[{ 'recipe':rec,'value':canonical(x)} for x,rec in B],'source_refs':[TEMPLATES[t][1]],'provenance':{'database':'math','basis':2275,'lineage':SOURCE_DATA['lineage']},'authored_level':level=='hard' or t=='quarter_closed','evidence_only':selected.startswith('q-'),'eligible_for_normal_generation':not selected.startswith('q-'),'profile_status':'normalized empirical evidence; intention underidentified' if selected.startswith('q-') else 'authored default','mathematical_fingerprint':mathfinger,'assets':assets,'calculator_requirement':'unknown: all source flags absent'}}
 # EASY: semicircle+diameter or three-quarter arc+one horizontal segment.
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
 # MODERATE: source two/three segments or quarter circle+chord; inferred q122484.

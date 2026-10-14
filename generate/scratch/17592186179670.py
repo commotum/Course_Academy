@@ -19,7 +19,7 @@ VERSION='segment-scalar-2275-draft-1'
 x,y,t,u=S.symbols('x y t u',real=True)
 SOURCE={'database':'math','basis':2275,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
 SECANT_DOMAINS=tuple((dx,dy,abs(dy-dx)*den) for dx in [-2,-1,1,2,3] for dy in [-3,-2,-1,1,2,3,4,5] if dx!=dy and 1<=abs(dy-dx)<=4 for den in [3,4,6])
-FAMILIES={'easy':['linear'],'moderate':['product','radical','exponential'],'hard':['secant','matched_exponential']}
+FAMILIES={'easy':['linear','odd_linear'],'moderate':['product','radical','exponential'],'hard':['secant','matched_exponential']}
 ANCHORS={
  'q-39954':('moderate','product',dict(a=1,b=2,dx=1,dy=-1,c=2)),
  'q-76565':('easy','odd_linear',dict(a=1,b=0,dx=-2,dy=0,c=2,d=-3)),
@@ -187,7 +187,7 @@ def normal_solution(f,p,z):
  if f=='radical':param.pop(2)
  text+=block(param)+'\n\nwhere $0\\le t\\le 1.$ Thus, we have that $x='+tex(X)+'$ and $y='+tex(Y)+'$ along the segment.\n\n'
  text+=r"Computing $r\prime(t)$ and $\|r\prime(t)\|,$ we get the following:"+'\n\n'
- text+=block([r"r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j",r'\frac{\mathrm{d}}{\mathrm{d}t}('+tex(X)+r')i+\frac{\mathrm{d}}{\mathrm{d}t}('+tex(Y)+')j',vec(S.Integer(dx),S.Integer(dy)),r'#\|r\prime(t)\| & =\sqrt{('+str(dx)+')^2+('+str(dy)+')^2}',tex(s)])+'\n\n'
+ text+=block([r"r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j",r'\frac{\mathrm{d}}{\mathrm{d}t}('+tex(X)+r')i+\frac{\mathrm{d}}{\mathrm{d}t}('+tex(Y)+')j',vec(S.Integer(dx),S.Integer(dy)),r'#\|r\prime(t)\| & =\sqrt{(\frac{\mathrm{d}x}{\mathrm{d}t})^2+(\frac{\mathrm{d}y}{\mathrm{d}t})^2}',r'\sqrt{('+str(dx)+')^2+('+str(dy)+')^2}',tex(s)])+'\n\n'
  text+='Now, since $f(x,y)='+tex(z['f'])+'$, we obtain\n\n'
  if f=='product':sub=tex(p['c'])+'('+tex(X)+')('+tex(Y)+')'
  elif f in ('linear','odd_linear'):sub=tex(p['c'])+'('+tex(X)+')+'+tex(p['d'])+'('+tex(Y)+')'
@@ -196,6 +196,7 @@ def normal_solution(f,p,z):
  elif f=='secant':sub=r'\sec^2\left(\frac{\pi(('+tex(Y)+')-('+tex(X)+'))}{'+str(p['n'])+r'}\right)'
  else:sub='('+tex(2*S.Integer(dy))+'('+tex(X)+')+'+tex(S.Integer(dx*b-dy*a))+r')e^{('+tex(X)+')('+tex(Y)+')}'
  g_tex=tex(g)
+ if f=='secant':g_tex=r'\sec^2\left('+tex(S.expand(S.pi*(Y-X)/p['n']))+r'\right)'
  if f=='matched_exponential':g_tex='('+tex(S.diff(S.expand(X*Y),t))+r')e^{'+tex(S.expand(X*Y))+'}'
  text+=block([r'f(r(t)) & ='+sub,g_tex+'.'])+'\n\nTherefore, we can write the integral as\n\n'
  rows=[r'\int_C '+tex(z['f'])+r'\,\mathrm{d}s & =\int_0^1 f(r(t))\,\|r\prime(t)\|\,\mathrm{d}t',r'\int_0^1 ('+g_tex+r')\cdot '+tex(s)+r'\,\mathrm{d}t',tex(s)+r'\int_0^1 ('+g_tex+r')\,\mathrm{d}t']
@@ -239,10 +240,32 @@ def source_render(source_id,p,z):
    return simp(expr.subs({S.Symbol(k):S.Integer(v) for k,v in parameters.items()}))
   if 'components' in node:
    val=[evaluated(e,p) for e in node['components']];anchor=[evaluated(e,data['anchor']) for e in node['components']]
-   vals[name]=node['notation'] if all(equivalent(a,b) for a,b in zip(val,anchor)) else '('+tex(val[0])+r')\,i+('+tex(val[1])+r')\,j'
+   vals[name]=node['notation'] if all(equivalent(a,b) for a,b in zip(val,anchor)) else '(('+tex(val[0])+r')\,i+('+tex(val[1])+r')\,j)'
   else:
    val=evaluated(node['formula'],p);anchor=evaluated(node['formula'],data['anchor'])
-   vals[name]=node['notation'] if equivalent(val,anchor) else tex(val)
+   vals[name]=node['notation'] if equivalent(val,anchor) else ('('+tex(val)+')' if val.is_Add else tex(val))
+
+ hints={'product':('1+3t','2+5t'),'radical':('2','2t'),'exponential':('-t','4t'),'secant':('1+t','1+3t'),'matched_exponential':('2t','1+2t')}
+ if data['family'] in hints:
+  def operand(value,anchor,hint):return hint if equivalent(value,anchor) else ('('+tex(value)+')' if value.is_Add else tex(value))
+  SX=operand(z['X'],az['X'],hints[data['family']][0]);SY=operand(z['Y'],az['Y'],hints[data['family']][1]);f=data['family']
+  for name,node in data['slots'].items():
+   if node.get('kind')=='substitution':
+    if f=='product':vals[name]=('' if p['c']==1 else str(p['c']))+'('+SX+')('+SY+')'
+    elif f=='radical':vals[name]=SX+r'+\sqrt{'+str(p['k'])+'('+SY+')}'
+    elif f=='exponential':vals[name]=r'{e}^{'+str(p['c'])+'('+SX+')+'+('' if p['d']==1 else str(p['d'])+'('+SY+')')+(SY if p['d']==1 else '')+'}'
+    elif f=='secant':vals[name]=r'{sec}^{2}⁡(\frac{\pi (('+SY+')-('+SX+'))}{'+str(p['n'])+'})'
+    else:
+     m=2*p['dy'];n=p['dx']*p['b']-p['dy']*p['a']
+     vals[name]='('+str(m)+'('+SX+')+'+str(n)+r'){e}^{'+SX+'('+SY+')}'
+   elif node.get('kind')=='secant_function':vals[name]=r'{sec}^{2}⁡(\frac{\pi (y-x)}{'+str(p['n'])+'})'
+   elif node.get('kind')=='secant_collected':
+    inner=S.pi*(p['dy']-p['dx'])*t/p['n'];oldinner=S.pi*(data['anchor']['dy']-data['anchor']['dx'])*t/data['anchor']['n']
+    vals[name]=r'{sec}^{2}⁡('+operand(inner,oldinner,r'\frac{\pi t}{4}')+')'
+   elif node.get('kind')=='matched_expanded':
+    inner=S.expand(z['X']*z['Y']);D=S.diff(inner,t)
+    dt=operand(D,S.diff(S.expand(az['X']*az['Y']),t),'8t+2');qt=operand(inner,S.expand(az['X']*az['Y']),'2t+4{t}^{2}')
+    vals[name]='('+dt+r')\,{e}^{'+qt+'}'
  def render(mask):
   for key,value in vals.items():mask=mask.replace('{{'+key+'}}',value)
   return mask

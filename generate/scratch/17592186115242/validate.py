@@ -42,7 +42,7 @@ def printed_check(rec):
         ar=A.subs(k,v).rank();mr=M.subs(k,v).rank()
         assert ((ar==mr==1) if dependent else ar<mr)==(a[':answer/id']==correct)
     # All matrices read from actual rendered solution; duplicate initial stage retained.
-    raw=re.findall(r'\[\\begin\{aligned\}(.*?)\\end\{aligned\}\]',solution,re.S)
+    raw=re.findall(r'\\left\[\\begin\{array\}\{[^}]+\}(.*?)\\end\{array\}\\right\]',solution,re.S)
     mats=list(map(matrix_text,raw));assert same(mats[0],M) and same(mats[1],M)
     swap='↔' in solution
     assert len(mats)==(4 if swap else 3)
@@ -82,14 +82,15 @@ def main():
         assert set(genvalues)==set(sourcevalues)
         assert sorted(a[':answer/value'] for a in f[':answer-field/choices'])==sorted(a[':answer/value'] for a in sourcef[':answer-field/choices'])
         gc=next(a for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1]);assert gc[':answer/value']==sourcef[':answer-field/correct'][':answer/value']
-        normalized_prompt=re.sub(r'(?<!\\)\{(?=\\begin\{aligned\})',lambda _:r'\{',source[':question/problem'])
+        normalized_prompt=g.normalize_prose(source[':question/problem'])
         assert q[':question/problem']==normalized_prompt
         exact_prompt+=q[':question/problem']==source[':question/problem']
         rawsol=source[':question/worked-solution'];repaired=rawsol
         if case['source_id']=='q-74695':repaired=repaired.replace('x+ky=2','x+ky=-2')
         if case['source_id']=='q-42021':repaired=repaired.replace('1 & 2 & -3','1 & 2 & 3').replace('1-2y=3','x+2y=3')
-        repaired=re.sub(r'(?<!\\)\{(?=\\begin\{aligned\})',lambda _:r'\{',repaired)
-        normalized_sol=re.sub(r'(?<!\\)\{(?=\\begin\{aligned\})',lambda _:r'\{',rawsol)
+        repaired=g.normalize_prose(repaired)
+        repaired=re.sub(r'\\begin\{bmatrix\}(.*?)\\end\{bmatrix\}',lambda m:g.matrix([[v.strip() for v in row.split('&')] for row in m[1].split(r'\\')]),repaired,flags=re.S)
+        normalized_sol=g.normalize_prose(rawsol)
         assert q[':question/worked-solution']==repaired
         presentation_solution+=q[':question/worked-solution']==normalized_sol
         exact_solution+=q[':question/worked-solution']==rawsol
@@ -107,7 +108,7 @@ def main():
     base=outputs[0][1]
     for kind in ('prompt','first_matrix','row_operation','correct_ref'):
         bad=copy.deepcopy(base);q=bad['question']
-        if kind=='prompt':q[':question/problem']=q[':question/problem'].replace('3x+4y=12','3x+4y=13')
+        if kind=='prompt':q[':question/problem']=q[':question/problem'].replace('3x+4y &=12','3x+4y &=13')
         if kind=='first_matrix':q[':question/worked-solution']=q[':question/worked-solution'].replace('3 & 4 & 12','3 & 5 & 12',1)
         if kind=='row_operation':q[':question/worked-solution']=q[':question/worked-solution'].replace('(-3){R}_{1}','(-2){R}_{1}')
         if kind=='correct_ref':

@@ -7,7 +7,9 @@ contain complete mathematical slots, not numeric substring replacements. Normal
 sampling uses assessed-operation distractor banks. All three levels are supported.
 """
 from __future__ import annotations
-import argparse,hashlib,json,pathlib,random,re,uuid
+import argparse,hashlib,json,pathlib,random,re,uuid,sys
+sys.path.insert(0,str(pathlib.Path(__file__).resolve().parents[2]/'scripts/question_capture'))
+from math_format import normalize_prose, normalize_tex, matrix_tex as format_matrix, checked_math_content
 import sympy as s
 KP_ID=17592186115242
 KP_UUID='22733f71-de4a-5058-a41c-039e66e333c5'
@@ -31,7 +33,7 @@ def aff(u,v,var='k',constant_first=False):
     return t+('+' if v>0 and t else '')+(tex(v) if v else '') or '0'
 
 def equation(a,b,c):return term(a,'x')+('+' if b>0 else '')+term(b,'y')+'='+tex(c)
-def matrix(rows):return r'[\begin{aligned}'+r' \\ '.join(' & '.join(map(str,row)) for row in rows)+r'\end{aligned}]'
+def matrix(rows):return format_matrix(rows, augmented=True)
 def components(p,style):
     a,b,c,d,u,v,e=[s.Rational(p[k]) for k in 'a b c d u v e'.split()]
     coef=aff(u,v)
@@ -117,6 +119,7 @@ def generic_masks(style,hard):
     return prefix,sol
 
 # Easy / moderate / hard all use shared exact mathematical recipes.
+@checked_math_content
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
     if level not in TEMPLATES:raise ValueError('Unsupported level')
     if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('Only observed radio layout supported')
@@ -156,6 +159,8 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     k=s.Symbol('k');mat=s.Matrix([[a,b,c],[d,u*k+v,e]])
     canonical=[s.srepr(z) for z in mat.rref()[0]]
     fp=hashlib.sha256(json.dumps([str(t),canonical],sort_keys=True).encode()).hexdigest()
+    problem,solution=normalize_prose(problem),normalize_prose(solution)
+    values=[normalize_tex(value) for value in values]
     content=[VERSION,level,template,p,problem,solution,sorted(values)]
     identity=json.dumps(content,sort_keys=True);qid=str(uuid.uuid5(uuid.NAMESPACE_URL,identity));fid=str(uuid.uuid5(uuid.UUID(qid),'selection'))
     answers=[{':answer/id':str(uuid.uuid5(uuid.UUID(fid),value)),':answer/type':':answer.type/math',':answer/value':value} for value in values]

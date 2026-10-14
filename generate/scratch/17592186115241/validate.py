@@ -1,13 +1,20 @@
 #!/usr/bin/env python3
 """Independent printed-mathematics, original-fidelity, identity, native grading QA."""
 from pathlib import Path
-import importlib.util, json, re, hashlib, subprocess
+import importlib.util, json, re, hashlib, subprocess, copy
 import sympy as sp
 HERE=Path(__file__).resolve().parent
 spec=importlib.util.spec_from_file_location('kp',HERE.with_suffix('.py'));g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
 
+def algebra_layout(text):
+ # Read canonical matrices using the existing independent algebra checks.
+ text=re.sub(r'\\begin\{bmatrix\}(.*?)\\end\{bmatrix\}',lambda m:r'[\begin{aligned}'+m[1]+r'\end{aligned}]',text,flags=re.S)
+ text=re.sub(r'\\left\[\\begin\{array\}\{[^}]+\}(.*?)\\end\{array\}\\right\]',lambda m:r'[\begin{aligned}'+m[1]+r'\end{aligned}]',text,flags=re.S)
+ return text.replace(' &=','=')
+
 def expressions(body):return [g.load_expr(v.strip().lstrip('&').strip()) for v in body.split(r'\\')]
 def printed_matrices(text):
+ text=algebra_layout(text)
  out=[]
  for m in g.INNER.finditer(text):
   if '&' in m[1] and '=' not in m[1]:out.append(sp.Matrix([[g.load_expr(v) for v in row.split('&')] for row in m[1].split(r'\\')]))
@@ -34,6 +41,7 @@ def signature(v):
  return tuple(sp.expand(e) for e in v)
 
 def math_components(text):
+ text=algebra_layout(text)
  out=[]
  for m in g.INNER.finditer(text):
   body=m[1]
@@ -49,6 +57,9 @@ def prose(text):
  return text
 
 def check_record(r):
+ r=copy.deepcopy(r)
+ for key in [':question/problem',':question/worked-solution']:
+  r['question'][key]=algebra_layout(r['question'][key])
  assert set(r['knowledge_point'])=={'db_id','id','title'}
  q=r['question'];gen=r['generation'];fields=q[':question/answer-fields'];assert len(fields)==1
  assert fields[0][':answer-field/type']==':answer-field.type/radio'

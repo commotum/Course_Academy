@@ -45,6 +45,9 @@ for q in source[':knowledge-point/questions']:
   # scalar 2 at explicitly identified derivative and speed positions only.
   maps.extend([('\\text{d}t}(2)i',r'\text{d}t}({{x_coordinate}})i'),(' & =2\\end{aligned}',r' & ={{speed}}\end{aligned}'),('\\cdot 2\\cdot',r'\cdot {{speed}}\cdot'),('=4{\\int',r'={{factor}}{\int'),('=4{[',r'={{factor}}{[')])
   slots['x_coordinate']=atom('a','2');slots['speed']=atom('sqrt(dx**2+dy**2)','2');slots['factor']=atom('a*sqrt(dx**2+dy**2)','4')
+
+  slots['radical_upper']=atom('2*sqrt(k*dy)/(3*a)',r'\frac{2}{3}')
+  maps.append(('4(1+\\frac{2}{3})-0','{{factor}}(1+{{radical_upper}})-0'))
   # The fixed integrand x+sqrt(ky) varies k, so its complete occurrence is masked.
   maps.append(scalar('x+\\sqrt{2y}','x+sqrt(k*y)'))
  if sid=='q-123366':
@@ -64,6 +67,9 @@ for q in source[':knowledge-point/questions']:
    scalar('5+\\frac{11}{2}+2','c*(dx*dy/3+(a*dy+b*dx)/2+a*b)'),
    scalar('\\frac{25\\sqrt{34}}{2}','sqrt(dx**2+dy**2)*c*(dx*dy/3+(a*dy+b*dx)/2+a*b)'),
    scalar('\\sqrt{{3}^{2}+{5}^{2}}','sqrt(dx**2+dy**2)'),scalar('\\sqrt{34}','sqrt(dx**2+dy**2)'),scalar('1+3t','a+dx*t'),scalar('2+5t','b+dy*t')])
+
+  slots['epcube']=atom('c*dx*dy/3','5');slots['epquad']=atom('c*(a*dy+b*dx)/2',r'\frac{11}{2}');slots['epconst']=atom('c*a*b','2')
+  maps.append(('5+\\frac{11}{2}+2','{{epcube}}+{{epquad}}+{{epconst}}'))
   # family integrand coefficient c has original unit coefficient.
   maps.append(scalar('xy','c*x*y'))
  if sid=='q-76605':
@@ -76,6 +82,9 @@ for q in source[':knowledge-point/questions']:
    scalar('\\frac{4\\sqrt{10}}{\\pi }','n*sqrt(dx**2+dy**2)/(pi*(dy-dx))'),
    scalar('\\frac{\\pi t}{4}','pi*(dy-dx)*t/n'),scalar('\\frac{\\pi }{4}','pi*(dy-dx)/n'),scalar('\\pi /4','pi*(dy-dx)/n'),
    scalar('1+3t','b+dy*t'),scalar('1+t','a+dx*t')])
+
+  slots['sec_final']=atom('n*sqrt(dx**2+dy**2)*tan(pi*(dy-dx)/n)/(pi*(dy-dx))',r'\frac{4\sqrt{10}}{\pi }')
+  maps.append((r'\frac{4\sqrt{10}}{\pi }\end{aligned}','{{sec_final}}'+r'\end{aligned}'))
   # Tangent endpoint values are formula slots as well; familiar endpoint may -1.
   maps.extend([('(1-0)','({{tan_hi}}-{{tan_lo}})')]);slots['tan_hi']=atom('tan(pi*(dy-dx)/n)','1');slots['tan_lo']=atom('tan(pi*(b-a)/n)','0')
  if sid=='q-76650':
@@ -89,7 +98,7 @@ for q in source[':knowledge-point/questions']:
    scalar('1+2t','b+dy*t'),scalar('2t','a+dx*t')])
   # Restrict vector j replacement to complete vec slots to protect basis labels.
   maps=[m for m in maps if m[0]!='j']
-  maps.extend([('$a=j$',r'$a={{avec}}$'),('=j+t[',r'={{avec}}+t['),('\\,j-j]',r'\,j-{{avec}}]')])
+  maps.extend([('$a=j$',r'$a={{avec}}$'),('=j+t[',r'={{avec}}+t['),('-j]',r'-{{avec}}]'),('=j+t(',r'={{avec}}+t(')])
   # Every endpoint appears separately; no correlated endpoint errors are hidden.
   maps.extend([('{0}^{6}',r'{'+ '{{exp_lo}}' +'}^{'+ '{{exp_hi}}' +'}'),('{|}_{0}^{6}',r'{|}_{'+ '{{exp_lo}}' +'}^{'+ '{{exp_hi}}' +'}'),('{e}^{6}-{e}^{0}',r'{e}^{'+ '{{exp_hi}}' +'}-{e}^{'+ '{{exp_lo}}' +'}'),scalar('{e}^{6}-1','exp((a+dx)*(b+dy))-exp(a*b)','endpoint_difference')])
   slots['exp_lo']=atom('a*b','0');slots['exp_hi']=atom('(a+dx)*(b+dy)','6')
@@ -101,5 +110,12 @@ for q in source[':knowledge-point/questions']:
   lookup=dict(maps)
   if not lookup:return text
   return re.sub('|'.join(map(re.escape,lookup)),lambda m:lookup[m.group(0)],text)
+
+ for node in slots.values():
+  if node.get('notation') in [r'(1+3t)(2+5t)',r'2+\sqrt{2(2t)}',r'{e}^{3(-t)+4t}',r'{sec}^{2}⁡(\frac{\pi ((1+3t)-(1+t))}{8})',r'(4(2t)+2){e}^{2t(1+2t)}']:
+   node['kind']='substitution'
+  if node.get('notation')==r'{sec}^{2}⁡(\frac{\pi (y-x)}{8})':node['kind']='secant_function'
+  if node.get('notation')==r'{sec}^{2}⁡(\frac{\pi t}{4})':node['kind']='secant_collected'
+  if node.get('notation')==r'(8t+2)\,{e}^{2t+4{t}^{2}}':node['kind']='matched_expanded'
  D[sid]={'family':f,'anchor':p,'problem':mask(problem),'solution':mask(sol),'slots':slots,'bank_notation':[a[':answer/value'] for a in q[':question/answer-fields'][0][':answer-field/choices']]}
 (P/'source-templates.json').write_text(json.dumps(D,indent=2)+'\n')

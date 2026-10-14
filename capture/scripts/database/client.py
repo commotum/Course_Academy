@@ -29,6 +29,16 @@ class StaleBasis(RuntimeError):
     pass
 
 
+class EDBCommandError(subprocess.CalledProcessError):
+    """Keep full transport diagnostics without putting argv on status cards."""
+    def __str__(self):
+        diagnostic = self.stderr or ''
+        remote = re.search(r'^remote_code=([a-z][a-z0-9_.-]*/[a-z][a-z0-9_.-]*)$', diagnostic, re.M)
+        code = re.search(r'\bcode=([a-z][a-z0-9_.-]*/[a-z][a-z0-9_.-]*)', diagnostic)
+        reason = remote.group(1) if remote else code.group(1) if code else 'command failed'
+        return f'EDB {self.cmd[1]}: {reason} (exit {self.returncode}; saved request retained)'
+
+
 class SnapshotReads:
     """Reuse identical readonly queries within one immutable batch value."""
     def __init__(self, client, basis):
@@ -97,6 +107,9 @@ class EDBClient:
             if executable is None:
                 from .preview import preview_executable
                 executable = preview_executable(self.config, self.stop_event)
+        elif command == 'transact':
+            from .preview import submission_executable
+            executable = submission_executable(self.config, self.stop_event)
         args = [str(executable), command, '--database', str(self.config.database), *map(str, options)]
         result = subprocess.run(args, env=self.environment, capture_output=True, text=True, timeout=timeout)
         if result.returncode:
@@ -104,7 +117,7 @@ class EDBClient:
             diagnostic = result.stderr
             if re.search(r'(?:code=|remote_code=)postgres/stale-basis(?:\s|$)', diagnostic):
                 raise StaleBasis(diagnostic)
-            raise subprocess.CalledProcessError(result.returncode, args, result.stdout, diagnostic)
+            raise EDBCommandError(result.returncode, args, result.stdout, diagnostic)
         return result.stdout
 
     def status(self):

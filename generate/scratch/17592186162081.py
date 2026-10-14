@@ -113,7 +113,7 @@ def plot_recipe(t,d,helper=False):
  return {'kind':t,'endpoints':pts,'direction':'first to second','helper':helper,'helper_corner':[str(d['x2']),str(d['y1'])], 'bounds':[min(0,float(d['x1']),float(d['x2']))-1,max(0,float(d['x1']),float(d['x2']))+1,min(0,float(d['y1']),float(d['y2']))-1,max(0,float(d['y1']),float(d['y2']))+1]}
 
 def _render_plot(t,d,helper=False):
- recipe=plot_recipe(t,d,helper);h=hashlib.sha256(dump({'recipe':recipe,'renderer':'matplotlib','version':matplotlib.__version__,'style':8}).encode()).hexdigest();dest=ROOT/'assets'/f'{h}.png';side=dest.with_suffix('.json')
+ recipe=plot_recipe(t,d,helper);h=hashlib.sha256(dump({'recipe':recipe,'renderer':'matplotlib','version':matplotlib.__version__,'style':9}).encode()).hexdigest();dest=ROOT/'assets'/f'{h}.png';side=dest.with_suffix('.json')
  if dest.exists() and side.exists():return str(dest),recipe
  # Each invocation has independent figure and temporary files; atomic rename.
  fig,ax=plt.subplots(figsize=(4.5,3.8),dpi=120)
@@ -131,7 +131,9 @@ def _render_plot(t,d,helper=False):
   x1,y1,x2,y2=[float(d[k]) for k in ('x1','y1','x2','y2')]
   ax.plot([x1,x2],[y1,y2],c=color,lw=1.8,marker='o',ms=4)
   for u in (.22,.42,.62,.82):ax.annotate('',xy=(x1+(u+.045)*(x2-x1),y1+(u+.045)*(y2-y1)),xytext=(x1+u*(x2-x1),y1+u*(y2-y1)),arrowprops={'arrowstyle':'->','color':color,'lw':1.3})
-  ax.text((x1+x2)/2+.2,(y1+y2)/2+.3,'$C$',color=color,fontsize=13)
+  dx,dy=x2-x1,y2-y1
+  offset=(18,0) if dx==0 else (0,18) if dy==0 else (-18,18) if dx*dy>0 else (-18,-18)
+  ax.annotate('$C$',((x1+x2)/2,(y1+y2)/2),xytext=offset,textcoords='offset points',ha='center',va='center',color=color,fontsize=13)
   if helper:ax.plot([x1,x2,x2],[y1,y1,y2],c=color,ls='--',lw=1.2)
   # Only distinct coordinate ticks; zero never obscures coordinate reading.
   for axis,keys in ((ax.xaxis,('x1','x2')),(ax.yaxis,('y1','y2'))):

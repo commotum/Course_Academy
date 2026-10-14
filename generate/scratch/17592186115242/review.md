@@ -626,7 +626,7 @@ Therefore, our system is consistent dependent when $k=5.$
 Determine the value of $k$ for which the following system of linear equations is consistent dependent:
 
 $$
-\{\begin{aligned} & 3x+4y=12 \\  & x+ky=4\end{aligned}
+\left\{\begin{aligned}3x+4y &=12 \\ x+ky &=4\end{aligned}\right.
 $$
 
 - $k=-4$
@@ -638,19 +638,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}3 & 4 & 12 \\ 1 & k & 4\end{aligned}].
+M=\left[\begin{array}{cc|c}3 & 4 & 12 \\ 1 & k & 4\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}3 & 4 & 12 \\ 1 & k & 4\end{aligned}] & {R}_{1} & ↔{R}_{2} \\  & ∼[\begin{aligned}1 & k & 4 \\ 3 & 4 & 12\end{aligned}] & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\  & ∼[\begin{aligned}1 & k & 4 \\ 0 & 4-3k & 0\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}3 & 4 & 12 \\ 1 & k & 4\end{array}\right] & {R}_{1} & ↔{R}_{2} \\  & ∼\left[\begin{array}{cc|c}1 & k & 4 \\ 3 & 4 & 12\end{array}\right] & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & k & 4 \\ 0 & 4-3k & 0\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & x+ky=4 \\  & (4-3k)y=0.\end{aligned}
+\left\{\begin{aligned}x+ky &=4 \\ (4-3k)y &=0.\end{aligned}\right.
 $$
 
 The system is consistent dependent if it has infinitely many solutions. For the system to have infinitely many solutions, it must have at least one free variable.
@@ -667,7 +667,7 @@ Therefore, our system is consistent dependent when $k=\frac{4}{3}.$
 Determine the value of $k$ for which the following system of linear equations is consistent dependent:
 
 $$
-\{\begin{aligned} & 2x-6y=8 \\  & x+ky=4\end{aligned}
+\left\{\begin{aligned}2x-6y &=8 \\ x+ky &=4\end{aligned}\right.
 $$
 
 - $k=3$
@@ -679,19 +679,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}2 & -6 & 8 \\ 1 & k & 4\end{aligned}].
+M=\left[\begin{array}{cc|c}2 & -6 & 8 \\ 1 & k & 4\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}2 & -6 & 8 \\ 1 & k & 4\end{aligned}] & {R}_{1} & ↔{R}_{2} \\  & ∼[\begin{aligned}1 & k & 4 \\ 2 & -6 & 8\end{aligned}] & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\  & ∼[\begin{aligned}1 & k & 4 \\ 0 & -6-2k & 0\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}2 & -6 & 8 \\ 1 & k & 4\end{array}\right] & {R}_{1} & ↔{R}_{2} \\  & ∼\left[\begin{array}{cc|c}1 & k & 4 \\ 2 & -6 & 8\end{array}\right] & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & k & 4 \\ 0 & -6-2k & 0\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & x+ky=4 \\  & (-6-2k)y=0.\end{aligned}
+\left\{\begin{aligned}x+ky &=4 \\ (-6-2k)y &=0.\end{aligned}\right.
 $$
 
 The system is consistent dependent if it has infinitely many solutions. For the system to have infinitely many solutions, it must have at least one free variable.
@@ -708,7 +708,7 @@ Therefore, our system is consistent dependent when $k=-3.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & 2x+3y=1 \\  & 6x+(k+3)y=-5\end{aligned}
+\left\{\begin{aligned}2x+3y &=1 \\ 6x+(k+3)y &=-5\end{aligned}\right.
 $$
 
 - $k=-2$
@@ -720,19 +720,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}2 & 3 & 1 \\ 6 & k+3 & -5\end{aligned}].
+M=\left[\begin{array}{cc|c}2 & 3 & 1 \\ 6 & k+3 & -5\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}2 & 3 & 1 \\ 6 & k+3 & -5\end{aligned}] & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\  & ∼[\begin{aligned}2 & 3 & 1 \\ 0 & k-6 & -8\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}2 & 3 & 1 \\ 6 & k+3 & -5\end{array}\right] & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\  & ∼\left[\begin{array}{cc|c}2 & 3 & 1 \\ 0 & k-6 & -8\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned}2x+3y=1 \\ (k-6)y=-8.\end{aligned}
+\left\{\begin{aligned}2x+3y &=1 \\ (k-6)y &=-8.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -747,7 +747,7 @@ Therefore, our system is inconsistent when $k=6.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & x+3y=1 \\  & -3x+(k-6)y=2\end{aligned}
+\left\{\begin{aligned}x+3y &=1 \\ -3x+(k-6)y &=2\end{aligned}\right.
 $$
 
 - $k=-2$
@@ -759,19 +759,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}1 & 3 & 1 \\ -3 & k-6 & 2\end{aligned}].
+M=\left[\begin{array}{cc|c}1 & 3 & 1 \\ -3 & k-6 & 2\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}1 & 3 & 1 \\ -3 & k-6 & 2\end{aligned}] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼[\begin{aligned}1 & 3 & 1 \\ 0 & k+3 & 5\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}1 & 3 & 1 \\ -3 & k-6 & 2\end{array}\right] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & 3 & 1 \\ 0 & k+3 & 5\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned}x+3y=1 \\ (k+3)y=5.\end{aligned}
+\left\{\begin{aligned}x+3y &=1 \\ (k+3)y &=5.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -786,7 +786,7 @@ Therefore, our system is inconsistent when $k=-3.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & -3x+2y=1 \\  & 6x+(k+9)y=5\end{aligned}
+\left\{\begin{aligned}-3x+2y &=1 \\ 6x+(k+9)y &=5\end{aligned}\right.
 $$
 
 - $k=7$
@@ -798,19 +798,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}-3 & 2 & 1 \\ 6 & k+9 & 5\end{aligned}].
+M=\left[\begin{array}{cc|c}-3 & 2 & 1 \\ 6 & k+9 & 5\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}-3 & 2 & 1 \\ 6 & k+9 & 5\end{aligned}] & {R}_{2} & :={R}_{2}+2{R}_{1} \\  & ∼[\begin{aligned}-3 & 2 & 1 \\ 0 & k+13 & 7\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}-3 & 2 & 1 \\ 6 & k+9 & 5\end{array}\right] & {R}_{2} & :={R}_{2}+2{R}_{1} \\  & ∼\left[\begin{array}{cc|c}-3 & 2 & 1 \\ 0 & k+13 & 7\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned}-3x+2y=1 \\ (k+13)y=7.\end{aligned}
+\left\{\begin{aligned}-3x+2y &=1 \\ (k+13)y &=7.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -825,7 +825,7 @@ Therefore, our system is inconsistent when $k=-13.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & x+3y=1 \\  & -3x+(k-6)y=2\end{aligned}
+\left\{\begin{aligned}x+3y &=1 \\ -3x+(k-6)y &=2\end{aligned}\right.
 $$
 
 - $k=-4$
@@ -837,19 +837,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}1 & 3 & 1 \\ -3 & k-6 & 2\end{aligned}].
+M=\left[\begin{array}{cc|c}1 & 3 & 1 \\ -3 & k-6 & 2\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}1 & 3 & 1 \\ -3 & k-6 & 2\end{aligned}] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼[\begin{aligned}1 & 3 & 1 \\ 0 & k+3 & 5\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}1 & 3 & 1 \\ -3 & k-6 & 2\end{array}\right] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & 3 & 1 \\ 0 & k+3 & 5\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned}x+3y=1 \\ (k+3)y=5.\end{aligned}
+\left\{\begin{aligned}x+3y &=1 \\ (k+3)y &=5.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -864,7 +864,7 @@ Therefore, our system is inconsistent when $k=-3.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & x-3y=-1 \\  & 4x+3ky=3\end{aligned}
+\left\{\begin{aligned}x-3y &=-1 \\ 4x+3ky &=3\end{aligned}\right.
 $$
 
 - $k=-12$
@@ -876,19 +876,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}1 & -3 & -1 \\ 4 & 3k & 3\end{aligned}].
+M=\left[\begin{array}{cc|c}1 & -3 & -1 \\ 4 & 3k & 3\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}1 & -3 & -1 \\ 4 & 3k & 3\end{aligned}] & {R}_{2} & :={R}_{2}-4{R}_{1} \\  & ∼[\begin{aligned}1 & -3 & -1 \\ 0 & 3k+12 & 7\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}1 & -3 & -1 \\ 4 & 3k & 3\end{array}\right] & {R}_{2} & :={R}_{2}-4{R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & -3 & -1 \\ 0 & 3k+12 & 7\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned}x-3y=-1 \\ (3k+12)y=7.\end{aligned}
+\left\{\begin{aligned}x-3y &=-1 \\ (3k+12)y &=7.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -903,7 +903,7 @@ Therefore, our system is inconsistent when $k=-4.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & x+3y=1 \\  & -3x+2ky=2\end{aligned}
+\left\{\begin{aligned}x+3y &=1 \\ -3x+2ky &=2\end{aligned}\right.
 $$
 
 - $k=-\frac{9}{2}$
@@ -915,19 +915,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}1 & 3 & 1 \\ -3 & 2k & 2\end{aligned}].
+M=\left[\begin{array}{cc|c}1 & 3 & 1 \\ -3 & 2k & 2\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}1 & 3 & 1 \\ -3 & 2k & 2\end{aligned}] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼[\begin{aligned}1 & 3 & 1 \\ 0 & 2k+9 & 5\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}1 & 3 & 1 \\ -3 & 2k & 2\end{array}\right] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & 3 & 1 \\ 0 & 2k+9 & 5\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned}x+3y=1 \\ (2k+9)y=5.\end{aligned}
+\left\{\begin{aligned}x+3y &=1 \\ (2k+9)y &=5.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -942,7 +942,7 @@ Therefore, our system is inconsistent when $k=-\frac{9}{2}.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & -x+4y=-2 \\  & -3x+(3k+15)y=-4\end{aligned}
+\left\{\begin{aligned}-x+4y &=-2 \\ -3x+(3k+15)y &=-4\end{aligned}\right.
 $$
 
 - $k=0$
@@ -954,19 +954,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}-1 & 4 & -2 \\ -3 & 3k+15 & -4\end{aligned}].
+M=\left[\begin{array}{cc|c}-1 & 4 & -2 \\ -3 & 3k+15 & -4\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}-1 & 4 & -2 \\ -3 & 3k+15 & -4\end{aligned}] & {R}_{2} & :={R}_{2}-3{R}_{1} \\  & ∼[\begin{aligned}-1 & 4 & -2 \\ 0 & 3k+3 & 2\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}-1 & 4 & -2 \\ -3 & 3k+15 & -4\end{array}\right] & {R}_{2} & :={R}_{2}-3{R}_{1} \\  & ∼\left[\begin{array}{cc|c}-1 & 4 & -2 \\ 0 & 3k+3 & 2\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned}-x+4y=-2 \\ (3k+3)y=2.\end{aligned}
+\left\{\begin{aligned}-x+4y &=-2 \\ (3k+3)y &=2.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -981,7 +981,7 @@ Therefore, our system is inconsistent when $k=-1.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & 2x-2y=-1 \\  & 6x+(2k+3)y=5\end{aligned}
+\left\{\begin{aligned}2x-2y &=-1 \\ 6x+(2k+3)y &=5\end{aligned}\right.
 $$
 
 - $k=\frac{9}{2}$
@@ -993,19 +993,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}2 & -2 & -1 \\ 6 & 2k+3 & 5\end{aligned}].
+M=\left[\begin{array}{cc|c}2 & -2 & -1 \\ 6 & 2k+3 & 5\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}2 & -2 & -1 \\ 6 & 2k+3 & 5\end{aligned}] & {R}_{2} & :={R}_{2}-3{R}_{1} \\  & ∼[\begin{aligned}2 & -2 & -1 \\ 0 & 2k+9 & 8\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}2 & -2 & -1 \\ 6 & 2k+3 & 5\end{array}\right] & {R}_{2} & :={R}_{2}-3{R}_{1} \\  & ∼\left[\begin{array}{cc|c}2 & -2 & -1 \\ 0 & 2k+9 & 8\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned}2x-2y=-1 \\ (2k+9)y=8.\end{aligned}
+\left\{\begin{aligned}2x-2y &=-1 \\ (2k+9)y &=8.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -1020,7 +1020,7 @@ Therefore, our system is inconsistent when $k=-\frac{9}{2}.$
 Determine the value of $k$ for which the following system of linear equations is consistent dependent:
 
 $$
-\{\begin{aligned} & -2x+7y=6 \\  & x+ky=-3\end{aligned}
+\left\{\begin{aligned}-2x+7y &=6 \\ x+ky &=-3\end{aligned}\right.
 $$
 
 - $k=-\frac{7}{2}$
@@ -1032,19 +1032,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}-2 & 7 & 6 \\ 1 & k & -3\end{aligned}].
+M=\left[\begin{array}{cc|c}-2 & 7 & 6 \\ 1 & k & -3\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}-2 & 7 & 6 \\ 1 & k & -3\end{aligned}] & {R}_{1} & ↔{R}_{2} \\  & ∼[\begin{aligned}1 & k & -3 \\ -2 & 7 & 6\end{aligned}] & {R}_{2} & :={R}_{2}+2{R}_{1} \\  & ∼[\begin{aligned}1 & k & -3 \\ 0 & 2k+7 & 0\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}-2 & 7 & 6 \\ 1 & k & -3\end{array}\right] & {R}_{1} & ↔{R}_{2} \\  & ∼\left[\begin{array}{cc|c}1 & k & -3 \\ -2 & 7 & 6\end{array}\right] & {R}_{2} & :={R}_{2}+2{R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & k & -3 \\ 0 & 2k+7 & 0\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & x+ky=-3 \\  & (2k+7)y=0.\end{aligned}
+\left\{\begin{aligned}x+ky &=-3 \\ (2k+7)y &=0.\end{aligned}\right.
 $$
 
 The system is consistent dependent if it has infinitely many solutions. For the system to have infinitely many solutions, it must have at least one free variable.
@@ -1061,7 +1061,7 @@ Therefore, our system is consistent dependent when $k=-\frac{7}{2}.$
 Determine the value of $k$ for which the following system of linear equations is consistent dependent:
 
 $$
-\{\begin{aligned} & 2x-6y=8 \\  & x+ky=4\end{aligned}
+\left\{\begin{aligned}2x-6y &=8 \\ x+ky &=4\end{aligned}\right.
 $$
 
 - $k=0$
@@ -1073,19 +1073,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}2 & -6 & 8 \\ 1 & k & 4\end{aligned}].
+M=\left[\begin{array}{cc|c}2 & -6 & 8 \\ 1 & k & 4\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}2 & -6 & 8 \\ 1 & k & 4\end{aligned}] & {R}_{1} & ↔{R}_{2} \\  & ∼[\begin{aligned}1 & k & 4 \\ 2 & -6 & 8\end{aligned}] & {R}_{2} & :={R}_{2}-2{R}_{1} \\  & ∼[\begin{aligned}1 & k & 4 \\ 0 & -6-2k & 0\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}2 & -6 & 8 \\ 1 & k & 4\end{array}\right] & {R}_{1} & ↔{R}_{2} \\  & ∼\left[\begin{array}{cc|c}1 & k & 4 \\ 2 & -6 & 8\end{array}\right] & {R}_{2} & :={R}_{2}-2{R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & k & 4 \\ 0 & -6-2k & 0\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & x+ky=4 \\  & (-6-2k)y=0.\end{aligned}
+\left\{\begin{aligned}x+ky &=4 \\ (-6-2k)y &=0.\end{aligned}\right.
 $$
 
 The system is consistent dependent if it has infinitely many solutions. For the system to have infinitely many solutions, it must have at least one free variable.
@@ -1102,7 +1102,7 @@ Therefore, our system is consistent dependent when $k=-3.$
 Determine the value of $k$ for which the following system of linear equations is consistent dependent:
 
 $$
-\{\begin{aligned} & -2x+6y=-4 \\  & 5x+(k-6)y=10\end{aligned}
+\left\{\begin{aligned}-2x+6y &=-4 \\ 5x+(k-6)y &=10\end{aligned}\right.
 $$
 
 - $k=9$
@@ -1114,13 +1114,13 @@ $$
 The augmented matrix for this system is 
 
 $$
-M=[\begin{aligned}-2 & 6 & -4 \\ 5 & k-6 & 10\end{aligned}].
+M=\left[\begin{array}{cc|c}-2 & 6 & -4 \\ 5 & k-6 & 10\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}-2 & 6 & -4 \\ 5 & k-6 & 10\end{aligned}] & {R}_{2} & :={R}_{2}+\frac{5}{2}{R}_{1} \\  & ∼[\begin{aligned}-2 & 6 & -4 \\ 0 & k+9 & 0\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}-2 & 6 & -4 \\ 5 & k-6 & 10\end{array}\right] & {R}_{2} & :={R}_{2}+\frac{5}{2}{R}_{1} \\  & ∼\left[\begin{array}{cc|c}-2 & 6 & -4 \\ 0 & k+9 & 0\end{array}\right]\end{aligned}
 $$
 
  
@@ -1128,7 +1128,7 @@ $$
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & -2x+6y=-4 \\  & (k+9)y=0.\end{aligned}
+\left\{\begin{aligned}-2x+6y &=-4 \\ (k+9)y &=0.\end{aligned}\right.
 $$
 
 The system is consistent dependent if it has infinitely many solutions. For the system to have infinitely many solutions, it must have at least one free variable.
@@ -1145,7 +1145,7 @@ Therefore, our system is consistent dependent when $k=-9.$
 Determine the value of $k$ for which the following system of linear equations is consistent dependent:
 
 $$
-\{\begin{aligned} & 2x+2y=-6 \\  & 5x+(k-1)y=-15\end{aligned}
+\left\{\begin{aligned}2x+2y &=-6 \\ 5x+(k-1)y &=-15\end{aligned}\right.
 $$
 
 - $k=0$
@@ -1157,13 +1157,13 @@ $$
 The augmented matrix for this system is 
 
 $$
-M=[\begin{aligned}2 & 2 & -6 \\ 5 & k-1 & -15\end{aligned}].
+M=\left[\begin{array}{cc|c}2 & 2 & -6 \\ 5 & k-1 & -15\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}2 & 2 & -6 \\ 5 & k-1 & -15\end{aligned}] & {R}_{2} & :={R}_{2}-\frac{5}{2}{R}_{1} \\  & ∼[\begin{aligned}2 & 2 & -6 \\ 0 & k-6 & 0\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}2 & 2 & -6 \\ 5 & k-1 & -15\end{array}\right] & {R}_{2} & :={R}_{2}-\frac{5}{2}{R}_{1} \\  & ∼\left[\begin{array}{cc|c}2 & 2 & -6 \\ 0 & k-6 & 0\end{array}\right]\end{aligned}
 $$
 
  
@@ -1171,7 +1171,7 @@ $$
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & 2x+2y=-6 \\  & (k-6)y=0.\end{aligned}
+\left\{\begin{aligned}2x+2y &=-6 \\ (k-6)y &=0.\end{aligned}\right.
 $$
 
 The system is consistent dependent if it has infinitely many solutions. For the system to have infinitely many solutions, it must have at least one free variable.
@@ -1188,7 +1188,7 @@ Therefore, our system is consistent dependent when $k=6.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & 2x-y=3 \\  & 4x+ky=4\end{aligned}
+\left\{\begin{aligned}2x-y &=3 \\ 4x+ky &=4\end{aligned}\right.
 $$
 
 - $k=-2$
@@ -1200,19 +1200,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}2 & -1 & 3 \\ 4 & k & 4\end{aligned}].
+M=\left[\begin{array}{cc|c}2 & -1 & 3 \\ 4 & k & 4\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}2 & -1 & 3 \\ 4 & k & 4\end{aligned}] & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\  & ∼[\begin{aligned}2 & -1 & 3 \\ 0 & k+2 & -2\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}2 & -1 & 3 \\ 4 & k & 4\end{array}\right] & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\  & ∼\left[\begin{array}{cc|c}2 & -1 & 3 \\ 0 & k+2 & -2\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now
 
 $$
-\{\begin{aligned} & 2x-y=3 \\  & (k+2)y=-2.\end{aligned}
+\left\{\begin{aligned}2x-y &=3 \\ (k+2)y &=-2.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -1227,7 +1227,7 @@ Therefore, our system is inconsistent when  $k=-2.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & 3x+3y=1 \\  & -9x+ky=-4\end{aligned}
+\left\{\begin{aligned}3x+3y &=1 \\ -9x+ky &=-4\end{aligned}\right.
 $$
 
 - $k=0$
@@ -1239,19 +1239,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}3 & 3 & 1 \\ -9 & k & -4\end{aligned}].
+M=\left[\begin{array}{cc|c}3 & 3 & 1 \\ -9 & k & -4\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}3 & 3 & 1 \\ -9 & k & -4\end{aligned}] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼[\begin{aligned}3 & 3 & 1 \\ 0 & k+9 & -1\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}3 & 3 & 1 \\ -9 & k & -4\end{array}\right] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼\left[\begin{array}{cc|c}3 & 3 & 1 \\ 0 & k+9 & -1\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now
 
 $$
-\{\begin{aligned} & 3x+3y=1 \\  & (k+9)y=-1.\end{aligned}
+\left\{\begin{aligned}3x+3y &=1 \\ (k+9)y &=-1.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -1266,7 +1266,7 @@ Therefore, our system is inconsistent when  $k=-9.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned}-4x-y=2 \\ 8x+ky=5\end{aligned}
+\left\{\begin{aligned}-4x-y &=2 \\ 8x+ky &=5\end{aligned}\right.
 $$
 
 - $k=-8$
@@ -1278,19 +1278,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}-4 & -1 & 2 \\ 8 & k & 5\end{aligned}].
+M=\left[\begin{array}{cc|c}-4 & -1 & 2 \\ 8 & k & 5\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}-4 & -1 & 2 \\ 8 & k & 5\end{aligned}] & {R}_{2} & :={R}_{2}+2{R}_{1} \\  & ∼[\begin{aligned}-4 & -1 & 2 \\ 0 & k-2 & 9\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}-4 & -1 & 2 \\ 8 & k & 5\end{array}\right] & {R}_{2} & :={R}_{2}+2{R}_{1} \\  & ∼\left[\begin{array}{cc|c}-4 & -1 & 2 \\ 0 & k-2 & 9\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned}-4x-y=2 \\ (k-2)y=9.\end{aligned}
+\left\{\begin{aligned}-4x-y &=2 \\ (k-2)y &=9.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -1305,7 +1305,7 @@ Therefore, our system is inconsistent when $k=2.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned}-2x+4y=-1 \\ -4x+ky=5\end{aligned}
+\left\{\begin{aligned}-2x+4y &=-1 \\ -4x+ky &=5\end{aligned}\right.
 $$
 
 - $k=-8$
@@ -1317,19 +1317,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}-2 & 4 & -1 \\ -4 & k & 5\end{aligned}].
+M=\left[\begin{array}{cc|c}-2 & 4 & -1 \\ -4 & k & 5\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}-2 & 4 & -1 \\ -4 & k & 5\end{aligned}] & {R}_{2} & :={R}_{2}-2{R}_{1} \\  & ∼[\begin{aligned}-2 & 4 & -1 \\ 0 & k-8 & 7\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}-2 & 4 & -1 \\ -4 & k & 5\end{array}\right] & {R}_{2} & :={R}_{2}-2{R}_{1} \\  & ∼\left[\begin{array}{cc|c}-2 & 4 & -1 \\ 0 & k-8 & 7\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned}-2x+4y=-1 \\ (k-8)y=7.\end{aligned}
+\left\{\begin{aligned}-2x+4y &=-1 \\ (k-8)y &=7.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -1344,7 +1344,7 @@ Therefore, our system is inconsistent when $k=8.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & x+4y=2 \\  & 2x+(k+1)y=3\end{aligned}
+\left\{\begin{aligned}x+4y &=2 \\ 2x+(k+1)y &=3\end{aligned}\right.
 $$
 
 - $k=9$
@@ -1356,19 +1356,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}1 & 4 & 2 \\ 2 & k+1 & 3\end{aligned}].
+M=\left[\begin{array}{cc|c}1 & 4 & 2 \\ 2 & k+1 & 3\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}1 & 4 & 2 \\ 2 & k+1 & 3\end{aligned}] & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\  & ∼[\begin{aligned}1 & 4 & 2 \\ 0 & k-7 & -1\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}1 & 4 & 2 \\ 2 & k+1 & 3\end{array}\right] & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & 4 & 2 \\ 0 & k-7 & -1\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned}x+4y=2 \\ (k-7)y=-1.\end{aligned}
+\left\{\begin{aligned}x+4y &=2 \\ (k-7)y &=-1.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -1383,7 +1383,7 @@ Therefore, our system is inconsistent when $k=7.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & x+3y=1 \\  & -3x+(k-6)y=2\end{aligned}
+\left\{\begin{aligned}x+3y &=1 \\ -3x+(k-6)y &=2\end{aligned}\right.
 $$
 
 - $k=-3$
@@ -1395,19 +1395,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}1 & 3 & 1 \\ -3 & k-6 & 2\end{aligned}].
+M=\left[\begin{array}{cc|c}1 & 3 & 1 \\ -3 & k-6 & 2\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}1 & 3 & 1 \\ -3 & k-6 & 2\end{aligned}] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼[\begin{aligned}1 & 3 & 1 \\ 0 & k+3 & 5\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}1 & 3 & 1 \\ -3 & k-6 & 2\end{array}\right] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & 3 & 1 \\ 0 & k+3 & 5\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned}x+3y=1 \\ (k+3)y=5.\end{aligned}
+\left\{\begin{aligned}x+3y &=1 \\ (k+3)y &=5.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -1422,7 +1422,7 @@ Therefore, our system is inconsistent when $k=-3.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & x+2y=-4 \\  & 3x+2ky=-2\end{aligned}
+\left\{\begin{aligned}x+2y &=-4 \\ 3x+2ky &=-2\end{aligned}\right.
 $$
 
 - $k=3$
@@ -1434,19 +1434,19 @@ $$
 The augmented matrix for this system is 
 
 $$
-M=[\begin{aligned}1 & 2 & -4 \\ 3 & 2k & -2\end{aligned}].
+M=\left[\begin{array}{cc|c}1 & 2 & -4 \\ 3 & 2k & -2\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}1 & 2 & -4 \\ 3 & 2k & -2\end{aligned}] & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\  & ∼[\begin{aligned}1 & 2 & -4 \\ 0 & 2k-6 & 10\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}1 & 2 & -4 \\ 3 & 2k & -2\end{array}\right] & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & 2 & -4 \\ 0 & 2k-6 & 10\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned}x+2y=-4 \\ (2k-6)y=10.\end{aligned}
+\left\{\begin{aligned}x+2y &=-4 \\ (2k-6)y &=10.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -1461,7 +1461,7 @@ Therefore, our system is inconsistent when $k=3.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & x+3y=1 \\  & -3x+2ky=2\end{aligned}
+\left\{\begin{aligned}x+3y &=1 \\ -3x+2ky &=2\end{aligned}\right.
 $$
 
 - $k=2$
@@ -1473,19 +1473,19 @@ $$
 The augmented matrix for this system is 
 
 $$
-M=[\begin{aligned}1 & 3 & 1 \\ -3 & 2k & 2\end{aligned}].
+M=\left[\begin{array}{cc|c}1 & 3 & 1 \\ -3 & 2k & 2\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}1 & 3 & 1 \\ -3 & 2k & 2\end{aligned}] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼[\begin{aligned}1 & 3 & 1 \\ 0 & 2k+9 & 5\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}1 & 3 & 1 \\ -3 & 2k & 2\end{array}\right] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & 3 & 1 \\ 0 & 2k+9 & 5\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned}x+3y=1 \\ (2k+9)y=5.\end{aligned}
+\left\{\begin{aligned}x+3y &=1 \\ (2k+9)y &=5.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -1500,7 +1500,7 @@ Therefore, our system is inconsistent when $k=-\frac{9}{2}.$
 Determine the value of $k$ for which the following system of linear equations is consistent dependent:
 
 $$
-\{\begin{aligned} & 4x+2y=-8 \\  & x+ky=-2\end{aligned}
+\left\{\begin{aligned}4x+2y &=-8 \\ x+ky &=-2\end{aligned}\right.
 $$
 
 - $k=2$
@@ -1512,19 +1512,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}4 & 2 & -8 \\ 1 & k & -2\end{aligned}].
+M=\left[\begin{array}{cc|c}4 & 2 & -8 \\ 1 & k & -2\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}4 & 2 & -8 \\ 1 & k & -2\end{aligned}] & {R}_{1} & ↔{R}_{2} \\  & ∼[\begin{aligned}1 & k & -2 \\ 4 & 2 & -8\end{aligned}] & {R}_{2} & :={R}_{2}+(-4){R}_{1} \\  & ∼[\begin{aligned}1 & k & -2 \\ 0 & 2-4k & 0\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}4 & 2 & -8 \\ 1 & k & -2\end{array}\right] & {R}_{1} & ↔{R}_{2} \\  & ∼\left[\begin{array}{cc|c}1 & k & -2 \\ 4 & 2 & -8\end{array}\right] & {R}_{2} & :={R}_{2}+(-4){R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & k & -2 \\ 0 & 2-4k & 0\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & x+ky=-2 \\  & (2-4k)y=0.\end{aligned}
+\left\{\begin{aligned}x+ky &=-2 \\ (2-4k)y &=0.\end{aligned}\right.
 $$
 
 The system is consistent dependent if it has infinitely many solutions. For the system to have infinitely many solutions, it must have at least one free variable.
@@ -1541,7 +1541,7 @@ Therefore, our system is consistent dependent when $k=\frac{1}{2}.$
 Determine the value of $k$ for which the following system of linear equations is consistent dependent:
 
 $$
-\{\begin{aligned} & 2x-6y=8 \\  & x+ky=4\end{aligned}
+\left\{\begin{aligned}2x-6y &=8 \\ x+ky &=4\end{aligned}\right.
 $$
 
 - $k=-\frac{3}{4}$
@@ -1553,19 +1553,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}2 & -6 & 8 \\ 1 & k & 4\end{aligned}].
+M=\left[\begin{array}{cc|c}2 & -6 & 8 \\ 1 & k & 4\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}2 & -6 & 8 \\ 1 & k & 4\end{aligned}] & {R}_{1} & ↔{R}_{2} \\  & ∼[\begin{aligned}1 & k & 4 \\ 2 & -6 & 8\end{aligned}] & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\  & ∼[\begin{aligned}1 & k & 4 \\ 0 & -6-2k & 0\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}2 & -6 & 8 \\ 1 & k & 4\end{array}\right] & {R}_{1} & ↔{R}_{2} \\  & ∼\left[\begin{array}{cc|c}1 & k & 4 \\ 2 & -6 & 8\end{array}\right] & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & k & 4 \\ 0 & -6-2k & 0\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & x+ky=4 \\  & (-6-2k)y=0.\end{aligned}
+\left\{\begin{aligned}x+ky &=4 \\ (-6-2k)y &=0.\end{aligned}\right.
 $$
 
 The system is consistent dependent if it has infinitely many solutions. For the system to have infinitely many solutions, it must have at least one free variable.
@@ -1582,7 +1582,7 @@ Therefore, our system is consistent dependent when $k=-3.$
 Determine the value of $k$ for which the following system of linear equations is consistent dependent:
 
 $$
-\{\begin{aligned} & 2x+6y=4 \\  & x+(k+1)y=2\end{aligned}
+\left\{\begin{aligned}2x+6y &=4 \\ x+(k+1)y &=2\end{aligned}\right.
 $$
 
 - $k=2$
@@ -1594,13 +1594,13 @@ $$
 The augmented matrix for this system is 
 
 $$
-M=[\begin{aligned}2 & 6 & 4 \\ 1 & k+1 & 2\end{aligned}].
+M=\left[\begin{array}{cc|c}2 & 6 & 4 \\ 1 & k+1 & 2\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}2 & 6 & 4 \\ 1 & k+1 & 2\end{aligned}] & {R}_{2} & :={R}_{2}+(-\frac{1}{2}){R}_{1} \\  & ∼[\begin{aligned}2 & 6 & 4 \\ 0 & k-2 & 0\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}2 & 6 & 4 \\ 1 & k+1 & 2\end{array}\right] & {R}_{2} & :={R}_{2}+(-\frac{1}{2}){R}_{1} \\  & ∼\left[\begin{array}{cc|c}2 & 6 & 4 \\ 0 & k-2 & 0\end{array}\right]\end{aligned}
 $$
 
  
@@ -1608,7 +1608,7 @@ $$
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & 2x+6y=4 \\  & (k-2)y=0.\end{aligned}
+\left\{\begin{aligned}2x+6y &=4 \\ (k-2)y &=0.\end{aligned}\right.
 $$
 
 The system is consistent dependent if it has infinitely many solutions. For the system to have infinitely many solutions, it must have at least one free variable.
@@ -1625,7 +1625,7 @@ Therefore, our system is consistent dependent when $k=2.$
 Determine the value of $k$ for which the following system of linear equations is consistent dependent:
 
 $$
-\{\begin{aligned} & 2x+2y=-6 \\  & 5x+(k-1)y=-15\end{aligned}
+\left\{\begin{aligned}2x+2y &=-6 \\ 5x+(k-1)y &=-15\end{aligned}\right.
 $$
 
 - $k=-6$
@@ -1637,13 +1637,13 @@ $$
 The augmented matrix for this system is 
 
 $$
-M=[\begin{aligned}2 & 2 & -6 \\ 5 & k-1 & -15\end{aligned}].
+M=\left[\begin{array}{cc|c}2 & 2 & -6 \\ 5 & k-1 & -15\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}2 & 2 & -6 \\ 5 & k-1 & -15\end{aligned}] & {R}_{2} & :={R}_{2}+(-\frac{5}{2}){R}_{1} \\  & ∼[\begin{aligned}2 & 2 & -6 \\ 0 & k-6 & 0\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}2 & 2 & -6 \\ 5 & k-1 & -15\end{array}\right] & {R}_{2} & :={R}_{2}+(-\frac{5}{2}){R}_{1} \\  & ∼\left[\begin{array}{cc|c}2 & 2 & -6 \\ 0 & k-6 & 0\end{array}\right]\end{aligned}
 $$
 
  
@@ -1651,7 +1651,7 @@ $$
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & 2x+2y=-6 \\  & (k-6)y=0.\end{aligned}
+\left\{\begin{aligned}2x+2y &=-6 \\ (k-6)y &=0.\end{aligned}\right.
 $$
 
 The system is consistent dependent if it has infinitely many solutions. For the system to have infinitely many solutions, it must have at least one free variable.
@@ -1668,7 +1668,7 @@ Therefore, our system is consistent dependent when $k=6.$
 Determine the value of $k$ for which the following system of linear equations is consistent dependent:
 
 $$
-\{\begin{aligned} & 3x+2y=12 \\  & x+ky=4\end{aligned}
+\left\{\begin{aligned}3x+2y &=12 \\ x+ky &=4\end{aligned}\right.
 $$
 
 - $k=-\frac{2}{3}$
@@ -1680,19 +1680,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}3 & 2 & 12 \\ 1 & k & 4\end{aligned}].
+M=\left[\begin{array}{cc|c}3 & 2 & 12 \\ 1 & k & 4\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}3 & 2 & 12 \\ 1 & k & 4\end{aligned}] & {R}_{1} & ↔{R}_{2} \\  & ∼[\begin{aligned}1 & k & 4 \\ 3 & 2 & 12\end{aligned}] & {R}_{2} & :={R}_{2}-3{R}_{1} \\  & ∼[\begin{aligned}1 & k & 4 \\ 0 & 2-3k & 0\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}3 & 2 & 12 \\ 1 & k & 4\end{array}\right] & {R}_{1} & ↔{R}_{2} \\  & ∼\left[\begin{array}{cc|c}1 & k & 4 \\ 3 & 2 & 12\end{array}\right] & {R}_{2} & :={R}_{2}-3{R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & k & 4 \\ 0 & 2-3k & 0\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & x+ky=4 \\  & (2-3k)y=0.\end{aligned}
+\left\{\begin{aligned}x+ky &=4 \\ (2-3k)y &=0.\end{aligned}\right.
 $$
 
 The system is consistent dependent if it has infinitely many solutions. For the system to have infinitely many solutions, it must have at least one free variable.
@@ -1709,7 +1709,7 @@ Therefore, our system is consistent dependent when $k=\frac{2}{3}.$
 Determine the value of $k$ for which the following system of linear equations is consistent dependent:
 
 $$
-\{\begin{aligned} & 2x-6y=8 \\  & x+ky=4\end{aligned}
+\left\{\begin{aligned}2x-6y &=8 \\ x+ky &=4\end{aligned}\right.
 $$
 
 - $k=-\frac{1}{3}$
@@ -1721,19 +1721,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}2 & -6 & 8 \\ 1 & k & 4\end{aligned}].
+M=\left[\begin{array}{cc|c}2 & -6 & 8 \\ 1 & k & 4\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}2 & -6 & 8 \\ 1 & k & 4\end{aligned}] & {R}_{1} & ↔{R}_{2} \\  & ∼[\begin{aligned}1 & k & 4 \\ 2 & -6 & 8\end{aligned}] & {R}_{2} & :={R}_{2}-2{R}_{1} \\  & ∼[\begin{aligned}1 & k & 4 \\ 0 & -6-2k & 0\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}2 & -6 & 8 \\ 1 & k & 4\end{array}\right] & {R}_{1} & ↔{R}_{2} \\  & ∼\left[\begin{array}{cc|c}1 & k & 4 \\ 2 & -6 & 8\end{array}\right] & {R}_{2} & :={R}_{2}-2{R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & k & 4 \\ 0 & -6-2k & 0\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & x+ky=4 \\  & (-6-2k)y=0.\end{aligned}
+\left\{\begin{aligned}x+ky &=4 \\ (-6-2k)y &=0.\end{aligned}\right.
 $$
 
 The system is consistent dependent if it has infinitely many solutions. For the system to have infinitely many solutions, it must have at least one free variable.
@@ -1750,7 +1750,7 @@ Therefore, our system is consistent dependent when $k=-3.$
 Determine the value of $k$ for which the following system of linear equations is consistent dependent:
 
 $$
-\{\begin{aligned}x+2y=3 \\ -3x-(k+1)y=-9\end{aligned}
+\left\{\begin{aligned}x+2y &=3 \\ -3x-(k+1)y &=-9\end{aligned}\right.
 $$
 
 - $k=2$
@@ -1762,19 +1762,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}1 & 2 & 3 \\ -3 & -(k+1) & -9\end{aligned}].
+M=\left[\begin{array}{cc|c}1 & 2 & 3 \\ -3 & -(k+1) & -9\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}1 & 2 & 3 \\ -3 & -(k+1) & -9\end{aligned}] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼[\begin{aligned}1 & 2 & 3 \\ 0 & -k+5 & 0\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}1 & 2 & 3 \\ -3 & -(k+1) & -9\end{array}\right] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & 2 & 3 \\ 0 & -k+5 & 0\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned}x+2y=3 \\ -(k-5)y=0.\end{aligned}
+\left\{\begin{aligned}x+2y &=3 \\ -(k-5)y &=0.\end{aligned}\right.
 $$
 
 The system is consistent dependent if it has infinitely many solutions. For the system to have infinitely many solutions, it must have at least one free variable.
@@ -1791,7 +1791,7 @@ Therefore, our system is consistent dependent when $k=5.$
 Determine the value of $k$ for which the following system of linear equations is consistent dependent:
 
 $$
-\{\begin{aligned}x-3y=3 \\ -4x-(k+1)y=-12\end{aligned}
+\left\{\begin{aligned}x-3y &=3 \\ -4x-(k+1)y &=-12\end{aligned}\right.
 $$
 
 - $k=-3$
@@ -1803,19 +1803,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}1 & -3 & 3 \\ -4 & -(k+1) & -12\end{aligned}].
+M=\left[\begin{array}{cc|c}1 & -3 & 3 \\ -4 & -(k+1) & -12\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}1 & -3 & 3 \\ -4 & -(k+1) & -12\end{aligned}] & {R}_{2} & :={R}_{2}+4{R}_{1} \\  & ∼[\begin{aligned}1 & -3 & 3 \\ 0 & -k-13 & 0\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}1 & -3 & 3 \\ -4 & -(k+1) & -12\end{array}\right] & {R}_{2} & :={R}_{2}+4{R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & -3 & 3 \\ 0 & -k-13 & 0\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned}x-3y=3 \\ -(k+13)y=0.\end{aligned}
+\left\{\begin{aligned}x-3y &=3 \\ -(k+13)y &=0.\end{aligned}\right.
 $$
 
 The system is consistent dependent if it has infinitely many solutions. For the system to have infinitely many solutions, it must have at least one free variable.
@@ -1832,7 +1832,7 @@ Therefore, our system is consistent dependent when $k=-13.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & x+2y=1 \\  & -3x+ky=0\end{aligned}
+\left\{\begin{aligned}x+2y &=1 \\ -3x+ky &=0\end{aligned}\right.
 $$
 
 - $k=-6$
@@ -1844,19 +1844,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}1 & 2 & 1 \\ -3 & k & 0\end{aligned}].
+M=\left[\begin{array}{cc|c}1 & 2 & 1 \\ -3 & k & 0\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}1 & 2 & 1 \\ -3 & k & 0\end{aligned}] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼[\begin{aligned}1 & 2 & 1 \\ 0 & k+6 & 3\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}1 & 2 & 1 \\ -3 & k & 0\end{array}\right] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & 2 & 1 \\ 0 & k+6 & 3\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & x+2y=1 \\  & (k+6)y=3.\end{aligned}
+\left\{\begin{aligned}x+2y &=1 \\ (k+6)y &=3.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -1871,7 +1871,7 @@ Therefore, our system is inconsistent when $k=-6.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & x-3y=4 \\  & -3x+ky=0\end{aligned}
+\left\{\begin{aligned}x-3y &=4 \\ -3x+ky &=0\end{aligned}\right.
 $$
 
 - $k=0$
@@ -1883,19 +1883,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}1 & -3 & 4 \\ -3 & k & 0\end{aligned}].
+M=\left[\begin{array}{cc|c}1 & -3 & 4 \\ -3 & k & 0\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}1 & -3 & 4 \\ -3 & k & 0\end{aligned}] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼[\begin{aligned}1 & -3 & 4 \\ 0 & k-9 & 12\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}1 & -3 & 4 \\ -3 & k & 0\end{array}\right] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & -3 & 4 \\ 0 & k-9 & 12\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & x-3y=4 \\  & (k-9)y=12.\end{aligned}
+\left\{\begin{aligned}x-3y &=4 \\ (k-9)y &=12.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -1910,7 +1910,7 @@ Therefore, our system is inconsistent when $k=9.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & 3x-4y=0 \\  & 9x+ky=3\end{aligned}
+\left\{\begin{aligned}3x-4y &=0 \\ 9x+ky &=3\end{aligned}\right.
 $$
 
 - $k=-12$
@@ -1922,19 +1922,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}3 & -4 & 0 \\ 9 & k & 3\end{aligned}].
+M=\left[\begin{array}{cc|c}3 & -4 & 0 \\ 9 & k & 3\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}3 & -4 & 0 \\ 9 & k & 3\end{aligned}] & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\  & ∼[\begin{aligned}3 & -4 & 0 \\ 0 & k+12 & 3\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}3 & -4 & 0 \\ 9 & k & 3\end{array}\right] & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\  & ∼\left[\begin{array}{cc|c}3 & -4 & 0 \\ 0 & k+12 & 3\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & 3x-4y=0 \\  & (k+12)y=3.\end{aligned}
+\left\{\begin{aligned}3x-4y &=0 \\ (k+12)y &=3.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -1949,7 +1949,7 @@ Therefore, our system is inconsistent when $k=-12.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & -2x+y=-3 \\  & 6x+ky=2\end{aligned}
+\left\{\begin{aligned}-2x+y &=-3 \\ 6x+ky &=2\end{aligned}\right.
 $$
 
 - $k=-3$
@@ -1961,19 +1961,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}-2 & 1 & -3 \\ 6 & k & 2\end{aligned}].
+M=\left[\begin{array}{cc|c}-2 & 1 & -3 \\ 6 & k & 2\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}-2 & 1 & -3 \\ 6 & k & 2\end{aligned}] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼[\begin{aligned}-2 & 1 & -3 \\ 0 & k+3 & -7\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}-2 & 1 & -3 \\ 6 & k & 2\end{array}\right] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼\left[\begin{array}{cc|c}-2 & 1 & -3 \\ 0 & k+3 & -7\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & -2x+y=-3 \\  & (k+3)y=-7.\end{aligned}
+\left\{\begin{aligned}-2x+y &=-3 \\ (k+3)y &=-7.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -1988,7 +1988,7 @@ Therefore, our system is inconsistent when $k=-3.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & x-4y=0 \\  & 3x+(k+9)y=1\end{aligned}
+\left\{\begin{aligned}x-4y &=0 \\ 3x+(k+9)y &=1\end{aligned}\right.
 $$
 
 - $k=-3$
@@ -2000,19 +2000,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}1 & -4 & 0 \\ 3 & k+9 & 1\end{aligned}].
+M=\left[\begin{array}{cc|c}1 & -4 & 0 \\ 3 & k+9 & 1\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}1 & -4 & 0 \\ 3 & k+9 & 1\end{aligned}] & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\  & ∼[\begin{aligned}1 & -4 & 0 \\ 0 & k+21 & 1\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}1 & -4 & 0 \\ 3 & k+9 & 1\end{array}\right] & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & -4 & 0 \\ 0 & k+21 & 1\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & x-4y=0 \\  & (k+21)y=1.\end{aligned}
+\left\{\begin{aligned}x-4y &=0 \\ (k+21)y &=1.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -2027,7 +2027,7 @@ Therefore, our system is inconsistent when $k=-21.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & -2x+y=-3 \\  & 6x+(k+9)y=2\end{aligned}
+\left\{\begin{aligned}-2x+y &=-3 \\ 6x+(k+9)y &=2\end{aligned}\right.
 $$
 
 - $k=12$
@@ -2039,19 +2039,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}-2 & 1 & -3 \\ 6 & k+9 & 2\end{aligned}].
+M=\left[\begin{array}{cc|c}-2 & 1 & -3 \\ 6 & k+9 & 2\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}-2 & 1 & -3 \\ 6 & k+9 & 2\end{aligned}] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼[\begin{aligned}-2 & 1 & -3 \\ 0 & k+12 & -7\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}-2 & 1 & -3 \\ 6 & k+9 & 2\end{array}\right] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼\left[\begin{array}{cc|c}-2 & 1 & -3 \\ 0 & k+12 & -7\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & -2x+y=-3 \\  & (k+12)y=-7.\end{aligned}
+\left\{\begin{aligned}-2x+y &=-3 \\ (k+12)y &=-7.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -2066,7 +2066,7 @@ Therefore, our system is inconsistent when $k=-12.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & x-4y=0 \\  & 3x+3ky=1\end{aligned}
+\left\{\begin{aligned}x-4y &=0 \\ 3x+3ky &=1\end{aligned}\right.
 $$
 
 - $k=0$
@@ -2078,19 +2078,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}1 & -4 & 0 \\ 3 & 3k & 1\end{aligned}].
+M=\left[\begin{array}{cc|c}1 & -4 & 0 \\ 3 & 3k & 1\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}1 & -4 & 0 \\ 3 & 3k & 1\end{aligned}] & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\  & ∼[\begin{aligned}1 & -4 & 0 \\ 0 & 3k+12 & 1\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}1 & -4 & 0 \\ 3 & 3k & 1\end{array}\right] & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & -4 & 0 \\ 0 & 3k+12 & 1\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & x-4y=0 \\  & (3k+12)y=1.\end{aligned}
+\left\{\begin{aligned}x-4y &=0 \\ (3k+12)y &=1.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -2105,7 +2105,7 @@ Therefore, our system is inconsistent when $k=-4.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & -2x+y=-3 \\  & 6x+3ky=2\end{aligned}
+\left\{\begin{aligned}-2x+y &=-3 \\ 6x+3ky &=2\end{aligned}\right.
 $$
 
 - $k=1$
@@ -2117,19 +2117,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}-2 & 1 & -3 \\ 6 & 3k & 2\end{aligned}].
+M=\left[\begin{array}{cc|c}-2 & 1 & -3 \\ 6 & 3k & 2\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}-2 & 1 & -3 \\ 6 & 3k & 2\end{aligned}] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼[\begin{aligned}-2 & 1 & -3 \\ 0 & 3k+3 & -7\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}-2 & 1 & -3 \\ 6 & 3k & 2\end{array}\right] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼\left[\begin{array}{cc|c}-2 & 1 & -3 \\ 0 & 3k+3 & -7\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & -2x+y=-3 \\  & (3k+3)y=-7.\end{aligned}
+\left\{\begin{aligned}-2x+y &=-3 \\ (3k+3)y &=-7.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -2144,7 +2144,7 @@ Therefore, our system is inconsistent when $k=-1.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & -3x-2y=0 \\  & -6x+(2k-6)y=5\end{aligned}
+\left\{\begin{aligned}-3x-2y &=0 \\ -6x+(2k-6)y &=5\end{aligned}\right.
 $$
 
 - $k=-1$
@@ -2156,19 +2156,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}-3 & -2 & 0 \\ -6 & 2k-6 & 5\end{aligned}].
+M=\left[\begin{array}{cc|c}-3 & -2 & 0 \\ -6 & 2k-6 & 5\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}-3 & -2 & 0 \\ -6 & 2k-6 & 5\end{aligned}] & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\  & ∼[\begin{aligned}-3 & -2 & 0 \\ 0 & 2k-2 & 5\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}-3 & -2 & 0 \\ -6 & 2k-6 & 5\end{array}\right] & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\  & ∼\left[\begin{array}{cc|c}-3 & -2 & 0 \\ 0 & 2k-2 & 5\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & -3x-2y=0 \\  & (2k-2)y=5.\end{aligned}
+\left\{\begin{aligned}-3x-2y &=0 \\ (2k-2)y &=5.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -2183,7 +2183,7 @@ Therefore, our system is inconsistent when $k=1.$
 Determine the value of $k$ for which the following system of linear equations is inconsistent:
 
 $$
-\{\begin{aligned} & -2x+y=-3 \\  & 6x+(3k+9)y=2\end{aligned}
+\left\{\begin{aligned}-2x+y &=-3 \\ 6x+(3k+9)y &=2\end{aligned}\right.
 $$
 
 - $k=-1$
@@ -2195,19 +2195,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}-2 & 1 & -3 \\ 6 & 3k+9 & 2\end{aligned}].
+M=\left[\begin{array}{cc|c}-2 & 1 & -3 \\ 6 & 3k+9 & 2\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}-2 & 1 & -3 \\ 6 & 3k+9 & 2\end{aligned}] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼[\begin{aligned}-2 & 1 & -3 \\ 0 & 3k+12 & -7\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}-2 & 1 & -3 \\ 6 & 3k+9 & 2\end{array}\right] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼\left[\begin{array}{cc|c}-2 & 1 & -3 \\ 0 & 3k+12 & -7\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & -2x+y=-3 \\  & (3k+12)y=-7.\end{aligned}
+\left\{\begin{aligned}-2x+y &=-3 \\ (3k+12)y &=-7.\end{aligned}\right.
 $$
 
 The system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.
@@ -2222,7 +2222,7 @@ Therefore, our system is inconsistent when $k=-4.$
 Determine the value of $k$ for which the following system of linear equations is consistent dependent:
 
 $$
-\{\begin{aligned} & 2x-7y=4 \\  & x+ky=2\end{aligned}
+\left\{\begin{aligned}2x-7y &=4 \\ x+ky &=2\end{aligned}\right.
 $$
 
 - $k=-\frac{7}{2}$
@@ -2234,19 +2234,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}2 & -7 & 4 \\ 1 & k & 2\end{aligned}].
+M=\left[\begin{array}{cc|c}2 & -7 & 4 \\ 1 & k & 2\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}2 & -7 & 4 \\ 1 & k & 2\end{aligned}] & {R}_{1} & ↔{R}_{2} \\  & ∼[\begin{aligned}1 & k & 2 \\ 2 & -7 & 4\end{aligned}] & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\  & ∼[\begin{aligned}1 & k & 2 \\ 0 & -7-2k & 0\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}2 & -7 & 4 \\ 1 & k & 2\end{array}\right] & {R}_{1} & ↔{R}_{2} \\  & ∼\left[\begin{array}{cc|c}1 & k & 2 \\ 2 & -7 & 4\end{array}\right] & {R}_{2} & :={R}_{2}+(-2){R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & k & 2 \\ 0 & -7-2k & 0\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & x+ky=2 \\  & (-7-2k)y=0.\end{aligned}
+\left\{\begin{aligned}x+ky &=2 \\ (-7-2k)y &=0.\end{aligned}\right.
 $$
 
 The system is consistent dependent if it has infinitely many solutions. For the system to have infinitely many solutions, it must have at least one free variable.
@@ -2263,7 +2263,7 @@ Therefore, our system is consistent dependent when $k=-\frac{7}{2}.$
 Determine the value of $k$ for which the following system of linear equations is consistent dependent:
 
 $$
-\{\begin{aligned} & -3x-6y=-9 \\  & x+ky=3\end{aligned}
+\left\{\begin{aligned}-3x-6y &=-9 \\ x+ky &=3\end{aligned}\right.
 $$
 
 - $k=-6$
@@ -2275,19 +2275,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}-3 & -6 & -9 \\ 1 & k & 3\end{aligned}].
+M=\left[\begin{array}{cc|c}-3 & -6 & -9 \\ 1 & k & 3\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}-3 & -6 & -9 \\ 1 & k & 3\end{aligned}] & {R}_{1} & ↔{R}_{2} \\  & ∼[\begin{aligned}1 & k & 3 \\ -3 & -6 & -9\end{aligned}] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼[\begin{aligned}1 & k & 3 \\ 0 & 3k-6 & 0\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}-3 & -6 & -9 \\ 1 & k & 3\end{array}\right] & {R}_{1} & ↔{R}_{2} \\  & ∼\left[\begin{array}{cc|c}1 & k & 3 \\ -3 & -6 & -9\end{array}\right] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & k & 3 \\ 0 & 3k-6 & 0\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & x+ky=3 \\  & (3k-6)y=0.\end{aligned}
+\left\{\begin{aligned}x+ky &=3 \\ (3k-6)y &=0.\end{aligned}\right.
 $$
 
 The system is consistent dependent if it has infinitely many solutions. For the system to have infinitely many solutions, it must have at least one free variable.
@@ -2304,7 +2304,7 @@ Therefore, our system is consistent dependent when $k=2.$
 Determine the value of $k$ for which the following system of linear equations is consistent dependent:
 
 $$
-\{\begin{aligned} & 2x-2y=-6 \\  & x+(k+3)y=-3\end{aligned}
+\left\{\begin{aligned}2x-2y &=-6 \\ x+(k+3)y &=-3\end{aligned}\right.
 $$
 
 - $k=-4$
@@ -2316,19 +2316,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}2 & -2 & -6 \\ 1 & k+3 & -3\end{aligned}].
+M=\left[\begin{array}{cc|c}2 & -2 & -6 \\ 1 & k+3 & -3\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}2 & -2 & -6 \\ 1 & k+3 & -3\end{aligned}] & {R}_{2} & :={R}_{2}+(-\frac{1}{2}){R}_{1} \\  & ∼[\begin{aligned}2 & -2 & -6 \\ 0 & k+4 & 0\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}2 & -2 & -6 \\ 1 & k+3 & -3\end{array}\right] & {R}_{2} & :={R}_{2}+(-\frac{1}{2}){R}_{1} \\  & ∼\left[\begin{array}{cc|c}2 & -2 & -6 \\ 0 & k+4 & 0\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & 2x-2y=-6 \\  & (k+4)y=0.\end{aligned}
+\left\{\begin{aligned}2x-2y &=-6 \\ (k+4)y &=0.\end{aligned}\right.
 $$
 
 The system is consistent dependent if it has infinitely many solutions. For the system to have infinitely many solutions, it must have at least one free variable.
@@ -2345,7 +2345,7 @@ Therefore, our system is consistent dependent when $k=-4.$
 Determine the value of $k$ for which the following system of linear equations is consistent dependent:
 
 $$
-\{\begin{aligned} & 2x+6y=4 \\  & x+(k+1)y=2\end{aligned}
+\left\{\begin{aligned}2x+6y &=4 \\ x+(k+1)y &=2\end{aligned}\right.
 $$
 
 - $k=-1$
@@ -2357,19 +2357,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}2 & 6 & 4 \\ 1 & k+1 & 2\end{aligned}].
+M=\left[\begin{array}{cc|c}2 & 6 & 4 \\ 1 & k+1 & 2\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}2 & 6 & 4 \\ 1 & k+1 & 2\end{aligned}] & {R}_{2} & :={R}_{2}+(-\frac{1}{2}){R}_{1} \\  & ∼[\begin{aligned}2 & 6 & 4 \\ 0 & k-2 & 0\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}2 & 6 & 4 \\ 1 & k+1 & 2\end{array}\right] & {R}_{2} & :={R}_{2}+(-\frac{1}{2}){R}_{1} \\  & ∼\left[\begin{array}{cc|c}2 & 6 & 4 \\ 0 & k-2 & 0\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & 2x+6y=4 \\  & (k-2)y=0.\end{aligned}
+\left\{\begin{aligned}2x+6y &=4 \\ (k-2)y &=0.\end{aligned}\right.
 $$
 
 The system is consistent dependent if it has infinitely many solutions. For the system to have infinitely many solutions, it must have at least one free variable.
@@ -2386,7 +2386,7 @@ Therefore, our system is consistent dependent when $k=2.$
 Determine the value of $k$ for which the following system of linear equations is consistent dependent:
 
 $$
-\{\begin{aligned} & x-4y=3 \\  & -3x-(k+2)y=-9\end{aligned}
+\left\{\begin{aligned}x-4y &=3 \\ -3x-(k+2)y &=-9\end{aligned}\right.
 $$
 
 - $k=-14$
@@ -2398,19 +2398,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}1 & -4 & 3 \\ -3 & -(k+2) & -9\end{aligned}].
+M=\left[\begin{array}{cc|c}1 & -4 & 3 \\ -3 & -(k+2) & -9\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}1 & -4 & 3 \\ -3 & -(k+2) & -9\end{aligned}] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼[\begin{aligned}1 & -4 & 3 \\ 0 & -k-14 & 0\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}1 & -4 & 3 \\ -3 & -(k+2) & -9\end{array}\right] & {R}_{2} & :={R}_{2}+3{R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & -4 & 3 \\ 0 & -k-14 & 0\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & x-4y=3 \\  & -(k+14)y=0.\end{aligned}
+\left\{\begin{aligned}x-4y &=3 \\ -(k+14)y &=0.\end{aligned}\right.
 $$
 
 The system is consistent dependent if it has infinitely many solutions. For the system to have infinitely many solutions, it must have at least one free variable.
@@ -2427,7 +2427,7 @@ Therefore, our system is consistent dependent when $k=-14.$
 Determine the value of $k$ for which the following system of linear equations is consistent dependent:
 
 $$
-\{\begin{aligned} & x-4y=4 \\  & -4x-(k+2)y=-16\end{aligned}
+\left\{\begin{aligned}x-4y &=4 \\ -4x-(k+2)y &=-16\end{aligned}\right.
 $$
 
 - $k=0$
@@ -2439,19 +2439,19 @@ $$
 The augmented matrix for this system is
 
 $$
-M=[\begin{aligned}1 & -4 & 4 \\ -4 & -(k+2) & -16\end{aligned}].
+M=\left[\begin{array}{cc|c}1 & -4 & 4 \\ -4 & -(k+2) & -16\end{array}\right].
 $$
 
 Using the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:
 
 $$
-\begin{aligned}M & =[\begin{aligned}1 & -4 & 4 \\ -4 & -(k+2) & -16\end{aligned}] & {R}_{2} & :={R}_{2}+4{R}_{1} \\  & ∼[\begin{aligned}1 & -4 & 4 \\ 0 & -k-18 & 0\end{aligned}]\end{aligned}
+\begin{aligned}M & =\left[\begin{array}{cc|c}1 & -4 & 4 \\ -4 & -(k+2) & -16\end{array}\right] & {R}_{2} & :={R}_{2}+4{R}_{1} \\  & ∼\left[\begin{array}{cc|c}1 & -4 & 4 \\ 0 & -k-18 & 0\end{array}\right]\end{aligned}
 $$
 
 The corresponding system is now 
 
 $$
-\{\begin{aligned} & x-4y=4 \\  & -(k+18)y=0.\end{aligned}
+\left\{\begin{aligned}x-4y &=4 \\ -(k+18)y &=0.\end{aligned}\right.
 $$
 
 The system is consistent dependent if it has infinitely many solutions. For the system to have infinitely many solutions, it must have at least one free variable.

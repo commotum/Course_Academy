@@ -17,3 +17,12 @@ Use a stable mathematical and instructional backbone with explicitly defined var
 ## 3. Stay within scope
 
 Check proposed variations against the lesson context, prerequisites, and the reasoning required at the intended difficulty. Vary the application while keeping the assessed skill and workload comparable; do not introduce other topics, additional skills, or branches that expand the knowledge point’s scope. Variations within one difficulty level have no instructional progression. Each question should stand on its own as another instance of the same skill at the same level.
+
+## Math content format
+
+All generated content must follow [the shared UI math convention](../docs/math-content.md).
+Use `scripts/question_capture/math_format.py` to format matrices and systems,
+normalize prose and bare math answers before computing IDs, and validate the public
+generator output. Keep coefficient and augmented matrix roles explicit. Source
+replication checks should compare mathematical content separately from normalized
+presentation; malformed captured TeX must not be reproduced in served content.

@@ -164,7 +164,7 @@ $$
 
 ## Changed public evidence mask q-122567
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/8d4eea58da67c4abcd54ddce614b199d4abdc2669548117efa8d632bc73a41ab.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/6618d1144a13bff6224cb43cc4a42db81d93eb1abf5583eb27e1e9887d0e8d66.png)
 
 Calculate $\displaystyle \int_{C}ds$, where $C$ is the arc of a semicircle of radius $\frac{9}{2}$ traversed once in the counterclockwise direction, as shown above.
 
@@ -178,7 +178,7 @@ Calculate $\displaystyle \int_{C}ds$, where $C$ is the arc of a semicircle of ra
 
 ## Changed public evidence mask q-122768
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/4fa50c228b3b684cd7d01f53b77dc7acfcdb069892cb4d430eab57f5b962bc31.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/ead5aa07bd51886696ac1a8f293ea11786607ad67ef11cdba0ed59001bdf4ec4.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -208,7 +208,7 @@ $$
 
 ## Changed public evidence mask q-122766
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/536b78841282ce9822fc6c72a31feabda2109409f246f0761b9939b4a8260104.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/de335ccc2de82bf4f928a71f559a92d13d645b3e1c5d6a97f0bd0ad5f62ee834.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -232,7 +232,7 @@ $$
 
 ## Changed public evidence mask q-122767
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/1cd1efbed7260efaa17bba4a4923a295f816857ac67a1a1a6501f80bffe9b9bb.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/1f7aa490ce918693dcd25df5d8a1bea665a078b61b9a313236aaca1df5b8ed46.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -256,7 +256,7 @@ $$
 
 ## Changed public evidence mask q-122769
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/97e4d8d7e201dfd1db6fde1800bd9489e39296a6d6a47681d5a22290f7ecbd11.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/ade88e8cb4ca90ef7f72c60c7b5d6350aa2b533009d591d98db966188ac8a865.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -274,7 +274,7 @@ $$
 
 In this case, the path $C$ is the hypotenuse of a right triangle whose legs have lengths $3$ and $6:$ 
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/cbb61308f99ec626e9fe227646a1c5bb50db6e47daf3421a2cca5ee9e75f650a.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/f925bdc109835f61918ae5d3b9b79d82aab515023ea0dd5731ca2e8f9155e018.png)
 
 Therefore, we have
 
@@ -290,7 +290,7 @@ $$
 
 ## Changed public evidence mask q-122770
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/28253cc79be53ff07fb24225b3b984a3911de9a43ff7e0e97c59d419f2c7a8bf.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/6a370f50137bde57d28ac26a2d1d2e23af8ae8da0e0c85df82b95dc3fd29495e.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -308,7 +308,7 @@ $$
 
 In this case, the path $C$ is the hypotenuse of a right triangle whose legs have lengths $\frac{9}{2}$ and $9:$ 
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/cbaaf07da5a942c93e54296e9a2e8e2b41ca478deb64271d1b839a3ec1bfc596.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/97e01f11abef3025e2fa52060a3ed466c860097a5d3e82a07aad52e451d6f559.png)
 
 Therefore, we have
 
@@ -324,7 +324,7 @@ $$
 
 ## Normal source-parameter teaching mask q-122567
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/be06a45c0f8caecec90ec7bd7912aab0f990c7e151b76287f771a49781dc0548.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/518b3385c0c7921e3c70edc1d0e3cd7abf6b1b37a2b8fb95561f240d4329a433.png)
 
 Calculate $\displaystyle \int_{C}ds$, where $C$ is the arc of a semicircle of radius $3$ traversed once in the counterclockwise direction, as shown above.
 
@@ -354,7 +354,7 @@ $$
 
 ## Normal source-parameter teaching mask q-122768
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/2561bee95d8428012da16c407808091c4573b42f93f67bb03764b4f002283d62.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/1c56c19739c3495b26b296c5bc06aea3fb3a45621705fa78c3e6ff81f3045730.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -384,7 +384,7 @@ $$
 
 ## Normal source-parameter teaching mask q-122766
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/1819917bf02857bf564cf7550fb0d2f4c7fc8ba5f6c82b053c38eab4bb919bde.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/e0a149e19e57a28b69b75bcb68c410ca6389459ac574091b062c226af83e1b18.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -408,7 +408,7 @@ $$
 
 ## Normal source-parameter teaching mask q-122767
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/e22230212d688a74a1d63698f77c3b4a3ac05c25a63aa4b3afcac0834ceee8f4.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/e29233c2f1a18803281f5d1394f927ee2563701a01659e84634ee81c66956a7b.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -432,7 +432,7 @@ $$
 
 ## Normal source-parameter teaching mask q-122769
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/005092086b981254934b997871ce4a2b1f54cfdc1d955e138d575d9d5eee0e74.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/bb687317c2de52749a516e0d73f31e12086c52b387bf8a421aa6cfed89873676.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -450,7 +450,7 @@ $$
 
 In this case, the path $C$ is the hypotenuse of a right triangle whose legs have lengths $2$ and $4:$ 
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/680fb388c88c68b044adc781221db4fc40bb85b08c753e5c7a652c5bf2133118.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/c7acd6a01284e1d79e02f042b9ccca100296472532a68df5ea5c91068065e4ce.png)
 
 Therefore, we have
 
@@ -466,7 +466,7 @@ $$
 
 ## Normal source-parameter teaching mask q-122770
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/aed7b10e273e894ce9a0e452380c9e91593b48a6cd50e8f4f071ff60d82c11ad.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/3e96af769f0388fa4bd179145ee2ce41cd48045d34eb9ecf9a43c646f96c4dea.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -484,7 +484,7 @@ $$
 
 In this case, the path $C$ is the hypotenuse of a right triangle whose legs have lengths $3$ and $6:$ 
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/b0bce5d5209bdea1fb19e82860108bd5938162c4fa1134d470b7da4349f2b5c0.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/8fefab846180d1b9d03a976e116de1f566510367ee12cd9d9346243605883e47.png)
 
 Therefore, we have
 
@@ -500,7 +500,7 @@ $$
 
 ## Authored normal easy semicircle
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/79fb9db122a6bb453897d9a98a78c28e9d8f8baab29123dd366e3db61075eb43.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/783a2e8f4d567cc1250a10c02c78653eb1436af9600947985c4e68bcc3b1d1be.png)
 
 Calculate $\displaystyle \int_{C}ds$, where $C$ is the arc of a semicircle of radius $8$ traversed once in the counterclockwise direction, as shown above.
 
@@ -530,7 +530,7 @@ $$
 
 ## Authored normal easy semicircle
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/35d8847ddb12fc4bcd4894a2d820d670acada754cc0c4475bb8719446ed4ee49.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/3baa74a06f54f5201434861a667717117af2b3b7215a012a6481e2994637b49e.png)
 
 Calculate $\displaystyle \int_{C}ds$, where $C$ is the arc of a semicircle of radius $9$ traversed once in the counterclockwise direction, as shown above.
 
@@ -560,7 +560,7 @@ $$
 
 ## Authored normal easy vertical
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/eda1a2d6764fad3643bbf66fd20ce72306f61941a1bd7b5923250644715ca959.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/6bd687849c201d82c51f61cf716ad21627f117554aa2296fdc9147435af71aa6.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -584,7 +584,7 @@ $$
 
 ## Authored normal easy vertical
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/ba2c198b44d76148ba75af93266b3220c2d6a911f2b5c6f144ae1493fa6b9c5b.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/45e9013acc02ff44e72522da3033fd98269c0f35442f0676f337114a71a2ac01.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -608,7 +608,7 @@ $$
 
 ## Authored normal easy horizontal
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/746cff1917afecd016eb483b02d6747ca0b9a879b90a03286feaa4f67075b714.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/b7da2cf343db014fe079bad1706af5cb3c3f97a7b64163f694f7b1c2c0117a55.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -632,7 +632,7 @@ $$
 
 ## Authored normal easy horizontal
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/98b2edde1990dfba111e39eb0ec48e4d4c1e78b21e31dbdead7fe7bdce29a8a3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/794d040d8f62cc97df28c04535670ada84822e7e05105c84f0ef945d5637e6c6.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -656,7 +656,7 @@ $$
 
 ## Authored normal easy diagonal_plain
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/0ae72e519f8a3aba4dbfcbc07893f8a1b2509de4fef5e01c193d256f1dd6b038.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/d8fac8fb097af8f17423f1cf354df0367632e356ba0c3f928f770f7eb2cacaa2.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -686,7 +686,7 @@ $$
 
 ## Authored normal easy diagonal_plain
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/88e187ae89d0bec90a0e40be6e03b61e7dcadc5f94122d96aae526cb4d152ed3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/9f7669981fb7c3d7ea417f0db70bb0287cff845e61b0cb9a0e7d9167180548ae.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -716,7 +716,7 @@ $$
 
 ## Authored normal easy diagonal_helper
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/511259fda4cb5d51e9e7c87c4590a5d36b0e0a9e7d80e03401dd5c38d0e2fcf6.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/9a86aa1869cc0e52544f98d8f49d7af7a69f8b9d21cd56dbc787a1f9038a866c.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -734,7 +734,7 @@ $$
 
 In this case, the path $C$ is the hypotenuse of a right triangle whose legs have lengths $10$ and $9:$ 
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/6f753a18af592fe61e9ff2f6fbc769e34392ce384656559e2d01df9cab12acac.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/f7e05b80704a0c373c2b0a7170eddb0960b0463cee0c31a99ca1c273cbd20958.png)
 
 Therefore, we have
 
@@ -750,7 +750,7 @@ $$
 
 ## Authored normal easy diagonal_helper
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/339adbca42c1e19c725d6c2ca857fc7c77bdadf5d948d176e61efb41d861d19d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/5ba1b59472d105061e74df677b0541bb78b1d5baf592fe805486174295654483.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -768,7 +768,7 @@ $$
 
 In this case, the path $C$ is the hypotenuse of a right triangle whose legs have lengths $7$ and $10:$ 
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/91ac1ba9512b4be622e89998e062629bd607dca93c13cca144d730a909c1c717.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/7d413fd694b88d70a791b8ec05452445f96f1892b2effb08f62c55b6c6930e3d.png)
 
 Therefore, we have
 
@@ -784,7 +784,7 @@ $$
 
 ## Authored normal moderate diagonal_plain
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/fb88f3f33870160d0a37cb5b43e754b83bce6e9d68591fd784bf44f124d89fb7.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/38a0688017f6a74886c7195516e04274b047ed330e37bc157be2ee310dff2ffc.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -814,7 +814,7 @@ $$
 
 ## Authored normal moderate diagonal_plain
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/bca36c15e201d70833b1db547a216646cfbb8cd5b8de323df57cd6df01a9b453.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/9728bce4712756d5ebe7724f4a6712b9030862eaaa8205fc5bda20e21e860c5a.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -844,7 +844,7 @@ $$
 
 ## Authored normal moderate diagonal_helper
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/747bb0d168391339ad73a12af7af4ce88f8db83fb5c2f15811d3df696f181817.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/f0523bbed161c8f9723f46a0bd0ef9f11379cd3d391cf5a3db20613bc091c9f2.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -862,7 +862,7 @@ $$
 
 In this case, the path $C$ is the hypotenuse of a right triangle whose legs have lengths $\frac{19}{2}$ and $\frac{17}{2}:$ 
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/94db90a3c5ab3631da7f848e4f4051cb13a17c74386434d71162f3e67359343f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/e79d0f82ae8d7d0fc04eaee31121f00a488dd14ba86389fe7a451e13b9253cdf.png)
 
 Therefore, we have
 
@@ -878,7 +878,7 @@ $$
 
 ## Authored normal moderate diagonal_helper
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/0ecd479423c31943c19030b55673eda032a9ed32160c0c64c0b2aeb799714bf2.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/ea190ae7631d25353999b167f639e4afcc8059f9a9393b82c39ed66ce19f9c82.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -896,7 +896,7 @@ $$
 
 In this case, the path $C$ is the hypotenuse of a right triangle whose legs have lengths $\frac{13}{2}$ and $\frac{19}{2}:$ 
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/1342f8d158430288232da7c645969dae74055c8ea5d16b7aa9a746f59c6d03e0.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/c7d8cd1db6ebddff35697af1a10f4153565911a6d3f1c2facfd47056760434bf.png)
 
 Therefore, we have
 
@@ -912,7 +912,7 @@ $$
 
 ## Authored normal hard diagonal_plain
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/2b8300e71a548dec2fd80d38c24c665b5676087e38cb2647e94183ab3343d7d5.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/affc1377d3ce03148dfb178e796f6e51dd00f1d4832a6e33e2dae5078799dd5e.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -942,7 +942,7 @@ $$
 
 ## Authored normal hard diagonal_plain
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/6b9c413c6128f256f39defcd8e9d5341e7823c37c7b6e58e33924ca1780eef0c.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/463127a86714fd8b67db176515e5cd788bb1935d406b45dd620b8cd43887900b.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -972,7 +972,7 @@ $$
 
 ## Authored normal hard diagonal_helper
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/115deb08c5203f81127c29b172eccf630cede8df0a7e5126b8a732f82b67c27b.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/58cf2b663ee8fe07cb4dc1be8663919a5641ea82929af695b9796ba0ae9837e5.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -990,7 +990,7 @@ $$
 
 In this case, the path $C$ is the hypotenuse of a right triangle whose legs have lengths $\frac{31}{4}$ and $\frac{14}{3}:$ 
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/336f5db9fb160b1be39632817a3fd2b60226aa45735d0c4c3e6309b8c878230b.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/70e28a758da8e5047957c1a2112a90c59e7701b3c8f313423246107830b92fd4.png)
 
 Therefore, we have
 
@@ -1006,7 +1006,7 @@ $$
 
 ## Authored normal hard diagonal_helper
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/2700fb7b30d846bbd9c3b884c5b9c131f23af1834cbfb2b69db7ebc6b31f6484.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/ac3b72fd1e5f2ff1654e092780d4d6d5342e813468172cfdef9a217285d01d34.png)
 
 Calculate ${\int }_{C}\,\text{d}s,$ where $C$ is the line segment shown above.
 
@@ -1024,7 +1024,7 @@ $$
 
 In this case, the path $C$ is the hypotenuse of a right triangle whose legs have lengths $\frac{16}{3}$ and $\frac{15}{4}:$ 
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/715df40f8bf239ad0dfec9e9891ebb962f48e83fcda01282e05de69102d44a8d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186162081/assets/4a30da5ae51696843f1cbcabfa7a2b17afe04734f7c4c239bd12fa1772f58a65.png)
 
 Therefore, we have
 

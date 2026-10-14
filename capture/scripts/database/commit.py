@@ -121,8 +121,16 @@ class Committer:
             except (ValueError, IndexError, KeyError):
                 pass
         # Retrying this complete saved request resolves a timeout even after basis advances.
-        result = self.client.command('transact', '--file', tx_path, '--endpoint', request['endpoint'],
-            '--request-key', request['request_key'], '--basis', request['basis'], '--source', request['source'], '--timeout-ms', 180000)
+        try:
+            result = self.client.command('transact', '--file', tx_path, '--endpoint', request['endpoint'],
+                '--request-key', request['request_key'], '--basis', request['basis'], '--source', request['source'], '--timeout-ms', 180000)
+        except Exception as error:
+            atomic_json(self.directory / 'submission-error.json', {
+                'request_key': request['request_key'], 'transaction_sha256': request['transaction_sha256'],
+                'error_type': type(error).__name__, 'message': str(error),
+                'stderr': getattr(error, 'stderr', None), 'stdout': getattr(error, 'stdout', None),
+            })
+            raise
         atomic_text(receipt_path, result)
         atomic_json(self.directory / 'receipt-request.json', {'request_key': request['request_key'],
             'transaction_sha256': request['transaction_sha256'], 'receipt_edn': result})

@@ -1,4 +1,4 @@
-"""Build only the noncommitting helper, using explicit deployed EDB dependencies."""
+"""Build native capture helpers against explicit deployed EDB dependencies."""
 from __future__ import annotations
 import hashlib
 import json
@@ -67,24 +67,22 @@ def _compile(command, stop_event):
                 process.wait()
 
 
-def preview_executable(config, stop_event):
-    """Return an explicit override or an atomic, content-addressed native build."""
+def native_executable(config, stop_event, source_files, prefix):
+    """Build against the deployed writer library and cache by input hashes."""
     check_stop(stop_event)
-    if getattr(config, 'preview_bin', None) is not None:
-        return Path(config.preview_bin)
     library = _library(config)
-    sources = {name: _digest(ROOT / name) for name in SOURCE_FILES}
+    sources = {name: _digest(ROOT / name) for name in source_files}
     build = {'sources': sources, 'edb_library': str(library), 'edb_sha256': _digest(library),
              'flags': BUILD_FLAGS, 'compiler': os.environ.get('RUSTC', 'rustc')}
     fingerprint = hashlib.sha256(json.dumps(build, sort_keys=True).encode()).hexdigest()
-    output = Path(config.repo_root) / '.local/edb/capture-runtime' / ('native-preview-' + fingerprint)
+    output = Path(config.repo_root) / '.local/edb/capture-runtime' / (prefix + '-' + fingerprint)
     if output.is_file():
         return output
     output.parent.mkdir(parents=True, exist_ok=True)
-    descriptor, temporary = tempfile.mkstemp(prefix='.native-preview-', dir=output.parent)
+    descriptor, temporary = tempfile.mkstemp(prefix='.' + prefix + '-', dir=output.parent)
     os.close(descriptor)
     try:
-        command = [build['compiler'], *BUILD_FLAGS, str(ROOT / SOURCE_FILES[0]),
+        command = [build['compiler'], *BUILD_FLAGS, str(ROOT / source_files[0]),
                    '--extern', 'edb_core=' + str(library), '-L', 'dependency=' + str(library.parent),
                    '-o', temporary]
         _compile(command, stop_event)
@@ -97,6 +95,19 @@ def preview_executable(config, stop_event):
     finally:
         Path(temporary).unlink(missing_ok=True)
     return output
+
+
+def preview_executable(config, stop_event):
+    """Return an explicit override or a noncommitting native preview build."""
+    check_stop(stop_event)
+    if getattr(config, 'preview_bin', None) is not None:
+        return Path(config.preview_bin)
+    return native_executable(config, stop_event, SOURCE_FILES, 'native-preview')
+
+
+def submission_executable(config, stop_event):
+    return native_executable(config, stop_event,
+        ('capture/scripts/database/submission.rs', 'capture/scripts/database/preview.py'), 'native-submit')
 
 
 if __name__ == '__main__':

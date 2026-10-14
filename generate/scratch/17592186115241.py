@@ -11,7 +11,9 @@ coefficient variety. Moderate/hard are authored curriculum-bounded extensions.
 No plots are required: captured SVGs are mathematical typesetting only.
 """
 from pathlib import Path
-import argparse, hashlib, json, random, re, uuid
+import argparse, hashlib, json, random, re, uuid, sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts/question_capture'))
+from math_format import normalize_prose, normalize_tex, matrix_tex as format_matrix, system_tex as format_system, checked_math_content
 import sympy as sp
 from sympy.parsing.sympy_parser import parse_expr, standard_transformations, implicit_multiplication_application
 KP=17592186115241
@@ -44,12 +46,12 @@ def tex(e,subscript=False):
   for i,v in enumerate(VARS):out=re.sub(r'(?<![A-Za-z\\])'+str(v)+r'(?![A-Za-z])',r'{x}_{'+str(i+1)+'}',out)
  return out
 
-def matrix_tex(M):
- return '[\\begin{aligned}'+r' \\ '.join(' & '.join(tex(v) for v in row) for row in M.tolist())+'\\end{aligned}]'
+def matrix_tex(M, *, augmented=True):
+ return format_matrix([[tex(v) for v in row] for row in M.tolist()], augmented=augmented)
 
 def vector_tex(values,free,subscript=False,bmatrix=False):
  body=r' \\ '.join(tex(v,subscript) for v in values)
- vector=('\\begin{bmatrix}'+body+'\\end{bmatrix}') if bmatrix else ('[\\begin{aligned}'+body+'\\end{aligned}]')
+ vector='\\begin{bmatrix}'+body+'\\end{bmatrix}'
  return vector+r',\,'+tex(free,subscript)+r'\in (-\infty ,\infty )'
 
 def fingerprint(x):return hashlib.sha256(json.dumps(x,sort_keys=True,separators=(',',':')).encode()).hexdigest()
@@ -73,7 +75,7 @@ def compile_math(text,scale,offsets):
   if '&' in body and '=' not in body:
    mat=sp.Matrix([[load_expr(v) for v in row.split('&')] for row in rows])
    mat=affine_matrix(mat,scale,offsets)
-   return r'\begin{aligned}'+r' \\ '.join(' & '.join(tex(v) for v in row) for row in mat.tolist())+r'\end{aligned}'
+   return r'\begin{array}{'+'c'*(mat.cols-1)+'|c}'+r' \\ '.join(' & '.join(tex(v) for v in row) for row in mat.tolist())+r'\end{array}'
   if '=' in body:
    for row in rows:
     lead=re.match(r'\s*(?:&\s*)?',row)[0];clean=row[len(lead):];lhs,rhs=clean.split('=',1)
@@ -137,7 +139,9 @@ def linear_tex(coefficients,sub=False):
 def equation_tex(row,sub=False):
  return linear_tex(row[:-1],sub)+'='+tex(row[-1])
 def system_tex(M,sub=False):
- return r'\{\begin{aligned}'+r' \\ '.join(equation_tex(row,sub) for row in M.tolist() if any(row))+r'.\end{aligned}'
+ rows=[equation_tex(row,sub) for row in M.tolist() if any(row)]
+ rows[-1]+='.'
+ return format_system(rows)
 
 def authored_solution(M,states,ops,sub=False):
  R,piv,free,vec=solution_vector(M);n=M.cols-1
@@ -149,7 +153,7 @@ def authored_solution(M,states,ops,sub=False):
   'The corresponding system is now\n\n$$\n'+system_tex(R,sub)+'\n$$\n\n'
   'The basic variables are the variables whose coefficients are pivots. In this case, the basic variables are '+names(piv)+', and we have one free variable, '+names(free)+'. That means we need to find '+names(piv)+' in terms of '+names(free)+'.\n\n'
   'Therefore, the general solution is\n\n$$\n'+r'\{\begin{aligned}'+r' \\ '.join(tex(VARS[i],sub)+'='+tex(vec[i],sub) for i in range(n))+r',\end{aligned}'+'\n$$\n\nwhere '+names(free)+' (the free variable) is an arbitrary number.\n\n'
-  'In vector form, the solution can be written as\n\n$$\n'+matrix_tex(sp.Matrix(VARS[:n]))+'='+vector_tex(vec,VARS[free[0]],sub)+'.\n$$')
+  'In vector form, the solution can be written as\n\n$$\n'+matrix_tex(sp.Matrix(VARS[:n]), augmented=False)+'='+vector_tex(vec,VARS[free[0]],sub)+'.\n$$')
 
 def observed(qid,parameters):
  q=QUESTIONS[qid];B=sp.Matrix(BASE[qid]);n=B.cols-1
@@ -235,6 +239,7 @@ def bank_valid(M,bank):
  if len(correct)!=1 or len(set(objects))!=5:raise ValueError('invalid complete bank')
  return correct[0]
 
+@checked_math_content
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  if level not in ('easy','moderate','hard'):raise ValueError('difficulty')
  if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('only observed radio layout supported')
@@ -258,6 +263,8 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   except ValueError:
    if parameters is not None:raise
  else:raise ValueError('could not sample an eligible COMPLETE bank')
+ prompt,sol=normalize_prose(prompt),normalize_prose(sol)
+ bank=[(normalize_tex(value) if value!='No solution' else value,obj) for value,obj in bank]
  canonical=[row for row in serialize(M.rref()[0]) if any(sp.Rational(v)!=0 for v in row)];mathfp=fingerprint({'rref':canonical,'n':M.cols-1})
  content=fingerprint({'version':VERSION,'prompt':prompt,'solution':sol,'bank':sorted(v for v,_ in bank),'profile':source or 'authored_operations','level':level})
  fid=uid(content+':field:selection');answers=[];correctid=None

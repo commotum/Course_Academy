@@ -7,8 +7,9 @@ records=json.loads((R/'review.json').read_text());allgenerated=json.loads((R/'en
 records=[{'label':x['label'],'record':x['record']} for x in allgenerated if x['label'].startswith(('source/','empirical-variant/'))]
 for level in ('easy','moderate','hard'):
  for t in (['quarter_open','three_segments'] if level=='hard' else [k for k,p in g.TEMPLATES.items() if p[0]==level]):records += [{'label':x['label'],'record':x['record']} for x in allgenerated if x['label'].startswith(level+'/'+t+'/')][:2]
+records=json.loads((R/'raw-source-records.json').read_text())+records
 (R/'review.json').write_text(json.dumps(records,indent=2)+'\n')
-parts=['# Source and generated review\n\nWorker review; parent independent QA remains pending. All original prompt plots and five solution plots were inspected directly. Each generated entry has one fixed source-shaped solution. Zero source calculator flags were present; requirement remains unknown.\n']
+parts=['# Source and generated review\n\nWorker review; parent independent QA remains pending. raw-source/raw-variant profiles are ineligible evidence records preserving the source attribute omissions; source/empirical-variant labels below denote normalized completed reconstructions, not raw parity. All original prompt plots and five solution plots were inspected directly. Each normal completed instance has one fixed source-shaped solution; raw q122484 retains its absent solution attribute. Zero source calculator flags were present; requirement remains unknown.\n']
 for source in g.SOURCE_Q.values():
  qid=source[':question/math-academy-id'];parts+=['\n## Original '+qid+'\n']
  def images(text):
@@ -19,12 +20,12 @@ for source in g.SOURCE_Q.values():
  combined=images(source[':question/problem']+'\n\n'+source.get(':question/worked-solution','[Source solution absent.]'))
  field=source[':question/answer-fields'][0];parts += [combined+'\n\nOriginal five options:\n\n'+'\n'.join('- $'+a[':answer/value']+'$' for a in field[':answer-field/choices'])+'\n\n'+('Observed key: $'+field[':answer-field/correct'][':answer/value']+'$.' if ':answer-field/correct' in field else 'Observed key and rating absent; independently inferred value π+2√2 and authored moderate level are documented separately.')+'\n']
  for item in records:
-  if item['label'] in ('source/'+qid,'empirical-variant/'+qid):
-   r=item['record'];q=r['question'];f=q[':question/answer-fields'][0];parts+=['\n### Generated '+item['label']+'\n\nParameters/profile: `'+json.dumps(r['generation']['parameters'])+'`, `'+r['generation']['profile']+'`.\n\n'+q[':question/problem']+'\n\n'+'\n'.join('- $'+a[':answer/value']+'$' for a in f[':answer-field/choices'])+'\n\n'+q[':question/worked-solution']+'\n']
+  if item['label'] in ('raw-source/'+qid,'raw-variant/'+qid,'source/'+qid,'empirical-variant/'+qid):
+   r=item['record'];q=r['question'];f=q[':question/answer-fields'][0];parts+=['\n### Generated '+item['label']+'\n\nParameters/profile: `'+json.dumps(r['generation']['parameters'])+'`, `'+r['generation']['profile']+'`.\n\n'+q[':question/problem']+'\n\n'+'\n'.join('- $'+a[':answer/value']+'$' for a in f[':answer-field/choices'])+'\n\n'+q.get(':question/worked-solution','[Raw source solution attribute absent; no completion inserted.]')+'\n']
 parts+=['\n## Authored default variants\n\nObserved empirical banks are explicit replay profiles. These defaults use complete omitted/doubled-piece operations. Hard labels are authored rational-bookkeeping policy.\n']
 for item in records:
- if item['label'].startswith(('source/','empirical-variant/')):continue
- r=item['record'];q=r['question'];parts+=['\n### '+item['label']+'\n\nParameters: `'+json.dumps(r['generation']['parameters'])+'`.\n\n'+q[':question/problem']+'\n\n'+'\n'.join('- $'+a[':answer/value']+'$' for a in q[':question/answer-fields'][0][':answer-field/choices'])+'\n\n'+q[':question/worked-solution']+'\n']
+ if item['label'].startswith(('raw-source/','raw-variant/','source/','empirical-variant/')):continue
+ r=item['record'];q=r['question'];parts+=['\n### '+item['label']+'\n\nParameters: `'+json.dumps(r['generation']['parameters'])+'`.\n\n'+q[':question/problem']+'\n\n'+'\n'.join('- $'+a[':answer/value']+'$' for a in q[':question/answer-fields'][0][':answer-field/choices'])+'\n\n'+q.get(':question/worked-solution','[Raw source solution attribute absent; no completion inserted.]')+'\n']
 (R/'review.md').write_text('\n'.join(parts))
 # Exhaust the bounded normal samplers mathematically; rendering is separately tested.
 capacity={}
