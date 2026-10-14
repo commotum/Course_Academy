@@ -1,0 +1,3 @@
+# Parametrized circles generator
+
+Run `.venv/bin/python generate/scratch/17592186087786.py --difficulty moderate --count 5 --seed 1831 --format json` (or hard). `validate.py` independently validates every complete source bank and sampled profiles, then invokes the native learner grader. `replenish.py` uses the existing application EDB integration and inventory reader, locks api.lock, rechecks current basis and source evidence, emits only distinct shortages, registers stable UUID/path, previews native validation specs, preserves exact request, and holds the lock through guarded submission and exact-basis readback. Receipts and scoped datom checks preserve source questions and learner history. Easy remains unsupported by this bounded package, with explicit shortage.
