@@ -1,0 +1,99 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-146849",
+      "sequence_position": 19,
+      "problem": "Suppose $X$ and $Y$ are discrete random variables. Let the joint CDF of $X$ and $Y$ be $F(x,y),$ where\n\n$$\nF(1,1)=0.7,\\,F(1,-2)=0.3,\\,F(-2,1)=0.4,\\,F(-2,-2)=0.1,\n$$\n\nand the supports of $X$ and $Y$, respectively, are\n\n$$\n{S}_{X}=\\{-2,-1,0,1,2\\},\\,{S}_{Y}=\\{-2,-1,0,1,2\\}.\n$$\n\nFind $P(-1.5\\le X\\le 1.5,-1.5\\le Y\\le 1.5).$",
+      "worked_solution": "Note the following:\n\n- For a given joint PMF $f(x,y),$ we can think of each point where $f(x,y)\\ne 0$ as a point mass in the plane, where the \"probability mass\" at each point equals the probability associated with that point.\n\n- The joint CDF $F(x,y)=P(X\\le x,Y\\le y)$ is the total \"probability mass\" that lies in the infinite rectangular region that has its top-right corner at $(x,y)$ and whose sides are parallel to the coordinate axis.\n\nGiven the supports of $X$ and $Y,$ the joint support $S$ is a subset of\n\n$$\n{S}_{X}\\times {S}_{Y}=\\{-2,-1,0,1,2\\}\\times \\{-2,-1,0,1,2\\}.\n$$\n\nLet's plot the points in ${S}_{X}\\times {S}_{Y},$ which contains the joint support, and sketch the region corresponding to the probability we wish to find.\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157784/assets/ae7d480e52257825e679349ce185b4aa08ed3b096fd7a780ece56c90439798fe.png)\n\nNotice that this region encompasses the same possible support points as the rectangular region with its top-right corner at $(1,1)$ and bottom-left corner at $(-2,-2)$ below, where the top and right boundaries are inclusive and the bottom and left boundaries are exclusive.\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157784/assets/5bcb1b0b518485dfcd4066a0259fea4a2dc050be47e95b4de0b925d8f1c997aa.png)\n\nGeometrically, this region can be obtained as follows:\n\n1\\. Take the infinite rectangle that has its top-right corner at $(1,1).$\n\n2\\. Subtract the infinite rectangles that have their top-right corners at $(1,-2)$ and $(-2,1).$\n\n3\\. Finally, we need to add back the infinite rectangle that has its top-right corner at $(-2,-2).$ This is because we subtracted this region twice in step 2.\n\nTherefore, we have\n\n$$\n\\begin{aligned}P(-1.5\\le X\\le 1.5,-1.5\\le Y\\le 1.5) & =\\overset{\\text{top-right corner at }(1,1)}{\\overset{⏞}{P(X\\le 1,Y\\le 1)}} \\\\  & \\,-\\overset{\\text{top-right corner at }(1,-2)}{\\overset{⏞}{P(X\\le 1,Y\\le -2)}}-\\overset{\\text{top-right corner at }(-2,1)}{\\overset{⏞}{P(X\\le -2,Y\\le 1)}} \\\\  & \\,+\\overset{\\text{top-right corner at }(-2,-2)}{\\overset{⏞}{P(X\\le -2,Y\\le -2)}} \\\\  & =F(1,1)-F(1,-2)-F(-2,1)+F(-2,-2) \\\\  & =0.7-0.3-0.4+0.1 \\\\  & =0.1.\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157784/observations/history-q-146849-0b5f6f6d60dabd9d0cf3.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14157784",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157784/observations/history-solution-q-146849-4e45d8013d5f34cebee9.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "0.4"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "0.1"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "0.2"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "0.3"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "0.5"
+            }
+          ]
+        }
+      ],
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157784/assets/ae7d480e52257825e679349ce185b4aa08ed3b096fd7a780ece56c90439798fe.png",
+          "sha256": "ae7d480e52257825e679349ce185b4aa08ed3b096fd7a780ece56c90439798fe",
+          "source_url": "https://mathacademy.com/graphics/q-146849-e-0",
+          "content_type": "image/png",
+          "representation": "original"
+        },
+        {
+          "index": 1,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157784/assets/5bcb1b0b518485dfcd4066a0259fea4a2dc050be47e95b4de0b925d8f1c997aa.png",
+          "sha256": "5bcb1b0b518485dfcd4066a0259fea4a2dc050be47e95b4de0b925d8f1c997aa",
+          "source_url": "https://mathacademy.com/graphics/q-146849-e-1",
+          "content_type": "image/png",
+          "representation": "original"
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q146849",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "0.1",
+                "option": "b",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Note the following:\n\n- For a given joint PMF $f(x,y),$ we can think of each point where $f(x,y)\\ne 0$ as a point mass in the plane, where the \"probability mass\" at each point equals the probability associated with that point.\n\n- The joint CDF $F(x,y)=P(X\\le x,Y\\le y)$ is the total \"probability mass\" that lies in the infinite rectangular region that has its top-right corner at $(x,y)$ and whose sides are parallel to the coordinate axis.\n\nGiven the supports of $X$ and $Y,$ the joint support $S$ is a subset of\n\n$$\n{S}_{X}\\times {S}_{Y}=\\{-2,-1,0,1,2\\}\\times \\{-2,-1,0,1,2\\}.\n$$\n\nLet's plot the points in ${S}_{X}\\times {S}_{Y},$ which contains the joint support, and sketch the region corresponding to the probability we wish to find.\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157784/assets/ae7d480e52257825e679349ce185b4aa08ed3b096fd7a780ece56c90439798fe.png)\n\nNotice that this region encompasses the same possible support points as the rectangular region with its top-right corner at $(1,1)$ and bottom-left corner at $(-2,-2)$ below, where the top and right boundaries are inclusive and the bottom and left boundaries are exclusive.\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157784/assets/5bcb1b0b518485dfcd4066a0259fea4a2dc050be47e95b4de0b925d8f1c997aa.png)\n\nGeometrically, this region can be obtained as follows:\n\n1\\. Take the infinite rectangle that has its top-right corner at $(1,1).$\n\n2\\. Subtract the infinite rectangles that have their top-right corners at $(1,-2)$ and $(-2,1).$\n\n3\\. Finally, we need to add back the infinite rectangle that has its top-right corner at $(-2,-2).$ This is because we subtracted this region twice in step 2.\n\nTherefore, we have\n\n$$\n\\begin{aligned}P(-1.5\\le X\\le 1.5,-1.5\\le Y\\le 1.5) & =\\overset{\\text{top-right corner at }(1,1)}{\\overset{⏞}{P(X\\le 1,Y\\le 1)}} \\\\  & \\,-\\overset{\\text{top-right corner at }(1,-2)}{\\overset{⏞}{P(X\\le 1,Y\\le -2)}}-\\overset{\\text{top-right corner at }(-2,1)}{\\overset{⏞}{P(X\\le -2,Y\\le 1)}} \\\\  & \\,+\\overset{\\text{top-right corner at }(-2,-2)}{\\overset{⏞}{P(X\\le -2,Y\\le -2)}} \\\\  & =F(1,1)-F(1,-2)-F(-2,1)+F(-2,-2) \\\\  & =0.7-0.3-0.4+0.1 \\\\  & =0.1.\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157784/observations/step-q146849-3271e8bfd351e2b5388b.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a1337e-4c7f-7161-9326-16ef29e7ed12",
+  "previous_failures": []
+}
