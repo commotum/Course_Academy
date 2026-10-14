@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-335649",
+      "sequence_position": 3,
+      "problem": "A mountain valley is monitoring the population of a reintroduced elk herd. The valley can sustain a maximum population of $600$ elk, but the herd is still below this limit. Since ecologists began tracking the growth, the population reached $536$ elk on month $4$ and $573$ elk on month $10.$ On what month will the population reach $590$ elk? Round your answer to the nearest integer.\n\n*Hint: You may assume that the population of elk, $P(t),$ increases at a rate that obeys an inhibited growth model, where $t$ is the time, in months.*",
+      "worked_solution": "The rate at which the population $P(t)$ changes is proportional to the difference between the maximum population and its current population. Therefore, we have the inhibited growth equation\n\n$$\n\\frac{dP}{dt}=k(a-P),\n$$\n\nwhere $a$ is the maximum population the valley can sustain, and $k>0$ is a constant of proportionality.\n\nIn our case, $a=600$ elk, and we have\n\n$$\n\\frac{dP}{dt}=k(600-P).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dP}{600-P} & =k\\,dt \\\\ \\int \\frac{dP}{600-P} & =\\int k\\,\\text{d}t \\\\ -\\operatorname{ln}⁡|600-P| & =kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $600-P>0$ for all $t\\ge 0.$ Next, we solve for $P(t),$ as follows:\n\n$$\n\\begin{aligned}600-P & ={e}^{-kt-C} \\\\ 600-P & ={e}^{-C}{e}^{-kt} \\\\ 600-P & =K{e}^{-kt} \\\\ P & =600-K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{-C}$ is a constant of integration.\n\nWe're told that, on month $4,$ the population was $536$ elk. So, applying the condition $P(4)=536,$ we have\n\n$$\n\\begin{aligned}P(4) & =536 \\\\ 600-K{e}^{-4k} & =536 \\\\ K{e}^{-4k} & =64.\\end{aligned}\n$$\n\nWe're also told that, on month $10,$ the population was $573$ elk. So, applying the condition $P(10)=573,$ we get\n\n$$\n\\begin{aligned}P(10) & =573 \\\\ 600-K{e}^{-10k} & =573 \\\\ K{e}^{-10k} & =27.\\end{aligned}\n$$\n\nThen, by dividing the result of the first condition by the result of the second, we can solve for $k:$\n\n$$\n\\begin{aligned}\\frac{K{e}^{-4k}}{K{e}^{-10k}} & =\\frac{64}{27} \\\\ {e}^{6k} & =\\frac{64}{27} \\\\ 6k & =\\operatorname{ln}⁡(\\frac{64}{27}) \\\\ k & =\\frac{1}{6}\\operatorname{ln}⁡(\\frac{64}{27})\\end{aligned}\n$$\n\nNow, substituting back into the result of the first condition, we solve for $K:$\n\n$$\n\\begin{aligned}K{e}^{-4\\cdot (1/6)\\operatorname{ln}⁡(64/27)} & =64 \\\\ K & =64{e}^{(4/6)\\operatorname{ln}⁡(64/27)} \\\\ K & =64{e}^{(2/3)\\operatorname{ln}⁡(64/27)} \\\\ K & =64{(\\frac{64}{27})}^{2/3} \\\\ K & =\\frac{1\\,024}{9}\\end{aligned}\n$$\n\nTherefore, we have the following expression for $P(t):$\n\n$$\nP(t)=600-\\frac{1\\,024}{9}{e}^{-(t/6)\\operatorname{ln}⁡(64/27)}.\n$$\n\nFinally, let $m$ be the month when the population reaches $590$ elk. Then, we have\n\n$$\n\\begin{aligned}P(m) & =590 \\\\ 600-\\frac{1\\,024}{9}{e}^{-km} & =590 \\\\ 10 & =\\frac{1\\,024}{9}{e}^{-km} \\\\ {e}^{-km} & =\\frac{90}{1\\,024} \\\\ {e}^{-km} & =\\frac{45}{512} \\\\ -km & =\\operatorname{ln}⁡(\\frac{45}{512}) \\\\ m & =-\\frac{1}{k}\\operatorname{ln}⁡(\\frac{45}{512}).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that the population will be $590$ elk on month\n\n$$\nm=\\frac{-\\operatorname{ln}⁡(\\frac{45}{512})}{\\frac{1}{6}\\operatorname{ln}⁡(\\frac{64}{27})}=16.905…≈17,\n$$\n\nrounded to the nearest day.",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14161478/observations/history-q-335649-0dc2526f2cc8cc20fae8.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14161478",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14161478/observations/history-solution-q-335649-c6fa80bb289de015e39b.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "text",
+              "value": "$20\\text{th}$ month"
+            },
+            {
+              "option": "b",
+              "type": "text",
+              "value": "$17\\text{th}$ month"
+            },
+            {
+              "option": "c",
+              "type": "text",
+              "value": "$25\\text{th}$ month"
+            },
+            {
+              "option": "d",
+              "type": "text",
+              "value": "$14\\text{th}$ month"
+            },
+            {
+              "option": "e",
+              "type": "text",
+              "value": "$22\\text{th}$ month"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q335649",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "$17\\text{th}$ month",
+                "option": "b",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "The rate at which the population $P(t)$ changes is proportional to the difference between the maximum population and its current population. Therefore, we have the inhibited growth equation\n\n$$\n\\frac{dP}{dt}=k(a-P),\n$$\n\nwhere $a$ is the maximum population the valley can sustain, and $k>0$ is a constant of proportionality.\n\nIn our case, $a=600$ elk, and we have\n\n$$\n\\frac{dP}{dt}=k(600-P).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dP}{600-P} & =k\\,dt \\\\ \\int \\frac{dP}{600-P} & =\\int k\\,\\text{d}t \\\\ -\\operatorname{ln}⁡|600-P| & =kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited growth equation, we have $600-P>0$ for all $t\\ge 0.$ Next, we solve for $P(t),$ as follows:\n\n$$\n\\begin{aligned}600-P & ={e}^{-kt-C} \\\\ 600-P & ={e}^{-C}{e}^{-kt} \\\\ 600-P & =K{e}^{-kt} \\\\ P & =600-K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{-C}$ is a constant of integration.\n\nWe're told that, on month $4,$ the population was $536$ elk. So, applying the condition $P(4)=536,$ we have\n\n$$\n\\begin{aligned}P(4) & =536 \\\\ 600-K{e}^{-4k} & =536 \\\\ K{e}^{-4k} & =64.\\end{aligned}\n$$\n\nWe're also told that, on month $10,$ the population was $573$ elk. So, applying the condition $P(10)=573,$ we get\n\n$$\n\\begin{aligned}P(10) & =573 \\\\ 600-K{e}^{-10k} & =573 \\\\ K{e}^{-10k} & =27.\\end{aligned}\n$$\n\nThen, by dividing the result of the first condition by the result of the second, we can solve for $k:$\n\n$$\n\\begin{aligned}\\frac{K{e}^{-4k}}{K{e}^{-10k}} & =\\frac{64}{27} \\\\ {e}^{6k} & =\\frac{64}{27} \\\\ 6k & =\\operatorname{ln}⁡(\\frac{64}{27}) \\\\ k & =\\frac{1}{6}\\operatorname{ln}⁡(\\frac{64}{27})\\end{aligned}\n$$\n\nNow, substituting back into the result of the first condition, we solve for $K:$\n\n$$\n\\begin{aligned}K{e}^{-4\\cdot (1/6)\\operatorname{ln}⁡(64/27)} & =64 \\\\ K & =64{e}^{(4/6)\\operatorname{ln}⁡(64/27)} \\\\ K & =64{e}^{(2/3)\\operatorname{ln}⁡(64/27)} \\\\ K & =64{(\\frac{64}{27})}^{2/3} \\\\ K & =\\frac{1\\,024}{9}\\end{aligned}\n$$\n\nTherefore, we have the following expression for $P(t):$\n\n$$\nP(t)=600-\\frac{1\\,024}{9}{e}^{-(t/6)\\operatorname{ln}⁡(64/27)}.\n$$\n\nFinally, let $m$ be the month when the population reaches $590$ elk. Then, we have\n\n$$\n\\begin{aligned}P(m) & =590 \\\\ 600-\\frac{1\\,024}{9}{e}^{-km} & =590 \\\\ 10 & =\\frac{1\\,024}{9}{e}^{-km} \\\\ {e}^{-km} & =\\frac{90}{1\\,024} \\\\ {e}^{-km} & =\\frac{45}{512} \\\\ -km & =\\operatorname{ln}⁡(\\frac{45}{512}) \\\\ m & =-\\frac{1}{k}\\operatorname{ln}⁡(\\frac{45}{512}).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that the population will be $590$ elk on month\n\n$$\nm=\\frac{-\\operatorname{ln}⁡(\\frac{45}{512})}{\\frac{1}{6}\\operatorname{ln}⁡(\\frac{64}{27})}=16.905…≈17,\n$$\n\nrounded to the nearest day.",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14161478/observations/step-q335649-38dc3ca21755de7d146f.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a1346b-716a-7330-b0c0-39cb268c92c1",
+  "previous_failures": []
+}
