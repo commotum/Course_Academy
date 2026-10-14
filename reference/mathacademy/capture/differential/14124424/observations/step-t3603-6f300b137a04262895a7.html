@@ -1,0 +1,275 @@
+<div id="step-t3603" class="step" style="display: block;">
+    
+               
+                <div class="tutorial">
+                    <div class="stepHeader">
+                        <div class="stepName"><span class="stepType">Normalizing a Vector</span></div>       
+                        <div class="helpButton" stepid="t3603">?</div>
+                    </div>                    
+    
+                    <style type="text/css">
+                            .mjpage .MJX-monospace {
+                            font-family: monospace
+                            }
+
+                            .mjpage .MJX-sans-serif {
+                            font-family: sans-serif
+                            }
+
+                            .mjpage {
+                            display: inline;
+                            font-style: normal;
+                            font-weight: normal;
+                            line-height: normal;
+                            font-size: 100%;
+                            font-size-adjust: none;
+                            text-indent: 0;
+                            text-align: left;
+                            text-transform: none;
+                            letter-spacing: normal;
+                            word-spacing: normal;
+                            word-wrap: normal;
+                            white-space: nowrap;
+                            float: none;
+                            direction: ltr;
+                            max-width: none;
+                            max-height: none;
+                            min-width: 0;
+                            min-height: 0;
+                            border: 0;
+                            padding: 0;
+                            margin: 0
+                            }
+
+                            .mjpage * {
+                            transition: none;
+                            -webkit-transition: none;
+                            -moz-transition: none;
+                            -ms-transition: none;
+                            -o-transition: none
+                            }
+
+                            .mjx-svg-href {
+                            fill: blue;
+                            stroke: blue
+                            }
+
+                            .MathJax_SVG_LineBox {
+                            display: table!important
+                            }
+
+                            .MathJax_SVG_LineBox span {
+                            display: table-cell!important;
+                            width: 10000em!important;
+                            min-width: 0;
+                            max-width: none;
+                            padding: 0;
+                            border: 0;
+                            margin: 0
+                            }
+
+                            .mjpage__block {
+                            text-align: center;
+                            margin: 1em 0em;
+                            position: relative;
+                            display: block!important;
+                            text-indent: 0;
+                            max-width: none;
+                            max-height: none;
+                            min-width: 0;
+                            min-height: 0;
+                            width: 100%
+                            }</style><p>A <strong>unit vector</strong> is a vector whose length is equal to <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1.809ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 779 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-1-Title">
+<title id="MathJax-SVG-1-Title">1.</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E1-MJMAIN-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path>
+<path stroke-width="1" id="E1-MJMAIN-2E" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E1-MJMAIN-31"></use>
+ <use xlink:href="#E1-MJMAIN-2E" x="500" y="0"></use>
+</g>
+</svg></span> If we divide a <em>non-zero</em> vector <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1.411ex" height="1.676ex" style="vertical-align: -0.338ex;" viewBox="0 -576.1 607.5 721.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-2-Title">
+<title id="MathJax-SVG-2-Title">\mathbf{x}</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E2-MJMAINB-78" d="M227 0Q212 3 121 3Q40 3 28 0H21V62H117L245 213L109 382H26V444H34Q49 441 143 441Q247 441 265 444H274V382H246L281 339Q315 297 316 297Q320 297 354 341L389 382H352V444H360Q375 441 466 441Q547 441 559 444H566V382H471L355 246L504 63L545 62H586V0H578Q563 3 469 3Q365 3 347 0H338V62H366Q366 63 326 112T285 163L198 63L217 62H235V0H227Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E2-MJMAINB-78" x="0" y="0"></use>
+</g>
+</svg></span> by its norm <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="4.383ex" height="2.843ex" style="vertical-align: -0.838ex;" viewBox="0 -863.1 1887 1223.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-3-Title">
+<title id="MathJax-SVG-3-Title">\Vert \mathbf{x} \Vert,</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E3-MJMAIN-2225" d="M133 736Q138 750 153 750Q164 750 170 739Q172 735 172 250T170 -239Q164 -250 152 -250Q144 -250 138 -244L137 -243Q133 -241 133 -179T132 250Q132 731 133 736ZM329 739Q334 750 346 750Q353 750 361 744L362 743Q366 741 366 679T367 250T367 -178T362 -243L361 -244Q355 -250 347 -250Q335 -250 329 -239Q327 -235 327 250T329 739Z"></path>
+<path stroke-width="1" id="E3-MJMAINB-78" d="M227 0Q212 3 121 3Q40 3 28 0H21V62H117L245 213L109 382H26V444H34Q49 441 143 441Q247 441 265 444H274V382H246L281 339Q315 297 316 297Q320 297 354 341L389 382H352V444H360Q375 441 466 441Q547 441 559 444H566V382H471L355 246L504 63L545 62H586V0H578Q563 3 469 3Q365 3 347 0H338V62H366Q366 63 326 112T285 163L198 63L217 62H235V0H227Z"></path>
+<path stroke-width="1" id="E3-MJMAIN-2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E3-MJMAIN-2225" x="0" y="0"></use>
+ <use xlink:href="#E3-MJMAINB-78" x="500" y="0"></use>
+ <use xlink:href="#E3-MJMAIN-2225" x="1108" y="0"></use>
+ <use xlink:href="#E3-MJMAIN-2C" x="1608" y="0"></use>
+</g>
+</svg></span> we obtain a unit vector <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="9.728ex" height="5.509ex" style="vertical-align: -2.671ex;" viewBox="0 -1221.9 4188.6 2372" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-4-Title">
+<title id="MathJax-SVG-4-Title">\mathbf{v}=\dfrac{\mathbf{x}}{\Vert\mathbf{x}\Vert},</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E4-MJMAINB-76" d="M401 444Q413 441 495 441Q568 441 574 444H580V382H510L409 156Q348 18 339 6Q331 -4 320 -4Q318 -4 313 -4T303 -3H288Q273 -3 264 12T221 102Q206 135 197 156L96 382H26V444H34Q49 441 145 441Q252 441 270 444H279V382H231L284 264Q335 149 338 149Q338 150 389 264T442 381Q442 382 418 382H394V444H401Z"></path>
+<path stroke-width="1" id="E4-MJMAIN-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path>
+<path stroke-width="1" id="E4-MJMAINB-78" d="M227 0Q212 3 121 3Q40 3 28 0H21V62H117L245 213L109 382H26V444H34Q49 441 143 441Q247 441 265 444H274V382H246L281 339Q315 297 316 297Q320 297 354 341L389 382H352V444H360Q375 441 466 441Q547 441 559 444H566V382H471L355 246L504 63L545 62H586V0H578Q563 3 469 3Q365 3 347 0H338V62H366Q366 63 326 112T285 163L198 63L217 62H235V0H227Z"></path>
+<path stroke-width="1" id="E4-MJMAIN-2225" d="M133 736Q138 750 153 750Q164 750 170 739Q172 735 172 250T170 -239Q164 -250 152 -250Q144 -250 138 -244L137 -243Q133 -241 133 -179T132 250Q132 731 133 736ZM329 739Q334 750 346 750Q353 750 361 744L362 743Q366 741 366 679T367 250T367 -178T362 -243L361 -244Q355 -250 347 -250Q335 -250 329 -239Q327 -235 327 250T329 739Z"></path>
+<path stroke-width="1" id="E4-MJMAIN-2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E4-MJMAINB-76" x="0" y="0"></use>
+ <use xlink:href="#E4-MJMAIN-3D" x="885" y="0"></use>
+<g transform="translate(1941,0)">
+<g transform="translate(120,0)">
+<rect stroke="none" width="1728" height="60" x="0" y="220"></rect>
+ <use xlink:href="#E4-MJMAINB-78" x="560" y="676"></use>
+<g transform="translate(60,-771)">
+ <use xlink:href="#E4-MJMAIN-2225" x="0" y="0"></use>
+ <use xlink:href="#E4-MJMAINB-78" x="500" y="0"></use>
+ <use xlink:href="#E4-MJMAIN-2225" x="1108" y="0"></use>
+</g>
+</g>
+</g>
+ <use xlink:href="#E4-MJMAIN-2C" x="3910" y="0"></use>
+</g>
+</svg></span> since
+<span class="mjpage mjpage__block"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="31.725ex" height="6.509ex" style="vertical-align: -2.671ex;" viewBox="0 -1652.5 13659.1 2802.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-5-Title">
+<title id="MathJax-SVG-5-Title">
+	\Vert \mathbf{v} \Vert	=\left\Vert \dfrac{\mathbf{x}}{\Vert \mathbf{x} \Vert} \right\Vert
+						= \dfrac{1}{\Vert \mathbf{x} \Vert}\cdot\Vert \mathbf{x} \Vert
+						= 1.
+</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E5-MJMAIN-2225" d="M133 736Q138 750 153 750Q164 750 170 739Q172 735 172 250T170 -239Q164 -250 152 -250Q144 -250 138 -244L137 -243Q133 -241 133 -179T132 250Q132 731 133 736ZM329 739Q334 750 346 750Q353 750 361 744L362 743Q366 741 366 679T367 250T367 -178T362 -243L361 -244Q355 -250 347 -250Q335 -250 329 -239Q327 -235 327 250T329 739Z"></path>
+<path stroke-width="1" id="E5-MJMAINB-76" d="M401 444Q413 441 495 441Q568 441 574 444H580V382H510L409 156Q348 18 339 6Q331 -4 320 -4Q318 -4 313 -4T303 -3H288Q273 -3 264 12T221 102Q206 135 197 156L96 382H26V444H34Q49 441 145 441Q252 441 270 444H279V382H231L284 264Q335 149 338 149Q338 150 389 264T442 381Q442 382 418 382H394V444H401Z"></path>
+<path stroke-width="1" id="E5-MJMAIN-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path>
+<path stroke-width="1" id="E5-MJMAINB-78" d="M227 0Q212 3 121 3Q40 3 28 0H21V62H117L245 213L109 382H26V444H34Q49 441 143 441Q247 441 265 444H274V382H246L281 339Q315 297 316 297Q320 297 354 341L389 382H352V444H360Q375 441 466 441Q547 441 559 444H566V382H471L355 246L504 63L545 62H586V0H578Q563 3 469 3Q365 3 347 0H338V62H366Q366 63 326 112T285 163L198 63L217 62H235V0H227Z"></path>
+<path stroke-width="1" id="E5-MJMAIN-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path>
+<path stroke-width="1" id="E5-MJMAIN-22C5" d="M78 250Q78 274 95 292T138 310Q162 310 180 294T199 251Q199 226 182 208T139 190T96 207T78 250Z"></path>
+<path stroke-width="1" id="E5-MJMAIN-2E" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E5-MJMAIN-2225" x="0" y="0"></use>
+ <use xlink:href="#E5-MJMAINB-76" x="500" y="0"></use>
+ <use xlink:href="#E5-MJMAIN-2225" x="1108" y="0"></use>
+ <use xlink:href="#E5-MJMAIN-3D" x="1886" y="0"></use>
+<g transform="translate(2942,0)">
+<g transform="translate(0,1521)">
+ <use xlink:href="#E5-MJMAIN-2225" x="0" y="-751"></use>
+<g transform="translate(0,-1430.7774900199602) scale(1,0.6375199600798404)">
+ <use xlink:href="#E5-MJMAIN-2225"></use>
+</g>
+ <use xlink:href="#E5-MJMAIN-2225" x="0" y="-2292"></use>
+</g>
+<g transform="translate(500,0)">
+<g transform="translate(120,0)">
+<rect stroke="none" width="1728" height="60" x="0" y="220"></rect>
+ <use xlink:href="#E5-MJMAINB-78" x="560" y="676"></use>
+<g transform="translate(60,-771)">
+ <use xlink:href="#E5-MJMAIN-2225" x="0" y="0"></use>
+ <use xlink:href="#E5-MJMAINB-78" x="500" y="0"></use>
+ <use xlink:href="#E5-MJMAIN-2225" x="1108" y="0"></use>
+</g>
+</g>
+</g>
+<g transform="translate(2469,1521)">
+ <use xlink:href="#E5-MJMAIN-2225" x="0" y="-751"></use>
+<g transform="translate(0,-1430.7774900199602) scale(1,0.6375199600798404)">
+ <use xlink:href="#E5-MJMAIN-2225"></use>
+</g>
+ <use xlink:href="#E5-MJMAIN-2225" x="0" y="-2292"></use>
+</g>
+</g>
+ <use xlink:href="#E5-MJMAIN-3D" x="6189" y="0"></use>
+<g transform="translate(7246,0)">
+<g transform="translate(120,0)">
+<rect stroke="none" width="1728" height="60" x="0" y="220"></rect>
+ <use xlink:href="#E5-MJMAIN-31" x="614" y="676"></use>
+<g transform="translate(60,-771)">
+ <use xlink:href="#E5-MJMAIN-2225" x="0" y="0"></use>
+ <use xlink:href="#E5-MJMAINB-78" x="500" y="0"></use>
+ <use xlink:href="#E5-MJMAIN-2225" x="1108" y="0"></use>
+</g>
+</g>
+</g>
+ <use xlink:href="#E5-MJMAIN-22C5" x="9436" y="0"></use>
+ <use xlink:href="#E5-MJMAIN-2225" x="9937" y="0"></use>
+ <use xlink:href="#E5-MJMAINB-78" x="10438" y="0"></use>
+ <use xlink:href="#E5-MJMAIN-2225" x="11045" y="0"></use>
+ <use xlink:href="#E5-MJMAIN-3D" x="11823" y="0"></use>
+<g transform="translate(12880,0)">
+ <use xlink:href="#E5-MJMAIN-31"></use>
+ <use xlink:href="#E5-MJMAIN-2E" x="500" y="0"></use>
+</g>
+</g>
+</svg></span></p>
+<p>The process of dividing a vector <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1.411ex" height="1.676ex" style="vertical-align: -0.338ex;" viewBox="0 -576.1 607.5 721.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-6-Title">
+<title id="MathJax-SVG-6-Title">\mathbf{x}</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E6-MJMAINB-78" d="M227 0Q212 3 121 3Q40 3 28 0H21V62H117L245 213L109 382H26V444H34Q49 441 143 441Q247 441 265 444H274V382H246L281 339Q315 297 316 297Q320 297 354 341L389 382H352V444H360Q375 441 466 441Q547 441 559 444H566V382H471L355 246L504 63L545 62H586V0H578Q563 3 469 3Q365 3 347 0H338V62H366Q366 63 326 112T285 163L198 63L217 62H235V0H227Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E6-MJMAINB-78" x="0" y="0"></use>
+</g>
+</svg></span> by its norm <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="3.736ex" height="2.843ex" style="vertical-align: -0.838ex;" viewBox="0 -863.1 1608.5 1223.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-7-Title">
+<title id="MathJax-SVG-7-Title">\Vert \mathbf{x} \Vert</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E7-MJMAIN-2225" d="M133 736Q138 750 153 750Q164 750 170 739Q172 735 172 250T170 -239Q164 -250 152 -250Q144 -250 138 -244L137 -243Q133 -241 133 -179T132 250Q132 731 133 736ZM329 739Q334 750 346 750Q353 750 361 744L362 743Q366 741 366 679T367 250T367 -178T362 -243L361 -244Q355 -250 347 -250Q335 -250 329 -239Q327 -235 327 250T329 739Z"></path>
+<path stroke-width="1" id="E7-MJMAINB-78" d="M227 0Q212 3 121 3Q40 3 28 0H21V62H117L245 213L109 382H26V444H34Q49 441 143 441Q247 441 265 444H274V382H246L281 339Q315 297 316 297Q320 297 354 341L389 382H352V444H360Q375 441 466 441Q547 441 559 444H566V382H471L355 246L504 63L545 62H586V0H578Q563 3 469 3Q365 3 347 0H338V62H366Q366 63 326 112T285 163L198 63L217 62H235V0H227Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E7-MJMAIN-2225" x="0" y="0"></use>
+ <use xlink:href="#E7-MJMAINB-78" x="500" y="0"></use>
+ <use xlink:href="#E7-MJMAIN-2225" x="1108" y="0"></use>
+</g>
+</svg></span> is called <strong>normalizing the vector <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.058ex" height="1.676ex" style="vertical-align: -0.338ex;" viewBox="0 -576.1 886 721.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-8-Title">
+<title id="MathJax-SVG-8-Title">\mathbf{x}.</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E8-MJMAINB-78" d="M227 0Q212 3 121 3Q40 3 28 0H21V62H117L245 213L109 382H26V444H34Q49 441 143 441Q247 441 265 444H274V382H246L281 339Q315 297 316 297Q320 297 354 341L389 382H352V444H360Q375 441 466 441Q547 441 559 444H566V382H471L355 246L504 63L545 62H586V0H578Q563 3 469 3Q365 3 347 0H338V62H366Q366 63 326 112T285 163L198 63L217 62H235V0H227Z"></path>
+<path stroke-width="1" id="E8-MJMAIN-2E" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E8-MJMAINB-78" x="0" y="0"></use>
+ <use xlink:href="#E8-MJMAIN-2E" x="607" y="0"></use>
+</g>
+</svg></span></strong> We say that the unit vector <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="9.081ex" height="5.509ex" style="vertical-align: -2.671ex;" viewBox="0 -1221.9 3910.1 2372" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-9-Title">
+<title id="MathJax-SVG-9-Title">\mathbf{v}=\dfrac{\mathbf{x}}{\Vert\mathbf{x}\Vert}</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E9-MJMAINB-76" d="M401 444Q413 441 495 441Q568 441 574 444H580V382H510L409 156Q348 18 339 6Q331 -4 320 -4Q318 -4 313 -4T303 -3H288Q273 -3 264 12T221 102Q206 135 197 156L96 382H26V444H34Q49 441 145 441Q252 441 270 444H279V382H231L284 264Q335 149 338 149Q338 150 389 264T442 381Q442 382 418 382H394V444H401Z"></path>
+<path stroke-width="1" id="E9-MJMAIN-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path>
+<path stroke-width="1" id="E9-MJMAINB-78" d="M227 0Q212 3 121 3Q40 3 28 0H21V62H117L245 213L109 382H26V444H34Q49 441 143 441Q247 441 265 444H274V382H246L281 339Q315 297 316 297Q320 297 354 341L389 382H352V444H360Q375 441 466 441Q547 441 559 444H566V382H471L355 246L504 63L545 62H586V0H578Q563 3 469 3Q365 3 347 0H338V62H366Q366 63 326 112T285 163L198 63L217 62H235V0H227Z"></path>
+<path stroke-width="1" id="E9-MJMAIN-2225" d="M133 736Q138 750 153 750Q164 750 170 739Q172 735 172 250T170 -239Q164 -250 152 -250Q144 -250 138 -244L137 -243Q133 -241 133 -179T132 250Q132 731 133 736ZM329 739Q334 750 346 750Q353 750 361 744L362 743Q366 741 366 679T367 250T367 -178T362 -243L361 -244Q355 -250 347 -250Q335 -250 329 -239Q327 -235 327 250T329 739Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E9-MJMAINB-76" x="0" y="0"></use>
+ <use xlink:href="#E9-MJMAIN-3D" x="885" y="0"></use>
+<g transform="translate(1941,0)">
+<g transform="translate(120,0)">
+<rect stroke="none" width="1728" height="60" x="0" y="220"></rect>
+ <use xlink:href="#E9-MJMAINB-78" x="560" y="676"></use>
+<g transform="translate(60,-771)">
+ <use xlink:href="#E9-MJMAIN-2225" x="0" y="0"></use>
+ <use xlink:href="#E9-MJMAINB-78" x="500" y="0"></use>
+ <use xlink:href="#E9-MJMAIN-2225" x="1108" y="0"></use>
+</g>
+</g>
+</g>
+</g>
+</svg></span> is <em>in the same direction</em> as <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.058ex" height="1.676ex" style="vertical-align: -0.338ex;" viewBox="0 -576.1 886 721.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-10-Title">
+<title id="MathJax-SVG-10-Title">\mathbf{x}.</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E10-MJMAINB-78" d="M227 0Q212 3 121 3Q40 3 28 0H21V62H117L245 213L109 382H26V444H34Q49 441 143 441Q247 441 265 444H274V382H246L281 339Q315 297 316 297Q320 297 354 341L389 382H352V444H360Q375 441 466 441Q547 441 559 444H566V382H471L355 246L504 63L545 62H586V0H578Q563 3 469 3Q365 3 347 0H338V62H366Q366 63 326 112T285 163L198 63L217 62H235V0H227Z"></path>
+<path stroke-width="1" id="E10-MJMAIN-2E" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E10-MJMAINB-78" x="0" y="0"></use>
+ <use xlink:href="#E10-MJMAIN-2E" x="607" y="0"></use>
+</g>
+</svg></span></p>
+           
+                </div>        
+                    
+            </div>
