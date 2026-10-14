@@ -12,6 +12,7 @@ from pathlib import Path
 
 from edn import kw
 from math_notation import identity as math_identity
+from math_content import normalize_capture_question
 
 ROOT = Path(__file__).resolve().parents[2]
 # Keep capture independent of rebuilds in the EDB development checkout.
@@ -338,6 +339,7 @@ def build_transaction(content, topic, existing, reconciler=None):
         transaction.append({kw('db/id'):ref('topic/math-academy-id',content['topic_id']),
                             kw('topic/knowledge-points'):[target]})
     for question, example in records:
+        question = normalize_capture_question(question)
         mid, kp_id = question['math_academy_id'], str(question['knowledge_point_id'])
         validate_question(question, canonical=example, existing=existing.get(mid))
         if kp_id not in kps:

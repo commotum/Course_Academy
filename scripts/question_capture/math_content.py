@@ -1,185 +1,293 @@
-"""Source-only content updates for the Source-aware math database.
+"""Shared Course Academy math-content convention for capture and generators.
 
-Existing domain identities are resolved from the current database. Answer values
-and field definitions are immutable: changed source fields replace ownership,
-leaving the old components available in history.
+Prose uses $inline$ / $$display$$; math answers contain bare TeX. Matrices use
+matrix environments, augmented matrices carry explicit array column rules,
+and equation systems use a scalable brace with equals-aligned rows.
 """
 import copy
-import hashlib
-import json
-import uuid
+import re
 
-from core import ALLOWED, ensured, ref, stable_id, validate_question
-from edn import kw
+FORMAT_VERSION = 'course-academy-tex-v1'
+
+ENV = re.compile(r'\\(begin|end)\{([^{}]+)\}')
+
+def environment(text, start):
+    first = ENV.match(text, start)
+    if not first or first[1] != 'begin': return None
+    stack = [first[2]]
+    for token in ENV.finditer(text, first.end()):
+        if token[1] == 'begin': stack.append(token[2])
+        elif not stack or stack.pop() != token[2]: return None
+        if not stack: return first.end(), token.start(), token.end()
+    return None
+
+def cells(body):
+    rows, row, cell, depth, i, stack = [], [], [], 0, 0, []
+    while i < len(body):
+        token = ENV.match(body, i)
+        if token:
+            if token[1] == 'begin': stack.append(token[2])
+            elif not stack or stack.pop() != token[2]: return None
+            cell.append(token[0]); i = token.end(); continue
+        if body[i:i + 2] == '\\\\' and not depth and not stack:
+            row.append(''.join(cell).strip()); rows.append(row); row, cell = [], []
+            i += 2; continue
+        if body[i] == '\\' and i + 1 < len(body):
+            cell.append(body[i:i + 2]); i += 2; continue
+        if body[i] == '{': depth += 1
+        elif body[i] == '}': depth -= 1
+        elif body[i] == '&' and not depth and not stack:
+            row.append(''.join(cell).strip()); cell = []; i += 1; continue
+        if depth < 0: return None
+        cell.append(body[i]); i += 1
+    if depth or stack: return None
+    row.append(''.join(cell).strip()); rows.append(row)
+    return rows
+
+def equation(row):
+    while len(row) > 1 and not row[0]: row = row[1:]
+    if len(row) == 2 and row[1].startswith('='): return row[0] + ' &' + row[1]
+    if len(row) == 2 and row[0].endswith('='): return row[0][:-1].strip() + ' &=' + row[1]
+    if len(row) == 3 and row[1] == '=': return row[0] + ' &=' + row[2]
+    if len(row) == 2:
+        first = equation([row[0]])
+        if first: return first + ' && ' + row[1]
+    if len(row) != 1 or r'\begin{' in row[0]: return None
+    text, depth, i = row[0], 0, 0
+    while i < len(text):
+        if text[i] == '\\': i += 2; continue
+        if text[i] == '{': depth += 1
+        elif text[i] == '}': depth -= 1
+        elif text[i] == '=' and not depth:
+            return text[:i].strip() + ' &=' + text[i + 1:].strip()
+        i += 1
+    return None
+
+def system(body):
+    rows = cells(body)
+    if not rows: return None
+    equations = [equation(row) for row in rows]
+    if not all(equations): return None
+    return r'\left\{\begin{aligned}' + r' \\ '.join(equations) + r'\end{aligned}\right.'
+
+def repair(text, include_cases=False):
+    changes = []
+    # This exact old capture has one literal opening brace, not a TeX group.
+    pattern = re.compile(r'\\begin\{aligned\}\s*\{\s*(?=\\begin\{aligned\})')
+    for match in list(pattern.finditer(text))[::-1]:
+        inner = environment(text, match.end())
+        if not inner: continue
+        suffix = re.match(r'\s*\\end\{aligned\}', text[inner[2]:])
+        if not suffix: continue
+        replacement = system(text[inner[0]:inner[1]])
+        if replacement: changes.append((match.start(), inner[2] + suffix.end(), replacement))
+    for start, end, value in sorted(changes, reverse=True): text = text[:start] + value + text[end:]
+    changes = []
+    for match in re.finditer(r'\\\{\s*(?=\\begin\{aligned\})', text):
+        if re.search(r'\\(?:left|[Bb]igg?)\s*$', text[:match.start()]): continue
+        span = environment(text, match.end())
+        if not span: continue
+        replacement = system(text[span[0]:span[1]])
+        if replacement: changes.append((match.start(), span[2], replacement))
+    for start, end, value in sorted(changes, reverse=True): text = text[:start] + value + text[end:]
+    changes = []
+    # In old answer choices the visible brace was emitted as an unmatched
+    # TeX group opener. A balanced ordinary group must remain a group.
+    for match in re.finditer(r'(?<!\\)\{\s*(?=\\begin\{aligned\})', text):
+        span = environment(text, match.end())
+        if not span or text[span[2]:].lstrip().startswith('}'): continue
+        replacement = system(text[span[0]:span[1]])
+        if replacement: changes.append((match.start(), span[2], replacement))
+    for start, end, value in sorted(changes, reverse=True): text = text[:start] + value + text[end:]
+    if include_cases:
+        changes = []
+        for match in re.finditer(r'\\begin\{cases\}', text):
+            span = environment(text, match.start())
+            if not span: continue
+            replacement = system(text[span[0]:span[1]])
+            if replacement: changes.append((match.start(), span[2], replacement))
+        for start, end, value in sorted(changes, reverse=True): text = text[:start] + value + text[end:]
+    return text
+
+def legacy_choice(text):
+    """The seed import also flattened system rows to semicolons in math choices."""
+    if not text.startswith('{') or text.endswith('}') or ';' not in text: return text
+    body, rows, start, depth, i = text[1:], [], 0, 0, 0
+    while i < len(body):
+        if body[i] == '\\': i += 2; continue
+        if body[i] == '{': depth += 1
+        elif body[i] == '}': depth -= 1
+        elif body[i] == ';' and not depth:
+            rows.append(body[start:i].strip()); start = i + 1
+        if depth < 0: return text
+        i += 1
+    if depth: return text
+    rows.append(body[start:].strip())
+    return system(r' \\ '.join(rows)) or text
 
 
-def scalar(value):
-    return value.get(':db/id', value.get(':db/ident')) if isinstance(value, dict) else value
+MATH = re.compile(r'\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\.|[^$\\])*?(?<!\\)\$')
 
 
-def resolve_knowledge_points(content, topics, existing):
-    content = copy.deepcopy(content)
-    records = content.get('questions', []) + content.get('canonical_examples', [])
-    examples = {str(q['knowledge_point_id']): q['math_academy_id']
-                for q in content.get('canonical_examples', [])}
-    declarations = {str(p['id']): p for p in content.get('new_knowledge_points', [])}
-    remapped, additions = {}, {}
-    for q in records:
-        tid = q.get('topic_id') or content.get('topic_id')
-        if tid not in topics:
-            raise ValueError('Question has no resolved source topic: ' + q['math_academy_id'])
-        points = topics[tid].get(':topic/knowledge-points', [])
-        original = str(q['knowledge_point_id'])
-        source_example = examples.get(original) or declarations.get(original, {}).get('source_example_id')
-        matches = [p for p in points if source_example and
-                   p.get(':knowledge-point/canonical-example', {}).get(':question/math-academy-id') == source_example]
-        if not matches:
-            matches = [p for p in points if str(p[':knowledge-point/id']) == original]
-        if not matches:
-            owners = existing.get(q['math_academy_id'], {}).get(':knowledge-point/_questions', []) + \
-                     existing.get(q['math_academy_id'], {}).get(':knowledge-point/_canonical-example', [])
-            owner_ids = {str(p[':knowledge-point/id']) for p in owners}
-            matches = [p for p in points if str(p[':knowledge-point/id']) in owner_ids]
-        if not matches:
-            matches = [p for p in points if p[':knowledge-point/title'] == q.get('knowledge_point')]
-        if len(matches) > 1:
-            raise ValueError('Ambiguous source knowledge point: ' + q['math_academy_id'])
-        if matches:
-            identity = str(matches[0][':knowledge-point/id'])
-        elif source_example and content.get('task_type') == 'lesson' and content.get('lesson_definition', {}).get('complete'):
-            identity = str(stable_id('knowledge-point', str(tid) + ':' + source_example))
-            additions[identity] = {'id': identity, 'title': q['knowledge_point'],
-                                   'source_example_id': source_example, 'topic_id': tid}
-        else:
-            raise ValueError('Cannot resolve source knowledge point: ' + q['math_academy_id'])
-        if original in remapped and remapped[original] != identity:
-            raise ValueError('Capture knowledge point maps to multiple current identities')
-        remapped[original] = identity
-        q['knowledge_point_id'] = identity
-        q['topic_id'] = tid
-    content['new_knowledge_points'] = list(additions.values())
-    return content
+def matrix_tex(rows, *, augmented=False):
+    rows = [list(map(str, row)) for row in rows]
+    if not rows or not rows[0] or len({len(row) for row in rows}) != 1:
+        raise ValueError('A matrix must have rectangular, nonempty rows')
+    body = r' \\ '.join(' & '.join(row) for row in rows)
+    if augmented:
+        if len(rows[0]) < 2: raise ValueError('An augmented matrix needs coefficients and a right-hand side')
+        return r'\left[\begin{array}{' + 'c' * (len(rows[0]) - 1) + '|c}' + body + r'\end{array}\right]'
+    return r'\begin{bmatrix}' + body + r'\end{bmatrix}'
 
 
-def field_signature(field, stored=False):
-    if stored:
-        choices = {(a[':answer/type'][':db/ident'].split('/')[-1], a[':answer/value'])
-                   for a in field.get(':answer-field/choices', [])}
-        correct = field.get(':answer-field/correct')
-        correct = ((correct[':answer/type'][':db/ident'].split('/')[-1], correct[':answer/value'])
-                   if correct else None)
-        return (field[':answer-field/key'], field[':answer-field/type'][':db/ident'].split('/')[-1],
-                tuple(sorted(choices)), correct)
-    choices = {(a['type'], a['value']) for a in field['choices']}
-    correct = {a for a in choices if a[1] == field['correct_value']}
-    if len(correct) != 1:
-        raise ValueError('Correct answer must identify one typed source value')
-    return field['key'], field['type'], tuple(sorted(choices)), next(iter(correct))
+def system_tex(equations):
+    value = system(r' \\ '.join(equations))
+    if value is None: raise ValueError('A system needs explicit equations')
+    return value
 
 
-def build_math_content(content, topics, existing):
-    transaction, retractions, changes = [], [], []
-    points = {str(p[':knowledge-point/id']): p for t in topics.values()
-              for p in t.get(':topic/knowledge-points', [])}
-    for point in content.get('new_knowledge_points', []):
-        identity = str(point['id'])
-        if identity in points:
-            continue
-        if not any(str(q['knowledge_point_id']) == identity for q in content.get('questions', [])):
-            raise ValueError('New knowledge point needs captured authoritative practice: ' + point['title'])
-        target = 'kp-' + identity
-        points[identity] = {':knowledge-point/id': uuid.UUID(identity),
-                            ':knowledge-point/title': point['title'], '_target': target}
-        transaction.append(ensured('knowledge-point', **{'db/id': target,
-            'knowledge-point/id': uuid.UUID(identity), 'knowledge-point/title': point['title']}))
-        transaction.append({kw('db/id'): ref('topic/math-academy-id', point['topic_id']),
-                            kw('topic/knowledge-points'): [target]})
-    records = [(q, False) for q in content.get('questions', [])] + \
-              [(q, True) for q in content.get('canonical_examples', [])]
-    if len({q['math_academy_id'] for q, _ in records}) != len(records):
-        raise ValueError('Duplicate source question identity')
-    canonical_ids = {q['math_academy_id'] for q, is_example in records if is_example}
-    canonical_ids.update(p[':knowledge-point/canonical-example'][':question/math-academy-id']
-                         for p in points.values() if p.get(':knowledge-point/canonical-example'))
-    for question, is_example in records:
-        mid = question['math_academy_id']
-        old = existing.get(mid)
-        validate_question(question, canonical=is_example, existing=old)
-        if not is_example and not question.get('answer_fields'):
-            raise ValueError('Authoritative practice requires all captured answer fields: ' + mid)
-        point = points[str(question['knowledge_point_id'])]
-        if not is_example and any(str(owner[':knowledge-point/id']) != str(point[':knowledge-point/id'])
-                for owner in (old or {}).get(':knowledge-point/_questions', [])):
-            raise ValueError('Existing question belongs to another KP: ' + mid)
-        if not is_example and mid in canonical_ids:
-            raise ValueError('Canonical example cannot enter practice: ' + mid)
-        if is_example and (old or {}).get(':knowledge-point/_questions'):
-            raise ValueError('Practice question cannot become a canonical example: ' + mid)
-        relation = 'knowledge-point/canonical-example' if is_example else 'knowledge-point/questions'
-        if is_example and point.get(':' + relation, {}).get(':question/math-academy-id') not in (None, mid):
-            raise ValueError('Canonical example identity changed; source placement review required')
-        target = ref('question/id', old[':question/id']) if old else mid
-        update = {kw('db/id'): target}
-        if not old:
-            update.update({kw('question/id'): stable_id('question', mid), kw('question/math-academy-id'): mid})
-        candidates = {'question/problem': question['problem'], 'question/worked-solution': question['worked_solution']}
-        if question.get('difficulty'):
-            candidates['question/difficulty'] = kw('question.difficulty/' + question['difficulty'])
-        if question.get('requires_calculator') is not None:
-            candidates['question/requires-calculator'] = question['requires_calculator']
-        for attr, value in candidates.items():
-            previous = (old or {}).get(':' + attr)
-            compare = previous.get(':db/ident') if isinstance(previous, dict) else previous
-            if compare != value:
-                update[kw(attr)] = value
-                if previous is not None:
-                    retractions.append([old[':db/id'], kw(attr), scalar(previous)])
-        old_fields = {f[':answer-field/key']: f for f in (old or {}).get(':question/answer-fields', [])}
-        incoming = question.get('answer_fields', [])
-        # Examples without observed fields preserve previously captured fields.
-        captured = {f['key'] for f in incoming}
-        if incoming or not is_example:
-            for key in old_fields.keys() - captured:
-                previous = old_fields[key]
-                triple = [old[':db/id'], kw('question/answer-fields'), previous[':db/id']]
-                transaction.append([kw('db/retract'), *triple]); retractions.append(triple)
-        links = []
-        for field in incoming:
-            signature = field_signature(field)
-            previous = old_fields.get(field['key'])
-            if previous and field_signature(previous, stored=True) == signature:
-                continue
-            if previous:
-                triple = [old[':db/id'], kw('question/answer-fields'), previous[':db/id']]
-                transaction.append([kw('db/retract'), *triple]); retractions.append(triple)
-            digest = hashlib.sha256(json.dumps(signature, ensure_ascii=False).encode()).hexdigest()
-            token = mid + '/ma-source-field/' + digest
-            answers = []
-            correct = None
-            for kind, value in signature[2]:
-                answer_token = token + '/' + hashlib.sha256((kind + ':' + value).encode()).hexdigest()
-                transaction.append(ensured('answer', **{'db/id': answer_token,
-                    'answer/id': stable_id('answer', answer_token), 'answer/type': kw('answer.type/' + kind),
-                    'answer/value': value}))
-                answers.append(answer_token)
-                if (kind, value) == signature[3]:
-                    correct = answer_token
-            transaction.append(ensured('answer-field', **{'db/id': token,
-                'answer-field/id': stable_id('field', token), 'answer-field/key': field['key'],
-                'answer-field/type': kw('answer-field.type/' + field['type']),
-                'answer-field/choices': answers, 'answer-field/correct': correct}))
-            links.append(token)
-        if links:
-            update[kw('question/answer-fields')] = links
-        if len(update) > 1:
-            update[kw('db/ensure')] = [kw('question/validate')]
-            transaction.append(update)
-        canonical = point.get(':knowledge-point/canonical-example')
-        linked = bool(canonical and canonical[':question/math-academy-id'] == mid) if is_example else \
-                 mid in {q[':question/math-academy-id'] for q in point.get(':knowledge-point/questions', [])}
-        if not linked:
-            transaction.append(ensured('knowledge-point', **{'db/id': point.get('_target',
-                ref('knowledge-point/id', point[':knowledge-point/id'])), relation: target if is_example else [target]}))
-        changes.append({'math_academy_id': mid, 'existing': bool(old),
-                        'knowledge_point_id': str(point[':knowledge-point/id'])})
-    return transaction, {'retractions': retractions, 'questions': changes}
+def _legacy_commands(text):
+    for command, layout in [('matrix', 'matrix'), ('eqalign', 'aligned')]:
+        offset = 0
+        while match := re.search(r'\\' + command + r'\s*\{', text[offset:]):
+            start = offset + match.start(); opening = offset + match.end() - 1
+            depth, i = 1, opening + 1
+            while i < len(text) and depth:
+                if text[i] == '\\' and i + 1 < len(text) and text[i + 1] in '\\{}': i += 2; continue
+                if text[i] == '{': depth += 1
+                elif text[i] == '}': depth -= 1
+                i += 1
+            if depth: raise ValueError('Unclosed legacy TeX ' + command)
+            body = text[opening + 1:i - 1]
+            body = re.sub(r'\\cr\b', lambda _: r'\\', body)
+            body = re.sub(r'(?<!\\)\\[ \t]*\r?\n', lambda _: r'\\' + '\n', body)
+            body = re.sub(r'\\\\\s*$', '', body)
+            replacement = r'\begin{' + layout + '}' + body + r'\end{' + layout + '}'
+            text = text[:start] + replacement + text[i:]
+            offset = start + len(r'\begin{' + layout + '}')
+    return text
+
+
+def _matrix_layouts(text):
+    for _ in range(256):
+        stack, pairs = [], []
+        for token in ENV.finditer(text):
+            if token[1] == 'begin': stack.append(token)
+            elif stack and stack[-1][2] == token[2]:
+                opening = stack.pop()
+                if token[2] in ['aligned', 'matrix']: pairs.append((opening, token))
+        changed = False
+        for opening, closing in pairs:
+            left = re.search(r'(?:\\left\s*)?([\[|(])\s*$', text[:opening.start()])
+            right = re.match(r'\s*(?:\\right\s*)?([\]|)])', text[closing.end():])
+            if not left or not right or (left[1], right[1]) not in [('[', ']'), ('(', ')'), ('|', '|')]: continue
+            body = text[opening.end():closing.start()]; rows = cells(body)
+            if not rows or any(equation([cell]) for row in rows for cell in row): continue
+            width = min(map(len, rows))
+            if any(len(row) != width for row in rows):
+                if not all(not cell for row in rows for cell in row[width:]): continue
+                body = r' \\ '.join(' & '.join(row[:width]) for row in rows)
+            layout = {'[': 'bmatrix', '(': 'pmatrix', '|': 'vmatrix'}[left[1]]
+            text = text[:left.start()] + r'\begin{' + layout + '}' + body + r'\end{' + layout + '}' + text[closing.end() + right.end():]
+            changed = True; break
+        if not changed: return text
+    raise ValueError('Excessive matrix nesting')
+
+
+def normalize_tex(value):
+    text = str(value).strip()
+    if MATH.fullmatch(text):
+        size = 2 if text.startswith(('$$', r'\[', r'\(')) else 1
+        text = text[size:-size].strip()
+    text = text.replace(r'\lbrack', '[').replace(r'\rbrack', ']')
+    text = text.replace(r'\lbrace', r'\{').replace(r'\rbrace', r'\}')
+    text = _matrix_layouts(_legacy_commands(text))
+    text = repair(text, include_cases=True)
+    text = legacy_choice(text)
+    changes = []
+    for match in re.finditer(r'\\left\\\{\s*(?=\\begin\{aligned\})', text):
+        span = environment(text, match.end())
+        if not span: continue
+        closing = re.match(r'\s*\\right\s*\.', text[span[2]:])
+        if not closing: continue
+        normalized = system(text[span[0]:span[1]])
+        if normalized: changes.append((match.start(), span[2] + closing.end(), normalized))
+    for start, end, new in sorted(changes, reverse=True): text = text[:start] + new + text[end:]
+    # A redundant outer equation table adds no mathematical structure.
+    for _ in range(32):
+        changed = False
+        for match in re.finditer(r'\\begin\{aligned\}', text):
+            span = environment(text, match.start())
+            if not span: continue
+            body = text[span[0]:span[1]].strip()
+            if body.startswith(r'\left\{\begin{aligned}') and body.endswith(r'\end{aligned}\right.'):
+                text = text[:match.start()] + body + text[span[2]:]; changed = True; break
+        if not changed: break
+    return text
+
+
+def normalize_prose(value):
+    def replace(match):
+        whole = match[0]; display = whole.startswith(('$$', r'\['))
+        normalized = normalize_tex(whole)
+        return ('$$\n' + normalized + '\n$$') if display else ('$' + normalized + '$')
+    text = MATH.sub(replace, str(value))
+    # Browser indentation is not a Markdown code-block instruction.
+    if '{{field-' in text:
+        text = re.sub(r'(?m)^[ \t]{4,}(?=\$(?!\$))', '', text)
+    return text
+
+
+def validate_tex(value):
+    """Validate structural invariants; the UI's MathJax checks rendering."""
+    text = str(value); depth = 0; stack = []
+    for token in re.findall(r'\\(?:begin|end)\{[^{}]+\}|\\[A-Za-z]+|\\.|.', text, re.S):
+        env = ENV.fullmatch(token)
+        if env:
+            if env[1] == 'begin': stack.append(env[2])
+            elif not stack or stack.pop() != env[2]: raise ValueError('Mismatched TeX environment')
+        elif token == '{': depth += 1
+        elif token == '}': depth -= 1
+        if depth < 0: raise ValueError('Unmatched closing TeX brace')
+        if token in [r'\matrix', r'\eqalign']: raise ValueError('Legacy TeX layout command')
+        if token == '$': raise ValueError('Math fields must not contain nested dollar delimiters')
+    if depth or stack: raise ValueError('Unclosed TeX group or environment')
+    return text
+
+
+def validate_prose(value):
+    text = str(value)
+    for match in MATH.finditer(text):
+        size = 2 if match[0].startswith(('$$', r'\[', r'\(')) else 1
+        validate_tex(match[0][size:-size])
+    outside = MATH.sub('', text)
+    if re.search(r'(?<!\\)\$', outside): raise ValueError('Unpaired math dollar delimiter')
+    return text
+
+
+def validate_generated_record(record):
+    question = record['question']
+    for key in [':question/problem', ':question/worked-solution']:
+        value = question[key]
+        validate_prose(value)
+        if normalize_prose(value) != value: raise ValueError('Noncanonical math content in ' + key)
+    for field in question.get(':question/answer-fields', []):
+        for answer in field.get(':answer-field/choices', []):
+            value = answer[':answer/value']
+            if answer[':answer/type'] == ':answer.type/math':
+                validate_tex(value)
+                if normalize_tex(value) != value: raise ValueError('Noncanonical math answer')
+            elif answer[':answer/type'] == ':answer.type/text': validate_prose(value)
+    record.setdefault('generation', {})['math_format'] = FORMAT_VERSION
+    return record
+
+
+def normalize_capture_question(question):
+    result = copy.deepcopy(question)
+    for name in ['problem', 'worked_solution']:
+        if result.get(name): result[name] = validate_prose(normalize_prose(result[name]))
+    for field in result.get('fields', []):
+        for choice in field.get('choices', []):
+            if choice.get('type') == 'math': choice['value'] = validate_tex(normalize_tex(choice['value']))
+            elif choice.get('type') == 'text': choice['value'] = validate_prose(normalize_prose(choice['value']))
+    return result

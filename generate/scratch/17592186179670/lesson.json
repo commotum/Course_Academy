@@ -1,0 +1,76 @@
+{
+  "database": "math",
+  "basis": 2275,
+  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "record": [
+    {
+      ":activity/first-step": {
+        ":db/id": 17592186180467
+      },
+      ":activity/id": "92c95980-af12-5349-9581-38b036ed9c61",
+      ":activity/steps": [
+        {
+          ":db/id": 17592186180388,
+          ":step/content": {
+            ":db/id": 17592186179670,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186179525,
+              ":question/id": "cd73b214-d887-5dbb-93f9-b71e16711a24",
+              ":question/math-academy-id": "e-6304",
+              ":question/problem": "Evaluate the integral of the function $f(x,y) = e^{x+y}$ along the line segment from $(0,3)$ to $(2,3).$",
+              ":question/worked-solution": "We will use the formula\n\n$$\n\\int\\limits_C f(x, y) \\, \\textrm{d}s  = \\int\\limits_{t_a}^{t_b}  f(\\mathbf r(t)) \\, \\| \\mathbf r'(t) \\| \\, \\textrm{d}t,\n$$\n\n \n\nwhere $C$ is the line segment from $(0,3)$ to $(2,3).$ \n\nThe position vectors of the endpoints of our line segment are $\\mathbf{a}=3\\,\\mathbf{j}$ and $\\mathbf{b}=2\\,\\mathbf{i}+3\\,\\mathbf{j}.$ So, the parametrization of the line segment is given by\n\n$$\n\\begin{aligned}r(t) & =a+t\\,(b-a) \\\\  & =3\\,j+t[(2\\,i+3\\,j)-3\\,j] \\\\  & =3\\,j+t(2\\,i) \\\\  & =2t\\,i+3\\,j\\end{aligned}\n$$\n\nwhere $0 \\le t \\le 1.$ Thus, we have that $x=2t$ and $y=3$ along the segment.\n\nComputing $\\mathbf{r}'(t)$ and $\\| \\mathbf{r}'(t) \\|,$ we get the following:\n\n$$\n\\begin{aligned}{r}^{′}(t) & =\\frac{\\text{d}x}{\\text{d}t}\\,i+\\frac{\\text{d}y}{\\text{d}t}\\,j \\\\  & =\\frac{\\text{d}}{\\text{d}t}(2t)i+\\frac{\\text{d}}{\\text{d}t}(3)j \\\\  & =2\\,i \\\\ ‖{r}^{′}(t)‖ & =\\sqrt{{(\\frac{\\text{d}x}{\\text{d}t})}^{2}+{(\\frac{\\text{d}y}{\\text{d}t})}^{2}} \\\\  & =\\sqrt{{2}^{2}+{0}^{2}} \\\\  & =2\\end{aligned}\n$$\n\nNow, since $f(x,y) = e^{x+y},$ we obtain\n\n$$\n\\begin{aligned}f(r(t)) & ={e}^{2t+3}.\\end{aligned}\n$$\n\nTherefore, we can write the integral as\n\n$$\n\\begin{aligned}{\\int }_{C}{e}^{x+y}\\,\\text{d}s & ={\\int }_{0}^{1}f(r(t))\\,‖{r}^{′}(t)‖\\,\\text{d}t \\\\  & ={\\int }_{0}^{1}{e}^{2t+3}\\cdot 2\\cdot \\text{d}t \\\\  & =2{\\int }_{0}^{1}{e}^{2t+3}\\,\\text{d}t.\\end{aligned}\n$$\n\nWe can solve this using the substitution $u=2t+3,$ $\\textrm d u=2\\,\\textrm d t$ as follows: \n\n$$\n\\begin{aligned}2{\\int }_{0}^{1}{e}^{2t+3}\\,\\text{d}t & ={\\int }_{3}^{5}{e}^{u}\\,\\text{d}u \\\\  & ={e}^{u}\\,{|}_{3}^{5} \\\\  & ={e}^{5}-{e}^{3} \\\\  & ={e}^{3}({e}^{2}-1)\\end{aligned}\n$$"
+            },
+            ":knowledge-point/title": "Calculating a Line Integral Along a Segment in the Cartesian Plane"
+          },
+          ":step/next": {
+            ":db/id": 17592186180469
+          }
+        },
+        {
+          ":db/id": 17592186180467,
+          ":step/content": {
+            ":db/id": 17592186180708,
+            ":tutorial/content": "Recall that the line integral with respect to arc length of a function $f(x,y)$ along a curve $C$ is given by\n\n$$\n\\int\\limits_C f(x, y) \\, \\textrm{d}s  = \\int\\limits_{t_a}^{t_b}  f(\\mathbf r(t)) \\, \\| \\mathbf r'(t) \\| \\, \\textrm{d}t,\n$$\n\n \n\nwhere $\\mathbf r(t)$ for $t_a \\leq  t \\leq t_b$ is a parametrization of the curve $C.$\n\nIn this lesson, we will consider the case when the curve $C$ is a line segment. To calculate a line integral along a segment, we first need to parameterize the segment.\n\nFor example, suppose we wish to parameterize the segment between the points $A$ and $B$ with position vectors $\\mathbf a$ and $\\mathbf b$ respectively, as shown below.\n\n![](images/a4/a4d8d4e764dc4d7b29d5871d989100f2bb13b97aa4d034052037de4599d39e0e.png)\n\nThe vector equation of the line that is parallel to $\\mathbf{v}$ and passes through $A$ is given by\n\n$$\n\\begin{aligned}r=a+tv,\\end{aligned}\n$$\n\nwhere $\\mathbf v$ is parallel to the line.\n\nWe can express $\\mathbf v$ as\n\n$$\n\\mathbf v = \\mathbf b - \\mathbf a,\n$$\n\nwhich gives the equation of the line as\n\n$$\n\\mathbf{r} = \\mathbf{a} + t (\\mathbf b - \\mathbf a).\n$$\n\nSince we only want to parameterize the part of the line that lies between $A$ and $B,$ we set the restriction $0\\leq t \\leq 1.$ Therefore, the complete parametrization of the line segment is\n\n$$\n\\mathbf{r} = \\mathbf{a} + t (\\mathbf b - \\mathbf a), \\qquad 0\\leq t\\leq 1.\n$$\n\nNote the following:\n\n- You can check that $t=0$ corresponds to the point $A,$ and $t=1$ corresponds to the point $B.$\n\n- It's important to realize that this parametrization traverses the segment *from* the point $A$ *to* the point $B.$ The orientation of our segment does not affect line integrals with respect to arc length, but it is important for other line integrals that we'll meet later.",
+            ":tutorial/title": "Introduction"
+          },
+          ":step/next": {
+            ":db/id": 17592186180468
+          }
+        },
+        {
+          ":db/id": 17592186180468,
+          ":step/content": {
+            ":db/id": 17592186179724,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186179586,
+              ":question/id": "b7d08596-fbe4-5601-a58e-dac90715f7e7",
+              ":question/math-academy-id": "e-9486",
+              ":question/problem": "Find a definite integral that is equivalent to the line integral of the function $f(x,y) = x+\\sin{y},$ traversed along the line segment from $(1,0)$ to $(1,1).$",
+              ":question/worked-solution": "We will use the formula\n\n$$\n\\int\\limits_C f(x, y) \\, \\textrm{d}s  =  \\int\\limits_{t_a}^{t_b}  f(\\mathbf r(t)) \\, \\| \\mathbf r'(t) \\| \\, \\textrm{d}t,\n$$\n\n \n\nwhere $C$ is the line segment from $(1,0)$ to $(1,1).$ \n\nThe position vectors of the endpoints of our line segment are $\\mathbf{a}=\\mathbf{i}$ and $\\mathbf{b}=\\mathbf{i}+\\mathbf{j}.$ So, the parametrization of the line segment is given by\n\n$$\n\\begin{aligned}r(t) & =a+t\\,(b-a) \\\\  & =i+t[(i+j)-i] \\\\  & =i+t\\,j\\end{aligned}\n$$\n\nwhere $0 \\le t \\le 1.$ Thus, we have that $x=1$ and $y=t$ along the segment.\n\nComputing $\\mathbf{r}'(t)$ and $\\| \\mathbf{r}'(t) \\|,$ we get the following:\n\n$$\n\\begin{aligned}{r}^{′}(t) & =\\frac{\\text{d}x}{\\text{d}t}\\,i+\\frac{\\text{d}y}{\\text{d}t}\\,j \\\\  & =\\frac{\\text{d}}{\\text{d}t}(1)i+\\frac{\\text{d}}{\\text{d}t}(t)j \\\\  & =0\\,i+j \\\\  & =j \\\\ ‖{r}^{′}(t)‖ & =\\sqrt{{(\\frac{\\text{d}x}{\\text{d}t})}^{2}+{(\\frac{\\text{d}y}{\\text{d}t})}^{2}} \\\\  & =\\sqrt{{0}^{2}+{1}^{2}} \\\\  & =1\\end{aligned}\n$$\n\nNow, since $f(x,y) = x+\\sin{y}$, we obtain\n\n$$\n\\begin{aligned}f(r(t)) & =1+\\operatorname{sin}⁡t.\\end{aligned}\n$$\n\nTherefore, we can write the integral as\n\n$$\n\\begin{aligned}{\\int }_{C}f(x,y)\\,\\text{d}s & ={\\int }_{0}^{1}f(r(t))\\,‖{r}^{′}(t)‖\\,\\text{d}t \\\\  & ={\\int }_{0}^{1}(1+\\operatorname{sin}⁡t)\\cdot 1\\cdot \\text{d}t \\\\  & ={\\int }_{0}^{1}(1+\\operatorname{sin}⁡t)\\text{d}t.\\end{aligned}\n$$"
+            },
+            ":knowledge-point/title": "Constructing a Line Integral Along a Segment in the Cartesian Plane"
+          },
+          ":step/next": {
+            ":db/id": 17592186180388
+          }
+        },
+        {
+          ":db/id": 17592186180469,
+          ":step/content": {
+            ":db/id": 17592186179725,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186179587,
+              ":question/id": "17ec17a0-11d7-57c1-9e7f-6893ab9e51e0",
+              ":question/math-academy-id": "e-9487",
+              ":question/problem": "Find the line integral of the function $f(x,y,z) = x^2+y-z,$ traversed along the line segment from $(0,1,-3)$ to $(-1,2,-2)?$",
+              ":question/worked-solution": "We will use the formula\n\n$$\n\\int\\limits_C f(x,y,z) \\, \\textrm{d}s  =  \\int\\limits_{t_a}^{t_b}  f(\\mathbf r(t)) \\, \\| \\mathbf r'(t) \\| \\, \\textrm{d}t,\n$$\n\n \n\nwhere $C$ is the line segment from $(0,1,-3)$ to $(-1,2,-2).$\n\nThe position vectors of the endpoints of our line segment are $\\mathbf{a}=\\mathbf{j}-3\\mathbf{k}$ and $\\mathbf{b}=-\\,\\mathbf{i}+2\\,\\mathbf{j}-2\\,\\mathbf{k}.$ So, the parametrization of the line segment is given by\n\n$$\n\\begin{aligned}r(t) & =a+t\\,(b-a) \\\\  & =(j-3k)+t[(-\\,i+2\\,j-2\\,k)-(j-3k)] \\\\  & =(j-3k)+t(-i+\\,j+k) \\\\  & =-t\\,i+(t+1)\\,j+(t-3)\\,k\\end{aligned}\n$$\n\nwhere $0 \\le t \\le 1.$ Thus, we have that $x=-t, y=t+1,$ and $z=t-3$ along the segment.\n\nComputing $\\mathbf{r}'(t)$ and $\\| \\mathbf{r}'(t) \\|,$ we get the following:\n\n$$\n\\begin{aligned}{r}^{′}(t) & =\\frac{\\text{d}x}{\\text{d}t}\\,i+\\frac{\\text{d}y}{\\text{d}t}\\,j+\\frac{\\text{d}z}{\\text{d}t}\\,k \\\\  & =\\frac{\\text{d}}{\\text{d}t}(-t)i+\\frac{\\text{d}}{\\text{d}t}(t+1)j+\\frac{\\text{d}}{\\text{d}t}(t-3)k \\\\  & =-i+j+k \\\\ ‖{r}^{′}(t)‖ & =\\sqrt{{(\\frac{\\text{d}x}{\\text{d}t})}^{2}+{(\\frac{\\text{d}y}{\\text{d}t})}^{2}+{(\\frac{\\text{d}z}{\\text{d}t})}^{2}} \\\\  & =\\sqrt{(-1)^{2}+{1}^{2}+{1}^{2}} \\\\  & =\\sqrt{3}\\end{aligned}\n$$\n\nNow, since $f(x,y) = x^2+y-z$, we obtain\n\n$$\n\\begin{aligned}f(r(t)) & =(-t)^{2}+(t+1)-(t-3) \\\\  & ={t}^{2}+4.\\end{aligned}\n$$\n\nTherefore, we can write the integral as\n\n$$\n\\begin{aligned}{\\int }_{C}f(x,y)\\,\\text{d}s & ={\\int }_{0}^{1}f(r(t))\\,‖{r}^{′}(t)‖\\,\\text{d}t \\\\  & ={\\int }_{0}^{1}({t}^{2}+4)\\cdot \\sqrt{3}\\cdot \\text{d}t \\\\  & =\\sqrt{3}{\\int }_{0}^{1}({t}^{2}+4)\\,\\text{d}t.\\end{aligned}\n$$"
+            },
+            ":knowledge-point/title": "Line Integrals Along Segments in Three Dimensions"
+          }
+        }
+      ],
+      ":activity/title": "Line Integrals of Scalar Functions Over Line Segments",
+      ":db/id": 17592186179853
+    }
+  ]
+}

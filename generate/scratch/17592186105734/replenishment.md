@@ -1,0 +1,13 @@
+# Inventory replenishment
+
+The existing `altitude-v1.0` generator was reused without changing its mathematical templates or original frozen validation package. Its registered UUID is `e4c31a73-de6a-56d2-913b-65e4262a3b8f`, and its repository script is `generate/scratch/17592186105734.py`.
+
+At basis 2342 the validated, distinct, unseen and unreserved pool contained 0 easy, 0 moderate and 15 hard questions. Source q-20028 is incomplete, source q-128008 has an incorrect reduced basis row, and q-20027/q-71113 share one geometry. Both defective originals remain unchanged and excluded; all original and canonical geometries are excluded from generation, including those that do not count as available inventory.
+
+The application contributor `:application/ca-engine` committed five easy and five moderate questions at **2342 → 2343**, plus generator registration. The easy/moderate classifications are the authored same-method extensions documented in classification.md, rather than recovered source labels. Hard stock already met the target, so no additional hard questions were authored. All three levels are supported; no capability exception was needed for this request.
+
+Each generated instance passed independent checks of the printed givens, every solution stage, complete answer bank, exact key, deterministic replay and geometry fingerprint. The current application grader accepted 14 valid submissions and rejected 28 incorrect submissions across the ten new radio/blank questions, with no unresolved checks. The final validated pool at inventory basis 2344 contains **5 easy, 5 moderate, 15 hard**, and the native inventory has no remaining jobs for this KP.
+
+`reference/replenishment/basis-2342/` retains the exact EDN, durable request, speculative native-spec preview, committed receipt, additive-datom/contributor checks, original snapshot, exact-basis readback, instance metadata and current inventory. Verification confirms all 18 originals and the canonical example are unchanged, and no learner/history/engine facts were transacted. The script held the application's `api.lock` from fresh inventory/basis capture through submission and readback; the writer additionally enforced the expected basis.
+
+Run `.venv/bin/python generate/scratch/17592186105734/replenish.py` to recover and reverify this job's retained request. It reconciles the saved intent before considering new work and does not generate a second intent after a confirmed receipt. A future replenishment request requires a fresh preparation directory after recovery and a new inventory check. Original `freeze.json` remains an intact historical validation snapshot; `reference/replenishment/runtime-validation.json` records its verification and the current grader/dependency hashes.

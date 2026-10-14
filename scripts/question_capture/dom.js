@@ -225,6 +225,7 @@ element => {
         if (environment === 'cases') {
           const equations = nodes.map(row => {
             const cells = [...row.children].map(cell => m(cell).trim());
+            while (cells.length > 1 && !cells[0]) cells.shift();
             if (cells.length === 1) return equationColumns(cells[0]);
             if (cells.length === 2 && cells[1].startsWith('=')) return cells[0] + ' &' + cells[1];
             if (cells.length === 2 && cells[0].endsWith('=')) return cells[0].slice(0, -1).trim() + ' &=' + cells[1];
@@ -294,7 +295,8 @@ element => {
   }
   function render(n) {
     if (!n) return '';
-    if (n.nodeType === 3) return n.textContent;
+    if (n.nodeType === 3) return n.parentElement?.closest('pre,code,textarea') ? n.textContent :
+      n.textContent.replace(/[ \t]*(?:\r?\n|\r)[ \t]*/g, '\n');
     if (n.nodeType !== 1) return '';
     const t = n.localName.toLowerCase();
     if (emptyFormula(n)) return '';
