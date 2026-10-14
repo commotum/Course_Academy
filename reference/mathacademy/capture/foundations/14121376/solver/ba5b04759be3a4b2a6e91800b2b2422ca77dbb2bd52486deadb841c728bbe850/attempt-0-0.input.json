@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-161807",
+      "sequence_position": 3,
+      "problem": "Consider the transformation $T:(u,v,w)\\to (x(u,v,w),y(u,v,w),z(u,v,w)).$ The inverse transformation ${T}^{-1}(x,y,z)\\to (u(x,y,z),v(x,y,z),w(x,y,z))$ is given by\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]⟶[\\begin{aligned}y{z}^{2} \\\\ z{x}^{2} \\\\ x{y}^{2}\\end{aligned}].\n$$\n\nFind the Jacobian determinant of $T.$\n\n*Hint: You can assume that $x,y,z\\ne 0.$*",
+      "worked_solution": "For a transformation \n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]\\to [\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}],\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by\n\n$$\n\\begin{aligned}\\frac{∂(x,y,z)}{∂(u,v,w)} & =|\\begin{aligned}\\frac{∂x}{∂u} & \\frac{∂x}{∂v} & \\frac{∂x}{∂w} \\\\ \\frac{∂y}{∂u} & \\frac{∂y}{∂v} & \\frac{∂y}{∂w} \\\\ \\frac{∂z}{∂u} & \\frac{∂z}{∂v} & \\frac{∂z}{∂w}\\end{aligned}|.\\end{aligned}\n$$\n\nIn this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:\n\n- First, we compute $\\frac{∂(u,v,w)}{∂(x,y,z)},$ the Jacobian determinant of ${T}^{-1}.$\n\n- Then, we will compute the Jacobian determinant of $T$ using the relation\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}.\n$$\n\nHere, we have \n\n$$\nu(x,y,z)=y{z}^{2},\\,v(x,y,z)=z{x}^{2},\\,w(x,y,z)=x{y}^{2}.\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{∂u}{∂x} & =0 & \\,\\frac{∂u}{∂y} & ={z}^{2} & \\,\\frac{∂u}{∂z} & =2yz \\\\ \\frac{∂v}{∂x} & =2xz & \\,\\frac{∂v}{∂y} & =0 & \\,\\frac{∂v}{∂z} & ={x}^{2} \\\\ \\frac{∂w}{∂x} & ={y}^{2} & \\,\\frac{∂w}{∂y} & =2xy & \\,\\frac{∂w}{∂z} & =0\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant of ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}0 & {z}^{2} & 2yz \\\\ 2xz & 0 & {x}^{2} \\\\ {y}^{2} & 2xy & 0\\end{aligned}| \\\\  & =-{z}^{2}|\\begin{aligned}2xy & {x}^{2} \\\\ {y}^{2} & 0\\end{aligned}|+2yz|\\begin{aligned}2xz & 0 \\\\ {y}^{2} & 2xy\\end{aligned}| \\\\  & =-{z}^{2}(0-{x}^{2}{y}^{2})+2yz(4{x}^{2}yz-0) \\\\  & ={x}^{2}{y}^{2}{z}^{2}+8{x}^{2}{y}^{2}{z}^{2} \\\\  & =9{x}^{2}{y}^{2}{z}^{2}.\\end{aligned}\n$$\n\nWriting down $\\frac{∂(u,v,w)}{∂(x,y,z)}$ in terms of $u,$ $v,$ and $w,$ we obtain\n\n$$\n\\begin{aligned}9{x}^{2}{y}^{2}{z}^{2} & =9{({x}^{3}{y}^{3}{z}^{3})}^{2/3} \\\\  & =9{(y{z}^{2}\\cdot z{x}^{2}\\cdot x{y}^{2})}^{2/3} \\\\  & =9(uvw)^{2/3}.\\end{aligned}\n$$\n\nFinally, we take the reciprocal:\n\n$$\n\\begin{aligned}\\frac{∂(x,y,z)}{∂(u,v,w)} & ={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1} \\\\  & =\\frac{1}{9(uvw)^{2/3}}\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14121376/observations/history-q-161807-8197b39727fec241b2dc.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14121376",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14121376/observations/history-solution-q-161807-eae1b70a340de642d6f8.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "\\frac{1}{9(uvw)^{2/3}}"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "(uvw)^{2/3}"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "3(uvw)^{3}"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "\\frac{9}{(uvw)^{2}}"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "3(uvw)^{1/3}"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q161807",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "\\frac{1}{9(uvw)^{2/3}}",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "For a transformation \n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]\\to [\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}],\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by\n\n$$\n\\begin{aligned}\\frac{∂(x,y,z)}{∂(u,v,w)} & =|\\begin{aligned}\\frac{∂x}{∂u} & \\frac{∂x}{∂v} & \\frac{∂x}{∂w} \\\\ \\frac{∂y}{∂u} & \\frac{∂y}{∂v} & \\frac{∂y}{∂w} \\\\ \\frac{∂z}{∂u} & \\frac{∂z}{∂v} & \\frac{∂z}{∂w}\\end{aligned}|.\\end{aligned}\n$$\n\nIn this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:\n\n- First, we compute $\\frac{∂(u,v,w)}{∂(x,y,z)},$ the Jacobian determinant of ${T}^{-1}.$\n\n- Then, we will compute the Jacobian determinant of $T$ using the relation\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}.\n$$\n\nHere, we have \n\n$$\nu(x,y,z)=y{z}^{2},\\,v(x,y,z)=z{x}^{2},\\,w(x,y,z)=x{y}^{2}.\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{∂u}{∂x} & =0 & \\,\\frac{∂u}{∂y} & ={z}^{2} & \\,\\frac{∂u}{∂z} & =2yz \\\\ \\frac{∂v}{∂x} & =2xz & \\,\\frac{∂v}{∂y} & =0 & \\,\\frac{∂v}{∂z} & ={x}^{2} \\\\ \\frac{∂w}{∂x} & ={y}^{2} & \\,\\frac{∂w}{∂y} & =2xy & \\,\\frac{∂w}{∂z} & =0\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant of ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}0 & {z}^{2} & 2yz \\\\ 2xz & 0 & {x}^{2} \\\\ {y}^{2} & 2xy & 0\\end{aligned}| \\\\  & =-{z}^{2}|\\begin{aligned}2xy & {x}^{2} \\\\ {y}^{2} & 0\\end{aligned}|+2yz|\\begin{aligned}2xz & 0 \\\\ {y}^{2} & 2xy\\end{aligned}| \\\\  & =-{z}^{2}(0-{x}^{2}{y}^{2})+2yz(4{x}^{2}yz-0) \\\\  & ={x}^{2}{y}^{2}{z}^{2}+8{x}^{2}{y}^{2}{z}^{2} \\\\  & =9{x}^{2}{y}^{2}{z}^{2}.\\end{aligned}\n$$\n\nWriting down $\\frac{∂(u,v,w)}{∂(x,y,z)}$ in terms of $u,$ $v,$ and $w,$ we obtain\n\n$$\n\\begin{aligned}9{x}^{2}{y}^{2}{z}^{2} & =9{({x}^{3}{y}^{3}{z}^{3})}^{2/3} \\\\  & =9{(y{z}^{2}\\cdot z{x}^{2}\\cdot x{y}^{2})}^{2/3} \\\\  & =9(uvw)^{2/3}.\\end{aligned}\n$$\n\nFinally, we take the reciprocal:\n\n$$\n\\begin{aligned}\\frac{∂(x,y,z)}{∂(u,v,w)} & ={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1} \\\\  & =\\frac{1}{9(uvw)^{2/3}}\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14121376/observations/step-q161807-462d5542dea1155ddeb3.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a12beb-5217-74f2-8973-c4fb853c4341",
+  "previous_failures": []
+}
