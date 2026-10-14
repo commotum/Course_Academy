@@ -46,3 +46,13 @@ Historical scalar distractors underdetermine error intent. Public observed profi
 The native comparator reports unresolved domain differences for independently unreduced root_power and authored hard derivative quotients. Their canonical derivative values grade, but equivalent coordinate-quotient entry support is limited; these failures are counted separately from mathematical equality and are not described as accepted entries.
 
 Common positive coordinate scaling is excluded from mathematical-task counts: source r,s are normalized together, and authored a,c are normalized together. Full coefficient presentation variety remains distinct. Product_pair explicitly distinguishes its all-real curve domain from its derivative domain excluding t=−1/b; quotient_pair's positive interval has no derivative exclusions. All original source strings remain unchanged.
+
+## Validated finite-domain variety
+
+| Level | Eligible full parameter instances | Semantic tasks after common-scaling normalization | Sampled full presentations | Sampled semantic tasks |
+|---|---:|---:|---:|---:|
+| easy | 1676 | 1039 | 72 | 60 |
+| moderate | 856 | 544 | 36 | 31 |
+| hard | 600 | 456 | 12 | 12 |
+
+The level totals union semantic fingerprints across aliases, including the two trig source anchors. Full parameter counts sum eligible complete banks; excluded ambiguous parameter instances are not counted. Each hard family has 300 eligible amplitude tuples but 228 semantic tasks. All 20 public template masks pass same-semantic/different-content common-scaling regressions.

@@ -6,17 +6,17 @@ Below, each original coordinate pair, domain, supplied parameter, complete field
 
 ### trig — 17592186083909 (q-6731)
 
-Original x: `$3\operatorname{sin}⁡\theta `; y: `$5\operatorname{cos}⁡\theta `; domain: `$0\le \theta <2\pi ,`; supplied parameter: `None`.
+Original x: $3\operatorname{sin}⁡\theta $; y: $5\operatorname{cos}⁡\theta $; domain: $0\le \theta <2\pi ,$; supplied parameter: `None`.
 
 Field 0: `:answer-field.type/radio`, key `selection`; correct designation present.
 
 | Complete original value | Recipe in public observed profile | Correct |
 |---|---|---|
-| `$\frac{dy}{dx}=-\frac{5}{3}\operatorname{tan}⁡\theta ` | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
-| `$\frac{dy}{dx}=-\frac{5}{3}\operatorname{cot}⁡\theta ` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$\frac{dy}{dx}=\frac{5}{3}\operatorname{tan}⁡\theta ` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$\frac{dy}{dx}=-\frac{3}{5}\operatorname{cot}⁡\theta ` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$\frac{dy}{dx}=-\frac{3}{5}\operatorname{tan}⁡\theta ` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $\frac{dy}{dx}=-\frac{5}{3}\operatorname{tan}⁡\theta $ | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
+| $\frac{dy}{dx}=-\frac{5}{3}\operatorname{cot}⁡\theta $ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $\frac{dy}{dx}=\frac{5}{3}\operatorname{tan}⁡\theta $ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $\frac{dy}{dx}=-\frac{3}{5}\operatorname{cot}⁡\theta $ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $\frac{dy}{dx}=-\frac{3}{5}\operatorname{tan}⁡\theta $ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
 
 Observed fixed solution blocks:
 
@@ -34,26 +34,26 @@ $$
 
 ### exp_poly — 17592186083911 (q-6809)
 
-Original x: `${e}^{t}`; y: `$2{t}^{2}`; domain: `$-\infty <t<\infty ,`; supplied parameter: `5`.
+Original x: ${e}^{t}$; y: $2{t}^{2}$; domain: $-\infty <t<\infty ,$; supplied parameter: `5`.
 
 Field 0: `:answer-field.type/radio`, key `selection`; correct designation absent legacy.
 
 | Complete original value | Recipe in public observed profile | Correct |
 |---|---|---|
-| `$5 \cdot e^{2}` | `(s/r) × entire original RHS`; no recovered intent asserted | no original designation |
-| `$4 \cdot e^{5}` | `(s/r) × entire original RHS`; no recovered intent asserted | no original designation |
-| `$\frac{20}{e^{5}}` | `(s/r) × entire original RHS`; no recovered intent asserted | no original designation |
-| `$\frac{5}{e^{2}}` | `(s/r) × entire original RHS`; no recovered intent asserted | no original designation |
-| `$20 \cdot e^{5}` | `(s/r) × entire original RHS`; no recovered intent asserted | no original designation |
+| $5 \cdot e^{2}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no original designation |
+| $4 \cdot e^{5}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no original designation |
+| $\frac{20}{e^{5}}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no original designation |
+| $\frac{5}{e^{2}}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no original designation |
+| $20 \cdot e^{5}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no original designation |
 Field 1: `:answer-field.type/radio`, key `selection`; correct designation present.
 
 | Complete original value | Recipe in public observed profile | Correct |
 |---|---|---|
-| `$4\cdot {e}^{5}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$5\cdot {e}^{2}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$20\cdot {e}^{5}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$\frac{20}{{e}^{5}}` | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
-| `$\frac{5}{{e}^{2}}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $4\cdot {e}^{5}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $5\cdot {e}^{2}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $20\cdot {e}^{5}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $\frac{20}{{e}^{5}}$ | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
+| $\frac{5}{{e}^{2}}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
 
 Observed fixed solution blocks:
 
@@ -75,17 +75,17 @@ $$
 
 ### quadratic — 17592186290260 (q-20988)
 
-Original x: `$3{t}^{2}-2t`; y: `${t}^{2}-1`; domain: `$-\infty <t<\infty ,`; supplied parameter: `2`.
+Original x: $3{t}^{2}-2t$; y: ${t}^{2}-1$; domain: $-\infty <t<\infty ,$; supplied parameter: `2`.
 
 Field 0: `:answer-field.type/radio`, key `selection`; correct designation present.
 
 | Complete original value | Recipe in public observed profile | Correct |
 |---|---|---|
-| `$\frac{2}{7}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$\frac{2}{5}` | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
-| `$\frac{3}{4}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$\frac{3}{7}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$\frac{4}{5}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $\frac{2}{7}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $\frac{2}{5}$ | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
+| $\frac{3}{4}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $\frac{3}{7}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $\frac{4}{5}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
 
 Observed fixed solution blocks:
 
@@ -107,13 +107,13 @@ $$
 
 ### expneg_poly — 17592186321110 (q-353340)
 
-Original x: `$4{e}^{-t}`; y: `${t}^{2}+6t`; domain: `$0\le t<\infty ,`; supplied parameter: `1`.
+Original x: $4{e}^{-t}$; y: ${t}^{2}+6t$; domain: $0\le t<\infty ,$; supplied parameter: `1`.
 
 Field 0: `:answer-field.type/blank`, key `field-1`; correct designation present.
 
 | Complete original value | Recipe in public observed profile | Correct |
 |---|---|---|
-| `$-2e` | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
+| $-2e$ | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
 
 Observed fixed solution blocks:
 
@@ -135,13 +135,13 @@ $$
 
 ### trig_double — 17592186321111 (q-353341)
 
-Original x: `$5\operatorname{sin}⁡2t`; y: `$\sqrt{3}\operatorname{cos}⁡2t`; domain: `$0\le t<2\pi ,`; supplied parameter: `pi/6`.
+Original x: $5\operatorname{sin}⁡2t$; y: $\sqrt{3}\operatorname{cos}⁡2t$; domain: $0\le t<2\pi ,$; supplied parameter: `pi/6`.
 
 Field 0: `:answer-field.type/blank`, key `field-1`; correct designation present.
 
 | Complete original value | Recipe in public observed profile | Correct |
 |---|---|---|
-| `$-\frac{3}{5}` | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
+| $-\frac{3}{5}$ | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
 
 Observed fixed solution blocks:
 
@@ -163,13 +163,13 @@ $$
 
 ### exp_poly_chain — 17592186321112 (q-353343)
 
-Original x: `${e}^{2t}`; y: `$3{t}^{2}`; domain: `$-\infty <t<\infty ,`; supplied parameter: `2`.
+Original x: ${e}^{2t}$; y: $3{t}^{2}$; domain: $-\infty <t<\infty ,$; supplied parameter: `2`.
 
 Field 0: `:answer-field.type/blank`, key `field-1`; correct designation present.
 
 | Complete original value | Recipe in public observed profile | Correct |
 |---|---|---|
-| `$\frac{6}{{e}^{4}}` | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
+| $\frac{6}{{e}^{4}}$ | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
 
 Observed fixed solution blocks:
 
@@ -191,13 +191,13 @@ $$
 
 ### line_poly — 17592186321113 (q-353344)
 
-Original x: `$5t-3`; y: `${t}^{4}+2t`; domain: `$-\infty <t<\infty ,`; supplied parameter: `1`.
+Original x: $5t-3$; y: ${t}^{4}+2t$; domain: $-\infty <t<\infty ,$; supplied parameter: `1`.
 
 Field 0: `:answer-field.type/blank`, key `field-1`; correct designation present.
 
 | Complete original value | Recipe in public observed profile | Correct |
 |---|---|---|
-| `$\frac{6}{5}` | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
+| $\frac{6}{5}$ | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
 
 Observed fixed solution blocks:
 
@@ -219,13 +219,13 @@ $$
 
 ### sqrt_linear — 17592186321114 (q-353346)
 
-Original x: `$\sqrt{t}`; y: `$8t-3`; domain: `$0\le t<\infty ,`; supplied parameter: `4`.
+Original x: $\sqrt{t}$; y: $8t-3$; domain: $0\le t<\infty ,$; supplied parameter: `4`.
 
 Field 0: `:answer-field.type/blank`, key `field-1`; correct designation present.
 
 | Complete original value | Recipe in public observed profile | Correct |
 |---|---|---|
-| `$32` | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
+| $32$ | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
 
 Observed fixed solution blocks:
 
@@ -247,13 +247,13 @@ $$
 
 ### exp_pair — 17592186321115 (q-353347)
 
-Original x: `${e}^{3t}`; y: `$2{e}^{t}`; domain: `$-\infty <t<\infty ,`; supplied parameter: `None`.
+Original x: ${e}^{3t}$; y: $2{e}^{t}$; domain: $-\infty <t<\infty ,$; supplied parameter: `None`.
 
 Field 0: `:answer-field.type/blank`, key `field-1`; correct designation present.
 
 | Complete original value | Recipe in public observed profile | Correct |
 |---|---|---|
-| `$\frac{2}{3}{e}^{-2t}` | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
+| $\frac{2}{3}{e}^{-2t}$ | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
 
 Observed fixed solution blocks:
 
@@ -271,17 +271,17 @@ $$
 
 ### quartic — 17592186335950 (q-6810)
 
-Original x: `${t}^{4}+t-1`; y: `${t}^{3}`; domain: `$-\infty <t<\infty ,`; supplied parameter: `-1`.
+Original x: ${t}^{4}+t-1$; y: ${t}^{3}$; domain: $-\infty <t<\infty ,$; supplied parameter: `-1`.
 
 Field 0: `:answer-field.type/radio`, key `selection`; correct designation present.
 
 | Complete original value | Recipe in public observed profile | Correct |
 |---|---|---|
-| `$-2` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$-\,\frac{1}{4}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$-1` | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
-| `$-\,\frac{2}{3}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$-\,\frac{1}{2}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $-2$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $-\,\frac{1}{4}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $-1$ | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
+| $-\,\frac{2}{3}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $-\,\frac{1}{2}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
 
 Observed fixed solution blocks:
 
@@ -303,17 +303,17 @@ $$
 
 ### exp_product — 17592186335953 (q-6816)
 
-Original x: `${e}^{2t}`; y: `$({t}^{2}-1){e}^{-t}`; domain: `$-\infty <t<\infty ,`; supplied parameter: `1`.
+Original x: ${e}^{2t}$; y: $({t}^{2}-1){e}^{-t}$; domain: $-\infty <t<\infty ,$; supplied parameter: `1`.
 
 Field 0: `:answer-field.type/radio`, key `selection`; correct designation present.
 
 | Complete original value | Recipe in public observed profile | Correct |
 |---|---|---|
-| `$\frac{{e}^{2}}{3}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `${e}^{-2}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$2{e}^{-2}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `${e}^{-3}` | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
-| `$\frac{{e}^{-3}}{4}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $\frac{{e}^{2}}{3}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| ${e}^{-2}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $2{e}^{-2}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| ${e}^{-3}$ | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
+| $\frac{{e}^{-3}}{4}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
 
 Observed fixed solution blocks:
 
@@ -335,17 +335,17 @@ $$
 
 ### quintic — 17592186335963 (q-6848)
 
-Original x: `${t}^{5}-2t`; y: `$1-{t}^{3}`; domain: `$-\infty <t<\infty ,`; supplied parameter: `-1`.
+Original x: ${t}^{5}-2t$; y: $1-{t}^{3}$; domain: $-\infty <t<\infty ,$; supplied parameter: `-1`.
 
 Field 0: `:answer-field.type/radio`, key `selection`; correct designation present.
 
 | Complete original value | Recipe in public observed profile | Correct |
 |---|---|---|
-| `$-\,\frac{1}{3}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$-\,\frac{3}{2}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$-\,\frac{1}{2}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$-3` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$-1` | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
+| $-\,\frac{1}{3}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $-\,\frac{3}{2}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $-\,\frac{1}{2}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $-3$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $-1$ | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
 
 Observed fixed solution blocks:
 
@@ -367,13 +367,13 @@ $$
 
 ### root_power — 17592186368467 (q-353349)
 
-Original x: `$\sqrt{t}`; y: `$3{t}^{3/2}`; domain: `$0<t<\infty ,`; supplied parameter: `None`.
+Original x: $\sqrt{t}$; y: $3{t}^{3/2}$; domain: $0<t<\infty ,$; supplied parameter: `None`.
 
 Field 0: `:answer-field.type/blank`, key `field-1`; correct designation present.
 
 | Complete original value | Recipe in public observed profile | Correct |
 |---|---|---|
-| `$9t` | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
+| $9t$ | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
 
 Observed fixed solution blocks:
 
@@ -391,17 +391,17 @@ $$
 
 ### line_quad — 17592186395776 (q-20849)
 
-Original x: `$2(t+1)`; y: `$4{t}^{2}`; domain: `$-1\le t<1,`; supplied parameter: `0`.
+Original x: $2(t+1)$; y: $4{t}^{2}$; domain: $-1\le t<1,$; supplied parameter: `0`.
 
 Field 0: `:answer-field.type/radio`, key `selection`; correct designation present.
 
 | Complete original value | Recipe in public observed profile | Correct |
 |---|---|---|
-| `$3` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$2` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$1` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$0` | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
-| `$-1` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $3$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $2$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $1$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $0$ | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
+| $-1$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
 
 Observed fixed solution blocks:
 
@@ -423,17 +423,17 @@ $$
 
 ### sqrt_scaled — 17592186401840 (q-20851)
 
-Original x: `$2\sqrt{t}`; y: `$12t+1`; domain: `$0\le t<\infty ,`; supplied parameter: `1`.
+Original x: $2\sqrt{t}$; y: $12t+1$; domain: $0\le t<\infty ,$; supplied parameter: `1`.
 
 Field 0: `:answer-field.type/radio`, key `selection`; correct designation present.
 
 | Complete original value | Recipe in public observed profile | Correct |
 |---|---|---|
-| `$12` | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
-| `$10` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$3` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$15` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$7` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $12$ | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
+| $10$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $3$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $15$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $7$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
 
 Observed fixed solution blocks:
 
@@ -455,17 +455,17 @@ $$
 
 ### texp_poly — 17592186401853 (q-20990)
 
-Original x: `$2t{e}^{t}`; y: `${t}^{2}+2t`; domain: `$0\le t<\infty ,`; supplied parameter: `1`.
+Original x: $2t{e}^{t}$; y: ${t}^{2}+2t$; domain: $0\le t<\infty ,$; supplied parameter: `1`.
 
 Field 0: `:answer-field.type/radio`, key `selection`; correct designation present.
 
 | Complete original value | Recipe in public observed profile | Correct |
 |---|---|---|
-| `$\frac{1}{2e}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$\frac{1}{{e}^{2}}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$\frac{1}{3e}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$\frac{1}{{e}^{3}}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$\frac{1}{e}` | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
+| $\frac{1}{2e}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $\frac{1}{{e}^{2}}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $\frac{1}{3e}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $\frac{1}{{e}^{3}}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $\frac{1}{e}$ | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
 
 Observed fixed solution blocks:
 
@@ -487,17 +487,17 @@ $$
 
 ### product_sin — 17592186403272 (q-6812)
 
-Original x: `$({t}^{3}-1){e}^{t}`; y: `$2\operatorname{sin}⁡t`; domain: `$-\infty <t<\infty ,`; supplied parameter: `0`.
+Original x: $({t}^{3}-1){e}^{t}$; y: $2\operatorname{sin}⁡t$; domain: $-\infty <t<\infty ,$; supplied parameter: `0`.
 
 Field 0: `:answer-field.type/radio`, key `selection`; correct designation present.
 
 | Complete original value | Recipe in public observed profile | Correct |
 |---|---|---|
-| `$-\,\frac{1}{2}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$-\,\frac{1}{2e}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$-\,\frac{e}{2}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$-2` | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
-| `$-\,\frac{1}{3e}` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $-\,\frac{1}{2}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $-\,\frac{1}{2e}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $-\,\frac{e}{2}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $-2$ | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
+| $-\,\frac{1}{3e}$ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
 
 Observed fixed solution blocks:
 
@@ -519,17 +519,17 @@ $$
 
 ### trig_scaled — 17592186403279 (q-6836)
 
-Original x: `$12\operatorname{sin}⁡\theta `; y: `$15\operatorname{cos}⁡\theta `; domain: `$0\le \theta <2\pi ,`; supplied parameter: `None`.
+Original x: $12\operatorname{sin}⁡\theta $; y: $15\operatorname{cos}⁡\theta $; domain: $0\le \theta <2\pi ,$; supplied parameter: `None`.
 
 Field 0: `:answer-field.type/radio`, key `selection`; correct designation present.
 
 | Complete original value | Recipe in public observed profile | Correct |
 |---|---|---|
-| `$\frac{dy}{dx}=-\frac{4}{5}\operatorname{tan}⁡\theta ` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$\frac{dy}{dx}=-\frac{4}{5}\operatorname{cot}⁡\theta ` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$\frac{dy}{dx}=-\frac{5}{4}\operatorname{cot}⁡\theta ` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
-| `$\frac{dy}{dx}=-\frac{5}{4}\operatorname{tan}⁡\theta ` | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
-| `$\frac{dy}{dx}=\frac{5}{4}\operatorname{tan}⁡\theta ` | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $\frac{dy}{dx}=-\frac{4}{5}\operatorname{tan}⁡\theta $ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $\frac{dy}{dx}=-\frac{4}{5}\operatorname{cot}⁡\theta $ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $\frac{dy}{dx}=-\frac{5}{4}\operatorname{cot}⁡\theta $ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
+| $\frac{dy}{dx}=-\frac{5}{4}\operatorname{tan}⁡\theta $ | `(s/r) × entire original RHS`; no recovered intent asserted | yes |
+| $\frac{dy}{dx}=\frac{5}{4}\operatorname{tan}⁡\theta $ | `(s/r) × entire original RHS`; no recovered intent asserted | no |
 
 Observed fixed solution blocks:
 

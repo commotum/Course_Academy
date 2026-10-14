@@ -56,6 +56,18 @@ def check(rec):
    raw,restriction=parts[0].split(r'\,{|}_{',1);assert eq(math(raw),F)
    restriction=restriction.split(r'\\')[0].strip().removesuffix('}');assert all(eq(math(part.split('=')[1]),coordinate) for part,coordinate in zip(restriction.split(r'\,'),coords))
    for raw in parts[1:]:assert eq(math(raw.split(r'\\')[0].split(r'\end{aligned}')[0]),pull);C['pullback_stages']+=1
+ if family!='canonical_hint':
+  original=json.loads((R/f'sources/{K}.json').read_text())['record'][':knowledge-point/questions']
+  original=next(o for o in original if o[':question/math-academy-id']==family)[':question/worked-solution']
+  prose=lambda text:re.sub(r'\s+',' ',re.sub(r'\$\$.*?\$\$|\$.*?\$','[MATH]',text,flags=re.S)).strip()
+  assert prose(sol)==prose(original)
+  originalchain=re.search(r'\\begin\{aligned\}(.*?)\\end\{aligned\}',original.rsplit('$$',2)[1],re.S)[1]
+  currentchain=re.search(r'\\begin\{aligned\}(.*?)\\end\{aligned\}',blocks[-1],re.S)[1]
+  added=0 if charge else 1 if family in ('q-160834','q-160835','q-161212','q-161242','q-161185') else 2
+  assert len(currentchain.split(chr(92)*2))==len(originalchain.split(chr(92)*2))+added
+  if family=='q-161185':assert currentchain.count(r'{\int }')==originalchain.count(r'{\int }')
+  if charge:assert '{cos}^{2}' in sol and '{sin}^{2}' in sol and r'\sqrt{16' in sol
+  C['operative_source_sequences']+=1
  reader=b.Reader(pull,metric,bounds,charge=charge);final=blocks[-1];body=re.search(r'\\begin\{aligned\}(.*?)\\end\{aligned\}',final,re.S)[1];rows=body.split(r'\\');primitives=[]
  for rowindex,row in enumerate(rows):
   rhs=re.split(r'&\s*=',row,maxsplit=1)[1];value=reader.value(rhs);assert eq(value,answer),(family,rhs,value,answer);C['complete_solution_rows']+=1
