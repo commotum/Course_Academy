@@ -1,0 +1,3 @@
+# Registered baseline preservation
+
+The frozen manifest lists has_generator=true and registered_baseline_script=generate/scratch/17592186064179.py. Existing saved replenishment evidence at basis1871 contains the generator script association and transaction receipt. The complete registered subtree contained 81 files (including its Python cache, historical source, templates, grader fixtures, references and receipts); both full SHA256/path-set snapshots are retained here. No baseline file was imported/executed, edited or removed. Validation requires complete before/after equality, not only the script hash. This separate draft is unregistered.
