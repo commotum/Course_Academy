@@ -23,7 +23,13 @@ profile=None); generate_easy/moderate/hard. Parameters never silently repaired.
 from __future__ import annotations
 import argparse, copy, hashlib, json, os, random, re, subprocess, sys, tempfile, uuid
 from pathlib import Path
-import sympy as sp
+try:
+    import sympy as sp
+except ImportError:
+    interpreter = Path(__file__).resolve().parents[2]/'.venv/bin/python'
+    if __name__ == '__main__' and interpreter.exists() and str(interpreter) != sys.executable:
+        os.execv(str(interpreter), [str(interpreter), str(Path(__file__).resolve()), *sys.argv[1:]])
+    raise
 
 KP=17592186124472
 D=Path(__file__).resolve().with_suffix('')
@@ -275,6 +281,58 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         elif level=='moderate':task.append({'kinds':p['graphs'][i]['kinds'],'directions':p['graphs'][i]['directions'],'range_order':p['graphs'][i]['range_order'],'overlap':p['graphs'][i]['overlap']})
         else:task.append(p['graphs'][i])
     return {'knowledge_point':{'db_id':KP,'id':UUID,'title':TITLE},'question':{':question/id':uid(content),':question/difficulty':':question.difficulty/'+level,':question/problem':problem,':question/worked-solution':solution,':question/answer-fields':[f]},'generation':{'version':VERSION,'source':{k:SNAPSHOT[k] for k in ('database','basis','lineage')},'template':level+'-graphs','bank_profile':bank_name,'profile':bank_name,'parameters':p,'graphs':graphs,'assets':plots,'authored':True,'authored_difficulty':True,'evidence_only':False,'eligible_for_learning':True,'correct_mask':computed,'mathematical_fingerprint':digest({'level':level,'graphs':task}),'identity':content,'python':sys.version.split()[0],'sympy':sp.__version__}}
+
+# The current database migrated the finite-subset response to four checkbox
+# fields. Keep the historical radio profiles as ineligible source evidence;
+# convert normal exact-domain instances without changing their mathematics.
+legacy_generate = generate
+CURRENT = json.loads((D/'current-source.json').read_text())
+CURRENT_SOURCES = {q[':question/math-academy-id']:q for q in CURRENT[':knowledge-point/questions']}
+CHECKBOX_VERSION = 'invertible-graph-checkbox-2.0'
+
+def generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None):
+    if profile and profile.startswith('current:'):
+        name = profile[8:]
+        if name not in CURRENT_SOURCES or parameters is not None:
+            raise ValueError('current source replay accepts original parameters only')
+        q = copy.deepcopy(CURRENT_SOURCES[name])
+        return {'knowledge_point':{'db_id':KP,'id':UUID,'title':TITLE}, 'question':q,
+                'generation':{'version':CHECKBOX_VERSION,'template':'current-source',
+                    'source_id':name,'source_basis':2221,'evidence_only':True,
+                    'eligible_for_learning':False,'assets':{}}}
+    if profile and profile.startswith('raw:'):
+        return legacy_generate(level, seed, template, field_type, parameters, profile)
+    if field_type not in (None, 'checkbox', ':answer-field.type/checkbox'):
+        raise ValueError('current production response uses four checkbox fields')
+    r = legacy_generate(level, seed, template, None, parameters, profile)
+    q, meta = r['question'], r['generation']
+    q[':question/problem'] += '\n\nSelect all that apply.\n\nGraph positions: **I.** upper left; **II.** upper right; **III.** lower left; **IV.** lower right.'
+    q[':question/worked-solution'] = q[':question/worked-solution'].split('\n\nTherefore, the correct answer is')[0]
+    content = digest({'version':CHECKBOX_VERSION, 'problem':q[':question/problem'],
+                      'solution':q[':question/worked-solution'],'difficulty':level,
+                      'response':'four-boolean-checkboxes'})
+    fields = []
+    for i, label in enumerate(ROMANS):
+        fid = uid(content+':checkbox:'+label)
+        choices = [{':answer/id':uid(fid+':'+value), ':answer/type':':answer.type/text',
+                    ':answer/value':value} for value in ('false','true')]
+        value = 'true' if meta['correct_mask'] >> i & 1 else 'false'
+        fields.append({':answer-field/id':fid, ':answer-field/key':label,
+                       ':answer-field/type':':answer-field.type/checkbox',
+                       ':answer-field/choices':choices,
+                       ':answer-field/correct':[':answer/id',uid(fid+':'+value)]})
+    q[':question/id'], q[':question/answer-fields'] = uid(content), fields
+    # Panel-label permutations are incidental to the unordered recognition task.
+    task = []
+    for i, graph in enumerate(meta['graphs']):
+        p = meta['parameters']['graphs'][i]
+        task.append({'family':graph['family']} if level=='easy' else
+                    {k:p[k] for k in ('kinds','directions','range_order','overlap')} if level=='moderate' else p)
+    meta.update(version=CHECKBOX_VERSION, identity=content,
+                mathematical_fingerprint=digest({'level':level,'graphs':sorted(task,key=lambda t:json.dumps(t,sort_keys=True))}),
+                legacy_sampling_profile=meta['bank_profile'], bank_profile='checkbox-boolean',
+                response_contract='four field-owned false/true banks', seed=seed)
+    return r
 
 # Easy: continuous shape recognition, one domain per graph.
 def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
