@@ -1,12 +1,16 @@
-## q-331601 original
+# Review: homogeneous / inhomogeneous ODE recognition
+
+All records are local drafts at math basis 1356. Raw source profiles are evidence-only. Normal generated examples preserve source operative masks. Hard is an authored scope extension.
+
+## Original q-331601
 
 Which of the following first-order linear differential equations are homogeneous?
 
-Select all that apply.
+- ${y}^{′}+2xy=0$
+- ${y}^{′}+2xy=4$
+- ${y}^{′}+2xy=-y$
 
-- **I.** ${y}^{′}+2xy=0$
-- **II.** ${y}^{′}+2xy=4$
-- **III.** ${y}^{′}+2xy=-y$
+Bank: II only, I, II, and III, I and III only, I only, III only
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -48,15 +52,19 @@ This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation
 
 Therefore, the correct answer is "I and III only."
 
-## Degree variant
+### Generated variant (observed_q-331601)
 
 Which of the following first-order linear differential equations are homogeneous?
 
-Select all that apply.
+- ${y}^{′}+7{x}^{2}y=0$
+- ${y}^{′}+7{x}^{2}y=-8$
+- ${y}^{′}+7{x}^{2}y=-3y$
 
-- **I.** ${y}^{′}+2{x}^{2}y=0$
-- **II.** ${y}^{′}+2{x}^{2}y=4$
-- **III.** ${y}^{′}+2{x}^{2}y=-y$
+- I and III only
+- I, II, and III
+- II only
+- III only
+- I only
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -69,7 +77,7 @@ Now, let's consider each equation in turn.
 - First, we consider the equation
 
 $$
-{y}^{′}+2{x}^{2}y=0.
+{y}^{′}+7{x}^{2}y=0.
 $$
 
 The right-hand side is already zero, so the equation directly matches the form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
@@ -77,38 +85,90 @@ The right-hand side is already zero, so the equation directly matches the form $
 - Next, we consider the equation
 
 $$
-{y}^{′}+2{x}^{2}y=4.
+{y}^{′}+7{x}^{2}y=-8.
 $$
 
-The presence of the constant term $4$ means the right-hand side is not zero, and so it cannot be rewritten in homogeneous form. Thus, this equation is *not* homogeneous.
+The presence of the constant term $-8$ means the right-hand side is not zero, and so it cannot be rewritten in homogeneous form. Thus, this equation is *not* homogeneous.
 
 - Finally, we consider the equation
 
 $$
-{y}^{′}+2{x}^{2}y=-y.
+{y}^{′}+7{x}^{2}y=-3y.
 $$
 
 We move the term involving $y$ to the left side so that all $y$-terms are together:
 
 $$
-\begin{aligned}{y}^{′}+2{x}^{2}y & =-y \\ {y}^{′}+2{x}^{2}y+y & =0 \\ {y}^{′}+(2{x}^{2}+1)y & =0\end{aligned}
+\begin{aligned}{y}^{′}+7{x}^{2}y & =-3y \\ {y}^{′}+7{x}^{2}y+3y & =0 \\ {y}^{′}+(7{x}^{2}+3)y & =0\end{aligned}
 $$
 
 This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
 
 Therefore, the correct answer is "I and III only."
 
----
+### Generated variant (observed_q-331601)
 
-## q-331744 original
+Which of the following first-order linear differential equations are homogeneous?
+
+- ${y}^{′}+3{x}^{3}y=0$
+- ${y}^{′}+3{x}^{3}y=-7$
+- ${y}^{′}+3{x}^{3}y=-3y$
+
+- I and III only
+- I only
+- III only
+- II only
+- I, II, and III
+
+A first-order linear differential equation is homogeneous if it can be written in the form
+
+$$
+{y}^{′}+P(x)y=0.
+$$
+
+Now, let's consider each equation in turn.
+
+- First, we consider the equation
+
+$$
+{y}^{′}+3{x}^{3}y=0.
+$$
+
+The right-hand side is already zero, so the equation directly matches the form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
+
+- Next, we consider the equation
+
+$$
+{y}^{′}+3{x}^{3}y=-7.
+$$
+
+The presence of the constant term $-7$ means the right-hand side is not zero, and so it cannot be rewritten in homogeneous form. Thus, this equation is *not* homogeneous.
+
+- Finally, we consider the equation
+
+$$
+{y}^{′}+3{x}^{3}y=-3y.
+$$
+
+We move the term involving $y$ to the left side so that all $y$-terms are together:
+
+$$
+\begin{aligned}{y}^{′}+3{x}^{3}y & =-3y \\ {y}^{′}+3{x}^{3}y+3y & =0 \\ {y}^{′}+(3{x}^{3}+3)y & =0\end{aligned}
+$$
+
+This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
+
+Therefore, the correct answer is "I and III only."
+
+## Original q-331744
 
 Which of the following first-order linear differential equations are inhomogeneous?
 
-Select all that apply.
+- ${y}^{′}-xy=0$
+- ${y}^{′}-xy=y$
+- ${y}^{′}-xy={x}^{3}$
 
-- **I.** ${y}^{′}-xy=0$
-- **II.** ${y}^{′}-xy=y$
-- **III.** ${y}^{′}-xy={x}^{3}$
+Bank: III only, II only, I only, I, II, and III, I and III only
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -158,15 +218,19 @@ Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)={x}^{
 
 Therefore, the correct answer is "III only."
 
-## Degree variant
+### Generated variant (observed_q-331744)
 
 Which of the following first-order linear differential equations are inhomogeneous?
 
-Select all that apply.
+- ${y}^{′}-7{x}^{2}y=0$
+- ${y}^{′}-7{x}^{2}y=y$
+- ${y}^{′}-7{x}^{2}y=-{x}^{3}$
 
-- **I.** ${y}^{′}-{x}^{2}y=0$
-- **II.** ${y}^{′}-{x}^{2}y=y$
-- **III.** ${y}^{′}-{x}^{2}y={x}^{6}$
+- I only
+- II only
+- III only
+- I and III only
+- I, II, and III
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -187,7 +251,7 @@ To determine which equations are inhomogeneous, we examine each one in turn.
 - First, we consider the equation
 
 $$
-{y}^{′}-{x}^{2}y=0.
+{y}^{′}-7{x}^{2}y=0.
 $$
 
 The right-hand side is already zero, so the equation directly matches the form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
@@ -195,13 +259,13 @@ The right-hand side is already zero, so the equation directly matches the form $
 - Next, we consider the equation
 
 $$
-{y}^{′}-{x}^{2}y=y.
+{y}^{′}-7{x}^{2}y=y.
 $$
 
 We move the term involving $y$ to the left side so that all $y$-terms are together:
 
 $$
-\begin{aligned}{y}^{′}-{x}^{2}y & =y \\ {y}^{′}-{x}^{2}y-y & =0 \\ {y}^{′}-({x}^{2}+1)y & =0.\end{aligned}
+\begin{aligned}{y}^{′}-7{x}^{2}y & =y \\ {y}^{′}-7{x}^{2}y-y & =0 \\ {y}^{′}-(7{x}^{2}+1)y & =0.\end{aligned}
 $$
 
 This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
@@ -209,24 +273,84 @@ This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation
 - Finally, we consider the equation
 
 $$
-{y}^{′}-{x}^{2}y={x}^{6}.
+{y}^{′}-7{x}^{2}y=-{x}^{3}.
 $$
 
-Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)={x}^{6}$ is not identically zero. Therefore, this equation is inhomogeneous.
+Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)=-{x}^{3}$ is not identically zero. Therefore, this equation is inhomogeneous.
 
 Therefore, the correct answer is "III only."
 
----
-
-## q-331605 original
+### Generated variant (observed_q-331744)
 
 Which of the following first-order linear differential equations are inhomogeneous?
 
-Select all that apply.
+- ${y}^{′}-3{x}^{3}y=0$
+- ${y}^{′}-3{x}^{3}y=y$
+- ${y}^{′}-3{x}^{3}y=-x$
 
-- **I.** ${y}^{′}+{x}^{2}y=3x$
-- **II.** ${y}^{′}+{x}^{2}y=0$
-- **III.** ${y}^{′}+{x}^{2}y=y$
+- I only
+- I, II, and III
+- I and III only
+- III only
+- II only
+
+A first-order linear differential equation is homogeneous if it can be written in the form
+
+$$
+{y}^{′}+P(x)y=0.
+$$
+
+A first-order linear differential equation is inhomogeneous if it is not homogeneous, i.e., if it can be written as
+
+$$
+{y}^{′}+P(x)y=Q(x)
+$$
+
+where $Q$ is not identical to zero.
+
+To determine which equations are inhomogeneous, we examine each one in turn.
+
+- First, we consider the equation
+
+$$
+{y}^{′}-3{x}^{3}y=0.
+$$
+
+The right-hand side is already zero, so the equation directly matches the form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
+
+- Next, we consider the equation
+
+$$
+{y}^{′}-3{x}^{3}y=y.
+$$
+
+We move the term involving $y$ to the left side so that all $y$-terms are together:
+
+$$
+\begin{aligned}{y}^{′}-3{x}^{3}y & =y \\ {y}^{′}-3{x}^{3}y-y & =0 \\ {y}^{′}-(3{x}^{3}+1)y & =0.\end{aligned}
+$$
+
+This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
+
+- Finally, we consider the equation
+
+$$
+{y}^{′}-3{x}^{3}y=-x.
+$$
+
+Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)=-x$ is not identically zero. Therefore, this equation is inhomogeneous.
+
+Therefore, the correct answer is "III only."
+
+## Original q-331605
+
+Which of the following first-order linear differential equations are inhomogeneous?
+
+- ${y}^{′}+{x}^{2}y=3x$
+- ${y}^{′}+{x}^{2}y=0$
+- ${y}^{′}+{x}^{2}y=y$
+
+Bank: I only, II only, III only, I and II only, I, II, and III
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -276,15 +400,19 @@ Since our equation can be written in the form ${y}^{′}+P(x)y=0,$ the equation 
 
 Therefore, the correct answer is "I only."
 
-## Degree variant
+### Generated variant (observed_q-331605)
 
 Which of the following first-order linear differential equations are inhomogeneous?
 
-Select all that apply.
+- ${y}^{′}+7{x}^{2}y=-8{x}^{2}$
+- ${y}^{′}+7{x}^{2}y=0$
+- ${y}^{′}+7{x}^{2}y=5y$
 
-- **I.** ${y}^{′}+{x}^{4}y=3{x}^{2}$
-- **II.** ${y}^{′}+{x}^{4}y=0$
-- **III.** ${y}^{′}+{x}^{4}y=y$
+- III only
+- II only
+- I only
+- I, II, and III
+- I and II only
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -305,15 +433,15 @@ To determine which equations are inhomogeneous, we examine each one in turn.
 - First, we consider the equation
 
 $$
-{y}^{′}+{x}^{4}y=3{x}^{2}.
+{y}^{′}+7{x}^{2}y=-8{x}^{2}.
 $$
 
-Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)=3{x}^{2}$ is not identically zero. Therefore, this equation is inhomogeneous.
+Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)=-8{x}^{2}$ is not identically zero. Therefore, this equation is inhomogeneous.
 
 - Next, we consider the equation
 
 $$
-{y}^{′}+{x}^{4}y=0.
+{y}^{′}+7{x}^{2}y=0.
 $$
 
 Notice that this equation has the form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
@@ -321,30 +449,90 @@ Notice that this equation has the form ${y}^{′}+P(x)y=0.$ Therefore, this equa
 - Finally, we consider the equation
 
 $$
-{y}^{′}+{x}^{4}y=y.
+{y}^{′}+7{x}^{2}y=5y.
 $$
 
 We collect the $y$-terms on the left side:
 
 $$
-\begin{aligned}{y}^{′}+{x}^{4}y & =y \\ {y}^{′}+{x}^{4}y-y & =0 \\ {y}^{′}+({x}^{4}-1)y & =0.\end{aligned}
+\begin{aligned}{y}^{′}+7{x}^{2}y & =5y \\ {y}^{′}+7{x}^{2}y-5y & =0 \\ {y}^{′}+(7{x}^{2}-5)y & =0.\end{aligned}
 $$
 
 Since our equation can be written in the form ${y}^{′}+P(x)y=0,$ the equation is homogeneous.
 
 Therefore, the correct answer is "I only."
 
----
+### Generated variant (observed_q-331605)
 
-## q-331724 original
+Which of the following first-order linear differential equations are inhomogeneous?
+
+- ${y}^{′}+3{x}^{3}y=-7{x}^{2}$
+- ${y}^{′}+3{x}^{3}y=0$
+- ${y}^{′}+3{x}^{3}y=y$
+
+- III only
+- I and II only
+- I, II, and III
+- I only
+- II only
+
+A first-order linear differential equation is homogeneous if it can be written in the form
+
+$$
+{y}^{′}+P(x)y=0.
+$$
+
+A first-order linear differential equation is inhomogeneous if it is not homogeneous, i.e., if it can be written as
+
+$$
+{y}^{′}+P(x)y=Q(x)
+$$
+
+where $Q$ is not identical to zero.
+
+To determine which equations are inhomogeneous, we examine each one in turn.
+
+- First, we consider the equation
+
+$$
+{y}^{′}+3{x}^{3}y=-7{x}^{2}.
+$$
+
+Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)=-7{x}^{2}$ is not identically zero. Therefore, this equation is inhomogeneous.
+
+- Next, we consider the equation
+
+$$
+{y}^{′}+3{x}^{3}y=0.
+$$
+
+Notice that this equation has the form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
+
+- Finally, we consider the equation
+
+$$
+{y}^{′}+3{x}^{3}y=y.
+$$
+
+We collect the $y$-terms on the left side:
+
+$$
+\begin{aligned}{y}^{′}+3{x}^{3}y & =y \\ {y}^{′}+3{x}^{3}y-y & =0 \\ {y}^{′}+(3{x}^{3}-1)y & =0.\end{aligned}
+$$
+
+Since our equation can be written in the form ${y}^{′}+P(x)y=0,$ the equation is homogeneous.
+
+Therefore, the correct answer is "I only."
+
+## Original q-331724
 
 Which of the following first-order linear differential equations are homogeneous?
 
-Select all that apply.
+- ${y}^{′}+2{x}^{3}y={x}^{2}$
+- ${y}^{′}+2{x}^{3}y=-3y$
+- ${y}^{′}+2{x}^{3}y=0$
 
-- **I.** ${y}^{′}+2{x}^{3}y={x}^{2}$
-- **II.** ${y}^{′}+2{x}^{3}y=-3y$
-- **III.** ${y}^{′}+2{x}^{3}y=0$
+Bank: III only, I, II, and III, II only, I only, II and III only
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -386,15 +574,19 @@ The right-hand side is already zero, so the equation directly matches the form $
 
 Therefore, the correct answer is "II and III only."
 
-## Degree variant
+### Generated variant (observed_q-331724)
 
 Which of the following first-order linear differential equations are homogeneous?
 
-Select all that apply.
+- ${y}^{′}+7{x}^{2}y=-8{x}^{2}$
+- ${y}^{′}+7{x}^{2}y=-5y$
+- ${y}^{′}+7{x}^{2}y=0$
 
-- **I.** ${y}^{′}+2{x}^{6}y={x}^{4}$
-- **II.** ${y}^{′}+2{x}^{6}y=-3y$
-- **III.** ${y}^{′}+2{x}^{6}y=0$
+- II only
+- I, II, and III
+- III only
+- II and III only
+- I only
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -407,21 +599,21 @@ Now, let's consider each equation in turn.
 - First, we consider the equation
 
 $$
-{y}^{′}+2{x}^{6}y={x}^{4}.
+{y}^{′}+7{x}^{2}y=-8{x}^{2}.
 $$
 
-Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)={x}^{4}$ is not identically zero. Therefore, this equation is inhomogeneous.
+Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)=-8{x}^{2}$ is not identically zero. Therefore, this equation is inhomogeneous.
 
 - Next, we consider the equation
 
 $$
-{y}^{′}+2{x}^{6}y=-3y.
+{y}^{′}+7{x}^{2}y=-5y.
 $$
 
 We move the term involving $y$ to the left side so that all $y$-terms are together:
 
 $$
-\begin{aligned}{y}^{′}+2{x}^{6}y & =-3y \\ {y}^{′}+2{x}^{6}y+3y & =0 \\ {y}^{′}+(2{x}^{6}+3)y & =0\end{aligned}
+\begin{aligned}{y}^{′}+7{x}^{2}y & =-5y \\ {y}^{′}+7{x}^{2}y+5y & =0 \\ {y}^{′}+(7{x}^{2}+5)y & =0\end{aligned}
 $$
 
 This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
@@ -429,24 +621,76 @@ This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation
 - Finally, we consider the equation
 
 $$
-{y}^{′}+2{x}^{6}y=0.
+{y}^{′}+7{x}^{2}y=0.
 $$
 
 The right-hand side is already zero, so the equation directly matches the form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
 
 Therefore, the correct answer is "II and III only."
 
----
-
-## q-331725 original
+### Generated variant (observed_q-331724)
 
 Which of the following first-order linear differential equations are homogeneous?
 
-Select all that apply.
+- ${y}^{′}+3{x}^{3}y=-7{x}^{2}$
+- ${y}^{′}+3{x}^{3}y=-y$
+- ${y}^{′}+3{x}^{3}y=0$
 
-- **I.** ${y}^{′}-xy=-y$
-- **II.** ${y}^{′}-xy=0$
-- **III.** ${y}^{′}-xy=-5y$
+- II only
+- I only
+- II and III only
+- III only
+- I, II, and III
+
+A first-order linear differential equation is homogeneous if it can be written in the form
+
+$$
+{y}^{′}+P(x)y=0.
+$$
+
+Now, let's consider each equation in turn.
+
+- First, we consider the equation
+
+$$
+{y}^{′}+3{x}^{3}y=-7{x}^{2}.
+$$
+
+Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)=-7{x}^{2}$ is not identically zero. Therefore, this equation is inhomogeneous.
+
+- Next, we consider the equation
+
+$$
+{y}^{′}+3{x}^{3}y=-y.
+$$
+
+We move the term involving $y$ to the left side so that all $y$-terms are together:
+
+$$
+\begin{aligned}{y}^{′}+3{x}^{3}y & =-y \\ {y}^{′}+3{x}^{3}y+y & =0 \\ {y}^{′}+(3{x}^{3}+1)y & =0\end{aligned}
+$$
+
+This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
+
+- Finally, we consider the equation
+
+$$
+{y}^{′}+3{x}^{3}y=0.
+$$
+
+The right-hand side is already zero, so the equation directly matches the form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
+
+Therefore, the correct answer is "II and III only."
+
+## Original q-331725
+
+Which of the following first-order linear differential equations are homogeneous?
+
+- ${y}^{′}-xy=-y$
+- ${y}^{′}-xy=0$
+- ${y}^{′}-xy=-5y$
+
+Bank: II only, I only, I, II, and III, I and III only, III only
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -494,15 +738,19 @@ This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation
 
 Therefore, the correct answer is "I, II and III."
 
-## Degree variant
+### Generated variant (observed_q-331725)
 
 Which of the following first-order linear differential equations are homogeneous?
 
-Select all that apply.
+- ${y}^{′}-7{x}^{2}y=-y$
+- ${y}^{′}-7{x}^{2}y=0$
+- ${y}^{′}-7{x}^{2}y=-3y$
 
-- **I.** ${y}^{′}-{x}^{2}y=-y$
-- **II.** ${y}^{′}-{x}^{2}y=0$
-- **III.** ${y}^{′}-{x}^{2}y=-5y$
+- I, II, and III
+- I only
+- II only
+- III only
+- I and III only
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -515,13 +763,13 @@ Now, let's consider each equation in turn.
 - First, we consider the equation
 
 $$
-{y}^{′}-{x}^{2}y=-y.
+{y}^{′}-7{x}^{2}y=-y.
 $$
 
 We move the term involving $y$ to the left side so that all $y$-terms are together:
 
 $$
-\begin{aligned}{y}^{′}-{x}^{2}y & =-y \\ {y}^{′}-{x}^{2}y+y & =0 \\ {y}^{′}-({x}^{2}-1)y & =0\end{aligned}
+\begin{aligned}{y}^{′}-7{x}^{2}y & =-y \\ {y}^{′}-7{x}^{2}y+y & =0 \\ {y}^{′}-(7{x}^{2}-1)y & =0\end{aligned}
 $$
 
 This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
@@ -529,7 +777,7 @@ This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation
 - Next, we consider the equation
 
 $$
-{y}^{′}-{x}^{2}y=0.
+{y}^{′}-7{x}^{2}y=0.
 $$
 
 The right-hand side is already zero, so the equation directly matches the form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
@@ -537,30 +785,88 @@ The right-hand side is already zero, so the equation directly matches the form $
 - Finally, we consider the equation
 
 $$
-{y}^{′}-{x}^{2}y=-5y.
+{y}^{′}-7{x}^{2}y=-3y.
 $$
 
 We move the term involving $y$ to the left side so that all $y$-terms are together:
 
 $$
-\begin{aligned}{y}^{′}-{x}^{2}y & =-5y \\ {y}^{′}-{x}^{2}y+5y & =0 \\ {y}^{′}-({x}^{2}-5)y & =0\end{aligned}
+\begin{aligned}{y}^{′}-7{x}^{2}y & =-3y \\ {y}^{′}-7{x}^{2}y+3y & =0 \\ {y}^{′}-(7{x}^{2}-3)y & =0\end{aligned}
 $$
 
 This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
 
 Therefore, the correct answer is "I, II and III."
 
----
-
-## q-331727 original
+### Generated variant (observed_q-331725)
 
 Which of the following first-order linear differential equations are homogeneous?
 
-Select all that apply.
+- ${y}^{′}-3{x}^{3}y=-y$
+- ${y}^{′}-3{x}^{3}y=0$
+- ${y}^{′}-3{x}^{3}y=-3y$
 
-- **I.** ${y}^{′}+{x}^{2}y=-3y$
-- **II.** ${y}^{′}+{x}^{2}y=x$
-- **III.** ${y}^{′}+{x}^{2}y=0$
+- I, II, and III
+- I and III only
+- III only
+- II only
+- I only
+
+A first-order linear differential equation is homogeneous if it can be written in the form
+
+$$
+{y}^{′}+P(x)y=0.
+$$
+
+Now, let's consider each equation in turn.
+
+- First, we consider the equation
+
+$$
+{y}^{′}-3{x}^{3}y=-y.
+$$
+
+We move the term involving $y$ to the left side so that all $y$-terms are together:
+
+$$
+\begin{aligned}{y}^{′}-3{x}^{3}y & =-y \\ {y}^{′}-3{x}^{3}y+y & =0 \\ {y}^{′}-(3{x}^{3}-1)y & =0\end{aligned}
+$$
+
+This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
+
+- Next, we consider the equation
+
+$$
+{y}^{′}-3{x}^{3}y=0.
+$$
+
+The right-hand side is already zero, so the equation directly matches the form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
+
+- Finally, we consider the equation
+
+$$
+{y}^{′}-3{x}^{3}y=-3y.
+$$
+
+We move the term involving $y$ to the left side so that all $y$-terms are together:
+
+$$
+\begin{aligned}{y}^{′}-3{x}^{3}y & =-3y \\ {y}^{′}-3{x}^{3}y+3y & =0 \\ {y}^{′}-(3{x}^{3}-3)y & =0\end{aligned}
+$$
+
+This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
+
+Therefore, the correct answer is "I, II and III."
+
+## Original q-331727
+
+Which of the following first-order linear differential equations are homogeneous?
+
+- ${y}^{′}+{x}^{2}y=-3y$
+- ${y}^{′}+{x}^{2}y=x$
+- ${y}^{′}+{x}^{2}y=0$
+
+Bank: I only, III only, I and III only, I, II, and III, II only
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -602,15 +908,19 @@ The right-hand side is already zero, so the equation directly matches the form $
 
 Therefore, the correct answer is "I and III only."
 
-## Degree variant
+### Generated variant (observed_q-331727)
 
 Which of the following first-order linear differential equations are homogeneous?
 
-Select all that apply.
+- ${y}^{′}+7{x}^{2}y=-y$
+- ${y}^{′}+7{x}^{2}y=-{x}^{3}$
+- ${y}^{′}+7{x}^{2}y=0$
 
-- **I.** ${y}^{′}+{x}^{4}y=-3y$
-- **II.** ${y}^{′}+{x}^{4}y={x}^{2}$
-- **III.** ${y}^{′}+{x}^{4}y=0$
+- I and III only
+- III only
+- I only
+- II only
+- I, II, and III
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -623,13 +933,13 @@ Now, let's consider each equation in turn.
 - First, we consider the equation
 
 $$
-{y}^{′}+{x}^{4}y=-3y.
+{y}^{′}+7{x}^{2}y=-y.
 $$
 
 We move the term involving $y$ to the left side so that all $y$-terms are together:
 
 $$
-\begin{aligned}{y}^{′}+{x}^{4}y & =-3y \\ {y}^{′}+{x}^{4}y+3y & =0 \\ {y}^{′}+({x}^{4}+3)y & =0\end{aligned}
+\begin{aligned}{y}^{′}+7{x}^{2}y & =-y \\ {y}^{′}+7{x}^{2}y+y & =0 \\ {y}^{′}+(7{x}^{2}+1)y & =0\end{aligned}
 $$
 
 This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
@@ -637,32 +947,84 @@ This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation
 - Next, we consider the equation
 
 $$
-{y}^{′}+{x}^{4}y={x}^{2}.
+{y}^{′}+7{x}^{2}y=-{x}^{3}.
 $$
 
-Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)={x}^{2}$ is not identically zero. Therefore, this equation is inhomogeneous.
+Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)=-{x}^{3}$ is not identically zero. Therefore, this equation is inhomogeneous.
 
 - Finally, we consider the equation
 
 $$
-{y}^{′}+{x}^{4}y=0.
+{y}^{′}+7{x}^{2}y=0.
 $$
 
 The right-hand side is already zero, so the equation directly matches the form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
 
 Therefore, the correct answer is "I and III only."
 
----
-
-## q-331728 original
+### Generated variant (observed_q-331727)
 
 Which of the following first-order linear differential equations are homogeneous?
 
-Select all that apply.
+- ${y}^{′}+3{x}^{3}y=-y$
+- ${y}^{′}+3{x}^{3}y=-x$
+- ${y}^{′}+3{x}^{3}y=0$
 
-- **I.** ${y}^{′}-4xy=y$
-- **II.** ${y}^{′}-4xy=0$
-- **III.** ${y}^{′}-4xy=9$
+- I and III only
+- I, II, and III
+- II only
+- I only
+- III only
+
+A first-order linear differential equation is homogeneous if it can be written in the form
+
+$$
+{y}^{′}+P(x)y=0.
+$$
+
+Now, let's consider each equation in turn.
+
+- First, we consider the equation
+
+$$
+{y}^{′}+3{x}^{3}y=-y.
+$$
+
+We move the term involving $y$ to the left side so that all $y$-terms are together:
+
+$$
+\begin{aligned}{y}^{′}+3{x}^{3}y & =-y \\ {y}^{′}+3{x}^{3}y+y & =0 \\ {y}^{′}+(3{x}^{3}+1)y & =0\end{aligned}
+$$
+
+This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
+
+- Next, we consider the equation
+
+$$
+{y}^{′}+3{x}^{3}y=-x.
+$$
+
+Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)=-x$ is not identically zero. Therefore, this equation is inhomogeneous.
+
+- Finally, we consider the equation
+
+$$
+{y}^{′}+3{x}^{3}y=0.
+$$
+
+The right-hand side is already zero, so the equation directly matches the form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
+
+Therefore, the correct answer is "I and III only."
+
+## Original q-331728
+
+Which of the following first-order linear differential equations are homogeneous?
+
+- ${y}^{′}-4xy=y$
+- ${y}^{′}-4xy=0$
+- ${y}^{′}-4xy=9$
+
+Bank: II only, III only, I and II only, I only, I, II, and III
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -704,15 +1066,19 @@ The presence of the constant term $9$ means the right-hand side is not zero, and
 
 Therefore, the correct answer is "I and II only."
 
-## Degree variant
+### Generated variant (observed_q-331728)
 
 Which of the following first-order linear differential equations are homogeneous?
 
-Select all that apply.
+- ${y}^{′}-7{x}^{2}y=y$
+- ${y}^{′}-7{x}^{2}y=0$
+- ${y}^{′}-7{x}^{2}y=-1$
 
-- **I.** ${y}^{′}-4{x}^{2}y=y$
-- **II.** ${y}^{′}-4{x}^{2}y=0$
-- **III.** ${y}^{′}-4{x}^{2}y=9$
+- I and II only
+- III only
+- II only
+- I, II, and III
+- I only
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -725,13 +1091,13 @@ Now, let's consider each equation in turn.
 - First, we consider the equation
 
 $$
-{y}^{′}-4{x}^{2}y=y.
+{y}^{′}-7{x}^{2}y=y.
 $$
 
 We move the term involving $y$ to the left side so that all $y$-terms are together:
 
 $$
-\begin{aligned}{y}^{′}-4{x}^{2}y & =y \\ {y}^{′}-4{x}^{2}y-y & =0 \\ {y}^{′}-(4{x}^{2}+1)y & =0\end{aligned}
+\begin{aligned}{y}^{′}-7{x}^{2}y & =y \\ {y}^{′}-7{x}^{2}y-y & =0 \\ {y}^{′}-(7{x}^{2}+1)y & =0\end{aligned}
 $$
 
 This matches the homogeneous form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
@@ -739,7 +1105,7 @@ This matches the homogeneous form ${y}^{′}+P(x)y=0.$ Therefore, this equation 
 - Next, we consider the equation
 
 $$
-{y}^{′}-4{x}^{2}y=0.
+{y}^{′}-7{x}^{2}y=0.
 $$
 
 The right-hand side is already zero, so the equation directly matches the form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
@@ -747,26 +1113,76 @@ The right-hand side is already zero, so the equation directly matches the form $
 - Finally, we consider the equation
 
 $$
-{y}^{′}-4{x}^{2}y=9.
+{y}^{′}-7{x}^{2}y=-1.
 $$
 
-The presence of the constant term $9$ means the right-hand side is not zero, and so it cannot be rewritten in homogeneous form. Thus, this equation is *not* homogeneous.
+The presence of the constant term $-1$ means the right-hand side is not zero, and so it cannot be rewritten in homogeneous form. Thus, this equation is *not* homogeneous.
 
 Therefore, the correct answer is "I and II only."
 
----
-
-## q-331729 original
+### Generated variant (observed_q-331728)
 
 Which of the following first-order linear differential equations are homogeneous?
 
-Select all that apply.
+- ${y}^{′}-3{x}^{3}y=y$
+- ${y}^{′}-3{x}^{3}y=0$
+- ${y}^{′}-3{x}^{3}y=-1$
 
-- **I.** ${y}^{′}+7xy=5$
+- I and II only
+- I only
+- I, II, and III
+- II only
+- III only
 
-- **II.** ${y}^{′}+7xy=0$
+A first-order linear differential equation is homogeneous if it can be written in the form
 
-- **III.** ${y}^{′}+7xy=-2y$
+$$
+{y}^{′}+P(x)y=0.
+$$
+
+Now, let's consider each equation in turn.
+
+- First, we consider the equation
+
+$$
+{y}^{′}-3{x}^{3}y=y.
+$$
+
+We move the term involving $y$ to the left side so that all $y$-terms are together:
+
+$$
+\begin{aligned}{y}^{′}-3{x}^{3}y & =y \\ {y}^{′}-3{x}^{3}y-y & =0 \\ {y}^{′}-(3{x}^{3}+1)y & =0\end{aligned}
+$$
+
+This matches the homogeneous form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
+
+- Next, we consider the equation
+
+$$
+{y}^{′}-3{x}^{3}y=0.
+$$
+
+The right-hand side is already zero, so the equation directly matches the form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
+
+- Finally, we consider the equation
+
+$$
+{y}^{′}-3{x}^{3}y=-1.
+$$
+
+The presence of the constant term $-1$ means the right-hand side is not zero, and so it cannot be rewritten in homogeneous form. Thus, this equation is *not* homogeneous.
+
+Therefore, the correct answer is "I and II only."
+
+## Original q-331729
+
+Which of the following first-order linear differential equations are homogeneous?
+
+- ${y}^{′}+7xy=5$
+- ${y}^{′}+7xy=0$
+- ${y}^{′}+7xy=-2y$
+
+Bank: II and III only, I, II, and III, III only, II only, I only
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -808,17 +1224,19 @@ This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation
 
 Therefore, the correct answer is "II and III only."
 
-## Degree variant
+### Generated variant (observed_q-331729)
 
 Which of the following first-order linear differential equations are homogeneous?
 
-Select all that apply.
+- ${y}^{′}+7{x}^{2}y=-8$
+- ${y}^{′}+7{x}^{2}y=0$
+- ${y}^{′}+7{x}^{2}y=-3y$
 
-- **I.** ${y}^{′}+7{x}^{2}y=5$
-
-- **II.** ${y}^{′}+7{x}^{2}y=0$
-
-- **III.** ${y}^{′}+7{x}^{2}y=-2y$
+- III only
+- I, II, and III
+- II and III only
+- I only
+- II only
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -831,10 +1249,10 @@ Now, let's consider each equation in turn.
 - First, we consider the equation
 
 $$
-{y}^{′}+7{x}^{2}y=5.
+{y}^{′}+7{x}^{2}y=-8.
 $$
 
-The presence of the constant term $5$ means the right-hand side is not zero, and so it cannot be rewritten in homogeneous form. Thus, this equation is *not* homogeneous.
+The presence of the constant term $-8$ means the right-hand side is not zero, and so it cannot be rewritten in homogeneous form. Thus, this equation is *not* homogeneous.
 
 - Next, we consider the equation
 
@@ -847,30 +1265,82 @@ The right-hand side is already zero, so the equation directly matches the form $
 - Finally, we consider the equation
 
 $$
-{y}^{′}+7{x}^{2}y=-2y.
+{y}^{′}+7{x}^{2}y=-3y.
 $$
 
 We move the term involving $y$ to the left side so that all $y$-terms are together:
 
 $$
-\begin{aligned}{y}^{′}+7{x}^{2}y & =-2y \\ {y}^{′}+7{x}^{2}y+2y & =0 \\ {y}^{′}+(7{x}^{2}+2)y & =0\end{aligned}
+\begin{aligned}{y}^{′}+7{x}^{2}y & =-3y \\ {y}^{′}+7{x}^{2}y+3y & =0 \\ {y}^{′}+(7{x}^{2}+3)y & =0\end{aligned}
 $$
 
 This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
 
 Therefore, the correct answer is "II and III only."
 
----
+### Generated variant (observed_q-331729)
 
-## q-331738 original
+Which of the following first-order linear differential equations are homogeneous?
+
+- ${y}^{′}+3{x}^{3}y=-7$
+- ${y}^{′}+3{x}^{3}y=0$
+- ${y}^{′}+3{x}^{3}y=-3y$
+
+- III only
+- II only
+- I only
+- II and III only
+- I, II, and III
+
+A first-order linear differential equation is homogeneous if it can be written in the form
+
+$$
+{y}^{′}+P(x)y=0.
+$$
+
+Now, let's consider each equation in turn.
+
+- First, we consider the equation
+
+$$
+{y}^{′}+3{x}^{3}y=-7.
+$$
+
+The presence of the constant term $-7$ means the right-hand side is not zero, and so it cannot be rewritten in homogeneous form. Thus, this equation is *not* homogeneous.
+
+- Next, we consider the equation
+
+$$
+{y}^{′}+3{x}^{3}y=0.
+$$
+
+The right-hand side is already zero, so the equation directly matches the form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
+
+- Finally, we consider the equation
+
+$$
+{y}^{′}+3{x}^{3}y=-3y.
+$$
+
+We move the term involving $y$ to the left side so that all $y$-terms are together:
+
+$$
+\begin{aligned}{y}^{′}+3{x}^{3}y & =-3y \\ {y}^{′}+3{x}^{3}y+3y & =0 \\ {y}^{′}+(3{x}^{3}+3)y & =0\end{aligned}
+$$
+
+This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
+
+Therefore, the correct answer is "II and III only."
+
+## Original q-331738
 
 Which of the following first-order linear differential equations are inhomogeneous?
 
-Select all that apply.
+- ${y}^{′}+4xy=2$
+- ${y}^{′}+4xy=0$
+- ${y}^{′}+4xy=y$
 
-- **I.** ${y}^{′}+4xy=2$
-- **II.** ${y}^{′}+4xy=0$
-- **III.** ${y}^{′}+4xy=y$
+Bank: I, II, and III, III only, II only, I and II only, I only
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -920,15 +1390,19 @@ This matches the homogeneous form ${y}^{′}+P(x)y=0.$ Therefore, this equation 
 
 Therefore, the correct answer is "I only."
 
-## Degree variant
+### Generated variant (observed_q-331738)
 
 Which of the following first-order linear differential equations are inhomogeneous?
 
-Select all that apply.
+- ${y}^{′}+7{x}^{2}y=-8$
+- ${y}^{′}+7{x}^{2}y=0$
+- ${y}^{′}+7{x}^{2}y=3y$
 
-- **I.** ${y}^{′}+4{x}^{2}y=2$
-- **II.** ${y}^{′}+4{x}^{2}y=0$
-- **III.** ${y}^{′}+4{x}^{2}y=y$
+- II only
+- III only
+- I, II, and III
+- I only
+- I and II only
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -949,15 +1423,15 @@ To determine which equations are inhomogeneous, we examine each one in turn.
 - First, we consider the equation
 
 $$
-{y}^{′}+4{x}^{2}y=2.
+{y}^{′}+7{x}^{2}y=-8.
 $$
 
-Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)=2$ is not identically zero. Therefore, this equation is inhomogeneous.
+Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)=-8$ is not identically zero. Therefore, this equation is inhomogeneous.
 
 - Next, we consider the equation
 
 $$
-{y}^{′}+4{x}^{2}y=0.
+{y}^{′}+7{x}^{2}y=0.
 $$
 
 The right-hand side is already zero, so the equation directly matches the form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
@@ -965,30 +1439,90 @@ The right-hand side is already zero, so the equation directly matches the form $
 - Finally, we consider the equation
 
 $$
-{y}^{′}+4{x}^{2}y=y.
+{y}^{′}+7{x}^{2}y=3y.
 $$
 
 We collect the $y$-terms on the left side:
 
 $$
-\begin{aligned}{y}^{′}+4{x}^{2}y & =y \\ {y}^{′}+4{x}^{2}y-y & =0 \\ {y}^{′}+(4{x}^{2}-1)y & =0.\end{aligned}
+\begin{aligned}{y}^{′}+7{x}^{2}y & =3y \\ {y}^{′}+7{x}^{2}y-3y & =0 \\ {y}^{′}+(7{x}^{2}-3)y & =0.\end{aligned}
 $$
 
 This matches the homogeneous form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
 
 Therefore, the correct answer is "I only."
 
----
-
-## q-331739 original
+### Generated variant (observed_q-331738)
 
 Which of the following first-order linear differential equations are inhomogeneous?
 
-Select all that apply.
+- ${y}^{′}+3{x}^{3}y=-7$
+- ${y}^{′}+3{x}^{3}y=0$
+- ${y}^{′}+3{x}^{3}y=3y$
 
-- **I.** ${y}^{′}-{x}^{2}y={x}^{3}$
-- **II.** ${y}^{′}-{x}^{2}y=y$
-- **III.** ${y}^{′}-{x}^{2}y=0$
+- II only
+- I and II only
+- I only
+- I, II, and III
+- III only
+
+A first-order linear differential equation is homogeneous if it can be written in the form
+
+$$
+{y}^{′}+P(x)y=0.
+$$
+
+A first-order linear differential equation is inhomogeneous if it is not homogeneous, i.e., if it can be written as
+
+$$
+{y}^{′}+P(x)y=Q(x)
+$$
+
+where $Q$ is not identical to zero.
+
+To determine which equations are inhomogeneous, we examine each one in turn.
+
+- First, we consider the equation
+
+$$
+{y}^{′}+3{x}^{3}y=-7.
+$$
+
+Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)=-7$ is not identically zero. Therefore, this equation is inhomogeneous.
+
+- Next, we consider the equation
+
+$$
+{y}^{′}+3{x}^{3}y=0.
+$$
+
+The right-hand side is already zero, so the equation directly matches the form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
+
+- Finally, we consider the equation
+
+$$
+{y}^{′}+3{x}^{3}y=3y.
+$$
+
+We collect the $y$-terms on the left side:
+
+$$
+\begin{aligned}{y}^{′}+3{x}^{3}y & =3y \\ {y}^{′}+3{x}^{3}y-3y & =0 \\ {y}^{′}+(3{x}^{3}-3)y & =0.\end{aligned}
+$$
+
+This matches the homogeneous form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
+
+Therefore, the correct answer is "I only."
+
+## Original q-331739
+
+Which of the following first-order linear differential equations are inhomogeneous?
+
+- ${y}^{′}-{x}^{2}y={x}^{3}$
+- ${y}^{′}-{x}^{2}y=y$
+- ${y}^{′}-{x}^{2}y=0$
+
+Bank: I, II, and III, I only, II only, I and II only, III only
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -1038,15 +1572,19 @@ The right-hand side is already zero, so the equation directly matches the form $
 
 Therefore, the correct answer is "I only."
 
-## Degree variant
+### Generated variant (observed_q-331739)
 
 Which of the following first-order linear differential equations are inhomogeneous?
 
-Select all that apply.
+- ${y}^{′}-7{x}^{2}y=-8{x}^{2}$
+- ${y}^{′}-7{x}^{2}y=5y$
+- ${y}^{′}-7{x}^{2}y=0$
 
-- **I.** ${y}^{′}-{x}^{4}y={x}^{6}$
-- **II.** ${y}^{′}-{x}^{4}y=y$
-- **III.** ${y}^{′}-{x}^{4}y=0$
+- II only
+- I only
+- I, II, and III
+- III only
+- I and II only
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -1067,21 +1605,21 @@ To determine which equations are inhomogeneous, we examine each one in turn.
 - First, we consider the equation
 
 $$
-{y}^{′}-{x}^{4}y={x}^{6}.
+{y}^{′}-7{x}^{2}y=-8{x}^{2}.
 $$
 
-Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)={x}^{6}$ is not identically zero. Therefore, this equation is inhomogeneous.
+Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)=-8{x}^{2}$ is not identically zero. Therefore, this equation is inhomogeneous.
 
 - Next, we consider the equation
 
 $$
-{y}^{′}-{x}^{4}y=y.
+{y}^{′}-7{x}^{2}y=5y.
 $$
 
 We collect the $y$-terms on the left side:
 
 $$
-\begin{aligned}{y}^{′}-{x}^{4}y & =y \\ {y}^{′}-{x}^{4}y-y & =0 \\ {y}^{′}-({x}^{4}+1)y & =0.\end{aligned}
+\begin{aligned}{y}^{′}-7{x}^{2}y & =5y \\ {y}^{′}-7{x}^{2}y-5y & =0 \\ {y}^{′}-(7{x}^{2}+5)y & =0.\end{aligned}
 $$
 
 This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
@@ -1089,24 +1627,84 @@ This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation
 - Finally, we consider the equation
 
 $$
-{y}^{′}-{x}^{4}y=0.
+{y}^{′}-7{x}^{2}y=0.
 $$
 
 The right-hand side is already zero, so the equation directly matches the form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
 
 Therefore, the correct answer is "I only."
 
----
-
-## q-331742 original
+### Generated variant (observed_q-331739)
 
 Which of the following first-order linear differential equations are inhomogeneous?
 
-Select all that apply.
+- ${y}^{′}-3{x}^{3}y=-7{x}^{2}$
+- ${y}^{′}-3{x}^{3}y=y$
+- ${y}^{′}-3{x}^{3}y=0$
 
-- **I.** ${y}^{′}+2y=y$
-- **II.** ${y}^{′}+2y=x$
-- **III.** ${y}^{′}+2y=0$
+- II only
+- I and II only
+- III only
+- I, II, and III
+- I only
+
+A first-order linear differential equation is homogeneous if it can be written in the form
+
+$$
+{y}^{′}+P(x)y=0.
+$$
+
+A first-order linear differential equation is inhomogeneous if it is not homogeneous, i.e., if it can be written as
+
+$$
+{y}^{′}+P(x)y=Q(x)
+$$
+
+where $Q$ is not identical to zero.
+
+To determine which equations are inhomogeneous, we examine each one in turn.
+
+- First, we consider the equation
+
+$$
+{y}^{′}-3{x}^{3}y=-7{x}^{2}.
+$$
+
+Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)=-7{x}^{2}$ is not identically zero. Therefore, this equation is inhomogeneous.
+
+- Next, we consider the equation
+
+$$
+{y}^{′}-3{x}^{3}y=y.
+$$
+
+We collect the $y$-terms on the left side:
+
+$$
+\begin{aligned}{y}^{′}-3{x}^{3}y & =y \\ {y}^{′}-3{x}^{3}y-y & =0 \\ {y}^{′}-(3{x}^{3}+1)y & =0.\end{aligned}
+$$
+
+This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
+
+- Finally, we consider the equation
+
+$$
+{y}^{′}-3{x}^{3}y=0.
+$$
+
+The right-hand side is already zero, so the equation directly matches the form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
+
+Therefore, the correct answer is "I only."
+
+## Original q-331742
+
+Which of the following first-order linear differential equations are inhomogeneous?
+
+- ${y}^{′}+2y=y$
+- ${y}^{′}+2y=x$
+- ${y}^{′}+2y=0$
+
+Bank: II only, I, II, and III, III only, I and II only, I only
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -1156,15 +1754,19 @@ This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation
 
 Therefore, the correct answer is "II only."
 
-## Degree variant
+### Generated variant (observed_q-331742)
 
 Which of the following first-order linear differential equations are inhomogeneous?
 
-Select all that apply.
+- ${y}^{′}+7y=4y$
+- ${y}^{′}+7y=-8{x}^{2}$
+- ${y}^{′}+7y=0$
 
-- **I.** ${y}^{′}+2y=y$
-- **II.** ${y}^{′}+2y={x}^{2}$
-- **III.** ${y}^{′}+2y=0$
+- III only
+- I, II, and III
+- II only
+- I only
+- I and II only
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -1185,13 +1787,13 @@ To determine which equations are inhomogeneous, we examine each one in turn.
 - First, we consider the equation
 
 $$
-{y}^{′}+2y=y.
+{y}^{′}+7y=4y.
 $$
 
 We collect the $y$-terms on the left side:
 
 $$
-\begin{aligned}{y}^{′}+2y & =y \\ {y}^{′}+2y-y & =0 \\ {y}^{′}+y & =0.\end{aligned}
+\begin{aligned}{y}^{′}+7y & =4y \\ {y}^{′}+7y-4y & =0 \\ {y}^{′}+3y & =0.\end{aligned}
 $$
 
 This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
@@ -1199,32 +1801,92 @@ This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation
 - Next, we consider the equation
 
 $$
-{y}^{′}+2y={x}^{2}.
+{y}^{′}+7y=-8{x}^{2}.
 $$
 
-Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)={x}^{2}$ is not identically zero. Therefore, this equation is inhomogeneous.
+Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)=-8{x}^{2}$ is not identically zero. Therefore, this equation is inhomogeneous.
 
 - Finally, we consider the equation
 
 $$
-{y}^{′}+2y=0.
+{y}^{′}+7y=0.
 $$
 
 This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
 
 Therefore, the correct answer is "II only."
 
----
-
-## q-331743 original
+### Generated variant (observed_q-331742)
 
 Which of the following first-order linear differential equations are inhomogeneous?
 
-Select all that apply.
+- ${y}^{′}+3y=5y$
+- ${y}^{′}+3y=-7{x}^{2}$
+- ${y}^{′}+3y=0$
 
-- **I.** ${y}^{′}+{x}^{2}y=-2$
-- **II.** ${y}^{′}+{x}^{2}y=y$
-- **III.** ${y}^{′}+{x}^{2}y=0$
+- III only
+- I and II only
+- I only
+- II only
+- I, II, and III
+
+A first-order linear differential equation is homogeneous if it can be written in the form
+
+$$
+{y}^{′}+P(x)y=0.
+$$
+
+A first-order linear differential equation is inhomogeneous if it is not homogeneous, i.e., if it can be written as
+
+$$
+{y}^{′}+P(x)y=Q(x)
+$$
+
+where $Q$ is not identical to zero.
+
+To determine which equations are inhomogeneous, we examine each one in turn.
+
+- First, we consider the equation
+
+$$
+{y}^{′}+3y=5y.
+$$
+
+We collect the $y$-terms on the left side:
+
+$$
+\begin{aligned}{y}^{′}+3y & =5y \\ {y}^{′}+3y-5y & =0 \\ {y}^{′}-2y & =0.\end{aligned}
+$$
+
+This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
+
+- Next, we consider the equation
+
+$$
+{y}^{′}+3y=-7{x}^{2}.
+$$
+
+Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)=-7{x}^{2}$ is not identically zero. Therefore, this equation is inhomogeneous.
+
+- Finally, we consider the equation
+
+$$
+{y}^{′}+3y=0.
+$$
+
+This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
+
+Therefore, the correct answer is "II only."
+
+## Original q-331743
+
+Which of the following first-order linear differential equations are inhomogeneous?
+
+- ${y}^{′}+{x}^{2}y=-2$
+- ${y}^{′}+{x}^{2}y=y$
+- ${y}^{′}+{x}^{2}y=0$
+
+Bank: III only, I and II only, I, II, and III, II only, I only
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -1274,15 +1936,19 @@ The right-hand side is already zero, so the equation directly matches the form $
 
 Therefore, the correct answer is "I only."
 
-## Degree variant
+### Generated variant (observed_q-331743)
 
 Which of the following first-order linear differential equations are inhomogeneous?
 
-Select all that apply.
+- ${y}^{′}+7{x}^{2}y=-8$
+- ${y}^{′}+7{x}^{2}y=3y$
+- ${y}^{′}+7{x}^{2}y=0$
 
-- **I.** ${y}^{′}+{x}^{4}y=-2$
-- **II.** ${y}^{′}+{x}^{4}y=y$
-- **III.** ${y}^{′}+{x}^{4}y=0$
+- I, II, and III
+- I and II only
+- III only
+- I only
+- II only
 
 A first-order linear differential equation is homogeneous if it can be written in the form
 
@@ -1303,21 +1969,21 @@ To determine which equations are inhomogeneous, we examine each one in turn.
 - First, we consider the equation
 
 $$
-{y}^{′}+{x}^{4}y=-2.
+{y}^{′}+7{x}^{2}y=-8.
 $$
 
-Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)=-2$ is not identically zero. Therefore, this equation is inhomogeneous.
+Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)=-8$ is not identically zero. Therefore, this equation is inhomogeneous.
 
 - Next, we consider the equation
 
 $$
-{y}^{′}+{x}^{4}y=y.
+{y}^{′}+7{x}^{2}y=3y.
 $$
 
 We collect the $y$-terms on the left side:
 
 $$
-\begin{aligned}{y}^{′}+{x}^{4}y & =y \\ {y}^{′}+{x}^{4}y-y & =0 \\ {y}^{′}+({x}^{4}-1)y & =0.\end{aligned}
+\begin{aligned}{y}^{′}+7{x}^{2}y & =3y \\ {y}^{′}+7{x}^{2}y-3y & =0 \\ {y}^{′}+(7{x}^{2}-3)y & =0.\end{aligned}
 $$
 
 This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
@@ -1325,9 +1991,649 @@ This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation
 - Finally, we consider the equation
 
 $$
-{y}^{′}+{x}^{4}y=0.
+{y}^{′}+7{x}^{2}y=0.
 $$
 
 The right-hand side is already zero, so the equation directly matches the form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
 
 Therefore, the correct answer is "I only."
+
+### Generated variant (observed_q-331743)
+
+Which of the following first-order linear differential equations are inhomogeneous?
+
+- ${y}^{′}+3{x}^{3}y=-7$
+- ${y}^{′}+3{x}^{3}y=3y$
+- ${y}^{′}+3{x}^{3}y=0$
+
+- I, II, and III
+- II only
+- I only
+- III only
+- I and II only
+
+A first-order linear differential equation is homogeneous if it can be written in the form
+
+$$
+{y}^{′}+P(x)y=0.
+$$
+
+A first-order linear differential equation is inhomogeneous if it is not homogeneous, i.e., if it can be written as
+
+$$
+{y}^{′}+P(x)y=Q(x)
+$$
+
+where $Q$ is not identical to zero.
+
+To determine which equations are inhomogeneous, we examine each one in turn.
+
+- First, we consider the equation
+
+$$
+{y}^{′}+3{x}^{3}y=-7.
+$$
+
+Notice that this is written in the form ${y}^{′}+P(x)y=Q(x)$ where $Q(x)=-7$ is not identically zero. Therefore, this equation is inhomogeneous.
+
+- Next, we consider the equation
+
+$$
+{y}^{′}+3{x}^{3}y=3y.
+$$
+
+We collect the $y$-terms on the left side:
+
+$$
+\begin{aligned}{y}^{′}+3{x}^{3}y & =3y \\ {y}^{′}+3{x}^{3}y-3y & =0 \\ {y}^{′}+(3{x}^{3}-3)y & =0.\end{aligned}
+$$
+
+This matches the homogeneous form ${y}^{′}+P(x)y=0.$  Therefore, this equation *is* homogeneous.
+
+- Finally, we consider the equation
+
+$$
+{y}^{′}+3{x}^{3}y=0.
+$$
+
+The right-hand side is already zero, so the equation directly matches the form ${y}^{′}+P(x)y=0.$ Therefore, this equation is homogeneous.
+
+Therefore, the correct answer is "I only."
+
+## Authored missing hard level
+
+Which of the following first-order linear differential equations are inhomogeneous?
+
+- $2{y}^{′}-{x}^{3}y+2{x}^{2}=3y+2{x}^{2}$
+- $4{y}^{′}+5xy-x=4y+4x$
+- $3{y}^{′}-4{x}^{3}y-{x}^{3}=-y-{x}^{3}$
+
+- III only
+- I, II, and III
+- II only
+- I only
+- I and II only
+
+A first-order linear differential equation is homogeneous if it can be written in the form
+
+$$
+{y}^{′}+P(x)y=0.
+$$
+
+A first-order linear differential equation is inhomogeneous if it is not homogeneous, i.e., if it can be written as
+
+$$
+{y}^{′}+P(x)y=Q(x)
+$$
+
+where $Q$ is not identical to zero.
+
+To determine which equations are inhomogeneous, we examine each one in turn.
+
+- First, we consider the equation
+
+$$
+2{y}^{′}-{x}^{3}y+2{x}^{2}=3y+2{x}^{2}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $2$:
+
+$$
+\begin{aligned}2{y}^{′}-{x}^{3}y+2{x}^{2} & =3y+2{x}^{2} \\ 2{y}^{′}-{x}^{3}y-3y+2{x}^{2} & =2{x}^{2} \\ 2{y}^{′}+(-{x}^{3}-3)y & =0 \\ {y}^{′}+\frac{-{x}^{3}-3}{2}y & =0.\end{aligned}
+$$
+
+The forcing function is $Q(x)=0$, which is identically zero. Therefore, this equation is homogeneous.
+
+- Next, we consider the equation
+
+$$
+4{y}^{′}+5xy-x=4y+4x.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $4$:
+
+$$
+\begin{aligned}4{y}^{′}+5xy-x & =4y+4x \\ 4{y}^{′}+5xy-4y-x & =4x \\ 4{y}^{′}+(5x-4)y & =5x \\ {y}^{′}+\frac{5x-4}{4}y & =\frac{5x}{4}.\end{aligned}
+$$
+
+The forcing function is $Q(x)=\frac{5x}{4}$, which is not identically zero. Therefore, this equation is inhomogeneous.
+
+- Finally, we consider the equation
+
+$$
+3{y}^{′}-4{x}^{3}y-{x}^{3}=-y-{x}^{3}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $3$:
+
+$$
+\begin{aligned}3{y}^{′}-4{x}^{3}y-{x}^{3} & =-y-{x}^{3} \\ 3{y}^{′}-4{x}^{3}y+y-{x}^{3} & =-{x}^{3} \\ 3{y}^{′}+(-4{x}^{3}+1)y & =0 \\ {y}^{′}+\frac{-4{x}^{3}+1}{3}y & =0.\end{aligned}
+$$
+
+The forcing function is $Q(x)=0$, which is identically zero. Therefore, this equation is homogeneous.
+
+Therefore, the correct answer is "II only."
+
+Which of the following first-order linear differential equations are inhomogeneous?
+
+- $4{y}^{′}-4{x}^{2}y+5{x}^{2}=3y-4{x}^{2}$
+- $3{y}^{′}-4{x}^{2}y+2{x}^{2}=-5y+2{x}^{2}$
+- $2{y}^{′}+3{x}^{2}y+2{x}^{3}=-2y+2{x}^{3}$
+
+- III only
+- I and II only
+- I, II, and III
+- I only
+- II only
+
+A first-order linear differential equation is homogeneous if it can be written in the form
+
+$$
+{y}^{′}+P(x)y=0.
+$$
+
+A first-order linear differential equation is inhomogeneous if it is not homogeneous, i.e., if it can be written as
+
+$$
+{y}^{′}+P(x)y=Q(x)
+$$
+
+where $Q$ is not identical to zero.
+
+To determine which equations are inhomogeneous, we examine each one in turn.
+
+- First, we consider the equation
+
+$$
+4{y}^{′}-4{x}^{2}y+5{x}^{2}=3y-4{x}^{2}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $4$:
+
+$$
+\begin{aligned}4{y}^{′}-4{x}^{2}y+5{x}^{2} & =3y-4{x}^{2} \\ 4{y}^{′}-4{x}^{2}y-3y+5{x}^{2} & =-4{x}^{2} \\ 4{y}^{′}+(-4{x}^{2}-3)y & =-9{x}^{2} \\ {y}^{′}+\frac{-4{x}^{2}-3}{4}y & =\frac{-9{x}^{2}}{4}.\end{aligned}
+$$
+
+The forcing function is $Q(x)=\frac{-9{x}^{2}}{4}$, which is not identically zero. Therefore, this equation is inhomogeneous.
+
+- Next, we consider the equation
+
+$$
+3{y}^{′}-4{x}^{2}y+2{x}^{2}=-5y+2{x}^{2}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $3$:
+
+$$
+\begin{aligned}3{y}^{′}-4{x}^{2}y+2{x}^{2} & =-5y+2{x}^{2} \\ 3{y}^{′}-4{x}^{2}y+5y+2{x}^{2} & =2{x}^{2} \\ 3{y}^{′}+(-4{x}^{2}+5)y & =0 \\ {y}^{′}+\frac{-4{x}^{2}+5}{3}y & =0.\end{aligned}
+$$
+
+The forcing function is $Q(x)=0$, which is identically zero. Therefore, this equation is homogeneous.
+
+- Finally, we consider the equation
+
+$$
+2{y}^{′}+3{x}^{2}y+2{x}^{3}=-2y+2{x}^{3}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $2$:
+
+$$
+\begin{aligned}2{y}^{′}+3{x}^{2}y+2{x}^{3} & =-2y+2{x}^{3} \\ 2{y}^{′}+3{x}^{2}y+2y+2{x}^{3} & =2{x}^{3} \\ 2{y}^{′}+(3{x}^{2}+2)y & =0 \\ {y}^{′}+\frac{3{x}^{2}+2}{2}y & =0.\end{aligned}
+$$
+
+The forcing function is $Q(x)=0$, which is identically zero. Therefore, this equation is homogeneous.
+
+Therefore, the correct answer is "I only."
+
+Which of the following first-order linear differential equations are inhomogeneous?
+
+- $3{y}^{′}-{x}^{3}y-4{x}^{2}=-y+5{x}^{2}$
+- $5{y}^{′}-{x}^{2}y-4{x}^{2}=2y-4{x}^{2}$
+- $4{y}^{′}-2{x}^{2}y-4{x}^{2}=y-4{x}^{2}$
+
+- I, II, and III
+- III only
+- I and II only
+- II only
+- I only
+
+A first-order linear differential equation is homogeneous if it can be written in the form
+
+$$
+{y}^{′}+P(x)y=0.
+$$
+
+A first-order linear differential equation is inhomogeneous if it is not homogeneous, i.e., if it can be written as
+
+$$
+{y}^{′}+P(x)y=Q(x)
+$$
+
+where $Q$ is not identical to zero.
+
+To determine which equations are inhomogeneous, we examine each one in turn.
+
+- First, we consider the equation
+
+$$
+3{y}^{′}-{x}^{3}y-4{x}^{2}=-y+5{x}^{2}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $3$:
+
+$$
+\begin{aligned}3{y}^{′}-{x}^{3}y-4{x}^{2} & =-y+5{x}^{2} \\ 3{y}^{′}-{x}^{3}y+y-4{x}^{2} & =5{x}^{2} \\ 3{y}^{′}+(-{x}^{3}+1)y & =9{x}^{2} \\ {y}^{′}+\frac{-{x}^{3}+1}{3}y & =\frac{9{x}^{2}}{3}.\end{aligned}
+$$
+
+The forcing function is $Q(x)=\frac{9{x}^{2}}{3}$, which is not identically zero. Therefore, this equation is inhomogeneous.
+
+- Next, we consider the equation
+
+$$
+5{y}^{′}-{x}^{2}y-4{x}^{2}=2y-4{x}^{2}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $5$:
+
+$$
+\begin{aligned}5{y}^{′}-{x}^{2}y-4{x}^{2} & =2y-4{x}^{2} \\ 5{y}^{′}-{x}^{2}y-2y-4{x}^{2} & =-4{x}^{2} \\ 5{y}^{′}+(-{x}^{2}-2)y & =0 \\ {y}^{′}+\frac{-{x}^{2}-2}{5}y & =0.\end{aligned}
+$$
+
+The forcing function is $Q(x)=0$, which is identically zero. Therefore, this equation is homogeneous.
+
+- Finally, we consider the equation
+
+$$
+4{y}^{′}-2{x}^{2}y-4{x}^{2}=y-4{x}^{2}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $4$:
+
+$$
+\begin{aligned}4{y}^{′}-2{x}^{2}y-4{x}^{2} & =y-4{x}^{2} \\ 4{y}^{′}-2{x}^{2}y-y-4{x}^{2} & =-4{x}^{2} \\ 4{y}^{′}+(-2{x}^{2}-1)y & =0 \\ {y}^{′}+\frac{-2{x}^{2}-1}{4}y & =0.\end{aligned}
+$$
+
+The forcing function is $Q(x)=0$, which is identically zero. Therefore, this equation is homogeneous.
+
+Therefore, the correct answer is "I only."
+
+Which of the following first-order linear differential equations are inhomogeneous?
+
+- $2{y}^{′}+4xy-5{x}^{2}=2y+5{x}^{2}$
+- $4{y}^{′}+5xy+4{x}^{2}=5y+4{x}^{2}$
+- $4{y}^{′}+2{x}^{2}y-4x=-y-4x$
+
+- II only
+- I and II only
+- III only
+- I, II, and III
+- I only
+
+A first-order linear differential equation is homogeneous if it can be written in the form
+
+$$
+{y}^{′}+P(x)y=0.
+$$
+
+A first-order linear differential equation is inhomogeneous if it is not homogeneous, i.e., if it can be written as
+
+$$
+{y}^{′}+P(x)y=Q(x)
+$$
+
+where $Q$ is not identical to zero.
+
+To determine which equations are inhomogeneous, we examine each one in turn.
+
+- First, we consider the equation
+
+$$
+2{y}^{′}+4xy-5{x}^{2}=2y+5{x}^{2}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $2$:
+
+$$
+\begin{aligned}2{y}^{′}+4xy-5{x}^{2} & =2y+5{x}^{2} \\ 2{y}^{′}+4xy-2y-5{x}^{2} & =5{x}^{2} \\ 2{y}^{′}+(4x-2)y & =10{x}^{2} \\ {y}^{′}+\frac{4x-2}{2}y & =\frac{10{x}^{2}}{2}.\end{aligned}
+$$
+
+The forcing function is $Q(x)=\frac{10{x}^{2}}{2}$, which is not identically zero. Therefore, this equation is inhomogeneous.
+
+- Next, we consider the equation
+
+$$
+4{y}^{′}+5xy+4{x}^{2}=5y+4{x}^{2}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $4$:
+
+$$
+\begin{aligned}4{y}^{′}+5xy+4{x}^{2} & =5y+4{x}^{2} \\ 4{y}^{′}+5xy-5y+4{x}^{2} & =4{x}^{2} \\ 4{y}^{′}+(5x-5)y & =0 \\ {y}^{′}+\frac{5x-5}{4}y & =0.\end{aligned}
+$$
+
+The forcing function is $Q(x)=0$, which is identically zero. Therefore, this equation is homogeneous.
+
+- Finally, we consider the equation
+
+$$
+4{y}^{′}+2{x}^{2}y-4x=-y-4x.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $4$:
+
+$$
+\begin{aligned}4{y}^{′}+2{x}^{2}y-4x & =-y-4x \\ 4{y}^{′}+2{x}^{2}y+y-4x & =-4x \\ 4{y}^{′}+(2{x}^{2}+1)y & =0 \\ {y}^{′}+\frac{2{x}^{2}+1}{4}y & =0.\end{aligned}
+$$
+
+The forcing function is $Q(x)=0$, which is identically zero. Therefore, this equation is homogeneous.
+
+Therefore, the correct answer is "I only."
+
+Which of the following first-order linear differential equations are inhomogeneous?
+
+- $3{y}^{′}-{x}^{3}y-4{x}^{2}=-y-4{x}^{2}$
+- $4{y}^{′}+3{x}^{3}y-4{x}^{2}=2y+4{x}^{2}$
+- $4{y}^{′}-2{x}^{2}y-4{x}^{2}=y-4{x}^{2}$
+
+- I only
+- III only
+- I and II only
+- I, II, and III
+- II only
+
+A first-order linear differential equation is homogeneous if it can be written in the form
+
+$$
+{y}^{′}+P(x)y=0.
+$$
+
+A first-order linear differential equation is inhomogeneous if it is not homogeneous, i.e., if it can be written as
+
+$$
+{y}^{′}+P(x)y=Q(x)
+$$
+
+where $Q$ is not identical to zero.
+
+To determine which equations are inhomogeneous, we examine each one in turn.
+
+- First, we consider the equation
+
+$$
+3{y}^{′}-{x}^{3}y-4{x}^{2}=-y-4{x}^{2}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $3$:
+
+$$
+\begin{aligned}3{y}^{′}-{x}^{3}y-4{x}^{2} & =-y-4{x}^{2} \\ 3{y}^{′}-{x}^{3}y+y-4{x}^{2} & =-4{x}^{2} \\ 3{y}^{′}+(-{x}^{3}+1)y & =0 \\ {y}^{′}+\frac{-{x}^{3}+1}{3}y & =0.\end{aligned}
+$$
+
+The forcing function is $Q(x)=0$, which is identically zero. Therefore, this equation is homogeneous.
+
+- Next, we consider the equation
+
+$$
+4{y}^{′}+3{x}^{3}y-4{x}^{2}=2y+4{x}^{2}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $4$:
+
+$$
+\begin{aligned}4{y}^{′}+3{x}^{3}y-4{x}^{2} & =2y+4{x}^{2} \\ 4{y}^{′}+3{x}^{3}y-2y-4{x}^{2} & =4{x}^{2} \\ 4{y}^{′}+(3{x}^{3}-2)y & =8{x}^{2} \\ {y}^{′}+\frac{3{x}^{3}-2}{4}y & =\frac{8{x}^{2}}{4}.\end{aligned}
+$$
+
+The forcing function is $Q(x)=\frac{8{x}^{2}}{4}$, which is not identically zero. Therefore, this equation is inhomogeneous.
+
+- Finally, we consider the equation
+
+$$
+4{y}^{′}-2{x}^{2}y-4{x}^{2}=y-4{x}^{2}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $4$:
+
+$$
+\begin{aligned}4{y}^{′}-2{x}^{2}y-4{x}^{2} & =y-4{x}^{2} \\ 4{y}^{′}-2{x}^{2}y-y-4{x}^{2} & =-4{x}^{2} \\ 4{y}^{′}+(-2{x}^{2}-1)y & =0 \\ {y}^{′}+\frac{-2{x}^{2}-1}{4}y & =0.\end{aligned}
+$$
+
+The forcing function is $Q(x)=0$, which is identically zero. Therefore, this equation is homogeneous.
+
+Therefore, the correct answer is "II only."
+
+Which of the following first-order linear differential equations are inhomogeneous?
+
+- $2{y}^{′}+4xy-5{x}^{2}=2y-5{x}^{2}$
+- $3{y}^{′}+5{x}^{2}y+4{x}^{2}=-4y-{x}^{2}$
+- $4{y}^{′}-xy+2{x}^{2}=y+2{x}^{2}$
+
+- I, II, and III
+- I and II only
+- III only
+- I only
+- II only
+
+A first-order linear differential equation is homogeneous if it can be written in the form
+
+$$
+{y}^{′}+P(x)y=0.
+$$
+
+A first-order linear differential equation is inhomogeneous if it is not homogeneous, i.e., if it can be written as
+
+$$
+{y}^{′}+P(x)y=Q(x)
+$$
+
+where $Q$ is not identical to zero.
+
+To determine which equations are inhomogeneous, we examine each one in turn.
+
+- First, we consider the equation
+
+$$
+2{y}^{′}+4xy-5{x}^{2}=2y-5{x}^{2}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $2$:
+
+$$
+\begin{aligned}2{y}^{′}+4xy-5{x}^{2} & =2y-5{x}^{2} \\ 2{y}^{′}+4xy-2y-5{x}^{2} & =-5{x}^{2} \\ 2{y}^{′}+(4x-2)y & =0 \\ {y}^{′}+\frac{4x-2}{2}y & =0.\end{aligned}
+$$
+
+The forcing function is $Q(x)=0$, which is identically zero. Therefore, this equation is homogeneous.
+
+- Next, we consider the equation
+
+$$
+3{y}^{′}+5{x}^{2}y+4{x}^{2}=-4y-{x}^{2}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $3$:
+
+$$
+\begin{aligned}3{y}^{′}+5{x}^{2}y+4{x}^{2} & =-4y-{x}^{2} \\ 3{y}^{′}+5{x}^{2}y+4y+4{x}^{2} & =-{x}^{2} \\ 3{y}^{′}+(5{x}^{2}+4)y & =-5{x}^{2} \\ {y}^{′}+\frac{5{x}^{2}+4}{3}y & =\frac{-5{x}^{2}}{3}.\end{aligned}
+$$
+
+The forcing function is $Q(x)=\frac{-5{x}^{2}}{3}$, which is not identically zero. Therefore, this equation is inhomogeneous.
+
+- Finally, we consider the equation
+
+$$
+4{y}^{′}-xy+2{x}^{2}=y+2{x}^{2}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $4$:
+
+$$
+\begin{aligned}4{y}^{′}-xy+2{x}^{2} & =y+2{x}^{2} \\ 4{y}^{′}-xy-y+2{x}^{2} & =2{x}^{2} \\ 4{y}^{′}+(-x-1)y & =0 \\ {y}^{′}+\frac{-x-1}{4}y & =0.\end{aligned}
+$$
+
+The forcing function is $Q(x)=0$, which is identically zero. Therefore, this equation is homogeneous.
+
+Therefore, the correct answer is "II only."
+
+Which of the following first-order linear differential equations are inhomogeneous?
+
+- $3{y}^{′}-{x}^{3}y-4{x}^{2}=-y-4{x}^{2}$
+- $5{y}^{′}-{x}^{2}y-4{x}^{2}=2y-4{x}^{2}$
+- $3{y}^{′}+{x}^{2}y-4{x}^{2}=-y+{x}^{2}$
+
+- I and III only
+- I only
+- I, II, and III
+- II only
+- III only
+
+A first-order linear differential equation is homogeneous if it can be written in the form
+
+$$
+{y}^{′}+P(x)y=0.
+$$
+
+A first-order linear differential equation is inhomogeneous if it is not homogeneous, i.e., if it can be written as
+
+$$
+{y}^{′}+P(x)y=Q(x)
+$$
+
+where $Q$ is not identical to zero.
+
+To determine which equations are inhomogeneous, we examine each one in turn.
+
+- First, we consider the equation
+
+$$
+3{y}^{′}-{x}^{3}y-4{x}^{2}=-y-4{x}^{2}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $3$:
+
+$$
+\begin{aligned}3{y}^{′}-{x}^{3}y-4{x}^{2} & =-y-4{x}^{2} \\ 3{y}^{′}-{x}^{3}y+y-4{x}^{2} & =-4{x}^{2} \\ 3{y}^{′}+(-{x}^{3}+1)y & =0 \\ {y}^{′}+\frac{-{x}^{3}+1}{3}y & =0.\end{aligned}
+$$
+
+The forcing function is $Q(x)=0$, which is identically zero. Therefore, this equation is homogeneous.
+
+- Next, we consider the equation
+
+$$
+5{y}^{′}-{x}^{2}y-4{x}^{2}=2y-4{x}^{2}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $5$:
+
+$$
+\begin{aligned}5{y}^{′}-{x}^{2}y-4{x}^{2} & =2y-4{x}^{2} \\ 5{y}^{′}-{x}^{2}y-2y-4{x}^{2} & =-4{x}^{2} \\ 5{y}^{′}+(-{x}^{2}-2)y & =0 \\ {y}^{′}+\frac{-{x}^{2}-2}{5}y & =0.\end{aligned}
+$$
+
+The forcing function is $Q(x)=0$, which is identically zero. Therefore, this equation is homogeneous.
+
+- Finally, we consider the equation
+
+$$
+3{y}^{′}+{x}^{2}y-4{x}^{2}=-y+{x}^{2}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $3$:
+
+$$
+\begin{aligned}3{y}^{′}+{x}^{2}y-4{x}^{2} & =-y+{x}^{2} \\ 3{y}^{′}+{x}^{2}y+y-4{x}^{2} & ={x}^{2} \\ 3{y}^{′}+({x}^{2}+1)y & =5{x}^{2} \\ {y}^{′}+\frac{{x}^{2}+1}{3}y & =\frac{5{x}^{2}}{3}.\end{aligned}
+$$
+
+The forcing function is $Q(x)=\frac{5{x}^{2}}{3}$, which is not identically zero. Therefore, this equation is inhomogeneous.
+
+Therefore, the correct answer is "III only."
+
+Which of the following first-order linear differential equations are inhomogeneous?
+
+- $2{y}^{′}+4xy-5{x}^{2}=2y-5{x}^{2}$
+- $4{y}^{′}+5xy+4{x}^{2}=5y+4{x}^{2}$
+- $5{y}^{′}+{x}^{2}y-4{x}^{2}=-4y+{x}^{2}$
+
+- II only
+- I, II, and III
+- I only
+- I and III only
+- III only
+
+A first-order linear differential equation is homogeneous if it can be written in the form
+
+$$
+{y}^{′}+P(x)y=0.
+$$
+
+A first-order linear differential equation is inhomogeneous if it is not homogeneous, i.e., if it can be written as
+
+$$
+{y}^{′}+P(x)y=Q(x)
+$$
+
+where $Q$ is not identical to zero.
+
+To determine which equations are inhomogeneous, we examine each one in turn.
+
+- First, we consider the equation
+
+$$
+2{y}^{′}+4xy-5{x}^{2}=2y-5{x}^{2}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $2$:
+
+$$
+\begin{aligned}2{y}^{′}+4xy-5{x}^{2} & =2y-5{x}^{2} \\ 2{y}^{′}+4xy-2y-5{x}^{2} & =-5{x}^{2} \\ 2{y}^{′}+(4x-2)y & =0 \\ {y}^{′}+\frac{4x-2}{2}y & =0.\end{aligned}
+$$
+
+The forcing function is $Q(x)=0$, which is identically zero. Therefore, this equation is homogeneous.
+
+- Next, we consider the equation
+
+$$
+4{y}^{′}+5xy+4{x}^{2}=5y+4{x}^{2}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $4$:
+
+$$
+\begin{aligned}4{y}^{′}+5xy+4{x}^{2} & =5y+4{x}^{2} \\ 4{y}^{′}+5xy-5y+4{x}^{2} & =4{x}^{2} \\ 4{y}^{′}+(5x-5)y & =0 \\ {y}^{′}+\frac{5x-5}{4}y & =0.\end{aligned}
+$$
+
+The forcing function is $Q(x)=0$, which is identically zero. Therefore, this equation is homogeneous.
+
+- Finally, we consider the equation
+
+$$
+5{y}^{′}+{x}^{2}y-4{x}^{2}=-4y+{x}^{2}.
+$$
+
+We collect the $y$-terms on the left side and the terms involving only $x$ on the right side, then divide through by $5$:
+
+$$
+\begin{aligned}5{y}^{′}+{x}^{2}y-4{x}^{2} & =-4y+{x}^{2} \\ 5{y}^{′}+{x}^{2}y+4y-4{x}^{2} & ={x}^{2} \\ 5{y}^{′}+({x}^{2}+4)y & =5{x}^{2} \\ {y}^{′}+\frac{{x}^{2}+4}{5}y & =\frac{5{x}^{2}}{5}.\end{aligned}
+$$
+
+The forcing function is $Q(x)=\frac{5{x}^{2}}{5}$, which is not identically zero. Therefore, this equation is inhomogeneous.
+
+Therefore, the correct answer is "III only."

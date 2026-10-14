@@ -1,3 +1,3 @@
-# Plot extraction
+# Plot extraction / step 7
 
-No source image, plot or diagram references occur. Rating none for all twelve templates. No generated assets or publishing requests. LaTeX equations are mathematical notation, not plots.
+Plot rating: none for all observed and authored templates. The complete captured prompt, bank and solution contain no image or mathematical graph references. No renderer, plot asset or diagram is needed.

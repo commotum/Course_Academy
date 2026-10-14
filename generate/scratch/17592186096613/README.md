@@ -1,14 +1,13 @@
-# Constant multiple of ln x generator
+# Constant×ln generator draft
 
-`../17592186096613.py` generates easy questions for KP 17592186096613. It uses the registered UUID derived from the existing KP identity if no generator is already registered. Later replenishment reuses the registered identity. JSON CLI output is a list compatible with the existing inventory worker:
+Current authoritative evidence is frozen `math` basis 1356 in source.json. Run from repository root:
 
-```bash
-.venv/bin/python generate/scratch/17592186096613.py --difficulty easy --count 5 --seed 42 --format json
-.venv/bin/python generate/scratch/17592186096613.py --difficulty easy --template blank --profile canonical --count 2 --seed 42 --format markdown
+```sh
 .venv/bin/python generate/scratch/17592186096613/validate.py
-.venv/bin/python generate/scratch/17592186096613/replenish.py
+.venv/bin/python generate/scratch/17592186096613.py --difficulty all --seed 7 --count 2 --format markdown
+.venv/bin/python generate/scratch/17592186096613.py --difficulty easy --profile raw-q-70881 --format json
 ```
 
-Supported level: easy. Moderate and hard are bounded unsupported capabilities with nominal shortages of five each. Do not treat those as filled. The exhaustive finite parameter catalog is deduplicated by normalized displayed coefficient c, independently of bank/layout/seed/order. `batch` never pads exhausted requests; the CLI reports a finite shortage on stderr and returns only distinct records.
+The API is `generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None)` and dedicated easy/moderate/hard entrypoints. Exact parameters are `{n,d,k}` with c=(n/d)e^k. Raw profiles are source-specific `raw-q-ID`; they preserve absent source attributes and original notation. Incomplete raw records are evidence only. Normal profiles are complete integer/fraction/euler/canonical/equivalent-entry banks. Moderate and hard are explicitly authored constant recognition variants, not observed difficulty labels. All questions stay y=c ln x, x>0, with no chain rule, nonconstant product, sum, general-base log or point evaluation.
 
-Source replay, independent differentiated prompt/solution checks, source bank coverage, boundary checks and current application grader results are saved in validation.json and native-report.json. Review originals and variants in review.md. `replenish.py` reads live inventory and captures one current basis before selecting content. It holds the application's api.lock from inventory recheck through exact request submission and readback. It adds only new question components, membership and generator registration, checks writer validation specs, retains requests/receipts under reference/replenishment, and verifies old source records and learner history are unchanged. An unknown commit outcome is recovered using the original exact saved intent before new work.
+Validation independently reads displayed expressions, every operative worked stage, all bank pairs, formatting and identities, then exercises the actual shared `learning::grade_field` harness. No DB writes, engine changes, registration, plots or commits. Older reference material under reference/ is historical and not current source provenance; only the files described here and validation.json are current-run evidence.

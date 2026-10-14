@@ -19,7 +19,7 @@ def formatting(text):
    depth+=1 if c=='{' else -1
    assert depth>=0,'TeX groups'
  assert depth==0,'TeX groups'
- assert '{{' not in text,'Unresolved masks'
+ assert not re.search(r'\{\{\w+\}\}',text),'Unresolved masks'
  assert '+-' not in text and '--' not in text,'Signed operands'
 
 def check(record):
@@ -95,6 +95,24 @@ def main():
    assert same['question'][':question/id']==record['question'][':question/id'],'Shuffle-independent identity'
    f=record['question'][':question/answer-fields'][0];positions.add([a[':answer/id'] for a in f[':answer-field/choices']].index(f[':answer-field/correct'][1]))
   slot_coverage[t]={'sampled_parameters':len({json.dumps(p,sort_keys=True) for p in coverage}),'coefficients':sorted({p['a'] for p in coverage}) if r['level']!='hard' else sorted({v[1] for p in coverage for v in p['equations']})}
+  if r['level']!='hard':
+   slot_coverage[t]['powers']=sorted({p['n'] for p in coverage})
+   slot_coverage[t]['rhs_slots']=[{key:sorted({p['rhs'][i][j] for p in coverage}) for j,key in enumerate(('b','c','m'))} for i in range(3)]
+  else:
+   slot_coverage[t]['equation_slots']=[{key:sorted({p['equations'][i][j] for p in coverage}) for j,key in enumerate(('k','a','n','b','d','e','m'))} for i in range(3)]
+ # Exercise exact range endpoints and signed forcing under public normal/raw profiles.
+ for t,r in g.RECIPES.items():
+  src=r['parameters']
+  for magnitude in (1,9):
+   for force_sign in (-1,1):
+    p={'a':magnitude*(1 if src['a']>0 else -1),'n':0 if src['n']==0 else (1 if magnitude==1 else 3),'rhs':[]}
+    for b,c,m in src['rhs']:
+     p['rhs'].append([5*(1 if b>0 else -1),0,0] if b else ([0,force_sign*magnitude,0 if m==0 else (1 if magnitude==1 else 3)] if c else [0,0,0]))
+    for prefix in ('raw_','observed_'):
+     record=g.generate(r['level'],template=t,parameters=p,profile=prefix+t);check(record);all_records.append(record)
+ for pos in range(3):
+  for seed in (14,19):
+   record=g.generate_hard(seed,profile='authored_hard_'+str(pos));check(record);all_records.append(record);review.append(record)
  for level in family_coverage:
   for seed in range(100):
    record=g.generate(level,seed);check(record);family_coverage[level].add(record['generation']['template'])
@@ -107,6 +125,12 @@ def main():
   try:g.generate(level,template=t,parameters=p,profile=profile)
   except ValueError:pass
   else:raise AssertionError('Explicit workload guard')
+ catalog={}
+ for t,r in g.RECIPES.items():
+  sample_record=g.generate(r['level'],template=t,parameters=r['parameters']);catalog[sample_record['generation']['mathematical_fingerprint']]={'level':r['level'],'source_layout':t}
+ for pos in range(3):
+  sample_record=g.generate_hard(0,profile='authored_hard_'+str(pos));catalog[sample_record['generation']['mathematical_fingerprint']]={'level':'hard','nonzero_forcing_position':pos+1}
+ assert len(catalog)==15 and fingerprints==set(catalog),'Finite semantic catalog coverage'
  mutations=[]
  anchor=g.generate_easy(template='q-331601',parameters=g.RECIPES['q-331601']['parameters'])
  for label,old,new in [('wrong displayed operand','2xy+y','2xy-y'),('missing operation','2xy+y & =0','(2x+1)y & =0'),('stale conclusion','I and III only.','II only.'),('control character','2xy+y','2xy+\x0cy')]:
@@ -122,7 +146,7 @@ def main():
  executable=ROOT/'generate/runs/current/check-engine'
  subprocess.run([str(executable),str(HERE/'engine-input.json'),str(HERE/'engine-report.json')],check=True)
  report=json.loads((HERE/'engine-report.json').read_text())
- validation={'passed':True,'source':g.SOURCE,'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'source_questions':12,'source_prompt_exact':12,'source_solution_exact':12,'source_banks_exact':12,'source_choices_exact':60,'source_distractors_exact':distractors,'source_correct_designations_exact':12,'attribute_presence_exact':12,'presentation_repairs':0,'mathematical_repairs':0,'generated_checked':len(all_records)-12,'native':{k:report[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'engine_sha256':hashlib.sha256(executable.read_bytes()).hexdigest(),'normal_family_coverage':{k:sorted(v) for k,v in family_coverage.items()},'slot_coverage':slot_coverage,'sampled_mathematical_fingerprints':len(fingerprints),'sampled_content_identities':len(identities),'categorical_variety_note':'Coefficient and exponent aliases do not inflate semantic task count; source templates preserve finite positional/categorical relations. Hard has three forcing-position tasks with identical normalization workload.','mutation_regressions':mutations,'failures':[],'fidelity':fidelity}
+ validation={'passed':True,'source':g.SOURCE,'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'source_questions':12,'source_prompt_exact':12,'source_solution_exact':12,'source_banks_exact':12,'source_choices_exact':60,'source_distractors_exact':distractors,'source_correct_designations_exact':12,'attribute_presence_exact':12,'presentation_repairs':0,'mathematical_repairs':0,'generated_checked':len(all_records)-12,'native':{k:report[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'engine_sha256':hashlib.sha256(executable.read_bytes()).hexdigest(),'normal_family_coverage':{k:sorted(v) for k,v in family_coverage.items()},'slot_coverage':slot_coverage,'finite_semantic_task_count':len(catalog),'finite_semantic_task_catalog':catalog,'sampled_mathematical_fingerprints':len(fingerprints),'sampled_content_identities':len(identities),'categorical_variety_note':'Coefficient and exponent aliases do not inflate semantic task count; source templates preserve finite positional/categorical relations. Hard has three forcing-position tasks with identical normalization workload.','mutation_regressions':mutations,'failures':[],'fidelity':fidelity}
  (HERE/'validation.json').write_text(json.dumps(validation,indent=2)+'\n');(HERE/'review.json').write_text(json.dumps(review,ensure_ascii=False,indent=2)+'\n')
  out=['# Review: homogeneous / inhomogeneous ODE recognition','All records are local drafts at math basis 1356. Raw source profiles are evidence-only. Normal generated examples preserve source operative masks. Hard is an authored scope extension.']
  for src_id,src in originals.items():

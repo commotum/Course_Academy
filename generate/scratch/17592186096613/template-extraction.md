@@ -1,17 +1,40 @@
-# Extracted template
+# Template extraction
 
-Given `y=c ln x`, ask for dy/dx. On x>0 use (ln x)'=1/x, pull out c, substitute c*(1/x), and simplify to c/x. Keep the four worked rows and fixed explanatory sentences. Blanks append the equation RHS placeholder `{{field-1}}`; radios keep the selection field separate. The immutable source record and `template-extraction.json` retain each prompt, full bank, field, values, supplied solution and mapped recipe.
+## 1. Specific source descriptions
 
-The observed complete radio profiles are:
+q-11909 displays y = 7\ln x with dy/dx notation, five choices, no rating, correct reference or solution. q-11910 uses the same spaced prompt with coefficient 2/3 and a different complete five-choice bank. q-101604 displays -9ln⁡x, text-d notation and a radio; q-101600 displays 2eln⁡x with the corresponding Euler bank. Both have the reciprocal identity and four worked rows, with explicit `\cdot` before the formal derivative in row two. q-339941 uses -11\operatorname{ln}x, and q-308849 uses 8ln⁡x; both append derivative equals then `{{field-1}}` and one canonical blank entry. q-339949 and q-339950 use 11/4 and -7/3 with the same blank layout and two equivalent accepted entries. Their row two has implicit coefficient multiplication. q-70881 displays 2\operatorname{ln}x and the same four-row implicit solution, but has no fields or placeholder. Original decoded strings have no C0 or TeX brace defects; the Unicode application marker is preserved in raw evidence, normalized in normal practice.
 
-- Integer, c=n: `1/x`, `-n/x`, `1/(n*x)`, `x/n`, `n/x`. q-11909 has n=7; q-101604 has n=-9. Each retains five options. The signed reciprocal and reciprocal derivative recipes reproduce complete expressions, not only sign labels.
-- Fraction, c=n/d: `n/(d*x)`, `1/(d*x)`, `n/x`, `d/x`, `d/(n*x)`. q-11910 has n=2,d=3. Omitting n, omitting d, using d, and inverting c are observed expression recipes; pedagogical interpretations are inferred.
-- Euler multiple, c=n*e: `e/(n*x)`, `n/(e*x)`, `n*e/x`, `n+e/x`, `e+n/x`. q-101600 has n=2. The final two values keep one factor undifferentiated as an added constant, a different complete bank from the integer profile.
+`source.json` gives every exact field/value/string. `template-extraction.json` maps every original option individually to a recipe, source field, parameters and complete profile. No source question is discarded.
 
-Blank canonical banks contain only c/x. q-339941 uses c=-11; q-308849 c=8. q-339949 uses c=11/4 and q-339950 c=-7/3, each with a second equivalent value `n/(d*x)` recorded without explicit multiplication in its original plain notation. Replay preserves both values; default fresh blank output has one canonical value unless the complete equivalent-entry profile is selected. These are not incorrect choices.
+## 2. Generalized mathematical and instructional backbone
 
-Observed c values are 7, 2/3, -11, 2, 2e, -9, 8, 11/4, -7/3; canonical c=5. The missing-field c=2 prompt is evidence only. Sampling uses reduced rational c=n/d, 2<=|n|<=30,1<=d<=12, plus signed integer multiples n*e. This covers all observed complete-bank values. Coefficient and bank arithmetic are exact SymPy expressions. Larger magnitudes, negative legacy fractions and negative Euler multiples are explicit, boundary-tested parameter extensions; c=0, unit numerator, zero denominator and unreduced parameter identities are excluded. The finite set is recorded in capabilities.json. Different field, bank, seed, ID or choice order for the same c still counts as one mathematical question for inventory.
+Given y=c ln x for real x>0, find the derivative RHS. Recall D(ln x)=1/x; apply the formal derivative to the original expression; pull the entire constant out; replace D(ln x) by 1/x; collect c/x. Each instance has one fixed worked solution independent of learner input. Prompt argument x, output y, reciprocal rule and ordered stages are fixed because they define this KP. No function composition or product rule is needed.
 
-Sampling selects a whole eligible bank before rendering. Integer and Euler profiles require d=1; fractional and equivalent-entry profiles require d>1. Coprimality and |n|>=2 avoid profile bank collisions. Source replay requires equal cardinality, one-to-one matching of complete mathematical values, correct designation where observed, exact prompts and exact supplied worked strings. Missing legacy worked strings are explicitly authored and never claimed as source fidelity. All native blank equivalents and wrong-entry tests must resolve through learning::grade_field.
+## 3. Components and complete banks
 
-Plots: none. No source image paths, no generated assets, no publication stage.
+Parameters are reduced signed numerator n, positive denominator d, and fixed Euler exponent k. c=(n/d)e^k. Source k is 0 or 1. Complete observed profiles are selected before parameters:
+
+| Bank | Complete ordered mathematical recipe list | Conditions |
+|---|---|---|
+| integer | 1/x; -c/x; 1/(cx); x/c; c/x | d=1,k=0, |n|≥2 |
+| fraction | c/x; 1/(dx); n/x; d/x; d/(nx) | d>1,k=0,n≥2, gcd(n,d)=1 |
+| euler | e/(nx); n/(ex); ne/x; n+e/x; e+n/x | d=1,k=1, |n|≥2 |
+| canonical | c/x | one accepted blank entry |
+| equivalent-entry | c/x; exact plain n/(dx) spelling | d>1,k=0; both entries accepted |
+| none | no field or bank | raw fieldless source only |
+
+Integer choices reproduce dropping the coefficient, changing its sign, inverting it, inverting the reciprocal function, and the correct rule. Fraction choices reproduce omitted numerator, omitted denominator, denominator used as coefficient, reciprocal coefficient, and correct rule. Euler profiles reproduce reciprocal factors and splitting the constant product into a sum. Those interpretations are inferred; the complete operations and anchor values are observed and defensibly parameterized. No opaque profile is promoted to default. Whole radio instances are rejected when any pair is equivalent or more than one choice is correct. Blank aliases are deliberately equivalent, not radio ambiguities.
+
+## 4. Reusable masks, variable slots and constraints
+
+The source-recipe builder masks the **complete original derivative quotient first**, then the complete original coefficient. Thus all prompt, formal operator, pulled-out coefficient, reciprocal multiplication and final quotient occurrences change together. Raw source masks preserve surrounding bytes and omit absent attributes. At anchors they do not return literal payloads: the normal public API executes the same masks and bank recipes used for changed inputs. An independent validator reads the actual learner prompt, all solution rows and all bank expressions rather than trusting parameter metadata.
+
+The dependent slots are coefficient appearance and derivative quotient; each original mathematical notation stays in raw replay. Normal observed-family presentation replaces only natural-log typography with `\ln`. Legacy solutions, absent in source, use the canonical introduction and four formal stages. Fieldless raw evidence remains fieldless; supported normal questions are separate completed layouts. Moderate and hard are authored blanks with the same worked backbone and normal ln notation, using the disjoint forms and bounds documented in classification.md. Explicit inputs obey identical guards to samplers. Every domain is finite and enumerable; coefficient signs, reduced denominators and fixed exponents affect math fingerprints. Bank/profile/layout aliases and shuffles do not.
+
+Presentation identity hashes actual prompt, fixed solution, difficulty presence/value, field layout, complete bank and correct-reference presence. It does not depend on seed or option order. Mathematical identity canonicalizes the actual displayed coefficient and x>0 and excludes layout and banks. Missing ratings remain absent in raw replay; every raw/evidence record has explicit evidence_only and eligible_for_learning flags.
+
+## Source findings and fidelity denominators
+
+All 26 displayed source values are mathematically correct or legitimate wrong radio values. The two blank banks each carry two equivalent answers intentionally. Eight complete source banks replay exactly; six supplied correct designations match; two missing designations are preserved as missing, while normal practice infers c/x independently. Seven supplied worked solutions replay exactly, including q-70881. Nine prompts and all key-presence sets match. No mathematical source repair is required. Three incomplete assessment records remain evidence only. Source typography normalization in normal practice is separate from exact raw replay.
+
+No plots or plot assets exist, so plot extraction and generation are not applicable.

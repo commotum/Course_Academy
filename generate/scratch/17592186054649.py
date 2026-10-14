@@ -38,7 +38,10 @@ def bank(t,p):
 def digest(x):return hashlib.sha256(json.dumps(x,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 def uid(parent,x):return str(uuid.uuid5(uuid.UUID(parent),str(x)))
 def fingerprint(q):
- a,b=matrices(q[':question/problem']);return digest([a,b])
+ ms=matrices(q[':question/problem'])
+ if len(ms)!=2:ms=[parse(m) for m in MATRIX.findall(q.get(':question/worked-solution',''))[:2]]
+ if len(ms)!=2:return digest(q[':question/problem'])
+ a,b=ms;return digest([a,b])
 def generate(difficulty='easy',seed=0,template=None,parameters=None,replay=False):
  if difficulty!='easy':raise ValueError('Unsupported band: no source-backed increase in method/workload')
  rng=random.Random(seed);t=template or rng.choice(TEMPLATES);source=SOURCES[t];nr,nc=shape(t);n=nr*nc
