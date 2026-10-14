@@ -24,7 +24,7 @@ Variants
 
 What is the augmented matrix for the following system of linear equations?
 
-$$\begin{cases}8x+y+z=20 \\ x+z=19\end{cases}$$
+$$\left\{\begin{aligned}8x+y+z &=20 \\ x+z &=19\end{aligned}\right.$$
 
 $\left[\begin{array}{ccc|c}8 & 1 & 1 & 20 \\ 1 & 1 & 0 & 19\end{array}\right]$
 
@@ -38,12 +38,12 @@ $\left[\begin{array}{cc|c}8 & 1 & 1 \\ 1 & 1 & 1\end{array}\right]$
 
 First, we organize the system so that the variables are ordered $x,y,z$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:
 
-$$\begin{cases}8x+y+z=20 \\ x+0y+z=19\end{cases}$$
+$$\left\{\begin{aligned}8x+y+z &=20 \\ x+0y+z &=19\end{aligned}\right.$$
 
 The coefficient matrix consists of the coefficients of the variables:
 
 $$
-\left[\begin{array}{cc|c}8 & 1 & 1 \\ 1 & 0 & 1\end{array}\right]
+\begin{bmatrix}8 & 1 & 1 \\ 1 & 0 & 1\end{bmatrix}
 $$
 
 The augmented matrix  is the coefficient matrix augmented with the column that represents the right-hand sides of the equations:
@@ -54,7 +54,7 @@ $$
 
 What is the augmented matrix for the following system of linear equations?
 
-$$\begin{cases}23x+y+z=6 \\ x+z=21\end{cases}$$
+$$\left\{\begin{aligned}23x+y+z &=6 \\ x+z &=21\end{aligned}\right.$$
 
 $\left[\begin{array}{ccc|c}23 & 1 & 1 & 6 \\ 1 & 1 & 0 & 21\end{array}\right]$
 
@@ -68,12 +68,12 @@ $\left[\begin{array}{cc|c}23 & 1 & 1 \\ 1 & 1 & 1\end{array}\right]$
 
 First, we organize the system so that the variables are ordered $x,y,z$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:
 
-$$\begin{cases}23x+y+z=6 \\ x+0y+z=21\end{cases}$$
+$$\left\{\begin{aligned}23x+y+z &=6 \\ x+0y+z &=21\end{aligned}\right.$$
 
 The coefficient matrix consists of the coefficients of the variables:
 
 $$
-\left[\begin{array}{cc|c}23 & 1 & 1 \\ 1 & 0 & 1\end{array}\right]
+\begin{bmatrix}23 & 1 & 1 \\ 1 & 0 & 1\end{bmatrix}
 $$
 
 The augmented matrix  is the coefficient matrix augmented with the column that represents the right-hand sides of the equations:
@@ -113,7 +113,7 @@ Variants
 What is the augmented matrix for the following system of  linear equations?
 
 $$
-\begin{aligned}\begin{cases}-x+y=20 \\ x+y=8\end{cases}\end{aligned}
+\begin{aligned}\left\{\begin{aligned}-x+y &=20 \\ x+y &=8\end{aligned}\right.\end{aligned}
 $$
 
 $\left[\begin{array}{cc|c}-1 & 1 & 20 \\ 1 & 1 & 8\end{array}\right]$ (correct)
@@ -131,7 +131,7 @@ Notice that the system is already organized so that the variables are in the ord
 The coefficient matrix consists of the coefficients of the variables: 
 
 $$
-\left[\begin{array}{c|c}-1 & 1 \\ 1 & 1\end{array}\right]
+\begin{bmatrix}-1 & 1 \\ 1 & 1\end{bmatrix}
 $$
 
  
@@ -145,7 +145,7 @@ $$
 What is the augmented matrix for the following system of  linear equations?
 
 $$
-\begin{aligned}\begin{cases}-x+y=6 \\ x+y=23\end{cases}\end{aligned}
+\begin{aligned}\left\{\begin{aligned}-x+y &=6 \\ x+y &=23\end{aligned}\right.\end{aligned}
 $$
 
 $\left[\begin{array}{cc|c}-1 & 1 & 6 \\ 1 & 1 & 23\end{array}\right]$ (correct)
@@ -163,7 +163,7 @@ Notice that the system is already organized so that the variables are in the ord
 The coefficient matrix consists of the coefficients of the variables: 
 
 $$
-\left[\begin{array}{c|c}-1 & 1 \\ 1 & 1\end{array}\right]
+\begin{bmatrix}-1 & 1 \\ 1 & 1\end{bmatrix}
 $$
 
  
@@ -202,7 +202,7 @@ Variants
 
 What is the augmented matrix for the following system of linear equations?
 
-$$\begin{cases}20x-13=8y \\ 16+y=19x\end{cases}$$
+$$\left\{\begin{aligned}20x-13 &=8y \\ 16+y &=19x\end{aligned}\right.$$
 
 $\left[\begin{array}{cc|c}20 & -13 & 8 \\ 16 & 1 & 19\end{array}\right]$
 
@@ -216,12 +216,12 @@ $\left[\begin{array}{cc|c}20 & 8 & 13 \\ 16 & 1 & 19\end{array}\right]$
 
 First, we organize the system so that the variables are ordered $x,y$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:
 
-$$\begin{cases}20x-8y=13 \\ -19x+y=-16\end{cases}$$
+$$\left\{\begin{aligned}20x-8y &=13 \\ -19x+y &=-16\end{aligned}\right.$$
 
 The coefficient matrix consists of the coefficients of the variables:
 
 $$
-\left[\begin{array}{c|c}20 & -8 \\ -19 & 1\end{array}\right]
+\begin{bmatrix}20 & -8 \\ -19 & 1\end{bmatrix}
 $$
 
 The augmented matrix  is the coefficient matrix augmented with the column that represents the right-hand sides of the equations: 
@@ -232,7 +232,7 @@ $$
 
 What is the augmented matrix for the following system of linear equations?
 
-$$\begin{cases}6x-13=23y \\ 7+y=21x\end{cases}$$
+$$\left\{\begin{aligned}6x-13 &=23y \\ 7+y &=21x\end{aligned}\right.$$
 
 $\left[\begin{array}{cc|c}6 & -13 & 23 \\ 7 & 1 & 21\end{array}\right]$
 
@@ -246,12 +246,12 @@ $\left[\begin{array}{cc|c}6 & 23 & 13 \\ 7 & 1 & 21\end{array}\right]$
 
 First, we organize the system so that the variables are ordered $x,y$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:
 
-$$\begin{cases}6x-23y=13 \\ -21x+y=-7\end{cases}$$
+$$\left\{\begin{aligned}6x-23y &=13 \\ -21x+y &=-7\end{aligned}\right.$$
 
 The coefficient matrix consists of the coefficients of the variables:
 
 $$
-\left[\begin{array}{c|c}6 & -23 \\ -21 & 1\end{array}\right]
+\begin{bmatrix}6 & -23 \\ -21 & 1\end{bmatrix}
 $$
 
 The augmented matrix  is the coefficient matrix augmented with the column that represents the right-hand sides of the equations: 
@@ -293,7 +293,7 @@ Variants
 What is the augmented matrix for the following system of linear equations?
 
 $$
-\begin{aligned}\begin{aligned}13x+20y-z=3 \\ 16-19x=-8y \\ -y+18x=20z\end{aligned}\end{aligned}
+\left\{\begin{aligned}13x+20y-z &=3 \\ 16-19x &=-8y \\ -y+18x &=20z\end{aligned}\right.
 $$
 
 $\left[\begin{array}{ccc|c}13 & -20 & 1 & 3 \\ -19 & 8 & 0 & -16 \\ 18 & -1 & -20 & 0\end{array}\right]$
@@ -309,13 +309,13 @@ $\left[\begin{array}{ccc|c}13 & -20 & -1 & 3 \\ -19 & 8 & 0 & -16 \\ 18 & -1 & 2
 First, we organize the system so that the variables are ordered $x,y,z$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:
 
 $$
-\begin{aligned}\begin{aligned}13x+20y-z=3 \\ -19x+8y+0z=-16 \\ 18x-y-20z=0\end{aligned}\end{aligned}
+\left\{\begin{aligned}13x+20y-z &=3 \\ -19x+8y+0z &=-16 \\ 18x-y-20z &=0\end{aligned}\right.
 $$
 
 The coefficient matrix consists of the coefficients of the variables:
 
 $$
-\left[\begin{array}{cc|c}13 & 20 & -1 \\ -19 & 8 & 0 \\ 18 & -1 & -20\end{array}\right]
+\begin{bmatrix}13 & 20 & -1 \\ -19 & 8 & 0 \\ 18 & -1 & -20\end{bmatrix}
 $$
 
 The augmented matrix  is the coefficient matrix augmented with the column that represents the right-hand sides of the equations:
@@ -327,7 +327,7 @@ $$
 What is the augmented matrix for the following system of linear equations?
 
 $$
-\begin{aligned}\begin{aligned}13x+6y-z=19 \\ 7-21x=-23y \\ -y+20x=6z\end{aligned}\end{aligned}
+\left\{\begin{aligned}13x+6y-z &=19 \\ 7-21x &=-23y \\ -y+20x &=6z\end{aligned}\right.
 $$
 
 $\left[\begin{array}{ccc|c}13 & -6 & 1 & 19 \\ -21 & 23 & 0 & -7 \\ 20 & -1 & -6 & 0\end{array}\right]$
@@ -343,13 +343,13 @@ $\left[\begin{array}{ccc|c}13 & -6 & -1 & 19 \\ -21 & 23 & 0 & -7 \\ 20 & -1 & 6
 First, we organize the system so that the variables are ordered $x,y,z$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:
 
 $$
-\begin{aligned}\begin{aligned}13x+6y-z=19 \\ -21x+23y+0z=-7 \\ 20x-y-6z=0\end{aligned}\end{aligned}
+\left\{\begin{aligned}13x+6y-z &=19 \\ -21x+23y+0z &=-7 \\ 20x-y-6z &=0\end{aligned}\right.
 $$
 
 The coefficient matrix consists of the coefficients of the variables:
 
 $$
-\left[\begin{array}{cc|c}13 & 6 & -1 \\ -21 & 23 & 0 \\ 20 & -1 & -6\end{array}\right]
+\begin{bmatrix}13 & 6 & -1 \\ -21 & 23 & 0 \\ 20 & -1 & -6\end{bmatrix}
 $$
 
 The augmented matrix  is the coefficient matrix augmented with the column that represents the right-hand sides of the equations:
@@ -389,7 +389,7 @@ Variants
 What is the augmented matrix for the following system of linear equations?
 
 $$
-\begin{aligned}\begin{aligned}20x-y=20 \\ 19x=-8\end{aligned}\end{aligned}
+\left\{\begin{aligned}20x-y &=20 \\ 19x &=-8\end{aligned}\right.
 $$
 
 $\left[\begin{array}{cc|c}20 & -1 & 20 \\ 19 & 1 & -8\end{array}\right]$
@@ -404,12 +404,12 @@ $\left[\begin{array}{cc|c}20 & -1 & 20 \\ -8 & 0 & 19\end{array}\right]$
 
 First, we organize the system so that the variables are ordered $x,y$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient: 
 
-$$\begin{cases}20x-y=20 \\ 19x+0y=-8\end{cases}$$
+$$\left\{\begin{aligned}20x-y &=20 \\ 19x+0y &=-8\end{aligned}\right.$$
 
 The coefficient matrix consists of the coefficients of the variables:
 
 $$
-\left[\begin{array}{c|c}20 & -1 \\ 19 & 0\end{array}\right]
+\begin{bmatrix}20 & -1 \\ 19 & 0\end{bmatrix}
 $$
 
 The augmented matrix  is the coefficient matrix augmented with the column that represents the right-hand sides of the equations:
@@ -421,7 +421,7 @@ $$
 What is the augmented matrix for the following system of linear equations?
 
 $$
-\begin{aligned}\begin{aligned}6x-y=6 \\ 21x=-23\end{aligned}\end{aligned}
+\left\{\begin{aligned}6x-y &=6 \\ 21x &=-23\end{aligned}\right.
 $$
 
 $\left[\begin{array}{cc|c}6 & -1 & 6 \\ 21 & 1 & -23\end{array}\right]$
@@ -436,12 +436,12 @@ $\left[\begin{array}{cc|c}6 & -1 & 6 \\ -23 & 0 & 21\end{array}\right]$
 
 First, we organize the system so that the variables are ordered $x,y$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient: 
 
-$$\begin{cases}6x-y=6 \\ 21x+0y=-23\end{cases}$$
+$$\left\{\begin{aligned}6x-y &=6 \\ 21x+0y &=-23\end{aligned}\right.$$
 
 The coefficient matrix consists of the coefficients of the variables:
 
 $$
-\left[\begin{array}{c|c}6 & -1 \\ 21 & 0\end{array}\right]
+\begin{bmatrix}6 & -1 \\ 21 & 0\end{bmatrix}
 $$
 
 The augmented matrix  is the coefficient matrix augmented with the column that represents the right-hand sides of the equations:
@@ -483,7 +483,7 @@ Variants
 What is the augmented matrix for the following system of linear equations?
 
 $$
-\begin{aligned}\begin{aligned}20y=8-x \\ 8x-19y+1=0\end{aligned}\end{aligned}
+\left\{\begin{aligned}20y &=8-x \\ 8x-19y+1 &=0\end{aligned}\right.
 $$
 
 $\left[\begin{array}{cc|c}1 & 20 & 8 \\ 8 & -19 & -1\end{array}\right]$ (correct)
@@ -499,13 +499,13 @@ $\left[\begin{array}{cc|c}1 & 20 & 8 \\ 8 & 19 & 1\end{array}\right]$
 First, we organize the system so that the variables are ordered $x,y$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:
 
 $$
-\begin{aligned}\begin{aligned}x+20y=8 \\ 8x-19y=-1\end{aligned}\end{aligned}
+\left\{\begin{aligned}x+20y &=8 \\ 8x-19y &=-1\end{aligned}\right.
 $$
 
 The coefficient matrix consists of the coefficients of the variables:
 
 $$
-\left[\begin{array}{c|c}1 & 20 \\ 8 & -19\end{array}\right]
+\begin{bmatrix}1 & 20 \\ 8 & -19\end{bmatrix}
 $$
 
 The augmented matrix  is the coefficient matrix augmented with the column that represents the right-hand sides of the equations: 
@@ -517,7 +517,7 @@ $$
 What is the augmented matrix for the following system of linear equations?
 
 $$
-\begin{aligned}\begin{aligned}6y=23-x \\ 23x-21y+1=0\end{aligned}\end{aligned}
+\left\{\begin{aligned}6y &=23-x \\ 23x-21y+1 &=0\end{aligned}\right.
 $$
 
 $\left[\begin{array}{cc|c}1 & 6 & 23 \\ 23 & -21 & -1\end{array}\right]$ (correct)
@@ -533,13 +533,13 @@ $\left[\begin{array}{cc|c}1 & 6 & 23 \\ 23 & 21 & 1\end{array}\right]$
 First, we organize the system so that the variables are ordered $x,y$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:
 
 $$
-\begin{aligned}\begin{aligned}x+6y=23 \\ 23x-21y=-1\end{aligned}\end{aligned}
+\left\{\begin{aligned}x+6y &=23 \\ 23x-21y &=-1\end{aligned}\right.
 $$
 
 The coefficient matrix consists of the coefficients of the variables:
 
 $$
-\left[\begin{array}{c|c}1 & 6 \\ 23 & -21\end{array}\right]
+\begin{bmatrix}1 & 6 \\ 23 & -21\end{bmatrix}
 $$
 
 The augmented matrix  is the coefficient matrix augmented with the column that represents the right-hand sides of the equations: 
@@ -581,7 +581,7 @@ Variants
 What is the augmented matrix for the following system of linear equations?
 
 $$
-\begin{aligned}\begin{aligned}x-8=20y \\ 1+y=-20x\end{aligned}\end{aligned}
+\left\{\begin{aligned}x-8 &=20y \\ 1+y &=-20x\end{aligned}\right.
 $$
 
 $\left[\begin{array}{cc|c}1 & -8 & 20 \\ 1 & 1 & 20\end{array}\right]$
@@ -597,13 +597,13 @@ $\left[\begin{array}{cc|c}8 & 1 & -20 \\ -1 & 20 & 1\end{array}\right]$
 First, we organize the system so that the variables are ordered $x,y$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:
 
 $$
-\begin{aligned}\begin{aligned}x-20y=8 \\ 20x+y=-1\end{aligned}\end{aligned}
+\left\{\begin{aligned}x-20y &=8 \\ 20x+y &=-1\end{aligned}\right.
 $$
 
 The coefficient matrix consists of the coefficients of the variables:
 
 $$
-\left[\begin{array}{c|c}1 & -20 \\ 20 & 1\end{array}\right]
+\begin{bmatrix}1 & -20 \\ 20 & 1\end{bmatrix}
 $$
 
 The augmented matrix  is the coefficient matrix augmented with the column that represents the right-hand sides of the equations: 
@@ -615,7 +615,7 @@ $$
 What is the augmented matrix for the following system of linear equations?
 
 $$
-\begin{aligned}\begin{aligned}x-23=6y \\ 1+y=-6x\end{aligned}\end{aligned}
+\left\{\begin{aligned}x-23 &=6y \\ 1+y &=-6x\end{aligned}\right.
 $$
 
 $\left[\begin{array}{cc|c}1 & -23 & 6 \\ 1 & 1 & 6\end{array}\right]$
@@ -631,13 +631,13 @@ $\left[\begin{array}{cc|c}23 & 1 & -6 \\ -1 & 6 & 1\end{array}\right]$
 First, we organize the system so that the variables are ordered $x,y$ on the left-hand side, the constants are on the right-hand side, and every variable has a coefficient:
 
 $$
-\begin{aligned}\begin{aligned}x-6y=23 \\ 6x+y=-1\end{aligned}\end{aligned}
+\left\{\begin{aligned}x-6y &=23 \\ 6x+y &=-1\end{aligned}\right.
 $$
 
 The coefficient matrix consists of the coefficients of the variables:
 
 $$
-\left[\begin{array}{c|c}1 & -6 \\ 6 & 1\end{array}\right]
+\begin{bmatrix}1 & -6 \\ 6 & 1\end{bmatrix}
 $$
 
 The augmented matrix  is the coefficient matrix augmented with the column that represents the right-hand sides of the equations: 

@@ -11,7 +11,7 @@ from pathlib import Path
 KP_ID=17592186059768
 KP_UUID='3f9ccaa5-d69c-584d-946e-0c57b3050160'
 TITLE='Finding the Augmented Matrix of a System of Linear Equations'
-VERSION='1.0.0'
+VERSION='1.0.1'
 HERE=Path(__file__).with_suffix('')
 SOURCE=json.loads((HERE/'source.json').read_text())
 PROFILES={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
@@ -23,8 +23,18 @@ def slots(q):
     return sorted({int(n) for t in texts for n in re.findall(r'\d+',t) if int(n)>1})
 def render(text,parameters):
     text=re.sub(r'\d+',lambda m:str(parameters.get(m[0],int(m[0]))),text)
-    # Source capture contains naked opening braces between aligned environments.
-    return text.replace(r'\begin{aligned}{\begin{aligned}',r'\begin{aligned}\begin{aligned}')
+    def system(match):
+        rows=[row.strip().replace('&','') for row in match[1].split(r'\\') if row.strip()]
+        assert all(row.count('=')==1 for row in rows)
+        return r'\left\{\begin{aligned}'+r' \\ '.join(lhs.strip()+' &='+rhs.strip() for lhs,rhs in (row.split('=',1) for row in rows))+r'\end{aligned}\right.'
+    text=re.sub(r'\\begin\{aligned\}\{\\begin\{aligned\}(.*?)\\end\{aligned\}\\end\{aligned\}',system,text,flags=re.S)
+    text=re.sub(r'\\begin\{cases\}(.*?)\\end\{cases\}',system,text,flags=re.S)
+    text=re.sub(r'(?<!\\left)\\\{\\begin\{aligned\}(.*?)\\end\{aligned\}',system,text,flags=re.S)
+    def coefficient(match):
+        paragraph=text[:match.start()].rstrip().split('\n\n')[-1]
+        if 'coefficient matrix' not in paragraph.lower() or 'augment' in paragraph.lower():return match[0]
+        return re.sub(r'\\left\[\\begin\{array\}\{c+\|c\}(.*?)\\end\{array\}\\right\]',lambda matrix:r'\begin{bmatrix}'+matrix[1]+r'\end{bmatrix}',match[0],flags=re.S)
+    return re.sub(r'\$\$.*?\$\$',coefficient,text,flags=re.S)
 def generate(difficulty,seed,template=None,parameters=None,profile=None):
     if difficulty not in SUPPORTED:raise ValueError('Unsupported difficulty: '+difficulty)
     rng=random.Random(seed)

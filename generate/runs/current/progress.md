@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Approved sources retain 
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 41**, **qa_passed: 299**, **queued: 233**, **working: 7**.
+**needs_revalidation: 41**, **qa_passed: 301**, **queued: 228**, **working: 10**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Existing approved work is preserved; other ready drafts await QA until these13 pass. Then finish any coverage-report KPs and the remaining script-ranked candidates.
 
@@ -60,8 +60,8 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186129123](../../scratch/17592186129123.py) | Properties of Transformed Sine and Cosine Functions | Finding the Midline of a Transformed Sinusoidal Function | 7 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186129123.json) |
 | [17592186129124](../../scratch/17592186129124.py) | Properties of Transformed Sine and Cosine Functions | Finding the Range of a Transformed Sinusoidal Function | 4 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186129124.json) |
 | [17592186092260](../../scratch/17592186092260.py) | The Chain Rule With Exponential Functions | Differentiating an Exponential Function with a Linear Exponent | 2 / 5 / 0 / 2 | qa_passed | [Report](qa/17592186092260.json) |
-| 17592186059740 | Scalar Multiplication of Matrices | Multiplying a Matrix by a Scalar | 5 / 0 / 0 / 2 | working | — |
-| 17592186059742 | Scalar Multiplication of Matrices | Calculating a Linear Combination of Two Matrices | 0 / 3 / 3 / 2 | working | — |
+| [17592186059740](../../scratch/17592186059740.py) | Scalar Multiplication of Matrices | Multiplying a Matrix by a Scalar | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186059740.json) |
+| [17592186059742](../../scratch/17592186059742.py) | Scalar Multiplication of Matrices | Calculating a Linear Combination of Two Matrices | 0 / 3 / 3 / 2 | qa_passed | [Report](qa/17592186059742.json) |
 | [17592186073776](../../scratch/17592186073776.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the Number of Solutions to a System | 0 / 0 / 0 / 3 | qa_passed | [Report](qa/17592186073776.json) |
 | [17592186073777](../../scratch/17592186073777.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the Number of Intersection Points of Two Lines | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186073777.json) |
 | [17592186073778](../../scratch/17592186073778.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the General Solution to a System With Infinitely Many Intersection Points | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186073778.json) |
@@ -74,16 +74,16 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186083244](../../scratch/17592186083244.py) | Calculating Tangent and Normal Lines with Parametric Equations | Computing the Tangent Line to a Parametric Curve | 0 / 2 / 3 / 1 | qa_passed | [Report](qa/17592186083244.json) |
 | [17592186172038](../../scratch/17592186172038.py) | Slope Fields for Nonautonomous Differential Equations | Sketching the Slope Field of a Differential Equation at Some Isolated Points | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186172038.json) |
 | [17592186100992](../../scratch/17592186100992.py) | Properties of Matrix Addition | Calculating the Sum or Difference of Three or More Matrices Using Distributivity | 5 / 1 / 0 / 1 | queued | — |
-| 17592186087888 | Homogeneous First-Order ODEs | Identifying Homogeneous Differential Equations | 3 / 3 / 0 / 0 | working | — |
+| [17592186087888](../../scratch/17592186087888.py) | Homogeneous First-Order ODEs | Identifying Homogeneous Differential Equations | 3 / 3 / 0 / 0 | working | — |
 | [17592186133827](../../scratch/17592186133827.py) | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function Using a Substitution | 0 / 4 / 1 / 1 | qa_passed | [Report](qa/17592186133827.json) |
 | [17592186133829](../../scratch/17592186133829.py) | Line Integrals of Scalar Functions | Writing the Line Integral of a Scalar Function as a Definite Integral | 1 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186133829.json) |
 | [17592186133830](../../scratch/17592186133830.py) | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function | 2 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186133830.json) |
-| 17592186162081 | Properties of Line Integrals of Scalar Functions | Calculating Line Integrals of Unity | 5 / 0 / 0 / 1 | queued | — |
-| 17592186162082 | Properties of Line Integrals of Scalar Functions | Calculating Line Integrals Over Piecewise-Smooth Curves | 2 / 3 / 0 / 1 | queued | — |
+| [17592186162081](../../scratch/17592186162081.py) | Properties of Line Integrals of Scalar Functions | Calculating Line Integrals of Unity | 5 / 0 / 0 / 1 | working | — |
+| [17592186162082](../../scratch/17592186162082.py) | Properties of Line Integrals of Scalar Functions | Calculating Line Integrals Over Piecewise-Smooth Curves | 2 / 3 / 0 / 1 | working | — |
 | [17592186162083](../../scratch/17592186162083.py) | Properties of Line Integrals of Scalar Functions | Applying Independence of Parametrization and Orientation | 0 / 3 / 2 / 2 | queued | — |
-| 17592186179670 | Line Integrals of Scalar Functions Over Line Segments | Calculating a Line Integral Along a Segment in the Cartesian Plane | 0 / 3 / 2 / 2 | queued | — |
-| 17592186179724 | Line Integrals of Scalar Functions Over Line Segments | Constructing a Line Integral Along a Segment in the Cartesian Plane | 5 / 0 / 0 / 0 | queued | — |
-| 17592186179725 | Line Integrals of Scalar Functions Over Line Segments | Line Integrals Along Segments in Three Dimensions | 2 / 1 / 2 / 2 | queued | — |
+| [17592186179670](../../scratch/17592186179670.py) | Line Integrals of Scalar Functions Over Line Segments | Calculating a Line Integral Along a Segment in the Cartesian Plane | 0 / 3 / 2 / 2 | working | — |
+| [17592186179724](../../scratch/17592186179724.py) | Line Integrals of Scalar Functions Over Line Segments | Constructing a Line Integral Along a Segment in the Cartesian Plane | 5 / 0 / 0 / 0 | working | — |
+| [17592186179725](../../scratch/17592186179725.py) | Line Integrals of Scalar Functions Over Line Segments | Line Integrals Along Segments in Three Dimensions | 2 / 1 / 2 / 2 | working | — |
 | [17592186179709](../../scratch/17592186179709.py) | Line Integrals of Scalar Functions Over Paths Expressed as Functions of Y | Constructing the Line Integral of a Function Over Curve Expressed as a Function of Y | 2 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186179709.json) |
 | [17592186133831](../../scratch/17592186133831.py) | Line Integrals of Vector-Valued Functions Over Parametric Curves | Constructing Line Integrals of a Vector-Valued Functions Over Plane Curves | 5 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186133831.json) |
 | 17592186119887 | Areas of Parametric Surfaces | Calculating the Fundamental Vector Product of a Parametric Surface | 6 / 0 / 0 / 1 | queued | — |
@@ -379,12 +379,12 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186124454](../../scratch/17592186124454.py) | Tangent Lines to Level Curves | Finding the Tangent Line to a Level Curve | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186124454.json) |
 | [17592186124456](../../scratch/17592186124456.py) | Tangent Lines to Level Curves | Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector | 0 / 0 / 9 / 2 | qa_passed | [Report](qa/17592186124456.json) |
 | [17592186124455](../../scratch/17592186124455.py) | Tangent Lines to Level Curves | Finding a Tangent Vector to a Plane Curve | 0 / 10 / 0 / 1 | qa_passed | [Report](qa/17592186124455.json) |
-| 17592186059770 | Systems of Equations as Augmented Matrices | Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z | 4 / 2 / 2 / 2 | queued | — |
+| [17592186059770](../../scratch/17592186059770.py) | Systems of Equations as Augmented Matrices | Finding the Augmented Matrix of a Linear System With Variables Other Than x, y, z | 4 / 2 / 2 / 2 | queued | — |
 | 17592186059769 | Systems of Equations as Augmented Matrices | Finding the System of Equations Associated With an Augmented Matrix | 3 / 5 / 2 / 1 | queued | — |
 | 17592186059767 | Systems of Equations as Augmented Matrices | Finding the Coefficient Matrix of a System of Linear Equations | 5 / 3 / 2 / 1 | queued | — |
 | [17592186059768](../../scratch/17592186059768.py) | Systems of Equations as Augmented Matrices | Finding the Augmented Matrix of a System of Linear Equations | 8 / 6 / 0 / 0 | queued | — |
 | 17592186129115 | Row Echelon Form | Identifying Operations That Would Transform a Matrix To Row Echelon Form | 0 / 10 / 0 / 0 | queued | — |
-| 17592186129176 | Row Echelon Form | Identifying the Leading Entries of a Matrix | 10 / 0 / 0 / 2 | queued | — |
+| [17592186129176](../../scratch/17592186129176.py) | Row Echelon Form | Identifying the Leading Entries of a Matrix | 10 / 0 / 0 / 2 | queued | — |
 | 17592186129113 | Row Echelon Form | Identifying Augmented Matrices in Row Echelon Form | 11 / 0 / 0 / 1 | queued | — |
 | 17592186129114 | Row Echelon Form | Identifying Matrices in Row Echelon Form | 13 / 0 / 0 / 1 | queued | — |
 | 17592186059771 | Elementary Row Operations | Applying Row Operations To a Coefficients Matrix | 3 / 2 / 4 / 0 | queued | — |
@@ -447,7 +447,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | 17592186119847 | The Rank of a Matrix | Determining the Rank of a Matrix Given the Number of Pivot Columns | 4 / 4 / 0 / 1 | queued | — |
 | 17592186119848 | The Rank of a Matrix | Identifying the Matrix With a Given Rank by Inspection | 10 / 0 / 0 / 2 | queued | — |
 | 17592186119849 | The Rank of a Matrix | Finding the Rank of a Matrix Using Row Reduction | 4 / 3 / 5 / 0 | queued | — |
-| 17592186179714 | Gradient Vector Fields | Calculating the Gradient Vector Field of a Function | 3 / 5 / 0 / 1 | queued | — |
+| [17592186179714](../../scratch/17592186179714.py) | Gradient Vector Fields | Calculating the Gradient Vector Field of a Function | 3 / 5 / 0 / 1 | queued | — |
 | 17592186179719 | Gradient Vector Fields | Sketching the Gradient Vector Field of a Function | 11 / 0 / 0 / 0 | queued | — |
 | 17592186179712 | Gradient Vector Fields | Using the Relationship Between the Vector Field of a Function and Its Contour Plot | 0 / 6 / 5 / 0 | queued | — |
 | 17592186059743 | The Transpose of a Matrix | Finding the Transpose of a Matrix | 15 / 0 / 0 / 1 | queued | — |

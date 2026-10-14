@@ -30,10 +30,12 @@ def run(K):
  D=R.parents[2]/f'generate/scratch/{K}';G=module('root_matrix_arithmetic_'+str(K),D.with_suffix('.py'));F=module('root_matrix_arithmetic_fidelity',R/'root-source-fidelity.py');originals,fidelity=F.check(G,K,D)
  C=dict(records=0,supplied_entries=0,repeated_input_entries=0,actual_product_operands=0,evaluated_scaled_entries=0,operative_combined_entries=0,collected_entries=0,choice_matrices=0,whole_bank_pairs=0,physical_blank_cells=0,provided_cells=0,actual_prose_coefficients=0)
  records=json.loads((R/f'qa/{K}-sampled.json').read_text());review=json.loads((D/'review.json').read_text())
- if isinstance(review,dict):review=review.get('generated',[])
+ if isinstance(review,dict):review=review.get('generated',review.get('generated_variants',[]))
  for row in review:
   r=row.get('record',row)
   if 'question' in r and r['question'].get(':question/worked-solution') and not r['generation'].get('evidence_only') and not r['generation'].get('raw_source_replay') and ':question/difficulty' in r['question']:records.append(r)
+ extra=R/f'qa/{K}-fixed-matrix-targets.json'
+ if extra.exists():records+=json.loads(extra.read_text())
  for r in records:
   q=r['question'];prompt=q[':question/problem'];sol=q[':question/worked-solution'];inputs=matrices(prompt);first=spans(prompt)[0].strip().rstrip('.,');proof=matrices(sol)
   if K==17592186059740:
@@ -48,7 +50,7 @@ def run(K):
    pre=spans(sol.split('$$')[0]);coefficient=pre[-1];assert scalar(coefficient)==k;C['actual_prose_coefficients']+=1
   else:
    assert K==17592186059742 and len(inputs)==2;A,B=[a[0] for a in inputs];assert A.shape==B.shape;C['supplied_entries']+=len(A)+len(B)
-   m=re.fullmatch(r'(.*?)([A-Z])([+-])(.*?)([A-Z])',first);assert m,(first,'two-scalar expression')
+   m=re.fullmatch(r'(.*?)([A-Z])([+-])(.*?)([A-Z])',first.replace(' ',''));assert m,(first,'two-scalar expression')
    k,l=scalar(m[1]),scalar(m[4]);sign=1 if m[3]=='+' else -1;target=k*A+sign*l*B
    assert len(proof)==8 and proof[0][0]==A and proof[1][0]==B;C['repeated_input_entries']+=2*len(A)
    for literal,M,coefficient in [(proof[2][1],A,k),(proof[3][1],B,l)]:

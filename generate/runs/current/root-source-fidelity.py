@@ -18,7 +18,14 @@ def check(g,K,D,asset_relocation=False):
   assert new==old;counts['prompts']+=1;counts['unrated']+=(':question/difficulty' not in o)
   if ':question/worked-solution' in o:assert q[':question/worked-solution']==o[':question/worked-solution'];counts['solutions']+=1
   assert len(q.get(':question/answer-fields',[]))==len(o.get(':question/answer-fields',[]))
-  for f,old in zip(q.get(':question/answer-fields',[]),o.get(':question/answer-fields',[])):
+  newfields=q.get(':question/answer-fields',[]);oldfields=o.get(':question/answer-fields',[])
+  # Pull field collection order does not define a blank's position. Match unique
+  # keys one-to-one; legacy duplicate keys still require occurrence-order parity.
+  if len({f[':answer-field/key'] for f in oldfields})==len(oldfields):
+   assert len({f[':answer-field/key'] for f in newfields})==len(newfields)
+   assert {f[':answer-field/key'] for f in newfields}=={f[':answer-field/key'] for f in oldfields}
+   keyed={f[':answer-field/key']:f for f in newfields};newfields=[keyed[f[':answer-field/key']] for f in oldfields]
+  for f,old in zip(newfields,oldfields):
    assert f[':answer-field/key']==old[':answer-field/key'];assert f[':answer-field/type']==old[':answer-field/type'][':db/ident']
    assert (':answer-field/choices' in f)==(':answer-field/choices' in old)
    assert sorted(a[':answer/value'] for a in f.get(':answer-field/choices',[]))==sorted(a[':answer/value'] for a in old.get(':answer-field/choices',[]));counts['fields']+=1;counts['values']+=len(old.get(':answer-field/choices',[]))

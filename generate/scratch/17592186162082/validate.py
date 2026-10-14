@@ -64,6 +64,15 @@ def check(rec):
   else:
    a,b=point(c[0]),point(c[-1]); # recover rationals with denominator <=3 from plotted coordinates
    a=[s.Rational(float(x)).limit_denominator(3) for x in a];b=[s.Rational(float(x)).limit_denominator(3) for x in b];L.append(s.sqrt(sum((u-v)**2 for u,v in zip(a,b))))
+ for role,path in m['assets'].items():
+  from PIL import Image
+  im=Image.open(path);assert im.format=='PNG' and im.size==(432,364)
+  assert Path(path).with_suffix('.json').exists()
+ if 'r' in p:
+  printed=re.search(r'of radius \$r=([^$]+)\.\$',q[':question/worked-solution']);assert printed
+  assert parse(printed.group(1))==s.Rational(side['geometry']['arc'][0])
+  prompt_radius=re.search(r'of radius \$([^$]+)\$',q[':question/problem'])
+  if prompt_radius:assert parse(prompt_radius.group(1))==s.Rational(side['geometry']['arc'][0])
  assert len(curves)==(3 if t=='three_segments' else 2);assert side['labels']==['C_'+str(i+1) for i in range(len(curves))]
  A=s.simplify(sum(L));assert sum(s.simplify(v-A)==0 for v in values)==1;assert parse(next(a[':answer/value'] for a in opts if a[':answer/id']==f[':answer-field/correct'][1]))==A
  numeric=numeric_rows(q[':question/worked-solution']);assert len(numeric)==3
@@ -113,6 +122,14 @@ def main():
     r=g.generate(level,seed=seed,template=t);check(r);assert r==g.generate(level,seed=seed,template=t);generated.append((level+'/'+t+'/'+str(seed),r))
    same=g.generate(level,99,template=t,parameters=r['generation']['parameters']);assert same['question'][':question/id']==r['question'][':question/id']
  records+=generated
+ # Deliberate printed-stage corruption must fail even with untouched metadata/key.
+ import copy
+ corrupted=copy.deepcopy(records[0][1]);corrupted['question'][':question/worked-solution']=corrupted['question'][':question/worked-solution'].replace('=2\\pi+4','=2\\pi+5')
+ # Whitespace in SymPy TeX is presentation-specific, so alter the exact printed segment row.
+ corrupted=copy.deepcopy(records[0][1]);corrupted['question'][':question/worked-solution']=corrupted['question'][':question/worked-solution'].replace(g.I(2)+'=4.',g.I(2)+'=5.')
+ try:check(corrupted)
+ except AssertionError:pass
+ else:raise AssertionError('Printed stage corruption escaped independent check')
  # Explicit guard checks rather than letting shared broad bounds bypass workload policies.
  for level,t,p in [('easy','semi',{'r':'1/2'}),('hard','quarter_open',{'r':2}),('moderate','three_segments',{'a':3,'b':5}),('hard','semi',{'r':'3/2'}),('moderate','two_segments',{'a':2,'b':3,'h':4})]:
   try:g.generate(level,template=t,parameters=p)
@@ -136,6 +153,6 @@ def main():
  # Include every authored family as well as two per level.
  for t in g.TEMPLATES:review += [{'label':label,'record':r} for label,r in generated if '/'+t+'/' in label][:1]
  (ROOT/'review.json').write_text(json.dumps(review,indent=2)+'\n')
- report={'status':'worker-validated; parent independent QA pending','basis':2275,'source_banks':6,'source_choices_matched':30,'source_choices_total':30,'source_wrong_options_matched':24,'source_wrong_options_total':24,'observed_correct_designations_matched':5,'observed_correct_designations_total':5,'inferred_missing_designations':1,'full_available_solutions_prose_and_numeric_sequence_matched':5,'available_solutions_total':5,'raw_exact_solution_strings':sum(x['raw_exact_solution'] is True for x in fidelity),'presentation_normalized_solutions':5,'record_checks':len(records),'source_fidelity':fidelity,'native_engine':json.loads((ROOT/'engine-report.json').read_text()),'fresh_concurrency_calls':4,'database_writes':0,'calculator_requirements':'unknown: absent in all six sources','unresolved':['q122484 difficulty, correct designation and solution absent: authored moderate, derived key and source-shaped solution','No observed hard questions; bounded rational hard policy is authored','Several empirical distractor intentions underidentified; never normal defaults','Matplotlib style differs from source asset, geometry and instructional cues preserved'],'versions':{'python':sys.version,'sympy':s.__version__}}
- (ROOT/'validation.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps({k:v for k,v in report.items() if k not in ('native_engine','source_fidelity')},indent=2))
+ report={'status':'worker-validated; parent independent QA pending','basis':2275,'source_banks':6,'source_choices_matched':30,'source_choices_total':30,'source_wrong_options_matched':24,'source_wrong_options_total':24,'observed_correct_designations_matched':5,'observed_correct_designations_total':5,'inferred_missing_designations':1,'full_available_solutions_prose_and_numeric_sequence_matched':5,'available_solutions_total':5,'raw_exact_solution_strings':sum(x['raw_exact_solution'] is True for x in fidelity),'presentation_normalized_solutions':5,'record_checks':len(records),'source_fidelity':fidelity,'native_engine':json.loads((ROOT/'engine-report.json').read_text()),'fresh_concurrency_calls':4,'database_writes':0,'calculator_requirements':'unknown: absent in all six sources','unresolved':['q122484 difficulty, correct designation and solution absent: authored moderate, derived key and source-shaped solution','No observed hard questions; bounded rational hard policy is authored','Several empirical distractor intentions underidentified; never normal defaults','Matplotlib style differs from source asset, geometry and instructional cues preserved'],'versions':{'python':sys.version,'sympy':s.__version__,'matplotlib':__import__('matplotlib').__version__}}
+ (ROOT/'validation.json').write_text(json.dumps(report,indent=2)+'\n');subprocess.run([sys.executable,str(ROOT/'finalize-evidence.py')],check=True);print(json.dumps({k:v for k,v in report.items() if k not in ('native_engine','source_fidelity')},indent=2))
 if __name__=='__main__':main()

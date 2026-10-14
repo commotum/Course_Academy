@@ -6,11 +6,13 @@ D=Path(__file__).resolve().parent;ROOT=D.parents[2]
 spec=importlib.util.spec_from_file_location('generator',D.with_suffix('.py'));g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
 def save(name,data):(D/name).write_text(json.dumps(data,indent=2)+'\n')
 def matrices(text):
-    return [[[int(n.strip()) for n in row.split('&')] for row in body.split('\\\\') if row.strip()] for body in re.findall(r'\\begin\{array\}\{[^}]*\}(.*?)\\end\{array\}',text,re.S)]
+    pattern=r'\\begin\{(array|bmatrix)\}(?:\{[^}]*\})?(.*?)\\end\{\1\}'
+    return [[[int(n.strip()) for n in row.split('&')] for row in body.split('\\\\') if row.strip()] for _,body in re.findall(pattern,text,re.S)]
 def systems(text):
     blocks=[]
     for body in re.findall(r'\$\$(.*?)\$\$',text,re.S):
-        body=re.sub(r'\\(?:begin|end)\{(?:aligned|cases)\}','',body).replace('{','').replace('}','').strip()
+        body=re.sub(r'\\(?:left|right)\s*(?:\\[{}]|[.\[\]()])','',body)
+        body=re.sub(r'\\(?:begin|end)\{(?:aligned|cases)\}','',body).replace('{','').replace('}','').replace('&','').strip()
         if '=' in body and r'\begin{array}' not in body:blocks.append([row.strip() for row in body.split('\\\\') if row.strip()])
     return blocks
 def equation_matrix(rows):
@@ -38,7 +40,7 @@ def display_check(rec):
     for rows in systems(solution):assert equation_matrix(rows)==expected
     for text in [q[':question/problem'],solution]+[a[':answer/value'] for a in f[':answer-field/choices']]:
         depth=0
-        for c in text:
+        for c in re.findall(r'\\[A-Za-z]+|\\.|.',text,re.S):
             depth+=(c=='{')-(c=='}');assert depth>=0
         assert depth==0 and text.count('$')%2==0
     assert q[':question/difficulty'].split('/')[-1] in g.SUPPORTED

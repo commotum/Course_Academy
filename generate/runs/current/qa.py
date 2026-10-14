@@ -54,7 +54,7 @@ def main():
    assert rec==g.generate(level,seed=seed),'nondeterministic replay'
    assert rec['knowledge_point']['db_id']==kp
    ids.add(rec['question'][':question/id']);params.add(json.dumps(rec['generation']['parameters'],sort_keys=True))
-   meta=rec['generation'];task=next((meta[k] for k in ('mathematical_task_fingerprint','mathematical_fingerprint','parameter_fingerprint') if k in meta),None)
+   meta=rec['generation'];task=next((meta[k] for k in ('mathematical_task_fingerprint','mathematical_fingerprint','math_fingerprint','mathematical_identity','parameter_fingerprint') if k in meta),None)
    tasks.add(str(task) if task is not None else json.dumps([meta['template'],meta['parameters']],sort_keys=True))
    examples.append(rec);records.append(rec)
    checks.append({'label':f'parent/{level}/seed={seed}','record':rec,'checks':record_checks(rec)})

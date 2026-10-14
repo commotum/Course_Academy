@@ -67,6 +67,7 @@ def guard(name,p):
  else:
   if not(a in (S.Rational(1,3),S.Rational(2,3)) and b==2 and p['op']=='+' and all(x.q==1 and abs(x)<=18 and (a*x).q==1 for x in A) and all(x.q in (1,2) and abs(x)<=6 and (b*x).q==1 for x in B)):raise ValueError('hard six-entry workload')
  if name=='partial_blank' and (len(p.get('targets',[]))!=4 or sorted(set(p['targets']))!=sorted(p['targets']) or any(not isinstance(x,int) or not 0<=x<6 for x in p['targets'])):raise ValueError('four ordered distinct target slots')
+ if name=='partial_blank' and (not any(A[i] for i in p['targets']) or not any(B[i] for i in p['targets'])):raise ValueError('both scalar products must contribute to requested cells')
  return a,b,A,B
 
 def solution(name,p):
@@ -165,7 +166,10 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
    if not correct_missing:f[':answer-field/correct']=[':answer/id',correct]
    fs.append(f)
   q[':question/answer-fields']=fs
- mathematical=digest({'A':p['A'],'B':p['B'],'a':p['a'],'signed_b':str(S.Rational(p['b'])*(1 if p['op']=='+' else -1)),'targets':targets if kind=='blank' else 'whole','response':kind})
+ task={'A':p['A'],'B':p['B'],'a':p['a'],'signed_b':str(S.Rational(p['b'])*(1 if p['op']=='+' else -1)),'targets':sorted(targets) if kind=='blank' else 'whole','response':kind}
+ if name=='partial_blank':
+  selected=sorted(targets);flat_a=sum(p['A'],[]);flat_b=sum(p['B'],[]);task.update(A=[flat_a[i] for i in selected],B=[flat_b[i] for i in selected],shape=[r,c])
+ mathematical=digest(task)
  return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'source':SOURCE,'seed':seed,'template':name,'bank_profile':profile,'parameters':p,'content_hash':identity,'math_fingerprint':mathematical,'evidence_only':raw,'eligible_for_learning':not raw,'authored_level_assignment':name=='easy_integer' or name in ('symmetric_plus','opaque_subtract'),'source_ids':[TEMPLATES[name][4]]if TEMPLATES[name][4]else [],'runtime':{'python':sys.version.split()[0],'sympy':S.__version__}}}
 def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
 def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)

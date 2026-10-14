@@ -128,6 +128,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         choices=[{':answer/id':uid(field_id+'/'+v),':answer/type':':answer.type/math',':answer/value':v} for v in b['values']]
         field={':answer-field/id':field_id,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices}
         if b['correct_index'] is not None:field[':answer-field/correct']=[':answer/id',choices[b['correct_index']][':answer/id']]
+        if not raw:rng.shuffle(choices)
         fields.append(field)
     question={':question/id':question_id,':question/problem':body,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+level,':question/answer-fields':fields}
     # Metadata excludes the key and source payload from learner-facing schema.
@@ -151,11 +152,14 @@ def generate_moderate(seed=0,**kwargs):return generate('moderate',seed,**kwargs)
 def generate_hard(seed=0,**kwargs):return generate('hard',seed,**kwargs)
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--difficulty',choices=list(LEVELS),default='easy');parser.add_argument('--seed',type=int,default=0)
+    parser.add_argument('--difficulty',choices=[*LEVELS,'all'],default='easy');parser.add_argument('--seed',type=int,default=0)
     parser.add_argument('--template');parser.add_argument('--profile',choices=['normal','raw']);parser.add_argument('--parameters',type=json.loads)
     parser.add_argument('--count',type=int,default=1);parser.add_argument('--format',choices=['json','markdown'],default='json')
-    args=parser.parse_args();records=[generate(args.difficulty,args.seed+i,args.template,parameters=args.parameters,profile=args.profile) for i in range(args.count)]
-    if args.format=='json':print(json.dumps(records[0] if args.count==1 else records,indent=2,ensure_ascii=False))
+    args=parser.parse_args()
+    if args.count<1:parser.error('count must be positive')
+    levels=list(LEVELS) if args.difficulty=='all' else [args.difficulty]
+    records=[generate(level,args.seed+i,args.template,parameters=args.parameters,profile=args.profile) for level in levels for i in range(args.count)]
+    if args.format=='json':print(json.dumps(records[0] if args.count==1 and args.difficulty!='all' else records,indent=2,ensure_ascii=False))
     else:
         for r in records:
             print(r['question'][':question/problem'])

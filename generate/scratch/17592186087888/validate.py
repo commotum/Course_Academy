@@ -182,7 +182,12 @@ def main():
                 r=g.generate(level,seed,template=template);check_record(r)
                 assert r==g.generate(level,seed,template=template)
                 same=g.generate(level,seed+100,template=template,parameters=r['generation']['parameters'])
-                assert r['question']==same['question']
+                normalized=[]
+                for candidate in (r,same):
+                    question=copy.deepcopy(candidate['question'])
+                    for field in question[':question/answer-fields']:field[':answer-field/choices'].sort(key=lambda answer:answer[':answer/id'])
+                    normalized.append(question)
+                assert normalized[0]==normalized[1], 'seed/order changed content or identity'
                 engine.append(native_checks(r,f'{level}/{template}/seed={seed}'))
                 review.append({'role':'generated '+level+' variant','record':r});examples+=1
             # Boundary native checks use both ends, rather than only random draws.
