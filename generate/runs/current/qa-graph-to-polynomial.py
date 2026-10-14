@@ -31,9 +31,18 @@ for rec in records:
  if source:
   clean=lambda z:re.sub(r'\s+',' ',re.sub(r'\$.*?\$','',z)).strip();assert clean(sol)==clean(source);C['source_prose_masks']+=1
  png=Path(re.search(r'!\[\]\((.*?)\)',q[':question/problem'])[1]);im=np.array(Image.open(png).convert('RGB'));red=(im[:,:,0]>170)&(im[:,:,1]<115)&(im[:,:,2]<115);black=(im[:,:,0]<90)&(im[:,:,1]<90)&(im[:,:,2]<90);lo,hi=meta['xlim'];yl,yh=meta['ylim'];assert lo<0<hi and yl<0<yh
- axisx=im.shape[1]*(.06-lo/(hi-lo)*.88);axisy=im.shape[0]*(1-(.1-yl/(yh-yl)*.84));assert abs(black.sum(0).argmax()-axisx)<3 and abs(black.sum(1).argmax()-axisy)<3;C['true_zero_axes']+=2;fn=s.lambdify(x,actual,'numpy')
+ mx,my,mw,mh=meta['main_rect'];axisx=im.shape[1]*(mx-lo/(hi-lo)*mw);axisy=im.shape[0]*(1-(my-yl/(yh-yl)*mh));x0=round(im.shape[1]*mx);x1=round(im.shape[1]*(mx+mw));y0=round(im.shape[0]*(1-my-mh));y1=round(im.shape[0]*(1-my));crop=black[y0:y1,x0:x1];assert abs(crop.sum(0).argmax()+x0-axisx)<3 and abs(crop.sum(1).argmax()+y0-axisy)<3;C['true_zero_axes']+=2;fn=s.lambdify(x,actual,'numpy')
  for sample in meta['raster_points']:
-  X=sample['x'];Y=float(fn(X));assert abs(Y-sample['y'])<1e-7*max(1,abs(Y));px=round(im.shape[1]*(.06+(X-lo)/(hi-lo)*.88));py=round(im.shape[0]*(1-(.1+(Y-yl)/(yh-yl)*.84)));assert red[py-4:py+5,px-4:px+5].any();C['raster_curve_probes']+=1
+  X=sample['x'];Y=float(fn(X));assert abs(Y-sample['y'])<1e-7*max(1,abs(Y));px=round(im.shape[1]*(mx+(X-lo)/(hi-lo)*mw));py=round(im.shape[0]*(1-(my+(Y-yl)/(yh-yl)*mh)));assert red[py-4:py+5,px-4:px+5].any();C['raster_curve_probes']+=1
+ # Local panels must show the exact same polynomial, not a synthetic sketch.
+ assert len(meta['local_views'])==len(rs)
+ for view,r,m in zip(meta['local_views'],rs,ms):
+  assert s.Rational(view['root'])==r and view['multiplicity']==m and view['label']=='Near x = '+str(r)
+  vx,vy,vw,vh=view['rect'];vlo,vhi=view['xlim'];vyl,vyh=view['ylim'];probes=view['probes'];assert len(probes)==7
+  for probe in probes:
+   X,Y=probe['x'],probe['y'];assert abs(float(fn(X))-Y)<1e-7*max(1,abs(Y));px=round(im.shape[1]*(vx+(X-vlo)/(vhi-vlo)*vw));py=round(im.shape[0]*(1-(vy+(Y-vyl)/(vyh-vyl)*vh)));assert red[py-4:py+5,px-4:px+5].any();C['raster_curve_probes']+=1
+  lobe=[probe for probe in probes if abs(probe['fraction'])==.8];assert all(abs(probe['y'])/(vyh-vyl)*im.shape[0]*vh>3 for probe in lobe)
+  assert (s.sign(lobe[0]['y'])==s.sign(lobe[1]['y']))==(m%2==0)
  level=q[':question/difficulty'].split('/')[-1]
  if level=='hard':assert len(rs)==4 and sorted('simple' if m==1 else 'even' if m%2==0 else 'odd' for m in ms)==['even','odd','simple','simple']
  C['records']+=1

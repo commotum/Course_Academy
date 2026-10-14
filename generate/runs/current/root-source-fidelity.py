@@ -19,6 +19,10 @@ def check(g,K,D,asset_relocation=False):
   for f,old in zip(q.get(':question/answer-fields',[]),o.get(':question/answer-fields',[])):
    assert f[':answer-field/key']==old[':answer-field/key'];assert f[':answer-field/type']==old[':answer-field/type'][':db/ident']
    assert sorted(a[':answer/value'] for a in f[':answer-field/choices'])==sorted(a[':answer/value'] for a in old[':answer-field/choices']);counts['fields']+=1;counts['values']+=len(old[':answer-field/choices'])
+   for a in f[':answer-field/choices']:
+    captured=next(v for v in old[':answer-field/choices'] if v[':answer/value']==a[':answer/value']);assert a[':answer/type']==captured[':answer/type'][':db/ident']
+    assert (':answer/feedback' in a)==(':answer/feedback' in captured)
+    if ':answer/feedback' in captured:assert a[':answer/feedback']==captured[':answer/feedback']
    assert (':answer-field/correct' in f)==(':answer-field/correct' in old)
    if ':answer-field/correct' in old:assert next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])==old[':answer-field/correct'][':answer/value'];counts['refs']+=1
    else:counts['missing_refs']+=1

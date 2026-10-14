@@ -1,0 +1,9 @@
+# Adding Square Matrices — basis 2203
+
+All six practice records were read together at EDB basis 2203, lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. Five are rated easy; q-101 is unrated and has no key or worked solution. Four are currently gradable and fresh. The lesson reserve needs one easy question.
+
+Four prompt/response templates: named-matrix radio (q-11440, q-125630, q-125631), explicit-expression RHS radio (q-100), interrogative explicit-expression radio (q-101), and named-matrix four scalar blanks (q-319591). All use two 2×2 integer matrices and entrywise addition. Named radio has three complete bank profiles; the other radio templates have one each. Blank has no distractor profile. All plot ratings are none: neither source nor generated content has graphs or diagrams.
+
+q-11440 has two `selection` fields with identical complete mathematical banks; only the later field has a key. This is a duplicate-key source defect, not a genuine mixed/multipart task. New content uses one field with that bank and the verified key; both original fields are retained unchanged. q-319591 has four distinct field keys requesting all four entries. Its nested aligned wrappers replay exactly. Canonical e-4374 has only one operand in its prompt; its solution supplies both. It is excluded from practice and generation, and both solution operands are used when excluding duplicates.
+
+Easy is supported by the five rated examples and the identical operation/workload of q-101. New q-101 variants receive an independently computed key and same-method solution; the unrated original remains unrated and incomplete. Moderate and hard are unsupported within this source-backed capability: no rated example or additional same-KP reasoning sequence establishes those levels. Merely inflating coefficients would not establish them. Each unfilled higher reserve remains five; new evidence reopens classification.

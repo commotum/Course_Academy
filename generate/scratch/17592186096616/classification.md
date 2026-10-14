@@ -1,27 +1,13 @@
-# Classification of logarithmic tangent slopes
+# Classification — frozen math basis 1356
 
-Captured math basis 1904, lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. Current source evidence: source.json and reference/initial/kp.edn. There is no registered generator at that basis. All 13 practice sources and canonical e-3630 were read together; canonical content does not count as stock.
+Database math, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. This revision replaces the archived pre-frozen draft; later-basis replenishment files are historical evidence only in `archive-pre-frozen1356/`.
 
-Eleven practice questions are labeled easy; two legacy radio questions are unrated. No practice sources are moderate or hard. All functions consist of logarithms of x with optional polynomial, exponential, linear and constant terms. Inputs are positive integers or the reciprocal of a base logarithm. They ask for a scalar tangent slope by termwise differentiation and substitution. No logarithm has a composed argument. Every plot rating is **none**: there are no graphs, diagrams or assets in any prompt, bank or solution.
+13 practice sources: 11 easy, 2 unrated (`q-17373`, `q-17395`). Easy has 3 radio families, 6 blank families, and 2 fieldless families; the unrated records add 2 radio families. There are 5 complete radio banks total. There are 13 source-shaped prompt/solution families because their operative derivative/evaluation masks and answer contracts differ. All plots: none.
 
-| Template/source | Source level | Field shape | Solution derivative/evaluation stages | Complete bank profile |
-|---|---|---|---|---|
-| rational_ln_radio / q-17373 | unrated | 5-option radio, selection | missing / authored 3+2 | reciprocal/sign/zero |
-| two_logs_radio / q-17395 | unrated | 5-option radio, selection | missing / authored 3+2 | log-factor/omission/zero |
-| exp_base_log_fieldless / q-101723 | easy | absent / authored blank field-1 | 1+3 | none |
-| quadratic_ln_blank / q-340014 | easy | blank field-1, one alias | 4+3 | none |
-| ln_exp_base_blank / q-340022 | easy | blank field-1, one alias | 4+3 | none |
-| negative_exp_log_blank / q-340109 | easy | blank field-1, two equivalent aliases | 4+3 | none |
-| log_exp_base_fieldless / q-70897 | easy | absent / authored blank field-1 | 1+3 | none |
-| linear_log_reciprocal_radio / q-101726 | easy | 5-option radio, selection | 5+4 | observed compound expressions |
-| ln_quadratic_linear_radio / q-17371 | easy | 5-option radio, selection | 5+4 | sign/term omission |
-| cubic_log_blank / q-340024 | easy | blank field-1, one alias | 4+3 | none |
-| log_quadratic_linear_blank / q-340026 | easy | blank field-1, one alias | 4+3 | none |
-| exp_log_constant_blank / q-340110 | easy | blank field-1, one alias | 4+3 | none |
-| common_log_cubic_radio / q-70903 | easy | 5-option radio, selection | 1+3 | observed altered evaluation |
+`source-cases.json` names each family, source, original parameters, complete raw bank profile, key, field type and derivative/evaluation stage counts. Fieldless entries' listed blank types are explicitly authored normal completions; raw replay omits answer fields. The two unrated records omit difficulty, solution and correct designation; raw replay preserves all three omissions. Their normal easy assignment is authored, supported by the sibling constant-log derivative and canonical two-log tangent example.
 
-Observed easy contains 11 distinct source Markdown/value templates, three complete radio profiles and six blank layouts; two templates lack fields. The unrated group contains two further templates and radio profiles. They are separated because prompt layouts, term order, split-derivative stages and field response shapes differ. Generator classification places the two elementary legacy templates in easy based on direct differentiation at x=1; this is an authored judgment, not a recovered original rating. No existing database difficulty or key is changed.
+Canonical e-3630 asks for a sum of natural and general-base logarithms at x=1. Ordered lesson route (follow first-step/next): introduction → constant times ln (96613) → sum containing ln (96614) → general-base tutorial → general-base derivative (96615) → tangent slope (96616). Prerequisite: tangent slopes using differentiation (topic 332). Exponential differentiation is the predecessor topic; product rule, logarithmic chain rule, higher derivatives and integration are successors and excluded.
 
-Source errors: q-70903's concluding prose says x=1 even though its prompt and all calculation stages use x=3. The new solution uses the actual input. q-17373/q-17395 have no correct designation or solution; their correct values are independently derived and their missing solutions use the canonical/sibling scaffold. q-101723/q-70897 have no answer fields; authored generated blanks supply scalar slopes and are explicitly labeled. All original payloads remain intact.
+Moderate and hard have no observed examples. Moderate authors the observed natural-log + quadratic − linear form at positive nonunit integer x=2..4: three derivatives, two nontrivial point substitutions, rational collection. Hard authors the observed general-base log + quadratic − linear form at x=s/ln b, s=2..4: same three derivatives, cancellation in the log contribution, and substitution/collection in the polynomial contribution. This combines source-supported reciprocal-log evaluation with the source-supported three-term sum, without chain/product rules. Coefficients 1..9 and bases 2..9 retain small arithmetic. Within each level every instance has the same workload; positive nonzero coefficients and nonunit point constraints apply to both sampling and explicit calls. Difficulty is an authored design calibration, not a recovered MA rating. Easy observed labels remain preserved even where an original exponential or cubic has more arithmetic than a simple easy sum.
 
-Moderate and hard are unobserved and outside this validated package. Bigger coefficients, choice permutations and constant shifts do not establish a difficulty escalation. A faithful extension at those levels would need a reviewed workload rubric or new source templates; chain/product-rule questions would change this package's assessed skill. This is a bounded capability exception, not a proof that such questions are mathematically impossible. Nominal shortages of five per unsupported level remain explicit in capabilities.json and the outcome.
+Source anomalies: q-101723/q-70897 fieldless; q-17373/q-17395 unrated and missing solutions/correct refs; q-70903 solution prose says x=1 though prompt and calculations use x=3. Raw profiles are evidence-only and ineligible for learning. Normal profiles complete missing fields/solutions/refs and correct the latter prose. No mathematical source answer repairs were necessary.

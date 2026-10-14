@@ -41,6 +41,7 @@ def digest(value):return hashlib.sha256(json.dumps(value,sort_keys=True,separato
 def uid(value):return str(uuid.uuid5(uuid.UUID(KP_UUID),value))
 def latex(value):return sp.latex(value).replace(' ','')
 def constant(p):return sp.Rational(p['n'],p['d'])*sp.E**p['k']
+@functools.lru_cache(maxsize=8192)
 def expression(text):
     """Parse the displayed constant/log/quotient grammar, not generation metadata."""
     text=text.replace('\u2061','').replace(r'\left','').replace(r'\right','')
@@ -60,6 +61,7 @@ def expression(text):
     text=text.replace('^','**').replace('{','(').replace('}',')').strip().rstrip('.,')
     if '\\' in text:raise ValueError(text)
     return parse_expr(text,local_dict={'x':x,'e':sp.E,'log':sp.log,'D':lambda value:sp.diff(value,x)},transformations=standard_transformations+(implicit_multiplication_application,))
+@functools.lru_cache(maxsize=4096)
 def coefficient(problem):
     m=re.search(r'\$y\s*=\s*(.*?)\$',problem)
     if not m:raise ValueError('No displayed y function')

@@ -13,7 +13,7 @@ import sympy as sp
 KP_ID=17592186096614
 ROOT=Path(__file__).resolve().parent/str(KP_ID)
 SOURCE=json.loads((ROOT/'source.json').read_text())
-KP=SOURCE['record']; TITLE=KP[':knowledge-point/title']; VERSION='1.0.0'
+KP=SOURCE['record']; TITLE=KP[':knowledge-point/title']; VERSION='1.1.0'
 X=sp.Symbol('x',positive=True)
 SOURCES={q[':question/math-academy-id']:q for q in KP[':knowledge-point/questions']}
 # Each observed record's layout is a separate mask; shared mathematical families
@@ -131,7 +131,8 @@ def render(name,p,raw):
     if not raw:
         prompt=prompt.replace('Do not round the answer.','Give an exact answer.')
         if name=='q-1920':
-            solution='Taking the derivative, we have\n\n$$\n'+r'\begin{aligned}\frac{dy}{dx} &=\frac{d}{dx}('+now['F']+') '+r'\\ &= '+now['G']+r'.\end{aligned}'+'\n$$'
+            substituted=add(coef(num(p['b']),r'(e^{x})'),coef(num(p['a']),r'(\frac{1}{x})'))
+            solution='Taking the derivative, we have\n\n$$\n'+r'\begin{aligned}\frac{dy}{dx} &=\frac{d}{dx}('+now['F']+') '+r'\\ &= '+substituted+r'\\ &= '+now['G']+r'.\end{aligned}'+'\n$$'
     return prompt,solution,now
 
 # Complete selected banks; q1919/q11911 contain historically opaque errors and
@@ -139,7 +140,7 @@ def render(name,p,raw):
 RECIPES={
  'quadratic':['flip_quadratic_sign','correct','drop_log_coefficient','retain_quadratic','omit_power_multiplier'],
  'cubic':['drop_log_coefficient_and_power_multiplier','drop_log_coefficient','correct','flip_linear_and_retain_cubic_power','double_log_and_flip_linear'],
- 'power-point-negative':['omit_log','correct','omit_power_multiplier','flip_log_sign','omit_power'],
+ 'power-point-negative':['omit_log','correct','omit_power_multiplier_and_log','flip_log_sign','omit_power'],
 }
 
 def authored_bank(name,p,math):
@@ -151,6 +152,11 @@ def authored_bank(name,p,math):
         B=num(p['base']); E=B**X
         vals=[G,E+a/X,E*sp.log(X)+a/X,E*sp.log(B)-a/X,a/X]
         recipes=['correct','omit_exponential_log_factor','use_variable_in_log_factor','flip_log_sign','omit_exponential']
+    elif fam=='irrational':
+        r=rp(p['r']);D=r+'{x}^{'+r+'-1}'
+        vals=[math['target'],1/X+num(p['r'])*X**(num(p['r'])-1),a/X+X**(num(p['r'])-1),a/X+num(p['r'])*X**num(p['r']),-a/X+num(p['r'])*X**(num(p['r'])-1)]
+        recipes=['correct','omit_log_coefficient','omit_power_exponent_factor','fail_exponent_decrement','flip_log_derivative_sign']
+        return [parts for parts in (add(frac(a),D),add(r'\frac{1}{x}',D),add(frac(a),'{x}^{'+r+'-1}'),add(frac(a),r+'{x}^{'+r+'}'),add(frac(-a),D))],0,recipes
     elif fam=='exp-first':
         vals=[G,-b*sp.exp(X)+a/X,b*sp.exp(X)+1/X,b*sp.exp(X)+a*sp.log(X),a/X]
         recipes=['correct','flip_exponential_sign','drop_log_coefficient','retain_log','omit_exponential']
@@ -216,16 +222,18 @@ def ident(obj):return str(uuid.uuid5(uuid.NAMESPACE_URL,digest(obj)))
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
     if level not in ('easy','moderate','hard'):raise ValueError('Unknown level')
-    eligible=[n for n,s in SPECS.items() if s['level']==level and (field_type is None or s['kind']==field_type)]
-    if profile and profile.startswith('observed:'):template=profile.split(':',1)[1] if template is None else template
+    eligible=[n for n,s in SPECS.items() if s['level']==level and (field_type is None or ('radio' if n=='q-339973' and not (profile and profile.startswith('observed:')) else s['kind'])==field_type)]
+    if profile and profile.split(':',1)[0] in ('observed','authored','method'):template=profile.split(':',1)[1] if template is None else template
     if template is not None and template not in eligible:raise ValueError('Template/level/field mismatch')
     rng=random.Random(seed); name=template or rng.choice(eligible); spec=SPECS[name]
     # Whole profile selected BEFORE coefficients. Stable explicit defaults do
     # not depend on seed; seed affects only presentation choice order.
-    profile=profile or ('authored:'+name if name in ('q-1919','q-1920','q-11911') else 'method:'+name)
+    profile=profile or ('authored:'+name if name in ('q-1919','q-1920','q-11911','q-339973') else 'method:'+name)
     if profile not in ('observed:'+name,'authored:'+name,'method:'+name):raise ValueError('Profile/template mismatch')
-    if profile.startswith('authored:') and name not in ('q-1919','q-1920','q-11911'):raise ValueError('No authored profile')
+    if profile=='method:'+name and name in ('q-1919','q-1920','q-11911','q-339973'):raise ValueError('Opaque banks require observed evidence or authored bank profile')
+    if profile.startswith('authored:') and name not in ('q-1919','q-1920','q-11911','q-339973'):raise ValueError('No authored profile')
     raw=profile.startswith('observed:')
+    kind='radio' if name=='q-339973' and not raw else spec['kind']
     for _ in range(128):
         p=dict(parameters) if parameters is not None else sample(name,rng)
         # Source q11911 has unit ln coefficient: supported raw evidence retains
@@ -235,6 +243,10 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
             else:validate_parameters(name,p)
         else:validate_parameters(name,p)
         prompt,solution,parts=render(name,p,raw); math=mathematics(name,p)
+        if not raw and name=='q-339973':prompt=prompt.split('\n\n',1)[0]
+        if not raw and name=='q-308854' and p['r']=='e':
+            original=parts['bank'][0]; visible=original.replace(coef(num(p['b']),'e'),tex(num(p['b']))+r'\cdot e',1)
+            parts['bank']=[visible];solution=solution.replace(original,visible)
         if profile.startswith('authored:'):bank,ci,recipes=authored_bank(name,p,math)
         else:bank,ci=parts['bank'],parts['correct'];recipes=RECIPES.get(spec['family'],['historical_expression_'+str(i) for i in range(len(bank))])
         # Exact evidence q1920 is deliberately ineligible, its malformed ln(-5)
@@ -251,7 +263,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     src=SOURCES[name]
     if not raw or ':question/difficulty' in src:q[':question/difficulty']=':question.difficulty/'+level
     if not raw or ':question/worked-solution' in src:q[':question/worked-solution']=solution
-    fid=ident([VERSION,level,prompt,solution,sorted(bank),spec['kind']])
+    fid=ident([VERSION,level,prompt,solution,sorted(bank),kind])
     answers=[]
     for i,value in enumerate(bank):
         ans={':answer/id':ident([fid,'answer',value]),':answer/type':':answer.type/math',':answer/value':value}
@@ -264,13 +276,13 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
             ans[':answer/feedback']=feedback
         answers.append(ans)
     correct_id=answers[ci][':answer/id']; random.Random(seed).shuffle(answers)
-    field={':answer-field/id':fid,':answer-field/key':src[':question/answer-fields'][0][':answer-field/key'],':answer-field/type':':answer-field.type/'+spec['kind'],':answer-field/choices':answers}
+    field={':answer-field/id':fid,':answer-field/key':'selection' if name=='q-339973' and not raw else src[':question/answer-fields'][0][':answer-field/key'],':answer-field/type':':answer-field.type/'+kind,':answer-field/choices':answers}
     if not raw or ':answer-field/correct' in src[':question/answer-fields'][0]:field[':answer-field/correct']=[':answer/id',correct_id]
     q[':question/answer-fields']=[field]
     q[':question/id']=ident([fid,'question'])
-    task=digest([sp.srepr(math['function'].diff(X)),p.get('t'),spec['kind'],'derivative' if 't' not in p else 'instantaneous rate'])
+    task=digest([sp.srepr(math['function'].diff(X)),p.get('t'),'derivative' if 't' not in p else 'instantaneous rate'])
     return {'knowledge_point':{'db_id':KP_ID,'id':KP[':knowledge-point/id'],'title':TITLE},'question':q,
-      'generation':{'version':VERSION,'python_version':sys.version.split()[0],'sympy_version':sp.__version__,'seed':seed,'template':name,'parameters':p,'bank_profile':profile,'profile_origin':'observed' if raw else 'authored' if profile.startswith('authored:') else 'observed method bank','eligible_for_learning':not(raw and name in ('q-1919','q-1920','q-11911')),'evidence_only':raw,'authored_extension':not raw,'domain':'x>0 (before differentiation/cancellation)','parameter_fingerprint':task,'content_fingerprint':digest([VERSION,level,prompt,solution,sorted(bank),spec['kind']]),'source_analysis':{k:SOURCE[k] for k in ('database','basis','lineage')},'source_ids':[src[':question/id']],'plot_rating':'none','distractor_recipes':recipes}}
+      'generation':{'version':VERSION,'python_version':sys.version.split()[0],'sympy_version':sp.__version__,'seed':seed,'template':name,'parameters':p,'bank_profile':profile,'source_field_type':spec['kind'],'generated_field_type':kind,'authored_radio_adaptation':name=='q-339973' and not raw,'profile_origin':'observed' if raw else 'authored' if profile.startswith('authored:') else 'observed method bank','eligible_for_learning':not raw,'evidence_only':raw,'authored_extension':not raw,'domain':'x>0 (before differentiation/cancellation)','parameter_fingerprint':task,'content_fingerprint':digest([VERSION,level,prompt,solution,sorted(bank),kind]),'source_analysis':{k:SOURCE[k] for k in ('database','basis','lineage')},'source_ids':[src[':question/id']],'plot_rating':'none','distractor_recipes':recipes}}
 
 # EASY: six observed layouts. Integer-power sums and simple exponential sums;
 # point layouts preserve their fixed familiar point and evaluation row omissions.
@@ -289,7 +301,7 @@ def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=N
 # This bounded grammar covers all assessed masks and reports malformed evidence.
 def read_math(value):
     from sympy.parsing.sympy_parser import parse_expr,standard_transformations,implicit_multiplication_application
-    s=value.strip().rstrip('.,').replace('⁡','').replace('−','-').replace(r'\,','').replace(r'\!','')
+    s=value.strip().replace(r'\,','').rstrip('.,').replace('⁡','').replace('−','-').replace(r'\,','').replace(r'\!','')
     s=s.replace(r'\operatorname{ln}','ln').replace(r'\ln','ln').replace(r'\cdot','*').replace(r'\pi','pi')
     s=s.replace(r'\left','').replace(r'\right','')
     def group(text,start):
@@ -316,6 +328,13 @@ def markdown(rec):
 def main():
     ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['json','markdown'],default='markdown');ap.add_argument('--template',choices=list(SPECS));ap.add_argument('--profile');args=ap.parse_args()
     if args.count<1 or ((args.template or args.profile) and args.difficulty=='all'):ap.error('Positive count and specific level required for template/profile')
-    recs=[generate(level,args.seed+i,args.template,profile=args.profile) for level in (['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]) for i in range(args.count)]
+    recs=[]
+    for level in (['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]):
+        seen=set(); attempt=0
+        while len(seen)<args.count:
+            if attempt>=max(500,args.count*100):ap.error('Requested count exceeds bounded distinct mathematical tasks')
+            record=generate(level,args.seed+attempt,args.template,profile=args.profile);attempt+=1
+            key=record['generation']['parameter_fingerprint']
+            if key not in seen:seen.add(key);recs.append(record)
     print(json.dumps(recs,indent=2,ensure_ascii=False) if args.format=='json' else '\n\n---\n\n'.join(map(markdown,recs)))
 if __name__=='__main__':main()

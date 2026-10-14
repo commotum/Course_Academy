@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Independent readback of learner strings, source parity and actual native grading."""
-import copy, hashlib, importlib.util, json, re, subprocess, sys
+import copy, functools, hashlib, importlib.util, json, re, subprocess, sys
 from pathlib import Path
 import sympy as sp
 HERE=Path(__file__).resolve().parent
@@ -10,11 +10,16 @@ g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
 ENGINE=ROOT/'generate/runs/current/check-engine'
 native=[]
 def save(name,data):(HERE/name).write_text(json.dumps(data,indent=2,ensure_ascii=False)+'\n')
+@functools.lru_cache(maxsize=8192)
 def eq(a,b):return sp.simplify(a-b)==0
 
 def format_check(text):
     assert not any(ord(c)<32 and c not in '\n\t\r' for c in text),'Control characters'
-    assert text.count('$')%2==0,'Math delimiters'
+    state=None
+    for token in re.findall(r'\$\$|\$',text):
+        if state is None:state=token
+        else:assert state==token,'Mixed math delimiters';state=None
+    assert state is None,'Math delimiters'
     depth=0
     for c in text:
         if c=='{':depth+=1

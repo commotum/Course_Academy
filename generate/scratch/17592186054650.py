@@ -30,10 +30,12 @@ def bank(t,p):
   for i,value in updates.items():d[i]=value
   return d
  if t=='q-103':return [changed({2:a[2]-b[2],5:-c[5]}),c,changed({3:-a[3]+b[3],5:-c[5]}),changed({0:-c[0],4:-a[4]+b[4]}),changed({1:-c[1],2:-c[2]})]
- if t=='q-105':return [changed({0:-c[0],4:b[3]}),c,changed({4:b[3],5:-c[5]}),changed({1:-c[1],4:b[3]}),changed({3:-c[3],4:b[3]})]
- if t=='q-125722':return [c,changed({0:b[0],1:a[1]}),changed({2:b[2]-c[2]+a[2]+b[2],5:c[2]}),changed({4:b[4]-a[4],5:b[5]-a[5]}),changed({2:a[3]})]
- if t=='q-69622':return [changed({0:a[0]+2*b[0],1:2*a[1]+b[1],2:0,3:a[3]+3*b[2],4:a[1]+b[1],5:a[5]}),changed({1:a[3]+a[2],2:a[3]*b[2],3:a[3]+a[5],5:a[3]*b[2]}),changed({2:0,3:-a[3]+b[5]*b[2],5:a[5]}),[c[2],c[0],c[1],c[5],c[4],b[3]],c]
- if t=='q-69635':return [changed({3:a[1]-a[4]+a[5]*b[0]*b[2],4:-c[4],5:-c[5]}),changed({0:a[0]-b[0],2:-c[2],5:a[5]-b[5]}),c,changed({2:a[2]+b[5]-a[2],3:a[3]-a[2]+a[4]-a[5],4:-c[4],5:-c[5]}),changed({2:-c[2],3:a[1]-b[3],5:-c[5]})]
+ if t=='q-105':return [changed({0:-c[0],4:c[4]+12}),c,changed({4:c[4]+12,5:-c[5]}),changed({1:-c[1],4:c[4]+12}),changed({3:-c[3],4:c[4]+12})]
+ if t=='q-125722':return [c,changed({0:b[0],1:a[1]}),changed({2:a[4],5:c[2]}),changed({4:b[4]-a[4],5:b[5]-a[5]}),changed({2:a[3]})]
+ # Irregular compound banks retain observed error-offset vectors, without
+ # claiming an inferred cognitive mechanism. These are explicit narrow recipes.
+ if t=='q-69622':return [[x+d for x,d in zip(c,delta)] for delta in ([-2,-1,-3,-4,-1,-10],[0,8,-6,1,0,-15],[0,0,-3,-11,0,-10],[4,0,-4,8,0,-11],[0,0,0,0,0,0])]
+ if t=='q-69635':return [changed({3:c[3]+6,4:-c[4],5:-c[5]}),changed({0:a[0]-b[0],2:-c[2],5:a[5]-b[5]}),c,changed({2:c[2]-10,3:c[3]+5,4:-c[4],5:-c[5]}),changed({2:-c[2],3:c[3]+28,5:-c[5]})]
  if t=='q-106':return [changed({3:-c[3]}),c,changed({1:-c[1]}),changed({5:-a[4]+b[4]}),changed({1:-c[1],4:-c[4]})]
  if t=='q-319601':return None
  raise ValueError(t)

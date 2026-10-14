@@ -1,0 +1,3 @@
+# Augmented-matrix generator
+
+Run `.venv/bin/python generate/scratch/17592186059768.py --difficulty moderate --count 5 --seed 20261013 --format json`. Easy and moderate have validated source profiles. Hard is unsupported in this package. Run validate.py for exact source-bank replay, independent display algebra, full slot coverage and native learner grading. Run replenish.py for additive, api.lock-serialized generation and exact-basis commit/readback using the existing EDB integration. Durable evidence resides under reference/replenishment. Source evidence remains immutable; generated question/field/answer UUIDs are content-derived and omit MA IDs.

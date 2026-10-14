@@ -27,7 +27,7 @@ from matplotlib.ticker import FixedLocator
 KP_ID=17592186129145
 TITLE='Identifying the Factored Polynomial Shown in a Graph'
 KP_UUID='4fc09a0f-34d3-5ca9-9964-6cb00498bfa7'
-VERSION='graph-factored-polynomial-1'
+VERSION='graph-factored-polynomial-2-root-local'
 HERE=Path(__file__).with_suffix('')
 SOURCE=json.loads((HERE/'source.json').read_text())
 QS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
@@ -184,7 +184,14 @@ def render_plot(roots,mults,c):
     key=hashlib.sha256(json.dumps(spec,sort_keys=True).encode()).hexdigest()[:24]
     out=HERE/'plots';out.mkdir(exist_ok=True);dest=out/(key+'.png');side=out/(key+'.json')
     if dest.exists() and side.exists(): return str(dest.resolve()),json.loads(side.read_text())
-    poly=polynomial(c,roots,mults);f=sp.lambdify(X,poly.as_expr(),'numpy')
+    poly=polynomial(c,roots,mults)
+    # Evaluate the actual factored polynomial numerically, preventing expanded
+    # high-degree cancellation from erasing a root-local feature.
+    def f(z):
+        a=np.asarray(z,dtype=float)
+        result=np.full_like(a,float(sp.Rational(c)))
+        for root,m in zip(roots,mults): result=result*(a-root)**m
+        return result
     lo=min(min(roots)-.8,0-.7);hi=max(max(roots)+.8,0+.7)
     critical=sorted(float(sp.re(z)) for z in sp.nroots(sp.diff(poly.as_expr(),X),maxsteps=300) if abs(float(sp.im(z)))<1e-8) if False else []
     # Derivative factors remove repeated roots before numeric solving.
@@ -195,21 +202,43 @@ def render_plot(roots,mults,c):
     ymin-=span*.22;ymax+=span*.22
     xx=np.sort(np.unique(np.concatenate([np.linspace(lo,hi,10001),np.array(roots),np.array(critical)])))
     yy=f(xx)
-    fig,ax=plt.subplots(figsize=(6.8,5.4),dpi=150)
-    fig.subplots_adjust(left=.06,right=.94,bottom=.1,top=.94)
+    fig=plt.figure(figsize=(7.5,7.2),dpi=150)
+    main_rect=[.08,.35,.84,.58]
+    ax=fig.add_axes(main_rect)
     ax.set_xlim(lo,hi);ax.set_ylim(ymin,ymax)
     for k in ('left','bottom'): ax.spines[k].set_position(('data',0));ax.spines[k].set_linewidth(1.1)
     for k in ('right','top'): ax.spines[k].set_visible(False)
-    ax.set_xticks([r for r in roots if r]);ax.set_yticks([])
+    ax.set_xticks(roots);ax.set_yticks([])
     ax.tick_params(axis='x',labelsize=12,pad=6)
     ax.plot(xx,yy,color='#e51b23',linewidth=2.0,zorder=3)
     ax.annotate('',xy=(hi,0),xytext=(hi-.15,0),arrowprops={'arrowstyle':'->','color':'black'})
     ax.annotate('',xy=(0,ymax),xytext=(0,ymax-.06*(ymax-ymin)),arrowprops={'arrowstyle':'->','color':'black'})
-    # Source root zero is unlabelled because it coincides with the vertical axis.
+    # All normal roots, including zero, are explicitly labelled. The small
+    # panels below are the same f(x), never a surrogate root-shape curve.
+    local_views=[]
+    for i,(root,m) in enumerate(zip(roots,mults)):
+        radius=min(abs(root-z) for z in roots if z!=root)*.14
+        gx=np.unique(np.r_[np.linspace(root-radius,root+radius,801),root])
+        gy=f(gx);vertical=max(abs(float(z)) for z in gy)*1.15
+        rect=[.08+i*.84/len(roots)+.012,.115,.84/len(roots)-.024,.16]
+        zx=fig.add_axes(rect)
+        zx.plot(gx,gy,color='#e51b23',linewidth=1.9,zorder=3)
+        zx.axhline(0,color='black',linewidth=.8)
+        if root-radius<0<root+radius: zx.axvline(0,color='black',linewidth=.8)
+        zx.set_xlim(root-radius,root+radius);zx.set_ylim(-vertical,vertical)
+        zx.set_xticks([root]);zx.set_yticks([]);zx.tick_params(axis='x',labelsize=11,pad=4)
+        zx.set_title('Near x = '+str(root),fontsize=11,pad=6)
+        for spine in zx.spines.values():spine.set_color('#bbbbbb');spine.set_linewidth(.6)
+        probes=[]
+        for fraction in [-.8,-.4,-.1,0,.1,.4,.8]:
+            z=root+fraction*radius
+            probes.append({'fraction':fraction,'x':z,'y':float(f(z))})
+        local_views.append({'root':root,'multiplicity':m,'radius':radius,'xlim':[root-radius,root+radius],'ylim':[-vertical,vertical],'rect':rect,'probes':probes,'label':'Near x = '+str(root)})
+    fig.text(.5,.035,'Small boxes: local views of the same polynomial, with independent vertical scales.',ha='center',fontsize=10)
     fig.canvas.draw();points=[]
     for z in [(roots[i]+roots[i+1])/2 for i in range(len(roots)-1)]+critical:
         px,py=ax.transData.transform((z,float(f(z))));points.append({'x':z,'y':float(f(z)),'pixel':[float(px),float(fig.bbox.height-py)]})
-    spec.update({'xlim':[lo,hi],'ylim':[ymin,ymax],'zero_pixel':list(map(float,ax.transData.transform((0,0)))),'width':int(fig.bbox.width),'height':int(fig.bbox.height),'raster_points':points,'critical':critical})
+    spec.update({'xlim':[lo,hi],'ylim':[ymin,ymax],'zero_pixel':list(map(float,ax.transData.transform((0,0)))),'width':int(fig.bbox.width),'height':int(fig.bbox.height),'raster_points':points,'critical':critical,'main_rect':main_rect,'local_views':local_views})
     fd,tmp=tempfile.mkstemp(prefix=key+'-',suffix='.png',dir=out);os.close(fd)
     fig.savefig(tmp);plt.close(fig);os.replace(tmp,dest)
     fd,tmp=tempfile.mkstemp(prefix=key+'-',suffix='.json',dir=out);os.close(fd);Path(tmp).write_text(json.dumps(spec,indent=2));os.replace(tmp,side)

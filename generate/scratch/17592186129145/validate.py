@@ -65,17 +65,52 @@ def check(r,raster=True):
   black=(im[:,:,0]<80)&(im[:,:,1]<80)&(im[:,:,2]<80)
   # Independently derive zero axes from fixed physical layout and actual bounds,
   # then locate long black axis strokes in raster rather than trusting sidecar.
-  expected_x=im.shape[1]*(.06+(0-lo)/(hi-lo)*.88)
-  expected_y=im.shape[0]*(1-(.1+(0-yl)/(yh-yl)*.84))
-  assert abs(int(black.sum(0).argmax())-expected_x)<3,'raster vertical axis not zero'
-  assert abs(int(black.sum(1).argmax())-expected_y)<3,'raster horizontal axis not zero'
+  assert plot['main_rect']==[.08,.35,.84,.58]
+  expected_x=im.shape[1]*(.08+(0-lo)/(hi-lo)*.84)
+  expected_y=im.shape[0]*(1-(.35+(0-yl)/(yh-yl)*.58))
+  main_top=round(im.shape[0]*(1-.35-.58));main_bottom=round(im.shape[0]*(1-.35));main_left=round(im.shape[1]*.08);main_right=round(im.shape[1]*(.08+.84))
+  main_black=black[main_top:main_bottom,main_left:main_right]
+  assert abs(int(main_black.sum(0).argmax())+main_left-expected_x)<3,'raster vertical axis not zero'
+  assert abs(int(main_black.sum(1).argmax())+main_top-expected_y)<3,'raster horizontal axis not zero'
   for point in plot['raster_points']:
    z=point['x'];yy=float(correct.eval(z));assert abs(yy-point['y'])<1e-7*max(1,abs(yy))
-   expected_px=im.shape[1]*(.06+(z-lo)/(hi-lo)*.88)
-   expected_py=im.shape[0]*(1-(.1+(yy-yl)/(yh-yl)*.84))
+   expected_px=im.shape[1]*(.08+(z-lo)/(hi-lo)*.84)
+   expected_py=im.shape[0]*(1-(.35+(yy-yl)/(yh-yl)*.58))
    assert abs(point['pixel'][0]-expected_px)<2 and abs(point['pixel'][1]-expected_py)<2
    px,py=map(round,[expected_px,expected_py]);region=red[max(0,py-4):py+5,max(0,px-4):px+5]
    assert region.any(),'missing raster point'
+  assert len(plot['local_views'])==len(pr),'missing local root view'
+  for i,(local,(root,m)) in enumerate(zip(plot['local_views'],pr)):
+   assert local['root']==root and local['multiplicity']==m
+   assert local['label']=='Near x = '+str(root),'every root labelled including zero'
+   radius=min(abs(root-z) for z,n in pr if z!=root)*.14
+   assert abs(local['radius']-radius)<1e-10
+   rect=[.08+i*.84/len(pr)+.012,.115,.84/len(pr)-.024,.16]
+   assert local['rect']==rect
+   title_top=round(im.shape[0]*(1-rect[1]-rect[3]))-34;title_bottom=round(im.shape[0]*(1-rect[1]-rect[3]))-5
+   title_left=round(im.shape[1]*rect[0]);title_right=round(im.shape[1]*(rect[0]+rect[2]))
+   assert black[title_top:title_bottom,title_left:title_right].sum()>90,'missing raster root label'
+   assert local['xlim']==[root-radius,root+radius]
+   ly,hy=local['ylim'];assert ly<0<hy and abs(ly+hy)<1e-12
+   probes={probe['fraction']:probe for probe in local['probes']}
+   signed_offsets={}
+   for fraction in [-.8,-.4,-.1,0,.1,.4,.8]:
+    z=root+radius*fraction;yy=float(correct.eval(sp.Rational(str(z))))
+    probe=probes[fraction];assert abs(probe['x']-z)<1e-10 and abs(probe['y']-yy)<1e-8*max(1,abs(yy))
+    px=im.shape[1]*(rect[0]+(z-(root-radius))/(2*radius)*rect[2])
+    py=im.shape[0]*(1-(rect[1]+(yy-ly)/(hy-ly)*rect[3]))
+    zero_y=im.shape[0]*(1-(rect[1]+.5*rect[3]));signed_offsets[fraction]=zero_y-py
+    ix,iy=round(px),round(py)
+    assert red[max(0,iy-3):iy+4,max(0,ix-3):ix+4].any(),'local actual-polynomial raster point missing'
+   # Outer shoulders on BOTH sides must sit far enough from the axis to see
+   # the crossing/reversal; center shoulders distinguish ordinary crossings
+   # from visibly flattened tangent crossings. These are image-pixel bounds.
+   assert min(abs(signed_offsets[-.8]),abs(signed_offsets[.8]))>14,'invisible local root shoulder'
+   assert (signed_offsets[-.8]*signed_offsets[.8]>0)==(m%2==0),'wrong local crossing/reversal'
+   if m==1:
+    assert min(abs(signed_offsets[-.1]),abs(signed_offsets[.1]))>2,'simple crossing looks flat'
+   else:
+    assert max(abs(signed_offsets[-.1]),abs(signed_offsets[.1]))<2,'multiple-root tangency not visibly flat'
  return True
 
 def check_raw(r,original,anchor):
@@ -148,6 +183,16 @@ def main():
   r=item['record'];f=r['question'][':question/answer-fields'][0]
   checks=[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'owned radio choice native grading'} for a in f[':answer-field/choices']]
   native.append({'label':r['generation']['profile']+'-'+str(len(native)),'record':r,'checks':checks})
+ # Explicit whole-domain boundary legibility including root zero, both
+ # horizontal stretch bounds, and both positive vertical-scale endpoints.
+ boundary_cases=[]
+ for sid,(level,*_) in g.DATA.items():
+  for h in [-3,3]:
+   for stretch in ([1] if level=='hard' else [1,2]):
+    for vertical in ['1/2','2']:
+     r=g.generate(level,profile=sid,parameters={'h':h,'s':stretch,'v':vertical});check(r)
+     boundary_cases.append({'profile':sid,'parameters':r['generation']['parameters'],'image':re.search(r'!\[\]\((.*?)\)',r['question'][':question/problem']).group(1),'root_categories_visible':True})
+ (HERE/'local-boundary-validation.json').write_text(json.dumps({'status':'pass','cases':boundary_cases,'same_function_root_views':True,'minimum_outer_shoulder_pixels':14,'simple_inner_shoulder_min_pixels':2,'multiple_inner_shoulder_max_pixels':2},indent=2))
  # Identity, defaults, explicit difficulty guards and mutations.
  for sid,(level,*_) in g.DATA.items():
   a=g.generate(level,seed=1,profile=sid,parameters={'h':0,'s':1,'v':'1'});b=g.generate(level,seed=22,profile=sid,parameters={'h':0,'s':1,'v':'1'});assert a['question'][':question/id']==b['question'][':question/id']
@@ -161,13 +206,15 @@ def main():
  for l in seen:assert seen[l]=={k for k,v in g.DATA.items() if v[0]==l and k not in g.RAW_COLLISION_PROFILES}
  base=next(z['record'] for z in reviews if z['kind']=='generated variant')
  mutation_count=0
- for mutation in ['solution','choice','control','plot']:
+ for mutation in ['solution','choice','control','plot','local-raster']:
   r=copy.deepcopy(base)
   if mutation=='solution':r['question'][':question/worked-solution']=r['question'][':question/worked-solution'].replace('x=', 'x=99',1)
   elif mutation=='choice':
    f=r['question'][':question/answer-fields'][0];a=next(a for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1]);a[':answer/value']='y=x'
   elif mutation=='control':r['question'][':question/problem']+='\x0c'
-  else:r['generation']['plot']['coefficient']='99'
+  elif mutation=='plot':r['generation']['plot']['coefficient']='99'
+  else:
+   q=r['question'];path=Path(re.search(r'!\[\]\((.*?)\)',q[':question/problem']).group(1));im=Image.open(path).convert('RGB');array=np.array(im);array[round(array.shape[0]*.70):]=255;mutation_path=HERE/'mutation-hidden-local.png';Image.fromarray(array).save(mutation_path);q[':question/problem']=q[':question/problem'].replace(str(path),str(mutation_path))
   try:check(r);raise RuntimeError('mutation survived '+mutation)
   except (AssertionError,ValueError):mutation_count+=1
  for level in finite:
@@ -176,7 +223,7 @@ def main():
  (HERE/'source-cases.json').write_text(json.dumps(cases,indent=2));(HERE/'review.json').write_text(json.dumps(reviews,indent=2));(HERE/'native-input.json').write_text(json.dumps(native,indent=2))
  engine=ROOT/'generate/runs/current/check-engine'
  subprocess.run([str(engine),str(HERE/'native-input.json'),str(HERE/'native-report.json')],check=True)
- result={'status':'pass_with_documented_raw_bank_ineligibility','original_raster_root_points_checked':original_root_pixels,'raw_source_prompts_assets_and_presence_matched':10,'changed_raw_masks_checked':10,'raw_missing_correct_ref_preserved':1,'raw_unrated_presence_preserved':1,'raw_fieldless_presence_preserved':2,'source_total':10,'source_replayed':10,'original_banks_matched':8,'original_options_matched':40,'original_correct_designations_matched':7,'missing_correct_designation':1,'authored_fields':2,'source_solution_prose_stages_matched':9,'source_solution_prose_stages_total':9,'source_full_exact_solutions':sum(z['solution_full_exact'] for z in fidelity),'graphically_colliding_raw_banks':['q-38671','q-38774'],'all_normal_banks_graphically_distinct':True,'finite_mathematical_tasks':{l:len(v) for l,v in finite.items()},'exhaustive_bank_instances':operations,'native_checks':sum(len(z['checks']) for z in native),'review_count':len(reviews),'independent_raster_zero_axes_checked':sum(not z['record']['generation']['evidence_only'] for z in reviews),'raster_points_use_independent_fixed_layout':True,'mutations_rejected':mutation_count,'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':g.matplotlib.__version__},'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'fidelity':fidelity}
+ result={'status':'pass_with_documented_raw_bank_ineligibility','original_raster_root_points_checked':original_root_pixels,'raw_source_prompts_assets_and_presence_matched':10,'changed_raw_masks_checked':10,'raw_missing_correct_ref_preserved':1,'raw_unrated_presence_preserved':1,'raw_fieldless_presence_preserved':2,'source_total':10,'source_replayed':10,'original_banks_matched':8,'original_options_matched':40,'original_correct_designations_matched':7,'missing_correct_designation':1,'authored_fields':2,'source_solution_prose_stages_matched':9,'source_solution_prose_stages_total':9,'source_full_exact_solutions':sum(z['solution_full_exact'] for z in fidelity),'graphically_colliding_raw_banks':['q-38671','q-38774'],'all_normal_banks_graphically_distinct':True,'finite_mathematical_tasks':{l:len(v) for l,v in finite.items()},'exhaustive_bank_instances':operations,'native_checks':sum(len(z['checks']) for z in native),'review_count':len(reviews),'local_legibility_boundary_cases':len(boundary_cases),'root_local_same_function_png_checks':True,'independent_raster_zero_axes_checked':sum(not z['record']['generation']['evidence_only'] for z in reviews),'raster_points_use_independent_fixed_layout':True,'mutations_rejected':mutation_count,'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':g.matplotlib.__version__},'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'fidelity':fidelity}
  (HERE/'validation.json').write_text(json.dumps(result,indent=2))
  # Complete review originals (all banks) and variants, no withheld answer data.
  parts=['# Review — Identifying the Factored Polynomial Shown in a Graph\n\nSource math basis 1356. Original omission/normalization and bank ineligibility are recorded in template-extraction.md.']
