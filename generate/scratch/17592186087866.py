@@ -200,7 +200,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   if set(p)!={'n'}:raise ValueError('Raw coordinate component slot is n only')
   q=localize(raw_source(t,p['n']),level,seed,True)
   result_meta=metadata(level,seed,t,p,'observed-raw',False)
-  m=data(t,ORIGINAL[t]);raw_domain='cos('+str(p['n'])+'*x) != 0' if t=='q-103354' else DOMAINS.get(t,'real x,y')
+  m=data(t,ORIGINAL[t]);raw_domain=str(s.cos(p['n']*x))+' != 0' if t=='q-103354' else str(s.sin(p['n']*x))+' != 0' if t=='q-8360' else DOMAINS.get(t,'real x,y')
   result_meta['domains']=raw_domain
   result_meta['mathematical_fingerprint']=semantic(m['P'].subs(x,p['n']*x),m['Q'].subs(x,p['n']*x),raw_domain,t)
   return {'knowledge_point':{'db_id':KP,'id':KP_UUID,'title':TITLE},'question':q,'generation':result_meta}
