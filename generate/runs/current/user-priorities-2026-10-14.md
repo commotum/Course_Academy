@@ -12,8 +12,8 @@ Dispatch in the listed order; independently approve all13 before continuing othe
 | 6 | 17592186179670 | Calculating a Line Integral Along a Segment in the Cartesian Plane | qa_passed | [Report](qa/17592186179670.json) |
 | 7 | 17592186179724 | Constructing a Line Integral Along a Segment in the Cartesian Plane | qa_passed | [Report](qa/17592186179724.json) |
 | 8 | 17592186179725 | Line Integrals Along Segments in Three Dimensions | qa_passed | [Report](qa/17592186179725.json) |
-| 9 | 17592186119887 | Calculating the Fundamental Vector Product of a Parametric Surface | working | — |
+| 9 | 17592186119887 | Calculating the Fundamental Vector Product of a Parametric Surface | qa_passed | [Report](qa/17592186119887.json) |
 | 10 | 17592186175972 | Parametrizing a Parabolic Cylinder | qa_passed | [Report](qa/17592186175972.json) |
-| 11 | 17592186175973 | Parametrizing a Hyperbolic Cylinder | working | — |
-| 12 | 17592186054804 | Factoring a Quartic Polynomial Given Two Roots | working | — |
-| 13 | 17592186054805 | Factoring a Quartic Polynomial With Only Two Real Factors | working | — |
+| 11 | 17592186175973 | Parametrizing a Hyperbolic Cylinder | qa_passed | [Report](qa/17592186175973.json) |
+| 12 | 17592186054804 | Factoring a Quartic Polynomial Given Two Roots | qa_passed | [Report](qa/17592186054804.json) |
+| 13 | 17592186054805 | Factoring a Quartic Polynomial With Only Two Real Factors | qa_passed | [Report](qa/17592186054805.json) |

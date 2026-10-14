@@ -129,3 +129,47 @@ Original MA authoritative widget evidence is saved in original-widgets.json; ins
 Every complete observed/default/authored bank is rejected as a whole on equivalent values or a missing/ambiguous correct answer. Default authored easy operations include omitted coordinate derivatives/contributions, incorrect derivative target, lost power/Jacobian factors, reciprocal factors and sign errors; these are author metadata, with no invented distractor diagnosis in the learner solution. Moderate/hard defaults use correct, negated correct, one dropped radial factor, x-only contribution and y-only contribution, with eligibility enforced by whole-bank checks. Source profiles retain all five patterns rather than taking the first valid distractors.
 
 No plots occur in these practices; steps 5/7 require no asset generator. No blank fields exist, so blank equivalence and the native “round” wording limitation do not apply. Native radio grading checks all five owned answer IDs, while independent exact mathematics checks every displayed option and row.
+
+## Basis-2370 additional source evidence
+
+The five newly captured families are recorded, without expanding the frozen
+sampler. Every bank below is a complete source expression-pattern profile at
+its original parameters; no inferred psychological recipe is claimed and no
+sampling bounds are assigned. The `*` marks the independently verified correct
+value. The unchanged raw strings, source UUIDs, field UUIDs and answer UUIDs are
+in `reference/replenishment/initial-snapshot.edn`. Comparison normalizes doubled
+TeX command escaping and imported trig glyphs only. This is a comparison view,
+not a transaction to repair source content.
+
+- q-95108, p=2x+y², theta: r² sin²(theta)−2r cos(theta);
+  r² sin(2theta); *r² sin(2theta)−2r sin(theta); −2r² cos(theta);
+  −2r² sin(2theta)+r sin(theta). Solution: generic rule, partials (2,2y),
+  polar partials (2,2r sin(theta)), substitution, distribution, double-angle
+  collection. Preserve the 3-row final sequence. The prose n/p error is flagged.
+- q-165280, f=2y−xy, theta: 2r sin(theta)−r cos(theta);
+  cos(theta)−r² sin(2theta); *2r cos(theta)−r² cos(2theta);
+  r(sin(theta)+cos(2theta)); r²(cos(theta)+sin(2theta)). Solution: rule,
+  partials (−y,2−x), polar partials, substitution, distribution, square
+  grouping, double-angle conversion, final reorder: 5 final rows.
+- q-95115, h=x²−y², r: r² cos(2theta); *2r cos(2theta);
+  2r cos²(theta); 2r sin(2theta); 2r sin²(theta). Solution: rule, partials
+  (2x,−2y), polar partials, substitution, difference-of-squares collection,
+  double angle: 3 final rows. Subtraction of the negative y contribution is
+  valid; the validator now permits this sign while checking every equality.
+- q-165281, f=x²+y, theta: *r cos(theta)−r² sin(2theta);
+  r²(cos(theta)−sin(theta)); the raw malformed `r(sin(2theta)+r cos(theta)`;
+  r sin(theta)+r² sin(2theta); r cos(theta)+r sin(2theta). The third expression
+  lacks its closing outer parenthesis, so this bank is excluded rather than
+  guessed or claimed as a successful complete-bank replay. Solution: rule,
+  partials (2x,1), polar partials, substitution, double-angle collection,
+  final reorder: 3 final rows.
+- q-95111, q=xy, theta: r² cos(2theta)−sin(2theta); *r² cos(2theta);
+  −2r cos(theta); r² sin(2theta); r² sin(2theta)+cos²(theta).
+  Solution: rule, partials (y,x), polar partials, substitution, distribution,
+  square grouping, double-angle conversion: 4 final rows.
+
+All supported frozen source banks were replayed again: 40/40 values, 8/8
+complete banks and all 6 previously available reference designations. The
+basis-1356 missing references remain described as derived, even though current
+q-37196 is complete. Current original bank correctness is reported independently;
+excluded new families do not inflate the frozen generator's fidelity denominator.

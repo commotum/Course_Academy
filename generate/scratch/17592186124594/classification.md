@@ -23,3 +23,44 @@ Moderate peer templates use nonzero unequal quadratic square coefficients plus a
 Hard peers are (a) a two-term cubic a x²y+b xy² with theta target, whose two two-term partials require four cubic angular products, and (b) ln(a x²+b xy+c y²) with theta target, whose four numerator products retain a common nonconstant angular denominator. Both extend observed cubic/log families rather than add another method. Coefficients are signed nonzero integers with absolute magnitude 1..4; logarithmic square coefficients are positive/unequal and 4ac>b². No angle evaluation, second derivative, inverse-coordinate derivative, cylindrical/spherical branch, or new function class is introduced. Each family samples equal-level peers, with no within-level progression.
 
 Easy source-pattern sampling uses positive scale a∈{½,1,2,3,4,5,6}; each original is a=1. The scale multiplies the complete Cartesian function and every observed expression pattern. Function names f/g/h/w affect presentation only. There are 49 bounded easy function/target tasks. Moderate has at most 896 coefficient/target tasks, cubic hard at most 64; log-quadratic positive-definite triples are deduplicated by their Cartesian partials, so common positive argument scales do not inflate task counts. All authored defining coefficients stay nonzero on explicit inputs and sampling.
+
+## Current inventory reclassification, basis 2370 (2026-10-14)
+
+The original basis-1356 capture and frozen generator remain intact. A complete
+current KP Pull is retained in `reference/replenishment/initial-snapshot.edn`,
+with all 12 source questions, 13 fields, 65 choices, correct references,
+solutions, difficulty and the canonical example at the same immutable basis and
+lineage. All twelve are now rated easy; q-37196 has since received its missing
+solution and reference. There are still no observed moderate/hard questions.
+All fields are five-option radio fields with key `selection`; q-37192 retains
+two duplicate fields, one without a reference. Every current question is assigned
+to one complete bank per field in `current-source-audit.json`.
+
+Five newly captured questions add five prompt/solution families. They retain
+the same Cartesian-to-polar direction and have no plots:
+
+| Source | Cartesian function | Target | Final solution rows | Generator treatment |
+|---|---|---|---:|---|
+| q-95108 | 2x+y² | theta | 3 | Newly classified, generation excluded; prose incorrectly calls p “n”. |
+| q-165280 | 2y−xy | theta | 5 | Newly classified, generation excluded; current source independently validated. |
+| q-95115 | x²−y² | r | 3 | Newly classified, generation excluded; current source independently validated. |
+| q-165281 | x²+y | theta | 3 | Newly classified, generation excluded; one distractor has an unclosed parenthesis. |
+| q-95111 | xy | theta | 4 | Newly classified, generation excluded; current source independently validated. |
+
+There are twelve observed Markdown/value families with distinct supplied
+function structures or ordered solution sequences, and thirteen raw bank
+profiles including the duplicate legacy field. The frozen generator supports
+seven observed families/eight raw banks and the four documented authored peer
+families. The five added families are bounded exclusions from generation, not
+unsupported difficulty bands. No bank from an excluded family is synthesized
+or merged into another profile. Their complete literal banks remain in the
+current snapshot, and their exact parsed values, correct-reference matches,
+parse failures and solution checks are audited separately.
+
+Inventory validation excludes q-37192 (duplicate/incomplete field), q-94999,
+q-95113 and q-95116 (documented wrong derivative labels), q-95108 (wrong prose
+function label), and q-165281 (malformed choice). These originals remain
+unchanged. All current source tasks, including excluded or previously shown
+ones, and the canonical example participate in mathematical duplicate checks.
+Current counts additionally exclude all historical presentations and active
+reservations and use the application's native pool and actual radio grader.

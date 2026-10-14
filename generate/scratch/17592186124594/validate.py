@@ -92,7 +92,7 @@ def check_record(rec):
     for row in final:assert eq(g.parse_math(rhs(row)),actual),row
     # Distinct teaching rows: first substitutes the two partials, never an
     # eagerly collapsed final answer. Source two-row families retain two rows.
-    assert '(' in rhs(final[0]) and '+' in rhs(final[0])
+    assert '(' in rhs(final[0]) and any(op in rhs(final[0]) for op in ('+', '-'))
     if rec['generation']['template'] in ('cross_theta','cubic_r','radial_theta'):
         assert len(final)==3
     if rec['generation']['template'] in ('x_square_r','y_square_theta'):
