@@ -1,0 +1,89 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-345151",
+      "sequence_position": 20,
+      "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14185497/assets/725398d9e534fbc888ef9963c9075538aa70cde9317c664b253394fb63cff052.png)\n\nFind, in amperes, the amplitude of the steady state current for the RCL circuit shown above, rounded to two decimal places.\n\n*Hint: The voltage drop ${V}_{C}$ across the capacitor is related to its charge by $q=C{V}_{C},$ where $C$ is the capacitance measured in Farads.*",
+      "worked_solution": "The diagram shows a series RCL circuit with a source electromotive force (EMF) of $16\\operatorname{sin}⁡(3t)\\,\\text{V},$ a resistor of resistance $25\\,Ω,$ a capacitor of capacitance $0.05\\,\\text{F},$ and an inductor of inductance $5\\,\\text{H}.$\n\nThe current $I,$ measured in amperes, is defined as the rate of flow of charge $q,$ measured in coulombs.\n\n$$\nI=\\frac{dq}{dt}\n$$\n\nKirchhoff's voltage law states that in a series circuit, the source voltage (EMF) equals the sum of the voltage drops.\n\nIn an RCL circuit, there are three voltage drops:\n\n- The voltage drop across the resistor is proportional to the current, with a constant of proportionality $R=25\\,Ω.$ So,\n\n$$\n{V}_{R}=25I=25\\,\\frac{dq}{dt}.\n$$\n\n- The voltage drop across the capacitor is related to its charge by $q=C{V}_{C}.$ Therefore,\n\n$$\n{V}_{C}=\\frac{q}{C}=\\frac{q}{0.05}=20q.\n$$\n\n- The voltage drop across the inductor is proportional to the rate of change of current, with a constant of proportionality $L=5\\,\\text{H}.$ Hence,\n\n$$\n{V}_{L}=5\\,\\frac{dI}{dt}=5\\,\\frac{d}{dt}(\\frac{dq}{dt})=5\\,\\frac{{d}^{2}q}{d{t}^{2}}.\n$$\n\nTherefore, by Kirchhoff's voltage law, the differential equation governing the amount of charge $q$ on the capacitor is\n\n$$\n16\\operatorname{sin}⁡(3t)=25\\,\\frac{dq}{dt}+20q+5\\,\\frac{{d}^{2}q}{d{t}^{2}},\n$$\n\nwhich gives\n\n$$\n\\frac{{d}^{2}q}{d{t}^{2}}+5\\cdot \\frac{dq}{dt}+4q=\\frac{16}{5}\\operatorname{sin}⁡(3t).\n$$\n\nThe given equation is a second-order linear equation with constant coefficients. To find the general solution, we must sum the complementary and particular solutions.\n\n- To find the complementary solution ${q}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n\\frac{{d}^{2}{q}_{c}}{d{t}^{2}}+5\\cdot \\frac{d{q}_{c}}{dt}+4{q}_{c}=0.\n$$\n\nSolving using an integration technique, such as a trial solution, we obtain the complementary solution\n\n$$\n{q}_{c}(t)=A{e}^{-4t}+B{e}^{-t},\n$$\n\nwhere $A$ and $B$ are constants.\n\n- Next, we find the particular solution. Note that the right-hand side of the inhomogeneous equation is sinusoidal with argument $3t.$ So, we assume that the particular solution is also a sinusoidal with argument $3t,$ i.e.,\n\n$$\n{q}_{p}(t)=\\alpha \\operatorname{cos}⁡(3t)+\\beta \\operatorname{sin}⁡(3t).\n$$\n\nTo find the values of $\\alpha $ and $\\beta ,$ we substitute\n\n$$\n\\begin{aligned}{q}_{p} & =\\alpha \\operatorname{cos}⁡(3t)+\\beta \\operatorname{sin}⁡(3t), \\\\ \\frac{d{q}_{p}}{dt} & =-3\\alpha \\operatorname{sin}⁡(3t)+3\\beta \\operatorname{cos}⁡(3t), \\\\ \\frac{{d}^{2}{q}_{p}}{d{t}^{2}} & =-9\\alpha \\operatorname{cos}⁡(3t)-9\\beta \\operatorname{sin}⁡(3t),\\end{aligned}\n$$\n\ninto the inhomogeneous equation and group like terms on the left-hand side:\n\n$$\n\\begin{aligned}\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,(-9\\alpha \\operatorname{cos}⁡(3t)-9\\beta \\operatorname{sin}⁡(3t))+5(-3\\alpha \\operatorname{sin}⁡(3t)+3\\beta \\operatorname{cos}⁡(3t))\\,\\, &  \\\\ +\\,4(\\alpha \\operatorname{cos}⁡(3t)+\\beta \\operatorname{sin}⁡(3t)) & =\\frac{16}{5}\\operatorname{sin}⁡(3t) \\\\ (-5\\alpha +15\\beta )\\operatorname{cos}⁡(3t)+(-15\\alpha -5\\beta )\\operatorname{sin}⁡(3t) & =\\frac{16}{5}\\operatorname{sin}⁡(3t)\\end{aligned}\n$$\n\nEquating the coefficients, we get the following system of equations:\n\n$$\n\\{\\begin{aligned}-5\\alpha +15\\beta =0\\, & (\\text{equating the coefficients of}\\,\\operatorname{cos}⁡(3t)) \\\\ -15\\alpha -5\\beta =\\frac{16}{5}\\, & (\\text{equating the coefficients of}\\,\\operatorname{sin}⁡(3t))\\end{aligned}\n$$\n\nSolving this system gives $\\alpha =-\\frac{24}{125},$ $\\beta =-\\frac{8}{125}.$ Therefore, the particular solution is\n\n$$\n{q}_{p}(t)=-\\frac{24}{125}\\operatorname{cos}⁡(3t)-\\frac{8}{125}\\operatorname{sin}⁡(3t).\n$$\n\nNow, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is\n\n$$\nq(t)={q}_{c}(t)+{q}_{p}(t)=A{e}^{-4t}+B{e}^{-t}-\\frac{24}{125}\\operatorname{cos}⁡(3t)-\\frac{8}{125}\\operatorname{sin}⁡(3t).\n$$\n\nDifferentiating this expression for $q(t),$ we obtain the following expression for $I$ in amperes:\n\n$$\n\\begin{aligned}I(t) & =\\frac{d}{dt}(A{e}^{-4t}+B{e}^{-t}-\\frac{24}{125}\\operatorname{cos}⁡(3t)-\\frac{8}{125}\\operatorname{sin}⁡(3t)) \\\\  & =-4A{e}^{-4t}-B{e}^{-t}+\\frac{72}{125}\\operatorname{sin}⁡(3t)-\\frac{24}{125}\\operatorname{cos}⁡(3t).\\end{aligned}\n$$\n\nNote the following:\n\n- The quantity ${I}_{c}(t)=-4A{e}^{-4t}-B{e}^{-t}$ is the *transient current*, since it goes to zero as $t\\to \\infty .$\n\n- The function ${I}_{p}(t)=\\frac{72}{125}\\operatorname{sin}⁡(3t)-\\frac{24}{125}\\operatorname{cos}⁡(3t)$ is the *steady-state current*. It governs the current's long-term behavior.\n\nTherefore, as $t\\to \\infty ,$ we have\n\n$$\nI(t)≈{I}_{p}(t)=\\frac{72}{125}\\operatorname{sin}⁡(3t)-\\frac{24}{125}\\operatorname{cos}⁡(3t).\n$$\n\nFinally, the amplitude of the steady-state current, in amperes, is given by\n\n$$\n\\sqrt{{(\\frac{72}{125})}^{2}+{(\\frac{24}{125})}^{2}}≈0.61,\n$$\n\nrounded to two decimal places.",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14185497/observations/history-q-345151-5edd8cab63f763090d0c.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14185497",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14185497/observations/history-solution-q-345151-b514a09905e73f8dde06.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "0.86"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "0.29"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "0.73"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "0.61"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "0.44"
+            }
+          ]
+        }
+      ],
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14185497/assets/725398d9e534fbc888ef9963c9075538aa70cde9317c664b253394fb63cff052.png",
+          "sha256": "725398d9e534fbc888ef9963c9075538aa70cde9317c664b253394fb63cff052",
+          "source_url": "https://mathacademy.com/graphics/q-345151",
+          "content_type": "image/png",
+          "representation": "original"
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q345151",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "0.61",
+                "option": "d",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "The diagram shows a series RCL circuit with a source electromotive force (EMF) of $16\\operatorname{sin}⁡(3t)\\,\\text{V},$ a resistor of resistance $25\\,Ω,$ a capacitor of capacitance $0.05\\,\\text{F},$ and an inductor of inductance $5\\,\\text{H}.$\n\nThe current $I,$ measured in amperes, is defined as the rate of flow of charge $q,$ measured in coulombs.\n\n$$\nI=\\frac{dq}{dt}\n$$\n\nKirchhoff's voltage law states that in a series circuit, the source voltage (EMF) equals the sum of the voltage drops.\n\nIn an RCL circuit, there are three voltage drops:\n\n- The voltage drop across the resistor is proportional to the current, with a constant of proportionality $R=25\\,Ω.$ So,\n\n$$\n{V}_{R}=25I=25\\,\\frac{dq}{dt}.\n$$\n\n- The voltage drop across the capacitor is related to its charge by $q=C{V}_{C}.$ Therefore,\n\n$$\n{V}_{C}=\\frac{q}{C}=\\frac{q}{0.05}=20q.\n$$\n\n- The voltage drop across the inductor is proportional to the rate of change of current, with a constant of proportionality $L=5\\,\\text{H}.$ Hence,\n\n$$\n{V}_{L}=5\\,\\frac{dI}{dt}=5\\,\\frac{d}{dt}(\\frac{dq}{dt})=5\\,\\frac{{d}^{2}q}{d{t}^{2}}.\n$$\n\nTherefore, by Kirchhoff's voltage law, the differential equation governing the amount of charge $q$ on the capacitor is\n\n$$\n16\\operatorname{sin}⁡(3t)=25\\,\\frac{dq}{dt}+20q+5\\,\\frac{{d}^{2}q}{d{t}^{2}},\n$$\n\nwhich gives\n\n$$\n\\frac{{d}^{2}q}{d{t}^{2}}+5\\cdot \\frac{dq}{dt}+4q=\\frac{16}{5}\\operatorname{sin}⁡(3t).\n$$\n\nThe given equation is a second-order linear equation with constant coefficients. To find the general solution, we must sum the complementary and particular solutions.\n\n- To find the complementary solution ${q}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n\\frac{{d}^{2}{q}_{c}}{d{t}^{2}}+5\\cdot \\frac{d{q}_{c}}{dt}+4{q}_{c}=0.\n$$\n\nSolving using an integration technique, such as a trial solution, we obtain the complementary solution\n\n$$\n{q}_{c}(t)=A{e}^{-4t}+B{e}^{-t},\n$$\n\nwhere $A$ and $B$ are constants.\n\n- Next, we find the particular solution. Note that the right-hand side of the inhomogeneous equation is sinusoidal with argument $3t.$ So, we assume that the particular solution is also a sinusoidal with argument $3t,$ i.e.,\n\n$$\n{q}_{p}(t)=\\alpha \\operatorname{cos}⁡(3t)+\\beta \\operatorname{sin}⁡(3t).\n$$\n\nTo find the values of $\\alpha $ and $\\beta ,$ we substitute\n\n$$\n\\begin{aligned}{q}_{p} & =\\alpha \\operatorname{cos}⁡(3t)+\\beta \\operatorname{sin}⁡(3t), \\\\ \\frac{d{q}_{p}}{dt} & =-3\\alpha \\operatorname{sin}⁡(3t)+3\\beta \\operatorname{cos}⁡(3t), \\\\ \\frac{{d}^{2}{q}_{p}}{d{t}^{2}} & =-9\\alpha \\operatorname{cos}⁡(3t)-9\\beta \\operatorname{sin}⁡(3t),\\end{aligned}\n$$\n\ninto the inhomogeneous equation and group like terms on the left-hand side:\n\n$$\n\\begin{aligned}\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,(-9\\alpha \\operatorname{cos}⁡(3t)-9\\beta \\operatorname{sin}⁡(3t))+5(-3\\alpha \\operatorname{sin}⁡(3t)+3\\beta \\operatorname{cos}⁡(3t))\\,\\, &  \\\\ +\\,4(\\alpha \\operatorname{cos}⁡(3t)+\\beta \\operatorname{sin}⁡(3t)) & =\\frac{16}{5}\\operatorname{sin}⁡(3t) \\\\ (-5\\alpha +15\\beta )\\operatorname{cos}⁡(3t)+(-15\\alpha -5\\beta )\\operatorname{sin}⁡(3t) & =\\frac{16}{5}\\operatorname{sin}⁡(3t)\\end{aligned}\n$$\n\nEquating the coefficients, we get the following system of equations:\n\n$$\n\\{\\begin{aligned}-5\\alpha +15\\beta =0\\, & (\\text{equating the coefficients of}\\,\\operatorname{cos}⁡(3t)) \\\\ -15\\alpha -5\\beta =\\frac{16}{5}\\, & (\\text{equating the coefficients of}\\,\\operatorname{sin}⁡(3t))\\end{aligned}\n$$\n\nSolving this system gives $\\alpha =-\\frac{24}{125},$ $\\beta =-\\frac{8}{125}.$ Therefore, the particular solution is\n\n$$\n{q}_{p}(t)=-\\frac{24}{125}\\operatorname{cos}⁡(3t)-\\frac{8}{125}\\operatorname{sin}⁡(3t).\n$$\n\nNow, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is\n\n$$\nq(t)={q}_{c}(t)+{q}_{p}(t)=A{e}^{-4t}+B{e}^{-t}-\\frac{24}{125}\\operatorname{cos}⁡(3t)-\\frac{8}{125}\\operatorname{sin}⁡(3t).\n$$\n\nDifferentiating this expression for $q(t),$ we obtain the following expression for $I$ in amperes:\n\n$$\n\\begin{aligned}I(t) & =\\frac{d}{dt}(A{e}^{-4t}+B{e}^{-t}-\\frac{24}{125}\\operatorname{cos}⁡(3t)-\\frac{8}{125}\\operatorname{sin}⁡(3t)) \\\\  & =-4A{e}^{-4t}-B{e}^{-t}+\\frac{72}{125}\\operatorname{sin}⁡(3t)-\\frac{24}{125}\\operatorname{cos}⁡(3t).\\end{aligned}\n$$\n\nNote the following:\n\n- The quantity ${I}_{c}(t)=-4A{e}^{-4t}-B{e}^{-t}$ is the *transient current*, since it goes to zero as $t\\to \\infty .$\n\n- The function ${I}_{p}(t)=\\frac{72}{125}\\operatorname{sin}⁡(3t)-\\frac{24}{125}\\operatorname{cos}⁡(3t)$ is the *steady-state current*. It governs the current's long-term behavior.\n\nTherefore, as $t\\to \\infty ,$ we have\n\n$$\nI(t)≈{I}_{p}(t)=\\frac{72}{125}\\operatorname{sin}⁡(3t)-\\frac{24}{125}\\operatorname{cos}⁡(3t).\n$$\n\nFinally, the amplitude of the steady-state current, in amperes, is given by\n\n$$\n\\sqrt{{(\\frac{72}{125})}^{2}+{(\\frac{24}{125})}^{2}}≈0.61,\n$$\n\nrounded to two decimal places.",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14185497/observations/step-q345151-3ada8301ce1f105ae9a5.html"
+        }
+      }
+    ]
+  }
+}
