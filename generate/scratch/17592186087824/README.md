@@ -1,3 +1,13 @@
+# Registered generator and verified inventory
+
+Generator `generate/scratch/17592186087824.py` is registered as UUID `9fcb8d6f-e996-5bb7-a671-b20495799375`. Revalidated and independently reviewed on 2026-10-14. The additive transaction advanced math from basis 2223 to 2224 under the application `api.lock`, with attribution to `:application/ca-engine`.
+
+Ten distinct practice tasks were added: four easy, one moderate, five hard. Verified fresh inventory is five per level. Hard is the documented fractional-grid extension, rather than an observed source rating. All seven source practice records, the canonical example and learner history were preserved. The two incomplete/unrated source records remain excluded from usable inventory.
+
+Exact preparation, preview, durable request, receipt and readback are retained in [reference/replenishment/basis-2223](reference/replenishment/basis-2223/). See [verification.json](reference/replenishment/basis-2223/verification.json), [outcome.json](reference/replenishment/basis-2223/outcome.json), [capabilities.json](capabilities.json) and [replenishment-freeze.json](replenishment-freeze.json). The original `freeze.json` below remains historical draft evidence. The current native grader was relinked to the same engine library as the application: 77 accepted and 308 rejected checks, zero unresolved; the committed batch added 10 accepted and 40 rejected checks.
+
+## Historical package notes
+
 # Shift and stretch from exponential growth curves
 
 Private draft for KP17592186087824, math basis 1356. No database writes. Identifies c from the horizontal asymptote, then k from the y-intercept by subtraction. Base is provided; no graph-selection or base-recovery tasks.

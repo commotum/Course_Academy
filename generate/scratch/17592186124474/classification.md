@@ -32,3 +32,16 @@ The missing hard level is explicitly authored, not a recovered label: `rational_
 ## Source anomaly
 
 q-66785 is missing exactly `:question/answer-fields`. It remains a public `profile="raw"` replay with that attribute absent, `evidence_only=true`, and `eligible_for_learning=false`. Its supplied solution establishes I only, independently verified by intervals relative to vertex 4. `profile="repaired"` adds a clearly authored five-choice radio bank and inferred designation; neither the new bank nor designation counts toward observed fidelity. No source mathematics required repair.
+
+
+## Current contract and bounded capacity (basis 2222)
+
+All 12 current practice questions use three checkbox fields keyed I, II, III. Each field owns exactly two text answers, `false` and `true`, with the correct Boolean determined by that interval's injectivity. The current q-66785 is complete; its historically missing field remains preserved only in the original basis-1356 evidence. Source prompts use “Select all that apply” and bold Roman interval labels; source-specific blank-line spacing and complete worked solutions are preserved. Current source replay matches 12/12 prompts and solutions, 36/36 complete banks (72/72 answers) and 36/36 correct designations. New questions preserve this contract, with fresh field-owned identities; no captured source identities or learner facts are revised.
+
+The mathematical backbone and plot specifications are unchanged. The selected constant and rational-domain replenishment templates need no plots. The public generator is version 1.1.0-checkbox; legacy five-choice radio profiles remain available separately for historical source replay and fidelity validation.
+
+Capacity is measured after removing interval-order permutations, coefficient/translation aliases, seed changes and quadratic/absolute realizations of the same branch-domain task. Easy has two tasks; authored moderate has 12 unordered structures; authored hard has 15 unordered structures. Historical 72/90 ordered render cases are coverage counts, not independent question counts. The generator enumerates and validates those render cases but commits at most one representative of each unordered structure. Source structures are included in duplicate detection.
+
+With the same displayed function held fixed, changing the second requested interval from a right branch to a crossing interval and the third from crossing to a vertex-including right branch changes the truth vector from [true,true,false] to [true,false,true]. The independent validator reads the rendered function and each interval, reconciles all field keys, and checks the concrete solution. Roman permutations alone are rejected as equivalent inventory.
+
+The current easy bank has four source identities representing one mathematical task. Only one additional constant-line question is available. The reserve target of five distinct easy tasks is therefore unattainable in this bounded template; after that addition, three remain missing. New source evidence can reopen classification. Hard remains an authored rational-comparison extension; no unsupported band is claimed filled.

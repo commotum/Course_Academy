@@ -40,3 +40,8 @@ Normal default bank profiles are chosen before parameters: `signed_intercept` di
 Normal worked solutions preserve the source's rule → translation → read level → conclusion sentences and exact paragraph count. Missing raw solutions remain absent; inferred values live only in generation metadata. The q-99775 base mismatch is kept in raw source evidence; the normal rule substitutes the actual base, an explicitly supported prose correction, with raw-exact and repaired mathematics counted separately.
 
 Meaningful task enumeration excludes base aliases, whitespace, bank/profile/order changes and plot-window scaling. Labeled tasks are distinguished by c; hard tasks by c plus actual calibration step. Content identity separately includes generator version, actual difficulty presence/value, rendered prompt, fixed solution and COMPLETE sorted bank. Fixed displayed content keeps UUID identity across seeds/choice order; a different displayed bank changes it.
+
+
+## Replenishment deployment decision (2026-10-14)
+
+Only easy `labelled_integer` and moderate `labelled_fraction` are supported for database replenishment. Both retain the source’s explicitly labelled asymptote and direct read. The historical draft hard `read_fraction_grid` and `axis_reading` bank remain review evidence; they are excluded from deployment because suppressing the label adds an axis-inference stage absent from the source backbone. `capabilities.json` records the hard shortage as unfilled. This decision supersedes the draft hard-support claim above.
