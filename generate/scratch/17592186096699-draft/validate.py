@@ -31,6 +31,11 @@ def actual(q):
         return residual,der,input_,target,name
     raise AssertionError('No actual ODE')
 def formatting(record):
+    if record['generation']['profile']=='observed_raw':
+        assert record['generation']['evidence_only'] and not record['generation']['eligible_for_learning']
+        assert not record['generation']['learner_normalization_applied']
+        return
+    assert record['generation']['learner_normalization_applied']
     temporary=copy.deepcopy(record);temporary['question'].setdefault(':question/worked-solution','');g.fmt.validate_generated_record(temporary)
     texts=[record['question'][':question/problem'],record['question'].get(':question/worked-solution','')]+[a[':answer/value'] for f in record['question'].get(':question/answer-fields',[]) for a in f[':answer-field/choices']]
     for text in texts:
@@ -228,6 +233,12 @@ def run():
         assert set(q)-{':db/id',':question/id',':question/math-academy-id'}==set(out)-{':question/id'}
         a=q[':question/answer-fields'][0];b=out[':question/answer-fields'][0]
         assert set(a)-{':db/id',':answer-field/id'}==set(b)-{':answer-field/id'};counts['presence_parity']+=1
+        assert sorted(z[':answer/value'] for z in a[':answer-field/choices'])==sorted(z[':answer/value'] for z in b[':answer-field/choices']),'raw captured bank byte mismatch'
+        for old_answer in a[':answer-field/choices']:
+            rendered=next(z for z in b[':answer-field/choices'] if z[':answer/value']==old_answer[':answer/value'])
+            assert set(old_answer)-{':db/id',':answer/id'}==set(rendered)-{':answer/id'},'raw answer attribute presence mismatch'
+            if ':answer-field/correct' in a:
+                assert (old_answer[':answer/id']==a[':answer-field/correct'][':answer/id'])==(rendered[':answer/id']==b[':answer-field/correct'][1]),'raw correct designation mismatch'
         old=[g.parse(z[':answer/value'].split('=')[-1]) for z in a[':answer-field/choices']];new=[g.parse(z[':answer/value'].split('=')[-1]) for z in b[':answer-field/choices']];assert len(old)==len(new)
         for z in old:assert sum(s.simplify(z-w)==0 for w in new)==1
         for item in a[':answer-field/choices']:
@@ -240,6 +251,15 @@ def run():
         repaired=g.generate(level,template=t,profile='observed_repaired',parameters={'scale':1});readback(repaired);engine.append(engine_case(repaired,t+'-repaired'))
         original={'source_id':t,'level':level,'raw':raw,'repaired':repaired,'variants':[]}
         for scale in (-2,2,4):
+            raw_variant=g.generate(level,template=t,profile='observed_raw',parameters={'scale':scale})
+            original_values=g.QUESTIONS[t][':question/answer-fields'][0][':answer-field/choices']
+            variant_values=raw_variant['question'][':question/answer-fields'][0][':answer-field/choices']
+            for proto in original_values:
+                original_expr=g.parse(proto[':answer/value'].split('=')[-1])
+                assert sum(s.simplify(g.parse(answer[':answer/value'].split('=')[-1])-scale*original_expr)==0 for answer in variant_values)==1
+            try:readback(raw_variant,True)
+            except AssertionError:
+                if t not in ('q-119045','q-50044'):raise
             replay=g.generate(level,template=t,profile='observed_repaired',parameters={'scale':scale});readback(replay);original['variants'].append(replay)
         originals.append(original)
     # Each easy/moderate source family is sampled through the supported normal
@@ -280,6 +300,17 @@ def run():
     # All hard numeric parameters are assessed except function spelling, whose
     # task identity was independently checked above.
     mutations=mutation_controls(normal)
+    assert counts['exact_answer_strings']==counts['values']==54
+    format_audit=[]
+    for t,question in g.QUESTIONS.items():
+        for field in question[':question/answer-fields']:
+            for answer in field[':answer-field/choices']:
+                value=answer[':answer/value'];errors=[]
+                try:g.fmt.validate_tex(value)
+                except ValueError as error:errors.append(str(error))
+                runs=[len(match[0]) for match in re.finditer(r'\\+',value)]
+                format_audit.append({'source_id':t,'answer_id':answer[':answer/id'],'captured_value':value,'max_adjacent_backslashes':max(runs or [0]),'shared_tex_structure_errors':errors,'raw_exact_retained':True,'raw_eligible_for_learning':False})
+    save('source-format-audit.json',{'role':'decoded raw capture diagnostics; not a learner-format approval','malformed_captured_answers':sum(bool(row['shared_tex_structure_errors']) or row['max_adjacent_backslashes']>1 for row in format_audit),'answers':format_audit})
     save('source-cases.json',cases);save('notation-audit.json',notation);save('review.json',{'originals':originals,'generated':normal});save('engine-input.json',engine)
     subprocess.run(['generate/runs/current/check-engine',str(HERE/'engine-input.json'),str(HERE/'engine-validation.json')],check=True)
     native=json.loads((HERE/'engine-validation.json').read_text());base_status=baseline()
@@ -292,7 +323,11 @@ def run():
         normal_variant=next(r for r in normal if r['generation']['template']==item['source_id'] and r['generation']['parameters']=={'scale':-2,'target':7})
         md+='### '+item['level']+' generated normal family variant (authored method bank)\n\n'+g.markdown(normal_variant)+'\n\n'
     for level in ('easy','moderate','hard'):
-        examples=[r for r in normal if r['question'][':question/difficulty'].endswith('/'+level)][-2:]
+        examples=[];seen=set()
+        for r in reversed(normal):
+            fp=r['generation']['mathematical_fingerprint']
+            if r['question'][':question/difficulty'].endswith('/'+level) and fp not in seen:examples.append(r);seen.add(fp)
+            if len(examples)==2:break
         for i,r in enumerate(examples):md+='## '+level+' generated default variant '+str(i+1)+'\n\n'+g.markdown(r)+'\n\n'
     (HERE/'review.md').write_text(md);print(json.dumps(report,indent=2))
 if __name__=='__main__':run()

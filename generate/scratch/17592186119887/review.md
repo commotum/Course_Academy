@@ -93,7 +93,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ \operatorname{cos}⁡u & 0 & -4v\operatorname{sin}⁡u \\ 0 & 2v & 4\operatorname{cos}⁡u\end{aligned}| \\  & =⟨|\begin{aligned}0 & -4v\operatorname{sin}⁡u \\ 2v & 4\operatorname{cos}⁡u\end{aligned}|,\,-|\begin{aligned}\operatorname{cos}⁡u & -4v\operatorname{sin}⁡u \\ 0 & 4\operatorname{cos}⁡u\end{aligned}|,\,|\begin{aligned}\operatorname{cos}⁡u & 0 \\ 0 & 2v\end{aligned}|⟩ \\  & =⟨8{v}^{2}\operatorname{sin}⁡u,\,-4{cos}^{2}⁡u,\,2v\operatorname{cos}⁡u⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ \operatorname{cos}⁡u & 0 & -4v\operatorname{sin}⁡u \\ 0 & 2v & 4\operatorname{cos}⁡u\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & -4v\operatorname{sin}⁡u \\ 2v & 4\operatorname{cos}⁡u\end{vmatrix},\,-\begin{vmatrix}\operatorname{cos}⁡u & -4v\operatorname{sin}⁡u \\ 0 & 4\operatorname{cos}⁡u\end{vmatrix},\,\begin{vmatrix}\operatorname{cos}⁡u & 0 \\ 0 & 2v\end{vmatrix}⟩ \\  & =⟨8{v}^{2}\operatorname{sin}⁡u,\,-4{cos}^{2}⁡u,\,2v\operatorname{cos}⁡u⟩.\end{aligned}
 $$
 
 ---
@@ -121,7 +121,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4\left(\operatorname{cos}⁡u\right) & 0 & -4v\operatorname{sin}⁡u \\ 0 & 2v & 4\operatorname{cos}⁡u\end{aligned}| \\  & =⟨|\begin{aligned}0 & -4v\operatorname{sin}⁡u \\ 2v & 4\operatorname{cos}⁡u\end{aligned}|,\,-|\begin{aligned}4\left(\operatorname{cos}⁡u\right) & -4v\operatorname{sin}⁡u \\ 0 & 4\operatorname{cos}⁡u\end{aligned}|,\,|\begin{aligned}4\left(\operatorname{cos}⁡u\right) & 0 \\ 0 & 2v\end{aligned}|⟩ \\  & =⟨8{v}^{2}\operatorname{sin}⁡u,\,- 16 \cos^{2}{(u )},\,8 v \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4\left(\operatorname{cos}⁡u\right) & 0 & -4v\operatorname{sin}⁡u \\ 0 & 2v & 4\operatorname{cos}⁡u\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & -4v\operatorname{sin}⁡u \\ 2v & 4\operatorname{cos}⁡u\end{vmatrix},\,-\begin{vmatrix}4\left(\operatorname{cos}⁡u\right) & -4v\operatorname{sin}⁡u \\ 0 & 4\operatorname{cos}⁡u\end{vmatrix},\,\begin{vmatrix}4\left(\operatorname{cos}⁡u\right) & 0 \\ 0 & 2v\end{vmatrix}⟩ \\  & =⟨8{v}^{2}\operatorname{sin}⁡u,\,- 16 \cos^{2}{(u )},\,8 v \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -193,7 +193,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 1 & \cos{(u )} & v \\ 1 & 2 v & u\end{aligned}| \\  & =⟨|\begin{aligned}\cos{(u )} & v \\ 2 v & u\end{aligned}|,\,-|\begin{aligned}1 & v \\ 1 & u\end{aligned}|,\,|\begin{aligned}1 & \cos{(u )} \\ 1 & 2 v\end{aligned}|⟩ \\  & =⟨(\cos{(u )})(u)-(v)(2 v),\,-[(1)(u)-(v)(1)],\,(1)(2 v)-(\cos{(u )})(1)⟩ \\  & =⟨u \cos{(u )} - 2 v^{2},\,- u + v,\,2 v - \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 1 & \cos{(u )} & v \\ 1 & 2 v & u\end{vmatrix} \\  & =⟨\begin{vmatrix}\cos{(u )} & v \\ 2 v & u\end{vmatrix},\,-\begin{vmatrix}1 & v \\ 1 & u\end{vmatrix},\,\begin{vmatrix}1 & \cos{(u )} \\ 1 & 2 v\end{vmatrix}⟩ \\  & =⟨(\cos{(u )})(u)-(v)(2 v),\,-[(1)(u)-(v)(1)],\,(1)(2 v)-(\cos{(u )})(1)⟩ \\  & =⟨u \cos{(u )} - 2 v^{2},\,- u + v,\,2 v - \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -229,7 +229,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4 & \cos{(u )} & v \\ 4 & 2 v & u\end{aligned}| \\  & =⟨|\begin{aligned}\cos{(u )} & v \\ 2 v & u\end{aligned}|,\,-|\begin{aligned}4 & v \\ 4 & u\end{aligned}|,\,|\begin{aligned}4 & \cos{(u )} \\ 4 & 2 v\end{aligned}|⟩ \\  & =⟨(\cos{(u )})(u)-(v)(2 v),\,-[(4)(u)-(v)(4)],\,(4)(2 v)-(\cos{(u )})(4)⟩ \\  & =⟨u \cos{(u )} - 2 v^{2},\,- 4 u + 4 v,\,8 v - 4 \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4 & \cos{(u )} & v \\ 4 & 2 v & u\end{vmatrix} \\  & =⟨\begin{vmatrix}\cos{(u )} & v \\ 2 v & u\end{vmatrix},\,-\begin{vmatrix}4 & v \\ 4 & u\end{vmatrix},\,\begin{vmatrix}4 & \cos{(u )} \\ 4 & 2 v\end{vmatrix}⟩ \\  & =⟨(\cos{(u )})(u)-(v)(2 v),\,-[(4)(u)-(v)(4)],\,(4)(2 v)-(\cos{(u )})(4)⟩ \\  & =⟨u \cos{(u )} - 2 v^{2},\,- 4 u + 4 v,\,8 v - 4 \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -509,7 +509,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 1 & 0 & 2u \\ 0 & 1 & -2v\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2u \\ 1 & -2v\end{aligned}|,\,-|\begin{aligned}1 & 2u \\ 0 & -2v\end{aligned}|,\,|\begin{aligned}1 & 0 \\ 0 & 1\end{aligned}|⟩ \\  & =⟨-2u,\,2v,\,1⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 1 & 0 & 2u \\ 0 & 1 & -2v\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2u \\ 1 & -2v\end{vmatrix},\,-\begin{vmatrix}1 & 2u \\ 0 & -2v\end{vmatrix},\,\begin{vmatrix}1 & 0 \\ 0 & 1\end{vmatrix}⟩ \\  & =⟨-2u,\,2v,\,1⟩.\end{aligned}
 $$
 
 ---
@@ -547,7 +547,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4\left(1\right) & 0 & 2u \\ 0 & 1 & -2v\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2u \\ 1 & -2v\end{aligned}|,\,-|\begin{aligned}4\left(1\right) & 2u \\ 0 & -2v\end{aligned}|,\,|\begin{aligned}4\left(1\right) & 0 \\ 0 & 1\end{aligned}|⟩ \\  & =⟨-2u,\,8 v,\,4⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4\left(1\right) & 0 & 2u \\ 0 & 1 & -2v\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2u \\ 1 & -2v\end{vmatrix},\,-\begin{vmatrix}4\left(1\right) & 2u \\ 0 & -2v\end{vmatrix},\,\begin{vmatrix}4\left(1\right) & 0 \\ 0 & 1\end{vmatrix}⟩ \\  & =⟨-2u,\,8 v,\,4⟩.\end{aligned}
 $$
 
 ---
@@ -661,7 +661,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 1 & 0 & 1 \\ 0 & 1 & -{e}^{v}\end{aligned}| \\  & =⟨|\begin{aligned}0 & 1 \\ 1 & -{e}^{v}\end{aligned}|,\,-|\begin{aligned}1 & 1 \\ 0 & -{e}^{v}\end{aligned}|,\,|\begin{aligned}1 & 0 \\ 0 & 1\end{aligned}|⟩ \\  & =⟨-1,\,{e}^{v},\,1⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 1 & 0 & 1 \\ 0 & 1 & -{e}^{v}\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 1 \\ 1 & -{e}^{v}\end{vmatrix},\,-\begin{vmatrix}1 & 1 \\ 0 & -{e}^{v}\end{vmatrix},\,\begin{vmatrix}1 & 0 \\ 0 & 1\end{vmatrix}⟩ \\  & =⟨-1,\,{e}^{v},\,1⟩.\end{aligned}
 $$
 
 ---
@@ -699,7 +699,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4\left(1\right) & 0 & 1 \\ 0 & 1 & -{e}^{v}\end{aligned}| \\  & =⟨|\begin{aligned}0 & 1 \\ 1 & -{e}^{v}\end{aligned}|,\,-|\begin{aligned}4\left(1\right) & 1 \\ 0 & -{e}^{v}\end{aligned}|,\,|\begin{aligned}4\left(1\right) & 0 \\ 0 & 1\end{aligned}|⟩ \\  & =⟨-1,\,4 e^{v},\,4⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4\left(1\right) & 0 & 1 \\ 0 & 1 & -{e}^{v}\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 1 \\ 1 & -{e}^{v}\end{vmatrix},\,-\begin{vmatrix}4\left(1\right) & 1 \\ 0 & -{e}^{v}\end{vmatrix},\,\begin{vmatrix}4\left(1\right) & 0 \\ 0 & 1\end{vmatrix}⟩ \\  & =⟨-1,\,4 e^{v},\,4⟩.\end{aligned}
 $$
 
 ---
@@ -813,7 +813,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2u & 0 & 2 \\ 0 & 3{v}^{2} & 1\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2 \\ 3{v}^{2} & 1\end{aligned}|,\,-|\begin{aligned}2u & 2 \\ 0 & 1\end{aligned}|,\,|\begin{aligned}2u & 0 \\ 0 & 3{v}^{2}\end{aligned}|⟩ \\  & =⟨-6{v}^{2},\,-2u,\,6u{v}^{2}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2u & 0 & 2 \\ 0 & 3{v}^{2} & 1\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2 \\ 3{v}^{2} & 1\end{vmatrix},\,-\begin{vmatrix}2u & 2 \\ 0 & 1\end{vmatrix},\,\begin{vmatrix}2u & 0 \\ 0 & 3{v}^{2}\end{vmatrix}⟩ \\  & =⟨-6{v}^{2},\,-2u,\,6u{v}^{2}⟩.\end{aligned}
 $$
 
 ---
@@ -851,7 +851,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4\left(2u\right) & 0 & 2 \\ 0 & 3{v}^{2} & 1\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2 \\ 3{v}^{2} & 1\end{aligned}|,\,-|\begin{aligned}4\left(2u\right) & 2 \\ 0 & 1\end{aligned}|,\,|\begin{aligned}4\left(2u\right) & 0 \\ 0 & 3{v}^{2}\end{aligned}|⟩ \\  & =⟨-6{v}^{2},\,- 8 u,\,24 u v^{2}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4\left(2u\right) & 0 & 2 \\ 0 & 3{v}^{2} & 1\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2 \\ 3{v}^{2} & 1\end{vmatrix},\,-\begin{vmatrix}4\left(2u\right) & 2 \\ 0 & 1\end{vmatrix},\,\begin{vmatrix}4\left(2u\right) & 0 \\ 0 & 3{v}^{2}\end{vmatrix}⟩ \\  & =⟨-6{v}^{2},\,- 8 u,\,24 u v^{2}⟩.\end{aligned}
 $$
 
 ---
@@ -935,7 +935,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 1 & \operatorname{sin}⁡v & -v\operatorname{sin}⁡u \\ 0 & u\operatorname{cos}⁡v & \operatorname{cos}⁡u\end{aligned}| \\  & =⟨|\begin{aligned}\operatorname{sin}⁡v & -v\operatorname{sin}⁡u \\ u\operatorname{cos}⁡v & \operatorname{cos}⁡u\end{aligned}|,\,-|\begin{aligned}1 & -v\operatorname{sin}⁡u \\ 0 & \operatorname{cos}⁡u\end{aligned}|,\,|\begin{aligned}1 & \operatorname{sin}⁡v \\ 0 & u\operatorname{cos}⁡v\end{aligned}|⟩ \\  & =⟨\operatorname{cos}⁡u\operatorname{sin}⁡v+uv\operatorname{sin}⁡u\operatorname{cos}⁡v,\,-\operatorname{cos}⁡u,\,u\operatorname{cos}⁡v⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 1 & \operatorname{sin}⁡v & -v\operatorname{sin}⁡u \\ 0 & u\operatorname{cos}⁡v & \operatorname{cos}⁡u\end{vmatrix} \\  & =⟨\begin{vmatrix}\operatorname{sin}⁡v & -v\operatorname{sin}⁡u \\ u\operatorname{cos}⁡v & \operatorname{cos}⁡u\end{vmatrix},\,-\begin{vmatrix}1 & -v\operatorname{sin}⁡u \\ 0 & \operatorname{cos}⁡u\end{vmatrix},\,\begin{vmatrix}1 & \operatorname{sin}⁡v \\ 0 & u\operatorname{cos}⁡v\end{vmatrix}⟩ \\  & =⟨\operatorname{cos}⁡u\operatorname{sin}⁡v+uv\operatorname{sin}⁡u\operatorname{cos}⁡v,\,-\operatorname{cos}⁡u,\,u\operatorname{cos}⁡v⟩.\end{aligned}
 $$
 
 ---
@@ -963,7 +963,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4\left(1\right) & \operatorname{sin}⁡v & -v\operatorname{sin}⁡u \\ 0 & u\operatorname{cos}⁡v & \operatorname{cos}⁡u\end{aligned}| \\  & =⟨|\begin{aligned}\operatorname{sin}⁡v & -v\operatorname{sin}⁡u \\ u\operatorname{cos}⁡v & \operatorname{cos}⁡u\end{aligned}|,\,-|\begin{aligned}4\left(1\right) & -v\operatorname{sin}⁡u \\ 0 & \operatorname{cos}⁡u\end{aligned}|,\,|\begin{aligned}4\left(1\right) & \operatorname{sin}⁡v \\ 0 & u\operatorname{cos}⁡v\end{aligned}|⟩ \\  & =⟨\operatorname{cos}⁡u\operatorname{sin}⁡v+uv\operatorname{sin}⁡u\operatorname{cos}⁡v,\,- 4 \cos{(u )},\,4 u \cos{(v )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4\left(1\right) & \operatorname{sin}⁡v & -v\operatorname{sin}⁡u \\ 0 & u\operatorname{cos}⁡v & \operatorname{cos}⁡u\end{vmatrix} \\  & =⟨\begin{vmatrix}\operatorname{sin}⁡v & -v\operatorname{sin}⁡u \\ u\operatorname{cos}⁡v & \operatorname{cos}⁡u\end{vmatrix},\,-\begin{vmatrix}4\left(1\right) & -v\operatorname{sin}⁡u \\ 0 & \operatorname{cos}⁡u\end{vmatrix},\,\begin{vmatrix}4\left(1\right) & \operatorname{sin}⁡v \\ 0 & u\operatorname{cos}⁡v\end{vmatrix}⟩ \\  & =⟨\operatorname{cos}⁡u\operatorname{sin}⁡v+uv\operatorname{sin}⁡u\operatorname{cos}⁡v,\,- 4 \cos{(u )},\,4 u \cos{(v )}⟩.\end{aligned}
 $$
 
 ---
@@ -991,7 +991,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2\left(\operatorname{cos}⁡u\right) & 0 & -4v\operatorname{sin}⁡u \\ 0 & 2\left(2v\right) & 4\operatorname{cos}⁡u\end{aligned}| \\  & =⟨|\begin{aligned}0 & -4v\operatorname{sin}⁡u \\ 2\left(2v\right) & 4\operatorname{cos}⁡u\end{aligned}|,\,-|\begin{aligned}2\left(\operatorname{cos}⁡u\right) & -4v\operatorname{sin}⁡u \\ 0 & 4\operatorname{cos}⁡u\end{aligned}|,\,|\begin{aligned}2\left(\operatorname{cos}⁡u\right) & 0 \\ 0 & 2\left(2v\right)\end{aligned}|⟩ \\  & =⟨16 v^{2} \sin{(u )},\,- 8 \cos^{2}{(u )},\,8 v \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2\left(\operatorname{cos}⁡u\right) & 0 & -4v\operatorname{sin}⁡u \\ 0 & 2\left(2v\right) & 4\operatorname{cos}⁡u\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & -4v\operatorname{sin}⁡u \\ 2\left(2v\right) & 4\operatorname{cos}⁡u\end{vmatrix},\,-\begin{vmatrix}2\left(\operatorname{cos}⁡u\right) & -4v\operatorname{sin}⁡u \\ 0 & 4\operatorname{cos}⁡u\end{vmatrix},\,\begin{vmatrix}2\left(\operatorname{cos}⁡u\right) & 0 \\ 0 & 2\left(2v\right)\end{vmatrix}⟩ \\  & =⟨16 v^{2} \sin{(u )},\,- 8 \cos^{2}{(u )},\,8 v \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -1019,7 +1019,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4\left(\operatorname{cos}⁡u\right) & 0 & -4v\operatorname{sin}⁡u \\ 0 & 4\left(2v\right) & 4\operatorname{cos}⁡u\end{aligned}| \\  & =⟨|\begin{aligned}0 & -4v\operatorname{sin}⁡u \\ 4\left(2v\right) & 4\operatorname{cos}⁡u\end{aligned}|,\,-|\begin{aligned}4\left(\operatorname{cos}⁡u\right) & -4v\operatorname{sin}⁡u \\ 0 & 4\operatorname{cos}⁡u\end{aligned}|,\,|\begin{aligned}4\left(\operatorname{cos}⁡u\right) & 0 \\ 0 & 4\left(2v\right)\end{aligned}|⟩ \\  & =⟨32 v^{2} \sin{(u )},\,- 16 \cos^{2}{(u )},\,32 v \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4\left(\operatorname{cos}⁡u\right) & 0 & -4v\operatorname{sin}⁡u \\ 0 & 4\left(2v\right) & 4\operatorname{cos}⁡u\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & -4v\operatorname{sin}⁡u \\ 4\left(2v\right) & 4\operatorname{cos}⁡u\end{vmatrix},\,-\begin{vmatrix}4\left(\operatorname{cos}⁡u\right) & -4v\operatorname{sin}⁡u \\ 0 & 4\operatorname{cos}⁡u\end{vmatrix},\,\begin{vmatrix}4\left(\operatorname{cos}⁡u\right) & 0 \\ 0 & 4\left(2v\right)\end{vmatrix}⟩ \\  & =⟨32 v^{2} \sin{(u )},\,- 16 \cos^{2}{(u )},\,32 v \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -1047,7 +1047,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2\left(\operatorname{cos}⁡u\right) & 0 & 2\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 2v & 2\left(4\operatorname{cos}⁡u\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2\left(-4v\operatorname{sin}⁡u\right) \\ 2v & 2\left(4\operatorname{cos}⁡u\right)\end{aligned}|,\,-|\begin{aligned}2\left(\operatorname{cos}⁡u\right) & 2\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 2\left(4\operatorname{cos}⁡u\right)\end{aligned}|,\,|\begin{aligned}2\left(\operatorname{cos}⁡u\right) & 0 \\ 0 & 2v\end{aligned}|⟩ \\  & =⟨16 v^{2} \sin{(u )},\,- 16 \cos^{2}{(u )},\,4 v \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2\left(\operatorname{cos}⁡u\right) & 0 & 2\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 2v & 2\left(4\operatorname{cos}⁡u\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2\left(-4v\operatorname{sin}⁡u\right) \\ 2v & 2\left(4\operatorname{cos}⁡u\right)\end{vmatrix},\,-\begin{vmatrix}2\left(\operatorname{cos}⁡u\right) & 2\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 2\left(4\operatorname{cos}⁡u\right)\end{vmatrix},\,\begin{vmatrix}2\left(\operatorname{cos}⁡u\right) & 0 \\ 0 & 2v\end{vmatrix}⟩ \\  & =⟨16 v^{2} \sin{(u )},\,- 16 \cos^{2}{(u )},\,4 v \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -1075,7 +1075,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4\left(\operatorname{cos}⁡u\right) & 0 & 4\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 2v & 4\left(4\operatorname{cos}⁡u\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 4\left(-4v\operatorname{sin}⁡u\right) \\ 2v & 4\left(4\operatorname{cos}⁡u\right)\end{aligned}|,\,-|\begin{aligned}4\left(\operatorname{cos}⁡u\right) & 4\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 4\left(4\operatorname{cos}⁡u\right)\end{aligned}|,\,|\begin{aligned}4\left(\operatorname{cos}⁡u\right) & 0 \\ 0 & 2v\end{aligned}|⟩ \\  & =⟨32 v^{2} \sin{(u )},\,- 64 \cos^{2}{(u )},\,8 v \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4\left(\operatorname{cos}⁡u\right) & 0 & 4\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 2v & 4\left(4\operatorname{cos}⁡u\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 4\left(-4v\operatorname{sin}⁡u\right) \\ 2v & 4\left(4\operatorname{cos}⁡u\right)\end{vmatrix},\,-\begin{vmatrix}4\left(\operatorname{cos}⁡u\right) & 4\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 4\left(4\operatorname{cos}⁡u\right)\end{vmatrix},\,\begin{vmatrix}4\left(\operatorname{cos}⁡u\right) & 0 \\ 0 & 2v\end{vmatrix}⟩ \\  & =⟨32 v^{2} \sin{(u )},\,- 64 \cos^{2}{(u )},\,8 v \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -1103,7 +1103,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ \operatorname{cos}⁡u & 0 & 2\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 2\left(2v\right) & 2\left(4\operatorname{cos}⁡u\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2\left(-4v\operatorname{sin}⁡u\right) \\ 2\left(2v\right) & 2\left(4\operatorname{cos}⁡u\right)\end{aligned}|,\,-|\begin{aligned}\operatorname{cos}⁡u & 2\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 2\left(4\operatorname{cos}⁡u\right)\end{aligned}|,\,|\begin{aligned}\operatorname{cos}⁡u & 0 \\ 0 & 2\left(2v\right)\end{aligned}|⟩ \\  & =⟨32 v^{2} \sin{(u )},\,- 8 \cos^{2}{(u )},\,4 v \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ \operatorname{cos}⁡u & 0 & 2\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 2\left(2v\right) & 2\left(4\operatorname{cos}⁡u\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2\left(-4v\operatorname{sin}⁡u\right) \\ 2\left(2v\right) & 2\left(4\operatorname{cos}⁡u\right)\end{vmatrix},\,-\begin{vmatrix}\operatorname{cos}⁡u & 2\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 2\left(4\operatorname{cos}⁡u\right)\end{vmatrix},\,\begin{vmatrix}\operatorname{cos}⁡u & 0 \\ 0 & 2\left(2v\right)\end{vmatrix}⟩ \\  & =⟨32 v^{2} \sin{(u )},\,- 8 \cos^{2}{(u )},\,4 v \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -1131,7 +1131,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ \operatorname{cos}⁡u & 0 & 4\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 4\left(2v\right) & 4\left(4\operatorname{cos}⁡u\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 4\left(-4v\operatorname{sin}⁡u\right) \\ 4\left(2v\right) & 4\left(4\operatorname{cos}⁡u\right)\end{aligned}|,\,-|\begin{aligned}\operatorname{cos}⁡u & 4\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 4\left(4\operatorname{cos}⁡u\right)\end{aligned}|,\,|\begin{aligned}\operatorname{cos}⁡u & 0 \\ 0 & 4\left(2v\right)\end{aligned}|⟩ \\  & =⟨128 v^{2} \sin{(u )},\,- 16 \cos^{2}{(u )},\,8 v \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ \operatorname{cos}⁡u & 0 & 4\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 4\left(2v\right) & 4\left(4\operatorname{cos}⁡u\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 4\left(-4v\operatorname{sin}⁡u\right) \\ 4\left(2v\right) & 4\left(4\operatorname{cos}⁡u\right)\end{vmatrix},\,-\begin{vmatrix}\operatorname{cos}⁡u & 4\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 4\left(4\operatorname{cos}⁡u\right)\end{vmatrix},\,\begin{vmatrix}\operatorname{cos}⁡u & 0 \\ 0 & 4\left(2v\right)\end{vmatrix}⟩ \\  & =⟨128 v^{2} \sin{(u )},\,- 16 \cos^{2}{(u )},\,8 v \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -1167,7 +1167,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2 & 2 \cos{(u )} & v \\ 2 & 4 v & u\end{aligned}| \\  & =⟨|\begin{aligned}2 \cos{(u )} & v \\ 4 v & u\end{aligned}|,\,-|\begin{aligned}2 & v \\ 2 & u\end{aligned}|,\,|\begin{aligned}2 & 2 \cos{(u )} \\ 2 & 4 v\end{aligned}|⟩ \\  & =⟨(2 \cos{(u )})(u)-(v)(4 v),\,-[(2)(u)-(v)(2)],\,(2)(4 v)-(2 \cos{(u )})(2)⟩ \\  & =⟨2 u \cos{(u )} - 4 v^{2},\,- 2 u + 2 v,\,8 v - 4 \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2 & 2 \cos{(u )} & v \\ 2 & 4 v & u\end{vmatrix} \\  & =⟨\begin{vmatrix}2 \cos{(u )} & v \\ 4 v & u\end{vmatrix},\,-\begin{vmatrix}2 & v \\ 2 & u\end{vmatrix},\,\begin{vmatrix}2 & 2 \cos{(u )} \\ 2 & 4 v\end{vmatrix}⟩ \\  & =⟨(2 \cos{(u )})(u)-(v)(4 v),\,-[(2)(u)-(v)(2)],\,(2)(4 v)-(2 \cos{(u )})(2)⟩ \\  & =⟨2 u \cos{(u )} - 4 v^{2},\,- 2 u + 2 v,\,8 v - 4 \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -1203,7 +1203,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4 & 4 \cos{(u )} & v \\ 4 & 8 v & u\end{aligned}| \\  & =⟨|\begin{aligned}4 \cos{(u )} & v \\ 8 v & u\end{aligned}|,\,-|\begin{aligned}4 & v \\ 4 & u\end{aligned}|,\,|\begin{aligned}4 & 4 \cos{(u )} \\ 4 & 8 v\end{aligned}|⟩ \\  & =⟨(4 \cos{(u )})(u)-(v)(8 v),\,-[(4)(u)-(v)(4)],\,(4)(8 v)-(4 \cos{(u )})(4)⟩ \\  & =⟨4 u \cos{(u )} - 8 v^{2},\,- 4 u + 4 v,\,32 v - 16 \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4 & 4 \cos{(u )} & v \\ 4 & 8 v & u\end{vmatrix} \\  & =⟨\begin{vmatrix}4 \cos{(u )} & v \\ 8 v & u\end{vmatrix},\,-\begin{vmatrix}4 & v \\ 4 & u\end{vmatrix},\,\begin{vmatrix}4 & 4 \cos{(u )} \\ 4 & 8 v\end{vmatrix}⟩ \\  & =⟨(4 \cos{(u )})(u)-(v)(8 v),\,-[(4)(u)-(v)(4)],\,(4)(8 v)-(4 \cos{(u )})(4)⟩ \\  & =⟨4 u \cos{(u )} - 8 v^{2},\,- 4 u + 4 v,\,32 v - 16 \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -1239,7 +1239,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2 & \cos{(u )} & 2 v \\ 2 & 2 v & 2 u\end{aligned}| \\  & =⟨|\begin{aligned}\cos{(u )} & 2 v \\ 2 v & 2 u\end{aligned}|,\,-|\begin{aligned}2 & 2 v \\ 2 & 2 u\end{aligned}|,\,|\begin{aligned}2 & \cos{(u )} \\ 2 & 2 v\end{aligned}|⟩ \\  & =⟨(\cos{(u )})(2 u)-(2 v)(2 v),\,-[(2)(2 u)-(2 v)(2)],\,(2)(2 v)-(\cos{(u )})(2)⟩ \\  & =⟨2 u \cos{(u )} - 4 v^{2},\,- 4 u + 4 v,\,4 v - 2 \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2 & \cos{(u )} & 2 v \\ 2 & 2 v & 2 u\end{vmatrix} \\  & =⟨\begin{vmatrix}\cos{(u )} & 2 v \\ 2 v & 2 u\end{vmatrix},\,-\begin{vmatrix}2 & 2 v \\ 2 & 2 u\end{vmatrix},\,\begin{vmatrix}2 & \cos{(u )} \\ 2 & 2 v\end{vmatrix}⟩ \\  & =⟨(\cos{(u )})(2 u)-(2 v)(2 v),\,-[(2)(2 u)-(2 v)(2)],\,(2)(2 v)-(\cos{(u )})(2)⟩ \\  & =⟨2 u \cos{(u )} - 4 v^{2},\,- 4 u + 4 v,\,4 v - 2 \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -1275,7 +1275,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4 & \cos{(u )} & 4 v \\ 4 & 2 v & 4 u\end{aligned}| \\  & =⟨|\begin{aligned}\cos{(u )} & 4 v \\ 2 v & 4 u\end{aligned}|,\,-|\begin{aligned}4 & 4 v \\ 4 & 4 u\end{aligned}|,\,|\begin{aligned}4 & \cos{(u )} \\ 4 & 2 v\end{aligned}|⟩ \\  & =⟨(\cos{(u )})(4 u)-(4 v)(2 v),\,-[(4)(4 u)-(4 v)(4)],\,(4)(2 v)-(\cos{(u )})(4)⟩ \\  & =⟨4 u \cos{(u )} - 8 v^{2},\,- 16 u + 16 v,\,8 v - 4 \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4 & \cos{(u )} & 4 v \\ 4 & 2 v & 4 u\end{vmatrix} \\  & =⟨\begin{vmatrix}\cos{(u )} & 4 v \\ 2 v & 4 u\end{vmatrix},\,-\begin{vmatrix}4 & 4 v \\ 4 & 4 u\end{vmatrix},\,\begin{vmatrix}4 & \cos{(u )} \\ 4 & 2 v\end{vmatrix}⟩ \\  & =⟨(\cos{(u )})(4 u)-(4 v)(2 v),\,-[(4)(4 u)-(4 v)(4)],\,(4)(2 v)-(\cos{(u )})(4)⟩ \\  & =⟨4 u \cos{(u )} - 8 v^{2},\,- 16 u + 16 v,\,8 v - 4 \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -1311,7 +1311,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 1 & 2 \cos{(u )} & 2 v \\ 1 & 4 v & 2 u\end{aligned}| \\  & =⟨|\begin{aligned}2 \cos{(u )} & 2 v \\ 4 v & 2 u\end{aligned}|,\,-|\begin{aligned}1 & 2 v \\ 1 & 2 u\end{aligned}|,\,|\begin{aligned}1 & 2 \cos{(u )} \\ 1 & 4 v\end{aligned}|⟩ \\  & =⟨(2 \cos{(u )})(2 u)-(2 v)(4 v),\,-[(1)(2 u)-(2 v)(1)],\,(1)(4 v)-(2 \cos{(u )})(1)⟩ \\  & =⟨4 u \cos{(u )} - 8 v^{2},\,- 2 u + 2 v,\,4 v - 2 \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 1 & 2 \cos{(u )} & 2 v \\ 1 & 4 v & 2 u\end{vmatrix} \\  & =⟨\begin{vmatrix}2 \cos{(u )} & 2 v \\ 4 v & 2 u\end{vmatrix},\,-\begin{vmatrix}1 & 2 v \\ 1 & 2 u\end{vmatrix},\,\begin{vmatrix}1 & 2 \cos{(u )} \\ 1 & 4 v\end{vmatrix}⟩ \\  & =⟨(2 \cos{(u )})(2 u)-(2 v)(4 v),\,-[(1)(2 u)-(2 v)(1)],\,(1)(4 v)-(2 \cos{(u )})(1)⟩ \\  & =⟨4 u \cos{(u )} - 8 v^{2},\,- 2 u + 2 v,\,4 v - 2 \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -1347,7 +1347,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 1 & 4 \cos{(u )} & 4 v \\ 1 & 8 v & 4 u\end{aligned}| \\  & =⟨|\begin{aligned}4 \cos{(u )} & 4 v \\ 8 v & 4 u\end{aligned}|,\,-|\begin{aligned}1 & 4 v \\ 1 & 4 u\end{aligned}|,\,|\begin{aligned}1 & 4 \cos{(u )} \\ 1 & 8 v\end{aligned}|⟩ \\  & =⟨(4 \cos{(u )})(4 u)-(4 v)(8 v),\,-[(1)(4 u)-(4 v)(1)],\,(1)(8 v)-(4 \cos{(u )})(1)⟩ \\  & =⟨16 u \cos{(u )} - 32 v^{2},\,- 4 u + 4 v,\,8 v - 4 \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 1 & 4 \cos{(u )} & 4 v \\ 1 & 8 v & 4 u\end{vmatrix} \\  & =⟨\begin{vmatrix}4 \cos{(u )} & 4 v \\ 8 v & 4 u\end{vmatrix},\,-\begin{vmatrix}1 & 4 v \\ 1 & 4 u\end{vmatrix},\,\begin{vmatrix}1 & 4 \cos{(u )} \\ 1 & 8 v\end{vmatrix}⟩ \\  & =⟨(4 \cos{(u )})(4 u)-(4 v)(8 v),\,-[(1)(4 u)-(4 v)(1)],\,(1)(8 v)-(4 \cos{(u )})(1)⟩ \\  & =⟨16 u \cos{(u )} - 32 v^{2},\,- 4 u + 4 v,\,8 v - 4 \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -1385,7 +1385,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2\left(1\right) & 0 & 2u \\ 0 & 2\left(1\right) & -2v\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2u \\ 2\left(1\right) & -2v\end{aligned}|,\,-|\begin{aligned}2\left(1\right) & 2u \\ 0 & -2v\end{aligned}|,\,|\begin{aligned}2\left(1\right) & 0 \\ 0 & 2\left(1\right)\end{aligned}|⟩ \\  & =⟨- 4 u,\,4 v,\,4⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2\left(1\right) & 0 & 2u \\ 0 & 2\left(1\right) & -2v\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2u \\ 2\left(1\right) & -2v\end{vmatrix},\,-\begin{vmatrix}2\left(1\right) & 2u \\ 0 & -2v\end{vmatrix},\,\begin{vmatrix}2\left(1\right) & 0 \\ 0 & 2\left(1\right)\end{vmatrix}⟩ \\  & =⟨- 4 u,\,4 v,\,4⟩.\end{aligned}
 $$
 
 ---
@@ -1423,7 +1423,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4\left(1\right) & 0 & 2u \\ 0 & 4\left(1\right) & -2v\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2u \\ 4\left(1\right) & -2v\end{aligned}|,\,-|\begin{aligned}4\left(1\right) & 2u \\ 0 & -2v\end{aligned}|,\,|\begin{aligned}4\left(1\right) & 0 \\ 0 & 4\left(1\right)\end{aligned}|⟩ \\  & =⟨- 8 u,\,8 v,\,16⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4\left(1\right) & 0 & 2u \\ 0 & 4\left(1\right) & -2v\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2u \\ 4\left(1\right) & -2v\end{vmatrix},\,-\begin{vmatrix}4\left(1\right) & 2u \\ 0 & -2v\end{vmatrix},\,\begin{vmatrix}4\left(1\right) & 0 \\ 0 & 4\left(1\right)\end{vmatrix}⟩ \\  & =⟨- 8 u,\,8 v,\,16⟩.\end{aligned}
 $$
 
 ---
@@ -1461,7 +1461,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2\left(1\right) & 0 & 2\left(2u\right) \\ 0 & 1 & 2\left(-2v\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2\left(2u\right) \\ 1 & 2\left(-2v\right)\end{aligned}|,\,-|\begin{aligned}2\left(1\right) & 2\left(2u\right) \\ 0 & 2\left(-2v\right)\end{aligned}|,\,|\begin{aligned}2\left(1\right) & 0 \\ 0 & 1\end{aligned}|⟩ \\  & =⟨- 4 u,\,8 v,\,2⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2\left(1\right) & 0 & 2\left(2u\right) \\ 0 & 1 & 2\left(-2v\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2\left(2u\right) \\ 1 & 2\left(-2v\right)\end{vmatrix},\,-\begin{vmatrix}2\left(1\right) & 2\left(2u\right) \\ 0 & 2\left(-2v\right)\end{vmatrix},\,\begin{vmatrix}2\left(1\right) & 0 \\ 0 & 1\end{vmatrix}⟩ \\  & =⟨- 4 u,\,8 v,\,2⟩.\end{aligned}
 $$
 
 ---
@@ -1499,7 +1499,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4\left(1\right) & 0 & 4\left(2u\right) \\ 0 & 1 & 4\left(-2v\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 4\left(2u\right) \\ 1 & 4\left(-2v\right)\end{aligned}|,\,-|\begin{aligned}4\left(1\right) & 4\left(2u\right) \\ 0 & 4\left(-2v\right)\end{aligned}|,\,|\begin{aligned}4\left(1\right) & 0 \\ 0 & 1\end{aligned}|⟩ \\  & =⟨- 8 u,\,32 v,\,4⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4\left(1\right) & 0 & 4\left(2u\right) \\ 0 & 1 & 4\left(-2v\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 4\left(2u\right) \\ 1 & 4\left(-2v\right)\end{vmatrix},\,-\begin{vmatrix}4\left(1\right) & 4\left(2u\right) \\ 0 & 4\left(-2v\right)\end{vmatrix},\,\begin{vmatrix}4\left(1\right) & 0 \\ 0 & 1\end{vmatrix}⟩ \\  & =⟨- 8 u,\,32 v,\,4⟩.\end{aligned}
 $$
 
 ---
@@ -1537,7 +1537,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 1 & 0 & 2\left(2u\right) \\ 0 & 2\left(1\right) & 2\left(-2v\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2\left(2u\right) \\ 2\left(1\right) & 2\left(-2v\right)\end{aligned}|,\,-|\begin{aligned}1 & 2\left(2u\right) \\ 0 & 2\left(-2v\right)\end{aligned}|,\,|\begin{aligned}1 & 0 \\ 0 & 2\left(1\right)\end{aligned}|⟩ \\  & =⟨- 8 u,\,4 v,\,2⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 1 & 0 & 2\left(2u\right) \\ 0 & 2\left(1\right) & 2\left(-2v\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2\left(2u\right) \\ 2\left(1\right) & 2\left(-2v\right)\end{vmatrix},\,-\begin{vmatrix}1 & 2\left(2u\right) \\ 0 & 2\left(-2v\right)\end{vmatrix},\,\begin{vmatrix}1 & 0 \\ 0 & 2\left(1\right)\end{vmatrix}⟩ \\  & =⟨- 8 u,\,4 v,\,2⟩.\end{aligned}
 $$
 
 ---
@@ -1575,7 +1575,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 1 & 0 & 4\left(2u\right) \\ 0 & 4\left(1\right) & 4\left(-2v\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 4\left(2u\right) \\ 4\left(1\right) & 4\left(-2v\right)\end{aligned}|,\,-|\begin{aligned}1 & 4\left(2u\right) \\ 0 & 4\left(-2v\right)\end{aligned}|,\,|\begin{aligned}1 & 0 \\ 0 & 4\left(1\right)\end{aligned}|⟩ \\  & =⟨- 32 u,\,8 v,\,4⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 1 & 0 & 4\left(2u\right) \\ 0 & 4\left(1\right) & 4\left(-2v\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 4\left(2u\right) \\ 4\left(1\right) & 4\left(-2v\right)\end{vmatrix},\,-\begin{vmatrix}1 & 4\left(2u\right) \\ 0 & 4\left(-2v\right)\end{vmatrix},\,\begin{vmatrix}1 & 0 \\ 0 & 4\left(1\right)\end{vmatrix}⟩ \\  & =⟨- 32 u,\,8 v,\,4⟩.\end{aligned}
 $$
 
 ---
@@ -1613,7 +1613,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2\left(1\right) & 0 & 1 \\ 0 & 2\left(1\right) & -{e}^{v}\end{aligned}| \\  & =⟨|\begin{aligned}0 & 1 \\ 2\left(1\right) & -{e}^{v}\end{aligned}|,\,-|\begin{aligned}2\left(1\right) & 1 \\ 0 & -{e}^{v}\end{aligned}|,\,|\begin{aligned}2\left(1\right) & 0 \\ 0 & 2\left(1\right)\end{aligned}|⟩ \\  & =⟨-2,\,2 e^{v},\,4⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2\left(1\right) & 0 & 1 \\ 0 & 2\left(1\right) & -{e}^{v}\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 1 \\ 2\left(1\right) & -{e}^{v}\end{vmatrix},\,-\begin{vmatrix}2\left(1\right) & 1 \\ 0 & -{e}^{v}\end{vmatrix},\,\begin{vmatrix}2\left(1\right) & 0 \\ 0 & 2\left(1\right)\end{vmatrix}⟩ \\  & =⟨-2,\,2 e^{v},\,4⟩.\end{aligned}
 $$
 
 ---
@@ -1651,7 +1651,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4\left(1\right) & 0 & 1 \\ 0 & 4\left(1\right) & -{e}^{v}\end{aligned}| \\  & =⟨|\begin{aligned}0 & 1 \\ 4\left(1\right) & -{e}^{v}\end{aligned}|,\,-|\begin{aligned}4\left(1\right) & 1 \\ 0 & -{e}^{v}\end{aligned}|,\,|\begin{aligned}4\left(1\right) & 0 \\ 0 & 4\left(1\right)\end{aligned}|⟩ \\  & =⟨-4,\,4 e^{v},\,16⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4\left(1\right) & 0 & 1 \\ 0 & 4\left(1\right) & -{e}^{v}\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 1 \\ 4\left(1\right) & -{e}^{v}\end{vmatrix},\,-\begin{vmatrix}4\left(1\right) & 1 \\ 0 & -{e}^{v}\end{vmatrix},\,\begin{vmatrix}4\left(1\right) & 0 \\ 0 & 4\left(1\right)\end{vmatrix}⟩ \\  & =⟨-4,\,4 e^{v},\,16⟩.\end{aligned}
 $$
 
 ---
@@ -1689,7 +1689,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2\left(1\right) & 0 & 2\left(1\right) \\ 0 & 1 & 2\left(-{e}^{v}\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2\left(1\right) \\ 1 & 2\left(-{e}^{v}\right)\end{aligned}|,\,-|\begin{aligned}2\left(1\right) & 2\left(1\right) \\ 0 & 2\left(-{e}^{v}\right)\end{aligned}|,\,|\begin{aligned}2\left(1\right) & 0 \\ 0 & 1\end{aligned}|⟩ \\  & =⟨-2,\,4 e^{v},\,2⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2\left(1\right) & 0 & 2\left(1\right) \\ 0 & 1 & 2\left(-{e}^{v}\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2\left(1\right) \\ 1 & 2\left(-{e}^{v}\right)\end{vmatrix},\,-\begin{vmatrix}2\left(1\right) & 2\left(1\right) \\ 0 & 2\left(-{e}^{v}\right)\end{vmatrix},\,\begin{vmatrix}2\left(1\right) & 0 \\ 0 & 1\end{vmatrix}⟩ \\  & =⟨-2,\,4 e^{v},\,2⟩.\end{aligned}
 $$
 
 ---
@@ -1727,7 +1727,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4\left(1\right) & 0 & 4\left(1\right) \\ 0 & 1 & 4\left(-{e}^{v}\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 4\left(1\right) \\ 1 & 4\left(-{e}^{v}\right)\end{aligned}|,\,-|\begin{aligned}4\left(1\right) & 4\left(1\right) \\ 0 & 4\left(-{e}^{v}\right)\end{aligned}|,\,|\begin{aligned}4\left(1\right) & 0 \\ 0 & 1\end{aligned}|⟩ \\  & =⟨-4,\,16 e^{v},\,4⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4\left(1\right) & 0 & 4\left(1\right) \\ 0 & 1 & 4\left(-{e}^{v}\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 4\left(1\right) \\ 1 & 4\left(-{e}^{v}\right)\end{vmatrix},\,-\begin{vmatrix}4\left(1\right) & 4\left(1\right) \\ 0 & 4\left(-{e}^{v}\right)\end{vmatrix},\,\begin{vmatrix}4\left(1\right) & 0 \\ 0 & 1\end{vmatrix}⟩ \\  & =⟨-4,\,16 e^{v},\,4⟩.\end{aligned}
 $$
 
 ---
@@ -1765,7 +1765,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 1 & 0 & 2\left(1\right) \\ 0 & 2\left(1\right) & 2\left(-{e}^{v}\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2\left(1\right) \\ 2\left(1\right) & 2\left(-{e}^{v}\right)\end{aligned}|,\,-|\begin{aligned}1 & 2\left(1\right) \\ 0 & 2\left(-{e}^{v}\right)\end{aligned}|,\,|\begin{aligned}1 & 0 \\ 0 & 2\left(1\right)\end{aligned}|⟩ \\  & =⟨-4,\,2 e^{v},\,2⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 1 & 0 & 2\left(1\right) \\ 0 & 2\left(1\right) & 2\left(-{e}^{v}\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2\left(1\right) \\ 2\left(1\right) & 2\left(-{e}^{v}\right)\end{vmatrix},\,-\begin{vmatrix}1 & 2\left(1\right) \\ 0 & 2\left(-{e}^{v}\right)\end{vmatrix},\,\begin{vmatrix}1 & 0 \\ 0 & 2\left(1\right)\end{vmatrix}⟩ \\  & =⟨-4,\,2 e^{v},\,2⟩.\end{aligned}
 $$
 
 ---
@@ -1803,7 +1803,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 1 & 0 & 4\left(1\right) \\ 0 & 4\left(1\right) & 4\left(-{e}^{v}\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 4\left(1\right) \\ 4\left(1\right) & 4\left(-{e}^{v}\right)\end{aligned}|,\,-|\begin{aligned}1 & 4\left(1\right) \\ 0 & 4\left(-{e}^{v}\right)\end{aligned}|,\,|\begin{aligned}1 & 0 \\ 0 & 4\left(1\right)\end{aligned}|⟩ \\  & =⟨-16,\,4 e^{v},\,4⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 1 & 0 & 4\left(1\right) \\ 0 & 4\left(1\right) & 4\left(-{e}^{v}\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 4\left(1\right) \\ 4\left(1\right) & 4\left(-{e}^{v}\right)\end{vmatrix},\,-\begin{vmatrix}1 & 4\left(1\right) \\ 0 & 4\left(-{e}^{v}\right)\end{vmatrix},\,\begin{vmatrix}1 & 0 \\ 0 & 4\left(1\right)\end{vmatrix}⟩ \\  & =⟨-16,\,4 e^{v},\,4⟩.\end{aligned}
 $$
 
 ---
@@ -1841,7 +1841,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2\left(2u\right) & 0 & 2 \\ 0 & 2\left(3{v}^{2}\right) & 1\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2 \\ 2\left(3{v}^{2}\right) & 1\end{aligned}|,\,-|\begin{aligned}2\left(2u\right) & 2 \\ 0 & 1\end{aligned}|,\,|\begin{aligned}2\left(2u\right) & 0 \\ 0 & 2\left(3{v}^{2}\right)\end{aligned}|⟩ \\  & =⟨- 12 v^{2},\,- 4 u,\,24 u v^{2}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2\left(2u\right) & 0 & 2 \\ 0 & 2\left(3{v}^{2}\right) & 1\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2 \\ 2\left(3{v}^{2}\right) & 1\end{vmatrix},\,-\begin{vmatrix}2\left(2u\right) & 2 \\ 0 & 1\end{vmatrix},\,\begin{vmatrix}2\left(2u\right) & 0 \\ 0 & 2\left(3{v}^{2}\right)\end{vmatrix}⟩ \\  & =⟨- 12 v^{2},\,- 4 u,\,24 u v^{2}⟩.\end{aligned}
 $$
 
 ---
@@ -1879,7 +1879,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4\left(2u\right) & 0 & 2 \\ 0 & 4\left(3{v}^{2}\right) & 1\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2 \\ 4\left(3{v}^{2}\right) & 1\end{aligned}|,\,-|\begin{aligned}4\left(2u\right) & 2 \\ 0 & 1\end{aligned}|,\,|\begin{aligned}4\left(2u\right) & 0 \\ 0 & 4\left(3{v}^{2}\right)\end{aligned}|⟩ \\  & =⟨- 24 v^{2},\,- 8 u,\,96 u v^{2}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4\left(2u\right) & 0 & 2 \\ 0 & 4\left(3{v}^{2}\right) & 1\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2 \\ 4\left(3{v}^{2}\right) & 1\end{vmatrix},\,-\begin{vmatrix}4\left(2u\right) & 2 \\ 0 & 1\end{vmatrix},\,\begin{vmatrix}4\left(2u\right) & 0 \\ 0 & 4\left(3{v}^{2}\right)\end{vmatrix}⟩ \\  & =⟨- 24 v^{2},\,- 8 u,\,96 u v^{2}⟩.\end{aligned}
 $$
 
 ---
@@ -1917,7 +1917,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2\left(2u\right) & 0 & 2\left(2\right) \\ 0 & 3{v}^{2} & 2\left(1\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2\left(2\right) \\ 3{v}^{2} & 2\left(1\right)\end{aligned}|,\,-|\begin{aligned}2\left(2u\right) & 2\left(2\right) \\ 0 & 2\left(1\right)\end{aligned}|,\,|\begin{aligned}2\left(2u\right) & 0 \\ 0 & 3{v}^{2}\end{aligned}|⟩ \\  & =⟨- 12 v^{2},\,- 8 u,\,12 u v^{2}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2\left(2u\right) & 0 & 2\left(2\right) \\ 0 & 3{v}^{2} & 2\left(1\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2\left(2\right) \\ 3{v}^{2} & 2\left(1\right)\end{vmatrix},\,-\begin{vmatrix}2\left(2u\right) & 2\left(2\right) \\ 0 & 2\left(1\right)\end{vmatrix},\,\begin{vmatrix}2\left(2u\right) & 0 \\ 0 & 3{v}^{2}\end{vmatrix}⟩ \\  & =⟨- 12 v^{2},\,- 8 u,\,12 u v^{2}⟩.\end{aligned}
 $$
 
 ---
@@ -1955,7 +1955,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4\left(2u\right) & 0 & 4\left(2\right) \\ 0 & 3{v}^{2} & 4\left(1\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 4\left(2\right) \\ 3{v}^{2} & 4\left(1\right)\end{aligned}|,\,-|\begin{aligned}4\left(2u\right) & 4\left(2\right) \\ 0 & 4\left(1\right)\end{aligned}|,\,|\begin{aligned}4\left(2u\right) & 0 \\ 0 & 3{v}^{2}\end{aligned}|⟩ \\  & =⟨- 24 v^{2},\,- 32 u,\,24 u v^{2}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4\left(2u\right) & 0 & 4\left(2\right) \\ 0 & 3{v}^{2} & 4\left(1\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 4\left(2\right) \\ 3{v}^{2} & 4\left(1\right)\end{vmatrix},\,-\begin{vmatrix}4\left(2u\right) & 4\left(2\right) \\ 0 & 4\left(1\right)\end{vmatrix},\,\begin{vmatrix}4\left(2u\right) & 0 \\ 0 & 3{v}^{2}\end{vmatrix}⟩ \\  & =⟨- 24 v^{2},\,- 32 u,\,24 u v^{2}⟩.\end{aligned}
 $$
 
 ---
@@ -1993,7 +1993,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2u & 0 & 2\left(2\right) \\ 0 & 2\left(3{v}^{2}\right) & 2\left(1\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2\left(2\right) \\ 2\left(3{v}^{2}\right) & 2\left(1\right)\end{aligned}|,\,-|\begin{aligned}2u & 2\left(2\right) \\ 0 & 2\left(1\right)\end{aligned}|,\,|\begin{aligned}2u & 0 \\ 0 & 2\left(3{v}^{2}\right)\end{aligned}|⟩ \\  & =⟨- 24 v^{2},\,- 4 u,\,12 u v^{2}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2u & 0 & 2\left(2\right) \\ 0 & 2\left(3{v}^{2}\right) & 2\left(1\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2\left(2\right) \\ 2\left(3{v}^{2}\right) & 2\left(1\right)\end{vmatrix},\,-\begin{vmatrix}2u & 2\left(2\right) \\ 0 & 2\left(1\right)\end{vmatrix},\,\begin{vmatrix}2u & 0 \\ 0 & 2\left(3{v}^{2}\right)\end{vmatrix}⟩ \\  & =⟨- 24 v^{2},\,- 4 u,\,12 u v^{2}⟩.\end{aligned}
 $$
 
 ---
@@ -2031,7 +2031,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2u & 0 & 4\left(2\right) \\ 0 & 4\left(3{v}^{2}\right) & 4\left(1\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 4\left(2\right) \\ 4\left(3{v}^{2}\right) & 4\left(1\right)\end{aligned}|,\,-|\begin{aligned}2u & 4\left(2\right) \\ 0 & 4\left(1\right)\end{aligned}|,\,|\begin{aligned}2u & 0 \\ 0 & 4\left(3{v}^{2}\right)\end{aligned}|⟩ \\  & =⟨- 96 v^{2},\,- 8 u,\,24 u v^{2}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2u & 0 & 4\left(2\right) \\ 0 & 4\left(3{v}^{2}\right) & 4\left(1\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 4\left(2\right) \\ 4\left(3{v}^{2}\right) & 4\left(1\right)\end{vmatrix},\,-\begin{vmatrix}2u & 4\left(2\right) \\ 0 & 4\left(1\right)\end{vmatrix},\,\begin{vmatrix}2u & 0 \\ 0 & 4\left(3{v}^{2}\right)\end{vmatrix}⟩ \\  & =⟨- 96 v^{2},\,- 8 u,\,24 u v^{2}⟩.\end{aligned}
 $$
 
 ---
@@ -2059,7 +2059,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2\left(1\right) & 2\left(\operatorname{sin}⁡v\right) & -v\operatorname{sin}⁡u \\ 0 & 2\left(u\operatorname{cos}⁡v\right) & \operatorname{cos}⁡u\end{aligned}| \\  & =⟨|\begin{aligned}2\left(\operatorname{sin}⁡v\right) & -v\operatorname{sin}⁡u \\ 2\left(u\operatorname{cos}⁡v\right) & \operatorname{cos}⁡u\end{aligned}|,\,-|\begin{aligned}2\left(1\right) & -v\operatorname{sin}⁡u \\ 0 & \operatorname{cos}⁡u\end{aligned}|,\,|\begin{aligned}2\left(1\right) & 2\left(\operatorname{sin}⁡v\right) \\ 0 & 2\left(u\operatorname{cos}⁡v\right)\end{aligned}|⟩ \\  & =⟨2 u v \sin{(u )} \cos{(v )} + 2 \sin{(v )} \cos{(u )},\,- 2 \cos{(u )},\,4 u \cos{(v )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2\left(1\right) & 2\left(\operatorname{sin}⁡v\right) & -v\operatorname{sin}⁡u \\ 0 & 2\left(u\operatorname{cos}⁡v\right) & \operatorname{cos}⁡u\end{vmatrix} \\  & =⟨\begin{vmatrix}2\left(\operatorname{sin}⁡v\right) & -v\operatorname{sin}⁡u \\ 2\left(u\operatorname{cos}⁡v\right) & \operatorname{cos}⁡u\end{vmatrix},\,-\begin{vmatrix}2\left(1\right) & -v\operatorname{sin}⁡u \\ 0 & \operatorname{cos}⁡u\end{vmatrix},\,\begin{vmatrix}2\left(1\right) & 2\left(\operatorname{sin}⁡v\right) \\ 0 & 2\left(u\operatorname{cos}⁡v\right)\end{vmatrix}⟩ \\  & =⟨2 u v \sin{(u )} \cos{(v )} + 2 \sin{(v )} \cos{(u )},\,- 2 \cos{(u )},\,4 u \cos{(v )}⟩.\end{aligned}
 $$
 
 ---
@@ -2087,7 +2087,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4\left(1\right) & 4\left(\operatorname{sin}⁡v\right) & -v\operatorname{sin}⁡u \\ 0 & 4\left(u\operatorname{cos}⁡v\right) & \operatorname{cos}⁡u\end{aligned}| \\  & =⟨|\begin{aligned}4\left(\operatorname{sin}⁡v\right) & -v\operatorname{sin}⁡u \\ 4\left(u\operatorname{cos}⁡v\right) & \operatorname{cos}⁡u\end{aligned}|,\,-|\begin{aligned}4\left(1\right) & -v\operatorname{sin}⁡u \\ 0 & \operatorname{cos}⁡u\end{aligned}|,\,|\begin{aligned}4\left(1\right) & 4\left(\operatorname{sin}⁡v\right) \\ 0 & 4\left(u\operatorname{cos}⁡v\right)\end{aligned}|⟩ \\  & =⟨4 u v \sin{(u )} \cos{(v )} + 4 \sin{(v )} \cos{(u )},\,- 4 \cos{(u )},\,16 u \cos{(v )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4\left(1\right) & 4\left(\operatorname{sin}⁡v\right) & -v\operatorname{sin}⁡u \\ 0 & 4\left(u\operatorname{cos}⁡v\right) & \operatorname{cos}⁡u\end{vmatrix} \\  & =⟨\begin{vmatrix}4\left(\operatorname{sin}⁡v\right) & -v\operatorname{sin}⁡u \\ 4\left(u\operatorname{cos}⁡v\right) & \operatorname{cos}⁡u\end{vmatrix},\,-\begin{vmatrix}4\left(1\right) & -v\operatorname{sin}⁡u \\ 0 & \operatorname{cos}⁡u\end{vmatrix},\,\begin{vmatrix}4\left(1\right) & 4\left(\operatorname{sin}⁡v\right) \\ 0 & 4\left(u\operatorname{cos}⁡v\right)\end{vmatrix}⟩ \\  & =⟨4 u v \sin{(u )} \cos{(v )} + 4 \sin{(v )} \cos{(u )},\,- 4 \cos{(u )},\,16 u \cos{(v )}⟩.\end{aligned}
 $$
 
 ---
@@ -2115,7 +2115,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2\left(1\right) & \operatorname{sin}⁡v & 2\left(-v\operatorname{sin}⁡u\right) \\ 0 & u\operatorname{cos}⁡v & 2\left(\operatorname{cos}⁡u\right)\end{aligned}| \\  & =⟨|\begin{aligned}\operatorname{sin}⁡v & 2\left(-v\operatorname{sin}⁡u\right) \\ u\operatorname{cos}⁡v & 2\left(\operatorname{cos}⁡u\right)\end{aligned}|,\,-|\begin{aligned}2\left(1\right) & 2\left(-v\operatorname{sin}⁡u\right) \\ 0 & 2\left(\operatorname{cos}⁡u\right)\end{aligned}|,\,|\begin{aligned}2\left(1\right) & \operatorname{sin}⁡v \\ 0 & u\operatorname{cos}⁡v\end{aligned}|⟩ \\  & =⟨2 u v \sin{(u )} \cos{(v )} + 2 \sin{(v )} \cos{(u )},\,- 4 \cos{(u )},\,2 u \cos{(v )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2\left(1\right) & \operatorname{sin}⁡v & 2\left(-v\operatorname{sin}⁡u\right) \\ 0 & u\operatorname{cos}⁡v & 2\left(\operatorname{cos}⁡u\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}\operatorname{sin}⁡v & 2\left(-v\operatorname{sin}⁡u\right) \\ u\operatorname{cos}⁡v & 2\left(\operatorname{cos}⁡u\right)\end{vmatrix},\,-\begin{vmatrix}2\left(1\right) & 2\left(-v\operatorname{sin}⁡u\right) \\ 0 & 2\left(\operatorname{cos}⁡u\right)\end{vmatrix},\,\begin{vmatrix}2\left(1\right) & \operatorname{sin}⁡v \\ 0 & u\operatorname{cos}⁡v\end{vmatrix}⟩ \\  & =⟨2 u v \sin{(u )} \cos{(v )} + 2 \sin{(v )} \cos{(u )},\,- 4 \cos{(u )},\,2 u \cos{(v )}⟩.\end{aligned}
 $$
 
 ---
@@ -2143,7 +2143,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4\left(1\right) & \operatorname{sin}⁡v & 4\left(-v\operatorname{sin}⁡u\right) \\ 0 & u\operatorname{cos}⁡v & 4\left(\operatorname{cos}⁡u\right)\end{aligned}| \\  & =⟨|\begin{aligned}\operatorname{sin}⁡v & 4\left(-v\operatorname{sin}⁡u\right) \\ u\operatorname{cos}⁡v & 4\left(\operatorname{cos}⁡u\right)\end{aligned}|,\,-|\begin{aligned}4\left(1\right) & 4\left(-v\operatorname{sin}⁡u\right) \\ 0 & 4\left(\operatorname{cos}⁡u\right)\end{aligned}|,\,|\begin{aligned}4\left(1\right) & \operatorname{sin}⁡v \\ 0 & u\operatorname{cos}⁡v\end{aligned}|⟩ \\  & =⟨4 u v \sin{(u )} \cos{(v )} + 4 \sin{(v )} \cos{(u )},\,- 16 \cos{(u )},\,4 u \cos{(v )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4\left(1\right) & \operatorname{sin}⁡v & 4\left(-v\operatorname{sin}⁡u\right) \\ 0 & u\operatorname{cos}⁡v & 4\left(\operatorname{cos}⁡u\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}\operatorname{sin}⁡v & 4\left(-v\operatorname{sin}⁡u\right) \\ u\operatorname{cos}⁡v & 4\left(\operatorname{cos}⁡u\right)\end{vmatrix},\,-\begin{vmatrix}4\left(1\right) & 4\left(-v\operatorname{sin}⁡u\right) \\ 0 & 4\left(\operatorname{cos}⁡u\right)\end{vmatrix},\,\begin{vmatrix}4\left(1\right) & \operatorname{sin}⁡v \\ 0 & u\operatorname{cos}⁡v\end{vmatrix}⟩ \\  & =⟨4 u v \sin{(u )} \cos{(v )} + 4 \sin{(v )} \cos{(u )},\,- 16 \cos{(u )},\,4 u \cos{(v )}⟩.\end{aligned}
 $$
 
 ---
@@ -2171,7 +2171,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 1 & 2\left(\operatorname{sin}⁡v\right) & 2\left(-v\operatorname{sin}⁡u\right) \\ 0 & 2\left(u\operatorname{cos}⁡v\right) & 2\left(\operatorname{cos}⁡u\right)\end{aligned}| \\  & =⟨|\begin{aligned}2\left(\operatorname{sin}⁡v\right) & 2\left(-v\operatorname{sin}⁡u\right) \\ 2\left(u\operatorname{cos}⁡v\right) & 2\left(\operatorname{cos}⁡u\right)\end{aligned}|,\,-|\begin{aligned}1 & 2\left(-v\operatorname{sin}⁡u\right) \\ 0 & 2\left(\operatorname{cos}⁡u\right)\end{aligned}|,\,|\begin{aligned}1 & 2\left(\operatorname{sin}⁡v\right) \\ 0 & 2\left(u\operatorname{cos}⁡v\right)\end{aligned}|⟩ \\  & =⟨4 u v \sin{(u )} \cos{(v )} + 4 \sin{(v )} \cos{(u )},\,- 2 \cos{(u )},\,2 u \cos{(v )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 1 & 2\left(\operatorname{sin}⁡v\right) & 2\left(-v\operatorname{sin}⁡u\right) \\ 0 & 2\left(u\operatorname{cos}⁡v\right) & 2\left(\operatorname{cos}⁡u\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}2\left(\operatorname{sin}⁡v\right) & 2\left(-v\operatorname{sin}⁡u\right) \\ 2\left(u\operatorname{cos}⁡v\right) & 2\left(\operatorname{cos}⁡u\right)\end{vmatrix},\,-\begin{vmatrix}1 & 2\left(-v\operatorname{sin}⁡u\right) \\ 0 & 2\left(\operatorname{cos}⁡u\right)\end{vmatrix},\,\begin{vmatrix}1 & 2\left(\operatorname{sin}⁡v\right) \\ 0 & 2\left(u\operatorname{cos}⁡v\right)\end{vmatrix}⟩ \\  & =⟨4 u v \sin{(u )} \cos{(v )} + 4 \sin{(v )} \cos{(u )},\,- 2 \cos{(u )},\,2 u \cos{(v )}⟩.\end{aligned}
 $$
 
 ---
@@ -2199,7 +2199,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 1 & 4\left(\operatorname{sin}⁡v\right) & 4\left(-v\operatorname{sin}⁡u\right) \\ 0 & 4\left(u\operatorname{cos}⁡v\right) & 4\left(\operatorname{cos}⁡u\right)\end{aligned}| \\  & =⟨|\begin{aligned}4\left(\operatorname{sin}⁡v\right) & 4\left(-v\operatorname{sin}⁡u\right) \\ 4\left(u\operatorname{cos}⁡v\right) & 4\left(\operatorname{cos}⁡u\right)\end{aligned}|,\,-|\begin{aligned}1 & 4\left(-v\operatorname{sin}⁡u\right) \\ 0 & 4\left(\operatorname{cos}⁡u\right)\end{aligned}|,\,|\begin{aligned}1 & 4\left(\operatorname{sin}⁡v\right) \\ 0 & 4\left(u\operatorname{cos}⁡v\right)\end{aligned}|⟩ \\  & =⟨16 u v \sin{(u )} \cos{(v )} + 16 \sin{(v )} \cos{(u )},\,- 4 \cos{(u )},\,4 u \cos{(v )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 1 & 4\left(\operatorname{sin}⁡v\right) & 4\left(-v\operatorname{sin}⁡u\right) \\ 0 & 4\left(u\operatorname{cos}⁡v\right) & 4\left(\operatorname{cos}⁡u\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}4\left(\operatorname{sin}⁡v\right) & 4\left(-v\operatorname{sin}⁡u\right) \\ 4\left(u\operatorname{cos}⁡v\right) & 4\left(\operatorname{cos}⁡u\right)\end{vmatrix},\,-\begin{vmatrix}1 & 4\left(-v\operatorname{sin}⁡u\right) \\ 0 & 4\left(\operatorname{cos}⁡u\right)\end{vmatrix},\,\begin{vmatrix}1 & 4\left(\operatorname{sin}⁡v\right) \\ 0 & 4\left(u\operatorname{cos}⁡v\right)\end{vmatrix}⟩ \\  & =⟨16 u v \sin{(u )} \cos{(v )} + 16 \sin{(v )} \cos{(u )},\,- 4 \cos{(u )},\,4 u \cos{(v )}⟩.\end{aligned}
 $$
 
 ---
@@ -2227,7 +2227,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2\left(\operatorname{cos}⁡u\right) & 0 & 2\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 2\left(2v\right) & 2\left(4\operatorname{cos}⁡u\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2\left(-4v\operatorname{sin}⁡u\right) \\ 2\left(2v\right) & 2\left(4\operatorname{cos}⁡u\right)\end{aligned}|,\,-|\begin{aligned}2\left(\operatorname{cos}⁡u\right) & 2\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 2\left(4\operatorname{cos}⁡u\right)\end{aligned}|,\,|\begin{aligned}2\left(\operatorname{cos}⁡u\right) & 0 \\ 0 & 2\left(2v\right)\end{aligned}|⟩ \\  & =⟨32 v^{2} \sin{(u )},\,- 16 \cos^{2}{(u )},\,8 v \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2\left(\operatorname{cos}⁡u\right) & 0 & 2\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 2\left(2v\right) & 2\left(4\operatorname{cos}⁡u\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2\left(-4v\operatorname{sin}⁡u\right) \\ 2\left(2v\right) & 2\left(4\operatorname{cos}⁡u\right)\end{vmatrix},\,-\begin{vmatrix}2\left(\operatorname{cos}⁡u\right) & 2\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 2\left(4\operatorname{cos}⁡u\right)\end{vmatrix},\,\begin{vmatrix}2\left(\operatorname{cos}⁡u\right) & 0 \\ 0 & 2\left(2v\right)\end{vmatrix}⟩ \\  & =⟨32 v^{2} \sin{(u )},\,- 16 \cos^{2}{(u )},\,8 v \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -2255,7 +2255,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4\left(\operatorname{cos}⁡u\right) & 0 & 4\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 4\left(2v\right) & 4\left(4\operatorname{cos}⁡u\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 4\left(-4v\operatorname{sin}⁡u\right) \\ 4\left(2v\right) & 4\left(4\operatorname{cos}⁡u\right)\end{aligned}|,\,-|\begin{aligned}4\left(\operatorname{cos}⁡u\right) & 4\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 4\left(4\operatorname{cos}⁡u\right)\end{aligned}|,\,|\begin{aligned}4\left(\operatorname{cos}⁡u\right) & 0 \\ 0 & 4\left(2v\right)\end{aligned}|⟩ \\  & =⟨128 v^{2} \sin{(u )},\,- 64 \cos^{2}{(u )},\,32 v \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4\left(\operatorname{cos}⁡u\right) & 0 & 4\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 4\left(2v\right) & 4\left(4\operatorname{cos}⁡u\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 4\left(-4v\operatorname{sin}⁡u\right) \\ 4\left(2v\right) & 4\left(4\operatorname{cos}⁡u\right)\end{vmatrix},\,-\begin{vmatrix}4\left(\operatorname{cos}⁡u\right) & 4\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 4\left(4\operatorname{cos}⁡u\right)\end{vmatrix},\,\begin{vmatrix}4\left(\operatorname{cos}⁡u\right) & 0 \\ 0 & 4\left(2v\right)\end{vmatrix}⟩ \\  & =⟨128 v^{2} \sin{(u )},\,- 64 \cos^{2}{(u )},\,32 v \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -2291,7 +2291,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2 & 2 \cos{(u )} & 2 v \\ 2 & 4 v & 2 u\end{aligned}| \\  & =⟨|\begin{aligned}2 \cos{(u )} & 2 v \\ 4 v & 2 u\end{aligned}|,\,-|\begin{aligned}2 & 2 v \\ 2 & 2 u\end{aligned}|,\,|\begin{aligned}2 & 2 \cos{(u )} \\ 2 & 4 v\end{aligned}|⟩ \\  & =⟨(2 \cos{(u )})(2 u)-(2 v)(4 v),\,-[(2)(2 u)-(2 v)(2)],\,(2)(4 v)-(2 \cos{(u )})(2)⟩ \\  & =⟨4 u \cos{(u )} - 8 v^{2},\,- 4 u + 4 v,\,8 v - 4 \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2 & 2 \cos{(u )} & 2 v \\ 2 & 4 v & 2 u\end{vmatrix} \\  & =⟨\begin{vmatrix}2 \cos{(u )} & 2 v \\ 4 v & 2 u\end{vmatrix},\,-\begin{vmatrix}2 & 2 v \\ 2 & 2 u\end{vmatrix},\,\begin{vmatrix}2 & 2 \cos{(u )} \\ 2 & 4 v\end{vmatrix}⟩ \\  & =⟨(2 \cos{(u )})(2 u)-(2 v)(4 v),\,-[(2)(2 u)-(2 v)(2)],\,(2)(4 v)-(2 \cos{(u )})(2)⟩ \\  & =⟨4 u \cos{(u )} - 8 v^{2},\,- 4 u + 4 v,\,8 v - 4 \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -2327,7 +2327,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4 & 4 \cos{(u )} & 4 v \\ 4 & 8 v & 4 u\end{aligned}| \\  & =⟨|\begin{aligned}4 \cos{(u )} & 4 v \\ 8 v & 4 u\end{aligned}|,\,-|\begin{aligned}4 & 4 v \\ 4 & 4 u\end{aligned}|,\,|\begin{aligned}4 & 4 \cos{(u )} \\ 4 & 8 v\end{aligned}|⟩ \\  & =⟨(4 \cos{(u )})(4 u)-(4 v)(8 v),\,-[(4)(4 u)-(4 v)(4)],\,(4)(8 v)-(4 \cos{(u )})(4)⟩ \\  & =⟨16 u \cos{(u )} - 32 v^{2},\,- 16 u + 16 v,\,32 v - 16 \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4 & 4 \cos{(u )} & 4 v \\ 4 & 8 v & 4 u\end{vmatrix} \\  & =⟨\begin{vmatrix}4 \cos{(u )} & 4 v \\ 8 v & 4 u\end{vmatrix},\,-\begin{vmatrix}4 & 4 v \\ 4 & 4 u\end{vmatrix},\,\begin{vmatrix}4 & 4 \cos{(u )} \\ 4 & 8 v\end{vmatrix}⟩ \\  & =⟨(4 \cos{(u )})(4 u)-(4 v)(8 v),\,-[(4)(4 u)-(4 v)(4)],\,(4)(8 v)-(4 \cos{(u )})(4)⟩ \\  & =⟨16 u \cos{(u )} - 32 v^{2},\,- 16 u + 16 v,\,32 v - 16 \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -2365,7 +2365,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2\left(1\right) & 0 & 2\left(2u\right) \\ 0 & 2\left(1\right) & 2\left(-2v\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2\left(2u\right) \\ 2\left(1\right) & 2\left(-2v\right)\end{aligned}|,\,-|\begin{aligned}2\left(1\right) & 2\left(2u\right) \\ 0 & 2\left(-2v\right)\end{aligned}|,\,|\begin{aligned}2\left(1\right) & 0 \\ 0 & 2\left(1\right)\end{aligned}|⟩ \\  & =⟨- 8 u,\,8 v,\,4⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2\left(1\right) & 0 & 2\left(2u\right) \\ 0 & 2\left(1\right) & 2\left(-2v\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2\left(2u\right) \\ 2\left(1\right) & 2\left(-2v\right)\end{vmatrix},\,-\begin{vmatrix}2\left(1\right) & 2\left(2u\right) \\ 0 & 2\left(-2v\right)\end{vmatrix},\,\begin{vmatrix}2\left(1\right) & 0 \\ 0 & 2\left(1\right)\end{vmatrix}⟩ \\  & =⟨- 8 u,\,8 v,\,4⟩.\end{aligned}
 $$
 
 ---
@@ -2403,7 +2403,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4\left(1\right) & 0 & 4\left(2u\right) \\ 0 & 4\left(1\right) & 4\left(-2v\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 4\left(2u\right) \\ 4\left(1\right) & 4\left(-2v\right)\end{aligned}|,\,-|\begin{aligned}4\left(1\right) & 4\left(2u\right) \\ 0 & 4\left(-2v\right)\end{aligned}|,\,|\begin{aligned}4\left(1\right) & 0 \\ 0 & 4\left(1\right)\end{aligned}|⟩ \\  & =⟨- 32 u,\,32 v,\,16⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4\left(1\right) & 0 & 4\left(2u\right) \\ 0 & 4\left(1\right) & 4\left(-2v\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 4\left(2u\right) \\ 4\left(1\right) & 4\left(-2v\right)\end{vmatrix},\,-\begin{vmatrix}4\left(1\right) & 4\left(2u\right) \\ 0 & 4\left(-2v\right)\end{vmatrix},\,\begin{vmatrix}4\left(1\right) & 0 \\ 0 & 4\left(1\right)\end{vmatrix}⟩ \\  & =⟨- 32 u,\,32 v,\,16⟩.\end{aligned}
 $$
 
 ---
@@ -2441,7 +2441,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2\left(1\right) & 0 & 2\left(1\right) \\ 0 & 2\left(1\right) & 2\left(-{e}^{v}\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2\left(1\right) \\ 2\left(1\right) & 2\left(-{e}^{v}\right)\end{aligned}|,\,-|\begin{aligned}2\left(1\right) & 2\left(1\right) \\ 0 & 2\left(-{e}^{v}\right)\end{aligned}|,\,|\begin{aligned}2\left(1\right) & 0 \\ 0 & 2\left(1\right)\end{aligned}|⟩ \\  & =⟨-4,\,4 e^{v},\,4⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2\left(1\right) & 0 & 2\left(1\right) \\ 0 & 2\left(1\right) & 2\left(-{e}^{v}\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2\left(1\right) \\ 2\left(1\right) & 2\left(-{e}^{v}\right)\end{vmatrix},\,-\begin{vmatrix}2\left(1\right) & 2\left(1\right) \\ 0 & 2\left(-{e}^{v}\right)\end{vmatrix},\,\begin{vmatrix}2\left(1\right) & 0 \\ 0 & 2\left(1\right)\end{vmatrix}⟩ \\  & =⟨-4,\,4 e^{v},\,4⟩.\end{aligned}
 $$
 
 ---
@@ -2479,7 +2479,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4\left(1\right) & 0 & 4\left(1\right) \\ 0 & 4\left(1\right) & 4\left(-{e}^{v}\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 4\left(1\right) \\ 4\left(1\right) & 4\left(-{e}^{v}\right)\end{aligned}|,\,-|\begin{aligned}4\left(1\right) & 4\left(1\right) \\ 0 & 4\left(-{e}^{v}\right)\end{aligned}|,\,|\begin{aligned}4\left(1\right) & 0 \\ 0 & 4\left(1\right)\end{aligned}|⟩ \\  & =⟨-16,\,16 e^{v},\,16⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4\left(1\right) & 0 & 4\left(1\right) \\ 0 & 4\left(1\right) & 4\left(-{e}^{v}\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 4\left(1\right) \\ 4\left(1\right) & 4\left(-{e}^{v}\right)\end{vmatrix},\,-\begin{vmatrix}4\left(1\right) & 4\left(1\right) \\ 0 & 4\left(-{e}^{v}\right)\end{vmatrix},\,\begin{vmatrix}4\left(1\right) & 0 \\ 0 & 4\left(1\right)\end{vmatrix}⟩ \\  & =⟨-16,\,16 e^{v},\,16⟩.\end{aligned}
 $$
 
 ---
@@ -2517,7 +2517,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2\left(2u\right) & 0 & 2\left(2\right) \\ 0 & 2\left(3{v}^{2}\right) & 2\left(1\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2\left(2\right) \\ 2\left(3{v}^{2}\right) & 2\left(1\right)\end{aligned}|,\,-|\begin{aligned}2\left(2u\right) & 2\left(2\right) \\ 0 & 2\left(1\right)\end{aligned}|,\,|\begin{aligned}2\left(2u\right) & 0 \\ 0 & 2\left(3{v}^{2}\right)\end{aligned}|⟩ \\  & =⟨- 24 v^{2},\,- 8 u,\,24 u v^{2}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2\left(2u\right) & 0 & 2\left(2\right) \\ 0 & 2\left(3{v}^{2}\right) & 2\left(1\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2\left(2\right) \\ 2\left(3{v}^{2}\right) & 2\left(1\right)\end{vmatrix},\,-\begin{vmatrix}2\left(2u\right) & 2\left(2\right) \\ 0 & 2\left(1\right)\end{vmatrix},\,\begin{vmatrix}2\left(2u\right) & 0 \\ 0 & 2\left(3{v}^{2}\right)\end{vmatrix}⟩ \\  & =⟨- 24 v^{2},\,- 8 u,\,24 u v^{2}⟩.\end{aligned}
 $$
 
 ---
@@ -2555,7 +2555,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4\left(2u\right) & 0 & 4\left(2\right) \\ 0 & 4\left(3{v}^{2}\right) & 4\left(1\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 4\left(2\right) \\ 4\left(3{v}^{2}\right) & 4\left(1\right)\end{aligned}|,\,-|\begin{aligned}4\left(2u\right) & 4\left(2\right) \\ 0 & 4\left(1\right)\end{aligned}|,\,|\begin{aligned}4\left(2u\right) & 0 \\ 0 & 4\left(3{v}^{2}\right)\end{aligned}|⟩ \\  & =⟨- 96 v^{2},\,- 32 u,\,96 u v^{2}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4\left(2u\right) & 0 & 4\left(2\right) \\ 0 & 4\left(3{v}^{2}\right) & 4\left(1\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 4\left(2\right) \\ 4\left(3{v}^{2}\right) & 4\left(1\right)\end{vmatrix},\,-\begin{vmatrix}4\left(2u\right) & 4\left(2\right) \\ 0 & 4\left(1\right)\end{vmatrix},\,\begin{vmatrix}4\left(2u\right) & 0 \\ 0 & 4\left(3{v}^{2}\right)\end{vmatrix}⟩ \\  & =⟨- 96 v^{2},\,- 32 u,\,96 u v^{2}⟩.\end{aligned}
 $$
 
 ---
@@ -2583,7 +2583,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2\left(1\right) & 2\left(\operatorname{sin}⁡v\right) & 2\left(-v\operatorname{sin}⁡u\right) \\ 0 & 2\left(u\operatorname{cos}⁡v\right) & 2\left(\operatorname{cos}⁡u\right)\end{aligned}| \\  & =⟨|\begin{aligned}2\left(\operatorname{sin}⁡v\right) & 2\left(-v\operatorname{sin}⁡u\right) \\ 2\left(u\operatorname{cos}⁡v\right) & 2\left(\operatorname{cos}⁡u\right)\end{aligned}|,\,-|\begin{aligned}2\left(1\right) & 2\left(-v\operatorname{sin}⁡u\right) \\ 0 & 2\left(\operatorname{cos}⁡u\right)\end{aligned}|,\,|\begin{aligned}2\left(1\right) & 2\left(\operatorname{sin}⁡v\right) \\ 0 & 2\left(u\operatorname{cos}⁡v\right)\end{aligned}|⟩ \\  & =⟨4 u v \sin{(u )} \cos{(v )} + 4 \sin{(v )} \cos{(u )},\,- 4 \cos{(u )},\,4 u \cos{(v )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2\left(1\right) & 2\left(\operatorname{sin}⁡v\right) & 2\left(-v\operatorname{sin}⁡u\right) \\ 0 & 2\left(u\operatorname{cos}⁡v\right) & 2\left(\operatorname{cos}⁡u\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}2\left(\operatorname{sin}⁡v\right) & 2\left(-v\operatorname{sin}⁡u\right) \\ 2\left(u\operatorname{cos}⁡v\right) & 2\left(\operatorname{cos}⁡u\right)\end{vmatrix},\,-\begin{vmatrix}2\left(1\right) & 2\left(-v\operatorname{sin}⁡u\right) \\ 0 & 2\left(\operatorname{cos}⁡u\right)\end{vmatrix},\,\begin{vmatrix}2\left(1\right) & 2\left(\operatorname{sin}⁡v\right) \\ 0 & 2\left(u\operatorname{cos}⁡v\right)\end{vmatrix}⟩ \\  & =⟨4 u v \sin{(u )} \cos{(v )} + 4 \sin{(v )} \cos{(u )},\,- 4 \cos{(u )},\,4 u \cos{(v )}⟩.\end{aligned}
 $$
 
 ---
@@ -2611,7 +2611,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 4\left(1\right) & 4\left(\operatorname{sin}⁡v\right) & 4\left(-v\operatorname{sin}⁡u\right) \\ 0 & 4\left(u\operatorname{cos}⁡v\right) & 4\left(\operatorname{cos}⁡u\right)\end{aligned}| \\  & =⟨|\begin{aligned}4\left(\operatorname{sin}⁡v\right) & 4\left(-v\operatorname{sin}⁡u\right) \\ 4\left(u\operatorname{cos}⁡v\right) & 4\left(\operatorname{cos}⁡u\right)\end{aligned}|,\,-|\begin{aligned}4\left(1\right) & 4\left(-v\operatorname{sin}⁡u\right) \\ 0 & 4\left(\operatorname{cos}⁡u\right)\end{aligned}|,\,|\begin{aligned}4\left(1\right) & 4\left(\operatorname{sin}⁡v\right) \\ 0 & 4\left(u\operatorname{cos}⁡v\right)\end{aligned}|⟩ \\  & =⟨16 u v \sin{(u )} \cos{(v )} + 16 \sin{(v )} \cos{(u )},\,- 16 \cos{(u )},\,16 u \cos{(v )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 4\left(1\right) & 4\left(\operatorname{sin}⁡v\right) & 4\left(-v\operatorname{sin}⁡u\right) \\ 0 & 4\left(u\operatorname{cos}⁡v\right) & 4\left(\operatorname{cos}⁡u\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}4\left(\operatorname{sin}⁡v\right) & 4\left(-v\operatorname{sin}⁡u\right) \\ 4\left(u\operatorname{cos}⁡v\right) & 4\left(\operatorname{cos}⁡u\right)\end{vmatrix},\,-\begin{vmatrix}4\left(1\right) & 4\left(-v\operatorname{sin}⁡u\right) \\ 0 & 4\left(\operatorname{cos}⁡u\right)\end{vmatrix},\,\begin{vmatrix}4\left(1\right) & 4\left(\operatorname{sin}⁡v\right) \\ 0 & 4\left(u\operatorname{cos}⁡v\right)\end{vmatrix}⟩ \\  & =⟨16 u v \sin{(u )} \cos{(v )} + 16 \sin{(v )} \cos{(u )},\,- 16 \cos{(u )},\,16 u \cos{(v )}⟩.\end{aligned}
 $$
 
 ---
@@ -2639,7 +2639,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ \operatorname{cos}⁡u & 0 & -4v\operatorname{sin}⁡u \\ 0 & 3\left(2v\right) & 4\operatorname{cos}⁡u\end{aligned}| \\  & =⟨|\begin{aligned}0 & -4v\operatorname{sin}⁡u \\ 3\left(2v\right) & 4\operatorname{cos}⁡u\end{aligned}|,\,-|\begin{aligned}\operatorname{cos}⁡u & -4v\operatorname{sin}⁡u \\ 0 & 4\operatorname{cos}⁡u\end{aligned}|,\,|\begin{aligned}\operatorname{cos}⁡u & 0 \\ 0 & 3\left(2v\right)\end{aligned}|⟩ \\  & =⟨24 v^{2} \sin{(u )},\,-4{cos}^{2}⁡u,\,6 v \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ \operatorname{cos}⁡u & 0 & -4v\operatorname{sin}⁡u \\ 0 & 3\left(2v\right) & 4\operatorname{cos}⁡u\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & -4v\operatorname{sin}⁡u \\ 3\left(2v\right) & 4\operatorname{cos}⁡u\end{vmatrix},\,-\begin{vmatrix}\operatorname{cos}⁡u & -4v\operatorname{sin}⁡u \\ 0 & 4\operatorname{cos}⁡u\end{vmatrix},\,\begin{vmatrix}\operatorname{cos}⁡u & 0 \\ 0 & 3\left(2v\right)\end{vmatrix}⟩ \\  & =⟨24 v^{2} \sin{(u )},\,-4{cos}^{2}⁡u,\,6 v \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -2667,7 +2667,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ \operatorname{cos}⁡u & 0 & 3\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 2v & 3\left(4\operatorname{cos}⁡u\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 3\left(-4v\operatorname{sin}⁡u\right) \\ 2v & 3\left(4\operatorname{cos}⁡u\right)\end{aligned}|,\,-|\begin{aligned}\operatorname{cos}⁡u & 3\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 3\left(4\operatorname{cos}⁡u\right)\end{aligned}|,\,|\begin{aligned}\operatorname{cos}⁡u & 0 \\ 0 & 2v\end{aligned}|⟩ \\  & =⟨24 v^{2} \sin{(u )},\,- 12 \cos^{2}{(u )},\,2v\operatorname{cos}⁡u⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ \operatorname{cos}⁡u & 0 & 3\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 2v & 3\left(4\operatorname{cos}⁡u\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 3\left(-4v\operatorname{sin}⁡u\right) \\ 2v & 3\left(4\operatorname{cos}⁡u\right)\end{vmatrix},\,-\begin{vmatrix}\operatorname{cos}⁡u & 3\left(-4v\operatorname{sin}⁡u\right) \\ 0 & 3\left(4\operatorname{cos}⁡u\right)\end{vmatrix},\,\begin{vmatrix}\operatorname{cos}⁡u & 0 \\ 0 & 2v\end{vmatrix}⟩ \\  & =⟨24 v^{2} \sin{(u )},\,- 12 \cos^{2}{(u )},\,2v\operatorname{cos}⁡u⟩.\end{aligned}
 $$
 
 ---
@@ -2703,7 +2703,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 1 & 3 \cos{(u )} & v \\ 1 & 6 v & u\end{aligned}| \\  & =⟨|\begin{aligned}3 \cos{(u )} & v \\ 6 v & u\end{aligned}|,\,-|\begin{aligned}1 & v \\ 1 & u\end{aligned}|,\,|\begin{aligned}1 & 3 \cos{(u )} \\ 1 & 6 v\end{aligned}|⟩ \\  & =⟨(3 \cos{(u )})(u)-(v)(6 v),\,-[(1)(u)-(v)(1)],\,(1)(6 v)-(3 \cos{(u )})(1)⟩ \\  & =⟨3 u \cos{(u )} - 6 v^{2},\,- u + v,\,6 v - 3 \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 1 & 3 \cos{(u )} & v \\ 1 & 6 v & u\end{vmatrix} \\  & =⟨\begin{vmatrix}3 \cos{(u )} & v \\ 6 v & u\end{vmatrix},\,-\begin{vmatrix}1 & v \\ 1 & u\end{vmatrix},\,\begin{vmatrix}1 & 3 \cos{(u )} \\ 1 & 6 v\end{vmatrix}⟩ \\  & =⟨(3 \cos{(u )})(u)-(v)(6 v),\,-[(1)(u)-(v)(1)],\,(1)(6 v)-(3 \cos{(u )})(1)⟩ \\  & =⟨3 u \cos{(u )} - 6 v^{2},\,- u + v,\,6 v - 3 \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -2739,7 +2739,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 1 & \cos{(u )} & 3 v \\ 1 & 2 v & 3 u\end{aligned}| \\  & =⟨|\begin{aligned}\cos{(u )} & 3 v \\ 2 v & 3 u\end{aligned}|,\,-|\begin{aligned}1 & 3 v \\ 1 & 3 u\end{aligned}|,\,|\begin{aligned}1 & \cos{(u )} \\ 1 & 2 v\end{aligned}|⟩ \\  & =⟨(\cos{(u )})(3 u)-(3 v)(2 v),\,-[(1)(3 u)-(3 v)(1)],\,(1)(2 v)-(\cos{(u )})(1)⟩ \\  & =⟨3 u \cos{(u )} - 6 v^{2},\,- 3 u + 3 v,\,2 v - \cos{(u )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 1 & \cos{(u )} & 3 v \\ 1 & 2 v & 3 u\end{vmatrix} \\  & =⟨\begin{vmatrix}\cos{(u )} & 3 v \\ 2 v & 3 u\end{vmatrix},\,-\begin{vmatrix}1 & 3 v \\ 1 & 3 u\end{vmatrix},\,\begin{vmatrix}1 & \cos{(u )} \\ 1 & 2 v\end{vmatrix}⟩ \\  & =⟨(\cos{(u )})(3 u)-(3 v)(2 v),\,-[(1)(3 u)-(3 v)(1)],\,(1)(2 v)-(\cos{(u )})(1)⟩ \\  & =⟨3 u \cos{(u )} - 6 v^{2},\,- 3 u + 3 v,\,2 v - \cos{(u )}⟩.\end{aligned}
 $$
 
 ---
@@ -2777,7 +2777,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 1 & 0 & 2u \\ 0 & 3\left(1\right) & -2v\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2u \\ 3\left(1\right) & -2v\end{aligned}|,\,-|\begin{aligned}1 & 2u \\ 0 & -2v\end{aligned}|,\,|\begin{aligned}1 & 0 \\ 0 & 3\left(1\right)\end{aligned}|⟩ \\  & =⟨- 6 u,\,2v,\,3⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 1 & 0 & 2u \\ 0 & 3\left(1\right) & -2v\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2u \\ 3\left(1\right) & -2v\end{vmatrix},\,-\begin{vmatrix}1 & 2u \\ 0 & -2v\end{vmatrix},\,\begin{vmatrix}1 & 0 \\ 0 & 3\left(1\right)\end{vmatrix}⟩ \\  & =⟨- 6 u,\,2v,\,3⟩.\end{aligned}
 $$
 
 ---
@@ -2815,7 +2815,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 1 & 0 & 3\left(2u\right) \\ 0 & 1 & 3\left(-2v\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 3\left(2u\right) \\ 1 & 3\left(-2v\right)\end{aligned}|,\,-|\begin{aligned}1 & 3\left(2u\right) \\ 0 & 3\left(-2v\right)\end{aligned}|,\,|\begin{aligned}1 & 0 \\ 0 & 1\end{aligned}|⟩ \\  & =⟨- 6 u,\,6 v,\,1⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 1 & 0 & 3\left(2u\right) \\ 0 & 1 & 3\left(-2v\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 3\left(2u\right) \\ 1 & 3\left(-2v\right)\end{vmatrix},\,-\begin{vmatrix}1 & 3\left(2u\right) \\ 0 & 3\left(-2v\right)\end{vmatrix},\,\begin{vmatrix}1 & 0 \\ 0 & 1\end{vmatrix}⟩ \\  & =⟨- 6 u,\,6 v,\,1⟩.\end{aligned}
 $$
 
 ---
@@ -2853,7 +2853,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 1 & 0 & 1 \\ 0 & 3\left(1\right) & -{e}^{v}\end{aligned}| \\  & =⟨|\begin{aligned}0 & 1 \\ 3\left(1\right) & -{e}^{v}\end{aligned}|,\,-|\begin{aligned}1 & 1 \\ 0 & -{e}^{v}\end{aligned}|,\,|\begin{aligned}1 & 0 \\ 0 & 3\left(1\right)\end{aligned}|⟩ \\  & =⟨-3,\,{e}^{v},\,3⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 1 & 0 & 1 \\ 0 & 3\left(1\right) & -{e}^{v}\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 1 \\ 3\left(1\right) & -{e}^{v}\end{vmatrix},\,-\begin{vmatrix}1 & 1 \\ 0 & -{e}^{v}\end{vmatrix},\,\begin{vmatrix}1 & 0 \\ 0 & 3\left(1\right)\end{vmatrix}⟩ \\  & =⟨-3,\,{e}^{v},\,3⟩.\end{aligned}
 $$
 
 ---
@@ -2891,7 +2891,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 1 & 0 & 3\left(1\right) \\ 0 & 1 & 3\left(-{e}^{v}\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 3\left(1\right) \\ 1 & 3\left(-{e}^{v}\right)\end{aligned}|,\,-|\begin{aligned}1 & 3\left(1\right) \\ 0 & 3\left(-{e}^{v}\right)\end{aligned}|,\,|\begin{aligned}1 & 0 \\ 0 & 1\end{aligned}|⟩ \\  & =⟨-3,\,3 e^{v},\,1⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 1 & 0 & 3\left(1\right) \\ 0 & 1 & 3\left(-{e}^{v}\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 3\left(1\right) \\ 1 & 3\left(-{e}^{v}\right)\end{vmatrix},\,-\begin{vmatrix}1 & 3\left(1\right) \\ 0 & 3\left(-{e}^{v}\right)\end{vmatrix},\,\begin{vmatrix}1 & 0 \\ 0 & 1\end{vmatrix}⟩ \\  & =⟨-3,\,3 e^{v},\,1⟩.\end{aligned}
 $$
 
 ---
@@ -2929,7 +2929,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2u & 0 & 2 \\ 0 & 3\left(3{v}^{2}\right) & 1\end{aligned}| \\  & =⟨|\begin{aligned}0 & 2 \\ 3\left(3{v}^{2}\right) & 1\end{aligned}|,\,-|\begin{aligned}2u & 2 \\ 0 & 1\end{aligned}|,\,|\begin{aligned}2u & 0 \\ 0 & 3\left(3{v}^{2}\right)\end{aligned}|⟩ \\  & =⟨- 18 v^{2},\,-2u,\,18 u v^{2}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2u & 0 & 2 \\ 0 & 3\left(3{v}^{2}\right) & 1\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 2 \\ 3\left(3{v}^{2}\right) & 1\end{vmatrix},\,-\begin{vmatrix}2u & 2 \\ 0 & 1\end{vmatrix},\,\begin{vmatrix}2u & 0 \\ 0 & 3\left(3{v}^{2}\right)\end{vmatrix}⟩ \\  & =⟨- 18 v^{2},\,-2u,\,18 u v^{2}⟩.\end{aligned}
 $$
 
 ---
@@ -2967,7 +2967,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 2u & 0 & 3\left(2\right) \\ 0 & 3{v}^{2} & 3\left(1\right)\end{aligned}| \\  & =⟨|\begin{aligned}0 & 3\left(2\right) \\ 3{v}^{2} & 3\left(1\right)\end{aligned}|,\,-|\begin{aligned}2u & 3\left(2\right) \\ 0 & 3\left(1\right)\end{aligned}|,\,|\begin{aligned}2u & 0 \\ 0 & 3{v}^{2}\end{aligned}|⟩ \\  & =⟨- 18 v^{2},\,- 6 u,\,6u{v}^{2}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 2u & 0 & 3\left(2\right) \\ 0 & 3{v}^{2} & 3\left(1\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}0 & 3\left(2\right) \\ 3{v}^{2} & 3\left(1\right)\end{vmatrix},\,-\begin{vmatrix}2u & 3\left(2\right) \\ 0 & 3\left(1\right)\end{vmatrix},\,\begin{vmatrix}2u & 0 \\ 0 & 3{v}^{2}\end{vmatrix}⟩ \\  & =⟨- 18 v^{2},\,- 6 u,\,6u{v}^{2}⟩.\end{aligned}
 $$
 
 ---
@@ -2995,7 +2995,7 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 1 & 3\left(\operatorname{sin}⁡v\right) & -v\operatorname{sin}⁡u \\ 0 & 3\left(u\operatorname{cos}⁡v\right) & \operatorname{cos}⁡u\end{aligned}| \\  & =⟨|\begin{aligned}3\left(\operatorname{sin}⁡v\right) & -v\operatorname{sin}⁡u \\ 3\left(u\operatorname{cos}⁡v\right) & \operatorname{cos}⁡u\end{aligned}|,\,-|\begin{aligned}1 & -v\operatorname{sin}⁡u \\ 0 & \operatorname{cos}⁡u\end{aligned}|,\,|\begin{aligned}1 & 3\left(\operatorname{sin}⁡v\right) \\ 0 & 3\left(u\operatorname{cos}⁡v\right)\end{aligned}|⟩ \\  & =⟨3 u v \sin{(u )} \cos{(v )} + 3 \sin{(v )} \cos{(u )},\,-\operatorname{cos}⁡u,\,3 u \cos{(v )}⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 1 & 3\left(\operatorname{sin}⁡v\right) & -v\operatorname{sin}⁡u \\ 0 & 3\left(u\operatorname{cos}⁡v\right) & \operatorname{cos}⁡u\end{vmatrix} \\  & =⟨\begin{vmatrix}3\left(\operatorname{sin}⁡v\right) & -v\operatorname{sin}⁡u \\ 3\left(u\operatorname{cos}⁡v\right) & \operatorname{cos}⁡u\end{vmatrix},\,-\begin{vmatrix}1 & -v\operatorname{sin}⁡u \\ 0 & \operatorname{cos}⁡u\end{vmatrix},\,\begin{vmatrix}1 & 3\left(\operatorname{sin}⁡v\right) \\ 0 & 3\left(u\operatorname{cos}⁡v\right)\end{vmatrix}⟩ \\  & =⟨3 u v \sin{(u )} \cos{(v )} + 3 \sin{(v )} \cos{(u )},\,-\operatorname{cos}⁡u,\,3 u \cos{(v )}⟩.\end{aligned}
 $$
 
 ---
@@ -3023,5 +3023,5 @@ $$
 Therefore, the fundamental vector product is
 
 $$
-\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =|\begin{aligned}i & j & k \\ 1 & \operatorname{sin}⁡v & 3\left(-v\operatorname{sin}⁡u\right) \\ 0 & u\operatorname{cos}⁡v & 3\left(\operatorname{cos}⁡u\right)\end{aligned}| \\  & =⟨|\begin{aligned}\operatorname{sin}⁡v & 3\left(-v\operatorname{sin}⁡u\right) \\ u\operatorname{cos}⁡v & 3\left(\operatorname{cos}⁡u\right)\end{aligned}|,\,-|\begin{aligned}1 & 3\left(-v\operatorname{sin}⁡u\right) \\ 0 & 3\left(\operatorname{cos}⁡u\right)\end{aligned}|,\,|\begin{aligned}1 & \operatorname{sin}⁡v \\ 0 & u\operatorname{cos}⁡v\end{aligned}|⟩ \\  & =⟨3 u v \sin{(u )} \cos{(v )} + 3 \sin{(v )} \cos{(u )},\,- 3 \cos{(u )},\,u\operatorname{cos}⁡v⟩.\end{aligned}
+\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & =\begin{vmatrix}i & j & k \\ 1 & \operatorname{sin}⁡v & 3\left(-v\operatorname{sin}⁡u\right) \\ 0 & u\operatorname{cos}⁡v & 3\left(\operatorname{cos}⁡u\right)\end{vmatrix} \\  & =⟨\begin{vmatrix}\operatorname{sin}⁡v & 3\left(-v\operatorname{sin}⁡u\right) \\ u\operatorname{cos}⁡v & 3\left(\operatorname{cos}⁡u\right)\end{vmatrix},\,-\begin{vmatrix}1 & 3\left(-v\operatorname{sin}⁡u\right) \\ 0 & 3\left(\operatorname{cos}⁡u\right)\end{vmatrix},\,\begin{vmatrix}1 & \operatorname{sin}⁡v \\ 0 & u\operatorname{cos}⁡v\end{vmatrix}⟩ \\  & =⟨3 u v \sin{(u )} \cos{(v )} + 3 \sin{(v )} \cos{(u )},\,- 3 \cos{(u )},\,u\operatorname{cos}⁡v⟩.\end{aligned}
 $$

@@ -151,7 +151,19 @@ def source_render(template,r,v,raw=True):
             else:return whole
             return ('$$\n'+replacement+'\n$$') if width==2 else '$'+replacement+'$'
         sol=fmt.MATH.sub(solution_math,sol)
-    values=[(name+'=' if kind_of(template)=='radio' else '')+tex(r*s.sympify(expr)) for expr in bank]
+    if raw:
+        # Complete captured expressions are notation-bearing prototypes. The
+        # generic unit scalar rule suppresses its own identity multiplication;
+        # nonunit scales wrap the entire RHS (or entire blank fragment).
+        values=[]
+        for answer in q[':question/answer-fields'][0][':answer-field/choices']:
+            prototype=answer[':answer/value']
+            if kind_of(template)=='radio':
+                lhs,equals,rhs=prototype.partition('=');assert equals
+                values.append(lhs+equals+scalar_mask(rhs,r))
+            else:values.append(scalar_mask(prototype,r))
+    else:
+        values=[(name+'=' if kind_of(template)=='radio' else '')+tex(r*s.sympify(expr)) for expr in bank]
     return prompt,sol,values,r*P+K,r*s.sympify(fragment),name
 
 def completed_solution(der,P,t,B,name):
@@ -163,9 +175,11 @@ def completed_solution(der,P,t,B,name):
     return 'First, we rearrange the equation to give\n\n$$\n'+first+'='+tex(der)+'.\n$$\n\nThen, we integrate both sides with respect to $x,$ and get\n\n$$\n'+r'\begin{aligned}'+rows+r'.\end{aligned}'+'\n$$\n\nSo our general solution is $'+name+'='+tex(P)+'+C.$ To find a particular solution, we substitute the condition $'+initial+'$ into our solution and obtain a value for $C,$ as follows:\n\n$$\n'+r'\begin{aligned}'+condition+r'.\end{aligned}'+'\n$$\n\nTherefore, our particular solution is\n\n$$\n'+name+'='+tex(P+K)+'.\n$$'
 
 def record(level,prompt,solution,values,correct,kind,key,meta,presence=None):
-    prompt=fmt.normalize_prose(prompt)
-    solution=fmt.normalize_prose(solution) if solution is not None else None
-    values=[fmt.normalize_tex(v) for v in values]
+    raw_evidence=meta['profile']=='observed_raw'
+    if not raw_evidence:
+        prompt=fmt.normalize_prose(prompt)
+        solution=fmt.normalize_prose(solution) if solution is not None else None
+        values=[fmt.normalize_tex(v) for v in values]
     assessment_presence={'difficulty':level if presence is None or presence['difficulty'] else None,'solution':solution is not None,'correct_value':values[correct] if correct is not None else None}
     content=fingerprint([VERSION,prompt,solution,kind,key,sorted(values),assessment_presence]);qid=uid(content);fid=uid(qid+':field')
     answers=[{':answer/id':uid(fid+':'+v),':answer/type':':answer.type/math',':answer/value':v} for v in values]
@@ -182,7 +196,8 @@ def record(level,prompt,solution,values,correct,kind,key,meta,presence=None):
     meta['provenance']={k:v for k,v in SOURCE.items() if k!='record'}
     meta['sympy_version']=s.__version__
     meta['python_version']=sys.version.split()[0]
-    meta['math_format']=fmt.FORMAT_VERSION
+    meta['math_format']='captured-source-notation' if raw_evidence else fmt.FORMAT_VERSION
+    meta['learner_normalization_applied']=not raw_evidence
     return {'knowledge_point':{'db_id':KP_ID,'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':q,'generation':meta}
 
 # Easy normal generation serves all twelve source-shaped masks with signed
@@ -337,6 +352,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
 _unchecked_generate=generate
 def generate(*args,**kwargs):
     result=_unchecked_generate(*args,**kwargs)
+    if result['generation']['profile']=='observed_raw':
+        assert result['generation']['evidence_only'] and not result['generation']['eligible_for_learning']
+        return result
     checked=copy.deepcopy(result)
     checked['question'].setdefault(':question/worked-solution','')
     fmt.validate_generated_record(checked)

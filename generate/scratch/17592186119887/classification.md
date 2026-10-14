@@ -25,3 +25,8 @@ Normal vector tasks share the small nonunit coefficient band 2..4. Easy allows z
 The existing easy norm family assesses the magnitude of an already computed product; it does not require the six partials. Its separate domain is a,b in 1..4 with c=b, giving 16 distinct supplied-product tasks. The vector count rule therefore does not classify this observed scalar family. Capacity is 60 easy vectors plus 16 norms, 162 moderate vectors, and 162 hard vectors. Cross-level semantic fingerprints exclude difficulty, and all normal level sets are disjoint in both actual partial tasks and complete displayed prompt/solution/bank. `accepted-domains.json` enumerates every accepted normal parameter tuple.
 
 Calculator policy is unknown in the EDB capture. The two available native widgets have empty calculator instruction blocks; this does not establish a general calculator policy. No database transactions, registration, assets, engine edits or shared-file edits occur.
+
+
+## Replenishment release
+
+Learner-eligible math is normalized with the shared `course-academy-tex-v1` formatter before content identities. Determinant cells render with `vmatrix`; source replay profiles keep exact historical markup. The full source-bank replay, 400-task bounded domain, rendered cell/derivative/cofactor checks and native grading suite pass after normalization. See `release.json` and `reference/replenishment/` for registration, inventory, exact requests and receipts. No learner history or source questions are edited.

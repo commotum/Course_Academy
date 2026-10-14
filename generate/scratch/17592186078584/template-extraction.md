@@ -1,5 +1,19 @@
 # Template extraction
 
+## Additional source at basis 2496
+
+q-107128 adds the easy `exhaust` layout. Its object is “exhaust pipe of a
+motorcycle”, short name “exhaust pipe”, article “an”, response wording “its
+temperature”, and unit Fahrenheit. Original parameters: ambient 74, initial
+140, rate 0.08, time 3. Complete observed bank: 98, 126 (correct), 112, 92,
+134 degrees F; replay offsets from rounded correct are [-28, 0, -14, -34, 8].
+These offsets remain an explicit evidence profile with unresolved error intent.
+The normal bank uses the five complete easy operations defined below.
+The prompt and all 13 worked-solution rows replay exactly. No plots are used.
+Conservative sampling keeps ambient 60..80 F, initial 120..220 F, rate
+0.03..0.20 and time 3..12; existing exact-input model bounds also apply.
+This varies numerical givens within the same known-rate IVP method.
+
 ## Stage 1 — specific observed questions
 
 Each original prompt, field type, entire five-option bank, key, and complete worked solution is reproduced in review.md and remains byte-preserved in source.json. Source-cases.json supplies the public generate API arguments for every original. No source-return lookup branch exists: original and changed cases use the same formula/prose builders and computed intermediate values.

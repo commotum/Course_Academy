@@ -6,15 +6,15 @@ Which of the following are autonomous ordinary differential equations?
 
 Select all that apply.
 
-- **I.** $\frac{\text{d}y}{\text{d}x}=y^{2}$
-- **II.** $\frac{\text{d}y}{\text{d}x}=\ln{\left(x \right)}$
+- **I.** $\frac{\text{d}y}{\text{d}x}=\ln{\left(x \right)}$
+- **II.** $\frac{\text{d}y}{\text{d}x}=y^{2}$
 - **III.** $\frac{\text{d}y}{\text{d}x}=\sqrt{y}$
 
 Author review: complete checkbox banks and correct lookup refs.
 
-- I (checkbox): false [b24e7300-c323-51bc-8f57-9fc10289343b], true [f7cdd821-63de-57a7-8dcd-5426f5c6af81]; correct=true; ref=[":answer/id", "f7cdd821-63de-57a7-8dcd-5426f5c6af81"]
-- II (checkbox): false [70a141a6-fb9f-5afe-9797-0a3b9abc4420], true [df7eb274-012d-5f41-a85d-556d4d1f4e1f]; correct=false; ref=[":answer/id", "70a141a6-fb9f-5afe-9797-0a3b9abc4420"]
-- III (checkbox): true [ab74c3a1-ecf7-5f71-be6a-793b33795d04], false [d84ef860-1386-56a1-b6e7-45ccfeda90a8]; correct=true; ref=[":answer/id", "ab74c3a1-ecf7-5f71-be6a-793b33795d04"]
+- I (checkbox): false [47bc09e1-91bb-5a87-9b55-e3bf65ee46a2], true [2c3d1649-7635-5b27-9260-5b716121f52e]; correct=false; ref=[":answer/id", "47bc09e1-91bb-5a87-9b55-e3bf65ee46a2"]
+- II (checkbox): false [a62d07b5-7c33-52ea-98e9-ba8574586d1c], true [862dd02b-193c-5d71-9a89-2a81f147928e]; correct=true; ref=[":answer/id", "862dd02b-193c-5d71-9a89-2a81f147928e"]
+- III (checkbox): true [23fc1c23-7ce2-538a-8505-22778805b498], false [55b3f24e-7ff7-5521-9161-61e404e89f19]; correct=true; ref=[":answer/id", "23fc1c23-7ce2-538a-8505-22778805b498"]
 
 Worked solution:
 
@@ -22,13 +22,13 @@ An ordinary differential equation with dependent variable $y$ and independent va
 
 With that in mind, let's check each of the differential equations:
 
-- Equation I is an autonomous differential equation. We see that it is of the form $\frac{\text{d}y}{\text{d}x}=f(y),$ where $f(y)=y^{2}.$
+- Equation I is not an autonomous differential equation. It is not of the form $\frac{\text{d}y}{\text{d}x}=f(y).$
 
-- Equation II is not an autonomous differential equation. It is not of the form $\frac{\text{d}y}{\text{d}x}=f(y).$
+- Equation II is an autonomous differential equation. We see that it is of the form $\frac{\text{d}y}{\text{d}x}=f(y),$ where $f(y)=y^{2}.$
 
 - Equation III is an autonomous differential equation. We see that it is of the form $\frac{\text{d}y}{\text{d}x}=f(y),$ where $f(y)=\sqrt{y}.$
 
-Therefore, the correct answer is "I and III only."
+Therefore, the correct answer is "II and III only."
 
 ## Generated authored variant | easy | authored_triplet | authored_boolean
 
@@ -70,15 +70,15 @@ Which of the following are autonomous ordinary differential equations?
 
 Select all that apply.
 
-- **I.** $s\frac{\text{d}v}{\text{d}s}+1=4\left(\sqrt{s}\right)$
-- **II.** $v\frac{\text{d}v}{\text{d}s}+1=4\left(e^{v}\right)$
-- **III.** $v\frac{\text{d}v}{\text{d}s}+1=4\left(\sin{\left(v \right)}\right)$
+- **I.** $v\frac{\text{d}v}{\text{d}s}+1=4\left(e^{v}\right)$
+- **II.** $v\frac{\text{d}v}{\text{d}s}+1=4\left(\sin{\left(v \right)}\right)$
+- **III.** $s\frac{\text{d}v}{\text{d}s}+1=4\left(\sqrt{s}\right)$
 
 Author review: complete checkbox banks and correct lookup refs.
 
-- I (checkbox): true [dda2ed44-a99f-5bbb-8d16-27feeabfff4a], false [9d6b33a3-4213-5e32-b14c-5c7f7a32f71b]; correct=false; ref=[":answer/id", "9d6b33a3-4213-5e32-b14c-5c7f7a32f71b"]
-- II (checkbox): true [5dee720a-0580-516f-a78e-1101d4a3cc58], false [5c80e5ad-cb94-5207-b537-db550ceca38d]; correct=true; ref=[":answer/id", "5dee720a-0580-516f-a78e-1101d4a3cc58"]
-- III (checkbox): true [2d3623e4-50ed-5eb1-b031-5fe59bceafa1], false [ff97bc3d-9ddb-52cb-8e67-9556f59ea1b8]; correct=true; ref=[":answer/id", "2d3623e4-50ed-5eb1-b031-5fe59bceafa1"]
+- I (checkbox): true [d1def708-2b73-5ee4-bcef-6bbf6a3734ec], false [db28851c-1773-57ef-8af4-b51f45ddad0a]; correct=true; ref=[":answer/id", "d1def708-2b73-5ee4-bcef-6bbf6a3734ec"]
+- II (checkbox): true [b5a6291c-a1e3-5b73-ba93-c6d7ee30f52a], false [d7146f3a-1911-5c57-99cf-9bf9df3479da]; correct=true; ref=[":answer/id", "b5a6291c-a1e3-5b73-ba93-c6d7ee30f52a"]
+- III (checkbox): true [e3673d6e-886a-520a-aba6-72135e0cdd3d], false [3488046f-0045-52c0-84c4-b36ae094b465]; correct=false; ref=[":answer/id", "3488046f-0045-52c0-84c4-b36ae094b465"]
 
 Worked solution:
 
@@ -86,15 +86,7 @@ An ordinary differential equation with dependent variable $v$ and independent va
 
 With that in mind, let's check each of the differential equations:
 
-- Equation I is not an autonomous differential equation. If we isolate the derivative term, we get
-
-$$
-\begin{aligned}s\frac{\text{d}v}{\text{d}s}+1 & =4\left(\sqrt{s}\right) \\ \frac{\text{d}v}{\text{d}s} & =\frac{4\left(\sqrt{s}\right)-1}{s} \\ \frac{\text{d}v}{\text{d}s} & =f(s,v)\end{aligned}
-$$
-
-where $f(s,v)=\frac{4 \sqrt{s} - 1}{s}.$ So, it is not possible to write the equation in the form $\frac{\text{d}v}{\text{d}s}=f(v).$
-
-- Equation II is an autonomous differential equation. Writing the equation in the form $\frac{\text{d}v}{\text{d}s}=f(v),$ we get
+- Equation I is an autonomous differential equation. Writing the equation in the form $\frac{\text{d}v}{\text{d}s}=f(v),$ we get
 
 $$
 \begin{aligned}v\frac{\text{d}v}{\text{d}s}+1 & =4\left(e^{v}\right) \\ \frac{\text{d}v}{\text{d}s} & =\frac{4\left(e^{v}\right)-1}{v} \\ \frac{\text{d}v}{\text{d}s} & =f(v)\end{aligned}
@@ -102,7 +94,7 @@ $$
 
 where $f(v)=\frac{4 e^{v} - 1}{v}.$
 
-- Equation III is an autonomous differential equation. Writing the equation in the form $\frac{\text{d}v}{\text{d}s}=f(v),$ we get
+- Equation II is an autonomous differential equation. Writing the equation in the form $\frac{\text{d}v}{\text{d}s}=f(v),$ we get
 
 $$
 \begin{aligned}v\frac{\text{d}v}{\text{d}s}+1 & =4\left(\sin{\left(v \right)}\right) \\ \frac{\text{d}v}{\text{d}s} & =\frac{4\left(\sin{\left(v \right)}\right)-1}{v} \\ \frac{\text{d}v}{\text{d}s} & =f(v)\end{aligned}
@@ -110,7 +102,15 @@ $$
 
 where $f(v)=\frac{4 \sin{\left(v \right)} - 1}{v}.$
 
-Therefore, the correct answer is "II and III only."
+- Equation III is not an autonomous differential equation. If we isolate the derivative term, we get
+
+$$
+\begin{aligned}s\frac{\text{d}v}{\text{d}s}+1 & =4\left(\sqrt{s}\right) \\ \frac{\text{d}v}{\text{d}s} & =\frac{4\left(\sqrt{s}\right)-1}{s} \\ \frac{\text{d}v}{\text{d}s} & =f(s,v)\end{aligned}
+$$
+
+where $f(s,v)=\frac{4 \sqrt{s} - 1}{s}.$ So, it is not possible to write the equation in the form $\frac{\text{d}v}{\text{d}s}=f(v).$
+
+Therefore, the correct answer is "I and II only."
 
 ## Generated authored variant | moderate | authored_triplet | authored_boolean
 
@@ -121,14 +121,14 @@ Which of the following are autonomous ordinary differential equations?
 Select all that apply.
 
 - **I.** $t\frac{\text{d}u}{\text{d}t}+2=2\left(e^{t}\right)$
-- **II.** $t\frac{\text{d}u}{\text{d}t}+2=2\left(\sqrt{t}\right)$
-- **III.** $u\frac{\text{d}u}{\text{d}t}+2=2\left(\sin{\left(u \right)}\right)$
+- **II.** $u\frac{\text{d}u}{\text{d}t}+2=2\left(\sin{\left(u \right)}\right)$
+- **III.** $t\frac{\text{d}u}{\text{d}t}+2=2\left(\sqrt{t}\right)$
 
 Author review: complete checkbox banks and correct lookup refs.
 
-- I (checkbox): false [1bc436ce-4ff3-533a-b711-8cd01c6c3d3f], true [0dd0dcf1-f4cf-56d9-b3b8-46512c102005]; correct=false; ref=[":answer/id", "1bc436ce-4ff3-533a-b711-8cd01c6c3d3f"]
-- II (checkbox): true [dd2b528d-c1d7-54a2-85ce-f8b598b0247a], false [86f24fcc-489e-5d68-b029-8c071270b319]; correct=false; ref=[":answer/id", "86f24fcc-489e-5d68-b029-8c071270b319"]
-- III (checkbox): false [82395c04-c83d-53f5-b539-e1e36ecc41e1], true [44f6504d-508d-5aba-a47a-71ec47f6c59a]; correct=true; ref=[":answer/id", "44f6504d-508d-5aba-a47a-71ec47f6c59a"]
+- I (checkbox): false [95a0c6ce-ebda-5db2-9fee-6f34b12224da], true [d416e638-3fcc-57c9-9c81-c1eb49671a03]; correct=false; ref=[":answer/id", "95a0c6ce-ebda-5db2-9fee-6f34b12224da"]
+- II (checkbox): true [7634c6c6-01a2-5cc9-8924-74caea3f41c4], false [f0d3adf3-1b02-5f36-8e69-d6bb13468400]; correct=true; ref=[":answer/id", "7634c6c6-01a2-5cc9-8924-74caea3f41c4"]
+- III (checkbox): false [cc499aad-b8ee-5ae3-b522-9046b0ad8d7f], true [3d12fe6a-fb84-57ad-94af-e89c9675797d]; correct=false; ref=[":answer/id", "cc499aad-b8ee-5ae3-b522-9046b0ad8d7f"]
 
 Worked solution:
 
@@ -144,15 +144,7 @@ $$
 
 where $f(t,u)=\frac{2 e^{t} - 2}{t}.$ So, it is not possible to write the equation in the form $\frac{\text{d}u}{\text{d}t}=f(u).$
 
-- Equation II is not an autonomous differential equation. If we isolate the derivative term, we get
-
-$$
-\begin{aligned}t\frac{\text{d}u}{\text{d}t}+2 & =2\left(\sqrt{t}\right) \\ \frac{\text{d}u}{\text{d}t} & =\frac{2\left(\sqrt{t}\right)-2}{t} \\ \frac{\text{d}u}{\text{d}t} & =f(t,u)\end{aligned}
-$$
-
-where $f(t,u)=\frac{2 \left(\sqrt{t} - 1\right)}{t}.$ So, it is not possible to write the equation in the form $\frac{\text{d}u}{\text{d}t}=f(u).$
-
-- Equation III is an autonomous differential equation. Writing the equation in the form $\frac{\text{d}u}{\text{d}t}=f(u),$ we get
+- Equation II is an autonomous differential equation. Writing the equation in the form $\frac{\text{d}u}{\text{d}t}=f(u),$ we get
 
 $$
 \begin{aligned}u\frac{\text{d}u}{\text{d}t}+2 & =2\left(\sin{\left(u \right)}\right) \\ \frac{\text{d}u}{\text{d}t} & =\frac{2\left(\sin{\left(u \right)}\right)-2}{u} \\ \frac{\text{d}u}{\text{d}t} & =f(u)\end{aligned}
@@ -160,7 +152,15 @@ $$
 
 where $f(u)=\frac{2 \left(\sin{\left(u \right)} - 1\right)}{u}.$
 
-Therefore, the correct answer is "III only."
+- Equation III is not an autonomous differential equation. If we isolate the derivative term, we get
+
+$$
+\begin{aligned}t\frac{\text{d}u}{\text{d}t}+2 & =2\left(\sqrt{t}\right) \\ \frac{\text{d}u}{\text{d}t} & =\frac{2\left(\sqrt{t}\right)-2}{t} \\ \frac{\text{d}u}{\text{d}t} & =f(t,u)\end{aligned}
+$$
+
+where $f(t,u)=\frac{2 \left(\sqrt{t} - 1\right)}{t}.$ So, it is not possible to write the equation in the form $\frac{\text{d}u}{\text{d}t}=f(u).$
+
+Therefore, the correct answer is "II only."
 
 ## Generated authored variant | hard | authored_triplet | authored_boolean
 

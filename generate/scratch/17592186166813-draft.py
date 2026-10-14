@@ -3,7 +3,7 @@
 
 Easy: one equation, identify highest derivative (Leibniz notation).
 Moderate: three independent prime-notation equations, test requested order1–3.
-Hard (authored): three equations; four derivative occurrences each, mixed
+Hard (authored): three equations; four derivative occurrences each;three distinct assessed equations, joint canonical order, mixed
 Leibniz/prime notation and powers/products, requested order4–8. No differentiation,
 solving, or classification is required. Levels have separate workload guards.
 
@@ -22,7 +22,7 @@ from scripts.question_capture.math_format import (checked_math_content,
     normalize_prose, normalize_tex, validate_prose, FORMAT_VERSION)
 KP_ID=17592186166813
 TITLE='Identifying the Order of an Ordinary Differential Equation'
-VERSION='ode-order-feedback-draft-2'
+VERSION='ode-order-feedback-draft-3'
 HERE=Path(__file__).with_suffix('')
 SOURCE=json.loads((HERE/'source.json').read_text())
 KP_UUID=SOURCE['record'][':knowledge-point/id']
@@ -185,12 +185,44 @@ def easy_parts(p):
 
 # Moderate authored: exactly3 equations, at most2 derivative occurrences each;
 # orders1–3, target1–3, source-root/power/product layouts. No higher order notation.
-def selection_parts(p,hard=False):
+def selection_shapes(hard=False):
+    """Finite assessed equation catalog. Labels and ordering are not slots."""
+    if not hard:return tuple((n,form) for n in range(1,4) for form in range(3))
+    return tuple((n,form,m,p,e) for n in range(4,9) for form in range(3)
+                 for m in range(1,n-1) for p in range(2,6) for e in range(n+1,11))
+
+def canonical_selection_parameters(p,hard=False):
+    """Validate the complete triplet, reject repeated assessed shapes, then sort
+    joint slots. Thus all six permutations have identical content/task IDs and
+    canonical metadata. Raw source records never call this authored-only helper.
+    """
     keys={'target','orders','forms'} | ({'lower','powers','exponents'} if hard else set())
     if set(p)!=keys:raise ValueError('selection parameter keys')
     target=strict_int(p['target'],'target',4 if hard else 1,8 if hard else 3)
     for name in keys-{'target'}:
         if not isinstance(p[name],list) or len(p[name])!=3:raise ValueError(name+' must be three entries')
+    shapes=[]
+    for i,n in enumerate(p['orders']):
+        strict_int(n,'equation order',4 if hard else 1,8 if hard else 3)
+        form=strict_int(p['forms'][i],'form',0,2)
+        shape=(n,form)
+        if hard:shape+=(strict_int(p['lower'][i],'lower',1,n-2),strict_int(p['powers'][i],'derivative power',2,5),strict_int(p['exponents'][i],'ordinary exponent',n+1,10))
+        shapes.append(shape)
+    if len(set(shapes))!=3:raise ValueError('three distinct assessed equation shapes required')
+    shapes.sort()
+    result={'target':target,'orders':[s[0] for s in shapes],'forms':[s[1] for s in shapes]}
+    if hard:result.update(lower=[s[2] for s in shapes],powers=[s[3] for s in shapes],exponents=[s[4] for s in shapes])
+    return result
+
+def selection_parameters_from_shapes(target,shapes,hard=False):
+    p={'target':target,'orders':[s[0] for s in shapes],'forms':[s[1] for s in shapes]}
+    if hard:p.update(lower=[s[2] for s in shapes],powers=[s[3] for s in shapes],exponents=[s[4] for s in shapes])
+    return canonical_selection_parameters(p,hard)
+
+def article(n):return 'an' if n==8 else 'a'
+
+def selection_parts(p,hard=False):
+    p=canonical_selection_parameters(p,hard);target=p['target']
     equations=[]
     for i,n in enumerate(p['orders']):
         strict_int(n,'equation order',4 if hard else 1,8 if hard else 3)
@@ -213,8 +245,8 @@ def selection_parts(p,hard=False):
         n=highest(eq);correct=n==target
         matching='also ' if correct and selected else ''
         if correct:
-            sentence=f'- Equation {key} is {matching}a {ORDINAL[target]}-order differential equation. The highest derivative in this equation is $'+derivative(n,'unicode')+'.$';selected.append(key)
-        else:sentence=f'- Equation {key} is not a {ORDINAL[target]}-order differential equation. The highest derivative in this equation is $'+derivative(n,'unicode')+f',$ so this is a {ORDINAL[n]}-order differential equation.'
+            sentence=f'- Equation {key} is {matching}{article(target)} {ORDINAL[target]}-order differential equation. The highest derivative in this equation is $'+derivative(n,'unicode')+'.$';selected.append(key)
+        else:sentence=f'- Equation {key} is not {article(target)} {ORDINAL[target]}-order differential equation. The highest derivative in this equation is $'+derivative(n,'unicode')+f',$ so this is {article(n)} {ORDINAL[n]}-order differential equation.'
         solution+='\n\n'+sentence
         specs.append((key,'checkbox',['false','true'],'true' if correct else 'false','text'))
     label=('none' if not selected else 'all three' if len(selected)==3 else ' and '.join(selected)+' only')
@@ -226,9 +258,8 @@ def selection_parts(p,hard=False):
 def sample(level,rng):
     if level=='easy':
         n=rng.randint(3,7);return {'n':n,'m':rng.randint(1,n-2),'e':rng.randint(n+2,9),'layout':rng.choice(['left','right'])}
-    p={'target':rng.randint(4,8) if level=='hard' else rng.randint(1,3),'orders':[rng.randint(4,8) if level=='hard' else rng.randint(1,3) for _ in range(3)],'forms':[rng.randint(0,2) for _ in range(3)]}
-    if level=='hard':p.update(lower=[rng.randint(1,n-2) for n in p['orders']],powers=[rng.randint(2,5) for _ in range(3)],exponents=[rng.randint(n+1,10) for n in p['orders']])
-    return p
+    hard=level=='hard';target=rng.randint(4,8) if hard else rng.randint(1,3)
+    return selection_parameters_from_shapes(target,rng.sample(selection_shapes(hard),3),hard)
 
 @checked_math_content
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
@@ -249,6 +280,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         profile=profile or 'authored';
         if profile!='authored':raise ValueError('authored template profile')
         p=sample(level,rng) if parameters is None else parameters
+        if level!='easy':p=canonical_selection_parameters(p,level=='hard')
         problem,solution,specs,task=easy_parts(p) if level=='easy' else selection_parts(p,level=='hard')
         authored=True;eligible=True;recipes=['highest derivative','lower derivative','displayed ordinary exponent','one too few derivative applications','one too many derivative applications'] if level=='easy' else 'printed highest derivative equals requested target'
         feedback={}
@@ -268,7 +300,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
             if (key,answer[':answer/value']) in feedback:answer[':answer/feedback']=feedback[(key,answer[':answer/value'])]
         if kind=='radio':rng.shuffle(answers)
         fields.append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/'+kind,':answer-field/choices':answers,':answer-field/correct':[':answer/id',ident(identity,key,correct)]})
-    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':ident(identity),':question/difficulty':':question.difficulty/'+level,':question/problem':problem,':question/worked-solution':solution,':question/answer-fields':fields},'generation':{'version':VERSION,'template':template,'profile':profile,'level':level,'seed':seed,'parameters':p,'source':PROVENANCE,'source_id':source_id,'authored':authored,'eligible_for_learning':eligible,'evidence_only':not eligible,'recipes':recipes,'domain':{'source':'strictly increasing original derivative-order map, integers1–8; complete displayed-component bank positive/distinct; source feedback derivative references/ordinals bound to printed equation','easy':'3<=n<=7;1<=m<=n−2;n+2<=e<=9;two derivative occurrences','moderate':'target/orders1–3;three equations;forms0–2','hard':'target/orders4–8;lower1..n−2;powers2–5;ordinary exponentsn+1..10;four derivative occurrences each'},'mathematical_fingerprint':hash_value(task),'content_fingerprint':identity,'plots':'none','dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__}}}
+    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':ident(identity),':question/difficulty':':question.difficulty/'+level,':question/problem':problem,':question/worked-solution':solution,':question/answer-fields':fields},'generation':{'version':VERSION,'template':template,'profile':profile,'level':level,'seed':seed,'parameters':p,'equation_slot_policy':('three distinct assessed shapes, joint canonical order' if authored and level!='easy' else 'original source order' if not authored else 'single equation'),'source':PROVENANCE,'source_id':source_id,'authored':authored,'eligible_for_learning':eligible,'evidence_only':not eligible,'recipes':recipes,'domain':{'source':'strictly increasing original derivative-order map, integers1–8; complete displayed-component bank positive/distinct; source feedback derivative references/ordinals bound to printed equation','easy':'3<=n<=7;1<=m<=n−2;n+2<=e<=9;two derivative occurrences','moderate':'target/orders1–3;three distinct assessed equations, joint canonical order;forms0–2','hard':'target/orders4–8;lower1..n−2;powers2–5;ordinary exponentsn+1..10;four derivative occurrences each;three distinct assessed equations, joint canonical order'},'mathematical_fingerprint':hash_value(task),'content_fingerprint':identity,'plots':'none','dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__}}}
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('easy',seed,template,field_type,parameters,profile)
 def generate_moderate(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('moderate',seed,template,field_type,parameters,profile)
 def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('hard',seed,template,field_type,parameters,profile)

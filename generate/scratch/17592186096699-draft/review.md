@@ -1,6 +1,6 @@
 # Basis-2275 particular-solution draft review
 
-Original replay preserves missing attributes and documented source errors. Banks use standard-TeX notation from scaling recipes. All observed banks are evidence-only. Independent inventory is separately identified.
+Original replay preserves missing attributes and documented source errors. Bank values use declared standard-TeX normalization from complete scaling recipes. Source strings remain in source.json and notation-audit.json. All observed banks are evidence-only. Independent inventory is separately labeled.
 
 ## q-119078 — unrated original raw replay
 
@@ -16,7 +16,7 @@ Find the particular solution to the differential equation $(x - 1)^{2}y^{′} =-
 
 ### easy generated observed-pattern variant (scale 2; repaired and ineligible)
 
-Find the particular solution to the differential equation ${y}^{′} x^{2} - 2 {y}^{′} x + {y}^{′}=-4$ that satisfies the condition $y(2) = 2$.
+Find the particular solution to the differential equation ${y}^{′} (x - 1)^{2}=-4$ that satisfies the condition $y(2) = 2$.
 
 - $y=-2 + \frac{4}{x - 1}$
 - $y=1 + \frac{2}{x - 1}$
@@ -50,7 +50,7 @@ $$
 
 ### easy generated normal family variant (authored method bank)
 
-Find the particular solution to the differential equation ${y}^{′} x^{2} - 2 {y}^{′} x + {y}^{′}=4$ that satisfies the condition $y(2) = 7$.
+Find the particular solution to the differential equation ${y}^{′} (x - 1)^{2}=4$ that satisfies the condition $y(2) = 7$.
 
 - $y=3 + \frac{4}{x - 1}$
 - $y=4 - \frac{4}{x - 1}$
@@ -706,7 +706,7 @@ $$
 
 ### easy generated observed-pattern variant (scale 2; repaired and ineligible)
 
-Find the particular solution to the differential equation ${y}^{′} x^{2} - 6 {y}^{′} x + 9 {y}^{′}=16$ that satisfies the condition $y(4)=2.$
+Find the particular solution to the differential equation ${y}^{′} (x - 3)^{2}=16$ that satisfies the condition $y(4)=2.$
 
 $y=\,${{field-1}}
 
@@ -738,7 +738,7 @@ $$
 
 ### easy generated normal family variant (authored method bank)
 
-Find the particular solution to the differential equation ${y}^{′} x^{2} - 6 {y}^{′} x + 9 {y}^{′}=-16$ that satisfies the condition $y(4)=7.$
+Find the particular solution to the differential equation ${y}^{′} (x - 3)^{2}=-16$ that satisfies the condition $y(4)=7.$
 
 $y=\,${{field-1}}
 
@@ -1240,7 +1240,7 @@ $$
 Find the particular solution to the differential equation below that satisfies the condition $f(0)=-4.$
 
 $$
-2 {f}^{′}(x) x + {f}^{′}(x) - 4=0.
+{f}^{′}(x) (2 x + 1) - 4=0.
 $$
 
 - $f(x)=2 \ln{(|{2 x + 1}| )} - 2$
@@ -1284,7 +1284,7 @@ $$
 Find the particular solution to the differential equation below that satisfies the condition $f(0)=7.$
 
 $$
-2 {f}^{′}(x) x + {f}^{′}(x) + 4=0.
+{f}^{′}(x) (2 x + 1) + 4=0.
 $$
 
 - $f(x)=2 \ln{(|{2 x + 1}| )} + 7$
@@ -1427,6 +1427,40 @@ $$
 
 ## easy generated default variant 1
 
+Find the particular solution to the differential equation ${f}^{′}(x) + 8 x=-2$ that satisfies the condition $f(1)=9.$
+
+- $f(x)=17 - 8 x$
+- $f(x)=- 8 x^{2} - 2 x + 19$
+- $f(x)=4 x^{2} + 2 x + 3$
+- $f(x)=- 4 x^{2} - 2 x + 15$
+- $f(x)=- 4 x^{2} - 2 x + 6$
+
+First, we rearrange the equation to give
+
+$$
+{f}^{′}(x)=(-2)\cdot(4x+1).
+$$
+
+Then, we integrate both sides with respect to $x,$ and get
+
+$$
+\begin{aligned}\int {f}^{′}(x)\,\text{d}x & =(-2)\cdot(\int (4x+1)\,\text{d}x )\\ f(x) & =(-2)\cdot(4\int x\,\text{d}x+\int \text{d}x )\\  & =(-2)\cdot(4(\frac{1}{2}{x}^{2})+x)+C \\  & =(-2)\cdot(2{x}^{2}+x)+C.\end{aligned}
+$$
+
+So our general solution is $f(x)=(-2)\cdot(2{x}^{2}+x)+C.$ To find a particular solution, we substitute the condition $f(1)=9$ into our solution and obtain a value for $C,$ as follows:
+
+$$
+\begin{aligned}9 & =(-2)\cdot(2(1)^{2}+1)+C \\ 9 & =(-2)\cdot(2+1)+C \\ C & =15.\end{aligned}
+$$
+
+Therefore, our particular solution is
+
+$$
+f(x)=- 4 x^{2} - 2 x + 15.
+$$
+
+## easy generated default variant 2
+
 Find the particular solution to the differential equation below that satisfies the condition $y(1)=-6.$
 
 $$
@@ -1463,75 +1497,7 @@ $$
 y=- \frac{x^{3}}{3} - x^{2} - \frac{14}{3}.
 $$
 
-## easy generated default variant 2
-
-Find the particular solution to the differential equation ${f}^{′}(x) + 8 x=-2$ that satisfies the condition $f(1)=9.$
-
-- $f(x)=17 - 8 x$
-- $f(x)=- 8 x^{2} - 2 x + 19$
-- $f(x)=4 x^{2} + 2 x + 3$
-- $f(x)=- 4 x^{2} - 2 x + 15$
-- $f(x)=- 4 x^{2} - 2 x + 6$
-
-First, we rearrange the equation to give
-
-$$
-{f}^{′}(x)=(-2)\cdot(4x+1).
-$$
-
-Then, we integrate both sides with respect to $x,$ and get
-
-$$
-\begin{aligned}\int {f}^{′}(x)\,\text{d}x & =(-2)\cdot(\int (4x+1)\,\text{d}x )\\ f(x) & =(-2)\cdot(4\int x\,\text{d}x+\int \text{d}x )\\  & =(-2)\cdot(4(\frac{1}{2}{x}^{2})+x)+C \\  & =(-2)\cdot(2{x}^{2}+x)+C.\end{aligned}
-$$
-
-So our general solution is $f(x)=(-2)\cdot(2{x}^{2}+x)+C.$ To find a particular solution, we substitute the condition $f(1)=9$ into our solution and obtain a value for $C,$ as follows:
-
-$$
-\begin{aligned}9 & =(-2)\cdot(2(1)^{2}+1)+C \\ 9 & =(-2)\cdot(2+1)+C \\ C & =15.\end{aligned}
-$$
-
-Therefore, our particular solution is
-
-$$
-f(x)=- 4 x^{2} - 2 x + 15.
-$$
-
 ## moderate generated default variant 1
-
-Find the particular solution to the differential equation ${y}^{′} - e^{- 2 x}=- 8 x$ that satisfies the condition $y(0)=12.$
-
-- $y=- 8 x + 11 + e^{- 2 x}$
-- $y=4 x^{2} + \frac{23}{2} + \frac{e^{- 2 x}}{2}$
-- $y=- 4 x^{2} + \frac{25}{2} - \frac{e^{- 2 x}}{2}$
-- $y=- 4 x^{2} + \frac{1}{2} - \frac{e^{- 2 x}}{2}$
-- $y=- 4 x^{2} + 14 - 2 e^{- 2 x}$
-
-First, we rearrange the equation to give
-
-$$
-{y}^{′}=(-1)\cdot(8x-{e}^{-2x}).
-$$
-
-Then, we integrate both sides with respect to $x,$ and get
-
-$$
-\begin{aligned}\int {y}^{′}\,\text{d}x & =(-1)\cdot(\int (8x-{e}^{-2x})\,\text{d}x )\\ y & =(-1)\cdot(8\int x\,\text{d}x-\int {e}^{-2x}\,\text{d}x )\\  & =(-1)\cdot(8(\frac{{x}^{2}}{2})-(-\frac{{e}^{-2x}}{2}))+C \\  & =(-1)\cdot(4{x}^{2}+\frac{{e}^{-2x}}{2})+C.\end{aligned}
-$$
-
-So our general solution is $y=(-1)\cdot(4{x}^{2}+\frac{{e}^{-2x}}{2})+C.$ To find a particular solution, we substitute the condition $y(0)=12$ into our solution and obtain a value for $C,$ as follows:
-
-$$
-\begin{aligned}12 & =(-1)\cdot(4(0)^{2}+\frac{{e}^{-2(0)}}{2})+C \\ 12 & =(-1)\cdot(0+\frac{1}{2})+C \\ C & =\frac{25}{2}.\end{aligned}
-$$
-
-Therefore, our particular solution is
-
-$$
-y=- 4 x^{2} + \frac{25}{2} - \frac{e^{- 2 x}}{2}.
-$$
-
-## moderate generated default variant 2
 
 Find the particular solution to the differential equation ${y}^{′} - 2 e^{- 2 x}=- 16 x$ that satisfies the condition $y(0)=9.$
 
@@ -1565,39 +1531,41 @@ $$
 y=- 8 x^{2} + 10 - e^{- 2 x}.
 $$
 
-## hard generated default variant 1
+## moderate generated default variant 2
 
-Find the particular solution to the differential equation $g'(x)=- 2 x^{2}- 2 e^{- 2 x}+2 \cos{(x )}$ that satisfies the condition $g(0)=-6.$
+Find the particular solution to the differential equation ${y}^{′} - e^{- 2 x}=- 8 x$ that satisfies the condition $y(0)=12.$
 
-$g(x)=\,${{field-1}}
+- $y=- 8 x + 11 + e^{- 2 x}$
+- $y=4 x^{2} + \frac{23}{2} + \frac{e^{- 2 x}}{2}$
+- $y=- 4 x^{2} + \frac{25}{2} - \frac{e^{- 2 x}}{2}$
+- $y=- 4 x^{2} + \frac{1}{2} - \frac{e^{- 2 x}}{2}$
+- $y=- 4 x^{2} + 14 - 2 e^{- 2 x}$
 
-- $- \frac{2 x^{3}}{3} + 2 \sin{(x )} - 7 + e^{- 2 x}$
-
-The derivative is already isolated, so we have
+First, we rearrange the equation to give
 
 $$
-g'(x)=- 2 x^{2}- 2 e^{- 2 x}+2 \cos{(x )}.
+{y}^{′}=(-1)\cdot(8x-{e}^{-2x}).
 $$
 
 Then, we integrate both sides with respect to $x,$ and get
 
 $$
-\begin{aligned}\int g'(x)\,\text{d}x & =\int (- 2 x^{2}- 2 e^{- 2 x}+2 \cos{(x )})\,\text{d}x \\ g(x) & =\int (- 2 x^{2})\,\text{d}x + \int (- 2 e^{- 2 x})\,\text{d}x + \int (2 \cos{(x )})\,\text{d}x \\ & =(-2)(\frac{x^{3}}{3}) + (-2)(- \frac{e^{- 2 x}}{2}) + (2)(\sin{(x )})+C \\ & =- \frac{2 x^{3}}{3}+e^{- 2 x}+2 \sin{(x )}+C.\end{aligned}
+\begin{aligned}\int {y}^{′}\,\text{d}x & =(-1)\cdot(\int (8x-{e}^{-2x})\,\text{d}x )\\ y & =(-1)\cdot(8\int x\,\text{d}x-\int {e}^{-2x}\,\text{d}x )\\  & =(-1)\cdot(8(\frac{{x}^{2}}{2})-(-\frac{{e}^{-2x}}{2}))+C \\  & =(-1)\cdot(4{x}^{2}+\frac{{e}^{-2x}}{2})+C.\end{aligned}
 $$
 
-So our general solution is $g(x)=- \frac{2 x^{3}}{3}+e^{- 2 x}+2 \sin{(x )}+C.$ To find a particular solution, we substitute the condition $g(0)=-6$ into our solution and obtain a value for $C,$ as follows:
+So our general solution is $y=(-1)\cdot(4{x}^{2}+\frac{{e}^{-2x}}{2})+C.$ To find a particular solution, we substitute the condition $y(0)=12$ into our solution and obtain a value for $C,$ as follows:
 
 $$
-\begin{aligned}-6 & =(- \frac{2 (0)^{3}}{3}) + (e^{- 2 (0)}) + (2 \sin{((0) )})+C \\ -6 & =(0) + (1) + (0)+C \\ C & =-7.\end{aligned}
+\begin{aligned}12 & =(-1)\cdot(4(0)^{2}+\frac{{e}^{-2(0)}}{2})+C \\ 12 & =(-1)\cdot(0+\frac{1}{2})+C \\ C & =\frac{25}{2}.\end{aligned}
 $$
 
 Therefore, our particular solution is
 
 $$
-g(x)=- \frac{2 x^{3}}{3} + 2 \sin{(x )} - 7 + e^{- 2 x}.
+y=- 4 x^{2} + \frac{25}{2} - \frac{e^{- 2 x}}{2}.
 $$
 
-## hard generated default variant 2
+## hard generated default variant 1
 
 Find the particular solution to the differential equation $g'(x)=- 2 x^{2}- 2 e^{- 2 x}+2 \cos{(x )}$ that satisfies the condition $g(0)=-6.$
 
@@ -1629,5 +1597,37 @@ Therefore, our particular solution is
 
 $$
 g(x)=- \frac{2 x^{3}}{3} + 2 \sin{(x )} - 7 + e^{- 2 x}.
+$$
+
+## hard generated default variant 2
+
+Find the particular solution to the differential equation $f'(x)=- 6 x^{2}+3 e^{- 2 x}+2 \cos{(x )}$ that satisfies the condition $f(0)=-4.$
+
+$f(x)=\,${{field-1}}
+
+- $- 2 x^{3} + 2 \sin{(x )} - \frac{5}{2} - \frac{3 e^{- 2 x}}{2}$
+
+The derivative is already isolated, so we have
+
+$$
+f'(x)=- 6 x^{2}+3 e^{- 2 x}+2 \cos{(x )}.
+$$
+
+Then, we integrate both sides with respect to $x,$ and get
+
+$$
+\begin{aligned}\int f'(x)\,\text{d}x & =\int (- 6 x^{2}+3 e^{- 2 x}+2 \cos{(x )})\,\text{d}x \\ f(x) & =\int (- 6 x^{2})\,\text{d}x + \int (3 e^{- 2 x})\,\text{d}x + \int (2 \cos{(x )})\,\text{d}x \\ & =(-6)(\frac{x^{3}}{3}) + (3)(- \frac{e^{- 2 x}}{2}) + (2)(\sin{(x )})+C \\ & =- 2 x^{3}- \frac{3 e^{- 2 x}}{2}+2 \sin{(x )}+C.\end{aligned}
+$$
+
+So our general solution is $f(x)=- 2 x^{3}- \frac{3 e^{- 2 x}}{2}+2 \sin{(x )}+C.$ To find a particular solution, we substitute the condition $f(0)=-4$ into our solution and obtain a value for $C,$ as follows:
+
+$$
+\begin{aligned}-4 & =(- 2 (0)^{3}) + (- \frac{3 e^{- 2 (0)}}{2}) + (2 \sin{((0) )})+C \\ -4 & =(0) + (- \frac{3}{2}) + (0)+C \\ C & =- \frac{5}{2}.\end{aligned}
+$$
+
+Therefore, our particular solution is
+
+$$
+f(x)=- 2 x^{3} + 2 \sin{(x )} - \frac{5}{2} - \frac{3 e^{- 2 x}}{2}.
 $$
 

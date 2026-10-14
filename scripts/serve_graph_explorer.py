@@ -31,6 +31,7 @@ import subprocess
 import sys
 import threading
 import time
+import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlsplit
 from inventory_jobs import InventoryJobs
@@ -132,6 +133,39 @@ def assignment_request(body: dict, directory: Path, learner: str) -> dict:
     return body
 
 
+def admit_answer(body: dict, directory: Path, learner: str, received: int) -> dict:
+    """Keep the first server-observed submission time across retries and conflicts."""
+    if body.get('action') != 'answer':
+        return body
+    key = body.get('submissionId', body.get('requestId', ''))
+    if not isinstance(key, str) or not 8 <= len(key) <= 128 or not all(c.isascii() and (c.isalnum() or c == '-') for c in key):
+        raise ValueError('A stable submission ID is required')
+    original = {k: v for k, v in body.items() if k not in {'requestId', 'submittedAt'}}
+    folder = directory / 'admissions'
+    folder.mkdir(parents=True, exist_ok=True)
+    path = folder / f'{learner}-{key}.json'
+    with (folder / 'admission.lock').open('a') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        if path.exists():
+            saved = json.loads(path.read_text())
+            if saved['input'] != original:
+                raise ValueError('Submission ID already used for a different answer')
+        else:
+            saved = {'input': original, 'submittedAt': received}
+            staging = path.with_suffix('.tmp')
+            with staging.open('w') as output:
+                json.dump(saved, output, separators=(',', ':'))
+                output.flush()
+                os.fsync(output.fileno())
+            staging.replace(path)
+            descriptor = os.open(folder, os.O_RDONLY)
+            try:
+                os.fsync(descriptor)
+            finally:
+                os.close(descriptor)
+    return {**body, 'submittedAt': saved['submittedAt']}
+
+
 class NativeWorker:
     """Keep EDB's connection and immutable block caches resident between requests."""
 
@@ -214,7 +248,7 @@ def build_learning(edb_root: Path, *, test: bool = False) -> Path:
     for name, directory in (("edb_core", edb_deps), ("serde_json", deps), ("chrono", deps), ("course_academy_engine", deps)):
         libraries[name] = max(directory.glob(f"lib{name}-*.rlib"), key=lambda p: p.stat().st_mtime_ns)
     sources = (source, ROOT / "scripts/page_reader.rs", ROOT / "scripts/activity_history.rs", ROOT / "scripts/assignment_reader.rs", ROOT / "scripts/assignment_interaction.rs",
-               ROOT / "scripts/developer_preview.rs")
+               ROOT / "scripts/developer_preview.rs", ROOT / "scripts/study_stats.rs")
     if test:
         sources += (ROOT / "scripts/assignment_interaction_tests.rs", ROOT / "scripts/retrieval_tests.rs",
                     ROOT / "engine/edb/progress.rs", ROOT / "engine/edb/configuration.rs",
@@ -396,20 +430,24 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
             return True
 
         def learning_request(self, body: dict) -> None:
+            request_started = time.monotonic()
+            received = time.time_ns() // 1_000_000
             if learning_worker is None:
                 self.send_bytes(503, b'{"error":"Learning API is unavailable."}', "application/json")
                 return
             try:
                 directory = Path(environment["LEARNING_REQUEST_DIR"])
                 directory.mkdir(parents=True, exist_ok=True)
+                body = admit_answer(body, directory, learner, received)
                 # Shared across request threads and server processes. Native writes also
                 # compare the EDB basis, covering writers outside this application.
-                page_read = body.get("action") in {"assignments", "activity-history"}
+                page_read = body.get("action") in {"assignments", "activity-history", "study-stats"}
                 # Immutable list reads have their own peer and never record
                 # learner state. Scheduler/write admission must not block them.
                 with (nullcontext() if page_read else (directory / "api.lock").open("a")) as lock:
                     if lock is not None:
                         fcntl.flock(lock, fcntl.LOCK_EX)
+                    admitted = time.monotonic()
                     if body.get("action") in MUTATING_ACTIONS and developer_mode(mode_path):
                         self.send_bytes(409, b'{"error":"Developer mode is on. No activity or learner changes are recorded.","code":"developer-mode"}', "application/json")
                         return
@@ -419,6 +457,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                         body = {**body, "preview": developer_mode(mode_path)}
                     body = assignment_request(body, directory, learner)
                     response = (page_worker if page_read else learning_worker).request(body)
+                    finished = time.monotonic()
                     refresh_inventory = response.get('ok') and (body.get('action') in {'queue','target','queue-topic','submit','expire','start','study-topic'} or body.get('action') == 'continue' and response.get('data', {}).get('status') in {'completed','failed'}) and not developer_mode(mode_path)
                 if response.get("ok"):
                     self.send_bytes(200, json.dumps(response["data"], separators=(",", ":")).encode(), "application/json; charset=utf-8")
@@ -427,6 +466,8 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 else:
                     self.log_error("Learning request failed (%s)", response.get("code", "validation"))
                     self.send_bytes(503 if response.get("code") == "unavailable" else 409, json.dumps({"error": response.get("error", "The request could not be completed."), "code": response.get("code", "validation")}).encode(), "application/json; charset=utf-8")
+                if body.get('action') in MUTATING_ACTIONS:
+                    print(f"Learning request {body.get('action')} {body.get('requestId', '')}: admission={(admitted-request_started)*1000:.1f} ms worker={(finished-admitted)*1000:.1f} ms total={(time.monotonic()-request_started)*1000:.1f} ms", file=sys.stderr)
             except (subprocess.SubprocessError, OSError, ValueError) as error:
                 self.log_error("Learning request failed (%s)", type(error).__name__)
                 self.send_bytes(503, b'{"error":"Could not reach the local learning database. Retry the same request."}', "application/json")
@@ -473,7 +514,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 return
             action = urlsplit(self.path).path.removeprefix("/api/")
             # Profile preferences remain editable in inspection mode; study writes do not.
-            if action not in MUTATING_ACTIONS | {"developer-mode", "preview-answer", "profile-settings"}:
+            if action not in MUTATING_ACTIONS | {"developer-mode", "preview-answer", "profile-settings", "daily-xp-goal"}:
                 self.send_bytes(404, b"Not found", "text/plain")
                 return
             try:
@@ -521,6 +562,18 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 self.learning_request({"action": "inventory"})
             elif path == "/api/home":
                 self.learning_request({"action": "home"})
+            elif path == "/api/study-stats":
+                try:
+                    boundaries = query.get("dayStarts", [])
+                    if len(boundaries) != 1 or len(boundaries[0]) > 160:
+                        raise ValueError("Provide local day boundaries")
+                    days = [int(value) for value in boundaries[0].split(",")]
+                    if len(days) != 8:
+                        raise ValueError("Provide eight local day boundaries")
+                except ValueError:
+                    self.send_bytes(400, b'{"error":"Provide eight local day boundaries."}', "application/json")
+                    return
+                self.learning_request({"action": "study-stats", "dayStarts": days})
             elif path == "/api/assignments":
                 self.learning_request({"action": "assignments"})
             elif path == "/api/assignment":
@@ -579,7 +632,7 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                 self.send_bytes(200, (ROOT / "ui/Assignments.html").read_bytes(), "text/html; charset=utf-8")
             elif path.startswith("/ui/") and path != "/ui/Math-Academy-Graph-Explorer.html":
                 asset = (ROOT / path.lstrip("/")).resolve()
-                allowed = {"Activity.html", "activity.js", "activity.css", "learning.js", "learning.css", "route-matrix.css", "question-fields.js", "prose-lists.js", "mathjax-config.js", "Learning.html", "MA-Logo.svg", "favicon.svg", "navigation.js", "navigation.css", "Course.html", "course.js", "course.css", "Topic.html", "topic.js", "topic.css", "targets.js", "target-weeks.js", "targets.css", "Assignments.html", "assignments.js", "assignments.css", "developer-mode.js", "step-menu.js", "topic-menu.js", "profile.js", "course-catalog.js", "course-catalog.css", "requests.js"}
+                allowed = {"Activity.html", "activity.js", "activity.css", "learning.js", "learning.css", "study-stats.js", "route-matrix.css", "question-fields.js", "prose-lists.js", "mathjax-config.js", "Learning.html", "MA-Logo.svg", "favicon.svg", "navigation.js", "navigation.css", "Course.html", "course.js", "course.css", "Topic.html", "topic.js", "topic.css", "targets.js", "target-weeks.js", "targets.css", "Assignments.html", "assignments.js", "assignments.css", "developer-mode.js", "step-menu.js", "topic-menu.js", "profile.js", "course-catalog.js", "course-catalog.css", "requests.js"}
                 if not asset.is_relative_to((ROOT / "ui").resolve()) or not asset.is_file() or not (asset.name in allowed or asset.is_relative_to((ROOT / "ui/vendor").resolve())):
                     self.send_bytes(404, b"Not found", "text/plain")
                 else:

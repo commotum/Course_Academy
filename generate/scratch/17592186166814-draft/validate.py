@@ -4,6 +4,8 @@ import copy,hashlib,importlib.util,itertools,json,re,subprocess,sys
 sys.dont_write_bytecode=True
 from pathlib import Path
 import sympy as sp
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from independent_math import slopes as independently_transcribed_slopes
 HERE=Path(__file__).resolve().parent
 SCRIPT=HERE.parent/(HERE.name+'.py')
 spec=importlib.util.spec_from_file_location('kp',SCRIPT);g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
@@ -50,6 +52,9 @@ def math_check(r):
     binding=binding_check(r);independent,dependent=binding
     answers=g.designation(q[':question/problem'],eqs)
     assert answers==[correct(f) for f in q[':question/answer-fields']]
+    independent_slopes=independently_transcribed_slopes(r['generation'],q[':question/difficulty'].split('/')[-1])
+    for eq,reference in zip(eqs,independent_slopes):
+        assert sp.simplify(g.isolate(eq,binding)-reference)==0,('independent displayed input mismatch',eq)
     errors=[]
     blocks=q[':question/worked-solution'].split('- Equation ')[1:]
     assert len(blocks)==3
@@ -178,6 +183,13 @@ for level,catalog in g.CATALOG.items():
 binding_instances=0;sampled_bindings={};slot_coverage={};mutation_results=[]
 for level in g.CATALOG:
     base=g.generate(level,seed=11)['generation']['parameters']
+    invariant=g.generate(level,parameters=base)
+    for permutation in itertools.permutations(base['kinds']):
+        permuted=g.generate(level,seed=33,parameters=base|{'kinds':list(permutation)})
+        assert permuted['question'][':question/id']==invariant['question'][':question/id']
+        assert permuted['generation']['mathematical_fingerprint']==invariant['generation']['mathematical_fingerprint']
+        assert permuted['question'][':question/problem']==invariant['question'][':question/problem']
+        assert permuted['question'][':question/worked-solution']==invariant['question'][':question/worked-solution']
     fingerprint=None
     for independent,dependent in g.BINDING_PAIRS:
         for notation in g.NOTATIONS:
@@ -264,7 +276,7 @@ write('source-cases.json',cases);write('review.json',review);write('native-input
 engine=SCRIPT.parent.parent/'runs/current/check-engine'
 subprocess.run([str(engine),str(HERE/'native-input.json'),str(HERE/'native-report.json')],check=True)
 report=json.loads((HERE/'native-report.json').read_text())
-validation={'status':'passed','source':{k:g.CAPTURE[k] for k in ('database','basis','lineage')},'source_questions':len(cases),'complete_banks_matched':45,'displayed_values_matched':90,'correct_designations_matched':45,'exact_prompts':15,'raw_exact_solutions':15,'original_mathematically_correct_solutions':14,'supported_repaired_solutions':1,'raw_source_errors':raw_errors,'key_presence_parity':15,'source_results':source_results,'authored_semantic_tasks':counts,'exhausted_semantic_tasks':task_samples,'random_samples_checked':180,'boundary_instances_checked':48,'source_boundary_instances_checked':source_boundary_instances,'source_binding_instances_checked':source_binding_instances,'authored_binding_instances_checked':binding_instances,'sampled_binding_slot_coverage':sampled_bindings,'slot_coverage':slot_coverage,'structural_mutation_checks':mutation_results,'classification_zero_cancellation_boundaries':len(classification_boundaries)+1,'registered_baseline_files_preserved':len(baseline_paths),'independent_inventory_questions':0,'native_accepted':report['accepted_checks'],'native_rejected':report['rejected_checks'],'native_unresolved':report['documented_unresolved_checks'],'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'script_sha256':hashlib.sha256(SCRIPT.read_bytes()).hexdigest(),'database_writes':0}
+validation={'status':'passed','source':{k:g.CAPTURE[k] for k in ('database','basis','lineage')},'independently_transcribed_template_slopes_checked':True,'source_questions':len(cases),'complete_banks_matched':45,'displayed_values_matched':90,'correct_designations_matched':45,'exact_prompts':15,'raw_exact_solutions':15,'original_mathematically_correct_solutions':14,'supported_repaired_solutions':1,'raw_source_errors':raw_errors,'key_presence_parity':15,'source_results':source_results,'authored_semantic_tasks':counts,'exhausted_semantic_tasks':task_samples,'random_samples_checked':180,'boundary_instances_checked':48,'source_boundary_instances_checked':source_boundary_instances,'source_binding_instances_checked':source_binding_instances,'authored_binding_instances_checked':binding_instances,'triplet_permutation_identity_regressions':18,'sampled_binding_slot_coverage':sampled_bindings,'slot_coverage':slot_coverage,'structural_mutation_checks':mutation_results,'classification_zero_cancellation_boundaries':len(classification_boundaries)+1,'registered_baseline_files_preserved':len(baseline_paths),'independent_inventory_questions':0,'native_accepted':report['accepted_checks'],'native_rejected':report['rejected_checks'],'native_unresolved':report['documented_unresolved_checks'],'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'script_sha256':hashlib.sha256(SCRIPT.read_bytes()).hexdigest(),'database_writes':0}
 write('validation.json',validation)
 lines=['# Review','', 'All original records retain captured wording. Raw evidence is ineligible for learner use. One source error is listed in template-extraction.md. Generated labels identify authored versus source-mask variants.','']
 for item in review:

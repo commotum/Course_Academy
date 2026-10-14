@@ -1,5 +1,22 @@
 # Classification
 
+## Current inventory refresh, basis 2496
+
+The same math lineage now contains nine practice sources: the eight below plus
+easy q-107128 (exhaust-pipe cooling). This fifth easy prose template has one
+radio field, five Fahrenheit math choices, and no plots. It supplies ambient
+74 F, initial 140 F, rate 0.08 per minute and time 3 minutes; the rounded answer
+is 126 F. It follows the same 13-row known-rate IVP solution. All nine sources
+are captured in source.json; the original basis-1356 snapshot and frozen manifest
+remain in reference/replenishment/original-frozen/. Version 1.1.0 adds the exhaust
+layout and complete bank replay; normal generation uses authored operation banks.
+
+q-107122 remains unchanged in EDB, but its three contradictory unit labels
+exclude it from the validated available pool. This is a bounded source-quality
+exception, not an unsupported difficulty. Easy, moderate and the explicitly
+authored hard band are supported. Native inventory counts and stricter validated
+counts are retained separately during preparation.
+
 Snapshot: database **math**, basis **1356**, lineage **01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1**. KP 17592186078584 / bfe4679b-9724-5502-89d4-05e7661a1b5f, *Solving an Inhibited Decay Model*, owning topic 17592186049131 / MA649. All eight practice records are captured in source.json; the canonical example e-6677 is curriculum evidence, not a ninth practice source.
 
 | Difficulty | Observed practice | Field shape | Mathematical method | Prose/layout templates | Bank profiles | Plots |

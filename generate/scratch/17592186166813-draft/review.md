@@ -1102,34 +1102,34 @@ Which of the following are second-order ordinary differential equations?
 
 Select all that apply.
 
-- **I.** $({y}^{″})^{2}+x{y}^{′}={y}^{5}$
-- **II.** $\sqrt{{y}^{′}+x}=3{y}^{4}$
-- **III.** $\sqrt{{y}^{″}+x}=3{y}^{4}$
+- **I.** ${y}^{′}+3x{y}^{′}={x}^{5}y$
+- **II.** $({y}^{′})^{2}+x{y}^{′}={y}^{5}$
+- **III.** ${y}^{‴}+3x{y}^{′}={x}^{5}y$
 
 Field I (:answer-field.type/checkbox)
-- false
-- true [correct]
+- false [correct]
+- true
 
 Field II (:answer-field.type/checkbox)
 - false [correct]
 - true
 
 Field III (:answer-field.type/checkbox)
-- false
-- true [correct]
+- false [correct]
+- true
 
 Worked solution:
 A differential equation is of second-order if the largest derivative term in the equation is ${y}^{″}.$
 
 Keeping this in mind, let's check each given equation.
 
-- Equation I is a second-order differential equation. The highest derivative in this equation is ${y}^{″}.$
+- Equation I is not a second-order differential equation. The highest derivative in this equation is ${y}^{′},$ so this is a first-order differential equation.
 
 - Equation II is not a second-order differential equation. The highest derivative in this equation is ${y}^{′},$ so this is a first-order differential equation.
 
-- Equation III is also a second-order differential equation. The highest derivative in this equation is ${y}^{″}.$
+- Equation III is not a second-order differential equation. The highest derivative in this equation is ${y}^{‴},$ so this is a third-order differential equation.
 
-Therefore, the correct answer is "I and III only."
+Therefore, the correct answer is "none."
 
 ---
 
@@ -1140,13 +1140,13 @@ Which of the following are first-order ordinary differential equations?
 
 Select all that apply.
 
-- **I.** ${y}^{‴}+3x{y}^{′}={x}^{5}y$
+- **I.** ${y}^{′}+3x{y}^{′}={x}^{5}y$
 - **II.** $\sqrt{{y}^{′}+x}=3{y}^{4}$
 - **III.** $\sqrt{{y}^{″}+x}=3{y}^{4}$
 
 Field I (:answer-field.type/checkbox)
-- false [correct]
-- true
+- false
+- true [correct]
 
 Field II (:answer-field.type/checkbox)
 - false
@@ -1161,13 +1161,13 @@ A differential equation is of first-order if the largest derivative term in the 
 
 Keeping this in mind, let's check each given equation.
 
-- Equation I is not a first-order differential equation. The highest derivative in this equation is ${y}^{‴},$ so this is a third-order differential equation.
+- Equation I is a first-order differential equation. The highest derivative in this equation is ${y}^{′}.$
 
-- Equation II is a first-order differential equation. The highest derivative in this equation is ${y}^{′}.$
+- Equation II is also a first-order differential equation. The highest derivative in this equation is ${y}^{′}.$
 
 - Equation III is not a first-order differential equation. The highest derivative in this equation is ${y}^{″},$ so this is a second-order differential equation.
 
-Therefore, the correct answer is "II only."
+Therefore, the correct answer is "I and II only."
 
 ---
 
@@ -1178,13 +1178,13 @@ Which of the following are seventh-order ordinary differential equations?
 
 Select all that apply.
 
-- **I.** ${x}^{8}{y}^{′}+y\frac{{\text{d}}^{4}y}{\text{d}{x}^{4}}={y}^{‴}(\frac{{\text{d}}^{7}y}{\text{d}{x}^{7}})^{3}$
-- **II.** ${y}^{″}(\frac{{\text{d}}^{4}y}{\text{d}{x}^{4}})^{3}={x}^{5}{y}^{′}+y\frac{{\text{d}}^{3}y}{\text{d}{x}^{3}}$
-- **III.** ${y}^{‴}(\frac{{\text{d}}^{6}y}{\text{d}{x}^{6}})^{4}={x}^{9}{y}^{′}+y\frac{{\text{d}}^{4}y}{\text{d}{x}^{4}}$
+- **I.** ${y}^{″}(\frac{{\text{d}}^{4}y}{\text{d}{x}^{4}})^{4}+{x}^{10}{y}^{′}=y\frac{{\text{d}}^{3}y}{\text{d}{x}^{3}}$
+- **II.** ${y}^{‴}(\frac{{\text{d}}^{6}y}{\text{d}{x}^{6}})^{4}={x}^{9}{y}^{′}+y\frac{{\text{d}}^{4}y}{\text{d}{x}^{4}}$
+- **III.** $\frac{{\text{d}}^{5}y}{\text{d}{x}^{5}}(\frac{{\text{d}}^{8}y}{\text{d}{x}^{8}})^{2}={x}^{9}{y}^{′}+y\frac{{\text{d}}^{6}y}{\text{d}{x}^{6}}$
 
 Field I (:answer-field.type/checkbox)
-- false
-- true [correct]
+- false [correct]
+- true
 
 Field II (:answer-field.type/checkbox)
 - false [correct]
@@ -1199,13 +1199,13 @@ A differential equation is of seventh-order if the largest derivative term in th
 
 Keeping this in mind, let's check each given equation.
 
-- Equation I is a seventh-order differential equation. The highest derivative in this equation is $\frac{{\text{d}}^{7}y}{\text{d}{x}^{7}}.$
+- Equation I is not a seventh-order differential equation. The highest derivative in this equation is $\frac{{\text{d}}^{4}y}{\text{d}{x}^{4}},$ so this is a fourth-order differential equation.
 
-- Equation II is not a seventh-order differential equation. The highest derivative in this equation is $\frac{{\text{d}}^{4}y}{\text{d}{x}^{4}},$ so this is a fourth-order differential equation.
+- Equation II is not a seventh-order differential equation. The highest derivative in this equation is $\frac{{\text{d}}^{6}y}{\text{d}{x}^{6}},$ so this is a sixth-order differential equation.
 
-- Equation III is not a seventh-order differential equation. The highest derivative in this equation is $\frac{{\text{d}}^{6}y}{\text{d}{x}^{6}},$ so this is a sixth-order differential equation.
+- Equation III is not a seventh-order differential equation. The highest derivative in this equation is $\frac{{\text{d}}^{8}y}{\text{d}{x}^{8}},$ so this is an eighth-order differential equation.
 
-Therefore, the correct answer is "I only."
+Therefore, the correct answer is "none."
 
 ---
 
@@ -1216,9 +1216,9 @@ Which of the following are fifth-order ordinary differential equations?
 
 Select all that apply.
 
-- **I.** $\frac{{\text{d}}^{4}y}{\text{d}{x}^{4}}(\frac{{\text{d}}^{8}y}{\text{d}{x}^{8}})^{2}+{x}^{10}{y}^{′}=y\frac{{\text{d}}^{5}y}{\text{d}{x}^{5}}$
-- **II.** ${y}^{″}(\frac{{\text{d}}^{4}y}{\text{d}{x}^{4}})^{5}={x}^{8}{y}^{′}+y\frac{{\text{d}}^{3}y}{\text{d}{x}^{3}}$
-- **III.** ${y}^{″}(\frac{{\text{d}}^{6}y}{\text{d}{x}^{6}})^{2}={x}^{7}{y}^{′}+y\frac{{\text{d}}^{3}y}{\text{d}{x}^{3}}$
+- **I.** ${y}^{′}(\frac{{\text{d}}^{7}y}{\text{d}{x}^{7}})^{4}={x}^{8}{y}^{′}+y\frac{{\text{d}}^{2}y}{\text{d}{x}^{2}}$
+- **II.** $\frac{{\text{d}}^{5}y}{\text{d}{x}^{5}}(\frac{{\text{d}}^{8}y}{\text{d}{x}^{8}})^{5}={x}^{9}{y}^{′}+y\frac{{\text{d}}^{6}y}{\text{d}{x}^{6}}$
+- **III.** ${x}^{10}{y}^{′}+y\frac{{\text{d}}^{5}y}{\text{d}{x}^{5}}=\frac{{\text{d}}^{4}y}{\text{d}{x}^{4}}(\frac{{\text{d}}^{8}y}{\text{d}{x}^{8}})^{4}$
 
 Field I (:answer-field.type/checkbox)
 - false [correct]
@@ -1237,11 +1237,11 @@ A differential equation is of fifth-order if the largest derivative term in the 
 
 Keeping this in mind, let's check each given equation.
 
-- Equation I is not a fifth-order differential equation. The highest derivative in this equation is $\frac{{\text{d}}^{8}y}{\text{d}{x}^{8}},$ so this is a eighth-order differential equation.
+- Equation I is not a fifth-order differential equation. The highest derivative in this equation is $\frac{{\text{d}}^{7}y}{\text{d}{x}^{7}},$ so this is a seventh-order differential equation.
 
-- Equation II is not a fifth-order differential equation. The highest derivative in this equation is $\frac{{\text{d}}^{4}y}{\text{d}{x}^{4}},$ so this is a fourth-order differential equation.
+- Equation II is not a fifth-order differential equation. The highest derivative in this equation is $\frac{{\text{d}}^{8}y}{\text{d}{x}^{8}},$ so this is an eighth-order differential equation.
 
-- Equation III is not a fifth-order differential equation. The highest derivative in this equation is $\frac{{\text{d}}^{6}y}{\text{d}{x}^{6}},$ so this is a sixth-order differential equation.
+- Equation III is not a fifth-order differential equation. The highest derivative in this equation is $\frac{{\text{d}}^{8}y}{\text{d}{x}^{8}},$ so this is an eighth-order differential equation.
 
 Therefore, the correct answer is "none."
 
@@ -1396,3 +1396,79 @@ Keeping this in mind, let's check each given equation.
 - Equation III is not a fifth-order differential equation. The highest derivative in this equation is $\frac{{\text{d}}^{6}y}{\text{d}{x}^{6}},$ so this is a sixth-order differential equation.
 
 Therefore, the correct answer is "II only."
+
+---
+
+### Generated authored hard article check / target 7
+
+Difficulty: hard | authored
+Which of the following are seventh-order ordinary differential equations?
+
+Select all that apply.
+
+- **I.** ${y}^{′}(\frac{{\text{d}}^{7}y}{\text{d}{x}^{7}})^{2}+{x}^{9}{y}^{′}=y\frac{{\text{d}}^{2}y}{\text{d}{x}^{2}}$
+- **II.** ${y}^{″}(\frac{{\text{d}}^{8}y}{\text{d}{x}^{8}})^{3}={x}^{10}{y}^{′}+y\frac{{\text{d}}^{3}y}{\text{d}{x}^{3}}$
+- **III.** ${x}^{9}{y}^{′}+y\frac{{\text{d}}^{4}y}{\text{d}{x}^{4}}={y}^{‴}(\frac{{\text{d}}^{8}y}{\text{d}{x}^{8}})^{4}$
+
+Field I (:answer-field.type/checkbox)
+- false
+- true [correct]
+
+Field II (:answer-field.type/checkbox)
+- false [correct]
+- true
+
+Field III (:answer-field.type/checkbox)
+- false [correct]
+- true
+
+Worked solution:
+A differential equation is of seventh-order if the largest derivative term in the equation is $\frac{{\text{d}}^{7}y}{\text{d}{x}^{7}}.$
+
+Keeping this in mind, let's check each given equation.
+
+- Equation I is a seventh-order differential equation. The highest derivative in this equation is $\frac{{\text{d}}^{7}y}{\text{d}{x}^{7}}.$
+
+- Equation II is not a seventh-order differential equation. The highest derivative in this equation is $\frac{{\text{d}}^{8}y}{\text{d}{x}^{8}},$ so this is an eighth-order differential equation.
+
+- Equation III is not a seventh-order differential equation. The highest derivative in this equation is $\frac{{\text{d}}^{8}y}{\text{d}{x}^{8}},$ so this is an eighth-order differential equation.
+
+Therefore, the correct answer is "I only."
+
+---
+
+### Generated authored hard article check / target 8
+
+Difficulty: hard | authored
+Which of the following are eighth-order ordinary differential equations?
+
+Select all that apply.
+
+- **I.** ${y}^{′}(\frac{{\text{d}}^{7}y}{\text{d}{x}^{7}})^{2}+{x}^{9}{y}^{′}=y\frac{{\text{d}}^{2}y}{\text{d}{x}^{2}}$
+- **II.** ${y}^{″}(\frac{{\text{d}}^{8}y}{\text{d}{x}^{8}})^{3}={x}^{10}{y}^{′}+y\frac{{\text{d}}^{3}y}{\text{d}{x}^{3}}$
+- **III.** ${x}^{9}{y}^{′}+y\frac{{\text{d}}^{4}y}{\text{d}{x}^{4}}={y}^{‴}(\frac{{\text{d}}^{8}y}{\text{d}{x}^{8}})^{4}$
+
+Field I (:answer-field.type/checkbox)
+- false [correct]
+- true
+
+Field II (:answer-field.type/checkbox)
+- false
+- true [correct]
+
+Field III (:answer-field.type/checkbox)
+- false
+- true [correct]
+
+Worked solution:
+A differential equation is of eighth-order if the largest derivative term in the equation is $\frac{{\text{d}}^{8}y}{\text{d}{x}^{8}}.$
+
+Keeping this in mind, let's check each given equation.
+
+- Equation I is not an eighth-order differential equation. The highest derivative in this equation is $\frac{{\text{d}}^{7}y}{\text{d}{x}^{7}},$ so this is a seventh-order differential equation.
+
+- Equation II is an eighth-order differential equation. The highest derivative in this equation is $\frac{{\text{d}}^{8}y}{\text{d}{x}^{8}}.$
+
+- Equation III is also an eighth-order differential equation. The highest derivative in this equation is $\frac{{\text{d}}^{8}y}{\text{d}{x}^{8}}.$
+
+Therefore, the correct answer is "II and III only."

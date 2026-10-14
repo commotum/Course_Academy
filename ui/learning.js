@@ -1,3 +1,4 @@
+import { createStudySidebar } from './study-stats.js';
 import { marked } from './vendor/marked/marked.esm.js';
 import { romanLists } from './prose-lists.js';
 import { createCoursePicker, topicReferenceURL } from './navigation.js';
@@ -191,6 +192,10 @@ async function mutation(path, values) {
   if (busy) return;
   if (path === '/api/start' || path === '/api/study-topic') preloadLessonRendering();
   const body = { ...values, requestId: crypto.randomUUID() };
+  if (path === '/api/answer' && task?.type !== 'assessment') {
+    body.submissionId = body.requestId;
+    stopClock(); updateTaskTimer();
+  }
   const revision = settingsRevision;
   let resumeBody = null;
   let expireBody = null;
@@ -485,9 +490,13 @@ function home({ preserve = false } = {}) {
 async function loadHome(signal, preserve) {
   const revision = targetRevision;
   task = null; clock.running = false; assessmentClock = null;
-  if (!preserve) {
+  let page = $('main').querySelector('.study-activities');
+  if (!preserve || !page) {
     resetMain();
-    $('main').append(el('div', 'loading', 'Loading your next activities…'));
+    const layout = el('div', 'study-layout');
+    page = el('section', 'study-activities');
+    page.append(el('div', 'loading', 'Loading your next activities…'));
+    layout.append(page, createStudySidebar()); $('main').append(layout);
   }
   setBusy(true); clearError();
   try {
@@ -498,14 +507,14 @@ async function loadHome(signal, preserve) {
       : await api('/api/queue', queueRequest, { signal });
     queueRequest = null;
     if (signal.aborted || modeChanging) return;
-    updateHeader(data); resetMain();
+    updateHeader(data); page.replaceChildren();
     document.title = 'Study · Course Academy';
     if (data.needsCourseSelection) {
       const welcome = el('section', 'empty-state');
       welcome.append(el('p', 'eyebrow', 'Your study desk'), el('h1', '', 'Choose your first course'),
         el('p', '', 'Select a course in your profile to see lessons and begin studying.'),
         actionButton('Choose a course →', 'primary', () => $('learnerName').click()));
-      $('main').append(welcome);
+      page.append(welcome);
       homeRendered = revision === targetRevision;
       return;
     }
@@ -513,7 +522,7 @@ async function loadHome(signal, preserve) {
     const selfDirected = data.learner?.selfDirected === true;
     const intro = el('div'); intro.append(el('p', 'eyebrow', 'Your study desk'), el('h1', '', selfDirected ? 'Your queue' : 'Next up'), el('p', 'subheading', isDeveloperMode() ? 'Preview activities without starting an attempt or recording progress.' : selfDirected ? 'Resume unfinished lessons or study topics you selected.' : 'Lessons interleaved across your course modules, with spaced reviews and assessments.'));
     head.append(intro);
-    $('main').append(head);
+    page.append(head);
     const queue = el('section', 'queue'); queue.setAttribute('aria-label', 'Next five activities');
     const activities = (data.activities || []).slice(0, 5);
     activities.forEach((activity, index) => {
@@ -557,12 +566,12 @@ async function loadHome(signal, preserve) {
       empty.append(el('h2', '', queueEmpty ? 'Your queue is empty' : 'No ready activities yet'), el('p', '', data.message || (queueEmpty ? 'Add topics to your queue, or turn off self-directed mode for course recommendations.' : selfDirected ? 'Your queued topics have no unfinished lessons with enough available questions.' : 'There are no eligible activities with enough available questions.')));
       queue.append(empty);
     }
-    $('main').append(queue);
-    if (!isDeveloperMode() && data.assessmentStatus?.unavailableReason) $('main').append(el('p', 'notice', data.assessmentStatus.unavailableReason + '. You can continue studying.'));
-    if (!isDeveloperMode() && data.supplyShortages?.length) $('main').append(el('p', 'notice', 'Fresh questions are being prepared for upcoming activities. Available activities remain below.'));
+    page.append(queue);
+    if (!isDeveloperMode() && data.assessmentStatus?.unavailableReason) page.append(el('p', 'notice', data.assessmentStatus.unavailableReason + '. You can continue studying.'));
+    if (!isDeveloperMode() && data.supplyShortages?.length) page.append(el('p', 'notice', 'Fresh questions are being prepared for upcoming activities. Available activities remain below.'));
     const foot = el('div', 'queue-foot');
     foot.append(el('span', '', `${activities.length} ${activities.length === 1 ? 'activity' : 'activities'} ready`), el('span', '', isDeveloperMode() ? 'Developer mode · Nothing recorded' : 'Your progress is saved as you work.'));
-    $('main').append(foot);
+    page.append(foot);
     if (data.waitingActivities?.length) {
       const waiting = el('section', 'waiting-lessons');
       waiting.append(el('h2', 'step-title', 'Unfinished practice'));
@@ -571,9 +580,9 @@ async function loadHome(signal, preserve) {
         row.append(el('span', '', `${activity.title} · ${activity.pendingCount} unfinished ${activity.pendingCount === 1 ? 'skill' : 'skills'}`), actionButton(activity.canResumePractice ? 'Resume practice →' : 'Review · waiting for questions →', 'secondary', () => openTask(activity.taskId)));
         waiting.append(row);
       }
-      $('main').append(waiting);
+      page.append(waiting);
     }
-    if (data.practiceNotice || data.notice) $('main').append(el('p', 'notice', data.practiceNotice || data.notice));
+    if (data.practiceNotice || data.notice) page.append(el('p', 'notice', data.practiceNotice || data.notice));
     homeRendered = revision === targetRevision;
   } catch (error) {
     if (error.code === 'basis-conflict') queueRequest = null;

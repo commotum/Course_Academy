@@ -1,7 +1,7 @@
 """Frozen order generator validation: decoded printed derivatives, full fidelity,
 SymPy derivative objects, finite catalogs, strict domains and real field grading.
 """
-import hashlib, importlib.util, itertools, json, re, subprocess, sys
+import hashlib, importlib.util, itertools, json, math, re, subprocess, sys
 from pathlib import Path
 import sympy as sp
 from functools import lru_cache
@@ -143,6 +143,11 @@ def check(r):
         assert WORDS[re.search(r'is of (\w+)-order',opening)[1]]==target
         assert printed_orders(opening)==[target]
         rows=re.findall(r'- \*\*(I|II|III)\.\*\* \$(.*?)\$',p);assert len(rows)==3
+        if r['generation']['authored']:
+            assert len({eq for _,eq in rows})==3,'authored equations must be distinct'
+            assert len({json.dumps(e,sort_keys=True) for e in g.semantic_equations(p)})==3,'assessed shapes must be distinct'
+            assert not re.search(r'\ba eighth-order\b',sol)
+            assert not re.search(r'\ban (?!eighth-order)',sol)
         sentences=[x for x in sol.split('\n\n') if x.startswith('- Equation')];assert len(sentences)==3
         expected_selected=[]
         for (key,eq),f,s in zip(rows,fields,sentences):
@@ -150,8 +155,8 @@ def check(r):
             assert actual_equation(eq)['order']==n
             assert max(printed_orders(s))==n
             assert (' is not ' in s)==(n!=target)
-            named_target=re.search(r' is (?:not )?(?:also )?a (\w+)-order',s)[1];assert WORDS[named_target]==target
-            if n!=target:assert WORDS[re.search(r'so this is a (\w+)-order',s)[1]]==n
+            named_target=re.search(r' is (?:not )?(?:also )?an? (\w+)-order',s)[1];assert WORDS[named_target]==target
+            if n!=target:assert WORDS[re.search(r'so this is an? (\w+)-order',s)[1]]==n
             if n==target:expected_selected.append(key)
             for answer in f[':answer-field/choices']:
                 if ':answer/feedback' in answer:
@@ -163,8 +168,18 @@ def check(r):
                     if key=='II':assert 'The factor y^5 does not change the differential order.' in text
                     if key=='III':assert 'The square root does not change the differential order.' in text
             if r['generation']['authored']:
-                if r['generation']['level']=='moderate':assert 1<=n<=3 and len(orders)<=2
-                else:assert 4<=n<=8 and len(orders)==4 and r'\frac' in eq and re.search('[′″‴]',eq)
+                params=r['generation']['parameters'];i=('I','II','III').index(key)
+                assert n==params['orders'][i]
+                model=actual_equation(eq);x,y=model['x'],model['y'];dn=sp.Symbol('D'+str(n));d1=sp.Symbol('D1');form=params['forms'][i]
+                if r['generation']['level']=='moderate':
+                    assert 1<=n<=3 and len(orders)<=2
+                    expected=[(dn+3*x*d1,x**5*y),(sp.sqrt(dn+x),3*y**4),(dn**2+x*d1,y**5)][form]
+                else:
+                    assert 4<=n<=8 and len(orders)==4 and r'\frac' in eq and re.search('[′″‴]',eq)
+                    m,power,e=(params[name][i] for name in ('lower','powers','exponents'))
+                    a=sp.Symbol('D'+str(m))*dn**power;b=x**e*d1;c=y*sp.Symbol('D'+str(m+1))
+                    expected=[(a+b,c),(a,b+c),(b+c,a)][form]
+                assert sp.simplify(model['left']-expected[0])==0 and sp.simplify(model['right']-expected[1])==0,'declared joint slots must match printed equation'
         conclusion=sol.split('Therefore, the correct answer is ')[-1]
         selected=re.findall(r'\b(?:I|II|III)\b',conclusion)
         if 'all three' in conclusion:selected=['I','II','III']
@@ -180,6 +195,21 @@ def native(label,r):
         else:
             for a in f[':answer-field/choices']:checks.append({'field_index':i,'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'every owned displayed choice'})
     return {'label':label,'record':r,'checks':checks}
+
+def permutation_check(r,level):
+    """Permute every joint equation component together; canonical presentation,
+    all owned fields/banks, task/content IDs and parameter metadata must agree.
+    """
+    p=r['generation']['parameters'];checked=0
+    for permutation in itertools.permutations(range(3)):
+        permuted={name:([value[i] for i in permutation] if isinstance(value,list) else value) for name,value in p.items()}
+        other=check(g.generate(level,r['generation']['seed'],parameters=permuted))
+        assert other['question']==r['question'],'parallel equation permutation changed displayed content or owned bank'
+        assert other['generation']['mathematical_fingerprint']==r['generation']['mathematical_fingerprint']
+        assert other['generation']['content_fingerprint']==r['generation']['content_fingerprint']
+        assert other['generation']['parameters']==p,'joint canonical metadata not stable'
+        checked+=1
+    return checked
 
 def main():
     review=[];fixtures=[];cases=[];source_log=[];changed=[];feedback_matches=0;attribute_matches=0
@@ -228,7 +258,7 @@ def main():
                 feedback_changed+=sum(':answer/feedback' in a for f in r['question'][':question/answer-fields'] for a in f[':answer-field/choices'])
                 if values in [(2,3),(3,4),(4,8)]:review.append({'label':'Generated q-96676 complete feedback operand slots '+str(values),'record':r})
         source_domains[sid]={'eligible_maps':accepted,'whole_catalog_rejections':rejected,'considered_maps':accepted+rejected}
-    fingerprints={};instances={};positions=set();slot_coverage={}
+    fingerprints={};instances={};positions=set();slot_coverage={};permutation_checks={'moderate':0,'hard':0}
     for level in ('easy','moderate','hard'):
         seen=set();covered={}
         for seed in range(400):
@@ -243,15 +273,18 @@ def main():
                 f=r['question'][':question/answer-fields'][0]
                 positions.add(next(i for i,a in enumerate(f[':answer-field/choices']) if a[':answer/id']==f[':answer-field/correct'][1]))
             if seed<8:fixtures.append(native(level+'/'+str(seed),r))
+            if level=='hard' and seed<32:permutation_checks['hard']+=permutation_check(r,level)
             if seed<2:review.append({'label':'Generated authored '+level+' example '+str(seed+1),'record':r})
         fingerprints[level]=len(seen);instances[level]=400;slot_coverage[level]={k:sorted(v) for k,v in covered.items()}
         if level=='easy':assert covered['n']==set(range(3,8)) and covered['layout']=={'left','right'}
         else:
             assert covered['target']==set(range(4,9) if level=='hard' else range(1,4))
-            for i in range(3):
-                assert covered['orders['+str(i)+']']==set(range(4,9) if level=='hard' else range(1,4))
-                assert covered['forms['+str(i)+']']==set(range(3))
-                if level=='hard':assert covered['powers['+str(i)+']']==set(range(2,6))
+            # Labels are canonical sorting positions, not separate assessed roles.
+            # Report each position but require coverage over the unordered pool.
+            aggregate=lambda name:set.union(*(covered[name+'['+str(i)+']'] for i in range(3)))
+            assert aggregate('orders')==set(range(4,9) if level=='hard' else range(1,4))
+            assert aggregate('forms')==set(range(3))
+            if level=='hard':assert aggregate('powers')==set(range(2,6))
     assert positions==set(range(5)), 'radio order must not fix the correct slot'
     # Enumerate actual finite easy and moderate meaningful catalog fingerprints.
     catalogs={}
@@ -263,24 +296,33 @@ def main():
                     r=check(g.generate_easy(parameters=dict(n=n,m=m,e=e,layout=layout)));count+=1;tasks.add(r['generation']['mathematical_fingerprint'])
     catalogs['easy']={'explicit_parameter_tuples':count,'semantic_tasks':len(tasks)}
     tasks=set();count=0
+    moderate_shapes=list(itertools.product(range(1,4),range(3)))
     for target in range(1,4):
-        for orders in itertools.product(range(1,4),repeat=3):
-            for forms in itertools.product(range(3),repeat=3):
-                r=check(g.generate_moderate(parameters={'target':target,'orders':list(orders),'forms':list(forms)}));count+=1;tasks.add(r['generation']['mathematical_fingerprint'])
-    catalogs['moderate']={'explicit_parameter_tuples':count,'semantic_tasks':len(tasks)}
+        for shapes in itertools.combinations(moderate_shapes,3):
+            r=check(g.generate_moderate(parameters={'target':target,'orders':[s[0] for s in shapes],'forms':[s[1] for s in shapes]}));count+=1;tasks.add(r['generation']['mathematical_fingerprint']);permutation_checks['moderate']+=permutation_check(r,'moderate')
+    assert count==len(tasks)==3*math.comb(9,3)==252
+    catalogs['moderate']={'per_equation_structures':9,'unordered_distinct_equation_sets':math.comb(9,3),'explicit_canonical_parameter_tuples':count,'semantic_tasks':len(tasks),'formula':'3 targets * C(9 distinct equation shapes,3); permutations excluded; repeated shapes rejected'}
     # Hard is a bounded finite product, not an unbounded numeric sampler. Distinct
     # full order/power/exponent/layout tuples; no variable/seed aliases counted.
     equation_count=sum((n-2)*4*(10-n)*3 for n in range(4,9))
-    catalogs['hard']={'per_equation_structures':equation_count,'three_equation_tasks':5*equation_count**3,'formula':'5 targets * (sum[n=4..8](n−2)*4 powers*(10−n) exponents*3 layouts)^3','enumeration':'factorized; equation structures independently enumerated below'}
+    catalogs['hard']={'per_equation_structures':equation_count,'unordered_distinct_equation_sets':math.comb(equation_count,3),'three_equation_tasks':5*math.comb(equation_count,3),'formula':'5 targets * C(sum[n=4..8](n−2)*4 powers*(10−n) exponents*3 layouts,3); distinct shapes; permutations excluded','enumeration':'factorized; each equation shape checked with two distinct eligible companions'}
+    hard_shapes=[(n,form,m,power,e) for n in range(4,9) for form in range(3) for m in range(1,n-1) for power in range(2,6) for e in range(n+1,11)]
     tasks=set()
     for n in range(4,9):
         for m in range(1,n-1):
             for power in range(2,6):
                 for exponent in range(n+1,11):
                     for form in range(3):
-                        p={'target':4,'orders':[n]*3,'forms':[form]*3,'lower':[m]*3,'powers':[power]*3,'exponents':[exponent]*3};r=check(g.generate_hard(parameters=p));tasks.add(json.dumps(g.semantic_equations(r['question'][':question/problem'])[0],sort_keys=True))
+                        shape=(n,form,m,power,exponent);companions=[x for x in hard_shapes if x!=shape][:2];shapes=sorted([shape,*companions])
+                        p={'target':4,'orders':[s[0] for s in shapes],'forms':[s[1] for s in shapes],'lower':[s[2] for s in shapes],'powers':[s[3] for s in shapes],'exponents':[s[4] for s in shapes]}
+                        r=check(g.generate_hard(parameters=p));tasks.add(json.dumps(g.semantic_equations(r['question'][':question/problem'])[shapes.index(shape)],sort_keys=True))
     assert len(tasks)==equation_count;catalogs['hard']['verified_equation_structures']=len(tasks)
     invalid=[('easy',dict(n=2,m=1,e=5,layout='left')),('easy',dict(n=7,m=6,e=9,layout='left')),('easy',dict(n=3,m=1,e=4,layout='left')),('moderate',dict(target=4,orders=[1,2,3],forms=[0,1,2])),('hard',dict(target=4,orders=[3,4,5],forms=[0,1,2],lower=[1,1,1],powers=[2,2,2],exponents=[7,7,7])),('hard',dict(target=4,orders=[4,4,4],forms=[0,1,2],lower=[3,1,1],powers=[2,2,2],exponents=[7,7,7]))]
+    duplicate_inputs=[('moderate',dict(target=1,orders=[1,1,1],forms=[0,0,0])),('moderate',dict(target=2,orders=[1,1,2],forms=[0,0,2])),('hard',dict(target=4,orders=[4,4,4],forms=[0,0,0],lower=[1,1,1],powers=[2,2,2],exponents=[5,5,5])),('hard',dict(target=4,orders=[4,4,5],forms=[0,0,2],lower=[1,1,2],powers=[2,2,3],exponents=[5,5,8]))]
+    for level,p in duplicate_inputs:
+        try:g.generate(level,parameters=p)
+        except ValueError as error:assert 'three distinct assessed equation shapes' in str(error)
+        else:raise AssertionError('repeated equation accepted')
     for level,p in invalid:
         try:g.generate(level,parameters=p)
         except ValueError:pass
@@ -329,6 +371,15 @@ def main():
         except AssertionError:negatives+=1
         else:raise AssertionError('stale target solution accepted')
         changed_targets.append({'level':level,'parameters_before':base,'parameters_after':other,'equations_held_fixed':True});review.extend([{'label':'Generated '+level+' target-only baseline','record':a},{'label':'Generated '+level+' target-only changed target','record':b}]);fixtures.extend([native(level+' fixed equations first target',a),native(level+' fixed equations changed target',b)])
+    article_checks=0
+    for target in (7,8):
+        p={'target':target,'orders':[7,8,8],'forms':[0,1,2],'lower':[1,2,3],'powers':[2,3,4],'exponents':[9,10,9]}
+        r=check(g.generate_hard(parameters=p));assert 'an eighth-order' in r['question'][':question/worked-solution'];article_checks+=1
+        review.append({'label':'Generated authored hard article check / target '+str(target),'record':r});fixtures.append(native('hard eighth-order article / target '+str(target),r))
+        mutated=g.generate_hard(parameters=p);mutated['question'][':question/worked-solution']=mutated['question'][':question/worked-solution'].replace('an eighth-order','a eighth-order',1)
+        try:check(mutated)
+        except AssertionError:negatives+=1
+        else:raise AssertionError('wrong eighth-order article accepted')
     # Feedback participates in content identity; changing a comment in an in-memory
     # source fixture leaves mathematical identity fixed. Restore immediately.
     source_choice=g.ORIGINALS['q-96676'][':question/answer-fields'][0][':answer-field/choices'][0];original_feedback=source_choice[':answer/feedback']
@@ -350,7 +401,7 @@ def main():
     save('source-cases.json',cases);save('source-fidelity.json',source_log);save('changed-source-parameters.json',changed);save('review.json',review);save('native-input.json',fixtures)
     engine=ROOT/'generate/runs/current/check-engine';proc=subprocess.run([str(engine),str(HERE/'native-input.json'),str(HERE/'native-report.json')],capture_output=True,text=True);assert proc.returncode==0,proc.stdout+proc.stderr
     native_report=json.loads((HERE/'native-report.json').read_text())
-    result={'passed':True,**g.PROVENANCE,'version':g.VERSION,'source_questions':len(cases),'matched_feedback':feedback_matches,'feedback_total':6,'answer_attribute_presence_matches':attribute_matches,'feedback_operand_checks':feedback_changed,'source_profile_domains':source_domains,'sampled_slot_coverage':slot_coverage,'changed_target_cases':changed_targets,'symbolic_equation_readback':{'unique_equations':actual_equation.cache_info().currsize,'rejects':'zero/cancelled highest derivative, foreign bound variable, unsupported derivative/PDE operator'},'registered_baseline_unchanged':True,'exact_prompts':len(cases),'exact_full_solutions':len(cases),'exact_attribute_presence':len(cases),'complete_banks':len(cases),'matched_options':sum(x['matched_options'] for x in source_log),'correct_designations':sum(x['correct_designations'] for x in source_log),'changed_source_recipes':len(changed),'source_prose_repairs':1,'authored_levels':['easy','moderate','hard'],'random_instances_checked':instances,'sampled_meaningful_tasks':fingerprints,'finite_catalogs':catalogs,'strict_domain_rejections':len(invalid),'api_domain_rejections':len(api_invalid),'radio_correct_positions_verified':sorted(positions),'negative_controls':negatives,'native_grading':{k:native_report[k] for k in ['entry_point','accepted_checks','rejected_checks','documented_unresolved_checks']},'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'unresolved_findings':['Historical scalar radio distractor intent is underdetermined; displayed-component catalogs retained only as explicit evidence replay; no recovered historical-error-intent claim.'],'source_anomalies':['q-167787 prompt RHS f(x), worked solution RHS (1/2)e^x. Order unaffected; raw replay exact, separate repaired prose profile.'],'database_writes':0}
+    result={'passed':True,**g.PROVENANCE,'version':g.VERSION,'source_questions':len(cases),'matched_feedback':feedback_matches,'feedback_total':6,'answer_attribute_presence_matches':attribute_matches,'feedback_operand_checks':feedback_changed,'source_profile_domains':source_domains,'sampled_slot_coverage':slot_coverage,'changed_target_cases':changed_targets,'symbolic_equation_readback':{'unique_equations':actual_equation.cache_info().currsize,'rejects':'zero/cancelled highest derivative, foreign bound variable, unsupported derivative/PDE operator'},'registered_baseline_unchanged':True,'exact_prompts':len(cases),'exact_full_solutions':len(cases),'exact_attribute_presence':len(cases),'complete_banks':len(cases),'matched_options':sum(x['matched_options'] for x in source_log),'correct_designations':sum(x['correct_designations'] for x in source_log),'changed_source_recipes':len(changed),'source_prose_repairs':1,'authored_levels':['easy','moderate','hard'],'random_instances_checked':instances,'sampled_meaningful_tasks':fingerprints,'finite_catalogs':catalogs,'strict_domain_rejections':len(invalid),'api_domain_rejections':len(api_invalid),'radio_correct_positions_verified':sorted(positions),'negative_controls':negatives,'duplicate_equation_input_rejections':len(duplicate_inputs),'parallel_equation_permutation_checks':permutation_checks,'eighth_order_article_checks':article_checks,'canonicalization_policy':'three distinct assessed equation shapes; joint tuples sorted before presentation, metadata and identity; source order untouched','native_grading':{k:native_report[k] for k in ['entry_point','accepted_checks','rejected_checks','documented_unresolved_checks']},'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'unresolved_findings':['Historical scalar radio distractor intent is underdetermined; displayed-component catalogs retained only as explicit evidence replay; no recovered historical-error-intent claim.'],'source_anomalies':['q-167787 prompt RHS f(x), worked solution RHS (1/2)e^x. Order unaffected; raw replay exact, separate repaired prose profile.'],'database_writes':0}
     save('validation.json',result)
     (HERE/'review.md').write_text('Order of an ordinary differential equation — review\n\nSource math basis2275. Correct answers are labeled for author review. Raw replay is evidence-only.\n\n'+'\n\n---\n\n'.join('### '+x['label']+'\n\n'+g.markdown(x['record']) for x in review)+'\n')
     print(json.dumps(result,indent=2))

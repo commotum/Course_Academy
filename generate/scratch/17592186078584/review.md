@@ -3,6 +3,186 @@
 Raw originals retain one documented unit-label anomaly. Generated variants use complete operation banks unless labeled observed profile.
 
 
+## Original q-107128 — exact raw replay
+
+The temperature $T(t),$ in degrees Fahrenheit, of an exhaust pipe of a motorcycle can be modeled by the differential equation
+
+$$
+\frac{dT}{dt}=-0.08(T-74)
+$$
+
+where $t>0$ is the time, measured in minutes. If the initial temperature of the exhaust pipe is ${140}^{∘}F,$ calculate its temperature after $3$ minutes. Round your answer to the nearest integer.
+
+- ${112}^{∘}\text{F}$
+- ${126}^{∘}\text{F}$ **(correct)**
+- ${98}^{∘}\text{F}$
+- ${134}^{∘}\text{F}$
+- ${92}^{∘}\text{F}$
+
+**Worked solution**
+
+We're told that the temperature of the exhaust pipe of a motorcycle is modeled by the inhibited decay equation
+
+$$
+\frac{dT}{dt}=-0.08(T-74).
+$$
+
+First, we integrate our differential equation by separating the variables:
+
+$$
+\begin{aligned}\frac{dT}{T-74} & =-0.08\,dt \\ \int \frac{dT}{T-74} & =-\int 0.08\,\text{d}t \\ \operatorname{ln}⁡|T-74| & =-0.08t+C\end{aligned}
+$$
+
+Since this is the solution to an inhibited decay equation, we have $T-74>0$ for all $t>0.$
+Next, we solve for $T(t),$ as follows:
+
+$$
+\begin{aligned}T-74 & ={e}^{-0.08t+C} \\ T-74 & ={e}^{C}{e}^{-0.08t} \\ T-74 & =K{e}^{-0.08t} \\ T & =74+K{e}^{-0.08t}\end{aligned}
+$$
+
+Note that $K={e}^{C}$ is a constant of integration. 
+
+We're told that the initial temperature of the exhaust pipe was ${140}^{∘}F.$ So, we apply the initial condition $T(0)=140,$ and solve for $K:$
+
+$$
+\begin{aligned}140 & =74+K{e}^{0} \\ 140 & =74+K \\ K & =66\end{aligned}
+$$
+
+Therefore, the solution to our initial value problem is
+
+$$
+T(t)=74+66{e}^{-0.08t}.
+$$
+
+Finally, the temperature of the exhaust pipe after $t=3$ minutes is
+
+$$
+T(3)=74+66{e}^{-0.08\cdot 3}≈{126}^{∘}\text{F},
+$$
+
+rounded to the nearest integer.
+
+
+## Changed observed profile q-107128 — underdetermined scalar intent
+
+The temperature $T(t),$ in degrees Fahrenheit, of an exhaust pipe of a motorcycle can be modeled by the differential equation
+
+$$
+\frac{dT}{dt}=-0.08(T-75)
+$$
+
+where $t>0$ is the time, measured in minutes. If the initial temperature of the exhaust pipe is ${141}^{∘}F,$ calculate its temperature after $4$ minutes. Round your answer to the nearest integer.
+
+- ${109}^{∘}\text{F}$
+- ${89}^{∘}\text{F}$
+- ${131}^{∘}\text{F}$
+- ${123}^{∘}\text{F}$ **(correct)**
+- ${95}^{∘}\text{F}$
+
+**Worked solution**
+
+We're told that the temperature of the exhaust pipe of a motorcycle is modeled by the inhibited decay equation
+
+$$
+\frac{dT}{dt}=-0.08(T-75).
+$$
+
+First, we integrate our differential equation by separating the variables:
+
+$$
+\begin{aligned}\frac{dT}{T-75} & =-0.08\,dt \\ \int \frac{dT}{T-75} & =-\int 0.08\,\text{d}t \\ \operatorname{ln}⁡|T-75| & =-0.08t+C\end{aligned}
+$$
+
+Since this is the solution to an inhibited decay equation, we have $T-75>0$ for all $t>0.$
+Next, we solve for $T(t),$ as follows:
+
+$$
+\begin{aligned}T-75 & ={e}^{-0.08t+C} \\ T-75 & ={e}^{C}{e}^{-0.08t} \\ T-75 & =K{e}^{-0.08t} \\ T & =75+K{e}^{-0.08t}\end{aligned}
+$$
+
+Note that $K={e}^{C}$ is a constant of integration. 
+
+We're told that the initial temperature of the exhaust pipe was ${141}^{∘}F.$ So, we apply the initial condition $T(0)=141,$ and solve for $K:$
+
+$$
+\begin{aligned}141 & =75+K{e}^{0} \\ 141 & =75+K \\ K & =66\end{aligned}
+$$
+
+Therefore, the solution to our initial value problem is
+
+$$
+T(t)=75+66{e}^{-0.08t}.
+$$
+
+Finally, the temperature of the exhaust pipe after $t=4$ minutes is
+
+$$
+T(4)=75+66{e}^{-0.08\cdot 4}≈{123}^{∘}\text{F},
+$$
+
+rounded to the nearest integer.
+
+
+## Generated default operations exhaust
+
+The temperature $T(t),$ in degrees Fahrenheit, of an exhaust pipe of a motorcycle can be modeled by the differential equation
+
+$$
+\frac{dT}{dt}=-0.04(T-64)
+$$
+
+where $t>0$ is the time, measured in minutes. If the initial temperature of the exhaust pipe is ${174}^{∘}F,$ calculate its temperature after $12$ minutes. Round your answer to the nearest integer.
+
+- ${132}^{∘}\text{F}$ **(correct)**
+- ${68}^{∘}\text{F}$
+- ${106}^{∘}\text{F}$
+- ${172}^{∘}\text{F}$
+- ${151}^{∘}\text{F}$
+
+**Worked solution**
+
+We're told that the temperature of the exhaust pipe of a motorcycle is modeled by the inhibited decay equation
+
+$$
+\frac{dT}{dt}=-0.04(T-64).
+$$
+
+First, we integrate our differential equation by separating the variables:
+
+$$
+\begin{aligned}\frac{dT}{T-64} & =-0.04\,dt \\ \int \frac{dT}{T-64} & =-\int 0.04\,\text{d}t \\ \operatorname{ln}⁡|T-64| & =-0.04t+C\end{aligned}
+$$
+
+Since this is the solution to an inhibited decay equation, we have $T-64>0$ for all $t>0.$
+Next, we solve for $T(t),$ as follows:
+
+$$
+\begin{aligned}T-64 & ={e}^{-0.04t+C} \\ T-64 & ={e}^{C}{e}^{-0.04t} \\ T-64 & =K{e}^{-0.04t} \\ T & =64+K{e}^{-0.04t}\end{aligned}
+$$
+
+Note that $K={e}^{C}$ is a constant of integration. 
+
+We're told that the initial temperature of the exhaust pipe was ${174}^{∘}F.$ So, we apply the initial condition $T(0)=174,$ and solve for $K:$
+
+$$
+\begin{aligned}174 & =64+K{e}^{0} \\ 174 & =64+K \\ K & =110\end{aligned}
+$$
+
+Therefore, the solution to our initial value problem is
+
+$$
+T(t)=64+110{e}^{-0.04t}.
+$$
+
+Finally, the temperature of the exhaust pipe after $t=12$ minutes is
+
+$$
+T(12)=64+110{e}^{-0.04\cdot 12}≈{132}^{∘}\text{F},
+$$
+
+rounded to the nearest integer.
+
+
 ## Original q-15595 — exact raw replay
 
 The temperature $T(t),$ in degrees Celsius, of a cup of coffee can be modeled by the differential equation
@@ -128,56 +308,56 @@ rounded to the nearest integer.
 The temperature $T(t),$ in degrees Celsius, of a cup of coffee can be modeled by the differential equation
 
 $$
-\frac{dT}{dt}=-0.15(T-22)
+\frac{dT}{dt}=-0.18(T-23)
 $$
 
-where $t>0$ is the time, measured in minutes. If the initial temperature of the coffee is ${80}^{∘}C,$ calculate the temperature of the coffee after $4$ minutes. Round your answer to the nearest integer.
+where $t>0$ is the time, measured in minutes. If the initial temperature of the coffee is ${81}^{∘}C,$ calculate the temperature of the coffee after $5$ minutes. Round your answer to the nearest integer.
 
-- ${39}^{∘}\text{C}$
-- ${65}^{∘}\text{C}$
-- ${54}^{∘}\text{C}$ **(correct)**
-- ${66}^{∘}\text{C}$
-- ${32}^{∘}\text{C}$
+- ${60}^{∘}\text{C}$
+- ${24}^{∘}\text{C}$
+- ${56}^{∘}\text{C}$
+- ${47}^{∘}\text{C}$ **(correct)**
+- ${33}^{∘}\text{C}$
 
 **Worked solution**
 
 We're told that the temperature of the cup of coffee is modeled by the inhibited decay equation
 
 $$
-\frac{dT}{dt}=-0.15(T-22).
+\frac{dT}{dt}=-0.18(T-23).
 $$
 
 First, we integrate our differential equation by separating the variables:
 
 $$
-\begin{aligned}\frac{dT}{T-22} & =-0.15\,dt \\ \int \frac{dT}{T-22} & =-\int 0.15\,\text{d}t \\ \operatorname{ln}⁡|T-22| & =-0.15t+C\end{aligned}
+\begin{aligned}\frac{dT}{T-23} & =-0.18\,dt \\ \int \frac{dT}{T-23} & =-\int 0.18\,\text{d}t \\ \operatorname{ln}⁡|T-23| & =-0.18t+C\end{aligned}
 $$
 
-Since this is the solution to an inhibited decay equation, we have $T-22>0$ for all $t>0.$
+Since this is the solution to an inhibited decay equation, we have $T-23>0$ for all $t>0.$
 Next, we solve for $T(t),$ as follows:
 
 $$
-\begin{aligned}T-22 & ={e}^{-0.15t+C} \\ T-22 & ={e}^{C}{e}^{-0.15t} \\ T-22 & =K{e}^{-0.15t} \\ T & =22+K{e}^{-0.15t}\end{aligned}
+\begin{aligned}T-23 & ={e}^{-0.18t+C} \\ T-23 & ={e}^{C}{e}^{-0.18t} \\ T-23 & =K{e}^{-0.18t} \\ T & =23+K{e}^{-0.18t}\end{aligned}
 $$
 
 Note that $K={e}^{C}$ is a constant of integration. 
 
-We're told that the initial temperature of the coffee was ${80}^{∘}C.$ So, we apply the initial condition $T(0)=80,$ and solve for $K:$
+We're told that the initial temperature of the coffee was ${81}^{∘}C.$ So, we apply the initial condition $T(0)=81,$ and solve for $K:$
 
 $$
-\begin{aligned}80 & =22+K{e}^{0} \\ 80 & =22+K \\ K & =58\end{aligned}
+\begin{aligned}81 & =23+K{e}^{0} \\ 81 & =23+K \\ K & =58\end{aligned}
 $$
 
 Therefore, the solution to our initial value problem is
 
 $$
-T(t)=22+58{e}^{-0.15t}.
+T(t)=23+58{e}^{-0.18t}.
 $$
 
-Finally, the temperature of the coffee after $t=4$ minutes is
+Finally, the temperature of the coffee after $t=5$ minutes is
 
 $$
-T(4)=22+58{e}^{-0.15\cdot 4}≈{54}^{∘}\text{C},
+T(5)=23+58{e}^{-0.18\cdot 5}≈{47}^{∘}\text{C},
 $$
 
 rounded to the nearest integer.
@@ -308,56 +488,56 @@ rounded to the nearest integer.
 The temperature $T(t),$ in degrees Celsius, of a cooling iron can be modeled by the differential equation
 
 $$
-\frac{dT}{dt}=-0.1(T-32)
+\frac{dT}{dt}=-0.06(T-23)
 $$
 
-where $t>0$ is the time, measured in minutes. If the initial temperature of the iron is ${154}^{∘}C,$ calculate its temperature after $4$ minutes. Round your answer to the nearest integer.
+where $t>0$ is the time, measured in minutes. If the initial temperature of the iron is ${131}^{∘}C,$ calculate its temperature after $7$ minutes. Round your answer to the nearest integer.
 
-- ${114}^{∘}\text{C}$ **(correct)**
-- ${87}^{∘}\text{C}$
-- ${82}^{∘}\text{C}$
-- ${135}^{∘}\text{C}$
-- ${132}^{∘}\text{C}$
+- ${111}^{∘}\text{C}$
+- ${70}^{∘}\text{C}$
+- ${109}^{∘}\text{C}$
+- ${94}^{∘}\text{C}$ **(correct)**
+- ${71}^{∘}\text{C}$
 
 **Worked solution**
 
 We're told that the temperature of the cooling iron is modeled by the inhibited decay equation
 
 $$
-\frac{dT}{dt}=-0.1(T-32).
+\frac{dT}{dt}=-0.06(T-23).
 $$
 
 First, we integrate our differential equation by separating the variables:
 
 $$
-\begin{aligned}\frac{dT}{T-32} & =-0.1\,dt \\ \int \frac{dT}{T-32} & =-\int 0.1\,\text{d}t \\ \operatorname{ln}⁡|T-32| & =-0.1t+C\end{aligned}
+\begin{aligned}\frac{dT}{T-23} & =-0.06\,dt \\ \int \frac{dT}{T-23} & =-\int 0.06\,\text{d}t \\ \operatorname{ln}⁡|T-23| & =-0.06t+C\end{aligned}
 $$
 
-Since this is the solution to an inhibited decay equation, we have $T-32>0$ for all $t>0.$
+Since this is the solution to an inhibited decay equation, we have $T-23>0$ for all $t>0.$
 Next, we solve for $T(t),$ as follows:
 
 $$
-\begin{aligned}T-32 & ={e}^{-0.1t+C} \\ T-32 & ={e}^{C}{e}^{-0.1t} \\ T-32 & =K{e}^{-0.1t} \\ T & =32+K{e}^{-0.1t}\end{aligned}
+\begin{aligned}T-23 & ={e}^{-0.06t+C} \\ T-23 & ={e}^{C}{e}^{-0.06t} \\ T-23 & =K{e}^{-0.06t} \\ T & =23+K{e}^{-0.06t}\end{aligned}
 $$
 
 Note that $K={e}^{C}$ is a constant of integration. 
 
-We're told that the initial temperature of the iron was ${154}^{∘}C.$ So, we apply the initial condition $T(0)=154,$ and solve for $K:$
+We're told that the initial temperature of the iron was ${131}^{∘}C.$ So, we apply the initial condition $T(0)=131,$ and solve for $K:$
 
 $$
-\begin{aligned}154 & =32+K{e}^{0} \\ 154 & =32+K \\ K & =122\end{aligned}
+\begin{aligned}131 & =23+K{e}^{0} \\ 131 & =23+K \\ K & =108\end{aligned}
 $$
 
 Therefore, the solution to our initial value problem is
 
 $$
-T(t)=32+122{e}^{-0.1t}.
+T(t)=23+108{e}^{-0.06t}.
 $$
 
-Finally, the temperature of the iron after $t=4$ minutes is
+Finally, the temperature of the iron after $t=7$ minutes is
 
 $$
-T(4)=32+122{e}^{-0.1\cdot 4}≈{114}^{∘}\text{C},
+T(7)=23+108{e}^{-0.06\cdot 7}≈{94}^{∘}\text{C},
 $$
 
 rounded to the nearest integer.
@@ -488,56 +668,56 @@ rounded to the nearest integer.
 The temperature $T(t),$ in degrees Fahrenheit, of a fresh-baked cake can be modeled by the differential equation
 
 $$
-\frac{dT}{dt}=-0.06(T-68)
+\frac{dT}{dt}=-0.07(T-61)
 $$
 
-where $t>0$ is the time, measured in minutes. If the initial temperature of the cake is ${281}^{∘}F,$ calculate the temperature of the cake after $7$ minutes. Round your answer to the nearest integer.
+where $t>0$ is the time, measured in minutes. If the initial temperature of the cake is ${325}^{∘}F,$ calculate the temperature of the cake after $10$ minutes. Round your answer to the nearest integer.
 
-- ${241}^{∘}\text{F}$
-- ${160}^{∘}\text{F}$
-- ${253}^{∘}\text{F}$
-- ${208}^{∘}\text{F}$ **(correct)**
-- ${140}^{∘}\text{F}$
+- ${131}^{∘}\text{F}$
+- ${126}^{∘}\text{F}$
+- ${247}^{∘}\text{F}$
+- ${192}^{∘}\text{F}$ **(correct)**
+- ${222}^{∘}\text{F}$
 
 **Worked solution**
 
 We're told that the temperature of the fresh-baked cake is modeled by the inhibited decay equation
 
 $$
-\frac{dT}{dt}=-0.06(T-68).
+\frac{dT}{dt}=-0.07(T-61).
 $$
 
 First, we integrate our differential equation by separating the variables:
 
 $$
-\begin{aligned}\frac{dT}{T-68} & =-0.06\,dt \\ \int \frac{dT}{T-68} & =-\int 0.06\,\text{d}t \\ \operatorname{ln}⁡|T-68| & =-0.06t+C\end{aligned}
+\begin{aligned}\frac{dT}{T-61} & =-0.07\,dt \\ \int \frac{dT}{T-61} & =-\int 0.07\,\text{d}t \\ \operatorname{ln}⁡|T-61| & =-0.07t+C\end{aligned}
 $$
 
-Since this is the solution to an inhibited decay equation, we have $T-68>0$ for all $t>0.$
+Since this is the solution to an inhibited decay equation, we have $T-61>0$ for all $t>0.$
 Next, we solve for $T(t),$ as follows:
 
 $$
-\begin{aligned}T-68 & ={e}^{-0.06t+C} \\ T-68 & ={e}^{C}{e}^{-0.06t} \\ T-68 & =K{e}^{-0.06t} \\ T & =68+K{e}^{-0.06t}\end{aligned}
+\begin{aligned}T-61 & ={e}^{-0.07t+C} \\ T-61 & ={e}^{C}{e}^{-0.07t} \\ T-61 & =K{e}^{-0.07t} \\ T & =61+K{e}^{-0.07t}\end{aligned}
 $$
 
 Note that $K={e}^{C}$ is a constant of integration. 
 
-We're told that the initial temperature of the cake was ${281}^{∘}F.$ So, we apply the initial condition $T(0)=281,$ and solve for $K:$
+We're told that the initial temperature of the cake was ${325}^{∘}F.$ So, we apply the initial condition $T(0)=325,$ and solve for $K:$
 
 $$
-\begin{aligned}281 & =68+K{e}^{0} \\ 281 & =68+K \\ K & =213\end{aligned}
+\begin{aligned}325 & =61+K{e}^{0} \\ 325 & =61+K \\ K & =264\end{aligned}
 $$
 
 Therefore, the solution to our initial value problem is
 
 $$
-T(t)=68+213{e}^{-0.06t}.
+T(t)=61+264{e}^{-0.07t}.
 $$
 
-Finally, the temperature of the cake after $t=7$ minutes is
+Finally, the temperature of the cake after $t=10$ minutes is
 
 $$
-T(7)=68+213{e}^{-0.06\cdot 7}≈{208}^{∘}\text{F},
+T(10)=61+264{e}^{-0.07\cdot 10}≈{192}^{∘}\text{F},
 $$
 
 rounded to the nearest integer.
@@ -668,56 +848,56 @@ rounded to the nearest integer.
 The temperature $T(t),$ in degrees Celsius, of a compressor of a refrigerator can be modeled by the differential equation
 
 $$
-\frac{dT}{dt}=-0.06(T-16)
+\frac{dT}{dt}=-0.13(T-24)
 $$
 
-where $t>0$ is the time, measured in minutes. If the initial temperature of the compressor is ${71}^{∘}C,$ calculate the temperature of the compressor after $8$ minutes. Round your answer to the nearest integer.
+where $t>0$ is the time, measured in minutes. If the initial temperature of the compressor is ${99}^{∘}C,$ calculate the temperature of the compressor after $7$ minutes. Round your answer to the nearest integer.
 
-- ${50}^{∘}\text{C}$ **(correct)**
-- ${37}^{∘}\text{C}$
-- ${59}^{∘}\text{C}$
-- ${34}^{∘}\text{C}$
-- ${60}^{∘}\text{C}$
+- ${54}^{∘}\text{C}$ **(correct)**
+- ${36}^{∘}\text{C}$
+- ${64}^{∘}\text{C}$
+- ${30}^{∘}\text{C}$
+- ${72}^{∘}\text{C}$
 
 **Worked solution**
 
 We're told that the temperature of the compressor of a refrigerator is modeled by the inhibited decay equation
 
 $$
-\frac{dT}{dt}=-0.06(T-16).
+\frac{dT}{dt}=-0.13(T-24).
 $$
 
 First, we integrate our differential equation by separating the variables:
 
 $$
-\begin{aligned}\frac{dT}{T-16} & =-0.06\,dt \\ \int \frac{dT}{T-16} & =-\int 0.06\,\text{d}t \\ \operatorname{ln}⁡|T-16| & =-0.06t+C\end{aligned}
+\begin{aligned}\frac{dT}{T-24} & =-0.13\,dt \\ \int \frac{dT}{T-24} & =-\int 0.13\,\text{d}t \\ \operatorname{ln}⁡|T-24| & =-0.13t+C\end{aligned}
 $$
 
-Since this is the solution to an inhibited decay equation, we have $T-16>0$ for all $t>0.$
+Since this is the solution to an inhibited decay equation, we have $T-24>0$ for all $t>0.$
 Next, we solve for $T(t),$ as follows:
 
 $$
-\begin{aligned}T-16 & ={e}^{-0.06t+C} \\ T-16 & ={e}^{C}{e}^{-0.06t} \\ T-16 & =K{e}^{-0.06t} \\ T & =16+K{e}^{-0.06t}\end{aligned}
+\begin{aligned}T-24 & ={e}^{-0.13t+C} \\ T-24 & ={e}^{C}{e}^{-0.13t} \\ T-24 & =K{e}^{-0.13t} \\ T & =24+K{e}^{-0.13t}\end{aligned}
 $$
 
 Note that $K={e}^{C}$ is a constant of integration. 
 
-We're told that the initial temperature of the compressor was ${71}^{∘}C.$ So, we apply the initial condition $T(0)=71,$ and solve for $K:$
+We're told that the initial temperature of the compressor was ${99}^{∘}C.$ So, we apply the initial condition $T(0)=99,$ and solve for $K:$
 
 $$
-\begin{aligned}71 & =16+K{e}^{0} \\ 71 & =16+K \\ K & =55\end{aligned}
+\begin{aligned}99 & =24+K{e}^{0} \\ 99 & =24+K \\ K & =75\end{aligned}
 $$
 
 Therefore, the solution to our initial value problem is
 
 $$
-T(t)=16+55{e}^{-0.06t}.
+T(t)=24+75{e}^{-0.13t}.
 $$
 
-Finally, the temperature of the compressor after $t=8$ minutes is
+Finally, the temperature of the compressor after $t=7$ minutes is
 
 $$
-T(8)=16+55{e}^{-0.06\cdot 8}≈{50}^{∘}\text{C},
+T(7)=24+75{e}^{-0.13\cdot 7}≈{54}^{∘}\text{C},
 $$
 
 rounded to the nearest integer.
@@ -877,15 +1057,15 @@ rounded to the nearest minute.
 
 ## Generated default operations bath
 
-A thermometer is placed into a water bath and displays a reading of ${91}^{∘}C.$ The thermometer is then transferred to a ${19}^{∘}C$ water bath, and its reading begins to decrease. After $12$ minutes, the thermometer reading is ${86}^{∘}C.$ To the nearest minute, how long does it take for the thermometer to register a reading of ${56}^{∘}C?$ 
+A thermometer is placed into a water bath and displays a reading of ${100}^{∘}C.$ The thermometer is then transferred to a ${24}^{∘}C$ water bath, and its reading begins to decrease. After $2$ minutes, the thermometer reading is ${95}^{∘}C.$ To the nearest minute, how long does it take for the thermometer to register a reading of ${48}^{∘}C?$ 
 
-*Hint: You may assume that the temperature reading $T(t)$ of the thermometer decreases at a rate that obeys Newton's law of cooling, where $T$ is measured in degrees Celsius and $t>0$ is the time, in minutes, since the thermometer was transferred into the ${19}^{∘}C$ water bath.*
+*Hint: You may assume that the temperature reading $T(t)$ of the thermometer decreases at a rate that obeys Newton's law of cooling, where $T$ is measured in degrees Celsius and $t>0$ is the time, in minutes, since the thermometer was transferred into the ${24}^{∘}C$ water bath.*
 
-- $111\,\text{min}$ **(correct)**
-- $103\,\text{min}$
-- $55\,\text{min}$
-- $81\,\text{min}$
-- $222\,\text{min}$
+- $17\,\text{min}$
+- $34\,\text{min}$ **(correct)**
+- $22\,\text{min}$
+- $68\,\text{min}$
+- $29\,\text{min}$
 
 **Worked solution**
 
@@ -897,55 +1077,55 @@ $$
 
 where ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.
 
-In our case, ${T}_{S}={19}^{∘}\text{C},$ and we have
+In our case, ${T}_{S}={24}^{∘}\text{C},$ and we have
 
 $$
-\frac{\text{d}T}{\text{d}t}=-k(T-19).
+\frac{\text{d}T}{\text{d}t}=-k(T-24).
 $$
 
 First, we integrate our differential equation by separating the variables:
 
 $$
-\begin{aligned}\frac{dT}{T-19} & =-k\,dt \\ \int \frac{dT}{T-19} & =-k\int dt \\ \operatorname{ln}⁡|T-19| & =-kt+C\end{aligned}
+\begin{aligned}\frac{dT}{T-24} & =-k\,dt \\ \int \frac{dT}{T-24} & =-k\int dt \\ \operatorname{ln}⁡|T-24| & =-kt+C\end{aligned}
 $$
 
-Since this is the solution to an inhibited decay equation, we have $T-19>0$ for all $t>0.$
+Since this is the solution to an inhibited decay equation, we have $T-24>0$ for all $t>0.$
 Next, we solve for $T(t),$ as follows:
 
 $$
-\begin{aligned}T-19 & ={e}^{-kt+C} \\ T-19 & ={e}^{C}{e}^{-kt} \\ T-19 & =K{e}^{-kt} \\ T & =19+K{e}^{-kt}\end{aligned}
+\begin{aligned}T-24 & ={e}^{-kt+C} \\ T-24 & ={e}^{C}{e}^{-kt} \\ T-24 & =K{e}^{-kt} \\ T & =24+K{e}^{-kt}\end{aligned}
 $$
 
 Note that $K={e}^{C}$ is a constant of integration. 
 
-We're told that the initial temperature reading was ${91}^{∘}C.$ So, we apply the initial condition $T(0)=91,$ and solve for $K:$
+We're told that the initial temperature reading was ${100}^{∘}C.$ So, we apply the initial condition $T(0)=100,$ and solve for $K:$
 
 $$
-\begin{aligned}91 & =19+K{e}^{0} \\ 91 & =19+K \\ K & =72\end{aligned}
+\begin{aligned}100 & =24+K{e}^{0} \\ 100 & =24+K \\ K & =76\end{aligned}
 $$
 
 Therefore, we have the following expression for $T(t):$
 
 $$
-T(t)=19+72{e}^{-kt}
+T(t)=24+76{e}^{-kt}
 $$
 
-We're also told that, after $12$ minutes, the thermometer reading is ${86}^{∘}C.$ So, applying the condition $T(12)=86,$ we can solve for $k:$
+We're also told that, after $2$ minutes, the thermometer reading is ${95}^{∘}C.$ So, applying the condition $T(2)=95,$ we can solve for $k:$
 
 $$
-\begin{aligned}86 & =19+72{e}^{-12k} \\ 67 & =72{e}^{-12k} \\ \frac{67}{72} & ={e}^{-12k} \\ \operatorname{ln}⁡(\frac{67}{72}) & =-12k \\ k & =-\frac{1}{12}\operatorname{ln}⁡(\frac{67}{72})\end{aligned}
+\begin{aligned}95 & =24+76{e}^{-2k} \\ 71 & =76{e}^{-2k} \\ \frac{71}{76} & ={e}^{-2k} \\ \operatorname{ln}⁡(\frac{71}{76}) & =-2k \\ k & =-\frac{1}{2}\operatorname{ln}⁡(\frac{71}{76})\end{aligned}
 $$
 
-Finally, let ${t}_{1}$ be the time when the thermometer reads ${56}^{∘}C.$ Then, we have
+Finally, let ${t}_{1}$ be the time when the thermometer reads ${48}^{∘}C.$ Then, we have
 
 $$
-\begin{aligned}T({t}_{1}) & =56 \\ 19+72{e}^{-k{t}_{1}} & =56 \\ 72{e}^{-k{t}_{1}} & =37 \\ {e}^{-k{t}_{1}} & =\frac{37}{72} \\ -k{t}_{1} & =\operatorname{ln}⁡(\frac{37}{72}) \\ {t}_{1} & =-\frac{1}{k}\operatorname{ln}⁡(\frac{37}{72}).\end{aligned}
+\begin{aligned}T({t}_{1}) & =48 \\ 24+76{e}^{-k{t}_{1}} & =48 \\ 76{e}^{-k{t}_{1}} & =24 \\ {e}^{-k{t}_{1}} & =\frac{6}{19} \\ -k{t}_{1} & =\operatorname{ln}⁡(\frac{6}{19}) \\ {t}_{1} & =-\frac{1}{k}\operatorname{ln}⁡(\frac{6}{19}).\end{aligned}
 $$
 
-Substituting in our value for $k,$ we conclude that the thermometer will read ${56}^{∘}C$ after
+Substituting in our value for $k,$ we conclude that the thermometer will read ${48}^{∘}C$ after
 
 $$
-{t}_{1}=\frac{-\operatorname{ln}⁡(\frac{37}{72})}{-\frac{1}{12}\operatorname{ln}⁡(\frac{67}{72})}≈111\,\text{min},
+{t}_{1}=\frac{-\operatorname{ln}⁡(\frac{6}{19})}{-\frac{1}{2}\operatorname{ln}⁡(\frac{71}{76})}≈34\,\text{min},
 $$
 
 rounded to the nearest minute.
@@ -1105,15 +1285,15 @@ rounded to the nearest minute.
 
 ## Generated default operations outside
 
-A thermometer is taken out of a room where the air temperature is ${74}^{∘}F$  and brought outside where the temperature is ${33}^{∘}F,$ and its reading begins to decrease. After $8$ minutes, the thermometer reading is ${57}^{∘}F.$ To the nearest minute, how long does it take for the thermometer to register a reading of ${39}^{∘}F?$ 
+A thermometer is taken out of a room where the air temperature is ${63}^{∘}F$  and brought outside where the temperature is ${13}^{∘}F,$ and its reading begins to decrease. After $10$ minutes, the thermometer reading is ${50}^{∘}F.$ To the nearest minute, how long does it take for the thermometer to register a reading of ${38}^{∘}F?$ 
 
-*Hint: You may assume that the temperature reading $T(t)$ of the thermometer decreases at a rate that obeys Newton's law of cooling, where $T$ is measured in degrees Fahrenheit and $t>0$ is the time, in minutes, since the thermometer was transferred outside to ${33}^{∘}F.$*
+*Hint: You may assume that the temperature reading $T(t)$ of the thermometer decreases at a rate that obeys Newton's law of cooling, where $T$ is measured in degrees Fahrenheit and $t>0$ is the time, in minutes, since the thermometer was transferred outside to ${13}^{∘}F.$*
 
-- $29\,\text{min}$ **(correct)**
-- $10\,\text{min}$
-- $57\,\text{min}$
-- $20\,\text{min}$
-- $14\,\text{min}$
+- $17\,\text{min}$
+- $12\,\text{min}$
+- $23\,\text{min}$ **(correct)**
+- $22\,\text{min}$
+- $46\,\text{min}$
 
 **Worked solution**
 
@@ -1125,55 +1305,55 @@ $$
 
 where ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.
 
-In our case, ${T}_{S}={33}^{∘}\text{F},$ and we have
+In our case, ${T}_{S}={13}^{∘}\text{F},$ and we have
 
 $$
-\frac{\text{d}T}{\text{d}t}=-k(T-33).
+\frac{\text{d}T}{\text{d}t}=-k(T-13).
 $$
 
 First, we integrate our differential equation by separating the variables:
 
 $$
-\begin{aligned}\frac{dT}{T-33} & =-k\,dt \\ \int \frac{dT}{T-33} & =-k\int dt \\ \operatorname{ln}⁡|T-33| & =-kt+C\end{aligned}
+\begin{aligned}\frac{dT}{T-13} & =-k\,dt \\ \int \frac{dT}{T-13} & =-k\int dt \\ \operatorname{ln}⁡|T-13| & =-kt+C\end{aligned}
 $$
 
-Since this is the solution to an inhibited decay equation, we have $T-33>0$ for all $t>0.$
+Since this is the solution to an inhibited decay equation, we have $T-13>0$ for all $t>0.$
 Next, we solve for $T(t),$ as follows:
 
 $$
-\begin{aligned}T-33 & ={e}^{-kt+C} \\ T-33 & ={e}^{C}{e}^{-kt} \\ T-33 & =K{e}^{-kt} \\ T & =33+K{e}^{-kt}\end{aligned}
+\begin{aligned}T-13 & ={e}^{-kt+C} \\ T-13 & ={e}^{C}{e}^{-kt} \\ T-13 & =K{e}^{-kt} \\ T & =13+K{e}^{-kt}\end{aligned}
 $$
 
 Note that $K={e}^{C}$ is a constant of integration. 
 
-We're told that the initial temperature reading was ${74}^{∘}F.$ So, we apply the initial condition $T(0)=74,$ and solve for $K:$
+We're told that the initial temperature reading was ${63}^{∘}F.$ So, we apply the initial condition $T(0)=63,$ and solve for $K:$
 
 $$
-\begin{aligned}74 & =33+K{e}^{0} \\ 74 & =33+K \\ K & =41\end{aligned}
+\begin{aligned}63 & =13+K{e}^{0} \\ 63 & =13+K \\ K & =50\end{aligned}
 $$
 
 Therefore, we have the following expression for $T(t):$
 
 $$
-T(t)=33+41{e}^{-kt}
+T(t)=13+50{e}^{-kt}
 $$
 
-We're also told that, after $8$ minutes, the thermometer reading is ${57}^{∘}F.$ So, applying the condition $T(8)=57,$ we can solve for $k:$
+We're also told that, after $10$ minutes, the thermometer reading is ${50}^{∘}F.$ So, applying the condition $T(10)=50,$ we can solve for $k:$
 
 $$
-\begin{aligned}57 & =33+41{e}^{-8k} \\ 24 & =41{e}^{-8k} \\ \frac{24}{41} & ={e}^{-8k} \\ \operatorname{ln}⁡(\frac{24}{41}) & =-8k \\ k & =-\frac{1}{8}\operatorname{ln}⁡(\frac{24}{41})\end{aligned}
+\begin{aligned}50 & =13+50{e}^{-10k} \\ 37 & =50{e}^{-10k} \\ \frac{37}{50} & ={e}^{-10k} \\ \operatorname{ln}⁡(\frac{37}{50}) & =-10k \\ k & =-\frac{1}{10}\operatorname{ln}⁡(\frac{37}{50})\end{aligned}
 $$
 
-Finally, let ${t}_{1}$ be the time when the thermometer reads ${39}^{∘}F.$ Then, we have
+Finally, let ${t}_{1}$ be the time when the thermometer reads ${38}^{∘}F.$ Then, we have
 
 $$
-\begin{aligned}T({t}_{1}) & =39 \\ 33+41{e}^{-k{t}_{1}} & =39 \\ 41{e}^{-k{t}_{1}} & =6 \\ {e}^{-k{t}_{1}} & =\frac{6}{41} \\ -k{t}_{1} & =\operatorname{ln}⁡(\frac{6}{41}) \\ {t}_{1} & =-\frac{1}{k}\operatorname{ln}⁡(\frac{6}{41}).\end{aligned}
+\begin{aligned}T({t}_{1}) & =38 \\ 13+50{e}^{-k{t}_{1}} & =38 \\ 50{e}^{-k{t}_{1}} & =25 \\ {e}^{-k{t}_{1}} & =\frac{25}{50} \\ -k{t}_{1} & =\operatorname{ln}⁡(\frac{25}{50}) \\ {t}_{1} & =-\frac{1}{k}\operatorname{ln}⁡(\frac{25}{50}).\end{aligned}
 $$
 
-Substituting in our value for $k,$ we conclude that the thermometer will read ${39}^{∘}F$ after
+Substituting in our value for $k,$ we conclude that the thermometer will read ${38}^{∘}F$ after
 
 $$
-{t}_{1}=\frac{-\operatorname{ln}⁡(\frac{6}{41})}{-\frac{1}{8}\operatorname{ln}⁡(\frac{24}{41})}≈29\,\text{min},
+{t}_{1}=\frac{-\operatorname{ln}⁡(\frac{25}{50})}{-\frac{1}{10}\operatorname{ln}⁡(\frac{37}{50})}≈23\,\text{min},
 $$
 
 rounded to the nearest minute.
@@ -1333,15 +1513,15 @@ rounded to the nearest minute.
 
 ## Generated default operations water
 
-The water boils in a pan at a temperature of ${100}^{∘}C.$ The pan with water is then placed to a room with a temperature of ${34}^{∘}C,$ and the temperature of water decreases. After $8$ minutes, it cools to ${74}^{∘}C.$ To the nearest minute, how long does it take for the water to have a temperature of ${37}^{∘}C?$ 
+The water boils in a pan at a temperature of ${100}^{∘}C.$ The pan with water is then placed to a room with a temperature of ${16}^{∘}C,$ and the temperature of water decreases. After $10$ minutes, it cools to ${86}^{∘}C.$ To the nearest minute, how long does it take for the water to have a temperature of ${49}^{∘}C?$ 
 
 *Hint: You may assume that the temperature reading $T(t)$ of the water in the pan decreases at a rate that obeys Newton's law of cooling, where $T$ is measured in degrees Celsius and $t>0$ is the time, in minutes, since the water starts cooling.*
 
-- $49\,\text{min}$ **(correct)**
-- $16\,\text{min}$
 - $26\,\text{min}$
-- $25\,\text{min}$
-- $99\,\text{min}$
+- $102\,\text{min}$
+- $39\,\text{min}$
+- $47\,\text{min}$
+- $51\,\text{min}$ **(correct)**
 
 **Worked solution**
 
@@ -1353,23 +1533,23 @@ $$
 
 where ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.
 
-In our case, ${T}_{S}={34}^{∘}\text{C},$ and we have
+In our case, ${T}_{S}={16}^{∘}\text{C},$ and we have
 
 $$
-\frac{\text{d}T}{\text{d}t}=-k(T-34).
+\frac{\text{d}T}{\text{d}t}=-k(T-16).
 $$
 
 First, we integrate our differential equation by separating the variables:
 
 $$
-\begin{aligned}\frac{dT}{T-34} & =-k\,dt \\ \int \frac{dT}{T-34} & =-k\int dt \\ \operatorname{ln}⁡|T-34| & =-kt+C\end{aligned}
+\begin{aligned}\frac{dT}{T-16} & =-k\,dt \\ \int \frac{dT}{T-16} & =-k\int dt \\ \operatorname{ln}⁡|T-16| & =-kt+C\end{aligned}
 $$
 
-Since this is the solution to an inhibited decay equation, we have $T-34>0$ for all $t>0.$
+Since this is the solution to an inhibited decay equation, we have $T-16>0$ for all $t>0.$
 Next, we solve for $T(t),$ as follows:
 
 $$
-\begin{aligned}T-34 & ={e}^{-kt+C} \\ T-34 & ={e}^{C}{e}^{-kt} \\ T-34 & =K{e}^{-kt} \\ T & =34+K{e}^{-kt}\end{aligned}
+\begin{aligned}T-16 & ={e}^{-kt+C} \\ T-16 & ={e}^{C}{e}^{-kt} \\ T-16 & =K{e}^{-kt} \\ T & =16+K{e}^{-kt}\end{aligned}
 $$
 
 Note that $K={e}^{C}$ is a constant of integration. 
@@ -1377,31 +1557,31 @@ Note that $K={e}^{C}$ is a constant of integration.
 We're told that the initial temperature was ${100}^{∘}C.$ So, we apply the initial condition $T(0)=100,$ and solve for $K:$
 
 $$
-\begin{aligned}100 & =34+K{e}^{0} \\ 100 & =34+K \\ K & =66\end{aligned}
+\begin{aligned}100 & =16+K{e}^{0} \\ 100 & =16+K \\ K & =84\end{aligned}
 $$
 
 Therefore, we have the following expression for $T(t):$
 
 $$
-T(t)=34+66{e}^{-kt}
+T(t)=16+84{e}^{-kt}
 $$
 
-We're also told that, after $8$ minutes, it cools to ${74}^{∘}C.$ So, applying the condition $T(8)=74,$ we can solve for $k:$
+We're also told that, after $10$ minutes, it cools to ${86}^{∘}C.$ So, applying the condition $T(10)=86,$ we can solve for $k:$
 
 $$
-\begin{aligned}74 & =34+66{e}^{-8k} \\ 40 & =66{e}^{-8k} \\ \frac{20}{33} & ={e}^{-8k} \\ \operatorname{ln}⁡(\frac{20}{33}) & =-8k \\ k & =-\frac{1}{8}\operatorname{ln}⁡(\frac{20}{33})\end{aligned}
+\begin{aligned}86 & =16+84{e}^{-10k} \\ 70 & =84{e}^{-10k} \\ \frac{5}{6} & ={e}^{-10k} \\ \operatorname{ln}⁡(\frac{5}{6}) & =-10k \\ k & =-\frac{1}{10}\operatorname{ln}⁡(\frac{5}{6})\end{aligned}
 $$
 
-Finally, let ${t}_{1}$ be the time when the water has a temperature of ${37}^{∘}C.$ Then, we have
+Finally, let ${t}_{1}$ be the time when the water has a temperature of ${49}^{∘}C.$ Then, we have
 
 $$
-\begin{aligned}T({t}_{1}) & =37 \\ 34+66{e}^{-k{t}_{1}} & =37 \\ 66{e}^{-k{t}_{1}} & =3 \\ {e}^{-k{t}_{1}} & =\frac{1}{22} \\ -k{t}_{1} & =\operatorname{ln}⁡(\frac{1}{22}) \\ {t}_{1} & =-\frac{1}{k}\operatorname{ln}⁡(\frac{1}{22}).\end{aligned}
+\begin{aligned}T({t}_{1}) & =49 \\ 16+84{e}^{-k{t}_{1}} & =49 \\ 84{e}^{-k{t}_{1}} & =33 \\ {e}^{-k{t}_{1}} & =\frac{11}{28} \\ -k{t}_{1} & =\operatorname{ln}⁡(\frac{11}{28}) \\ {t}_{1} & =-\frac{1}{k}\operatorname{ln}⁡(\frac{11}{28}).\end{aligned}
 $$
 
-Substituting in our value for $k,$ we conclude that the temperature of water will be ${37}^{∘}C$ after
+Substituting in our value for $k,$ we conclude that the temperature of water will be ${49}^{∘}C$ after
 
 $$
-{t}_{1}=\frac{-\operatorname{ln}⁡(\frac{1}{22})}{-\frac{1}{8}\operatorname{ln}⁡(\frac{20}{33})}≈49\,\text{min},
+{t}_{1}=\frac{-\operatorname{ln}⁡(\frac{11}{28})}{-\frac{1}{10}\operatorname{ln}⁡(\frac{5}{6})}≈51\,\text{min},
 $$
 
 rounded to the nearest minute.
@@ -1561,15 +1741,15 @@ rounded to the nearest minute.
 
 ## Generated default operations tea
 
-Simon measures the temperature of the tea in his cup, and the thermometer displays a reading of ${81}^{∘}C.$ After $5$ minutes, Simon repeats the measurement and the thermometer displays a reading of  ${71}^{∘}C.$ To the nearest minute, how long does it take for the tea to decrease its temperature to ${24}^{∘}C$ if the temperature in the room is ${16}^{∘}C?$ 
+Simon measures the temperature of the tea in his cup, and the thermometer displays a reading of ${53}^{∘}C.$ After $4$ minutes, Simon repeats the measurement and the thermometer displays a reading of  ${40}^{∘}C.$ To the nearest minute, how long does it take for the tea to decrease its temperature to ${20}^{∘}C$ if the temperature in the room is ${11}^{∘}C?$ 
 
 *Hint: You may assume that the temperature $T(t)$ of the tea in Simon's cup decreases at a rate that obeys Newton's law of cooling, where $T$ is measured in degrees Celsius and $t>0$ is the time, in minutes, since the first measurement.*
 
-- $36\,\text{min}$
-- $46\,\text{min}$
-- $31\,\text{min}$
-- $63\,\text{min}$ **(correct)**
-- $125\,\text{min}$
+- $17\,\text{min}$ **(correct)**
+- $8\,\text{min}$
+- $11\,\text{min}$
+- $33\,\text{min}$
+- $14\,\text{min}$
 
 **Worked solution**
 
@@ -1581,55 +1761,55 @@ $$
 
 where ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.
 
-In our case, ${T}_{S}={16}^{∘}\text{C},$ and we have
+In our case, ${T}_{S}={11}^{∘}\text{C},$ and we have
 
 $$
-\frac{\text{d}T}{\text{d}t}=-k(T-16).
+\frac{\text{d}T}{\text{d}t}=-k(T-11).
 $$
 
 First, we integrate our differential equation by separating the variables:
 
 $$
-\begin{aligned}\frac{dT}{T-16} & =-k\,dt \\ \int \frac{dT}{T-16} & =-k\int dt \\ \operatorname{ln}⁡|T-16| & =-kt+C\end{aligned}
+\begin{aligned}\frac{dT}{T-11} & =-k\,dt \\ \int \frac{dT}{T-11} & =-k\int dt \\ \operatorname{ln}⁡|T-11| & =-kt+C\end{aligned}
 $$
 
-Since this is the solution to an inhibited decay equation, we have $T-16>0$ for all $t>0.$
+Since this is the solution to an inhibited decay equation, we have $T-11>0$ for all $t>0.$
 Next, we solve for $T(t),$ as follows:
 
 $$
-\begin{aligned}T-16 & ={e}^{-kt+C} \\ T-16 & ={e}^{C}{e}^{-kt} \\ T-16 & =K{e}^{-kt} \\ T & =16+K{e}^{-kt}\end{aligned}
+\begin{aligned}T-11 & ={e}^{-kt+C} \\ T-11 & ={e}^{C}{e}^{-kt} \\ T-11 & =K{e}^{-kt} \\ T & =11+K{e}^{-kt}\end{aligned}
 $$
 
 Note that $K={e}^{C}$ is a constant of integration. 
 
-We're told that the initial temperature reading was ${81}^{∘}C.$ So, we apply the initial condition $T(0)=81,$ and solve for $K:$
+We're told that the initial temperature reading was ${53}^{∘}C.$ So, we apply the initial condition $T(0)=53,$ and solve for $K:$
 
 $$
-\begin{aligned}81 & =16+K{e}^{0} \\ 81 & =16+K \\ K & =65\end{aligned}
+\begin{aligned}53 & =11+K{e}^{0} \\ 53 & =11+K \\ K & =42\end{aligned}
 $$
 
 Therefore, we have the following expression for $T(t):$
 
 $$
-T(t)=16+65{e}^{-kt}
+T(t)=11+42{e}^{-kt}
 $$
 
-We're also told that, after $5$ minutes, the thermometer reading is ${71}^{∘}C.$ So, applying the condition $T(5)=71,$ we can solve for $k:$
+We're also told that, after $4$ minutes, the thermometer reading is ${40}^{∘}C.$ So, applying the condition $T(4)=40,$ we can solve for $k:$
 
 $$
-\begin{aligned}71 & =16+65{e}^{-5k} \\ 55 & =65{e}^{-5k} \\ \frac{11}{13} & ={e}^{-5k} \\ \operatorname{ln}⁡(\frac{11}{13}) & =-5k \\ k & =-\frac{1}{5}\operatorname{ln}⁡(\frac{11}{13})\end{aligned}
+\begin{aligned}40 & =11+42{e}^{-4k} \\ 29 & =42{e}^{-4k} \\ \frac{29}{42} & ={e}^{-4k} \\ \operatorname{ln}⁡(\frac{29}{42}) & =-4k \\ k & =-\frac{1}{4}\operatorname{ln}⁡(\frac{29}{42})\end{aligned}
 $$
 
-Finally, let ${t}_{1}$ be the time when the temperature of the tea is ${24}^{∘}C.$ Then, we have
+Finally, let ${t}_{1}$ be the time when the temperature of the tea is ${20}^{∘}C.$ Then, we have
 
 $$
-\begin{aligned}T({t}_{1}) & =24 \\ 16+65{e}^{-k{t}_{1}} & =24 \\ 65{e}^{-k{t}_{1}} & =8 \\ {e}^{-k{t}_{1}} & =\frac{8}{65} \\ -k{t}_{1} & =\operatorname{ln}⁡(\frac{8}{65}) \\ {t}_{1} & =-\frac{1}{k}\operatorname{ln}⁡(\frac{8}{65}).\end{aligned}
+\begin{aligned}T({t}_{1}) & =20 \\ 11+42{e}^{-k{t}_{1}} & =20 \\ 42{e}^{-k{t}_{1}} & =9 \\ {e}^{-k{t}_{1}} & =\frac{3}{14} \\ -k{t}_{1} & =\operatorname{ln}⁡(\frac{3}{14}) \\ {t}_{1} & =-\frac{1}{k}\operatorname{ln}⁡(\frac{3}{14}).\end{aligned}
 $$
 
-Substituting in our value for $k,$ we conclude that the tea will have a temperature of ${24}^{∘}C$ after
+Substituting in our value for $k,$ we conclude that the tea will have a temperature of ${20}^{∘}C$ after
 
 $$
-{t}_{1}=\frac{-\operatorname{ln}⁡(\frac{8}{65})}{-\frac{1}{5}\operatorname{ln}⁡(\frac{11}{13})}≈63\,\text{min},
+{t}_{1}=\frac{-\operatorname{ln}⁡(\frac{3}{14})}{-\frac{1}{4}\operatorname{ln}⁡(\frac{29}{42})}≈17\,\text{min},
 $$
 
 rounded to the nearest minute.
@@ -1637,59 +1817,59 @@ rounded to the nearest minute.
 
 ## Generated easy seed 121
 
-The temperature $T(t),$ in degrees Celsius, of a cup of coffee can be modeled by the differential equation
+The temperature $T(t),$ in degrees Fahrenheit, of an exhaust pipe of a motorcycle can be modeled by the differential equation
 
 $$
-\frac{dT}{dt}=-0.15(T-21)
+\frac{dT}{dt}=-0.06(T-65)
 $$
 
-where $t>0$ is the time, measured in minutes. If the initial temperature of the coffee is ${88}^{∘}C,$ calculate the temperature of the coffee after $5$ minutes. Round your answer to the nearest integer.
+where $t>0$ is the time, measured in minutes. If the initial temperature of the exhaust pipe is ${175}^{∘}F,$ calculate its temperature after $8$ minutes. Round your answer to the nearest integer.
 
-- ${53}^{∘}\text{C}$ **(correct)**
-- ${63}^{∘}\text{C}$
-- ${67}^{∘}\text{C}$
-- ${32}^{∘}\text{C}$
-- ${36}^{∘}\text{C}$
+- ${133}^{∘}\text{F}$ **(correct)**
+- ${107}^{∘}\text{F}$
+- ${173}^{∘}\text{F}$
+- ${152}^{∘}\text{F}$
+- ${68}^{∘}\text{F}$
 
 **Worked solution**
 
-We're told that the temperature of the cup of coffee is modeled by the inhibited decay equation
+We're told that the temperature of the exhaust pipe of a motorcycle is modeled by the inhibited decay equation
 
 $$
-\frac{dT}{dt}=-0.15(T-21).
+\frac{dT}{dt}=-0.06(T-65).
 $$
 
 First, we integrate our differential equation by separating the variables:
 
 $$
-\begin{aligned}\frac{dT}{T-21} & =-0.15\,dt \\ \int \frac{dT}{T-21} & =-\int 0.15\,\text{d}t \\ \operatorname{ln}⁡|T-21| & =-0.15t+C\end{aligned}
+\begin{aligned}\frac{dT}{T-65} & =-0.06\,dt \\ \int \frac{dT}{T-65} & =-\int 0.06\,\text{d}t \\ \operatorname{ln}⁡|T-65| & =-0.06t+C\end{aligned}
 $$
 
-Since this is the solution to an inhibited decay equation, we have $T-21>0$ for all $t>0.$
+Since this is the solution to an inhibited decay equation, we have $T-65>0$ for all $t>0.$
 Next, we solve for $T(t),$ as follows:
 
 $$
-\begin{aligned}T-21 & ={e}^{-0.15t+C} \\ T-21 & ={e}^{C}{e}^{-0.15t} \\ T-21 & =K{e}^{-0.15t} \\ T & =21+K{e}^{-0.15t}\end{aligned}
+\begin{aligned}T-65 & ={e}^{-0.06t+C} \\ T-65 & ={e}^{C}{e}^{-0.06t} \\ T-65 & =K{e}^{-0.06t} \\ T & =65+K{e}^{-0.06t}\end{aligned}
 $$
 
 Note that $K={e}^{C}$ is a constant of integration. 
 
-We're told that the initial temperature of the coffee was ${88}^{∘}C.$ So, we apply the initial condition $T(0)=88,$ and solve for $K:$
+We're told that the initial temperature of the exhaust pipe was ${175}^{∘}F.$ So, we apply the initial condition $T(0)=175,$ and solve for $K:$
 
 $$
-\begin{aligned}88 & =21+K{e}^{0} \\ 88 & =21+K \\ K & =67\end{aligned}
+\begin{aligned}175 & =65+K{e}^{0} \\ 175 & =65+K \\ K & =110\end{aligned}
 $$
 
 Therefore, the solution to our initial value problem is
 
 $$
-T(t)=21+67{e}^{-0.15t}.
+T(t)=65+110{e}^{-0.06t}.
 $$
 
-Finally, the temperature of the coffee after $t=5$ minutes is
+Finally, the temperature of the exhaust pipe after $t=8$ minutes is
 
 $$
-T(5)=21+67{e}^{-0.15\cdot 5}≈{53}^{∘}\text{C},
+T(8)=65+110{e}^{-0.06\cdot 8}≈{133}^{∘}\text{F},
 $$
 
 rounded to the nearest integer.
@@ -1697,59 +1877,59 @@ rounded to the nearest integer.
 
 ## Generated easy seed 722
 
-The temperature $T(t),$ in degrees Celsius, of a cooling iron can be modeled by the differential equation
+The temperature $T(t),$ in degrees Celsius, of a compressor of a refrigerator can be modeled by the differential equation
 
 $$
-\frac{dT}{dt}=-0.11(T-23)
+\frac{dT}{dt}=-0.07(T-28)
 $$
 
-where $t>0$ is the time, measured in minutes. If the initial temperature of the iron is ${118}^{∘}C,$ calculate its temperature after $6$ minutes. Round your answer to the nearest integer.
+where $t>0$ is the time, measured in minutes. If the initial temperature of the compressor is ${82}^{∘}C,$ calculate the temperature of the compressor after $7$ minutes. Round your answer to the nearest integer.
 
-- ${49}^{∘}\text{C}$
-- ${91}^{∘}\text{C}$
-- ${72}^{∘}\text{C}$ **(correct)**
-- ${84}^{∘}\text{C}$
 - ${48}^{∘}\text{C}$
+- ${70}^{∘}\text{C}$
+- ${61}^{∘}\text{C}$ **(correct)**
+- ${78}^{∘}\text{C}$
+- ${33}^{∘}\text{C}$
 
 **Worked solution**
 
-We're told that the temperature of the cooling iron is modeled by the inhibited decay equation
+We're told that the temperature of the compressor of a refrigerator is modeled by the inhibited decay equation
 
 $$
-\frac{dT}{dt}=-0.11(T-23).
+\frac{dT}{dt}=-0.07(T-28).
 $$
 
 First, we integrate our differential equation by separating the variables:
 
 $$
-\begin{aligned}\frac{dT}{T-23} & =-0.11\,dt \\ \int \frac{dT}{T-23} & =-\int 0.11\,\text{d}t \\ \operatorname{ln}⁡|T-23| & =-0.11t+C\end{aligned}
+\begin{aligned}\frac{dT}{T-28} & =-0.07\,dt \\ \int \frac{dT}{T-28} & =-\int 0.07\,\text{d}t \\ \operatorname{ln}⁡|T-28| & =-0.07t+C\end{aligned}
 $$
 
-Since this is the solution to an inhibited decay equation, we have $T-23>0$ for all $t>0.$
+Since this is the solution to an inhibited decay equation, we have $T-28>0$ for all $t>0.$
 Next, we solve for $T(t),$ as follows:
 
 $$
-\begin{aligned}T-23 & ={e}^{-0.11t+C} \\ T-23 & ={e}^{C}{e}^{-0.11t} \\ T-23 & =K{e}^{-0.11t} \\ T & =23+K{e}^{-0.11t}\end{aligned}
+\begin{aligned}T-28 & ={e}^{-0.07t+C} \\ T-28 & ={e}^{C}{e}^{-0.07t} \\ T-28 & =K{e}^{-0.07t} \\ T & =28+K{e}^{-0.07t}\end{aligned}
 $$
 
 Note that $K={e}^{C}$ is a constant of integration. 
 
-We're told that the initial temperature of the iron was ${118}^{∘}C.$ So, we apply the initial condition $T(0)=118,$ and solve for $K:$
+We're told that the initial temperature of the compressor was ${82}^{∘}C.$ So, we apply the initial condition $T(0)=82,$ and solve for $K:$
 
 $$
-\begin{aligned}118 & =23+K{e}^{0} \\ 118 & =23+K \\ K & =95\end{aligned}
+\begin{aligned}82 & =28+K{e}^{0} \\ 82 & =28+K \\ K & =54\end{aligned}
 $$
 
 Therefore, the solution to our initial value problem is
 
 $$
-T(t)=23+95{e}^{-0.11t}.
+T(t)=28+54{e}^{-0.07t}.
 $$
 
-Finally, the temperature of the iron after $t=6$ minutes is
+Finally, the temperature of the compressor after $t=7$ minutes is
 
 $$
-T(6)=23+95{e}^{-0.11\cdot 6}≈{72}^{∘}\text{C},
+T(7)=28+54{e}^{-0.07\cdot 7}≈{61}^{∘}\text{C},
 $$
 
 rounded to the nearest integer.

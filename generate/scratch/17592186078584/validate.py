@@ -81,7 +81,7 @@ def validate(r):
     assert f[':answer-field/type']==':answer-field.type/radio' and f[':answer-field/key']=='selection'
     assert len(f[':answer-field/choices'])==5 and len({a[':answer/id'] for a in f[':answer-field/choices']})==5
     vals=[]; correct=None
-    U='F' if r['generation']['template'] in ('cake','outside') else 'C'
+    U='F' if r['generation']['template'] in ('cake','exhaust','outside') else 'C'
     for a in f[':answer-field/choices']:
         x=int(re.search(r'\d+',a[':answer/value'])[0]); vals.append(x)
         assert a[':answer/type']==':answer.type/math'
@@ -205,9 +205,9 @@ def run():
     assert_equal(A+sp.exp(sp.log(c)+2)*sp.exp(-k*t),A+sp.exp(2)*c*sp.exp(-k*t),'General family constant shift')
     for filename,value in [('source-cases.json',sourcecases),('review.json',records),('native-input.json',native)]: (ROOT/filename).write_text(json.dumps(value,indent=2,ensure_ascii=False)+'\n')
     (ROOT/'review.md').write_text('\n\n'.join(sections)+'\n')
-    engine=Path('generate/runs/current/check-engine'); subprocess.run([str(engine),str(ROOT/'native-input.json'),str(ROOT/'native-report.json')],check=True)
+    engine=ROOT/'check-engine'; subprocess.run([str(engine),str(ROOT/'native-input.json'),str(ROOT/'native-report.json')],check=True)
     nr=json.loads((ROOT/'native-report.json').read_text())
-    report={'status':'pass','database':'math','basis':1356,'counts':COUNTS,'source_coverage':'8/8 (4 easy, 4 moderate; 0 hard)','source_fidelity':{'complete_option_values':'40/40','distractor_values':'32/32','complete_banks':'8/8','correct_designations':'8/8','full_prompt_strings':'8/8','full_raw_solution_strings':'8/8','raw_solution_equations_correct':'8/8','raw_solution_unit_consistency':'7/8','normal_unit_repair':'1/1; all normal outputs correct'},'source_anomaly':'q-107122: 3 Celsius prose labels in Fahrenheit problem; 8/8 raw exact solutions; 1/1 normal repair verified','authored_hard':'Same cooling target time from two nonzero observations, nonintegral start/gap, no analytical branch; 2 reviewed examples','native':{k:nr[k] for k in ['entry_point','accepted_checks','rejected_checks','documented_unresolved_checks','database_writes']},'blank_equivalent_entries':'Not applicable: all observed and authored layouts are radio; no new blank layout introduced','engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'engine_source_sha256':hashlib.sha256(Path('generate/runs/current/check-engine.rs').read_bytes()).hexdigest(),'sympy_version':sp.__version__,'invalid_explicit_cases_rejected':len(invalid)+2,'plots':'none'}
+    report={'status':'pass','database':'math','basis':g.SNAPSHOT['basis'],'counts':COUNTS,'source_coverage':'9/9 (5 easy, 4 moderate; 0 hard)','source_fidelity':{'complete_option_values':'45/45','distractor_values':'36/36','complete_banks':'9/9','correct_designations':'9/9','full_prompt_strings':'9/9','full_raw_solution_strings':'9/9','raw_solution_equations_correct':'9/9','raw_solution_unit_consistency':'8/9','normal_unit_repair':'1/1; all normal outputs correct'},'source_anomaly':'q-107122: 3 Celsius prose labels in Fahrenheit problem; 9/9 raw exact solutions; 1/1 normal repair verified','authored_hard':'Same cooling target time from two nonzero observations, nonintegral start/gap, no analytical branch; 2 reviewed examples','native':{k:nr[k] for k in ['entry_point','accepted_checks','rejected_checks','documented_unresolved_checks','database_writes']},'blank_equivalent_entries':'Not applicable: all observed and authored layouts are radio; no new blank layout introduced','engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'engine_source_sha256':hashlib.sha256(ROOT.joinpath('check-engine.rs').read_bytes()).hexdigest(),'sympy_version':sp.__version__,'invalid_explicit_cases_rejected':len(invalid)+2,'plots':'none'}
     (ROOT/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps(report,indent=2))
 if __name__=='__main__': run()

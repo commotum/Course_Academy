@@ -199,7 +199,36 @@ pub fn elapsed(snapshot: &EntitySnapshot, item: u64, at: DateTime<Utc>) -> Resul
             total += (at - before).num_milliseconds() as f64 / 1000.0;
         }
     }
+    if let Some(value) = snapshot.entity(item)?.get("task-item/working-ended-at") {
+        let ended = parse_instant(value)?;
+        if !terminal(&status(snapshot,item,"task-item/status")?) || ended > at || ended < events_first(snapshot,item)? {
+            return Err("invalid working-time submission cutoff".into());
+        }
+        // Imported checkpoints are saved with the cutoff already applied.
+        if !imported { total = (total - working_after(snapshot,item,ended,at)?).max(0.0); }
+    }
     Ok(total)
+}
+
+fn events_first(snapshot:&EntitySnapshot,item:u64)->Result<DateTime<Utc>> {
+    Ok(history(snapshot,item,"task-item/status")?[0].0)
+}
+
+fn working_after(snapshot:&EntitySnapshot,item:u64,until:DateTime<Utc>,at:DateTime<Utc>)->Result<f64> {
+    let events=history(snapshot,item,"task-item/status")?;
+    let mut waiting=0.;
+    for (index,(start,state)) in events.iter().enumerate() {
+        if state != "task-item.status/started" {continue;}
+        let end=events.get(index+1).map(|event|event.0).unwrap_or(at).min(at);
+        waiting += (end-(*start).max(until)).num_milliseconds().max(0) as f64/1000.;
+    }
+    Ok(waiting)
+}
+
+/// Cut off working time at admission while keeping the transaction clock current.
+pub fn elapsed_until(snapshot:&EntitySnapshot,item:u64,at:DateTime<Utc>,until:DateTime<Utc>)->Result<f64> {
+    if until>at || until<events_first(snapshot,item)? {return Err("invalid submission instant".into());}
+    Ok((elapsed(snapshot,item,at)?-working_after(snapshot,item,until,at)?).max(0.))
 }
 
 pub fn task_elapsed(snapshot: &EntitySnapshot, task: u64, at: DateTime<Utc>) -> Result<f64> {

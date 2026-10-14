@@ -1,5 +1,6 @@
 //! Local learner application boundary: immutable EDB reads and guarded durable writes.
 mod activity_history;
+mod study_stats;
 mod assignment_interaction;
 mod assignment_reader;
 mod developer_preview;
@@ -581,6 +582,7 @@ fn course(s: &EntitySnapshot, l: u64) -> Result<u64> {
 }
 fn learner_json(s: &EntitySnapshot, l: u64) -> Json {
     json!({"id":text(s,l,"learner/id"),"name":text(s,l,"learner/name"),
+        "dailyXpGoal":s.entities.get(&l).and_then(|r|r.get("learner/daily-xp-goal")),
         "selfDirected":s.entities.get(&l).and_then(|r|r.get("learner/self-directed")).and_then(Json::as_bool).unwrap_or(false),
         "targets":s.refs(l,"learner/targets").unwrap_or_default(),
         "queue":s.refs(l,"learner/queue").unwrap_or_default()})
@@ -1378,6 +1380,10 @@ fn transition(
     forms: &mut Vec<Json>,
 ) -> Result<()> {
     let elapsed = timing::elapsed(s, i, at)?;
+    transition_with_elapsed(s,t,i,state,elapsed,forms)
+}
+
+fn transition_with_elapsed(s:&EntitySnapshot,t:u64,i:u64,state:&str,elapsed:f64,forms:&mut Vec<Json>)->Result<()> {
     let total = items(s, t)?
         .into_iter()
         .map(|other| {
@@ -1805,6 +1811,12 @@ fn mutate_with_selection(
         return assignment_interaction::mutate(s, l, action, body, at);
     }
     let mut forms = vec![];
+    if action == "daily-xp-goal" {
+        let goal = body["dailyXpGoal"].as_i64().filter(|n| *n > 0 && *n <= 9_007_199_254_740_991)
+            .ok_or("Daily XP goal must be a positive whole number")?;
+        forms.push(json!([kw("db/cas"), l, kw("learner/daily-xp-goal"), s.entity(l)?.get("learner/daily-xp-goal").cloned().unwrap_or(Json::Null), goal]));
+        return Ok((forms, json!({"goal":true})));
+    }
     if action == "profile-settings" {
         let requested = body["courseId"].as_str().ok_or("courseId is required")?;
         let selected = s
@@ -2206,14 +2218,15 @@ fn mutate_with_selection(
             for response in response_refs {
                 forms.push(add(json!(i), "task-item/responses", response));
             }
-            transition(
-                s,
-                t,
-                i,
-                if correct { "correct" } else { "incorrect" },
-                at,
-                &mut forms,
-            )?;
+            let answered_state=if correct {"correct"}else{"incorrect"};
+            if let Some(millis)=body["submittedAt"].as_i64() {
+                let until=DateTime::from_timestamp_millis(millis).ok_or("Invalid submission instant")?;
+                let elapsed=timing::elapsed_until(s,i,at,until)?;
+                transition_with_elapsed(s,t,i,answered_state,elapsed,&mut forms)?;
+                forms.push(add(json!(i),"task-item/working-ended-at",json!({"$instant":millis})));
+            }else {
+                transition(s,t,i,answered_state,at,&mut forms)?;
+            }
             // Imported questions have no measured speed baseline. Persist the
             // observed duration and outcome; leave calculated performance absent.
             forms.extend(learning::credit(
@@ -2534,7 +2547,7 @@ impl Application {
         if let Some(id) = result["assignmentId"].as_str() {
             return assignment_reader::detail(s, l, id);
         }
-        if matches!(action, "target" | "queue-topic") {
+        if matches!(action, "target" | "queue-topic" | "daily-xp-goal") {
             return Ok(json!({"basis":s.basis_t,"learner":learner_json(s,l)}));
         }
         if action == "queue" {

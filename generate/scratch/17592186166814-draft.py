@@ -12,6 +12,7 @@ No solves, integration, IVPs, new derivative orders, plots or database operation
 from __future__ import annotations
 import argparse, hashlib, json, random, re, sys, uuid
 from pathlib import Path
+from functools import lru_cache
 import sympy as sp
 KP_ID=17592186166814
 TITLE='Determining Whether an Ordinary Differential Equation is Autonomous or Nonautonomous'
@@ -127,12 +128,15 @@ class MathReader:
     def read(self):
         v=self.expr();assert self.i==len(self.tokens);return v
 
+@lru_cache(maxsize=16384)
 def read(s,binding=('x','y')): return MathReader(s,*binding).read()
+@lru_cache(maxsize=16384)
 def isolate(eq,binding=('x','y')):
     l,r=eq.split('='); residual=read(l,binding)-read(r,binding)
     coefficient=sp.diff(residual,D)
     assert not coefficient.has(D) and coefficient!=0
     return sp.simplify(-residual.subs(D,0)/coefficient)
+@lru_cache(maxsize=16384)
 def autonomous(eq,binding=('x','y')): return sp.simplify(sp.diff(isolate(eq,binding),X))==0
 
 def prompt_equations(prompt): return re.findall(r'- \*\*(?:I|II|III)\.\*\* \$(.*?)\$',prompt)
@@ -215,6 +219,9 @@ def authored(level,p,rng):
     if set(p)!=set(('kinds','a','b','n','c','negate','independent','dependent','notation')): raise ValueError('authored parameter keys')
     if len(p['kinds'])!=3 or len(set(p['kinds']))!=3 or any(k not in CATALOG[level] for k in p['kinds']):raise ValueError('three distinct eligible structures required')
     if {k.split(':')[1] for k in p['kinds']}!={'x','y'}:raise ValueError('mixed autonomous/nonautonomous structures required')
+    # The three peer classifications form an unordered set (multiplicity one).
+    # Canonicalize before I/II/III labels, bank ownership, rendering and IDs.
+    p['kinds']=sorted(p['kinds'])
     for k,lo,hi in [('a',2,4),('b',1,4),('n',2,3),('c',5,7)]:
         if type(p[k])!=int or not lo<=p[k]<=hi:raise ValueError('authored workload bound '+k)
     if type(p['negate'])!=bool:raise ValueError('boolean response criterion required')

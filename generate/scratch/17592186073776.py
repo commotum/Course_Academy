@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Number of solutions to two linear equations; local review only (basis 1356).
+"""Number of solutions to two linear equations; validated generator (source basis 1356).
 
 All practice records are unrated/incomplete. raw_* profiles reproduce their
 parameterized prompts/banks AND absence of difficulty, solution and correct ref.
@@ -21,6 +21,8 @@ KP_ID = 17592186073776
 KP_UUID = 'a24fb4f3-6e3c-5c45-b31e-85b7ce290eda'
 TITLE = 'Finding the Number of Solutions to a System'
 VERSION = 'solution-count-v1'
+GENERATOR_UUID = '6a33e997-8493-5804-97b4-8e2f4474cbad'
+SUPPORTED_LEVELS = ('easy', 'moderate', 'hard')
 LEVELS = ('easy', 'moderate', 'hard')
 TEMPLATES = ('standard', 'zero_rhs')
 VALUES = ('no solutions', 'infinitely many solutions', 'a single solution')

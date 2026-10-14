@@ -39,6 +39,11 @@
   :db/cardinality :db.cardinality/one
   :db/doc "Calculated performance magnitude used by the engine. Positive and finite; may exceed one. Distinct from correctness and XP. Omit until evaluated; the application checks the range."}
 
+ {:db/ident :task-item/working-ended-at
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional server-observed submission instant for a terminal question item. Working time ends here, excluding subsequent admission, grading, and database waits even when the status transaction commits later. Absent on older items. Imported duration checkpoints already contain this cutoff when present; dated summaries only count observed started intervals up to this instant."}
+
  {:db/ident :task-item/next
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one

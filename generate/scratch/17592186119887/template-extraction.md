@@ -42,3 +42,8 @@ Source notation stays exact through complete expression masks; changed factors a
 The application's memory-only `learning::grade_field` accepts canonical and reordered factored scalar norms and rejects scalar zero. Its supported equivalence rules leave `sqrt(64x^6+4x^4)` unresolved despite exact real mathematics. This is a documented grading-form restriction, not an algebraic source error. The normal blank retains the original expression shape and meaningful accepted reordered forms; no answer equation or vector fragment is substituted, and the engine is unchanged. All six actually keyed original fields are separately graded; the two missing original refs are never fabricated for raw native fixtures.
 
 Changed evaluated tangent/cross rows collect the actual coefficient products. Expanded cross sums remain expanded, and the norm cross common-factor row retains its grouped trigonometric sum with its changed leading coefficient. Anchor spelling remains exact; changed evaluated scalar expressions use conventional SymPy TeX notation. Determinant cells and substituted partial arguments retain explicitly grouped factors until their evaluated stages.
+
+
+## Replenishment release
+
+Learner-eligible math is normalized with the shared `course-academy-tex-v1` formatter before content identities. Determinant cells render with `vmatrix`; source replay profiles keep exact historical markup. The full source-bank replay, 400-task bounded domain, rendered cell/derivative/cofactor checks and native grading suite pass after normalization. See `release.json` and `reference/replenishment/` for registration, inventory, exact requests and receipts. No learner history or source questions are edited.

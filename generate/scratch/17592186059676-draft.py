@@ -181,6 +181,11 @@ def recipe_texts(sid,p):
  if sid=='q-30990':return [fr'-{a}\csc^2 x-{b}x',fr'-{a}\sec^2 x-{b}x',fr'{a}\sec^2 x-{b}',fr'{a}\csc^2 x+{b}',fr'{a}\csc x-{b}']
  return [fr'{a}\sec x-{b}\cos x',fr'{a}\sec^2 x-{b}\cos x',fr'{a}\sec x+{b}\cos x',fr'{a}\sec^2 x+{b}\cos x',fr'-{a}\sec^2 x+{b}\cos x']
 
+def task_fingerprint(fun,point):
+ assessed=sp.expand(fun)
+ if point is None:assessed=assessed.as_independent(x,as_Add=True)[1]
+ return digest([str(assessed),str(point)])
+
 def source_variant(sid,p,seed):
  fun,point,bank,right=source_model(sid,p)
  if sid in ORIGINALS:
@@ -193,9 +198,17 @@ def source_variant(sid,p,seed):
   q[':question/answer-fields']=[field(q,bank,'radio',correct=right)]
   for choice,value in zip(q[':question/answer-fields'][0][':answer-field/choices'],recipe_texts(sid,p)):choice[':answer/value']=normalize_tex(value)
   rec={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{}}
- rec['generation'].update({'generator_id':GENERATOR_UUID,'version':VERSION,'seed':seed,'template':sid,'profile':'source-pattern','parameters':p,'source_question':SOURCES[sid][':question/id'],'source_basis':SOURCE_BASIS,'lineage':LINEAGE,'eligible':True,'role':'parameterized original source template' if sid in ORIGINALS else 'authored repair of unrated source template','math_format':'course-academy-tex-v1','dependencies':{'sympy':sp.__version__,'python':sys.version.split()[0]},'domain':'x>0 and cos(x)!=0' if sid in ('q-341495','q-47983') else 'real x with cos(x)!=0','mathematical_fingerprint':digest([str(sp.expand(fun)),str(point)]),'sampling_policy':'positive integer coefficients 1..6 for complete sources; a 1..8, b 1..6 for q-30990; fixed source evaluation inputs; all mandatory full-bank recipes retained'})
+ rec['generation'].update({'generator_id':GENERATOR_UUID,'version':VERSION,'seed':seed,'template':sid,'profile':'source-pattern','parameters':p,'source_question':SOURCES[sid][':question/id'],'source_basis':SOURCE_BASIS,'lineage':LINEAGE,'eligible':True,'role':'parameterized original source template' if sid in ORIGINALS else 'authored repair of unrated source template','math_format':'course-academy-tex-v1','dependencies':{'sympy':sp.__version__,'python':sys.version.split()[0]},'domain':'x>0 and cos(x)!=0' if sid in ('q-341495','q-47983') else 'real x with cos(x)!=0','mathematical_fingerprint':task_fingerprint(fun,point),'sampling_policy':'positive integer coefficients 1..6 for complete sources; a 1..8, b 1..6 for q-30990; fixed source evaluation inputs; all mandatory full-bank recipes retained'})
  return final_ids(rec)
 POINTS=(sp.Integer(0),sp.pi/4,-sp.pi/4,sp.pi,-sp.pi)
+def duplicate(a,b):
+ delta=sp.expand((a-b).rewrite(sp.cos))
+ if delta==0:return True
+ if x in delta.free_symbols:
+  sample=sp.N(delta.subs(x,sp.Rational(1,3)),30)
+  if sample.is_real and abs(sample)>sp.Float('1e-22'):return False
+ return sp.simplify(delta)==0
+
 def authored(level,sid,p,seed,kind):
  a,b=p['a'],p['b']
  if level=='hard':
@@ -209,9 +222,9 @@ def authored(level,sid,p,seed,kind):
   prompt=rf"The derivative of $y={b}x-{a}\tan x$ when $x={tex(point)}$ is"
  q={':question/id':uid('temporary'),':question/problem':prompt,':question/worked-solution':authored_solution(fun,point,'y' if level=='moderate' else 'f'),':question/difficulty':':question.difficulty/'+level}
  if kind=='blank':q[':question/problem']+='\n\n'+rf"${'y' if level=='moderate' else 'f'}'({tex(point) if point is not None else 'x'})=$"+'\n{{field-1}}';bank=bank[:1]
- if any(sp.simplify((bank[i]-bank[j]).rewrite(sp.cos))==0 for i in range(len(bank)) for j in range(i)):raise ValueError('ambiguous complete bank')
+ if any(duplicate(bank[i],bank[j]) for i in range(len(bank)) for j in range(i)):raise ValueError('ambiguous complete bank')
  q[':question/answer-fields']=[field(q,bank,kind,'field-1' if kind=='blank' else 'selection')]
- rec={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'generator_id':GENERATOR_UUID,'version':VERSION,'seed':seed,'template':sid,'profile':'authored-method','parameters':p,'source_basis':SOURCE_BASIS,'lineage':LINEAGE,'eligible':True,'role':'authored conservative extension','domain':'real x with cos(x)!=0','mathematical_fingerprint':digest([str(sp.expand(fun)),str(point)]),'dependencies':{'sympy':sp.__version__,'python':sys.version.split()[0]},'bank_recipes':['correct','tangent secant-power error','cosine derivative sign error','power multiplier omission','outer constant-distribution omission'] if level=='hard' else ['correct','tangent derivative sign error','omit tangent derivative','omit secant square','negate linear derivative and tangent derivative'],'sampling_policy':'bounded same-method four-term sum for hard; regular familiar unit-circle point slot for moderate'}}
+ rec={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'generator_id':GENERATOR_UUID,'version':VERSION,'seed':seed,'template':sid,'profile':'authored-method','parameters':p,'source_basis':SOURCE_BASIS,'lineage':LINEAGE,'eligible':True,'role':'authored conservative extension','domain':'real x with cos(x)!=0','mathematical_fingerprint':task_fingerprint(fun,point),'dependencies':{'sympy':sp.__version__,'python':sys.version.split()[0]},'bank_recipes':['correct','tangent secant-power error','cosine derivative sign error','power multiplier omission','outer constant-distribution omission'] if level=='hard' else ['correct','tangent derivative sign error','omit tangent derivative','omit secant square','negate linear derivative and tangent derivative'],'sampling_policy':'bounded same-method four-term sum for hard; regular familiar unit-circle point slot for moderate'}}
  return final_ids(rec)
 
 def parameters_for(sid):
@@ -259,4 +272,4 @@ def batch(level,count,seed=0):
 if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=(*SUPPORTED_LEVELS,'all'),required=True);ap.add_argument('--count',type=int,default=1);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--template');ap.add_argument('--profile',choices=(*NORMAL_PROFILES,'observed_raw'));ap.add_argument('--field-type',choices=('radio','blank'));ap.add_argument('--parameters');ap.add_argument('--format',choices=['json','markdown'],default='json');a=ap.parse_args();levels=SUPPORTED_LEVELS if a.difficulty=='all' else [a.difficulty]
  rs=[generate(l,a.seed,a.template,json.loads(a.parameters) if a.parameters else None,a.profile,a.field_type) for l in levels] if a.template or a.parameters or a.profile or a.field_type else [r for l in levels for r in batch(l,a.count,a.seed)]
- print(json.dumps({'instances':rs},indent=2,ensure_ascii=False) if a.format=='json' else '\n\n'.join(map(markdown,rs)))
+ print(json.dumps(rs,indent=2,ensure_ascii=False) if a.format=='json' else '\n\n'.join(map(markdown,rs)))

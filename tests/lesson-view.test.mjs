@@ -64,6 +64,7 @@ function fixture(storage = new Map()) {
     attachStepMenu(node, id, mathAcademyId, options = {}) { node.dataset.stepDbId = id; node.dataset.mathAcademyId = mathAcademyId; node.dataset.contentKind = options.kind; },
     sessionStorage: { getItem: key => storage.get(key) ?? null, setItem(key, value) { storage.set(key, value); }, removeItem(key) { storage.delete(key); } },
     history: { replaceState() {} }, location: { replace() {}, assign() {} },
+    createStudySidebar: () => new Element('aside'),
     loadMathInputs: async () => {},
     fetch: async (path, options) => {
       const body = options.body ? JSON.parse(options.body) : null;

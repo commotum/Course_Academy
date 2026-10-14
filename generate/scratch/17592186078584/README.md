@@ -1,5 +1,15 @@
 # Inhibited decay model generator
 
+Version 1.1.0 refreshes all nine current sources at basis 2496, adds the
+exhaust-pipe easy layout and replays 45/45 choices (36/36 distractors), 9/9
+complete banks, prompts, solutions and correct designations. The previous
+basis-1356 material described below is historical evidence. Current native
+grading is built against the application's compiled engine in this package.
+Run `replenish.py` for scoped additive preparation, lock-protected submission,
+receipt recovery and exact-basis verification. Evidence is under
+`reference/replenishment/`. The contradictory source q-107122 is preserved
+and excluded from validated inventory; new variants use consistent units.
+
 Run from the repository root:
 
 ```sh

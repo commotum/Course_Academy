@@ -22,6 +22,9 @@ import sympy as sp
 HERE=Path(__file__).with_suffix(''); ROOT=HERE.parents[2]
 SNAPSHOT=json.loads((HERE/'source.json').read_text()); REC=SNAPSHOT['record']
 KP_ID=17592186119887; VERSION='fundamental-vector-product-draft-2'
+GENERATOR_ID=str(uuid.uuid5(uuid.UUID(REC[':knowledge-point/id']), 'question-generator'))
+sys.path.insert(0,str(ROOT/'scripts/question_capture'))
+from math_format import normalize_prose, normalize_tex, validate_generated_record
 SOURCES={q[':question/math-academy-id']:q for q in REC[':knowledge-point/questions']}
 TEMPLATES={q:'easy' for q in SOURCES}; CROSS=tuple(q for q in SOURCES if q!='q-167648')
 TEMPLATES.update({'moderate:'+q:'moderate' for q in CROSS});TEMPLATES.update({'hard:'+q:'hard' for q in CROSS})
@@ -238,6 +241,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  # Mathematical identity excludes offsets annihilated by derivatives, answer banks,
  # aliases, seed and order; norm uses its actual supplied product up to sign aliases.
  fp=digest(['supplied-product-norm' if base=='q-167648' else 'partial-cross', [sp.srepr(z) for z in (cross if base=='q-167648' else list(du)+list(dv))]])
+ if not observed:
+  prompt=normalize_prose(prompt);solution=normalize_prose(solution)
+  fields=[(k,t,[normalize_tex(z) for z in vals],correct) for k,t,vals,correct in fields]
  content=digest([VERSION,level if not observed else SOURCES[base].get(':question/difficulty'),prompt,solution,[[k,t,sorted(vals),correct is not None] for k,t,vals,correct in fields]])
  outfields=[]
  for fi,(key,typ,vals,correct) in enumerate(fields):
@@ -252,6 +258,11 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  return {'knowledge_point':{'db_id':KP_ID,'id':REC[':knowledge-point/id'],'title':REC[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'seed':seed,'template':template,'profile':profile,'parameters':p,'source_ids':[base],'source':{k:SNAPSHOT[k] for k in ('database','basis','lineage')},'evidence_only':observed,'eligible_for_learning':not observed,'domains':{'variables':'real','regularity':REGULARITY[base],'norm_context':'Recovered r=<x,2x² cos theta,2x² sin theta> from full captured original worked solution; no inference from scalar answer'},'bookkeeping_nonunit_coordinates':sum(z!=1 for z in scales),'authored_difficulty_uncertainty':'Number of nonunit coordinate scales is a conservative coefficient-bookkeeping policy, not recovered MA difficulty evidence; observed easy norms have their own supplied-product workload','mathematical_fingerprint':fp,'content_hash':content,'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},'plots':{'rating':'none','references':[]},'grading_limitations':(['Native rules accept canonical and reordered factored norms but cannot establish uncollected square-root equivalence; recorded as unresolved'] if base=='q-167648' else []),'recipe_interpretation':('Complete observed bank diagonal-coordinate covariance; source error intent opaque, evidence only' if observed else 'cross; reversed operands; omit negative middle cofactor; first tangent; second tangent' if base!='q-167648' else 'Euclidean scalar norm of supplied product'), 'calculator_policy':'unknown in captured EDB; two local widgets have empty instruction blocks, not an inferred general prohibition'}}
 
 # EASY: vector tasks have zero/one nonunit scales; observed norm workload is separate.
+_generate=generate
+def generate(*args,**kwargs):
+ record=_generate(*args,**kwargs)
+ if record['generation']['eligible_for_learning']:validate_generated_record(record)
+ return record
 def generate_easy(seed=0,**kwargs):return generate('easy',seed=seed,**kwargs)
 # MODERATE: exactly two nonunit coordinate scales in 2..4; same fixed six partials.
 def generate_moderate(seed=0,**kwargs):return generate('moderate',seed=seed,**kwargs)

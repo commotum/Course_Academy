@@ -10,14 +10,15 @@ import argparse, hashlib, json, math, random, uuid
 from pathlib import Path
 import sympy as sp
 
-VERSION='1.0.0'
+VERSION='1.1.0'
 ROOT=Path(__file__).with_suffix('')
 SNAPSHOT=json.loads((ROOT/'source.json').read_text())
 KP=SNAPSHOT['record']
 LEVELS=('easy','moderate','hard')
-TEMPLATES={'coffee':'easy','iron':'easy','cake':'easy','compressor':'easy',
+TEMPLATES={'exhaust':'easy','coffee':'easy','iron':'easy','cake':'easy','compressor':'easy',
            'bath':'moderate','outside':'moderate','water':'moderate','tea':'moderate','two_observations':'hard'}
 ORIGINALS={
+ 'q-107128':('exhaust',dict(ambient=74,initial=140,rate='0.08',time=3)),
  'q-15595':('coffee',dict(ambient=25,initial=100,rate='0.05',time=6)),
  'q-107118':('iron',dict(ambient=28,initial=140,rate='0.1',time=5)),
  'q-107120':('cake',dict(ambient=70,initial=340,rate='0.09',time=8)),
@@ -27,7 +28,7 @@ ORIGINALS={
  'q-15589':('water',dict(ambient=25,initial=100,observed=90,target=30,time=5)),
  'q-107125':('tea',dict(ambient=28,initial=60,observed=52,target=40,time=10))}
 SOURCE_Q={q[':question/math-academy-id']:q for q in KP[':knowledge-point/questions']}
-CONTEXT={'coffee':('cup of coffee','coffee','C','Celsius'),'iron':('cooling iron','iron','C','Celsius'),
+CONTEXT={'exhaust':('exhaust pipe of a motorcycle','exhaust pipe','F','Fahrenheit'),'coffee':('cup of coffee','coffee','C','Celsius'),'iron':('cooling iron','iron','C','Celsius'),
 'cake':('fresh-baked cake','cake','F','Fahrenheit'),'compressor':('compressor of a refrigerator','compressor','C','Celsius')}
 BANKS={sid:[int(__import__('re').search(r'\d+',a[':answer/value']).group()) for a in q[':question/answer-fields'][0][':answer-field/choices']] for sid,q in SOURCE_Q.items()}
 
@@ -84,8 +85,8 @@ def base_solution(A,initial,k,U):
 def build_easy(template,p):
     A,I,t=p['ambient'],p['initial'],p['time']; k=dec(p['rate']); D=I-A
     obj,short,U,name=CONTEXT[template]
-    pronoun='its temperature' if template=='iron' else f'the temperature of the {short}'
-    prompt=f'The temperature $T(t),$ in degrees {name}, of a {obj} can be modeled by the differential equation'
+    pronoun='its temperature' if template in ('iron','exhaust') else f'the temperature of the {short}'
+    prompt=f'The temperature $T(t),$ in degrees {name}, of {'an' if template=='exhaust' else 'a'} {obj} can be modeled by the differential equation'
     prompt+=block(rf'\frac{{dT}}{{dt}}=-{k}(T-{A})')
     prompt+=f'\n\nwhere $t>0$ is the time, measured in minutes. If the initial temperature of the {short} is ${{{I}}}^{{∘}}{U},$ calculate {pronoun} after ${t}$ minutes. Round your answer to the nearest integer.'
     x=sp.Rational(str(k))*t; exact=A+D*sp.exp(-x); answer=rounded(exact)
@@ -169,8 +170,8 @@ def build_hard(p):
 
 def sample(level,rng,template):
     if level=='easy':
-        A=rng.randint(15,35) if template!='cake' else rng.randint(60,80)
-        I=rng.randint(70,100) if template=='coffee' else rng.randint(100,200) if template=='iron' else rng.randint(250,370) if template=='cake' else rng.randint(65,100)
+        A=rng.randint(15,35) if template not in ('cake','exhaust') else rng.randint(60,80)
+        I=rng.randint(70,100) if template=='coffee' else rng.randint(100,200) if template=='iron' else rng.randint(250,370) if template=='cake' else rng.randint(120,220) if template=='exhaust' else rng.randint(65,100)
         return dict(ambient=A,initial=I,rate=dec(sp.Rational(rng.randint(3,20),100)),time=rng.randint(3,12))
     if level=='moderate':
         A=rng.randint(10,35); I=100 if template=='water' else rng.randint(max(50,A+35),90) if template=='outside' else rng.randint(A+35,100)
@@ -220,7 +221,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     solution=solution.replace('after $1$ minutes','after $1$ minute').replace('after $t=1$ minutes','after $t=1$ minute')
     # Math identity deliberately excludes layout/profile/options; unit scale belongs to task.
     mathematical={'level':level,'parameters':{k:str(sp.Rational(str(v))) if k=='rate' else v for k,v in p.items()}}
-    if level=='easy': mathematical['parameters']['unit']='F' if template=='cake' else 'C'
+    if level=='easy': mathematical['parameters']['unit']='F' if template in ('cake','exhaust') else 'C'
     if level=='moderate': mathematical['parameters']['unit']='F' if template=='outside' else 'C'
     bank=[render(v) for v in values]; right=render(correct)
     content={'version':VERSION,'level':level,'prompt':prompt,'solution':solution,'bank':sorted(bank),'correct':right}
@@ -228,7 +229,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     choices=[{':answer/id':uid([fid,value]),':answer/type':':answer.type/math',':answer/value':value} for value in bank]
     rng.shuffle(choices)
     question={':question/id':identity,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices,':answer-field/correct':[':answer/id',uid([fid,right])]}]}
-    return {'knowledge_point':{'db_id':KP[':db/id'],'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':question,'generation':{'version':VERSION,'seed':seed,'template':template,'parameters':p,'bank_profile':profile or 'authored_operations','origin':'authored_hard' if level=='hard' else 'observed_template','bank_origin':'observed_scalar_offsets_intent_underdetermined' if profile else 'authored_operations','source_basis':1356,'source_lineage':SNAPSHOT['lineage'],'mathematical_fingerprint':fingerprint(mathematical),'content_fingerprint':fingerprint(content),'domain':'T(t)>ambient; positive rate; t>=0; observations strictly cooling','recipes':(['correct','omit_ambient','do_not_subtract_ambient_in_K','halve_rate','double_rate'] if level=='easy' else ['correct','omit_ambient_in_both_ratios','omit_ambient_in_target_ratio','double_rate','halve_rate'] if level=='moderate' else ['correct','omit_elapsed_origin','double_rate','halve_rate','omit_ambient_in_both_ratios']) if not profile else ['rounded_correct_plus_'+str(v-correct) for v in values]}}
+    return {'knowledge_point':{'db_id':KP[':db/id'],'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':question,'generation':{'version':VERSION,'seed':seed,'template':template,'parameters':p,'bank_profile':profile or 'authored_operations','origin':'authored_hard' if level=='hard' else 'observed_template','bank_origin':'observed_scalar_offsets_intent_underdetermined' if profile else 'authored_operations','source_basis':SNAPSHOT['basis'],'source_lineage':SNAPSHOT['lineage'],'mathematical_fingerprint':fingerprint(mathematical),'content_fingerprint':fingerprint(content),'domain':'T(t)>ambient; positive rate; t>=0; observations strictly cooling','recipes':(['correct','omit_ambient','do_not_subtract_ambient_in_K','halve_rate','double_rate'] if level=='easy' else ['correct','omit_ambient_in_both_ratios','omit_ambient_in_target_ratio','double_rate','halve_rate'] if level=='moderate' else ['correct','omit_elapsed_origin','double_rate','halve_rate','omit_ambient_in_both_ratios']) if not profile else ['rounded_correct_plus_'+str(v-correct) for v in values]}}
 
 
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):
