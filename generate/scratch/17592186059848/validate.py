@@ -50,7 +50,7 @@ def split_additive(text):
             parts.append(text[start:j]);start=j
     parts.append(text[start:]);return [latex_expr(v)for v in parts if v.strip()]
 def source_matrix(question):
-    block=re.search(r'\\begin\{aligned\}(.*?)\\end\{aligned\}',question,re.S)[1]
+    block=re.search(r'\\begin\{(?:bmatrix|aligned)\}(.*?)\\end\{(?:bmatrix|aligned)\}',question,re.S)[1]
     return sp.Matrix([[latex_expr(v)for v in row.split('&')]for row in block.split(r'\\')])
 def statement_signature(problem):
     lines=[v for v in problem.splitlines()if v.startswith('- ')or re.match(r'I{1,3}\.',v)]

@@ -1,6 +1,6 @@
 # Identifying Singular Matrices: review
 
-Database math, basis 1522, lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. Original captures and preconversion generator artifacts remain in history/basis-1356. Current source records are shown verbatim; all generated records are local review data.
+Database math, basis 2484, lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. Original captures and preconversion generator artifacts remain in history/basis-1356. Current source records are shown verbatim; all generated records are local review data.
 
 ## Original q-128490
 
@@ -15,7 +15,7 @@ Select all that apply.
  
 
 $$
-M=[\begin{aligned}\sqrt{5} & 0 & \frac{1}{3} \\ 0 & 3 & 5 \\ -3\sqrt{5} & 3 & 4\end{aligned}]
+M=\begin{bmatrix}\sqrt{5} & 0 & \frac{1}{3} \\ 0 & 3 & 5 \\ -3\sqrt{5} & 3 & 4\end{bmatrix}
 $$
 
 Database field keys: I=false, II=false, III=true
@@ -45,7 +45,7 @@ Select all that apply.
 - **III.** $M$ is a singular matrix
 
 $$
-M=[\begin{aligned}\sqrt{5} & 0 & \frac{1}{3} \\ 0 & 3 & 5 \\ - 3 \sqrt{5} & 3 & 4\end{aligned}]
+M=\begin{bmatrix}\sqrt{5} & 0 & \frac{1}{3} \\ 0 & 3 & 5 \\ - 3 \sqrt{5} & 3 & 4\end{bmatrix}
 $$
 
 Correct selections: III
@@ -75,7 +75,7 @@ Select all that apply.
 - **III.** $M$ is a singular matrix
 
 $$
-M=[\begin{aligned}-1 & -1 & 0 \\ -2 & \sqrt{3} & 1 \\ \sqrt{3} & -2 & - \sqrt{3}\end{aligned}]
+M=\begin{bmatrix}-1 & -1 & 0 \\ -2 & \sqrt{3} & 1 \\ \sqrt{3} & -2 & - \sqrt{3}\end{bmatrix}
 $$
 
 Correct selections: I
@@ -103,7 +103,7 @@ Select all that apply.
 - **III.** $E$ is a singular matrix
 
 $$
-E=[\begin{aligned}2 \sqrt{3} & 0 & - \frac{1}{3} \\ \sqrt{3} & 1 & 0 \\ -2 & 0 & 2 \sqrt{3}\end{aligned}]
+E=\begin{bmatrix}2 \sqrt{3} & 0 & - \frac{1}{3} \\ \sqrt{3} & 1 & 0 \\ -2 & 0 & 2 \sqrt{3}\end{bmatrix}
 $$
 
 Correct selections: I
@@ -131,7 +131,7 @@ Select all that apply.
 - **III.** $det(F)=-2$
 
 $$
-F=[\begin{aligned}0 & 1 & 2 \\ 3 & 4 & 5 \\ 6 & 7 & 8\end{aligned}]
+F=\begin{bmatrix}0 & 1 & 2 \\ 3 & 4 & 5 \\ 6 & 7 & 8\end{bmatrix}
 $$
 
 Database field keys: I=true, II=true, III=false
@@ -159,7 +159,7 @@ Select all that apply.
 - **III.** $det(F)=-2$
 
 $$
-F=[\begin{aligned}0 & 1 & 2 \\ 3 & 4 & 5 \\ 6 & 7 & 8\end{aligned}]
+F=\begin{bmatrix}0 & 1 & 2 \\ 3 & 4 & 5 \\ 6 & 7 & 8\end{bmatrix}
 $$
 
 Correct selections: I, II
@@ -187,7 +187,7 @@ Select all that apply.
 - **III.** $det(T)=1$
 
 $$
-T=[\begin{aligned}1 & -1 & 0 \\ -1 & 0 & -1 \\ -1 & -2 & 0\end{aligned}]
+T=\begin{bmatrix}1 & -1 & 0 \\ -1 & 0 & -1 \\ -1 & -2 & 0\end{bmatrix}
 $$
 
 Correct selections: leave all boxes unchecked
@@ -215,7 +215,7 @@ Select all that apply.
 - **III.** $det(E)=2$
 
 $$
-E=[\begin{aligned}2 & 0 & -1 \\ 3 & 1 & 1 \\ 3 & -3 & 0\end{aligned}]
+E=\begin{bmatrix}2 & 0 & -1 \\ 3 & 1 & 1 \\ 3 & -3 & 0\end{bmatrix}
 $$
 
 Correct selections: I
@@ -243,7 +243,7 @@ Select all that apply.
 - **III.** $Q$ is **not** a singular matrix
 
 $$
-Q=[\begin{aligned}1 & 1 & -1 \\ 2 & 3 & 1 \\ 3 & 5 & 3\end{aligned}]
+Q=\begin{bmatrix}1 & 1 & -1 \\ 2 & 3 & 1 \\ 3 & 5 & 3\end{bmatrix}
 $$
 
 Database field keys: I=false, II=false, III=false
@@ -271,7 +271,7 @@ Select all that apply.
 - **III.** $Q$ is **not** a singular matrix
 
 $$
-Q=[\begin{aligned}1 & 1 & -1 \\ 2 & 3 & 1 \\ 3 & 5 & 3\end{aligned}]
+Q=\begin{bmatrix}1 & 1 & -1 \\ 2 & 3 & 1 \\ 3 & 5 & 3\end{bmatrix}
 $$
 
 Correct selections: leave all boxes unchecked
@@ -299,7 +299,7 @@ Select all that apply.
 - **III.** $T$ is **not** a singular matrix
 
 $$
-T=[\begin{aligned}1 & -1 & 0 \\ -1 & 0 & -1 \\ -1 & -2 & 0\end{aligned}]
+T=\begin{bmatrix}1 & -1 & 0 \\ -1 & 0 & -1 \\ -1 & -2 & 0\end{bmatrix}
 $$
 
 Correct selections: III
@@ -327,7 +327,7 @@ Select all that apply.
 - **III.** $E$ is **not** a singular matrix
 
 $$
-E=[\begin{aligned}2 & 0 & -1 \\ 3 & 1 & 1 \\ 3 & -3 & 0\end{aligned}]
+E=\begin{bmatrix}2 & 0 & -1 \\ 3 & 1 & 1 \\ 3 & -3 & 0\end{bmatrix}
 $$
 
 Correct selections: I, III
@@ -357,7 +357,7 @@ Select all that apply.
  
 
 $$
-T=[\begin{aligned}1 & 3 & -5 \\ 2 & 1 & 1 \\ 1 & 3 & 1\end{aligned}]
+T=\begin{bmatrix}1 & 3 & -5 \\ 2 & 1 & 1 \\ 1 & 3 & 1\end{bmatrix}
 $$
 
 Database field keys: I=false, II=true, III=true
@@ -387,7 +387,7 @@ Select all that apply.
 - **III.** $det(T)=-30$
 
 $$
-T=[\begin{aligned}1 & 3 & -5 \\ 2 & 1 & 1 \\ 1 & 3 & 1\end{aligned}]
+T=\begin{bmatrix}1 & 3 & -5 \\ 2 & 1 & 1 \\ 1 & 3 & 1\end{bmatrix}
 $$
 
 Correct selections: II, III
@@ -417,7 +417,7 @@ Select all that apply.
 - **III.** $det(P)=3$
 
 $$
-P=[\begin{aligned}1 & -1 & 0 \\ -1 & 0 & -1 \\ -1 & -2 & 0\end{aligned}]
+P=\begin{bmatrix}1 & -1 & 0 \\ -1 & 0 & -1 \\ -1 & -2 & 0\end{bmatrix}
 $$
 
 Correct selections: II
@@ -445,7 +445,7 @@ Select all that apply.
 - **III.** $det(Q)=18$
 
 $$
-Q=[\begin{aligned}2 & 0 & -1 \\ 3 & 1 & 1 \\ 3 & -3 & 0\end{aligned}]
+Q=\begin{bmatrix}2 & 0 & -1 \\ 3 & 1 & 1 \\ 3 & -3 & 0\end{bmatrix}
 $$
 
 Correct selections: II, III
@@ -475,7 +475,7 @@ Select all that apply.
  
 
 $$
-R=[\begin{aligned}2 & \sqrt{2} & 2 \\ \frac{1}{2} & 0 & -1 \\ 1 & \sqrt{2} & 4\end{aligned}]
+R=\begin{bmatrix}2 & \sqrt{2} & 2 \\ \frac{1}{2} & 0 & -1 \\ 1 & \sqrt{2} & 4\end{bmatrix}
 $$
 
 Database field keys: I=true, II=true, III=false
@@ -505,7 +505,7 @@ Select all that apply.
 - **III.** $det(R)=1$
 
 $$
-R=[\begin{aligned}2 & \sqrt{2} & 2 \\ \frac{1}{2} & 0 & -1 \\ 1 & \sqrt{2} & 4\end{aligned}]
+R=\begin{bmatrix}2 & \sqrt{2} & 2 \\ \frac{1}{2} & 0 & -1 \\ 1 & \sqrt{2} & 4\end{bmatrix}
 $$
 
 Correct selections: I, II
@@ -535,7 +535,7 @@ Select all that apply.
 - **III.** $det(M)=- \sqrt{3}$
 
 $$
-M=[\begin{aligned}-1 & -1 & 0 \\ -2 & \sqrt{3} & 1 \\ \sqrt{3} & -2 & - \sqrt{3}\end{aligned}]
+M=\begin{bmatrix}-1 & -1 & 0 \\ -2 & \sqrt{3} & 1 \\ \sqrt{3} & -2 & - \sqrt{3}\end{bmatrix}
 $$
 
 Correct selections: II
@@ -563,7 +563,7 @@ Select all that apply.
 - **III.** $det(E)=\frac{52}{3}$
 
 $$
-E=[\begin{aligned}2 \sqrt{3} & 0 & - \frac{1}{3} \\ \sqrt{3} & 1 & 0 \\ -2 & 0 & 2 \sqrt{3}\end{aligned}]
+E=\begin{bmatrix}2 \sqrt{3} & 0 & - \frac{1}{3} \\ \sqrt{3} & 1 & 0 \\ -2 & 0 & 2 \sqrt{3}\end{bmatrix}
 $$
 
 Correct selections: II
@@ -591,7 +591,7 @@ Select all that apply.
 - **III.** $det(E)=-2$
 
 $$
-E=[\begin{aligned}\frac{2}{3} & 3 & 4 \\ \frac{2}{3} & 5 & 6 \\ \frac{2}{3} & 7 & 8\end{aligned}]
+E=\begin{bmatrix}\frac{2}{3} & 3 & 4 \\ \frac{2}{3} & 5 & 6 \\ \frac{2}{3} & 7 & 8\end{bmatrix}
 $$
 
 Database field keys: I=true, II=false, III=false
@@ -619,7 +619,7 @@ Select all that apply.
 - **III.** $det(E)=-2$
 
 $$
-E=[\begin{aligned}\frac{2}{3} & 3 & 4 \\ \frac{2}{3} & 5 & 6 \\ \frac{2}{3} & 7 & 8\end{aligned}]
+E=\begin{bmatrix}\frac{2}{3} & 3 & 4 \\ \frac{2}{3} & 5 & 6 \\ \frac{2}{3} & 7 & 8\end{bmatrix}
 $$
 
 Correct selections: I
@@ -647,7 +647,7 @@ Select all that apply.
 - **III.** $det(M)=1 + \sqrt{3}$
 
 $$
-M=[\begin{aligned}-1 & -1 & 0 \\ -2 & \sqrt{3} & 1 \\ \sqrt{3} & -2 & - \sqrt{3}\end{aligned}]
+M=\begin{bmatrix}-1 & -1 & 0 \\ -2 & \sqrt{3} & 1 \\ \sqrt{3} & -2 & - \sqrt{3}\end{bmatrix}
 $$
 
 Correct selections: II, III
@@ -675,7 +675,7 @@ Select all that apply.
 - **III.** $det(Q)=\frac{34}{3}$
 
 $$
-Q=[\begin{aligned}2 \sqrt{3} & 0 & - \frac{1}{3} \\ \sqrt{3} & 1 & 0 \\ -2 & 0 & 2 \sqrt{3}\end{aligned}]
+Q=\begin{bmatrix}2 \sqrt{3} & 0 & - \frac{1}{3} \\ \sqrt{3} & 1 & 0 \\ -2 & 0 & 2 \sqrt{3}\end{bmatrix}
 $$
 
 Correct selections: II, III
@@ -703,7 +703,7 @@ Select all that apply.
 - **III.** $det(Q)=-5$
 
 $$
-Q=[\begin{aligned}0 & 3 & 6 \\ 1 & 4 & 7 \\ 2 & 5 & 8\end{aligned}]
+Q=\begin{bmatrix}0 & 3 & 6 \\ 1 & 4 & 7 \\ 2 & 5 & 8\end{bmatrix}
 $$
 
 Database field keys: I=false, II=true, III=false
@@ -731,7 +731,7 @@ Select all that apply.
 - **III.** $det(Q)=-5$
 
 $$
-Q=[\begin{aligned}0 & 3 & 6 \\ 1 & 4 & 7 \\ 2 & 5 & 8\end{aligned}]
+Q=\begin{bmatrix}0 & 3 & 6 \\ 1 & 4 & 7 \\ 2 & 5 & 8\end{bmatrix}
 $$
 
 Correct selections: II
@@ -759,7 +759,7 @@ Select all that apply.
 - **III.** $det(P)=3$
 
 $$
-P=[\begin{aligned}1 & -1 & 0 \\ -1 & 0 & -1 \\ -1 & -2 & 0\end{aligned}]
+P=\begin{bmatrix}1 & -1 & 0 \\ -1 & 0 & -1 \\ -1 & -2 & 0\end{bmatrix}
 $$
 
 Correct selections: I
@@ -787,7 +787,7 @@ Select all that apply.
 - **III.** $det(Q)=18$
 
 $$
-Q=[\begin{aligned}2 & 0 & -1 \\ 3 & 1 & 1 \\ 3 & -3 & 0\end{aligned}]
+Q=\begin{bmatrix}2 & 0 & -1 \\ 3 & 1 & 1 \\ 3 & -3 & 0\end{bmatrix}
 $$
 
 Correct selections: I, III
@@ -817,7 +817,7 @@ Select all that apply.
  
 
 $$
-M=[\begin{aligned}1 & -2 & 1 \\ 1 & 2 & 3 \\ -2 & 4 & -2\end{aligned}]
+M=\begin{bmatrix}1 & -2 & 1 \\ 1 & 2 & 3 \\ -2 & 4 & -2\end{bmatrix}
 $$
 
 Database field keys: I=true, II=false, III=true
@@ -847,7 +847,7 @@ Select all that apply.
 - **III.** $det(M)=0$
 
 $$
-M=[\begin{aligned}1 & -2 & 1 \\ 1 & 2 & 3 \\ -2 & 4 & -2\end{aligned}]
+M=\begin{bmatrix}1 & -2 & 1 \\ 1 & 2 & 3 \\ -2 & 4 & -2\end{bmatrix}
 $$
 
 Correct selections: I, III
@@ -877,7 +877,7 @@ Select all that apply.
 - **III.** $det(T)=1$
 
 $$
-T=[\begin{aligned}1 & -1 & 0 \\ -1 & 0 & -1 \\ -1 & -2 & 0\end{aligned}]
+T=\begin{bmatrix}1 & -1 & 0 \\ -1 & 0 & -1 \\ -1 & -2 & 0\end{bmatrix}
 $$
 
 Correct selections: leave all boxes unchecked
@@ -905,7 +905,7 @@ Select all that apply.
 - **III.** $det(E)=2$
 
 $$
-E=[\begin{aligned}2 & 0 & -1 \\ 3 & 1 & 1 \\ 3 & -3 & 0\end{aligned}]
+E=\begin{bmatrix}2 & 0 & -1 \\ 3 & 1 & 1 \\ 3 & -3 & 0\end{bmatrix}
 $$
 
 Correct selections: II
@@ -935,7 +935,7 @@ Select all that apply.
 - **III.** $det(S)=\sqrt{3}$
 
 $$
-S=[\begin{aligned}1 & 2 & \,0 \\ 2 & \sqrt{3} & \,\,-1 \\ \sqrt{3} & 4 & \,\,-\sqrt{3}\end{aligned}]
+S=\begin{bmatrix}1 & 2 & \,0 \\ 2 & \sqrt{3} & \,\,-1 \\ \sqrt{3} & 4 & \,\,-\sqrt{3}\end{bmatrix}
 $$
 
 Database field keys: I=true, II=false, III=false
@@ -965,7 +965,7 @@ Select all that apply.
 - **III.** $det(S)=\sqrt{3}$
 
 $$
-S=[\begin{aligned}1 & 2 & 0 \\ 2 & \sqrt{3} & -1 \\ \sqrt{3} & 4 & - \sqrt{3}\end{aligned}]
+S=\begin{bmatrix}1 & 2 & 0 \\ 2 & \sqrt{3} & -1 \\ \sqrt{3} & 4 & - \sqrt{3}\end{bmatrix}
 $$
 
 Correct selections: I
@@ -995,7 +995,7 @@ Select all that apply.
 - **III.** $det(M)=1 + \sqrt{3}$
 
 $$
-M=[\begin{aligned}-1 & -1 & 0 \\ -2 & \sqrt{3} & 1 \\ \sqrt{3} & -2 & - \sqrt{3}\end{aligned}]
+M=\begin{bmatrix}-1 & -1 & 0 \\ -2 & \sqrt{3} & 1 \\ \sqrt{3} & -2 & - \sqrt{3}\end{bmatrix}
 $$
 
 Correct selections: I, III
@@ -1025,7 +1025,7 @@ Select all that apply.
 - **III.** $det(Q)=\frac{34}{3}$
 
 $$
-Q=[\begin{aligned}2 \sqrt{3} & 0 & - \frac{1}{3} \\ \sqrt{3} & 1 & 0 \\ -2 & 0 & 2 \sqrt{3}\end{aligned}]
+Q=\begin{bmatrix}2 \sqrt{3} & 0 & - \frac{1}{3} \\ \sqrt{3} & 1 & 0 \\ -2 & 0 & 2 \sqrt{3}\end{bmatrix}
 $$
 
 Correct selections: I, III
@@ -1055,7 +1055,7 @@ Select all that apply.
  
 
 $$
-R=[\begin{aligned}\frac{3}{5} & \frac{2}{5} & \frac{1}{5} \\ 1 & 2 & 3 \\ 0 & \frac{1}{2} & 1\end{aligned}]
+R=\begin{bmatrix}\frac{3}{5} & \frac{2}{5} & \frac{1}{5} \\ 1 & 2 & 3 \\ 0 & \frac{1}{2} & 1\end{bmatrix}
 $$
 
 Database field keys: I=true, II=true, III=false
@@ -1085,7 +1085,7 @@ Select all that apply.
 - **III.** $det(R)=1$
 
 $$
-R=[\begin{aligned}\frac{3}{5} & \frac{2}{5} & \frac{1}{5} \\ 1 & 2 & 3 \\ 0 & \frac{1}{2} & 1\end{aligned}]
+R=\begin{bmatrix}\frac{3}{5} & \frac{2}{5} & \frac{1}{5} \\ 1 & 2 & 3 \\ 0 & \frac{1}{2} & 1\end{bmatrix}
 $$
 
 Correct selections: I, II
@@ -1115,7 +1115,7 @@ Select all that apply.
 - **III.** $det(M)=- \sqrt{3}$
 
 $$
-M=[\begin{aligned}-1 & -1 & 0 \\ -2 & \sqrt{3} & 1 \\ \sqrt{3} & -2 & - \sqrt{3}\end{aligned}]
+M=\begin{bmatrix}-1 & -1 & 0 \\ -2 & \sqrt{3} & 1 \\ \sqrt{3} & -2 & - \sqrt{3}\end{bmatrix}
 $$
 
 Correct selections: II
@@ -1143,7 +1143,7 @@ Select all that apply.
 - **III.** $det(E)=\frac{52}{3}$
 
 $$
-E=[\begin{aligned}2 \sqrt{3} & 0 & - \frac{1}{3} \\ \sqrt{3} & 1 & 0 \\ -2 & 0 & 2 \sqrt{3}\end{aligned}]
+E=\begin{bmatrix}2 \sqrt{3} & 0 & - \frac{1}{3} \\ \sqrt{3} & 1 & 0 \\ -2 & 0 & 2 \sqrt{3}\end{bmatrix}
 $$
 
 Correct selections: II
@@ -1171,7 +1171,7 @@ Select all that apply.
 - **III.** $det(P)=-\frac{1}{2}$
 
 $$
-P=[\begin{aligned}\frac{1}{2} & 1 & \frac{1}{2} \\ \frac{1}{2} & 2 & \frac{1}{2} \\ -1 & 0 & -1\end{aligned}]
+P=\begin{bmatrix}\frac{1}{2} & 1 & \frac{1}{2} \\ \frac{1}{2} & 2 & \frac{1}{2} \\ -1 & 0 & -1\end{bmatrix}
 $$
 
 Database field keys: I=false, II=true, III=false
@@ -1199,7 +1199,7 @@ Select all that apply.
 - **III.** $det(P)=- \frac{1}{2}$
 
 $$
-P=[\begin{aligned}\frac{1}{2} & 1 & \frac{1}{2} \\ \frac{1}{2} & 2 & \frac{1}{2} \\ -1 & 0 & -1\end{aligned}]
+P=\begin{bmatrix}\frac{1}{2} & 1 & \frac{1}{2} \\ \frac{1}{2} & 2 & \frac{1}{2} \\ -1 & 0 & -1\end{bmatrix}
 $$
 
 Correct selections: II
@@ -1227,7 +1227,7 @@ Select all that apply.
 - **III.** $det(M)=1 + \sqrt{3}$
 
 $$
-M=[\begin{aligned}-1 & -1 & 0 \\ -2 & \sqrt{3} & 1 \\ \sqrt{3} & -2 & - \sqrt{3}\end{aligned}]
+M=\begin{bmatrix}-1 & -1 & 0 \\ -2 & \sqrt{3} & 1 \\ \sqrt{3} & -2 & - \sqrt{3}\end{bmatrix}
 $$
 
 Correct selections: I, III
@@ -1255,7 +1255,7 @@ Select all that apply.
 - **III.** $det(Q)=\frac{34}{3}$
 
 $$
-Q=[\begin{aligned}2 \sqrt{3} & 0 & - \frac{1}{3} \\ \sqrt{3} & 1 & 0 \\ -2 & 0 & 2 \sqrt{3}\end{aligned}]
+Q=\begin{bmatrix}2 \sqrt{3} & 0 & - \frac{1}{3} \\ \sqrt{3} & 1 & 0 \\ -2 & 0 & 2 \sqrt{3}\end{bmatrix}
 $$
 
 Correct selections: I, III
@@ -1285,7 +1285,7 @@ Select all that apply.
  
 
 $$
-D=[\begin{aligned}1 & 2 & 3 \\ 1 & 4 & 5 \\ 1 & 6 & 7\end{aligned}]
+D=\begin{bmatrix}1 & 2 & 3 \\ 1 & 4 & 5 \\ 1 & 6 & 7\end{bmatrix}
 $$
 
 Database field keys: I=false, II=true, III=true
@@ -1315,7 +1315,7 @@ Select all that apply.
 - **III.** $det(D)=0$
 
 $$
-D=[\begin{aligned}1 & 2 & 3 \\ 1 & 4 & 5 \\ 1 & 6 & 7\end{aligned}]
+D=\begin{bmatrix}1 & 2 & 3 \\ 1 & 4 & 5 \\ 1 & 6 & 7\end{bmatrix}
 $$
 
 Correct selections: II, III
@@ -1345,7 +1345,7 @@ Select all that apply.
 - **III.** $det(T)=1$
 
 $$
-T=[\begin{aligned}1 & -1 & 0 \\ -1 & 0 & -1 \\ -1 & -2 & 0\end{aligned}]
+T=\begin{bmatrix}1 & -1 & 0 \\ -1 & 0 & -1 \\ -1 & -2 & 0\end{bmatrix}
 $$
 
 Correct selections: leave all boxes unchecked
@@ -1373,7 +1373,7 @@ Select all that apply.
 - **III.** $det(E)=2$
 
 $$
-E=[\begin{aligned}2 & 0 & -1 \\ 3 & 1 & 1 \\ 3 & -3 & 0\end{aligned}]
+E=\begin{bmatrix}2 & 0 & -1 \\ 3 & 1 & 1 \\ 3 & -3 & 0\end{bmatrix}
 $$
 
 Correct selections: I
@@ -1401,7 +1401,7 @@ Select all that apply.
 - **III.** $det(F)=-2$
 
 $$
-F=[\begin{aligned}2 & 8 & 3 \\ -1 & 2 & 1 \\ 5 & 3 & 1\end{aligned}]
+F=\begin{bmatrix}2 & 8 & 3 \\ -1 & 2 & 1 \\ 5 & 3 & 1\end{bmatrix}
 $$
 
 Database field keys: I=false, II=true, III=false
@@ -1429,7 +1429,7 @@ Select all that apply.
 - **III.** $det(F)=-2$
 
 $$
-F=[\begin{aligned}2 & 8 & 3 \\ -1 & 2 & 1 \\ 5 & 3 & 1\end{aligned}]
+F=\begin{bmatrix}2 & 8 & 3 \\ -1 & 2 & 1 \\ 5 & 3 & 1\end{bmatrix}
 $$
 
 Correct selections: II
@@ -1457,7 +1457,7 @@ Select all that apply.
 - **III.** $det(T)=1$
 
 $$
-T=[\begin{aligned}1 & -1 & 0 \\ -1 & 0 & -1 \\ -1 & -2 & 0\end{aligned}]
+T=\begin{bmatrix}1 & -1 & 0 \\ -1 & 0 & -1 \\ -1 & -2 & 0\end{bmatrix}
 $$
 
 Correct selections: II
@@ -1485,7 +1485,7 @@ Select all that apply.
 - **III.** $det(E)=2$
 
 $$
-E=[\begin{aligned}2 & 0 & -1 \\ 3 & 1 & 1 \\ 3 & -3 & 0\end{aligned}]
+E=\begin{bmatrix}2 & 0 & -1 \\ 3 & 1 & 1 \\ 3 & -3 & 0\end{bmatrix}
 $$
 
 Correct selections: I, II
@@ -1513,7 +1513,7 @@ Select all that apply.
 - **III.** $det(D)=0$
 
 $$
-D=[\begin{aligned}2 & -3 & 1 \\ -1 & 2 & 3 \\ -3 & 5 & 2\end{aligned}]
+D=\begin{bmatrix}2 & -3 & 1 \\ -1 & 2 & 3 \\ -3 & 5 & 2\end{bmatrix}
 $$
 
 Database field keys: I=true, II=false, III=true
@@ -1543,7 +1543,7 @@ Select all that apply.
 - **III.** $det(D)=0$
 
 $$
-D=[\begin{aligned}2 & -3 & 1 \\ -1 & 2 & 3 \\ -3 & 5 & 2\end{aligned}]
+D=\begin{bmatrix}2 & -3 & 1 \\ -1 & 2 & 3 \\ -3 & 5 & 2\end{bmatrix}
 $$
 
 Correct selections: I, III
@@ -1573,7 +1573,7 @@ Select all that apply.
 - **III.** $det(T)=1$
 
 $$
-T=[\begin{aligned}1 & -1 & 0 \\ -1 & 0 & -1 \\ -1 & -2 & 0\end{aligned}]
+T=\begin{bmatrix}1 & -1 & 0 \\ -1 & 0 & -1 \\ -1 & -2 & 0\end{bmatrix}
 $$
 
 Correct selections: leave all boxes unchecked
@@ -1601,7 +1601,7 @@ Select all that apply.
 - **III.** $det(E)=2$
 
 $$
-E=[\begin{aligned}2 & 0 & -1 \\ 3 & 1 & 1 \\ 3 & -3 & 0\end{aligned}]
+E=\begin{bmatrix}2 & 0 & -1 \\ 3 & 1 & 1 \\ 3 & -3 & 0\end{bmatrix}
 $$
 
 Correct selections: II
@@ -1629,7 +1629,7 @@ Select all that apply.
 - **III.** $det(S)=5+2\sqrt{7}$
 
 $$
-S=[\begin{aligned}2\sqrt{7} & 0 & \frac{1}{2} \\ -\sqrt{7} & 2 & 0 \\ 5 & 0 & \sqrt{7}\end{aligned}]
+S=\begin{bmatrix}2\sqrt{7} & 0 & \frac{1}{2} \\ -\sqrt{7} & 2 & 0 \\ 5 & 0 & \sqrt{7}\end{bmatrix}
 $$
 
 Database field keys: I=false, II=true, III=false
@@ -1657,7 +1657,7 @@ Select all that apply.
 - **III.** $det(S)=5 + 2 \sqrt{7}$
 
 $$
-S=[\begin{aligned}2 \sqrt{7} & 0 & \frac{1}{2} \\ - \sqrt{7} & 2 & 0 \\ 5 & 0 & \sqrt{7}\end{aligned}]
+S=\begin{bmatrix}2 \sqrt{7} & 0 & \frac{1}{2} \\ - \sqrt{7} & 2 & 0 \\ 5 & 0 & \sqrt{7}\end{bmatrix}
 $$
 
 Correct selections: II
@@ -1685,7 +1685,7 @@ Select all that apply.
 - **III.** $det(M)=1 + \sqrt{3}$
 
 $$
-M=[\begin{aligned}-1 & -1 & 0 \\ -2 & \sqrt{3} & 1 \\ \sqrt{3} & -2 & - \sqrt{3}\end{aligned}]
+M=\begin{bmatrix}-1 & -1 & 0 \\ -2 & \sqrt{3} & 1 \\ \sqrt{3} & -2 & - \sqrt{3}\end{bmatrix}
 $$
 
 Correct selections: II, III
@@ -1713,7 +1713,7 @@ Select all that apply.
 - **III.** $det(Q)=\frac{34}{3}$
 
 $$
-Q=[\begin{aligned}2 \sqrt{3} & 0 & - \frac{1}{3} \\ \sqrt{3} & 1 & 0 \\ -2 & 0 & 2 \sqrt{3}\end{aligned}]
+Q=\begin{bmatrix}2 \sqrt{3} & 0 & - \frac{1}{3} \\ \sqrt{3} & 1 & 0 \\ -2 & 0 & 2 \sqrt{3}\end{bmatrix}
 $$
 
 Correct selections: II, III
@@ -1741,7 +1741,7 @@ Select all that apply.
 - **III.** $det(N)=-1$
 
 $$
-N=[\begin{aligned}\frac{1}{7} & 3 & -\frac{1}{7} \\ \frac{1}{7} & 4 & -\frac{1}{7} \\ \frac{1}{7} & 5 & -\frac{1}{7}\end{aligned}]
+N=\begin{bmatrix}\frac{1}{7} & 3 & -\frac{1}{7} \\ \frac{1}{7} & 4 & -\frac{1}{7} \\ \frac{1}{7} & 5 & -\frac{1}{7}\end{bmatrix}
 $$
 
 Database field keys: I=false, II=true, III=false
@@ -1769,7 +1769,7 @@ Select all that apply.
 - **III.** $det(N)=-1$
 
 $$
-N=[\begin{aligned}\frac{1}{7} & 3 & - \frac{1}{7} \\ \frac{1}{7} & 4 & - \frac{1}{7} \\ \frac{1}{7} & 5 & - \frac{1}{7}\end{aligned}]
+N=\begin{bmatrix}\frac{1}{7} & 3 & - \frac{1}{7} \\ \frac{1}{7} & 4 & - \frac{1}{7} \\ \frac{1}{7} & 5 & - \frac{1}{7}\end{bmatrix}
 $$
 
 Correct selections: II
@@ -1797,7 +1797,7 @@ Select all that apply.
 - **III.** $det(M)=1 + \sqrt{3}$
 
 $$
-M=[\begin{aligned}-1 & -1 & 0 \\ -2 & \sqrt{3} & 1 \\ \sqrt{3} & -2 & - \sqrt{3}\end{aligned}]
+M=\begin{bmatrix}-1 & -1 & 0 \\ -2 & \sqrt{3} & 1 \\ \sqrt{3} & -2 & - \sqrt{3}\end{bmatrix}
 $$
 
 Correct selections: I, III
@@ -1825,7 +1825,7 @@ Select all that apply.
 - **III.** $det(Q)=\frac{34}{3}$
 
 $$
-Q=[\begin{aligned}2 \sqrt{3} & 0 & - \frac{1}{3} \\ \sqrt{3} & 1 & 0 \\ -2 & 0 & 2 \sqrt{3}\end{aligned}]
+Q=\begin{bmatrix}2 \sqrt{3} & 0 & - \frac{1}{3} \\ \sqrt{3} & 1 & 0 \\ -2 & 0 & 2 \sqrt{3}\end{bmatrix}
 $$
 
 Correct selections: I, III
@@ -1855,7 +1855,7 @@ Select all that apply.
  
 
 $$
-T=[\begin{aligned}4 & 2 & -1 \\ 1 & 2 & 3 \\ -2 & -1 & 1\end{aligned}]
+T=\begin{bmatrix}4 & 2 & -1 \\ 1 & 2 & 3 \\ -2 & -1 & 1\end{bmatrix}
 $$
 
 Database field keys: I=false, II=false, III=true
@@ -1885,7 +1885,7 @@ Select all that apply.
 - **III.** $T$ is **not** a singular matrix
 
 $$
-T=[\begin{aligned}4 & 2 & -1 \\ 1 & 2 & 3 \\ -2 & -1 & 1\end{aligned}]
+T=\begin{bmatrix}4 & 2 & -1 \\ 1 & 2 & 3 \\ -2 & -1 & 1\end{bmatrix}
 $$
 
 Correct selections: III
@@ -1915,7 +1915,7 @@ Select all that apply.
 - **III.** $P$ is **not** a singular matrix
 
 $$
-P=[\begin{aligned}1 & -1 & 0 \\ -1 & 0 & -1 \\ -1 & -2 & 0\end{aligned}]
+P=\begin{bmatrix}1 & -1 & 0 \\ -1 & 0 & -1 \\ -1 & -2 & 0\end{bmatrix}
 $$
 
 Correct selections: III
@@ -1943,7 +1943,7 @@ Select all that apply.
 - **III.** $Q$ is **not** a singular matrix
 
 $$
-Q=[\begin{aligned}2 & 0 & -1 \\ 3 & 1 & 1 \\ 3 & -3 & 0\end{aligned}]
+Q=\begin{bmatrix}2 & 0 & -1 \\ 3 & 1 & 1 \\ 3 & -3 & 0\end{bmatrix}
 $$
 
 Correct selections: II, III
@@ -1971,7 +1971,7 @@ Select all that apply.
 - **III.** $det(M)=\frac{399}{40}$
 
 $$
-M=[\begin{aligned}\frac{\sqrt{7}}{5} & -1 & \sqrt{7} \\ \frac{2 \sqrt{7}}{5} & - \frac{3}{2} & - \frac{3 \sqrt{7}}{4} \\ \frac{2 \sqrt{7}}{5} & 1 & - \frac{\sqrt{7}}{4}\end{aligned}]
+M=\begin{bmatrix}\frac{\sqrt{7}}{5} & -1 & \sqrt{7} \\ \frac{2 \sqrt{7}}{5} & - \frac{3}{2} & - \frac{3 \sqrt{7}}{4} \\ \frac{2 \sqrt{7}}{5} & 1 & - \frac{\sqrt{7}}{4}\end{bmatrix}
 $$
 
 Correct selections: II, III
@@ -1999,7 +1999,7 @@ Select all that apply.
 - **III.** $det(D)=0$
 
 $$
-D=[\begin{aligned}- \frac{\sqrt{5}}{3} & 1 & \frac{\sqrt{5}}{4} \\ \frac{\sqrt{5}}{3} & 1 & - \frac{3 \sqrt{5}}{4} \\ - \sqrt{5} & 1 & \frac{5 \sqrt{5}}{4}\end{aligned}]
+D=\begin{bmatrix}- \frac{\sqrt{5}}{3} & 1 & \frac{\sqrt{5}}{4} \\ \frac{\sqrt{5}}{3} & 1 & - \frac{3 \sqrt{5}}{4} \\ - \sqrt{5} & 1 & \frac{5 \sqrt{5}}{4}\end{bmatrix}
 $$
 
 Correct selections: I, III

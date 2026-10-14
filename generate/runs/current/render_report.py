@@ -2,10 +2,10 @@
 import json,collections
 from pathlib import Path
 R=Path(__file__).resolve().parent;m=json.loads((R/'manifest.json').read_text());jobs=m['jobs'];counts=collections.Counter(j['status'] for j in jobs)
-lines=['# Generator creation progress','',f"Cumulative scope: **{m['topics']} topics, {m['knowledge_points']} knowledge points**. Approved sources retain their recorded per-KP bases; active-before-refresh sources use1356; refreshed queued sources: basis{m.get('latest_candidate_basis',1356)}.",'',
+lines=['# Generator creation progress','',f"Cumulative scope: **{m['topics']} topics, {m['knowledge_points']} knowledge points**. Each saved source wrapper retains its database basis; refreshed queue: basis{m.get('latest_candidate_basis',1356)}.",'',
  'Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.','',
  ', '.join(f'**{status}: {count}**' for status,count in sorted(counts.items()))+'.','',
- f"Latest query: **{m.get('latest_candidate_topics',m['topics'])} topics, {m.get('latest_candidate_knowledge_points',m['knowledge_points'])} KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Existing approved work is preserved; other ready drafts await QA until these13 pass. Then finish any coverage-report KPs and the remaining script-ranked candidates.",'',
+ f"Latest query: **{m.get('latest_candidate_topics',m['topics'])} topics, {m.get('latest_candidate_knowledge_points',m['knowledge_points'])} KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.",'',
  'Cumulative counts retain seven earlier KPs outside the latest list. Only qa_passed jobs have current parent verification; queued, working and needs_revalidation jobs are not complete. Captured counts can include independently authored inventory as well as original MA examples; per-KP evidence separates them. Source anomalies and authored missing-level designs are recorded with each KP.','',
  '| KP | Topic | Knowledge point | Captured E / M / H / unrated | Status | Parent QA |',
  '|---|---|---|---|---|---|']

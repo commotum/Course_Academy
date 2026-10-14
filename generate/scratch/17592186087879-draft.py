@@ -139,7 +139,7 @@ def raw_strings(qid,p):
         for a in field[':answer-field/choices']:
             v=a[':answer/value'];mp={}
             if field[':answer-field/key']=='field-2':
-                if qid=='q-334916':mp={'4':str(1-h),'-3':'-'+str(-h)}
+                if qid=='q-334916':mp={'4':str(1-h),'-3':'-'+str(-h),r'\frac{3}':r'\frac{'+str(-h)+'}'}
                 elif qid=='q-335808':mp={'+1':'+'+str(h),'-{e}':'-'+coeff(2-h)+r'{e}'}
                 elif qid=='q-335810':mp={'3x':str(h+1)+'x','3{x}':str(h+1)+'{x}',r'\frac{1}':r'\frac{'+str(h-1)+'}'}
                 elif qid=='q-335811':mp={r'\operatorname{sin}':coeff(p['k'])+r'\operatorname{sin}'}
@@ -175,7 +175,7 @@ def normal_blocks(qid,p,m):
     U=sp.integrate(P,x)
     ifrows=[('I(x)',r'e^{\int P(x)\,\text{d}x}'),('',r'e^{\int ('+pt+r')\,\text{d}x}')]
     if f in ('nonstandard','cosine'):
-        ifrows.extend([('',r'e^{2\int (1/x)\,\text{d}x}'),('',r'e^{2\ln x}'),('',r'e^{\ln x^2}')])
+        ifrows.extend([('',r'e^{2\int (1/x)\,\text{d}x}'),('',r'e^{2\ln x}'),('',r'e^{\ln(x^2)}')])
     elif f=='sine':ifrows.append(('',r'e^{\ln x}'))
     ifrows.append(('',it))
     product=[(it+r'\cdot ('+addterm(D,pt+'y')+')',it+r'\cdot ('+qt+')'),(addterm(it+r'\cdot '+D,ip+r'\cdot y'),prod),(DX+'('+yg+')',prod+'.')]
@@ -188,8 +188,8 @@ def normal_blocks(qid,p,m):
     elif f=='nonstandard':sub=tex(p['b'])+'('+tex(t)+r')^2+\frac{C}{('+tex(t)+')^2}';ev=tex(p['b'])+'+C'
     elif f=='cosine':sub=r'\frac{'+tex(p['k'])+r'\sin('+tex(t)+r')+C}{('+tex(t)+r')^2}';ev=r'\frac{C}{'+tex(t**2)+'}'
     elif f=='sine':sub=r'\frac{-'+tex(p['k'])+r'\cos('+tex(t)+r')+C}{('+tex(t)+')}';ev=r'\frac{2C}{\pi}'
-    elif f=='cancellation':sub='('+tex(p['b'])+'('+tex(t)+r')^2+C)e^{-'+evaluated_at(tex(P*x),t)+'}';ev=r'(0+C)\cdot 1'
-    else:sub=r'e^{-'+evaluated_at(tex(P*x),t)+'}(C-'+tex(p['k'])+r'\cos('+tex(t)+'))';ev='C-'+tex(p['k'])
+    elif f=='cancellation':sub='('+tex(p['b'])+'('+tex(t)+r')^2+C)e^{'+evaluated_at(tex(-P*x),t)+'}';ev=r'(0+C)\cdot 1'
+    else:sub=r'e^{'+evaluated_at(tex(-P*x),t)+'}(C-'+tex(p['k'])+r'\cos('+tex(t)+'))';ev='C-'+tex(p['k'])
     initial=[('y('+tex(t)+')',sub),(tex(h),ev),('C',tex(c))]
     final='y='+tex(y)+'.'
     if f=='sine':
@@ -309,6 +309,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     if profile not in ('raw','authored'):raise ValueError('Unknown profile')
     r=random.Random(seed)
     eligible=[t for t,v in TEMPLATES.items() if v[0]==level and (profile!='raw' or t in OBS)]
+    if not eligible:raise ValueError('No observed raw source at this difficulty')
     if template is None:template=r.choice(eligible)
     if template not in eligible:raise ValueError('Template difficulty/profile mismatch')
     f=TEMPLATES[template][1]

@@ -22,6 +22,7 @@ from matplotlib.patches import Polygon, Wedge
 
 KP_ID=17592186105903
 KP_UUID='acc86fb6-2ef4-5f8f-b204-6e1fdbbf0530'
+GENERATOR_UUID='6a47fdf1-4be6-5b0e-b9be-3377eba83cf9'
 TITLE='Calculating the Area of a Triangle'
 VERSION='triangle-area-2'
 ROOT=Path(__file__).resolve().with_suffix('')
@@ -313,6 +314,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     prompt=f'![]({imagepath})\n\nFind the area of $△ABC$. Round your answer to two decimal places.'
     solution=authored_solution(t,p)
    q={':question/problem':prompt}
+   if not raw:q[':question/requires-calculator']=True
    if solution is not None:q[':question/worked-solution']=solution
    if not raw or ':question/difficulty' in source_q:q[':question/difficulty']=':question.difficulty/'+level
    identity=digest(dict(version=VERSION,level=q.get(':question/difficulty'),prompt=prompt,solution=solution,bank=sorted(values),kind=t['kind']))

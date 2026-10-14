@@ -1,0 +1,22 @@
+# ODE-order generator
+
+Run from repository root:
+
+```sh
+.venv/bin/python generate/scratch/17592186166813-draft/validate.py
+.venv/bin/python generate/scratch/17592186166813-draft.py --difficulty all --seed 42 --count 2 --format markdown
+```
+
+API: generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None), plus generate_easy/moderate/hard. Source replay uses template=source_id, profile="observed", parameters from source-cases.json. Authored defaults use single/selection/mixed_selection and profile="authored". Invalid explicit parameters raise ValueError; they are never replaced by sampled values. JSON records are local review artifacts, never transactions.
+
+Scope is recognition of the highest displayed ordinary derivative only. Easy/moderate observed; hard authored from existing higher-derivative notation plus sourced derivative power/product and full-equation scanning. Source opaque numeric catalogs remain evidence-only. q-167787 restated RHS anomaly has a separate source_repaired profile; source order answer itself is unchanged. All learner eligible defaults use authored complete banks and clean solutions. No solving, ODE linearity/autonomy, IVP/PDE branch or plots.
+
+Frozen version ode-order-feedback-draft-2. Evidence includes source wrapper, full extraction and73-choice mapping, original parameter replay cases, changed-source recipes, source-fidelity results, explicit finite-domain QA, native input/report, labeled review and dependency/hash freeze. Validation compares every original prompt, solution and field/bank with source evidence, checks displayed order via an independent reader and SymPy, tests every native choice plus equivalent/wrong blank entries, and fails on mismatch. Historical distractor intention is explicitly unresolved; exact source values are not a recovered authorship claim.
+
+This is a local feedback-repair draft. The registered numeric script and its entire existing evidence tree are immutable; registered-baseline.json lists all65 full file paths with their original SHA256 hashes. validate.py rechecks exact file/directory coverage and every digest. The refreshed basis2275 wrapper contains14 original MA questions and zero independent inventory questions; independent-inventory.json records that separate current-inventory coverage. No generated inventory establishes observed difficulty labels.
+
+The reported omission is repaired on all6 q-96676 answers. Feedback presence is exact on all73 answers (6 present,67 absent). Full derivative references and ordinal words are slots; y^5 and the square-root explanation stay fixed because they describe their respective source equations. Every one of the28 strictly increasing two-order maps from1–8 is independently checked:168 feedback instances. Changed orders above3 use an inline Leibniz derivative in feedback. Content identity includes feedback, while mathematical task identity excludes feedback, bank profiles and seed.
+
+Source radio recipe definitions are explicit component operations rather than fitted offsets: highest/lowest/next-highest displayed derivative, ordinary independent/dependent exponent, and predecessor/successor order-count candidates. The complete seven scalar catalogs, including the one-answer blank, are mapped choice by choice. These operations reproduce the full original banks, but the historical author intent is underdetermined. Public observed replay therefore stays evidence-only; authored default banks have specified displayed-method operations. validate.py sweeps every bounded source order map, rejects colliding complete catalogs, and independently recomputes each eligible bank from the actual printed equation.
+
+Independent QA parses the full printed equations to exact SymPy jet-coordinate expressions, verifies their ordinary x/y binding, and checks that the highest derivative survives simplification with nonzero coefficient. Negative controls cover zero/cancelled highest terms, foreign derivative variables, PDE notation, stale/drop/wrong-factor feedback, stale solution derivatives and changed-target solution text. Shared math-content normalization and checked_math_content run before identity and at the public API boundary; feedback is also explicitly normalized and validated. Native grading uses the unchanged memory-only engine; no registration, transactions, baseline edits or shared QA writes occur.

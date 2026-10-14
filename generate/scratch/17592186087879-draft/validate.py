@@ -181,6 +181,8 @@ def formal_stages(solution,P,Q,m):
         for row in rows:
             if '&' not in row:continue
             a,b=row.split('&',1);a=a.strip() or prior;prior=a;b=b.strip().removeprefix('=').rstrip('.')
+            if a=='P(x)' and 'Q(x)=' in b:
+                part,qpart=b.split(r',\,Q(x)=');assert equal(parse(part),P) and equal(parse(qpart),Q);n+=2;continue
             if a=='I(x)' and r'\int' in b:
                 # The definition row is symbolic; following rows must use actual P.
                 if 'P(x)' in b:n+=1;continue
@@ -218,10 +220,15 @@ def operative_structure(rec):
     integral=next(rows for rows in groups if r'\int' in rows[0] and 'I(x)' not in rows[0]);assert len(integral)==({'constant':4,'quadratic':5,'cubic':5}.get(family,3))
     initial=next(rows for rows in groups if 'C &' in rows[-1]);assert len(initial)==3
     assert '(' in initial[0] and '=' in initial[1]
+    substitution=initial[0].split('&',1)[1]
+    if family in ('constant','quadratic','cubic','cancellation','trig_cancellation'):assert 'e^{' in substitution and '(0)' in substitution
+    if family=='nonstandard':assert '(1)^2' in substitution
+    if family=='cosine':assert r'\sin(' in substitution
+    if family in ('sine','trig_cancellation'):assert r'\cos(' in substitution
     if family in ('quadratic','cubic'):
         assert r'\text{d}u' in integral[1] and 'e^u+C' in integral[2] and 'u' not in integral[3].split('&',1)[1]
     if family=='constant':assert r'\left(' in integral[1] and r'\cdot' in integral[1]
-    if family in ('cosine','nonstandard'):assert r'\int (1/x)' in IF[2] and r'\ln x^2' in IF[4]
+    if family in ('cosine','nonstandard'):assert r'\int (1/x)' in IF[2] and r'\ln' in IF[4] and 'x^2' in IF[4]
     if family=='sine':
         final=groups[-1];assert len(final)==3 and r'\frac{' in final[0] and final[1].count(r'\frac{')==2 and '{2x}' in final[2]
     if family=='nonstandard':
@@ -233,6 +240,36 @@ def baseline_check():
     assert paths==old['pathset'],'Registered baseline path set changed'
     assert all(hashlib.sha256((g.ROOT/p).read_bytes()).hexdigest()==v for p,v in old['files'].items()),'Registered baseline bytes changed'
     return len(paths)
+
+def raw_recipes(qid,p):
+    h=sp.Integer(p['h']);e=sp.exp
+    if qid=='q-334916':return [x,e(x),x**3,1/x],[1+(h-1)*e(x),1+(h-1)*e(-x),h*e(x),e(-x)+h-1,h*e(-x)]
+    if qid=='q-335808':return [1/x,e(x*x/4),e(4*x),x**3],[2*x+h,e(2*x*x),2+(h-2)*e(x*x),2+(h-2)*e(-x*x/4),2*x*x+h]
+    if qid=='q-335810':return [2*x,e(2*x),e(x),x*x],[(h+1)*x*x-(h-1)/x**2,x*x+(h-1)/x**2,x+(h-1)/x**2,(h+1)*x-(h-1)/x**2]
+    if qid=='q-335811':
+        v=p['k']*sp.sin(x);return [e(x*x),e(2*x),x*x,2*x],[x*x*v,v/x,v/x**2,v/x**2,x*v]
+    if qid=='q-335812':return [1/x,e(x),x,sp.log(x)],[(h*sp.pi+3*sp.cos(x))/(2*x),(h*sp.pi+4*sp.cos(x))/(2*x),(h*sp.pi-sp.cos(x))/(2*x),(h*sp.pi-2*sp.cos(x))/(2*x),(h*sp.pi-2*sp.cos(x))/(2*x)]
+    if qid=='q-335806':return [e(x),x,e(-x),x*x],[(x+h)*e(x),(x*x+h)*e(x),h*e(-x),(x+h)*e(-x),(x*x+h)*e(-x)]
+    if qid=='q-335829':return [e(2*x),4*x,e(4*x),e(8*x)],[2+(h-2)*e(-4*x),1+(h-1)*e(-4*x),4+(h-4)*e(4*x),h*e(4*x),h*e(-4*x)]
+    if qid=='q-339145':return [e(12*x),1/x,x**6,e(x*x/12)],[6+(h-6)*e(x*x),6*x+h,e(6*x*x),6*x*x+h,6+(h-6)*e(-x*x/12)]
+    if qid=='q-335830':return [e(-2*x),-2*x,e(2*x),2*x],[e(-2*x)*(h-3+(h-1)*sp.cos(x)),h*e(-2*x)*(1+sp.cos(x))/2,e(2*x)*(h+1-sp.cos(x)),e(2*x)*(h-1+sp.cos(x)),h*e(2*x)*sp.cos(x)]
+    raise ValueError(qid)
+
+def check_raw_math(rec):
+    ib,yb=raw_recipes(rec['generation']['template'],rec['generation']['parameters'])
+    P,Q,t,h=displayed_problem(rec)
+    out=[]
+    for key,expected in [('field-1',ib),('field-2',yb)]:
+        f=next(f for f in rec['question'][':question/answer-fields'] if f[':answer-field/key']==key)
+        remaining=list(expected)
+        for a in f[':answer-field/choices']:
+            value=parse(a[':answer/value']);j=next((i for i,v in enumerate(remaining) if equal(value,v)),None);assert j is not None,(rec['generation']['template'],value,remaining);remaining.pop(j)
+            out.append({'field_key':key,'displayed_raw_value':a[':answer/value'],'derived_symbolic_value':str(value),'recipe_status':'whole captured expression pattern; original intent unresolved where opaque'})
+        assert not remaining
+        if ':answer-field/correct' in f:
+            z=parse(next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1]))
+            assert (equal(sp.diff(z,x),P*z) if key=='field-1' else equal(sp.diff(z,x)+P*z,Q) and equal(z.subs(x,t),h))
+    return out
 
 def raw_check(rec,q):
     actual=rec['question'];assert rec['generation']['evidence_only'] and not rec['generation']['eligible']
@@ -260,19 +297,41 @@ def diagnostics(rec):
     for i,f in enumerate(clone['question'][':question/answer-fields']):
         f[':answer-field/type']=':answer-field.type/blank';a=next(a for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1]);value=a[':answer/value'];z=parse(value)
         # Visible unreduced quotient is algebraically equivalent and nonidentical.
-        alternative=r'\frac{('+value+r')(x+1)}{x+1}'
+        if i==0:
+            if z.func==sp.exp:
+                half=sp.simplify(z.args[0]/2);alternative=r'e^{'+g.tex(half)+'+('+g.tex(half)+')}'
+            else:alternative='x\\cdot x' if equal(z,x**2) else 'x+x-x'
+        else:
+            P,Q,t,h=displayed_problem(rec);IF=parse(next(a[':answer/value'] for a in rec['question'][':question/answer-fields'][0][':answer-field/choices'] if a[':answer/id']==rec['question'][':question/answer-fields'][0][':answer-field/correct'][1]));primitive=sp.integrate(IF*Q,x);constant=sp.simplify(h*IF.subs(x,t)-primitive.subs(x,t))
+            family=g.TEMPLATES[rec['generation']['template']][1]
+            if family in ('constant','quadratic','cubic'):
+                b=sp.simplify(primitive/IF);half=-sp.integrate(P,x)/2
+                alternative=g.tex(b)+'+('+g.tex(constant)+r')e^{'+g.tex(half)+'+('+g.tex(half)+')}'
+            elif family in ('cosine','sine','nonstandard'):
+                alternative=r'\frac{'+g.tex(primitive)+'}{'+g.tex(IF)+r'}+\frac{'+g.tex(constant)+'}{'+g.tex(IF)+'}'
+            else:alternative=g.tex(sp.expand(z))
         assert equal(parse(alternative),z)
         checks.extend([{'field_index':i,'submitted':value,'expected':'accepted','purpose':'Diagnostic native math canonical value; no blank served'},
                        {'field_index':i,'submitted':alternative,'expected':'accepted','purpose':'Diagnostic native nonidentical unreduced equivalent function'},
                        {'field_index':i,'submitted':g.tex(z+1),'expected':'rejected','purpose':'Diagnostic native known-wrong function'}])
     return {'label':'expression diagnostic '+rec['generation']['template'],'record':clone,'checks':checks}
 
+def native_split(native,fixtures):
+    lookup={row['label']:row for row in fixtures};groups={name:{'accepted':0,'rejected':0,'unresolved':0} for name in ('normal_served_select','raw_captured_select','supplemental_blank_diagnostics')}
+    for row in native['records']:
+        fixture=lookup[row['label']];r=fixture['record'];blank=any(f[':answer-field/type']==':answer-field.type/blank' for f in r['question'][':question/answer-fields'])
+        name='supplemental_blank_diagnostics' if blank else 'raw_captured_select' if r['generation']['evidence_only'] else 'normal_served_select'
+        for check in row['checks']:groups[name][check['outcome']]+=1
+    assert groups['normal_served_select']['unresolved']==0
+    return groups
+
 def main():
     import copy
-    baseline=baseline_check();counts={'MA_originals':0,'raw_prompts_exact':0,'raw_solutions_exact':0,'fields':0,'raw_values_exact':0,'correct_refs_exact':0,'missing_correct_refs_preserved':0,'missing_solutions_preserved':0,'unrated_preserved':0};cases=[];review=[];fixtures=[];steps=0
+    baseline=baseline_check();counts={'MA_originals':0,'raw_prompts_exact':0,'raw_solutions_exact':0,'fields':0,'raw_values_exact':0,'correct_refs_exact':0,'missing_correct_refs_preserved':0,'missing_solutions_preserved':0,'unrated_preserved':0};cases=[];review=[];fixtures=[];steps=0;raw_mapping=[]
     # Exact raw API coverage; no completion masquerades as a captured designation.
     for qid,(level,family,p,*_) in g.OBS.items():
         rec=g.generate(level,template=qid,parameters=p,profile='raw');q=g.QUESTIONS[qid];raw_check(rec,q)
+        raw_mapping.append({'source_id':qid,'parameters':p,'values':check_raw_math(rec)})
         counts['MA_originals']+=1;counts['raw_prompts_exact']+=1;counts['raw_solutions_exact']+=(':question/worked-solution' in q);counts['missing_solutions_preserved']+=(':question/worked-solution' not in q);counts['unrated_preserved']+=(':question/difficulty' not in q)
         for f in q[':question/answer-fields']:
             counts['fields']+=1;counts['raw_values_exact']+=len(f[':answer-field/choices']);counts['correct_refs_exact']+=(':answer-field/correct' in f);counts['missing_correct_refs_preserved']+=(':answer-field/correct' not in f)
@@ -283,7 +342,7 @@ def main():
         if family!='cosine':
             if 'k' not in p:changed.pop('k',None)
             lo,hi=g.RAW_H[qid];changed['h']=next(h for h in range(lo,hi+1) if h!=p['h'] and (qid!='q-335830' or not h%2))
-        var=g.generate(level,template=qid,parameters=changed,profile='raw');assert var['question'][':question/problem']!=rec['question'][':question/problem'];review.append({'label':'Parameterized raw evidence '+qid,'record':var})
+        var=g.generate(level,template=qid,parameters=changed,profile='raw');assert var['question'][':question/problem']!=rec['question'][':question/problem'];review.append({'label':'Parameterized raw evidence '+qid,'record':var});raw_mapping.append({'source_id':qid,'parameters':changed,'values':check_raw_math(var)})
     # Exact independent inventory coverage, not an original-template denominator.
     independent=json.loads((HERE/'independent-inventory.json').read_text());captured=[q for q in g.SOURCE['record'][':knowledge-point/questions'] if ':question/math-academy-id' not in q]
     assert [r['record'] for r in independent['questions']]==captured
@@ -312,7 +371,19 @@ def main():
             try:g.generate(level,template=template,parameters=bad)
             except ValueError:rejected+=1
             else:raise AssertionError(('Bad parameter accepted',template,bad))
-    # Structure mutations preserve algebraic equality but erase assessed operations.
+    boundary_passes=0;boundary_collisions=0
+    for template,(level,family) in g.TEMPLATES.items():
+        base=g.generate(level,2,template=template)['generation']['parameters']
+        for key in base:
+            options=(-6,0,6) if key=='h' and family=='cosine' else (-6,6) if key=='h' else (-4,-1) if key=='a' and family=='trig_cancellation' else (1,) if key=='a' and level=='easy' else (2,6) if key=='a' and family=='constant' else (2,6) if key=='d' and family=='quadratic' else (1,4) if key=='d' else (1,6)
+            for value in options:
+                pp=dict(base,**{key:value})
+                try:rr=g.generate(level,17,template=template,parameters=pp)
+                except ValueError:
+                    assert pp['h']==0 or g.model(family,pp)['c']==0
+                    boundary_collisions+=1;continue
+                steps+=check_record(rr);operative_structure(rr);boundary_passes+=1
+        # Structure mutations preserve algebraic equality but erase assessed operations.
     mutations=0
     for template in ('q-335829','q-335808','q-335810','q-335812'):
         level=g.TEMPLATES[template][0];rec=g.generate(level,2,template=template);bad=copy.deepcopy(rec);sol=bad['question'][':question/worked-solution'];groups=list(re.finditer(r'\\begin\{aligned\}(.*?)\\end\{aligned\}',sol,re.S))
@@ -329,8 +400,12 @@ def main():
     try:check_record(bad)
     except AssertionError:mutations+=1
     else:raise AssertionError('Wrong primitive coefficient accepted')
+    (HERE/'raw-bank-mapping.json').write_text(json.dumps(raw_mapping,indent=2,ensure_ascii=False)+'\n')
     (HERE/'source-cases.json').write_text(json.dumps(cases,indent=2)+'\n');(HERE/'review.json').write_text(json.dumps(review,indent=2,ensure_ascii=False)+'\n');(HERE/'review.md').write_text('# Original and parameterized source evidence / normal variants\n\n'+''.join('## '+r['label']+'\n\n'+g.markdown(r['record'])+'\n\n' for r in review))
+    # Known current native restriction: equivalent exponential quotient.
+    diagnostic=diagnostics(g.generate('hard',0,template='q-335808'));r=diagnostic['record'];mP,mQ,mt,mh=displayed_problem(r);IF=parse(next(a[':answer/value'] for a in r['question'][':question/answer-fields'][0][':answer-field/choices'] if a[':answer/id']==r['question'][':question/answer-fields'][0][':answer-field/correct'][1]));prim=sp.integrate(IF*mQ,x);cc=sp.simplify(mh*IF.subs(x,mt)-prim.subs(x,mt));entry=r'\frac{('+g.tex(prim)+')+('+g.tex(cc)+')}{'+g.tex(IF)+'}'
+    fixtures.append({'label':'Documented diagnostic exponential-quotient restriction','record':r,'checks':[{'field_index':1,'submitted':entry,'expected':'unresolved','purpose':'Equivalent whole function with nonzero exponential denominator; current native rules cannot prove it; diagnostic blank never served'}]})
     (HERE/'engine-input.json').write_text(json.dumps(fixtures,indent=2)+'\n');engine=g.ROOT/'generate/runs/current/check-engine';subprocess.run([str(engine),str(HERE/'engine-input.json'),str(HERE/'engine.json')],check=True);native=json.loads((HERE/'engine.json').read_text())
-    out={'status':'validated_draft_with_ineligible_raw_source_defects','basis':2275,'source_fidelity':counts,'independent_inventory_exact_records':len(captured),'normal_instances':samples,'distinct_sampled_tasks':tasks,'slot_coverage':slots,'default_family_coverage':default_coverage,'independent_displayed_rows_checked':steps,'invalid_explicit_inputs_rejected':rejected,'mutation_controls_rejected':mutations,'native':{k:v for k,v in native.items() if k!='records'},'baseline_paths_unchanged':baseline_check(),'generator_sha256':hashlib.sha256(HERE.with_suffix('.py').read_bytes()).hexdigest(),'grader_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'raw_ineligible_findings':['q334916: omitted solution/two designations/unrated preserved','q335811/q335812: duplicate full correct functions preserved','q335830: wrong IF ±2x redundant under IF scalar-equivalence'],'database_writes':0}
+    out={'status':'validated_draft_with_ineligible_raw_source_defects','basis':2275,'source_fidelity':counts,'independent_inventory_exact_records':len(captured),'normal_instances':samples,'distinct_sampled_tasks':tasks,'slot_coverage':slots,'default_family_coverage':default_coverage,'independent_displayed_rows_checked':steps,'invalid_explicit_inputs_rejected':rejected,'mutation_controls_rejected':mutations,'boundary_passes':boundary_passes,'boundary_whole_instance_rejections':boundary_collisions,'native':{k:v for k,v in native.items() if k!='records'},'native_by_contract':native_split(native,fixtures),'baseline_paths_unchanged':baseline_check(),'generator_sha256':hashlib.sha256(HERE.with_suffix('.py').read_bytes()).hexdigest(),'grader_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'raw_ineligible_findings':['q334916: omitted solution/two designations/unrated preserved','q335811/q335812: duplicate full correct functions preserved','q335830: wrong IF ±2x redundant under IF scalar-equivalence'],'database_writes':0}
     (HERE/'validation.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out,indent=2))
 if __name__=='__main__':main()

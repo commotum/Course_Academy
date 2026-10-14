@@ -99,6 +99,12 @@ def locus(value):
 
 def readback(record,legacy=False):
     q=record['question'];prompt=q[':question/problem'];solution=q[':question/worked-solution']
+    # Read standard matrix environments through the same independent CAS parser.
+    def legacy_matrices(text):
+        for env,edges in [('bmatrix',('[',']')),('vmatrix',('|','|'))]:
+            text=text.replace('\\begin{'+env+'}',edges[0]+r'\begin{aligned}').replace('\\end{'+env+'}',r'\end{aligned}'+edges[1])
+        return text
+    prompt=legacy_matrices(prompt);solution=legacy_matrices(solution)
     for s in [prompt,solution]+[a[':answer/value'] for f in q[':question/answer-fields'] for a in f[':answer-field/choices']]:
         assert s.count('$')%2==0,s
         assert s.count('{')==s.count('}'),s

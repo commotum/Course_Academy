@@ -1,12 +1,12 @@
 # Generator creation progress
 
-Cumulative scope: **184 topics, 580 knowledge points**. Approved sources retain their recorded per-KP bases; active-before-refresh sources use1356; refreshed queued sources: basis2275.
+Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrapper retains its database basis; refreshed queue: basis2275.
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 38**, **qa_passed: 331**, **queued: 207**, **working: 4**.
+**needs_revalidation: 36**, **qa_passed: 335**, **queued: 205**, **working: 4**.
 
-Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Existing approved work is preserved; other ready drafts await QA until these13 pass. Then finish any coverage-report KPs and the remaining script-ranked candidates.
+Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
 Cumulative counts retain seven earlier KPs outside the latest list. Only qa_passed jobs have current parent verification; queued, working and needs_revalidation jobs are not complete. Captured counts can include independently authored inventory as well as original MA examples; per-KP evidence separates them. Source anomalies and authored missing-level designs are recorded with each KP.
 
@@ -99,26 +99,26 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186100951](../../scratch/17592186100951.py) | Verifying Solutions of Differential Equations | Identifying Solutions to Initial Value Problems | 17 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186100951.json) |
 | [17592186064180](../../scratch/17592186064180-draft.py) | Integrating Trigonometric Functions | Integrating Secant Squared | 6 / 7 / 0 / 2 | qa_passed | [Report](qa/17592186064180.json) |
 | [17592186064179](../../scratch/17592186064179-draft.py) | Integrating Trigonometric Functions | Integrating Secant-Tangent and Cosecant-Cotangent | 7 / 7 / 0 / 2 | qa_passed | [Report](qa/17592186064179.json) |
-| [17592186064178](../../scratch/17592186064178-draft.py) | Integrating Trigonometric Functions | Integrating Sine and Cosine | 10 / 6 / 0 / 2 | working | — |
-| [17592186064181](../../scratch/17592186064181-draft.py) | Integrating Trigonometric Functions | Integrating Cosecant Squared | 8 / 7 / 6 / 2 | working | — |
+| [17592186064178](../../scratch/17592186064178-draft.py) | Integrating Trigonometric Functions | Integrating Sine and Cosine | 10 / 6 / 0 / 2 | qa_passed | [Report](qa/17592186064178.json) |
+| [17592186064181](../../scratch/17592186064181-draft.py) | Integrating Trigonometric Functions | Integrating Cosecant Squared | 8 / 7 / 6 / 2 | qa_passed | [Report](qa/17592186064181.json) |
 | [17592186087866](../../scratch/17592186087866.py) | Introduction to First-Order Linear ODEs | Writing First-Order Linear ODEs in Standard Form | 8 / 0 / 1 / 0 | qa_passed | [Report](qa/17592186087866.json) |
 | [17592186087868](../../scratch/17592186087868.py) | Introduction to First-Order Linear ODEs | Identifying Homogeneous and Inhomogeneous ODEs | 6 / 6 / 0 / 0 | qa_passed | [Report](qa/17592186087868.json) |
 | [17592186087878](../../scratch/17592186087878.py) | Solving First-Order Linear ODEs Using Integrating Factors | Solving First-Order Linear ODEs Using Integrating Factors | 2 / 2 / 1 / 3 | qa_passed | [Report](qa/17592186087878.json) |
-| [17592186087877](../../scratch/17592186087877-draft.py) | Solving First-Order Linear ODEs Using Integrating Factors | Transforming First-Order Linear ODEs Using Integrating Factors | 2 / 3 / 0 / 2 | working | [Report](qa/17592186087877.json) |
-| 17592186087879 | Solving First-Order Linear ODEs Using Integrating Factors | Solving First-Order Initial Value Problems Using Integrating Factors | 0 / 5 / 1 / 2 | working | [Report](qa/17592186087879.json) |
+| [17592186087877](../../scratch/17592186087877-draft.py) | Solving First-Order Linear ODEs Using Integrating Factors | Transforming First-Order Linear ODEs Using Integrating Factors | 5 / 5 / 5 / 2 | qa_passed | [Report](qa/17592186087877.json) |
+| [17592186087879](../../scratch/17592186087879-draft.py) | Solving First-Order Linear ODEs Using Integrating Factors | Solving First-Order Initial Value Problems Using Integrating Factors | 5 / 8 / 5 / 1 | qa_passed | [Report](qa/17592186087879.json) |
 | [17592186096610](../../scratch/17592186096610.py) | Differentiating Exponential Functions | Differentiating the Product of a Constant and the Exponential Function, Plus a Constant | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096610.json) |
 | [17592186096612](../../scratch/17592186096612.py) | Differentiating Exponential Functions | Differentiating an Exponential Function with a Base Other Than e | 3 / 2 / 0 / 2 | qa_passed | [Report](qa/17592186096612.json) |
 | [17592186096696](../../scratch/17592186096696.py) | Solving First-Order ODEs Using Direct Integration | Finding the General Solution of a Differential Equation Using Integration | 3 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186096696.json) |
 | [17592186096697](../../scratch/17592186096697.py) | Solving First-Order ODEs Using Direct Integration | Finding the General Solution of a Second Order Differential Equation by Integrating Twice | 4 / 7 / 0 / 0 | qa_passed | [Report](qa/17592186096697.json) |
 | [17592186096698](../../scratch/17592186096698.py) | Solving First-Order ODEs Using Direct Integration | Sketching the Solution Curves of a Differential Equation | 7 / 4 / 0 / 0 | qa_passed | [Report](qa/17592186096698.json) |
 | [17592186096611](../../scratch/17592186096611.py) | Differentiating Exponential Functions | Differentiating the Product of a Constant and the Exponential Function, Plus a Polynomial | 5 / 2 / 0 / 2 | qa_passed | [Report](qa/17592186096611.json) |
-| [17592186096699](../../scratch/17592186096699.py) | Solving First-Order ODEs Using Direct Integration | Finding the Solution of a Differential Equation With a Given Condition | 10 / 2 / 0 / 2 | needs_revalidation | [Report](qa/17592186096699.json) |
-| 17592186166813 | Introduction to Differential Equations | Identifying the Order of an Ordinary Differential Equation | 7 / 7 / 0 / 0 | queued | — |
-| [17592186166814](../../scratch/17592186166814.py) | Introduction to Differential Equations | Determining Whether an Ordinary Differential Equation is Autonomous or Nonautonomous | 8 / 7 / 0 / 0 | needs_revalidation | [Report](qa/17592186166814.json) |
+| [17592186096699](../../scratch/17592186096699-draft.py) | Solving First-Order ODEs Using Direct Integration | Finding the Solution of a Differential Equation With a Given Condition | 10 / 2 / 0 / 2 | working | [Report](qa/17592186096699.json) |
+| [17592186166813](../../scratch/17592186166813-draft.py) | Introduction to Differential Equations | Identifying the Order of an Ordinary Differential Equation | 7 / 7 / 0 / 0 | working | — |
+| [17592186166814](../../scratch/17592186166814-draft.py) | Introduction to Differential Equations | Determining Whether an Ordinary Differential Equation is Autonomous or Nonautonomous | 8 / 7 / 0 / 0 | working | [Report](qa/17592186166814.json) |
 | [17592186166815](../../scratch/17592186166815.py) | Introduction to Differential Equations | Initial Value Problems and Initial Conditions | 11 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186166815.json) |
 | [17592186087819](../../scratch/17592186087819.py) | Introduction to Matrices | Matrices for Route Planning | 4 / 1 / 0 / 2 | qa_passed | [Report](qa/17592186087819.json) |
 | [17592186087713](../../scratch/17592186087713.py) | Introduction to Matrices | Identifying a Matrix by Its Description | 0 / 6 / 0 / 2 | qa_passed | [Report](qa/17592186087713.json) |
-| [17592186059676](../../scratch/17592186059676.py) | Differentiating Trigonometric Functions | Finding the Derivative of an Expression With the Tangent Trigonometric Function | 5 / 5 / 0 / 2 | queued | — |
+| [17592186059676](../../scratch/17592186059676.py) | Differentiating Trigonometric Functions | Finding the Derivative of an Expression With the Tangent Trigonometric Function | 5 / 5 / 0 / 2 | working | — |
 | [17592186059675](../../scratch/17592186059675.py) | Differentiating Trigonometric Functions | Finding the Derivative of an Expression With Sine or Cosine Trigonometric Functions | 8 / 5 / 0 / 2 | queued | — |
 | [17592186096616](../../scratch/17592186096616.py) | Differentiating Logarithmic Functions | Calculating the Slope of the Tangent Line of a Logarithmic Function at a Point | 11 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096616.json) |
 | [17592186096614](../../scratch/17592186096614.py) | Differentiating Logarithmic Functions | Differentiating a Sum Containing a Natural Logarithm Function | 6 / 1 / 3 / 1 | qa_passed | [Report](qa/17592186096614.json) |

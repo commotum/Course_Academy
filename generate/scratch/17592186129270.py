@@ -13,14 +13,16 @@ moderate retains all twelve families plus a sparse product/linear block; hard us
 All ask for the critical locus, never just a Jacobian or an inverse Jacobian.
 """
 from __future__ import annotations
-import argparse, copy, hashlib, json, platform, random, re, uuid
+import argparse, copy, hashlib, json, platform, random, re, uuid, sys
 from pathlib import Path
 import sympy as sp
+sys.path.insert(0,str(Path(__file__).resolve().parents[2] / "scripts/question_capture"))
+from math_format import normalize_prose, validate_generated_record
 
 KP_ID=17592186129270
 KP_UUID='4b4a31c6-01be-5b15-88f5-9150f350e944'
 TITLE='Determining the Critical Points of a Transformation'
-VERSION='critical-locus-1'
+VERSION='critical-locus-2'
 HERE=Path(__file__).with_suffix('')
 CAPTURE=json.loads((HERE/'source.json').read_text())
 SOURCES={q[':question/math-academy-id']:q for q in CAPTURE['record'][':knowledge-point/questions']}
@@ -233,6 +235,8 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         except ValueError:
             if parameters is not None:raise
     else:raise RuntimeError('No valid complete instance.')
+    if profile=='method':
+        prompt=normalize_prose(prompt);solution=normalize_prose(solution)
     identity=digest({'version':VERSION,'difficulty':level,'problem':prompt,'solution':solution,'fields':[{'values':sorted(f['values']),'correct':None if f['correct_index'] is None else f['values'][f['correct_index']],'key':f['key']} for f in fields]})
     # Canonical assessed task includes printed map/domain; excludes profile/bank/seed.
     if template in OBSERVED:

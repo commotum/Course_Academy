@@ -2040,7 +2040,7 @@ Difficulty: easy | GENERATED normal learning record | Origin: authored missing-l
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}\left(u - 2\right)^{2} \\ v \\ w\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}\left(u - 2\right)^{2} \\ v \\ w\end{bmatrix}.
 $$
 
 Field 1:
@@ -2054,13 +2054,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -2078,7 +2078,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}2 u - 4 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{aligned}| \\  & =(2 u - 4)|\begin{aligned}1 & 0 \\ 0 & 1\end{aligned}| \\  & =(2 u - 4)(1\cdot(1)-(0)\cdot(0)) \\  & =2 \left(u - 2\right).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}2 u - 4 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{vmatrix} \\  & =(2 u - 4)\begin{vmatrix}1 & 0 \\ 0 & 1\end{vmatrix} \\  & =(2 u - 4)(1\cdot(1)-(0)\cdot(0)) \\  & =2 \left(u - 2\right).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -2096,7 +2096,7 @@ Difficulty: easy | GENERATED normal learning record | Origin: authored missing-l
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}\left(u - 5\right)^{2} \\ v \\ w\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}\left(u - 5\right)^{2} \\ v \\ w\end{bmatrix}.
 $$
 
 Field 1:
@@ -2110,13 +2110,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -2134,7 +2134,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}2 u - 10 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{aligned}| \\  & =(2 u - 10)|\begin{aligned}1 & 0 \\ 0 & 1\end{aligned}| \\  & =(2 u - 10)(1\cdot(1)-(0)\cdot(0)) \\  & =2 \left(u - 5\right).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}2 u - 10 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{vmatrix} \\  & =(2 u - 10)\begin{vmatrix}1 & 0 \\ 0 & 1\end{vmatrix} \\  & =(2 u - 10)(1\cdot(1)-(0)\cdot(0)) \\  & =2 \left(u - 5\right).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -2152,7 +2152,7 @@ Difficulty: easy | GENERATED normal learning record | Origin: authored missing-l
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}\left(u + 4\right)^{2} \\ v \\ w\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}\left(u + 4\right)^{2} \\ v \\ w\end{bmatrix}.
 $$
 
 Field 1:
@@ -2166,13 +2166,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -2190,7 +2190,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}2 u + 8 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{aligned}| \\  & =(2 u + 8)|\begin{aligned}1 & 0 \\ 0 & 1\end{aligned}| \\  & =(2 u + 8)(1\cdot(1)-(0)\cdot(0)) \\  & =2 \left(u + 4\right).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}2 u + 8 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{vmatrix} \\  & =(2 u + 8)\begin{vmatrix}1 & 0 \\ 0 & 1\end{vmatrix} \\  & =(2 u + 8)(1\cdot(1)-(0)\cdot(0)) \\  & =2 \left(u + 4\right).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -2208,7 +2208,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}(u-3) \\ v{e}^{(w+3)} \\ 2(u-3)+v+3(w+3)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}(u-3) \\ v{e}^{(w+3)} \\ 2(u-3)+v+3(w+3)\end{bmatrix}.
 $$
 
 Field 1:
@@ -2222,13 +2222,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -2246,7 +2246,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}1 & 0 & 0 \\ 0 & {e}^{(w+3)} & v{e}^{(w+3)} \\ 2 & 1 & 3\end{aligned}| \\  & =1|\begin{aligned}{e}^{(w+3)} & v{e}^{(w+3)} \\ 1 & 3\end{aligned}| \\  & =1(3{e}^{(w+3)}-v{e}^{(w+3)}) \\  & ={e}^{(w+3)}(3-v).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}1 & 0 & 0 \\ 0 & {e}^{(w+3)} & v{e}^{(w+3)} \\ 2 & 1 & 3\end{vmatrix} \\  & =1\begin{vmatrix}{e}^{(w+3)} & v{e}^{(w+3)} \\ 1 & 3\end{vmatrix} \\  & =1(3{e}^{(w+3)}-v{e}^{(w+3)}) \\  & ={e}^{(w+3)}(3-v).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -2264,7 +2264,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}{(u-1)}^{2}-(v-3) \\ {(u-1)}^{2}+(v-3) \\ {e}^{(w-3)}\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}{(u-1)}^{2}-(v-3) \\ {(u-1)}^{2}+(v-3) \\ {e}^{(w-3)}\end{bmatrix}.
 $$
 
 Field 1:
@@ -2278,13 +2278,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -2302,7 +2302,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}2(u-1) & -1 & 0 \\ 2(u-1) & 1 & 0 \\ 0 & 0 & {e}^{(w-3)}\end{aligned}| \\  & ={e}^{(w-3)}|\begin{aligned}2(u-1) & -1 \\ 2(u-1) & 1\end{aligned}| \\  & ={e}^{(w-3)}(2(u-1)+2(u-1)) \\  & =4(u-1){e}^{(w-3)}.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}2(u-1) & -1 & 0 \\ 2(u-1) & 1 & 0 \\ 0 & 0 & {e}^{(w-3)}\end{vmatrix} \\  & ={e}^{(w-3)}\begin{vmatrix}2(u-1) & -1 \\ 2(u-1) & 1\end{vmatrix} \\  & ={e}^{(w-3)}(2(u-1)+2(u-1)) \\  & =4(u-1){e}^{(w-3)}.\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -2320,7 +2320,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: authored bank 
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}u v \\ 3 u + 7 v \\ w\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}u v \\ 3 u + 7 v \\ w\end{bmatrix}.
 $$
 
 Field 1:
@@ -2334,13 +2334,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -2358,7 +2358,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}v & u & 0 \\ 3 & 7 & 0 \\ 0 & 0 & 1\end{aligned}| \\  & =(v)|\begin{aligned}7 & 0 \\ 0 & 1\end{aligned}|+(- u)|\begin{aligned}3 & 0 \\ 0 & 1\end{aligned}| \\  & =(v)(7\cdot(1)-(0)\cdot(0))+(- u)(3\cdot(1)-(0)\cdot(0)) \\  & =- 3 u + 7 v.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}v & u & 0 \\ 3 & 7 & 0 \\ 0 & 0 & 1\end{vmatrix} \\  & =(v)\begin{vmatrix}7 & 0 \\ 0 & 1\end{vmatrix}+(- u)\begin{vmatrix}3 & 0 \\ 0 & 1\end{vmatrix} \\  & =(v)(7\cdot(1)-(0)\cdot(0))+(- u)(3\cdot(1)-(0)\cdot(0)) \\  & =- 3 u + 7 v.\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -2376,7 +2376,7 @@ Difficulty: hard | GENERATED normal learning record | Origin: authored missing-l
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}u + 3 v - 4 w \\ u^{2} + v \\ 4 u^{2} + 3 u + w\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}u + 3 v - 4 w \\ u^{2} + v \\ 4 u^{2} + 3 u + w\end{bmatrix}.
 $$
 
 Field 1:
@@ -2390,13 +2390,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -2414,7 +2414,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}1 & 3 & -4 \\ 2 u & 1 & 0 \\ 8 u + 3 & 0 & 1\end{aligned}| \\  & =(1)|\begin{aligned}1 & 0 \\ 0 & 1\end{aligned}|+(-3)|\begin{aligned}2 u & 0 \\ 8 u + 3 & 1\end{aligned}|+(-4)|\begin{aligned}2 u & 1 \\ 8 u + 3 & 0\end{aligned}| \\  & =(1)(1\cdot(1)-(0)\cdot(0))+(-3)(2 u\cdot(1)-(0)\cdot(8 u + 3))+(-4)(2 u\cdot(0)-(1)\cdot(8 u + 3)) \\  & =13 \left(2 u + 1\right).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}1 & 3 & -4 \\ 2 u & 1 & 0 \\ 8 u + 3 & 0 & 1\end{vmatrix} \\  & =(1)\begin{vmatrix}1 & 0 \\ 0 & 1\end{vmatrix}+(-3)\begin{vmatrix}2 u & 0 \\ 8 u + 3 & 1\end{vmatrix}+(-4)\begin{vmatrix}2 u & 1 \\ 8 u + 3 & 0\end{vmatrix} \\  & =(1)(1\cdot(1)-(0)\cdot(0))+(-3)(2 u\cdot(1)-(0)\cdot(8 u + 3))+(-4)(2 u\cdot(0)-(1)\cdot(8 u + 3)) \\  & =13 \left(2 u + 1\right).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -2432,7 +2432,7 @@ Difficulty: hard | GENERATED normal learning record | Origin: authored missing-l
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}u - 3 v + w \\ - 3 u^{2} + v \\ 4 u^{2} + 4 u + w\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}u - 3 v + w \\ - 3 u^{2} + v \\ 4 u^{2} + 4 u + w\end{bmatrix}.
 $$
 
 Field 1:
@@ -2446,13 +2446,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -2470,7 +2470,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}1 & -3 & 1 \\ - 6 u & 1 & 0 \\ 8 u + 4 & 0 & 1\end{aligned}| \\  & =(1)|\begin{aligned}1 & 0 \\ 0 & 1\end{aligned}|+(3)|\begin{aligned}- 6 u & 0 \\ 8 u + 4 & 1\end{aligned}|+(1)|\begin{aligned}- 6 u & 1 \\ 8 u + 4 & 0\end{aligned}| \\  & =(1)(1\cdot(1)-(0)\cdot(0))+(3)(- 6 u\cdot(1)-(0)\cdot(8 u + 4))+(1)(- 6 u\cdot(0)-(1)\cdot(8 u + 4)) \\  & =- 26 u - 3.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}1 & -3 & 1 \\ - 6 u & 1 & 0 \\ 8 u + 4 & 0 & 1\end{vmatrix} \\  & =(1)\begin{vmatrix}1 & 0 \\ 0 & 1\end{vmatrix}+(3)\begin{vmatrix}- 6 u & 0 \\ 8 u + 4 & 1\end{vmatrix}+(1)\begin{vmatrix}- 6 u & 1 \\ 8 u + 4 & 0\end{vmatrix} \\  & =(1)(1\cdot(1)-(0)\cdot(0))+(3)(- 6 u\cdot(1)-(0)\cdot(8 u + 4))+(1)(- 6 u\cdot(0)-(1)\cdot(8 u + 4)) \\  & =- 26 u - 3.\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -2488,7 +2488,7 @@ Difficulty: hard | GENERATED normal learning record | Origin: authored missing-l
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}u + v - w \\ - 4 u^{2} + v \\ - 2 u^{2} + 3 u + w\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}u + v - w \\ - 4 u^{2} + v \\ - 2 u^{2} + 3 u + w\end{bmatrix}.
 $$
 
 Field 1:
@@ -2502,13 +2502,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -2526,7 +2526,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}1 & 1 & -1 \\ - 8 u & 1 & 0 \\ 3 - 4 u & 0 & 1\end{aligned}| \\  & =(1)|\begin{aligned}1 & 0 \\ 0 & 1\end{aligned}|+(-1)|\begin{aligned}- 8 u & 0 \\ 3 - 4 u & 1\end{aligned}|+(-1)|\begin{aligned}- 8 u & 1 \\ 3 - 4 u & 0\end{aligned}| \\  & =(1)(1\cdot(1)-(0)\cdot(0))+(-1)(- 8 u\cdot(1)-(0)\cdot(3 - 4 u))+(-1)(- 8 u\cdot(0)-(1)\cdot(3 - 4 u)) \\  & =4 \left(u + 1\right).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}1 & 1 & -1 \\ - 8 u & 1 & 0 \\ 3 - 4 u & 0 & 1\end{vmatrix} \\  & =(1)\begin{vmatrix}1 & 0 \\ 0 & 1\end{vmatrix}+(-1)\begin{vmatrix}- 8 u & 0 \\ 3 - 4 u & 1\end{vmatrix}+(-1)\begin{vmatrix}- 8 u & 1 \\ 3 - 4 u & 0\end{vmatrix} \\  & =(1)(1\cdot(1)-(0)\cdot(0))+(-1)(- 8 u\cdot(1)-(0)\cdot(3 - 4 u))+(-1)(- 8 u\cdot(0)-(1)\cdot(3 - 4 u)) \\  & =4 \left(u + 1\right).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -2544,7 +2544,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}{u}^{2}-{w}^{2} \\ w{e}^{u} \\ u-v\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}{u}^{2}-{w}^{2} \\ w{e}^{u} \\ u-v\end{bmatrix}.
 $$
 
 Field 1:
@@ -2558,13 +2558,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -2582,7 +2582,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}2u & 0 & -2w \\ w{e}^{u} & 0 & {e}^{u} \\ 1 & -1 & 0\end{aligned}| \\  & =2u|\begin{aligned}0 & {e}^{u} \\ -1 & 0\end{aligned}|-2w|\begin{aligned}w{e}^{u} & 0 \\ 1 & -1\end{aligned}| \\  & =2u(0+{e}^{u})-2w(-w{e}^{u}-0) \\  & =2u{e}^{u}+2{w}^{2}{e}^{u} \\  & =2{e}^{u}({w}^{2}+u).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}2u & 0 & -2w \\ w{e}^{u} & 0 & {e}^{u} \\ 1 & -1 & 0\end{vmatrix} \\  & =2u\begin{vmatrix}0 & {e}^{u} \\ -1 & 0\end{vmatrix}-2w\begin{vmatrix}w{e}^{u} & 0 \\ 1 & -1\end{vmatrix} \\  & =2u(0+{e}^{u})-2w(-w{e}^{u}-0) \\  & =2u{e}^{u}+2{w}^{2}{e}^{u} \\  & =2{e}^{u}({w}^{2}+u).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -2600,7 +2600,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}{(u+3)}^{2}-{(w+1)}^{2} \\ (w+1){e}^{(u+3)} \\ (u+3)-(v-2)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}{(u+3)}^{2}-{(w+1)}^{2} \\ (w+1){e}^{(u+3)} \\ (u+3)-(v-2)\end{bmatrix}.
 $$
 
 Field 1:
@@ -2614,13 +2614,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -2638,7 +2638,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}2(u+3) & 0 & -2(w+1) \\ (w+1){e}^{(u+3)} & 0 & {e}^{(u+3)} \\ 1 & -1 & 0\end{aligned}| \\  & =2(u+3)|\begin{aligned}0 & {e}^{(u+3)} \\ -1 & 0\end{aligned}|-2(w+1)|\begin{aligned}(w+1){e}^{(u+3)} & 0 \\ 1 & -1\end{aligned}| \\  & =2(u+3)(0+{e}^{(u+3)})-2(w+1)(-(w+1){e}^{(u+3)}-0) \\  & =2(u+3){e}^{(u+3)}+2{(w+1)}^{2}{e}^{(u+3)} \\  & =2{e}^{(u+3)}({(w+1)}^{2}+(u+3)).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}2(u+3) & 0 & -2(w+1) \\ (w+1){e}^{(u+3)} & 0 & {e}^{(u+3)} \\ 1 & -1 & 0\end{vmatrix} \\  & =2(u+3)\begin{vmatrix}0 & {e}^{(u+3)} \\ -1 & 0\end{vmatrix}-2(w+1)\begin{vmatrix}(w+1){e}^{(u+3)} & 0 \\ 1 & -1\end{vmatrix} \\  & =2(u+3)(0+{e}^{(u+3)})-2(w+1)(-(w+1){e}^{(u+3)}-0) \\  & =2(u+3){e}^{(u+3)}+2{(w+1)}^{2}{e}^{(u+3)} \\  & =2{e}^{(u+3)}({(w+1)}^{2}+(u+3)).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -2656,7 +2656,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}{(u-3)}^{2}-{(w-1)}^{2} \\ (w-1){e}^{(u-3)} \\ (u-3)-(v+2)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}{(u-3)}^{2}-{(w-1)}^{2} \\ (w-1){e}^{(u-3)} \\ (u-3)-(v+2)\end{bmatrix}.
 $$
 
 Field 1:
@@ -2670,13 +2670,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -2694,7 +2694,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}2(u-3) & 0 & -2(w-1) \\ (w-1){e}^{(u-3)} & 0 & {e}^{(u-3)} \\ 1 & -1 & 0\end{aligned}| \\  & =2(u-3)|\begin{aligned}0 & {e}^{(u-3)} \\ -1 & 0\end{aligned}|-2(w-1)|\begin{aligned}(w-1){e}^{(u-3)} & 0 \\ 1 & -1\end{aligned}| \\  & =2(u-3)(0+{e}^{(u-3)})-2(w-1)(-(w-1){e}^{(u-3)}-0) \\  & =2(u-3){e}^{(u-3)}+2{(w-1)}^{2}{e}^{(u-3)} \\  & =2{e}^{(u-3)}({(w-1)}^{2}+(u-3)).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}2(u-3) & 0 & -2(w-1) \\ (w-1){e}^{(u-3)} & 0 & {e}^{(u-3)} \\ 1 & -1 & 0\end{vmatrix} \\  & =2(u-3)\begin{vmatrix}0 & {e}^{(u-3)} \\ -1 & 0\end{vmatrix}-2(w-1)\begin{vmatrix}(w-1){e}^{(u-3)} & 0 \\ 1 & -1\end{vmatrix} \\  & =2(u-3)(0+{e}^{(u-3)})-2(w-1)(-(w-1){e}^{(u-3)}-0) \\  & =2(u-3){e}^{(u-3)}+2{(w-1)}^{2}{e}^{(u-3)} \\  & =2{e}^{(u-3)}({(w-1)}^{2}+(u-3)).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -2712,7 +2712,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}{u}^{2}-v \\ {u}^{2}+v \\ {e}^{w}\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}{u}^{2}-v \\ {u}^{2}+v \\ {e}^{w}\end{bmatrix}.
 $$
 
 Field 1:
@@ -2726,13 +2726,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -2750,7 +2750,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}2u & -1 & 0 \\ 2u & 1 & 0 \\ 0 & 0 & {e}^{w}\end{aligned}| \\  & ={e}^{w}|\begin{aligned}2u & -1 \\ 2u & 1\end{aligned}| \\  & ={e}^{w}(2u+2u) \\  & =4u{e}^{w}.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}2u & -1 & 0 \\ 2u & 1 & 0 \\ 0 & 0 & {e}^{w}\end{vmatrix} \\  & ={e}^{w}\begin{vmatrix}2u & -1 \\ 2u & 1\end{vmatrix} \\  & ={e}^{w}(2u+2u) \\  & =4u{e}^{w}.\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -2768,7 +2768,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}{(u+3)}^{2}-(v-2) \\ {(u+3)}^{2}+(v-2) \\ {e}^{(w+1)}\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}{(u+3)}^{2}-(v-2) \\ {(u+3)}^{2}+(v-2) \\ {e}^{(w+1)}\end{bmatrix}.
 $$
 
 Field 1:
@@ -2782,13 +2782,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -2806,7 +2806,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}2(u+3) & -1 & 0 \\ 2(u+3) & 1 & 0 \\ 0 & 0 & {e}^{(w+1)}\end{aligned}| \\  & ={e}^{(w+1)}|\begin{aligned}2(u+3) & -1 \\ 2(u+3) & 1\end{aligned}| \\  & ={e}^{(w+1)}(2(u+3)+2(u+3)) \\  & =4(u+3){e}^{(w+1)}.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}2(u+3) & -1 & 0 \\ 2(u+3) & 1 & 0 \\ 0 & 0 & {e}^{(w+1)}\end{vmatrix} \\  & ={e}^{(w+1)}\begin{vmatrix}2(u+3) & -1 \\ 2(u+3) & 1\end{vmatrix} \\  & ={e}^{(w+1)}(2(u+3)+2(u+3)) \\  & =4(u+3){e}^{(w+1)}.\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -2824,7 +2824,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}{(u-3)}^{2}-(v+2) \\ {(u-3)}^{2}+(v+2) \\ {e}^{(w-1)}\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}{(u-3)}^{2}-(v+2) \\ {(u-3)}^{2}+(v+2) \\ {e}^{(w-1)}\end{bmatrix}.
 $$
 
 Field 1:
@@ -2838,13 +2838,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -2862,7 +2862,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}2(u-3) & -1 & 0 \\ 2(u-3) & 1 & 0 \\ 0 & 0 & {e}^{(w-1)}\end{aligned}| \\  & ={e}^{(w-1)}|\begin{aligned}2(u-3) & -1 \\ 2(u-3) & 1\end{aligned}| \\  & ={e}^{(w-1)}(2(u-3)+2(u-3)) \\  & =4(u-3){e}^{(w-1)}.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}2(u-3) & -1 & 0 \\ 2(u-3) & 1 & 0 \\ 0 & 0 & {e}^{(w-1)}\end{vmatrix} \\  & ={e}^{(w-1)}\begin{vmatrix}2(u-3) & -1 \\ 2(u-3) & 1\end{vmatrix} \\  & ={e}^{(w-1)}(2(u-3)+2(u-3)) \\  & =4(u-3){e}^{(w-1)}.\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -2880,7 +2880,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}uv \\ u+v \\ w\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}uv \\ u+v \\ w\end{bmatrix}.
 $$
 
 Field 1:
@@ -2894,13 +2894,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -2918,7 +2918,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}v & u & 0 \\ 1 & 1 & 0 \\ 0 & 0 & 1\end{aligned}| \\  & =1|\begin{aligned}v & u \\ 1 & 1\end{aligned}| \\  & =v-u.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}v & u & 0 \\ 1 & 1 & 0 \\ 0 & 0 & 1\end{vmatrix} \\  & =1\begin{vmatrix}v & u \\ 1 & 1\end{vmatrix} \\  & =v-u.\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -2936,7 +2936,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}(u+3)(v-2) \\ (u+3)+(v-2) \\ (w+1)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}(u+3)(v-2) \\ (u+3)+(v-2) \\ (w+1)\end{bmatrix}.
 $$
 
 Field 1:
@@ -2950,13 +2950,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -2974,7 +2974,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}(v-2) & (u+3) & 0 \\ 1 & 1 & 0 \\ 0 & 0 & 1\end{aligned}| \\  & =1|\begin{aligned}(v-2) & (u+3) \\ 1 & 1\end{aligned}| \\  & =(v-2)-(u+3).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}(v-2) & (u+3) & 0 \\ 1 & 1 & 0 \\ 0 & 0 & 1\end{vmatrix} \\  & =1\begin{vmatrix}(v-2) & (u+3) \\ 1 & 1\end{vmatrix} \\  & =(v-2)-(u+3).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -2992,7 +2992,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}(u-3)(v+2) \\ (u-3)+(v+2) \\ (w-1)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}(u-3)(v+2) \\ (u-3)+(v+2) \\ (w-1)\end{bmatrix}.
 $$
 
 Field 1:
@@ -3006,13 +3006,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -3030,7 +3030,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}(v+2) & (u-3) & 0 \\ 1 & 1 & 0 \\ 0 & 0 & 1\end{aligned}| \\  & =1|\begin{aligned}(v+2) & (u-3) \\ 1 & 1\end{aligned}| \\  & =(v+2)-(u-3).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}(v+2) & (u-3) & 0 \\ 1 & 1 & 0 \\ 0 & 0 & 1\end{vmatrix} \\  & =1\begin{vmatrix}(v+2) & (u-3) \\ 1 & 1\end{vmatrix} \\  & =(v+2)-(u-3).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -3048,7 +3048,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}u \\ {v}^{3}+{w}^{3} \\ v+w\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}u \\ {v}^{3}+{w}^{3} \\ v+w\end{bmatrix}.
 $$
 
 Field 1:
@@ -3062,13 +3062,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -3086,7 +3086,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}1 & 0 & 0 \\ 0 & 3{v}^{2} & 3{w}^{2} \\ 0 & 1 & 1\end{aligned}| \\  & =1|\begin{aligned}3{v}^{2} & 3{w}^{2} \\ 1 & 1\end{aligned}| \\  & =1(3{v}^{2}-3{w}^{2}) \\  & =3({v}^{2}-{w}^{2}).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}1 & 0 & 0 \\ 0 & 3{v}^{2} & 3{w}^{2} \\ 0 & 1 & 1\end{vmatrix} \\  & =1\begin{vmatrix}3{v}^{2} & 3{w}^{2} \\ 1 & 1\end{vmatrix} \\  & =1(3{v}^{2}-3{w}^{2}) \\  & =3({v}^{2}-{w}^{2}).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -3104,7 +3104,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}(u+3) \\ {(v-2)}^{3}+{(w+1)}^{3} \\ (v-2)+(w+1)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}(u+3) \\ {(v-2)}^{3}+{(w+1)}^{3} \\ (v-2)+(w+1)\end{bmatrix}.
 $$
 
 Field 1:
@@ -3118,13 +3118,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -3142,7 +3142,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}1 & 0 & 0 \\ 0 & 3{(v-2)}^{2} & 3{(w+1)}^{2} \\ 0 & 1 & 1\end{aligned}| \\  & =1|\begin{aligned}3{(v-2)}^{2} & 3{(w+1)}^{2} \\ 1 & 1\end{aligned}| \\  & =1(3{(v-2)}^{2}-3{(w+1)}^{2}) \\  & =3({(v-2)}^{2}-{(w+1)}^{2}).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}1 & 0 & 0 \\ 0 & 3{(v-2)}^{2} & 3{(w+1)}^{2} \\ 0 & 1 & 1\end{vmatrix} \\  & =1\begin{vmatrix}3{(v-2)}^{2} & 3{(w+1)}^{2} \\ 1 & 1\end{vmatrix} \\  & =1(3{(v-2)}^{2}-3{(w+1)}^{2}) \\  & =3({(v-2)}^{2}-{(w+1)}^{2}).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -3160,7 +3160,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}(u-3) \\ {(v+2)}^{3}+{(w-1)}^{3} \\ (v+2)+(w-1)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}(u-3) \\ {(v+2)}^{3}+{(w-1)}^{3} \\ (v+2)+(w-1)\end{bmatrix}.
 $$
 
 Field 1:
@@ -3174,13 +3174,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -3198,7 +3198,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}1 & 0 & 0 \\ 0 & 3{(v+2)}^{2} & 3{(w-1)}^{2} \\ 0 & 1 & 1\end{aligned}| \\  & =1|\begin{aligned}3{(v+2)}^{2} & 3{(w-1)}^{2} \\ 1 & 1\end{aligned}| \\  & =1(3{(v+2)}^{2}-3{(w-1)}^{2}) \\  & =3({(v+2)}^{2}-{(w-1)}^{2}).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}1 & 0 & 0 \\ 0 & 3{(v+2)}^{2} & 3{(w-1)}^{2} \\ 0 & 1 & 1\end{vmatrix} \\  & =1\begin{vmatrix}3{(v+2)}^{2} & 3{(w-1)}^{2} \\ 1 & 1\end{vmatrix} \\  & =1(3{(v+2)}^{2}-3{(w-1)}^{2}) \\  & =3({(v+2)}^{2}-{(w-1)}^{2}).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -3216,7 +3216,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}\sqrt{u} \\ vw \\ u+w\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}\sqrt{u} \\ vw \\ u+w\end{bmatrix}.
 $$
 
 Assume $u>0$.
@@ -3232,13 +3232,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -3256,7 +3256,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{1}{2\sqrt{u}} & 0 & 0 \\ 0 & w & v \\ 1 & 0 & 1\end{aligned}| \\  & =\frac{1}{2\sqrt{u}}|\begin{aligned}w & v \\ 0 & 1\end{aligned}|+1|\begin{aligned}0 & 0 \\ w & v\end{aligned}| \\  & =\frac{1}{2\sqrt{u}}(w-0)+0 \\  & =\frac{w}{2\sqrt{u}}.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{1}{2\sqrt{u}} & 0 & 0 \\ 0 & w & v \\ 1 & 0 & 1\end{vmatrix} \\  & =\frac{1}{2\sqrt{u}}\begin{vmatrix}w & v \\ 0 & 1\end{vmatrix}+1\begin{vmatrix}0 & 0 \\ w & v\end{vmatrix} \\  & =\frac{1}{2\sqrt{u}}(w-0)+0 \\  & =\frac{w}{2\sqrt{u}}.\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -3274,7 +3274,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}\sqrt{(u+3)} \\ (v-2)(w+1) \\ (u+3)+(w+1)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}\sqrt{(u+3)} \\ (v-2)(w+1) \\ (u+3)+(w+1)\end{bmatrix}.
 $$
 
 Assume $u>-3$.
@@ -3290,13 +3290,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -3314,7 +3314,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{1}{2\sqrt{(u+3)}} & 0 & 0 \\ 0 & (w+1) & (v-2) \\ 1 & 0 & 1\end{aligned}| \\  & =\frac{1}{2\sqrt{(u+3)}}|\begin{aligned}(w+1) & (v-2) \\ 0 & 1\end{aligned}|+1|\begin{aligned}0 & 0 \\ (w+1) & (v-2)\end{aligned}| \\  & =\frac{1}{2\sqrt{(u+3)}}((w+1)-0)+0 \\  & =\frac{(w+1)}{2\sqrt{(u+3)}}.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{1}{2\sqrt{(u+3)}} & 0 & 0 \\ 0 & (w+1) & (v-2) \\ 1 & 0 & 1\end{vmatrix} \\  & =\frac{1}{2\sqrt{(u+3)}}\begin{vmatrix}(w+1) & (v-2) \\ 0 & 1\end{vmatrix}+1\begin{vmatrix}0 & 0 \\ (w+1) & (v-2)\end{vmatrix} \\  & =\frac{1}{2\sqrt{(u+3)}}((w+1)-0)+0 \\  & =\frac{(w+1)}{2\sqrt{(u+3)}}.\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -3332,7 +3332,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}\sqrt{(u-3)} \\ (v+2)(w-1) \\ (u-3)+(w-1)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}\sqrt{(u-3)} \\ (v+2)(w-1) \\ (u-3)+(w-1)\end{bmatrix}.
 $$
 
 Assume $u>3$.
@@ -3348,13 +3348,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -3372,7 +3372,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{1}{2\sqrt{(u-3)}} & 0 & 0 \\ 0 & (w-1) & (v+2) \\ 1 & 0 & 1\end{aligned}| \\  & =\frac{1}{2\sqrt{(u-3)}}|\begin{aligned}(w-1) & (v+2) \\ 0 & 1\end{aligned}|+1|\begin{aligned}0 & 0 \\ (w-1) & (v+2)\end{aligned}| \\  & =\frac{1}{2\sqrt{(u-3)}}((w-1)-0)+0 \\  & =\frac{(w-1)}{2\sqrt{(u-3)}}.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{1}{2\sqrt{(u-3)}} & 0 & 0 \\ 0 & (w-1) & (v+2) \\ 1 & 0 & 1\end{vmatrix} \\  & =\frac{1}{2\sqrt{(u-3)}}\begin{vmatrix}(w-1) & (v+2) \\ 0 & 1\end{vmatrix}+1\begin{vmatrix}0 & 0 \\ (w-1) & (v+2)\end{vmatrix} \\  & =\frac{1}{2\sqrt{(u-3)}}((w-1)-0)+0 \\  & =\frac{(w-1)}{2\sqrt{(u-3)}}.\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -3390,7 +3390,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}u \\ v{e}^{w} \\ 2u+v+3w\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}u \\ v{e}^{w} \\ 2u+v+3w\end{bmatrix}.
 $$
 
 Field 1:
@@ -3404,13 +3404,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -3428,7 +3428,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}1 & 0 & 0 \\ 0 & {e}^{w} & v{e}^{w} \\ 2 & 1 & 3\end{aligned}| \\  & =1|\begin{aligned}{e}^{w} & v{e}^{w} \\ 1 & 3\end{aligned}| \\  & =1(3{e}^{w}-v{e}^{w}) \\  & ={e}^{w}(3-v).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}1 & 0 & 0 \\ 0 & {e}^{w} & v{e}^{w} \\ 2 & 1 & 3\end{vmatrix} \\  & =1\begin{vmatrix}{e}^{w} & v{e}^{w} \\ 1 & 3\end{vmatrix} \\  & =1(3{e}^{w}-v{e}^{w}) \\  & ={e}^{w}(3-v).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -3446,7 +3446,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}(u+3) \\ (v-2){e}^{(w+1)} \\ 2(u+3)+(v-2)+3(w+1)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}(u+3) \\ (v-2){e}^{(w+1)} \\ 2(u+3)+(v-2)+3(w+1)\end{bmatrix}.
 $$
 
 Field 1:
@@ -3460,13 +3460,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -3484,7 +3484,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}1 & 0 & 0 \\ 0 & {e}^{(w+1)} & (v-2){e}^{(w+1)} \\ 2 & 1 & 3\end{aligned}| \\  & =1|\begin{aligned}{e}^{(w+1)} & (v-2){e}^{(w+1)} \\ 1 & 3\end{aligned}| \\  & =1(3{e}^{(w+1)}-(v-2){e}^{(w+1)}) \\  & ={e}^{(w+1)}(3-(v-2)).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}1 & 0 & 0 \\ 0 & {e}^{(w+1)} & (v-2){e}^{(w+1)} \\ 2 & 1 & 3\end{vmatrix} \\  & =1\begin{vmatrix}{e}^{(w+1)} & (v-2){e}^{(w+1)} \\ 1 & 3\end{vmatrix} \\  & =1(3{e}^{(w+1)}-(v-2){e}^{(w+1)}) \\  & ={e}^{(w+1)}(3-(v-2)).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -3502,7 +3502,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}(u-3) \\ (v+2){e}^{(w-1)} \\ 2(u-3)+(v+2)+3(w-1)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}(u-3) \\ (v+2){e}^{(w-1)} \\ 2(u-3)+(v+2)+3(w-1)\end{bmatrix}.
 $$
 
 Field 1:
@@ -3516,13 +3516,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -3540,7 +3540,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}1 & 0 & 0 \\ 0 & {e}^{(w-1)} & (v+2){e}^{(w-1)} \\ 2 & 1 & 3\end{aligned}| \\  & =1|\begin{aligned}{e}^{(w-1)} & (v+2){e}^{(w-1)} \\ 1 & 3\end{aligned}| \\  & =1(3{e}^{(w-1)}-(v+2){e}^{(w-1)}) \\  & ={e}^{(w-1)}(3-(v+2)).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}1 & 0 & 0 \\ 0 & {e}^{(w-1)} & (v+2){e}^{(w-1)} \\ 2 & 1 & 3\end{vmatrix} \\  & =1\begin{vmatrix}{e}^{(w-1)} & (v+2){e}^{(w-1)} \\ 1 & 3\end{vmatrix} \\  & =1(3{e}^{(w-1)}-(v+2){e}^{(w-1)}) \\  & ={e}^{(w-1)}(3-(v+2)).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -3558,7 +3558,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}u+3w \\ v+2w \\ {v}^{2}-u\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}u+3w \\ v+2w \\ {v}^{2}-u\end{bmatrix}.
 $$
 
 Field 1:
@@ -3572,13 +3572,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -3596,7 +3596,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}1 & 0 & 3 \\ 0 & 1 & 2 \\ -1 & 2v & 0\end{aligned}| \\  & =1|\begin{aligned}1 & 2 \\ 2v & 0\end{aligned}|+3|\begin{aligned}0 & 1 \\ -1 & 2v\end{aligned}| \\  & =1(0-4v)+3(0+1) \\  & =3-4v.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}1 & 0 & 3 \\ 0 & 1 & 2 \\ -1 & 2v & 0\end{vmatrix} \\  & =1\begin{vmatrix}1 & 2 \\ 2v & 0\end{vmatrix}+3\begin{vmatrix}0 & 1 \\ -1 & 2v\end{vmatrix} \\  & =1(0-4v)+3(0+1) \\  & =3-4v.\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -3614,7 +3614,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}(u+3)+3(w+1) \\ (v-2)+2(w+1) \\ {(v-2)}^{2}-(u+3)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}(u+3)+3(w+1) \\ (v-2)+2(w+1) \\ {(v-2)}^{2}-(u+3)\end{bmatrix}.
 $$
 
 Field 1:
@@ -3628,13 +3628,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -3652,7 +3652,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}1 & 0 & 3 \\ 0 & 1 & 2 \\ -1 & 2(v-2) & 0\end{aligned}| \\  & =1|\begin{aligned}1 & 2 \\ 2(v-2) & 0\end{aligned}|+3|\begin{aligned}0 & 1 \\ -1 & 2(v-2)\end{aligned}| \\  & =1(0-4(v-2))+3(0+1) \\  & =3-4(v-2).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}1 & 0 & 3 \\ 0 & 1 & 2 \\ -1 & 2(v-2) & 0\end{vmatrix} \\  & =1\begin{vmatrix}1 & 2 \\ 2(v-2) & 0\end{vmatrix}+3\begin{vmatrix}0 & 1 \\ -1 & 2(v-2)\end{vmatrix} \\  & =1(0-4(v-2))+3(0+1) \\  & =3-4(v-2).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -3670,7 +3670,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}(u-3)+3(w-1) \\ (v+2)+2(w-1) \\ {(v+2)}^{2}-(u-3)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}(u-3)+3(w-1) \\ (v+2)+2(w-1) \\ {(v+2)}^{2}-(u-3)\end{bmatrix}.
 $$
 
 Field 1:
@@ -3684,13 +3684,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -3708,7 +3708,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}1 & 0 & 3 \\ 0 & 1 & 2 \\ -1 & 2(v+2) & 0\end{aligned}| \\  & =1|\begin{aligned}1 & 2 \\ 2(v+2) & 0\end{aligned}|+3|\begin{aligned}0 & 1 \\ -1 & 2(v+2)\end{aligned}| \\  & =1(0-4(v+2))+3(0+1) \\  & =3-4(v+2).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}1 & 0 & 3 \\ 0 & 1 & 2 \\ -1 & 2(v+2) & 0\end{vmatrix} \\  & =1\begin{vmatrix}1 & 2 \\ 2(v+2) & 0\end{vmatrix}+3\begin{vmatrix}0 & 1 \\ -1 & 2(v+2)\end{vmatrix} \\  & =1(0-4(v+2))+3(0+1) \\  & =3-4(v+2).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -3726,7 +3726,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}\frac{1}{u} \\ {v}^{2}+w \\ vw\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}\frac{1}{u} \\ {v}^{2}+w \\ vw\end{bmatrix}.
 $$
 
 Assume $u\ne 0$.
@@ -3742,13 +3742,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -3766,7 +3766,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}-\frac{1}{{u}^{2}} & 0 & 0 \\ 0 & 2v & 1 \\ 0 & w & v\end{aligned}| \\  & =-\frac{1}{{u}^{2}}|\begin{aligned}2v & 1 \\ w & v\end{aligned}| \\  & =-\frac{1}{{u}^{2}}(2{v}^{2}-w).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}-\frac{1}{{u}^{2}} & 0 & 0 \\ 0 & 2v & 1 \\ 0 & w & v\end{vmatrix} \\  & =-\frac{1}{{u}^{2}}\begin{vmatrix}2v & 1 \\ w & v\end{vmatrix} \\  & =-\frac{1}{{u}^{2}}(2{v}^{2}-w).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -3784,7 +3784,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}\frac{1}{(u+3)} \\ {(v-2)}^{2}+(w+1) \\ (v-2)(w+1)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}\frac{1}{(u+3)} \\ {(v-2)}^{2}+(w+1) \\ (v-2)(w+1)\end{bmatrix}.
 $$
 
 Assume $u\ne -3$.
@@ -3800,13 +3800,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -3824,7 +3824,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}-\frac{1}{{(u+3)}^{2}} & 0 & 0 \\ 0 & 2(v-2) & 1 \\ 0 & (w+1) & (v-2)\end{aligned}| \\  & =-\frac{1}{{(u+3)}^{2}}|\begin{aligned}2(v-2) & 1 \\ (w+1) & (v-2)\end{aligned}| \\  & =-\frac{1}{{(u+3)}^{2}}(2{(v-2)}^{2}-(w+1)).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}-\frac{1}{{(u+3)}^{2}} & 0 & 0 \\ 0 & 2(v-2) & 1 \\ 0 & (w+1) & (v-2)\end{vmatrix} \\  & =-\frac{1}{{(u+3)}^{2}}\begin{vmatrix}2(v-2) & 1 \\ (w+1) & (v-2)\end{vmatrix} \\  & =-\frac{1}{{(u+3)}^{2}}(2{(v-2)}^{2}-(w+1)).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -3842,7 +3842,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}\frac{1}{(u-3)} \\ {(v+2)}^{2}+(w-1) \\ (v+2)(w-1)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}\frac{1}{(u-3)} \\ {(v+2)}^{2}+(w-1) \\ (v+2)(w-1)\end{bmatrix}.
 $$
 
 Assume $u\ne 3$.
@@ -3858,13 +3858,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -3882,7 +3882,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}-\frac{1}{{(u-3)}^{2}} & 0 & 0 \\ 0 & 2(v+2) & 1 \\ 0 & (w-1) & (v+2)\end{aligned}| \\  & =-\frac{1}{{(u-3)}^{2}}|\begin{aligned}2(v+2) & 1 \\ (w-1) & (v+2)\end{aligned}| \\  & =-\frac{1}{{(u-3)}^{2}}(2{(v+2)}^{2}-(w-1)).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}-\frac{1}{{(u-3)}^{2}} & 0 & 0 \\ 0 & 2(v+2) & 1 \\ 0 & (w-1) & (v+2)\end{vmatrix} \\  & =-\frac{1}{{(u-3)}^{2}}\begin{vmatrix}2(v+2) & 1 \\ (w-1) & (v+2)\end{vmatrix} \\  & =-\frac{1}{{(u-3)}^{2}}(2{(v+2)}^{2}-(w-1)).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -3900,7 +3900,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}u+2w \\ v-u \\ uw\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}u+2w \\ v-u \\ uw\end{bmatrix}.
 $$
 
 Field 1:
@@ -3914,13 +3914,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -3938,7 +3938,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}1 & 0 & 2 \\ -1 & 1 & 0 \\ w & 0 & u\end{aligned}| \\  & =1|\begin{aligned}1 & 0 \\ 0 & u\end{aligned}|+2|\begin{aligned}-1 & 1 \\ w & 0\end{aligned}| \\  & =1(u-0)+2(0-w) \\  & =u-2w.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}1 & 0 & 2 \\ -1 & 1 & 0 \\ w & 0 & u\end{vmatrix} \\  & =1\begin{vmatrix}1 & 0 \\ 0 & u\end{vmatrix}+2\begin{vmatrix}-1 & 1 \\ w & 0\end{vmatrix} \\  & =1(u-0)+2(0-w) \\  & =u-2w.\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -3956,7 +3956,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}(u+3)+2(w+1) \\ (v-2)-(u+3) \\ (u+3)(w+1)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}(u+3)+2(w+1) \\ (v-2)-(u+3) \\ (u+3)(w+1)\end{bmatrix}.
 $$
 
 Field 1:
@@ -3970,13 +3970,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -3994,7 +3994,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}1 & 0 & 2 \\ -1 & 1 & 0 \\ (w+1) & 0 & (u+3)\end{aligned}| \\  & =1|\begin{aligned}1 & 0 \\ 0 & (u+3)\end{aligned}|+2|\begin{aligned}-1 & 1 \\ (w+1) & 0\end{aligned}| \\  & =1((u+3)-0)+2(0-(w+1)) \\  & =(u+3)-2(w+1).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}1 & 0 & 2 \\ -1 & 1 & 0 \\ (w+1) & 0 & (u+3)\end{vmatrix} \\  & =1\begin{vmatrix}1 & 0 \\ 0 & (u+3)\end{vmatrix}+2\begin{vmatrix}-1 & 1 \\ (w+1) & 0\end{vmatrix} \\  & =1((u+3)-0)+2(0-(w+1)) \\  & =(u+3)-2(w+1).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -4012,7 +4012,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}(u-3)+2(w-1) \\ (v+2)-(u-3) \\ (u-3)(w-1)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}(u-3)+2(w-1) \\ (v+2)-(u-3) \\ (u-3)(w-1)\end{bmatrix}.
 $$
 
 Field 1:
@@ -4026,13 +4026,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -4050,7 +4050,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}1 & 0 & 2 \\ -1 & 1 & 0 \\ (w-1) & 0 & (u-3)\end{aligned}| \\  & =1|\begin{aligned}1 & 0 \\ 0 & (u-3)\end{aligned}|+2|\begin{aligned}-1 & 1 \\ (w-1) & 0\end{aligned}| \\  & =1((u-3)-0)+2(0-(w-1)) \\  & =(u-3)-2(w-1).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}1 & 0 & 2 \\ -1 & 1 & 0 \\ (w-1) & 0 & (u-3)\end{vmatrix} \\  & =1\begin{vmatrix}1 & 0 \\ 0 & (u-3)\end{vmatrix}+2\begin{vmatrix}-1 & 1 \\ (w-1) & 0\end{vmatrix} \\  & =1((u-3)-0)+2(0-(w-1)) \\  & =(u-3)-2(w-1).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -4068,7 +4068,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}{e}^{u} \\ {e}^{u+w} \\ uv+w\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}{e}^{u} \\ {e}^{u+w} \\ uv+w\end{bmatrix}.
 $$
 
 Field 1:
@@ -4082,13 +4082,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -4106,7 +4106,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}{e}^{u} & 0 & 0 \\ {e}^{u+w} & 0 & {e}^{u+w} \\ v & u & 1\end{aligned}| \\  & ={e}^{u}|\begin{aligned}0 & {e}^{u+w} \\ u & 1\end{aligned}| \\  & ={e}^{u}(0-u{e}^{u+w}) \\  & =-u{e}^{2u+w}.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}{e}^{u} & 0 & 0 \\ {e}^{u+w} & 0 & {e}^{u+w} \\ v & u & 1\end{vmatrix} \\  & ={e}^{u}\begin{vmatrix}0 & {e}^{u+w} \\ u & 1\end{vmatrix} \\  & ={e}^{u}(0-u{e}^{u+w}) \\  & =-u{e}^{2u+w}.\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -4124,7 +4124,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}{e}^{(u+3)} \\ {e}^{(u+3)+(w+1)} \\ (u+3)(v-2)+(w+1)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}{e}^{(u+3)} \\ {e}^{(u+3)+(w+1)} \\ (u+3)(v-2)+(w+1)\end{bmatrix}.
 $$
 
 Field 1:
@@ -4138,13 +4138,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -4162,7 +4162,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}{e}^{(u+3)} & 0 & 0 \\ {e}^{(u+3)+(w+1)} & 0 & {e}^{(u+3)+(w+1)} \\ (v-2) & (u+3) & 1\end{aligned}| \\  & ={e}^{(u+3)}|\begin{aligned}0 & {e}^{(u+3)+(w+1)} \\ (u+3) & 1\end{aligned}| \\  & ={e}^{(u+3)}(0-(u+3){e}^{(u+3)+(w+1)}) \\  & =-(u+3){e}^{2(u+3)+(w+1)}.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}{e}^{(u+3)} & 0 & 0 \\ {e}^{(u+3)+(w+1)} & 0 & {e}^{(u+3)+(w+1)} \\ (v-2) & (u+3) & 1\end{vmatrix} \\  & ={e}^{(u+3)}\begin{vmatrix}0 & {e}^{(u+3)+(w+1)} \\ (u+3) & 1\end{vmatrix} \\  & ={e}^{(u+3)}(0-(u+3){e}^{(u+3)+(w+1)}) \\  & =-(u+3){e}^{2(u+3)+(w+1)}.\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -4180,7 +4180,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}{e}^{(u-3)} \\ {e}^{(u-3)+(w-1)} \\ (u-3)(v+2)+(w-1)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}{e}^{(u-3)} \\ {e}^{(u-3)+(w-1)} \\ (u-3)(v+2)+(w-1)\end{bmatrix}.
 $$
 
 Field 1:
@@ -4194,13 +4194,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -4218,7 +4218,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}{e}^{(u-3)} & 0 & 0 \\ {e}^{(u-3)+(w-1)} & 0 & {e}^{(u-3)+(w-1)} \\ (v+2) & (u-3) & 1\end{aligned}| \\  & ={e}^{(u-3)}|\begin{aligned}0 & {e}^{(u-3)+(w-1)} \\ (u-3) & 1\end{aligned}| \\  & ={e}^{(u-3)}(0-(u-3){e}^{(u-3)+(w-1)}) \\  & =-(u-3){e}^{2(u-3)+(w-1)}.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}{e}^{(u-3)} & 0 & 0 \\ {e}^{(u-3)+(w-1)} & 0 & {e}^{(u-3)+(w-1)} \\ (v+2) & (u-3) & 1\end{vmatrix} \\  & ={e}^{(u-3)}\begin{vmatrix}0 & {e}^{(u-3)+(w-1)} \\ (u-3) & 1\end{vmatrix} \\  & ={e}^{(u-3)}(0-(u-3){e}^{(u-3)+(w-1)}) \\  & =-(u-3){e}^{2(u-3)+(w-1)}.\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -4236,7 +4236,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}u+vw \\ {v}^{2} \\ w+v\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}u+vw \\ {v}^{2} \\ w+v\end{bmatrix}.
 $$
 
 Field 1:
@@ -4250,13 +4250,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -4274,7 +4274,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}1 & w & v \\ 0 & 2v & 0 \\ 0 & 1 & 1\end{aligned}| \\  & =1|\begin{aligned}2v & 0 \\ 1 & 1\end{aligned}| \\  & =1(2v-0) \\  & =2v.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}1 & w & v \\ 0 & 2v & 0 \\ 0 & 1 & 1\end{vmatrix} \\  & =1\begin{vmatrix}2v & 0 \\ 1 & 1\end{vmatrix} \\  & =1(2v-0) \\  & =2v.\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -4292,7 +4292,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}(u+3)+(v-2)(w+1) \\ {(v-2)}^{2} \\ (w+1)+(v-2)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}(u+3)+(v-2)(w+1) \\ {(v-2)}^{2} \\ (w+1)+(v-2)\end{bmatrix}.
 $$
 
 Field 1:
@@ -4306,13 +4306,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -4330,7 +4330,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}1 & (w+1) & (v-2) \\ 0 & 2(v-2) & 0 \\ 0 & 1 & 1\end{aligned}| \\  & =1|\begin{aligned}2(v-2) & 0 \\ 1 & 1\end{aligned}| \\  & =1(2(v-2)-0) \\  & =2(v-2).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}1 & (w+1) & (v-2) \\ 0 & 2(v-2) & 0 \\ 0 & 1 & 1\end{vmatrix} \\  & =1\begin{vmatrix}2(v-2) & 0 \\ 1 & 1\end{vmatrix} \\  & =1(2(v-2)-0) \\  & =2(v-2).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -4348,7 +4348,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}(u-3)+(v+2)(w-1) \\ {(v+2)}^{2} \\ (w-1)+(v+2)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}(u-3)+(v+2)(w-1) \\ {(v+2)}^{2} \\ (w-1)+(v+2)\end{bmatrix}.
 $$
 
 Field 1:
@@ -4362,13 +4362,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -4386,7 +4386,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}1 & (w-1) & (v+2) \\ 0 & 2(v+2) & 0 \\ 0 & 1 & 1\end{aligned}| \\  & =1|\begin{aligned}2(v+2) & 0 \\ 1 & 1\end{aligned}| \\  & =1(2(v+2)-0) \\  & =2(v+2).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}1 & (w-1) & (v+2) \\ 0 & 2(v+2) & 0 \\ 0 & 1 & 1\end{vmatrix} \\  & =1\begin{vmatrix}2(v+2) & 0 \\ 1 & 1\end{vmatrix} \\  & =1(2(v+2)-0) \\  & =2(v+2).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -4404,7 +4404,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}{e}^{u}+v \\ v+w \\ vw\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}{e}^{u}+v \\ v+w \\ vw\end{bmatrix}.
 $$
 
 Field 1:
@@ -4418,13 +4418,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -4442,7 +4442,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}{e}^{u} & 1 & 0 \\ 0 & 1 & 1 \\ 0 & w & v\end{aligned}| \\  & ={e}^{u}|\begin{aligned}1 & 1 \\ w & v\end{aligned}| \\  & ={e}^{u}(v-w).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}{e}^{u} & 1 & 0 \\ 0 & 1 & 1 \\ 0 & w & v\end{vmatrix} \\  & ={e}^{u}\begin{vmatrix}1 & 1 \\ w & v\end{vmatrix} \\  & ={e}^{u}(v-w).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -4460,7 +4460,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}{e}^{(u+3)}+(v-2) \\ (v-2)+(w+1) \\ (v-2)(w+1)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}{e}^{(u+3)}+(v-2) \\ (v-2)+(w+1) \\ (v-2)(w+1)\end{bmatrix}.
 $$
 
 Field 1:
@@ -4474,13 +4474,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -4498,7 +4498,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}{e}^{(u+3)} & 1 & 0 \\ 0 & 1 & 1 \\ 0 & (w+1) & (v-2)\end{aligned}| \\  & ={e}^{(u+3)}|\begin{aligned}1 & 1 \\ (w+1) & (v-2)\end{aligned}| \\  & ={e}^{(u+3)}((v-2)-(w+1)).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}{e}^{(u+3)} & 1 & 0 \\ 0 & 1 & 1 \\ 0 & (w+1) & (v-2)\end{vmatrix} \\  & ={e}^{(u+3)}\begin{vmatrix}1 & 1 \\ (w+1) & (v-2)\end{vmatrix} \\  & ={e}^{(u+3)}((v-2)-(w+1)).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain
@@ -4516,7 +4516,7 @@ Difficulty: moderate | GENERATED normal learning record | Origin: observed templ
 Find the locations of all of the critical points of the transformation $T,$ where $T$ is defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}{e}^{(u-3)}+(v+2) \\ (v+2)+(w-1) \\ (v+2)(w-1)\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}{e}^{(u-3)}+(v+2) \\ (v+2)+(w-1) \\ (v+2)(w-1)\end{bmatrix}.
 $$
 
 Field 1:
@@ -4530,13 +4530,13 @@ Worked solution:
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -4554,7 +4554,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}{e}^{(u-3)} & 1 & 0 \\ 0 & 1 & 1 \\ 0 & (w-1) & (v+2)\end{aligned}| \\  & ={e}^{(u-3)}|\begin{aligned}1 & 1 \\ (w-1) & (v+2)\end{aligned}| \\  & ={e}^{(u-3)}((v+2)-(w-1)).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}{e}^{(u-3)} & 1 & 0 \\ 0 & 1 & 1 \\ 0 & (w-1) & (v+2)\end{vmatrix} \\  & ={e}^{(u-3)}\begin{vmatrix}1 & 1 \\ (w-1) & (v+2)\end{vmatrix} \\  & ={e}^{(u-3)}((v+2)-(w-1)).\end{aligned}
 $$
 
 The function has critical points when $\frac{∂(x,y,z)}{∂(u,v,w)}=0.$ So, we obtain

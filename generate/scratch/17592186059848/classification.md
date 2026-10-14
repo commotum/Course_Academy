@@ -1,6 +1,6 @@
 # Classification
 
-Snapshot: math / basis 1522 / lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1.
+Snapshot: math / basis 2484 / lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1.
 
 | Level | Practices | Layout/order/stage patterns | Fields | Plot rating |
 |---|---:|---:|---|---|

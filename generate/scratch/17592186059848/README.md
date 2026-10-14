@@ -1,8 +1,8 @@
 # Identifying Singular Matrices (17592186059848)
 
-Current source: math basis 1522. All 17 practice questions use three Boolean checkbox fields with bold I/II/III bullets and Select all that apply. Old artifacts are retained in history/basis-1356.
+Current source: math basis 2484. All 17 practice questions use three Boolean checkbox fields with bold I/II/III bullets and Select all that apply. Earlier packages remain in history; checkbox-v3-pre-bmatrix-refresh preserves the prior notation. Current prompts use bmatrix, matching the live source.
 
-All originals share one mathematical method. The twelve observed layout/order/stage patterns do not represent twelve methods. Easy and moderate retain their numeric determinant/singularity scopes. Hard is an authored dense fraction/repeated-radical extension with no original hard calibration. No database writes or registrations occur.
+All originals share one mathematical method. The twelve observed layout/order/stage patterns do not represent twelve methods. Easy and moderate retain their numeric determinant/singularity scopes. Hard is an authored dense fraction/repeated-radical extension with no original hard calibration. The generator itself produces local records. replenish.py prepares and commits scoped additions through the configured application contributor, preserving exact requests and receipts under reference/replenishment.
 
 Fresh sampling includes proportional rows and columns, mixed additive radical determinants, and sparse rational/radical positions, alongside fraction row/column scaling. False determinant claims come from the actual matrix arithmetic and can be fractions, radicals or large integers. Easy and moderate arithmetic is bounded by measured source maxima; see template-extraction.md. Each moderate family is selected before rejection to preserve its sampling coverage. Normal samples exclude completely zero rows or columns while retaining nonzero proportional dependencies.
 
