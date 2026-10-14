@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-143517",
+      "sequence_position": 7,
+      "problem": "| $x$ | $1$ | $4$ | $6$ | $8$ |\n| --- | --- | --- | --- | --- |\n| $f(x)$ | $0.4$ | $0.25$ | $0.1$ | $0.25$ |\n\nLet ${X}_{1},{X}_{2},…,{X}_{128}$ be a random sample of size $n=128$ from a population with the probability mass function given above.  Find an approximation for the probability that the sample mean is between $3.6$ and $4.2.$\n\n*Hint: Two tables of values of $Φ(z)$ for different values of $z$ are given below, where $Φ(z)$ is the cumulative distribution function for the standard normal distribution. *\n\n<table align=\"center\">\n\n<tbody><tr>\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> \n  <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th>\n  <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.00\\,$</th>\n  <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.01\\,$</th>\n  <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.02\\,$</th>\n</tr>\n<tr> \n  <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.7\\,$</th>\n  <td align=\"center\"> $\\,0.7580\\,$ </td>\n  <td align=\"center\"> $\\,0.7611\\,$ </td>\n  <td align=\"center\"> $\\,0.7642\\,$ </td>\n</tr>\n<tr> \n  <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.8\\,$</th>\n    <td align=\"center\"> $\\,0.7881\\,$ </td>\n    <td align=\"center\"> $\\,0.7910\\,$ </td>\n    <td align=\"center\"> $\\,0.7939\\,$ </td>\n</tr>\n<tr> \n  <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.9\\,$</th>\n  <td align=\"center\"> $\\,0.8159\\,$ </td>\n  <td align=\"center\"> $\\,0.8186\\,$ </td>\n  <td align=\"center\"> $\\,0.8212\\,$ </td>\n</tr>\n</tbody></table>\n\n<p></p></th>\n<th width=\"5%\"></th>\n\n<th><p></p>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> \n  <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th>\n  <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.00\\,$</th>\n  <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.01\\,$</th>\n  <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.02\\,$</th>\n</tr>\n<tr> \n  <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-1.7\\,$</th>\n  <td align=\"center\"> $\\,0.0446\\,$ </td>\n  <td align=\"center\"> $\\,0.0436\\,$ </td>\n  <td align=\"center\"> $\\,0.0427\\,$ </td>\n</tr>\n<tr> \n  <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-1.6\\,$</th>\n    <td align=\"center\"> $\\,0.0548\\,$ </td>\n    <td align=\"center\"> $\\,0.0537\\,$ </td>\n    <td align=\"center\"> $\\,0.0526\\,$ </td>\n</tr>\n<tr> \n  <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-1.5\\,$</th>\n  <td align=\"center\"> $\\,0.0668\\,$ </td>\n  <td align=\"center\"> $\\,0.0655\\,$ </td>\n  <td align=\"center\"> $\\,0.0643\\,$ </td>\n</tr>\n</tbody></table>\n\n<p></p></th>\n</tr>\n</tbody></table>",
+      "worked_solution": "Suppose that ${X}_{1},{X}_{2},…,{X}_{n}$ is a random sample of size $n$ from a population with population mean $\\mu $ and population standard deviation $\\sigma .$ The central limit theorem (or CLT) states that for sufficiently large $n,$ the distribution of the sample mean $\\overset{―}{X}$ can be approximated as \n\n$$\n\\overset{―}{X}∼N\\,(\\mu ,\\frac{{\\sigma }^{2}}{n}).\n$$\n\nIn our case:\n\n- the sample size is \n\n$$\nn=128,\n$$\n\n- the population mean is\n\n$$\n\\begin{aligned}\\mu  & =\\text{E}[X] \\\\  & ={\\sum }_{i=1}^{n}{x}_{i}f({x}_{i}) \\\\  & =1\\cdot 0.4+4\\cdot 0.25+6\\cdot 0.1+8\\cdot 0.25 \\\\  & =0.4+1+0.6+2 \\\\  & =4,\\end{aligned}\n$$\n\n- the population variance is\n\n$$\n\\begin{aligned}{\\sigma }^{2} & =\\text{Var}[X] \\\\  & =\\text{E}[{X}^{2}]-\\text{E}[X]^{2} \\\\  & =({1}^{2}\\cdot 0.4+{4}^{2}\\cdot 0.25+{6}^{2}\\cdot 0.1+{8}^{2}\\cdot 0.25)-{4}^{2} \\\\  & =(0.4+4+3.6+16)-16 \\\\  & =8.\\end{aligned}\n$$\n\nTherefore, by the CLT, we have that the distribution of the sample mean can be approximated as\n\n$$\n\\begin{aligned}\\overset{―}{X} & ∼N\\,(\\mu ,\\frac{{\\sigma }^{2}}{n}) \\\\  & ∼N\\,(4,\\frac{8}{128}) \\\\  & ∼N(4,0.0625).\\end{aligned}\n$$\n\nWe want to find $P(3.6<\\overset{―}{X}<4.2).$ So, we convert $\\overset{―}{X}$ to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(3.6<\\overset{―}{X}<4.2) & ≈-P(\\frac{3.6-4}{\\sqrt{0.0625}}<Z<\\frac{4.2-4}{\\sqrt{0.0625}}) \\\\  & ≈-P(-1.6<Z<0.8) \\\\  & =P(Z<0.8)-P(Z<-1.6) \\\\  & =Φ(0.8)-Φ(-1.6).\\end{aligned}\n$$\n\nFrom the tables, we have\n\n$$\n\\begin{aligned}Φ(0.8)=0.7881, \\\\ Φ(-1.6)=0.0548.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}P(3.6<\\overset{―}{X}<4.2) & =Φ(0.8)-Φ(-1.6) \\\\  & =0.7881-0.0548 \\\\  & =0.7333.\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14185505/observations/history-q-143517-00de27b283f297f97f61.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14185505",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14185505/observations/history-solution-q-143517-2b123b4859a948d1adca.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "0.7173"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "0.7985"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "0.7333"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "0.7413"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "0.7713"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q143517",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "0.7173",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "Suppose that ${X}_{1},{X}_{2},…,{X}_{n}$ is a random sample of size $n$ from a population with population mean $\\mu $ and population standard deviation $\\sigma .$ The central limit theorem (or CLT) states that for sufficiently large $n,$ the distribution of the sample mean $\\overset{―}{X}$ can be approximated as \n\n$$\n\\overset{―}{X}∼N\\,(\\mu ,\\frac{{\\sigma }^{2}}{n}).\n$$\n\nIn our case:\n\n- the sample size is \n\n$$\nn=128,\n$$\n\n- the population mean is\n\n$$\n\\begin{aligned}\\mu  & =\\text{E}[X] \\\\  & ={\\sum }_{i=1}^{n}{x}_{i}f({x}_{i}) \\\\  & =1\\cdot 0.4+4\\cdot 0.25+6\\cdot 0.1+8\\cdot 0.25 \\\\  & =0.4+1+0.6+2 \\\\  & =4,\\end{aligned}\n$$\n\n- the population variance is\n\n$$\n\\begin{aligned}{\\sigma }^{2} & =\\text{Var}[X] \\\\  & =\\text{E}[{X}^{2}]-\\text{E}[X]^{2} \\\\  & =({1}^{2}\\cdot 0.4+{4}^{2}\\cdot 0.25+{6}^{2}\\cdot 0.1+{8}^{2}\\cdot 0.25)-{4}^{2} \\\\  & =(0.4+4+3.6+16)-16 \\\\  & =8.\\end{aligned}\n$$\n\nTherefore, by the CLT, we have that the distribution of the sample mean can be approximated as\n\n$$\n\\begin{aligned}\\overset{―}{X} & ∼N\\,(\\mu ,\\frac{{\\sigma }^{2}}{n}) \\\\  & ∼N\\,(4,\\frac{8}{128}) \\\\  & ∼N(4,0.0625).\\end{aligned}\n$$\n\nWe want to find $P(3.6<\\overset{―}{X}<4.2).$ So, we convert $\\overset{―}{X}$ to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(3.6<\\overset{―}{X}<4.2) & ≈-P(\\frac{3.6-4}{\\sqrt{0.0625}}<Z<\\frac{4.2-4}{\\sqrt{0.0625}}) \\\\  & ≈-P(-1.6<Z<0.8) \\\\  & =P(Z<0.8)-P(Z<-1.6) \\\\  & =Φ(0.8)-Φ(-1.6).\\end{aligned}\n$$\n\nFrom the tables, we have\n\n$$\n\\begin{aligned}Φ(0.8)=0.7881, \\\\ Φ(-1.6)=0.0548.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}P(3.6<\\overset{―}{X}<4.2) & =Φ(0.8)-Φ(-1.6) \\\\  & =0.7881-0.0548 \\\\  & =0.7333.\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14185505/observations/step-q143517-c95573b923b2b417cfaf.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a136d0-6bdc-7820-82c3-40066fd12e32",
+  "previous_failures": []
+}

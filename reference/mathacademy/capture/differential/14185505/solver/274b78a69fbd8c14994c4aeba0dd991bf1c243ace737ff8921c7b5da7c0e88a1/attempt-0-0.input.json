@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-143499",
+      "sequence_position": 15,
+      "problem": "Let ${X}_{1},{X}_{2},…,{X}_{40}$ be a random sample of size $n=40$ from a population with probability density function \n\n$$\nf(x)=\\{\\begin{aligned}1, & 0\\le x\\le 1, \\\\ 0, & \\text{otherwise}.\\end{aligned}\n$$\n\nGiven that the population variance ${\\sigma }^{2}=0.08,$ calculate $P(0.51<\\overset{―}{X}<0.55).$\n\n*Hint: Two tables of values of $Φ(z)$ for different values of $z$ are given below, where $Φ(z)$ is the cumulative distribution function for the standard normal distribution. *\n\n<table align=\"center\">\n\n<tbody><tr>\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.00\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.01\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.02\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.2\\,$</th><td align=\"center\"> $\\,0.5793\\,$ </td><td align=\"center\"> $\\,0.5832\\,$ </td><td align=\"center\"> $\\,0.5871\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.3\\,$</th><td align=\"center\"> $\\,0.6179\\,$ </td><td align=\"center\"> $\\,0.6217\\,$ </td><td align=\"center\"> $\\,0.6255\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.4\\,$</th><td align=\"center\"> $\\,0.6554\\,$ </td><td align=\"center\"> $\\,0.6591\\,$ </td><td align=\"center\"> $\\,0.6628\\,$ </td></tr>\n</tbody></table>\n</th>\n\n<th width=\"5%\"></th>\n\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.00\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.01\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.02\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.0\\,$</th><td align=\"center\"> $\\,0.8413\\,$ </td><td align=\"center\"> $\\,0.8438\\,$ </td><td align=\"center\"> $\\,0.8461\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.1\\,$</th><td align=\"center\"> $\\,0.8643\\,$ </td><td align=\"center\"> $\\,0.8665\\,$ </td><td align=\"center\"> $\\,0.8686\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.2\\,$</th><td align=\"center\"> $\\,0.8849\\,$ </td><td align=\"center\"> $\\,0.8869\\,$ </td><td align=\"center\"> $\\,0.8888\\,$ </td></tr>\n</tbody></table>\n</th>\n</tr>\n\n</tbody></table>",
+      "worked_solution": "Suppose that ${X}_{1},{X}_{2},…,{X}_{n}$ is a random sample of size $n$ from a population with population mean $\\mu $ and population standard deviation $\\sigma .$ The central limit theorem (or CLT) states that for sufficiently large $n,$ the distribution of the sample mean $\\overset{―}{X}$ can be approximated as \n\n$$\n\\overset{―}{X}∼N\\,(\\mu ,\\frac{{\\sigma }^{2}}{n}).\n$$\n\nIn our case:\n\n- the sample size is\n\n$$\n\\begin{aligned}n & =40,\\end{aligned}\n$$\n\n- the population mean is\n\n$$\n\\begin{aligned}\\mu  & =\\text{E}[X] \\\\  & ={\\int }_{-\\infty }^{\\infty }x\\,f(x)\\,\\text{d}x \\\\  & ={\\int }_{0}^{1}x\\cdot 1\\,\\text{d}x \\\\  & ={\\int }_{0}^{1}x\\,\\text{d}x \\\\  & =\\frac{{x}^{2}}{2}\\,{|}_{0}^{1} \\\\  & =\\frac{1}{2} \\\\  & =0.5,\\end{aligned}\n$$\n\n- the population variance is ${\\sigma }^{2}=0.08.$\n\nTherefore, by the CLT, we have that the distribution of the sample mean can be approximated as\n\n$$\n\\begin{aligned}\\overset{―}{X} & ∼N\\,(\\mu ,\\frac{{\\sigma }^{2}}{n}) \\\\  & ∼N\\,(0.5,\\frac{0.08}{40}) \\\\  & ∼N(0.5,0.002).\\end{aligned}\n$$\n\nWe want to find $P(0.51<\\overset{―}{X}<0.55).$ So, we convert $\\overset{―}{X}$ to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(0.51<\\overset{―}{X}<0.55) & =P(\\frac{0.51-0.5}{\\sqrt{0.002}}<Z<\\frac{0.55-0.5}{\\sqrt{0.002}}) \\\\  & ≈P(0.22<Z<1.12) \\\\  & =P(Z<1.12)-P(Z<0.22) \\\\  & =Φ(1.12)-Φ(0.22)\\end{aligned}\n$$\n\nFrom the tables, we have\n\n$$\n\\begin{aligned}Φ(0.22)=0.5871, \\\\ Φ(1.12)=0.8686.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}P(0.51<\\overset{―}{X}<0.55) & =Φ(1.12)-Φ(0.22) \\\\  & =0.8686-0.5871 \\\\  & =0.2815.\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14185505/observations/history-q-143499-5dc51bbee548e92757d8.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14185505",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14185505/observations/history-solution-q-143499-44ce9da9b8e1e9b89b41.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "0.3136"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "0.2997"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "0.2815"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "0.2513"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "0.3065"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q143499",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "0.2815",
+                "option": "c",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Suppose that ${X}_{1},{X}_{2},…,{X}_{n}$ is a random sample of size $n$ from a population with population mean $\\mu $ and population standard deviation $\\sigma .$ The central limit theorem (or CLT) states that for sufficiently large $n,$ the distribution of the sample mean $\\overset{―}{X}$ can be approximated as \n\n$$\n\\overset{―}{X}∼N\\,(\\mu ,\\frac{{\\sigma }^{2}}{n}).\n$$\n\nIn our case:\n\n- the sample size is\n\n$$\n\\begin{aligned}n & =40,\\end{aligned}\n$$\n\n- the population mean is\n\n$$\n\\begin{aligned}\\mu  & =\\text{E}[X] \\\\  & ={\\int }_{-\\infty }^{\\infty }x\\,f(x)\\,\\text{d}x \\\\  & ={\\int }_{0}^{1}x\\cdot 1\\,\\text{d}x \\\\  & ={\\int }_{0}^{1}x\\,\\text{d}x \\\\  & =\\frac{{x}^{2}}{2}\\,{|}_{0}^{1} \\\\  & =\\frac{1}{2} \\\\  & =0.5,\\end{aligned}\n$$\n\n- the population variance is ${\\sigma }^{2}=0.08.$\n\nTherefore, by the CLT, we have that the distribution of the sample mean can be approximated as\n\n$$\n\\begin{aligned}\\overset{―}{X} & ∼N\\,(\\mu ,\\frac{{\\sigma }^{2}}{n}) \\\\  & ∼N\\,(0.5,\\frac{0.08}{40}) \\\\  & ∼N(0.5,0.002).\\end{aligned}\n$$\n\nWe want to find $P(0.51<\\overset{―}{X}<0.55).$ So, we convert $\\overset{―}{X}$ to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(0.51<\\overset{―}{X}<0.55) & =P(\\frac{0.51-0.5}{\\sqrt{0.002}}<Z<\\frac{0.55-0.5}{\\sqrt{0.002}}) \\\\  & ≈P(0.22<Z<1.12) \\\\  & =P(Z<1.12)-P(Z<0.22) \\\\  & =Φ(1.12)-Φ(0.22)\\end{aligned}\n$$\n\nFrom the tables, we have\n\n$$\n\\begin{aligned}Φ(0.22)=0.5871, \\\\ Φ(1.12)=0.8686.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}P(0.51<\\overset{―}{X}<0.55) & =Φ(1.12)-Φ(0.22) \\\\  & =0.8686-0.5871 \\\\  & =0.2815.\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14185505/observations/step-q143499-aec0fe41dec8491b66c0.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a136d0-6bdc-7820-82c3-40066fd12e32",
+  "previous_failures": []
+}

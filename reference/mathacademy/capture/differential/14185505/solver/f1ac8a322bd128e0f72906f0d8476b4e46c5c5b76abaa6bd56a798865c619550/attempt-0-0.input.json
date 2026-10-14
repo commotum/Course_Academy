@@ -1,0 +1,56 @@
+{
+  "task": "solve_question",
+  "payload": {
+    "evidence_contract": "solve_question:1",
+    "question": {
+      "math_academy_id": "q-143519",
+      "problem": "| $x$ | $1$ | $2$ | $4$ | $10$ |\n| --- | --- | --- | --- | --- |\n| $f(x)$ | $0.4$ | $0.35$ | $0.1$ | $0.15$ |\n\nLet ${X}_{1},{X}_{2},…,{X}_{47}$ be a random sample of size $n=47$ from a population with the probability mass function given above.  Find an approximation for the probability that the sample mean is greater than $3.2.$\n\n*Hint: Two tables of values of $Φ(z)$ for different values of $z$ are given below, where $Φ(z)$ is the cumulative distribution function for the standard normal distribution. *\n\n| $z$ | $\\,0.01\\,$ | $\\,0.02\\,$ | $\\,0.03\\,$ | $\\,0.04\\,$ | $\\,0.05\\,$ |\n| --- | --- | --- | --- | --- | --- |\n| $\\,0.3\\,$ | $\\,0.6217\\,$ | $\\,0.6255\\,$ | $\\,0.6293\\,$ | $\\,0.6331\\,$ | $\\,0.6368\\,$ |\n| $\\,0.4\\,$ | $\\,0.6591\\,$ | $\\,0.6628\\,$ | $\\,0.6664\\,$ | $\\,0.6700\\,$ | $\\,0.6736\\,$ |\n| $\\,0.5\\,$ | $\\,0.6950\\,$ | $\\,0.6985\\,$ | $\\,0.7019\\,$ | $\\,0.7054\\,$ | $\\,0.7088\\,$ |",
+      "answer_fields_complete": true,
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14185505/observations/step-q143519-534275fe58002d53c269.html",
+      "source_url": "https://mathacademy.com/tasks/14185505/topics/359/lesson",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "0.3264"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "0.3707"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "0.2912"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "0.3669"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "0.2981"
+            }
+          ]
+        }
+      ]
+    },
+    "current_example": {
+      "math_academy_id": "e-10088",
+      "problem": "| $x$ | $-3$ | $-1$ | $1$ | $3$ |\n| --- | --- | --- | --- | --- |\n| $f(x)$ | $0.4$ | $0.1$ | $0.1$ | $0.4$ |\n\nLet $X_1, X_2, \\ldots, X_{185}$ be a random sample of size $n = 185$ from a population with the probability mass function given above. Find an approximation in terms of $\\Phi(z)$ for $P(|\\overline{X}| \\gt 0.1).$\n\n*Note: $\\Phi(z)$ is the cumulative distribution function for the standard normal distribution.*",
+      "worked_solution": "Suppose that $X_1, X_2,\\ldots, X_n$ is a random sample of size $n$ from a population with population mean $\\mu$ and population standard deviation $\\sigma.$ The central limit theorem (or CLT) states that for sufficiently large $n,$ the distribution of the sample mean $\\overline{X}$ can be approximated as \n\n$$\n\\overline{X}\\sim N\\!\\left(\\mu,\\frac{\\sigma^2}{n}\\right).\n$$\n\nIn our case:\n\n- the sample size is \n\n$$\nn = 185,\n$$\n\n- the population mean is\n\n$$\n\\begin{aligned}\\mu  & =\\text{E}[X] \\\\  & ={\\sum }_{i=1}^{n}{x}_{i}f({x}_{i}) \\\\  & =-3\\cdot 0.4+(-1)\\cdot 0.1+1\\cdot 0.1+3\\cdot 0.4 \\\\  & =-1.2-0.1+0.1+1.2 \\\\  & =0,\\end{aligned}\n$$\n\n- the population variance is\n\n$$\n\\begin{aligned}{\\sigma }^{2} & =\\text{Var}[X] \\\\  & =\\text{E}[{X}^{2}]-\\text{E}[X]^{2} \\\\  & =((-3)^{2}\\cdot 0.4+(-1)^{2}\\cdot 0.1+{1}^{2}\\cdot 0.1+{3}^{2}\\cdot 0.4)-{0}^{2} \\\\  & =(3.6+0.1+0.1+3.6)-0 \\\\  & =7.4.\\end{aligned}\n$$\n\nTherefore, by the CLT, we have that the distribution of the sample mean can be approximated as\n\n$$\n\\begin{aligned}\\overset{―}{X} & ∼N\\,(\\mu ,\\frac{{\\sigma }^{2}}{n}) \\\\  & ∼N\\,(0,\\frac{7.4}{185}) \\\\  & ∼N(0,0.04).\\end{aligned}\n$$\n\nWe want to find $P(|\\overline{X}| \\gt 0.1).$ So, we convert $\\overline{X}$ to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(|\\overset{―}{X}|>0.1) & =P(\\overset{―}{X}<-0.1)+P(\\overset{―}{X}>0.1) \\\\  & ≈P(Z<\\frac{-0.1-0}{\\sqrt{0.04}})+P(Z>\\frac{0.1-0}{\\sqrt{0.04}}) \\\\  & =P(Z<-0.5)+P(Z>0.5) \\\\  & =P(Z<-0.5)+1-P(Z<0.5) \\\\  & =1+Φ(-0.5)-Φ(0.5).\\end{aligned}\n$$\n\nBy the symmetry of the normal distribution, we have\n\n$$\n\\qquad \\Phi(-0.5) \n= 1-\\Phi(0.5).\n$$\n\nTherefore, we conclude that\n\n$$\n\\begin{aligned}P(|\\overset{―}{X}|>0.1) & =1+Φ(-0.5)-Φ(0.5) \\\\  & =1+(1-Φ(0.5))-Φ(0.5) \\\\  & =2-2Φ(0.5) \\\\  & =2(1-Φ(0.5)).\\end{aligned}\n$$",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14185505/observations/step-e10088-abda9e80e362149648ee.html",
+      "source_url": "https://mathacademy.com/tasks/14185505/topics/359/lesson"
+    }
+  },
+  "session_id": "01a136d0-6bdc-7820-82c3-40066fd12e32",
+  "previous_failures": []
+}
