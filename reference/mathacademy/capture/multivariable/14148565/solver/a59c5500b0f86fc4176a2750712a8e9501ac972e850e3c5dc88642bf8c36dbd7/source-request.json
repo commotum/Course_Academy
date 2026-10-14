@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-333983",
+      "sequence_position": 13,
+      "problem": "For the initial value problem ${y}^{′}=f(x,y),y({x}_{0})={y}_{0},$ the modified Euler method can be expressed as the update formula\n\n$$\n\\begin{aligned}Δ{y}_{n}^{(p)} & =f({x}_{n},{y}_{n})\\cdot Δx, \\\\ {y}_{n+1} & ={y}_{n}+\\frac{1}{2}(f({x}_{n},{y}_{n})+f({x}_{n+1},{y}_{n}+Δ{y}_{n}^{(p)}))\\cdot Δx.\\end{aligned}\n$$\n\nWhich of the following statements are true when testing the stability of the modified Euler method on the test equation ${y}^{′}=-\\lambda y$ with $y=y(x),y(0)=1,x\\ge 0,\\lambda =8,$ and step size $Δx?$  \n\nI. The stability function is $R(8Δx)=1-8Δx+32(Δx)^{2}.$\n\nII. The stability region is $|32{(Δx-\\frac{1}{8})}^{2}+\\frac{1}{2}|<1.$\n\nIII. The method is absolutely stable.\n\nIV. The method is stable for step size $Δx=0.6.$\n\n*Hint:* The stability function $R$ is given by ${y}_{n+1}=R(\\lambda Δx){y}_{n}.$",
+      "worked_solution": "A numerical method ${y}_{n+1}={y}_{n}+Δ{y}_{n}$ is stable for a given step size $Δx$ if, when applied to the test equation\n\n$$\n{y}^{′}=-\\lambda y,\\,y(0)=1,\\,x\\ge 0,\\,\\lambda >0,\n$$\n\nthe numerical solution satisfies ${y}_{n}\\to 0$ as $n\\to \\infty ,$ just like the exact solution.\n\nWhen a method is applied to the test equation, the update takes the form\n\n$$\n{y}_{n+1}=R(\\lambda Δx){y}_{n},\n$$\n\nwhere $R(\\lambda Δx)$ is the stability function of the method. The set of values for which the method is stable, given by $|R(\\lambda Δx)|<1,$ is called the stability region of the method.\n\nA method that is stable for all possible values $\\lambda Δx>0$ is called absolutely stable.\n\nNow, let's check the stability of the modified Euler Method by applying it to the test equation\n\n$$\n{y}^{′}=-8y,\\,y(0)=1.\n$$\n\nWe now examine our statements:\n\n- Applying the modified Euler method to this test equation, we get the following:\n\n$$\n\\begin{aligned}{y}_{n}+Δ{y}_{n}^{(p)} & ={y}_{n}+f({x}_{n},{y}_{n})\\cdot Δx \\\\  & ={y}_{n}-8{y}_{n}\\cdot Δx\\end{aligned}\n$$\n\nThus,\n\n$$\n\\begin{aligned}{y}_{n+1} & ={y}_{n}+\\frac{1}{2}(f({x}_{n},{y}_{n})+f({x}_{n+1},{y}_{n}-8{y}_{n}\\cdot Δx))\\cdot Δx \\\\  & ={y}_{n}+\\frac{1}{2}(-8{y}_{n}-8({y}_{n}-8{y}_{n}\\cdot Δx))\\cdot Δx \\\\  & ={y}_{n}+\\frac{1}{2}(-16{y}_{n}+64{y}_{n}\\cdot Δx)\\cdot Δx \\\\  & ={y}_{n}-8{y}_{n}\\cdot Δx+32{y}_{n}\\cdot (Δx)^{2} \\\\  & =[1-8Δx+32(Δx)^{2}]{y}_{n}.\\end{aligned}\n$$\n\nSo, the stability function is $R(8Δx)=1-8Δx+32(Δx)^{2}.$ Hence, statement I is true.\n\n- The method is stable when\n\n$$\n\\begin{aligned}|R(8Δx)| & <1 \\\\ |1-8Δx+32(Δx)^{2}| & <1 \\\\ |32{(Δx-\\frac{1}{8})}^{2}+\\frac{1}{2}| & <1.\\end{aligned}\n$$\n\nTherefore, ${y}_{n}$ converges to $0$ as $n\\to \\infty $ if and only if\n\n$$\n|32{(Δx-\\frac{1}{8})}^{2}+\\frac{1}{2}|<1.\n$$\n\nHence, statement II is true.\n\n- Now, since the argument of the absolute value is always non-negative, we can remove the absolute value. So, we have\n\n$$\n\\begin{aligned}32{(Δx-\\frac{1}{8})}^{2}+\\frac{1}{2} & <1 \\\\ 32{(Δx-\\frac{1}{8})}^{2} & <\\frac{1}{2} \\\\ {(Δx-\\frac{1}{8})}^{2} & <\\frac{1}{64} \\\\ -\\frac{1}{8}<Δx-\\frac{1}{8} & <\\frac{1}{8} \\\\ 0<Δx & <\\frac{1}{4}\\end{aligned}\n$$\n\nThus, the modified Euler method is not absolutely stable, and statement III is false.\n\n- Finally, it does *not* satisfy this inequality, the modified Euler method is unstable for step size $Δx=0.6,$ and hence statement IV is false.\n\nIn conclusion, the correct answer is \"I and II only\".",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14148565/observations/history-q-333983-e806c929532c3380441c.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14148565",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14148565/observations/history-solution-q-333983-f935ecfdf537df0e8d0f.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "text",
+              "value": "II and III only"
+            },
+            {
+              "option": "b",
+              "type": "text",
+              "value": "I and III only"
+            },
+            {
+              "option": "c",
+              "type": "text",
+              "value": "I, III, and IV only"
+            },
+            {
+              "option": "d",
+              "type": "text",
+              "value": "I and II only"
+            },
+            {
+              "option": "e",
+              "type": "text",
+              "value": "II, III, and IV only"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q333983",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "I and II only",
+                "option": "d",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "A numerical method ${y}_{n+1}={y}_{n}+Δ{y}_{n}$ is stable for a given step size $Δx$ if, when applied to the test equation\n\n$$\n{y}^{′}=-\\lambda y,\\,y(0)=1,\\,x\\ge 0,\\,\\lambda >0,\n$$\n\nthe numerical solution satisfies ${y}_{n}\\to 0$ as $n\\to \\infty ,$ just like the exact solution.\n\nWhen a method is applied to the test equation, the update takes the form\n\n$$\n{y}_{n+1}=R(\\lambda Δx){y}_{n},\n$$\n\nwhere $R(\\lambda Δx)$ is the stability function of the method. The set of values for which the method is stable, given by $|R(\\lambda Δx)|<1,$ is called the stability region of the method.\n\nA method that is stable for all possible values $\\lambda Δx>0$ is called absolutely stable.\n\nNow, let's check the stability of the modified Euler Method by applying it to the test equation\n\n$$\n{y}^{′}=-8y,\\,y(0)=1.\n$$\n\nWe now examine our statements:\n\n- Applying the modified Euler method to this test equation, we get the following:\n\n$$\n\\begin{aligned}{y}_{n}+Δ{y}_{n}^{(p)} & ={y}_{n}+f({x}_{n},{y}_{n})\\cdot Δx \\\\  & ={y}_{n}-8{y}_{n}\\cdot Δx\\end{aligned}\n$$\n\nThus,\n\n$$\n\\begin{aligned}{y}_{n+1} & ={y}_{n}+\\frac{1}{2}(f({x}_{n},{y}_{n})+f({x}_{n+1},{y}_{n}-8{y}_{n}\\cdot Δx))\\cdot Δx \\\\  & ={y}_{n}+\\frac{1}{2}(-8{y}_{n}-8({y}_{n}-8{y}_{n}\\cdot Δx))\\cdot Δx \\\\  & ={y}_{n}+\\frac{1}{2}(-16{y}_{n}+64{y}_{n}\\cdot Δx)\\cdot Δx \\\\  & ={y}_{n}-8{y}_{n}\\cdot Δx+32{y}_{n}\\cdot (Δx)^{2} \\\\  & =[1-8Δx+32(Δx)^{2}]{y}_{n}.\\end{aligned}\n$$\n\nSo, the stability function is $R(8Δx)=1-8Δx+32(Δx)^{2}.$ Hence, statement I is true.\n\n- The method is stable when\n\n$$\n\\begin{aligned}|R(8Δx)| & <1 \\\\ |1-8Δx+32(Δx)^{2}| & <1 \\\\ |32{(Δx-\\frac{1}{8})}^{2}+\\frac{1}{2}| & <1.\\end{aligned}\n$$\n\nTherefore, ${y}_{n}$ converges to $0$ as $n\\to \\infty $ if and only if\n\n$$\n|32{(Δx-\\frac{1}{8})}^{2}+\\frac{1}{2}|<1.\n$$\n\nHence, statement II is true.\n\n- Now, since the argument of the absolute value is always non-negative, we can remove the absolute value. So, we have\n\n$$\n\\begin{aligned}32{(Δx-\\frac{1}{8})}^{2}+\\frac{1}{2} & <1 \\\\ 32{(Δx-\\frac{1}{8})}^{2} & <\\frac{1}{2} \\\\ {(Δx-\\frac{1}{8})}^{2} & <\\frac{1}{64} \\\\ -\\frac{1}{8}<Δx-\\frac{1}{8} & <\\frac{1}{8} \\\\ 0<Δx & <\\frac{1}{4}\\end{aligned}\n$$\n\nThus, the modified Euler method is not absolutely stable, and statement III is false.\n\n- Finally, it does *not* satisfy this inequality, the modified Euler method is unstable for step size $Δx=0.6,$ and hence statement IV is false.\n\nIn conclusion, the correct answer is \"I and II only\".",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14148565/observations/step-q333983-8448d051c8dedbaefb77.html"
+        }
+      }
+    ]
+  }
+}

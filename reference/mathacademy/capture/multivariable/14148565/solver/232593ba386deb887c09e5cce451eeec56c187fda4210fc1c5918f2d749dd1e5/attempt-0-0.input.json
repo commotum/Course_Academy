@@ -1,0 +1,56 @@
+{
+  "task": "solve_question",
+  "payload": {
+    "evidence_contract": "solve_question:1",
+    "question": {
+      "math_academy_id": "q-332551",
+      "problem": "For the initial value problem ${y}^{′}=f(x,y),y({x}_{0})={y}_{0},$ the modified Euler method can be expressed as the update formula\n\n$$\n\\begin{aligned}Δ{y}_{n}^{(p)} & =f({x}_{n},{y}_{n})\\cdot Δx, \\\\ {y}_{n+1} & ={y}_{n}+\\frac{1}{2}(f({x}_{n},{y}_{n})+f({x}_{n+1},{y}_{n}+Δ{y}_{n}^{(p)}))\\cdot Δx.\\end{aligned}\n$$\n\nWhich of the following statements are true when testing the stability of the modified Euler method on the test equation ${y}^{′}=-\\lambda y$ with $y=y(x),y(0)=1,x\\ge 0,\\lambda =5,$ and step size $Δx?$\n\nI. The stability function is $R(5Δx)=1-5Δx+\\frac{25}{2}(Δx)^{2}.$\n\nII. The stability region is $|\\frac{25}{2}{(Δx-\\frac{1}{5})}^{2}|<1.$\n\nIII. The method is absolutely stable.\n\nIV. The method is stable for step size $Δx=0.5.$\n\n*Hint:* The stability function $R$ is given by ${y}_{n+1}=R(\\lambda Δx){y}_{n}.$",
+      "answer_fields_complete": true,
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14148565/observations/step-q332551-8453d5643dc9b82c338a.html",
+      "source_url": "https://mathacademy.com/tasks/14148565/topics/6685/lesson",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "text",
+              "value": "I only"
+            },
+            {
+              "option": "b",
+              "type": "text",
+              "value": "II and IV only"
+            },
+            {
+              "option": "c",
+              "type": "text",
+              "value": "I and II only"
+            },
+            {
+              "option": "d",
+              "type": "text",
+              "value": "II, III, and IV only"
+            },
+            {
+              "option": "e",
+              "type": "text",
+              "value": "I, III, and IV only"
+            }
+          ]
+        }
+      ]
+    },
+    "current_example": {
+      "math_academy_id": "e-21637",
+      "problem": "For the initial value problem $y' = f(x,y), y(x_0) = y_0,$ the modified Euler method can be expressed as the update formula\n\n$$\n\\begin{aligned}Δ{y}_{n}^{(p)} & =f({x}_{n},{y}_{n})\\cdot Δx, \\\\ {y}_{n+1} & ={y}_{n}+\\frac{1}{2}(f({x}_{n},{y}_{n})+f({x}_{n+1},{y}_{n}+Δ{y}_{n}^{(p)}))\\cdot Δx.\\end{aligned}\n$$\n\nWhich of the following statements are true when testing the stability of the modified Euler method on the test equation $y'=-\\lambda y$ with $y = y(x), y(0) = 1, x \\geq 0, \\lambda = 12,$ and step size $\\Delta x?$  \n\nI. The stability function is $R(12\\Delta x) = 1 - 12\\Delta x + 72(\\Delta x)^2.$\n\nII. The stability region is $\\left|72\\left(\\Delta x - \\dfrac16\\right)^2\\right| < 1.$\n\nIII. The method is absolutely stable.\n\nIV. The method is stable for step size $\\Delta x = 0.15.$\n\n*Hint:* The stability function $R$ is given by $y_{n+1} = R(\\lambda\\Delta x)y_n.$",
+      "worked_solution": "A numerical method  $y_{n+1} = y_n + \\Delta y_n$ is stable for a given step size $\\Delta x$ if, when applied to the test equation\n\n$$\ny' = -\\lambda y, \\qquad y(0) = 1, \\quad x \\geq 0, \\quad \\lambda > 0,\n$$\n\nthe numerical solution satisfies $y_n \\to 0$ as $n \\to \\infty,$ just like the exact solution.\n\nWhen a method is applied to the test equation, the update takes the form\n\n$$\ny_{n+1} = R(\\lambda\\Delta x)y_n,\n$$\n\nwhere $R(\\lambda\\Delta x)$ is the stability function of the method. The set of values for which the method is stable, given by $|R(\\lambda\\Delta x)| < 1,$ is called the stability region of the method.\n\nA method that is stable for all possible values $\\lambda\\Delta x > 0$ is called absolutely stable.\n\nNow, let's check the stability of the modified Euler Method by applying it to the test equation\n\n$$\ny' = -12y, \\qquad y(0) = 1.\n$$\n\nWe now examine our statements:\n\n- Applying the modified Euler method to this test equation, we get the following:\n\n$$\n\\begin{aligned}{y}_{n}+Δ{y}_{n}^{(p)} & ={y}_{n}+f({x}_{n},{y}_{n})\\cdot Δx \\\\  & ={y}_{n}-12{y}_{n}\\cdot Δx\\end{aligned}\n$$\n\nThus,\n\n$$\n\\begin{aligned}{y}_{n+1} & ={y}_{n}+\\frac{1}{2}(f({x}_{n},{y}_{n})+f({x}_{n+1},{y}_{n}-12{y}_{n}\\cdot Δx))\\cdot Δx \\\\  & ={y}_{n}+\\frac{1}{2}(-12{y}_{n}-12({y}_{n}-12{y}_{n}\\cdot Δx))\\cdot Δx \\\\  & ={y}_{n}+\\frac{1}{2}(-24{y}_{n}+144{y}_{n}\\cdot Δx)\\cdot Δx \\\\  & ={y}_{n}-12{y}_{n}\\cdot Δx+72{y}_{n}\\cdot (Δx)^{2} \\\\  & =[1-12Δx+72(Δx)^{2}]{y}_{n}.\\end{aligned}\n$$\n\nSo, the stability function is $R(12\\Delta x) = 1 - 12\\Delta x + 72(\\Delta x)^2.$ Hence, statement I is true.\n\n- The method is stable when\n\n$$\n\\begin{aligned}|R(12Δx)| & <1 \\\\ |1-12Δx+72(Δx)^{2}| & <1 \\\\ |72{(Δx-\\frac{1}{12})}^{2}+\\frac{1}{2}| & <1.\\end{aligned}\n$$\n\nTherefore, $y_n$ converges to $0$ as $n \\to \\infty$ if and only if\n\n$$\n\\left|72\\left(\\Delta x - \\dfrac1{12}\\right)^2 + \\dfrac12\\right| < 1.\n$$\n\nHence, statement II is false.\n\n- Now, since the argument of the absolute value is always non-negative, we can remove the absolute value. So, we have\n\n$$\n\\begin{aligned}72{(Δx-\\frac{1}{12})}^{2}+\\frac{1}{2} & <1 \\\\ 72{(Δx-\\frac{1}{12})}^{2} & <\\frac{1}{2} \\\\ {(Δx-\\frac{1}{12})}^{2} & <\\frac{1}{144} \\\\ -\\frac{1}{12}<Δx-\\frac{1}{12} & <\\frac{1}{12} \\\\ 0<Δx & <\\frac{1}{6}\\end{aligned}\n$$\n\nThus, the modified Euler method is not absolutely stable, and statement III is false.\n\n- Finally, since it satisfies this inequality, the modified Euler method is stable for step size $\\Delta x = 0.15,$ and hence statement IV is true.\n\nIn conclusion, the correct answer is \"I and IV only\".",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14148565/observations/step-e21637-f960e7db861aadd860eb.html",
+      "source_url": "https://mathacademy.com/tasks/14148565/topics/6685/lesson"
+    }
+  },
+  "session_id": "01a131ae-e432-7a03-8267-fe2b8a68473c",
+  "previous_failures": []
+}
