@@ -4,7 +4,7 @@ Captured scope: **120 topics, 384 knowledge points**, 3757 practice questions; m
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**qa_passed: 274**, **queued: 107**, **working: 3**.
+**qa_passed: 278**, **queued: 102**, **working: 4**.
 
 Dispatch priority: the 15 KPs in `coverage-report.md`, while already-started workers finish.
 
@@ -286,14 +286,14 @@ Counts describe reviewed work; queued and working KPs are not complete. Source a
 | [17592186119771](../../scratch/17592186119771.py) | Triangular Matrices | Describing a Triangular Matrix | 6 / 3 / 0 / 1 | qa_passed | [Report](qa/17592186119771.json) |
 | [17592186119772](../../scratch/17592186119772.py) | Triangular Matrices | Identifying a Triangular Matrix | 6 / 2 / 0 / 0 | qa_passed | [Report](qa/17592186119772.json) |
 | [17592186119784](../../scratch/17592186119784.py) | Triangular Matrices | Identifying Correct Statements About a Matrix | 0 / 5 / 4 / 1 | qa_passed | [Report](qa/17592186119784.json) |
-| [17592186133827](../../scratch/17592186133827.py) | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function Using a Substitution | 0 / 4 / 1 / 1 | working | — |
-| [17592186133829](../../scratch/17592186133829.py) | Line Integrals of Scalar Functions | Writing the Line Integral of a Scalar Function as a Definite Integral | 1 / 4 / 0 / 1 | working | — |
-| [17592186133830](../../scratch/17592186133830.py) | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function | 2 / 3 / 0 / 2 | working | — |
-| 17592186175987 | Green's Theorem in Polar Coordinates | Expressing a Line Integral Along a Path as a Double Integral Using Green's Theorem | 0 / 11 / 0 / 0 | queued | — |
-| 17592186176023 | Green's Theorem in Polar Coordinates | Evaluating a Line Integral Using Green's Theorem | 0 / 6 / 3 / 1 | queued | — |
-| 17592186176024 | Green's Theorem in Polar Coordinates | Expressing a Line Integral Along a Circular Path as a Double Integral Using Green's Theorem | 4 / 3 / 0 / 1 | queued | — |
-| 17592186129267 | Triple Integrals in Cylindrical Polar Coordinates | Rewriting a Triple Integral Defined Over a Cylindrical Solid | 4 / 3 / 0 / 1 | queued | — |
-| 17592186129268 | Triple Integrals in Cylindrical Polar Coordinates | Rewriting a Triple Integral Defined Over a Shifted Cylindrical Solid | 0 / 1 / 3 / 2 | queued | — |
+| [17592186133827](../../scratch/17592186133827.py) | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function Using a Substitution | 0 / 4 / 1 / 1 | qa_passed | [Report](qa/17592186133827.json) |
+| [17592186133829](../../scratch/17592186133829.py) | Line Integrals of Scalar Functions | Writing the Line Integral of a Scalar Function as a Definite Integral | 1 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186133829.json) |
+| [17592186133830](../../scratch/17592186133830.py) | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function | 2 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186133830.json) |
+| [17592186175987](../../scratch/17592186175987.py) | Green's Theorem in Polar Coordinates | Expressing a Line Integral Along a Path as a Double Integral Using Green's Theorem | 0 / 11 / 0 / 0 | working | — |
+| [17592186176023](../../scratch/17592186176023.py) | Green's Theorem in Polar Coordinates | Evaluating a Line Integral Using Green's Theorem | 0 / 6 / 3 / 1 | working | — |
+| [17592186176024](../../scratch/17592186176024.py) | Green's Theorem in Polar Coordinates | Expressing a Line Integral Along a Circular Path as a Double Integral Using Green's Theorem | 4 / 3 / 0 / 1 | qa_passed | [Report](qa/17592186176024.json) |
+| [17592186129267](../../scratch/17592186129267.py) | Triple Integrals in Cylindrical Polar Coordinates | Rewriting a Triple Integral Defined Over a Cylindrical Solid | 4 / 3 / 0 / 1 | working | — |
+| 17592186129268 | Triple Integrals in Cylindrical Polar Coordinates | Rewriting a Triple Integral Defined Over a Shifted Cylindrical Solid | 0 / 1 / 3 / 2 | working | — |
 | 17592186129278 | Triple Integrals in Cylindrical Polar Coordinates | Evaluating a Triple Integral by Converting to Cylindrical Coordinates | 0 / 3 / 5 / 2 | queued | — |
 | 17592186105735 | The Scalar Triple Product | Calculating the Scalar Triple Product Using the Definition | 6 / 4 / 0 / 1 | queued | — |
 | 17592186105736 | The Scalar Triple Product | Calculating the Scalar Triple Product Using a Determinant | 11 / 11 / 0 / 1 | queued | — |

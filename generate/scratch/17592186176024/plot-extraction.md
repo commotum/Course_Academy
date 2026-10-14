@@ -1,0 +1,8 @@
+# Plot extraction and specification
+
+1. All seven practice-solution PNGs were inspected individually at original full resolution. They depict a centered filled disk D in pale blue, an orange boundary C, black axes labelled x/y, radius ticks ±R on both axes, and four black counterclockwise tangent arrows. Source sizes are 360×304. The disk's relative screen radius differs across plots, while x/y aspect remains equal. Radius sequence is 1,3,4,5,6,2,4. q-125716 has no image. No answer plots occur.
+2. Shared instructional purpose: illustrate a simple positively oriented boundary and the enclosed disk satisfying Green's theorem. The image supports the theorem condition and domain; it supplies no hidden assessed quantity.
+3. Fixed components: white background, axes through the origin, equal aspect, centered disk fill, boundary and four arrows, C/D/x/y labels. Variable components: disk radius, signed tick labels, axes extents and all label/arrow positions scaled from that same radius.
+4. `render_plots(radius, output_dir)` uses Matplotlib; positions are derived from the exact instance, with equal aspect and axes bounds ±1.42R. Cache names are circle-R, and sidecars contain Python/Matplotlib versions, radius, orientation, aspect and PNG SHA256. Unique temporary files and atomic replacement support concurrent identical/different writes. Source assets are reused only for exact original replay at unchanged geometry; normal and changed-radius replay use generated images. No SVG or image model is used. Renderer output is visually inspected at original resolution and concurrent render writes are verified by hashes. Plot rating light.
+
+Source paths/hashes remain in source.json and original review; generated paths are absolute local review references.

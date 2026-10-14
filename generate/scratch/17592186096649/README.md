@@ -1,6 +1,6 @@
 # Creating Parallel Vectors
 
-Local draft through generation/plot step7. No EDB transaction, registration or engine edits.
+Validated generator and scoped replenishment package. The reference/replenishment directory retains exact preparation, source attribution, preview, basis-guarded request, receipt and readback evidence.
 
 Run `.venv/bin/python generate/scratch/17592186096649/validate.py` from the repository root. Preview `.venv/bin/python generate/scratch/17592186096649.py --difficulty all --seed 8 --count 2 --format json` (or markdown). API functions generate/generate_easy/generate_moderate/generate_hard accept seed,template,field_type,parameters,profile. Templates single/pair; supported field radio. Normal profile authored_operations. Evidence profiles observed_single/observed_pair preserve raw omissions; corresponding _completed profiles explicitly infer the missing key/solution/difficulty and remain ineligible for learning. Source-cases gives exact public replay parameters.
 
@@ -8,4 +8,6 @@ Two unrated sources, two prompt masks, two original whole banks, ten original op
 
 Review originals, both changed observed banks and at least two authored examples per level in review.md/review.json. classification,template-extraction,plot-extraction document evidence and domains. validation separates raw fidelity, independently checked diagram mathematics and actual native ID grading. All normal and source-completion radio options are checked by the shared real-engine harness. Image responses have no expression-entry equivalence route; other translated equivalent diagrams cannot be submitted, while bank comparison checks actual length/direction eligibility.
 
-Exact runtime versions and source/binary hashes are in freeze.json, validation.json, native-report.json and per-image sidecars. Generator uses the project .venv with SymPy; renderer uses cached Python3.10 and Matplotlib read-only. Normal orientation arrows exclude zero, consistently with the lesson's separate zero-parallel-to-any-vector convention. The draft is not registered and awaits parent independent QA.
+Exact runtime versions and source/binary hashes are in freeze.json, validation.json, native-report.json and per-image sidecars. Generator uses the project .venv with SymPy; renderer uses cached Python3.10 and Matplotlib read-only. Normal orientation arrows exclude zero, consistently with the lesson's separate zero-parallel-to-any-vector convention. Current parent QA rechecks source evidence, all finite diagram mathematics and every owned image option using the current application library. Registration and inventory outcomes are recorded only after verified database readback.
+
+Batch CLI output enumerates a seeded finite catalog without repeated mathematical tasks; count requests above a catalog limit return its distinct catalog only. `capabilities.json` states the bounds. Run `.venv/bin/python generate/scratch/17592186096649/replenish.py` for locked preparation, retained request recovery and readback; the script preserves original questions and never marks content as presented.

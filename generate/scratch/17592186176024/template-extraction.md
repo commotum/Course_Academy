@@ -1,0 +1,29 @@
+# Four extraction stages
+
+## 1. Specific original descriptions
+
+The original records are reproduced in `review.md` and `source.json` with every full bank and all solution text. y2, xy and negx2 use direct Pdx+Qdy prompts with one curl-reduction row; cross adds a derivative-difference row, reduced 2xy row, product substitution, r³cosθsinθ row and double-angle result. Moderate starts with vector-field rewriting. cubic has three polar transformation rows before its final repeated-integral row: substituted squares times r, expanded squared trig terms times r, factored −3r³(cos²θ+sin²θ), then −3r³. offset retains grouped (y−1)−(x−1), then y−x, then grouped polar substitution times r. xy_extra uses one polar substitution and distribution. All sources provide radial and angular bounds; the selected answer is only the missing integrand fragment.
+
+## 2. General pattern
+
+Given a positively oriented circular path and a line integral or vector field, calculate Q_x−P_y, substitute x=r cosθ, y=r sinθ, and multiply by the polar Jacobian r. Select the pointwise simplified missing integrand. The source does not ask the learner to evaluate the repeated integral.
+
+## 3. Complete component and bank mapping
+
+`source-cases.json` maps all eight questions to parameters and public profiles. `full-integral-audit.json` records all forty exact source fragments and their complete integral values separately. All five members of each bank are chosen together; no first-valid recipe pool exists. `bank()` specifies every parameterized expression in its original bank order, including the correct index. With a=b=1 (cross a=1,b=2), all forty source option values match one-to-one mathematically; seven available correct designations match. The missing q-125716 designation is independently inferable from curl, but cannot count as a matched source designation.
+
+Bank operations: y2 includes half y derivative, x/y interchange, omitted Jacobian and component mixture; xy includes omitted Jacobian, x/y interchange, half-angle product pattern; negx2 includes omitted P derivative, omitted Jacobian and coordinate interchange; cubic includes missing derivative powers, omitted Jacobian and incorrect cos²−sin² identity; cross retains source constant-minus-double-angle shapes and omitted Jacobian; xy_extra retains coordinate interchange, omitted Jacobian and a mixed component derivative; offset retains omitted Jacobian, incorrect double-angle patterns and angular omission. Some compound shapes have no uniquely recoverable psychological interpretation. They remain observed algebraic recipes, without invented learner-facing diagnosis.
+
+q-125716's e^(cosθ)−sin²θ alternatives are opaque: their original expression structures are parameterized as b e^(cosθ)−a sin²θ, with/without r, alongside b r±a r²sinθ. The public `original` profile is evidence only and retains missing attributes. Its default bank is separately authored from actual operations: correct curl times r, omitted Jacobian, derivative sum instead of difference, omitted P derivative, omitted Q derivative. The hard authored bank uses those same method-derived operations; all five are pointwise distinct for its unequal positive cubic weights.
+
+## 4. Reusable masks and constraints
+
+`pieces()` builds distinct ordered operand components; `masks()` replaces complete inline P/Q definitions, whole line-integral component strings, derivative statements and integral operands atomically. It retains every fixed source sentence, all formal theorem/change-of-variable blocks, every operative row, and the original family-specific factorization/identity sequence. It never globally replaces a single x/y/1. At anchors all eight prompt strings and seven existing solution strings are exact. Answer TeX is normalized through a symbolic renderer, independently parsed for value matching.
+
+Normal disk-region delimiters are escaped into visible braces, because the raw source uses group braces around its set. Normal incomplete q-125716 has AAAAAAAA replaced with a visible blank and an authored full solution. All normal prompts explicitly request pointwise simplification. Raw evidence remains exact; no format omission is treated as recovered pedagogy.
+
+Complete definite-integral values are audited, and many source alternatives coincide after integration. These fragments are not complete integrals: the response criterion is the pointwise missing integrand (expressly stated in q-126539/q-126564). The normal clarification disambiguates that criterion for all families. Equal integral values do not imply equal eligible pointwise fragments. `eligible()` rejects the entire bank when any two fragments are pointwise equivalent, and validation reports full-value coincidences without presenting them as pointwise ambiguity.
+
+Coefficient bounds 1..6 preserve integer monomial derivatives and source arithmetic. Easy has 123 meaningful derivative-pair tasks; moderate has 84 (six radial cubics, 36 held-coordinate xy, six equal-weight offsets, 36 authored completed cross); hard has thirty ordered unequal cubic pairs. Radius and the cancelled common offset are excluded from these counts. For cross, different a,b pairs with the same difference still require distinct displayed derivative operands; mathematical fingerprints include the two partials, not just the already-reduced answer. Levels retain their observed labels, even when historical easy cross is algebraically longer than another moderate family. Hard differs from moderate cubic by two independently weighted polar squares and cannot accept the same coefficient pair.
+
+Canonical e-9551 has a transcription error in its later line-integral row: it displays xy−cos y where the field/rewrite has 3xy−cos y. Its correct partials and final answer remain y and r²sinθ. This error is documented; the canonical row is not used as a practice template.

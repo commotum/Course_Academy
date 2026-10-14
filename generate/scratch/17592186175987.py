@@ -12,14 +12,14 @@ Easy and hard are explicitly authored, bounded variants of this same setup skill
 No evaluation is requested. No database registration or writes. Steps 3–7 only.
 """
 from __future__ import annotations
-import argparse, copy, hashlib, json, math, os, random, re, sys, tempfile, uuid
+import argparse, copy, shutil, hashlib, json, math, os, random, re, sys, tempfile, uuid
 from pathlib import Path
 os.environ.setdefault("MPLCONFIGDIR", "/tmp/kp75987-mpl")
 import sympy as sp
 from functools import lru_cache
 BASE=Path(__file__).with_suffix('')
 KP_ID=17592186175987
-VERSION='greens-polar-path-1'
+VERSION='greens-polar-path-2'
 SOURCE=json.loads((BASE/'source.json').read_text())
 KP=SOURCE['record']; TITLE=KP[':knowledge-point/title']
 X,Y,R,T=sp.symbols('x y r theta', real=True)
@@ -62,7 +62,7 @@ def integral(g,a,b,radius):return r'\int_{'+latex(a)+'}^{'+latex(b)+r'}\int_{0}^
 def value(g,a,b,radius):
  # Polynomial/trig answers integrate exactly. Remaining smooth elementary
  # fields use two independent high-order Gauss quadratures (80 and 120 nodes).
- if g.is_polynomial(R) and not any(f.has(R) for f in g.atoms(sp.Function)):
+ if g.is_polynomial(R) and not any(f.has(R) for f in g.atoms(sp.Function)) and all(f.func in (sp.sin,sp.cos) for f in g.atoms(sp.Function)):
   return sp.simplify(sp.integrate(sp.integrate(g,(R,0,radius)),(T,a,b)))
  import numpy as np
  f=sp.lambdify((R,T),g,'numpy');previous=None
@@ -92,13 +92,13 @@ def render_sector(radius,a,b,filled=False):
  import matplotlib;matplotlib.use('Agg')
  import matplotlib.pyplot as plt
  import numpy as np
- key=digest([radius,str(a),str(b),filled,'sector-v1'])[:20]
+ key=digest([radius,str(a),str(b),filled,'sector-v2'])[:20]
  out=BASE/'plots'/f'{key}.png';side=out.with_suffix('.json');out.parent.mkdir(exist_ok=True)
  if out.exists() and side.exists():return str(out.resolve())
  aa,bb=float(a),float(b); th=np.linspace(aa,bb,301)
  xx=radius*np.cos(th);yy=radius*np.sin(th)
  fig,ax=plt.subplots(figsize=(4,4),dpi=120);ax.set_aspect('equal')
- if filled:ax.fill(np.r_[0,xx,0],np.r_[0,yy,0],color='#d2e9f7');ax.text(radius*.15, radius*.2 if aa>=0 else -radius*.2,'$D$',color='#4588b5')
+ if filled:ax.fill(np.r_[0,xx,0],np.r_[0,yy,0],color='#d2e9f7');ax.text(radius*.35*math.cos((aa+bb)/2),radius*.35*math.sin((aa+bb)/2),'$D$',color='#4588b5')
  ax.axhline(0,color='#666',lw=.8);ax.axvline(0,color='#666',lw=.8)
  ax.plot(xx,yy,color='#efa51a',lw=1.5)
  ax.plot([0,xx[0]],[0,yy[0]],color='#efa51a',lw=1.5);ax.plot([xx[-1],0],[yy[-1],0],color='#efa51a',lw=1.5)
@@ -109,7 +109,9 @@ def render_sector(radius,a,b,filled=False):
  mid=(aa+bb)/2;ax.text(radius*1.12*math.cos(mid),radius*1.12*math.sin(mid),'$C$',color='#d98e00')
  ax.set_xlim(-radius*1.3,radius*1.3);ax.set_ylim(-radius*1.3,radius*1.3)
  ax.set_xticks([-radius,radius]);ax.set_yticks([-radius,radius]);ax.tick_params(length=0,labelsize=8)
- for spine in ax.spines.values():spine.set_visible(False)
+ for name,spine in ax.spines.items():
+  if name in ('left','bottom'):spine.set_position('zero');spine.set_color('#666');spine.set_linewidth(.8)
+  else:spine.set_visible(False)
  ax.text(radius*1.22,.04*radius,'$x$');ax.text(.04*radius,radius*1.2,'$y$')
  fig.tight_layout()
  fd,tmp=tempfile.mkstemp(dir=out.parent,suffix='.png');os.close(fd)
@@ -119,9 +121,20 @@ def render_sector(radius,a,b,filled=False):
  fd,tmp=tempfile.mkstemp(dir=out.parent,suffix='.json');os.close(fd);Path(tmp).write_text(json.dumps(meta,indent=2));os.replace(tmp,side)
  return str(out.resolve())
 
-def get_plots(q,radius,original_radius,a,b):
+def get_plots(q,radius,original_radius,a,b,raw=False):
  images=re.findall(r'!\[.*?\]\((.*?)\)',q[':question/problem']+q[':question/worked-solution'])
- if radius==original_radius:return images
+ if radius==original_radius:
+  resolved=[]
+  for reference in images:
+   local=BASE/reference;local.parent.mkdir(parents=True,exist_ok=True)
+   asset=Path('/media/jake/SSD/EDB/math')/reference
+   if not local.exists():
+    fd,tmp=tempfile.mkstemp(dir=local.parent,suffix='.png');os.close(fd)
+    try:shutil.copyfile(asset,tmp);os.replace(tmp,local)
+    finally:Path(tmp).unlink(missing_ok=True)
+   if hashlib.sha256(local.read_bytes()).digest()!=hashlib.sha256(asset.read_bytes()).digest():raise ValueError('source asset hash mismatch')
+   resolved.append(str(local.resolve()))
+  return images if raw else resolved
  return [render_sector(radius,a,b,False),render_sector(radius,a,b,True)] if images else []
 
 # Source extraction operates on COMPLETE components and blocks, never short
@@ -129,7 +142,7 @@ def get_plots(q,radius,original_radius,a,b):
 def source_prompt(q,s,images):
  text=q[':question/problem']
  if 'Given that $F(x,y)=' in text:
-  text=re.sub(r'(F\(x,y\)=)⟨(.*?)⟩',lambda m:m[1]+'⟨'+r'\,'.join(scaled(z,s) for z in m[2].split(r'\,'))+'⟩',text)
+  text=re.sub(r'(F\(x,y\)=)⟨(.*?)⟩',lambda m:m[1]+'⟨'+r',\,'.join(scaled(z,s) for z in m[2].split(r',\,'))+'⟩',text)
  elif '$$' in text:
   text=re.sub(r'(\$\$\n)(.*?)(\n\$\$)',lambda m:m[1]+scaled(m[2],s)+m[3],text,flags=re.S)
  for old,new in zip(re.findall(r'!\[.*?\]\((.*?)\)',text),images):text=text.replace('('+old+')','('+new+')')
@@ -199,9 +212,10 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   if profile not in (None,'authored_method'):raise ValueError('unsupported authored profile')
   explicit=parameters is not None
   for attempt in range(100):
-   p=dict(parameters) if explicit else {'radius':rng.randint(2,6),'a':rng.randint(1,4),'b':rng.randint(1,4),'c':rng.randint(1,3)}
-   if set(p)!={'radius','a','b','c'} or any(type(p[k])!=int for k in p):raise ValueError('parameters require integral radius,a,b,c')
-   if not (2<=p['radius']<=6 and 1<=p['a']<=4 and 1<=p['b']<=4 and 1<=p['c']<=3):raise ValueError('authored workload bounds')
+   p=dict(parameters) if explicit else ({'radius':rng.randint(2,6),'a':rng.randint(1,4),'b':rng.randint(1,4)} if level=='easy' else {'radius':rng.randint(2,6),'a':rng.randint(1,4),'c':rng.randint(1,3)})
+   required={'radius','a','b'} if level=='easy' else {'radius','a','c'}
+   if set(p)!=required or any(type(p[k])!=int for k in p):raise ValueError('parameters require integral '+','.join(sorted(required)))
+   if not (2<=p['radius']<=6 and 1<=p['a']<=4 and (1<=p['b']<=4 if level=='easy' else 1<=p['c']<=3)):raise ValueError('authored workload bounds')
    a,b=0,sp.pi/2
    if level=='easy':
     if p['a']==p['b']:
@@ -217,22 +231,30 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  sid,P0,Q0,orig,a,b=SPECS[template];q=QS[sid]
  isblank=template=='polar_blanks'
  if field_type and field_type.split('/')[-1]!=('blank' if isblank else 'radio'):raise ValueError('field type mismatch')
- profile=profile or ('authored_context' if isblank else 'authored_method')
- if profile not in ('observed','authored_method','authored_context'):raise ValueError('unknown profile')
- if isblank and profile=='authored_method' or not isblank and profile=='authored_context':raise ValueError('profile mismatch')
+ profile=profile or ('authored_context' if isblank else 'authored_zero' if template=='square_difference' else 'authored_constant' if template=='constant' else 'authored_method')
+ if profile not in ('observed','authored_method','authored_context','authored_zero','authored_constant'):raise ValueError('unknown profile')
+ if isblank and profile in ('authored_method','authored_zero') or not isblank and profile=='authored_context' or profile=='authored_zero' and template!='square_difference':raise ValueError('profile mismatch')
+ if template=='square_difference' and profile=='authored_method':raise ValueError('zero integral requires its complete eligible bank')
+ if profile=='authored_constant' and template!='constant':raise ValueError('constant profile requires its own family')
  explicit=parameters is not None;raw=profile=='observed'
  for attempt in range(100):
   p=dict(parameters) if explicit else {'scale':rng.randint(1,5),'radius':rng.randint(1,4 if template=='constant' else 8)}
   if set(p)!={'scale','radius'} or any(type(p[k])!=int for k in p):raise ValueError('requires integer scale,radius')
   if not (1<=p['scale']<=5 and 1<=p['radius']<=(4 if template=='constant' else 8)):raise ValueError('moderate workload bounds')
-  s,rad=p['scale'],p['radius'];images=get_plots(q,rad,orig,a,b)
+  s,rad=p['scale'],p['radius'];images=get_plots(q,rad,orig,a,b,raw)
   prompt=source_prompt(q,s,images);sol=source_solution(q,s,rad,orig,images,raw)
   if template=='square_difference' and not raw:prompt=prompt.replace('{e}^{1/y}','{e}^{y}')
   if isblank:
    # Continuation has a supplied Cartesian integral; replace the complete value,
    # never the digits 6 or 3 independently across unrelated prose/components.
    prompt=prompt.replace('-6xy',scaled('-6xy',s))
-   if not raw:prompt='![]('+render_sector(rad,a,b)+')\n\nThe region $D$ is bounded by the positively oriented path $C$ shown above. '+prompt.replace('from the previous part','shown below')
+   if not raw:
+    prompt=('![]('+render_sector(rad,a,b)+')\n\n'
+            'The region $D$ is bounded by the positively oriented path $C$ shown above. '
+            'Write the double integral below in polar coordinates.\n\n'
+            '${∬}_{D}'+scaled('-6xy',s)+r'\,\text{d}A\,={\int }_{\pi /2}^{a}\,{\int }_{0}^{b}$ '
+            '{{field-1}} '+r'$\,\text{d}r\,\text{d}\theta,$'+'\n\n'
+            'where $a=$ {{field-2}} and $b=$ {{field-3}}.')
    values=[scaled('-3{r}^{3}\\operatorname{sin}(2\\theta )',s),str(rad),r'2\pi ']
    fields=[{'key':f[':answer-field/key'],'type':'blank','values':[v],'correct':v} for f,v in zip(q[':question/answer-fields'],values)]
    key=['convert_supplied_curl',str(-6*s*X*Y),str(a),str(b),rad]
@@ -249,6 +271,12 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
    else:
     py=sp.diff(P,Y);qx=sp.diff(Q,X)
     opts=[(g,a,b,rad),(-g,a,b,rad),(sp.cancel(g/R),a,b,rad),(sp.trigsimp((qx+py).subs({X:R*C,Y:R*SN})*R),a,b,rad),(g,a,b,rad+1)]
+    if profile=='authored_constant':
+     gp=py*R;gq=qx*R
+     opts=[(g,a,b,rad),(-g,a,b,rad),(-gp,a,b,rad),(gq,a,b,rad),(gq+gp,a,b,rad)]
+    if profile=='authored_zero':
+     gp=sp.trigsimp(py.subs({X:R*C,Y:R*SN})*R);gq=sp.trigsimp(qx.subs({X:R*C,Y:R*SN})*R)
+     opts=[(g,a,b,rad),(gq,a,b,rad),(-gp,a,b,rad),(gq+gp,a,b,rad),(sp.cancel((gq+gp)/R),a,b,rad)]
     try:compare_values([value(*z) for z in opts])
     except ValueError:
      if explicit:raise
@@ -266,9 +294,10 @@ def build_authored(level,seed,template,p,P,Q,a,b):
  compare_values([value(*z) for z in opts]);vals=[integral(*z) for z in opts]
  plot=render_sector(rad,a,b);filled=render_sector(rad,a,b,True)
  prompt='![]('+plot+")\n\nConsider the path $C$ shown above. Which of the following is equivalent to the line integral\n\n$$\n\\oint_C("+latex(P)+r')\,dx+('+latex(Q)+r')\,dy\,?'+"\n$$"
+ if level=='easy':prompt+='\n\nThe cross partials are $\\partial P/\\partial y='+latex(py)+'$ and $\\partial Q/\\partial x='+latex(qx)+'$.'
  sol=authored_solution(P,Q,a,b,rad,filled)
  p['_seed']=seed
- return record(level,template,'authored_method',p,prompt,sol,[{'key':'selection','type':'radio','values':vals,'correct':vals[0]}],['derive_polar_setup',str(P),str(Q),str(a),str(b),rad])
+ return record(level,template,'authored_method',p,prompt,sol,[{'key':'selection','type':'radio','values':vals,'correct':vals[0]}],['provided_partials' if level=='easy' else 'derive_polar_setup',str(P),str(Q),str(a),str(b),rad])
 
 def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
 def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)

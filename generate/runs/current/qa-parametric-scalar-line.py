@@ -18,7 +18,7 @@ def equal(a,b,bounds=None):
   a,b=[p.on_interval(s.sympify(q),bounds).xreplace({s.Abs(s.cos(t)):s.cos(t)}) for q in (a,b)]
  return p.same_on(a,b,bounds) if bounds else p.same(a,b)
 def read(q):
- text=q[':question/problem'];fraw=re.search(r'\$f\([^$]*?\)=(.*?)\$',text)[1];F=scalar(fraw);v=re.search(r'r\(t\)=\\langle\s*(.*?)\\rangle',text)[1];curve=tuple(scalar(c) for c in v.split(','));ab=re.search(r't\\in \[(.*?),(.*?)\]',text);bounds=(scalar(ab[1]),scalar(ab[2]));assert bounds[1]>bounds[0]
+ text=q[':question/problem'];fraw=re.search(r'\$f\([^$]*?\)=(.*?)\$',text)[1];F=scalar(fraw);v=re.search(r'r\(t\)=\\langle\s*(.*?)\\rangle',text)[1];curve=tuple(scalar(c) for c in v.split(','));ab=re.search(r't\\in \[(.*),(.*)\]\.\$',text);bounds=(scalar(ab[1]),scalar(ab[2]));assert bounds[1]>bounds[0]
  pull=s.simplify(F.subs(dict(zip((x,y,z),curve)),simultaneous=True));speed=p.on_interval(p.speed(curve),bounds)
  # cos remains nonnegative on all source-shaped sine-line intervals.
  for a in speed.atoms(s.Abs):

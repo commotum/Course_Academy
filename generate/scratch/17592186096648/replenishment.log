@@ -1,0 +1,43 @@
+    Finished `release` profile [optimized] target(s) in 0.03s
+Native grading: 15 accepted, 60 rejected, 0 explicitly unresolved; no database operations.
+Traceback (most recent call last):
+  File "/home/jake/Developer/Course_Academy/scripts/question_capture/database.py", line 463, in _commit
+    text = self.command('transact', '--file', tx_path, '--endpoint', intent['endpoint'],
+                        '--request-key', intent['request_key'], '--basis', intent['basis'], '--timeout-ms', 180000, *source_options)
+  File "/home/jake/Developer/Course_Academy/scripts/question_capture/database.py", line 63, in command
+    return subprocess.run([self.args.edb_bin, command, '--database', self.args.database, *map(str, options)],
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                          env=self.env, check=True, capture_output=True, text=True, timeout=210).stdout
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jake/.local/share/uv/python/cpython-3.13.5-linux-x86_64-gnu/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['/home/jake/Developer/Course_Academy/.local/edb/capture-runtime/math-edb', 'transact', '--database', 'math', '--file', '/home/jake/Developer/Course_Academy/generate/scratch/17592186096648/reference/replenishment/basis-2132/transaction.edn', '--endpoint', '/tmp/edb-math/writer.sock', '--request-key', 'parallel-vector-inventory-17592186096648-2132-2b9849c5a55eff1c737b92c307a1f7d12f09d725768a7d55d3d9e4483538a68a', '--basis', '2132', '--timeout-ms', '180000', '--source', ':application/ca-engine']' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jake/Developer/Course_Academy/scripts/question_capture/database.py", line 472, in _commit
+    text = replay([self.args.edb_bin, 'transact', '--database', self.args.database,
+        '--file', tx_path, '--endpoint', intent['endpoint'], '--request-key', intent['request_key'],
+        '--basis', intent['basis'], '--timeout-ms', 180000, *source_options], env=self.env)
+  File "/home/jake/Developer/Course_Academy/scripts/question_capture/edb_transport.py", line 94, in replay
+    raise subprocess.CalledProcessError(result.returncode, command, result.stdout, stderr)
+subprocess.CalledProcessError: Command '['/home/jake/Developer/Course_Academy/.local/edb/capture-runtime/math-edb', 'transact', '--database', 'math', '--file', '/home/jake/Developer/Course_Academy/generate/scratch/17592186096648/reference/replenishment/basis-2132/transaction.edn', '--endpoint', '/tmp/ma-edb-40ets4h7/relay.sock', '--request-key', 'parallel-vector-inventory-17592186096648-2132-2b9849c5a55eff1c737b92c307a1f7d12f09d725768a7d55d3d9e4483538a68a', '--basis', '2132', '--timeout-ms', '180000', '--source', ':application/ca-engine']' returned non-zero exit status 1.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/jake/Developer/Course_Academy/generate/scratch/17592186096648/replenish.py", line 251, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/home/jake/Developer/Course_Academy/generate/scratch/17592186096648/replenish.py", line 250, in main
+    save(path/'commit-intent.json',intent);report=DB._commit(intent,txpath,path);verified=verify(path,intent,report);finish(path,gid,verified,inventory(path/'inventory-after.json'))
+                                                  ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/jake/Developer/Course_Academy/scripts/question_capture/database.py", line 502, in _commit
+    raise StaleBasis('EDB rejected stale import basis '+str(intent['basis'])+'; rejected plan archived at '+str(archive)) from error
+database.StaleBasis: EDB rejected stale import basis 2132; rejected plan archived at /home/jake/Developer/Course_Academy/generate/scratch/17592186096648/reference/replenishment/basis-2132/rejected-commits/2132-e279d01f2f15f7d735a4b011cb480b61f8827bec85393877c7a5c35d9375b64f
+    Finished `release` profile [optimized] target(s) in 0.03s
+Native grading: 15 accepted, 60 rejected, 0 explicitly unresolved; no database operations.
+Native grading: 15 accepted, 60 rejected, 0 explicitly unresolved; no database operations.
+{"outcome": "generated", "verified_commit_basis": 2134, "new_questions": 15, "shortage_remaining": {"easy": 0, "moderate": 0, "hard": 0}}

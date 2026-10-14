@@ -1,51 +1,24 @@
-# Four-stage template extraction
+# Current template extraction
 
-## 1. Describe each source before generalizing
+Source snapshot: math basis 2134. Exact original content, fields, choices and identities are retained in `source.json`; original tails and parameters are in `source-cases.json`. Previous radio-bank extraction is retained under `reference/prior-radio-v2/`.
 
-q-19215: image above prose; five blue translated vectors a–e on an unlabeled 12×12 square grid. Statements exactly `b =-2e`, `c =-d`, `b = 2e`. One `selection` radio field. Complete text bank: I only; II and III only; I and III only; I and II only; III only. No difficulty, correct designation, or solution. Full raster: a=(4,2), b=(-4,-2), c=(2,5), d=(-2,-5), e=(2,1), in grid-square units. Thus I/II are true, III is false. Arrow tails/heads, not their displayed location, determine these displacements.
+q-19215 places its diagram before the prompt. Its statements are `b =-2e`, `c =-d`, `b = 2e`. Its three checkbox banks each contain the two text values false and true. Correct values are I=true, II=true, III=false. The fixed solution reads the grid displacements b=(-4,-2), e=(2,1), c=(2,5), d=(-2,-5), then confirms the first two equalities and rejects the third. Its difficulty is absent.
 
-q-20404: same figure role/grid/style and prose; statements exactly `a =-c`, `c =-\frac{1}{2}a`, `b = d`. Complete bank: I only; II and III only; III only; II only; I and III only. Same field and missing attributes. Raster: a=(6,4), b=(-3,-5), c=(-3,-2), d=(3,5), e=(-4,0). Only II is true. I uses the wrong length (a is twice c), III ignores opposite arrow direction.
+q-20404 has the same layout but the distinct statements `a =-c`, `c =-\frac{1}{2}a`, `b = d`. Correct values are I=false, II=true, III=false. Its fixed solution reads a=(6,4), c=(-3,-2), b=(-3,-5), d=(3,5), then confirms the reciprocal relation and rejects the other two. Its difficulty is absent. This is a different statement/value mask, not merely new numbers in the first mask.
 
-Canonical e-5183: prose first, diagram last; bold-vector notation. Three statements b=-c, e=2a, a=2e. The supplied fixed solution has three bullets: unequal b/c magnitudes; e/a same direction and magnitude ratio2; e larger than a; then only-II conclusion. The source is retained verbatim in review. Its shared explanatory structure and sentences anchor authored solutions; there is no practice worked-solution text to claim replicated. The canonical image's b magnitude2 and c magnitude3 independently support its first bullet.
+The shared purpose is to compare direction and relative magnitude in three complete vector equalities, selecting precisely the true statements. Translation does not change a vector. Negative scaling reverses direction; exact equality also requires the stated magnitude ratio.
 
-## 2. Shared mathematical purpose
-
-For each of three printed vector equalities, compare arrow direction and relative magnitude from a common equal-square grid. Select the unordered subset of true statements. Translation of a vector does not change it. A negative scalar reverses direction while positive scalar preserves direction. Exact equality requires both the direction and magnitude ratio. The response is a complete truth subset, never just a single matching vector.
-
-## 3. Map every component and complete bank
-
-Let u,v be nonzero nonparallel displacement families; k>0; s,t∈{-1,+1}.
-
-| Mask | Computed vectors | Statement components |
+| Mask | Computed arrows | Complete statements |
 |---|---|---|
 | opposite_multiple | e=u, b=sk·u, c=v, d=t·v, unused a=k·u | b=-k·e; c=-d; b=k·e |
 | reciprocal_multiple | a=k·u, c=s·u, b=v, d=t·v, unused e=(-4,0) | a=-c; c=-(1/k)·a; b=d |
 
-Original parameters and all five tails are explicit in `source-cases.json`. Tips are derived from tails plus computed displacement; these are genuinely parameterized recipes. The complete original diagram is restored only if this whole geometry matches the measured original geometry. Otherwise raw profiles render the changed instance and retain missing difficulty/key/solution.
+u and v are nonzero, nonparallel direction families, k is positive, and s,t are ±1. Each source choice is mapped to its own field: I/false and I/true refer to the truth of statement I; II/false and II/true to II; III/false and III/true to III. For each field the true-valued choice is correct exactly when the complete vector equality holds; otherwise false is correct. Thus every source value and incorrect choice has an exact parameterized semantic recipe. No opaque psychological distractor explanation is inferred. There is one complete boolean bank profile per field layout, shared by both masks.
 
-| Source / field | Choice text | Exact unordered subset | At original parameters |
-|---|---|---|---|
-| q-19215 / selection | I only | {I} | false: omits II |
-| same | II and III only | {II,III} | false: omits I, adds III |
-| same | I and III only | {I,III} | false: omits II, adds III |
-| same | I and II only | {I,II} | independently correct |
-| same | III only | {III} | false: omits I/II, adds III |
-| q-20404 / selection | I only | {I} | false: omits II, adds I |
-| same | II and III only | {II,III} | false: adds III |
-| same | III only | {III} | false: omits II, adds III |
-| same | II only | {II} | independently correct |
-| same | I and III only | {I,III} | false: omits II, adds I/III |
+Fixed parts are image-first placement, the question sentence, select-all instruction, Roman bullet labels, field keys, checkbox type, false/true text banks, and source whitespace around equalities. Variable components are signed scalar expressions, exact displacements, diagram tails/tips, image references, and truth values. Rational arithmetic computes vectors and correct values before plotting. No choice is pooled across fields, and every answer UUID belongs to its field.
 
-These map the complete source answers one-to-one, without guessing the original author's psychological intent. The subset semantics are exact; omission/addition interpretations follow the actual truth set. The observed bank membership is a fixed categorical catalog, not an arbitrary fit to numbers. In normal completed profiles the same catalog applies to changed signs/geometry only when it contains exactly one correct subset. The entire instance is rejected otherwise. No first-valid recipe pool or option substitution exists.
+The source-a and source-b profiles replay their bounded original geometry, prompt, complete answer banks, correct designation and compact worked solution exactly while preserving absent difficulty. They are evidence-only. The checkbox-completed profile generates supported variants with an authored level and a fixed three-bullet solution followed by a true-subset conclusion. This longer explanation follows the canonical example's direction/magnitude sequence; it is a labeled solution-layout extension of the current compact source solutions. One fixed solution is determined by each instance; it never depends on seed or option order.
 
-Authored-selection-flips is a separately labeled complete profile: true subset T, T△{I}, T△{II}, T△{III}, T△{I,III}. Each wrong response is a real omission/addition of a displayed statement selection. Distinct flip masks guarantee five distinct subsets; all are checked against the actual printed criterion. This profile is chosen before parameter sampling. Learner-facing choices and worked solutions contain no invented distractor diagnosis.
+Sampler bounds are in classification and the script: easy unit/sign relations, moderate doubling/halving, and hard exact 3:2 or 2:3 comparisons. Explicit parameter calls enforce the same level bounds. Zero arrows and the repeated easy reciprocal demand are rejected. Every changed geometry uses the same renderer; source assets are reused only for identical verified geometry. Plot specification is in `plot-extraction.md`.
 
-## 4. Reusable masks, constraints, calculations
-
-Fixed prompt: original image-first placement, original shared question sentence, three numbered `$…$` statements. Variable slots: complete left vector, complete multiplier, complete right vector; computed tips/labels; image reference. Source whitespace differs between the first two statements and the third and is retained. Radio layout, count5, text answer type and key `selection` are fixed. Original absent attributes remain absent in raw replay. Captured database IDs/math-academy IDs are provenance in `source.json`; local generated UUIDs own their fields/banks. No new external source identity is invented.
-
-The generator first selects the whole family/profile, then samples its parameters; computes exact vectors; evaluates each complete printed equality; constructs the complete eligible bank; rejects missing/colliding valid responses; and renders one fixed solution. All arithmetic uses Rational values. Normal solution structure is three truth bullets and one subset conclusion, borrowing canonical wording for direction/magnitude arguments. False bullets vary only when the actual printed relation fails by direction versus magnitude. Every equation/conclusion is rebuilt from complete slots; no blind replacement across labels/prose occurs.
-
-Scope constraints and level guards are documented in the script and classification. Integer-grid tails/tips, bounded nonzero displacements, distinct directions, and fixed common physical scale are preserved. Hard 3:2/2:3 ratios are exact and never achieved by enlarging an algebra problem. Mathematical-task fingerprints retain direction families, signed relations and ratio, but exclude unrelated pair length scaling, unused a/e, translation, answer bank and choice order. Presentation/content identity uses actual prompt, solution, complete displayed bank and difficulty. Raw original key absence prevents an inferred key being counted as fidelity.
-
-No mathematical source error was found. The missing assessment attributes are explicit captured anomalies, not silently repaired evidence. Public raw bank fidelity:2 banks/10 choices. Original correct-designation denominator:0 available (2 missing). Original worked-solution denominator:0 available (2 missing). Completed inference/native grading is separate.
+Source-bank fidelity, independent printed-equation/PNG correctness, and actual engine grading are separate evidence. `source-replay.json` reports complete current banks and correct designations. `reference/current-validation/` checks both masks, every level, signed boundary cases, and checked/unchecked field-owned answer-ID submissions. No source error or unresolved bank comparison remains. Original database IDs and Math Academy IDs are evidence only and are omitted from new generated questions.

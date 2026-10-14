@@ -8,6 +8,8 @@ def load(path):return json.loads(path.read_text())
 def dump(path,x):path.write_text(json.dumps(x,indent=2,ensure_ascii=False)+'\n')
 def record_checks(rec):
  q=rec['question'];meta=rec['generation'];errors=[]
+ for text in [q.get(':question/problem',''),q.get(':question/worked-solution','')]+[a[':answer/value'] for f in q.get(':question/answer-fields',[]) for a in f.get(':answer-field/choices',[])]:
+  assert all(ord(c)>=32 or c in ('\n','\t','\r') for c in text),'unintended control byte in learner display'
  assert q[':question/difficulty'] in [':question.difficulty/'+s for s in ('easy','moderate','hard')]
  assert q[':question/problem'].strip() and q[':question/worked-solution'].strip()
  assert ':question/math-academy-id' not in q

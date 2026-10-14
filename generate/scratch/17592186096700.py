@@ -1,32 +1,10 @@
 #!/usr/bin/env python3
-"""Identifying vector scalar relations from one equal-square grid (steps 3–7).
-
-API: generate(level, seed=0, template=None, field_type=None, parameters=None,
-profile=None), plus three level entrypoints. Source snapshot: math basis 1356.
-Source practice is unrated and lacks solutions/correct refs. Public raw-a/raw-b
-profiles faithfully preserve those omissions, are evidence-only, and parameterize
-both statements and plotted geometry. Completed source-shaped profiles add an
-independently inferred key and an authored solution. No literal payload replay.
-
-Easy: three signed unit relations in the opposite-multiple mask, axis/45-degree directions. Moderate: three
-relations including a factor 2 or 1/2, integer endpoints and oblique directions.
-Hard: identical operation with factor 3/2 or 2/3, integer-grid 3:2 lengths.
-These are authored workload bounds, not recovered source difficulty labels.
-Positive/negative multipliers are both parallel in the actual lesson. The zero
-vector is parallel to every vector there; zero arrows are excluded because this
-KP assesses arrow direction and magnitude rather than that later convention.
-Translations do not change a vector. Only requested vectors enter task dedupe.
-
-Five-choice banks are complete profiles, chosen before parameters. The observed
-subset catalogs are preserved verbatim. Unit reciprocal questions have a labeled
-authored bank of the true subset plus four complete selection-error operations:
-toggle I, toggle II, toggle III, toggle I and III. Reject a whole instance when
-an observed catalog does not contain its true subset. No random wrong values.
-Raw source figures are reused only at independently raster-verified geometry;
-changed geometry always calls the fixed Matplotlib renderer. Stable content UUIDs
-include actual presentation, bank, solution and level, excluding choice order;
-canonical mathematical fingerprints exclude banks, translations and unused arrows.
-No EDB writes, registration, shared edits, installations, or image models.
+"""Checkbox vector-relation diagrams, validated against the current math source.
+All difficulty assignments are authored: easy signed equality, moderate factor
+2/1/2, hard factor 3/2 or 2/3. Reuses the frozen Matplotlib geometry renderer.
+Three field-owned true/false checkbox banks preserve the current source layout.
+Source replay profiles preserve unrated source status, keys and fixed solutions.
+No database writes; registration and commits live in the KP replenish helper.
 """
 from __future__ import annotations
 import argparse, hashlib, json, math, os, random, subprocess, sys, tempfile, uuid
@@ -37,16 +15,12 @@ HERE=Path(__file__).resolve().with_suffix('')
 KP_ID=17592186096700
 KP_UUID='dc5bab6c-1ce7-58b5-a59d-cff2ce35ecca'
 TITLE='Identifying Parallel Vectors From a Diagram'
-VERSION='parallel-diagram-2'
-SOURCE={'database':'math','basis':1356,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
+VERSION='parallel-diagram-checkbox-3'
+GENERATOR_ID=str(uuid.uuid5(uuid.NAMESPACE_URL,'kp'+str(KP_ID)+':generator'))
+SOURCE={k:json.loads((HERE/'source.json').read_text())[k] for k in ('database','basis','lineage')}
 RUNTIME='/home/jake/.local/share/uv/python/cpython-3.10.13-linux-x86_64-gnu/bin/python3.10'
 TEMPLATES=('opposite_multiple','reciprocal_multiple')
-CATALOG_A=('I only','II and III only','I and III only','I and II only','III only')
-CATALOG_B=('I only','II and III only','III only','II only','I and III only')
-PROFILES={'raw-a':(TEMPLATES[0],'raw'),'raw-b':(TEMPLATES[1],'raw'),
-          'observed-a-completed':(TEMPLATES[0],'completed'),
-          'observed-b-completed':(TEMPLATES[1],'completed'),
-          'authored-selection-flips':(None,'authored')}
+PROFILES={'source-a':TEMPLATES[0],'source-b':TEMPLATES[1],'checkbox-completed':None}
 ROMAN=('I','II','III')
 SOURCE_CASES=json.loads((HERE/'source-cases.json').read_text())
 ASSET_REFS={x['source_id']:q[':question/problem'].split('![](',1)[1].split(')',1)[0]
@@ -139,15 +113,6 @@ def vectors_and_statements(template,p):
 def truth_set(vs,st):
     return frozenset(i for i,(a,k,b) in enumerate(st) if all(vs[a][j]==k*vs[b][j] for j in (0,1)))
 
-def bank_values(profile,true):
-    if profile.endswith('a') or profile=='observed-a-completed':values=list(CATALOG_A)
-    elif profile.endswith('b') or profile=='observed-b-completed':values=list(CATALOG_B)
-    else:
-        values=[subset_text(true^frozenset(toggle)) for toggle in ((),(0,),(1,),(2,),(0,2))]
-    sets=[parse_subset(x) for x in values]
-    if len(sets)!=5 or len(set(sets))!=5 or sets.count(true)!=1:raise ValueError('Whole bank rejected: response ambiguity or missing correct subset')
-    return values
-
 def plot_geometry(vs,p):
     centers={'a':[5,4],'b':[14,4],'c':[23,4],'d':[5,13],'e':[14,13]}
     tails=p.get('tails',{x:[sp.floor(sp.Rational(centers[x][i])-vs[x][i]/2) for i in (0,1)] for x in vs})
@@ -213,73 +178,81 @@ def sample(level,template,rng):
         v=list(rng.choice(dirs+[(2,5),(5,2),(-3,-5),(3,5),(0,3),(3,0)]))
     return {'u':u,'v':v,'k':str(k),'s':rng.choice((-1,1)),'t':rng.choice((-1,1))}
 
+def task_key(template,p):
+    """Ignore translations, common scales, unused arrows and all D4 symmetries."""
+    u,v=primitive(p['u']),primitive(p['v'])
+    orientations=[]
+    for swap in (False,True):
+        for sx in (-1,1):
+            for sy in (-1,1):
+                def transform(w):
+                    x,y=w[::-1] if swap else w
+                    return (sx*x,sy*y)
+                orientations.append((transform(u),transform(v)))
+    return digest([template,str(p['k']),p['s'],p['t'],min(orientations)])
+
+def source_solution(template,vs):
+    """Replay the current compact source wording with computed grid values."""
+    def vector(x):return '('+','.join(str(z) for z in vs[x])+')'
+    if template==TEMPLATES[0]:
+        return f'The grid gives b={vector("b")}, e={vector("e")}, c={vector("c")}, d={vector("d")}. Hence b=-2e and c=-d; b=2e is false.'
+    return f'The grid gives a={vector("a")}, c={vector("c")}, b={vector("b")}, d={vector("d")}. Thus c=-a/2; a=-c and b=d are false.'
+
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
-    if level not in ('easy','moderate','hard'):raise ValueError('Unknown level')
-    if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('Only observed radio supported')
-    if profile is not None and profile not in PROFILES:raise ValueError('Unknown profile')
-    rng=random.Random(seed)
-    if template is None:template=(PROFILES[profile][0] if profile and PROFILES[profile][0] else rng.choice(TEMPLATES[:1] if level=='easy' else TEMPLATES))
-    if template not in TEMPLATES:raise ValueError('Unknown template')
-    if level=='easy' and template==TEMPLATES[1] and not (profile and PROFILES[profile][1]=='raw'):raise ValueError('Unit reciprocal mask duplicates a relation; easy supports opposite_multiple')
-    if profile is None:profile='authored-selection-flips' if level=='easy' and template==TEMPLATES[1] else ('observed-a-completed' if template==TEMPLATES[0] else 'observed-b-completed')
-    if PROFILES[profile][0] not in (None,template):raise ValueError('Profile incompatible with template')
-    raw=PROFILES[profile][1]=='raw'
-    if raw and parameters is None:raise ValueError('Raw evidence requires explicit parameters')
+    if level not in ('easy','moderate','hard'):raise ValueError('Unknown difficulty')
+    if field_type not in (None,'checkbox',':answer-field.type/checkbox'):raise ValueError('Only current checkbox layout supported')
+    profile=profile or 'checkbox-completed'
+    if profile not in PROFILES:raise ValueError('Unknown complete profile')
+    raw=profile.startswith('source-');rng=random.Random(seed)
+    template=template or PROFILES[profile] or rng.choice(TEMPLATES[:1] if level=='easy' else TEMPLATES)
+    if template not in TEMPLATES or PROFILES[profile] not in (None,template):raise ValueError('Template/profile mismatch')
+    if level=='easy' and template!=TEMPLATES[0]:raise ValueError('Easy reciprocal mask repeats the same demand')
+    if raw and parameters is None:raise ValueError('Source replay requires original explicit parameters')
     for _ in range(2000):
         try:
             p=normalize_parameters(level,template,parameters if parameters is not None else sample(level,template,rng),raw)
-            vs,st=vectors_and_statements(template,p);true=truth_set(vs,st);values=bank_values(profile,true)
-            geometry=plot_geometry(vs,p)
+            vs,st=vectors_and_statements(template,p);geometry=plot_geometry(vs,p)
             break
         except ValueError:
             if parameters is not None:raise
-    else:raise RuntimeError('No complete eligible instance')
+    else:raise RuntimeError('Bounded sampler exhausted')
     original=match_original(template,p)
+    if raw and original is None:raise ValueError('Source replay is bounded to its verified original geometry')
     if original:
-        asset=ASSET_REFS[original['source_id']]
-        plot_meta={'role':'prompt','source_asset':str(Path('/media/jake/SSD/EDB/math')/asset),'png_sha256':file_hash(Path('/media/jake/SSD/EDB/math')/asset),'geometry':geometry,'independent_raster_evidence':'original-geometry.json'}
-    else:
-        asset,plot_meta=render_plots(geometry)
+        asset=ASSET_REFS[original['source_id']];path=Path('/media/jake/SSD/EDB/math')/asset
+        plot={'source_asset':str(path),'png_sha256':file_hash(path),'geometry':geometry}
+    else:asset,plot=render_plots(geometry)
     statements=[statement_tex(*x,template,i) for i,x in enumerate(st)]
-    prompt='![]('+asset+')\n\nConsider the diagram that is shown above. Which of the following statements are true?\n\n'+'\n'.join(f'{i+1}. ${v}$' for i,v in enumerate(statements))
-    worked=None if raw else solution(template,vs,st,true)
-    semantic={'template':template,'statements':statements,'requested_vectors':{x:[str(v) for v in vs[x]] for x in sorted(set(a for a,k,b in st)|set(b for a,k,b in st))}}
-    # Common magnitude scaling is incidental; direction and ratios are assessed.
-    requested=semantic['requested_vectors'];reference=next(iter(requested));scale=max(abs(sp.Rational(x)) for x in requested[reference])
-    fingerprint=digest({'template':template,'k':str(p['k']),'s':p['s'],'t':p['t'],'u_direction':primitive(p['u']),'v_direction':primitive(p['v']),'grid':'equal-square unlabeled'})
-    content={'version':VERSION,'level':None if raw else level,'prompt':prompt,'worked':worked,'bank':sorted(values),'field':'radio/selection','correct':None if raw else subset_text(true)}
-    qid=owned(KP_UUID,content);fid=owned(qid,'selection')
-    answers=[{':answer/id':owned(fid,v),':answer/type':':answer.type/text',':answer/value':v} for v in values]
-    correct_id=owned(fid,subset_text(true));rng.shuffle(answers)
-    field={':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers}
-    q={':question/id':qid,':question/problem':prompt,':question/answer-fields':[field]}
-    if not raw:q.update({':question/difficulty':':question.difficulty/'+level,':question/worked-solution':worked});field[':answer-field/correct']=[':answer/id',correct_id]
-    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'source':SOURCE,'seed':seed,'template':template,'bank_profile':profile,'parameters':serialize_parameters(p),'mathematical_fingerprint':fingerprint,'content_fingerprint':digest(content),'difficulty_status':'source unrated; authored assignment '+level,'source_ids':[c['source_id'] for c in SOURCE_CASES if c['template']==template],'evidence_only':raw,'eligible_for_learning':not raw,'correct_inference':subset_text(true),'geometry':geometry,'plot':plot_meta,'bank_recipes':(['toggle I','toggle II','toggle III','toggle I and III'] if profile=='authored-selection-flips' else 'complete observed subset catalog; selection omission/addition errors, original author intent unknown'),'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__}}}
+    prompt='![]('+asset+')\n\nConsider the diagram that is shown above. Which of the following statements are true?\n\nSelect all that apply.\n\n'+'\n'.join(f'- **{ROMAN[i]}.** ${text}$' for i,text in enumerate(statements))
+    true=truth_set(vs,st)
+    worked=source_solution(template,vs) if raw else solution(template,vs,st,true)
+    content={'version':VERSION,'level':None if raw else level,'prompt':prompt,'worked':worked,'bank':['false','true'],'keys':list(ROMAN),'correct':[i in true for i in range(3)]}
+    qid=owned(KP_UUID,content);fields=[]
+    for i,key in enumerate(ROMAN):
+        fid=owned(qid,key)
+        fields.append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/checkbox',':answer-field/choices':[{':answer/id':owned(fid,value),':answer/type':':answer.type/text',':answer/value':value} for value in ('false','true')],':answer-field/correct':[':answer/id',owned(fid,'true' if i in true else 'false')]})
+    q={':question/id':qid,':question/problem':prompt,':question/worked-solution':worked,':question/answer-fields':fields}
+    if not raw:q[':question/difficulty']=':question.difficulty/'+level
+    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'source':SOURCE,'seed':seed,'template':template,'bank_profile':profile,'parameters':serialize_parameters(p),'mathematical_fingerprint':task_key(template,p),'content_fingerprint':digest(content),'difficulty_status':'source unrated; authored '+level,'source_ids':[c['source_id'] for c in SOURCE_CASES if c['template']==template],'evidence_only':raw,'eligible_for_learning':not raw,'correct_inference':subset_text(true),'geometry':geometry,'plot':plot,'bank_recipes':'Each statement owns the complete false/true bank; canonical value is exact vector equality','runtime':{'python':sys.version.split()[0],'sympy':sp.__version__}}}
 
-def generate_easy(seed=0,**kw):
-    """Authored unit/sign diagram recognition, no within-level progression."""
-    return generate('easy',seed,**kw)
-def generate_moderate(seed=0,**kw):
-    """Authored factor-two/reciprocal diagram recognition."""
-    return generate('moderate',seed,**kw)
-def generate_hard(seed=0,**kw):
-    """Authored 3:2/2:3 magnitude comparison grounded in lesson's 1.5 multiplier."""
-    return generate('hard',seed,**kw)
+def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
+def generate_moderate(seed=0,**kwargs):return generate('moderate',seed,**kwargs)
+def generate_hard(seed=0,**kwargs):return generate('hard',seed,**kwargs)
 
 def markdown(r):
-    q=r['question'];g=r['generation'];f=q[':question/answer-fields'][0]
-    lines=['## '+('Parameterized raw evidence profile' if g['evidence_only'] else 'Generated authored '+q[':question/difficulty'].split('/')[-1]),'Template: '+g['template']+'; profile: '+g['bank_profile'],q[':question/problem']]
-    lines+=['\nChoices:']+[f'- {a[":answer/value"]}'+(' **correct**' if f.get(':answer-field/correct',[None,None])[1]==a[':answer/id'] else '') for a in f[':answer-field/choices']]
-    if ':question/worked-solution' in q:lines+=['\nWorked solution:',q[':question/worked-solution']]
-    else:lines+=['\nOriginal correct ref, difficulty and worked solution absent. Independent inference: '+g['correct_inference']+'. Evidence only.']
-    return '\n\n'.join(lines)
+    q=r['question'];lines=[q[':question/problem']]
+    for f in q[':question/answer-fields']:
+        correct=next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])
+        lines.append(f'{f[":answer-field/key"]}: {correct}')
+    return '\n\n'.join(lines+[q[':question/worked-solution']])
 
 def main():
-    ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['markdown','json'],default='markdown');ap.add_argument('--template',choices=TEMPLATES);ap.add_argument('--profile',choices=list(PROFILES));ap.add_argument('--parameters',help='Exact JSON parameters')
+    ap=argparse.ArgumentParser(description=__doc__)
+    ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['markdown','json'],default='markdown');ap.add_argument('--template',choices=TEMPLATES);ap.add_argument('--profile',choices=list(PROFILES));ap.add_argument('--parameters')
     args=ap.parse_args()
-    if args.count<1:ap.error('count must be positive')
-    params=json.loads(args.parameters) if args.parameters else None
+    if args.count<1:ap.error('Count must be positive')
     levels=['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]
-    records=[generate(level,args.seed+i,args.template,parameters=params,profile=args.profile) for level in levels for i in range(args.count)]
+    records=[generate(level,args.seed+i,args.template,parameters=json.loads(args.parameters) if args.parameters else None,profile=args.profile) for level in levels for i in range(args.count)]
     print(json.dumps(records,indent=2) if args.format=='json' else '\n\n'.join(markdown(r) for r in records))
 if __name__=='__main__':main()
+

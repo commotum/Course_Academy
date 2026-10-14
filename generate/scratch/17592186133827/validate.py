@@ -142,6 +142,10 @@ def engine(rec,label):
  return {'label':label,'record':rec,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==correct else 'rejected','purpose':'field-owned radio selection'} for a in field[':answer-field/choices']]}
 
 def main():
+ try:
+  fmt('bad'+chr(12)+'rac{1}{3}')
+ except AssertionError:pass
+ else:raise AssertionError('Control-character regression was not rejected')
  sources=[];cases=[];eng=[];review=[];markdown=[]
  for sid,source in g.SOURCES.items():
   family=g.SOURCE_TEMPLATE[sid];level=g.LEVELS[family];rec=g.generate(level,seed=13,template=family,profile='raw:'+sid,parameters={'scale':1});q=rec['question'];field=q[':question/answer-fields'][0];original=source[':question/answer-fields'][0]

@@ -15,3 +15,5 @@ Normal finite domains are defined by `domain(template)` and apply identically to
 `validate.py` parses the actual displayed prompt, coordinate derivatives, speed rows, substituted f, setup integrands, u substitution/differential, primitive, and both individual endpoint values. It compares all raw option values and present designations separately from correctness and native ID grading. No blanks occur: equivalent blank-entry tests are inapplicable. Native grading uses the existing `check-engine` binary and creates only local fixtures; no EDB operations.
 
 Review files contain originals, a generated evidence-only scale variant for every historical bank, and two eligible authored-bank examples for each normal family at all three levels. Source anomaly details and opaque-bank interpretation limits are in `template-extraction.md`.
+
+Root QA corrected the sine-line endpoint fraction mask in version2: every TeX command is now a raw string component. Formatting validation rejects unintended control characters, with a form-feed regression; generated previews and validation were rebuilt.

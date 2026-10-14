@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Creating Parallel Vectors, math basis1356. Steps3–7 only; no database calls.
+"""Creating Parallel Vectors, math basis1356. Validated generator; no database calls.
 
 Source families are single and paired scale diagrams (unrated, no solution/key).
 Raw parameterized public profiles preserve all omissions and original assets at
@@ -163,6 +163,15 @@ def generate_moderate(seed=0,template=None,field_type=None,parameters=None,profi
 # Hard: two independently requested vectors, positive integer and negative fraction.
 def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('hard',seed,template,field_type,parameters,profile)
 
+def batch(level,count,seed=0):
+ """Finite distinct task catalog; seed changes order, never task cardinality."""
+ import itertools
+ if level not in ('easy','moderate','hard'):raise ValueError('difficulty')
+ if count<0:raise ValueError('count must be nonnegative')
+ scales=[(str(k),) for k in POS] if level=='easy' else [(k,) for k in NEG] if level=='moderate' else list(itertools.product([str(k) for k in POS],NEG))
+ catalog=list(itertools.product(ANGLES,scales));random.Random(seed).shuffle(catalog)
+ return [generate(level,seed+i,parameters={'angle':angle,'length':'1','scales':list(ks)}) for i,(angle,ks) in enumerate(catalog[:count])]
+
 def markdown(r):
  q=r['question'];gen=r['generation'];raw=gen['evidence_only'];level=gen['actual_difficulty'] or 'unrated'
  label='Original source evidence' if raw and not gen['source_completion'] else 'Authored source completion' if raw else 'Generated variant'
@@ -180,5 +189,5 @@ def markdown(r):
 if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['markdown','json'],default='markdown');ap.add_argument('--template');ap.add_argument('--profile');args=ap.parse_args()
  levels=('easy','moderate','hard') if args.difficulty=='all' else (args.difficulty,)
- records=[generate(l,args.seed+i,template=args.template,profile=args.profile) for l in levels for i in range(args.count)]
+ records=([r for l in levels for r in batch(l,args.count,args.seed)] if not args.template and not args.profile else [generate(l,args.seed+i,template=args.template,profile=args.profile) for l in levels for i in range(args.count)])
  print(json.dumps(records,indent=2) if args.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in records))
