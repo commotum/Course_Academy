@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-111042",
+      "sequence_position": 6,
+      "problem": "The matrix $C$ and the vector $b$ are given below.\nDetermine if $b\\in \\text{Col}(C).$ \nIn the affirmative case, find the value of ${x}_{1}\\cdot {x}_{2}\\cdot {x}_{3}$, where ${x}_{1},{x}_{2}$ and ${x}_{3}$ are real numbers such that $b={x}_{1}{c}_{1}+{x}_{2}{c}_{2}+{x}_{3}{c}_{3},$ and ${c}_{1}$, ${c}_{2}$, and ${c}_{3}$ are the respective columns of $C.$\n\n$$\nC=[\\begin{aligned}4 & 1 & -4 \\\\ -1 & 1 & 0 \\\\ 1 & 2 & 3\\end{aligned}],\\,b=[\\begin{aligned}9 \\\\ -8 \\\\ 5\\end{aligned}]\n$$",
+      "worked_solution": "In order to determine whether $b$ lies in $\\text{Col}(C),$ we need to check if the equation $Cx=b$ is consistent. So, let's find the row echelon form of the augmented matrix $[C\\,|\\,b]$ as follows:\n\n$$\n\\begin{aligned}[C\\,|\\,b] & =[\\begin{aligned}4 & 1 & -4 & 9 \\\\ -1 & 1 & 0 & -8 \\\\ 1 & 2 & 3 & 5\\end{aligned}] & {R}_{3} & ↔{R}_{1} \\\\  & ∼[\\begin{aligned}1 & 2 & 3 & 5 \\\\ -1 & 1 & 0 & -8 \\\\ 4 & 1 & -4 & 9\\end{aligned}] & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & ∼[\\begin{aligned}1 & 2 & 3 & 5 \\\\ 0 & 3 & 3 & -3 \\\\ 4 & 1 & -4 & 9\\end{aligned}] & {R}_{3} & :={R}_{3}-4{R}_{1} \\\\  & ∼[\\begin{aligned}1 & 2 & 3 & 5 \\\\ 0 & 3 & 3 & -3 \\\\ 0 & -7 & -16 & -11\\end{aligned}] & {R}_{3} & :={R}_{3}+(\\frac{7}{3}){R}_{2} \\\\  & ∼[\\begin{aligned}1 & 2 & 3 & 5 \\\\ 0 & 3 & 3 & -3 \\\\ 0 & 0 & -9 & -18\\end{aligned}]\\end{aligned}\n$$\n\nNow, we have the system\n\n$$\n\\{\\begin{aligned}{x}_{1}+2{x}_{2}+3{x}_{3}=5 \\\\ 3{x}_{2}+3{x}_{3}=-3 \\\\ -9{x}_{3}=-18.\\end{aligned}\n$$\n\nFrom the third equation, we get ${x}_{3}=2.$ Substituting it into the second equation gives \n\n$$\n\\begin{aligned}3{x}_{2}+3(2) & =-3 \\\\ {x}_{2} & =-3.\\end{aligned}\n$$\n\nFinally, from the first equation, we get \n\n$$\n\\begin{aligned}{x}_{1} & =5-2{x}_{2}-3{x}_{3} \\\\  & =5-2(-3)-3(2) \\\\  & =5\\end{aligned}\n$$\n\nSince we have a solution, the equation $Cx=b$ is consistent, which implies that $b\\in \\text{Col}(C).$ \n\nMoreover, there is exactly one solution, so we have exactly one way to write $b$ as a linear combination of ${c}_{1},$ ${c}_{2},$ and ${c}_{3}:$\n\n$$\n{{[\\begin{aligned}9 \\\\ -8 \\\\ 5\\end{aligned}]}_{⏟}}_{b}=5\\cdot {{[\\begin{aligned}4 \\\\ -1 \\\\ 1\\end{aligned}]}_{⏟}}_{{c}_{1}}+(-3)\\cdot {{[\\begin{aligned}1 \\\\ 1 \\\\ 2\\end{aligned}]}_{⏟}}_{{c}_{2}}+2\\cdot {{[\\begin{aligned}-4 \\\\ 0 \\\\ 3\\end{aligned}]}_{⏟}}_{{c}_{3}}\n$$\n\nFinally, we get ${x}_{1}\\cdot {x}_{2}\\cdot {x}_{3}=5\\cdot (-3)\\cdot 2=-30.$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14130643/observations/history-q-111042-234f4a4a824bb1455a92.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14130643",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14130643/observations/history-solution-q-111042-d8443d169548860ca0ce.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "b\\notin \\text{Col}(C)"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "12"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "-30"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "-28"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "16"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q111042",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "-30",
+                "option": "c",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "In order to determine whether $b$ lies in $\\text{Col}(C),$ we need to check if the equation $Cx=b$ is consistent. So, let's find the row echelon form of the augmented matrix $[C\\,|\\,b]$ as follows:\n\n$$\n\\begin{aligned}[C\\,|\\,b] & =[\\begin{aligned}4 & 1 & -4 & 9 \\\\ -1 & 1 & 0 & -8 \\\\ 1 & 2 & 3 & 5\\end{aligned}] & {R}_{3} & ↔{R}_{1} \\\\  & ∼[\\begin{aligned}1 & 2 & 3 & 5 \\\\ -1 & 1 & 0 & -8 \\\\ 4 & 1 & -4 & 9\\end{aligned}] & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & ∼[\\begin{aligned}1 & 2 & 3 & 5 \\\\ 0 & 3 & 3 & -3 \\\\ 4 & 1 & -4 & 9\\end{aligned}] & {R}_{3} & :={R}_{3}-4{R}_{1} \\\\  & ∼[\\begin{aligned}1 & 2 & 3 & 5 \\\\ 0 & 3 & 3 & -3 \\\\ 0 & -7 & -16 & -11\\end{aligned}] & {R}_{3} & :={R}_{3}+(\\frac{7}{3}){R}_{2} \\\\  & ∼[\\begin{aligned}1 & 2 & 3 & 5 \\\\ 0 & 3 & 3 & -3 \\\\ 0 & 0 & -9 & -18\\end{aligned}]\\end{aligned}\n$$\n\nNow, we have the system\n\n$$\n\\{\\begin{aligned}{x}_{1}+2{x}_{2}+3{x}_{3}=5 \\\\ 3{x}_{2}+3{x}_{3}=-3 \\\\ -9{x}_{3}=-18.\\end{aligned}\n$$\n\nFrom the third equation, we get ${x}_{3}=2.$ Substituting it into the second equation gives \n\n$$\n\\begin{aligned}3{x}_{2}+3(2) & =-3 \\\\ {x}_{2} & =-3.\\end{aligned}\n$$\n\nFinally, from the first equation, we get \n\n$$\n\\begin{aligned}{x}_{1} & =5-2{x}_{2}-3{x}_{3} \\\\  & =5-2(-3)-3(2) \\\\  & =5\\end{aligned}\n$$\n\nSince we have a solution, the equation $Cx=b$ is consistent, which implies that $b\\in \\text{Col}(C).$ \n\nMoreover, there is exactly one solution, so we have exactly one way to write $b$ as a linear combination of ${c}_{1},$ ${c}_{2},$ and ${c}_{3}:$\n\n$$\n{{[\\begin{aligned}9 \\\\ -8 \\\\ 5\\end{aligned}]}_{⏟}}_{b}=5\\cdot {{[\\begin{aligned}4 \\\\ -1 \\\\ 1\\end{aligned}]}_{⏟}}_{{c}_{1}}+(-3)\\cdot {{[\\begin{aligned}1 \\\\ 1 \\\\ 2\\end{aligned}]}_{⏟}}_{{c}_{2}}+2\\cdot {{[\\begin{aligned}-4 \\\\ 0 \\\\ 3\\end{aligned}]}_{⏟}}_{{c}_{3}}\n$$\n\nFinally, we get ${x}_{1}\\cdot {x}_{2}\\cdot {x}_{3}=5\\cdot (-3)\\cdot 2=-30.$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14130643/observations/step-q111042-e7e2f93f8e8bd94d3848.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a12e81-ab37-7a51-b317-59012aae724b",
+  "previous_failures": []
+}
