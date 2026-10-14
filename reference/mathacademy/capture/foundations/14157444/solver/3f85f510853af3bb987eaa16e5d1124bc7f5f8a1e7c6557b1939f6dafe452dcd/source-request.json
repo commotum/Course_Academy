@@ -1,0 +1,89 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-97279",
+      "sequence_position": 18,
+      "problem": "$$\nB=\\{[\\begin{aligned}0 \\\\ 3\\end{aligned}],[\\begin{aligned}-1 \\\\ -4\\end{aligned}]\\},\\,C=\\{[\\begin{aligned}1 \\\\ -2\\end{aligned}],[\\begin{aligned}2 \\\\ -1\\end{aligned}]\\},\\,[T]_{B}=[\\begin{aligned}4 & 3 \\\\ 2 & 5\\end{aligned}]\n$$\n\nConsider the bases $B$ and $C$ of ${R}^{2},$ and the matrix $[T]_{B}$ of a linear transformation $T$ with respect to the basis $B$, shown above. Find the matrix of $T$ relative to the basis $C.$",
+      "worked_solution": "The connection between the matrices of our linear transformation $T$ relative to the bases $B$ and $C$ is given by the following diagram:\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157444/assets/1b81504d6fdcabee0e1f586fef3dd2af5a57a8411ba4d22429e00e09b171a4d1.png)\n\n \n\nHere, moving along an arrow means pre-multiplying by the corresponding matrix. Algebraically, we can write this as\n\n$$\n[T]_{C}={P}_{B\\to C}\\cdot [T]_{B}\\cdot {P}_{B\\to C}^{-1},\n$$\n\nwhere ${P}_{B\\to C}$ is the change-of-coordinates matrix from $B$ to $C.$\n\nFirst, let's denote the vectors of $B$ and $C$ as $\\{{b}_{1},{b}_{2}\\}$ and $\\{{c}_{1},{c}_{2}\\}$, respectively.\n\nThe change-of-coordinates matrix from $B$ to $C$ is a matrix whose columns are the coordinates of vectors from $B$ relative to the basis $C.$\n\nHence, we need to find the coordinates of ${b}_{1}$ and ${b}_{2}$ relative to the basis $C.$ To do this, we consider the matrix\n\n$$\nM=[\\begin{aligned}| & | & | & | \\\\ {c}_{1} & {c}_{2} & {b}_{1} & {b}_{2} \\\\ | & | & | & |\\end{aligned}].\n$$\n\nWe reduce $M$ using Gaussian elimination until we get the identity matrix on the left. By doing this, we obtain the required change-of-coordinates matrix on the right.\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}1 & 2 & 0 & -1 \\\\ -2 & -1 & 3 & -4\\end{aligned}] & {R}_{2} & :={R}_{2}+2{R}_{1} \\\\  & ∼[\\begin{aligned}1 & 2 & 0 & -1 \\\\ 0 & 3 & 3 & -6\\end{aligned}] & {R}_{2} & :=\\frac{1}{3}{R}_{2} \\\\  & ∼[\\begin{aligned}1 & 2 & 0 & -1 \\\\ 0 & 1 & 1 & -2\\end{aligned}] & {R}_{1} & :={R}_{1}+(-2){R}_{2} \\\\  & ∼[\\begin{aligned}1 & 0 & -2 & 3 \\\\ 0 & 1 & 1 & -2\\end{aligned}]\\end{aligned}\n$$\n\nHence,\n\n$$\n{P}_{B\\to C}=[\\begin{aligned}-2 & 3 \\\\ 1 & -2\\end{aligned}].\n$$\n\nNow, we compute the inverse of ${P}_{B\\to C}:$\n\n$$\n\\begin{aligned}{P}_{B\\to C}^{-1} & ={[\\begin{aligned}-2 & 3 \\\\ 1 & -2\\end{aligned}]}^{-1} \\\\  & =\\frac{1}{(-2)\\cdot (-2)-1\\cdot 3}[\\begin{aligned}-2 & -3 \\\\ -1 & -2\\end{aligned}] \\\\  & =[\\begin{aligned}-2 & -3 \\\\ -1 & -2\\end{aligned}]\\end{aligned}\n$$\n\nFinally, we can compute the matrix of $T$ relative to the basis $C:$\n\n$$\n\\begin{aligned}[T]_{C} & ={P}_{B\\to C}\\cdot [T]_{B}\\cdot {P}_{B\\to C}^{-1} \\\\  & =[\\begin{aligned}-2 & 3 \\\\ 1 & -2\\end{aligned}][\\begin{aligned}4 & 3 \\\\ 2 & 5\\end{aligned}][\\begin{aligned}-2 & -3 \\\\ -1 & -2\\end{aligned}] \\\\  & =[\\begin{aligned}-2 & 9 \\\\ 0 & -7\\end{aligned}][\\begin{aligned}-2 & -3 \\\\ -1 & -2\\end{aligned}] \\\\  & =[\\begin{aligned}-5 & -12 \\\\ 7 & 14\\end{aligned}]\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157444/observations/history-q-97279-44e1daa60f875d399777.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14157444",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157444/observations/history-solution-q-97279-0127585bc8edd64e72ac.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "[\\begin{aligned}-2 & 9 \\\\ 0 & -7\\end{aligned}]"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "[\\begin{aligned}-11 & -18 \\\\ -9 & -16\\end{aligned}]"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "[\\begin{aligned}-5 & -12 \\\\ 7 & 14\\end{aligned}]"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "[\\begin{aligned}-5 & 6 \\\\ 1 & -4\\end{aligned}]"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "[\\begin{aligned}7 & 0 \\\\ 3 & 2\\end{aligned}]"
+            }
+          ]
+        }
+      ],
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157444/assets/1b81504d6fdcabee0e1f586fef3dd2af5a57a8411ba4d22429e00e09b171a4d1.png",
+          "sha256": "1b81504d6fdcabee0e1f586fef3dd2af5a57a8411ba4d22429e00e09b171a4d1",
+          "source_url": "https://mathacademy.com/graphics/q-97279-e-0",
+          "content_type": "image/png",
+          "representation": "original"
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q97279",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "[\\begin{aligned}-2 & 9 \\\\ 0 & -7\\end{aligned}]",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "The connection between the matrices of our linear transformation $T$ relative to the bases $B$ and $C$ is given by the following diagram:\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157444/assets/1b81504d6fdcabee0e1f586fef3dd2af5a57a8411ba4d22429e00e09b171a4d1.png)\n\n \n\nHere, moving along an arrow means pre-multiplying by the corresponding matrix. Algebraically, we can write this as\n\n$$\n[T]_{C}={P}_{B\\to C}\\cdot [T]_{B}\\cdot {P}_{B\\to C}^{-1},\n$$\n\nwhere ${P}_{B\\to C}$ is the change-of-coordinates matrix from $B$ to $C.$\n\nFirst, let's denote the vectors of $B$ and $C$ as $\\{{b}_{1},{b}_{2}\\}$ and $\\{{c}_{1},{c}_{2}\\}$, respectively.\n\nThe change-of-coordinates matrix from $B$ to $C$ is a matrix whose columns are the coordinates of vectors from $B$ relative to the basis $C.$\n\nHence, we need to find the coordinates of ${b}_{1}$ and ${b}_{2}$ relative to the basis $C.$ To do this, we consider the matrix\n\n$$\nM=[\\begin{aligned}| & | & | & | \\\\ {c}_{1} & {c}_{2} & {b}_{1} & {b}_{2} \\\\ | & | & | & |\\end{aligned}].\n$$\n\nWe reduce $M$ using Gaussian elimination until we get the identity matrix on the left. By doing this, we obtain the required change-of-coordinates matrix on the right.\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}1 & 2 & 0 & -1 \\\\ -2 & -1 & 3 & -4\\end{aligned}] & {R}_{2} & :={R}_{2}+2{R}_{1} \\\\  & ∼[\\begin{aligned}1 & 2 & 0 & -1 \\\\ 0 & 3 & 3 & -6\\end{aligned}] & {R}_{2} & :=\\frac{1}{3}{R}_{2} \\\\  & ∼[\\begin{aligned}1 & 2 & 0 & -1 \\\\ 0 & 1 & 1 & -2\\end{aligned}] & {R}_{1} & :={R}_{1}+(-2){R}_{2} \\\\  & ∼[\\begin{aligned}1 & 0 & -2 & 3 \\\\ 0 & 1 & 1 & -2\\end{aligned}]\\end{aligned}\n$$\n\nHence,\n\n$$\n{P}_{B\\to C}=[\\begin{aligned}-2 & 3 \\\\ 1 & -2\\end{aligned}].\n$$\n\nNow, we compute the inverse of ${P}_{B\\to C}:$\n\n$$\n\\begin{aligned}{P}_{B\\to C}^{-1} & ={[\\begin{aligned}-2 & 3 \\\\ 1 & -2\\end{aligned}]}^{-1} \\\\  & =\\frac{1}{(-2)\\cdot (-2)-1\\cdot 3}[\\begin{aligned}-2 & -3 \\\\ -1 & -2\\end{aligned}] \\\\  & =[\\begin{aligned}-2 & -3 \\\\ -1 & -2\\end{aligned}]\\end{aligned}\n$$\n\nFinally, we can compute the matrix of $T$ relative to the basis $C:$\n\n$$\n\\begin{aligned}[T]_{C} & ={P}_{B\\to C}\\cdot [T]_{B}\\cdot {P}_{B\\to C}^{-1} \\\\  & =[\\begin{aligned}-2 & 3 \\\\ 1 & -2\\end{aligned}][\\begin{aligned}4 & 3 \\\\ 2 & 5\\end{aligned}][\\begin{aligned}-2 & -3 \\\\ -1 & -2\\end{aligned}] \\\\  & =[\\begin{aligned}-2 & 9 \\\\ 0 & -7\\end{aligned}][\\begin{aligned}-2 & -3 \\\\ -1 & -2\\end{aligned}] \\\\  & =[\\begin{aligned}-5 & -12 \\\\ 7 & 14\\end{aligned}]\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157444/observations/step-q97279-c23a65ec3d8eb65d71e9.html"
+        }
+      }
+    ]
+  }
+}

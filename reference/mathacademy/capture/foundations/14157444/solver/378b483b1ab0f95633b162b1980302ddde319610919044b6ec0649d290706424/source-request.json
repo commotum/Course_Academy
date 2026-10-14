@@ -1,0 +1,86 @@
+{
+  "task": "solve_question",
+  "payload": {
+    "evidence_contract": "solve_question:1",
+    "question": {
+      "math_academy_id": "q-97282",
+      "problem": "$$\nB=\\{[\\begin{aligned}8 \\\\ -7\\end{aligned}],[\\begin{aligned}-5 \\\\ 4\\end{aligned}]\\},\\,C=\\{[\\begin{aligned}1 \\\\ -2\\end{aligned}],[\\begin{aligned}3 \\\\ -3\\end{aligned}]\\},\\,[T]_{B}=[\\begin{aligned}4 & 2 \\\\ 3 & 5\\end{aligned}]\n$$\n\nConsider the bases $B$ and $C$ of ${R}^{2},$ and the matrix $[T]_{B}$ of a linear transformation $T$ with respect to the basis $B$, shown above. Find the matrix of $T$ relative to the basis $C.$",
+      "answer_fields_complete": true,
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157444/observations/step-q97282-f72d6f6da12832897c7b.html",
+      "source_url": "https://mathacademy.com/tasks/14157444/topics/2014/lesson",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "[\\begin{aligned}-1 & 3 \\\\ 6 & -4\\end{aligned}]"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "[\\begin{aligned}7 & 2 \\\\ 0 & 2\\end{aligned}]"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "[\\begin{aligned}6 & -7 \\\\ 8 & -7\\end{aligned}]"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "[\\begin{aligned}2 & 6 \\\\ 7 & 8\\end{aligned}]"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "[\\begin{aligned}11 & 9 \\\\ 8 & 11\\end{aligned}]"
+            }
+          ]
+        }
+      ]
+    },
+    "current_example": {
+      "math_academy_id": "e-5897",
+      "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157444/assets/69338ec7ed346818d327d10920eab94201c234479b069f92dba986848282d1e1.svg)\n\nConsider the bases $\\mathcal{B}$ and $\\mathcal{C}$ of $\\mathbb{R}^2,$ and the matrix $[\\mathbf{T}]_{\\mathcal{B}}$ of a linear transformation $\\mathbf{T}$ with respect to the basis $\\mathcal{B}$, shown above. Find the matrix of $\\mathbf{T}$ relative to the basis $\\mathcal{C}.$",
+      "worked_solution": "The connection between the matrices of our linear transformation $\\mathbf{T}$ relative to the bases $\\mathcal{B}$ and $\\mathcal{C}$ is given by the following diagram:\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157444/assets/1b81504d6fdcabee0e1f586fef3dd2af5a57a8411ba4d22429e00e09b171a4d1.png)\n\n \n\nHere, moving along an arrow means pre-multiplying by the corresponding matrix. Algebraically, we can write this as\n\n$$\n[\\mathbf{T}]_{\\mathcal{C}} = P_{\\small{\\mathcal{B}}\\to{\\mathcal{C}}} \\cdot [\\mathbf{T}]_{\\mathcal{B}} \\cdot P_{\\small{\\mathcal{B}}\\to{\\mathcal{C}}}^{-1},\n$$\n\nwhere $P_{\\small{\\mathcal{B}}\\to{\\mathcal{C}}}$ is the change-of-coordinates matrix from $\\mathcal{B}$ to $\\mathcal{C}.$\n\nFirst, let's denote the vectors of $\\mathcal{B}$ and $\\mathcal{C}$ as $\\{ \\mathbf{b}_1,\\mathbf{b}_2 \\}$ and $\\{ \\mathbf{c}_1,\\mathbf{c}_2 \\}$, respectively.\n\nThe change-of-coordinates matrix from $\\mathcal{B}$ to $\\mathcal{C}$ is a matrix whose columns are the coordinates of vectors from $\\mathcal{B}$ relative to the basis $\\mathcal{C}.$\n\nHence, we need to find the coordinates of $\\mathbf{b}_1$ and $\\mathbf{b}_2$ relative to the basis $\\mathcal{C}.$ To do this, we consider the matrix\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157444/assets/dd1a95794d66a167a69e3fef8d03f70a925a3ade175d2b11bba9a456687dde6c.svg)\n\nWe reduce $M$ using Gaussian elimination until we get the identity matrix on the left. By doing this, we obtain the required change-of-coordinates matrix on the right.\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}1 & 1 & 1 & 0 \\\\ -1 & 1 & -1 & 2\\end{aligned}] & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & ∼[\\begin{aligned}1 & 1 & 1 & 0 \\\\ 0 & 2 & 0 & 2\\end{aligned}] & {R}_{2} & :=\\frac{1}{2}{R}_{2} \\\\  & ∼[\\begin{aligned}1 & 1 & 1 & 0 \\\\ 0 & 1 & 0 & 1\\end{aligned}] & {R}_{1} & :={R}_{1}+(-1){R}_{2} \\\\  & ∼[\\begin{aligned}1 & 0 & 1 & -1 \\\\ 0 & 1 & 0 & 1\\end{aligned}]\\end{aligned}\n$$\n\nHence,\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157444/assets/902fdf81bc52ac08e8e2723e445486601a6227d240bba7708607cf2e4fc357b5.svg)\n\nNow, we compute the inverse of $P_{\\small{\\mathcal{B}}\\to{\\mathcal{C}}} \\mathbin{:}$\n\n$$\n\\begin{aligned}{P}_{B\\to C}^{-1} & ={[\\begin{aligned}1 & -1 \\\\ 0 & 1\\end{aligned}]}^{-1} \\\\  & =\\frac{1}{1\\cdot 1-0\\cdot (-1)}[\\begin{aligned}1 & 1 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}1 & 1 \\\\ 0 & 1\\end{aligned}]\\end{aligned}\n$$\n\nFinally, we can compute the matrix of $\\mathbf{T}$ relative to the basis $\\mathcal{C} \\mathbin{:}$\n\n$$\n\\begin{aligned}[T]_{C} & ={P}_{B\\to C}\\cdot [T]_{B}\\cdot {P}_{B\\to C}^{-1} \\\\  & =[\\begin{aligned}1 & -1 \\\\ 0 & 1\\end{aligned}][\\begin{aligned}4 & -3 \\\\ 2 & 6\\end{aligned}][\\begin{aligned}1 & 1 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}2 & -9 \\\\ 2 & 6\\end{aligned}][\\begin{aligned}1 & 1 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}2 & -7 \\\\ 2 & 8\\end{aligned}]\\end{aligned}\n$$",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157444/observations/step-e5897-2a610f98dc0f8fde4f69.html",
+      "source_url": "https://mathacademy.com/tasks/14157444/topics/2014/lesson",
+      "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157444/observations/step-e5897-2a610f98dc0f8fde4f69.png",
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157444/assets/69338ec7ed346818d327d10920eab94201c234479b069f92dba986848282d1e1.svg",
+          "sha256": "69338ec7ed346818d327d10920eab94201c234479b069f92dba986848282d1e1",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 1,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157444/assets/1b81504d6fdcabee0e1f586fef3dd2af5a57a8411ba4d22429e00e09b171a4d1.png",
+          "sha256": "1b81504d6fdcabee0e1f586fef3dd2af5a57a8411ba4d22429e00e09b171a4d1",
+          "source_url": "https://mathacademy.com/graphics/c5e4593940236538bb9a20433d7b4e8d",
+          "content_type": "image/png",
+          "representation": "original"
+        },
+        {
+          "index": 2,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157444/assets/dd1a95794d66a167a69e3fef8d03f70a925a3ade175d2b11bba9a456687dde6c.svg",
+          "sha256": "dd1a95794d66a167a69e3fef8d03f70a925a3ade175d2b11bba9a456687dde6c",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 3,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14157444/assets/902fdf81bc52ac08e8e2723e445486601a6227d240bba7708607cf2e4fc357b5.svg",
+          "sha256": "902fdf81bc52ac08e8e2723e445486601a6227d240bba7708607cf2e4fc357b5",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        }
+      ]
+    }
+  }
+}
