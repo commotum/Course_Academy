@@ -1205,7 +1205,7 @@ $$
 \begin{aligned}\oint_{\partial D}(3 x^{2} y)\,\mathrm dx+(- 3 x y^{2})\,\mathrm dy & =\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\,\mathrm dA\\ & =\iint_D\left(- 3 y^{2}-(3 x^{2})\right)\,\mathrm dA\\ & =\iint_D - 3 \left(x^{2} + y^{2}\right)\,\mathrm dA.\end{aligned}
 $$
 
-The region $D$ can be represented in polar coordinates as
+The region $D$ can be represented in polar coordinates as 
 
 $$\Delta=\{(r,\theta):3\le r\le 4,0\le\theta\le2\pi\}.$$
 
@@ -1218,7 +1218,7 @@ $$
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D - 3 \left(x^{2} + y^{2}\right)\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{4}-3\left(((r\cos\theta)^2+(r\sin\theta)^2)\cdot r\right)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}-3\left(r^{2}(\cos^2\theta+\sin^2\theta)\cdot r\right)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}- 3 r^{3}\,\mathrm d r\,\mathrm d \theta\\ & =-3\left(\int_{0}^{2 \pi}\,\mathrm d \theta\cdot \int_{3}^{4}r^{3}\,\mathrm d r\right)\\ & =- 6 \pi\cdot \int_{3}^{4}r^{3}\,\mathrm d r\\ & =- 6 \pi\cdot \frac{r^{4}}{4}\big|_{3}^{4}\\ & =- 6 \pi\cdot (\left(64\right)-\left(\frac{81}{4}\right))\\ & =- 6 \pi\cdot \left(\frac{175}{4}\right)\\ & =- \frac{525 \pi}{2}.\end{aligned}
+\begin{aligned}\iint_D - 3 \left(x^{2} + y^{2}\right)\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{4}-3\left(((r\cos\theta)^2+(r\sin\theta)^2)\cdot r\right)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}-3\left(r^{2}(\cos^2\theta+\sin^2\theta)\cdot r\right)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}- 3 r^{3}\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\,\mathrm d \theta\cdot \int_{3}^{4}- 3 r^{3}\,\mathrm d r\\ & =- 6 \pi\cdot \int_{3}^{4}r^{3}\,\mathrm d r\\ & =- 6 \pi\cdot \frac{r^{4}}{4}\big|_{3}^{4}\\ & =- 6 \pi\cdot (\left(64\right)-\left(\frac{81}{4}\right))\\ & =-3\cdot\left(\frac{\pi}{2}\right)\cdot \left((4)^{4}-\left((3)^{4}\right)\right)\\ & =- \frac{3 \pi}{2}\cdot \left(256-\left(81\right)\right)\\ & =- \frac{525 \pi}{2}.\end{aligned}
 $$
 
 ## Generated variant annulus_quadratic 1
@@ -1260,7 +1260,7 @@ $$
 \begin{aligned}\oint_{\partial D}(- x^{2} y)\,\mathrm dx+(x y^{2})\,\mathrm dy & =\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\,\mathrm dA\\ & =\iint_D\left(y^{2}-(- x^{2})\right)\,\mathrm dA\\ & =\iint_D x^{2} + y^{2}\,\mathrm dA.\end{aligned}
 $$
 
-The region $D$ can be represented in polar coordinates as
+The region $D$ can be represented in polar coordinates as 
 
 $$\Delta=\{(r,\theta):3\le r\le 5,0\le\theta\le2\pi\}.$$
 
@@ -1273,7 +1273,7 @@ $$
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D x^{2} + y^{2}\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{5}((r\cos\theta)^2+(r\sin\theta)^2)\cdot r\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}r^{2}(\cos^2\theta+\sin^2\theta)\cdot r\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}r^{3}\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\,\mathrm d \theta\cdot \int_{3}^{5}r^{3}\,\mathrm d r\\ & =2 \pi\cdot \int_{3}^{5}r^{3}\,\mathrm d r\\ & =2 \pi\cdot \frac{r^{4}}{4}\big|_{3}^{5}\\ & =2 \pi\cdot (\left(\frac{625}{4}\right)-\left(\frac{81}{4}\right))\\ & =2 \pi\cdot \left(136\right)\\ & =272 \pi.\end{aligned}
+\begin{aligned}\iint_D x^{2} + y^{2}\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{5}((r\cos\theta)^2+(r\sin\theta)^2)\cdot r\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}r^{2}(\cos^2\theta+\sin^2\theta)\cdot r\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}r^{3}\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\,\mathrm d \theta\cdot \int_{3}^{5}r^{3}\,\mathrm d r\\ & =2 \pi\cdot \int_{3}^{5}r^{3}\,\mathrm d r\\ & =2 \pi\cdot \frac{r^{4}}{4}\big|_{3}^{5}\\ & =2 \pi\cdot (\left(\frac{625}{4}\right)-\left(\frac{81}{4}\right))\\ & =\frac{\pi}{2}\cdot \left((5)^{4}-\left((3)^{4}\right)\right)\\ & =\frac{\pi}{2}\cdot \left(625-\left(81\right)\right)\\ & =272 \pi.\end{aligned}
 $$
 
 ## Generated variant annulus_sin2 0
@@ -1299,7 +1299,7 @@ $$
 
 Green's theorem can be extended to include regions containing holes. In such cases, we can apply Green's theorem in the same way as before.
 
-As we saw earlier, we can use Green's theorem to write our line integral in polar coordinates. Holding the other coordinate fixed, we have that $P(x,y)=- 9 x y^{2}$ and $Q(x,y)=3 y^{3}.$ So,
+We have that $P(x,y)=- 9 x y^{2}$ and $Q(x,y)=3 y^{3}.$ So,
 
 For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
 
@@ -1312,23 +1312,21 @@ $$\frac{\partial P}{\partial y}=- 18 x y,\qquad\frac{\partial Q}{\partial x}=0.$
 Therefore, applying Green's theorem, we get
 
 $$
-\begin{aligned}\oint_{\partial R}(- 9 x y^{2})\,\mathrm dx+(3 y^{3})\,\mathrm dy & =\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\,\mathrm dA\\ & =\iint_D\left(0-(- 18 x y)\right)\,\mathrm dA\\ & =\iint_D 18 x y\,\mathrm dA.\end{aligned}
+\begin{aligned}\oint_{\partial R}(- 9 x y^{2})\,\mathrm dx+(3 y^{3})\,\mathrm dy & =\iint_R\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\,\mathrm dA\\ & =\iint_R\left(0-(- 18 x y)\right)\,\mathrm dA\\ & =\iint_R 18 x y\,\mathrm dA.\end{aligned}
 $$
 
-But this time, our region $R$ (in polar coordinates) is given by
+As we saw earlier, we can use Green's theorem to write our line integral in polar coordinates as 
 
-$$\Delta=\{(r,\theta):3\le r\le 4,0\le\theta\le2\pi\}.$$
+$$\oint_{\partial R}(- 9 x y^{2})\,\mathrm dx+(3 y^{3})\,\mathrm dy=\iint_\Delta 9r^3\sin(2\theta)\,\mathrm dr\,\mathrm d\theta.$$
 
-Recall that the change of variables formula for polar coordinates gives
+But this time, our region $R$ (in polar coordinates) is given by 
 
-$$
-{∬}_{D}f(x,y)\text{ }dA={∬}_{Δ}\text{ }f(r\operatorname{cos}⁡\theta ,r\operatorname{sin}⁡\theta )\,r\text{ }drd\theta .
-$$
+$$\Delta=\{(r,\theta):3\le r\le 4,0\le\theta<2\pi\}.$$
 
-Therefore, our double integral becomes
+Therefore, we get
 
 $$
-\begin{aligned}\iint_D 18 x y\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{4}18(r\cos\theta)(r\sin\theta)r\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}9r^3\sin(2\theta)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}9r^3\sin(2\theta)\,\mathrm d r\,\mathrm d \theta\\ & =9\left(\int_{0}^{2 \pi}\sin{\left(2 \theta \right)}\,\mathrm d \theta\cdot \int_{3}^{4}r^{3}\,\mathrm d r\right)\\ & =9\left(- \frac{\cos{\left(2 \theta \right)}}{2}\big|_{0}^{2 \pi}\cdot \frac{r^{4}}{4}\big|_{3}^{4}\right)\\ & =9\left((\left(- \frac{1}{2}\right)-\left(- \frac{1}{2}\right))\cdot (\left(64\right)-\left(\frac{81}{4}\right))\right)\\ & =9\cdot \left(0\right)\cdot \left(\frac{175}{4}\right)\\ & =0.\end{aligned}
+\begin{aligned}\iint_\Delta 9r^3\sin(2\theta)\,\mathrm dr\,\mathrm d\theta & =9\cdot \int_{0}^{2 \pi}\int_{3}^{4}r^3\sin(2\theta)\,\mathrm d r\,\mathrm d \theta\\ & =9\cdot \int_{0}^{2 \pi}\sin(2\theta)\,\mathrm d \theta\cdot \int_{3}^{4}r^3\,\mathrm d r\\ & =9\cdot \frac{\cos(2\theta)}{-2}\big|_{0}^{2 \pi}\cdot \frac{r^4}{4}\big|_{3}^{4}\\ & =9\cdot (\left(- \frac{1}{2}\right)-\left(- \frac{1}{2}\right))\cdot (\left(64\right)-\left(\frac{81}{4}\right))\\ & =-3\cdot\left(\frac{3}{2}\right)\cdot (1-1)\cdot\frac{1}{4}\cdot \left((4)^{4}-\left((3)^{4}\right)\right)\\ & =- \frac{9}{2}\cdot (1-1)\cdot\frac{1}{4}\cdot \left(256-\left(81\right)\right)\\ & =0.\end{aligned}
 $$
 
 ## Generated variant annulus_sin2 1
@@ -1354,7 +1352,7 @@ $$
 
 Green's theorem can be extended to include regions containing holes. In such cases, we can apply Green's theorem in the same way as before.
 
-As we saw earlier, we can use Green's theorem to write our line integral in polar coordinates. Holding the other coordinate fixed, we have that $P(x,y)=3 x y^{2}$ and $Q(x,y)=- y^{3}.$ So,
+We have that $P(x,y)=3 x y^{2}$ and $Q(x,y)=- y^{3}.$ So,
 
 For $\partial P/\partial y$ we hold $x$ fixed, and for $\partial Q/\partial x$ we hold $y$ fixed. The component derivatives, including zero contributions, are
 
@@ -1367,23 +1365,21 @@ $$\frac{\partial P}{\partial y}=6 x y,\qquad\frac{\partial Q}{\partial x}=0.$$
 Therefore, applying Green's theorem, we get
 
 $$
-\begin{aligned}\oint_{\partial R}(3 x y^{2})\,\mathrm dx+(- y^{3})\,\mathrm dy & =\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\,\mathrm dA\\ & =\iint_D\left(0-(6 x y)\right)\,\mathrm dA\\ & =\iint_D - 6 x y\,\mathrm dA.\end{aligned}
+\begin{aligned}\oint_{\partial R}(3 x y^{2})\,\mathrm dx+(- y^{3})\,\mathrm dy & =\iint_R\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\,\mathrm dA\\ & =\iint_R\left(0-(6 x y)\right)\,\mathrm dA\\ & =\iint_R - 6 x y\,\mathrm dA.\end{aligned}
 $$
 
-But this time, our region $R$ (in polar coordinates) is given by
+As we saw earlier, we can use Green's theorem to write our line integral in polar coordinates as 
 
-$$\Delta=\{(r,\theta):3\le r\le 5,0\le\theta\le2\pi\}.$$
+$$\oint_{\partial R}(3 x y^{2})\,\mathrm dx+(- y^{3})\,\mathrm dy=\iint_\Delta -3r^3\sin(2\theta)\,\mathrm dr\,\mathrm d\theta.$$
 
-Recall that the change of variables formula for polar coordinates gives
+But this time, our region $R$ (in polar coordinates) is given by 
 
-$$
-{∬}_{D}f(x,y)\text{ }dA={∬}_{Δ}\text{ }f(r\operatorname{cos}⁡\theta ,r\operatorname{sin}⁡\theta )\,r\text{ }drd\theta .
-$$
+$$\Delta=\{(r,\theta):3\le r\le 5,0\le\theta<2\pi\}.$$
 
-Therefore, our double integral becomes
+Therefore, we get
 
 $$
-\begin{aligned}\iint_D - 6 x y\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{5}-6(r\cos\theta)(r\sin\theta)r\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}-3r^3\sin(2\theta)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}-3r^3\sin(2\theta)\,\mathrm d r\,\mathrm d \theta\\ & =-3\left(\int_{0}^{2 \pi}\sin{\left(2 \theta \right)}\,\mathrm d \theta\cdot \int_{3}^{5}r^{3}\,\mathrm d r\right)\\ & =-3\left(- \frac{\cos{\left(2 \theta \right)}}{2}\big|_{0}^{2 \pi}\cdot \frac{r^{4}}{4}\big|_{3}^{5}\right)\\ & =-3\left((\left(- \frac{1}{2}\right)-\left(- \frac{1}{2}\right))\cdot (\left(\frac{625}{4}\right)-\left(\frac{81}{4}\right))\right)\\ & =-3\cdot \left(0\right)\cdot \left(136\right)\\ & =0.\end{aligned}
+\begin{aligned}\iint_\Delta -3r^3\sin(2\theta)\,\mathrm dr\,\mathrm d\theta & =-3\cdot \int_{0}^{2 \pi}\int_{3}^{5}r^3\sin(2\theta)\,\mathrm d r\,\mathrm d \theta\\ & =-3\cdot \int_{0}^{2 \pi}\sin(2\theta)\,\mathrm d \theta\cdot \int_{3}^{5}r^3\,\mathrm d r\\ & =-3\cdot \frac{\cos(2\theta)}{-2}\big|_{0}^{2 \pi}\cdot \frac{r^4}{4}\big|_{3}^{5}\\ & =-3\cdot (\left(- \frac{1}{2}\right)-\left(- \frac{1}{2}\right))\cdot (\left(\frac{625}{4}\right)-\left(\frac{81}{4}\right))\\ & =\frac{3}{2}\cdot (1-1)\cdot\frac{1}{4}\cdot \left((5)^{4}-\left((3)^{4}\right)\right)\\ & =\frac{3}{2}\cdot (1-1)\cdot\frac{1}{4}\cdot \left(625-\left(81\right)\right)\\ & =0.\end{aligned}
 $$
 
 ## Generated variant annulus_fourth 0
@@ -1425,7 +1421,7 @@ $$
 \begin{aligned}\oint_{\partial D}(3 x^{4} y + x^{2} y^{3})\,\mathrm dx+(- x^{3} y^{2} - 3 x y^{4})\,\mathrm dy & =\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\,\mathrm dA\\ & =\iint_D\left(- 3 x^{2} y^{2} - 3 y^{4}-(3 x^{4} + 3 x^{2} y^{2})\right)\,\mathrm dA\\ & =\iint_D(- 3 x^{4} - 6 x^{2} y^{2} - 3 y^{4})\,\mathrm dA\\ & =\iint_D - 3 \left(x^{2} + y^{2}\right)^{2}\,\mathrm dA.\end{aligned}
 $$
 
-The region $D$ can be represented in polar coordinates as
+The region $D$ can be represented in polar coordinates as 
 
 $$\Delta=\{(r,\theta):3\le r\le 4,0\le\theta\le2\pi\}.$$
 
@@ -1438,7 +1434,7 @@ $$
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D - 3 \left(x^{2} + y^{2}\right)^{2}\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{4}-3\left(((r\cos\theta)^2+(r\sin\theta)^2)^2\cdot r\right)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}-3\left(r^{4}(\cos^2\theta+\sin^2\theta)^2\cdot r\right)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}- 3 r^{5}\,\mathrm d r\,\mathrm d \theta\\ & =-3\left(\int_{0}^{2 \pi}\,\mathrm d \theta\cdot \int_{3}^{4}r^{5}\,\mathrm d r\right)\\ & =- 6 \pi\cdot \int_{3}^{4}r^{5}\,\mathrm d r\\ & =- 6 \pi\cdot \frac{r^{6}}{6}\big|_{3}^{4}\\ & =- 6 \pi\cdot (\left(\frac{2048}{3}\right)-\left(\frac{243}{2}\right))\\ & =- 6 \pi\cdot \left(\frac{3367}{6}\right)\\ & =- 3367 \pi.\end{aligned}
+\begin{aligned}\iint_D - 3 \left(x^{2} + y^{2}\right)^{2}\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{4}-3\left(((r\cos\theta)^2+(r\sin\theta)^2)^2\cdot r\right)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}-3\left(r^{4}(\cos^2\theta+\sin^2\theta)^2\cdot r\right)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}- 3 r^{5}\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\,\mathrm d \theta\cdot \int_{3}^{4}- 3 r^{5}\,\mathrm d r\\ & =- 6 \pi\cdot \int_{3}^{4}r^{5}\,\mathrm d r\\ & =- 6 \pi\cdot \frac{r^{6}}{6}\big|_{3}^{4}\\ & =- 6 \pi\cdot (\left(\frac{2048}{3}\right)-\left(\frac{243}{2}\right))\\ & =-3\cdot\left(\frac{\pi}{3}\right)\cdot \left((4)^{6}-\left((3)^{6}\right)\right)\\ & =- \pi\cdot \left(4096-\left(729\right)\right)\\ & =- 3367 \pi.\end{aligned}
 $$
 
 ## Generated variant annulus_fourth 1
@@ -1480,7 +1476,7 @@ $$
 \begin{aligned}\oint_{\partial D}(- x^{4} y - \frac{x^{2} y^{3}}{3})\,\mathrm dx+(\frac{x^{3} y^{2}}{3} + x y^{4})\,\mathrm dy & =\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\,\mathrm dA\\ & =\iint_D\left(x^{2} y^{2} + y^{4}-(- x^{4} - x^{2} y^{2})\right)\,\mathrm dA\\ & =\iint_D(x^{4} + 2 x^{2} y^{2} + y^{4})\,\mathrm dA\\ & =\iint_D \left(x^{2} + y^{2}\right)^{2}\,\mathrm dA.\end{aligned}
 $$
 
-The region $D$ can be represented in polar coordinates as
+The region $D$ can be represented in polar coordinates as 
 
 $$\Delta=\{(r,\theta):3\le r\le 5,0\le\theta\le2\pi\}.$$
 
@@ -1493,7 +1489,7 @@ $$
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D \left(x^{2} + y^{2}\right)^{2}\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{5}((r\cos\theta)^2+(r\sin\theta)^2)^2\cdot r\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}r^{4}(\cos^2\theta+\sin^2\theta)^2\cdot r\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}r^{5}\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\,\mathrm d \theta\cdot \int_{3}^{5}r^{5}\,\mathrm d r\\ & =2 \pi\cdot \int_{3}^{5}r^{5}\,\mathrm d r\\ & =2 \pi\cdot \frac{r^{6}}{6}\big|_{3}^{5}\\ & =2 \pi\cdot (\left(\frac{15625}{6}\right)-\left(\frac{243}{2}\right))\\ & =2 \pi\cdot \left(\frac{7448}{3}\right)\\ & =\frac{14896 \pi}{3}.\end{aligned}
+\begin{aligned}\iint_D \left(x^{2} + y^{2}\right)^{2}\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{5}((r\cos\theta)^2+(r\sin\theta)^2)^2\cdot r\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}r^{4}(\cos^2\theta+\sin^2\theta)^2\cdot r\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}r^{5}\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\,\mathrm d \theta\cdot \int_{3}^{5}r^{5}\,\mathrm d r\\ & =2 \pi\cdot \int_{3}^{5}r^{5}\,\mathrm d r\\ & =2 \pi\cdot \frac{r^{6}}{6}\big|_{3}^{5}\\ & =2 \pi\cdot (\left(\frac{15625}{6}\right)-\left(\frac{243}{2}\right))\\ & =\frac{\pi}{3}\cdot \left((5)^{6}-\left((3)^{6}\right)\right)\\ & =\frac{\pi}{3}\cdot \left(15625-\left(729\right)\right)\\ & =\frac{14896 \pi}{3}.\end{aligned}
 $$
 
 ## Generated variant annulus_negative 0
@@ -1535,7 +1531,7 @@ $$
 \begin{aligned}\oint_{\partial D}(- y^{3} - 3 \cos{\left(x \right)})\,\mathrm dx+(x^{3} - 3 \ln{\left(\sin^{2}{\left(y \right)} + 1 \right)})\,\mathrm dy & =\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\,\mathrm dA\\ & =\iint_D\left(3 x^{2}-(- 3 y^{2})\right)\,\mathrm dA\\ & =\iint_D(3 x^{2} + 3 y^{2})\,\mathrm dA\\ & =\iint_D 3 \left(x^{2} + y^{2}\right)\,\mathrm dA.\end{aligned}
 $$
 
-The region $D$ can be represented in polar coordinates as
+The region $D$ can be represented in polar coordinates as 
 
 $$\Delta=\{(r,\theta):3\le r\le 4,0\le\theta\le2\pi\}.$$
 
@@ -1548,7 +1544,7 @@ $$
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D 3 \left(x^{2} + y^{2}\right)\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{4}3\left(((r\cos\theta)^2+(r\sin\theta)^2)\cdot r\right)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}3\left(r^{2}(\cos^2\theta+\sin^2\theta)\cdot r\right)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}3 r^{3}\,\mathrm d r\,\mathrm d \theta\\ & =3\left(\int_{0}^{2 \pi}\,\mathrm d \theta\cdot \int_{3}^{4}r^{3}\,\mathrm d r\right)\\ & =6 \pi\cdot \int_{3}^{4}r^{3}\,\mathrm d r\\ & =6 \pi\cdot \frac{r^{4}}{4}\big|_{3}^{4}\\ & =6 \pi\cdot (\left(64\right)-\left(\frac{81}{4}\right))\\ & =6 \pi\cdot \left(\frac{175}{4}\right)\\ & =\frac{525 \pi}{2}.\end{aligned}
+\begin{aligned}\iint_D 3 \left(x^{2} + y^{2}\right)\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{4}3\left(((r\cos\theta)^2+(r\sin\theta)^2)\cdot r\right)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}3\left(r^{2}(\cos^2\theta+\sin^2\theta)\cdot r\right)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}3 r^{3}\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\,\mathrm d \theta\cdot \int_{3}^{4}3 r^{3}\,\mathrm d r\\ & =6 \pi\cdot \int_{3}^{4}r^{3}\,\mathrm d r\\ & =6 \pi\cdot \frac{r^{4}}{4}\big|_{3}^{4}\\ & =6 \pi\cdot (\left(64\right)-\left(\frac{81}{4}\right))\\ & =-3\cdot\left(- \frac{\pi}{2}\right)\cdot \left((4)^{4}-\left((3)^{4}\right)\right)\\ & =\frac{3 \pi}{2}\cdot \left(256-\left(81\right)\right)\\ & =\frac{525 \pi}{2}.\end{aligned}
 $$
 
 ## Generated variant annulus_negative 1
@@ -1590,7 +1586,7 @@ $$
 \begin{aligned}\oint_{\partial D}(\frac{y^{3}}{3} + \cos{\left(x \right)})\,\mathrm dx+(- \frac{x^{3}}{3} + \ln{\left(\sin^{2}{\left(y \right)} + 1 \right)})\,\mathrm dy & =\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\,\mathrm dA\\ & =\iint_D\left(- x^{2}-(y^{2})\right)\,\mathrm dA\\ & =\iint_D(- x^{2} - y^{2})\,\mathrm dA\\ & =\iint_D - x^{2} - y^{2}\,\mathrm dA.\end{aligned}
 $$
 
-The region $D$ can be represented in polar coordinates as
+The region $D$ can be represented in polar coordinates as 
 
 $$\Delta=\{(r,\theta):3\le r\le 5,0\le\theta\le2\pi\}.$$
 
@@ -1603,7 +1599,7 @@ $$
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D - x^{2} - y^{2}\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{5}-1\left(((r\cos\theta)^2+(r\sin\theta)^2)\cdot r\right)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}-1\left(r^{2}(\cos^2\theta+\sin^2\theta)\cdot r\right)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}- r^{3}\,\mathrm d r\,\mathrm d \theta\\ & =-1\left(\int_{0}^{2 \pi}\,\mathrm d \theta\cdot \int_{3}^{5}r^{3}\,\mathrm d r\right)\\ & =- 2 \pi\cdot \int_{3}^{5}r^{3}\,\mathrm d r\\ & =- 2 \pi\cdot \frac{r^{4}}{4}\big|_{3}^{5}\\ & =- 2 \pi\cdot (\left(\frac{625}{4}\right)-\left(\frac{81}{4}\right))\\ & =- 2 \pi\cdot \left(136\right)\\ & =- 272 \pi.\end{aligned}
+\begin{aligned}\iint_D - x^{2} - y^{2}\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{5}-1\left(((r\cos\theta)^2+(r\sin\theta)^2)\cdot r\right)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}-1\left(r^{2}(\cos^2\theta+\sin^2\theta)\cdot r\right)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}- r^{3}\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\,\mathrm d \theta\cdot \int_{3}^{5}- r^{3}\,\mathrm d r\\ & =- 2 \pi\cdot \int_{3}^{5}r^{3}\,\mathrm d r\\ & =- 2 \pi\cdot \frac{r^{4}}{4}\big|_{3}^{5}\\ & =- 2 \pi\cdot (\left(\frac{625}{4}\right)-\left(\frac{81}{4}\right))\\ & =- \frac{\pi}{2}\cdot \left((5)^{4}-\left((3)^{4}\right)\right)\\ & =- \frac{\pi}{2}\cdot \left(625-\left(81\right)\right)\\ & =- 272 \pi.\end{aligned}
 $$
 
 ## Generated variant annulus_odd 0
@@ -1645,7 +1641,7 @@ $$
 \begin{aligned}\oint_{\partial D}(- 3 x^{2} + 3 y^{4})\,\mathrm dx+(- 3 x^{3} y + 3 x y^{3})\,\mathrm dy & =\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\,\mathrm dA\\ & =\iint_D\left(- 9 x^{2} y + 3 y^{3}-(12 y^{3})\right)\,\mathrm dA\\ & =\iint_D(- 9 x^{2} y - 9 y^{3})\,\mathrm dA\\ & =\iint_D - 9 y \left(x^{2} + y^{2}\right)\,\mathrm dA.\end{aligned}
 $$
 
-The region $D$ can be represented in polar coordinates as
+The region $D$ can be represented in polar coordinates as 
 
 $$\Delta=\{(r,\theta):3\le r\le 4,0\le\theta\le2\pi\}.$$
 
@@ -1658,7 +1654,7 @@ $$
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D - 9 y \left(x^{2} + y^{2}\right)\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{4}-9\cdot r\sin\theta\cdot ((r\cos\theta)^2+(r\sin\theta)^2)\cdot r\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}-9r^2\sin\theta\cdot r^2(\cos^2\theta+\sin^2\theta)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}- 9 r^{4}\sin\theta\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\sin{\left(\theta \right)}\,\mathrm d \theta\cdot \int_{3}^{4}- 9 r^{4}\,\mathrm d r\\ & =- \cos{\left(\theta \right)}\big|_{0}^{2 \pi}\cdot - \frac{9 r^{5}}{5}\big|_{3}^{4}\\ & =(\left(-1\right)-\left(-1\right))\cdot (\left(- \frac{9216}{5}\right)-\left(- \frac{2187}{5}\right))\\ & =1\cdot \left(0\right)\cdot \left(- \frac{7029}{5}\right)\\ & =0.\end{aligned}
+\begin{aligned}\iint_D - 9 y \left(x^{2} + y^{2}\right)\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{4}-9\cdot r\sin\theta\cdot ((r\cos\theta)^2+(r\sin\theta)^2)\cdot r\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}-9r^2\sin\theta\cdot r^2(\cos^2\theta+\sin^2\theta)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}-9r^4\sin\theta\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\sin\theta\,\mathrm d \theta\cdot \int_{3}^{4}-9r^4\,\mathrm d r\\ & =-\cos\theta\big|_{0}^{2 \pi}\cdot \frac{-9r^5}{5}\big|_{3}^{4}\\ & =\left(-\cos(2\pi)-\left(-\cos(0)\right)\right)\cdot \left(\frac{-9\cdot (4)^{5}}{5}-\left(\frac{-9\cdot (3)^{5}}{5}\right)\right)\\ & =\left(-1-\left(-1\right)\right)\cdot \left(\frac{-9\cdot (4)^{5}}{5}-\left(\frac{-9\cdot (3)^{5}}{5}\right)\right)\\ & =(\left(-1\right)-\left(-1\right))\cdot (\left(- \frac{9216}{5}\right)-\left(- \frac{2187}{5}\right))\\ & =0.\end{aligned}
 $$
 
 ## Generated variant annulus_odd 1
@@ -1700,7 +1696,7 @@ $$
 \begin{aligned}\oint_{\partial D}(x^{2} - y^{4})\,\mathrm dx+(x^{3} y - x y^{3})\,\mathrm dy & =\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\,\mathrm dA\\ & =\iint_D\left(3 x^{2} y - y^{3}-(- 4 y^{3})\right)\,\mathrm dA\\ & =\iint_D(3 x^{2} y + 3 y^{3})\,\mathrm dA\\ & =\iint_D 3 y \left(x^{2} + y^{2}\right)\,\mathrm dA.\end{aligned}
 $$
 
-The region $D$ can be represented in polar coordinates as
+The region $D$ can be represented in polar coordinates as 
 
 $$\Delta=\{(r,\theta):3\le r\le 5,0\le\theta\le2\pi\}.$$
 
@@ -1713,7 +1709,7 @@ $$
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D 3 y \left(x^{2} + y^{2}\right)\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{5}3\cdot r\sin\theta\cdot ((r\cos\theta)^2+(r\sin\theta)^2)\cdot r\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}3r^2\sin\theta\cdot r^2(\cos^2\theta+\sin^2\theta)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}3 r^{4}\sin\theta\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\sin{\left(\theta \right)}\,\mathrm d \theta\cdot \int_{3}^{5}3 r^{4}\,\mathrm d r\\ & =- \cos{\left(\theta \right)}\big|_{0}^{2 \pi}\cdot \frac{3 r^{5}}{5}\big|_{3}^{5}\\ & =(\left(-1\right)-\left(-1\right))\cdot (\left(1875\right)-\left(\frac{729}{5}\right))\\ & =1\cdot \left(0\right)\cdot \left(\frac{8646}{5}\right)\\ & =0.\end{aligned}
+\begin{aligned}\iint_D 3 y \left(x^{2} + y^{2}\right)\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{5}3\cdot r\sin\theta\cdot ((r\cos\theta)^2+(r\sin\theta)^2)\cdot r\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}3r^2\sin\theta\cdot r^2(\cos^2\theta+\sin^2\theta)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}3r^4\sin\theta\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\sin\theta\,\mathrm d \theta\cdot \int_{3}^{5}3r^4\,\mathrm d r\\ & =-\cos\theta\big|_{0}^{2 \pi}\cdot \frac{3r^5}{5}\big|_{3}^{5}\\ & =\left(-\cos(2\pi)-\left(-\cos(0)\right)\right)\cdot \left(\frac{3\cdot (5)^{5}}{5}-\left(\frac{3\cdot (3)^{5}}{5}\right)\right)\\ & =\left(-1-\left(-1\right)\right)\cdot \left(\frac{3\cdot (5)^{5}}{5}-\left(\frac{3\cdot (3)^{5}}{5}\right)\right)\\ & =(\left(-1\right)-\left(-1\right))\cdot (\left(1875\right)-\left(\frac{729}{5}\right))\\ & =0.\end{aligned}
 $$
 
 ## Generated variant annulus_four 0
@@ -1755,7 +1751,7 @@ $$
 \begin{aligned}\oint_{\partial D}(3 x^{2} y + 3 y^{3})\,\mathrm dx+(- 3 x^{3} - 3 x y^{2})\,\mathrm dy & =\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\,\mathrm dA\\ & =\iint_D\left(- 9 x^{2} - 3 y^{2}-(3 x^{2} + 9 y^{2})\right)\,\mathrm dA\\ & =\iint_D(- 12 x^{2} - 12 y^{2})\,\mathrm dA\\ & =\iint_D - 12 \left(x^{2} + y^{2}\right)\,\mathrm dA.\end{aligned}
 $$
 
-The region $D$ can be represented in polar coordinates as
+The region $D$ can be represented in polar coordinates as 
 
 $$\Delta=\{(r,\theta):3\le r\le 4,0\le\theta\le2\pi\}.$$
 
@@ -1768,7 +1764,7 @@ $$
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D - 12 \left(x^{2} + y^{2}\right)\,\mathrm dA & =-12\left(\int_{0}^{2 \pi}\int_{3}^{4}((r\cos\theta)^2+(r\sin\theta)^2)\cdot r\,\mathrm d r\,\mathrm d \theta\right)\\ & =-12\left(\int_{0}^{2 \pi}\int_{3}^{4}r^{2}(\cos^2\theta+\sin^2\theta)\cdot r\,\mathrm d r\,\mathrm d \theta\right)\\ & =-12\left(\int_{0}^{2 \pi}\int_{3}^{4}r^{3}\,\mathrm d r\,\mathrm d \theta\right)\\ & =-12\left(\int_{0}^{2 \pi}\,\mathrm d \theta\cdot \int_{3}^{4}r^{3}\,\mathrm d r\right)\\ & =- 24 \pi\cdot \int_{3}^{4}r^{3}\,\mathrm d r\\ & =- 24 \pi\cdot \frac{r^{4}}{4}\big|_{3}^{4}\\ & =- 24 \pi\cdot (\left(64\right)-\left(\frac{81}{4}\right))\\ & =- 24 \pi\cdot \left(\frac{175}{4}\right)\\ & =- 1050 \pi.\end{aligned}
+\begin{aligned}\iint_D - 12 \left(x^{2} + y^{2}\right)\,\mathrm dA & =-12\cdot \int_{0}^{2 \pi}\int_{3}^{4}((r\cos\theta)^2+(r\sin\theta)^2)\cdot r\,\mathrm d r\,\mathrm d \theta\\ & =-12\cdot \int_{0}^{2 \pi}\int_{3}^{4}r^{2}(\cos^2\theta+\sin^2\theta)\cdot r\,\mathrm d r\,\mathrm d \theta\\ & =-12\cdot \int_{0}^{2 \pi}\int_{3}^{4}r^{3}\,\mathrm d r\,\mathrm d \theta\\ & =-12\cdot \int_{0}^{2 \pi}\,\mathrm d \theta\cdot \int_{3}^{4}r^{3}\,\mathrm d r\\ & =- 24 \pi\cdot \int_{3}^{4}r^{3}\,\mathrm d r\\ & =- 24 \pi\cdot \frac{r^{4}}{4}\big|_{3}^{4}\\ & =- 24 \pi\cdot (\left(64\right)-\left(\frac{81}{4}\right))\\ & =-3\cdot\left(2 \pi\right)\cdot \left((4)^{4}-\left((3)^{4}\right)\right)\\ & =- 6 \pi\cdot \left(256-\left(81\right)\right)\\ & =- 1050 \pi.\end{aligned}
 $$
 
 ## Generated variant annulus_four 1
@@ -1810,7 +1806,7 @@ $$
 \begin{aligned}\oint_{\partial D}(- x^{2} y - y^{3})\,\mathrm dx+(x^{3} + x y^{2})\,\mathrm dy & =\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\,\mathrm dA\\ & =\iint_D\left(3 x^{2} + y^{2}-(- x^{2} - 3 y^{2})\right)\,\mathrm dA\\ & =\iint_D(4 x^{2} + 4 y^{2})\,\mathrm dA\\ & =\iint_D 4 \left(x^{2} + y^{2}\right)\,\mathrm dA.\end{aligned}
 $$
 
-The region $D$ can be represented in polar coordinates as
+The region $D$ can be represented in polar coordinates as 
 
 $$\Delta=\{(r,\theta):3\le r\le 5,0\le\theta\le2\pi\}.$$
 
@@ -1823,7 +1819,7 @@ $$
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D 4 \left(x^{2} + y^{2}\right)\,\mathrm dA & =4\left(\int_{0}^{2 \pi}\int_{3}^{5}((r\cos\theta)^2+(r\sin\theta)^2)\cdot r\,\mathrm d r\,\mathrm d \theta\right)\\ & =4\left(\int_{0}^{2 \pi}\int_{3}^{5}r^{2}(\cos^2\theta+\sin^2\theta)\cdot r\,\mathrm d r\,\mathrm d \theta\right)\\ & =4\left(\int_{0}^{2 \pi}\int_{3}^{5}r^{3}\,\mathrm d r\,\mathrm d \theta\right)\\ & =4\left(\int_{0}^{2 \pi}\,\mathrm d \theta\cdot \int_{3}^{5}r^{3}\,\mathrm d r\right)\\ & =8 \pi\cdot \int_{3}^{5}r^{3}\,\mathrm d r\\ & =8 \pi\cdot \frac{r^{4}}{4}\big|_{3}^{5}\\ & =8 \pi\cdot (\left(\frac{625}{4}\right)-\left(\frac{81}{4}\right))\\ & =8 \pi\cdot \left(136\right)\\ & =1088 \pi.\end{aligned}
+\begin{aligned}\iint_D 4 \left(x^{2} + y^{2}\right)\,\mathrm dA & =4\cdot \int_{0}^{2 \pi}\int_{3}^{5}((r\cos\theta)^2+(r\sin\theta)^2)\cdot r\,\mathrm d r\,\mathrm d \theta\\ & =4\cdot \int_{0}^{2 \pi}\int_{3}^{5}r^{2}(\cos^2\theta+\sin^2\theta)\cdot r\,\mathrm d r\,\mathrm d \theta\\ & =4\cdot \int_{0}^{2 \pi}\int_{3}^{5}r^{3}\,\mathrm d r\,\mathrm d \theta\\ & =4\cdot \int_{0}^{2 \pi}\,\mathrm d \theta\cdot \int_{3}^{5}r^{3}\,\mathrm d r\\ & =8 \pi\cdot \int_{3}^{5}r^{3}\,\mathrm d r\\ & =8 \pi\cdot \frac{r^{4}}{4}\big|_{3}^{5}\\ & =8 \pi\cdot (\left(\frac{625}{4}\right)-\left(\frac{81}{4}\right))\\ & =2 \pi\cdot \left((5)^{4}-\left((3)^{4}\right)\right)\\ & =2 \pi\cdot \left(625-\left(81\right)\right)\\ & =1088 \pi.\end{aligned}
 $$
 
 ## Generated variant rectangle_y2 0
@@ -1874,7 +1870,7 @@ The region $D$ can be represented in Cartesian coordinates as $\Delta_1\setminus
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D - 3 y^{2}\,\mathrm dA & =\iint_{\Delta_1}- 3 y^{2}\,\mathrm dA-\iint_{\Delta_2}- 3 y^{2}\,\mathrm dA\\ & =\int_{-4}^{2}\int_{-3}^{5}- 3 y^{2}\,\mathrm d x\,\mathrm d y-\int_{-2}^{1}\int_{1}^{3}- 3 y^{2}\,\mathrm d x\,\mathrm d y\\ & =\int_{-3}^{5}-3\,\mathrm d x\cdot \int_{-4}^{2}y^{2}\,\mathrm d y-\int_{1}^{3}-3\,\mathrm d x\cdot \int_{-2}^{1}y^{2}\,\mathrm d y\\ & =- 3 x\big|_{-3}^{5}\cdot \frac{y^{3}}{3}\big|_{-4}^{2}-- 3 x\big|_{1}^{3}\cdot \frac{y^{3}}{3}\big|_{-2}^{1}\\ & =(\left(-15\right)-\left(9\right))\cdot (\left(\frac{8}{3}\right)-\left(- \frac{64}{3}\right))-(\left(-9\right)-\left(-3\right))\cdot (\left(\frac{1}{3}\right)-\left(- \frac{8}{3}\right))\\ & =\left(-24\right)\cdot \left(24\right)-\left(-6\right)\cdot \left(3\right)\\ & =-558.\end{aligned}
+\begin{aligned}\iint_D - 3 y^{2}\,\mathrm dA & =\iint_{\Delta_1}- 3 y^{2}\,\mathrm dA-\iint_{\Delta_2}- 3 y^{2}\,\mathrm dA\\ & =\int_{-4}^{2}\int_{-3}^{5}- 3 y^{2}\,\mathrm d x\,\mathrm d y-\int_{-2}^{1}\int_{1}^{3}- 3 y^{2}\,\mathrm d x\,\mathrm d y\\ & =\int_{-3}^{5}-3\,\mathrm d x\cdot \int_{-4}^{2}y^{2}\,\mathrm d y-\int_{1}^{3}-3\,\mathrm d x\cdot \int_{-2}^{1}y^{2}\,\mathrm d y\\ & =- 3 x\big|_{-3}^{5}\cdot \frac{y^3}{3}\big|_{-4}^{2}-- 3 x\big|_{1}^{3}\cdot \frac{y^3}{3}\big|_{-2}^{1}\\ & =(\left(-15\right)-\left(9\right))\cdot (\left(\frac{8}{3}\right)-\left(- \frac{64}{3}\right))-(\left(-9\right)-\left(-3\right))\cdot (\left(\frac{1}{3}\right)-\left(- \frac{8}{3}\right))\\ & =\left(-24\right)\cdot \left(24\right)-\left(-6\right)\cdot \left(3\right)\\ & =-558.\end{aligned}
 $$
 
 ## Generated variant rectangle_y2 1
@@ -1925,7 +1921,7 @@ The region $D$ can be represented in Cartesian coordinates as $\Delta_1\setminus
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D y^{2}\,\mathrm dA & =\iint_{\Delta_1}y^{2}\,\mathrm dA-\iint_{\Delta_2}y^{2}\,\mathrm dA\\ & =\int_{-2}^{4}\int_{-3}^{5}y^{2}\,\mathrm d x\,\mathrm d y-\int_{0}^{3}\int_{1}^{3}y^{2}\,\mathrm d x\,\mathrm d y\\ & =\int_{-3}^{5}\,\mathrm d x\cdot \int_{-2}^{4}y^{2}\,\mathrm d y-\int_{1}^{3}\,\mathrm d x\cdot \int_{0}^{3}y^{2}\,\mathrm d y\\ & =x\big|_{-3}^{5}\cdot \frac{y^{3}}{3}\big|_{-2}^{4}-x\big|_{1}^{3}\cdot \frac{y^{3}}{3}\big|_{0}^{3}\\ & =(\left(5\right)-\left(-3\right))\cdot (\left(\frac{64}{3}\right)-\left(- \frac{8}{3}\right))-(\left(3\right)-\left(1\right))\cdot (\left(9\right)-\left(0\right))\\ & =\left(8\right)\cdot \left(24\right)-\left(2\right)\cdot \left(9\right)\\ & =174.\end{aligned}
+\begin{aligned}\iint_D y^{2}\,\mathrm dA & =\iint_{\Delta_1}y^{2}\,\mathrm dA-\iint_{\Delta_2}y^{2}\,\mathrm dA\\ & =\int_{-2}^{4}\int_{-3}^{5}y^{2}\,\mathrm d x\,\mathrm d y-\int_{0}^{3}\int_{1}^{3}y^{2}\,\mathrm d x\,\mathrm d y\\ & =\int_{-3}^{5}\,\mathrm d x\cdot \int_{-2}^{4}y^{2}\,\mathrm d y-\int_{1}^{3}\,\mathrm d x\cdot \int_{0}^{3}y^{2}\,\mathrm d y\\ & =x\big|_{-3}^{5}\cdot \frac{y^3}{3}\big|_{-2}^{4}-x\big|_{1}^{3}\cdot \frac{y^3}{3}\big|_{0}^{3}\\ & =(\left(5\right)-\left(-3\right))\cdot (\left(\frac{64}{3}\right)-\left(- \frac{8}{3}\right))-(\left(3\right)-\left(1\right))\cdot (\left(9\right)-\left(0\right))\\ & =\left(8\right)\cdot \left(24\right)-\left(2\right)\cdot \left(9\right)\\ & =174.\end{aligned}
 $$
 
 ## Generated variant rectangle_x3y2 0
@@ -1976,7 +1972,7 @@ The region $D$ can be represented in Cartesian coordinates as $\Delta_1\setminus
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D - 3 x^{3} y^{2}\,\mathrm dA & =\iint_{\Delta_1}- 3 x^{3} y^{2}\,\mathrm dA-\iint_{\Delta_2}- 3 x^{3} y^{2}\,\mathrm dA\\ & =\int_{-2}^{1}\int_{-1}^{3}- 3 x^{3} y^{2}\,\mathrm d x\,\mathrm d y-\int_{-1}^{0}\int_{1}^{2}- 3 x^{3} y^{2}\,\mathrm d x\,\mathrm d y\\ & =\int_{-1}^{3}- 3 x^{3}\,\mathrm d x\cdot \int_{-2}^{1}y^{2}\,\mathrm d y-\int_{1}^{2}- 3 x^{3}\,\mathrm d x\cdot \int_{-1}^{0}y^{2}\,\mathrm d y\\ & =- \frac{3 x^{4}}{4}\big|_{-1}^{3}\cdot \frac{y^{3}}{3}\big|_{-2}^{1}-- \frac{3 x^{4}}{4}\big|_{1}^{2}\cdot \frac{y^{3}}{3}\big|_{-1}^{0}\\ & =(\left(- \frac{243}{4}\right)-\left(- \frac{3}{4}\right))\cdot (\left(\frac{1}{3}\right)-\left(- \frac{8}{3}\right))-(\left(-12\right)-\left(- \frac{3}{4}\right))\cdot (\left(0\right)-\left(- \frac{1}{3}\right))\\ & =\left(-60\right)\cdot \left(3\right)-\left(- \frac{45}{4}\right)\cdot \left(\frac{1}{3}\right)\\ & =- \frac{705}{4}.\end{aligned}
+\begin{aligned}\iint_D - 3 x^{3} y^{2}\,\mathrm dA & =\iint_{\Delta_1}- 3 x^{3} y^{2}\,\mathrm dA-\iint_{\Delta_2}- 3 x^{3} y^{2}\,\mathrm dA\\ & =\int_{-2}^{1}\int_{-1}^{3}- 3 x^{3} y^{2}\,\mathrm d x\,\mathrm d y-\int_{-1}^{0}\int_{1}^{2}- 3 x^{3} y^{2}\,\mathrm d x\,\mathrm d y\\ & =\int_{-1}^{3}- 3 x^{3}\,\mathrm d x\cdot \int_{-2}^{1}y^{2}\,\mathrm d y-\int_{1}^{2}- 3 x^{3}\,\mathrm d x\cdot \int_{-1}^{0}y^{2}\,\mathrm d y\\ & =\frac{-3x^4}{4}\big|_{-1}^{3}\cdot \frac{y^3}{3}\big|_{-2}^{1}-\frac{-3x^4}{4}\big|_{1}^{2}\cdot \frac{y^3}{3}\big|_{-1}^{0}\\ & =(\left(- \frac{243}{4}\right)-\left(- \frac{3}{4}\right))\cdot (\left(\frac{1}{3}\right)-\left(- \frac{8}{3}\right))-(\left(-12\right)-\left(- \frac{3}{4}\right))\cdot (\left(0\right)-\left(- \frac{1}{3}\right))\\ & =\left(-60\right)\cdot \left(3\right)-\left(- \frac{45}{4}\right)\cdot \left(\frac{1}{3}\right)\\ & =- \frac{705}{4}.\end{aligned}
 $$
 
 ## Generated variant rectangle_x3y2 1
@@ -2027,7 +2023,7 @@ The region $D$ can be represented in Cartesian coordinates as $\Delta_1\setminus
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D x^{3} y^{2}\,\mathrm dA & =\iint_{\Delta_1}x^{3} y^{2}\,\mathrm dA-\iint_{\Delta_2}x^{3} y^{2}\,\mathrm dA\\ & =\int_{0}^{3}\int_{-1}^{3}x^{3} y^{2}\,\mathrm d x\,\mathrm d y-\int_{1}^{2}\int_{1}^{2}x^{3} y^{2}\,\mathrm d x\,\mathrm d y\\ & =\int_{-1}^{3}x^{3}\,\mathrm d x\cdot \int_{0}^{3}y^{2}\,\mathrm d y-\int_{1}^{2}x^{3}\,\mathrm d x\cdot \int_{1}^{2}y^{2}\,\mathrm d y\\ & =\frac{x^{4}}{4}\big|_{-1}^{3}\cdot \frac{y^{3}}{3}\big|_{0}^{3}-\frac{x^{4}}{4}\big|_{1}^{2}\cdot \frac{y^{3}}{3}\big|_{1}^{2}\\ & =(\left(\frac{81}{4}\right)-\left(\frac{1}{4}\right))\cdot (\left(9\right)-\left(0\right))-(\left(4\right)-\left(\frac{1}{4}\right))\cdot (\left(\frac{8}{3}\right)-\left(\frac{1}{3}\right))\\ & =\left(20\right)\cdot \left(9\right)-\left(\frac{15}{4}\right)\cdot \left(\frac{7}{3}\right)\\ & =\frac{685}{4}.\end{aligned}
+\begin{aligned}\iint_D x^{3} y^{2}\,\mathrm dA & =\iint_{\Delta_1}x^{3} y^{2}\,\mathrm dA-\iint_{\Delta_2}x^{3} y^{2}\,\mathrm dA\\ & =\int_{0}^{3}\int_{-1}^{3}x^{3} y^{2}\,\mathrm d x\,\mathrm d y-\int_{1}^{2}\int_{1}^{2}x^{3} y^{2}\,\mathrm d x\,\mathrm d y\\ & =\int_{-1}^{3}x^{3}\,\mathrm d x\cdot \int_{0}^{3}y^{2}\,\mathrm d y-\int_{1}^{2}x^{3}\,\mathrm d x\cdot \int_{1}^{2}y^{2}\,\mathrm d y\\ & =\frac{x^4}{4}\big|_{-1}^{3}\cdot \frac{y^3}{3}\big|_{0}^{3}-\frac{x^4}{4}\big|_{1}^{2}\cdot \frac{y^3}{3}\big|_{1}^{2}\\ & =(\left(\frac{81}{4}\right)-\left(\frac{1}{4}\right))\cdot (\left(9\right)-\left(0\right))-(\left(4\right)-\left(\frac{1}{4}\right))\cdot (\left(\frac{8}{3}\right)-\left(\frac{1}{3}\right))\\ & =\left(20\right)\cdot \left(9\right)-\left(\frac{15}{4}\right)\cdot \left(\frac{7}{3}\right)\\ & =\frac{685}{4}.\end{aligned}
 $$
 
 ## Generated variant rectangle_xy 0
@@ -2078,7 +2074,7 @@ The region $D$ can be represented in Cartesian coordinates as $\Delta_1\setminus
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D - 6 x y\,\mathrm dA & =\iint_{\Delta_1}- 6 x y\,\mathrm dA-\iint_{\Delta_2}- 6 x y\,\mathrm dA\\ & =\int_{-2}^{1}\int_{-1}^{3}- 6 x y\,\mathrm d x\,\mathrm d y-\int_{-1}^{0}\int_{0}^{2}- 6 x y\,\mathrm d x\,\mathrm d y\\ & =\int_{-1}^{3}- 6 x\,\mathrm d x\cdot \int_{-2}^{1}y\,\mathrm d y-\int_{0}^{2}- 6 x\,\mathrm d x\cdot \int_{-1}^{0}y\,\mathrm d y\\ & =- 3 x^{2}\big|_{-1}^{3}\cdot \frac{y^{2}}{2}\big|_{-2}^{1}-- 3 x^{2}\big|_{0}^{2}\cdot \frac{y^{2}}{2}\big|_{-1}^{0}\\ & =(\left(-27\right)-\left(-3\right))\cdot (\left(\frac{1}{2}\right)-\left(2\right))-(\left(-12\right)-\left(0\right))\cdot (\left(0\right)-\left(\frac{1}{2}\right))\\ & =\left(-24\right)\cdot \left(- \frac{3}{2}\right)-\left(-12\right)\cdot \left(- \frac{1}{2}\right)\\ & =30.\end{aligned}
+\begin{aligned}\iint_D - 6 x y\,\mathrm dA & =\iint_{\Delta_1}- 6 x y\,\mathrm dA-\iint_{\Delta_2}- 6 x y\,\mathrm dA\\ & =\int_{-2}^{1}\int_{-1}^{3}- 6 x y\,\mathrm d x\,\mathrm d y-\int_{-1}^{0}\int_{0}^{2}- 6 x y\,\mathrm d x\,\mathrm d y\\ & =\int_{-1}^{3}- 6 x\,\mathrm d x\cdot \int_{-2}^{1}y\,\mathrm d y-\int_{0}^{2}- 6 x\,\mathrm d x\cdot \int_{-1}^{0}y\,\mathrm d y\\ & =- 3 x^{2}\big|_{-1}^{3}\cdot \frac{y^2}{2}\big|_{-2}^{1}-- 3 x^{2}\big|_{0}^{2}\cdot \frac{y^2}{2}\big|_{-1}^{0}\\ & =(\left(-27\right)-\left(-3\right))\cdot (\left(\frac{1}{2}\right)-\left(2\right))-(\left(-12\right)-\left(0\right))\cdot (\left(0\right)-\left(\frac{1}{2}\right))\\ & =\left(-24\right)\cdot \left(- \frac{3}{2}\right)-\left(-12\right)\cdot \left(- \frac{1}{2}\right)\\ & =30.\end{aligned}
 $$
 
 ## Generated variant rectangle_xy 1
@@ -2129,7 +2125,7 @@ The region $D$ can be represented in Cartesian coordinates as $\Delta_1\setminus
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D 2 x y\,\mathrm dA & =\iint_{\Delta_1}2 x y\,\mathrm dA-\iint_{\Delta_2}2 x y\,\mathrm dA\\ & =\int_{0}^{3}\int_{-1}^{3}2 x y\,\mathrm d x\,\mathrm d y-\int_{1}^{2}\int_{0}^{2}2 x y\,\mathrm d x\,\mathrm d y\\ & =\int_{-1}^{3}2 x\,\mathrm d x\cdot \int_{0}^{3}y\,\mathrm d y-\int_{0}^{2}2 x\,\mathrm d x\cdot \int_{1}^{2}y\,\mathrm d y\\ & =x^{2}\big|_{-1}^{3}\cdot \frac{y^{2}}{2}\big|_{0}^{3}-x^{2}\big|_{0}^{2}\cdot \frac{y^{2}}{2}\big|_{1}^{2}\\ & =(\left(9\right)-\left(1\right))\cdot (\left(\frac{9}{2}\right)-\left(0\right))-(\left(4\right)-\left(0\right))\cdot (\left(2\right)-\left(\frac{1}{2}\right))\\ & =\left(8\right)\cdot \left(\frac{9}{2}\right)-\left(4\right)\cdot \left(\frac{3}{2}\right)\\ & =30.\end{aligned}
+\begin{aligned}\iint_D 2 x y\,\mathrm dA & =\iint_{\Delta_1}2 x y\,\mathrm dA-\iint_{\Delta_2}2 x y\,\mathrm dA\\ & =\int_{0}^{3}\int_{-1}^{3}2 x y\,\mathrm d x\,\mathrm d y-\int_{1}^{2}\int_{0}^{2}2 x y\,\mathrm d x\,\mathrm d y\\ & =\int_{-1}^{3}2 x\,\mathrm d x\cdot \int_{0}^{3}y\,\mathrm d y-\int_{0}^{2}2 x\,\mathrm d x\cdot \int_{1}^{2}y\,\mathrm d y\\ & =x^{2}\big|_{-1}^{3}\cdot \frac{y^2}{2}\big|_{0}^{3}-x^{2}\big|_{0}^{2}\cdot \frac{y^2}{2}\big|_{1}^{2}\\ & =(\left(9\right)-\left(1\right))\cdot (\left(\frac{9}{2}\right)-\left(0\right))-(\left(4\right)-\left(0\right))\cdot (\left(2\right)-\left(\frac{1}{2}\right))\\ & =\left(8\right)\cdot \left(\frac{9}{2}\right)-\left(4\right)\cdot \left(\frac{3}{2}\right)\\ & =30.\end{aligned}
 $$
 
 ## Generated variant rectangle_shift 0
@@ -2180,7 +2176,7 @@ The region $D$ can be represented in Cartesian coordinates as $\Delta_1\setminus
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D - 12 x y\,\mathrm dA & =\iint_{\Delta_1}- 12 x y\,\mathrm dA-\iint_{\Delta_2}- 12 x y\,\mathrm dA\\ & =\int_{-2}^{1}\int_{1}^{4}- 12 x y\,\mathrm d x\,\mathrm d y-\int_{-1}^{0}\int_{2}^{3}- 12 x y\,\mathrm d x\,\mathrm d y\\ & =\int_{1}^{4}- 6 x\,\mathrm d x\cdot \int_{-2}^{1}2 y\,\mathrm d y-\int_{2}^{3}- 6 x\,\mathrm d x\cdot \int_{-1}^{0}2 y\,\mathrm d y\\ & =- 3 x^{2}\big|_{1}^{4}\cdot y^{2}\big|_{-2}^{1}-- 3 x^{2}\big|_{2}^{3}\cdot y^{2}\big|_{-1}^{0}\\ & =(\left(-48\right)-\left(-3\right))\cdot (\left(1\right)-\left(4\right))-(\left(-27\right)-\left(-12\right))\cdot (\left(0\right)-\left(1\right))\\ & =\left(-45\right)\cdot \left(-3\right)-\left(-15\right)\cdot \left(-1\right)\\ & =120.\end{aligned}
+\begin{aligned}\iint_D - 12 x y\,\mathrm dA & =\iint_{\Delta_1}- 12 x y\,\mathrm dA-\iint_{\Delta_2}- 12 x y\,\mathrm dA\\ & =\int_{-2}^{1}\int_{1}^{4}- 12 x y\,\mathrm d x\,\mathrm d y-\int_{-1}^{0}\int_{2}^{3}- 12 x y\,\mathrm d x\,\mathrm d y\\ & =\int_{1}^{4}- 6 x\,\mathrm d x\cdot \int_{-2}^{1}2 y\,\mathrm d y-\int_{2}^{3}- 6 x\,\mathrm d x\cdot \int_{-1}^{0}2 y\,\mathrm d y\\ & =- 3 x^{2}\big|_{1}^{4}\cdot y^2\big|_{-2}^{1}-- 3 x^{2}\big|_{2}^{3}\cdot y^2\big|_{-1}^{0}\\ & =(\left(-48\right)-\left(-3\right))\cdot (\left(1\right)-\left(4\right))-(\left(-27\right)-\left(-12\right))\cdot (\left(0\right)-\left(1\right))\\ & =\left(-45\right)\cdot \left(-3\right)-\left(-15\right)\cdot \left(-1\right)\\ & =120.\end{aligned}
 $$
 
 ## Generated variant rectangle_shift 1
@@ -2231,7 +2227,7 @@ The region $D$ can be represented in Cartesian coordinates as $\Delta_1\setminus
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D 4 x y\,\mathrm dA & =\iint_{\Delta_1}4 x y\,\mathrm dA-\iint_{\Delta_2}4 x y\,\mathrm dA\\ & =\int_{0}^{3}\int_{1}^{4}4 x y\,\mathrm d x\,\mathrm d y-\int_{1}^{2}\int_{2}^{3}4 x y\,\mathrm d x\,\mathrm d y\\ & =\int_{1}^{4}2 x\,\mathrm d x\cdot \int_{0}^{3}2 y\,\mathrm d y-\int_{2}^{3}2 x\,\mathrm d x\cdot \int_{1}^{2}2 y\,\mathrm d y\\ & =x^{2}\big|_{1}^{4}\cdot y^{2}\big|_{0}^{3}-x^{2}\big|_{2}^{3}\cdot y^{2}\big|_{1}^{2}\\ & =(\left(16\right)-\left(1\right))\cdot (\left(9\right)-\left(0\right))-(\left(9\right)-\left(4\right))\cdot (\left(4\right)-\left(1\right))\\ & =\left(15\right)\cdot \left(9\right)-\left(5\right)\cdot \left(3\right)\\ & =120.\end{aligned}
+\begin{aligned}\iint_D 4 x y\,\mathrm dA & =\iint_{\Delta_1}4 x y\,\mathrm dA-\iint_{\Delta_2}4 x y\,\mathrm dA\\ & =\int_{0}^{3}\int_{1}^{4}4 x y\,\mathrm d x\,\mathrm d y-\int_{1}^{2}\int_{2}^{3}4 x y\,\mathrm d x\,\mathrm d y\\ & =\int_{1}^{4}2 x\,\mathrm d x\cdot \int_{0}^{3}2 y\,\mathrm d y-\int_{2}^{3}2 x\,\mathrm d x\cdot \int_{1}^{2}2 y\,\mathrm d y\\ & =x^{2}\big|_{1}^{4}\cdot y^2\big|_{0}^{3}-x^{2}\big|_{2}^{3}\cdot y^2\big|_{1}^{2}\\ & =(\left(16\right)-\left(1\right))\cdot (\left(9\right)-\left(0\right))-(\left(9\right)-\left(4\right))\cdot (\left(4\right)-\left(1\right))\\ & =\left(15\right)\cdot \left(9\right)-\left(5\right)\cdot \left(3\right)\\ & =120.\end{aligned}
 $$
 
 ## Generated variant rectangle_x2y3 0
@@ -2282,7 +2278,7 @@ The region $D$ can be represented in Cartesian coordinates as $\Delta_1\setminus
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D - 12 x^{2} y^{3}\,\mathrm dA & =\iint_{\Delta_1}- 12 x^{2} y^{3}\,\mathrm dA-\iint_{\Delta_2}- 12 x^{2} y^{3}\,\mathrm dA\\ & =\int_{-3}^{1}\int_{0}^{3}- 12 x^{2} y^{3}\,\mathrm d x\,\mathrm d y-\int_{-1}^{0}\int_{1}^{2}- 12 x^{2} y^{3}\,\mathrm d x\,\mathrm d y\\ & =\int_{0}^{3}- 3 x^{2}\,\mathrm d x\cdot \int_{-3}^{1}4 y^{3}\,\mathrm d y-\int_{1}^{2}- 3 x^{2}\,\mathrm d x\cdot \int_{-1}^{0}4 y^{3}\,\mathrm d y\\ & =- x^{3}\big|_{0}^{3}\cdot y^{4}\big|_{-3}^{1}-- x^{3}\big|_{1}^{2}\cdot y^{4}\big|_{-1}^{0}\\ & =(\left(-27\right)-\left(0\right))\cdot (\left(1\right)-\left(81\right))-(\left(-8\right)-\left(-1\right))\cdot (\left(0\right)-\left(1\right))\\ & =\left(-27\right)\cdot \left(-80\right)-\left(-7\right)\cdot \left(-1\right)\\ & =2153.\end{aligned}
+\begin{aligned}\iint_D - 12 x^{2} y^{3}\,\mathrm dA & =\iint_{\Delta_1}- 12 x^{2} y^{3}\,\mathrm dA-\iint_{\Delta_2}- 12 x^{2} y^{3}\,\mathrm dA\\ & =\int_{-3}^{1}\int_{0}^{3}- 12 x^{2} y^{3}\,\mathrm d x\,\mathrm d y-\int_{-1}^{0}\int_{1}^{2}- 12 x^{2} y^{3}\,\mathrm d x\,\mathrm d y\\ & =\int_{0}^{3}- 3 x^{2}\,\mathrm d x\cdot \int_{-3}^{1}4 y^{3}\,\mathrm d y-\int_{1}^{2}- 3 x^{2}\,\mathrm d x\cdot \int_{-1}^{0}4 y^{3}\,\mathrm d y\\ & =\frac{-3x^3}{3}\big|_{0}^{3}\cdot y^4\big|_{-3}^{1}-\frac{-3x^3}{3}\big|_{1}^{2}\cdot y^4\big|_{-1}^{0}\\ & =(\left(-27\right)-\left(0\right))\cdot (\left(1\right)-\left(81\right))-(\left(-8\right)-\left(-1\right))\cdot (\left(0\right)-\left(1\right))\\ & =\left(-27\right)\cdot \left(-80\right)-\left(-7\right)\cdot \left(-1\right)\\ & =2153.\end{aligned}
 $$
 
 ## Generated variant rectangle_x2y3 1
@@ -2333,7 +2329,7 @@ The region $D$ can be represented in Cartesian coordinates as $\Delta_1\setminus
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D 4 x^{2} y^{3}\,\mathrm dA & =\iint_{\Delta_1}4 x^{2} y^{3}\,\mathrm dA-\iint_{\Delta_2}4 x^{2} y^{3}\,\mathrm dA\\ & =\int_{-1}^{3}\int_{0}^{3}4 x^{2} y^{3}\,\mathrm d x\,\mathrm d y-\int_{1}^{2}\int_{1}^{2}4 x^{2} y^{3}\,\mathrm d x\,\mathrm d y\\ & =\int_{0}^{3}x^{2}\,\mathrm d x\cdot \int_{-1}^{3}4 y^{3}\,\mathrm d y-\int_{1}^{2}x^{2}\,\mathrm d x\cdot \int_{1}^{2}4 y^{3}\,\mathrm d y\\ & =\frac{x^{3}}{3}\big|_{0}^{3}\cdot y^{4}\big|_{-1}^{3}-\frac{x^{3}}{3}\big|_{1}^{2}\cdot y^{4}\big|_{1}^{2}\\ & =(\left(9\right)-\left(0\right))\cdot (\left(81\right)-\left(1\right))-(\left(\frac{8}{3}\right)-\left(\frac{1}{3}\right))\cdot (\left(16\right)-\left(1\right))\\ & =\left(9\right)\cdot \left(80\right)-\left(\frac{7}{3}\right)\cdot \left(15\right)\\ & =685.\end{aligned}
+\begin{aligned}\iint_D 4 x^{2} y^{3}\,\mathrm dA & =\iint_{\Delta_1}4 x^{2} y^{3}\,\mathrm dA-\iint_{\Delta_2}4 x^{2} y^{3}\,\mathrm dA\\ & =\int_{-1}^{3}\int_{0}^{3}4 x^{2} y^{3}\,\mathrm d x\,\mathrm d y-\int_{1}^{2}\int_{1}^{2}4 x^{2} y^{3}\,\mathrm d x\,\mathrm d y\\ & =\int_{0}^{3}x^{2}\,\mathrm d x\cdot \int_{-1}^{3}4 y^{3}\,\mathrm d y-\int_{1}^{2}x^{2}\,\mathrm d x\cdot \int_{1}^{2}4 y^{3}\,\mathrm d y\\ & =\frac{x^3}{3}\big|_{0}^{3}\cdot y^4\big|_{-1}^{3}-\frac{x^3}{3}\big|_{1}^{2}\cdot y^4\big|_{1}^{2}\\ & =(\left(9\right)-\left(0\right))\cdot (\left(81\right)-\left(1\right))-(\left(\frac{8}{3}\right)-\left(\frac{1}{3}\right))\cdot (\left(16\right)-\left(1\right))\\ & =\left(9\right)\cdot \left(80\right)-\left(\frac{7}{3}\right)\cdot \left(15\right)\\ & =685.\end{aligned}
 $$
 
 ## Generated variant annulus_supplied 0
@@ -2365,7 +2361,7 @@ $$
 \begin{aligned}\oint_{\partial D}P\,\mathrm dx+Q\,\mathrm dy & =\iint_D - 3 x^{2} - 3 y^{2}\,\mathrm dA.\end{aligned}
 $$
 
-The region $D$ can be represented in polar coordinates as
+The region $D$ can be represented in polar coordinates as 
 
 $$\Delta=\{(r,\theta):3\le r\le 4,0\le\theta\le2\pi\}.$$
 
@@ -2378,7 +2374,7 @@ $$
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D - 3 x^{2} - 3 y^{2}\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{4}-3\left(((r\cos\theta)^2+(r\sin\theta)^2)\cdot r\right)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}-3\left(r^{2}(\cos^2\theta+\sin^2\theta)\cdot r\right)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}- 3 r^{3}\,\mathrm d r\,\mathrm d \theta\\ & =-3\left(\int_{0}^{2 \pi}\,\mathrm d \theta\cdot \int_{3}^{4}r^{3}\,\mathrm d r\right)\\ & =- 6 \pi\cdot \int_{3}^{4}r^{3}\,\mathrm d r\\ & =- 6 \pi\cdot \frac{r^{4}}{4}\big|_{3}^{4}\\ & =- 6 \pi\cdot (\left(64\right)-\left(\frac{81}{4}\right))\\ & =- 6 \pi\cdot \left(\frac{175}{4}\right)\\ & =- \frac{525 \pi}{2}.\end{aligned}
+\begin{aligned}\iint_D - 3 x^{2} - 3 y^{2}\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{4}-3\left(((r\cos\theta)^2+(r\sin\theta)^2)\cdot r\right)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}-3\left(r^{2}(\cos^2\theta+\sin^2\theta)\cdot r\right)\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{4}- 3 r^{3}\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\,\mathrm d \theta\cdot \int_{3}^{4}- 3 r^{3}\,\mathrm d r\\ & =- 6 \pi\cdot \int_{3}^{4}r^{3}\,\mathrm d r\\ & =- 6 \pi\cdot \frac{r^{4}}{4}\big|_{3}^{4}\\ & =- 6 \pi\cdot (\left(64\right)-\left(\frac{81}{4}\right))\\ & =-3\cdot\left(\frac{\pi}{2}\right)\cdot \left((4)^{4}-\left((3)^{4}\right)\right)\\ & =- \frac{3 \pi}{2}\cdot \left(256-\left(81\right)\right)\\ & =- \frac{525 \pi}{2}.\end{aligned}
 $$
 
 ## Generated variant annulus_supplied 1
@@ -2410,7 +2406,7 @@ $$
 \begin{aligned}\oint_{\partial D}P\,\mathrm dx+Q\,\mathrm dy & =\iint_D x^{2} + y^{2}\,\mathrm dA.\end{aligned}
 $$
 
-The region $D$ can be represented in polar coordinates as
+The region $D$ can be represented in polar coordinates as 
 
 $$\Delta=\{(r,\theta):3\le r\le 5,0\le\theta\le2\pi\}.$$
 
@@ -2423,6 +2419,6 @@ $$
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D x^{2} + y^{2}\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{5}((r\cos\theta)^2+(r\sin\theta)^2)\cdot r\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}r^{2}(\cos^2\theta+\sin^2\theta)\cdot r\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}r^{3}\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\,\mathrm d \theta\cdot \int_{3}^{5}r^{3}\,\mathrm d r\\ & =2 \pi\cdot \int_{3}^{5}r^{3}\,\mathrm d r\\ & =2 \pi\cdot \frac{r^{4}}{4}\big|_{3}^{5}\\ & =2 \pi\cdot (\left(\frac{625}{4}\right)-\left(\frac{81}{4}\right))\\ & =2 \pi\cdot \left(136\right)\\ & =272 \pi.\end{aligned}
+\begin{aligned}\iint_D x^{2} + y^{2}\,\mathrm dA & =\int_{0}^{2 \pi}\int_{3}^{5}((r\cos\theta)^2+(r\sin\theta)^2)\cdot r\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}r^{2}(\cos^2\theta+\sin^2\theta)\cdot r\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\int_{3}^{5}r^{3}\,\mathrm d r\,\mathrm d \theta\\ & =\int_{0}^{2 \pi}\,\mathrm d \theta\cdot \int_{3}^{5}r^{3}\,\mathrm d r\\ & =2 \pi\cdot \int_{3}^{5}r^{3}\,\mathrm d r\\ & =2 \pi\cdot \frac{r^{4}}{4}\big|_{3}^{5}\\ & =2 \pi\cdot (\left(\frac{625}{4}\right)-\left(\frac{81}{4}\right))\\ & =\frac{\pi}{2}\cdot \left((5)^{4}-\left((3)^{4}\right)\right)\\ & =\frac{\pi}{2}\cdot \left(625-\left(81\right)\right)\\ & =272 \pi.\end{aligned}
 $$
 

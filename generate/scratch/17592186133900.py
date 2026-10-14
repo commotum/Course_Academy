@@ -117,6 +117,8 @@ def rect_solution(f,p,P,Q,Py,Qx,C):
  sol='The region $D$ can be represented in Cartesian coordinates as $\\Delta_1\\setminus\\Delta_2,$ where\n\n- $\\Delta_1='+bound(A)+'$ is the region enclosed by the outer curve, and\n\n- $\\Delta_2='+bound(B)+'$ is the region enclosed by the inner curve.\n\nTherefore, our double integral becomes\n\n'
  sol+=aligned([r'\iint_D '+tex(C)+r'\,\mathrm dA & =\iint_{\Delta_1}'+tex(C)+r'\,\mathrm dA-\iint_{\Delta_2}'+tex(C)+r'\,\mathrm dA',repeated(A)+'-'+repeated(B),product(A)+'-'+product(B),prim(A)+'-'+prim(B),ends(A)+'-'+ends(B),par(av[0])+r'\cdot '+par(av[1])+'-'+par(bv[0])+r'\cdot '+par(bv[1]),tex(ans)])
  return sol,ans,outer,hole,{'gx':str(gx),'gy':str(gy),'G':str(G),'H':str(H),'primitive_tex':{'x':GT,'y':HT},'endpoint_components':[[str(G.subs(x,a[1])),str(G.subs(x,a[0])),str(H.subs(y,a[3])),str(H.subs(y,a[2]))] for a in (A,B)]}
+def held_scale(c,base):
+ return base if c==1 else tex(c)+r'\cdot\left('+base+r'\right)'
 def held_power(v,n):
  return '('+tex(v)+')^{'+str(n)+'}'
 def held_fraction(coefficient,v,n,denominator):
@@ -147,7 +149,7 @@ def polar_solution(f,p,C):
   primitive=tex(factor)+r'\cdot '+evaluate(angular_primitive,r'\theta',0,2*S.pi)+r'\cdot '+evaluate(r'\frac{r^4}{4}','r',a,b)
   primitive_values=tex(factor)+r'\cdot '+endpoint(G,t,0,2*S.pi)+r'\cdot '+endpoint(H,r,a,b)
   # Original pulls BOTH denominator factors outside the held powers.
-  factored=tex(S.Rational(3*c,2))+r'\cdot (1-1)\cdot\frac{1}{4}\cdot '+difference(held_power(b,4),held_power(a,4))
+  factored=held_scale(c,r'\frac{3}{2}')+r'\cdot (1-1)\cdot\frac{1}{4}\cdot '+difference(held_power(b,4),held_power(a,4))
   power_values=tex(S.Rational(3*c,2))+r'\cdot (1-1)\cdot\frac{1}{4}\cdot '+difference(tex(b**4),tex(a**4))
   required=[repeated,separated,primitive,factored];added=[primitive_values,power_values]
   rows=[r'\iint_\Delta '+integrand+r'\,\mathrm dr\,\mathrm d\theta & ='+repeated,separated,primitive,primitive_values,factored,power_values,'0']
@@ -182,7 +184,8 @@ def polar_solution(f,p,C):
   primitive=tex(k)+r'\cdot '+evaluate(r'\frac{r^{'+str(n)+'}}{'+str(n)+'}','r',a,b)
   primitive_values=tex(k)+r'\cdot '+endpoint(H,r,a,b)
   # This is the source operation: collect 2pi*(factor/n) OUTSIDE powers.
-  factored_endpoints=tex(k/n)+r'\cdot '+difference(held_power(b,n),held_power(a,n))
+  base_factor=-S.pi/2 if f=='annulus_negative' else 2*S.pi if f=='annulus_four' else S.pi/3 if n==6 else S.pi/2
+  factored_endpoints=held_scale(c,tex(base_factor))+r'\cdot '+difference(held_power(b,n),held_power(a,n))
   power_values=tex(k/n)+r'\cdot '+difference(tex(b**n),tex(a**n))
   required=[repeated,factored_integrand,reduced_integral,separated,angular_evaluated,primitive,factored_endpoints];added=[primitive_values,power_values]
   ans=S.simplify(k*(H.subs(r,b)-H.subs(r,a)))

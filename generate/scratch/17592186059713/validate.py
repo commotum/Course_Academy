@@ -140,70 +140,89 @@ def fidelity(r,source):
    sa=next(sa for sa in sf[':answer-field/choices'] if a[':answer/value']==sa[':answer/value']);assert set(a)==set(sa),'raw answer presence parity'
    assert a[':answer/type']==sa[':answer/type'][':db/ident']
 
-cases=[{'source_id':sid,'template':g.SOURCE_TEMPLATE[sid],'parameters':p,'bank_profile':'raw-'+sid,'level':'easy','level_assignment':'observed easy' if ':question/difficulty' in g.QS[sid] else 'authored single-operation easy; raw difficulty remains absent'} for sid,p in g.SOURCE_PARAMS.items()]
-write('source-cases.json',cases)
-raws=[];completed=[]
-for case in cases:
- r=g.generate('easy',template=case['template'],parameters=case['parameters'],profile=case['bank_profile']);check_record(r);fidelity(r,g.QS[case['source_id']]);raws.append(r)
- n=g.generate('easy',template=case['template'],parameters=case['parameters']);check_record(n);completed.append(n)
-write('raw-replay.json',raws)
-records=[];counts=Counter();stages=0;tasks={level:set() for level in ('easy','moderate','hard')}
-for t,level in g.TEMPLATES.items():
- for seed in range(200):
-  r=g.generate(level,seed,template=t);stages+=check_record(r);counts[t]+=1;tasks[level].add(r['generation']['mathematical_fingerprint']);records.append(r)
-  other=g.generate(level,seed+1,template=t,parameters=r['generation']['parameters'],profile=r['generation']['profile'])
-  assert other['question'][':question/id']==r['question'][':question/id'],'seed must not affect identity'
-  assert other['generation']['mathematical_fingerprint']==r['generation']['mathematical_fingerprint']
-assert set(g.generate('easy',s)['generation']['template'] for s in range(200))==set(t for t,l in g.TEMPLATES.items() if l=='easy'),'default family coverage'
-# Explicit boundaries and failed whole banks; no silently resampled parameters.
-invalid=[('moderate','linear_combination',{'a':[1,1],'b':[1,2],'p':1,'q':2,'s':1}),('moderate','linear_combination',{'a':[0,1],'b':[1,2],'p':2,'q':2,'s':1}),('hard','nested_combination',{'a':[1,1],'b':[1,2],'c':[2,3],'p':5,'q':2,'r':2,'s':1}),('easy','sum_lower',{'a':[0,0],'b':[0,0]}),('easy','scalar',{'a':[1,0],'p':3}),('easy','subtract',{'a':[10,1],'b':[1,1]})]
-for l,t,p in invalid:
- try:g.generate(l,template=t,parameters=p)
- except ValueError:pass
- else:raise AssertionError(('invalid accepted',l,t,p))
-valid_boundaries=[('easy','scalar',{'a':[-9,8],'p':-6}),('moderate','linear_combination',{'a':[6,-5],'b':[-4,6],'p':6,'q':5,'s':-1}),('hard','nested_combination',{'a':[6,-5],'b':[-4,6],'c':[5,-6],'p':4,'q':3,'r':4,'s':1})]
-for l,t,p in valid_boundaries:check_record(g.generate(l,template=t,parameters=p))
-# Raw evidence remains public but never enters default sampling.
-for sid in ('q-1323','q-1386'):
- for seed in range(50):
-  rr=g.generate('easy',seed,template=g.SOURCE_TEMPLATE[sid],profile='raw-'+sid);check_record(rr);assert rr['generation']['evidence_only'] and not rr['generation']['eligible_for_learning']
-  assert set(rr['question'])==set(g.QS[sid])
-  f=rr['question'][':question/answer-fields'][0];sf=g.QS[sid][':question/answer-fields'][0];assert set(f)==set(sf)
-  assert all(set(a)==set(sf[':answer-field/choices'][0]) for a in f[':answer-field/choices'])
-# Mutations prove independent reads detect failures in printed stages/choices/definitions.
-mutation_base=g.generate('hard',template='nested_combination',parameters={'a':[2,-3],'b':[4,5],'c':[-2,3],'p':2,'q':3,'r':4,'s':-1})
-mutations=[]
-bad=copy.deepcopy(mutation_base);bad['question'][':question/problem']=bad['question'][':question/problem'].replace('⟨2,-3⟩','⟨3,-3⟩');mutations.append(bad)
-bad=copy.deepcopy(mutation_base);bad['question'][':question/worked-solution']=bad['question'][':question/worked-solution'].replace('3\\cdot 4-4\\cdot (-2)','3\\cdot 4+4\\cdot (-2)');mutations.append(bad)
-bad=copy.deepcopy(mutation_base);f=bad['question'][':question/answer-fields'][0];f[':answer-field/choices'][0][':answer/value']=f[':answer-field/choices'][1][':answer/value'];mutations.append(bad)
-bad=copy.deepcopy(mutation_base);bad['question'][':question/worked-solution']=bad['question'][':question/worked-solution'].replace('⟨-16,-9⟩','⟨-15,-9⟩');mutations.append(bad)
-bad=copy.deepcopy(mutation_base);bad['question'][':question/worked-solution']=bad['question'][':question/worked-solution'].replace('⟨4,-6⟩-(⟨12,15⟩','⟨5,-6⟩-(⟨13,15⟩');mutations.append(bad)
-for bad in mutations:
- try:check_record(bad)
- except AssertionError:pass
- else:raise AssertionError('mutation survived independent check')
-# Real engine: every displayed choice of 1200 generated + four complete originals.
-fixtures=[]
-for i,r in enumerate(completed+records):
- f=r['question'][':question/answer-fields'][0]
- checks=[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'correct choice' if a[':answer/id']==f[':answer-field/correct'][1] else 'displayed wrong choice'} for a in f[':answer-field/choices']]
- fixtures.append({'label':str(i),'record':r,'checks':checks})
-write('native-input.json',fixtures)
-engine=REPO/'generate/runs/current/check-engine';subprocess.run([str(engine),str(D/'native-input.json'),str(D/'native-report.json')],check=True)
-native=json.loads((D/'native-report.json').read_text())
-reviews=[]
-for t,l in g.TEMPLATES.items():
- for seed in (27,83):reviews.append(g.generate(l,seed,template=t))
-# Changed parameters for both observed banks, including raw opaque evidence.
-for sid in ('q-1323','q-1386'):
- reviews.append(g.generate('easy',91,template=g.SOURCE_TEMPLATE[sid],profile='raw-'+sid))
-write('review.json',reviews)
-review=['# Original evidence and generated variants','', 'All raw omissions are intentional. Complete originals below infer fields/correct refs and solutions; no captured designation exists.']
-for case,r,n in zip(cases,raws,completed):
- review.extend(['\n## Original '+case['source_id']+' — raw evidence',g.markdown(r),'\n### Completed original — authored assessment repair',g.markdown(n)])
-for r in reviews:
- review.extend(['\n## Generated '+r['generation']['level']+' / '+r['generation']['template']+' / '+r['generation']['profile'],g.markdown(r)])
-(D/'review.md').write_text('\n'.join(review)+'\n')
-result={'status':'pass','runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':importlib.metadata.version('matplotlib')},'source_provenance':{k:g.SOURCE[k] for k in ('database','basis','lineage')},'source_fidelity':{'practice_sources':4,'prompt_exact':4,'raw_attribute_presence':4,'complete_banks':{'matched':2,'total':2},'displayed_choices':{'matched':10,'total':10},'captured_correct_designations':{'matched':0,'total':0,'missing':2},'worked_solution_exact':{'matched':2,'total':2,'missing':2},'fieldless_sources':2,'completed_originals':4,'raw_gradeable_records':0},'generated_records':1200,'per_template':dict(counts),'independently_verified_solution_stages':stages,'sampled_unique_mathematical_tasks':{k:len(v) for k,v in tasks.items()},'valid_explicit_boundaries':len(valid_boundaries),'invalid_explicit_rejections':len(invalid),'mutation_rejections':len(mutations),'raw_changed_parameter_checks':100,'native':{k:native[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'native_engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'evidence_limits':['Two raw radio records lack captured correct refs and worked solutions. Correct values are independently inferred only in completed originals.','Two raw easy sums are fieldless; authored radio completion uses the observed five-choice layout.','q-1323 complete wrong bank is opaque except final-y sign flip; parameterized evidence-only formulas reproduce all values without claiming author intent.','No observed moderate/hard label; bounds and workload are authored within the lesson method.','Canonical raster is contextual evidence, not a practice template; no assessed generated plot.']}
-write('validation.json',result)
-print(json.dumps(result,indent=2))
+
+def native_engine():
+ # Compile the existing generic fixture against the current application library.
+ sys.path.insert(0,str(REPO/'scripts'))
+ from serve_graph_explorer import build_learning
+ build_learning(REPO.parent/'EDB')
+ libraries={n:max((REPO/'target/release/deps').glob('lib'+n+'-*.rlib'),key=lambda p:p.stat().st_mtime_ns) for n in ('course_academy_engine','serde_json')}
+ source=D/'check-engine.rs';source.write_bytes((REPO/'generate/runs/current/check-engine.rs').read_bytes())
+ engine=D/'check-engine'
+ fingerprint=hashlib.sha256(source.read_bytes()+b''.join(p.read_bytes() for p in libraries.values())).hexdigest()
+ manifest=D/'engine-build.json'
+ if not engine.exists() or not manifest.exists() or json.loads(manifest.read_text())['fingerprint']!=fingerprint:
+  cmd=['rustc','--edition=2024','-O',str(source)]
+  for name,path in libraries.items():cmd+=['--extern',name+'='+str(path)]
+  cmd+=['-L','dependency='+str(REPO/'target/release/deps'),'-L','dependency='+str(REPO.parent/'EDB/target/release/deps'),'-o',str(engine)]
+  subprocess.run(cmd,check=True)
+  write('engine-build.json',{'fingerprint':fingerprint,'libraries':{n:str(p) for n,p in libraries.items()},'library_sha256':{n:hashlib.sha256(p.read_bytes()).hexdigest() for n,p in libraries.items()},'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest()})
+ return engine
+
+def main():
+ cases=[{'source_id':sid,'template':g.SOURCE_TEMPLATE[sid],'parameters':p,'bank_profile':'raw-'+sid,'level':'easy','level_assignment':'observed easy' if ':question/difficulty' in g.QS[sid] else 'authored single-operation easy; raw difficulty remains absent'} for sid,p in g.SOURCE_PARAMS.items()]
+ write('source-cases.json',cases)
+ raws=[];completed=[]
+ for case in cases:
+  r=g.generate('easy',template=case['template'],parameters=case['parameters'],profile=case['bank_profile']);check_record(r);fidelity(r,g.QS[case['source_id']]);raws.append(r)
+  if case['template'] in g.SUPPORTED_TEMPLATES:
+   n=g.generate('easy',template=case['template'],parameters=case['parameters']);check_record(n);completed.append(n)
+ write('raw-replay.json',raws)
+ records=[];counts=Counter();stages=0;tasks=set()
+ for t in g.SUPPORTED_TEMPLATES:
+  for seed in range(200):
+   r=g.generate('easy',seed,template=t);stages+=check_record(r);counts[t]+=1;tasks.add(r['generation']['mathematical_fingerprint']);records.append(r)
+   other=g.generate('easy',seed+1,template=t,parameters=r['generation']['parameters'],profile=r['generation']['profile'])
+   assert other['question'][':question/id']==r['question'][':question/id'],'seed must not affect identity'
+   assert other['generation']['mathematical_fingerprint']==r['generation']['mathematical_fingerprint']
+ assert set(g.generate('easy',s)['generation']['template'] for s in range(200))==set(g.SUPPORTED_TEMPLATES)
+ invalid=[('moderate',None,None),('hard',None,None),('easy','subtract',g.SOURCE_PARAMS['q-1323']),('easy','sum_lower',{'a':[0,0],'b':[0,0]}),('easy','scalar',{'a':[1,0],'p':3}),('easy','sum_upper',{'a':[10,1],'b':[1,1]}),('easy','scalar',{'a':[1,2],'p':1})]
+ for l,t,p in invalid:
+  try:g.generate(l,template=t,parameters=p)
+  except ValueError:pass
+  else:raise AssertionError(('invalid/unsupported accepted',l,t,p))
+ for p in ({'a':[-9,8],'p':-6},{'a':[9,-8],'p':6}):check_record(g.generate('easy',template='scalar',parameters=p))
+ for sid in ('q-1323','q-1386'):
+  for seed in range(50):
+   rr=g.generate('easy',seed,template=g.SOURCE_TEMPLATE[sid],profile='raw-'+sid);check_record(rr);assert rr['generation']['evidence_only'] and not rr['generation']['eligible_for_learning']
+   assert set(rr['question'])==set(g.QS[sid]);f=rr['question'][':question/answer-fields'][0];sf=g.QS[sid][':question/answer-fields'][0];assert set(f)==set(sf)
+   assert all(set(a)==set(sf[':answer-field/choices'][0]) for a in f[':answer-field/choices'])
+ # Hold the arithmetic fixed while changing letter case. Independently parse the
+ # prompt, all solution rows and key; case/operand aliases must not inflate stock.
+ pa={'a':[-3,1],'b':[4,6]}
+ lo=g.generate('easy',template='sum_lower',parameters=pa);up=g.generate('easy',template='sum_upper',parameters=pa)
+ check_record(lo);check_record(up);assert lo['generation']['mathematical_fingerprint']==up['generation']['mathematical_fingerprint']
+ swapped=g.generate('easy',template='sum_lower',parameters={'a':pa['b'],'b':pa['a']});check_record(swapped)
+ assert swapped['generation']['mathematical_fingerprint']==lo['generation']['mathematical_fingerprint']
+ sa=g.generate('easy',template='scalar',parameters={'a':[2,-4],'p':6});sb=g.generate('easy',template='scalar',parameters={'a':[4,-8],'p':3})
+ check_record(sa);check_record(sb);assert sa['generation']['mathematical_fingerprint']==sb['generation']['mathematical_fingerprint']
+ mutations=[]
+ bad=copy.deepcopy(lo);bad['question'][':question/problem']=bad['question'][':question/problem'].replace('⟨-3,1⟩','⟨-2,1⟩');mutations.append(bad)
+ bad=copy.deepcopy(lo);bad['question'][':question/worked-solution']=bad['question'][':question/worked-solution'].replace('⟨-3+4,1+6⟩','⟨-2+3,1+6⟩');mutations.append(bad)
+ bad=copy.deepcopy(lo);f=bad['question'][':question/answer-fields'][0];f[':answer-field/choices'][0][':answer/value']=f[':answer-field/choices'][1][':answer/value'];mutations.append(bad)
+ bad=copy.deepcopy(lo);bad['question'][':question/worked-solution']=bad['question'][':question/worked-solution'].replace('⟨1,7⟩','⟨2,7⟩');mutations.append(bad)
+ bad=copy.deepcopy(sa);bad['question'][':question/worked-solution']=bad['question'][':question/worked-solution'].replace(r'6\cdot 2',r'6\cdot 3');mutations.append(bad)
+ for bad in mutations:
+  try:check_record(bad)
+  except AssertionError:pass
+  else:raise AssertionError('mutation survived independent check')
+ fixtures=[]
+ for i,r in enumerate(completed+records):
+  f=r['question'][':question/answer-fields'][0]
+  checks=[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'independently verified displayed choice'} for a in f[':answer-field/choices']]
+  fixtures.append({'label':str(i),'record':r,'checks':checks})
+ write('native-input.json',fixtures);engine=native_engine()
+ subprocess.run([str(engine),str(D/'native-input.json'),str(D/'native-report.json')],check=True)
+ native=json.loads((D/'native-report.json').read_text());assert native['accepted_checks']==len(fixtures) and native['rejected_checks']==4*len(fixtures) and native['documented_unresolved_checks']==0
+ reviews=[g.generate('easy',seed,template=t) for t in g.SUPPORTED_TEMPLATES for seed in (27,83)]
+ write('review.json',reviews)
+ review=['# Original evidence and supported easy variants','', 'Raw omissions remain intact. Radio completions of fieldless sums are authored. Historical subtraction bank is replayed as evidence and excluded from generation; moderate/hard are unsupported.']
+ for case,r in zip(cases,raws):
+  review.extend(['\n## Original '+case['source_id']+' — raw replay',g.markdown(r)])
+  if case['template'] in g.SUPPORTED_TEMPLATES:review.extend(['\n### Completed original parameters — authored fields where absent',g.markdown(g.generate('easy',template=case['template'],parameters=case['parameters']))])
+ for r in reviews:review.extend(['\n## Generated easy / '+r['generation']['template'],g.markdown(r)])
+ (D/'review.md').write_text('\n'.join(review)+'\n')
+ result={'status':'pass','runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'source_provenance':{k:g.SOURCE[k] for k in ('database','basis','lineage')},'source_fidelity':{'practice_sources':4,'prompt_exact':4,'raw_attribute_presence':4,'complete_banks':{'matched':2,'total':2},'displayed_choices':{'matched':10,'total':10},'distractors':{'matched':8,'total':8},'captured_correct_designations':{'matched':0,'total':0,'missing':2},'worked_solution_exact':{'matched':2,'total':2,'missing':2},'completed_originals':len(completed),'raw_gradeable_records':0},'generated_records':len(records),'per_template':dict(counts),'independently_verified_solution_stages':stages,'sampled_unique_mathematical_tasks':len(tasks),'supported_levels':list(g.SUPPORTED_LEVELS),'excluded_templates':['subtract','linear_combination','nested_combination'],'explicit_invalid_or_unsupported_rejections':len(invalid),'mutation_rejections':len(mutations),'raw_changed_parameter_checks':100,'alias_checks':['letter case','sum operand swap','scalar factor alias'],'native':{k:native[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'native_engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'evidence_limits':['All source banks replay exactly, but original correct refs are absent.','The historical subtraction selectors reproduce all five original choices; generalized pedagogical intent remains unresolved, so learning generation excludes that template.','Fieldless easy sums use explicitly authored five-choice completion. Scalar source bank retained.','Moderate/hard proposed extensions introduce new operations and solution stages beyond the observed practice backbone; unsupported. Canonical graph is contextual evidence, not a practice template.']}
+ write('validation.json',result);print(json.dumps(result,indent=2))
+
+if __name__=='__main__':main()

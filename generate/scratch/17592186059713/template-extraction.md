@@ -18,7 +18,7 @@ No practice source has a plot or an image choice. The canonical raster is separa
 
 Sum: identify arrow-labelled vectors with their given ordered coordinate pairs and add corresponding components. Subtraction: subtract the second pair componentwise while retaining signs. Scalar: distribute the given scalar into both components. These are three assessed families and four source rendering masks (letter case is incidental). Source tuples are not basis-vector expressions or column vectors; outputs remain complete coordinate pairs.
 
-Normal authored levels use the same representation and componentwise method: moderate pu±qv; hard pu-(qv±rw). The scalar-product count, not larger incidental labels or parameter aliasing, separates their workloads.
+Supported normal learning generation is easy only: the two sum masks and the scalar mask. Subtraction remains raw evidence only. Moderate pu±qv and hard pu-(qv±rw) change the observed practice operations/stages and are excluded.
 
 ## 3. Map components and all complete banks
 
@@ -37,9 +37,9 @@ Write a=(aₓ,aᵧ), b=(bₓ,bᵧ); z is the independently computed correct vect
 | raw-q-1386 | ⟨ - 24,-21⟩ | (-n aₓ,n aᵧ) | inferred x sign flip after scaling |
 | raw-q-1386 | ⟨ - 11, 4⟩ | -a-(n,n) | inferred negated componentwise scalar addition |
 
-All 10 displayed values reproduce exactly at original parameters. The subtraction profile is evidence-only, including changed-parameter replay; the numerical selectors are not claimed to recover a defensible learning bank. The scalar profile has a full operation-derived interpretation, labeled inferred rather than recovered author intent, and supports normal sampling. Each raw profile has explicit `evidence_only=true`, `eligible_for_learning=false`; neither fills missing raw fields/refs or difficulty.
+All 10 displayed values reproduce exactly at original parameters. The subtraction profile and its proposed replacement bank are excluded from learning, including changed-parameter replay; the numerical selectors are not claimed to recover a defensible learning bank. The scalar profile has a full operation-derived interpretation, labeled inferred rather than recovered author intent, and supports normal sampling. Each raw profile has explicit `evidence_only=true`, `eligible_for_learning=false`; neither fills missing raw fields/refs or difficulty.
 
-Complete authored banks are fixed and not selected from a first-valid pool:
+The prior proposed banks are preserved below as extraction evidence. Only the sum and scalar rows are eligible for learning generation; subtraction, moderate and hard rows are excluded. Complete eligible banks are fixed and not selected from a first-valid pool:
 
 | Family | Complete five-vector bank |
 |---|---|
@@ -63,10 +63,14 @@ Sampling and explicit guards: easy coordinates -9…9; scalar n from ±2…±6. 
 
 The unfiltered finite parameter domains contain 19⁴=130,321 easy coordinate pairs for each sum/subtraction family, 361×10=3,610 scalar inputs, 12⁴×25×2=1,036,800 moderate inputs and 12⁶×27×2=161,243,136 hard inputs. Those are domain sizes, not claimed eligible-bank counts. QA reports measured unique valid tasks among sampled records (lower/upper sum aliases deduplicated), rather than multiplying by notation or bank profiles. These broad signed integer domains provide repeated-practice variety without a new method. All level guards apply to public explicit parameters.
 
-Identity uses generator version, actual prompt, actual fixed solution, complete displayed bank, difficulty and raw/normal presence state. Choice ordering/seed is excluded. Mathematical fingerprints exclude banks/profiles/letter-case aliases but retain coefficients, ordered coordinates and operation grouping. Local raw `:db/id` and Math Academy IDs are captured provenance only; generated UUIDs are stable content identities and none of these records are transaction data.
+Only easy sum/scalar normal records are eligible; raw subtraction stays public for fidelity evidence. Identity uses generator version, actual prompt, actual fixed solution, complete displayed bank, difficulty and raw/normal presence state. Choice ordering/seed is excluded. Mathematical fingerprints exclude banks, profiles, seed and letter-case aliases. Sum operand swaps are one task; scalar factorizations yielding the same ordered pair are conservatively one task. Other changed signed coordinate arithmetic remains distinct. Local raw `:db/id` and Math Academy IDs are captured provenance only; generated UUIDs are stable content identities and none of these records are transaction data.
 
 ## Validation and limits
 
 `validate.py` reads coordinates and requested operation from actual prompt fragments, then independently checks formal operation, every solution row, individual distributed products, intermediate vector shape and collected conclusion. It verifies complete bank operation values, unique mathematical choices and owned correct refs, original key-presence parity, exact original solution prose/row sequence, explicit workload guards, normal family coverage and deterministic identities. Mutations of a prompt coordinate, distributed sign, choice collision, final conclusion and correlated individually evaluated vectors (preserving the final total) must fail. Native grading is an independent selection check and is never counted as mathematical proof.
 
 No captured correct designation exists in either original bank: matched designation denominator is 0, with 2 missing refs reported. Four raw records remain ungradeable; four separately completed original instances exercise the native grader. No mathematical source error was found. The two missing fields and two missing correct refs/solutions are source-format omissions, not silently repaired raw evidence.
+
+## Current eligibility boundary
+
+The supported template set is sum_lower, sum_upper and scalar at easy only. Prior moderate/hard bounds, stages and formulas above are retained as analysis of rejected extensions; the public generator rejects those levels, and they are never committed or called filled. The historical subtraction bank fully replays, but its opaque selectors do not establish a supported sampling policy; no new subtraction bank is substituted. `validation.json` reports 600 generated easy fixtures, three completed source-parameter fixtures, and explicit rejection tests for each excluded level/template. `review.md` contains the reviewed supported originals and variants. No variable target slot is declared; the arrow labels designate the complete supplied vectors. Case changes with fixed arithmetic verify synchronized prompt, solution and key and are deduplicated.

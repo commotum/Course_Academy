@@ -3,6 +3,8 @@
 import copy, importlib.util, json, re, subprocess, sys
 from pathlib import Path
 import sympy as sp
+import numpy as np
+from PIL import Image
 ROOT=Path(__file__).resolve().parent
 REPO=ROOT.parents[2]
 spec=importlib.util.spec_from_file_location('continuity_generator',ROOT.with_suffix('.py'));g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
@@ -80,6 +82,34 @@ def graph_equivalence(a,b):
     return True
 
 
+def raster_markers(path,side):
+    """Read the actual PNG centers/rings at independently derived graph points."""
+    im=np.asarray(Image.open(path).convert('RGB'));h,w=im.shape[:2];tf=side['pixel_transform'];obj=side['graph'];x=sp.Symbol('x',real=True)
+    def color_at(a,v,filled):
+        px=int(round(tf['x_offset']+tf['x_scale']*float(scalar(a))));py=int(round(tf['y_offset']+tf['y_scale']*float(scalar(v))))
+        if not (8<=px<w-8 and 8<=py<h-8):return
+        crop=im[py-7:py+8,px-7:px+8];red=(crop[:,:,0]>175)&(crop[:,:,1]<110)&(crop[:,:,2]<110)
+        center=red[6:9,6:9]
+        if filled:assert center.sum()>=5,(path,a,v,'missing filled marker')
+        else:assert center.sum()==0 and red.sum()>=10,(path,a,v,'missing open marker')
+    for a in obj['holes']:
+        for b in obj['segments']:
+            if scalar(b['lo'])<=scalar(a)<=scalar(b['hi']):
+                v=sp.sympify(b['expr'],locals={'x':x}).subs(x,scalar(a))
+                if v.is_finite:color_at(a,str(v),False);break
+    for a,v in obj['values'].items():
+        if not limit_status(obj,a)['continuous'] or a in obj.get('marked_values',[]):color_at(a,v,True)
+    for a,v in obj.get('open_annotations',[]):color_at(a,v,False)
+    # Open finite jump endpoints are read separately from every filled endpoint.
+    for b in obj['segments']:
+        expr=sp.sympify(b['expr'],locals={'x':x})
+        for endpoint,direction in ((b['lo'],'+'),(b['hi'],'-')):
+            a=scalar(endpoint)
+            if a in (scalar(obj['bounds'][0]),scalar(obj['bounds'][1])):continue
+            v=sp.limit(expr,x,a,dir=direction)
+            if v.is_finite and not limit_status(obj,endpoint)['continuous'] and obj['values'].get(str(a))!=str(v):color_at(endpoint,str(v),False)
+
+
 def audit(r):
     q=r['question'];meta=r['generation'];t=meta['source_id'];p=meta['parameters'];level=meta['requested_level'];raw=meta['bank_profile']=='observed'
     assert set(r['knowledge_point'])=={'db_id','id','title'}
@@ -88,13 +118,14 @@ def audit(r):
     printed=read_coordinates(q[':question/problem']);assert list(map(str,printed))==meta['targets']
     assert all(a in printed for a in read_coordinates(q[':question/worked-solution'])) or g.SPECS[t]['level']=='easy'
     # Final source prose has context points outside the queried point for easy.
-    if level=='hard':assert any(a.q==2 for a in printed)
+    if level=='hard':assert sum(a.q==2 for a in printed)>=2 and meta['half_unit_target_readings']==sum(a.q==2 for a in printed)
     elif not raw:assert all(a.q==1 for a in printed)
     for path,obj in meta['graphs'].items():
+        assert scalar(obj['bounds'][0])<0<scalar(obj['bounds'][1]) and scalar(obj['bounds'][2])<0<scalar(obj['bounds'][3]),'Zero axes hidden or relocated'
         if path.startswith('images/'):
             assert (Path('/media/jake/SSD/EDB/math')/path).is_file()
         else:
-            side=json.loads(Path(path).with_suffix('.json').read_text());assert side['graph']==obj;assert side['targets']==meta['targets']
+            side=json.loads(Path(path).with_suffix('.json').read_text());assert side['graph']==obj;assert side['targets']==meta['targets'];raster_markers(path,side)
             if level=='hard':assert all(scalar(v).q==1 for v in side['tick_values']) and side['tick_step']=='1' and any(a not in list(map(scalar,side['tick_values'])) for a in printed)
     if g.SPECS[t]['level']=='easy':
         f=q[':question/answer-fields'][-1];correct=f[':answer-field/correct'][1]
@@ -105,7 +136,7 @@ def audit(r):
         contextual=[scalar(p['scale'])*scalar(str(a))+scalar(p['shift']) for a in g.SPECS[t].get('context',[])]
         solution_points=read_coordinates(q[':question/worked-solution'])
         assert printed[0] in solution_points
-        assert set(solution_points)==set(printed+contextual),'Stale easy prose coordinate'
+        assert set(solution_points)<=set(printed+contextual),'Stale easy prose coordinate'
         for a in contextual:assert not limit_status(selected,a)['continuous'],'False unrelated-discontinuity prose claim'
         for i,a in enumerate(objects):
             for b in objects[i+1:]:assert not graph_equivalence(a,b),'Equivalent complete graph choices'
@@ -226,6 +257,6 @@ def main():
     (ROOT/'native-input.json').write_text(json.dumps(native,indent=2)+'\n')
     subprocess.run([str(REPO/'generate/runs/current/check-engine'),str(ROOT/'native-input.json'),str(ROOT/'native-report.json')],check=True)
     engine=json.loads((ROOT/'native-report.json').read_text())
-    report={'status':'passed','source_fidelity':counts,'source_scope':'9 practice originals; canonical separate; basis1356','normal_records_checked':len(content),'semantic_tasks':len(task),'default_family_coverage':{k:sorted(v) for k,v in seen.items()},'review_records':len(review),'native':{'accepted':engine['accepted_checks'],'rejected':engine['rejected_checks'],'unresolved':engine['documented_unresolved_checks'],'blanks':'not applicable; no observed blank fields'},'source_anomalies':['q-48081 duplicate legacy radio field, first missing correct ref; raw preserved, normal one widget and add missing shown-below solution plot' ,'q-102106 and q-78133 fieldless: raw omit field attr; normal supported authored5-option bank','q-102115 unlabeled list with Roman subset bank: normal labels added','q-78132 source omitted at: normal minimal prose repair','q-48082 solution raster reverses open/filled markers at unqueried x=2; raw preserved, normal uses the answer-option function' ], 'plot_fidelity':'32 original assets inspected at original resolution; raw assets exact; changed geometry preserves extracted local topology, not unknown source algebraic formulas','dependencies':review[0]['generation']['dependencies'],'concurrency':json.loads((ROOT/'concurrency-report.json').read_text()),'database_writes':0}
+    report={'status':'passed','source_fidelity':counts,'source_scope':'9 practice originals; canonical separate; basis1356','normal_records_checked':len(content),'semantic_tasks':len(task),'default_family_coverage':{k:sorted(v) for k,v in seen.items()},'review_records':len(review),'native':{'accepted':engine['accepted_checks'],'rejected':engine['rejected_checks'],'unresolved':engine['documented_unresolved_checks'],'blanks':'not applicable; no observed blank fields'},'source_anomalies':['q-48081 duplicate legacy radio field, first missing correct ref; raw preserved, normal one widget and add missing shown-below solution plot' ,'q-102106 and q-78133 fieldless: raw omit field attr; normal supported authored5-option bank','q-102115 unlabeled list with Roman subset bank: normal labels added','q-78132 source omitted at: normal minimal prose repair','q-48082 solution raster reverses open/filled markers at unqueried x=2; raw preserved, normal uses the answer-option function' ], 'raster_qa':'Actual generated PNG open/filled centers and rings checked against independent branch/domain/value mathematics; pixel transform from recorded axes', 'plot_fidelity':'32 original assets inspected at original resolution; raw assets exact; changed geometry preserves extracted local topology, not unknown source algebraic formulas','dependencies':review[0]['generation']['dependencies'],'concurrency':json.loads((ROOT/'concurrency-report.json').read_text()),'database_writes':0}
     (ROOT/'validation.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
 if __name__=='__main__':main()

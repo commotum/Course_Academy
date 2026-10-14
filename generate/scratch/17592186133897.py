@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 ROOT=Path(__file__).resolve().parent/'17592186133897'
 SOURCE=json.loads((ROOT/'source.json').read_text())
-RECORD=SOURCE['record']; KP=17592186133897; VERSION='green-area-v2'
+RECORD=SOURCE['record']; KP=17592186133897; VERSION='green-area-v8'
 T,U=sp.symbols('t u',real=True)
 A,B=sp.symbols('a b',positive=True)
 QS={str(q[':db/id']):q for q in RECORD[':knowledge-point/questions']}
@@ -97,6 +97,35 @@ def serialized_plot(fn):
         with _PLOT_LOCK:return fn(*args,**kwargs)
     return wrapped
 
+def route_leader(start,end,obstacles,canvas):
+    """Shortest pixel-space polyline avoiding actual rendered text rectangles."""
+    import heapq
+    from matplotlib.path import Path as MplPath
+    from matplotlib.transforms import Bbox
+    blocks=[Bbox.from_extents(b.x0-3,b.y0-3,b.x1+3,b.y1+3) for b in obstacles]
+    vertices=[tuple(start),tuple(end)]
+    for b in blocks:
+        for x in [b.x0-1,b.x1+1]:
+            for y in [b.y0-1,b.y1+1]:
+                if 0<x<canvas[0] and 0<y<canvas[1] and not any(c.contains(x,y) for c in blocks):vertices.append((x,y))
+    def clear(a,b):return not any(MplPath([a,b]).intersects_bbox(box,filled=False) for box in blocks)
+    distances={0:0};parents={};queue=[(0,0)]
+    while queue:
+        distance,node=heapq.heappop(queue)
+        if distance!=distances[node]:continue
+        if node==1:break
+        for j,v in enumerate(vertices):
+            if j==node or not clear(vertices[node],v):continue
+            candidate=distance+float(np.hypot(v[0]-vertices[node][0],v[1]-vertices[node][1]))
+            if candidate<distances.get(j,float('inf')):
+                distances[j]=candidate;parents[j]=node;heapq.heappush(queue,(candidate,j))
+    assert 1 in distances,'no clear leader route'
+    indexes=[1]
+    while indexes[-1]!=0:indexes.append(parents[indexes[-1]])
+    route=[vertices[j] for j in reversed(indexes)]
+    assert all(clear(a,b) for a,b in zip(route,route[1:])),'leader crosses rendered text'
+    return route
+
 @serialized_plot
 def render_plots(family,p,output_dir=None):
     """Single-instance Matplotlib; unique temporary files + atomic final writes."""
@@ -109,38 +138,82 @@ def render_plots(family,p,output_dir=None):
         xf,yf=sp.lambdify(T,x,'numpy'),sp.lambdify(T,y,'numpy')
         xx=np.broadcast_to(xf(ts),ts.shape);yy=np.broadcast_to(yf(ts),ts.shape)
         arrays.append((ts,xx,yy));points.extend(zip(xx.tolist(),yy.tolist()))
+    xs,ys=zip(*points)
+    xr=max(max(xs)-min(xs),1);yr=max(max(ys)-min(ys),1)
+    lo,hi=min(min(xs),0)-.25*xr,max(max(xs),0)+.4*xr
+    bottom,top=min(min(ys),0)-.2*yr,max(max(ys),0)+.3*yr
+    ratio=(hi-lo)/(top-bottom)
+    # Widen/tall the canvas for long regions, retaining equal coordinate scale.
+    # Labels use a reserved screen-space column rather than thin data-space gaps.
+    width=5.8+min(3.0,max(0.0,ratio-2.0)*.5)
+    height=4.6+min(3.0,max(0.0,1/ratio-2.0)*.5)
     with plt.rc_context({'font.family':'DejaVu Serif','font.size':12}):
-        fig,ax=plt.subplots(figsize=(4.4,3.9),dpi=125)
-        xs,ys=zip(*points);ax.fill(xs,ys,color='#d6e8f5',zorder=0)
+        fig=plt.figure(figsize=(width,height),dpi=125)
+        ax=fig.add_axes([.10,.13,.59,.74])
+        ax.fill(xs,ys,color='#d6e8f5',zorder=0)
+        callouts=[]
         for n,(ts,xx,yy) in enumerate(arrays):
             color='#ef9b00' if n==0 else '#d173ab';ax.plot(xx,yy,c=color,lw=1.7)
-            for fraction in ([.18,.42,.68,.87] if len(seg)==1 else [.27,.74]):
+            for fraction in ([.18,.42,.68,.87] if len(seg)==1 else [.12,.88] if n==0 else [.27,.74]):
                 k=int(fraction*(len(ts)-1));ax.annotate('',xy=(xx[k+9],yy[k+9]),xytext=(xx[k-9],yy[k-9]),arrowprops={'arrowstyle':'->','color':'black','lw':1})
-            if len(seg)>1:
-                k=72 if n==0 else 300
-                dx=(-.12 if n==0 and family in ['upper_polynomial','lower_polynomial'] else .04)*(max(xs)-min(xs))
-                dy=(.06 if family!='upper_polynomial' else -.12)*(max(ys)-min(ys))
-                ax.text(xx[k]+dx,yy[k]+dy,f'$C_{n+1}$',color=color)
+            k=510 if n==0 else 300
+            label='$C$' if len(seg)==1 else f'$C_{n+1}$'
+            callouts.append((label,(float(xx[k]),float(yy[k])),color))
         a,b=p['a'],p['b']
-        label={'ellipse':(.2*a,.15*b),'sin_sin2':(.65*a,.15*b),'minus_cos_sin2':(.65*a,.15*b),'sin2_minus_sin':(.35*a,-.5*b),'sin2_cos':(.35*a,-.5*b),'left_polynomial':(-.7*a,.15*b),'right_polynomial':(.7*a,.2*b),'upper_polynomial':(.2*a,.65*b),'lower_polynomial':(.2*a,-.65*b)}[family]
-        ax.text(*label,'$D$',color='#286eaa')
-        if len(seg)==1:ax.text(max(xs)*.6,max(ys)+.09*(max(ys)-min(ys)),'$C$',color='#ef9b00')
-        xr=max(max(xs)-min(xs),1);yr=max(max(ys)-min(ys),1)
-        lo,hi=min(min(xs),0)-.25*xr,max(max(xs),0)+.4*xr
-        bottom,top=min(min(ys),0)-.2*yr,max(max(ys),0)+.3*yr
+        region={'ellipse':(.2*a,.35*b),'sin_sin2':(.65*a,.5*b),'minus_cos_sin2':(.65*a,.5*b),'sin2_minus_sin':(.35*a,-.5*b),'sin2_cos':(.35*a,-.5*b),'left_polynomial':(-.75*a,.3*b),'right_polynomial':(.75*a,.3*b),'upper_polynomial':(.5*a,.8*b),'lower_polynomial':(.5*a,-.8*b)}[family]
+        callouts.append(('$D$',region,'#286eaa'))
         ax.set_xlim(lo,hi);ax.set_ylim(bottom,top);ax.set_aspect('equal',adjustable='box')
         for spine in ['top','right']:ax.spines[spine].set_visible(False)
         ax.spines['left'].set_position('zero');ax.spines['bottom'].set_position('zero')
         ax.spines['left'].set_visible(False);ax.spines['bottom'].set_visible(False)
         ax.annotate('',xy=(hi,0),xytext=(lo,0),arrowprops={'arrowstyle':'->','lw':.9});ax.annotate('',xy=(0,top),xytext=(0,bottom),arrowprops={'arrowstyle':'->','lw':.9})
         xt=sorted(set(int(round(v)) for v in [min(xs),max(xs)] if abs(v)>1e-5));yt=sorted(set(int(round(v)) for v in [min(ys),max(ys)] if abs(v)>1e-5))
-        ax.set_xticks(xt);ax.set_yticks(yt);ax.text(hi,0,'$x$');ax.text(0,top,'$y$');fig.tight_layout(pad=.7)
+        ax.set_xticks(xt);ax.set_yticks(yt)
+        for tick,value in zip(ax.get_yticklabels(),yt):tick.set_verticalalignment('bottom' if value>0 else 'top')
+        from matplotlib.transforms import ScaledTranslation
+        for tick,value in zip(ax.get_xticklabels(),xt):
+            tick.set_horizontalalignment('left' if value>0 else 'right')
+            tick.set_transform(tick.get_transform()+ScaledTranslation((3 if value>0 else -3)/72,0,fig.dpi_scale_trans))
+        axis_labels=[ax.annotate('$x$',xy=(hi,0),xytext=(-7,7),textcoords='offset points',ha='right',va='bottom'),ax.annotate('$y$',xy=(0,top),xytext=(7,7),textcoords='offset points',ha='left',va='bottom')]
+        text_artists=[]
+        for j,(label,anchor,color) in enumerate(sorted(callouts,key=lambda z:z[1][1])):
+            # Vertically separated at fixed FIGURE positions, even when the axes
+            # shrink under equal aspect. Screen-space leaders identify real anchors.
+            yf=.28+.44*j/(len(callouts)-1)
+            artist=ax.annotate(label,xy=anchor,xycoords='data',xytext=(.84,yf),textcoords='figure fraction',ha='left',va='center',color=color,annotation_clip=False)
+            text_artists.append((label,artist,anchor))
+        fig.canvas.draw();renderer=fig.canvas.get_renderer()
+        # Annotation.get_window_extent includes its leader; inspect the actual
+        # Text portion only, so harmless leaders do not count as label collisions.
+        from matplotlib.text import Text
+        boxes=[(label,Text.get_window_extent(artist,renderer),anchor) for label,artist,anchor in text_artists]
+        axis_boxes=[Text.get_window_extent(artist,renderer) for artist in axis_labels]
+        tick_boxes=[artist.get_window_extent(renderer) for artist in ax.get_xticklabels()+ax.get_yticklabels() if artist.get_visible()]
+        assert all(not box.overlaps(tick) for box in axis_boxes for tick in tick_boxes),'axis title overlaps a scale label'
+        for i,(_,box,_) in enumerate(boxes):
+            assert all(not box.expanded(1.2,1.2).overlaps(other.expanded(1.2,1.2)) for _,other,_ in boxes[i+1:]),'rendered label collision'
+            assert all(not box.expanded(1.2,1.2).overlaps(other) for other in axis_boxes+tick_boxes),'rendered axis/label collision'
+            assert box.x0>=0 and box.y0>=0 and box.x1<fig.bbox.width and box.y1<fig.bbox.height,'clipped label'
+        from matplotlib.path import Path as MplPath
+        from matplotlib.patches import PathPatch
+        from matplotlib.transforms import IdentityTransform
+        leader_paths={}
+        for label,box,anchor in boxes:
+            start=(box.x0-8,(box.y0+box.y1)/2);end=ax.transData.transform(anchor)
+            route=route_leader(start,end,[b for _,b,_ in boxes]+axis_boxes+tick_boxes,(fig.bbox.width,fig.bbox.height))
+            patch=PathPatch(MplPath(route),transform=IdentityTransform(),fill=False,color='#929292',lw=.7,zorder=3)
+            fig.add_artist(patch);leader_paths[label]=[[float(x),float(y)] for x,y in route]
+        text_boxes={label:[float(v) for v in box.extents] for label,box,_ in boxes}
+        anchor_pixels={label:[float(v) for v in ax.transData.transform(anchor)] for label,_,anchor in boxes}
+        axes_bounds=[float(v) for v in ax.get_window_extent(renderer).extents]
+        scale_x=float(ax.transData.transform((1,0))[0]-ax.transData.transform((0,0))[0]);scale_y=float(ax.transData.transform((0,1))[1]-ax.transData.transform((0,0))[1])
+        assert abs(scale_x-scale_y)<1e-8,'coordinate-scale distortion'
         fd,tmp=tempfile.mkstemp(suffix='.png',prefix='render-',dir=out);os.close(fd)
         try:fig.savefig(tmp,facecolor='white');os.replace(tmp,png)
         finally:
             plt.close(fig)
             if os.path.exists(tmp):os.unlink(tmp)
-    payload={'family':family,'parameters':p,'segments':[[str(v) for v in z] for z in seg],'orientation':orientation,'renderer':'Matplotlib','version':matplotlib.__version__,'python':sys.version.split()[0],'xlim':[lo,hi],'ylim':[bottom,top],'ticks':[xt,yt],'arrow_fractions':[.18,.42,.68,.87] if len(seg)==1 else [.27,.74],'closed':True}
+    payload={'family':family,'parameters':p,'segments':[[str(v) for v in z] for z in seg],'orientation':orientation,'renderer':'Matplotlib','version':matplotlib.__version__,'python':sys.version.split()[0],'xlim':[lo,hi],'ylim':[bottom,top],'ticks':[xt,yt],'arrow_fractions':[[.18,.42,.68,.87]] if len(seg)==1 else [[.12,.88],[.27,.74]],'closed':True,'label_policy':'reserved figure-space column with leaders to exact-instance anchors','text_boxes_pixels':text_boxes,'anchor_pixels':anchor_pixels,'axes_bounds_pixels':axes_bounds,'unit_pixels':[scale_x,scale_y],'canvas_inches':[width,height],'label_collisions':0,'leader_text_collisions':0,'leader_paths_pixels':leader_paths,'axis_text_boxes_pixels':[[float(v) for v in box.extents] for box in axis_boxes],'tick_text_boxes_pixels':[[float(v) for v in box.extents] for box in tick_boxes]}
     fd,tmp=tempfile.mkstemp(suffix='.json',prefix='sidecar-',dir=out)
     with os.fdopen(fd,'w') as f:json.dump(payload,f,indent=2)
     os.replace(tmp,side);return str(png)

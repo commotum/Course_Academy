@@ -2,7 +2,7 @@
 """Alternative vector notation; local steps 3–7 generator, no database operations.
 
 API: generate(level, seed=0, template=None, field_type=None, parameters=None,
-profile=None); generate_easy/moderate/hard expose the same keyword arguments.
+profile=None); easy is supported; moderate/hard fail explicitly.
 CLI: --difficulty easy|moderate|hard|all --seed N --count N --format markdown|json
 and optional --template/--profile. Raw evidence profiles preserve source omissions.
 Normal radio profiles use five complete operation-derived choices selected BEFORE
@@ -18,12 +18,14 @@ KP_ID=17592186059713
 KP_UUID='fc55e44b-82d0-5145-8a24-d43bc60dc594'
 TITLE='Calculating Sums and Scalar Multiplication of Vectors Given in Alternative Notation'
 VERSION='alternative-vector-1'
+SUPPORTED_LEVELS=('easy',)
+SUPPORTED_TEMPLATES=('sum_lower','sum_upper','scalar')
 ROOT=Path(__file__).with_suffix('')
 SOURCE=json.loads((ROOT/'source.json').read_text())
 QS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
 OPENING='To compute the result, we just need to perform the required operations with each component separately:'
-TEMPLATES={'sum_lower':'easy','sum_upper':'easy','subtract':'easy','scalar':'easy','linear_combination':'moderate','nested_combination':'hard'}
-PROFILES={'sum_lower':['component_bank','raw-q-1300'], 'sum_upper':['component_bank','raw-q-1324'], 'subtract':['component_bank','raw-q-1323'], 'scalar':['scalar_source_bank','raw-q-1386'], 'linear_combination':['distribution_bank'], 'nested_combination':['nested_bank']}
+TEMPLATES={'sum_lower':'easy','sum_upper':'easy','subtract':'easy','scalar':'easy'}
+PROFILES={'sum_lower':['component_bank','raw-q-1300'], 'sum_upper':['component_bank','raw-q-1324'], 'subtract':['raw-q-1323'], 'scalar':['scalar_source_bank','raw-q-1386']}
 SOURCE_PARAMS={'q-1300':{'a':[-3,1],'b':[4,6]},'q-1324':{'a':[1,3],'b':[6,3]},'q-1323':{'a':[4,1],'b':[1,-4]},'q-1386':{'a':[8,-7],'p':3}}
 SOURCE_TEMPLATE={'q-1300':'sum_lower','q-1324':'sum_upper','q-1323':'subtract','q-1386':'scalar'}
 
@@ -39,6 +41,16 @@ def label(name,style):
  return r'\overset{\to }{'+name+'}'
 def matrix(v): return sp.Matrix([sp.Integer(x) for x in v])
 def aslist(v): return [int(x) for x in v]
+def mathematical_fingerprint(t,p):
+ # Case, label assignments, sum operand swaps and scalar-factor aliases are
+ # conservatively one assessed task. No seed or bank order participates.
+ if t.startswith('sum'):
+  task=['sum', sorted([p['a'],p['b']])]
+ elif t=='scalar':
+  task=['scalar', aslist(compute(t,p))]
+ else:
+  task=[t,p]
+ return hashlib.sha256(json.dumps(task,sort_keys=True).encode()).hexdigest()
 def expression(t,p,style):
  a,b,c=[label(n,style) for n in (('U','V','W') if t=='sum_upper' else ('u','v','w'))]
  if t.startswith('sum'): return a+'+'+b
@@ -147,16 +159,22 @@ def sample(t,rng):
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  if level not in ('easy','moderate','hard'): raise ValueError('invalid difficulty')
+ if level not in SUPPORTED_LEVELS:
+  raise ValueError('unsupported difficulty: no source practice backbone at '+level+'; shortage remains explicit')
  rng=random.Random(seed)
  if profile and not template:
   eligible=[t for t,v in PROFILES.items() if profile in v and TEMPLATES[t]==level]
- else: eligible=[t for t,v in TEMPLATES.items() if v==level]
+ else: eligible=list(SUPPORTED_TEMPLATES)
  if not eligible: raise ValueError('profile not eligible for difficulty')
  t=template or rng.choice(eligible)
  if TEMPLATES.get(t)!=level: raise ValueError('template difficulty mismatch')
+ if t not in SUPPORTED_TEMPLATES and not (profile and profile.startswith('raw-')):
+  raise ValueError('excluded template requires an explicit evidence-only raw profile')
  profile=profile or PROFILES[t][0]
  if profile not in PROFILES[t]: raise ValueError('profile mismatch')
  raw=profile.startswith('raw-');sid=profile[4:] if raw else None
+ if not raw and t not in SUPPORTED_TEMPLATES:
+  raise ValueError('unsupported learning template: historical subtraction bank has unresolved selector generalization; raw replay only')
  if field_type not in (None,'radio',':answer-field.type/radio'): raise ValueError('only observed radio type is supported')
  p=parameters
  for attempt in range(10000):
@@ -194,14 +212,14 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   q[':question/answer-fields']=[f]
  fingerprint=hashlib.sha256(json.dumps([t,sorted(p.items())],sort_keys=True).encode()).hexdigest()
  # Coordinate tasks are distinct; uppercase/lowercase aliases do not inflate diversity.
- mathematical=hashlib.sha256(json.dumps([t.replace('sum_upper','sum').replace('sum_lower','sum'),p],sort_keys=True).encode()).hexdigest()
+ mathematical=mathematical_fingerprint(t,p)
  return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'template':t,'level':level,'seed':seed,'parameters':p,'profile':profile,'source':{k:SOURCE[k] for k in ('database','basis','lineage')},'raw_evidence':raw,'evidence_only':raw,'eligible_for_learning':not raw,'authorship':'observed mask with explicit operation bank' if level=='easy' else 'authored missing-level extension','recipes':[n for n,_ in items],'correct_value':vec(aslist(compute(t,p))),'mathematical_fingerprint':mathematical,'parameter_fingerprint':fingerprint,'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'bounds':{'coordinates':9 if level=='easy' else 6,'moderate_scalars':[2,6],'hard_scalars':[2,4],'all_choice_components_max':120}}}
 
-# EASY: one sum, subtraction or scalar multiplication; completed sum fields authored.
+# EASY: one sum or scalar multiplication; completed sum fields authored.
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None): return generate('easy',seed,template,field_type,parameters,profile)
-# MODERATE (authored): four nonzero products and two component sums, no nesting.
+# MODERATE: unsupported; the previous proposed extension is excluded.
 def generate_moderate(seed=0,template=None,field_type=None,parameters=None,profile=None): return generate('moderate',seed,template,field_type,parameters,profile)
-# HARD (authored): six nonzero products, an inner sum and outer subtraction in each component.
+# HARD: unsupported; the previous proposed extension is excluded.
 def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=None): return generate('hard',seed,template,field_type,parameters,profile)
 
 def markdown(record):
@@ -213,6 +231,6 @@ def markdown(record):
 if __name__=='__main__':
  ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['markdown','json'],default='markdown');ap.add_argument('--template');ap.add_argument('--profile');a=ap.parse_args()
  if a.count<1: ap.error('count must be positive')
- levels=['easy','moderate','hard'] if a.difficulty=='all' else [a.difficulty]
+ levels=list(SUPPORTED_LEVELS) if a.difficulty=='all' else [a.difficulty]
  records=[generate(level,a.seed+i,template=a.template,profile=a.profile) for level in levels for i in range(a.count)]
  print(json.dumps(records,indent=2,ensure_ascii=False) if a.format=='json' else '\n\n'.join(markdown(r) for r in records))

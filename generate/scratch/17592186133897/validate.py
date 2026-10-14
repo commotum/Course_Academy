@@ -197,6 +197,25 @@ def main():
   assert paths[0]==paths[1]
   for path,(family,p) in zip(paths,work):assert json.loads(Path(path).with_suffix('.json').read_text())['parameters']==p
   assert not list(Path(tmp).glob('render-*')) and not list(Path(tmp).glob('sidecar-*'))
+ # Parent-discovered thin-label regressions plus both aspect extremes for every
+ # renderer family. These stress render-only ellipse coefficient1 deliberately.
+ regressions=[('minus_cos_sin2',{'a':6,'b':1}),('lower_polynomial',{'a':7,'b':1}),('left_polynomial',{'a':2,'b':5}),('upper_polynomial',{'a':6,'b':1})]
+ plot_checks=[]
+ for family,p in regressions+[(family,p) for family in g.FAMILY_LEVEL for p in [{'a':1,'b':8},{'a':8,'b':1}]]:
+  path=g.render_plots(family,p);side=json.loads(Path(path).with_suffix('.json').read_text())
+  assert side['label_collisions']==0 and side['leader_text_collisions']==0 and abs(side['unit_pixels'][0]-side['unit_pixels'][1])<1e-8
+  from matplotlib.path import Path as MplPath
+  from matplotlib.transforms import Bbox
+  obstacles=list(side['text_boxes_pixels'].values())+side['axis_text_boxes_pixels']+side['tick_text_boxes_pixels']
+  for route in side['leader_paths_pixels'].values():
+   for a,b in zip(route,route[1:]):
+    assert not any(MplPath([a,b]).intersects_bbox(Bbox.from_extents(*box),filled=False) for box in obstacles),'leader covers actual text'
+  boxes=list(side['text_boxes_pixels'].values())
+  for i,a in enumerate(boxes):
+   for b in boxes[i+1:]:assert a[2]<b[0] or b[2]<a[0] or a[3]<b[1] or b[3]<a[1]
+  plot_checks.append({'family':family,'parameters':p,'plot':path,'equal_coordinate_scale':True,'text_collision_check':'pass','leader_text_collision_check':'pass'})
+ (ROOT/'plot-regressions.json').write_text(json.dumps(plot_checks,indent=2))
+ (ROOT/'plot-review.md').write_text('# Updated plot regression/extreme review\n\nAll22 PNGs were inspected individually at full original resolution; grey leaders connect separated labels to exact-instance objects. Earlier cache assets retained.\n\n'+'\n\n'.join('## '+r['family']+' '+str(r['parameters'])+'\n\n![]('+r['plot']+')' for r in plot_checks))
  (ROOT/'source-cases.json').write_text(json.dumps(cases,indent=2));(ROOT/'review.json').write_text(json.dumps({'original_replays':replays,'generated_variants':variants,'generated_evidence_variants':evidence_variants},indent=2))
  lines=['# Original questions and parameterized variants','All originals below are explicit ineligible historical evidence profiles. Normal variants use complete method banks.']
  for label,records in [('Original',replays),('Generated eligible',variants),('Generated opaque evidence only',evidence_variants)]:
@@ -204,6 +223,6 @@ def main():
    q=r['question'];lines += ['\n## '+label+' '+r['generation']['template']+' '+str(r['generation']['parameters']),q[':question/problem'],'\nChoices: '+', '.join(a[':answer/value'] for f in q[':question/answer-fields'] for a in f[':answer-field/choices']),q.get(':question/worked-solution','[Absent in source; retained as absent in raw replay.]')]
    if label=='Original':lines.append('Inspected source raster: ![]('+str(ROOT/('source-plot-'+r['generation']['source_id']+'.png'))+')')
  (ROOT/'review.md').write_text('\n\n'.join(lines))
- report={'status':'pass','practice_sources':8,'exact_prompt_replays':8,'exact_solution_replays':7,'source_solution_absence_replayed':1,'full_banks':9,'source_options':45,'correct_designations_matched':7,'missing_designations_preserved':2,'key_presence_parity':8,'normal_templates':9,'authored_easy':'ellipse evaluation, not sibling setup','source_opaque_banks':'8 evidence-only profiles; no recovered intent claimed','ungradeable_raw_fields_missing_correct':2,'normal_inferred_completion_sources':1,'normal_smoothness_wording_repairs':4,'bank_default_family_coverage':'all 9 families covered under 35 default seeds per level','domain_boundary_checks':'all families at coefficients1/8; easy2/8 unequal; invalid explicit easy rejected','native':json.loads((ROOT/'engine-results.json').read_text()),'displayed_math_checked':'prompt closure/orientation/area, every coordinate derivative, every numerical integral and primitive/endpoint/final row','fresh_concurrency':'pass','mutation_regressions':['control','derivative','intermediate','operative_stage'],'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':g.matplotlib.__version__,'database_writes':0}
+ report={'status':'pass','practice_sources':8,'exact_prompt_replays':8,'exact_solution_replays':7,'source_solution_absence_replayed':1,'full_banks':9,'source_options':45,'correct_designations_matched':7,'missing_designations_preserved':2,'key_presence_parity':8,'normal_templates':9,'authored_easy':'ellipse evaluation, not sibling setup','source_opaque_banks':'8 evidence-only profiles; no recovered intent claimed','ungradeable_raw_fields_missing_correct':2,'normal_inferred_completion_sources':1,'normal_smoothness_wording_repairs':4,'bank_default_family_coverage':'all 9 families covered under 35 default seeds per level','domain_boundary_checks':'all families at coefficients1/8; easy2/8 unequal; invalid explicit easy rejected','native':json.loads((ROOT/'engine-results.json').read_text()),'displayed_math_checked':'prompt closure/orientation/area, every coordinate derivative, every numerical integral and primitive/endpoint/final row','fresh_concurrency':'pass','plot_regression_extreme_instances':22,'plot_layout':'measured text boxes clear; equal coordinate scale; adaptive canvas; reserved column with leaders','mutation_regressions':['control','derivative','intermediate','operative_stage'],'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':g.matplotlib.__version__,'database_writes':0}
  (ROOT/'validation.json').write_text(json.dumps(report,indent=2));print(json.dumps({k:v for k,v in report.items() if k!='native'},indent=2))
 if __name__=='__main__':main()

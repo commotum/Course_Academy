@@ -28,8 +28,25 @@ def graph_readback(path):
   opened=[m for m in ms if m['kind']=='open']
   if opened:xs.add(x)
  return frozenset(xs)
+def zero_axes_raster_check(path,side_override=None):
+ side=side_override if side_override is not None else json.loads(Path(path).with_suffix('.json').read_text())
+ im=np.array(Image.open(path).convert('RGB'));H,W=im.shape[:2];a=side['axes'];lo,hi=a['xlim'];bot,top=a['ylim'];lx,by,width,height=a['pixel_bounds']
+ check(lo<0<hi and bot<0<top,'true zero must lie inside both plot limits')
+ ox=lx+(0-lo)/(hi-lo)*width;oy=by+(0-bot)/(top-bot)*height
+ check(np.allclose(a['origin_pixel'],[ox,oy],atol=.01),'sidecar actual origin transform')
+ hs=np.array(a['horizontal_spine']).reshape(-1,2);vs=np.array(a['vertical_spine']).reshape(-1,2)
+ check(np.allclose(hs[:,1],oy,atol=.01) and np.allclose(vs[:,0],ox,atol=.01),'axes must meet at true data zero')
+ check(hs[:,0].min()<=ox<=hs[:,0].max() and vs[:,1].min()<=oy<=vs[:,1].max(),'origin lies on both actual spine segments')
+ check(a['label_anchors']=={'x':[hi,0],'y':[0,top]},'axis labels follow true axes')
+ check(0 in a['ticks'],'true zero tick retained')
+ # Inspect four actual black spine segments just beyond possible point markers.
+ dark=im.max(2)<95;px=round(ox);py=round(H-oy)
+ for dx,dy in ((12,0),(-12,0),(0,12),(0,-12)):
+  x,y=px+dx,py+dy;check(0<=x<W and 0<=y<H and dark[max(0,y-2):y+3,max(0,x-2):x+3].any(),'actual raster axes cross at true zero')
+ return True
 def plotted_raster_check(path):
  if path.startswith('images/'):return
+ zero_axes_raster_check(path)
  side=json.loads(Path(path).with_suffix('.json').read_text());im=np.array(Image.open(path).convert('RGB'));H,W=im.shape[:2];axes=side['axes'];lo,hi=axes['xlim'];bot,top=axes['ylim'];lx,by,width,height=axes['pixel_bounds'];z=side['geometry']
  color=((im[:,:,0]>140)&(im[:,:,1]<140)&(im[:,:,2]<140))|((im[:,:,2]>140)&(im[:,:,0]<120)&(im[:,:,1]<120))
  for m in z['markers']:
@@ -147,6 +164,8 @@ def raster_checks():
    px=round(z['origin_pixel'][0]+z['pixels_per_x_unit']*x)
    center=colored[y-1:y+2,px-1:px+2].sum()
    check(center<=3 if kind=='open' else center>=6,'actual source raster marker '+path+str((x,y,kind)))
+   if kind=='open':
+    sy=(z['origin_pixel'][1]-y)/z['pixels_per_x_unit'];check(any(abs(c[j][0]-x)<1e-8 and abs(c[j][1]-sy)<1e-8 for c in z['curves'] for j in (0,-1)),'isolated marked endpoint must not become missing interval')
    checks+=1
   check(hashlib.sha256((g.ASSET_ROOT/path).read_bytes()).hexdigest()==z['sha256'],'source asset hash')
  return {'source_assets_inspected_native_resolution':len(g.PLOTS),'independent_markers_checked':checks,'curves':'all connected red components traced, all cropped edges solid, positive axes arrowheads only','unlabelled_vertical_coordinates':'pixel geometry; no asserted exact formula/y-value'}
@@ -167,7 +186,12 @@ def run():
  check(len(profile)==17,'normal source-family coverage')
  # Validate mathematical workload catalogs completely, plotting representative
  # signed/half-grid boundary records independently, not counting letter aliases.
- catalog_counts={}
+ easy_catalog=set()
+ for qid in g.QUESTIONS:
+  for scale,shift in itertools.product((1,2),range(-3,4)):
+   target=[g.affine(x,{'scale':scale,'shift':shift}) for x in g.BREAKS.get(qid,[g.SELECT.get(qid,0)])];catalog_family=g.infer_family(qid)
+   easy_catalog.add(g.digest({'criterion':'graph-selection' if catalog_family=='select_graph' else 'coordinate-set','target':list(map(str,target)),'scale_reading':1,'break_count':len(target)}))
+ catalog_counts={'easy':len(easy_catalog)}
  for level in ('moderate','hard'):
   catalog=g.coordinate_catalog(level);catalog_counts[level]=len(catalog)
   for coords in catalog:
@@ -175,6 +199,20 @@ def run():
    bank=g.complete_set_bank(coords);check(len(bank)==5 and len(set(bank))==5,'finite bank catalog')
   for p in ({'coordinates':catalog[0],'orientation':1},{'coordinates':catalog[-1],'orientation':-1}):
    r=g.generate(level,parameters=p);validate_record(r);native.append(grade_checks(r,level+' boundary'));fprints[level].add(r['generation']['mathematical_fingerprint'])
+ # Parent-discovered axis regression: every source family and complete image
+ # bank at both translation boundaries; all geometry remains affine unchanged.
+ axis_records=[];axis_plot_count=0
+ for qid in g.QUESTIONS:
+  for shift in (-3,3):
+   r=g.generate('easy',seed=5,profile='authored:'+qid,parameters={'scale':2,'shift':shift});validate_record(r);axis_records.append(r);native.append(grade_checks(r,qid+' true-origin scale2 shift'+str(shift)))
+   paths=re.findall(r'!\[\]\(([^)]+)\)',r['question'][':question/problem'])+[a[':answer/value'] for f in r['question'][':question/answer-fields'] for a in f[':answer-field/choices'] if a[':answer/type']==':answer.type/image']
+   for path in paths:zero_axes_raster_check(path);axis_plot_count+=1
+ (D/'zero-axes-review.json').write_text(json.dumps(axis_records,indent=2)+'\n')
+ sentinel=next(r for r in axis_records if r['generation']['profile']=='authored:q-131299' and r['generation']['parameters']['shift']==3)
+ sentinel_path=re.findall(r'!\[\]\(([^)]+)\)',sentinel['question'][':question/problem'])[0];broken_side=copy.deepcopy(json.loads(Path(sentinel_path).with_suffix('.json').read_text()));broken_side['axes']['xlim']=[3,11]
+ try:zero_axes_raster_check(sentinel_path,broken_side)
+ except AssertionError:axis_mutation_rejected=True
+ else:raise AssertionError('old off-viewport-origin defect escaped regression')
  # Invalid explicit parameters cannot evade workload bounds.
  invalid=[('easy',{'scale':0,'shift':0}),('easy',{'scale':1,'shift':4}),('moderate',{'coordinates':[-3,-1,2],'orientation':1}),('hard',{'coordinates':[-3,-1,2.5],'orientation':1}),('hard',{'coordinates':[-3.5,-3,2.5],'orientation':1})]
  for l,p in invalid:
@@ -203,6 +241,13 @@ def run():
   side=json.loads(Path(path).with_suffix('.json').read_text());check(side['parameters']==p,'concurrent sidecar mixed');check(side['png_sha256']==hashlib.sha256(Path(path).read_bytes()).hexdigest(),'concurrent PNG/sidecar')
  check(not list((D/'plots').glob('*.tmp')),'temporary leaks')
  evidence=[g.generate('easy',seed=29,profile='observed:'+qid,parameters={'scale':1,'shift':1}) for qid in g.QUESTIONS]
+ for er in evidence:
+  qid=er['generation']['profile'].split(':',1)[1];sq=g.QUESTIONS[qid]
+  for sf,gf in zip(sq.get(':question/answer-fields',[]),er['question'].get(':question/answer-fields',[])):
+   if g.infer_family(qid)=='select_graph':
+    expected=sorted([sorted(float(x)+1 for x in graph_readback(a[':answer/value'])) for a in sf[':answer-field/choices']]);actual=sorted([sorted(float(x) for x in graph_readback(a[':answer/value'])) for a in gf[':answer-field/choices']]);check(expected==actual,'changed plotted source-bank replay')
+   else:
+    expected=sorted([sorted(x+1 for x in parse_set(a[':answer/value'])) for a in sf[':answer-field/choices']]);actual=sorted([sorted(parse_set(a[':answer/value'])) for a in gf[':answer-field/choices']]);check(expected==actual,'changed scalar source-bank replay')
  (D/'review.json').write_text(json.dumps(review+evidence,indent=2)+'\n')
  md=['# Source originals and generated variants','Source evidence is frozen at math basis 1356. All observed source banks and omissions are available through public observed profiles. Generated variants below are clearly authored normal presentation.']
  for qid,q in g.QUESTIONS.items():
@@ -220,6 +265,6 @@ def run():
  result=subprocess.run(['generate/runs/current/check-engine',str(D/'engine-input.json'),str(D/'engine-report.json')],capture_output=True,text=True)
  check(result.returncode==0,result.stdout+result.stderr)
  engine=json.loads((D/'engine-report.json').read_text())
- result={'status':'pass','fidelity':fidelity,'plots':raster,'independent_printed_record_checks':len(review)+70+4,'sampled_mathematical_tasks':{k:len(v) for k,v in fprints.items()},'finite_authorable_coordinate_tasks':catalog_counts,'normal_default_families':sorted(family),'normal_default_source_profiles':len(profile),'mutation_regressions':mutations,'explicit_invalid_parameters_rejected':len(invalid),'concurrent_fresh_render_cases':3,'native':{k:engine[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'native_engine_sha256':hashlib.sha256(Path('generate/runs/current/check-engine').read_bytes()).hexdigest(),'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':g.matplotlib.__version__},'unresolved_source_evidence':['four omitted legacy graph widgets remain unrecovered; raw profiles ineligible; normal supplied plots authored','legacy field q-48080 lacks correct designation; raw presence preserved, authoritative widget graded via labelled adapter','q-104021 lacks answer fields; raw omission preserved, normal 5-choice field authored','historical decoded double TeX slashes retained in raw evidence; normal set-bank notation authored'],'root_approval':False}
+ result={'status':'pass','fidelity':fidelity,'plots':raster,'independent_printed_record_checks':len(review)+70+4,'sampled_mathematical_tasks':{k:len(v) for k,v in fprints.items()},'finite_authorable_coordinate_tasks':catalog_counts,'normal_default_families':sorted(family),'normal_default_source_profiles':len(profile),'raw_changed_parameter_review_records':len(evidence),'actual_rendered_marker_pixels_checked':True,'mutation_regressions':mutations,'explicit_invalid_parameters_rejected':len(invalid),'zero_axes_boundary_questions':len(axis_records),'zero_axes_boundary_plots':axis_plot_count,'old_off_viewport_origin_mutation_rejected':axis_mutation_rejected,'concurrent_fresh_render_cases':3,'native':{k:engine[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'native_engine_sha256':hashlib.sha256(Path('generate/runs/current/check-engine').read_bytes()).hexdigest(),'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':g.matplotlib.__version__},'unresolved_source_evidence':['four omitted legacy graph widgets remain unrecovered; raw profiles ineligible; normal supplied plots authored','legacy field q-48080 lacks correct designation; raw presence preserved, authoritative widget graded via labelled adapter','q-104021 lacks answer fields; raw omission preserved, normal 5-choice field authored','historical decoded double TeX slashes retained in raw evidence; normal set-bank notation authored'],'root_approval':False}
  (D/'validation.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))
 if __name__=='__main__':run()

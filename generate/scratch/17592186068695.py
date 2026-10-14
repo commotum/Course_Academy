@@ -29,7 +29,7 @@ import numpy as np
 KP_ID=17592186068695
 KP_UUID='6cd6c125-ecaf-5847-a802-ec1b3594a15c'
 TITLE='Determining Whether a Function Is Continuous at a Given Point'
-VERSION='continuity-graph-4'
+VERSION='continuity-graph-6'
 ROOT=Path(__file__).with_suffix('')
 SOURCE=json.loads((ROOT/'source.json').read_text())
 QUESTIONS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
@@ -159,7 +159,16 @@ def transformed(g,p):
     if 'marked_values' in g:out['marked_values']=[str(s*rat(a)+h) for a in g['marked_values']]
     if 'guides' in g:out['guides']=[str(s*rat(a)+h) for a in g['guides']]
     if 'open_annotations' in g:out['open_annotations']=[[str(s*rat(a)+h),str(rat(v)+k)] for a,v in g['open_annotations']]
-    out['bounds']=[str(s*rat(g['bounds'][0])+h),str(s*rat(g['bounds'][1])+h),str(rat(g['bounds'][2])+k),str(rat(g['bounds'][3])+k)]
+    bounds=[s*rat(g['bounds'][0])+h,s*rat(g['bounds'][1])+h,rat(g['bounds'][2])+k,rat(g['bounds'][3])+k]
+    width=bounds[1]-bounds[0];height=bounds[3]-bounds[2]
+    if bounds[0]>=0:bounds[0]=-width/12
+    if bounds[1]<=0:bounds[1]=width/12
+    if bounds[2]>=0:bounds[2]=-height/12
+    if bounds[3]<=0:bounds[3]=height/12
+    # Outer segments are schematic clipped continuations, not finite endpoints.
+    # Keep the real zero axes visible after translation; never relocate y-axis.
+    out['segments'][0]['lo']=str(bounds[0]);out['segments'][-1]['hi']=str(bounds[1])
+    out['bounds']=list(map(str,bounds))
     return out
 
 
@@ -233,16 +242,18 @@ def render_plot(prefix,p,targets,observed=False,highlight=False):
         if not status['continuous'] or a in g.get('marked_values',[]):ax.scatter([float(rat(a))],[float(rat(v))],s=29,c='#f11',zorder=6)
     for a in g.get('guides',g['poles']):ax.axvline(float(rat(a)),ls='--',color='#888',lw=1,zorder=1)
     ax.set(xlim=(lo,hi),ylim=(bottom,top));ax.spines[['right','top']].set_visible(False)
-    ax.spines['left'].set_position(('data',0 if lo<0<hi else lo+.06*(hi-lo)))
-    ax.spines['bottom'].set_position(('data',0 if bottom<0<top else bottom+.1*(top-bottom)))
+    ax.spines['left'].set_position(('data',0))
+    ax.spines['bottom'].set_position(('data',0))
     ax.set_xticks(list(map(lambda z:float(rat(z)),ticks)));ax.set_xticklabels(['$'+tex(t)+'$' for t in ticks]);ax.set_yticks([])
     if hard_scale:ax.grid(axis='x',color='#ddd',lw=.5,zorder=0)
-    axis_x=0 if lo<0<hi else lo+.06*(hi-lo);axis_y=0 if bottom<0<top else bottom+.1*(top-bottom)
+    axis_x=0;axis_y=0
     ax.annotate('',xy=(hi,axis_y),xytext=(hi-.035*(hi-lo),axis_y),arrowprops={'arrowstyle':'->','color':'black','lw':1})
     ax.annotate('',xy=(axis_x,top),xytext=(axis_x,top-.035*(top-bottom)),arrowprops={'arrowstyle':'->','color':'black','lw':1})
     ax.annotate('$x$',xy=(hi,axis_y),xytext=(-4,7),textcoords='offset points',ha='right')
     ax.annotate('$y$',xy=(axis_x,top),xytext=(7,-4),textcoords='offset points',va='top')
     fig.tight_layout(pad=.6)
+    origin=ax.transData.transform((0,0));unit=ax.transData.transform((1,1));height=fig.get_figheight()*fig.dpi
+    data['pixel_transform']={'x_offset':float(origin[0]),'x_scale':float(unit[0]-origin[0]),'y_offset':float(height-origin[1]),'y_scale':float(origin[1]-unit[1])}
     # Unique temp files, atomic final PNG/sidecar writes; safe concurrent callers.
     tmp=directory/(key+'.'+uuid.uuid4().hex+'.png');fig.savefig(tmp,facecolor='white');plt.close(fig);tmp.replace(png)
     tmpj=directory/(key+'.'+uuid.uuid4().hex+'.json');tmpj.write_text(json.dumps(data,indent=2)+'\n');tmpj.replace(side)
@@ -280,6 +291,7 @@ def normalized_parameters(level,p,observed):
 
 def compile_question(source_id,p,profile,level,seed):
     src=QUESTIONS[source_id];spec=SPECS[source_id];raw=profile=='observed';targets=[rat(p['scale'])*rat(a)+rat(p['shift']) for a in spec['targets']]
+    if level=='hard' and sum(t.q==2 for t in targets)<2:raise ValueError('Hard requires at least two unlabelled half-unit target readings')
     asset_map={};graphs={}
     for ref in sorted(set(re.findall(r'images/[\w/]+\.png',json.dumps(src)))):
         prefix=Path(ref).stem[:8];path,obj=render_plot(prefix,p,targets,raw,prefix in ALIASES);asset_map[ref]=path;graphs[path]=obj
@@ -351,7 +363,7 @@ def finalize(q,template,p,profile,level,seed,graphs,targets,statuses):
       'version':VERSION,'seed':seed,'template':template,'requested_level':level,'parameters':p,'bank_profile':profile,
       'source':{'database':SOURCE['database'],'basis':SOURCE['basis'],'lineage':SOURCE['lineage']},
       'source_id':template,'content_fingerprint':content,'mathematical_fingerprint':task,'graphs':graphs,
-      'targets':list(map(str,targets)),'continuity_checks':statuses,
+      'targets':list(map(str,targets)),'half_unit_target_readings':sum(t.q==2 for t in targets),'continuity_checks':statuses,
       'eligible_for_learning':profile!='observed' or (template not in ('q-48081','q-102106','q-78133','q-48082')),
       'evidence_only':profile=='observed' and template in ('q-48081','q-102106','q-78133','q-48082'),
       'domain':'Graph branches with open external ends, exclusions and separately specified singleton values',

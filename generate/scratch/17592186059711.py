@@ -12,8 +12,8 @@ ambiguous instance is rejected wholesale. Both recovered banks have defensible
 componentwise operations, although the original error intent is not recoverable.
 Easy defaults sample every observed single-operation family (sum, subtraction,
 scalar multiplication). Moderate is a single scaled vector plus another, anchored
-to q17611/canonical e4293. Hard scales BOTH supplied vectors before combining,
-an authored extra bookkeeping demand within the same componentwise method.
+to q17611/canonical e4293. The previous hard extension scaled BOTH vectors and is now excluded because it
+adds an operation absent from this KP source backbone. No hard stock is claimed.
 See the private classification/extraction for number bounds and source omissions.
 """
 from __future__ import annotations
@@ -25,10 +25,11 @@ KP_ID=17592186059711
 KP_UUID='1735c445-9c97-5aa7-83d6-7dee23993153'
 TITLE='Calculating Sums and Scalar Multiplication of Vectors Using Angle Bracket Notation'
 VERSION='angle-vector-1.0'
+SUPPORTED_LEVELS=('easy','moderate')  # Hard extension is not source-backed.
 SOURCE={'database':'math','basis':1356,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
-TEMPLATES={'sum':'easy','subtract':'easy','scalar':'easy','linear':'moderate','double_scaled':'hard'}
+TEMPLATES={'sum':'easy','subtract':'easy','scalar':'easy','linear':'moderate'}
 PROFILES={'sum_method':'sum','subtract_observed':'subtract','scalar_method':'scalar',
-          'linear_observed':'linear','hard_method':'double_scaled',
+          'linear_observed':'linear',
           'raw_q1304':'subtract','raw_q17611':'linear','raw_q1301':'sum','raw_q1389':'scalar'}
 RAW={'raw_q1304':{'source_id':'q-1304','difficulty':False,'fields':True,'solution':False},
      'raw_q17611':{'source_id':'q-17611','difficulty':False,'fields':True,'solution':False},
@@ -170,7 +171,7 @@ def mathematical_fingerprint(template,p):
     return digest(task)
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
-    if level not in ('easy','moderate','hard'):raise ValueError('Unknown difficulty')
+    if level not in SUPPORTED_LEVELS:raise ValueError('Unsupported difficulty: hard adds a second scaled vector absent from this KP source backbone')
     if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('Only the observed/supported radio response is provided')
     rng=random.Random(seed)
     if profile is not None:
@@ -215,7 +216,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('easy',seed,template,field_type,parameters,profile)
 # MODERATE: exactly two scalar products and two additions; one scalar |k|2..5.
 def generate_moderate(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('moderate',seed,template,field_type,parameters,profile)
-# HARD: exactly four scalar products and two additions; both scalars |r|,|k|2..4.
+# HARD: explicitly unsupported; retained callable raises a capability exception.
 def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('hard',seed,template,field_type,parameters,profile)
 
 def markdown(record):
@@ -236,7 +237,7 @@ def main():
     args=parser.parse_args()
     if args.count<1:parser.error('Count must be positive')
     if args.difficulty=='all' and (args.template or args.profile or args.parameters):parser.error('Choose a difficulty for explicit template/profile/parameters')
-    try: records=[generate(l,args.seed+i,args.template,args.field_type,json.loads(args.parameters) if args.parameters else None,args.profile) for l in (['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]) for i in range(args.count)]
+    try: records=[generate(l,args.seed+i,args.template,args.field_type,json.loads(args.parameters) if args.parameters else None,args.profile) for l in (SUPPORTED_LEVELS if args.difficulty=='all' else [args.difficulty]) for i in range(args.count)]
     except ValueError as e:parser.error(str(e))
     print(json.dumps(records,indent=2,ensure_ascii=False) if args.format=='json' else '\n\n---\n\n'.join(map(markdown,records)))
 if __name__=='__main__':main()

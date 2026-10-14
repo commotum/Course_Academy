@@ -297,7 +297,7 @@ Raw-exact fidelity is eight prompts, seven existing solutions, nine field layout
 
 `variety.json` enumerates the authored domain without counting equal product scales twice: easy circle 19 mathematical tasks; moderate ellipse (see refreshed variety.json); each simple hard family 17; odd-power hard family 51. These are finite practice families, not unlimited variety. Profile, plot aliases and option shuffle do not count as new tasks. Cross-family equal integrands/intervals share a fingerprint as well. The sampler preserves the same elementary multiplication/chain-rule workload.
 
-Root review broadens the authored easy circle radius to integers 2..20: nineteen mathematically distinct pointwise products, with unchanged two trig derivatives and one substitution product. No area evaluation is requested; this is a variation of the same setup workload. Moderate and hard coefficient bounds remain 1..6.
+Root review broadens the authored easy circle radius to integers 2..20: nineteen mathematically distinct pointwise products, with unchanged two trig derivatives and one substitution product. No area evaluation is requested; this is a variation of the same setup workload. Moderate subsequently extends to1..12; hard retains1..6.
 
 Root formatting correction preserves every doubled TeX aligned row separator; global backslash collapsing had turned row breaks into invalid escaped ampersands. Raw source evidence remains exact. Validator now rejects collapsed separators and multirow chains without proper row breaks.
 

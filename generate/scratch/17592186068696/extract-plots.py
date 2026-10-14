@@ -69,6 +69,16 @@ for p in paths:
   for x,y in comp:by.setdefault(x,[]).append(y)
   if len(by)<8:continue
   curves.append([[round((x-x0)/scale,6),round((y0-sum(v)/len(v))/scale,6)] for x,v in sorted(by.items())])
+ # Restore each branch's genuine endpoint underneath its marker. Removing
+ # ring pixels during tracing must not turn one hole into a missing interval.
+ for m in refined:
+  mx=float(m['x']);my=(y0-m['y_pixel'])/scale
+  for curve in curves:
+   for at in (0,-1):
+    ex,ey=curve[at]
+    if ((ex-mx)**2+(ey-my)**2)**.5*scale<=10:
+     if at==0:curve.insert(0,[mx,my])
+     else:curve.append([mx,my])
  plots[p]={'source':p,'sha256':hashlib.sha256(Path('/media/jake/SSD/EDB/math/'+p).read_bytes()).hexdigest(),'dimensions':[a.shape[1],a.shape[0]],'origin_pixel':[x0,y0],'pixels_per_x_unit':scale,'markers':refined,'breaks':breaks,'curves':curves,'bounds':[-x0/scale,(a.shape[1]-x0)/scale,(y0-a.shape[0])/scale,y0/scale],'vertical_asymptotes':{'25dbe2':[-2,3],'2f5337':[2],'36cecf':[-1],'374abc':[-2],'455cdb':[1],'492341':[-1],'6d0d3c':[2.5],'eb8803':[2],'e111be':[0]}.get(prefix,[]),'edges':'All red branches solid; no red branch arrowheads. Black positive x/y axis arrowheads. No inclusion implied at cropped edges. Unmarked joins/corners remain connected.'}
 (D/'plot-spec.json').write_text(json.dumps(plots,indent=2)+'\n')
 print('wrote',len(plots),'plots')

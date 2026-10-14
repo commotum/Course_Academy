@@ -38,16 +38,16 @@ Field selection (:answer-field.type/radio)
 
 ### Generated variant; list_breaks
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/7e452724829fee58cb39bf476aea1659d963590cb0f8a47c90097762b3ae636e.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/cc0bb65c56237ca7f688174e2b903cf881837f0bf4dac5d5abefad3672708823.png)
 
 What are the points of discontinuity of the function plotted above?
 
 Field selection
 
-- $x=-2$ and $x=-1$
 - $x=-6$ only
-- $x=-2$ only
+- $x=-2$ and $x=-1$
 - $x=-6$ and $x=-1$
+- $x=-2$ only
 - $x=-6$ and $x=-2$
 
 Worked solution:
@@ -59,23 +59,23 @@ Therefore, the correct answer is $x=-6$ and $x=-2.$
 
 ### Parameterized observed-bank variant; evidence only, preserved omissions
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/9cf2bf105bfc51859f980e77a6da85f2d28db2d81854da8c7c7c6969728173d2.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/605f7f339b6666784b1c0203da6c7f1f31f0b90977d5230ac05d26084675151d.png)
 
 What are the points of discontinuity of the function plotted above?
 
 Field selection
 
-- $x =-1$ and $x = 1$
-- $x = 1$ only
 - $x = 3$ and $x = 1$
-- $x = 3$ only
 - x=-1,3
+- $x = 3$ only
+- $x = 1$ only
+- $x =-1$ and $x = 1$
 Field selection
 
 - $x=3$ only
-- $x=1$ only
-- x=-1,3
 - $x=-1$ and $x=1$
+- x=-1,3
+- $x=1$ only
 - $x=3$ and $x=1$
 
 Worked solution:
@@ -109,17 +109,17 @@ Field selection (:answer-field.type/radio)
 
 ### Generated variant; list_breaks
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/ae8a3f2354ca1b70c83f67c9b712eec00b8ee3f2752b34e241b0a90e6434c86f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/fe516c6f3019106878edf6b45bbf7468afbec0471bac56311a5b3bb0b515dcec.png)
 
 What are the points of discontinuity of the function plotted above?
 
 Field selection
 
-- $x=0$ and $x=1$ and $x=3$
 - $x=0$ and $x=3$
+- $x=0$ and $x=1$
 - $x=1$ only
 - $x=1$ and $x=3$
-- $x=0$ and $x=1$
+- $x=0$ and $x=1$ and $x=3$
 
 Worked solution:
 
@@ -130,7 +130,7 @@ Therefore, the correct answer is $x=0,1,3.$
 
 ### Parameterized observed-bank variant; evidence only, preserved omissions
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/9fbc2d02ab2faed481d46ae4dec29ba59a9b1ef9bdd4347ebad8a8cac249ad33.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/c5bd5924dd44e6750df27d2cdb85d03e1c6412a26fe621adc23941b0fcd7c79f.png)
 
 What are the points of discontinuity of the function plotted above?
 
@@ -138,8 +138,8 @@ Field selection
 
 - $x=3$ only
 - $x=2$ and $x=5$
-- $x=5$ only
 - x=2,3,5
+- $x=5$ only
 - $x=2$ and $x=3$
 
 Worked solution:
@@ -161,17 +161,17 @@ Therefore, the correct answer is $x=-2,1,3.$
 
 ### Generated variant; list_breaks
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/e53860fb22dc42dc3402b7ba7a16052cb76adf11cdc7598c3db92d0996565f1a.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/587652c789a262e95d077c5305dd0b0c6bb3e6357fda032039f215edd40416de.png)
 
 What are the points of discontinuity of the function plotted above?
 
 Field selection
 
-- $x=-4$ and $x=2$ and $x=6$
-- $x=-4$ and $x=6$
 - $x=2$ and $x=6$
 - $x=2$ only
 - $x=-4$ and $x=2$
+- $x=-4$ and $x=2$ and $x=6$
+- $x=-4$ and $x=6$
 
 Worked solution:
 
@@ -182,7 +182,7 @@ Therefore, the correct answer is $x=-4,2,6.$
 
 ### Parameterized observed-bank variant; evidence only, preserved omissions
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/34bd19ca3ba803641c1f2f93d35b4872ea4ceaf6f0fb564de1471c830db2b6e6.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/4b7d03a91eb097440ebf7d1b8617d41f52e5d39f74e42607329bbc5bc43b85fc.png)
 
 What are the points of discontinuity of the function plotted above?
 
@@ -209,7 +209,7 @@ Field field-1 (:answer-field.type/blank)
 
 ### Generated variant; blank_1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/0fea08956a53847677f05a84a2cb894a151a28a84e5861d0e936844825843763.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/caf1404d992f7fd32812a79c9154d6cbf7934455258269b30b8d8cc9253fec68.png)
 
 What are the points of discontinuity of $f(x)?$
 
@@ -262,7 +262,7 @@ Field field-2 (:answer-field.type/blank)
 
 ### Generated variant; blank_2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/4f39c4d8be32e6c42718ef1f4393ea7dc87eba99db714a9c6263d7ab7deaf156.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/942cd94f178cd44731a404625f9f51ff52f16d61a218666906ea119d11ae8510.png)
 
 **In ascending order**, what are the points of discontinuity of $g(x)?$
 
@@ -344,7 +344,7 @@ Field field-1 (:answer-field.type/blank)
 
 ### Generated variant; blank_1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/0a8b172bc6e828d41eb026e38b54b65526dfbd432b88f370eaad6b19b4e1e5a9.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/186614828fc48b69918f3aa05e34bee245babfc8548a932d03b8755dab82f911.png)
 
 What are the points of discontinuity of $f(x)?$
 
@@ -460,7 +460,7 @@ Field field-2 (:answer-field.type/blank)
 
 ### Generated variant; blank_2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/e9f300f91a9a98a44234232a394e876f6eaf06ff33b6eae9fca6af1a4cd8a205.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/a2a7a75d686b0aa40618b6184849e08e5b054c46385632ad68b95782c766be08.png)
 
 **In ascending order**, what are the points of discontinuity of $g(x)?$
 
@@ -566,17 +566,17 @@ Field selection (:answer-field.type/radio)
 
 ### Generated variant; list_breaks
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/28465b6e81b35f3a8020f2dc7164ef7f5814962e45457417bfc682d7dc2d8758.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/465a42dcc015f18e4a833fd2015112a02b84298b9d52cad57994ea3f26b7c882.png)
 
 What are the points of discontinuity of the function plotted above?
 
 Field selection
 
-- $x=0$ and $x=3$
 - $x=0$ and $x=2$
-- $x=2$ only
 - $x=0$ only
 - $x=2$ and $x=3$
+- $x=0$ and $x=3$
+- $x=2$ only
 
 Worked solution:
 
@@ -587,17 +587,17 @@ Therefore, the correct answer is $x=0$ and $x=2.$
 
 ### Parameterized observed-bank variant; evidence only, preserved omissions
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/25d343b61b3cee73c377ee68f6be2ea7bb4cd5ff38676cbd954a42f408eeb614.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/ec5342364e6ae528e9e388515978943494c4847780cf1f8dc6f3e61b5fad619f.png)
 
 What are the points of discontinuity of the function plotted above?
 
 Field selection
 
 - $x=1$ only
-- $x=1$ and $x=3$
 - x=-1,3
-- $x=-1$ and $x=1$
 - $x=3$ only
+- $x=-1$ and $x=1$
+- $x=1$ and $x=3$
 
 Worked solution:
 
@@ -630,17 +630,17 @@ Field selection (:answer-field.type/radio)
 
 ### Generated variant; list_breaks
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/83bb7a507bfaa1e0bd87c82c9c6a0126c79c66a369e3240e644539efa47fe30d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/6ba93e0aad5e36346f7e89642584a93a83026ad7afc52c8e1130fd074ff1d5a6.png)
 
 What are the points of discontinuity of the function plotted above?
 
 Field selection
 
-- $x=-3$ and $x=2$
-- $x=-3$ and $x=1$
-- $x=1$ and $x=2$
-- $x=-3$ only
 - $x=1$ only
+- $x=-3$ and $x=1$
+- $x=-3$ only
+- $x=1$ and $x=2$
+- $x=-3$ and $x=2$
 
 Worked solution:
 
@@ -651,16 +651,16 @@ Therefore, the correct answer is $x=-3$ and $x=1.$
 
 ### Parameterized observed-bank variant; evidence only, preserved omissions
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/964f18e36d44c28f760eb530cdd802a258cd554ec8c018b5b63c86692c5f9164.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/457200c050f717db224b5a108c471af325e4510596ffa999e8e814714671f4f0.png)
 
 What are the points of discontinuity of the function plotted above?
 
 Field selection
 
-- $x=-1$ only
 - $x=1$ and $x=3$
-- $x=1$ only
+- $x=-1$ only
 - $x=-1$ and $x=1$
+- $x=1$ only
 - x=-1,3
 
 Worked solution:
@@ -696,17 +696,17 @@ Select the function that has a discontinuity at $x=-1.$
 
 Field selection
 
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/2dbe0ab34b905ab5e0add60f0c4aa37bdc1c0d13b4e3fd4534ea3be22b9c32e9.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/e0326f1dc0f1d08f96c2fe39d11c66004afec5d8b694b64e0238e4adc13f174d.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/21d3231921423654ff6601de37ca30e54096d48df03578e972f934242992ab76.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/49fd0099c39445f5d4852de668c0fb0b14971690dcf458ff84e6ea8a826775f8.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/f0d7d349665e761442c530b66f43c71965dad456620a0fcf73c4a540c8e575d3.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/f5cc1dc18985e6b9c0f550995301723c550283d5d09e82136b1ab232c6aec150.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/2166e3b12547bd6ecbdd14ff91d8f3cd8958541f2a6d8e9d83af1460d2bed939.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/3d494d7ab7ca2cd17210e51eaead6f53aac58cb43bec64f53a10b494d0054148.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/937f58706be5f0ff60bb9c90b9bdcb3baff1834958f395dceed4c237edc864f1.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/56f8d2916e962cd9db44afb6e4be45d2dbbe8d6e87146b5b866a32704f7faf97.png)
 
 Worked solution:
 
 The correct answer is shown below. Notice that the function contains a break exactly at $x=-1$ and it's impossible to draw its graph without taking our pencil off of the paper.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/e0326f1dc0f1d08f96c2fe39d11c66004afec5d8b694b64e0238e4adc13f174d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/f5cc1dc18985e6b9c0f550995301723c550283d5d09e82136b1ab232c6aec150.png)
 
 All the other given graphs can be plotted without taking the pencil off of the paper.
 
@@ -717,11 +717,11 @@ Select the function that has a discontinuity at $x=-2.$
 
 Field selection
 
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/075d15b81ad6e29daba363c9febcfa8e09ac977e593e19720131bf4c4845ab14.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/4fbdf790783ad4bfe0d1863bc41f2488930b368f8bf09a4e9cd9cceb8f9035eb.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/7b08cb9e0edcc62c613bd937f15446311c06cc4ebbcd3e2ce028f4c63fda310b.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/d8c4e6421ed6263204a65a8d5f2205662181cb6d66c2a5b19643a6310b691152.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/eeecab5680bbf7be283d9084b6557904cc063be0e361c34b327c54a9b54a10cc.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/74f0915453ee50a4e5c35c7e82d42e3aeadb5aa7df91e73c59e25a0d1a4093af.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/8654ad246e0723618e8eb8e0af05ab7f44b9f8b7f6a227c77b97b3a2e3296fe3.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/a76e91acc6b5e069a336b46119cf030b5e896c3a6c2e0de32e1a2ede9a41d75a.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/ec0681ca04e27fdaded549c25f5ce6d873f001e65d2f73d30e3db753722d05cd.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/95b0c8a128d823d3a0ae6f3dd927846fac468d1277de13c1d43e1efd0075cff5.png)
 
 Worked solution:
 
@@ -756,17 +756,17 @@ Select the function that has a discontinuity at $x=0.$
 
 Field selection
 
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/06c0a0762e793dabbba683762110b6f6844f1d094f73be04bfc321e19876fc21.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/803251b8ccf39a7a5ca278b07d7f260c98d3b6f67f28daa557ca7fbe6c3de2bc.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/f76e9cb65b0f081386d1c38ac2a5d59af0ff32e226a4489b80ebcadf189a0412.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/081ba83c97bfd4bc16e0c7451dcb0bfa4b3a24200831926fe44a6773740465d7.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/22e9c10cf50395f408bbb6c8e316a9d07e1278f2c91abbba42849d62ce577f84.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/a71f6beaffdfe1eb762c8eb705150fae66a9c178ebd8b0f5b22d55dfce7a2121.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/f2e84369cf8a97e29a11619c732c558ef20b6778c50bedd672cc4ccb53f60ea9.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/f128f00282147ac70bdc8c346daeac81321eabb8f826d54b2e05720c872b7273.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/aa0157725c9d11fbea7408e59ffc4b49a883ea02c97f74c3ee43f63da23994ac.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/e127e4151e791a82c546984cec09a907c91f9dceab5e591a20506383fd7922a3.png)
 
 Worked solution:
 
 The correct answer is shown below. Notice that the function contains a vertical asymptote exactly at $x=0$ and it's impossible to draw its graph without taking our pencil off of the paper.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/06c0a0762e793dabbba683762110b6f6844f1d094f73be04bfc321e19876fc21.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/aa0157725c9d11fbea7408e59ffc4b49a883ea02c97f74c3ee43f63da23994ac.png)
 
 All the other given graphs can be plotted without taking the pencil off of the paper.
 
@@ -777,11 +777,11 @@ Select the function that has a discontinuity at $x=2.$
 
 Field selection
 
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/e8705bee6ce9f212ff3f69c2356010a541669d20b5b70943f9d65dced9cd612b.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/e5fc88019d2a7484e4cd5baa28968c131b8334ca93e84b868bffa7306951e18b.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/6e4e6d0c7e5f2f411aa0f40ea1c2189c57e9b33e3e520f35558986aeaa2d089d.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/42a78fb1d989802535b5ae104a2bb5aa38da2b1a1fb81869c146ccaec6af601c.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/a5b76773bb9a0e9cd5c04579994290997905ae9354be0055bc8f8d10ddac77ed.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/460dc8f74c04ebfa800cf49c305250109e89f277e5628d65d98fb6fa4cb03a7b.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/d0c2389c44b2e0e60ad03b36446a5a33a670a43f9b25b2c4618b3f58273c4d09.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/4676789f24cfd189097061e617ef492fe1acdf097bfc6b14ac9fa7a69efed623.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/8cafca33413c956f83c7e3d3794a256040c7e67a378e0f466efe6315f0b41778.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/89251beda0047a94ecf385a579405d364c7264bf68c2da04404de14bb0baa904.png)
 
 Worked solution:
 
@@ -818,17 +818,17 @@ Select the function that has a discontinuity at $x=-2.$
 
 Field selection
 
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/dcb4a48dac36059030af3df483c44a9b5740c05eb17fd7f32b2d05f760720233.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/27316e83f84d1bf980965ceeb477f2a2b2497cbb653285a698e85419d15f446d.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/c0dc689880b04115ab6eac87854c929e1120ce15d40d1b79450b2e1655bb73f6.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/1685c76e3bc373cbb58df88e627fc2687b13e19466adfa15dca825d67f4a9bc6.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/6e6ef4d3fa46dce2489da151d1ee1a7d2e483d3a8c29d5d9f29e3669d8eecb4d.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/20f1641adba163ed852698c2b9062d51d206d4af486067b4be0961751451acb4.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/6f574086277bbb978fe682c8d3c62618a49b1c70f05108fde940dfd18d35b31e.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/d7be0d6ce4921a115f0a879b72814689c6d3ba26a4a9f1b86f24a201534b9f9a.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/51c386b053303d5f4d2989297abec5bddd9bc03847e1a028a206630fff119f84.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/dbe59dae06cd3c1b4b50de7e36b701a2a863f95e2230a4c41fd5833c8df533a5.png)
 
 Worked solution:
 
 The correct answer is shown below. Notice that the function contains a vertical asymptote exactly at $x=-2$ and it's impossible to draw its graph without taking our pencil off of the paper.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/f702f4c26874a719167cb32865cda1e407f5931575e70ea4c977301e89ce26bf.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/eaa06f36cba82bea7d1b3d9fa2cafd81ad0d7e3d3caabc6dc210560523888bb8.png)
 
 All the other given graphs can be plotted without taking the pencil off of the paper.
 
@@ -839,17 +839,17 @@ Select the function that has a discontinuity at $x=0.$
 
 Field selection
 
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/c4353c1e1b4843f4bbfbd22d0c255a06c611f2399008eeb205d7e8ed4fae3417.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/3a9587e210446f4f3f1fea70eafb0979a184b7b003f243a6ac11ae4b930e78f8.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/415b9289b6129f41a74d09fc771873038d85207a6e56a2c40bdb0fcdf692b039.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/c44a3aec8efecb1bdd99fd75f7aab7fbc5b2be2cc3e202e4f39444c28aaa951c.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/8d0bc38c63918277963db68dbd852708592f1e7d18b175189134661565d2cf0b.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/d01cec1bb464ffc2cf01f1cf58bf1aa3852fb5a26da7ad345c274be5f757f913.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/3b611745dc8e1925de525562997cc5185bf2e7031268bf5a675c9cc45fa11d51.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/6c1ea80c5b251b1579b1a9914f07d0cf59c1bec6c267540a668704fb8fb5dcdd.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/ec99a20efcd50af3a8c78c5eeeafcaad069a3129f2f9c431e9e02efb879408d0.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/8aa42bfc72b55e1681e6358431e2dd659fe45b531ddbcbd99f4ed81c7c593d38.png)
 
 Worked solution:
 
 The correct answer is shown below. Notice that the function contains a vertical asymptote exactly at $x=0$ and it's impossible to draw its graph without taking our pencil off of the paper.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/c5cb261298e2a18da07014cd9632835dc48ce111052367f7e4633d8aa156560d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/95406c2d49eb84198c2b9a51fa3c0823bb7284dee67a61f2595f56c715e8e8e0.png)
 
 All the other given graphs can be plotted without taking the pencil off of the paper.
 
@@ -878,17 +878,17 @@ Field selection (:answer-field.type/radio)
 
 ### Generated variant; list_breaks
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/62db44da07aacc9b06f3b65ad61f528522e62ab8d56b0659c7da4152e25f5c77.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/a459ac7cc7f15cfefd72011ec4817ae834a664f42090cd8b56d27023af64bae0.png)
 
 What are the points of discontinuity of the function plotted above?
 
 Field selection
 
-- $x=-4$ only
-- $x=-4$ and $x=4$
 - $x=-4$ and $x=5$
-- $x=4$ only
+- $x=-4$ only
 - $x=4$ and $x=5$
+- $x=4$ only
+- $x=-4$ and $x=4$
 
 Worked solution:
 
@@ -899,17 +899,17 @@ Therefore, the correct answer is $x=-4$ and $x=4.$
 
 ### Parameterized observed-bank variant; evidence only, preserved omissions
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/5c96ed912a97201d4281a9843eee6239b347f1bd44ceef18962c0baa82cf91a7.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/15aedce24cec6e754b93502c67bb5b8d9896c903f0b57297825552e9fba86a19.png)
 
 What are the points of discontinuity of the function plotted above?
 
 Field selection
 
 - $x=3$ only
+- $x=3$ and $x=1$
 - x=-2,4
 - x=-1,3
 - $x=1$ only
-- $x=3$ and $x=1$
 
 Worked solution:
 
@@ -946,17 +946,17 @@ Select the function that has a discontinuity at $x=-1.$
 
 Field selection
 
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/dae11102f0c79478fc52065a51bc08bbf506dd9b1f379457498bd66cdc3cca99.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/26e76c07a00e34dc4d53016ef1b20d13e8ec5c5ecb7f9b70fb2103fbd673607b.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/87bd2298a31b7f9e3be154388d1cf0e07ef42847aa07823411851963018fa287.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/dffb0e6873e4ef1722f0da11424cc98923dfeeb4eb00a3342ab179b0412871fc.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/5c4673356606a630403c772d75a27f50625ed741c06baad92516ad3ed113f32c.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/763200195fa06a3827f84aeb9f9fa163ddf5df53f7c00b8ba37dadf321bc6cef.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/1095925890d2a797bf4b4780f3736a1529c933e66c1f1175fc42bf289e943401.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/bdaee92435c3f5e21077eeacf21e1dfcb9b9cccb27819cef8711ff2250456338.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/880acf65758f171be777901dcaeea4f431f63f0ba8374dbd94c383f34eca3bd7.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/957a7d8eb77531a85e673e59e248447f1c644e36513a44afae82c5d47c13fd09.png)
 
 Worked solution:
 
 The correct answer is shown below. Notice that the function contains a jump exactly at $x=-1$ and it's impossible to draw its graph without taking our pencil off of the paper.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/c5505a8d8477233a72378f29df40a34aa0d36b6e45de3585b12323c8fe31aad5.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/46f72d20c12127f81b03bd8b862bfb621518cd03f64a01b7417faec880a5b419.png)
 
 All the other given graphs can be plotted without taking the pencil off of the paper.
 
@@ -967,17 +967,17 @@ Select the function that has a discontinuity at $x=-1.$
 
 Field selection
 
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/87bd2298a31b7f9e3be154388d1cf0e07ef42847aa07823411851963018fa287.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/5c4673356606a630403c772d75a27f50625ed741c06baad92516ad3ed113f32c.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/dae11102f0c79478fc52065a51bc08bbf506dd9b1f379457498bd66cdc3cca99.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/26e76c07a00e34dc4d53016ef1b20d13e8ec5c5ecb7f9b70fb2103fbd673607b.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/dffb0e6873e4ef1722f0da11424cc98923dfeeb4eb00a3342ab179b0412871fc.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/bdaee92435c3f5e21077eeacf21e1dfcb9b9cccb27819cef8711ff2250456338.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/957a7d8eb77531a85e673e59e248447f1c644e36513a44afae82c5d47c13fd09.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/763200195fa06a3827f84aeb9f9fa163ddf5df53f7c00b8ba37dadf321bc6cef.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/1095925890d2a797bf4b4780f3736a1529c933e66c1f1175fc42bf289e943401.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/880acf65758f171be777901dcaeea4f431f63f0ba8374dbd94c383f34eca3bd7.png)
 
 Worked solution:
 
 The correct answer is shown below. Notice that the function contains a jump exactly at $x=-1$ and it's impossible to draw its graph without taking our pencil off of the paper.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/c5505a8d8477233a72378f29df40a34aa0d36b6e45de3585b12323c8fe31aad5.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/46f72d20c12127f81b03bd8b862bfb621518cd03f64a01b7417faec880a5b419.png)
 
 All the other given graphs can be plotted without taking the pencil off of the paper.
 
@@ -1010,17 +1010,17 @@ Select the function that has a discontinuity at $x=4.$
 
 Field selection
 
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/7bd1e2b2a9975c1fc855a8c0aeaf97b1572acfaff9018fe33844fbec8f9411b7.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/f1d40fff611feb61e1f01694dff1a2b04c1eb1461c09e0945c5f5c138c151d74.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/13ccd91dd6594a0dab7029d0296e4fd8e35cbd062504b6823002ac0d54661924.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/866d103ebdd45734a8294222bed01b25c2dbcc9b412478132b4894b6619e4ba2.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/923d2c4dae5222b875197eab2a92fd3bbaa38060dd531f2ee0e5065b51d009f2.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/2dca244bf4ec3c686bcae85f32b3d150188ca9fafeafa644431274fb4c8879c4.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/1116a715b20c06fbd3e4ad0dc0b390af1a2fbaa207c07ba6d871f1a48ee88d4a.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/24c432b3a22b94a14ff4f69adff08217dc4925a904e21c58808056b245025be6.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/d747f809b060719e7bb1050610979b60013f8fbd0f59523d304c9d0772482d09.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/45a431d7e40e40602d6fe70ea5310b9645bc35539111d62d81f5acf9a9fe677b.png)
 
 Worked solution:
 
 The correct answer is shown below. Notice that the function contains a break exactly at $x=4$ and it's impossible to draw its graph without taking our pencil off of the paper.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/232087739e2a29225a866b5d98e11f921a43fecd01af182d65263fff3a9f802f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/36238cdcec501b995d07570c41c0c40c7b04cc2936b9f235dcb4a51e8297a01b.png)
 
 All the other given graphs can be plotted without taking the pencil off of the paper.
 
@@ -1031,17 +1031,17 @@ Select the function that has a discontinuity at $x=2.$
 
 Field selection
 
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/dd53c43b1013810fd62f3cc6f28fde072ff07fba43b82ae62ef2f567a9ab9f63.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/06226523689b7b0075b9f7c56b9ba0bd178be47732fb60aa9833cf57ffb772db.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/dc05e5bcefada210579fb7d1066a6f6ab790279a8765d1ac199dd8c4a0d58972.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/27b79d7dc284af94e7fc5b86e43be445b491c98972755ef981ae8f9cac3130b9.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/42a78fb1d989802535b5ae104a2bb5aa38da2b1a1fb81869c146ccaec6af601c.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/9692296cf257072fc8b488605c6f63e63b3fe28817602d84dd4ccfb9de1c7f58.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/62cf7e3f2cc0eb2cc8f69725e1c8344159d196e848f770b6d71b2dd7fb6bfb58.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/f63a30a6928ac6a95d049681536e248b4555e8298f8b47d0b757e806d19b77da.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/c73d03cb650062945877944f02637e446b3205972dcc863cadc1248cd7f1b8f9.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/d0c2389c44b2e0e60ad03b36446a5a33a670a43f9b25b2c4618b3f58273c4d09.png)
 
 Worked solution:
 
 The correct answer is shown below. Notice that the function contains a break exactly at $x=2$ and it's impossible to draw its graph without taking our pencil off of the paper.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/a4a6bea8c4b52944206e66f13ec2393cc93f06662aeac1b7b7e3e8788a863e25.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/95398c1f12522a1d4985a288ec8ccbec43b56c7d3ca82c2b8cacc0d4d04ea220.png)
 
 All the other given graphs can be plotted without taking the pencil off of the paper.
 
@@ -1070,17 +1070,17 @@ Field selection (:answer-field.type/radio)
 
 ### Generated variant; list_breaks
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/c1dc4a22d81e78643f320035acd5379fb5e18332ca73de4f6b4310eca311b4ac.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/b2d763c6fbb95cb49b2e4a51081fd9a0b3531274b92a065cf74559721dba24f3.png)
 
 What are the points of discontinuity of the function plotted above?
 
 Field selection
 
-- $x=-3$ and $x=0$
-- $x=-3$ only
 - $x=0$ and $x=1$
-- $x=-3$ and $x=1$
 - $x=0$ only
+- $x=-3$ only
+- $x=-3$ and $x=1$
+- $x=-3$ and $x=0$
 
 Worked solution:
 
@@ -1091,17 +1091,17 @@ Therefore, the correct answer is $x=-3$ and $x=0.$
 
 ### Parameterized observed-bank variant; evidence only, preserved omissions
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/43adc4d788799b30a37c1d05a6c77ea392e53eaaff54bf18bee422f022b90edd.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/50ec19fb29622fbc31ff61a25dfcbc07746609722547105c494dfcc7326a5c08.png)
 
 What are the points of discontinuity of the function plotted above?
 
 Field selection
 
 - $x=2$ and $x=3$
+- $x=3$ only
+- $x=0$ and $x=3$
 - $x=-1$ and $x=2$
 - $x=0$ only
-- $x=0$ and $x=3$
-- $x=3$ only
 
 Worked solution:
 
@@ -1134,17 +1134,17 @@ Field selection (:answer-field.type/radio)
 
 ### Generated variant; list_breaks
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/add45eba02c8059a4260f540c6d85fad367a54d573e3a29aaceba9dbfbeb5378.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/4dc7576258fdd7f249f6824a0c0731c6974281d1a10995f61261c3cd56205014.png)
 
 What are the points of discontinuity of the function plotted above?
 
 Field selection
 
-- $x=-1$ only
-- $x=-7$ and $x=0$
 - $x=-7$ only
 - $x=-7$ and $x=-1$
+- $x=-1$ only
 - $x=-1$ and $x=0$
+- $x=-7$ and $x=0$
 
 Worked solution:
 
@@ -1155,17 +1155,17 @@ Therefore, the correct answer is $x=-7$ and $x=-1.$
 
 ### Parameterized observed-bank variant; evidence only, preserved omissions
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/4d4b77c64fcf435a3f4a776290fd1e847f026d0d8ccbbe58eb9d1eb69a2fcc5c.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/48b7d16e3a81835483c3d62f7cc98c5813070921a64168b4ecf82cd9d0be18e7.png)
 
 What are the points of discontinuity of the function plotted above?
 
 Field selection
 
-- $x=-2$ only
 - x=-1,3
-- $x=1$ and $x=3$
-- $x=2$ only
+- $x=-2$ only
 - $x=-2$ and $x=1$
+- $x=2$ only
+- $x=1$ and $x=3$
 
 Worked solution:
 
@@ -1176,17 +1176,17 @@ Therefore, the correct answer is $x=-2$ and $x=1.$
 
 ## Authored moderate extension
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/dc75209a9b4dde17cbe8451a970da330e2430a7cb30c6aa26e44a605863b6a2c.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/d8f89564ac819f0ea0cbc75c65d98930d1dba84d8ba98957c53d7b09b2a28f5e.png)
 
 What are the points of discontinuity of the function plotted above?
 
 Field selection
 
-- $x=-4$ and $x=2$
-- $x=-4$ and $x=3.5$
 - $x=-4$ and $x=2$ and $x=3.5$
 - $x=2$ only
 - $x=2$ and $x=3.5$
+- $x=-4$ and $x=3.5$
+- $x=-4$ and $x=2$
 
 Worked solution:
 
@@ -1197,17 +1197,17 @@ Therefore, the correct answer is $x=-4$ and $x=2$ and $x=3.5$.
 
 ## Authored moderate extension
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/58add1a5282a49a564779f26fad01c378f23c1843822cf5ca63083ca3389253c.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/8f08d9638f37b5c3f93be8a0e5d959017e85517551d51b72bdffc5525d89c48b.png)
 
 What are the points of discontinuity of the function plotted above?
 
 Field selection
 
-- $x=-1.5$ and $x=1$
 - $x=-3$ and $x=-1.5$
-- $x=-3$ and $x=1$
-- $x=-3$ and $x=-1.5$ and $x=1$
 - $x=-1.5$ only
+- $x=-3$ and $x=-1.5$ and $x=1$
+- $x=-3$ and $x=1$
+- $x=-1.5$ and $x=1$
 
 Worked solution:
 
@@ -1218,17 +1218,17 @@ Therefore, the correct answer is $x=-3$ and $x=-1.5$ and $x=1$.
 
 ## Authored hard extension
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/aed0ac7415f25b78cb7502db1039a13471f4523a9a9cfc104a143bfdfed25f37.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/465163601d78c4ec45f253ef7bbca30aa7432dd91efb4563c08fc31bd2217bdf.png)
 
 What are the points of discontinuity of the function plotted above?
 
 Field selection
 
-- $x=-3.5$ and $x=1.5$
+- $x=-3.5$ and $x=0$ and $x=1.5$
+- $x=-3.5$ and $x=0$
 - $x=0$ and $x=1.5$
 - $x=0$ only
-- $x=-3.5$ and $x=0$
-- $x=-3.5$ and $x=0$ and $x=1.5$
+- $x=-3.5$ and $x=1.5$
 
 Worked solution:
 
@@ -1239,17 +1239,17 @@ Therefore, the correct answer is $x=-3.5$ and $x=0$ and $x=1.5$.
 
 ## Authored hard extension
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/bf03cd65bd48bd8b1f0db67401304e4f872502598706e9ab6218cd43955303ab.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068696/plots/64c4762d74bb42edc749c1f977946e4d05c9d935a7c35cd4d8afe6cc2738fd18.png)
 
 What are the points of discontinuity of the function plotted above?
 
 Field selection
 
+- $x=-0.5$ only
+- $x=-3$ and $x=-0.5$ and $x=1.5$
 - $x=-0.5$ and $x=1.5$
 - $x=-3$ and $x=1.5$
 - $x=-3$ and $x=-0.5$
-- $x=-0.5$ only
-- $x=-3$ and $x=-0.5$ and $x=1.5$
 
 Worked solution:
 
@@ -1257,3 +1257,12 @@ The graph breaks at $x=-3$ and $x=-0.5$ and $x=1.5$, meaning that we can't draw 
 
 Therefore, the correct answer is $x=-3$ and $x=-0.5$ and $x=1.5$.
 
+
+
+## Parent QA true-origin correction
+
+Version `graph-discontinuity-2-zero-axes` extends the viewport to include actual x=0 and y=0; curve coordinates and correct answers retain their affine transformation. The original failing single blank at scale2/shift+3 now shows the true origin and the break at x=7. Its axis begins before 0, while the curve begins at x=3. Axis labels are attached to the true positive axes.
+
+![](zero-axes-q-131299-plus3.png)
+
+`zero-axes-review.json` contains all 34 source-family boundary records (scale2, shifts -3/+3), totalling 74 prompt/choice plots. Both shifts of every complete five-image selection bank were inspected at native resolution in the `zero-axes-q-*-plus3/minus3.png` sheets. Single/two-blank reconstructions, a translated three-break source curve, and authored moderate/hard screenshots were also inspected. Sidecar and actual raster checks verify true-zero spine intersections and ticks for all generated records; an old [3,11] viewport mutation is rejected. Native grading after refresh: 107 accepted, 260 rejected, zero unresolved. Earlier assets remain preserved.

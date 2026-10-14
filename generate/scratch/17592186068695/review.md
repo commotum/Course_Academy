@@ -24,33 +24,33 @@ All the other given graphs contain breaks at $x=-2$ and it would be impossible t
 
 Select the function that is continuous at $x=-5.$
 
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/9fda3018fd6e4082fadf8418b77bb5b56fecbfdfb1d2194d13cb7092379be77f.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/1bd87d828f9d2a30c1815b7f84ca57b5ae558489abbe195b24cb32fdecc3f4d0.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/f61525bff1f2fe44db4738ee87525a566c5b5e9fc069699d737517793bfc32d4.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/381a1bb16c82bbccce58aabeaf0b71d2fa6e49b6d33279bd6d9ab1c7845beb73.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/d8374c7d310d55d6556adf010a8824ee9504772c3eab3e023216776fbe4ad7c0.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/b1131bef876b7269ae113dc2718a9b11a8098dc25f95a47fbe70a87c9e687c54.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/0abc89981d7751c97a32f5247ef497cf12618e9725418caa344a13d03fca2907.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/488632caf98c93f1a8d1aa425f9f32cd0e2a2e1ae90309c7ee013214b730f549.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/534a382b1e02d2545df3ced0397298d2ef1ae6be95911e2f69493613c49a30dd.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/9a24848ebded5d896c069c8752dc45ea709760906f2416a244dd826a1ac71640.png)
 
 Worked solution:
 
 The correct answer is shown below. Despite the fact that the function has a discontinuity at $x=-2$, the graph can be drawn in the neighborhood of $x=-5$ without taking our pencil off of the paper.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/5adba706b5be88c23904887d9c51d3cc2096a525efc2d9d170849a8ab0b89ca4.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/296add864e6cb6d63764860b2dfc8054a6aaf9dde5d328c9be7580e703ad7436.png)
 
 All the other given graphs contain breaks at $x=-5$ and it would be impossible to draw them in the neighborhood of $x=-5$ without taking the pencil off of the paper.
 
 Select the function that is continuous at $x=-2.$
 
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/eb66718e9cf2e8a85fe162376e93762be8ab4bae1977e0c6cc8011129edb6791.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/c978aca65828e9aa1490f67a052c6230e0dfb0656038f887971f14338ef370ff.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/4726dc8756615ed42eaaccf01be3080d73c653fecaebe299dbdff0da91ce2549.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/0c3cf1b9b394818e5f5a1edb9d56e51ccbb5ff87729b5178d2c85b3f379bb2f4.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/3f00af789519005234a03c7d9c8e3fd4a00501389d8fed33c2242240f1bfe5a0.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/38398a4710495a14065a0dae8486295ab01e4cab0c7403cb1b0970b18655a5d1.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/d9fdfdb4be783364e34754f2b40320d795e1350a67f2bcefc54b76651a6c7074.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/79f1f016a496d1983090899c1b315f8bb6560391945a865a74753ad1e70b62ba.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/e456e8351348740a97407aa0b41ee789e935e25d46d0d9a3441abce99f49fa05.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/195eba6b9a6f0d9823796af846ba2400b8edd33ce031855edf679f20da93306e.png)
 
 Worked solution:
 
 The correct answer is shown below. Despite the fact that the function has a discontinuity at $x=4$, the graph can be drawn in the neighborhood of $x=-2$ without taking our pencil off of the paper.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/d5eb06714fa6df27ec84b7d9129e0d6d3d1e7af1fc742e440900d57c589afbb7.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/81622907aca4442dbf772b4c4df90ae50d637188ca97d23c75b4a0df0ead6acb.png)
 
 All the other given graphs contain breaks at $x=-2$ and it would be impossible to draw them in the neighborhood of $x=-2$ without taking the pencil off of the paper.
 
@@ -80,33 +80,33 @@ All the other given graphs contain breaks at $x=2$ and it would be impossible to
 
 Select the function that is continuous at $x=-1.$
 
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/1db583789bc34e0b94311bc0526ff23d1ad13b1309dcaa7e6c56370e73d3223b.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/46a68707f4ea28a7c455590685393eb5346ce69640818d1454c7b5226c29abca.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/35d1222da5f514497ef7529c52b2a346ed7cdd5e4a5265a56acc00c177eea1b0.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/373a26e6a2caad252577151c9a9d96758c501ff0e3aa8f835045c6cea9ace28f.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/3c8bdb553e87a85522b6e1b4faf9bd6e79c8b68214bc4f9a8d1361a7ee69bcfe.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/425a736bc6f815550e25318e92001f58649af33798d50e371ae348e0fd216125.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/741ee7ec68b6293376fb1f18e43326c4a0863c5bdf63304ef1f7f7e1746cfb81.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/bb9d9cbc8652126e4f27591cf5b56b656b7db8e0ce6ba5c850e5d961cf6aa937.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/50cea89511a32a524453ba53ef1c612cb17e0b80291452715275df6198a074c5.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/33a3888fe2e289224c6a13d15c8739ee4a577d829a83826a4580476dab509a7a.png)
 
 Worked solution:
 
 The correct answer is shown below.  Indeed, the graph can be drawn in a neighborhood of $x=-1$ without taking our pencil off of the paper.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/46a68707f4ea28a7c455590685393eb5346ce69640818d1454c7b5226c29abca.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/741ee7ec68b6293376fb1f18e43326c4a0863c5bdf63304ef1f7f7e1746cfb81.png)
 
 All the other given graphs contain breaks at $x=-1$ and it would be impossible to draw them in a neighborhood of $x=-1$ without taking the pencil off of the paper.
 
 Select the function that is continuous at $x=6.$
 
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/b00055f6e9fca48efc558119dd219eec07238e92563427285584d0d7e3ee90c4.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/e4861db42e7fc130eee4f9bc9c37a4d141d0f5b02b91a8beaf9fdf1d7c80b4de.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/9ca1fc91b468174ec12e77d5a32dfdde0923909c2e4faab769fe94b9110298e0.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/f9a2344b8fe30276704ebd31ae626204d023844201dd4370bf6252c8b178d7c8.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/20a955549fb859dc257c90e6f0dd5dd4c80fe63aec6b020fc889aec4b2c8b1cc.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/7ea14f21ca5f553e0a84063338e963fd476877c52ae7e8f8735546af54c94344.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/76ce7f1e37ede1509330ed286d6ee5ba036cd04bd5d59e53c5b6d62ccd213698.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/da680fff60e8760faa9f42f1fe39eb6c0bec5d938e830453090b120d0ef1279c.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/d6cb85fa83db5833cbe307c82f9c398eff861dc1eb6c41a4db07f616e2e1f3af.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/d4487dda66595ed0006053a509fb6187974aae14808475c26c7143ab2750f6c1.png)
 
 Worked solution:
 
 The correct answer is shown below.  Indeed, the graph can be drawn in a neighborhood of $x=6$ without taking our pencil off of the paper.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/20a955549fb859dc257c90e6f0dd5dd4c80fe63aec6b020fc889aec4b2c8b1cc.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/d4487dda66595ed0006053a509fb6187974aae14808475c26c7143ab2750f6c1.png)
 
 All the other given graphs contain breaks at $x=6$ and it would be impossible to draw them in a neighborhood of $x=6$ without taking the pencil off of the paper.
 
@@ -136,7 +136,7 @@ Hence, the correct answer is  "I and II only".
 
 ### Generated variants
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/a4dfb83b3f487dc778be3bd9b57755fb5c3ac7e72a742fd9f5d4043fd3252858.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/c04a46ec4e44bf46ca969dc65ed35e2c1f7c38473e257e988c5410433c70af87.png)
 
 The curve $y=f(x)$ is shown above. At which of the following points is $f(x)$ continuous?
 
@@ -162,9 +162,9 @@ Let's consider each point separately.
 
 Hence, the correct answer is  "I and II only".
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/a057ed04fb974ac5546a80cd5ebc6c21ed228d4836bb3fcd6f6b54c4a93dff37.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/4931d16e48f98e4bdbb4b4532a3aa6d7d239c5897069077c3a9e8e29dfab70d4.png)
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/eefe34ef30214ca559aff1d7e7aa9f948ce66fc0093c4d08a25bf8dd8b319ccb.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/2fd9eba447e14ce63157c9b01351ffce5c82a07ab15bac739af50454ba6f2f7a.png)
 
 The curve $y=f(x)$ is shown above. At which of the following points is $f(x)$ continuous?
 
@@ -190,7 +190,7 @@ Let's consider each point separately.
 
 Hence, the correct answer is  "I and II only".
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/11cade6c6dab7dfede44525b907bcdcf662d0bac044391119d8e53a8e445fa8f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/7996f2d3416c108c21728c8c419c918e3edec917db7982c38058bb4341477371.png)
 
 ## Original q-78133
 
@@ -216,7 +216,7 @@ Hence, the correct answer is: "II only".
 
 ### Generated variants
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/29c0d09ba27feb171e580ef1c30e988c187611dca6ebfe2611a4b8e3c76763cd.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/fdd204ee3c857a8e115bf25e42dcd26497fbdbcd1a013ba18d1c972c00cc194b.png)
 
 The curve $y=f(x)$ is shown above. At which of the following points is $f(x)$ continuous?
 
@@ -242,7 +242,7 @@ Let's consider each point separately.
 
 Hence, the correct answer is: "II only".
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/45e864ebfebc1b56865c9301ff0a00b308db93a74b0ce3d62179c33eff15e8db.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/d5ad049c090adf51f58410f16f537ab31c0af1bea87f1bcb4035a741e9eac0e9.png)
 
 The curve $y=f(x)$ is shown above. At which of the following points is $f(x)$ continuous?
 
@@ -302,7 +302,7 @@ Hence, the correct answer is  "III only".
 
 ### Generated variants
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/bb6d6adb25fa18b311b64ca69f27ddae624735e4ac03d3a319cf02b85723c094.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/71d2eb8e2e89836ea60a57c3406050a606c8f9e38eab75a602ca28a36fdc39e5.png)
 
 The curve $y=f(x)$ is shown above. At which of the following points is $f(x)$ continuous?
 
@@ -330,9 +330,9 @@ Hence, the correct answer is  "III only".
 
  
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/dbaf6e474aabb4d232a5e43f39327eef6b39db76aa5eed37aaceb2b7d20c1fc8.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/ec0e003794b94141ef03853a0a85dd78a7c286ef8be333bdc39827aed3f408a9.png)
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/fe77511ab46325c8de2476545f932e2676fe2e584d5d239bc3ca9d856adf91af.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/b4ff9eb2458f48b37c4216a87781382220a8073b576918c1f5551a0f92cd4ad8.png)
 
 The curve $y=f(x)$ is shown above. At which of the following points is $f(x)$ continuous?
 
@@ -360,7 +360,7 @@ Hence, the correct answer is  "III only".
 
  
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/c4c06493d4f3f22a353c0e5a594104e657e65894699f0be1fca59218acfb52f1.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/e49cceb61568573c8b3576f616eb3df22149f74e6e4602578e60430a9e1b183a.png)
 
 ## Original q-69782
 
@@ -384,33 +384,33 @@ All other given options have breaks or asymptotes at $x=5$, so it is impossible 
 
 Select the function that is continuous at $x=2.$
 
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/bcf45c856447ca14a6b1f75a6faf9250901cc70d54839deed4b18d89881d2f1d.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/c81dce1fd6f74a2de399a0de2c0e689ffd6e7551b9aa781bec13b3f21e8634f7.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/83fefb8b12db8da2febd06da186b0b8a9e660e2e626afe4ea4bd4fcd25a97cd3.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/f7769c8cab20b78544abcf9fea29206a0675ecb48e8bd3a162a03d345a131d20.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/d72db43d817816e4f126ccd5b85de49ae7343153ca1fc69f749d30632a426a4d.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/a14ecb62cb1972452b617043a313fc1a16a7a54b8f4c82bd7015ba032cc57888.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/73ac70d57b5a6dc144bdb6f83bf3d17b7046dd142b4effae47be69a0c9c5d1a3.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/a9e2b2d5a4cea4b0506c444e43306daa4f53c088d373decf5fd1f6ea1dc5fa29.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/b726d6c460c4b9b6b29196eb3d4fee73ecd7255175a8ac6f2f4bc511b03469fc.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/9d41c30ea484ec48bd39aa7f06e9c6139d5448c57905fa41c6bc2b0f9c4be733.png)
 
 Worked solution:
 
 Of the given options, the only one where we can draw the graph of the function without taking our pencil off of the paper in a neighborhood of $x=2$ is shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/0b077e688eedf1a9238f4d7937e36d74ca398c35c30578ece970b133479a7a8d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/4a5c7f9df7b5e79634601a049f67404d58f02922b677bae893ccbc15fdf9f13f.png)
 
 All other given options have breaks or asymptotes at $x=2$, so it is impossible to draw the function in the neighborhood of $x=2$ without taking our pencil off of the paper.
 
 Select the function that is continuous at $x=12.$
 
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/827af12582e5b0091aeffd6151142cc0996660b95c85f8a1a94111fa00ae555e.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/4d0d7d534e58f7576a8834aa2ca563facf5fc4841bbc411979a39df7fde07d08.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/ba172c76b1b8d05d85848cf783292a82a62185a9fddfd491a950ade5dfa50768.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/0d948945b4374627540a1d3d02841bb1efb097b6d5b3b716e10328621bfe30e9.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/8c24ffa5d8ada56a23d0a588b8b2b709607cdef4866ef7df0cef9ec5896a5862.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/475347399c725ba9ae01fa170e31fa9c537ed0d090415aca1d7813db690c8ee2.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/d71c5212f5abda3b8a8e1950d3313658f36bd7b85de4526d5343c34dde23be7d.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/e906407f768c041108a2bc2229ea46ba85ff5748d5d315785f9ce562542286e9.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/df68aa4ff8d0b88ba9c47df8042c18bc7397b4473902750062afd7179d492512.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/667d0a4c498fdc35b1e2ad60cb4a15a36c873dcd5d96c7258cf4b83f9b250ac6.png)
 
 Worked solution:
 
 Of the given options, the only one where we can draw the graph of the function without taking our pencil off of the paper in a neighborhood of $x=12$ is shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/b591c704a30e5df2eba8e264dc78a0b64fa98143d4d6ac15c80ac631c57ffec8.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/f9271352a96b28936c4d9a21c16baf8d0be590e172df4abb1a3dc550c0fb7fd8.png)
 
 All other given options have breaks or asymptotes at $x=12$, so it is impossible to draw the function in the neighborhood of $x=12$ without taking our pencil off of the paper.
 
@@ -446,7 +446,7 @@ Hence, the correct answer is "II and III only".
 
 ### Generated variants
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/91cd353a48e96b0761fe19463bf3e821e62f22b82dfb33603818cd5f17428f22.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/dacbfff86395eac233aa4ea05e8fe2774370d86d916ff372b37cae8b9ff23955.png)
 
 The curve $y=f(x)$ is shown above. At which of the following points is $f(x)$ continuous?
 
@@ -474,7 +474,7 @@ Let's consider each point separately.
 
 Hence, the correct answer is "II and III only".
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/8a058d47280d2f3ef7a7cd936673e5c6ae9eed70700594aee346ef1e798b857a.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/b3096096f5a18fb51e32818d94d1561d6abe970808764d4138660f32c0732c82.png)
 
 The curve $y=f(x)$ is shown above. At which of the following points is $f(x)$ continuous?
 
@@ -536,7 +536,7 @@ Hence, the correct answer is  "I and III only".
 
 ### Generated variants
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/72409eef07bf49af98848b4af12ae290e2db1a9f7feace4a733e62699ae09c30.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/eace7681c79a24807a28982ab879999d00255b99c7dc60b1f4349b4ed32f51cf.png)
 
 The curve $y=f(x)$ is shown above. At which of the following points is $f(x)$ continuous?
 
@@ -564,9 +564,9 @@ Let's consider each point separately.
 
 Hence, the correct answer is  "I and III only".
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/8b69f3e67108ffa64302e4f16f13360751110ef748512edfe223cf59c8ac4526.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/7d24de54a79903785f631ca996e7419834f24c8767a9f6f1f252af5089ac1bb7.png)
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/3db6d0afee19970397846fd94f63aeda298b3e1c2547bfa1e3104efb9fbb36b5.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/efed8a6072b2d6ec7b3b2f676373a6863038dc91103d8cbdf03d71bd626b3c9d.png)
 
 The curve $y=f(x)$ is shown above. At which of the following points is $f(x)$ continuous?
 
@@ -594,7 +594,7 @@ Let's consider each point separately.
 
 Hence, the correct answer is  "I and III only".
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/cf481038ed505a3a120ae153defbffe939f84731940321b251c6248324f592aa.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/475bf45061a17839e03a5bff99009c208a979de8b4fb592e3aeeda036fb5f4fa.png)
 
 ## Original q-48082
 
@@ -620,17 +620,17 @@ All the other given graphs contain breaks at $x=0$ and it would be impossible to
 
 Select the function that is continuous at $x=-3.$
 
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/1689a3754e4f869f6be5bc291488da2080284890198558535de3a8dbaa88e368.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/871e791a02eb08246e2e962b00d7932414a9a199b00dfb00f61485515b29da38.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/1927d70e78d15b7fa248074b632b5cd637553e4e6a15bbbe184f4974e95bfc2a.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/72ec8109b6913d29785398448b34289cba5a6e51ce828d0d769d9bf3e7d35fd5.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/9d76827e2353bf50b365af024ae89b63df9fb2fe92ef994c68c1e2e71f4b7db3.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/b18e3b3e2d77f816766a32382d82f5555bcbe057be78cfafb79c9ef975c97731.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/bedd8d819f718649fea3f6d8b60d1c0e93a113514ee45697db2bfda06e474384.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/b9a151cdab7586d82ce200e8762cc881974560f96ead1c750f4c67ff0579891d.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/4b294b3090b1f1fe339336d54cb624a7d68d153d9a80f7c18bc75398c4ac21a8.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/4fe6e78556d6a2405f67fd7d7a79090ae3fc756ee33e9c8947089530546c8a4e.png)
 
 Worked solution:
 
 The correct answer is shown below.  Indeed, despite the fact that the function has a discontinuity at $x=-1$, the graph can be drawn in a neighborhood of $x=-3$ without taking our pencil off of the paper.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/80a4a95f70914050b49649469ceaac0cfd50847c736ffb67a3cbac3ffc0e0e9d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/2d46c69e1e27df56b6f59c5bdab839dc7cf921597e981652b3d306da3ceac49b.png)
 
    
 
@@ -638,17 +638,17 @@ All the other given graphs contain breaks at $x=-3$ and it would be impossible t
 
 Select the function that is continuous at $x=2.$
 
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/28889a3101c0f3054ab007464b82e9c0023f55940d4a627ecb9e987cc0652e2e.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/32422292ec8aebcbe3222aae3e1c953144fbbca7524aeb25c10a29ac65180210.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/e3254eda6e903a1c41b891dc06bcda45e33449aa5feef5fdfe52fc205a6130d2.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/16f72880c8a0c3b925b935e100567e442b7770f95e67d1f94b48dc2dab8f43bf.png)
-- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/5521e9fe3e48c3c3f9fec0cc6b6f83799134e841790533b3d28749e54bef76a1.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/fde3c3cb72ae4bac1d86bd6b611012b6243a07cd20fe2fdc8d1d699af54b11fd.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/965fe7d8a28a5ac75f6209052eaae3f7a22a47ceaedef054830c897e81d07afb.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/1c73173061d9ef54f770e1890e9dc14a25c83cbb753415d3ed69161cecbf903c.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/ad1ed7f4dc766db928df8b8e98487370533fc720a3fa5ff113640b4269a5ae93.png)
+- ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/ae753905c3f117bf1feadc44ad06b774578920636ca8839af130d2f4a67e71c0.png)
 
 Worked solution:
 
 The correct answer is shown below.  Indeed, despite the fact that the function has a discontinuity at $x=6$, the graph can be drawn in a neighborhood of $x=2$ without taking our pencil off of the paper.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/a18cb7bb1c4a4941ac2d237f8b763e8bce3c097f437153411c152db370c325b3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/f7069e9d684e8ac2cc3a021e1f62dc726395bb54b82c74c8305d96ee9c68f472.png)
 
    
 
@@ -656,7 +656,7 @@ All the other given graphs contain breaks at $x=2$ and it would be impossible to
 
 ## Authored hard: half-unit coordinates with jump and hole
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/3b447df0060a950ee2c6d5f9b2340f353a31e47f2609df3942f434df670ded2a.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/97e8810fab168c71fae366e64eda825a6ff8aa68afd6804ddae1a0ae1edfb10a.png)
 
 The curve $y=f(x)$ is shown above. Use the unit-spaced tick marks to locate the listed points. At which of the following points is $f(x)$ continuous?
 
@@ -682,7 +682,7 @@ Let's consider each point separately.
 
 Hence, the correct answer is: "II only".
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/e2f0f50ce9e4350f04f8c44126d2f3dc66ddea0fa8da9b0935bcef0302bee2c6.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/4e0280cd0590dcb02b6b02c3b96990a75ec2652de854131fc2954292908b5a20.png)
 
 The curve $y=f(x)$ is shown above. Use the unit-spaced tick marks to locate the listed points. At which of the following points is $f(x)$ continuous?
 
@@ -710,5 +710,5 @@ Hence, the correct answer is  "III only".
 
  
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/936ba4b194343ec4ff7d0cc680dfd4c27cc07106ca62fdd009337a8288f692c4.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186068695/plots/172b40db3cbeb3f6f77fe838d11534ad53ba679eb1fe8c9033d8cfc10af8bb41.png)
 

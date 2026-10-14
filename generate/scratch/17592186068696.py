@@ -24,7 +24,7 @@ import sympy as sp
 KP_ID=17592186068696
 KP_UUID='31eacf5a-75a5-5b38-8c24-4b1598ecf3a7'
 TITLE='Identifying Points of Discontinuity'
-VERSION='graph-discontinuity-1'
+VERSION='graph-discontinuity-2-zero-axes'
 ROOT=Path(__file__).resolve().parent / str(KP_ID)
 SOURCE=json.loads((ROOT/'source.json').read_text())
 RECORD=SOURCE['record']
@@ -78,7 +78,12 @@ def render(spec,p,force=False):
  for m in transformed['markers']:m['x']=float(affine(m['x'],p))
  transformed['breaks']=[float(affine(x,p)) for x in spec['breaks']]
  transformed['vertical_asymptotes']=[float(affine(x,p)) for x in spec.get('vertical_asymptotes',[])]
- lo,hi,bot,top=spec['bounds'];transformed['bounds']=[float(affine(lo,p)),float(affine(hi,p)),bot,top]
+ lo,hi,bot,top=spec['bounds'];curve_view=[float(affine(lo,p)),float(affine(hi,p)),bot,top]
+ # The axes are always the true x=0 and y=0. Extend the viewport rather
+ # than moving the origin when a translated graph lies to one side.
+ margin=max(.6,.6*p.get('grid',1))
+ transformed['curve_view_bounds']=curve_view
+ transformed['bounds']=[min(curve_view[0],-margin),max(curve_view[1],margin),min(bot,-.6),max(top,.6)]
  key=digest({'version':VERSION,'geometry':transformed,'grid':p.get('grid',1)})
  path=ROOT/'plots'/f'{key}.png';side=path.with_suffix('.json');path.parent.mkdir(exist_ok=True)
  with LOCK:
@@ -101,12 +106,15 @@ def render(spec,p,force=False):
   ax.grid(axis='x',color='#dddddd',lw=.6)
   ax.spines[['top','right']].set_visible(False)
   ax.spines['bottom'].set_position(('data',0));ax.spines['left'].set_position(('data',0))
-  ax.tick_params(axis='x',labelsize=9,pad=3);ax.set_xlabel('$x$',loc='right');ax.set_ylabel('$y$',rotation=0,loc='top')
+  ax.tick_params(axis='x',labelsize=9,pad=3)
+  # Labels follow the positive ends of the actual axes, not the frame.
+  ax.annotate('$x$',xy=(hi,0),xytext=(3,-10),textcoords='offset points',ha='left',va='top',annotation_clip=False)
+  ax.annotate('$y$',xy=(0,top),xytext=(-8,3),textcoords='offset points',ha='left',va='bottom',annotation_clip=False)
   ax.annotate('',xy=(hi,0),xytext=(hi-.2,0),arrowprops={'arrowstyle':'->','color':'black','lw':.9})
   ax.annotate('',xy=(0,top),xytext=(0,top-.2),arrowprops={'arrowstyle':'->','color':'black','lw':.9})
   fig.tight_layout(pad=.4);fig.canvas.draw()
   fd,tmp=tempfile.mkstemp(dir=path.parent,suffix='.png');os.close(fd)
-  fig.savefig(tmp);axes={'xlim':list(ax.get_xlim()),'ylim':list(ax.get_ylim()),'ticks':list(map(float,ticks)),'pixel_bounds':list(map(float,ax.get_window_extent().bounds))}
+  fig.savefig(tmp);axes={'xlim':list(ax.get_xlim()),'ylim':list(ax.get_ylim()),'ticks':list(map(float,ticks)),'pixel_bounds':list(map(float,ax.get_window_extent().bounds)),'origin_pixel':list(map(float,ax.transData.transform((0,0)))),'horizontal_spine':list(map(float,ax.spines['bottom'].get_transform().transform(ax.spines['bottom'].get_path().vertices).flatten())),'vertical_spine':list(map(float,ax.spines['left'].get_transform().transform(ax.spines['left'].get_path().vertices).flatten())),'label_anchors':{'x':[hi,0],'y':[0,top]}}
   plt.close(fig);os.replace(tmp,path)
   atomic_json(side,{'renderer':'Matplotlib','python':sys.version.split()[0],'matplotlib':matplotlib.__version__,'geometry':transformed,'parameters':p,'axes':axes,'png_sha256':hashlib.sha256(path.read_bytes()).hexdigest()})
  return str(path)
@@ -161,7 +169,7 @@ def complete_set_bank(xs):
 def assemble(problem,solution,fields,level,metadata,preserve_difficulty=True):
  # Content identity excludes seed and parameter aliases; full displayed banks included.
  identity={'version':VERSION,'problem':problem,'solution':solution,'level':level if preserve_difficulty else None,
- 'fields':[{'key':f['key'],'type':f['type'],'choices':sorted([(a['type'],a['value']) for a in f['choices']]),'correct':f.get('correct')} for f in fields]}
+ 'fields':[{'key':f['key'],'type':f['type'],'choices':sorted([(a['type'],a['value']) for a in f['choices']]),'correct':next(((a['type'],a['value']) for a in f['choices'] if a.get('original_id',a['value'])==f.get('correct')),None)} for f in fields]}
  key=digest(identity);q={':question/id':uid(key),':question/problem':problem}
  if solution is not None:q[':question/worked-solution']=solution
  if preserve_difficulty:q[':question/difficulty']=':question.difficulty/'+level
@@ -216,7 +224,7 @@ def observed(qid,p,seed,raw=False,bank_profile='authored'):
  return assemble(problem,solution,fields,'easy',{'seed':seed,'template':family,'profile':('observed:' if raw else 'authored:')+qid,'parameters':p,'source_ids':[q[':question/id']],
  'evidence_only':raw,'eligible_for_learning':not raw,'source_anomalies':{'omitted_plot':missing_plot,'legacy_field':legacy,'decoded_double_slashes':opaque_slashes,'fieldless':':question/answer-fields' not in q},
  'fields_present':':question/answer-fields' in q if raw else True,
- 'mathematical_fingerprint':digest({'family':family,'target':list(map(str,target)),'scale_reading':p.get('grid',1),'break_count':len(target)}),'raw_source_replay':raw},preserve_difficulty=':question/difficulty' in q if raw else True)
+ 'mathematical_fingerprint':digest({'criterion':'graph-selection' if family=='select_graph' else 'coordinate-set','target':list(map(str,target)),'scale_reading':p.get('grid',1),'break_count':len(target)}),'raw_source_replay':raw},preserve_difficulty=':question/difficulty' in q if raw else True)
 
 # MODERATE: authored three mixed breaks, signed half-unit coordinates all labelled.
 # HARD: same recognition operation; three half-unit breaks, unit-tick midpoint

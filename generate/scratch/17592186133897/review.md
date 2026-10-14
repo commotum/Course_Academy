@@ -392,7 +392,7 @@ Inspected source raster: ![](/home/jake/Developer/Course_Academy/generate/scratc
 
 ## Generated eligible sin_sin2 {'a': 3, 'b': 5}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/3a5126082a3f6b1f30fa645564f6c3a85d9c5702f40f087410138f6c587eb0b0.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/8c1a9bb940480d5c1dd2a5a5a8019f5b1cde1d9c8a29d7b7245ea27f8d84c323.png)
 
 Use Green's theorem to find the area of the region enclosed by the curve 
 $C$ parametrized as $r(t)=3\operatorname{sin}⁡t\,i+5\operatorname{sin}⁡2t\,j$ 
@@ -442,7 +442,7 @@ $$
 
 ## Generated eligible sin_sin2 {'a': 7, 'b': 4}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/2db8cd7a471113439b23b21c41c854a84f999ab65c8b098fe00cfcb3e0d9e2a4.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/1f4458127c574a761374c1c37cb0e078a16450d657e6ed355e0c8ce2e843b0bb.png)
 
 Use Green's theorem to find the area of the region enclosed by the curve 
 $C$ parametrized as $r(t)=7\operatorname{sin}⁡t\,i+4\operatorname{sin}⁡2t\,j$ 
@@ -492,7 +492,7 @@ $$
 
 ## Generated eligible right_polynomial {'a': 3, 'b': 5}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/0cab9524ed5c7f4023193a3efad2588fbce2ce544cb0a86491b524fb21c7466a.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/0e9c0ec9d74a47ef3227f7abc6da634a67f2265fc23a5a5bb186d98963fde6c5.png)
 
 Consider the region $D$ enclosed by the curve $C = C_{1}∪C_{2}$, where
 
@@ -543,7 +543,7 @@ $$
 
 ## Generated eligible right_polynomial {'a': 7, 'b': 4}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/ccb98396c7e1760c6efb13b36f24d388a6d1f8a4cd03c54ce88d618bdca961ef.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/e853bb110b4a18524dcc77df412ea0a0f2ce3ecbddf592553e63fa86ae78bd6b.png)
 
 Consider the region $D$ enclosed by the curve $C = C_{1}∪C_{2}$, where
 
@@ -594,7 +594,7 @@ $$
 
 ## Generated eligible sin2_minus_sin {'a': 3, 'b': 5}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/f58a47e08eabf2de82fda04ec87aad2988491b2bd6e680d4eaa8dfea9309d109.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/30fb2d3f47372bd78750cbf689771cc7f2ea176d9ad3311ebdeb6f0ce756151a.png)
 
 Use Green's theorem to find the area of the region enclosed by the curve 
 $C$ parametrized as $r(t)=3\operatorname{sin}⁡2t\,i-5\operatorname{sin}⁡t\,j$ 
@@ -644,7 +644,7 @@ $$
 
 ## Generated eligible sin2_minus_sin {'a': 7, 'b': 4}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/81ab8e10a0380e0ed4456f6b6f02da216a2dc73517b991444523ff6412f0c5fd.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/2e820016efddd732de442da09b5ebbb65543e5930dc52d3eb9e393ce8bfb4b26.png)
 
 Use Green's theorem to find the area of the region enclosed by the curve 
 $C$ parametrized as $r(t)=7\operatorname{sin}⁡2t\,i-4\operatorname{sin}⁡t\,j$ 
@@ -694,7 +694,7 @@ $$
 
 ## Generated eligible sin2_cos {'a': 3, 'b': 5}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/2a7ed035e38384165fdfbdd64543c88cf3f0e635d10e2a678d51ca9f9e6830b0.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/5cd570cb430eaec856688b17f0b046c979534da255fd5a4f48e5e9444af2fbe8.png)
 
 Use Green's theorem to find the area of the region enclosed by the curve 
 $C$ parametrized as $r(t)=3\operatorname{sin}⁡2t\,i+5\operatorname{cos}⁡t\,j$ 
@@ -742,7 +742,7 @@ $$
 
 ## Generated eligible sin2_cos {'a': 7, 'b': 4}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/45035580a57ce8f599b621f05a35f8200939b31005e793ca166ed55304189b0f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/63267b7ad54dd7435ed6b6787c320d4c13734ee76f82414d3432db4403c54a79.png)
 
 Use Green's theorem to find the area of the region enclosed by the curve 
 $C$ parametrized as $r(t)=7\operatorname{sin}⁡2t\,i+4\operatorname{cos}⁡t\,j$ 
@@ -790,7 +790,7 @@ $$
 
 ## Generated eligible left_polynomial {'a': 3, 'b': 5}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/e2e31ee75e23064551a238fa20e0347a0f8411d7cef6532197edce296ed78e40.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/e9211aa9722bfe620c7da6d877f4136efdf984f46df2b5a763dc11ebb05d6bca.png)
 
 Consider the region $D$ enclosed by the curve $C={C}_{1}\cup {C}_{2},$ where 
 
@@ -842,7 +842,7 @@ $$
 
 ## Generated eligible left_polynomial {'a': 7, 'b': 4}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/c4c276f93d8955366ecc4c454e29f75c7bef590fc477145193cd5e9594520c5d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/4e8cdfcadeac24945596824d763801e2ef44d2050a35e19390238bd47c3c951b.png)
 
 Consider the region $D$ enclosed by the curve $C={C}_{1}\cup {C}_{2},$ where 
 
@@ -894,7 +894,7 @@ $$
 
 ## Generated eligible upper_polynomial {'a': 3, 'b': 5}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/ccb7a568cc16e9bc1fb335687b5b6dcd8165fe15204c90481224a531a863d1cc.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/887785c19d2bd96c9d0586f54ecc6d065b108e990b7226d5dffe021e63312df3.png)
 
 Consider the region $D$ enclosed by the curve $C={C}_{1}\cup {C}_{2},$ where 
 
@@ -946,7 +946,7 @@ $$
 
 ## Generated eligible upper_polynomial {'a': 7, 'b': 4}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/37a6d96c6019e307e5f473444f9dc6e34e813f7916f731fa7827c2ee5e913f8b.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/b4d4164695724c45b683ae27b2194ad5245837f8663d7f4d1369f2da7d49c23d.png)
 
 Consider the region $D$ enclosed by the curve $C={C}_{1}\cup {C}_{2},$ where 
 
@@ -998,7 +998,7 @@ $$
 
 ## Generated eligible minus_cos_sin2 {'a': 3, 'b': 5}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/a1a5a6e41db84d94f5fd3771e679cd0e586dd00cea7bf5bd94f1b465a272cb8f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/f7c5c2a0d5d37471f6db673ec9fc92d301deb745be1eb31d93ab0f46e1eb6b00.png)
 
 Use Green's theorem to find the area of the region enclosed by the curve 
 $C$ parametrized as $r(t)=-3\operatorname{cos}⁡t\,i+5\operatorname{sin}⁡2t\,j$ 
@@ -1046,7 +1046,7 @@ $$
 
 ## Generated eligible minus_cos_sin2 {'a': 7, 'b': 4}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/17064959715aa61f33310535b823bedadd7af0a316513d3e011755d303821141.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/131bbf32a3a090a42bcb695a46dcaeecbbd51df53ecff3733e0a8376a63759ba.png)
 
 Use Green's theorem to find the area of the region enclosed by the curve 
 $C$ parametrized as $r(t)=-7\operatorname{cos}⁡t\,i+4\operatorname{sin}⁡2t\,j$ 
@@ -1094,7 +1094,7 @@ $$
 
 ## Generated eligible lower_polynomial {'a': 3, 'b': 5}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/aaecef4b8ef2ac4f9d6f8213db72f781227fe20fa53c58b4917e96667228e091.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/bb87f082257bd436b7f89a6d5ea0500ac81da8c6d811ebbc37adddaf42504298.png)
 
 Consider the region $D$ enclosed by the curve $C={C}_{1}\cup {C}_{2},$ where 
 
@@ -1148,7 +1148,7 @@ $$
 
 ## Generated eligible lower_polynomial {'a': 7, 'b': 4}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/fc2a08384c1b6153e62c2083be5cdbaaaeffc323f2567e93371dfe08e2e6bbdd.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/ce072d943595a89a093d12ffbb1c8232f3068f393c98cd5702d286ab301b502c.png)
 
 Consider the region $D$ enclosed by the curve $C={C}_{1}\cup {C}_{2},$ where 
 
@@ -1204,7 +1204,7 @@ $$
 
 Use Green's theorem to find the area of the region $D$ enclosed by the curve $C$ parametrized as $r(t)=2\cos t\,i+3\sin t\,j$ for $t\in[0,2\pi].$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/0f9dda57b5eb537104fde7ea4914e3f8d69dd510e3674806af488ab8690db5a2.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/eaab9c42be1a72f7179d20b7073880217c67f2ce35dc9f6adbc17ef302424eba.png)
 
 
 Choices: 3 \pi, 12 \pi, - 6 \pi, 6 \pi, 2 \pi
@@ -1238,7 +1238,7 @@ Therefore, we conclude that $\text{Area}(D)=6 \pi.$
 
 Use Green's theorem to find the area of the region $D$ enclosed by the curve $C$ parametrized as $r(t)=5\cos t\,i+4\sin t\,j$ for $t\in[0,2\pi].$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/aeed97266f8b5d287dfdde21ab6a3b16205c2ae5e461fba25398e3a743520485.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/979b2c44553420f9dab7b4c59f40a9990ea5c3dfe1d90cd4bed29c283028db97.png)
 
 
 Choices: 4 \pi, 40 \pi, - 20 \pi, 20 \pi, 5 \pi
@@ -1270,7 +1270,7 @@ Therefore, we conclude that $\text{Area}(D)=20 \pi.$
 
 ## Generated opaque evidence only sin_sin2 {'a': 3, 'b': 5}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/3a5126082a3f6b1f30fa645564f6c3a85d9c5702f40f087410138f6c587eb0b0.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/8c1a9bb940480d5c1dd2a5a5a8019f5b1cde1d9c8a29d7b7245ea27f8d84c323.png)
 
 Use Green's theorem to find the area of the region enclosed by the curve 
 $C$ parametrized as $r(t)=3\operatorname{sin}⁡t\,i+5\operatorname{sin}⁡2t\,j$ 
@@ -1320,7 +1320,7 @@ $$
 
 ## Generated opaque evidence only sin_sin2 {'a': 7, 'b': 4}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/2db8cd7a471113439b23b21c41c854a84f999ab65c8b098fe00cfcb3e0d9e2a4.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/1f4458127c574a761374c1c37cb0e078a16450d657e6ed355e0c8ce2e843b0bb.png)
 
 Use Green's theorem to find the area of the region enclosed by the curve 
 $C$ parametrized as $r(t)=7\operatorname{sin}⁡t\,i+4\operatorname{sin}⁡2t\,j$ 
@@ -1370,7 +1370,7 @@ $$
 
 ## Generated opaque evidence only right_polynomial {'a': 3, 'b': 5}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/0cab9524ed5c7f4023193a3efad2588fbce2ce544cb0a86491b524fb21c7466a.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/0e9c0ec9d74a47ef3227f7abc6da634a67f2265fc23a5a5bb186d98963fde6c5.png)
 
 Consider the region $D$ enclosed by the curve $C = C_{1}∪C_{2}$, where
 
@@ -1387,7 +1387,7 @@ Choices: 10, \frac{35}{2}, 12, 15, 30
 
 ## Generated opaque evidence only right_polynomial {'a': 7, 'b': 4}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/ccb98396c7e1760c6efb13b36f24d388a6d1f8a4cd03c54ce88d618bdca961ef.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/e853bb110b4a18524dcc77df412ea0a0f2ce3ecbddf592553e63fa86ae78bd6b.png)
 
 Consider the region $D$ enclosed by the curve $C = C_{1}∪C_{2}$, where
 
@@ -1404,7 +1404,7 @@ Choices: \frac{56}{3}, \frac{98}{3}, \frac{112}{5}, 28, 56
 
 ## Generated opaque evidence only sin2_minus_sin {'a': 3, 'b': 5}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/f58a47e08eabf2de82fda04ec87aad2988491b2bd6e680d4eaa8dfea9309d109.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/30fb2d3f47372bd78750cbf689771cc7f2ea176d9ad3311ebdeb6f0ce756151a.png)
 
 Use Green's theorem to find the area of the region enclosed by the curve 
 $C$ parametrized as $r(t)=3\operatorname{sin}⁡2t\,i-5\operatorname{sin}⁡t\,j$ 
@@ -1454,7 +1454,7 @@ $$
 
 ## Generated opaque evidence only sin2_minus_sin {'a': 7, 'b': 4}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/81ab8e10a0380e0ed4456f6b6f02da216a2dc73517b991444523ff6412f0c5fd.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/2e820016efddd732de442da09b5ebbb65543e5930dc52d3eb9e393ce8bfb4b26.png)
 
 Use Green's theorem to find the area of the region enclosed by the curve 
 $C$ parametrized as $r(t)=7\operatorname{sin}⁡2t\,i-4\operatorname{sin}⁡t\,j$ 
@@ -1504,7 +1504,7 @@ $$
 
 ## Generated opaque evidence only sin2_cos {'a': 3, 'b': 5}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/2a7ed035e38384165fdfbdd64543c88cf3f0e635d10e2a678d51ca9f9e6830b0.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/5cd570cb430eaec856688b17f0b046c979534da255fd5a4f48e5e9444af2fbe8.png)
 
 Use Green's theorem to find the area of the region enclosed by the curve 
 $C$ parametrized as $r(t)=3\operatorname{sin}⁡2t\,i+5\operatorname{cos}⁡t\,j$ 
@@ -1552,7 +1552,7 @@ $$
 
 ## Generated opaque evidence only sin2_cos {'a': 7, 'b': 4}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/45035580a57ce8f599b621f05a35f8200939b31005e793ca166ed55304189b0f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/63267b7ad54dd7435ed6b6787c320d4c13734ee76f82414d3432db4403c54a79.png)
 
 Use Green's theorem to find the area of the region enclosed by the curve 
 $C$ parametrized as $r(t)=7\operatorname{sin}⁡2t\,i+4\operatorname{cos}⁡t\,j$ 
@@ -1600,7 +1600,7 @@ $$
 
 ## Generated opaque evidence only left_polynomial {'a': 3, 'b': 5}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/e2e31ee75e23064551a238fa20e0347a0f8411d7cef6532197edce296ed78e40.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/e9211aa9722bfe620c7da6d877f4136efdf984f46df2b5a763dc11ebb05d6bca.png)
 
 Consider the region $D$ enclosed by the curve $C={C}_{1}\cup {C}_{2},$ where 
 
@@ -1652,7 +1652,7 @@ $$
 
 ## Generated opaque evidence only left_polynomial {'a': 7, 'b': 4}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/c4c276f93d8955366ecc4c454e29f75c7bef590fc477145193cd5e9594520c5d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/4e8cdfcadeac24945596824d763801e2ef44d2050a35e19390238bd47c3c951b.png)
 
 Consider the region $D$ enclosed by the curve $C={C}_{1}\cup {C}_{2},$ where 
 
@@ -1704,7 +1704,7 @@ $$
 
 ## Generated opaque evidence only upper_polynomial {'a': 3, 'b': 5}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/ccb7a568cc16e9bc1fb335687b5b6dcd8165fe15204c90481224a531a863d1cc.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/887785c19d2bd96c9d0586f54ecc6d065b108e990b7226d5dffe021e63312df3.png)
 
 Consider the region $D$ enclosed by the curve $C={C}_{1}\cup {C}_{2},$ where 
 
@@ -1756,7 +1756,7 @@ $$
 
 ## Generated opaque evidence only upper_polynomial {'a': 7, 'b': 4}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/37a6d96c6019e307e5f473444f9dc6e34e813f7916f731fa7827c2ee5e913f8b.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/b4d4164695724c45b683ae27b2194ad5245837f8663d7f4d1369f2da7d49c23d.png)
 
 Consider the region $D$ enclosed by the curve $C={C}_{1}\cup {C}_{2},$ where 
 
@@ -1808,7 +1808,7 @@ $$
 
 ## Generated opaque evidence only minus_cos_sin2 {'a': 3, 'b': 5}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/a1a5a6e41db84d94f5fd3771e679cd0e586dd00cea7bf5bd94f1b465a272cb8f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/f7c5c2a0d5d37471f6db673ec9fc92d301deb745be1eb31d93ab0f46e1eb6b00.png)
 
 Use Green's theorem to find the area of the region enclosed by the curve 
 $C$ parametrized as $r(t)=-3\operatorname{cos}⁡t\,i+5\operatorname{sin}⁡2t\,j$ 
@@ -1856,7 +1856,7 @@ $$
 
 ## Generated opaque evidence only minus_cos_sin2 {'a': 7, 'b': 4}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/17064959715aa61f33310535b823bedadd7af0a316513d3e011755d303821141.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/131bbf32a3a090a42bcb695a46dcaeecbbd51df53ecff3733e0a8376a63759ba.png)
 
 Use Green's theorem to find the area of the region enclosed by the curve 
 $C$ parametrized as $r(t)=-7\operatorname{cos}⁡t\,i+4\operatorname{sin}⁡2t\,j$ 
@@ -1904,7 +1904,7 @@ $$
 
 ## Generated opaque evidence only lower_polynomial {'a': 3, 'b': 5}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/aaecef4b8ef2ac4f9d6f8213db72f781227fe20fa53c58b4917e96667228e091.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/bb87f082257bd436b7f89a6d5ea0500ac81da8c6d811ebbc37adddaf42504298.png)
 
 Consider the region $D$ enclosed by the curve $C={C}_{1}\cup {C}_{2},$ where 
 
@@ -1958,7 +1958,7 @@ $$
 
 ## Generated opaque evidence only lower_polynomial {'a': 7, 'b': 4}
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/fc2a08384c1b6153e62c2083be5cdbaaaeffc323f2567e93371dfe08e2e6bbdd.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133897/plots/ce072d943595a89a093d12ffbb1c8232f3068f393c98cd5702d286ab301b502c.png)
 
 Consider the region $D$ enclosed by the curve $C={C}_{1}\cup {C}_{2},$ where 
 
