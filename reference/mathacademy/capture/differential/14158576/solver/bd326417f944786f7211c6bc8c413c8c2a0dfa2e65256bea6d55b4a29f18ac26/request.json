@@ -1,0 +1,64 @@
+{
+  "task": "solve_question",
+  "payload": {
+    "evidence_contract": "solve_question:1",
+    "question": {
+      "math_academy_id": "q-85285",
+      "problem": "Consider the system $Ax=b$, where the matrix $A$ and the vector $b$ are shown below. Given that the columns of $A$ are linearly independent, find the minimum value of $‖Ax-b‖.$\n\n$$\nA=[\\begin{aligned}1 & 1 \\\\ -1 & 0 \\\\ 0 & 1 \\\\ 1 & 1 \\\\ -1 & 0\\end{aligned}],\\,b=[\\begin{aligned}6 \\\\ -3 \\\\ 1 \\\\ 9 \\\\ 2\\end{aligned}]\n$$",
+      "answer_fields_complete": true,
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14158576/observations/step-q85285-de27b1a9a0e36a9f1a82.html",
+      "source_url": "https://mathacademy.com/tasks/14158576/topics/2166/lesson",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "\\sqrt{3}"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "\\sqrt{35}"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "\\sqrt{5}"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "5\\sqrt{3}"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "3\\sqrt{5}"
+            }
+          ]
+        }
+      ]
+    },
+    "current_example": {
+      "math_academy_id": "e-7429",
+      "problem": "Consider the system $A\\mathbf{x}=\\mathbf{b}$, where the matrix $A$ and the vector $\\mathbf{b}$ are given below. Given that the columns of $A$ are linearly independent, find the minimum value of $\\Vert A\\mathbf{x} - \\mathbf{b} \\Vert.$\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14158576/assets/9a0b7bb72f719d095a6cad94e87a08caf1ca88e71124621f410f5d14714938d7.svg)",
+      "worked_solution": "First of all, we write the given system in the form $A \\mathbf{x} = \\mathbf{b}\\mathbin{:}$\n\n$$\n\\begin{aligned}\\overset{A}{\\overset{⏞}{[\\begin{aligned}1 & 1 \\\\ 1 & 0 \\\\ -1 & 0 \\\\ -1 & -1\\end{aligned}]}}\\overset{x}{\\overset{⏞}{[\\begin{aligned}{x}_{1} \\\\ {x}_{2}\\end{aligned}]}} & =\\overset{b}{\\overset{⏞}{[\\begin{aligned}22 \\\\ 0 \\\\ 0 \\\\ 2\\end{aligned}]}} \\\\ Ax & =b\\end{aligned}\n$$\n\nWe can find the least-squares solution ${\\hat{\\mathbf{x}}}$ of the equation above by solving the corresponding normal equation, which we obtain by left-multiplying our original equation by $A^T\\mathbin{:}$\n\n$$\n\\begin{aligned}{A}^{T}\\,A\\overset{^}{x} & ={A}^{T}b\\end{aligned}\n$$\n\nSince the columns of $A$ are linearly independent, the matrix $A^T \\! A$ is invertible. Therefore, multiplying by $(A^T \\! A)^{-1}$ on the left, we obtain\n\n$$\n\\begin{aligned}\\overset{^}{x} & =({A}^{T}\\,A)^{-1}{A}^{T}b \\\\  & ={([\\begin{aligned}1 & 1 & -1 & -1 \\\\ 1 & 0 & 0 & -1\\end{aligned}][\\begin{aligned}1 & 1 \\\\ 1 & 0 \\\\ -1 & 0 \\\\ -1 & -1\\end{aligned}])}^{-1}\\,\\,\\,\\,[\\begin{aligned}1 & 1 & -1 & -1 \\\\ 1 & 0 & 0 & -1\\end{aligned}][\\begin{aligned}22 \\\\ 0 \\\\ 0 \\\\ 2\\end{aligned}] \\\\  & ={[\\begin{aligned}4 & 2 \\\\ 2 & 2\\end{aligned}]}^{-1}[\\begin{aligned}20 \\\\ 20\\end{aligned}] \\\\  & =\\frac{1}{4}[\\begin{aligned}2 & -2 \\\\ -2 & 4\\end{aligned}][\\begin{aligned}20 \\\\ 20\\end{aligned}] \\\\  & =\\frac{1}{2}[\\begin{aligned}1 & -1 \\\\ -1 & 2\\end{aligned}][\\begin{aligned}20 \\\\ 20\\end{aligned}] \\\\  & =[\\begin{aligned}0 \\\\ 10\\end{aligned}].\\end{aligned}\n$$\n\nThe minimum value of $\\Vert A\\mathbf{x} - \\mathbf{b} \\Vert$ is attained when $\\mathbf{x}={\\hat{\\mathbf{x}}},$ which is the least-squares solution of the system $A\\mathbf{x}=\\mathbf{b}.$\n\nIn this case, $A{\\hat{\\mathbf{x}}}$ represents the orthogonal projection of $\\mathbf{b}$ onto the column space of $A,$ and $\\Vert A{\\hat{\\mathbf{x}}} - \\mathbf{b} \\Vert$ is the distance between the vector $\\mathbf{b}$ and the column space.\n\nTherefore,\n\n$$\n\\begin{aligned}A\\overset{^}{x}-b & =[\\begin{aligned}1 & 1 \\\\ 1 & 0 \\\\ -1 & 0 \\\\ -1 & -1\\end{aligned}][\\begin{aligned}0 \\\\ 10\\end{aligned}]-[\\begin{aligned}22 \\\\ 0 \\\\ 0 \\\\ 2\\end{aligned}]=[\\begin{aligned}-12 \\\\ 0 \\\\ 0 \\\\ -12\\end{aligned}].\\end{aligned}\n$$\n\nFinally, \n\n$$\n\\Vert A{\\hat{\\mathbf{x}}}-\\mathbf{b}\\Vert =\\sqrt{(-12)^2+0^2+(-12)^2+0^2}=12\\sqrt{2}.\n$$",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14158576/observations/step-e7429-b7f268f0e3c504e79ae3.html",
+      "source_url": "https://mathacademy.com/tasks/14158576/topics/2166/lesson",
+      "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14158576/observations/step-e7429-b7f268f0e3c504e79ae3.png",
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14158576/assets/9a0b7bb72f719d095a6cad94e87a08caf1ca88e71124621f410f5d14714938d7.svg",
+          "sha256": "9a0b7bb72f719d095a6cad94e87a08caf1ca88e71124621f410f5d14714938d7",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        }
+      ]
+    }
+  }
+}
