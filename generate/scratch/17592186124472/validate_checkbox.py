@@ -93,8 +93,12 @@ def validate(r, plots=True):
 def replay(r):
     meta = r['generation']
     level = r['question'][':question/difficulty'].split('/')[-1]
-    return m.generate(level,seed=meta.get('seed',0),parameters=meta['parameters'],
+    result=m.generate(level,seed=meta.get('seed',0),parameters=meta['parameters'],
                       profile=meta['legacy_sampling_profile'])
+    for asset in meta.get('published_assets',{}).values():
+        for k in (':question/problem',':question/worked-solution'):
+            result['question'][k]=result['question'][k].replace(asset['local'],asset['reference'])
+    return result
 
 def main():
     records=[]

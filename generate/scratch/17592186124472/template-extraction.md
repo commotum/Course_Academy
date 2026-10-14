@@ -1,3 +1,11 @@
+# Current response contract
+
+At math basis 2221, `current-source.json` supersedes the historical radio answer layout for production. The ten current questions share four checkbox fields, one for each of I, II, III, IV. Each field has its own false and true answer UUIDs and one correct ref. There are no distractors beyond the checkbox boolean contract. Source replay via `profile=current:<source-id>` preserves every captured component exactly and is marked evidence only. The mathematical backbone, parameter domains, graph roles, and ordered horizontal-line explanation stages below remain unchanged.
+
+Production calls the established exact-domain graph sampler, computes all four injectivity decisions, and renders four corresponding checkbox keys. The prompt asks “Select all that apply” and maps labels to graph positions. The worked solution keeps the horizontal-line opening, diagram and passing/failing graph explanations, omitting the obsolete radio-choice conclusion. Parameters, curve data, text references, images and answer keys share the same instance. Field identities are owned by one question, and each answer by one field. A parameter replay with another seed returns the same mathematical question.
+
+The production fingerprint sorts the four structural graph descriptions, so permuting panel labels cannot create a new practice task. Historical ordered catalog counts are finite upper bounds, not claims of distinct usable inventory. Easy reflection, bank profile, axis aliases, seed, UUID and choice order do not expand task capacity. The legacy bank still drives bounded subset-mask sampling; it is not exposed as a current answer bank. Exact current source boolean banks replay 80/80 choices across 10/10 complete questions.
+
 # Four-stage template extraction
 
 ## 1. Specific source descriptions

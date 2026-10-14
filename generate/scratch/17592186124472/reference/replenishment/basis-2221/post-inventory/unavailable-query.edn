@@ -1,0 +1,11 @@
+[:find ?q :in $ ?learner ?kp
+ :where [?l :learner/id ?learner] [?kp :knowledge-point/questions ?q]
+ (or-join [?q ?l]
+   (and [?l :learner/activity ?t] [?t :learner-task/items ?i] [?i :task-item/content ?q])
+   (and [?l :learner/activity ?t] [?t :learner-task/activity ?a]
+     (or [?t :learner-task/status :learner-task.status/started]
+         [?t :learner-task/status :learner-task.status/paused])
+     (or [?a :activity/type :activity.type/lesson]
+         [?a :activity/type :activity.type/review]
+         [?a :activity/type :activity.type/assessment])
+     [?a :activity/steps ?st] [?st :step/content ?q]))]
