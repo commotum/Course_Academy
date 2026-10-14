@@ -51,7 +51,7 @@ def normalize_parameters(profile,p):
  if family=='quadratic':
   if p['a']!=0 or p['b']==0 or len(roots)!=1:raise ValueError('Nondegenerate quadratic required')
  elif p['a']==0 or any(not r.is_Rational for r in roots):raise ValueError('Cubic with rational tangent locations required')
- if family=='positive' and (len(roots)!=2 or sum(r>0 for r in roots)!=1 or not min(roots)<0):raise ValueError('Exactly one positive and one negative root')
+ if family=='positive' and (len(roots)!=2 or sum(bool(r>0) for r in roots)!=1 or not min(roots)<0):raise ValueError('Exactly one positive and one negative root')
  if family=='all' and (len(roots)!=2 or not min(roots)<0<max(roots)):raise ValueError('Two opposite-sign rational roots')
  if family=='repeated' and (len(roots)!=1 or roots[0]==0):raise ValueError('One repeated nonzero root')
  if family=='quadratic' and roots[0]==0:raise ValueError('Nonzero root policy avoids bank collisions')
@@ -80,9 +80,9 @@ def sample(profile,rng):
   if family=='quadratic':
    b=rng.choice([i for i in range(-5,6) if i]);c=rng.choice([i for i in range(-12,13) if i]);m=rng.randint(-12,12);p=dict(a=0,b=b,c=c,d=d,m=m)
   else:
-   a=rng.choice([-3,-2,-1,1,2,3,4,8]);u=-rng.choice([1,2,3,4,sp.Rational(3,4),sp.Rational(8,3)]);v=rng.choice([1,2,3,4,5,6,sp.Rational(4,3)])
+   a=sp.Rational(rng.choice([-3,-2,-1,1,2,3,4,8]));u=-rng.choice([1,2,3,4,sp.Rational(3,4),sp.Rational(8,3)]);v=rng.choice([1,2,3,4,5,6,sp.Rational(4,3)])
    if profile=='positive_offsets':v=rng.choice([4,5,6,7,8])
-   if family=='repeated':u=v=rng.choice([-4,-3,-2,-1,1,2,3,4])
+   if family=='repeated':u=v=sp.Rational(rng.choice([-4,-3,-2,-1,1,2,3,4]))
    m=rng.randint(-12,12);p=dict(a=a,b=-3*a*(u+v)/2,c=m+3*a*u*v,d=d,m=m)
   try:return normalize_parameters(profile,p)
   except ValueError:pass
@@ -103,16 +103,16 @@ def render(profile,p):
  if ft=='blank':prompt+='\n\n$x=$\n{{field-1}}'
  else:prompt+='\n\n{{selection}}'
  # Separate differentiated terms preserve the power-rule stages of the source.
- derivative_terms=sp.Add(*[sp.Mul(sp.Integer(power),coef,x**(power-1),evaluate=False) for (power,),coef in sp.Poly(f,x).terms() if power],evaluate=False)
- intro=f'Let $f(x)={tex(f)}.$ The slope of the tangent at the point $x$ is equal to $f^{{\prime}}(x).$ Computing the derivative, we get'
- derivative_rows=[r'f^{\prime}(x) &= \frac{\mathrm{d}}{\mathrm{d}x}\left('+tex(f)+r'\right)', '&= '+tex(derivative_terms), '&= '+tex(df)]
+ derivative_terms=' + '.join('('+tex(coef)+')'+r'\cdot '+str(power)+r'\cdot '+tex(x**(power-1)) for (power,),coef in sp.Poly(f,x).terms() if power)
+ intro=f'Let $f(x)={tex(f)}.$ The slope of the tangent at the point $x$ is equal to $f^{{\\prime}}(x).$ Computing the derivative, we get'
+ derivative_rows=[r'f^{\prime}(x) &= \frac{\mathrm{d}}{\mathrm{d}x}\left('+tex(f)+r'\right)', '&= '+derivative_terms, '&= '+tex(df)]
  eq=df-p['m'];rows=[tex(df)+' &= '+tex(p['m'])]
  if family=='quadratic':
   rows += [tex(2*p['b']*x)+' &= '+tex(p['m']-p['c']), 'x &= '+tex(ans[0])]
  else:
   rows += [tex(eq)+' &= 0',tex(sp.factor(eq))+' &= 0','x &= '+r',\,'.join(tex(r) for r in roots)]
  def aligned(rs):return '$$\n'+r'\begin{aligned}'+'\n'+(' '+r'\\'+'\n').join(rs)+'\n'+r'\end{aligned}'+'\n$$'
- solution=intro+'\n\n'+aligned(derivative_rows)+f'\n\nWe now set $f^{{\prime}}(x)={tex(p["m"])}$ and solve for $x:$\n\n'+aligned(rows)+'\n\n'
+ solution=intro+'\n\n'+aligned(derivative_rows)+f'\n\nWe now set $f^{{\\prime}}(x)={tex(p["m"])}$ and solve for $x:$\n\n'+aligned(rows)+'\n\n'
  if family=='positive':solution+=f'Since $x>0$, the required coordinate is $x={tex(ans[0])}.$'
  else:solution+=f'Therefore, the slope of the tangent is equal to ${tex(p["m"])}$ at '+('the points' if family=='all' else 'the point')+' where $x='+r',\,'.join(tex(r) for r in ans)+'.$'
  return prompt,solution,values,recipes

@@ -48,6 +48,32 @@ def plot_test(path,c,m):
   px,py=pix(float(Fraction(x)),float(Fraction(y)));assert abs(py-oy)>=40 and abs(px-ox)>=35
   assert blue[py-3:py+4,px-3:px+4].sum()>=18,('missing marked point',path,x,y)
 
+REFERENCE_BANKS={
+ 'raw_q-97958':('-1','1','a','-n','-a'),
+ 'raw_q-97963':('-a','-round_inverse','-1','1','a'),
+ 'raw_q-113335':('-a','-1','-inv','a','inv'),
+ 'raw_q-113337':('-a','inv','-inv','-1','a'),
+ 'raw_q-113339':('a','-1','-d','-inv','-a'),
+ 'raw_q-113341':('a','-inv','-a','inv','-1'),
+ 'raw_q-113336':('inv','-a','a','-inv','-1'),
+ 'raw_q-97949':('-a','a','1','-n','-1'),
+ 'raw_q-99068':('-1','-inv','-a','inv','-2a'),
+ 'integer_reversal':('inv','-a','a','-inv','-1'),
+ 'unit_numerator_reversal':('-a','-1','-inv','a','inv'),
+ 'rational_reversal':('-a','inv','-inv','-1','a'),
+ 'rational_numerator':('-a','a','1','-n','-1'),
+ 'rational_denominator':('a','-1','-d','-inv','-a'),
+ 'nonunit_point_reversal':('-a','a','inv','-inv','-1'),
+ 'nonunit_point_numerator':('-a','a','1','-n','-1'),
+}
+
+def independent_bank(q,profile):
+ from decimal import Decimal,ROUND_HALF_UP
+ m=re.search(r'y\s*=\s*-\\frac\{(\d+)\}\{(\d*)x\}',q[':question/problem']);n=int(m[1]);d=int(m[2] or 1)
+ a=Fraction(n,d);inv=Fraction(d,n)
+ vals={'a':a,'-a':-a,'inv':inv,'-inv':-inv,'-1':Fraction(-1),'1':Fraction(1),'-n':Fraction(-n),'-d':Fraction(-d),'-2a':-2*a,'-round_inverse':-Fraction((Decimal(d)/Decimal(n)).quantize(Decimal('.01'),rounding=ROUND_HALF_UP))}
+ return [vals[t] for t in REFERENCE_BANKS[profile]]
+
 def check(r,raw=False):
  assert set(r['knowledge_point'])=={'db_id','id','title'}
  q=r['question'];f=q[':question/answer-fields'][0];a=printed(q);assert a<0
@@ -73,6 +99,9 @@ def check(r,raw=False):
   c=Fraction(r['generation']['plot_coefficients'][ans[':answer/value']]);bank.append(c)
   truth.append(c==a)
   if not ans[':answer/value'].startswith('images/'):plot_test(ans[':answer/value'],c,Fraction(r['generation']['mark_x']))
+ assert sorted(bank)==sorted(independent_bank(q,r['generation']['bank_profile'])),('wrong operation bank',q[':question/problem'],bank)
+ x=g.sp.Symbol('x',nonzero=True)
+ for u,v in itertools.combinations(bank,2):assert g.sp.simplify(g.sp.Rational(u.numerator,u.denominator)/x-g.sp.Rational(v.numerator,v.denominator)/x)!=0
  assert sum(truth)==1
  for u,v in itertools.combinations(bank,2):assert u!=v,('equivalent plotted functions',u,v)
  if ':answer-field/correct' in f:

@@ -117,7 +117,7 @@ Which of the following is the graph of $y =-\frac{12}{x}$?
 ![](plots/8d336d63e0a0450460b6c2b61e1e9ce078bc87722d4149c37a005e0592418711.png)
 
 **E**
-![](plots/57f459dc482acb561e836e2a0e91f1227f2fb86cd10f603bb84f844078a0cb5f.png)
+![](plots/efc4301b9a1a28675ce652c454ec5d83724a10053d67cb6b32d88868019be936.png)
 
 Raw evidence: source correct designation absent.
 
@@ -129,7 +129,7 @@ Raw evidence: source correct designation absent.
 Which of the following is the graph of $y =-\frac{7}{x}$?
 
 **A**
-![](plots/8953ee7e7368464efa32db3f3e08b0793b40c125365b10a8bf67e81c49da4cd7.png)
+![](plots/beb186456441823a9d1a7ce6319fca3dbe56802f92df51b669496f4210e5bb0a.png)
 
 **B**
 ![](plots/5516f5a9fe8b737d1ba8914103a1e314b81ac74e5be47a94d45a39b8cf008700.png)
@@ -1230,3 +1230,65 @@ To plot $y=-\frac{14}{9x},$ we apply the following steps:
 - Stretch the result by a scale factor of $\frac{14}{9}$ parallel to the $y$-axis to get the graph of $y=-\frac{14}{9x}.$
 
 ![](plots/3b4b23780fdc79668df01454174ec9e2794d1956e5d47675458b5a5bf27f5082.png)
+
+## Generated variant — rational_reversal
+
+{"n": 3, "d": 2}
+
+Which of the following is the graph of $y=-\frac{3}{2x}?$
+
+**A**
+![](plots/d3785e7cd5c35528d65ae421a6886ad214071c87b5b9d895bcf7dd0dd6ea9636.png)
+
+**B**
+![](plots/8f5fa9a57185518cbc3ecf688c9aa4e16e98508d5bb5e6283003752f7db41e3e.png)
+
+**C** (correct)
+![](plots/6073cc2e29fd52ab2649966193e24170d065facba12fd444b7b9598a56b27483.png)
+
+**D**
+![](plots/3e8465116adff839254bd316198d271ea04f9504659bd05c3ea82314f69c6808.png)
+
+**E**
+![](plots/51c8fd38e126afd05e67e9e538dd834692bb47d55a0f6189b99c1e8e5cb92604.png)
+
+To plot $y=-\frac{3}{2x},$ we apply the following steps:
+
+- Take the curve $y=-\frac{1}{x}.$
+
+![](plots/51c8fd38e126afd05e67e9e538dd834692bb47d55a0f6189b99c1e8e5cb92604.png)
+
+- Stretch the result by a scale factor of $\frac{3}{2}$ parallel to the $y$-axis to get the graph of $y=-\frac{3}{2x}.$
+
+![](plots/6073cc2e29fd52ab2649966193e24170d065facba12fd444b7b9598a56b27483.png)
+
+## Generated variant — integer_reversal
+
+{"n": 3, "d": 1}
+
+Which of the following is the graph of $y=-\frac{3}{x}?$
+
+**A**
+![](plots/e01de611036d14cd3e7df8878436caac738eac19cddad8474cb7b4104870da9c.png)
+
+**B** (correct)
+![](plots/5cc0b574783e248b5e7a0b0c22e19be95f10e9a32b9ee6b81540166a30f7a9f1.png)
+
+**C**
+![](plots/591d345e6b3f89ba32a76bf5923d3b14ca21e9a4156a5feac407d3bdb0e2694b.png)
+
+**D**
+![](plots/51c8fd38e126afd05e67e9e538dd834692bb47d55a0f6189b99c1e8e5cb92604.png)
+
+**E**
+![](plots/e80cfb8ca8acff01ec508986124187bb66cc18f184392b69459fa07090be3f05.png)
+
+To plot $y=-\frac{3}{x},$ we apply the following steps:
+
+- Take the curve $y=-\frac{1}{x}.$
+
+![](plots/51c8fd38e126afd05e67e9e538dd834692bb47d55a0f6189b99c1e8e5cb92604.png)
+
+- Stretch the result by a scale factor of $3$ parallel to the $y$-axis to get the graph of $y=-\frac{3}{x}.$
+
+![](plots/5cc0b574783e248b5e7a0b0c22e19be95f10e9a32b9ee6b81540166a30f7a9f1.png)
