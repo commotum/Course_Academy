@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-38371",
+      "sequence_position": 5,
+      "problem": "Using the change of variables $u=xy$ and $v=y+x,$ evaluate the double integral\n\n$$\n{∬}_{D}|y-x|\\,{e}^{xy}\\,dxdy,\n$$\n\nwhere $D=\\{(x,y)\\,:\\,1\\le xy\\le 4,\\,1\\le y+x\\le 10\\}.$",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]⟶[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{∬}_{D}f(x,y)\\text{ }dxdy={∬}_{Δ}\\text{ }f(x(u,v),y(u,v))\\,|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=xy,\\,v=y+x\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}Δ & =\\{(u,v)\\,:\\,1\\le u\\le 4,\\,1\\le v\\le 10\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}y & x \\\\ 1 & 1\\end{aligned}| \\\\  & =y-x.\\end{aligned}\n$$\n\n.\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=\\frac{1}{y-x}\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{∬}_{D}|y-x|\\,{e}^{xy}\\,dxdy & ={∬}_{Δ}|y-x|\\,{e}^{u}\\,|\\frac{∂(x,y)}{∂(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}|y-x|\\,{e}^{u}\\,\\frac{1}{|y-x|}\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}{e}^{u}\\,\\text{d}u\\text{d}v \\\\  & ={\\int }_{1}^{4}[{\\int }_{1}^{10}{e}^{u}\\,dv]du \\\\  & ={\\int }_{1}^{4}{e}^{u}[{\\int }_{1}^{10}dv]du \\\\  & ={\\int }_{1}^{4}{e}^{u}[v]_{1}^{10}\\,du \\\\  & =9{\\int }_{1}^{4}{e}^{u}\\,du \\\\  & =9[{e}^{u}]_{1}^{4} \\\\  & =9({e}^{4}-e).\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14178029/observations/history-q-38371-c594f43c652ab9ef33c3.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14178029",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14178029/observations/history-solution-q-38371-cf4a30a7e1cda74c3a6e.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "5({e}^{4}-1)"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "5(1-{e}^{3})"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "10({e}^{4}-1)"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "9({e}^{3}-e)"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "9({e}^{4}-e)"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q38371",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "5({e}^{4}-1)",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]⟶[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{∬}_{D}f(x,y)\\text{ }dxdy={∬}_{Δ}\\text{ }f(x(u,v),y(u,v))\\,|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=xy,\\,v=y+x\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}Δ & =\\{(u,v)\\,:\\,1\\le u\\le 4,\\,1\\le v\\le 10\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}y & x \\\\ 1 & 1\\end{aligned}| \\\\  & =y-x.\\end{aligned}\n$$\n\n.\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=\\frac{1}{y-x}\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{∬}_{D}|y-x|\\,{e}^{xy}\\,dxdy & ={∬}_{Δ}|y-x|\\,{e}^{u}\\,|\\frac{∂(x,y)}{∂(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}|y-x|\\,{e}^{u}\\,\\frac{1}{|y-x|}\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}{e}^{u}\\,\\text{d}u\\text{d}v \\\\  & ={\\int }_{1}^{4}[{\\int }_{1}^{10}{e}^{u}\\,dv]du \\\\  & ={\\int }_{1}^{4}{e}^{u}[{\\int }_{1}^{10}dv]du \\\\  & ={\\int }_{1}^{4}{e}^{u}[v]_{1}^{10}\\,du \\\\  & =9{\\int }_{1}^{4}{e}^{u}\\,du \\\\  & =9[{e}^{u}]_{1}^{4} \\\\  & =9({e}^{4}-e).\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14178029/observations/step-q38371-351d1bc27ef51c179ab3.html"
+        }
+      }
+    ]
+  }
+}

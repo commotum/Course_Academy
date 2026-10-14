@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-160899",
+      "sequence_position": 2,
+      "problem": "Using the change of variables $u=\\frac{y}{x}$ and $v=xy,$ evaluate the double integral\n\n$$\n{∬}_{D}{e}^{-xy/2}\\,dx\\,dy,\n$$\n\nwhere $D=\\{(x,y)\\,:\\,\\frac{x}{4}\\le y\\le 2x,\\,1\\le xy\\le 4\\}.$",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]⟶[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{∬}_{D}f(x,y)\\,dx\\,dy={∬}_{Δ}\\text{ }f(x(u,v),y(u,v))|\\frac{∂(x,y)}{∂(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=\\frac{y}{x},\\,v=xy\n$$\n\n \ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}Δ & =\\{(u,v)\\,:\\,\\frac{1}{4}\\le u\\le 2,\\,1\\le v\\le 4\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}-\\frac{y}{{x}^{2}} & \\frac{1}{x} \\\\ y & \\text{ }\\text{ }x\\end{aligned}| \\\\  & =-\\frac{2y}{x}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=\\frac{1}{(-\\frac{2y}{x})}=-\\frac{1}{2u}.\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{∬}_{D}{e}^{-xy/2}\\,dx\\,dy & ={∬}_{Δ}{e}^{-v/2}|\\frac{∂(x,y)}{∂(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={∬}_{Δ}{e}^{-v/2}\\cdot |-\\frac{1}{2u}|\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{1}^{4}{\\int }_{1/4}^{2}\\frac{{e}^{-v/2}}{u}\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{1}^{4}{e}^{-v/2}[{\\int }_{1/4}^{2}\\frac{1}{u}\\,\\text{d}u]\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{1}^{4}{e}^{-v/2}[\\operatorname{ln}⁡|u|\\,{|}_{1/4}^{2}]du \\\\  & =\\frac{1}{2}{\\int }_{1}^{4}{e}^{-v/2}[\\operatorname{ln}⁡2-\\operatorname{ln}⁡\\frac{1}{4}]\\,du \\\\  & =\\frac{3\\operatorname{ln}⁡2}{2}{\\int }_{1}^{4}{e}^{-v/2}\\,du \\\\  & =\\frac{3\\operatorname{ln}⁡2}{2}\\cdot {[-2{e}^{-v/2}]}_{1}^{4} \\\\  & =-3\\operatorname{ln}⁡2\\cdot ({e}^{-2}-{e}^{-1/2}) \\\\  & =3({e}^{-1/2}-{e}^{-2})\\operatorname{ln}⁡2.\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14178029/observations/history-q-160899-fe0a29ba8bff917acac3.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14178029",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14178029/observations/history-solution-q-160899-aa14e0a48ae540d3fb51.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "3({e}^{-1/2}-{e}^{-2})\\operatorname{ln}⁡2"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "\\frac{{e}^{-1}-{e}^{-2}}{4}"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "\\frac{e}{8}"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "({e}^{2}-e)\\operatorname{ln}⁡2"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "8{e}^{2}"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q160899",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "\\frac{{e}^{-1}-{e}^{-2}}{4}",
+                "option": "b",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]⟶[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{∬}_{D}f(x,y)\\,dx\\,dy={∬}_{Δ}\\text{ }f(x(u,v),y(u,v))|\\frac{∂(x,y)}{∂(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=\\frac{y}{x},\\,v=xy\n$$\n\n \ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}Δ & =\\{(u,v)\\,:\\,\\frac{1}{4}\\le u\\le 2,\\,1\\le v\\le 4\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}-\\frac{y}{{x}^{2}} & \\frac{1}{x} \\\\ y & \\text{ }\\text{ }x\\end{aligned}| \\\\  & =-\\frac{2y}{x}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=\\frac{1}{(-\\frac{2y}{x})}=-\\frac{1}{2u}.\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{∬}_{D}{e}^{-xy/2}\\,dx\\,dy & ={∬}_{Δ}{e}^{-v/2}|\\frac{∂(x,y)}{∂(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={∬}_{Δ}{e}^{-v/2}\\cdot |-\\frac{1}{2u}|\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{1}^{4}{\\int }_{1/4}^{2}\\frac{{e}^{-v/2}}{u}\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{1}^{4}{e}^{-v/2}[{\\int }_{1/4}^{2}\\frac{1}{u}\\,\\text{d}u]\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{1}^{4}{e}^{-v/2}[\\operatorname{ln}⁡|u|\\,{|}_{1/4}^{2}]du \\\\  & =\\frac{1}{2}{\\int }_{1}^{4}{e}^{-v/2}[\\operatorname{ln}⁡2-\\operatorname{ln}⁡\\frac{1}{4}]\\,du \\\\  & =\\frac{3\\operatorname{ln}⁡2}{2}{\\int }_{1}^{4}{e}^{-v/2}\\,du \\\\  & =\\frac{3\\operatorname{ln}⁡2}{2}\\cdot {[-2{e}^{-v/2}]}_{1}^{4} \\\\  & =-3\\operatorname{ln}⁡2\\cdot ({e}^{-2}-{e}^{-1/2}) \\\\  & =3({e}^{-1/2}-{e}^{-2})\\operatorname{ln}⁡2.\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14178029/observations/step-q160899-85ac523b730ef823aff5.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a13626-c10b-7d51-baa4-0c8ba704b6fb",
+  "previous_failures": []
+}
