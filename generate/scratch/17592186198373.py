@@ -35,7 +35,7 @@ LEVEL_FAMILIES={'easy':('linear',),'moderate':FAMILIES,'hard':FAMILIES}
 
 def tex(z):
     z=s.sympify(z); atoms=sorted(z.atoms(s.exp),key=str);mask={a:s.Symbol('Zexp'+str(i)) for i,a in enumerate(atoms)}
-    text=s.latex(z.xreplace(mask)).replace(r'\log',r'\ln')
+    text=s.latex(z.xreplace(mask)).replace(r'\log',r'\ln').replace(r'\operatorname{atan}',r'\arctan')
     for a,letter in mask.items():text=text.replace(s.latex(letter),'e^{'+s.latex(a.args[0])+'}')
     return text
 def par(z):return r'\left('+tex(z)+r'\right)'
@@ -52,14 +52,20 @@ def parameters_for(level,f,rng):
     # Easy: one linear primitive; moderate: original-family operations;
     # hard: same primitives, nonunit factor + four nonzero endpoint values.
     if level=='easy':return dict(a=0,b=rng.randint(2,8),c=0,d=rng.randint(2,6),m=1,k=1,h=0,q=1,R=9)
-    a= rng.randint(1,3); b=a+rng.randint(1,3)
+    a= rng.randint(1,3); b=rng.randint(a+1,min(6,a+4))
     c,d=(0,rng.randint(1,3)) if level=='moderate' else (rng.randint(1,2),rng.randint(3,4))
-    p=dict(a=a,b=b,c=c,d=d,m=(2 if f=='gaussian' else 1) if level=='moderate' else rng.choice([3,4]),k=1,h=rng.randint(0,a),q=rng.choice([1,2]),R=9)
-    if f=='arctan' and level=='moderate':p.update(a=0,b=rng.randint(2,5),c=0,d=rng.randint(1,4))
+    p=dict(a=a,b=b,c=c,d=d,m=(2 if f=='gaussian' else 1) if level=='moderate' else rng.choice([3,4]),k=1,h=rng.randint(1,a),q=rng.choice([1,2]),R=9)
+    if f=='arctan' and level=='moderate':p.update(a=0,b=rng.randint(2,8),c=0,d=rng.randint(2,6))
     if f=='radical':
-        B=rng.choice([1,2]);p.update(a=0 if level=='moderate' else 1,b=rng.randint(2,4),c=-B if level=='moderate' else 1,d=B if level=='moderate' else 2,R=rng.choice([9,16,25]),m=1)
+        B=rng.choice([1,2])
+        if level=='moderate':p.update(a=0,b=rng.randint(1,5),c=-B,d=B,R=rng.choice([r for r in (4,9,16,25) if r>B*B]),m=1)
+        else:
+            aa=rng.randint(1,2);cc=rng.randint(1,2);dd=rng.randint(cc+1,3)
+            p.update(a=aa,b=rng.randint(aa+1,5),c=cc,d=dd,R=rng.choice([r for r in (9,16,25) if r>dd*dd]),m=1)
+    if f=='linear_exp' and level=='moderate':
+        cc=rng.choice([-1,0,1]);p.update(c=cc,d=cc+rng.randint(1,2))
     if f=='sine':p.update(c='-pi/2' if level=='moderate' else 'pi/6',d=rng.choice(['pi/3','pi/2']) if level=='moderate' else '2*pi/3')
-    if f=='quadratic_exp' and level=='moderate':p.update(a=0,b=rng.randint(1,3),c=0,d=rng.randint(1,3))
+    if f=='quadratic_exp' and level=='moderate':p.update(a=0,b=rng.randint(1,5),c=0,d=rng.randint(1,5))
     if f!='linear_exp':p['h']=0
     return p
 
@@ -68,20 +74,26 @@ def guard(level,f,p):
     if set(p)!=keys:raise ValueError('parameters require exactly '+','.join(sorted(keys)))
     z={k:s.sympify(val,locals={'pi':s.pi}) for k,val in p.items()}
     if any(z[k].is_Integer is not True for k in keys-{'c','d'}):raise ValueError('integer workload parameters required')
-    if not(0<=z['a']<z['b']<=(8 if level=='easy' else 6) and z['c']<z['d'] and 1<=z['m']<=4 and z['k']==1 and 0<=z['h']<=z['a'] and z['q'] in (1,2) and z['R'] in (4,9,16,25)):raise ValueError('unsupported arithmetic bounds')
+    bmax=8 if level=='easy' or (level=='moderate' and f=='arctan') else (5 if level=='moderate' and f=='quadratic_exp' else 6)
+    dmax=6 if level=='easy' or (level=='moderate' and f=='arctan') else (5 if level=='moderate' and f=='quadratic_exp' else 4)
+    if not(0<=z['a']<z['b']<=bmax and z['c']<z['d'] and 1<=z['m']<=4 and z['k']==1 and 0<=z['h']<=z['a'] and z['q'] in (1,2) and z['R'] in (4,9,16,25)):raise ValueError('unsupported arithmetic bounds')
     if f=='sine':
         if z['c'] not in (-s.pi/2,s.pi/6) or z['d'] not in (s.pi/3,s.pi/2,2*s.pi/3):raise ValueError('familiar sine angles required')
-    elif not(-2<=z['c']<z['d']<=(6 if level=='easy' else 4) and z['c'].is_Integer and z['d'].is_Integer):raise ValueError('integer rectangle bounds required')
+    elif not(-2<=z['c']<z['d']<=dmax and z['c'].is_Integer and z['d'].is_Integer):raise ValueError('integer rectangle bounds required')
+    if f=='linear_exp' and not(1<=z['h']<=z['a']):raise ValueError('shifted linear primitive requires nonzero h')
     if f=='radical' and not(z['R']>max(z['c']**2,z['d']**2) and z['m']==1):raise ValueError('positive radical throughout rectangle required')
     if level=='easy' and not(f=='linear' and z['a']==z['c']==z['h']==0 and z['m']==1 and z['b']<=8 and z['d']<=6):raise ValueError('easy zero-bound unit-Jacobian demand')
     if level=='moderate':
+        if f=='arctan' and not(z['a']==0 and z['c']==0):raise ValueError('moderate arctan zero-bound demand')
+        if f=='gaussian' and z['c']!=0:raise ValueError('moderate Gaussian zero exponent endpoint')
+        if f=='quadratic_exp' and not(z['a']==0 and z['c']==0):raise ValueError('moderate quadratic exponential unit endpoint values')
         if z['m']!=(2 if f=='gaussian' else 1):raise ValueError('moderate original Jacobian workload')
         if f=='radical' and not(z['a']==0 and z['c']==-z['d'] and z['d'] in (1,2)):raise ValueError('moderate symmetric radical demand')
         if f=='sine' and z['c']!=-s.pi/2:raise ValueError('moderate original negative endpoint')
     if level=='hard':
         if not(z['a']>0 and z['c']>0):raise ValueError('hard requires nonzero lower endpoints')
         if f=='radical':
-            if z['c']==-z['d']:raise ValueError('hard radical cannot use symmetry')
+            if not(z['a'] in (1,2) and z['b']<=5 and (z['c'],z['d']) in ((1,2),(1,3),(2,3)) and z['R'] in (9,16,25)):raise ValueError('hard radical asymmetric bounded workload')
         elif z['m'] not in (3,4):raise ValueError('hard nonunit Jacobian demand')
         if f=='sine' and (z['c']!=s.pi/6 or z['d']!=2*s.pi/3):raise ValueError('hard sine familiar nonzero endpoints')
     return z
@@ -240,7 +252,7 @@ def record(level,f,p,prompt,sol,banks,seed,profile,raw=None,names=None,mathdata=
         random.Random(seed+101*i).shuffle(answers);fields.append(field)
     if raw is None or ':question/answer-fields' in raw:q[':question/answer-fields']=fields
     if raw is None:
-        obj=mathdata if mathdata is not None else model(f,guard(level,f,p)); meaningful=[level,f,*[str(obj[j]) for j in ('F','U','V')],*[str(p[j]) for j in ('a','b','c','d')]]
+        obj=mathdata if mathdata is not None else model(f,guard(level,f,p)); meaningful=[level,f,*[str(obj[j]) for j in ('F','U','V')],*[str(s.sympify(p[j],locals={'pi':s.pi})) for j in ('a','b','c','d')]]
     else:meaningful=['homogeneous-source',f,p['k']]
     task=digest(meaningful)
     return dict(knowledge_point=dict(db_id=KP_ID,id=KP_UUID,title=TITLE),question=q,generation=dict(version=VERSION,template=f,profile=profile,seed=seed,parameters=normalize(p),source=dict(database=SOURCE['database'],basis=SOURCE['basis'],lineage=SOURCE['lineage']),source_ids=[SOURCE_NAMES[f]] if f in SOURCE_NAMES else [],mathematical_fingerprint=task,content_fingerprint=ident,evidence_only=raw is not None,eligible_for_learning=raw is None,authored_level=raw is None and (level!='moderate' or f=='gaussian'),recipes=names,dependencies=dict(python=sys.version.split()[0],sympy=s.__version__)))

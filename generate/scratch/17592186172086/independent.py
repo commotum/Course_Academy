@@ -61,7 +61,7 @@ def relation(c):
 
 def set_constraints(s):
  if '|' not in s and r'\text{all real }' in s:return []
- c=s.split('|',1)[1].rstrip('.').strip();c=c[:-1] if c.endswith('}') else c;return [z for part in c.split(r',\,') for z in relation(part)]
+ c=s.split('|',1)[1].rstrip('.').strip();c=c[:-2] if c.endswith(r'\}') else c[:-1] if c.endswith('}') else c;return [z for part in c.split(r',\,') for z in relation(part)]
 
 def truth(cs,a,b):
  try:return all(bool(c.subs({X:a,Y:b})) for c in cs)

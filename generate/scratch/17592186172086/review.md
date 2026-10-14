@@ -73,11 +73,11 @@ $$
 F(x,y)=\frac{y}{{x}^{2}+{y}^{2}}\,i+\frac{x}{{x}^{2}-36{y}^{2}}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)}$
-2. ${(x,y)\in {R}^{2}\,|\,y\ne -\frac{1}{6}x}$
-3. ${(x,y)\in {R}^{2}\,|\,y\ne \frac{1}{6}x}$
-4. ${(x,y)\in {R}^{2}\,|\,\text{all real }(x,y)}$
-5. ${(x,y)\in {R}^{2}\,|\,y\ne \pm \frac{1}{6}x}$
+1. $\{(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)\}$
+2. $\{(x,y)\in {R}^{2}\,|\,y\ne -\frac{1}{6}x\}$
+3. $\{(x,y)\in {R}^{2}\,|\,y\ne \frac{1}{6}x\}$
+4. $\{(x,y)\in {R}^{2}\,|\,\text{all real }(x,y)\}$
+5. $\{(x,y)\in {R}^{2}\,|\,y\ne \pm \frac{1}{6}x\}$
 
 Worked solution:
 
@@ -104,7 +104,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)\}.
 $$
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
@@ -116,13 +116,13 @@ $$
 Therefore, the domain of $Q$ is given by
 
 $$
-{D}_{2}={(x,y)\in {R}^{2}\,|\,y\ne \pm \frac{1}{6}x}.
+{D}_{2}=\{(x,y)\in {R}^{2}\,|\,y\ne \pm \frac{1}{6}x\}.
 $$
 
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,y\ne \pm \frac{1}{6}x}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,y\ne \pm \frac{1}{6}x\}\,.
 $$
 
 
@@ -135,11 +135,11 @@ $$
 F(x,y)=\frac{y}{{x}^{2}+{y}^{2}}\,i+\frac{x}{25{x}^{2}-9{y}^{2}}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,\text{all real }(x,y)}$
-2. ${(x,y)\in {R}^{2}\,|\,y\ne -\frac{5}{3}x}$
-3. ${(x,y)\in {R}^{2}\,|\,y\ne \pm \frac{5}{3}x}$
-4. ${(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)}$
-5. ${(x,y)\in {R}^{2}\,|\,y\ne \frac{5}{3}x}$
+1. $\{(x,y)\in {R}^{2}\,|\,\text{all real }(x,y)\}$
+2. $\{(x,y)\in {R}^{2}\,|\,y\ne -\frac{5}{3}x\}$
+3. $\{(x,y)\in {R}^{2}\,|\,y\ne \pm \frac{5}{3}x\}$
+4. $\{(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)\}$
+5. $\{(x,y)\in {R}^{2}\,|\,y\ne \frac{5}{3}x\}$
 
 Worked solution:
 
@@ -166,7 +166,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)\}.
 $$
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
@@ -178,13 +178,13 @@ $$
 Therefore, the domain of $Q$ is given by
 
 $$
-{D}_{2}={(x,y)\in {R}^{2}\,|\,y\ne \pm \frac{5}{3}x}.
+{D}_{2}=\{(x,y)\in {R}^{2}\,|\,y\ne \pm \frac{5}{3}x\}.
 $$
 
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,y\ne \pm \frac{5}{3}x}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,y\ne \pm \frac{5}{3}x\}\,.
 $$
 
 
@@ -197,11 +197,11 @@ $$
 F(x,y)=\frac{y}{{x}^{2}+{y}^{2}}\,i+\frac{x}{9{x}^{2}-{y}^{2}}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,y\ne -3x}$
-2. ${(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)}$
-3. ${(x,y)\in {R}^{2}\,|\,\text{all real }(x,y)}$
-4. ${(x,y)\in {R}^{2}\,|\,y\ne 3x}$
-5. ${(x,y)\in {R}^{2}\,|\,y\ne \pm 3x}$
+1. $\{(x,y)\in {R}^{2}\,|\,y\ne -3x\}$
+2. $\{(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)\}$
+3. $\{(x,y)\in {R}^{2}\,|\,\text{all real }(x,y)\}$
+4. $\{(x,y)\in {R}^{2}\,|\,y\ne 3x\}$
+5. $\{(x,y)\in {R}^{2}\,|\,y\ne \pm 3x\}$
 
 Worked solution:
 
@@ -228,7 +228,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)\}.
 $$
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
@@ -240,13 +240,13 @@ $$
 Therefore, the domain of $Q$ is given by
 
 $$
-{D}_{2}={(x,y)\in {R}^{2}\,|\,y\ne \pm 3x}.
+{D}_{2}=\{(x,y)\in {R}^{2}\,|\,y\ne \pm 3x\}.
 $$
 
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,y\ne \pm 3x}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,y\ne \pm 3x\}\,.
 $$
 
 
@@ -259,11 +259,11 @@ $$
 F(x,y)=\frac{y}{{x}^{2}+{y}^{2}}\,i+\frac{x}{{x}^{2}-{y}^{2}}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)}$
-2. ${(x,y)\in {R}^{2}\,|\,\text{all real }(x,y)}$
-3. ${(x,y)\in {R}^{2}\,|\,y\ne -x}$
-4. ${(x,y)\in {R}^{2}\,|\,y\ne x}$
-5. ${(x,y)\in {R}^{2}\,|\,y\ne \pm x}$
+1. $\{(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)\}$
+2. $\{(x,y)\in {R}^{2}\,|\,\text{all real }(x,y)\}$
+3. $\{(x,y)\in {R}^{2}\,|\,y\ne -x\}$
+4. $\{(x,y)\in {R}^{2}\,|\,y\ne x\}$
+5. $\{(x,y)\in {R}^{2}\,|\,y\ne \pm x\}$
 
 Worked solution:
 
@@ -290,7 +290,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)\}.
 $$
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
@@ -302,13 +302,13 @@ $$
 Therefore, the domain of $Q$ is given by
 
 $$
-{D}_{2}={(x,y)\in {R}^{2}\,|\,y\ne \pm x}.
+{D}_{2}=\{(x,y)\in {R}^{2}\,|\,y\ne \pm x\}.
 $$
 
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,y\ne \pm x}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,y\ne \pm x\}\,.
 $$
 
 
@@ -383,11 +383,11 @@ $$
 F(x,y)=\operatorname{ln}⁡(x-5y)\,i+\frac{1}{{x}^{2}+{y}^{2}}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,x<5y}$
-2. ${(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0),\,x\ge 5y}$
-3. ${(x,y)\in {R}^{2}\,|\,x\ne 5y}$
-4. ${(x,y)\in {R}^{2}\,|\,x>5y}$
-5. ${(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)}$
+1. $\{(x,y)\in {R}^{2}\,|\,x<5y\}$
+2. $\{(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0),\,x\ge 5y\}$
+3. $\{(x,y)\in {R}^{2}\,|\,x\ne 5y\}$
+4. $\{(x,y)\in {R}^{2}\,|\,x>5y\}$
+5. $\{(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)\}$
 
 Worked solution:
 
@@ -414,7 +414,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,x>5y}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,x>5y\}.
 $$
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
@@ -426,13 +426,13 @@ $$
 Therefore, the domain of $Q$ is given by
 
 $$
-{D}_{2}={(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)}.
+{D}_{2}=\{(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)\}.
 $$
 
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,x>5y}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,x>5y\}\,.
 $$
 
 
@@ -445,11 +445,11 @@ $$
 F(x,y)=\operatorname{ln}⁡(x-y-2)\,i+\frac{1}{{x}^{2}+{y}^{2}}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,x>y+2}$
-2. ${(x,y)\in {R}^{2}\,|\,x\ne y+2}$
-3. ${(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0),\,x\ge y+2}$
-4. ${(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)}$
-5. ${(x,y)\in {R}^{2}\,|\,x<y+2}$
+1. $\{(x,y)\in {R}^{2}\,|\,x>y+2\}$
+2. $\{(x,y)\in {R}^{2}\,|\,x\ne y+2\}$
+3. $\{(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0),\,x\ge y+2\}$
+4. $\{(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)\}$
+5. $\{(x,y)\in {R}^{2}\,|\,x<y+2\}$
 
 Worked solution:
 
@@ -476,7 +476,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,x>y+2}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,x>y+2\}.
 $$
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
@@ -488,13 +488,13 @@ $$
 Therefore, the domain of $Q$ is given by
 
 $$
-{D}_{2}={(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)}.
+{D}_{2}=\{(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)\}.
 $$
 
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,x>y+2}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,x>y+2\}\,.
 $$
 
 
@@ -507,11 +507,11 @@ $$
 F(x,y)=\operatorname{ln}⁡(x-4y-6)\,i+\frac{1}{{x}^{2}+{y}^{2}}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0),\,x\ge 4y+6}$
-2. ${(x,y)\in {R}^{2}\,|\,x<4y+6}$
-3. ${(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)}$
-4. ${(x,y)\in {R}^{2}\,|\,x\ne 4y+6}$
-5. ${(x,y)\in {R}^{2}\,|\,x>4y+6}$
+1. $\{(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0),\,x\ge 4y+6\}$
+2. $\{(x,y)\in {R}^{2}\,|\,x<4y+6\}$
+3. $\{(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)\}$
+4. $\{(x,y)\in {R}^{2}\,|\,x\ne 4y+6\}$
+5. $\{(x,y)\in {R}^{2}\,|\,x>4y+6\}$
 
 Worked solution:
 
@@ -538,7 +538,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,x>4y+6}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,x>4y+6\}.
 $$
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
@@ -550,13 +550,13 @@ $$
 Therefore, the domain of $Q$ is given by
 
 $$
-{D}_{2}={(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)}.
+{D}_{2}=\{(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)\}.
 $$
 
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,x>4y+6}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,x>4y+6\}\,.
 $$
 
 
@@ -569,11 +569,11 @@ $$
 F(x,y)=\operatorname{ln}⁡(x-y)\,i+\frac{1}{{x}^{2}+{y}^{2}}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,x<y}$
-2. ${(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)}$
-3. ${(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0),\,x\ge y}$
-4. ${(x,y)\in {R}^{2}\,|\,x\ne y}$
-5. ${(x,y)\in {R}^{2}\,|\,x>y}$
+1. $\{(x,y)\in {R}^{2}\,|\,x<y\}$
+2. $\{(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)\}$
+3. $\{(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0),\,x\ge y\}$
+4. $\{(x,y)\in {R}^{2}\,|\,x\ne y\}$
+5. $\{(x,y)\in {R}^{2}\,|\,x>y\}$
 
 Worked solution:
 
@@ -600,7 +600,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,x>y}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,x>y\}.
 $$
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
@@ -612,13 +612,13 @@ $$
 Therefore, the domain of $Q$ is given by
 
 $$
-{D}_{2}={(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)}.
+{D}_{2}=\{(x,y)\in {R}^{2}\,|\,(x,y)\ne (0,0)\}.
 $$
 
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,x>y}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,x>y\}\,.
 $$
 
 
@@ -693,11 +693,11 @@ $$
 F(x,y)=\operatorname{arctan}⁡(\frac{1}{{x}^{2}+{y}^{2}-3})\,i+\frac{xy}{x}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}<3,\,x\ne 0}$
-2. ${(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}<3}$
-3. ${(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 3}$
-4. ${(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 3,\,x\ne 0}$
-5. ${(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}>3}$
+1. $\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}<3,\,x\ne 0\}$
+2. $\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}<3\}$
+3. $\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 3\}$
+4. $\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 3,\,x\ne 0\}$
+5. $\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}>3\}$
 
 Worked solution:
 
@@ -724,7 +724,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 3}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 3\}.
 $$
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
@@ -736,13 +736,13 @@ $$
 Therefore, the domain of $Q$ is given by
 
 $$
-{D}_{2}={(x,y)\in {R}^{2}\,|\,x\ne 0}.
+{D}_{2}=\{(x,y)\in {R}^{2}\,|\,x\ne 0\}.
 $$
 
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 3,\,x\ne 0}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 3,\,x\ne 0\}\,.
 $$
 
 
@@ -755,11 +755,11 @@ $$
 F(x,y)=\operatorname{arctan}⁡(\frac{1}{{x}^{2}+{y}^{2}-11})\,i+\frac{xy}{x-3}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}>11}$
-2. ${(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}<11}$
-3. ${(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 11,\,x\ne 3}$
-4. ${(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}<11,\,x\ne 3}$
-5. ${(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 11}$
+1. $\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}>11\}$
+2. $\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}<11\}$
+3. $\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 11,\,x\ne 3\}$
+4. $\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}<11,\,x\ne 3\}$
+5. $\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 11\}$
 
 Worked solution:
 
@@ -786,7 +786,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 11}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 11\}.
 $$
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
@@ -798,13 +798,13 @@ $$
 Therefore, the domain of $Q$ is given by
 
 $$
-{D}_{2}={(x,y)\in {R}^{2}\,|\,x\ne 3}.
+{D}_{2}=\{(x,y)\in {R}^{2}\,|\,x\ne 3\}.
 $$
 
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 11,\,x\ne 3}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 11,\,x\ne 3\}\,.
 $$
 
 
@@ -817,11 +817,11 @@ $$
 F(x,y)=\operatorname{arctan}⁡(\frac{1}{{x}^{2}+{y}^{2}-11})\,i+\frac{xy}{x}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 11}$
-2. ${(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}<11}$
-3. ${(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}<11,\,x\ne 0}$
-4. ${(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 11,\,x\ne 0}$
-5. ${(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}>11}$
+1. $\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 11\}$
+2. $\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}<11\}$
+3. $\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}<11,\,x\ne 0\}$
+4. $\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 11,\,x\ne 0\}$
+5. $\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}>11\}$
 
 Worked solution:
 
@@ -848,7 +848,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 11}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 11\}.
 $$
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
@@ -860,13 +860,13 @@ $$
 Therefore, the domain of $Q$ is given by
 
 $$
-{D}_{2}={(x,y)\in {R}^{2}\,|\,x\ne 0}.
+{D}_{2}=\{(x,y)\in {R}^{2}\,|\,x\ne 0\}.
 $$
 
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 11,\,x\ne 0}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 11,\,x\ne 0\}\,.
 $$
 
 
@@ -879,11 +879,11 @@ $$
 F(x,y)=\operatorname{arctan}⁡(\frac{1}{{x}^{2}+{y}^{2}-4})\,i+\frac{xy}{x-1}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}<4,\,x\ne 1}$
-2. ${(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}>4}$
-3. ${(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}<4}$
-4. ${(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 4}$
-5. ${(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 4,\,x\ne 1}$
+1. $\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}<4,\,x\ne 1\}$
+2. $\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}>4\}$
+3. $\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}<4\}$
+4. $\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 4\}$
+5. $\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 4,\,x\ne 1\}$
 
 Worked solution:
 
@@ -910,7 +910,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 4}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 4\}.
 $$
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
@@ -922,13 +922,13 @@ $$
 Therefore, the domain of $Q$ is given by
 
 $$
-{D}_{2}={(x,y)\in {R}^{2}\,|\,x\ne 1}.
+{D}_{2}=\{(x,y)\in {R}^{2}\,|\,x\ne 1\}.
 $$
 
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 4,\,x\ne 1}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,{x}^{2}+{y}^{2}\ne 4,\,x\ne 1\}\,.
 $$
 
 
@@ -1003,11 +1003,11 @@ $$
 F(x,y)=\operatorname{ln}⁡(x-11{y}^{2})\,i+({x}^{2}+{y}^{2}){e}^{1/x}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,x<11{y}^{2}}$
-2. ${(x,y)\in {R}^{2}\,|\,x\ge 11{y}^{2}}$
-3. ${(x,y)\in {R}^{2}\,|\,x>0}$
-4. ${(x,y)\in {R}^{2}\,|\,x>11{y}^{2}}$
-5. ${(x,y)\in {R}^{2}\,|\,x>11{y}^{2},\,x>1}$
+1. $\{(x,y)\in {R}^{2}\,|\,x<11{y}^{2}\}$
+2. $\{(x,y)\in {R}^{2}\,|\,x\ge 11{y}^{2}\}$
+3. $\{(x,y)\in {R}^{2}\,|\,x>0\}$
+4. $\{(x,y)\in {R}^{2}\,|\,x>11{y}^{2}\}$
+5. $\{(x,y)\in {R}^{2}\,|\,x>11{y}^{2},\,x>1\}$
 
 Worked solution:
 
@@ -1034,7 +1034,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,x>11{y}^{2}}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,x>11{y}^{2}\}.
 $$
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator of the exponent vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
@@ -1046,13 +1046,13 @@ $$
 Therefore, the domain of $Q$ is given by
 
 $$
-{D}_{2}={(x,y)\in {R}^{2}\,|\,x\ne 0}.
+{D}_{2}=\{(x,y)\in {R}^{2}\,|\,x\ne 0\}.
 $$
 
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,x>11{y}^{2}}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,x>11{y}^{2}\}\,.
 $$
 
 
@@ -1065,11 +1065,11 @@ $$
 F(x,y)=\operatorname{ln}⁡(x-7{y}^{2}-2)\,i+({x}^{2}+{y}^{2}){e}^{1/x}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,x>7{y}^{2}+2}$
-2. ${(x,y)\in {R}^{2}\,|\,x>2}$
-3. ${(x,y)\in {R}^{2}\,|\,x\ge 7{y}^{2}+2}$
-4. ${(x,y)\in {R}^{2}\,|\,x>7{y}^{2}+2,\,x>3}$
-5. ${(x,y)\in {R}^{2}\,|\,x<7{y}^{2}+2}$
+1. $\{(x,y)\in {R}^{2}\,|\,x>7{y}^{2}+2\}$
+2. $\{(x,y)\in {R}^{2}\,|\,x>2\}$
+3. $\{(x,y)\in {R}^{2}\,|\,x\ge 7{y}^{2}+2\}$
+4. $\{(x,y)\in {R}^{2}\,|\,x>7{y}^{2}+2,\,x>3\}$
+5. $\{(x,y)\in {R}^{2}\,|\,x<7{y}^{2}+2\}$
 
 Worked solution:
 
@@ -1096,7 +1096,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,x>7{y}^{2}+2}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,x>7{y}^{2}+2\}.
 $$
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator of the exponent vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
@@ -1108,13 +1108,13 @@ $$
 Therefore, the domain of $Q$ is given by
 
 $$
-{D}_{2}={(x,y)\in {R}^{2}\,|\,x\ne 0}.
+{D}_{2}=\{(x,y)\in {R}^{2}\,|\,x\ne 0\}.
 $$
 
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,x>7{y}^{2}+2}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,x>7{y}^{2}+2\}\,.
 $$
 
 
@@ -1127,11 +1127,11 @@ $$
 F(x,y)=\operatorname{ln}⁡(x-7{y}^{2})\,i+({x}^{2}+{y}^{2}){e}^{1/x}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,x>7{y}^{2}}$
-2. ${(x,y)\in {R}^{2}\,|\,x>7{y}^{2},\,x>1}$
-3. ${(x,y)\in {R}^{2}\,|\,x<7{y}^{2}}$
-4. ${(x,y)\in {R}^{2}\,|\,x\ge 7{y}^{2}}$
-5. ${(x,y)\in {R}^{2}\,|\,x>0}$
+1. $\{(x,y)\in {R}^{2}\,|\,x>7{y}^{2}\}$
+2. $\{(x,y)\in {R}^{2}\,|\,x>7{y}^{2},\,x>1\}$
+3. $\{(x,y)\in {R}^{2}\,|\,x<7{y}^{2}\}$
+4. $\{(x,y)\in {R}^{2}\,|\,x\ge 7{y}^{2}\}$
+5. $\{(x,y)\in {R}^{2}\,|\,x>0\}$
 
 Worked solution:
 
@@ -1158,7 +1158,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,x>7{y}^{2}}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,x>7{y}^{2}\}.
 $$
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator of the exponent vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
@@ -1170,13 +1170,13 @@ $$
 Therefore, the domain of $Q$ is given by
 
 $$
-{D}_{2}={(x,y)\in {R}^{2}\,|\,x\ne 0}.
+{D}_{2}=\{(x,y)\in {R}^{2}\,|\,x\ne 0\}.
 $$
 
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,x>7{y}^{2}}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,x>7{y}^{2}\}\,.
 $$
 
 
@@ -1189,11 +1189,11 @@ $$
 F(x,y)=\operatorname{ln}⁡(x-{y}^{2})\,i+({x}^{2}+{y}^{2}){e}^{1/x}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,x<{y}^{2}}$
-2. ${(x,y)\in {R}^{2}\,|\,x>{y}^{2},\,x>1}$
-3. ${(x,y)\in {R}^{2}\,|\,x\ge {y}^{2}}$
-4. ${(x,y)\in {R}^{2}\,|\,x>0}$
-5. ${(x,y)\in {R}^{2}\,|\,x>{y}^{2}}$
+1. $\{(x,y)\in {R}^{2}\,|\,x<{y}^{2}\}$
+2. $\{(x,y)\in {R}^{2}\,|\,x>{y}^{2},\,x>1\}$
+3. $\{(x,y)\in {R}^{2}\,|\,x\ge {y}^{2}\}$
+4. $\{(x,y)\in {R}^{2}\,|\,x>0\}$
+5. $\{(x,y)\in {R}^{2}\,|\,x>{y}^{2}\}$
 
 Worked solution:
 
@@ -1220,7 +1220,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,x>{y}^{2}}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,x>{y}^{2}\}.
 $$
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator of the exponent vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
@@ -1232,13 +1232,13 @@ $$
 Therefore, the domain of $Q$ is given by
 
 $$
-{D}_{2}={(x,y)\in {R}^{2}\,|\,x\ne 0}.
+{D}_{2}=\{(x,y)\in {R}^{2}\,|\,x\ne 0\}.
 $$
 
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,x>{y}^{2}}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,x>{y}^{2}\}\,.
 $$
 
 
@@ -1307,11 +1307,11 @@ $$
 F(x,y)=\frac{1}{\sqrt{2-{x}^{2}-{y}^{2}}}\,i+\frac{xy}{{x}^{2}+{y}^{2}}\,j\,.
 $$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/96e4810d7aebbecf2cc9e180a94a961efc8b58bed51f07d206d40bf05af76e5f.png)
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/5c0d0160c55c2e7416a39cbf6351f8c8d6652328a69a84d32cd3fd314416e531.png)
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/4d912aa71db2c614066e651184ba78836560112dd830b26d661ed57483b4777e.png)
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/82cc5e6002e909df95563e280b58c1e74f5a4319eb0928fd237ae80eca748cdb.png)
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/2ecf0818e8871c76d790f3ee4585a780c2df2db468f7c25ca9f44baafa000b08.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/142c42682ddf88499d64c29dd7f58db1eaefd9602cba185e680d6444b607a878.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/d3f4180be988b1c4ea980cb68cd59afa5a8ce6560f4d3b1015b35aa9116e34d3.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/9006893b23e0ce453455b8fc724e5cc625090c6e374a5840fdf0b93131a5a7a1.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/5fa11b4efeecd79465227e852d80ea52a0a521105f5bd366cc06cb57ee5acbea.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/579715ffbcb4f48a693da31f270a94040fd132f8802ad4ed137ba8445f196c4b.png)
 
 Worked solution:
 
@@ -1337,7 +1337,7 @@ $$
 
 This defines the region ${D}_{1},$ which is the interior of a circle of radius $3,$ as shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/661415fcac2f93ae2981703479fac7b9b55e28d9354217591209f1352bb203e1.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/3f7735ba53ae553f85a297ac00a1590f96d495885a8ea179143fcd9fbfcd8368.png)
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
 
@@ -1347,11 +1347,11 @@ $$
 
 This defines the region ${D}_{2},$ which is the entire plane ${R}^{2}$ with the origin removed:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/6f021b8c34a5bde5ae6bf18491c6f1a59e77fe9acf79535f212ab3b04d05baf3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/34d6f2859056f52e29b9b93a22234f7a693b953c02e7172344d1f7330d92753a.png)
 
 Finally, the domain $D$ of $F$ is given by ${D}_{1}\cap {D}_{2},$ shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/96e4810d7aebbecf2cc9e180a94a961efc8b58bed51f07d206d40bf05af76e5f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/142c42682ddf88499d64c29dd7f58db1eaefd9602cba185e680d6444b607a878.png)
 
 
 
@@ -1363,11 +1363,11 @@ $$
 F(x,y)=\frac{1}{\sqrt{13-{x}^{2}-{y}^{2}}}\,i+\frac{xy}{{x}^{2}+{y}^{2}}\,j\,.
 $$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/131a62b5bc2decadfd65502888b4225b6be844bbc35f9f7dd568b75e04360719.png)
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/8af7fbda79febc11a9bd954eb7a47fad5a2cbf203e088ed943337e0a0c3c9ec3.png)
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/0ebab34bea2115b544fec748b548c31654840cf01685cbd9e832fab9eaf24a2d.png)
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/98f8eaf6e8fea0ed4ecf1a0de607cc654f31fa2e1a27d85bea9e87e9e79eb136.png)
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/ed0140c3e44141eb25cd7aab273a792034c6657d41b43e09f13d1d462382af8e.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/eb5baf64706d618e7fac74d84923d5ded4120d5744d99f78cc8f051af405a2b2.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/7f161a957b8e8e613236496a3cb9f812ab6ccd2308c6e2f31d045c9d54a23954.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/ef65d30b39e88ed41a0e19790c77ad31e944b49a42c40faf0026bcdb4adb5ee3.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/ce8b8be6a495d318936000fa9aff789d15d5f698d909849f19d75e8e1a52e868.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/1add8ab30bcca64ed210cc1657c2ee819529f04438a01d56f461c0ea11ad3ff0.png)
 
 Worked solution:
 
@@ -1393,7 +1393,7 @@ $$
 
 This defines the region ${D}_{1},$ which is the interior of a circle of radius $3,$ as shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/0bba08723056c04396d0140d912b80e2e79a411055b7aecce441bc9bdbe23769.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/4a8f0683f5a9e38dafd9b9c9492525c714960106497b8d4973ef19678abacdef.png)
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
 
@@ -1403,11 +1403,11 @@ $$
 
 This defines the region ${D}_{2},$ which is the entire plane ${R}^{2}$ with the origin removed:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/6f021b8c34a5bde5ae6bf18491c6f1a59e77fe9acf79535f212ab3b04d05baf3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/34d6f2859056f52e29b9b93a22234f7a693b953c02e7172344d1f7330d92753a.png)
 
 Finally, the domain $D$ of $F$ is given by ${D}_{1}\cap {D}_{2},$ shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/98f8eaf6e8fea0ed4ecf1a0de607cc654f31fa2e1a27d85bea9e87e9e79eb136.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/ce8b8be6a495d318936000fa9aff789d15d5f698d909849f19d75e8e1a52e868.png)
 
 
 
@@ -1419,11 +1419,11 @@ $$
 F(x,y)=\frac{1}{\sqrt{3-{x}^{2}-{y}^{2}}}\,i+\frac{xy}{{x}^{2}+{y}^{2}}\,j\,.
 $$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/b84323b8b882914bb7f52fdc22c31bc558e0ded4e4c7abb3e697b6faf8e263cf.png)
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/6795de1f83f48b75455cef233379e9fe7acfe31cd731562c6579767ac5c92b47.png)
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/2e2ec41894e88efdc2258439d9650f561763b0e7f04e10d275a3dc040669a874.png)
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/dec32effb26908d544eea780b0f809420fa1606c2dd3ac21a0fbf47761399b6f.png)
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/78ced605cbdc5773584feaf5b3373dd3088265e67372c7cf3dbe3a743dab1298.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/624ae62b2b8816cd5d673c399ce922fe2b0fa5052ccc9503451b3b2bdf741468.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/b4c2b1b8754ad03f4506235bd11c8e68b66016adcc3d31d5c467c3f063b0d75e.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/db02bf17ce8303bbb3fc4b5e93f2a10603077922296ebc4bd03bf1616b45c8b3.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/d1545660b0286d38cfa83f889d4f3a8ab1489e3a98712ee0d3bfd601df4dc3ea.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/15ea56fcbc9cf8164a22a578ca9e1e1b4cd7a9fba1b8564640ac6052fa34d3ae.png)
 
 Worked solution:
 
@@ -1449,7 +1449,7 @@ $$
 
 This defines the region ${D}_{1},$ which is the interior of a circle of radius $3,$ as shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/824002bd38357a5f48d6c9fe88c0f65b2bcd70ee531468e43f73ae4e16e6bd08.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/df0d2e5c4a352e9bb17f07859a9a3f5ba0c392ae3272088956f5669d0815ccf2.png)
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
 
@@ -1459,11 +1459,11 @@ $$
 
 This defines the region ${D}_{2},$ which is the entire plane ${R}^{2}$ with the origin removed:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/6f021b8c34a5bde5ae6bf18491c6f1a59e77fe9acf79535f212ab3b04d05baf3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/34d6f2859056f52e29b9b93a22234f7a693b953c02e7172344d1f7330d92753a.png)
 
 Finally, the domain $D$ of $F$ is given by ${D}_{1}\cap {D}_{2},$ shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/6795de1f83f48b75455cef233379e9fe7acfe31cd731562c6579767ac5c92b47.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/b4c2b1b8754ad03f4506235bd11c8e68b66016adcc3d31d5c467c3f063b0d75e.png)
 
 
 
@@ -1475,11 +1475,11 @@ $$
 F(x,y)=\frac{1}{\sqrt{9-{x}^{2}-{y}^{2}}}\,i+\frac{xy}{{x}^{2}+{y}^{2}}\,j\,.
 $$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/97e48ec11c057e5130818f98fc070d9b650a7837160f5db6a3c0bb015ae1369e.png)
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/687d0886b258a23616cb4fffe367815490c7515c48a028404f6eabc24e1ffdcd.png)
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/8d45bc462b0b1dc34d84c53a0693b3aaf870481d5d2716afa86394c8cbcbfc03.png)
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/79d87df26fd4a455bfeea3f10deb8d16b0555bf717a2a9256bce52ea8f1322a1.png)
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/f1466209fc2980c3c731909e3cc499a6713ad842d08c99ce58a6d809841cfd22.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/6891cd5f0e80ff35f03c6f1c02867dc5397132792993ad01dd587eecd52850c3.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/1bc5c2411378bfc7c3ef34a2b9907fd1a2cbed4f3b51aff951b5d028d262bcf5.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/0723c2789865a1003fb06744e26949656796454c55009c37e041a7d3cae2ed47.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/ce80747b3db44018c3a29bc08b66a55b2e3680af59d80275e4cd5d38ca82495a.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/736266e0ea1044e6b8ab0abd490ca0e880a48baaae4749fe0ef3102f495f7db6.png)
 
 Worked solution:
 
@@ -1505,7 +1505,7 @@ $$
 
 This defines the region ${D}_{1},$ which is the interior of a circle of radius $3,$ as shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/b7ed400941a061e237a8ca04ee3e8fbfee1556fda46775fecb60becb2b1dabc1.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/bcc7c11663821073e29d641d422491c3e836c479f4800006389deb46bf8d2a21.png)
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
 
@@ -1515,11 +1515,11 @@ $$
 
 This defines the region ${D}_{2},$ which is the entire plane ${R}^{2}$ with the origin removed:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/6f021b8c34a5bde5ae6bf18491c6f1a59e77fe9acf79535f212ab3b04d05baf3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/34d6f2859056f52e29b9b93a22234f7a693b953c02e7172344d1f7330d92753a.png)
 
 Finally, the domain $D$ of $F$ is given by ${D}_{1}\cap {D}_{2},$ shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/97e48ec11c057e5130818f98fc070d9b650a7837160f5db6a3c0bb015ae1369e.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/6891cd5f0e80ff35f03c6f1c02867dc5397132792993ad01dd587eecd52850c3.png)
 
 
 
@@ -1587,11 +1587,11 @@ $$
 F(x,y)=\sqrt{2-{x}^{2}-{y}^{2}}\,i+\frac{{e}^{x}}{{x}^{2}+{y}^{2}}\,j\,.
 $$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/2ecf0818e8871c76d790f3ee4585a780c2df2db468f7c25ca9f44baafa000b08.png)
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/96e4810d7aebbecf2cc9e180a94a961efc8b58bed51f07d206d40bf05af76e5f.png)
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/82cc5e6002e909df95563e280b58c1e74f5a4319eb0928fd237ae80eca748cdb.png)
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/4d912aa71db2c614066e651184ba78836560112dd830b26d661ed57483b4777e.png)
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/5c0d0160c55c2e7416a39cbf6351f8c8d6652328a69a84d32cd3fd314416e531.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/579715ffbcb4f48a693da31f270a94040fd132f8802ad4ed137ba8445f196c4b.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/142c42682ddf88499d64c29dd7f58db1eaefd9602cba185e680d6444b607a878.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/5fa11b4efeecd79465227e852d80ea52a0a521105f5bd366cc06cb57ee5acbea.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/9006893b23e0ce453455b8fc724e5cc625090c6e374a5840fdf0b93131a5a7a1.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/d3f4180be988b1c4ea980cb68cd59afa5a8ce6560f4d3b1015b35aa9116e34d3.png)
 
 Worked solution:
 
@@ -1617,7 +1617,7 @@ $$
 
 This defines the region ${D}_{1},$ which is the closed disk of radius $1,$ as shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/374975c3684566bdfc2edd08561a90f0ecef208d36972e898ebec91970bd008c.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/680b1628046f6b4ee793e905a773f921005668c3fdcf65991c43cf9ae0e39541.png)
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
 
@@ -1627,11 +1627,11 @@ $$
 
 This defines the region ${D}_{2},$ which is the entire plane ${R}^{2}$ with the origin removed:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/6f021b8c34a5bde5ae6bf18491c6f1a59e77fe9acf79535f212ab3b04d05baf3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/34d6f2859056f52e29b9b93a22234f7a693b953c02e7172344d1f7330d92753a.png)
 
 Finally, the domain $D$ of $F$ is given by ${D}_{1}\cap {D}_{2},$ shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/5c0d0160c55c2e7416a39cbf6351f8c8d6652328a69a84d32cd3fd314416e531.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/d3f4180be988b1c4ea980cb68cd59afa5a8ce6560f4d3b1015b35aa9116e34d3.png)
 
 
 
@@ -1643,11 +1643,11 @@ $$
 F(x,y)=\sqrt{13-{x}^{2}-{y}^{2}}\,i+\frac{{e}^{x}}{{x}^{2}+{y}^{2}}\,j\,.
 $$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/8af7fbda79febc11a9bd954eb7a47fad5a2cbf203e088ed943337e0a0c3c9ec3.png)
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/98f8eaf6e8fea0ed4ecf1a0de607cc654f31fa2e1a27d85bea9e87e9e79eb136.png)
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/ed0140c3e44141eb25cd7aab273a792034c6657d41b43e09f13d1d462382af8e.png)
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/131a62b5bc2decadfd65502888b4225b6be844bbc35f9f7dd568b75e04360719.png)
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/0ebab34bea2115b544fec748b548c31654840cf01685cbd9e832fab9eaf24a2d.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/7f161a957b8e8e613236496a3cb9f812ab6ccd2308c6e2f31d045c9d54a23954.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/ce8b8be6a495d318936000fa9aff789d15d5f698d909849f19d75e8e1a52e868.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/1add8ab30bcca64ed210cc1657c2ee819529f04438a01d56f461c0ea11ad3ff0.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/eb5baf64706d618e7fac74d84923d5ded4120d5744d99f78cc8f051af405a2b2.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/ef65d30b39e88ed41a0e19790c77ad31e944b49a42c40faf0026bcdb4adb5ee3.png)
 
 Worked solution:
 
@@ -1673,7 +1673,7 @@ $$
 
 This defines the region ${D}_{1},$ which is the closed disk of radius $1,$ as shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/40382c0862ac2c3cad2398d069b5df41cb6f2b8668cdbc052c7b012f39dcbb1d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/887c0016359cfc67dbd38811f5d8194b1ffc56b495b581cc7448848ec84fdb6b.png)
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
 
@@ -1683,11 +1683,11 @@ $$
 
 This defines the region ${D}_{2},$ which is the entire plane ${R}^{2}$ with the origin removed:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/6f021b8c34a5bde5ae6bf18491c6f1a59e77fe9acf79535f212ab3b04d05baf3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/34d6f2859056f52e29b9b93a22234f7a693b953c02e7172344d1f7330d92753a.png)
 
 Finally, the domain $D$ of $F$ is given by ${D}_{1}\cap {D}_{2},$ shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/8af7fbda79febc11a9bd954eb7a47fad5a2cbf203e088ed943337e0a0c3c9ec3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/7f161a957b8e8e613236496a3cb9f812ab6ccd2308c6e2f31d045c9d54a23954.png)
 
 
 
@@ -1699,11 +1699,11 @@ $$
 F(x,y)=\sqrt{3-{x}^{2}-{y}^{2}}\,i+\frac{{e}^{x}}{{x}^{2}+{y}^{2}}\,j\,.
 $$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/6795de1f83f48b75455cef233379e9fe7acfe31cd731562c6579767ac5c92b47.png)
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/b84323b8b882914bb7f52fdc22c31bc558e0ded4e4c7abb3e697b6faf8e263cf.png)
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/2e2ec41894e88efdc2258439d9650f561763b0e7f04e10d275a3dc040669a874.png)
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/dec32effb26908d544eea780b0f809420fa1606c2dd3ac21a0fbf47761399b6f.png)
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/78ced605cbdc5773584feaf5b3373dd3088265e67372c7cf3dbe3a743dab1298.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/b4c2b1b8754ad03f4506235bd11c8e68b66016adcc3d31d5c467c3f063b0d75e.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/624ae62b2b8816cd5d673c399ce922fe2b0fa5052ccc9503451b3b2bdf741468.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/db02bf17ce8303bbb3fc4b5e93f2a10603077922296ebc4bd03bf1616b45c8b3.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/d1545660b0286d38cfa83f889d4f3a8ab1489e3a98712ee0d3bfd601df4dc3ea.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/15ea56fcbc9cf8164a22a578ca9e1e1b4cd7a9fba1b8564640ac6052fa34d3ae.png)
 
 Worked solution:
 
@@ -1729,7 +1729,7 @@ $$
 
 This defines the region ${D}_{1},$ which is the closed disk of radius $1,$ as shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/40a586c675a5c7189814749bdb1caba7f90c6111faffd275b9f3dd239c9a20d6.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/f5460df236f0a2c392f66a65f3c38d05da20d4c93e8712efaefc77102fccab5d.png)
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
 
@@ -1739,11 +1739,11 @@ $$
 
 This defines the region ${D}_{2},$ which is the entire plane ${R}^{2}$ with the origin removed:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/6f021b8c34a5bde5ae6bf18491c6f1a59e77fe9acf79535f212ab3b04d05baf3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/34d6f2859056f52e29b9b93a22234f7a693b953c02e7172344d1f7330d92753a.png)
 
 Finally, the domain $D$ of $F$ is given by ${D}_{1}\cap {D}_{2},$ shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/b84323b8b882914bb7f52fdc22c31bc558e0ded4e4c7abb3e697b6faf8e263cf.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/624ae62b2b8816cd5d673c399ce922fe2b0fa5052ccc9503451b3b2bdf741468.png)
 
 
 
@@ -1755,11 +1755,11 @@ $$
 F(x,y)=\sqrt{1-{x}^{2}-{y}^{2}}\,i+\frac{{e}^{x}}{{x}^{2}+{y}^{2}}\,j\,.
 $$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/2eebc032927801c23d15e038ac9036842111a039d0281e5c93ab2be77775f4fc.png)
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/2a0edd5ef22785e4a873dd241099227ea671baa2877508c60082a40de0faa1bc.png)
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/b0c130df356710f8740f87537600ab55eb06f71fc8c213586b0f0321a470ddb3.png)
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/8cf466edf9d0dabf4cc3591279dc658653ffec7498aa73f8a6fc3a422ac81262.png)
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/cf2c879b3c9a75478809c1a0e68ccc357e1674ef77f5c6881b44c3d2a0a2a59d.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/828614da74b41eff3220445dc93fdc119d0956a5606a82b080e4560256b21904.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/590938fc9d01a1da2f20acc7b0d39095f7e5af892c5436cf46fa3e673216f7f5.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/d5296bf69ec80d1c84380563df820c93800915b11ba3574991a9c22831c75e30.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/7ed2281857d7468bb26cf90918d96188f13f6929fa25b7fab069a077968c3014.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/551a5299bb1b5db4108bfa17981d5ae85c9a38f84394ef622d77c3ac36834bbe.png)
 
 Worked solution:
 
@@ -1785,7 +1785,7 @@ $$
 
 This defines the region ${D}_{1},$ which is the closed disk of radius $1,$ as shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/a2a700e706ff037834c69fb3427bb96b315bfaacecabfc28b4adcef01e0f7a0d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/6d66a9600eba5d9a9617b3639d786b8523f74d89dee52a04c67a7e7e702ebe9e.png)
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
 
@@ -1795,11 +1795,11 @@ $$
 
 This defines the region ${D}_{2},$ which is the entire plane ${R}^{2}$ with the origin removed:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/6f021b8c34a5bde5ae6bf18491c6f1a59e77fe9acf79535f212ab3b04d05baf3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/34d6f2859056f52e29b9b93a22234f7a693b953c02e7172344d1f7330d92753a.png)
 
 Finally, the domain $D$ of $F$ is given by ${D}_{1}\cap {D}_{2},$ shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/2a0edd5ef22785e4a873dd241099227ea671baa2877508c60082a40de0faa1bc.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/590938fc9d01a1da2f20acc7b0d39095f7e5af892c5436cf46fa3e673216f7f5.png)
 
 
 
@@ -1867,11 +1867,11 @@ $$
 F(x,y)=y\operatorname{ln}⁡(36-{x}^{2})\,i+x\sqrt{1-|y|}\,j\,.
 $$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/5e46a7cc661b607613cff4e69f8d342ec7e56c9189996f30cbee555d1c00bef5.png)
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/2edcdd6a19da62eef0e4ffb5b3a4ea7ffb1b98ae7adcb51cc883b39f2927ff6d.png)
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/971486d6a0d66da12d7b60e8289a828e57a912cecbd548466194b1820acc080f.png)
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/8734680febc1b3340c77fb9ebe5924f3e508d475d38bf2f844cc4e81af31c510.png)
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/7cb63ce705e0779d76918f1ffc3e2ca75941767f6041b4e36068a91f2e00a676.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/c468bf48e0c8ce64896f67382dfc7c306b5ae80227e204dcbb5da83ab960e0b4.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/c5fd658c6823968fac1cf291272fb4a1d80265a8b96be875c518bd29211f9a28.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/d42d551cd7d5f93b452930d916ec7b55191b26e4567d2b41067aa109953d45af.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/cf7a0232d2174310853946f1bcc309b59a7f6af61af55cb14c9c82795ffbb047.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/ba8009736438dcacffa9bcbd0978701de3a7885db805b80642fd0555128bdba9.png)
 
 Worked solution:
 
@@ -1897,7 +1897,7 @@ $$
 
 This defines the region ${D}_{1},$ shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/7c404cd59f935f83aeb7ce0367bc9390948e5b5b8976d043b6b5077f1846bbd9.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/92ca06551dc3f4b0e5700c2007d6a799c45efc7d3ba3216bf1bafeec673a3911.png)
 
 - The function $Q(x,y)$ is defined when the expression under the radical is positive or equal to zero. So, to find the domain, we solve the following inequality:
 
@@ -1907,11 +1907,11 @@ $$
 
 This defines the region ${D}_{2},$ shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/83b547dd2b1bd596291e440bfbe77b818a7de7f9ad54b237c7807fb084338781.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/91b30f3cc498d1e62c95f4bfb9abf3391c8785a2e205cb06f2c66c7f6c3780a7.png)
 
 Finally, the domain $D$ of $F$ is given by ${D}_{1}\cap {D}_{2},$ shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/7cb63ce705e0779d76918f1ffc3e2ca75941767f6041b4e36068a91f2e00a676.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/ba8009736438dcacffa9bcbd0978701de3a7885db805b80642fd0555128bdba9.png)
 
 
 
@@ -1923,11 +1923,11 @@ $$
 F(x,y)=y\operatorname{ln}⁡(16-{x}^{2})\,i+x\sqrt{3-|y|}\,j\,.
 $$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/ebb4a5ff41c7a8e66d923a0fafe59c2ccb1ec3695c4d5589dcf7975a951924ca.png)
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/1eb14d8b931465f8ae5b8e3e9d65df2c2c9f894fc49d92cb84bb29fc46db8085.png)
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/112d53d4c3cf78805ecab533bf21df98448923a8974dba2145766a129661d98e.png)
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/25af706868086aa82209cbcbd63762cceabaaa8b213591713198ec614eee0a19.png)
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/82f77abdb9e344179364b8c392ce691035a7dfe80cb948c474fe98841b623c66.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/5d8d96cda68d3d9bcd1d4c84ac5b2aafce3b3b5eb4381fbafeb930ded8b3f5f9.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/96b39acfa5ec32a612774c0ffb965034aca8a4c601b5fa93d5293b06b3f18f33.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/8785f702c403ce6468c3e7b4f12f9355aaf89657259262baa13ce785e2d15e87.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/ba54fc128a9d0f7ff6eea255fdb79ca50b27d8658205f9eb97ed9cb1bdf0e435.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/1cc3b72bbc829606e6a6bfc17666b7dc272d40d173d704ca0501c3a97932a400.png)
 
 Worked solution:
 
@@ -1953,7 +1953,7 @@ $$
 
 This defines the region ${D}_{1},$ shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/d22499606cfbf2e6e484a34a4c6b4879f0f8686e1cf90404708f3d296ec8db57.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/9cf600072f8d33c258f699be4cc9efea0a87437090d6ef5417692c8936dff736.png)
 
 - The function $Q(x,y)$ is defined when the expression under the radical is positive or equal to zero. So, to find the domain, we solve the following inequality:
 
@@ -1963,11 +1963,11 @@ $$
 
 This defines the region ${D}_{2},$ shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/dfdefbbb3088e98dc0fd91df8de7142f2e18050d423e62cbaeaa747d7fe7a102.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/2fe76243fed5823cc90b733f1582bd951daa07528720ba607a6a08a2ecb95cea.png)
 
 Finally, the domain $D$ of $F$ is given by ${D}_{1}\cap {D}_{2},$ shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/25af706868086aa82209cbcbd63762cceabaaa8b213591713198ec614eee0a19.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/ba54fc128a9d0f7ff6eea255fdb79ca50b27d8658205f9eb97ed9cb1bdf0e435.png)
 
 
 
@@ -1979,11 +1979,11 @@ $$
 F(x,y)=y\operatorname{ln}⁡(4-{x}^{2})\,i+x\sqrt{4-|y|}\,j\,.
 $$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/013fa8edde44b45864570ebed7aa9ec843b59cf9d3babc24416c9d9a985b3333.png)
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/6f78ebcaffbcd93a78997ce9674958c8b8ce8128849f683bbaa2a2d0254db10a.png)
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/0accbd88a5543346751e259d76ad6e9a939e62181949e538bcfd777935f9c650.png)
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/7422334dbee50be38c931ab758c1bde4dd494b7996c08d6a33dfa5ecab8bc76a.png)
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/e607483fa046d70e69e9e9d4b7f92105f0ade723839be6eff14e4cda64fd342a.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/0d317ee846920f5083a7531c962b62377f6f496b27fb7c1b5c6fcf832d221c11.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/f19fa57eb79459820ac9ed26ae33026db1c0ae99b074bdc41a1e2a5860737199.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/bda0724a5c5fc3282afd1de760fbb3e4e908d086b8e0c7eb93843cb45ea79468.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/a74372f0d741ba5289f9dc604fb7427e3707d2e4f5a8ddc375f26d6484feef3d.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/50dcdfd420b1e4db9f3783f42860ce995c5de0fa1b1c8768b0675605d9bca4de.png)
 
 Worked solution:
 
@@ -2009,7 +2009,7 @@ $$
 
 This defines the region ${D}_{1},$ shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/3fa4dc6b1ed28fa3c65eb06e3ca2d99a678b126b4ae287dab4122962196a25f4.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/e8d5fc9060d95030bca1c8b47acf47f5ccb8b8a169ebab3f6ee88bacbcf00051.png)
 
 - The function $Q(x,y)$ is defined when the expression under the radical is positive or equal to zero. So, to find the domain, we solve the following inequality:
 
@@ -2019,11 +2019,11 @@ $$
 
 This defines the region ${D}_{2},$ shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/c0ad2ab559f3c19c488879a024a751ab8d8ecf5e901e8cb906c4098a1fc700d5.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/db62c2e4e6b9c7f22a8080a0ab69fa7e3d7dfc89a9438a495357d16acabc1796.png)
 
 Finally, the domain $D$ of $F$ is given by ${D}_{1}\cap {D}_{2},$ shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/7422334dbee50be38c931ab758c1bde4dd494b7996c08d6a33dfa5ecab8bc76a.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/a74372f0d741ba5289f9dc604fb7427e3707d2e4f5a8ddc375f26d6484feef3d.png)
 
 
 
@@ -2035,11 +2035,11 @@ $$
 F(x,y)=y\operatorname{ln}⁡(1-{x}^{2})\,i+x\sqrt{1-|y|}\,j\,.
 $$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/fbc6619bde17c54830cc734a97a193a860dc7660587e145c1247909d3e09b0c6.png)
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/12b43859c5afc0b38c3c45807bde4e0a477149e9179aca83924c63704f8c2b9f.png)
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/c622165da92893c5a980fc80b2872534e5e746df38cf947394a9b5ea801f6795.png)
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/e8883a1992ee943b9fa69fa7a32d86b1f44a34b2fa566be1861e8448a72ee143.png)
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/4c7de7bf5bdcedbbf777968217e9fbcbdf83a208a3e1ebecc6b5e51cea26865a.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/5bbf90c00910078e58aad68d0ccc7b3d57417fd8528da1d75d3d747f2acab571.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/bb0d061ad45a9552cd071c160201b329d2fe8e7d62607ffe1d4af953e3f7b3f8.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/909becd2b2847d44e474518393e027344c34885badda62c569306f1fc0560c51.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/3f9ac14a0e8c059f28219a023c9e477f1b25600ce9f5a41559fb163c31532040.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/69bd72e98a525e4a9483b5c4a5ba633b815aeec997b5688f820a79afe1b517f9.png)
 
 Worked solution:
 
@@ -2065,7 +2065,7 @@ $$
 
 This defines the region ${D}_{1},$ shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/93fdd65d0907fedbacdc85c0b80da4afe64c8bc9e785b7f33303c24b009a2f2d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/a9fff886ed8f673a463e046c44fd1e9b64552106b797d10c1bdcfe4cabc7dac6.png)
 
 - The function $Q(x,y)$ is defined when the expression under the radical is positive or equal to zero. So, to find the domain, we solve the following inequality:
 
@@ -2075,11 +2075,11 @@ $$
 
 This defines the region ${D}_{2},$ shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/83b547dd2b1bd596291e440bfbe77b818a7de7f9ad54b237c7807fb084338781.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/91b30f3cc498d1e62c95f4bfb9abf3391c8785a2e205cb06f2c66c7f6c3780a7.png)
 
 Finally, the domain $D$ of $F$ is given by ${D}_{1}\cap {D}_{2},$ shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/12b43859c5afc0b38c3c45807bde4e0a477149e9179aca83924c63704f8c2b9f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/bb0d061ad45a9552cd071c160201b329d2fe8e7d62607ffe1d4af953e3f7b3f8.png)
 
 
 
@@ -2147,11 +2147,11 @@ $$
 F(x,y)=\frac{1}{\sqrt{y+3x}}\,i+\sqrt{2-{x}^{2}-{y}^{2}}\,j\,.
 $$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/e4d62aee74a412427d12673fbf3d67de8fd4494189cbbe7556f127e8e5eec715.png)
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/fd346fdcfcb4da1f4ff4931bbfc3071bc96eb556571de9314b1c4e47de6e5f65.png)
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/40b681a4ba62e4caff0592e278abc65f6db8f90647811c324f18c209977792ea.png)
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/5c650233d61b08d23eb7914d61315728aede3bb53973bb4df666a8501b1717ff.png)
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/e628583a95e324babe683d0b77093955cd5fc20b44fe9ada2048d75a391197f4.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/b4a9e6e29dba33ca911f806da9f99933a6164574d88ac105b71e9932cefca086.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/14d7f80a5240c98a21666e8a65682331ad59f2d730bc6347e4764b6da3394f7c.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/ae4d27e5adfba6597b7bc887f667c85db3281384aac21599c94a1bf5c34495d3.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/a52540d85e1b677a677c7b8c8dbf25b0bc54b5c74d4ffe61b63e1e32b932c950.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/d2e6af0b7124c6a3d00d8a6040ff12749cc9bc5e61a70d58e71cce21b963a27f.png)
 
 Worked solution:
 
@@ -2177,7 +2177,7 @@ $$
 
 This defines the region ${D}_{1},$ shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/812af7e4a728cd3621987afc308932b5449fb3c924f28f878e4a2be8bd7bd7bd.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/0f925a070937bc2f3e1866c6b0ce4b6192eb133a59c9429e6fa12b23b9176c6d.png)
 
 - The function $Q(x,y)$ is defined when the expression under the radical is positive or equal to zero. So, to find the domain, we solve the following inequality:
 
@@ -2187,11 +2187,11 @@ $$
 
 This defines the region ${D}_{2},$ which is a circle of radius $\sqrt{2},$ as shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/374975c3684566bdfc2edd08561a90f0ecef208d36972e898ebec91970bd008c.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/680b1628046f6b4ee793e905a773f921005668c3fdcf65991c43cf9ae0e39541.png)
 
 Finally, the domain $D$ of $F$ is given by ${D}_{1}\cap {D}_{2},$ shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/5c650233d61b08d23eb7914d61315728aede3bb53973bb4df666a8501b1717ff.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/a52540d85e1b677a677c7b8c8dbf25b0bc54b5c74d4ffe61b63e1e32b932c950.png)
 
 
 
@@ -2203,11 +2203,11 @@ $$
 F(x,y)=\frac{1}{\sqrt{y-2x}}\,i+\sqrt{13-{x}^{2}-{y}^{2}}\,j\,.
 $$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/eee6ae00aad3ecca1127ef0c620386969538dbab5299aba4d60990eb0e194b37.png)
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/b6adfa494e61092c7e2894e8ac4861f2d9e62d70e76a5edd6a9a623f1f89bf16.png)
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/c0b2c1fe378638b2b692645165e8a8e049713e6c6e5e802f8026d59165b29f2d.png)
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/410a98ff1e01adbff957ac4f09a0247763aaafe18ecbcfb3c95b733d014c3f71.png)
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/db06d66c4a3fa191cb3c6207d8e5b7dc5819d7606048224769cc75640fd6cdab.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/858faec1fd734d7c86e4764d173c8fcba224ab5730853ad65bace4836049d35c.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/de09b616482e4e9a8bd5be20d20dd150f7d42859c228df2efea355f99c06736f.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/341e4c3b4e3e489f07f2f94c716896466c167437b3b6401a885c746c51be270e.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/e5c39b352753a910b0b5640b5f2a1710cc0293c1f8ecd335abd4ed39a9fd3a6a.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/397bd8b2e1ae82ac81c320840d0e7e8fdb0f342a55614f41e7c2d52106d8749f.png)
 
 Worked solution:
 
@@ -2233,7 +2233,7 @@ $$
 
 This defines the region ${D}_{1},$ shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/5c7b2f92df2a4c6ff1f3c108ce192809d4d2a4695440c865e728d6a10279b166.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/82f020026837e156020477a00ff24afc321665bb48e16da93981a58514679e24.png)
 
 - The function $Q(x,y)$ is defined when the expression under the radical is positive or equal to zero. So, to find the domain, we solve the following inequality:
 
@@ -2243,11 +2243,11 @@ $$
 
 This defines the region ${D}_{2},$ which is a circle of radius $\sqrt{2},$ as shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/40382c0862ac2c3cad2398d069b5df41cb6f2b8668cdbc052c7b012f39dcbb1d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/887c0016359cfc67dbd38811f5d8194b1ffc56b495b581cc7448848ec84fdb6b.png)
 
 Finally, the domain $D$ of $F$ is given by ${D}_{1}\cap {D}_{2},$ shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/db06d66c4a3fa191cb3c6207d8e5b7dc5819d7606048224769cc75640fd6cdab.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/397bd8b2e1ae82ac81c320840d0e7e8fdb0f342a55614f41e7c2d52106d8749f.png)
 
 
 
@@ -2259,11 +2259,11 @@ $$
 F(x,y)=\frac{1}{\sqrt{y+4x}}\,i+\sqrt{14-{x}^{2}-{y}^{2}}\,j\,.
 $$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/3e6f6cf951c557d394d14920a735ba71629f83b9afa26e76e7d378b824e5d444.png)
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/9d191eecbe44da44becfd6ce7ed4f883490b3a02dd06efcb0f26c1cdb5b14c97.png)
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/8b51d23d5a63a6bbe74f96942f67a3e232aca58a34d0077a029bf6321b9f2100.png)
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/0b364baeec383a8cb7051324d16be2849020167febec9bc4d4c94d1c40724347.png)
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/5b8af701f892dd8f3e646daa01311558a95e35bd719896e3c8b4540b01b16991.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/7bece962db7bffa3a47505b8f3be659333b85d8c4ce3f930d833001f730cc027.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/b21d6b926eb663ddc4dd6eb8164c66948f2732bac3f15fa6cee6d65b7d9852dc.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/4a9c45d5910ec6a980ab51cdfbc70cac09a5c36123922f6add31cd077b59c5e5.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/91b8f6e28cce653c36e44848efe2caf01694c43711cd5a38e3b85b85e47fb0ee.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/0af66b397628419eb578aac7fdddf0e8989b39c7143c2afe1694258b30754f9a.png)
 
 Worked solution:
 
@@ -2289,7 +2289,7 @@ $$
 
 This defines the region ${D}_{1},$ shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/9ff578fc72414a898d891e5d70c06b1b1df3b92a08023a4abfbd84bc48c969be.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/a7932937ffc2b8538c4849f2dfd674cc1c263110b5310d8840faa00e4ee55aef.png)
 
 - The function $Q(x,y)$ is defined when the expression under the radical is positive or equal to zero. So, to find the domain, we solve the following inequality:
 
@@ -2299,11 +2299,11 @@ $$
 
 This defines the region ${D}_{2},$ which is a circle of radius $\sqrt{2},$ as shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/0868fdcfb500731cd045aa0d382adeb6bc528886cfe6399b25b8b8bfb175b3f3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/5e317978b74ba8f998a1458bfeabe2b7d8799c4dcead138abc6e4e6ef9f44c16.png)
 
 Finally, the domain $D$ of $F$ is given by ${D}_{1}\cap {D}_{2},$ shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/8b51d23d5a63a6bbe74f96942f67a3e232aca58a34d0077a029bf6321b9f2100.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/4a9c45d5910ec6a980ab51cdfbc70cac09a5c36123922f6add31cd077b59c5e5.png)
 
 
 
@@ -2315,11 +2315,11 @@ $$
 F(x,y)=\frac{1}{\sqrt{y-x}}\,i+\sqrt{2-{x}^{2}-{y}^{2}}\,j\,.
 $$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/70f7bc919b363dd009ddd2b087199bab35de5147b5bd5b6e49a87107bd8adb7f.png)
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/e90043e90e3f658ae57e44128e65ea44eefcd9e3b95e93063e53fa04be35e6d8.png)
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/9fd4b762eccc94a0fb535b9c09d0c8f9df212f938763a7a504c8f95240069025.png)
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/4d912aa71db2c614066e651184ba78836560112dd830b26d661ed57483b4777e.png)
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/af86dcdd6b0ed901a3792c2eb16c65eb6ddcf5be9f583a6ad56964a6895bbbf5.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/28d83a3ec2669f98c0de2f7452d04b6cb4698cd0f6c884e6164721bfbdbb5b2e.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/9869888867459d3a29aab719666f7277f2a380fe39fc814d9f6a842994a919f1.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/b865fcbc88439aec8cbcd1d9fc756cfc76c706ef86d060af54d398d463675958.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/9006893b23e0ce453455b8fc724e5cc625090c6e374a5840fdf0b93131a5a7a1.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/b248c1c92131a3bf99cb750d9b72380bfd42ce15c391d9c965cd20a3727aade5.png)
 
 Worked solution:
 
@@ -2345,7 +2345,7 @@ $$
 
 This defines the region ${D}_{1},$ shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/f8541e10c6f36a478f262390679b744ce5d04ea2a542c74356e17a1d8f61e1d3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/23c890adb403cf1c5bcb1da77cdae0a64ffd4874acd1162b701c2d1876c86dd4.png)
 
 - The function $Q(x,y)$ is defined when the expression under the radical is positive or equal to zero. So, to find the domain, we solve the following inequality:
 
@@ -2355,11 +2355,11 @@ $$
 
 This defines the region ${D}_{2},$ which is a circle of radius $\sqrt{2},$ as shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/374975c3684566bdfc2edd08561a90f0ecef208d36972e898ebec91970bd008c.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/680b1628046f6b4ee793e905a773f921005668c3fdcf65991c43cf9ae0e39541.png)
 
 Finally, the domain $D$ of $F$ is given by ${D}_{1}\cap {D}_{2},$ shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/70f7bc919b363dd009ddd2b087199bab35de5147b5bd5b6e49a87107bd8adb7f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/28d83a3ec2669f98c0de2f7452d04b6cb4698cd0f6c884e6164721bfbdbb5b2e.png)
 
 
 
@@ -2427,11 +2427,11 @@ $$
 F(x,y)=\frac{1}{\sqrt{2-{x}^{2}-{y}^{2}}}\,i+\frac{{x}^{2}+{y}^{2}}{-3x-y}\,j
 $$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/82cc5e6002e909df95563e280b58c1e74f5a4319eb0928fd237ae80eca748cdb.png)
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/fd346fdcfcb4da1f4ff4931bbfc3071bc96eb556571de9314b1c4e47de6e5f65.png)
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/2ecf0818e8871c76d790f3ee4585a780c2df2db468f7c25ca9f44baafa000b08.png)
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/4357c56877c27ea25fb80817239c09ff55559009d060549a7e2548f8b1aae419.png)
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/e628583a95e324babe683d0b77093955cd5fc20b44fe9ada2048d75a391197f4.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/5fa11b4efeecd79465227e852d80ea52a0a521105f5bd366cc06cb57ee5acbea.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/14d7f80a5240c98a21666e8a65682331ad59f2d730bc6347e4764b6da3394f7c.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/579715ffbcb4f48a693da31f270a94040fd132f8802ad4ed137ba8445f196c4b.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/3c757b7911683244070b57186de73ce838c0da0b45fc07772373c072ddeffb81.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/d2e6af0b7124c6a3d00d8a6040ff12749cc9bc5e61a70d58e71cce21b963a27f.png)
 
 Worked solution:
 
@@ -2457,7 +2457,7 @@ $$
 
 This defines the region ${D}_{1},$ which is the interior of a circle of radius $\sqrt{3},$ as shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/661415fcac2f93ae2981703479fac7b9b55e28d9354217591209f1352bb203e1.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/3f7735ba53ae553f85a297ac00a1590f96d495885a8ea179143fcd9fbfcd8368.png)
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
 
@@ -2467,11 +2467,11 @@ $$
 
 This defines the region ${D}_{2},$ which is the entire plane ${R}^{2}$ with the line $y=-3x$ removed:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/6e73de214db4cb7a126fbdc579f71e1482e59e8c7b6ce59f5a5a82b2046bebe3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/87e5cfb15bbfc822235d33798af318a5390a2e48be8f398798185c68f85a2b6f.png)
 
 Finally, the domain $D$ of $F$ is given by ${D}_{1}\cap {D}_{2},$ shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/fd346fdcfcb4da1f4ff4931bbfc3071bc96eb556571de9314b1c4e47de6e5f65.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/14d7f80a5240c98a21666e8a65682331ad59f2d730bc6347e4764b6da3394f7c.png)
 
 
 
@@ -2483,11 +2483,11 @@ $$
 F(x,y)=\frac{1}{\sqrt{13-{x}^{2}-{y}^{2}}}\,i+\frac{{x}^{2}+{y}^{2}}{2x-y}\,j
 $$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/0ebab34bea2115b544fec748b548c31654840cf01685cbd9e832fab9eaf24a2d.png)
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/b6adfa494e61092c7e2894e8ac4861f2d9e62d70e76a5edd6a9a623f1f89bf16.png)
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/131a62b5bc2decadfd65502888b4225b6be844bbc35f9f7dd568b75e04360719.png)
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/410a98ff1e01adbff957ac4f09a0247763aaafe18ecbcfb3c95b733d014c3f71.png)
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/2b36bd5a0d6c7a057f1464a40a3b51efc872207e44b0b3ef456ea606755f1e84.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/ef65d30b39e88ed41a0e19790c77ad31e944b49a42c40faf0026bcdb4adb5ee3.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/de09b616482e4e9a8bd5be20d20dd150f7d42859c228df2efea355f99c06736f.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/eb5baf64706d618e7fac74d84923d5ded4120d5744d99f78cc8f051af405a2b2.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/e5c39b352753a910b0b5640b5f2a1710cc0293c1f8ecd335abd4ed39a9fd3a6a.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/62800804059c3dbc01250e0166496996848bba28146cc55f098a5149e2cdd556.png)
 
 Worked solution:
 
@@ -2513,7 +2513,7 @@ $$
 
 This defines the region ${D}_{1},$ which is the interior of a circle of radius $\sqrt{3},$ as shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/0bba08723056c04396d0140d912b80e2e79a411055b7aecce441bc9bdbe23769.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/4a8f0683f5a9e38dafd9b9c9492525c714960106497b8d4973ef19678abacdef.png)
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
 
@@ -2523,11 +2523,11 @@ $$
 
 This defines the region ${D}_{2},$ which is the entire plane ${R}^{2}$ with the line $y=2x$ removed:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/e6b94c7c171e0201a9f6ed4f6cc4d1339bc312442077854e22cb57e875493560.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/6ea3d8cfb40676b9c1c81d40283c1fb828110d3de3895c16da7b9d9a4504f7c2.png)
 
 Finally, the domain $D$ of $F$ is given by ${D}_{1}\cap {D}_{2},$ shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/b6adfa494e61092c7e2894e8ac4861f2d9e62d70e76a5edd6a9a623f1f89bf16.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/de09b616482e4e9a8bd5be20d20dd150f7d42859c228df2efea355f99c06736f.png)
 
 
 
@@ -2539,11 +2539,11 @@ $$
 F(x,y)=\frac{1}{\sqrt{9-{x}^{2}-{y}^{2}}}\,i+\frac{{x}^{2}+{y}^{2}}{2x-y}\,j
 $$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/abcb98c85e38d159146e16ead642c2a972c4f1b926f386da583758a70de89aeb.png)
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/687d0886b258a23616cb4fffe367815490c7515c48a028404f6eabc24e1ffdcd.png)
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/c787b7c0afda3fe25cd46f0eac8826a76c9879765cbb892bfb0c72e217a0a621.png)
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/f1466209fc2980c3c731909e3cc499a6713ad842d08c99ce58a6d809841cfd22.png)
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/13ba2b88a9905c04f5daf0f679c006de11adf0059e9a466e1c8b8578f48d7b8e.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/18bafe26452fd88f5ecb55228ec19728456e59620b19f3dcf279fb04db13f305.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/1bc5c2411378bfc7c3ef34a2b9907fd1a2cbed4f3b51aff951b5d028d262bcf5.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/ab7df09f108f88740b94bd1c29fbb01370c4bb7fd682d85e839959ba80494199.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/736266e0ea1044e6b8ab0abd490ca0e880a48baaae4749fe0ef3102f495f7db6.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/68c82245d53c356b2294855b20019b37bcea208847ce24413de152b3f9e92364.png)
 
 Worked solution:
 
@@ -2569,7 +2569,7 @@ $$
 
 This defines the region ${D}_{1},$ which is the interior of a circle of radius $\sqrt{3},$ as shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/b7ed400941a061e237a8ca04ee3e8fbfee1556fda46775fecb60becb2b1dabc1.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/bcc7c11663821073e29d641d422491c3e836c479f4800006389deb46bf8d2a21.png)
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
 
@@ -2579,11 +2579,11 @@ $$
 
 This defines the region ${D}_{2},$ which is the entire plane ${R}^{2}$ with the line $y=2x$ removed:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/e6b94c7c171e0201a9f6ed4f6cc4d1339bc312442077854e22cb57e875493560.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/6ea3d8cfb40676b9c1c81d40283c1fb828110d3de3895c16da7b9d9a4504f7c2.png)
 
 Finally, the domain $D$ of $F$ is given by ${D}_{1}\cap {D}_{2},$ shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/abcb98c85e38d159146e16ead642c2a972c4f1b926f386da583758a70de89aeb.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/18bafe26452fd88f5ecb55228ec19728456e59620b19f3dcf279fb04db13f305.png)
 
 
 
@@ -2595,11 +2595,11 @@ $$
 F(x,y)=\frac{1}{\sqrt{3-{x}^{2}-{y}^{2}}}\,i+\frac{{x}^{2}+{y}^{2}}{x-y}\,j
 $$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/75dd50eef67bd63daebd075143e699ae2a00dc775cc0b3e5609dad639afc7b95.png)
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/f7e169c3282305de2850df91ab0ab44ce69b161655db169fa925485513720895.png)
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/2e2ec41894e88efdc2258439d9650f561763b0e7f04e10d275a3dc040669a874.png)
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/dec32effb26908d544eea780b0f809420fa1606c2dd3ac21a0fbf47761399b6f.png)
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/78ced605cbdc5773584feaf5b3373dd3088265e67372c7cf3dbe3a743dab1298.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/1b99cb165a67306026dce13fb9af909283b0fb1c806394b612727721f60f1f3d.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/43535f69d1c9d562149dcda2532ef592c41cae7e27ae916eac6dce73e653d15c.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/db02bf17ce8303bbb3fc4b5e93f2a10603077922296ebc4bd03bf1616b45c8b3.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/d1545660b0286d38cfa83f889d4f3a8ab1489e3a98712ee0d3bfd601df4dc3ea.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/15ea56fcbc9cf8164a22a578ca9e1e1b4cd7a9fba1b8564640ac6052fa34d3ae.png)
 
 Worked solution:
 
@@ -2625,7 +2625,7 @@ $$
 
 This defines the region ${D}_{1},$ which is the interior of a circle of radius $\sqrt{3},$ as shown below:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/824002bd38357a5f48d6c9fe88c0f65b2bcd70ee531468e43f73ae4e16e6bd08.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/df0d2e5c4a352e9bb17f07859a9a3f5ba0c392ae3272088956f5669d0815ccf2.png)
 
 - The function $Q(x,y)$ is defined everywhere other than when the denominator vanishes. To find where the denominator vanishes, we set it equal to zero and solve:
 
@@ -2635,11 +2635,11 @@ $$
 
 This defines the region ${D}_{2},$ which is the entire plane ${R}^{2}$ with the line $y=x$ removed:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/057f43709a4c5c36f68dbfb1f8e868e7ab8ec66ea8f92ff63b911342352bb173.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/960d32478af1aeb98d22d4ebf4fdf9de63da3b403db98cf6d64c6a04832cfbd0.png)
 
 Finally, the domain $D$ of $F$ is given by ${D}_{1}\cap {D}_{2},$ shown below.
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/dec32effb26908d544eea780b0f809420fa1606c2dd3ac21a0fbf47761399b6f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186172086/plots/d1545660b0286d38cfa83f889d4f3a8ab1489e3a98712ee0d3bfd601df4dc3ea.png)
 
 
 
@@ -2651,11 +2651,11 @@ $$
 F(x,y)=\sqrt{x-6}\,i+{y}^{2}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,x>6}$
-2. ${(x,y)\in {R}^{2}\,|\,x\le 6}$
-3. ${(x,y)\in {R}^{2}\,|\,x<6}$
-4. ${(x,y)\in {R}^{2}\,|\,x\ge 6}$
-5. ${(x,y)\in {R}^{2}\,|\,x\ne 6}$
+1. $\{(x,y)\in {R}^{2}\,|\,x>6\}$
+2. $\{(x,y)\in {R}^{2}\,|\,x\le 6\}$
+3. $\{(x,y)\in {R}^{2}\,|\,x<6\}$
+4. $\{(x,y)\in {R}^{2}\,|\,x\ge 6\}$
+5. $\{(x,y)\in {R}^{2}\,|\,x\ne 6\}$
 
 Worked solution:
 
@@ -2682,7 +2682,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,x\ge 6}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,x\ge 6\}.
 $$
 
 - The polynomial function $Q(x,y)$ is defined on the entire plane ${R}^{2}.$ Therefore, ${D}_{2}={R}^{2}.$
@@ -2690,7 +2690,7 @@ $$
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,x\ge 6}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,x\ge 6\}\,.
 $$
 
 
@@ -2703,11 +2703,11 @@ $$
 F(x,y)=\sqrt{y+1}\,i+{x}^{2}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,y\ge -1}$
-2. ${(x,y)\in {R}^{2}\,|\,y<-1}$
-3. ${(x,y)\in {R}^{2}\,|\,y\le -1}$
-4. ${(x,y)\in {R}^{2}\,|\,y\ne -1}$
-5. ${(x,y)\in {R}^{2}\,|\,y>-1}$
+1. $\{(x,y)\in {R}^{2}\,|\,y\ge -1\}$
+2. $\{(x,y)\in {R}^{2}\,|\,y<-1\}$
+3. $\{(x,y)\in {R}^{2}\,|\,y\le -1\}$
+4. $\{(x,y)\in {R}^{2}\,|\,y\ne -1\}$
+5. $\{(x,y)\in {R}^{2}\,|\,y>-1\}$
 
 Worked solution:
 
@@ -2734,7 +2734,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,y\ge -1}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,y\ge -1\}.
 $$
 
 - The polynomial function $Q(x,y)$ is defined on the entire plane ${R}^{2}.$ Therefore, ${D}_{2}={R}^{2}.$
@@ -2742,7 +2742,7 @@ $$
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,y\ge -1}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,y\ge -1\}\,.
 $$
 
 
@@ -2755,11 +2755,11 @@ $$
 F(x,y)=\ln(x-6)\,i+{y}^{2}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,x\ge 6}$
-2. ${(x,y)\in {R}^{2}\,|\,x\le 6}$
-3. ${(x,y)\in {R}^{2}\,|\,x<6}$
-4. ${(x,y)\in {R}^{2}\,|\,x>6}$
-5. ${(x,y)\in {R}^{2}\,|\,x\ne 6}$
+1. $\{(x,y)\in {R}^{2}\,|\,x\ge 6\}$
+2. $\{(x,y)\in {R}^{2}\,|\,x\le 6\}$
+3. $\{(x,y)\in {R}^{2}\,|\,x<6\}$
+4. $\{(x,y)\in {R}^{2}\,|\,x>6\}$
+5. $\{(x,y)\in {R}^{2}\,|\,x\ne 6\}$
 
 Worked solution:
 
@@ -2786,7 +2786,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,x>6}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,x>6\}.
 $$
 
 - The polynomial function $Q(x,y)$ is defined on the entire plane ${R}^{2}.$ Therefore, ${D}_{2}={R}^{2}.$
@@ -2794,7 +2794,7 @@ $$
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,x>6}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,x>6\}\,.
 $$
 
 
@@ -2807,11 +2807,11 @@ $$
 F(x,y)=\ln(y+1)\,i+{x}^{2}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,y>-1}$
-2. ${(x,y)\in {R}^{2}\,|\,y<-1}$
-3. ${(x,y)\in {R}^{2}\,|\,y\le -1}$
-4. ${(x,y)\in {R}^{2}\,|\,y\ne -1}$
-5. ${(x,y)\in {R}^{2}\,|\,y\ge -1}$
+1. $\{(x,y)\in {R}^{2}\,|\,y>-1\}$
+2. $\{(x,y)\in {R}^{2}\,|\,y<-1\}$
+3. $\{(x,y)\in {R}^{2}\,|\,y\le -1\}$
+4. $\{(x,y)\in {R}^{2}\,|\,y\ne -1\}$
+5. $\{(x,y)\in {R}^{2}\,|\,y\ge -1\}$
 
 Worked solution:
 
@@ -2838,7 +2838,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,y>-1}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,y>-1\}.
 $$
 
 - The polynomial function $Q(x,y)$ is defined on the entire plane ${R}^{2}.$ Therefore, ${D}_{2}={R}^{2}.$
@@ -2846,7 +2846,7 @@ $$
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,y>-1}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,y>-1\}\,.
 $$
 
 
@@ -2859,11 +2859,11 @@ $$
 F(x,y)=\frac{1}{x-6}\,i+{y}^{2}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,x>6}$
-2. ${(x,y)\in {R}^{2}\,|\,x=6}$
-3. ${(x,y)\in {R}^{2}\,|\,x<6}$
-4. ${(x,y)\in {R}^{2}\,|\,x\ne 6}$
-5. ${(x,y)\in {R}^{2}\,|\,\text{all real }(x,y)}$
+1. $\{(x,y)\in {R}^{2}\,|\,x>6\}$
+2. $\{(x,y)\in {R}^{2}\,|\,x=6\}$
+3. $\{(x,y)\in {R}^{2}\,|\,x<6\}$
+4. $\{(x,y)\in {R}^{2}\,|\,x\ne 6\}$
+5. $\{(x,y)\in {R}^{2}\,|\,\text{all real }(x,y)\}$
 
 Worked solution:
 
@@ -2890,7 +2890,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,x\ne 6}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,x\ne 6\}.
 $$
 
 - The polynomial function $Q(x,y)$ is defined on the entire plane ${R}^{2}.$ Therefore, ${D}_{2}={R}^{2}.$
@@ -2898,7 +2898,7 @@ $$
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,x\ne 6}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,x\ne 6\}\,.
 $$
 
 
@@ -2911,11 +2911,11 @@ $$
 F(x,y)=\frac{1}{y+1}\,i+{x}^{2}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,y\ne -1}$
-2. ${(x,y)\in {R}^{2}\,|\,y<-1}$
-3. ${(x,y)\in {R}^{2}\,|\,y=-1}$
-4. ${(x,y)\in {R}^{2}\,|\,\text{all real }(x,y)}$
-5. ${(x,y)\in {R}^{2}\,|\,y>-1}$
+1. $\{(x,y)\in {R}^{2}\,|\,y\ne -1\}$
+2. $\{(x,y)\in {R}^{2}\,|\,y<-1\}$
+3. $\{(x,y)\in {R}^{2}\,|\,y=-1\}$
+4. $\{(x,y)\in {R}^{2}\,|\,\text{all real }(x,y)\}$
+5. $\{(x,y)\in {R}^{2}\,|\,y>-1\}$
 
 Worked solution:
 
@@ -2942,7 +2942,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,y\ne -1}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,y\ne -1\}.
 $$
 
 - The polynomial function $Q(x,y)$ is defined on the entire plane ${R}^{2}.$ Therefore, ${D}_{2}={R}^{2}.$
@@ -2950,7 +2950,7 @@ $$
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,y\ne -1}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,y\ne -1\}\,.
 $$
 
 
@@ -2963,11 +2963,11 @@ $$
 F(x,y)=\ln(y+6)\,i+{x}^{2}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,y>-6}$
-2. ${(x,y)\in {R}^{2}\,|\,y\ne -6}$
-3. ${(x,y)\in {R}^{2}\,|\,y\ge -6}$
-4. ${(x,y)\in {R}^{2}\,|\,y\le -6}$
-5. ${(x,y)\in {R}^{2}\,|\,y<-6}$
+1. $\{(x,y)\in {R}^{2}\,|\,y>-6\}$
+2. $\{(x,y)\in {R}^{2}\,|\,y\ne -6\}$
+3. $\{(x,y)\in {R}^{2}\,|\,y\ge -6\}$
+4. $\{(x,y)\in {R}^{2}\,|\,y\le -6\}$
+5. $\{(x,y)\in {R}^{2}\,|\,y<-6\}$
 
 Worked solution:
 
@@ -2994,7 +2994,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,y>-6}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,y>-6\}.
 $$
 
 - The polynomial function $Q(x,y)$ is defined on the entire plane ${R}^{2}.$ Therefore, ${D}_{2}={R}^{2}.$
@@ -3002,7 +3002,7 @@ $$
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,y>-6}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,y>-6\}\,.
 $$
 
 
@@ -3015,11 +3015,11 @@ $$
 F(x,y)=\sqrt{x+2}\,i+{y}^{2}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,x\ne -2}$
-2. ${(x,y)\in {R}^{2}\,|\,x<-2}$
-3. ${(x,y)\in {R}^{2}\,|\,x>-2}$
-4. ${(x,y)\in {R}^{2}\,|\,x\le -2}$
-5. ${(x,y)\in {R}^{2}\,|\,x\ge -2}$
+1. $\{(x,y)\in {R}^{2}\,|\,x\ne -2\}$
+2. $\{(x,y)\in {R}^{2}\,|\,x<-2\}$
+3. $\{(x,y)\in {R}^{2}\,|\,x>-2\}$
+4. $\{(x,y)\in {R}^{2}\,|\,x\le -2\}$
+5. $\{(x,y)\in {R}^{2}\,|\,x\ge -2\}$
 
 Worked solution:
 
@@ -3046,7 +3046,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,x\ge -2}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,x\ge -2\}.
 $$
 
 - The polynomial function $Q(x,y)$ is defined on the entire plane ${R}^{2}.$ Therefore, ${D}_{2}={R}^{2}.$
@@ -3054,7 +3054,7 @@ $$
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,x\ge -2}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,x\ge -2\}\,.
 $$
 
 
@@ -3067,11 +3067,11 @@ $$
 F(x,y)=\frac{1}{y-5}\,i+{x}^{2}\,j\,.
 $$
 
-1. ${(x,y)\in {R}^{2}\,|\,\text{all real }(x,y)}$
-2. ${(x,y)\in {R}^{2}\,|\,y=5}$
-3. ${(x,y)\in {R}^{2}\,|\,y>5}$
-4. ${(x,y)\in {R}^{2}\,|\,y\ne 5}$
-5. ${(x,y)\in {R}^{2}\,|\,y<5}$
+1. $\{(x,y)\in {R}^{2}\,|\,\text{all real }(x,y)\}$
+2. $\{(x,y)\in {R}^{2}\,|\,y=5\}$
+3. $\{(x,y)\in {R}^{2}\,|\,y>5\}$
+4. $\{(x,y)\in {R}^{2}\,|\,y\ne 5\}$
+5. $\{(x,y)\in {R}^{2}\,|\,y<5\}$
 
 Worked solution:
 
@@ -3098,7 +3098,7 @@ $$
 Therefore, the domain of $P$ is given by
 
 $$
-{D}_{1}={(x,y)\in {R}^{2}\,|\,y\ne 5}.
+{D}_{1}=\{(x,y)\in {R}^{2}\,|\,y\ne 5\}.
 $$
 
 - The polynomial function $Q(x,y)$ is defined on the entire plane ${R}^{2}.$ Therefore, ${D}_{2}={R}^{2}.$
@@ -3106,5 +3106,5 @@ $$
 Finally, the domain $D$ of $F$ is given by
 
 $$
-D={D}_{1}\cap {D}_{2}={(x,y)\in {R}^{2}\,|\,y\ne 5}\,.
+D={D}_{1}\cap {D}_{2}=\{(x,y)\in {R}^{2}\,|\,y\ne 5\}\,.
 $$

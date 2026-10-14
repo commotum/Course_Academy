@@ -29,6 +29,9 @@ def bracket(s):
     var,lo=lo.split('=',1);var2,hi=hi.split('=',1);assert var==var2
     return s[:a],g.parse_tex(primitive),var,g.parse_tex(lo),g.parse_tex(hi)
 
+def outside_multiplier(s):
+    return g.parse_tex(s.strip().removesuffix(r'\cdot').strip()) if s.strip() else sp.Integer(1)
+
 def endpoint_parts(s):
     """Read each actual printed signed endpoint component without cancellation."""
     result=[];i=0
@@ -39,8 +42,8 @@ def endpoint_parts(s):
         result.append(g.parse_tex(s[i+1:j-1]));i=j
     return result
 
-def assert_endpoints(s,prim,var,lo,hi):
-    observed=endpoint_parts(s);terms=prim.as_ordered_terms() if prim.is_Add else [prim]
+def assert_endpoints(s,prim,var,lo,hi,terms=None):
+    observed=endpoint_parts(s);terms=terms if terms is not None else prim.as_ordered_terms() if prim.is_Add else [prim]
     expected=[value for term in terms for value in (term.subs(var,hi),term.subs(var,lo))]
     assert len(observed)==len(expected),(s,expected)
     for a,b in zip(observed,expected):eq(a,b)
@@ -105,18 +108,52 @@ def displayed_math(record):
     eq(g.parse_tex(integrand),F)
     # z primitive and both endpoints, before radial integration.
     _,zp_display=integral(rows[2]);factor,primitive,var,l,h=bracket(zp_display);assert var=='z';eq(l,low);eq(h,high)
-    multiplier=g.parse_tex(factor) if factor else sp.Integer(1);eq(multiplier*sp.diff(primitive,g.z),F)
+    multiplier=outside_multiplier(factor);eq(multiplier*sp.diff(primitive,g.z),F)
     radial_index=next(i for i,row in enumerate(rows) if ']_{r=' in row)
     for row in rows[3:radial_index]:
         bs,expr=integral(row);assert len(bs)==2;eq(g.parse_tex(expr),ze)
     _,primexpr=integral(rows[radial_index]);fac,radprim,var,l,h=bracket(primexpr);assert not fac and var=='r';eq(l,0);eq(h,R);eq(sp.diff(radprim,g.r),ze)
     for i in (radial_index+1,radial_index+2):
-        _,expr=integral(rows[i]);eq(g.parse_tex(expr),rr);assert_endpoints(expr,radprim,g.r,0,R)
-    theta_index=next(i for i,row in enumerate(rows) if row.startswith('[') and r']_{\theta=' in row)
+        _,expr=integral(rows[i]);eq(g.parse_tex(expr),rr)
+        if family=='half_linear':
+            angular=r'\cos(\theta)-\sin(\theta)';suffix=r'\cdot ('+angular+')'
+            assert expr.endswith(suffix) and expr.startswith('(')
+            scalar_diff=expr[:-len(suffix)][1:-1]
+            scalar_prim=sp.simplify(radprim/(sp.cos(g.t)-sp.sin(g.t)))
+            assert_endpoints(scalar_diff,scalar_prim,g.r,0,R)
+        else:assert_endpoints(expr,radprim,g.r,0,R)
+    theta_index=next(i for i,row in enumerate(rows) if not row.startswith(r'\int') and r']_{\theta=' in row)
     for row in rows[radial_index+3:theta_index]:
         bs,expr=integral(row);assert len(bs)==1;eq(g.parse_tex(expr),rr)
-    fac,thetaprim,var,l,h=bracket(rows[theta_index]);assert not fac and var==r'\theta';eq(l,a);eq(h,d);eq(sp.diff(thetaprim,g.t),rr)
-    assert_endpoints(rows[theta_index+1],thetaprim,g.t,a,d);eq(g.parse_tex(rows[-1]),value)
+    fac,thetaprim,var,l,h=bracket(rows[theta_index]);assert var==r'\theta';eq(l,a);eq(h,d)
+    theta_multiplier=outside_multiplier(fac);eq(theta_multiplier*sp.diff(thetaprim,g.t),rr)
+    if family=='half_linear':
+        # Structural demands from q161621, independent of equal mathematical sums:
+        # one unscaled cos-minus-sin factor through EVERY radial stage, followed
+        # by a scalar outside the unscaled sin-plus-cos angular bracket.
+        angular=r'\cos(\theta)-\sin(\theta)';suffix=r'\cdot ('+angular+')'
+        for stage_index,row in enumerate(rows[1:radial_index+4],start=1):
+            _,expr=integral(row)
+            assert expr.count(angular)==1,(row,'required common angular factor')
+            if stage_index==1 or stage_index>=4:assert expr.count(r'\cos(')==1 and expr.count(r'\sin(')==1
+        assert primexpr.split('[')[1].split(']')[0].endswith(suffix)
+        assert fac.strip().endswith(r'\cdot') and theta_multiplier!=0
+        assert rows[theta_index].split('[')[1].split(']')[0]==r'\sin(\theta)+\cos(\theta)'
+        scalar_prim=sp.simplify(radprim/(sp.cos(g.t)-sp.sin(g.t)))
+        eq(theta_multiplier,scalar_prim.subs(g.r,R)-scalar_prim.subs(g.r,0))
+        # The source's extracted-factor endpoint row precedes an explicit row
+        # evaluating BOTH signed primitive components independently.
+        endpoint=rows[theta_index+1];pieces=endpoint.split('+');assert len(pieces)==2
+        for piece,term in zip(pieces,[sp.sin(g.t),sp.cos(g.t)]):
+            factor,pair=piece.split(r'\cdot ((',1);eq(g.parse_tex(factor),theta_multiplier)
+            upper,lower=pair.removesuffix('))').split(')-(')
+            eq(g.parse_tex(upper),term.subs(g.t,d));eq(g.parse_tex(lower),term.subs(g.t,a))
+        eq(g.parse_tex(endpoint),value)
+        assert_endpoints(rows[theta_index+2],theta_multiplier*thetaprim,g.t,a,d,terms=[theta_multiplier*sp.sin(g.t),theta_multiplier*sp.cos(g.t)])
+    else:
+        assert not fac
+        assert_endpoints(rows[theta_index+1],thetaprim,g.t,a,d)
+    eq(g.parse_tex(rows[-1]),value)
     family=record['generation']['template']
     if family=='half_xz':
         assert '^2' in rows[3] or '^{2}' in rows[3]
@@ -180,6 +217,28 @@ def main():
     try:displayed_math(mutated)
     except (AssertionError,ValueError):pass
     else:raise AssertionError('Wrong endpoint component accepted')
+    half=next(q for q in normal if q['generation']['template']=='half_linear')
+    work=half['question'][':question/worked-solution']
+    chain=work.split(r'\begin{aligned}',1)[1].split(r'\end{aligned}',1)[0]
+    rows=chain.split(r' \\ &=');rows[0]=rows[0].split('&=',1)[1]
+    radial_index=next(i for i,row in enumerate(rows) if ']_{r=' in row)
+    theta_index=next(i for i,row in enumerate(rows) if not row.startswith(r'\int') and r']_{\theta=' in row)
+    _,rad=integral(rows[radial_index]);fac,prim,var,lo,hi=bracket(rad)
+    grouped=rad.split('[')[1].split(']')[0]
+    mutations=[('half_linear_radial_distribution',grouped,g.tex(sp.expand(prim)))]
+    outer,inner,var,lo,hi=bracket(rows[theta_index]);mult=outside_multiplier(outer)
+    mutations.append(('half_linear_angular_distribution',rows[theta_index],g.bracket(g.tex(sp.expand(mult*inner)),var,lo,hi)))
+    _,height_expr=integral(rows[4])
+    mutations.append(('half_linear_height_distribution',height_expr,g.tex(sp.expand(g.parse_tex(height_expr)))))
+    for label,original,replacement in mutations:
+        assert original!=replacement
+        eq(g.parse_tex(original) if label!='half_linear_angular_distribution' else mult*inner,
+           g.parse_tex(replacement) if label!='half_linear_angular_distribution' else bracket(replacement)[1])
+        mutation=copy.deepcopy(half)
+        mutation['question'][':question/worked-solution']=work.replace(original,replacement,1)
+        try:displayed_math(mutation)
+        except (AssertionError,ValueError):pass
+        else:raise AssertionError(label+' accepted equivalent distributed replacement')
     # Explicit scope guards and whole-bank rejection.
     for f,p in [('easy_radial',dict(n=4,h=3,b=1,c=1)),('half_xz',dict(n=9,h=2,b=1,c=2)),('cone',dict(n=4,h=3,b=1,c=1)),('reciprocal',dict(n=9,h=3,b=1,c=1))]:
         try:g.generate(g.SPECS[f][0],template=f,parameters=p)
@@ -223,6 +282,6 @@ def main():
                     for c in range(1,6):
                         m=g.model(f,{**p,'c':c});tasks.add(g.digest({'F':str(m['F']),'bounds':[str(m[k]) for k in ('R','a','d','low','high')]}));eligible_count+=1
         domains[f]={'eligible_complete_instances':eligible_count,'meaningful_tasks':len(tasks),'whole_bank_rejections':rejected}
-    write('validation.json',{'pass':True,'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':__import__('matplotlib').__version__},'source':{k:g.SOURCE[k] for k in ('database','basis','lineage')},'fidelity':fidelity,'rated_source_distractors_matched':32,'unrated_undesignated_choices_matched':10,'original_correct_designations_absent':2,'normal_review_records':len(normal),'generated_evidence_variants':len(raw_variants),'sampled_unique_mathematical_tasks':len(seen),'default_family_coverage':{k:sorted(v) for k,v in family_coverage.items()},'finite_domains':domains,'native':json.loads((HERE/'engine-report.json').read_text()),'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'mutations_rejected':['C0','trig_identity','endpoint_component'],'normal_present_source_anchor_chains_checked':8,'source_repairs':['reciprocal substitution missing sine square','quarter endpoint extra parenthesis','raw mathematical-set braces rendered literally'],'excluded_source_geometry':'cross_z original planes cross inside radius3 disk','unresolved_findings':[],'limitations':['Historical scalar distractor operations are opaque: all raw banks are ineligible for learning','Two raw originals lack difficulty, solution and correct designation','Crossed-surface original is mathematical geometry error retained only as evidence','Normal additive term order/TeX and prose notation are normalized, not byte-exact source output']})
+    write('validation.json',{'pass':True,'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':__import__('matplotlib').__version__},'source':{k:g.SOURCE[k] for k in ('database','basis','lineage')},'fidelity':fidelity,'rated_source_distractors_matched':32,'unrated_undesignated_choices_matched':10,'original_correct_designations_absent':2,'normal_review_records':len(normal),'generated_evidence_variants':len(raw_variants),'sampled_unique_mathematical_tasks':len(seen),'default_family_coverage':{k:sorted(v) for k,v in family_coverage.items()},'finite_domains':domains,'native':json.loads((HERE/'engine-report.json').read_text()),'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'mutations_rejected':['C0','trig_identity','endpoint_component','half_linear_radial_distribution','half_linear_angular_distribution','half_linear_height_distribution'],'normal_present_source_anchor_chains_checked':8,'source_repairs':['reciprocal substitution missing sine square','quarter endpoint extra parenthesis','raw mathematical-set braces rendered literally'],'excluded_source_geometry':'cross_z original planes cross inside radius3 disk','unresolved_findings':[],'limitations':['Historical scalar distractor operations are opaque: all raw banks are ineligible for learning','Two raw originals lack difficulty, solution and correct designation','Crossed-surface original is mathematical geometry error retained only as evidence','Normal additive term order/TeX and prose notation are normalized, not byte-exact source output']})
     print('PASS: 10/10 raw prompts, 50/50 options, 8/8 supplied correct designations, 8/8 raw solutions; normal displayed calculus stages and both endpoints checked.')
 if __name__=='__main__':main()

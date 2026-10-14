@@ -301,6 +301,18 @@ def build_text(template,p,observed):
    sol=sol.replace('![]('+old+')','![]('+path+')')
  return prompt,sol
 
+def visible_sets(text):
+ # Escape only complete outer set braces, preserving inner TeX groups.
+ cursor=0
+ while (match:=re.search(r'(?<!\\)\{\(x,y\)',text[cursor:])):
+  start=cursor+match.start();end=start+1;depth=1
+  while depth:
+   if text[end]=='{':depth+=1
+   elif text[end]=='}':depth-=1
+   end+=1
+  text=text[:start]+chr(92)+text[start:end-1]+chr(92)+text[end-1:];cursor=end+2
+ return text
+
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  rng=random.Random(seed)
  if profile and profile.startswith('observed:'):
@@ -330,6 +342,8 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   orig=QUESTIONS[sid][':question/answer-fields'][0];values=[apply_masks(a[':answer/value'],masks(template,p)) for a in orig[':answer-field/choices']]
   correct_index=next(i for i,a in enumerate(orig[':answer-field/choices']) if a[':answer/id']==orig[':answer-field/correct'][':answer/id']);typ=':answer.type/math'
  else:values,correct_index=math_bank(template,p);typ=':answer.type/math'
+ if not observed:
+  prompt,sol=visible_sets(prompt),visible_sets(sol);values=[visible_sets(v) for v in values]
  # Content identity has no seed/profile alias; domain task excludes the bank.
  identity=hash_obj({'version':VERSION,'difficulty':level,'problem':prompt,'solution':sol,'bank':sorted(values),'type':typ})
  qid=uid('question:'+identity);fid=uid('field:'+qid+':selection')

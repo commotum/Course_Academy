@@ -19,7 +19,7 @@ KP_ID=17592186129278
 ROOT=Path(__file__).resolve().with_suffix('')
 SOURCE=json.loads((ROOT/'source.json').read_text())
 KP=SOURCE['record']
-VERSION='cylindrical-evaluate-1'
+VERSION='cylindrical-evaluate-2'
 r=sp.Symbol('r',positive=True); t=sp.Symbol('theta',real=True); z=sp.Symbol('z',real=True)
 x,y=sp.symbols('x y',real=True)
 SOURCES={q[':db/id']:q for q in KP[':knowledge-point/questions']}
@@ -261,6 +261,29 @@ def normal_text(f,p):
         rows +=[I1(m,tex(coeff)+'('+tex(sp.Rational(1,2))+'(1+'+tex(sp.cos(2*t))+'))+'+tex(rest)),I1(m,tex(trig))]
     if f=='quarter_x':trig=rr;tp=sp.integrate(trig,t)
     rows +=[bracket(tex(tp),r'\theta',m['a'],m['d']),component_endpoint(tp,t,m['a'],m['d']),tex(v)]
+    if f=='half_linear':
+        # Preserve q161621's operative grouping, including the scalar OUTSIDE
+        # the angular primitive bracket. Extra endpoint rows supplement it.
+        angular=r'\cos(\theta)-\sin(\theta)'
+        factor=lambda coefficient,power=0: tex(sp.sympify(coefficient)*r**power)+r'\cdot ('+angular+')'
+        scalar_primitive=sp.Rational(p['c']*p['h'],3)*r**3
+        scalar=sp.simplify(scalar_primitive.subs(r,m['R']))
+        primitive_text=factor(sp.Rational(p['c']*p['h'],3),3)
+        delta=r'\sin(\theta)+\cos(\theta)'
+        angle_parts=[sp.sin(t),sp.cos(t)]
+        angle_endpoint='+'.join(tex(scalar)+r'\cdot (('+tex(term.subs(t,m['d']))+')-('+tex(term.subs(t,m['a']))+'))' for term in angle_parts)
+        angle_components='+'.join('('+tex(scalar*term.subs(t,m['d']))+')-('+tex(scalar*term.subs(t,m['a']))+')' for term in angle_parts)
+        rows=[r'\iiint_\Delta ('+tex(p['c'])+r'\cdot ('+tex(r*sp.cos(t))+'-'+tex(r*sp.sin(t))+r'))\cdot r\,dz\,dr\,d\theta',
+              I3(m,factor(p['c'],2)),
+              I2(m,factor(p['c'],2)+bracket('z','z',m['low'],m['high'])),
+              I2(m,factor(p['c'],2)+'(('+tex(m['high'])+')-('+tex(m['low'])+'))'),
+              I2(m,factor(p['c']*p['h'],2)),
+              I1(m,bracket(primitive_text,'r',0,m['R'])),
+              I1(m,'('+substituted_endpoint(scalar_primitive,r,0,m['R'])+')'+r'\cdot ('+angular+')'),
+              I1(m,'('+component_endpoint(scalar_primitive,r,0,m['R'])+')'+r'\cdot ('+angular+')'),
+              I1(m,factor(scalar)),
+              tex(scalar)+r'\cdot '+bracket(delta,r'\theta',m['a'],m['d']),
+              angle_endpoint,angle_components,tex(v)]
     worked=intro+r'\begin{aligned}\iiint_R '+tex(m['cart'])+r'\,dV &='+rows[0]+''.join(r' \\ &='+a for a in rows[1:])+r'\end{aligned}'+'\n$$'
     return problem,worked
 

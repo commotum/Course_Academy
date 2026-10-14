@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Fail on independent math, source fidelity, identity, scope, or native grade."""
-import copy, importlib.util, json, math, os, subprocess, sys, hashlib, uuid
+import copy, importlib.util, json, math, os, subprocess, sys, hashlib, uuid, re
 from pathlib import Path
 ROOT=Path(__file__).parent;REPO=ROOT.parents[2]
 spec=importlib.util.spec_from_file_location('g',ROOT.with_suffix('.py'));g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
@@ -72,6 +72,9 @@ def main():
  try:v.check_source_geometry(mutated)
  except AssertionError:mutations.append({'label':'historical rectangle vertical-side inclusion','rejected':True})
  else:raise AssertionError('historical rectangle vertical-side mutation escaped')
+ for rr in variants:
+  content=[rr['question'][':question/problem'],rr['question'][':question/worked-solution']]+[a[':answer/value'] for a in rr['question'][':question/answer-fields'][0][':answer-field/choices']]
+  assert not any(re.search(r'(?<!\\)\{\(x,y\)',text) for text in content),'invisible outer set glyph'
  # All normal raw selector spellings, ineligible selector rejection.
  for selector in ['radio',':answer-field.type/radio','answer-field.type/radio']:
   assert g.generate_easy(1,field_type=selector)['question'][':question/answer-fields'][0][':answer-field/type']==':answer-field.type/radio'

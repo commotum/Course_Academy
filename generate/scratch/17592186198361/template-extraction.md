@@ -26,7 +26,7 @@ Normal banks are selected as one complete family before parameters are sampled. 
 
 | Family | Correct transformed integrand | Four wrong transformed integrands / operations |
 |---|---|---|
-| difference |uv/2|uv (omit inverse determinant),2uv (forward determinant),−uv/2 (signed area), (u²−v²)/2 (difference instead of product)|
+| difference |uv/2|uv (omit inverse determinant),2uv (forward determinant),−uv/2 (reverse the two determinant products and omit the absolute value), (u²−v²)/2 (difference instead of product)|
 | triangular_quadratic |(u²+2uv−3v²)/8|(u²+2uv−3v²)/4 (omit determinant), (u²+2uv−3v²)/2 (forward determinant), [2((u+v)/2)v+((u+v)/2)²]/2 (inverse sign error), [(u−v)v]/2 (omit x²)|
 | product |v²−u²|2(v²−u²),4(v²−u²),(v−u)²,(v+u)²; omit/invert determinant and replace conjugate factors by repeated factors|
 | exponential |e^{2u−3v}|2e^{3u−2v},e^{2u−v},e^{u+v},(1/2)e^{3u−2v}; complete source patterns, coefficient swaps/drop/naive-variable substitution, leading-coefficient factor misuse. Intentions remain inferred|

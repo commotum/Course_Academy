@@ -13,7 +13,7 @@ Parameter guards apply equally to explicit inputs. Profiles are selected before
 parameters. Identity excludes seed/order, mathematical identity excludes banks.
 """
 from __future__ import annotations
-import argparse, hashlib, json, random, re, sys, uuid, os, tempfile
+import argparse, hashlib, json, random, re, sys, uuid, os, tempfile, threading
 from pathlib import Path
 import sympy as s
 os.environ.setdefault('MPLCONFIGDIR','/tmp/kp17592186198374-matplotlib')
@@ -52,14 +52,16 @@ ANCHORS={
 
 def dump(obj):return json.dumps(obj,sort_keys=True,separators=(',',':'),ensure_ascii=False)
 def uid(*parts):return str(uuid.uuid5(uuid.UUID(KP_UUID),dump(parts)))
-def tex(z):return s.latex(s.sympify(z)).replace(r'\log',r'\ln')
+def no_hyperbolic(z):
+    z=s.sympify(z);return z.xreplace({a:a.rewrite(s.exp) for a in z.atoms(s.sinh,s.cosh,s.tanh)})
+def tex(z):return s.latex(no_hyperbolic(z)).replace(r'\log',r'\ln')
 def group(z):return r'\left('+tex(z)+r'\right)'
 def parse(z):
     if isinstance(z,(int,s.Expr)): return s.sympify(z)
     if not isinstance(z,str) or not re.fullmatch(r'[0-9piE*/+(). -]+',z):raise ValueError('exact numeric parameter required')
     return s.sympify(z,locals={'pi':s.pi,'E':s.E})
 def canonical_parameters(p):
-    if set(p)-{'matrix','shift','bounds','scale'}:raise ValueError('unknown parameters')
+    if set(p)-{'matrix','shift','bounds','scale'} or not {'matrix','shift','bounds'}<=set(p):raise ValueError('complete matrix/shift/bounds parameters required')
     q={k:[parse(z) for z in p[k]] for k in ['matrix','shift','bounds']}
     q['scale']=parse(p.get('scale',1));return q
 def serial(p):return {k:[str(z) for z in val] if isinstance(val,list) else str(val) for k,val in p.items()}
@@ -73,10 +75,12 @@ def validate_parameters(level,family,p):
     if not scale.is_Integer or not 1<=scale<=3:raise ValueError('scale integer1..3')
     if any(abs(z)>5 for z in p['matrix']+p['shift']):raise ValueError('coefficient arithmetic ceiling5')
     if any(abs(z)>8 for z in p['bounds']):raise ValueError('bounds arithmetic ceiling8')
+    if family!='cosine_square' and any(not z.is_Integer for z in p['bounds']):raise ValueError('source-sized integer rectangle bounds required')
+    if family=='cosine_square' and (not a0.is_Integer or not a1.is_Integer):raise ValueError('integer u bounds in cosine family')
     if family=='polynomial':
         if c!=0 or d!=1 or h!=0 or k!=0 or a not in [1,2,3] or b not in [-2,-1,1,2] or a0<1 or b0<0:raise ValueError('easy canonical shear bounds')
     if family=='shifted_polynomial':
-        if b!=0 or c!=1 or a not in [2,3,4] or d not in [1,2] or h==0 or k!=0 or a0<1 or b0<1:raise ValueError('moderate affine shift must remain substantive')
+        if b!=0 or c!=1 or a not in [2,3,4] or d not in [1,2] or h not in [-3,-2,-1,1,2,3] or k!=0 or a0<1 or b0<1:raise ValueError('moderate affine shift must remain substantive')
     if family=='rational' and (h!=0 or k!=0 or a!=1 or b!=1 or c not in [2,3,4] or d!=1 or a0<1 or b0<1):raise ValueError('hard rational family bounds')
     if family=='sine' and (a!=1 or b!=0 or c not in [1,2,3] or d!=1 or h!=0 or k!=0 or b0!=0 or b1!=1 or a0<0):raise ValueError('hard sine familiar angle family')
     if family=='exponential' and (a not in [s.Rational(1,2),1] or b!=1 or c!=1 or d not in [2,3,4] or h!=0 or k!=0 or a0<1):raise ValueError('hard exponential matrix domain')
@@ -90,7 +94,8 @@ def sample(family,rng):
     elif family=='shifted_polynomial':p.update(matrix=[rng.randint(2,4),0,1,rng.randint(1,2)],shift=[rng.choice([-3,-2,-1,1,2,3]),0],bounds=[lo,hi,rng.randint(1,2),rng.randint(3,5)])
     elif family=='rational':p.update(matrix=[1,1,rng.randint(2,4),1],bounds=[lo,hi,rng.randint(1,3),rng.randint(4,6)])
     elif family=='sine':p.update(matrix=[1,0,rng.randint(1,3),1],bounds=[rng.randint(0,3),rng.randint(4,6),0,1])
-    elif family=='exponential':p.update(matrix=[rng.choice(['1/2',1]),1,1,rng.choice([2,3,4])],bounds=[lo,hi,rng.choice([-3,-2,0,1]),rng.choice([2,3])])
+    elif family=='exponential':
+        a,d=rng.choice([('1/2',3),('1/2',4),(1,2),(1,3),(1,4)]);p.update(matrix=[a,1,1,d],bounds=[lo,hi,rng.choice([-3,-2,0,1]),rng.choice([2,3])])
     elif family=='exponential_square':p.update(matrix=[1,0,rng.randint(1,3),-1],bounds=[lo,hi,rng.randint(1,2),rng.randint(3,4)])
     else:p.update(bounds=[lo,hi,0,rng.choice(['pi/2','pi/3','pi/4'])])
     return canonical_parameters(p)
@@ -109,7 +114,7 @@ def components(family,p):
     F=fu*fv;fxy=F.subs({u:ux,v:vx},simultaneous=True)*sc
     if family=='cosine_square':fxy=sc*(x*x-y*y)*s.cos((x+y)**2)
     eU=[s.simplify(Au.subs(u,z)) for z in [a1,a0]];eV=[s.simplify(Av.subs(v,z)) for z in [b1,b0]]
-    Iu=s.simplify(eU[0]-eU[1]);Iv=s.simplify(eV[0]-eV[1]);ans=s.simplify(C*Iu*Iv)
+    Iu=no_hyperbolic(s.simplify(eU[0]-eU[1]));Iv=no_hyperbolic(s.simplify(eV[0]-eV[1]));ans=no_hyperbolic(s.simplify(C*Iu*Iv))
     return dict(M=M,det=det,J=J,C=C,ux=ux,vx=vx,inv=inv,corners=corners,vertices=vertices,fu=fu,fv=fv,Au=Au,Av=Av,F=F,fxy=fxy,eU=eU,eV=eV,Iu=Iu,Iv=Iv,answer=ans)
 
 def bank(family,p,z):
@@ -121,16 +126,21 @@ def bank(family,p,z):
     elif family=='exponential':vals=[A,-A,2*A,C*width*Iv,C*Iu*(z['eV'][0]+z['eV'][1])];recipes=['correct','reverse bounds','omit u primitive denominator2','replace u by1','add v endpoints']
     elif family=='exponential_square':vals=[A,-A,2*A,C*width*(s.exp(b1)-s.exp(b0)),C*width*(z['eV'][0]+z['eV'][1])];recipes=['correct','reverse bounds','omit chain factor1/2','replace exp(v^2) endpoint by exp(v)','add v endpoints']
     else:vals=[A,-A,2*A,C*Iu*(s.sin(b1)-s.sin(b0)),C*width*Iv];recipes=['correct','reverse bounds','omit chain factor1/2','replace sin(v^2) endpoint by sin(v)','replace u by1']
-    vals=[s.simplify(q) for q in vals]
+    vals=[no_hyperbolic(s.simplify(q)) for q in vals]
     if any(not q.is_finite or q.has(s.zoo,s.nan) for q in vals):raise ValueError('invalid whole bank')
     for i,q in enumerate(vals):
         for t in vals[:i]:
             if eq(q,t) or abs(float(s.N(q-t,18)))<1e-12:raise ValueError('ambiguous whole bank')
     return vals,recipes
 
+_PLOT_LOCK=threading.RLock()
 def rectangle_plot(p):
+    # Matplotlib mathtext has process-global mutable parser state.
+    with _PLOT_LOCK:return _rectangle_plot(p)
+
+def _rectangle_plot(p):
     """Source rectangle conventions, exact bounds carried into one atomic asset."""
-    path=OUT/'plots';path.mkdir(exist_ok=True);key=hashlib.sha256(dump(serial(p)['bounds']).encode()).hexdigest()[:20];png=path/(key+'.png');meta=path/(key+'.json')
+    path=OUT/'plots';path.mkdir(exist_ok=True);key=hashlib.sha256(dump(['rectangle-layout2',serial(p)['bounds']]).encode()).hexdigest()[:20];png=path/(key+'.png');meta=path/(key+'.json')
     if png.exists() and meta.exists():return str(png)
     a0,a1,b0,b1=p['bounds'];aa,bb,cc,dd=[float(s.N(t)) for t in p['bounds']];w=bb-aa;h=dd-cc
     fig,ax=plt.subplots(figsize=(4.8,4),dpi=125)
@@ -142,7 +152,7 @@ def rectangle_plot(p):
     for A,B in [(aa,cc),(bb,cc),(aa,dd),(bb,dd)]:
         ax.plot([A,A],[0,B],ls='--',color='.65',lw=.6);ax.plot([0,A],[B,B],ls='--',color='.65',lw=.6);ax.plot(A,B,'ko',ms=4)
     for A,B,ea,eb,up in [(aa,cc,a0,b0,False),(bb,cc,a1,b0,False),(aa,dd,a0,b1,True),(bb,dd,a1,b1,True)]:
-        ax.annotate('$('+tex(ea)+','+tex(eb)+')$',(A,B),xytext=(0,13 if up else -20),textcoords='offset points',ha='center',fontsize=10)
+        ax.annotate('$('+tex(ea)+','+tex(eb)+')$',(A,B),xytext=(-7 if A==aa else 7,13 if up else -20),textcoords='offset points',ha='right' if A==aa else 'left',fontsize=10)
     ax.text((aa+bb)/2,dd+h*.07,'$v='+tex(b1)+'$',color='blue',ha='center');ax.text((aa+bb)/2,cc-h*.17,'$v='+tex(b0)+'$',color='red',ha='center');ax.text((aa+bb)/2,(cc+dd)/2,r'$\Delta$',color='#477799',ha='center')
     ax.text(xmax,0,'$u$',va='bottom');ax.text(0,ymax,'$v$',ha='right');ax.axis('off');fig.tight_layout()
     fd,tmp=tempfile.mkstemp(suffix='.png',dir=path);os.close(fd)
@@ -191,7 +201,7 @@ def solution(family,p,z,plot):
     if family=='cosine_square':rows.append(left+'&='+D+tex(sc)+r'(x-y)(x+y)\cos((x+y)^2)\,\mathrm{d}x\,\mathrm{d}y');left=''
     rows.append(left+'&='+DD+tex(sc*F)+r'\,\left|\frac{\partial(x,y)}{\partial(u,v)}\right|'+diff)
     rows.append('&='+DD+tex(sc*F)+r'\,\left|'+tex(z['J'])+r'\right|'+diff)
-    if family=='rational' and C==1:rows.append('&='+DD+tex(F)+diff)
+    if family=='rational':rows.append('&='+DD+tex(C*F)+diff)
     rows.append('&='+tex(C)+r'\cdot '+vint+uint+tex(F)+diff)
     # Rational original factors u first; other source families factor v first.
     vfactor=vint+tex(fv)+r'\,\mathrm{d}v';ufactor=uint+tex(fu)+r'\,\mathrm{d}u'
@@ -229,7 +239,10 @@ def enum(value):return value[':db/ident'] if isinstance(value,dict) else value
 def raw_scale_string(t,c):
     """Complete component scaling slot; at unit scale uses the empty multiplier."""
     prefix='' if c==1 else tex(c)+r'\cdot '
-    return prefix+t if c==1 else prefix+r'\left('+t+r'\right)'
+    if c==1:return prefix+t
+    tail='.' if t.endswith('.') else ''
+    component=t[:-1] if tail else t
+    return prefix+r'\left('+component+r'\right)'+tail
 
 def raw_question(source_id,c):
     """Extracted source masks, not a literal-payload replay branch.
@@ -272,6 +285,17 @@ def raw_question(source_id,c):
         if ':answer-field/correct' in f:field[':answer-field/correct']=[':answer/id',mapping[f[':answer-field/correct'][':answer/id']]]
         fields.append(field)
     if ':question/answer-fields' in q:result[':question/answer-fields']=fields
+    signature=[]
+    for f in fields:
+        selected=next((a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f.get(':answer-field/correct',[None,None])[1]),None)
+        signature.append([f[':answer-field/type'],sorted(a[':answer/value'] for a in f[':answer-field/choices']),selected])
+    qid=uid('raw-content',VERSION,result.get(':question/difficulty'),problem,sol,signature)
+    result[':question/id']=qid
+    for fi,f in enumerate(fields):
+        fid=uid('raw-field',qid,fi);f[':answer-field/id']=fid;mapping={}
+        for a in f[':answer-field/choices']:
+            mapping[a[':answer/id']]=uid('answer',fid,a[':answer/value']);a[':answer/id']=mapping[a[':answer/id']]
+        if ':answer-field/correct' in f:f[':answer-field/correct'][1]=mapping[f[':answer-field/correct'][1]]
     return result
 
 # Easy: canonical integrand factor u and visible y^2, one shear, power primitives.
@@ -298,7 +322,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         q=raw_question(sid,c)
         for f in q.get(':question/answer-fields',[]):rng.shuffle(f[':answer-field/choices'])
         z=components(fam,canonical_parameters(ANCHORS[fam]))
-        return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'template':fam,'profile':profile,'parameters':{'scale':str(c)},'difficulty':level,'source_id':sid,'eligible_for_learning':False,'evidence_only':True,'opaque_bank_interpretation':True,'answer_exact':str(c*z['answer']),'source':{k:SOURCE[k] for k in ['database','basis','lineage']},'runtime':{'python':sys.version.split()[0],'sympy':s.__version__,'matplotlib':matplotlib.__version__}}}
+        return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'template':fam,'profile':profile,'parameters':{'scale':str(c)},'difficulty':level,'source_id':sid,'authored_level':':question/difficulty' not in SOURCES[sid],'mathematical_fingerprint':hashlib.sha256(dump([fam,str(c*z['fxy']),[[str(t) for t in vv] for vv in z['vertices']]]).encode()).hexdigest(),'eligible_for_learning':False,'evidence_only':True,'opaque_bank_interpretation':True,'answer_exact':str(c*z['answer']),'source':{k:SOURCE[k] for k in ['database','basis','lineage']},'runtime':{'python':sys.version.split()[0],'sympy':s.__version__,'matplotlib':matplotlib.__version__}}}
     if profile not in [None,'method']:raise ValueError('unknown bank profile')
     families=[f for f,l in FAMILIES.items() if l==level]
     if template is not None and template not in families:raise ValueError('template outside difficulty')

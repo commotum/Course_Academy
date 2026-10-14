@@ -219,6 +219,13 @@ def validate(record):
         if a[':answer/id']==field[':answer-field/correct'][1]:eq(val,answer)
     assert g.eligible(vals),'ambiguous complete scalar values'
     check_solution(record,p,U,V,f,jac,z)
+    correct_value=next(a[':answer/value'] for a in field[':answer-field/choices'] if a[':answer/id']==field[':answer-field/correct'][1])
+    content=dict(version=g.VERSION,level=q.get(':question/difficulty'),problem=q[':question/problem'],solution=q.get(':question/worked-solution'),bank=sorted(a[':answer/value'] for a in field[':answer-field/choices']),correct=correct_value)
+    expected_identity=g.digest(content)
+    assert record['generation']['content_fingerprint']==expected_identity
+    assert q[':question/id']==g.uid('question/'+expected_identity)
+    assert field[':answer-field/id']==g.uid(q[':question/id']+'/selection')
+    assert all(a[':answer/id']==g.uid(field[':answer-field/id']+'/'+a[':answer/value']) for a in field[':answer-field/choices'])
     return True
 
 def replay_fidelity():

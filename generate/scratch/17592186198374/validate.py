@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Read actual learner math, test all stages/operands and native radio grading."""
-import copy,hashlib,importlib.util,json,re,subprocess,sys,concurrent.futures
+import copy,hashlib,importlib.util,json,re,subprocess,sys,concurrent.futures,tempfile
 from pathlib import Path
 import sympy as s
 from sympy.parsing.sympy_parser import parse_expr,standard_transformations,implicit_multiplication_application
@@ -11,6 +11,8 @@ x,y,u,v=g.x,g.y,g.u,g.v
 def write(name,value):(D/name).write_text(json.dumps(value,indent=2,ensure_ascii=False)+'\n')
 def eq(a,b):
     delta=s.simplify(a-b)
+    if delta==0:return
+    delta=s.simplify(delta.rewrite(s.exp))
     assert delta==0 or delta.equals(0),(a,b,delta)
 def balanced(t):
     assert not any(ord(c)<32 and c not in '\n\t' for c in t),'C0 control character'
@@ -50,6 +52,7 @@ def math(t):
     t=t.replace('{','(').replace('}',')').replace('[','(').replace(']',')').replace('^','**')
     t=re.sub(r'(?<![A-Za-z])e(?![A-Za-z])','E',t)
     t=re.sub(r'(sin|cos|log)\s*([uv]|[0-9]+)(?![a-zA-Z])',r'\1(\2)',t)
+    t=re.sub(r'(?<=[0-9A-Za-z)])(sin|cos|log)(?=\()',r'*\1',t)
     assert '\\' not in t,('unsupported TeX',t)
     return parse_expr(t,local_dict=dict(x=x,y=y,u=u,v=v,pi=s.pi,E=s.E,sqrt=s.sqrt,Abs=s.Abs,sin=s.sin,cos=s.cos,log=s.log),transformations=standard_transformations+(implicit_multiplication_application,))
 
@@ -91,10 +94,18 @@ def read_context(r):
     pts=re.findall(r'\$\((.*?),(.*?)\)\$',prob);assert len(pts)==4
     mapped=[(s.simplify(U.subs({x:math(A),y:math(B)})),s.simplify(V.subs({x:math(A),y:math(B)}))) for A,B in pts]
     expected=[(a0,b0),(a1,b0),(a1,b1),(a0,b1)];assert mapped==expected,(mapped,expected)
+    vertex_block=sol.split('**Step 2**')[1].split('Therefore')[0]
+    vertex_chain=vertex_block.split(r'\begin{aligned}')[1].split(r'\end{aligned}')[0].split(r' \\ ')
+    assert len(vertex_chain)==8
+    for i,(A,B) in enumerate(pts):
+        operands,result=vertex_chain[2*i:2*i+2]
+        lhs,rhs=operands.split('&=');assert lhs==r'T^{-1}('+A+','+B+')'
+        first,second=rhs[1:-1].split(',');eq(math(first),mapped[i][0]);eq(math(second),mapped[i][1])
+        first,second=result.split('&=')[1][1:-1].split(',');eq(math(first),mapped[i][0]);eq(math(second),mapped[i][1])
     transformed=s.simplify(F.subs(inv,simultaneous=True));J=abs(1/det);ans=s.integrate(transformed*J,(u,a0,a1),(v,b0,b1));ans=s.simplify(ans)
     block3=sol.split('**Step 3**')[1].split('**Step 4**')[0];numeric=re.findall(r'&=\\begin\{vmatrix\}(.*?)&(.*?)\\\\(.*?)&(.*?)\\end\{vmatrix\}',block3)[-1];numeric=(None,*numeric);assert numeric
     actual=s.Matrix([[math(numeric[1]),math(numeric[2])],[math(numeric[3]),math(numeric[4])]]);assert M==actual
-    jac=re.search(r'&=(.*?)\.\\end\{aligned\}',block3);assert jac;eq(math(jac[1]),det)
+    jac=block3.rsplit('&=',1)[1].split(r'\end{aligned}')[0];eq(math(jac),det)
     block4=sol.split('**Step 4**')[1].split('Note that')[0];eq(math(block4.split('^{-1}=')[1].split('$$')[0]),1/det)
     return dict(F=F,U=U,V=V,M=M,det=det,J=J,X=X,Y=Y,a0=a0,a1=a1,b0=b0,b1=b1,answer=ans,transformed=transformed)
 
@@ -103,8 +114,11 @@ def check_normal(r):
     assert r['generation']['eligible_for_learning'] and not r['generation']['evidence_only']
     q=r['question']
     for text in [q[':question/problem'],q[':question/worked-solution']]+[a[':answer/value'] for f in q[':question/answer-fields'] for a in f[':answer-field/choices']]:balanced(text)
-    ctx=read_context(r);sol=q[':question/worked-solution'];chain=sol.rsplit(r'\begin{aligned}',1)[1].split(r'\end{aligned}')[0];rows=chain.split(r' \\ ')
-    family=r['generation']['template'];expected_rows=10+(family=='cosine_square')+(family=='rational' and g.parse(r['generation']['parameters']['scale'])*ctx['J']==1)
+    ctx=read_context(r);sol=q[':question/worked-solution']
+    expression=re.search(r'\$\$\nf\(x,y\)=(.*?)\n\$\$',sol,re.S);assert expression
+    for component in expression[1].split('='):eq(math(component),ctx['F'])
+    chain=sol.rsplit(r'\begin{aligned}',1)[1].split(r'\end{aligned}')[0];rows=chain.split(r' \\ ')
+    family=r['generation']['template'];expected_rows=9+(family in ['cosine_square','rational'])
     assert len(rows)==expected_rows,('operative stage count',family,len(rows),expected_rows)
     for row in rows:
         sides=row.split('&=');assert len(sides)==2,(row,'equality stage')
@@ -115,10 +129,20 @@ def check_normal(r):
     assert '|'+g.tex(1/ctx['det'])+'|' in rows[1 if family!='cosine_square' else 2].replace(r'\left','').replace(r'\right','')
     assert rows[-7].count(r'\int_')==2,'nested integral stage'
     assert rows[-6].count(r'\int_')==2 and r'\cdot ' in rows[-6],'separated factors stage'
-    primitive_row=rows[-5];brackets=re.findall(r'\\left\[(.*?)\\right\]_\{(.*?)\}\^\{(.*?)\}',primitive_row);assert len(brackets)==2
+    primitive_row=rows[-5];brackets=[]
+    for m in re.finditer(r'\\left\[(.*?)\\right\]_\{',primitive_row):
+        lo,i=group(primitive_row,m.end()-1);assert primitive_row[i]=='^';hi,j=group(primitive_row,i+1);brackets.append((m[1],lo,hi))
+    assert len(brackets)==2
     primitives={}
     for expr,lo,hi in brackets:
         P=math(expr);vars=P.free_symbols & {u,v};assert len(vars)==1;var=vars.pop();primitives[str(var)]=(P,math(lo),math(hi))
+    # Each displayed separated factor must have its own matching canonical primitive.
+    # Compensating wrong primitive scales cannot pass via the product alone.
+    for component in rows[-6].split(r'\int_')[1:]:
+        lo,i=group(component,0);assert component[i]=='^';hi,j=group(component,i+1)
+        diff=re.search(r'\\mathrm\{d\}([uv])',component[j:]);assert diff
+        var=u if diff[1]=='u' else v;name=str(var);operand=math(component[j:j+diff.start()])
+        P,Plo,Phi=primitives[name];eq(Plo,math(lo));eq(Phi,math(hi));eq(s.diff(P,var),operand);eq(P,s.integrate(operand,var))
     fu=s.diff(primitives['u'][0],u);fv=s.diff(primitives['v'][0],v);scale=g.parse(r['generation']['parameters']['scale']);eq(scale*fu*fv,ctx['transformed'])
     # Reversed endpoints shared errors cannot hide in final equality.
     ev_matches=re.findall(r'\\left\(\\left\((.*?)\\right\)-\\left\((.*?)\\right\)\\right\)',rows[-3]);assert len(ev_matches)==2,(rows[-3],ev_matches)
@@ -130,7 +154,7 @@ def check_normal(r):
     values=[math(a[':answer/value']) for a in choices];assert len({a[':answer/id'] for a in choices})==5
     for i,val in enumerate(values):
         for oth in values[:i]:assert not g.eq(val,oth) and abs(float(s.N(val-oth,18)))>1e-12
-    correct=[a for a in choices if a[':answer/id']==f[':answer-field/correct'][1]];assert len(correct)==1;eq(math(correct[0][':answer/value']),ctx['answer']);eq(g.parse(r['generation']['answer_exact']),ctx['answer'])
+    correct=[a for a in choices if a[':answer/id']==f[':answer-field/correct'][1]];assert len(correct)==1;eq(math(correct[0][':answer/value']),ctx['answer']);eq(s.sympify(r['generation']['answer_exact']),ctx['answer'])
     # Regenerate complete chosen profile independently from printed transform/bounds.
     p={'matrix':list(ctx['M']),'shift':[s.simplify(ctx['U']-ctx['M'][0,0]*x-ctx['M'][0,1]*y),s.simplify(ctx['V']-ctx['M'][1,0]*x-ctx['M'][1,1]*y)],'bounds':[ctx['a0'],ctx['a1'],ctx['b0'],ctx['b1']],'scale':scale}
     z=g.components(family,p);bank,_=g.bank(family,p,z)
@@ -143,13 +167,28 @@ def check_raw(r,source):
     q=r['question'];assert not r['generation']['eligible_for_learning'] and r['generation']['evidence_only']
     for k in [':question/difficulty',':question/worked-solution',':question/answer-fields']:assert (k in q)==(k in source),(k,'attribute parity')
     assert q[':question/problem']==source[':question/problem'];assert q.get(':question/worked-solution')==source.get(':question/worked-solution')
+    # Independently read source integrand/vertices, rather than trust mapped metadata.
+    sid=r['generation']['source_id'];family=g.SOURCE_FAMILY[sid];p=g.canonical_parameters(g.ANCHORS[family]);z=g.components(family,p)
+    prob=source[':question/problem']
+    if '$$' in prob:expr=prob.split('$$')[1].replace('{∬}_{D}','').split(r'\,dxdy')[0]
+    else:expr=prob.split('$∬_(D)')[1].split('dxdy$')[0]
+    F=math(expr);eq(F,z['fxy'])
+    points=re.findall(r'\$\((.*?),(.*?)\)[,.]?\$',prob);assert len(points)==4
+    actual={(s.simplify(z['ux'].subs({x:math(A),y:math(B)})),s.simplify(z['vx'].subs({x:math(A),y:math(B)}))) for A,B in points}
+    assert actual==set(z['corners'])
+    direct=s.integrate(F.subs({x:z['inv'][0],y:z['inv'][1]},simultaneous=True)*abs(z['J']),(u,p['bounds'][0],p['bounds'][1]),(v,p['bounds'][2],p['bounds'][3]));eq(direct,z['answer'])
     pairs=list(zip(q.get(':question/answer-fields',[]),source.get(':question/answer-fields',[])));assert len(pairs)==len(source.get(':question/answer-fields',[]))
     for f,orig in pairs:
         assert f[':answer-field/type']==g.enum(orig[':answer-field/type']);assert f[':answer-field/key']==orig[':answer-field/key']
         assert sorted(a[':answer/value'] for a in f[':answer-field/choices'])==sorted(a[':answer/value'] for a in orig[':answer-field/choices'])
         assert (':answer-field/correct' in f)==(':answer-field/correct' in orig)
+        values=[math(a[':answer/value']) for a in f[':answer-field/choices']]
+        for i,val in enumerate(values):
+            assert val.is_finite and not val.has(s.zoo,s.nan)
+            for old in values[:i]:assert not g.eq(val,old) and abs(float(s.N(val-old,18)))>1e-12
+        assert sum(g.eq(value,direct) for value in values)==1,'source complete bank unique correct scalar'
         if ':answer-field/correct' in f:
-            chosen=[a for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1]];assert len(chosen)==1;assert chosen[0][':answer/value']==orig[':answer-field/correct'][':answer/value']
+            chosen=[a for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1]];assert len(chosen)==1;assert chosen[0][':answer/value']==orig[':answer-field/correct'][':answer/value'];eq(math(chosen[0][':answer/value']),direct)
 
 
 def expect_failure(fn):
@@ -158,12 +197,12 @@ def expect_failure(fn):
     raise AssertionError('negative regression was accepted')
 
 def run():
-    cases=[];raw=[];counts=dict(questions=0,fields=0,options=0,designations=0,missing_correct=0,solution_exact=0,unrated=0)
+    cases=[];raw=[];scaled_raw=[];counts=dict(questions=0,fields=0,options=0,designations=0,missing_correct=0,solution_exact=0,unrated=0)
     for sid,source in g.SOURCES.items():
         level=g.FAMILIES[g.SOURCE_FAMILY[sid]];case=dict(source_id=sid,template=g.SOURCE_FAMILY[sid],parameters={'scale':1},bank_profile='raw:'+sid,level=level,authored_level=':question/difficulty' not in source)
         cases.append(case);r=g.generate(level,profile=case['bank_profile'],parameters=case['parameters']);check_raw(r,source);raw.append(r)
         counts['questions']+=1;counts['fields']+=len(source.get(':question/answer-fields',[]));counts['options']+=sum(len(f[':answer-field/choices']) for f in source.get(':question/answer-fields',[]));counts['designations']+=sum(':answer-field/correct' in f for f in source.get(':question/answer-fields',[]));counts['missing_correct']+=sum(':answer-field/correct' not in f for f in source.get(':question/answer-fields',[]));counts['solution_exact']+=(':question/worked-solution' in source);counts['unrated']+=(':question/difficulty' not in source)
-        scaled=g.generate(level,profile=case['bank_profile'],parameters={'scale':2});assert scaled['question'][':question/problem']!=r['question'][':question/problem'];assert scaled['generation']['answer_exact']!=r['generation']['answer_exact']
+        scaled=g.generate(level,profile=case['bank_profile'],parameters={'scale':2});scaled_raw.append(scaled);assert scaled['question'][':question/problem']!=r['question'][':question/problem'];assert scaled['generation']['answer_exact']!=r['generation']['answer_exact']
     write('source-cases.json',cases)
     records=[];fingerprints={lev:set() for lev in ['easy','moderate','hard']};family_counts={f:0 for f in g.FAMILIES}
     for family,level in g.FAMILIES.items():
@@ -183,23 +222,34 @@ def run():
     expect_failure(lambda:g.generate_hard(template='rational',parameters=dict(matrix=[1,1,2,1],shift=[0,0],bounds=[1,2,0,2])))
     # Same and different renderer instances concurrently: assets + sidecars consistent.
     inputs=[g.canonical_parameters(g.ANCHORS['polynomial']),g.canonical_parameters(g.ANCHORS['sine'])]*2
-    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:paths=list(pool.map(g.rectangle_plot,inputs))
-    assert paths[0]==paths[2] and paths[1]==paths[3] and paths[0]!=paths[1]
+    original_out=g.OUT
+    with tempfile.TemporaryDirectory(dir=D,prefix='fresh-render-') as private:
+        g.OUT=Path(private)
+        try:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:paths=list(pool.map(g.rectangle_plot,inputs))
+            assert paths[0]==paths[2] and paths[1]==paths[3] and paths[0]!=paths[1]
+            for p,png in zip(inputs,paths):
+                png=Path(png);meta=json.loads(png.with_suffix('.json').read_text());assert meta['bounds']==[str(v) for v in p['bounds']];assert meta['image_sha256']==hashlib.sha256(png.read_bytes()).hexdigest()
+            assert not list((g.OUT/'plots').glob('tmp*')),'current private render leaked temporary input'
+        finally:g.OUT=original_out
     engine=[]
     for i,r in enumerate(records):
         f=r['question'][':question/answer-fields'][0];checks=[{'field_index':0,'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'complete radio bank selected-ID grading'} for a in f[':answer-field/choices']]
         engine.append({'label':str(i),'record':r,'checks':checks})
     for r in raw:
-        if any(':answer-field/correct' not in f for f in r['question'][':question/answer-fields']):continue
+        supported=[f for f in r['question'][':question/answer-fields'] if ':answer-field/correct' in f]
+        if not supported:continue
+        r=copy.deepcopy(r);r['question'][':question/answer-fields']=supported
         f=r['question'][':question/answer-fields'][0];checks=[{'field_index':0,'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'faithful original bank radio grading'} for a in f[':answer-field/choices']]
         engine.append({'label':r['generation']['source_id'],'record':r,'checks':checks})
     write('engine-input.json',engine);subprocess.run([str(g.ROOT.parent/'runs/current/check-engine'),str(D/'engine-input.json'),str(D/'engine-report.json')],check=True)
     er=json.loads((D/'engine-report.json').read_text())
-    write('review.json',records)
+    write('review.json',records+scaled_raw)
     review=['# Inferred-from-integrand source and generated review\n\nFrozen math basis1356. Raw sources are evidence-only, opaque banks. Normal banks are authored method-derived complete profiles.\n']
     for r in raw:review+=['\n## Original raw '+r['generation']['source_id']+'\n',g.markdown(r)]
+    for r in scaled_raw:review+=['\n## Generated evidence-only raw bank scale2 '+r['generation']['source_id']+'\n',g.markdown(r)]
     for r in records:review+=['\n## Generated '+r['generation']['difficulty']+' / '+r['generation']['template']+'\n',g.markdown(r)]
     (D/'review.md').write_text('\n'.join(review))
-    report={'status':'passed with documented ineligible raw evidence','source_provenance':{k:g.SOURCE[k] for k in ['database','basis','lineage']},'source_fidelity':counts,'raw_bank_options_matched':counts['options'],'normal_checked_by_family':family_counts,'unique_sampled_mathematical_tasks':{lev:len(val) for lev,val in fingerprints.items()},'native':{k:er[k] for k in ['accepted_checks','rejected_checks','documented_unresolved_checks']},'native_raw_unsupported_fields_missing_correct':2,'native_raw_unchecked_records_due_missing_correct':2,'raw_normal_solution_exact_separated':{'raw_exact_existing':5,'normal_exact':0,'normal_shared_prose_and_required_operations':True,'normal_additions':['explicit inverse equations','individual endpoint substitution and signed evaluation rows'],'presentation_normalization':'balanced literal domain brace; standard LaTeX operators; remove stray differential after completed primitive product'},'authored_extensions':['easy canonical polynomial family','moderate shifted polynomial completion and level assignment','all normal whole method banks'],'regressions':['control character','same-equality primitive substitution removal','correlated endpoint corruption','moderate unshifted scope escape','rational zero denominator','enum/nonenum field selector','identity/order','default hard family coverage','concurrent render sidecars'],'runtime':records[0]['generation']['runtime'],'database_writes':0,'unresolved':['historical scalar distractor intention opaque; raw banks remain public evidence-only','missing original correct designation on unrated source and legacy duplicate: never counted matched']}
+    report={'status':'passed with documented ineligible raw evidence','source_provenance':{k:g.SOURCE[k] for k in ['database','basis','lineage']},'source_fidelity':counts,'raw_bank_options_matched':counts['options'],'normal_checked_by_family':family_counts,'unique_sampled_mathematical_tasks':{lev:len(val) for lev,val in fingerprints.items()},'native':{k:er[k] for k in ['accepted_checks','rejected_checks','documented_unresolved_checks']},'native_raw_unsupported_fields_missing_correct':2,'native_raw_full_record_unsupported':2,'native_raw_completely_unchecked_records':1,'native_source_fields_checked':5,'raw_normal_solution_exact_separated':{'raw_exact_existing':5,'normal_exact':0,'normal_shared_prose_and_required_operations':True,'normal_additions':['explicit inverse equations','individual endpoint substitution and signed evaluation rows'],'presentation_normalization':'balanced literal domain brace; standard LaTeX operators; remove stray differential after completed primitive product'},'authored_extensions':['easy canonical polynomial family','moderate shifted polynomial completion and level assignment','all normal whole method banks'],'regressions':['control character','same-equality primitive substitution removal','correlated endpoint corruption','moderate unshifted scope escape','rational zero denominator','enum/nonenum field selector','identity/order','default hard family coverage','concurrent render sidecars'],'runtime':records[0]['generation']['runtime'],'database_writes':0,'unresolved':['historical scalar distractor intention opaque; raw banks remain public evidence-only','missing original correct designation on unrated source and legacy duplicate: never counted matched']}
     write('validation.json',report);print(json.dumps(report,indent=2))
 if __name__=='__main__':run()
