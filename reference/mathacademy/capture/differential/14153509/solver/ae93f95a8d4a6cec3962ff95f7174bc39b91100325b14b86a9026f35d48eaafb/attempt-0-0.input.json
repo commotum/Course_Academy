@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-37250",
+      "sequence_position": 14,
+      "problem": "Consider the following matrices:\n\n$$\nA=[\\begin{aligned}5 & -4 & -2 \\\\ 0 & -1 & 0 \\\\ 4 & -4 & -1\\end{aligned}],\\,D=[\\begin{aligned}-1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 3\\end{aligned}],\\,P=[\\begin{aligned}∗ & 1 & 1 \\\\ ∗ & 0 & 0 \\\\ ∗ & 2 & 1\\end{aligned}]\n$$\n\nGiven that $D={P}^{-1}AP,$ find the first column of the matrix $P.$",
+      "worked_solution": "From the diagonal matrix $D$, we deduce that the eigenvalues of $A$ are \n\n$\\,$ ${\\lambda }_{1}=-1,\\,$ ${\\lambda }_{2}=1,\\,$ ${\\lambda }_{3}=3.$\n\nSo, the first column of $P$ corresponds to the eigenvalue ${\\lambda }_{1}=-1.$\n\nNow, we need to find an eigenvector that corresponds to ${\\lambda }_{1}=-1.$ Computing $A-(-1)I,$ we get\n\n$$\n\\begin{aligned}A-(-1)I & =[\\begin{aligned}5 & -4 & -2 \\\\ 0 & -1 & 0 \\\\ 4 & -4 & -1\\end{aligned}]-(-1)[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}6 & -4 & -2 \\\\ 0 & 0 & 0 \\\\ 4 & -4 & 0\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ that we reduce to row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}6 & -4 & -2 & 0 \\\\ 0 & 0 & 0 & 0 \\\\ 4 & -4 & 0 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{1}:=\\frac{1}{2}{R}_{1} \\\\ {R}_{3}:=\\frac{1}{4}{R}_{3}\\end{aligned} \\\\  & ∼[\\begin{aligned}3 & -2 & -1 & 0 \\\\ 0 & 0 & 0 & 0 \\\\ 1 & -1 & 0 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}↔{R}_{3}\\end{aligned} \\\\  & ∼[\\begin{aligned}3 & -2 & -1 & 0 \\\\ 1 & -1 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+(-\\frac{1}{3}){R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}3 & -2 & -1 & 0 \\\\ 0 & -\\frac{1}{3} & \\frac{1}{3} & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has two pivot columns ($1$st and $2$nd). Thus, ${x}_{3}$ is a free variable. From the second equation, we obtain ${x}_{2}={x}_{3}.$ Substituting this into the first equation, we get ${x}_{1}={x}_{3}.$\nHence, the general solution is\n\n$$\n[\\begin{aligned}{x}_{3} \\\\ {x}_{3} \\\\ {x}_{3}\\end{aligned}],\\,{x}_{3}\\in R.\n$$\n\nTherefore, setting ${x}_{3}=1,$ we get the eigenvector \n\n$$\n{v}_{1}=[\\begin{aligned}1 \\\\ 1 \\\\ 1\\end{aligned}].\n$$\n\nFinally, $P=[\\begin{aligned}1 & 1 & 1 \\\\ 1 & 0 & 0 \\\\ 1 & 2 & 1\\end{aligned}].$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14153509/observations/history-q-37250-95561628e8e22a4aaf2a.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14153509",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14153509/observations/history-solution-q-37250-b2f5fceae23a13fcd454.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "[\\begin{aligned}0 \\\\ 1 \\\\ 1\\end{aligned}]"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "[\\begin{aligned}2 \\\\ -1 \\\\ 2\\end{aligned}]"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "[\\begin{aligned}-2 \\\\ 1 \\\\ 1\\end{aligned}]"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "[\\begin{aligned}1 \\\\ 1 \\\\ 1\\end{aligned}]"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "[\\begin{aligned}4 \\\\ 3 \\\\ 4\\end{aligned}]"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q37250",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "[\\begin{aligned}0 \\\\ 1 \\\\ 1\\end{aligned}]",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "From the diagonal matrix $D$, we deduce that the eigenvalues of $A$ are \n\n$\\,$ ${\\lambda }_{1}=-1,\\,$ ${\\lambda }_{2}=1,\\,$ ${\\lambda }_{3}=3.$\n\nSo, the first column of $P$ corresponds to the eigenvalue ${\\lambda }_{1}=-1.$\n\nNow, we need to find an eigenvector that corresponds to ${\\lambda }_{1}=-1.$ Computing $A-(-1)I,$ we get\n\n$$\n\\begin{aligned}A-(-1)I & =[\\begin{aligned}5 & -4 & -2 \\\\ 0 & -1 & 0 \\\\ 4 & -4 & -1\\end{aligned}]-(-1)[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}6 & -4 & -2 \\\\ 0 & 0 & 0 \\\\ 4 & -4 & 0\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ that we reduce to row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}6 & -4 & -2 & 0 \\\\ 0 & 0 & 0 & 0 \\\\ 4 & -4 & 0 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{1}:=\\frac{1}{2}{R}_{1} \\\\ {R}_{3}:=\\frac{1}{4}{R}_{3}\\end{aligned} \\\\  & ∼[\\begin{aligned}3 & -2 & -1 & 0 \\\\ 0 & 0 & 0 & 0 \\\\ 1 & -1 & 0 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}↔{R}_{3}\\end{aligned} \\\\  & ∼[\\begin{aligned}3 & -2 & -1 & 0 \\\\ 1 & -1 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+(-\\frac{1}{3}){R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}3 & -2 & -1 & 0 \\\\ 0 & -\\frac{1}{3} & \\frac{1}{3} & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has two pivot columns ($1$st and $2$nd). Thus, ${x}_{3}$ is a free variable. From the second equation, we obtain ${x}_{2}={x}_{3}.$ Substituting this into the first equation, we get ${x}_{1}={x}_{3}.$\nHence, the general solution is\n\n$$\n[\\begin{aligned}{x}_{3} \\\\ {x}_{3} \\\\ {x}_{3}\\end{aligned}],\\,{x}_{3}\\in R.\n$$\n\nTherefore, setting ${x}_{3}=1,$ we get the eigenvector \n\n$$\n{v}_{1}=[\\begin{aligned}1 \\\\ 1 \\\\ 1\\end{aligned}].\n$$\n\nFinally, $P=[\\begin{aligned}1 & 1 & 1 \\\\ 1 & 0 & 0 \\\\ 1 & 2 & 1\\end{aligned}].$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14153509/observations/step-q37250-9d21215c256df1559b89.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a13296-7b00-7f53-9603-e8f20483e913",
+  "previous_failures": []
+}
