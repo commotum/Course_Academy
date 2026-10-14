@@ -84,7 +84,8 @@ def sample(profile,rng):
    if profile=='positive_offsets':v=rng.choice([4,5,6,7,8])
    if family=='repeated':u=v=sp.Rational(rng.choice([-4,-3,-2,-1,1,2,3,4]))
    m=rng.randint(-12,12);p=dict(a=a,b=-3*a*(u+v)/2,c=m+3*a*u*v,d=d,m=m)
-  try:return normalize_parameters(profile,p)
+  try:
+   p=normalize_parameters(profile,p);objects(profile,p);return p
   except ValueError:pass
  raise ValueError('Bounded sampler exhausted')
 
@@ -131,7 +132,7 @@ def generate(level='moderate',seed=0,template=None,parameters=None,profile=None)
  for value in values:
   val=(('x=' if ft=='radio' else '')+r',\,'.join(tex(v) for v in value))
   answers.append({':answer/id':uid(fid+':'+digest(list(map(str,value)))),':answer/type':':answer.type/math',':answer/value':val})
- correct=answers[0][':answer/id'];rng.shuffle(answers)
+ correct=answers[0][':answer/id'];random.Random(seed).shuffle(answers)
  q={':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+level,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection' if ft=='radio' else 'field-1',':answer-field/type':':answer-field.type/'+ft,':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]}
  return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'seed':seed,'template':profile,'bank_profile':profile,'parameters':canonical(p),'source_id':PROFILES[profile][2],'source':SOURCE,'difficulty_design':level,'eligible_for_learning':True,'evidence_only':False,'mathematical_fingerprint':fp,'recipes':recipes,'domains':'Real x; polynomial. Positive templates select the sole positive root.','runtime':{'sympy':sp.__version__}}}
 def markdown(rec):

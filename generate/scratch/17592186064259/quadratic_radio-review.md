@@ -58,11 +58,11 @@ Find the $x$-coordinate of the point on the curve $y=- 2 x^{2} - 8 x - 10$ whose
 
 {{selection}}
 
-$x=0$
 $x=\frac{5}{2}$
-$x=- \frac{5}{4}$
 $x=- \frac{5}{2}$
+$x=0$
 $x=\frac{5}{4}$
+$x=- \frac{5}{4}$
 
 Let $f(x)=- 2 x^{2} - 8 x - 10.$ The slope of the tangent at the point $x$ is equal to $f^{\prime}(x).$ Computing the derivative, we get
 
@@ -92,11 +92,11 @@ Find the $x$-coordinate of the point on the curve $y=x^{2} - 6 x - 4$ whose tang
 
 {{selection}}
 
-$x=1$
-$x=-1$
-$x=0$
-$x=\frac{1}{2}$
 $x=- \frac{1}{2}$
+$x=1$
+$x=\frac{1}{2}$
+$x=0$
+$x=-1$
 
 Let $f(x)=x^{2} - 6 x - 4.$ The slope of the tangent at the point $x$ is equal to $f^{\prime}(x).$ Computing the derivative, we get
 

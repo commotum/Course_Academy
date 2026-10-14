@@ -88,6 +88,6 @@ def check_source(q):
   if left=='x':assert values(right)==roots
   else:assert tuple(sorted(sp.solve(scalar(left)-scalar(right),x)))==roots
  # Conclusions containing a stated slope must agree with the prompt.
- for stated in re.findall(r'(?:slope of|equal to) \$([^$]+)\$',sol):
+ for stated in re.findall(r'(?:slope of|equal to) \$([^$]+)\$',sol.split('Therefore,')[-1]):
   assert scalar(stated.rstrip(' ,'))==m, 'Source conclusion has inconsistent slope'
  return ans

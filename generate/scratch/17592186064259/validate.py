@@ -3,7 +3,7 @@ from pathlib import Path
 import sympy as sp
 HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[2]
 sys.path.insert(0,str(HERE))
-from printed import check,scalar,values,task,fingerprint
+from printed import check,check_source,scalar,values,task,fingerprint
 spec=importlib.util.spec_from_file_location('generator',HERE.with_suffix('.py'));g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
 def save(name,data):(HERE/name).write_text(json.dumps(data,indent=2,ensure_ascii=False,default=str)+'\n')
 def engine_item(rec):
@@ -11,7 +11,7 @@ def engine_item(rec):
  if f[':answer-field/type'].endswith('/radio'):
   checks=[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'Every owned radio choice'} for a in f[':answer-field/choices']]
  else:
-  r=check(rec)[0]
+  r=task(rec['question'])[3][0]
   checks=[{'submitted':z,'expected':'accepted','purpose':'Equivalent exact numeric blank'} for z in {sp.latex(r),str(r),str(2*r.p)+'/'+str(2*r.q)}]
   checks +=[{'submitted':str(r+1),'expected':'rejected','purpose':'Incorrect root'},{'submitted':str(-r),'expected':'rejected','purpose':'Incorrect root sign'}]
  return {'label':rec['question'][':question/id'],'record':rec,'checks':checks}
