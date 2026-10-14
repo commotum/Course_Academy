@@ -79,3 +79,8 @@ The validator exhaustively enumerates the bounded integer factor slots, enforces
 | hard_leading_blank | 480 |
 
 Deduplicated level totals are easy **36**, moderate **1165**, hard **956**. This is a finite easy skill bank; additional exponential/coefficient display variation is useful for recognition but does not claim extra assessed tasks. Sixty seeded draws per template cover all 12 easy tasks in each of the three easy layouts, and 42–56 distinct tasks in each moderate/hard layout. The counts describe authored defaults; observed replay banks retain their own complete-bank eligibility conditions and do not inflate these totals.
+
+
+## Current source refresh at basis 2255
+
+New source q-110802 is moderate quadratic_radio: P(x)=(x-1)(x-2), E(x)=10^x. It retains the existing distributed equation, factoring, zero-product and positive-exponential solution stages. Its bank is z, -z, z/2, 0, -z/2 (2, -2, 1, 0, -1 at source parameters), with product z correct. Scalar-pattern intent is underidentified; this complete bank is replayed explicitly, never merged into authored banks. The positive base domain extends from 2..9 to 2..10; positivity and workload are unchanged. All 15 current practice sources are captured at one basis; original historical capture remains under reference/basis-1356. Plot rating remains none.

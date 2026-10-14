@@ -21,3 +21,8 @@ Nine observed templates, eight individual radio profiles (seven rated, one unrat
 q-88412 has no difficulty, correct reference or solution. Its five choices and prompt are retained exactly. Independently: exponential e^(2x)>0; x²−9=(x+3)(x−3); roots −3,3; product −9. Its easy label and worked solution are authored support, and its inferred designation never counts as an original designation match. An owning lesson Source/q-88412.json was not present at the documented local location; the immutable capture is the available original evidence.
 
 Lesson order was followed using first-step/next: introduction (positive exponential common factor in a linear equation), this KP canonical quadratic, then sibling rearrangement-and-factoring KP. Prerequisites explicitly include difference of squares and quadratic factoring; upstream topic links include quadratic leading coefficients. The generator retains equations already equal to zero, so it does not cross into the sibling rearrangement demand.
+
+
+## Current source refresh at basis 2255
+
+New source q-110802 is moderate quadratic_radio: P(x)=(x-1)(x-2), E(x)=10^x. It retains the existing distributed equation, factoring, zero-product and positive-exponential solution stages. Its bank is z, -z, z/2, 0, -z/2 (2, -2, 1, 0, -1 at source parameters), with product z correct. Scalar-pattern intent is underidentified; this complete bank is replayed explicitly, never merged into authored banks. The positive base domain extends from 2..9 to 2..10; positivity and workload are unchanged. All 15 current practice sources are captured at one basis; original historical capture remains under reference/basis-1356. Plot rating remains none.

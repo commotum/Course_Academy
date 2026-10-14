@@ -1039,6 +1039,72 @@ which leads to the solutions $x=-3,1.$
 Therefore, the original equation has the solutions $x=-3,1,$ and their product is $(-3)\cdot 1=-3.$
 
 
+## Original q-110802
+
+What is the product of solutions of the equation ${x}^{2}\cdot {10}^{x}-3x\cdot {10}^{x}+2\cdot {10}^{x}=0?$
+
+Bank selection: 2, -2, 1, 0, -1
+
+First, we factor the equation:
+
+$$
+\begin{aligned}{x}^{2}\cdot {10}^{x}-3x\cdot {10}^{x}+2\cdot {10}^{x} & =0 \\ ({x}^{2}-3x+2){10}^{x} & =0\end{aligned}
+$$
+
+We can now apply the zero product property, which states that $ab=0$ if and only if $a=0$ or $b=0.$ This gives us two equations,
+
+$$
+{x}^{2}-3x+2=0\,\text{and}\,{10}^{x}=0.
+$$
+
+We now solve each of these equations separately.
+
+- The equation ${x}^{2}-3x+2=0$ can be factored as
+
+$$
+(x-1)(x-2)=0,
+$$
+
+which leads to the solutions $x=1,2.$
+
+- The equation ${10}^{x}=0$ has no solutions because ${10}^{x}$ is positive for every real number $x.$
+
+Therefore, the original equation has the solutions $x=1,2,$ and their product is $1\cdot 2=2.$
+
+
+### Generated changed-parameter variant of q-110802
+
+What is the product of solutions of the equation ${x}^{2}\cdot {4}^{x+3}-5x\cdot {4}^{x+3}-24\cdot {4}^{x+3}=0?$
+
+Generated bank selection: 24, 0, -12, -24, 12
+
+First, we factor the equation:
+
+$$
+\begin{aligned}{x}^{2}\cdot {4}^{x+3}-5x\cdot {4}^{x+3}-24\cdot {4}^{x+3} & =0 \\ ({x}^{2}-5x-24){4}^{x+3} & =0\end{aligned}
+$$
+
+We can now apply the zero product property, which states that $ab=0$ if and only if $a=0$ or $b=0.$ This gives us two equations,
+
+$$
+{x}^{2}-5x-24=0\,\text{and}\,{4}^{x+3}=0.
+$$
+
+We now solve each of these equations separately.
+
+- The equation ${x}^{2}-5x-24=0$ can be factored as
+
+$$
+(x+3)(x-8)=0,
+$$
+
+which leads to the solutions $x=-3,8.$
+
+- The equation ${4}^{x+3}=0$ has no solutions because ${4}^{x+3}$ is positive for every real number $x.$
+
+Therefore, the original equation has the solutions $x=-3,8,$ and their product is $-3\cdot 8=-24.$
+
+
 ## Generated moderate / quadratic_blank
 
 In **ascending order,** the solutions of the equation ${x}^{2}\cdot {7}^{x-3}+7x\cdot {7}^{x-3}-8\cdot {7}^{x-3}=0$ are
@@ -1394,46 +1460,46 @@ $$
 
 ## Generated easy / difference_gcf_blank
 
-In **ascending order,** the solutions of the equation $2{x}^{2}\cdot {2}^{-3-x}-128\cdot {2}^{-3-x}=0$ are
+In **ascending order,** the solutions of the equation $2{x}^{2}\cdot {10}^{-3x-1}-8\cdot {10}^{-3x-1}=0$ are
 
 $x=$
 {{field-1}}$\,$ and $\,x=$
 {{field-2}}.
 
-Generated bank field-1: -8
+Generated bank field-1: -2
 
-Generated bank field-2: 8
+Generated bank field-2: 2
 
 First, we factor the equation:
 
 $$
-\begin{aligned}2{x}^{2}\cdot {2}^{-3-x}-128\cdot {2}^{-3-x} & =0 \\ (2{x}^{2}-128)\cdot {2}^{-3-x} & =0\end{aligned}
+\begin{aligned}2{x}^{2}\cdot {10}^{-3x-1}-8\cdot {10}^{-3x-1} & =0 \\ (2{x}^{2}-8)\cdot {10}^{-3x-1} & =0\end{aligned}
 $$
 
 We can now apply the zero product property, which states that $ab=0$ if and only if $a=0$ or $b=0.$ This gives us two equations,
 
 $$
-2{x}^{2}-128=0\,\text{and}\,{2}^{-3-x}=0.
+2{x}^{2}-8=0\,\text{and}\,{10}^{-3x-1}=0.
 $$
 
 We now solve each of these equations separately.
 
-- The equation $2{x}^{2}-128=0$ can be factored as
+- The equation $2{x}^{2}-8=0$ can be factored as
 
 $$
-\begin{aligned}2({x}^{2}-64) & =0 \\ 2(x+8)(x-8) & =0,\end{aligned}
+\begin{aligned}2({x}^{2}-4) & =0 \\ 2(x+2)(x-2) & =0,\end{aligned}
 $$
 
-which leads to the solutions $x=-8,8.$
+which leads to the solutions $x=-2,2.$
 
 - The equation $2=0$ is not a possible solution because it's a false statement.
 
-- The equation ${2}^{-3-x}=0$ has no solutions because ${2}^{-3-x}$ is positive for every real number $x.$
+- The equation ${10}^{-3x-1}=0$ has no solutions because ${10}^{-3x-1}$ is positive for every real number $x.$
 
 Therefore, in ascending order, the original equation has the solutions 
 
 $$
-x=-8\,\text{and}\,x=8.
+x=-2\,\text{and}\,x=2.
 $$
 
 
@@ -1484,46 +1550,46 @@ $$
 
 ## Generated moderate / quadratic_gcf_blank
 
-In **ascending order,** the solutions of the equation $3{x}^{2}\cdot {4}^{2x-3}-21x\cdot {4}^{2x-3}-54\cdot {4}^{2x-3}=0$ are
+In **ascending order,** the solutions of the equation $3{x}^{2}\cdot {8}^{3x}-27x\cdot {8}^{3x}+54\cdot {8}^{3x}=0$ are
 
 $x=$
 {{field-1}}$\,$ and $\,x=$
 {{field-2}}.
 
-Generated bank field-1: -2
+Generated bank field-1: 3
 
-Generated bank field-2: 9
+Generated bank field-2: 6
 
 First, we factor the equation:
 
 $$
-\begin{aligned}3{x}^{2}\cdot {4}^{2x-3}-21x\cdot {4}^{2x-3}-54\cdot {4}^{2x-3} & =0 \\ (3{x}^{2}-21x-54){4}^{2x-3} & =0\end{aligned}
+\begin{aligned}3{x}^{2}\cdot {8}^{3x}-27x\cdot {8}^{3x}+54\cdot {8}^{3x} & =0 \\ (3{x}^{2}-27x+54){8}^{3x} & =0\end{aligned}
 $$
 
 We can now apply the zero product property, which states that $ab=0$ if and only if $a=0$ or $b=0.$ This gives us two equations,
 
 $$
-3{x}^{2}-21x-54=0\,\text{and}\,{4}^{2x-3}=0.
+3{x}^{2}-27x+54=0\,\text{and}\,{8}^{3x}=0.
 $$
 
 We now solve each of these equations separately.
 
-- The equation $3{x}^{2}-21x-54=0$ can be factored as
+- The equation $3{x}^{2}-27x+54=0$ can be factored as
 
 $$
-\begin{aligned}3({x}^{2}-7x-18) & =0 \\ 3(x+2)(x-9) & =0,\end{aligned}
+\begin{aligned}3({x}^{2}-9x+18) & =0 \\ 3(x-3)(x-6) & =0,\end{aligned}
 $$
 
-which leads to the solutions $x=-2,9.$
+which leads to the solutions $x=3,6.$
 
 - The equation $3=0$ is not a possible solution because it's a false statement.
 
-- The equation ${4}^{2x-3}=0$ has no solutions because ${4}^{2x-3}$ is positive for every real number $x.$
+- The equation ${8}^{3x}=0$ has no solutions because ${8}^{3x}$ is positive for every real number $x.$
 
 Therefore, in ascending order, the original equation has the solutions 
 
 $$
-x=-2\,\text{and}\,x=9.
+x=3\,\text{and}\,x=6.
 $$
 
 
@@ -1714,35 +1780,35 @@ Therefore, the original equation has the solutions $x=-8,3,$ and their product i
 
 ## Generated moderate / quadratic_scaled_radio
 
-What is the product of solutions of the equation $3{x}^{2}\cdot {4}^{2x-3}-21x\cdot {4}^{2x-3}-54\cdot {4}^{2x-3}=0?$
+What is the product of solutions of the equation $3{x}^{2}\cdot {8}^{3x}-27x\cdot {8}^{3x}+54\cdot {8}^{3x}=0?$
 
-Generated bank selection: 7, 9, -2, -54, -18
+Generated bank selection: 54, 3, 9, 18, 6
 
 First, we factor the equation:
 
 $$
-\begin{aligned}3{x}^{2}\cdot {4}^{2x-3}-21x\cdot {4}^{2x-3}-54\cdot {4}^{2x-3} & =0 \\ (3{x}^{2}-21x-54){4}^{2x-3} & =0\end{aligned}
+\begin{aligned}3{x}^{2}\cdot {8}^{3x}-27x\cdot {8}^{3x}+54\cdot {8}^{3x} & =0 \\ (3{x}^{2}-27x+54){8}^{3x} & =0\end{aligned}
 $$
 
 We can now apply the zero product property, which states that $ab=0$ if and only if $a=0$ or $b=0.$ This gives us two equations,
 
 $$
-3{x}^{2}-21x-54=0\,\text{and}\,{4}^{2x-3}=0.
+3{x}^{2}-27x+54=0\,\text{and}\,{8}^{3x}=0.
 $$
 
 We now solve each of these equations separately.
 
-- The equation $3{x}^{2}-21x-54=0$ can be factored as
+- The equation $3{x}^{2}-27x+54=0$ can be factored as
 
 $$
-3(x+2)(x-9)=0,
+3(x-3)(x-6)=0,
 $$
 
-which leads to the solutions $x=-2,9.$
+which leads to the solutions $x=3,6.$
 
-- The equation ${4}^{2x-3}=0$ has no solutions because ${4}^{2x-3}$ is positive for every real number $x.$
+- The equation ${8}^{3x}=0$ has no solutions because ${8}^{3x}$ is positive for every real number $x.$
 
-Therefore, the original equation has the solutions $x=-2,9,$ and their product is $(-2)\cdot 9=-18.$
+Therefore, the original equation has the solutions $x=3,6,$ and their product is $3\cdot 6=18.$
 
 
 ## Generated hard / hard_leading_radio

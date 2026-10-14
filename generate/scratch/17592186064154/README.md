@@ -16,3 +16,12 @@ The stock prompts are incomplete. Their solutions show **endpoint expressions on
 Default radio banks are authored complete operation banks. Explicit `observed_<template>` banks retain every original scalar and expression using coefficient scaling, with the original distractor intent explicitly unresolved. Such scaling is evidence replay, not claimed error recovery. Reject an entire bank on equivalent choices. Genuine nearest-integer/three-decimal instructions remain unchanged; native grading rejects unreduced fractions for rounded numeric blanks even when numerically equal. Exact stock and krill blank equivalents are accepted.
 
 Hard has no observed source: `clock_factory` extends the observed supplied factory rates with fractional clock conversion and sine ±1. It assesses evaluation and entry minus exit; no differentiation or integration. Its time/angle guards apply to explicit parameters too. Stock-g has a finite 19-task positive-square-week domain, enumerated rather than claiming unlimited variety.
+
+
+## Verified replenishment
+
+The validated generator is registered as `0588722c-3c3a-5cea-ab70-6b10fb7fbff3` with repository script `generate/scratch/17592186064154.py`. Replenishment committed nine distinct questions at basis **2253**, from preparation basis 2252: two easy, two moderate, five hard. Strict validated, unshown, unreserved inventory is now **5 / 5 / 5**, with no remaining job for this KP. Hard is the explicitly authored clock-conversion extension; easy and moderate have observed source evidence.
+
+`replenish.py` holds the application `api.lock` from current inventory/basis capture through exact receipt-basis readback. It uses the configured application contributor and basis guard. All eleven existing practice sources, the canonical example and learner history are unchanged. Exact EDN, durable intent, speculative preview, verified receipt, readback and final counts are in `reference/replenishment/basis-2252/`. Five incomplete source questions remain excluded from usable stock, with their original facts retained.
+
+`reference/semantic-dedup-validation.json` records slot coverage and collision checks: changing calendar origins or the sine amplitude at a zero-sine target does not create a distinct task. Bank/order/seed/identity changes never expand inventory. The CLI uses the repository Python environment when the application's ordinary interpreter lacks SymPy.

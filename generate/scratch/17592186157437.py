@@ -14,7 +14,7 @@ import sympy as sp
 KP_ID=17592186157437
 KP_UUID='3758cf02-ba4b-539a-bc61-8c2030ff6f6f'
 TITLE='Solving an Exponential Equation by Factoring'
-VERSION='exponential-factoring-1'
+VERSION='exponential-factoring-2'
 ROOT=Path(__file__).with_suffix('')
 DISPLAYS=json.loads((ROOT/'display-profiles.json').read_text())
 X=sp.Symbol('x',real=True)
@@ -39,7 +39,7 @@ def bounds(p,level,template):
     if set(p)!=PARAM_KEYS:raise ValueError('Require exactly g,a,b,c,d,base,k,h.')
     for k in PARAM_KEYS-{'base'}:
         if type(p[k]) is not int:raise ValueError('Integer parameters required.')
-    if p['base']!='e' and (type(p['base']) is not int or not 2<=p['base']<=9):raise ValueError('Base e or integer 2..9 required.')
+    if p['base']!='e' and (type(p['base']) is not int or not 2<=p['base']<=10):raise ValueError('Base e or integer 2..10 required.')
     if not 1<=p['g']<=3 or not 1<=p['a']<=4 or not 1<=p['c']<=4 or not 1<=abs(p['k'])<=9 or abs(p['h'])>4:raise ValueError('Common-factor/exponent bounds.')
     if not p['b'] or not p['d']:raise ValueError('Both roots nonzero.')
     if sp.Rational(-p['b'],p['a'])==sp.Rational(-p['d'],p['c']):raise ValueError('Two distinct roots required.')
@@ -66,6 +66,7 @@ def bank(profile,p,roots):
     u,v=roots; z=u*v;r=abs(u)
     if profile in ('q-100785','q-88454','q-88412'):return [('product',z),('opposite_product',-z),('lower_root',u),('upper_root',v),('false_exponential_root',sp.Integer(0))]
     if profile=='q-110801':return [('double_upper_root',2*v),('opposite_product',-z),('false_exponential_root',sp.Integer(0)),('product',z),('double_lower_root',2*u)]
+    if profile=='q-110802':return [('product',z),('opposite_product',-z),('half_product',z/2),('false_exponential_root',sp.Integer(0)),('negative_half_product',-z/2)]
     if profile=='q-100781':return [('upper_root',v),('sum_roots',u+v),('lower_root',u),('double_product',2*z),('product',z)]
     # Underidentified banks retain explicit scale patterns; no intent claim.
     if profile=='q-88458':return [('half_product',z/2),('negative_double_upper',-2*v),('negative_upper',-v),('product',z),('double_upper',2*v)]
@@ -111,7 +112,7 @@ def render(mask,values):
     return re.sub(r'\{\{([a-z_0-9]+)\}\}',lambda m:values.get(m[1],m[0]),mask)
 
 def sample(level,template,rng):
-    p={'g':rng.choice([2,3]) if 'gcf' in template or 'scaled' in template else 1,'a':1,'c':1,'base':rng.choice(['e',2,3,4,5,6,7,8,9]),'k':rng.choice([-3,-2,-1,1,2,3]),'h':rng.randint(-3,3)}
+    p={'g':rng.choice([2,3]) if 'gcf' in template or 'scaled' in template else 1,'a':1,'c':1,'base':rng.choice(['e',2,3,4,5,6,7,8,9,10]),'k':rng.choice([-3,-2,-1,1,2,3]),'h':rng.randint(-3,3)}
     if level=='easy':p.update(b=rng.randint(1,12),d=0);p['d']=-p['b']
     else:
         p.update(a=rng.choice([2,3,4]) if level=='hard' else rng.choice([2,3]) if 'leading' in template else 1,c=rng.choice([2,3,4]) if level=='hard' else 1,b=rng.choice([i for i in range(-9,10) if i]),d=rng.choice([i for i in range(-9,10) if i]))
@@ -161,7 +162,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         arr=field_values[key];fid=ident(cid+'/'+key);answers=[{':answer/id':ident(fid+'/'+tex(v)),':answer/type':':answer.type/math',':answer/value':tex(v)} for _,v in arr]
         correct_id=ident(fid+'/'+tex(correct[key]));rng.shuffle(answers)
         fields.append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/blank' if blank else ':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct_id]})
-    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':fields},'generation':{'version':VERSION,'seed':seed,'template':template,'parameters':p,'profile':chosen,'display_profile':profile if profile and profile!='authored' else DEFAULTS[template],'origin':'authored hard extension' if level=='hard' else 'observed display; authored default bank' if chosen=='authored' else 'observed replay profile','source':{'database':'math','basis':1356,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'},'domain':'x real; exponential base positive; distinct nonzero roots','mathematical_fingerprint':fingerprint,'content_fingerprint':cid,'recipes':[(name,tex(v)) for name,v in entries]}}
+    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':fields},'generation':{'version':VERSION,'seed':seed,'template':template,'parameters':p,'profile':chosen,'display_profile':profile if profile and profile!='authored' else DEFAULTS[template],'origin':'authored hard extension' if level=='hard' else 'observed display; authored default bank' if chosen=='authored' else 'observed replay profile','source':{'database':'math','basis':2255,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'},'domain':'x real; exponential base positive; distinct nonzero roots','mathematical_fingerprint':fingerprint,'content_fingerprint':cid,'recipes':[(name,tex(v)) for name,v in entries]}}
 
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
 def generate_moderate(seed=0,**kwargs):return generate('moderate',seed,**kwargs)

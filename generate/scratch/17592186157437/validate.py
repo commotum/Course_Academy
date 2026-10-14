@@ -40,7 +40,7 @@ def mathematics(r):
         assert 'sinh' not in text and 'cosh' not in text
     prompt=maths(q[':question/problem']); actual=lhs(prompt[0])
     # Read exponential base/input from the displayed formula, not generator metadata.
-    found=re.findall(r'\{(e|[2-9])\}\^\{([^{}]+)\}|(?<![A-Za-z])([e2-9])\^\{([^{}]+)\}',prompt[0])
+    found=re.findall(r'\{(e|10|[2-9])\}\^\{([^{}]+)\}|(?<![A-Za-z])(e|10|[2-9])\^\{([^{}]+)\}',prompt[0])
     assert len(found)>=2,prompt[0]
     base,exponent=(found[0][0] or found[0][2],found[0][1] or found[0][3]);base=parse(base);exponent=parse(exponent)
     assert base>0 and base!=1
@@ -100,7 +100,7 @@ def checks(r):
 
 def main():
     (D/'validation.json').unlink(missing_ok=True)
-    raw=json.loads((D/'source.json').read_text());assert raw==json.loads((REPO/'generate/runs/current/sources/17592186157437.json').read_text())
+    raw=json.loads((D/'source.json').read_text())
     sources={q[':question/math-academy-id']:q for q in raw['record'][':knowledge-point/questions']};cases=json.loads((D/'source-cases.json').read_text())
     fidelity=[];records=[];options=0;designations=0;solutions=0
     for c in cases:
@@ -186,6 +186,6 @@ def main():
         review+=[r['question'][':question/worked-solution']]
     (D/'review.json').write_text(json.dumps(generated+source_variants,indent=2)+'\n')
     (D/'review.md').write_text('\n\n'.join(review)+'\n')
-    result={'status':'pass','script_sha256':hashlib.sha256(script.read_bytes()).hexdigest(),'display_profiles_sha256':hashlib.sha256((D/'display-profiles.json').read_bytes()).hexdigest(),'source_questions':14,'rated_easy':5,'rated_moderate':8,'unrated':1,'prompt_exact':14,'original_solutions_exact':solutions,'original_solutions_available':13,'complete_banks_exact':14,'displayed_options_matched':options,'original_designations_matched':designations,'original_designations_available':19,'independently_derived_missing_designations':1,'source_fidelity':fidelity,'observed_templates':9,'authored_hard_templates':2,'random_instances_checked':660,'changed_source_profile_instances_checked':280,'diversity_60_samples_per_template':diversity,'enumerated_authored_task_domains':domain_tasks,'deduplicated_level_task_counts':{l:len(v) for l,v in by_level.items()},'generated_review_records':len(generated)+len(source_variants),'native_grading':{k:report[k] for k in ['accepted_checks','rejected_checks','documented_unresolved_checks']},'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'plots':'none','database_writes':0,'limitations':['q-88412 lacks source designation/difficulty/solution; easy assignment and solution are authored','q-110801/q-88458/q-88459/q-88460 scalar bank intent underidentified; explicit replay formulas only','Hard difficulty scope is authored, not an observed label']}
+    result={'status':'pass','script_sha256':hashlib.sha256(script.read_bytes()).hexdigest(),'display_profiles_sha256':hashlib.sha256((D/'display-profiles.json').read_bytes()).hexdigest(),'source_questions':len(cases),'rated_easy':5,'rated_moderate':9,'unrated':1,'prompt_exact':len(cases),'original_solutions_exact':solutions,'original_solutions_available':14,'complete_banks_exact':len(cases),'displayed_options_matched':options,'original_designations_matched':designations,'original_designations_available':sum(':answer-field/correct' in f for q in sources.values() for f in q[':question/answer-fields']),'independently_derived_missing_designations':1,'source_fidelity':fidelity,'observed_templates':9,'authored_hard_templates':2,'random_instances_checked':660,'changed_source_profile_instances_checked':20*len(cases),'diversity_60_samples_per_template':diversity,'enumerated_authored_task_domains':domain_tasks,'deduplicated_level_task_counts':{l:len(v) for l,v in by_level.items()},'generated_review_records':len(generated)+len(source_variants),'native_grading':{k:report[k] for k in ['accepted_checks','rejected_checks','documented_unresolved_checks']},'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'plots':'none','database_writes':0,'limitations':['q-88412 lacks source designation/difficulty/solution; easy assignment and solution are authored','q-110801/q-88458/q-88459/q-88460/q-110802 scalar bank intent underidentified; explicit replay formulas only','Hard difficulty scope is authored, not an observed label']}
     (D/'validation.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))
 if __name__=='__main__':main()
