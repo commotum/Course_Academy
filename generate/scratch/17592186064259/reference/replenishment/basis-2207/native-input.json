@@ -1,0 +1,88 @@
+[
+  {
+    "label": "3fd03b4b-26b0-57a3-90b6-cf64c012470d",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186064259,
+        "id": "00a74f63-a4eb-5894-b4a4-eb4fd297a3f3",
+        "title": "Finding a Point on a Curve With a Certain Slope"
+      },
+      "question": {
+        ":question/id": "3fd03b4b-26b0-57a3-90b6-cf64c012470d",
+        ":question/problem": "Find the **positive** $x$-coordinate of the point on the curve $y=- x^{3} + 42 x - 2$ whose tangent has a slope of $-6.$\n\n$x=$\n{{field-1}}",
+        ":question/worked-solution": "Let $f(x)=- x^{3} + 42 x - 2.$ The slope of the tangent at the point $x$ is equal to $f^{\\prime}(x).$ Computing the derivative, we get\n\n$$\n\\begin{aligned}\nf^{\\prime}(x) &= \\frac{\\mathrm{d}}{\\mathrm{d}x}\\left(- x^{3} + 42 x - 2\\right) \\\\\n&= (-1)\\cdot 3\\cdot x^{2} + (42)\\cdot 1\\cdot 1 \\\\\n&= 42 - 3 x^{2}\n\\end{aligned}\n$$\n\nWe now set $f^{\\prime}(x)=-6$ and solve for $x:$\n\n$$\n\\begin{aligned}\n42 - 3 x^{2} &= -6 \\\\\n48 - 3 x^{2} &= 0 \\\\\n- 3 \\left(x - 4\\right) \\left(x + 4\\right) &= 0 \\\\\nx &= -4,\\,4\n\\end{aligned}\n$$\n\nSince $x>0$, the required coordinate is $x=4.$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "dc755ef9-cb44-5175-b229-7f7ea951429f",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "e4fa0cb2-db6a-5c95-a80a-4cdb79568c03",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "4"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "e4fa0cb2-db6a-5c95-a80a-4cdb79568c03"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "polynomial-tangent-slope-1.0",
+        "seed": 20261013064259,
+        "template": "cubic_positive_blank",
+        "bank_profile": "cubic_positive_blank",
+        "parameters": {
+          "a": "-1",
+          "b": "0",
+          "c": "42",
+          "d": "-2",
+          "m": "-6"
+        },
+        "source_id": "q-343737",
+        "source": {
+          "database": "math",
+          "basis": 2207,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "difficulty_design": "moderate",
+        "eligible_for_learning": true,
+        "evidence_only": false,
+        "mathematical_fingerprint": "84ff5b9a4f537bf64b2c5c7241a29c53395773599e9fdba345cebd560467117f",
+        "recipes": [
+          "correct_exact_fragment"
+        ],
+        "domains": "Real x; polynomial. Positive templates select the sole positive root.",
+        "runtime": {
+          "sympy": "1.14.0"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted": "4",
+        "expected": "accepted",
+        "purpose": "Equivalent exact numeric blank"
+      },
+      {
+        "submitted": "8/2",
+        "expected": "accepted",
+        "purpose": "Equivalent exact numeric blank"
+      },
+      {
+        "submitted": "5",
+        "expected": "rejected",
+        "purpose": "Incorrect root"
+      },
+      {
+        "submitted": "-4",
+        "expected": "rejected",
+        "purpose": "Incorrect root sign"
+      }
+    ]
+  }
+]
