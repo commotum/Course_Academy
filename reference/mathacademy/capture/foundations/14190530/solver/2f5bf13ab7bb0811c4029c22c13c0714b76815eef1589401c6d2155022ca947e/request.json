@@ -1,0 +1,89 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-160901",
+      "sequence_position": 2,
+      "problem": "Use a change of variables to evaluate the double integral \n\n$$\n{∬}_{D}x\\operatorname{sin}⁡(\\pi (x+y))\\,dxdy,\n$$\n\nwhere $D$ is the quadrilateral region with vertices $(0,0),$ $(1,-1),$ $(1,0),$ and $(0,1).$",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]⟶[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{∬}_{D}f(x,y)\\text{ }dxdy={∬}_{Δ}\\text{ }f(x(u,v),y(u,v))\\,|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=x\\operatorname{sin}⁡(\\pi (x+y))\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=x,\\,v=x+y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\n**Step 2**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $Δ$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}{T}^{-1}(0,0) & =(0,0+0) \\\\  & =(0,0) \\\\ {T}^{-1}(1,-1) & =(1,1+(-1)) \\\\  & =(1,0) \\\\ {T}^{-1}(1,0) & =(1,1+0) \\\\  & =(1,1) \\\\ {T}^{-1}(0,1) & =(0,0+1) \\\\  & =(0,1)\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\nΔ=\\{(u,v)\\,:\\,0\\le u\\le 1,\\,0\\le v\\le 1\\}\n$$\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14190530/assets/5be3ed729654d60b6084200334086b35f093e461bfa2f0eb9d8f0c323f007fb3.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 \\\\ 1 & 1\\end{aligned}| \\\\  & =1.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=1\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{∬}_{D}x\\operatorname{sin}⁡(\\pi (x+y))\\,\\text{d}x\\text{d}y & ={∬}_{Δ}u\\operatorname{sin}⁡(\\pi v)\\,|\\frac{∂(x,y)}{∂(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}u\\operatorname{sin}⁡(\\pi v)\\,|1|\\,\\text{d}u\\text{d}v \\\\  & ={\\int }_{0}^{1}{\\int }_{0}^{1}u\\operatorname{sin}⁡(\\pi v)\\,\\text{d}u\\,\\text{d}v \\\\  & ={\\int }_{0}^{1}\\operatorname{sin}⁡(\\pi v)\\,\\text{d}v{\\int }_{0}^{1}u\\,\\text{d}u \\\\  & ={[-\\frac{\\operatorname{cos}⁡(\\pi v)}{\\pi }]}_{0}^{1}\\cdot {[\\frac{1}{2}{u}^{2}]}_{0}^{1}\\,\\text{d}v \\\\  & =\\frac{2}{\\pi }\\cdot \\frac{1}{2} \\\\  & =\\frac{1}{\\pi }.\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14190530/observations/history-q-160901-037d082202c03cc1b1e5.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14190530",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14190530/observations/history-solution-q-160901-43737392a2555064ed42.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "\\frac{3}{2\\pi }"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "\\pi "
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "\\frac{1}{\\pi }"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "2"
+            }
+          ]
+        }
+      ],
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14190530/assets/5be3ed729654d60b6084200334086b35f093e461bfa2f0eb9d8f0c323f007fb3.png",
+          "sha256": "5be3ed729654d60b6084200334086b35f093e461bfa2f0eb9d8f0c323f007fb3",
+          "source_url": "https://mathacademy.com/graphics/q-160901-e-0",
+          "content_type": "image/png",
+          "representation": "original"
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q160901",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "\\frac{3}{2\\pi }",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]⟶[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{∬}_{D}f(x,y)\\text{ }dxdy={∬}_{Δ}\\text{ }f(x(u,v),y(u,v))\\,|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=x\\operatorname{sin}⁡(\\pi (x+y))\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=x,\\,v=x+y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\n**Step 2**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $Δ$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}{T}^{-1}(0,0) & =(0,0+0) \\\\  & =(0,0) \\\\ {T}^{-1}(1,-1) & =(1,1+(-1)) \\\\  & =(1,0) \\\\ {T}^{-1}(1,0) & =(1,1+0) \\\\  & =(1,1) \\\\ {T}^{-1}(0,1) & =(0,0+1) \\\\  & =(0,1)\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\nΔ=\\{(u,v)\\,:\\,0\\le u\\le 1,\\,0\\le v\\le 1\\}\n$$\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14190530/assets/5be3ed729654d60b6084200334086b35f093e461bfa2f0eb9d8f0c323f007fb3.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 \\\\ 1 & 1\\end{aligned}| \\\\  & =1.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=1\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{∬}_{D}x\\operatorname{sin}⁡(\\pi (x+y))\\,\\text{d}x\\text{d}y & ={∬}_{Δ}u\\operatorname{sin}⁡(\\pi v)\\,|\\frac{∂(x,y)}{∂(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}u\\operatorname{sin}⁡(\\pi v)\\,|1|\\,\\text{d}u\\text{d}v \\\\  & ={\\int }_{0}^{1}{\\int }_{0}^{1}u\\operatorname{sin}⁡(\\pi v)\\,\\text{d}u\\,\\text{d}v \\\\  & ={\\int }_{0}^{1}\\operatorname{sin}⁡(\\pi v)\\,\\text{d}v{\\int }_{0}^{1}u\\,\\text{d}u \\\\  & ={[-\\frac{\\operatorname{cos}⁡(\\pi v)}{\\pi }]}_{0}^{1}\\cdot {[\\frac{1}{2}{u}^{2}]}_{0}^{1}\\,\\text{d}v \\\\  & =\\frac{2}{\\pi }\\cdot \\frac{1}{2} \\\\  & =\\frac{1}{\\pi }.\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14190530/observations/step-q160901-d50a92af12e0297f7ced.html"
+        }
+      }
+    ]
+  }
+}

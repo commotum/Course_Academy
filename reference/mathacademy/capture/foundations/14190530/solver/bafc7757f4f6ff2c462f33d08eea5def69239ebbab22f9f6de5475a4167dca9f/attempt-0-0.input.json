@@ -1,0 +1,91 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-160906",
+      "sequence_position": 3,
+      "problem": "Use a change of variables to evaluate the double integral \n\n$$\n{∬}_{D}2x\\operatorname{cos}⁡(x+2y)\\,dxdy,\n$$\n\nwhere $D$ is the quadrilateral region with vertices $(1,-\\frac{1}{2}),$ $(\\frac{3}{2},-\\frac{3}{4}),$ $(\\frac{3}{2},\\frac{\\pi -3}{4}),$ and $(1,\\frac{\\pi -2}{4}).$",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]⟶[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{∬}_{D}f(x,y)\\text{ }dxdy={∬}_{Δ}\\text{ }f(x(u,v),y(u,v))\\,|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=2x\\operatorname{cos}⁡(x+2y)\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=2x,\\,v=x+2y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\n**Step 2**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $Δ$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}{T}^{-1}(1,-\\frac{1}{2}) & =(2\\cdot 1,1+2(-\\frac{1}{2})) \\\\  & =(2,0) \\\\ {T}^{-1}(\\frac{3}{2},-\\frac{3}{4}) & =(2\\cdot \\frac{3}{2},\\frac{3}{2}+2(-\\frac{3}{4})) \\\\  & =(3,0) \\\\ {T}^{-1}(\\frac{3}{2},\\frac{\\pi -3}{4}) & =(2\\cdot \\frac{3}{2},\\frac{3}{2}+2(\\frac{\\pi -3}{4})) \\\\  & =(3,\\frac{\\pi }{2}) \\\\ {T}^{-1}(1,\\frac{\\pi -2}{4}) & =(2\\cdot 1,1+2(\\frac{\\pi -2}{4})) \\\\  & =(2,\\frac{\\pi }{2})\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\nΔ=\\{(u,v)\\,:\\,2\\le u\\le 3,\\,0\\le v\\le \\frac{\\pi }{2}\\}\n$$\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14190530/assets/dd628fd99b4684d79e8c3b0f4e6696f72582abaef18eef729f5611711a2e42ec.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}2 & 0 \\\\ 1 & 2\\end{aligned}| \\\\  & =4.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=\\frac{1}{4}\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{∬}_{D}2x\\operatorname{cos}⁡(x+2y)\\,\\text{d}x\\text{d}y & ={∬}_{Δ}u\\operatorname{cos}⁡v\\,|\\frac{∂(x,y)}{∂(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}u\\operatorname{cos}⁡v\\,|\\frac{1}{4}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{4}{\\int }_{0}^{\\pi /2}{\\int }_{2}^{3}u\\operatorname{cos}⁡v\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{4}{\\int }_{0}^{\\pi /2}\\operatorname{cos}⁡v\\,\\text{d}v{\\int }_{2}^{3}u\\,\\text{d}u \\\\  & =\\frac{1}{4}\\cdot [\\operatorname{sin}⁡v]_{0}^{\\pi /2}\\cdot {[\\frac{1}{2}{u}^{2}]}_{2}^{3}\\,\\text{d}v \\\\  & =\\frac{1}{4}\\cdot 1\\cdot \\frac{5}{2} \\\\  & =\\frac{5}{8}.\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14190530/observations/history-q-160906-51faa95df63df0df277b.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14190530",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14190530/observations/history-solution-q-160906-be3bcaaba6d7a6439f6a.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "\\frac{\\pi }{2}"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "10"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "\\frac{5}{8}"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "\\frac{5}{2}"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "\\pi "
+            }
+          ]
+        }
+      ],
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14190530/assets/dd628fd99b4684d79e8c3b0f4e6696f72582abaef18eef729f5611711a2e42ec.png",
+          "sha256": "dd628fd99b4684d79e8c3b0f4e6696f72582abaef18eef729f5611711a2e42ec",
+          "source_url": "https://mathacademy.com/graphics/q-160906-e-0",
+          "content_type": "image/png",
+          "representation": "original"
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q160906",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "\\frac{5}{8}",
+                "option": "c",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]⟶[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{∬}_{D}f(x,y)\\text{ }dxdy={∬}_{Δ}\\text{ }f(x(u,v),y(u,v))\\,|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=2x\\operatorname{cos}⁡(x+2y)\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=2x,\\,v=x+2y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\n**Step 2**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $Δ$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}{T}^{-1}(1,-\\frac{1}{2}) & =(2\\cdot 1,1+2(-\\frac{1}{2})) \\\\  & =(2,0) \\\\ {T}^{-1}(\\frac{3}{2},-\\frac{3}{4}) & =(2\\cdot \\frac{3}{2},\\frac{3}{2}+2(-\\frac{3}{4})) \\\\  & =(3,0) \\\\ {T}^{-1}(\\frac{3}{2},\\frac{\\pi -3}{4}) & =(2\\cdot \\frac{3}{2},\\frac{3}{2}+2(\\frac{\\pi -3}{4})) \\\\  & =(3,\\frac{\\pi }{2}) \\\\ {T}^{-1}(1,\\frac{\\pi -2}{4}) & =(2\\cdot 1,1+2(\\frac{\\pi -2}{4})) \\\\  & =(2,\\frac{\\pi }{2})\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\nΔ=\\{(u,v)\\,:\\,2\\le u\\le 3,\\,0\\le v\\le \\frac{\\pi }{2}\\}\n$$\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14190530/assets/dd628fd99b4684d79e8c3b0f4e6696f72582abaef18eef729f5611711a2e42ec.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}2 & 0 \\\\ 1 & 2\\end{aligned}| \\\\  & =4.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=\\frac{1}{4}\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{∬}_{D}2x\\operatorname{cos}⁡(x+2y)\\,\\text{d}x\\text{d}y & ={∬}_{Δ}u\\operatorname{cos}⁡v\\,|\\frac{∂(x,y)}{∂(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}u\\operatorname{cos}⁡v\\,|\\frac{1}{4}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{4}{\\int }_{0}^{\\pi /2}{\\int }_{2}^{3}u\\operatorname{cos}⁡v\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{4}{\\int }_{0}^{\\pi /2}\\operatorname{cos}⁡v\\,\\text{d}v{\\int }_{2}^{3}u\\,\\text{d}u \\\\  & =\\frac{1}{4}\\cdot [\\operatorname{sin}⁡v]_{0}^{\\pi /2}\\cdot {[\\frac{1}{2}{u}^{2}]}_{2}^{3}\\,\\text{d}v \\\\  & =\\frac{1}{4}\\cdot 1\\cdot \\frac{5}{2} \\\\  & =\\frac{5}{8}.\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14190530/observations/step-q160906-77f2855a96f782c8cb45.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a13783-f838-7ec3-8d65-978a9d0429ae",
+  "previous_failures": []
+}
