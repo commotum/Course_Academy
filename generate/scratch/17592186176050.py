@@ -70,6 +70,9 @@ def cleanparams(parameters):
 def check_scope(level,t,p,raw=False):
     v,a,b=p['v'],p['a'],p['b']
     if raw:
+        if not a.is_Rational or a==0 or abs(a)>12 or not b.is_Integer or abs(b)>6:raise ValueError('observed replay coefficient/offset bounds')
+        if t in ('affine','affine_legacy') and (a==1 or b==0):raise ValueError('observed affine workload requires nonunit scaling and offset')
+        if t=='scale' and (a.is_Integer or not 2<=sp.denom(a)<=4 or not (a*v).is_Integer):raise ValueError('observed scale workload requires fractional scaling and integral product')
         if t.startswith('direct') and (a!=1 or b!=0):raise ValueError('direct template requires a=1,b=0')
         if t=='scale' and b!=0:raise ValueError('scale template requires b=0')
         if t=='add' and a!=1:raise ValueError('add template requires a=1')
@@ -118,7 +121,8 @@ def authored_render(p,t):
     # Keep the family's observed stage chain, while standardizing Unicode tan.
     if t in ('direct_legacy','affine_legacy'):
         style='direct' if t=='direct_legacy' else 'affine'
-        prompt,solution=render(p,style)
+        prompt=render(p,t)[0]
+        solution=render(p,style)[1]
         return prompt.replace('tan⁡',r'\tan '),solution.replace('tan⁡',r'\tan ')
     prompt,solution=render(p,t)
     return prompt.replace('tan⁡',r'\tan '),solution.replace('tan⁡',r'\tan ')
@@ -140,9 +144,9 @@ def values(p,t,profile):
 
 def source_bank_tex(sid,p,vals):
     v,a,b,n=p['v'],p['a'],p['b'],p['n']; av=a*v
-    if sid=='q-29382':return [tex(v)+' + '+str(-n)+'π',tex(b),str(-n)+'π',tex(av+b),tex(av-b)]
+    if sid=='q-29382':return [tex(v)+(' + ' if n<0 else ' - ')+str(abs(n))+'π',tex(b),str(-n)+'π',tex(av+b),tex(av-b)]
     if sid=='q-103307':return [tex(av+b),tex(av),tex(-(av+b)),tex(av)+r'\pi '+bterm(av+b),tex(-b)]
-    if sid=='q-103312':return [tex(vals[0]),tex(av),tex(av)+('+' if n>0 else '-')+tex(abs(n/sp.numer(a)))+r'\pi ',tex(av)+r'+\pi ',tex(vals[4])]
+    if sid=='q-103312':return [tex(vals[0]),tex(av),tex(av)+('+' if n/sp.numer(a)>0 else '-')+tex(abs(n/sp.numer(a)))+r'\pi ',tex(av)+r'+\pi ',tex(vals[4])]
     if sid=='q-66594':return [tex(v)+r'+2\pi ', '-1',tex(-v),tex(v),tex(v/2)]
     if sid=='q-70998':return [tex(v+b)+('+' if n<0 else '-')+str(abs(n))+r'\pi ',tex(n)+r'\pi ',tex(b),tex(-v+b),tex(v+b)]
     if sid=='q-71002':return [tex(-v),tex(-v**2),tex(v**2),tex(v)+('+' if n>0 else '-')+str(abs(n))+r'\pi ',tex(v)]
@@ -181,6 +185,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     else:
         if profile not in (None,'authored_method'):raise ValueError('unknown bank profile')
         profile='authored_method';rng=random.Random(seed);t=template or rng.choice(TEMPLATES[level])
+    if not raw and t not in TEMPLATES[level]:raise ValueError('unknown template')
     rng=random.Random(seed)
     for attempt in range(2000):
         try:
@@ -188,11 +193,11 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         except ValueError:
             if parameters is not None:raise
             continue
+        correct=sp.simplify(p['a']*p['v']+p['b'])
         vs=values(p,t,profile)
         if len(vs)!=5 or any(sp.simplify(x-y)==0 for i,x in enumerate(vs) for y in vs[i+1:]):
             if parameters is not None:raise ValueError('whole bank collision')
             continue
-        correct=sp.simplify(p['a']*p['v']+p['b'])
         ci=[i for i,x in enumerate(vs) if sp.simplify(x-correct)==0]
         if len(ci)!=1:raise ValueError('bank lacks unique correct value')
         break

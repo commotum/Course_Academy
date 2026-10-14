@@ -106,3 +106,9 @@ Complete observed bank (original order): `3\sqrt{6}` (ratio 1/3), `9\sqrt{6}` (c
 Coordinates: `['u', '2*v', '6*v']`; scalar: `x*y + x*z`; rectangle: `{'ua': '0', 'ub': '1', 'va': '0', 'vb': '2'}`; extracted factor: `16*sqrt(10)`; reduced integrand: `u*v`; final-chain mask: `separated`.
 
 Complete observed bank (original order): `12\sqrt{10}` (ratio 3/4), `8\sqrt{10}` (ratio 1/2), `16\sqrt{10}` (correct), `14\sqrt{10}` (ratio 7/8), `20\sqrt{10}` (ratio 5/4).
+
+## Independent primitive-bound repair validation
+
+Version v2 repairs wrapped primitive evaluation bounds such as `{[u²/2]}_0^{5/2}` and preserves labelled inner bounds such as `u=-3/2`. The validator reads every bounded primitive directly from the displayed solution with balanced TeX-group parsing, including fraction-valued endpoints and optional closing wrappers, and compares both endpoints and any coordinate labels with the independently parsed prompt/domain. This applies to nested inner/outer primitives, separated products, the shell blank and authored easy tasks. Source-context shell evidence uses its displayed preceding domain in the solution.
+
+Each separated primitive is differentiated and compared with its own actual printed integral factor and differential. Equality of the derivative product is insufficient. New regressions reject a stale q-161185 upper primitive bound (2 changed to 1) and reciprocal scaling of its two primitives, even though the derivative product and final integral can stay equal. Explicit changed-bound cases cover ub=5/2 and labelled symmetric inner endpoints ±3/2. All thirteen original source solution strings must remain byte-exact.

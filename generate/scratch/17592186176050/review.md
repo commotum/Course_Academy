@@ -16,13 +16,13 @@ E. $2 + 4π$
 
 ### Parameterized observed-bank evidence variant (ineligible)
 
-If $\tan x = 2$, for some value of $x$, find the value of $2\tan (x - 5π) - 1$.
+If $\tan x = 3$, for some value of $x$, find the value of $2\tan (x - 5π) - 1$.
 
 A. $5π$
 B. $-1$
-C. $2 + 5π$
-D. $5$
-E. $3$
+C. $3 + 5π$
+D. $7$
+E. $5$
 
 [Worked solution absent in raw source.]
 
@@ -40,13 +40,13 @@ E. $\frac{1}{4}$
 
 ### Parameterized observed-bank evidence variant (ineligible)
 
-If $\tan x = 4$, for some value of $x$, find the value of $\tan (x + 8π)$.
+If $\tan x = 5$, for some value of $x$, find the value of $\tan (x + 8π)$.
 
-A. $4$
+A. $5$
 B. $1$
-C. $\frac{1}{4}$
-D. $-\frac{1}{4}$
-E. $-4$
+C. $\frac{1}{5}$
+D. $-\frac{1}{5}$
+E. $-5$
 
 [Worked solution absent in raw source.]
 
@@ -80,13 +80,13 @@ $$
 
 ### Parameterized observed-bank evidence variant (ineligible)
 
-If $tan⁡x=\frac{1}{3},$ for some value of $x,$ find the value of $12tan⁡(x+6\pi )-6.$
+If $tan⁡x=\frac{4}{3},$ for some value of $x,$ find the value of $12tan⁡(x+6\pi )-6.$
 
-A. $2$
-B. $4$
-C. $-2$
+A. $-10$
+B. $16$
+C. $10$
 D. $6$
-E. $4\pi -2$
+E. $16\pi +10$
 
 The period of $y=tan⁡x$ is $\pi .$ Therefore, for any integer $n,$ we have
 
@@ -100,10 +100,10 @@ $$
 \begin{aligned}tan⁡x=tan⁡(x+6\cdot \pi )=tan⁡(x+6\pi ).\end{aligned}
 $$
 
-Since $tan⁡x=\frac{1}{3},$ we get that $tan⁡(x+6\pi )=\frac{1}{3}.$ Therefore
+Since $tan⁡x=\frac{4}{3},$ we get that $tan⁡(x+6\pi )=\frac{4}{3}.$ Therefore
 
 $$
-12tan⁡(x+6\pi )-6=12(\frac{1}{3})-6=4-6=-2.
+12tan⁡(x+6\pi )-6=12(\frac{4}{3})-6=16-6=10.
 $$
 
 ## Original q-103312
@@ -136,13 +136,13 @@ $$
 
 ### Parameterized observed-bank evidence variant (ineligible)
 
-If $tan⁡x=16,$ for some value of $x,$ find the value of $\frac{3}{4}tan⁡(x-10\pi ).$
+If $tan⁡x=12,$ for some value of $x,$ find the value of $\frac{3}{4}tan⁡(x-10\pi ).$
 
-A. $12-\frac{10}{3}\pi $
-B. $12$
-C. $4$
-D. $15$
-E. $12+\pi $
+A. $9-\frac{10}{3}\pi $
+B. $9$
+C. $3$
+D. $12$
+E. $9+\pi $
 
 The period of $y=tan⁡x$ is $\pi .$ Therefore, for any integer $n,$ we have
 
@@ -156,10 +156,10 @@ $$
 \begin{aligned}tan⁡x=tan⁡(x+(-10)\cdot \pi )=tan⁡(x-10\pi ).\end{aligned}
 $$
 
-Since $tan⁡x=16,$ we get that $tan⁡(x-10\pi )=16.$ Therefore
+Since $tan⁡x=12,$ we get that $tan⁡(x-10\pi )=12.$ Therefore
 
 $$
-\frac{3}{4}tan⁡(x-10\pi )=\frac{3}{4}(16)=12.
+\frac{3}{4}tan⁡(x-10\pi )=\frac{3}{4}(12)=9.
 $$
 
 ## Original q-66594
@@ -188,13 +188,13 @@ Therefore, if $tan⁡x=\sqrt{3},$ we get that $tan⁡(x-5\pi )=\sqrt{3}.$
 
 ### Parameterized observed-bank evidence variant (ineligible)
 
-If $tan⁡x=\sqrt{3},$ for some $x$, find the value of $tan⁡(x-6\pi ).$
+If $tan⁡x=\sqrt{5},$ for some $x$, find the value of $tan⁡(x-6\pi ).$
 
-A. $-\sqrt{3}$
+A. $-\sqrt{5}$
 B. $-1$
-C. $\sqrt{3}+2\pi $
-D. $\frac{\sqrt{3}}{2}$
-E. $\sqrt{3}$
+C. $\sqrt{5}+2\pi $
+D. $\frac{\sqrt{5}}{2}$
+E. $\sqrt{5}$
 
 The period of $y=tan⁡x$ is $\pi .$ Therefore, for integer $n$ we have
 
@@ -208,7 +208,7 @@ $$
 \begin{aligned}tan⁡x=tan⁡(x+(-6)\cdot \pi )=tan⁡(x-6\pi ).\end{aligned}
 $$
 
-Therefore, if $tan⁡x=\sqrt{3},$ we get that $tan⁡(x-6\pi )=\sqrt{3}.$
+Therefore, if $tan⁡x=\sqrt{5},$ we get that $tan⁡(x-6\pi )=\sqrt{5}.$
 
 ## Original q-70998
 
@@ -242,13 +242,13 @@ $$
 
 ### Parameterized observed-bank evidence variant (ineligible)
 
-If $tan⁡x=3,$ for some $x$, find the value of $tan⁡(x+6\pi )+2.$
+If $tan⁡x=4,$ for some $x$, find the value of $tan⁡(x+6\pi )+2.$
 
 A. $2$
 B. $6\pi $
-C. $5-6\pi $
-D. $5$
-E. $-1$
+C. $6-6\pi $
+D. $6$
+E. $-2$
 
 The period of $y=tan⁡x$ is $\pi .$ Therefore, for integer $n$ we have
 
@@ -262,12 +262,12 @@ $$
 \begin{aligned}tan⁡x=tan⁡(x+6\cdot \pi )=tan⁡(x+6\pi ).\end{aligned}
 $$
 
-Therefore, if $tan⁡x=3,$ we get that $tan⁡(x+6\pi )=3.$
+Therefore, if $tan⁡x=4,$ we get that $tan⁡(x+6\pi )=4.$
 
 Finally, then
 
 $$
-tan⁡(x+6\pi )+2=(3)+2=5.
+tan⁡(x+6\pi )+2=(4)+2=6.
 $$
 
 ## Original q-71002
@@ -296,13 +296,13 @@ Therefore, if $tan⁡x=\sqrt{2},$ we get that $tan⁡(x-11\pi )=\sqrt{2}.$
 
 ### Parameterized observed-bank evidence variant (ineligible)
 
-If $tan⁡x=\sqrt{2},$ for some $x$, find the value of $tan⁡(x-12\pi ).$
+If $tan⁡x=\sqrt{3},$ for some $x$, find the value of $tan⁡(x-12\pi ).$
 
-A. $2$
-B. $-2$
-C. $-\sqrt{2}$
-D. $\sqrt{2}$
-E. $\sqrt{2}-12\pi $
+A. $3$
+B. $-3$
+C. $-\sqrt{3}$
+D. $\sqrt{3}$
+E. $\sqrt{3}-12\pi $
 
 The period of $y=tan⁡x$ is $\pi .$ Therefore, for integer $n$ we have
 
@@ -316,11 +316,63 @@ $$
 \begin{aligned}tan⁡x=tan⁡(x+(-12)\cdot \pi )=tan⁡(x-12\pi ).\end{aligned}
 $$
 
-Therefore, if $tan⁡x=\sqrt{2},$ we get that $tan⁡(x-12\pi )=\sqrt{2}.$
+Therefore, if $tan⁡x=\sqrt{3},$ we get that $tan⁡(x-12\pi )=\sqrt{3}.$
+
+## Authored moderate / affine_legacy
+
+If $\tan x = 2$, for some value of $x$, find the value of $2\tan (x - 4π) - 1$.
+
+A. $5$
+B. $4$
+C. $3$
+D. $3 -8 \pi$
+E. $0$
+
+The period of $y=\tan x$ is $\pi .$ Therefore, for any integer $n,$ we have
+
+$$
+\tan x=\tan (x+n\pi ).
+$$
+
+Substituting $n=-4$ into the above gives
+
+$$
+\begin{aligned}\tan x=\tan (x+(-4)\cdot \pi )=\tan (x-4\pi ).\end{aligned}
+$$
+
+Since $\tan x=2,$ we get that $\tan (x-4\pi )=2.$ Therefore
+
+$$
+2\tan (x-4\pi )-1=2(2)-1=4-1=3.
+$$
 
 ## Authored easy / direct_legacy
 
-If $\tan x=-15,$ for some $x$, find the value of $\tan (x+10\pi ).$
+If $\tan x = 4$, for some value of $x$, find the value of $\tan (x + 7π)$.
+
+A. $-4$
+B. $\frac{1}{4}$
+C. $4$
+D. $4 + 7 \pi$
+E. $-\frac{1}{4}$
+
+The period of $y=\tan x$ is $\pi .$ Therefore, for integer $n$ we have
+
+$$
+\tan x=\tan (x+n\pi ).
+$$
+
+Substituting $n=7$ into the right-hand-side of the above gives
+
+$$
+\begin{aligned}\tan x=\tan (x+7\cdot \pi )=\tan (x+7\pi ).\end{aligned}
+$$
+
+Therefore, if $\tan x=4,$ we get that $\tan (x+7\pi )=4.$
+
+## Authored easy / direct_legacy
+
+If $\tan x = -15$, for some value of $x$, find the value of $\tan (x + 10π)$.
 
 A. $-\frac{1}{15}$
 B. $\frac{1}{15}$
@@ -344,7 +396,7 @@ Therefore, if $\tan x=-15,$ we get that $\tan (x+10\pi )=-15.$
 
 ## Authored easy / direct_legacy
 
-If $\tan x=-14,$ for some $x$, find the value of $\tan (x-1\pi ).$
+If $\tan x = -14$, for some value of $x$, find the value of $\tan (x - 1π)$.
 
 A. $-14$
 B. $-\frac{1}{14}$
@@ -588,7 +640,7 @@ $$
 
 ## Authored moderate / affine_legacy
 
-If $\tan x=\frac{2}{3},$ for some value of $x,$ find the value of $\left(-12\right)\tan (x+5\pi )-2.$
+If $\tan x = \frac{2}{3}$, for some value of $x$, find the value of $\left(-12\right)\tan (x + 5π) - 2$.
 
 A. $-60 \pi -10$
 B. $-10$
@@ -616,7 +668,7 @@ $$
 
 ## Authored moderate / affine_legacy
 
-If $\tan x=6,$ for some value of $x,$ find the value of $4\tan (x-1\pi )-2.$
+If $\tan x = 6$, for some value of $x$, find the value of $4\tan (x - 1π) - 2$.
 
 A. $26$
 B. $22$

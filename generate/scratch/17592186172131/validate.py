@@ -23,6 +23,57 @@ def formatting(r):
         assert f[':answer-field/correct'][1] in [a[':answer/id'] for a in f[':answer-field/choices']]
 
 def pexpr(t):return g.scalar_parse(t.replace('\\,','').replace('⁡','').strip().rstrip('.,'))
+def tex_group(text,pos):
+    """Read the actual complete TeX group, including nested fraction groups."""
+    assert text[pos]=='{','expected braced TeX bound'
+    depth=1;end=pos+1
+    while depth:
+        assert end<len(text),'unterminated TeX bound'
+        if text[end]=='{':depth+=1
+        elif text[end]=='}':depth-=1
+        end+=1
+    return text[pos+1:end-1],end
+
+def evaluation_bounds(solution):
+    """Enumerate every displayed bounded primitive, retaining labels and wrappers."""
+    result=[]
+    for hit in re.finditer(r'\[([^\[\]\n]+)\](?:\})?_',solution):
+        cursor=hit.end()
+        if solution[cursor]=='{':lower,cursor=tex_group(solution,cursor)
+        else:lower=solution[cursor];cursor+=1 # authored easy's _0 convention
+        assert solution[cursor]=='^','primitive needs an upper evaluation bound'
+        upper,cursor=tex_group(solution,cursor+1)
+        result.append((hit.group(1),lower.strip(),upper.strip()))
+    return result
+
+def check_primitive_bounds(solution,expected):
+    actual=evaluation_bounds(solution)
+    assert len(actual)==len(expected),'missing or extra bounded primitive'
+    for (body,lower,upper),(var,lo,hi) in zip(actual,expected):
+        for text,value in ((lower,lo),(upper,hi)):
+            if '=' in text:
+                label,text=text.split('=',1)
+                assert pexpr(label)==var,'primitive bound labels the wrong coordinate'
+            eq(pexpr(text),value)
+    return [pexpr(body) for body,_,_ in actual]
+
+def separate_integral_factors(row,variables):
+    """Read each actual source-separated integrand before its own differential."""
+    factors=[]
+    hits=list(re.finditer(r'(?:\{\\int \}|\\int)_',row))
+    assert len(hits)==len(variables),'separated factor count'
+    for hit,var in zip(hits,variables):
+        cursor=hit.end()
+        if row[cursor]=='{':_,cursor=tex_group(row,cursor)
+        else:cursor+=1
+        assert row[cursor]=='^'
+        _,cursor=tex_group(row,cursor+1)
+        diff=re.search(r'\\text\{d\}(\\theta|[uvx])',row[cursor:]);assert diff,'missing factor differential'
+        assert pexpr(diff[1])==var,'wrong factor differential'
+        body=row[cursor:cursor+diff.start()].replace(r'\,','').strip()
+        factors.append(pexpr(body) if body else s.Integer(1))
+    return factors
+
 def independent(r):
     t=r['generation']['template'];p=r['generation']['parameters'];q=r['question'];sol=q[':question/worked-solution'];prompt=q[':question/problem'];raw=r['generation']['evidence_only']
     if not raw:formatting(r)
@@ -30,6 +81,16 @@ def independent(r):
         a,b,c,A,B=[p[k] for k in ('a','b','c','U','V')];ru=s.Matrix([a,a,0]);rv=s.Matrix([b,-b,c]);n=s.sqrt(ru.cross(rv).dot(ru.cross(rv)));value=s.integrate(2*b*g.v*n,(g.u,0,A),(g.v,0,B))
         assert '⟨'+r',\,'.join(g.tex(e) for e in [a*g.u+b*g.v,a*g.u-b*g.v,c*g.v])+'⟩' in prompt
         eq(pexpr(sol.split('&=')[-1].split('\\end')[0]),value)
+        printed=[]
+        for var in ('u','v'):
+            hit=re.search(r'(\d+)\\le '+var+r'\\le (\d+)',prompt);assert hit
+            printed.extend(map(pexpr,hit.groups()))
+        for actual,expected in zip(printed,(0,A,0,B)):eq(actual,expected)
+        primitives=check_primitive_bounds(sol,[(g.v,printed[2],printed[3]),(g.u,printed[0],printed[1])])
+        integralrow=next(row for row in sol.split(r'\\') if r'\int_0' in row)
+        factors=separate_integral_factors(integralrow,(g.v,g.u))
+        for primitive,var,factor in zip(primitives,(g.v,g.u),factors):eq(s.diff(primitive,var),factor)
+        eq(factors[0],2*b*g.v);eq(factors[1],1)
     else:
         # Extract coordinates and density from printed prompt, separately from generation metadata.
         R,F,B,C,H,style=g.DATA[t]
@@ -53,7 +114,18 @@ def independent(r):
                 parsed.extend(map(pexpr,hit.groups()))
             for printed,parameter in zip(parsed,(a,b,c,d)):eq(printed,parameter)
             a,b,c,d=parsed
-        elif not raw:assert '0\\le x\\le '+g.tex(p['ub']) in prompt and r'\frac{'+g.tex(s.sympify(p['k'])*g.x)+'(y^2+z^2)}' in prompt
+        else:
+            if raw:
+                setup=next(e for e in sol.split('$$') if r'x\in [' in e)
+                xb=re.search(r'x\\in \[([^,]+),([^]]+)\]',setup);th=re.search(r'\\theta \\in \[([^,]+),([^)]*)\)',setup);assert xb and th
+                domain=list(map(pexpr,xb.groups()+th.groups()))
+            else:
+                atom=r'-?(?:\d+|\\frac\{\d+\}\{\d+\})'
+                xb=re.search('('+atom+r')\\le x\\le ('+atom+')',prompt);th=re.search(r'(\d+)\\le\\theta<([^$]+)',prompt);assert xb and th
+                domain=list(map(pexpr,xb.groups()+th.groups()))
+                assert r'\frac{'+g.tex(s.sympify(p['k'])*g.x)+'(y^2+z^2)}' in prompt
+            for actual,parameter in zip(domain,(a,b,c,d)):eq(actual,parameter)
+            a,b,c,d=domain
         value=s.simplify(s.integrate(s.simplify(pull*norm),(aa,a,b),(bb,c,d)))
         eq((s.sympify(p['k'])*C*H) if style=='charge' else C*H,pull*norm)
         if style!='charge':
@@ -79,6 +151,7 @@ def independent(r):
         # Validate source family stages and evaluate BOTH primitive endpoints independently from printed brackets.
         block=sol.split('$$')[-2];rows=block.replace('\\begin{aligned}','').replace('\\end{aligned}','').strip().split(r' \\ ')
         final=rows[-1].split('=')[-1];eq(pexpr(final),value)
+        bounded_primitives=check_primitive_bounds(sol,[(aa,a,b),(bb,c,d)])
         if style=='nested':
             # Read actual displayed inner/outer primitives; differentiate independently.
             inner=re.findall(r'\[([^]]+)\]',rows[4])[0];Pu=pexpr(inner);eq(s.diff(Pu,aa),H)
@@ -111,7 +184,10 @@ def independent(r):
             primitives=list(map(pexpr,re.findall(r'\[([^]]+)\]',primitive_row)))
             # Raw q160834 dv [u] typo is recorded, not a correctness pass.
             if raw and t=='q-160834':primitives[1]=g.v
-            eq(s.diff(primitives[0],aa)*s.diff(primitives[1],bb),H)
+            factorrow=rows[4] if style=='separated' else rows[3]
+            factors=separate_integral_factors(factorrow,(aa,bb))
+            for primitive,var,factor in zip(primitives,(aa,bb),factors):eq(s.diff(primitive,var),factor)
+            eq(factors[0]*factors[1],H)
             if not raw:
                 endpointrow=next(row for row in rows if r')]\cdot [(' in row)
                 factors=re.findall(r'\[([^]]+)\]',endpointrow)
@@ -119,7 +195,9 @@ def independent(r):
                     hi_s,lo_s=factor[1:-1].split(')-(');eq(pexpr(hi_s),P.subs(var,hi));eq(pexpr(lo_s),P.subs(var,lo))
         elif style=='charge':
             primitives=list(map(pexpr,re.findall(r'\[([^]]+)\]',rows[4])))
-            eq(s.diff(primitives[0],aa)*s.diff(primitives[1],bb),s.simplify(pull*norm))
+            integral_factors=separate_integral_factors(rows[3],(aa,bb))
+            for primitive,var,factor in zip(primitives,(aa,bb),integral_factors):eq(s.diff(primitive,var),factor)
+            eq(integral_factors[0]*integral_factors[1],s.simplify(pull*norm))
             normtext=next(e for e in sol.split('$$') if '‖{r}_{x}' in e and '=2' in e).split('=')[1];eq(pexpr(normtext),norm)
             pullblock=next(e for e in sol.split('$$') if r'\begin{aligned}d(r' in e);lastpull=pullblock.split(' & =')[-1].split('\\end')[0];eq(pexpr(lastpull),pull)
             factors=rows[5].split('=',1)[1].split(r'\cdot ')
@@ -165,6 +243,9 @@ def run():
             r=g.generate(g.LEVEL[t],seed,template=t);independent(r);records.append(r)
         # Changed opaque evidence remains public but ineligible.
         changed=g.generate(g.LEVEL[t],12,template=t,profile='observed');independent(changed)
+    # Explicit parent-found wrapped/fractional and labelled-inner bound regressions.
+    for t,p in [('q-161185',{'ua':'0','ub':'5/2','va':'0','vb':'2'}),('q-161127',{'ua':'-3/2','ub':'3/2','va':'0','vb':'1'})]:
+        r=g.generate(g.LEVEL[t],template=t,parameters=p);independent(r);records.append(r)
     for coefficient,upper in itertools.product(range(1,9),('1/2','1','3/2','2')):
         p=dict(g.ORIGINAL['q-167649'],k=str(coefficient),ub=upper);r=g.generate_moderate(template='q-167649',parameters=p);independent(r);records.append(r)
     for seed in range(60):r=g.generate_easy(seed);independent(r);records.append(r)
@@ -182,6 +263,12 @@ def run():
     m=copy.deepcopy(base);m['question'][':question/worked-solution']=m['question'][':question/worked-solution'].replace(r'\frac{{u}^{3}}{3}+u{v}^{2}',r'\frac{{u}^{3}}{3}+u{v}^{2}+1');mutations.append(m)
     m=copy.deepcopy(g.generate_hard(6,template='q-161242'));m['question'][':question/worked-solution']=m['question'][':question/worked-solution'].replace(r'5{∬}_{D}\,4uv',r'10{∬}_{D}\,2uv');mutations.append(m)
     m=copy.deepcopy(g.generate_hard(0,template='q-161127',parameters=g.ORIGINAL['q-161127']));sol=m['question'][':question/worked-solution'];block=sol.split('$$')[-2];rows=block.split(r' \\ ');detail=rows[5];inside=detail.split('}[(',1)[1].split(r')]\text')[0];hi,lo=inside.split(')-(');changed=detail.replace('}[('+inside+r')]\text','}[('+hi+'+1)-('+lo+r'+1)]\text');m['question'][':question/worked-solution']=sol.replace(detail,changed);mutations.append(m)
+    stale=g.generate_moderate(template='q-161185',parameters={'ua':'0','ub':'2','va':'0','vb':'2'})
+    m=copy.deepcopy(stale);sol=m['question'][':question/worked-solution'];old=r'{[\frac{{u}^{2}}{2}]}_{0}^{2}';assert old in sol
+    m['question'][':question/worked-solution']=sol.replace(old,r'{[\frac{{u}^{2}}{2}]}_{0}^{1}',1);mutations.append(m)
+    # Reciprocal primitive scaling preserves their derivative product but violates each factor.
+    m=copy.deepcopy(stale);sol=m['question'][':question/worked-solution'];sol=sol.replace(r'{[\frac{{u}^{2}}{2}]}',r'{[{u}^{2}]}',1).replace(r'{[\frac{{v}^{2}}{2}]}',r'{[\frac{{v}^{2}}{4}]}',1)
+    m['question'][':question/worked-solution']=sol;mutations.append(m)
     for m in mutations:
         try:independent(m)
         except AssertionError:pass
@@ -204,6 +291,6 @@ def run():
     for r in review:
         if r['generation']['template']=='canonical_hint':md+=['## Authored easy',g.markdown(r)]
     (ROOT/'review.md').write_text('\n\n'.join(md)+'\n')
-    report={'status':'pass','basis':1356,'source_questions':13,'source_complete_banks':'13/13','source_all_values':'61/61','source_distractors':'48/48','source_correct_designations':'13/13','source_exact_prompts':'13/13','source_exact_solution_strings':sum(f['raw_solution_exact'] for f in fidelity),'source_solution_strings_total':13,'raw_source_intermediate_errors':{'q-160834':'dv primitive printed with u','q-161127':'ungrouped negative-component squares'},'normal_mathematical_repairs':'2/2', 'charge_supported_tasks_exhaustively_checked':32,'source_solution_prose_and_family_sequence':'13/13; byte-exact original strings, operative slots at changed inputs','generated_checked':len(records)-13,'native':json.loads((ROOT/'engine-report.json').read_text()),'mutation_regressions':4,'dependencies':{'python':sys.version.split()[0],'sympy':s.__version__},'remaining_limitations':['Historical scalar wrong-answer operations are unresolved and evidence-only.','Geometry and integrand forms remain source-fixed; variation is rectangle limits and contextual density coefficient.','Contextual charge family has 32 supported endpoint/coefficient tasks; normal prompt supplies the formerly inherited context.','Easy ratings are authored design claims.','Source raw norm/primitive/set-brace anomalies remain evidence; normal output repairs them.']}
+    report={'status':'pass','basis':1356,'source_questions':13,'source_complete_banks':'13/13','source_all_values':'61/61','source_distractors':'48/48','source_correct_designations':'13/13','source_exact_prompts':'13/13','source_exact_solution_strings':sum(f['raw_solution_exact'] for f in fidelity),'source_solution_strings_total':13,'raw_source_intermediate_errors':{'q-160834':'dv primitive printed with u','q-161127':'ungrouped negative-component squares'},'normal_mathematical_repairs':'2/2', 'charge_supported_tasks_exhaustively_checked':32,'source_solution_prose_and_family_sequence':'13/13; byte-exact original strings, operative slots at changed inputs','generated_checked':len(records)-13,'distinct_normal_tasks_checked':{level:len({r['generation']['mathematical_fingerprint'] for r in records if not r['generation']['evidence_only'] and r['question'][':question/difficulty'].endswith('/'+level)}) for level in ('easy','moderate','hard')},'native':json.loads((ROOT/'engine-report.json').read_text()),'mutation_regressions':6,'printed_primitive_bound_checks':'every bounded primitive against parsed prompt/domain','separated_primitive_checks':'each derivative against its actual individual displayed integral factor','dependencies':{'python':sys.version.split()[0],'sympy':s.__version__},'remaining_limitations':['Historical scalar wrong-answer operations are unresolved and evidence-only.','Geometry and integrand forms remain source-fixed; variation is rectangle limits and contextual density coefficient.','Contextual charge family has 32 supported endpoint/coefficient tasks; normal prompt supplies the formerly inherited context.','Easy ratings are authored design claims.','Source raw norm/primitive/set-brace anomalies remain evidence; normal output repairs them.']}
     (ROOT/'validation.json').write_text(json.dumps(report,indent=2)+'\n');print({k:v for k,v in report.items() if k!='native'})
 if __name__=='__main__':run()

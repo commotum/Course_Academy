@@ -12,7 +12,7 @@ import sympy as s
 DIR=Path(__file__).with_suffix(''); SNAPSHOT=json.loads((DIR/'source.json').read_text()); KP=SNAPSHOT['record']
 SOURCES={q[':question/math-academy-id']:q for q in KP[':knowledge-point/questions']}
 u,v,x,y,z,theta=s.symbols('u v x y z theta',real=True)
-VERSION='surface-family-masks-v1'
+VERSION='surface-family-masks-v2'
 # family: coordinates, scalar, original rectangle, extracted factor, reduced integrand, primitive convention
 DATA={
 'q-160834':([2*u-v,3*u+2,u+2*v],2*x+y+z,[0,1,-1,1],s.sqrt(70),8*u+2,'product'),
@@ -134,10 +134,13 @@ def integral_mask(t,m,raw=False):
     # Primitive-bound masks are complete bracket components, never blind short-expression edits.
     for i,row in enumerate(rows):
         def bracket(match):
-            body=match.group(1);var=aa if ('u' in body or style=='charge' and 'x' in body) else bb
+            body,wrapper,oldlo,oldhi=match.groups();var=aa if ('u' in body or style=='charge' and 'x' in body) else bb
             if t=='q-160834' and body=='u' and r'\cdot [u]' in row:var=bb
-            lo,hi=(a,b) if var==aa else(c,d);return '['+body+']_{'+tex(lo)+'}^{'+tex(hi)+(' ' if hi.has(s.pi) else '')+'}'
-        rows[i]=re.sub(r'\[(.*?)\]_\{[^{}]*\}\^\{[^{}]*\}',bracket,row)
+            lo,hi=(a,b) if var==aa else(c,d)
+            lolabel=oldlo.split('=',1)[0]+'=' if '=' in oldlo else ''
+            hilabel=oldhi.split('=',1)[0]+'=' if '=' in oldhi else ''
+            return '['+body+']'+wrapper+'_{'+lolabel+tex(lo)+'}^{'+hilabel+tex(hi)+(' ' if hi.has(s.pi) else '')+'}'
+        rows[i]=re.sub(r'\[(.*?)\](\}?)_\{([^{}]*)\}\^\{([^{}]*)\}',bracket,row)
     if style=='nested':
         oldJ={'q-161127':r'\frac{2}{3}+2{v}^{2}','q-161180':r'\frac{5}{2}+v','q-161182':r'\frac{v}{3}+\frac{{v}^{2}}{2}','q-161209':r'\frac{1}{3}-{v}^{2}','q-161245':r'2-6{v}^{2}','q-161181':r'0-2v','q-161179':r'\frac{1}{2}+v'}[t]
         newJ=polytex(J,bb,True)

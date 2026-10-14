@@ -61,7 +61,7 @@ def check(rec):
  M=s.Matrix([[math(c) for c in row.split('&')] for row in matrices[1].split(r'\\')]);assert M==J;C['jacobian_entries']+=4
  tail=section.rsplit('&=',1)[1].split(r'\end{aligned}')[0];assert eq(math(tail),det)
  sec4=sol.split('**Step 4**')[1].split('Solving the transformation equations')[0].split('$$')[1];parts=sec4.split('=')[-2:];assert eq(math(parts[0]),1/det) and eq(math(parts[1]),j);C['inverse_stages']+=2
- chain=re.search(r'\\begin\{aligned\}(.*?)\\end\{aligned\}',sol.split('**Step 5**')[1],re.S)[1];rows=chain.split(r'\\');reader=Reader(F,inverse,bounds,metric);primitive_sequence=[]
+ chain=re.search(r'\\begin\{aligned\}(.*?)\\end\{aligned\}',sol.split('**Step 5**')[1],re.S)[1];rows=chain.split(r'\\');assert len(rows)==(12 if family=='quadratic_exp' else 11);reader=Reader(F,inverse,bounds,metric);primitive_sequence=[]
  for i,row in enumerate(rows):
   body=(row.split('=',1)[1] if '=' in row else row).replace('&','').strip();value=reader.value(body);assert eq(value,answer),(family,body,value,answer);C['solution_rows']+=1
   if re.search(r'\]_\{',body.replace(r'\right','')):
@@ -73,6 +73,9 @@ def check(rec):
     text=text.strip()
     observed=[math(z) for z in split_terms(text)];wanted=[t.subs(var,bound) for t in parts];assert len(observed)==len(wanted) and all(eq(a,b) for a,b in zip(observed,wanted)),(family,text,observed,wanted);C['individual_endpoint_components']+=len(observed)
  assert len(primitive_sequence)==2
+ if family=='radical':assert 'v^2(' in rows[2] and '- v^{4}' in rows[3]
+ if family=='quadratic_exp':assert r'\iint_D e^{x+(' in rows[0] and 'e^{u} e^{v}' in rows[3]
+ if family=='linear_exp':assert '[' in rows[3] and r'\left(u -' in rows[3]
  values=[math(a[':answer/value']) for a in q[':question/answer-fields'][0][':answer-field/choices']];assert len(values)==5 and all(not eq(a,b) for a,b in itertools.combinations(values,2));f=q[':question/answer-fields'][0];assert [a[':answer/id'] for a,val in zip(f[':answer-field/choices'],values) if eq(val,answer)]==[f[':answer-field/correct'][1]]
  # Separate the actual density into its independent u and v components.
  A=s.Integer(1) if not density.has(u) else u if family in ('radical','sine') else s.simplify(density/(metric*s.Mul(*density.atoms(s.exp)))) if family=='linear_exp' else s.exp(u) if family=='quadratic_exp' else s.Integer(1)

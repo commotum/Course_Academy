@@ -1002,7 +1002,7 @@ $$
 our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}{x}^{2}-2yz\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,({u}^{2}+{v}^{2})\sqrt{3}\,\text{d}A \\  & =\sqrt{3}{∬}_{D}\,{u}^{2}+{v}^{2}\,\text{d}A \\  & =\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}{u}^{2}+{v}^{2}\,\text{d}u)\text{d}v \\  & =\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}{[\frac{{u}^{3}}{3}+u{v}^{2}]}_{u=-1}^{u=1}\,\text{d}v \\  & =\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}[(\frac{v^{2}}{2}+\frac{1}{24})-((-\frac{v^{2}}{2})+(-\frac{1}{24}))]\text{d}v \\  & =\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}\frac{1}{12}+{v}^{2}\,\text{d}v \\  & =\sqrt{3}{[\frac{1}{12}v+\frac{1}{3}{v}^{3}]}_{-\frac{5}{2}}^{-1} \\  & =\sqrt{3}[((-\frac{1}{12})+(-\frac{1}{3}))-((-\frac{5}{24})+(-\frac{125}{24}))] \\  & =\sqrt{3}(-\frac{1}{12}-\frac{1}{3})-\sqrt{3}(-\frac{5}{24}-\frac{125}{24}) \\  & =5\sqrt{3}\end{aligned}
+\begin{aligned}{∬}_{S}{x}^{2}-2yz\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,({u}^{2}+{v}^{2})\sqrt{3}\,\text{d}A \\  & =\sqrt{3}{∬}_{D}\,{u}^{2}+{v}^{2}\,\text{d}A \\  & =\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}{u}^{2}+{v}^{2}\,\text{d}u)\text{d}v \\  & =\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}{[\frac{{u}^{3}}{3}+u{v}^{2}]}_{u=-\frac{1}{2}}^{u=\frac{1}{2}}\,\text{d}v \\  & =\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}[(\frac{v^{2}}{2}+\frac{1}{24})-((-\frac{v^{2}}{2})+(-\frac{1}{24}))]\text{d}v \\  & =\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}\frac{1}{12}+{v}^{2}\,\text{d}v \\  & =\sqrt{3}{[\frac{1}{12}v+\frac{1}{3}{v}^{3}]}_{-\frac{5}{2}}^{-1} \\  & =\sqrt{3}[((-\frac{1}{12})+(-\frac{1}{3}))-((-\frac{5}{24})+(-\frac{125}{24}))] \\  & =\sqrt{3}(-\frac{1}{12}-\frac{1}{3})-\sqrt{3}(-\frac{5}{24}-\frac{125}{24}) \\  & =5\sqrt{3}\end{aligned}
 $$
 
 ### Generated normal method bank {'ua': '-1/2', 'ub': '1/2', 'va': '-1/2', 'vb': '1'}
@@ -1072,7 +1072,7 @@ $$
 our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}{x}^{2}-2yz\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,({u}^{2}+{v}^{2})\sqrt{3}\,\text{d}A \\  & =\sqrt{3}{∬}_{D}\,{u}^{2}+{v}^{2}\,\text{d}A \\  & =\sqrt{3}{\int }_{-\frac{1}{2}}^{1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}{u}^{2}+{v}^{2}\,\text{d}u)\text{d}v \\  & =\sqrt{3}{\int }_{-\frac{1}{2}}^{1}{[\frac{{u}^{3}}{3}+u{v}^{2}]}_{u=-1}^{u=1}\,\text{d}v \\  & =\sqrt{3}{\int }_{-\frac{1}{2}}^{1}[(\frac{v^{2}}{2}+\frac{1}{24})-((-\frac{v^{2}}{2})+(-\frac{1}{24}))]\text{d}v \\  & =\sqrt{3}{\int }_{-\frac{1}{2}}^{1}\frac{1}{12}+{v}^{2}\,\text{d}v \\  & =\sqrt{3}{[\frac{1}{12}v+\frac{1}{3}{v}^{3}]}_{-\frac{1}{2}}^{1} \\  & =\sqrt{3}[(\frac{1}{12}+\frac{1}{3})-((-\frac{1}{24})+(-\frac{1}{24}))] \\  & =\sqrt{3}(\frac{1}{12}+\frac{1}{3})-\sqrt{3}(-\frac{1}{24}-\frac{1}{24}) \\  & =\frac{\sqrt{3}}{2}\end{aligned}
+\begin{aligned}{∬}_{S}{x}^{2}-2yz\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,({u}^{2}+{v}^{2})\sqrt{3}\,\text{d}A \\  & =\sqrt{3}{∬}_{D}\,{u}^{2}+{v}^{2}\,\text{d}A \\  & =\sqrt{3}{\int }_{-\frac{1}{2}}^{1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}{u}^{2}+{v}^{2}\,\text{d}u)\text{d}v \\  & =\sqrt{3}{\int }_{-\frac{1}{2}}^{1}{[\frac{{u}^{3}}{3}+u{v}^{2}]}_{u=-\frac{1}{2}}^{u=\frac{1}{2}}\,\text{d}v \\  & =\sqrt{3}{\int }_{-\frac{1}{2}}^{1}[(\frac{v^{2}}{2}+\frac{1}{24})-((-\frac{v^{2}}{2})+(-\frac{1}{24}))]\text{d}v \\  & =\sqrt{3}{\int }_{-\frac{1}{2}}^{1}\frac{1}{12}+{v}^{2}\,\text{d}v \\  & =\sqrt{3}{[\frac{1}{12}v+\frac{1}{3}{v}^{3}]}_{-\frac{1}{2}}^{1} \\  & =\sqrt{3}[(\frac{1}{12}+\frac{1}{3})-((-\frac{1}{24})+(-\frac{1}{24}))] \\  & =\sqrt{3}(\frac{1}{12}+\frac{1}{3})-\sqrt{3}(-\frac{1}{24}-\frac{1}{24}) \\  & =\frac{\sqrt{3}}{2}\end{aligned}
 $$
 
 ### Generated opaque bank evidence (ineligible) {'ua': '-1/2', 'ub': '1/2', 'va': '-5/2', 'vb': '-1'}
@@ -1142,7 +1142,7 @@ $$
 our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}{x}^{2}-2yz\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,({u}^{2}+{v}^{2})\sqrt{3}\,\text{d}A \\  & =\sqrt{3}{∬}_{D}\,{u}^{2}+{v}^{2}\,\text{d}A \\  & =\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}{u}^{2}+{v}^{2}\,\text{d}u)\text{d}v \\  & =\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}{[\frac{{u}^{3}}{3}+u{v}^{2}]}_{u=-1}^{u=1}\,\text{d}v \\  & =\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}\frac{1}{12}+{v}^{2}\,\text{d}v \\  & =\sqrt{3}{[\frac{1}{12}v+\frac{1}{3}{v}^{3}]}_{-\frac{5}{2}}^{-1} \\  & =\sqrt{3}(-\frac{1}{12}-\frac{1}{3})-\sqrt{3}(-\frac{5}{24}-\frac{125}{24}) \\  & =5\sqrt{3}\end{aligned}
+\begin{aligned}{∬}_{S}{x}^{2}-2yz\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,({u}^{2}+{v}^{2})\sqrt{3}\,\text{d}A \\  & =\sqrt{3}{∬}_{D}\,{u}^{2}+{v}^{2}\,\text{d}A \\  & =\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}{u}^{2}+{v}^{2}\,\text{d}u)\text{d}v \\  & =\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}{[\frac{{u}^{3}}{3}+u{v}^{2}]}_{u=-\frac{1}{2}}^{u=\frac{1}{2}}\,\text{d}v \\  & =\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}\frac{1}{12}+{v}^{2}\,\text{d}v \\  & =\sqrt{3}{[\frac{1}{12}v+\frac{1}{3}{v}^{3}]}_{-\frac{5}{2}}^{-1} \\  & =\sqrt{3}(-\frac{1}{12}-\frac{1}{3})-\sqrt{3}(-\frac{5}{24}-\frac{125}{24}) \\  & =5\sqrt{3}\end{aligned}
 $$
 
 ### Generated opaque bank evidence (ineligible) {'ua': '-1/2', 'ub': '1/2', 'va': '-1/2', 'vb': '1'}
@@ -1212,7 +1212,7 @@ $$
 our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}{x}^{2}-2yz\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,({u}^{2}+{v}^{2})\sqrt{3}\,\text{d}A \\  & =\sqrt{3}{∬}_{D}\,{u}^{2}+{v}^{2}\,\text{d}A \\  & =\sqrt{3}{\int }_{-\frac{1}{2}}^{1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}{u}^{2}+{v}^{2}\,\text{d}u)\text{d}v \\  & =\sqrt{3}{\int }_{-\frac{1}{2}}^{1}{[\frac{{u}^{3}}{3}+u{v}^{2}]}_{u=-1}^{u=1}\,\text{d}v \\  & =\sqrt{3}{\int }_{-\frac{1}{2}}^{1}\frac{1}{12}+{v}^{2}\,\text{d}v \\  & =\sqrt{3}{[\frac{1}{12}v+\frac{1}{3}{v}^{3}]}_{-\frac{1}{2}}^{1} \\  & =\sqrt{3}(\frac{1}{12}+\frac{1}{3})-\sqrt{3}(-\frac{1}{24}-\frac{1}{24}) \\  & =\frac{\sqrt{3}}{2}\end{aligned}
+\begin{aligned}{∬}_{S}{x}^{2}-2yz\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,({u}^{2}+{v}^{2})\sqrt{3}\,\text{d}A \\  & =\sqrt{3}{∬}_{D}\,{u}^{2}+{v}^{2}\,\text{d}A \\  & =\sqrt{3}{\int }_{-\frac{1}{2}}^{1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}{u}^{2}+{v}^{2}\,\text{d}u)\text{d}v \\  & =\sqrt{3}{\int }_{-\frac{1}{2}}^{1}{[\frac{{u}^{3}}{3}+u{v}^{2}]}_{u=-\frac{1}{2}}^{u=\frac{1}{2}}\,\text{d}v \\  & =\sqrt{3}{\int }_{-\frac{1}{2}}^{1}\frac{1}{12}+{v}^{2}\,\text{d}v \\  & =\sqrt{3}{[\frac{1}{12}v+\frac{1}{3}{v}^{3}]}_{-\frac{1}{2}}^{1} \\  & =\sqrt{3}(\frac{1}{12}+\frac{1}{3})-\sqrt{3}(-\frac{1}{24}-\frac{1}{24}) \\  & =\frac{\sqrt{3}}{2}\end{aligned}
 $$
 
 ## Original q-161180
@@ -1310,7 +1310,7 @@ $$
 Therefore, our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(5u+v)\cdot 6\,\text{d}A \\  & =6{∬}_{D}\,(5u+v)\,\text{d}A \\  & =6{\int }_{-\frac{5}{2}}^{-1}({\int }_{-3}^{-\frac{5}{2}}(5u+v)\,\text{d}u)\text{d}v \\  & =6{\int }_{-\frac{5}{2}}^{-1}{[\frac{5{u}^{2}}{2}+vu]}_{0}^{1}\text{d}v \\  & =6{\int }_{-\frac{5}{2}}^{-1}[((-\frac{5v}{2})+\frac{125}{8})-((-3v)+\frac{45}{2})]\text{d}v \\  & =6{\int }_{-\frac{5}{2}}^{-1}(-\frac{55}{8}+\frac{v}{2})\text{d}v \\  & =6{[-\frac{55v}{8}+\frac{{v}^{2}}{4}]}_{-\frac{5}{2}}^{-1} \\  & =6[(\frac{55}{8}+\frac{1}{4})-(\frac{275}{16}+\frac{25}{16})] \\  & =6[\frac{55}{8}+\frac{1}{4}-(\frac{275}{16}+\frac{25}{16})] \\  & =-\frac{279}{4}.\end{aligned}
+\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(5u+v)\cdot 6\,\text{d}A \\  & =6{∬}_{D}\,(5u+v)\,\text{d}A \\  & =6{\int }_{-\frac{5}{2}}^{-1}({\int }_{-3}^{-\frac{5}{2}}(5u+v)\,\text{d}u)\text{d}v \\  & =6{\int }_{-\frac{5}{2}}^{-1}{[\frac{5{u}^{2}}{2}+vu]}_{-3}^{-\frac{5}{2}}\text{d}v \\  & =6{\int }_{-\frac{5}{2}}^{-1}[((-\frac{5v}{2})+\frac{125}{8})-((-3v)+\frac{45}{2})]\text{d}v \\  & =6{\int }_{-\frac{5}{2}}^{-1}(-\frac{55}{8}+\frac{v}{2})\text{d}v \\  & =6{[-\frac{55v}{8}+\frac{{v}^{2}}{4}]}_{-\frac{5}{2}}^{-1} \\  & =6[(\frac{55}{8}+\frac{1}{4})-(\frac{275}{16}+\frac{25}{16})] \\  & =6[\frac{55}{8}+\frac{1}{4}-(\frac{275}{16}+\frac{25}{16})] \\  & =-\frac{279}{4}.\end{aligned}
 $$
 
 ### Generated normal method bank {'ua': '1/2', 'ub': '3', 'va': '-1/2', 'vb': '1'}
@@ -1359,7 +1359,7 @@ $$
 Therefore, our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(5u+v)\cdot 6\,\text{d}A \\  & =6{∬}_{D}\,(5u+v)\,\text{d}A \\  & =6{\int }_{-\frac{1}{2}}^{1}({\int }_{\frac{1}{2}}^{3}(5u+v)\,\text{d}u)\text{d}v \\  & =6{\int }_{-\frac{1}{2}}^{1}{[\frac{5{u}^{2}}{2}+vu]}_{0}^{1}\text{d}v \\  & =6{\int }_{-\frac{1}{2}}^{1}[(3v+\frac{45}{2})-(\frac{v}{2}+\frac{5}{8})]\text{d}v \\  & =6{\int }_{-\frac{1}{2}}^{1}(\frac{175}{8}+\frac{5v}{2})\text{d}v \\  & =6{[\frac{175v}{8}+\frac{5{v}^{2}}{4}]}_{-\frac{1}{2}}^{1} \\  & =6[(\frac{175}{8}+\frac{5}{4})-((-\frac{175}{16})+\frac{5}{16})] \\  & =6[\frac{175}{8}+\frac{5}{4}-(-\frac{175}{16}+\frac{5}{16})] \\  & =\frac{405}{2}.\end{aligned}
+\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(5u+v)\cdot 6\,\text{d}A \\  & =6{∬}_{D}\,(5u+v)\,\text{d}A \\  & =6{\int }_{-\frac{1}{2}}^{1}({\int }_{\frac{1}{2}}^{3}(5u+v)\,\text{d}u)\text{d}v \\  & =6{\int }_{-\frac{1}{2}}^{1}{[\frac{5{u}^{2}}{2}+vu]}_{\frac{1}{2}}^{3}\text{d}v \\  & =6{\int }_{-\frac{1}{2}}^{1}[(3v+\frac{45}{2})-(\frac{v}{2}+\frac{5}{8})]\text{d}v \\  & =6{\int }_{-\frac{1}{2}}^{1}(\frac{175}{8}+\frac{5v}{2})\text{d}v \\  & =6{[\frac{175v}{8}+\frac{5{v}^{2}}{4}]}_{-\frac{1}{2}}^{1} \\  & =6[(\frac{175}{8}+\frac{5}{4})-((-\frac{175}{16})+\frac{5}{16})] \\  & =6[\frac{175}{8}+\frac{5}{4}-(-\frac{175}{16}+\frac{5}{16})] \\  & =\frac{405}{2}.\end{aligned}
 $$
 
 ### Generated opaque bank evidence (ineligible) {'ua': '-3', 'ub': '-5/2', 'va': '-5/2', 'vb': '-1'}
@@ -1408,7 +1408,7 @@ $$
 Therefore, our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(5u+v)\cdot 6\,\text{d}A \\  & =6{∬}_{D}\,(5u+v)\,\text{d}A \\  & =6{\int }_{-\frac{5}{2}}^{-1}({\int }_{-3}^{-\frac{5}{2}}(5u+v)\,\text{d}u)\text{d}v \\  & =6{\int }_{-\frac{5}{2}}^{-1}{[\frac{5{u}^{2}}{2}+vu]}_{0}^{1}\text{d}v \\  & =6{\int }_{-\frac{5}{2}}^{-1}(-\frac{55}{8}+\frac{v}{2})\text{d}v \\  & =6{[-\frac{55v}{8}+\frac{{v}^{2}}{4}]}_{-\frac{5}{2}}^{-1} \\  & =6[\frac{55}{8}+\frac{1}{4}-(\frac{275}{16}+\frac{25}{16})] \\  & =-\frac{279}{4}.\end{aligned}
+\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(5u+v)\cdot 6\,\text{d}A \\  & =6{∬}_{D}\,(5u+v)\,\text{d}A \\  & =6{\int }_{-\frac{5}{2}}^{-1}({\int }_{-3}^{-\frac{5}{2}}(5u+v)\,\text{d}u)\text{d}v \\  & =6{\int }_{-\frac{5}{2}}^{-1}{[\frac{5{u}^{2}}{2}+vu]}_{-3}^{-\frac{5}{2}}\text{d}v \\  & =6{\int }_{-\frac{5}{2}}^{-1}(-\frac{55}{8}+\frac{v}{2})\text{d}v \\  & =6{[-\frac{55v}{8}+\frac{{v}^{2}}{4}]}_{-\frac{5}{2}}^{-1} \\  & =6[\frac{55}{8}+\frac{1}{4}-(\frac{275}{16}+\frac{25}{16})] \\  & =-\frac{279}{4}.\end{aligned}
 $$
 
 ### Generated opaque bank evidence (ineligible) {'ua': '1/2', 'ub': '3', 'va': '-1/2', 'vb': '1'}
@@ -1457,7 +1457,7 @@ $$
 Therefore, our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(5u+v)\cdot 6\,\text{d}A \\  & =6{∬}_{D}\,(5u+v)\,\text{d}A \\  & =6{\int }_{-\frac{1}{2}}^{1}({\int }_{\frac{1}{2}}^{3}(5u+v)\,\text{d}u)\text{d}v \\  & =6{\int }_{-\frac{1}{2}}^{1}{[\frac{5{u}^{2}}{2}+vu]}_{0}^{1}\text{d}v \\  & =6{\int }_{-\frac{1}{2}}^{1}(\frac{175}{8}+\frac{5v}{2})\text{d}v \\  & =6{[\frac{175v}{8}+\frac{5{v}^{2}}{4}]}_{-\frac{1}{2}}^{1} \\  & =6[\frac{175}{8}+\frac{5}{4}-(-\frac{175}{16}+\frac{5}{16})] \\  & =\frac{405}{2}.\end{aligned}
+\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(5u+v)\cdot 6\,\text{d}A \\  & =6{∬}_{D}\,(5u+v)\,\text{d}A \\  & =6{\int }_{-\frac{1}{2}}^{1}({\int }_{\frac{1}{2}}^{3}(5u+v)\,\text{d}u)\text{d}v \\  & =6{\int }_{-\frac{1}{2}}^{1}{[\frac{5{u}^{2}}{2}+vu]}_{\frac{1}{2}}^{3}\text{d}v \\  & =6{\int }_{-\frac{1}{2}}^{1}(\frac{175}{8}+\frac{5v}{2})\text{d}v \\  & =6{[\frac{175v}{8}+\frac{5{v}^{2}}{4}]}_{-\frac{1}{2}}^{1} \\  & =6[\frac{175}{8}+\frac{5}{4}-(-\frac{175}{16}+\frac{5}{16})] \\  & =\frac{405}{2}.\end{aligned}
 $$
 
 ## Original q-161182
@@ -1555,7 +1555,7 @@ $$
 Therefore, our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,6({u}^{2}v+u{v}^{2})\cdot \sqrt{3}\,\text{d}A \\  & =6\sqrt{3}{∬}_{D}\,({u}^{2}v+u{v}^{2})\,\text{d}A \\  & =6\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}({\int }_{-3}^{-\frac{5}{2}}({u}^{2}v+u{v}^{2})\text{d}u)\text{d}v \\  & =6\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}{[\frac{{u}^{3}v}{3}+\frac{{u}^{2}{v}^{2}}{2}]}_{0}^{1}\,\text{d}v \\  & =6\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}[(\frac{25v^{2}}{8}+(-\frac{125v}{24}))-(\frac{9v^{2}}{2}+(-9v))]\text{d}v \\  & =6\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}(\frac{91v}{24}-\frac{11{v}^{2}}{8})\,\text{d}v \\  & =6\sqrt{3}{[\frac{91{v}^{2}}{48}-\frac{11{v}^{3}}{24}]}_{-\frac{5}{2}}^{-1} \\  & =6\sqrt{3}[(\frac{91}{48}+\frac{11}{24})-(\frac{2275}{192}+\frac{1375}{192})] \\  & =6\sqrt{3}(\frac{91}{48}+\frac{11}{24}-(\frac{2275}{192}+\frac{1375}{192})) \\  & =-\frac{1599\sqrt{3}}{16}.\end{aligned}
+\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,6({u}^{2}v+u{v}^{2})\cdot \sqrt{3}\,\text{d}A \\  & =6\sqrt{3}{∬}_{D}\,({u}^{2}v+u{v}^{2})\,\text{d}A \\  & =6\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}({\int }_{-3}^{-\frac{5}{2}}({u}^{2}v+u{v}^{2})\text{d}u)\text{d}v \\  & =6\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}{[\frac{{u}^{3}v}{3}+\frac{{u}^{2}{v}^{2}}{2}]}_{-3}^{-\frac{5}{2}}\,\text{d}v \\  & =6\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}[(\frac{25v^{2}}{8}+(-\frac{125v}{24}))-(\frac{9v^{2}}{2}+(-9v))]\text{d}v \\  & =6\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}(\frac{91v}{24}-\frac{11{v}^{2}}{8})\,\text{d}v \\  & =6\sqrt{3}{[\frac{91{v}^{2}}{48}-\frac{11{v}^{3}}{24}]}_{-\frac{5}{2}}^{-1} \\  & =6\sqrt{3}[(\frac{91}{48}+\frac{11}{24})-(\frac{2275}{192}+\frac{1375}{192})] \\  & =6\sqrt{3}(\frac{91}{48}+\frac{11}{24}-(\frac{2275}{192}+\frac{1375}{192})) \\  & =-\frac{1599\sqrt{3}}{16}.\end{aligned}
 $$
 
 ### Generated normal method bank {'ua': '1/2', 'ub': '3', 'va': '-1/2', 'vb': '1'}
@@ -1604,7 +1604,7 @@ $$
 Therefore, our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,6({u}^{2}v+u{v}^{2})\cdot \sqrt{3}\,\text{d}A \\  & =6\sqrt{3}{∬}_{D}\,({u}^{2}v+u{v}^{2})\,\text{d}A \\  & =6\sqrt{3}{\int }_{-\frac{1}{2}}^{1}({\int }_{\frac{1}{2}}^{3}({u}^{2}v+u{v}^{2})\text{d}u)\text{d}v \\  & =6\sqrt{3}{\int }_{-\frac{1}{2}}^{1}{[\frac{{u}^{3}v}{3}+\frac{{u}^{2}{v}^{2}}{2}]}_{0}^{1}\,\text{d}v \\  & =6\sqrt{3}{\int }_{-\frac{1}{2}}^{1}[(\frac{9v^{2}}{2}+9v)-(\frac{v^{2}}{8}+\frac{v}{24})]\text{d}v \\  & =6\sqrt{3}{\int }_{-\frac{1}{2}}^{1}(\frac{215v}{24}+\frac{35{v}^{2}}{8})\,\text{d}v \\  & =6\sqrt{3}{[\frac{215{v}^{2}}{48}+\frac{35{v}^{3}}{24}]}_{-\frac{1}{2}}^{1} \\  & =6\sqrt{3}[(\frac{215}{48}+\frac{35}{24})-(\frac{215}{192}+(-\frac{35}{192}))] \\  & =6\sqrt{3}(\frac{215}{48}+\frac{35}{24}-(\frac{215}{192}-\frac{35}{192})) \\  & =30\sqrt{3}.\end{aligned}
+\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,6({u}^{2}v+u{v}^{2})\cdot \sqrt{3}\,\text{d}A \\  & =6\sqrt{3}{∬}_{D}\,({u}^{2}v+u{v}^{2})\,\text{d}A \\  & =6\sqrt{3}{\int }_{-\frac{1}{2}}^{1}({\int }_{\frac{1}{2}}^{3}({u}^{2}v+u{v}^{2})\text{d}u)\text{d}v \\  & =6\sqrt{3}{\int }_{-\frac{1}{2}}^{1}{[\frac{{u}^{3}v}{3}+\frac{{u}^{2}{v}^{2}}{2}]}_{\frac{1}{2}}^{3}\,\text{d}v \\  & =6\sqrt{3}{\int }_{-\frac{1}{2}}^{1}[(\frac{9v^{2}}{2}+9v)-(\frac{v^{2}}{8}+\frac{v}{24})]\text{d}v \\  & =6\sqrt{3}{\int }_{-\frac{1}{2}}^{1}(\frac{215v}{24}+\frac{35{v}^{2}}{8})\,\text{d}v \\  & =6\sqrt{3}{[\frac{215{v}^{2}}{48}+\frac{35{v}^{3}}{24}]}_{-\frac{1}{2}}^{1} \\  & =6\sqrt{3}[(\frac{215}{48}+\frac{35}{24})-(\frac{215}{192}+(-\frac{35}{192}))] \\  & =6\sqrt{3}(\frac{215}{48}+\frac{35}{24}-(\frac{215}{192}-\frac{35}{192})) \\  & =30\sqrt{3}.\end{aligned}
 $$
 
 ### Generated opaque bank evidence (ineligible) {'ua': '-3', 'ub': '-5/2', 'va': '-5/2', 'vb': '-1'}
@@ -1653,7 +1653,7 @@ $$
 Therefore, our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,6({u}^{2}v+u{v}^{2})\cdot \sqrt{3}\,\text{d}A \\  & =6\sqrt{3}{∬}_{D}\,({u}^{2}v+u{v}^{2})\,\text{d}A \\  & =6\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}({\int }_{-3}^{-\frac{5}{2}}({u}^{2}v+u{v}^{2})\text{d}u)\text{d}v \\  & =6\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}{[\frac{{u}^{3}v}{3}+\frac{{u}^{2}{v}^{2}}{2}]}_{0}^{1}\,\text{d}v \\  & =6\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}(\frac{91v}{24}-\frac{11{v}^{2}}{8})\,\text{d}v \\  & =6\sqrt{3}{[\frac{91{v}^{2}}{48}-\frac{11{v}^{3}}{24}]}_{-\frac{5}{2}}^{-1} \\  & =6\sqrt{3}(\frac{91}{48}+\frac{11}{24}-(\frac{2275}{192}+\frac{1375}{192})) \\  & =-\frac{1599\sqrt{3}}{16}.\end{aligned}
+\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,6({u}^{2}v+u{v}^{2})\cdot \sqrt{3}\,\text{d}A \\  & =6\sqrt{3}{∬}_{D}\,({u}^{2}v+u{v}^{2})\,\text{d}A \\  & =6\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}({\int }_{-3}^{-\frac{5}{2}}({u}^{2}v+u{v}^{2})\text{d}u)\text{d}v \\  & =6\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}{[\frac{{u}^{3}v}{3}+\frac{{u}^{2}{v}^{2}}{2}]}_{-3}^{-\frac{5}{2}}\,\text{d}v \\  & =6\sqrt{3}{\int }_{-\frac{5}{2}}^{-1}(\frac{91v}{24}-\frac{11{v}^{2}}{8})\,\text{d}v \\  & =6\sqrt{3}{[\frac{91{v}^{2}}{48}-\frac{11{v}^{3}}{24}]}_{-\frac{5}{2}}^{-1} \\  & =6\sqrt{3}(\frac{91}{48}+\frac{11}{24}-(\frac{2275}{192}+\frac{1375}{192})) \\  & =-\frac{1599\sqrt{3}}{16}.\end{aligned}
 $$
 
 ### Generated opaque bank evidence (ineligible) {'ua': '1/2', 'ub': '3', 'va': '-1/2', 'vb': '1'}
@@ -1702,7 +1702,7 @@ $$
 Therefore, our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,6({u}^{2}v+u{v}^{2})\cdot \sqrt{3}\,\text{d}A \\  & =6\sqrt{3}{∬}_{D}\,({u}^{2}v+u{v}^{2})\,\text{d}A \\  & =6\sqrt{3}{\int }_{-\frac{1}{2}}^{1}({\int }_{\frac{1}{2}}^{3}({u}^{2}v+u{v}^{2})\text{d}u)\text{d}v \\  & =6\sqrt{3}{\int }_{-\frac{1}{2}}^{1}{[\frac{{u}^{3}v}{3}+\frac{{u}^{2}{v}^{2}}{2}]}_{0}^{1}\,\text{d}v \\  & =6\sqrt{3}{\int }_{-\frac{1}{2}}^{1}(\frac{215v}{24}+\frac{35{v}^{2}}{8})\,\text{d}v \\  & =6\sqrt{3}{[\frac{215{v}^{2}}{48}+\frac{35{v}^{3}}{24}]}_{-\frac{1}{2}}^{1} \\  & =6\sqrt{3}(\frac{215}{48}+\frac{35}{24}-(\frac{215}{192}-\frac{35}{192})) \\  & =30\sqrt{3}.\end{aligned}
+\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,6({u}^{2}v+u{v}^{2})\cdot \sqrt{3}\,\text{d}A \\  & =6\sqrt{3}{∬}_{D}\,({u}^{2}v+u{v}^{2})\,\text{d}A \\  & =6\sqrt{3}{\int }_{-\frac{1}{2}}^{1}({\int }_{\frac{1}{2}}^{3}({u}^{2}v+u{v}^{2})\text{d}u)\text{d}v \\  & =6\sqrt{3}{\int }_{-\frac{1}{2}}^{1}{[\frac{{u}^{3}v}{3}+\frac{{u}^{2}{v}^{2}}{2}]}_{\frac{1}{2}}^{3}\,\text{d}v \\  & =6\sqrt{3}{\int }_{-\frac{1}{2}}^{1}(\frac{215v}{24}+\frac{35{v}^{2}}{8})\,\text{d}v \\  & =6\sqrt{3}{[\frac{215{v}^{2}}{48}+\frac{35{v}^{3}}{24}]}_{-\frac{1}{2}}^{1} \\  & =6\sqrt{3}(\frac{215}{48}+\frac{35}{24}-(\frac{215}{192}-\frac{35}{192})) \\  & =30\sqrt{3}.\end{aligned}
 $$
 
 ## Original q-161209
@@ -1842,7 +1842,7 @@ $$
 our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}(xy+z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,({u}^{2}-{v}^{2})\cdot 2\,\text{d}A \\  & =2{∬}_{D}\,({u}^{2}-{v}^{2})\,\text{d}A \\  & =2{\int }_{-\frac{5}{2}}^{-1}({\int }_{-3}^{-\frac{5}{2}}({u}^{2}-{v}^{2})\,\text{d}u)\text{d}v \\  & =2{\int }_{-\frac{5}{2}}^{-1}{[\frac{{u}^{3}}{3}-{v}^{2}u]}_{0}^{1}\,\text{d}v \\  & =2{\int }_{-\frac{5}{2}}^{-1}[(\frac{5v^{2}}{2}+(-\frac{125}{24}))-(3v^{2}+(-9))]\text{d}v \\  & =2{\int }_{-\frac{5}{2}}^{-1}(\frac{91}{24}-\frac{{v}^{2}}{2})\text{d}v \\  & =2{[\frac{91v}{24}-\frac{{v}^{3}}{6}]}_{-\frac{5}{2}}^{-1} \\  & =2[((-\frac{91}{24})+\frac{1}{6})-((-\frac{455}{48})+\frac{125}{48})] \\  & =2[-\frac{91}{24}+\frac{1}{6}-(-\frac{455}{48}+\frac{125}{48})] \\  & =\frac{13}{2}.\end{aligned}
+\begin{aligned}{∬}_{S}(xy+z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,({u}^{2}-{v}^{2})\cdot 2\,\text{d}A \\  & =2{∬}_{D}\,({u}^{2}-{v}^{2})\,\text{d}A \\  & =2{\int }_{-\frac{5}{2}}^{-1}({\int }_{-3}^{-\frac{5}{2}}({u}^{2}-{v}^{2})\,\text{d}u)\text{d}v \\  & =2{\int }_{-\frac{5}{2}}^{-1}{[\frac{{u}^{3}}{3}-{v}^{2}u]}_{-3}^{-\frac{5}{2}}\,\text{d}v \\  & =2{\int }_{-\frac{5}{2}}^{-1}[(\frac{5v^{2}}{2}+(-\frac{125}{24}))-(3v^{2}+(-9))]\text{d}v \\  & =2{\int }_{-\frac{5}{2}}^{-1}(\frac{91}{24}-\frac{{v}^{2}}{2})\text{d}v \\  & =2{[\frac{91v}{24}-\frac{{v}^{3}}{6}]}_{-\frac{5}{2}}^{-1} \\  & =2[((-\frac{91}{24})+\frac{1}{6})-((-\frac{455}{48})+\frac{125}{48})] \\  & =2[-\frac{91}{24}+\frac{1}{6}-(-\frac{455}{48}+\frac{125}{48})] \\  & =\frac{13}{2}.\end{aligned}
 $$
 
 ### Generated normal method bank {'ua': '1/2', 'ub': '3', 'va': '-1/2', 'vb': '1'}
@@ -1912,7 +1912,7 @@ $$
 our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}(xy+z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,({u}^{2}-{v}^{2})\cdot 2\,\text{d}A \\  & =2{∬}_{D}\,({u}^{2}-{v}^{2})\,\text{d}A \\  & =2{\int }_{-\frac{1}{2}}^{1}({\int }_{\frac{1}{2}}^{3}({u}^{2}-{v}^{2})\,\text{d}u)\text{d}v \\  & =2{\int }_{-\frac{1}{2}}^{1}{[\frac{{u}^{3}}{3}-{v}^{2}u]}_{0}^{1}\,\text{d}v \\  & =2{\int }_{-\frac{1}{2}}^{1}[((-3v^{2})+9)-((-\frac{v^{2}}{2})+\frac{1}{24})]\text{d}v \\  & =2{\int }_{-\frac{1}{2}}^{1}(\frac{215}{24}-\frac{5{v}^{2}}{2})\text{d}v \\  & =2{[\frac{215v}{24}-\frac{5{v}^{3}}{6}]}_{-\frac{1}{2}}^{1} \\  & =2[(\frac{215}{24}+(-\frac{5}{6}))-((-\frac{215}{48})+\frac{5}{48})] \\  & =2[\frac{215}{24}-\frac{5}{6}-(-\frac{215}{48}+\frac{5}{48})] \\  & =25.\end{aligned}
+\begin{aligned}{∬}_{S}(xy+z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,({u}^{2}-{v}^{2})\cdot 2\,\text{d}A \\  & =2{∬}_{D}\,({u}^{2}-{v}^{2})\,\text{d}A \\  & =2{\int }_{-\frac{1}{2}}^{1}({\int }_{\frac{1}{2}}^{3}({u}^{2}-{v}^{2})\,\text{d}u)\text{d}v \\  & =2{\int }_{-\frac{1}{2}}^{1}{[\frac{{u}^{3}}{3}-{v}^{2}u]}_{\frac{1}{2}}^{3}\,\text{d}v \\  & =2{\int }_{-\frac{1}{2}}^{1}[((-3v^{2})+9)-((-\frac{v^{2}}{2})+\frac{1}{24})]\text{d}v \\  & =2{\int }_{-\frac{1}{2}}^{1}(\frac{215}{24}-\frac{5{v}^{2}}{2})\text{d}v \\  & =2{[\frac{215v}{24}-\frac{5{v}^{3}}{6}]}_{-\frac{1}{2}}^{1} \\  & =2[(\frac{215}{24}+(-\frac{5}{6}))-((-\frac{215}{48})+\frac{5}{48})] \\  & =2[\frac{215}{24}-\frac{5}{6}-(-\frac{215}{48}+\frac{5}{48})] \\  & =25.\end{aligned}
 $$
 
 ### Generated opaque bank evidence (ineligible) {'ua': '-3', 'ub': '-5/2', 'va': '-5/2', 'vb': '-1'}
@@ -1982,7 +1982,7 @@ $$
 our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}(xy+z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,({u}^{2}-{v}^{2})\cdot 2\,\text{d}A \\  & =2{∬}_{D}\,({u}^{2}-{v}^{2})\,\text{d}A \\  & =2{\int }_{-\frac{5}{2}}^{-1}({\int }_{-3}^{-\frac{5}{2}}({u}^{2}-{v}^{2})\,\text{d}u)\text{d}v \\  & =2{\int }_{-\frac{5}{2}}^{-1}{[\frac{{u}^{3}}{3}-{v}^{2}u]}_{0}^{1}\,\text{d}v \\  & =2{\int }_{-\frac{5}{2}}^{-1}(\frac{91}{24}-\frac{{v}^{2}}{2})\text{d}v \\  & =2{[\frac{91v}{24}-\frac{{v}^{3}}{6}]}_{-\frac{5}{2}}^{-1} \\  & =2[-\frac{91}{24}+\frac{1}{6}-(-\frac{455}{48}+\frac{125}{48})] \\  & =\frac{13}{2}.\end{aligned}
+\begin{aligned}{∬}_{S}(xy+z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,({u}^{2}-{v}^{2})\cdot 2\,\text{d}A \\  & =2{∬}_{D}\,({u}^{2}-{v}^{2})\,\text{d}A \\  & =2{\int }_{-\frac{5}{2}}^{-1}({\int }_{-3}^{-\frac{5}{2}}({u}^{2}-{v}^{2})\,\text{d}u)\text{d}v \\  & =2{\int }_{-\frac{5}{2}}^{-1}{[\frac{{u}^{3}}{3}-{v}^{2}u]}_{-3}^{-\frac{5}{2}}\,\text{d}v \\  & =2{\int }_{-\frac{5}{2}}^{-1}(\frac{91}{24}-\frac{{v}^{2}}{2})\text{d}v \\  & =2{[\frac{91v}{24}-\frac{{v}^{3}}{6}]}_{-\frac{5}{2}}^{-1} \\  & =2[-\frac{91}{24}+\frac{1}{6}-(-\frac{455}{48}+\frac{125}{48})] \\  & =\frac{13}{2}.\end{aligned}
 $$
 
 ### Generated opaque bank evidence (ineligible) {'ua': '1/2', 'ub': '3', 'va': '-1/2', 'vb': '1'}
@@ -2052,7 +2052,7 @@ $$
 our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}(xy+z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,({u}^{2}-{v}^{2})\cdot 2\,\text{d}A \\  & =2{∬}_{D}\,({u}^{2}-{v}^{2})\,\text{d}A \\  & =2{\int }_{-\frac{1}{2}}^{1}({\int }_{\frac{1}{2}}^{3}({u}^{2}-{v}^{2})\,\text{d}u)\text{d}v \\  & =2{\int }_{-\frac{1}{2}}^{1}{[\frac{{u}^{3}}{3}-{v}^{2}u]}_{0}^{1}\,\text{d}v \\  & =2{\int }_{-\frac{1}{2}}^{1}(\frac{215}{24}-\frac{5{v}^{2}}{2})\text{d}v \\  & =2{[\frac{215v}{24}-\frac{5{v}^{3}}{6}]}_{-\frac{1}{2}}^{1} \\  & =2[\frac{215}{24}-\frac{5}{6}-(-\frac{215}{48}+\frac{5}{48})] \\  & =25.\end{aligned}
+\begin{aligned}{∬}_{S}(xy+z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,({u}^{2}-{v}^{2})\cdot 2\,\text{d}A \\  & =2{∬}_{D}\,({u}^{2}-{v}^{2})\,\text{d}A \\  & =2{\int }_{-\frac{1}{2}}^{1}({\int }_{\frac{1}{2}}^{3}({u}^{2}-{v}^{2})\,\text{d}u)\text{d}v \\  & =2{\int }_{-\frac{1}{2}}^{1}{[\frac{{u}^{3}}{3}-{v}^{2}u]}_{\frac{1}{2}}^{3}\,\text{d}v \\  & =2{\int }_{-\frac{1}{2}}^{1}(\frac{215}{24}-\frac{5{v}^{2}}{2})\text{d}v \\  & =2{[\frac{215v}{24}-\frac{5{v}^{3}}{6}]}_{-\frac{1}{2}}^{1} \\  & =2[\frac{215}{24}-\frac{5}{6}-(-\frac{215}{48}+\frac{5}{48})] \\  & =25.\end{aligned}
 $$
 
 ## Original q-161212
@@ -2892,7 +2892,7 @@ $$
 our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}{x}^{2}-{z}^{2}\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(3{u}^{2}-3{v}^{2})\cdot 9\,\text{d}A \\  & =9{∬}_{D}\,(3{u}^{2}-3{v}^{2})\,\text{d}A \\  & =9{\int }_{-\frac{5}{2}}^{-1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}(3{u}^{2}-3{v}^{2})\,\text{d}u)\text{d}v \\  & =9{\int }_{-\frac{5}{2}}^{-1}{[{u}^{3}-3{v}^{2}u]}_{-1}^{1}\,\text{d}v \\  & =9{\int }_{-\frac{5}{2}}^{-1}[((-\frac{3v^{2}}{2})+\frac{1}{8})-(\frac{3v^{2}}{2}+(-\frac{1}{8}))]\text{d}v \\  & =9{\int }_{-\frac{5}{2}}^{-1}(\frac{1}{4}-3{v}^{2})\text{d}v \\  & =9\cdot [\frac{v}{4}-{v}^{3}]_{-\frac{5}{2}}^{-1} \\  & =9[((-\frac{1}{4})+1)-((-\frac{5}{8})+\frac{125}{8})] \\  & =9\cdot (-\frac{57}{4}) \\  & =-\frac{513}{4}.\end{aligned}
+\begin{aligned}{∬}_{S}{x}^{2}-{z}^{2}\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(3{u}^{2}-3{v}^{2})\cdot 9\,\text{d}A \\  & =9{∬}_{D}\,(3{u}^{2}-3{v}^{2})\,\text{d}A \\  & =9{\int }_{-\frac{5}{2}}^{-1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}(3{u}^{2}-3{v}^{2})\,\text{d}u)\text{d}v \\  & =9{\int }_{-\frac{5}{2}}^{-1}{[{u}^{3}-3{v}^{2}u]}_{-\frac{1}{2}}^{\frac{1}{2}}\,\text{d}v \\  & =9{\int }_{-\frac{5}{2}}^{-1}[((-\frac{3v^{2}}{2})+\frac{1}{8})-(\frac{3v^{2}}{2}+(-\frac{1}{8}))]\text{d}v \\  & =9{\int }_{-\frac{5}{2}}^{-1}(\frac{1}{4}-3{v}^{2})\text{d}v \\  & =9\cdot [\frac{v}{4}-{v}^{3}]_{-\frac{5}{2}}^{-1} \\  & =9[((-\frac{1}{4})+1)-((-\frac{5}{8})+\frac{125}{8})] \\  & =9\cdot (-\frac{57}{4}) \\  & =-\frac{513}{4}.\end{aligned}
 $$
 
 ### Generated normal method bank {'ua': '-1/2', 'ub': '1/2', 'va': '-1/2', 'vb': '1'}
@@ -2962,7 +2962,7 @@ $$
 our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}{x}^{2}-{z}^{2}\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(3{u}^{2}-3{v}^{2})\cdot 9\,\text{d}A \\  & =9{∬}_{D}\,(3{u}^{2}-3{v}^{2})\,\text{d}A \\  & =9{\int }_{-\frac{1}{2}}^{1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}(3{u}^{2}-3{v}^{2})\,\text{d}u)\text{d}v \\  & =9{\int }_{-\frac{1}{2}}^{1}{[{u}^{3}-3{v}^{2}u]}_{-1}^{1}\,\text{d}v \\  & =9{\int }_{-\frac{1}{2}}^{1}[((-\frac{3v^{2}}{2})+\frac{1}{8})-(\frac{3v^{2}}{2}+(-\frac{1}{8}))]\text{d}v \\  & =9{\int }_{-\frac{1}{2}}^{1}(\frac{1}{4}-3{v}^{2})\text{d}v \\  & =9\cdot [\frac{v}{4}-{v}^{3}]_{-\frac{1}{2}}^{1} \\  & =9[(\frac{1}{4}+(-1))-((-\frac{1}{8})+\frac{1}{8})] \\  & =9\cdot (-\frac{3}{4}) \\  & =-\frac{27}{4}.\end{aligned}
+\begin{aligned}{∬}_{S}{x}^{2}-{z}^{2}\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(3{u}^{2}-3{v}^{2})\cdot 9\,\text{d}A \\  & =9{∬}_{D}\,(3{u}^{2}-3{v}^{2})\,\text{d}A \\  & =9{\int }_{-\frac{1}{2}}^{1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}(3{u}^{2}-3{v}^{2})\,\text{d}u)\text{d}v \\  & =9{\int }_{-\frac{1}{2}}^{1}{[{u}^{3}-3{v}^{2}u]}_{-\frac{1}{2}}^{\frac{1}{2}}\,\text{d}v \\  & =9{\int }_{-\frac{1}{2}}^{1}[((-\frac{3v^{2}}{2})+\frac{1}{8})-(\frac{3v^{2}}{2}+(-\frac{1}{8}))]\text{d}v \\  & =9{\int }_{-\frac{1}{2}}^{1}(\frac{1}{4}-3{v}^{2})\text{d}v \\  & =9\cdot [\frac{v}{4}-{v}^{3}]_{-\frac{1}{2}}^{1} \\  & =9[(\frac{1}{4}+(-1))-((-\frac{1}{8})+\frac{1}{8})] \\  & =9\cdot (-\frac{3}{4}) \\  & =-\frac{27}{4}.\end{aligned}
 $$
 
 ### Generated opaque bank evidence (ineligible) {'ua': '-1/2', 'ub': '1/2', 'va': '-5/2', 'vb': '-1'}
@@ -3032,7 +3032,7 @@ $$
 our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}{x}^{2}-{z}^{2}\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(3{u}^{2}-3{v}^{2})\cdot 9\,\text{d}A \\  & =9{∬}_{D}\,(3{u}^{2}-3{v}^{2})\,\text{d}A \\  & =9{\int }_{-\frac{5}{2}}^{-1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}(3{u}^{2}-3{v}^{2})\,\text{d}u)\text{d}v \\  & =9{\int }_{-\frac{5}{2}}^{-1}{[{u}^{3}-3{v}^{2}u]}_{-1}^{1}\,\text{d}v \\  & =9{\int }_{-\frac{5}{2}}^{-1}(\frac{1}{4}-3{v}^{2})\text{d}v \\  & =9\cdot [\frac{v}{4}-{v}^{3}]_{-\frac{5}{2}}^{-1} \\  & =9\cdot (-\frac{57}{4}) \\  & =-\frac{513}{4}.\end{aligned}
+\begin{aligned}{∬}_{S}{x}^{2}-{z}^{2}\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(3{u}^{2}-3{v}^{2})\cdot 9\,\text{d}A \\  & =9{∬}_{D}\,(3{u}^{2}-3{v}^{2})\,\text{d}A \\  & =9{\int }_{-\frac{5}{2}}^{-1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}(3{u}^{2}-3{v}^{2})\,\text{d}u)\text{d}v \\  & =9{\int }_{-\frac{5}{2}}^{-1}{[{u}^{3}-3{v}^{2}u]}_{-\frac{1}{2}}^{\frac{1}{2}}\,\text{d}v \\  & =9{\int }_{-\frac{5}{2}}^{-1}(\frac{1}{4}-3{v}^{2})\text{d}v \\  & =9\cdot [\frac{v}{4}-{v}^{3}]_{-\frac{5}{2}}^{-1} \\  & =9\cdot (-\frac{57}{4}) \\  & =-\frac{513}{4}.\end{aligned}
 $$
 
 ### Generated opaque bank evidence (ineligible) {'ua': '-1/2', 'ub': '1/2', 'va': '-1/2', 'vb': '1'}
@@ -3102,7 +3102,7 @@ $$
 our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}{x}^{2}-{z}^{2}\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(3{u}^{2}-3{v}^{2})\cdot 9\,\text{d}A \\  & =9{∬}_{D}\,(3{u}^{2}-3{v}^{2})\,\text{d}A \\  & =9{\int }_{-\frac{1}{2}}^{1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}(3{u}^{2}-3{v}^{2})\,\text{d}u)\text{d}v \\  & =9{\int }_{-\frac{1}{2}}^{1}{[{u}^{3}-3{v}^{2}u]}_{-1}^{1}\,\text{d}v \\  & =9{\int }_{-\frac{1}{2}}^{1}(\frac{1}{4}-3{v}^{2})\text{d}v \\  & =9\cdot [\frac{v}{4}-{v}^{3}]_{-\frac{1}{2}}^{1} \\  & =9\cdot (-\frac{3}{4}) \\  & =-\frac{27}{4}.\end{aligned}
+\begin{aligned}{∬}_{S}{x}^{2}-{z}^{2}\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(3{u}^{2}-3{v}^{2})\cdot 9\,\text{d}A \\  & =9{∬}_{D}\,(3{u}^{2}-3{v}^{2})\,\text{d}A \\  & =9{\int }_{-\frac{1}{2}}^{1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}(3{u}^{2}-3{v}^{2})\,\text{d}u)\text{d}v \\  & =9{\int }_{-\frac{1}{2}}^{1}{[{u}^{3}-3{v}^{2}u]}_{-\frac{1}{2}}^{\frac{1}{2}}\,\text{d}v \\  & =9{\int }_{-\frac{1}{2}}^{1}(\frac{1}{4}-3{v}^{2})\text{d}v \\  & =9\cdot [\frac{v}{4}-{v}^{3}]_{-\frac{1}{2}}^{1} \\  & =9\cdot (-\frac{3}{4}) \\  & =-\frac{27}{4}.\end{aligned}
 $$
 
 ## Original q-161181
@@ -3200,7 +3200,7 @@ $$
 Therefore, our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,2(u-v)\cdot 2\sqrt{2}\,\text{d}A \\  & =4\sqrt{2}{∬}_{D}\,(u-v)\,\text{d}A \\  & =4\sqrt{2}{\int }_{-\frac{5}{2}}^{-1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}u-v\,\text{d}u)\text{d}v \\  & =4\sqrt{2}{\int }_{-\frac{5}{2}}^{-1}{[\frac{{u}^{2}}{2}-vu]}_{-1}^{1}\text{d}v \\  & =4\sqrt{2}{\int }_{-\frac{5}{2}}^{-1}[((-\frac{v}{2})+\frac{1}{8})-(\frac{v}{2}+\frac{1}{8})]\text{d}v \\  & =4\sqrt{2}{\int }_{-\frac{5}{2}}^{-1}(0-v)\text{d}v \\  & =4\sqrt{2}{[-\frac{{v}^{2}}{2}]}_{-\frac{5}{2}}^{-1} \\  & =4\sqrt{2}[((-\frac{1}{2}))-((-\frac{25}{8}))] \\  & =4\sqrt{2}\cdot \frac{21}{8} \\  & =\frac{21\sqrt{2}}{2}.\end{aligned}
+\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,2(u-v)\cdot 2\sqrt{2}\,\text{d}A \\  & =4\sqrt{2}{∬}_{D}\,(u-v)\,\text{d}A \\  & =4\sqrt{2}{\int }_{-\frac{5}{2}}^{-1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}u-v\,\text{d}u)\text{d}v \\  & =4\sqrt{2}{\int }_{-\frac{5}{2}}^{-1}{[\frac{{u}^{2}}{2}-vu]}_{-\frac{1}{2}}^{\frac{1}{2}}\text{d}v \\  & =4\sqrt{2}{\int }_{-\frac{5}{2}}^{-1}[((-\frac{v}{2})+\frac{1}{8})-(\frac{v}{2}+\frac{1}{8})]\text{d}v \\  & =4\sqrt{2}{\int }_{-\frac{5}{2}}^{-1}(0-v)\text{d}v \\  & =4\sqrt{2}{[-\frac{{v}^{2}}{2}]}_{-\frac{5}{2}}^{-1} \\  & =4\sqrt{2}[((-\frac{1}{2}))-((-\frac{25}{8}))] \\  & =4\sqrt{2}\cdot \frac{21}{8} \\  & =\frac{21\sqrt{2}}{2}.\end{aligned}
 $$
 
 ### Generated normal method bank {'ua': '-1/2', 'ub': '1/2', 'va': '-1/2', 'vb': '1'}
@@ -3249,7 +3249,7 @@ $$
 Therefore, our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,2(u-v)\cdot 2\sqrt{2}\,\text{d}A \\  & =4\sqrt{2}{∬}_{D}\,(u-v)\,\text{d}A \\  & =4\sqrt{2}{\int }_{-\frac{1}{2}}^{1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}u-v\,\text{d}u)\text{d}v \\  & =4\sqrt{2}{\int }_{-\frac{1}{2}}^{1}{[\frac{{u}^{2}}{2}-vu]}_{-1}^{1}\text{d}v \\  & =4\sqrt{2}{\int }_{-\frac{1}{2}}^{1}[((-\frac{v}{2})+\frac{1}{8})-(\frac{v}{2}+\frac{1}{8})]\text{d}v \\  & =4\sqrt{2}{\int }_{-\frac{1}{2}}^{1}(0-v)\text{d}v \\  & =4\sqrt{2}{[-\frac{{v}^{2}}{2}]}_{-\frac{1}{2}}^{1} \\  & =4\sqrt{2}[((-\frac{1}{2}))-((-\frac{1}{8}))] \\  & =4\sqrt{2}\cdot (-\frac{3}{8}) \\  & =-\frac{3\sqrt{2}}{2}.\end{aligned}
+\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,2(u-v)\cdot 2\sqrt{2}\,\text{d}A \\  & =4\sqrt{2}{∬}_{D}\,(u-v)\,\text{d}A \\  & =4\sqrt{2}{\int }_{-\frac{1}{2}}^{1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}u-v\,\text{d}u)\text{d}v \\  & =4\sqrt{2}{\int }_{-\frac{1}{2}}^{1}{[\frac{{u}^{2}}{2}-vu]}_{-\frac{1}{2}}^{\frac{1}{2}}\text{d}v \\  & =4\sqrt{2}{\int }_{-\frac{1}{2}}^{1}[((-\frac{v}{2})+\frac{1}{8})-(\frac{v}{2}+\frac{1}{8})]\text{d}v \\  & =4\sqrt{2}{\int }_{-\frac{1}{2}}^{1}(0-v)\text{d}v \\  & =4\sqrt{2}{[-\frac{{v}^{2}}{2}]}_{-\frac{1}{2}}^{1} \\  & =4\sqrt{2}[((-\frac{1}{2}))-((-\frac{1}{8}))] \\  & =4\sqrt{2}\cdot (-\frac{3}{8}) \\  & =-\frac{3\sqrt{2}}{2}.\end{aligned}
 $$
 
 ### Generated opaque bank evidence (ineligible) {'ua': '-1/2', 'ub': '1/2', 'va': '-5/2', 'vb': '-1'}
@@ -3298,7 +3298,7 @@ $$
 Therefore, our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,2(u-v)\cdot 2\sqrt{2}\,\text{d}A \\  & =4\sqrt{2}{∬}_{D}\,(u-v)\,\text{d}A \\  & =4\sqrt{2}{\int }_{-\frac{5}{2}}^{-1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}u-v\,\text{d}u)\text{d}v \\  & =4\sqrt{2}{\int }_{-\frac{5}{2}}^{-1}{[\frac{{u}^{2}}{2}-vu]}_{-1}^{1}\text{d}v \\  & =4\sqrt{2}{\int }_{-\frac{5}{2}}^{-1}(0-v)\text{d}v \\  & =4\sqrt{2}{[-\frac{{v}^{2}}{2}]}_{-\frac{5}{2}}^{-1} \\  & =4\sqrt{2}\cdot \frac{21}{8} \\  & =\frac{21\sqrt{2}}{2}.\end{aligned}
+\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,2(u-v)\cdot 2\sqrt{2}\,\text{d}A \\  & =4\sqrt{2}{∬}_{D}\,(u-v)\,\text{d}A \\  & =4\sqrt{2}{\int }_{-\frac{5}{2}}^{-1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}u-v\,\text{d}u)\text{d}v \\  & =4\sqrt{2}{\int }_{-\frac{5}{2}}^{-1}{[\frac{{u}^{2}}{2}-vu]}_{-\frac{1}{2}}^{\frac{1}{2}}\text{d}v \\  & =4\sqrt{2}{\int }_{-\frac{5}{2}}^{-1}(0-v)\text{d}v \\  & =4\sqrt{2}{[-\frac{{v}^{2}}{2}]}_{-\frac{5}{2}}^{-1} \\  & =4\sqrt{2}\cdot \frac{21}{8} \\  & =\frac{21\sqrt{2}}{2}.\end{aligned}
 $$
 
 ### Generated opaque bank evidence (ineligible) {'ua': '-1/2', 'ub': '1/2', 'va': '-1/2', 'vb': '1'}
@@ -3347,7 +3347,7 @@ $$
 Therefore, our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,2(u-v)\cdot 2\sqrt{2}\,\text{d}A \\  & =4\sqrt{2}{∬}_{D}\,(u-v)\,\text{d}A \\  & =4\sqrt{2}{\int }_{-\frac{1}{2}}^{1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}u-v\,\text{d}u)\text{d}v \\  & =4\sqrt{2}{\int }_{-\frac{1}{2}}^{1}{[\frac{{u}^{2}}{2}-vu]}_{-1}^{1}\text{d}v \\  & =4\sqrt{2}{\int }_{-\frac{1}{2}}^{1}(0-v)\text{d}v \\  & =4\sqrt{2}{[-\frac{{v}^{2}}{2}]}_{-\frac{1}{2}}^{1} \\  & =4\sqrt{2}\cdot (-\frac{3}{8}) \\  & =-\frac{3\sqrt{2}}{2}.\end{aligned}
+\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,2(u-v)\cdot 2\sqrt{2}\,\text{d}A \\  & =4\sqrt{2}{∬}_{D}\,(u-v)\,\text{d}A \\  & =4\sqrt{2}{\int }_{-\frac{1}{2}}^{1}({\int }_{-\frac{1}{2}}^{\frac{1}{2}}u-v\,\text{d}u)\text{d}v \\  & =4\sqrt{2}{\int }_{-\frac{1}{2}}^{1}{[\frac{{u}^{2}}{2}-vu]}_{-\frac{1}{2}}^{\frac{1}{2}}\text{d}v \\  & =4\sqrt{2}{\int }_{-\frac{1}{2}}^{1}(0-v)\text{d}v \\  & =4\sqrt{2}{[-\frac{{v}^{2}}{2}]}_{-\frac{1}{2}}^{1} \\  & =4\sqrt{2}\cdot (-\frac{3}{8}) \\  & =-\frac{3\sqrt{2}}{2}.\end{aligned}
 $$
 
 ## Original q-161179
@@ -3445,7 +3445,7 @@ $$
 Therefore, our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(3u+3v)\cdot 3\sqrt{6}\,\text{d}A \\  & =9\sqrt{6}{∬}_{D}\,(u+v)\,\text{d}A \\  & =9\sqrt{6}{\int }_{-\frac{5}{2}}^{-1}({\int }_{-3}^{-\frac{5}{2}}u+v\,\text{d}u)\text{d}v \\  & =9\sqrt{6}{\int }_{-\frac{5}{2}}^{-1}{[\frac{{u}^{2}}{2}+vu]}_{0}^{1}\text{d}v \\  & =9\sqrt{6}{\int }_{-\frac{5}{2}}^{-1}[((-\frac{5v}{2})+\frac{25}{8})-((-3v)+\frac{9}{2})]\text{d}v \\  & =9\sqrt{6}{\int }_{-\frac{5}{2}}^{-1}(-\frac{11}{8}+\frac{v}{2})\text{d}v \\  & =9\sqrt{6}{[-\frac{11v}{8}+\frac{{v}^{2}}{4}]}_{-\frac{5}{2}}^{-1} \\  & =9\sqrt{6}[(\frac{11}{8}+\frac{1}{4})-(\frac{55}{16}+\frac{25}{16})] \\  & =9\sqrt{6}\cdot (-\frac{27}{8}) \\  & =-\frac{243\sqrt{6}}{8}.\end{aligned}
+\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(3u+3v)\cdot 3\sqrt{6}\,\text{d}A \\  & =9\sqrt{6}{∬}_{D}\,(u+v)\,\text{d}A \\  & =9\sqrt{6}{\int }_{-\frac{5}{2}}^{-1}({\int }_{-3}^{-\frac{5}{2}}u+v\,\text{d}u)\text{d}v \\  & =9\sqrt{6}{\int }_{-\frac{5}{2}}^{-1}{[\frac{{u}^{2}}{2}+vu]}_{-3}^{-\frac{5}{2}}\text{d}v \\  & =9\sqrt{6}{\int }_{-\frac{5}{2}}^{-1}[((-\frac{5v}{2})+\frac{25}{8})-((-3v)+\frac{9}{2})]\text{d}v \\  & =9\sqrt{6}{\int }_{-\frac{5}{2}}^{-1}(-\frac{11}{8}+\frac{v}{2})\text{d}v \\  & =9\sqrt{6}{[-\frac{11v}{8}+\frac{{v}^{2}}{4}]}_{-\frac{5}{2}}^{-1} \\  & =9\sqrt{6}[(\frac{11}{8}+\frac{1}{4})-(\frac{55}{16}+\frac{25}{16})] \\  & =9\sqrt{6}\cdot (-\frac{27}{8}) \\  & =-\frac{243\sqrt{6}}{8}.\end{aligned}
 $$
 
 ### Generated normal method bank {'ua': '1/2', 'ub': '3', 'va': '-1/2', 'vb': '1'}
@@ -3494,7 +3494,7 @@ $$
 Therefore, our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(3u+3v)\cdot 3\sqrt{6}\,\text{d}A \\  & =9\sqrt{6}{∬}_{D}\,(u+v)\,\text{d}A \\  & =9\sqrt{6}{\int }_{-\frac{1}{2}}^{1}({\int }_{\frac{1}{2}}^{3}u+v\,\text{d}u)\text{d}v \\  & =9\sqrt{6}{\int }_{-\frac{1}{2}}^{1}{[\frac{{u}^{2}}{2}+vu]}_{0}^{1}\text{d}v \\  & =9\sqrt{6}{\int }_{-\frac{1}{2}}^{1}[(3v+\frac{9}{2})-(\frac{v}{2}+\frac{1}{8})]\text{d}v \\  & =9\sqrt{6}{\int }_{-\frac{1}{2}}^{1}(\frac{35}{8}+\frac{5v}{2})\text{d}v \\  & =9\sqrt{6}{[\frac{35v}{8}+\frac{5{v}^{2}}{4}]}_{-\frac{1}{2}}^{1} \\  & =9\sqrt{6}[(\frac{35}{8}+\frac{5}{4})-((-\frac{35}{16})+\frac{5}{16})] \\  & =9\sqrt{6}\cdot \frac{15}{2} \\  & =\frac{135\sqrt{6}}{2}.\end{aligned}
+\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(3u+3v)\cdot 3\sqrt{6}\,\text{d}A \\  & =9\sqrt{6}{∬}_{D}\,(u+v)\,\text{d}A \\  & =9\sqrt{6}{\int }_{-\frac{1}{2}}^{1}({\int }_{\frac{1}{2}}^{3}u+v\,\text{d}u)\text{d}v \\  & =9\sqrt{6}{\int }_{-\frac{1}{2}}^{1}{[\frac{{u}^{2}}{2}+vu]}_{\frac{1}{2}}^{3}\text{d}v \\  & =9\sqrt{6}{\int }_{-\frac{1}{2}}^{1}[(3v+\frac{9}{2})-(\frac{v}{2}+\frac{1}{8})]\text{d}v \\  & =9\sqrt{6}{\int }_{-\frac{1}{2}}^{1}(\frac{35}{8}+\frac{5v}{2})\text{d}v \\  & =9\sqrt{6}{[\frac{35v}{8}+\frac{5{v}^{2}}{4}]}_{-\frac{1}{2}}^{1} \\  & =9\sqrt{6}[(\frac{35}{8}+\frac{5}{4})-((-\frac{35}{16})+\frac{5}{16})] \\  & =9\sqrt{6}\cdot \frac{15}{2} \\  & =\frac{135\sqrt{6}}{2}.\end{aligned}
 $$
 
 ### Generated opaque bank evidence (ineligible) {'ua': '-3', 'ub': '-5/2', 'va': '-5/2', 'vb': '-1'}
@@ -3543,7 +3543,7 @@ $$
 Therefore, our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(3u+3v)\cdot 3\sqrt{6}\,\text{d}A \\  & =9\sqrt{6}{∬}_{D}\,(u+v)\,\text{d}A \\  & =9\sqrt{6}{\int }_{-\frac{5}{2}}^{-1}({\int }_{-3}^{-\frac{5}{2}}u+v\,\text{d}u)\text{d}v \\  & =9\sqrt{6}{\int }_{-\frac{5}{2}}^{-1}{[\frac{{u}^{2}}{2}+vu]}_{0}^{1}\text{d}v \\  & =9\sqrt{6}{\int }_{-\frac{5}{2}}^{-1}(-\frac{11}{8}+\frac{v}{2})\text{d}v \\  & =9\sqrt{6}{[-\frac{11v}{8}+\frac{{v}^{2}}{4}]}_{-\frac{5}{2}}^{-1} \\  & =9\sqrt{6}\cdot (-\frac{27}{8}) \\  & =-\frac{243\sqrt{6}}{8}.\end{aligned}
+\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(3u+3v)\cdot 3\sqrt{6}\,\text{d}A \\  & =9\sqrt{6}{∬}_{D}\,(u+v)\,\text{d}A \\  & =9\sqrt{6}{\int }_{-\frac{5}{2}}^{-1}({\int }_{-3}^{-\frac{5}{2}}u+v\,\text{d}u)\text{d}v \\  & =9\sqrt{6}{\int }_{-\frac{5}{2}}^{-1}{[\frac{{u}^{2}}{2}+vu]}_{-3}^{-\frac{5}{2}}\text{d}v \\  & =9\sqrt{6}{\int }_{-\frac{5}{2}}^{-1}(-\frac{11}{8}+\frac{v}{2})\text{d}v \\  & =9\sqrt{6}{[-\frac{11v}{8}+\frac{{v}^{2}}{4}]}_{-\frac{5}{2}}^{-1} \\  & =9\sqrt{6}\cdot (-\frac{27}{8}) \\  & =-\frac{243\sqrt{6}}{8}.\end{aligned}
 $$
 
 ### Generated opaque bank evidence (ineligible) {'ua': '1/2', 'ub': '3', 'va': '-1/2', 'vb': '1'}
@@ -3592,7 +3592,7 @@ $$
 Therefore, our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(3u+3v)\cdot 3\sqrt{6}\,\text{d}A \\  & =9\sqrt{6}{∬}_{D}\,(u+v)\,\text{d}A \\  & =9\sqrt{6}{\int }_{-\frac{1}{2}}^{1}({\int }_{\frac{1}{2}}^{3}u+v\,\text{d}u)\text{d}v \\  & =9\sqrt{6}{\int }_{-\frac{1}{2}}^{1}{[\frac{{u}^{2}}{2}+vu]}_{0}^{1}\text{d}v \\  & =9\sqrt{6}{\int }_{-\frac{1}{2}}^{1}(\frac{35}{8}+\frac{5v}{2})\text{d}v \\  & =9\sqrt{6}{[\frac{35v}{8}+\frac{5{v}^{2}}{4}]}_{-\frac{1}{2}}^{1} \\  & =9\sqrt{6}\cdot \frac{15}{2} \\  & =\frac{135\sqrt{6}}{2}.\end{aligned}
+\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,(3u+3v)\cdot 3\sqrt{6}\,\text{d}A \\  & =9\sqrt{6}{∬}_{D}\,(u+v)\,\text{d}A \\  & =9\sqrt{6}{\int }_{-\frac{1}{2}}^{1}({\int }_{\frac{1}{2}}^{3}u+v\,\text{d}u)\text{d}v \\  & =9\sqrt{6}{\int }_{-\frac{1}{2}}^{1}{[\frac{{u}^{2}}{2}+vu]}_{\frac{1}{2}}^{3}\text{d}v \\  & =9\sqrt{6}{\int }_{-\frac{1}{2}}^{1}(\frac{35}{8}+\frac{5v}{2})\text{d}v \\  & =9\sqrt{6}{[\frac{35v}{8}+\frac{5{v}^{2}}{4}]}_{-\frac{1}{2}}^{1} \\  & =9\sqrt{6}\cdot \frac{15}{2} \\  & =\frac{135\sqrt{6}}{2}.\end{aligned}
 $$
 
 ## Original q-161185
@@ -3690,7 +3690,7 @@ $$
 Therefore, our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,8uv\cdot 2\sqrt{10}\,\text{d}A \\  & =16\sqrt{10}{∬}_{D}\,uv\,\text{d}A \\  & =16\sqrt{10}{\int }_{0}^{3}{\int }_{0}^{1}uv\,\text{d}u\text{d}v \\  & =16\sqrt{10}({\int }_{0}^{1}u\,\text{d}u)({\int }_{0}^{3}v\,\text{d}v) \\  & =16\sqrt{10}\cdot {[\frac{{u}^{2}}{2}]}_{0}^{1}\cdot {[\frac{{v}^{2}}{2}]}_{0}^{2} \\  & =16\sqrt{10}[(\frac{1}{2})-(0)]\cdot [(\frac{9}{2})-(0)] \\  & =16\sqrt{10}\cdot \frac{1}{2}\cdot \frac{9}{2} \\  & =36\sqrt{10}.\end{aligned}
+\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,8uv\cdot 2\sqrt{10}\,\text{d}A \\  & =16\sqrt{10}{∬}_{D}\,uv\,\text{d}A \\  & =16\sqrt{10}{\int }_{0}^{3}{\int }_{0}^{1}uv\,\text{d}u\text{d}v \\  & =16\sqrt{10}({\int }_{0}^{1}u\,\text{d}u)({\int }_{0}^{3}v\,\text{d}v) \\  & =16\sqrt{10}\cdot {[\frac{{u}^{2}}{2}]}_{0}^{1}\cdot {[\frac{{v}^{2}}{2}]}_{0}^{3} \\  & =16\sqrt{10}[(\frac{1}{2})-(0)]\cdot [(\frac{9}{2})-(0)] \\  & =16\sqrt{10}\cdot \frac{1}{2}\cdot \frac{9}{2} \\  & =36\sqrt{10}.\end{aligned}
 $$
 
 ### Generated normal method bank {'ua': '0', 'ub': '1', 'va': '0', 'vb': '1'}
@@ -3739,7 +3739,7 @@ $$
 Therefore, our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,8uv\cdot 2\sqrt{10}\,\text{d}A \\  & =16\sqrt{10}{∬}_{D}\,uv\,\text{d}A \\  & =16\sqrt{10}{\int }_{0}^{1}{\int }_{0}^{1}uv\,\text{d}u\text{d}v \\  & =16\sqrt{10}({\int }_{0}^{1}u\,\text{d}u)({\int }_{0}^{1}v\,\text{d}v) \\  & =16\sqrt{10}\cdot {[\frac{{u}^{2}}{2}]}_{0}^{1}\cdot {[\frac{{v}^{2}}{2}]}_{0}^{2} \\  & =16\sqrt{10}[(\frac{1}{2})-(0)]\cdot [(\frac{1}{2})-(0)] \\  & =16\sqrt{10}\cdot \frac{1}{2}\cdot \frac{1}{2} \\  & =4\sqrt{10}.\end{aligned}
+\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,8uv\cdot 2\sqrt{10}\,\text{d}A \\  & =16\sqrt{10}{∬}_{D}\,uv\,\text{d}A \\  & =16\sqrt{10}{\int }_{0}^{1}{\int }_{0}^{1}uv\,\text{d}u\text{d}v \\  & =16\sqrt{10}({\int }_{0}^{1}u\,\text{d}u)({\int }_{0}^{1}v\,\text{d}v) \\  & =16\sqrt{10}\cdot {[\frac{{u}^{2}}{2}]}_{0}^{1}\cdot {[\frac{{v}^{2}}{2}]}_{0}^{1} \\  & =16\sqrt{10}[(\frac{1}{2})-(0)]\cdot [(\frac{1}{2})-(0)] \\  & =16\sqrt{10}\cdot \frac{1}{2}\cdot \frac{1}{2} \\  & =4\sqrt{10}.\end{aligned}
 $$
 
 ### Generated opaque bank evidence (ineligible) {'ua': '0', 'ub': '1', 'va': '0', 'vb': '3'}
@@ -3788,7 +3788,7 @@ $$
 Therefore, our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,8uv\cdot 2\sqrt{10}\,\text{d}A \\  & =16\sqrt{10}{∬}_{D}\,uv\,\text{d}A \\  & =16\sqrt{10}{\int }_{0}^{3}{\int }_{0}^{1}uv\,\text{d}u\text{d}v \\  & =16\sqrt{10}({\int }_{0}^{1}u\,\text{d}u)({\int }_{0}^{3}v\,\text{d}v) \\  & =16\sqrt{10}\cdot {[\frac{{u}^{2}}{2}]}_{0}^{1}\cdot {[\frac{{v}^{2}}{2}]}_{0}^{2} \\  & =16\sqrt{10}\cdot \frac{1}{2}\cdot \frac{9}{2} \\  & =36\sqrt{10}.\end{aligned}
+\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,8uv\cdot 2\sqrt{10}\,\text{d}A \\  & =16\sqrt{10}{∬}_{D}\,uv\,\text{d}A \\  & =16\sqrt{10}{\int }_{0}^{3}{\int }_{0}^{1}uv\,\text{d}u\text{d}v \\  & =16\sqrt{10}({\int }_{0}^{1}u\,\text{d}u)({\int }_{0}^{3}v\,\text{d}v) \\  & =16\sqrt{10}\cdot {[\frac{{u}^{2}}{2}]}_{0}^{1}\cdot {[\frac{{v}^{2}}{2}]}_{0}^{3} \\  & =16\sqrt{10}\cdot \frac{1}{2}\cdot \frac{9}{2} \\  & =36\sqrt{10}.\end{aligned}
 $$
 
 ### Generated opaque bank evidence (ineligible) {'ua': '0', 'ub': '1', 'va': '0', 'vb': '1'}
@@ -3837,7 +3837,7 @@ $$
 Therefore, our surface integral can be written as 
 
 $$
-\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,8uv\cdot 2\sqrt{10}\,\text{d}A \\  & =16\sqrt{10}{∬}_{D}\,uv\,\text{d}A \\  & =16\sqrt{10}{\int }_{0}^{1}{\int }_{0}^{1}uv\,\text{d}u\text{d}v \\  & =16\sqrt{10}({\int }_{0}^{1}u\,\text{d}u)({\int }_{0}^{1}v\,\text{d}v) \\  & =16\sqrt{10}\cdot {[\frac{{u}^{2}}{2}]}_{0}^{1}\cdot {[\frac{{v}^{2}}{2}]}_{0}^{2} \\  & =16\sqrt{10}\cdot \frac{1}{2}\cdot \frac{1}{2} \\  & =4\sqrt{10}.\end{aligned}
+\begin{aligned}{∬}_{S}f(x,y,z)\,\text{d}S & ={∬}_{D}f(r(u,v))‖{r}_{u}^{′}\times {r}_{v}^{′}‖\text{d}A \\  & ={∬}_{D}\,8uv\cdot 2\sqrt{10}\,\text{d}A \\  & =16\sqrt{10}{∬}_{D}\,uv\,\text{d}A \\  & =16\sqrt{10}{\int }_{0}^{1}{\int }_{0}^{1}uv\,\text{d}u\text{d}v \\  & =16\sqrt{10}({\int }_{0}^{1}u\,\text{d}u)({\int }_{0}^{1}v\,\text{d}v) \\  & =16\sqrt{10}\cdot {[\frac{{u}^{2}}{2}]}_{0}^{1}\cdot {[\frac{{v}^{2}}{2}]}_{0}^{1} \\  & =16\sqrt{10}\cdot \frac{1}{2}\cdot \frac{1}{2} \\  & =4\sqrt{10}.\end{aligned}
 $$
 
 ## Authored easy

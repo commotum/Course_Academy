@@ -4,7 +4,7 @@ Captured scope: **120 topics, 384 knowledge points**, 3757 practice questions; m
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**qa_passed: 294**, **queued: 84**, **working: 6**.
+**qa_passed: 298**, **queued: 81**, **working: 5**.
 
 Dispatch priority: the 15 KPs in `coverage-report.md`, while already-started workers finish.
 
@@ -306,15 +306,15 @@ Counts describe reviewed work; queued and working KPs are not complete. Source a
 | [17592186172086](../../scratch/17592186172086.py) | Vector Fields | Finding the Domain of a Vector Field | 0 / 4 / 5 / 0 | qa_passed | [Report](qa/17592186172086.json) |
 | [17592186172087](../../scratch/17592186172087.py) | Vector Fields | Identifying Vector Fields on Three-Dimensions | 9 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186172087.json) |
 | [17592186198361](../../scratch/17592186198361.py) | Computing Double Integrals Using a Change of Variables | Performing a Change of Variables | 4 / 1 / 0 / 2 | qa_passed | [Report](qa/17592186198361.json) |
-| [17592186198373](../../scratch/17592186198373.py) | Computing Double Integrals Using a Change of Variables | Cases When the Transformation Is Inferred From the Domain | 0 / 5 / 0 / 1 | working | — |
-| [17592186198374](../../scratch/17592186198374.py) | Computing Double Integrals Using a Change of Variables | Cases When the Transformation Is Inferred From the Integrand | 0 / 0 / 5 / 1 | working | — |
-| [17592186172130](../../scratch/17592186172130.py) | Surface Integrals Over Parametric Surfaces | Constructing Surface Integrals Over Parametric Surfaces | 6 / 6 / 0 / 0 | working | — |
+| [17592186198373](../../scratch/17592186198373.py) | Computing Double Integrals Using a Change of Variables | Cases When the Transformation Is Inferred From the Domain | 0 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186198373.json) |
+| [17592186198374](../../scratch/17592186198374.py) | Computing Double Integrals Using a Change of Variables | Cases When the Transformation Is Inferred From the Integrand | 0 / 0 / 5 / 1 | qa_passed | [Report](qa/17592186198374.json) |
+| [17592186172130](../../scratch/17592186172130.py) | Surface Integrals Over Parametric Surfaces | Constructing Surface Integrals Over Parametric Surfaces | 6 / 6 / 0 / 0 | qa_passed | [Report](qa/17592186172130.json) |
 | [17592186172131](../../scratch/17592186172131.py) | Surface Integrals Over Parametric Surfaces | Evaluating Surface Integrals Over Parametric Surfaces | 0 / 7 / 6 / 0 | working | — |
-| [17592186176049](../../scratch/17592186176049.py) | Describing Properties of the Tangent Function | Describing Properties of the Tangent Function | 0 / 0 / 5 / 1 | working | — |
-| 17592186176050 | Describing Properties of the Tangent Function | Utilizing the Periodicity Property of the Tangent Function | 0 / 5 / 0 / 2 | working | — |
-| 17592186176058 | Describing Properties of the Tangent Function | Utilizing the Oddness Property of the Tangent Function | 3 / 0 / 2 / 1 | queued | — |
-| 17592186083240 | Differentiating Parametric Curves | Finding the Derivative of a Parametric Curve | 12 / 6 / 0 / 0 | queued | — |
-| 17592186133929 | The Divergence Theorem | Writing the Flux Across a Closed Surface as a Triple Integral | 3 / 4 / 0 / 1 | queued | — |
+| [17592186176049](../../scratch/17592186176049.py) | Describing Properties of the Tangent Function | Describing Properties of the Tangent Function | 0 / 0 / 5 / 1 | qa_passed | [Report](qa/17592186176049.json) |
+| [17592186176050](../../scratch/17592186176050.py) | Describing Properties of the Tangent Function | Utilizing the Periodicity Property of the Tangent Function | 0 / 5 / 0 / 2 | working | — |
+| [17592186176058](../../scratch/17592186176058.py) | Describing Properties of the Tangent Function | Utilizing the Oddness Property of the Tangent Function | 3 / 0 / 2 / 1 | working | — |
+| [17592186083240](../../scratch/17592186083240.py) | Differentiating Parametric Curves | Finding the Derivative of a Parametric Curve | 12 / 6 / 0 / 0 | working | — |
+| [17592186133929](../../scratch/17592186133929.py) | The Divergence Theorem | Writing the Flux Across a Closed Surface as a Triple Integral | 3 / 4 / 0 / 1 | working | — |
 | 17592186133930 | The Divergence Theorem | Calculating Flux Across the Surface of a Known Solid | 6 / 4 / 0 / 0 | queued | — |
 | 17592186133931 | The Divergence Theorem | Calculating Flux Across a Closed Surface | 0 / 10 / 0 / 1 | queued | — |
 | 17592186124458 | Directional Derivatives | Calculating a Directional Derivative | 5 / 1 / 0 / 2 | queued | — |

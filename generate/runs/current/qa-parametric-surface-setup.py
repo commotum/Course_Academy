@@ -11,7 +11,7 @@ def math(raw):return p.scalar(raw.strip().rstrip('.,'))
 def vec(raw):
  raw=raw.strip().rstrip('.,');assert raw.startswith('⟨') and raw.endswith('⟩');return s.Matrix([math(t) for t in raw[1:-1].split(r',\,')])
 def displays(text):return re.findall(r'\$\$\s*(.*?)\s*\$\$',text,re.S)
-def rows(text):return [t.strip().removesuffix(r'\end{aligned}').strip().rstrip('.,') for t in text.split(' & =')[1:]]
+def rows(text):return [t.split(chr(92)*2,1)[0].strip().removesuffix(r'\end{aligned}').strip().rstrip('.,') for t in text.split(' & =')[1:]]
 def eq(a,b,domain):
  diff=s.expand(a-b)
  if diff==0:return True

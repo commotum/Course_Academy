@@ -1,0 +1,8 @@
+# Plot extraction and reuse specification
+
+The only image used by the canonical example and all five solved practice sources is `images/df/df1aba3f5ff980de82a74dde8170ad708e379caf2188873bcddc83177e87c7a6.png`. The original raster was inspected at full resolution and copied locally as `tangent-source.png` for review. It shows three blue increasing tangent branches; horizontal/vertical black coordinate axes with arrow tips and x/y labels; dashed gray vertical asymptotes at -3π/2,-π/2,π/2,3π/2; labeled zeros at -π,0,π; and origin-centered rotational symmetry. The branches are clipped naturally at the raster's top/bottom, rather than crossing the asymptotes.
+
+1. Specific observed representation: explanatory standard y=tan(x) graph, white background, approximate x-range[-2π,2π] and visible y-range; π labels identify period and symmetry. No problem-dependent value, highlighted point, curve scaling, shifted function, answer graphic, or assessed coordinate is present.
+2. Shared visual pattern: a fixed conceptual reference for oddness and period π.
+3. Components: three original blue curves, four dashed asymptotes, axes/ticks, labels and white background. Their mathematical definition stays y=tan(x), regardless of supplied tan(u), reflected input, multiplier or outer offset in the evaluated expression.
+4. Reusable specification: retain the exact original asset in its original solution location. Generated parameter changes alter the expression being evaluated, never the explanatory graph's function. All geometry/zero/asymptote sets are unchanged. No new plot is needed (rating **none**); no Matplotlib/TikZ renderer or synthesized raster was invoked. Hash and dimensions are recorded in validation evidence.

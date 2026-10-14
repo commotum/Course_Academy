@@ -5,6 +5,7 @@ Local generator for KP17592186176049, `math` basis 1356. Stops at steps 3–7; n
 ```sh
 .venv/bin/python generate/scratch/17592186176049/validate.py
 .venv/bin/python generate/scratch/17592186176049/build_evidence.py
+.venv/bin/python generate/scratch/17592186176049/check_concurrency.py
 .venv/bin/python generate/scratch/17592186176049.py --difficulty all --seed 20 --count 2 --format json
 .venv/bin/python generate/scratch/17592186176049.py --difficulty hard --template two_identity_properties --seed 21
 ```

@@ -1,0 +1,9 @@
+# Flux as a triple integral generator
+
+Run `.venv/bin/python generate/scratch/17592186133929/validate.py` from repository root. Preview with `.venv/bin/python generate/scratch/17592186133929.py --difficulty all --seed 8 --count 2 --format markdown`.
+
+The script implements eight observed source families and three authored hard orientations, all setup-only. Public API `generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None)` and the three level entrypoints return local JSON review records. `observed_raw` takes `{s:1}` for faithful original replay, or integer scales 1..4 for recipe checks. Normal `authored_method` takes a,b,c (1..4), h (0..3), u,v (1..2). Invalid explicit parameters and ambiguous whole banks fail rather than silently changing inputs. Raw profiles are evidence-only; normal profiles are eligible for learning. No database writes or registration.
+
+Raw source omissions and the symmetric-region integral-value ambiguity are documented in extraction and validation. Normal uses an authored complete method-derived bank for every observed family. Hard is explicitly authored from the lesson's simple-region theorem/setup route and excludes the following KPs' evaluation demand. No plots occur in this KP's source questions or generator.
+
+Review and native evidence: review.md/review.json, source-cases.json, validation.json, native-input.json/native-report.json. The validation reads displayed mathematics using a separate parser, verifies formal inputs/held coordinates and all derivative contributions, reconstructs planes/surfaces and full integral choices, checks source key presence and exact banks/solutions, rejects mutation regressions, checks deterministic identities/default family coverage, and runs real `learning::grade_field` radio grading.
