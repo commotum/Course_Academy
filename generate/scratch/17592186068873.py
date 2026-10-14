@@ -117,6 +117,7 @@ def guard(level,p,sid):
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
     if level not in ('easy','moderate','hard'):raise ValueError('unknown difficulty')
+    if field_type not in (None,'radio','blank'):raise ValueError('supported fields: radio/blank')
     rng=random.Random(seed)
     if profile and profile.startswith(('raw:','completed:')):
         sid=profile.split(':',1)[1]; raw=profile.startswith('raw:')
@@ -132,7 +133,11 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     kind=CONFIG[sid][6] if sid in CONFIG else sid.split('_')[1]
     if field_type and kind!=field_type:raise ValueError('field mismatch')
     if profile and not profile.startswith(('raw:','completed:')) and profile!='method':raise ValueError('unknown bank profile')
-    p=dict(parameters) if parameters is not None else {'variable':rng.choice(['x','y','z']),'a':rng.randint(11,15) if level=='hard' else rng.randint(1,10),'k':rng.randint(1,10),'sign':CONFIG[sid][4] if sid in CONFIG else -1}
+    candidates=list(range(11,16) if level=='hard' else range(1,11))
+    if profile and profile.startswith(('raw:','completed:')) and kind=='radio':
+        recipe=BANKS[sid]
+        candidates=[a for a in candidates if len({sp.sympify(r).subs({'a':a}) for r in recipe})==5]
+    p=dict(parameters) if parameters is not None else {'variable':rng.choice(['x','y','z']),'a':rng.choice(candidates),'k':rng.randint(1,10),'sign':CONFIG[sid][4] if sid in CONFIG else -1}
     guard(level,p,sid)
     v,a,k,sign=(p[z] for z in ('variable','a','k','sign'))
     notation=CONFIG[sid][5] if sid in CONFIG else 'number'
@@ -155,7 +160,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         if ':question/difficulty' in source:q[':question/difficulty']=enum(source[':question/difficulty'])
     else:q={':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+level}
     # Identity: actual displayed content, level presence and complete banks, no seed/profile alias.
-    presence=[[(key,key in f) for key in (':answer-field/choices',':answer-field/correct')] for f in QUESTIONS[sid][':question/answer-fields']] if raw else None
+    presence=sorted([[f[':answer-field/key'],':answer-field/choices' in f,':answer-field/correct' in f] for f in QUESTIONS[sid][':question/answer-fields']]) if raw else [[key,True,True] for key in (['selection'] if kind=='radio' else ['field-1','field-2'])]
     ident=digest([VERSION,q,kind,sorted(values),presence])
     q[':question/id']=uid(ident)
     q[':question/answer-fields']=[]
@@ -174,7 +179,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         q[':question/answer-fields'].append(f)
     # Variable aliases excluded, square notation not extra skill, fragments assessed separately.
     mathematical=digest([a,k,sign,'whole expression' if kind=='radio' else 'supplied binomial and constant'])
-    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'seed':seed,'template':sid,'parameters':p,'bank_profile':profile or 'method','mathematical_fingerprint':mathematical,'content_fingerprint':ident,'source':{key:SOURCE[key] for key in ('database','basis','lineage')},'origin':'raw observed evidence' if raw else ('authored completion' if observed else ('authored hard' if level=='hard' else 'observed family with authored method bank')),'evidence_only':raw,'eligible_for_learning':not raw,'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__}}}
+    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'seed':seed,'template':sid,'parameters':p,'bank_profile':profile or 'method','mathematical_fingerprint':mathematical,'content_fingerprint':ident,'source':{key:SOURCE[key] for key in ('database','basis','lineage')},'origin':'raw observed evidence' if raw else ('authored completion' if observed else ('authored hard' if level=='hard' else 'observed family with authored method bank')),'raw_replay':raw,'evidence_only':raw or (observed and sid=='q-141513'),'eligible_for_learning':not raw and not (observed and sid=='q-141513'),'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__}}}
 
 # Easy: independent isolated sum/difference family instances, no progression.
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)

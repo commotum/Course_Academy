@@ -19,7 +19,7 @@ import sympy as sp
 from functools import lru_cache
 BASE=Path(__file__).with_suffix('')
 KP_ID=17592186175987
-VERSION='greens-polar-path-2'
+VERSION='greens-polar-path-3'
 SOURCE=json.loads((BASE/'source.json').read_text())
 KP=SOURCE['record']; TITLE=KP[':knowledge-point/title']
 X,Y,R,T=sp.symbols('x y r theta', real=True)
@@ -205,7 +205,12 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  if field_type not in (None,'radio','blank',':answer-field.type/radio',':answer-field.type/blank'):raise ValueError('unsupported field type')
  rng=random.Random(seed)
  if template is None:
-  template='easy_constant' if level=='easy' else 'hard_polynomial' if level=='hard' else ('polar_blanks' if field_type in ('blank',':answer-field.type/blank') else rng.choice(list(SPECS)))
+  if level=='easy':template='easy_constant'
+  elif level=='hard':template='hard_polynomial'
+  else:
+   requested=field_type.split('/')[-1] if field_type else None
+   eligible=[name for name in SPECS if requested is None or (name=='polar_blanks')==(requested=='blank')]
+   template=rng.choice(eligible)
  if template in ('easy_constant','hard_polynomial'):
   if template!=('easy_constant' if level=='easy' else 'hard_polynomial'):raise ValueError('template/level mismatch')
   if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('authored levels use radio')

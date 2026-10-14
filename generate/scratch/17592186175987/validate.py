@@ -283,6 +283,19 @@ def main():
   for seed in range(35):
    rec=gen.generate(level,seed);check_normal(rec);families.add(rec['generation']['template']);unique[level].add(rec['generation']['mathematical_fingerprint'])
  assert set(gen.SPECS)<=families
+ # Public field-type selectors filter implicit family choice. Both plain and
+ # enum-form aliases are exercised, including root's seed19 regression.
+ selector_checks=0;selector_families={}
+ for requested in ('radio',':answer-field.type/radio','blank',':answer-field.type/blank'):
+  selected=set();expected=':answer-field.type/'+requested.split('/')[-1]
+  for seed in range(25):
+   rec=gen.generate_moderate(seed=seed,field_type=requested)
+   assert all(f[':answer-field/type']==expected for f in rec['question'][':question/answer-fields']),('selector mismatch',requested,seed)
+   check_normal(rec);selected.add(rec['generation']['template']);selector_checks+=1
+  selector_families[requested]=sorted(selected)
+ assert selector_families['radio']==selector_families[':answer-field.type/radio']
+ assert selector_families['blank']==selector_families[':answer-field.type/blank']==['polar_blanks']
+ summary['field_type_selector_checks']=selector_checks;summary['field_type_selector_families']=selector_families
  # All source families also exercise a common changed amplitude and radius.
  for template in gen.SPECS:
   for scale,radius in [(2,2),(5,4)]:

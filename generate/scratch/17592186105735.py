@@ -17,7 +17,7 @@ import sympy as sp
 KP_ID=17592186105735
 KP_UUID='7ba6b6b5-ac1d-5a3a-876a-af51fdf50e0a'
 TITLE='Calculating the Scalar Triple Product Using the Definition'
-VERSION='definition-triple-v1'
+VERSION='definition-triple-v2'
 EVIDENCE=Path(__file__).with_suffix('')
 SOURCE=json.loads((EVIDENCE/'source.json').read_text())
 QUESTIONS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
@@ -175,7 +175,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  canonical={k:[sp.srepr(val(x)) for x in v] for k,v in sorted(p.items())}
  task={'method':'supplied-cross-dot' if template.startswith('dot_') else 'cross-then-dot','vectors':canonical}
  fp=hashlib.sha256(json.dumps(task,sort_keys=True).encode()).hexdigest()
- identity={'version':VERSION,'question':q,'field_type':ft,'bank':sorted(map(tex,vs))}
+ has_correct=not raw or ':answer-field/correct' in QUESTIONS[qid][':question/answer-fields'][0]
+ assigned=tex(dot(p['a'],p.get('d') or cross(p['b'],p['c']))) if has_correct else None
+ identity={'version':VERSION,'question':q,'field_type':ft,'bank':sorted(map(tex,vs)),'correct_assignment':{'present':has_correct,'value':assigned}}
  key=hashlib.sha256(json.dumps(identity,sort_keys=True).encode()).hexdigest()
  uid=lambda s:str(uuid.uuid5(uuid.NAMESPACE_URL,VERSION+':'+key+':'+s))
  choices=[{':answer/id':uid('answer:'+tex(v)),':answer/type':':answer.type/math',':answer/value':tex(v)} for v in vs]

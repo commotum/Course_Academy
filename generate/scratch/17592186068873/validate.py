@@ -101,10 +101,23 @@ def main():
   rr=g.generate(level,77,parameters=changed,profile='raw:'+sid);checks+=check(rr);review.append(rr)
   for n in (91,157):
    rr=g.generate(level,n,template=sid);checks+=check(rr);review.append(rr)
+ # Complete raw records and completed aliases share actual content identities.
+ for sid in ('q-141513','q-250392','q-250395','q-250396','q-250397'):
+  level=g.CONFIG[sid][0];p=g.parameters_for(sid)
+  assert g.generate(level,0,parameters=p,profile='raw:'+sid)['question'][':question/id']==g.generate(level,1,parameters=p,profile='completed:'+sid)['question'][':question/id']
+ for sid in g.BANKS:
+  for seed in range(12):check(g.generate(g.CONFIG[sid][0],seed,profile='raw:'+sid))
+ for sid,a in [('q-140186',1),('q-141513',1),('q-141513',4)]:
+  p=g.parameters_for(sid);p['a']=a
+  try:g.generate(g.CONFIG[sid][0],parameters=p,profile='raw:'+sid)
+  except ValueError:pass
+  else:raise AssertionError('ambiguous complete raw profile accepted')
  for level in ('easy','moderate','hard'):
+  covered=set()
   for seed in range(60):
-   rr=g.generate(level,seed);checks+=check(rr)
+   rr=g.generate(level,seed);checks+=check(rr);covered.add(rr['generation']['template'])
    if seed<4:review.append(rr)
+  assert covered==({sid for sid,c in g.CONFIG.items() if c[0]==level} if level!='hard' else {'hard_radio','hard_blank'}),'default family coverage'
  # All sampled arithmetic domains, aliases excluded from mathematical counts.
  counts={}
  for level in ('easy','moderate','hard'):
@@ -137,14 +150,14 @@ def main():
  else:raise AssertionError('C0 mutation survived')
  payload=[]
  for n,r in enumerate(review):
-  if r['generation']['evidence_only']:continue
+  if any(':answer-field/correct' not in f for f in r['question'][':question/answer-fields']):continue
   tests=[]
   for fi,f in enumerate(r['question'][':question/answer-fields']):
    if f[':answer-field/type'].endswith('/radio'):
     tests +=[{'field_index':fi,'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'complete choice bank selection'} for a in f[':answer-field/choices']]
    else:
     answer=f[':answer-field/choices'][0][':answer/value'];val=parse(answer)
-    equivalent=sp.sstr(val).replace(' ','') if f[':answer-field/key']=='field-2' else '1*('+answer+')'
+    equivalent=str(val)+'/2+'+str(val)+'/2' if f[':answer-field/key']=='field-2' else '1*('+answer+')'
     tests +=[{'field_index':fi,'submitted':x,'expected':ex,'purpose':purpose} for x,ex,purpose in [(answer,'accepted','canonical supplied fragment'),(equivalent,'accepted','equivalent unreduced supplied fragment'),(str(val+1),'rejected','wrong supplied fragment')]]
   payload.append({'label':str(n)+' '+r['generation']['template'],'record':r,'checks':tests})
  (HERE/'engine-input.json').write_text(json.dumps(payload,indent=2)+'\n')

@@ -31,7 +31,10 @@ def full(raw):
  return a*fn,aa,bb,high,None
 
 def num(fn,a,b,rad):
- mp.mp.dps=35;f=s.lambdify((r,theta),fn,'mpmath');aa,bb,rr=[mp.mpf(str(s.N(z,35))) for z in (a,b,rad)]
+ mp.mp.dps=35;aa,bb,rr=[mp.mpf(str(s.N(z,35))) for z in (a,b,rad)]
+ if fn.is_polynomial(r):
+  polynomial=s.Poly(fn,r);radial=sum(coef*s.sympify(rad)**(degree[0]+1)/s.Integer(degree[0]+1) for degree,coef in polynomial.terms());f=s.lambdify(theta,radial,'mpmath');return mp.quad(f,[aa,(aa+bb)/2,bb])
+ f=s.lambdify((r,theta),fn,'mpmath')
  return mp.quad(lambda tt:mp.quad(lambda rho:f(rho,tt),[0,rr/2,rr]),[aa,(aa+bb)/2,bb])
 def check(rec):
  q=rec['question'];fam=rec['generation']['template'];rad,a,b=region(q,fam);sol=q[':question/worked-solution'];C['geometry']+=1

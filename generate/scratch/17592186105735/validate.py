@@ -73,6 +73,14 @@ def validate(r):
  return int(t)
 
 def run():
+ sid='q-20063';lev,template,anchor=g.SPECS[sid]
+ before=g.generate(lev,template=template,parameters=anchor,profile='source:'+sid)
+ sourcefield=g.QUESTIONS[sid][':question/answer-fields'][0];saved=sourcefield.pop(':answer-field/correct')
+ try:
+  after=g.generate(lev,template=template,parameters=anchor,profile='source:'+sid)
+  assert before['question'][':question/id']!=after['question'][':question/id']
+  assert ':answer-field/correct' not in after['question'][':question/answer-fields'][0]
+ finally:sourcefield[':answer-field/correct']=saved
  source_cases=[];records=[];fixtures=[];fidelity=[]
  for qid,(level,template,p) in g.SPECS.items():
   case={'source_id':qid,'level':level,'template':template,'parameters':p,'bank_profile':'source:'+qid};source_cases.append(case)
@@ -127,7 +135,7 @@ def run():
  (HERE/'engine-input.json').write_text(json.dumps(fixtures,ensure_ascii=False,indent=2)+'\n')
  subprocess.run([str(Path('generate/runs/current/check-engine').resolve()),str(HERE/'engine-input.json'),str(HERE/'engine-report.json')],check=True)
  engine=json.loads((HERE/'engine-report.json').read_text())
- report={'status':'passed','database':'math','basis':1356,'source_questions':11,'exact_prompts':11,'exact_available_solutions':10,'exact_complete_banks':11,'source_distractors_matched':20,'source_distractors_total':20,'inferred_missing_key_distractors':4,'present_correct_designations_matched':10,'missing_source_designations':1,'raw_ungradable_sources':['q-20065'],'authored_completion_answer':16,'opaque_evidence_banks':6,'native_grading':engine,'variety':counts,'mutation_regressions':3,'plot_rating':'none','dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__}}
+ report={'status':'passed','database':'math','basis':1356,'source_questions':11,'exact_prompts':11,'exact_available_solutions':10,'exact_complete_banks':11,'source_distractors_matched':20,'source_distractors_total':20,'inferred_missing_key_distractors':4,'present_correct_designations_matched':10,'missing_source_designations':1,'raw_ungradable_sources':['q-20065'],'authored_completion_answer':16,'opaque_evidence_banks':6,'native_grading':engine,'variety':counts,'mutation_regressions':4,'plot_rating':'none','dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__}}
  (HERE/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
  (HERE/'review.md').write_text('# Source originals and generated variants\n\nRaw evidence profiles retain source omissions; all changed variants are labeled by metadata.\n\n'+'\n\n'.join('## '+('Original replay' if i<12 else 'Generated variant')+' — '+r['generation']['level']+' / '+r['generation']['template']+' / '+r['generation']['profile']+'\n\n'+g.markdown(r) for i,r in enumerate(records)))
  print('PASS: 11 banks, 11 prompts, 10 available solutions; 900 changed samples; native checks passed')

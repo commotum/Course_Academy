@@ -410,11 +410,11 @@ Given that $a = ⟨0,2, -3⟩$, $b = ⟨4,-2, 1⟩$, and $c = ⟨3,-1, 2⟩$, fi
 
 Find $a\cdot (b\times c)$ given that $a=⟨5,4,-4⟩$ and $b\times c=⟨9,10,6⟩.$
 
-30
 217
+34
+30
 57
 61
-34
 
 Substituting given vectors into the formula for the scalar triple product, we obtain 
 
@@ -426,11 +426,11 @@ $$
 
 Find $a\cdot (b\times c)$ given that $a=⟨-4,4,-1⟩$ and $b\times c=⟨-6,1,-8⟩.$
 
-101
--14
-42
 33
 36
+42
+101
+-14
 
 Substituting given vectors into the formula for the scalar triple product, we obtain 
 
@@ -532,11 +532,11 @@ $$
 
 Given that $a=⟨2,2,3⟩,$ $b=⟨-2,-4,-3⟩,$ and $c=⟨2,-3,4⟩,$ find $a\cdot (b\times c)$ using the definition of the scalar triple product.
 
+-4
 -12
 46
-2
--4
 -46
+2
 
 First, we find the cross product:
 
@@ -554,11 +554,11 @@ $$
 
 Given that $a=⟨4,3,2⟩,$ $b=⟨3,1,4⟩,$ and $c=⟨4,0,-1⟩,$ find $a\cdot (b\times c)$ using the definition of the scalar triple product.
 
-49
 -69
-53
-5
 45
+49
+5
+53
 
 First, we find the cross product:
 
@@ -618,11 +618,11 @@ $$
 
 Given that $a=⟨5,-4,5⟩,$ $b=⟨4,-5,1⟩,$ and $c=⟨3,4,-4⟩,$ find $a\cdot (b\times c)$ using the definition of the scalar triple product.
 
-311
-79
-116
 159
 4
+311
+116
+79
 
 First, we find the cross product:
 
@@ -640,11 +640,11 @@ $$
 
 Given that $a=⟨-4,5,-1⟩,$ $b=⟨-3,1,-4⟩,$ and $c=⟨-3,2,1⟩,$ find $a\cdot (b\times c)$ using the definition of the scalar triple product.
 
-78
--108
-39
-17
 42
+39
+78
+17
+-108
 
 First, we find the cross product:
 
