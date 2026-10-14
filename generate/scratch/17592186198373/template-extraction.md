@@ -1,0 +1,35 @@
+# Template extraction
+
+## Stage 1 — Individual observed components
+
+q38377 integrates 1/(1+(x−y)²), with x∈[0,2], x−y∈[0,2]. It selects u=x,v=x−y, inverse determinant −1, forward determinant −1. Its chain substitutes, inserts absolute Jacobian, separates the u integral, evaluates width 2, then evaluates the arctangent primitive. Two complete banks contain the same five mathematical scalar values with notation/order changes; only the second has a designation.
+
+q82916 integrates (x+2y)exp((x+2y)²), x∈[1,5], x+2y∈[0,1]. No source solution or designation is present. A direct inverse is x=u,y=(v−u)/2 with Jacobian 1/2. The u width is4; the v primitive is exp(v²)/2; hence e−1. The source bank has five values and includes that value. Its normal solution is an explicitly authored completion with the source's common five-step prose.
+
+q160911 integrates (x−1)exp(2x+2y), x∈[1,3], x+y∈[−1,1]. It selects u=x,v=x+y, determinant1. The operative sequence separates the exponential inner v integral, evaluates exp(2v)/2, factors its difference, integrates u−1 with primitive u²/2−u, then collects. Two source rows mistakenly label the outer differential dv.
+
+q160919 integrates xy² over x/sqrt(4−y²)∈[0,1], y∈[−1,1]. It infers u=x/sqrt(4−y²),v=y; its inverse partial block includes the nonzero chain-rule derivative xy/(4−y²)^(3/2), and forward Jacobian sqrt(4−v²). It substitutes x=u sqrt(4−v²), inserts the Jacobian, cancels the two radical factors, expands 4v²−v⁴, integrates to 4v³/3−v⁵/5, evaluates34/15, then integrates u to u²/2 and obtains17/15. Its four wrong rational values are opaque historical evidence.
+
+q160920 integrates exp(x²+x+y) with x∈[0,1],y+x²∈[0,2]. It selects u=x,v=y+x². The inverse matrix includes ∂v/∂x=2x; determinant1. Its first operative row groups x+(y+x²) before substitution to exp(u+v), inserts Jacobian, splits exp(u)exp(v), evaluates the inner primitive, factors exp(2)−1, evaluates the outer primitive, multiplies the two endpoint differences, and expands the final exponential product.
+
+q83651 integrates x sin(x+y), x∈[1,3], |x+y|≤π/2. The source first expands the absolute inequality, infers u=x,v=x+y, determinant1, integrates u first to width factor4, then sin(v) to −cos(v), and obtains0. Its integer distractors have unresolved historical operations.
+
+## Stage 2 — Generalized assessed pattern
+
+Infer u and v from the two domain inequalities, identify their rectangle, compute the inverse Jacobian through its full partial-derivative matrix, reciprocate, justify injectivity from the explicit global inverse, substitute the integrand, multiply by the absolute forward Jacobian, separate in the family's observed order, and evaluate elementary primitives and endpoint arithmetic. The same fixed solution is independent of the learner's choice.
+
+## Stage 3 — Complete bank/component map
+
+`bank-map.json` records every one of the **35** original choice occurrences, source answer UUID, exact scalar spelling, field ownership, designation presence and matching result. `source-cases.json` maps all six practice source IDs to their public template/profile and k parameter. Raw recipes preserve all seven fields, including the duplicate legacy artifact and missing refs. These profiles scale every historical scalar atom by the displayed integrand coefficient k; this is an explicit evidence extension, not a fitted error model. No arbitrary interpolation is used or admitted to normal sampling. Both complete q38377 banks remain distinct field-owned banks.
+
+Normal banks are different, explicitly authored profiles. Their five values are derived together in `bank()`. Degenerate operation collisions reject the whole bank and its sampled parameters. For zero lower arctangent/linear primitives an explicitly eligible complete bank uses omitted width, orientation sign, wrong primitive input and upper rectangle, rather than replacing individual failed choices. Radical banks retain the actual quartic drop/sign errors; Gaussian banks retain Jacobian, squared-exponent, and endpoint errors; sine banks use cosine-integrand errors to remain meaningful even when the correct sine integral is zero. Wrong operations are author metadata only, with no invented learner feedback.
+
+## Stage 4 — Reusable rendering and constraints
+
+`source_recipe()` builds public homogeneous source replay by identifying the complete prompt integrand and each full Step5 equality side; k=1 reproduces original spelling, fields and omissions, while k=2,3 change the mathematical integral and complete bank. Raw sources are ineligible for learning. Normal `normal_question()` uses shared source prose and formal Jacobian/rectangle blocks; `family_chain()` keeps each family's separation order, radical cancellation/expansion, exponential grouping/factorization, primitive and final collection operations. Added explicit inverse and individually evaluated upper/lower primitive-component rows clarify injectivity and endpoint arithmetic. They supplement the operative source sequence.
+
+Normal parameters require bounded integers, familiar trig angles and R∈{4,9,16,25}. Transformations are globally injective: triangular maps have nonzero m; the radical map has positive R−v² throughout its closed rectangle. Moderate keeps original Jacobian scale (m=2 for Gaussian, otherwise1) and original symmetric radical/negative sine lower endpoint structure. Hard uses m∈{3,4}, positive lower limits; radical hard fixes m=1 but uses four nonzero asymmetric bounds. Easy fixes m=1, both lower limits0, and a linear transformed integrand. All guards apply to explicit inputs, too. Bounds/primitive forms remain in the elementary source/prerequisite workload. Default selection covers all supported source families at moderate/hard.
+
+Mathematical identity is based on the actual reduced F,U,V, rectangle and assessed level, excluding unused parameters, profiles/banks and seed. Content identity includes difficulty, actual prompt, fixed solution, complete displayed bank and correct value/presence; field-owned UUIDs are deterministic and invariant under option order and profile aliases.
+
+Notation normalization is separate from raw exactness: normal output uses standard TeX, mathematical set braces, ln and source variables u,v. Raw strings are retained unchanged. Normal output rejects C0 control bytes and unbalanced delimiters/braces. Source differential corrections and inferred q82916 completion are explicitly outside raw exact-solution/designation denominators.

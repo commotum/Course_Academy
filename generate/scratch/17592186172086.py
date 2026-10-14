@@ -22,7 +22,7 @@ import sympy as sp
 KP_ID=17592186172086
 TITLE='Finding the Domain of a Vector Field'
 KP_UUID='67b7ea90-38e0-54b5-b76e-816beb0d48f9'
-VERSION='vector-field-domain-1'
+VERSION='vector-field-domain-4'
 ROOT=Path(__file__).with_suffix('')
 SOURCE=json.loads((ROOT/'source.json').read_text())
 QUESTIONS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
@@ -59,7 +59,7 @@ def guards(template,p):
   if template=='sum_difference':assert 1<=p['m']<=6 and 1<=p['n']<=6 and math.gcd(p['m'],p['n'])==1
   if template=='log_halfplane':assert 1<=abs(p['m'])<=6 and 0<=p['b']<=6
   if template=='log_parabola':assert 1<=p['m']<=12 and 0<=p['b']<=6
-  if template=='atan_circle_line':assert -3<=p['c']<=3
+  if template=='atan_circle_line':assert -3<=p['c']<=3 and p['c']**2<p['r2']
   if template=='rectangle':assert 1<=p['a']<=6 and 1<=p['b']<=6
   if template in ('half_disk','disk_line'):assert 1<=abs(p['m'])<=4
 
@@ -68,7 +68,7 @@ def sample(template,rng):
  if template=='sum_difference':return rng.choice([{'m':m,'n':n} for m in range(1,7) for n in range(1,7) if math.gcd(m,n)==1])
  if template=='log_halfplane':return {'m':rng.choice([i for i in range(-6,7) if i]),'b':rng.randint(0,6)}
  if template=='log_parabola':return {'m':rng.randint(1,12),'b':rng.randint(0,6)}
- if template=='atan_circle_line':return {'r2':rng.randint(1,16),'c':rng.randint(-3,3)}
+ if template=='atan_circle_line':return rng.choice([{'r2':r,'c':c} for r in range(1,17) for c in range(-3,4) if c*c<r])
  if template=='rectangle':return {'a':rng.randint(1,6),'b':rng.randint(1,6)}
  p={'r2':rng.randint(1,16)}
  if template in ('half_disk','disk_line'):p['m']=rng.choice([i for i in range(-4,5) if i])
@@ -163,7 +163,8 @@ def graph_banks(template,p,observed):
  if template=='half_disk':return [disk(True,False,None,('ge',m)),disk(True,False,None,('gt',m)),disk(False,False,m),disk(True,False,None,('lt',m)),disk(True,False,m)],1
  a,b=p['a'],p['b']
  def rect(cx,cy,lower=None):return {'shape':'rectangle','a':a,'b':b,'cx':cx,'cy':cy,'lower':lower}
- return [rect(True,True,0),rect(False,False,0),rect(True,True),rect(False,False),rect(False,True)],4
+ upper=rect(False,False,0);upper['lower_closed']=True
+ return [rect(True,True,0),upper,rect(True,True),rect(True,False),rect(False,True)],4
 
 def graph_constraints(g):
  rho=x*x+y*y
@@ -172,7 +173,7 @@ def graph_constraints(g):
  if g['shape']=='strip_x':return [sp.Lt(x*x,g['a']**2)]
  if g['shape']=='strip_y':return [sp.Le(sp.Abs(y),g['b'])]
  if g['shape']=='rectangle':
-  a,b=g['a'],g['b'];lo=-b if g.get('lower') is None else g['lower'];return [(sp.Le if g['cx'] else sp.Lt)(sp.Abs(x),a),(sp.Ge if g['cy'] else sp.Gt)(y,lo),(sp.Le if g['cy'] else sp.Lt)(y,b)]
+  a,b=g['a'],g['b'];lo=-b if g.get('lower') is None else g['lower'];return [(sp.Le if g['cx'] else sp.Lt)(sp.Abs(x),a),(sp.Ge if g.get('lower_closed',g['cy']) else sp.Gt)(y,lo),(sp.Le if g['cy'] else sp.Lt)(y,b)]
  cs=[(sp.Le if g['closed'] else sp.Lt)(rho,g['r2'])]
  if g.get('puncture'):cs.append(sp.Ne(rho,0))
  if g.get('line'):cs.append(sp.Ne(y,g['line']*x))
@@ -210,11 +211,15 @@ def render_graph(g):
    t=r/math.sqrt(1+line*line);included=g.get('side') and g['side'][0]=='ge';ax.plot([-t,t],[-line*t,line*t],color=blue,ls='-' if included else '--',lw=1.5)
    if g['closed'] and not included:ax.plot([-t,t],[-line*t,line*t],'o',mfc='white',mec=blue,ms=4,zorder=7)
   if g.get('puncture'):ax.plot(0,0,'o',mfc='white',mec=blue,ms=5,zorder=8)
-  ax.set_xticks([-r,r],['$-'+latex(sp.sqrt(g['r2']))+'$','$'+latex(sp.sqrt(g['r2']))+'$']);ax.set_yticks([-r,r],['$-'+latex(sp.sqrt(g['r2']))+'$','$'+latex(sp.sqrt(g['r2']))+'$'])
+  ax.set_xticks([]);ax.set_yticks([])
+  for sign in [-1,1]:
+   label='$'+('-' if sign<0 else '')+latex(sp.sqrt(g['r2']))+'$'
+   ax.annotate(label,(sign*r,0),xytext=(sign*8,-5),textcoords='offset points',ha='right' if sign<0 else 'left',va='top',fontsize=9)
+   ax.annotate(label,(0,sign*r),xytext=(-5,sign*8),textcoords='offset points',ha='right',va='bottom' if sign>0 else 'top',fontsize=9)
  elif g['shape']=='rectangle':
   a,b=g['a'],g['b'];lo=-b if g.get('lower') is None else g['lower']
   for v in [-a,a]:ax.plot([v,v],[lo,b],color=blue,ls='-' if g['cx'] else '--',lw=1.5)
-  for v in [lo,b]:ax.plot([-a,a],[v,v],color=blue,ls='-' if g['cy'] else '--',lw=1.5)
+  for v,included in [(lo,g.get('lower_closed',g['cy'])),(b,g['cy'])]:ax.plot([-a,a],[v,v],color=blue,ls='-' if included else '--',lw=1.5)
   if not(g['cx'] and g['cy']):ax.plot([-a,a,-a,a],[lo,lo,b,b],'o',mfc='white',mec=blue,ms=4,zorder=8)
   ax.set_xticks([-a,a]);ax.set_yticks([lo,b])
  elif g['shape']=='plane':
@@ -232,12 +237,12 @@ def render_graph(g):
  ax.spines['top'].set_visible(False);ax.spines['right'].set_visible(False)
  ax.tick_params(length=0,labelsize=9,pad=5);ax.annotate('x',(lim,0),xytext=(-4,7),textcoords='offset points');ax.annotate('y',(0,lim),xytext=(7,-7),textcoords='offset points')
  ax.annotate('',(lim,0),(-lim,0),arrowprops={'arrowstyle':'->','color':'#444','lw':.7});ax.annotate('',(0,lim),(0,-lim),arrowprops={'arrowstyle':'->','color':'#444','lw':.7})
- fig.tight_layout(pad=.45)
+ fig.tight_layout(pad=.45);fig.canvas.draw();axes_bbox=list(ax.bbox.bounds)
  fd,tmp=tempfile.mkstemp(prefix=digest+'-',suffix='.png',dir=out);os.close(fd)
  try:fig.savefig(tmp,facecolor='white');os.replace(tmp,path)
  finally:plt.close(fig);Path(tmp).unlink(missing_ok=True)
  fd,tmp=tempfile.mkstemp(prefix=digest+'-',suffix='.json',dir=out);os.close(fd)
- Path(tmp).write_text(json.dumps({'geometry':g,'constraints':[str(c) for c in cs],'renderer':'Matplotlib','matplotlib':matplotlib.__version__,'python':sys.version.split()[0],'limits':[-lim,lim],'equal_aspect':True,'png_sha256':hashlib.sha256(path.read_bytes()).hexdigest()},indent=2));os.replace(tmp,side)
+ Path(tmp).write_text(json.dumps({'geometry':g,'constraints':[str(c) for c in cs],'renderer':'Matplotlib','matplotlib':matplotlib.__version__,'python':sys.version.split()[0],'limits':[-lim,lim],'equal_aspect':True,'axes_bbox':axes_bbox,'png_sha256':hashlib.sha256(path.read_bytes()).hexdigest()},indent=2));os.replace(tmp,side)
  return str(path.relative_to(Path.cwd()))
 
 def source_asset(p):
@@ -362,11 +367,15 @@ def generate_moderate(seed=0,template=None,field_type=None,parameters=None,profi
 # rectangle halfwidth/halfheight1..6. These are unordered equal-workload tasks.
 def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('hard',seed,template,field_type,parameters,profile)
 
+def preview_path(path):
+ p=Path(path)
+ return str(p.resolve()) if p.exists() else str(Path('/media/jake/SSD/EDB/math')/path)
 def markdown(r):
  q=r['question'];text=q[':question/problem']+'\n\n'
  for f in q.get(':question/answer-fields',[]):
-  for i,a in enumerate(f[':answer-field/choices']):text+=str(i+1)+'. '+('![]('+a[':answer/value']+')' if a[':answer/type']==':answer.type/image' else '$'+a[':answer/value']+'$')+'\n'
- return text+'\nWorked solution:\n\n'+q.get(':question/worked-solution','')+'\n'
+  for i,a in enumerate(f[':answer-field/choices']):text+=str(i+1)+'. '+('![]('+preview_path(a[':answer/value'])+')' if a[':answer/type']==':answer.type/image' else '$'+a[':answer/value']+'$')+'\n'
+ solution=re.sub(r'!\[\]\(([^)]+)\)',lambda m:'![]('+preview_path(m[1])+')',q.get(':question/worked-solution',''))
+ return text+'\nWorked solution:\n\n'+solution+'\n'
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['markdown','json'],default='markdown');ap.add_argument('--template');ap.add_argument('--profile');a=ap.parse_args()
  levels=['easy','moderate','hard'] if a.difficulty=='all' else [a.difficulty];rows=[generate(l,a.seed+i,a.template,profile=a.profile) for l in levels for i in range(a.count)]

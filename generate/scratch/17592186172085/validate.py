@@ -22,9 +22,8 @@ def inspect(r):
  for i,v in enumerate(formulas):
   sig=re.match(r'([A-Z])\(([^)]+)\)=',v);assert sig
   inputs=len(sig[2].split(','));expression=v[sig.end():]
-  outputs=len(expression.split(',')) if expression.startswith('⟨') else (3 if r'\,k' in expression else 2)
-  # Source q-122656 has a trailing comma inside its tuple: notation artifact.
-  if expression.startswith('⟨') and expression.rstrip('⟩').rstrip().endswith(r'\,'):outputs-=1
+  outputs=len(expression.replace(r'\,','').split(',')) if expression.startswith('⟨') else (3 if r'\,k' in expression else 2)
+  # Decoded source q-122656 ends with TeX thin space, not tuple punctuation.
   if inputs==outputs==2:mask|=1<<i
   domains.append((sig[1],sig[2],inputs,outputs,expression))
   categories.append((inputs,outputs,'+'.join(k for k,token in [('log',r'\operatorname{ln}'),('reciprocal',r'\frac'),('sqrt',r'\sqrt')] if token in expression) or 'all'))
@@ -138,6 +137,9 @@ def main():
   f[':answer-field/correct']=[':answer/id',g.uid(fid+'/'+old_correct)]
   try:inspect(mutant);raise RuntimeError('mutation escaped '+action)
   except AssertionError:pass
+ for level in ('easy','moderate','hard'):
+  for seed in range(25):
+   plain=g.generate(level,seed,field_type='radio');alias=g.generate(level,seed,field_type=':answer-field.type/radio');assert plain==alias
  native=[{'label':str(i),'record':r,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==r['question'][':question/answer-fields'][0][':answer-field/correct'][1] else 'rejected','purpose':'all owned radio choices'} for a in r['question'][':question/answer-fields'][0][':answer-field/choices']]} for i,r in enumerate(rs)]
  (D/'engine-input.json').write_text(json.dumps(native))
  subprocess.run(['generate/runs/current/check-engine',str(D/'engine-input.json'),str(D/'engine-report.json')],check=True)
@@ -164,6 +166,6 @@ def main():
   text+='\n## Original '+source+'\n\n'+q[':question/problem']+'\n\nBank: '+', '.join(a[':answer/value'] for a in q[':question/answer-fields'][0][':answer-field/choices'])+'\n\n'+q[':question/worked-solution']+'\n\n### Generated variant\n\n'+g.markdown(next(r for r in review if r['generation']['template']==source))+'\n'
  for r in review[8:]:text+='\n## Authored '+r['question'][':question/difficulty'].split('/')[-1]+' variant\n\n'+g.markdown(r)+'\n'
  (D/'review.md').write_text(text)
- report={'passed':True,'source_records':len(fidelity),'source_fidelity':fidelity,'banks_matched':8,'answer_values_matched':40,'correct_designations_matched':8,'raw_exact_solutions':8,'normal_source_name_repairs':2,'sample_records':len(rs),'explicit_boundary_instances':tested,'mutation_regressions':5,'semantic_tasks_by_level':{k:len(v) for k,v in tasks.items()},'default_authored_kinds':{l:sorted({r['generation']['parameters']['kind'] for r in rs[8:] if r['question'][':question/difficulty'].endswith('/'+l)}) for l in ('moderate','hard')},'default_easy_families':sorted({r['generation']['template'] for r in rs[8:] if r['question'][':question/difficulty'].endswith('/easy')}),'native':{k:engine[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'dependencies':rs[0]['generation']['dependencies'],'plot_requirement':'none','engine_binary_sha256':g.hashlib.sha256(Path('generate/runs/current/check-engine').read_bytes()).hexdigest(),'limitations':['Moderate/hard difficulty labels are authored design claims; no source at these levels.','This narrow categorical skill has a finite meaningful task family; coefficient/shift/notation changes do not enlarge its semantic task count.','Raw name errors remain evidence only; normal solutions repair them.']}
+ report={'passed':True,'source_records':len(fidelity),'source_fidelity':fidelity,'banks_matched':8,'answer_values_matched':40,'correct_designations_matched':8,'raw_exact_solutions':8,'normal_source_name_repairs':2,'sample_records':len(rs),'explicit_boundary_instances':tested,'mutation_regressions':5,'enum_selector_comparisons':75,'semantic_tasks_by_level':{k:len(v) for k,v in tasks.items()},'default_authored_kinds':{l:sorted({r['generation']['parameters']['kind'] for r in rs[8:] if r['question'][':question/difficulty'].endswith('/'+l)}) for l in ('moderate','hard')},'default_easy_families':sorted({r['generation']['template'] for r in rs[8:] if r['question'][':question/difficulty'].endswith('/easy')}),'native':{k:engine[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'dependencies':rs[0]['generation']['dependencies'],'plot_requirement':'none','engine_binary_sha256':g.hashlib.sha256(Path('generate/runs/current/check-engine').read_bytes()).hexdigest(),'limitations':['Moderate/hard difficulty labels are authored design claims; no source at these levels.','This narrow categorical skill has a finite meaningful task family; coefficient/shift/notation changes do not enlarge its semantic task count.','Raw name errors remain evidence only; normal solutions repair them.']}
  (D/'validation.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
 if __name__=='__main__':main()

@@ -15,7 +15,7 @@ import sympy as sp
 KP_ID=17592186172085
 KP_UUID='019e5a17-1aab-565b-8881-447c86a9a7ec'
 TITLE='Identifying Vector Fields on Two-Dimensions'
-VERSION='vector-identification-1'
+VERSION='vector-identification-2'
 DIR=Path(__file__).with_suffix('')
 CAPTURE=json.loads((DIR/'source.json').read_text())
 SOURCES={q[':question/math-academy-id']:q for q in CAPTURE['record'][':knowledge-point/questions']}
@@ -77,6 +77,7 @@ def authored(level,h,order,kind):
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  if level not in ('easy','moderate','hard'):raise ValueError('unknown difficulty')
+ if field_type==':answer-field.type/radio':field_type='radio'
  if field_type not in (None,'radio'):raise ValueError('only source radio shape supported')
  rng=random.Random(seed)
  if profile not in (None,'authored'):

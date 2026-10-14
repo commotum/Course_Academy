@@ -3,7 +3,7 @@
 No import from the generator and no domain metadata used for correctness.
 Converts only this family's deliberately bounded mathematical grammar.
 """
-import copy, json, math, re
+import copy, json, math, re, hashlib
 from pathlib import Path
 import sympy as sp
 from sympy.parsing.sympy_parser import parse_expr,standard_transformations,implicit_multiplication_application
@@ -27,6 +27,7 @@ def expr(s):
   out+=s[i];i+=1
  out=out.replace(r'\ln','log').replace(r'\arctan','atan').replace('{e}','E').replace('^','**').replace('{','(').replace('}',')')
  out=re.sub(r'\|([^|]+)\|',r'Abs(\1)',out)
+ out=re.sub(r'([xy\)])(?=(?:log|sqrt|atan|Abs)\()',r'\1*',out)
  assert '\\' not in out,'unsupported TeX '+out
  return parse_expr(out,local_dict={'x':X,'y':Y,'E':sp.E,'sqrt':sp.sqrt,'log':sp.log,'atan':sp.atan,'Abs':sp.Abs},transformations=standard_transformations+(implicit_multiplication_application,),evaluate=False)
 def convert(s):return str(expr(s))
@@ -60,7 +61,7 @@ def relation(c):
 
 def set_constraints(s):
  if '|' not in s and r'\text{all real }' in s:return []
- c=s.split('|',1)[1].rstrip('}.').strip();return [z for part in c.split(r',\,') for z in relation(part)]
+ c=s.split('|',1)[1].rstrip('.').strip();c=c[:-1] if c.endswith('}') else c;return [z for part in c.split(r',\,') for z in relation(part)]
 
 def truth(cs,a,b):
  try:return all(bool(c.subs({X:a,Y:b})) for c in cs)
@@ -88,7 +89,7 @@ def equivalent(a,b,pts):return all(truth(a,*p)==truth(b,*p) for p in pts)
 def graph_cs(g):
  r=X*X+Y*Y
  if g['shape']=='rectangle':
-  lo=-g['b'] if g.get('lower') is None else g['lower'];return [(sp.Le if g['cx'] else sp.Lt)(sp.Abs(X),g['a']),(sp.Ge if g['cy'] else sp.Gt)(Y,lo),(sp.Le if g['cy'] else sp.Lt)(Y,g['b'])]
+  lo=-g['b'] if g.get('lower') is None else g['lower'];return [(sp.Le if g['cx'] else sp.Lt)(sp.Abs(X),g['a']),(sp.Ge if g.get('lower_closed',g['cy']) else sp.Gt)(Y,lo),(sp.Le if g['cy'] else sp.Lt)(Y,g['b'])]
  if g['shape']=='plane':return [sp.Ne(r,0)] if g.get('puncture') else ([sp.Ne(Y,g['line']*X)] if g.get('line') else [])
  if g['shape']=='halfplane':return [sp.Gt(Y,g['m']*X)]
  if g['shape']=='strip_x':return [sp.Lt(X*X,g['a']**2)]
@@ -127,7 +128,7 @@ def check_record(r,allow_source=False):
  for choice in a:
   if choice[':answer/type']==':answer.type/math':displayed.append(set_constraints(choice[':answer/value']))
   else:
-   side=Path(choice[':answer/value']).with_suffix('.json');assert side.exists(),'generated graph sidecar missing';g=json.loads(side.read_text())['geometry'];displayed.append(graph_cs(g))
+   side=Path(choice[':answer/value']).with_suffix('.json');assert side.exists(),'generated graph sidecar missing';data=json.loads(side.read_text());g=data['geometry'];assert hashlib.sha256(Path(choice[':answer/value']).read_bytes()).hexdigest()==data['png_sha256'];visual_check(choice[':answer/value'],data);displayed.append(graph_cs(g))
  pts=test_points([actual]+displayed)
  # Numerical predicate evaluation does not assume symbolic simplification.
  signatures=[tuple(truth(cs,*p) for p in pts) for cs in displayed]
@@ -161,3 +162,37 @@ def check_record(r,allow_source=False):
  assert 'Finally, the domain $D$ of $F$ is given by' in sol
  assert sol.count('solve the following inequality:')+sol.count('set it equal to zero and solve:')>= (1 if r'{D}_{2}={R}^{2}' in sol else 2)
  return {'points':len(pts),'unique_eligible_choice':True,'component_stage_match':True}
+
+
+def visual_check(path,data):
+ from PIL import Image
+ image=Image.open(path).convert('RGB');g=data['geometry'];lim=data['limits'][1];bx,by,bw,bh=data['axes_bbox'];cs=graph_cs(g)
+ scale=math.sqrt(g['r2']) if g['shape']=='disk' else max(g.get('a',1),g.get('b',1))
+ xs=[scale*t for t in [-1.3,-.6,-.3,.3,.6,1.3]]
+ ys=xs if g['shape']!='rectangle' else [g['b']*t for t in [-1.3,-.6,-.3,.3,.6,1.3]]
+ tested=0
+ for a in xs:
+  for b in ys:
+   # Ignore locations near any curve/axis stroke; compare interior shading.
+   if abs(a)<.05 or abs(b)<.05:continue
+   if g['shape']=='disk' and abs(a*a+b*b-g['r2'])<.12*scale:continue
+   if g.get('line') and abs(b-g['line']*a)<.1*scale:continue
+   if g.get('side') and abs(b-g['side'][1]*a)<.1*scale:continue
+   if g['shape']=='rectangle' and (abs(abs(a)-g['a'])<.08 or abs(abs(b)-g['b'])<.08):continue
+   u=round(bx+(a+lim)/(2*lim)*bw);vv=round(image.height-(by+(b+lim)/(2*lim)*bh))
+   if not(2<=u<image.width-2 and 2<=vv<image.height-2):continue
+   colors=[image.getpixel((u+i,vv+j)) for i in [-1,0,1] for j in [-1,0,1]]
+   shaded=sum(1 for rr,gg,bb in colors if 205<=rr<=230 and 220<=gg<=245 and 230<=bb<=250)>=5
+   expected=truth(cs,sp.Rational(str(a)),sp.Rational(str(b)))
+   assert shaded==expected,'raster shading disagrees with actual geometric region'
+   tested+=1
+ assert tested>=8,'insufficient visual domain samples'
+
+
+def check_source_geometry(record):
+ data=json.loads((Path(__file__).parent/'plot-source-domains.json').read_text())['domains'];sid=record['generation']['source_id']
+ if sid not in data:return 0
+ assert len(record['generation']['geometry'])==5
+ for i,(g,text) in enumerate(zip(record['generation']['geometry'],data[sid])):
+  expected=[sp.sympify(text,locals={'x':X,'y':Y})];got=graph_cs(g);pts=test_points([expected,got]);assert equivalent(got,expected,pts),'source raster transcription mismatch '+sid+' choice '+str(i)
+ return 5

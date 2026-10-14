@@ -22,7 +22,7 @@ ROOT=Path(__file__).resolve().parent
 EVIDENCE=ROOT/str(KP_ID)
 CAPTURE=json.loads((EVIDENCE/'source.json').read_text())
 SOURCE=CAPTURE['record']; QS={q[':question/math-academy-id']:q for q in SOURCE[':knowledge-point/questions']}
-VERSION='cylindrical-solid-1'
+VERSION='cylindrical-solid-2'
 x,y,z=sp.symbols('x y z',real=True);r=sp.Symbol('r',nonnegative=True);theta=sp.Symbol('theta',real=True)
 TEMPLATES={
  'half_xz':('moderate','q-161520',{'S':25,'H':6}),
@@ -165,7 +165,7 @@ def projection(t,p):
  import matplotlib.pyplot as plt
  import numpy as np
  R=float(sp.sqrt(p['S']));a,b,*_=model(t,p)
- key=digest({'renderer':matplotlib.__version__,'S':p['S'],'a':str(a),'b':str(b)})
+ key=digest({'renderer':matplotlib.__version__,'renderer_revision':2,'S':p['S'],'a':str(a),'b':str(b)})
  dest=EVIDENCE/'images'/('projection-'+key+'.png');side=dest.with_suffix('.json')
  if dest.exists() and side.exists():return str(dest)
  ts=np.linspace(float(a),float(b),400)
@@ -174,7 +174,7 @@ def projection(t,p):
  ax.annotate('',xy=(1.72*R,0),xytext=(-1.75*R,0),arrowprops={'arrowstyle':'->','color':'#333'})
  ax.annotate('',xy=(0,1.52*R),xytext=(0,-1.43*R),arrowprops={'arrowstyle':'->','color':'#333'})
  ax.text(1.75*R,-.09*R,'$x$');ax.text(.04*R,1.5*R,'$y$')
- for angle in [0,sp.pi/2,sp.pi,3*sp.pi/2]:
+ for angle in [-sp.pi/2,0,sp.pi/2,sp.pi,3*sp.pi/2]:
   av=float(angle)
   if float(a)-1e-8<=av<=float(b)+1e-8:
    xx,yy=R*np.cos(av),R*np.sin(av)
@@ -184,7 +184,7 @@ def projection(t,p):
  ax.axis('off');dest.parent.mkdir(exist_ok=True)
  fd,tmp=tempfile.mkstemp(suffix='.png',prefix='.render-',dir=dest.parent);os.close(fd)
  fig.savefig(tmp,dpi=120,bbox_inches='tight',facecolor='white');plt.close(fig);os.replace(tmp,dest)
- atomic(side,json.dumps({'renderer':'Matplotlib','version':matplotlib.__version__,'S':p['S'],'theta':[str(a),str(b)],'equal_scale':True}))
+ atomic(side,json.dumps({'renderer':'Matplotlib','version':matplotlib.__version__,'renderer_revision':2,'S':p['S'],'theta':[str(a),str(b)],'equal_scale':True}))
  return str(dest)
 
 def clean_solution(s,t,p):

@@ -42,7 +42,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-5d995d2bb65e10606f49e053716dbf277c52be9b75e7f47722c56f995ef80d5d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-6a7adecbe9d05c474e08cc8adc644e478976ef3c03cea1c675b5cd0c35661a95.png)
 
 The region $R$ is one-half of a right vertical cylinder of radius $\sqrt{10}$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -92,7 +92,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-eecb1f223f60daa31ed41afed7e8b95ca3d651d7c799af3b950f8639409f4968.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-31fca9ab20e300a443729a83c79eda833152531acbc8c8d3ab87e2eeaaf99e3e.png)
 
 The region $R$ is one-half of a right vertical cylinder of radius $\sqrt{11}$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -199,7 +199,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-19117c64548253a4378491b9c3e0c83cd5781023f46402ebda454fe23b60cbc4.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-39d14c21202e441ca00b770fe1607f17e67d75484c16a786f07cb7318e860dfc.png)
 
 The region $R$ is a right vertical cylinder of radius $\sqrt{10}$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -250,7 +250,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-72855e79d024558dce013208b6a6f2e9295cefd2a81fbbf32e76f160bd66d0ed.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-253627f77276b714b2be50721ac3b274e943c22a1c3925f92ac428b1b7b052a7.png)
 
 The region $R$ is a right vertical cylinder of radius $4$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -350,7 +350,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-19117c64548253a4378491b9c3e0c83cd5781023f46402ebda454fe23b60cbc4.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-39d14c21202e441ca00b770fe1607f17e67d75484c16a786f07cb7318e860dfc.png)
 
 The region $R$ is a right vertical cylinder of radius $\sqrt{10}$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -400,7 +400,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-72855e79d024558dce013208b6a6f2e9295cefd2a81fbbf32e76f160bd66d0ed.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-253627f77276b714b2be50721ac3b274e943c22a1c3925f92ac428b1b7b052a7.png)
 
 The region $R$ is a right vertical cylinder of radius $4$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -500,7 +500,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-d9efb861d324766bc6bcdae8af74edabd40e7ab2db133fcb53c0f1f29430f826.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-c34ac99073b685ae8384281b4e269f5b348d1d8163c54e02b7030494e3f69131.png)
 
 The region $R$ is a right vertical cylinder of radius $\sqrt{6}$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -550,7 +550,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-6b314bfdd7417e408f97b0ca42ac0e50a87243855ef41b0778de5918df0acb5c.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-54c50082895500eb46206f90413a187bda548b2b54a4f437a72ccc7b967ba9d6.png)
 
 The region $R$ is a right vertical cylinder of radius $2 \sqrt{2}$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -650,7 +650,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-1dbe6f3d59f10735fde2f520ab7b5f966627efe4ae1943876b9d50ccfa188164.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-18580e050efef846d690decbfe19087a909ad41e5d3873cfc3cb711dc9d14f94.png)
 
 The region $R$ is one-half of a right vertical cylinder of radius $\sqrt{10}$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -700,7 +700,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-3de7b23ea5d064f499d7c3f245533ce84a34f6d2297116e4d315baec8865457d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-4a2305169e13f40b1a1a5734ae53f14153f1699babd2a39d50ce3d6aca2aefed.png)
 
 The region $R$ is one-half of a right vertical cylinder of radius $4$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -800,7 +800,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-f6bdcac641c5bb3141fa28aa4defafccfa2be5a77f6280211de77511610bb2d4.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-8c0135acb69f554799f78daa2032ac3e052b2076f7bb006481d8ca7511677a0b.png)
 
 The region $R$ is one-half of a right vertical cylinder of radius $\sqrt{10}$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -850,7 +850,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-6e872e05acb89ad9ce030e4172c1b5389f7d2197d58f3a6d6ed41947cfa7ccea.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-d76d3f4ecdc5ea6b51aebc0c3028364d48069b8943fd6981bb2f589b01806b8b.png)
 
 The region $R$ is one-half of a right vertical cylinder of radius $4$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -950,7 +950,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-0cc92390f67db05806d5583ec09846da881fe59818dd87ab578986f02c483ab1.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-0361d5ae05f22bf51bffc5c913bb51a1390aeb8b17ec6d5ebb49d5f2a9375121.png)
 
 The region $R$ is one-quarter of a right vertical cylinder of radius $\sqrt{10}$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -1000,7 +1000,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-08c76067e1300cf3803d0b9912fff8c98c9ded8b7acdcc534966d00ef84c540b.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-c7675ced8ad4883ec7672885f5f69c9795e80505ccac54a9300a6efccf0bad02.png)
 
 The region $R$ is one-quarter of a right vertical cylinder of radius $4$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -1100,7 +1100,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-19117c64548253a4378491b9c3e0c83cd5781023f46402ebda454fe23b60cbc4.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-39d14c21202e441ca00b770fe1607f17e67d75484c16a786f07cb7318e860dfc.png)
 
 The region $R$ is a right vertical cylinder of radius $\sqrt{10}$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -1150,7 +1150,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-baf4ded17b8e5a590021ce779cfe203e08c4661296bbb79bc03cda436078bf40.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-53695a87e5f1b5e20fdf58ad9200a5e46040b8286d95995368651206ad602b21.png)
 
 The region $R$ is a right vertical cylinder of radius $\sqrt{11}$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -1200,7 +1200,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-0cc92390f67db05806d5583ec09846da881fe59818dd87ab578986f02c483ab1.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-0361d5ae05f22bf51bffc5c913bb51a1390aeb8b17ec6d5ebb49d5f2a9375121.png)
 
 The region $R$ is one-quarter of a right vertical cylinder of radius $\sqrt{10}$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -1250,7 +1250,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-08c76067e1300cf3803d0b9912fff8c98c9ded8b7acdcc534966d00ef84c540b.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-c7675ced8ad4883ec7672885f5f69c9795e80505ccac54a9300a6efccf0bad02.png)
 
 The region $R$ is one-quarter of a right vertical cylinder of radius $4$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -1672,7 +1672,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-de854cea84b4684544976655d6b7d549eb59559c63c380aaf9e5b416f0334001.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-804f44d94708ff42da0a7b3e36cd8a53e0c9786e791bae4e6e398a57f82935eb.png)
 
 The region $R$ is one-half of a right vertical cylinder of radius $\sqrt{2}$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -1723,7 +1723,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-af4dd5feca098045825adff252829786da9b80e4ddc41ec0e0a8e1b0ad5e73b0.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-f5f8e432b0fd9f4e1f4c2f1986e2f4f48612228ddaa59420aa956b74fbb3cd28.png)
 
 The region $R$ is a right vertical cylinder of radius $5$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -1773,7 +1773,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-af4dd5feca098045825adff252829786da9b80e4ddc41ec0e0a8e1b0ad5e73b0.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-f5f8e432b0fd9f4e1f4c2f1986e2f4f48612228ddaa59420aa956b74fbb3cd28.png)
 
 The region $R$ is a right vertical cylinder of radius $5$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -1823,7 +1823,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-7e0bdda3a3fb78a03b7bb976353743a47b8d358988e26054bf364448d89ca310.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-c6dcd4f675a4674a4fd15f0d488c569b4fdac8a01cb263d61dbb53499528ef77.png)
 
 The region $R$ is a right vertical cylinder of radius $\sqrt{2}$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -1873,7 +1873,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-ede8452254d4f964d0d5d56a4c7f3c0dfb8f3c05e98a1ef919a3d9b59410a25d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-dd5342d4e768430089e75431b2a211eb3de632e8de11a4167736e574eea65bf7.png)
 
 The region $R$ is one-half of a right vertical cylinder of radius $5$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -1923,7 +1923,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-a20de1c419761af818f932fd894a2b753dad6163817d454381ac8b44efb55b2d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-112441fda53fcf28d7e1f8eb4a2eac44b24eadb2c8db40d8848dc1b54202ee5a.png)
 
 The region $R$ is one-half of a right vertical cylinder of radius $5$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -1973,7 +1973,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-8cd9b024473e2dd484fc53c000a0fbe3d7f2bef0557db7860a659b870d1ca4c8.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-49d045399826a4949674ab7e849b4e3669159500d3e0d40472de030051329ae2.png)
 
 The region $R$ is one-quarter of a right vertical cylinder of radius $\sqrt{2}$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 
@@ -2023,7 +2023,7 @@ $$
 
 First, let's sketch the projection of $R$ onto the $xy$-plane:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-7e0bdda3a3fb78a03b7bb976353743a47b8d358988e26054bf364448d89ca310.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/images/projection-c6dcd4f675a4674a4fd15f0d488c569b4fdac8a01cb263d61dbb53499528ef77.png)
 
 The region $R$ is a right vertical cylinder of radius $\sqrt{2}$ whose axis passes through the point $(0,0)$ in the $xy$-plane, and is
 

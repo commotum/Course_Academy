@@ -1,0 +1,496 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186198373,
+      "id": "cd546dda-c78f-5367-b03e-9b3acb420040",
+      "title": "Cases When the Transformation Is Inferred From the Domain"
+    },
+    "question": {
+      ":question/id": "054ccdc8-ce53-52cf-980e-751771106e43",
+      ":question/problem": "Use a change of variables to evaluate the double integral \n\n$$\n{∬}_{D}\\frac{1}{1+(x-y)^{2}}\\,dxdy,\n$$\n\nwhere $D={(x,y)\\,:\\,0\\le x\\le 2,\\,0\\le x-y\\le 2}.$",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]⟶[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{∬}_{D}f(x,y)\\text{ }dxdy={∬}_{Δ}\\text{ }f(x(u,v),y(u,v))\\,|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe inequalities that define the region $D,$\n\n$$\n0\\le x\\le 2,\\,0\\le x-y\\le 2,\n$$\n\nsuggest that we use the change of variables \n\n$$\nu=x\\,\\text{and}\\,v=x-y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\n**Step 2**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}Δ & ={(u,v)\\,:\\,0\\le u\\le 2,\\,0\\le v\\le 2}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & \\text{ }\\text{ }0 \\\\ 1 & -1\\end{aligned}| \\\\  & =-1.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=-1.\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{∬}_{D}\\frac{1}{1+(x-y)^{2}}\\,\\text{d}x\\text{d}y & ={∬}_{Δ}\\frac{1}{1+{v}^{2}}\\,|\\frac{∂(x,y)}{∂(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}\\frac{1}{1+{v}^{2}}\\,|-1|\\,\\text{d}u\\text{d}v \\\\  & ={\\int }_{0}^{2}[{\\int }_{0}^{2}\\frac{1}{1+{v}^{2}}\\,du]dv \\\\  & ={\\int }_{0}^{2}\\frac{1}{1+{v}^{2}}[{\\int }_{0}^{2}du]dv \\\\  & ={\\int }_{0}^{2}\\frac{1}{1+{v}^{2}}[u]_{0}^{2}\\,dv \\\\  & =2{\\int }_{0}^{2}\\frac{1}{1+{v}^{2}}\\,dv \\\\  & =2[\\operatorname{arctan}⁡v]_{0}^{2} \\\\  & =2\\operatorname{arctan}⁡(2).\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "2b5d6fc1-3eae-586c-833c-a021464f8b99",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2d285593-d466-5d9e-ba33-43aec88b1d4c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\arctan (4) - \\arctan (2)"
+            },
+            {
+              ":answer/id": "d25f9b3f-7189-53d1-aa5b-d7295f4d9dac",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\ln (2) + \\arctan (2)"
+            },
+            {
+              ":answer/id": "495ded68-3a3d-5e53-b5d1-85a09966e493",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2\\arctan (2)"
+            },
+            {
+              ":answer/id": "b974798b-caea-50e3-969e-15b2fc353fa5",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 - 2\\arctan (2)"
+            },
+            {
+              ":answer/id": "57aa9c4c-eb88-5484-8b75-ed2c210a5c41",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\arctan (2)"
+            }
+          ]
+        },
+        {
+          ":answer-field/id": "c802b5e8-ccaa-5e28-8b7f-808056150d80",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4218e006-e656-566e-bde2-509c1e6ff2f8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2\\operatorname{arctan}⁡(2)"
+            },
+            {
+              ":answer/id": "04633f74-d2f4-5321-9db2-0f22542f8007",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{arctan}⁡(4)-\\operatorname{arctan}⁡(2)"
+            },
+            {
+              ":answer/id": "ade31ac0-9a8c-5c4c-83a1-5dff7cd84870",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2-2\\operatorname{arctan}⁡(2)"
+            },
+            {
+              ":answer/id": "2d3a90d2-b03c-5e16-8ee8-5d81f54c0745",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{arctan}⁡(2)"
+            },
+            {
+              ":answer/id": "989d1835-8bf3-5d8a-a7ca-11ca23817d6b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\operatorname{ln}⁡(2)+\\operatorname{arctan}⁡(2)"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4218e006-e656-566e-bde2-509c1e6ff2f8"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "domain-inferred-1",
+      "template": "arctan",
+      "profile": "source:q-38377",
+      "seed": 19,
+      "parameters": {
+        "k": 1
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [
+        "q-38377"
+      ],
+      "mathematical_fingerprint": "577f51ac21ebc5b09310740925897348a0d60188536dee7a0d4a5b954acd31b5",
+      "content_fingerprint": "1a76980ee4574abd76943cf5898c39d34699bde482babce0abd77924d1d6e0ab",
+      "evidence_only": true,
+      "eligible_for_learning": false,
+      "authored_level": false,
+      "recipes": null,
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198373,
+      "id": "cd546dda-c78f-5367-b03e-9b3acb420040",
+      "title": "Cases When the Transformation Is Inferred From the Domain"
+    },
+    "question": {
+      ":question/id": "6fe66a7a-586b-523e-a9bd-8eb150771659",
+      ":question/problem": "Use a change of variables to evaluate the double integral\n$∬_(D)(x + 2y)e^{(x + 2y)^{2}}dxdy$,\nwhere $D = {(x, y): 1 \\le x \\le 5, 0 \\le x + 2y \\le 1}$.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "64050e4d-ab14-5727-a8fc-96d2924b8017",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c5723927-78aa-5d18-9e6b-65d538c4c5a6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{e^{2} - e}{4}"
+            },
+            {
+              ":answer/id": "78d46bcd-d7ba-5318-a2c9-0e6e147ddb59",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "e^{2} - 1"
+            },
+            {
+              ":answer/id": "c06892d2-df27-5ec8-b536-78a6737db333",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{e - 2}{2}"
+            },
+            {
+              ":answer/id": "b43d3507-721c-55ae-90df-09bd5f6e877a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "e"
+            },
+            {
+              ":answer/id": "61ea3d8e-e2a9-5dd2-b01d-a4cd56cec5a4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "e - 1"
+            }
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "domain-inferred-1",
+      "template": "gaussian",
+      "profile": "source:q-82916",
+      "seed": 19,
+      "parameters": {
+        "k": 1
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [
+        "q-82916"
+      ],
+      "mathematical_fingerprint": "5ff5e17ab68c53aea348a764eedbb8db0a0f3c14226a4ab9cfede8e70da09257",
+      "content_fingerprint": "24a3e846d2cc9c381c13683eba68baf3607180515fd47f1e2f73deac870e7334",
+      "evidence_only": true,
+      "eligible_for_learning": false,
+      "authored_level": false,
+      "recipes": null,
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198373,
+      "id": "cd546dda-c78f-5367-b03e-9b3acb420040",
+      "title": "Cases When the Transformation Is Inferred From the Domain"
+    },
+    "question": {
+      ":question/id": "e267394b-5a0a-5380-95a9-a30a100d6e69",
+      ":question/problem": "Use a change of variables to evaluate the double integral \n\n$$\n{∬}_{D}(x-1){e}^{2x+2y}\\,dxdy,\n$$\n\nwhere $D={(x,y)\\,:\\,1\\le x\\le 3,\\,-1\\le x+y\\le 1}.$",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]⟶[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{∬}_{D}f(x,y)\\text{ }dxdy={∬}_{Δ}\\text{ }f(x(u,v),y(u,v))\\,|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe inequalities that define the region $D,$\n\n$$\n1\\le x\\le 3,\\,-1\\le x+y\\le 1,\n$$\n\nsuggest that we use the change of variables \n\n$$\nu=x\\,\\text{and}\\,v=x+y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\n**Step 2**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}Δ & ={(u,v)\\,:\\,1\\le u\\le 3,\\,-1\\le v\\le 1}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 \\\\ 1 & 1\\end{aligned}| \\\\  & =1.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=1.\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{∬}_{D}(x-1){e}^{2x+2y}\\,\\text{d}x\\text{d}y & ={∬}_{Δ}(u-1){e}^{2v}|\\frac{∂(x,y)}{∂(u,v)}|\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}(u-1){e}^{2v}|1|\\text{d}u\\text{d}v \\\\  & ={\\int }_{1}^{3}(u-1)[{\\int }_{-1}^{1}{e}^{2v}\\,dv]du \\\\  & ={\\int }_{1}^{3}(u-1){[\\frac{1}{2}{e}^{2v}]}_{-1}^{1}\\,dv \\\\  & =\\frac{{e}^{2}-{e}^{-2}}{2}{\\int }_{1}^{3}(u-1)\\,dv \\\\  & =\\frac{{e}^{2}-{e}^{-2}}{2}{[\\frac{1}{2}{u}^{2}-u]}_{1}^{3} \\\\  & =\\frac{{e}^{2}-{e}^{-2}}{2}\\cdot 2 \\\\  & ={e}^{2}-{e}^{-2}.\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "e79dfbdb-bd56-5fa7-ac71-4f83f57ffc04",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "28c13e75-f001-5df6-8a2a-f47f11a9b219",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{e}^{2}-{e}^{-2}"
+            },
+            {
+              ":answer/id": "bc78c0d8-f5ae-55ac-9577-2dd7053f2409",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2({e}^{2}-{e}^{-2})}{3}"
+            },
+            {
+              ":answer/id": "c9259058-aa16-5c1f-9fce-064fd7ce004a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2(e-{e}^{-1})"
+            },
+            {
+              ":answer/id": "23bcf396-0872-59ee-b789-1e6cd1b23eac",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3({e}^{2}-1)"
+            },
+            {
+              ":answer/id": "6c899d4e-0145-5bc8-89a2-629a910941f0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1-{e}^{-2}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "28c13e75-f001-5df6-8a2a-f47f11a9b219"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "domain-inferred-1",
+      "template": "linear_exp",
+      "profile": "source:q-160911",
+      "seed": 19,
+      "parameters": {
+        "k": 1
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [
+        "q-160911"
+      ],
+      "mathematical_fingerprint": "b7946d861322df6159cb43efa811f49cb55264f0f6e625bf7f40682c08b47e9b",
+      "content_fingerprint": "a7f8c7af0ba161fba6d636da70890de8a73a5d2db0f9e0db509f727770768455",
+      "evidence_only": true,
+      "eligible_for_learning": false,
+      "authored_level": false,
+      "recipes": null,
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198373,
+      "id": "cd546dda-c78f-5367-b03e-9b3acb420040",
+      "title": "Cases When the Transformation Is Inferred From the Domain"
+    },
+    "question": {
+      ":question/id": "8c4bbc19-d724-50e7-912f-c427767906c7",
+      ":question/problem": "Use a change of variables to evaluate the double integral \n\n$$\n{∬}_{D}x{y}^{2}\\,dxdy,\n$$\n\nwhere $D={(x,y)\\,:\\,0\\le \\frac{x}{\\sqrt{4-{y}^{2}}}\\le 1,\\,-1\\le y\\le 1}.$",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]⟶[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{∬}_{D}f(x,y)\\text{ }dxdy={∬}_{Δ}\\text{ }f(x(u,v),y(u,v))\\,|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe inequalities that define the region $D,$\n\n$$\n0\\le \\frac{x}{\\sqrt{4-{y}^{2}}}\\le 1,\\,-1\\le y\\le 1,\n$$\n\nsuggest that we use the change of variables \n\n$$\nu=\\frac{x}{\\sqrt{4-{y}^{2}}}\\,\\text{and}\\,v=y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\n**Step 2**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}Δ & ={(u,v)\\,:\\,0\\le u\\le 1,\\,-1\\le v\\le 1}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}\\frac{1}{\\sqrt{4-{y}^{2}}} & \\frac{xy}{\\sqrt{{(4-{y}^{2})}^{3}}} \\\\ 0 & 1\\end{aligned}| \\\\  & =\\frac{1}{\\sqrt{4-{y}^{2}}}.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=\\sqrt{4-{y}^{2}}=\\sqrt{4-{v}^{2}}\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{∬}_{D}x{y}^{2}\\,\\text{d}x\\text{d}y & ={∬}_{Δ}u\\sqrt{4-{v}^{2}}\\cdot {v}^{2}\\,|\\frac{∂(x,y)}{∂(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}u\\sqrt{4-{v}^{2}}\\cdot {v}^{2}\\cdot |\\sqrt{4-{v}^{2}}|\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}u{v}^{2}(4-{v}^{2})\\,\\text{d}u\\text{d}v \\\\  & ={\\int }_{0}^{1}u[{\\int }_{-1}^{1}(4{v}^{2}-{v}^{4})\\,dv]du \\\\  & ={\\int }_{0}^{1}u\\cdot {[\\frac{4}{3}{v}^{3}-\\frac{1}{5}{v}^{5}]}_{-1}^{1}\\,du \\\\  & ={\\int }_{0}^{1}u\\cdot \\frac{34}{15}\\,du \\\\  & =\\frac{34}{15}{[\\frac{1}{2}{u}^{2}]}_{0}^{1} \\\\  & =\\frac{17}{15}\\cdot (1-0) \\\\  & =\\frac{17}{15}.\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ac0a5d25-0c16-55de-971a-bdd7ae70e148",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ce587bc6-67e9-5d75-a03e-02dba68511ea",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{17}{15}"
+            },
+            {
+              ":answer/id": "45d540d5-3c34-5dbb-bb64-a4088e8be68e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{23}{12}"
+            },
+            {
+              ":answer/id": "38054678-63f8-5f32-a7e8-97745afa7822",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{25}{18}"
+            },
+            {
+              ":answer/id": "bec1ac04-a71c-5f53-b8c6-59ad54396192",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{13}{10}"
+            },
+            {
+              ":answer/id": "e32af5bc-ba34-5a6e-bf02-305abeb75923",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{19}{14}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ce587bc6-67e9-5d75-a03e-02dba68511ea"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "domain-inferred-1",
+      "template": "radical",
+      "profile": "source:q-160919",
+      "seed": 19,
+      "parameters": {
+        "k": 1
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [
+        "q-160919"
+      ],
+      "mathematical_fingerprint": "e1a75a93d8b46f03e6456b4fb052f5f454abac7919ee485a86c5f3564225bb86",
+      "content_fingerprint": "9c150127fb00f04abf42fb5f66b46de90ee8bb1e21bb0256036fe542a7b5960e",
+      "evidence_only": true,
+      "eligible_for_learning": false,
+      "authored_level": false,
+      "recipes": null,
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198373,
+      "id": "cd546dda-c78f-5367-b03e-9b3acb420040",
+      "title": "Cases When the Transformation Is Inferred From the Domain"
+    },
+    "question": {
+      ":question/id": "0fad751d-39d5-55c5-8a60-24a6f6192ebf",
+      ":question/problem": "Use a change of variables to evaluate the double integral \n\n$$\n{∬}_{D}{e}^{{x}^{2}+x+y}\\,dxdy,\n$$\n\nwhere $D={(x,y)\\,:\\,0\\le x\\le 1,\\,0\\le y+{x}^{2}\\le 2}.$",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]⟶[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{∬}_{D}f(x,y)\\text{ }dxdy={∬}_{Δ}\\text{ }f(x(u,v),y(u,v))\\,|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe inequalities that define the region $D,$\n\n$$\n0\\le x\\le 1,\\,0\\le y+{x}^{2}\\le 2,\n$$\n\nsuggest that we use the change of variables \n\n$$\nu=x\\,\\text{and}\\,v=y+{x}^{2}.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\n**Step 2**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}Δ & ={(u,v)\\,:\\,0\\le u\\le 1,\\,0\\le v\\le 2}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 \\\\ 2x & 1\\end{aligned}| \\\\  & =1.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=1\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{∬}_{D}{e}^{{x}^{2}+x+y}\\,\\text{d}x\\text{d}y & ={∬}_{D}{e}^{x+(y+{x}^{2})}\\text{d}x\\text{d}y \\\\  & ={∬}_{Δ}{e}^{u+v}|\\frac{∂(x,y)}{∂(u,v)}|\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}{e}^{u+v}\\cdot |1|\\text{d}u\\text{d}v \\\\  & ={\\int }_{0}^{1}[{\\int }_{0}^{2}{e}^{u+v}\\,dv]du \\\\  & ={\\int }_{0}^{1}{e}^{u}[{\\int }_{0}^{2}{e}^{v}\\,dv]du \\\\  & ={\\int }_{0}^{1}{e}^{u}[{e}^{v}]_{0}^{2}\\,du \\\\  & =({e}^{2}-1){\\int }_{0}^{1}{e}^{u}\\,du \\\\  & =({e}^{2}-1)[{e}^{u}]_{0}^{1} \\\\  & =({e}^{2}-1)(e-1) \\\\  & ={e}^{3}-{e}^{2}-e+1.\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "517ff674-e814-59bc-a0e3-57e3efe4dc24",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "59a67370-92c4-5a42-b2d8-5f6d6c3151bf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2{e}^{2}-3"
+            },
+            {
+              ":answer/id": "eb236725-c7e3-5dc7-a07a-6f915fba6a87",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4{e}^{3}-1"
+            },
+            {
+              ":answer/id": "52d41703-0195-5f19-8be6-7892d6c7fb95",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2{e}^{4}-{e}^{2}+2"
+            },
+            {
+              ":answer/id": "b296bfe2-44de-5ed9-ad0d-36f14a4646ff",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{e}^{3}-e+1"
+            },
+            {
+              ":answer/id": "ff6a3825-e492-59c6-a1f0-7f47734b7fd8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "{e}^{3}-{e}^{2}-e+1"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ff6a3825-e492-59c6-a1f0-7f47734b7fd8"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "domain-inferred-1",
+      "template": "quadratic_exp",
+      "profile": "source:q-160920",
+      "seed": 19,
+      "parameters": {
+        "k": 1
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [
+        "q-160920"
+      ],
+      "mathematical_fingerprint": "74ec6a431f208719c1eac8a38c4f7d1dfb9fe2b6b710137f706426f5d0841f71",
+      "content_fingerprint": "2f0a04af214a12ff6e16e132c31b7c2867c465b4acf95b7c55a755c537fc4e14",
+      "evidence_only": true,
+      "eligible_for_learning": false,
+      "authored_level": false,
+      "recipes": null,
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198373,
+      "id": "cd546dda-c78f-5367-b03e-9b3acb420040",
+      "title": "Cases When the Transformation Is Inferred From the Domain"
+    },
+    "question": {
+      ":question/id": "7c7f6de7-51ad-5eda-a5fa-7849f7bc253e",
+      ":question/problem": "Use a change of variables to evaluate the double integral \n\n$$\n{∬}_{D}x\\operatorname{sin}⁡(x+y)\\,dxdy,\n$$\n\nwhere $D={(x,y)\\,:\\,1\\le x\\le 3,\\,|x+y|\\le \\frac{\\pi }{2}}.$",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]⟶[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{∬}_{D}f(x,y)\\text{ }dxdy={∬}_{Δ}\\text{ }f(x(u,v),y(u,v))\\,|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe inequalities that define the region $D,$\n\n$$\n1\\le x\\le 3,\\,-\\frac{\\pi }{2}\\le x+y\\le \\frac{\\pi }{2},\n$$\n\nsuggest that we use the change of variables \n\n$$\nu=x\\,\\text{and}\\,v=x+y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\n**Step 2**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}Δ & ={(u,v)\\,:\\,1\\le u\\le 3,\\,-\\frac{\\pi }{2}\\le v\\le \\frac{\\pi }{2}}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & \\text{ }\\text{ }0 \\\\ 1 & 1\\end{aligned}| \\\\  & =1.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=1.\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{∬}_{D}x\\operatorname{sin}⁡(x+y)\\,\\text{d}x\\text{d}y & ={∬}_{Δ}u\\operatorname{sin}⁡v\\,|\\frac{∂(x,y)}{∂(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}u\\operatorname{sin}⁡v\\,|1|\\,\\text{d}u\\text{d}v \\\\  & ={\\int }_{-\\pi /2}^{\\pi /2}\\operatorname{sin}⁡v[{\\int }_{1}^{3}u\\,du]dv \\\\  & ={\\int }_{-\\pi /2}^{\\pi /2}\\operatorname{sin}⁡v{[\\frac{{u}^{2}}{2}]}_{1}^{3}dv \\\\  & =4{\\int }_{-\\pi /2}^{\\pi /2}\\operatorname{sin}⁡v\\,dv \\\\  & =4[-\\operatorname{cos}⁡v]_{-\\pi /2}^{\\pi /2} \\\\  & =0.\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a590e27f-4a34-5dd9-96ab-31b3f0477606",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4bc8b36a-282f-5564-bd29-5dc96510b41d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-4"
+            },
+            {
+              ":answer/id": "2c0ccdd1-9669-519f-ba06-f9b050152c6f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0"
+            },
+            {
+              ":answer/id": "70b42e2d-d43a-55a9-8f1f-09586ff81144",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4"
+            },
+            {
+              ":answer/id": "88616e46-f41d-5abd-8d51-78baeb0b08a4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-6"
+            },
+            {
+              ":answer/id": "18b514e0-1bba-574b-b06a-1a87d83d0ce8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2c0ccdd1-9669-519f-ba06-f9b050152c6f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "domain-inferred-1",
+      "template": "sine",
+      "profile": "source:q-83651",
+      "seed": 19,
+      "parameters": {
+        "k": 1
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [
+        "q-83651"
+      ],
+      "mathematical_fingerprint": "85870d082759b8cefe57f2604e807bc025917999cb466725962c2a2b922e3f5f",
+      "content_fingerprint": "63f8ed7448ea4d9bb9fd4f965a69916bb30f10767116e6598aa190a7fda5dd51",
+      "evidence_only": true,
+      "eligible_for_learning": false,
+      "authored_level": false,
+      "recipes": null,
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    }
+  }
+]

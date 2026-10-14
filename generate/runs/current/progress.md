@@ -4,7 +4,7 @@ Captured scope: **120 topics, 384 knowledge points**, 3757 practice questions; m
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**qa_passed: 286**, **queued: 92**, **working: 6**.
+**qa_passed: 291**, **queued: 88**, **working: 5**.
 
 Dispatch priority: the 15 KPs in `coverage-report.md`, while already-started workers finish.
 
@@ -292,8 +292,8 @@ Counts describe reviewed work; queued and working KPs are not complete. Source a
 | [17592186175987](../../scratch/17592186175987.py) | Green's Theorem in Polar Coordinates | Expressing a Line Integral Along a Path as a Double Integral Using Green's Theorem | 0 / 11 / 0 / 0 | qa_passed | [Report](qa/17592186175987.json) |
 | [17592186176023](../../scratch/17592186176023.py) | Green's Theorem in Polar Coordinates | Evaluating a Line Integral Using Green's Theorem | 0 / 6 / 3 / 1 | qa_passed | [Report](qa/17592186176023.json) |
 | [17592186176024](../../scratch/17592186176024.py) | Green's Theorem in Polar Coordinates | Expressing a Line Integral Along a Circular Path as a Double Integral Using Green's Theorem | 4 / 3 / 0 / 1 | qa_passed | [Report](qa/17592186176024.json) |
-| [17592186129267](../../scratch/17592186129267.py) | Triple Integrals in Cylindrical Polar Coordinates | Rewriting a Triple Integral Defined Over a Cylindrical Solid | 4 / 3 / 0 / 1 | working | — |
-| [17592186129268](../../scratch/17592186129268.py) | Triple Integrals in Cylindrical Polar Coordinates | Rewriting a Triple Integral Defined Over a Shifted Cylindrical Solid | 0 / 1 / 3 / 2 | working | — |
+| [17592186129267](../../scratch/17592186129267.py) | Triple Integrals in Cylindrical Polar Coordinates | Rewriting a Triple Integral Defined Over a Cylindrical Solid | 4 / 3 / 0 / 1 | qa_passed | [Report](qa/17592186129267.json) |
+| [17592186129268](../../scratch/17592186129268.py) | Triple Integrals in Cylindrical Polar Coordinates | Rewriting a Triple Integral Defined Over a Shifted Cylindrical Solid | 0 / 1 / 3 / 2 | qa_passed | [Report](qa/17592186129268.json) |
 | [17592186129278](../../scratch/17592186129278.py) | Triple Integrals in Cylindrical Polar Coordinates | Evaluating a Triple Integral by Converting to Cylindrical Coordinates | 0 / 3 / 5 / 2 | working | — |
 | [17592186105735](../../scratch/17592186105735.py) | The Scalar Triple Product | Calculating the Scalar Triple Product Using the Definition | 6 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186105735.json) |
 | [17592186105736](../../scratch/17592186105736.py) | The Scalar Triple Product | Calculating the Scalar Triple Product Using a Determinant | 11 / 11 / 0 / 1 | qa_passed | [Report](qa/17592186105736.json) |
@@ -301,13 +301,13 @@ Counts describe reviewed work; queued and working KPs are not complete. Source a
 | [17592186068873](../../scratch/17592186068873.py) | Completing the Square | Completing the Square When the Perfect Square is Isolated | 3 / 2 / 0 / 3 | qa_passed | [Report](qa/17592186068873.json) |
 | [17592186068874](../../scratch/17592186068874.py) | Completing the Square | Completing the Square When the Perfect Square is Isolated: Negative Linear Term | 5 / 1 / 0 / 2 | qa_passed | [Report](qa/17592186068874.json) |
 | [17592186068875](../../scratch/17592186068875.py) | Completing the Square | Completing the Square on a Quadratic Expression | 5 / 2 / 0 / 2 | qa_passed | [Report](qa/17592186068875.json) |
-| [17592186068876](../../scratch/17592186068876.py) | Completing the Square | Completing the Square on a Quadratic Expression with a Negative Linear Term | 5 / 3 / 0 / 2 | working | — |
-| [17592186172085](../../scratch/17592186172085.py) | Vector Fields | Identifying Vector Fields on Two-Dimensions | 8 / 0 / 0 / 0 | working | — |
+| [17592186068876](../../scratch/17592186068876.py) | Completing the Square | Completing the Square on a Quadratic Expression with a Negative Linear Term | 5 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186068876.json) |
+| [17592186172085](../../scratch/17592186172085.py) | Vector Fields | Identifying Vector Fields on Two-Dimensions | 8 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186172085.json) |
 | [17592186172086](../../scratch/17592186172086.py) | Vector Fields | Finding the Domain of a Vector Field | 0 / 4 / 5 / 0 | working | — |
-| 17592186172087 | Vector Fields | Identifying Vector Fields on Three-Dimensions | 9 / 0 / 0 / 0 | queued | — |
-| 17592186198361 | Computing Double Integrals Using a Change of Variables | Performing a Change of Variables | 4 / 1 / 0 / 2 | queued | — |
-| 17592186198373 | Computing Double Integrals Using a Change of Variables | Cases When the Transformation Is Inferred From the Domain | 0 / 5 / 0 / 1 | queued | — |
-| 17592186198374 | Computing Double Integrals Using a Change of Variables | Cases When the Transformation Is Inferred From the Integrand | 0 / 0 / 5 / 1 | queued | — |
+| [17592186172087](../../scratch/17592186172087.py) | Vector Fields | Identifying Vector Fields on Three-Dimensions | 9 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186172087.json) |
+| [17592186198361](../../scratch/17592186198361.py) | Computing Double Integrals Using a Change of Variables | Performing a Change of Variables | 4 / 1 / 0 / 2 | working | — |
+| [17592186198373](../../scratch/17592186198373.py) | Computing Double Integrals Using a Change of Variables | Cases When the Transformation Is Inferred From the Domain | 0 / 5 / 0 / 1 | working | — |
+| 17592186198374 | Computing Double Integrals Using a Change of Variables | Cases When the Transformation Is Inferred From the Integrand | 0 / 0 / 5 / 1 | working | — |
 | 17592186172130 | Surface Integrals Over Parametric Surfaces | Constructing Surface Integrals Over Parametric Surfaces | 6 / 6 / 0 / 0 | queued | — |
 | 17592186172131 | Surface Integrals Over Parametric Surfaces | Evaluating Surface Integrals Over Parametric Surfaces | 0 / 7 / 6 / 0 | queued | — |
 | 17592186176049 | Describing Properties of the Tangent Function | Describing Properties of the Tangent Function | 0 / 0 / 5 / 1 | queued | — |

@@ -4,6 +4,7 @@ import copy, hashlib, importlib.util, itertools, json, re, subprocess, sys
 from pathlib import Path
 import sympy as sp
 from sympy.parsing.sympy_parser import parse_expr, standard_transformations, implicit_multiplication_application, convert_xor
+sys.dont_write_bytecode=True
 HERE=Path(__file__).resolve().parent
 spec=importlib.util.spec_from_file_location('generator',HERE.with_suffix('.py'));g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
 TRANS=standard_transformations+(implicit_multiplication_application,convert_xor)
@@ -90,6 +91,9 @@ def displayed(record,allow_raw=False):
 
 
 def fidelity():
+ captured=json.loads((HERE.parents[1]/'runs/current/sources/17592186068876.json').read_text())
+ assert captured==g.SOURCE,'private source copy differs from frozen capture'
+ assert captured['basis']==1356 and captured['database']=='math'
  stats={'sources':0,'exact_prompts':0,'exact_present_solutions':0,'present_solutions':0,'complete_banks':0,'bank_choices':0,'distractors':0,'matched_correct_refs':0,'present_correct_refs':0,'missing_correct_refs':0,'missing_banks':0,'unrated':0,'fieldless':0}
  records=[];cases=[]
  for sid,case in g.CASES.items():
@@ -204,13 +208,37 @@ def main():
  for level,c in [('easy',0),('moderate',-1),('hard',0)]:expect_failure(lambda level=level,c=c:g.generate(level,parameters={'v':'x','h':5,'c':c}))
  expect_failure(lambda:g.generate('hard',parameters={'v':'x','h':2,'c':-5}))
  for kwargs in [dict(field_type='checkbox'),dict(template='nonsense'),dict(profile='nonsense'),dict(parameters={'v':'x','h':-5,'c':30}),dict(parameters={'v':'x','h':13,'c':30})]:expect_failure(lambda kwargs=kwargs:g.generate('moderate',**kwargs))
+ # Enumerate the meaningful polynomial domain through the public API, using
+ # blank response to avoid h1 radio collision; notation/profile aliases do not count.
+ finite={}
+ for level in g.TEMPLATES:
+  seen=set()
+  for h in range(3 if level=='hard' else 1,13):
+   for c in range(-60,-0) if level=='hard' else range(0 if level=='moderate' else 1,145):
+    if c==h*h:continue
+    r=g.generate(level,template=g.TEMPLATES[level][0],field_type='blank',parameters={'v':'x','h':h,'c':c})
+    seen.add(r['generation']['mathematical_fingerprint'])
+  finite[level]=len(seen)
+ assert finite=={'easy':1716,'moderate':1728,'hard':600}
+ for level,points in {'easy':[(1,1+1),(12,143),(1,144)],'moderate':[(1,0),(12,143),(1,144)],'hard':[(3,-1),(12,-60)]}.items():
+  for h,c in points:
+   for template in g.TEMPLATES[level]:
+    displayed(g.generate(level,template=template,field_type='blank',parameters={'v':'z','h':h,'c':c}))
+ # Raw duplicate complete bank: a forbidden explicit evidence instance.
+ expect_failure(lambda:g.generate('moderate',profile='source:q-3662',parameters={'v':'x','h':2,'c':0}))
+ expect_failure(lambda:g.generate('easy',profile='source:q-235904',parameters={'v':'y','h':3,'c':64}))
+ # Raw omission parity must also survive the CLI evidence writer.
+ for sid in ('q-235904','q-141615','q-25253'):
+  cli=subprocess.run([sys.executable,str(HERE.with_suffix('.py')),'--difficulty',g.CASES[sid]['level'],'--profile','source:'+sid,'--format','json'],capture_output=True,text=True,check=True)
+  cli_record=json.loads(cli.stdout)[0]
+  assert cli_record['question']==g.generate(g.CASES[sid]['level'],profile='source:'+sid)['question']
  (HERE/'native-input.json').write_text(json.dumps(native,indent=2,ensure_ascii=False)+'\n')
  engine=HERE.parents[1]/'runs/current/check-engine'
  subprocess.run([str(engine),str(HERE/'native-input.json'),str(HERE/'native-report.json')],check=True)
  report=json.loads((HERE/'native-report.json').read_text())
  summary={'status':'passed','source':stats,'generated_checked':len(generated),'coverage':coverage,'native':{k:report[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'completed_source_anomalies':3,
  'mutations_rejected':['C0_prompt','C0_solution','C0_answer','distributed_sign','equal_but_collapsed_add_subtract','stale_conclusion','correct_ref_identity_value_and_presence'],
- 'finite_meaningful_polynomial_counts':{'easy':1716,'moderate':1728,'hard':600},'task_count_convention':'Distinct monic even-negative polynomials excluding zero residual; variable aliases, bank/layout and p-sign convention aliases excluded. Radio h=1 excluded by bank collisions; blank supports it.',
+ 'finite_meaningful_polynomial_counts':finite,'task_count_convention':'Distinct monic even-negative polynomials excluding zero residual; variable aliases, bank/layout and p-sign convention aliases excluded. Radio h=1 excluded by bank collisions; blank supports it.',
  'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'native_binary_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'basis':1356,'database_writes':0,
  'unresolved_findings':['Historical q-141611 and q-141612 scalar distractor intentions are opaque; public raw profiles are evidence-only and never default sampling. Missing source correct designations (3 fields) cannot count as matched.']}
  (HERE/'validation.json').write_text(json.dumps(summary,indent=2,ensure_ascii=False)+'\n')
