@@ -1,0 +1,23 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "e-21762",
+      "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14184069/assets/424cb52325c95f03708ed9ae5fe1d41e7b0d1c8bb8878e1dd8dc002aef214481.png)\n\nFind an equation for the charge $q$ (in coulombs) on the capacitor in the circuit given in the diagram above, expressing your answer in terms of time $t$ (in seconds) **only**, and given that the initial charge is $\\dfrac{1}{50}\\,\\textrm{C}.$\n\n*Hint: The voltage drop $V_C$ across the capacitor is related to its charge by $q = CV_C,$ where $C$ is the capacitance measured in Farads.*",
+      "worked_solution": "The current $I,$ measured in amperes, is defined as the rate of flow of charge $q,$ measured in coulombs. \n\n$$\nI = \\dfrac{\\textrm d q}{\\textrm d t}\n$$\n\nKirchhoff's voltage law states that in a series circuit, the source voltage (EMF) equals the sum of the voltage drops.\n\nIn an RC circuit, there are two voltage drops:\n\n- The voltage drop across the resistor is proportional to the current, with a constant of proportionality $R = 80\\,\\Omega.$So,\n\n$$\nV_R = 80I = 80\\,\\dfrac{\\mathrm{d}q}{\\mathrm{d}t}.\n$$\n\n- The voltage drop across the capacitor is related to its charge by $q = CV_C.$ Therefore,\n\n$$\nV_C = \\dfrac{q}{0.00125} = 800q.\n$$\n\nTherefore, by Kirchhoff's voltage law, the differential equation governing the amount of charge $q$ on the capacitor is\n\n$$\n24 = 80\\,\\dfrac{\\mathrm{d}q}{\\mathrm{d}t} + 800q,\n$$\n\nwhich gives\n\n$$\n\\dfrac{\\mathrm{d}q}{\\mathrm{d}t} + 10q = \\dfrac3{10}.\n$$\n\nThis is a first-order linear equation with constant coefficients. So, to find the general solution, we must find the sum of the complementary and particular solutions.\n\n- To find the complementary solution $q_c,$ we solve the corresponding homogeneous equation, given by\n\n$$\n\\dfrac{\\mathrm{d}q_c}{\\mathrm{d}t} + 10q_c = 0.\n$$\n\nSolving using an integration technique, such as separation of variables, we obtain the complementary solution\n\n$$\nq_c(t) = Ae^{-10t},\n$$\n\nwhere $A$ is a constant of integration.\n\n- Next, we find the particular solution. Note that the right-hand side of the inhomogeneous equation is a polynomial of degree $0.$ So, we assume that the particular solution is also a polynomial of degree $0,$ i.e.,\n\n$$\nq_p(t) = \\alpha.\n$$\n\nTo find the value of $\\alpha,$ we substitute $q_p = \\alpha$ and $\\dfrac{\\mathrm{d}q_p}{\\mathrm{d}t} = (\\alpha)' = 0$ into the inhomogeneous equation:\n\n$$\n0 + 10\\alpha = \\dfrac3{10}\n  \\quad\\Longrightarrow\\quad\n  \\alpha = \\dfrac3{100}\n$$\n\nTherefore, the particular solution is $q_p(t) = \\dfrac3{100}.$\n\nNow, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is\n\n$$\nq(t) = q_c(t) + q_p(t) = Ae^{-10t} + \\dfrac3{100}.\n$$\n\nWe're told that the circuit starts with an initial charge of $\\dfrac{1}{50}\\,\\textrm{C}$ on the capacitor. So, we can apply the initial condition $q(0) = \\dfrac{1}{50},$ and solve for $A{:}$\n\n$$\n\\begin{aligned}q(0) & =\\frac{1}{50} \\\\ A{e}^{-10(0)}+\\frac{3}{100} & =\\frac{1}{50} \\\\ A & =-\\frac{1}{100}\\end{aligned}\n$$\n\nTherefore, we have the following expression for $q(t){:}$\n\n$$\n\\begin{aligned}q(t) & =-\\frac{1}{100}{e}^{-10t}+\\frac{3}{100} \\\\  & =\\frac{1}{100}(3-{e}^{-10t})\\end{aligned}\n$$\n\nNote the following:\n\n- The quantity $q_c = -\\dfrac1{100}e^{-10t}$ is the *transient charge*, since it goes to zero as $t \\to \\infty.$\n\n- The constant $q_p = \\dfrac3{100}$ is the *steady-state charge*. As $t\\to\\infty,$ the charge $q$ approaches the value of the steady-state charge.",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14184069/observations/lesson-step-590199-192a55c4a08c9b3426c1.html",
+      "source_url": "https://mathacademy.com/topics/6701",
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14184069/assets/424cb52325c95f03708ed9ae5fe1d41e7b0d1c8bb8878e1dd8dc002aef214481.png",
+          "sha256": "424cb52325c95f03708ed9ae5fe1d41e7b0d1c8bb8878e1dd8dc002aef214481",
+          "source_url": "https://mathacademy.com/graphics/b144c85dbd922b70e678db80c285015e",
+          "content_type": "image/png",
+          "representation": "original"
+        }
+      ]
+    }
+  }
+}
