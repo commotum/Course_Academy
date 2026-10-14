@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-143471",
+      "sequence_position": 1,
+      "problem": "Suppose ${X}_{1},{X}_{2},{X}_{3},{X}_{4}$ is an I.I.D random sample with ${X}_{i}∼B(5,\\theta )$ with unknown probability of success $\\theta .$ You're given the particular sample \n\n$$\n{x}_{1}=5,\\,{x}_{2}=3,\\,{x}_{3}=2,\\,{x}_{4}=1.\n$$\n\nThe log-likelihood function of the sample is given by\n\n$$\nl(\\theta )=\\operatorname{ln}⁡a+b\\operatorname{ln}⁡\\theta +c\\operatorname{ln}⁡(1-\\theta ).\n$$\n\nFind the value of $a+b+c.$",
+      "worked_solution": "Recall that if ${X}_{1},{X}_{2},…,{X}_{n}$ are independent and identically distributed discrete random variables with probability mass function $f(x;\\theta ),$ where $\\theta $ is an unknown parameter, then the log-likelihood function of a random sample ${x}_{1},{x}_{2},…,{x}_{n}$ is\n\n$$\n\\begin{aligned}l(\\theta ) & =\\operatorname{ln}⁡L(\\theta ) \\\\  & =\\operatorname{ln}⁡({\\prod }_{i=1}^{n}f({x}_{i},\\theta )) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(f({x}_{i},\\theta )).\\end{aligned}\n$$\n\nIn our case, we are given a sample of $n=4$ independent binomial random variables with an unknown probability of success $\\theta $ and $N=5$ as the number of trials. Therefore, the probability mass function is\n\n$$\n\\begin{aligned}f(x,\\theta ) & =(\\genfrac{}{}{0pt}{}{N}{x}){\\theta }^{x}(1-\\theta )^{N-x},\\,x=0,1,…,N \\\\  & =(\\genfrac{}{}{0pt}{}{5}{x}){\\theta }^{x}(1-\\theta )^{5-x},\\,x=0,1,…,5.\\end{aligned}\n$$\n\nWe can calculate the log-likelihood function as follows:\n\n$$\n\\begin{aligned}l(\\theta ) & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡((\\genfrac{}{}{0pt}{}{5}{{x}_{i}}){\\theta }^{{x}_{i}}(1-\\theta )^{5-{x}_{i}}) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{i}})+\\operatorname{ln}⁡({\\theta }^{{x}_{i}})+\\operatorname{ln}⁡((1-\\theta )^{5-{x}_{i}}) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{i}})+{\\sum }_{i=1}^{n}{x}_{i}\\operatorname{ln}⁡\\theta +{\\sum }_{i=1}^{n}(5-{x}_{i})\\operatorname{ln}⁡(1-\\theta ) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{i}})+\\operatorname{ln}⁡\\theta {\\sum }_{i=1}^{n}{x}_{i}+\\operatorname{ln}⁡(1-\\theta ){\\sum }_{i=1}^{n}(5-{x}_{i}) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{i}})+S\\operatorname{ln}⁡\\theta +(5n-S)\\operatorname{ln}⁡(1-\\theta )\\end{aligned}\n$$\n\nwhere $S={\\sum }_{i=1}^{n}{x}_{i}.$\n\nNow, note that\n\n$$\n\\begin{aligned}{\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{i}}) & =\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{1}})+\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{2}})+\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{3}})+\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{4}}) \\\\  & =\\operatorname{ln}⁡({\\prod }_{i=1}^{n}(\\genfrac{}{}{0pt}{}{5}{{x}_{i}})).\\end{aligned}\n$$\n\nSo, our expression for $l(\\theta )$ becomes\n\n$$\nl(\\theta )=\\operatorname{ln}⁡({\\prod }_{i=1}^{n}(\\genfrac{}{}{0pt}{}{5}{{x}_{i}}))+S\\operatorname{ln}⁡\\theta +(5n-S)\\operatorname{ln}⁡(1-\\theta ).\n$$\n\nNow, using the sample data with $n=4,$ we have\n\n$$\n\\begin{aligned}{\\prod }_{i=1}^{n}(\\genfrac{}{}{0pt}{}{5}{{x}_{i}}) & =(\\genfrac{}{}{0pt}{}{5}{5})\\cdot (\\genfrac{}{}{0pt}{}{5}{3})\\cdot (\\genfrac{}{}{0pt}{}{5}{2})\\cdot (\\genfrac{}{}{0pt}{}{5}{1}) \\\\  & =1\\cdot 10\\cdot 10\\cdot 5 \\\\  & =500,\\end{aligned}\n$$\n\nand\n\n$$\nS=5+3+2+1=11.\n$$\n\nSubstituting the above values into our expression for $l(\\theta )$, we get\n\n$$\n\\begin{aligned}l(\\theta ) & =\\operatorname{ln}⁡(500)+11\\operatorname{ln}⁡\\theta +(5\\cdot 4-11)\\operatorname{ln}⁡(1-\\theta ) \\\\  & =\\operatorname{ln}⁡(500)+11\\operatorname{ln}⁡\\theta +9\\operatorname{ln}⁡(1-\\theta ).\\end{aligned}\n$$\n\nFinally,\n\n$$\na+b+c=500+11+9=520.\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14157087/observations/history-q-143471-4d563afc2941e7a557ed.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14157087",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14157087/observations/history-solution-q-143471-68bdb7e4dcafd5232ff3.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "510"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "450"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "500"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "520"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "480"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q143471",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "520",
+                "option": "d",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Recall that if ${X}_{1},{X}_{2},…,{X}_{n}$ are independent and identically distributed discrete random variables with probability mass function $f(x;\\theta ),$ where $\\theta $ is an unknown parameter, then the log-likelihood function of a random sample ${x}_{1},{x}_{2},…,{x}_{n}$ is\n\n$$\n\\begin{aligned}l(\\theta ) & =\\operatorname{ln}⁡L(\\theta ) \\\\  & =\\operatorname{ln}⁡({\\prod }_{i=1}^{n}f({x}_{i},\\theta )) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(f({x}_{i},\\theta )).\\end{aligned}\n$$\n\nIn our case, we are given a sample of $n=4$ independent binomial random variables with an unknown probability of success $\\theta $ and $N=5$ as the number of trials. Therefore, the probability mass function is\n\n$$\n\\begin{aligned}f(x,\\theta ) & =(\\genfrac{}{}{0pt}{}{N}{x}){\\theta }^{x}(1-\\theta )^{N-x},\\,x=0,1,…,N \\\\  & =(\\genfrac{}{}{0pt}{}{5}{x}){\\theta }^{x}(1-\\theta )^{5-x},\\,x=0,1,…,5.\\end{aligned}\n$$\n\nWe can calculate the log-likelihood function as follows:\n\n$$\n\\begin{aligned}l(\\theta ) & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡((\\genfrac{}{}{0pt}{}{5}{{x}_{i}}){\\theta }^{{x}_{i}}(1-\\theta )^{5-{x}_{i}}) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{i}})+\\operatorname{ln}⁡({\\theta }^{{x}_{i}})+\\operatorname{ln}⁡((1-\\theta )^{5-{x}_{i}}) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{i}})+{\\sum }_{i=1}^{n}{x}_{i}\\operatorname{ln}⁡\\theta +{\\sum }_{i=1}^{n}(5-{x}_{i})\\operatorname{ln}⁡(1-\\theta ) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{i}})+\\operatorname{ln}⁡\\theta {\\sum }_{i=1}^{n}{x}_{i}+\\operatorname{ln}⁡(1-\\theta ){\\sum }_{i=1}^{n}(5-{x}_{i}) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{i}})+S\\operatorname{ln}⁡\\theta +(5n-S)\\operatorname{ln}⁡(1-\\theta )\\end{aligned}\n$$\n\nwhere $S={\\sum }_{i=1}^{n}{x}_{i}.$\n\nNow, note that\n\n$$\n\\begin{aligned}{\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{i}}) & =\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{1}})+\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{2}})+\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{3}})+\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{4}}) \\\\  & =\\operatorname{ln}⁡({\\prod }_{i=1}^{n}(\\genfrac{}{}{0pt}{}{5}{{x}_{i}})).\\end{aligned}\n$$\n\nSo, our expression for $l(\\theta )$ becomes\n\n$$\nl(\\theta )=\\operatorname{ln}⁡({\\prod }_{i=1}^{n}(\\genfrac{}{}{0pt}{}{5}{{x}_{i}}))+S\\operatorname{ln}⁡\\theta +(5n-S)\\operatorname{ln}⁡(1-\\theta ).\n$$\n\nNow, using the sample data with $n=4,$ we have\n\n$$\n\\begin{aligned}{\\prod }_{i=1}^{n}(\\genfrac{}{}{0pt}{}{5}{{x}_{i}}) & =(\\genfrac{}{}{0pt}{}{5}{5})\\cdot (\\genfrac{}{}{0pt}{}{5}{3})\\cdot (\\genfrac{}{}{0pt}{}{5}{2})\\cdot (\\genfrac{}{}{0pt}{}{5}{1}) \\\\  & =1\\cdot 10\\cdot 10\\cdot 5 \\\\  & =500,\\end{aligned}\n$$\n\nand\n\n$$\nS=5+3+2+1=11.\n$$\n\nSubstituting the above values into our expression for $l(\\theta )$, we get\n\n$$\n\\begin{aligned}l(\\theta ) & =\\operatorname{ln}⁡(500)+11\\operatorname{ln}⁡\\theta +(5\\cdot 4-11)\\operatorname{ln}⁡(1-\\theta ) \\\\  & =\\operatorname{ln}⁡(500)+11\\operatorname{ln}⁡\\theta +9\\operatorname{ln}⁡(1-\\theta ).\\end{aligned}\n$$\n\nFinally,\n\n$$\na+b+c=500+11+9=520.\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14157087/observations/step-q143471-99e0ec87dae0cfdc53aa.html"
+        }
+      }
+    ]
+  }
+}
