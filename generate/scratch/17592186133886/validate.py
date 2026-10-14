@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Independent readback of displayed calculus, all arithmetic rows, banks and rasters."""
-import concurrent.futures,copy,hashlib,importlib.util,json,re,subprocess,sys
+import concurrent.futures,copy,hashlib,importlib.util,json,re,subprocess,sys,tempfile
 from pathlib import Path
 import sympy as sp
 from PIL import Image
@@ -56,6 +56,7 @@ EXPECTED_ROWS={'annulus_constant':7,'annulus_negative':8,'annulus_positive':7,'c
 
 def math_check(record):
  q=record['question'];m=record['generation'];t=m['template'];raw=m['evidence_only'];formatting(q)
+ if t=='circle_semicircle':assert ('annular region' in q[':question/problem'])==raw
  assert set(record['knowledge_point'])=={'db_id','id','title'}
  P,Q=printed_P_Q(q);dP=sp.diff(P,y);dQ=sp.diff(Q,x);curl=dQ-dP
  O,holes,A=independent_geometry(record);correct=sp.simplify(curl*A)
@@ -98,6 +99,17 @@ def math_check(record):
   # Preserve factored area and separately evaluated area components.
   if t in ('rectangle_square','square_square','diamond_square','annulus_negative'):
    assert '(' in rows[-2] or t in ('rectangle_square','square_square')
+ if raw:
+  bankmap=json.loads((D/'bank-recipes.json').read_text())
+  for i,f in enumerate(q[':question/answer-fields']):
+   values=[expression(a[':answer/value']) for a in f[':answer-field/choices']]
+   assert len(values)==5 and len(set(map(sp.srepr,values)))==5
+   recipe=next(b for b in bankmap if b['template']==t and b['field_index']==i)
+   expected=[sp.sympify(a['coefficient'])*correct for a in recipe['choices']]
+   assert sorted(sp.srepr(sp.simplify(v)) for v in values)==sorted(sp.srepr(sp.simplify(v)) for v in expected)
+   if ':answer-field/correct' in f:
+    found=next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])
+    assert sp.simplify(expression(found)-correct)==0, 'Historical key mathematically wrong'
  if not raw:
   f=q[':question/answer-fields'][0];values=[expression(a[':answer/value']) for a in f[':answer-field/choices']]
   assert len(values)==5 and len(set(map(sp.srepr,values)))==5
@@ -112,12 +124,58 @@ def math_check(record):
   assert sorted(map(lambda v:sp.srepr(sp.simplify(v)),values))==sorted(map(lambda v:sp.srepr(sp.simplify(v)),expected))
  return correct
 
+def source_plot_check(record,path):
+ pixels=np.array(Image.open(path).convert('RGB'))
+ orange=(pixels[:,:,0]>180)&(pixels[:,:,1]>80)&(pixels[:,:,1]<200)&(pixels[:,:,2]<70)
+ ys,xs=np.where(orange);cx=(xs.min()+xs.max())/2;cy=(ys.min()+ys.max())/2
+ p=record['generation']['parameters'];shape=g.SPECS[record['generation']['template']]['shape']
+ if shape in ('annulus','semicircle'):
+  sx=(xs.max()-xs.min())/(2*p['R']);sy=(ys.max()-ys.min())/(2*p['R'])
+ else:
+  sx=(xs.max()-xs.min())/p['W'];sy=(ys.max()-ys.min())/p['H']
+ assert abs(sx-sy)*min(p.get('R',p.get('W')),p.get('R',p.get('H')))<=2.5
+ def hit(v):
+  px=int(round(cx+v[0]*sx));py=int(round(cy-v[1]*sy))
+  assert orange[max(0,py-3):py+4,max(0,px-3):px+4].any(), ('Original boundary mismatch',path,v)
+ if shape in ('annulus','semicircle'):
+  for radius in [p['R'],p['r']]:
+   angles=[20,60,130,160] if shape=='semicircle' and radius==p['r'] else [20,70,140,210,300]
+   for a in angles:hit([radius*np.cos(np.deg2rad(a)),radius*np.sin(np.deg2rad(a))])
+  if shape=='semicircle':
+   for f in (-.8,.3,.8):hit([p['r']*f,0])
+ else:
+  W,H,s=p['W'],p['H'],p['s']
+  outer=[[-W/2,0],[0,-H/2],[W/2,0],[0,H/2]] if shape=='diamond' else [[-W/2,-H/2],[W/2,-H/2],[W/2,H/2],[-W/2,H/2]]
+  inner=[[-s/2,-s/2],[s/2,-s/2],[s/2,s/2],[-s/2,s/2]]
+  for points in (outer,inner):
+   for a,b in zip(points,points[1:]+points[:1]):
+    for f in (.2,.5,.8):hit(np.array(a)+f*(np.array(b)-a))
+
 def plot_check(record):
  image=re.search(r'!\[\]\(([^)]+)\)',record['question'][':question/problem'])[1]
  if image.startswith('images/'):
-  assert (Path('/media/jake/SSD/EDB/math')/image).exists();return
+  source_plot_check(record,Path('/media/jake/SSD/EDB/math')/image);return
  path=Path(image);side=json.loads(path.with_suffix('.json').read_text());pixels=np.array(Image.open(path).convert('RGB'));h,w=pixels.shape[:2]
  assert side['png_sha256']==hashlib.sha256(path.read_bytes()).hexdigest()
+ p=record['generation']['parameters'];shape=g.SPECS[record['generation']['template']]['shape']
+ assert side['geometry']=={k:v for k,v in p.items() if k not in ('a','b')}
+ expected=[]
+ if shape in ('annulus','semicircle','two_circles'):
+  expected.append(dict(center=[0,0],radius=p['R']))
+  centers=[[-p['R']/2,0],[p['R']/2,0]] if shape=='two_circles' else [[0,0]]
+  radii=[p['r'],p['t']] if shape=='two_circles' else [p['r']]
+  for c,r in zip(centers,radii):
+   item=dict(center=c,radius=r)
+   if shape=='semicircle':item.update(angle=[0,180],diameter=[[-r,0],[r,0]])
+   expected.append(item)
+ else:
+  W,H=p['W'],p['H']
+  vertices=[[-W/2,0],[0,-H/2],[W/2,0],[0,H/2]] if shape=='diamond' else [[-W/2,-H/2],[W/2,-H/2],[W/2,H/2],[-W/2,H/2]]
+  expected.append(dict(vertices=vertices))
+  centers=[[-W/4,0],[W/4,0]] if shape=='two_squares' else [[0,0]]
+  sizes=[p['s'],p['t']] if shape=='two_squares' else [p['s']]
+  for c,s in zip(centers,sizes):expected.append(dict(vertices=[[c[0]-s/2,-s/2],[c[0]+s/2,-s/2],[c[0]+s/2,s/2],[c[0]-s/2,s/2]]))
+ assert [b['points'] for b in side['boundaries']]==expected, 'Independent geometric recipe mismatch'
  origin,unitx,unity=np.array(side['axes_transform']);sx=unitx[0]-origin[0];sy=unity[1]-origin[1]
  assert abs(sx-sy)<1e-7
  orange=(pixels[:,:,0]>160)&(pixels[:,:,1]>80)&(pixels[:,:,1]<200)&(pixels[:,:,2]<70)
@@ -147,6 +205,7 @@ def plot_check(record):
 
 def run():
  sources=[];review=[];fidelity=[];native=[]
+ source_plot_check({'generation':dict(template='annulus_positive',parameters=dict(a=-3,b=1,R=4,r=2))},Path('/media/jake/SSD/EDB/math/images/83/83bd636f3a294c641e171c5a8281aaa7068e1931a06229064314e8f96efd0c3a.png'))
  for t,z in g.SPECS.items():
   if 'source' in z:
    case=dict(source_id=z['source'],template=t,level=z['level'],parameters=g.parameters_for(t),bank_profile='observed_raw');sources.append(case)
@@ -159,6 +218,17 @@ def run():
     if ':answer-field/correct' in f:
      got=next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1]);assert got==orig[':answer-field/correct'][':answer/value']
    math_check(r);plot_check(r);review.append(dict(kind='original public raw replay',record=r));fidelity.append(dict(source_id=z['source'],prompt_exact=True,solution_exact=True,field_presence=True,bank_count=len(q[':question/answer-fields']),choices=sum(len(f[':answer-field/choices']) for f in q[':question/answer-fields']),designation_count=sum(':answer-field/correct' in f for f in q[':question/answer-fields'])))
+   # Native fixture projects only existing supported fields, without fabricating keys.
+   supported=[f for f in rq[':question/answer-fields'] if ':answer-field/correct' in f]
+   if supported:
+    fixture=copy.deepcopy(r);fixture['question'][':question/answer-fields']=supported
+    checks=[]
+    for i,f in enumerate(supported):
+     for a in f[':answer-field/choices']:checks.append(dict(field_index=i,submitted_answer_id=a[':answer/id'],expected='accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected',purpose='Existing source key; unsupported absent-key fields excluded from fixture only'))
+    native.append(dict(label=z['source']+' supported-field fixture',record=fixture,checks=checks))
+   # Public raw replay under changed inputs remains parameterized and keeps omissions.
+   changed=g.generate(z['level'],seed=777,template=t,profile='observed_raw');math_check(changed);plot_check(changed)
+   assert changed['generation']['parameters']!=case['parameters']
   for n in range(2):
    r=g.generate(z['level'],seed=341+n,template=t);math_check(r);plot_check(r);review.append(dict(kind='generated variant; authored normal operation bank',record=r))
    fields=r['question'][':question/answer-fields'];checks=[]
@@ -168,6 +238,13 @@ def run():
   # Same parameters with shuffled choices have identical content UUIDs.
   a=g.generate(z['level'],seed=31,template=t);b=g.generate(z['level'],seed=32,template=t,parameters=a['generation']['parameters']);assert a['question'][':question/id']==b['question'][':question/id']
  coverage={l:set() for l in ['easy','moderate','hard']};math_tasks={l:set() for l in coverage}
+ # Equal-role hole permutations are presentation variety, not new area tasks.
+ for t,keys in [('circle_two_holes',('r','t')),('rectangle_two_holes',('s','t'))]:
+  p=g.parameters_for(t);swapped=dict(p);swapped[keys[0]],swapped[keys[1]]=p[keys[1]],p[keys[0]]
+  a=g.generate_hard(template=t,parameters=p);b=g.generate_hard(template=t,parameters=swapped)
+  math_check(a);math_check(b);plot_check(a);plot_check(b)
+  assert a['generation']['mathematical_fingerprint']==b['generation']['mathematical_fingerprint']
+  assert a['question'][':question/id']!=b['question'][':question/id']
  for l in coverage:
   for seed in range(80):
    r=g.generate(l,seed);math_check(r);coverage[l].add(r['generation']['template']);math_tasks[l].add(r['generation']['mathematical_fingerprint'])
@@ -187,18 +264,27 @@ def run():
  else:raise AssertionError('Orientation mutation escaped')
  finally:path.write_text(saved)
  # Concurrent processes (Matplotlib is not thread-safe), same and different parameters.
- code="import importlib.util,json; s=importlib.util.spec_from_file_location('g',%r);g=importlib.util.module_from_spec(s);s.loader.exec_module(g);print(json.dumps(g.generate_hard(seed=%%s)))"%str(D.with_suffix('.py'))
+ qa_render=Path(tempfile.mkdtemp(prefix='concurrency-',dir=D))
+ code="import importlib.util,json;from pathlib import Path;s=importlib.util.spec_from_file_location('g',%r);g=importlib.util.module_from_spec(s);s.loader.exec_module(g);g.DIR=Path(%r);print(json.dumps(g.generate_hard(seed=%%s)))"%(str(D.with_suffix('.py')),str(qa_render))
  def call(n):return json.loads(subprocess.check_output([sys.executable,'-c',code%str(n)],text=True))
  with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
   parallel_records=list(pool.map(call,[901,901,902]))
  for r in parallel_records:math_check(r);plot_check(r)
  assert parallel_records[0]['question'][':question/id']==parallel_records[1]['question'][':question/id']
+ assert not list((qa_render/'plots').glob('tmp*')), 'Private concurrency temporary leak'
+ (qa_render/'records.json').write_text(json.dumps(parallel_records,indent=2)+'\n')
+ # Explicit inputs receive the same substantive bounds as random sampling.
+ invalid=[('hard','circle_two_holes',dict(a=3,b=7,R=6,r=3,t=1)),('hard','rectangle_two_holes',dict(a=3,b=7,W=12,H=10,s=6,t=2)),('moderate','annulus_negative',dict(a=2,b=3,R=3,r=1)),('easy','square_square',dict(a=-5,b=8,W=8,H=6,s=2)),('easy','rectangle_square',dict(a=2.5,b=4,W=6,H=4,s=2))]
+ for l,t,p in invalid:
+  try:g.generate(l,template=t,parameters=p)
+  except ValueError:pass
+  else:raise AssertionError('Invalid explicit inputs accepted')
  (D/'source-cases.json').write_text(json.dumps(sources,indent=2)+'\n');(D/'review.json').write_text(json.dumps(review,indent=2)+'\n');(D/'engine-input.json').write_text(json.dumps(native,indent=2)+'\n')
  subprocess.run(['generate/runs/current/check-engine',str(D/'engine-input.json'),str(D/'engine-report.json')],check=True)
- report=dict(status='passed with documented source anomalies',basis=1356,lineage=g.CAPTURE['lineage'],source_practice_questions=len(sources),source_banks=sum(r['bank_count'] for r in fidelity),source_choices=sum(r['choices'] for r in fidelity),source_correct_designations=sum(r['designation_count'] for r in fidelity),exact_prompt_replays=8,exact_solution_presence_replays=8,exact_present_solutions=7,mathematically_correct_present_source_solutions=5,source_LHS_repairs=2,missing_correct_designations=2,legacy_duplicate_fields=1,source_ratings_observed=7,unrated_source_authored_easy=1,authored_hard_templates=2,default_family_coverage={l:sorted(v) for l,v in coverage.items()},sampled_math_tasks={l:len(v) for l,v in math_tasks.items()},native=json.loads((D/'engine-report.json').read_text()),mutation_regressions=mutations,concurrency='same/different independent process instances validated',python=sys.version.split()[0],sympy=sp.__version__,matplotlib=g.matplotlib.__version__,fidelity=fidelity,unresolved=['Historical opaque scalar distractor intent is not recovered; evidence profiles are ineligible. Missing original correct references cannot count as matched designations.'])
+ report=dict(status='passed with documented source anomalies',basis=1356,lineage=g.CAPTURE['lineage'],source_practice_questions=len(sources),source_banks=sum(r['bank_count'] for r in fidelity),source_choices=sum(r['choices'] for r in fidelity),source_correct_designations=sum(r['designation_count'] for r in fidelity),exact_prompt_replays=8,exact_solution_presence_replays=8,exact_present_solutions=7,mathematically_correct_present_source_solutions=5,source_LHS_repairs=2,source_region_terminology_repairs=1,same_role_hole_identity_regressions=2,missing_correct_designations=2,legacy_duplicate_fields=1,source_ratings_observed=7,unrated_source_authored_easy=1,authored_hard_templates=2,default_family_coverage={l:sorted(v) for l,v in coverage.items()},sampled_math_tasks={l:len(v) for l,v in math_tasks.items()},native=json.loads((D/'engine-report.json').read_text()),native_engine_sha256=hashlib.sha256(Path('generate/runs/current/check-engine').read_bytes()).hexdigest(),native_harness_source_sha256=hashlib.sha256(Path('generate/runs/current/check-engine.rs').read_bytes()).hexdigest(),mutation_regressions=mutations,concurrency='same/different independent process instances validated',python=sys.version.split()[0],sympy=sp.__version__,matplotlib=g.matplotlib.__version__,fidelity=fidelity,unresolved=['Historical opaque scalar distractor intent is not recovered; evidence profiles are ineligible. Missing original correct references cannot count as matched designations.'])
  (D/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
  text='# Applying Green\'s Theorem to Regions With Holes\n\nOriginals are public parameterized raw replays. They retain captured omissions and two erroneous initial LHSs. Variants repair these and use authored complete operation banks.\n\n'
  for entry in review:
-  r=entry['record'];text+='## '+entry['kind']+': '+r['generation']['template']+'\n\n'+g.markdown(r)+'\n\n'
+  r=entry['record'];text+='## '+entry['kind']+': '+r['generation']['template']+'\n\n'+g.markdown(r).replace('](images/','](/media/jake/SSD/EDB/math/images/')+'\n\n'
  (D/'review.md').write_text(text);print(json.dumps({k:v for k,v in report.items() if k not in ('native','fidelity')},indent=2))
 if __name__=='__main__':run()

@@ -11,8 +11,17 @@ Default radios use one complete method-derived bank, rejecting all collisions.
 See private evidence folder for fidelity, repairs, scope and native grading.
 """
 import argparse, hashlib, json, random, uuid
+import os, sys
+from pathlib import Path
+try:
+ import sympy as sp
+except ModuleNotFoundError:
+ # Inventory invokes system Python; use the repository's dependency environment.
+ python = Path(__file__).resolve().parents[2] / '.venv/bin/python'
+ if not python.is_file() or Path(sys.executable).absolute() == python.absolute():
+  raise
+ os.execv(str(python), [str(python), str(Path(__file__).resolve()), *sys.argv[1:]])
 from fractions import Fraction
-import sympy as sp
 
 KP_ID=17592186073752
 KP_UUID='5e79a91b-c479-53da-9f06-59c082fa4187'

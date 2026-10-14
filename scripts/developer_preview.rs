@@ -212,15 +212,13 @@ fn append_content(
             "question"
         };
         let mut markdown = contexts.to_vec();
-        markdown.push(text(
-            s,
-            content,
-            if tutorial {
-                "tutorial/content"
-            } else {
-                "question/problem"
-            },
-        ));
+        markdown.push(if tutorial {
+            text(s, content, "tutorial/content")
+        } else if contexts.is_empty() {
+            question_markdown(s, content)?
+        } else {
+            text(s, content, "question/problem")
+        });
         let title = if tutorial {
             text(s, content, "tutorial/title")
         } else if !title.is_empty() {

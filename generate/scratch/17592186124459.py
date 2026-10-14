@@ -181,7 +181,7 @@ def fill(mask,t,p,rows=None,fin=None,raw=False):
  assert '§'not in mask
  return mask
 
-def guard(t,p,raw=False):
+def guard(t,p,raw=False,bank_kind=None):
  keys=set(FAMILIES[t][2])|{'direction'}
  if set(p)-keys:raise ValueError('Unknown parameters')
  for k in FAMILIES[t][2]:
@@ -193,7 +193,9 @@ def guard(t,p,raw=False):
   if k in p and not 1<=p[k]<= (6 if t=='log_unit' else 4):raise ValueError('Nonzero small coefficients required')
  if t in ('cosxy','quadratic') and (not 1<=abs(p['u'])<=3 or not 1<=abs(p['v'])<=3):raise ValueError('Easy nonzero coordinates <=3')
  if t=='exp' and (p['u']not in (-2,-1,1,2) or p['v']!=1):raise ValueError('Easy exact exp/log anchor workload')
- if t=='trig_product' and (p['u']not in (-1,0,1) or p['v']not in (-1,1)):raise ValueError('Easy trig evaluation bounds')
+ if t=='trig_product':
+  if p['u']not in (-1,0,1) or p['v']not in (-1,1):raise ValueError('Easy trig evaluation bounds')
+  if not raw and ((bank_kind=='axis') != (p['u']==0)):raise ValueError('Complete axis/nonaxis bank eligibility')
  if t=='linear_sin' and (p['b']==p['c'] or not all(1<=abs(p[k])<=3 for k in ('u','v','w')) or abs(p['b']*p['u']+p['c']*p['w'])>12):raise ValueError('Moderate familiar pi phase and distinct chain factors')
  if t=='mixed_sin' and (p['v']!=0 or not 1<=abs(p['u'])<=3 or not 1<=abs(p['w'])<=2 or abs(p['a']*p['u'])>6):raise ValueError('Moderate familiar pi phase')
  if t=='log_unit':
@@ -211,7 +213,11 @@ def method_bank(t,p):
  elif t=='linear_sin':co=s.cos((b*u+c*w)*s.pi);errs=[[s.pi*co,g[1],g[2]],[g[0],a*v,g[2]],[g[0],g[1],co]]
  elif t=='mixed_sin':co=s.cos(a*s.pi*u+v);errs=[[b*w*w,co,g[2]],[a*s.pi*co+b*w*w,co,b*u*w],[co+b*w*w,co,g[2]]]
  elif t=='exp':errs=[[a*s.log(v)+b*v*s.exp(u)+c*v,g[1]],[g[0],b*s.exp(u)-c*u],[a*s.log(v)+b*v*s.exp(-u)-c*v,s.Rational(a*u,v)+b*s.exp(-u)-c*u]]
- elif t=='trig_product':errs=[[b*v*s.sin(u)+2*a*s.sin(v),g[1]],[g[0],a*s.cos(v)-b*s.cos(u)],[g[1],g[0]]]
+ elif t=='trig_product':
+  if u==0:
+   # Complete axis bank, separately selected before random parameters.
+   errs=[[b*v*s.sin(u)+2*a*s.sin(v),g[1]],[g[1],g[0]],[-b*v*s.cos(u)+2*a*u*s.sin(v),g[1]]]
+  else:errs=[[2*a*u*s.sin(v),g[1]],[g[0],a*u*u*s.cos(v)+b*s.cos(u)],[g[1],g[0]]]
  elif t=='log_unit':
   N=s.sqrt(sum(e*e for e in g));target=[e/N for e in g]
   # Complete normalization bank: opposite direction, no normalization,
@@ -223,21 +229,24 @@ def method_bank(t,p):
 
 def same_direction(a,b):
  if all(s.simplify(e)==0 for e in a) or all(s.simplify(e)==0 for e in b):return False
- j=next(i for i,e in enumerate(b) if s.simplify(e)!=0);r=s.simplify(a[j]/b[j])
- return bool(r.is_positive) and all(s.simplify(x-r*y)==0 for x,y in zip(a,b))
+ j=next(i for i,e in enumerate(b) if s.simplify(e)!=0)
+ if not all(s.simplify(x*b[j]-y*a[j])==0 for x,y in zip(a,b)):return False
+ r=s.simplify(a[j]/b[j])
+ if r.is_positive is None:raise ValueError('Unresolved parallel-vector orientation')
+ return bool(r.is_positive)
 def eligible(v,target,unit=False):return same_direction(v,target) and (not unit or s.simplify(sum(e*e for e in v)-1)==0)
 def validate_bank(vals,idx,unit):
  if len(vals)!=5 or any(all(s.simplify(e)==0 for e in v) for v in vals):raise ValueError('Undefined zero vector bank')
  for i in range(5):
   if eligible(vals[i],vals[idx],unit)!=(i==idx):raise ValueError('Ambiguous direction bank')
   for j in range(i):
-   if all(s.simplify(a-b)==0 for a,b in zip(vals[i],vals[j])):raise ValueError('Duplicate vectors')
+   if (same_direction(vals[i],vals[j]) if not unit else all(s.simplify(a-b)==0 for a,b in zip(vals[i],vals[j]))):raise ValueError('Duplicate requested directions/vectors')
 
-def sample(t,rng):
+def sample(t,rng,bank_kind=None):
  p={k:rng.randint(1,4)for k in FAMILIES[t][2]}
  if t in ('cosxy','quadratic'):p.update(u=rng.choice([-3,-2,-1,1,2,3]),v=rng.choice([-3,-2,-1,1,2,3]))
  elif t=='exp':p.update(u=rng.choice([-2,-1,1,2]),v=1)
- elif t=='trig_product':p.update(u=rng.choice([-1,0,1]),v=rng.choice([-1,1]))
+ elif t=='trig_product':p.update(u=0 if bank_kind=='axis' else rng.choice([-1,1]) if bank_kind=='nonaxis' else rng.choice([-1,0,1]),v=rng.choice([-1,1]))
  elif t=='linear_sin':p.update(u=rng.choice([-2,-1,1,2]),v=rng.choice([-2,-1,1,2]),w=rng.choice([-2,-1,1,2]))
  elif t=='mixed_sin':p.update(u=rng.choice([-2,-1,1,2]),v=0,w=rng.choice([-2,-1,1,2]))
  else:p={k:rng.randint(1,6) if k in ('a','b','c') else rng.randint(1,3) for k in FAMILIES[t][2]}
@@ -263,13 +272,18 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  t=template or rng.choice(choices)
  if t not in choices:raise ValueError('Template level mismatch')
  raw=profile=='source';profile=profile or 'method'
- if profile not in ('source','method'):raise ValueError('Unknown complete bank')
+ if profile not in ('source','method','axis_method','nonaxis_method'):raise ValueError('Unknown complete bank')
+ if profile in ('axis_method','nonaxis_method') and t!='trig_product':raise ValueError('Axis bank applies only to trig_product')
+ bank_kind=None
+ if t=='trig_product' and not raw:
+  bank_kind=('axis' if profile=='axis_method' else 'nonaxis' if profile=='nonaxis_method' else ('axis' if parameters['u']==0 else 'nonaxis') if parameters is not None else rng.choice(['axis','nonaxis']))
+  profile=bank_kind+'_method'
  if raw and t=='log_unit':raise ValueError('No source hard profile')
  for attempt in range(10000):
-  p=dict(parameters)if parameters is not None else sample(t,rng)
+  p=dict(parameters)if parameters is not None else sample(t,rng,bank_kind)
   if raw and parameters is None:p=sample(t,rng);p['direction']='increase'
   try:
-   guard(t,p,raw);f,vs,d,sub,g=data(t,p)
+   guard(t,p,raw,bank_kind);f,vs,d,sub,g=data(t,p)
    if raw:vals,texts,idx=source_bank(t,p)
    else:vals,idx=method_bank(t,p);texts=[]
    if not raw:

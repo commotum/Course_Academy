@@ -22,7 +22,7 @@ from matplotlib.patches import Circle, Polygon, Rectangle, Wedge
 KP_ID=17592186133886
 KP_UUID='c67da0d8-518b-5fdb-b6ba-6c1c95c22d9b'
 TITLE="Applying Green's Theorem to Regions With Holes"
-VERSION='greens-holes-1'
+VERSION='greens-holes-5'
 DIR=Path(__file__).with_suffix('')
 CAPTURE=json.loads((DIR/'source.json').read_text())
 SOURCE=CAPTURE['record']
@@ -63,7 +63,7 @@ def field_parts(template,p):
 def integrand(template,p,raw=False):
  P,Q,da,db=field_parts(template,p)
  if template in ('square_unrated','square_square'):
-  if raw and template=='square_unrated':return Q+'dy - '+term(-p['a'],'y')+'dx'
+  if raw and template=='square_unrated':return Q+('dy - '+term(-p['a'],'y') if p['a']<0 else 'dy + '+term(p['a'],'y'))+'dx'
   return Q+r'\,dy'+('+' if p['a']>=0 else '-')+term(abs(p['a']),'y')+r'\,dx'
  qterm=('+'+Q if not Q.startswith('-') else Q)+r'\,dy'
  return (('' if P=='1' else P)+r'dx'+qterm) if SPECS[template].get('constant') else P+r'\,dx'+qterm
@@ -105,7 +105,7 @@ def validate_parameters(level,template,p,raw=False):
 # Matplotlib-only renderer, immutable hash-addressed files and atomic sidecars.
 def render_plot(template,p):
  shape=SPECS[template]['shape'];geometry={k:v for k,v in p.items() if k not in ('a','b')}
- digest=hashlib.sha256(json.dumps([shape,geometry],sort_keys=True).encode()).hexdigest()[:20]
+ digest=hashlib.sha256(json.dumps(['plot-v4',shape,geometry],sort_keys=True).encode()).hexdigest()[:20]
  folder=DIR/'plots';folder.mkdir(exist_ok=True)
  target=folder/(digest+'.png');side=target.with_suffix('.json')
  if target.exists() and side.exists():return str(target.resolve())
@@ -127,8 +127,8 @@ def render_plot(template,p):
     theta=__import__('numpy').linspace(__import__('numpy').pi,2*__import__('numpy').pi,100);ax.plot(r*__import__('numpy').cos(theta),r*__import__('numpy').sin(theta),'--',color='#b5b5b5',lw=1)
    else:
     curve(dict(center=c,radius=r),'clockwise','hole',Circle(c,r,facecolor='white',edgecolor=edge,lw=1.5));arrow((c[0]+r*.62,r*.79),(c[0]+r*.71,r*.71),'hole')
-   ax.text(c[0],-(r+.28),f'$r_{i+1}={r}$',ha='center',fontsize=10)
-  ax.text(R*.55,-R*.65,f'$R={R}$',fontsize=10);limx=limy=R*1.22
+   ax.text(c[0],-(r+.28),f'$r_{i+1}={r}$',ha='center',va='top',fontsize=10)
+  ax.text(R*.68,-R*.88,f'$R={R}$',fontsize=10);limx=limy=R*1.22
  else:
   W,H=p['W'],p['H'];limx=W*.63;limy=H*.66
   if shape=='diamond':
@@ -140,10 +140,17 @@ def render_plot(template,p):
   centers=[[-W/4,0],[W/4,0]] if shape=='two_squares' else [[0,0]];sizes=[p['s'],p['t']] if shape=='two_squares' else [p['s']]
   for c,s in zip(centers,sizes):
    vertices=[[c[0]-s/2,-s/2],[c[0]+s/2,-s/2],[c[0]+s/2,s/2],[c[0]-s/2,s/2]]
-   curve(dict(vertices=vertices),'clockwise','hole',Polygon(vertices,closed=True,facecolor='white',edgecolor=edge,lw=1.5));arrow((c[0]-s*.15,s/2),(c[0]+s*.15,s/2),'hole');ax.text(c[0],-s/2-.28,f'$s={s}$',ha='center',fontsize=10)
-  ax.text(W*.34,H*.43,f'$W={W}$',fontsize=10);ax.text(-W*.55,H*.32,f'$H={H}$',fontsize=10)
- ax.axhline(0,color='#333333',lw=.7,zorder=0);ax.axvline(0,color='#333333',lw=.7,zorder=0)
- ax.set_xlim(-limx,limx);ax.set_ylim(-limy,limy);ax.text(-limx*.75,limy*.65,'$D$',color='#287cb7',fontsize=14)
+   curve(dict(vertices=vertices),'clockwise','hole',Polygon(vertices,closed=True,facecolor='white',edgecolor=edge,lw=1.5));arrow((c[0]-s*.15,s/2),(c[0]+s*.15,s/2),'hole');ax.text(c[0],-s/2-.28,f'$s={s}$',ha='center',va='top',fontsize=10)
+  ax.set_title(f'Diagonals: {W} and {H}' if shape=='diamond' else f'Width: {W}; height: {H}',fontsize=10)
+ ax.axhline(0,color='#333333',lw=.7,zorder=1.1);ax.axvline(0,color='#333333',lw=.7,zorder=1.1)
+ ax.set_xlim(-limx,limx);ax.set_ylim(-limy,limy)
+ if shape in ('annulus','semicircle'):dpos=(-.707*(p['R']+p['r'])/2,.707*(p['R']+p['r'])/2)
+ elif shape=='two_circles':dpos=(p['R']*.2,p['R']*.65)
+ elif shape=='diamond':dpos=(-p['W']*.10,p['H']*.32)
+ else:dpos=(-p['W']*.35,(p['H']+max(p['s'],p.get('t',p['s'])))/4)
+ ax.text(*dpos,'$D$',color='#287cb7',fontsize=14,ha='center',va='center')
+ from matplotlib.ticker import MaxNLocator
+ ax.xaxis.set_major_locator(MaxNLocator(nbins=7,integer=True));ax.yaxis.set_major_locator(MaxNLocator(nbins=7,integer=True))
  ax.set_xlabel('$x$');ax.set_ylabel('$y$',rotation=0);ax.tick_params(labelsize=9);ax.spines[['top','right']].set_visible(False);fig.tight_layout()
  with tempfile.NamedTemporaryFile(dir=folder,suffix='.png',delete=False) as f:tmp=Path(f.name)
  fig.savefig(tmp);transform=ax.transData.transform([[0,0],[1,0],[0,1]]).tolist();plt.close(fig);os.replace(tmp,target)
@@ -292,7 +299,10 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  if template=='square_unrated' and raw:
   problem=plot+'\n\nCalculate $∮_(∂D)'+integrand(template,p,True)+'$, where $D$ is the region shown above.'
  else:
-  problem=plot+'\n\nCalculate $'+line(template,p)+',$ where $D$ is the '+('annular region' if spec['shape'] in ('annulus','semicircle') else 'region')+' shown above.'
+  # A disk minus an upper semicircle is not an annulus. Preserve the source
+  # misnomer only in evidence replay; normal geometry uses the accurate term.
+  annular=spec['shape']=='annulus' or (raw and spec['shape']=='semicircle')
+  problem=plot+'\n\nCalculate $'+line(template,p)+',$ where $D$ is the '+('annular region' if annular else 'region')+' shown above.'
  if not raw:problem+='\n\nThe outer boundary is counterclockwise and each hole boundary is clockwise.'
  solution=source_solution(template,p,raw)
  content=dict(problem=problem,solution=solution,level=(sourceq.get(':question/difficulty',{}).get(':db/ident') if raw else level))
@@ -317,8 +327,16 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   correct=answers[0][':answer/id'];rng.shuffle(answers);fields=[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]
  q[':question/answer-fields']=fields
  P,Q,da,db=field_parts(template,p);O,holes,A=areas(template,p)
- task=hashlib.sha256(json.dumps([spec['shape'],P,Q,{k:v for k,v in p.items() if k not in ('a','b')}],sort_keys=True).encode()).hexdigest()
- return {'knowledge_point':dict(db_id=KP_ID,id=KP_UUID,title=TITLE),'question':q,'generation':dict(version=VERSION,seed=seed,template=template,parameters=p,profile=profile,source=spec.get('source'),basis=1356,lineage=CAPTURE['lineage'],difficulty_design='observed' if level!='hard' else 'authored two-hole bookkeeping',eligible_for_learning=not raw,evidence_only=raw,mathematical_fingerprint=task,content_fingerprint=cid,operations=[r for r,_ in values] if not raw else 'opaque proportional historical coefficients; intent unresolved',outer_area=str(O),hole_areas=[str(h) for h in holes],area=str(A),curl=db-da,python=sys.version.split()[0],sympy=sp.__version__,matplotlib=matplotlib.__version__)}
+ taskshape='rectangle' if spec['shape']=='square' else spec['shape']
+ taskP='constant' if spec.get('constant') else P
+ task_geometry={k:v for k,v in p.items() if k not in ('a','b')}
+ # Exchanging equal-role holes changes their drawing, but neither the area
+ # subtraction nor its complete omission bank. Retain that presentation in
+ # content identity while canonicalizing the assessed task.
+ if spec['shape']=='two_circles':task_geometry['r'],task_geometry['t']=sorted((p['r'],p['t']))
+ elif spec['shape']=='two_squares':task_geometry['s'],task_geometry['t']=sorted((p['s'],p['t']))
+ task=hashlib.sha256(json.dumps([taskshape,taskP,Q,task_geometry],sort_keys=True).encode()).hexdigest()
+ return {'knowledge_point':dict(db_id=KP_ID,id=KP_UUID,title=TITLE),'question':q,'generation':dict(version=VERSION,seed=seed,template=template,parameters=p,profile=profile,source=spec.get('source'),basis=1356,lineage=CAPTURE['lineage'],difficulty_design=('authored unrated-source easy completion' if template=='square_unrated' else 'authored two-hole bookkeeping' if level=='hard' else 'observed'),eligible_for_learning=not raw,evidence_only=raw,mathematical_fingerprint=task,content_fingerprint=cid,operations=[r for r,_ in values] if not raw else 'opaque proportional historical coefficients; intent unresolved',outer_area=str(O),hole_areas=[str(h) for h in holes],area=str(A),curl=db-da,python=sys.version.split()[0],sympy=sp.__version__,matplotlib=matplotlib.__version__)}
 
 # EASY: one polygon hole, constant partial derivatives, geometric subtraction.
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('easy',seed,template,field_type,parameters,profile)

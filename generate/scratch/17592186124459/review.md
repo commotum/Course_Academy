@@ -14,6 +14,18 @@ In what direction does the function $f(x, y) = \cos x + x^{2}y$ increase most ra
 
 [Source omits difficulty, solution and correct ref.]
 
+## cosxy — generated raw source bank variant (evidence only)
+
+In what direction does the function $f(x, y) = 2\cos x + x^{2}y$ increase most rapidly at the point $(1, 1)$?
+
+- $2i + j$
+- $(2\sin (1) - 2)i - j$
+- $-2\sin (1)i + 2j$
+- $-2i - j$
+- $(2 - 2\sin (1))i + j$
+
+[Raw source omits worked solution.]
+
 ## cosxy — generated easy seed 170
 
 In what direction does the function $f(x, y) = \cos x + 2x^{2}y$ decrease most rapidly at the point $(2, -1)$?
@@ -73,6 +85,26 @@ $$
 $$
 
 Therefore, the function increases most rapidly in the direction of $⟨2\pi ,\,2,\,\pi ⟩.$
+
+## linear_sin — generated raw source bank variant (evidence only)
+
+In what direction does the function $g(x,y,z)=2{y}^{2}+\operatorname{sin}⁡(2\pi x+\pi z)$ increase most rapidly at the point $(1,1,2)?$
+
+- $⟨2\pi ,4,\pi ⟩$
+- $⟨\pi ,4,\pi ⟩$
+- $⟨-2\pi ,-4,-\pi ⟩$
+- $⟨2,4,1⟩$
+- $⟨-\pi ,-2,\pi ⟩$
+
+At a given point, a function $g(x,y,z)$ increases most rapidly in the direction of its gradient at that point.
+
+So, we compute $∇g(x,y,z)$ and evaluate it at the point $(1,1,2):$
+
+$$
+\begin{aligned}∇g(x,y,z) & =⟨\frac{∂}{∂x}(2{y}^{2}+\operatorname{sin}⁡(2\pi x+\pi z)),\,\frac{∂}{∂y}(2{y}^{2}+\operatorname{sin}⁡(2\pi x+\pi z)),\,\frac{∂}{∂z}(2{y}^{2}+\operatorname{sin}⁡(2\pi x+\pi z))⟩ \\  & =⟨2\pi \operatorname{cos}⁡(2\pi x+\pi z),\,4y,\,\pi \operatorname{cos}⁡(2\pi x+\pi z)⟩ \\ ∇g(1,1,2) & =⟨2\pi \operatorname{cos}⁡(2\pi \cdot 1+\pi \cdot 2),\,4\cdot 1,\,\pi \operatorname{cos}⁡(2\pi \cdot 1+\pi \cdot 2)⟩ \\  & =⟨2\pi \operatorname{cos}⁡(4\pi ),\,4,\,\pi \operatorname{cos}⁡(4\pi )⟩ \\  & =⟨2\pi ,\,4,\,\pi ⟩\end{aligned}
+$$
+
+Therefore, the function increases most rapidly in the direction of $⟨2\pi ,\,4,\,\pi ⟩.$
 
 ## linear_sin — generated moderate seed 170
 
@@ -134,6 +166,26 @@ $$
 
 Therefore, the function increases most rapidly in the direction of $7\,i+10\,j.$
 
+## quadratic — generated raw source bank variant (evidence only)
+
+In what direction does the function $f(x,y)={x}^{2}+4xy+2{y}^{2}$ increase most rapidly at the point $(2,1)?$
+
+- $4\,i-5\,j$
+- $4\,i+j$
+- $i-2\,j$
+- $2\,i+j$
+- $8\,i+12\,j$
+
+At a given point, a function $f(x,y)$ increases most rapidly in the direction of its gradient at that point.
+
+So, we compute $∇f(x,y)$ and evaluate it at the point $(2,1):$
+
+$$
+\begin{aligned}∇f(x,y) & =\frac{∂}{∂x}({x}^{2}+4xy+2{y}^{2})\,i+\frac{∂}{∂y}({x}^{2}+4xy+2{y}^{2})\,j \\  & =(2x+4y)\,i+(4x+4y)\,j \\ ∇f(2,1) & =(2(2)+4(1))\,i+(4(2)+4(1))\,j \\  & =8\,i+12\,j\end{aligned}
+$$
+
+Therefore, the function increases most rapidly in the direction of $8\,i+12\,j.$
+
 ## quadratic — generated easy seed 170
 
 In what direction does the function $f(x,y)=2{x}^{2}+xy+4{y}^{2}$ decrease most rapidly at the point $(-3,2)?$
@@ -193,6 +245,26 @@ $$
 $$
 
 Therefore, the function increases most rapidly in the direction of $⟨-\pi +3,\,-1,\,6⟩.$
+
+## mixed_sin — generated raw source bank variant (evidence only)
+
+Given the function $f(x,y,z)=\operatorname{sin}⁡(2\pi x+y)+3{z}^{2}x$, in what direction does the function increase most rapidly at the point $(1,0,1)?$
+
+- $⟨5,\,1,\,6⟩$
+- $⟨2\pi +3,\,1,\,6⟩$
+- $⟨3,\,-2\pi ,\,3⟩$
+- $⟨2\pi +3,\,2\pi ,\,3⟩$
+- $⟨3,\,0,\,6⟩$
+
+At a given point, a function $f(x,y,z)$ increases most rapidly in the direction of its gradient at that point.
+
+So, we compute $∇f(x,y,z)$ and evaluate it at the point $(1,0,1):$
+
+$$
+\begin{aligned}∇f(x,y,z) & =⟨\frac{∂}{∂x}(\operatorname{sin}⁡(2\pi x+y)+3{z}^{2}x),\,\frac{∂}{∂y}(\operatorname{sin}⁡(2\pi x+y)+3{z}^{2}x),\,\frac{∂}{∂z}(\operatorname{sin}⁡(2\pi x+y)+3{z}^{2}x)⟩ \\  & =⟨2\pi \operatorname{cos}⁡(2\pi x+y)+3{z}^{2},\,\operatorname{cos}⁡(2\pi x+y),\,6xz⟩ \\ ∇f(1,0,1) & =⟨2\pi \operatorname{cos}⁡(2\pi \cdot 1+0)+3\cdot {1}^{2},\,\operatorname{cos}⁡(2\pi \cdot 1+0),\,6\cdot 1\cdot 1⟩ \\  & =⟨2\pi \operatorname{cos}⁡(2\pi )+3,\,\operatorname{cos}⁡(2\pi ),\,6⟩ \\  & =⟨2\pi +3,\,1,\,6⟩\end{aligned}
+$$
+
+Therefore, the function increases most rapidly in the direction of $⟨2\pi +3,\,1,\,6⟩.$
 
 ## mixed_sin — generated moderate seed 170
 
@@ -254,6 +326,26 @@ $$
 
 Therefore, the function increases most rapidly in the direction of $({e}^{-1}-1)\text{ }i+{e}^{-1}j.$
 
+## exp — generated raw source bank variant (evidence only)
+
+In what direction does the function $f(x,y)=x\operatorname{ln}⁡y+y{e}^{x}-2xy$ increase most rapidly at the point $(-1,1)?$
+
+- $(e+2)\text{ }i+(e-2)j$
+- $({e}^{-1}-2)\text{ }i+({e}^{-1}+1)j$
+- $({e}^{-1}+2)\text{ }i+({e}^{-1}-2)j$
+- $(e-2)\text{ }i+(e+1)j$
+- $({e}^{-1}+2)\text{ }i+({e}^{-1}+1)j$
+
+At a given point, a function $f(x,y)$ increases most rapidly in the direction of its gradient at that point.
+
+So, we compute $∇f(x,y)$ and evaluate it at the point $(-1,1):$
+
+$$
+\begin{aligned}∇f(x,y) & =\frac{∂}{∂x}(x\operatorname{ln}⁡y+y{e}^{x}-2xy)\text{ }i+\frac{∂}{∂y}(x\operatorname{ln}⁡y+y{e}^{x}-2xy)\text{ }j \\  & =(\operatorname{ln}⁡y+y{e}^{x}-2y)\text{ }i+(\frac{x}{y}+{e}^{x}-2x)\text{ }j \\ ∇f(1,1) & =(\operatorname{ln}⁡1+1\cdot {e}^{-1}-2\cdot (1))\text{ }i+(\frac{-1}{1}+{e}^{-1}-2(-1))\text{ }j \\  & =({e}^{-1}-2)\text{ }i+({e}^{-1}+1)j\end{aligned}
+$$
+
+Therefore, the function increases most rapidly in the direction of $({e}^{-1}-2)\text{ }i+({e}^{-1}+1)j.$
+
 ## exp — generated easy seed 170
 
 In what direction does the function $f(x,y)=3x\operatorname{ln}⁡y+3y{e}^{x}-3xy$ decrease most rapidly at the point $(1,1)?$
@@ -314,45 +406,65 @@ $$
 
 Therefore, the function increases most rapidly in the direction of $-j.$
 
-## trig_product — generated easy seed 170
+## trig_product — generated raw source bank variant (evidence only)
 
-In what direction does the function $f(x,y)=3{x}^{2}\operatorname{sin}⁡y-y\operatorname{cos}⁡x$ decrease most rapidly at the point $(0,-1)?$
+In what direction does the function $f(x,y)=4{x}^{2}\operatorname{sin}⁡y-y\operatorname{cos}⁡x$ increase most rapidly at the point $(0,1)?$
 
+- $i-j$
+- $2i-j$
 - $-j$
-- $(1 -3 \cos{(1 )})\,j$
-- $6 \sin{(1 )}\,i+j$
-- $i$
 - $j$
-
-At a given point, a function $f(x,y)$ decreases most rapidly in the direction opposite to that of its gradient.
-
-So, we compute $∇f(x,y)$ and evaluate it at the point $(0,-1):$
-
-$$
-\begin{aligned}∇f(x,y) & =\frac{∂}{∂x}(3{x}^{2}\operatorname{sin}⁡y-y\operatorname{cos}⁡x)\text{ }i+\frac{∂}{∂y}(3{x}^{2}\operatorname{sin}⁡y-y\operatorname{cos}⁡x)\text{ }j \\  & =(y\operatorname{sin}⁡x+6x\operatorname{sin}⁡y)\text{ }i+(3{x}^{2}\operatorname{cos}⁡y-\operatorname{cos}⁡x)\text{ }j \\ ∇f(0,-1) & =(-1\cdot \operatorname{sin}⁡(0)+6\cdot 0\cdot \operatorname{sin}⁡(-1))\text{ }i+(3(0)^{2}\operatorname{cos}⁡(-1)-\operatorname{cos}⁡(0))\text{ }j \\  & =-j\end{aligned}
-$$
-
-Therefore, the function decreases most rapidly in the direction of $j.$
-
-## trig_product — generated easy seed 171
-
-In what direction does the function $f(x,y)=4{x}^{2}\operatorname{sin}⁡y-2y\operatorname{cos}⁡x$ increase most rapidly at the point $(0,1)?$
-
-- $-2\,i$
-- $(-2 + 4 \cos{(1 )})\,j$
-- $-2\,j$
-- $2\,j$
-- $8 \sin{(1 )}\,i-2\,j$
+- $i+j$
 
 At a given point, a function $f(x,y)$ increases most rapidly in the direction of its gradient at that point.
 
 So, we compute $∇f(x,y)$ and evaluate it at the point $(0,1):$
 
 $$
-\begin{aligned}∇f(x,y) & =\frac{∂}{∂x}(4{x}^{2}\operatorname{sin}⁡y-2y\operatorname{cos}⁡x)\text{ }i+\frac{∂}{∂y}(4{x}^{2}\operatorname{sin}⁡y-2y\operatorname{cos}⁡x)\text{ }j \\  & =(2y\operatorname{sin}⁡x+8x\operatorname{sin}⁡y)\text{ }i+(4{x}^{2}\operatorname{cos}⁡y-2\operatorname{cos}⁡x)\text{ }j \\ ∇f(0,1) & =(2\cdot (1\cdot \operatorname{sin}⁡(0))+8\cdot 0\cdot \operatorname{sin}⁡(1))\text{ }i+(4(0)^{2}\operatorname{cos}⁡(1)-2\operatorname{cos}⁡(0))\text{ }j \\  & =-2\text{ }j\end{aligned}
+\begin{aligned}∇f(x,y) & =\frac{∂}{∂x}(4{x}^{2}\operatorname{sin}⁡y-y\operatorname{cos}⁡x)\text{ }i+\frac{∂}{∂y}(4{x}^{2}\operatorname{sin}⁡y-y\operatorname{cos}⁡x)\text{ }j \\  & =(y\operatorname{sin}⁡x+8x\operatorname{sin}⁡y)\text{ }i+(4{x}^{2}\operatorname{cos}⁡y-\operatorname{cos}⁡x)\text{ }j \\ ∇f(0,1) & =(1\cdot \operatorname{sin}⁡(0)+8\cdot 0\cdot \operatorname{sin}⁡(1))\text{ }i+(4(0)^{2}\operatorname{cos}⁡(1)-\operatorname{cos}⁡(0))\text{ }j \\  & =-j\end{aligned}
 $$
 
-Therefore, the function increases most rapidly in the direction of $-2\text{ }j.$
+Therefore, the function increases most rapidly in the direction of $-j.$
+
+## trig_product — generated easy seed 170
+
+In what direction does the function $f(x,y)=2{x}^{2}\operatorname{sin}⁡y-y\operatorname{cos}⁡x$ decrease most rapidly at the point $(1,-1)?$
+
+- $5 \sin{(1 )}\,i-3 \cos{(1 )}\,j$
+- $4 \sin{(1 )}\,i-\cos{(1 )}\,j$
+- $5 \sin{(1 )}\,i-\cos{(1 )}\,j$
+- $-5 \sin{(1 )}\,i+\cos{(1 )}\,j$
+- $-\cos{(1 )}\,i+5 \sin{(1 )}\,j$
+
+At a given point, a function $f(x,y)$ decreases most rapidly in the direction opposite to that of its gradient.
+
+So, we compute $∇f(x,y)$ and evaluate it at the point $(1,-1):$
+
+$$
+\begin{aligned}∇f(x,y) & =\frac{∂}{∂x}(2{x}^{2}\operatorname{sin}⁡y-y\operatorname{cos}⁡x)\text{ }i+\frac{∂}{∂y}(2{x}^{2}\operatorname{sin}⁡y-y\operatorname{cos}⁡x)\text{ }j \\  & =(y\operatorname{sin}⁡x+4x\operatorname{sin}⁡y)\text{ }i+(2{x}^{2}\operatorname{cos}⁡y-\operatorname{cos}⁡x)\text{ }j \\ ∇f(1,-1) & =(-1\cdot \operatorname{sin}⁡(1)+4\cdot 1\cdot \operatorname{sin}⁡(-1))\text{ }i+(2(1)^{2}\operatorname{cos}⁡(-1)-\operatorname{cos}⁡(1))\text{ }j \\  & =-5 \sin{(1 )}\text{ }i+\cos{(1 )}\text{ }j\end{aligned}
+$$
+
+Therefore, the function decreases most rapidly in the direction of $5 \sin{(1 )}\,i-\cos{(1 )}\,j.$
+
+## trig_product — generated easy seed 171
+
+In what direction does the function $f(x,y)=4{x}^{2}\operatorname{sin}⁡y-y\operatorname{cos}⁡x$ decrease most rapidly at the point $(1,1)?$
+
+- $-9 \sin{(1 )}\,i-5 \cos{(1 )}\,j$
+- $-8 \sin{(1 )}\,i-3 \cos{(1 )}\,j$
+- $-9 \sin{(1 )}\,i-3 \cos{(1 )}\,j$
+- $-3 \cos{(1 )}\,i-9 \sin{(1 )}\,j$
+- $9 \sin{(1 )}\,i+3 \cos{(1 )}\,j$
+
+At a given point, a function $f(x,y)$ decreases most rapidly in the direction opposite to that of its gradient.
+
+So, we compute $∇f(x,y)$ and evaluate it at the point $(1,1):$
+
+$$
+\begin{aligned}∇f(x,y) & =\frac{∂}{∂x}(4{x}^{2}\operatorname{sin}⁡y-y\operatorname{cos}⁡x)\text{ }i+\frac{∂}{∂y}(4{x}^{2}\operatorname{sin}⁡y-y\operatorname{cos}⁡x)\text{ }j \\  & =(y\operatorname{sin}⁡x+8x\operatorname{sin}⁡y)\text{ }i+(4{x}^{2}\operatorname{cos}⁡y-\operatorname{cos}⁡x)\text{ }j \\ ∇f(1,1) & =(1\cdot \operatorname{sin}⁡(1)+8\cdot 1\cdot \operatorname{sin}⁡(1))\text{ }i+(4(1)^{2}\operatorname{cos}⁡(1)-\operatorname{cos}⁡(1))\text{ }j \\  & =9 \sin{(1 )}\text{ }i+3 \cos{(1 )}\text{ }j\end{aligned}
+$$
+
+Therefore, the function decreases most rapidly in the direction of $-9 \sin{(1 )}\,i-3 \cos{(1 )}\,j.$
 
 ## log_unit — generated hard seed 170
 

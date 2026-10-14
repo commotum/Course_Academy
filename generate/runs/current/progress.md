@@ -4,7 +4,7 @@ Captured scope: **120 topics, 384 knowledge points**, 3757 practice questions; m
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**qa_passed: 304**, **queued: 75**, **working: 5**.
+**qa_passed: 306**, **queued: 75**, **working: 3**.
 
 Dispatch priority: the 15 KPs in `coverage-report.md`, while already-started workers finish.
 
@@ -313,10 +313,10 @@ Counts describe reviewed work; queued and working KPs are not complete. Source a
 | [17592186176049](../../scratch/17592186176049.py) | Describing Properties of the Tangent Function | Describing Properties of the Tangent Function | 0 / 0 / 5 / 1 | qa_passed | [Report](qa/17592186176049.json) |
 | [17592186176050](../../scratch/17592186176050.py) | Describing Properties of the Tangent Function | Utilizing the Periodicity Property of the Tangent Function | 0 / 5 / 0 / 2 | qa_passed | [Report](qa/17592186176050.json) |
 | [17592186176058](../../scratch/17592186176058.py) | Describing Properties of the Tangent Function | Utilizing the Oddness Property of the Tangent Function | 3 / 0 / 2 / 1 | qa_passed | [Report](qa/17592186176058.json) |
-| [17592186083240](../../scratch/17592186083240.py) | Differentiating Parametric Curves | Finding the Derivative of a Parametric Curve | 12 / 6 / 0 / 0 | working | — |
+| [17592186083240](../../scratch/17592186083240.py) | Differentiating Parametric Curves | Finding the Derivative of a Parametric Curve | 12 / 6 / 0 / 0 | qa_passed | [Report](qa/17592186083240.json) |
 | [17592186133929](../../scratch/17592186133929.py) | The Divergence Theorem | Writing the Flux Across a Closed Surface as a Triple Integral | 3 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186133929.json) |
 | [17592186133930](../../scratch/17592186133930.py) | The Divergence Theorem | Calculating Flux Across the Surface of a Known Solid | 6 / 4 / 0 / 0 | qa_passed | [Report](qa/17592186133930.json) |
-| [17592186133931](../../scratch/17592186133931.py) | The Divergence Theorem | Calculating Flux Across a Closed Surface | 0 / 10 / 0 / 1 | working | — |
+| [17592186133931](../../scratch/17592186133931.py) | The Divergence Theorem | Calculating Flux Across a Closed Surface | 0 / 10 / 0 / 1 | qa_passed | [Report](qa/17592186133931.json) |
 | [17592186124458](../../scratch/17592186124458.py) | Directional Derivatives | Calculating a Directional Derivative | 5 / 1 / 0 / 2 | qa_passed | [Report](qa/17592186124458.json) |
 | [17592186124459](../../scratch/17592186124459.py) | Directional Derivatives | Finding the Direction of Maximum Increase or Maximum Decrease of a Function | 3 / 2 / 0 / 1 | working | — |
 | [17592186124460](../../scratch/17592186124460.py) | Directional Derivatives | Finding the Rate of Change of a Function in a Given Direction | 0 / 3 / 2 / 2 | working | — |

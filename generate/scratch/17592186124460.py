@@ -49,7 +49,8 @@ def bracepow(z,n=2):return '('+tex(z)+')^{'+str(n)+'}' if expr(z)<0 else '{'+tex
 def mult(c,z):return ('' if c==1 else str(c))+z
 
 def parameters(t,p):
- keys=set(ANCHORS[FAMILY_SOURCE[t]][1]);assert set(p)==keys,('parameter keys',t,keys,set(p))
+ keys=set(ANCHORS[FAMILY_SOURCE[t]][1])
+ if set(p)!=keys:raise ValueError(('parameter keys',t,keys,set(p)))
  q={k:expr(v) for k,v in p.items()}
  if any(v.has(S.Float) or v.free_symbols for v in q.values()):raise ValueError('exact constant parameters required')
  if t in ('quotient','ratio_sum','sine_quotient','tangent'):
@@ -61,9 +62,10 @@ def parameters(t,p):
   if t=='quotient' and not (q['h']>0 and q['k']>0 and q['c'].is_Integer and 1<=q['c']<=4):raise ValueError('easy positive coordinates/coefficient bounds')
   if t=='sine_quotient' and not (q['k']>0 and all(q[k].is_Integer and 1<=q[k]<=4 for k in ('a','b'))):raise ValueError('moderate sine coefficient/domain bounds')
   if t=='tangent' and not(q['h']==q['k'] and abs(q['h'])==S.pi/4 and q['a'].is_Integer and 1<=q['a']<=6):raise ValueError('equal familiar nonzero quarter-pi arguments; coefficient 1..6')
-  if any(abs(z.evalf())>6 for z in v):raise ValueError('direction component arithmetic bound 6')
+  if any(abs(z.evalf())>6 or not (z.is_Integer or (z/S.sqrt(2)).is_Integer) for z in v):raise ValueError('direction components: signed integers or integer multiples of sqrt(2), absolute bound 6')
  elif t=='exp_bilinear':
   if not all(q[k].is_Integer and lo<=q[k]<=hi for k,lo,hi in [('a',2,6),('b',2,5),('h',1,4)]):raise ValueError('hard exponential coefficient bounds')
+  if q['a']*q['b']*q['h']+q['b']>30 or q['a']*q['h']-1>12:raise ValueError('hard exponential evaluated component bounds 30 and 12')
  elif t=='sumlog':
   if not all(q[k].is_Integer and lo<=q[k]<=hi for k,lo,hi in [('a',1,8),('b',1,8),('h',1,4)]):raise ValueError('hard log-product coefficient bounds')
  elif t=='sinlog':
@@ -113,6 +115,10 @@ def prompt(t,p,d):
  return re.sub('|'.join(re.escape(k) for k in sorted(slots,key=len,reverse=True)),lambda m:slots[m[0]],old)
 
 # Each block's row structure is kept intact, including individually evaluated terms.
+def tangent_evaluated(p,d):
+ a=p['a'];z=tex(abs(2*a*d['h']))
+ return (str(a)+'-'+z,z+'-'+str(a)) if d['h']>0 else (z+'-'+str(a),str(a)+'-'+z)
+
 def derivative_rows(t,p,d):
  h,k=d['h'],d['k'];H,K=tex(h),tex(k);a=p.get('a',1);b=p.get('b',1)
  if t=='ratio_sum':
@@ -132,7 +138,7 @@ def derivative_rows(t,p,d):
   general=vec(str(a)+r'\operatorname{tan}⁡y-'+str(a)+r'y{sec}^{2}⁡x',str(a)+r'x{sec}^{2}⁡y-'+str(a)+r'\operatorname{tan}⁡x',True)
   sub=vec(str(a)+r'\operatorname{tan}⁡('+H+')-'+str(a)+r'\cdot '+group(k)+r'\cdot {sec}^{2}⁡('+H+')',str(a)+r'\cdot '+group(h)+r'\cdot {sec}^{2}⁡('+K+')-'+str(a)+r'\operatorname{tan}⁡('+H+')',True)
   mid=vec(str(a)+r'\cdot '+group(S.tan(k))+'-'+group(a*k)+r'\cdot 2',tex(a*h)+r'\cdot 2-'+str(a)+r'\cdot '+group(S.tan(h)))
-  ev=vec(str(a)+'-'+group(2*a*k)+' ',tex(2*a*h)+'-'+str(a),True)
+  EA,EB=tangent_evaluated(p,d);ev=vec(EA+' ',EB,True)
   return general,sub.replace(r'\pi}',r'\pi }'),mid.replace(r'\pi}',r'\pi }'),ev.replace(r'\pi-',r'\pi -')
  if t=='exp_bilinear':
   exponent=str(b)+'x-y';general='-('+str(a)+'y+'+str(b)+r'{e}^{'+exponent+r'})\text{ }i-('+str(a)+r'x-{e}^{'+exponent+r'})\text{ }j'
@@ -180,7 +186,7 @@ def source_solution(t,p,d):
   if t in ('sine_quotient','tangent'):
    dotblock=blocks[2];dotrows=dotblock.split(chr(92)*2)
    olddotvectors=re.findall('⟨[^⟩]+⟩',dotrows[1])
-   slots[olddotvectors[0]]=vec(tex(d['ev'][0]),tex(d['ev'][1])+' ') if t=='sine_quotient' else vec(str(p['a'])+'-'+group(2*p['a']*d['k'])+' ',tex(2*p['a']*d['h']).replace(r'\pi-',r'\pi -')+'-'+str(p['a']))
+   slots[olddotvectors[0]]=vec(tex(d['ev'][0]),tex(d['ev'][1])+' ') if t=='sine_quotient' else vec(tangent_evaluated(p,d)[0]+' ',tangent_evaluated(p,d)[1])
    if t=='tangent':slots[olddotvectors[0]]=slots[olddotvectors[0]].replace(r'\pi-',r'\pi -')
    def component(z):return ('-' if z<0 else '')+frac(tex(abs(z)),tex(pn))
    slots[olddotvectors[1]]=vec(component(pv[0]),component(pv[1]))
@@ -189,7 +195,7 @@ def source_solution(t,p,d):
   else:oldnum=r'\frac{(2-\pi )\cdot (-1)+(\pi -2)\cdot 1}{\sqrt{2}}'
   E=d['ev'];numericnum=(group(E[0])+'('+tex(pv[0])+')+'+group(E[1])+'('+tex(pv[1])+')') if t=='ratio_sum' else '('+tex(E[0])+r')\cdot ('+tex(pv[0])+')+('+tex(E[1])+r')\cdot ('+tex(pv[1])+')'
   if t=='sine_quotient':numericnum=group(E[0])+r'\cdot '+group(pv[0])+'+'+tex(E[1])+r' \cdot '+group(pv[1])
-  if t=='tangent':numericnum='('+str(p['a'])+'-'+group(2*p['a']*d['k'])+r' )\cdot '+group(pv[0])+'+('+tex(2*p['a']*d['h'])+'-'+str(p['a'])+r')\cdot '+group(pv[1])
+  if t=='tangent':numericnum='('+tangent_evaluated(p,d)[0]+r' )\cdot '+group(pv[0])+'+('+tangent_evaluated(p,d)[1]+r')\cdot '+group(pv[1])
   slots[oldnum]=frac(numericnum.replace(r'\pi-',r'\pi -'),tex(pn))
   if t=='sine_quotient':slots[r'\frac{\pi }{\sqrt{2}}']=frac(tex(S.simplify(E[0]*pv[0]+E[1]*pv[1]))+' ',tex(pn))
   elif t=='tangent':
@@ -217,7 +223,7 @@ def authored_solution(t,p,d):
   c=p['c'];H,K=tex(h),tex(k)
   formal=vec(frac('∂','∂x')+'('+F+')',frac('∂','∂y')+'('+F+')',True)
   general=vec(mult(c,r'\cos(y\ln x)')+r'\cdot '+frac('y','x'),mult(c,r'\cos(y\ln x)')+r'\cdot \ln x',True)
-  sub=vec(mult(c,r'\cos('+K+r'\ln '+H+')')+r'\cdot '+frac(K,H),mult(c,r'\cos('+K+r'\ln '+H+')')+r'\cdot \ln '+H,True)
+  sub=vec(mult(c,r'\cos('+K+r'\ln ('+H+')'+')')+r'\cdot '+frac(K,H),mult(c,r'\cos('+K+r'\ln ('+H+')'+')')+r'\cdot \ln ('+H+')',True)
   return 'At a given point, a function $g(x,y)$ increases most rapidly in the direction of its gradient at that point.\n\nIn our case, we compute $∇g(x,y)$ and evaluate it at the point $('+P+'):$\n\n$$\n'+r'\begin{aligned}∇g(x,y) & ='+formal+r' \\ & ='+general+r' \\ ∇g('+P+r') & ='+sub+r' \\ & ='+vec(*map(tex,E))+r'\end{aligned}'+'\n$$\n\nFinally, the rate of change of $g(x,y)$ at the point $('+P+')$ in the direction of $∇g('+P+')$ is given by\n\n$$\n'+r'\begin{aligned}‖∇g('+P+r')‖ & =‖'+vec(*map(tex,E))+r'‖ \\ & =\sqrt{'+bracepow(E[0])+'+'+bracepow(E[1])+'}'+r' \\ & ='+tex(d['answer'])+r'.\end{aligned}'+'\n$$'
  sol=source_solution(t,p,d)
  if t in ('exp_bilinear','sumlog'):
@@ -237,10 +243,11 @@ def bank(t,p,d,historical=False):
  if historical:
   if t=='quotient':
    vals=[d['v'][0]/d['vn'],p['k'],E[0]**2+p['k']**2,correct,p['h']/S.sqrt(p['h']**2+p['k']**2)]
-   return vals,[r'-\frac{\sqrt{10}}{10}','1','17',r'-\frac{8\sqrt{10}}{5}',r'\frac{2\sqrt{5}}{5}'] if False else [tex(z) for z in vals]
+   return vals,[tex(z) for z in vals]
   if t=='sinlog':
    H,K=d['h'],d['k'];vals=[S.sqrt(K+H)/H,S.sqrt((K+H)/H),S.sqrt(K*K+H*H)/H,S.sqrt(K**4+H*H)/K,S.sqrt(K*K+H*H)/K]
-   out=[frac(r'\sqrt{'+tex(K)+' + '+tex(H)+'}',tex(H)),r'\sqrt{'+frac(tex(K)+' + '+tex(H),tex(H))+'}',frac(r'\sqrt{'+tex(K)+'^{2} + '+tex(H)+'^{2}}',tex(H)),frac(r'\sqrt{'+tex(K)+'^{4} + '+tex(H)+'^{2}}',tex(K)),frac(r'\sqrt{'+tex(K)+'^{2} + '+tex(H)+'^{2}}',tex(K))]
+   kt=tex(K) if K==S.pi else '('+tex(K)+')';ht=tex(H) if H==S.E else '('+tex(H)+')'
+   out=[frac(r'\sqrt{'+tex(K)+' + '+tex(H)+'}',tex(H)),r'\sqrt{'+frac(tex(K)+' + '+tex(H),tex(H))+'}',frac(r'\sqrt{'+kt+'^{2} + '+ht+'^{2}}',tex(H)),frac(r'\sqrt{'+kt+'^{4} + '+ht+'^{2}}',tex(K)),frac(r'\sqrt{'+kt+'^{2} + '+ht+'^{2}}',tex(K))]
    if p['n']==p['j']==1:out=[z.replace(r'\pi','π') for z in out]
    return vals,out
   if t=='ratio_sum':vals=[abs(v[1]),d['vn'],v[1]**2,d['vn']**2,correct];return vals,[tex(z) for z in vals]
@@ -255,7 +262,7 @@ def bank(t,p,d,historical=False):
    # Structural historical expressions retain factorization; source pi/4 values are
    # components of these formulas, not an answer lookup table.
    if p['h']==S.pi/4:
-    out=[tex(a/S.sqrt(2))+r'(\pi -2)',tex(a)+r'(\pi -2)',tex(a/2)+r'\pi -'+tex(a/S.sqrt(2)),tex(a)+r'(\pi +2)',tex(a/S.sqrt(2))+r'(\pi +2)'];out[2]=out[2].replace('1'+r'\pi',r'\pi')
+    out=[tex(a/S.sqrt(2))+r'(\pi -2)',tex(a*p['v2'])+r'(\pi -2)',tex(a/2)+r'\pi -'+tex(a/S.sqrt(2)),tex(a)+r'(\pi +2)',tex(a/S.sqrt(2))+r'(\pi +2)'];out[2]=out[2].replace('1'+r'\pi',r'\pi')
    return vals,out
   if t=='exp_bilinear':
    vals=[S.sqrt(A+B),S.sqrt(A-B),S.sqrt(A*A-B*B),A,norm]
@@ -265,19 +272,19 @@ def bank(t,p,d,historical=False):
    return vals,[tex(vals[0]).replace(' ',''),r'\sqrt{'+tex(sum(E)+1)+'}',tex(vals[2]),tex(norm),tex(vals[4])]
  if t=='quotient':
   dot=lambda aa,bb:S.simplify((aa*v[0]+bb*v[1])/d['vn'])
-  vals=[correct,dot(-A,B),dot(A,-B),A*v[0]+B*v[1],dot(A,p['c']*p['h']/p['k'])]
+  vals=[correct,dot(-A,B),dot(A,-B),A*v[0]+B*v[1],dot(A,-p['c']*p['h']/p['k']**2)]
  elif t=='ratio_sum':
   dot=lambda aa,bb:S.simplify((aa*v[0]+bb*v[1])/d['vn'])
   vals=[correct,dot(1/p['k']+p['k']/p['h']**2,B),dot(A,1/p['h']+p['h']/p['k']**2),dot(1/p['k']+p['k']/p['h']**2,1/p['h']+p['h']/p['k']**2),d['vn']]
  elif t=='sine_quotient':
   dot=lambda aa,bb:S.simplify((aa*v[0]+bb*v[1])/d['vn'])
-  vals=[correct,A*v[0]+B*v[1],-correct,dot(p['b']*S.pi*p['k'],B),dot(A,0)]
+  vals=[correct,A*v[0]+B*v[1],-correct,dot(p['b']*S.pi*p['k'],B),(A*v[0]+B*v[1])/d['vn']**2]
  elif t=='tangent':
   dot=lambda aa,bb:S.simplify((aa*v[0]+bb*v[1])/d['vn']);a=p['a'];h,k=p['h'],p['k']
   vals=[correct,A*v[0]+B*v[1],-correct,dot(a*S.tan(k),-a*S.tan(h)),dot(-2*a*k,2*a*h)]
  elif t=='exp_bilinear':
   a,b,h=p['a'],p['b'],p['h'];k=d['k'];vals=[correct,norm,-S.sqrt((a*k+1)**2+(a*h-1)**2),-S.sqrt(b*b+1),-abs(A)]
- elif t=='sumlog':vals=[correct,norm,-S.sqrt(A*A+B*B)/2,-abs(A),-(A+B)]
+ elif t=='sumlog':vals=[correct,norm,S.Integer(0),-abs(A),-(A+B)]
  else:
   c=p['c'];H,K=d['h'],d['k'];n=p['n'];vals=[correct,c*S.sqrt(K*K+n*n),c*S.sqrt((K/H)**2+H*H),abs(A)+abs(B),abs(A)]
  vals=[S.simplify(z) for z in vals]
@@ -304,7 +311,8 @@ def sample(t,r):
  if t=='sine_quotient':return dict(a=r.randint(1,4),b=r.randint(1,4),h=r.randint(1,5),k=r.randint(1,5),v1=r.choice([-3,-2,-1,1,2,3]),v2=r.choice([-3,-2,-1,1,2,3]))
  if t=='tangent':h=r.choice(['pi/4','-pi/4']);return dict(a=r.randint(1,6),h=h,k=h,v1=r.choice([-3,-2,-1,1,2,3]),v2=r.choice([-3,-2,-1,1,2,3]))
  # Hard: source-grounded composite rules; exact familiar evaluations, no new branch.
- if t=='exp_bilinear':return dict(a=r.randint(2,6),b=r.randint(2,5),h=r.randint(1,4))
+ if t=='exp_bilinear':
+  a,b,h=r.choice([(a,b,h) for a in range(2,7) for b in range(2,6) for h in range(1,5) if a*b*h+b<=30 and a*h-1<=12]);return dict(a=a,b=b,h=h)
  if t=='sumlog':return dict(a=r.randint(1,8),b=r.randint(1,8),h=r.randint(1,4))
  return dict(c=r.randint(1,4),n=r.randint(1,4),j=r.randint(1,4))
 
@@ -312,13 +320,18 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  if level not in ('easy','moderate','hard'):raise ValueError('unknown difficulty')
  if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('only source radio layout supported')
  r=random.Random(seed);choices=[t for t,l in TEMPLATES.items() if l==level]
- t=template or r.choice(choices)
+ profile_family=next((name for name,s in FAMILY_SOURCE.items() if profile in ('raw-'+s,'completed-'+s)),None)
+ t=template or profile_family or r.choice(choices)
  if t not in choices:raise ValueError('template level mismatch')
  sid=FAMILY_SOURCE[t];profile=profile or 'authored-operations'
  raw=profile=='raw-'+sid;completed=profile=='completed-'+sid
  if profile not in ('authored-operations','raw-'+sid,'completed-'+sid):raise ValueError('profile belongs to another family')
  for attempt in range(1000):
-  p=globals()['parameters'](t,parameters or sample(t,r));d=data(t,p)
+  candidate=parameters if parameters is not None else sample(t,r)
+  if parameters is None and (raw or completed):
+   if t=='sinlog':candidate.update(c=1,n=1)
+   if t=='tangent':candidate.update(h='pi/4',k='pi/4',v1=-1,v2=1)
+  p=globals()['parameters'](t,candidate);d=data(t,p)
   if (raw or completed) and t=='sinlog' and (p['c']!=1 or p['n']!=1):raise ValueError('historical sinlog bank requires unit coefficient and x=e')
   if (raw or completed) and t=='tangent' and (p['h']!=S.pi/4 or p['v1']!=-p['v2'] or p['v2']<=0):raise ValueError('historical tangent profile uses positive quarter-pi and (-s,s) direction')
   if raw or completed:vals,strings=raw_bank(t,p,d)
@@ -348,6 +361,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  if not raw or ':question/difficulty' in original:q[':question/difficulty']=':question.difficulty/'+level
  if solution is not None:q[':question/worked-solution']=solution
  content=dict(version=VERSION,level=q.get(':question/difficulty'),problem=problem,solution=solution,bank=sorted(strings),field_type='radio',correct_present=(not raw or ':answer-field/correct' in original[':question/answer-fields'][0]))
+ content['correct_value']=strings[matches[0]] if content['correct_present'] else None
  ident=digest(content);fid=uid(ident+'/selection')
  answers=[{':answer/id':uid(ident+'/selection/'+s),':answer/type':':answer.type/math',':answer/value':s} for s in strings]
  correct_id=answers[matches[0]][':answer/id'];r.shuffle(answers)
@@ -355,17 +369,31 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  if not raw or ':answer-field/correct' in original[':question/answer-fields'][0]:field[':answer-field/correct']=[':answer/id',correct_id]
  q[':question/answer-fields']=[field];q[':question/id']=uid(ident)
  direction=None if d['v'] is None else [S.sstr(S.simplify(z/d['vn'])) for z in d['v']]
- task={'function':S.sstr(d['F']),'point':[S.sstr(d['h']),S.sstr(d['k'])],'direction':direction,'criterion':'given-vector' if direction else ('maximum-increase' if t=='sinlog' else 'maximum-decrease')}
+ assessed_point=[S.sstr(S.simplify(p['a']*d['h']+p['b']*d['k']))] if t=='sumlog' else [S.sstr(d['h']),S.sstr(d['k'])]
+ task={'function':S.sstr(d['F']),'point':assessed_point,'direction':direction,'criterion':'given-vector' if direction else ('maximum-increase' if t=='sinlog' else 'maximum-decrease')}
  return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'seed':seed,'template':t,'bank_profile':profile,'parameters':{k:S.sstr(v) for k,v in p.items()},'source_refs':[sid],'provenance':{k:v for k,v in CAPTURE.items() if k!='record'},'evidence_only':raw or completed,'eligible_for_learning':not(raw or completed),'source_difficulty_origin':'authored unrated assignment' if ':question/difficulty' not in original else 'observed','solution_origin':'authored missing solution' if ':question/worked-solution' not in original else ('raw observed' if raw else 'parameterized observed sequence with documented repairs'),'mathematical_fingerprint':digest(task),'content_identity':ident,'correct_scalar':S.sstr(d['answer']),'runtime':{'python':sys.version.split()[0],'sympy':S.__version__},'domain':'denominators nonzero; log argument positive; familiar trig points; displayed coefficients bounded','bank_interpretation':'opaque historical scalar shapes; evidence only' if raw or completed else 'complete family-specific operation errors'}}
 
-def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
-def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)
-def generate_hard(seed=0,**kw):return generate('hard',seed,**kw)
+# Easy — authored assignment of the unrated elementary quotient source.
+def generate_easy(seed=0,**kw):
+ """c*x^2/y: two elementary partials, positive integer point, vector normalization."""
+ return generate('easy',seed,**kw)
+
+# Moderate — all three observed families, equal-level alternatives.
+def generate_moderate(seed=0,**kw):
+ """Reciprocal sums or familiar sine/tangent partials, substitution, normalized dot."""
+ return generate('moderate',seed,**kw)
+
+# Hard — observed exponential/product-log plus authored unrated sine-log assignment.
+def generate_hard(seed=0,**kw):
+ """Composite partials at familiar exact inputs, then maximum/minimum signed rate."""
+ return generate('hard',seed,**kw)
 def markdown(rec):
  q=rec['question'];s=q[':question/problem']+'\n\n';f=q[':question/answer-fields'][0]
  for i,a in enumerate(f[':answer-field/choices']):s+=f'{chr(65+i)}. $'+a[':answer/value']+'$\n\n'
  return s+q.get(':question/worked-solution','[No observed worked solution.]')
 if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['markdown','json'],default='markdown');ap.add_argument('--template');ap.add_argument('--profile');args=ap.parse_args()
- out=[generate(l,args.seed+i,template=args.template,profile=args.profile) for l in (TEMPLATES.get(args.template) and [TEMPLATES[args.template]] if args.difficulty=='all' and args.template else ['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]) for i in range(args.count)]
+ selected_template=args.template or next((t for t,s in FAMILY_SOURCE.items() if args.profile in ('raw-'+s,'completed-'+s)),None)
+ levels=[TEMPLATES[selected_template]] if args.difficulty=='all' and selected_template else ['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]
+ out=[generate(l,args.seed+i,template=args.template,profile=args.profile) for l in levels for i in range(args.count)]
  print(json.dumps(out,indent=2,ensure_ascii=False) if args.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in out))

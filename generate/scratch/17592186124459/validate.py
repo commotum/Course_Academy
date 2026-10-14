@@ -33,7 +33,9 @@ def equal(a,b):return S.simplify(a-b)==0
 def veq(a,b):return len(a)==len(b)and all(equal(v,w)for v,w in zip(a,b))
 def parallel(a,b):
  if all(equal(e,0)for e in a)or all(equal(e,0)for e in b):return False
- j=next(i for i,e in enumerate(b)if not equal(e,0));r=S.simplify(a[j]/b[j]);return bool(r.is_positive)and veq(a,[r*e for e in b])
+ j=next(i for i,e in enumerate(b)if not equal(e,0))
+ if not all(equal(u*b[j],v*a[j])for u,v in zip(a,b)):return False
+ r=S.simplify(a[j]/b[j]);assert r.is_positive is not None,'unresolved parallel sign';return bool(r.is_positive)
 def formatting(t):
  assert all(ord(c)>=32 or c in '\n\t'for c in t),'C0'
  assert t.count('$')%2==0,'dollars'
@@ -71,7 +73,7 @@ def check(r,raw=False):
  if ':answer-field/correct'in fld:assert ids[eligibility.index(True)]==fld[':answer-field/correct'][1]
  for i,v in enumerate(vals):
   assert not all(equal(e,0)for e in v),'zero choice'
-  for w in vals[i+1:]:assert not veq(v,w),'equal options'
+  for w in vals[i+1:]:assert not (veq(v,w) if unit else parallel(v,w)),'duplicate requested directions'
  sol=q.get(':question/worked-solution')
  if sol is None:assert raw;return
  blocks=re.findall(r'\\begin\{aligned\}(.*?)\\end\{aligned\}',sol,re.S);assert blocks
@@ -137,7 +139,7 @@ def main():
   # Normal anchor retains its full source stage chain, with documented label repair.
   if i:
    r=g.generate(lv,template=t,parameters=p);check(r);records.append(r)
-   varied=dict(p);varied['c'if t=='exp'else'a']+=1
+   varied=dict(p);varied['c'if t=='exp'else'b'if t=='quadratic'else'a']+=1
    rr=g.generate(lv,template=t,parameters=varied,profile='source');check(rr,True)
  # Default sampler must serve all source families without explicit selection.
  default={lv:set()for lv in ('easy','moderate','hard')}
@@ -156,13 +158,24 @@ def main():
  base=next(r for r in records if r['generation']['template']=='quadratic')
  mutations=[mutate_failure(base,lambda r:r['question'].__setitem__(':question/worked-solution',r['question'][':question/worked-solution'].replace(r'\frac{∂}{∂x}',r'\frac{∂}{∂y}',1)),'held partial mutation'),mutate_failure(base,lambda r:r['question'].__setitem__(':question/worked-solution',r['question'][':question/worked-solution'].replace('Therefore,','Therefore,\f')),'C0 mutation'),mutate_failure(base,lambda r:r['question'].__setitem__(':question/worked-solution',r['question'][':question/worked-solution'].rsplit('direction of $',1)[0]+'direction of $i+j.$'),'stale prose vector')]
  # Incidental common magnitude cannot create another canonical direction.
- for template,p1,p2 in [('quadratic',dict(a=1,b=1,c=2,u=1,v=2),dict(a=2,b=2,c=4,u=1,v=2)),('log_unit',dict(a=2,b=1,c=1,u=1,v=1,w=1),dict(a=4,b=2,c=2,u=1,v=1,w=1)),('trig_product',dict(a=1,b=1,u=0,v=1),dict(a=4,b=4,u=0,v=-1))]:
+ for template,p1,p2 in [('quadratic',dict(a=1,b=1,c=2,u=1,v=2),dict(a=2,b=2,c=4,u=1,v=2)),('log_unit',dict(a=2,b=1,c=1,u=1,v=1,w=1),dict(a=4,b=2,c=2,u=1,v=1,w=1)),('trig_product',dict(a=3,b=1,u=0,v=1),dict(a=4,b=1,u=0,v=-1))]:
   r1=g.generate(g.FAMILIES[template][0],template=template,parameters=p1);r2=g.generate(g.FAMILIES[template][0],template=template,parameters=p2)
   assert r1['generation']['mathematical_fingerprint']==r2['generation']['mathematical_fingerprint'],'common direction magnitude'
   assert r1['question'][':question/id']!=r2['question'][':question/id'],'presentation identity'
  def erase_operation(r):
   t=r['question'][':question/worked-solution'];block=re.search(r'\\begin\{aligned\}(.*?)\\end\{aligned\}',t,re.S)[1];rows=block.split(r'\\');r['question'][':question/worked-solution']=t.replace(rows[1],rows[2],1)
  h=next(r for r in records if r['generation']['template']=='log_unit');mutations.append(mutate_failure(h,erase_operation,'algebraically equal but erased log chain operation'))
+ axis=g.generate_easy(template='trig_product',parameters=dict(a=3,b=1,u=0,v=1),profile='axis_method');check(axis)
+ def duplicate_axis_direction(r):
+  f=r['question'][':question/answer-fields'][0];wrong=next(a for a in f[':answer-field/choices'] if a[':answer/value'].startswith('-i'))
+  wrong[':answer/value']=r'(3\cos(1)-1)j'
+ mutations.append(mutate_failure(axis,duplicate_axis_direction,'duplicate wrong positive-parallel axis directions'))
+ old_g=g.data('trig_product',dict(a=3,b=1,u=0,v=1))[4]
+ try:g.validate_bank([old_g,[-e for e in old_g],[6*S.sin(1),-1],[0,3*S.cos(1)-1],[-1,0]],0,False)
+ except ValueError:pass
+ else:raise AssertionError('generator accepted duplicate axis directions')
+ # Both complete trig banks remain normally eligible and observable.
+ assert {g.generate_easy(seed,template='trig_product')['generation']['profile'] for seed in range(16)}=={'axis_method','nonaxis_method'}
  checks=[]
  native_records=list(records)
  for t,(lv,i,p) in g.FAMILIES.items():
@@ -188,7 +201,7 @@ def build_review():
   if i:
    md+=['## '+t+' — original',g.QUESTIONS[i][':question/problem'],'\n'.join('- $'+a[':answer/value']+'$'for a in g.QUESTIONS[i][':question/answer-fields'][0][':answer-field/choices']),g.QUESTIONS[i].get(':question/worked-solution','[Source omits difficulty, solution and correct ref.]')]
   if i:
-   varied=dict(p);varied['c' if t=='exp' else 'a']+=1
+   varied=dict(p);varied['c' if t=='exp' else 'b' if t=='quadratic' else 'a']+=1
    r=g.generate(lv,172,template=t,parameters=varied,profile='source');check(r,True);review.append(r);md+=['## '+t+' — generated raw source bank variant (evidence only)',g.markdown(r)]
   for seed in (170,171):
    r=g.generate(lv,seed,template=t);check(r);review.append(r);md+=['## '+t+' — generated '+lv+' seed '+str(seed),g.markdown(r)]

@@ -1074,6 +1074,54 @@ fn knowledge_point_identity(s: &EntitySnapshot, content: u64) -> Result<Option<J
     }))
 }
 
+// A practice pool can reuse a part of an imported multipart problem without
+// presenting its enclosing step. Recover the explicitly stored setup through
+// reverse containment, using this same captured snapshot and its cached indexes.
+fn question_markdown(s: &EntitySnapshot, question: u64) -> Result<String> {
+    fn contexts(
+        s: &EntitySnapshot,
+        content: u64,
+        ancestors: &mut BTreeSet<u64>,
+    ) -> Result<BTreeSet<Vec<String>>> {
+        if ancestors.len() >= 32 || !ancestors.insert(content) {
+            return Err("Question context nesting must be acyclic and at most 32 levels deep".into());
+        }
+        let mut paths = BTreeSet::new();
+        for step in s.owners(content, "step/content")? {
+            for parent in s.owners(step, "multistep/steps")? {
+                let context = text(s, parent, "multistep/context");
+                for mut path in contexts(s, parent, ancestors)? {
+                    if !context.trim().is_empty() {
+                        path.push(context.trim().to_owned());
+                    }
+                    paths.insert(path);
+                }
+            }
+        }
+        for wrapper in s.owners(content, "assigned-problem/content")? {
+            paths.extend(contexts(s, wrapper, ancestors)?);
+        }
+        ancestors.remove(&content);
+        if paths.is_empty() {
+            paths.insert(vec![]);
+        }
+        Ok(paths)
+    }
+    let problem = text(s, question, "question/problem");
+    let mut paths = contexts(s, question, &mut BTreeSet::new())?;
+    if paths.len() > 1 {
+        paths.remove(&vec![]);
+    }
+    if paths.len() > 1 {
+        return Err("Question has multiple different shared setups".into());
+    }
+    let mut parts: Vec<_> = paths.into_iter().next().unwrap_or_default().into_iter()
+        .filter(|context| !problem.contains(context))
+        .collect();
+    parts.push(problem);
+    Ok(parts.join("\n\n"))
+}
+
 fn task_step_json(
     s: &EntitySnapshot,
     steps: &[learning::LessonStep],
@@ -1144,7 +1192,8 @@ fn task_step_json_with_elapsed(
         }
         fields.push(field);
     }
-    let mut step = json!({"itemId":i,"contentId":content,"kind":if tutorial{"tutorial"}else if example{"example"}else{"question"},"title":title,"markdown":text(s,content,if tutorial{"tutorial/content"}else{"question/problem"}),"fields":fields,"status":state,"canContinue":tutorial||example||terminal,"requiresCalculator":e.get("question/requires-calculator"),"elapsedSeconds":elapsed});
+    let markdown = if tutorial { text(s, content, "tutorial/content") } else { question_markdown(s, content)? };
+    let mut step = json!({"itemId":i,"contentId":content,"kind":if tutorial{"tutorial"}else if example{"example"}else{"question"},"title":title,"markdown":markdown,"fields":fields,"status":state,"canContinue":tutorial||example||terminal,"requiresCalculator":e.get("question/requires-calculator"),"elapsedSeconds":elapsed});
     step["stepId"] = json!(authored.map(|(_, entry)| entry.step.to_string()));
     step["mathAcademyId"] = json!(content_math_academy_id(e));
     if let Some((_, entry)) = authored {
@@ -2754,6 +2803,44 @@ mod lesson_progress_tests {
 #[cfg(test)]
 mod study_queue_tests {
     use super::*;
+
+    #[test]
+    fn standalone_questions_and_saved_items_include_their_shared_function() -> Result<()> {
+        let s = EntitySnapshot::new(BTreeMap::from([
+            (1, json!({"question/id":"part","question/problem":"Calculate $f'(x)$.\n\n$f'(x)={{field-1}}$"}).as_object().unwrap().clone()),
+            (2, json!({"step/content":1}).as_object().unwrap().clone()),
+            (3, json!({"multistep/context":"Consider $f(x)=-x^3-3x^2+24x-7$.","multistep/steps":[2]}).as_object().unwrap().clone()),
+            (4, json!({"task-item/content":1,"task-item/status":5}).as_object().unwrap().clone()),
+            (5, json!({"db/ident":kw("task-item.status/started")}).as_object().unwrap().clone()),
+        ]), 10)?;
+        let before = s.entities.clone();
+        let expected = "Consider $f(x)=-x^3-3x^2+24x-7$.\n\nCalculate $f'(x)$.\n\n$f'(x)={{field-1}}$";
+        assert_eq!(question_markdown(&s, 1)?, expected);
+        assert_eq!(task_step_json_with_elapsed(&s, &[], 4, None)?["markdown"], expected);
+        assert_eq!(s.entities, before);
+        Ok(())
+    }
+
+    #[test]
+    fn shared_question_setup_is_ordered_deduplicated_and_never_guessed() -> Result<()> {
+        let mut s = EntitySnapshot::new(BTreeMap::from([
+            (1, json!({"question/problem":"Calculate the derivative."}).as_object().unwrap().clone()),
+            (2, json!({"step/content":1}).as_object().unwrap().clone()),
+            (3, json!({"multistep/context":"Inner setup.","multistep/steps":[2]}).as_object().unwrap().clone()),
+            (4, json!({"step/content":3}).as_object().unwrap().clone()),
+            (5, json!({"multistep/context":"Outer setup.","multistep/steps":[4]}).as_object().unwrap().clone()),
+        ]), 10)?;
+        assert_eq!(question_markdown(&s, 1)?, "Outer setup.\n\nInner setup.\n\nCalculate the derivative.");
+        s.entities.insert(1, json!({"question/problem":"Outer setup.\n\nInner setup.\n\nCalculate the derivative."}).as_object().unwrap().clone());
+        assert_eq!(question_markdown(&s, 1)?, "Outer setup.\n\nInner setup.\n\nCalculate the derivative.");
+        s.entities.insert(6, json!({"multistep/context":"Different function.","multistep/steps":[2]}).as_object().unwrap().clone());
+        assert!(question_markdown(&s, 1).unwrap_err().to_string().contains("different shared setups"));
+        s.entities.remove(&6);
+        s.entities.insert(7, json!({"step/content":5}).as_object().unwrap().clone());
+        s.entities.get_mut(&3).unwrap().insert("multistep/steps".into(), json!([2,7]));
+        assert!(question_markdown(&s, 1).unwrap_err().to_string().contains("acyclic"));
+        Ok(())
+    }
 
     fn fixture() -> EntitySnapshot {
         let mut records = BTreeMap::new();
