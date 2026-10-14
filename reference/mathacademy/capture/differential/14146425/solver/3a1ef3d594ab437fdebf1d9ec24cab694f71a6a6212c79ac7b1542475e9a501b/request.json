@@ -1,0 +1,54 @@
+{
+  "task": "solve_question",
+  "payload": {
+    "evidence_contract": "solve_question:1",
+    "question": {
+      "math_academy_id": "q-159902",
+      "problem": "Suppose ${X}_{1},{X}_{2},{X}_{3}$ is an I.I.D random sample with ${X}_{i}∼B(5,\\theta )$ with unknown probability of success $\\theta .$ You're given the particular sample \n\n$$\n{x}_{1}=5,\\,{x}_{2}=3,\\,{x}_{3}=2.\n$$\n\nThe log-likelihood function of the sample is given by\n\n$$\nl(\\theta )=\\operatorname{ln}⁡a+b\\operatorname{ln}⁡\\theta +c\\operatorname{ln}⁡(1-\\theta ).\n$$\n\nFind the value of $a+b+c.$",
+      "answer_fields_complete": true,
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14146425/observations/step-q159902-94e85a5fd6512a13927a.html",
+      "source_url": "https://mathacademy.com/tasks/14146425/topics/4124/lesson",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "115"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "120"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "137"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "128"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "105"
+            }
+          ]
+        }
+      ]
+    },
+    "current_example": {
+      "math_academy_id": "e-11119",
+      "problem": "Suppose $X_1, X_2, X_3$ is an I.I.D random sample with $X_i \\sim B(5,\\theta)$ with unknown probability of success $\\theta.$ You're given the particular sample \n\n$$\nx_1 = 4, \\qquad x_2 = 1, \\qquad x_3 = 1.\n$$\n\nFind the log-likelihood function of this sample.\n\n*Hint: The probability mass function for a binomial random variable is given by*\n\n$$\nf(x) = \\displaystyle \\binom{5}{x} \\theta^x (1-\\theta)^{5-x}, \\qquad x = 0,1, \\ldots, 5.\n$$",
+      "worked_solution": "Recall that if $X_1, X_2, \\ldots, X_{n}$ are independent and identically distributed discrete random variables with probability mass function $f(x; \\theta),$ where $\\theta$ is an unknown parameter, then the log-likelihood function of a random sample $x_1, x_2, \\ldots, x_n$ is\n\n$$\n\\begin{aligned}l(\\theta ) & =\\operatorname{ln}⁡L(\\theta ) \\\\  & =\\operatorname{ln}⁡({\\prod }_{i=1}^{n}f({x}_{i},\\theta )) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(f({x}_{i},\\theta )).\\end{aligned}\n$$\n\nIn our case, we are given a sample of $n = 3$ independent binomial random variables with an unknown probability of success $\\theta$ and $N = 5$ as the number of trials. Therefore, the probability mass function is\n\n$$\n\\begin{aligned}f(x,\\theta ) & =(\\genfrac{}{}{0pt}{}{N}{x}){\\theta }^{x}(1-\\theta )^{N-x},\\,x=0,1,…,N \\\\  & =(\\genfrac{}{}{0pt}{}{5}{x}){\\theta }^{x}(1-\\theta )^{5-x},\\,x=0,1,…,5.\\end{aligned}\n$$\n\nWe can calculate the log-likelihood function as follows:\n\n$$\n\\begin{aligned}l(\\theta ) & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡((\\genfrac{}{}{0pt}{}{5}{{x}_{i}}){\\theta }^{{x}_{i}}(1-\\theta )^{5-{x}_{i}}) \\\\  & ={\\sum }_{i=1}^{n}(\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{i}})+\\operatorname{ln}⁡({\\theta }^{{x}_{i}})+\\operatorname{ln}⁡((1-\\theta )^{5-{x}_{i}})) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{i}})+{\\sum }_{i=1}^{n}{x}_{i}\\operatorname{ln}⁡\\theta +{\\sum }_{i=1}^{n}(5-{x}_{i})\\operatorname{ln}⁡(1-\\theta ) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{i}})+\\operatorname{ln}⁡\\theta {\\sum }_{i=1}^{n}{x}_{i}+\\operatorname{ln}⁡(1-\\theta ){\\sum }_{i=1}^{n}(5-{x}_{i}) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{i}})+S\\operatorname{ln}⁡\\theta +(5n-S)\\operatorname{ln}⁡(1-\\theta )\\end{aligned}\n$$\n\nwhere $\\displaystyle S = \\sum_ {i=1}^n x_i.$\n\nNow, note that\n\n$$\n\\begin{aligned}{\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{i}}) & =\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{1}})+\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{2}})+\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{5}{{x}_{3}}) \\\\  & =\\operatorname{ln}⁡({\\prod }_{i=1}^{n}(\\genfrac{}{}{0pt}{}{5}{{x}_{i}})).\\end{aligned}\n$$\n\nSo, our expression for $l(\\theta)$ becomes\n\n$$\nl(\\theta) =  \\ln\\left( \\prod_{i=1}^n {5 \\choose x_i}\\right) + S\\ln \\theta + (5n - S) \\ln(1-\\theta).\n$$\n\nNow, using the sample data with $n=3,$ we have\n\n$$\n\\begin{aligned}{\\prod }_{i=1}^{n}(\\genfrac{}{}{0pt}{}{5}{{x}_{i}}) & =(\\genfrac{}{}{0pt}{}{5}{4})\\cdot (\\genfrac{}{}{0pt}{}{5}{1})\\cdot (\\genfrac{}{}{0pt}{}{5}{1}) \\\\  & =5\\cdot 5\\cdot 5 \\\\  & =125,\\end{aligned}\n$$\n\nand\n\n$$\nS = 4 + 1 + 1 = 6.\n$$\n\nSubstituting the above values into our expression for $l(\\theta)$, we get\n\n$$\n\\begin{aligned}l(\\theta ) & =\\operatorname{ln}⁡(125)+6\\operatorname{ln}⁡\\theta +(5\\cdot 3-6)\\operatorname{ln}⁡(1-\\theta ) \\\\  & =\\operatorname{ln}⁡125+6\\operatorname{ln}⁡\\theta +9\\operatorname{ln}⁡(1-\\theta ).\\end{aligned}\n$$",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14146425/observations/step-e11119-02122953d37a7eccd05a.html",
+      "source_url": "https://mathacademy.com/tasks/14146425/topics/4124/lesson"
+    }
+  }
+}
