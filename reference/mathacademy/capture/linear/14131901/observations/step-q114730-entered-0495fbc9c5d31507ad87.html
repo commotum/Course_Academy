@@ -1,0 +1,1471 @@
+<!DOCTYPE html><html><head>
+        <title>Math Academy</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">    
+
+        <link rel="shortcut icon" href="/img/favicon.ico">
+        <link rel="stylesheet" href="/css/app.css?v=2">
+        <link rel="stylesheet" href="/css/mathquill.css">
+        <link rel="stylesheet" href="/css/math-editor.css">
+
+        <link rel="stylesheet" href="/css/prism.css">
+        <script type="text/javascript" src="/js/prism.js"></script>
+
+        <script type="text/javascript" src="/js/jquery.1.11.0.min.js"></script>
+
+        <script>
+            $.noConflict();
+            // Code that uses other library's $ can follow here.
+        </script>
+
+        <script type="text/javascript" src="/js/mathquill.v2.1.min.js"></script>
+        <script type="text/javascript" src="/js/math-editor.js"></script>         
+        <script type="text/javascript" src="/js/mathjax-config.js?v=2"></script>
+        <script type="text/javascript" id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="loadMathJaxFallback()"></script>
+        <!--
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>        
+        <script type="text/javascript" src="/js/katex-config.js"></script>
+        -->
+
+          
+
+        <script type="text/javascript" src="/js/core.js"></script>
+        <script type="text/javascript" src="/js/core-ui.js"></script>
+        <script type="text/javascript" src="/js/api.js"></script>
+        <script type="text/javascript" src="/js/api-new.js"></script>
+           
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/input/tex/extensions/color.js" charset="UTF-8"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/input/tex/extensions/enclose.js" charset="UTF-8"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/input/tex/extensions/bbox.js" charset="UTF-8"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/input/tex/extensions/cancel.js" charset="UTF-8"></script><style type="text/css">.CtxtMenu_InfoClose {  top:.2em; right:.2em;}
+.CtxtMenu_InfoContent {  overflow:auto; text-align:left; font-size:80%;  padding:.4em .6em; border:1px inset; margin:1em 0px;  max-height:20em; max-width:30em; background-color:#EEEEEE;  white-space:normal;}
+.CtxtMenu_Info.CtxtMenu_MousePost {outline:none;}
+.CtxtMenu_Info {  position:fixed; left:50%; width:auto; text-align:center;  border:3px outset; padding:1em 2em; background-color:#DDDDDD;  color:black;  cursor:default; font-family:message-box; font-size:120%;  font-style:normal; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 15px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius:15px;               /* Safari and Chrome */  -moz-border-radius:15px;                  /* Firefox */  -khtml-border-radius:15px;                /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */  filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color="gray", Positive="true"); /* IE */}
+</style><style type="text/css">.CtxtMenu_MenuClose {  position:absolute;  cursor:pointer;  display:inline-block;  border:2px solid #AAA;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  font-family: "Courier New", Courier;  font-size:24px;  color:#F0F0F0}
+.CtxtMenu_MenuClose span {  display:block; background-color:#AAA; border:1.5px solid;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  line-height:0;  padding:8px 0 6px     /* may need to be browser-specific */}
+.CtxtMenu_MenuClose:hover {  color:white!important;  border:2px solid #CCC!important}
+.CtxtMenu_MenuClose:hover span {  background-color:#CCC!important}
+.CtxtMenu_MenuClose:hover:focus {  outline:none}
+</style><style type="text/css">.CtxtMenu_Menu {  position:absolute;  background-color:white;  color:black;  width:auto; padding:5px 0px;  border:1px solid #CCCCCC; margin:0; cursor:default;  font: menu; text-align:left; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 5px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius: 5px;             /* Safari and Chrome */  -moz-border-radius: 5px;                /* Firefox */  -khtml-border-radius: 5px;              /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */}
+.CtxtMenu_MenuItem {  padding: 1px 2em;  background:transparent;}
+.CtxtMenu_MenuArrow {  position:absolute; right:.5em; padding-top:.25em; color:#666666;  font-family: null; font-size: .75em}
+.CtxtMenu_MenuActive .CtxtMenu_MenuArrow {color:white}
+.CtxtMenu_MenuArrow.CtxtMenu_RTL {left:.5em; right:auto}
+.CtxtMenu_MenuCheck {  position:absolute; left:.7em;  font-family: null}
+.CtxtMenu_MenuCheck.CtxtMenu_RTL { right:.7em; left:auto }
+.CtxtMenu_MenuRadioCheck {  position:absolute; left: .7em;}
+.CtxtMenu_MenuRadioCheck.CtxtMenu_RTL {  right: .7em; left:auto}
+.CtxtMenu_MenuInputBox {  padding-left: 1em; right:.5em; color:#666666;  font-family: null;}
+.CtxtMenu_MenuInputBox.CtxtMenu_RTL {  left: .1em;}
+.CtxtMenu_MenuComboBox {  left:.1em; padding-bottom:.5em;}
+.CtxtMenu_MenuSlider {  left: .1em;}
+.CtxtMenu_SliderValue {  position:absolute; right:.1em; padding-top:.25em; color:#333333;  font-size: .75em}
+.CtxtMenu_SliderBar {  outline: none; background: #d3d3d3}
+.CtxtMenu_MenuLabel {  padding: 1px 2em 3px 1.33em;  font-style:italic}
+.CtxtMenu_MenuRule {  border-top: 1px solid #DDDDDD;  margin: 4px 3px;}
+.CtxtMenu_MenuDisabled {  color:GrayText}
+.CtxtMenu_MenuActive {  background-color: #606872;  color: white;}
+.CtxtMenu_MenuDisabled:focus {  background-color: #E8E8E8}
+.CtxtMenu_MenuLabel:focus {  background-color: #E8E8E8}
+.CtxtMenu_ContextMenu:focus {  outline:none}
+.CtxtMenu_ContextMenu .CtxtMenu_MenuItem:focus {  outline:none}
+.CtxtMenu_SelectionMenu {  position:relative; float:left;  border-bottom: none; -webkit-box-shadow:none; -webkit-border-radius:0px; }
+.CtxtMenu_SelectionItem {  padding-right: 1em;}
+.CtxtMenu_Selection {  right: 40%; width:50%; }
+.CtxtMenu_SelectionBox {  padding: 0em; max-height:20em; max-width: none;  background-color:#FFFFFF;}
+.CtxtMenu_SelectionDivider {  clear: both; border-top: 2px solid #000000;}
+.CtxtMenu_Menu .CtxtMenu_MenuClose {  top:-10px; left:-10px}
+</style><style id="MJX-CHTML-styles">
+mjx-container[jax="CHTML"] {
+  line-height: 0;
+}
+
+mjx-container [space="1"] {
+  margin-left: .111em;
+}
+
+mjx-container [space="2"] {
+  margin-left: .167em;
+}
+
+mjx-container [space="3"] {
+  margin-left: .222em;
+}
+
+mjx-container [space="4"] {
+  margin-left: .278em;
+}
+
+mjx-container [space="5"] {
+  margin-left: .333em;
+}
+
+mjx-container [rspace="1"] {
+  margin-right: .111em;
+}
+
+mjx-container [rspace="2"] {
+  margin-right: .167em;
+}
+
+mjx-container [rspace="3"] {
+  margin-right: .222em;
+}
+
+mjx-container [rspace="4"] {
+  margin-right: .278em;
+}
+
+mjx-container [rspace="5"] {
+  margin-right: .333em;
+}
+
+mjx-container [size="s"] {
+  font-size: 70.7%;
+}
+
+mjx-container [size="ss"] {
+  font-size: 50%;
+}
+
+mjx-container [size="Tn"] {
+  font-size: 60%;
+}
+
+mjx-container [size="sm"] {
+  font-size: 85%;
+}
+
+mjx-container [size="lg"] {
+  font-size: 120%;
+}
+
+mjx-container [size="Lg"] {
+  font-size: 144%;
+}
+
+mjx-container [size="LG"] {
+  font-size: 173%;
+}
+
+mjx-container [size="hg"] {
+  font-size: 207%;
+}
+
+mjx-container [size="HG"] {
+  font-size: 249%;
+}
+
+mjx-container [width="full"] {
+  width: 100%;
+}
+
+mjx-box {
+  display: inline-block;
+}
+
+mjx-block {
+  display: block;
+}
+
+mjx-itable {
+  display: inline-table;
+}
+
+mjx-row {
+  display: table-row;
+}
+
+mjx-row > * {
+  display: table-cell;
+}
+
+mjx-mtext {
+  display: inline-block;
+}
+
+mjx-mstyle {
+  display: inline-block;
+}
+
+mjx-merror {
+  display: inline-block;
+  color: red;
+  background-color: yellow;
+}
+
+mjx-mphantom {
+  visibility: hidden;
+}
+
+_::-webkit-full-page-media, _:future, :root mjx-container {
+  will-change: opacity;
+}
+
+mjx-assistive-mml {
+  position: absolute !important;
+  top: 0px;
+  left: 0px;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 1px 0px 0px 0px !important;
+  border: 0px !important;
+  display: block !important;
+  width: auto !important;
+  overflow: hidden !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+mjx-assistive-mml[display="block"] {
+  width: 100% !important;
+}
+
+mjx-c::before {
+  display: block;
+  width: 0;
+}
+
+.MJX-TEX {
+  font-family: MJXZERO, MJXTEX;
+}
+
+.TEX-B {
+  font-family: MJXZERO, MJXTEX-B;
+}
+
+.TEX-I {
+  font-family: MJXZERO, MJXTEX-I;
+}
+
+.TEX-MI {
+  font-family: MJXZERO, MJXTEX-MI;
+}
+
+.TEX-BI {
+  font-family: MJXZERO, MJXTEX-BI;
+}
+
+.TEX-S1 {
+  font-family: MJXZERO, MJXTEX-S1;
+}
+
+.TEX-S2 {
+  font-family: MJXZERO, MJXTEX-S2;
+}
+
+.TEX-S3 {
+  font-family: MJXZERO, MJXTEX-S3;
+}
+
+.TEX-S4 {
+  font-family: MJXZERO, MJXTEX-S4;
+}
+
+.TEX-A {
+  font-family: MJXZERO, MJXTEX-A;
+}
+
+.TEX-C {
+  font-family: MJXZERO, MJXTEX-C;
+}
+
+.TEX-CB {
+  font-family: MJXZERO, MJXTEX-CB;
+}
+
+.TEX-FR {
+  font-family: MJXZERO, MJXTEX-FR;
+}
+
+.TEX-FRB {
+  font-family: MJXZERO, MJXTEX-FRB;
+}
+
+.TEX-SS {
+  font-family: MJXZERO, MJXTEX-SS;
+}
+
+.TEX-SSB {
+  font-family: MJXZERO, MJXTEX-SSB;
+}
+
+.TEX-SSI {
+  font-family: MJXZERO, MJXTEX-SSI;
+}
+
+.TEX-SC {
+  font-family: MJXZERO, MJXTEX-SC;
+}
+
+.TEX-T {
+  font-family: MJXZERO, MJXTEX-T;
+}
+
+.TEX-V {
+  font-family: MJXZERO, MJXTEX-V;
+}
+
+.TEX-VB {
+  font-family: MJXZERO, MJXTEX-VB;
+}
+
+mjx-stretchy-v mjx-c, mjx-stretchy-h mjx-c {
+  font-family: MJXZERO, MJXTEX-S1, MJXTEX-S4, MJXTEX, MJXTEX-A ! important;
+}
+
+@font-face /* 0 */ {
+  font-family: MJXZERO;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Zero.woff") format("woff");
+}
+
+@font-face /* 1 */ {
+  font-family: MJXTEX;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Regular.woff") format("woff");
+}
+
+@font-face /* 2 */ {
+  font-family: MJXTEX-B;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Bold.woff") format("woff");
+}
+
+@font-face /* 3 */ {
+  font-family: MJXTEX-I;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-Italic.woff") format("woff");
+}
+
+@font-face /* 4 */ {
+  font-family: MJXTEX-MI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Italic.woff") format("woff");
+}
+
+@font-face /* 5 */ {
+  font-family: MJXTEX-BI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-BoldItalic.woff") format("woff");
+}
+
+@font-face /* 6 */ {
+  font-family: MJXTEX-S1;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size1-Regular.woff") format("woff");
+}
+
+@font-face /* 7 */ {
+  font-family: MJXTEX-S2;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size2-Regular.woff") format("woff");
+}
+
+@font-face /* 8 */ {
+  font-family: MJXTEX-S3;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size3-Regular.woff") format("woff");
+}
+
+@font-face /* 9 */ {
+  font-family: MJXTEX-S4;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size4-Regular.woff") format("woff");
+}
+
+@font-face /* 10 */ {
+  font-family: MJXTEX-A;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_AMS-Regular.woff") format("woff");
+}
+
+@font-face /* 11 */ {
+  font-family: MJXTEX-C;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Regular.woff") format("woff");
+}
+
+@font-face /* 12 */ {
+  font-family: MJXTEX-CB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Bold.woff") format("woff");
+}
+
+@font-face /* 13 */ {
+  font-family: MJXTEX-FR;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Regular.woff") format("woff");
+}
+
+@font-face /* 14 */ {
+  font-family: MJXTEX-FRB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Bold.woff") format("woff");
+}
+
+@font-face /* 15 */ {
+  font-family: MJXTEX-SS;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Regular.woff") format("woff");
+}
+
+@font-face /* 16 */ {
+  font-family: MJXTEX-SSB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Bold.woff") format("woff");
+}
+
+@font-face /* 17 */ {
+  font-family: MJXTEX-SSI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Italic.woff") format("woff");
+}
+
+@font-face /* 18 */ {
+  font-family: MJXTEX-SC;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Script-Regular.woff") format("woff");
+}
+
+@font-face /* 19 */ {
+  font-family: MJXTEX-T;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Typewriter-Regular.woff") format("woff");
+}
+
+@font-face /* 20 */ {
+  font-family: MJXTEX-V;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Regular.woff") format("woff");
+}
+
+@font-face /* 21 */ {
+  font-family: MJXTEX-VB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Bold.woff") format("woff");
+}
+</style><style data-calcw-skins="">.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}</style></head>    
+    <body>
+        <div id="wrap">
+            <link rel="stylesheet" href="/css/select-list.css">
+<link rel="stylesheet" href="/css/help-menu.css">
+<link rel="stylesheet" href="/css/question-widget.css">
+<link rel="stylesheet" href="/css/student-lesson.css">
+
+<link rel="stylesheet" href="/css/calculator.css">
+<link rel="stylesheet" href="/css/calculator-skins-app.css">
+<link rel="stylesheet" href="/css/calculator-skins-edu.css">
+
+<script type="text/javascript" src="/js/core/utils/splitter.js"></script>
+<script type="text/javascript" src="/js/core/utils/segment-parser.js?v=3"></script>
+<script type="text/javascript" src="/js/core/utils/graphics-parser.js"></script>
+<script type="text/javascript" src="/js/core/utils/block-parser.js?v=2"></script>
+<script type="text/javascript" src="/js/core/utils/code-renderer.js?v=2"></script>
+<script type="text/javascript" src="/js/core/question/components/input/input.js"></script>
+<script type="text/javascript" src="/js/core/question/components/input/select.js"></script>
+<script type="text/javascript" src="/js/core/question/components/input/textbox.js"></script>
+<script type="text/javascript" src="/js/core/question/components/question-body-section.js"></script>
+<script type="text/javascript" src="/js/core/question/components/question-body.js"></script>
+
+<script type="text/javascript" src="/js/error-reporter.js?v=4"></script>
+<script type="text/javascript" src="/js/marked.min.js"></script>
+<script type="text/javascript" src="/js/mathdown.js?v=3"></script>
+<script type="text/javascript" src="/js/task-event-storage.js"></script>
+<script type="text/javascript" src="/js/task-event.js"></script>
+<script type="text/javascript" src="/js/free-response-parser.js"></script>
+<script type="text/javascript" src="/js/select-list.js"></script>
+<script type="text/javascript" src="/js/question-body-widget.js"></script>
+<script type="text/javascript" src="/js/question-body-renderer.js"></script>
+
+<script type="text/javascript" src="/js/calculator-expression.js"></script>
+<script type="text/javascript" src="/js/calculator-graphing.js"></script>
+<script type="text/javascript" src="/js/calculator-engine.js"></script>
+<script type="text/javascript" src="/js/calculator-widget.js"></script>
+
+<script type="text/javascript" src="/js/help-menu.js"></script>
+<script type="text/javascript" src="/js/question-widget.js?v=2"></script>
+<script type="text/javascript" src="/js/multiple-choice-question-widget.js"></script>
+<script type="text/javascript" src="/js/free-response-question-widget.js"></script>
+<script type="text/javascript" src="/js/static-select-question-widget.js"></script>
+<script type="text/javascript" src="/js/dynamic-select-question-widget.js"></script>
+<script type="text/javascript" src="/js/proof-question-widget.js"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@rive-app/canvas@latest/rive.js" defer=""></script>
+
+<script>
+    var taskAlreadyCompleted = false;
+    var initialPointsAwarded = null;
+    var initialTaskPoints = null;
+    var initialTaskPassed = null;
+</script>
+
+<script type="text/javascript" src="/js/student-lesson.js"></script>
+
+<div id="header" style="display: block;">
+    <div id="progressBar"><div id="progressBarPreviousButton" class="progressBarPreviousButtonEnabled"></div><div id="stepButton-t2178" class="stepButton visited"></div><div id="stepButton-e10595" class="stepButton visited"></div><div id="stepButton-q150790" class="stepButton visited"></div><div id="stepButton-q150754" class="stepButton visited"></div><div id="stepButton-q150757" class="stepButton visited"></div><div id="stepButton-q150755" class="stepButton visited"></div><div id="stepButton-q150686" class="stepButton visited"></div><div id="stepButton-e10596" class="stepButton visited"></div><div id="stepButton-q153862" class="stepButton visited"></div><div id="stepButton-q150799" class="stepButton visited"></div><div id="stepButton-q150801" class="stepButton visited"></div><div id="stepButton-q153860" class="stepButton visited"></div><div id="stepButton-q153666" class="stepButton visited"></div><div id="stepButton-e2604" class="stepButton visited"></div><div id="stepButton-q52645" class="stepButton visited"></div><div id="stepButton-q151096" class="stepButton visited"></div><div id="stepButton-q114726" class="stepButton visited"></div><div id="stepButton-q114730" class="stepButton current"></div><div id="stepButton-q114728" class="stepButton"></div><div id="progressBarNextButton" class="progressBarNextButtonDisabled"></div></div>
+
+    <div id="exitButton"></div>
+</div>
+
+
+<div id="stepsFrame" style="display: block;">
+    <div id="steps">        
+        
+    
+            
+    
+            <div id="step-t2178" class="step" style="display: block">
+    
+               
+                <div class="tutorial">
+                    <div class="stepHeader">
+                        <div class="stepName"><span class="stepType">Introduction</span></div>       
+                        <div class="helpButton" stepid="t2178">?</div>
+                    </div>                    
+    
+                    <style type="text/css">
+                            .mjpage .MJX-monospace {
+                            font-family: monospace
+                            }
+
+                            .mjpage .MJX-sans-serif {
+                            font-family: sans-serif
+                            }
+
+                            .mjpage {
+                            display: inline;
+                            font-style: normal;
+                            font-weight: normal;
+                            line-height: normal;
+                            font-size: 100%;
+                            font-size-adjust: none;
+                            text-indent: 0;
+                            text-align: left;
+                            text-transform: none;
+                            letter-spacing: normal;
+                            word-spacing: normal;
+                            word-wrap: normal;
+                            white-space: nowrap;
+                            float: none;
+                            direction: ltr;
+                            max-width: none;
+                            max-height: none;
+                            min-width: 0;
+                            min-height: 0;
+                            border: 0;
+                            padding: 0;
+                            margin: 0
+                            }
+
+                            .mjpage * {
+                            transition: none;
+                            -webkit-transition: none;
+                            -moz-transition: none;
+                            -ms-transition: none;
+                            -o-transition: none
+                            }
+
+                            .mjx-svg-href {
+                            fill: blue;
+                            stroke: blue
+                            }
+
+                            .MathJax_SVG_LineBox {
+                            display: table!important
+                            }
+
+                            .MathJax_SVG_LineBox span {
+                            display: table-cell!important;
+                            width: 10000em!important;
+                            min-width: 0;
+                            max-width: none;
+                            padding: 0;
+                            border: 0;
+                            margin: 0
+                            }
+
+                            .mjpage__block {
+                            text-align: center;
+                            margin: 1em 0em;
+                            position: relative;
+                            display: block!important;
+                            text-indent: 0;
+                            max-width: none;
+                            max-height: none;
+                            min-width: 0;
+                            min-height: 0;
+                            width: 100%
+                            }</style><p>Some angles have special names.</p>
+<ul>
+<li><p>A <strong>right angle</strong> has a measure of <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="4.026ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 1733.4 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-1-Title">
+<title id="MathJax-SVG-1-Title">90^\circ.</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E1-MJMAIN-39" d="M352 287Q304 211 232 211Q154 211 104 270T44 396Q42 412 42 436V444Q42 537 111 606Q171 666 243 666Q245 666 249 666T257 665H261Q273 665 286 663T323 651T370 619T413 560Q456 472 456 334Q456 194 396 97Q361 41 312 10T208 -22Q147 -22 108 7T68 93T121 149Q143 149 158 135T173 96Q173 78 164 65T148 49T135 44L131 43Q131 41 138 37T164 27T206 22H212Q272 22 313 86Q352 142 352 280V287ZM244 248Q292 248 321 297T351 430Q351 508 343 542Q341 552 337 562T323 588T293 615T246 625Q208 625 181 598Q160 576 154 546T147 441Q147 358 152 329T172 282Q197 248 244 248Z"></path>
+<path stroke-width="1" id="E1-MJMAIN-30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path>
+<path stroke-width="1" id="E1-MJMAIN-2218" d="M55 251Q55 328 112 386T249 444T386 388T444 249Q444 171 388 113T250 55Q170 55 113 112T55 251ZM245 403Q188 403 142 361T96 250Q96 183 141 140T250 96Q284 96 313 109T354 135T375 160Q403 197 403 250Q403 313 360 358T245 403Z"></path>
+<path stroke-width="1" id="E1-MJMAIN-2E" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E1-MJMAIN-39"></use>
+ <use xlink:href="#E1-MJMAIN-30" x="500" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E1-MJMAIN-2218" x="1415" y="557"></use>
+ <use xlink:href="#E1-MJMAIN-2E" x="1454" y="0"></use>
+</g>
+</svg></span> It corresponds to one-quarter of a full turn.</p>
+<div id="graphic-0729ecdd0e50e50ae481185840af19a7" class="graphic"><img src="/graphics/0729ecdd0e50e50ae481185840af19a7"></div>
+</li>
+<li><p>A <strong>straight angle</strong>, which is just a straight line, has a measure of <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="5.188ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 2233.9 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-2-Title">
+<title id="MathJax-SVG-2-Title">180^\circ.</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E2-MJMAIN-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path>
+<path stroke-width="1" id="E2-MJMAIN-38" d="M70 417T70 494T124 618T248 666Q319 666 374 624T429 515Q429 485 418 459T392 417T361 389T335 371T324 363L338 354Q352 344 366 334T382 323Q457 264 457 174Q457 95 399 37T249 -22Q159 -22 101 29T43 155Q43 263 172 335L154 348Q133 361 127 368Q70 417 70 494ZM286 386L292 390Q298 394 301 396T311 403T323 413T334 425T345 438T355 454T364 471T369 491T371 513Q371 556 342 586T275 624Q268 625 242 625Q201 625 165 599T128 534Q128 511 141 492T167 463T217 431Q224 426 228 424L286 386ZM250 21Q308 21 350 55T392 137Q392 154 387 169T375 194T353 216T330 234T301 253T274 270Q260 279 244 289T218 306L210 311Q204 311 181 294T133 239T107 157Q107 98 150 60T250 21Z"></path>
+<path stroke-width="1" id="E2-MJMAIN-30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path>
+<path stroke-width="1" id="E2-MJMAIN-2218" d="M55 251Q55 328 112 386T249 444T386 388T444 249Q444 171 388 113T250 55Q170 55 113 112T55 251ZM245 403Q188 403 142 361T96 250Q96 183 141 140T250 96Q284 96 313 109T354 135T375 160Q403 197 403 250Q403 313 360 358T245 403Z"></path>
+<path stroke-width="1" id="E2-MJMAIN-2E" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E2-MJMAIN-31"></use>
+ <use xlink:href="#E2-MJMAIN-38" x="500" y="0"></use>
+ <use xlink:href="#E2-MJMAIN-30" x="1001" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E2-MJMAIN-2218" x="2123" y="557"></use>
+ <use xlink:href="#E2-MJMAIN-2E" x="1955" y="0"></use>
+</g>
+</svg></span> It corresponds to one-half of a full turn.</p>
+<div id="graphic-cc5d4e4f0eebd08cb156839b6e212a3c" class="graphic"><img src="/graphics/cc5d4e4f0eebd08cb156839b6e212a3c"></div>
+
+
+</li>
+</ul>
+<ul>
+<li><p>A <strong>null angle</strong> has a measure of <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.864ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 1232.9 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-3-Title">
+<title id="MathJax-SVG-3-Title">0^\circ.</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E3-MJMAIN-30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path>
+<path stroke-width="1" id="E3-MJMAIN-2218" d="M55 251Q55 328 112 386T249 444T386 388T444 249Q444 171 388 113T250 55Q170 55 113 112T55 251ZM245 403Q188 403 142 361T96 250Q96 183 141 140T250 96Q284 96 313 109T354 135T375 160Q403 197 403 250Q403 313 360 358T245 403Z"></path>
+<path stroke-width="1" id="E3-MJMAIN-2E" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E3-MJMAIN-30" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E3-MJMAIN-2218" x="707" y="557"></use>
+ <use xlink:href="#E3-MJMAIN-2E" x="954" y="0"></use>
+</g>
+</svg></span> You can imagine "closing" the angle until the two sides of the angle overlap. In this case, we don't have any turn, so its measure is zero!</p>
+<div id="graphic-d2a63c2f2b942f09af2cd7367e0505a0" class="graphic"><img src="/graphics/d2a63c2f2b942f09af2cd7367e0505a0"></div>
+</li>
+<li><p>A <strong>full angle</strong> has a measure of <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="5.188ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 2233.9 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-4-Title">
+<title id="MathJax-SVG-4-Title">360^\circ.</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E4-MJMAIN-33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path>
+<path stroke-width="1" id="E4-MJMAIN-36" d="M42 313Q42 476 123 571T303 666Q372 666 402 630T432 550Q432 525 418 510T379 495Q356 495 341 509T326 548Q326 592 373 601Q351 623 311 626Q240 626 194 566Q147 500 147 364L148 360Q153 366 156 373Q197 433 263 433H267Q313 433 348 414Q372 400 396 374T435 317Q456 268 456 210V192Q456 169 451 149Q440 90 387 34T253 -22Q225 -22 199 -14T143 16T92 75T56 172T42 313ZM257 397Q227 397 205 380T171 335T154 278T148 216Q148 133 160 97T198 39Q222 21 251 21Q302 21 329 59Q342 77 347 104T352 209Q352 289 347 316T329 361Q302 397 257 397Z"></path>
+<path stroke-width="1" id="E4-MJMAIN-30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path>
+<path stroke-width="1" id="E4-MJMAIN-2218" d="M55 251Q55 328 112 386T249 444T386 388T444 249Q444 171 388 113T250 55Q170 55 113 112T55 251ZM245 403Q188 403 142 361T96 250Q96 183 141 140T250 96Q284 96 313 109T354 135T375 160Q403 197 403 250Q403 313 360 358T245 403Z"></path>
+<path stroke-width="1" id="E4-MJMAIN-2E" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E4-MJMAIN-33"></use>
+ <use xlink:href="#E4-MJMAIN-36" x="500" y="0"></use>
+ <use xlink:href="#E4-MJMAIN-30" x="1001" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E4-MJMAIN-2218" x="2123" y="557"></use>
+ <use xlink:href="#E4-MJMAIN-2E" x="1955" y="0"></use>
+</g>
+</svg></span> You can imagine "opening" the angle until one of the sides goes all the way around. So, this is the angle between a ray and itself after it has made one full turn.</p>
+<div id="graphic-7ba2fb4b247374848dbc4b7c8d7fcf85" class="graphic"><img src="/graphics/7ba2fb4b247374848dbc4b7c8d7fcf85"></div>
+
+</li>
+</ul>
+<p>On a diagram, null and full angles can look the same, so it is up to us what we choose to call it.</p>
+           
+                </div>        
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-t2178" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-e10595" class="step" style="display: block;">
+    
+                 
+                <div class="example">
+                    <div class="stepHeader">
+                        <div class="stepName"><span class="stepType">Example:</span> Identifying Right Angles</div>       
+                        <div class="helpButton" stepid="e10595">?</div>
+                    </div>
+            
+                    <div class="exampleQuestion">
+                        <p>Which of the following shows a right angle?</p>
+<div id="graphic-8e5c550bebeadc1d031c5f38ade12467" class="graphic"><img src="/graphics/8e5c550bebeadc1d031c5f38ade12467"></div> 
+                    </div>     
+            
+                    <div class="exampleExplanationHeader">EXPLANATION</div>
+            
+                    <div class="exampleExplanation">
+                        <style type="text/css">
+                            .mjpage .MJX-monospace {
+                            font-family: monospace
+                            }
+
+                            .mjpage .MJX-sans-serif {
+                            font-family: sans-serif
+                            }
+
+                            .mjpage {
+                            display: inline;
+                            font-style: normal;
+                            font-weight: normal;
+                            line-height: normal;
+                            font-size: 100%;
+                            font-size-adjust: none;
+                            text-indent: 0;
+                            text-align: left;
+                            text-transform: none;
+                            letter-spacing: normal;
+                            word-spacing: normal;
+                            word-wrap: normal;
+                            white-space: nowrap;
+                            float: none;
+                            direction: ltr;
+                            max-width: none;
+                            max-height: none;
+                            min-width: 0;
+                            min-height: 0;
+                            border: 0;
+                            padding: 0;
+                            margin: 0
+                            }
+
+                            .mjpage * {
+                            transition: none;
+                            -webkit-transition: none;
+                            -moz-transition: none;
+                            -ms-transition: none;
+                            -o-transition: none
+                            }
+
+                            .mjx-svg-href {
+                            fill: blue;
+                            stroke: blue
+                            }
+
+                            .MathJax_SVG_LineBox {
+                            display: table!important
+                            }
+
+                            .MathJax_SVG_LineBox span {
+                            display: table-cell!important;
+                            width: 10000em!important;
+                            min-width: 0;
+                            max-width: none;
+                            padding: 0;
+                            border: 0;
+                            margin: 0
+                            }
+
+                            .mjpage__block {
+                            text-align: center;
+                            margin: 1em 0em;
+                            position: relative;
+                            display: block!important;
+                            text-indent: 0;
+                            max-width: none;
+                            max-height: none;
+                            min-width: 0;
+                            min-height: 0;
+                            width: 100%
+                            }</style><p>An angle of <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="3.379ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 1454.9 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-1-Title">
+<title id="MathJax-SVG-1-Title">90^\circ</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E1-MJMAIN-39" d="M352 287Q304 211 232 211Q154 211 104 270T44 396Q42 412 42 436V444Q42 537 111 606Q171 666 243 666Q245 666 249 666T257 665H261Q273 665 286 663T323 651T370 619T413 560Q456 472 456 334Q456 194 396 97Q361 41 312 10T208 -22Q147 -22 108 7T68 93T121 149Q143 149 158 135T173 96Q173 78 164 65T148 49T135 44L131 43Q131 41 138 37T164 27T206 22H212Q272 22 313 86Q352 142 352 280V287ZM244 248Q292 248 321 297T351 430Q351 508 343 542Q341 552 337 562T323 588T293 615T246 625Q208 625 181 598Q160 576 154 546T147 441Q147 358 152 329T172 282Q197 248 244 248Z"></path>
+<path stroke-width="1" id="E1-MJMAIN-30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path>
+<path stroke-width="1" id="E1-MJMAIN-2218" d="M55 251Q55 328 112 386T249 444T386 388T444 249Q444 171 388 113T250 55Q170 55 113 112T55 251ZM245 403Q188 403 142 361T96 250Q96 183 141 140T250 96Q284 96 313 109T354 135T375 160Q403 197 403 250Q403 313 360 358T245 403Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E1-MJMAIN-39"></use>
+ <use xlink:href="#E1-MJMAIN-30" x="500" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E1-MJMAIN-2218" x="1415" y="557"></use>
+</g>
+</svg></span> has the same measure as one-quarter of a full turn.</p>
+<p>Among the given options, the only <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="3.379ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 1454.9 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-2-Title">
+<title id="MathJax-SVG-2-Title">90^\circ</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E2-MJMAIN-39" d="M352 287Q304 211 232 211Q154 211 104 270T44 396Q42 412 42 436V444Q42 537 111 606Q171 666 243 666Q245 666 249 666T257 665H261Q273 665 286 663T323 651T370 619T413 560Q456 472 456 334Q456 194 396 97Q361 41 312 10T208 -22Q147 -22 108 7T68 93T121 149Q143 149 158 135T173 96Q173 78 164 65T148 49T135 44L131 43Q131 41 138 37T164 27T206 22H212Q272 22 313 86Q352 142 352 280V287ZM244 248Q292 248 321 297T351 430Q351 508 343 542Q341 552 337 562T323 588T293 615T246 625Q208 625 181 598Q160 576 154 546T147 441Q147 358 152 329T172 282Q197 248 244 248Z"></path>
+<path stroke-width="1" id="E2-MJMAIN-30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path>
+<path stroke-width="1" id="E2-MJMAIN-2218" d="M55 251Q55 328 112 386T249 444T386 388T444 249Q444 171 388 113T250 55Q170 55 113 112T55 251ZM245 403Q188 403 142 361T96 250Q96 183 141 140T250 96Q284 96 313 109T354 135T375 160Q403 197 403 250Q403 313 360 358T245 403Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E2-MJMAIN-39"></use>
+ <use xlink:href="#E2-MJMAIN-30" x="500" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E2-MJMAIN-2218" x="1415" y="557"></use>
+</g>
+</svg></span> angle is the following:</p>
+<div id="graphic-7578182bd3234b7f3193dc04c1d11677" class="graphic"><img src="/graphics/7578182bd3234b7f3193dc04c1d11677"></div>
+
+<p>Therefore, the correct answer is II.</p>
+
+                    </div>     
+                </div>                            
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-e10595" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q150790" class="step questionWidget" style="display: block;"><div class="questionWidget-header"><div class="questionWidget-title">Question 1</div><div class="questionWidget-helpButton">?</div></div><div class="questionWidget-text"><p>Which of the following is the closest to a right angle?</p>
+</div><table class="questionWidget-choicesTable"><tbody><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150790-a" class="questionWidget-choiceLetterCircle">a</div></td><td class="questionWidget-choiceText">
+<img src="/graphics/q-150790-a-4"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150790-b" class="questionWidget-choiceLetterCircle">b</div></td><td class="questionWidget-choiceText">
+<img src="/graphics/q-150790-a-5"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150790-c" class="questionWidget-choiceLetterCircle">c</div></td><td class="questionWidget-choiceText">
+<img src="/graphics/q-150790-a-3"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150790-d" class="questionWidget-choiceLetterCircle">d</div></td><td class="questionWidget-choiceText">
+<img src="/graphics/q-150790-a-2"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150790-e" class="questionWidget-choiceLetterCircle" style="background: rgb(64, 64, 64); color: white;">e</div></td><td class="questionWidget-choiceText">
+<img src="/graphics/q-150790-a-1"></td></tr></tbody></table><div class="questionWidget-buttonBar"><div class="questionWidget-submitButton disabledButton" style="display: none;">Submit</div></div><div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner" style="display: block;"></div></div><div class="questionWidget-result"><div class="questionWidget-correctIncorrectIcon"><img src="/img/correct-answer.svg"></div><div class="questionWidget-correctText">Correct</div></div><div class="questionWidget-explanationHeader">EXPLANATION</div><div class="questionWidget-explanation"><p>A right angle has a degree measure of <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="0" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msup><mjx-mn class="mjx-n"><mjx-c class="mjx-c39"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-script style="vertical-align: 0.393em;"><mjx-mo class="mjx-n" size="s"><mjx-c class="mjx-c2218"></mjx-c></mjx-mo></mjx-script></mjx-msup><mjx-mo class="mjx-n"><mjx-c class="mjx-c2E"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mn>90</mn><mo>∘</mo></msup><mo>.</mo></math></mjx-assistive-mml></mjx-container> This corresponds to one-quarter of a full turn.</p>
+<p>Among the given options, the closest to a right angle is the following:</p>
+<div id="graphic-q-150790-e-0" class="graphic"><img src="/graphics/q-150790-e-0"></div>
+
+</div></div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q150790" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q150754" class="step questionWidget" style="display: block;"><div class="questionWidget-header"><div class="questionWidget-title">Question 2</div><div class="questionWidget-helpButton">?</div></div><div class="questionWidget-text"><p>Which of the following shows an angle of <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="1" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msup><mjx-mn class="mjx-n"><mjx-c class="mjx-c39"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-script style="vertical-align: 0.393em;"><mjx-mo class="mjx-n" size="s"><mjx-c class="mjx-c2218"></mjx-c></mjx-mo></mjx-script></mjx-msup><mjx-mo class="mjx-n"><mjx-c class="mjx-c3F"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mn>90</mn><mo>∘</mo></msup><mo>?</mo></math></mjx-assistive-mml></mjx-container></p>
+</div><table class="questionWidget-choicesTable"><tbody><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150754-a" class="questionWidget-choiceLetterCircle" style="background: rgb(64, 64, 64); color: white;">a</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150754-a-2"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150754-b" class="questionWidget-choiceLetterCircle">b</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150754-a-5"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150754-c" class="questionWidget-choiceLetterCircle">c</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150754-a-1"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150754-d" class="questionWidget-choiceLetterCircle">d</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150754-a-3"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150754-e" class="questionWidget-choiceLetterCircle">e</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150754-a-4"></td></tr></tbody></table><div class="questionWidget-buttonBar"><div class="questionWidget-submitButton disabledButton" style="display: none;">Submit</div></div><div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner" style="display: block;"></div></div><div class="questionWidget-result"><div class="questionWidget-incorrectIcon"><img src="/img/incorrect-answer.svg"></div><div class="questionWidget-incorrectText">Incorrect</div></div><div class="questionWidget-explanationHeader">EXPLANATION</div><div class="questionWidget-explanation"><p>An angle of <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="2" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msup><mjx-mn class="mjx-n"><mjx-c class="mjx-c39"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-script style="vertical-align: 0.393em;"><mjx-mo class="mjx-n" size="s"><mjx-c class="mjx-c2218"></mjx-c></mjx-mo></mjx-script></mjx-msup></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mn>90</mn><mo>∘</mo></msup></math></mjx-assistive-mml></mjx-container> has the same measure as one-quarter of a full turn.</p>
+<p>Among the given options, the only <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="3" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msup><mjx-mn class="mjx-n"><mjx-c class="mjx-c39"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-script style="vertical-align: 0.393em;"><mjx-mo class="mjx-n" size="s"><mjx-c class="mjx-c2218"></mjx-c></mjx-mo></mjx-script></mjx-msup></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mn>90</mn><mo>∘</mo></msup></math></mjx-assistive-mml></mjx-container> angle is the following:</p>
+<div id="graphic-q-150754-e-0" class="graphic"><img src="/graphics/q-150754-e-0"></div>
+
+</div></div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q150754" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q150757" class="step questionWidget" style="display: block;"><div class="questionWidget-header"><div class="questionWidget-title">Question 3</div><div class="questionWidget-helpButton">?</div></div><div class="questionWidget-text"><p>Which of the following shows a right angle?</p>
+</div><table class="questionWidget-choicesTable"><tbody><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150757-a" class="questionWidget-choiceLetterCircle">a</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150757-a-2"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150757-b" class="questionWidget-choiceLetterCircle" style="background: rgb(64, 64, 64); color: white;">b</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150757-a-1"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150757-c" class="questionWidget-choiceLetterCircle">c</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150757-a-4"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150757-d" class="questionWidget-choiceLetterCircle">d</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150757-a-3"> </td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150757-e" class="questionWidget-choiceLetterCircle">e</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150757-a-5"></td></tr></tbody></table><div class="questionWidget-buttonBar"><div class="questionWidget-submitButton disabledButton" style="display: none;">Submit</div></div><div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner" style="display: block;"></div></div><div class="questionWidget-result"><div class="questionWidget-correctIncorrectIcon"><img src="/img/correct-answer.svg"></div><div class="questionWidget-correctText">Correct</div></div><div class="questionWidget-explanationHeader">EXPLANATION</div><div class="questionWidget-explanation"><p>A right angle has a degree measure of <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="4" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msup><mjx-mn class="mjx-n"><mjx-c class="mjx-c39"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-script style="vertical-align: 0.393em;"><mjx-mo class="mjx-n" size="s"><mjx-c class="mjx-c2218"></mjx-c></mjx-mo></mjx-script></mjx-msup><mjx-mo class="mjx-n"><mjx-c class="mjx-c2E"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mn>90</mn><mo>∘</mo></msup><mo>.</mo></math></mjx-assistive-mml></mjx-container> This corresponds to one-quarter of a full turn.</p>
+<p>Among the given options, the only right angle is the following:</p>
+<div id="graphic-q-150757-e-0" class="graphic"><img src="/graphics/q-150757-e-0"></div>
+
+</div></div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q150757" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q150755" class="step questionWidget" style="display: block;"><div class="questionWidget-header"><div class="questionWidget-title">Question 4</div><div class="questionWidget-helpButton">?</div></div><div class="questionWidget-text"><p>Which of the following shows an angle of <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="5" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msup><mjx-mn class="mjx-n"><mjx-c class="mjx-c39"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-script style="vertical-align: 0.393em;"><mjx-mo class="mjx-n" size="s"><mjx-c class="mjx-c2218"></mjx-c></mjx-mo></mjx-script></mjx-msup><mjx-mo class="mjx-n"><mjx-c class="mjx-c3F"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mn>90</mn><mo>∘</mo></msup><mo>?</mo></math></mjx-assistive-mml></mjx-container></p>
+</div><table class="questionWidget-choicesTable"><tbody><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150755-a" class="questionWidget-choiceLetterCircle" style="background: rgb(64, 64, 64); color: white;">a</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150755-a-3"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150755-b" class="questionWidget-choiceLetterCircle">b</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150755-a-4"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150755-c" class="questionWidget-choiceLetterCircle">c</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150755-a-5"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150755-d" class="questionWidget-choiceLetterCircle">d</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150755-a-1"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150755-e" class="questionWidget-choiceLetterCircle">e</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150755-a-2"></td></tr></tbody></table><div class="questionWidget-buttonBar"><div class="questionWidget-submitButton disabledButton" style="display: none;">Submit</div></div><div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner" style="display: block;"></div></div><div class="questionWidget-result"><div class="questionWidget-incorrectIcon"><img src="/img/incorrect-answer.svg"></div><div class="questionWidget-incorrectText">Incorrect</div></div><div class="questionWidget-explanationHeader">EXPLANATION</div><div class="questionWidget-explanation"><p>An angle of <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="6" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msup><mjx-mn class="mjx-n"><mjx-c class="mjx-c39"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-script style="vertical-align: 0.393em;"><mjx-mo class="mjx-n" size="s"><mjx-c class="mjx-c2218"></mjx-c></mjx-mo></mjx-script></mjx-msup></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mn>90</mn><mo>∘</mo></msup></math></mjx-assistive-mml></mjx-container> has the same measure as one-quarter of a full turn.</p>
+<p>Among the given options, the only <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="7" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msup><mjx-mn class="mjx-n"><mjx-c class="mjx-c39"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-script style="vertical-align: 0.393em;"><mjx-mo class="mjx-n" size="s"><mjx-c class="mjx-c2218"></mjx-c></mjx-mo></mjx-script></mjx-msup></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mn>90</mn><mo>∘</mo></msup></math></mjx-assistive-mml></mjx-container> angle is the following:</p>
+<div id="graphic-q-150755-e-0" class="graphic"><img src="/graphics/q-150755-e-0"></div>
+
+</div></div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q150755" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q150686" class="step questionWidget" style="display: block;"><div class="questionWidget-header"><div class="questionWidget-title">Question 5</div><div class="questionWidget-helpButton">?</div></div><div class="questionWidget-text"><p>Which of the following shows a right angle?</p>
+</div><table class="questionWidget-choicesTable"><tbody><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150686-a" class="questionWidget-choiceLetterCircle">a</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150686-a-3"> </td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150686-b" class="questionWidget-choiceLetterCircle">b</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150686-a-2"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150686-c" class="questionWidget-choiceLetterCircle">c</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150686-a-5"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150686-d" class="questionWidget-choiceLetterCircle" style="background: rgb(64, 64, 64); color: white;">d</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150686-a-1"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150686-e" class="questionWidget-choiceLetterCircle">e</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150686-a-4"></td></tr></tbody></table><div class="questionWidget-buttonBar"><div class="questionWidget-submitButton disabledButton" style="display: none;">Submit</div></div><div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner" style="display: block;"></div></div><div class="questionWidget-result"><div class="questionWidget-correctIncorrectIcon"><img src="/img/correct-answer.svg"></div><div class="questionWidget-correctText">Correct</div></div><div class="questionWidget-explanationHeader">EXPLANATION</div><div class="questionWidget-explanation"><p>A right angle has a degree measure of <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="8" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msup><mjx-mn class="mjx-n"><mjx-c class="mjx-c39"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-script style="vertical-align: 0.393em;"><mjx-mo class="mjx-n" size="s"><mjx-c class="mjx-c2218"></mjx-c></mjx-mo></mjx-script></mjx-msup><mjx-mo class="mjx-n"><mjx-c class="mjx-c2E"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mn>90</mn><mo>∘</mo></msup><mo>.</mo></math></mjx-assistive-mml></mjx-container> This corresponds to one-quarter of a full turn.</p>
+<p>Among the given options, the only right angle is the following:</p>
+<div id="graphic-q-150686-e-0" class="graphic"><img src="/graphics/q-150686-e-0"></div>
+
+</div></div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q150686" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-e10596" class="step" style="display: block;">
+    
+                 
+                <div class="example">
+                    <div class="stepHeader">
+                        <div class="stepName"><span class="stepType">Example:</span> Identifying Straight Angles</div>       
+                        <div class="helpButton" stepid="e10596">?</div>
+                    </div>
+            
+                    <div class="exampleQuestion">
+                        <p>Which of the following shows a straight angle?</p>
+<div id="graphic-e5163da52d7b58149b9070a20d12b6f2" class="graphic"><img src="/graphics/e5163da52d7b58149b9070a20d12b6f2"></div> 
+                    </div>     
+            
+                    <div class="exampleExplanationHeader">EXPLANATION</div>
+            
+                    <div class="exampleExplanation">
+                        <style type="text/css">
+                            .mjpage .MJX-monospace {
+                            font-family: monospace
+                            }
+
+                            .mjpage .MJX-sans-serif {
+                            font-family: sans-serif
+                            }
+
+                            .mjpage {
+                            display: inline;
+                            font-style: normal;
+                            font-weight: normal;
+                            line-height: normal;
+                            font-size: 100%;
+                            font-size-adjust: none;
+                            text-indent: 0;
+                            text-align: left;
+                            text-transform: none;
+                            letter-spacing: normal;
+                            word-spacing: normal;
+                            word-wrap: normal;
+                            white-space: nowrap;
+                            float: none;
+                            direction: ltr;
+                            max-width: none;
+                            max-height: none;
+                            min-width: 0;
+                            min-height: 0;
+                            border: 0;
+                            padding: 0;
+                            margin: 0
+                            }
+
+                            .mjpage * {
+                            transition: none;
+                            -webkit-transition: none;
+                            -moz-transition: none;
+                            -ms-transition: none;
+                            -o-transition: none
+                            }
+
+                            .mjx-svg-href {
+                            fill: blue;
+                            stroke: blue
+                            }
+
+                            .MathJax_SVG_LineBox {
+                            display: table!important
+                            }
+
+                            .MathJax_SVG_LineBox span {
+                            display: table-cell!important;
+                            width: 10000em!important;
+                            min-width: 0;
+                            max-width: none;
+                            padding: 0;
+                            border: 0;
+                            margin: 0
+                            }
+
+                            .mjpage__block {
+                            text-align: center;
+                            margin: 1em 0em;
+                            position: relative;
+                            display: block!important;
+                            text-indent: 0;
+                            max-width: none;
+                            max-height: none;
+                            min-width: 0;
+                            min-height: 0;
+                            width: 100%
+                            }</style><p>A straight angle has a degree measure of <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="5.188ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 2233.9 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-1-Title">
+<title id="MathJax-SVG-1-Title">180^\circ.</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E1-MJMAIN-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path>
+<path stroke-width="1" id="E1-MJMAIN-38" d="M70 417T70 494T124 618T248 666Q319 666 374 624T429 515Q429 485 418 459T392 417T361 389T335 371T324 363L338 354Q352 344 366 334T382 323Q457 264 457 174Q457 95 399 37T249 -22Q159 -22 101 29T43 155Q43 263 172 335L154 348Q133 361 127 368Q70 417 70 494ZM286 386L292 390Q298 394 301 396T311 403T323 413T334 425T345 438T355 454T364 471T369 491T371 513Q371 556 342 586T275 624Q268 625 242 625Q201 625 165 599T128 534Q128 511 141 492T167 463T217 431Q224 426 228 424L286 386ZM250 21Q308 21 350 55T392 137Q392 154 387 169T375 194T353 216T330 234T301 253T274 270Q260 279 244 289T218 306L210 311Q204 311 181 294T133 239T107 157Q107 98 150 60T250 21Z"></path>
+<path stroke-width="1" id="E1-MJMAIN-30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path>
+<path stroke-width="1" id="E1-MJMAIN-2218" d="M55 251Q55 328 112 386T249 444T386 388T444 249Q444 171 388 113T250 55Q170 55 113 112T55 251ZM245 403Q188 403 142 361T96 250Q96 183 141 140T250 96Q284 96 313 109T354 135T375 160Q403 197 403 250Q403 313 360 358T245 403Z"></path>
+<path stroke-width="1" id="E1-MJMAIN-2E" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E1-MJMAIN-31"></use>
+ <use xlink:href="#E1-MJMAIN-38" x="500" y="0"></use>
+ <use xlink:href="#E1-MJMAIN-30" x="1001" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E1-MJMAIN-2218" x="2123" y="557"></use>
+ <use xlink:href="#E1-MJMAIN-2E" x="1955" y="0"></use>
+</g>
+</svg></span> This corresponds to one-half of a full turn.</p>
+<p>Among the given options, the only straight angle is the following:</p>
+ <div id="graphic-6260b2316837acff1bc4931cb5d81561" class="graphic"><img src="/graphics/6260b2316837acff1bc4931cb5d81561"></div> 
+
+<p>Therefore, the correct answer is III.</p>
+
+                    </div>     
+                </div>                            
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-e10596" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q153862" class="step questionWidget" style="display: block;"><div class="questionWidget-header"><div class="questionWidget-title">Question 6</div><div class="questionWidget-helpButton">?</div></div><div class="questionWidget-text"><p>Which of the following shows a straight angle?</p>
+</div><table class="questionWidget-choicesTable"><tbody><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-153862-a" class="questionWidget-choiceLetterCircle">a</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-153862-a-5"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-153862-b" class="questionWidget-choiceLetterCircle">b</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-153862-a-4"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-153862-c" class="questionWidget-choiceLetterCircle">c</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-153862-a-2"> </td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-153862-d" class="questionWidget-choiceLetterCircle" style="background: rgb(64, 64, 64); color: white;">d</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-153862-a-1"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-153862-e" class="questionWidget-choiceLetterCircle">e</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-153862-a-3"></td></tr></tbody></table><div class="questionWidget-buttonBar"><div class="questionWidget-submitButton disabledButton" style="display: none;">Submit</div></div><div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner" style="display: block;"></div></div><div class="questionWidget-result"><div class="questionWidget-correctIncorrectIcon"><img src="/img/correct-answer.svg"></div><div class="questionWidget-correctText">Correct</div></div><div class="questionWidget-explanationHeader">EXPLANATION</div><div class="questionWidget-explanation"><p>A straight angle has a degree measure of <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="9" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msup><mjx-mn class="mjx-n"><mjx-c class="mjx-c31"></mjx-c><mjx-c class="mjx-c38"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-script style="vertical-align: 0.393em;"><mjx-mo class="mjx-n" size="s"><mjx-c class="mjx-c2218"></mjx-c></mjx-mo></mjx-script></mjx-msup><mjx-mo class="mjx-n"><mjx-c class="mjx-c2E"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mn>180</mn><mo>∘</mo></msup><mo>.</mo></math></mjx-assistive-mml></mjx-container> This corresponds to one-half of a full turn.</p>
+<p>Among the given options, the only straight angle is the following:</p>
+<div id="graphic-q-153862-e-0" class="graphic"><img src="/graphics/q-153862-e-0"></div>
+</div></div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q153862" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q150799" class="step questionWidget" style="display: block;"><div class="questionWidget-header"><div class="questionWidget-title">Question 7</div><div class="questionWidget-helpButton">?</div></div><div class="questionWidget-text"><p>Which of the following shows a straight angle?</p>
+</div><table class="questionWidget-choicesTable"><tbody><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150799-a" class="questionWidget-choiceLetterCircle" style="background: rgb(64, 64, 64); color: white;">a</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150799-a-3"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150799-b" class="questionWidget-choiceLetterCircle">b</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150799-a-2"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150799-c" class="questionWidget-choiceLetterCircle">c</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150799-a-4"> </td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150799-d" class="questionWidget-choiceLetterCircle">d</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150799-a-1"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150799-e" class="questionWidget-choiceLetterCircle">e</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150799-a-5"> </td></tr></tbody></table><div class="questionWidget-buttonBar"><div class="questionWidget-submitButton disabledButton" style="display: none;">Submit</div></div><div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner" style="display: block;"></div></div><div class="questionWidget-result"><div class="questionWidget-incorrectIcon"><img src="/img/incorrect-answer.svg"></div><div class="questionWidget-incorrectText">Incorrect</div></div><div class="questionWidget-explanationHeader">EXPLANATION</div><div class="questionWidget-explanation"><p>A straight angle has a degree measure of <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="10" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msup><mjx-mn class="mjx-n"><mjx-c class="mjx-c31"></mjx-c><mjx-c class="mjx-c38"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-script style="vertical-align: 0.393em;"><mjx-mo class="mjx-n" size="s"><mjx-c class="mjx-c2218"></mjx-c></mjx-mo></mjx-script></mjx-msup><mjx-mo class="mjx-n"><mjx-c class="mjx-c2E"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mn>180</mn><mo>∘</mo></msup><mo>.</mo></math></mjx-assistive-mml></mjx-container> This corresponds to one-half of a full turn.</p>
+<p>Among the given options, the only straight angle is the following:</p>
+<div id="graphic-q-150799-e-0" class="graphic"><img src="/graphics/q-150799-e-0"></div>
+</div></div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q150799" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q150801" class="step questionWidget" style="display: block;"><div class="questionWidget-header"><div class="questionWidget-title">Question 8</div><div class="questionWidget-helpButton">?</div></div><div class="questionWidget-text"><p>Which of the following shows a straight angle?</p>
+</div><table class="questionWidget-choicesTable"><tbody><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150801-a" class="questionWidget-choiceLetterCircle">a</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150801-a-5"> </td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150801-b" class="questionWidget-choiceLetterCircle">b</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150801-a-2"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150801-c" class="questionWidget-choiceLetterCircle">c</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150801-a-3"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150801-d" class="questionWidget-choiceLetterCircle">d</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150801-a-4"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-150801-e" class="questionWidget-choiceLetterCircle" style="background: rgb(64, 64, 64); color: white;">e</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-150801-a-1"></td></tr></tbody></table><div class="questionWidget-buttonBar"><div class="questionWidget-submitButton disabledButton" style="display: none;">Submit</div></div><div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner" style="display: block;"></div></div><div class="questionWidget-result"><div class="questionWidget-correctIncorrectIcon"><img src="/img/correct-answer.svg"></div><div class="questionWidget-correctText">Correct</div></div><div class="questionWidget-explanationHeader">EXPLANATION</div><div class="questionWidget-explanation"><p>A straight angle has a degree measure of <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="11" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msup><mjx-mn class="mjx-n"><mjx-c class="mjx-c31"></mjx-c><mjx-c class="mjx-c38"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-script style="vertical-align: 0.393em;"><mjx-mo class="mjx-n" size="s"><mjx-c class="mjx-c2218"></mjx-c></mjx-mo></mjx-script></mjx-msup><mjx-mo class="mjx-n"><mjx-c class="mjx-c2E"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mn>180</mn><mo>∘</mo></msup><mo>.</mo></math></mjx-assistive-mml></mjx-container> This corresponds to one-half of a full turn.</p>
+<p>Among the given options, the only straight angle is the following:</p>
+<div id="graphic-q-150801-e-0" class="graphic"><img src="/graphics/q-150801-e-0"></div>
+</div></div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q150801" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q153860" class="step questionWidget" style="display: block;"><div class="questionWidget-header"><div class="questionWidget-title">Question 9</div><div class="questionWidget-helpButton">?</div></div><div class="questionWidget-text"><p>Which of the following shows an angle of <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="12" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msup><mjx-mn class="mjx-n"><mjx-c class="mjx-c31"></mjx-c><mjx-c class="mjx-c38"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-script style="vertical-align: 0.393em;"><mjx-mo class="mjx-n" size="s"><mjx-c class="mjx-c2218"></mjx-c></mjx-mo></mjx-script></mjx-msup><mjx-mo class="mjx-n"><mjx-c class="mjx-c3F"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mn>180</mn><mo>∘</mo></msup><mo>?</mo></math></mjx-assistive-mml></mjx-container></p>
+</div><table class="questionWidget-choicesTable"><tbody><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-153860-a" class="questionWidget-choiceLetterCircle">a</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-153860-a-1"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-153860-b" class="questionWidget-choiceLetterCircle" style="background: rgb(64, 64, 64); color: white;">b</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-153860-a-3"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-153860-c" class="questionWidget-choiceLetterCircle">c</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-153860-a-4"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-153860-d" class="questionWidget-choiceLetterCircle">d</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-153860-a-5"> </td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-153860-e" class="questionWidget-choiceLetterCircle">e</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-153860-a-2"></td></tr></tbody></table><div class="questionWidget-buttonBar"><div class="questionWidget-submitButton disabledButton" style="display: none;">Submit</div></div><div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner" style="display: block;"></div></div><div class="questionWidget-result"><div class="questionWidget-incorrectIcon"><img src="/img/incorrect-answer.svg"></div><div class="questionWidget-incorrectText">Incorrect</div></div><div class="questionWidget-explanationHeader">EXPLANATION</div><div class="questionWidget-explanation"><p>An angle of <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="13" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msup><mjx-mn class="mjx-n"><mjx-c class="mjx-c31"></mjx-c><mjx-c class="mjx-c38"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-script style="vertical-align: 0.393em;"><mjx-mo class="mjx-n" size="s"><mjx-c class="mjx-c2218"></mjx-c></mjx-mo></mjx-script></mjx-msup></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mn>180</mn><mo>∘</mo></msup></math></mjx-assistive-mml></mjx-container> corresponds to one-half of a full turn (straight line).</p>
+<p>Among the given options, the only angle of <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="14" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msup><mjx-mn class="mjx-n"><mjx-c class="mjx-c31"></mjx-c><mjx-c class="mjx-c38"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-script style="vertical-align: 0.393em;"><mjx-mo class="mjx-n" size="s"><mjx-c class="mjx-c2218"></mjx-c></mjx-mo></mjx-script></mjx-msup></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mn>180</mn><mo>∘</mo></msup></math></mjx-assistive-mml></mjx-container> is the following:</p>
+<div id="graphic-q-153860-e-0" class="graphic"><img src="/graphics/q-153860-e-0"></div>
+
+</div></div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q153860" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q153666" class="step questionWidget" style="display: block;"><div class="questionWidget-header"><div class="questionWidget-title">Question 10</div><div class="questionWidget-helpButton">?</div></div><div class="questionWidget-text"><p>Which of the following shows an angle of <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="15" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msup><mjx-mn class="mjx-n"><mjx-c class="mjx-c31"></mjx-c><mjx-c class="mjx-c38"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-script style="vertical-align: 0.393em;"><mjx-mo class="mjx-n" size="s"><mjx-c class="mjx-c2218"></mjx-c></mjx-mo></mjx-script></mjx-msup><mjx-mo class="mjx-n"><mjx-c class="mjx-c3F"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mn>180</mn><mo>∘</mo></msup><mo>?</mo></math></mjx-assistive-mml></mjx-container></p>
+</div><table class="questionWidget-choicesTable"><tbody><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-153666-a" class="questionWidget-choiceLetterCircle">a</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-153666-a-4"> </td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-153666-b" class="questionWidget-choiceLetterCircle">b</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-153666-a-2"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-153666-c" class="questionWidget-choiceLetterCircle">c</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-153666-a-3"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-153666-d" class="questionWidget-choiceLetterCircle" style="background: rgb(64, 64, 64); color: white;">d</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-153666-a-1"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-153666-e" class="questionWidget-choiceLetterCircle">e</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-153666-a-5"></td></tr></tbody></table><div class="questionWidget-buttonBar"><div class="questionWidget-submitButton disabledButton" style="display: none;">Submit</div></div><div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner" style="display: block;"></div></div><div class="questionWidget-result"><div class="questionWidget-correctIncorrectIcon"><img src="/img/correct-answer.svg"></div><div class="questionWidget-correctText">Correct</div></div><div class="questionWidget-explanationHeader">EXPLANATION</div><div class="questionWidget-explanation"><p>An angle of <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="16" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msup><mjx-mn class="mjx-n"><mjx-c class="mjx-c31"></mjx-c><mjx-c class="mjx-c38"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-script style="vertical-align: 0.393em;"><mjx-mo class="mjx-n" size="s"><mjx-c class="mjx-c2218"></mjx-c></mjx-mo></mjx-script></mjx-msup></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mn>180</mn><mo>∘</mo></msup></math></mjx-assistive-mml></mjx-container> corresponds to one-half of a full turn (straight line).</p>
+<p>Among the given options, the only angle of <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="17" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msup><mjx-mn class="mjx-n"><mjx-c class="mjx-c31"></mjx-c><mjx-c class="mjx-c38"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-script style="vertical-align: 0.393em;"><mjx-mo class="mjx-n" size="s"><mjx-c class="mjx-c2218"></mjx-c></mjx-mo></mjx-script></mjx-msup></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mn>180</mn><mo>∘</mo></msup></math></mjx-assistive-mml></mjx-container> is the following:</p>
+<div id="graphic-q-153666-e-0" class="graphic"><img src="/graphics/q-153666-e-0"></div></div></div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q153666" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-e2604" class="step" style="display: block;">
+    
+                 
+                <div class="example">
+                    <div class="stepHeader">
+                        <div class="stepName"><span class="stepType">Example:</span> Identifying Null and Full Angles</div>       
+                        <div class="helpButton" stepid="e2604">?</div>
+                    </div>
+            
+                    <div class="exampleQuestion">
+                        <style type="text/css">
+                            .mjpage .MJX-monospace {
+                            font-family: monospace
+                            }
+
+                            .mjpage .MJX-sans-serif {
+                            font-family: sans-serif
+                            }
+
+                            .mjpage {
+                            display: inline;
+                            font-style: normal;
+                            font-weight: normal;
+                            line-height: normal;
+                            font-size: 100%;
+                            font-size-adjust: none;
+                            text-indent: 0;
+                            text-align: left;
+                            text-transform: none;
+                            letter-spacing: normal;
+                            word-spacing: normal;
+                            word-wrap: normal;
+                            white-space: nowrap;
+                            float: none;
+                            direction: ltr;
+                            max-width: none;
+                            max-height: none;
+                            min-width: 0;
+                            min-height: 0;
+                            border: 0;
+                            padding: 0;
+                            margin: 0
+                            }
+
+                            .mjpage * {
+                            transition: none;
+                            -webkit-transition: none;
+                            -moz-transition: none;
+                            -ms-transition: none;
+                            -o-transition: none
+                            }
+
+                            .mjx-svg-href {
+                            fill: blue;
+                            stroke: blue
+                            }
+
+                            .MathJax_SVG_LineBox {
+                            display: table!important
+                            }
+
+                            .MathJax_SVG_LineBox span {
+                            display: table-cell!important;
+                            width: 10000em!important;
+                            min-width: 0;
+                            max-width: none;
+                            padding: 0;
+                            border: 0;
+                            margin: 0
+                            }
+
+                            .mjpage__block {
+                            text-align: center;
+                            margin: 1em 0em;
+                            position: relative;
+                            display: block!important;
+                            text-indent: 0;
+                            max-width: none;
+                            max-height: none;
+                            min-width: 0;
+                            min-height: 0;
+                            width: 100%
+                            }</style><div id="graphic-7ba2e95bc60239428277d91cdce52d7a" class="graphic"><img src="/graphics/7ba2e95bc60239428277d91cdce52d7a"></div>
+
+<p>What type of angle is <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="7.224ex" height="2.509ex" style="vertical-align: -0.671ex;" viewBox="0 -791.3 3110.5 1080.4" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-1-Title">
+<title id="MathJax-SVG-1-Title">\angle RST,</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E1-MJMAIN-2220" d="M71 0L68 2Q65 3 63 5T58 11T55 20Q55 22 57 28Q67 43 346 361Q397 420 474 508Q595 648 616 671T647 694T661 688T666 674Q666 668 663 663Q662 662 627 622T524 503T390 350L120 41L386 40H653Q666 30 666 20Q666 8 651 0H71Z"></path>
+<path stroke-width="1" id="E1-MJMATHI-52" d="M230 637Q203 637 198 638T193 649Q193 676 204 682Q206 683 378 683Q550 682 564 680Q620 672 658 652T712 606T733 563T739 529Q739 484 710 445T643 385T576 351T538 338L545 333Q612 295 612 223Q612 212 607 162T602 80V71Q602 53 603 43T614 25T640 16Q668 16 686 38T712 85Q717 99 720 102T735 105Q755 105 755 93Q755 75 731 36Q693 -21 641 -21H632Q571 -21 531 4T487 82Q487 109 502 166T517 239Q517 290 474 313Q459 320 449 321T378 323H309L277 193Q244 61 244 59Q244 55 245 54T252 50T269 48T302 46H333Q339 38 339 37T336 19Q332 6 326 0H311Q275 2 180 2Q146 2 117 2T71 2T50 1Q33 1 33 10Q33 12 36 24Q41 43 46 45Q50 46 61 46H67Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628Q287 635 230 637ZM630 554Q630 586 609 608T523 636Q521 636 500 636T462 637H440Q393 637 386 627Q385 624 352 494T319 361Q319 360 388 360Q466 361 492 367Q556 377 592 426Q608 449 619 486T630 554Z"></path>
+<path stroke-width="1" id="E1-MJMATHI-53" d="M308 24Q367 24 416 76T466 197Q466 260 414 284Q308 311 278 321T236 341Q176 383 176 462Q176 523 208 573T273 648Q302 673 343 688T407 704H418H425Q521 704 564 640Q565 640 577 653T603 682T623 704Q624 704 627 704T632 705Q645 705 645 698T617 577T585 459T569 456Q549 456 549 465Q549 471 550 475Q550 478 551 494T553 520Q553 554 544 579T526 616T501 641Q465 662 419 662Q362 662 313 616T263 510Q263 480 278 458T319 427Q323 425 389 408T456 390Q490 379 522 342T554 242Q554 216 546 186Q541 164 528 137T492 78T426 18T332 -20Q320 -22 298 -22Q199 -22 144 33L134 44L106 13Q83 -14 78 -18T65 -22Q52 -22 52 -14Q52 -11 110 221Q112 227 130 227H143Q149 221 149 216Q149 214 148 207T144 186T142 153Q144 114 160 87T203 47T255 29T308 24Z"></path>
+<path stroke-width="1" id="E1-MJMATHI-54" d="M40 437Q21 437 21 445Q21 450 37 501T71 602L88 651Q93 669 101 677H569H659Q691 677 697 676T704 667Q704 661 687 553T668 444Q668 437 649 437Q640 437 637 437T631 442L629 445Q629 451 635 490T641 551Q641 586 628 604T573 629Q568 630 515 631Q469 631 457 630T439 622Q438 621 368 343T298 60Q298 48 386 46Q418 46 427 45T436 36Q436 31 433 22Q429 4 424 1L422 0Q419 0 415 0Q410 0 363 1T228 2Q99 2 64 0H49Q43 6 43 9T45 27Q49 40 55 46H83H94Q174 46 189 55Q190 56 191 56Q196 59 201 76T241 233Q258 301 269 344Q339 619 339 625Q339 630 310 630H279Q212 630 191 624Q146 614 121 583T67 467Q60 445 57 441T43 437H40Z"></path>
+<path stroke-width="1" id="E1-MJMAIN-2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E1-MJMAIN-2220" x="0" y="0"></use>
+ <use xlink:href="#E1-MJMATHI-52" x="722" y="0"></use>
+ <use xlink:href="#E1-MJMATHI-53" x="1482" y="0"></use>
+ <use xlink:href="#E1-MJMATHI-54" x="2127" y="0"></use>
+ <use xlink:href="#E1-MJMAIN-2C" x="2832" y="0"></use>
+</g>
+</svg></span> shown in the figure above?</p>
+
+                    </div>     
+            
+                    <div class="exampleExplanationHeader">EXPLANATION</div>
+            
+                    <div class="exampleExplanation">
+                        <style type="text/css">
+                            .mjpage .MJX-monospace {
+                            font-family: monospace
+                            }
+
+                            .mjpage .MJX-sans-serif {
+                            font-family: sans-serif
+                            }
+
+                            .mjpage {
+                            display: inline;
+                            font-style: normal;
+                            font-weight: normal;
+                            line-height: normal;
+                            font-size: 100%;
+                            font-size-adjust: none;
+                            text-indent: 0;
+                            text-align: left;
+                            text-transform: none;
+                            letter-spacing: normal;
+                            word-spacing: normal;
+                            word-wrap: normal;
+                            white-space: nowrap;
+                            float: none;
+                            direction: ltr;
+                            max-width: none;
+                            max-height: none;
+                            min-width: 0;
+                            min-height: 0;
+                            border: 0;
+                            padding: 0;
+                            margin: 0
+                            }
+
+                            .mjpage * {
+                            transition: none;
+                            -webkit-transition: none;
+                            -moz-transition: none;
+                            -ms-transition: none;
+                            -o-transition: none
+                            }
+
+                            .mjx-svg-href {
+                            fill: blue;
+                            stroke: blue
+                            }
+
+                            .MathJax_SVG_LineBox {
+                            display: table!important
+                            }
+
+                            .MathJax_SVG_LineBox span {
+                            display: table-cell!important;
+                            width: 10000em!important;
+                            min-width: 0;
+                            max-width: none;
+                            padding: 0;
+                            border: 0;
+                            margin: 0
+                            }
+
+                            .mjpage__block {
+                            text-align: center;
+                            margin: 1em 0em;
+                            position: relative;
+                            display: block!important;
+                            text-indent: 0;
+                            max-width: none;
+                            max-height: none;
+                            min-width: 0;
+                            min-height: 0;
+                            width: 100%
+                            }</style><p>Notice that the vertex of <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="6.578ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 2832 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-1-Title">
+<title id="MathJax-SVG-1-Title">\angle RST</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E1-MJMAIN-2220" d="M71 0L68 2Q65 3 63 5T58 11T55 20Q55 22 57 28Q67 43 346 361Q397 420 474 508Q595 648 616 671T647 694T661 688T666 674Q666 668 663 663Q662 662 627 622T524 503T390 350L120 41L386 40H653Q666 30 666 20Q666 8 651 0H71Z"></path>
+<path stroke-width="1" id="E1-MJMATHI-52" d="M230 637Q203 637 198 638T193 649Q193 676 204 682Q206 683 378 683Q550 682 564 680Q620 672 658 652T712 606T733 563T739 529Q739 484 710 445T643 385T576 351T538 338L545 333Q612 295 612 223Q612 212 607 162T602 80V71Q602 53 603 43T614 25T640 16Q668 16 686 38T712 85Q717 99 720 102T735 105Q755 105 755 93Q755 75 731 36Q693 -21 641 -21H632Q571 -21 531 4T487 82Q487 109 502 166T517 239Q517 290 474 313Q459 320 449 321T378 323H309L277 193Q244 61 244 59Q244 55 245 54T252 50T269 48T302 46H333Q339 38 339 37T336 19Q332 6 326 0H311Q275 2 180 2Q146 2 117 2T71 2T50 1Q33 1 33 10Q33 12 36 24Q41 43 46 45Q50 46 61 46H67Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628Q287 635 230 637ZM630 554Q630 586 609 608T523 636Q521 636 500 636T462 637H440Q393 637 386 627Q385 624 352 494T319 361Q319 360 388 360Q466 361 492 367Q556 377 592 426Q608 449 619 486T630 554Z"></path>
+<path stroke-width="1" id="E1-MJMATHI-53" d="M308 24Q367 24 416 76T466 197Q466 260 414 284Q308 311 278 321T236 341Q176 383 176 462Q176 523 208 573T273 648Q302 673 343 688T407 704H418H425Q521 704 564 640Q565 640 577 653T603 682T623 704Q624 704 627 704T632 705Q645 705 645 698T617 577T585 459T569 456Q549 456 549 465Q549 471 550 475Q550 478 551 494T553 520Q553 554 544 579T526 616T501 641Q465 662 419 662Q362 662 313 616T263 510Q263 480 278 458T319 427Q323 425 389 408T456 390Q490 379 522 342T554 242Q554 216 546 186Q541 164 528 137T492 78T426 18T332 -20Q320 -22 298 -22Q199 -22 144 33L134 44L106 13Q83 -14 78 -18T65 -22Q52 -22 52 -14Q52 -11 110 221Q112 227 130 227H143Q149 221 149 216Q149 214 148 207T144 186T142 153Q144 114 160 87T203 47T255 29T308 24Z"></path>
+<path stroke-width="1" id="E1-MJMATHI-54" d="M40 437Q21 437 21 445Q21 450 37 501T71 602L88 651Q93 669 101 677H569H659Q691 677 697 676T704 667Q704 661 687 553T668 444Q668 437 649 437Q640 437 637 437T631 442L629 445Q629 451 635 490T641 551Q641 586 628 604T573 629Q568 630 515 631Q469 631 457 630T439 622Q438 621 368 343T298 60Q298 48 386 46Q418 46 427 45T436 36Q436 31 433 22Q429 4 424 1L422 0Q419 0 415 0Q410 0 363 1T228 2Q99 2 64 0H49Q43 6 43 9T45 27Q49 40 55 46H83H94Q174 46 189 55Q190 56 191 56Q196 59 201 76T241 233Q258 301 269 344Q339 619 339 625Q339 630 310 630H279Q212 630 191 624Q146 614 121 583T67 467Q60 445 57 441T43 437H40Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E1-MJMAIN-2220" x="0" y="0"></use>
+ <use xlink:href="#E1-MJMATHI-52" x="722" y="0"></use>
+ <use xlink:href="#E1-MJMATHI-53" x="1482" y="0"></use>
+ <use xlink:href="#E1-MJMATHI-54" x="2127" y="0"></use>
+</g>
+</svg></span> is point <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.146ex" height="2.509ex" style="vertical-align: -0.671ex;" viewBox="0 -791.3 924 1080.4" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-2-Title">
+<title id="MathJax-SVG-2-Title">S,</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E2-MJMATHI-53" d="M308 24Q367 24 416 76T466 197Q466 260 414 284Q308 311 278 321T236 341Q176 383 176 462Q176 523 208 573T273 648Q302 673 343 688T407 704H418H425Q521 704 564 640Q565 640 577 653T603 682T623 704Q624 704 627 704T632 705Q645 705 645 698T617 577T585 459T569 456Q549 456 549 465Q549 471 550 475Q550 478 551 494T553 520Q553 554 544 579T526 616T501 641Q465 662 419 662Q362 662 313 616T263 510Q263 480 278 458T319 427Q323 425 389 408T456 390Q490 379 522 342T554 242Q554 216 546 186Q541 164 528 137T492 78T426 18T332 -20Q320 -22 298 -22Q199 -22 144 33L134 44L106 13Q83 -14 78 -18T65 -22Q52 -22 52 -14Q52 -11 110 221Q112 227 130 227H143Q149 221 149 216Q149 214 148 207T144 186T142 153Q144 114 160 87T203 47T255 29T308 24Z"></path>
+<path stroke-width="1" id="E2-MJMAIN-2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E2-MJMATHI-53" x="0" y="0"></use>
+ <use xlink:href="#E2-MJMAIN-2C" x="645" y="0"></use>
+</g>
+</svg></span> not point <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.283ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 983 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-3-Title">
+<title id="MathJax-SVG-3-Title">T.</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E3-MJMATHI-54" d="M40 437Q21 437 21 445Q21 450 37 501T71 602L88 651Q93 669 101 677H569H659Q691 677 697 676T704 667Q704 661 687 553T668 444Q668 437 649 437Q640 437 637 437T631 442L629 445Q629 451 635 490T641 551Q641 586 628 604T573 629Q568 630 515 631Q469 631 457 630T439 622Q438 621 368 343T298 60Q298 48 386 46Q418 46 427 45T436 36Q436 31 433 22Q429 4 424 1L422 0Q419 0 415 0Q410 0 363 1T228 2Q99 2 64 0H49Q43 6 43 9T45 27Q49 40 55 46H83H94Q174 46 189 55Q190 56 191 56Q196 59 201 76T241 233Q258 301 269 344Q339 619 339 625Q339 630 310 630H279Q212 630 191 624Q146 614 121 583T67 467Q60 445 57 441T43 437H40Z"></path>
+<path stroke-width="1" id="E3-MJMAIN-2E" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E3-MJMATHI-54" x="0" y="0"></use>
+ <use xlink:href="#E3-MJMAIN-2E" x="704" y="0"></use>
+</g>
+</svg></span> So <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="6.578ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 2832 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-4-Title">
+<title id="MathJax-SVG-4-Title">\angle RST</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E4-MJMAIN-2220" d="M71 0L68 2Q65 3 63 5T58 11T55 20Q55 22 57 28Q67 43 346 361Q397 420 474 508Q595 648 616 671T647 694T661 688T666 674Q666 668 663 663Q662 662 627 622T524 503T390 350L120 41L386 40H653Q666 30 666 20Q666 8 651 0H71Z"></path>
+<path stroke-width="1" id="E4-MJMATHI-52" d="M230 637Q203 637 198 638T193 649Q193 676 204 682Q206 683 378 683Q550 682 564 680Q620 672 658 652T712 606T733 563T739 529Q739 484 710 445T643 385T576 351T538 338L545 333Q612 295 612 223Q612 212 607 162T602 80V71Q602 53 603 43T614 25T640 16Q668 16 686 38T712 85Q717 99 720 102T735 105Q755 105 755 93Q755 75 731 36Q693 -21 641 -21H632Q571 -21 531 4T487 82Q487 109 502 166T517 239Q517 290 474 313Q459 320 449 321T378 323H309L277 193Q244 61 244 59Q244 55 245 54T252 50T269 48T302 46H333Q339 38 339 37T336 19Q332 6 326 0H311Q275 2 180 2Q146 2 117 2T71 2T50 1Q33 1 33 10Q33 12 36 24Q41 43 46 45Q50 46 61 46H67Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628Q287 635 230 637ZM630 554Q630 586 609 608T523 636Q521 636 500 636T462 637H440Q393 637 386 627Q385 624 352 494T319 361Q319 360 388 360Q466 361 492 367Q556 377 592 426Q608 449 619 486T630 554Z"></path>
+<path stroke-width="1" id="E4-MJMATHI-53" d="M308 24Q367 24 416 76T466 197Q466 260 414 284Q308 311 278 321T236 341Q176 383 176 462Q176 523 208 573T273 648Q302 673 343 688T407 704H418H425Q521 704 564 640Q565 640 577 653T603 682T623 704Q624 704 627 704T632 705Q645 705 645 698T617 577T585 459T569 456Q549 456 549 465Q549 471 550 475Q550 478 551 494T553 520Q553 554 544 579T526 616T501 641Q465 662 419 662Q362 662 313 616T263 510Q263 480 278 458T319 427Q323 425 389 408T456 390Q490 379 522 342T554 242Q554 216 546 186Q541 164 528 137T492 78T426 18T332 -20Q320 -22 298 -22Q199 -22 144 33L134 44L106 13Q83 -14 78 -18T65 -22Q52 -22 52 -14Q52 -11 110 221Q112 227 130 227H143Q149 221 149 216Q149 214 148 207T144 186T142 153Q144 114 160 87T203 47T255 29T308 24Z"></path>
+<path stroke-width="1" id="E4-MJMATHI-54" d="M40 437Q21 437 21 445Q21 450 37 501T71 602L88 651Q93 669 101 677H569H659Q691 677 697 676T704 667Q704 661 687 553T668 444Q668 437 649 437Q640 437 637 437T631 442L629 445Q629 451 635 490T641 551Q641 586 628 604T573 629Q568 630 515 631Q469 631 457 630T439 622Q438 621 368 343T298 60Q298 48 386 46Q418 46 427 45T436 36Q436 31 433 22Q429 4 424 1L422 0Q419 0 415 0Q410 0 363 1T228 2Q99 2 64 0H49Q43 6 43 9T45 27Q49 40 55 46H83H94Q174 46 189 55Q190 56 191 56Q196 59 201 76T241 233Q258 301 269 344Q339 619 339 625Q339 630 310 630H279Q212 630 191 624Q146 614 121 583T67 467Q60 445 57 441T43 437H40Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E4-MJMAIN-2220" x="0" y="0"></use>
+ <use xlink:href="#E4-MJMATHI-52" x="722" y="0"></use>
+ <use xlink:href="#E4-MJMATHI-53" x="1482" y="0"></use>
+ <use xlink:href="#E4-MJMATHI-54" x="2127" y="0"></use>
+</g>
+</svg></span> is <em>not</em> a straight angle.</p>
+<p>As a result, the two rays <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="3.806ex" height="3.676ex" style="vertical-align: -0.338ex;" viewBox="0 -1437.2 1638.5 1582.7" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-5-Title">
+<title id="MathJax-SVG-5-Title">\overset{\longrightarrow}{SR}</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E5-MJMATHI-53" d="M308 24Q367 24 416 76T466 197Q466 260 414 284Q308 311 278 321T236 341Q176 383 176 462Q176 523 208 573T273 648Q302 673 343 688T407 704H418H425Q521 704 564 640Q565 640 577 653T603 682T623 704Q624 704 627 704T632 705Q645 705 645 698T617 577T585 459T569 456Q549 456 549 465Q549 471 550 475Q550 478 551 494T553 520Q553 554 544 579T526 616T501 641Q465 662 419 662Q362 662 313 616T263 510Q263 480 278 458T319 427Q323 425 389 408T456 390Q490 379 522 342T554 242Q554 216 546 186Q541 164 528 137T492 78T426 18T332 -20Q320 -22 298 -22Q199 -22 144 33L134 44L106 13Q83 -14 78 -18T65 -22Q52 -22 52 -14Q52 -11 110 221Q112 227 130 227H143Q149 221 149 216Q149 214 148 207T144 186T142 153Q144 114 160 87T203 47T255 29T308 24Z"></path>
+<path stroke-width="1" id="E5-MJMATHI-52" d="M230 637Q203 637 198 638T193 649Q193 676 204 682Q206 683 378 683Q550 682 564 680Q620 672 658 652T712 606T733 563T739 529Q739 484 710 445T643 385T576 351T538 338L545 333Q612 295 612 223Q612 212 607 162T602 80V71Q602 53 603 43T614 25T640 16Q668 16 686 38T712 85Q717 99 720 102T735 105Q755 105 755 93Q755 75 731 36Q693 -21 641 -21H632Q571 -21 531 4T487 82Q487 109 502 166T517 239Q517 290 474 313Q459 320 449 321T378 323H309L277 193Q244 61 244 59Q244 55 245 54T252 50T269 48T302 46H333Q339 38 339 37T336 19Q332 6 326 0H311Q275 2 180 2Q146 2 117 2T71 2T50 1Q33 1 33 10Q33 12 36 24Q41 43 46 45Q50 46 61 46H67Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628Q287 635 230 637ZM630 554Q630 586 609 608T523 636Q521 636 500 636T462 637H440Q393 637 386 627Q385 624 352 494T319 361Q319 360 388 360Q466 361 492 367Q556 377 592 426Q608 449 619 486T630 554Z"></path>
+<path stroke-width="1" id="E5-MJMAIN-27F6" d="M84 237T84 250T98 270H1444Q1328 357 1301 493Q1301 494 1301 496T1300 499Q1300 511 1317 511H1320Q1329 511 1332 510T1338 506T1341 497T1344 481T1352 456Q1374 389 1425 336T1544 261Q1553 258 1553 250Q1553 244 1548 241T1524 231T1486 212Q1445 186 1415 152T1370 85T1349 35T1341 4Q1339 -6 1336 -8T1320 -11Q1300 -11 1300 0Q1300 7 1305 25Q1337 151 1444 230H98Q84 237 84 250Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+<g transform="translate(116,0)">
+ <use xlink:href="#E5-MJMATHI-53" x="0" y="0"></use>
+ <use xlink:href="#E5-MJMATHI-52" x="645" y="0"></use>
+</g>
+ <use xlink:href="#E5-MJMAIN-27F6" x="0" y="825"></use>
+</g>
+</svg></span> and <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="3.987ex" height="3.676ex" style="vertical-align: -0.338ex;" viewBox="0 -1437.2 1716.5 1582.7" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-6-Title">
+<title id="MathJax-SVG-6-Title">\overset{\longrightarrow}{ST}</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E6-MJMATHI-53" d="M308 24Q367 24 416 76T466 197Q466 260 414 284Q308 311 278 321T236 341Q176 383 176 462Q176 523 208 573T273 648Q302 673 343 688T407 704H418H425Q521 704 564 640Q565 640 577 653T603 682T623 704Q624 704 627 704T632 705Q645 705 645 698T617 577T585 459T569 456Q549 456 549 465Q549 471 550 475Q550 478 551 494T553 520Q553 554 544 579T526 616T501 641Q465 662 419 662Q362 662 313 616T263 510Q263 480 278 458T319 427Q323 425 389 408T456 390Q490 379 522 342T554 242Q554 216 546 186Q541 164 528 137T492 78T426 18T332 -20Q320 -22 298 -22Q199 -22 144 33L134 44L106 13Q83 -14 78 -18T65 -22Q52 -22 52 -14Q52 -11 110 221Q112 227 130 227H143Q149 221 149 216Q149 214 148 207T144 186T142 153Q144 114 160 87T203 47T255 29T308 24Z"></path>
+<path stroke-width="1" id="E6-MJMATHI-54" d="M40 437Q21 437 21 445Q21 450 37 501T71 602L88 651Q93 669 101 677H569H659Q691 677 697 676T704 667Q704 661 687 553T668 444Q668 437 649 437Q640 437 637 437T631 442L629 445Q629 451 635 490T641 551Q641 586 628 604T573 629Q568 630 515 631Q469 631 457 630T439 622Q438 621 368 343T298 60Q298 48 386 46Q418 46 427 45T436 36Q436 31 433 22Q429 4 424 1L422 0Q419 0 415 0Q410 0 363 1T228 2Q99 2 64 0H49Q43 6 43 9T45 27Q49 40 55 46H83H94Q174 46 189 55Q190 56 191 56Q196 59 201 76T241 233Q258 301 269 344Q339 619 339 625Q339 630 310 630H279Q212 630 191 624Q146 614 121 583T67 467Q60 445 57 441T43 437H40Z"></path>
+<path stroke-width="1" id="E6-MJMAIN-27F6" d="M84 237T84 250T98 270H1444Q1328 357 1301 493Q1301 494 1301 496T1300 499Q1300 511 1317 511H1320Q1329 511 1332 510T1338 506T1341 497T1344 481T1352 456Q1374 389 1425 336T1544 261Q1553 258 1553 250Q1553 244 1548 241T1524 231T1486 212Q1445 186 1415 152T1370 85T1349 35T1341 4Q1339 -6 1336 -8T1320 -11Q1300 -11 1300 0Q1300 7 1305 25Q1337 151 1444 230H98Q84 237 84 250Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+<g transform="translate(144,0)">
+ <use xlink:href="#E6-MJMATHI-53" x="0" y="0"></use>
+ <use xlink:href="#E6-MJMATHI-54" x="645" y="0"></use>
+</g>
+ <use xlink:href="#E6-MJMAIN-27F6" x="78" y="825"></use>
+</g>
+</svg></span> of our angle coincide. So, we can think of <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="6.578ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 2832 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-7-Title">
+<title id="MathJax-SVG-7-Title">\angle RST</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E7-MJMAIN-2220" d="M71 0L68 2Q65 3 63 5T58 11T55 20Q55 22 57 28Q67 43 346 361Q397 420 474 508Q595 648 616 671T647 694T661 688T666 674Q666 668 663 663Q662 662 627 622T524 503T390 350L120 41L386 40H653Q666 30 666 20Q666 8 651 0H71Z"></path>
+<path stroke-width="1" id="E7-MJMATHI-52" d="M230 637Q203 637 198 638T193 649Q193 676 204 682Q206 683 378 683Q550 682 564 680Q620 672 658 652T712 606T733 563T739 529Q739 484 710 445T643 385T576 351T538 338L545 333Q612 295 612 223Q612 212 607 162T602 80V71Q602 53 603 43T614 25T640 16Q668 16 686 38T712 85Q717 99 720 102T735 105Q755 105 755 93Q755 75 731 36Q693 -21 641 -21H632Q571 -21 531 4T487 82Q487 109 502 166T517 239Q517 290 474 313Q459 320 449 321T378 323H309L277 193Q244 61 244 59Q244 55 245 54T252 50T269 48T302 46H333Q339 38 339 37T336 19Q332 6 326 0H311Q275 2 180 2Q146 2 117 2T71 2T50 1Q33 1 33 10Q33 12 36 24Q41 43 46 45Q50 46 61 46H67Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628Q287 635 230 637ZM630 554Q630 586 609 608T523 636Q521 636 500 636T462 637H440Q393 637 386 627Q385 624 352 494T319 361Q319 360 388 360Q466 361 492 367Q556 377 592 426Q608 449 619 486T630 554Z"></path>
+<path stroke-width="1" id="E7-MJMATHI-53" d="M308 24Q367 24 416 76T466 197Q466 260 414 284Q308 311 278 321T236 341Q176 383 176 462Q176 523 208 573T273 648Q302 673 343 688T407 704H418H425Q521 704 564 640Q565 640 577 653T603 682T623 704Q624 704 627 704T632 705Q645 705 645 698T617 577T585 459T569 456Q549 456 549 465Q549 471 550 475Q550 478 551 494T553 520Q553 554 544 579T526 616T501 641Q465 662 419 662Q362 662 313 616T263 510Q263 480 278 458T319 427Q323 425 389 408T456 390Q490 379 522 342T554 242Q554 216 546 186Q541 164 528 137T492 78T426 18T332 -20Q320 -22 298 -22Q199 -22 144 33L134 44L106 13Q83 -14 78 -18T65 -22Q52 -22 52 -14Q52 -11 110 221Q112 227 130 227H143Q149 221 149 216Q149 214 148 207T144 186T142 153Q144 114 160 87T203 47T255 29T308 24Z"></path>
+<path stroke-width="1" id="E7-MJMATHI-54" d="M40 437Q21 437 21 445Q21 450 37 501T71 602L88 651Q93 669 101 677H569H659Q691 677 697 676T704 667Q704 661 687 553T668 444Q668 437 649 437Q640 437 637 437T631 442L629 445Q629 451 635 490T641 551Q641 586 628 604T573 629Q568 630 515 631Q469 631 457 630T439 622Q438 621 368 343T298 60Q298 48 386 46Q418 46 427 45T436 36Q436 31 433 22Q429 4 424 1L422 0Q419 0 415 0Q410 0 363 1T228 2Q99 2 64 0H49Q43 6 43 9T45 27Q49 40 55 46H83H94Q174 46 189 55Q190 56 191 56Q196 59 201 76T241 233Q258 301 269 344Q339 619 339 625Q339 630 310 630H279Q212 630 191 624Q146 614 121 583T67 467Q60 445 57 441T43 437H40Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E7-MJMAIN-2220" x="0" y="0"></use>
+ <use xlink:href="#E7-MJMATHI-52" x="722" y="0"></use>
+ <use xlink:href="#E7-MJMATHI-53" x="1482" y="0"></use>
+ <use xlink:href="#E7-MJMATHI-54" x="2127" y="0"></use>
+</g>
+</svg></span> as:</p>
+<ul>
+<li>A <em>null</em> angle, assuming it doesn't turn at all.</li>
+</ul>
+<div id="graphic-f106ef923fbb8853e6a5c55fb69aa5cb" class="graphic"><img src="/graphics/f106ef923fbb8853e6a5c55fb69aa5cb"></div>
+
+<ul>
+<li>A <em>full</em> angle, assuming it makes one full turn.</li>
+</ul>
+<div id="graphic-704abb17e8bb0827d712d21d1ea5afa1" class="graphic"><img src="/graphics/704abb17e8bb0827d712d21d1ea5afa1"></div>
+
+<p>So, the answer is "Null" or "Full."</p>
+
+                    </div>     
+                </div>                            
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-e2604" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q52645" class="step questionWidget" style="display: block;"><div class="questionWidget-header"><div class="questionWidget-title">Question 11</div><div class="questionWidget-helpButton">?</div></div><div class="questionWidget-text"><p>Which of the following shows a full angle?</p>
+</div><table class="questionWidget-choicesTable"><tbody><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-52645-a" class="questionWidget-choiceLetterCircle" style="background: rgb(64, 64, 64); color: white;">a</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-52645-a-2"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-52645-b" class="questionWidget-choiceLetterCircle">b</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-52645-a-3"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-52645-c" class="questionWidget-choiceLetterCircle">c</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-52645-a-4"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-52645-d" class="questionWidget-choiceLetterCircle">d</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-52645-a-1"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-52645-e" class="questionWidget-choiceLetterCircle">e</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-52645-a-5"></td></tr></tbody></table><div class="questionWidget-buttonBar"><div class="questionWidget-submitButton disabledButton" style="display: none;">Submit</div></div><div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner" style="display: block;"></div></div><div class="questionWidget-result"><div class="questionWidget-incorrectIcon"><img src="/img/incorrect-answer.svg"></div><div class="questionWidget-incorrectText">Incorrect</div></div><div class="questionWidget-explanationHeader">EXPLANATION</div><div class="questionWidget-explanation"><p>A full angle has a degree measure of <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="18" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msup><mjx-mn class="mjx-n"><mjx-c class="mjx-c33"></mjx-c><mjx-c class="mjx-c36"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-script style="vertical-align: 0.393em;"><mjx-mo class="mjx-n" size="s"><mjx-c class="mjx-c2218"></mjx-c></mjx-mo></mjx-script></mjx-msup><mjx-mo class="mjx-n"><mjx-c class="mjx-c2E"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mn>360</mn><mo>∘</mo></msup><mo>.</mo></math></mjx-assistive-mml></mjx-container> This corresponds to a full turn.</p>
+<p>Among the given options, the only full angle is the following:</p>
+<div id="graphic-q-52645-a-1" class="graphic"><img src="/graphics/q-52645-a-1"></div></div></div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q52645" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q151096" class="step questionWidget" style="display: block;"><div class="questionWidget-header"><div class="questionWidget-title">Question 12</div><div class="questionWidget-helpButton">?</div></div><div class="questionWidget-text"><p>Which of the following shows a full angle?</p>
+</div><table class="questionWidget-choicesTable"><tbody><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-151096-a" class="questionWidget-choiceLetterCircle" style="background: rgb(64, 64, 64); color: white;">a</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-151096-a-1"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-151096-b" class="questionWidget-choiceLetterCircle">b</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-151096-a-5"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-151096-c" class="questionWidget-choiceLetterCircle">c</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-151096-a-4"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-151096-d" class="questionWidget-choiceLetterCircle">d</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-151096-a-2"></td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-151096-e" class="questionWidget-choiceLetterCircle">e</div></td><td class="questionWidget-choiceText"><img src="/graphics/q-151096-a-3"></td></tr></tbody></table><div class="questionWidget-buttonBar"><div class="questionWidget-submitButton disabledButton" style="display: none;">Submit</div></div><div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner" style="display: block;"></div></div><div class="questionWidget-result"><div class="questionWidget-correctIncorrectIcon"><img src="/img/correct-answer.svg"></div><div class="questionWidget-correctText">Correct</div></div><div class="questionWidget-explanationHeader">EXPLANATION</div><div class="questionWidget-explanation"><p>A full angle has a degree measure of <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="19" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msup><mjx-mn class="mjx-n"><mjx-c class="mjx-c33"></mjx-c><mjx-c class="mjx-c36"></mjx-c><mjx-c class="mjx-c30"></mjx-c></mjx-mn><mjx-script style="vertical-align: 0.393em;"><mjx-mo class="mjx-n" size="s"><mjx-c class="mjx-c2218"></mjx-c></mjx-mo></mjx-script></mjx-msup><mjx-mo class="mjx-n"><mjx-c class="mjx-c2E"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mn>360</mn><mo>∘</mo></msup><mo>.</mo></math></mjx-assistive-mml></mjx-container> This corresponds to a full turn.</p>
+<p>Among the given options, the only full angle is the following:</p>
+<div id="graphic-q-151096-a-1" class="graphic"><img src="/graphics/q-151096-a-1"></div></div></div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q151096" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q114726" class="step questionWidget" style="display: block;"><div class="questionWidget-header"><div class="questionWidget-title">Question 13</div><div class="questionWidget-helpButton">?</div></div><div class="questionWidget-graphic"><img src="/graphics/q-114726"></div><div class="questionWidget-text"><p>What type of angle is <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="20" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-n"><mjx-c class="mjx-c2220"></mjx-c></mjx-mi><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D444 TEX-I"></mjx-c></mjx-mi><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D443 TEX-I"></mjx-c></mjx-mi><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D445 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n"><mjx-c class="mjx-c2C"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">∠</mi><mi>Q</mi><mi>P</mi><mi>R</mi><mo>,</mo></math></mjx-assistive-mml></mjx-container> shown in the figure above?</p>
+</div><table class="questionWidget-choicesTable"><tbody><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-114726-a" class="questionWidget-choiceLetterCircle" style="background: rgb(64, 64, 64); color: white;">a</div></td><td class="questionWidget-choiceText">Other</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-114726-b" class="questionWidget-choiceLetterCircle">b</div></td><td class="questionWidget-choiceText">Null or Full</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-114726-c" class="questionWidget-choiceLetterCircle">c</div></td><td class="questionWidget-choiceText">Right</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-114726-d" class="questionWidget-choiceLetterCircle">d</div></td><td class="questionWidget-choiceText">Straight</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-114726-e" class="questionWidget-choiceLetterCircle">e</div></td><td class="questionWidget-choiceText">Full or Straight</td></tr></tbody></table><div class="questionWidget-buttonBar"><div class="questionWidget-submitButton disabledButton" style="display: none;">Submit</div></div><div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner" style="display: block;"></div></div><div class="questionWidget-result"><div class="questionWidget-incorrectIcon"><img src="/img/incorrect-answer.svg"></div><div class="questionWidget-incorrectText">Incorrect</div></div><div class="questionWidget-explanationHeader">EXPLANATION</div><div class="questionWidget-explanation"><p>Notice that the vertex of <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="21" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-n"><mjx-c class="mjx-c2220"></mjx-c></mjx-mi><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D444 TEX-I"></mjx-c></mjx-mi><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D443 TEX-I"></mjx-c></mjx-mi><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D445 TEX-I"></mjx-c></mjx-mi></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">∠</mi><mi>Q</mi><mi>P</mi><mi>R</mi></math></mjx-assistive-mml></mjx-container> is point <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="22" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D443 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n"><mjx-c class="mjx-c2C"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>P</mi><mo>,</mo></math></mjx-assistive-mml></mjx-container> not point <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="23" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D445 TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n"><mjx-c class="mjx-c2E"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>R</mi><mo>.</mo></math></mjx-assistive-mml></mjx-container> So <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="24" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-n"><mjx-c class="mjx-c2220"></mjx-c></mjx-mi><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D444 TEX-I"></mjx-c></mjx-mi><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D443 TEX-I"></mjx-c></mjx-mi><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D445 TEX-I"></mjx-c></mjx-mi></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">∠</mi><mi>Q</mi><mi>P</mi><mi>R</mi></math></mjx-assistive-mml></mjx-container> is <em>not</em> a straight angle.</p>
+<p>We can think of <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="25" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-n"><mjx-c class="mjx-c2220"></mjx-c></mjx-mi><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D444 TEX-I"></mjx-c></mjx-mi><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D443 TEX-I"></mjx-c></mjx-mi><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D445 TEX-I"></mjx-c></mjx-mi></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">∠</mi><mi>Q</mi><mi>P</mi><mi>R</mi></math></mjx-assistive-mml></mjx-container> as:</p>
+<ul>
+<li><p>a <em>null</em> angle, if we assume that it doesn't turn at all (diagram on the left), or</p>
+</li>
+<li><p>a <em>full</em> angle, if we assume that it makes one full turn (diagram on the right).</p>
+</li>
+</ul>
+<div id="graphic-q-114726-e-0" class="graphic"><img src="/graphics/q-114726-e-0"></div>
+
+<p>So, the answer is 'Null' or 'Full'.</p>
+</div></div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q114726" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q114730" class="step questionWidget" style="display: block;"><div class="questionWidget-header"><div class="questionWidget-title">Question 14</div><div class="questionWidget-helpButton">?</div></div><div class="questionWidget-graphic"><img src="/graphics/q-114730"></div><div class="questionWidget-text"><p>What type of angle is <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="26" style="font-size: 119.4%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-mi class="mjx-n"><mjx-c class="mjx-c2220"></mjx-c></mjx-mi><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D449 TEX-I"></mjx-c></mjx-mi><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D442 TEX-I"></mjx-c></mjx-mi><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D44A TEX-I"></mjx-c></mjx-mi><mjx-mo class="mjx-n"><mjx-c class="mjx-c2C"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">∠</mi><mi>V</mi><mi>O</mi><mi>W</mi><mo>,</mo></math></mjx-assistive-mml></mjx-container> shown in the figure above?</p>
+</div><table class="questionWidget-choicesTable"><tbody><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-114730-a" class="questionWidget-choiceLetterCircle" style="background: rgb(64, 64, 64); color: white;">a</div></td><td class="questionWidget-choiceText"> Null or Full</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-114730-b" class="questionWidget-choiceLetterCircle">b</div></td><td class="questionWidget-choiceText"> Full or Straight</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-114730-c" class="questionWidget-choiceLetterCircle">c</div></td><td class="questionWidget-choiceText"> Right</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-114730-d" class="questionWidget-choiceLetterCircle">d</div></td><td class="questionWidget-choiceText"> Straight</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-114730-e" class="questionWidget-choiceLetterCircle">e</div></td><td class="questionWidget-choiceText"> Other</td></tr></tbody></table><div class="questionWidget-buttonBar"><div class="questionWidget-submitButton enabledButton">Submit</div></div><div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner"></div></div></div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q114730" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q114728" class="step questionWidget" style="display: none">
+    
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q114728" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+          
+    </div>         
+</div>
+
+<div id="finalScreen">        
+    <div id="finalScreen-completionMessage"></div>
+    <div id="finalScreen-pointsMessage"></div>
+
+    <div id="finalScreen-buttonBar">
+        <div id="finalScreen-doneButton">Continue</div>  
+    </div>
+</div>   
+
+<link rel="stylesheet" href="/css/flag-content-dialog.css">
+
+<script type="text/javascript" src="/js/flag-content-dialog.js"></script>
+
+<div id="flagContentDialog">
+    <div id="flagContentDialog-title">Flag Content</div>
+
+    <div id="flagContentDialog-instructions">Did you notice an error, or do you simply believe that something could be improved? Please explain below.</div>
+
+    <textarea id="flagContentDialog-description" style=""></textarea>
+
+    <div id="flagContentDialog-submitButton">Submit</div>
+    <div id="flagContentDialog-cancelButton">Cancel</div>
+</div>
+<link rel="stylesheet" href="/css/bookmark-dialog.css">
+
+<script type="text/javascript" src="/js/bookmark-dialog.js"></script>
+
+<div id="bookmarkDialog">
+    <div id="bookmarkDialog-title">Bookmark</div>
+
+    <div id="bookmarkDialog-contentTitle"></div>    
+
+    <div id="bookmarkDialog-instructions">Notes</div>
+
+    <textarea id="bookmarkDialog-notes" style=""></textarea>
+
+    <div id="bookmarkDialog-submitButton">SUBMIT</div>
+    <div id="bookmarkDialog-cancelButton">CANCEL</div>
+</div>
+
+        </div>
+    
+                      
+
+    
+</body></html>
