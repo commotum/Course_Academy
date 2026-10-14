@@ -26,9 +26,14 @@ def scalar(text):
 
 def integral(text):
     text = re.sub(r'\(\s*-\s*(' + DIFFERENTIAL + r')\s*\)', r'(-1)\1', text)
+    text = re.sub(r'\(([^()]*?)(' + DIFFERENTIAL + r')\s*\)', lambda m:'('+m[1]+')'+m[2], text)
     match = re.search(r'\\int\s*(.*?)\s*' + DIFFERENTIAL, text, re.S)
     assert match, ('No actual displayed integral', text)
-    return scalar(match[1]), P.locals_[match[2]], match
+    body = match[1].replace(r'\,', '').strip()
+    # A printed dot multiplying the differential is legal: f(u) · du.
+    # The differential becomes the measure here, leaving f(u) as integrand.
+    if body.endswith(r'\cdot'): body = body[:-len(r'\cdot')].strip()
+    return scalar(body), P.locals_[match[2]], match
 
 def equal(a, b):
     return s.simplify(s.expand(a - b)) == 0

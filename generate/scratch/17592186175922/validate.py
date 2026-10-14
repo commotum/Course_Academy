@@ -107,7 +107,10 @@ def check_png(path,p):
   assert len(visible)>=2
   assert sum(near(x,y,color) for x,y in visible)>=2,'actual colored line does not align with equation'
  for box in p['text_boxes']:
-  x,y,w,h=box['bbox'];assert x>=0 and y>=0 and x+w<=im.width and y+h<=im.height,'clipped reading label'
+  x,y,w,h=box['bbox']
+  if box['text'] in ('$l_1$','$l_2$'):
+   assert (x+w<=origin[0]-4 or x>=origin[0]+4) and (y+h<=origin[1]-4 or y>=origin[1]+4),'line-name glyph overlaps a zero axis'
+  assert x>=0 and y>=0 and x+w<=im.width and y+h<=im.height,'clipped reading label'
   crop=im.crop((int(x),int(im.height-y-h),int(x+w)+1,int(im.height-y)+1))
   assert any(min(pixel)<180 for pixel in crop.getdata()),'empty native label box'
  assert abs(float(sp.Rational(p['a']))*float(sp.Rational(p['m']))+1)<1e-12
@@ -198,6 +201,21 @@ def main():
   for asset,p in zip(assets,ps):
    side=json.loads(Path(asset['sidecar']).read_text());assert all(side[k]==str(sp.Rational(p[k])) for k in p);check_png(Path(asset['prompt']),side)
   assert not list(Path(td).glob('.render-*'))
+ # Targeted native seed1 regression: both line-name bboxes must clear each zero axis.
+ label_target=g.generate_easy(1)
+ label_data=json.loads(Path(label_target['generation']['plots']['sidecar']).read_text())
+ label_regressions=[]
+ check_png(Path(label_target['generation']['plots']['prompt']),label_data)
+ for label,axis in itertools.product(('$l_1$','$l_2$'),(0,1)):
+  mutated=copy.deepcopy(label_data)
+  box=next(z for z in mutated['text_boxes'] if z['text']==label)
+  box['bbox'][axis]=mutated['origin_pixel'][axis]-2
+  try:check_png(Path(label_target['generation']['plots']['prompt']),mutated)
+  except AssertionError as error:
+   assert 'line-name glyph overlaps' in str(error)
+   label_regressions.append(label+' axis'+str(axis))
+  else:raise AssertionError('line-name axis overlap mutation missed')
+ (HERE/'label-clearance-regression.json').write_text(json.dumps({'target':label_target,'native_sidecar':label_data,'axis_overlap_mutations_rejected':label_regressions},indent=2)+'\n')
  # Mutations must fail printed-stage and formatting validators, independent of metadata.
  baseline=g.generate_hard(304,template='text_equation_blank')
  mutations=[]
@@ -208,7 +226,7 @@ def main():
   else:raise AssertionError('mutation missed '+name)
  (HERE/'native-fixtures.json').write_text(json.dumps([f for f in fixtures if f],indent=2)+'\n')
  subprocess.run(['generate/runs/current/check-engine',str(HERE/'native-fixtures.json'),str(HERE/'native-report.json')],check=True)
- report={'status':'passed','script_sha256':hashlib.sha256(SCRIPT.read_bytes()).hexdigest(),'source_count':7,'source_fidelity':fidelity,'matched_source_options':sum(x['choices_matched'] for x in fidelity),'matched_source_correct_refs':sum(x['correct_designation_matched'] for x in fidelity),'raw_missing_native_ungradeable':['q-213914: no choices/correct','q-44604: no correct ref'],'source_distractors_matched':8,'source_distractors_total':8,'inferred_source_distractors_matched':4,'inferred_source_distractors_total':4,'normal_samples':360,'distinct_assessed_tasks_sampled':{k:len(v) for k,v in unique.items()},'default_family_counts':dict(default_families),'invalid_explicit_scope_rejections':invalid_checks,'explicit_changed_point_checks':7,'concurrent_fresh_render_checks':4,'mutation_regressions':mutations,'native':json.loads((HERE/'native-report.json').read_text()),'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':g.matplotlib.__version__},'unresolved':['Historical q44337/q44606 distractor intent is opaque; complete structural evidence profiles are ineligible for learning.','Unrated missing fields/solution/refs cannot establish original native grading or observed difficulty.'],'writes':'private evidence only; no DB operations'}
+ report={'status':'passed','script_sha256':hashlib.sha256(SCRIPT.read_bytes()).hexdigest(),'source_count':7,'source_fidelity':fidelity,'matched_source_options':sum(x['choices_matched'] for x in fidelity),'matched_source_correct_refs':sum(x['correct_designation_matched'] for x in fidelity),'raw_missing_native_ungradeable':['q-213914: no choices/correct','q-44604: no correct ref'],'source_distractors_matched':8,'source_distractors_total':8,'inferred_source_distractors_matched':4,'inferred_source_distractors_total':4,'normal_samples':360,'distinct_assessed_tasks_sampled':{k:len(v) for k,v in unique.items()},'default_family_counts':dict(default_families),'invalid_explicit_scope_rejections':invalid_checks,'explicit_changed_point_checks':7,'concurrent_fresh_render_checks':4,'line_label_axis_overlap_regressions':label_regressions,'mutation_regressions':mutations,'native':json.loads((HERE/'native-report.json').read_text()),'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':g.matplotlib.__version__},'unresolved':['Historical q44337/q44606 distractor intent is opaque; complete structural evidence profiles are ineligible for learning.','Unrated missing fields/solution/refs cannot establish original native grading or observed difficulty.'],'writes':'private evidence only; no DB operations'}
  (HERE/'validation.json').write_text(json.dumps(report,indent=2)+'\n');(HERE/'source-cases.json').write_text(json.dumps(cases,indent=2)+'\n');(HERE/'review.json').write_text(json.dumps(reviews,indent=2)+'\n')
  md=[]
  for item in reviews:

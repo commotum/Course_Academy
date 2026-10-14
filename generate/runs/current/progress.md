@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Approved sources retain 
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 43**, **qa_passed: 292**, **queued: 242**, **working: 3**.
+**needs_revalidation: 43**, **qa_passed: 295**, **queued: 238**, **working: 4**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). Finish existing workers, then follow updated ranks; coverage-report priorities remain first and are already approved.
 
@@ -36,13 +36,13 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186096613](../../scratch/17592186096613.py) | Differentiating Logarithmic Functions | Differentiating the Product of a Constant and the Natural Logarithm Function | 7 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096613.json) |
 | [17592186068722](../../scratch/17592186068722.py) | Integration Using Substitution | Integrating an Expression Involving a Power Function Multiplied by Its Derivative | 2 / 2 / 1 / 0 | qa_passed | [Report](qa/17592186068722.json) |
 | [17592186184349](../../scratch/17592186184349.py) | Integrating Exponential Functions Using Substitution | Integrating Products Containing the Exponential Function | 2 / 2 / 1 / 2 | qa_passed | [Report](qa/17592186184349.json) |
-| [17592186175922](../../scratch/17592186175922.py) | Finding Equations of Perpendicular Lines | Finding the Equation of a Perpendicular Line | 1 / 1 / 3 / 2 | working | — |
-| [17592186064171](../../scratch/17592186064171.py) | Integrating Exponential Functions | Integrating the Exponential Function | 3 / 1 / 1 / 1 | working | — |
-| 17592186064172 | Integrating Exponential Functions | Integrating an Exponential Function With a General Base | 2 / 2 / 1 / 1 | working | — |
-| [17592186064206](../../scratch/17592186064206.py) | Integrating Linear Rational Functions Using Substitution | Integrating a Linear Rational Function | 5 / 0 / 0 / 1 | queued | — |
-| [17592186054694](../../scratch/17592186054694.py) | Graphing Linear Equations | Plotting a Line Using a Table | 5 / 0 / 0 / 1 | queued | — |
-| [17592186054695](../../scratch/17592186054695.py) | Graphing Linear Equations | Sketching a Line Using Two Points | 5 / 0 / 0 / 2 | queued | — |
-| [17592186054802](../../scratch/17592186054802.py) | Graphing Linear Equations | Identifying a Line Given a Graph | 0 / 0 / 5 / 2 | queued | — |
+| [17592186175922](../../scratch/17592186175922.py) | Finding Equations of Perpendicular Lines | Finding the Equation of a Perpendicular Line | 1 / 1 / 3 / 2 | qa_passed | [Report](qa/17592186175922.json) |
+| [17592186064171](../../scratch/17592186064171.py) | Integrating Exponential Functions | Integrating the Exponential Function | 3 / 1 / 1 / 1 | qa_passed | [Report](qa/17592186064171.json) |
+| [17592186064172](../../scratch/17592186064172.py) | Integrating Exponential Functions | Integrating an Exponential Function With a General Base | 2 / 2 / 1 / 1 | qa_passed | [Report](qa/17592186064172.json) |
+| [17592186064206](../../scratch/17592186064206-draft.py) | Integrating Linear Rational Functions Using Substitution | Integrating a Linear Rational Function | 5 / 0 / 0 / 1 | working | — |
+| [17592186054694](../../scratch/17592186054694-draft.py) | Graphing Linear Equations | Plotting a Line Using a Table | 5 / 0 / 0 / 1 | working | — |
+| [17592186054695](../../scratch/17592186054695-draft.py) | Graphing Linear Equations | Sketching a Line Using Two Points | 5 / 0 / 0 / 2 | working | — |
+| [17592186054802](../../scratch/17592186054802-draft.py) | Graphing Linear Equations | Identifying a Line Given a Graph | 0 / 0 / 5 / 2 | working | — |
 | [17592186059714](../../scratch/17592186059714.py) | Calculating the Magnitude of Cartesian Vectors in 2D | Calculating the Magnitude of a Vector Given in Component Form | 7 / 0 / 0 / 2 | queued | — |
 | [17592186059715](../../scratch/17592186059715.py) | Calculating the Magnitude of Cartesian Vectors in 2D | Calculating a Vector From Position Vectors and then Computing its Magnitude | 0 / 8 / 0 / 2 | queued | — |
 | [17592186059826](../../scratch/17592186059826.py) | Interval Notation | Converting Between Intervals and Inequalities: Open Intervals | 0 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186059826.json) |
@@ -80,7 +80,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186133830](../../scratch/17592186133830.py) | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function | 2 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186133830.json) |
 | 17592186162081 | Properties of Line Integrals of Scalar Functions | Calculating Line Integrals of Unity | 5 / 0 / 0 / 1 | queued | — |
 | 17592186162082 | Properties of Line Integrals of Scalar Functions | Calculating Line Integrals Over Piecewise-Smooth Curves | 2 / 3 / 0 / 1 | queued | — |
-| 17592186162083 | Properties of Line Integrals of Scalar Functions | Applying Independence of Parametrization and Orientation | 0 / 3 / 2 / 2 | queued | — |
+| [17592186162083](../../scratch/17592186162083.py) | Properties of Line Integrals of Scalar Functions | Applying Independence of Parametrization and Orientation | 0 / 3 / 2 / 2 | queued | — |
 | 17592186179670 | Line Integrals of Scalar Functions Over Line Segments | Calculating a Line Integral Along a Segment in the Cartesian Plane | 0 / 3 / 2 / 2 | queued | — |
 | 17592186179724 | Line Integrals of Scalar Functions Over Line Segments | Constructing a Line Integral Along a Segment in the Cartesian Plane | 5 / 0 / 0 / 0 | queued | — |
 | 17592186179725 | Line Integrals of Scalar Functions Over Line Segments | Line Integrals Along Segments in Three Dimensions | 2 / 1 / 2 / 2 | queued | — |
@@ -262,7 +262,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186092218](../../scratch/17592186092218.py) | Converting from Polar Coordinates to Cartesian Coordinates | Finding the Cartesian Coordinates of a Point Given a Description of the Radius and Angle | 0 / 10 / 0 / 2 | qa_passed | [Report](qa/17592186092218.json) |
 | 17592186100872 | Multiplying Matrices | Multiplying Two Matrices When They Are Conformable | 9 / 0 / 0 / 2 | queued | — |
 | 17592186100913 | Multiplying Matrices | Multiplying a Column-Vector By a Row-Vector | 8 / 1 / 0 / 2 | queued | — |
-| 17592186100873 | Multiplying Matrices | Finding an Entry of the Product of Two Matrices | 10 / 0 / 0 / 2 | queued | — |
+| [17592186100873](../../scratch/17592186100873.py) | Multiplying Matrices | Finding an Entry of the Product of Two Matrices | 10 / 0 / 0 / 2 | queued | — |
 | 17592186064246 | Introduction to Integration by Parts | Using Integration by Parts to Compute an Indefinite Integral Containing a Trigonometric Expression | 8 / 6 / 1 / 0 | queued | — |
 | 17592186064274 | Introduction to Integration by Parts | Computing a Definite Integral Using Integration by Parts | 0 / 23 / 0 / 0 | queued | — |
 | [17592186064259](../../scratch/17592186064259.py) | Calculating the Slope of a Tangent Line Using Differentiation | Finding a Point on a Curve With a Certain Slope | 0 / 7 / 0 / 2 | queued | — |

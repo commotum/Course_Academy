@@ -25,7 +25,7 @@ $$
 
 ## Normal method-derived graph_intercept_blank 0
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175922/plots/c065fa196a273bac15da3350110a9c5c42602fec85dd983d829abcf6595948fe.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175922/plots/8943908aa6775eb5cb3c909b7b3a20c9f707263b848bdb01979d29c9f4ac4545.png)
 
 The equation of the line $l_{1}$ is $y = 4x + 7$ and $l_{2}$ is perpendicular to $l_{1}$. What is the equation of $l_{2}$?
 
@@ -43,7 +43,7 @@ $$
 
 ## Normal method-derived graph_intercept_blank 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175922/plots/b2993b8476c8bfcc3f7a436c5afe4f42879b27e8d39bd01d83aaab1599294678.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175922/plots/5e459db702b5e279bf1ba8758442b9ff4170d12522f9181d4bc3bc0549996812.png)
 
 The equation of the line $l_{1}$ is $y = 4x + 7$ and $l_{2}$ is perpendicular to $l_{1}$. What is the equation of $l_{2}$?
 
@@ -91,7 +91,7 @@ $$
 
 ## Normal method-derived graph_point_radio 0
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175922/plots/d8d3dbaef757af1fed67b119a151add565a5655813fa0da1a1dd3857ac2f11fe.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175922/plots/c1a40b44dbaca3b784fd802ef37faf8983435ff6157f9241bc088c4990fec339.png)
 
 In the diagram above, the equation of the line $l_{1}$ is $y = -\frac{1}{4}x - 5$ and $l_{2}$ is perpendicular to $l_{1}$. What is the equation of the line $l_{2}$?
 - $y=-\frac{1}{4}x+\frac{35}{4}$
@@ -110,7 +110,7 @@ $$
 
 ## Normal method-derived graph_point_radio 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175922/plots/b851955edbca65dfd3eb28e64bc07216f5a335e5184f52371a6211e1e0647e0b.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175922/plots/b3a896b69ce2bc6855ad13766aeb61176c47895bf4190508c32725d8faa2ab97.png)
 
 In the diagram above, the equation of the line $l_{1}$ is $y = \frac{1}{4}x + 4$ and $l_{2}$ is perpendicular to $l_{1}$. What is the equation of the line $l_{2}$?
 - $y=\frac{1}{4}x+\frac{17}{2}$
@@ -237,7 +237,7 @@ $$
 
 ## Normal method-derived graph_point_blank 0
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175922/plots/fbdcb1c93b86fd206b8254a534581bf824c3e1ee61d44c9dc56915d245e38fc4.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175922/plots/dc153e09288939efe3a9b1d4f2f855f0c5a21ef2fc8e45f04e1cac02e0fc8ddc.png)
 
 The equation of the line ${l}_{1}$ is $y=4x+7$ and ${l}_{2}$ is perpendicular to ${l}_{1}.$  What is the equation of ${l}_{2}?$
 
@@ -255,7 +255,7 @@ $$
 
 ## Normal method-derived graph_point_blank 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175922/plots/5d563a6a82e83a30e2d1a616e3cab0735ddf92993bf146ed478d4b5c2617f300.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175922/plots/9ce8630886e0e39ce4ad2004f3b7d6cf688c3fe9cf39a3c47a5c28bdeebb6684.png)
 
 The equation of the line ${l}_{1}$ is $y=4x+7$ and ${l}_{2}$ is perpendicular to ${l}_{1}.$  What is the equation of ${l}_{2}?$
 
@@ -391,7 +391,7 @@ $$
 
 ## Normal method-derived graph_intercept_radio 0
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175922/plots/f3966d5aa9ab15529bb9f7562a20a62c9bb3f84a3a8b0e0b3ae6b45f14f29b07.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175922/plots/8a4caee16a25e25dbf6074aa02dd10df3626086ddacb7afca2445a0c1541141c.png)
 
 In the diagram above, the equation of the line ${l}_{1}$ is $y=-2x$ and ${l}_{2}$ is perpendicular to ${l}_{1}.$ What is the equation of the line ${l}_{2}?$
 - $y=-\frac{1}{2}x-5$
@@ -410,7 +410,7 @@ $$
 
 ## Normal method-derived graph_intercept_radio 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175922/plots/c4c7df76cd8b1d5e4b8ed9c5a007c1d2a59c68b82d5d1373538a5f6fb9821aae.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186175922/plots/4e1881723ff3da9be08399917575728ae62967c21c1d4aeadcc229c60abb01d9.png)
 
 In the diagram above, the equation of the line ${l}_{1}$ is $y=4x+7$ and ${l}_{2}$ is perpendicular to ${l}_{1}.$ What is the equation of the line ${l}_{2}?$
 - $y=\frac{1}{4}x-2$

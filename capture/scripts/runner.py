@@ -81,6 +81,15 @@ class CaptureRunner:
             directory = path.parent
             if not (directory / "handoff-complete.json").exists():
                 item = read_json(path, {})
+                # An explicit user course switch can leave unfinished source
+                # work behind. Retain it without treating it as completed or
+                # silently selecting it again after the new diagnostic.
+                suspension = read_json(directory / 'capture-suspended.json', {}) or {}
+                if (suspension.get('status') == 'suspended'
+                        and suspension.get('reason') == 'user_course_change'
+                        and suspension.get('operator_authorized') is True
+                        and str(suspension.get('task_id')) == str(item.get('task_id'))):
+                    continue
                 candidates.append((path.stat().st_mtime_ns, {"activity": item, "directory": str(directory)}))
         return min(candidates, key=lambda item: item[0])[1] if candidates else None
 

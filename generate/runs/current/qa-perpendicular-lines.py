@@ -66,6 +66,9 @@ for r in records:
             if not text['text']: continue
             x,y,w,h=text['bbox']; assert 0<=x<x+w<=W and 0<=y<y+h<=H
             assert im[max(0,int(H-y-h)):int(H-y)+1,int(x):int(x+w)+1].min()<180
+            if text['text'] in ('$l_1$','$l_2$'):
+                assert not x-4<=origin[0]<=x+w+4,('Line glyph overlaps vertical zero axis',path)
+                assert not y-4<=origin[1]<=y+h+4,('Line glyph overlaps horizontal zero axis',path)
             C['native_label_boxes']+=1
         for axis in (0,1):
             hit=0

@@ -1,0 +1,7 @@
+# Plotting a Line Using a Table — private local draft
+
+Run `.venv/bin/python generate/scratch/17592186054694-draft/validate.py` from the repository root. CLI: `.venv/bin/python generate/scratch/17592186054694-draft.py --difficulty all --count 2 --seed 41 --format json` (or markdown). API exposes generate_easy, generate_moderate, generate_hard and generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None).
+
+The exact basis-2275 captured wrapper is source.json. Source-cases covers the three MA originals; independent-inventory.json retains complete current independently authored records. Public source replay sets parameters.source_replay=true. q-59676's missing difficulty, correct ref and solution remain absent in raw output. Normal negative-family completion and all moderate/hard templates are authored. Conservative workload boundaries preserve equation -> four substitutions -> completed table -> plotted points -> connected line/selection, with 48 easy, 48 moderate and 72 hard substantive tasks.
+
+validation.json separates 15 original graph values/3 banks/2 supplied keys/2 supplied solutions, exact mathematics, native pixel geometry and memory-only application radio grading. q-71695 option 2 was corrected in the new extraction to y=-2x+1; its immutable original record/asset is retained, and the numeric registered generator/evidence are untouched. Root independently reviews the draft; no database writes, publication, registration, engine changes, or commits occur.

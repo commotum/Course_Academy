@@ -14,7 +14,7 @@ def check(K):
     for row in json.load(open(D/'review.json')):
         r=row.get('record',row)
         if 'question'in r and not r['generation'].get('evidence_only',False):records.append(r)
-    cases=json.load(open(D/'source-cases.json'));C=dict(records=0,actual_integrands=0,operative_integral_sides=0,primitive_sides=0,choice_values=0,criterion_pairs=0,source_prose_masks=0)
+    cases=json.load(open(D/'source-cases.json'));C=dict(records=0,actual_integrands=0,operative_integral_sides=0,primitive_sides=0,choice_values=0,criterion_pairs=0,source_prose_masks=0,exact_log_sides=0,final_primitive_sides=0)
     for r in records:
         q=r['question'];F,x,_=P.integral(q[':question/problem']);sol=q[':question/worked-solution'];C['actual_integrands']+=1
         if K==17592186064171:
@@ -25,11 +25,27 @@ def check(K):
             assert mask(sol) in [mask(o[':question/worked-solution'])for o in candidates];C['source_prose_masks']+=1
         else:
             assert len(F.atoms(s.Pow))>=1
+            candidates=[o for o in originals.values() if ':question/worked-solution'in o]
+            assert mask(sol) in [mask(o[':question/worked-solution'])for o in candidates];C['source_prose_masks']+=1
         primitives=0
         for block in re.findall(r'\$\$\s*(.*?)\s*\$\$',sol,re.S):
             # Rule displays in the general-base sources use a symbolic base;
             # operative numeric chains are checked here and formal rules separately.
-            if r'\int'not in block or re.search(r'(?<![A-Za-z])[ab](?:\^|\})',block):continue
+            if r'\int'not in block:
+                if K==17592186064172:
+                    block=re.sub(r'\\(?:begin|end)\{aligned\}','',block).replace('&','');previous=None
+                    for row in block.split(chr(92)*2):
+                        for index,side in enumerate(row.split('=')):
+                            side=side.strip().rstrip('.,')
+                            if not side:assert index==0 and previous is not None;value=previous
+                            else:value=P.scalar(side)
+                            if index>0:assert P.equal(value,previous),(K,'Wrong logarithm/final-primitive stage',side)
+                            previous=value
+                            if value.has(x):
+                                assert P.equal(s.diff(value,x),F)
+                                if side:C['final_primitive_sides']+=1
+                            elif side:C['exact_log_sides']+=1
+                continue
             block=re.sub(r'\\(?:begin|end)\{aligned\}','',block).replace('&','')
             for row in block.split(chr(92)*2):
                 for side in row.split('='):

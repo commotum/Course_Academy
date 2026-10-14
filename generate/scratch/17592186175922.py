@@ -209,7 +209,7 @@ def sample(level,template,rng):
 # Matplotlib renderer, instance-derived native geometry, unique atomic writes.
 def render_plots(p,template,output_dir=None):
  a,c,u,v,m,b=values(p)
- data={'a':str(a),'c':str(c),'u':str(u),'v':str(v),'m':str(m),'b':str(b),'template':template,'renderer':matplotlib.__version__,'geometry_revision':3}
+ data={'a':str(a),'c':str(c),'u':str(u),'v':str(v),'m':str(m),'b':str(b),'template':template,'renderer':matplotlib.__version__,'geometry_revision':5}
  target=Path(output_dir or ROOT/'plots');target.mkdir(parents=True,exist_ok=True)
  name=digest(data);png=target/(name+'.png');side=target/(name+'.json')
  if png.exists() and side.exists():return {'prompt':str(png),'sidecar':str(side)}
@@ -233,12 +233,22 @@ def render_plots(p,template,output_dir=None):
   ax.annotate('$'+tex(u)+'$',(float(u),0),xytext=(0,-15 if v>0 else 7),textcoords='offset points',ha='center',fontsize=11)
  ax.plot([float(u)],[float(v)],'o',color='red',ms=5)
  ax.annotate('$'+tex(v)+'$',(0,float(v)),xytext=(-17,3),textcoords='offset points',ha='right',fontsize=11)
- # Identify each line using an interior point well away from the crossing and marker.
- for slope,intercept,label,offset in [(a,c,'$l_1$',(8,0)),(m,b,'$l_2$',(0,9))]:
+ # Move each complete line-name glyph away from both actual zero axes.
+ # Calibrate its native text bbox before accepting a candidate; geometry is unchanged.
+ fig.canvas.draw()
+ origin=ax.transData.transform((0,0))
+ for slope,intercept,label in [(a,c,'$l_1$'),(m,b,'$l_2$')]:
   candidates=[(lo+(hi-lo)*f,float(slope)*(lo+(hi-lo)*f)+float(intercept)) for f in [i/40 for i in range(1,40)]]
-  visible=[z for z in candidates if lo+1<z[1]<hi-1]
-  pt=max(visible,key=lambda z:(z[0]-cross_x)**2+(z[1]-cross_y)**2) if visible else (cross_x,cross_y)
-  ax.annotate(label,pt,xytext=offset,textcoords='offset points',fontsize=12)
+  visible=sorted([z for z in candidates if lo+1<z[1]<hi-1],key=lambda z:(z[0]-cross_x)**2+(z[1]-cross_y)**2,reverse=True)
+  for pt in visible:
+   offset=(-18 if pt[0]<0 else 8,-17 if pt[1]<0 else 9)
+   name=ax.annotate(label,pt,xytext=offset,textcoords='offset points',fontsize=12)
+   fig.canvas.draw()
+   bx,by,bw,bh=name.get_window_extent(fig.canvas.get_renderer()).bounds
+   axis_clear=(bx+bw<=origin[0]-4 or bx>=origin[0]+4) and (by+bh<=origin[1]-4 or by>=origin[1]+4)
+   if axis_clear and bx>=4 and by>=4 and bx+bw<=572 and by+bh<=500:break
+   name.remove()
+  else:raise ValueError('no readable line-label placement')
  fig.canvas.draw()
  data.update(bounds=[lo,hi],size=[576,504],point_pixel=list(map(float,ax.transData.transform((float(u),float(v))))),crossing=[cross_x,cross_y],labels=['x','y','l_1','l_2',tex(v)]+([tex(u)] if u else []),unit_pixels=float(ax.transData.transform((1,0))[0]-ax.transData.transform((0,0))[0]),origin_pixel=list(map(float,ax.transData.transform((0,0)))),text_boxes=[{'text':t.get_text(),'bbox':list(map(float,t.get_window_extent(fig.canvas.get_renderer()).bounds))} for t in ax.texts])
  fd,tmp=tempfile.mkstemp(prefix='.render-',suffix='.png',dir=target);os.close(fd)

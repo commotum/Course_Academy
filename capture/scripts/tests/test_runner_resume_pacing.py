@@ -104,6 +104,33 @@ class RunnerResumePacingTests(unittest.TestCase):
         self.assertEqual(self.captured, [])
         self.assertFalse(runner.active_path.exists())
 
+    def test_explicit_course_switch_preserves_unfinished_capture_without_repinning(self):
+        runner = self.runner({})
+        old = self.config.output_root / 'old'
+        atomic_json(old / 'activity.json', self.activity('old'))
+        atomic_json(old / 'checkpoint.json', {'stage': 'activity', 'presentations': {'saved': {}}})
+        atomic_json(old / 'capture-suspended.json', {'status': 'suspended',
+            'reason': 'user_course_change', 'operator_authorized': True, 'task_id': 'old'})
+        self.queue = [self.activity('placement', 'diagnostic')]
+        with self.assertRaises(StopRequested):
+            runner.cycle(self.browser)
+        self.assertEqual(self.captured[0]['task_id'], 'placement')
+        self.assertEqual(read_json(old / 'checkpoint.json')['stage'], 'activity')
+        self.assertFalse((old / 'capture-complete.json').exists())
+        self.assertFalse((old / 'handoff-complete.json').exists())
+
+    def test_unapproved_or_mismatched_suspension_does_not_hide_unfinished_capture(self):
+        runner = self.runner({})
+        old = self.config.output_root / 'old'
+        atomic_json(old / 'activity.json', self.activity('old'))
+        for change in ({'operator_authorized': False}, {'task_id': 'different'},
+                       {'reason': 'server_error'}, {'status': 'complete'}):
+            with self.subTest(change=change):
+                marker = {'status': 'suspended', 'reason': 'user_course_change',
+                          'operator_authorized': True, 'task_id': 'old', **change}
+                atomic_json(old / 'capture-suspended.json', marker)
+                self.assertEqual(runner._recover_orphan()['activity']['task_id'], 'old')
+
     def test_new_queue_evidence_is_saved_under_reference_without_moving_old_cache(self):
         old = self.config.state_root / 'queue' / 'queue.json'
         atomic_json(old, {'previous_evidence': True})

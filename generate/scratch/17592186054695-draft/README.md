@@ -1,0 +1,11 @@
+# Unregistered local draft: Sketching a Line Using Two Points
+
+Immutable math basis 2275; four original MA practice records, three independent inventory records. Stops after generation/plot step 7. The registered numeric script and folder remain unchanged.
+
+Run `.venv/bin/python generate/scratch/17592186054695-draft/validate.py` from the repository root. Optional `MPLCONFIGDIR=/tmp/kp54695-mpl` avoids read-only user cache warnings. Native grader uses memory-only fixtures through the actual `learning::grade_field` entrypoint; its report is distinct from whole-line symbolic/pixel proof.
+
+Use `.venv/bin/python generate/scratch/17592186054695-draft.py --difficulty all --seed 5 --count 2 --format json` (or markdown). Import API exposes `generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None)` and all three `generate_easy`, `generate_moderate`, `generate_hard` entrypoints. Normal templates: homogeneous (E), coefficient-first, constant-first. Full normal profiles are selected before parameters. Exact source replay is `generate('easy', profile='q-109055')`, etc.; source-cases gives explicit parameters for all four.
+
+Normal records are eligible local review data, never transaction data. Historical raw profiles are evidence-only; two unrated originals faithfully omit solutions, correct keys and difficulties. Their mathematical correct graphs can be inferred, but missing captured correct keys never count as matched keys. All four full banks and 20 graph options are reproduced and geometrically inspected. Historical author error intent remains underdetermined; separately authored defaults use the actual substitution method. M/H are explicit conservative authored policies described in classification.md, not observed grades. Neither changes the supplied-equation response or two forward-substitution solution stages.
+
+`review.json` and review.md contain four raw originals and two normal examples per level. `source-plot-inspection.json`, validation.json and engine-report.json carry separate fidelity, math/pixel and native results. Asset sidecars carry exact plotted objects/coordinates/runtime and PNG hashes. Parent QA remains required before any publication; no registration or database actions are part of this draft.

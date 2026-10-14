@@ -1,0 +1,9 @@
+# Native pixel review
+
+All twenty original choice occurrences were inspected at full native resolution, with fifteen distinct PNGs. Each raster has independently recovered black axes and gray unit-grid scale; each red whole line agrees with its extracted equation. The two available original solution images have actual blue point coordinates (0,0),(1,-2) and (0,2),(8,-2), verified with independently calibrated pixel neighborhoods. The canonical red markers (0,3),(4,1) were visually inspected.
+
+The six normal review solution PNGs were inspected at their full 638×638 pixels. They cover signed E integer and unit-quarter slopes, M nonunit numerator fractions, H halfinteger y-values, positive/negative selected x, zero axes, numeric signs and fractional coordinate labels. All two-point labels remain legible, retain the actual chosen coordinates, and clear the relevant line; axes x/y glyphs and real zero are visible. H halfunit minor grids remain distinguishable and both computed points have halfinteger y-coordinates. All 420 normal choice/solution rasters additionally passed independent red-line axis/grid fits and all 140 source-role blue marker neighborhoods passed coordinate checks.
+
+Whole-line comparisons use canonical (slope,intercept) representations of equations y−mx−b=0, equivalent to comparing full equations up to a nonzero scalar. Native radio ID grading is separate and does not establish this proof.
+
+Pixel-fit intercept tolerance is tied to each raster’s recovered unit scale and line slope, allowing at most a bounded 0.7-pixel axis-center error amplified by the slope. Grid scales use regression on integer grid indices, accounting for a missing grid line covered by a black axis and alternating pixel spacings. This avoids median rounding errors on halfunit grids; it still rejects a one-unit wrong intercept.

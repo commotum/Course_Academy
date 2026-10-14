@@ -35,18 +35,18 @@ def arithmetic(m,b,i):return ('' if m==1 else '-' if m==-1 else tex(m))+f'({i})'
 def bank(profile,m,b):
  if profile=='q-54397':return [(-m,0),(m,b),(-m,-b/2),(m,-b),(m,0)]
  if profile=='q-59676':return [(m,2*b),(-m,-2*b),(-m,-b),(2*m,4*b),(m,b)]
- if profile=='q-71695':return [(m,-b),(-m,b),(-m/2,b),(m,b),(m/2,b)]
+ if profile=='q-71695':return [(m,-b),(-m,b/2),(-m/2,b),(m,b),(m/2,b)]
  if profile in ('signed-products','half-units'):return [(m,b),(-m,b),(m,-b),(m,0),(2*m,b)]
  raise ValueError('Unknown complete profile')
 def task_domain(level):
  bs=[sp.Integer(b) for b in range(-8,9) if b]
- if level=='easy':return [(sp.Integer(m),b) for m in (1,-1,2) for b in bs]
+ if level=='easy':return [(sp.Integer(m),sp.Integer(b)) for m in (1,2) for b in range(-16,17,2) if b]+[(sp.Integer(-1),b) for b in bs]
  if level=='moderate':return [(sp.Integer(m),b) for m in (-2,-3,-4) for b in bs]
  if level=='hard':return [(sp.Rational(m,2),sp.Rational(b,2)) for m in (-5,-3,-1,1,3,5) for b in range(-11,12,2)]
  raise ValueError('Unknown difficulty')
 def profile_for(level,template):return TEMPLATES[template]['source'] if level=='easy' else 'signed-products' if level=='moderate' else 'half-units'
 def recipe_names(profile):
- return {'q-54397':['reverse product and omit constant','correct','reverse product and reverse/halve constant (empirical compound pattern)','reverse constant sign','omit constant'],'q-59676':['double constant','reverse entire doubled-constant expression','reverse entire expression','double product and quadruple constant (empirical compound pattern)','correct'],'q-71695':['reverse constant sign','reverse product sign','reverse and halve product','correct','halve product'],'signed-products':['correct','reverse product sign','reverse constant sign','omit constant','double product'],'half-units':['correct','reverse product sign','reverse constant sign','omit constant','double product']}[profile]
+ return {'q-54397':['reverse product and omit constant','correct','reverse product and reverse/halve constant (empirical compound pattern)','reverse constant sign','omit constant'],'q-59676':['double constant','reverse entire doubled-constant expression','reverse entire expression','double product and quadruple constant (empirical compound pattern)','correct'],'q-71695':['reverse constant sign','reverse product and halve constant (independently recovered empirical compound pattern)','reverse and halve product','correct','halve product'],'signed-products':['correct','reverse product sign','reverse constant sign','omit constant','double product'],'half-units':['correct','reverse product sign','reverse constant sign','omit constant','double product']}[profile]
 def render_plot(m,b,points_only,bounds,step,output_dir=None):
  """No input file: arguments belong to this call. Unique temp PNG + atomic sidecar."""
  import matplotlib;matplotlib.use('Agg')
@@ -126,7 +126,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  oldeq=re.search(r'\$y\s*=\s*([^$]+)\$',src[':question/problem'])[0]
  # Preserve punctuation placement and the legacy right-aligned negative table.
  prompt=src[':question/problem'].replace(oldeq,'$y ='+rhs(m,b)+'$' if template=='unit_negative' else '$y='+rhs(m,b)+'.$')
- if raw:prompt=src[':question/problem'] # The same formula mask is verified above; source spacing is evidence.
+ if raw and template=='unit_negative':
+  spaced=rhs(m,b).replace('+',' + ').replace('-'+tex(-b),' - '+tex(-b)) if b<0 else rhs(m,b).replace('+',' + ')
+  prompt=src[':question/problem'].replace(oldeq,'$y ='+spaced+'$')
  correct=lines.index((m,b));assets=[a[':answer/value'] for a in src[':question/answer-fields'][0][':answer-field/choices']] if raw else fresh
  srcsol=src.get(':question/worked-solution');points=re.findall(r'!\[\]\(([^)]+)\)',srcsol)[0] if raw and srcsol else freshpoints
  sol=solution(template,m,b,points,assets[correct])
