@@ -120,7 +120,14 @@ fn run() -> Result<(), Box<dyn Error>> {
         let _ = std::io::stdin().read_line(&mut stop);
         let _ = stop_tx.send(());
     });
+    let completed_jobs = std::cell::Cell::new(0);
     let clean_stop = wait_for_stop(&stop_rx, || {
+        let stats = service.background_indexing_stats();
+        if stats.jobs_completed > completed_jobs.get() {
+            println!("INDEX_COMPLETED basis={} jobs={}", stats.published_basis_t, stats.jobs_completed);
+            let _ = std::io::stdout().flush();
+            completed_jobs.set(stats.jobs_completed);
+        }
         service.client().is_available() && server.is_available()
     });
     if !clean_stop {

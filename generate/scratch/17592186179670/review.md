@@ -895,7 +895,7 @@ where $0\le t\le 1.$ Thus, we have that $x=2 \cdot t$ and $y=3 \cdot t$ along th
 Computing $r\prime(t)$ and $\|r\prime(t)\|,$ we get the following:
 
 $$
-\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t)i+\frac{\mathrm{d}}{\mathrm{d}t}(3 \cdot t)j \\  & =(2)\,i+(3)\,j \\ \|r\prime(t)\| & =\sqrt{(2)^2+(3)^2} \\  & =\sqrt{13}\end{aligned}
+\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t)i+\frac{\mathrm{d}}{\mathrm{d}t}(3 \cdot t)j \\  & =(2)\,i+(3)\,j \\ \|r\prime(t)\| & =\sqrt{(\frac{\mathrm{d}x}{\mathrm{d}t})^2+(\frac{\mathrm{d}y}{\mathrm{d}t})^2} \\  & =\sqrt{(2)^2+(3)^2} \\  & =\sqrt{13}\end{aligned}
 $$
 
 Now, since $f(x,y)=x + 3 \cdot y$, we obtain
@@ -942,7 +942,7 @@ where $0\le t\le 1.$ Thus, we have that $x=- 3 \cdot t - 2$ and $y=2 \cdot t + 1
 Computing $r\prime(t)$ and $\|r\prime(t)\|,$ we get the following:
 
 $$
-\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(- 3 \cdot t - 2)i+\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t + 1)j \\  & =(-3)\,i+(2)\,j \\ \|r\prime(t)\| & =\sqrt{(-3)^2+(2)^2} \\  & =\sqrt{13}\end{aligned}
+\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(- 3 \cdot t - 2)i+\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t + 1)j \\  & =(-3)\,i+(2)\,j \\ \|r\prime(t)\| & =\sqrt{(\frac{\mathrm{d}x}{\mathrm{d}t})^2+(\frac{\mathrm{d}y}{\mathrm{d}t})^2} \\  & =\sqrt{(-3)^2+(2)^2} \\  & =\sqrt{13}\end{aligned}
 $$
 
 Now, since $f(x,y)=- 3 \cdot x + 2 \cdot y$, we obtain
@@ -989,7 +989,7 @@ where $0\le t\le 1.$ Thus, we have that $x=4 - 8 \cdot t$ and $y=0$ along the se
 Computing $r\prime(t)$ and $\|r\prime(t)\|,$ we get the following:
 
 $$
-\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(4 - 8 \cdot t)i+\frac{\mathrm{d}}{\mathrm{d}t}(0)j \\  & =(-8)\,i+(0)\,j \\ \|r\prime(t)\| & =\sqrt{(-8)^2+(0)^2} \\  & =8\end{aligned}
+\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(4 - 8 \cdot t)i+\frac{\mathrm{d}}{\mathrm{d}t}(0)j \\  & =(-8)\,i+(0)\,j \\ \|r\prime(t)\| & =\sqrt{(\frac{\mathrm{d}x}{\mathrm{d}t})^2+(\frac{\mathrm{d}y}{\mathrm{d}t})^2} \\  & =\sqrt{(-8)^2+(0)^2} \\  & =8\end{aligned}
 $$
 
 Now, since $f(x,y)=4 \cdot x - 3 \cdot y$, we obtain
@@ -1036,7 +1036,7 @@ where $0\le t\le 1.$ Thus, we have that $x=2 - 4 \cdot t$ and $y=0$ along the se
 Computing $r\prime(t)$ and $\|r\prime(t)\|,$ we get the following:
 
 $$
-\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(2 - 4 \cdot t)i+\frac{\mathrm{d}}{\mathrm{d}t}(0)j \\  & =(-4)\,i+(0)\,j \\ \|r\prime(t)\| & =\sqrt{(-4)^2+(0)^2} \\  & =4\end{aligned}
+\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(2 - 4 \cdot t)i+\frac{\mathrm{d}}{\mathrm{d}t}(0)j \\  & =(-4)\,i+(0)\,j \\ \|r\prime(t)\| & =\sqrt{(\frac{\mathrm{d}x}{\mathrm{d}t})^2+(\frac{\mathrm{d}y}{\mathrm{d}t})^2} \\  & =\sqrt{(-4)^2+(0)^2} \\  & =4\end{aligned}
 $$
 
 Now, since $f(x,y)=x - 3 \cdot y$, we obtain
@@ -1083,7 +1083,7 @@ where $0\le t\le 1.$ Thus, we have that $x=2 - 2 \cdot t$ and $y=t + 2$ along th
 Computing $r\prime(t)$ and $\|r\prime(t)\|,$ we get the following:
 
 $$
-\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(2 - 2 \cdot t)i+\frac{\mathrm{d}}{\mathrm{d}t}(t + 2)j \\  & =(-2)\,i+(1)\,j \\ \|r\prime(t)\| & =\sqrt{(-2)^2+(1)^2} \\  & =\sqrt{5}\end{aligned}
+\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(2 - 2 \cdot t)i+\frac{\mathrm{d}}{\mathrm{d}t}(t + 2)j \\  & =(-2)\,i+(1)\,j \\ \|r\prime(t)\| & =\sqrt{(\frac{\mathrm{d}x}{\mathrm{d}t})^2+(\frac{\mathrm{d}y}{\mathrm{d}t})^2} \\  & =\sqrt{(-2)^2+(1)^2} \\  & =\sqrt{5}\end{aligned}
 $$
 
 Now, since $f(x,y)=3 \cdot x \cdot y$, we obtain
@@ -1130,7 +1130,7 @@ where $0\le t\le 1.$ Thus, we have that $x=2 \cdot t + 2$ and $y=4 \cdot t + 2$ 
 Computing $r\prime(t)$ and $\|r\prime(t)\|,$ we get the following:
 
 $$
-\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t + 2)i+\frac{\mathrm{d}}{\mathrm{d}t}(4 \cdot t + 2)j \\  & =(2)\,i+(4)\,j \\ \|r\prime(t)\| & =\sqrt{(2)^2+(4)^2} \\  & =2 \cdot \sqrt{5}\end{aligned}
+\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t + 2)i+\frac{\mathrm{d}}{\mathrm{d}t}(4 \cdot t + 2)j \\  & =(2)\,i+(4)\,j \\ \|r\prime(t)\| & =\sqrt{(\frac{\mathrm{d}x}{\mathrm{d}t})^2+(\frac{\mathrm{d}y}{\mathrm{d}t})^2} \\  & =\sqrt{(2)^2+(4)^2} \\  & =2 \cdot \sqrt{5}\end{aligned}
 $$
 
 Now, since $f(x,y)=2 \cdot x \cdot y$, we obtain
@@ -1177,7 +1177,7 @@ where $0\le t\le 1.$ Thus, we have that $x=4$ and $y=4 \cdot t$ along the segmen
 Computing $r\prime(t)$ and $\|r\prime(t)\|,$ we get the following:
 
 $$
-\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(4)i+\frac{\mathrm{d}}{\mathrm{d}t}(4 \cdot t)j \\  & =(0)\,i+(4)\,j \\ \|r\prime(t)\| & =\sqrt{(0)^2+(4)^2} \\  & =4\end{aligned}
+\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(4)i+\frac{\mathrm{d}}{\mathrm{d}t}(4 \cdot t)j \\  & =(0)\,i+(4)\,j \\ \|r\prime(t)\| & =\sqrt{(\frac{\mathrm{d}x}{\mathrm{d}t})^2+(\frac{\mathrm{d}y}{\mathrm{d}t})^2} \\  & =\sqrt{(0)^2+(4)^2} \\  & =4\end{aligned}
 $$
 
 Now, since $f(x,y)=x + 2 \cdot \sqrt{y}$, we obtain
@@ -1189,7 +1189,7 @@ $$
 Therefore, we can write the integral as
 
 $$
-\begin{aligned}\int_C x + 2 \cdot \sqrt{y}\,\mathrm{d}s & =\int_0^1 f(r(t))\,\|r\prime(t)\|\,\mathrm{d}t \\  & =\int_0^1 (4 \cdot \sqrt{t} + 4)\cdot 4\,\mathrm{d}t \\  & =16\int_0^1 (\sqrt{t} + 1)\,\mathrm{d}t \\  & =16[\frac{2 \cdot t^{\frac{3}{2}}}{3} + t]_0^1 \\  & =16(\frac{5}{3})-0 \\  & =\frac{80}{3}\end{aligned}
+\begin{aligned}\int_C x + 2 \cdot \sqrt{y}\,\mathrm{d}s & =\int_0^1 f(r(t))\,\|r\prime(t)\|\,\mathrm{d}t \\  & =\int_0^1 (4 \cdot \sqrt{t} + 4)\cdot 4\,\mathrm{d}t \\  & =16\int_0^1 (\sqrt{t} + 1)\,\mathrm{d}t \\  & =16[\frac{2 \cdot t^{\frac{3}{2}}}{3} + t]_0^1 \\  & =16(1+\frac{2}{3})-0 \\  & =\frac{80}{3}\end{aligned}
 $$
 
 
@@ -1224,7 +1224,7 @@ where $0\le t\le 1.$ Thus, we have that $x=1$ and $y=4 \cdot t$ along the segmen
 Computing $r\prime(t)$ and $\|r\prime(t)\|,$ we get the following:
 
 $$
-\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(1)i+\frac{\mathrm{d}}{\mathrm{d}t}(4 \cdot t)j \\  & =(0)\,i+(4)\,j \\ \|r\prime(t)\| & =\sqrt{(0)^2+(4)^2} \\  & =4\end{aligned}
+\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(1)i+\frac{\mathrm{d}}{\mathrm{d}t}(4 \cdot t)j \\  & =(0)\,i+(4)\,j \\ \|r\prime(t)\| & =\sqrt{(\frac{\mathrm{d}x}{\mathrm{d}t})^2+(\frac{\mathrm{d}y}{\mathrm{d}t})^2} \\  & =\sqrt{(0)^2+(4)^2} \\  & =4\end{aligned}
 $$
 
 Now, since $f(x,y)=x + \sqrt{y}$, we obtain
@@ -1236,7 +1236,7 @@ $$
 Therefore, we can write the integral as
 
 $$
-\begin{aligned}\int_C x + \sqrt{y}\,\mathrm{d}s & =\int_0^1 f(r(t))\,\|r\prime(t)\|\,\mathrm{d}t \\  & =\int_0^1 (2 \cdot \sqrt{t} + 1)\cdot 4\,\mathrm{d}t \\  & =4\int_0^1 (2 \cdot \sqrt{t} + 1)\,\mathrm{d}t \\  & =4[\frac{4 \cdot t^{\frac{3}{2}}}{3} + t]_0^1 \\  & =4(\frac{7}{3})-0 \\  & =\frac{28}{3}\end{aligned}
+\begin{aligned}\int_C x + \sqrt{y}\,\mathrm{d}s & =\int_0^1 f(r(t))\,\|r\prime(t)\|\,\mathrm{d}t \\  & =\int_0^1 (2 \cdot \sqrt{t} + 1)\cdot 4\,\mathrm{d}t \\  & =4\int_0^1 (2 \cdot \sqrt{t} + 1)\,\mathrm{d}t \\  & =4[\frac{4 \cdot t^{\frac{3}{2}}}{3} + t]_0^1 \\  & =4(1+\frac{4}{3})-0 \\  & =\frac{28}{3}\end{aligned}
 $$
 
 
@@ -1271,7 +1271,7 @@ where $0\le t\le 1.$ Thus, we have that $x=t$ and $y=2 \cdot t$ along the segmen
 Computing $r\prime(t)$ and $\|r\prime(t)\|,$ we get the following:
 
 $$
-\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(t)i+\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t)j \\  & =(1)\,i+(2)\,j \\ \|r\prime(t)\| & =\sqrt{(1)^2+(2)^2} \\  & =\sqrt{5}\end{aligned}
+\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(t)i+\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t)j \\  & =(1)\,i+(2)\,j \\ \|r\prime(t)\| & =\sqrt{(\frac{\mathrm{d}x}{\mathrm{d}t})^2+(\frac{\mathrm{d}y}{\mathrm{d}t})^2} \\  & =\sqrt{(1)^2+(2)^2} \\  & =\sqrt{5}\end{aligned}
 $$
 
 Now, since $f(x,y)=e^{- 3 \cdot x + y}$, we obtain
@@ -1318,7 +1318,7 @@ where $0\le t\le 1.$ Thus, we have that $x=- 3 \cdot t$ and $y=2 \cdot t$ along 
 Computing $r\prime(t)$ and $\|r\prime(t)\|,$ we get the following:
 
 $$
-\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(- 3 \cdot t)i+\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t)j \\  & =(-3)\,i+(2)\,j \\ \|r\prime(t)\| & =\sqrt{(-3)^2+(2)^2} \\  & =\sqrt{13}\end{aligned}
+\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(- 3 \cdot t)i+\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t)j \\  & =(-3)\,i+(2)\,j \\ \|r\prime(t)\| & =\sqrt{(\frac{\mathrm{d}x}{\mathrm{d}t})^2+(\frac{\mathrm{d}y}{\mathrm{d}t})^2} \\  & =\sqrt{(-3)^2+(2)^2} \\  & =\sqrt{13}\end{aligned}
 $$
 
 Now, since $f(x,y)=e^{x + 2 \cdot y}$, we obtain
@@ -1365,7 +1365,7 @@ where $0\le t\le 1.$ Thus, we have that $x=2 \cdot t + 3$ and $y=3 - 2 \cdot t$ 
 Computing $r\prime(t)$ and $\|r\prime(t)\|,$ we get the following:
 
 $$
-\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t + 3)i+\frac{\mathrm{d}}{\mathrm{d}t}(3 - 2 \cdot t)j \\  & =(2)\,i+(-2)\,j \\ \|r\prime(t)\| & =\sqrt{(2)^2+(-2)^2} \\  & =2 \cdot \sqrt{2}\end{aligned}
+\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t + 3)i+\frac{\mathrm{d}}{\mathrm{d}t}(3 - 2 \cdot t)j \\  & =(2)\,i+(-2)\,j \\ \|r\prime(t)\| & =\sqrt{(\frac{\mathrm{d}x}{\mathrm{d}t})^2+(\frac{\mathrm{d}y}{\mathrm{d}t})^2} \\  & =\sqrt{(2)^2+(-2)^2} \\  & =2 \cdot \sqrt{2}\end{aligned}
 $$
 
 Now, since $f(x,y)=\sec^{2}{\left(\pi \cdot \left(- \frac{x}{16} + \frac{y}{16}\right) \right)}$, we obtain
@@ -1418,7 +1418,7 @@ where $0\le t\le 1.$ Thus, we have that $x=3 \cdot t - 2$ and $y=2 \cdot t - 2$ 
 Computing $r\prime(t)$ and $\|r\prime(t)\|,$ we get the following:
 
 $$
-\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(3 \cdot t - 2)i+\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t - 2)j \\  & =(3)\,i+(2)\,j \\ \|r\prime(t)\| & =\sqrt{(3)^2+(2)^2} \\  & =\sqrt{13}\end{aligned}
+\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(3 \cdot t - 2)i+\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t - 2)j \\  & =(3)\,i+(2)\,j \\ \|r\prime(t)\| & =\sqrt{(\frac{\mathrm{d}x}{\mathrm{d}t})^2+(\frac{\mathrm{d}y}{\mathrm{d}t})^2} \\  & =\sqrt{(3)^2+(2)^2} \\  & =\sqrt{13}\end{aligned}
 $$
 
 Now, since $f(x,y)=\sec^{2}{\left(\pi \cdot \left(- \frac{x}{3} + \frac{y}{3}\right) \right)}$, we obtain
@@ -1471,7 +1471,7 @@ where $0\le t\le 1.$ Thus, we have that $x=2 \cdot t + 1$ and $y=2 \cdot t + 2$ 
 Computing $r\prime(t)$ and $\|r\prime(t)\|,$ we get the following:
 
 $$
-\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t + 1)i+\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t + 2)j \\  & =(2)\,i+(2)\,j \\ \|r\prime(t)\| & =\sqrt{(2)^2+(2)^2} \\  & =2 \cdot \sqrt{2}\end{aligned}
+\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t + 1)i+\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t + 2)j \\  & =(2)\,i+(2)\,j \\ \|r\prime(t)\| & =\sqrt{(\frac{\mathrm{d}x}{\mathrm{d}t})^2+(\frac{\mathrm{d}y}{\mathrm{d}t})^2} \\  & =\sqrt{(2)^2+(2)^2} \\  & =2 \cdot \sqrt{2}\end{aligned}
 $$
 
 Now, since $f(x,y)=\left(4 \cdot x + 2\right) \cdot e^{x \cdot y}$, we obtain
@@ -1524,7 +1524,7 @@ where $0\le t\le 1.$ Thus, we have that $x=2 \cdot t - 1$ and $y=2 \cdot t + 2$ 
 Computing $r\prime(t)$ and $\|r\prime(t)\|,$ we get the following:
 
 $$
-\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t - 1)i+\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t + 2)j \\  & =(2)\,i+(2)\,j \\ \|r\prime(t)\| & =\sqrt{(2)^2+(2)^2} \\  & =2 \cdot \sqrt{2}\end{aligned}
+\begin{aligned}r\prime(t) & =\frac{\mathrm{d}x}{\mathrm{d}t}\,i+\frac{\mathrm{d}y}{\mathrm{d}t}\,j \\  & =\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t - 1)i+\frac{\mathrm{d}}{\mathrm{d}t}(2 \cdot t + 2)j \\  & =(2)\,i+(2)\,j \\ \|r\prime(t)\| & =\sqrt{(\frac{\mathrm{d}x}{\mathrm{d}t})^2+(\frac{\mathrm{d}y}{\mathrm{d}t})^2} \\  & =\sqrt{(2)^2+(2)^2} \\  & =2 \cdot \sqrt{2}\end{aligned}
 $$
 
 Now, since $f(x,y)=\left(4 \cdot x + 6\right) \cdot e^{x \cdot y}$, we obtain

@@ -214,6 +214,7 @@ def normal_stages(r,z):
   # Read plus and minus endpoint components independently before subtracting.
   row=ir[4].split('& =')[-1];assert '-' in row,'signed endpoint row'
   if f=='product':assert row.count(')+(')>=2,'required uncollected three-term endpoint sum'
+  if f=='radical':assert '(1+' in row,'required uncollected radical upper endpoint sum'
   # rightmost minus separates the lower endpoint (all normal prefixes are nonnegative speeds).
   depth=0;cuts=[]
   for j,c in enumerate(row):
@@ -381,6 +382,10 @@ def main():
   assert m
   row['question'][':question/worked-solution']=solution[:m.start(1)]+m[2]+solution[m.end(1):]
  mutation('equal expression loses operative product substitution',pr,erase_product)
+ rr=next(r for r in variants if r['generation']['template']=='radical')
+ def collapse_radical(row):
+  text=row['question'][':question/worked-solution'];start=text.index(']_0^1');i=text.index('(1+',start);j=text.index(')',i);text=text[:i]+'('+g.tex(scalar(text[i+1:j]))+')'+text[j+1:];row['question'][':question/worked-solution']=text
+ mutation('equal scalar loses radical endpoint addition',rr,collapse_radical)
  mutation('control character',variants[0],lambda r:r['question'].__setitem__(':question/problem',r['question'][':question/problem']+'\x0c'))
  mutation('unrelated wrong scalar outside complete recipe bank',variants[0],lambda r:r['question'][':question/answer-fields'][0][':answer-field/choices'][0].__setitem__(':answer/value','1234567'))
  mutation('duplicate wrong/wrong',variants[0],lambda r:r['question'][':question/answer-fields'][0][':answer-field/choices'][1].__setitem__(':answer/value',r['question'][':question/answer-fields'][0][':answer-field/choices'][2][':answer/value']))

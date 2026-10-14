@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Approved sources retain 
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 41**, **qa_passed: 302**, **queued: 226**, **working: 11**.
+**needs_revalidation: 41**, **qa_passed: 308**, **queued: 223**, **working: 8**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Existing approved work is preserved; other ready drafts await QA until these13 pass. Then finish any coverage-report KPs and the remaining script-ranked candidates.
 
@@ -78,21 +78,21 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186133827](../../scratch/17592186133827.py) | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function Using a Substitution | 0 / 4 / 1 / 1 | qa_passed | [Report](qa/17592186133827.json) |
 | [17592186133829](../../scratch/17592186133829.py) | Line Integrals of Scalar Functions | Writing the Line Integral of a Scalar Function as a Definite Integral | 1 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186133829.json) |
 | [17592186133830](../../scratch/17592186133830.py) | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function | 2 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186133830.json) |
-| [17592186162081](../../scratch/17592186162081.py) | Properties of Line Integrals of Scalar Functions | Calculating Line Integrals of Unity | 5 / 0 / 0 / 1 | working | — |
-| [17592186162082](../../scratch/17592186162082.py) | Properties of Line Integrals of Scalar Functions | Calculating Line Integrals Over Piecewise-Smooth Curves | 2 / 3 / 0 / 1 | working | — |
+| [17592186162081](../../scratch/17592186162081.py) | Properties of Line Integrals of Scalar Functions | Calculating Line Integrals of Unity | 5 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186162081.json) |
+| [17592186162082](../../scratch/17592186162082.py) | Properties of Line Integrals of Scalar Functions | Calculating Line Integrals Over Piecewise-Smooth Curves | 2 / 3 / 0 / 1 | qa_passed | [Report](qa/17592186162082.json) |
 | [17592186162083](../../scratch/17592186162083.py) | Properties of Line Integrals of Scalar Functions | Applying Independence of Parametrization and Orientation | 0 / 3 / 2 / 2 | queued | — |
-| [17592186179670](../../scratch/17592186179670.py) | Line Integrals of Scalar Functions Over Line Segments | Calculating a Line Integral Along a Segment in the Cartesian Plane | 0 / 3 / 2 / 2 | working | — |
-| [17592186179724](../../scratch/17592186179724.py) | Line Integrals of Scalar Functions Over Line Segments | Constructing a Line Integral Along a Segment in the Cartesian Plane | 5 / 0 / 0 / 0 | working | — |
-| [17592186179725](../../scratch/17592186179725.py) | Line Integrals of Scalar Functions Over Line Segments | Line Integrals Along Segments in Three Dimensions | 2 / 1 / 2 / 2 | working | — |
+| [17592186179670](../../scratch/17592186179670.py) | Line Integrals of Scalar Functions Over Line Segments | Calculating a Line Integral Along a Segment in the Cartesian Plane | 0 / 3 / 2 / 2 | qa_passed | [Report](qa/17592186179670.json) |
+| [17592186179724](../../scratch/17592186179724.py) | Line Integrals of Scalar Functions Over Line Segments | Constructing a Line Integral Along a Segment in the Cartesian Plane | 5 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186179724.json) |
+| [17592186179725](../../scratch/17592186179725.py) | Line Integrals of Scalar Functions Over Line Segments | Line Integrals Along Segments in Three Dimensions | 2 / 1 / 2 / 2 | qa_passed | [Report](qa/17592186179725.json) |
 | [17592186179709](../../scratch/17592186179709.py) | Line Integrals of Scalar Functions Over Paths Expressed as Functions of Y | Constructing the Line Integral of a Function Over Curve Expressed as a Function of Y | 2 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186179709.json) |
 | [17592186133831](../../scratch/17592186133831.py) | Line Integrals of Vector-Valued Functions Over Parametric Curves | Constructing Line Integrals of a Vector-Valued Functions Over Plane Curves | 5 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186133831.json) |
 | [17592186119887](../../scratch/17592186119887.py) | Areas of Parametric Surfaces | Calculating the Fundamental Vector Product of a Parametric Surface | 6 / 0 / 0 / 1 | working | — |
-| [17592186175972](../../scratch/17592186175972.py) | Parametrizations of Cylinders | Parametrizing a Parabolic Cylinder | 4 / 1 / 0 / 1 | working | — |
-| 17592186175973 | Parametrizations of Cylinders | Parametrizing a Hyperbolic Cylinder | 0 / 2 / 3 / 1 | queued | — |
+| [17592186175972](../../scratch/17592186175972.py) | Parametrizations of Cylinders | Parametrizing a Parabolic Cylinder | 4 / 1 / 0 / 1 | qa_passed | [Report](qa/17592186175972.json) |
+| [17592186175973](../../scratch/17592186175973.py) | Parametrizations of Cylinders | Parametrizing a Hyperbolic Cylinder | 0 / 2 / 3 / 1 | working | — |
 | [17592186073810](../../scratch/17592186073810.py) | The Shortest Distance Between a Point and a Line | Finding the Distance Between a Point and a Horizontal or Vertical Line | 5 / 0 / 0 / 1 | queued | — |
 | [17592186115200](../../scratch/17592186115200.py) | Solving Exponential Equations With Different Bases | Solving Exponential Equations Containing Different Bases by Rewriting One Exponent | 3 / 1 / 3 / 2 | qa_passed | [Report](qa/17592186115200.json) |
-| 17592186054804 | Factoring Quartic Polynomials Using the Factor Theorem | Factoring a Quartic Polynomial Given Two Roots | 3 / 1 / 1 / 2 | queued | — |
-| 17592186054805 | Factoring Quartic Polynomials Using the Factor Theorem | Factoring a Quartic Polynomial With Only Two Real Factors | 1 / 4 / 1 / 2 | queued | — |
+| [17592186054804](../../scratch/17592186054804.py) | Factoring Quartic Polynomials Using the Factor Theorem | Factoring a Quartic Polynomial Given Two Roots | 3 / 1 / 1 / 2 | working | — |
+| [17592186054805](../../scratch/17592186054805.py) | Factoring Quartic Polynomials Using the Factor Theorem | Factoring a Quartic Polynomial With Only Two Real Factors | 1 / 4 / 1 / 2 | working | — |
 | [17592186096843](../../scratch/17592186096843.py) | The Chain Rule for Differentiation | Differentiating a Function Using the Chain Rule and Prime Notation | 0 / 5 / 5 / 2 | queued | — |
 | [17592186100888](../../scratch/17592186100888.py) | Verifying Solutions of Differential Equations | Identifying a Solution to a First-Order Differential Equation | 8 / 1 / 0 / 0 | needs_revalidation | [Report](qa/17592186100888.json) |
 | [17592186100959](../../scratch/17592186100959.py) | Verifying Solutions of Differential Equations | Identifying Solutions to First-Order Differential Equations | 0 / 11 / 0 / 0 | qa_passed | [Report](qa/17592186100959.json) |
@@ -383,11 +383,11 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | 17592186059769 | Systems of Equations as Augmented Matrices | Finding the System of Equations Associated With an Augmented Matrix | 3 / 5 / 2 / 1 | queued | — |
 | 17592186059767 | Systems of Equations as Augmented Matrices | Finding the Coefficient Matrix of a System of Linear Equations | 5 / 3 / 2 / 1 | queued | — |
 | [17592186059768](../../scratch/17592186059768.py) | Systems of Equations as Augmented Matrices | Finding the Augmented Matrix of a System of Linear Equations | 8 / 6 / 0 / 0 | queued | — |
-| 17592186129115 | Row Echelon Form | Identifying Operations That Would Transform a Matrix To Row Echelon Form | 0 / 10 / 0 / 0 | queued | — |
+| [17592186129115](../../scratch/17592186129115.py) | Row Echelon Form | Identifying Operations That Would Transform a Matrix To Row Echelon Form | 0 / 10 / 0 / 0 | queued | — |
 | [17592186129176](../../scratch/17592186129176.py) | Row Echelon Form | Identifying the Leading Entries of a Matrix | 10 / 0 / 0 / 2 | queued | — |
-| 17592186129113 | Row Echelon Form | Identifying Augmented Matrices in Row Echelon Form | 11 / 0 / 0 / 1 | queued | — |
+| [17592186129113](../../scratch/17592186129113.py) | Row Echelon Form | Identifying Augmented Matrices in Row Echelon Form | 11 / 0 / 0 / 1 | queued | — |
 | [17592186129114](../../scratch/17592186129114.py) | Row Echelon Form | Identifying Matrices in Row Echelon Form | 13 / 0 / 0 / 1 | queued | — |
-| 17592186059771 | Elementary Row Operations | Applying Row Operations To a Coefficients Matrix | 3 / 2 / 4 / 0 | queued | — |
+| [17592186059771](../../scratch/17592186059771.py) | Elementary Row Operations | Applying Row Operations To a Coefficients Matrix | 3 / 2 / 4 / 0 | queued | — |
 | 17592186059773 | Elementary Row Operations | Identifying the Appropriate Row Operation To Transform One Matrix Into Another | 0 / 8 / 0 / 2 | queued | — |
 | 17592186059774 | Elementary Row Operations | Identifying the Appropriate Row Operation To Transform a Given Entry to a Desired Value | 0 / 0 / 9 / 1 | queued | — |
 | 17592186059772 | Elementary Row Operations | Applying Row Operations To an Augmented Matrix | 2 / 5 / 3 / 1 | queued | — |

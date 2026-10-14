@@ -215,7 +215,7 @@ def normal_solution(f,p,z):
    # Source pulls a common coefficient before using the t^(3/2) primitive.
    fac=s*S.Integer(a);inside=1+S.sqrt(p['k']*dy)*S.sqrt(t)/a
    rows[-1]=tex(fac)+r'\int_0^1 ('+tex(inside)+r')\,\mathrm{d}t'
-   rows.extend([tex(fac)+'['+tex(P/a)+']_0^1',tex(fac)+'('+tex(hi/a)+')-'+tex(s*lo),tex(v)])
+   rows.extend([tex(fac)+'['+tex(P/a)+']_0^1',tex(fac)+'(1+'+tex(S.Rational(2,3)*S.sqrt(p['k']*p['dy'])/a)+')-'+tex(s*lo),tex(v)])
   else:
    if f=='product':
     endpoint='+'.join('('+tex(S.Rational(p['c']*p['dx']*p['dy'],3))+')' if i==0 else '('+tex(e)+')' for i,e in enumerate([S.Rational(p['c']*p['dx']*p['dy'],3),S.Rational(p['c']*(a*dy+b*dx),2),S.Integer(p['c']*a*b)]))
@@ -299,7 +299,8 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   bankdata=json.loads((ROOT/'source-templates.json').read_text())[sid]
   strings=[mask if equivalent(value,anchorvalue) else tex(value) for mask,value,anchorvalue in zip(bankdata['bank_notation'],vals,source_bank(sid,ANCHORS[sid][2],instance(f,ANCHORS[sid][2]))[0])]
  else:prompt,solution=normal_prompt(f,p,z),normal_solution(f,p,z);strings=list(map(tex,vals))
- fingerprint=digest({'weighted_pulled':S.srepr(simp(z['speed']*z['pulled'])),'speed':S.srepr(z['speed']),'primitive_workload':f,'bounds':[0,1]})
+ weighted=simp(z['speed']*z['pulled']);reverse=simp(weighted.subs(t,1-t))
+ fingerprint=digest({'weighted_pulled':min(S.srepr(weighted),S.srepr(reverse)),'speed':S.srepr(z['speed']),'primitive_workload':f,'bounds':[0,1]})
  identity=digest({'version':VERSION,'level':level if not(raw and sid in ['q-39954','q-76565']) else None,'prompt':prompt,'solution':solution,'bank':sorted(strings),'math':fingerprint})
  answers=[{':answer/id':uid(identity+'/answer/'+str(i)),':answer/type':':answer.type/math',':answer/value':v} for i,v in enumerate(strings)]
  correctindex=next(i for i,v in enumerate(vals) if equivalent(v,z['answer']))

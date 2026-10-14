@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Fundamental vector product, immutable math basis 2275; local review only.
 
-Easy: seven observed surface/norm shapes, coordinate coefficients 1..3.
-Moderate: authored same partial derivative/cofactor workload, all coordinate
-scales 2..4. Hard: authored same workload with scales 5..8. No new operators,
+Easy vector tasks have at most one nonunit coordinate scale; moderate tasks
+have exactly two, and hard tasks exactly three, with common nonunit band 2..4.
+The observed easy norm family separately varies its already computed product. No new operators,
 functions, geometric targets, normalization, or integration. These authored
 labels are arithmetic policies, not recovered Math Academy levels.
 
@@ -17,10 +17,11 @@ Source layouts are parameterized expression masks, never literal-payload returns
 """
 import argparse, hashlib, importlib.util, json, random, re, sys, uuid
 from pathlib import Path
+sys.dont_write_bytecode=True
 import sympy as sp
 HERE=Path(__file__).with_suffix(''); ROOT=HERE.parents[2]
 SNAPSHOT=json.loads((HERE/'source.json').read_text()); REC=SNAPSHOT['record']
-KP_ID=17592186119887; VERSION='fundamental-vector-product-draft-1'
+KP_ID=17592186119887; VERSION='fundamental-vector-product-draft-2'
 SOURCES={q[':question/math-academy-id']:q for q in REC[':knowledge-point/questions']}
 TEMPLATES={q:'easy' for q in SOURCES}; CROSS=tuple(q for q in SOURCES if q!='q-167648')
 TEMPLATES.update({'moderate:'+q:'moderate' for q in CROSS});TEMPLATES.update({'hard:'+q:'hard' for q in CROSS})
@@ -45,13 +46,20 @@ def multiply(t,k):
  """A complete scalar slot; unit scale preserves exact source spelling."""
  if k==1 or scalar(t)==0:return t
  return str(k)+r'\left('+t+r'\right)'
-def vec_scale(t,scales):
+def vec_scale(t,scales,expanded=False):
  parts=re.split(r'(?<!\\),',t[1:-1]);assert len(parts)==3
  # Retain each source's exact comma spacing and TeX fragments at unit parameters.
  out=[]
  for part,k in zip(parts,scales):
   prefix=re.match(r'(?:\s|\\,)*',part)[0];body=part[len(prefix):]
-  out.append(prefix+multiply(body,k))
+  if expanded and k!=1 and scalar(body)!=0:
+   # Keep the source norm common-factor stage, while collecting its changed
+   # leading coefficient; all other evaluated vectors distribute actual scales.
+   if '({cos}^{2}' in body:
+    m=re.match(r'(-?\d+)(.*)',body);assert m;value=str(int(m[1])*k)+m[2]
+   else:value=tex(sp.expand(k*scalar(body)))
+  else:value=multiply(body,k)
+  out.append(prefix+value)
  return '⟨'+','.join(out)+'⟩'
 def derivative_vec(t,scales):
  parts=re.split(r'(?<!\\),',t[1:-1]);out=[]
@@ -99,8 +107,8 @@ def transform_solution(base,scales):
    # Before derivative blocks: surface vector. After those blocks: cofactor result.
    before=source[:m.start()]
    if 'We first compute' not in before:out=vec_scale(t,scales)
-   elif 'Therefore, the fundamental' not in before:out=vec_scale(t,scales)
-   else:out=vec_scale(t,co)
+   elif 'Therefore, the fundamental' not in before:out=vec_scale(t,scales,expanded=True)
+   else:out=vec_scale(t,co,expanded=True)
   replacements.append((m.start(),m.end(),out))
  out=source
  for a,b,z in reversed(replacements):out=out[:a]+z+out[b:]
@@ -127,6 +135,8 @@ def transform_prompt(base,scales):
  t=re.sub(pat,repl,t);assert count==3,(base,t,count)
  return t
 
+def norm_answer(a,b):return str(2*b)+r'{x}^{2}\sqrt{'+str(16*b*b)+r'{x}^{2}+'+str(a*a)+'}'
+
 def norm_solution(a,b,exact=False):
  source=SOURCES['q-167648'][':question/worked-solution'];part=source[source.index('Finally, the corresponding norm is'):]
  # Exact source stage strings become scalar expression masks. The common factor
@@ -137,9 +147,7 @@ def norm_solution(a,b,exact=False):
  rf'\sqrt{{{A*A}{{x}}^{{6}}+{B*B}{{x}}^{{4}}{{cos}}^{{2}}⁡\theta +{B*B}{{x}}^{{4}}{{sin}}^{{2}}⁡\theta }}',
  rf'\sqrt{{{A*A}{{x}}^{{6}}+{B*B}{{x}}^{{4}}({{cos}}^{{2}}⁡\theta +{{sin}}^{{2}}⁡\theta )}}',
  rf'\sqrt{{{A*A}{{x}}^{{6}}+{B*B}{{x}}^{{4}}}}',
- tex(2*b*x*x*sp.sqrt(16*b*b*x*x+a*a))]
- # Source spelling at the anchor is a slot rendering policy, not payload lookup.
- if a==1 and b==1:values=rows
+ norm_answer(a,b)]
  for old,new in reversed(list(zip(rows,values))):
   # Work with full unique rows; no overlapping numeric token replacement.
   part=part.replace(old,new,1)
@@ -161,14 +169,29 @@ def authored_solution(surface,du,dv,cross,base):
  sol+=r'\begin{aligned}{r}_{u}^{′}\times {r}_{v}^{′} & ='+matrix+r' \\  & =⟨'+r',\,'.join(minors)+'⟩'+r' \\  & =⟨'+r',\,'.join(products)+'⟩'+r' \\  & ='+vec(cross)+r'.\end{aligned}'+'\n$$'
  return sol
 
-def parameters_for(level,base,rng,parameters):
- domain={'easy':(1,3),'moderate':(2,4),'hard':(5,8)}[level]
- p={'a':rng.randint(*domain),'b':rng.randint(*domain),'c':rng.randint(*domain)} if parameters is None else dict(parameters)
+def parameter_domain(level,base,observed=False):
+ """Finite assessed domains; evidence is exempt from authored level design.
+
+ The norm is an observed easy scalar task supplied with its prior product, not a
+ vector-partial task; a,b range 1..4 with c=b. Vector defaults share scales 1..4
+ and distinguish exactly the number of independently nonunit coordinate scales.
+ """
+ import itertools
+ if level not in ('easy','moderate','hard'):raise ValueError('difficulty')
  if base=='q-167648':
-  if parameters is None:p['c']=p['b']
-  if 'c' not in p:p['c']=p['b']
-  if p['b']!=p['c']:raise ValueError('Norm requires equal radial coefficients b=c')
- if set(p)!={'a','b','c'} or any(type(z)!=int or not domain[0]<=z<=domain[1] for z in p.values()):raise ValueError('Coordinate scale outside authored level bounds')
+  if level!='easy':raise ValueError('Existing norm remains easy')
+  return tuple({'a':a,'b':b,'c':b} for a,b in itertools.product(range(1,5),repeat=2))
+ def eligible(values):
+  count=sum(z!=1 for z in values)
+  return observed or (count<=1 if level=='easy' else count==2 if level=='moderate' else count==3)
+ return tuple(dict(zip(('a','b','c'),values)) for values in itertools.product(range(1,5),repeat=3) if eligible(values))
+
+def parameters_for(level,base,rng,parameters,observed=False):
+ domain=parameter_domain(level,base,observed)
+ p=dict(rng.choice(domain)) if parameters is None else dict(parameters)
+ if base=='q-167648' and 'c' not in p and 'b' in p:p['c']=p['b']
+ if set(p)!={'a','b','c'} or any(type(z)!=int for z in p.values()) or p not in domain:
+  raise ValueError('Coordinate scales violate bounded domain or level bookkeeping count')
  return p
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
@@ -184,8 +207,8 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  if template not in TEMPLATES or TEMPLATES[template]!=level:raise ValueError('Template level mismatch')
  base=template.split(':')[-1]
  if field_type is not None and (field_type.split('/')[-1]=='blank')!=(base=='q-167648'):raise ValueError('Explicit template/field contract mismatch')
- p=parameters_for(level,base,rng,parameters);scales=(p['a'],p['b'],p['c'])
  observed=profile is not None and profile.startswith('observed:')
+ p=parameters_for(level,base,rng,parameters,observed);scales=(p['a'],p['b'],p['c'])
  if observed and profile!='observed:'+base:raise ValueError('Observed bank mismatch')
  if observed and level!='easy':raise ValueError('Raw evidence keeps observed labels')
  if profile is None:profile='norm:supplied-product' if base=='q-167648' else 'method:ordered-cross'
@@ -201,7 +224,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  fields=[];co=(p['b']*p['c'],p['a']*p['c'],p['a']*p['b'])
  if observed:
   for sf in SOURCES[base][':question/answer-fields']:
-   vals=[(tex(norm) if base=='q-167648' and scales!=(1,1,1) else a[':answer/value']) for a in sf[':answer-field/choices']]
+   vals=[norm_answer(p['a'],p['b']) if base=='q-167648' else a[':answer/value'] for a in sf[':answer-field/choices']]
    if base!='q-167648':vals=[vec_scale(z,co) for z in vals]
    correct=None
    if ':answer-field/correct' in sf:
@@ -214,7 +237,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   fields=[('selection',':answer-field.type/radio',[vec(z) for z in values],0)]
  # Mathematical identity excludes offsets annihilated by derivatives, answer banks,
  # aliases, seed and order; norm uses its actual supplied product up to sign aliases.
- fp=digest([level,'supplied-product-norm' if base=='q-167648' else 'partial-cross', [sp.srepr(z) for z in (cross if base=='q-167648' else list(du)+list(dv))]])
+ fp=digest(['supplied-product-norm' if base=='q-167648' else 'partial-cross', [sp.srepr(z) for z in (cross if base=='q-167648' else list(du)+list(dv))]])
  content=digest([VERSION,level if not observed else SOURCES[base].get(':question/difficulty'),prompt,solution,[[k,t,sorted(vals),correct is not None] for k,t,vals,correct in fields]])
  outfields=[]
  for fi,(key,typ,vals,correct) in enumerate(fields):
@@ -226,13 +249,13 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  q={':question/id':uid(content),':question/problem':prompt,':question/answer-fields':outfields}
  if solution is not None:q[':question/worked-solution']=solution
  if not observed or ':question/difficulty' in SOURCES[base]:q[':question/difficulty']=':question.difficulty/'+level
- return {'knowledge_point':{'db_id':KP_ID,'id':REC[':knowledge-point/id'],'title':REC[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'seed':seed,'template':template,'profile':profile,'parameters':p,'source_ids':[base],'source':{k:SNAPSHOT[k] for k in ('database','basis','lineage')},'evidence_only':observed,'eligible_for_learning':not observed,'domains':{'variables':'real','regularity':REGULARITY[base],'norm_context':'Recovered r=<x,2x² cos theta,2x² sin theta> from full captured original worked solution; no inference from scalar answer'},'mathematical_fingerprint':fp,'content_hash':content,'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},'plots':{'rating':'none','references':[]},'grading_limitations':(['Native rules accept canonical and reordered factored norms but cannot establish uncollected square-root equivalence; recorded as unresolved'] if base=='q-167648' else []),'recipe_interpretation':('Complete observed bank diagonal-coordinate covariance; source error intent opaque, evidence only' if observed else 'cross; reversed operands; omit negative middle cofactor; first tangent; second tangent' if base!='q-167648' else 'Euclidean scalar norm of supplied product'), 'calculator_policy':'unknown in captured EDB; two local widgets have empty instruction blocks, not an inferred general prohibition'}}
+ return {'knowledge_point':{'db_id':KP_ID,'id':REC[':knowledge-point/id'],'title':REC[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'seed':seed,'template':template,'profile':profile,'parameters':p,'source_ids':[base],'source':{k:SNAPSHOT[k] for k in ('database','basis','lineage')},'evidence_only':observed,'eligible_for_learning':not observed,'domains':{'variables':'real','regularity':REGULARITY[base],'norm_context':'Recovered r=<x,2x² cos theta,2x² sin theta> from full captured original worked solution; no inference from scalar answer'},'bookkeeping_nonunit_coordinates':sum(z!=1 for z in scales),'authored_difficulty_uncertainty':'Number of nonunit coordinate scales is a conservative coefficient-bookkeeping policy, not recovered MA difficulty evidence; observed easy norms have their own supplied-product workload','mathematical_fingerprint':fp,'content_hash':content,'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},'plots':{'rating':'none','references':[]},'grading_limitations':(['Native rules accept canonical and reordered factored norms but cannot establish uncollected square-root equivalence; recorded as unresolved'] if base=='q-167648' else []),'recipe_interpretation':('Complete observed bank diagonal-coordinate covariance; source error intent opaque, evidence only' if observed else 'cross; reversed operands; omit negative middle cofactor; first tangent; second tangent' if base!='q-167648' else 'Euclidean scalar norm of supplied product'), 'calculator_policy':'unknown in captured EDB; two local widgets have empty instruction blocks, not an inferred general prohibition'}}
 
-# EASY: observed function/operator workload is retained; norm is an existing family.
+# EASY: vector tasks have zero/one nonunit scales; observed norm workload is separate.
 def generate_easy(seed=0,**kwargs):return generate('easy',seed=seed,**kwargs)
-# MODERATE: authored nonunit coordinate coefficients 2..4, same fixed six partials.
+# MODERATE: exactly two nonunit coordinate scales in 2..4; same fixed six partials.
 def generate_moderate(seed=0,**kwargs):return generate('moderate',seed=seed,**kwargs)
-# HARD: authored coefficients 5..8, same cofactor arithmetic, no new calculus branches.
+# HARD: exactly three nonunit scales in 2..4; same cofactor stages, no new calculus.
 def generate_hard(seed=0,**kwargs):return generate('hard',seed=seed,**kwargs)
 def markdown(r):
  q=r['question'];s=q[':question/problem']+'\n\n'

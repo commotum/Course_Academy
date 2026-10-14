@@ -73,7 +73,23 @@ def verify(r):
   assert f[':answer-field/type'].endswith('/radio')
   source=g.SOURCES[base].get(':question/worked-solution')
   if source:
+   prose=lambda text:re.sub(r'\$\$.*?\$\$|\$.*?\$', '',text,flags=re.S)
+   assert prose(sol)==prose(source),'Full shared prose fidelity'
    assert sol.split('We first compute')[0].split('In vector form')[0]==source.split('We first compute')[0].split('In vector form')[0]
+  front=sol.split('We first compute')[0]
+  if '⟨' in front:assert equal(read_surface(front),surface),'Initial vector-form surface is stale'
+  base_surface=read_surface(g.SOURCES[base][':question/problem'])
+  base_du,base_dv=base_surface.diff(u),base_surface.diff(v)
+  actual_scales=[]
+  for i in range(3):
+   derivative,reference=(du[i],base_du[i]) if base_du[i]!=0 else (dv[i],base_dv[i])
+   assert reference!=0,'Derivative-zero coordinate cannot be counted'
+   ratio=sp.simplify(derivative/reference)
+   assert ratio.is_Integer is True and 1<=ratio<=4,'Actual coordinate-scale bound'
+   actual_scales.append(int(ratio))
+  count=sum(z!=1 for z in actual_scales);level=q[':question/difficulty'].split('/')[-1]
+  assert (count<=1 if level=='easy' else count==2 if level=='moderate' else count==3),'Actual nonunit bookkeeping count'
+  assert count==meta['bookkeeping_nonunit_coordinates']
   tangent=sol.split('We first compute')[1].split('Therefore, the fundamental')[0]
   args=re.findall(r'\\frac\{∂\}\{∂(u|v)\}\((.*?)\)(?=,|⟩)',tangent)
   assert len(args)==6,('Formal substitution stage missing',args)
@@ -161,30 +177,64 @@ def main():
    scale=sp.diag(pp['b']*pp['c'],pp['a']*pp['c'],pp['a']*pp['b'])
    for f,sf in zip(raw['question'][':question/answer-fields'],q[':question/answer-fields']):
     for a,sa in zip(f[':answer-field/choices'],sf[':answer-field/choices']):assert equal(vector(a[':answer/value']),scale*vector(sa[':answer/value']))
-  for pp in ({'a':1,'b':1,'c':1},{'a':2,'b':3,'c':3 if base=='q-167648' else 2}):
+  for pp in ({'a':1,'b':1,'c':1},{'a':2,'b':3,'c':3} if base=='q-167648' else {'a':4,'b':1,'c':1}):
    r=g.generate('easy',template=base,parameters=pp);verify(r);review.append(r);normal.append(r)
- # Every family, level and its representative low/high arithmetic boundary.
+ # Every family/level: review all eligible nonunit-coordinate roles, not just
+ # the first valid role. Norm separately retains its observed supplied-product task.
  for level in ('moderate','hard'):
-  lo,hi={'moderate':(2,4),'hard':(5,8)}[level]
+  roles=((0,1),(0,2),(1,2)) if level=='moderate' else ((0,1,2),)
   for base in g.CROSS:
-   for p in ({'a':lo,'b':lo,'c':lo},{'a':hi,'b':hi-1,'c':lo}):
-    r=g.generate(level,template=level+':'+base,parameters=p);verify(r);normal.append(r);review.append(r)
- # Exercise full meaningful bounded domains, identity, explicit-bound rejection.
- domain_counts={};fingerprints={}
+   for role in roles:
+    for value in (2,4):
+     p=dict(zip(('a','b','c'),(value if i in role else 1 for i in range(3))))
+     r=g.generate(level,template=level+':'+base,parameters=p);verify(r);normal.append(r);review.append(r)
+ # Easy review also shows the b and c roles; a role and all-unit already present.
+ for base in g.CROSS:
+  for name in ('b','c'):
+   p={'a':1,'b':1,'c':1};p[name]=3
+   r=g.generate('easy',template=base,parameters=p);verify(r);normal.append(r);review.append(r)
+ # Enumerate the full 1..4 cube independently. All explicit invalid inputs must
+ # reject; raw profiles separately permit the full bounded cube as evidence.
+ domain_counts={};fingerprints={};domains={};semantic_by_level={};presentation_by_level={};rejected_by_level={}
  for level in ('easy','moderate','hard'):
-  lo,hi={'easy':(1,3),'moderate':(2,4),'hard':(5,8)}[level];fps=set();count=0
+  fps=set();count=0;accepted=[];semantic=set();presentation=set();rejected=0
   for template,l in g.TEMPLATES.items():
    if l!=level:continue
    base=template.split(':')[-1]
-   for a,b,c in itertools.product(range(lo,hi+1),repeat=3):
-    if base=='q-167648' and b!=c:continue
-    r=g.generate(level,template=template,parameters={'a':a,'b':b,'c':c});verify(r);count+=1;fps.add(r['generation']['mathematical_fingerprint'])
-  domain_counts[level]=count;fingerprints[level]=len(fps);assert len(fps)==count,(level,count,len(fps))
-  for template,l in g.TEMPLATES.items():
-   if l==level:
-    try:g.generate(level,template=template,parameters={'a':lo-1,'b':lo,'c':lo})
+   for a,b,c in itertools.product(range(1,5),repeat=3):
+    p={'a':a,'b':b,'c':c};nonunit=sum(z!=1 for z in (a,b,c))
+    eligible=(b==c) if base=='q-167648' else (nonunit<=1 if level=='easy' else nonunit==2 if level=='moderate' else nonunit==3)
+    if not eligible:
+     try:g.generate(level,template=template,parameters=p)
+     except ValueError:rejected+=1;continue
+     raise AssertionError('Explicit level bookkeeping guard bypassed')
+    r=g.generate(level,template=template,parameters=p);verify(r);count+=1;fps.add(r['generation']['mathematical_fingerprint']);accepted.append({'template':template,'parameters':p})
+    # Same hash data across levels; no difficulty tag is permitted to hide overlap.
+    q=r['question'];surface=read_surface(q[':question/problem']) if base!='q-167648' else None
+    semantics=['partial-cross',[sp.srepr(z) for z in list(surface.diff(u))+list(surface.diff(v))]] if surface is not None else ['supplied-product-norm',[sp.srepr(z) for z in vector(re.search('⟨[^⟨⟩]*⟩',q[':question/problem'])[0])]]
+    mathematical=g.digest(semantics);assert mathematical==r['generation']['mathematical_fingerprint'];semantic.add(mathematical)
+    presentation.add(g.digest([q[':question/problem'],q[':question/worked-solution'],sorted(a[':answer/value'] for a in q[':question/answer-fields'][0][':answer-field/choices'])]))
+   for invalid in ({'a':0,'b':1,'c':1},{'a':5,'b':2,'c':2}):
+    try:g.generate(level,template=template,parameters=invalid)
     except ValueError:pass
-    else:raise AssertionError('Bound not enforced')
+    else:raise AssertionError('Common coefficient bound not enforced')
+  domain_counts[level]=count;fingerprints[level]=len(fps);assert len(fps)==count,(level,count,len(fps));domains[level]=accepted;semantic_by_level[level]=semantic;presentation_by_level[level]=presentation;rejected_by_level[level]=rejected
+ for first,second in itertools.combinations(('easy','moderate','hard'),2):
+  assert semantic_by_level[first].isdisjoint(semantic_by_level[second]),'Cross-level identical assessed partial task'
+  assert presentation_by_level[first].isdisjoint(presentation_by_level[second]),'Cross-level identical normal prompt/solution/bank'
+ # Former overlapping (2,2,2)/(3,3,3) must be hard-only; original easy raw label
+ # stays exact and changed raw source evidence is still publicly available.
+ for base in g.CROSS:
+  for a in (2,3):
+   p={'a':a,'b':a,'c':a}
+   for level in ('easy','moderate'):
+    try:g.generate(level,template=base if level=='easy' else level+':'+base,parameters=p)
+    except ValueError:pass
+    else:raise AssertionError('Former cross-level overlapping input accepted')
+   verify(g.generate('hard',template='hard:'+base,parameters=p))
+   raw=g.generate('easy',template=base,parameters=p,profile='observed:'+base)
+   assert raw['generation']['evidence_only'] and not raw['generation']['eligible_for_learning']
+ (HERE/'accepted-domains.json').write_text(json.dumps(domains,indent=2)+'\n')
  # Seed/order cannot create identity; changed complete bank is part of identity.
  for r in normal:
   m=r['generation'];s=g.generate(g.TEMPLATES[m['template']],seed=777,template=m['template'],parameters=m['parameters'],profile=m['profile'])
@@ -201,7 +251,7 @@ def main():
     {'submitted':'0','expected':'rejected','purpose':'Wrong scalar entry'}]
   engine.append({'label':m['template']+':'+str(m['parameters']),'record':r,'checks':checks})
  # Fail closed against stale stages, missing signs, control bytes and content aliases.
- original=g.generate('easy',template='q-109912',parameters={'a':2,'b':3,'c':2});verify(original)
+ original=g.generate('hard',template='hard:q-109912',parameters={'a':2,'b':3,'c':2});verify(original)
  for mut in ('cofactor','derivative','control','cofactor-structure'):
   r=copy.deepcopy(original)
   if mut=='cofactor':r['question'][':question/worked-solution']=r['question'][':question/worked-solution'].replace(r',\,-|\begin{aligned}',r',\,|\begin{aligned}',1)
@@ -227,7 +277,7 @@ def main():
   assert default[l]=={t for t,ll in g.TEMPLATES.items() if ll==l}
  (HERE/'engine-input.json').write_text(json.dumps(engine,ensure_ascii=False))
  subprocess.run([str(ROOT/'generate/runs/current/check-engine'),str(HERE/'engine-input.json'),str(HERE/'engine-report.json')],check=True)
- report={'status':'pass','review_status':'awaiting parent independent QA','basis':g.SNAPSHOT['basis'],'lineage':g.SNAPSHOT['lineage'],'generator_sha256':hashlib.sha256(HERE.with_suffix('.py').read_bytes()).hexdigest(),'original_questions':'7/7','original_fields':'8/8','complete_banks':'8/8 (7 radio, 1 blank)','source_values':f'{matched}/36','original_correct_designations':f'{designation}/6; 2 absent retained','known_source_distractors':f'{distractors}/20; 10 unkeyed radio options accounted as unkeyed values','original_full_solutions':'6/6; 1 absence retained','raw_prompt_whitespace':'7/7 exact','inferred_original_keys_not_counted_as_source_designations':inferred_keys,'source_replays':replays,'bounded_domain_instances':domain_counts,'meaningful_tasks':fingerprints,'every_pair_whole_vector_bank_checked':True,'displayed_math_and_stages_independently_checked':True,'mutations_rejected':['middle-cofactor sign deletion','stale changed-parameter derivative solution','C0 formfeed','algebraically equal replacement of cofactor minors','algebraically equal replacement of norm trig-factor stage'],'default_family_coverage':{l:sorted(z) for l,z in default.items()},'native':json.loads((HERE/'engine-report.json').read_text()),'unresolved':['Opaque historical distractor intent remains unresolved; public complete parameterized evidence profiles are ineligible for learning.','q-105607 original lacks difficulty, correct reference and solution; normal level/key/solution are authored.','q-105606 duplicate legacy field has no key; normal output has one supported selection field.','Native scalar grader cannot establish the equivalent uncollected sqrt(64x^6+4x^4) norm; canonical/reordered factored forms pass and wrong scalars fail.','Native local lesson archive has no q-167648 ID; actual captured full solution supplies surface, derivatives and computed product; no answer-based reconstruction.','Calculator policy unknown in database snapshot. Missing moderate/hard labels use conservative arithmetic coefficient bands, not recovered progression.']}
+ report={'status':'pass','review_status':'awaiting parent independent QA','basis':g.SNAPSHOT['basis'],'lineage':g.SNAPSHOT['lineage'],'generator_sha256':hashlib.sha256(HERE.with_suffix('.py').read_bytes()).hexdigest(),'original_questions':'7/7','original_fields':'8/8','complete_banks':'8/8 (7 radio, 1 blank)','source_values':f'{matched}/36','original_correct_designations':f'{designation}/6; 2 absent retained','known_source_distractors':f'{distractors}/20; 10 unkeyed radio options accounted as unkeyed values','original_full_solutions':'6/6; 1 absence retained','raw_prompt_whitespace':'7/7 exact','inferred_original_keys_not_counted_as_source_designations':inferred_keys,'source_replays':replays,'bounded_domain_instances':domain_counts,'meaningful_tasks':fingerprints,'explicit_ineligible_cube_inputs_rejected':rejected_by_level,'cross_level_semantic_and_presentation_disjoint':True,'difficulty_policy':'Vector easy zero/one, moderate exactly two, hard exactly three nonunit coordinate scales in common 2..4 band; norm is a separate observed easy supplied-product family','accepted_domains_file':'accepted-domains.json','every_pair_whole_vector_bank_checked':True,'displayed_math_and_stages_independently_checked':True,'mutations_rejected':['middle-cofactor sign deletion','stale changed-parameter derivative solution','C0 formfeed','algebraically equal replacement of cofactor minors','algebraically equal replacement of norm trig-factor stage'],'default_family_coverage':{l:sorted(z) for l,z in default.items()},'native':json.loads((HERE/'engine-report.json').read_text()),'unresolved':['Opaque historical distractor intent remains unresolved; public complete parameterized evidence profiles are ineligible for learning.','q-105607 original lacks difficulty, correct reference and solution; normal level/key/solution are authored.','q-105606 duplicate legacy field has no key; normal output has one supported selection field.','Native scalar grader cannot establish the equivalent uncollected sqrt(64x^6+4x^4) norm; canonical/reordered factored forms pass and wrong scalars fail.','Native local lesson archive has no q-167648 ID; actual captured full solution supplies surface, derivatives and computed product; no answer-based reconstruction.','Calculator policy unknown in database snapshot. Missing moderate/hard labels use a conservative count of independently nonunit coordinate scales in the same small coefficient band; this is not recovered MA difficulty evidence.']}
  (HERE/'validation.json').write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n');(HERE/'source-cases.json').write_text(json.dumps(source_cases,indent=2)+'\n');(HERE/'review.json').write_text(json.dumps(review,indent=2,ensure_ascii=False)+'\n')
  pieces=[]
  for r in review:

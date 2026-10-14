@@ -17,7 +17,7 @@ for a,b,dx,dy,c,d in itertools.product(range(-3,4),range(-3,4),[-3,-2,2,3],[-3,-
  if not A:continue
  bank=[term(I,n),(I,1),term(B,n),term(A+B,n),term(F(A,8)+F(B,2),n)]
  if not unique(bank):continue
- parameter_instances+=1;tasks.add((radical(n),term(A,n),term(B,n),'linear'))
+ parameter_instances+=1;tasks.add((radical(n),min((term(A,n),term(B,n)),(term(-A,n),term(A+B,n))),'linear'))
 capacities['easy/linear']={'eligible_parameter_instances':parameter_instances,'meaningful_mathematical_tasks':len(tasks),'proof':'Exhaustive exact rational/radical tuples; weighted linear coefficients and speed; complete bank distinctness.'}
 tasks=set();count=0
 for a,b,dx,dy,c in itertools.product(range(1,4),range(1,4),[-2,-1,1,2,3],[-2,-1,1,2,3,4,5],range(1,4)):
@@ -25,7 +25,7 @@ for a,b,dx,dy,c in itertools.product(range(1,4),range(1,4),[-2,-1,1,2,3],[-2,-1,
  C0=c*a*b;C1=c*(a*dy+b*dx);C2=c*dx*dy;n=dx*dx+dy*dy;I=F(C2,3)+F(C1,2)+C0
  bank=[term(I,n),(I,1),term(F(C2,3)+C0,n),term(F(C1,2)+C0,n),term(F(C2,2)+F(C1,2)+C0,n)]
  if not unique(bank):continue
- count+=1;tasks.add((radical(n),term(C2,n),term(C1,n),term(C0,n),'product'))
+ count+=1;tasks.add((radical(n),min((term(C2,n),term(C1,n),term(C0,n)),(term(C2,n),term(-2*C2-C1,n),term(C2+C1+C0,n))),'product'))
 capacities['moderate/product']={'eligible_parameter_instances':count,'meaningful_mathematical_tasks':len(tasks),'proof':'Exhaustive exact rational/radical tuples of weighted quadratic coefficients and speed; complete bank distinctness.'}
 tasks=set();count=0
 for a,(k,dy) in itertools.product(range(1,5),[(1,1),(1,4),(2,2),(2,8),(3,3),(4,1),(4,4)]):
@@ -55,5 +55,5 @@ for a,b,dx,dy in itertools.product(range(-1,2),range(1,4),[1,2,3],[1,2,3]):
  if not 1<=B<=10 or q1>18:continue
  count+=1;tasks.add((radical(dx*dx+dy*dy),dx*dy,B,a*b,'matched_exponential'))
 capacities['hard/matched_exponential']={'eligible_parameter_instances':count,'meaningful_mathematical_tasks':len(tasks),'proof':'Exhaustive speed and exponent-quadratic tuples; positive slope and dx,dy enforce noncollision; exp(integer) transcendence separates coefficient banks.'}
-capacities['easy/odd_linear_explicit']={'eligible_parameter_instances':12,'meaningful_mathematical_tasks':12,'proof':'Normal method bank: a in2..4,c in1..4; a=1 collides and rejects whole bank. Public source raw bank retains anchor a=1,c=2. Fixed y=0; unused d excluded from fingerprint.'}
+capacities['easy/odd_linear']={'eligible_parameter_instances':12,'meaningful_mathematical_tasks':12,'proof':'Normal method bank: a in2..4,c in1..4; a=1 collides and rejects whole bank. Public source raw bank retains anchor a=1,c=2. Fixed y=0; unused d excluded from fingerprint.'}
 (P/'capacity.json').write_text(json.dumps(capacities,indent=2)+'\n');print(json.dumps(capacities,indent=2))

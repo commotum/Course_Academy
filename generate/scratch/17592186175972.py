@@ -70,6 +70,23 @@ def math_values(p, recipes, style='braced'):
  'reciprocal':mul(1/c,square(u,style))}
  return [normalize_tex(table[r]) for r in recipes]
 
+def check_complete_bank(p, recipes):
+ # Guards apply to the entire selected profile, never a replacement option pool.
+ u,v=sp.symbols(p['base']+' '+p['free'], real=True);c=sp.Rational(p['a'],p['b'])
+ dep=c*u**2
+ table={'correct':dep if p['role']=='dependent' else v,
+ 'half_linear':c*u/2,'free_square':v**2,'base_square':u**2,
+ 'wrong_scaled_square':c*v**2,'free':v,'base':u,'base_linear':c*u,
+ 'free_linear':c*v,'dependent':dep,'sin_base':sp.sin(u),
+ 'unnormalized':p['a']*u**2,'reciprocal':u**2/c}
+ values=[table[r] for r in recipes]
+ if len(values)!=5 or len(recipes)!=5:raise ValueError('Incomplete selected bank')
+ for i,x in enumerate(values):
+  for y in values[i+1:]:
+   if sp.expand(x-y)==0:raise ValueError('Reject whole instance: equivalent component options')
+ expected=dep if p['role']=='dependent' else v
+ if sum(sp.expand(x-expected)==0 for x in values)!=1:raise ValueError('Reject whole instance: nonunique direct-coordinate answer')
+
 def prepare(level,template,parameters,profile,rng,raw):
  if level not in ('easy','moderate','hard'):raise ValueError('Unknown difficulty')
  if profile is not None and profile not in PROFILES:raise ValueError('Unknown complete profile')
@@ -146,6 +163,8 @@ def render(p,profile,raw):
  solution=opening+'$$\n'+r'\begin{aligned}'+fn+'('+args+r') & =⟨x,y,z⟩ \\  & =⟨'+r'\,'.join([vector[0]+',',vector[1]+',',vector[2]])+r'⟩\end{aligned}'+'\n$$\n\n'
  solution+='where $'+p['arguments'][0]+r'\in (-\infty ,\infty )$ and $'+p['arguments'][1]+r'\in (-\infty ,\infty ).$'+'\n\n'
  solution+='Therefore, the '+ordinal+' component of $'+fn+'$ is $'+vector[i]+'.$'
+ if not raw and p['role']=='free':
+  solution='Use the named coordinate parameters directly, so the free-axis coordinate is $'+v+'.$\n\n'+solution
  if profile=='normalized':
   solution='First, write the dependent coordinate as an explicit function of $'+u+'.$\n\n$$\n'+left+'='+right+r'\quad\Longrightarrow\quad '+d+'='+dep+'\n$$\n\n'+solution
  return (problem,solution)
@@ -165,6 +184,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  problem,solution=render(p,profile,raw)
  problem=normalize_prose(problem);solution=normalize_prose(solution)
  recipes=PROFILES[profile][1]
+ if profile=='q-103986' and not raw:
+  recipes=('base_linear','free_square','base_square','wrong_scaled_square','correct')
+ check_complete_bank(p,recipes)
  banks=[math_values(p,recipes,'legacy' if profile=='q-103992' else 'braced')]
  legacy=None
  if raw and profile=='q-103986':
@@ -204,7 +226,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  'parameter_fingerprint':digest(task),'coordinate_basis':['x','y','z'],'plot_requirement':'none',
  'difficulty_evidence':'unobserved authored workload; uncertain grade' if level=='hard' else 'authored easy assignment to unrated source' if profile=='q-103992' else 'observed label; axis-permutation extension',
  'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},
- 'repairs':[] if raw else ['replace blank marker with keyed placeholder']+(['keep supported duplicate field only'] if profile=='q-103986' else [])+(['repair prose arguments; infer correct free component; author missing solution and easy label'] if profile=='q-103992' else [])+(['clarify direct-coordinate convention; 6z is otherwise a covering parametrization'] if p['role']=='free' else [])}
+ 'bank_origin':'observed complete bank' if raw or profile!='q-103986' and profile!='normalized' else 'authored complete method-derived bank',
+ 'recipes':list(recipes),
+ 'repairs':[] if raw else ['replace blank marker with keyed placeholder']+(['keep supported duplicate field only; use authored whole bank replacing opaque half-linear mask with omitted square'] if profile=='q-103986' else [])+(['repair prose arguments; infer correct free component; author missing solution and easy label'] if profile=='q-103992' else [])+(['clarify direct-coordinate convention; 6z is otherwise a covering parametrization'] if p['role']=='free' else [])}
  result={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,'generation':generation}
  if raw:
   # Shared strict formatter cannot require an absent source worked-solution.
