@@ -1,0 +1,235 @@
+Browser tab: 1418862706, Title: "Math Academy", URL: "https://mathacademy.com/tasks/14191625/topics/6704/lesson".
+1 AXWebArea Math Academy, URL: mathacademy.com/tasks/14191625/topics/6704/lesson
+	2 container wrap
+		3 container steps
+			4 container step-t4152
+				5 container
+					6 text Introduction ?
+				7 text In this topic, we'll derive a formula for variation of parameters for second-order linear ODEs.
+				8 text Suppose we're given the differential equation
+				9 image  y'' + p(x)y' + q(x)y = f(x) , Help: y'' + p(x)y' + q(x)y = f(x)
+				10 text and let 
+				11 image y_1
+				12 text  and 
+				13 image y_2
+				14 text  be fundamental solutions of the corresponding homogeneous equation. Recall that the method of variation of parameters begins by assuming that a particular solution satisfies the following constraints:
+				15 image {, Help: {yp=u1y1+u2y2yp′=u1y1′+u2y2′
+				16 container
+					17 text Using these constraints, we will set up a system of two equations that we can solve for 
+					18 image u_1
+					19 text  and 
+					20 image u_2.
+				21 content list
+					22 container
+						23 AXListMarker • 
+						24 text To obtain the first equation, we differentiate the constraint for 
+						25 image y_p
+						26 text  given above,
+						27 image yp′=(u1y1+u2y2)′=u1′y1+u1y1′+u2′y2+u2y2′,
+						28 text and since we assumed that 
+						29 image y_p' = u_1 y_1' + u_2 y_2',
+						30 text  we reach
+						31 image u1y1′+u2y2′=u1′y1+u1y1′+u2′y2+u2y2′0=u1′y1+u2′y2.
+					32 container
+						33 AXListMarker • 
+						34 text To obtain another equation, we substitute the constraints into the differential equation and simplify:
+						35 image y″+p(x)y′+q(x)y=f(x)(u1y1′+u2y2′)′+p(x)(u1y1′+u2y2′)+q(x)(u1y1+u2y2)=f(x)(u1′y1′+u1y1″+u2′y2′+u2y2″)+p(x)(u1y1′+u2y2′)+q(x)(u1y1+u2y2)=f(x)u1(y1″+p(x)y1′+q(x)y1)+u2(y2″+p(x)y2′+q(x)y2)+u1′y1′+u2′y2′=f(x)
+						36 text Here, 
+						37 image y_1'' + p(x) y_1' + q(x)y_1=0
+						38 text  and 
+						39 image y_2'' + p(x) y_2' + q(x) y_2=0
+						40 text  since 
+						41 image y_1
+						42 text  and 
+						43 image y_2
+						44 text  are solutions of the corresponding homogeneous ODE. Thus, we get
+						45 image  u_1' y_1' + u_2' y_2' = f(x). , Help: u_1' y_1' + u_2' y_2' = f(x).
+				46 text So, we have the following system:
+				47 image {, Help: {u1′y1+u2′y2=0u1′y1′+u2′y2′=f
+				48 text According to Cramer's rule, the solution of the system is the following:
+				49 image u1′=|0y2fy2′||y1y2y1′y2′|=−y2fy1y2′−y2y1′=−f(x)y2(x)W(y1,y2)u2′=|y10y1′f||y1y2y1′y2′|=y1fy1y2′−y2y1′=f(x)y1(x)W(y1,y2)
+				50 text where 
+				51 image W(y_1,y_2)
+				52 text  is the Wronskian. Integrating, we reach the final result:
+				53 image u1=−∫f(x)y2(x)W(y1,y2)dx,u2=∫f(x)y1(x)W(y1,y2)dx
+			54 container step-e6618
+				55 container
+					56 text Example:  Solving a Differential Equation Whose Characteristic Equation Has Real Roots ?
+				57 text Consider the following differential equation.
+				58 image  y'' + p(x)y' + q(x)y = f(x) , Help: y'' - 2y' + y = 18x e^{x}
+				59 text The general solution to this equation can be written as
+				60 image y_1, Help: y(x) = A e^{x} + B x e^{x} + g(x),
+				61 text where 
+				62 image y_2, Help: A
+				63 text  and 
+				64 image {, Help: B
+				65 text  are constants. What could be the function 
+				66 image u_1, Help: g(x)?
+				67 text EXPLANATION
+				68 text Suppose we have a second-order linear differential equation with linearly independent fundamental solutions 
+				69 image  y'' + p(x)y' + q(x)y = f(x) , Help: y_1(x)
+				70 text  and 
+				71 image y_1, Help: y_2(x)
+				72 text . Then, according to the method of variation of parameters, we can seek a particular solution 
+				73 image y_2, Help: y_p
+				74 text  may be written as
+				75 image {, Help: yp(x)=u1(x)y1(x)+u2(x)y2(x),
+				76 text where 
+				77 image u_1
+				78 text  and 
+				79 image u_2., Help: u_2
+				80 text  satisfy the following system:
+				81 image y_p, Help: {u1′y1′+u2′y2′=f(x)u1′y1+u2′y2=0
+				82 text The solution to this system is
+				83 image  u_1(x) = -\int \dfrac{f(x)y_2(x)}{W(y_1,y_2)}\,dx, \qquad u_2(x) = \int \dfrac{f(x)y_1(x)}{W(y_1,y_2)}\,dx, , Help: u_1(x) = -\int \dfrac{f(x)y_2(x)}{W(y_1,y_2)}\,dx, \qquad u_2(x) = \int \dfrac{f(x)y_1(x)}{W(y_1,y_2)}\,dx,
+				84 text where 
+				85 image y_p' = u_1 y_1' + u_2 y_2',, Help: W(y_1,y_2)
+				86 text  is the Wronskian. From the given information, we see that the complementary solution is
+				87 image  y_c(x) = A e^{x} + B x e^{x}. , Help: y_c(x) = A e^{x} + B x e^{x}.
+				88 text Therefore, the fundamental solutions to the corresponding homogeneous equation are
+				89 image  y_1(x) = e^{x}, \qquad y_2(x) = x e^{x}. , Help: y_1(x) = e^{x}, \qquad y_2(x) = x e^{x}.
+				90 text We can use the method of variation of parameters if these solutions are independent. So, let's first compute the Wronskian:
+				91 image y_1'' + p(x) y_1' + q(x)y_1=0, Help: W(y1,y2)=|y1y2y1′y2′|=y1y2′−y1′y2=(ex)(xex)′−(ex)′(xex)=(ex)(ex+xex)−(ex)(xex)=e2x+xe2x−xe2x=e2x≠0
+				92 container
+					93 text Since the Wronskian is not equal to zero, this confirms that the functions 
+					94 image y_2'' + p(x) y_2' + q(x) y_2=0, Help: y_1(x)
+					95 text  and 
+					96 image y_1, Help: y_2(x)
+					97 text  are independent.
+				98 text Now compute 
+				99 image y_2, Help: u_1(x)
+				100 text  and 
+				101 image  u_1' y_1' + u_2' y_2' = f(x). , Help: u_2(x)
+				102 text :
+				103 image {, Help: u1(x)=−∫18xex⋅xexe2xdx=−18∫x2dx=−6x3u2(x)=∫18xex⋅exe2xdx=18∫xdx=9x2
+				104 text Therefore, the particular solution is
+				105 image yp(x)=u1y1+u2y2=(−6x3)ex+(9x2)(xex)=−6x3ex+9x3ex=3x3ex.
+				106 text The general solution is the sum of the complementary and particular solutions, and can be written as follows:
+				107 image W(y_1,y_2), Help: y(x)=yc(x)+yp(x)=Aex+Bxex+3x3ex⏟g(x)
+				108 text Therefore, we conclude that
+				109 image  g(x) = 3x^3 e^{x}. , Help: g(x) = 3x^3 e^{x}.
+			110 container step-q337541
+				111 container
+					112 text Question 1 ?
+				113 text Consider the following differential equation.
+				114 container
+					115 text 𝑦
+					116 text ″
+					117 text +
+					118 text 𝑦
+					119 text ′
+					120 text − 12 𝑦 = 14 𝑥
+					121 text 𝑒
+					122 container
+						123 text − 4 𝑥
+				124 text The general solution to this equation can be written as
+				125 container
+					126 text 𝑦 ( 𝑥 ) = 𝐴
+					127 text 𝑒
+					128 container
+						129 text − 4 𝑥
+					130 text + 𝐵
+					131 text 𝑒
+					132 container
+						133 text 3 𝑥
+					134 text + 𝑔 ( 𝑥 ) ,
+				135 text where 
+				136 text 𝐴
+				137 text  and 
+				138 text 𝐵
+				139 text  are constants. Which of the following could be the function 
+				140 container
+					141 text 𝑔 ( 𝑥 ) ?
+				142 text Hint: Use the variation of parameters method. You may also wish to make use of the following result (integration constants omitted):
+				143 container
+					144 text ∫ 𝑥
+					145 text 𝑒
+					146 container
+						147 text − 7 𝑥
+					148 text d 𝑥 = −
+					149 container
+						150 text 1 49
+					151 text ( 7 𝑥 + 1 )
+					152 text 𝑒
+					153 container
+						154 text − 7 𝑥
+				155 container
+					156 container a
+						157 text a
+					158 container
+						159 text −
+						160 text (
+						161 container
+							162 text 𝑥 2
+						163 text +
+						164 container
+							165 text 3
+							166 text 𝑥
+							167 text 7
+						168 text )
+						169 text 𝑒
+						170 container
+							171 text − 4 𝑥
+					172 container b
+						173 text b
+					174 container
+						175 text −
+						176 text (
+						177 container
+							178 text 𝑥 2
+						179 text +
+						180 container
+							181 text 2
+							182 text 𝑥
+							183 text 5
+						184 text )
+						185 text 𝑒
+						186 container
+							187 text − 4 𝑥
+					188 container c
+						189 text c
+					190 container
+						191 text −
+						192 text (
+						193 container
+							194 text 𝑥 2
+						195 text +
+						196 container
+							197 text 2
+							198 text 𝑥
+							199 text 7
+						200 text )
+						201 text 𝑒
+						202 container
+							203 text − 4 𝑥
+					204 container d
+						205 text d
+					206 container
+						207 text −
+						208 text (
+						209 container
+							210 text 𝑥 2
+						211 text +
+						212 container
+							213 text 𝑥 3
+						214 text )
+						215 text 𝑒
+						216 container
+							217 text − 4 𝑥
+					218 container e
+						219 text e
+					220 container
+						221 text −
+						222 text (
+						223 container
+							224 text 𝑥 2
+						225 text +
+						226 container
+							227 text 𝑥 7
+						228 text )
+						229 text 𝑒
+						230 container
+							231 text − 4 𝑥
+				232 text Submit
+
+The focused UI element is 1 AXWebArea Math Academy, URL: mathacademy.com/tasks/14191625/topics/6704/lesson
