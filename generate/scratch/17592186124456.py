@@ -19,7 +19,9 @@ import sympy as S
 from sympy.parsing.sympy_parser import parse_expr, standard_transformations, implicit_multiplication_application
 ROOT=Path(__file__).resolve().parent/'17592186124456'
 SNAP=json.loads((ROOT/'source.json').read_text()); REC=SNAP['record']; KP=17592186124456
-VERSION='tangent-perpendicular-1.0.0'
+VERSION='tangent-perpendicular-1.1.0'
+GENERATOR_UUID= str(uuid.uuid5(uuid.UUID(REC[':knowledge-point/id']), 'question-generator'))
+SUPPORTED_LEVELS=('easy','moderate','hard')
 X,Y=S.symbols('x y',real=True)
 SOURCES={q[':question/math-academy-id']:q for q in REC[':knowledge-point/questions']}
 TRANS=standard_transformations+(implicit_multiplication_application,)
@@ -43,7 +45,7 @@ def curve_vector(prompt):
     equation=next(t for t in blocks if '=' in t);l,r=equation.split('=',1)
     F=S.expand(parse_math(l)-parse_math(r));v=blocks[-1].replace(r'\mathbf','').replace('{','').replace('}','').rstrip('?').strip()
     # Source and normal vectors use i,j only; exact numeric coefficients supported.
-    v=v.replace('i','u').replace('j','v');U,V=S.symbols('u v')
+    v=v.replace(r'\,','').replace(r'\ ','').replace('i','u').replace('j','v');U,V=S.symbols('u v')
     e=parse_expr(v,local_dict={'u':U,'v':V},transformations=TRANS)
     return F,(S.expand(e).coeff(U),S.expand(e).coeff(V))
 def solve_points(F,v,bank=()):
@@ -175,7 +177,7 @@ def sample(level,rng):
     a,b=sorted(rng.sample([v for v in range(-6,7) if v],2))
     return {'a':a,'b':b}
 
-def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+def _generate_radio(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
     if level not in ('easy','moderate','hard'):raise ValueError('Unknown difficulty')
     if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('Radio field required')
     rng=random.Random(seed)
@@ -226,6 +228,49 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         except ValueError:
             if parameters is not None:raise
     raise ValueError('No eligible complete instance')
+def checkbox_coordinates(level,p):
+    """Complete current q-72410/q-72440 coordinate profiles, ignoring order.
+
+    Opaque observed coordinate patterns are retained as patterns, not inferred
+    misconception claims. Reject the whole profile on coordinate collisions.
+    """
+    if level=='moderate':
+        m,r=S.Integer(p['m']),S.Integer(p['r'])
+        return [(-r,-m*r),(0,m*r),(r/2,m*r),(r,0),(r,m*r/2),(r,m*r)]
+    a,b=S.Integer(p['a']),S.Integer(p['b'])
+    return [(-b,a),(-b,b),(-b/2,b),(-a,a),(-a,b),(a,a),(b,-b)]
+
+def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+    if template in SOURCES or level=='easy':
+        return _generate_radio(level,seed,template,field_type,parameters,profile)
+    if field_type not in (None,'checkbox',':answer-field.type/checkbox'):
+        raise ValueError('Current multi-point templates require checkbox fields')
+    if profile not in (None,'current_coordinate_bank'):
+        raise ValueError('Current coordinate bank required')
+    rng=random.Random(seed)
+    for _ in range(1000):
+        p=dict(parameters) if parameters is not None else sample(level,rng)
+        try:
+            old=_generate_radio(level,seed,template,None,p,'authored_method_bank')
+            coords=checkbox_coordinates(level,p)
+            if len(set(coords))!=len(coords):raise ValueError('Complete coordinate bank collision')
+            q=old['question'];correct={tuple(S.sympify(c) for c in point) for point in old['generation']['actual_points']}
+            if not correct.issubset(set(coords)):raise ValueError('Missing correct point')
+            values=['('+tex(a)+','+tex(b)+')' for a,b in coords]
+            key=digest({'version':VERSION,'task':old['generation']['mathematical_fingerprint'],'coordinates':values,'level':level})
+            q[':question/id']=uid(key);fields=[];labels=['I','II','III','IV','V','VI','VII']
+            for i,(point,val) in enumerate(zip(coords,values)):
+                label=labels[i];fid=uid(key+'/'+label)
+                choices=[{':answer/id':uid(key+'/'+label+'/'+v),':answer/type':':answer.type/text',':answer/value':v} for v in ('false','true')]
+                fields.append({':answer-field/id':fid,':answer-field/key':label,':answer-field/type':':answer-field.type/checkbox',':answer-field/choices':choices,':answer-field/correct':[':answer/id',choices[int(point in correct)][':answer/id']]})
+            q[':question/answer-fields']=fields
+            q[':question/problem']+='\n\nSelect all that apply. If none apply, leave all boxes unchecked.\n\n'+'\n'.join('- **'+labels[i]+'.** $'+v+'$' for i,v in enumerate(values))
+            old['generation'].update(profile='current_coordinate_bank',bank_recipes=['current source coordinate pattern '+str(i+1) for i in range(len(coords))],coordinates=values,content_hash=key,current_source_ids=['q-72410' if level=='moderate' else 'q-72440'])
+            return old
+        except ValueError:
+            if parameters is not None:raise
+    raise ValueError('No distinct coordinate bank')
+
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
 def generate_moderate(seed=0,**kwargs):return generate('moderate',seed,**kwargs)
 def generate_hard(seed=0,**kwargs):return generate('hard',seed,**kwargs)

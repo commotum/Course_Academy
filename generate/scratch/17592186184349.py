@@ -80,17 +80,17 @@ def recipes(template,p,profile):
 def answer_text(expr,p,prototype=None):
  v,g,d,poly,r=objects(p);G,P,D,E,_=components(p)
  # Recipe expression interpreted before rendering, never answer-literal lookup.
- k=s.simplify(expr/s.exp(g))
- if s.simplify(expr-r*s.exp(v))==0:
+ k=s.expand(expr/s.exp(g))
+ if s.expand(expr-r*s.exp(v))==0:
   k=r;G=p['v'];E='{e}^{'+G+'}'
  if v not in k.free_symbols:
   if prototype and r'\frac{{e}^' in prototype:
    sign='-' if k<0 else '';z=abs(k)
-   if z.p==1:return sign+r'\frac{'+E+'}{'+str(z.q)+'}+C'
+   return sign+r'\frac{'+('' if z.p==1 else str(z.p))+E+'}{'+str(z.q)+'}+C'
   out=primitive(k,G)
- elif s.simplify(expr-r*s.exp(v))==0:out=primitive(r,p['v'])
- elif s.simplify(expr-(s.exp(g)+p['a']*v**2))==0:out=E+'+'+mono(p['a'],p['v'],2)+'+C'
- elif s.simplify(expr-g*s.exp(g))==0:out='('+G+')'+E+'+C'
+ elif s.expand(expr-r*s.exp(v))==0:out=primitive(r,p['v'])
+ elif s.expand(expr-(s.exp(g)+p['a']*v**2))==0:out=E+'+'+mono(p['a'],p['v'],2)+'+C'
+ elif s.expand(expr-g*s.exp(g))==0:out='('+G+')'+E+'+C'
  else:out=tex(k)+E+'+C'
  if prototype and ' + C' in prototype:out=out[:-2]+' + C'
  # Unrated legacy formatting is recovered as a presentation mask.
@@ -102,7 +102,7 @@ def answer_text(expr,p,prototype=None):
 
 def source_prompt(template,p):
  G,P,D,E,r=components(p);qid=CONFIG[template][1]
- if qid=='q-13737':return 'What is $'+r'\displaystyle \int'+P.replace('{x}', 'x')+'e^{'+s.latex(objects(p)[1])+'}dx$?'
+ if qid=='q-13737':return 'What is $'+r'\displaystyle \int'+P.replace('{'+p['v']+'}',p['v'])+'e^{'+s.latex(objects(p)[1])+'}d'+p['v']+'$?'
  if qid=='q-73663':return 'What is $'+r'\displaystyle \int'+P+'e^{'+str(p['b'])+' - '+str(abs(p['a']))+p['v']+'^{2}}d'+p['v']+'$?'
  return '$'+r'\int '+P+E+r'\,\text{d}'+p['v']+'=$'
 
@@ -175,7 +175,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
    for i,(_,e) in enumerate(bank):
     if e.has(s.zoo,s.nan,s.oo) or e.free_symbols-{v}:raise ValueError('invalid expression domain')
     for _,f in bank[:i]:
-     if s.simplify(s.diff(e-f,v))==0:raise ValueError('ambiguous whole bank')
+     if s.expand(s.diff(e-f,v))==0:raise ValueError('ambiguous whole bank')
    break
   except ValueError:
    if parameters is not None:raise
@@ -195,7 +195,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  rng.shuffle(answers);payload[':question/id']=qid_new;payload[':question/answer-fields']=[f]
  canonical=s.Symbol('x',real=True)
  fingerprint=hashlib.sha256(s.srepr(poly*s.exp(g)).replace("Symbol('"+p['v']+"', real=True)","Symbol('x', real=True)").encode()).hexdigest()
- return {'knowledge_point':{'db_id':KP,'id':SOURCE[':knowledge-point/id'],'title':SOURCE[':knowledge-point/title']},'question':payload,'generation':{'version':VERSION,'seed':seed,'template':template,'profile':profile,'parameters':p,'source_id':qid,'source_basis':WRAPPER['basis'],'source_lineage':WRAPPER['lineage'],'mathematical_fingerprint':fingerprint,'domain':'all real '+p['v'],'eligible_for_learning':not raw,'evidence_only':raw,'inferred_correct':legacy and not raw,'bank_recipes':[l for l,e in bank],'runtime':{'python':sys.version.split()[0],'sympy':s.__version__}}}
+ return {'knowledge_point':{'db_id':KP,'id':SOURCE[':knowledge-point/id'],'title':SOURCE[':knowledge-point/title']},'question':payload,'generation':{'version':VERSION,'seed':seed,'template':template,'profile':profile,'parameters':p,'source_id':qid,'source_basis':WRAPPER['basis'],'source_lineage':WRAPPER['lineage'],'mathematical_fingerprint':fingerprint,'domain':'all real '+p['v'],'eligible_for_learning':not(raw or (legacy and profile!='authored_method')),'evidence_only':raw or (legacy and profile!='authored_method'),'inferred_correct':legacy and not raw,'bank_recipes':[l for l,e in bank],'runtime':{'python':sys.version.split()[0],'sympy':s.__version__}}}
 
 def markdown(record):
  q=record['question'];out=q[':question/problem']+'\n\n'

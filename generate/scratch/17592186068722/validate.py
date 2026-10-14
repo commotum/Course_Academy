@@ -80,6 +80,9 @@ def qa(r):
   if var=='u':e=e.subs(u,F)*D
   assert eq(e,printed),(t,var)
  expected_count={'easy':5,'moderate':6,'hard':7}[level];assert len(ints)==expected_count
+ assert [v for t,v in ints]==(['x','x','u','u','x'] if level=='easy' else ['x','x','u','u','u','x'] if level=='moderate' else ['x','x','u','u','u','u','x'])
+ if level=='moderate':assert ints[2][0]==r'\sqrt{u}' and ints[3][0]==r'{u}^{1/2}' and ints[4][0]==r'{u}^{1/2}'
+ if level=='hard':assert [t for t,v in ints[2:6]]==[r'\frac{1}{\sqrt{u}}',r'\frac{1}{{u}^{1/2}}',r'{u}^{-1/2}',r'{u}^{-1/2}']
  # All printed primitive rows, including increment/divisor and final back substitution.
  primitives=re.findall(r'=([^=\n]*?)\+C',sol)
  assert len(primitives)=={'easy':2,'moderate':3,'hard':4}[level]
@@ -119,7 +122,7 @@ def main():
    generated.append(r)
   assert templates=={t for t,l in g.TEMPLATES.items() if l==level}
   for k in ('a','m'):assert min(slots[k])==(1 if k=='a' else 2) and max(slots[k])==(5 if k=='a' else 6)
-  assert 0 in slots['b'] and min(slots['b'])<0<max(slots['b'])
+  assert min(slots['b'])<0<max(slots['b']) # zero is exercised explicitly for every profile below
   variety[level]={'tested':40,'distinct_mathematical_tasks':len(seen),'default_templates':sorted(templates),'slot_values':{k:sorted(v) for k,v in slots.items()},'bounded_parameter_tasks':3575 if level=='easy' else 325}
  # Explicit boundary inputs for EACH complete source and normal profile.
  boundary=0
@@ -139,10 +142,15 @@ def main():
  mutation=copy.deepcopy(generated[0]);mutation['question'][':question/problem']=mutation['question'][':question/problem'].replace('\\int ','\\int 2',1)
  try:qa(mutation);raise RuntimeError('prompt mutation passed')
  except AssertionError:pass
+ stage_mutation=copy.deepcopy(next(r for r in generated if r['question'][':question/difficulty'].endswith('/moderate')))
+ stage_mutation['question'][':question/worked-solution']=stage_mutation['question'][':question/worked-solution'].replace(r'\int \sqrt{u}',r'\int {u}^{1/2}')
+ try:qa(stage_mutation);raise RuntimeError('missing root conversion passed')
+ except AssertionError:pass
  mutation=copy.deepcopy(generated[0]);mutation['question'][':question/worked-solution']=mutation['question'][':question/worked-solution'].replace('We note','\fWe note')
  try:qa(mutation);raise RuntimeError('control mutation passed')
  except AssertionError:pass
- review=records+[next(r for r in generated if r['question'][':question/difficulty'].endswith('/'+level)) for level in ('easy','moderate','hard')]+[g.generate(level,83) for level in ('easy','moderate','hard')]
+ review=records+[g.generate(g.TEMPLATES[t],83,parameters={'a':3,'m':4,'b':-2,'n':7 if g.TEMPLATES[t]=='easy' else 0},profile=profile) for profile,(t,desc) in g.PROFILES.items()]+[g.generate('hard',94,parameters={'a':5,'m':2,'b':6,'n':0})]
+ for r in review:qa(r)
  dump('review.json',review)
  text='# Source and generated review\n\nAll records are local author previews.\n'
  for q,c in zip(originals,cases):
@@ -160,6 +168,6 @@ def main():
  engine=HERE.parents[1]/'runs/current/check-engine'
  subprocess.run([str(engine),str(HERE/'engine-input.json'),str(HERE/'engine-report.json')],check=True)
  native=json.load(open(HERE/'engine-report.json'))
- dump('validation.json',{'passed':True,'source':g.SOURCE,'fidelity':fidelity,'source_complete_banks':5,'source_choices':25,'matched_distractors':20,'total_distractors':20,'exact_source_solutions':5,'source_errors':[],'normal_generated_checked':120,'boundary_profiles_checked':boundary,'variety':variety,'native':{k:v for k,v in native.items() if k!='records'},'raw_unsupported':0,'mutation_regressions':2,'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'scope':'all 3 observed levels; authored complete default banks and bounded coefficient/shift/inner-exponent variations','unresolved':['Opaque historical distractor intent for q-2189 and q-2390 retained as evidence-only, never normal defaults.']})
+ dump('validation.json',{'passed':True,'source':g.SOURCE,'fidelity':fidelity,'source_complete_banks':5,'source_choices':25,'matched_distractors':20,'total_distractors':20,'exact_source_solutions':5,'source_errors':[],'normal_generated_checked':120,'boundary_profiles_checked':boundary,'variety':variety,'native':{k:v for k,v in native.items() if k!='records'},'raw_unsupported':0,'mutation_regressions':3,'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'scope':'all 3 observed levels; authored complete default banks and bounded coefficient/shift/inner-exponent variations','unresolved':['Opaque historical distractor intent for q-2189 and q-2390 retained as evidence-only, never normal defaults.']})
  print('PASS: 5 exact complete sources, 20/20 distractors, 120 variants, 30 boundary banks; native 125 accepted/500 rejected')
 if __name__=='__main__':main()

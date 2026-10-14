@@ -6,8 +6,8 @@ lines=['# Generator creation progress','',f"Cumulative scope: **{m['topics']} to
  'Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.','',
  ', '.join(f'**{status}: {count}**' for status,count in sorted(counts.items()))+'.','',
  f"Latest query: **{m.get('latest_candidate_topics',m['topics'])} topics, {m.get('latest_candidate_knowledge_points',m['knowledge_points'])} KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). Finish existing workers, then follow updated ranks; coverage-report priorities remain first and are already approved.",'',
- 'Cumulative counts include previously approved KPs and two active KPs that left the latest list; their work is retained. Queued and working KPs are not complete. Source anomalies and authored missing-level designs are recorded with each KP.','',
- '| KP | Topic | Knowledge point | Source E / M / H / unrated | Status | Parent QA |',
+ 'Cumulative counts retain seven earlier KPs outside the latest list. Only qa_passed jobs have current parent verification; queued, working and needs_revalidation jobs are not complete. Captured counts can include independently authored inventory as well as original MA examples; per-KP evidence separates them. Source anomalies and authored missing-level designs are recorded with each KP.','',
+ '| KP | Topic | Knowledge point | Captured E / M / H / unrated | Status | Parent QA |',
  '|---|---|---|---|---|---|']
 for j in jobs:
  c=j['source_counts'];s=' / '.join(str(c.get(':question.difficulty/'+x,0)) for x in ('easy','moderate','hard'))+' / '+str(c.get('unrated',0))

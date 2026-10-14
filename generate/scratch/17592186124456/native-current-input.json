@@ -1,0 +1,1598 @@
+[
+  {
+    "label": "fa7f7f93-0d46-5f99-8add-97f1d5e0eb80",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "fa7f7f93-0d46-5f99-8add-97f1d5e0eb80",
+        ":question/problem": "At which point on the curve $6 x y + 3 y^{2}=- 3 x^{2} + 2 y - 12$ is the tangent vector to the curve perpendicular to the vector $j$?",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "5cc1c934-4041-5b06-86b8-f7daabd4148e",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "c3818c08-70e7-5646-a8bb-ed0fbca911c3",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-6,0)$ only"
+              },
+              {
+                ":answer/id": "c6dbfd31-90fa-5c7f-81a4-49cee89f6d25",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-6,-6)$ only"
+              },
+              {
+                ":answer/id": "c9a1a437-1f47-52b7-8a3e-215c79e26cb8",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-12,12)$ only"
+              },
+              {
+                ":answer/id": "5c5cae0d-49ff-5fc5-9e18-8b7f5fce7d11",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-6,6)$ only"
+              },
+              {
+                ":answer/id": "70cb40ff-d6a1-5970-b094-4b2b086ab74a",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(6,-6)$ only"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "5c5cae0d-49ff-5fc5-9e18-8b7f5fce7d11"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}6 x y + 3 y^{2}&=- 3 x^{2} + 2 y - 12\\\\3 x^{2} + 6 x y + 3 y^{2} - 2 y + 12&=0\\end{aligned}$$\n\nIf we set $f(x,y)=3 x^{2} + 6 x y + 3 y^{2} - 2 y + 12$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(3 x^{2} + 6 x y + 3 y^{2} - 2 y + 12)\\,i-\\frac{\u2202}{\u2202x}(3 x^{2} + 6 x y + 3 y^{2} - 2 y + 12)\\,j\\\\&=(6 x + 6 y - 2)\\,i-(6 x + 6 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\- 6 x - 6 y&=0\\\\y&=-x\\end{aligned}$$\n\nSubstituting $y=-x$ into the equation of our curve gives:\n\n$$\\begin{aligned}3(x+(-x))^{2}-2(-x)-(-12)&=0\\\\2x-(-12)&=0\\\\2x&=-12\\\\x&=-6\\end{aligned}$$\n\nFinally, the corresponding point is $(-6,6)$."
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.1.0",
+        "seed": 23,
+        "template": "canonical_linear",
+        "profile": "authored_method_bank",
+        "parameters": {
+          "A": 3,
+          "b": 2,
+          "r": -6
+        },
+        "domain": {
+          "A": [
+            1,
+            4
+          ],
+          "b": [
+            2,
+            5
+          ],
+          "r": [
+            -6,
+            6
+          ],
+          "r_nonzero": true
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "e-3364"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "authored_missing_level",
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "bank_recipes": [
+          "solve",
+          "wrong_relation_sign",
+          "wrong_x_sign",
+          "omit_division_b",
+          "omit_y_substitution"
+        ],
+        "content_hash": "c00000d8fb9ed24939982b240f73f96a151e01e72613551397d384fae47abb63",
+        "mathematical_fingerprint": "45f999d09ce15777d39375fe9eec3e1eb42cc0b2f60039a6b0e2bb795a152401",
+        "actual_points": [
+          [
+            "-6",
+            "6"
+          ]
+        ],
+        "operator_input": "3*x**2 + 6*x*y + 3*y**2 - 2*y + 12",
+        "Fx": "6*x + 6*y",
+        "Fy": "6*x + 6*y - 2",
+        "orthogonality": "-6*x - 6*y",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "c3818c08-70e7-5646-a8bb-ed0fbca911c3",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "c6dbfd31-90fa-5c7f-81a4-49cee89f6d25",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "c9a1a437-1f47-52b7-8a3e-215c79e26cb8",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "5c5cae0d-49ff-5fc5-9e18-8b7f5fce7d11",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "70cb40ff-d6a1-5970-b094-4b2b086ab74a",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      }
+    ]
+  },
+  {
+    "label": "d686567e-f56f-5260-93e8-126e81e59ffd",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "d686567e-f56f-5260-93e8-126e81e59ffd",
+        ":question/problem": "At which point on the curve $8 x y + 4 y^{2}=- 4 x^{2} + 2 y - 8$ is the tangent vector to the curve perpendicular to the vector $j$?",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "748a3709-fa2a-556a-b5fe-7309253c79a1",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "4f97ca6a-c5bc-5734-bb6b-6f1fd240f027",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(4,-4)$ only"
+              },
+              {
+                ":answer/id": "211f9ac5-3587-56c0-8b9d-44f41c368c14",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-4,-4)$ only"
+              },
+              {
+                ":answer/id": "01d4b459-d5a6-5a6e-9d05-717bc4f63f41",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-4,0)$ only"
+              },
+              {
+                ":answer/id": "5a8c45b4-05bb-57df-9d4a-9bc9ecd5bcfe",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-4,4)$ only"
+              },
+              {
+                ":answer/id": "9e3e91d9-5b85-5326-9ad4-e6cae7c5fe22",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "$(-8,8)$ only"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "5a8c45b4-05bb-57df-9d4a-9bc9ecd5bcfe"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}8 x y + 4 y^{2}&=- 4 x^{2} + 2 y - 8\\\\4 x^{2} + 8 x y + 4 y^{2} - 2 y + 8&=0\\end{aligned}$$\n\nIf we set $f(x,y)=4 x^{2} + 8 x y + 4 y^{2} - 2 y + 8$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(4 x^{2} + 8 x y + 4 y^{2} - 2 y + 8)\\,i-\\frac{\u2202}{\u2202x}(4 x^{2} + 8 x y + 4 y^{2} - 2 y + 8)\\,j\\\\&=(8 x + 8 y - 2)\\,i-(8 x + 8 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\- 8 x - 8 y&=0\\\\y&=-x\\end{aligned}$$\n\nSubstituting $y=-x$ into the equation of our curve gives:\n\n$$\\begin{aligned}4(x+(-x))^{2}-2(-x)-(-8)&=0\\\\2x-(-8)&=0\\\\2x&=-8\\\\x&=-4\\end{aligned}$$\n\nFinally, the corresponding point is $(-4,4)$."
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.1.0",
+        "seed": 44,
+        "template": "canonical_linear",
+        "profile": "authored_method_bank",
+        "parameters": {
+          "A": 4,
+          "b": 2,
+          "r": -4
+        },
+        "domain": {
+          "A": [
+            1,
+            4
+          ],
+          "b": [
+            2,
+            5
+          ],
+          "r": [
+            -6,
+            6
+          ],
+          "r_nonzero": true
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "e-3364"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "authored_missing_level",
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "bank_recipes": [
+          "solve",
+          "wrong_relation_sign",
+          "wrong_x_sign",
+          "omit_division_b",
+          "omit_y_substitution"
+        ],
+        "content_hash": "450b8ef1818233e6e354e4f3dd36f0204f117941bf24a6c3e24e8fe5eed702d5",
+        "mathematical_fingerprint": "028082197c0cbd9f3c497d0bfba21a96ab6c149ec265317dd9698841ef031769",
+        "actual_points": [
+          [
+            "-4",
+            "4"
+          ]
+        ],
+        "operator_input": "4*x**2 + 8*x*y + 4*y**2 - 2*y + 8",
+        "Fx": "8*x + 8*y",
+        "Fy": "8*x + 8*y - 2",
+        "orthogonality": "-8*x - 8*y",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "4f97ca6a-c5bc-5734-bb6b-6f1fd240f027",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "211f9ac5-3587-56c0-8b9d-44f41c368c14",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "01d4b459-d5a6-5a6e-9d05-717bc4f63f41",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "5a8c45b4-05bb-57df-9d4a-9bc9ecd5bcfe",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "9e3e91d9-5b85-5326-9ad4-e6cae7c5fe22",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      }
+    ]
+  },
+  {
+    "label": "8330a8eb-fc93-5f2c-bfea-8134bfee16d3",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "8330a8eb-fc93-5f2c-bfea-8134bfee16d3",
+        ":question/problem": "At which points on the curve $4 x y + 2 y^{2}=4 x^{2} + 12$ is the tangent vector to the curve perpendicular to the vector $j$?\n\nSelect all that apply. If none apply, leave all boxes unchecked.\n\n- **I.** $(-1,-2)$\n- **II.** $(0,2)$\n- **III.** $(\\frac{1}{2},2)$\n- **IV.** $(1,0)$\n- **V.** $(1,1)$\n- **VI.** $(1,2)$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "ebfd8f92-2a0c-5ec1-9005-9fb8c5bd8a5b",
+            ":answer-field/key": "I",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "7431e8e9-d070-559a-a472-76f144c34c39",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "6c71e273-b7cf-5c85-aa7b-f7d8250d9748",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "6c71e273-b7cf-5c85-aa7b-f7d8250d9748"
+            ]
+          },
+          {
+            ":answer-field/id": "703796a4-d33d-5baf-937c-452a77d67e60",
+            ":answer-field/key": "II",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "61b2e046-855b-554a-ae47-83d5c40e20b2",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "7e6177c8-905a-5afe-aaee-0140adf05fab",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "61b2e046-855b-554a-ae47-83d5c40e20b2"
+            ]
+          },
+          {
+            ":answer-field/id": "c2caa3b6-cbe1-5e88-bad9-5547cc158016",
+            ":answer-field/key": "III",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "be542230-159b-574b-b8c6-2d8520c63b99",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "0963091d-4255-5b12-a2da-1cbcc6e18a72",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "be542230-159b-574b-b8c6-2d8520c63b99"
+            ]
+          },
+          {
+            ":answer-field/id": "94ad3abe-4e2a-58e5-b0fe-eb99503300a9",
+            ":answer-field/key": "IV",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "53d717aa-62ed-5836-9234-3b0bbc072ebe",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "88f05ccc-4192-5c3b-9cf5-17cdb6ebd952",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "53d717aa-62ed-5836-9234-3b0bbc072ebe"
+            ]
+          },
+          {
+            ":answer-field/id": "87c8ff05-f6d8-5ebf-a765-cb60aedae799",
+            ":answer-field/key": "V",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "e6af58cf-78a1-565a-9aed-0af7530cbb85",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "b63a35b5-65e7-5518-9bf9-7f47b1d8dc0e",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "e6af58cf-78a1-565a-9aed-0af7530cbb85"
+            ]
+          },
+          {
+            ":answer-field/id": "c94f3b82-e12a-522f-a336-d709ddb15afe",
+            ":answer-field/key": "VI",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "bd0c84a4-924a-598a-bfb0-8a4721753a9d",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "84181adc-4740-56bf-b67a-fc18fb3282ca",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "84181adc-4740-56bf-b67a-fc18fb3282ca"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}4 x y + 2 y^{2}&=4 x^{2} + 12\\\\- 4 x^{2} + 4 x y + 2 y^{2} - 12&=0\\end{aligned}$$\n\nIf we set $f(x,y)=- 4 x^{2} + 4 x y + 2 y^{2} - 12$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(- 4 x^{2} + 4 x y + 2 y^{2} - 12)\\,i-\\frac{\u2202}{\u2202x}(- 4 x^{2} + 4 x y + 2 y^{2} - 12)\\,j\\\\&=(4 x + 4 y)\\,i-(- 8 x + 4 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\8 x - 4 y&=0\\\\y&=2x\\end{aligned}$$\n\nSubstituting $y=2x$ into the equation of our curve gives:\n\n$$\\begin{aligned}2(2x)^{2}+4x(2x)-4x^{2}-12&=0\\\\12x^{2}-12&=0\\\\x^{2}&=1\\\\x&=\\pm 1\\end{aligned}$$\n\nFinally, the corresponding points are $(1,2)$ and $(-1,-2)$."
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.1.0",
+        "seed": 23,
+        "template": "symmetric_quadratic",
+        "profile": "current_coordinate_bank",
+        "parameters": {
+          "D": 2,
+          "m": 2,
+          "r": 1
+        },
+        "domain": {
+          "D": [
+            1,
+            3
+          ],
+          "m": [
+            2,
+            4
+          ],
+          "r": [
+            1,
+            4
+          ]
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-72410"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "authored_missing_level",
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "bank_recipes": [
+          "current source coordinate pattern 1",
+          "current source coordinate pattern 2",
+          "current source coordinate pattern 3",
+          "current source coordinate pattern 4",
+          "current source coordinate pattern 5",
+          "current source coordinate pattern 6"
+        ],
+        "content_hash": "1e2e4665aaaad912c19ad1dd778e396811b606192e7fd4e92687f49004bea9eb",
+        "mathematical_fingerprint": "4b4737fdba0a827be9fa7178ddc5b02fc4f0faeed4b9176204a2a750999aaf97",
+        "actual_points": [
+          [
+            "-1",
+            "-2"
+          ],
+          [
+            "1",
+            "2"
+          ]
+        ],
+        "operator_input": "-4*x**2 + 4*x*y + 2*y**2 - 12",
+        "Fx": "-8*x + 4*y",
+        "Fy": "4*x + 4*y",
+        "orthogonality": "8*x - 4*y",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6",
+        "coordinates": [
+          "(-1,-2)",
+          "(0,2)",
+          "(\\frac{1}{2},2)",
+          "(1,0)",
+          "(1,1)",
+          "(1,2)"
+        ],
+        "current_source_ids": [
+          "q-72410"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "7431e8e9-d070-559a-a472-76f144c34c39",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "6c71e273-b7cf-5c85-aa7b-f7d8250d9748",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 1,
+        "submitted_answer_id": "61b2e046-855b-554a-ae47-83d5c40e20b2",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 1,
+        "submitted_answer_id": "7e6177c8-905a-5afe-aaee-0140adf05fab",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 2,
+        "submitted_answer_id": "be542230-159b-574b-b8c6-2d8520c63b99",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 2,
+        "submitted_answer_id": "0963091d-4255-5b12-a2da-1cbcc6e18a72",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 3,
+        "submitted_answer_id": "53d717aa-62ed-5836-9234-3b0bbc072ebe",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 3,
+        "submitted_answer_id": "88f05ccc-4192-5c3b-9cf5-17cdb6ebd952",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 4,
+        "submitted_answer_id": "e6af58cf-78a1-565a-9aed-0af7530cbb85",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 4,
+        "submitted_answer_id": "b63a35b5-65e7-5518-9bf9-7f47b1d8dc0e",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 5,
+        "submitted_answer_id": "bd0c84a4-924a-598a-bfb0-8a4721753a9d",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 5,
+        "submitted_answer_id": "84181adc-4740-56bf-b67a-fc18fb3282ca",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      }
+    ]
+  },
+  {
+    "label": "638eb9ae-09f8-5fce-b7bc-2aac37c3181f",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "638eb9ae-09f8-5fce-b7bc-2aac37c3181f",
+        ":question/problem": "At which points on the curve $8 x y + 2 y^{2}=16 x^{2} + 48$ is the tangent vector to the curve perpendicular to the vector $j$?\n\nSelect all that apply. If none apply, leave all boxes unchecked.\n\n- **I.** $(-1,-4)$\n- **II.** $(0,4)$\n- **III.** $(\\frac{1}{2},4)$\n- **IV.** $(1,0)$\n- **V.** $(1,2)$\n- **VI.** $(1,4)$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "75fee8ed-8c3c-5d8e-8885-59cd9a1a038b",
+            ":answer-field/key": "I",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "3d388d87-d497-5186-9585-832740c93638",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "359049d8-2b99-5751-bb03-ff9f055d1cd2",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "359049d8-2b99-5751-bb03-ff9f055d1cd2"
+            ]
+          },
+          {
+            ":answer-field/id": "e9e874dd-4e18-58ae-af29-7f29c7c49fd9",
+            ":answer-field/key": "II",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "92e10c0d-3823-528f-87a3-277e9336972f",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "d3cf240d-8708-5599-aca2-d261591ea7e6",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "92e10c0d-3823-528f-87a3-277e9336972f"
+            ]
+          },
+          {
+            ":answer-field/id": "31f0b4d9-85ff-5f7b-a017-2aaa76c4d97a",
+            ":answer-field/key": "III",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "f122121f-13ed-5d40-84a7-05ee73afda8c",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "9a081b4b-d2c2-54f6-ab72-e97e24330f29",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "f122121f-13ed-5d40-84a7-05ee73afda8c"
+            ]
+          },
+          {
+            ":answer-field/id": "6e022411-5a1d-5f6f-b21c-692fe3273ffb",
+            ":answer-field/key": "IV",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "757b6da9-9b20-587b-a837-d9980f40fc92",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "115aa2f4-a593-5d77-a880-a7ebe30e68ff",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "757b6da9-9b20-587b-a837-d9980f40fc92"
+            ]
+          },
+          {
+            ":answer-field/id": "770dec33-da36-590b-98e3-de009fe90cf3",
+            ":answer-field/key": "V",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "b7e67073-fb07-58a4-9874-e483c457ec81",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "f3aa9a94-d8a4-5840-ab7a-2800c7878b3a",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "b7e67073-fb07-58a4-9874-e483c457ec81"
+            ]
+          },
+          {
+            ":answer-field/id": "5ea2cb71-3f95-569a-91de-ff7ff0b18064",
+            ":answer-field/key": "VI",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "81ff8521-700c-5ba4-8fe0-3eb4a044c6cb",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "51d1e0d8-489d-5f8d-ac1f-733085c67b07",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "51d1e0d8-489d-5f8d-ac1f-733085c67b07"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}8 x y + 2 y^{2}&=16 x^{2} + 48\\\\- 16 x^{2} + 8 x y + 2 y^{2} - 48&=0\\end{aligned}$$\n\nIf we set $f(x,y)=- 16 x^{2} + 8 x y + 2 y^{2} - 48$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(- 16 x^{2} + 8 x y + 2 y^{2} - 48)\\,i-\\frac{\u2202}{\u2202x}(- 16 x^{2} + 8 x y + 2 y^{2} - 48)\\,j\\\\&=(8 x + 4 y)\\,i-(- 32 x + 8 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\32 x - 8 y&=0\\\\y&=4x\\end{aligned}$$\n\nSubstituting $y=4x$ into the equation of our curve gives:\n\n$$\\begin{aligned}2(4x)^{2}+8x(4x)-16x^{2}-48&=0\\\\48x^{2}-48&=0\\\\x^{2}&=1\\\\x&=\\pm 1\\end{aligned}$$\n\nFinally, the corresponding points are $(1,4)$ and $(-1,-4)$."
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.1.0",
+        "seed": 44,
+        "template": "symmetric_quadratic",
+        "profile": "current_coordinate_bank",
+        "parameters": {
+          "D": 2,
+          "m": 4,
+          "r": 1
+        },
+        "domain": {
+          "D": [
+            1,
+            3
+          ],
+          "m": [
+            2,
+            4
+          ],
+          "r": [
+            1,
+            4
+          ]
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-72410"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "authored_missing_level",
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "bank_recipes": [
+          "current source coordinate pattern 1",
+          "current source coordinate pattern 2",
+          "current source coordinate pattern 3",
+          "current source coordinate pattern 4",
+          "current source coordinate pattern 5",
+          "current source coordinate pattern 6"
+        ],
+        "content_hash": "c8556355eb5730b10ed0f9337b78f2691f19cc7fd7d04db420a95f1f8c1f9294",
+        "mathematical_fingerprint": "93513a988d3c484c4a817838d7c51874f66ae62546b2b9e27f243205b4284c0e",
+        "actual_points": [
+          [
+            "-1",
+            "-4"
+          ],
+          [
+            "1",
+            "4"
+          ]
+        ],
+        "operator_input": "-16*x**2 + 8*x*y + 2*y**2 - 48",
+        "Fx": "-32*x + 8*y",
+        "Fy": "8*x + 4*y",
+        "orthogonality": "32*x - 8*y",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6",
+        "coordinates": [
+          "(-1,-4)",
+          "(0,4)",
+          "(\\frac{1}{2},4)",
+          "(1,0)",
+          "(1,2)",
+          "(1,4)"
+        ],
+        "current_source_ids": [
+          "q-72410"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "3d388d87-d497-5186-9585-832740c93638",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "359049d8-2b99-5751-bb03-ff9f055d1cd2",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 1,
+        "submitted_answer_id": "92e10c0d-3823-528f-87a3-277e9336972f",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 1,
+        "submitted_answer_id": "d3cf240d-8708-5599-aca2-d261591ea7e6",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 2,
+        "submitted_answer_id": "f122121f-13ed-5d40-84a7-05ee73afda8c",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 2,
+        "submitted_answer_id": "9a081b4b-d2c2-54f6-ab72-e97e24330f29",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 3,
+        "submitted_answer_id": "757b6da9-9b20-587b-a837-d9980f40fc92",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 3,
+        "submitted_answer_id": "115aa2f4-a593-5d77-a880-a7ebe30e68ff",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 4,
+        "submitted_answer_id": "b7e67073-fb07-58a4-9874-e483c457ec81",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 4,
+        "submitted_answer_id": "f3aa9a94-d8a4-5840-ab7a-2800c7878b3a",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 5,
+        "submitted_answer_id": "81ff8521-700c-5ba4-8fe0-3eb4a044c6cb",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 5,
+        "submitted_answer_id": "51d1e0d8-489d-5f8d-ac1f-733085c67b07",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      }
+    ]
+  },
+  {
+    "label": "78c2c97e-96a2-5988-858b-c14219520408",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "78c2c97e-96a2-5988-858b-c14219520408",
+        ":question/problem": "At which points on the curve $x^{2} + 2 x y=7 y + 10$ is the tangent vector to the curve perpendicular to the vector $j$?\n\nSelect all that apply. If none apply, leave all boxes unchecked.\n\n- **I.** $(2,-5)$\n- **II.** $(2,-2)$\n- **III.** $(1,-2)$\n- **IV.** $(5,-5)$\n- **V.** $(5,-2)$\n- **VI.** $(-5,-5)$\n- **VII.** $(-2,2)$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "33408f28-10c6-547b-8f13-61a4bc4470a6",
+            ":answer-field/key": "I",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "08af404b-2010-5926-9e9a-a4bf276bb458",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "8a45d6e4-acfd-5611-8b7b-0e3ee2cbf3af",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "08af404b-2010-5926-9e9a-a4bf276bb458"
+            ]
+          },
+          {
+            ":answer-field/id": "2192d885-d0f9-5891-ab0f-b1c37c266c97",
+            ":answer-field/key": "II",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "132a1cf9-210d-5470-98b4-22ada484dd38",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "3d88c502-a372-510b-bbf9-bc094c1d2529",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "3d88c502-a372-510b-bbf9-bc094c1d2529"
+            ]
+          },
+          {
+            ":answer-field/id": "7671c574-ddd2-5343-809c-f4d82cab7313",
+            ":answer-field/key": "III",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "a1829372-6e25-516b-8fdf-b5aa651b0bdc",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "1935350c-fbbb-50e4-ae1c-1090d239d35b",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "a1829372-6e25-516b-8fdf-b5aa651b0bdc"
+            ]
+          },
+          {
+            ":answer-field/id": "80f08ede-8263-5a86-97b7-854c19dbc19a",
+            ":answer-field/key": "IV",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "cb665ebb-94b1-53b3-9df1-4b179e26497e",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "526bc04d-6a3a-59c2-bb09-f0ceb60f268a",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "526bc04d-6a3a-59c2-bb09-f0ceb60f268a"
+            ]
+          },
+          {
+            ":answer-field/id": "82735cd1-8288-530a-a19c-57d5016a0f09",
+            ":answer-field/key": "V",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "3224920c-78d9-5724-b1b3-0e0a3d176f4a",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "1f7b79d6-d778-579b-9eb1-5073f1b16bbb",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "3224920c-78d9-5724-b1b3-0e0a3d176f4a"
+            ]
+          },
+          {
+            ":answer-field/id": "0e04234f-294c-50e6-bc81-e705893703ba",
+            ":answer-field/key": "VI",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "2f387a60-00b0-5656-b7e7-c387b190a5f7",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "9f645ea5-15f5-502d-8fd5-f418ba51c29f",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "2f387a60-00b0-5656-b7e7-c387b190a5f7"
+            ]
+          },
+          {
+            ":answer-field/id": "f8c205f0-b9e9-5b42-bbb7-f813444070d9",
+            ":answer-field/key": "VII",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "2cf63e7a-1f2a-5867-a232-d9e827a32abf",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "36072adf-f7f9-5d4a-9f37-0b767d96581e",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "2cf63e7a-1f2a-5867-a232-d9e827a32abf"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}x^{2} + 2 x y&=7 y + 10\\\\x^{2} + 2 x y - 7 y - 10&=0\\end{aligned}$$\n\nIf we set $f(x,y)=x^{2} + 2 x y - 7 y - 10$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(x^{2} + 2 x y - 7 y - 10)\\,i-\\frac{\u2202}{\u2202x}(x^{2} + 2 x y - 7 y - 10)\\,j\\\\&=(2 x - 7)\\,i-(2 x + 2 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\- 2 x - 2 y&=0\\\\x&=-y\\end{aligned}$$\n\nSubstituting $x=-y$ into the equation of our curve gives:\n\n$$\\begin{aligned}(-y)^{2}+2(-y)y+(-7)y-(10)&=0\\\\-y^{2}+(-7)y-(10)&=0\\\\y^{2}-(-7)y+(10)&=0\\\\(y-(-5))(y-(-2))&=0\\\\y&=-5\\text{ or }-2\\end{aligned}$$\n\nFinally, the corresponding points are $(5,-5)$ and $(2,-2)$."
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.1.0",
+        "seed": 23,
+        "template": "factor_quadratic",
+        "profile": "current_coordinate_bank",
+        "parameters": {
+          "a": -5,
+          "b": -2
+        },
+        "domain": {
+          "a": [
+            -6,
+            6
+          ],
+          "b": [
+            -6,
+            6
+          ],
+          "nonzero": true,
+          "a_less_b": true,
+          "a_plus_b_nonzero": true
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-72440"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "authored_bank_same_observed_hard_method",
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "bank_recipes": [
+          "current source coordinate pattern 1",
+          "current source coordinate pattern 2",
+          "current source coordinate pattern 3",
+          "current source coordinate pattern 4",
+          "current source coordinate pattern 5",
+          "current source coordinate pattern 6",
+          "current source coordinate pattern 7"
+        ],
+        "content_hash": "2793934359efbddb2b80adac6a4e70a6100e907065397d11497a504dc076013d",
+        "mathematical_fingerprint": "941dcc568301483ffb7cb82b065eaebd1f6f34e58e6cf5a628301dcfa5c6db64",
+        "actual_points": [
+          [
+            "2",
+            "-2"
+          ],
+          [
+            "5",
+            "-5"
+          ]
+        ],
+        "operator_input": "x**2 + 2*x*y - 7*y - 10",
+        "Fx": "2*x + 2*y",
+        "Fy": "2*x - 7",
+        "orthogonality": "-2*x - 2*y",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6",
+        "coordinates": [
+          "(2,-5)",
+          "(2,-2)",
+          "(1,-2)",
+          "(5,-5)",
+          "(5,-2)",
+          "(-5,-5)",
+          "(-2,2)"
+        ],
+        "current_source_ids": [
+          "q-72440"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "08af404b-2010-5926-9e9a-a4bf276bb458",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "8a45d6e4-acfd-5611-8b7b-0e3ee2cbf3af",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 1,
+        "submitted_answer_id": "132a1cf9-210d-5470-98b4-22ada484dd38",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 1,
+        "submitted_answer_id": "3d88c502-a372-510b-bbf9-bc094c1d2529",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 2,
+        "submitted_answer_id": "a1829372-6e25-516b-8fdf-b5aa651b0bdc",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 2,
+        "submitted_answer_id": "1935350c-fbbb-50e4-ae1c-1090d239d35b",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 3,
+        "submitted_answer_id": "cb665ebb-94b1-53b3-9df1-4b179e26497e",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 3,
+        "submitted_answer_id": "526bc04d-6a3a-59c2-bb09-f0ceb60f268a",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 4,
+        "submitted_answer_id": "3224920c-78d9-5724-b1b3-0e0a3d176f4a",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 4,
+        "submitted_answer_id": "1f7b79d6-d778-579b-9eb1-5073f1b16bbb",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 5,
+        "submitted_answer_id": "2f387a60-00b0-5656-b7e7-c387b190a5f7",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 5,
+        "submitted_answer_id": "9f645ea5-15f5-502d-8fd5-f418ba51c29f",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 6,
+        "submitted_answer_id": "2cf63e7a-1f2a-5867-a232-d9e827a32abf",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 6,
+        "submitted_answer_id": "36072adf-f7f9-5d4a-9f37-0b767d96581e",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      }
+    ]
+  },
+  {
+    "label": "fd522a3e-ce03-5652-acaa-708366cf408f",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124456,
+        "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+        "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+      },
+      "question": {
+        ":question/id": "fd522a3e-ce03-5652-acaa-708366cf408f",
+        ":question/problem": "At which points on the curve $x^{2} + 2 x y=3 - 4 y$ is the tangent vector to the curve perpendicular to the vector $j$?\n\nSelect all that apply. If none apply, leave all boxes unchecked.\n\n- **I.** $(-3,1)$\n- **II.** $(-3,3)$\n- **III.** $(- \\frac{3}{2},3)$\n- **IV.** $(-1,1)$\n- **V.** $(-1,3)$\n- **VI.** $(1,1)$\n- **VII.** $(3,-3)$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "34c76762-89fb-5629-835e-54bee13f406e",
+            ":answer-field/key": "I",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "935ff75f-1c32-579e-b76f-1861f4f19619",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "3bce5a3c-20b1-5b4d-8fd4-4f65e15a43ed",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "935ff75f-1c32-579e-b76f-1861f4f19619"
+            ]
+          },
+          {
+            ":answer-field/id": "f0460423-17fe-5b6d-b02b-3f473c6fda08",
+            ":answer-field/key": "II",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "2c5745b3-a150-5511-9e86-64048e37fed3",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "5b9b4d0e-dd5d-55f1-9bd0-a96feb5d54cb",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "5b9b4d0e-dd5d-55f1-9bd0-a96feb5d54cb"
+            ]
+          },
+          {
+            ":answer-field/id": "adc5a858-7275-5cb5-8277-d1c8454a199b",
+            ":answer-field/key": "III",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "900b2cab-b529-5a68-91e2-752793ab3aea",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "2c9e182f-4e33-5d0e-9086-3da9b0007be0",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "900b2cab-b529-5a68-91e2-752793ab3aea"
+            ]
+          },
+          {
+            ":answer-field/id": "5fcfc855-c6d6-5771-8f8c-efd90a26de49",
+            ":answer-field/key": "IV",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "9cd06cd9-f7ac-555c-aa0f-7c29ccf4b1cb",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "6494dc37-5f96-5bfa-9d57-128de29f8a15",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "6494dc37-5f96-5bfa-9d57-128de29f8a15"
+            ]
+          },
+          {
+            ":answer-field/id": "e7bf6980-58c1-5b6a-ad77-81f85d939e48",
+            ":answer-field/key": "V",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "dc33d9eb-e382-5796-8919-8f252df3c77c",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "05f495e5-ef88-5aae-8378-5ab2f0539bc6",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "dc33d9eb-e382-5796-8919-8f252df3c77c"
+            ]
+          },
+          {
+            ":answer-field/id": "17cc3ebf-0874-536f-8379-358d4318358d",
+            ":answer-field/key": "VI",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "bece2b5e-9ee1-51b3-9bba-70b19a4d5f92",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "e8acadc6-bbcd-5a0a-90b0-6f59dfc6aa4f",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "bece2b5e-9ee1-51b3-9bba-70b19a4d5f92"
+            ]
+          },
+          {
+            ":answer-field/id": "96b5cf37-2738-5fd6-b12e-4153c72ad064",
+            ":answer-field/key": "VII",
+            ":answer-field/type": ":answer-field.type/checkbox",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "2f4983d7-274e-5924-9983-e5e916fc21ae",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "false"
+              },
+              {
+                ":answer/id": "97737ef3-d892-559c-9ed7-f96116e41cdb",
+                ":answer/type": ":answer.type/text",
+                ":answer/value": "true"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "2f4983d7-274e-5924-9983-e5e916fc21ae"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}x^{2} + 2 x y&=3 - 4 y\\\\x^{2} + 2 x y + 4 y - 3&=0\\end{aligned}$$\n\nIf we set $f(x,y)=x^{2} + 2 x y + 4 y - 3$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(x^{2} + 2 x y + 4 y - 3)\\,i-\\frac{\u2202}{\u2202x}(x^{2} + 2 x y + 4 y - 3)\\,j\\\\&=(2 x + 4)\\,i-(2 x + 2 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\- 2 x - 2 y&=0\\\\x&=-y\\end{aligned}$$\n\nSubstituting $x=-y$ into the equation of our curve gives:\n\n$$\\begin{aligned}(-y)^{2}+2(-y)y+(4)y-(3)&=0\\\\-y^{2}+(4)y-(3)&=0\\\\y^{2}-(4)y+(3)&=0\\\\(y-(1))(y-(3))&=0\\\\y&=1\\text{ or }3\\end{aligned}$$\n\nFinally, the corresponding points are $(-1,1)$ and $(-3,3)$."
+      },
+      "generation": {
+        "version": "tangent-perpendicular-1.1.0",
+        "seed": 44,
+        "template": "factor_quadratic",
+        "profile": "current_coordinate_bank",
+        "parameters": {
+          "a": 1,
+          "b": 3
+        },
+        "domain": {
+          "a": [
+            -6,
+            6
+          ],
+          "b": [
+            -6,
+            6
+          ],
+          "nonzero": true,
+          "a_less_b": true,
+          "a_plus_b_nonzero": true
+        },
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-72440"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "origin": "authored_bank_same_observed_hard_method",
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "bank_recipes": [
+          "current source coordinate pattern 1",
+          "current source coordinate pattern 2",
+          "current source coordinate pattern 3",
+          "current source coordinate pattern 4",
+          "current source coordinate pattern 5",
+          "current source coordinate pattern 6",
+          "current source coordinate pattern 7"
+        ],
+        "content_hash": "3a6dd638c9679c5f1874a0ccc7455d6e6ac58496c36b7c6853b59a82e905abe9",
+        "mathematical_fingerprint": "1664c09c9aa7059d8a3d17d3c18194fb95c04e499c4522a71a5138eec93b2bc6",
+        "actual_points": [
+          [
+            "-1",
+            "1"
+          ],
+          [
+            "-3",
+            "3"
+          ]
+        ],
+        "operator_input": "x**2 + 2*x*y + 4*y - 3",
+        "Fx": "2*x + 2*y",
+        "Fy": "2*x + 4",
+        "orthogonality": "-2*x - 2*y",
+        "regular_curve": true,
+        "nonzero_given_vector": true,
+        "curve_domain": [
+          "real x,y; retain regular curve points"
+        ],
+        "assumptions": [
+          "given vector is nonzero",
+          "tangent vector is nonzero at every included point"
+        ],
+        "coefficient_domain": "EX; complete-bank coefficients included",
+        "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6",
+        "coordinates": [
+          "(-3,1)",
+          "(-3,3)",
+          "(- \\frac{3}{2},3)",
+          "(-1,1)",
+          "(-1,3)",
+          "(1,1)",
+          "(3,-3)"
+        ],
+        "current_source_ids": [
+          "q-72440"
+        ]
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "935ff75f-1c32-579e-b76f-1861f4f19619",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "3bce5a3c-20b1-5b4d-8fd4-4f65e15a43ed",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 1,
+        "submitted_answer_id": "2c5745b3-a150-5511-9e86-64048e37fed3",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 1,
+        "submitted_answer_id": "5b9b4d0e-dd5d-55f1-9bd0-a96feb5d54cb",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 2,
+        "submitted_answer_id": "900b2cab-b529-5a68-91e2-752793ab3aea",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 2,
+        "submitted_answer_id": "2c9e182f-4e33-5d0e-9086-3da9b0007be0",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 3,
+        "submitted_answer_id": "9cd06cd9-f7ac-555c-aa0f-7c29ccf4b1cb",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 3,
+        "submitted_answer_id": "6494dc37-5f96-5bfa-9d57-128de29f8a15",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 4,
+        "submitted_answer_id": "dc33d9eb-e382-5796-8919-8f252df3c77c",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 4,
+        "submitted_answer_id": "05f495e5-ef88-5aae-8378-5ab2f0539bc6",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 5,
+        "submitted_answer_id": "bece2b5e-9ee1-51b3-9bba-70b19a4d5f92",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 5,
+        "submitted_answer_id": "e8acadc6-bbcd-5a0a-90b0-6f59dfc6aa4f",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 6,
+        "submitted_answer_id": "2f4983d7-274e-5924-9983-e5e916fc21ae",
+        "expected": "accepted",
+        "purpose": "every checkbox Boolean or radio selection"
+      },
+      {
+        "field_index": 6,
+        "submitted_answer_id": "97737ef3-d892-559c-9ed7-f96116e41cdb",
+        "expected": "rejected",
+        "purpose": "every checkbox Boolean or radio selection"
+      }
+    ]
+  }
+]

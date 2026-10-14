@@ -1,0 +1,1747 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186124456,
+      "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+      "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+    },
+    "question": {
+      ":question/id": "0e539d3d-4951-53af-94a7-c8aeb37adea8",
+      ":question/problem": "At which point on the curve $8 x y + 4 y^{2}=- 4 x^{2} + 2 y + 2$ is the tangent vector to the curve perpendicular to the vector $j$?",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "2b54fca1-5f4f-5f7a-ac16-b56cb534ed89",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0963e65c-d280-54c5-8d17-93cf19eca363",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(1,0)$ only"
+            },
+            {
+              ":answer/id": "4d7bc285-d4bb-52bd-b477-8eb6442fca3b",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(-1,1)$ only"
+            },
+            {
+              ":answer/id": "613efcec-87ab-524f-80ad-5c6c7ea407fa",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(1,1)$ only"
+            },
+            {
+              ":answer/id": "49c63c1d-850a-5467-bc9f-8d6c96a23564",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(1,-1)$ only"
+            },
+            {
+              ":answer/id": "07a4137d-ddb6-53e9-8eba-31dd118da976",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(2,-2)$ only"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "49c63c1d-850a-5467-bc9f-8d6c96a23564"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}8 x y + 4 y^{2}&=- 4 x^{2} + 2 y + 2\\\\4 x^{2} + 8 x y + 4 y^{2} - 2 y - 2&=0\\end{aligned}$$\n\nIf we set $f(x,y)=4 x^{2} + 8 x y + 4 y^{2} - 2 y - 2$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(4 x^{2} + 8 x y + 4 y^{2} - 2 y - 2)\\,i-\\frac{\u2202}{\u2202x}(4 x^{2} + 8 x y + 4 y^{2} - 2 y - 2)\\,j\\\\&=(8 x + 8 y - 2)\\,i-(8 x + 8 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\- 8 x - 8 y&=0\\\\y&=-x\\end{aligned}$$\n\nSubstituting $y=-x$ into the equation of our curve gives:\n\n$$\\begin{aligned}4(x+(-x))^{2}-2(-x)-(2)&=0\\\\2x-(2)&=0\\\\2x&=2\\\\x&=1\\end{aligned}$$\n\nFinally, the corresponding point is $(1,-1)$."
+    },
+    "generation": {
+      "version": "tangent-perpendicular-1.1.0",
+      "seed": 1000,
+      "template": "canonical_linear",
+      "profile": "authored_method_bank",
+      "parameters": {
+        "A": 4,
+        "b": 2,
+        "r": 1
+      },
+      "domain": {
+        "A": [
+          1,
+          4
+        ],
+        "b": [
+          2,
+          5
+        ],
+        "r": [
+          -6,
+          6
+        ],
+        "r_nonzero": true
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [
+        "e-3364"
+      ],
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "origin": "authored_missing_level",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "bank_recipes": [
+        "solve",
+        "wrong_relation_sign",
+        "wrong_x_sign",
+        "omit_division_b",
+        "omit_y_substitution"
+      ],
+      "content_hash": "6f35e0114bd0f6f2117c10a3aabf1c8f11ad10c1ddf18ed6faa321faa7a3723b",
+      "mathematical_fingerprint": "dc61b2400fb20a530f639a2d3d6fca34b13887a13723597bf26f02479de49254",
+      "actual_points": [
+        [
+          "1",
+          "-1"
+        ]
+      ],
+      "operator_input": "4*x**2 + 8*x*y + 4*y**2 - 2*y - 2",
+      "Fx": "8*x + 8*y",
+      "Fy": "8*x + 8*y - 2",
+      "orthogonality": "-8*x - 8*y",
+      "regular_curve": true,
+      "nonzero_given_vector": true,
+      "curve_domain": [
+        "real x,y; retain regular curve points"
+      ],
+      "assumptions": [
+        "given vector is nonzero",
+        "tangent vector is nonzero at every included point"
+      ],
+      "coefficient_domain": "EX; complete-bank coefficients included",
+      "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186124456,
+      "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+      "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+    },
+    "question": {
+      ":question/id": "e7a17a4a-d80f-51f1-afa6-1faeaa5943f8",
+      ":question/problem": "At which point on the curve $2 x y + y^{2}=- x^{2} + 3 y - 15$ is the tangent vector to the curve perpendicular to the vector $j$?",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "a368d38c-2b11-5487-a14f-a13efc2b6541",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "912504b1-f9c3-5d19-8f90-fc428ccbb006",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(5,-5)$ only"
+            },
+            {
+              ":answer/id": "ae59b4c0-93bd-5c71-bcd3-142c6d6eb995",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(-15,15)$ only"
+            },
+            {
+              ":answer/id": "ccac1d60-6b01-5598-82a2-30b9d00efbf6",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(-5,0)$ only"
+            },
+            {
+              ":answer/id": "3c9640d8-fe2b-5a2c-9bf2-1921afc58809",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(-5,-5)$ only"
+            },
+            {
+              ":answer/id": "2c751557-77e8-5772-8224-bcd8b52ba3c6",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(-5,5)$ only"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2c751557-77e8-5772-8224-bcd8b52ba3c6"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}2 x y + y^{2}&=- x^{2} + 3 y - 15\\\\x^{2} + 2 x y + y^{2} - 3 y + 15&=0\\end{aligned}$$\n\nIf we set $f(x,y)=x^{2} + 2 x y + y^{2} - 3 y + 15$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(x^{2} + 2 x y + y^{2} - 3 y + 15)\\,i-\\frac{\u2202}{\u2202x}(x^{2} + 2 x y + y^{2} - 3 y + 15)\\,j\\\\&=(2 x + 2 y - 3)\\,i-(2 x + 2 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\- 2 x - 2 y&=0\\\\y&=-x\\end{aligned}$$\n\nSubstituting $y=-x$ into the equation of our curve gives:\n\n$$\\begin{aligned}1(x+(-x))^{2}-3(-x)-(-15)&=0\\\\3x-(-15)&=0\\\\3x&=-15\\\\x&=-5\\end{aligned}$$\n\nFinally, the corresponding point is $(-5,5)$."
+    },
+    "generation": {
+      "version": "tangent-perpendicular-1.1.0",
+      "seed": 1001,
+      "template": "canonical_linear",
+      "profile": "authored_method_bank",
+      "parameters": {
+        "A": 1,
+        "b": 3,
+        "r": -5
+      },
+      "domain": {
+        "A": [
+          1,
+          4
+        ],
+        "b": [
+          2,
+          5
+        ],
+        "r": [
+          -6,
+          6
+        ],
+        "r_nonzero": true
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [
+        "e-3364"
+      ],
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "origin": "authored_missing_level",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "bank_recipes": [
+        "solve",
+        "wrong_relation_sign",
+        "wrong_x_sign",
+        "omit_division_b",
+        "omit_y_substitution"
+      ],
+      "content_hash": "bf09b5cae74e5e5c7694c324bc029281a19023ff91aed5d54b90b4991b331cd6",
+      "mathematical_fingerprint": "1c2efbb387e793b0f2e2140a2dd58c01f1cfee152abe4f26cf4acb8cfd92d28c",
+      "actual_points": [
+        [
+          "-5",
+          "5"
+        ]
+      ],
+      "operator_input": "x**2 + 2*x*y + y**2 - 3*y + 15",
+      "Fx": "2*x + 2*y",
+      "Fy": "2*x + 2*y - 3",
+      "orthogonality": "-2*x - 2*y",
+      "regular_curve": true,
+      "nonzero_given_vector": true,
+      "curve_domain": [
+        "real x,y; retain regular curve points"
+      ],
+      "assumptions": [
+        "given vector is nonzero",
+        "tangent vector is nonzero at every included point"
+      ],
+      "coefficient_domain": "EX; complete-bank coefficients included",
+      "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186124456,
+      "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+      "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+    },
+    "question": {
+      ":question/id": "714feb07-8211-5226-a523-87577689d617",
+      ":question/problem": "At which point on the curve $8 x y + 4 y^{2}=- 4 x^{2} + 3 y - 12$ is the tangent vector to the curve perpendicular to the vector $j$?",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "2283f6dd-22a1-5e6f-b61e-5ea5da67f7c6",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "6b1fa8ea-2503-52d0-b202-c7610a2fcdaa",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(-4,-4)$ only"
+            },
+            {
+              ":answer/id": "1a57fa11-825b-5d72-897b-0173f47e260f",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(4,-4)$ only"
+            },
+            {
+              ":answer/id": "2165a269-3f7c-5aba-b78b-82d4e0f644ec",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(-4,4)$ only"
+            },
+            {
+              ":answer/id": "d2ccf363-a0bd-5a86-90cc-34fb5f55c5a9",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(-12,12)$ only"
+            },
+            {
+              ":answer/id": "55c4f24c-6643-5605-81fb-7978b6d363b7",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(-4,0)$ only"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2165a269-3f7c-5aba-b78b-82d4e0f644ec"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}8 x y + 4 y^{2}&=- 4 x^{2} + 3 y - 12\\\\4 x^{2} + 8 x y + 4 y^{2} - 3 y + 12&=0\\end{aligned}$$\n\nIf we set $f(x,y)=4 x^{2} + 8 x y + 4 y^{2} - 3 y + 12$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(4 x^{2} + 8 x y + 4 y^{2} - 3 y + 12)\\,i-\\frac{\u2202}{\u2202x}(4 x^{2} + 8 x y + 4 y^{2} - 3 y + 12)\\,j\\\\&=(8 x + 8 y - 3)\\,i-(8 x + 8 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\- 8 x - 8 y&=0\\\\y&=-x\\end{aligned}$$\n\nSubstituting $y=-x$ into the equation of our curve gives:\n\n$$\\begin{aligned}4(x+(-x))^{2}-3(-x)-(-12)&=0\\\\3x-(-12)&=0\\\\3x&=-12\\\\x&=-4\\end{aligned}$$\n\nFinally, the corresponding point is $(-4,4)$."
+    },
+    "generation": {
+      "version": "tangent-perpendicular-1.1.0",
+      "seed": 1002,
+      "template": "canonical_linear",
+      "profile": "authored_method_bank",
+      "parameters": {
+        "A": 4,
+        "b": 3,
+        "r": -4
+      },
+      "domain": {
+        "A": [
+          1,
+          4
+        ],
+        "b": [
+          2,
+          5
+        ],
+        "r": [
+          -6,
+          6
+        ],
+        "r_nonzero": true
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [
+        "e-3364"
+      ],
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "origin": "authored_missing_level",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "bank_recipes": [
+        "solve",
+        "wrong_relation_sign",
+        "wrong_x_sign",
+        "omit_division_b",
+        "omit_y_substitution"
+      ],
+      "content_hash": "c86b4ad2efb977bf2bef027989b8b099e03b0318d2fa2faaa24b286cbcdcede4",
+      "mathematical_fingerprint": "e9fe10714aef37abbd90604a49be93011fb8f7fefa3c4777c048e5dc3eb6e311",
+      "actual_points": [
+        [
+          "-4",
+          "4"
+        ]
+      ],
+      "operator_input": "4*x**2 + 8*x*y + 4*y**2 - 3*y + 12",
+      "Fx": "8*x + 8*y",
+      "Fy": "8*x + 8*y - 3",
+      "orthogonality": "-8*x - 8*y",
+      "regular_curve": true,
+      "nonzero_given_vector": true,
+      "curve_domain": [
+        "real x,y; retain regular curve points"
+      ],
+      "assumptions": [
+        "given vector is nonzero",
+        "tangent vector is nonzero at every included point"
+      ],
+      "coefficient_domain": "EX; complete-bank coefficients included",
+      "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186124456,
+      "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+      "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+    },
+    "question": {
+      ":question/id": "a3e58fdb-d0b9-56b1-bc61-4cc0137e18be",
+      ":question/problem": "At which point on the curve $8 x y + 4 y^{2}=- 4 x^{2} + 4 y - 12$ is the tangent vector to the curve perpendicular to the vector $j$?",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ac6736fd-7e64-5c2d-8cf8-ffbe9d4a8da2",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "fb340755-5a6e-525b-9533-8be7ec844986",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(-3,0)$ only"
+            },
+            {
+              ":answer/id": "9f7e2fdc-5342-51c3-9ca1-bc037dcd0169",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(-3,-3)$ only"
+            },
+            {
+              ":answer/id": "aeabbe9c-35f7-56c8-9956-5f4b302d43d0",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(-3,3)$ only"
+            },
+            {
+              ":answer/id": "36239cce-902e-52a9-b49c-e42a6bc1c132",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(3,-3)$ only"
+            },
+            {
+              ":answer/id": "67333ad8-5fc4-5f22-abf5-77c6242dbc74",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(-12,12)$ only"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "aeabbe9c-35f7-56c8-9956-5f4b302d43d0"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}8 x y + 4 y^{2}&=- 4 x^{2} + 4 y - 12\\\\4 x^{2} + 8 x y + 4 y^{2} - 4 y + 12&=0\\end{aligned}$$\n\nIf we set $f(x,y)=4 x^{2} + 8 x y + 4 y^{2} - 4 y + 12$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(4 x^{2} + 8 x y + 4 y^{2} - 4 y + 12)\\,i-\\frac{\u2202}{\u2202x}(4 x^{2} + 8 x y + 4 y^{2} - 4 y + 12)\\,j\\\\&=(8 x + 8 y - 4)\\,i-(8 x + 8 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\- 8 x - 8 y&=0\\\\y&=-x\\end{aligned}$$\n\nSubstituting $y=-x$ into the equation of our curve gives:\n\n$$\\begin{aligned}4(x+(-x))^{2}-4(-x)-(-12)&=0\\\\4x-(-12)&=0\\\\4x&=-12\\\\x&=-3\\end{aligned}$$\n\nFinally, the corresponding point is $(-3,3)$."
+    },
+    "generation": {
+      "version": "tangent-perpendicular-1.1.0",
+      "seed": 1003,
+      "template": "canonical_linear",
+      "profile": "authored_method_bank",
+      "parameters": {
+        "A": 4,
+        "b": 4,
+        "r": -3
+      },
+      "domain": {
+        "A": [
+          1,
+          4
+        ],
+        "b": [
+          2,
+          5
+        ],
+        "r": [
+          -6,
+          6
+        ],
+        "r_nonzero": true
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [
+        "e-3364"
+      ],
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "origin": "authored_missing_level",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "bank_recipes": [
+        "solve",
+        "wrong_relation_sign",
+        "wrong_x_sign",
+        "omit_division_b",
+        "omit_y_substitution"
+      ],
+      "content_hash": "2cce9854051ad401c1ce4dc44de922e1479ce286f494dff9f92b3ff87b2a5351",
+      "mathematical_fingerprint": "268abae11bf7dcafb4fac8e8055c28ce23ab8e004f8de59909203c36eda57d02",
+      "actual_points": [
+        [
+          "-3",
+          "3"
+        ]
+      ],
+      "operator_input": "4*x**2 + 8*x*y + 4*y**2 - 4*y + 12",
+      "Fx": "8*x + 8*y",
+      "Fy": "8*x + 8*y - 4",
+      "orthogonality": "-8*x - 8*y",
+      "regular_curve": true,
+      "nonzero_given_vector": true,
+      "curve_domain": [
+        "real x,y; retain regular curve points"
+      ],
+      "assumptions": [
+        "given vector is nonzero",
+        "tangent vector is nonzero at every included point"
+      ],
+      "coefficient_domain": "EX; complete-bank coefficients included",
+      "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186124456,
+      "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+      "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+    },
+    "question": {
+      ":question/id": "76dd91ba-d91e-5c6c-a612-22de10fca4c2",
+      ":question/problem": "At which point on the curve $8 x y + 4 y^{2}=- 4 x^{2} + 2 y + 12$ is the tangent vector to the curve perpendicular to the vector $j$?",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "ef88e170-4022-53af-bd77-e7b6f6076c55",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5564689e-d3ce-5a9f-a719-7eb39d492591",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(6,6)$ only"
+            },
+            {
+              ":answer/id": "9771a166-dec6-517f-84ff-1a74c2c15214",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(6,0)$ only"
+            },
+            {
+              ":answer/id": "c971a363-ecc3-50ee-89d0-484b756504a1",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(-6,6)$ only"
+            },
+            {
+              ":answer/id": "4d04ae77-6226-5ce7-885b-f80ba15e2fbe",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(6,-6)$ only"
+            },
+            {
+              ":answer/id": "0fca5786-6f95-5edc-89d7-025c97273124",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$(12,-12)$ only"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4d04ae77-6226-5ce7-885b-f80ba15e2fbe"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}8 x y + 4 y^{2}&=- 4 x^{2} + 2 y + 12\\\\4 x^{2} + 8 x y + 4 y^{2} - 2 y - 12&=0\\end{aligned}$$\n\nIf we set $f(x,y)=4 x^{2} + 8 x y + 4 y^{2} - 2 y - 12$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(4 x^{2} + 8 x y + 4 y^{2} - 2 y - 12)\\,i-\\frac{\u2202}{\u2202x}(4 x^{2} + 8 x y + 4 y^{2} - 2 y - 12)\\,j\\\\&=(8 x + 8 y - 2)\\,i-(8 x + 8 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\- 8 x - 8 y&=0\\\\y&=-x\\end{aligned}$$\n\nSubstituting $y=-x$ into the equation of our curve gives:\n\n$$\\begin{aligned}4(x+(-x))^{2}-2(-x)-(12)&=0\\\\2x-(12)&=0\\\\2x&=12\\\\x&=6\\end{aligned}$$\n\nFinally, the corresponding point is $(6,-6)$."
+    },
+    "generation": {
+      "version": "tangent-perpendicular-1.1.0",
+      "seed": 1004,
+      "template": "canonical_linear",
+      "profile": "authored_method_bank",
+      "parameters": {
+        "A": 4,
+        "b": 2,
+        "r": 6
+      },
+      "domain": {
+        "A": [
+          1,
+          4
+        ],
+        "b": [
+          2,
+          5
+        ],
+        "r": [
+          -6,
+          6
+        ],
+        "r_nonzero": true
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [
+        "e-3364"
+      ],
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "origin": "authored_missing_level",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "bank_recipes": [
+        "solve",
+        "wrong_relation_sign",
+        "wrong_x_sign",
+        "omit_division_b",
+        "omit_y_substitution"
+      ],
+      "content_hash": "84c22434c108fae6360695c6f4dbfad9f20ab8b1dc08db2a40c9b5324829e603",
+      "mathematical_fingerprint": "e8c2eec052e03c90b656dcc2433929946a7799d65fc6a06838207ac75a0130ae",
+      "actual_points": [
+        [
+          "6",
+          "-6"
+        ]
+      ],
+      "operator_input": "4*x**2 + 8*x*y + 4*y**2 - 2*y - 12",
+      "Fx": "8*x + 8*y",
+      "Fy": "8*x + 8*y - 2",
+      "orthogonality": "-8*x - 8*y",
+      "regular_curve": true,
+      "nonzero_given_vector": true,
+      "curve_domain": [
+        "real x,y; retain regular curve points"
+      ],
+      "assumptions": [
+        "given vector is nonzero",
+        "tangent vector is nonzero at every included point"
+      ],
+      "coefficient_domain": "EX; complete-bank coefficients included",
+      "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186124456,
+      "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+      "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+    },
+    "question": {
+      ":question/id": "638eb9ae-09f8-5fce-b7bc-2aac37c3181f",
+      ":question/problem": "At which points on the curve $8 x y + 2 y^{2}=16 x^{2} + 48$ is the tangent vector to the curve perpendicular to the vector $j$?\n\nSelect all that apply. If none apply, leave all boxes unchecked.\n\n- **I.** $(-1,-4)$\n- **II.** $(0,4)$\n- **III.** $(\\frac{1}{2},4)$\n- **IV.** $(1,0)$\n- **V.** $(1,2)$\n- **VI.** $(1,4)$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "75fee8ed-8c3c-5d8e-8885-59cd9a1a038b",
+          ":answer-field/key": "I",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "3d388d87-d497-5186-9585-832740c93638",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "359049d8-2b99-5751-bb03-ff9f055d1cd2",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "359049d8-2b99-5751-bb03-ff9f055d1cd2"
+          ]
+        },
+        {
+          ":answer-field/id": "e9e874dd-4e18-58ae-af29-7f29c7c49fd9",
+          ":answer-field/key": "II",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "92e10c0d-3823-528f-87a3-277e9336972f",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "d3cf240d-8708-5599-aca2-d261591ea7e6",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "92e10c0d-3823-528f-87a3-277e9336972f"
+          ]
+        },
+        {
+          ":answer-field/id": "31f0b4d9-85ff-5f7b-a017-2aaa76c4d97a",
+          ":answer-field/key": "III",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f122121f-13ed-5d40-84a7-05ee73afda8c",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "9a081b4b-d2c2-54f6-ab72-e97e24330f29",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f122121f-13ed-5d40-84a7-05ee73afda8c"
+          ]
+        },
+        {
+          ":answer-field/id": "6e022411-5a1d-5f6f-b21c-692fe3273ffb",
+          ":answer-field/key": "IV",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "757b6da9-9b20-587b-a837-d9980f40fc92",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "115aa2f4-a593-5d77-a880-a7ebe30e68ff",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "757b6da9-9b20-587b-a837-d9980f40fc92"
+          ]
+        },
+        {
+          ":answer-field/id": "770dec33-da36-590b-98e3-de009fe90cf3",
+          ":answer-field/key": "V",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "b7e67073-fb07-58a4-9874-e483c457ec81",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "f3aa9a94-d8a4-5840-ab7a-2800c7878b3a",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "b7e67073-fb07-58a4-9874-e483c457ec81"
+          ]
+        },
+        {
+          ":answer-field/id": "5ea2cb71-3f95-569a-91de-ff7ff0b18064",
+          ":answer-field/key": "VI",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "81ff8521-700c-5ba4-8fe0-3eb4a044c6cb",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "51d1e0d8-489d-5f8d-ac1f-733085c67b07",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "51d1e0d8-489d-5f8d-ac1f-733085c67b07"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}8 x y + 2 y^{2}&=16 x^{2} + 48\\\\- 16 x^{2} + 8 x y + 2 y^{2} - 48&=0\\end{aligned}$$\n\nIf we set $f(x,y)=- 16 x^{2} + 8 x y + 2 y^{2} - 48$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(- 16 x^{2} + 8 x y + 2 y^{2} - 48)\\,i-\\frac{\u2202}{\u2202x}(- 16 x^{2} + 8 x y + 2 y^{2} - 48)\\,j\\\\&=(8 x + 4 y)\\,i-(- 32 x + 8 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\32 x - 8 y&=0\\\\y&=4x\\end{aligned}$$\n\nSubstituting $y=4x$ into the equation of our curve gives:\n\n$$\\begin{aligned}2(4x)^{2}+8x(4x)-16x^{2}-48&=0\\\\48x^{2}-48&=0\\\\x^{2}&=1\\\\x&=\\pm 1\\end{aligned}$$\n\nFinally, the corresponding points are $(1,4)$ and $(-1,-4)$."
+    },
+    "generation": {
+      "version": "tangent-perpendicular-1.1.0",
+      "seed": 1000,
+      "template": "symmetric_quadratic",
+      "profile": "current_coordinate_bank",
+      "parameters": {
+        "D": 2,
+        "m": 4,
+        "r": 1
+      },
+      "domain": {
+        "D": [
+          1,
+          3
+        ],
+        "m": [
+          2,
+          4
+        ],
+        "r": [
+          1,
+          4
+        ]
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [
+        "q-72410"
+      ],
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "origin": "authored_missing_level",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "bank_recipes": [
+        "current source coordinate pattern 1",
+        "current source coordinate pattern 2",
+        "current source coordinate pattern 3",
+        "current source coordinate pattern 4",
+        "current source coordinate pattern 5",
+        "current source coordinate pattern 6"
+      ],
+      "content_hash": "c8556355eb5730b10ed0f9337b78f2691f19cc7fd7d04db420a95f1f8c1f9294",
+      "mathematical_fingerprint": "93513a988d3c484c4a817838d7c51874f66ae62546b2b9e27f243205b4284c0e",
+      "actual_points": [
+        [
+          "-1",
+          "-4"
+        ],
+        [
+          "1",
+          "4"
+        ]
+      ],
+      "operator_input": "-16*x**2 + 8*x*y + 2*y**2 - 48",
+      "Fx": "-32*x + 8*y",
+      "Fy": "8*x + 4*y",
+      "orthogonality": "32*x - 8*y",
+      "regular_curve": true,
+      "nonzero_given_vector": true,
+      "curve_domain": [
+        "real x,y; retain regular curve points"
+      ],
+      "assumptions": [
+        "given vector is nonzero",
+        "tangent vector is nonzero at every included point"
+      ],
+      "coefficient_domain": "EX; complete-bank coefficients included",
+      "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6",
+      "coordinates": [
+        "(-1,-4)",
+        "(0,4)",
+        "(\\frac{1}{2},4)",
+        "(1,0)",
+        "(1,2)",
+        "(1,4)"
+      ],
+      "current_source_ids": [
+        "q-72410"
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186124456,
+      "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+      "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+    },
+    "question": {
+      ":question/id": "138b2fa1-5696-5cfb-b4c1-4b8eecec9f34",
+      ":question/problem": "At which points on the curve $4 x y + y^{2}=4 x^{2} + 8$ is the tangent vector to the curve perpendicular to the vector $j$?\n\nSelect all that apply. If none apply, leave all boxes unchecked.\n\n- **I.** $(-1,-2)$\n- **II.** $(0,2)$\n- **III.** $(\\frac{1}{2},2)$\n- **IV.** $(1,0)$\n- **V.** $(1,1)$\n- **VI.** $(1,2)$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9f42b424-e100-5b5c-951d-e8888fc4bf5f",
+          ":answer-field/key": "I",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4480175c-3691-5b32-9497-8234cd5473d6",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "edb2237f-9c3e-58da-8879-ad909ca56f97",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "edb2237f-9c3e-58da-8879-ad909ca56f97"
+          ]
+        },
+        {
+          ":answer-field/id": "4bf2940c-8256-52c6-be97-fc5e2aae3edc",
+          ":answer-field/key": "II",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4d90e1ca-3cff-5a39-9cbc-7a04878d8001",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "1582ef11-2a8f-56b8-be1e-533ad686623d",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4d90e1ca-3cff-5a39-9cbc-7a04878d8001"
+          ]
+        },
+        {
+          ":answer-field/id": "15959162-8202-56a1-a0f2-83319529d308",
+          ":answer-field/key": "III",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ee1f00c6-1b40-51e8-8084-53cf529cfa21",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "a67e1549-d894-58c3-ab0c-c5878c485999",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "ee1f00c6-1b40-51e8-8084-53cf529cfa21"
+          ]
+        },
+        {
+          ":answer-field/id": "7754cae4-0b72-5eed-ba00-86faee75c95a",
+          ":answer-field/key": "IV",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "acf0d49c-0802-5936-9cc5-c8634c61903c",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "806a4800-e105-55cd-86c2-f0de72c7a66b",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "acf0d49c-0802-5936-9cc5-c8634c61903c"
+          ]
+        },
+        {
+          ":answer-field/id": "c37932de-0cce-59c6-b24c-876d74561656",
+          ":answer-field/key": "V",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "09e4bcaf-692e-58c5-9fd3-61415f2310de",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "113382ea-65ed-55c1-ac18-b7478229c5ab",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "09e4bcaf-692e-58c5-9fd3-61415f2310de"
+          ]
+        },
+        {
+          ":answer-field/id": "dee6063a-ddce-52a8-86a7-f5e0d850c4d5",
+          ":answer-field/key": "VI",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1b0fcc2f-e79a-53cd-94ba-19c374993156",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "5bb26662-eec4-5532-b2af-772b585f772c",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "5bb26662-eec4-5532-b2af-772b585f772c"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}4 x y + y^{2}&=4 x^{2} + 8\\\\- 4 x^{2} + 4 x y + y^{2} - 8&=0\\end{aligned}$$\n\nIf we set $f(x,y)=- 4 x^{2} + 4 x y + y^{2} - 8$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(- 4 x^{2} + 4 x y + y^{2} - 8)\\,i-\\frac{\u2202}{\u2202x}(- 4 x^{2} + 4 x y + y^{2} - 8)\\,j\\\\&=(4 x + 2 y)\\,i-(- 8 x + 4 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\8 x - 4 y&=0\\\\y&=2x\\end{aligned}$$\n\nSubstituting $y=2x$ into the equation of our curve gives:\n\n$$\\begin{aligned}1(2x)^{2}+4x(2x)-4x^{2}-8&=0\\\\8x^{2}-8&=0\\\\x^{2}&=1\\\\x&=\\pm 1\\end{aligned}$$\n\nFinally, the corresponding points are $(1,2)$ and $(-1,-2)$."
+    },
+    "generation": {
+      "version": "tangent-perpendicular-1.1.0",
+      "seed": 1001,
+      "template": "symmetric_quadratic",
+      "profile": "current_coordinate_bank",
+      "parameters": {
+        "D": 1,
+        "m": 2,
+        "r": 1
+      },
+      "domain": {
+        "D": [
+          1,
+          3
+        ],
+        "m": [
+          2,
+          4
+        ],
+        "r": [
+          1,
+          4
+        ]
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [
+        "q-72410"
+      ],
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "origin": "authored_missing_level",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "bank_recipes": [
+        "current source coordinate pattern 1",
+        "current source coordinate pattern 2",
+        "current source coordinate pattern 3",
+        "current source coordinate pattern 4",
+        "current source coordinate pattern 5",
+        "current source coordinate pattern 6"
+      ],
+      "content_hash": "2ffddfe4d18ec3a0ac672be10234883a5185629ee1863b0b4ee297a5d3a02afa",
+      "mathematical_fingerprint": "1aa272c28fcc1dab938db9b7f20edc0ac9266ad38d0598ee8dd6390f4e96ecec",
+      "actual_points": [
+        [
+          "-1",
+          "-2"
+        ],
+        [
+          "1",
+          "2"
+        ]
+      ],
+      "operator_input": "-4*x**2 + 4*x*y + y**2 - 8",
+      "Fx": "-8*x + 4*y",
+      "Fy": "4*x + 2*y",
+      "orthogonality": "8*x - 4*y",
+      "regular_curve": true,
+      "nonzero_given_vector": true,
+      "curve_domain": [
+        "real x,y; retain regular curve points"
+      ],
+      "assumptions": [
+        "given vector is nonzero",
+        "tangent vector is nonzero at every included point"
+      ],
+      "coefficient_domain": "EX; complete-bank coefficients included",
+      "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6",
+      "coordinates": [
+        "(-1,-2)",
+        "(0,2)",
+        "(\\frac{1}{2},2)",
+        "(1,0)",
+        "(1,1)",
+        "(1,2)"
+      ],
+      "current_source_ids": [
+        "q-72410"
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186124456,
+      "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+      "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+    },
+    "question": {
+      ":question/id": "5284e034-941a-5de0-a7ad-3718d5b22f4c",
+      ":question/problem": "At which points on the curve $8 x y + 3 y^{2}=16 x^{2} + 1024$ is the tangent vector to the curve perpendicular to the vector $j$?\n\nSelect all that apply. If none apply, leave all boxes unchecked.\n\n- **I.** $(-4,-16)$\n- **II.** $(0,16)$\n- **III.** $(2,16)$\n- **IV.** $(4,0)$\n- **V.** $(4,8)$\n- **VI.** $(4,16)$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "d22532c8-639b-5317-9e25-5a6b015f3e59",
+          ":answer-field/key": "I",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "ff204a0b-f70b-54b9-9f82-42d7e94798fc",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "bd4b8f5d-5057-5789-b7f7-4fd4c164a788",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "bd4b8f5d-5057-5789-b7f7-4fd4c164a788"
+          ]
+        },
+        {
+          ":answer-field/id": "2bf8aaf8-fe3e-5ed9-9824-d9ba6d421a9e",
+          ":answer-field/key": "II",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "306ad61b-7cf2-5e46-b92a-99bb59b27116",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "a5d14569-99f9-5f0a-b34b-fcf4aef8d5b6",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "306ad61b-7cf2-5e46-b92a-99bb59b27116"
+          ]
+        },
+        {
+          ":answer-field/id": "e42052b3-aa02-5893-8463-3d339c71e909",
+          ":answer-field/key": "III",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e47c93e5-ac5e-5cd9-8ce7-1409ae6e9efc",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "a87d580a-cc87-57ae-a1c2-a6fb03cd6656",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e47c93e5-ac5e-5cd9-8ce7-1409ae6e9efc"
+          ]
+        },
+        {
+          ":answer-field/id": "f1266a7c-b2e9-54bd-aeaa-5ab051911a08",
+          ":answer-field/key": "IV",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c9b55f41-a1e5-5298-bc1c-4923b387c0d3",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "47875e80-b080-5ec4-a93d-445fc72ad0bf",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c9b55f41-a1e5-5298-bc1c-4923b387c0d3"
+          ]
+        },
+        {
+          ":answer-field/id": "d31c957d-5744-57ef-a8b5-ba4c001a3589",
+          ":answer-field/key": "V",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5594ceac-94ff-581e-9891-b704648df3b6",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "1a3c48b5-42fb-5379-947d-53eddffd3f43",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "5594ceac-94ff-581e-9891-b704648df3b6"
+          ]
+        },
+        {
+          ":answer-field/id": "2cc7bde4-9ea5-57bc-8ce3-0de4156021db",
+          ":answer-field/key": "VI",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "bc7dfc78-e18a-5790-b5c3-ca2284d7c7cd",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "04f0e009-6fcf-56c0-ab31-f7119fd2b704",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "04f0e009-6fcf-56c0-ab31-f7119fd2b704"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}8 x y + 3 y^{2}&=16 x^{2} + 1024\\\\- 16 x^{2} + 8 x y + 3 y^{2} - 1024&=0\\end{aligned}$$\n\nIf we set $f(x,y)=- 16 x^{2} + 8 x y + 3 y^{2} - 1024$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(- 16 x^{2} + 8 x y + 3 y^{2} - 1024)\\,i-\\frac{\u2202}{\u2202x}(- 16 x^{2} + 8 x y + 3 y^{2} - 1024)\\,j\\\\&=(8 x + 6 y)\\,i-(- 32 x + 8 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\32 x - 8 y&=0\\\\y&=4x\\end{aligned}$$\n\nSubstituting $y=4x$ into the equation of our curve gives:\n\n$$\\begin{aligned}3(4x)^{2}+8x(4x)-16x^{2}-1024&=0\\\\64x^{2}-1024&=0\\\\x^{2}&=16\\\\x&=\\pm 4\\end{aligned}$$\n\nFinally, the corresponding points are $(4,16)$ and $(-4,-16)$."
+    },
+    "generation": {
+      "version": "tangent-perpendicular-1.1.0",
+      "seed": 1002,
+      "template": "symmetric_quadratic",
+      "profile": "current_coordinate_bank",
+      "parameters": {
+        "D": 3,
+        "m": 4,
+        "r": 4
+      },
+      "domain": {
+        "D": [
+          1,
+          3
+        ],
+        "m": [
+          2,
+          4
+        ],
+        "r": [
+          1,
+          4
+        ]
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [
+        "q-72410"
+      ],
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "origin": "authored_missing_level",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "bank_recipes": [
+        "current source coordinate pattern 1",
+        "current source coordinate pattern 2",
+        "current source coordinate pattern 3",
+        "current source coordinate pattern 4",
+        "current source coordinate pattern 5",
+        "current source coordinate pattern 6"
+      ],
+      "content_hash": "749eebd860d862987810c8ac31b18dcda53390859a2dcd6eb2832534ed977103",
+      "mathematical_fingerprint": "31b8dd3dafae10799240c49b7f8b5c1ad2ffefa55fd3ffb1c4a91bbfb8921ecb",
+      "actual_points": [
+        [
+          "-4",
+          "-16"
+        ],
+        [
+          "4",
+          "16"
+        ]
+      ],
+      "operator_input": "-16*x**2 + 8*x*y + 3*y**2 - 1024",
+      "Fx": "-32*x + 8*y",
+      "Fy": "8*x + 6*y",
+      "orthogonality": "32*x - 8*y",
+      "regular_curve": true,
+      "nonzero_given_vector": true,
+      "curve_domain": [
+        "real x,y; retain regular curve points"
+      ],
+      "assumptions": [
+        "given vector is nonzero",
+        "tangent vector is nonzero at every included point"
+      ],
+      "coefficient_domain": "EX; complete-bank coefficients included",
+      "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6",
+      "coordinates": [
+        "(-4,-16)",
+        "(0,16)",
+        "(2,16)",
+        "(4,0)",
+        "(4,8)",
+        "(4,16)"
+      ],
+      "current_source_ids": [
+        "q-72410"
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186124456,
+      "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+      "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+    },
+    "question": {
+      ":question/id": "10aa9a22-24d9-5578-9f7c-cc0b57f6bc72",
+      ":question/problem": "At which points on the curve $8 x y + 2 y^{2}=16 x^{2} + 432$ is the tangent vector to the curve perpendicular to the vector $j$?\n\nSelect all that apply. If none apply, leave all boxes unchecked.\n\n- **I.** $(-3,-12)$\n- **II.** $(0,12)$\n- **III.** $(\\frac{3}{2},12)$\n- **IV.** $(3,0)$\n- **V.** $(3,6)$\n- **VI.** $(3,12)$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c455ae41-516c-5087-9292-187bc01c3ff1",
+          ":answer-field/key": "I",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1ebf4b66-1c76-5d1d-9695-6113cde87fe1",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "c3fcc17e-6297-5fd5-8fb7-5d0519e2cf46",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c3fcc17e-6297-5fd5-8fb7-5d0519e2cf46"
+          ]
+        },
+        {
+          ":answer-field/id": "e41e89b0-8613-5944-9948-dba717ba611f",
+          ":answer-field/key": "II",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7fe93697-ea3f-5119-a24f-b497681320d3",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "9655312b-299c-5150-92fb-924ba2114fd9",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "7fe93697-ea3f-5119-a24f-b497681320d3"
+          ]
+        },
+        {
+          ":answer-field/id": "ac7dbd6c-1a1e-51c6-a4ba-ad8bbcb82f75",
+          ":answer-field/key": "III",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "06fb16ac-e893-51b0-abb9-b191df46e080",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "5135b9f5-3ff0-5dcb-bf6f-6769b8e27e1b",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "06fb16ac-e893-51b0-abb9-b191df46e080"
+          ]
+        },
+        {
+          ":answer-field/id": "0442c6bd-1b78-5c99-ad02-d114eb9446c8",
+          ":answer-field/key": "IV",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5244335d-6970-5429-aa03-d3dec60b6ae0",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "dbde3a30-d25a-522f-935f-3e8b50dc20ed",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "5244335d-6970-5429-aa03-d3dec60b6ae0"
+          ]
+        },
+        {
+          ":answer-field/id": "0b9b35e0-eec0-5034-8f33-49c3fb288348",
+          ":answer-field/key": "V",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "2bcca2dc-e93a-558e-afac-54ae144ba53f",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "ab244f97-43eb-57ac-828c-fe7913efb4d5",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2bcca2dc-e93a-558e-afac-54ae144ba53f"
+          ]
+        },
+        {
+          ":answer-field/id": "4377d73f-e0ae-5355-9da8-86f2c7f533c5",
+          ":answer-field/key": "VI",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "3c2c129a-aac1-5c11-a517-08a307cf978c",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "a655609d-28d2-5c5d-9357-2a9a49c8bdf6",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "a655609d-28d2-5c5d-9357-2a9a49c8bdf6"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}8 x y + 2 y^{2}&=16 x^{2} + 432\\\\- 16 x^{2} + 8 x y + 2 y^{2} - 432&=0\\end{aligned}$$\n\nIf we set $f(x,y)=- 16 x^{2} + 8 x y + 2 y^{2} - 432$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(- 16 x^{2} + 8 x y + 2 y^{2} - 432)\\,i-\\frac{\u2202}{\u2202x}(- 16 x^{2} + 8 x y + 2 y^{2} - 432)\\,j\\\\&=(8 x + 4 y)\\,i-(- 32 x + 8 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\32 x - 8 y&=0\\\\y&=4x\\end{aligned}$$\n\nSubstituting $y=4x$ into the equation of our curve gives:\n\n$$\\begin{aligned}2(4x)^{2}+8x(4x)-16x^{2}-432&=0\\\\48x^{2}-432&=0\\\\x^{2}&=9\\\\x&=\\pm 3\\end{aligned}$$\n\nFinally, the corresponding points are $(3,12)$ and $(-3,-12)$."
+    },
+    "generation": {
+      "version": "tangent-perpendicular-1.1.0",
+      "seed": 1003,
+      "template": "symmetric_quadratic",
+      "profile": "current_coordinate_bank",
+      "parameters": {
+        "D": 2,
+        "m": 4,
+        "r": 3
+      },
+      "domain": {
+        "D": [
+          1,
+          3
+        ],
+        "m": [
+          2,
+          4
+        ],
+        "r": [
+          1,
+          4
+        ]
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [
+        "q-72410"
+      ],
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "origin": "authored_missing_level",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "bank_recipes": [
+        "current source coordinate pattern 1",
+        "current source coordinate pattern 2",
+        "current source coordinate pattern 3",
+        "current source coordinate pattern 4",
+        "current source coordinate pattern 5",
+        "current source coordinate pattern 6"
+      ],
+      "content_hash": "af6b077f3a359ac4c8ffe3465f36df3176e63a0a2872ae5d3d0fbbe84bdcb07a",
+      "mathematical_fingerprint": "a610474ca269905aec98ead3cddca0ad937ec6ab15ad3296cd9c4179cf1846b1",
+      "actual_points": [
+        [
+          "-3",
+          "-12"
+        ],
+        [
+          "3",
+          "12"
+        ]
+      ],
+      "operator_input": "-16*x**2 + 8*x*y + 2*y**2 - 432",
+      "Fx": "-32*x + 8*y",
+      "Fy": "8*x + 4*y",
+      "orthogonality": "32*x - 8*y",
+      "regular_curve": true,
+      "nonzero_given_vector": true,
+      "curve_domain": [
+        "real x,y; retain regular curve points"
+      ],
+      "assumptions": [
+        "given vector is nonzero",
+        "tangent vector is nonzero at every included point"
+      ],
+      "coefficient_domain": "EX; complete-bank coefficients included",
+      "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6",
+      "coordinates": [
+        "(-3,-12)",
+        "(0,12)",
+        "(\\frac{3}{2},12)",
+        "(3,0)",
+        "(3,6)",
+        "(3,12)"
+      ],
+      "current_source_ids": [
+        "q-72410"
+      ]
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186124456,
+      "id": "84245283-3cf9-5889-8c42-896a0c8af291",
+      "title": "Finding the Points on a Curve at which the Tangent Vector is Perpendicular to a Given Vector"
+    },
+    "question": {
+      ":question/id": "f0a0a0dc-dc0e-505f-ae57-9fc7b81e15fb",
+      ":question/problem": "At which points on the curve $4 x y + 2 y^{2}=4 x^{2} + 48$ is the tangent vector to the curve perpendicular to the vector $j$?\n\nSelect all that apply. If none apply, leave all boxes unchecked.\n\n- **I.** $(-2,-4)$\n- **II.** $(0,4)$\n- **III.** $(1,4)$\n- **IV.** $(2,0)$\n- **V.** $(2,2)$\n- **VI.** $(2,4)$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "f01ae0ea-77c1-50d9-838c-8c96b77ae81a",
+          ":answer-field/key": "I",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "25dc062e-44f5-5471-a146-179e82acfe66",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "2a4d2807-65a8-535d-b28f-d716f496cbc5",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2a4d2807-65a8-535d-b28f-d716f496cbc5"
+          ]
+        },
+        {
+          ":answer-field/id": "068014f6-160c-5582-b4e9-027adae7c44d",
+          ":answer-field/key": "II",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "355d6b08-c81d-5a24-8d9b-b5b309763df3",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "b9468b67-fe8b-596a-b36c-8a9160644e13",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "355d6b08-c81d-5a24-8d9b-b5b309763df3"
+          ]
+        },
+        {
+          ":answer-field/id": "0b48a7c4-4358-56a2-b9e1-abd8e70b08cb",
+          ":answer-field/key": "III",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "91d5a3b4-81a9-5029-bfc7-fff806ff92c3",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "79fd7a02-7f40-548d-8d9e-67af6ec26c31",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "91d5a3b4-81a9-5029-bfc7-fff806ff92c3"
+          ]
+        },
+        {
+          ":answer-field/id": "18c70ce8-f1f7-5bbc-adca-e3c29eed1cca",
+          ":answer-field/key": "IV",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "204cec1a-d643-526b-9513-6282f7765087",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "ea7623f8-926b-589d-b4d2-d244bf6811a2",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "204cec1a-d643-526b-9513-6282f7765087"
+          ]
+        },
+        {
+          ":answer-field/id": "01392b38-8c9f-501e-947f-a711423a8b27",
+          ":answer-field/key": "V",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c087c404-166b-5d66-9df7-23a64d6373c8",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "6f4e1d8e-84d6-5a20-9c01-8ae98987f8dd",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c087c404-166b-5d66-9df7-23a64d6373c8"
+          ]
+        },
+        {
+          ":answer-field/id": "3de24a5f-af67-5551-918b-272cb93832bb",
+          ":answer-field/key": "VI",
+          ":answer-field/type": ":answer-field.type/checkbox",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "37b9e260-94cc-5539-a762-ef0c781c432d",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "false"
+            },
+            {
+              ":answer/id": "a312f786-15df-5b00-91b3-215f9c7e7a71",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "true"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "a312f786-15df-5b00-91b3-215f9c7e7a71"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "First, we bring all variables to one side:\n\n$$\\begin{aligned}4 x y + 2 y^{2}&=4 x^{2} + 48\\\\- 4 x^{2} + 4 x y + 2 y^{2} - 48&=0\\end{aligned}$$\n\nIf we set $f(x,y)=- 4 x^{2} + 4 x y + 2 y^{2} - 48$, our curve can be viewed as the level curve $f(x,y)=0.$\n\nA tangent vector to the level curve can be computed as follows:\n\n$$t(x,y)=f_y(x,y)\\,i-f_x(x,y)\\,j$$\n\nSo, we calculate $t(x,y):$\n\n$$\\begin{aligned}t(x,y)&=\\frac{\u2202}{\u2202y}(- 4 x^{2} + 4 x y + 2 y^{2} - 48)\\,i-\\frac{\u2202}{\u2202x}(- 4 x^{2} + 4 x y + 2 y^{2} - 48)\\,j\\\\&=(4 x + 4 y)\\,i-(- 8 x + 4 y)\\,j\\end{aligned}$$\n\nSince our tangent vector needs to be perpendicular to $j$, we must have $t\\cdot j=0.$\n\n$$\\begin{aligned}t(x,y)\\cdot j&=0\\\\8 x - 4 y&=0\\\\y&=2x\\end{aligned}$$\n\nSubstituting $y=2x$ into the equation of our curve gives:\n\n$$\\begin{aligned}2(2x)^{2}+4x(2x)-4x^{2}-48&=0\\\\12x^{2}-48&=0\\\\x^{2}&=4\\\\x&=\\pm 2\\end{aligned}$$\n\nFinally, the corresponding points are $(2,4)$ and $(-2,-4)$."
+    },
+    "generation": {
+      "version": "tangent-perpendicular-1.1.0",
+      "seed": 1004,
+      "template": "symmetric_quadratic",
+      "profile": "current_coordinate_bank",
+      "parameters": {
+        "D": 2,
+        "m": 2,
+        "r": 2
+      },
+      "domain": {
+        "D": [
+          1,
+          3
+        ],
+        "m": [
+          2,
+          4
+        ],
+        "r": [
+          1,
+          4
+        ]
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_ids": [
+        "q-72410"
+      ],
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "origin": "authored_missing_level",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "bank_recipes": [
+        "current source coordinate pattern 1",
+        "current source coordinate pattern 2",
+        "current source coordinate pattern 3",
+        "current source coordinate pattern 4",
+        "current source coordinate pattern 5",
+        "current source coordinate pattern 6"
+      ],
+      "content_hash": "aa901f629ca65af60f0896b12345d517196760109d826c50724d714f69eb1b70",
+      "mathematical_fingerprint": "8d53f32e0b313d170e45cc59d17a7c0a5359bb2f620faaa853c1160d26066f61",
+      "actual_points": [
+        [
+          "-2",
+          "-4"
+        ],
+        [
+          "2",
+          "4"
+        ]
+      ],
+      "operator_input": "-4*x**2 + 4*x*y + 2*y**2 - 48",
+      "Fx": "-8*x + 4*y",
+      "Fy": "4*x + 4*y",
+      "orthogonality": "8*x - 4*y",
+      "regular_curve": true,
+      "nonzero_given_vector": true,
+      "curve_domain": [
+        "real x,y; retain regular curve points"
+      ],
+      "assumptions": [
+        "given vector is nonzero",
+        "tangent vector is nonzero at every included point"
+      ],
+      "coefficient_domain": "EX; complete-bank coefficients included",
+      "source_snapshot_sha256": "6bb5fb8c75d55be16c853c6175011e31c689bb458e8bcd452f7a2e43563542e6",
+      "coordinates": [
+        "(-2,-4)",
+        "(0,4)",
+        "(1,4)",
+        "(2,0)",
+        "(2,2)",
+        "(2,4)"
+      ],
+      "current_source_ids": [
+        "q-72410"
+      ]
+    }
+  }
+]

@@ -25,14 +25,17 @@ from matplotlib.patches import Rectangle
 KP_ID=17592186198374
 KP_UUID='b2682751-23e4-5cf2-9a46-82c75765423f'
 TITLE='Cases When the Transformation Is Inferred From the Integrand'
-VERSION='integrand-transform-1'
+VERSION='integrand-transform-2'
+SUPPORTED_LEVELS=('easy','hard')
+# Current source q-160896 was completed and rated hard after frozen basis1356.
+# The previous authored moderate assignment is superseded, not a usable reserve.
 ROOT=Path(__file__).resolve().parent
 OUT=ROOT/str(KP_ID)
 SOURCE=json.loads((OUT/'source.json').read_text())
 RECORD=SOURCE['record']
 SOURCES={q[':question/math-academy-id']:q for q in RECORD[':knowledge-point/questions']}
 x,y,u,v=s.symbols('x y u v',real=True)
-FAMILIES={'polynomial':'easy','shifted_polynomial':'moderate','rational':'hard','sine':'hard','exponential':'hard','exponential_square':'hard','cosine_square':'hard'}
+FAMILIES={'polynomial':'easy','shifted_polynomial':'hard','rational':'hard','sine':'hard','exponential':'hard','exponential_square':'hard','cosine_square':'hard'}
 SOURCE_FAMILY={'q-160433':'rational','q-160896':'shifted_polynomial','q-160901':'sine','q-160904':'exponential','q-160933':'exponential_square','q-160935':'cosine_square'}
 RAW_EXPRESSIONS={
 'q-160433':[[s.Rational(7,3)*s.log(2),s.log(2)/9,s.log(2)/3,2*s.log(2),s.Rational(2,3)*s.log(2)],[2*s.log(2),s.Rational(7,3)*s.log(2),s.log(2)/3,s.log(2)/9,s.Rational(2,3)*s.log(2)]],
@@ -307,6 +310,7 @@ def generate_hard(seed=0,**kwargs):return generate('hard',seed,**kwargs)
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
     if level not in ['easy','moderate','hard']:raise ValueError('unknown difficulty')
+    if level not in SUPPORTED_LEVELS:raise ValueError('unsupported moderate: current shifted-polynomial source is rated hard; see capabilities.json')
     if field_type is not None and field_type not in ['radio',':answer-field.type/radio']:raise ValueError('only observed radio field supported')
     rng=random.Random(seed)
     if profile and profile.startswith('raw:'):
@@ -351,6 +355,6 @@ def markdown(r):
         for i,a in enumerate(f[':answer-field/choices']):text+=f'{i+1}. ${a[":answer/value"]}$\n'
     return text+'\n'+q.get(':question/worked-solution','[Raw source has no worked solution.]')
 if __name__=='__main__':
-    ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['markdown','json'],default='markdown');ap.add_argument('--template');ap.add_argument('--profile');args=ap.parse_args();levels=['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]
+    ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['markdown','json'],default='markdown');ap.add_argument('--template');ap.add_argument('--profile');args=ap.parse_args();levels=SUPPORTED_LEVELS if args.difficulty=='all' else [args.difficulty]
     rows=[generate(l,args.seed+i,template=args.template,profile=args.profile) for l in levels for i in range(args.count)]
     print(json.dumps(rows,indent=2,ensure_ascii=False) if args.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in rows))

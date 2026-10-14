@@ -1,15 +1,9 @@
 # Tangent-perpendicular point-set generator
 
-Local script `../17592186124456.py`; immutable math basis 1356. Stop after generation/validation: no database writes or shared edits.
+`../17592186124456.py` is the registered generator; its existing stable package identity is retained. Version 1.1.0 uses radio fields for easy and the current complete checkbox coordinate profiles for moderate/hard. Easy/moderate assignments are explicitly authored, not source difficulty labels. Historical source banks remain evidence-only.
 
-```sh
-.venv/bin/python generate/scratch/17592186124456.py --difficulty all --seed 23 --count 2
-.venv/bin/python generate/scratch/17592186124456.py --difficulty hard --template q-65208 --profile observed_raw --parameters '{"h":0,"k":0}'
-.venv/bin/python generate/scratch/17592186124456/validate.py
-```
+Run `.venv/bin/python generate/scratch/17592186124456/validate-current.py` to verify all accepted bounded normal parameter combinations, current complete coordinate-bank replay, mathematical deduplication, displayed solution stages and native learner grading. The older `validate.py`, `validation.json` and `freeze.json` describe historical radio source fidelity; current evidence is in `validation-current.json` and `freeze-current.json`.
 
-Raw observed profiles replay complete historical masks and preserve the two unrated questions' missing solution/ref attributes. Completed historical profiles remain evidence-only because their distractor intention is opaque. Default easy/moderate are explicitly authored missing-level extensions; hard follows the observed q-72440 method with an authored bank. Reviews clearly label original/generated, raw/completed, observed/authored and correct marks. Absent original correct refs are shown as absent.
+The bounded distinct capacities are 156 easy, 36 moderate and 57 hard tasks. Three hard parameter banks are rejected for coordinate collisions. Five new source masks were captured and classified but are outside this generator's supported generalization scope; singular source intersections are excluded from usable counts. No source or learner records are changed.
 
-Independent validation reads the actual displayed curve/vector, computes complete real regular solution sets and verifies every choice as an unordered set. It checks full source prompt/bank/ordered-solution fidelity, partial derivative operator inputs, expanded tangent vectors, scalar orthogonality and every applicable substitution row, domain guards, finite task variety and seed-independent identity. Real `learning::grade_field` checks select every correct and wrong radio option. Blank equivalence is inapplicable.
-
-`validation.json` reports exact counts and limitations. `freeze.json` records final hashes, dependency/source/engine provenance and the honest interpretation limits. Re-run validation in the project venv. Historical bank replay establishes numerical/structural fidelity, not recovered distractor-author code or observed missing difficulty ratings.
+`replenish.py` rechecks the captured native inventory, holds application `api.lock` through rechecking basis, preparation, installed-spec preview, exact durable basis-guarded request, submission and exact-basis verification. It recovers existing requests before new work and checks additive content scope, source attribution, unchanged sources, generator UUID/script registration and repeat preparation. Retained requests, previews, receipts, grading and readback evidence are in `reference/replenishment/`. No plots are required.

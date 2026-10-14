@@ -9,6 +9,7 @@ def check(g,K,D,asset_relocation=False):
  for c in json.load(open(D/'source-cases.json')):
   o=originals.get(c.get('math_academy_id',c.get('source_ma_id',c.get('source_math_academy_id',c['source_id'])))) or next(q for q in originals.values() if str(q[':db/id'])==str(c['source_id']) or q[':question/id']==c['source_id']);q=g.generate(c.get('level',c.get('difficulty',o.get(':question/difficulty',{}).get(':db/ident',':question.difficulty/easy').split('/')[-1])),template=c['template'],parameters=c['parameters'],profile=c.get('profile',c.get('bank_profile')))['question']
   for k in (':question/problem',':question/worked-solution',':question/difficulty',':question/answer-fields'):assert (k in q)==(k in o),(c['source_id'],k)
+  if ':question/difficulty' in o:assert q[':question/difficulty']==o[':question/difficulty'][':db/ident'],(c['source_id'],'source difficulty changed')
   new=q[':question/problem'];old=o[':question/problem']
   if asset_relocation:
    a=re.findall(r'!\[.*?\]\((.*?)\)',new);b=re.findall(r'!\[.*?\]\((.*?)\)',old);assert len(a)==len(b)

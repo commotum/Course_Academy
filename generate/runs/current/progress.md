@@ -4,13 +4,13 @@ Cumulative scope: **184 topics, 580 knowledge points**. Approved sources retain 
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 43**, **qa_passed: 290**, **queued: 245**, **working: 2**.
+**needs_revalidation: 43**, **qa_passed: 292**, **queued: 242**, **working: 3**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). Finish existing workers, then follow updated ranks; coverage-report priorities remain first and are already approved.
 
-Cumulative counts include previously approved KPs and two active KPs that left the latest list; their work is retained. Queued and working KPs are not complete. Source anomalies and authored missing-level designs are recorded with each KP.
+Cumulative counts retain seven earlier KPs outside the latest list. Only qa_passed jobs have current parent verification; queued, working and needs_revalidation jobs are not complete. Captured counts can include independently authored inventory as well as original MA examples; per-KP evidence separates them. Source anomalies and authored missing-level designs are recorded with each KP.
 
-| KP | Topic | Knowledge point | Source E / M / H / unrated | Status | Parent QA |
+| KP | Topic | Knowledge point | Captured E / M / H / unrated | Status | Parent QA |
 |---|---|---|---|---|---|
 | [17592186129197](../../scratch/17592186129197.py) | Computing Areas Using a Change of Variables | Finding an Area by Transforming to a Type I Region | 0 / 0 / 6 / 1 | qa_passed | [Report](qa/17592186129197.json) |
 | [17592186096841](../../scratch/17592186096841.py) | The Chain Rule for Differentiation | Differentiating a Polynomial Raised to a Power Using the Chain Rule | 3 / 3 / 2 / 1 | qa_passed | [Report](qa/17592186096841.json) |
@@ -34,11 +34,11 @@ Cumulative counts include previously approved KPs and two active KPs that left t
 | [17592186100989](../../scratch/17592186100989-draft.py) | Index Notation for Matrices | Finding an Entry of a Square Matrix | 5 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186100989.json) |
 | [17592186100990](../../scratch/17592186100990-draft.py) | Index Notation for Matrices | Describing an Entry of a Matrix in Index Notation | 6 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186100990.json) |
 | [17592186096613](../../scratch/17592186096613.py) | Differentiating Logarithmic Functions | Differentiating the Product of a Constant and the Natural Logarithm Function | 7 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096613.json) |
-| 17592186068722 | Integration Using Substitution | Integrating an Expression Involving a Power Function Multiplied by Its Derivative | 2 / 2 / 1 / 0 | working | — |
-| 17592186184349 | Integrating Exponential Functions Using Substitution | Integrating Products Containing the Exponential Function | 2 / 2 / 1 / 2 | working | — |
-| 17592186175922 | Finding Equations of Perpendicular Lines | Finding the Equation of a Perpendicular Line | 1 / 1 / 3 / 2 | queued | — |
-| 17592186064171 | Integrating Exponential Functions | Integrating the Exponential Function | 3 / 1 / 1 / 1 | queued | — |
-| 17592186064172 | Integrating Exponential Functions | Integrating an Exponential Function With a General Base | 2 / 2 / 1 / 1 | queued | — |
+| [17592186068722](../../scratch/17592186068722.py) | Integration Using Substitution | Integrating an Expression Involving a Power Function Multiplied by Its Derivative | 2 / 2 / 1 / 0 | qa_passed | [Report](qa/17592186068722.json) |
+| [17592186184349](../../scratch/17592186184349.py) | Integrating Exponential Functions Using Substitution | Integrating Products Containing the Exponential Function | 2 / 2 / 1 / 2 | qa_passed | [Report](qa/17592186184349.json) |
+| [17592186175922](../../scratch/17592186175922.py) | Finding Equations of Perpendicular Lines | Finding the Equation of a Perpendicular Line | 1 / 1 / 3 / 2 | working | — |
+| [17592186064171](../../scratch/17592186064171.py) | Integrating Exponential Functions | Integrating the Exponential Function | 3 / 1 / 1 / 1 | working | — |
+| 17592186064172 | Integrating Exponential Functions | Integrating an Exponential Function With a General Base | 2 / 2 / 1 / 1 | working | — |
 | [17592186064206](../../scratch/17592186064206.py) | Integrating Linear Rational Functions Using Substitution | Integrating a Linear Rational Function | 5 / 0 / 0 / 1 | queued | — |
 | [17592186054694](../../scratch/17592186054694.py) | Graphing Linear Equations | Plotting a Line Using a Table | 5 / 0 / 0 / 1 | queued | — |
 | [17592186054695](../../scratch/17592186054695.py) | Graphing Linear Equations | Sketching a Line Using Two Points | 5 / 0 / 0 / 2 | queued | — |
