@@ -164,23 +164,23 @@ To sketch the graph of $y={6}^{x}-0.75,$ we take the graph of $y={6}^{x}$ and sh
 
 Which of the following is the graph of $y={4}^{x}+2.75?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-1909f3b94882b5692cc258a49b4b0572c0093d145c385d57c8ac6cc723d545ac.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-6abd45392527087b2f71d36e7eb8af2677268008fb118a56ffdf2f57871423df.png)
 
-2. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-99462f4fd91c3f11a36e9564a4108f4f9b72e26f326991f76e151c47c4de4c8c.png)
+2. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a49480c73920531d72a6aeb0970fb89f8af7ead893a653972300ce9228af0100.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-9ea889ac120d077b268835bf6f7cd86410069b9e093f2097a579f85c8b7ae6e4.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-bfcd4763b8c782182af6de306c68e2257a1f09890dd93493b45e134a7f118e38.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a403b6b3f303ca83cb1a37382cee3275b3f6f614a5bed8e8f8ea46b553760179.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d4d85ec27eb19d16e8a9907555da9d839e5e361fecb6b372d8c268353c2351c7.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-80b52a4b11c475f21b3624d827143a4da688e7cb9e1aaa850ee8f5e892a25fb3.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-f758bcb53a260d75972e93bba8284bc3c3f5b33223643c05d11d059d73bb46e7.png)
 
 First, we plot the graph of $y={4}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b54da1e87bbdf011ffc203777b6e88570ed0f05fb9829efc720bd7345f0e18f3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7a77e62903a638e9ebb8f19b791ac5fa23d7c9958d7e2613b2ac4c2e26a48a0a.png)
 
 To sketch the graph of $y={4}^{x}+2.75,$ we take the graph of $y={4}^{x}$ and shift it $2.75$ units up. The $y$-intercept moves from $(0,1)$ to $(0,3.75),$ and the horizontal asymptote moves from $y=0$ to $y=2.75.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-266cd46a5eb3f74a3894066f60f657509f48f4d797d5d8c351d2e5ce6805012f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-8e9ca469e3bc7d73720ead9dd63bdb72a54f9c6b276efd1c0470ca3862e1cf25.png)
 
 ## GENERATED easy authored_transformations
 
@@ -188,23 +188,23 @@ To sketch the graph of $y={4}^{x}+2.75,$ we take the graph of $y={4}^{x}$ and sh
 
 Which of the following is the graph of $y={2}^{x}-2.75?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-625e3be8315672713a69efe655072b7eeb517d1c385a8408b52d5000776887ef.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-de4de4d736cb9c558c0c35ee9f24d910138ea5335ebfd5b85a5938f2e7cd5d61.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-6284116408856f5b90bcb36e689564b4712b0f2b4bf76e75c076883e7825d8be.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2ad7a176081ac6d8b53d1b50b639b100884f877f269ec346ac1114ed96f50131.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0709b1eb05e6fde755432cef2d6d6ef75476581665de1b45166df107d7ed3f98.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-254176838803548b16ca4d143e958efa27abb531fea6314e402a3e385aa33f54.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-55517dd70ba1f0a39a9ae5c9be393977c6e78e787b7fe35c527e48751474222d.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-8e5032f8d4249255570ce33292a6d03c0fe69cac71c720a46ea554827ce4d58a.png)
 
-5. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-24780608fdd74144b05977060b64ccddaf3d2f61c5f8d350ac1645fb81b295de.png)
+5. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-bc5533c596fa82a6c6606880ca3e4a0ce55f7b5aaf91a111538a0418d703649b.png)
 
 First, we plot the graph of $y={2}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7d3f9a4852beb6fd761ed5af03553e4d1193ef4e648604d4af058404de773b67.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-814889f9290af5eb22b587db340c9305f4979fcaf44401956a40d830fb029f54.png)
 
 To sketch the graph of $y={2}^{x}-2.75,$ we take the graph of $y={2}^{x}$ and shift it $2.75$ units down. The $y$-intercept moves from $(0,1)$ to $(0,-1.75),$ and the horizontal asymptote moves from $y=0$ to $y=-2.75.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-755bf5d5202019db1f9e65d53a545367d6bc17af895cf2f9a4f6d686cec28f7c.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-6e6718139a17b061cd1dbdcbdd39936ee3b88426f0207828e1d67d4a7008167c.png)
 
 ## GENERATED easy authored_offsets
 
@@ -212,23 +212,23 @@ To sketch the graph of $y={2}^{x}-2.75,$ we take the graph of $y={2}^{x}$ and sh
 
 Which of the following is the graph of $y={4}^{x}+2.75?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-20d4655e018cd3d46a01224173abd3bc6a029df098c81f1a56b155606504b52c.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-114a7d4b0d9e305564fad9fb1071aebe4a12235d1c7957dad46a67897ced4e41.png)
 
-2. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-555ff19aa6c6a9c92ff7200890e7206fa8fa5bd1961d835145d3663e640963e5.png)
+2. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-1acc0190bae1ebd09cfabd2ba3772bc02e18f5ca399fe32ed55ed040502a145a.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-e5cf4287961b9e23683bce40ad2f5cb3d59b02a8ffa9a1770e669ff267f583d2.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-8834eb5cb29c4bbdac6ebf6c2bd63cf34fd95bb966e2213ae313d5867050f41c.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-3955aabfdc5d9a49b2761d9d2b5fa24cedd80685c570f830a476f6b7f06f45a5.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-53f2c61c89056020967ff7db843ce5f09ba7d596e43628734c5282653612e7da.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-6b343320bd308395da45d523d1c1b4d6b386b396d98a27f0333f232f93e2b38b.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d71b4c7fca979e3900364fbdf04433fd14f73afc6a89546b2b1ab9245f76ea12.png)
 
 First, we plot the graph of $y={4}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b54da1e87bbdf011ffc203777b6e88570ed0f05fb9829efc720bd7345f0e18f3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7a77e62903a638e9ebb8f19b791ac5fa23d7c9958d7e2613b2ac4c2e26a48a0a.png)
 
 To sketch the graph of $y={4}^{x}+2.75,$ we take the graph of $y={4}^{x}$ and shift it $2.75$ units up. The $y$-intercept moves from $(0,1)$ to $(0,3.75),$ and the horizontal asymptote moves from $y=0$ to $y=2.75.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2cd830682d77f4b69ef7c2f98f2abca654b2cbbb3330fbbf91a3a061a5d4dff4.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2d07ce50b64253c6a24db6dd4eb8c73d03cef3da239ff3e5b2428eda702e419c.png)
 
 ## GENERATED easy authored_offsets
 
@@ -236,23 +236,23 @@ To sketch the graph of $y={4}^{x}+2.75,$ we take the graph of $y={4}^{x}$ and sh
 
 Which of the following is the graph of $y={2}^{x}-2.75?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-da9109c4894560c3760b8271c656d988998fc8d7616632cedb51d384d718c791.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-8483b65e8006fd2477dc79481f45cb653a173e901d90b978044ec05de0651e53.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-85dc6d68bec53d7780b2552a6a9b97a8088d2e73fafb7d5bda3d1b3be0517b64.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-5484c07157455ef52e43e30b7b7f69297761c006f4f9f7ddcb4aaf9845618096.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-9999535e13328e50a9cfc252241cba122fc5a1fbac25bf5ded6bf48f9a7d099a.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a2dc5bdb8bd50cd6ee56b411806e5785c859e6b08d5ae0f4f1527f7f11b1ae6b.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-9d4bcd12ebbba59c4ebcbf20ef5799465a313c449bbe9870a849c1e32d04d37f.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-93243c089548447eb8abb279de859991f8b5652fe13c93d4eea72e9f1dc29a38.png)
 
-5. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-bc81f284ebb398510151f89a1f734d9ce4f2e360470a80a4b2e215593d015a0b.png)
+5. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2df43b9f3b98e39f75295a70abadd609956bcde921e143ab5999fa9b7f8509b4.png)
 
 First, we plot the graph of $y={2}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7d3f9a4852beb6fd761ed5af03553e4d1193ef4e648604d4af058404de773b67.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-814889f9290af5eb22b587db340c9305f4979fcaf44401956a40d830fb029f54.png)
 
 To sketch the graph of $y={2}^{x}-2.75,$ we take the graph of $y={2}^{x}$ and shift it $2.75$ units down. The $y$-intercept moves from $(0,1)$ to $(0,-1.75),$ and the horizontal asymptote moves from $y=0$ to $y=-2.75.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-46a9e8bdf90f5cff139968b8e463ae664eda5269afb86ed2b789d8a47c397706.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-3b254208f5912d63dfd3f4541823b1cd6be53eecc1ba56003882bf8b77f0109f.png)
 
 ## GENERATED moderate authored_transformations
 
@@ -260,23 +260,23 @@ To sketch the graph of $y={2}^{x}-2.75,$ we take the graph of $y={2}^{x}$ and sh
 
 Which of the following is the graph of $y={(\frac{3}{2})}^{x}+3?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-1962d32a65ec616fb6f32b2ed32a33e3749d69d0f5aad6e6ccdd8e5ab1200280.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2eb6f85f7bb057be93d6d3083612632c7464581d660621c25f93a5a8b81dab83.png)
 
-2. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0a4cbff1748d4d4f18f53f0dae9d96421f97c87480898c0b9c939947c7748e25.png)
+2. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-78a3c185cea9d4041232051e368a02fa2822ca1b4b3ce4e96d964e2f09396d96.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0a112fad9c8c8a5812dcc21ddaa313632d42eae9fe6a6cabc41889b1978e0631.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-9d538183ee0c3a4c3270ad4fa97af97f64be21e05364fa0ac41e20a5b1ca6e73.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-9b423395b663eab787061b44f1762138355a0159faa1442a5e9afb371b44d114.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d8ca6f5f719f7aba4aaf8c96718dcc0d3f061831e5c0de29bbf9d6db4d69a6e2.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-202045bde920880beaed375512d0eaecfa8a2cb7339e090f1bb793f4a8f46072.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-003bb019a02a5532ad7418c94cd6fdea79240d66b70710378d65160ac8c76b16.png)
 
 First, we plot the graph of $y={(\frac{3}{2})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2634eec8baf603f28e6a0e6201b06d5cd6a835ad01999431a2bbe8cf79028f30.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-dccaee30c8c7ff9d9b9303c1e1dc2cfbe679c65b635c5225e6fd5a79c7f0405b.png)
 
 To sketch the graph of $y={(\frac{3}{2})}^{x}+3,$ we take the graph of $y={(\frac{3}{2})}^{x}$ and shift it $3$ units up. The $y$-intercept moves from $(0,1)$ to $(0,4),$ and the horizontal asymptote moves from $y=0$ to $y=3.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-9f2b954469967d8ebf44a47fe84a5aa48e3a575c0d1f3bdb56ab6e35728a71fa.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-781f7bb9b9d54b81c5f7a0bc2c9dbdcbeeab01ff4395a48a9c6f1a00431eb869.png)
 
 ## GENERATED moderate authored_transformations
 
@@ -284,23 +284,23 @@ To sketch the graph of $y={(\frac{3}{2})}^{x}+3,$ we take the graph of $y={(\fra
 
 Which of the following is the graph of $y={(\frac{5}{4})}^{x}-3?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-1e24d41a0fe901378f3b22cea55ecc05c18efc56b419c2e2bf37c082cc8dc1c6.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-ff973f5712879ce64d197b9adec2c4cd3e9d729f70462d5a244df28f57f86c31.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-f29255ffa8b15531ec52d257ac1ab814e32eda2a11150093feb24964baa8639b.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-168bcb4775e526475b97e58d2f77f3206cc6a9b50fd74c12cf283a5ece54b4e4.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-5ad746c7d6eb3f4fab742bf359cb8767f86ccb8f58d7769c35a929714825b95f.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-9261a863ca8b7f82587a7c98660ec7ef6dac0d085985b5808e02ab0594790d6c.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-8d1c946a0352e5e14b5d1db53e96a28bd0243a933388c614c66c2b493adcda73.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-3ecf077e7daa038b2680cbb5e7b40f0e2524ff5eec5ef71d15cf1752f8ccd44c.png)
 
-5. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-be04a37f1265af85200920e4a07e03f0513d43b78735470ff9b9b2d90e91c3ca.png)
+5. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7c693a0552aeed8735db78b031704a190a6f4aed23e6666dec507cd8336e346b.png)
 
 First, we plot the graph of $y={(\frac{5}{4})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b44f9a1d344cfeca7b8fc7ea736edd26abaf2c11a3124468a2b3f73174ccb472.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-3ac54b57ca23df207b3d16e04cb301c82ad53f4090ff053a8d89c43b8caf834b.png)
 
 To sketch the graph of $y={(\frac{5}{4})}^{x}-3,$ we take the graph of $y={(\frac{5}{4})}^{x}$ and shift it $3$ units down. The $y$-intercept moves from $(0,1)$ to $(0,-2),$ and the horizontal asymptote moves from $y=0$ to $y=-3.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0389fb2a7aebfafbb96ab1ee532a226c9842db99d20ab9ff25b15e2027bc3651.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-bc0201befd19ea8c69904c96785da8bfd10cab89e3521de0a3b47dadd7407512.png)
 
 ## GENERATED moderate authored_offsets
 
@@ -308,23 +308,23 @@ To sketch the graph of $y={(\frac{5}{4})}^{x}-3,$ we take the graph of $y={(\fra
 
 Which of the following is the graph of $y={(\frac{3}{2})}^{x}+3?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-97b4c3c33b12802fec6933b946bb85a3c79b47952430dcd663b507e7d31aed12.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-08cd7464e9f8cf32d345783ac8f10a1955511d5a8676e2d355272fee98c46f2c.png)
 
-2. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a72a9d0e06cce46e5082cb15986d3dd4c735e941af8801030d0587a3dde846b2.png)
+2. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-6001add07602df16036975fe702d16900222200ca93307f3ade541f5e3ca983a.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-c9be396bc71fb6c75a4e6fb45efd20a6c3b00741fecaceac8a958c7c907ef70b.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-efc7f61fac8b518880f6eb4365009b9f68dc99d67af21036edaed354ad714ed8.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-4c601e9c0c1ca384f111b05410c4433c3fce0c5447091ef9e5d2c21242f8c3d7.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2d1e9a363746663083295d646fba2b83ba560b093afc073f67037f8190315cd6.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d03eba38a43a2a21be96c7bada453e18021670980fd9a84df23e641191fc24d3.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-38a96bd8d9aff5ad9a9b37ddd7f63dbe5820abacc3fdbf2917aeb9f8fa504260.png)
 
 First, we plot the graph of $y={(\frac{3}{2})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2634eec8baf603f28e6a0e6201b06d5cd6a835ad01999431a2bbe8cf79028f30.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-dccaee30c8c7ff9d9b9303c1e1dc2cfbe679c65b635c5225e6fd5a79c7f0405b.png)
 
 To sketch the graph of $y={(\frac{3}{2})}^{x}+3,$ we take the graph of $y={(\frac{3}{2})}^{x}$ and shift it $3$ units up. The $y$-intercept moves from $(0,1)$ to $(0,4),$ and the horizontal asymptote moves from $y=0$ to $y=3.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-8a810f9fbdcd3c7cbf1002c2b9e76992c3675f35425a08b27cdb5ddb54e1c542.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-ad1a5c415d796ded64f1416e53dddde08c91479ca456605ee56a0f43386880d4.png)
 
 ## GENERATED moderate authored_offsets
 
@@ -332,23 +332,23 @@ To sketch the graph of $y={(\frac{3}{2})}^{x}+3,$ we take the graph of $y={(\fra
 
 Which of the following is the graph of $y={(\frac{5}{4})}^{x}-3?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-504b6dc648de8dd8bac722c31f0be9a93292fa4be5e7198f90bdf3a5f55d1853.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-c4819be35cbbad806156ed31def950b98f4f23bde802e4d69ba564e9a82c1413.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-50766b96903f7125c8476a3889aed0ef1bc69d06e9ed670b07fc26db98b8c318.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-ae01a4275588a2211cceda9722d98f167b9f0c3cc1205c09af5b72920dd6e789.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a92345d4d21bced5ef3cd2c5ae4d09438f9cabea542acb9ecf72bfccba517508.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2476b683ffc5f98f4bdfc1f97d356433eb51eeb78e4f2eb760a28c662a3c2814.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-73414f67b4f11b343aa666071bceb09b27a7aebfdc462d2a20ef4bb96b2278c6.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d17bcbdd5d54f509538d0e18d22ab8ef259559c91c6ede4d2ddcc71978a4c494.png)
 
-5. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-e2e8670b932b93819fb5b45cada853ca1e12a43121ea0c5dd251df25c38e1f50.png)
+5. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-6373a9468f20ceb2e71195f01961b8c73acad191bbe640e177f7a2937809012e.png)
 
 First, we plot the graph of $y={(\frac{5}{4})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b44f9a1d344cfeca7b8fc7ea736edd26abaf2c11a3124468a2b3f73174ccb472.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-3ac54b57ca23df207b3d16e04cb301c82ad53f4090ff053a8d89c43b8caf834b.png)
 
 To sketch the graph of $y={(\frac{5}{4})}^{x}-3,$ we take the graph of $y={(\frac{5}{4})}^{x}$ and shift it $3$ units down. The $y$-intercept moves from $(0,1)$ to $(0,-2),$ and the horizontal asymptote moves from $y=0$ to $y=-3.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a4546e954dd02a85fd273cb2de9ef2d9d73795e184f08faae56fac75b8e6a972.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-85229c6707f20e87a106785536f028acd31be57b2db61d89e75f13987053596a.png)
 
 ## GENERATED hard authored_transformations
 
@@ -356,23 +356,23 @@ To sketch the graph of $y={(\frac{5}{4})}^{x}-3,$ we take the graph of $y={(\fra
 
 Which of the following is the graph of $y={(\frac{3}{2})}^{x}+\frac{1}{3}?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2110b7fca5e40d02b91c84491ce51405707d2d197fe7bee4bcef75ea8fe4d975.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-262cedf50d03098e33dc9c01259b8fede715d8b23e0cd6f3cbd54a2fd388fb87.png)
 
-2. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-5c2388ad416f5ff492e658aa86b2c0d603a28ef84a21e77ca537d4a64933d356.png)
+2. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-92d844598d542d47c241bdf70bc47110e85a3b275a415896d8e2037283ff45fc.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-df394927612c811b13828804ee1474a91e893d456bbd5cd26655f21ae2bce591.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-ce026fe98bf455c9b7242ab8515eb6496f3cf507ade5b36f5323151ba49853d2.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-91a674bae9d49fbc9e8db83243bde1847b68987c726a581d1da869c7b4348e85.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-32433a3b6a6706835ce417460ea892dc7340b9b372b8272c024fc91e945a1178.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-21313112a77553c73724f0ddaaa3a5bdc9af86d42c8cd4a6e7c260d5dd8bf992.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-6472e94388d1466f74aef00bd4b0100ee7cb203193b65e6352d66b546ffaf75f.png)
 
 First, we plot the graph of $y={(\frac{3}{2})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2634eec8baf603f28e6a0e6201b06d5cd6a835ad01999431a2bbe8cf79028f30.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-dccaee30c8c7ff9d9b9303c1e1dc2cfbe679c65b635c5225e6fd5a79c7f0405b.png)
 
 To sketch the graph of $y={(\frac{3}{2})}^{x}+\frac{1}{3},$ we take the graph of $y={(\frac{3}{2})}^{x}$ and shift it $\frac{1}{3}$ units up. The $y$-intercept moves from $(0,1)$ to $(0,\frac{4}{3}),$ and the horizontal asymptote moves from $y=0$ to $y=\frac{1}{3}.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7dde6065dc1720bc82c0ab7c50f8b99b8949db9a271c5c2ad1e4130970e0065f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-eed8edb5601c6be91e05c8ccf7b7ef09ddcc377fd8b3108be76657cc5b9200f5.png)
 
 ## GENERATED hard authored_transformations
 
@@ -380,23 +380,23 @@ To sketch the graph of $y={(\frac{3}{2})}^{x}+\frac{1}{3},$ we take the graph of
 
 Which of the following is the graph of $y={(\frac{5}{4})}^{x}-\frac{7}{3}?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-653ce7458416a2f95d1910dcb1b5e9fbb977cd15e10a1e33bc5a1259298380b8.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-38da11caf8eefcc62998350d1ec99cb2941fe5ce161fa2d6c2dbefb03ead71e2.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-c7ac945a671d6a80ae6982d1230aa3d86468c19a52dee6ea612799461303b041.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-fb92c7957b3df13abfb3c59ed19e9b27565504f2ec6056dbe3ffa0090ccd0f6a.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-361edfeab6090a339a41f9ee32038c2fb48d9e0dd4d662a229ab04eb52a11337.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b9926e841bedbba022c9e455d78b3a7e4d5846091c210b85bf5696ec4dc808c1.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d4bd504eb51318b5168725e675a3c17437a1c61bc3a5cad431b9a8a40c736c9b.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2022ad46ccfab2e9d6624c9a15e50dee2af000b64fa8f7c837bcf87c0ac52346.png)
 
-5. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-730ba589da1b072a42fd03c8667a6a64b45c915badaa525cfc4b4483cac93673.png)
+5. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-29e489f8c267f2c273dbb2cee809a7539c5c6f0055f5e9e6331840904d543e40.png)
 
 First, we plot the graph of $y={(\frac{5}{4})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b44f9a1d344cfeca7b8fc7ea736edd26abaf2c11a3124468a2b3f73174ccb472.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-3ac54b57ca23df207b3d16e04cb301c82ad53f4090ff053a8d89c43b8caf834b.png)
 
 To sketch the graph of $y={(\frac{5}{4})}^{x}-\frac{7}{3},$ we take the graph of $y={(\frac{5}{4})}^{x}$ and shift it $\frac{7}{3}$ units down. The $y$-intercept moves from $(0,1)$ to $(0,- \frac{4}{3}),$ and the horizontal asymptote moves from $y=0$ to $y=- \frac{7}{3}.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-710606a97bc7ad28d53bb72755523d955689381d6e6d4839aed93189addd19b1.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-126d6d8806f452f677b33450538694f20e6d2b69c65dca650c3ac2bf65024a27.png)
 
 ## GENERATED hard authored_offsets
 
@@ -404,23 +404,23 @@ To sketch the graph of $y={(\frac{5}{4})}^{x}-\frac{7}{3},$ we take the graph of
 
 Which of the following is the graph of $y={(\frac{3}{2})}^{x}+\frac{1}{3}?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-33252c508d1dcb4b1aa7f4cddf1a256f0218871d56142cb5c53922966be75dab.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7df017b436e37a682c536fe9bb10e44796c5a4067b3fc1cb87c284575f6d0410.png)
 
-2. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-29cd86461eccd84e82009b143e649712cc961c08ba5fdd5b0052525e57615d94.png)
+2. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d1372662b3f6979c3a02c34c9481f086017249f67b3008a7b02e0b4508a61ab0.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d2c8ae53af9a034238a7d5c918b3e2f250fa8688da9817c725ed7ca15695dc93.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-c8fb5d978515649be2bf721d13d60ae4ab0235276b8437e4c740e02b7cd2ed3a.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-ac555f3372628b43fb0eadc836ad58e717a38723ba0bf04bb79d099b3148a287.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-e303759fb7ce6487ba54448d10841a64d23326996c97be0809bf3fc25b5264af.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-6c156e19398f374087d7a30d75fa9ba9b3004a341f3fa39c4e1f0f79d46c0b34.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-fe8f243f45d04e0682f2e9f6423c8c9a0fd19fca8c00841a0993a00f7c488566.png)
 
 First, we plot the graph of $y={(\frac{3}{2})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2634eec8baf603f28e6a0e6201b06d5cd6a835ad01999431a2bbe8cf79028f30.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-dccaee30c8c7ff9d9b9303c1e1dc2cfbe679c65b635c5225e6fd5a79c7f0405b.png)
 
 To sketch the graph of $y={(\frac{3}{2})}^{x}+\frac{1}{3},$ we take the graph of $y={(\frac{3}{2})}^{x}$ and shift it $\frac{1}{3}$ units up. The $y$-intercept moves from $(0,1)$ to $(0,\frac{4}{3}),$ and the horizontal asymptote moves from $y=0$ to $y=\frac{1}{3}.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b8f24ad2e5b001482823440b1c312ffc5c94680c0cbcfcb1f4e6b6093c53361e.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-bfdae6b58e50c5e48e1e9d70d92e34d2c0ae93d761ca8378695c95c6a2c539af.png)
 
 ## GENERATED hard authored_offsets
 
@@ -428,23 +428,23 @@ To sketch the graph of $y={(\frac{3}{2})}^{x}+\frac{1}{3},$ we take the graph of
 
 Which of the following is the graph of $y={(\frac{5}{4})}^{x}-\frac{7}{3}?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-80af47b573d021e3ea440196466ea1a569790610a6a185fd8a19f044f49f0dd7.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-c1cb3854c1c4ce40f9c102b3b6954d17e0963dd0e29571ff28cec153015be5ab.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0e7886fca235fa0d8b8b0892cdb404d991d10527cf270b04d1f5bd2ed159389e.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-cdee3a9c4694015b66a607ab4764d367bacd3021f43ff0fd989affd24447fb15.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-ad43f6af4ebd9d81691d139d7f430bb6e1ee8f3fcaa6afef39eef9b91d7f5895.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-961e119dae6cccedc3272830af4634cc90e45a971bc87e349b2a10f809020583.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-c70669ef62ab388a6597a4c395cdaeb3f6af45fad834c553fe188cdb8702166b.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a40920eb8092ed34cadc6ae7a4853be84c863bc6701562e066a3cd08e5174545.png)
 
-5. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-cbf39647fdaa58e56cec44c4f535e8aa2eb832431dad6e7a218791c8a3f9bf86.png)
+5. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-fccb603d92a024c37197c89e7837219cd6989d6a3f2e631437a7f1ae070603eb.png)
 
 First, we plot the graph of $y={(\frac{5}{4})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b44f9a1d344cfeca7b8fc7ea736edd26abaf2c11a3124468a2b3f73174ccb472.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-3ac54b57ca23df207b3d16e04cb301c82ad53f4090ff053a8d89c43b8caf834b.png)
 
 To sketch the graph of $y={(\frac{5}{4})}^{x}-\frac{7}{3},$ we take the graph of $y={(\frac{5}{4})}^{x}$ and shift it $\frac{7}{3}$ units down. The $y$-intercept moves from $(0,1)$ to $(0,- \frac{4}{3}),$ and the horizontal asymptote moves from $y=0$ to $y=- \frac{7}{3}.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-8c11016c22e21a7fbbd4d75cdb2f77690ed47aa5ebb77a245ab50c70d7f9fa49.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-8622923121ed476d7d93a5d8ec7f537826a2a159279f7fa07b56abfea4fb30f3.png)
 
 ## GENERATED easy authored_offsets
 
@@ -452,23 +452,23 @@ To sketch the graph of $y={(\frac{5}{4})}^{x}-\frac{7}{3},$ we take the graph of
 
 Which of the following is the graph of $y={8}^{x}-3.5?$
 
-1. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-180ddf9b39d1014f3d7f6f3c6096240123659e74bf0517460e92a66ff6928fd2.png)
+1. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-442f9927cb33520752620d5a03fc794b50df90984f1d357885368ce65708d03a.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-067c93219bf3ba2f9aea59fe41812719c38da408aebbd1f11b5c0829fac05859.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0f0098236567873cbbecbdf5863a4ffac62a9d3bc726395b7ee16b9a04d59d75.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0bb0af8d7985960d7dff6533ff9e3592e4a2d42a96db648914550aadea884466.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-091ede1b5ff0c45ff414da55fdec61ba7f6eb997e820124b59f0102e453cead3.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-1524c93ee86f6526b93f9adc53b7200cb592453779127ba86edfd22ed4b76ef1.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-f99c6c61f105db981db2e86e64211a9e19150af8a42704f82e3fe2b96249e2b4.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-e87a059ccba5f5bbec8fb99aebf303fb12596c9eab16cc616978b68c92c1cdde.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-71a01b8df138bc2b01e907457fca57458295663f59d38ef4509b3aeeabb65964.png)
 
 First, we plot the graph of $y={8}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-aab5c14325dfa70ac6bc70685a54c7840a853b399178fb1d4d294770858f5bec.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-63204385d408816428afc40f736e95c2804ba270976071859adec9e0a68d2ddb.png)
 
 To sketch the graph of $y={8}^{x}-3.5,$ we take the graph of $y={8}^{x}$ and shift it $3.5$ units down. The $y$-intercept moves from $(0,1)$ to $(0,-2.5),$ and the horizontal asymptote moves from $y=0$ to $y=-3.5.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-685cfd769a89761eedeeb454b05e68da7c8c9fc8310d706ab11dceaa2aad44b8.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b1286bf55660a6a277bbebadfb8c205e27cd7374b6134c9e86c5e8fc7d0d2373.png)
 
 ## GENERATED easy authored_transformations
 
@@ -476,23 +476,23 @@ To sketch the graph of $y={8}^{x}-3.5,$ we take the graph of $y={8}^{x}$ and shi
 
 Which of the following is the graph of $y={3}^{x}+0.25?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-71b8268b318dce593032a2911dafc9a46874e22dc3577c57b858702e8df6d97a.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-18990b4634f46dbd5c8f1a421a42cf23731a508ff1b66fa2c6469fd41bdc743d.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-36225c79082d9ee4ab03548131325c01f1638fc96eaa26c710ba448d7187a5c8.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-336c8604b760247964f292b0efb7d8a9abe6a53224d011fc1e7eb41340473603.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-129b2e62dbc859cc1a139e81c82268b8515eaadbe7525e3d973d62e655305e96.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-6bada6b8fbb945c7fbddb28614dca42bbb9f3e000de6d323b5a769a8cbf8d1db.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0b96122e4bd87b6e2026ecf11f7242c7918d4d8092282a8fc3f8cd570e7eafb2.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-56f993e87f64d51de0303bffbd4d4ca814db001c89ef687e169d523bc09ac9b9.png)
 
-5. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0304580ea17d9401a6149bc90a9f22706218f2cb6bda69bc244750507e3da7bd.png)
+5. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-716405be7195b238098c0a08eabfd4540fdd555a8150a8e038b1e78c3081d427.png)
 
 First, we plot the graph of $y={3}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-9177888604ce83d0cdfc820d14fa4c102e589f9d955affd6d4f90fab34002886.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-e6b251d7e0304c04df9b46cc86364741938e8fcd931e182dea12b2aad7883816.png)
 
 To sketch the graph of $y={3}^{x}+0.25,$ we take the graph of $y={3}^{x}$ and shift it $0.25$ units up. The $y$-intercept moves from $(0,1)$ to $(0,1.25),$ and the horizontal asymptote moves from $y=0$ to $y=0.25.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-4b4ea9ad929eac8c6c4b70e41a530317a1f63f6afd336c468184fe9c4493586f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-8ee5941f0f4ea9e3121a16f4294a4aa23fcef5bc6c963bd5417c27a0414f20e1.png)
 
 ## GENERATED moderate authored_offsets
 
@@ -500,23 +500,23 @@ To sketch the graph of $y={3}^{x}+0.25,$ we take the graph of $y={3}^{x}$ and sh
 
 Which of the following is the graph of $y={(\frac{7}{3})}^{x}-\frac{7}{2}?$
 
-1. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a57f515f9425629bf53710bb6d26a1765a9865b8f87d4716ab3491b1e0599948.png)
+1. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-70673096f065321372641830616c9737e0c19e9b521304b5b2242d70110a7a40.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-36eb5c0bc3dc64b8fe5a5d74fcbc9c3274853cd75b3826a00b7032ebc8a2815c.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-252447b0931ddb6ba97eafbfbf9a1c7359ccf8f058ebe6443314a65937e66e3d.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d40a59c4793173fdf5fa291eb519283adcc5147b76cf5d1a82b6b58c4575c2e9.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0571f5986efa60875bfa5c2de3c25272338ffc5b2aa06048d4e54387b4308290.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-27a805e454111e4afbedd7fc4e068496af9d274a1fcc9d2bf767dafb5f724c88.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-794a6d6464e036de707239b78625b0b14e3adb49fa23ae259d8554f99f220b01.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-bfbf37ea19753e5bd125d0f7c1c16d223692adc2e0227af291960473be804818.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-4d3a7c5a9cc7be2c907b10c4b12d9a947d9c5649922fa3770c52aed775a980f7.png)
 
 First, we plot the graph of $y={(\frac{7}{3})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-4c0991f43ce5b4c920a37df8453c61a79f9f4ae826246f672685657b434d8803.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-1ad33b364bad0a060a06cc18850d557297d2b7b647dc2e518cd606cf10f235c4.png)
 
 To sketch the graph of $y={(\frac{7}{3})}^{x}-\frac{7}{2},$ we take the graph of $y={(\frac{7}{3})}^{x}$ and shift it $\frac{7}{2}$ units down. The $y$-intercept moves from $(0,1)$ to $(0,- \frac{5}{2}),$ and the horizontal asymptote moves from $y=0$ to $y=- \frac{7}{2}.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-80befa1f5cea8c30d2dedc98e5323046367477238316ae5d21fbae1dfe37f27c.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a7d8e6fbac87355cecf34b11a10340d4ae702e706b2152a9f4ba742638e9a3cc.png)
 
 ## GENERATED moderate authored_transformations
 
@@ -524,23 +524,23 @@ To sketch the graph of $y={(\frac{7}{3})}^{x}-\frac{7}{2},$ we take the graph of
 
 Which of the following is the graph of $y={(\frac{7}{2})}^{x}-3?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a44a7f710fdf68561707d46722a6a7f051fb47faa96aeafbc951f257d124d07c.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2ce327f0c82f7521a9415597dd1c7b7ccc12fcfc587fc44f6623875c836ff51b.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-829b76220df983c876393a184bcb54d901efa3ce37fa0d27c905a43a3fc2c38b.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-c59bee5543e7852968998b332e6a9e54499b61cb801e1dcc22cab4e4bb448566.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-6b943789f3d060d2bc417639597e9c5438a8dbe79c77de4871d5ecf78d0b8a08.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-c8f9e22243931a70880d111d3f4e88e73619c55f2e1b53bb939f47ecf616cf9b.png)
 
-4. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-3f0bd813eea2f062a9349b470d17dff063c4292706c4de597b62d9c987e397a7.png)
+4. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-f8236a9490b6cb817f72775e27c30fc0328dd5ae7030fb7556f929a4262ac8e2.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-90178e37d5eb2672b97ced9729225333a5ebdb3fda0f5a83f7f8292ac2f135dc.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-1cb23d7ae22c94f9dee58dab704945be3a919232054165655af2a746d854205b.png)
 
 First, we plot the graph of $y={(\frac{7}{2})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0a93a751c7efa2c609d717cb616c5775c3f5f8410ea1a1df63dbfb9d9108bc05.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2ef3f870633082ce1d660fe6e916c3fed4f110b1d83986df372fbb7550aee351.png)
 
 To sketch the graph of $y={(\frac{7}{2})}^{x}-3,$ we take the graph of $y={(\frac{7}{2})}^{x}$ and shift it $3$ units down. The $y$-intercept moves from $(0,1)$ to $(0,-2),$ and the horizontal asymptote moves from $y=0$ to $y=-3.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-6b3bca03384f67b20eaac87a0de570b1c04989d853dc8ada7b8526713d9da1d3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-df3dc73f121d793797161d4e01a8a840ac31ac4f50b048e44a350134c43fb82f.png)
 
 ## GENERATED hard authored_offsets
 
@@ -548,23 +548,23 @@ To sketch the graph of $y={(\frac{7}{2})}^{x}-3,$ we take the graph of $y={(\fra
 
 Which of the following is the graph of $y={(\frac{7}{3})}^{x}-\frac{8}{3}?$
 
-1. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-010491a68b4ad15056f0ffc20744b9f964774f2090e0747d8d3e757a3c6a02e6.png)
+1. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-21489bad96b6e8380d3a5c8f5f45661253e7208567aa6070b7b08f3ce50416a8.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-64ec4df8687fe84914d5a8983540d16917effcf64bfabad0491344ea6dcef882.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b828583852c6a9b797547dae4950afc41b8327708803b18966305f4098ebeb13.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d909420f982aea3adf85b39aff3110931f41d83cc42ab2a8ef730dbf85db3959.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-31ff20a401ce2a88039de056b77276d3f7539ebe0786ea51c707232e7b969fc2.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-c16649439aaf5710e67a928f0797072aa6be6d635d6a5610e83964c01b47a41a.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-91034d2e0cc92dfd330dbd9ba517badc214d4f5c79811c273b21f055d5715d3a.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-464429a2cad84a0e275cc7f5725ee660ed6f3a2276be9f3833a6df7cd58bb8f0.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a3e3870512c0249ada4e6fbf467449494f6ba03e7c1c00c961364f56e470f23e.png)
 
 First, we plot the graph of $y={(\frac{7}{3})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-4c0991f43ce5b4c920a37df8453c61a79f9f4ae826246f672685657b434d8803.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-1ad33b364bad0a060a06cc18850d557297d2b7b647dc2e518cd606cf10f235c4.png)
 
 To sketch the graph of $y={(\frac{7}{3})}^{x}-\frac{8}{3},$ we take the graph of $y={(\frac{7}{3})}^{x}$ and shift it $\frac{8}{3}$ units down. The $y$-intercept moves from $(0,1)$ to $(0,- \frac{5}{3}),$ and the horizontal asymptote moves from $y=0$ to $y=- \frac{8}{3}.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-89c11f6a58d9434aadebba32eacef1c2dd3443328593475c7712ecc4387aa2b7.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-953a095f8dd7b2c34cb30a8915a78fc6c7758cdf440ee87e68e86bc2eed34a3d.png)
 
 ## GENERATED hard authored_transformations
 
@@ -572,23 +572,23 @@ To sketch the graph of $y={(\frac{7}{3})}^{x}-\frac{8}{3},$ we take the graph of
 
 Which of the following is the graph of $y={(\frac{7}{2})}^{x}-\frac{7}{3}?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-6661e290e96ab5b5b7edabeb67f176bc44c9ccce353552671abe08ccd06e9552.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b8c3823e70cc8189954a79ba465fadbb5d7008555f499f3ed273cbc289f05d86.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-08ec923e1d101ab4aecb050ae59a1dc8c089d37f43da6a74e7741da066295bbe.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-82ae30b1fda00e3a3828c1eb04187a3ea5281914ee688bc97324b0dcfa3b220b.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-45cc035887e6862ec2a072dce2d2ae5c3c2748186b9dbce45b1deea777b4338f.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d267b74ab4477798ab04e11cee2c0876708b10c26dabb04abf0199645f5a6ab6.png)
 
-4. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-fc5812edbcc63ae145c9c881c48b7ff7e0318fadf3811c59a81c48e7f83a67c5.png)
+4. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-4eb1bf6fa9c0057db2e8924a296cc50a7bf725071672fcf716d5df2d94ea7eeb.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a7b86960b55f9b89e313bd1536b32860843f50623bfeae775bc316cecb4f0ef7.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-8deac8fd99a51f2093ae8b0991866753d2ed3ae0a1bd291189ad61df626e1144.png)
 
 First, we plot the graph of $y={(\frac{7}{2})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0a93a751c7efa2c609d717cb616c5775c3f5f8410ea1a1df63dbfb9d9108bc05.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2ef3f870633082ce1d660fe6e916c3fed4f110b1d83986df372fbb7550aee351.png)
 
 To sketch the graph of $y={(\frac{7}{2})}^{x}-\frac{7}{3},$ we take the graph of $y={(\frac{7}{2})}^{x}$ and shift it $\frac{7}{3}$ units down. The $y$-intercept moves from $(0,1)$ to $(0,- \frac{4}{3}),$ and the horizontal asymptote moves from $y=0$ to $y=- \frac{7}{3}.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d714ffeb2888e08e1494751ef4338060cf5c71a5205e43a595b2418a2f91b67e.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0a00376537377dea91475aae5afa0b19946d10669b57d85d9ae7a856a53980db.png)
 
 ## GENERATED easy authored_transformations
 
@@ -596,23 +596,23 @@ To sketch the graph of $y={(\frac{7}{2})}^{x}-\frac{7}{3},$ we take the graph of
 
 Which of the following is the graph of $y={2}^{x}-1.25?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2c303cdfcd25bc3f8aa97d39b9b5b6879d6ef52059e62aaf217b34f54bd5bc97.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7064bda4359928c521b5b063d195c61d1f0178ba290ac75b6def46a9e5ddd821.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-9b06445a151f7b6ddfcc09295ad52cb3330572036831a3f440effcc9f0e1ffdd.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-3164d70a1fc46ddec3cf022c9d7ef35a715e739b5d34029fb78e105e51971b2a.png)
 
-3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0245c3e4e91b21b860f462ca89ab5432241bf8f074a771d1baad4e6c98f2ac04.png)
+3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-1ed3719f5842ebe3d34eae4ea6ec745e088229bb03bbc4587eaba0cbbfdca5a6.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a9a94803de7022ca1802d7c084d44d3de244a66ab1b7dc5d5d7bbadeee6b1cef.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-293cf74eb09b9817414b35c19a0c3bb9f5284ddc2e1010b0e4e72445db266b54.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d1f7b2c40ae013adc3b961c8a4a05629e81c7ff9db9d545b9251dd9bb7c227ba.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-16e700544072a2434d5ebb7e820b0ae7bba23a8ff9c7fbbe5b0d0d68d0433da6.png)
 
 First, we plot the graph of $y={2}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7d3f9a4852beb6fd761ed5af03553e4d1193ef4e648604d4af058404de773b67.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-814889f9290af5eb22b587db340c9305f4979fcaf44401956a40d830fb029f54.png)
 
 To sketch the graph of $y={2}^{x}-1.25,$ we take the graph of $y={2}^{x}$ and shift it $1.25$ units down. The $y$-intercept moves from $(0,1)$ to $(0,-0.25),$ and the horizontal asymptote moves from $y=0$ to $y=-1.25.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7b2fc6aaa23997857a0a717e5eda4e71fa68d955cf6bb63c58f56cfc6550100f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-1c321c31eb5b90a20a45f37f162e5f2ba4cdee533543eb781a018ae5103681ab.png)
 
 ## GENERATED easy authored_transformations
 
@@ -620,23 +620,23 @@ To sketch the graph of $y={2}^{x}-1.25,$ we take the graph of $y={2}^{x}$ and sh
 
 Which of the following is the graph of $y={2}^{x}-0.75?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d6d6c4ba19d12e94184c4e1da849ac255289c231cd9f7b03886fa4d9ce2ed9fb.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-8e62b74df06495e3d3d617989b7a5e2c87f5d3cf92cfdc12a89e3f124500a6f6.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7a4ef58fb21c85e38abef6b2b18bb333ac3cc2e2ef6fd70c1f363a56cb4bd595.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d27946e441dee738067823e753a74ec40e94ff31cc3a8d33ecfbbdfd94e44642.png)
 
-3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2bde2cdc4bd347795d069719a0667ebec6e42122cf47d5e3418b615be27f7893.png)
+3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-75a675faf56c69f91b40ecf36a3d3dafbfc6300ebb7005d6c9c22f4df5e6c95a.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b950e131c6268da55d2c3cf203d2a51e6184bdfba1987ad5eb6ccfbdb7d77af3.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-343a5b0d1344109e57985142b83a144bb31a8f9932471219df70435df303861b.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-3ab980b896d4824f317f46b72b71ec49813db7b574dbeb0c7a68e32c9260a8e5.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-63489421deb0a3f806ff4e6993a640e2092b66be29365dc50b1c436612a59795.png)
 
 First, we plot the graph of $y={2}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7d3f9a4852beb6fd761ed5af03553e4d1193ef4e648604d4af058404de773b67.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-814889f9290af5eb22b587db340c9305f4979fcaf44401956a40d830fb029f54.png)
 
 To sketch the graph of $y={2}^{x}-0.75,$ we take the graph of $y={2}^{x}$ and shift it $0.75$ units down. The $y$-intercept moves from $(0,1)$ to $(0,0.25),$ and the horizontal asymptote moves from $y=0$ to $y=-0.75.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-668d8b8e56ca24e5f4c98eb7b8a95772d7919d6b3aae1b14a19c668bf1c7ea61.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-14b832aa2cd29ca389b989db0501008a11ff636fb95dfbdef42177406bcc0f03.png)
 
 ## GENERATED easy authored_transformations
 
@@ -644,23 +644,23 @@ To sketch the graph of $y={2}^{x}-0.75,$ we take the graph of $y={2}^{x}$ and sh
 
 Which of the following is the graph of $y={2}^{x}-1?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2f87591cb008dfb27a08f0b44ca56980c67dfb12fa92feef9bd2cdde4fa68a48.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-58972d1ecf5f1e75c6a3427a9a8819fca7b567007f3fbdaf819531caf0e2a0d4.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-ec5d896311ae01d8049768e1450e99d148bc440d5c817a14228880a5721f6deb.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-07e6c3202596b9f65a32c098b86e38bd42055154ba6cd0d7729f96a7a4b61596.png)
 
-3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b884ce0c6c1e25c3ecf1a445fdea894c9bbc9872f55c082949d165cdf7a7353d.png)
+3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-6bce6f1a69ea1bf64e8e6de2484fe0fb5091d90e4ac0da4c97a1001d3c818362.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-fb4114ce25143c30a4ae9ab7e1062835f8b5f29bbdc21e4794526d1d42ee1788.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2b40995e5116c32af7e7cd19118ae629225b4cf41e4603d5349f2faff22a534f.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-13279379009a9ba2f6b6d6ec3705ea183344d50891d568888eb4f04b000f1d68.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a3f9ffcad824fb301eace7d014c4a1941fa095621804da12806b896a499adcd5.png)
 
 First, we plot the graph of $y={2}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7d3f9a4852beb6fd761ed5af03553e4d1193ef4e648604d4af058404de773b67.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-814889f9290af5eb22b587db340c9305f4979fcaf44401956a40d830fb029f54.png)
 
 To sketch the graph of $y={2}^{x}-1,$ we take the graph of $y={2}^{x}$ and shift it $1$ unit down. The $y$-intercept moves from $(0,1)$ to $(0,0),$ and the horizontal asymptote moves from $y=0$ to $y=-1.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-02045196fbd756c8bea5360a057c86f48e018bb5e6724b295bc47256a48c8ca4.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-ffdd61aaeaacdd40e5f7dd1e818d1f9fc63edc088459f5971beb194ddee91ef8.png)
 
 ## GENERATED easy authored_transformations
 
@@ -668,23 +668,23 @@ To sketch the graph of $y={2}^{x}-1,$ we take the graph of $y={2}^{x}$ and shift
 
 Which of the following is the graph of $y={2}^{x}+0.25?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-f6e7e963bd79bb0a5ae938265e50112e0e6568c406a3fa1e47d18e74625b63df.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-39b2b4b7a071c85f86c44061a8c953f6d8d11f0b4c12a45cedb712b3f9be3deb.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-02409e9a445ee4b9b99d107de7ea63d7af19af478a242189f307efeb3d8bf202.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-03ceb25230e83f3863454c3545fa220fa7bbe7466d04877c36148d36540c1670.png)
 
-3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-e82e2017bc47acd8e3af19ee0ed9970fb3d145c54744df7f0487424019faa209.png)
+3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-fa8eae0f728877ac240f9028c7d8fc70d4b0a85c9e581fbb1851b85ddc8edb95.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7dd932aea8b163e53a93c20bc856a783a862b8de65e4a5d4c2b107ed1861b8a0.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-8d9da21158ff2dd6e391e711aa1fb3b9ca60abf1904e32e99a23492388281ab7.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-6a90bd1b3f04afaa731d6a81a80766e4d5d297a17336f3c79326c60648f55fa5.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-9177aa94e90c66d038424580d748266ae7b95035f63c114fe82adad1ba57f76d.png)
 
 First, we plot the graph of $y={2}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7d3f9a4852beb6fd761ed5af03553e4d1193ef4e648604d4af058404de773b67.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-814889f9290af5eb22b587db340c9305f4979fcaf44401956a40d830fb029f54.png)
 
 To sketch the graph of $y={2}^{x}+0.25,$ we take the graph of $y={2}^{x}$ and shift it $0.25$ units up. The $y$-intercept moves from $(0,1)$ to $(0,1.25),$ and the horizontal asymptote moves from $y=0$ to $y=0.25.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-e2b0f40ff27bab4ff7170697e78a6441a82817207333b12ef2cb5a2707ca855c.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-473bf24143a26947d1431e6c840f9666b0e61520af113edf231eabd2a8b399f9.png)
 
 ## GENERATED easy authored_transformations
 
@@ -692,23 +692,23 @@ To sketch the graph of $y={2}^{x}+0.25,$ we take the graph of $y={2}^{x}$ and sh
 
 Which of the following is the graph of $y={9}^{x}-1.25?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-06e29319738ccf49859b3a0cc9ef19e45abad09cb485e04ad44767b727ffa9c0.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-5b55f248fada12a19fb7a3dfaa0d3313df90375172e7138270387a72bf08c5f7.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b1038fdd1a9d1d21187e6b038ca25a92c96a16f1ba7ec7cca4fe098bae8cd1c4.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a82ce2422abcc841ec2200d6f1a321f342a5a7bd99d221b760a43f40242af8d8.png)
 
-3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-f3bd5166bd6503b3aeeb96f1391624d65dc27ab0db534369cd6428654d19ac8c.png)
+3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-4def33f452f99ea476e5f3d66eaebf06fdcc00895f8610fd0fa7d0702198e61e.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-62a83147f238b7b77a0a006d188e59e3453bffbfffe11f7b9ff902dc04f075d0.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-023a95b70d14eece40a1441891bac0ece5bbc0dfdbd62377c2cf5b7d0b01787a.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7e62deb89889cd71852d068211dba9a667ced85b4a133ecbf00bc0b985923588.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-6d7811c84df1e2cd65b42307378d30d227c96d08172af8998022b4056da4c367.png)
 
 First, we plot the graph of $y={9}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0c7e32c22b207340d816a8e7727938c40c5589751dec5d6dc79e43543f43483d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-98b05207f90ce1c114a08142a78e0ee465e5d3b94744b81f0fe63500b4473ba7.png)
 
 To sketch the graph of $y={9}^{x}-1.25,$ we take the graph of $y={9}^{x}$ and shift it $1.25$ units down. The $y$-intercept moves from $(0,1)$ to $(0,-0.25),$ and the horizontal asymptote moves from $y=0$ to $y=-1.25.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2135dcf18ef76bb2e5ab2513074b2c5db772cf802fbe624875849c8cc7c45241.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7cf5ed72b93344b8974412a091b96fa2a5769f4cad93e69f1cfacfa24de1304a.png)
 
 ## GENERATED easy authored_transformations
 
@@ -716,23 +716,23 @@ To sketch the graph of $y={9}^{x}-1.25,$ we take the graph of $y={9}^{x}$ and sh
 
 Which of the following is the graph of $y={9}^{x}-0.75?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-1d7a539adf8702b4debefce422bdadbf73ea266a6086d1c0dc97d6751521d154.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-24fea89d0554b1c39c1319a5076944e852cd261bd31a454a30927a2638993df6.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-1b43e2c70275570b1edac25a70048701c16cbd3cee9e0527910435936aaa0401.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a156bec90a29fc04517217989ad159b68cd7c4e7c8a818d0bd1b46fe00250363.png)
 
-3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-e18df138484427dde581aa61e0a40b33827ddd8eed45d369791661d4c6f0bc58.png)
+3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-9c642bbb0f65b992df1969024df44c337e40fe903997aa80ca6d21d81c26ac65.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-4da817a958bbc8f9c804367960fb015f970b731d45660f657ab2032737c39c36.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d5121838c2e119b1d2cf39aae62b66549543dd0fa66a4b2c8208dccf2dfa483e.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-c0ae5435bf9e8c9c991a755c3a26d770f0190199fa713c4423b0991e43c904b7.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d75eab89c5a440fffad0e512464225f9fc80697a9f4ca3ea772ddfa265926a33.png)
 
 First, we plot the graph of $y={9}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0c7e32c22b207340d816a8e7727938c40c5589751dec5d6dc79e43543f43483d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-98b05207f90ce1c114a08142a78e0ee465e5d3b94744b81f0fe63500b4473ba7.png)
 
 To sketch the graph of $y={9}^{x}-0.75,$ we take the graph of $y={9}^{x}$ and shift it $0.75$ units down. The $y$-intercept moves from $(0,1)$ to $(0,0.25),$ and the horizontal asymptote moves from $y=0$ to $y=-0.75.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-cf9ef022f7987054003dc89a1ca444e854fb7ab2106e26b3c3c0bad15dfab744.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-4e7b054b5f8ec7747576a3fcdf6ed8b97d7448967e14bd74d14ed5b2ba5682da.png)
 
 ## GENERATED easy authored_transformations
 
@@ -740,23 +740,23 @@ To sketch the graph of $y={9}^{x}-0.75,$ we take the graph of $y={9}^{x}$ and sh
 
 Which of the following is the graph of $y={9}^{x}-1?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-83d0a5fcf64ffa997a446fee1306b0e344ece77eae0d40f1de1cdb9e982028c6.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7749b9a85126705293bb442bff2c91e79d226ea5acedd4e58722bf950044c6be.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-55ea8cb899a873aa3d9d99e8cb1fffde506578680b39ce33953597a29b91cd3e.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-9f6f2df32b9c044623c112821042e7454ead7a3c998c07030e9c6738f58c722e.png)
 
-3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7a15fcc5bd4e4dca2cec6e2ad9eaacbecc96e391d6963bdb5126376ca9476b95.png)
+3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b0d7183176eda16dfc9ead2c81cf930edeaab2f33a231aa9067ad25a1d0bdf23.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2921c2775daa67f08eb6a5fde414ebbbfb83e9d1c5adc7e3141b9535f13c65a7.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-750d0bfce588a44c7186e01eab4cf72873d6d4daca6868a45feb547c388f5980.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0abfa037d5f5e1bae083d99d8737bbc745828a1e2a8efea68ab9bdb29225ea18.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-6bd22874326047b90850b59874d1b7c73debd72299678b7e91a55f83aed333ef.png)
 
 First, we plot the graph of $y={9}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0c7e32c22b207340d816a8e7727938c40c5589751dec5d6dc79e43543f43483d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-98b05207f90ce1c114a08142a78e0ee465e5d3b94744b81f0fe63500b4473ba7.png)
 
 To sketch the graph of $y={9}^{x}-1,$ we take the graph of $y={9}^{x}$ and shift it $1$ unit down. The $y$-intercept moves from $(0,1)$ to $(0,0),$ and the horizontal asymptote moves from $y=0$ to $y=-1.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-e418863af48c8545ad46adbb9d60d801cecf524498ef35d879a98d4a6b0d4d19.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-73517ae01bb67c3bf6bc183da22f4d0c58431adc0cd7876bfdb29d4feecf2e28.png)
 
 ## GENERATED easy authored_transformations
 
@@ -764,23 +764,23 @@ To sketch the graph of $y={9}^{x}-1,$ we take the graph of $y={9}^{x}$ and shift
 
 Which of the following is the graph of $y={9}^{x}+0.25?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-76d062b373b02a2f21513369b15d014e7f59b49c1d0bccc17a6f85a161768f36.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-bd9c1e61bb03637e0cbc6125e60d1d169d235a3faed7ef0a7c86b24c8be1d941.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a9d4797953fdbe69cc1b496b10065c299a73b08ac34ddd35dc19c713d3374caf.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-60d757a0d0728613a9ef41f1c1b0292a6d85abc094caa60b77fc9794f83007bc.png)
 
-3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-804265f5520aaf52d44378be9c150f014d31997600588fe0b16b64a44da474d9.png)
+3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-ae0aa5f07f2b61ea355ce19e0e56e1f255d751328bafc434c21ec89a6eec868e.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-4e8c969ca86a40706d92b0d8f8092979f97de2766d2eadb4a26cdeebc5b1cc66.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-58a251e9aae52f8a6219b5720aa5d9f7ca31e76dc38b3a7633fa393c39da5137.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-16b1e34cbfc349bed5913664307d0b42723a2ad635144d12509a9e093bdb78ce.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0a3c904f070f9dead5a28ba0e51657f04ff07f662c27c1ceb19febe702e7e577.png)
 
 First, we plot the graph of $y={9}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0c7e32c22b207340d816a8e7727938c40c5589751dec5d6dc79e43543f43483d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-98b05207f90ce1c114a08142a78e0ee465e5d3b94744b81f0fe63500b4473ba7.png)
 
 To sketch the graph of $y={9}^{x}+0.25,$ we take the graph of $y={9}^{x}$ and shift it $0.25$ units up. The $y$-intercept moves from $(0,1)$ to $(0,1.25),$ and the horizontal asymptote moves from $y=0$ to $y=0.25.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-08b7dc0ee6c9d46c1d1a2a063f1aac20d9f2d6c48bd10bfb768ddc00b74ef8cb.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a3b592c0235bbb7e80e20662c792eede3bb5c97146349096cbef4613c666a237.png)
 
 ## GENERATED moderate authored_transformations
 
@@ -788,23 +788,23 @@ To sketch the graph of $y={9}^{x}+0.25,$ we take the graph of $y={9}^{x}$ and sh
 
 Which of the following is the graph of $y={(\frac{5}{4})}^{x}-\frac{3}{2}?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-e98bd8267e510ded6a8d9d01dcb1f8340e5a49f7eef622c5052e49df2edc8bc2.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-558f1196770cc827bf1ee6621ba3f7a801f0d87266de811af83001248dde4c40.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-9fd011e758b8121a1129b3892bc7b286f1c277bb0d9b961f9fd86bdd2ec61bda.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-60ec1db5fe8ffb4e6cafcd64ea021db21ba6c4deb39ae324b475c2e12240c9c1.png)
 
-3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2d9f3def89c356cc37677a8478180a733852b2f9202bab74ebd9eecddbd44650.png)
+3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0d03039a04174a227ca9f255b41500a3a23cb80074f5db062d3e3ff481ab8e05.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-f9073b5bc38ae0e98a3e98e80a3a115ab1ae74d2398991de1e90dd360d43435d.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-c3e6b7730e2c8a4dba0b7f67a917c195110332344a5cf248685d2866b40e236b.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-28e717fe20610d0e855a213f899d088b190c4cff82a03e04abbd5cd827cbd5af.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-72ba5eafc4e32a9e6093773de57e6f701ffc42432464562af16783dc2ecad24a.png)
 
 First, we plot the graph of $y={(\frac{5}{4})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b44f9a1d344cfeca7b8fc7ea736edd26abaf2c11a3124468a2b3f73174ccb472.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-3ac54b57ca23df207b3d16e04cb301c82ad53f4090ff053a8d89c43b8caf834b.png)
 
 To sketch the graph of $y={(\frac{5}{4})}^{x}-\frac{3}{2},$ we take the graph of $y={(\frac{5}{4})}^{x}$ and shift it $\frac{3}{2}$ units down. The $y$-intercept moves from $(0,1)$ to $(0,- \frac{1}{2}),$ and the horizontal asymptote moves from $y=0$ to $y=- \frac{3}{2}.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-756d1cae0aa7ed9a0a2f48f0b2e621e3751a31c6b80873a2991cc7b93e531261.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-9635b27998fe0eebfa49e313f3acaaf299ba7a418661ecb05296b3659f73e542.png)
 
 ## GENERATED moderate authored_transformations
 
@@ -812,23 +812,23 @@ To sketch the graph of $y={(\frac{5}{4})}^{x}-\frac{3}{2},$ we take the graph of
 
 Which of the following is the graph of $y={(\frac{5}{4})}^{x}-\frac{1}{2}?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-aa03aa407193e8337438cde23645d7cb5443d174b2527c7c32c6c1cfc5a6e4cd.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2c4a5ffa48b4e7f00ce7964f0fe88f2a1cf21db9e1ed0301f2520d1188d8d476.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-5bdbba20cb96f8218873baff4503d2796aaafbde8f495c5bb98a6776dbbcec2b.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-ba7838e0b7e28543fd4ace8c9eceba998d3eee242a0e0dc54e8f26526e1496c2.png)
 
-3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-f61d882ac2e28f052d1845f4359695915f832ea37a9a3504e701d4a4c802073b.png)
+3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-64f3d17693118fa5a41e45b13e671729c40e13e7020f793849721fae043b96fd.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-918f5b31cea861ae41c74ad4cd47643b175c71ad2b26ac2f1358b27720bd2bb3.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-3d7c029740f8661f9380920590bed05dc01c89f741f314e1a7ebbff0c685a74a.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-8b2d39c2274d5560a08036ae24f01b7d3507aa068c5bc03f61b4dc3d6fa352cb.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a307e79aecbbb7e77a270c6cef57a22d3127aa63923a4b0ac4e6490dd3358015.png)
 
 First, we plot the graph of $y={(\frac{5}{4})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b44f9a1d344cfeca7b8fc7ea736edd26abaf2c11a3124468a2b3f73174ccb472.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-3ac54b57ca23df207b3d16e04cb301c82ad53f4090ff053a8d89c43b8caf834b.png)
 
 To sketch the graph of $y={(\frac{5}{4})}^{x}-\frac{1}{2},$ we take the graph of $y={(\frac{5}{4})}^{x}$ and shift it $\frac{1}{2}$ units down. The $y$-intercept moves from $(0,1)$ to $(0,\frac{1}{2}),$ and the horizontal asymptote moves from $y=0$ to $y=- \frac{1}{2}.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-808ec2899488e5d09bade0d7cbab94ba2f8bc82781a85fe16e8f35b671dabf8f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-ea990692d3fc72362d5bde4874ee3318a03031debfd6ed1ef70123d18bfa0382.png)
 
 ## GENERATED moderate authored_transformations
 
@@ -836,23 +836,23 @@ To sketch the graph of $y={(\frac{5}{4})}^{x}-\frac{1}{2},$ we take the graph of
 
 Which of the following is the graph of $y={(\frac{9}{2})}^{x}-\frac{3}{2}?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-292a7947f55fb68a29e1bd8360cc7bb4310e8c0c6819aeb71593c5267cb1afe1.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-961083b9fd80fca27dd6dc46bf14fc5624ab9e79c687e94a2b46bfec48df949b.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-cc6a74f10e0a49f5acb63cdee1159f4f3301b5dd11fa2e00b6886bc89a63ff9b.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-df788ad2be8da6007d9b312d67a0bce1ab4e56c06cd0f4319333171574a415de.png)
 
-3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a5e836a86e1f35f31c9d5653cc0ed2b81a3d4ebed692673ca60fbb4cc88bccf8.png)
+3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-00685b04a2edb27c3b5ee1c2de4d8ecdff1099512d20f29592f439a57a296145.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7b0b493108d96e95e43814f3faf738049a30293b6d3fbc240f6804c057017df7.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-27f147e08de6892383493ae5cc3bb9e5e4c754fef0e29e943ca0670ed5d7f304.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-153e5f3deebc9503a25a402e81ca82365b2419bbb4206c1f26abebcae4ce4817.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-ca9030d6b234ceea806b21ca53f6d082aa785c9eafda8e9b5dd334519412a4d4.png)
 
 First, we plot the graph of $y={(\frac{9}{2})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0a7c592d729b36fa33f4731e4e3442cb84af3a012455c1f427cb0c19295ed799.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-8a16f99c6a77089ee2cc7bda0ea59f77449c2b334211247d5378ca6792f9f7e6.png)
 
 To sketch the graph of $y={(\frac{9}{2})}^{x}-\frac{3}{2},$ we take the graph of $y={(\frac{9}{2})}^{x}$ and shift it $\frac{3}{2}$ units down. The $y$-intercept moves from $(0,1)$ to $(0,- \frac{1}{2}),$ and the horizontal asymptote moves from $y=0$ to $y=- \frac{3}{2}.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-596e32572fe7841e1b00302284d65229d55c4f3c39b6dd04dfac5ea237debd7f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0b42283802e3cb143a2785bb30a942beff67ef7b6fd2d6c77d7c698d7cf7c084.png)
 
 ## GENERATED moderate authored_transformations
 
@@ -860,23 +860,23 @@ To sketch the graph of $y={(\frac{9}{2})}^{x}-\frac{3}{2},$ we take the graph of
 
 Which of the following is the graph of $y={(\frac{9}{2})}^{x}-\frac{1}{2}?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-5252a9fcb6eed91c1547cfad547be5110e641230d2bd981b22aead368bbb6eff.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-e2a1d8a8a4038adaa0cc8dde3849f3b621a89cd23cf9429fd4ed4ff571d8e18c.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7953cb196c2964c935064638065380ea6993dbb4471cc747319a708088ff9d50.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d14cb2b876478c16b0b37b9c492ab1f7585c65e90db6d1962359ef06a25e8622.png)
 
-3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0301988cc8a6db03eedadc72abc142e348642a992b98f1d5fad7e57704a44353.png)
+3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-dab183f05278f8844448b6415aa95c1ba42e7381ad6a63a0fb9252856a227931.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-e6f9148c03980e45c37258088b4a6d71545a17b19447c20d2e65a777b73f07c7.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-c8264e048b1612ed75284cfabe2ca7c8a8fa0d445764c6aa4231294839eeffb2.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-4cd3e7c6ea790ab98485c695cbc4f7bbb2fe2135151e9a4e18de7fd0202b254b.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-20b5bde4df94bb165ade13eb3812cf920002b04eb0ce0ddc892787bcb4ec753b.png)
 
 First, we plot the graph of $y={(\frac{9}{2})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0a7c592d729b36fa33f4731e4e3442cb84af3a012455c1f427cb0c19295ed799.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-8a16f99c6a77089ee2cc7bda0ea59f77449c2b334211247d5378ca6792f9f7e6.png)
 
 To sketch the graph of $y={(\frac{9}{2})}^{x}-\frac{1}{2},$ we take the graph of $y={(\frac{9}{2})}^{x}$ and shift it $\frac{1}{2}$ units down. The $y$-intercept moves from $(0,1)$ to $(0,\frac{1}{2}),$ and the horizontal asymptote moves from $y=0$ to $y=- \frac{1}{2}.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-6ff286997fa54cf74afc0d898f2aaac38ce299a8cf35657f310d8a110b462303.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-5f4b726992c7aaeb9f9caac23d6fef93045ebe53168a7544597c6fec18b5daf0.png)
 
 ## GENERATED hard authored_transformations
 
@@ -884,23 +884,23 @@ To sketch the graph of $y={(\frac{9}{2})}^{x}-\frac{1}{2},$ we take the graph of
 
 Which of the following is the graph of $y={(\frac{5}{4})}^{x}-\frac{5}{4}?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-c64fb11712dcb49f5c86b8b32bbf83b9e1f7eab9f4da2de8e5b8ae654e57aeb6.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-104dd478877f5f162cfe398ccb621612bca732fc4e483e193b291139512ac8fc.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-539c5064bda6c5f39e8db5273ea2f2f1989bc344d693a3d6adb9b276f0ca1e40.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b7fe4fec171a1d1172ba52aef4477c8ec3234e12ecef007176e9cf3224d7f0d5.png)
 
-3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-30866f75946142380888ee8c70944a06336e800585c2de3817f5c480bbb83aad.png)
+3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-1dc671e794d7785678c3e9f4046b1ff9b34ca4b998db5936c7493d76bea62768.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2629ed7a8b8ceeb6b0660c2bf47ccc08481576163cac7e25052d9b1b23214d88.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2d63426b31f390d49b66ececf0b1b3dcd1f5929789311993428a5c9a5410f257.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0d38b693e09198e05409031b8053d96dbb4e50e2e4597d73c54448543964927e.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-4b201c588f108292533d817d65c25c3cb49e61eaed50cd9a9b138ca8b69a4cc0.png)
 
 First, we plot the graph of $y={(\frac{5}{4})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b44f9a1d344cfeca7b8fc7ea736edd26abaf2c11a3124468a2b3f73174ccb472.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-3ac54b57ca23df207b3d16e04cb301c82ad53f4090ff053a8d89c43b8caf834b.png)
 
 To sketch the graph of $y={(\frac{5}{4})}^{x}-\frac{5}{4},$ we take the graph of $y={(\frac{5}{4})}^{x}$ and shift it $\frac{5}{4}$ units down. The $y$-intercept moves from $(0,1)$ to $(0,- \frac{1}{4}),$ and the horizontal asymptote moves from $y=0$ to $y=- \frac{5}{4}.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-286d96749d36cacc9e751556131b74d19b3485eeedb2bcfd12bb3c127312b754.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-da606ef7aa29b00ada501d5a1d5f46d26636eee98afd364f492f1e6f3f71ef98.png)
 
 ## GENERATED hard authored_transformations
 
@@ -908,23 +908,23 @@ To sketch the graph of $y={(\frac{5}{4})}^{x}-\frac{5}{4},$ we take the graph of
 
 Which of the following is the graph of $y={(\frac{5}{4})}^{x}-\frac{3}{4}?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-48f229600f2d14170c123a636796215ef8517dcd8a733838348beae013ba62f9.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-72e780e62c60b71fc54bc3a6d5b90ea504b7a03bc0158aa35010d2d0f599c4ed.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-4f79731d7be274483618f5b41037f02494280f51012aab739078453493b6a8ac.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-139ac38f3d2daed83d1f37b2c3a0303b1fdcdd1cbbf9d68ebcac2b5515913821.png)
 
-3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7bdb86e347bebdc6c6a1de912376e763ba86e2658fa6bd54a7d56bf055b58e12.png)
+3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-c638e55283d6a54f817c20d344ecec134de4a6771997c0d45716704c220d12ed.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-4276d6cee05d9a392e65be4d5d5fcf8547da8b3beff24083a716c144185258bd.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b6e0b500a4c66fe1e296590422918e79a38396554a264d9a0a2a0deec1fdf2ed.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-be61af3a150db223a1eb30581cfc9261add9c5186c5b29a1a9d47eb5b5ba2a91.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-3682ca8699e3427d58e6a082066972b8fca258a7fda694ebc1fb9b5fd21e6b0e.png)
 
 First, we plot the graph of $y={(\frac{5}{4})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b44f9a1d344cfeca7b8fc7ea736edd26abaf2c11a3124468a2b3f73174ccb472.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-3ac54b57ca23df207b3d16e04cb301c82ad53f4090ff053a8d89c43b8caf834b.png)
 
 To sketch the graph of $y={(\frac{5}{4})}^{x}-\frac{3}{4},$ we take the graph of $y={(\frac{5}{4})}^{x}$ and shift it $\frac{3}{4}$ units down. The $y$-intercept moves from $(0,1)$ to $(0,\frac{1}{4}),$ and the horizontal asymptote moves from $y=0$ to $y=- \frac{3}{4}.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-98789f64f50778ed8e1bbc397074fa0e692a44d220a865ba954e326a73df2586.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-62fdd351466d28e7f215359489afd5248348c85f6416501f2ba5ae943d572db3.png)
 
 ## GENERATED hard authored_transformations
 
@@ -932,23 +932,23 @@ To sketch the graph of $y={(\frac{5}{4})}^{x}-\frac{3}{4},$ we take the graph of
 
 Which of the following is the graph of $y={(\frac{9}{2})}^{x}-\frac{5}{4}?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a6949ce053bd1a3d9497c333156e6e0a244e64fca845f789bb977af1440bf769.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0e6fd078a49085c3c613ecccb4a786eb3469a38028d5d67c61c10893216c3de8.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-db9a85943b87b6c161973811b89a1819c9a6e06d59e1c770678ce142e8229b0c.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-eff72f354ca4ecd30db63228967d1f23189a1802aa7e953dc755dff56c5dfab1.png)
 
-3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-559efd77a5459c50b7e3005209db45092da0bfcdf1957191de3bdaf46c39dbdc.png)
+3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-3496f418dd354f31d20fea51eb9aec889a3b8001cadcb83be4da04a27e990137.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-4eb73f4be8090d44c60c8e21a56d5e1d491e82b97fa90db5e28da46554b515db.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-162be200b3708f2b5b1a26196b0f993ea64fe85d7cd025c78cc61fdf8d63f6a1.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-8622a9d7e9616b53dd2999e4ad6b032ffb8d48e7f9eee6bf4c3e1211577571dc.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b72f7fc3c3a01b92eeade201cda9af919831b6c490a4d3678ebf487db16702a7.png)
 
 First, we plot the graph of $y={(\frac{9}{2})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0a7c592d729b36fa33f4731e4e3442cb84af3a012455c1f427cb0c19295ed799.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-8a16f99c6a77089ee2cc7bda0ea59f77449c2b334211247d5378ca6792f9f7e6.png)
 
 To sketch the graph of $y={(\frac{9}{2})}^{x}-\frac{5}{4},$ we take the graph of $y={(\frac{9}{2})}^{x}$ and shift it $\frac{5}{4}$ units down. The $y$-intercept moves from $(0,1)$ to $(0,- \frac{1}{4}),$ and the horizontal asymptote moves from $y=0$ to $y=- \frac{5}{4}.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b7cf28362b9826ebdc701f637e9f471272ed5d7e66ba5fb40b348bea415840d9.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d7d7f2fd0a3992e3a1203fce4cd38976b00728eb905bfd6d86a0fcd27bb866df.png)
 
 ## GENERATED hard authored_transformations
 
@@ -956,23 +956,23 @@ To sketch the graph of $y={(\frac{9}{2})}^{x}-\frac{5}{4},$ we take the graph of
 
 Which of the following is the graph of $y={(\frac{9}{2})}^{x}-\frac{3}{4}?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a27b60807135b1a871fb78bfb998b3a6a245fb40c235d5d9334161c6a4b8a11e.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7e108645e73dcf0f396efd1d14968c37db307d24cbd3f0b87564945d9aa4933e.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-62adb7a98c1f5311585c1340cc5aa77810bc68b1e2e8852bfd54c04dfa3b87ea.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-e70504655d432678cdafd29e05349229cff58e4d6d299c825fc7d4089123c888.png)
 
-3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-985bb7614738c72f4f5d6631a12d3a3256385b6600442315b9811d8d96c1c1dd.png)
+3. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-71b9192012404ad881260722a35c2cd2adf0c557f5447ffb9bc5bc6da452a073.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-dd15b843ca1af790ce6c583e716942a4403463e69580e9b074d0ff595ef6cae9.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-f9a82a949c1b4f7ab526586d36d562d5ae107c3a0ccf691df06b6c977586b041.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d81f39e5cf6fd57abb4aac84926f3831d31c7daeaba06fc4b7e2cf811e8211f9.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-efb2fe6f42d6ce0213c48d0189a826195d1a2e3e744a857c401179e0ae0fb703.png)
 
 First, we plot the graph of $y={(\frac{9}{2})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0a7c592d729b36fa33f4731e4e3442cb84af3a012455c1f427cb0c19295ed799.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-8a16f99c6a77089ee2cc7bda0ea59f77449c2b334211247d5378ca6792f9f7e6.png)
 
 To sketch the graph of $y={(\frac{9}{2})}^{x}-\frac{3}{4},$ we take the graph of $y={(\frac{9}{2})}^{x}$ and shift it $\frac{3}{4}$ units down. The $y$-intercept moves from $(0,1)$ to $(0,\frac{1}{4}),$ and the horizontal asymptote moves from $y=0$ to $y=- \frac{3}{4}.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-f435e4ee03847b222b0ea8638156381bf540a42ad3c7eaf67e6c7618cd49323a.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-3d4ed37ecfdad8b7ccb1eb65644b463ff63e338bfa33b193ed7277e1de1e9d19.png)
 
 ## GENERATED easy observed:q-25154
 
@@ -980,15 +980,15 @@ To sketch the graph of $y={(\frac{9}{2})}^{x}-\frac{3}{4},$ we take the graph of
 
 Which of the following is the graph of $y = 2^{x} + 0.25$?
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-231e07460f00657fc7a42892c1469cd33463b52bd976078e88ff34097642a912.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2854be5ed157b73a394c947c284a00b24ec7d5610f9cdeb5511d0e5f90d4c436.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0be1098b256016dfd522a18d146c82230d44da632121c5522dc6c8a731dba43c.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2cd10b47ccd6928ade6cf8b3c6d8bed1912828116b18206978d92ba5c107a4f4.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-ebcf3b970f1070c871b3796d9013793c28f1eacab7c79b0f6ef0e539b1f8dcac.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-fe3bd78fa1e6dd06ec31ef82a0e633178ef72e8ac256939d66136096f1c3d24a.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-92972a699bf22647e9f8000184aaff6f47fb22a99e0a0471182407ca82bcf7d1.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-c0108df7ad2bb2a438f172a175e0c98f0c32f9e075f90aa74d9f4c9943e34387.png)
 
-5. **INFERRED CORRECT; original designation absent** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a55f7a57aa9e2a60dc53f62bc5c91799aeb653b1d1c6685a281addbd7eb33cf4.png)
+5. **INFERRED CORRECT; original designation absent** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0e43f041bbf42386d60dfb127a5bdd33939c83a7dd8db7ae94f54948acfa2976.png)
 
 [Original source has no worked solution.]
 
@@ -998,15 +998,15 @@ Which of the following is the graph of $y = 2^{x} + 0.25$?
 
 Which of the following is the graph of $y = 2^{x} - 1.75$?
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-611991370e16a59074f321783aec08dcd962e9199c67541e33995be100f225eb.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-41c413442eacd7aa4fdf3956269ba79dd9e49c2387eef09584b10b51f0216ef2.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-ce6a6eabdb39d93a5595c5f3fef836f7cbb16fa4e1412dfe492f8235f424bdc7.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7675c93e692f88e7fc5141792cc085ae04358fdb5d50e0b46b5e82bf5cee3db0.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-231e07460f00657fc7a42892c1469cd33463b52bd976078e88ff34097642a912.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2854be5ed157b73a394c947c284a00b24ec7d5610f9cdeb5511d0e5f90d4c436.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-6d63f35a32b9bb4b703f17b37a5b6b465aedef6209fc95c4c28723fbcf5e4c42.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-9831f9fbf21b7db3c6a335bf547613888708eec2505a62d5dfc44ec780b752e2.png)
 
-5. **INFERRED CORRECT; original designation absent** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-92972a699bf22647e9f8000184aaff6f47fb22a99e0a0471182407ca82bcf7d1.png)
+5. **INFERRED CORRECT; original designation absent** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-c0108df7ad2bb2a438f172a175e0c98f0c32f9e075f90aa74d9f4c9943e34387.png)
 
 [Original source has no worked solution.]
 
@@ -1016,23 +1016,23 @@ Which of the following is the graph of $y = 2^{x} - 1.75$?
 
 Which of the following is the graph of $y={(\frac{4}{3})}^{x}+\frac{5}{4}?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-269dcc5a9a2490b526a86a55b66ca4033671ca0cc5cef7fa06ba1277d5291a72.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-3a10349629d998eedd3176ea6089daf1807ce4201f8c5f08d016a0b265f76299.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-708227094149180d2879d2118b80c60b15110a317576c34375edb2b828f7ede6.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-e90a0dfd5784e3e90e553ab9b4a1600553273555d986bbdec4817d2e7f093e0c.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b8d521c1c1af322a0da161b02d37b3b10716455a8f28715cd30cd431fe504286.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-f7052254befbc58bbc417173152c2ad1eaf08e6c32f95606686aca90aafa9a87.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-4e36ea075c9f02173640bcfdb3be4ca262d7a6795ac44028d179749c6912e56c.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0668399783df6011ffb5f511e6f5c6daea78a3fe485c9f480c6a8e54939179cd.png)
 
-5. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-5bfb64c51c47daeadc6efae6462bbf9aafdda8b749af615e66424bfe419c845a.png)
+5. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-f7f9cd84b71b83c866dbe9d864cd29dd6339fb0813da3faca25bf9606683c9c8.png)
 
 First, we plot the graph of $y={(\frac{4}{3})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a7138bf69945fec0779fb38c6bfe4b5dc760ccbee9c892f326d5a67ea36b389e.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-1865e2d78371834c17e282d4ce5efe342c2e390cefe0d7ba2c7b01d8cdd7bc4b.png)
 
 To sketch the graph of $y={(\frac{4}{3})}^{x}+\frac{5}{4},$ we take the graph of $y={(\frac{4}{3})}^{x}$ and shift it $\frac{5}{4}$ units up. The $y$-intercept moves from $(0,1)$ to $(0,\frac{9}{4}),$ and the horizontal asymptote moves from $y=0$ to $y=\frac{5}{4}.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b41eea3908268e766dd5c5838b2d0a183c1057180d6f4637a3185534c0958268.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-3783625cc4d0c7ee9cb492352ddf9cfec883e8ef0ee8c28039d13bc34dc753f8.png)
 
 ## GENERATED moderate observed:q-170590
 
@@ -1040,23 +1040,23 @@ To sketch the graph of $y={(\frac{4}{3})}^{x}+\frac{5}{4},$ we take the graph of
 
 Which of the following is the graph of $y={(\frac{4}{3})}^{x}+\frac{3}{4}?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-395f30e6f2fce055c0ea1e6821ee02ee9aa4af8254537e58909c08ff68306f0c.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-3e5e1d461c6f2337ca8c97b08c2057a410eddf1266aa151819456c1c983f414e.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b4aa67c12e9cbae447f94fbac9aae615ad8c3394101467e976c0c80b01593be1.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-44a4d4c8364a983f34669f9a5161abc5cbe97e58561779d34d9b2cba830d48ec.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2cdcdb0740896580bd9f04bb9c0c7df10800649f93b2862ef9004f836d6bb870.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-0980165a42766440b7653834a8ea8c07d0350a8a25dbbaa45002799439b88076.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-82c77a357e30ba6708d6f0b92c11387b620f0f63ccc6869e2943c1753ddcd81e.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-f987a167ea6e466610aca2c8f7ba924763f84278ab2c7b694bd6f4713ef63fbe.png)
 
-5. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-e44325b1b84142973fb38b01ac39371a5d61969e0ccf6ed39d915c0b970465df.png)
+5. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7391571059970d54debc465b2907c7dde7af965b6281617f4b39c831c414fce4.png)
 
 First, we plot the graph of $y={(\frac{4}{3})}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-a7138bf69945fec0779fb38c6bfe4b5dc760ccbee9c892f326d5a67ea36b389e.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-1865e2d78371834c17e282d4ce5efe342c2e390cefe0d7ba2c7b01d8cdd7bc4b.png)
 
 To sketch the graph of $y={(\frac{4}{3})}^{x}+\frac{3}{4},$ we take the graph of $y={(\frac{4}{3})}^{x}$ and shift it $\frac{3}{4}$ units up. The $y$-intercept moves from $(0,1)$ to $(0,\frac{7}{4}),$ and the horizontal asymptote moves from $y=0$ to $y=\frac{3}{4}.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-418070f2119388bfba536f831f36c227b5bfe00c1484c1a781fc18c6bccaa9af.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2c0dc2c648f30b4f03284cd3b33ad19a8e856db224872127000bcb94847794ab.png)
 
 ## GENERATED easy observed:q-26810
 
@@ -1064,23 +1064,23 @@ To sketch the graph of $y={(\frac{4}{3})}^{x}+\frac{3}{4},$ we take the graph of
 
 Which of the following is the graph of $y={2}^{x}+3.25?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d46a5b37f906fb10845c13a28b3fde0440902ef5d8ffabc52d9cdb905a22c77d.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-e809338fe3d8f8faee2febd87bcf95ac0682cf6a53ce84fe4b13debbd1fa39d5.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-f7ead3b5bf1a4ba79f455d4d27d5b2e4b31188ca20b15d5f095fd87d6e03de08.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-1fda9db26fc729f3bdfd0780323225ccad11ad7a031215ccad55511887c00deb.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-82acdec9fb887c00d48bab042d3b7905ca9cb6ebaddc2305cbf366de15dd9f35.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-fc175fff0a66892674ba0abfad429d6145b51931c479bf3d3b435e321f536a17.png)
 
-4. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-670234d54bdc6a835145f84557bc582a240fd348f0f61f6ae0d2a9b225fbfc2c.png)
+4. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-cb56ad16c0eca0d2634fb629cbf9c8d2ea4032c4fb02f311cc2e0c91b0b35b81.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-fac87c53c91a7935700bbb34270d71414b95e44c8e9f96b42330948fd4a79e49.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-ed864b9ca381824747101a8d0155c026cf5f6ebdd8733a339d043e26d0b40d86.png)
 
 First, we plot the graph of $y={2}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7d3f9a4852beb6fd761ed5af03553e4d1193ef4e648604d4af058404de773b67.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-814889f9290af5eb22b587db340c9305f4979fcaf44401956a40d830fb029f54.png)
 
 To sketch the graph of $y={2}^{x}+3.25,$ we take the graph of $y={2}^{x}$ and shift it $3.25$ units up. The $y$-intercept moves from $(0,1)$ to $(0,4.25),$ and the horizontal asymptote moves from $y=0$ to $y=3.25.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-d4ea3fe01a88a4e68deab4b1f9377db0a71b217c59de681578c3dc16995cf1b3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-20d7261c5d6e687129ae03b1739fe61983e654bee29a1fcc541f9ed303581fc9.png)
 
 ## GENERATED easy observed:q-26811
 
@@ -1088,23 +1088,23 @@ To sketch the graph of $y={2}^{x}+3.25,$ we take the graph of $y={2}^{x}$ and sh
 
 Which of the following is the graph of $y={2}^{x}+\frac{15}{4}?$
 
-1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-aae9273604dc530693c85330735c7f8a562a6ed2b48aa3c3f7e8b357af017629.png)
+1. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-ad01cf07f153b00d78abf7c04dd71a56d854af08b42e09d9914f6eb2a3775a20.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-347a47106eb4aeb3a9fce6ccb0b21699e8d6f7e023ed1869fa4978e5368ef4cd.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-4ba759d7c7ec75a2a55df7f27d89ceb3eb99715f7151e783c728c498d82c99b2.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-ec719dce63a7fb384063b76ddcff7664fcbfa84faf28aebb5100384472cc0252.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-b408a6dc592b1551c82a53c77de30191d65358916b65b1d2655a48f31ce73993.png)
 
-4. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-605db235c041030a2d08dd041d18169ccdb4ba3fb9e76bc102469029514aac95.png)
+4. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-be3c8365be13107c11bc2773b68a58374bb8aee295ff7608bb6b3a2baefd128b.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-9a7ac21706a732f791f060dfddf21d9e5500668c39e875721775cbc0a2ed20db.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-684a45a39889f75608d825d19794f7d89d9584ba6e3eb817c174a3459b61fa8f.png)
 
 First, we plot the graph of $y={2}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7d3f9a4852beb6fd761ed5af03553e4d1193ef4e648604d4af058404de773b67.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-814889f9290af5eb22b587db340c9305f4979fcaf44401956a40d830fb029f54.png)
 
 To sketch the graph of $y={2}^{x}+\frac{15}{4},$ we take the graph of $y={2}^{x}$ and shift it $\frac{15}{4}$ units up. The $y$-intercept moves from $(0,1)$ to $(0,\frac{19}{4}),$ and the horizontal asymptote moves from $y=0$ to $y=\frac{15}{4}.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-349db3504857ece9cd0552ebfaab3c1f35a63700c7b0989e3eedfcb214209ad2.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-710a15f285863d6c807a91b8cf2b08723714f3714b2337898b6fa088cb15641f.png)
 
 ## GENERATED easy observed:q-26815
 
@@ -1112,20 +1112,20 @@ To sketch the graph of $y={2}^{x}+\frac{15}{4},$ we take the graph of $y={2}^{x}
 
 Which of the following is the graph of $y={2}^{x}-0.5?$
 
-1. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-40e49d49172f4d86a91d6095b7c5268d97a7695cfbcb818bd1fc2f88cc879567.png)
+1. **CORRECT** ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7518afd271d81b553511ccd23f7256446fe57256d72b33165e8b3487756244ea.png)
 
-2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-dc1d6f62db7cddf4715c341b73ac716233be0ca40f4492519de15af89ac6c706.png)
+2. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-bcb87b6c66973a6615159846adf2bf894f7e226c3321833684e5580ecfba3f30.png)
 
-3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-e896ebaf30c4133ff5dd42e3648fa41b7f6489a9158dbb611051910bdd748064.png)
+3. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-9493b9cc85d573a3cdef263889ea68178aba2ea5a15dc75ee61cafe1945cbc42.png)
 
-4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-2e718598556be321bf83ba1d7bea6978d434f9684fa002d8b02197985a75e3a5.png)
+4. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-f5be9d2b1ee230ccf31e8c8bf4c1e89aff457469551dea9b678d8c4a21e14225.png)
 
-5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-6725f1387194ec21f14950730cc40fe2c638dc22a70a944e1215fc13a2004882.png)
+5. ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-f6dea73259d4f5cf3fbdb1b042a223d8981ced9d77809a0f4f7c9849155f9ebf.png)
 
 First, we plot the graph of $y={2}^{x}:$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-7d3f9a4852beb6fd761ed5af03553e4d1193ef4e648604d4af058404de773b67.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-814889f9290af5eb22b587db340c9305f4979fcaf44401956a40d830fb029f54.png)
 
 To sketch the graph of $y={2}^{x}-0.5,$ we take the graph of $y={2}^{x}$ and shift it $0.5$ units down. The $y$-intercept moves from $(0,1)$ to $(0,0.5),$ and the horizontal asymptote moves from $y=0$ to $y=-0.5.$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-4e44df50b01c0506e8024e28dbf1552f41097f4ef0b92f61171b53cd122c0ed9.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186087821/plots/plot-e9dc844eaccd9b4cf5fce094a9431782149b9d6c1af45c156d226c0d0fbe2bce.png)

@@ -1,17 +1,30 @@
-# Local graphical-continuity generator
+# Graphical continuity generator
 
-Steps3–7 draft for KP17592186068695, math basis1356. No database writes or registration.
+KP 17592186068695, version continuity-graph-7. Current source basis 2227;
+historical source basis 1356. Database `math`, original lineage retained.
 
 ```bash
-.venv/bin/python generate/scratch/17592186068695.py --difficulty all --seed 0 --format markdown
-.venv/bin/python generate/scratch/17592186068695.py --difficulty easy --template q-48039 --profile observed --format json
+.venv/bin/python generate/scratch/17592186068695.py --difficulty hard --seed 0 --format json
 .venv/bin/python generate/scratch/17592186068695/validate.py
+.venv/bin/python generate/scratch/17592186068695/replenish.py
 ```
 
-API: generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None), generate_easy, generate_moderate, generate_hard. Profiles observed/authored/normal; default authored. Parameters scale, shift, vertical. Explicit observed identity-coordinate replay preserves original omissions and legacy banks. See source-cases.json.
+Easy has one five-image radio field. Normal moderate/hard output has three
+checkbox fields I/II/III, each with owned true/false choices. `profile=observed`
+replays historical source content; `profile=current` replays current source
+content. Neither raw profile repairs q-48081 or q-48082. Normal samples retain
+the original reasoning and repair presentation defects without editing sources.
 
-All9 original prompts/solutions,8 fields,40 options and7 available correct designations replay exactly. Missing1 legacy designation and2 absent fields are evidence, not invented observed matches. Normal source-shaped defaults complete fieldless questions and retain one authoritative q48081 widget. Four complete easy image banks and five moderate graph/set families all participate in defaults. Hard is explicitly authored:2 jump+hole graph families with at least2 half-unit target coordinates read on unit tick grids (2/3 midpoint readings respectively; exactly3 continuity checks in either family).
+The finite mathematical catalog is 4 easy, 5 moderate, 2 hard tasks. Coordinate
+transforms and response-form changes cannot replenish exhausted tasks. The
+replenisher enumerates that catalog, excludes every existing mathematical task,
+counts validated unseen/unreserved inventory including retained learner history,
+and records any remaining shortage as finite-limit. It acquires api.lock and
+holds it across a fresh basis read, guarded preview/commit, receipt and exact-basis
+verification. Writes use application/ca-engine and registered generator UUID/path.
+Exact requests, receipts, assets and readbacks are kept under reference/replenishment.
 
-review.md/review.json include original evidence and20 changed-coordinate examples (at least2 per level). validation.json separates source fidelity from independent graph mathematics and native grading. All32 original plot assets were inspected at full resolution on white; plot-extraction.md lists each marker/branch. Changed curves are schematic exact realizations of source topology, not claimed recovery of unknown algebraic source formulas. Source q48082 solution plot has inverted markers at unqueried2; raw preserved, normal corrected to answer-option function. Eleven categorical semantic tasks are reported separately from numeric/cosmetic presentation variants.
-
-The native checker is the shared read-only in-memory grade_field harness; radio choices are graded by their authored answer IDs. No blank fields exist, so equivalent-entry blank tests are inapplicable. No engine changes, dependency installs or shared-file edits.
+Historical and current source replay are separate from graph correctness and
+learner grading. PNG centers/rings are independently checked. The local native
+harness uses the current application library, checks every owned-choice
+combination (including all 8 checkbox subsets), and rejects incomplete responses.

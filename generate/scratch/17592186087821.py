@@ -14,7 +14,7 @@ import sympy as sp
 KP_ID=17592186087821
 KP_UUID='dd63cb30-a236-546e-82ac-08bce09c88f7'
 TITLE='Identifying a Vertically Shifted Exponential Growth Curve'
-VERSION='vertical-growth-7'
+VERSION='vertical-growth-8'
 HERE=Path(__file__).resolve().with_suffix('')
 SOURCE=json.loads((HERE/'source.json').read_text())
 QUESTIONS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
@@ -60,7 +60,7 @@ def render_plots(specs):
   path=Path(item['path']);side=path.with_suffix('.json')
   try:
    cache=json.loads(side.read_text())
-   valid=cache['version']=='shift-plots-7' and cache['spec']==item and cache['png_sha256']==hashlib.sha256(path.read_bytes()).hexdigest()
+   valid=cache['version']=='shift-plots-8' and cache['spec']==item and cache['png_sha256']==hashlib.sha256(path.read_bytes()).hexdigest()
   except (OSError,ValueError,KeyError):valid=False
   if not valid:pending.append(item)
  if not pending:return
@@ -70,7 +70,7 @@ def render_plots(specs):
  finally:Path(tmp).unlink(missing_ok=True)
 
 def plot(b,A,c,direction,cue,grid,ylim,decimal=False):
- data={'b':str(b),'A':str(A),'c':str(c),'direction':direction,'cue':cue,'grid':str(grid),'ylim':ylim,'intercept_tex':'(0,'+tex(A+c,decimal)+')','shift_tex':tex(c,decimal),'renderer_version':'shift-plots-7'}
+ data={'b':str(b),'A':str(A),'c':str(c),'direction':direction,'cue':cue,'grid':str(grid),'ylim':ylim,'intercept_tex':'(0,'+tex(A+c,decimal)+')','shift_tex':tex(c,decimal),'renderer_version':'shift-plots-8'}
  path=HERE/'plots'/('plot-'+digest(data)+'.png');return {**data,'path':str(path)}
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):

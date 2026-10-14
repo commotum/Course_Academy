@@ -33,3 +33,35 @@ Source graph equations and unlabelled y-scales are unavailable. Changed graphs a
 Sampling selects the complete family/bank first and then coordinates. The declared semantic catalog has11 tasks:4 easy banks,5 moderate graph/target topologies,2 hard coordinate-reading variants. Numeric translation, vertical offset, option order and cosmetic profile aliases do not inflate semantic variety. Different graph realizations create new full content but retain the same assessed categorical structure. This narrow KP has a finite conceptual catalog; we do not invent another skill to claim infinite structural diversity. All9 source-shaped families participate in normal defaults.
 
 Content IDs include generator version, actual rendered prompt, fixed solution, complete displayed bank, difficulty, field/key layout and attribute presence; ignore option order and profile aliases. Mathematical IDs exclude numeric/cosmetic aliases and incidental unqueried point coordinates, retaining candidate roles/topology and hard scale-reading demand. Raw omitted fields/designations are ineligible evidence. UUID correct refs are field-owned and identify exactly one bank option. Metadata is never inserted into learner prose.
+
+
+## Current source and commit contract (2026-10-14)
+
+Rechecked `math` at basis 2227 and the same immutable lineage. The nine source
+questions remain, but all five moderate questions now have three checkbox fields
+with keys I, II, III, each owning text `true` and `false` answers. The migrated
+prompts say “Select all that apply” and label all three coordinates. The current
+correct sets match the independently transcribed graph predicates. Easy still
+uses five-image radio banks. q-48081 still has duplicate selection fields and an
+absent correct designation. q-48082 still has the contradictory solution plot.
+Both are preserved and excluded from validated inventory. All current source
+questions are stored in `current-source.json`; historical source evidence is
+retained in `source.json`. `current-replay.json` reports exact complete current
+bank, field, prompt and solution replay. Historical observed replay remains exact.
+
+Version continuity-graph-7 uses the current checkbox contract for normal moderate
+and hard output. `profile=current` is exact current-source replay at identity
+coordinates, while `profile=observed` retains historical bank/omission evidence.
+Checkbox answers encode each point's independently computed continuity predicate;
+no subset radio distractor bank is mixed into the checkbox layout. All complete
+owned-choice combinations are checked through the current application grader.
+Hard still has exactly three local checks, both jump and displaced-singleton
+features, and at least two half-unit coordinate readings against unit tick grids.
+
+The declared finite catalog remains four easy, five moderate and two hard tasks.
+Changes to widget format, answer order, affine coordinates, seed or UUID are not
+additional tasks. Every source task consumes its mathematical fingerprint even
+if defective or shown. Only unused hard tasks can be committed from this catalog.
+Per-band reserves remain short where no unused task exists; these are bounded
+capability exceptions for this generator, not claims that the broader skill has
+no other possible questions. New validated templates can reopen that boundary.

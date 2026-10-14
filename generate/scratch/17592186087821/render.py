@@ -13,7 +13,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 from fractions import Fraction
-VERSION='shift-plots-7'
+VERSION='shift-plots-8'
 def atomic(path,data):
  fd,tmp=tempfile.mkstemp(dir=path.parent,suffix='.tmp');os.close(fd)
  try: Path(tmp).write_text(data);os.replace(tmp,path)
@@ -62,6 +62,16 @@ def render(s):
   if left<bounds.x0+4 or right>bounds.x1-4 or bottom<bounds.y0+4 or top>bounds.y1-4:return 'bounds'
   if left-pad<=zero[0]<=right+pad or bottom-pad<=zero[1]<=top+pad:return 'axis'
   if bottom-pad<=asy<=top+pad:return 'asymptote'
+  # Check continuous monotone exponentials across the padded box. A sampled
+  # polyline can miss a narrow intersection at a steep curve segment.
+  lo=max(xmin,trans.inverted().transform((left-pad,0))[0])
+  hi=min(xmax,trans.inverted().transform((right+pad,0))[0])
+  if lo<=hi:
+   functions=[lambda xx:A*b**(direction*xx)+c]
+   if s.get('role')=='translation':functions.append(lambda xx:b**xx)
+   for fn in functions:
+    ends=[trans.transform((xx,fn(xx)))[1] for xx in (lo,hi)]
+    if min(ends)<=top+pad and max(ends)>=bottom-pad:return 'continuous_curve'
   for pts in curves+arrow_pixels:
    if len(pts) and np.any((pts[:,0]>=left-pad)&(pts[:,0]<=right+pad)&(pts[:,1]>=bottom-pad)&(pts[:,1]<=top+pad)):return 'curve_or_arrow'
   if len(marker_pixels) and np.any((marker_pixels[:,0]>=left-7)&(marker_pixels[:,0]<=right+7)&(marker_pixels[:,1]>=bottom-7)&(marker_pixels[:,1]<=top+7)):return 'marker'

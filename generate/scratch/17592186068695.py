@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Graphical continuity at a specified point (math basis1356); steps3–7 only.
+"""Graphical continuity at a specified point (math basis1356); finite-catalog generation and replenishment.
 
 Observed profiles reproduce every source component with numeric x-coordinate
 slots and image-role slots. Explicit observed replay preserves missing fields,
@@ -8,11 +8,13 @@ source-shaped families with one radio field. Curves at changed parameters are
 Matplotlib renderings of the documented geometric recipes, not source samplers.
 
 Easy: select one continuous function among five graphs, at integer coordinate.
-Moderate: check three integer positions on one graph; five-option subset bank.
+Moderate: check three integer positions on one graph; three checkbox fields.
 Hard (authored): same three-point reading at half-unit coordinates, with a
 removable point discontinuity AND a jump in the graph; exactly three local
 checks and no calculus/limit calculations asked of the learner. No progression.
-All samplers choose a complete graph/bank profile before coordinate parameters.
+Historical observed replay retains radio banks; normal moderate/hard output uses
+the current three-checkbox source contract. All samplers choose a complete
+graph/bank profile before coordinate parameters.
 Unlabelled source ordinates are schematic; exact branch formulas are authored
 realizations of inspected topology, not recovered source formulas.
 """
@@ -29,10 +31,12 @@ import numpy as np
 KP_ID=17592186068695
 KP_UUID='6cd6c125-ecaf-5847-a802-ec1b3594a15c'
 TITLE='Determining Whether a Function Is Continuous at a Given Point'
-VERSION='continuity-graph-6'
+VERSION='continuity-graph-7'
 ROOT=Path(__file__).with_suffix('')
 SOURCE=json.loads((ROOT/'source.json').read_text())
 QUESTIONS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
+CURRENT_SOURCE=json.loads((ROOT/'current-source.json').read_text())
+CURRENT_QUESTIONS={q[':question/math-academy-id']:q for q in CURRENT_SOURCE['record'][':knowledge-point/questions']}
 X=sp.Symbol('x',real=True)
 NS=uuid.UUID(KP_UUID)
 ROMAN=['I','II','III']
@@ -290,7 +294,9 @@ def normalized_parameters(level,p,observed):
 
 
 def compile_question(source_id,p,profile,level,seed):
-    src=QUESTIONS[source_id];spec=SPECS[source_id];raw=profile=='observed';targets=[rat(p['scale'])*rat(a)+rat(p['shift']) for a in spec['targets']]
+    spec=SPECS[source_id];raw=profile in ('observed','current')
+    src=CURRENT_QUESTIONS[source_id] if profile=='current' or (not raw and spec['level']=='moderate') else QUESTIONS[source_id]
+    targets=[rat(p['scale'])*rat(a)+rat(p['shift']) for a in spec['targets']]
     if level=='hard' and sum(t.q==2 for t in targets)<2:raise ValueError('Hard requires at least two unlabelled half-unit target readings')
     asset_map={};graphs={}
     for ref in sorted(set(re.findall(r'images/[\w/]+\.png',json.dumps(src)))):
@@ -317,9 +323,6 @@ def compile_question(source_id,p,profile,level,seed):
         if source_id=='q-48081':
             correct_path=next(path for ref,path in asset_map.items() if Path(ref).stem.startswith(spec['correct']))
             opening,rest=solution.split('\n\n',1);solution=opening+'\n\n![]('+correct_path+')\n\n'+rest
-        if source_id=='q-102115':
-            # Original unlabeled bullets use Roman subset answers: add explicit labels.
-            for i,t in enumerate(targets):problem=problem.replace('- $x='+tex(t)+'$',ROMAN[i]+'. $x='+tex(t)+'$')
         if source_id=='q-78132':solution=solution.replace('continuous $x=','continuous at $x=')
     q={':question/problem':problem,':question/worked-solution':solution}
     if ':question/difficulty' in src or not raw:q[':question/difficulty']=':question.difficulty/'+level
@@ -361,11 +364,11 @@ def finalize(q,template,p,profile,level,seed,graphs,targets,statuses):
                  'topology':[s['continuous'] for s in statuses],'coordinate_reading':'half-unit' if level=='hard' else 'integer'})
     return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{
       'version':VERSION,'seed':seed,'template':template,'requested_level':level,'parameters':p,'bank_profile':profile,
-      'source':{'database':SOURCE['database'],'basis':SOURCE['basis'],'lineage':SOURCE['lineage']},
+      'source':{'database':'math','basis':(SOURCE if profile=='observed' else CURRENT_SOURCE)['basis'],'lineage':SOURCE['lineage']},
       'source_id':template,'content_fingerprint':content,'mathematical_fingerprint':task,'graphs':graphs,
       'targets':list(map(str,targets)),'half_unit_target_readings':sum(t.q==2 for t in targets),'continuity_checks':statuses,
-      'eligible_for_learning':profile!='observed' or (template not in ('q-48081','q-102106','q-78133','q-48082')),
-      'evidence_only':profile=='observed' and template in ('q-48081','q-102106','q-78133','q-48082'),
+      'eligible_for_learning':profile not in ('observed','current') or (template not in (('q-48081','q-102106','q-78133','q-48082') if profile=='observed' else ('q-48081','q-48082'))),
+      'evidence_only':profile in ('observed','current') and template in (('q-48081','q-102106','q-78133','q-48082') if profile=='observed' else ('q-48081','q-48082')),
       'domain':'Graph branches with open external ends, exclusions and separately specified singleton values',
       'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':matplotlib.__version__},
       'authored_scope':level=='hard'}}
@@ -373,8 +376,8 @@ def finalize(q,template,p,profile,level,seed,graphs,targets,statuses):
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
     if level not in ('easy','moderate','hard'):raise ValueError('Unsupported level')
-    if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('Only observed radio fields supported')
-    if profile not in (None,'observed','authored','normal'):raise ValueError('Unknown complete bank profile')
+    if field_type not in (None,'radio',':answer-field.type/radio','checkbox',':answer-field.type/checkbox'):raise ValueError('Only source radio and checkbox fields supported')
+    if profile not in (None,'observed','current','authored','normal'):raise ValueError('Unknown complete bank profile')
     rng=random.Random(seed);profile='authored' if profile is None else profile
     # A complete template/bank is selected first, then coordinate parameters.
     if template=='hard_jump_and_hole':template=rng.choice(['q-78133','q-102115'])
@@ -382,7 +385,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     if template not in SPECS:raise ValueError('Unsupported source-shaped template')
     if level!='hard' and SPECS[template]['level']!=level:raise ValueError('Template level mismatch')
     if level=='hard' and template not in ('q-78133','q-102115'):raise ValueError('Hard needs jump + removable point roles')
-    observed=profile=='observed'
+    observed=profile in ('observed','current')
     if observed and level!=SPECS[template]['level']:raise ValueError('Raw source difficulty must be preserved')
     if parameters is None:
         parameters={'scale':1 if observed else ('1/2' if level=='hard' else rng.choice([1,2])), 'shift':0 if observed else rng.randint(-4,4),'vertical':0 if observed else rng.randint(-2,2)}

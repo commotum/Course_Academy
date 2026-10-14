@@ -13,3 +13,35 @@ q-48081 has two legacy radio fields sharing a five-image bank, with no correct d
 The canonical e-3567 reciprocal graph supports detecting an asymptote at the **specified** point. The local-neighborhood lesson explicitly shows a function can have a discontinuity elsewhere and remain continuous at the asked point. None of these tasks asks to find every discontinuity. No formal derivative, L'Hôpital calculation, or algebraic continuity theorem is added.
 
 Hard is an authored design claim: exactly3 local checks on graphs with both a jump and a displaced singleton. At least two targets are half-integers, read against unit-spaced ticks/grid with no target-specific half-integer tick labels. This adds coordinate-scale reading to the same continuity decision; it does not add a fourth local check or introduce a progression. q-78133 has2 midpoint readings and1 labeled integer reading; q-102115 has3 midpoint readings. Both require exactly3 local continuity checks and at least2 unlabelled midpoint coordinate readings, a comparable coordinate-reading workload within this level. Its2 families are unordered variants, not a progression. Easy/moderate use integer queried coordinate ticks. Explicit inputs enforce these separate coordinate bounds and at least2 half-integer targets.
+
+
+## Current source and commit contract (2026-10-14)
+
+Rechecked `math` at basis 2227 and the same immutable lineage. The nine source
+questions remain, but all five moderate questions now have three checkbox fields
+with keys I, II, III, each owning text `true` and `false` answers. The migrated
+prompts say “Select all that apply” and label all three coordinates. The current
+correct sets match the independently transcribed graph predicates. Easy still
+uses five-image radio banks. q-48081 still has duplicate selection fields and an
+absent correct designation. q-48082 still has the contradictory solution plot.
+Both are preserved and excluded from validated inventory. All current source
+questions are stored in `current-source.json`; historical source evidence is
+retained in `source.json`. `current-replay.json` reports exact complete current
+bank, field, prompt and solution replay. Historical observed replay remains exact.
+
+Version continuity-graph-7 uses the current checkbox contract for normal moderate
+and hard output. `profile=current` is exact current-source replay at identity
+coordinates, while `profile=observed` retains historical bank/omission evidence.
+Checkbox answers encode each point's independently computed continuity predicate;
+no subset radio distractor bank is mixed into the checkbox layout. All complete
+owned-choice combinations are checked through the current application grader.
+Hard still has exactly three local checks, both jump and displaced-singleton
+features, and at least two half-unit coordinate readings against unit tick grids.
+
+The declared finite catalog remains four easy, five moderate and two hard tasks.
+Changes to widget format, answer order, affine coordinates, seed or UUID are not
+additional tasks. Every source task consumes its mathematical fingerprint even
+if defective or shown. Only unused hard tasks can be committed from this catalog.
+Per-band reserves remain short where no unused task exists; these are bounded
+capability exceptions for this generator, not claims that the broader skill has
+no other possible questions. New validated templates can reopen that boundary.

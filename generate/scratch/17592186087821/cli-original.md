@@ -1,13 +1,13 @@
 ## Generator review manifest
 
 {
-  "version": "vertical-growth-7",
-  "generator_sha256": "59dd611ce36d3d5c473fcc6022221136d7cab87efd6fbffe63d34095217abc7a",
-  "renderer_sha256": "d43d73fe65b9f645d04191b7a5d7ea801f32fd241272679ee7e7a37653c56711",
+  "version": "vertical-growth-8",
+  "generator_sha256": "c27106c797d6090b63fc679b61f012ecaf2745a68a8b103e18c11a4972907630",
+  "renderer_sha256": "7b8d53dd9931c491b7622eece99e4ad00378ac2022231b3099b643776cf5f877",
   "python": "3.13.5",
   "sympy": "1.14.0",
   "renderer_runtime": {
-    "renderer_version": "shift-plots-7",
+    "renderer_version": "shift-plots-8",
     "python": "3.10.13",
     "matplotlib": "3.10.9",
     "numpy": "2.2.6"

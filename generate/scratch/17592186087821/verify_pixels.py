@@ -24,7 +24,7 @@ for side in (HERE/'plots').glob('*.json'):
  # Every plot retains both axes and finite transforms, and data-valued text.
  assert all(math.isfinite(v) for v in (left,bottom,width,height));assert width>0 and height>0
  if s['cue']=='labels':assert s['intercept_tex'].startswith('(0,') and s['shift_tex']
- if data['version']=='shift-plots-7':
+ if data['version']=='shift-plots-8':
   current_pngs+=1
   zero_x=left+width/2;zero_y=bottom+(0-ylo)/(yhi-ylo)*height;asym_y=bottom+(c-ylo)/(yhi-ylo)*height
   marker_values=[A+c] if s['cue']=='labels' else []

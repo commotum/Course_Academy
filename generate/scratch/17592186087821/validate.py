@@ -121,7 +121,7 @@ def run():
  cli_records=json.loads(cli_json);assert len(cli_records)==6
  for r in cli_records:
   check_display(r);manifest=r['generation']['review_manifest']
-  assert manifest['version']==g.VERSION and manifest['renderer_runtime']['renderer_version']=='shift-plots-7'
+  assert manifest['version']==g.VERSION and manifest['renderer_runtime']['renderer_version']=='shift-plots-8'
   assert manifest['generator_sha256']==hashlib.sha256(HERE.with_suffix('.py').read_bytes()).hexdigest()
   assert manifest['renderer_sha256']==hashlib.sha256((HERE/'render.py').read_bytes()).hexdigest()
  (HERE/'cli-review.json').write_text(cli_json)

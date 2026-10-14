@@ -111,7 +111,7 @@ def raster_markers(path,side):
 
 
 def audit(r):
-    q=r['question'];meta=r['generation'];t=meta['source_id'];p=meta['parameters'];level=meta['requested_level'];raw=meta['bank_profile']=='observed'
+    q=r['question'];meta=r['generation'];t=meta['source_id'];p=meta['parameters'];level=meta['requested_level'];raw=meta['bank_profile'] in ('observed','current')
     assert set(r['knowledge_point'])=={'db_id','id','title'}
     for k in (':question/problem',':question/worked-solution'):check_math(q[k])
     # The prompt is the source of queried coordinates, not generation metadata.
@@ -156,7 +156,13 @@ def audit(r):
             if kind=='pole':assert not st['limit_exists']
         wanted=g.subset_text([s['continuous'] for s in statuses])
         if q.get(':question/answer-fields'):
-            f=q[':question/answer-fields'][0];assert next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])==wanted
+            fs=q[':question/answer-fields']
+            if fs[0][':answer-field/type']==':answer-field.type/checkbox':
+                assert [f[':answer-field/key'] for f in fs]==g.ROMAN
+                for f,st in zip(fs,statuses):
+                    assert next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])==str(st['continuous']).lower()
+            else:
+                f=fs[0];assert next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])==wanted
         # Each local solution sentence and final prose must match actual graph.
         bullets=[b for b in q[':question/worked-solution'].split('\n\n') if b.startswith('- ')]
         assert len(bullets)==3
@@ -165,8 +171,10 @@ def audit(r):
             assert ('is not continuous' in b)==(not st['continuous'])
         assert '"'+wanted+'"' in q[':question/worked-solution']
     for f in q.get(':question/answer-fields',[]):
-        assert f[':answer-field/type']==':answer-field.type/radio'
-        assert len(f[':answer-field/choices'])==5
+        assert f[':answer-field/type'] in (':answer-field.type/radio',':answer-field.type/checkbox')
+        if f[':answer-field/type']==':answer-field.type/checkbox':
+            assert len(f[':answer-field/choices'])==2 and {a[':answer/value'] for a in f[':answer-field/choices']}=={'false','true'}
+        else:assert len(f[':answer-field/choices'])==5
         for a in f[':answer-field/choices']:check_math(a[':answer/value'])
         if ':answer-field/correct' in f:assert sum(a[':answer/id']==f[':answer-field/correct'][1] for a in f[':answer-field/choices'])==1
 
@@ -196,8 +204,13 @@ def source_fidelity():
 
 
 def native_item(r,label):
-    f=r['question'][':question/answer-fields'][0];correct=f[':answer-field/correct'][1]
-    return {'label':label,'record':r,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==correct else 'rejected','purpose':'actual radio graph/subset choice'} for a in f[':answer-field/choices']]}
+    checks=[]
+    for i,f in enumerate(r['question'][':question/answer-fields']):
+        correct=f[':answer-field/correct'][1]
+        for a in f[':answer-field/choices']:
+            submit={'submitted_answer_id':a[':answer/id']}
+            checks.append({'field_index':i,**submit,'expected':'accepted' if a[':answer/id']==correct else 'rejected','purpose':'Actual source-shaped field grading'})
+    return {'label':label,'record':r,'checks':checks}
 
 
 def main():
@@ -254,9 +267,30 @@ def main():
     for r in originals:
         fs=r['question'].get(':question/answer-fields',[])
         if len(fs)==1 and ':answer-field/correct' in fs[0]:native.append(native_item(r,'observed/'+r['generation']['source_id']))
+    # Reopen classification against current source: five migrated checkbox banks.
+    current_counts={'questions':0,'prompts':0,'solutions':0,'fields':0,'options':0,'correct_designations':0}
+    def contract(q):
+        result={k:q[k] for k in (':question/problem',':question/worked-solution')}
+        result['difficulty']=q[':question/difficulty'] if isinstance(q[':question/difficulty'],str) else q[':question/difficulty'][':db/ident']
+        fields=[]
+        for f in q.get(':question/answer-fields',[]):
+            correct=f.get(':answer-field/correct')
+            if isinstance(correct,list):correct=next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==correct[1])
+            elif correct is not None:correct=correct[':answer/value']
+            fields.append({'key':f[':answer-field/key'],'type':f[':answer-field/type'] if isinstance(f[':answer-field/type'],str) else f[':answer-field/type'][':db/ident'],'choices':sorted([(a[':answer/type'] if isinstance(a[':answer/type'],str) else a[':answer/type'][':db/ident'],a[':answer/value']) for a in f[':answer-field/choices']]),'correct':correct})
+        result['fields']=sorted(fields,key=lambda f:json.dumps(f,sort_keys=True))
+        return result
+    for t,src in g.CURRENT_QUESTIONS.items():
+        r=g.generate(g.SPECS[t]['level'],template=t,parameters={'scale':1,'shift':0,'vertical':0},profile='current')
+        audit(r);assert contract(r['question'])==contract(src),(t,'current contract replay')
+        current_counts['questions']+=1;current_counts['prompts']+=1;current_counts['solutions']+=1
+        fs=r['question'].get(':question/answer-fields',[])
+        current_counts['fields']+=len(fs);current_counts['options']+=sum(len(f[':answer-field/choices']) for f in fs);current_counts['correct_designations']+=sum(':answer-field/correct' in f for f in fs)
+        if r['generation']['eligible_for_learning']:native.append(native_item(r,'current/'+t))
+    (ROOT/'current-replay.json').write_text(json.dumps({'passed':True,'basis':g.CURRENT_SOURCE['basis'],'matched':current_counts,'checkbox_source_questions':5,'historical_source_replay_retained':True,'source_exclusions':['q-48081 duplicate key/missing correct designation','q-48082 contradictory solution plot'],'current_normal_contract':'Easy single radio image bank; moderate/hard three Roman-key checkbox fields; boolean owned choices true/false'},indent=2)+'\n')
     (ROOT/'native-input.json').write_text(json.dumps(native,indent=2)+'\n')
-    subprocess.run([str(REPO/'generate/runs/current/check-engine'),str(ROOT/'native-input.json'),str(ROOT/'native-report.json')],check=True)
+    subprocess.run([str(ROOT/'check-engine'),str(ROOT/'native-input.json'),str(ROOT/'native-report.json')],check=True)
     engine=json.loads((ROOT/'native-report.json').read_text())
-    report={'status':'passed','source_fidelity':counts,'source_scope':'9 practice originals; canonical separate; basis1356','normal_records_checked':len(content),'semantic_tasks':len(task),'default_family_coverage':{k:sorted(v) for k,v in seen.items()},'review_records':len(review),'native':{'accepted':engine['accepted_checks'],'rejected':engine['rejected_checks'],'unresolved':engine['documented_unresolved_checks'],'blanks':'not applicable; no observed blank fields'},'source_anomalies':['q-48081 duplicate legacy radio field, first missing correct ref; raw preserved, normal one widget and add missing shown-below solution plot' ,'q-102106 and q-78133 fieldless: raw omit field attr; normal supported authored5-option bank','q-102115 unlabeled list with Roman subset bank: normal labels added','q-78132 source omitted at: normal minimal prose repair','q-48082 solution raster reverses open/filled markers at unqueried x=2; raw preserved, normal uses the answer-option function' ], 'raster_qa':'Actual generated PNG open/filled centers and rings checked against independent branch/domain/value mathematics; pixel transform from recorded axes', 'plot_fidelity':'32 original assets inspected at original resolution; raw assets exact; changed geometry preserves extracted local topology, not unknown source algebraic formulas','dependencies':review[0]['generation']['dependencies'],'concurrency':json.loads((ROOT/'concurrency-report.json').read_text()),'database_writes':0}
+    report={'status':'passed','source_fidelity':counts,'source_scope':'9 practice originals; canonical separate; basis1356','normal_records_checked':len(content),'semantic_tasks':len(task),'default_family_coverage':{k:sorted(v) for k,v in seen.items()},'review_records':len(review),'current_source_fidelity':current_counts,'native':{'accepted':engine['accepted_checks'],'rejected':engine['rejected_checks'],'unresolved':engine['documented_unresolved_checks'],'blanks':'not applicable; no observed blank fields'},'source_anomalies':['q-48081 duplicate legacy radio field, first missing correct ref; raw preserved, normal one widget and add missing shown-below solution plot' ,'Historical q-102106/q-78133 fieldless; current replay and normal output use three complete checkbox fields','Historical q-102115 unlabeled; current migrated source and normal output label I/II/III','q-78132 source omitted at: normal minimal prose repair','q-48082 solution raster reverses open/filled markers at unqueried x=2; raw preserved, normal uses the answer-option function' ], 'raster_qa':'Actual generated PNG open/filled centers and rings checked against independent branch/domain/value mathematics; pixel transform from recorded axes', 'plot_fidelity':'32 original assets inspected at original resolution; raw assets exact; changed geometry preserves extracted local topology, not unknown source algebraic formulas','dependencies':review[0]['generation']['dependencies'],'concurrency':json.loads((ROOT/'concurrency-report.json').read_text()),'database_writes':0}
     (ROOT/'validation.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
 if __name__=='__main__':main()
