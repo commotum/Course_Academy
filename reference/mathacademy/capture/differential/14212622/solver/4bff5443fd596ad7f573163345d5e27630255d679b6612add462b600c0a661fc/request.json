@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-114459",
+      "sequence_position": 1,
+      "problem": "Given that the random variables \n\n$$\n{X}_{1}∼N(2,{1}^{2}),\\,{X}_{2}∼N(20,{5}^{2}),\\,{X}_{3}∼N(6,5)\n$$\n\nare mutually independent and $Y=10{X}_{1}-4{X}_{2}+5{X}_{3},$ calculate $P(3<Y<40).$ \n\n*Hint: A table of values of $Φ(z)$ for different values of $z$ is given below, where $Φ(z)$ is the cumulative distribution function for the standard normal distribution. *\n\n<table align=\"center\">\n\n<tbody><tr>\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$0.01$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$0.02$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$0.03$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.2\\,$</th><td align=\"center\"> $0.8869$ </td><td align=\"center\"> $0.8888$ </td><td align=\"center\"> $0.8907$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.3\\,$</th><td align=\"center\"> $0.9049$ </td><td align=\"center\"> $0.9066$ </td><td align=\"center\"> $0.9082$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.4\\,$</th><td align=\"center\"> $0.9207$ </td><td align=\"center\"> $0.9222$ </td><td align=\"center\"> $0.9236$ </td></tr>\n</tbody></table>\n</th>\n\n<th width=\"5%\"></th>\n\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$0.00$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$0.01$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$0.02$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,2.7\\,$</th><td align=\"center\"> $0.9965$ </td><td align=\"center\"> $0.9966$ </td><td align=\"center\"> $0.9967$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,2.8\\,$</th><td align=\"center\"> $0.9974$ </td><td align=\"center\"> $0.9975$ </td><td align=\"center\"> $0.9976$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,2.9\\,$</th><td align=\"center\"> $0.9981$ </td><td align=\"center\"> $0.9982$ </td><td align=\"center\"> $0.9982$ </td></tr>\n</tbody></table>\n</th>\n</tr>\n\n</tbody></table>",
+      "worked_solution": "Recall that if ${X}_{1},{X}_{2},$ and ${X}_{3}$ are mutually independent random variables, where \n\n$$\n{X}_{1}∼N({\\mu }_{1},{\\sigma }_{1}^{2}),\\,{X}_{2}∼N({\\mu }_{2},{\\sigma }_{2}^{2}),\\,{X}_{3}∼N({\\mu }_{3},{\\sigma }_{3}^{2}),\n$$\n\nand ${a}_{1},{a}_{2},{a}_{3}$ are real constants,  then \n\n$$\n\\begin{aligned}Y & ={a}_{1}{X}_{1}+{a}_{2}{X}_{2}+{a}_{3}{X}_{3} \\\\  & ∼N({a}_{1}{\\mu }_{1}+{a}_{2}{\\mu }_{2}+{a}_{3}{\\mu }_{3},\\,{a}_{1}^{2}{\\sigma }_{1}^{2}+{a}_{2}^{2}{\\sigma }_{2}^{2}+{a}_{3}^{2}{\\sigma }_{3}^{2}).\\end{aligned}\n$$\n\nIn our case, we have\n\n$$\n{X}_{1}∼N(2,{1}^{2}),\\,{X}_{2}∼N(20,{5}^{2}),\\,{X}_{3}∼N(6,5),\n$$\n\nand\n\n$$\nY=10{X}_{1}-4{X}_{2}+5{X}_{3}.\n$$\n\nSince ${X}_{1},{X}_{2},$ and ${X}_{3}$ are mutually independent, we have\n\n$$\n\\begin{aligned}\\text{E}[Y] & ={a}_{1}{\\mu }_{1}+{a}_{2}{\\mu }_{2}+{a}_{3}{\\mu }_{3} \\\\  & =10\\cdot 2+(-4)\\cdot 20+5\\cdot 6 \\\\  & =-30, \\\\ \\text{Var}[Y] & ={a}_{1}^{2}{\\sigma }_{1}^{2}+{a}_{2}^{2}{\\sigma }_{2}^{2}+{a}_{3}^{2}{\\sigma }_{3}^{2} \\\\  & ={10}^{2}\\cdot {1}^{2}+(-4)^{2}\\cdot {5}^{2}+{5}^{2}\\cdot 5 \\\\  & =100\\cdot 1+16\\cdot 25+25\\cdot 5 \\\\  & =625.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}Y∼N(-30,625).\\end{aligned}\n$$\n\nWe want to find $P(3<Y<40).$ Thus, we convert $Y$ to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(3<Y<40) & =P(\\frac{3-(-30)}{\\sqrt{625}}<Z<\\frac{40-(-30)}{\\sqrt{625}}) \\\\  & =P(1.32<Z<2.8) \\\\  & =P(Z<2.8)-P(Z<1.32) \\\\  & =Φ(2.8)-Φ(1.32)\\end{aligned}\n$$\n\nUsing the $z$-table, we see that\n\n$$\n\\begin{aligned}Φ(1.32)≈0.9066,\\,Φ(2.8)≈0.9974.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}P(3<Y<40) & =Φ(2.8)-Φ(1.32) \\\\  & ≈0.9974-0.9066 \\\\  & ≈0.0908.\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14212622/observations/history-q-114459-988e07321e4f9677609d.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14212622",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14212622/observations/history-solution-q-114459-52ccbe3b591bda86f590.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "0.1808"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "0.0908"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "0.0918"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "0.0808"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "0.1908"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q114459",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "0.0908",
+                "option": "b",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Recall that if ${X}_{1},{X}_{2},$ and ${X}_{3}$ are mutually independent random variables, where \n\n$$\n{X}_{1}∼N({\\mu }_{1},{\\sigma }_{1}^{2}),\\,{X}_{2}∼N({\\mu }_{2},{\\sigma }_{2}^{2}),\\,{X}_{3}∼N({\\mu }_{3},{\\sigma }_{3}^{2}),\n$$\n\nand ${a}_{1},{a}_{2},{a}_{3}$ are real constants,  then \n\n$$\n\\begin{aligned}Y & ={a}_{1}{X}_{1}+{a}_{2}{X}_{2}+{a}_{3}{X}_{3} \\\\  & ∼N({a}_{1}{\\mu }_{1}+{a}_{2}{\\mu }_{2}+{a}_{3}{\\mu }_{3},\\,{a}_{1}^{2}{\\sigma }_{1}^{2}+{a}_{2}^{2}{\\sigma }_{2}^{2}+{a}_{3}^{2}{\\sigma }_{3}^{2}).\\end{aligned}\n$$\n\nIn our case, we have\n\n$$\n{X}_{1}∼N(2,{1}^{2}),\\,{X}_{2}∼N(20,{5}^{2}),\\,{X}_{3}∼N(6,5),\n$$\n\nand\n\n$$\nY=10{X}_{1}-4{X}_{2}+5{X}_{3}.\n$$\n\nSince ${X}_{1},{X}_{2},$ and ${X}_{3}$ are mutually independent, we have\n\n$$\n\\begin{aligned}\\text{E}[Y] & ={a}_{1}{\\mu }_{1}+{a}_{2}{\\mu }_{2}+{a}_{3}{\\mu }_{3} \\\\  & =10\\cdot 2+(-4)\\cdot 20+5\\cdot 6 \\\\  & =-30, \\\\ \\text{Var}[Y] & ={a}_{1}^{2}{\\sigma }_{1}^{2}+{a}_{2}^{2}{\\sigma }_{2}^{2}+{a}_{3}^{2}{\\sigma }_{3}^{2} \\\\  & ={10}^{2}\\cdot {1}^{2}+(-4)^{2}\\cdot {5}^{2}+{5}^{2}\\cdot 5 \\\\  & =100\\cdot 1+16\\cdot 25+25\\cdot 5 \\\\  & =625.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}Y∼N(-30,625).\\end{aligned}\n$$\n\nWe want to find $P(3<Y<40).$ Thus, we convert $Y$ to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(3<Y<40) & =P(\\frac{3-(-30)}{\\sqrt{625}}<Z<\\frac{40-(-30)}{\\sqrt{625}}) \\\\  & =P(1.32<Z<2.8) \\\\  & =P(Z<2.8)-P(Z<1.32) \\\\  & =Φ(2.8)-Φ(1.32)\\end{aligned}\n$$\n\nUsing the $z$-table, we see that\n\n$$\n\\begin{aligned}Φ(1.32)≈0.9066,\\,Φ(2.8)≈0.9974.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}P(3<Y<40) & =Φ(2.8)-Φ(1.32) \\\\  & ≈0.9974-0.9066 \\\\  & ≈0.0908.\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14212622/observations/step-q114459-4cf0fe9ae9f569e90683.html"
+        }
+      }
+    ]
+  }
+}
