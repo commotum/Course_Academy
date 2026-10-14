@@ -1106,15 +1106,17 @@ Therefore, the correct answer is " II only".
 
 On which of the following intervals is the function $f(x)$ (shown above) invertible?
 
+Select all that apply.
+
 I. $x\in [-3,0]$
 
 II. $x\in [-5,-2]$
 
 III. $x\in [-2,0)$
 
-Choices: III only, II only, I and III only, I and II only, II and III only
+Choices: false, true
 
-Correct: II and III only
+Correct: false
 
 A function is invertible on a particular interval if and only if it's a one-to-one function on that interval. To determine the intervals on which the function is invertible, we use the horizontal line test.
 
@@ -1132,15 +1134,17 @@ Therefore, the correct answer is "II and III only".
 
 On which of the following intervals is the function $f(x)$ (shown above) invertible?
 
+Select all that apply.
+
 I. $x\in [1,5)$
 
 II. $x\in [-1,5]$
 
 III. $x\in [-3,1]$
 
-Choices: I only, II and III only, III only, I and III only, I and II only
+Choices: false, true
 
-Correct: I and III only
+Correct: true
 
 A function is invertible on a particular interval if and only if it's a one-to-one function on that interval. To determine the intervals on which the function is invertible, we use the horizontal line test.
 
@@ -1158,15 +1162,17 @@ Therefore, the correct answer is "I and III only".
 
 On which of the following intervals is the function $f(x)$ (shown above) invertible?
 
+Select all that apply.
+
 I. $x\in [-5,-2]$
 
 II. $x\in [-5,1]$
 
 III. $x\in [-2,1)$
 
-Choices: III only, I only, II and III only, I and II only, I and III only
+Choices: false, true
 
-Correct: I and III only
+Correct: true
 
 A function is invertible on a particular interval if and only if it's a one-to-one function on that interval. To determine the intervals on which the function is invertible, we use the horizontal line test.
 
@@ -1184,15 +1190,17 @@ Therefore, the correct answer is "I and III only".
 
 On which of the following intervals is the function $f(x)$ (shown above) invertible?
 
+Select all that apply.
+
 I. $x\in [1,5)$
 
 II. $x\in [-3,5]$
 
 III. $x\in [-3,1]$
 
-Choices: I only, II and III only, III only, I and III only, I and II only
+Choices: false, true
 
-Correct: I and III only
+Correct: true
 
 A function is invertible on a particular interval if and only if it's a one-to-one function on that interval. To determine the intervals on which the function is invertible, we use the horizontal line test.
 
@@ -1210,15 +1218,17 @@ Therefore, the correct answer is "I and III only".
 
 On which of the following intervals is the function $f(x)$ (shown above) invertible?
 
+Select all that apply.
+
 I. $x\in [-5,0]$
 
 II. $x\in [-5,\frac{-4}{3}]$
 
 III. $x\in [-5,-2)$
 
-Choices: III only, II only, I and III only, I and II only, II and III only
+Choices: false, true
 
-Correct: II and III only
+Correct: false
 
 A function is invertible on a particular interval if and only if it's a one-to-one function on that interval. To determine the intervals on which the function is invertible, we use the horizontal line test.
 
@@ -1236,15 +1246,17 @@ Therefore, the correct answer is "II and III only".
 
 On which of the following intervals is the function $f(x)$ (shown above) invertible?
 
+Select all that apply.
+
 I. $x\in [-3,1)$
 
 II. $x\in [-3,5]$
 
 III. $x\in [-3,\frac{7}{3}]$
 
-Choices: I only, II and III only, III only, I and III only, I and II only
+Choices: false, true
 
-Correct: I and III only
+Correct: true
 
 A function is invertible on a particular interval if and only if it's a one-to-one function on that interval. To determine the intervals on which the function is invertible, we use the horizontal line test.
 
@@ -1262,15 +1274,17 @@ Therefore, the correct answer is "I and III only".
 
 On which of the following intervals is the function $f(x)$ (shown above) invertible?
 
+Select all that apply.
+
 I. $x\in [-5,\frac{-7}{2}]\cup (1,3)$
 
 II. $x\in [-5,1]$
 
 III. $x\in [-2,1]$
 
-Choices: III only, I only, II and III only, I and II only, I and III only
+Choices: false, true
 
-Correct: I and III only
+Correct: true
 
 A function is invertible on a particular interval if and only if it's a one-to-one function on that interval. To determine the intervals on which the function is invertible, we use the horizontal line test.
 
@@ -1288,15 +1302,17 @@ Therefore, the correct answer is "I and III only".
 
 On which of the following intervals is the function $f(x)$ (shown above) invertible?
 
+Select all that apply.
+
 I. $x\in [1,5]$
 
 II. $x\in [-3,5]$
 
 III. $x\in [-3,-1]\cup (5,9)$
 
-Choices: I only, II and III only, III only, I and III only, I and II only
+Choices: false, true
 
-Correct: I and III only
+Correct: true
 
 A function is invertible on a particular interval if and only if it's a one-to-one function on that interval. To determine the intervals on which the function is invertible, we use the horizontal line test.
 
@@ -1314,15 +1330,17 @@ Therefore, the correct answer is "I and III only".
 
 On which of the following intervals is the function $f(x)$ (shown above) invertible?
 
+Select all that apply.
+
 I. $x\in (-5,-2]$
 
 II. $x\in [-8,-5]\cup [0,3)$
 
 III. $x\in (-5,0]$
 
-Choices: III only, II only, I and III only, I and II only, I only
+Choices: false, true
 
-Correct: I only
+Correct: true
 
 A function is invertible on a particular interval if and only if it's a one-to-one function on that interval. To determine the intervals on which the function is invertible, we use the horizontal line test.
 
@@ -1340,15 +1358,17 @@ Therefore, the correct answer is "I only".
 
 On which of the following intervals is the function $f(x)$ (shown above) invertible?
 
+Select all that apply.
+
 I. $x\in (-3,5]$
 
 II. $x\in [-7,-3]\cup [5,9)$
 
 III. $x\in (-3,1]$
 
-Choices: I only, II and III only, II only, III only, I and III only
+Choices: false, true
 
-Correct: III only
+Correct: false
 
 A function is invertible on a particular interval if and only if it's a one-to-one function on that interval. To determine the intervals on which the function is invertible, we use the horizontal line test.
 

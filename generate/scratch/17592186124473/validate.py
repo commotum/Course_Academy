@@ -60,12 +60,16 @@ def fmt(q):
 
 def normalcheck(r):
  q=r['question'];assert set(r['knowledge_point'])=={'db_id','id','title'};fmt(q)
- f=q[':question/answer-fields'][0];values=[a[':answer/value'] for a in f[':answer-field/choices']]
- assert len(values)==len(set(values))==5
- assert f[':answer-field/type']==':answer-field.type/radio'
+ fields=q[':question/answer-fields'];f=fields[0];values=[a[':answer/value'] for a in f[':answer-field/choices']]
  # Read graph instance from the actual rendered artifact sidecar, whose pixel
  # verification is performed by renderer, not from generation math metadata.
- path=Path(re.search(r'!\[\]\((.*?)\)',q[':question/problem'])[1]);side=json.loads(path.with_suffix('.json').read_text())
+ path=Path(re.search(r'!\[\]\((.*?)\)',q[':question/problem'])[1])
+ sidepath=path.with_suffix('.json')
+ if path.parts[0]=='images':
+  path=Path('/media/jake/SSD/EDB/math')/path
+  original=Path(r['generation']['plot']);sidepath=original.with_suffix('.json')
+  assert path.read_bytes()==original.read_bytes()
+ side=json.loads(sidepath.read_text())
  pieces=side['data']['pieces'];assert path.exists()
  assert side['minimum_feature_clearance_pixels']>=4
  assert side['raster_curve_midpoints_verified']==len(pieces)
@@ -73,15 +77,22 @@ def normalcheck(r):
  requested=promptsets(q)
  if requested:
   bits=[independent_hlt(pieces,s) for s in requested]
-  assert correct(r)==g.subset_label(bits),(r['generation']['template'],bits,correct(r))
+  assert len(fields)==3 and 'Select all that apply.' in q[':question/problem']
+  assert [f[':answer-field/key'] for f in fields]==['I','II','III']
+  for f,b in zip(fields,bits):
+   assert f[':answer-field/type']==':answer-field.type/checkbox'
+   assert sorted(a[':answer/value'] for a in f[':answer-field/choices'])==['false','true']
+   assert next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])==str(b).lower()
   # Actual fixed prose states each printed interval's HLT result; not metadata.
   lines=[x for x in q[':question/worked-solution'].splitlines() if x.startswith('- On interval')]
   assert len(lines)==3
   for line,ss,b in zip(lines,requested,bits):
    assert g.spset(parse(line))==g.spset(ss)
    assert ('**not** invertible' not in line)==b
-  eligible=[stripmath(v)==stripmath(g.subset_label(bits)) for v in values]
+  eligible=[True]
  else:
+  assert len(fields)==1 and f[':answer-field/type']==':answer-field.type/radio'
+  assert len(values)==len(set(values))==5
   answer_sets=[parse(v) for v in values]
   valid=[independent_hlt(pieces,s) for s in answer_sets]
   ci=values.index(correct(r));assert valid[ci]
@@ -148,7 +159,7 @@ def main():
  # ID excludes shuffle/seed, retains actual output and mathematical criterion.
  for r in review:
   meta=r['generation'];level=r['question'][':question/difficulty'].split('/')[-1]
-  rr=g.generate(level,999,template=meta['template'],profile=meta['bank_profile'],parameters=meta['parameters'])
+  rr=g.generate(level,999,template=meta['template'],profile=meta['bank_profile'] if meta['evidence_only'] else None,parameters=meta['parameters'])
   assert rr['question'][':question/id']==r['question'][':question/id']
  # Concurrent fresh renders: same/different geometry, unique inputs, atomic files.
  from concurrent.futures import ThreadPoolExecutor
@@ -161,12 +172,17 @@ def main():
  # Native radio: all complete displayed banks, each correct and each wrong.
  records=originals+review+extra;native=[]
  for i,r in enumerate(records):
-  f=r['question'][':question/answer-fields'][0]
-  native.append({'label':str(i),'record':r,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'Owned radio selection; mathematical eligibility separately verified'} for a in f[':answer-field/choices']]})
+  checks=[]
+  for index,f in enumerate(r['question'][':question/answer-fields']):
+   for a in f[':answer-field/choices']:
+    check={'field_index':index,'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'Actual field grading; mathematical eligibility separately verified'}
+    check['submitted_answer_id']=a[':answer/id']
+    checks.append(check)
+  native.append({'label':str(i),'record':r,'checks':checks})
  (HERE/'engine-input.json').write_text(json.dumps(native,default=str));engine=ROOT/'generate/runs/current/check-engine'
  subprocess.run([str(engine),str(HERE/'engine-input.json'),str(HERE/'engine-results.json')],check=True)
  (HERE/'review.json').write_text(json.dumps(review,indent=2,default=str))
- results={'status':'pass_with_explicit_source_limits','source_questions':13,'source_choices_matched':65,'source_complete_banks_matched':13,'source_correct_designations_matched':13,'raw_prompt_solution_exact':13,'raw_attribute_presence_exact':13,'source_math':source_math,'fidelity':fidelity,'normal_rendered_math_checks':len(extra)+sum(len(t)*2 for t in g.NORMAL.values()),'native_records':len(records),'native_checks':len(records)*5,'explicit_guard_rejections':invalid,'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'python':sys.version.split()[0],'sympy':sp.__version__,'unresolved':['Source analytic formulas are underidentified; profiles evidence-only.','q-108791 has no globally greatest injective domain; normal prompt clarifies listed maximal criterion.','Raw solution endpoint typos q-36039 and q-36004 preserved as evidence.'],'source_coordinate_hlt_translation_checks':26,'source_geometry_claim':'Monotonicity/output overlap landmarks independently support selections; exact original curve formulas not claimed.'}
+ results={'status':'pass_with_explicit_source_limits','source_questions':13,'source_choices_matched':65,'source_complete_banks_matched':13,'source_correct_designations_matched':13,'raw_prompt_solution_exact':13,'raw_attribute_presence_exact':13,'source_math':source_math,'fidelity':fidelity,'normal_rendered_math_checks':len(extra)+sum(len(t)*2 for t in g.NORMAL.values()),'native_records':len(records),'native_checks':sum(len(n['checks']) for n in native),'explicit_guard_rejections':invalid,'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'python':sys.version.split()[0],'sympy':sp.__version__,'unresolved':['Source analytic formulas are underidentified; profiles evidence-only.','q-108791 has no globally greatest injective domain; normal prompt clarifies listed maximal criterion.','Raw solution endpoint typos q-36039 and q-36004 preserved as evidence.'],'source_coordinate_hlt_translation_checks':26,'source_geometry_claim':'Monotonicity/output overlap landmarks independently support selections; exact original curve formulas not claimed.'}
  (HERE/'validation.json').write_text(json.dumps(results,indent=2));print(json.dumps({k:v for k,v in results.items() if k not in ('fidelity','source_math')},indent=2))
  # Preserve original source image references in prose review as absolute copies.
  def replace_images(s,sid,section):

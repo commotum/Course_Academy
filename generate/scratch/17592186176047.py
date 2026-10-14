@@ -28,7 +28,7 @@ import sympy as sp
 KP_ID=17592186176047
 KP_UUID='542df339-5020-5680-a39c-a1ae161083e7'
 TITLE='Describing Properties of the Cosine Function'
-VERSION='cosine-properties-finite-1'
+VERSION='cosine-properties-checkbox-finite-2'
 HERE=Path(__file__).resolve().with_suffix('')
 RECIPES=json.loads((HERE/'recipes.json').read_text())
 SOURCE={'database':'math','basis':1356,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
@@ -225,7 +225,7 @@ def source_sample(name,rng):
  return p
 
 # HARD: exactly three complete-family claims, one each for zeros/maxima/minima.
-def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+def _generate_legacy(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  if level not in ('easy','moderate','hard'):raise ValueError('Unknown difficulty')
  if profile is not None:
   if profile not in BANK_PROFILES:raise ValueError('Unknown complete bank profile')
@@ -277,6 +277,51 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   out.append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/'+kind,':answer-field/choices':answers,':answer-field/correct':[':answer/id',cid]})
  return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':out},'generation':{'version':VERSION,'seed':seed,'template':name,'bank_profile':profile,'parameters':p,'parameter_fingerprint':fingerprint,'mathematical_task_fingerprint':fingerprint,'content_fingerprint':content,'source_analysis':SOURCE,'source_ids':[name] if name in RECIPES else [],'authored_extension':name not in RECIPES,'source_repairs':(['sine mislink to cosine'] if name=='q-167631' and not raw else ['missing correct designation inferred','missing solution authored'] if name in ('q-27015','q-27021') else []),'plot_rating':'none','plot_assets':{'solution':re.findall(r'!\[\]\((.*?)\)',solution)},'claims':claims,'truth_vector':list(bits),'catalog_task_count':{'easy':32,'moderate':72,'hard':216}[level] if name not in RECIPES else None,'sympy_version':sp.__version__}}
 
+# Current source migration: three owned boolean checkbox fields. Historical
+# radio banks remain evidence in recipes.json; live source content is preserved.
+GENERATOR_UUID=str(uuid.uuid5(uuid.UUID(KP_UUID),'question-generator'))
+CURRENT=json.loads((HERE/'current-source.json').read_text())
+CURRENT_QUESTIONS={q[':question/math-academy-id']:q for q in CURRENT['record'][':knowledge-point/questions']}
+SUPPORTED_LEVELS=('easy','moderate','hard')
+
+def checkbox_prompt(prompt):
+ lines=prompt.splitlines();statements=[];header=[]
+ for line in lines:
+  if re.match(r'^(?:- |[1-3]\. |I{1,3}\. )',line):
+   statements.append(re.sub(r'^(?:- |[1-3]\. |I{1,3}\. )','',line))
+  elif not statements:header.append(line)
+ if len(statements)!=3:raise ValueError('Expected three statement slots')
+ return '\n'.join(header).strip()+'\n\nSelect all that apply.\n\n'+'\n'.join('- **'+roman+'.** '+statement for roman,statement in zip(ROMAN,statements))
+
+def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+ if field_type not in (None,'checkbox','blank'):raise ValueError('Live bank uses checkbox or blank')
+ r=_generate_legacy(level,seed,template,None,parameters,profile)
+ name=r['generation']['template'];q=r['question'];meta=r['generation']
+ if name=='q-167631' and profile=='observed-q-167631':
+  raise ValueError('Mislinked sine and malformed source TeX are evidence only, excluded from supported generation')
+ if meta['claims']:
+  q[':question/problem']=checkbox_prompt(q[':question/problem'])
+  if name in CURRENT_QUESTIONS and '\n\n- **II.' in CURRENT_QUESTIONS[name][':question/problem']:
+   q[':question/problem']=q[':question/problem'].replace('\n- **II.', '\n\n- **II.').replace('\n- **III.', '\n\n- **III.')
+  if name in ('q-27015','q-27021'):
+   # Live repair uses ASCII mathematical explanation. At changed parameters
+   # use the same three-verdict method with independently computed values.
+   if meta['parameters']==SOURCE_DEFAULTS[name]:q[':question/worked-solution']=CURRENT_QUESTIONS[name][':question/worked-solution']
+  values=[(roman,('true' if bit else 'false')) for roman,bit in zip(ROMAN,meta['truth_vector'])]
+  fields=[(key,'text',['false','true'],correct) for key,correct in values]
+  typ='checkbox'
+ else:
+  fields=[(f[':answer-field/key'],'math',[a[':answer/value'] for a in f[':answer-field/choices']],next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])) for f in q[':question/answer-fields']]
+  typ='blank'
+ content=digest({'version':VERSION,'prompt':q[':question/problem'],'solution':q[':question/worked-solution'],'fields':fields})
+ qid=str(uuid.uuid5(uuid.UUID(KP_UUID),content));q[':question/id']=qid;out=[]
+ for key,atype,bank,correct in fields:
+  fid=str(uuid.uuid5(uuid.UUID(qid),key))
+  answers=[{':answer/id':str(uuid.uuid5(uuid.UUID(fid),value)),':answer/type':':answer.type/'+atype,':answer/value':value} for value in bank]
+  out.append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/'+typ,':answer-field/choices':answers,':answer-field/correct':[':answer/id',next(a[':answer/id'] for a in answers if a[':answer/value']==correct)]})
+ q[':question/answer-fields']=out;meta['content_fingerprint']=content;meta['source_analysis']={'database':'math','basis':CURRENT['basis'],'lineage':CURRENT['lineage']};meta['response_profile']='live-three-boolean-checkbox' if typ=='checkbox' else 'repaired-cosine-facts'
+ return r
+
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):
  """Authored missing easy: three local facts, 32 finite semantic claim sets."""
  return generate('easy',seed,template,field_type,parameters,profile)
@@ -293,7 +338,7 @@ def markdown(r):
   for a in f[':answer-field/choices']:lines+=['- '+a[':answer/value']+(' **(correct)**' if a[':answer/id']==f[':answer-field/correct'][1] else '')]
  return '\n'.join(lines+['','Worked solution:','',q[':question/worked-solution']])
 def main():
- parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--difficulty',choices=('easy','moderate','hard','all'),default='all');parser.add_argument('--seed',type=int,default=0);parser.add_argument('--count',type=int,default=1);parser.add_argument('--format',choices=('markdown','json'),default='markdown');parser.add_argument('--template',choices=TEMPLATES);parser.add_argument('--profile',choices=BANK_PROFILES);parser.add_argument('--field-type',choices=('radio','blank'))
+ parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--difficulty',choices=('easy','moderate','hard','all'),default='all');parser.add_argument('--seed',type=int,default=0);parser.add_argument('--count',type=int,default=1);parser.add_argument('--format',choices=('markdown','json'),default='markdown');parser.add_argument('--template',choices=TEMPLATES);parser.add_argument('--profile',choices=BANK_PROFILES);parser.add_argument('--field-type',choices=('checkbox','blank'))
  a=parser.parse_args()
  if a.count<1:parser.error('count must be positive')
  if a.difficulty=='all' and (a.template or a.profile):parser.error('Use a specific difficulty with template/profile')

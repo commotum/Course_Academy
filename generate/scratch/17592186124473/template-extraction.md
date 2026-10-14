@@ -26,3 +26,10 @@ q-108791 asks for the "largest domain." The displayed correct [-3,1]∪(3,5] is 
 
 
 Root clarification: the normal plateau-interval prompt asks for the greatest injective interval by inclusion among the listed choices. A singleton on the excluded plateau is incomparable with the main branch globally, so a global greatest-domain claim would be ambiguous. The raw source prompts remain verbatim; the authored normal solution names the greatest listed interval.
+
+
+## Current application layout at basis 2219
+
+The ten subset-selection sources now have three checkbox fields I, II, III, each with a field-owned text bank {false, true}. The three greatest-listed-domain sources retain a radio field and five mathematical choices. `current-source.json` records the complete current evidence; the original basis-1356 source capture remains intact. Version 2 emits the current checkbox contract for subset questions and preserves the original radio evidence as ineligible replay profiles. Each field key refers to the same interval in the prompt and worked solution. No source or learner records are edited.
+
+The replenishment catalog additionally collapses interval label permutations, output reflection and translations. Selection requires a new normalized relative-span/endpoint task, never a new seed or choice order. Source raster profiles remain excluded; exact authored affine graphs support all three difficulty labels.

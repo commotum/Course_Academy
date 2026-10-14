@@ -48,3 +48,9 @@ The easy/moderate/hard catalog bounds are enforced by membership, not loose gene
 - These catalogs are finite. Equivalent integer shifts, variable aliases and incorrect coefficient magnitudes are not used to claim endless conceptual diversity. Source recovery does not imply original sampling algorithms or observed easy/hard labels.
 
 Incorrect symmetric range bounds 2, 3 and π are incidental magnitudes in a truth-classification task: their lower/upper endpoint positions are identical relative to [-1,1], so they share a mathematical fingerprint. Similarly, output magnitudes outside the range share the below/above classification fingerprint. Their actual displayed values still affect complete content identity and source-bank fidelity.
+
+## Current response contract, basis 2218
+
+Version 2 migrates generated statement questions to the live source's three-field checkbox structure. Every statement is labeled I, II or III. Each field has exactly the source boolean bank `{false,true}` and a correct designation computed from that printed statement. Source numeric/function slots, mathematical backbone and worked-solution stages remain as extracted. Complete live-source replay compares all values and designations in all 21 banks; historical radio recipes are retained as evidence, not assembled as current banks. q-27015/q-27021 now replay the current repaired explanations at their original slots; changed parameters use the existing parameterized three-verdict explanation with exact values. Neither source question is assigned a new database difficulty.
+
+The five-field sine source is excluded: it belongs to a different function and its current TeX answer bytes are malformed. The repaired cosine facts template uses singleton math banks with delimiter-free canonical values and native equivalent/wrong-entry checks. All three normal reserve catalogs use checkboxes. Boolean field choice order is fixed and is not a source of task variety.

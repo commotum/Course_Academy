@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Draft graph/interval invertibility generator; stops at step 7.
+"""Graph/interval invertibility generator with current checkbox response layout.
 
 Raw observed profiles reconstruct complete interval/prose/bank masks and retain
 original raster ink at its original parameters. Changed evidence coordinates use
@@ -16,7 +16,7 @@ import sympy as sp
 KP_ID=17592186124473
 HERE=Path(__file__).resolve().with_suffix('')
 SOURCE=json.loads((HERE/'source.json').read_text())
-REC=SOURCE['record'];TITLE=REC[':knowledge-point/title'];VERSION='interval-invertibility-1'
+REC=SOURCE['record'];TITLE=REC[':knowledge-point/title'];VERSION='interval-invertibility-2'
 QUESTIONS={q[':question/math-academy-id']:q for q in REC[':knowledge-point/questions']}
 NS=uuid.UUID('3b6b8762-b3ed-4b42-872a-95f6d1bf32ec')
 OPEN="A function is invertible on a particular interval if and only if it's a one-to-one function on that interval. To determine the intervals on which the function is invertible, we use the horizontal line test."
@@ -46,6 +46,7 @@ LANDMARKS['q-36066']=[[-99,100,0,1,0,1],[0,1,2,3,1,1],[2,3,4,-1,1,1],[4,-1,99,-9
 
 def digest(v): return hashlib.sha256(json.dumps(v,sort_keys=True,default=str,separators=(',',':')).encode()).hexdigest()
 def uid(v): return str(uuid.uuid5(NS,v))
+GENERATOR_UUID=uid('generator/'+str(KP_ID))
 def num(x):
  x=F(x);return str(x.numerator) if x.denominator==1 else r'\frac{'+str(x.numerator)+'}{'+str(x.denominator)+'}'
 def interval(a,b,lc=True,rc=True):return [a,b,bool(lc),bool(rc)]
@@ -289,8 +290,22 @@ def observed(level,seed,profile,p):
  return r
 
 
+def current_layout(record):
+ """Preserve the assessed restrictions; each now owns a true/false bank."""
+ if record['generation']['evidence_only'] or record['generation']['restrictions'] is None:return record
+ q=record['question'];bits=[injective(record['generation']['pieces'],s) for s in record['generation']['restrictions']]
+ q[':question/problem']=q[':question/problem'].replace('invertible?\n\n','invertible?\n\nSelect all that apply.\n\n')
+ identity=digest([VERSION,q[':question/difficulty'],q[':question/problem'],q[':question/worked-solution'],bits])
+ q[':question/id']=uid(identity);q[':question/answer-fields']=[]
+ for key,bit in zip(('I','II','III'),bits):
+  fid=uid(identity+'/'+key)
+  choices=[{':answer/id':uid(fid+'/'+value),':answer/type':':answer.type/text',':answer/value':value} for value in ('false','true')]
+  q[':question/answer-fields'].append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/checkbox',':answer-field/choices':choices,':answer-field/correct':[':answer/id',uid(fid+'/'+str(bit).lower())]})
+ record['generation'].update(content_identity=identity,bank_profile='current_boolean_fields',response_layout='three independent checkbox fields')
+ return record
+
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
- if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('only observed radio layout supported')
+ if field_type not in (None,'radio',':answer-field.type/radio','checkbox',':answer-field.type/checkbox'):raise ValueError('unsupported field layout')
  if profile in QUESTIONS:
   if template not in (None,'source_'+profile):raise ValueError('evidence template mismatch')
   return observed(level,seed,profile,parameters)
@@ -298,7 +313,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   return observed(level,seed,template[7:],parameters)
  if level not in NORMAL:raise ValueError('unknown difficulty')
  template=template or random.Random(seed).choice(NORMAL[level])
- return authored(level,seed,template,parameters,profile)
+ return current_layout(authored(level,seed,template,parameters,None if profile=='current_boolean_fields' else profile))
 
 # EASY: authored missing level, one turning point and three finite restrictions.
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('easy',seed,template,field_type,parameters,profile)
@@ -313,6 +328,7 @@ def markdown(record):
  level=q.get(':question/difficulty','unrated').split('/')[-1]
  lines=['## '+label+' — '+level+' ('+('observed' if raw else 'authored')+')','',q[':question/problem'],'','Choices:']
  for f in q.get(':question/answer-fields',[]):
+  lines.append('Field '+f[':answer-field/key']+':')
   for a in f[':answer-field/choices']:
    value='$'+a[':answer/value']+'$' if a[':answer/type']==':answer.type/math' else a[':answer/value']
    lines.append('- '+value+(' **(source designation)**' if raw else ' **(correct)**' if a[':answer/id']==f[':answer-field/correct'][1] else '') if a[':answer/id']==f[':answer-field/correct'][1] else '- '+value)
