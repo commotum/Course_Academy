@@ -31,7 +31,7 @@ import sympy as sp
 KP_ID=17592186133896
 KP_UUID='8644454b-ee25-59fd-ae65-9770a0b44442'
 TITLE='Expressing the Area Bounded by a Closed Curve Using Green’s Theorem'
-VERSION='green-area-setup-v3'
+VERSION='green-area-setup-v4'
 ROOT=Path(__file__).with_suffix('')
 SOURCE=json.loads((ROOT/'source.json').read_text())
 QUESTIONS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
@@ -302,9 +302,10 @@ def _render_plots(template,p,output_dir=None):
 
 def guard(level,template,p):
  if set(p)!=({'a','b','m'} if template=='power' else {'a','b'}):raise ValueError('parameters must exactly match template slots')
- if any(type(p[z]) is not int or not 1<=p[z]<=(20 if level=='easy' else 6) for z in ('a','b')):raise ValueError('outer scales must be integers 1..20 at easy, 1..6 otherwise')
+ if any(type(p[z]) is not int or not 1<=p[z]<=(20 if level=='easy' else 12 if level=='moderate' else 6) for z in ('a','b')):raise ValueError('outer scales must be integers 1..20 at easy,1..12 at moderate,1..6 at hard')
  if level=='easy' and (p['a']!=p['b'] or p['a']>20):raise ValueError('easy requires circles of radius 1..20')
  if level=='moderate' and p['a']==p['b']:raise ValueError('moderate requires unequal semiaxes')
+ if level=='hard' and template=='ellipse_cw' and p['a']==p['b']:raise ValueError('hard ellipse requires unequal semiaxes; authored easy uses circles')
  if template=='power' and p['m'] not in (3,5,7):raise ValueError('hard power workload uses odd m=3,5,7')
 
 
@@ -321,9 +322,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  if level=='easy' and profile!='authored':raise ValueError('circle level is authored; no observed easy evidence')
  raw=profile=='observed_raw';source_id=TEMPLATES[template][1];source=QUESTIONS[source_id]
  for attempt in range(100):
-  p=dict(parameters) if parameters is not None else {'a':rng.randint(1,6),'b':rng.randint(1,6)}
+  p=dict(parameters) if parameters is not None else {'a':rng.randint(1,12 if level=='moderate' else 6),'b':rng.randint(1,12 if level=='moderate' else 6)}
   if parameters is None:
-   if profile=='authored':p['a']=rng.randint(2,20 if level=='easy' else 6)
+   if profile=='authored':p['a']=rng.randint(2,20 if level=='easy' else 12 if level=='moderate' else 6)
    if level=='easy':p['b']=p['a']
    if template=='power':p['m']=rng.choice((3,5,7))
   try:

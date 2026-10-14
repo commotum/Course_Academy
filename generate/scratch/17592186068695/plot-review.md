@@ -1,0 +1,9 @@
+# Rendered plot review
+
+Inspected the34 actual final Matplotlib assets listed in plot-review-paths.json at their original585×507 resolution: complete changed banks for all4 easy families, prompt/solution plots for all5 moderate families, and both authored hard families. Every answer-option branch/marker was included, not only the selected graph. All32 original source assets were separately viewed at full source resolution on white.
+
+The inspection identified and corrected external polyline knots showing false open endpoints within the viewport; only internal exclusions remain marked. Open vertices receive viewport margin so the entire ring remains visible. q48082 normal solution uses the same displaced-value/hole relation as the correct option. Unit tick grids in both hard graphs omit half-unit target labels: source-derived jump/hole locations occur midway between visible integer labels. All labels, targets, filled/open markers, poles and optional blue neighborhoods were read against the exact question instance. Black axes arrows have no traversal meaning; curves have no traversal arrows or area fill.
+
+The original source smooth formulas are unavailable. Generated polygons/rational branches are schematic source-topology realizations, which intentionally do not claim algebraic recovery from raster pixels. Local continuum/domain/value relationships remain exact and were independently verified symbolically. Source90's contradictory marker geometry is preserved only in raw evidence, with a separately recorded graph/annotation recipe.
+
+Fresh concurrent render tests use3 independent processes (2 identical parameter calls,1 different), a new private render directory and atomic PNG/JSON writes. PNG/sidecar consistency and absence of temporary file leaks pass. Cache pruning is not performed during review.

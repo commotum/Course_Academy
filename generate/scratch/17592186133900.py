@@ -20,7 +20,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle, Rectangle
 ROOT=Path(__file__).with_suffix(''); SOURCE=json.loads((ROOT/'source.json').read_text()); REC=SOURCE['record']
-KP_ID=17592186133900; VERSION='advanced-green-1'; x,y,r,t=S.symbols('x y r theta',real=True)
+KP_ID=17592186133900; VERSION='advanced-green-2'; x,y,r,t=S.symbols('x y r theta',real=True)
 QUESTIONS={q[':question/math-academy-id']:q for q in REC[':knowledge-point/questions']}
 FAMILIES={
 'annulus_quadratic':('moderate','q-126566',-x*x*y,x*y*y,1,2),
@@ -108,34 +108,89 @@ def rect_solution(f,p,P,Q,Py,Qx,C):
  gx,gy={'rectangle_y2':(1,y**2),'rectangle_x3y2':(x**3,y**2),'rectangle_xy':(2*x,y),'rectangle_shift':(2*x,2*y),'rectangle_x2y3':(x**2,4*y**3)}[f];gx=S.sympify(gx)*p['c'];gy=S.sympify(gy);G=S.integrate(gx,x);H=S.integrate(gy,y);A=p['outer'];B=p['hole']
  def repeated(a):return integ(a[2],a[3],integ(a[0],a[1],tex(C),'x'),'y')
  def product(a):return integ(a[0],a[1],tex(gx) if gx!=1 else '', 'x')+r'\cdot '+integ(a[2],a[3],tex(gy),'y')
- def prim(a):return evaluate(tex(G),'x',a[0],a[1])+r'\cdot '+evaluate(tex(H),'y',a[2],a[3])
+ GT={'rectangle_y2':tex(p['c']*x),'rectangle_x3y2':r'\frac{'+('' if p['c']==1 else tex(p['c']))+r'x^4}{4}','rectangle_xy':tex(p['c']*x*x),'rectangle_shift':tex(p['c']*x*x),'rectangle_x2y3':r'\frac{'+('' if p['c']==1 else tex(p['c']))+r'x^3}{3}'}[f]
+ HT={'rectangle_y2':r'\frac{y^3}{3}','rectangle_x3y2':r'\frac{y^3}{3}','rectangle_xy':r'\frac{y^2}{2}','rectangle_shift':'y^2','rectangle_x2y3':'y^4'}[f]
+ def prim(a):return evaluate(GT,'x',a[0],a[1])+r'\cdot '+evaluate(HT,'y',a[2],a[3])
  def ends(a):return endpoint(G,x,a[0],a[1])+r'\cdot '+endpoint(H,y,a[2],a[3])
  def diffs(a):return [S.simplify(G.subs(x,a[1])-G.subs(x,a[0])),S.simplify(H.subs(y,a[3])-H.subs(y,a[2]))]
  av,bv=diffs(A),diffs(B);outer=S.prod(av);hole=S.prod(bv);ans=outer-hole
  sol='The region $D$ can be represented in Cartesian coordinates as $\\Delta_1\\setminus\\Delta_2,$ where\n\n- $\\Delta_1='+bound(A)+'$ is the region enclosed by the outer curve, and\n\n- $\\Delta_2='+bound(B)+'$ is the region enclosed by the inner curve.\n\nTherefore, our double integral becomes\n\n'
  sol+=aligned([r'\iint_D '+tex(C)+r'\,\mathrm dA & =\iint_{\Delta_1}'+tex(C)+r'\,\mathrm dA-\iint_{\Delta_2}'+tex(C)+r'\,\mathrm dA',repeated(A)+'-'+repeated(B),product(A)+'-'+product(B),prim(A)+'-'+prim(B),ends(A)+'-'+ends(B),par(av[0])+r'\cdot '+par(av[1])+'-'+par(bv[0])+r'\cdot '+par(bv[1]),tex(ans)])
- return sol,ans,outer,hole,{'gx':str(gx),'gy':str(gy),'G':str(G),'H':str(H),'endpoint_components':[[str(G.subs(x,a[1])),str(G.subs(x,a[0])),str(H.subs(y,a[3])),str(H.subs(y,a[2]))] for a in (A,B)]}
+ return sol,ans,outer,hole,{'gx':str(gx),'gy':str(gy),'G':str(G),'H':str(H),'primitive_tex':{'x':GT,'y':HT},'endpoint_components':[[str(G.subs(x,a[1])),str(G.subs(x,a[0])),str(H.subs(y,a[3])),str(H.subs(y,a[2]))] for a in (A,B)]}
+def held_power(v,n):
+ return '('+tex(v)+')^{'+str(n)+'}'
+def held_fraction(coefficient,v,n,denominator):
+ numerator=(tex(coefficient)+r'\cdot ' if coefficient!=1 else '')+held_power(v,n)
+ return r'\frac{'+numerator+'}{'+str(denominator)+'}'
+def difference(u,v):
+ return r'\left('+u+'-'+r'\left('+v+r'\right)'+r'\right)'
 def polar_solution(f,p,C):
- a,b,c=p['inner'],p['outer'],p['c'];trig=r'\cos^2\theta+\sin^2\theta';external=f=='annulus_four'
- if f=='annulus_sin2':
-  angular=S.sin(2*t);radial=r**3;factor=-3*c;L=tex(C);sub=tex(-6*c)+r'(r\cos\theta)(r\sin\theta)r';fact=tex(factor)+r'r^3\sin(2\theta)';reduced=fact
- elif f=='annulus_odd':
-  angular=S.sin(t);radial=3*c*r**4;factor=1;L=tex(C);sub=tex(3*c)+r'\cdot r\sin\theta\cdot ((r\cos\theta)^2+(r\sin\theta)^2)\cdot r';fact=tex(3*c)+r'r^2\sin\theta\cdot r^2('+trig+')';reduced=tex(radial)+r'\sin\theta'
- else:
-  angular=S.Integer(1);power=5 if f=='annulus_fourth' else 3;factor=(-c if f=='annulus_negative' else 4*c if f=='annulus_four' else c);radial=r**power;L=tex(C);n=2 if power==5 else 1
-  sub=r'((r\cos\theta)^2+(r\sin\theta)^2)'+('^2' if n==2 else '')+r'\cdot r';fact='r^{'+str(2*n)+'}('+trig+')'+('^2' if n==2 else '')+r'\cdot r';reduced=tex(radial)
-  if not external:sub=scaled(factor,sub);fact=scaled(factor,fact);reduced=tex(factor*radial)
- H=S.integrate(radial,r);G=S.integrate(angular,t);angularval=S.integrate(angular,(t,0,2*S.pi));rv=H.subs(r,b)-H.subs(r,a);ans=S.simplify(factor*angularval*rv)
- sol='The region $D$ can be represented in polar coordinates as\n\n$$\\Delta=\\{(r,\\theta):'+tex(a)+r'\le r\le '+tex(b)+r',0\le\theta\le2\pi\}.'+'$$\n\nRecall that'+POLAR+'Therefore, our double integral becomes\n\n'
+ """Each branch preserves its source's operative primitive/factor convention.
+
+ Supplemental evaluated primitive components ADD to those original stages.
+ Held powers/fractions prevent SymPy from collapsing the factoring operation.
+ """
+ a,b,c=p['inner'],p['outer'],p['c'];trig=r'\cos^2\theta+\sin^2\theta'
+ domain='$$\\Delta=\\{(r,\\theta):'+tex(a)+r'\le r\le '+tex(b)+r',0\le\theta'+('<' if f=='annulus_sin2' else r'\le')+r'2\pi\}.'+'$$'
  R=lambda z:integ(0,2*S.pi,integ(a,b,z,'r'),r'\theta')
- pref=lambda z:scaled(factor,z)
- rows=[r'\iint_D '+L+r'\,\mathrm dA & ='+(pref(R(sub)) if external else R(sub)),pref(R(fact)) if external else R(fact),pref(R(reduced)) if external else R(reduced)]
- sep=integ(0,2*S.pi,tex(angular) if angular!=1 else '',r'\theta')+r'\cdot '+integ(a,b,tex(radial),'r');rows.append(pref(sep))
- if angular==1:
-  k=2*S.pi*factor;rows+=[tex(k)+r'\cdot '+integ(a,b,tex(radial),'r'),tex(k)+r'\cdot '+evaluate(tex(H),'r',a,b),tex(k)+r'\cdot '+endpoint(H,r,a,b),tex(k)+r'\cdot '+par(rv),tex(ans)]
+ def product(angular,radial):return integ(0,2*S.pi,angular,r'\theta')+r'\cdot '+integ(a,b,radial,'r')
+ required=[];added=[]
+ if f=='annulus_sin2':
+  angular=S.sin(2*t);radial=r**3;factor=-3*c;G=-S.cos(2*t)/2;H=r**4/4
+  integrand=tex(factor)+r'r^3\sin(2\theta)'
+  conversion=r'\oint_{\partial R}('+tex(c*FAMILIES[f][2])+r')\,\mathrm dx+('+tex(c*FAMILIES[f][3])+r')\,\mathrm dy=\iint_\Delta '+integrand+r'\,\mathrm dr\,\mathrm d\theta'
+  sol="As we saw earlier, we can use Green's theorem to write our line integral in polar coordinates as \n\n$$"+conversion+".$$\n\nBut this time, our region $R$ (in polar coordinates) is given by \n\n"+domain+"\n\nTherefore, we get\n\n"
+  repeated=tex(factor)+r'\cdot '+R(r'r^3\sin(2\theta)')
+  separated=tex(factor)+r'\cdot '+product(r'\sin(2\theta)',r'r^3')
+  # Source cos(2theta)/(-2), including its denominator, stays explicit.
+  angular_primitive=r'\frac{\cos(2\theta)}{-2}'
+  primitive=tex(factor)+r'\cdot '+evaluate(angular_primitive,r'\theta',0,2*S.pi)+r'\cdot '+evaluate(r'\frac{r^4}{4}','r',a,b)
+  primitive_values=tex(factor)+r'\cdot '+endpoint(G,t,0,2*S.pi)+r'\cdot '+endpoint(H,r,a,b)
+  # Original pulls BOTH denominator factors outside the held powers.
+  factored=tex(S.Rational(3*c,2))+r'\cdot (1-1)\cdot\frac{1}{4}\cdot '+difference(held_power(b,4),held_power(a,4))
+  power_values=tex(S.Rational(3*c,2))+r'\cdot (1-1)\cdot\frac{1}{4}\cdot '+difference(tex(b**4),tex(a**4))
+  required=[repeated,separated,primitive,factored];added=[primitive_values,power_values]
+  rows=[r'\iint_\Delta '+integrand+r'\,\mathrm dr\,\mathrm d\theta & ='+repeated,separated,primitive,primitive_values,factored,power_values,'0']
+ elif f=='annulus_odd':
+  angular=S.sin(t);radial=3*c*r**4;factor=1;G=-S.cos(t);H=3*c*r**5/5
+  sub=tex(3*c)+r'\cdot r\sin\theta\cdot ((r\cos\theta)^2+(r\sin\theta)^2)\cdot r'
+  fact=tex(3*c)+r'r^2\sin\theta\cdot r^2('+trig+')'
+  reduced=tex(3*c)+r'r^4\sin\theta'
+  separated=product(r'\sin\theta',tex(3*c)+r'r^4')
+  primitive=evaluate(r'-\cos\theta',r'\theta',0,2*S.pi)+r'\cdot '+evaluate(r'\frac{'+tex(3*c)+r'r^5}{5}','r',a,b)
+  held_radial=difference(held_fraction(3*c,b,5,5),held_fraction(3*c,a,5,5))
+  symbolic_angular=difference(r'-\cos(2\pi)',r'-\cos(0)')
+  numeric_angular=difference('-1','-1')
+  symbolic_endpoints=symbolic_angular+r'\cdot '+held_radial
+  angular_values=numeric_angular+r'\cdot '+held_radial
+  primitive_values=endpoint(G,t,0,2*S.pi)+r'\cdot '+endpoint(H,r,a,b)
+  required=[R(sub),R(fact),R(reduced),separated,primitive,symbolic_endpoints,angular_values];added=[primitive_values]
+  rows=[r'\iint_D '+tex(C)+r'\,\mathrm dA & ='+R(sub),R(fact),R(reduced),separated,primitive,symbolic_endpoints,angular_values,primitive_values,'0']
  else:
-  rows +=[pref(evaluate(tex(G),r'\theta',0,2*S.pi)+r'\cdot '+evaluate(tex(H),'r',a,b)),pref(endpoint(G,t,0,2*S.pi)+r'\cdot '+endpoint(H,r,a,b)),tex(factor)+r'\cdot '+par(angularval)+r'\cdot '+par(rv),tex(ans)]
- sol+=aligned(rows);return sol,ans,rv*factor,angularval,{'radial':str(radial),'angular':str(angular),'factor':str(factor),'G':str(G),'H':str(H),'endpoint_components':[str(G.subs(t,2*S.pi)),str(G.subs(t,0)),str(H.subs(r,b)),str(H.subs(r,a))]}
+  n=6 if f=='annulus_fourth' else 4;angular=S.Integer(1);radial=r**(n-1);factor=-c if f=='annulus_negative' else 4*c if f=='annulus_four' else c;G=t;H=r**n/n;k=2*S.pi*factor
+  sub=r'((r\cos\theta)^2+(r\sin\theta)^2)'+('^2' if n==6 else '')+r'\cdot r'
+  fact='r^{'+str(n-2)+'}('+trig+')'+('^2' if n==6 else '')+r'\cdot r'
+  reduced='r^{'+str(n-1)+'}'
+  if f=='annulus_four':
+   # Source external4 applies to the WHOLE double integral, never its integrand.
+   repeated=tex(4*c)+r'\cdot '+R(sub);factored_integrand=tex(4*c)+r'\cdot '+R(fact);reduced_integral=tex(4*c)+r'\cdot '+R(reduced)
+   separated=tex(4*c)+r'\cdot '+product('',reduced)
+  else:
+   repeated=R(scaled(factor,sub));factored_integrand=R(scaled(factor,fact));reduced_integral=R(tex(factor*radial));separated=product('',tex(factor*radial))
+  angular_evaluated=tex(k)+r'\cdot '+integ(a,b,reduced,'r')
+  # All radial source families use the unscaled r^n/n primitive.
+  primitive=tex(k)+r'\cdot '+evaluate(r'\frac{r^{'+str(n)+'}}{'+str(n)+'}','r',a,b)
+  primitive_values=tex(k)+r'\cdot '+endpoint(H,r,a,b)
+  # This is the source operation: collect 2pi*(factor/n) OUTSIDE powers.
+  factored_endpoints=tex(k/n)+r'\cdot '+difference(held_power(b,n),held_power(a,n))
+  power_values=tex(k/n)+r'\cdot '+difference(tex(b**n),tex(a**n))
+  required=[repeated,factored_integrand,reduced_integral,separated,angular_evaluated,primitive,factored_endpoints];added=[primitive_values,power_values]
+  ans=S.simplify(k*(H.subs(r,b)-H.subs(r,a)))
+  rows=[r'\iint_D '+tex(C)+r'\,\mathrm dA & ='+repeated,factored_integrand,reduced_integral,separated,angular_evaluated,primitive,primitive_values,factored_endpoints,power_values,tex(ans)]
+ if f!='annulus_sin2':sol='The region $D$ can be represented in polar coordinates as \n\n'+domain+'\n\nRecall that'+POLAR+'Therefore, our double integral becomes\n\n'
+ angularval=S.integrate(angular,(t,0,2*S.pi));rv=H.subs(r,b)-H.subs(r,a);ans=S.simplify(factor*angularval*rv)
+ sol+=aligned(rows)
+ return sol,ans,rv*factor,angularval,{'radial':str(radial),'angular':str(angular),'factor':str(factor),'G':str(G),'H':str(H),'endpoint_components':[str(G.subs(t,2*S.pi)),str(G.subs(t,0)),str(H.subs(r,b)),str(H.subs(r,a))],'source_operative_rows':required,'supplemental_rows':added}
 def parameters_guard(f,p):
  if set(p)!={'c','inner','outer'} and f.startswith('annulus'):raise ValueError('annulus requires c,inner,outer')
  if not f.startswith('annulus') and set(p)!={'c','outer','hole'}:raise ValueError('rectangle requires c,outer,hole')
@@ -181,16 +236,15 @@ def raw_generate(level,f,p,profile,seed):
  prompt=raw_text(q[':question/problem'],c)
  if c!=1:prompt=re.sub(r'!\[\]\([^)]*\)',lambda m:'![]('+render_plot(f,mathp)+')',prompt,count=1)
  return record(level,f,p,profile,prompt,raw_text(q[':question/worked-solution'],c),fields,seed,task_key(level,f,mathp,Py,Qx,S.factor(Qx-Py)),{'evidence_only':True,'source_id':sid,'raw_shape':True,'source_geometry_parameters':mathp,'derived_formal_integral':str(expected),'invalid_premise':sid=='q-126937'})
-def build(level,f,p,profile,seed):
+def build(level,f,p,profile,seed,calculation_only=False):
  parameters_guard(f,p);c=p['c'];d=FAMILIES[f];P=c*d[2];Q=c*d[3];Py=S.diff(P,y);Qx=S.diff(Q,x);C=S.factor(Qx-Py)
  if f=='annulus_supplied':C=c*(x*x+y*y)
  elif f=='rectangle_shift':Py=2*c*y*(x+1)
- expression=r'\oint_{\partial D}('+tex(P)+r')\,\mathrm dx+('+tex(Q)+r')\,\mathrm dy'
- if f=='annulus_sin2':expression=expression.replace('\\partial D','\\partial R')
+ expression=r'\oint_{\partial '+('R' if f=='annulus_sin2' else 'D')+'}('+tex(P)+r')\,\mathrm dx+('+tex(Q)+r')\,\mathrm dy'
  if f=='annulus_supplied':expression=r'\oint_{\partial D}P\,\mathrm dx+Q\,\mathrm dy';prompt='Given $'+r'\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}='+tex(C)+'$, calculate $'+expression+'$ over the positively oriented annular region shown above.';sol=OPEN+'Therefore, applying Green\'s theorem, we get\n\n'+aligned([expression+r' & =\iint_D '+tex(C)+r'\,\mathrm dA'])
  else:
   prompt='Calculate $'+expression+'$, where $D$ is the '+('annular ' if f.startswith('annulus') else '')+'region shown above.'
-  sol=OPEN+'We have that $P(x,y)='+tex(P)+'$ and $Q(x,y)='+tex(Q)+'.$ '+('So,' if level=='moderate' else 'Therefore,')+'\n\n$$'+r'\frac{\partial P}{\partial y}='+tex(Py)+r',\qquad\frac{\partial Q}{\partial x}='+tex(Qx)+'.$$\n\nTherefore, applying Green\'s theorem, we get\n\n'
+  sol=(QUESTIONS[d[1]][':question/worked-solution'].split('As we saw earlier' if f=='annulus_sin2' else 'We have that')[0])+'We have that $P(x,y)='+tex(P)+'$ and $Q(x,y)='+tex(Q)+'.$ '+('So,' if level=='moderate' else 'Therefore,')+'\n\n$$'+r'\frac{\partial P}{\partial y}='+tex(Py)+r',\qquad\frac{\partial Q}{\partial x}='+tex(Qx)+'.$$\n\nTherefore, applying Green\'s theorem, we get\n\n'
   formal=[]
   for name,var,field,base,derived in (('P',y,P,d[2],Py),('Q',x,Q,d[3],Qx)):
    parts=[S.diff(c*term,var) for term in S.Add.make_args(base)]
@@ -199,13 +253,16 @@ def build(level,f,p,profile,seed):
   sol=sol.replace('\n\n$$'+r'\frac{\partial P}', '\n\n'+supplement+'$$'+r'\frac{\partial P}',1)
   curlrows=[expression+r' & =\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\,\mathrm dA',r'\iint_D\left('+tex(Qx)+'-('+tex(Py)+r')\right)\,\mathrm dA']
   if f in ('annulus_fourth','annulus_odd','annulus_four','annulus_negative'):curlrows.append(r'\iint_D('+tex(S.expand(C))+r')\,\mathrm dA')
-  curlrows.append(r'\iint_D '+tex(C)+r'\,\mathrm dA');sol+=aligned(curlrows)
+  curlrows.append(r'\iint_D '+tex(C)+r'\,\mathrm dA')
+  if f=='annulus_sin2':curlrows=[v.replace('\\iint_D','\\iint_R') for v in curlrows]
+  sol+=aligned(curlrows)
  if f.startswith('annulus'):tail,ans,rv,av,stages=polar_solution(f,p,C)
  else:tail,ans,outer,hole,stages=rect_solution(f,p,P,Q,Py,Qx,C)
  sol+='\n\n'+tail
  if f=='annulus_sin2':
   prompt="Let $\\partial R$ be the boundary of the region $R,$ shown above. Use Green's theorem to calculate the following integral:\n\n$\\oint_{\\partial R}\\mathbf F\\cdot\\mathrm d\\mathbf r="+expression+'=$'
-  sol=sol.replace('We have that',"As we saw earlier, we can use Green's theorem to write our line integral in polar coordinates. Holding the other coordinate fixed, we have that",1).replace('The region $D$ can be represented in polar coordinates as', 'But this time, our region $R$ (in polar coordinates) is given by',1)
+
+ if calculation_only:return {'prompt':prompt,'solution':sol,'parameters':p,'template':f,'level':level,'source_id':d[1],'P':str(P),'Q':str(Q),'curl':str(C),'answer':str(ans),'stages':stages,'evidence_only':True,'reason':'normal calculation at source anchor; no bank eligibility claim'}
  if f.startswith('annulus'):
   if f in ('annulus_sin2',):values=[ans];recipes=['correct'];kind='blank';key='field-1';prompt+='\n\n{{field-1}}'
   elif f=='annulus_odd':values=[ans,2*rv,-2*rv,2*S.pi*rv,S.pi*rv];recipes=['correct','use_half_turn','add_cos_endpoints','omit_sine','use_pi_angular_measure'];kind='radio';key='selection'

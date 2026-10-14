@@ -130,7 +130,7 @@ def main():
    assert other['question'][':question/id']==r['question'][':question/id']
    assert other['generation']['mathematical_fingerprint']==r['generation']['mathematical_fingerprint']
  # Exercise documented coefficient and power boundary workloads explicitly.
- boundaries=[('easy','circle_cw',{'a':20,'b':20}),('moderate','ellipse_ccw',{'a':6,'b':1}),('hard','power',{'a':6,'b':1,'m':3}),('hard','power',{'a':2,'b':6,'m':7}),('hard','exp_cw',{'a':1,'b':6}),('hard','double_sine',{'a':6,'b':1}),('hard','double_cos',{'a':1,'b':6})]
+ boundaries=[('easy','circle_cw',{'a':20,'b':20}),('moderate','ellipse_ccw',{'a':12,'b':1}),('hard','power',{'a':6,'b':1,'m':3}),('hard','power',{'a':2,'b':6,'m':7}),('hard','exp_cw',{'a':1,'b':6}),('hard','double_sine',{'a':6,'b':1}),('hard','double_cos',{'a':1,'b':6})]
  for level,template,p in boundaries:
   r=g.generate(level,1001,template=template,parameters=p);iv=verify(r);records.append(r);math_results.append({'template':template,'boundary_parameters':p,'integral_values':iv})
  # Normalized evidence profile exists publicly but is never learner-eligible.
@@ -145,7 +145,7 @@ def main():
   assert r['generation']['parameters']==p
   changed_raw.append(r)
  # Strict explicit bounds and authored bank collision rejection.
- invalid=[('easy','circle_cw',{'a':21,'b':21}),('moderate','ellipse_ccw',{'a':3,'b':3}),('hard','power',{'a':2,'b':3,'m':4}),('hard','exp_cw',{'a':2,'b':1})]
+ invalid=[('hard','ellipse_cw',{'a':3,'b':3}),('moderate','ellipse_ccw',{'a':13,'b':1}),('easy','circle_cw',{'a':21,'b':21}),('moderate','ellipse_ccw',{'a':3,'b':3}),('hard','power',{'a':2,'b':3,'m':4}),('hard','exp_cw',{'a':2,'b':1})]
  for level,template,p in invalid:
   try:g.generate(level,template=template,parameters=p)
   except ValueError:pass

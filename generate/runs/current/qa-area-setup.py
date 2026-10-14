@@ -55,7 +55,7 @@ for index,rec in enumerate(records):
  coordinate=Y if P!=0 else X;first=orientation*(P if P!=0 else Q);scale=coordinate.subs(t,s.pi/2 if P==0 and family not in ('ellipse_ccw','exp_ccw','exp_cw','double_cos') else 0)
  # Coefficient scale is recovered from the actual coordinate's normalized shape,
  # never from generation metadata.
- scale=s.factor(coordinate).as_coeff_Mul()[0]
+ scale=abs(s.factor(coordinate).as_coeff_Mul()[0])
  if family.startswith('exp'):scale=s.expand(coordinate).as_coeff_Mul()[0]
  want=[expected,-expected,expected/scale,2*expected,first*(X if P!=0 else Y)]
  assert all(sum(eq(v,w) for w in want)==1 for v in values),(family,coords,scale,values,want);C['choices']+=5;C['method_banks']+=1

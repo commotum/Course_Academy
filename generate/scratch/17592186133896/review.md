@@ -1036,12 +1036,12 @@ $$
 
 ### Generated variant — moderate
 
-## ellipse_ccw (authored; {'a': 2, 'b': 4})
+## ellipse_ccw (authored; {'a': 3, 'b': 8})
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133896/plots/7649f93c85abfa55a8e490b55b41b8d0be48774691684df08dd5c87c83568fe8.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133896/plots/39e2929cb6efc6d8ff9f4c84fc845b4350569818ca3390d6363b039b327767fb.png)
 
 Let $D$ be the region enclosed by the curve $C$ parametrized as
-$r(t)=⟨2\cos(t),\,4\sin(t)⟩$ for $t\in [0,2\pi ].$ The area of $D$ can be written as
+$r(t)=⟨3\cos(t),\,8\sin(t)⟩$ for $t\in [0,2\pi ].$ The area of $D$ can be written as
 
 $$
 \text{Area}(D)={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})dA={\int }_{0}^{2\pi }\boxed{}\,dt,
@@ -1049,11 +1049,11 @@ $$
 
 where $P(x,y)=0$ and $Q(x,y)=x.$ Determine the pointwise integrand obtained from the given $P$, $Q$, and parametrization using Green's theorem, with the sign adjusted for the orientation of $C$.
 
-- $8 \sin{\left(t \right)} \cos{\left(t \right)}$
+- $24 \sin{\left(t \right)} \cos{\left(t \right)}$
+- $24 \cos^{2}{\left(t \right)}$
 - $8 \cos^{2}{\left(t \right)}$
-- $4 \cos^{2}{\left(t \right)}$
-- $- 8 \cos^{2}{\left(t \right)}$
-- $16 \cos^{2}{\left(t \right)}$
+- $- 24 \cos^{2}{\left(t \right)}$
+- $48 \cos^{2}{\left(t \right)}$
 
 Worked solution:
 
@@ -1082,23 +1082,23 @@ $$
 The derivative of $r(t)$ is
 
 $$
-{r}^{′}(t)=⟨-2\sin(t),\,4\cos(t)⟩.
+{r}^{′}(t)=⟨-3\sin(t),\,8\cos(t)⟩.
 $$
 
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}x\,dy & ={\int }_{0}^{2\pi }2\cos(t)\cdot 4\cos(t)\,dt \\  & ={\int }_{0}^{2\pi }8\cos^{2}(t)\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}x\,dy & ={\int }_{0}^{2\pi }3\cos(t)\cdot 8\cos(t)\,dt \\  & ={\int }_{0}^{2\pi }24\cos^{2}(t)\,dt.\end{aligned}
 $$
 
 ### Generated variant — moderate
 
-## ellipse_ccw (authored; {'a': 2, 'b': 3})
+## ellipse_ccw (authored; {'a': 4, 'b': 5})
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133896/plots/1f6830788feb68e5af2fa413c192be7c6a085f389a33bb42f169a48499918228.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133896/plots/fb26a346b6cf885feb15fddf6d0f1bf9877a97c53a25d178ef3cfd44ce4c4ec3.png)
 
 Let $D$ be the region enclosed by the curve $C$ parametrized as
-$r(t)=⟨2\cos(t),\,3\sin(t)⟩$ for $t\in [0,2\pi ].$ The area of $D$ can be written as
+$r(t)=⟨4\cos(t),\,5\sin(t)⟩$ for $t\in [0,2\pi ].$ The area of $D$ can be written as
 
 $$
 \text{Area}(D)={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})dA={\int }_{0}^{2\pi }\boxed{}\,dt,
@@ -1106,11 +1106,11 @@ $$
 
 where $P(x,y)=0$ and $Q(x,y)=x.$ Determine the pointwise integrand obtained from the given $P$, $Q$, and parametrization using Green's theorem, with the sign adjusted for the orientation of $C$.
 
-- $- 6 \cos^{2}{\left(t \right)}$
-- $6 \cos^{2}{\left(t \right)}$
-- $3 \cos^{2}{\left(t \right)}$
-- $6 \sin{\left(t \right)} \cos{\left(t \right)}$
-- $12 \cos^{2}{\left(t \right)}$
+- $- 20 \cos^{2}{\left(t \right)}$
+- $20 \cos^{2}{\left(t \right)}$
+- $20 \sin{\left(t \right)} \cos{\left(t \right)}$
+- $5 \cos^{2}{\left(t \right)}$
+- $40 \cos^{2}{\left(t \right)}$
 
 Worked solution:
 
@@ -1139,13 +1139,13 @@ $$
 The derivative of $r(t)$ is
 
 $$
-{r}^{′}(t)=⟨-2\sin(t),\,3\cos(t)⟩.
+{r}^{′}(t)=⟨-4\sin(t),\,5\cos(t)⟩.
 $$
 
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}x\,dy & ={\int }_{0}^{2\pi }2\cos(t)\cdot 3\cos(t)\,dt \\  & ={\int }_{0}^{2\pi }6\cos^{2}(t)\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}x\,dy & ={\int }_{0}^{2\pi }4\cos(t)\cdot 5\cos(t)\,dt \\  & ={\int }_{0}^{2\pi }20\cos^{2}(t)\,dt.\end{aligned}
 $$
 
 ### Generated variant — hard
@@ -1212,12 +1212,12 @@ $$
 
 ### Generated variant — hard
 
-## ellipse_cw (authored; {'a': 3, 'b': 3})
+## ellipse_cw (authored; {'a': 2, 'b': 3})
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133896/plots/400ceed8a61ae7a57d62a0c73e431d2a5cbe6d6dd647feb4b6c012647be66ec9.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133896/plots/26b46b248ebf63c435d0dc36774b03d949e6701f86a4c251b1dbbe905c32a446.png)
 
 Let $D$ be the region enclosed by the curve $C$ parametrized as
-$r(t)=⟨3\sin(t),\,3\cos(t)⟩$ for $t\in [0,2\pi ].$ 
+$r(t)=⟨2\sin(t),\,3\cos(t)⟩$ for $t\in [0,2\pi ].$ 
 The area of $D$ can be written as
 
 $$
@@ -1228,11 +1228,11 @@ where $P(x,y)=-y$ and $Q(x,y)=0.$ Determine the pointwise integrand obtained fro
 
 *Hint: Note that $C$ is negatively oriented.*
 
-- $- 9 \cos^{2}{\left(t \right)}$
-- $9 \cos^{2}{\left(t \right)}$
-- $9 \sin{\left(t \right)} \cos{\left(t \right)}$
-- $3 \cos^{2}{\left(t \right)}$
-- $18 \cos^{2}{\left(t \right)}$
+- $- 6 \cos^{2}{\left(t \right)}$
+- $6 \cos^{2}{\left(t \right)}$
+- $2 \cos^{2}{\left(t \right)}$
+- $6 \sin{\left(t \right)} \cos{\left(t \right)}$
+- $12 \cos^{2}{\left(t \right)}$
 
 Worked solution:
 
@@ -1263,13 +1263,13 @@ $$
 The derivative of $r(t)$ is
 
 $$
-{r}^{′}(t)=⟨3\cos(t),\,-3\sin(t)⟩.
+{r}^{′}(t)=⟨2\cos(t),\,-3\sin(t)⟩.
 $$
 
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}y\,\text{d}x & ={\int }_{0}^{2\pi }3\cos(t)\cdot 3\cos(t)\,dt \\  & ={\int }_{0}^{2\pi }9\cos^{2}(t)\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}y\,\text{d}x & ={\int }_{0}^{2\pi }3\cos(t)\cdot 2\cos(t)\,dt \\  & ={\int }_{0}^{2\pi }6\cos^{2}(t)\,dt.\end{aligned}
 $$
 
 ### Generated variant — hard
@@ -2058,12 +2058,12 @@ $$
 
 ### Generated variant — moderate
 
-## ellipse_ccw (authored; {'a': 6, 'b': 1})
+## ellipse_ccw (authored; {'a': 12, 'b': 1})
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133896/plots/23d12beade53afe2ce7dce7d0fc199476e4be1076200e7c8d105e3249851f844.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133896/plots/d954e8350632675d81bf9c2032b9712ba70a4874ffc05ec0ce390345a49859cc.png)
 
 Let $D$ be the region enclosed by the curve $C$ parametrized as
-$r(t)=⟨6\cos(t),\,\sin(t)⟩$ for $t\in [0,2\pi ].$ The area of $D$ can be written as
+$r(t)=⟨12\cos(t),\,\sin(t)⟩$ for $t\in [0,2\pi ].$ The area of $D$ can be written as
 
 $$
 \text{Area}(D)={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})dA={\int }_{0}^{2\pi }\boxed{}\,dt,
@@ -2072,10 +2072,10 @@ $$
 where $P(x,y)=0$ and $Q(x,y)=x.$ Determine the pointwise integrand obtained from the given $P$, $Q$, and parametrization using Green's theorem, with the sign adjusted for the orientation of $C$.
 
 - $\cos^{2}{\left(t \right)}$
+- $24 \cos^{2}{\left(t \right)}$
+- $12 \sin{\left(t \right)} \cos{\left(t \right)}$
+- $- 12 \cos^{2}{\left(t \right)}$
 - $12 \cos^{2}{\left(t \right)}$
-- $6 \sin{\left(t \right)} \cos{\left(t \right)}$
-- $- 6 \cos^{2}{\left(t \right)}$
-- $6 \cos^{2}{\left(t \right)}$
 
 Worked solution:
 
@@ -2104,13 +2104,13 @@ $$
 The derivative of $r(t)$ is
 
 $$
-{r}^{′}(t)=⟨-6\sin(t),\,\cos(t)⟩.
+{r}^{′}(t)=⟨-12\sin(t),\,\cos(t)⟩.
 $$
 
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}x\,dy & ={\int }_{0}^{2\pi }6\cos(t)\cdot \cos(t)\,dt \\  & ={\int }_{0}^{2\pi }6\cos^{2}(t)\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}x\,dy & ={\int }_{0}^{2\pi }12\cos(t)\cdot \cos(t)\,dt \\  & ={\int }_{0}^{2\pi }12\cos^{2}(t)\,dt.\end{aligned}
 $$
 
 ### Generated variant — hard

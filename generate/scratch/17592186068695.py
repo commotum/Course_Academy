@@ -29,7 +29,7 @@ import numpy as np
 KP_ID=17592186068695
 KP_UUID='6cd6c125-ecaf-5847-a802-ec1b3594a15c'
 TITLE='Determining Whether a Function Is Continuous at a Given Point'
-VERSION='continuity-graph-3'
+VERSION='continuity-graph-4'
 ROOT=Path(__file__).with_suffix('')
 SOURCE=json.loads((ROOT/'source.json').read_text())
 QUESTIONS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
@@ -50,11 +50,13 @@ def segments(points):
         a,b,c,d=map(rat,(a,b,c,d));out.append({'lo':str(a),'hi':str(b),'expr':str(c+(d-c)*(X-a)/(b-a))})
     return out
 
-def graph(*branches, values=None, holes=None, poles=None, bounds=(-4,4,-4,4), notes=''):
+def graph(*branches, values=None, holes=None, poles=None, bounds=(-4,4,-4,4), notes='', extend=True):
     ss=[];vs={}
     for b in branches:
         ss.extend(segments(b))
         for a,c in b[1:-1]:vs[str(rat(a))]=str(rat(c))
+    if extend and ss:
+        ss[0]['lo']=str(rat(bounds[0]));ss[-1]['hi']=str(rat(bounds[1]))
     vs.update({str(rat(k)):str(rat(v)) for k,v in (values or {}).items()})
     for a in (holes or []):vs.pop(str(rat(a)),None)
     return {'segments':ss,'values':vs,'holes':[str(rat(a)) for a in (holes or [])],
@@ -94,11 +96,12 @@ add('c2f85d1a',pole(0,-1,1,0,values={0:0}));G['c2f85d1a']['guides']=[]
 add('14349b3d',graph([(-4,3),(-3.5,3.8),(-2.6,2.4),(-1.7,3.3),(-.5,2.8),(0,3)],[(0,2),(1,2.1),(2,1.5),(3,2.7),(4,1.4)],values={0:2}))
 add('3073f651',graph([(-4,5),(0,1),(4,5)],values={0:0},holes=[0]))
 G['3073f651']['values']['0']='0'
-add('c95d9944',graph([(-4,1.5),(0,1.5)],values={0:1.5}))
+add('c95d9944',graph([(-4,1.5),(0,1.5)],values={0:1.5},extend=False))
 G['c95d9944']['segments'].append({'lo':'0','hi':'4','expr':'1+1/x**2'})
 G['c95d9944']['poles']=['0'];G['c95d9944']['guides']=[]
 # Moderate source graphs retain nonqueried holes and jumps as context.
-add('d9cf9a5c',graph([(-2,-1),(-1,1),(0,0),(1,-1)],[(1,-1),(2,-.8),(3,-.2)],values={1:2},bounds=(-2.5,5.5,-3.5,3.5)))
+add('d9cf9a5c',graph([(-2,-1),(-1,1),(0,0),(1,-1)],[(1,-1),(2,-.8),(3,-.2)],values={1:2},bounds=(-2.5,5.5,-3.5,3.5),extend=False))
+G['d9cf9a5c']['segments'][0]['lo']='-5/2'
 G['d9cf9a5c']['segments'] += [{'lo':'3','hi':'4','expr':'-1/(x-4)**2+2/(x-4)**2-6/5'}, {'lo':'4','hi':'11/2','expr':'1-1/(x-4)**2'}]
 G['d9cf9a5c']['values']['3']='-1/5';G['d9cf9a5c']['poles']=['4']
 # The left pole branch tends +infinity; choose its offset to meet x=3 exactly.
@@ -119,7 +122,7 @@ for alias,base in ALIASES.items():G[alias]=copy.deepcopy(G[base])
 # Raw evidence records that asset separately; normal solution uses the corrected
 # same function as its answer option. It cannot support a claim of a hole at2.
 G['90c2fbe9']['holes']=[];G['90c2fbe9']['values']['2']='1'
-G['90c2fbe9']['open_annotations']=[['2','2']]
+G['90c2fbe9']['open_annotations']=[['2','2']];G['90c2fbe9']['marked_values']=['2']
 add('e395863c',{'segments':[{'lo':'-5/2','hi':'0','expr':'1/x'},{'lo':'0','hi':'5/2','expr':'1/x'}],'values':{},'holes':[],'poles':['0'],'bounds':['-5/2','5/2','-7/2','7/2'],'notes':'Canonical y=1/x; labelled unit x and y scales.'})
 
 SPECS={
@@ -153,6 +156,7 @@ def transformed(g,p):
     out['values']={str(s*rat(a)+h):str(rat(v)+k) for a,v in g['values'].items()}
     out['holes']=[str(s*rat(a)+h) for a in g['holes']]
     out['poles']=[str(s*rat(a)+h) for a in g['poles']]
+    if 'marked_values' in g:out['marked_values']=[str(s*rat(a)+h) for a in g['marked_values']]
     if 'guides' in g:out['guides']=[str(s*rat(a)+h) for a in g['guides']]
     if 'open_annotations' in g:out['open_annotations']=[[str(s*rat(a)+h),str(rat(v)+k)] for a,v in g['open_annotations']]
     out['bounds']=[str(s*rat(g['bounds'][0])+h),str(s*rat(g['bounds'][1])+h),str(rat(g['bounds'][2])+k),str(rat(g['bounds'][3])+k)]
@@ -186,11 +190,12 @@ def render_plot(prefix,p,targets,observed=False,highlight=False):
     hard_scale=rat(p['scale'])==sp.Rational(1,2)
     ticks=list(range(int(sp.ceiling(rat(g['bounds'][0]))),int(sp.floor(rat(g['bounds'][1])))+1)) if hard_scale else targets
     data={'graph':g,'targets':list(map(str,targets)),'tick_values':list(map(str,ticks)),'tick_step':'1' if hard_scale else 'specified targets','highlight':highlight,'renderer':matplotlib.__version__,'renderer_version':VERSION}
+    lo,hi,bottom,top=map(lambda z:float(rat(z)),g['bounds']);padding=.08*(top-bottom);data['render_bounds']=[lo,hi,bottom-padding,top+padding]
     key=digest(data);directory=ROOT/'plots';directory.mkdir(exist_ok=True)
     png=directory/(key+'.png');side=directory/(key+'.json')
     if png.exists() and side.exists():return str(png.resolve()),g
     fig,ax=plt.subplots(figsize=(4.5,3.9),dpi=130)
-    lo,hi,bottom,top=map(lambda z:float(rat(z)),g['bounds'])
+    lo,hi,bottom,top=data['render_bounds']
     for b in g['segments']:
         a,c=map(lambda z:float(rat(z)),(b['lo'],b['hi']));xx=np.linspace(a+(c-a)*1e-5,c-(c-a)*1e-5,180)
         fn=sp.lambdify(X,sp.sympify(b['expr'],locals={'x':X}),'numpy');yy=fn(xx)
@@ -225,7 +230,7 @@ def render_plot(prefix,p,targets,observed=False,highlight=False):
     for a,v in g['values'].items():
         status=inspect_at(g,a)
         # Mark specified singleton values only when discontinuity is visible.
-        if not status['continuous']:ax.scatter([float(rat(a))],[float(rat(v))],s=29,c='#f11',zorder=6)
+        if not status['continuous'] or a in g.get('marked_values',[]):ax.scatter([float(rat(a))],[float(rat(v))],s=29,c='#f11',zorder=6)
     for a in g.get('guides',g['poles']):ax.axvline(float(rat(a)),ls='--',color='#888',lw=1,zorder=1)
     ax.set(xlim=(lo,hi),ylim=(bottom,top));ax.spines[['right','top']].set_visible(False)
     ax.spines['left'].set_position(('data',0 if lo<0<hi else lo+.06*(hi-lo)))
@@ -297,6 +302,9 @@ def compile_question(source_id,p,profile,level,seed):
         # Authored scale reading keeps all original local checks and shared prose.
         problem=problem.replace('The curve $y=f(x)$ is shown above.', 'The curve $y=f(x)$ is shown above. Use the unit-spaced tick marks to locate the listed points.')
     if not raw:
+        if source_id=='q-48081':
+            correct_path=next(path for ref,path in asset_map.items() if Path(ref).stem.startswith(spec['correct']))
+            opening,rest=solution.split('\n\n',1);solution=opening+'\n\n![]('+correct_path+')\n\n'+rest
         if source_id=='q-102115':
             # Original unlabeled bullets use Roman subset answers: add explicit labels.
             for i,t in enumerate(targets):problem=problem.replace('- $x='+tex(t)+'$',ROMAN[i]+'. $x='+tex(t)+'$')
