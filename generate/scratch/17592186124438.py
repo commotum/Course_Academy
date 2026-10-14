@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Tangent lines to coordinate-plane sections, basis 1356; local review only.
+"""Tangent lines to coordinate-plane sections, refreshed at basis 2267.
 
-Fourteen observed moderate families, each with its own operative source chain.
+Sixteen observed moderate families, each with its own operative source chain.
 Public raw_<question-id> profiles preserve opaque whole banks and legacy omissions.
 Normal operation banks are authored, separately labeled, and never mix recipes.
 Easy: supplied single linear partial. Moderate: source derivatives at familiar
@@ -17,9 +17,11 @@ ROOT=Path(__file__).resolve().parent
 EVIDENCE=ROOT/'17592186124438'
 CAPTURE=json.loads((EVIDENCE/'source.json').read_text())
 KP=CAPTURE['record']; KP_ID=17592186124438
-VERSION='coordinate-section-tangent-v1'
+VERSION='coordinate-section-tangent-v2'
 x,y,z=sp.symbols('x y z', real=True)
 NS=uuid.UUID(KP[':knowledge-point/id'])
+SUPPORTED_LEVELS=('easy','moderate','hard')
+GENERATOR_UUID=str(uuid.uuid5(NS,'question-generator'))
 
 # Small exact reader for the actual source/generated TeX arithmetic, independent
 # of sampler metadata. Supports all printed derivative/substitution/line stages.
@@ -114,7 +116,12 @@ def source_render(q,scale,znew):
         # shared prose. Original substitution omissions remain at replay anchors.
         old=blocks(sol)[1]; rr=rows(old)
         lhs0,rhs0=rr[0].split('=',1)
-        rr[1]=' z-('+tex(znew)+') & =('+tex(scale*slope)+')('+str(u)+'-('+tex(u0)+')) '
+        for i in range(1,len(rr)-1):
+            # Every intermediate point-slope equality depends on the altitude
+            # and slope, including the extra simplification row in q-71204.
+            oldrhs=rr[i].split('=',1)[1].strip()
+            newrhs=oldrhs if scale==1 else tex(scale)+r'\left('+oldrhs+r'\right)'
+            rr[i]=' z-('+tex(znew)+') & ='+newrhs
         rr[-1]=' z & ='+tex(sp.expand(scale*slope*(u-u0)+znew))
         sol=sol.replace(old,r' \\ '.join(rr),1)
         old=blocks(sol)[-1];sol=sol.replace(old, v+'='+coords[0 if v=='x' else 1]+r' \\ z='+tex(sp.expand(scale*slope*(u-u0)+znew)),1)
@@ -174,7 +181,7 @@ def authored(level,p,pt,v,der,stages,template):
     prompt=f'The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane ${v}={tex(v0)}.$ Given that the point $P({point})$ lies on $C$, and that $'+r'{f}_{'+str(u)+'}='+tex(der)+'$, find the equations of the tangent line to $C$ at $P.$'
     sol=f'The curve $C$ is the intersection of the surface $z=f(x,y)$ with the plane ${v}={tex(v0)}.$ Hence, the slope of the tangent to the curve at the point $P({point})$ will be given by the partial derivative $'+r'\frac{∂z}{∂'+str(u)+'}{|}_{('+tex(a)+','+tex(b)+')}.$\n\n'+f'To get the slope, we evaluate the partial derivative $'+r'\frac{∂z}{∂'+str(u)+'}$ at $('+tex(a)+','+tex(b)+'):$\n\n$$\n'+r'\begin{aligned}{f}_{'+str(u)+'}('+tex(a)+','+tex(b)+') & ='+r' \\ & ='.join(stages)+r'\end{aligned}'+'\n$$\n\nNow, we use the point-slope form of a straight line:\n\n$$\n'+r'\begin{aligned}z-z{|}_{('+tex(a)+','+tex(b)+')} & ='+r'\frac{∂z}{∂'+str(u)+'}{|}_{('+tex(a)+','+tex(b)+')}('+str(u)+'-('+tex(u0)+'))'+r' \\ z-('+tex(h)+') & =('+tex(m)+')('+str(u)+'-('+tex(u0)+'))'+r' \\ z & ='+tex(sp.expand(m*(u-u0)+h))+r'\end{aligned}'+'\n$$\n\n'+f'Finally, the tangent line to the curve $C$ at $P({point})$ can be given as the intersection of two planes, as follows:\n\n$$\n'+relation(v,v0,sp.expand(m*(u-u0)+h))+'\n$$'
     return prompt,sol,pt,v,der,template
-# MODERATE: all 14 captured families remain normal default families. Signed scale ±1..±3
+# MODERATE: all 16 captured families remain normal default families. Signed scale ±1..±3
 # changes supplied derivative, altitude ±1..12 changes point-slope arithmetic;
 # coordinates retain each source's perfect squares/familiar special values.
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):

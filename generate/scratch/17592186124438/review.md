@@ -63,7 +63,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(1,2)} & =\frac{∂z}{∂y}{|}_{(1,2)}(y-2)  \\  z-(7) & =(\frac{5}{2})(y-(2))  \\  z & =\frac{5 y}{2} + 2\end{aligned}
+\begin{aligned}z-z{|}_{(1,2)} & =\frac{∂z}{∂y}{|}_{(1,2)}(y-2)  \\  z-(7) & =2\left(\frac{5}{4}(y-2)\right) \\  z & =\frac{5 y}{2} + 2\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(1,2,7)$ can be given as the intersection of two planes, as follows:
@@ -99,7 +99,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(1,2)} & =\frac{∂z}{∂y}{|}_{(1,2)}(y-2)  \\  z-(-8) & =(- \frac{5}{4})(y-(2))  \\  z & =- \frac{5 y}{4} - \frac{11}{2}\end{aligned}
+\begin{aligned}z-z{|}_{(1,2)} & =\frac{∂z}{∂y}{|}_{(1,2)}(y-2)  \\  z-(-8) & =-1\left(\frac{5}{4}(y-2)\right) \\  z & =- \frac{5 y}{4} - \frac{11}{2}\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(1,2,-8)$ can be given as the intersection of two planes, as follows:
@@ -135,7 +135,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(1,2)} & =\frac{∂z}{∂y}{|}_{(1,2)}(y-2)  \\  z-(6) & =(\frac{5}{4})(y-(2))  \\  z & =\frac{5 y}{4} + \frac{7}{2}\end{aligned}
+\begin{aligned}z-z{|}_{(1,2)} & =\frac{∂z}{∂y}{|}_{(1,2)}(y-2)  \\  z-(6) & =\frac{5}{4}(y-2) \\  z & =\frac{5 y}{4} + \frac{7}{2}\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(1,2,6)$ can be given as the intersection of two planes, as follows:
@@ -150,17 +150,11 @@ $$
 
 The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $y=1.$ Given that the point $P(1,1,0)$ lies on $C$, and that ${f}_{x}=3x+6x\operatorname{ln}⁡(xy)$, find the equations of the tangent line to $C$ at $P.$
 
-- ${y = 1; z = 2 - 2x$
-- ${y = 1; z = 2x - 2$
-- ${y = 1; z = 3x - 3$
-- ${y = 1,; z = 4x - 4$
-- ${y = 1; z = 3x$
-
-- ${\begin{aligned}y=1 \\ z=2-2x\end{aligned}$
-- ${\begin{aligned}y=1 \\ z=2x-2\end{aligned}$
-- ${\begin{aligned}y=1, \\ z=4x-4\end{aligned}$
-- ${\begin{aligned}y=1 \\ z=3x\end{aligned}$
-- ${\begin{aligned}y=1 \\ z=3x-3\end{aligned}$
+- $\{\begin{aligned}y=1 \\ z=2x-2\end{aligned}$
+- $\{\begin{aligned}y=1 \\ z=3x-3\end{aligned}$
+- $\{\begin{aligned}y=1, \\ z=4x-4\end{aligned}$
+- $\{\begin{aligned}y=1 \\ z=2-2x\end{aligned}$
+- $\{\begin{aligned}y=1 \\ z=3x\end{aligned}$
 
 Worked solution:
 
@@ -181,7 +175,7 @@ $$
 Finally, the tangent line to the curve $C$ at $P(1,1,0)$ can be given as the intersection of two planes, as follows:
 
 $$
-{\begin{aligned}y=1 \\ z=3x-3\end{aligned}
+\{\begin{aligned}y=1 \\ z=3x-3\end{aligned}
 $$
 
 ---
@@ -190,17 +184,11 @@ $$
 
 The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $y=1.$ Given that the point $P(1,1,7)$ lies on $C$, and that ${f}_{x}=2\left(3x+6x\operatorname{ln}⁡(xy)\right)$, find the equations of the tangent line to $C$ at $P.$
 
-- ${y = 1; z = 11 - 4 x$
-- ${y = 1; z = 4 x + 3$
-- ${y = 1; z = 6 x + 1$
-- ${y = 1,; z = 8 x - 1$
-- ${y = 1; z = 6 x + 7$
-
-- ${\begin{aligned}y=1 \\ z=11 - 4 x\end{aligned}$
-- ${\begin{aligned}y=1 \\ z=4 x + 3\end{aligned}$
-- ${\begin{aligned}y=1, \\ z=8 x - 1\end{aligned}$
-- ${\begin{aligned}y=1 \\ z=6 x + 7\end{aligned}$
-- ${\begin{aligned}y=1 \\ z=6 x + 1\end{aligned}$
+- $\{\begin{aligned}y=1 \\ z=4 x + 3\end{aligned}$
+- $\{\begin{aligned}y=1 \\ z=6 x + 1\end{aligned}$
+- $\{\begin{aligned}y=1, \\ z=8 x - 1\end{aligned}$
+- $\{\begin{aligned}y=1 \\ z=11 - 4 x\end{aligned}$
+- $\{\begin{aligned}y=1 \\ z=6 x + 7\end{aligned}$
 
 Worked solution:
 
@@ -215,13 +203,13 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(1,1)} & =\frac{∂z}{∂x}{|}_{(1,1)}(x-1)  \\  z-(7) & =(6)(x-(1))  \\  z & =6 x + 1\end{aligned}
+\begin{aligned}z-z{|}_{(1,1)} & =\frac{∂z}{∂x}{|}_{(1,1)}(x-1)  \\  z-(7) & =2\left(3(x-1)\right) \\  z & =6 x + 1\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(1,1,7)$ can be given as the intersection of two planes, as follows:
 
 $$
-{\begin{aligned}y=1 \\ z=6 x + 1\end{aligned}
+\{\begin{aligned}y=1 \\ z=6 x + 1\end{aligned}
 $$
 
 ---
@@ -249,7 +237,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(1,1)} & =\frac{∂z}{∂x}{|}_{(1,1)}(x-1)  \\  z-(-8) & =(-3)(x-(1))  \\  z & =- 3 x - 5\end{aligned}
+\begin{aligned}z-z{|}_{(1,1)} & =\frac{∂z}{∂x}{|}_{(1,1)}(x-1)  \\  z-(-8) & =-1\left(3(x-1)\right) \\  z & =- 3 x - 5\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(1,1,-8)$ can be given as the intersection of two planes, as follows:
@@ -283,7 +271,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(1,1)} & =\frac{∂z}{∂x}{|}_{(1,1)}(x-1)  \\  z-(6) & =(3)(x-(1))  \\  z & =3 x + 3\end{aligned}
+\begin{aligned}z-z{|}_{(1,1)} & =\frac{∂z}{∂x}{|}_{(1,1)}(x-1)  \\  z-(6) & =3(x-1) \\  z & =3 x + 3\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(1,1,6)$ can be given as the intersection of two planes, as follows:
@@ -351,7 +339,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(4,-2)} & =\frac{∂z}{∂x}{|}_{(4,-2)}(x-4)  \\  z-(7) & =(-8)(x-(4))  \\  z & =39 - 8 x\end{aligned}
+\begin{aligned}z-z{|}_{(4,-2)} & =\frac{∂z}{∂x}{|}_{(4,-2)}(x-4)  \\  z-(7) & =2\left(-4(x-4)\right) \\  z & =39 - 8 x\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(4,-2,7)$ can be given as the intersection of two planes, as follows:
@@ -385,7 +373,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(4,-2)} & =\frac{∂z}{∂x}{|}_{(4,-2)}(x-4)  \\  z-(-8) & =(4)(x-(4))  \\  z & =4 x - 24\end{aligned}
+\begin{aligned}z-z{|}_{(4,-2)} & =\frac{∂z}{∂x}{|}_{(4,-2)}(x-4)  \\  z-(-8) & =-1\left(-4(x-4)\right) \\  z & =4 x - 24\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(4,-2,-8)$ can be given as the intersection of two planes, as follows:
@@ -419,7 +407,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(4,-2)} & =\frac{∂z}{∂x}{|}_{(4,-2)}(x-4)  \\  z-(6) & =(-4)(x-(4))  \\  z & =22 - 4 x\end{aligned}
+\begin{aligned}z-z{|}_{(4,-2)} & =\frac{∂z}{∂x}{|}_{(4,-2)}(x-4)  \\  z-(6) & =-4(x-4) \\  z & =22 - 4 x\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(4,-2,6)$ can be given as the intersection of two planes, as follows:
@@ -487,7 +475,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(1,2)} & =\frac{∂z}{∂x}{|}_{(1,2)}(x-1)  \\  z-(7) & =(12)(x-(1))  \\  z & =12 x - 5\end{aligned}
+\begin{aligned}z-z{|}_{(1,2)} & =\frac{∂z}{∂x}{|}_{(1,2)}(x-1)  \\  z-(7) & =2\left(6(x-1)\right) \\  z & =12 x - 5\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(1,2,7)$ can be given as the intersection of two planes, as follows:
@@ -521,7 +509,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(1,2)} & =\frac{∂z}{∂x}{|}_{(1,2)}(x-1)  \\  z-(-8) & =(-6)(x-(1))  \\  z & =- 6 x - 2\end{aligned}
+\begin{aligned}z-z{|}_{(1,2)} & =\frac{∂z}{∂x}{|}_{(1,2)}(x-1)  \\  z-(-8) & =-1\left(6(x-1)\right) \\  z & =- 6 x - 2\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(1,2,-8)$ can be given as the intersection of two planes, as follows:
@@ -555,7 +543,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(1,2)} & =\frac{∂z}{∂x}{|}_{(1,2)}(x-1)  \\  z-(6) & =(6)(x-(1))  \\  z & =6 x\end{aligned}
+\begin{aligned}z-z{|}_{(1,2)} & =\frac{∂z}{∂x}{|}_{(1,2)}(x-1)  \\  z-(6) & =6(x-1) \\  z & =6 x\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(1,2,6)$ can be given as the intersection of two planes, as follows:
@@ -627,7 +615,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(e,2)} & =\frac{∂z}{∂y}{|}_{(e,2)}(y-2)  \\  z-(7) & =(2)(y-(2))  \\  z & =2 y + 3\end{aligned}
+\begin{aligned}z-z{|}_{(e,2)} & =\frac{∂z}{∂y}{|}_{(e,2)}(y-2)  \\  z-(7) & =2\left(1(y-2)\right) \\  z & =2 y + 3\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(e,2,7)$ can be given as the intersection of two planes, as follows:
@@ -663,7 +651,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(e,2)} & =\frac{∂z}{∂y}{|}_{(e,2)}(y-2)  \\  z-(-8) & =(-1)(y-(2))  \\  z & =- y - 6\end{aligned}
+\begin{aligned}z-z{|}_{(e,2)} & =\frac{∂z}{∂y}{|}_{(e,2)}(y-2)  \\  z-(-8) & =-1\left(1(y-2)\right) \\  z & =- y - 6\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(e,2,-8)$ can be given as the intersection of two planes, as follows:
@@ -699,7 +687,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(e,2)} & =\frac{∂z}{∂y}{|}_{(e,2)}(y-2)  \\  z-(6) & =(1)(y-(2))  \\  z & =y + 4\end{aligned}
+\begin{aligned}z-z{|}_{(e,2)} & =\frac{∂z}{∂y}{|}_{(e,2)}(y-2)  \\  z-(6) & =1(y-2) \\  z & =y + 4\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(e,2,6)$ can be given as the intersection of two planes, as follows:
@@ -767,7 +755,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(-\pi /2,2)} & =\frac{∂z}{∂x}{|}_{(-\pi /2,2)}(x-(-\frac{\pi }{2}))  \\  z-(7) & =(-4)(x-(- \frac{\pi}{2}))  \\  z & =- 4 x - 2 \pi + 7\end{aligned}
+\begin{aligned}z-z{|}_{(-\pi /2,2)} & =\frac{∂z}{∂x}{|}_{(-\pi /2,2)}(x-(-\frac{\pi }{2}))  \\  z-(7) & =2\left(-2(x+\frac{\pi }{2})\right) \\  z & =- 4 x - 2 \pi + 7\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(-\frac{\pi }{2},2,7)$ can be given as the intersection of two planes, as follows:
@@ -801,7 +789,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(-\pi /2,2)} & =\frac{∂z}{∂x}{|}_{(-\pi /2,2)}(x-(-\frac{\pi }{2}))  \\  z-(-8) & =(2)(x-(- \frac{\pi}{2}))  \\  z & =2 x - 8 + \pi\end{aligned}
+\begin{aligned}z-z{|}_{(-\pi /2,2)} & =\frac{∂z}{∂x}{|}_{(-\pi /2,2)}(x-(-\frac{\pi }{2}))  \\  z-(-8) & =-1\left(-2(x+\frac{\pi }{2})\right) \\  z & =2 x - 8 + \pi\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(-\frac{\pi }{2},2,-8)$ can be given as the intersection of two planes, as follows:
@@ -835,7 +823,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(-\pi /2,2)} & =\frac{∂z}{∂x}{|}_{(-\pi /2,2)}(x-(-\frac{\pi }{2}))  \\  z-(6) & =(-2)(x-(- \frac{\pi}{2}))  \\  z & =- 2 x - \pi + 6\end{aligned}
+\begin{aligned}z-z{|}_{(-\pi /2,2)} & =\frac{∂z}{∂x}{|}_{(-\pi /2,2)}(x-(-\frac{\pi }{2}))  \\  z-(6) & =-2(x+\frac{\pi }{2}) \\  z & =- 2 x - \pi + 6\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(-\frac{\pi }{2},2,6)$ can be given as the intersection of two planes, as follows:
@@ -850,11 +838,11 @@ $$
 
 The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $x=2.$ Given that the point $P(2,\frac{\pi }{4},0)$ lies on $C$, and that ${f}_{y}=4\operatorname{sin}⁡(xy)$, find the equations of the tangent line to $C$ at $P.$
 
-- ${\begin{aligned}x=2 \\ z=4y-\frac{\pi }{2}\end{aligned}$
-- ${\begin{aligned}x=2 \\ z=2y-\frac{\pi }{2}\end{aligned}$
-- ${\begin{aligned}x=2 \\ z=4y\end{aligned}$
-- ${\begin{aligned}x=2 \\ z=4y-\pi \end{aligned}$
-- ${\begin{aligned}x=2 \\ z=2y+\pi \end{aligned}$
+- $\{\begin{aligned}x=2 \\ z=4y-\frac{\pi }{2}\end{aligned}$
+- $\{\begin{aligned}x=2 \\ z=2y+\pi \end{aligned}$
+- $\{\begin{aligned}x=2 \\ z=4y\end{aligned}$
+- $\{\begin{aligned}x=2 \\ z=4y-\pi \end{aligned}$
+- $\{\begin{aligned}x=2 \\ z=2y-\frac{\pi }{2}\end{aligned}$
 
 Worked solution:
 
@@ -877,7 +865,7 @@ $$
 Finally, the tangent line to the curve $C$ at $P(2,\frac{\pi }{4},0)$ can be given as the intersection of two planes, as follows:
 
 $$
-{\begin{aligned}x=2 \\ z=4y-\pi \end{aligned}
+\{\begin{aligned}x=2 \\ z=4y-\pi \end{aligned}
 $$
 
 ---
@@ -886,11 +874,11 @@ $$
 
 The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $x=2.$ Given that the point $P(2,\frac{\pi }{4},7)$ lies on $C$, and that ${f}_{y}=2\left(4\operatorname{sin}⁡(xy)\right)$, find the equations of the tangent line to $C$ at $P.$
 
-- ${\begin{aligned}x=2 \\ z=8 y - \pi + 7\end{aligned}$
-- ${\begin{aligned}x=2 \\ z=4 y - \pi + 7\end{aligned}$
-- ${\begin{aligned}x=2 \\ z=8 y + 7\end{aligned}$
-- ${\begin{aligned}x=2 \\ z=8 y - 2 \pi + 7\end{aligned}$
-- ${\begin{aligned}x=2 \\ z=4 y + 2 \pi + 7\end{aligned}$
+- $\{\begin{aligned}x=2 \\ z=8 y - \pi + 7\end{aligned}$
+- $\{\begin{aligned}x=2 \\ z=4 y + 2 \pi + 7\end{aligned}$
+- $\{\begin{aligned}x=2 \\ z=8 y + 7\end{aligned}$
+- $\{\begin{aligned}x=2 \\ z=8 y - 2 \pi + 7\end{aligned}$
+- $\{\begin{aligned}x=2 \\ z=4 y - \pi + 7\end{aligned}$
 
 Worked solution:
 
@@ -907,13 +895,13 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(2,\pi /4)} & =\frac{∂z}{∂y}{|}_{(2,\pi /4)}(y-\frac{\pi }{4})  \\  z-(7) & =(8)(y-(\frac{\pi}{4}))  \\  z & =8 y - 2 \pi + 7\end{aligned}
+\begin{aligned}z-z{|}_{(2,\pi /4)} & =\frac{∂z}{∂y}{|}_{(2,\pi /4)}(y-\frac{\pi }{4})  \\  z-(7) & =2\left(4(y-\frac{\pi }{4})\right) \\  z & =8 y - 2 \pi + 7\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(2,\frac{\pi }{4},7)$ can be given as the intersection of two planes, as follows:
 
 $$
-{\begin{aligned}x=2 \\ z=8 y - 2 \pi + 7\end{aligned}
+\{\begin{aligned}x=2 \\ z=8 y - 2 \pi + 7\end{aligned}
 $$
 
 ---
@@ -943,7 +931,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(2,\pi /4)} & =\frac{∂z}{∂y}{|}_{(2,\pi /4)}(y-\frac{\pi }{4})  \\  z-(-8) & =(-4)(y-(\frac{\pi}{4}))  \\  z & =- 4 y - 8 + \pi\end{aligned}
+\begin{aligned}z-z{|}_{(2,\pi /4)} & =\frac{∂z}{∂y}{|}_{(2,\pi /4)}(y-\frac{\pi }{4})  \\  z-(-8) & =-1\left(4(y-\frac{\pi }{4})\right) \\  z & =- 4 y - 8 + \pi\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(2,\frac{\pi }{4},-8)$ can be given as the intersection of two planes, as follows:
@@ -979,7 +967,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(2,\pi /4)} & =\frac{∂z}{∂y}{|}_{(2,\pi /4)}(y-\frac{\pi }{4})  \\  z-(6) & =(4)(y-(\frac{\pi}{4}))  \\  z & =4 y - \pi + 6\end{aligned}
+\begin{aligned}z-z{|}_{(2,\pi /4)} & =\frac{∂z}{∂y}{|}_{(2,\pi /4)}(y-\frac{\pi }{4})  \\  z-(6) & =4(y-\frac{\pi }{4}) \\  z & =4 y - \pi + 6\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(2,\frac{\pi }{4},6)$ can be given as the intersection of two planes, as follows:
@@ -994,11 +982,11 @@ $$
 
 The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $x=\sqrt{2}.$ Given that the point $P(\sqrt{2},2,\frac{1}{2})$ lies on $C$, and that ${f}_{y}=-\frac{2{x}^{2}+y}{{y}^{3}}$, find the equations of the tangent line to $C$ at $P.$
 
-- ${\begin{aligned}x=\sqrt{2} \\ z=\frac{1}{2}y+2\end{aligned}$
-- ${\begin{aligned}x=\sqrt{2} \\ z=-\frac{1}{4}y-2\end{aligned}$
-- ${\begin{aligned}x=\sqrt{2} \\ z=-\frac{3}{4}y+2\end{aligned}$
-- ${\begin{aligned}x=\sqrt{2} \\ z=-\frac{3}{2}y+1\end{aligned}$
-- ${\begin{aligned}x=\sqrt{2} \\ z=\frac{3}{2}y-1\end{aligned}$
+- $\{\begin{aligned}x=\sqrt{2} \\ z=\frac{1}{2}y+2\end{aligned}$
+- $\{\begin{aligned}x=\sqrt{2} \\ z=-\frac{1}{4}y-2\end{aligned}$
+- $\{\begin{aligned}x=\sqrt{2} \\ z=-\frac{3}{2}y+1\end{aligned}$
+- $\{\begin{aligned}x=\sqrt{2} \\ z=\frac{3}{2}y-1\end{aligned}$
+- $\{\begin{aligned}x=\sqrt{2} \\ z=-\frac{3}{4}y+2\end{aligned}$
 
 Worked solution:
 
@@ -1021,7 +1009,7 @@ $$
 Finally, the tangent line to the curve $C$ at $P(\sqrt{2},2,\frac{1}{2})$ can be given as the intersection of two planes, as follows:
 
 $$
-{\begin{aligned}x=\sqrt{2} \\ z=-\frac{3}{4}y+2\end{aligned}
+\{\begin{aligned}x=\sqrt{2} \\ z=-\frac{3}{4}y+2\end{aligned}
 $$
 
 ---
@@ -1030,11 +1018,11 @@ $$
 
 The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $x=\sqrt{2}.$ Given that the point $P(\sqrt{2},2,7)$ lies on $C$, and that ${f}_{y}=2\left(-\frac{2{x}^{2}+y}{{y}^{3}}\right)$, find the equations of the tangent line to $C$ at $P.$
 
-- ${\begin{aligned}x=\sqrt{2} \\ z=y + 10\end{aligned}$
-- ${\begin{aligned}x=\sqrt{2} \\ z=2 - \frac{y}{2}\end{aligned}$
-- ${\begin{aligned}x=\sqrt{2} \\ z=10 - \frac{3 y}{2}\end{aligned}$
-- ${\begin{aligned}x=\sqrt{2} \\ z=8 - 3 y\end{aligned}$
-- ${\begin{aligned}x=\sqrt{2} \\ z=3 y + 4\end{aligned}$
+- $\{\begin{aligned}x=\sqrt{2} \\ z=y + 10\end{aligned}$
+- $\{\begin{aligned}x=\sqrt{2} \\ z=2 - \frac{y}{2}\end{aligned}$
+- $\{\begin{aligned}x=\sqrt{2} \\ z=8 - 3 y\end{aligned}$
+- $\{\begin{aligned}x=\sqrt{2} \\ z=3 y + 4\end{aligned}$
+- $\{\begin{aligned}x=\sqrt{2} \\ z=10 - \frac{3 y}{2}\end{aligned}$
 
 Worked solution:
 
@@ -1051,13 +1039,13 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(\sqrt{2},2)} & =\frac{∂z}{∂y}{|}_{(\sqrt{2},2)}(y-2)  \\  z-(7) & =(- \frac{3}{2})(y-(2))  \\  z & =10 - \frac{3 y}{2}\end{aligned}
+\begin{aligned}z-z{|}_{(\sqrt{2},2)} & =\frac{∂z}{∂y}{|}_{(\sqrt{2},2)}(y-2)  \\  z-(7) & =2\left(-\frac{3}{4}(y-2)\right) \\  z & =10 - \frac{3 y}{2}\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(\sqrt{2},2,7)$ can be given as the intersection of two planes, as follows:
 
 $$
-{\begin{aligned}x=\sqrt{2} \\ z=10 - \frac{3 y}{2}\end{aligned}
+\{\begin{aligned}x=\sqrt{2} \\ z=10 - \frac{3 y}{2}\end{aligned}
 $$
 
 ---
@@ -1087,7 +1075,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(\sqrt{2},2)} & =\frac{∂z}{∂y}{|}_{(\sqrt{2},2)}(y-2)  \\  z-(-8) & =(\frac{3}{4})(y-(2))  \\  z & =\frac{3 y}{4} - \frac{19}{2}\end{aligned}
+\begin{aligned}z-z{|}_{(\sqrt{2},2)} & =\frac{∂z}{∂y}{|}_{(\sqrt{2},2)}(y-2)  \\  z-(-8) & =-1\left(-\frac{3}{4}(y-2)\right) \\  z & =\frac{3 y}{4} - \frac{19}{2}\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(\sqrt{2},2,-8)$ can be given as the intersection of two planes, as follows:
@@ -1123,7 +1111,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(\sqrt{2},2)} & =\frac{∂z}{∂y}{|}_{(\sqrt{2},2)}(y-2)  \\  z-(6) & =(- \frac{3}{4})(y-(2))  \\  z & =\frac{15}{2} - \frac{3 y}{4}\end{aligned}
+\begin{aligned}z-z{|}_{(\sqrt{2},2)} & =\frac{∂z}{∂y}{|}_{(\sqrt{2},2)}(y-2)  \\  z-(6) & =-\frac{3}{4}(y-2) \\  z & =\frac{15}{2} - \frac{3 y}{4}\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(\sqrt{2},2,6)$ can be given as the intersection of two planes, as follows:
@@ -1191,7 +1179,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(-2,0)} & =\frac{∂z}{∂y}{|}_{(-2,0)}(y-0)  \\  z-(7) & =(-8)(y-(0))  \\  z & =7 - 8 y\end{aligned}
+\begin{aligned}z-z{|}_{(-2,0)} & =\frac{∂z}{∂y}{|}_{(-2,0)}(y-0)  \\  z-(7) & =2\left(-4(y-0)\right) \\  z & =7 - 8 y\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(-2,0,7)$ can be given as the intersection of two planes, as follows:
@@ -1225,7 +1213,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(-2,0)} & =\frac{∂z}{∂y}{|}_{(-2,0)}(y-0)  \\  z-(-8) & =(4)(y-(0))  \\  z & =4 y - 8\end{aligned}
+\begin{aligned}z-z{|}_{(-2,0)} & =\frac{∂z}{∂y}{|}_{(-2,0)}(y-0)  \\  z-(-8) & =-1\left(-4(y-0)\right) \\  z & =4 y - 8\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(-2,0,-8)$ can be given as the intersection of two planes, as follows:
@@ -1259,7 +1247,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(-2,0)} & =\frac{∂z}{∂y}{|}_{(-2,0)}(y-0)  \\  z-(6) & =(-4)(y-(0))  \\  z & =6 - 4 y\end{aligned}
+\begin{aligned}z-z{|}_{(-2,0)} & =\frac{∂z}{∂y}{|}_{(-2,0)}(y-0)  \\  z-(6) & =-4(y-0) \\  z & =6 - 4 y\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(-2,0,6)$ can be given as the intersection of two planes, as follows:
@@ -1327,7 +1315,7 @@ $$
 Now, we use the point-slope form of a straight line: 
 
 $$
-\begin{aligned}z-z{|}_{(0.5,2)} & =\frac{∂z}{∂y}{|}_{(0.5,2)}(y-2)  \\  z-(7) & =(8)(y-(2))  \\  z & =8 y - 9\end{aligned}
+\begin{aligned}z-z{|}_{(0.5,2)} & =\frac{∂z}{∂y}{|}_{(0.5,2)}(y-2)  \\  z-(7) & =2\left(4(y-2)\right) \\  z & =8 y - 9\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(0.5,2,7)$ can be given as the intersection of two planes, as follows:
@@ -1361,7 +1349,7 @@ $$
 Now, we use the point-slope form of a straight line: 
 
 $$
-\begin{aligned}z-z{|}_{(0.5,2)} & =\frac{∂z}{∂y}{|}_{(0.5,2)}(y-2)  \\  z-(-8) & =(-4)(y-(2))  \\  z & =- 4 y\end{aligned}
+\begin{aligned}z-z{|}_{(0.5,2)} & =\frac{∂z}{∂y}{|}_{(0.5,2)}(y-2)  \\  z-(-8) & =-1\left(4(y-2)\right) \\  z & =- 4 y\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(0.5,2,-8)$ can be given as the intersection of two planes, as follows:
@@ -1395,7 +1383,7 @@ $$
 Now, we use the point-slope form of a straight line: 
 
 $$
-\begin{aligned}z-z{|}_{(0.5,2)} & =\frac{∂z}{∂y}{|}_{(0.5,2)}(y-2)  \\  z-(6) & =(4)(y-(2))  \\  z & =4 y - 2\end{aligned}
+\begin{aligned}z-z{|}_{(0.5,2)} & =\frac{∂z}{∂y}{|}_{(0.5,2)}(y-2)  \\  z-(6) & =4(y-2) \\  z & =4 y - 2\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(0.5,2,6)$ can be given as the intersection of two planes, as follows:
@@ -1467,7 +1455,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(-2,2)} & =\frac{∂z}{∂y}{|}_{(-2,2)}(y-2)  \\  z-(7) & =(4)(y-(2))  \\  z & =4 y - 1\end{aligned}
+\begin{aligned}z-z{|}_{(-2,2)} & =\frac{∂z}{∂y}{|}_{(-2,2)}(y-2)  \\  z-(7) & =2\left(2(y-2)\right) \\  z & =4 y - 1\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(-2,2,7)$ can be given as the intersection of two planes, as follows:
@@ -1503,7 +1491,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(-2,2)} & =\frac{∂z}{∂y}{|}_{(-2,2)}(y-2)  \\  z-(-8) & =(-2)(y-(2))  \\  z & =- 2 y - 4\end{aligned}
+\begin{aligned}z-z{|}_{(-2,2)} & =\frac{∂z}{∂y}{|}_{(-2,2)}(y-2)  \\  z-(-8) & =-1\left(2(y-2)\right) \\  z & =- 2 y - 4\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(-2,2,-8)$ can be given as the intersection of two planes, as follows:
@@ -1539,7 +1527,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(-2,2)} & =\frac{∂z}{∂y}{|}_{(-2,2)}(y-2)  \\  z-(6) & =(2)(y-(2))  \\  z & =2 y + 2\end{aligned}
+\begin{aligned}z-z{|}_{(-2,2)} & =\frac{∂z}{∂y}{|}_{(-2,2)}(y-2)  \\  z-(6) & =2(y-2) \\  z & =2 y + 2\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(-2,2,6)$ can be given as the intersection of two planes, as follows:
@@ -1607,7 +1595,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(0,1)} & =\frac{∂z}{∂x}{|}_{(0,1)}(x-0)  \\  z-(7) & =(2)(x-(0))  \\  z & =2 x + 7\end{aligned}
+\begin{aligned}z-z{|}_{(0,1)} & =\frac{∂z}{∂x}{|}_{(0,1)}(x-0)  \\  z-(7) & =2\left(1(x)\right) \\  z & =2 x + 7\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(0,1,7)$ can be given as the intersection of two planes, as follows:
@@ -1641,7 +1629,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(0,1)} & =\frac{∂z}{∂x}{|}_{(0,1)}(x-0)  \\  z-(-8) & =(-1)(x-(0))  \\  z & =- x - 8\end{aligned}
+\begin{aligned}z-z{|}_{(0,1)} & =\frac{∂z}{∂x}{|}_{(0,1)}(x-0)  \\  z-(-8) & =-1\left(1(x)\right) \\  z & =- x - 8\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(0,1,-8)$ can be given as the intersection of two planes, as follows:
@@ -1675,7 +1663,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(0,1)} & =\frac{∂z}{∂x}{|}_{(0,1)}(x-0)  \\  z-(6) & =(1)(x-(0))  \\  z & =x + 6\end{aligned}
+\begin{aligned}z-z{|}_{(0,1)} & =\frac{∂z}{∂x}{|}_{(0,1)}(x-0)  \\  z-(6) & =1(x) \\  z & =x + 6\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(0,1,6)$ can be given as the intersection of two planes, as follows:
@@ -1690,11 +1678,11 @@ $$
 
 The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $y=0.$ Given that the point $P(2,0,4)$ lies on $C$, and that ${f}_{x}={e}^{y}+2x\operatorname{cos}⁡y$, find the equations of the tangent line to $C$ at $P.$
 
-- ${\begin{aligned}y=0 \\ z=5x+6\end{aligned}$
-- ${\begin{aligned}x=2 \\ z=5y+4\end{aligned}$
-- ${\begin{aligned}x=2 \\ z=-5x-6\end{aligned}$
-- ${\begin{aligned}y=0 \\ z=5x-14\end{aligned}$
-- ${\begin{aligned}y=0 \\ z=5x-6\end{aligned}$
+- $\{\begin{aligned}x=2 \\ z=-5x-6\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=5x+6\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=5x-6\end{aligned}$
+- $\{\begin{aligned}x=2 \\ z=5y+4\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=5x-14\end{aligned}$
 
 Worked solution:
 
@@ -1717,7 +1705,7 @@ $$
 Finally, the tangent line to the curve $C$ at $P(2,0,4)$ can be given as the intersection of two planes, as follows:
 
 $$
-{\begin{aligned}y=0 \\ z=5x-6\end{aligned}
+\{\begin{aligned}y=0 \\ z=5x-6\end{aligned}
 $$
 
 ---
@@ -1726,11 +1714,11 @@ $$
 
 The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $y=0.$ Given that the point $P(2,0,7)$ lies on $C$, and that ${f}_{x}=2\left({e}^{y}+2x\operatorname{cos}⁡y\right)$, find the equations of the tangent line to $C$ at $P.$
 
-- ${\begin{aligned}y=0 \\ z=10 x + 11\end{aligned}$
-- ${\begin{aligned}x=2 \\ z=10 y + 7\end{aligned}$
-- ${\begin{aligned}x=2 \\ z=- 10 x - 13\end{aligned}$
-- ${\begin{aligned}y=0 \\ z=10 x - 29\end{aligned}$
-- ${\begin{aligned}y=0 \\ z=10 x - 13\end{aligned}$
+- $\{\begin{aligned}x=2 \\ z=- 10 x - 13\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=10 x + 11\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=10 x - 13\end{aligned}$
+- $\{\begin{aligned}x=2 \\ z=10 y + 7\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=10 x - 29\end{aligned}$
 
 Worked solution:
 
@@ -1747,13 +1735,13 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(2,0)} & =\frac{∂z}{∂x}{|}_{(2,0)}(x-2)  \\  z-(7) & =(10)(x-(2))  \\  z & =10 x - 13\end{aligned}
+\begin{aligned}z-z{|}_{(2,0)} & =\frac{∂z}{∂x}{|}_{(2,0)}(x-2)  \\  z-(7) & =2\left(5(x-2)\right) \\  z & =10 x - 13\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(2,0,7)$ can be given as the intersection of two planes, as follows:
 
 $$
-{\begin{aligned}y=0 \\ z=10 x - 13\end{aligned}
+\{\begin{aligned}y=0 \\ z=10 x - 13\end{aligned}
 $$
 
 ---
@@ -1783,7 +1771,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(2,0)} & =\frac{∂z}{∂x}{|}_{(2,0)}(x-2)  \\  z-(-8) & =(-5)(x-(2))  \\  z & =2 - 5 x\end{aligned}
+\begin{aligned}z-z{|}_{(2,0)} & =\frac{∂z}{∂x}{|}_{(2,0)}(x-2)  \\  z-(-8) & =-1\left(5(x-2)\right) \\  z & =2 - 5 x\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(2,0,-8)$ can be given as the intersection of two planes, as follows:
@@ -1819,7 +1807,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(2,0)} & =\frac{∂z}{∂x}{|}_{(2,0)}(x-2)  \\  z-(6) & =(5)(x-(2))  \\  z & =5 x - 4\end{aligned}
+\begin{aligned}z-z{|}_{(2,0)} & =\frac{∂z}{∂x}{|}_{(2,0)}(x-2)  \\  z-(6) & =5(x-2) \\  z & =5 x - 4\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(2,0,6)$ can be given as the intersection of two planes, as follows:
@@ -1891,7 +1879,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(1,0)} & =\frac{∂z}{∂y}{|}_{(1,0)}(y-0)  \\  z-(7) & =(-2)(y-(0))  \\  z & =7 - 2 y\end{aligned}
+\begin{aligned}z-z{|}_{(1,0)} & =\frac{∂z}{∂y}{|}_{(1,0)}(y-0)  \\  z-(7) & =2\left((-1)y\right) \\  z & =7 - 2 y\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(1,0,7)$ can be given as the intersection of two planes, as follows:
@@ -1927,7 +1915,7 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(1,0)} & =\frac{∂z}{∂y}{|}_{(1,0)}(y-0)  \\  z-(-8) & =(1)(y-(0))  \\  z & =y - 8\end{aligned}
+\begin{aligned}z-z{|}_{(1,0)} & =\frac{∂z}{∂y}{|}_{(1,0)}(y-0)  \\  z-(-8) & =-1\left((-1)y\right) \\  z & =y - 8\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(1,0,-8)$ can be given as the intersection of two planes, as follows:
@@ -1963,13 +1951,285 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(1,0)} & =\frac{∂z}{∂y}{|}_{(1,0)}(y-0)  \\  z-(6) & =(-1)(y-(0))  \\  z & =6 - y\end{aligned}
+\begin{aligned}z-z{|}_{(1,0)} & =\frac{∂z}{∂y}{|}_{(1,0)}(y-0)  \\  z-(6) & =(-1)y \\  z & =6 - y\end{aligned}
 $$
 
 Finally, the tangent line to the curve $C$ at $P(1,0,6)$ can be given as the intersection of two planes, as follows:
 
 $$
 \{\begin{aligned}x=1 \\ z=6 - y\end{aligned}
+$$
+
+---
+
+## original public raw evidence q-71204
+
+The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $y=0.$ Given that the point $P(\frac{1}{2},0,1)$ lies on $C$, and that ${f}_{x}=(y+1)\operatorname{cos}⁡(\pi x)+2x\operatorname{cos}⁡(\pi y)\operatorname{sin}⁡(\pi x)$, find the equations of the tangent line to $C$ at $P.$
+
+- $\{\begin{aligned}y=0 \\ z=3x-2\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=x+\frac{1}{2}\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=2x+1\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=2x\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=2x+\frac{1}{2}\end{aligned}$
+
+Worked solution:
+
+The curve $C$ is the intersection of the surface $z=f(x,y)$ with the plane $y=0.$ Hence, the slope of the tangent to the curve at the point $P(\frac{1}{2},0,1)$ will be given by the partial derivative $\frac{∂z}{∂x}{|}_{(\frac{1}{2},0)}.$
+
+To get the slope, we evaluate the partial derivative $\frac{∂z}{∂x}$ at $(\frac{1}{2},0)\,:$
+
+$$
+\begin{aligned}\frac{∂z}{∂x}{|}_{(\frac{1}{2},0)} & =(0+1)\operatorname{cos}⁡(\pi \cdot \frac{1}{2})+2\cdot \frac{1}{2}\cdot \operatorname{cos}⁡(\pi \cdot 0)\operatorname{sin}⁡(\pi \cdot \frac{1}{2}) \\  & =1\cdot 0+2\cdot \frac{1}{2}\cdot 1\cdot 1 \\  & =0+1 \\  & =1\end{aligned}
+$$
+
+Now, we use the point-slope form of a straight line:
+
+$$
+\begin{aligned}z-z{|}_{(\frac{1}{2},0)} & =\frac{∂z}{∂x}{|}_{(\frac{1}{2},0)}(x-\frac{1}{2}) \\ z-1 & =1(x-\frac{1}{2}) \\ z-1 & =x-\frac{1}{2} \\ z & =x+\frac{1}{2}\end{aligned}
+$$
+
+Finally, the tangent line to the curve $C$ at $P(\frac{1}{2},0,1)$ can be given as the intersection of two planes, as follows:
+
+$$
+\{\begin{aligned}y=0 \\ z=x+\frac{1}{2}\end{aligned}
+$$
+
+---
+
+## generated raw evidence variant q-71204
+
+The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $y=0.$ Given that the point $P(\frac{1}{2},0,7)$ lies on $C$, and that ${f}_{x}=2\left((y+1)\operatorname{cos}⁡(\pi x)+2x\operatorname{cos}⁡(\pi y)\operatorname{sin}⁡(\pi x)\right)$, find the equations of the tangent line to $C$ at $P.$
+
+- $\{\begin{aligned}y=0 \\ z=6 x + 1\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=2 x + 6\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=4 x + 7\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=4 x + 5\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=4 x + 6\end{aligned}$
+
+Worked solution:
+
+The curve $C$ is the intersection of the surface $z=f(x,y)$ with the plane $y=0.$ Hence, the slope of the tangent to the curve at the point $P(\frac{1}{2},0,7)$ will be given by the partial derivative $\frac{∂z}{∂x}{|}_{(\frac{1}{2},0)}.$
+
+To get the slope, we evaluate the partial derivative $\frac{∂z}{∂x}$ at $(\frac{1}{2},0)\,:$
+
+$$
+\begin{aligned}\frac{∂z}{∂x}{|}_{(\frac{1}{2},0)} & =2\left((0+1)\operatorname{cos}⁡(\pi \cdot \frac{1}{2})+2\cdot \frac{1}{2}\cdot \operatorname{cos}⁡(\pi \cdot 0)\operatorname{sin}⁡(\pi \cdot \frac{1}{2})\right) \\   & =2\left(1\cdot 0+2\cdot \frac{1}{2}\cdot 1\cdot 1\right) \\   & =2\left(0+1\right) \\   & =2\end{aligned}
+$$
+
+Now, we use the point-slope form of a straight line:
+
+$$
+\begin{aligned}z-z{|}_{(\frac{1}{2},0)} & =\frac{∂z}{∂x}{|}_{(\frac{1}{2},0)}(x-\frac{1}{2})  \\  z-(7) & =2\left(1(x-\frac{1}{2})\right) \\  z-(7) & =2\left(x-\frac{1}{2}\right) \\  z & =2 x + 6\end{aligned}
+$$
+
+Finally, the tangent line to the curve $C$ at $P(\frac{1}{2},0,7)$ can be given as the intersection of two planes, as follows:
+
+$$
+\{\begin{aligned}y=0 \\ z=2 x + 6\end{aligned}
+$$
+
+---
+
+## generated authored operation bank q-71204
+
+The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $y=0.$ Given that the point $P(\frac{1}{2},0,-8)$ lies on $C$, and that ${f}_{x}=-1\left((y+1)\operatorname{cos}⁡(\pi x)+2x\operatorname{cos}⁡(\pi y)\operatorname{sin}⁡(\pi x)\right)$, find the equations of the tangent line to $C$ at $P.$
+
+- $\{\begin{aligned}y=0 \\ z=- x - \frac{17}{2}\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=x - \frac{17}{2}\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=\frac{1}{2} - x\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=- x - \frac{15}{2}\end{aligned}$
+- $\{\begin{aligned}x=\frac{1}{2} \\ z=- y - 8\end{aligned}$
+
+Worked solution:
+
+The curve $C$ is the intersection of the surface $z=f(x,y)$ with the plane $y=0.$ Hence, the slope of the tangent to the curve at the point $P(\frac{1}{2},0,-8)$ will be given by the partial derivative $\frac{∂z}{∂x}{|}_{(\frac{1}{2},0)}.$
+
+To get the slope, we evaluate the partial derivative $\frac{∂z}{∂x}$ at $(\frac{1}{2},0)\,:$
+
+$$
+\begin{aligned}\frac{∂z}{∂x}{|}_{(\frac{1}{2},0)} & =-1\left((0+1)\operatorname{cos}⁡(\pi \cdot \frac{1}{2})+2\cdot \frac{1}{2}\cdot \operatorname{cos}⁡(\pi \cdot 0)\operatorname{sin}⁡(\pi \cdot \frac{1}{2})\right) \\   & =-1\left(1\cdot 0+2\cdot \frac{1}{2}\cdot 1\cdot 1\right) \\   & =-1\left(0+1\right) \\   & =-1\end{aligned}
+$$
+
+Now, we use the point-slope form of a straight line:
+
+$$
+\begin{aligned}z-z{|}_{(\frac{1}{2},0)} & =\frac{∂z}{∂x}{|}_{(\frac{1}{2},0)}(x-\frac{1}{2})  \\  z-(-8) & =-1\left(1(x-\frac{1}{2})\right) \\  z-(-8) & =-1\left(x-\frac{1}{2}\right) \\  z & =- x - \frac{15}{2}\end{aligned}
+$$
+
+Finally, the tangent line to the curve $C$ at $P(\frac{1}{2},0,-8)$ can be given as the intersection of two planes, as follows:
+
+$$
+\{\begin{aligned}y=0 \\ z=- x - \frac{15}{2}\end{aligned}
+$$
+
+---
+
+## generated authored operation bank q-71204
+
+The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $y=0.$ Given that the point $P(\frac{1}{2},0,6)$ lies on $C$, and that ${f}_{x}=(y+1)\operatorname{cos}⁡(\pi x)+2x\operatorname{cos}⁡(\pi y)\operatorname{sin}⁡(\pi x)$, find the equations of the tangent line to $C$ at $P.$
+
+- $\{\begin{aligned}y=0 \\ z=x - \frac{1}{2}\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=x + \frac{13}{2}\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=\frac{13}{2} - x\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=x + \frac{11}{2}\end{aligned}$
+- $\{\begin{aligned}x=\frac{1}{2} \\ z=y + 6\end{aligned}$
+
+Worked solution:
+
+The curve $C$ is the intersection of the surface $z=f(x,y)$ with the plane $y=0.$ Hence, the slope of the tangent to the curve at the point $P(\frac{1}{2},0,6)$ will be given by the partial derivative $\frac{∂z}{∂x}{|}_{(\frac{1}{2},0)}.$
+
+To get the slope, we evaluate the partial derivative $\frac{∂z}{∂x}$ at $(\frac{1}{2},0)\,:$
+
+$$
+\begin{aligned}\frac{∂z}{∂x}{|}_{(\frac{1}{2},0)} & =(0+1)\operatorname{cos}⁡(\pi \cdot \frac{1}{2})+2\cdot \frac{1}{2}\cdot \operatorname{cos}⁡(\pi \cdot 0)\operatorname{sin}⁡(\pi \cdot \frac{1}{2}) \\  & =1\cdot 0+2\cdot \frac{1}{2}\cdot 1\cdot 1 \\  & =0+1 \\  & =1\end{aligned}
+$$
+
+Now, we use the point-slope form of a straight line:
+
+$$
+\begin{aligned}z-z{|}_{(\frac{1}{2},0)} & =\frac{∂z}{∂x}{|}_{(\frac{1}{2},0)}(x-\frac{1}{2})  \\  z-(6) & =1(x-\frac{1}{2}) \\  z-(6) & =x-\frac{1}{2} \\  z & =x + \frac{11}{2}\end{aligned}
+$$
+
+Finally, the tangent line to the curve $C$ at $P(\frac{1}{2},0,6)$ can be given as the intersection of two planes, as follows:
+
+$$
+\{\begin{aligned}y=0 \\ z=x + \frac{11}{2}\end{aligned}
+$$
+
+---
+
+## original public raw evidence q-132594
+
+The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $y=\pi .$ Given that the point $P(\frac{1}{2},\pi ,1)$ lies on $C$, and that ${f}_{x}=2x{e}^{\operatorname{cos}⁡(xy)}+\operatorname{sin}⁡(xy)$, find the equations of the tangent line to $C$ at $P.$
+
+- $\{\begin{aligned}y=\pi  \\ z=2x+\pi \end{aligned}$
+- $\{\begin{aligned}y=\pi  \\ z=x-\pi \end{aligned}$
+- $\{\begin{aligned}y=\pi  \\ z=2x\end{aligned}$
+- $\{\begin{aligned}y=\pi  \\ z=3x+1\end{aligned}$
+- $\{\begin{aligned}y=\pi  \\ z=x-1\end{aligned}$
+
+Worked solution:
+
+The curve $C$ is the intersection of the surface $z=f(x,y)$ with the plane $y=\pi .$ Hence, the slope of the tangent to the curve at the point $P(\frac{1}{2},\pi ,1)$ will be given by the partial derivative $\frac{∂z}{∂x}{|}_{(1/2,\pi )}.$
+
+To get the slope, we evaluate the partial derivative $\frac{∂z}{∂x}$ at $(\frac{1}{2},\pi ):$
+
+$$
+\begin{aligned}\frac{∂z}{∂x}{|}_{(1/2,\pi )} & =2(\frac{1}{2}){e}^{\operatorname{cos}⁡(\pi /2)}+\operatorname{sin}⁡(\frac{\pi }{2}) \\  & ={e}^{0}+1 \\  & =2\end{aligned}
+$$
+
+Now, we use the point-slope form of a straight line:
+
+$$
+\begin{aligned}z-z{|}_{(1/2,\pi )} & =\frac{∂z}{∂x}{|}_{(1/2,\pi )}(x-\frac{1}{2}) \\ z-1 & =2(x-\frac{1}{2}) \\ z & =2x\end{aligned}
+$$
+
+Finally, the tangent line to the curve $C$ at $P(\frac{1}{2},\pi ,1)$ can be given as the intersection of two planes, as follows:
+
+$$
+\{\begin{aligned}y=\pi  \\ z=2x\end{aligned}
+$$
+
+---
+
+## generated raw evidence variant q-132594
+
+The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $y=\pi .$ Given that the point $P(\frac{1}{2},\pi ,7)$ lies on $C$, and that ${f}_{x}=2\left(2x{e}^{\operatorname{cos}⁡(xy)}+\operatorname{sin}⁡(xy)\right)$, find the equations of the tangent line to $C$ at $P.$
+
+- $\{\begin{aligned}y=\pi  \\ z=4 x + 5 + 2 \pi\end{aligned}$
+- $\{\begin{aligned}y=\pi  \\ z=2 x - 2 \pi + 5\end{aligned}$
+- $\{\begin{aligned}y=\pi  \\ z=4 x + 5\end{aligned}$
+- $\{\begin{aligned}y=\pi  \\ z=6 x + 7\end{aligned}$
+- $\{\begin{aligned}y=\pi  \\ z=2 x + 3\end{aligned}$
+
+Worked solution:
+
+The curve $C$ is the intersection of the surface $z=f(x,y)$ with the plane $y=\pi .$ Hence, the slope of the tangent to the curve at the point $P(\frac{1}{2},\pi ,7)$ will be given by the partial derivative $\frac{∂z}{∂x}{|}_{(1/2,\pi )}.$
+
+To get the slope, we evaluate the partial derivative $\frac{∂z}{∂x}$ at $(\frac{1}{2},\pi ):$
+
+$$
+\begin{aligned}\frac{∂z}{∂x}{|}_{(1/2,\pi )} & =2\left(2(\frac{1}{2}){e}^{\operatorname{cos}⁡(\pi /2)}+\operatorname{sin}⁡(\frac{\pi }{2})\right) \\   & =2\left({e}^{0}+1\right) \\   & =4\end{aligned}
+$$
+
+Now, we use the point-slope form of a straight line:
+
+$$
+\begin{aligned}z-z{|}_{(1/2,\pi )} & =\frac{∂z}{∂x}{|}_{(1/2,\pi )}(x-\frac{1}{2})  \\  z-(7) & =2\left(2(x-\frac{1}{2})\right) \\  z & =4 x + 5\end{aligned}
+$$
+
+Finally, the tangent line to the curve $C$ at $P(\frac{1}{2},\pi ,7)$ can be given as the intersection of two planes, as follows:
+
+$$
+\{\begin{aligned}y=\pi  \\ z=4 x + 5\end{aligned}
+$$
+
+---
+
+## generated authored operation bank q-132594
+
+The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $y=\pi .$ Given that the point $P(\frac{1}{2},\pi ,-8)$ lies on $C$, and that ${f}_{x}=-1\left(2x{e}^{\operatorname{cos}⁡(xy)}+\operatorname{sin}⁡(xy)\right)$, find the equations of the tangent line to $C$ at $P.$
+
+- $\{\begin{aligned}y=\pi \\ z=- 2 x - 9\end{aligned}$
+- $\{\begin{aligned}y=\pi \\ z=2 x - 9\end{aligned}$
+- $\{\begin{aligned}y=\pi \\ z=1 - 2 x\end{aligned}$
+- $\{\begin{aligned}y=\pi \\ z=- 2 x - 7\end{aligned}$
+- $\{\begin{aligned}x=\frac{1}{2} \\ z=- 2 y - 8 + 2 \pi\end{aligned}$
+
+Worked solution:
+
+The curve $C$ is the intersection of the surface $z=f(x,y)$ with the plane $y=\pi .$ Hence, the slope of the tangent to the curve at the point $P(\frac{1}{2},\pi ,-8)$ will be given by the partial derivative $\frac{∂z}{∂x}{|}_{(1/2,\pi )}.$
+
+To get the slope, we evaluate the partial derivative $\frac{∂z}{∂x}$ at $(\frac{1}{2},\pi ):$
+
+$$
+\begin{aligned}\frac{∂z}{∂x}{|}_{(1/2,\pi )} & =-1\left(2(\frac{1}{2}){e}^{\operatorname{cos}⁡(\pi /2)}+\operatorname{sin}⁡(\frac{\pi }{2})\right) \\   & =-1\left({e}^{0}+1\right) \\   & =-2\end{aligned}
+$$
+
+Now, we use the point-slope form of a straight line:
+
+$$
+\begin{aligned}z-z{|}_{(1/2,\pi )} & =\frac{∂z}{∂x}{|}_{(1/2,\pi )}(x-\frac{1}{2})  \\  z-(-8) & =-1\left(2(x-\frac{1}{2})\right) \\  z & =- 2 x - 7\end{aligned}
+$$
+
+Finally, the tangent line to the curve $C$ at $P(\frac{1}{2},\pi ,-8)$ can be given as the intersection of two planes, as follows:
+
+$$
+\{\begin{aligned}y=\pi  \\ z=- 2 x - 7\end{aligned}
+$$
+
+---
+
+## generated authored operation bank q-132594
+
+The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $y=\pi .$ Given that the point $P(\frac{1}{2},\pi ,6)$ lies on $C$, and that ${f}_{x}=2x{e}^{\operatorname{cos}⁡(xy)}+\operatorname{sin}⁡(xy)$, find the equations of the tangent line to $C$ at $P.$
+
+- $\{\begin{aligned}y=\pi \\ z=2 x - 1\end{aligned}$
+- $\{\begin{aligned}y=\pi \\ z=2 x + 7\end{aligned}$
+- $\{\begin{aligned}y=\pi \\ z=7 - 2 x\end{aligned}$
+- $\{\begin{aligned}y=\pi \\ z=2 x + 5\end{aligned}$
+- $\{\begin{aligned}x=\frac{1}{2} \\ z=2 y - 2 \pi + 6\end{aligned}$
+
+Worked solution:
+
+The curve $C$ is the intersection of the surface $z=f(x,y)$ with the plane $y=\pi .$ Hence, the slope of the tangent to the curve at the point $P(\frac{1}{2},\pi ,6)$ will be given by the partial derivative $\frac{∂z}{∂x}{|}_{(1/2,\pi )}.$
+
+To get the slope, we evaluate the partial derivative $\frac{∂z}{∂x}$ at $(\frac{1}{2},\pi ):$
+
+$$
+\begin{aligned}\frac{∂z}{∂x}{|}_{(1/2,\pi )} & =2(\frac{1}{2}){e}^{\operatorname{cos}⁡(\pi /2)}+\operatorname{sin}⁡(\frac{\pi }{2}) \\  & ={e}^{0}+1 \\  & =2\end{aligned}
+$$
+
+Now, we use the point-slope form of a straight line:
+
+$$
+\begin{aligned}z-z{|}_{(1/2,\pi )} & =\frac{∂z}{∂x}{|}_{(1/2,\pi )}(x-\frac{1}{2})  \\  z-(6) & =2(x-\frac{1}{2}) \\  z & =2 x + 5\end{aligned}
+$$
+
+Finally, the tangent line to the curve $C$ at $P(\frac{1}{2},\pi ,6)$ can be given as the intersection of two planes, as follows:
+
+$$
+\{\begin{aligned}y=\pi  \\ z=2 x + 5\end{aligned}
 $$
 
 ---
@@ -2248,22 +2508,22 @@ $$
 
 ## sample moderate 0
 
-The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $x=1.$ Given that the point $P(1,0,2)$ lies on $C$, and that ${f}_{y}=x{e}^{xy}-2\operatorname{cos}⁡y$, find the equations of the tangent line to $C$ at $P.$
+The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $y=0.$ Given that the point $P(2,0,-11)$ lies on $C$, and that ${f}_{x}={e}^{y}+2x\operatorname{cos}⁡y$, find the equations of the tangent line to $C$ at $P.$
 
-- $\{\begin{aligned}x=1 \\ z=- y - 2\end{aligned}$
-- $\{\begin{aligned}x=1 \\ z=- y\end{aligned}$
-- $\{\begin{aligned}y=0 \\ z=3 - x\end{aligned}$
-- $\{\begin{aligned}x=1 \\ z=2 - y\end{aligned}$
-- $\{\begin{aligned}x=1 \\ z=y + 2\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=5 x - 10\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=5 x - 1\end{aligned}$
+- $\{\begin{aligned}x=2 \\ z=5 y - 11\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=5 x - 21\end{aligned}$
+- $\{\begin{aligned}y=0 \\ z=- 5 x - 1\end{aligned}$
 
 Worked solution:
 
-The curve $C$ is the intersection of the surface $z=f(x,y)$ with the plane $x=1.$ Hence, the slope of the tangent to the curve at the point $P(1,0,2)$ will be given by the partial derivative $\frac{∂z}{∂y}{|}_{(1,0)}.$
+The curve $C$ is the intersection of the surface $z=f(x,y)$ with the plane $y=0.$ Hence, the slope of the tangent to the curve at the point $P(2,0,-11)$ will be given by the partial derivative $\frac{∂z}{∂x}{|}_{(2,0)}.$
 
-To get the slope, we evaluate the partial derivative $\frac{∂z}{∂y}$ at $(1,0):$
+To get the slope, we evaluate the partial derivative $\frac{∂z}{∂x}$ at $(2,0):$
 
 $$
-\begin{aligned}{f}_{y}(1,0) & =1\cdot {e}^{1\cdot 0}-2\operatorname{cos}⁡0 \\  & =1\cdot 1-2\cdot 1 \\  & =-1\end{aligned}
+\begin{aligned}{f}_{x}(2,0) & ={e}^{(0)}+2(2)\operatorname{cos}⁡(0) \\  & =1+4 \\  & =5\end{aligned}
 $$
 
  
@@ -2271,69 +2531,35 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(1,0)} & =\frac{∂z}{∂y}{|}_{(1,0)}(y-0)  \\  z-(2) & =(-1)(y-(0))  \\  z & =2 - y\end{aligned}
+\begin{aligned}z-z{|}_{(2,0)} & =\frac{∂z}{∂x}{|}_{(2,0)}(x-2)  \\  z-(-11) & =5(x-2) \\  z & =5 x - 21\end{aligned}
 $$
 
-Finally, the tangent line to the curve $C$ at $P(1,0,2)$ can be given as the intersection of two planes, as follows:
+Finally, the tangent line to the curve $C$ at $P(2,0,-11)$ can be given as the intersection of two planes, as follows:
 
 $$
-\{\begin{aligned}x=1 \\ z=2 - y\end{aligned}
+\{\begin{aligned}y=0 \\ z=5 x - 21\end{aligned}
 $$
 
 ---
 
 ## sample moderate 1
 
-The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $y=-2.$ Given that the point $P(4,-2,-10)$ lies on $C$, and that ${f}_{x}=2\left(y\sqrt{x}\right)$, find the equations of the tangent line to $C$ at $P.$
+The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $x=e.$ Given that the point $P(e,2,-10)$ lies on $C$, and that ${f}_{y}=2\left(2\operatorname{ln}⁡x-\frac{{e}^{y}}{{x}^{2}}\right)$, find the equations of the tangent line to $C$ at $P.$
 
-- $\{\begin{aligned}x=4 \\ z=- 8 y - 26\end{aligned}$
-- $\{\begin{aligned}y=-2 \\ z=- 8 x - 42\end{aligned}$
-- $\{\begin{aligned}y=-2 \\ z=8 x - 42\end{aligned}$
-- $\{\begin{aligned}y=-2 \\ z=22 - 8 x\end{aligned}$
-- $\{\begin{aligned}y=-2 \\ z=32 - 8 x\end{aligned}$
-
-Worked solution:
-
-The curve $C$ is the intersection of the surface $z=f(x,y)$ with the plane $y=-2.$ Hence, the slope of the tangent to the curve at the point $P(4,-2,-10)$ will be given by the partial derivative $\frac{∂z}{∂x}{|}_{(4,-2)}.$
-
-To get the slope, we evaluate the partial derivative $\frac{∂z}{∂x}$ at $(4,-2):$
-
-$$
-\begin{aligned}\frac{∂z}{∂x}{|}_{(4,-2)} & =2\left((-2)\sqrt{4}\right) \\   & =2\left(-2(2)\right) \\   & =-8\end{aligned}
-$$
-
-Now, we use the point-slope form of a straight line:
-
-$$
-\begin{aligned}z-z{|}_{(4,-2)} & =\frac{∂z}{∂x}{|}_{(4,-2)}(x-4)  \\  z-(-10) & =(-8)(x-(4))  \\  z & =22 - 8 x\end{aligned}
-$$
-
-Finally, the tangent line to the curve $C$ at $P(4,-2,-10)$ can be given as the intersection of two planes, as follows:
-
-$$
-\{\begin{aligned}y=-2 \\ z=22 - 8 x\end{aligned}
-$$
-
----
-
-## sample moderate 2
-
-The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $x=1.$ Given that the point $P(1,0,-10)$ lies on $C$, and that ${f}_{y}=-3\left(x{e}^{xy}-2\operatorname{cos}⁡y\right)$, find the equations of the tangent line to $C$ at $P.$
-
-- $\{\begin{aligned}x=1 \\ z=- 3 y - 10\end{aligned}$
-- $\{\begin{aligned}x=1 \\ z=3 y + 10\end{aligned}$
-- $\{\begin{aligned}x=1 \\ z=3 y - 10\end{aligned}$
-- $\{\begin{aligned}x=1 \\ z=3 y\end{aligned}$
-- $\{\begin{aligned}y=0 \\ z=3 x - 13\end{aligned}$
+- $\{\begin{aligned}y=2 \\ z=2 x - 10 - 2 e\end{aligned}$
+- $\{\begin{aligned}x=e \\ z=2 y - 6\end{aligned}$
+- $\{\begin{aligned}x=e \\ z=- 2 y - 6\end{aligned}$
+- $\{\begin{aligned}x=e \\ z=2 y - 14\end{aligned}$
+- $\{\begin{aligned}x=e \\ z=2 y - 4\end{aligned}$
 
 Worked solution:
 
-The curve $C$ is the intersection of the surface $z=f(x,y)$ with the plane $x=1.$ Hence, the slope of the tangent to the curve at the point $P(1,0,-10)$ will be given by the partial derivative $\frac{∂z}{∂y}{|}_{(1,0)}.$
+The curve $C$ is the intersection of the surface $z=f(x,y)$ with the plane $x=e.$ Hence, the slope of the tangent to the curve at the point $P(e,2,-10)$ will be given by the partial derivative $\frac{∂z}{∂y}{|}_{(e,2)}.$
 
-To get the slope, we evaluate the partial derivative $\frac{∂z}{∂y}$ at $(1,0):$
+To get the slope, we evaluate the partial derivative $\frac{∂z}{∂y}$ at $(e,2):$
 
 $$
-\begin{aligned}{f}_{y}(1,0) & =-3\left(1\cdot {e}^{1\cdot 0}-2\operatorname{cos}⁡0\right) \\   & =-3\left(1\cdot 1-2\cdot 1\right) \\   & =3\end{aligned}
+\begin{aligned}{f}_{y}(e,2) & =2\left(2\operatorname{ln}⁡e-\frac{{e}^{2}}{{e}^{2}}\right) \\   & =2\left(2-1\right) \\   & =2\end{aligned}
 $$
 
  
@@ -2341,47 +2567,83 @@ $$
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(1,0)} & =\frac{∂z}{∂y}{|}_{(1,0)}(y-0)  \\  z-(-10) & =(3)(y-(0))  \\  z & =3 y - 10\end{aligned}
+\begin{aligned}z-z{|}_{(e,2)} & =\frac{∂z}{∂y}{|}_{(e,2)}(y-2)  \\  z-(-10) & =2\left(1(y-2)\right) \\  z & =2 y - 14\end{aligned}
 $$
 
-Finally, the tangent line to the curve $C$ at $P(1,0,-10)$ can be given as the intersection of two planes, as follows:
+Finally, the tangent line to the curve $C$ at $P(e,2,-10)$ can be given as the intersection of two planes, as follows:
 
 $$
-\{\begin{aligned}x=1 \\ z=3 y - 10\end{aligned}
+\{\begin{aligned}x=e \\ z=2 y - 14\end{aligned}
+$$
+
+---
+
+## sample moderate 2
+
+The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $y=1.$ Given that the point $P(1,1,-10)$ lies on $C$, and that ${f}_{x}=-3\left(3x+6x\operatorname{ln}⁡(xy)\right)$, find the equations of the tangent line to $C$ at $P.$
+
+- $\{\begin{aligned}y=1 \\ z=9 x - 19\end{aligned}$
+- $\{\begin{aligned}y=1 \\ z=9 - 9 x\end{aligned}$
+- $\{\begin{aligned}y=1 \\ z=- 9 x - 1\end{aligned}$
+- $\{\begin{aligned}y=1 \\ z=- 9 x - 19\end{aligned}$
+- $\{\begin{aligned}x=1 \\ z=- 9 y - 1\end{aligned}$
+
+Worked solution:
+
+The curve $C$ is the intersection of the surface $z=f(x,y)$ with the plane $y=1.$ Hence, the slope of the tangent to the curve at the point $P(1,1,-10)$ will be given by the partial derivative $\frac{∂z}{∂x}{|}_{(1,1)}.$
+
+To get the slope, we evaluate the partial derivative $\frac{∂z}{∂x}$ at $(1,1):$
+
+$$
+\begin{aligned}\frac{∂z}{∂x}{|}_{(1,1)} & =-3\left(3(1)+6(1)\operatorname{ln}⁡(1\cdot 1)\right) \\   & =-3\left(3+6\operatorname{ln}⁡1\right) \\   & =-9\end{aligned}
+$$
+
+Now, we use the point-slope form of a straight line:
+
+$$
+\begin{aligned}z-z{|}_{(1,1)} & =\frac{∂z}{∂x}{|}_{(1,1)}(x-1)  \\  z-(-10) & =-3\left(3(x-1)\right) \\  z & =- 9 x - 1\end{aligned}
+$$
+
+Finally, the tangent line to the curve $C$ at $P(1,1,-10)$ can be given as the intersection of two planes, as follows:
+
+$$
+\{\begin{aligned}y=1 \\ z=- 9 x - 1\end{aligned}
 $$
 
 ---
 
 ## sample moderate 3
 
-The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $y=2.$ Given that the point $P(1,2,6)$ lies on $C$, and that ${f}_{x}=2\left(2xy+2\right)$, find the equations of the tangent line to $C$ at $P.$
+The curve $C$ is the intersection of a surface $S,$ defined by $z=f(x,y),$ with the plane $x=\sqrt{2}.$ Given that the point $P(\sqrt{2},2,-1)$ lies on $C$, and that ${f}_{y}=-2\left(-\frac{2{x}^{2}+y}{{y}^{3}}\right)$, find the equations of the tangent line to $C$ at $P.$
 
-- $\{\begin{aligned}y=2 \\ z=12 x - 12\end{aligned}$
-- $\{\begin{aligned}y=2 \\ z=12 x + 18\end{aligned}$
-- $\{\begin{aligned}y=2 \\ z=12 x - 6\end{aligned}$
-- $\{\begin{aligned}y=2 \\ z=18 - 12 x\end{aligned}$
-- $\{\begin{aligned}x=1 \\ z=12 y - 18\end{aligned}$
+- $\{\begin{aligned}x=\sqrt{2} \\ z=\frac{3 y}{2} - 3\end{aligned}$
+- $\{\begin{aligned}x=\sqrt{2} \\ z=\frac{3 y}{2} + 2\end{aligned}$
+- $\{\begin{aligned}x=\sqrt{2} \\ z=\frac{3 y}{2} - 4\end{aligned}$
+- $\{\begin{aligned}x=\sqrt{2} \\ z=2 - \frac{3 y}{2}\end{aligned}$
+- $\{\begin{aligned}y=2 \\ z=\frac{3 x}{2} - \frac{3 \sqrt{2}}{2} - 1\end{aligned}$
 
 Worked solution:
 
-The curve $C$ is the intersection of the surface $z=f(x,y)$ with the plane $y=2.$ Hence, the slope of the tangent to the curve at the point $P(1,2,6)$ will be given by the partial derivative $\frac{∂z}{∂x}{|}_{(1,2)}.$
+The curve $C$ is the intersection of the surface $z=f(x,y)$ with the plane $x=\sqrt{2}.$ Hence, the slope of the tangent to the curve at the point $P(\sqrt{2},2,-1)$ will be given by the partial derivative $\frac{∂z}{∂y}{|}_{(\sqrt{2},2)}.$
 
-To get the slope, we evaluate the partial derivative $\frac{∂z}{∂x}$ at $(1,2):$
+To get the slope, we evaluate the partial derivative $\frac{∂z}{∂y}$ at $(\sqrt{2},2):$
 
 $$
-\begin{aligned}\frac{∂z}{∂x}{|}_{(1,2)} & =2\left(2(1)(2)+2\right) \\   & =2\left(4+2\right) \\   & =12\end{aligned}
+\begin{aligned}{f}_{y}(\sqrt{2},2) & =-2\left(-\frac{2(\sqrt{2})^{2}+2}{{2}^{3}}\right) \\   & =-2\left(-\frac{4+2}{8}\right) \\   & =\frac{3}{2}\end{aligned}
 $$
+
+ 
 
 Now, we use the point-slope form of a straight line:
 
 $$
-\begin{aligned}z-z{|}_{(1,2)} & =\frac{∂z}{∂x}{|}_{(1,2)}(x-1)  \\  z-(6) & =(12)(x-(1))  \\  z & =12 x - 6\end{aligned}
+\begin{aligned}z-z{|}_{(\sqrt{2},2)} & =\frac{∂z}{∂y}{|}_{(\sqrt{2},2)}(y-2)  \\  z-(-1) & =-2\left(-\frac{3}{4}(y-2)\right) \\  z & =\frac{3 y}{2} - 4\end{aligned}
 $$
 
-Finally, the tangent line to the curve $C$ at $P(1,2,6)$ can be given as the intersection of two planes, as follows:
+Finally, the tangent line to the curve $C$ at $P(\sqrt{2},2,-1)$ can be given as the intersection of two planes, as follows:
 
 $$
-\{\begin{aligned}y=2 \\ z=12 x - 6\end{aligned}
+\{\begin{aligned}x=\sqrt{2} \\ z=\frac{3 y}{2} - 4\end{aligned}
 $$
 
 ---
