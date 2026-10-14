@@ -1,0 +1,94 @@
+[
+  {
+    "label": "d686c858-3d09-57c7-a18a-662015e75d19",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186083240,
+        "id": "8922ab07-5ac7-5f85-bfee-c30de7f4024a",
+        "title": "Finding the Derivative of a Parametric Curve"
+      },
+      "question": {
+        ":question/problem": "For the parametric curve\n\n$$\nx=3t e^{1t},\\quad y=5(t^2+2)e^{-1t},\\quad -\\infty<t<\\infty,\n$$\n\ncalculate $\\frac{dy}{dx}$ as a function of $t$ for $t\\ne -1.$\n\n$\\frac{dy}{dx}=$\n{{field-1}}",
+        ":question/worked-solution": "We will use the formula\n\n$$\n\\frac{dy}{dx}=\\frac{y'(t)}{x'(t)}.\n$$\n\nDifferentiating $x$ and $y,$ we get\n\n$$\nx'(t)=3\\left(\\frac{d}{dt}\\left(t\\right)\\right)e^{1t}+3t\\left(\\frac{d}{dt}\\left(e^{1t}\\right)\\right),\\quad y'(t)=5\\left(\\frac{d}{dt}\\left(t^2+2\\right)\\right)e^{-1t}+5(t^2+2)\\left(\\frac{d}{dt}\\left(e^{-1t}\\right)\\right)\n$$\n\n$$\nx'(t)=3e^{1t}+ 3t(1e^{1t}),\\quad y'(t)=5(2t)e^{-1t}+5(t^2+2)(-1e^{-1t})\n$$\n\n$$\nx'(t)=3(1+1t)e^{1t},\\quad y'(t)=5(2t-1(t^2+2))e^{-1t}\n$$\n\nTherefore,\n\n$$\n\\frac{dy}{dx}=\\frac{5(2t-1(t^2+2))e^{-1t}}{3(1+1t)e^{1t}}=\\frac{5(2t-1(t^2+2))}{3(1+1t)}e^{-2t}.\n$$\n\nThis derivative is defined for $t\\ne -1.$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{5(2t-1(t^2+2))}{3(1+1t)}e^{-2t}",
+                ":answer/id": "499737b3-a0fe-585c-b187-55fbf62e6658"
+              }
+            ],
+            ":answer-field/id": "c1552876-53e6-5070-82ee-064a196e5b3f",
+            ":answer-field/correct": [
+              ":answer/id",
+              "499737b3-a0fe-585c-b187-55fbf62e6658"
+            ]
+          }
+        ],
+        ":question/id": "d686c858-3d09-57c7-a18a-662015e75d19"
+      },
+      "generation": {
+        "version": "parametric-derivative-2",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "template": "product_pair",
+        "profile": "method",
+        "parameters": {
+          "a": "3",
+          "b": "1",
+          "c": "5",
+          "d": "2"
+        },
+        "seed": 268766555,
+        "domain": "-\\infty<t<\\infty",
+        "curve_domain": "-\\infty<t<\\infty",
+        "derivative_domain": {
+          "within_curve_domain": "-\\infty<t<\\infty",
+          "condition": "x'(t) and y'(t) exist and x'(t) != 0",
+          "excluded_parameters": [
+            "-1"
+          ]
+        },
+        "source_ids": [],
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "recipes": [
+          "correct"
+        ],
+        "mathematical_fingerprint": "a10e24e45bbe16a826af876bacb20ece7360a7f7ed4be4a034bb0d92d8211efe",
+        "content_fingerprint": "189b4eabc86354c2ba4e05fa6953512e6db6e49fe0a6b0477ca7564111933221",
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        }
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted": "\\frac{5(2t-1(t^2+2))}{3(1+1t)}e^{-2t}",
+        "expected": "accepted",
+        "purpose": "canonical exact answer"
+      },
+      {
+        "field_index": 0,
+        "submitted": "(\\frac{5(2t-1(t^2+2))}{3(1+1t)}e^{-2t})",
+        "expected": "accepted",
+        "purpose": "equivalent grouped exact expression through current learner grader"
+      },
+      {
+        "field_index": 0,
+        "submitted": "(\\frac{5(2t-1(t^2+2))}{3(1+1t)}e^{-2t})+1",
+        "expected": "rejected",
+        "purpose": "incorrect derivative"
+      }
+    ]
+  }
+]

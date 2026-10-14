@@ -1,0 +1,92 @@
+[
+  {
+    "label": "fb2910a3-e9dd-5491-a8ee-7d4f932f22ed",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186083240,
+        "id": "8922ab07-5ac7-5f85-bfee-c30de7f4024a",
+        "title": "Finding the Derivative of a Parametric Curve"
+      },
+      "question": {
+        ":question/problem": "For the parametric curve\n\n$$\nx=\\frac{4t}{t+2},\\quad y=\\frac{4t^2}{t+1},\\quad t>0,\n$$\n\ncalculate $\\frac{dy}{dx}$ as a function of $t.$\n\n$\\frac{dy}{dx}=$\n{{field-1}}",
+        ":question/worked-solution": "We will use the formula\n\n$$\n\\frac{dy}{dx}=\\frac{y'(t)}{x'(t)}.\n$$\n\nDifferentiating $x$ and $y,$ we get\n\n$$\nx'(t)=\\frac{4\\left(\\frac{d}{dt}\\left(t\\right)\\right)(t+2)-4t\\left(\\frac{d}{dt}\\left(t+2\\right)\\right)}{(t+2)^2},\\quad y'(t)=\\frac{4\\left(\\frac{d}{dt}\\left(t^2\\right)\\right)(t+1)-4t^2\\left(\\frac{d}{dt}\\left(t+1\\right)\\right)}{(t+1)^2}\n$$\n\n$$\nx'(t)=\\frac{4(t+2)-4t(1)}{(t+2)^2},\\quad y'(t)=\\frac{8t(t+1)-4t^2(1)}{(t+1)^2}\n$$\n\n$$\nx'(t)=\\frac{4t+8-4t}{(t+2)^2},\\quad y'(t)=\\frac{8t^2+8t-4t^2}{(t+1)^2}\n$$\n\n$$\nx'(t)=\\frac{8}{(t+2)^2},\\quad y'(t)=\\frac{4t^2+8t}{(t+1)^2}\n$$\n\nTherefore,\n\n$$\n\\frac{dy}{dx}=\\frac{\\frac{4t^2+8t}{(t+1)^2}}{\\frac{8}{(t+2)^2}}=\\frac{(4t^2+8t)(t+2)^2}{8(t+1)^2}.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{(4t^2+8t)(t+2)^2}{8(t+1)^2}",
+                ":answer/id": "febe59cd-28cc-5650-9663-a8b8618b90e5"
+              }
+            ],
+            ":answer-field/id": "4a0921ba-c3f5-5016-a00f-3a2bc8cd7e62",
+            ":answer-field/correct": [
+              ":answer/id",
+              "febe59cd-28cc-5650-9663-a8b8618b90e5"
+            ]
+          }
+        ],
+        ":question/id": "fb2910a3-e9dd-5491-a8ee-7d4f932f22ed"
+      },
+      "generation": {
+        "version": "parametric-derivative-2",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "template": "quotient_pair",
+        "profile": "method",
+        "parameters": {
+          "a": "4",
+          "b": "2",
+          "c": "4",
+          "d": "1"
+        },
+        "seed": 268766546,
+        "domain": "t>0",
+        "curve_domain": "t>0",
+        "derivative_domain": {
+          "within_curve_domain": "t>0",
+          "condition": "x'(t) and y'(t) exist and x'(t) != 0",
+          "excluded_parameters": []
+        },
+        "source_ids": [],
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "recipes": [
+          "correct"
+        ],
+        "mathematical_fingerprint": "68337c2a501115b04864d247aea673b9282be6ed3de42859babbe212aed4ad98",
+        "content_fingerprint": "c7616a0ff7e459f5a942d0a325181a79fdb75c1413b5f20ed1c8458e1e8c2fd3",
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        }
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted": "\\frac{(4t^2+8t)(t+2)^2}{8(t+1)^2}",
+        "expected": "accepted",
+        "purpose": "canonical exact answer"
+      },
+      {
+        "field_index": 0,
+        "submitted": "(\\frac{(4t^2+8t)(t+2)^2}{8(t+1)^2})",
+        "expected": "accepted",
+        "purpose": "equivalent grouped exact expression through current learner grader"
+      },
+      {
+        "field_index": 0,
+        "submitted": "(\\frac{(4t^2+8t)(t+2)^2}{8(t+1)^2})+1",
+        "expected": "rejected",
+        "purpose": "incorrect derivative"
+      }
+    ]
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "label": "85e9a979-dd16-5177-b9bf-cda7e7a25733",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186083240,
+        "id": "8922ab07-5ac7-5f85-bfee-c30de7f4024a",
+        "title": "Finding the Derivative of a Parametric Curve"
+      },
+      "question": {
+        ":question/problem": "For the parametric curve\n\n$$\nx=\\frac{1t}{t+1},\\quad y=\\frac{1t^2}{t+4},\\quad t>0,\n$$\n\ncalculate $\\frac{dy}{dx}$ as a function of $t.$\n\n$\\frac{dy}{dx}=$\n{{field-1}}",
+        ":question/worked-solution": "We will use the formula\n\n$$\n\\frac{dy}{dx}=\\frac{y'(t)}{x'(t)}.\n$$\n\nDifferentiating $x$ and $y,$ we get\n\n$$\nx'(t)=\\frac{1\\left(\\frac{d}{dt}\\left(t\\right)\\right)(t+1)-1t\\left(\\frac{d}{dt}\\left(t+1\\right)\\right)}{(t+1)^2},\\quad y'(t)=\\frac{1\\left(\\frac{d}{dt}\\left(t^2\\right)\\right)(t+4)-1t^2\\left(\\frac{d}{dt}\\left(t+4\\right)\\right)}{(t+4)^2}\n$$\n\n$$\nx'(t)=\\frac{1(t+1)-1t(1)}{(t+1)^2},\\quad y'(t)=\\frac{2t(t+4)-1t^2(1)}{(t+4)^2}\n$$\n\n$$\nx'(t)=\\frac{1t+1-1t}{(t+1)^2},\\quad y'(t)=\\frac{2t^2+8t-1t^2}{(t+4)^2}\n$$\n\n$$\nx'(t)=\\frac{1}{(t+1)^2},\\quad y'(t)=\\frac{1t^2+8t}{(t+4)^2}\n$$\n\nTherefore,\n\n$$\n\\frac{dy}{dx}=\\frac{\\frac{1t^2+8t}{(t+4)^2}}{\\frac{1}{(t+1)^2}}=\\frac{(1t^2+8t)(t+1)^2}{1(t+4)^2}.\n$$",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/answer-fields": [
+          {
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{(1t^2+8t)(t+1)^2}{1(t+4)^2}",
+                ":answer/id": "96bfdd12-5356-5e4e-ad0c-9ecbcd9ab433"
+              }
+            ],
+            ":answer-field/id": "6dfb02a6-9b02-5883-876f-ce117dbd3f4d",
+            ":answer-field/correct": [
+              ":answer/id",
+              "96bfdd12-5356-5e4e-ad0c-9ecbcd9ab433"
+            ]
+          }
+        ],
+        ":question/id": "85e9a979-dd16-5177-b9bf-cda7e7a25733"
+      },
+      "generation": {
+        "version": "parametric-derivative-2",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "template": "quotient_pair",
+        "profile": "method",
+        "parameters": {
+          "a": "1",
+          "b": "1",
+          "c": "1",
+          "d": "4"
+        },
+        "seed": 268766545,
+        "domain": "t>0",
+        "curve_domain": "t>0",
+        "derivative_domain": {
+          "within_curve_domain": "t>0",
+          "condition": "x'(t) and y'(t) exist and x'(t) != 0",
+          "excluded_parameters": []
+        },
+        "source_ids": [],
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "recipes": [
+          "correct"
+        ],
+        "mathematical_fingerprint": "2acdd2837ecd8ff99fa41c72334a55e96893b56db3c557bfff756f758f30387b",
+        "content_fingerprint": "d045faabb9340184aad88c1c4f7058521b548d4f7d65224f55f0d7f0f1c386ac",
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        }
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted": "\\frac{(1t^2+8t)(t+1)^2}{1(t+4)^2}",
+        "expected": "accepted",
+        "purpose": "canonical exact answer"
+      },
+      {
+        "field_index": 0,
+        "submitted": "(\\frac{(1t^2+8t)(t+1)^2}{1(t+4)^2})",
+        "expected": "accepted",
+        "purpose": "equivalent grouped exact expression through current learner grader"
+      },
+      {
+        "field_index": 0,
+        "submitted": "(\\frac{(1t^2+8t)(t+1)^2}{1(t+4)^2})+1",
+        "expected": "rejected",
+        "purpose": "incorrect derivative"
+      }
+    ]
+  }
+]
