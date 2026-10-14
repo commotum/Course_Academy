@@ -6,7 +6,7 @@ import numpy as np
 import sympy as sp
 from PIL import Image
 D=pathlib.Path(__file__).parent
-spec=importlib.util.spec_from_file_location('generator',D.with_suffix('.py'));g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
+spec=importlib.util.spec_from_file_location('generator',D.with_suffix('.py'));g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g);g.generate=g.generate_legacy
 s=json.loads((D/'source.json').read_text());sources=s['record'][':knowledge-point/questions'];x=sp.Symbol('x',real=True)
 
 def normalized(text):return re.sub(r'!\[\]\([^)]*\)','![]({asset})',text)

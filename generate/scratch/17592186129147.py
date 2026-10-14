@@ -9,12 +9,18 @@ must differ or the entire instance is rejected. PNGs use the same exact factors.
 """
 from pathlib import Path
 import argparse,hashlib,itertools,json,os,random,re,tempfile,threading,uuid
-import sympy as sp
+# Inventory jobs invoke system Python; reuse the repository dependency environment.
+try:
+ import sympy as sp
+except ImportError:
+ import sys
+ runtime=Path(__file__).resolve().parents[2]/'.venv/bin/python'
+ os.execv(str(runtime),[str(runtime),__file__,*sys.argv[1:]])
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-ROOT=Path(__file__).with_suffix(''); VERSION='factored-to-graph-v2'
+ROOT=Path(__file__).with_suffix(''); VERSION='factored-to-graph-v3'
 WRAPPER=json.loads((ROOT/'source.json').read_text()); RECORD=WRAPPER['record']
 X=sp.Symbol('x',real=True); ROMANS=['I','II','III','IV']; LOCK=threading.Lock()
 SOURCES={q[':question/math-academy-id']:q for q in RECORD[':knowledge-point/questions']}
@@ -113,7 +119,8 @@ def render_plots(t,p,output_dir=None):
     visible=[i for i in inds if abs(values[i])<=Ymax*.9]
     if visible:
      i=visible[0];j=min(i+6,len(grid)-1) if left else max(i-6,0)
-     ax.annotate('',(grid[i],values[i]),(grid[j],values[j]),arrowprops={'arrowstyle':'->','color':'red','lw':1.5})
+     arrow=ax.annotate('',(grid[i],values[i]),(grid[j],values[j]),arrowprops={'arrowstyle':'->','color':'red','lw':1.5})
+     arrow.arrow_patch.set_clip_path(ax.patch)
    # Reserve a separate row of native polynomial root zooms. These use
    # actual f(x), true horizontal axes, and explicitly independent y scales.
    box=ax.get_position();ax.set_position([box.x0,box.y0+box.height*.30,box.width,box.height*.70])

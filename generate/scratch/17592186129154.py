@@ -181,7 +181,7 @@ def _render_plots(p,marked_intercept=False):
  finally:pathlib.Path(tmp).unlink(missing_ok=True)
  return str(png.resolve())
 
-def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+def generate_legacy(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  rng=random.Random(seed)
  if level not in ['easy','moderate','hard']:raise ValueError('Unknown difficulty')
  candidates=[k for k,t in RECIPES.items() if t['level']==level]
@@ -239,6 +239,48 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  task={'roots':p['roots'],'categories':[category(m) for m in p['multiplicities']], 'leading_sign':int(sp.sign(sp.Rational(p['coefficient']))),'claims':claims}
  return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,
  'generation':{'version':VERSION,'template':name,'profile':('source:' if raw else 'repaired:')+name,'seed':seed,'parameters':p,'claims':claims,'truth':truth,'mathematical_fingerprint':digest(task),'source_id':t.get('source_id'),'basis':1356,'database':'math','lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1','authored_level':level=='hard' or t['unrated'],'bank_origin':'authored hard family' if level=='hard' else 'observed complete subset bank' if t['bank'] else 'absent raw source' if raw else 'authored missing-field repair','authored_solution':not raw and level!='hard' and t['solution_mask'] is None,'source_presence_preserved':raw,'plot':asset,'plot_representative_not_recovered_formula':True,'python_renderer':matplotlib.__version__}}
+
+CURRENT_RECIPES=json.loads((D/'current-recipes.json').read_text())
+CURRENT_VERSION='graph-statements-checkbox-2'
+GENERATOR_UUID=str(uuid.uuid5(NAMESPACE,'question-generator'))
+SUPPORTED_LEVELS=('easy','moderate','hard')
+
+def mathematical_fingerprint(p,claims):
+ concrete=[]
+ for claim in claims:
+  if claim[0] in ('value','positive','limit'):concrete.append(claim)
+  else:concrete.append([claim[0].removesuffix('_pair'),sorted(p['roots'][i] for i in claim[1:])])
+ return digest({'roots':p['roots'],'categories':[category(m) for m in p['multiplicities']],
+  'leading_sign':int(sp.sign(sp.Rational(p['coefficient']))),'claims':sorted(concrete,key=dump)})
+
+def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+ if field_type not in (None,'checkbox',':answer-field.type/checkbox'):raise ValueError('Current source contract is three checkbox fields')
+ raw=bool(profile and profile.startswith('source:'))
+ if profile and ':' in profile:
+  name=profile.split(':',1)[1]
+  if template and template!=name:raise ValueError('Conflicting template/profile')
+  template=name
+ legacy=generate_legacy(level,seed,template=template,parameters=parameters,profile='repaired:'+template if template else None)
+ tname=legacy['generation']['template'];p=legacy['generation']['parameters'];claims=legacy['generation']['claims'];truth=legacy['generation']['truth']
+ asset=legacy['generation']['plot']
+ if tname in CURRENT_RECIPES:
+  t=RECIPES[tname];current=CURRENT_RECIPES[tname]
+  if raw and p=={k:t[k] for k in ('roots','multiplicities','coefficient')}:asset=str((pathlib.Path('/media/jake/SSD/EDB/math')/current['asset']).resolve())
+  prompt=fill(current['prompt_mask'],p,asset);solution=fill(current['solution_mask'],p,asset)
+ else:
+  if raw:raise ValueError('Authored hard has no source profile')
+  prompt=f'![]({asset})\n\nThe graph of a polynomial $p(x)$ is shown above. Which of the following statements are true?\n\nSelect all that apply.\n\n'+'\n'.join('- **'+r+'.** '+statement(c,p) for r,c in zip(ROMAN,claims))
+  solution=legacy['question'][':question/worked-solution']
+ fp=mathematical_fingerprint(p,claims)
+ ident=uid({'version':CURRENT_VERSION,'task':fp,'prompt':prompt.replace(asset,'{asset}'),'solution':solution,'field_contract':'checkbox I II III'})
+ fields=[]
+ for key,correct in zip(ROMAN,truth):
+  fid=uid([ident,key]);answers=[{':answer/id':uid([fid,value]),':answer/type':':answer.type/text',':answer/value':value} for value in ('false','true')]
+  fields.append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/checkbox',':answer-field/choices':answers,':answer-field/correct':[':answer/id',uid([fid,'true' if correct else 'false'])]})
+ q={':question/id':ident,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':fields}
+ if not raw or not RECIPES[tname]['unrated']:q[':question/difficulty']=':question.difficulty/'+level
+ legacy['question']=q;legacy['generation'].update(version=CURRENT_VERSION,profile=('source:' if raw else 'current:')+tname,mathematical_fingerprint=fp,plot=asset,source_basis=2257,bank_origin='current field-owned boolean banks',source_presence_preserved=raw)
+ return legacy
 
 def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
 def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)
