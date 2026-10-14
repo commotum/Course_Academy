@@ -17,7 +17,7 @@ def parts(q):
  elif 'is the circle' in text:
   value=re.search(r'circle \$x\^2\+y\^2=(.*?)\$',text)[1];inner,outer,lo,hi=s.Integer(0),s.sqrt(math(value.rstrip(','))),0,2*s.pi
  else:
-  path=Path(re.findall(r'!\[\]\(([^)]+)\)',text)[0]);side=json.loads(path.with_suffix('.json').read_text());assert side['shaded'] is False and side['renderer_revision']==2;inner,outer,lo,hi=s.sympify(side['inner']),s.sqrt(s.sympify(side['s'])),s.pi*s.sympify(side['lo']),s.pi*s.sympify(side['hi']);C['geometry_records']+=1
+  path=Path(re.findall(r'!\[\]\(([^)]+)\)',text)[0]);side=json.loads(path.with_suffix('.json').read_text());assert side['shaded'] is False and side['renderer_revision']==3;inner,outer,lo,hi=s.sympify(side['inner']),s.sqrt(s.sympify(side['s'])),s.pi*s.sympify(side['lo']),s.pi*s.sympify(side['hi']);C['geometry_records']+=1
  assert outer>inner>=0 and hi>lo
  return P,Q,(s.sympify(inner),s.sympify(outer),s.sympify(lo),s.sympify(hi))
 def delta(sol):
@@ -47,8 +47,11 @@ def check(rec):
     assert eq(low,a) and eq(high,b);C['radial_nodes']+=1
    else:assert var==theta and eq(low,l) and eq(high,h);C['angular_nodes']+=1
   for prim,var,low,high in prims:
-   if var==r:assert eq(low,a) and eq(high,b);C['radial_primitives']+=1
-   else:assert var==theta and eq(low,l) and eq(high,h);C['angular_primitives']+=1
+   if var==r:
+    inside_coeff=s.expand(curl).coeff(x,2) if rec['generation']['template']=='q-126756' else s.Integer(1)
+    assert eq(low,a) and eq(high,b) and eq(s.diff(prim,r),inside_coeff*r**3);C['radial_primitives']+=1
+   else:
+    assert var==theta and eq(low,l) and eq(high,h) and eq(s.diff(prim,theta),s.cos(2*theta) if rec['generation']['template']=='q-126747' else s.Integer(1));C['angular_primitives']+=1
   # Independent endpoint components: radial row survives even if angular symmetry
   # could erase an error; derive the scale from actual displayed radial integrand.
   if r'\left(' in raw and r'\int' in raw and r'\left[' not in raw and '\\cos' not in raw:
@@ -68,7 +71,8 @@ def check(rec):
   elif op=='omit_polar_jacobian':wanted=expected[2]
   elif op=='omit_radial_primitive_denominator':wanted=4*value
   elif op=='omit_one_cross_partial':wanted=expected[4]
-  elif op=='omit_double_angle_primitive_denominator':wanted=2*value
+  elif op in ('omit_double_angle_primitive_denominator','omit_angular_chain_half'):wanted=2*value
+  elif op=='use_squares_sum_identity':wanted=s.simplify(s.integrate(s.integrate((qx+py).subs({x:r*s.cos(theta),y:r*s.sin(theta)},simultaneous=True)*r,(r,a,b)),(theta,l,h)))
   else:raise AssertionError(('Unknown full bank operation',op))
   assert eq(displayed,wanted),(op,displayed,wanted);assert sum(eq(z,wanted) for z in vs)==1
  C['records']+=1;C['choices']+=5;C['banks']+=1

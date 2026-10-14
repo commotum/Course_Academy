@@ -9,7 +9,7 @@ base=load(R/'qa-parametric-scalar-line.py','scalarbase');p=base.p;x,y=p.p.x,p.p.
 C={k:0 for k in ('records','cross_partials','cartesian_curl_rows','polar_rows','complete_choices','whole_banks','circle_equations','plot_sidecars','raw_prompts','raw_solutions','raw_choices','literal_raw_choices','raw_banks','raw_designations','raw_missing_designations','raw_missing_ratings')}
 def scalar(raw):
  raw=raw.replace('θ',r'\theta').replace(r'\theta','v');raw=re.sub(r'\\[A-Za-z]+|r',lambda m:'u' if m[0]=='r' else m[0],raw);return base.scalar(raw)
-def equal(a,b):return base.equal(a,b)
+def equal(a,b):return base.equal(s.sympify(a),s.sympify(b))
 def prompt(q):
  txt=q[':question/problem'];bs=p.blocks(txt);vec=re.search(r'F\(x,\s*y\)\s*=\s*⟨(.*?)⟩',txt)
  if vec:P,Q=[scalar(v) for v in vec[1].replace(r'\,','').split(',')]

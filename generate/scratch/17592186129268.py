@@ -10,7 +10,7 @@ expanded squares, Pythagorean grouping, reduction, factorization, radial/angular
 bounds, full integrand substitution, grouping (radial functions), final integral.
 """
 from __future__ import annotations
-import argparse,copy,hashlib,json,math,os,random,re,sys,tempfile,uuid
+import argparse,copy,hashlib,json,math,os,random,re,sys,tempfile,uuid,threading
 from pathlib import Path
 from functools import lru_cache
 import sympy as sp
@@ -90,6 +90,7 @@ def eligible(opts):
 # components known from the captured family are masked; no short x/y replacement.
 def substitute(s,t,p):
  original=TEMPLATES[t][2];a0=original['a'];a=p['a']; replacements={}
+ if t=='upper_square':s=s.replace(r'\le 1,',r'\le @@aSquared@@,')
  # Protect fixed theta ranges, exponent forms and function constants before radius
  # components: numeric aliases otherwise conflate a=3 with 3*pi/2 or r^3.
  protected={}
@@ -137,13 +138,16 @@ def raw_question(t,p):
 
 # Thread-safe rendering: each call owns its figure, and writes unique files then
 # atomic rename. Sidecar+PNG both required. No active cache deletion.
+PLOT_LOCK=threading.RLock()
 def projection(t,p):
+ with PLOT_LOCK:return _projection(t,p)
+def _projection(t,p):
  os.environ.setdefault('MPLCONFIGDIR',str(EVIDENCE/'matplotlib-cache'))
  import matplotlib;matplotlib.use('Agg')
  from matplotlib.figure import Figure
  from matplotlib.backends.backend_agg import FigureCanvasAgg
  a,b,R,*rest=model(t,p);cx,cy=model(t,p)[9:11]
- key=digest({'a':p['a'],'center':[cx,cy],'angles':[str(a),str(b)],'matplotlib':matplotlib.__version__})
+ key=digest({'a':p['a'],'center':[cx,cy],'angles':[str(a),str(b)],'matplotlib':matplotlib.__version__,'style':2})
  dest=EVIDENCE/'images'/('projection-'+key+'.png');side=dest.with_suffix('.json')
  if dest.exists() and side.exists():return str(dest)
  dest.parent.mkdir(parents=True,exist_ok=True)
@@ -151,11 +155,14 @@ def projection(t,p):
  A=p['a'];fig=Figure(figsize=(4.5,3.8));FigureCanvasAgg(fig);ax=fig.add_subplot();ax.set_aspect('equal')
  ax.set_xlim(min(0,cx-A)-.6*A,max(0,cx+A)+.6*A);ax.set_ylim(min(0,cy-A)-.6*A,max(0,cy+A)+.6*A)
  ax.fill(np.r_[0,xx,0],np.r_[0,yy,0],fc='#deebf4',ec='#277dbe',lw=1.5)
- ax.axhline(0,color='black',lw=.8);ax.axvline(0,color='black',lw=.8)
+ xmin,xmax=ax.get_xlim();ymin,ymax=ax.get_ylim()
+ ax.annotate('',xy=(xmax,0),xytext=(xmin,0),arrowprops={'arrowstyle':'->','color':'black','lw':.9})
+ ax.annotate('',xy=(0,ymax),xytext=(0,ymin),arrowprops={'arrowstyle':'->','color':'black','lw':.9})
+ for spine in ax.spines.values():spine.set_visible(False)
  ax.set_xticks(sorted(set([0,cx,cx-A,cx+A])));ax.set_yticks(sorted(set([0,cy,cy-A,cy+A])))
  ax.grid(alpha=.2);ax.set_xlabel('$x$');ax.set_ylabel('$y$',rotation=0)
  circle=(x-cx)**2+(y-cy)**2
- ax.set_title('$'+tex(circle)+'='+str(A*A)+'$',fontsize=11)
+ ax.set_title('$'+tex(circle)+'='+str(A*A)+'$',fontsize=11,pad=18)
  fd,tmp=tempfile.mkstemp(prefix='.render-',suffix='.png',dir=dest.parent);os.close(fd)
  try:fig.savefig(tmp,dpi=130,bbox_inches='tight');os.replace(tmp,dest)
  finally:
@@ -174,7 +181,9 @@ def normal_question(t,p,options):
  # Preserve shared source prose and the exact operative algebra order.
  opener='We will use the change of variables formula in the form\n\n$$\n'+r'{∭}_{R}f(x,y,z)\,dV={∭}_{Δ}\,f(r\operatorname{cos}⁡\theta ,r\operatorname{sin}⁡\theta ,z)\,r\,dz\,dr\,d\theta .'+'\n$$\n\nIf $(r,\\theta ,z)$ are the cylindrical polar coordinates of a point, then its Cartesian coordinates $(x,y,z)$ can be found by using the formulas\n\n$$\n'+r'x=r\operatorname{cos}⁡\theta ,\,y=r\operatorname{sin}⁡\theta ,\,z=z.'+'\n$$\n\nFirst, let\'s sketch the projection of $R$ onto the $xy$-plane:\n\n![]('+projection(t,p)+')\n\n'
  word='one-half of a right vertical cylinder' if condition else 'a right vertical cylinder'
- sol=opener+'The region $R$ is '+word+' of radius $'+str(A)+'$ whose axis passes through the point $('+str(cx)+','+str(cy)+')$ in the $xy$-plane, and is\n\n- bounded below by $z='+tex(L)+'='+tex(l)+',$ and\n\n- bounded above by $z='+tex(H)+'='+tex(h)+'.$\n\nWith that in mind, let\'s '+('now write the ' if condition else 'write the equation ')+eq+'$ in polar coordinates:\n\n'
+ lowertext=tex(L)+('='+tex(l) if sp.simplify(L-l)!=0 else '')
+ uppertext=tex(H)+('='+tex(h) if sp.simplify(H-h)!=0 else '')
+ sol=opener+'The region $R$ is '+word+' of radius $'+str(A)+'$ whose axis passes through the point $('+str(cx)+','+str(cy)+')$ in the $xy$-plane, and is\n\n- bounded below by $z='+lowertext+',$ and\n\n- bounded above by $z='+uppertext+'.$\n\nWith that in mind, let\'s '+('now write the ' if condition else 'write the equation ')+eq+'$ in polar coordinates:\n\n'
  sol=sol.replace('write the '+eq+'$', 'write the $'+eq+'$').replace('equation '+eq+'$', 'equation $'+eq+'$')
  c=r'\operatorname{cos}⁡\theta';s=r'\operatorname{sin}⁡\theta';fun=c if cx else s
  signed=('+' if shift<0 else '-')+str(A)
@@ -189,7 +198,7 @@ def normal_question(t,p,options):
  if t in ['lower_xy','left_xy_sphere']:
   coeff='2' if t=='left_xy_sphere' else ''
   fs=coeff+'(r'+c+')(r'+s+')'
- elif t=='upper_square':fs='(r'+c+r')^{2}+(r'+s+r')^{2}'
+ elif t=='upper_square':fs='((r'+c+r')^{2}+(r'+s+r')^{2})'
  elif t=='left_inverse':fs=r'\frac{1}{\sqrt{(r'+c+r')^{2}+(r'+s+r')^{2}+'+str(p['C'])+'}}'
  elif t=='right_radical':fs=r'\sqrt{(r'+c+r')^{2}+(r'+s+r')^{2}+'+str(p['C'])+'}'
  else:fs=tex(Fc)
@@ -247,6 +256,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   template=ts[0]
  t=template or rng.choice([k for k,v in TEMPLATES.items() if v[0]==level])
  if t not in TEMPLATES or TEMPLATES[t][0]!=level:raise ValueError('difficulty family mismatch')
+ if profile is None and t=='right_radical':profile='source:'+TEMPLATES[t][1]
  raw=bool(profile and profile.startswith('observed:'))
  if profile not in [None,'authored:method','source:'+TEMPLATES[t][1],'observed:'+TEMPLATES[t][1]]:raise ValueError('bank profile')
  p=dict(parameters) if parameters is not None else (dict(TEMPLATES[t][2]) if raw else sample(t,rng))
@@ -269,11 +279,17 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   q[':question/answer-fields']=[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',corr]}]
  else:
   identity=digest({'version':VERSION,'level':level,'prompt':q[':question/problem'],'solution':q.get(':question/worked-solution'),'bank':sorted(a[':answer/value'] for f in q[':question/answer-fields'] for a in f[':answer-field/choices'])})
-  for f in q[':question/answer-fields']:rng.shuffle(f[':answer-field/choices'])
+  for fi,f in enumerate(q[':question/answer-fields']):
+   previous=f.get(':answer-field/correct',[None,None])[1];fid=uid(identity+'/field/'+str(fi));f[':answer-field/id']=fid
+   for a in f[':answer-field/choices']:
+    old=a[':answer/id'];a[':answer/id']=uid(fid+'/'+a[':answer/value'])
+    if old==previous:f[':answer-field/correct']=[':answer/id',a[':answer/id']]
+   rng.shuffle(f[':answer-field/choices'])
  q[':question/id']=uid(identity)
  # Canonical task excludes bank/profile/layout and common canceled vertical offset.
  taskp=dict(p)
  if t=='upper_square':taskp={'a':p['a'],'height':p['H']-p['L']}
+ if t=='left_inverse':taskp={'a':p['a'],'C':p['C'],'height':p['H']-p['L']}
  return {'knowledge_point':{'db_id':KP_ID,'id':SOURCE[':knowledge-point/id'],'title':SOURCE[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'seed':seed,'level':level,'template':t,'profile':profile or 'authored:method','parameters':p,'source_id':TEMPLATES[t][1],'source':{k:CAPTURE[k] for k in ['database','basis','lineage']},'evidence_only':raw,'eligible_for_learning':not raw,'mathematical_fingerprint':digest({'template':t,'parameters':taskp}),'content_fingerprint':identity,'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__,'numpy':np.__version__}}}
 
 def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)

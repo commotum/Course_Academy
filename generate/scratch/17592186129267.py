@@ -77,11 +77,33 @@ def banks(t,p):
  # hard bank: forgotten Jacobian, squared radial upper, lower x->y, omitted H.
  return [c,alter(f=f/r),alter(R=S),alter(l=r*sp.sin(theta)),alter(h=h-p['H'])],0
 
+def angular_integral(expr,a,b):
+ """Exact quadrant moments of the independently constructed inner primitive.
+
+ This avoids repeated general-purpose trigonometric integration without changing
+ any displayed stage. gamma half-integer values reduce exactly to rationals/pi.
+ """
+ U,V=sp.symbols('sin_slot cos_slot')
+ expanded=sp.expand(sp.expand_trig(expr)).subs({sp.sin(theta):U,sp.cos(theta):V})
+ poly=sp.Poly(expanded,U,V)
+ out=sp.Integer(0)
+ for (n,m),coefficient in poly.terms():
+  B=sp.gamma(sp.Rational(n+1,2))*sp.gamma(sp.Rational(m+1,2))/sp.gamma(sp.Rational(n+m+2,2))
+  if (a,b)==(0,2*sp.pi):moment=0 if n%2 or m%2 else 2*B
+  elif (a,b)==(0,sp.pi):moment=0 if m%2 else B
+  elif (a,b)==(sp.pi/2,3*sp.pi/2):moment=0 if n%2 else (-1)**m*B
+  elif (a,b)==(-sp.pi/2,sp.pi/2):moment=0 if n%2 else B
+  elif (a,b)==(0,sp.pi/2):moment=B/2
+  elif (a,b)==(sp.pi/2,sp.pi):moment=(-1)**m*B/2
+  else:return sp.integrate(expr,(theta,a,b))
+  out+=coefficient*moment
+ return sp.expand(out)
+
 @lru_cache(maxsize=8192)
 def value(parts,radial_lower=0):
  a,b,R,l,h,f=parts
  g=sp.integrate(f,(z,l,h))
- th=sp.integrate(g,(theta,a,b))
+ th=angular_integral(g,a,b)
  # Exact inner integrations; remaining numerical quadrature is only bank eligibility,
  # not an answer. Source extraction records exact unevaluated whole integrals too.
  if not th.has(sp.Integral):
@@ -273,9 +295,18 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  m=model(t,p)
  fingerprint=digest({'criterion':'complete cylindrical integral setup','integrand':str(m[6]),'bounds':[str(v) for v in m[:5]],'level':level})
  return {'knowledge_point':{'db_id':KP_ID,'id':SOURCE[':knowledge-point/id'],'title':SOURCE[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'seed':seed,'template':t,'profile':profile,'parameters':p,'source_id':sid,'basis':CAPTURE['basis'],'database':CAPTURE['database'],'lineage':CAPTURE['lineage'],'identity':identity,'mathematical_fingerprint':fingerprint,'evidence_only':raw,'eligible_for_learning':not raw,'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':package_version('matplotlib')},'authored_level':t in ['half_xz','quarter_zdifference']}}
-def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
-def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)
-def generate_hard(seed=0,**kw):return generate('hard',seed,**kw)
+# Easy entrypoint: full-disk bounds; standard radial identity or z-only function.
+def generate_easy(seed=0,**kw):
+ """Observed easy families; complete source banks are normal defaults."""
+ return generate('easy',seed,**kw)
+# Moderate entrypoint: sector bookkeeping / difference-square substitution.
+def generate_moderate(seed=0,**kw):
+ """Three observed moderate families plus authored placement of unrated xz."""
+ return generate('moderate',seed,**kw)
+# Hard entrypoint: combined quadrant, two nonconstant heights, z-weighted identity.
+def generate_hard(seed=0,**kw):
+ """Missing-level authored extension, never integral evaluation or shifted circle."""
+ return generate('hard',seed,**kw)
 def markdown(rec):
  q=rec['question'];text=q[':question/problem']+'\n\n'
  for f in q.get(':question/answer-fields',[]):

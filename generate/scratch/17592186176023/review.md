@@ -92,7 +92,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/401ba9a619b2ce6f7fb6411ce762cc7d2a1698e42cd21e9b8dc024c13fc0c1ed.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/95b347882765352377ac71e985c8c96cf10411cedd7ea3c3d3922afac3ceb594.png)
 
 Now, since
 
@@ -164,7 +164,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/465106ed423d0ab62e1002dc418d6722f705ba6d8f6a491c77c940ddade38392.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/6dbf71fec3d4d1f489cebd6d8ab224425d3cd4479fb355236f579b1db5392662.png)
 
 Now, since
 
@@ -236,7 +236,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/401ba9a619b2ce6f7fb6411ce762cc7d2a1698e42cd21e9b8dc024c13fc0c1ed.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/95b347882765352377ac71e985c8c96cf10411cedd7ea3c3d3922afac3ceb594.png)
 
 Now, since
 
@@ -308,7 +308,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/465106ed423d0ab62e1002dc418d6722f705ba6d8f6a491c77c940ddade38392.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/6dbf71fec3d4d1f489cebd6d8ab224425d3cd4479fb355236f579b1db5392662.png)
 
 Now, since
 
@@ -360,7 +360,7 @@ Original worked solution absent; no original difficulty or correct designation.
 
 ### Generated :question.difficulty/hard; authored method bank
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/a8dcbbcdb26796e4dd826fd8b10658e2f37c1920d096ba3978e046fe2060ea03.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/4fce3c4d86780eedc114f529dd302e94475d856745c4bbb479ee5cbb12b0d056.png)
 
 Evaluate $\oint_C(\sqrt{x+1}-4x^2y)\,dx+(e^y+4xy^2)\,dy,$ where the path $C$ is shown above.
 
@@ -386,7 +386,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/f1fbf6afb03f43d2b4e15af6731f2dfeb3928dca41e40aabfadbacd75252b844.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/79190b83bb26b855845a9df56083872b9efe1a99c8be476c4b015d44be35e18c.png)
 
 Now, since
 
@@ -428,7 +428,7 @@ $$
 
 ### Generated :question.difficulty/hard; authored method bank
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/2231f0384fa357a184e34c3ee7613100725381814f36f74ca02a72e1e48ab366.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/d6eee734a12b8fd4ce75badd1ac235c818098b7257063679172bf23286499d97.png)
 
 Evaluate $\oint_C(\sqrt{x+1}-5x^2y)\,dx+(e^y+5xy^2)\,dy,$ where the path $C$ is shown above.
 
@@ -454,7 +454,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/825e72ad80ca1d0d5d037d40ea741e5157fc4e249f9f681ab69dafdaf79e866a.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/cb56b829d2c3e042e45acc5e86814e3062374171788e11496d6cc9970a26e47e.png)
 
 Now, since
 
@@ -496,7 +496,7 @@ $$
 
 ### Generated :question.difficulty/hard; authored method bank
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/8be2361b5bdd978d2223a9dbf2f56bf8ebf62955c8928c0ac11c85cb2bebd80e.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/b14c1a6b82ba3f1856e9c76ca11d279bde92fe090c2e51d76aacac30fd7de927.png)
 
 Evaluate $\oint_C(\sqrt{x+1}-5x^2y)\,dx+(e^y+5xy^2)\,dy,$ where the path $C$ is shown above.
 
@@ -522,7 +522,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/59b2374002adcef6430c4add960f31d5ae97b27afb039cadb79018651fe44d09.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/96d5a78383242eed8f3a4fec6af9c389063fcdf0b1c4fa4de5b92eb52a3c4d71.png)
 
 Now, since
 
@@ -564,7 +564,7 @@ $$
 
 ### Generated :question.difficulty/hard; authored method bank
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/2231f0384fa357a184e34c3ee7613100725381814f36f74ca02a72e1e48ab366.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/d6eee734a12b8fd4ce75badd1ac235c818098b7257063679172bf23286499d97.png)
 
 Evaluate $\oint_C(\sqrt{x+1}-5x^2y)\,dx+(e^y+5xy^2)\,dy,$ where the path $C$ is shown above.
 
@@ -590,7 +590,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/825e72ad80ca1d0d5d037d40ea741e5157fc4e249f9f681ab69dafdaf79e866a.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/cb56b829d2c3e042e45acc5e86814e3062374171788e11496d6cc9970a26e47e.png)
 
 Now, since
 
@@ -720,7 +720,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/d22a474ff03ae7ec8a9f8bc41b00e85829d6c01adef6305bdc384b758cbdb1e9.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/0a738176367aa859654ca169ac13cf5cb713ffd400f98dbb7b59ea6a095d9af5.png)
 
 Now, since
 
@@ -792,7 +792,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/465106ed423d0ab62e1002dc418d6722f705ba6d8f6a491c77c940ddade38392.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/6dbf71fec3d4d1f489cebd6d8ab224425d3cd4479fb355236f579b1db5392662.png)
 
 Now, since
 
@@ -864,7 +864,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/401ba9a619b2ce6f7fb6411ce762cc7d2a1698e42cd21e9b8dc024c13fc0c1ed.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/95b347882765352377ac71e985c8c96cf10411cedd7ea3c3d3922afac3ceb594.png)
 
 Now, since
 
@@ -936,7 +936,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/465106ed423d0ab62e1002dc418d6722f705ba6d8f6a491c77c940ddade38392.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/6dbf71fec3d4d1f489cebd6d8ab224425d3cd4479fb355236f579b1db5392662.png)
 
 Now, since
 
@@ -1066,7 +1066,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/cc2ffc8f7e430d156cb6160d152943f7bff4a2b20511c1359a4a808ec05ab868.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/efdff6a65c44890a566ac4b9963e7e26a3e85eb38607bf746bfe305093d3a6c0.png)
 
 Now, since
 
@@ -1138,7 +1138,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/a3f3bb483d00fe18955b2af11db3d7d84ef3be1b95e651fc5bf4162ee18c44db.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/c803dd5de2de64486bb24816426a08b47face5ddc1c156a1dd6068471cc068ce.png)
 
 Now, since
 
@@ -1210,7 +1210,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/a3f3bb483d00fe18955b2af11db3d7d84ef3be1b95e651fc5bf4162ee18c44db.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/c803dd5de2de64486bb24816426a08b47face5ddc1c156a1dd6068471cc068ce.png)
 
 Now, since
 
@@ -1282,7 +1282,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/a3f3bb483d00fe18955b2af11db3d7d84ef3be1b95e651fc5bf4162ee18c44db.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/c803dd5de2de64486bb24816426a08b47face5ddc1c156a1dd6068471cc068ce.png)
 
 Now, since
 
@@ -1378,7 +1378,7 @@ $$
 
 ### Generated :question.difficulty/hard; authored method bank
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/2f073176a1c14ed9a61988196c19cbfd99de9aaad1adb55dc9fc96bb6f3037fd.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/f42c2e7a1f3ffb39ba9873ce30fbc024f8d4b53cd8ff7f6db00a09c6af29667e.png)
 
 Evaluate $\oint_C(3^x+x^2y)\,dx+(2^y+xy^2)\,dy,$ where the path $C$ is shown above.
 
@@ -1404,7 +1404,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/539fd7c12e2771758acf9ed431a12eb7f8eccb8dff873623d2ed2c2d6ece8e9f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/d98a5c96ddff63e16c7af8bba9457e1f29089fe235ad179d95800e3b878fb3a9.png)
 
 Now, since
 
@@ -1446,7 +1446,7 @@ $$
 
 ### Generated :question.difficulty/hard; authored method bank
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/5a5f3bb57356cd161cc2a896d1a0c629193b92763780d08d218f33d6aeb3185b.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/1747f470795d617561561e7f2b96ef40a4ace9edb2095377edaea055516de890.png)
 
 Evaluate $\oint_C(3^x+5x^2y)\,dx+(2^y+5xy^2)\,dy,$ where the path $C$ is shown above.
 
@@ -1472,7 +1472,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/3950aa69cf731adfd1a905f8e512481cf4b3836122da278b83963f33d366a534.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/d34d9f25c5307cf8aa107a6ab334a1698d3f3664f004d8de3cb5597e1882585f.png)
 
 Now, since
 
@@ -1514,7 +1514,7 @@ $$
 
 ### Generated :question.difficulty/hard; authored method bank
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/b3c2049404ca26d270308d10339674d94c5db19a24c37bf3464b8c620cda3887.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/2aeef50b717012e2c125fb831804408bbdfbf171bf0b5df219a2f210fa097f8e.png)
 
 Evaluate $\oint_C(3^x+5x^2y)\,dx+(2^y+5xy^2)\,dy,$ where the path $C$ is shown above.
 
@@ -1540,7 +1540,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/96fdfbc6b3d4eca2857d471cd273df88ce25149a3bc5ca6755ae9059cf71561e.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/2e966d3490e14a0a329a644bd1efde6d29b09dcb2f7b1871cab14ffa3b90b96e.png)
 
 Now, since
 
@@ -1582,7 +1582,7 @@ $$
 
 ### Generated :question.difficulty/hard; authored method bank
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/5a5f3bb57356cd161cc2a896d1a0c629193b92763780d08d218f33d6aeb3185b.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/1747f470795d617561561e7f2b96ef40a4ace9edb2095377edaea055516de890.png)
 
 Evaluate $\oint_C(3^x+5x^2y)\,dx+(2^y+5xy^2)\,dy,$ where the path $C$ is shown above.
 
@@ -1608,7 +1608,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/3950aa69cf731adfd1a905f8e512481cf4b3836122da278b83963f33d366a534.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/d34d9f25c5307cf8aa107a6ab334a1698d3f3664f004d8de3cb5597e1882585f.png)
 
 Now, since
 
@@ -1738,7 +1738,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/a3f3bb483d00fe18955b2af11db3d7d84ef3be1b95e651fc5bf4162ee18c44db.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/c803dd5de2de64486bb24816426a08b47face5ddc1c156a1dd6068471cc068ce.png)
 
 Now, since
 
@@ -1810,7 +1810,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/465106ed423d0ab62e1002dc418d6722f705ba6d8f6a491c77c940ddade38392.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/6dbf71fec3d4d1f489cebd6d8ab224425d3cd4479fb355236f579b1db5392662.png)
 
 Now, since
 
@@ -1882,7 +1882,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/401ba9a619b2ce6f7fb6411ce762cc7d2a1698e42cd21e9b8dc024c13fc0c1ed.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/95b347882765352377ac71e985c8c96cf10411cedd7ea3c3d3922afac3ceb594.png)
 
 Now, since
 
@@ -1954,7 +1954,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/465106ed423d0ab62e1002dc418d6722f705ba6d8f6a491c77c940ddade38392.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/6dbf71fec3d4d1f489cebd6d8ab224425d3cd4479fb355236f579b1db5392662.png)
 
 Now, since
 
@@ -2052,7 +2052,7 @@ $$
 
 ### Generated :question.difficulty/hard; authored method bank
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/2fbb7820ab08e84742355997dab0dc6539e1f1bd85ff115eec465b700eb8c85e.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/3c109ac0ba8fd93a4208ac13b9fecfa1ee15ce4d1d20a1840b5ac69f962885bd.png)
 
 Evaluate $\oint_C(e^x-2x^2y)\,dx+(e^y+2xy^2)\,dy,$ where the path $C$ is shown above.
 
@@ -2078,7 +2078,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/454c47ea39d6c3157047fa7d1160bb147434f0ebf7f596bed08e519b65018718.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/b40fe8900016a3cc674ef504614aa10986a23cddf0cee94d2183b059037971a4.png)
 
 Now, since
 
@@ -2120,7 +2120,7 @@ $$
 
 ### Generated :question.difficulty/hard; authored method bank
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/be73c08d19a12cdf183a98f292d8019835fc04ca332ebe0ccc136ce47fe106d6.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/b9bc3a78e0a9d464048f9606769b9fe52de1d0526e24467473bbcdc5b659e7bd.png)
 
 Evaluate $\oint_C(e^x-5x^2y)\,dx+(e^y+5xy^2)\,dy,$ where the path $C$ is shown above.
 
@@ -2146,7 +2146,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/59d0f0c59efbcc153583d22fcb769eece2262d739aa914fe17acce7f8fd302c8.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/ee9b83b1e98ecce68485aa48e6984e89c61e00f1e0edc133871ca8df9d23d74b.png)
 
 Now, since
 
@@ -2188,7 +2188,7 @@ $$
 
 ### Generated :question.difficulty/hard; authored method bank
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/b5f38431366978d0e9b6ce0e88023ed7da7e41fe2a39bf51e03e3ede713746eb.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/fd97727ddcec1205d2fff0bf7cc1d6153dca43f639e30b98d50df7dd0af26131.png)
 
 Evaluate $\oint_C(e^x-5x^2y)\,dx+(e^y+5xy^2)\,dy,$ where the path $C$ is shown above.
 
@@ -2214,7 +2214,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/797399ab8dcb6440403e34e0c4749f3a1ade76b0207a77b42608af6b3ec7d244.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/2cc6fd5f2de5bfa3e49c4307e381c84af8112028590e1dcd48f3a9ff0d20b4af.png)
 
 Now, since
 
@@ -2256,7 +2256,7 @@ $$
 
 ### Generated :question.difficulty/hard; authored method bank
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/be73c08d19a12cdf183a98f292d8019835fc04ca332ebe0ccc136ce47fe106d6.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/b9bc3a78e0a9d464048f9606769b9fe52de1d0526e24467473bbcdc5b659e7bd.png)
 
 Evaluate $\oint_C(e^x-5x^2y)\,dx+(e^y+5xy^2)\,dy,$ where the path $C$ is shown above.
 
@@ -2282,7 +2282,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/59d0f0c59efbcc153583d22fcb769eece2262d739aa914fe17acce7f8fd302c8.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/ee9b83b1e98ecce68485aa48e6984e89c61e00f1e0edc133871ca8df9d23d74b.png)
 
 Now, since
 
@@ -2378,7 +2378,7 @@ $$
 
 ### Generated :question.difficulty/hard; authored method bank
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/f5493974356d6e071fc68c8f08cd83eca5c8a239e21e760d5300f5b624cfc2b4.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/8a8fc41e2f16267981b9bafcb93cab4942d96bebd56d9b1534fb1a7430f602ae.png)
 
 Evaluate $\oint_C(\sqrt{5+x}-3x^2y)\,dx+(e^{-y^2}+3xy^2)\,dy,$ where the path $C$ is shown above.
 
@@ -2404,7 +2404,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/4d5a8e005faa79dfc933355a57dc779a0debc33e9020c1856f4aa4e7d630eae1.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/e77b677fd2c8f255473266982ba79ca9cfe27e72af2f17e7bb2304c5bf87ac57.png)
 
 Now, since
 
@@ -2446,7 +2446,7 @@ $$
 
 ### Generated :question.difficulty/hard; authored method bank
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/893d3ebb5c16206ac65e35d0165b5d1efc0cf0ffb5c3baf810d8abc8dfca3ac0.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/79c519766e01280e911a12705947808ccad86fbc8ea3fa6fd373a7fcf772f5ae.png)
 
 Evaluate $\oint_C(\sqrt{5+x}-5x^2y)\,dx+(e^{-y^2}+5xy^2)\,dy,$ where the path $C$ is shown above.
 
@@ -2472,7 +2472,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/fe56e2e17632f00bf2c230e58f7e9885c7f400eef86bd03f7b63eaf3d52a0da5.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/b165ab302b80b647a394bbbda221d17a5c80900c1dcadb3a932fae290917bd93.png)
 
 Now, since
 
@@ -2514,7 +2514,7 @@ $$
 
 ### Generated :question.difficulty/hard; authored method bank
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/5df57d8bfcf1968d2b3877e48427fb3223c1928386dafa429d14bb42d4f25564.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/24d5a57dd4699737d76153687ce0fa01247423cd073b6219306cff827b5b49aa.png)
 
 Evaluate $\oint_C(\sqrt{5+x}-5x^2y)\,dx+(e^{-y^2}+5xy^2)\,dy,$ where the path $C$ is shown above.
 
@@ -2540,7 +2540,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/91ccbfa8486c46ba8d4bf6bee17b3a74e960b6d16bf91b9236428d4da429f77a.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/31c31c52b5255802c8ba1b53b57c81b49b01c7695aa09e83c3491c6d75d03ef1.png)
 
 Now, since
 
@@ -2582,7 +2582,7 @@ $$
 
 ### Generated :question.difficulty/hard; authored method bank
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/893d3ebb5c16206ac65e35d0165b5d1efc0cf0ffb5c3baf810d8abc8dfca3ac0.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/79c519766e01280e911a12705947808ccad86fbc8ea3fa6fd373a7fcf772f5ae.png)
 
 Evaluate $\oint_C(\sqrt{5+x}-5x^2y)\,dx+(e^{-y^2}+5xy^2)\,dy,$ where the path $C$ is shown above.
 
@@ -2608,7 +2608,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/fe56e2e17632f00bf2c230e58f7e9885c7f400eef86bd03f7b63eaf3d52a0da5.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/b165ab302b80b647a394bbbda221d17a5c80900c1dcadb3a932fae290917bd93.png)
 
 Now, since
 
@@ -2738,7 +2738,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/401ba9a619b2ce6f7fb6411ce762cc7d2a1698e42cd21e9b8dc024c13fc0c1ed.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/95b347882765352377ac71e985c8c96cf10411cedd7ea3c3d3922afac3ceb594.png)
 
 Now, since
 
@@ -2810,7 +2810,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/465106ed423d0ab62e1002dc418d6722f705ba6d8f6a491c77c940ddade38392.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/6dbf71fec3d4d1f489cebd6d8ab224425d3cd4479fb355236f579b1db5392662.png)
 
 Now, since
 
@@ -2882,7 +2882,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/401ba9a619b2ce6f7fb6411ce762cc7d2a1698e42cd21e9b8dc024c13fc0c1ed.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/95b347882765352377ac71e985c8c96cf10411cedd7ea3c3d3922afac3ceb594.png)
 
 Now, since
 
@@ -2954,7 +2954,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/465106ed423d0ab62e1002dc418d6722f705ba6d8f6a491c77c940ddade38392.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/6dbf71fec3d4d1f489cebd6d8ab224425d3cd4479fb355236f579b1db5392662.png)
 
 Now, since
 
@@ -3084,7 +3084,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/465106ed423d0ab62e1002dc418d6722f705ba6d8f6a491c77c940ddade38392.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/6dbf71fec3d4d1f489cebd6d8ab224425d3cd4479fb355236f579b1db5392662.png)
 
 Now, since
 
@@ -3156,7 +3156,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/465106ed423d0ab62e1002dc418d6722f705ba6d8f6a491c77c940ddade38392.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/6dbf71fec3d4d1f489cebd6d8ab224425d3cd4479fb355236f579b1db5392662.png)
 
 Now, since
 
@@ -3228,7 +3228,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/401ba9a619b2ce6f7fb6411ce762cc7d2a1698e42cd21e9b8dc024c13fc0c1ed.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/95b347882765352377ac71e985c8c96cf10411cedd7ea3c3d3922afac3ceb594.png)
 
 Now, since
 
@@ -3300,7 +3300,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/465106ed423d0ab62e1002dc418d6722f705ba6d8f6a491c77c940ddade38392.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/6dbf71fec3d4d1f489cebd6d8ab224425d3cd4479fb355236f579b1db5392662.png)
 
 Now, since
 
@@ -3366,7 +3366,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/401ba9a619b2ce6f7fb6411ce762cc7d2a1698e42cd21e9b8dc024c13fc0c1ed.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/95b347882765352377ac71e985c8c96cf10411cedd7ea3c3d3922afac3ceb594.png)
 
 Now, since
 
@@ -3430,7 +3430,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/465106ed423d0ab62e1002dc418d6722f705ba6d8f6a491c77c940ddade38392.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/6dbf71fec3d4d1f489cebd6d8ab224425d3cd4479fb355236f579b1db5392662.png)
 
 Now, since
 
@@ -3494,7 +3494,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/d22a474ff03ae7ec8a9f8bc41b00e85829d6c01adef6305bdc384b758cbdb1e9.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/0a738176367aa859654ca169ac13cf5cb713ffd400f98dbb7b59ea6a095d9af5.png)
 
 Now, since
 
@@ -3558,7 +3558,7 @@ $$
 
 In our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/465106ed423d0ab62e1002dc418d6722f705ba6d8f6a491c77c940ddade38392.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186176023/plots/6dbf71fec3d4d1f489cebd6d8ab224425d3cd4479fb355236f579b1db5392662.png)
 
 Now, since
 

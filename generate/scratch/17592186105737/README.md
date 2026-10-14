@@ -1,0 +1,7 @@
+# Scalar triple product properties draft
+
+Run `.venv/bin/python generate/scratch/17592186105737/validate.py` for full source, displayed-math, structure, workload, identity, mutation and native grading checks. Preview all levels using `.venv/bin/python generate/scratch/17592186105737.py --difficulty all --count 2 --seed 7 --format markdown`.
+
+API: `generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None)` and individual `generate_easy`, `generate_moderate`, `generate_hard` wrappers. All 15 observed source masks are moderate. `profile="observed:q-20058"` (and analogous source IDs) exposes faithful evidence replay through the same API. `source-cases.json` supplies exact original parameters. Evidence profiles are explicitly ineligible; defaults use the `method-derived` complete bank. The authored easy/hard scopes are documented in classification. `review.md`/`review.json` include all 15 generated normal masks plus at least two examples per level.
+
+No plots, database writes, registrations, commits or dependencies were added. Source presence/layout/value fidelity is separate from distractor-intent recovery and the q-20062 nonscalar-bank anomaly. Native checks use the existing in-memory engine binary and preserve native report outcomes. Exact finite domain counts cover the authored easy/hard families; sampled counts for moderate are not claimed as exhaustive.

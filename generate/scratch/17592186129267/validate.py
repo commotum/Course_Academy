@@ -90,6 +90,10 @@ def verify(rec):
 
 def main():
  cases=[];fidelity=[];review=[];native=[];anomalies=[]
+ # Independently verify angular moment helper against direct SymPy integration.
+ for a,b in [(0,2*s.pi),(0,s.pi),(s.pi/2,3*s.pi/2),(-s.pi/2,s.pi/2),(0,s.pi/2),(s.pi/2,s.pi)]:
+  for term in [s.Integer(1),s.sin(g.theta),s.cos(g.theta),s.sin(g.theta)**2,s.cos(g.theta)**2,s.sin(g.theta)*s.cos(g.theta)]:
+   assert s.simplify(g.angular_integral(term,a,b)-s.integrate(term,(g.theta,a,b)))==0
  for t,(lev,sid,p) in g.TEMPLATES.items():
   print('checking',t,flush=True)
   if sid:
@@ -127,6 +131,13 @@ def main():
    for fi,f in enumerate(rec['question'][':question/answer-fields']):
     for a in f[':answer-field/choices']:checks.append({'field_index':fi,'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'owned radio selection'})
    native.append({'label':t+'-'+str(i),'record':rec,'checks':checks})
+ # Changed-parameter evidence replay for every original field/bank, including legacy.
+ for t,(lev,sid,p) in g.TEMPLATES.items():
+  if not sid:continue
+  changed=next(item['record']['generation']['parameters'] for item in review if item['label']=='generated '+t)
+  raw=g.generate(lev,seed=89,template=t,parameters=changed,profile='observed:'+sid)
+  assert raw['generation']['evidence_only'] and not raw['generation']['eligible_for_learning']
+  review.append({'label':'generated raw evidence bank '+sid,'record':raw})
  # Every optional complete authored bank profile, selected before parameters.
  for t,(lev,sid,p) in g.TEMPLATES.items():
   if sid:

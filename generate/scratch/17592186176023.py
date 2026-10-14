@@ -26,7 +26,7 @@ import numpy as np
 BASE=Path(__file__).with_suffix('')
 SOURCE=json.loads((BASE/'source.json').read_text())
 KP=SOURCE['record']; KP_ID=17592186176023
-VERSION='green-polar-evaluation-v2'
+VERSION='green-polar-evaluation-v3'
 X,Y,R,T=sp.symbols('x y r theta',real=True)
 Q={q[':question/math-academy-id']:q for q in KP[':knowledge-point/questions']}
 # Observed family anchors: c is the common derivative magnitude; s is R^2.
@@ -120,7 +120,7 @@ def render_plots(p,shaded):
  import threading
  global _PLOT_LOCK
  if _PLOT_LOCK is None:_PLOT_LOCK=threading.RLock()
- data={k:str(p[k])for k in ['s','inner','lo','hi']};data['shaded']=shaded;data['renderer_revision']=2
+ data={k:str(p[k])for k in ['s','inner','lo','hi']};data['shaded']=shaded;data['renderer_revision']=3
  key=digest(data); d=BASE/'plots';d.mkdir(exist_ok=True); dst=d/(key+'.png'); side=dst.with_suffix('.json')
  with _PLOT_LOCK:
   if dst.exists() and side.exists():return str(dst.resolve())
@@ -150,7 +150,7 @@ def render_plots(p,shaded):
   if b-a<2*np.pi and b not in [np.pi/2,np.pi,3*np.pi/2]:
    tt=np.linspace(a,b,50);rr=ro*.28;ax.plot(rr*np.cos(tt),rr*np.sin(tt),'--',color='#999999',lw=1);mid=(a+b)/2;ax.text(ro*.36*np.cos(mid),ro*.36*np.sin(mid),'$'+tex(sp.pi*(p['hi']-p['lo']))+'$',fontsize=10)
   if shaded:
-   mid=np.pi/4 if b-a>2*np.pi-1e-8 else (a+b)/2;mr=(ri+ro)*.55;ax.text(mr*np.cos(mid),mr*np.sin(mid),'D',color='#6795b2')
+   mid=np.pi/4 if b-a>2*np.pi-1e-8 else (a+b)/2;mr=(ri+ro)/2;ax.text(mr*np.cos(mid),mr*np.sin(mid),'D',color='#6795b2',ha='center',va='center')
    cm=a+(b-a)*.3;ax.text(ro*1.06*np.cos(cm),ro*1.06*np.sin(cm),'C',color='#d89700')
   fd,tmp=tempfile.mkstemp(dir=d,suffix='.png');os.close(fd)
   try:fig.savefig(tmp,bbox_inches='tight',facecolor='white');os.replace(tmp,dst)

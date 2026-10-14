@@ -5,3 +5,5 @@ Run `.venv/bin/python generate/scratch/17592186176023/validate.py` from reposito
 Ten captured practice source masks, all three levels, Matplotlib boundary/region diagrams; source-shaped normal coefficient/radius/eligible-angle variations use authored method banks. Easy is explicitly authored from the tutorial with supplied polar bounds. No EDB registration, writes, commits or generator engine changes.
 
 Raw original-bank fidelity and original omissions are separate from correctness and native grading. q126758 has duplicate equivalent wrong options; q126736 andq126758 have incorrect solution integral components; q125717 lacks designation/solution/difficulty and has a C1 boundary nuisance issue. Normal fixes are documented in template-extraction.md; raw evidence is ineligible for learning. Opaque wrong-operation intentions remain unresolved evidence, with complete normal method-derived banks instead.
+
+Parent visual QA placed D at the centered radial midpoint in version3, including the narrow inner4/outer5 annulus; the old .55*(inner+outer) placement pushed the label outside the outer arc. Renderer revision3 preserves prior assets and regenerates current previews.
