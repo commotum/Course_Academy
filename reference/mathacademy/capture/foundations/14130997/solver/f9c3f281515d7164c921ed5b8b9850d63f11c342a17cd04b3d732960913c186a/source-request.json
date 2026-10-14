@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-80480",
+      "sequence_position": 7,
+      "problem": "Find matrices $P$ and $D$ such that $PD{P}^{-1}=E,$ where $D$ is a diagonal matrix and $E=[\\begin{aligned}7 & 9 \\\\ -6 & -8\\end{aligned}].$",
+      "worked_solution": "We apply the diagonalization algorithm. \n\n**Step 1.** We need to find the eigenvalues of the matrix $E$ using its characteristic equation $det(E-\\lambda I)=0:$\n\n$$\n\\begin{aligned}|\\begin{aligned}7-\\lambda  & 9 \\\\ -6 & -8-\\lambda \\end{aligned}| & =0 \\\\ (7-\\lambda )(-8-\\lambda )-9\\cdot (-6) & =0 \\\\ {\\lambda }^{2}+\\lambda -2 & =0 \\\\ (\\lambda -1)(\\lambda +2) & =0\\end{aligned}\n$$\n\nSo, the eigenvalues of $E$ are ${\\lambda }_{1}=1$ and ${\\lambda }_{2}=-2.$\n\n**Step 2.** Now, we need to find an eigenvector basis of $E.$\n\n- For ${\\lambda }_{1}=1,$ we have\n\n$$\n\\begin{aligned}E-I & =[\\begin{aligned}7 & 9 \\\\ -6 & -8\\end{aligned}]-[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}6 & 9 \\\\ -6 & -9\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ which we reduce to its row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}6 & 9 & 0 \\\\ -6 & -9 & 0\\end{aligned}] & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & ∼[\\begin{aligned}6 & 9 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain ${x}_{1}=-\\frac{3}{2}{x}_{2}.$ Hence, the general solution is\n\n$$\n[\\begin{aligned}-\\frac{3}{2}{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nSetting ${x}_{2}=-2,$ we get the eigenvector ${v}_{1}=[\\begin{aligned}3 \\\\ -2\\end{aligned}].$\n\n- For ${\\lambda }_{2}=-2,$ we have\n\n$$\n\\begin{aligned}E-(-2)I & =[\\begin{aligned}7 & 9 \\\\ -6 & -8\\end{aligned}]+2[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}9 & 9 \\\\ -6 & -6\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ which we reduce to its row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}9 & 9 & 0 \\\\ -6 & -6 & 0\\end{aligned}] & {R}_{2} & ={R}_{2}+(\\frac{2}{3}){R}_{1} \\\\  & ∼[\\begin{aligned}9 & 9 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain ${x}_{1}=-{x}_{2}.$ Hence, the general solution is\n\n$$\n[\\begin{aligned}-{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nSetting ${x}_{2}=1,$ we get the eigenvector ${v}_{2}=[\\begin{aligned}-1 \\\\ 1\\end{aligned}].$\n\n**Step 3.** We construct the diagonal matrix $D$ and the invertible matrix $P$ as follows:\n\n$$\nD=[\\begin{aligned}1 & 0 \\\\ 0 & -2\\end{aligned}],\\,P=[\\begin{aligned}3 & -1 \\\\ -2 & 1\\end{aligned}]\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14130997/observations/history-q-80480-f9e8c5c6dea72a1bd3c4.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14130997",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14130997/observations/history-solution-q-80480-474f468fe8acb5c88a27.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "text",
+              "value": "$D=[\\begin{aligned}-1 & 0 \\\\ 0 & 2\\end{aligned}]$ and $P=[\\begin{aligned}3 & -1 \\\\ -1 & 1\\end{aligned}]$"
+            },
+            {
+              "option": "b",
+              "type": "text",
+              "value": "$D=[\\begin{aligned}1 & 0 \\\\ 0 & 2\\end{aligned}]$ and $P=[\\begin{aligned}3 & -1 \\\\ 2 & 1\\end{aligned}]$"
+            },
+            {
+              "option": "c",
+              "type": "text",
+              "value": "$E$ is not diagonalizable"
+            },
+            {
+              "option": "d",
+              "type": "text",
+              "value": "$D=[\\begin{aligned}1 & 0 \\\\ 0 & -1\\end{aligned}]$ and $P=[\\begin{aligned}1 & -1 \\\\ -2 & 1\\end{aligned}]$"
+            },
+            {
+              "option": "e",
+              "type": "text",
+              "value": "$D=[\\begin{aligned}1 & 0 \\\\ 0 & -2\\end{aligned}]$ and $P=[\\begin{aligned}3 & -1 \\\\ -2 & 1\\end{aligned}]$"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q80480",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "$D=[\\begin{aligned}1 & 0 \\\\ 0 & -2\\end{aligned}]$ and $P=[\\begin{aligned}3 & -1 \\\\ -2 & 1\\end{aligned}]$",
+                "option": "e",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "We apply the diagonalization algorithm. \n\n**Step 1.** We need to find the eigenvalues of the matrix $E$ using its characteristic equation $det(E-\\lambda I)=0:$\n\n$$\n\\begin{aligned}|\\begin{aligned}7-\\lambda  & 9 \\\\ -6 & -8-\\lambda \\end{aligned}| & =0 \\\\ (7-\\lambda )(-8-\\lambda )-9\\cdot (-6) & =0 \\\\ {\\lambda }^{2}+\\lambda -2 & =0 \\\\ (\\lambda -1)(\\lambda +2) & =0\\end{aligned}\n$$\n\nSo, the eigenvalues of $E$ are ${\\lambda }_{1}=1$ and ${\\lambda }_{2}=-2.$\n\n**Step 2.** Now, we need to find an eigenvector basis of $E.$\n\n- For ${\\lambda }_{1}=1,$ we have\n\n$$\n\\begin{aligned}E-I & =[\\begin{aligned}7 & 9 \\\\ -6 & -8\\end{aligned}]-[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}6 & 9 \\\\ -6 & -9\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ which we reduce to its row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}6 & 9 & 0 \\\\ -6 & -9 & 0\\end{aligned}] & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & ∼[\\begin{aligned}6 & 9 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain ${x}_{1}=-\\frac{3}{2}{x}_{2}.$ Hence, the general solution is\n\n$$\n[\\begin{aligned}-\\frac{3}{2}{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nSetting ${x}_{2}=-2,$ we get the eigenvector ${v}_{1}=[\\begin{aligned}3 \\\\ -2\\end{aligned}].$\n\n- For ${\\lambda }_{2}=-2,$ we have\n\n$$\n\\begin{aligned}E-(-2)I & =[\\begin{aligned}7 & 9 \\\\ -6 & -8\\end{aligned}]+2[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}9 & 9 \\\\ -6 & -6\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ which we reduce to its row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}9 & 9 & 0 \\\\ -6 & -6 & 0\\end{aligned}] & {R}_{2} & ={R}_{2}+(\\frac{2}{3}){R}_{1} \\\\  & ∼[\\begin{aligned}9 & 9 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain ${x}_{1}=-{x}_{2}.$ Hence, the general solution is\n\n$$\n[\\begin{aligned}-{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nSetting ${x}_{2}=1,$ we get the eigenvector ${v}_{2}=[\\begin{aligned}-1 \\\\ 1\\end{aligned}].$\n\n**Step 3.** We construct the diagonal matrix $D$ and the invertible matrix $P$ as follows:\n\n$$\nD=[\\begin{aligned}1 & 0 \\\\ 0 & -2\\end{aligned}],\\,P=[\\begin{aligned}3 & -1 \\\\ -2 & 1\\end{aligned}]\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14130997/observations/step-q80480-c1f22518cb3ce8e9e214.html"
+        }
+      }
+    ]
+  }
+}
