@@ -9,7 +9,7 @@ Using the change of variables
 $u = x - y, v = y$,
 calculate the area of the finite region $D$ bounded by the curve $(x - y)^{2} - y = 0$ and the line $y = 1$.
 
-Bank: \frac{2}{3}, 1, 2, \frac{4}{3}, \sqrt{2}
+Bank for field 0: \frac{2}{3}, 1, 2, \frac{4}{3}, \sqrt{2}; correct ref absent
 
 Worked solution absent; difficulty and correct designation also absent.
 
@@ -75,7 +75,7 @@ $$
 (x - 4 y)^{2}-(y)=0\,⟹\,u^{2}-v=0\,⟹\,v=u^{2}.
 $$
 
-while substituting $y=v$ into the equation of the line, we obtain
+while substituting $y=v$ into the equation of the second curve, we obtain
 
 $$
 v=9.
@@ -95,7 +95,7 @@ $$
 Δ=\{(u,v)\,:\,-3\le u\le 3,\,u^{2}\le v\le 9\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/892fa535c08e1aa6f4069b19.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/7cf9bd6657f7f719ce824885.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -185,7 +185,7 @@ $$
 (x - 5 y)^{2}-(y)=0\,⟹\,u^{2}-v=0\,⟹\,v=u^{2}.
 $$
 
-while substituting $y=v$ into the equation of the line, we obtain
+while substituting $y=v$ into the equation of the second curve, we obtain
 
 $$
 v=9.
@@ -205,7 +205,7 @@ $$
 Δ=\{(u,v)\,:\,-3\le u\le 3,\,u^{2}\le v\le 9\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/175e7521e83e3214f13371d3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/940bfe74d9464bc2483064f4.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -243,7 +243,8 @@ $$
 
 calculate the area of the finite region $D$ bounded by the curve $(x+y)^{4}-x+y=0$ and  the line $y=0.$
 
-Bank: \frac{1}{3}, \frac{1}{2}, \frac{1}{10}, \frac{3}{20}, \frac{2}{3}
+Bank for field 0: \frac{1}{3}, \frac{1}{2}, \frac{1}{10}, \frac{3}{20}, \frac{2}{3}; correct ref absent
+Bank for field 1: \frac{1}{10}, \frac{3}{20}, \frac{2}{3}, \frac{1}{2}, \frac{1}{3}; correct ref present
 
 The area of the required region is given by
 
@@ -439,7 +440,7 @@ $$
 Δ=\{(u,v)\,:\,0\le u\le 2,\,\frac{u^{4}}{8}\le v\le u\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/27c68d5681d233a302a3c0c3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/8b4cd08b944400c544749e00.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -555,7 +556,7 @@ $$
 Δ=\{(u,v)\,:\,0\le u\le 2,\,\frac{u^{4}}{8}\le v\le u\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/8c8aafcb099e2badb48ce3e9.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/3e0f57c353128fe95306942c.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -593,7 +594,7 @@ $$
 
 calculate the area of the finite region $D$ bounded by the lines $y+2x=1,$ $y-2x=1$ and the curve ${y}^{2}-4{x}^{2}=4.$
 
-Bank: \operatorname{ln}⁡4-\frac{3}{2}, \operatorname{ln}⁡4-\frac{3}{4}, 2\operatorname{ln}⁡4-3, 4\operatorname{ln}⁡4-\frac{3}{4}, 2\operatorname{ln}⁡4-\frac{3}{2}
+Bank for field 0: \operatorname{ln}⁡4-\frac{3}{2}, \operatorname{ln}⁡4-\frac{3}{4}, 2\operatorname{ln}⁡4-3, 4\operatorname{ln}⁡4-\frac{3}{4}, 2\operatorname{ln}⁡4-\frac{3}{2}; correct ref present
 
 The area of the required region is given by
 
@@ -775,7 +776,7 @@ $$
 - 4 x + y=2\,⟹\,v=2.
 $$
 
-Substituting into the equation of the curve, we get
+Substituting $u=4 x + y$ and $v=- 4 x + y$ into the equation of curve, we get
 
 $$
 - 16 x^{2} + y^{2}=6\,⟹\,(4 x + y)(- 4 x + y)=6\,⟹\,uv=6.
@@ -783,13 +784,13 @@ $$
 
 The intersection point of the two lines in the $uv$-plane is $(2,2).$
 
-To find the intersection of the curve with the line in the $uv$-plane, we solve the following system:
+To find the intersection of the curve with the first line in the $uv$-plane, we solve the following system:
 
 $$
 \begin{aligned}\left\{\begin{aligned}uv=6 \\ u=2\end{aligned}\right.\,⟹\,\left\{\begin{aligned}u=2 \\ v=3\end{aligned}\right.\end{aligned}
 $$
 
-To find the intersection of the curve with the line in the $uv$-plane, we solve the following system:
+To find the intersections of the curve with the second line in the $uv$-plane, we solve the following system:
 
 $$
 \begin{aligned}\left\{\begin{aligned}uv=6 \\ v=2\end{aligned}\right.\,⟹\,\left\{\begin{aligned}v=2 \\ u=3\end{aligned}\right.\end{aligned}
@@ -803,7 +804,7 @@ $$
 Δ=\{(u,v)\,:\,2\le u\le 3,\,2\le v\le \frac{6}{u}\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/bfa7d4c00802b45556bd74b3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/4e38b40f48581420c0955bc1.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -899,7 +900,7 @@ $$
 - 5 x + y=2\,⟹\,v=2.
 $$
 
-Substituting into the equation of the curve, we get
+Substituting $u=5 x + y$ and $v=- 5 x + y$ into the equation of curve, we get
 
 $$
 - 25 x^{2} + y^{2}=7\,⟹\,(5 x + y)(- 5 x + y)=7\,⟹\,uv=7.
@@ -907,13 +908,13 @@ $$
 
 The intersection point of the two lines in the $uv$-plane is $(2,2).$
 
-To find the intersection of the curve with the line in the $uv$-plane, we solve the following system:
+To find the intersection of the curve with the first line in the $uv$-plane, we solve the following system:
 
 $$
 \begin{aligned}\left\{\begin{aligned}uv=7 \\ u=2\end{aligned}\right.\,⟹\,\left\{\begin{aligned}u=2 \\ v=\frac{7}{2}\end{aligned}\right.\end{aligned}
 $$
 
-To find the intersection of the curve with the line in the $uv$-plane, we solve the following system:
+To find the intersections of the curve with the second line in the $uv$-plane, we solve the following system:
 
 $$
 \begin{aligned}\left\{\begin{aligned}uv=7 \\ v=2\end{aligned}\right.\,⟹\,\left\{\begin{aligned}v=2 \\ u=\frac{7}{2}\end{aligned}\right.\end{aligned}
@@ -927,7 +928,7 @@ $$
 Δ=\{(u,v)\,:\,2\le u\le \frac{7}{2},\,2\le v\le \frac{7}{u}\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/860f4d2d68852f56c0540acd.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/633802c28ae3635c7f0d4099.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -965,7 +966,7 @@ $$
 
 calculate the area of the finite region $D$ bounded by the curve $(x-y)^{2}+y=2$ and the line $y=0.$
 
-Bank: \frac{2}{3}, \frac{8\sqrt{2}}{3}, \frac{8}{3}, \frac{2\sqrt{2}}{3}, \frac{\sqrt{2}}{3}
+Bank for field 0: \frac{2}{3}, \frac{8\sqrt{2}}{3}, \frac{8}{3}, \frac{2\sqrt{2}}{3}, \frac{\sqrt{2}}{3}; correct ref present
 
 The area of the required region is given by
 
@@ -1147,7 +1148,7 @@ $$
 Δ=\{(u,v)\,:\,- \sqrt{7}\le u\le \sqrt{7},\,1\le v\le 8 - u^{2}\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/b6fea5cf0fbe721163bba20e.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/43620357dabc59584feaecfb.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -1257,7 +1258,7 @@ $$
 Δ=\{(u,v)\,:\,- \sqrt{7}\le u\le \sqrt{7},\,2\le v\le 9 - u^{2}\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/446b6cd4c6efb1688c57d7f9.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/179a69af0851cc322f57a0d6.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -1295,7 +1296,7 @@ $$
 
 calculate the area of the finite region $D$ bounded by the curve $y-(x-2y)^{2}=2$ and the line $y=3.$
 
-Bank: \frac{2}{3}, 10, 2, \frac{4}{3}, \frac{1}{3}
+Bank for field 0: \frac{2}{3}, 10, 2, \frac{4}{3}, \frac{1}{3}; correct ref present
 
 The area of the required region is given by
 
@@ -1453,7 +1454,7 @@ $$
 (x - 4 y)^{2}-(y)=4\,⟹\,u^{2}-v=4\,⟹\,v=u^{2} - 4.
 $$
 
-while substituting $y=v$ into the equation of the line, we obtain
+while substituting $y=v$ into the equation of the second curve, we obtain
 
 $$
 v=1.
@@ -1473,7 +1474,7 @@ $$
 Δ=\{(u,v)\,:\,- \sqrt{5}\le u\le \sqrt{5},\,u^{2} - 4\le v\le 1\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/c57dc57747175524c5363dd7.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/e4521bfcd16a853b8de743f1.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -1563,7 +1564,7 @@ $$
 (x - 5 y)^{2}-(y)=3\,⟹\,u^{2}-v=3\,⟹\,v=u^{2} - 3.
 $$
 
-while substituting $y=v$ into the equation of the line, we obtain
+while substituting $y=v$ into the equation of the second curve, we obtain
 
 $$
 v=2.
@@ -1583,7 +1584,7 @@ $$
 Δ=\{(u,v)\,:\,- \sqrt{5}\le u\le \sqrt{5},\,u^{2} - 3\le v\le 2\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/09dee1ba1b15d63e62bead2b.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/b75671cbc89eda821608fcb3.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -1621,7 +1622,7 @@ $$
 
 calculate the area of the finite region $D$ bounded by the curve $(y+3x)^{2}-x=3$ and the line $x=1.$
 
-Bank: -\frac{32}{3}, \frac{16}{3}, \frac{32}{3}, -\frac{16}{3}, \frac{47}{3}
+Bank for field 0: -\frac{32}{3}, \frac{16}{3}, \frac{32}{3}, -\frac{16}{3}, \frac{47}{3}; correct ref present
 
 The area of the required region is given by
 
@@ -1779,7 +1780,7 @@ $$
 (4 x + y)^{2}-(x)=4\,⟹\,u^{2}-v=4\,⟹\,v=u^{2} - 4.
 $$
 
-while substituting $x=v$ into the equation of the line, we obtain
+while substituting $x=v$ into the equation of the second curve, we obtain
 
 $$
 v=1.
@@ -1799,7 +1800,7 @@ $$
 Δ=\{(u,v)\,:\,- \sqrt{5}\le u\le \sqrt{5},\,u^{2} - 4\le v\le 1\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/a1a8ea7eec4a2b74c96d2e7f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/82a6f60695ceef3f6d6f67a3.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -1889,7 +1890,7 @@ $$
 (5 x + y)^{2}-(x)=3\,⟹\,u^{2}-v=3\,⟹\,v=u^{2} - 3.
 $$
 
-while substituting $x=v$ into the equation of the line, we obtain
+while substituting $x=v$ into the equation of the second curve, we obtain
 
 $$
 v=2.
@@ -1909,7 +1910,7 @@ $$
 Δ=\{(u,v)\,:\,- \sqrt{5}\le u\le \sqrt{5},\,u^{2} - 3\le v\le 2\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/896b571578b19bcb9df2bd1c.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/1f1fb684eb7a2ee6e523197c.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -1947,7 +1948,7 @@ $$
 
 calculate the area of the finite region $D$ bounded by the lines $x+y=1,$ $x-y=1$ and the curve ${x}^{2}-{y}^{2}=2.$
 
-Bank: \operatorname{ln}⁡2-1, \operatorname{ln}⁡2-\frac{1}{2}, 2\operatorname{ln}⁡2-2, \operatorname{ln}⁡2-3, 2\operatorname{ln}⁡2-\frac{3}{2}
+Bank for field 0: \operatorname{ln}⁡2-1, \operatorname{ln}⁡2-\frac{1}{2}, 2\operatorname{ln}⁡2-2, \operatorname{ln}⁡2-3, 2\operatorname{ln}⁡2-\frac{3}{2}; correct ref present
 
 The area of the required region is given by
 
@@ -2129,7 +2130,7 @@ $$
 x - 4 y=2\,⟹\,u=2.
 $$
 
-Substituting into the equation of the curve, we get
+Substituting $x + 4 y=v$ and $x - 4 y=u$ into the equation of curve, we get
 
 $$
 x^{2} - 16 y^{2}=6\,⟹\,(x - 4 y)(x + 4 y)=6\,⟹\,uv=6.
@@ -2137,13 +2138,13 @@ $$
 
 The intersection point of the two lines in the $uv$-plane is $(2,2).$
 
-To find the intersection of the curve with the line in the $uv$-plane, we solve the following system:
+To find the intersection of the curve with the first line in the $uv$-plane, we solve the following system:
 
 $$
 \begin{aligned}\left\{\begin{aligned}uv=6 \\ v=2\end{aligned}\right.\,⟹\,\left\{\begin{aligned}v=2 \\ u=3\end{aligned}\right.\end{aligned}
 $$
 
-To find the intersection of the curve with the line in the $uv$-plane, we solve the following system:
+To find the intersections of the curve with the second line in the $uv$-plane, we solve the following system:
 
 $$
 \begin{aligned}\left\{\begin{aligned}uv=6 \\ u=2\end{aligned}\right.\,⟹\,\left\{\begin{aligned}u=2 \\ v=3\end{aligned}\right.\end{aligned}
@@ -2157,7 +2158,7 @@ $$
 Δ=\{(u,v)\,:\,2\le u\le 3,\,2\le v\le \frac{6}{u}\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/d695fb75f5fda3c81735da37.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/999a690213db3995a291d0aa.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -2253,7 +2254,7 @@ $$
 x - 5 y=2\,⟹\,u=2.
 $$
 
-Substituting into the equation of the curve, we get
+Substituting $x + 5 y=v$ and $x - 5 y=u$ into the equation of curve, we get
 
 $$
 x^{2} - 25 y^{2}=7\,⟹\,(x - 5 y)(x + 5 y)=7\,⟹\,uv=7.
@@ -2261,13 +2262,13 @@ $$
 
 The intersection point of the two lines in the $uv$-plane is $(2,2).$
 
-To find the intersection of the curve with the line in the $uv$-plane, we solve the following system:
+To find the intersection of the curve with the first line in the $uv$-plane, we solve the following system:
 
 $$
 \begin{aligned}\left\{\begin{aligned}uv=7 \\ v=2\end{aligned}\right.\,⟹\,\left\{\begin{aligned}v=2 \\ u=\frac{7}{2}\end{aligned}\right.\end{aligned}
 $$
 
-To find the intersection of the curve with the line in the $uv$-plane, we solve the following system:
+To find the intersections of the curve with the second line in the $uv$-plane, we solve the following system:
 
 $$
 \begin{aligned}\left\{\begin{aligned}uv=7 \\ u=2\end{aligned}\right.\,⟹\,\left\{\begin{aligned}u=2 \\ v=\frac{7}{2}\end{aligned}\right.\end{aligned}
@@ -2281,7 +2282,7 @@ $$
 Δ=\{(u,v)\,:\,2\le u\le \frac{7}{2},\,2\le v\le \frac{7}{u}\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/fe605d1da20296c072996483.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/5bc23e388b4c1ad0bd054298.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -2371,7 +2372,7 @@ $$
 (4 x - 2 y)^{2}-(x + y)=0\,⟹\,u^{2}-v=0\,⟹\,v=u^{2}.
 $$
 
-while substituting $x + y=v$ into the equation of the line, we obtain
+while substituting $x + y=v$ into the equation of the second curve, we obtain
 
 $$
 v=1.
@@ -2391,7 +2392,7 @@ $$
 Δ=\{(u,v)\,:\,-1\le u\le 1,\,u^{2}\le v\le 1\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/cd307b56ece5db8840c42212.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/6c3cadbace681d1e13ac50ea.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -2479,7 +2480,7 @@ $$
 (4 x - 2 y)^{2}-(x + y)=0\,⟹\,u^{2}-v=0\,⟹\,v=u^{2}.
 $$
 
-while substituting $x + y=v$ into the equation of the line, we obtain
+while substituting $x + y=v$ into the equation of the second curve, we obtain
 
 $$
 v=36.
@@ -2499,7 +2500,7 @@ $$
 Δ=\{(u,v)\,:\,-6\le u\le 6,\,u^{2}\le v\le 36\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/bfcf9b2a5fa957e3e06a4e36.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/64a09db0e43d3b59a65878a7.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 

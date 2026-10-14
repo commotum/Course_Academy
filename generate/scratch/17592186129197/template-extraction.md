@@ -1,6 +1,6 @@
 # Four-stage template extraction
 
-Source wrapper: math/basis1356/lineage01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. Seven complete banks; source-specific decoded strings remain in source.json and review.md.
+Source wrapper: math/basis1356/lineage01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. Eight complete field-owned banks across seven practice questions; source-specific decoded strings remain in source.json and review.md.
 
 ## 1. Specific observed instances
 
@@ -111,7 +111,7 @@ Field `selection`, radio/math,5 choices. Observed anchor map/domain parameters: 
 
 | $\sqrt{2}$ | $s^2\left(\sqrt{2}\right)$ | designation absent |
 
-### Complete profile raw:q-82874
+### Complete profile raw:q-82874 — field0 (older widget)
 
 Field `selection`, radio/math,5 choices. Observed anchor map/domain parameters: `{'a': 1, 'h': 1, 'k': 0}`.
 
@@ -219,6 +219,24 @@ Field `selection`, radio/math,5 choices. Observed anchor map/domain parameters: 
 
 | $2\operatorname{ln}⁡2-\frac{3}{2}$ | $s^2\left(2\operatorname{ln}⁡2-\frac{3}{2}\right)$ | wrong |
 
+### Complete profile raw:q-82874 — field1 (later widget)
+
+A second captured radio field with the same selection key owns a separate five-value bank and original correct ref3/20. Raw replay preserves this field simultaneously with field0. Normal output uses one authoritative widget, matching the single widget in the owning MA capture.
+
+| Original complete value | Parameterized replay operation | Original designation |
+
+|---|---|---|
+
+| $\frac{1}{10}$ | $s^2\left(\frac{1}{10}\right)$ | wrong |
+
+| $\frac{3}{20}$ | $s^2\left(\frac{3}{20}\right)$ | correct |
+
+| $\frac{2}{3}$ | $s^2\left(\frac{2}{3}\right)$ | wrong |
+
+| $\frac{1}{2}$ | $s^2\left(\frac{1}{2}\right)$ | wrong |
+
+| $\frac{1}{3}$ | $s^2\left(\frac{1}{3}\right)$ | wrong |
+
 ### Authored complete method banks
 
 Let J be the absolute reciprocal determinant. For parabolas L=2h√h and E=2(√h)³/3 are separately integrated constant and quadratic terms; for quartic L=h²/2,E=h²/5; for hyperbola L=h ln(hi/lo),E=k(hi−lo). Entire selected bank before parameter sampling: `[J(L−E),J(L+E),−J(L−E),JL,JE]` for polynomial families; hyperbola’s last member is `−JE`, retaining the actual linear primitive component. Wrong choices respectively reverse the sign between terms, omit the area absolute sign, omit the second contribution or omit the first contribution. All complete scalar pairs are checked for equivalence, and any collision rejects the whole instance. No recipes are cherry-picked after sampling.
@@ -232,3 +250,5 @@ Dependent objects are displayed xy equations, every substitution/prose operand, 
 Finite sampler catalog sizes (before cosmetic option order): easy48,moderate42,up960,vertical960,down256,quartic24,each hyperbola176. These are meaningful displayed maps/bounds rather than UUID/seed counts. The authored arithmetic ceiling uses familiar squares through36 and coefficients through8: endpoints are at most6 and only the existing determinant, reciprocal, quadratic primitive and two endpoint-power evaluations are required. This conservative broader domain follows the two stated integration/transformation prerequisites; it does not introduce a new operation or stage. Hard quartic keeps endpoints at most3 and familiar cube denominators1,8,27, so its existing degree-five evaluation stays at most243. The inverse y=(u−v)/(2a) substitution into y=0 remains operative; changing the line would have made that source stage redundant, so the line is fixed and the quartic coefficient is the conservative variable slot. Same determinant-one shears change the actual xy region but leave the area invariant; metadata retains their supplied map as part of the assessed transformation object.
 
 Normal presentation retains shared source introductory/four-step sentences and the ordered mathematical operations. Safe TeX notation/grouping and correct source mathematics are explicit normalization; endpoint detail is an addition where a source collected endpoints into one row. Normal method banks are authored extensions, never counted as recovered historical banks. Raw and normal solution denominators are reported separately.
+
+Full frozen-field fidelity totals are8/8 banks,40/40 values and6/6 existing correct refs. Missing refs are retained on q-38374 field0 and q-82874 field0. Field key/type, every answer type/feedback presence and attribute omissions are compared per widget; the old first-field-only validator has been replaced and a removed-second-widget regression must fail.

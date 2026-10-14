@@ -1,10 +1,10 @@
 # Generator creation progress
 
-Cumulative scope: **184 topics, 580 knowledge points**. Original immutable sources: basis1356; refreshed queued sources: basis2275.
+Cumulative scope: **184 topics, 580 knowledge points**. Approved sources retain their recorded per-KP bases; active-before-refresh sources use1356; refreshed queued sources: basis2275.
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**qa_passed: 331**, **queued: 246**, **working: 3**.
+**qa_passed: 332**, **queued: 247**, **working: 1**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). Finish existing workers, then follow updated ranks; coverage-report priorities remain first and are already approved.
 
@@ -12,11 +12,7 @@ Cumulative counts include previously approved KPs and two active KPs that left t
 
 | KP | Topic | Knowledge point | Source E / M / H / unrated | Status | Parent QA |
 |---|---|---|---|---|---|
-| [17592186129261](../../scratch/17592186129261.py) | Computing Areas Using a Change of Variables | Mapping an Area to a Rectangular Region: Transformations Given | 1 / 1 / 0 / 2 | working | — |
-| [17592186129262](../../scratch/17592186129262.py) | Computing Areas Using a Change of Variables | Mapping an Area to a Rectangular Region: Transformations Not Given | 0 / 3 / 2 / 1 | working | — |
 | [17592186129197](../../scratch/17592186129197.py) | Computing Areas Using a Change of Variables | Finding an Area by Transforming to a Type I Region | 0 / 0 / 6 / 1 | working | — |
-| [17592186068779](../../scratch/17592186068779.py) | Combining Graph Transformations of Reciprocal Functions | Graphing a Transformed Reciprocal Function | 0 / 4 / 4 / 2 | qa_passed | [Report](qa/17592186068779.json) |
-| [17592186068814](../../scratch/17592186068814.py) | Combining Graph Transformations of Reciprocal Functions | Graphing a Stretched Negative Reciprocal Function | 3 / 4 / 0 / 2 | qa_passed | [Report](qa/17592186068814.json) |
 | [17592186096841](../../scratch/17592186096841.py) | The Chain Rule for Differentiation | Differentiating a Polynomial Raised to a Power Using the Chain Rule | 3 / 3 / 2 / 1 | qa_passed | [Report](qa/17592186096841.json) |
 | [17592186096842](../../scratch/17592186096842.py) | The Chain Rule for Differentiation | Differentiating a Radical Function Using the Chain Rule | 2 / 4 / 2 / 1 | qa_passed | [Report](qa/17592186096842.json) |
 | [17592186087867](../../scratch/17592186087867.py) | Introduction to First-Order Linear ODEs | Identifying First-Order Linear ODEs | 4 / 5 / 3 / 0 | qa_passed | [Report](qa/17592186087867.json) |
@@ -77,7 +73,7 @@ Cumulative counts include previously approved KPs and two active KPs that left t
 | [17592186105903](../../scratch/17592186105903.py) | The Area of a General Triangle | Calculating the Area of a Triangle | 5 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186105903.json) |
 | [17592186083244](../../scratch/17592186083244.py) | Calculating Tangent and Normal Lines with Parametric Equations | Computing the Tangent Line to a Parametric Curve | 0 / 2 / 3 / 1 | qa_passed | [Report](qa/17592186083244.json) |
 | [17592186172038](../../scratch/17592186172038.py) | Slope Fields for Nonautonomous Differential Equations | Sketching the Slope Field of a Differential Equation at Some Isolated Points | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186172038.json) |
-| 17592186100992 | Properties of Matrix Addition | Calculating the Sum or Difference of Three or More Matrices Using Distributivity | 5 / 1 / 0 / 1 | queued | — |
+| [17592186100992](../../scratch/17592186100992.py) | Properties of Matrix Addition | Calculating the Sum or Difference of Three or More Matrices Using Distributivity | 5 / 1 / 0 / 1 | queued | — |
 | 17592186087888 | Homogeneous First-Order ODEs | Identifying Homogeneous Differential Equations | 3 / 3 / 0 / 0 | queued | — |
 | [17592186133827](../../scratch/17592186133827.py) | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function Using a Substitution | 0 / 4 / 1 / 1 | qa_passed | [Report](qa/17592186133827.json) |
 | [17592186133829](../../scratch/17592186133829.py) | Line Integrals of Scalar Functions | Writing the Line Integral of a Scalar Function as a Definite Integral | 1 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186133829.json) |
@@ -117,7 +113,7 @@ Cumulative counts include previously approved KPs and two active KPs that left t
 | [17592186096698](../../scratch/17592186096698.py) | Solving First-Order ODEs Using Direct Integration | Sketching the Solution Curves of a Differential Equation | 7 / 4 / 0 / 0 | qa_passed | [Report](qa/17592186096698.json) |
 | [17592186096611](../../scratch/17592186096611.py) | Differentiating Exponential Functions | Differentiating the Product of a Constant and the Exponential Function, Plus a Polynomial | 5 / 2 / 0 / 2 | qa_passed | [Report](qa/17592186096611.json) |
 | [17592186096699](../../scratch/17592186096699.py) | Solving First-Order ODEs Using Direct Integration | Finding the Solution of a Differential Equation With a Given Condition | 10 / 2 / 0 / 2 | qa_passed | [Report](qa/17592186096699.json) |
-| [17592186166813](../../scratch/17592186166813.py) | Introduction to Differential Equations | Identifying the Order of an Ordinary Differential Equation | 7 / 7 / 0 / 0 | qa_passed | [Report](qa/17592186166813.json) |
+| 17592186166813 | Introduction to Differential Equations | Identifying the Order of an Ordinary Differential Equation | 7 / 7 / 0 / 0 | queued | — |
 | [17592186166814](../../scratch/17592186166814.py) | Introduction to Differential Equations | Determining Whether an Ordinary Differential Equation is Autonomous or Nonautonomous | 8 / 7 / 0 / 0 | qa_passed | [Report](qa/17592186166814.json) |
 | [17592186166815](../../scratch/17592186166815.py) | Introduction to Differential Equations | Initial Value Problems and Initial Conditions | 11 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186166815.json) |
 | [17592186087819](../../scratch/17592186087819.py) | Introduction to Matrices | Matrices for Route Planning | 4 / 1 / 0 / 2 | qa_passed | [Report](qa/17592186087819.json) |
@@ -483,7 +479,7 @@ Cumulative counts include previously approved KPs and two active KPs that left t
 | [17592186179718](../../scratch/17592186179718.py) | Line Integrals of Scalar Functions Over Paths Expressed as Functions of Y | Evaluating the Line Integral of a Function Over Curve Expressed as a Function of Y | 0 / 3 / 2 / 1 | qa_passed | [Report](qa/17592186179718.json) |
 | 17592186133877 | The Curl of a Vector Field | Calculating the Curl of a Vector Field | 4 / 5 / 0 / 2 | queued | — |
 | 17592186133881 | The Curl of a Vector Field | Interpreting the Curl of a Vector Field | 0 / 6 / 7 / 1 | queued | — |
-| 17592186133898 | The Curl of a Vector Field | Calculating the Scalar Curl of a Vector Field | 7 / 8 / 0 / 1 | queued | — |
+| [17592186133898](../../scratch/17592186133898.py) | The Curl of a Vector Field | Calculating the Scalar Curl of a Vector Field | 7 / 8 / 0 / 1 | queued | — |
 | [17592186133894](../../scratch/17592186133894.py) | Line Integrals of Vector-Valued Functions Over Parametric Curves | Evaluating Line Integrals of Vector-Valued Functions Over Space Curves | 0 / 0 / 7 / 1 | qa_passed | [Report](qa/17592186133894.json) |
 | [17592186133828](../../scratch/17592186133828.py) | Line Integrals of Vector-Valued Functions Over Parametric Curves | Evaluating Line Integrals of a Vector-Valued Functions Over Plane Curves | 0 / 8 / 0 / 0 | qa_passed | [Report](qa/17592186133828.json) |
 | 17592186133891 | Line Integrals With Respect to X and Y | Constructing Line Integrals With Respect to X | 6 / 0 / 0 / 1 | queued | — |
@@ -536,6 +532,8 @@ Cumulative counts include previously approved KPs and two active KPs that left t
 | [17592186119771](../../scratch/17592186119771.py) | Triangular Matrices | Describing a Triangular Matrix | 6 / 3 / 0 / 1 | qa_passed | [Report](qa/17592186119771.json) |
 | [17592186119784](../../scratch/17592186119784.py) | Triangular Matrices | Identifying Correct Statements About a Matrix | 0 / 5 / 4 / 1 | qa_passed | [Report](qa/17592186119784.json) |
 | [17592186119772](../../scratch/17592186119772.py) | Triangular Matrices | Identifying a Triangular Matrix | 6 / 2 / 0 / 0 | qa_passed | [Report](qa/17592186119772.json) |
+| [17592186129261](../../scratch/17592186129261.py) | Computing Areas Using a Change of Variables | Mapping an Area to a Rectangular Region: Transformations Given | 1 / 1 / 0 / 2 | qa_passed | [Report](qa/17592186129261.json) |
+| [17592186129262](../../scratch/17592186129262.py) | Computing Areas Using a Change of Variables | Mapping an Area to a Rectangular Region: Transformations Not Given | 0 / 3 / 2 / 1 | qa_passed | [Report](qa/17592186129262.json) |
 | [17592186129270](../../scratch/17592186129270.py) | The Jacobian of a Three-Dimensional Transformation | Determining the Critical Points of a Transformation | 0 / 12 / 0 / 0 | qa_passed | [Report](qa/17592186129270.json) |
 | [17592186129271](../../scratch/17592186129271.py) | The Jacobian of a Three-Dimensional Transformation | Finding the Jacobian of a Three-Dimensional Transformation | 4 / 5 / 0 / 0 | qa_passed | [Report](qa/17592186129271.json) |
 | [17592186129269](../../scratch/17592186129269.py) | The Jacobian of a Three-Dimensional Transformation | Finding the Jacobian of an Inverse Transformation | 0 / 6 / 6 / 0 | qa_passed | [Report](qa/17592186129269.json) |
@@ -587,8 +585,10 @@ Cumulative counts include previously approved KPs and two active KPs that left t
 | [17592186152117](../../scratch/17592186152117.py) | The Least Common Multiple of Two Polynomials | Finding the LCM of Two Single-Variable Polynomials | 2 / 0 / 3 / 2 | qa_passed | [Report](qa/17592186152117.json) |
 | [17592186152118](../../scratch/17592186152118.py) | The Least Common Multiple of Two Polynomials | Finding the LCM of Two Multivariable Polynomials | 3 / 2 / 0 / 1 | qa_passed | [Report](qa/17592186152118.json) |
 | [17592186152119](../../scratch/17592186152119.py) | The Least Common Multiple of Two Polynomials | Finding the LCM of Three Polynomials | 3 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186152119.json) |
+| [17592186068779](../../scratch/17592186068779.py) | Combining Graph Transformations of Reciprocal Functions | Graphing a Transformed Reciprocal Function | 0 / 4 / 4 / 2 | qa_passed | [Report](qa/17592186068779.json) |
 | [17592186068780](../../scratch/17592186068780.py) | Combining Graph Transformations of Reciprocal Functions | Solving for Some Unknowns Given the Graph of a Transformed Reciprocal Function | 0 / 4 / 3 / 1 | qa_passed | [Report](qa/17592186068780.json) |
 | [17592186068813](../../scratch/17592186068813.py) | Combining Graph Transformations of Reciprocal Functions | Graphing a Stretched Reciprocal Function | 3 / 2 / 0 / 0 | qa_passed | [Report](qa/17592186068813.json) |
+| [17592186068814](../../scratch/17592186068814.py) | Combining Graph Transformations of Reciprocal Functions | Graphing a Stretched Negative Reciprocal Function | 3 / 4 / 0 / 2 | qa_passed | [Report](qa/17592186068814.json) |
 | [17592186184148](../../scratch/17592186184148.py) | Combining Graph Transformations of Tangent and Cotangent | Identifying the Horizontal Stretch and Vertical Shift of a Transformed Cotangent Curve | 0 / 12 / 0 / 0 | qa_passed | [Report](qa/17592186184148.json) |
 | [17592186184149](../../scratch/17592186184149.py) | Combining Graph Transformations of Tangent and Cotangent | Identifying the Horizontal Shift of a Horizontally Stretched Tangent or Cotangent Curve | 0 / 11 / 3 / 0 | qa_passed | [Report](qa/17592186184149.json) |
 | [17592186184236](../../scratch/17592186184236.py) | Combining Graph Transformations of Tangent and Cotangent | Identifying the Horizontal Stretch and Vertical Shift of a Transformed Tangent Curve | 5 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186184236.json) |

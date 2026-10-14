@@ -95,11 +95,19 @@ def raw_generate(level,seed,source,parameters):
    sec=re.sub(r'\$\$[\s\S]*?\$\$',scaled_chain,sec)
    sol=sol[:start]+sec
   out[':question/worked-solution']=sol
- bank=[parse(a[':answer/value'])*s*s for a in q[':question/answer-fields'][0][':answer-field/choices']]
- spell=[a[':answer/value'] if s==1 else tex(z) for a,z in zip(q[':question/answer-fields'][0][':answer-field/choices'],bank)]
- original_correct=q[':question/answer-fields'][0].get(':answer-field/correct')
- correct=parse(original_correct[':answer/value'])*s*s if original_correct else None
- return record(out,bank,correct,spell,level,seed,source,p,'raw:'+source,False,{'source_omissions':sorted(set([':question/difficulty',':question/worked-solution'])-set(q)), 'source_field_omissions':sorted(set([':answer-field/correct'])-set(q[':question/answer-fields'][0]))})
+ specs=[]
+ for sourcefield in q[':question/answer-fields']:
+  bank=[parse(a[':answer/value'])*s*s for a in sourcefield[':answer-field/choices']]
+  spell=[a[':answer/value'] if s==1 else tex(z) for a,z in zip(sourcefield[':answer-field/choices'],bank)]
+  original_correct=sourcefield.get(':answer-field/correct')
+  correct=parse(original_correct[':answer/value'])*s*s if original_correct else None
+  attributes={key:copy.deepcopy(value)for key,value in sourcefield.items()if key not in [':db/id',':answer-field/id',':answer-field/choices',':answer-field/correct']}
+  attributes[':answer-field/type']=sourcefield[':answer-field/type'][':db/ident']
+  answer_attributes=[{key:copy.deepcopy(value)for key,value in answer.items()if key not in [':db/id',':answer/id',':answer/type',':answer/value']}for answer in sourcefield[':answer-field/choices']]
+  answer_types=[answer[':answer/type'][':db/ident']for answer in sourcefield[':answer-field/choices']]
+  specs.append({'bank':bank,'spelling':spell,'correct':correct,'attributes':attributes,'answer_attributes':answer_attributes,'answer_types':answer_types})
+ first=specs[0]
+ return record(out,first['bank'],first['correct'],first['spelling'],level,seed,source,p,'raw:'+source,False,{'source_omissions':sorted(set([':question/difficulty',':question/worked-solution'])-set(q)), 'source_field_omissions':[sorted(set([':answer-field/correct'])-set(field))for field in q[':question/answer-fields']]},field_specs=specs)
 def model(f,p):
  a,h,k=map(sp.Integer,(p['a'],p['h'],p['k']))
  if f in ['simple','down','up']:
@@ -151,7 +159,7 @@ def recipes(f,d,p,profile):
   return [A,J*(L+D),-A,J*L,J*D]
  h=sp.Integer(p['h']);r=sp.sqrt(h);L=2*h*r;D=2*r**3/3
  return [A,J*(L+D),-A,J*L,J*D]
-RENDERER_VERSION='type-I-region-pixel-calibration-2'
+RENDERER_VERSION='type-I-region-pixel-calibration-4'
 _PLOT_LOCK=threading.RLock()
 def plot(f,p,d,output_dir=None):
  # Matplotlib's global mathtext parser is not thread-safe. Serialize rendering
@@ -159,7 +167,7 @@ def plot(f,p,d,output_dir=None):
  with _PLOT_LOCK:return _plot_impl(f,p,d,output_dir)
 def _plot_impl(f,p,d,output_dir=None):
  folder=Path(output_dir) if output_dir else ROOT/'plots';folder.mkdir(parents=True,exist_ok=True)
- key=digest({'renderer_version':RENDERER_VERSION,'f':f,'p':p,'geometry':str((d['lo'],d['hi'],d['low'],d['high']))})[:24]
+ key=digest({'renderer_version':RENDERER_VERSION,'python':sys.version.split()[0],'matplotlib':matplotlib.__version__,'f':f,'p':p,'geometry':str((d['lo'],d['hi'],d['low'],d['high']))})[:24]
  dst=folder/(key+'.png');side=folder/(key+'.json')
  if dst.exists() and side.exists():return str(dst.resolve())
  us=np.linspace(float(d['lo']),float(d['hi']),401)
@@ -168,36 +176,58 @@ def _plot_impl(f,p,d,output_dir=None):
  dx=max(xmax-xmin,1);dy=max(ymax-ymin,1)
  # Each axis is calibrated independently; source geometry need not use equal units.
  fig,ax=plt.subplots(figsize=(5.2,4.2),dpi=130)
- ax.fill_between(us,yl,yh,color='#dce9f1');ax.plot(us,yl,color='red',lw=1.5);ax.plot(us,yh,color='blue',lw=1.5)
- if f.startswith('hyper'):ax.plot([us[0],us[0]],[yl[0],yh[0]],color='red',lw=1.5)
+ lower_color,upper_color=('blue','red')if f=='quartic'else('red','blue')
+ ax.fill_between(us,yl,yh,color='#dce9f1');ax.plot(us,yl,color=lower_color,lw=1.5);ax.plot(us,yh,color=upper_color,lw=1.5)
+ if f.startswith('hyper'):ax.plot([us[0],us[0]],[yl[0],yh[0]],color=lower_color,lw=1.5)
  ax.axhline(0,color='black',lw=0.8);ax.axvline(0,color='black',lw=0.8)
  ax.set_xlim(xmin-.18*dx,xmax+.18*dx);ax.set_ylim(ymin-.15*dy,ymax+.22*dy)
  ax.set_xlabel('$u$');ax.set_ylabel('$v$',rotation=0)
  ax.set_xticks(sorted(set([0,float(d['lo']),float(d['hi'])])));ax.set_xticklabels([f'${tex(sp.nsimplify(n))}$' for n in sorted(set([sp.Integer(0),d['lo'],d['hi']]))])
  ax.set_yticks(sorted(set([0,float(d['low'].subs(u,d['lo'])),float(d['high'].subs(u,d['lo']))])))
  mid=(float(d['lo'])+float(d['hi']))/2;bottom=float(d['low'].subs(u,mid));top=float(d['high'].subs(u,mid))
- region_label=ax.text(mid,bottom+.45*(top-bottom),r'$\Delta$',ha='center',color='#226aaa',fontsize=13)
- arrow_head=(mid-.12*dx,bottom+.88*(top-bottom));arrow_tail=(mid-.12*dx,bottom+.12*(top-bottom))
- slice_arrow=ax.annotate('',xy=arrow_head,xytext=arrow_tail,arrowprops={'arrowstyle':'->','lw':1})
- upper_label=ax.text(.03,.96,f'$v={tex(d["high"])}$',transform=ax.transAxes,va='top',color='blue',fontsize=11,bbox={'facecolor':'white','alpha':.8,'edgecolor':'none'})
- lower_label=ax.text(.98,.06,f'$v={tex(d["low"])}$',transform=ax.transAxes,ha='right',color='red',fontsize=11,bbox={'facecolor':'white','alpha':.8,'edgecolor':'none'})
+ # A full zero-axis view cannot fit readable text and a slice arrow inside a
+ # very narrow hyperbola wedge. Draw the identical region in a labelled local
+ # view rather than shrink glyphs below readable size or move them off-domain.
+ detail=None;annotation_axes=ax
+ if f.startswith('hyper') and (float(d['hi'])-float(d['lo']))/dx<.25:
+  detail=ax.inset_axes([.07,.43,.5,.43]);detail.set_in_layout(False)
+  detail.fill_between(us,yl,yh,color='#dce9f1');detail.plot(us,yl,color=lower_color,lw=1.5);detail.plot(us,yh,color=upper_color,lw=1.5)
+  detail.plot([us[0],us[0]],[yl[0],yh[0]],color=lower_color,lw=1.5)
+  span=float(d['hi']-d['lo']);yspan=float(yh.max()-yl.min())
+  detail.set_xlim(float(d['lo'])-.12*span,float(d['hi'])+.12*span)
+  detail.set_ylim(float(yl.min())-.12*yspan,float(yh.max())+.12*yspan)
+  detail.set_xticks([float(d['lo']),float(d['hi'])]);detail.set_xticklabels([f'${tex(d["lo"])}$',f'${tex(d["hi"])}$'],fontsize=8)
+  detail.set_yticks([float(yl.min()),float(yh.max())]);detail.set_yticklabels([f'${tex(d["low"])}$',f'${tex(d["high"].subs(u,d["lo"]))}$'],fontsize=8)
+  detail.set_title('Same region: local view',fontsize=9,pad=4)
+  annotation_axes=detail
+ region_label=annotation_axes.text(mid,bottom+.45*(top-bottom),r'$\Delta$',ha='center',va='center'if detail is not None else'baseline',color='#226aaa',fontsize=13)
+ slice_x=mid-.12*(float(d['hi'])-float(d['lo']))
+ slice_low=float(d['low'].subs(u,slice_x));slice_high=float(d['high'].subs(u,slice_x))
+ arrow_head=(slice_x,slice_low+.88*(slice_high-slice_low));arrow_tail=(slice_x,slice_low+.12*(slice_high-slice_low))
+ slice_arrow=annotation_axes.annotate('',xy=arrow_head,xytext=arrow_tail,arrowprops={'arrowstyle':'->','lw':1})
+ upper_label=ax.text(.03,.96,f'$v={tex(d["high"])}$',transform=ax.transAxes,va='top',color=upper_color,fontsize=11,bbox={'facecolor':'white','alpha':.8,'edgecolor':'none'})
+ lower_label=ax.text(.98,.06,f'$v={tex(d["low"])}$',transform=ax.transAxes,ha='right',color=lower_color,fontsize=11,bbox={'facecolor':'white','alpha':.8,'edgecolor':'none'})
  for z in ['top','right']:ax.spines[z].set_visible(False)
  fig.tight_layout();fig.canvas.draw()
  renderer=fig.canvas.get_renderer();width_px,height_px=fig.canvas.get_width_height()
- def image_point(point):
-  px,py=ax.transData.transform(point)
+ def image_point(point,axis=ax):
+  px,py=axis.transData.transform(point)
   return [float(px),float(height_px-py)]
  def image_bbox(bbox):
   bx,by,bw,bh=map(float,bbox.bounds)
   return [bx,float(height_px-by-bh),bw,bh]
  labels=[]
- for role,artist,coordinates in [('region',region_label,'data'),('upper_boundary',upper_label,'axes'),('lower_boundary',lower_label,'axes'),('u_axis',ax.xaxis.label,'axes-label'),('v_axis',ax.yaxis.label,'axes-label')]+[('u_tick',z,'tick-label')for z in ax.get_xticklabels()]+[('v_tick',z,'tick-label')for z in ax.get_yticklabels()]:
+ for role,artist,coordinates in [('region',region_label,'detail-data'if detail is not None else'data'),('upper_boundary',upper_label,'axes'),('lower_boundary',lower_label,'axes'),('u_axis',ax.xaxis.label,'axes-label'),('v_axis',ax.yaxis.label,'axes-label')]+[('u_tick',z,'tick-label')for z in ax.get_xticklabels()]+[('v_tick',z,'tick-label')for z in ax.get_yticklabels()]+([('detail_title',detail.title,'axes-label')]+[('detail_u_tick',z,'tick-label')for z in detail.get_xticklabels()]+[('detail_v_tick',z,'tick-label')for z in detail.get_yticklabels()]if detail is not None else[]):
   bbox=artist.get_window_extent(renderer)
   labels.append({'role':role,'text':artist.get_text(),'position':list(map(float,artist.get_position())),'coordinate_system':coordinates,'bbox_display':list(map(float,bbox.bounds)),'bbox_pixel':image_bbox(bbox),'color':artist.get_color(),'visible':artist.get_visible()})
  transform=ax.transData.get_affine().get_matrix()
  to_image=np.array([[1,0,0],[0,-1,height_px],[0,0,1]],dtype=float)@transform
  axes_bbox=ax.get_window_extent(renderer)
- data={'renderer':'Matplotlib','renderer_version':RENDERER_VERSION,'version':matplotlib.__version__,'python':sys.version.split()[0],'runtime':{'python':sys.version.split()[0],'matplotlib':matplotlib.__version__,'sympy':sp.__version__},'family':f,'parameters':p,'bounds':[str(d[t]) for t in ['lo','hi','low','high']],'axis_calibration':{'xlim':list(map(float,ax.get_xlim())),'ylim':list(map(float,ax.get_ylim()))},'axes_bbox_display':list(map(float,axes_bbox.bounds)),'axes_pixel_bbox':image_bbox(axes_bbox),'origin_display':list(map(float,ax.transData.transform((0,0)))),'origin_pixel':image_point((0,0)),'data_to_display_matrix':transform.tolist(),'data_to_pixel_matrix':to_image.tolist(),'pixel_coordinate_convention':'top-left origin, x rightward, y downward; display coordinates use bottom-left origin','artist_labels':labels,'slice_arrow':{'tail_data':list(map(float,arrow_tail)),'head_data':list(map(float,arrow_head)),'tail_pixel':image_point(arrow_tail),'head_pixel':image_point(arrow_head),'artist_bbox_pixel':image_bbox(slice_arrow.arrow_patch.get_window_extent(renderer))},'boundaries':'all bounding segments included/solid','arrow':'vertical upward slice','pixel_size':[width_px,height_px]}
+ annotation_matrix=np.array([[1,0,0],[0,-1,height_px],[0,0,1]],dtype=float)@annotation_axes.transData.get_affine().get_matrix()
+ data={'renderer':'Matplotlib','renderer_version':RENDERER_VERSION,'version':matplotlib.__version__,'python':sys.version.split()[0],'runtime':{'python':sys.version.split()[0],'matplotlib':matplotlib.__version__,'sympy':sp.__version__},'family':f,'parameters':p,'bounds':[str(d[t]) for t in ['lo','hi','low','high']],'axis_calibration':{'xlim':list(map(float,ax.get_xlim())),'ylim':list(map(float,ax.get_ylim()))},'axes_bbox_display':list(map(float,axes_bbox.bounds)),'axes_pixel_bbox':image_bbox(axes_bbox),'origin_display':list(map(float,ax.transData.transform((0,0)))),'origin_pixel':image_point((0,0)),'data_to_display_matrix':transform.tolist(),'data_to_pixel_matrix':to_image.tolist(),'pixel_coordinate_convention':'top-left origin, x rightward, y downward; display coordinates use bottom-left origin','artist_labels':labels,'slice_arrow':{'axes_role':'detail'if detail is not None else'primary','data_to_pixel_matrix':annotation_matrix.tolist(),'tail_data':list(map(float,arrow_tail)),'head_data':list(map(float,arrow_head)),'tail_pixel':image_point(arrow_tail,annotation_axes),'head_pixel':image_point(arrow_head,annotation_axes),'artist_bbox_pixel':image_bbox(slice_arrow.arrow_patch.get_window_extent(renderer))},'boundaries':'all bounding segments included/solid','arrow':'vertical upward slice','pixel_size':[width_px,height_px]}
+ data['boundary_colors']={'lower':lower_color,'upper':upper_color,'left_vertical':lower_color if f.startswith('hyper')else None}
+ if detail is not None:
+  data['detail_view']={'title':detail.title.get_text(),'axes_pixel_bbox':image_bbox(detail.get_window_extent(renderer)),'data_to_pixel_matrix':annotation_matrix.tolist(),'xlim':list(map(float,detail.get_xlim())),'ylim':list(map(float,detail.get_ylim())),'bounds':data['bounds'],'same_region':True}
  fd,tmp=tempfile.mkstemp(prefix=key+'-',suffix='.png',dir=folder);os.close(fd)
  fig.savefig(tmp);plt.close(fig);os.replace(tmp,dst)
  fd,tmp=tempfile.mkstemp(prefix=key+'-',suffix='.json',dir=folder);os.close(fd);Path(tmp).write_text(json.dumps(data,indent=2));os.replace(tmp,side)
@@ -224,10 +254,12 @@ def solution(f,p,d,asset):
   first_expr,first_var,second_expr,second_var=(V,'v',U,'u')if f=='hyper_x'else(U,'u',V,'v')
   out+=f'Substituting ${first_expr}={first_var}$ into the equation of the first line, we get\n\n'+display(f'{first_expr}={tex(k)}\\,⟹\\,{first_var}={tex(k)}.')
   out+=f'\n\nwhile substituting ${second_expr}={second_var}$ into the equation of the second line, we obtain\n\n'+display(f'{second_expr}={tex(k)}\\,⟹\\,{second_var}={tex(k)}.')
-  out+='\n\nSubstituting into the equation of the curve, we get\n\n'+display(f'{tex(sp.expand(d["U"]*d["V"]))}={tex(h)}\\,⟹\\,({U})({V})={tex(h)}\\,⟹\\,uv={tex(h)}.')
+  curve_substitutions=f'${V}=v$ and ${U}=u$'if f=='hyper_x'else f'$u={U}$ and $v={V}$'
+  out+='\n\nSubstituting '+curve_substitutions+' into the equation of curve, we get\n\n'+display(f'{tex(sp.expand(d["U"]*d["V"]))}={tex(h)}\\,⟹\\,({U})({V})={tex(h)}\\,⟹\\,uv={tex(h)}.')
   out+=f'\n\nThe intersection point of the two lines in the $uv$-plane is $({tex(k)},{tex(k)}).$'
-  for fixed,unknown in ([('v','u'),('u','v')]if f=='hyper_x'else[('u','v'),('v','u')]):
-   out+='\n\nTo find the intersection of the curve with the line in the $uv$-plane, we solve the following system:\n\n'+display(aligned([f'\\left\\{{\\begin{{aligned}}uv={tex(h)} \\\\ {fixed}={tex(k)}\\end{{aligned}}\\right.\\,⟹\\,\\left\\{{\\begin{{aligned}}{fixed}={tex(k)} \\\\ {unknown}={tex(h/k)}\\end{{aligned}}\\right.']))
+  for index,(fixed,unknown) in enumerate([('v','u'),('u','v')]if f=='hyper_x'else[('u','v'),('v','u')]):
+   intersection_word,line_word=('intersection','first')if index==0 else('intersections','second')
+   out+=f'\n\nTo find the {intersection_word} of the curve with the {line_word} line in the $uv$-plane, we solve the following system:\n\n'+display(aligned([f'\\left\\{{\\begin{{aligned}}uv={tex(h)} \\\\ {fixed}={tex(k)}\\end{{aligned}}\\right.\\,⟹\\,\\left\\{{\\begin{{aligned}}{fixed}={tex(k)} \\\\ {unknown}={tex(h/k)}\\end{{aligned}}\\right.']))
   pts=f'$({tex(k)},{tex(k)}),$ $({tex(k)},{tex(h/k)})$ and $({tex(h/k)},{tex(k)}).$'
  else:
   out+=f'Substituting ${U}=u$ and ${V}=v$ into the equation of the first curve, we get\n\n'
@@ -243,7 +275,8 @@ def solution(f,p,d,asset):
    transformed=f'v={tex(d["high"] if f=="down" else d["low"])}'
    middle=(f'(y+{tex(k)})={tex(h+k)}-({U})^{{2}}' if f=='down' else f'u^{{2}}-v={tex(-k)}')
    out+=display(curve+r'\,⟹\,'+middle+r'\,⟹\,'+transformed+'.')
-   out+=f'\n\nwhile substituting ${V}=v$ into the equation of the line, we obtain\n\n'+display(f'v={tex(k if f=="down" else k+h)}.')
+   second_boundary_word='line'if f=='down'else'second curve'
+   out+=f'\n\nwhile substituting ${V}=v$ into the equation of the {second_boundary_word}, we obtain\n\n'+display(f'v={tex(k if f=="down" else k+h)}.')
    sys=f'u=\\pm {tex(hi)}';pts=f'$(\\pm {tex(hi)},{tex(k if f=="down" else k+h)}).$'
   out+='\n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n'+display(aligned([r'\left\{\begin{aligned}v='+tex(d['low'])+r' \\ v='+tex(d['high'])+r'\end{aligned}\right.\,⟹\,'+sys]))
  out+='\n\nSo, the intersection points are '+pts+'\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n'+display(r'Δ=\{(u,v)\,:\,'+tex(lo)+r'\le u\le '+tex(hi)+r',\,'+tex(d['low'])+r'\le v\le '+tex(d['high'])+r'\}.')+'\n\n![]('+asset+')\n\n'
@@ -267,14 +300,27 @@ def solution(f,p,d,asset):
  out+=display(aligned(rows))
  return out
 
-def record(question,bank,correct,spelling,level,seed,f,p,profile,eligible,extra=None):
+def record(question,bank,correct,spelling,level,seed,f,p,profile,eligible,extra=None,field_specs=None):
  content={'version':VERSION,'question':question,'bank':sorted(spelling),'correct':tex(correct)if correct is not None else None,'field_type':'radio','level':question.get(':question/difficulty')}
+ if field_specs is not None:
+  content={'version':VERSION,'question':question,'fields':[{'attributes':z['attributes'],'answers':sorted([{'value':val,'type':typ,**attrs}for val,typ,attrs in zip(z['spelling'],z['answer_types'],z['answer_attributes'])],key=lambda a:a['value']),'correct':tex(z['correct'])if z['correct']is not None else None}for z in field_specs]}
  fp=digest(content);qid=uid(fp);fid=uid(fp+'/selection')
  answers=[{':answer/id':uid(fid+'/'+val),':answer/type':':answer.type/math',':answer/value':val} for val in spelling]
  cid=next(z[':answer/id'] for z,m in zip(answers,bank) if eq(m,correct)) if correct is not None else None;random.Random(seed).shuffle(answers)
  field={':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',cid]}
  if cid is None:field.pop(':answer-field/correct')
- question[':question/id']=qid;question[':question/answer-fields']=[field]
+ fields=[field]
+ if field_specs is not None:
+  fields=[]
+  for index,z in enumerate(field_specs):
+   owned_id=uid(fp+'/raw-field/'+str(index)+'/'+z['attributes'][':answer-field/key'])
+   owned_answers=[{':answer/id':uid(owned_id+'/'+value),':answer/type':typ,':answer/value':value,**attrs}for value,typ,attrs in zip(z['spelling'],z['answer_types'],z['answer_attributes'])]
+   owned_correct=next(answer[':answer/id']for answer,value in zip(owned_answers,z['bank'])if eq(value,z['correct']))if z['correct']is not None else None
+   random.Random(seed+index).shuffle(owned_answers)
+   owned_field={**z['attributes'],':answer-field/id':owned_id,':answer-field/choices':owned_answers}
+   if owned_correct is not None:owned_field[':answer-field/correct']=[':answer/id',owned_correct]
+   fields.append(owned_field)
+ question[':question/id']=qid;question[':question/answer-fields']=fields
  task=digest({'f':f,'p':p,'level':question.get(':question/difficulty')})
  meta={'version':VERSION,'template':f,'profile':profile,'seed':seed,'parameters':p,'mathematical_fingerprint':task,'content_fingerprint':fp,'source':{k:SRC[k] for k in ['database','basis','lineage']},'eligible_for_learning':eligible,'evidence_only':not eligible,'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':matplotlib.__version__}}
  meta.update(extra or {})
@@ -310,7 +356,10 @@ def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)
 def generate_hard(seed=0,**kw):return generate('hard',seed,**kw)
 def markdown(r):
  q=r['question'];s=q[':question/problem']+'\n\n'
- for a in q.get(':question/answer-fields',[{}])[0].get(':answer-field/choices',[]):s+='- $'+a[':answer/value']+'$\n'
+ fields=q.get(':question/answer-fields',[])
+ for index,field in enumerate(fields):
+  if len(fields)>1:s+='Captured field '+str(index)+' (`'+field[':answer-field/key']+'`)\n\n'
+  for a in field.get(':answer-field/choices',[]):s+='- $'+a[':answer/value']+'$\n'
  if ':question/worked-solution'in q:s+='\n'+q[':question/worked-solution']
  return s
 if __name__=='__main__':

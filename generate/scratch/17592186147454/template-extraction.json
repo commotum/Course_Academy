@@ -1,0 +1,777 @@
+{
+  "basis": 2280,
+  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "templates": [
+    {
+      "template": "q-106073",
+      "difficulty": "moderate",
+      "source_db_id": 17592186147725,
+      "field_type": "radio",
+      "key": "selection",
+      "choice_count": 5,
+      "plot_rating": "none",
+      "source_problem": "Find the general solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-y={y}^{2}{e}^{x}.\n$$",
+      "solution_template": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-1,\\,q(x)={e}^{x},\\,n=2.\n$$\n\nFirst, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}-{y}^{-1}={e}^{x}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}-z={e}^{x}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+z=-{e}^{x}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=1,\\,Q(x)=-{e}^{x}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (1)\\,\\text{d}x} \\\\  & ={e}^{x}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{x}$ yields\n\n$$\n\\begin{aligned}{e}^{x}\\cdot (\\frac{\\text{d}z}{\\text{d}x}+z) & ={e}^{x}\\cdot (-{e}^{x}) \\\\ {e}^{x}\\cdot \\frac{\\text{d}z}{\\text{d}x}+z{e}^{x} & =-{e}^{2x} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{x}) & =-{e}^{2x}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{x})\\,\\text{d}x & =-\\int {e}^{2x}\\,\\text{d}x \\\\ z{e}^{x} & =-\\frac{1}{2}{e}^{2x}+{C}_{1} \\\\ z & =\\frac{C-{e}^{2x}}{2{e}^{x}},\\end{aligned}\n$$\n\nwhere $C=2{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-1}=\\frac{C-{e}^{2x}}{2{e}^{x}}\\,\u21d2\\,y=\\frac{2{e}^{x}}{C-{e}^{2x}}.\\end{aligned}\n$$",
+      "profile": "observed:q-106073",
+      "choices": [
+        {
+          "source_answer_id": "4fb6e0b5-50bd-5bc3-9926-8cce1ea815dd",
+          "source_value": "y=\\frac{2{e}^{x}}{C-{e}^{2x}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": true,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "5b195b37-4d20-505c-ae89-b9a443329f6d",
+          "source_value": "y=\\frac{C-{e}^{x}}{2{e}^{x}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "8ee3123a-b991-57e4-b166-c66adaa44398",
+          "source_value": "y=\\frac{C-{e}^{2x}}{2{e}^{x}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "d0593637-ef94-5572-897c-c8ab00cf7d80",
+          "source_value": "y=\\frac{{e}^{x}}{C-2{e}^{x}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "f02c7ad2-ea02-5ae9-b738-dc45f744f891",
+          "source_value": "y=\\frac{2x{e}^{x}}{C-2{e}^{2x}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        }
+      ],
+      "slots": {
+        "shift": {
+          "observed": 0,
+          "proposed": [
+            -6,
+            -5,
+            -4,
+            -3,
+            -2,
+            -1,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "role": "unit-slope translation of coefficient arguments",
+          "dependencies": [
+            "prompt coefficient values",
+            "p(x), q(x), P(x), Q(x)",
+            "integrating factor",
+            "integration antiderivatives",
+            "all source options and final solution"
+          ]
+        }
+      },
+      "backbone": "Bernoulli substitution z=y^(1-n); chain rule; solve resulting linear ODE by integrating factor; recover y with source response and layout. Keep original exponent n, coefficient structures, ordered stages, and entire five-choice source bank.",
+      "constraints": "x+h>0; exclude y=0 for division; restrict denominators/real branches; even power inversion retains positive z; signed sqrt retains both nonzero branches."
+    },
+    {
+      "template": "q-109026",
+      "difficulty": "moderate",
+      "source_db_id": 17592186244216,
+      "field_type": "radio",
+      "key": "selection",
+      "choice_count": 5,
+      "plot_rating": "none",
+      "source_problem": "Find the general solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}+xy=x{y}^{2}.\n$$",
+      "solution_template": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=x,\\,q(x)=x,\\,n=2.\n$$\n\nFirst, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}+x{y}^{-1}=x.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}+xz=x\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}-xz=-x\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=-x,\\,Q(x)=-x\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (-x)\\,\\text{d}x} \\\\  & ={e}^{-{x}^{2}/2}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{-{x}^{2}/2}$ yields\n\n$$\n\\begin{aligned}{e}^{-{x}^{2}/2}\\cdot (\\frac{\\text{d}z}{\\text{d}x}-xz) & ={e}^{-{x}^{2}/2}\\cdot (-x) \\\\ {e}^{-{x}^{2}/2}\\cdot \\frac{\\text{d}z}{\\text{d}x}-xz{e}^{-{x}^{2}/2} & =-x{e}^{-{x}^{2}/2} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{-{x}^{2}/2}) & =-x{e}^{-{x}^{2}/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{-{x}^{2}/2})\\,\\text{d}x & =-\\int x{e}^{-{x}^{2}/2}\\,\\text{d}x \\\\ z{e}^{-{x}^{2}/2} & ={e}^{-{x}^{2}/2}+C \\\\ z & =1+C{e}^{{x}^{2}/2}.\\end{aligned}\n$$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-1}=1+C{e}^{{x}^{2}/2}\\,\u21d2\\,y=\\frac{1}{1+C{e}^{{x}^{2}/2}}.\\end{aligned}\n$$",
+      "profile": "observed:q-109026",
+      "choices": [
+        {
+          "source_answer_id": "1db95ec7-7bbb-59e1-8146-28cacbdd7712",
+          "source_value": "y=\\frac{1}{1+C{e}^{{x}^{2}}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "22504129-485e-5c7b-bb3a-4e7932845def",
+          "source_value": "y=\\frac{1}{1+C{e}^{{x}^{2}/2}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": true,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "61185df4-4db8-5659-8962-34e04a46e0d3",
+          "source_value": "y=\\frac{x}{1+C{x}^{2}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "62160cf8-9638-5701-94fd-5b00ed372c4f",
+          "source_value": "y=\\frac{1}{1+C{e}^{-{x}^{2}}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "d43a211a-1155-59ad-8d25-261eacabadfe",
+          "source_value": "y=\\frac{{e}^{{x}^{2}/2}}{C+x}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        }
+      ],
+      "slots": {
+        "shift": {
+          "observed": 0,
+          "proposed": [
+            -6,
+            -5,
+            -4,
+            -3,
+            -2,
+            -1,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "role": "unit-slope translation of coefficient arguments",
+          "dependencies": [
+            "prompt coefficient values",
+            "p(x), q(x), P(x), Q(x)",
+            "integrating factor",
+            "integration antiderivatives",
+            "all source options and final solution"
+          ]
+        }
+      },
+      "backbone": "Bernoulli substitution z=y^(1-n); chain rule; solve resulting linear ODE by integrating factor; recover y with source response and layout. Keep original exponent n, coefficient structures, ordered stages, and entire five-choice source bank.",
+      "constraints": "x+h>0; exclude y=0 for division; restrict denominators/real branches; even power inversion retains positive z; signed sqrt retains both nonzero branches."
+    },
+    {
+      "template": "q-109027",
+      "difficulty": "moderate",
+      "source_db_id": 17592186244217,
+      "field_type": "radio",
+      "key": "selection",
+      "choice_count": 5,
+      "plot_rating": "none",
+      "source_problem": "Find the general solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-3{x}^{2}y={x}^{2}{y}^{-4}.\n$$",
+      "solution_template": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-3{x}^{2},\\,q(x)={x}^{2},\\,n=-4.\n$$\n\nFirst, we multiply the differential equation by ${y}^{4},$ and we get\n\n$$\n{y}^{4}\\frac{dy}{dx}-3{x}^{2}{y}^{5}={x}^{2}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{5}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=5{y}^{4}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{4}\\frac{\\text{d}y}{\\text{d}x}=\\frac{1}{5}\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n\\frac{1}{5}\\,\\frac{\\text{d}z}{\\text{d}x}-3{x}^{2}z={x}^{2}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}-15{x}^{2}z=5{x}^{2}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=-15{x}^{2},\\,Q(x)=5{x}^{2}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (-15{x}^{2})\\,\\text{d}x} \\\\  & ={e}^{-5{x}^{3}}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{-5{x}^{3}}$ yields\n\n$$\n\\begin{aligned}{e}^{-5{x}^{3}}\\cdot (\\frac{\\text{d}z}{\\text{d}x}-15{x}^{2}z) & ={e}^{-5{x}^{3}}\\cdot (5{x}^{2}) \\\\ {e}^{-5{x}^{3}}\\cdot \\frac{\\text{d}z}{\\text{d}x}-15{x}^{2}z{e}^{-5{x}^{3}} & =5{x}^{2}{e}^{-5{x}^{3}} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{-5{x}^{3}}) & =5{x}^{2}{e}^{-5{x}^{3}}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{-5{x}^{3}})\\,\\text{d}x & =\\int 5{x}^{2}{e}^{-5{x}^{3}}\\,\\text{d}x \\\\ z{e}^{-5{x}^{3}} & =-\\frac{{e}^{-5{x}^{3}}}{3}+{C}_{1} \\\\ z & =\\frac{C{e}^{5{x}^{3}}-1}{3},\\end{aligned}\n$$\n\nwhere $C=3{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{5}.$ This results in\n\n$$\n\\begin{aligned}{y}^{5}=\\frac{C{e}^{5{x}^{3}}-1}{3}\\,\u21d2\\,y=\\sqrt[5]{\\frac{C{e}^{5{x}^{3}}-1}{3}}.\\end{aligned}\n$$",
+      "profile": "observed:q-109027",
+      "choices": [
+        {
+          "source_answer_id": "082efab0-0317-5dbc-abdd-5b8e3e2944a8",
+          "source_value": "y=\\sqrt[3]{\\frac{C{e}^{3{x}^{2}}-1}{2}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "1d96bd59-970e-5488-afd5-3d367f724a52",
+          "source_value": "y=\\sqrt[3]{\\frac{C-{e}^{3{x}^{2}}}{x}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "5d5028bc-2a5a-5f66-ab80-bab0735a9a64",
+          "source_value": "y=\\sqrt[5]{\\frac{C{e}^{5{x}^{3}}-1}{3}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": true,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "7a832465-fff4-50d1-8849-9ef36b8e1628",
+          "source_value": "y=\\sqrt[5]{\\frac{C{e}^{x}-1}{3}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "9559d545-a9cd-50cf-b2d8-3770de68727e",
+          "source_value": "y=\\sqrt[5]{\\frac{C-{e}^{5{x}^{3}}}{{x}^{2}}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        }
+      ],
+      "slots": {
+        "shift": {
+          "observed": 0,
+          "proposed": [
+            -6,
+            -5,
+            -4,
+            -3,
+            -2,
+            -1,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "role": "unit-slope translation of coefficient arguments",
+          "dependencies": [
+            "prompt coefficient values",
+            "p(x), q(x), P(x), Q(x)",
+            "integrating factor",
+            "integration antiderivatives",
+            "all source options and final solution"
+          ]
+        }
+      },
+      "backbone": "Bernoulli substitution z=y^(1-n); chain rule; solve resulting linear ODE by integrating factor; recover y with source response and layout. Keep original exponent n, coefficient structures, ordered stages, and entire five-choice source bank.",
+      "constraints": "x+h>0; exclude y=0 for division; restrict denominators/real branches; even power inversion retains positive z; signed sqrt retains both nonzero branches."
+    },
+    {
+      "template": "q-109028",
+      "difficulty": "moderate",
+      "source_db_id": 17592186244218,
+      "field_type": "radio",
+      "key": "selection",
+      "choice_count": 5,
+      "plot_rating": "none",
+      "source_problem": "Find the general solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}+y=-x{y}^{3}.\n$$",
+      "solution_template": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=1,\\,q(x)=-x,\\,n=3.\n$$\n\nFirst, we divide the differential equation by ${y}^{3},$ and we get\n\n$$\n{y}^{-3}\\frac{dy}{dx}+{y}^{-2}=-x.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-2}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-2{y}^{-3}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-3}\\frac{\\text{d}y}{\\text{d}x}=-\\frac{1}{2}\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\frac{1}{2}\\,\\frac{\\text{d}z}{\\text{d}x}+z=-x\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}-2z=2x\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=-2,\\,Q(x)=2x\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (-2)\\,\\text{d}x} \\\\  & ={e}^{-2x}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{-2x}$ yields\n\n$$\n\\begin{aligned}{e}^{-2x}\\cdot (\\frac{\\text{d}z}{\\text{d}x}-2z) & ={e}^{-2x}\\cdot (2x) \\\\ {e}^{-2x}\\cdot \\frac{\\text{d}z}{\\text{d}x}-2z{e}^{-2x} & =2x{e}^{-2x} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{-2x}) & =2x{e}^{-2x}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{-2x})\\,\\text{d}x & =\\int 2x{e}^{-2x}\\,\\text{d}x \\\\ z{e}^{-2x} & =-\\frac{1}{2}{e}^{-2x}(2x+1)+{C}_{1} \\\\ z & =\\frac{C{e}^{2x}-2x-1}{2},\\end{aligned}\n$$\n\nwhere $C=2{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-2}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-2}=\\frac{C{e}^{2x}-2x-1}{2}\\,\u21d2\\,y=\\pm \\sqrt{\\frac{2}{C{e}^{2x}-2x-1}}.\\end{aligned}\n$$",
+      "profile": "observed:q-109028",
+      "choices": [
+        {
+          "source_answer_id": "0cb78f3a-989b-501c-bd49-e05a5a9fbb84",
+          "source_value": "y=\\frac{2}{C{e}^{x}-2x}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "797506fa-84e9-5eb1-9fea-8e1b2a741cd4",
+          "source_value": "y=\\pm \\sqrt{\\frac{2}{C{e}^{2x}-2x-1}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": true,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "bbd2281f-a36b-54cd-bf13-2a97fd60cb3f",
+          "source_value": "y=\\pm \\sqrt{\\frac{2x}{C+{e}^{2x}}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "d3b5b9a5-ce13-5522-b61f-93f41e10347c",
+          "source_value": "y=\\frac{2x+1}{C-{e}^{2x}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "d42539a6-6f41-51b8-a98e-7a3a4c4fb5c2",
+          "source_value": "y=\\pm \\sqrt{\\frac{1}{C{e}^{x}-1}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        }
+      ],
+      "slots": {
+        "shift": {
+          "observed": 0,
+          "proposed": [
+            -6,
+            -5,
+            -4,
+            -3,
+            -2,
+            -1,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "role": "unit-slope translation of coefficient arguments",
+          "dependencies": [
+            "prompt coefficient values",
+            "p(x), q(x), P(x), Q(x)",
+            "integrating factor",
+            "integration antiderivatives",
+            "all source options and final solution"
+          ]
+        }
+      },
+      "backbone": "Bernoulli substitution z=y^(1-n); chain rule; solve resulting linear ODE by integrating factor; recover y with source response and layout. Keep original exponent n, coefficient structures, ordered stages, and entire five-choice source bank.",
+      "constraints": "x+h>0; exclude y=0 for division; restrict denominators/real branches; even power inversion retains positive z; signed sqrt retains both nonzero branches."
+    },
+    {
+      "template": "q-109029",
+      "difficulty": "moderate",
+      "source_db_id": 17592186244219,
+      "field_type": "radio",
+      "key": "selection",
+      "choice_count": 5,
+      "plot_rating": "none",
+      "source_problem": "Find the general solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-y=\\sqrt{y}.\n$$",
+      "solution_template": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-1,\\,q(x)=1,\\,n=\\frac{1}{2}.\n$$\n\nFirst, we divide the differential equation by ${y}^{1/2},$ and we get\n\n$$\n{y}^{-1/2}\\frac{dy}{dx}-{y}^{1/2}=1.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{1/2}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=\\frac{1}{2}{y}^{-1/2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-1/2}\\frac{\\text{d}y}{\\text{d}x}=2\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n2\\,\\frac{\\text{d}z}{\\text{d}x}-z=1\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{2}z=\\frac{1}{2}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=-\\frac{1}{2},\\,Q(x)=\\frac{1}{2}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (-1/2)\\,\\text{d}x} \\\\  & ={e}^{-x/2}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={e}^{-x/2}$ yields\n\n$$\n\\begin{aligned}{e}^{-x/2}\\cdot (\\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{2}z) & ={e}^{-x/2}\\cdot (\\frac{1}{2}) \\\\ {e}^{-x/2}\\cdot \\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{2}z{e}^{-x/2} & =\\frac{1}{2}{e}^{-x/2} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{e}^{-x/2}) & =\\frac{1}{2}{e}^{-x/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{e}^{-x/2})\\,\\text{d}x & =\\int \\frac{1}{2}{e}^{-x/2}\\,\\text{d}x \\\\ z{e}^{-x/2} & =-{e}^{-x/2}+{C}_{1} \\\\ z & =C{e}^{x/2}-1,\\end{aligned}\n$$\n\nwhere $C={C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{1/2}.$ This results in\n\n$$\n\\begin{aligned}{y}^{1/2}=C{e}^{x/2}-1\\,\u21d2\\,y={(C{e}^{x/2}-1)}^{2}.\\end{aligned}\n$$",
+      "profile": "observed:q-109029",
+      "choices": [
+        {
+          "source_answer_id": "2db67a4b-551b-50d3-aa9d-94998480bd57",
+          "source_value": "y={(\\frac{x}{C{e}^{x/2}-1})}^{2}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "46aaacb9-f86c-5ffc-ac24-3c6368262bf9",
+          "source_value": "y={(C{e}^{x/2}-1)}^{2}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": true,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "51b19b15-add7-5c7e-8009-0bf343fb02a7",
+          "source_value": "y=\\pm \\sqrt{\\frac{C{e}^{2x}+x+1}{2}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "d004786f-80c4-57b9-b27c-963af74bb669",
+          "source_value": "y=\\pm \\sqrt{\\frac{{e}^{2x}+C}{2}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "fb1e0800-7084-5f24-ae7c-61d79f458bb6",
+          "source_value": "y={({e}^{x/2}-2x+C)}^{2}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        }
+      ],
+      "slots": {
+        "shift": {
+          "observed": 0,
+          "proposed": [],
+          "role": "unit-slope translation of coefficient arguments",
+          "dependencies": [
+            "prompt coefficient values",
+            "p(x), q(x), P(x), Q(x)",
+            "integrating factor",
+            "integration antiderivatives",
+            "all source options and final solution"
+          ]
+        }
+      },
+      "backbone": "Bernoulli substitution z=y^(1-n); chain rule; solve resulting linear ODE by integrating factor; recover y with source response and layout. Keep original exponent n, coefficient structures, ordered stages, and entire five-choice source bank.",
+      "constraints": "x+h>0; exclude y=0 for division; restrict denominators/real branches; even power inversion retains positive z; signed sqrt retains both nonzero branches."
+    },
+    {
+      "template": "q-109154",
+      "difficulty": "moderate",
+      "source_db_id": 17592186244240,
+      "field_type": "radio",
+      "key": "selection",
+      "choice_count": 5,
+      "plot_rating": "none",
+      "source_problem": "Find the general solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{x}=\\sqrt{x}\\,{y}^{2}.\n$$",
+      "solution_template": "Notice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-\\frac{1}{x},\\,q(x)=\\sqrt{x},\\,n=2.\n$$\n\nFirst, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}-\\frac{1}{x}{y}^{-1}=\\sqrt{x}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, the original equation can be written in terms of $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{x}z=\\sqrt{x}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{x}z=-\\sqrt{x}\n$$\n\nThe above equation is in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x)\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{1}{x},\\,Q(x)=-\\sqrt{x}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (1/x)\\,\\text{d}x} \\\\  & ={e}^{\\operatorname{ln}\u2061x} \\\\  & =x\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)=x$ yields\n\n$$\n\\begin{aligned}x\\cdot (\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{x}z) & =x\\cdot (-\\sqrt{x}) \\\\ x\\cdot \\frac{\\text{d}z}{\\text{d}x}+z & =-x\\sqrt{x} \\\\ \\frac{\\text{d}}{\\text{d}x}(xz) & =-{x}^{3/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(xz)\\,\\text{d}x & =\\int -{x}^{3/2}\\,\\text{d}x \\\\ xz & =-\\frac{2{x}^{5/2}}{5}+{C}_{1} \\\\ z & =\\frac{C-2{x}^{5/2}}{5x},\\end{aligned}\n$$\n\nwhere $C=5{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n\\begin{aligned}{y}^{-1}=\\frac{C-2{x}^{5/2}}{5x}\\,\u21d2\\,y=\\frac{5x}{C-2{x}^{5/2}}.\\end{aligned}\n$$",
+      "profile": "observed:q-109154",
+      "choices": [
+        {
+          "source_answer_id": "05dccc3a-055f-56b3-b883-95c2ad00bc81",
+          "source_value": "y=\\frac{5x}{C+{x}^{3/2}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "086185d1-e93f-51d1-8b6d-eaa525ad35a8",
+          "source_value": "y=\\frac{{x}^{2}}{C-5{x}^{5/2}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "1d85751b-a7a9-5fd6-a5c7-c8956884f0d5",
+          "source_value": "y=\\frac{5x}{C-2{x}^{5/2}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": true,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "92878b28-57d2-57f6-8d59-8df96602fa63",
+          "source_value": "y={(\\frac{2x}{C-{x}^{3/2}})}^{2}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "e5d5a33a-0925-57f4-811a-6f47f2738dcd",
+          "source_value": "y=\\pm \\sqrt{\\frac{x}{C+{x}^{5/2}}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        }
+      ],
+      "slots": {
+        "shift": {
+          "observed": 0,
+          "proposed": [
+            -6,
+            -5,
+            -4,
+            -3,
+            -2,
+            -1,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "role": "unit-slope translation of coefficient arguments",
+          "dependencies": [
+            "prompt coefficient values",
+            "p(x), q(x), P(x), Q(x)",
+            "integrating factor",
+            "integration antiderivatives",
+            "all source options and final solution"
+          ]
+        }
+      },
+      "backbone": "Bernoulli substitution z=y^(1-n); chain rule; solve resulting linear ODE by integrating factor; recover y with source response and layout. Keep original exponent n, coefficient structures, ordered stages, and entire five-choice source bank.",
+      "constraints": "x+h>0; exclude y=0 for division; restrict denominators/real branches; even power inversion retains positive z; signed sqrt retains both nonzero branches."
+    },
+    {
+      "template": "q-109170",
+      "difficulty": "hard",
+      "source_db_id": 17592186244246,
+      "field_type": "radio",
+      "key": "selection",
+      "choice_count": 5,
+      "plot_rating": "none",
+      "source_problem": "Find the general solution to the differential equation\n\n$$\nx\\,\\frac{\\text{d}y}{\\text{d}x}+y={x}^{2}{y}^{3/4}.\n$$",
+      "solution_template": "First, we rearrange the equation, as follows:\n\n$$\n\\begin{aligned}x\\,\\frac{\\text{d}y}{\\text{d}x}+y={x}^{2}{y}^{3/4} \\\\ \\frac{\\text{d}y}{\\text{d}x}+\\frac{y}{x} & =x{y}^{3/4}\\end{aligned}\n$$\n\nNotice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)={x}^{-1},\\,q(x)=x,\\,n=\\frac{3}{4}.\n$$\n\nNow, we divide the differential equation by ${y}^{3/4},$ and we get\n\n$$\n{y}^{-3/4}\\frac{dy}{dx}+{x}^{-1}{y}^{1/4}=x.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{1/4}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=\\frac{1}{4}{y}^{-3/4}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-3/4}\\frac{\\text{d}y}{\\text{d}x}=4\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, equation $(\u2217)$ can be written as a linear equation in $z(x)$ as follows:\n\n$$\n4\\,\\frac{\\text{d}z}{\\text{d}x}+{x}^{-1}z=x\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{4}{x}^{-1}z=\\frac{x}{4}\n$$\n\nThe above equation is now in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x),\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{1}{4x},\\,Q(x)=\\frac{x}{4}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (1/4x)\\,\\text{d}x} \\\\  & ={e}^{(1/4)\\operatorname{ln}\u2061x} \\\\  & ={x}^{1/4}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={x}^{1/4}$ yields\n\n$$\n\\begin{aligned}{x}^{1/4}\\cdot (\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{4}{x}^{-1}z) & ={x}^{1/4}\\cdot (\\frac{x}{4}) \\\\ {x}^{1/4}\\cdot \\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{4}{x}^{-3/4}z & =\\frac{{x}^{5/4}}{4} \\\\ \\frac{\\text{d}}{\\text{d}x}(z{x}^{1/4}) & =\\frac{{x}^{5/4}}{4}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(z{x}^{1/4})\\,\\text{d}x & =\\int \\frac{{x}^{5/4}}{4}\\,\\text{d}x \\\\ z{x}^{1/4} & =\\frac{1}{9}{x}^{9/4}+{C}_{1} \\\\ z & =\\frac{{x}^{9/4}+C}{9{x}^{1/4}},\\end{aligned}\n$$\n\nwhere $C=9{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{1/4}.$ This results in\n\n$$\n{y}^{1/4}=\\frac{{x}^{9/4}+C}{9{x}^{1/4}}\\,\u21d2\\,y={(\\frac{{x}^{9/4}+C}{9{x}^{1/4}})}^{4}\\,.\n$$",
+      "profile": "observed:q-109170",
+      "choices": [
+        {
+          "source_answer_id": "17db3d82-11ec-509d-ab63-0e5193af0c88",
+          "source_value": "y={(\\frac{{x}^{5/4}+C}{5{x}^{1/4}})}^{4}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "2c0d3fc8-af2a-5397-a40e-b88eb47a52b7",
+          "source_value": "y={(\\frac{C{x}^{1/2}-2}{4{x}^{1/2}})}^{2}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "601be5e6-b943-5b1d-bccd-fe6ec7de5ec8",
+          "source_value": "y=\\frac{{x}^{1/4}+C}{4{x}^{9/4}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "7e50f3de-2289-5189-ab71-28ca20cc56e7",
+          "source_value": "y={(\\frac{{x}^{9/4}+C}{9{x}^{1/4}})}^{4}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": true,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "e31a0853-d5e3-5909-a9a1-0d81e266fab8",
+          "source_value": "y=\\frac{4{x}^{5/4}+C}{3{x}^{1/4}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        }
+      ],
+      "slots": {
+        "shift": {
+          "observed": 0,
+          "proposed": [
+            -6,
+            -5,
+            -4,
+            -3,
+            -2,
+            -1,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "role": "unit-slope translation of coefficient arguments",
+          "dependencies": [
+            "prompt coefficient values",
+            "p(x), q(x), P(x), Q(x)",
+            "integrating factor",
+            "integration antiderivatives",
+            "all source options and final solution"
+          ]
+        }
+      },
+      "backbone": "Bernoulli substitution z=y^(1-n); chain rule; solve resulting linear ODE by integrating factor; recover y with source response and layout. Keep original exponent n, coefficient structures, ordered stages, and entire five-choice source bank.",
+      "constraints": "x+h>0; exclude y=0 for division; restrict denominators/real branches; even power inversion retains positive z; signed sqrt retains both nonzero branches."
+    },
+    {
+      "template": "q-109172",
+      "difficulty": "hard",
+      "source_db_id": 17592186244247,
+      "field_type": "radio",
+      "key": "selection",
+      "choice_count": 5,
+      "plot_rating": "none",
+      "source_problem": "Find the general solution to the differential equation\n\n$$\n\\frac{\\text{d}y}{\\text{d}x}=\\frac{{y}^{2}+2xy}{{x}^{2}}.\n$$",
+      "solution_template": "First, we rearrange the equation, as follows:\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{{y}^{2}+2xy}{{x}^{2}} \\\\ \\frac{\\text{d}y}{\\text{d}x} & =\\frac{{y}^{2}}{{x}^{2}}+\\frac{2xy}{{x}^{2}} \\\\ \\frac{\\text{d}y}{\\text{d}x}-2{x}^{-1}y & ={x}^{-2}{y}^{2}\\end{aligned}\n$$\n\nNotice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-2{x}^{-1},\\,q(x)={x}^{-2},\\,n=2.\n$$\n\nNow, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}-2{x}^{-1}{y}^{-1}={x}^{-2}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, equation $(\u2217)$ can be written as a linear equation in $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}-2{x}^{-1}z={x}^{-2}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+2{x}^{-1}z=-{x}^{-2}\n$$\n\nThe above equation is now in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x),\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{2}{x},\\,Q(x)=-\\frac{1}{{x}^{2}}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (2/x)\\,\\text{d}x} \\\\  & ={e}^{2\\operatorname{ln}\u2061x} \\\\  & ={x}^{2}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={x}^{2}$ yields\n\n$$\n\\begin{aligned}{x}^{2}\\cdot (\\frac{\\text{d}z}{\\text{d}x}+2{x}^{-1}z) & ={x}^{2}\\cdot (-{x}^{-2}) \\\\ {x}^{2}\\cdot \\frac{\\text{d}z}{\\text{d}x}+2xz & =-1 \\\\ \\frac{\\text{d}}{\\text{d}x}({x}^{2}z) & =-1.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}({x}^{2}z)\\,\\text{d}x & =-\\int 1\\,\\text{d}x \\\\ {x}^{2}z & =-x+C \\\\ z & =\\frac{C-x}{{x}^{2}}.\\end{aligned}\n$$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n{y}^{-1}=\\frac{C-x}{{x}^{2}}\\,\u21d2\\,y=\\frac{{x}^{2}}{C-x}\\,.\n$$",
+      "profile": "observed:q-109172",
+      "choices": [
+        {
+          "source_answer_id": "2f72fa48-00bb-5f1a-977f-8c3a1854fc12",
+          "source_value": "y=\\frac{{x}^{2}}{C-x}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": true,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "35f33d3b-7fb6-5684-af24-1fc172ab09e9",
+          "source_value": "y=\\frac{x+C}{{x}^{3}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "55bcc63a-a6e9-5e69-ac5e-35e6a3036181",
+          "source_value": "y=\\frac{C-x}{2{x}^{2}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "d0694046-7042-5d19-85b1-970f97668ed2",
+          "source_value": "y=\\frac{{x}^{2}}{Cx+2}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "f06c513f-cd6c-5fd9-894b-b623992985bb",
+          "source_value": "y=\\frac{2{x}^{2}}{C-4x}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        }
+      ],
+      "slots": {
+        "shift": {
+          "observed": 0,
+          "proposed": [
+            -6,
+            -5,
+            -4,
+            -3,
+            -2,
+            -1,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "role": "unit-slope translation of coefficient arguments",
+          "dependencies": [
+            "prompt coefficient values",
+            "p(x), q(x), P(x), Q(x)",
+            "integrating factor",
+            "integration antiderivatives",
+            "all source options and final solution"
+          ]
+        }
+      },
+      "backbone": "Bernoulli substitution z=y^(1-n); chain rule; solve resulting linear ODE by integrating factor; recover y with source response and layout. Keep original exponent n, coefficient structures, ordered stages, and entire five-choice source bank.",
+      "constraints": "x+h>0; exclude y=0 for division; restrict denominators/real branches; even power inversion retains positive z; signed sqrt retains both nonzero branches."
+    },
+    {
+      "template": "q-109177",
+      "difficulty": "hard",
+      "source_db_id": 17592186244248,
+      "field_type": "radio",
+      "key": "selection",
+      "choice_count": 5,
+      "plot_rating": "none",
+      "source_problem": "Find the general solution to the differential equation\n\n$$\n{x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x}=\\frac{1}{\\sqrt{y}}-xy.\n$$",
+      "solution_template": "First, we rearrange the equation, as follows:\n\n$$\n\\begin{aligned}{x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x} & ={y}^{-1/2}-xy \\\\ {x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x}+xy & ={y}^{-1/2} \\\\ \\frac{dy}{dx}+{x}^{-1}y & ={x}^{-2}{y}^{-1/2}\\end{aligned}\n$$\n\nNotice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)={x}^{-1},\\,q(x)={x}^{-2},\\,n=-\\frac{1}{2}.\n$$\n\nNow, we multiply the differential equation by ${y}^{1/2},$ and we get\n\n$$\n{y}^{1/2}\\frac{dy}{dx}+{x}^{-1}{y}^{3/2}={x}^{-2}.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{3/2}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=\\frac{3}{2}{y}^{1/2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{1/2}\\frac{\\text{d}y}{\\text{d}x}=\\frac{2}{3}\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, equation $(\u2217)$ can be written as a linear equation in $z(x)$ as follows:\n\n$$\n\\frac{2}{3}\\,\\frac{\\text{d}z}{\\text{d}x}+{x}^{-1}z={x}^{-2}\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+\\frac{3}{2}{x}^{-1}z=\\frac{3}{2}{x}^{-2}\n$$\n\nThe above equation is now in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x),\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{3}{2x},\\,Q(x)=\\frac{3}{2{x}^{2}}\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (3/2x)\\,\\text{d}x} \\\\  & ={e}^{(3/2)\\operatorname{ln}\u2061x} \\\\  & ={x}^{3/2}\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)={x}^{3/2}$ yields\n\n$$\n\\begin{aligned}{x}^{3/2}\\cdot (\\frac{\\text{d}z}{\\text{d}x}+\\frac{3}{2}{x}^{-1}z) & ={x}^{3/2}\\cdot (\\frac{3}{2}{x}^{-2}) \\\\ {x}^{3/2}\\cdot \\frac{\\text{d}z}{\\text{d}x}+\\frac{3}{2}{x}^{1/2}z & =\\frac{3}{2}{x}^{-1/2} \\\\ \\frac{\\text{d}}{\\text{d}x}({x}^{3/2}z) & =\\frac{3}{2}{x}^{-1/2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}({x}^{3/2}z)\\,\\text{d}x & =\\int \\frac{3}{2}{x}^{-1/2}\\,\\text{d}x \\\\ {x}^{3/2}z & =3{x}^{1/2}+C \\\\ z & =\\frac{3\\sqrt{x}+C}{{x}^{3/2}}.\\end{aligned}\n$$\n\nFinally, we determine $y(x)$ by writing $z={y}^{3/2}.$ This results in\n\n$$\n{y}^{3/2}=\\frac{3\\sqrt{x}+C}{{x}^{3/2}}\\,\u21d2\\,y=\\frac{{(3\\sqrt{x}+C)}^{2/3}}{x}\\,.\n$$",
+      "profile": "observed:q-109177",
+      "choices": [
+        {
+          "source_answer_id": "177d975d-e56e-5b9c-9d15-f202564d2dcc",
+          "source_value": "y=2{x}^{2/3}-Cx",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "2494ed9c-553b-5032-82dd-4cad1100915e",
+          "source_value": "y=\\frac{{(3\\sqrt{x}+C)}^{2/3}}{x}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": true,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "2a0262c3-0c88-53c2-8f6c-a696ff2d9c86",
+          "source_value": "y=\\frac{{(3+Cx)}^{2/3}}{{x}^{2}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "3ed47f22-7be9-5d13-aafa-9aa435553945",
+          "source_value": "y=3\\sqrt{x}+C{x}^{2/3}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "b691ba50-56e8-5e37-96ad-51102a634da5",
+          "source_value": "y={(\\frac{\\sqrt{x}+C}{x})}^{2/3}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        }
+      ],
+      "slots": {
+        "shift": {
+          "observed": 0,
+          "proposed": [
+            -6,
+            -5,
+            -4,
+            -3,
+            -2,
+            -1,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "role": "unit-slope translation of coefficient arguments",
+          "dependencies": [
+            "prompt coefficient values",
+            "p(x), q(x), P(x), Q(x)",
+            "integrating factor",
+            "integration antiderivatives",
+            "all source options and final solution"
+          ]
+        }
+      },
+      "backbone": "Bernoulli substitution z=y^(1-n); chain rule; solve resulting linear ODE by integrating factor; recover y with source response and layout. Keep original exponent n, coefficient structures, ordered stages, and entire five-choice source bank.",
+      "constraints": "x+h>0; exclude y=0 for division; restrict denominators/real branches; even power inversion retains positive z; signed sqrt retains both nonzero branches."
+    },
+    {
+      "template": "q-109158",
+      "difficulty": "hard",
+      "source_db_id": 17592186399657,
+      "field_type": "radio",
+      "key": "selection",
+      "choice_count": 5,
+      "plot_rating": "none",
+      "source_problem": "Find the general solution to the differential equation\n\n$$\n{x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x}={x}^{3}{y}^{2}+xy.\n$$",
+      "solution_template": "First, we rearrange the equation, as follows:\n\n$$\n\\begin{aligned}{x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x} & ={x}^{3}{y}^{2}+xy \\\\ {x}^{2}\\,\\frac{\\text{d}y}{\\text{d}x}-xy & ={x}^{3}{y}^{2} \\\\ \\frac{\\text{d}y}{\\text{d}x}-\\frac{y}{x} & =x{y}^{2}\\end{aligned}\n$$\n\nNotice that our equation is an instance of the Bernoulli differential equation\n\n$$\n\\frac{dy}{dx}+p(x)y=q(x){y}^{n}.\n$$\n\nIn this case, we have\n\n$$\np(x)=-\\frac{1}{x},\\,q(x)=x,\\,n=2.\n$$\n\nNow, we divide the differential equation by ${y}^{2},$ and we get\n\n$$\n{y}^{-2}\\frac{dy}{dx}-\\frac{{y}^{-1}}{x}=x.\\,\\,(\u2217)\n$$\n\nThen, we make the substitution\n\n$$\nz={y}^{1-n}={y}^{-1}.\n$$\n\nDifferentiating $z(x)$ using the chain rule, we get \n\n$$\n\\frac{\\text{d}z}{\\text{d}x}=-{y}^{-2}\\,\\frac{\\text{d}y}{\\text{d}x}\\,\u27f9\\,{y}^{-2}\\frac{\\text{d}y}{\\text{d}x}=-\\,\\frac{\\text{d}z}{\\text{d}x}.\n$$\n\n \n\nTherefore, equation $(\u2217)$ can be written as a linear equation in $z(x)$ as follows:\n\n$$\n-\\,\\frac{\\text{d}z}{\\text{d}x}-\\frac{1}{x}z=x\n$$\n\nThis differential equation is linear, so we can use the method of integrating factors. But first, we write the above equation in standard form:\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{x}z=-x\n$$\n\nThe above equation is now in the standard form\n\n$$\n\\frac{\\text{d}z}{\\text{d}x}+P(x)z=Q(x),\n$$\n\nwith\n\n$$\n\\begin{aligned}P(x)=\\frac{1}{x},\\,Q(x)=-x\\,.\\end{aligned}\n$$\n\nWe then compute an integrating factor:\n\n$$\n\\begin{aligned}I(x) & ={e}^{\\int P(x)\\,\\text{d}x} \\\\  & ={e}^{\\int (1/x)\\,\\text{d}x} \\\\  & ={e}^{\\operatorname{ln}\u2061x} \\\\  & =x\\end{aligned}\n$$\n\nMultiplying both sides of the standard form equation by $I(x)=x$ yields\n\n$$\n\\begin{aligned}x\\cdot (\\frac{\\text{d}z}{\\text{d}x}+\\frac{1}{x}z) & =x\\cdot (-x) \\\\ x\\cdot \\frac{\\text{d}z}{\\text{d}x}+z & =-{x}^{2} \\\\ \\frac{\\text{d}}{\\text{d}x}(xz) & =-{x}^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $x:$\n\n$$\n\\begin{aligned}\\int \\frac{\\text{d}}{\\text{d}x}(xz)\\,\\text{d}x & =-\\int {x}^{2}\\,\\text{d}x \\\\ xz & =-\\frac{{x}^{3}}{3}+{C}_{1} \\\\ z & =\\frac{C-{x}^{3}}{3x},\\end{aligned}\n$$\n\nwhere $C=3{C}_{1}.$\n\nFinally, we determine $y(x)$ by writing $z={y}^{-1}.$ This results in\n\n$$\n{y}^{-1}=\\frac{C-{x}^{3}}{3x}\\,\u21d2\\,y=\\frac{3x}{C-{x}^{3}}\\,.\n$$",
+      "profile": "observed:q-109158",
+      "choices": [
+        {
+          "source_answer_id": "6773b545-4c85-529f-8c68-3b883278b649",
+          "source_value": "y=\\frac{{x}^{3}}{C-x}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "f60a96fe-942a-5e12-a66c-9e48bde3cb0d",
+          "source_value": "y=\\frac{3x}{C-{x}^{3}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": true,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "fe66776a-5049-554f-b295-b90565404145",
+          "source_value": "y=\\frac{3{x}^{2}}{C+2{x}^{3}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "e00a7e53-ea54-5b25-9e84-5594638cadcf",
+          "source_value": "y=\\frac{{x}^{3}+C}{{x}^{2}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        },
+        {
+          "source_answer_id": "f849933c-eec0-5349-a930-557222d316e5",
+          "source_value": "y=\\frac{x}{C-{x}^{2}}",
+          "exact_recipe": "source expression with algebraic x replaced by x+h; preserve derivative coordinates and function argument names",
+          "correct": false,
+          "interpretation": "Observed expression retained; error mechanism is not inferred."
+        }
+      ],
+      "slots": {
+        "shift": {
+          "observed": 0,
+          "proposed": [
+            -6,
+            -5,
+            -4,
+            -3,
+            -2,
+            -1,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "role": "unit-slope translation of coefficient arguments",
+          "dependencies": [
+            "prompt coefficient values",
+            "p(x), q(x), P(x), Q(x)",
+            "integrating factor",
+            "integration antiderivatives",
+            "all source options and final solution"
+          ]
+        }
+      },
+      "backbone": "Bernoulli substitution z=y^(1-n); chain rule; solve resulting linear ODE by integrating factor; recover y with source response and layout. Keep original exponent n, coefficient structures, ordered stages, and entire five-choice source bank.",
+      "constraints": "x+h>0; exclude y=0 for division; restrict denominators/real branches; even power inversion retains positive z; signed sqrt retains both nonzero branches."
+    }
+  ],
+  "unclassified_exclusion": {
+    "source": "q-106074",
+    "reason": "No correct answer, worked solution, or difficulty; cannot establish full source-bank fidelity. No source changes."
+  }
+}
