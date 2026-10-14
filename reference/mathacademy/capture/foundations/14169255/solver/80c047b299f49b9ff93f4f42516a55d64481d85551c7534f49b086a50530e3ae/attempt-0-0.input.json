@@ -1,0 +1,91 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-82874",
+      "sequence_position": 11,
+      "problem": "Using the change of variables \n\n$$\nu=x+y,\\,v=x-y,\n$$\n\ncalculate the area of the finite region $D$ bounded by the curve $(x+y)^{4}-x+y=0$ and  the line $y=0.$",
+      "worked_solution": "The area of the required region is given by\n\n$$\n{∬}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\to [\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{∬}_{D}dxdy={∬}_{Δ}|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=x+y,\\,v=x-y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nSubstituting $x+y=u$ and $x-y=v$ into the equation of the first curve, we get\n\n$$\n\\begin{aligned}(x+y)^{4}-x+y=0\\,⟹\\,(x+y)^{4}-(x-y)=0\\,⟹\\,v={u}^{4},\\end{aligned}\n$$\n\nNow, \n\n$$\n\\begin{aligned}\\{\\begin{aligned}x+y=u \\\\ x-y=v\\end{aligned}\\,⟹\\,y=\\frac{u-v}{2}.\\end{aligned}\n$$\n\nSubstituting this value into the equation of the given line yields:\n\n$$\n\\begin{aligned}y=0\\, & ⟹\\,\\frac{u-v}{2}=0\\,⟹\\,v=u\\end{aligned}\n$$\n\n \n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\{\\begin{aligned}v={u}^{4} \\\\ v=u\\end{aligned}\\,⟹\\,\\{\\begin{aligned}{u}^{3}(u-1)=0 \\\\ v=u.\\end{aligned}\\end{aligned}\n$$\n\n \n\nSo, the intersection points are $(0,0)$ and $(1,1).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\nΔ=\\{(u,v)\\,:\\,0\\le u\\le 1,\\,{u}^{4}\\le v\\le u\\}.\n$$\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14169255/assets/1ed905e319e689d3fc7955a30f58e0f3ae2e7a751c27b80201d2b43f58b4206c.png)\n\n \n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 1 \\\\ 1 & -1\\end{aligned}| \\\\  & =-2.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=(-2)^{-1}=-\\frac{1}{2}.\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$  In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{∬}_{D}\\text{d}x\\text{d}y & ={∬}_{Δ}|\\frac{∂(x,y)}{∂(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}|-\\frac{1}{2}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{0}^{1}[{\\int }_{{u}^{4}}^{u}\\,dv]du \\\\  & =\\frac{1}{2}{\\int }_{0}^{1}[v]_{{u}^{4}}^{u}\\,du \\\\  & =\\frac{1}{2}{\\int }_{0}^{1}(u-{u}^{4})du \\\\  & =\\frac{1}{2}{[\\frac{{u}^{2}}{2}-\\frac{{u}^{5}}{5}]}_{0}^{1} \\\\  & =\\frac{1}{2}(\\frac{1}{2}-\\frac{1}{5}) \\\\  & =\\frac{1}{2}(\\frac{3}{10}) \\\\  & =\\frac{3}{20}\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14169255/observations/history-q-82874-b47740d9067bf2bf2b27.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14169255",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14169255/observations/history-solution-q-82874-2923f75813844bd1df07.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "\\frac{1}{2}"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "\\frac{2}{3}"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "\\frac{1}{3}"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "\\frac{3}{20}"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "\\frac{1}{10}"
+            }
+          ]
+        }
+      ],
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14169255/assets/1ed905e319e689d3fc7955a30f58e0f3ae2e7a751c27b80201d2b43f58b4206c.png",
+          "sha256": "1ed905e319e689d3fc7955a30f58e0f3ae2e7a751c27b80201d2b43f58b4206c",
+          "source_url": "https://mathacademy.com/graphics/q-82874-e-0",
+          "content_type": "image/png",
+          "representation": "original"
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q82874",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "\\frac{3}{20}",
+                "option": "d",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "The area of the required region is given by\n\n$$\n{∬}_{D}dxdy.\n$$\n\nLet's define a transformation $T$ as follows: \n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\\to [\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required area, we will use the change of variables formula\n\n$$\n{∬}_{D}dxdy={∬}_{Δ}|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$  \n\nNote that the changes of variables\n\n$$\nu=x+y,\\,v=x-y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\nTo compute the required area, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nSubstituting $x+y=u$ and $x-y=v$ into the equation of the first curve, we get\n\n$$\n\\begin{aligned}(x+y)^{4}-x+y=0\\,⟹\\,(x+y)^{4}-(x-y)=0\\,⟹\\,v={u}^{4},\\end{aligned}\n$$\n\nNow, \n\n$$\n\\begin{aligned}\\{\\begin{aligned}x+y=u \\\\ x-y=v\\end{aligned}\\,⟹\\,y=\\frac{u-v}{2}.\\end{aligned}\n$$\n\nSubstituting this value into the equation of the given line yields:\n\n$$\n\\begin{aligned}y=0\\, & ⟹\\,\\frac{u-v}{2}=0\\,⟹\\,v=u\\end{aligned}\n$$\n\n \n\nTo find the intersections of the curves in the $uv$-plane, we solve the following system:\n\n$$\n\\begin{aligned}\\{\\begin{aligned}v={u}^{4} \\\\ v=u\\end{aligned}\\,⟹\\,\\{\\begin{aligned}{u}^{3}(u-1)=0 \\\\ v=u.\\end{aligned}\\end{aligned}\n$$\n\n \n\nSo, the intersection points are $(0,0)$ and $(1,1).$\n\nTherefore, our domain in the $uv$-plane has the type I representation\n\n$$\nΔ=\\{(u,v)\\,:\\,0\\le u\\le 1,\\,{u}^{4}\\le v\\le u\\}.\n$$\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14169255/assets/1ed905e319e689d3fc7955a30f58e0f3ae2e7a751c27b80201d2b43f58b4206c.png)\n\n \n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 1 \\\\ 1 & -1\\end{aligned}| \\\\  & =-2.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=(-2)^{-1}=-\\frac{1}{2}.\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$  In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Compute the required area.\n\nWe calculate the required area by performing the change of variables:\n\n$$\n\\begin{aligned}{∬}_{D}\\text{d}x\\text{d}y & ={∬}_{Δ}|\\frac{∂(x,y)}{∂(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}|-\\frac{1}{2}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{0}^{1}[{\\int }_{{u}^{4}}^{u}\\,dv]du \\\\  & =\\frac{1}{2}{\\int }_{0}^{1}[v]_{{u}^{4}}^{u}\\,du \\\\  & =\\frac{1}{2}{\\int }_{0}^{1}(u-{u}^{4})du \\\\  & =\\frac{1}{2}{[\\frac{{u}^{2}}{2}-\\frac{{u}^{5}}{5}]}_{0}^{1} \\\\  & =\\frac{1}{2}(\\frac{1}{2}-\\frac{1}{5}) \\\\  & =\\frac{1}{2}(\\frac{3}{10}) \\\\  & =\\frac{3}{20}\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14169255/observations/step-q82874-c2907b762db3b03bdf6a.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a13590-d9cf-7103-a501-110b224f601d",
+  "previous_failures": []
+}
