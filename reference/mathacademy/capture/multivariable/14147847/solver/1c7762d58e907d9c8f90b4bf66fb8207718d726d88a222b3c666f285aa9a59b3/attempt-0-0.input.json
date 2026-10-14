@@ -1,0 +1,87 @@
+{
+  "task": "solve_question",
+  "payload": {
+    "evidence_contract": "solve_question:1",
+    "question": {
+      "math_academy_id": "q-334545",
+      "problem": "A numerical method is used to approximate the solution to an initial value problem.\n\n- With step size $Δx=0.12,$ the observed global truncation error is $e(0.12)=0.410.$\n\n- With step size $Δx=0.06,$ the observed global truncation error is $e(0.06)=0.026.$\n\nUse this data to estimate the order of the numerical method.",
+      "answer_fields_complete": true,
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14147847/observations/step-q334545-2a30f2a98ee717495b26.html",
+      "source_url": "https://mathacademy.com/tasks/14147847/topics/6399/lesson",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "0"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "3"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "4"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "2"
+            }
+          ]
+        }
+      ]
+    },
+    "current_example": {
+      "math_academy_id": "e-21684",
+      "problem": "The global truncation error (GTE) of a numerical method with step size $\\Delta x$ is\n\n$$\ne(\\Delta x) = 4(\\Delta x)^3 + (\\Delta x)^4.\n$$\n\nComplete the following sentences.\n\n$\\quad$ With step size $\\Delta x = 0.4,$ the global truncation error is ![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14147847/assets/1bea31a9bc528b67a87633757da82ec48b3c12a79a3dfbb0fdd1e32a3e555e73.svg)\n\n$\\quad$ With step size $\\Delta x = 0.2,$ the global truncation error is ![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14147847/assets/c958ad3b774d7007b7dfdfc47c43d4dd1ba870ae4935f95047910fa754cbcf49.svg)\n\n$\\quad$ Decreasing from $\\Delta x = 0.4$ to $\\Delta x = 0.2,$ the GTE is reduced by a factor of ![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14147847/assets/b06398e270b48de17545f2801a7b321a4a48512ff8408aa7e6f7211489dd223c.svg)\n\n$\\quad$ According to this data, the order of the method is approximately\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14147847/assets/7ded83c237782e094ff6fe9ba47bbc6d0d47b8b3e44cfd1726b1a558cc9db000.svg)",
+      "worked_solution": "A numerical method has order $p$ if $p$ is the largest positive integer such that the global truncation error (GTE) satisfies\n\n$$\ne(\\Delta x) = \\mathcal O\\!\\left((\\Delta x)^p\\right)\\quad\\textrm{as}\\quad \\Delta x \\to 0.\n$$\n\nThe order describes how fast errors shrink as $\\Delta x$ decreases.\n\nIn other words, a numerical method has order $p$ if, for sufficiently small step sizes, reducing the step size by a factor of $k$ reduces the GTE by a factor of approximately $k^p.$\n\nFirst, we compute the GTE for the given step sizes:\n\n- With step size $\\Delta x = 0.4,$ the GTE is\n\n$$\n\\begin{aligned}e(0.4) & =4(0.4)^{3}+(0.4)^{4} \\\\  & =4\\cdot 0.064+1\\cdot 0.025\\,6 \\\\  & =0.256+0.025\\,6 \\\\  & =0.281\\,6 \\\\  & ≈0.282.\\end{aligned}\n$$\n\n- With step size $\\Delta x = 0.2,$ the GTE is\n\n$$\n\\begin{aligned}e(0.2) & =4(0.2)^{3}+(0.2)^{4} \\\\  & =4\\cdot 0.008+1\\cdot 0.001\\,6 \\\\  & =0.032+0.001\\,6 \\\\  & =0.033\\,6 \\\\  & ≈0.034.\\end{aligned}\n$$\n\nNext, we determine the order by comparing the errors. The step size decreases from $0.4$ to $0.2.$ So, it reduces by a factor of\n\n$$\nk = \\dfrac{0.4}{0.2} = 2.\n$$\n\nAs a result, for a numerical method of order $p,$ the GTE should decrease by a factor of approximately\n\n$$\nk^p = 2^p.\n$$\n\nOn the other hand, the GTE actually decreases from $0.281\\,6$ to $0.033\\,6.$ So, it reduces by a factor of\n\n$$\n\\dfrac{0.281\\,6}{0.033\\,6} = 8.380\\,95\\ldots \\approx  \\bbox[4pt,border: 1px solid gray]{8.381}.\n$$\n\nComparing the two scale factors for the GTE, we get\n\n$$\n\\begin{aligned}{2}^{p} & ≈8.380\\,952… \\\\ p & ≈{log}_{2}⁡(8.380\\,95…) \\\\ p & ≈3.067….\\end{aligned}\n$$\n\nTherefore, rounding to the nearest integer, the estimated order of the method is\n$\\bbox[4pt,border: 1px solid gray]{3}.$\n\nIndeed, this coincides with the definition of the order from the expression for the GTE:\n\n$$\ne(\\Delta x) = 4(\\Delta x)^3 + (\\Delta x)^4\n\\quad\\Rightarrow\\quad\ne(\\Delta x) = \\mathcal O\\!\\left((\\Delta x)^3\\right)\\quad\\textrm{as}\\quad \\Delta x\\to 0.\n$$\n\nHence, the order of the method is $3.$",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14147847/observations/step-e21684-b08a889edf28b5ea087e.html",
+      "source_url": "https://mathacademy.com/tasks/14147847/topics/6399/lesson",
+      "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14147847/observations/step-e21684-b08a889edf28b5ea087e.png",
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14147847/assets/1bea31a9bc528b67a87633757da82ec48b3c12a79a3dfbb0fdd1e32a3e555e73.svg",
+          "sha256": "1bea31a9bc528b67a87633757da82ec48b3c12a79a3dfbb0fdd1e32a3e555e73",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 1,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14147847/assets/c958ad3b774d7007b7dfdfc47c43d4dd1ba870ae4935f95047910fa754cbcf49.svg",
+          "sha256": "c958ad3b774d7007b7dfdfc47c43d4dd1ba870ae4935f95047910fa754cbcf49",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 2,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14147847/assets/b06398e270b48de17545f2801a7b321a4a48512ff8408aa7e6f7211489dd223c.svg",
+          "sha256": "b06398e270b48de17545f2801a7b321a4a48512ff8408aa7e6f7211489dd223c",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 3,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14147847/assets/7ded83c237782e094ff6fe9ba47bbc6d0d47b8b3e44cfd1726b1a558cc9db000.svg",
+          "sha256": "7ded83c237782e094ff6fe9ba47bbc6d0d47b8b3e44cfd1726b1a558cc9db000",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        }
+      ]
+    }
+  },
+  "session_id": "01a13193-3a6e-7843-b2ef-12af153f5ec6",
+  "previous_failures": []
+}
