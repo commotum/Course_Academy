@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-95912",
+      "sequence_position": 17,
+      "problem": "$$\nA=[\\begin{aligned}0 & -2 \\\\ -2 & 3\\end{aligned}],\\,Σ=[\\begin{aligned}4 & 0 \\\\ 0 & 1\\end{aligned}]\n$$\n\nConsider the matrices $A$ and $Σ$ shown above. Given that $A=UΣ{V}^{T}$ is a singular value decomposition of $A,$ which of the following could be the matrices $U$ and $V?$",
+      "worked_solution": "Let's find the singular value decomposition of $A$ using the usual algorithm.\n\n- **Step 1.** Compute ${A}^{T}\\,A:$\n\n$$\n\\begin{aligned}{A}^{T}\\,A & ={[\\begin{aligned}0 & -2 \\\\ -2 & 3\\end{aligned}]}^{T}[\\begin{aligned}0 & -2 \\\\ -2 & 3\\end{aligned}] \\\\  & =[\\begin{aligned}0 & -2 \\\\ -2 & 3\\end{aligned}][\\begin{aligned}0 & -2 \\\\ -2 & 3\\end{aligned}] \\\\  & =[\\begin{aligned}4 & -6 \\\\ -6 & 13\\end{aligned}]\\end{aligned}\n$$\n\n- **Step 2.** Find the singular values: From the matrix $Σ,$ we deduce that ${\\sigma }_{1}=4$ and ${\\sigma }_{2}=1.$\n\n- **Step 3.** Find the right singular vectors of $A$ (i.e., the unit eigenvectors of ${A}^{T}\\,A$):\n\n- For ${\\lambda }_{1}={\\sigma }_{1}^{2}=16,$ we have\n\n$$\n\\begin{aligned}{A}^{T}\\,A-16I & =[\\begin{aligned}4 & -6 \\\\ -6 & 13\\end{aligned}]-16[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}-12 & -6 \\\\ -6 & -3\\end{aligned}].\\end{aligned}\n$$\n\nSeeking a non-zero solution of $({A}^{T}\\,A-16I)v=0$ gives a unit eigenvector\n\n$$\n{v}_{1}=[\\begin{aligned}-\\frac{1}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}}\\end{aligned}].\n$$\n\n- For ${\\lambda }_{2}={\\sigma }_{2}^{2}=1,$ we have\n\n$$\n\\begin{aligned}{A}^{T}\\,A-I & =[\\begin{aligned}4 & -6 \\\\ -6 & 13\\end{aligned}]-[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}3 & -6 \\\\ -6 & 12\\end{aligned}].\\end{aligned}\n$$\n\nSeeking a non-zero solution of $({A}^{T}\\,A-I)v=0$ gives a unit eigenvector\n\n$$\n{v}_{2}=[\\begin{aligned}\\frac{2}{\\sqrt{5}} \\\\ \\frac{1}{\\sqrt{5}}\\end{aligned}].\n$$\n\n- **Step 4.** Find the left singular vectors of $A$: Since we know the singular values and right singular vectors, we can compute the columns of $U$ as follows:\n\n- First, we compute ${u}_{1}:$\n\n$$\n\\begin{aligned}{u}_{1} & =\\frac{1}{{\\sigma }_{1}}A{v}_{1} \\\\  & =\\frac{1}{4}[\\begin{aligned}0 & -2 \\\\ -2 & 3\\end{aligned}][\\begin{aligned}-\\frac{1}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}}\\end{aligned}] \\\\  & =\\frac{1}{4}[\\begin{aligned}-\\frac{4}{\\sqrt{5}} \\\\ \\frac{8}{\\sqrt{5}}\\end{aligned}] \\\\  & =[\\begin{aligned}-\\frac{1}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}}\\end{aligned}]\\end{aligned}\n$$\n\n- Then, we compute ${u}_{2}:$\n\n$$\n\\begin{aligned}{u}_{2} & =\\frac{1}{{\\sigma }_{2}}A{v}_{2} \\\\  & =\\frac{1}{1}[\\begin{aligned}0 & -2 \\\\ -2 & 3\\end{aligned}][\\begin{aligned}\\frac{2}{\\sqrt{5}} \\\\ \\frac{1}{\\sqrt{5}}\\end{aligned}] \\\\  & =[\\begin{aligned}-\\frac{2}{\\sqrt{5}} \\\\ -\\frac{1}{\\sqrt{5}}\\end{aligned}]\\end{aligned}\n$$\n\nFinally, we construct the matrices $U$ and $V:$\n\n$$\nU=[\\begin{aligned}-\\frac{1}{\\sqrt{5}} & -\\frac{2}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}} & -\\frac{1}{\\sqrt{5}}\\end{aligned}],\\,V=[\\begin{aligned}-\\frac{1}{\\sqrt{5}} & \\frac{2}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}} & \\frac{1}{\\sqrt{5}}\\end{aligned}]\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14181573/observations/history-q-95912-da49c347cef328964277.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14181573",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14181573/observations/history-solution-q-95912-8781c0f513ebad1e44ff.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "text",
+              "value": "$U=[\\begin{aligned}-\\frac{1}{\\sqrt{5}} & -\\frac{2}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}} & -\\frac{1}{\\sqrt{5}}\\end{aligned}]$\nand\n$V=[\\begin{aligned}-\\frac{1}{\\sqrt{5}} & \\frac{2}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}} & \\frac{1}{\\sqrt{5}}\\end{aligned}]$"
+            },
+            {
+              "option": "b",
+              "type": "text",
+              "value": "$U=[\\begin{aligned}-\\frac{1}{\\sqrt{13}} & \\frac{3}{\\sqrt{13}} \\\\ \\frac{3}{\\sqrt{13}} & \\frac{1}{\\sqrt{13}}\\end{aligned}]$\nand\n$V=[\\begin{aligned}-\\frac{3}{\\sqrt{13}} & -\\frac{1}{\\sqrt{13}} \\\\ \\frac{1}{\\sqrt{13}} & -\\frac{3}{\\sqrt{13}}\\end{aligned}]$"
+            },
+            {
+              "option": "c",
+              "type": "text",
+              "value": "$U=[\\begin{aligned}-\\frac{1}{\\sqrt{5}} & \\frac{2}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}} & \\frac{1}{\\sqrt{5}}\\end{aligned}]$\nand\n$V=[\\begin{aligned}-\\frac{2}{\\sqrt{5}} & -\\frac{1}{\\sqrt{5}} \\\\ -\\frac{1}{\\sqrt{5}} & \\frac{2}{\\sqrt{5}}\\end{aligned}]$"
+            },
+            {
+              "option": "d",
+              "type": "text",
+              "value": "$U=[\\begin{aligned}-\\frac{3}{\\sqrt{13}} & -\\frac{1}{\\sqrt{13}} \\\\ \\frac{1}{\\sqrt{13}} & -\\frac{3}{\\sqrt{13}}\\end{aligned}]$\nand\n$V=[\\begin{aligned}-\\frac{1}{\\sqrt{13}} & \\frac{3}{\\sqrt{13}} \\\\ \\frac{3}{\\sqrt{13}} & \\frac{1}{\\sqrt{13}}\\end{aligned}]$"
+            },
+            {
+              "option": "e",
+              "type": "text",
+              "value": "$U=[\\begin{aligned}\\frac{1}{\\sqrt{2}} & -\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}}\\end{aligned}]$\nand\n$V=[\\begin{aligned}-\\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}}\\end{aligned}]$"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q95912",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "$U=[\\begin{aligned}-\\frac{1}{\\sqrt{5}} & -\\frac{2}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}} & -\\frac{1}{\\sqrt{5}}\\end{aligned}]$\nand\n$V=[\\begin{aligned}-\\frac{1}{\\sqrt{5}} & \\frac{2}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}} & \\frac{1}{\\sqrt{5}}\\end{aligned}]$",
+                "option": "a",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Let's find the singular value decomposition of $A$ using the usual algorithm.\n\n- **Step 1.** Compute ${A}^{T}\\,A:$\n\n$$\n\\begin{aligned}{A}^{T}\\,A & ={[\\begin{aligned}0 & -2 \\\\ -2 & 3\\end{aligned}]}^{T}[\\begin{aligned}0 & -2 \\\\ -2 & 3\\end{aligned}] \\\\  & =[\\begin{aligned}0 & -2 \\\\ -2 & 3\\end{aligned}][\\begin{aligned}0 & -2 \\\\ -2 & 3\\end{aligned}] \\\\  & =[\\begin{aligned}4 & -6 \\\\ -6 & 13\\end{aligned}]\\end{aligned}\n$$\n\n- **Step 2.** Find the singular values: From the matrix $Σ,$ we deduce that ${\\sigma }_{1}=4$ and ${\\sigma }_{2}=1.$\n\n- **Step 3.** Find the right singular vectors of $A$ (i.e., the unit eigenvectors of ${A}^{T}\\,A$):\n\n- For ${\\lambda }_{1}={\\sigma }_{1}^{2}=16,$ we have\n\n$$\n\\begin{aligned}{A}^{T}\\,A-16I & =[\\begin{aligned}4 & -6 \\\\ -6 & 13\\end{aligned}]-16[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}-12 & -6 \\\\ -6 & -3\\end{aligned}].\\end{aligned}\n$$\n\nSeeking a non-zero solution of $({A}^{T}\\,A-16I)v=0$ gives a unit eigenvector\n\n$$\n{v}_{1}=[\\begin{aligned}-\\frac{1}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}}\\end{aligned}].\n$$\n\n- For ${\\lambda }_{2}={\\sigma }_{2}^{2}=1,$ we have\n\n$$\n\\begin{aligned}{A}^{T}\\,A-I & =[\\begin{aligned}4 & -6 \\\\ -6 & 13\\end{aligned}]-[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}3 & -6 \\\\ -6 & 12\\end{aligned}].\\end{aligned}\n$$\n\nSeeking a non-zero solution of $({A}^{T}\\,A-I)v=0$ gives a unit eigenvector\n\n$$\n{v}_{2}=[\\begin{aligned}\\frac{2}{\\sqrt{5}} \\\\ \\frac{1}{\\sqrt{5}}\\end{aligned}].\n$$\n\n- **Step 4.** Find the left singular vectors of $A$: Since we know the singular values and right singular vectors, we can compute the columns of $U$ as follows:\n\n- First, we compute ${u}_{1}:$\n\n$$\n\\begin{aligned}{u}_{1} & =\\frac{1}{{\\sigma }_{1}}A{v}_{1} \\\\  & =\\frac{1}{4}[\\begin{aligned}0 & -2 \\\\ -2 & 3\\end{aligned}][\\begin{aligned}-\\frac{1}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}}\\end{aligned}] \\\\  & =\\frac{1}{4}[\\begin{aligned}-\\frac{4}{\\sqrt{5}} \\\\ \\frac{8}{\\sqrt{5}}\\end{aligned}] \\\\  & =[\\begin{aligned}-\\frac{1}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}}\\end{aligned}]\\end{aligned}\n$$\n\n- Then, we compute ${u}_{2}:$\n\n$$\n\\begin{aligned}{u}_{2} & =\\frac{1}{{\\sigma }_{2}}A{v}_{2} \\\\  & =\\frac{1}{1}[\\begin{aligned}0 & -2 \\\\ -2 & 3\\end{aligned}][\\begin{aligned}\\frac{2}{\\sqrt{5}} \\\\ \\frac{1}{\\sqrt{5}}\\end{aligned}] \\\\  & =[\\begin{aligned}-\\frac{2}{\\sqrt{5}} \\\\ -\\frac{1}{\\sqrt{5}}\\end{aligned}]\\end{aligned}\n$$\n\nFinally, we construct the matrices $U$ and $V:$\n\n$$\nU=[\\begin{aligned}-\\frac{1}{\\sqrt{5}} & -\\frac{2}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}} & -\\frac{1}{\\sqrt{5}}\\end{aligned}],\\,V=[\\begin{aligned}-\\frac{1}{\\sqrt{5}} & \\frac{2}{\\sqrt{5}} \\\\ \\frac{2}{\\sqrt{5}} & \\frac{1}{\\sqrt{5}}\\end{aligned}]\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14181573/observations/step-q95912-390d62b97ac73a77aa9c.html"
+        }
+      }
+    ]
+  }
+}
