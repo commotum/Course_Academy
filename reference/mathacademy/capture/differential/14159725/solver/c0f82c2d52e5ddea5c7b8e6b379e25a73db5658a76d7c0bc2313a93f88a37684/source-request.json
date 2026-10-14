@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-97020",
+      "sequence_position": 4,
+      "problem": "$$\nA=[\\begin{aligned}2 & 1 & 2 \\\\ -2 & 5 & 4 \\\\ 3 & -3 & -3\\end{aligned}],\\,D=[\\begin{aligned}-2 & 0 & 0 \\\\ 0 & 3 & 0 \\\\ 0 & 0 & 3\\end{aligned}]\n$$\n\nConsider the matrices shown above. Given that $A=PD{P}^{-1},$ which of the following could be the matrix $P?$",
+      "worked_solution": "Notice that $A=PD{P}^{-1}$ is a diagonalization of the matrix $A.$ So let's apply the diagonalization algorithm to $A.$\n\n**Step 1.** From the diagonal matrix $D,$ we deduce that the eigenvalues of $A$ are \n\n$\\,$ ${\\lambda }_{1}={\\lambda }_{2}=3\\,$ and $\\,{\\lambda }_{3}=-2.$\n\n**Step 2.** Now, we need to find an eigenvector basis of $A.$\n\n- Consider $\\lambda =3.$ Then,\n\n$$\n\\begin{aligned}A-\\lambda I & =[\\begin{aligned}2 & 1 & 2 \\\\ -2 & 5 & 4 \\\\ 3 & -3 & -3\\end{aligned}]-3[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}-1 & 1 & 2 \\\\ -2 & 2 & 4 \\\\ 3 & -3 & -6\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ which we reduce to row echelon form using Gaussian elimination:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-1 & 1 & 2 & 0 \\\\ -2 & 2 & 4 & 0 \\\\ 3 & -3 & -6 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+(-2){R}_{1} \\\\ {R}_{3}:={R}_{3}+3{R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}-1 & 1 & 2 & 0 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nIn the reduced matrix above, there is one pivot column (the $1$st one). Thus, ${x}_{2}$ and ${x}_{3}$ are free variables. From the first equation, we obtain ${x}_{2}={x}_{2}+2{x}_{3}.$ Hence, the general solution is\n\n$$\n[\\begin{aligned}{x}_{2}+2{x}_{3} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}]={x}_{2}[\\begin{aligned}1 \\\\ 1 \\\\ 0\\end{aligned}]+{x}_{3}[\\begin{aligned}2 \\\\ 0 \\\\ 1\\end{aligned}],\\,{x}_{2},{x}_{3}\\in R.\n$$\n\nAs a result, we have two linearly independent eigenvectors\n\n$\\,$ ${v}_{1}=[\\begin{aligned}1 \\\\ 1 \\\\ 0\\end{aligned}]\\,$ and $\\,{v}_{2}=[\\begin{aligned}2 \\\\ 0 \\\\ 1\\end{aligned}].$\n\n- Consider $\\lambda =-2.$ Then,\n\n$$\n\\begin{aligned}A-(-2)I & =[\\begin{aligned}2 & 1 & 2 \\\\ -2 & 5 & 4 \\\\ 3 & -3 & -3\\end{aligned}]-(-2)[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}4 & 1 & 2 \\\\ -2 & 7 & 4 \\\\ 3 & -3 & -1\\end{aligned}].\\end{aligned}\n$$\n\nSeeking for nonzero solutions of $(A-(-2)I)x=0,$ we obtain the eigenvector \n\n$\\,$ ${v}_{3}=[\\begin{aligned}-1 \\\\ -2 \\\\ 3\\end{aligned}].$\n\n**Step 3.** We construct the invertible matrix $P$ using our eigenvectors, as follows:\n\n$$\nP=[\\begin{aligned}-1 & 1 & 2 \\\\ -2 & 1 & 0 \\\\ 3 & 0 & 1\\end{aligned}]\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14159725/observations/history-q-97020-da74f9b31c05301a8bd3.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14159725",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14159725/observations/history-solution-q-97020-e712f445743efc1ed022.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "text",
+              "value": "$A$ is not diagonalizable"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "P=[\\begin{aligned}-1 & 1 & 2 \\\\ -2 & 1 & 0 \\\\ 3 & 0 & 1\\end{aligned}]"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "P=[\\begin{aligned}2 & 1 & 3 \\\\ 1 & 0 & -1 \\\\ 2 & 1 & 0\\end{aligned}]"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "P=[\\begin{aligned}1 & 0 & -2 \\\\ 1 & 1 & 0 \\\\ 0 & 1 & 1\\end{aligned}]"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "P=[\\begin{aligned}-2 & 2 & 2 \\\\ -2 & 1 & 0 \\\\ 1 & 0 & 1\\end{aligned}]"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q97020",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "$A$ is not diagonalizable",
+                "option": "a",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "Notice that $A=PD{P}^{-1}$ is a diagonalization of the matrix $A.$ So let's apply the diagonalization algorithm to $A.$\n\n**Step 1.** From the diagonal matrix $D,$ we deduce that the eigenvalues of $A$ are \n\n$\\,$ ${\\lambda }_{1}={\\lambda }_{2}=3\\,$ and $\\,{\\lambda }_{3}=-2.$\n\n**Step 2.** Now, we need to find an eigenvector basis of $A.$\n\n- Consider $\\lambda =3.$ Then,\n\n$$\n\\begin{aligned}A-\\lambda I & =[\\begin{aligned}2 & 1 & 2 \\\\ -2 & 5 & 4 \\\\ 3 & -3 & -3\\end{aligned}]-3[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}-1 & 1 & 2 \\\\ -2 & 2 & 4 \\\\ 3 & -3 & -6\\end{aligned}].\\end{aligned}\n$$\n\nSo, we have a system of linear equations with the augmented matrix $M$ which we reduce to row echelon form using Gaussian elimination:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-1 & 1 & 2 & 0 \\\\ -2 & 2 & 4 & 0 \\\\ 3 & -3 & -6 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+(-2){R}_{1} \\\\ {R}_{3}:={R}_{3}+3{R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}-1 & 1 & 2 & 0 \\\\ 0 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nIn the reduced matrix above, there is one pivot column (the $1$st one). Thus, ${x}_{2}$ and ${x}_{3}$ are free variables. From the first equation, we obtain ${x}_{2}={x}_{2}+2{x}_{3}.$ Hence, the general solution is\n\n$$\n[\\begin{aligned}{x}_{2}+2{x}_{3} \\\\ {x}_{2} \\\\ {x}_{3}\\end{aligned}]={x}_{2}[\\begin{aligned}1 \\\\ 1 \\\\ 0\\end{aligned}]+{x}_{3}[\\begin{aligned}2 \\\\ 0 \\\\ 1\\end{aligned}],\\,{x}_{2},{x}_{3}\\in R.\n$$\n\nAs a result, we have two linearly independent eigenvectors\n\n$\\,$ ${v}_{1}=[\\begin{aligned}1 \\\\ 1 \\\\ 0\\end{aligned}]\\,$ and $\\,{v}_{2}=[\\begin{aligned}2 \\\\ 0 \\\\ 1\\end{aligned}].$\n\n- Consider $\\lambda =-2.$ Then,\n\n$$\n\\begin{aligned}A-(-2)I & =[\\begin{aligned}2 & 1 & 2 \\\\ -2 & 5 & 4 \\\\ 3 & -3 & -3\\end{aligned}]-(-2)[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}4 & 1 & 2 \\\\ -2 & 7 & 4 \\\\ 3 & -3 & -1\\end{aligned}].\\end{aligned}\n$$\n\nSeeking for nonzero solutions of $(A-(-2)I)x=0,$ we obtain the eigenvector \n\n$\\,$ ${v}_{3}=[\\begin{aligned}-1 \\\\ -2 \\\\ 3\\end{aligned}].$\n\n**Step 3.** We construct the invertible matrix $P$ using our eigenvectors, as follows:\n\n$$\nP=[\\begin{aligned}-1 & 1 & 2 \\\\ -2 & 1 & 0 \\\\ 3 & 0 & 1\\end{aligned}]\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14159725/observations/step-q97020-908d3a01891f0e4c99b1.html"
+        }
+      }
+    ]
+  }
+}
