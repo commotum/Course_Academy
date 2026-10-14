@@ -1,0 +1,55 @@
+--- a/src/index/tree/mod.rs
++++ b/src/index/tree/mod.rs
+@@ -2729,8 +2729,8 @@
+                 context.load_directory(directory_ref, descriptor.order, descriptor.history)?;
+             let mut output_leaves = Vec::new();
+             for (leaf_index, leaf_ref) in directory.leaves.iter().enumerate() {
+-                let leaf_lower = if directory_index == 0 && leaf_index == 0 {
+-                    None
++                let leaf_lower = if leaf_index == 0 {
++                    lower
+                 } else {
+                     Some(&leaf_ref.key)
+                 };
+@@ -3754,8 +3754,8 @@
+             &mut ignored_reads,
+         )?;
+         for (leaf_index, leaf_ref) in directory.leaves.iter().enumerate() {
+-            let leaf_lower = if directory_index == 0 && leaf_index == 0 {
+-                None
++            let leaf_lower = if leaf_index == 0 {
++                lower
+             } else {
+                 Some(&leaf_ref.key)
+             };
+--- a/src/index/tests.rs
++++ b/src/index/tests.rs
+@@ -714,3 +714,28 @@
+         }
+     }
+ }
++
++#[test]
++fn merge_first_leaf_inherits_sparse_parent_range() {
++    use crate::{Datom, Value, IndexOrder, t_to_tx};
++    use super::tree::{build_tree, merge_tree, TreeConfig, TreeMergeEdits};
++    let fact = |entity, t| Datom { entity, attribute: 100, value: Value::Ref(77),
++        tx: t_to_tx(t).unwrap(), source: 98, added: true };
++    let config = TreeConfig { max_leaf_datoms: 1, max_leaves_per_directory: 1,
++        ..Default::default() };
++    for order in [IndexOrder::Eavt, IndexOrder::Aevt, IndexOrder::Avet,
++                  IndexOrder::Vaet, IndexOrder::Saevt, IndexOrder::Savet] {
++        for history in [false, true] {
++            let mut input = vec![fact(10, 1), fact(20, 1)];
++            input.sort_by(|a, b| a.cmp_in(b, order));
++            let built = build_tree(order, history, input, &config).unwrap();
++            let edits = TreeMergeEdits {
++                removals: if history { vec![] } else { vec![fact(20, 1)] },
++                insertions: vec![fact(20, 2)], ..Default::default()
++            };
++            let merged = merge_tree(&built.descriptor, &built.nodes, &edits, &config)
++                .unwrap_or_else(|e| panic!("{order:?} history={history}: {e}"));
++            assert_eq!(merged.descriptor.count, if history { 3 } else { 2 });
++        }
++    }
++}

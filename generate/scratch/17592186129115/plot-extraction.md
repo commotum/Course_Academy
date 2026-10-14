@@ -1,0 +1,5 @@
+# Plot extraction
+
+The ten practice prompts and solutions store plain TeX matrices. These are standalone mathematical notation, not plots, so the rating is none and no per-instance image generation is needed. The canonical prompt and solution use MathJax SVG math assets; their embedded MathML was read to verify matrix content. Exact references, dimensions and byte hashes are in `canonical-assets.json`.
+
+The canonical matrix is [[3,11,10,9],[0,4,7,8],[0,-1,6,5],[0,1,2,4]]. The solution asset marks echelon pivots with gray backing, leading zeros in blue, and offending a32, a42, a43 entries in red. Their order and row-column positions convey the removal relationship; the canonical worked sentence identifies those entries. This supports the same zero-replacement method. Practice source notation instead shows the original and corrected matrices with an arrow and ordinary uncolored entries. Generated practice keeps that observed practice layout. No existing asset is modified or published; native TeX follows the shared matrix formatter. Matplotlib/TikZ is unnecessary.

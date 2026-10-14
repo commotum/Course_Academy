@@ -1,0 +1,3 @@
+# Plot assessment
+
+All practice matrices are native LaTeX arrays with a vertical separator before the constants column. These are standalone mathematical typesetting, not plots. No plots need generating and no assets need publishing. The canonical example uses five existing MathJax SVG assets: one prompt with four augmented matrices, followed by four solution matrices with highlighted violation entries. Their accessible SVG titles and array structure were inspected from the database image store. Those immutable assets remain unchanged and excluded from practice inventory. Generated variants use the source practice array notation. No geometric or relational diagram is invented.
