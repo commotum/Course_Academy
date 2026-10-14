@@ -12,7 +12,7 @@ from pathlib import Path
 
 from edn import kw
 from math_notation import identity as math_identity
-from math_content import normalize_capture_question
+from math_format import normalize_capture_question
 
 ROOT = Path(__file__).resolve().parents[2]
 # Keep capture independent of rebuilds in the EDB development checkout.

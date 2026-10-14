@@ -1,5 +1,6 @@
 """Source-aware content plans tested against native EDB pull-shaped fixtures."""
 import copy
+import re
 import unittest
 import uuid
 
@@ -60,6 +61,25 @@ class MathContentTests(unittest.TestCase):
         transaction, guards = self.plan()
         self.assertEqual(transaction, [])
         self.assertEqual(guards['retractions'], [])
+
+    def test_matrix_import_normalizes_prompt_and_keeps_correct_choice_link(self):
+        self.question['problem'] = r'Choose this matrix: \[ [\matrix{1 & 3\cr 2 & 0}] \]'
+        self.question['worked_solution'] = r'\[ [\matrix{1 & 3\cr 2 & 0}] \]'
+        correct = r'$[\matrix{1 & 3\cr 2 & 0}]$'
+        field = self.question['answer_fields'][0]
+        field['correct_value'] = correct
+        field['choices'] = [{'type':'math', 'value':correct},
+                            {'type':'math', 'value':r'$[\matrix{1 & 2\cr 3 & 0}]$'}]
+        transaction, _ = self.plan()
+        saved = {item[':db/id']:item for item in transaction
+                 if isinstance(item, dict) and isinstance(item[':db/id'], str)}
+        new_field = next(item for item in saved.values() if ':answer-field/id' in item)
+        answer = saved[new_field[':answer-field/correct']]
+        self.assertEqual(re.sub(r'\s+', '', answer[':answer/value']),
+                         r'\begin{bmatrix}1&3\\2&0\end{bmatrix}')
+        prompt = next(item[':question/problem'] for item in transaction
+                      if isinstance(item, dict) and ':question/problem' in item)
+        self.assertEqual(prompt, 'Choose this matrix: $$\n' + answer[':answer/value'] + '\n$$')
 
     def test_changed_source_body_updates_existing_uuid_and_plans_prior_value_retraction(self):
         self.question['worked_solution'] = 'Expanded explanation: $5!=5(4)(3)(2)(1)=120$.'
