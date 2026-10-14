@@ -2966,6 +2966,27 @@ mod study_queue_tests {
 
     #[test]
     #[ignore = "read-only performance measurement against the configured database"]
+    fn profile_study_home_reads() -> Result<()> {
+        let app = Application::connect(std::env::var("EDB_DATABASE")?, std::env::var("PAGE_TEST_LEARNER")?, std::env::var("EDB_ENDPOINT").unwrap_or_default())?;
+        let s = &app.snapshot;
+        let l = app.learner_eid;
+        eprintln!("Profile home basis={} entities={} cache-lifetime={:?}", s.basis_t, s.entities.len(), app.home_lifetime());
+        for run in 0..3 {
+            let started = Instant::now();
+            let (forms, candidates) = queue_preparation(s, l, Utc::now())?;
+            eprintln!("Profile home run={run} preparation={:.3} ms speculative-forms={} candidates={}", started.elapsed().as_secs_f64()*1000., forms.len(), candidates.len());
+            let started = Instant::now();
+            let view = home_with_candidates(s, l, None)?;
+            eprintln!("Profile home run={run} repeated-planning={:.3} ms bytes={}", started.elapsed().as_secs_f64()*1000., serde_json::to_vec(&view)?.len());
+            let started = Instant::now();
+            let _view = home_with_candidates(s, l, Some(candidates))?;
+            eprintln!("Profile home run={run} reused-planning={:.3} ms", started.elapsed().as_secs_f64()*1000.);
+        }
+        Ok(())
+    }
+
+    #[test]
+    #[ignore = "read-only performance measurement against the configured database"]
     fn profile_study_now_reads() -> Result<()> {
         let app = Application::connect(
             std::env::var("EDB_DATABASE")?,
