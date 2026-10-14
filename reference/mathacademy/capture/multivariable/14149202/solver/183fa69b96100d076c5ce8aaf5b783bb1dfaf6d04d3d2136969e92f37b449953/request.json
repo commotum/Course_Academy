@@ -1,0 +1,148 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-336918",
+      "sequence_position": 11,
+      "problem": "$$\n\\{\\begin{aligned}{x}^{′}(t)=y(t)+(x(t)-2)^{3}+8 \\\\ {y}^{′}(t)=-2x(t)+4+\\operatorname{sin}⁡(y(t)+8)\\end{aligned}\n$$\n\nConsider the system of differential equations above. What is the behavior of the system's solutions near the equilibrium ${x}^{∗}=[2,\\text{ }-8]^{T}?$\n\n$\\,$\nThe equilibrium is an \n{{field-1}}{{field-2}}.",
+      "worked_solution": "The system can be rewritten in matrix form as \n\n$$\n{x}^{′}=\\text{\\boldsymbol}f(x)\n$$\n\nwhere $x=[\\begin{aligned}x(t) \\\\ y(t)\\end{aligned}]$ and \n$\\text{\\boldsymbol}f(x)=[\\begin{aligned}y+(x-2)^{3}+8 \\\\ -2x+4+\\operatorname{sin}⁡(y+8)\\end{aligned}].$\n\nWe need to compute the Jacobian matrix (or the total derivative) of $\\text{\\boldsymbol}f(x).$ \n\nIn our case, we have the following:\n\n$$\n\\text{\\boldsymbol}{f}^{′}(x)=[\\begin{aligned}\\frac{∂{f}_{1}}{∂x} & \\frac{∂{f}_{1}}{∂y} \\\\ \\frac{∂{f}_{2}}{∂x} & \\frac{∂{f}_{2}}{∂y}\\end{aligned}]\n$$\n\nFirst, we compute the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{∂{f}_{1}}{∂x} & =\\frac{∂}{∂x}(y+(x-2)^{3}+8)=3(x-2)^{2} \\\\ \\frac{∂{f}_{1}}{∂y} & =\\frac{∂}{∂y}(-2x(t)+4+\\operatorname{sin}⁡(y(t)+8))=1 \\\\ \\frac{∂{f}_{2}}{∂x} & =\\frac{∂}{∂x}(-2x+4+\\operatorname{sin}⁡(y+8))=-2 \\\\ \\frac{∂{f}_{2}}{∂y} & =\\frac{∂}{∂y}(-2x(t)+4+\\operatorname{sin}⁡(y(t)+8))=\\operatorname{cos}⁡(y+8)\\end{aligned}\n$$\n\nThus, we have\n\n$$\n\\text{\\boldsymbol}{f}^{′}(x)=[\\begin{aligned}3(x-2)^{2} & 1 \\\\ -2 & \\operatorname{cos}⁡(y+8)\\end{aligned}].\n$$\n\nNext, we evaluate the Jacobian at the equilibrium ${x}^{∗}=[2,\\text{ }-8]^{T}$ to get\n\n$$\n\\text{\\boldsymbol}{f}^{′}({x}^{∗})=[\\begin{aligned}3((2)-2)^{2} & 1 \\\\ -2 & \\operatorname{cos}⁡(-8+8)\\end{aligned}]=[\\begin{aligned}0 & 1 \\\\ -2 & 1\\end{aligned}].\n$$\n\nTo find the eigenvalues of the Jacobian matrix, we write down the characteristic equation:\n\n$$\n\\begin{aligned}|\\begin{aligned}0-\\lambda  & 1 \\\\ -2 & 1-\\lambda \\end{aligned}| & =0 \\\\ (-\\lambda )(1-\\lambda )-2 & =0 \\\\ {\\lambda }^{2}-\\lambda +2 & =0\\end{aligned}\n$$\n\nSolving the equation, we get the eigenvalues ${\\lambda }_{1,2}=\\frac{1}{2}\\pm \\frac{\\sqrt{7}}{2}i.$\n\nSince we have two complex eigenvalues with positive real parts, our equilibrium is an $\\text{unstable}$ $\\text{spiral source}.$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "problem_field_keys": [
+        "field-1",
+        "field-2"
+      ],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14149202/observations/history-q-336918-d3a77272b24da269ca20.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14149202",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14149202/observations/history-solution-q-336918-ed4acace787f7092e971.html",
+      "fields": [
+        {
+          "key": "field-1",
+          "type": "select",
+          "disabled": false,
+          "choices_complete": true,
+          "source_selected": {
+            "type": "text",
+            "value": "unstable"
+          },
+          "source_correct": {
+            "type": "text",
+            "value": "unstable"
+          },
+          "source_result": "Correct",
+          "correct_value": "unstable",
+          "value_type": "text",
+          "correct_origin": "ma_answer",
+          "evidence": {
+            "kind": "ma_correct_grade",
+            "value": "unstable",
+            "grade": "correct",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14149202/observations/step-q336918-a90e2bd7b3410b12c28e.html",
+            "presentation_key": "step-q336918"
+          },
+          "correct_evidence": {
+            "kind": "ma_answer",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14149202/observations/history-q-336918-d3a77272b24da269ca20.html",
+            "value": "unstable"
+          },
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "unstable"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "asymptotically stable"
+            }
+          ]
+        },
+        {
+          "key": "field-2",
+          "type": "select",
+          "disabled": false,
+          "choices_complete": true,
+          "source_selected": {
+            "type": "text",
+            "value": "spiral source"
+          },
+          "source_correct": {
+            "type": "text",
+            "value": "spiral source"
+          },
+          "source_result": "Correct",
+          "correct_value": "spiral source",
+          "value_type": "text",
+          "correct_origin": "ma_answer",
+          "evidence": {
+            "kind": "ma_correct_grade",
+            "value": "spiral source",
+            "grade": "correct",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14149202/observations/step-q336918-a90e2bd7b3410b12c28e.html",
+            "presentation_key": "step-q336918"
+          },
+          "correct_evidence": {
+            "kind": "ma_answer",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14149202/observations/history-q-336918-d3a77272b24da269ca20.html",
+            "value": "spiral source"
+          },
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "spiral source"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "spiral sink"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "saddle"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q336918",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "unstable",
+                "option": "0",
+                "value_type": "text"
+              },
+              {
+                "key": "field-2",
+                "value": "spiral source",
+                "option": "1",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "source_grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "The system can be rewritten in matrix form as \n\n$$\n{x}^{′}=\\text{\\boldsymbol}f(x)\n$$\n\nwhere $x=[\\begin{aligned}x(t) \\\\ y(t)\\end{aligned}]$ and \n$\\text{\\boldsymbol}f(x)=[\\begin{aligned}y+(x-2)^{3}+8 \\\\ -2x+4+\\operatorname{sin}⁡(y+8)\\end{aligned}].$\n\nWe need to compute the Jacobian matrix (or the total derivative) of $\\text{\\boldsymbol}f(x).$ \n\nIn our case, we have the following:\n\n$$\n\\text{\\boldsymbol}{f}^{′}(x)=[\\begin{aligned}\\frac{∂{f}_{1}}{∂x} & \\frac{∂{f}_{1}}{∂y} \\\\ \\frac{∂{f}_{2}}{∂x} & \\frac{∂{f}_{2}}{∂y}\\end{aligned}]\n$$\n\nFirst, we compute the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{∂{f}_{1}}{∂x} & =\\frac{∂}{∂x}(y+(x-2)^{3}+8)=3(x-2)^{2} \\\\ \\frac{∂{f}_{1}}{∂y} & =\\frac{∂}{∂y}(-2x(t)+4+\\operatorname{sin}⁡(y(t)+8))=1 \\\\ \\frac{∂{f}_{2}}{∂x} & =\\frac{∂}{∂x}(-2x+4+\\operatorname{sin}⁡(y+8))=-2 \\\\ \\frac{∂{f}_{2}}{∂y} & =\\frac{∂}{∂y}(-2x(t)+4+\\operatorname{sin}⁡(y(t)+8))=\\operatorname{cos}⁡(y+8)\\end{aligned}\n$$\n\nThus, we have\n\n$$\n\\text{\\boldsymbol}{f}^{′}(x)=[\\begin{aligned}3(x-2)^{2} & 1 \\\\ -2 & \\operatorname{cos}⁡(y+8)\\end{aligned}].\n$$\n\nNext, we evaluate the Jacobian at the equilibrium ${x}^{∗}=[2,\\text{ }-8]^{T}$ to get\n\n$$\n\\text{\\boldsymbol}{f}^{′}({x}^{∗})=[\\begin{aligned}3((2)-2)^{2} & 1 \\\\ -2 & \\operatorname{cos}⁡(-8+8)\\end{aligned}]=[\\begin{aligned}0 & 1 \\\\ -2 & 1\\end{aligned}].\n$$\n\nTo find the eigenvalues of the Jacobian matrix, we write down the characteristic equation:\n\n$$\n\\begin{aligned}|\\begin{aligned}0-\\lambda  & 1 \\\\ -2 & 1-\\lambda \\end{aligned}| & =0 \\\\ (-\\lambda )(1-\\lambda )-2 & =0 \\\\ {\\lambda }^{2}-\\lambda +2 & =0\\end{aligned}\n$$\n\nSolving the equation, we get the eigenvalues ${\\lambda }_{1,2}=\\frac{1}{2}\\pm \\frac{\\sqrt{7}}{2}i.$\n\nSince we have two complex eigenvalues with positive real parts, our equilibrium is an $\\text{unstable}$ $\\text{spiral source}.$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14149202/observations/history-solution-q-336918-ed4acace787f7092e971.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14149202/observations/history-q-336918-d3a77272b24da269ca20.html"
+        }
+      }
+    ]
+  }
+}
