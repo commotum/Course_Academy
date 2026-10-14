@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-107125",
+      "sequence_position": 4,
+      "problem": "Simon measures the temperature of the tea in his cup, and the thermometer displays a reading of ${60}^{∘}C.$ After $10$ minutes, Simon repeats the measurement and the thermometer displays a reading of  ${52}^{∘}C.$ To the nearest minute, how long does it take for the tea to decrease its temperature to ${40}^{∘}C$ if the temperature in the room is ${28}^{∘}C?$ \n\n*Hint: You may assume that the temperature $T(t)$ of the tea in Simon's cup decreases at a rate that obeys Newton's law of cooling, where $T$ is measured in degrees Celsius and $t>0$ is the time, in minutes, since the first measurement.*",
+      "worked_solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-{T}_{S}),\n$$\n\nwhere ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.\n\nIn our case, ${T}_{S}={28}^{∘}\\text{C},$ and we have\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-28).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-28} & =-k\\,dt \\\\ \\int \\frac{dT}{T-28} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-28| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-28>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-28 & ={e}^{-kt+C} \\\\ T-28 & ={e}^{C}{e}^{-kt} \\\\ T-28 & =K{e}^{-kt} \\\\ T & =28+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature reading was ${60}^{∘}C.$ So, we apply the initial condition $T(0)=60,$ and solve for $K:$\n\n$$\n\\begin{aligned}60 & =28+K{e}^{0} \\\\ 60 & =28+K \\\\ K & =32\\end{aligned}\n$$\n\nTherefore, we have the following expression for $T(t):$\n\n$$\nT(t)=28+32{e}^{-kt}\n$$\n\nWe're also told that, after $10$ minutes, the thermometer reading is ${52}^{∘}C.$ So, applying the condition $T(10)=52,$ we can solve for $k:$\n\n$$\n\\begin{aligned}52 & =28+32{e}^{-10k} \\\\ 24 & =32{e}^{-10k} \\\\ \\frac{3}{4} & ={e}^{-10k} \\\\ \\operatorname{ln}⁡(\\frac{3}{4}) & =-10k \\\\ k & =-\\frac{1}{10}\\operatorname{ln}⁡(\\frac{3}{4})\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the temperature of the tea is ${40}^{∘}C.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =40 \\\\ 28+32{e}^{-k{t}_{1}} & =40 \\\\ 32{e}^{-k{t}_{1}} & =12 \\\\ {e}^{-k{t}_{1}} & =\\frac{3}{8} \\\\ -k{t}_{1} & =\\operatorname{ln}⁡(\\frac{3}{8}) \\\\ {t}_{1} & =-\\frac{1}{k}\\operatorname{ln}⁡(\\frac{3}{8}).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that the tea will have a temperature of ${40}^{∘}C$ after\n\n$$\n{t}_{1}=\\frac{-\\operatorname{ln}⁡(\\frac{3}{8})}{-\\frac{1}{10}\\operatorname{ln}⁡(\\frac{3}{4})}≈34\\,\\text{min},\n$$\n\nrounded to the nearest minute.",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14162756/observations/history-q-107125-14d77c0317758c160fb9.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14162756",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14162756/observations/history-solution-q-107125-b953ddba0e94bde981fe.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "23\\,\\text{min}"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "31\\,\\text{min}"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "28\\,\\text{min}"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "34\\,\\text{min}"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "45\\,\\text{min}"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q107125",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "34\\,\\text{min}",
+                "option": "d",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the inhibited decay equation\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-{T}_{S}),\n$$\n\nwhere ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.\n\nIn our case, ${T}_{S}={28}^{∘}\\text{C},$ and we have\n\n$$\n\\frac{\\text{d}T}{\\text{d}t}=-k(T-28).\n$$\n\nFirst, we integrate our differential equation by separating the variables:\n\n$$\n\\begin{aligned}\\frac{dT}{T-28} & =-k\\,dt \\\\ \\int \\frac{dT}{T-28} & =-k\\int dt \\\\ \\operatorname{ln}⁡|T-28| & =-kt+C\\end{aligned}\n$$\n\nSince this is the solution to an inhibited decay equation, we have $T-28>0$ for all $t>0.$\nNext, we solve for $T(t),$ as follows:\n\n$$\n\\begin{aligned}T-28 & ={e}^{-kt+C} \\\\ T-28 & ={e}^{C}{e}^{-kt} \\\\ T-28 & =K{e}^{-kt} \\\\ T & =28+K{e}^{-kt}\\end{aligned}\n$$\n\nNote that $K={e}^{C}$ is a constant of integration. \n\nWe're told that the initial temperature reading was ${60}^{∘}C.$ So, we apply the initial condition $T(0)=60,$ and solve for $K:$\n\n$$\n\\begin{aligned}60 & =28+K{e}^{0} \\\\ 60 & =28+K \\\\ K & =32\\end{aligned}\n$$\n\nTherefore, we have the following expression for $T(t):$\n\n$$\nT(t)=28+32{e}^{-kt}\n$$\n\nWe're also told that, after $10$ minutes, the thermometer reading is ${52}^{∘}C.$ So, applying the condition $T(10)=52,$ we can solve for $k:$\n\n$$\n\\begin{aligned}52 & =28+32{e}^{-10k} \\\\ 24 & =32{e}^{-10k} \\\\ \\frac{3}{4} & ={e}^{-10k} \\\\ \\operatorname{ln}⁡(\\frac{3}{4}) & =-10k \\\\ k & =-\\frac{1}{10}\\operatorname{ln}⁡(\\frac{3}{4})\\end{aligned}\n$$\n\nFinally, let ${t}_{1}$ be the time when the temperature of the tea is ${40}^{∘}C.$ Then, we have\n\n$$\n\\begin{aligned}T({t}_{1}) & =40 \\\\ 28+32{e}^{-k{t}_{1}} & =40 \\\\ 32{e}^{-k{t}_{1}} & =12 \\\\ {e}^{-k{t}_{1}} & =\\frac{3}{8} \\\\ -k{t}_{1} & =\\operatorname{ln}⁡(\\frac{3}{8}) \\\\ {t}_{1} & =-\\frac{1}{k}\\operatorname{ln}⁡(\\frac{3}{8}).\\end{aligned}\n$$\n\nSubstituting in our value for $k,$ we conclude that the tea will have a temperature of ${40}^{∘}C$ after\n\n$$\n{t}_{1}=\\frac{-\\operatorname{ln}⁡(\\frac{3}{8})}{-\\frac{1}{10}\\operatorname{ln}⁡(\\frac{3}{4})}≈34\\,\\text{min},\n$$\n\nrounded to the nearest minute.",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14162756/observations/step-q107125-09f18962c938abfaa7bc.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a134a5-d05c-76a1-9fe6-81472e570f30",
+  "previous_failures": []
+}
