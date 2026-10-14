@@ -66,3 +66,6 @@ Hard admission requires coprime ratio entries: both reduced numerator weights ar
 
 
 Finite meaningful ratio domains: {'easy': 11, 'moderate': 91, 'hard': 130}. Authored radio omits the midpoint to avoid reversed-weight collisions, leaving easy 10 and moderate 90 radio tasks. Label and geometry orientation changes do not inflate these counts.
+
+
+Current-source check at math basis 2235: all 23 source prompts, solutions, complete banks and correct references remain unchanged. Four earlier source-error claims were array-order audit errors, not database key errors. Keyed mathematical validation admits 21 distinct rated complete source tasks; the duplicate legacy field and missing-designation unrated question remain excluded. All existing source content is preserved.

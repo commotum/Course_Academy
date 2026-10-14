@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-159891",
+      "sequence_position": 4,
+      "problem": "Suppose ${X}_{1},{X}_{2},{X}_{3}$ is an I.I.D random sample with ${X}_{i}∼B(6,\\theta )$ with unknown probability of success $\\theta .$ You're given the particular sample \n\n$$\n{x}_{1}=4,\\,{x}_{2}=3,\\,{x}_{3}=5.\n$$\n\nThe log-likelihood function of the sample is given by\n\n$$\nl(\\theta )=\\operatorname{ln}⁡a+b\\operatorname{ln}⁡\\theta +c\\operatorname{ln}⁡(1-\\theta ).\n$$\n\nFind the value of $a+b+c.$\n\n*Hint: The probability mass function for a binomial random variable is given by*\n\n$$\nf(x)=(\\genfrac{}{}{0pt}{}{6}{x}){\\theta }^{x}(1-\\theta )^{6-x},\\,x=0,1,…,6.\n$$",
+      "worked_solution": "Recall that if ${X}_{1},{X}_{2},…,{X}_{n}$ are independent and identically distributed discrete random variables with probability mass function $f(x;\\theta ),$ where $\\theta $ is an unknown parameter, then the log-likelihood function of a random sample ${x}_{1},{x}_{2},…,{x}_{n}$ is\n\n$$\n\\begin{aligned}l(\\theta ) & =\\operatorname{ln}⁡L(\\theta ) \\\\  & =\\operatorname{ln}⁡({\\prod }_{i=1}^{n}f({x}_{i},\\theta )) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(f({x}_{i},\\theta )).\\end{aligned}\n$$\n\nIn our case, we are given a sample of $n=3$ independent binomial random variables with an unknown probability of success $\\theta $ and $N=6$ as the number of trials. Therefore, the probability mass function is\n\n$$\n\\begin{aligned}f(x,\\theta ) & =(\\genfrac{}{}{0pt}{}{N}{x}){\\theta }^{x}(1-\\theta )^{N-x},\\,x=0,1,…,N \\\\  & =(\\genfrac{}{}{0pt}{}{6}{x}){\\theta }^{x}(1-\\theta )^{6-x},\\,x=0,1,…,6.\\end{aligned}\n$$\n\nWe can calculate the log-likelihood function as follows:\n\n$$\n\\begin{aligned}l(\\theta ) & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡((\\genfrac{}{}{0pt}{}{6}{{x}_{i}}){\\theta }^{{x}_{i}}(1-\\theta )^{6-{x}_{i}}) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{6}{{x}_{i}})+\\operatorname{ln}⁡({\\theta }^{{x}_{i}})+\\operatorname{ln}⁡((1-\\theta )^{6-{x}_{i}}) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{6}{{x}_{i}})+{\\sum }_{i=1}^{n}{x}_{i}\\operatorname{ln}⁡\\theta +{\\sum }_{i=1}^{n}(6-{x}_{i})\\operatorname{ln}⁡(1-\\theta ) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{6}{{x}_{i}})+\\operatorname{ln}⁡\\theta {\\sum }_{i=1}^{n}{x}_{i}+\\operatorname{ln}⁡(1-\\theta ){\\sum }_{i=1}^{n}(6-{x}_{i}) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{6}{{x}_{i}})+S\\operatorname{ln}⁡\\theta +(6n-S)\\operatorname{ln}⁡(1-\\theta )\\end{aligned}\n$$\n\nwhere $S={\\sum }_{i=1}^{n}{x}_{i}.$\n\nNow, note that\n\n$$\n\\begin{aligned}{\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{6}{{x}_{i}}) & =\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{6}{{x}_{1}})+\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{6}{{x}_{2}})+\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{6}{{x}_{3}}) \\\\  & =\\operatorname{ln}⁡({\\prod }_{i=1}^{n}(\\genfrac{}{}{0pt}{}{6}{{x}_{i}})).\\end{aligned}\n$$\n\nSo, our expression for $l(\\theta )$ becomes\n\n$$\nl(\\theta )=\\operatorname{ln}⁡({\\prod }_{i=1}^{n}(\\genfrac{}{}{0pt}{}{6}{{x}_{i}}))+S\\operatorname{ln}⁡\\theta +(6n-S)\\operatorname{ln}⁡(1-\\theta ).\n$$\n\nNow, using the sample data with $n=3,$ we have\n\n$$\n\\begin{aligned}{\\prod }_{i=1}^{n}(\\genfrac{}{}{0pt}{}{6}{{x}_{i}}) & =(\\genfrac{}{}{0pt}{}{6}{4})\\cdot (\\genfrac{}{}{0pt}{}{6}{3})\\cdot (\\genfrac{}{}{0pt}{}{6}{5}) \\\\  & =15\\cdot 20\\cdot 6 \\\\  & =1\\,800,\\end{aligned}\n$$\n\nand\n\n$$\nS=4+3+5=12.\n$$\n\nSubstituting the above values into our expression for $l(\\theta )$, we get\n\n$$\n\\begin{aligned}l(\\theta ) & =\\operatorname{ln}⁡(1\\,800)+12\\operatorname{ln}⁡\\theta +(6\\cdot 3-12)\\operatorname{ln}⁡(1-\\theta ) \\\\  & =\\operatorname{ln}⁡1\\,800+12\\operatorname{ln}⁡\\theta +6\\operatorname{ln}⁡(1-\\theta ).\\end{aligned}\n$$\n\nFinally,\n\n$$\na+b+c=1\\,800+12+6=1\\,818.\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14198872/observations/history-q-159891-238762e4e9609c38112b.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14198872",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14198872/observations/history-solution-q-159891-8d5ae0ca03cee493c741.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "1\\,698"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "1\\,764"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "1\\,604"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "1\\,846"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "1\\,818"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q159891",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "1\\,698",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "Recall that if ${X}_{1},{X}_{2},…,{X}_{n}$ are independent and identically distributed discrete random variables with probability mass function $f(x;\\theta ),$ where $\\theta $ is an unknown parameter, then the log-likelihood function of a random sample ${x}_{1},{x}_{2},…,{x}_{n}$ is\n\n$$\n\\begin{aligned}l(\\theta ) & =\\operatorname{ln}⁡L(\\theta ) \\\\  & =\\operatorname{ln}⁡({\\prod }_{i=1}^{n}f({x}_{i},\\theta )) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(f({x}_{i},\\theta )).\\end{aligned}\n$$\n\nIn our case, we are given a sample of $n=3$ independent binomial random variables with an unknown probability of success $\\theta $ and $N=6$ as the number of trials. Therefore, the probability mass function is\n\n$$\n\\begin{aligned}f(x,\\theta ) & =(\\genfrac{}{}{0pt}{}{N}{x}){\\theta }^{x}(1-\\theta )^{N-x},\\,x=0,1,…,N \\\\  & =(\\genfrac{}{}{0pt}{}{6}{x}){\\theta }^{x}(1-\\theta )^{6-x},\\,x=0,1,…,6.\\end{aligned}\n$$\n\nWe can calculate the log-likelihood function as follows:\n\n$$\n\\begin{aligned}l(\\theta ) & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡((\\genfrac{}{}{0pt}{}{6}{{x}_{i}}){\\theta }^{{x}_{i}}(1-\\theta )^{6-{x}_{i}}) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{6}{{x}_{i}})+\\operatorname{ln}⁡({\\theta }^{{x}_{i}})+\\operatorname{ln}⁡((1-\\theta )^{6-{x}_{i}}) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{6}{{x}_{i}})+{\\sum }_{i=1}^{n}{x}_{i}\\operatorname{ln}⁡\\theta +{\\sum }_{i=1}^{n}(6-{x}_{i})\\operatorname{ln}⁡(1-\\theta ) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{6}{{x}_{i}})+\\operatorname{ln}⁡\\theta {\\sum }_{i=1}^{n}{x}_{i}+\\operatorname{ln}⁡(1-\\theta ){\\sum }_{i=1}^{n}(6-{x}_{i}) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{6}{{x}_{i}})+S\\operatorname{ln}⁡\\theta +(6n-S)\\operatorname{ln}⁡(1-\\theta )\\end{aligned}\n$$\n\nwhere $S={\\sum }_{i=1}^{n}{x}_{i}.$\n\nNow, note that\n\n$$\n\\begin{aligned}{\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{6}{{x}_{i}}) & =\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{6}{{x}_{1}})+\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{6}{{x}_{2}})+\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{6}{{x}_{3}}) \\\\  & =\\operatorname{ln}⁡({\\prod }_{i=1}^{n}(\\genfrac{}{}{0pt}{}{6}{{x}_{i}})).\\end{aligned}\n$$\n\nSo, our expression for $l(\\theta )$ becomes\n\n$$\nl(\\theta )=\\operatorname{ln}⁡({\\prod }_{i=1}^{n}(\\genfrac{}{}{0pt}{}{6}{{x}_{i}}))+S\\operatorname{ln}⁡\\theta +(6n-S)\\operatorname{ln}⁡(1-\\theta ).\n$$\n\nNow, using the sample data with $n=3,$ we have\n\n$$\n\\begin{aligned}{\\prod }_{i=1}^{n}(\\genfrac{}{}{0pt}{}{6}{{x}_{i}}) & =(\\genfrac{}{}{0pt}{}{6}{4})\\cdot (\\genfrac{}{}{0pt}{}{6}{3})\\cdot (\\genfrac{}{}{0pt}{}{6}{5}) \\\\  & =15\\cdot 20\\cdot 6 \\\\  & =1\\,800,\\end{aligned}\n$$\n\nand\n\n$$\nS=4+3+5=12.\n$$\n\nSubstituting the above values into our expression for $l(\\theta )$, we get\n\n$$\n\\begin{aligned}l(\\theta ) & =\\operatorname{ln}⁡(1\\,800)+12\\operatorname{ln}⁡\\theta +(6\\cdot 3-12)\\operatorname{ln}⁡(1-\\theta ) \\\\  & =\\operatorname{ln}⁡1\\,800+12\\operatorname{ln}⁡\\theta +6\\operatorname{ln}⁡(1-\\theta ).\\end{aligned}\n$$\n\nFinally,\n\n$$\na+b+c=1\\,800+12+6=1\\,818.\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14198872/observations/step-q159891-9fe9e09da22a8ba560c0.html"
+        }
+      }
+    ]
+  }
+}

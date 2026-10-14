@@ -1,6 +1,6 @@
 # Ratio-vector review
 
-Database math; basis 1356. Source banks are explicit replay evidence. Four raw blank keys are mathematically wrong; normal authored answers use the corrected coefficients.
+Database math; basis 1356. Source banks are explicit replay evidence. Blank source fields are matched by key, not unordered collection position. All stored coefficient keys are correct.
 
 
 ## Original q-12212
@@ -913,7 +913,7 @@ $d+$
 {{field-2}}
 $e$
 
-[{":answer-field/id": "5c11be68-5bc7-5aed-b90c-0985aa722dc1", ":answer-field/key": "field-1", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "b346c27e-0ef7-5bf2-a113-5dad56e0b710", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{2}{7}"}], ":answer-field/correct": [":answer/id", "b346c27e-0ef7-5bf2-a113-5dad56e0b710"]}, {":answer-field/id": "5695ddb9-80e4-5f2b-b2af-1944e7677924", ":answer-field/key": "field-2", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "d735f1bf-279f-5942-9685-2d8a155e076c", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{5}{7}"}], ":answer-field/correct": [":answer/id", "d735f1bf-279f-5942-9685-2d8a155e076c"]}]
+[{":answer-field/id": "8a2c2b3c-487e-546b-8620-207b8fbb7d3a", ":answer-field/key": "field-1", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "fbd2d388-a1ce-5d19-834a-8964e81d49b2", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{5}{7}"}], ":answer-field/correct": [":answer/id", "fbd2d388-a1ce-5d19-834a-8964e81d49b2"]}, {":answer-field/id": "9bc148aa-b271-505d-afe5-ce522d00ec1b", ":answer-field/key": "field-2", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "225fd240-0cc8-53d4-a5d7-80579fc19f38", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{2}{7}"}], ":answer-field/correct": [":answer/id", "225fd240-0cc8-53d4-a5d7-80579fc19f38"]}]
 
 From the diagram, we see that
 
@@ -1141,7 +1141,7 @@ $d+$
 {{field-2}}
 $e$
 
-[{":answer-field/id": "5c11be68-5bc7-5aed-b90c-0985aa722dc1", ":answer-field/key": "field-1", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "b346c27e-0ef7-5bf2-a113-5dad56e0b710", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{2}{7}"}], ":answer-field/correct": [":answer/id", "b346c27e-0ef7-5bf2-a113-5dad56e0b710"]}, {":answer-field/id": "5695ddb9-80e4-5f2b-b2af-1944e7677924", ":answer-field/key": "field-2", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "d735f1bf-279f-5942-9685-2d8a155e076c", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{5}{7}"}], ":answer-field/correct": [":answer/id", "d735f1bf-279f-5942-9685-2d8a155e076c"]}]
+[{":answer-field/id": "8a2c2b3c-487e-546b-8620-207b8fbb7d3a", ":answer-field/key": "field-1", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "fbd2d388-a1ce-5d19-834a-8964e81d49b2", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{5}{7}"}], ":answer-field/correct": [":answer/id", "fbd2d388-a1ce-5d19-834a-8964e81d49b2"]}, {":answer-field/id": "9bc148aa-b271-505d-afe5-ce522d00ec1b", ":answer-field/key": "field-2", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "225fd240-0cc8-53d4-a5d7-80579fc19f38", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{2}{7}"}], ":answer-field/correct": [":answer/id", "225fd240-0cc8-53d4-a5d7-80579fc19f38"]}]
 
 From the diagram, we see that
 
@@ -1510,7 +1510,7 @@ $d+$
 {{field-2}}
 $e$
 
-[{":answer-field/id": "2f7bec6c-9805-5bad-abcf-ffc44bca57a4", ":answer-field/key": "field-1", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "1c3294b6-b703-57e0-9bee-52e997c92d9e", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{2}{7}"}], ":answer-field/correct": [":answer/id", "1c3294b6-b703-57e0-9bee-52e997c92d9e"]}, {":answer-field/id": "cde880a8-c3b6-539c-b28a-740e514f4304", ":answer-field/key": "field-2", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "d6a7d7e8-6f19-5b07-95d6-9ab9d24f0e05", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{5}{7}"}], ":answer-field/correct": [":answer/id", "d6a7d7e8-6f19-5b07-95d6-9ab9d24f0e05"]}]
+[{":answer-field/id": "8df9b062-0751-530a-84b3-ccf6b710dabf", ":answer-field/key": "field-1", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "b5c92f8a-8ca3-53e6-9e9d-7962c8a4342a", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{5}{7}"}], ":answer-field/correct": [":answer/id", "b5c92f8a-8ca3-53e6-9e9d-7962c8a4342a"]}, {":answer-field/id": "db1723fe-92cb-5794-98ac-b7ade1d3a173", ":answer-field/key": "field-2", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "1e316e51-4f8c-5da6-bfed-aa8dd6df36f8", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{2}{7}"}], ":answer-field/correct": [":answer/id", "1e316e51-4f8c-5da6-bfed-aa8dd6df36f8"]}]
 
 From the diagram, we see that
 
@@ -2125,7 +2125,7 @@ $l+$
 {{field-2}}
 $p$
 
-[{":answer-field/id": "c331a746-ddec-5954-9dea-af49cccfbfd5", ":answer-field/key": "field-1", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "79e827ac-9808-5f29-8f0a-2a8ca38765ea", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{2}{7}"}], ":answer-field/correct": [":answer/id", "79e827ac-9808-5f29-8f0a-2a8ca38765ea"]}, {":answer-field/id": "809dcda1-776c-55d4-ab5f-4a40df3d3e9c", ":answer-field/key": "field-2", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "89d90993-7d73-50b7-940e-ab9e26c22364", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{5}{7}"}], ":answer-field/correct": [":answer/id", "89d90993-7d73-50b7-940e-ab9e26c22364"]}]
+[{":answer-field/id": "f2dc9716-779e-560b-a7ff-b87eb3d7d3ae", ":answer-field/key": "field-1", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "8e9a4c14-c1a5-5414-a976-8ab40051ed5a", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{5}{7}"}], ":answer-field/correct": [":answer/id", "8e9a4c14-c1a5-5414-a976-8ab40051ed5a"]}, {":answer-field/id": "612b5f27-de4d-5d37-9cfa-ec4adbdba58c", ":answer-field/key": "field-2", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "0d354870-db30-5bf9-80d3-26b6d6195083", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{2}{7}"}], ":answer-field/correct": [":answer/id", "0d354870-db30-5bf9-80d3-26b6d6195083"]}]
 
 From the diagram, we see that
 
@@ -2571,170 +2571,6 @@ Therefore,
 
 $$
 \begin{aligned}\overset{\to }{OT} & =\overset{\to }{OA}+\overset{\to }{AT} \\  & =a+\frac{2}{7}(b-a) \\  & =\frac{5}{7}a+\frac{2}{7}b.\end{aligned}
-$$
-
-
-## Mathematically repaired source q-278263
-
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186096653/plots/14fa0783f340c3e638903e43.png)
-
-Consider the diagram above, where $\overset{\to }{OD}=d,$ $\overset{\to }{OE}=e,$ and $F$ divides $\overset{―}{DE}$ in the ratio $DF:FE=2:3.$ Express $\overset{\to }{OF}$ via the vectors $d$ and $e.$
-
-$\,\overset{\to }{OF}=$
-{{field-1}}
-$d+$
-{{field-2}}
-$e$
-
-[{":answer-field/id": "29045f43-df80-5cef-8ba7-242784d253a7", ":answer-field/key": "field-1", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "b702a2b8-044c-589f-8f31-68f591ff8b7d", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{3}{5}"}], ":answer-field/correct": [":answer/id", "b702a2b8-044c-589f-8f31-68f591ff8b7d"]}, {":answer-field/id": "2d32a084-d8a6-5f7c-9b64-7a992e635869", ":answer-field/key": "field-2", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "822bdebb-7a1f-534c-b946-ab0fba0c5a7c", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{2}{5}"}], ":answer-field/correct": [":answer/id", "822bdebb-7a1f-534c-b946-ab0fba0c5a7c"]}]
-
-From the diagram, we see that
-
-$$
-\overset{\to }{OF}=\overset{\to }{OD}+\overset{\to }{DF}.
-$$
-
-We're told that $\overset{\to }{OD}=d,$ so we just need to work out $\overset{\to }{DF}.$
-
-First, from $△ODE,$ we have
-
-$$
-\begin{aligned}\overset{\to }{DE} & =\overset{\to }{DO}+\overset{\to }{OE} \\  & =-\overset{\to }{OD}+\overset{\to }{OE} \\  & =-d+e \\  & =e-d.\end{aligned}
-$$
-
-Since $DF:FE=2:3,$ we have
-
-$$
-\overset{\to }{DF}=\frac{2}{5}\overset{\to }{DE}=\frac{2}{5}(e-d).
-$$
-
-Therefore,
-
-$$
-\begin{aligned}\overset{\to }{OF} & =\overset{\to }{OD}+\overset{\to }{DF} \\  & =d+\frac{2}{5}(e-d) \\  & =\frac{3}{5}d+\frac{2}{5}e.\end{aligned}
-$$
-
-
-## Mathematically repaired source q-322568
-
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186096653/plots/06aff5d3907ffdbcdc5fe5e4.png)
-
-Consider the diagram above, where $\overset{\to }{OD}=d,$ $\overset{\to }{OE}=e,$ and $F$ divides $\overset{―}{DE}$ in the ratio $DF:FE=3:4.$ Express $\overset{\to }{OF}$ via the vectors $d$ and $e.$
-
-$\,\overset{\to }{OF}=$
-{{field-1}}
-$d+$
-{{field-2}}
-$e$
-
-[{":answer-field/id": "bf8dc760-f869-5c09-9326-31052edb18c6", ":answer-field/key": "field-1", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "dcc5ecd4-8757-5ea5-bc24-46b63fd5c0a8", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{4}{7}"}], ":answer-field/correct": [":answer/id", "dcc5ecd4-8757-5ea5-bc24-46b63fd5c0a8"]}, {":answer-field/id": "edf29954-eb2e-5a1b-afb2-6cd21fdd874b", ":answer-field/key": "field-2", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "1a80f896-5e1b-5bc7-b0e8-37333e573857", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{3}{7}"}], ":answer-field/correct": [":answer/id", "1a80f896-5e1b-5bc7-b0e8-37333e573857"]}]
-
-From the diagram, we see that
-
-$$
-\overset{\to }{OF}=\overset{\to }{OD}+\overset{\to }{DF}.
-$$
-
-We're told that $\overset{\to }{OD}=d,$ so we just need to work out $\overset{\to }{DF}.$
-
-First, from $△ODE,$ we have
-
-$$
-\begin{aligned}\overset{\to }{DE} & =\overset{\to }{DO}+\overset{\to }{OE} \\  & =-\overset{\to }{OD}+\overset{\to }{OE} \\  & =-d+e \\  & =e-d.\end{aligned}
-$$
-
-Since $DF:FE=3:4,$ we have
-
-$$
-\overset{\to }{DF}=\frac{3}{7}\overset{\to }{DE}=\frac{3}{7}(e-d).
-$$
-
-Therefore,
-
-$$
-\begin{aligned}\overset{\to }{OF} & =\overset{\to }{OD}+\overset{\to }{DF} \\  & =d+\frac{3}{7}(e-d) \\  & =\frac{4}{7}d+\frac{3}{7}e.\end{aligned}
-$$
-
-
-## Mathematically repaired source q-322576
-
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186096653/plots/6ba2e86282afcf1488dea8fa.png)
-
-Consider the diagram above, where $\overset{\to }{OM}=d,$ $\overset{\to }{ON}=e,$ and $T$ divides $\overset{―}{MN}$ in the ratio $MT:TN=8:3.$ Express $\overset{\to }{OT}$ via the vectors $d$ and $e.$
-
-$\,\overset{\to }{OT}=$
-{{field-1}}
-$d+$
-{{field-2}}
-$e$
-
-[{":answer-field/id": "705f0636-8f5f-56c0-88ff-8308d81a6f0c", ":answer-field/key": "field-1", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "f1ba5fee-1422-5327-88cd-8e70e5317193", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{3}{11}"}], ":answer-field/correct": [":answer/id", "f1ba5fee-1422-5327-88cd-8e70e5317193"]}, {":answer-field/id": "f90202b2-5987-5648-be6f-de36ab6ca779", ":answer-field/key": "field-2", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "e29ec8a1-9389-584b-a404-d1ff345a9cbb", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{8}{11}"}], ":answer-field/correct": [":answer/id", "e29ec8a1-9389-584b-a404-d1ff345a9cbb"]}]
-
-From the diagram, we see that
-
-$$
-\overset{\to }{OT}=\overset{\to }{OM}+\overset{\to }{MT}.
-$$
-
-We're told that $\overset{\to }{OM}=d,$ so we just need to work out $\overset{\to }{MT}.$
-
-First, from $△OMN,$ we have
-
-$$
-\begin{aligned}\overset{\to }{MN} & =\overset{\to }{MO}+\overset{\to }{ON} \\  & =-\overset{\to }{OM}+\overset{\to }{ON} \\  & =-d+e \\  & =e-d.\end{aligned}
-$$
-
-Since $MT:TN=8:3,$ we have
-
-$$
-\overset{\to }{MT}=\frac{8}{11}\overset{\to }{MN}=\frac{8}{11}(e-d).
-$$
-
-Therefore,
-
-$$
-\begin{aligned}\overset{\to }{OT} & =\overset{\to }{OM}+\overset{\to }{MT} \\  & =d+\frac{8}{11}(e-d) \\  & =\frac{3}{11}d+\frac{8}{11}e.\end{aligned}
-$$
-
-
-## Mathematically repaired source q-322586
-
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186096653/plots/f781c08a9a09f3874347f161.png)
-
-Consider the diagram above, where $\overset{\to }{OL}=l,$ $\overset{\to }{OP}=p,$ and $Q$ divides $\overset{―}{LP}$ in the ratio $LQ:QP=7:9.$ Express $\overset{\to }{OQ}$ via the vectors $l$ and $p.$
-
-$\,\overset{\to }{OQ}=$
-{{field-1}}
-$l+$
-{{field-2}}
-$p$
-
-[{":answer-field/id": "a0858e1f-8b45-5fbe-8f44-33d360c40f0b", ":answer-field/key": "field-1", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "115b859c-cde7-593e-911f-817fb135374b", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{9}{16}"}], ":answer-field/correct": [":answer/id", "115b859c-cde7-593e-911f-817fb135374b"]}, {":answer-field/id": "2f5896b0-263f-5eb3-b491-235ca0d46d6a", ":answer-field/key": "field-2", ":answer-field/type": ":answer-field.type/blank", ":answer-field/choices": [{":answer/id": "1eae37a1-62f2-5f15-acfe-a68a83386299", ":answer/type": ":answer.type/math", ":answer/value": "\\frac{7}{16}"}], ":answer-field/correct": [":answer/id", "1eae37a1-62f2-5f15-acfe-a68a83386299"]}]
-
-From the diagram, we see that
-
-$$
-\overset{\to }{OQ}=\overset{\to }{OL}+\overset{\to }{LQ}.
-$$
-
-We're told that $\overset{\to }{OL}=l,$ so we just need to work out $\overset{\to }{LQ}.$
-
-First, from $△OLP,$ we have
-
-$$
-\begin{aligned}\overset{\to }{LP} & =\overset{\to }{LO}+\overset{\to }{OP} \\  & =-\overset{\to }{OL}+\overset{\to }{OP} \\  & =-l+p \\  & =p-l.\end{aligned}
-$$
-
-Since $LQ:QP=7:9,$ we have
-
-$$
-\overset{\to }{LQ}=\frac{7}{16}\overset{\to }{LP}=\frac{7}{16}(p-l).
-$$
-
-Therefore,
-
-$$
-\begin{aligned}\overset{\to }{OQ} & =\overset{\to }{OL}+\overset{\to }{LQ} \\  & =l+\frac{7}{16}(p-l) \\  & =\frac{9}{16}l+\frac{7}{16}p.\end{aligned}
 $$
 
 

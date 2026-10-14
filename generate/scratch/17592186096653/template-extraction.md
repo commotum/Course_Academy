@@ -368,9 +368,13 @@ $d+$
 {{field-2}}
 $e$
 
-Field 1, option 1: `\frac{2}{5}`; recipe `r/(r + s), s/(r + s) (field 1)`; stored correct: True.
 
-Field 2, option 1: `\frac{3}{5}`; recipe `r/(r + s), s/(r + s) (field 2)`; stored correct: True.
+
+
+
+Field `field-1` (UUID `3ea5bc20-1829-57bc-bf77-805686187035`), owned answer `6f22b1a6-2bb1-5ce8-b04f-37229ed9ed7a`: `\frac{3}{5}`; recipe `s/(r+s)`; stored correct: True.
+
+Field `field-2` (UUID `2b1935e4-b1db-59ac-bdd1-af6a29d2f762`), owned answer `a8cc1233-884e-55c1-bc0b-5c72b12ac47b`: `\frac{2}{5}`; recipe `r/(r+s)`; stored correct: True.
 
 Fixed solution: From the diagram, we see that
 
@@ -456,9 +460,13 @@ $d+$
 {{field-2}}
 $e$
 
-Field 1, option 1: `\frac{3}{7}`; recipe `r/(r + s), s/(r + s) (field 1)`; stored correct: True.
 
-Field 2, option 1: `\frac{4}{7}`; recipe `r/(r + s), s/(r + s) (field 2)`; stored correct: True.
+
+
+
+Field `field-1` (UUID `90eae733-f531-59d4-a171-4ead23e4e79d`), owned answer `2135a533-159f-5115-8bee-d5be3c469c8a`: `\frac{4}{7}`; recipe `s/(r+s)`; stored correct: True.
+
+Field `field-2` (UUID `0dacd43f-373d-54c4-96fa-27afeffa529d`), owned answer `798bd0e0-70de-587f-9840-15e882f63ca9`: `\frac{3}{7}`; recipe `r/(r+s)`; stored correct: True.
 
 Fixed solution: From the diagram, we see that
 
@@ -500,9 +508,13 @@ $g+$
 {{field-2}}
 $h$
 
-Field 1, option 1: `\frac{7}{13}`; recipe `s/(r + s), r/(r + s) (field 1)`; stored correct: True.
 
-Field 2, option 1: `\frac{6}{13}`; recipe `s/(r + s), r/(r + s) (field 2)`; stored correct: True.
+
+
+
+Field `field-1` (UUID `894293cb-5bcb-5c58-bcf1-8fa19684d17e`), owned answer `8d9de2aa-4041-5f76-b6be-fe41ae2704f6`: `\frac{7}{13}`; recipe `s/(r+s)`; stored correct: True.
+
+Field `field-2` (UUID `cdd6dde1-aa3a-5f12-b998-fbca206e7fd2`), owned answer `115586ce-ea68-5b73-b06d-7488ecd05e55`: `\frac{6}{13}`; recipe `r/(r+s)`; stored correct: True.
 
 Fixed solution: From the diagram, we see that
 
@@ -544,9 +556,13 @@ $p+$
 {{field-2}}
 $q$
 
-Field 1, option 1: `\frac{9}{13}`; recipe `s/(r + s), r/(r + s) (field 1)`; stored correct: True.
 
-Field 2, option 1: `\frac{4}{13}`; recipe `s/(r + s), r/(r + s) (field 2)`; stored correct: True.
+
+
+
+Field `field-1` (UUID `1b3110a3-3c76-50a9-8099-660e479f8913`), owned answer `e48e2a50-28f2-5163-870b-8afa809e432c`: `\frac{9}{13}`; recipe `s/(r+s)`; stored correct: True.
+
+Field `field-2` (UUID `aa3c4a6c-7827-538e-a831-35325998bb72`), owned answer `fbbc76d5-fe38-5e97-a234-8280ad9d288f`: `\frac{4}{13}`; recipe `r/(r+s)`; stored correct: True.
 
 Fixed solution: From the diagram, we see that
 
@@ -588,9 +604,13 @@ $d+$
 {{field-2}}
 $e$
 
-Field 1, option 1: `\frac{8}{11}`; recipe `r/(r + s), s/(r + s) (field 1)`; stored correct: True.
 
-Field 2, option 1: `\frac{3}{11}`; recipe `r/(r + s), s/(r + s) (field 2)`; stored correct: True.
+
+
+
+Field `field-1` (UUID `bf21a52d-986f-53a9-827a-aa6185c06320`), owned answer `ed2752f0-24b6-5acd-9348-7f0e4dc496b1`: `\frac{3}{11}`; recipe `s/(r+s)`; stored correct: True.
+
+Field `field-2` (UUID `7f9d3030-0df2-534d-a2aa-d2de45556fcc`), owned answer `9b14b714-b52b-5d04-b557-997d58e4906b`: `\frac{8}{11}`; recipe `r/(r+s)`; stored correct: True.
 
 Fixed solution: From the diagram, we see that
 
@@ -632,9 +652,13 @@ $u+$
 {{field-2}}
 $v$
 
-Field 1, option 1: `\frac{8}{17}`; recipe `s/(r + s), r/(r + s) (field 1)`; stored correct: True.
 
-Field 2, option 1: `\frac{9}{17}`; recipe `s/(r + s), r/(r + s) (field 2)`; stored correct: True.
+
+
+
+Field `field-1` (UUID `268f3bd7-dd2a-5bdb-bad4-117ce7290310`), owned answer `7e2a1c00-8cb8-59b8-999c-b1980e06520e`: `\frac{8}{17}`; recipe `s/(r+s)`; stored correct: True.
+
+Field `field-2` (UUID `30856aab-2bfb-535e-861a-9300f9697001`), owned answer `a7e90b75-2f39-50f4-ab84-711dcbfdae4f`: `\frac{9}{17}`; recipe `r/(r+s)`; stored correct: True.
 
 Fixed solution: From the diagram, we see that
 
@@ -676,9 +700,13 @@ $s+$
 {{field-2}}
 $t$
 
-Field 1, option 1: `\frac{4}{15}`; recipe `s/(r + s), r/(r + s) (field 1)`; stored correct: True.
 
-Field 2, option 1: `\frac{11}{15}`; recipe `s/(r + s), r/(r + s) (field 2)`; stored correct: True.
+
+
+
+Field `field-1` (UUID `77c690e5-687f-5145-90a7-53ff4b4d9a45`), owned answer `1b8ed698-dbb6-5343-a913-fe9fb4d1817c`: `\frac{4}{15}`; recipe `s/(r+s)`; stored correct: True.
+
+Field `field-2` (UUID `97cc111a-a639-515c-9c5c-fe8cdd60bdc6`), owned answer `d2bbeecb-5f96-5ae6-a1cc-831d9c3c1e71`: `\frac{11}{15}`; recipe `r/(r+s)`; stored correct: True.
 
 Fixed solution: From the diagram, we see that
 
@@ -720,9 +748,13 @@ $k+$
 {{field-2}}
 $z$
 
-Field 1, option 1: `\frac{7}{17}`; recipe `s/(r + s), r/(r + s) (field 1)`; stored correct: True.
 
-Field 2, option 1: `\frac{10}{17}`; recipe `s/(r + s), r/(r + s) (field 2)`; stored correct: True.
+
+
+
+Field `field-1` (UUID `24470832-a4f9-57f7-99c2-0c4da16ae600`), owned answer `aa9e3a8b-c071-5d0e-81bf-ddc27065f654`: `\frac{7}{17}`; recipe `s/(r+s)`; stored correct: True.
+
+Field `field-2` (UUID `3e6ba9e6-a7a1-5b0f-b138-160dc339aa31`), owned answer `e8a1594d-ec17-53b6-8cd8-9593fe66ca1c`: `\frac{10}{17}`; recipe `r/(r+s)`; stored correct: True.
 
 Fixed solution: From the diagram, we see that
 
@@ -764,9 +796,13 @@ $a+$
 {{field-2}}
 $q$
 
-Field 1, option 1: `\frac{7}{19}`; recipe `s/(r + s), r/(r + s) (field 1)`; stored correct: True.
 
-Field 2, option 1: `\frac{12}{19}`; recipe `s/(r + s), r/(r + s) (field 2)`; stored correct: True.
+
+
+
+Field `field-1` (UUID `257374bb-4fcd-535e-9b70-c67245f5a50c`), owned answer `6e3ab9b3-b004-5c05-861c-4429d0885514`: `\frac{7}{19}`; recipe `s/(r+s)`; stored correct: True.
+
+Field `field-2` (UUID `8cc79974-795c-5c9e-b38b-d74f3b32ec5e`), owned answer `7f48c4b3-d819-50a6-a9df-d19da3ae33a2`: `\frac{12}{19}`; recipe `r/(r+s)`; stored correct: True.
 
 Fixed solution: From the diagram, we see that
 
@@ -808,9 +844,13 @@ $l+$
 {{field-2}}
 $p$
 
-Field 1, option 1: `\frac{7}{16}`; recipe `r/(r + s), s/(r + s) (field 1)`; stored correct: True.
 
-Field 2, option 1: `\frac{9}{16}`; recipe `r/(r + s), s/(r + s) (field 2)`; stored correct: True.
+
+
+
+Field `field-1` (UUID `58d2a450-3879-51ea-99f9-5107ab896718`), owned answer `d103b022-3392-5699-86c4-14260174eff5`: `\frac{9}{16}`; recipe `s/(r+s)`; stored correct: True.
+
+Field `field-2` (UUID `306a4818-28a4-5233-9c68-e7e860afe61d`), owned answer `111b3502-4d20-5d31-91b8-7abbeab14d76`: `\frac{7}{16}`; recipe `r/(r+s)`; stored correct: True.
 
 Fixed solution: From the diagram, we see that
 
@@ -1022,12 +1062,17 @@ Normal authored radio bank is chosen whole: correct (s/D,r/D), reversed weights 
 
 Mathematical task fingerprints use the normalized ordered weight pair; relabeling vectors or scaling a ratio does not inflate task counts. Complete prompt, fixed solution and displayed bank determine presentation identity, independently of seed/shuffle/profile aliases.
 
-## Source anomalies and repairs
+## Source field-key interpretation
 
-q-278263 (2:3), q-322568 (3:4), q-322576 (8:3), q-322586 (7:9) store both coefficient keys in reversed order relative to supplied vector order and their own correct fixed worked solutions. Raw profiles replay those keys for evidence, native ID/value grading follows those keys, and independent mathematics marks the four source records wrong. `-repaired` profiles put s/D in field-1 and r/D in field-2. All normal authored generation uses the mathematically correct coefficient order.
+q-278263 (2:3), q-322568 (3:4), q-322576 (8:3), q-322586 (7:9) have field-2 preceding field-1 in the unordered capture array. Their correct keys agree with their prompts and worked solutions. Replay must put s/D in field-1 and r/D in field-2, using keys rather than array position. `-repaired` profiles are compatibility aliases for the same correct replay. All normal authored generation uses this coefficient order.
 
 q-42659 has no difficulty, worked solution or correct designation. The captured authoritative 1106 widget confirms the five choice values and one assessment. The correct 2/3 p+1/3 q is independently derived; the complete shared worked solution and moderate assignment are authored. q-12212 duplicate legacy bank is preserved separately, with missing designation inferred.
 
 Legacy q-42659 prompt/bank uses OP^(→) notation; it remains explicit raw replay evidence. Authored output uses the course overset-arrow vector notation. Choice whitespace is normalized while complete equations, every coefficient, signs and term ordering are preserved mathematically. Regenerated diagrams replace source asset paths, so graph-file bytes are not claimed exact.
 
 Hard admission requires coprime ratio entries: both reduced numerator weights are at least 5 and the irreducible denominator is at least 19 and at most 39. Scaling an easy ratio does not make it hard. Explicit (10,10) and (20,10) regression cases reject; mathematical task identity deduplicates common ratio scaling.
+
+
+## Field-key audit correction (2026-10-14)
+
+The earlier reversed-key claims for q-278263, q-322568, q-322576 and q-322586 came from treating the EDB field collection as ordered. Their field-1 answers are the first basis coefficient s/(r+s), and their field-2 answers are r/(r+s). Match source replay banks by field key. The source keys are correct; no source repair is needed or performed. Earlier per-case array-position mappings remain historical audit evidence and are superseded by this keyed mapping.

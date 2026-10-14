@@ -6,8 +6,8 @@ ratio-arithmetic peers of the same two-vector internal-section method; no extra
 path, external division, coordinate solving or coefficient matching is added.
 Observed banks are explicit component recipes with underdetermined intent, used
 only on request. Default radio bank is a complete authored operation bank.
-The four reversed blank keys remain in observed profiles; normal outputs repair
-them. Source-shaped prompts and fixed ordered worked solutions are mask-rendered
+Blank banks are mapped by field key, independently of EDB collection order.
+Source-shaped prompts and fixed ordered worked solutions are mask-rendered
 for changed ratios. Every field has owned UUIDs; identity excludes option order.
 """
 from pathlib import Path
@@ -37,7 +37,9 @@ BANKS={
 'q-120304':[(sp.Rational(1,2),sp.Rational(1,2)),((S+3)/D,(R-3)/D),(R/D,S/D),((S-2)/D,(R+1)/D),(S/D,R/D)],
 'q-278288':[(S/R,1/R),(R/D,S/D),(1,S/R),(S/D,R/D),(1/D,1)],
 'q-120289':[((R-1)/D,(S+1)/D),(S/D,R/D),(R/D,S/D),((S+1)/D,(R-1)/D),((S+2)/D,(R-2)/D)]}
-REVERSED={'q-278263','q-322568','q-322576','q-322586'}
+# A historical audit misread four sources' unordered field collections.
+# Their keys are correct. The compatibility flag remains empty.
+REVERSED=set()
 def tex(x):return sp.latex(sp.sympify(x)) .replace(r'\frac{',r'\frac{').replace('}{','}{')
 def frac(x):
  x=sp.Rational(x)
@@ -117,7 +119,6 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  sol=solution(p);banks=[];correct_indices=[]
  if kind=='coefficients':
   vals=[a,t]
-  if observed and source_profile in REVERSED and not repaired:vals=[t,a]
   banks=[[frac(x)] for x in vals];correct_indices=[0,0]
  elif observed:
   pairs=[tuple(sp.sympify(z).subs({R:r,S:s}) for z in pair) for pair in BANKS[source_profile]]

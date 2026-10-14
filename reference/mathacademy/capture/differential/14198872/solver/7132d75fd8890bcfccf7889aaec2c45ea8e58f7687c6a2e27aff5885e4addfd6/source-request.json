@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-159898",
+      "sequence_position": 5,
+      "problem": "Suppose ${X}_{1},{X}_{2},…,{X}_{5}$ is an I.I.D random sample with ${X}_{i}∼B(3,\\theta )$ with unknown probability of success $\\theta .$ You're given the particular sample \n\n$$\n{x}_{1}=2,\\,{x}_{2}=1,\\,{x}_{3}=3,\\,{x}_{4}=1,\\,{x}_{5}=1.\n$$\n\nThe log-likelihood function of the sample is given by\n\n$$\nl(\\theta )=\\operatorname{ln}⁡a+b\\operatorname{ln}⁡\\theta +c\\operatorname{ln}⁡(1-\\theta ).\n$$\n\nFind the value of $a+b+c.$",
+      "worked_solution": "Recall that if ${X}_{1},{X}_{2},…,{X}_{n}$ are independent and identically distributed discrete random variables with probability mass function $f(x;\\theta ),$ where $\\theta $ is an unknown parameter, then the log-likelihood function of a random sample ${x}_{1},{x}_{2},…,{x}_{n}$ is\n\n$$\n\\begin{aligned}l(\\theta ) & =\\operatorname{ln}⁡L(\\theta ) \\\\  & =\\operatorname{ln}⁡({\\prod }_{i=1}^{n}f({x}_{i},\\theta )) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(f({x}_{i},\\theta )).\\end{aligned}\n$$\n\nIn our case, we are given a sample of $n=5$ independent binomial random variables with an unknown probability of success $\\theta $ and $N=3$ as the number of trials. Therefore, the probability mass function is\n\n$$\n\\begin{aligned}f(x,\\theta ) & =(\\genfrac{}{}{0pt}{}{N}{x}){\\theta }^{x}(1-\\theta )^{N-x},\\,x=0,1,…,N \\\\  & =(\\genfrac{}{}{0pt}{}{3}{x}){\\theta }^{x}(1-\\theta )^{3-x},\\,x=0,1,2,3.\\end{aligned}\n$$\n\nWe can calculate the log-likelihood function as follows:\n\n$$\n\\begin{aligned}l(\\theta ) & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡((\\genfrac{}{}{0pt}{}{3}{{x}_{i}}){\\theta }^{{x}_{i}}(1-\\theta )^{3-{x}_{i}}) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{3}{{x}_{i}})+\\operatorname{ln}⁡({\\theta }^{{x}_{i}})+\\operatorname{ln}⁡((1-\\theta )^{3-{x}_{i}}) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{3}{{x}_{i}})+{\\sum }_{i=1}^{n}{x}_{i}\\operatorname{ln}⁡\\theta +{\\sum }_{i=1}^{n}(3-{x}_{i})\\operatorname{ln}⁡(1-\\theta ) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{3}{{x}_{i}})+\\operatorname{ln}⁡\\theta {\\sum }_{i=1}^{n}{x}_{i}+\\operatorname{ln}⁡(1-\\theta ){\\sum }_{i=1}^{n}(3-{x}_{i}) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{3}{{x}_{i}})+S\\operatorname{ln}⁡\\theta +(3n-S)\\operatorname{ln}⁡(1-\\theta )\\end{aligned}\n$$\n\nwhere $S={\\sum }_{i=1}^{n}{x}_{i}.$\n\nNow, note that\n\n$$\n\\begin{aligned}{\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{3}{{x}_{i}}) & =\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{3}{{x}_{1}})+\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{3}{{x}_{2}})+\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{3}{{x}_{3}})+\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{3}{{x}_{4}})+\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{3}{{x}_{5}}) \\\\  & =\\operatorname{ln}⁡({\\prod }_{i=1}^{n}(\\genfrac{}{}{0pt}{}{3}{{x}_{i}})).\\end{aligned}\n$$\n\nSo, our expression for $l(\\theta )$ becomes\n\n$$\nl(\\theta )=\\operatorname{ln}⁡({\\prod }_{i=1}^{n}(\\genfrac{}{}{0pt}{}{3}{{x}_{i}}))+S\\operatorname{ln}⁡\\theta +(3n-S)\\operatorname{ln}⁡(1-\\theta ).\n$$\n\nNow, using the sample data with $n=5,$ we have\n\n$$\n\\begin{aligned}{\\prod }_{i=1}^{n}(\\genfrac{}{}{0pt}{}{3}{{x}_{i}}) & =(\\genfrac{}{}{0pt}{}{3}{2})\\cdot (\\genfrac{}{}{0pt}{}{3}{1})\\cdot (\\genfrac{}{}{0pt}{}{3}{3})\\cdot (\\genfrac{}{}{0pt}{}{3}{1})\\cdot (\\genfrac{}{}{0pt}{}{3}{1}) \\\\  & =3\\cdot 3\\cdot 1\\cdot 3\\cdot 3 \\\\  & =81,\\end{aligned}\n$$\n\nand\n\n$$\nS=2+1+3+1+1=8.\n$$\n\nSubstituting the above values into our expression for $l(\\theta )$, we get\n\n$$\n\\begin{aligned}l(\\theta ) & =\\operatorname{ln}⁡(81)+8\\operatorname{ln}⁡\\theta +(3\\cdot 5-8)\\operatorname{ln}⁡(1-\\theta ) \\\\  & =\\operatorname{ln}⁡(81)+8\\operatorname{ln}⁡\\theta +7\\operatorname{ln}⁡(1-\\theta ).\\end{aligned}\n$$\n\nFinally,\n\n$$\na+b+c=81+8+7=96.\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14198872/observations/history-q-159898-429d3ddcbd83c6bc621f.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14198872",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14198872/observations/history-solution-q-159898-b3d4790b11d6a8f005ff.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "96"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "92"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "88"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "104"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "112"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q159898",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "96",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Recall that if ${X}_{1},{X}_{2},…,{X}_{n}$ are independent and identically distributed discrete random variables with probability mass function $f(x;\\theta ),$ where $\\theta $ is an unknown parameter, then the log-likelihood function of a random sample ${x}_{1},{x}_{2},…,{x}_{n}$ is\n\n$$\n\\begin{aligned}l(\\theta ) & =\\operatorname{ln}⁡L(\\theta ) \\\\  & =\\operatorname{ln}⁡({\\prod }_{i=1}^{n}f({x}_{i},\\theta )) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(f({x}_{i},\\theta )).\\end{aligned}\n$$\n\nIn our case, we are given a sample of $n=5$ independent binomial random variables with an unknown probability of success $\\theta $ and $N=3$ as the number of trials. Therefore, the probability mass function is\n\n$$\n\\begin{aligned}f(x,\\theta ) & =(\\genfrac{}{}{0pt}{}{N}{x}){\\theta }^{x}(1-\\theta )^{N-x},\\,x=0,1,…,N \\\\  & =(\\genfrac{}{}{0pt}{}{3}{x}){\\theta }^{x}(1-\\theta )^{3-x},\\,x=0,1,2,3.\\end{aligned}\n$$\n\nWe can calculate the log-likelihood function as follows:\n\n$$\n\\begin{aligned}l(\\theta ) & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡((\\genfrac{}{}{0pt}{}{3}{{x}_{i}}){\\theta }^{{x}_{i}}(1-\\theta )^{3-{x}_{i}}) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{3}{{x}_{i}})+\\operatorname{ln}⁡({\\theta }^{{x}_{i}})+\\operatorname{ln}⁡((1-\\theta )^{3-{x}_{i}}) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{3}{{x}_{i}})+{\\sum }_{i=1}^{n}{x}_{i}\\operatorname{ln}⁡\\theta +{\\sum }_{i=1}^{n}(3-{x}_{i})\\operatorname{ln}⁡(1-\\theta ) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{3}{{x}_{i}})+\\operatorname{ln}⁡\\theta {\\sum }_{i=1}^{n}{x}_{i}+\\operatorname{ln}⁡(1-\\theta ){\\sum }_{i=1}^{n}(3-{x}_{i}) \\\\  & ={\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{3}{{x}_{i}})+S\\operatorname{ln}⁡\\theta +(3n-S)\\operatorname{ln}⁡(1-\\theta )\\end{aligned}\n$$\n\nwhere $S={\\sum }_{i=1}^{n}{x}_{i}.$\n\nNow, note that\n\n$$\n\\begin{aligned}{\\sum }_{i=1}^{n}\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{3}{{x}_{i}}) & =\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{3}{{x}_{1}})+\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{3}{{x}_{2}})+\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{3}{{x}_{3}})+\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{3}{{x}_{4}})+\\operatorname{ln}⁡(\\genfrac{}{}{0pt}{}{3}{{x}_{5}}) \\\\  & =\\operatorname{ln}⁡({\\prod }_{i=1}^{n}(\\genfrac{}{}{0pt}{}{3}{{x}_{i}})).\\end{aligned}\n$$\n\nSo, our expression for $l(\\theta )$ becomes\n\n$$\nl(\\theta )=\\operatorname{ln}⁡({\\prod }_{i=1}^{n}(\\genfrac{}{}{0pt}{}{3}{{x}_{i}}))+S\\operatorname{ln}⁡\\theta +(3n-S)\\operatorname{ln}⁡(1-\\theta ).\n$$\n\nNow, using the sample data with $n=5,$ we have\n\n$$\n\\begin{aligned}{\\prod }_{i=1}^{n}(\\genfrac{}{}{0pt}{}{3}{{x}_{i}}) & =(\\genfrac{}{}{0pt}{}{3}{2})\\cdot (\\genfrac{}{}{0pt}{}{3}{1})\\cdot (\\genfrac{}{}{0pt}{}{3}{3})\\cdot (\\genfrac{}{}{0pt}{}{3}{1})\\cdot (\\genfrac{}{}{0pt}{}{3}{1}) \\\\  & =3\\cdot 3\\cdot 1\\cdot 3\\cdot 3 \\\\  & =81,\\end{aligned}\n$$\n\nand\n\n$$\nS=2+1+3+1+1=8.\n$$\n\nSubstituting the above values into our expression for $l(\\theta )$, we get\n\n$$\n\\begin{aligned}l(\\theta ) & =\\operatorname{ln}⁡(81)+8\\operatorname{ln}⁡\\theta +(3\\cdot 5-8)\\operatorname{ln}⁡(1-\\theta ) \\\\  & =\\operatorname{ln}⁡(81)+8\\operatorname{ln}⁡\\theta +7\\operatorname{ln}⁡(1-\\theta ).\\end{aligned}\n$$\n\nFinally,\n\n$$\na+b+c=81+8+7=96.\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14198872/observations/step-q159898-fcdf409295e80973a468.html"
+        }
+      }
+    ]
+  }
+}
