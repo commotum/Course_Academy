@@ -1,15 +1,9 @@
-# Already-isolated perfect square: negative linear term
+# Isolated perfect square with a negative linear term
 
-Script: `../17592186068874.py`. Run from the repository root:
+Run `.venv/bin/python generate/scratch/17592186068874/validate.py` for source replay, independent displayed mathematics and native learner grading. Run `.venv/bin/python generate/scratch/17592186068874/replenish.py` for inventory recheck, additive preparation, preview, locked commit and exact-basis readback.
 
-```sh
-.venv/bin/python generate/scratch/17592186068874/validate.py
-.venv/bin/python generate/scratch/17592186068874.py --difficulty all --seed 4 --count 2 --format json
-.venv/bin/python generate/scratch/17592186068874.py --difficulty moderate --profile raw_q-140283 --format markdown
-```
+The registered script is `generate/scratch/17592186068874.py`. `--difficulty all` emits supported easy/moderate only; hard rejects output. `generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None)` preserves stable field-owned identities. Easy covers observed monic layouts and authored completions of the two incomplete sources. Moderate retains the observed numeric radio layout and complete adjacent-offset bank. It allows a=10..15, centered on observed a=11, without adding mathematical stages. The bank's exact algebraic recipes are known; their misconception interpretation remains unresolved and is not shown to learners.
 
-`generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None)` and easy/moderate/hard entrypoints accept exact integer parameters `a,b,c,variable`. Field type selectors choose eligible families before sampling. Raw profiles preserve individually absent source ratings, solutions, banks and keys; every raw record is evidence-only and ineligible for learning. Normal completions and level extensions are authored, using method-based banks. Opaque adjacent offsets stay outside defaults.
+Raw replay preserves each source's missing ratings, fields, keys and solutions and remains evidence-only. No source record is repaired by replenishment. The supported domains contain 192 easy and 144 moderate distinct (a,c) tasks before existing questions/canonical examples are excluded. Variable aliases, seeds, option order and alternate banks do not add stock. Hard's previous nonunit-factor draft is excluded because it changes the observed expression backbone and adds a recognition stage. See `capability.json`.
 
-Easy uses monic isolated identities with a=2..9. Moderate uses a=10..15 (observed a=11). Hard uses coprime a=2..9 and b=2..5 in `(b²v²−2abv+a²)±c`, an authored application of the prerequisite perfect-square identity to a nonunit variable factor (the inspected prerequisite itself has no nonunit-leading example). Outer constants have nonzero integer magnitude 1..12. All three retain the negative linear term and already-isolated parentheses. No insertion of a squared constant, add-to-both-sides operation, or equation solving occurs.
-
-The validator compares full source fields/presence, exact prompt and complete worked-solution strings, all complete expression options, every printed arithmetic row and required operative stage, identity/alias behavior, all field types/families/banks, explicit parameter bounds, default coverage, and native grading. It tests sign, stage-removal and C0 mutations. Source key omissions are counted separately from inferred completions. Native engine executable hash/runtime versions are recorded. Artifacts are local review JSON, not transaction data. No DB writes, registration, commits or shared edits.
+`reference/replenishment/` retains current inventory, exact EDN, native grading, previews, durable requests, receipts and exact-basis verification. Commit uses `:application/ca-engine`, installed validation specs and basis guard while holding the application's `api.lock` through readback. Unknown submissions recover the original request.

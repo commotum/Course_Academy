@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cosine periodicity generator, captured math basis 1356; stops at step 7.
+"""Cosine periodicity generator, captured math basis 1356.
 
 All observed radio banks are public profiles. Source recipes describe complete
 observed expression patterns, not recovered author intent. Default banks are
@@ -123,6 +123,9 @@ def source_presentation(template,c,n,a,b):
 def hash_data(x): return hashlib.sha256(json.dumps(x,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
 def uid(x): return str(uuid.uuid5(uuid.UUID(KP_UUID),x))
 
+# Stable package identity; registration reuses any existing KP reference.
+GENERATOR_UUID=uid('question-generator')
+
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  if field_type not in (None,'radio'): raise ValueError('Only radio layout is supported')
  if profile not in (None,*PROFILES): raise ValueError('Unknown bank profile')
@@ -181,6 +184,18 @@ def markdown(r):
 def main():
  ap=argparse.ArgumentParser(description=__doc__); ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all'); ap.add_argument('--seed',type=int,default=0); ap.add_argument('--count',type=int,default=1); ap.add_argument('--format',choices=['markdown','json'],default='markdown'); ap.add_argument('--template',choices=list(TEMPLATES)); ap.add_argument('--profile',choices=list(PROFILES)); args=ap.parse_args()
  if args.count<1 or args.difficulty=='all' and (args.template or args.profile): ap.error('Positive count and specific difficulty required with template/profile')
- records=[generate(level,args.seed+i,args.template,profile=args.profile) for level in (['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]) for i in range(args.count)]
+ if args.difficulty in ('easy','all') and args.count>len(EASY_VALUES):
+  ap.error(f'easy: finite capability limit of {len(EASY_VALUES)} distinct tasks; requested {args.count}.')
+ records=[];seen=set()
+ for level in (['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]):
+  produced=0
+  for i in range(max(512,args.count*32)):
+   r=generate(level,args.seed+i,args.template,profile=args.profile)
+   fp=r['generation']['parameter_fingerprint']
+   if fp in seen: continue
+   records.append(r);seen.add(fp);produced+=1
+   if produced==args.count: break
+  if produced<args.count:
+   ap.error(f'{level}: bounded capability limit; requested {args.count}, found {produced} distinct tasks. Period shifts, seed and bank order do not create extra tasks.')
  print(json.dumps(records,indent=2,ensure_ascii=False) if args.format=='json' else '\n\n---\n\n'.join(map(markdown,records)))
 if __name__=='__main__': main()

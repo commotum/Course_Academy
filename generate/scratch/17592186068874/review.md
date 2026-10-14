@@ -392,9 +392,9 @@ Rewrite the expression $({x}^{2}-24x+144)-5$ as the difference between a perfect
 selection (radio)
 $(x+12{)}^{2}-5$
 $(x-12{)}^{2}-5$
-$(x-6{)}^{2}-5$
-$(x+24{)}^{2}-5$
 $(x-24{)}^{2}-5$
+$(x+13{)}^{2}-5$
+$(x-13{)}^{2}-5$
 
 First, we recall the following formula:
 
@@ -691,9 +691,9 @@ Rewrite the expression $({z}^{2}-20z+100)+5$ as the sum of a perfect square and 
 
 selection (radio)
 $(z-10{)}^{2}+5$
-$(z+20{)}^{2}+5$
+$(z+11{)}^{2}+5$
 $(z+10{)}^{2}+5$
-$(z-100{)}^{2}+5$
+$(z-11{)}^{2}+5$
 $(z-20{)}^{2}+5$
 
 First, we recall the following formula:
@@ -716,14 +716,14 @@ $$
 
 ## Generated moderate radio seed 1
 
-Rewrite the expression $({z}^{2}-20z+{10}^{2})-9$ as the difference between a perfect square and a constant.
+Rewrite the expression $({z}^{2}-24z+144)+4$ as the sum of a perfect square and a constant.
 
 selection (radio)
-$(z-10{)}^{2}-9$
-$(z+10{)}^{2}-9$
-$(z-100{)}^{2}-9$
-$(z+100{)}^{2}-9$
-$(z-20{)}^{2}-9$
+$(z+12{)}^{2}+4$
+$(z-13{)}^{2}+4$
+$(z-12{)}^{2}+4$
+$(z+13{)}^{2}+4$
+$(z-24{)}^{2}+4$
 
 First, we recall the following formula:
 
@@ -734,191 +734,11 @@ $$
 Notice that we have a perfect square in the parentheses that we can factor as follows:
 
 $$
-\begin{aligned}{z}^{2}-20z+{10}^{2} & = \\ {z}^{2}-2\cdot 10z+{10}^{2} & = \\ (z-10{)}^{2} & \end{aligned}
+\begin{aligned}{z}^{2}-24z+144 & = \\ {z}^{2}-24z+{12}^{2} & = \\ {z}^{2}-2\cdot 12z+{12}^{2} & = \\ (z-12{)}^{2} & \end{aligned}
 $$
 
 Therefore, we obtain
 
 $$
-\begin{aligned}({z}^{2}-20z+{10}^{2})-9 & = \\ (z-10{)}^{2}-9 & .\end{aligned}
-$$
-
-## Generated moderate blank seed 0
-
-Rewrite the following expression as the difference between a perfect square and a constant.$(z^{2} - 26z + 13^{2}) - 4 = ($ {{field-1}} $)^{2} -$
-{{field-2}}
-
-field-1 (blank)
-$z-13$
-
-field-2 (blank)
-$4$
-
-First, we recall the following formula:
-
-$$
-{z}^{2}-2az+{a}^{2}=(z-a{)}^{2}
-$$
-
-Notice that we have a perfect square in the parentheses that we can factor as follows:
-
-$$
-\begin{aligned}{z}^{2}-26z+{13}^{2} & = \\ {z}^{2}-2\cdot 13z+{13}^{2} & = \\ (z-13{)}^{2} & \end{aligned}
-$$
-
-Therefore, we obtain
-
-$$
-\begin{aligned}({z}^{2}-26z+{13}^{2})-4 & = \\ (z-13{)}^{2}-4 & .\end{aligned}
-$$
-
-## Generated moderate blank seed 1
-
-Rewrite the following expression as the difference between a perfect square and a constant.
-
-$({x}^{2}-28x+196)-4=(${{field-1}}${)}^{2}\,-$
-{{field-2}}
-
-field-1 (blank)
-$x-14$
-
-field-2 (blank)
-$4$
-
-First, we recall the following formula:
-
-$$
-{x}^{2}-2ax+{a}^{2}=(x-a{)}^{2}
-$$
-
-Notice that we have a perfect square in the parentheses that we can factor as follows:
-
-$$
-\begin{aligned}{x}^{2}-28x+196 & = \\ {x}^{2}-2\cdot 14x+{14}^{2} & = \\ (x-14{)}^{2} & \end{aligned}
-$$
-
-Therefore, we obtain
-
-$$
-\begin{aligned}({x}^{2}-28x+196)-4 & = \\ (x-14{)}^{2}-4 & .\end{aligned}
-$$
-
-## Generated hard radio seed 0
-
-Rewrite the expression $(25{z}^{2}-20z+4)+5$ as the sum of a perfect square and a constant.
-
-selection (radio)
-$(5z-2{)}^{2}+5$
-$(25z-2{)}^{2}+5$
-$(5z+2{)}^{2}+5$
-$(5z-4{)}^{2}+5$
-$(z-2{)}^{2}+5$
-
-First, we recall the following formula:
-
-$$
-{z}^{2}-2az+{a}^{2}=(z-a{)}^{2}
-$$
-
-Notice that we have a perfect square in the parentheses that we can factor as follows:
-
-$$
-\begin{aligned}25{z}^{2}-20z+4 & = \\ (5z)^{2}-2\cdot 2\cdot (5z)+{2}^{2} & = \\ (5z-2{)}^{2} & \end{aligned}
-$$
-
-Therefore, we obtain
-
-$$
-\begin{aligned}(25{z}^{2}-20z+4)+5 & = \\ (5z-2{)}^{2}+5 & .\end{aligned}
-$$
-
-## Generated hard radio seed 1
-
-Rewrite the expression $(25{z}^{2}-60z+36)+4$ as the sum of a perfect square and a constant.
-
-selection (radio)
-$(5z+6{)}^{2}+4$
-$(5z-12{)}^{2}+4$
-$(5z-6{)}^{2}+4$
-$(25z-6{)}^{2}+4$
-$(z-6{)}^{2}+4$
-
-First, we recall the following formula:
-
-$$
-{z}^{2}-2az+{a}^{2}=(z-a{)}^{2}
-$$
-
-Notice that we have a perfect square in the parentheses that we can factor as follows:
-
-$$
-\begin{aligned}25{z}^{2}-60z+36 & = \\ (5z)^{2}-2\cdot 6\cdot (5z)+{6}^{2} & = \\ (5z-6{)}^{2} & \end{aligned}
-$$
-
-Therefore, we obtain
-
-$$
-\begin{aligned}(25{z}^{2}-60z+36)+4 & = \\ (5z-6{)}^{2}+4 & .\end{aligned}
-$$
-
-## Generated hard blank seed 0
-
-Rewrite the following expression as the difference between a perfect square and a constant.
-
-$(9{z}^{2}-48z+64)-4=(${{field-1}}${)}^{2}\,-$
-{{field-2}}
-
-field-1 (blank)
-$3z-8$
-
-field-2 (blank)
-$4$
-
-First, we recall the following formula:
-
-$$
-{z}^{2}-2az+{a}^{2}=(z-a{)}^{2}
-$$
-
-Notice that we have a perfect square in the parentheses that we can factor as follows:
-
-$$
-\begin{aligned}9{z}^{2}-48z+64 & = \\ (3z)^{2}-2\cdot 8\cdot (3z)+{8}^{2} & = \\ (3z-8{)}^{2} & \end{aligned}
-$$
-
-Therefore, we obtain
-
-$$
-\begin{aligned}(9{z}^{2}-48z+64)-4 & = \\ (3z-8{)}^{2}-4 & .\end{aligned}
-$$
-
-## Generated hard blank seed 1
-
-Rewrite the following expression as the difference between a perfect square and a constant.
-
-$(16{z}^{2}-24z+9)-9=(${{field-1}}${)}^{2}\,-$
-{{field-2}}
-
-field-1 (blank)
-$4z-3$
-
-field-2 (blank)
-$9$
-
-First, we recall the following formula:
-
-$$
-{z}^{2}-2az+{a}^{2}=(z-a{)}^{2}
-$$
-
-Notice that we have a perfect square in the parentheses that we can factor as follows:
-
-$$
-\begin{aligned}16{z}^{2}-24z+9 & = \\ (4z)^{2}-2\cdot 3\cdot (4z)+{3}^{2} & = \\ (4z-3{)}^{2} & \end{aligned}
-$$
-
-Therefore, we obtain
-
-$$
-\begin{aligned}(16{z}^{2}-24z+9)-9 & = \\ (4z-3{)}^{2}-9 & .\end{aligned}
+\begin{aligned}({z}^{2}-24z+144)+4 & = \\ (z-12{)}^{2}+4 & .\end{aligned}
 $$

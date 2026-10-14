@@ -144,9 +144,8 @@ def main():
         source_report.append({'source_id':cid,'prompt_exact':True,'present_solution_exact':':question/worked-solution' in q,'bank_values_exact':True,'raw_presence_exact':True,'raw_missing':case['raw_missing']})
         cases.append({**case,'observed_bank_profile':case['bank_profile'],'bank_profile':rawprofile,'profile':rawprofile,'authored_level_assignment':':question/difficulty' not in q})
         reviews.append({'label':'Original raw replay '+cid,'record':replay,'original':q})
-        # Raw adjacent bank remains public evidence-only; normal counterpart uses
-        # complete method-derived bank without fabricating the adjacent intention.
-        normalprofile=case['bank_profile'] if case['bank_profile']!='adjacent_opaque' else 'half_coefficient'
+        # Preserve the observed complete moderate bank; its rationale stays unresolved.
+        normalprofile=case['bank_profile']
         completed=g.generate(case['level'],template=case['template'],parameters=case['parameters'],profile=normalprofile)
         checked(completed);engine.append(engine_request(completed,'completed '+cid))
         changed=dict(case['parameters']);changed['c']=(-1 if changed['c']<0 else 1)*(abs(changed['c'])%12+1)
@@ -159,17 +158,17 @@ def main():
         if case['bank_profile']:
             vr=g.generate(case['level'],parameters=changed,profile=rawprofile);checked(vr)
             reviews.append({'label':'Changed-parameter observed bank evidence '+cid,'record':vr})
-    fingerprints={level:set() for level in ('easy','moderate','hard')}
+    fingerprints={level:set() for level in g.SUPPORTED_LEVELS}
     families={level:set() for level in fingerprints}
     tested=0
     for level in fingerprints:
-        for kind in ('radio','blank'):
+        for kind in (('radio',) if level=='moderate' else ('radio','blank')):
             for seed in range(40):
                 r=g.generate(level,seed,field_type=kind);checked(r);tested+=1
                 assert r['question'][':question/answer-fields'][0][':answer-field/type'].endswith('/'+kind)
                 fingerprints[level].add(r['generation']['mathematical_fingerprint']);families[level].add(r['generation']['template'])
                 if seed<2:reviews.append({'label':f'Generated {level} {kind} seed {seed}','record':r});engine.append(engine_request(r,f'{level} {kind} seed {seed}'))
-        expected={t for t in g.TEMPLATES if t.endswith('_scaled')==(level=='hard')}
+        expected={t for t in g.TEMPLATES if not t.endswith('_scaled') and (level!='moderate' or t=='radio_numeric')}
         assert families[level]==expected,(level,families[level])
     # Enumerated meaningful domains omit variable and profile aliases entirely.
     enumeration={}
@@ -180,8 +179,8 @@ def main():
         enumeration[level]=len(pairs)*24
     for level in fingerprints:
         for t,s in g.TEMPLATES.items():
-            if t.endswith('_scaled')!=(level=='hard'):continue
-            banks=[None] if s.field=='blank' else (['scaled_method'] if level=='hard' else ['half_coefficient','square_constant','both_constant_signs'])
+            if t.endswith('_scaled') or (level=='moderate' and t!='radio_numeric'):continue
+            banks=[None] if s.field=='blank' else (['adjacent_opaque'] if level=='moderate' else ['half_coefficient','square_constant','both_constant_signs'])
             for bank in banks:
                 a=10 if level=='moderate' else 3;b=2 if level=='hard' else 1
                 for c in [-12,-1,1,12]:
@@ -194,8 +193,8 @@ def main():
     default_coverage={}
     for level in fingerprints:
         records=[g.generate(level,seed) for seed in range(100)]
-        assert {r['generation']['template'] for r in records}=={t for t in g.TEMPLATES if t.endswith('_scaled')==(level=='hard')}
-        expected_banks={'scaled_method'} if level=='hard' else {'half_coefficient','square_constant','both_constant_signs'}
+        assert {r['generation']['template'] for r in records}=={t for t in g.TEMPLATES if not t.endswith('_scaled') and (level!='moderate' or t=='radio_numeric')}
+        expected_banks={'adjacent_opaque'} if level=='moderate' else {'half_coefficient','square_constant','both_constant_signs'}
         assert {r['generation']['profile'] for r in records if r['question'][':question/answer-fields'][0][':answer-field/type'].endswith('/radio')}==expected_banks
         default_coverage[level]=sorted(expected_banks)
     p={'a':5,'b':1,'c':2,'variable':'x'}
@@ -205,12 +204,10 @@ def main():
     assert first['generation']['mathematical_fingerprint']==second['generation']['mathematical_fingerprint']
     alias=g.generate('easy',parameters=p,profile='raw_q-140281')
     assert alias['question'][':question/id']==first['question'][':question/id']
-    for a in range(2,10):
-        for b in range(2,6):
-            if sp.gcd(a,b)!=1:continue
-            for c in [-12,12]:
-                for t in ('radio_scaled','blank_scaled'):
-                    checked(g.generate('hard',template=t,parameters={'a':a,'b':b,'c':c,'variable':'x'}));tested+=1
+    for entry in (g.generate_hard, lambda **kw: g.generate('moderate',field_type='blank',**kw)):
+        try: entry(seed=0)
+        except ValueError: pass
+        else: raise AssertionError('unsupported level/layout accepted')
     invalid=[('easy','radio_numeric',{'a':0,'b':1,'c':2,'variable':'x'}),('moderate','radio_numeric',{'a':9,'b':1,'c':2,'variable':'x'}),('hard','radio_scaled',{'a':4,'b':2,'c':2,'variable':'x'}),('hard','radio_scaled',{'a':3,'b':1,'c':2,'variable':'x'}),('easy','radio_numeric',{'a':3,'b':1,'c':-13,'variable':'x'})]
     for level,t,p in invalid:
         try:g.generate(level,template=t,parameters=p)
@@ -236,7 +233,7 @@ def main():
     for item in reviews:
         review+=['## '+item['label'],'',g.markdown(item['record']),'']
     (HERE/'review.md').write_text('\n'.join(review))
-    result={'passed':True,'source':g.SOURCE,'source_questions':8,'source_prompts_exact':8,'source_present_solutions_exact':{'matched':matched_solutions,'total':6},'raw_attribute_presence_exact':8,'source_bank_options_exact':{'matched':matched_options,'total':29},'source_correct_designations':{'matched':correct_designations,'total':8},'source_complete_radio_banks_exact':{'matched':5,'total':5},'source_distractors_exact':{'matched':20,'total':20},'inferred_missing_designations':3,'authored_missing_solutions':2,'observed_difficulties':{'easy':5,'moderate':1,'unrated':2,'hard':0},'raw_replay_evidence_only':8,'opaque_banks':['q-140283 adjacent offsets; structural pattern parameterized, intent unresolved'],'independent_displayed_checks':tested,'sampled_distinct_meaningful_tasks':{k:len(v) for k,v in fingerprints.items()},'enumerated_meaningful_tasks':enumeration,'default_family_coverage':{k:sorted(v) for k,v in families.items()},'unfiltered_default_bank_coverage':default_coverage,'native':native,'native_executable_sha256':hashlib.sha256(executable.read_bytes()).hexdigest(),'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'source_results':source_report,'unresolved_findings':['Opaque adjacent choice-bank intent; raw public evidence retained and excluded from normal defaults.']}
+    result={'passed':True,'generator_sha256':hashlib.sha256(SCRIPT.read_bytes()).hexdigest(),'source':g.SOURCE,'source_questions':8,'source_prompts_exact':8,'source_present_solutions_exact':{'matched':matched_solutions,'total':6},'raw_attribute_presence_exact':8,'source_bank_options_exact':{'matched':matched_options,'total':29},'source_correct_designations':{'matched':correct_designations,'total':8},'source_complete_radio_banks_exact':{'matched':5,'total':5},'source_distractors_exact':{'matched':20,'total':20},'inferred_missing_designations':3,'authored_missing_solutions':2,'observed_difficulties':{'easy':5,'moderate':1,'unrated':2,'hard':0},'raw_replay_evidence_only':8,'opaque_banks':['q-140283 adjacent offsets; structural pattern parameterized, intent unresolved'],'independent_displayed_checks':tested,'sampled_distinct_meaningful_tasks':{k:len(v) for k,v in fingerprints.items()},'enumerated_meaningful_tasks':enumeration,'default_family_coverage':{k:sorted(v) for k,v in families.items()},'unfiltered_default_bank_coverage':default_coverage,'native':native,'native_executable_sha256':hashlib.sha256(executable.read_bytes()).hexdigest(),'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'source_results':source_report,'unresolved_findings':['Opaque adjacent choice-bank intent; exact structural recipes retained; misconception rationale is not presented to learners.']}
     (HERE/'validation.json').write_text(json.dumps(result,indent=2)+'\n')
     print(json.dumps({k:result[k] for k in ('passed','source_questions','source_prompts_exact','source_bank_options_exact','independent_displayed_checks','enumerated_meaningful_tasks')}))
 

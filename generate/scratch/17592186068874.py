@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Negative-linear already-isolated perfect-square expressions; basis 1356.
 
-Shared exact helpers, source-shaped easy/moderate recipes, and authored hard
-nonunit variable factors. No add/subtract trick, equation solving, plots or DB.
+Shared exact helpers and source-shaped easy/moderate recipes. Hard is
+unsupported: nonunit variable factors change the observed expression backbone. No add/subtract trick, equation solving, plots or DB.
 Raw profiles are public evidence-only parameterized replays preserving individual
 missing attributes. Normal completions are authored. See adjacent extraction.
 """
@@ -20,6 +20,8 @@ KP_ID = 17592186068874
 KP_UUID = 'bf9b812d-0dbf-5a67-9d45-3cc5e373b2b1'
 TITLE = 'Completing the Square When the Perfect Square is Isolated: Negative Linear Term'
 VERSION = 'isolated-negative-square-v1'
+GENERATOR_ID = str(uuid.uuid5(uuid.UUID(KP_UUID), 'question-generator'))
+SUPPORTED_LEVELS = ('easy', 'moderate')
 SOURCE = {'database':'math','basis':1356,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
 OPENING = 'First, we recall the following formula:'
 FACTORING = 'Notice that we have a perfect square in the parentheses that we can factor as follows:'
@@ -160,6 +162,8 @@ def check_parameters(level,template,parameters):
 
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+    if level not in SUPPORTED_LEVELS:
+        raise ValueError('Unsupported difficulty: hard requires an unobserved nonunit variable factor')
     rng=random.Random(seed)
     if field_type: field_type=field_type.removeprefix(':answer-field.type/')
     if field_type not in (None,'radio','blank'): raise ValueError('unsupported field_type')
@@ -169,7 +173,8 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         if template and template!=raw['template']: raise ValueError('raw profile/template mismatch')
         template=raw['template']; bank=raw['bank_profile']
     else:
-        eligible=[k for k,s in TEMPLATES.items() if (level=='hard')==k.endswith('_scaled') and (field_type is None or s.field==field_type)]
+        eligible=[k for k,s in TEMPLATES.items() if not k.endswith('_scaled') and (level!='moderate' or k=='radio_numeric') and (field_type is None or s.field==field_type)]
+        if not eligible: raise ValueError('Unsupported field layout for this difficulty')
         if level not in ('easy','moderate','hard'): raise ValueError('unknown difficulty')
         if template is None: template=rng.choice(eligible)
         if template not in eligible: raise ValueError('ineligible template/field type')
@@ -178,10 +183,10 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     if field_type and spec.field!=field_type: raise ValueError('field_type incompatible with explicit template')
     if spec.field=='blank' and bank is not None: raise ValueError('blank has no bank profile')
     if spec.field=='radio':
-        eligible_banks=['scaled_method'] if level=='hard' else ['half_coefficient','square_constant','both_constant_signs']
+        eligible_banks=['adjacent_opaque'] if level=='moderate' else ['half_coefficient','square_constant','both_constant_signs']
         if bank is None: bank=rng.choice(eligible_banks)
         if bank not in BANKS: raise ValueError('unknown profile')
-        if not raw and bank not in eligible_banks: raise ValueError('opaque or incompatible bank requires public raw replay')
+        if not raw and bank not in eligible_banks: raise ValueError('incompatible source bank requires public raw replay')
     if parameters is None:
         if raw: parameters=raw['parameters']
         else:
@@ -240,8 +245,7 @@ def generate_moderate(seed=0,template=None,field_type=None,parameters=None,profi
     return generate('moderate',seed,template,field_type,parameters,profile)
 
 
-# Hard: nonunit squared variable factor; requires matching both square roots and
-# checking the negative cross product. No new operation or later-topic trick.
+# Retained compatibility entrypoint: hard explicitly rejects unsupported output.
 def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=None):
     return generate('hard',seed,template,field_type,parameters,profile)
 
@@ -261,7 +265,7 @@ def main():
     parser.add_argument('--format',choices=['markdown','json'],default='markdown')
     parser.add_argument('--template');parser.add_argument('--profile');parser.add_argument('--field-type')
     args=parser.parse_args()
-    levels=['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]
+    levels=list(SUPPORTED_LEVELS) if args.difficulty=='all' else [args.difficulty]
     records=[generate(level,args.seed+i,args.template,args.field_type,profile=args.profile) for level in levels for i in range(args.count)]
     print(json.dumps(records,indent=2) if args.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in records))
 
