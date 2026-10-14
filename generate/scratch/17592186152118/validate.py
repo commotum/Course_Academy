@@ -280,7 +280,7 @@ def main():
             if h==k==0:continue
             for t in g.TEMPLATES:check(g.generate(level,parameters={**p,'h':h,'k':k},template=t));sign_checks+=1
     write('source-cases.json',cases);write('review.json',reviews);write('engine-input.json',engine)
-    binary=REPO/'generate/runs/current/check-engine'
+    binary=HERE/'check-engine'
     subprocess.run([str(binary),str(HERE/'engine-input.json'),str(HERE/'engine-validation.json')],check=True)
     er=json.loads((HERE/'engine-validation.json').read_text())
     report={'status':'passed','version':g.VERSION,'source_provenance':{k:v for k,v in g.SOURCE.items() if k!='record'},'practice_sources':6,'source_prompt_exact':'6/6','field_shape_and_presence_exact':'6/6','complete_original_banks_exact':'6/6','all_original_answer_values_exact':f'{total_options}/14','original_correct_designations_exact':f'{corrects}/5','full_original_solution_sequence_exact':f'{solutions}/5','raw_missing_correct_difficulty_solution':1,'authored_missing_correct_reference':1,'authored_unrated_moderate_assignment':1,'authored_missing_solution':1,'presentation_or_mathematical_repairs':0,'raw_unmatched_values':0,'source_replay_details':matches,'normal_instances_checked':len(records),'source_profile_variants_checked':profile_samples,'signed_zero_shift_format_stage_checks':sign_checks,'unique_content_identities':len(identities),'mathematical_tasks_per_level':{l:len(x) for l,x in fingerprints.items()},'all_ordered_formal_arithmetic_and_prose_math_stages':'parsed and independently checked from actual printed output','correct_option_positions_observed':sorted(correct_positions),'invalid_explicit_inputs_rejected':len(invalid),'source_profile_negative_controls_rejected':profile_negative_checks,'native_accepted':er['accepted_checks'],'native_rejected':er['rejected_checks'],'native_unresolved':er['documented_unresolved_checks'],'plot_rating':'none','database_writes':0,'parent_qa':'pending independent review'}
@@ -294,7 +294,7 @@ def main():
             markdown += [o.get(':question/worked-solution','[Original has no worked solution, difficulty, or correct reference.]'),'### Parameterized replay']
         markdown += [g.markdown(e['record'])]
     (HERE/'review.md').write_text('\n\n'.join(markdown)+'\n')
-    files=[HERE.with_suffix('.py')]+sorted(p for p in HERE.iterdir() if p.is_file() and p.name!='frozen-manifest.json')+[binary,REPO/'generate/runs/current/check-engine.rs']+[REPO/'engine/rust'/f'{name}.rs' for name in ('learning','symbolic','schema','lib')]
+    files=[HERE.with_suffix('.py')]+sorted(p for p in HERE.iterdir() if p.is_file() and p.name!='frozen-manifest.json')+[binary,HERE/'check-engine.rs']+[REPO/'engine/rust'/f'{name}.rs' for name in ('learning','symbolic','schema','lib')]
     hashes={str(p.relative_to(REPO)):hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
     write('frozen-manifest.json',{'version':g.VERSION,'sympy':sp.__version__,'sha256':hashes,'database_writes':0})
     print(json.dumps(report,indent=2))
