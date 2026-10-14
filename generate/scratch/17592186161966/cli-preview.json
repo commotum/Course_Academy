@@ -1,0 +1,99 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186161966,
+      "id": "958cdcf3-aaba-5275-85f8-9531f10b3d0e",
+      "title": "Using Column Operations to Create a Row of Zeros in a 4x4 Matrix"
+    },
+    "question": {
+      ":question/id": "487009be-26d0-5204-8399-7532ef8a28f5",
+      ":question/problem": "$$\nA=\\begin{bmatrix}5 & 6 & -1 & -4 \\\\ -8 & 7 & 6 & 1 \\\\ -7 & -2 & 2 & -8 \\\\ 2 & -10 & 10 & 4\\end{bmatrix},\\,B=\\begin{bmatrix}5 & 31 & -26 & -14 \\\\ -8 & -33 & 46 & 17 \\\\ -7 & -37 & 37 & 6 \\\\ 2 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nConsider the matrices $A$ and $B$ above. By applying three matrix elementary column operations\n\n- $C_{2}:=\\ldots$\n- $C_{3}:=C_{3}-5C_{1}$\n- $C_{4}:=\\ldots$\n\neach of the form $C_i:=C_i+kC_{1},$ the matrix $A$ can be transformed into the matrix $B.$ What are the missing elementary column operations?",
+      ":question/worked-solution": "To transform $A$ into $B,$ we need to make entries in row 4 other than $a_{41}=2$ equal to $0.$\n\nTo do this, we can apply the following elementary column operations:\n\n$$\n\\begin{bmatrix}5 & 6 & -1 & -4 \\\\ -8 & 7 & 6 & 1 \\\\ -7 & -2 & 2 & -8 \\\\ 2 & -10 & 10 & 4\\end{bmatrix}\n\\xrightarrow{C_{2}:=C_{2}+5C_{1}}\\begin{bmatrix}5 & 31 & -1 & -4 \\\\ -8 & -33 & 6 & 1 \\\\ -7 & -37 & 2 & -8 \\\\ 2 & 0 & 10 & 4\\end{bmatrix}\n\\xrightarrow{C_{3}:=C_{3}-5C_{1}}\\begin{bmatrix}5 & 31 & -26 & -4 \\\\ -8 & -33 & 46 & 1 \\\\ -7 & -37 & 37 & -8 \\\\ 2 & 0 & 0 & 4\\end{bmatrix}\n\\xrightarrow{C_{4}:=C_{4}-2C_{1}}\\begin{bmatrix}5 & 31 & -26 & -14 \\\\ -8 & -33 & 46 & 17 \\\\ -7 & -37 & 37 & 6 \\\\ 2 & 0 & 0 & 0\\end{bmatrix}=B\n$$\n\nTherefore, the corresponding elementary column operations are\n\n$C_{2}:=C_{2}+5C_{1}$ and $C_{4}:=C_{4}-2C_{1}$.",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4e70a038-4c1a-5b08-aaa3-e7a8984d3b3b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5d69ccfb-d102-588e-809e-082cb848af61",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{2}:=C_{2}-6C_{1}$ and $C_{4}:=C_{4}-C_{1}$"
+            },
+            {
+              ":answer/id": "99581012-364a-578d-af29-b9ffea4c4704",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{2}:=C_{2}-5C_{1}$ and $C_{4}:=C_{4}-2C_{1}$"
+            },
+            {
+              ":answer/id": "c20cdcb0-6c68-5a1a-9067-f0916155205e",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{2}:=C_{2}-5C_{1}$ and $C_{4}:=C_{4}+2C_{1}$"
+            },
+            {
+              ":answer/id": "b163c03c-7115-5ec5-b05a-b4ba254336ae",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{2}:=C_{2}+7C_{1}$ and $C_{4}:=C_{4}-2C_{1}$"
+            },
+            {
+              ":answer/id": "42a27452-4e1c-52ad-81c2-148d0f9e73b9",
+              ":answer/type": ":answer.type/text",
+              ":answer/value": "$C_{2}:=C_{2}+5C_{1}$ and $C_{4}:=C_{4}-2C_{1}$"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "42a27452-4e1c-52ad-81c2-148d0f9e73b9"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": 1,
+      "seed": 10,
+      "template": "column-zero-4x4",
+      "bank_profile": "q-42563",
+      "parameters": {
+        "A": [
+          [
+            5,
+            6,
+            -1,
+            -4
+          ],
+          [
+            -8,
+            7,
+            6,
+            1
+          ],
+          [
+            -7,
+            -2,
+            2,
+            -8
+          ],
+          [
+            2,
+            -10,
+            10,
+            4
+          ]
+        ],
+        "row": 3,
+        "pivot": 0,
+        "given": 2,
+        "ks": [
+          0,
+          5,
+          -5,
+          -2
+        ]
+      },
+      "parameter_fingerprint": "4491e59b7d5fc0f02a3fc956d1f66878aa18a30cfc540ae3d89d5e7b9b28bae2",
+      "generator_id": "c2b3a602-ceda-51aa-9ca5-ee94cde6e828",
+      "sympy_version": "1.14.0"
+    }
+  }
+]

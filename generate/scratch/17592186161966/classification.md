@@ -1,0 +1,11 @@
+# Classification at basis 2437
+
+KP 17592186161966: Using Column Operations to Create a Row of Zeros in a 4x4 Matrix.
+
+All 11 practice questions and the canonical example were captured together. Ten practice questions are rated moderate; q-91208 is unrated, lacks a correct designation and worked solution, and cannot count toward inventory. q-42563 has two fields with the same `selection` key, one without a correct designation; preserve both source fields and exclude this question from gradable inventory. New variants use the complete five-choice radio field alone, an explicit source-completion policy rather than literal duplication of an unusable field layout.
+
+Moderate has one mathematical/value template and one radio `selection` field with five text choices, each a pair of column assignments. Each source bank is retained separately (ten rated profiles, one unrated evidence-only profile); no pooled distractors. Formatting varies between bullet, Roman, and numbered lists; these do not change method. Matrices are rendered LaTeX, not mathematical plots. Plot rating: none. The canonical PNG was visually inspected: it shows two 4x4 matrices with the pivot column blue and the target zeros red; it introduces no additional geometry. No new assets are needed.
+
+Source row/pivot/given positions vary already. Preserve the 4x4 shape, three additions to different nonpivot columns, one supplied operation and two requested operations, common unchanged pivot column, zeroing a single row, integer coefficients and complete intermediate matrices. Easy and hard have no certified source backbone or difficulty assignment; this package leaves both unsupported, not filled. This is a bounded capability exception, not proof that those levels are mathematically impossible; new evidence reopens classification.
+
+q-91210 source error: prompt A[2,1] = -7; the solution's initial matrix shows +7. Adding -4 times column 2 to column 1 gives -7 - 4(-4) = 9, which agrees with the next matrix and B. All subsequent matrices and key agree with the prompt. Generated initial matrix is corrected to -7; source retained unchanged. `source-components.json` and `source-bank-replay.json` contain every source question, field and choice, complete numerical replay, and unresolved distractor interpretation.
