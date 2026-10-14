@@ -31,9 +31,9 @@ SOURCES={q[':question/math-academy-id']:q for q in RAW[':knowledge-point/questio
 x,y,z=s.symbols('x y z', real=True)
 i,j,k=s.symbols('i j k')
 VARS=(x,y,z); BASIS=(i,j,k)
-FAMILIES={'poly':'q-36144','log_product':'q-37466','gaussian':'q-128521','reciprocal3':'q-128529','log':'q-65131','cancel':'q-71476','exp_linear':'q-128532','exp_product':'q-71484'}
-OPAQUE={'poly','gaussian','reciprocal3','exp_linear'}
-ELIGIBLE=('poly','log_product','gaussian','reciprocal3','log','cancel','exp_linear','exp_product')
+FAMILIES={'poly':'q-36144','log_product':'q-37466','gaussian':'q-128521','reciprocal3':'q-128529','log':'q-65131','cancel':'q-71476','exp_linear':'q-128532','exp_product':'q-71484','exp_cross':'q-71515'}
+OPAQUE={'poly','gaussian','reciprocal3','exp_linear','exp_cross'}
+ELIGIBLE=('poly','log_product','gaussian','reciprocal3','log','cancel','exp_linear','exp_product','exp_cross')
 FAMILY_LEVELS={f:SOURCES[q].get(':question/difficulty',{}).get(':db/ident',':question.difficulty/moderate').split('/')[-1] for f,q in FAMILIES.items()}
 LEVELS={'easy':('linear',),'moderate':tuple(f for f in ELIGIBLE if FAMILY_LEVELS[f]=='moderate'),'hard':tuple(f for f in ELIGIBLE if FAMILY_LEVELS[f]=='hard')+('binomial3',)}
 TRANSFORMS=standard_transformations+(implicit_multiplication_application,)
@@ -141,6 +141,7 @@ def expressions(family,p):
     if family=='cancel':return p['a']*x**2*y+p['b']*x*y**2,1/(x*y),(x,y)
     if family=='exp_linear':return s.exp(X-Y),X**2-3*X*Y,(x,y)
     if family=='exp_product':return s.exp(X*Y),X**2+Y**2,(x,y)
+    if family=='exp_cross':return X*s.exp(Y),Y*s.exp(X),(x,y)
     if family=='linear':return p['a']*x+p['b']*y,p['c']*x+p['d']*y,(x,y)
     if family=='binomial3':
         a,b=p['a'],p['b'];r,t=p['r'],p['t']

@@ -545,104 +545,6 @@ $$
 \begin{aligned}∇[f(x,y)g(x,y)] & =(x-4){(y+5)}^{2}(-2(x-4){e}^{-({(x-4)}^{2}+{(y+5)}^{2})}\text{ }i-2(y+5){e}^{-({(x-4)}^{2}+{(y+5)}^{2})}\text{ }j)+{e}^{-({(x-4)}^{2}+{(y+5)}^{2})}({(y+5)}^{2}\text{ }i+2(x-4)(y+5)\text{ }j) \\  & ={e}^{-({(x-4)}^{2}+{(y+5)}^{2})}(-2{(x-4)}^{2}{(y+5)}^{2}\text{ }i-2(x-4){(y+5)}^{3}\text{ }j)+{e}^{-({(x-4)}^{2}+{(y+5)}^{2})}({(y+5)}^{2}\text{ }i+2(x-4)(y+5)\text{ }j) \\  & ={e}^{-({(x-4)}^{2}+{(y+5)}^{2})}({(y+5)}^{2}(1-2{(x-4)}^{2})\text{ }i+2(x-4)(y+5)(1-{(y+5)}^{2})\text{ }j).\end{aligned}
 $$
 
-### Generated hard method
-
-Parameters: `{"x0": 6, "y0": 2}`. Eligible for learning: True.
-
-What is the gradient of the product $f(x,y)g(x,y)$ if $f(x,y)=(x-6){(y-2)}^{2}$ and $g(x,y)={e}^{-({(x-6)}^{2}+{(y-2)}^{2})}?$
-
-- $(2 \left(1 - \left(y - 2\right)^{2}\right) \left(x - 6\right) \left(y - 2\right) e^{- \left(x - 6\right)^{2} - \left(y - 2\right)^{2}})\,i+(\left(1 - 2 \left(x - 6\right)^{2}\right) \left(y - 2\right)^{2} e^{- \left(x - 6\right)^{2} - \left(y - 2\right)^{2}})\,j$
-- $(\left(12 - 2 x\right) \left(x - 6\right) \left(y - 2\right)^{2} e^{- \left(x - 6\right)^{2} - \left(y - 2\right)^{2}})\,i+(\left(4 - 2 y\right) \left(x - 6\right) \left(y - 2\right)^{2} e^{- \left(x - 6\right)^{2} - \left(y - 2\right)^{2}})\,j$
-- $(- \left(12 - 2 x\right) \left(x - 6\right) \left(y - 2\right)^{2} e^{- \left(x - 6\right)^{2} - \left(y - 2\right)^{2}} + \left(y - 2\right)^{2} e^{- \left(x - 6\right)^{2} - \left(y - 2\right)^{2}})\,i+(- \left(4 - 2 y\right) \left(x - 6\right) \left(y - 2\right)^{2} e^{- \left(x - 6\right)^{2} - \left(y - 2\right)^{2}} + \left(x - 6\right) \left(2 y - 4\right) e^{- \left(x - 6\right)^{2} - \left(y - 2\right)^{2}})\,j$
-- $(\left(y - 2\right)^{2} e^{- \left(x - 6\right)^{2} - \left(y - 2\right)^{2}})\,i+(\left(x - 6\right) \left(2 y - 4\right) e^{- \left(x - 6\right)^{2} - \left(y - 2\right)^{2}})\,j$
-- $(\left(1 - 2 \left(x - 6\right)^{2}\right) \left(y - 2\right)^{2} e^{- \left(x - 6\right)^{2} - \left(y - 2\right)^{2}})\,i+(2 \left(1 - \left(y - 2\right)^{2}\right) \left(x - 6\right) \left(y - 2\right) e^{- \left(x - 6\right)^{2} - \left(y - 2\right)^{2}})\,j$
-
-Worked solution:
-The gradient of the product of two functions $f(x,y)$ and $g(x,y)$ is given by
-
-$$
-∇[fg]=f∇g+g∇f.
-$$
-
-Now, we calculate the partial derivatives of $f(x,y):$
-
-$$
-\begin{aligned}\frac{∂f}{∂x} & =\frac{∂}{∂x}((x-6){(y-2)}^{2})={(y-2)}^{2} \\ \frac{∂f}{∂y} & =\frac{∂}{∂y}((x-6){(y-2)}^{2})=2(x-6)(y-2)\end{aligned}
-$$
-
-Hence, 
-
-$$
-\begin{aligned}∇f(x,y) & =\frac{∂f}{∂x}\text{ }i+\frac{∂f}{∂y}\text{ }j={(y-2)}^{2}\text{ }i+2(x-6)(y-2)\text{ }j.\end{aligned}
-$$
-
-Next, we calculate the partial derivatives of $g(x,y):$
-
-$$
-\begin{aligned}\frac{∂g}{∂x} & =\frac{∂}{∂x}({e}^{-({(x-6)}^{2}+{(y-2)}^{2})})=-2(x-6){e}^{-({(x-6)}^{2}+{(y-2)}^{2})} \\ \frac{∂g}{∂y} & =\frac{∂}{∂y}({e}^{-({(x-6)}^{2}+{(y-2)}^{2})})=-2(y-2){e}^{-({(x-6)}^{2}+{(y-2)}^{2})}\end{aligned}
-$$
-
-Therefore, 
-
-$$
-\begin{aligned}∇g(x,y) & =\frac{∂g}{∂x}\text{ }i+\frac{∂g}{∂y}\text{ }j=-2(x-6){e}^{-({(x-6)}^{2}+{(y-2)}^{2})}\text{ }i-2(y-2){e}^{-({(x-6)}^{2}+{(y-2)}^{2})}\text{ }j.\end{aligned}
-$$
-
-Finally, using the product rule, we obtain
-
-$$
-\begin{aligned}∇[f(x,y)g(x,y)] & =(x-6){(y-2)}^{2}(-2(x-6){e}^{-({(x-6)}^{2}+{(y-2)}^{2})}\text{ }i-2(y-2){e}^{-({(x-6)}^{2}+{(y-2)}^{2})}\text{ }j)+{e}^{-({(x-6)}^{2}+{(y-2)}^{2})}({(y-2)}^{2}\text{ }i+2(x-6)(y-2)\text{ }j) \\  & ={e}^{-({(x-6)}^{2}+{(y-2)}^{2})}(-2{(x-6)}^{2}{(y-2)}^{2}\text{ }i-2(x-6){(y-2)}^{3}\text{ }j)+{e}^{-({(x-6)}^{2}+{(y-2)}^{2})}({(y-2)}^{2}\text{ }i+2(x-6)(y-2)\text{ }j) \\  & ={e}^{-({(x-6)}^{2}+{(y-2)}^{2})}({(y-2)}^{2}(1-2{(x-6)}^{2})\text{ }i+2(x-6)(y-2)(1-{(y-2)}^{2})\text{ }j).\end{aligned}
-$$
-
-### Generated hard method
-
-Parameters: `{"x0": -6, "y0": 5}`. Eligible for learning: True.
-
-What is the gradient of the product $f(x,y)g(x,y)$ if $f(x,y)=(x+6){(y-5)}^{2}$ and $g(x,y)={e}^{-({(x+6)}^{2}+{(y-5)}^{2})}?$
-
-- $(- \left(- 2 x - 12\right) \left(x + 6\right) \left(y - 5\right)^{2} e^{- \left(x + 6\right)^{2} - \left(y - 5\right)^{2}} + \left(y - 5\right)^{2} e^{- \left(x + 6\right)^{2} - \left(y - 5\right)^{2}})\,i+(- \left(10 - 2 y\right) \left(x + 6\right) \left(y - 5\right)^{2} e^{- \left(x + 6\right)^{2} - \left(y - 5\right)^{2}} + \left(x + 6\right) \left(2 y - 10\right) e^{- \left(x + 6\right)^{2} - \left(y - 5\right)^{2}})\,j$
-- $(2 \left(1 - \left(y - 5\right)^{2}\right) \left(x + 6\right) \left(y - 5\right) e^{- \left(x + 6\right)^{2} - \left(y - 5\right)^{2}})\,i+(\left(1 - 2 \left(x + 6\right)^{2}\right) \left(y - 5\right)^{2} e^{- \left(x + 6\right)^{2} - \left(y - 5\right)^{2}})\,j$
-- $(\left(1 - 2 \left(x + 6\right)^{2}\right) \left(y - 5\right)^{2} e^{- \left(x + 6\right)^{2} - \left(y - 5\right)^{2}})\,i+(2 \left(1 - \left(y - 5\right)^{2}\right) \left(x + 6\right) \left(y - 5\right) e^{- \left(x + 6\right)^{2} - \left(y - 5\right)^{2}})\,j$
-- $(\left(y - 5\right)^{2} e^{- \left(x + 6\right)^{2} - \left(y - 5\right)^{2}})\,i+(\left(x + 6\right) \left(2 y - 10\right) e^{- \left(x + 6\right)^{2} - \left(y - 5\right)^{2}})\,j$
-- $(\left(- 2 x - 12\right) \left(x + 6\right) \left(y - 5\right)^{2} e^{- \left(x + 6\right)^{2} - \left(y - 5\right)^{2}})\,i+(\left(10 - 2 y\right) \left(x + 6\right) \left(y - 5\right)^{2} e^{- \left(x + 6\right)^{2} - \left(y - 5\right)^{2}})\,j$
-
-Worked solution:
-The gradient of the product of two functions $f(x,y)$ and $g(x,y)$ is given by
-
-$$
-∇[fg]=f∇g+g∇f.
-$$
-
-Now, we calculate the partial derivatives of $f(x,y):$
-
-$$
-\begin{aligned}\frac{∂f}{∂x} & =\frac{∂}{∂x}((x+6){(y-5)}^{2})={(y-5)}^{2} \\ \frac{∂f}{∂y} & =\frac{∂}{∂y}((x+6){(y-5)}^{2})=2(x+6)(y-5)\end{aligned}
-$$
-
-Hence, 
-
-$$
-\begin{aligned}∇f(x,y) & =\frac{∂f}{∂x}\text{ }i+\frac{∂f}{∂y}\text{ }j={(y-5)}^{2}\text{ }i+2(x+6)(y-5)\text{ }j.\end{aligned}
-$$
-
-Next, we calculate the partial derivatives of $g(x,y):$
-
-$$
-\begin{aligned}\frac{∂g}{∂x} & =\frac{∂}{∂x}({e}^{-({(x+6)}^{2}+{(y-5)}^{2})})=-2(x+6){e}^{-({(x+6)}^{2}+{(y-5)}^{2})} \\ \frac{∂g}{∂y} & =\frac{∂}{∂y}({e}^{-({(x+6)}^{2}+{(y-5)}^{2})})=-2(y-5){e}^{-({(x+6)}^{2}+{(y-5)}^{2})}\end{aligned}
-$$
-
-Therefore, 
-
-$$
-\begin{aligned}∇g(x,y) & =\frac{∂g}{∂x}\text{ }i+\frac{∂g}{∂y}\text{ }j=-2(x+6){e}^{-({(x+6)}^{2}+{(y-5)}^{2})}\text{ }i-2(y-5){e}^{-({(x+6)}^{2}+{(y-5)}^{2})}\text{ }j.\end{aligned}
-$$
-
-Finally, using the product rule, we obtain
-
-$$
-\begin{aligned}∇[f(x,y)g(x,y)] & =(x+6){(y-5)}^{2}(-2(x+6){e}^{-({(x+6)}^{2}+{(y-5)}^{2})}\text{ }i-2(y-5){e}^{-({(x+6)}^{2}+{(y-5)}^{2})}\text{ }j)+{e}^{-({(x+6)}^{2}+{(y-5)}^{2})}({(y-5)}^{2}\text{ }i+2(x+6)(y-5)\text{ }j) \\  & ={e}^{-({(x+6)}^{2}+{(y-5)}^{2})}(-2{(x+6)}^{2}{(y-5)}^{2}\text{ }i-2(x+6){(y-5)}^{3}\text{ }j)+{e}^{-({(x+6)}^{2}+{(y-5)}^{2})}({(y-5)}^{2}\text{ }i+2(x+6)(y-5)\text{ }j) \\  & ={e}^{-({(x+6)}^{2}+{(y-5)}^{2})}({(y-5)}^{2}(1-2{(x+6)}^{2})\text{ }i+2(x+6)(y-5)(1-{(y-5)}^{2})\text{ }j).\end{aligned}
-$$
-
 ## Original q-128529 (reciprocal3; moderate)
 
 Find the gradient of the product $f(x,y,z)h(x,y,z),$ given that 
@@ -1266,6 +1168,248 @@ $$
 \begin{aligned}∇[g(x,y)h(x,y)] & =h(x,y)∇g(x,y)+g(x,y)∇h(x,y) \\  & =({(x-4)}^{2}+{(y+6)}^{2})((y+6){e}^{(x-4)(y+6)}\text{ }i+(x-4){e}^{(x-4)(y+6)}\text{ }j)+{e}^{(x-4)(y+6)}(2(x-4)\text{ }i+2(y+6)\text{ }j) \\  & =(({(x-4)}^{2}+{(y+6)}^{2})(y+6){e}^{(x-4)(y+6)}\text{ }i+({(x-4)}^{2}+{(y+6)}^{2})(x-4){e}^{(x-4)(y+6)}\text{ }j)+(2(x-4){e}^{(x-4)(y+6)}\text{ }i+2(y+6){e}^{(x-4)(y+6)}\text{ }j) \\  & =({(x-4)}^{2}(y+6)+{(y+6)}^{3}+2(x-4)){e}^{(x-4)(y+6)}\text{ }i+({(x-4)}^{3}+(x-4){(y+6)}^{2}+2(y+6)){e}^{(x-4)(y+6)}\text{ }j\end{aligned}
 $$
 
+## Original q-71515 (exp_cross; hard)
+
+What is the gradient of the product $f(x,y)h(x,y)$ if $f(x,y)=x{e}^{y}$ and $h(x,y)=y{e}^{x}?$
+
+- $(x+y)y{e}^{xy}\text{ }i+x(x+y){e}^{xy}\text{ }j$
+- $(x+y){e}^{x+y}\text{ }i+(x+y){e}^{x+y}\text{ }j$
+- $(x+1)y{e}^{x}\text{ }i+x(1+y){e}^{y}\text{ }j$
+- $(x+1)y{e}^{x+y}\text{ }i+x(1+y){e}^{x+y}\text{ }j$
+- $xy{e}^{xy}\text{ }i+(x+1)(1+y){e}^{xy}\text{ }j$
+
+The gradient of the product of two functions $f(x,y)$ and $h(x,y)$ is given by:
+
+$$
+∇[fh]=f\,∇\,h+h\,∇\,f\,\,
+$$
+
+Now, we calculate the partial derivatives of $f(x,y):$
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & =\frac{∂}{∂x}(x{e}^{y})={e}^{y} \\ \frac{∂f}{∂y} & =\frac{∂}{∂y}(x{e}^{y})=x{e}^{y}\end{aligned}
+$$
+
+Hence, 
+
+$$
+\begin{aligned}∇f(x,y) & =\frac{∂f}{∂x}\text{ }i+\frac{∂f}{∂y}\text{ }j={e}^{y}\text{ }i+x{e}^{y}\text{ }j.\end{aligned}
+$$
+
+Next, we calculate the partial derivatives of $h(x,y):$
+
+$$
+\begin{aligned}\frac{∂h}{∂x} & =\frac{∂}{∂x}(y{e}^{x})=y{e}^{x} \\ \frac{∂h}{∂y} & =\frac{∂}{∂y}(y{e}^{x})={e}^{x}\end{aligned}
+$$
+
+Therefore, 
+
+$$
+\begin{aligned}∇h(x,y) & =\frac{∂h}{∂x}\text{ }i+\frac{∂h}{∂y}\text{ }j=y{e}^{x}\text{ }i+{e}^{x}\text{ }j.\end{aligned}
+$$
+
+Finally, using the product rule, we obtain:
+
+$$
+\begin{aligned}∇[f(x,y)h(x,y)] & =x{e}^{y}(y{e}^{x}\text{ }i+{e}^{x}\text{ }j)+y{e}^{x}({e}^{y}\text{ }i+x{e}^{y}\text{ }j) \\  & =xy{e}^{x+y}\text{ }i+x{e}^{x+y}\text{ }j+y{e}^{x+y}\text{ }i+xy{e}^{x+y}\text{ }j \\  & =(x+1)y{e}^{x+y}\text{ }i+x(1+y){e}^{x+y}\text{ }j\end{aligned}
+$$
+
+### Generated hard method
+
+Parameters: `{"x0": 4, "y0": -6}`. Eligible for learning: True.
+
+What is the gradient of the product $f(x,y)h(x,y)$ if $f(x,y)=(x-4){e}^{(y+6)}$ and $h(x,y)=(y+6){e}^{(x-4)}?$
+
+- $(\left(y + 6\right) e^{x - 4} e^{y + 6})\,i+(\left(x - 4\right) \left(y + 6\right) e^{x - 4} e^{y + 6})\,j$
+- $(- \left(x - 4\right) \left(y + 6\right) e^{x - 4} e^{y + 6} + \left(y + 6\right) e^{x - 4} e^{y + 6})\,i+(\left(x - 4\right) \left(y + 6\right) e^{x - 4} e^{y + 6} - \left(x - 4\right) e^{x - 4} e^{y + 6})\,j$
+- $(\left(x - 4\right) \left(y + 6\right) e^{x - 4} e^{y + 6})\,i+(\left(x - 4\right) e^{x - 4} e^{y + 6})\,j$
+- $(\left(x - 3\right) \left(y + 6\right) e^{x + y + 2})\,i+(\left(x - 4\right) \left(y + 7\right) e^{x + y + 2})\,j$
+- $(\left(x - 4\right) \left(y + 7\right) e^{x + y + 2})\,i+(\left(x - 3\right) \left(y + 6\right) e^{x + y + 2})\,j$
+
+Worked solution:
+The gradient of the product of two functions $f(x,y)$ and $h(x,y)$ is given by:
+
+$$
+∇[fh]=f\,∇\,h+h\,∇\,f\,\,
+$$
+
+Now, we calculate the partial derivatives of $f(x,y):$
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & =\frac{∂}{∂x}((x-4){e}^{(y+6)})={e}^{(y+6)} \\ \frac{∂f}{∂y} & =\frac{∂}{∂y}((x-4){e}^{(y+6)})=(x-4){e}^{(y+6)}\end{aligned}
+$$
+
+Hence, 
+
+$$
+\begin{aligned}∇f(x,y) & =\frac{∂f}{∂x}\text{ }i+\frac{∂f}{∂y}\text{ }j={e}^{(y+6)}\text{ }i+(x-4){e}^{(y+6)}\text{ }j.\end{aligned}
+$$
+
+Next, we calculate the partial derivatives of $h(x,y):$
+
+$$
+\begin{aligned}\frac{∂h}{∂x} & =\frac{∂}{∂x}((y+6){e}^{(x-4)})=(y+6){e}^{(x-4)} \\ \frac{∂h}{∂y} & =\frac{∂}{∂y}((y+6){e}^{(x-4)})={e}^{(x-4)}\end{aligned}
+$$
+
+Therefore, 
+
+$$
+\begin{aligned}∇h(x,y) & =\frac{∂h}{∂x}\text{ }i+\frac{∂h}{∂y}\text{ }j=(y+6){e}^{(x-4)}\text{ }i+{e}^{(x-4)}\text{ }j.\end{aligned}
+$$
+
+Finally, using the product rule, we obtain:
+
+$$
+\begin{aligned}∇[f(x,y)h(x,y)] & =(x-4){e}^{(y+6)}((y+6){e}^{(x-4)}\text{ }i+{e}^{(x-4)}\text{ }j)+(y+6){e}^{(x-4)}({e}^{(y+6)}\text{ }i+(x-4){e}^{(y+6)}\text{ }j) \\  & =(x-4)(y+6){e}^{(x-4)+(y+6)}\text{ }i+(x-4){e}^{(x-4)+(y+6)}\text{ }j+(y+6){e}^{(x-4)+(y+6)}\text{ }i+(x-4)(y+6){e}^{(x-4)+(y+6)}\text{ }j \\  & =((x-4)+1)(y+6){e}^{(x-4)+(y+6)}\text{ }i+(x-4)(1+(y+6)){e}^{(x-4)+(y+6)}\text{ }j\end{aligned}
+$$
+
+### Generated hard source:q-71515
+
+Parameters: `{"x0": 4, "y0": -6}`. Eligible for learning: False.
+
+What is the gradient of the product $f(x,y)h(x,y)$ if $f(x,y)=(x-4){e}^{(y+6)}$ and $h(x,y)=(y+6){e}^{(x-4)}?$
+
+- $((x-4)+(y+6)){e}^{(x-4)+(y+6)}\text{ }i+((x-4)+(y+6)){e}^{(x-4)+(y+6)}\text{ }j$
+- $((x-4)+1)(y+6){e}^{(x-4)+(y+6)}\text{ }i+(x-4)(1+(y+6)){e}^{(x-4)+(y+6)}\text{ }j$
+- $((x-4)+1)(y+6){e}^{(x-4)}\text{ }i+(x-4)(1+(y+6)){e}^{(y+6)}\text{ }j$
+- $(x-4)(y+6){e}^{(x-4)(y+6)}\text{ }i+((x-4)+1)(1+(y+6)){e}^{(x-4)(y+6)}\text{ }j$
+- $((x-4)+(y+6))(y+6){e}^{(x-4)(y+6)}\text{ }i+(x-4)((x-4)+(y+6)){e}^{(x-4)(y+6)}\text{ }j$
+
+Worked solution:
+The gradient of the product of two functions $f(x,y)$ and $h(x,y)$ is given by:
+
+$$
+∇[fh]=f\,∇\,h+h\,∇\,f\,\,
+$$
+
+Now, we calculate the partial derivatives of $f(x,y):$
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & =\frac{∂}{∂x}((x-4){e}^{(y+6)})={e}^{(y+6)} \\ \frac{∂f}{∂y} & =\frac{∂}{∂y}((x-4){e}^{(y+6)})=(x-4){e}^{(y+6)}\end{aligned}
+$$
+
+Hence, 
+
+$$
+\begin{aligned}∇f(x,y) & =\frac{∂f}{∂x}\text{ }i+\frac{∂f}{∂y}\text{ }j={e}^{(y+6)}\text{ }i+(x-4){e}^{(y+6)}\text{ }j.\end{aligned}
+$$
+
+Next, we calculate the partial derivatives of $h(x,y):$
+
+$$
+\begin{aligned}\frac{∂h}{∂x} & =\frac{∂}{∂x}((y+6){e}^{(x-4)})=(y+6){e}^{(x-4)} \\ \frac{∂h}{∂y} & =\frac{∂}{∂y}((y+6){e}^{(x-4)})={e}^{(x-4)}\end{aligned}
+$$
+
+Therefore, 
+
+$$
+\begin{aligned}∇h(x,y) & =\frac{∂h}{∂x}\text{ }i+\frac{∂h}{∂y}\text{ }j=(y+6){e}^{(x-4)}\text{ }i+{e}^{(x-4)}\text{ }j.\end{aligned}
+$$
+
+Finally, using the product rule, we obtain:
+
+$$
+\begin{aligned}∇[f(x,y)h(x,y)] & =(x-4){e}^{(y+6)}((y+6){e}^{(x-4)}\text{ }i+{e}^{(x-4)}\text{ }j)+(y+6){e}^{(x-4)}({e}^{(y+6)}\text{ }i+(x-4){e}^{(y+6)}\text{ }j) \\  & =(x-4)(y+6){e}^{(x-4)+(y+6)}\text{ }i+(x-4){e}^{(x-4)+(y+6)}\text{ }j+(y+6){e}^{(x-4)+(y+6)}\text{ }i+(x-4)(y+6){e}^{(x-4)+(y+6)}\text{ }j \\  & =((x-4)+1)(y+6){e}^{(x-4)+(y+6)}\text{ }i+(x-4)(1+(y+6)){e}^{(x-4)+(y+6)}\text{ }j\end{aligned}
+$$
+
+### Generated hard method
+
+Parameters: `{"x0": 4, "y0": -5}`. Eligible for learning: True.
+
+What is the gradient of the product $f(x,y)h(x,y)$ if $f(x,y)=(x-4){e}^{(y+5)}$ and $h(x,y)=(y+5){e}^{(x-4)}?$
+
+- $(\left(y + 5\right) e^{x - 4} e^{y + 5})\,i+(\left(x - 4\right) \left(y + 5\right) e^{x - 4} e^{y + 5})\,j$
+- $(- \left(x - 4\right) \left(y + 5\right) e^{x - 4} e^{y + 5} + \left(y + 5\right) e^{x - 4} e^{y + 5})\,i+(\left(x - 4\right) \left(y + 5\right) e^{x - 4} e^{y + 5} - \left(x - 4\right) e^{x - 4} e^{y + 5})\,j$
+- $(\left(x - 4\right) \left(y + 6\right) e^{x + y + 1})\,i+(\left(x - 3\right) \left(y + 5\right) e^{x + y + 1})\,j$
+- $(\left(x - 4\right) \left(y + 5\right) e^{x - 4} e^{y + 5})\,i+(\left(x - 4\right) e^{x - 4} e^{y + 5})\,j$
+- $(\left(x - 3\right) \left(y + 5\right) e^{x + y + 1})\,i+(\left(x - 4\right) \left(y + 6\right) e^{x + y + 1})\,j$
+
+Worked solution:
+The gradient of the product of two functions $f(x,y)$ and $h(x,y)$ is given by:
+
+$$
+∇[fh]=f\,∇\,h+h\,∇\,f\,\,
+$$
+
+Now, we calculate the partial derivatives of $f(x,y):$
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & =\frac{∂}{∂x}((x-4){e}^{(y+5)})={e}^{(y+5)} \\ \frac{∂f}{∂y} & =\frac{∂}{∂y}((x-4){e}^{(y+5)})=(x-4){e}^{(y+5)}\end{aligned}
+$$
+
+Hence, 
+
+$$
+\begin{aligned}∇f(x,y) & =\frac{∂f}{∂x}\text{ }i+\frac{∂f}{∂y}\text{ }j={e}^{(y+5)}\text{ }i+(x-4){e}^{(y+5)}\text{ }j.\end{aligned}
+$$
+
+Next, we calculate the partial derivatives of $h(x,y):$
+
+$$
+\begin{aligned}\frac{∂h}{∂x} & =\frac{∂}{∂x}((y+5){e}^{(x-4)})=(y+5){e}^{(x-4)} \\ \frac{∂h}{∂y} & =\frac{∂}{∂y}((y+5){e}^{(x-4)})={e}^{(x-4)}\end{aligned}
+$$
+
+Therefore, 
+
+$$
+\begin{aligned}∇h(x,y) & =\frac{∂h}{∂x}\text{ }i+\frac{∂h}{∂y}\text{ }j=(y+5){e}^{(x-4)}\text{ }i+{e}^{(x-4)}\text{ }j.\end{aligned}
+$$
+
+Finally, using the product rule, we obtain:
+
+$$
+\begin{aligned}∇[f(x,y)h(x,y)] & =(x-4){e}^{(y+5)}((y+5){e}^{(x-4)}\text{ }i+{e}^{(x-4)}\text{ }j)+(y+5){e}^{(x-4)}({e}^{(y+5)}\text{ }i+(x-4){e}^{(y+5)}\text{ }j) \\  & =(x-4)(y+5){e}^{(x-4)+(y+5)}\text{ }i+(x-4){e}^{(x-4)+(y+5)}\text{ }j+(y+5){e}^{(x-4)+(y+5)}\text{ }i+(x-4)(y+5){e}^{(x-4)+(y+5)}\text{ }j \\  & =((x-4)+1)(y+5){e}^{(x-4)+(y+5)}\text{ }i+(x-4)(1+(y+5)){e}^{(x-4)+(y+5)}\text{ }j\end{aligned}
+$$
+
+### Generated hard source:q-71515
+
+Parameters: `{"x0": 4, "y0": -5}`. Eligible for learning: False.
+
+What is the gradient of the product $f(x,y)h(x,y)$ if $f(x,y)=(x-4){e}^{(y+5)}$ and $h(x,y)=(y+5){e}^{(x-4)}?$
+
+- $((x-4)+1)(y+5){e}^{(x-4)+(y+5)}\text{ }i+(x-4)(1+(y+5)){e}^{(x-4)+(y+5)}\text{ }j$
+- $((x-4)+(y+5)){e}^{(x-4)+(y+5)}\text{ }i+((x-4)+(y+5)){e}^{(x-4)+(y+5)}\text{ }j$
+- $((x-4)+1)(y+5){e}^{(x-4)}\text{ }i+(x-4)(1+(y+5)){e}^{(y+5)}\text{ }j$
+- $(x-4)(y+5){e}^{(x-4)(y+5)}\text{ }i+((x-4)+1)(1+(y+5)){e}^{(x-4)(y+5)}\text{ }j$
+- $((x-4)+(y+5))(y+5){e}^{(x-4)(y+5)}\text{ }i+(x-4)((x-4)+(y+5)){e}^{(x-4)(y+5)}\text{ }j$
+
+Worked solution:
+The gradient of the product of two functions $f(x,y)$ and $h(x,y)$ is given by:
+
+$$
+∇[fh]=f\,∇\,h+h\,∇\,f\,\,
+$$
+
+Now, we calculate the partial derivatives of $f(x,y):$
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & =\frac{∂}{∂x}((x-4){e}^{(y+5)})={e}^{(y+5)} \\ \frac{∂f}{∂y} & =\frac{∂}{∂y}((x-4){e}^{(y+5)})=(x-4){e}^{(y+5)}\end{aligned}
+$$
+
+Hence, 
+
+$$
+\begin{aligned}∇f(x,y) & =\frac{∂f}{∂x}\text{ }i+\frac{∂f}{∂y}\text{ }j={e}^{(y+5)}\text{ }i+(x-4){e}^{(y+5)}\text{ }j.\end{aligned}
+$$
+
+Next, we calculate the partial derivatives of $h(x,y):$
+
+$$
+\begin{aligned}\frac{∂h}{∂x} & =\frac{∂}{∂x}((y+5){e}^{(x-4)})=(y+5){e}^{(x-4)} \\ \frac{∂h}{∂y} & =\frac{∂}{∂y}((y+5){e}^{(x-4)})={e}^{(x-4)}\end{aligned}
+$$
+
+Therefore, 
+
+$$
+\begin{aligned}∇h(x,y) & =\frac{∂h}{∂x}\text{ }i+\frac{∂h}{∂y}\text{ }j=(y+5){e}^{(x-4)}\text{ }i+{e}^{(x-4)}\text{ }j.\end{aligned}
+$$
+
+Finally, using the product rule, we obtain:
+
+$$
+\begin{aligned}∇[f(x,y)h(x,y)] & =(x-4){e}^{(y+5)}((y+5){e}^{(x-4)}\text{ }i+{e}^{(x-4)}\text{ }j)+(y+5){e}^{(x-4)}({e}^{(y+5)}\text{ }i+(x-4){e}^{(y+5)}\text{ }j) \\  & =(x-4)(y+5){e}^{(x-4)+(y+5)}\text{ }i+(x-4){e}^{(x-4)+(y+5)}\text{ }j+(y+5){e}^{(x-4)+(y+5)}\text{ }i+(x-4)(y+5){e}^{(x-4)+(y+5)}\text{ }j \\  & =((x-4)+1)(y+5){e}^{(x-4)+(y+5)}\text{ }i+(x-4)(1+(y+5)){e}^{(x-4)+(y+5)}\text{ }j\end{aligned}
+$$
+
 ## Generated authored easy
 
 Parameters: `{"a": -3, "b": -1, "c": 3, "d": 2}`.
@@ -1322,5 +1466,103 @@ Using the product rule, we obtain
 
 $$
 \begin{aligned}∇[f(x,y)g(x,y)] & =g(x,y)∇f(x,y)+f(x,y)∇g(x,y) \\  & =(- x - y)((-4)\,i+(1)\,j)+(- 4 x + y)((-1)\,i+(-1)\,j) \\  & =(- x - y)(-4)i+(- x - y)(1)j+(- 4 x + y)(-1)i+(- 4 x + y)(-1)j \\  & =(4 x + 4 y)i+(- x - y)j+(4 x - y)i+(4 x - y)j \\  & =(8 x + 3 y)\,i+(3 x - 2 y)\,j\end{aligned}
+$$
+
+## Generated authored hard
+
+Parameters: `{"a": -4, "b": -3, "r": 3, "t": 2}`.
+
+Find the gradient of the product $f(x,y,z)g(x,y,z),$ given that $f(x,y,z)=- 4 x^{2} y^{3} z - 3 x y z^{2}$ and $g(x,y,z)=\frac{1}{x y z}.$
+
+- $(- 4 y^{2})\,i+(- 8 x y)\,j+(-3)\,k$
+- $(\frac{- 8 x y^{3} z - 3 y z^{2}}{x y z})\,i+(\frac{- 12 x^{2} y^{2} z - 3 x z^{2}}{x y z})\,j+(\frac{- 4 x^{2} y^{3} - 6 x y z}{x y z})\,k$
+- $(- 8 x y)\,i+(- 4 y^{2})\,j+(-3)\,k$
+- $(- \frac{- 4 x^{2} y^{3} z - 3 x y z^{2}}{x^{2} y z})\,i+(- \frac{- 4 x^{2} y^{3} z - 3 x y z^{2}}{x y^{2} z})\,j+(- \frac{- 4 x^{2} y^{3} z - 3 x y z^{2}}{x y z^{2}})\,k$
+- $(\frac{- 8 x y^{3} z - 3 y z^{2}}{x y z} + \frac{- 4 x^{2} y^{3} z - 3 x y z^{2}}{x^{2} y z})\,i+(\frac{- 12 x^{2} y^{2} z - 3 x z^{2}}{x y z} + \frac{- 4 x^{2} y^{3} z - 3 x y z^{2}}{x y^{2} z})\,j+(\frac{- 4 x^{2} y^{3} - 6 x y z}{x y z} + \frac{- 4 x^{2} y^{3} z - 3 x y z^{2}}{x y z^{2}})\,k$
+
+Worked solution:
+The gradient of the product of two functions $f(x,y,z)$ and $g(x,y,z)$ is given by
+
+$$
+∇[fg]=g∇f+f∇g.
+$$
+
+Now, we calculate the partial derivatives of $f(x,y,z):$
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & =\frac{∂}{∂x}(- 4 x^{2} y^{3} z - 3 x y z^{2})=- 8 x y^{3} z - 3 y z^{2} \\ \frac{∂f}{∂y} & =\frac{∂}{∂y}(- 4 x^{2} y^{3} z - 3 x y z^{2})=- 12 x^{2} y^{2} z - 3 x z^{2} \\ \frac{∂f}{∂z} & =\frac{∂}{∂z}(- 4 x^{2} y^{3} z - 3 x y z^{2})=- 4 x^{2} y^{3} - 6 x y z\end{aligned}
+$$
+
+Hence,
+
+$$
+\begin{aligned}∇f(x,y,z) & =\frac{∂f}{∂x}i+\frac{∂f}{∂y}j+\frac{∂f}{∂z}k=(- 8 x y^{3} z - 3 y z^{2})\,i+(- 12 x^{2} y^{2} z - 3 x z^{2})\,j+(- 4 x^{2} y^{3} - 6 x y z)\,k\end{aligned}
+$$
+
+Now, we calculate the partial derivatives of $g(x,y,z):$
+
+$$
+\begin{aligned}\frac{∂g}{∂x} & =\frac{∂}{∂x}(\frac{1}{x y z})=- \frac{1}{x^{2} y z} \\ \frac{∂g}{∂y} & =\frac{∂}{∂y}(\frac{1}{x y z})=- \frac{1}{x y^{2} z} \\ \frac{∂g}{∂z} & =\frac{∂}{∂z}(\frac{1}{x y z})=- \frac{1}{x y z^{2}}\end{aligned}
+$$
+
+Hence,
+
+$$
+\begin{aligned}∇g(x,y,z) & =\frac{∂g}{∂x}i+\frac{∂g}{∂y}j+\frac{∂g}{∂z}k=(- \frac{1}{x^{2} y z})\,i+(- \frac{1}{x y^{2} z})\,j+(- \frac{1}{x y z^{2}})\,k\end{aligned}
+$$
+
+Using the product rule, we obtain
+
+$$
+\begin{aligned}∇[f(x,y,z)g(x,y,z)] & =g(x,y,z)∇f(x,y,z)+f(x,y,z)∇g(x,y,z) \\  & =(\frac{1}{x y z})((- 8 x y^{3} z - 3 y z^{2})\,i+(- 12 x^{2} y^{2} z - 3 x z^{2})\,j+(- 4 x^{2} y^{3} - 6 x y z)\,k)+(- 4 x^{2} y^{3} z - 3 x y z^{2})((- \frac{1}{x^{2} y z})\,i+(- \frac{1}{x y^{2} z})\,j+(- \frac{1}{x y z^{2}})\,k) \\  & =(\frac{1}{x y z})(- 8 x y^{3} z - 3 y z^{2})i+(\frac{1}{x y z})(- 12 x^{2} y^{2} z - 3 x z^{2})j+(\frac{1}{x y z})(- 4 x^{2} y^{3} - 6 x y z)k+(- 4 x^{2} y^{3} z - 3 x y z^{2})(- \frac{1}{x^{2} y z})i+(- 4 x^{2} y^{3} z - 3 x y z^{2})(- \frac{1}{x y^{2} z})j+(- 4 x^{2} y^{3} z - 3 x y z^{2})(- \frac{1}{x y z^{2}})k \\  & =(- 8 y^{2} - \frac{3 z}{x})i+(- 12 x y - \frac{3 z}{y})j+(- \frac{4 x y^{2}}{z} - 6)k+(4 y^{2} + \frac{3 z}{x})i+(4 x y + \frac{3 z}{y})j+(\frac{4 x y^{2}}{z} + 3)k \\  & =(- 4 y^{2})\,i+(- 8 x y)\,j+(-3)\,k\end{aligned}
+$$
+
+## Generated authored hard
+
+Parameters: `{"a": -3, "b": -4, "r": 3, "t": 3}`.
+
+Find the gradient of the product $f(x,y,z)g(x,y,z),$ given that $f(x,y,z)=- 3 x^{2} y^{3} z - 4 x y z^{3}$ and $g(x,y,z)=\frac{1}{x y z}.$
+
+- $(\frac{- 6 x y^{3} z - 4 y z^{3}}{x y z} + \frac{- 3 x^{2} y^{3} z - 4 x y z^{3}}{x^{2} y z})\,i+(\frac{- 9 x^{2} y^{2} z - 4 x z^{3}}{x y z} + \frac{- 3 x^{2} y^{3} z - 4 x y z^{3}}{x y^{2} z})\,j+(\frac{- 3 x^{2} y^{3} - 12 x y z^{2}}{x y z} + \frac{- 3 x^{2} y^{3} z - 4 x y z^{3}}{x y z^{2}})\,k$
+- $(- \frac{- 3 x^{2} y^{3} z - 4 x y z^{3}}{x^{2} y z})\,i+(- \frac{- 3 x^{2} y^{3} z - 4 x y z^{3}}{x y^{2} z})\,j+(- \frac{- 3 x^{2} y^{3} z - 4 x y z^{3}}{x y z^{2}})\,k$
+- $(- 3 y^{2})\,i+(- 6 x y)\,j+(- 8 z)\,k$
+- $(- 6 x y)\,i+(- 3 y^{2})\,j+(- 8 z)\,k$
+- $(\frac{- 6 x y^{3} z - 4 y z^{3}}{x y z})\,i+(\frac{- 9 x^{2} y^{2} z - 4 x z^{3}}{x y z})\,j+(\frac{- 3 x^{2} y^{3} - 12 x y z^{2}}{x y z})\,k$
+
+Worked solution:
+The gradient of the product of two functions $f(x,y,z)$ and $g(x,y,z)$ is given by
+
+$$
+∇[fg]=g∇f+f∇g.
+$$
+
+Now, we calculate the partial derivatives of $f(x,y,z):$
+
+$$
+\begin{aligned}\frac{∂f}{∂x} & =\frac{∂}{∂x}(- 3 x^{2} y^{3} z - 4 x y z^{3})=- 6 x y^{3} z - 4 y z^{3} \\ \frac{∂f}{∂y} & =\frac{∂}{∂y}(- 3 x^{2} y^{3} z - 4 x y z^{3})=- 9 x^{2} y^{2} z - 4 x z^{3} \\ \frac{∂f}{∂z} & =\frac{∂}{∂z}(- 3 x^{2} y^{3} z - 4 x y z^{3})=- 3 x^{2} y^{3} - 12 x y z^{2}\end{aligned}
+$$
+
+Hence,
+
+$$
+\begin{aligned}∇f(x,y,z) & =\frac{∂f}{∂x}i+\frac{∂f}{∂y}j+\frac{∂f}{∂z}k=(- 6 x y^{3} z - 4 y z^{3})\,i+(- 9 x^{2} y^{2} z - 4 x z^{3})\,j+(- 3 x^{2} y^{3} - 12 x y z^{2})\,k\end{aligned}
+$$
+
+Now, we calculate the partial derivatives of $g(x,y,z):$
+
+$$
+\begin{aligned}\frac{∂g}{∂x} & =\frac{∂}{∂x}(\frac{1}{x y z})=- \frac{1}{x^{2} y z} \\ \frac{∂g}{∂y} & =\frac{∂}{∂y}(\frac{1}{x y z})=- \frac{1}{x y^{2} z} \\ \frac{∂g}{∂z} & =\frac{∂}{∂z}(\frac{1}{x y z})=- \frac{1}{x y z^{2}}\end{aligned}
+$$
+
+Hence,
+
+$$
+\begin{aligned}∇g(x,y,z) & =\frac{∂g}{∂x}i+\frac{∂g}{∂y}j+\frac{∂g}{∂z}k=(- \frac{1}{x^{2} y z})\,i+(- \frac{1}{x y^{2} z})\,j+(- \frac{1}{x y z^{2}})\,k\end{aligned}
+$$
+
+Using the product rule, we obtain
+
+$$
+\begin{aligned}∇[f(x,y,z)g(x,y,z)] & =g(x,y,z)∇f(x,y,z)+f(x,y,z)∇g(x,y,z) \\  & =(\frac{1}{x y z})((- 6 x y^{3} z - 4 y z^{3})\,i+(- 9 x^{2} y^{2} z - 4 x z^{3})\,j+(- 3 x^{2} y^{3} - 12 x y z^{2})\,k)+(- 3 x^{2} y^{3} z - 4 x y z^{3})((- \frac{1}{x^{2} y z})\,i+(- \frac{1}{x y^{2} z})\,j+(- \frac{1}{x y z^{2}})\,k) \\  & =(\frac{1}{x y z})(- 6 x y^{3} z - 4 y z^{3})i+(\frac{1}{x y z})(- 9 x^{2} y^{2} z - 4 x z^{3})j+(\frac{1}{x y z})(- 3 x^{2} y^{3} - 12 x y z^{2})k+(- 3 x^{2} y^{3} z - 4 x y z^{3})(- \frac{1}{x^{2} y z})i+(- 3 x^{2} y^{3} z - 4 x y z^{3})(- \frac{1}{x y^{2} z})j+(- 3 x^{2} y^{3} z - 4 x y z^{3})(- \frac{1}{x y z^{2}})k \\  & =(- 6 y^{2} - \frac{4 z^{2}}{x})i+(- 9 x y - \frac{4 z^{2}}{y})j+(- \frac{3 x y^{2}}{z} - 12 z)k+(3 y^{2} + \frac{4 z^{2}}{x})i+(3 x y + \frac{4 z^{2}}{y})j+(\frac{3 x y^{2}}{z} + 4 z)k \\  & =(- 3 y^{2})\,i+(- 6 x y)\,j+(- 8 z)\,k\end{aligned}
 $$
 

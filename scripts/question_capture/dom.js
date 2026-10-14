@@ -145,6 +145,18 @@ element => {
     }
     return value;
   }
+  // A system often arrives as one MathML cell per equation. Split only a
+  // top-level equals sign, keeping fractions, text and nested formulas intact.
+  function equationColumns(value) {
+    let depth = 0;
+    for (let i = 0; i < value.length; i++) {
+      if (value[i] === '\\') { i++; continue; }
+      if (value[i] === '{') depth++;
+      else if (value[i] === '}') depth--;
+      else if (!depth && value[i] === '=') return value.slice(0, i).trim() + ' &=' + value.slice(i + 1).trim();
+    }
+    return null;
+  }
   function mathNode(n, environment=null) {
     if (n.nodeType === 3) return greek[n.textContent] || n.textContent;
     if (n.nodeType !== 1) return '';
@@ -161,14 +173,15 @@ element => {
     const nodes = [...n.childNodes].filter(child => child.nodeType !== 3 || child.textContent.trim());
     const cs = [];
     for (let i = 0; i < nodes.length; i++) {
-      const open = ['math', 'mrow'].includes(t) ? fence(nodes[i]) : null;
+      const open = ['math', 'mrow', 'mtd', 'mstyle', 'mpadded'].includes(t) ? fence(nodes[i]) : null;
       const close = fence(nodes[i + 2]);
       const matrixEnvironment = open && close && matrixEnvironments[open + close];
-      const cases = open === '{' && close === '' && nodes[i + 1]?.localName === 'mtable';
+      // Invisible right delimiters are sometimes omitted from archived MathML.
+      const cases = open === '{' && (close === '' || !nodes[i + 2]) && nodes[i + 1]?.localName === 'mtable';
       if (nodes[i].localName === 'mo' && (matrixEnvironment && matrixTable(nodes[i + 1]) || cases)) {
         let matrix = m(nodes[i + 1], cases ? 'cases' : matrixEnvironment);
         const closing = nodes[i + 2];
-        if (closing.localName !== 'mo') {
+        if (closing && closing.localName !== 'mo') {
           matrix = '{' + matrix + '}';
           if (closing.localName !== 'msup') matrix += '_{' + m(closing.children[1]) + '}';
           if (closing.localName !== 'msub') matrix += '^{' + m(closing.children[closing.localName === 'msubsup' ? 2 : 1]) + '}';
@@ -207,6 +220,20 @@ element => {
         }
         return greek[n.textContent] || n.textContent;
       case 'mtable': {
+        if (!environment && nodes.length === 1 && nodes[0].children.length === 1 &&
+            cs[0].startsWith('\\left\\{\\begin{aligned}')) return cs[0];
+        if (environment === 'cases') {
+          const equations = nodes.map(row => {
+            const cells = [...row.children].map(cell => m(cell).trim());
+            if (cells.length === 1) return equationColumns(cells[0]);
+            if (cells.length === 2 && cells[1].startsWith('=')) return cells[0] + ' &' + cells[1];
+            if (cells.length === 2 && cells[0].endsWith('=')) return cells[0].slice(0, -1).trim() + ' &=' + cells[1];
+            if (cells.length === 3 && cells[1] === '=') return cells[0] + ' &=' + cells[2];
+            if (cells.length === 2 && equationColumns(cells[0])) return equationColumns(cells[0]) + ' && ' + cells[1];
+            return null;
+          });
+          if (equations.every(Boolean)) return '\\left\\{\\begin{aligned}' + equations.join(' \\\\ ') + '\\end{aligned}\\right.';
+        }
         const centered = matrixTable(n) !== null;
         let columnCount = Math.max(...nodes.map(row => row.children.length));
         if (centered && (environment || n.getAttribute('columnalign'))) {

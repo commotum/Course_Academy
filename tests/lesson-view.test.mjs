@@ -262,6 +262,28 @@ test('a completed attempt reopens as a full read-only lesson history without res
   assert.equal(f.calls.length, 0);
 });
 
+test('resumed instruction history has no response badges while answered questions retain feedback', async () => {
+  const f = fixture();
+  const tutorial = { ...activity(1).step, status: 'completed' };
+  const example = { ...activity(2).step, kind: 'example', status: 'completed', solution: 'The worked solution.' };
+  const response = { ...question(3, 'completed'), fields: [{ id: 30, key: 'field-1', type: 'free', response: { value: 'My answer' } }] };
+  await f.h.render(activity(4, 4, {
+    status: 'paused',
+    history: [tutorial, example, response].map((step, i) => ({ order: i + 1, number: i + 1, total: 4, step })),
+  }));
+  const [tutorialCard, exampleCard, questionCard] = f.h.view.feed.children;
+  assert.equal(tutorialCard.querySelector('.feedback'), null);
+  assert.equal(exampleCard.querySelector('.feedback'), null);
+  assert.match(exampleCard.querySelector('.worked-solution').textContent, /The worked solution/);
+  assert.match(questionCard.querySelector('.feedback').textContent, /Response saved/);
+  assert.equal(f.calls.length, 0);
+
+  const preview = fixture(); preview.dev = true;
+  await preview.h.preview({ activityId: 456, learner: { id: 'test' }, steps: [example, tutorial] }, 1);
+  assert.equal(preview.h.view.feed.querySelector('.feedback'), null);
+  assert.match(preview.h.view.feed.querySelector('.worked-solution').textContent, /The worked solution/);
+});
+
 test('database history replaces stale browser entries without revealing later steps', async () => {
   const f = fixture();
   await f.h.render(activity(99, 1));

@@ -60,6 +60,17 @@ def check(r):
  final=re.findall(r'(?:\\text\{d\}s|\\textrm d s)\s*=\s*([^\n]+)',s)[-1]
  assert sp.simplify(scalar(final.split('=')[-1])-L)==0
 
+# Fit each original raster independently; verify stated endpoints and semicircle radius.
+source_raster_checks=0
+for asset in json.loads((HERE/'plot-extraction.json').read_text()):
+ im=Image.open(image_path(asset['asset'])).convert('RGBA');white=Image.new('RGBA',im.size,'white');white.alpha_composite(im);pix=np.array(white.convert('RGB')).astype('int16')
+ blue=(pix[:,:,2]>pix[:,:,0]+30)&(pix[:,:,2]>pix[:,:,1]+10)&(pix[:,:,0]<140)
+ origin=asset['source_axes_fit']['origin_pixels'];scale=asset['source_axes_fit']['pixels_per_coordinate_unit'];sid=asset['source_id'];t,p=g.P[sid]
+ if t=='semicircle':points=[(float(p['r'])*__import__('math').cos(u),float(p['r'])*__import__('math').sin(u)) for u in (0,.6,1.5,2.4,__import__('math').pi)]
+ else:points=[(p['x1'],p['y1']),(p['x2'],p['y2']),((p['x1']+p['x2'])/2,(p['y1']+p['y2'])/2)]
+ for x,y in points:
+  xp,yp=round(origin[0]+x*scale),round(origin[1]-y*scale);assert blue[max(0,yp-5):yp+6,max(0,xp-5):xp+6].any(),('original geometry mismatch',sid,x,y)
+ source_raster_checks+=1
 cases=[];replays=[];fidelity=[]
 for sid,(t,p) in g.P.items():
  case={'source_id':sid,'template':t,'parameters':p,'bank_profile':'original:'+sid,'level':'easy','authored_level_assignment':sid=='q-122567'};cases.append(case)
@@ -76,6 +87,12 @@ for r in replays:review.append({'label':'Original raw evidence '+r['generation']
 for sid,(t,p) in g.P.items():
  changed={k:str(sp.Rational(v)*sp.Rational(3,2)) for k,v in p.items()}
  r=g.generate('easy',template=t,parameters=changed,profile='original:'+sid);check(r);review.append({'label':'Changed public evidence mask '+sid,'record':r})
+for sid,(t,p) in g.P.items():
+ r=g.generate('easy',template=t,parameters=p);check(r)
+ if ':question/worked-solution' in g.QUESTIONS[sid]:
+  strip_assets=lambda text:re.sub(r'!\[.*?\]\((.*?)\)','![](ASSET)',text)
+  assert strip_assets(r['question'][':question/worked-solution'])==strip_assets(g.QUESTIONS[sid][':question/worked-solution'])
+ review.append({'label':'Normal source-parameter teaching mask '+sid,'record':r})
 for level in ('easy','moderate','hard'):
  for t in (g.TEMPLATES if level=='easy' else g.TEMPLATES[-2:]):
   for seed in (11,35):
@@ -117,6 +134,17 @@ with ThreadPoolExecutor(max_workers=2) as pool:
  results=list(pool.map(lambda p:g.generate('hard',template='diagonal_helper',parameters=p),params))
 for r in results:check(r)
 assert results[0]['question'][':question/id']==results[2]['question'][':question/id']
+# Independent processes exercise simultaneous atomic publication and isolated mathtext.
+process_params=[{'x1':'-11/12','y1':'-7/12','x2':'23/4','y2':'20/3'}]*2+[{'x1':'-5/12','y1':'-1/12','x2':'25/4','y2':'43/6'}]*2
+def process_render(p):
+ code='import importlib.util,json; s=importlib.util.spec_from_file_location("g",'+repr(str(HERE.with_suffix('.py')))+');g=importlib.util.module_from_spec(s);s.loader.exec_module(g);print(json.dumps(g.generate("hard",template="diagonal_helper",parameters='+repr(p)+')))'
+ out=subprocess.run([sys.executable,'-c',code],check=True,capture_output=True,text=True)
+ return json.loads(out.stdout)
+with ThreadPoolExecutor(max_workers=4) as pool: process_results=list(pool.map(process_render,process_params))
+for r in process_results:check(r)
+assert process_results[0]['question'][':question/id']==process_results[1]['question'][':question/id']
+assert process_results[2]['question'][':question/id']==process_results[3]['question'][':question/id']
+
 # Mutation regressions must fail despite an unchanged final answer.
 mutations=[]
 base=next(x['record'] for x in review if x['label']=='Authored normal moderate diagonal_plain')
@@ -138,5 +166,5 @@ save('review.json',review);save('source-bank-fidelity.json',fidelity)
 text='# Line integrals of unity review\n\nRaw originals preserve omissions. Changed raw masks are evidence only. Normal variants use authored complete method banks.\n\n'
 for item in review:text+='## '+item['label']+'\n\n'+g.markdown(item['record'])+'\n\n'
 (HERE/'review.md').write_text(text)
-report={'passed':True,'parent_qa_approved':False,'source_basis':g.SOURCE['basis'],'source_questions':6,'complete_banks':6,'choices_matched':30,'incorrect_choices_matched':24,'correct_designations_matched':5,'missing_correct_designations':1,'worked_solutions_exact':5,'missing_worked_solutions':1,'presence_parity_sources':6,'normal_questions_checked':len(normal),'review_records':len(review),'default_family_coverage':coverage,'meaningful_sampler_capacities':capacities,'total_meaningful_tasks':sum(capacities.values()),'mutation_regressions':mutations,'concurrent_render_checks':4,'calculator_requirements':'all six supplement records omit flags; unknown, not false','runtime':normal[0]['generation']['runtime'],'unresolved':['Original q-122567 has no observed key, solution or difficulty; normal completion is authored.','Five scalar segment distractor banks have underidentified original error intent; public homogeneous masks remain evidence only.','Moderate/hard levels are conservative authored workload designs, not observed labels.']}
+report={'passed':True,'parent_qa_approved':False,'source_basis':g.SOURCE['basis'],'source_questions':6,'complete_banks':6,'choices_matched':30,'incorrect_choices_matched':24,'observed_incorrect_choices_matched':20,'independently_inferred_incorrect_choices_matched':4,'correct_designations_matched':5,'missing_correct_designations':1,'worked_solutions_exact':5,'missing_worked_solutions':1,'presence_parity_sources':6,'original_rasters_geometry_checked':source_raster_checks,'normal_source_solution_masks_checked':5,'normal_questions_checked':len(normal),'review_records':len(review),'default_family_coverage':coverage,'meaningful_sampler_capacities':capacities,'total_meaningful_tasks':sum(capacities.values()),'mutation_regressions':mutations,'concurrent_render_checks':8,'concurrent_process_checks':4,'calculator_requirements':'all six supplement records omit flags; unknown, not false','runtime':normal[0]['generation']['runtime'],'script_sha256':hashlib.sha256(HERE.with_suffix('.py').read_bytes()).hexdigest(),'source_sha256':hashlib.sha256((HERE/'source.json').read_bytes()).hexdigest(),'unresolved':['Original q-122567 has no observed key, solution or difficulty; normal completion is authored.','Five scalar segment distractor banks have underidentified original error intent; public homogeneous masks remain evidence only.','Moderate/hard levels are conservative authored workload designs, not observed labels.']}
 save('validation.json',report);print(json.dumps(report,indent=2))

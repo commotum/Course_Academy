@@ -1,6 +1,6 @@
 # Classification
 
-Frozen source: database `math`, basis **1356**, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. Eight practice records, six rated moderate, one rated hard and one unrated. Every field is one radio selection with five math choices. No practice/canonical source has a relevant plot; no rendering is needed. Canonical e-3150 is a product-property example, not a ninth practice record.
+Frozen source: database `math`, basis **2320**, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. Nine practice records, six rated moderate, two rated hard and one unrated. Every field is one radio selection with five math choices. No practice/canonical source has a relevant plot; no rendering is needed. Canonical e-3150 is a product-property example, not a tenth practice record.
 
 | Family | Source | Observed level | Fields | Bank | Plots |
 |---|---|---|---|---|---|
@@ -13,10 +13,14 @@ Frozen source: database `math`, basis **1356**, lineage `01a12a15-3e0a-75a1-9dac
 | exp_linear | q-128532 | moderate | radio × 1, five choices | source:q-128532 | none |
 | exp_product | q-71484 | moderate | radio × 1, five choices | source:q-71484 | none |
 
-Eight distinct Markdown/value templates, eight complete observed bank profiles. Normal defaults choose every family with its complete eligible bank before sampling parameters. Opaque poly/gaussian/reciprocal3/exp_linear profiles are excluded from learning; their source-shaped normal families use a separately labeled complete method bank.
+Nine distinct Markdown/value templates, nine complete observed bank profiles. Normal defaults choose every family with its complete eligible bank before sampling parameters. Opaque poly/gaussian/reciprocal3/exp_linear/exp_cross profiles are excluded from learning; their source-shaped normal families use a separately labeled complete method bank.
 
 The lesson route follows `activity/first-step` 17592186125274 and `step/next`, rather than Pull order: Introduction → two-variable gradient → more-than-two-variable tutorial → three-variable gradient → gradient vanishes (a separate sibling KP) → Properties tutorial 17592186125279 → this KP step 17592186125281. The tutorial supplies constant, linearity, product and quotient properties. The canonical example applies the product property to supplied gradients. The explicit key prerequisite is the single-variable product rule (topic 1109). This generator assesses only product properties; it does not import the separate vanishing, normal-vector or directional branches.
 
 Authored easy supplies gradients of two independent linear factors and requires only component multiplication and collection. Observed hard retains the unsupplied Gaussian product, including its exponential chain factors and common-factor solution rows. An authored hard family withholds gradients for a trivariate two-monomial polynomial and reciprocal; it requires six partial derivatives and twelve monomial contributions across the product property. Observed moderate preserves six supplied-gradient families and the explicitly authored unrated logarithm-product completion. Each family has a fixed workload, with independent unordered variants. Easy is the only missing observed level; both authored families are design claims, not recovered labels.
 
 q-37466 has no difficulty, worked solution or correct designation in the capture. The owning local MA lesson `1934/Source/1934.json` confirms its five-choice radio widget and placement after the properties example; its DOM capture contains no reliable correct designation. Exact independent differentiation identifies choice 2 in snapshot order. Raw public replay retains all three omissions; normal moderate completion is explicitly authored.
+
+## Current-source extension
+
+At basis 2320, q-71515 adds the hard `exp_cross` family: two unsupplied crossed coordinate/exponential factors, four partial derivatives, two component vectors, grouped product substitution, four contributions, and final collected vector. One radio field with five choices, profile `source:q-71515`, plots none. This is distinct from the supplied-gradient exponential families and the negative-quadratic Gaussian. The legacy basis-1356 evidence is retained in `reference/legacy-basis-1356/`. The existing eight questions and canonical example have unchanged mathematical content.

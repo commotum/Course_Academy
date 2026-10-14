@@ -779,7 +779,7 @@ function previewContent(data, step, index, archived = false) {
     }
     card.append(form);
   }
-  if (answered(short(step.status))) {
+  if (kind === 'question' && answered(short(step.status))) {
     const feedback = el('div', 'feedback'); questionFeedback(feedback, step.status); feedback.setAttribute('role', 'status');
     feedback.append(feedbackHeading(step.status, true));
     if (step.feedback) feedback.append(markdown(step.feedback));
@@ -902,7 +902,7 @@ function taskContent(data, step, number, total, archived = false) {
     }
     card.append(form);
   }
-  if (isAnswered && short(step.status) !== 'submitted') {
+  if (kind === 'question' && isAnswered && short(step.status) !== 'submitted') {
     const feedback = el('div', 'feedback'); questionFeedback(feedback, step.status); feedback.setAttribute('role', 'status');
     feedback.append(feedbackHeading(step.status));
     if (step.feedback) feedback.append(markdown(step.feedback));

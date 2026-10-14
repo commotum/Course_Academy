@@ -113,7 +113,7 @@ def plot_recipe(t,d,helper=False):
  return {'kind':t,'endpoints':pts,'direction':'first to second','helper':helper,'helper_corner':[str(d['x2']),str(d['y1'])], 'bounds':[min(0,float(d['x1']),float(d['x2']))-1,max(0,float(d['x1']),float(d['x2']))+1,min(0,float(d['y1']),float(d['y2']))-1,max(0,float(d['y1']),float(d['y2']))+1]}
 
 def _render_plot(t,d,helper=False):
- recipe=plot_recipe(t,d,helper);h=hashlib.sha256(dump({'recipe':recipe,'renderer':'matplotlib','version':matplotlib.__version__,'style':7}).encode()).hexdigest();dest=ROOT/'assets'/f'{h}.png';side=dest.with_suffix('.json')
+ recipe=plot_recipe(t,d,helper);h=hashlib.sha256(dump({'recipe':recipe,'renderer':'matplotlib','version':matplotlib.__version__,'style':8}).encode()).hexdigest();dest=ROOT/'assets'/f'{h}.png';side=dest.with_suffix('.json')
  if dest.exists() and side.exists():return str(dest),recipe
  # Each invocation has independent figure and temporary files; atomic rename.
  fig,ax=plt.subplots(figsize=(4.5,3.8),dpi=120)
@@ -140,7 +140,7 @@ def _render_plot(t,d,helper=False):
   for (x,y),keys,offset in zip(((x1,y1),(x2,y2)),(('x1','y1'),('x2','y2')),((8,-18),(8,8))):
    label='$('+tex(d[keys[0]])+','+tex(d[keys[1]])+')$'
    offset=(-8,-18) if x<=(x1+x2)/2 else (8,8)
-   ax.annotate(label,(x,y),xytext=offset,textcoords='offset points',ha='right' if offset[0]<0 else 'left',fontsize=9)
+   ax.annotate(label,(x,y),xytext=offset,textcoords='offset points',ha='right' if offset[0]<0 else 'left',fontsize=9,bbox={'facecolor':'white','edgecolor':'none','pad':1.5})
  ax.tick_params(labelsize=10);fig.tight_layout(pad=1.2);fig.canvas.draw()
  transform=ax.transData.get_affine().get_matrix().tolist()
  if t=='semicircle':testpoints=[(float(d['r'])*math.cos(u),float(d['r'])*math.sin(u)) for u in (0,.4,1.2,2.1,math.pi)]

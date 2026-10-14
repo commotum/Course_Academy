@@ -1,6 +1,6 @@
 # Template extraction
 
-The four stages below are applied to each family. Exact source questions and all fields are preserved in `source.json`; all eight public cases are in `source-cases.json`. Slot evaluation is not a source-payload return or answer lookup: source scalar input nodes translate to grouped X=x−h, Y=y−k, Z=z−l, and cancellation nodes use a,b. Anchors h=k=l=0 and a=b=1 are evaluated through those same masks.
+The four stages below are applied to each family. Exact source questions and all fields are preserved in `source.json`; all nine public cases are in `source-cases.json`. Slot evaluation is not a source-payload return or answer lookup: source scalar input nodes translate to grouped X=x−h, Y=y−k, Z=z−l, and cancellation nodes use a,b. Anchors h=k=l=0 and a=b=1 are evaluated through those same masks.
 
 ## poly — q-36144
 
@@ -143,3 +143,25 @@ Raw attribute presence is checked per question, including missing difficulty/sol
 Canonical task fingerprints use the reduced complete product, fixed variable domain and supplied/unsupplied information, excluding seed, options, profiles and unused cancellations such as the reciprocal3 x-origin. Swapped factors, coefficient aliases and banks cannot create new mathematical tasks. Presentation identities use version, actual difficulty, prompt, fixed solution, full bank and designation. Seeds only affect ordering and random selection.
 
 The finite easy coefficient domain contains 3776 valid whole-bank parameter instances and 902 distinct reduced products after factor-order/scale aliases are deduplicated. Moderate has 1050 canonical same-method candidates (169 in each of six translated families and 36 cancellation coefficient pairs); reciprocal3 x-origin is excluded. Observed hard Gaussian has 169 translated tasks; authored hard binomial has 576 distinct reduced products. These are mathematical candidate/analytic enumeration claims, not full-domain native grading claims. No TeX escape repair is claimed: decoded ord=92 counts are recorded in decoded-strings.json; adjacent characters are the expected aligned row breaks. The captured reciprocal3 introductory prose names two variables; exact raw replay retains it, and normal generation minimally substitutes the three-variable names. No mathematical source error was found in the seven designated answers; no missing designation is counted as matched.
+
+## exp_cross — q-71515 (current basis 2320)
+
+1. **Specific source.** Hard, one radio selection field with five math choices. Supplied scalar functions are f(x,y)=x exp(y) and h(x,y)=y exp(x); no gradients are supplied. The two inputs have crossed roles: a linear x factor paired with an exponential in y, and a linear y factor paired with an exponential in x. Domain: all real x,y.
+
+2. **Generalized pattern.** Differentiate each factor coordinate by coordinate, form the two gradients, substitute in ∇(fh)=f∇h+h∇f, distribute four contributions, collect an ordered two-component vector. Do not add an evaluation point, normalize the vector or infer that parallel vectors are equal.
+
+3. **Complete source bank.** Each expression below is a complete value recipe under X=x−x0, Y=y−y0. Exact source replay uses x0=y0=0. The correct designation is the fourth option in captured snapshot order; correctness follows independently from differentiating XY exp(X+Y).
+
+1. Field `selection`: `$(x+y)y{e}^{xy}\text{ }i+x(x+y){e}^{xy}\text{ }j$`; incorrect; its exact complete symbolic mask is retained, but the compound wrong-operation intent is unresolved.
+
+2. Field `selection`: `$(x+y){e}^{x+y}\text{ }i+(x+y){e}^{x+y}\text{ }j$`; incorrect; its exact complete symbolic mask is retained, but the compound wrong-operation intent is unresolved.
+
+3. Field `selection`: `$(x+1)y{e}^{x}\text{ }i+x(1+y){e}^{y}\text{ }j$`; incorrect; its exact complete symbolic mask is retained, but the compound wrong-operation intent is unresolved.
+
+4. Field `selection`: `$(x+1)y{e}^{x+y}\text{ }i+x(1+y){e}^{x+y}\text{ }j$`; correct.
+
+5. Field `selection`: `$xy{e}^{xy}\text{ }i+(x+1)(1+y){e}^{xy}\text{ }j$`; incorrect; its exact complete symbolic mask is retained, but the compound wrong-operation intent is unresolved.
+
+The source bank is explicitly excluded from normal learning variants because its error recipes are opaque. The separate authored `method` bank computes G∇F+F∇G first, followed by G∇F, F∇G, G∇F−F∇G, and the correct vector with its two components exchanged. All five values must be distinct. Replay reports source-bank fidelity separately from this extension.
+
+4. **Reusable template.** Preserve the complete source prompt and solution sentences and rows; translate scalar-coordinate nodes throughout definitions, partial-derivative arguments, derivative results, gradient components, substitution, distribution, collected answers and all source choices. Keep derivative variables, function argument labels, basis i,j, coefficients and power patterns fixed because changing them changes the assessed crossed-factor chain/product operations. x0,y0 are independent integers from −6 through 6, including zero and both boundaries; translated variables remain grouped. Correct answer: exp(X+Y)[Y(X+1)i+X(Y+1)j]. No new plots or assets. Source replay at (0,0), signed-boundary checks and changed origins establish coverage without altering the solution stages.
