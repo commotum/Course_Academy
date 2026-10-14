@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-114942",
+      "sequence_position": 6,
+      "problem": "Evaluate ${\\int }_{1}^{e}9{x}^{2}({log}_{2}⁡x)^{2}\\,\\text{d}x.$",
+      "worked_solution": "We need to use integration by parts. We'll work out the indefinite integral first, and then proceed to work out the definite integral.\n\nIn this case, we define\n\n$$\n\\begin{aligned}u=({log}_{2}⁡x)^{2}\\, & ⟹\\,\\frac{\\text{d}u}{\\text{d}x}=\\frac{2{log}_{2}⁡x}{x\\operatorname{ln}⁡2} \\\\ \\frac{\\text{d}v}{\\text{d}x}=9{x}^{2}\\, & ⟹\\,v=\\int \\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x=\\int 9{x}^{2}\\,\\text{d}x=3{x}^{3}.\\end{aligned}\n$$\n\nUsing the formula of integration by parts, we get\n\n$$\n\\begin{aligned}\\int 9{x}^{2}({log}_{2}⁡x)^{2}\\,\\text{d}x & =\\int u\\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x \\\\  & =uv-\\int v\\frac{\\text{d}u}{\\text{d}x}\\,\\text{d}x \\\\  & ={({log}_{2}⁡x)}^{2}(3{x}^{3})-\\int (3{x}^{3})(\\frac{2{log}_{2}⁡x}{x\\operatorname{ln}⁡2})\\,\\text{d}x \\\\  & =3{x}^{3}{({log}_{2}⁡x)}^{2}-\\frac{6}{\\operatorname{ln}⁡2}\\int {x}^{2}{log}_{2}⁡x\\,\\text{d}x.\\end{aligned}\n$$\n\nWe use integration by parts once again to evaluate  $\\int {x}^{2}{log}_{2}⁡x\\,\\text{d}x.$ We take\n\n$$\n\\begin{aligned}u={log}_{2}⁡x\\, & ⟹\\,\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x\\operatorname{ln}⁡2} \\\\ \\frac{\\text{d}v}{\\text{d}x}={x}^{2}\\, & ⟹\\,v=\\int \\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x=\\int {x}^{2}\\,\\text{d}x=\\frac{{x}^{3}}{3}.\\end{aligned}\n$$\n\nIn this case, the formula for integration by parts gives\n\n$$\n\\begin{aligned}\\int {x}^{2}{log}_{2}⁡x\\,\\text{d}x & =\\int u\\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x \\\\  & =uv-\\int v\\frac{\\text{d}u}{\\text{d}x}\\,\\text{d}x \\\\  & =({log}_{2}⁡x)(\\frac{{x}^{3}}{3})-\\int (\\frac{{x}^{3}}{3})(\\frac{1}{x\\operatorname{ln}⁡2})\\,\\text{d}x \\\\  & =\\frac{{x}^{3}{log}_{2}⁡x}{3}-\\frac{1}{3\\operatorname{ln}⁡2}\\int {x}^{2}\\,\\text{d}x \\\\  & =\\frac{{x}^{3}{log}_{2}⁡x}{3}-\\frac{{x}^{3}}{9\\operatorname{ln}⁡2}+D,\\end{aligned}\n$$\n\nwhere $D$ is an integral constant.\n\nSo we have\n\n$$\n\\begin{aligned}\\int 9{x}^{2}({log}_{2}⁡x)^{2}\\,\\text{d}x & =3{x}^{3}{({log}_{2}⁡x)}^{2}-\\frac{6}{\\operatorname{ln}⁡2}(\\frac{{x}^{3}{log}_{2}⁡x}{3}-\\frac{{x}^{3}}{9\\operatorname{ln}⁡2}+D) \\\\  & =3{x}^{3}{({log}_{2}⁡x)}^{2}-\\frac{2{x}^{3}{log}_{2}⁡x}{\\operatorname{ln}⁡2}+\\frac{2{x}^{3}}{3{ln}^{2}⁡2}+C \\\\  & =\\frac{3{x}^{3}{ln}^{2}⁡x}{{ln}^{2}⁡2}-\\frac{2{x}^{3}\\operatorname{ln}⁡x}{{ln}^{2}⁡2}+\\frac{2{x}^{3}}{3{ln}^{2}⁡2}+C \\\\  & =\\frac{{x}^{3}}{{ln}^{2}⁡2}(3{ln}^{2}⁡x-2\\operatorname{ln}⁡x+\\frac{2}{3})+C.\\end{aligned}\n$$\n\nwhere $C=-\\frac{6D}{\\operatorname{ln}⁡2}.$\n\nNote that in the above calculation we used the change of base formula ${log}_{2}⁡x=\\frac{\\operatorname{ln}⁡x}{\\operatorname{ln}⁡2}.$\n\nFinally then, we can work out the definite integral:\n\n$$\n\\begin{aligned}{\\int }_{1}^{e}9{x}^{2}({log}_{2}⁡x)^{2}\\,\\text{d}x & ={[\\frac{{x}^{3}}{{ln}^{2}⁡2}(3{ln}^{2}⁡x-2\\operatorname{ln}⁡x+\\frac{2}{3})]}_{1}^{e} \\\\  & =\\frac{{e}^{3}}{{ln}^{2}⁡2}(3{ln}^{2}⁡e-2\\operatorname{ln}⁡e+\\frac{2}{3})-\\frac{{1}^{3}}{{ln}^{2}⁡2}(3{ln}^{2}⁡1-2\\operatorname{ln}⁡1+\\frac{2}{3}) \\\\  & =\\frac{{e}^{3}}{{ln}^{2}⁡2}(3-2+\\frac{2}{3})-\\frac{1}{{ln}^{2}⁡2}(0-0+\\frac{2}{3}) \\\\  & =\\frac{5{e}^{3}}{3{ln}^{2}⁡2}-\\frac{2}{3{ln}^{2}⁡2} \\\\  & =\\frac{5{e}^{3}-2}{3{ln}^{2}⁡2}.\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14129691/observations/history-q-114942-fbfd299ff41604182266.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14129691",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14129691/observations/history-solution-q-114942-74401ed7be0dde3818b9.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "\\frac{2{e}^{2}-3}{4{ln}^{2}⁡2}"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "4{e}^{3}-1"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "\\frac{5{e}^{3}-2}{3{ln}^{2}⁡2}"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "\\frac{{e}^{3}-1}{{ln}^{2}⁡2}"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "2{e}^{2}+3"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q114942",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "\\frac{5{e}^{3}-2}{3{ln}^{2}⁡2}",
+                "option": "c",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "We need to use integration by parts. We'll work out the indefinite integral first, and then proceed to work out the definite integral.\n\nIn this case, we define\n\n$$\n\\begin{aligned}u=({log}_{2}⁡x)^{2}\\, & ⟹\\,\\frac{\\text{d}u}{\\text{d}x}=\\frac{2{log}_{2}⁡x}{x\\operatorname{ln}⁡2} \\\\ \\frac{\\text{d}v}{\\text{d}x}=9{x}^{2}\\, & ⟹\\,v=\\int \\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x=\\int 9{x}^{2}\\,\\text{d}x=3{x}^{3}.\\end{aligned}\n$$\n\nUsing the formula of integration by parts, we get\n\n$$\n\\begin{aligned}\\int 9{x}^{2}({log}_{2}⁡x)^{2}\\,\\text{d}x & =\\int u\\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x \\\\  & =uv-\\int v\\frac{\\text{d}u}{\\text{d}x}\\,\\text{d}x \\\\  & ={({log}_{2}⁡x)}^{2}(3{x}^{3})-\\int (3{x}^{3})(\\frac{2{log}_{2}⁡x}{x\\operatorname{ln}⁡2})\\,\\text{d}x \\\\  & =3{x}^{3}{({log}_{2}⁡x)}^{2}-\\frac{6}{\\operatorname{ln}⁡2}\\int {x}^{2}{log}_{2}⁡x\\,\\text{d}x.\\end{aligned}\n$$\n\nWe use integration by parts once again to evaluate  $\\int {x}^{2}{log}_{2}⁡x\\,\\text{d}x.$ We take\n\n$$\n\\begin{aligned}u={log}_{2}⁡x\\, & ⟹\\,\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x\\operatorname{ln}⁡2} \\\\ \\frac{\\text{d}v}{\\text{d}x}={x}^{2}\\, & ⟹\\,v=\\int \\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x=\\int {x}^{2}\\,\\text{d}x=\\frac{{x}^{3}}{3}.\\end{aligned}\n$$\n\nIn this case, the formula for integration by parts gives\n\n$$\n\\begin{aligned}\\int {x}^{2}{log}_{2}⁡x\\,\\text{d}x & =\\int u\\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x \\\\  & =uv-\\int v\\frac{\\text{d}u}{\\text{d}x}\\,\\text{d}x \\\\  & =({log}_{2}⁡x)(\\frac{{x}^{3}}{3})-\\int (\\frac{{x}^{3}}{3})(\\frac{1}{x\\operatorname{ln}⁡2})\\,\\text{d}x \\\\  & =\\frac{{x}^{3}{log}_{2}⁡x}{3}-\\frac{1}{3\\operatorname{ln}⁡2}\\int {x}^{2}\\,\\text{d}x \\\\  & =\\frac{{x}^{3}{log}_{2}⁡x}{3}-\\frac{{x}^{3}}{9\\operatorname{ln}⁡2}+D,\\end{aligned}\n$$\n\nwhere $D$ is an integral constant.\n\nSo we have\n\n$$\n\\begin{aligned}\\int 9{x}^{2}({log}_{2}⁡x)^{2}\\,\\text{d}x & =3{x}^{3}{({log}_{2}⁡x)}^{2}-\\frac{6}{\\operatorname{ln}⁡2}(\\frac{{x}^{3}{log}_{2}⁡x}{3}-\\frac{{x}^{3}}{9\\operatorname{ln}⁡2}+D) \\\\  & =3{x}^{3}{({log}_{2}⁡x)}^{2}-\\frac{2{x}^{3}{log}_{2}⁡x}{\\operatorname{ln}⁡2}+\\frac{2{x}^{3}}{3{ln}^{2}⁡2}+C \\\\  & =\\frac{3{x}^{3}{ln}^{2}⁡x}{{ln}^{2}⁡2}-\\frac{2{x}^{3}\\operatorname{ln}⁡x}{{ln}^{2}⁡2}+\\frac{2{x}^{3}}{3{ln}^{2}⁡2}+C \\\\  & =\\frac{{x}^{3}}{{ln}^{2}⁡2}(3{ln}^{2}⁡x-2\\operatorname{ln}⁡x+\\frac{2}{3})+C.\\end{aligned}\n$$\n\nwhere $C=-\\frac{6D}{\\operatorname{ln}⁡2}.$\n\nNote that in the above calculation we used the change of base formula ${log}_{2}⁡x=\\frac{\\operatorname{ln}⁡x}{\\operatorname{ln}⁡2}.$\n\nFinally then, we can work out the definite integral:\n\n$$\n\\begin{aligned}{\\int }_{1}^{e}9{x}^{2}({log}_{2}⁡x)^{2}\\,\\text{d}x & ={[\\frac{{x}^{3}}{{ln}^{2}⁡2}(3{ln}^{2}⁡x-2\\operatorname{ln}⁡x+\\frac{2}{3})]}_{1}^{e} \\\\  & =\\frac{{e}^{3}}{{ln}^{2}⁡2}(3{ln}^{2}⁡e-2\\operatorname{ln}⁡e+\\frac{2}{3})-\\frac{{1}^{3}}{{ln}^{2}⁡2}(3{ln}^{2}⁡1-2\\operatorname{ln}⁡1+\\frac{2}{3}) \\\\  & =\\frac{{e}^{3}}{{ln}^{2}⁡2}(3-2+\\frac{2}{3})-\\frac{1}{{ln}^{2}⁡2}(0-0+\\frac{2}{3}) \\\\  & =\\frac{5{e}^{3}}{3{ln}^{2}⁡2}-\\frac{2}{3{ln}^{2}⁡2} \\\\  & =\\frac{5{e}^{3}-2}{3{ln}^{2}⁡2}.\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14129691/observations/step-q114942-8cee94d8c58826a71cfc.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a12e37-8333-79c1-8c87-c61248825427",
+  "previous_failures": []
+}
