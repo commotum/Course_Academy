@@ -76,7 +76,20 @@ def main():
  aliases={str(q[':db/id']):q.get(':question/math-academy-id',str(q[':db/id'])) for q in source.get(':knowledge-point/questions',[])}
  aliases.update({q[':question/id']:q.get(':question/math-academy-id',str(q[':db/id'])) for q in source.get(':knowledge-point/questions',[]) if ':question/id' in q})
  caseids={aliases.get(str(case.get('source_math_academy_id',case.get('math_academy_id',case.get('source_ma_id',case['source_id'])))),str(case.get('source_math_academy_id',case.get('math_academy_id',case.get('source_ma_id',case['source_id']))))) for case in cases}
- assert caseids==qids,'source case coverage gap'
+ if caseids!=qids:
+  # Fresh inventories can contain independently authored practice (no MA identity).
+  # Keep those exact captured records/context separate from original-template replay.
+  maids={q[':question/math-academy-id'] for q in source.get(':knowledge-point/questions',[]) if ':question/math-academy-id' in q}
+  assert caseids==maids,'original source case coverage gap'
+  independent=[q for q in source.get(':knowledge-point/questions',[]) if ':question/math-academy-id' not in q]
+  inventory=load(folder/'independent-inventory.json')
+  assert inventory['basis']==evidence['basis'] and inventory['lineage']==evidence['lineage']
+  rows=inventory['questions'];assert len(rows)==len(independent)
+  assert {r['record'][':db/id'] for r in rows}=={q[':db/id'] for q in independent}
+  for r in rows:
+   assert r['record']==next(q for q in independent if q[':db/id']==r['record'][':db/id'])
+   assert r['role']=='independently authored inventory' and r['relationship_to_source_templates'].strip()
+  qids=maids
  result={'kp_id':kp,'automated_parent_checks':'passed','source_case_coverage':len(qids),'levels':by_level,'native_grading':str(qa/f'{kp}-engine.json'),'database_writes':0,
   'manual_review_required':['source-bank mathematical equivalence and correctness designation','shared worked-solution fidelity and intermediate math','curriculum scope of observed and authored levels','plots and source repairs where present']}
  dump(qa/f'{kp}.json',result);print(json.dumps(result))

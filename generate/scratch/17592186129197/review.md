@@ -95,7 +95,7 @@ $$
 Δ=\{(u,v)\,:\,-3\le u\le 3,\,u^{2}\le v\le 9\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/7cf9bd6657f7f719ce824885.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/3a931359251be4c6f04a7150.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -205,7 +205,7 @@ $$
 Δ=\{(u,v)\,:\,-3\le u\le 3,\,u^{2}\le v\le 9\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/940bfe74d9464bc2483064f4.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/f5dff219de9d5f568d49d24d.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -440,7 +440,7 @@ $$
 Δ=\{(u,v)\,:\,0\le u\le 2,\,\frac{u^{4}}{8}\le v\le u\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/8b4cd08b944400c544749e00.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/3702fbe12e7e1150699e16d7.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -556,7 +556,7 @@ $$
 Δ=\{(u,v)\,:\,0\le u\le 2,\,\frac{u^{4}}{8}\le v\le u\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/3e0f57c353128fe95306942c.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/3d35d77c4f15ef353c427330.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -804,7 +804,7 @@ $$
 Δ=\{(u,v)\,:\,2\le u\le 3,\,2\le v\le \frac{6}{u}\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/4e38b40f48581420c0955bc1.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/0fde352461cbc4593164f48f.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -928,7 +928,7 @@ $$
 Δ=\{(u,v)\,:\,2\le u\le \frac{7}{2},\,2\le v\le \frac{7}{u}\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/633802c28ae3635c7f0d4099.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/3090e0d44bb2af9d386625dd.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -1148,7 +1148,7 @@ $$
 Δ=\{(u,v)\,:\,- \sqrt{7}\le u\le \sqrt{7},\,1\le v\le 8 - u^{2}\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/43620357dabc59584feaecfb.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/b05da0309501c5b940f78b27.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -1258,7 +1258,7 @@ $$
 Δ=\{(u,v)\,:\,- \sqrt{7}\le u\le \sqrt{7},\,2\le v\le 9 - u^{2}\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/179a69af0851cc322f57a0d6.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/3bfe27834d072559ed746617.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -1474,7 +1474,7 @@ $$
 Δ=\{(u,v)\,:\,- \sqrt{5}\le u\le \sqrt{5},\,u^{2} - 4\le v\le 1\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/e4521bfcd16a853b8de743f1.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/049b622e00566cd865e9eae8.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -1584,7 +1584,7 @@ $$
 Δ=\{(u,v)\,:\,- \sqrt{5}\le u\le \sqrt{5},\,u^{2} - 3\le v\le 2\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/b75671cbc89eda821608fcb3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/54af0df2070ab5d354ed650b.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -1800,7 +1800,7 @@ $$
 Δ=\{(u,v)\,:\,- \sqrt{5}\le u\le \sqrt{5},\,u^{2} - 4\le v\le 1\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/82a6f60695ceef3f6d6f67a3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/502bf573e0173cf59ce52c27.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -1910,7 +1910,7 @@ $$
 Δ=\{(u,v)\,:\,- \sqrt{5}\le u\le \sqrt{5},\,u^{2} - 3\le v\le 2\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/1f1fb684eb7a2ee6e523197c.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/84e53b7e1be76b03ed2db015.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -2158,7 +2158,7 @@ $$
 Δ=\{(u,v)\,:\,2\le u\le 3,\,2\le v\le \frac{6}{u}\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/999a690213db3995a291d0aa.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/18bb933f477c96a20fa2a5d5.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -2282,7 +2282,7 @@ $$
 Δ=\{(u,v)\,:\,2\le u\le \frac{7}{2},\,2\le v\le \frac{7}{u}\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/5bc23e388b4c1ad0bd054298.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/3509783338b0a731df5f187c.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -2392,7 +2392,7 @@ $$
 Δ=\{(u,v)\,:\,-1\le u\le 1,\,u^{2}\le v\le 1\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/6c3cadbace681d1e13ac50ea.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/8a7836644e5d0d7c2823eb2a.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 
@@ -2500,7 +2500,7 @@ $$
 Δ=\{(u,v)\,:\,-6\le u\le 6,\,u^{2}\le v\le 36\}.
 $$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/64a09db0e43d3b59a65878a7.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186129197/plots/d7065414c32132452871e3dd.png)
 
 **Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$
 

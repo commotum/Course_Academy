@@ -6,9 +6,14 @@ x -> x+h varies. Derivative coordinates and function names remain x. The
 constant-coefficient autonomous q-109029 has source replay only (no new tasks).
 Easy and incomplete q-106074 are explicitly unsupported. See package evidence.
 """
-import argparse,hashlib,json,random,re,uuid
+import argparse,hashlib,json,random,re,uuid,os,sys
 from pathlib import Path
-import sympy as sp
+try:
+ import sympy as sp
+except ImportError:
+ runtime=Path(__file__).resolve().parents[2]/'.venv/bin/python'
+ if __name__=='__main__' and runtime.exists():os.execv(str(runtime),[str(runtime),__file__,*sys.argv[1:]])
+ raise
 KP_ID=17592186147454
 HERE=Path(__file__).resolve().with_suffix('')
 SNAPSHOT=json.loads((HERE/'source.json').read_text())
@@ -60,7 +65,11 @@ def generate(difficulty,seed=0,template=None,parameters=None,profile=None):
    answers.append({':answer/id':aid,':answer/type':':answer.type/math',':answer/value':value})
    if a[':answer/id']==f[':answer-field/correct'][':answer/id']:correct=aid
   fields.append({':answer-field/id':fid,':answer-field/key':f[':answer-field/key'],':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]})
- problem=translate(q[':question/problem'],h);solution=translate(q[':question/worked-solution'],h)
+ problem=translate(q[':question/problem'],h)
+ solution_source=q[':question/worked-solution']
+ if h:
+  solution_source=solution_source.replace('(1/4x)',r'(\frac{1}{4x})').replace('(3/2x)',r'(\frac{3}{2x})')
+ solution=translate(solution_source,h)
  if not original:
   # Restrict the question to the nonzero family obtained by Bernoulli division.
   problem=problem.replace('Find the general solution','Find the general nonzero real solution')
@@ -80,7 +89,7 @@ def fingerprint(q):
  text=q[':question/problem'];eq=re.search(r'\$\$([\s\S]*?)\$\$',text)
  if not eq:eq=re.search(r'\$([^$]*=[^$]*)\$',text)
  assert eq
- eq=eq[1].strip().rstrip('.')
+ eq=re.sub(r'\s+','',eq[1]).rstrip('.').replace(r'\dfrac',r'\frac').replace(r'\textrm{d}',r'\text{d}')
  eq=re.sub(r'\\frac\{\\text\{d\}y\}\{\\text\{d\}x\}|\\frac\{dy\}\{dx\}', 'D',eq)
  lhs,rhs=eq.split('=')
  x,y,D=sp.symbols('x y D');env={'x':x,'y':y,'D':D,'e':sp.E}
@@ -95,9 +104,9 @@ def main():
  p=argparse.ArgumentParser();p.add_argument('--difficulty',required=True);p.add_argument('--seed',type=int,default=0);p.add_argument('--count',type=int,default=1);p.add_argument('--format',choices=('json','markdown'),default='json');a=p.parse_args()
  records=[];seen=set()
  for seed in range(a.seed,a.seed+1000):
-  r=generate(a.difficulty,seed);fp=fingerprint(r['question'])
+  r=generate(a.difficulty,seed);fp=digest([r['generation']['template'],r['generation']['parameters']['shift']])
   if fp not in seen:records.append(r);seen.add(fp)
   if len(records)>=a.count:break
  if len(records)!=a.count:raise ValueError('Finite variant limit; '+str(len(records))+' distinct available in this package')
- print(json.dumps({'instances':records},indent=2) if a.format=='json' else '\n\n---\n\n'.join(map(markdown,records)))
+ print(json.dumps(records,indent=2) if a.format=='json' else '\n\n---\n\n'.join(map(markdown,records)))
 if __name__=='__main__':main()

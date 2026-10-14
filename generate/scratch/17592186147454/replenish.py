@@ -161,7 +161,7 @@ def verify(path,intent,report):
 def finish(path,gid,verified,inv):
     prep=json.loads((path/'preparation.json').read_text());caps=json.loads((HERE/'capabilities.json').read_text())
     after=verified.get('available_counts_after',prep['available_counts']);remaining={l:max(0,5-after['levels'][l]['distinct_available_tasks']) for l in g.SUPPORTED_LEVELS}
-    result={'outcome':'finite-limit' if any(remaining.values()) else 'generated','knowledgePoint':KP,'generator_path':SCRIPT,'generator_id':gid,'lineage':LINEAGE,'verified_commit_basis':verified['basis_after'],'new_questions':verified['new_questions'],'supported_levels':list(g.SUPPORTED_LEVELS),'available_counts_before':prep['available_counts'],'available_counts_after':after,'shortage_remaining':remaining,'unsupported_levels':['easy'], 'unsupported_levels_filled':False,'unsupported_nominal_shortage':{'easy':5},'capability_exceptions':caps['exceptions'],'inventory_recheck_basis':inv['basis'],'remaining_jobs':[j for j in inv['jobs'] if j['knowledgePoint']==KP],'evidence':[str(p.relative_to(ROOT)) for p in [path/'verification.json',path/'commit-intent.json',path/'transaction.edn',path/'commit.edn',path/'preview.edn',path/'preparation.json',path/'inventory-after.json',HERE/'classification.md',HERE/'template-extraction.md',HERE/'validation.json',HERE/'capabilities.json'] if p.exists()],'note':'Supported moderate/hard levels checked for distinct fresh usable tasks. Easy remains unsupported with nominal shortage five. q-106074 remains unrated/incomplete and is not inventory. New radio solutions retain exact source banks, nonzero real-family domains, and explicit fractional branch restrictions. No source or learner facts modified.'}
+    result={'outcome':'finite-limit' if any(remaining.values()) else 'generated','knowledgePoint':KP,'generator_path':SCRIPT,'generator_id':gid,'lineage':LINEAGE,'verified_commit_basis':verified['basis_after'],'new_questions':verified['new_questions'],'supported_levels':list(g.SUPPORTED_LEVELS),'available_counts_before':prep['available_counts'],'available_counts_after':after,'shortage_remaining':remaining,'unsupported_levels':['easy'], 'unsupported_levels_filled':False,'unsupported_nominal_shortage':{'easy':5},'capability_exceptions':caps['exceptions'],'inventory_recheck_basis':inv['basis'],'remaining_jobs':[j for j in inv['jobs'] if j['knowledgePoint']==KP],'evidence':[str(p.relative_to(ROOT)) for p in [path/'verification.json',path/'commit-intent.json',path/'transaction.edn',path/'commit.edn',path/'preview.edn',path/'preparation.json',path/'inventory-after.json',HERE/'classification.md',HERE/'template-extraction.md',HERE/'validation.json',HERE/'stage-validation.json',HERE/'template-extraction.json',HERE/'capabilities.json'] if p.exists()],'note':'Supported moderate/hard levels checked for distinct fresh usable tasks. Easy remains unsupported with nominal shortage five. q-106074 remains unrated/incomplete and is not inventory. New radio solutions retain exact source banks, nonzero real-family domains, and explicit fractional branch restrictions. No source or learner facts modified.'}
     save(path/'outcome.json',result);save(JOB.with_suffix('.result'),result);print(json.dumps({k:result[k] for k in ('outcome','verified_commit_basis','new_questions','shortage_remaining')}),flush=True)
 
 def canonical(value):
@@ -172,6 +172,7 @@ def canonical(value):
 
 def main():
     validation=json.loads((HERE/'validation.json').read_text());assert validation['status']=='pass' and validation['generator_sha256']==sha(HERE.with_suffix('.py'))
+    stages=json.loads((HERE/'stage-validation.json').read_text());assert stages['passed'] and stages['generator_sha256']==sha(HERE.with_suffix('.py'))
     preview=preview_executable(SimpleNamespace(math_root=Path('/media/jake/SSD/EDB/math'),repo_root=ROOT,preview_bin=None),threading.Event())
     with (ROOT/'.local/learning/requests/math/api.lock').open('a') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX)
@@ -193,10 +194,13 @@ def main():
         assert gid==g.GENERATOR_UUID
         c=counts(kp,path,basis);needed={l:max(0,5-c['levels'][l]['distinct_available_tasks']) for l in g.SUPPORTED_LEVELS}
         used={fingerprint(q) for q in kp[':knowledge-point/questions']};used.add(fingerprint(kp[':knowledge-point/canonical-example']));records=[];added={l:0 for l in g.SUPPORTED_LEVELS}
-        supplied_path=JOB.with_suffix('.generated');supplied=json.loads(supplied_path.read_text()) if supplied_path.exists() else {};instances=supplied.get('instances',[]);assert isinstance(instances,list)
+        supplied_path=JOB.with_suffix('.generated');supplied=json.loads(supplied_path.read_text()) if supplied_path.exists() else {};instances=supplied.get('instances',[])
+        if isinstance(instances,dict):instances=instances.get('instances',[])
+        assert isinstance(instances,list)
         for rec in instances:v.independent(rec)
         save(path/'supplied-status.json',{'exists':supplied_path.exists(),'validated_instances':len(instances),'generator_error':supplied.get('generatorError')})
         for rec in instances+candidate_records():
+            if all(added[l]>=needed[l] for l in g.SUPPORTED_LEVELS):break
             level=rec['question'][':question/difficulty'].split('/')[-1];fp=fingerprint(rec['question'])
             if added[level]<needed[level] and fp not in used:
                 v.independent(rec);records.append(rec);used.add(fp);added[level]+=1

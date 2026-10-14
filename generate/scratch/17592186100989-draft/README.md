@@ -1,0 +1,18 @@
+# Square-matrix entry draft
+
+The separate `../17592186100989-draft.py` exposes easy, moderate, hard and the standard generate API/CLI. This review stops after steps 3–7. The registered numeric script and its private folder are preserved; no registration, database writes, publication, engine changes, or commits occur.
+
+```sh
+.venv/bin/python generate/scratch/17592186100989-draft/validate.py
+.venv/bin/python generate/scratch/17592186100989-draft.py --difficulty all --seed 42 --count 2 --format markdown
+```
+
+Immutable source: math basis 1356, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`; `source.json` matches `generate/runs/current/sources/17592186100989.json`. Owning topic and ordered lesson wrappers are retained as `topic.json` and `lesson.json`. Refreshed rank 4 identifies this revalidation; it does not replace the original approved source scope with later generated database questions. `source-current-context.json` retains the basis 2275 capture; `current-source-comparison.json` verifies all six complete refreshed records against the original after enclosure normalization and the supported q-125593 E→R repair. No banks, refs, field types, feedback, source labels, or omission presences changed.
+
+The baseline at copy was `b37bf5c164840e3a1471cd1f10efa51af8d4a2d1226630662f8dc199d3b38b5c`, following approved `8c08ebf52c0e8c817e90e115e150ba75d6468352913c65cd6bf4e7c965ce325a`. Current normal output uses `bmatrix` in place of literal brackets around `aligned`; exact raw source replay retains the original enclosure. No mathematical value, matrix row, target role, bank, or operative solution stage changes. Draft generator differs from the current numeric script only in its private evidence path. Validator improvements certify this refreshed behavior, including full normal source prompt/solution parity after the named normalization.
+
+All six source prompts/banks and five available solutions/correct designations replay through public parameterized raw profiles. Missing q-13506 difficulty/solution/correct remains absent in raw replay; normal completion explicitly authors/infer these. Raw q-125593 retains E while normal uses R. Opaque q-13490 historical 5/4 values remain explicit evidence-only slots; its normal family uses a separately authored indexing bank. No source feedback occurs and none is invented.
+
+Moderate 5×5 with max requested index ≥4 and hard 6×6 with max index ≥5 are authored visual-search levels, grounded in the ordered index-notation lesson and rectangular sibling. Easy retains observed 2–4 orders and integer/radical forms. Each level assesses one positional lookup with no within-level progression or additional operations. Finite meaningful tasks are 845/464/580 and exclude unrelated entries, profile/letter/layout aliases.
+
+`validate.py` independently reads actual matrices, all indices, complete banks, correct refs and every solution target/conclusion. It exercises all eligible target positions per normal bank, rejects overlapping/out-of-range banks whole, holds the matrix fixed while changing targets, enforces signed magnitude/size/depth bounds on explicit inputs, and tests profile choice before parameter retries. Native grading uses only the shared in-memory `generate/runs/current/check-engine` fixture. `validation.json` separates raw fidelity, presentation-normalized fidelity, math, scope, identity, task variety, native grading and explicit repairs. `review.md`/`review.json` retain every original and bank variant plus at least two normal examples per level. No legacy publication scripts or database artifacts were copied or executed.

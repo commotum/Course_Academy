@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Approved sources retain 
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**qa_passed: 332**, **queued: 247**, **working: 1**.
+**needs_revalidation: 43**, **qa_passed: 290**, **queued: 245**, **working: 2**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). Finish existing workers, then follow updated ranks; coverage-report priorities remain first and are already approved.
 
@@ -12,7 +12,7 @@ Cumulative counts include previously approved KPs and two active KPs that left t
 
 | KP | Topic | Knowledge point | Source E / M / H / unrated | Status | Parent QA |
 |---|---|---|---|---|---|
-| [17592186129197](../../scratch/17592186129197.py) | Computing Areas Using a Change of Variables | Finding an Area by Transforming to a Type I Region | 0 / 0 / 6 / 1 | working | — |
+| [17592186129197](../../scratch/17592186129197.py) | Computing Areas Using a Change of Variables | Finding an Area by Transforming to a Type I Region | 0 / 0 / 6 / 1 | qa_passed | [Report](qa/17592186129197.json) |
 | [17592186096841](../../scratch/17592186096841.py) | The Chain Rule for Differentiation | Differentiating a Polynomial Raised to a Power Using the Chain Rule | 3 / 3 / 2 / 1 | qa_passed | [Report](qa/17592186096841.json) |
 | [17592186096842](../../scratch/17592186096842.py) | The Chain Rule for Differentiation | Differentiating a Radical Function Using the Chain Rule | 2 / 4 / 2 / 1 | qa_passed | [Report](qa/17592186096842.json) |
 | [17592186087867](../../scratch/17592186087867.py) | Introduction to First-Order Linear ODEs | Identifying First-Order Linear ODEs | 4 / 5 / 3 / 0 | qa_passed | [Report](qa/17592186087867.json) |
@@ -30,12 +30,12 @@ Cumulative counts include previously approved KPs and two active KPs that left t
 | [17592186198392](../../scratch/17592186198392.py) | Calculating Flux Through Cartesian Surfaces | Expressing Flux Over a Surface as a Repeated Integral Using a Formula | 5 / 4 / 3 / 0 | qa_passed | [Report](qa/17592186198392.json) |
 | [17592186087694](../../scratch/17592186087694-draft.py) | Introduction to Matrices | Determining the Dimensions of a Matrix with One Row or Column | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186087694.json) |
 | [17592186087693](../../scratch/17592186087693-draft.py) | Introduction to Matrices | Determining the Dimensions of a Matrix | 6 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186087693.json) |
-| [17592186100988](../../scratch/17592186100988.py) | Index Notation for Matrices | Finding an Entry of a Matrix | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186100988.json) |
-| [17592186100989](../../scratch/17592186100989.py) | Index Notation for Matrices | Finding an Entry of a Square Matrix | 5 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186100989.json) |
-| [17592186100990](../../scratch/17592186100990.py) | Index Notation for Matrices | Describing an Entry of a Matrix in Index Notation | 6 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186100990.json) |
+| [17592186100988](../../scratch/17592186100988-draft.py) | Index Notation for Matrices | Finding an Entry of a Matrix | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186100988.json) |
+| [17592186100989](../../scratch/17592186100989-draft.py) | Index Notation for Matrices | Finding an Entry of a Square Matrix | 5 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186100989.json) |
+| [17592186100990](../../scratch/17592186100990-draft.py) | Index Notation for Matrices | Describing an Entry of a Matrix in Index Notation | 6 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186100990.json) |
 | [17592186096613](../../scratch/17592186096613.py) | Differentiating Logarithmic Functions | Differentiating the Product of a Constant and the Natural Logarithm Function | 7 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096613.json) |
-| 17592186068722 | Integration Using Substitution | Integrating an Expression Involving a Power Function Multiplied by Its Derivative | 2 / 2 / 1 / 0 | queued | — |
-| 17592186184349 | Integrating Exponential Functions Using Substitution | Integrating Products Containing the Exponential Function | 2 / 2 / 1 / 2 | queued | — |
+| 17592186068722 | Integration Using Substitution | Integrating an Expression Involving a Power Function Multiplied by Its Derivative | 2 / 2 / 1 / 0 | working | — |
+| 17592186184349 | Integrating Exponential Functions Using Substitution | Integrating Products Containing the Exponential Function | 2 / 2 / 1 / 2 | working | — |
 | 17592186175922 | Finding Equations of Perpendicular Lines | Finding the Equation of a Perpendicular Line | 1 / 1 / 3 / 2 | queued | — |
 | 17592186064171 | Integrating Exponential Functions | Integrating the Exponential Function | 3 / 1 / 1 / 1 | queued | — |
 | 17592186064172 | Integrating Exponential Functions | Integrating an Exponential Function With a General Base | 2 / 2 / 1 / 1 | queued | — |
@@ -45,8 +45,8 @@ Cumulative counts include previously approved KPs and two active KPs that left t
 | [17592186054802](../../scratch/17592186054802.py) | Graphing Linear Equations | Identifying a Line Given a Graph | 0 / 0 / 5 / 2 | queued | — |
 | [17592186059714](../../scratch/17592186059714.py) | Calculating the Magnitude of Cartesian Vectors in 2D | Calculating the Magnitude of a Vector Given in Component Form | 7 / 0 / 0 / 2 | queued | — |
 | [17592186059715](../../scratch/17592186059715.py) | Calculating the Magnitude of Cartesian Vectors in 2D | Calculating a Vector From Position Vectors and then Computing its Magnitude | 0 / 8 / 0 / 2 | queued | — |
-| [17592186059826](../../scratch/17592186059826.py) | Interval Notation | Converting Between Intervals and Inequalities: Open Intervals | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186059826.json) |
-| [17592186059713](../../scratch/17592186059713.py) | Addition and Scalar Multiplication of Cartesian Vectors in 2D | Calculating Sums and Scalar Multiplication of Vectors Given in Alternative Notation | 2 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186059713.json) |
+| [17592186059826](../../scratch/17592186059826.py) | Interval Notation | Converting Between Intervals and Inequalities: Open Intervals | 0 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186059826.json) |
+| [17592186059713](../../scratch/17592186059713.py) | Addition and Scalar Multiplication of Cartesian Vectors in 2D | Calculating Sums and Scalar Multiplication of Vectors Given in Alternative Notation | 2 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186059713.json) |
 | [17592186087696](../../scratch/17592186087696.py) | Zero, Square, Diagonal and Identity Matrices | Identifying a Square Matrix | 5 / 0 / 0 / 1 | queued | — |
 | [17592186087697](../../scratch/17592186087697.py) | Zero, Square, Diagonal and Identity Matrices | Identifying a Special Square Matrix | 5 / 0 / 0 / 1 | queued | — |
 | [17592186087698](../../scratch/17592186087698.py) | Zero, Square, Diagonal and Identity Matrices | Identifying Other Matrices | 5 / 0 / 0 / 2 | queued | — |
@@ -94,7 +94,7 @@ Cumulative counts include previously approved KPs and two active KPs that left t
 | 17592186054804 | Factoring Quartic Polynomials Using the Factor Theorem | Factoring a Quartic Polynomial Given Two Roots | 3 / 1 / 1 / 2 | queued | — |
 | 17592186054805 | Factoring Quartic Polynomials Using the Factor Theorem | Factoring a Quartic Polynomial With Only Two Real Factors | 1 / 4 / 1 / 2 | queued | — |
 | [17592186096843](../../scratch/17592186096843.py) | The Chain Rule for Differentiation | Differentiating a Function Using the Chain Rule and Prime Notation | 0 / 5 / 5 / 2 | queued | — |
-| [17592186100888](../../scratch/17592186100888.py) | Verifying Solutions of Differential Equations | Identifying a Solution to a First-Order Differential Equation | 8 / 1 / 0 / 0 | qa_passed | [Report](qa/17592186100888.json) |
+| [17592186100888](../../scratch/17592186100888.py) | Verifying Solutions of Differential Equations | Identifying a Solution to a First-Order Differential Equation | 8 / 1 / 0 / 0 | needs_revalidation | [Report](qa/17592186100888.json) |
 | [17592186100959](../../scratch/17592186100959.py) | Verifying Solutions of Differential Equations | Identifying Solutions to First-Order Differential Equations | 0 / 11 / 0 / 0 | qa_passed | [Report](qa/17592186100959.json) |
 | [17592186100951](../../scratch/17592186100951.py) | Verifying Solutions of Differential Equations | Identifying Solutions to Initial Value Problems | 17 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186100951.json) |
 | [17592186064180](../../scratch/17592186064180.py) | Integrating Trigonometric Functions | Integrating Secant Squared | 6 / 7 / 0 / 2 | queued | — |
@@ -104,17 +104,17 @@ Cumulative counts include previously approved KPs and two active KPs that left t
 | [17592186087866](../../scratch/17592186087866.py) | Introduction to First-Order Linear ODEs | Writing First-Order Linear ODEs in Standard Form | 8 / 0 / 1 / 0 | qa_passed | [Report](qa/17592186087866.json) |
 | [17592186087868](../../scratch/17592186087868.py) | Introduction to First-Order Linear ODEs | Identifying Homogeneous and Inhomogeneous ODEs | 6 / 6 / 0 / 0 | qa_passed | [Report](qa/17592186087868.json) |
 | [17592186087878](../../scratch/17592186087878.py) | Solving First-Order Linear ODEs Using Integrating Factors | Solving First-Order Linear ODEs Using Integrating Factors | 2 / 2 / 1 / 3 | qa_passed | [Report](qa/17592186087878.json) |
-| [17592186087877](../../scratch/17592186087877.py) | Solving First-Order Linear ODEs Using Integrating Factors | Transforming First-Order Linear ODEs Using Integrating Factors | 2 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186087877.json) |
-| [17592186087879](../../scratch/17592186087879.py) | Solving First-Order Linear ODEs Using Integrating Factors | Solving First-Order Initial Value Problems Using Integrating Factors | 0 / 5 / 1 / 2 | qa_passed | [Report](qa/17592186087879.json) |
+| [17592186087877](../../scratch/17592186087877.py) | Solving First-Order Linear ODEs Using Integrating Factors | Transforming First-Order Linear ODEs Using Integrating Factors | 2 / 3 / 0 / 2 | needs_revalidation | [Report](qa/17592186087877.json) |
+| [17592186087879](../../scratch/17592186087879.py) | Solving First-Order Linear ODEs Using Integrating Factors | Solving First-Order Initial Value Problems Using Integrating Factors | 0 / 5 / 1 / 2 | needs_revalidation | [Report](qa/17592186087879.json) |
 | [17592186096610](../../scratch/17592186096610.py) | Differentiating Exponential Functions | Differentiating the Product of a Constant and the Exponential Function, Plus a Constant | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096610.json) |
 | [17592186096612](../../scratch/17592186096612.py) | Differentiating Exponential Functions | Differentiating an Exponential Function with a Base Other Than e | 3 / 2 / 0 / 2 | qa_passed | [Report](qa/17592186096612.json) |
 | [17592186096696](../../scratch/17592186096696.py) | Solving First-Order ODEs Using Direct Integration | Finding the General Solution of a Differential Equation Using Integration | 3 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186096696.json) |
 | [17592186096697](../../scratch/17592186096697.py) | Solving First-Order ODEs Using Direct Integration | Finding the General Solution of a Second Order Differential Equation by Integrating Twice | 4 / 7 / 0 / 0 | qa_passed | [Report](qa/17592186096697.json) |
 | [17592186096698](../../scratch/17592186096698.py) | Solving First-Order ODEs Using Direct Integration | Sketching the Solution Curves of a Differential Equation | 7 / 4 / 0 / 0 | qa_passed | [Report](qa/17592186096698.json) |
 | [17592186096611](../../scratch/17592186096611.py) | Differentiating Exponential Functions | Differentiating the Product of a Constant and the Exponential Function, Plus a Polynomial | 5 / 2 / 0 / 2 | qa_passed | [Report](qa/17592186096611.json) |
-| [17592186096699](../../scratch/17592186096699.py) | Solving First-Order ODEs Using Direct Integration | Finding the Solution of a Differential Equation With a Given Condition | 10 / 2 / 0 / 2 | qa_passed | [Report](qa/17592186096699.json) |
+| [17592186096699](../../scratch/17592186096699.py) | Solving First-Order ODEs Using Direct Integration | Finding the Solution of a Differential Equation With a Given Condition | 10 / 2 / 0 / 2 | needs_revalidation | [Report](qa/17592186096699.json) |
 | 17592186166813 | Introduction to Differential Equations | Identifying the Order of an Ordinary Differential Equation | 7 / 7 / 0 / 0 | queued | — |
-| [17592186166814](../../scratch/17592186166814.py) | Introduction to Differential Equations | Determining Whether an Ordinary Differential Equation is Autonomous or Nonautonomous | 8 / 7 / 0 / 0 | qa_passed | [Report](qa/17592186166814.json) |
+| [17592186166814](../../scratch/17592186166814.py) | Introduction to Differential Equations | Determining Whether an Ordinary Differential Equation is Autonomous or Nonautonomous | 8 / 7 / 0 / 0 | needs_revalidation | [Report](qa/17592186166814.json) |
 | [17592186166815](../../scratch/17592186166815.py) | Introduction to Differential Equations | Initial Value Problems and Initial Conditions | 11 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186166815.json) |
 | [17592186087819](../../scratch/17592186087819.py) | Introduction to Matrices | Matrices for Route Planning | 4 / 1 / 0 / 2 | qa_passed | [Report](qa/17592186087819.json) |
 | [17592186087713](../../scratch/17592186087713.py) | Introduction to Matrices | Identifying a Matrix by Its Description | 0 / 6 / 0 / 2 | qa_passed | [Report](qa/17592186087713.json) |
@@ -191,35 +191,35 @@ Cumulative counts include previously approved KPs and two active KPs that left t
 | 17592186100817 | Integrating Logarithmic Functions Using Substitution | Integrating Functions Containing Other Logarithms | 5 / 3 / 6 / 0 | queued | — |
 | 17592186100818 | Integrating Logarithmic Functions Using Substitution | Evaluating Definite Integrals | 17 / 5 / 11 / 1 | queued | — |
 | [17592186138428](../../scratch/17592186138428.py) | Introduction to Systems of Linear Equations | Finding the Solution to a System From Its Graph | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186138428.json) |
-| [17592186138429](../../scratch/17592186138429.py) | Introduction to Systems of Linear Equations | Word Problems | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186138429.json) |
-| [17592186059731](../../scratch/17592186059731.py) | Calculating the Dot Product Using Components | Solving for an Unknown Given Two Perpendicular Vectors | 3 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186059731.json) |
-| [17592186059730](../../scratch/17592186059730.py) | Calculating the Dot Product Using Components | Calculating the Dot Product Using the General Formula | 6 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186059730.json) |
+| [17592186138429](../../scratch/17592186138429.py) | Introduction to Systems of Linear Equations | Word Problems | 0 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186138429.json) |
+| [17592186059731](../../scratch/17592186059731.py) | Calculating the Dot Product Using Components | Solving for an Unknown Given Two Perpendicular Vectors | 3 / 3 / 0 / 2 | needs_revalidation | [Report](qa/17592186059731.json) |
+| [17592186059730](../../scratch/17592186059730.py) | Calculating the Dot Product Using Components | Calculating the Dot Product Using the General Formula | 6 / 0 / 0 / 1 | needs_revalidation | [Report](qa/17592186059730.json) |
 | [17592186054676](../../scratch/17592186054676.py) | Graphing Linear Equations | Identifying Points That Lie on a Line | 5 / 5 / 0 / 2 | queued | — |
 | [17592186059716](../../scratch/17592186059716.py) | Calculating the Magnitude of Cartesian Vectors in 2D | Calculating a Unit Vector Parallel to a Given Vector | 0 / 2 / 6 / 2 | queued | — |
-| [17592186096813](../../scratch/17592186096813.py) | Unit Vectors | Finding a Unit Vector Parallel to a Given Vector | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096813.json) |
+| [17592186096813](../../scratch/17592186096813.py) | Unit Vectors | Finding a Unit Vector Parallel to a Given Vector | 0 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186096813.json) |
 | [17592186096815](../../scratch/17592186096815.py) | Unit Vectors | Finding a Unit Vector Parallel to a Vector Sum | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096815.json) |
 | [17592186096814](../../scratch/17592186096814.py) | Unit Vectors | Finding a Unit Vector Parallel to a Given Vector in a Diagram | 0 / 0 / 1 / 2 | qa_passed | [Report](qa/17592186096814.json) |
-| [17592186059827](../../scratch/17592186059827.py) | Interval Notation | Translating Between Half-Open Intervals and Inequalities | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186059827.json) |
-| [17592186059829](../../scratch/17592186059829.py) | Interval Notation | Converting Between Intervals and Inequalities: Closed Intervals | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186059829.json) |
-| [17592186059828](../../scratch/17592186059828.py) | Interval Notation | Translating Between Half-Open Intervals and Number Lines | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186059828.json) |
-| [17592186064167](../../scratch/17592186064167.py) | The Antiderivative | Finding the Antiderivative of a Monomial | 4 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186064167.json) |
+| [17592186059827](../../scratch/17592186059827.py) | Interval Notation | Translating Between Half-Open Intervals and Inequalities | 0 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186059827.json) |
+| [17592186059829](../../scratch/17592186059829.py) | Interval Notation | Converting Between Intervals and Inequalities: Closed Intervals | 0 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186059829.json) |
+| [17592186059828](../../scratch/17592186059828.py) | Interval Notation | Translating Between Half-Open Intervals and Number Lines | 0 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186059828.json) |
+| [17592186064167](../../scratch/17592186064167.py) | The Antiderivative | Finding the Antiderivative of a Monomial | 4 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186064167.json) |
 | [17592186064168](../../scratch/17592186064168.py) | The Antiderivative | Finding the Antiderivative of a Radical Function | 4 / 0 / 2 / 2 | qa_passed | [Report](qa/17592186064168.json) |
 | [17592186064169](../../scratch/17592186064169.py) | The Antiderivative | Finding the Antiderivative of a Reciprocal Function | 1 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186064169.json) |
 | [17592186096648](../../scratch/17592186096648.py) | Parallel Vectors | Determining Whether Two Vectors are Parallel | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096648.json) |
-| [17592186096649](../../scratch/17592186096649.py) | Parallel Vectors | Creating Parallel Vectors | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096649.json) |
-| [17592186096700](../../scratch/17592186096700.py) | Parallel Vectors | Identifying Parallel Vectors From a Diagram | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096700.json) |
+| [17592186096649](../../scratch/17592186096649.py) | Parallel Vectors | Creating Parallel Vectors | 0 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186096649.json) |
+| [17592186096700](../../scratch/17592186096700.py) | Parallel Vectors | Identifying Parallel Vectors From a Diagram | 0 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186096700.json) |
 | [17592186073753](../../scratch/17592186073753.py) | Solving Systems of Equations by Substitution | Solving a Challenging System of Linear Equations Using Substitution | 0 / 0 / 0 / 3 | qa_passed | [Report](qa/17592186073753.json) |
-| [17592186073752](../../scratch/17592186073752.py) | Solving Systems of Equations by Substitution | Solving a System of Linear Equations Using Substitution | 3 / 0 / 0 / 3 | qa_passed | [Report](qa/17592186073752.json) |
+| [17592186073752](../../scratch/17592186073752.py) | Solving Systems of Equations by Substitution | Solving a System of Linear Equations Using Substitution | 3 / 0 / 0 / 3 | needs_revalidation | [Report](qa/17592186073752.json) |
 | [17592186192654](../../scratch/17592186192654.py) | Solving Systems of Linear Equations Using Elimination: One Transformation | Eliminating the First Variable | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186192654.json) |
-| [17592186192656](../../scratch/17592186192656.py) | Solving Systems of Linear Equations Using Elimination: One Transformation | Solving a System of Equations by Eliminating the First Variable | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186192656.json) |
+| [17592186192656](../../scratch/17592186192656.py) | Solving Systems of Linear Equations Using Elimination: One Transformation | Solving a System of Equations by Eliminating the First Variable | 0 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186192656.json) |
 | [17592186192657](../../scratch/17592186192657.py) | Solving Systems of Linear Equations Using Elimination: One Transformation | Solving a System of Equations by Eliminating the Second Variable | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186192657.json) |
 | [17592186192655](../../scratch/17592186192655.py) | Solving Systems of Linear Equations Using Elimination: One Transformation | Eliminating the Second Variable | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186192655.json) |
-| [17592186059711](../../scratch/17592186059711.py) | Addition and Scalar Multiplication of Cartesian Vectors in 2D | Calculating Sums and Scalar Multiplication of Vectors Using Angle Bracket Notation | 2 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186059711.json) |
+| [17592186059711](../../scratch/17592186059711.py) | Addition and Scalar Multiplication of Cartesian Vectors in 2D | Calculating Sums and Scalar Multiplication of Vectors Using Angle Bracket Notation | 2 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186059711.json) |
 | [17592186059710](../../scratch/17592186059710.py) | Addition and Scalar Multiplication of Cartesian Vectors in 2D | Addition and Scalar Multiplication of Vectors in Component Form | 2 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186059710.json) |
 | [17592186059712](../../scratch/17592186059712.py) | Addition and Scalar Multiplication of Cartesian Vectors in 2D | Calculating Sums and Scalar Multiplication of Column Vectors | 0 / 2 / 0 / 2 | qa_passed | [Report](qa/17592186059712.json) |
 | [17592186087695](../../scratch/17592186087695.py) | Zero, Square, Diagonal and Identity Matrices | Identifying a Zero Matrix | 6 / 0 / 0 / 2 | queued | — |
 | [17592186059750](../../scratch/17592186059750.py) | The Determinant of a 2x2 Matrix | Solving for an Unknown in an Expression Involving the Determinant of a 2x2 Matrix | 6 / 6 / 1 / 2 | qa_passed | [Report](qa/17592186059750.json) |
-| [17592186059748](../../scratch/17592186059748.py) | The Determinant of a 2x2 Matrix | Calculating the Determinant of a 2x2 Matrix With Integer Entries | 4 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186059748.json) |
+| [17592186059748](../../scratch/17592186059748.py) | The Determinant of a 2x2 Matrix | Calculating the Determinant of a 2x2 Matrix With Integer Entries | 4 / 4 / 0 / 1 | needs_revalidation | [Report](qa/17592186059748.json) |
 | [17592186059749](../../scratch/17592186059749.py) | The Determinant of a 2x2 Matrix | Calculating the Determinant of a 2x2 Matrix With Non-Integer Entries | 6 / 6 / 0 / 1 | qa_passed | [Report](qa/17592186059749.json) |
 | [17592186059641](../../scratch/17592186059641.py) | Simplifying Expressions Using the Pythagorean Identity | Simplifying an Expression by Factoring and Using the Pythagorean Identity | 4 / 4 / 0 / 2 | qa_passed | [Report](qa/17592186059641.json) |
 | [17592186059642](../../scratch/17592186059642.py) | Simplifying Expressions Using the Pythagorean Identity | Simplifying a Rational Expression Using the Pythagorean Identity | 0 / 5 / 3 / 2 | qa_passed | [Report](qa/17592186059642.json) |
@@ -255,7 +255,7 @@ Cumulative counts include previously approved KPs and two active KPs that left t
 | 17592186124643 | Introduction to Partial Derivatives | Partial Derivatives as Limits of Difference Quotients | 6 / 5 / 0 / 1 | queued | — |
 | [17592186083240](../../scratch/17592186083240.py) | Differentiating Parametric Curves | Finding the Derivative of a Parametric Curve | 12 / 6 / 0 / 0 | qa_passed | [Report](qa/17592186083240.json) |
 | 17592186100870 | Conformability for Matrix Multiplication | Determining the Dimension of the Product of Two Matrices Given the Dimensions of the Factors | 4 / 5 / 0 / 2 | queued | — |
-| 17592186100871 | Conformability for Matrix Multiplication | Determining the Dimension of the Product of Two Matrices | 0 / 5 / 4 / 1 | queued | — |
+| [17592186100871](../../scratch/17592186100871.py) | Conformability for Matrix Multiplication | Determining the Dimension of the Product of Two Matrices | 0 / 5 / 4 / 1 | queued | — |
 | 17592186100869 | Conformability for Matrix Multiplication | Determining Whether Two Matrices Are Conformable for Multiplication | 7 / 3 / 0 / 0 | queued | — |
 | [17592186092219](../../scratch/17592186092219.py) | Converting from Polar Coordinates to Cartesian Coordinates | Finding the Cartesian Coordinates of a Point Given Some Information About Another Point | 0 / 6 / 2 / 2 | qa_passed | [Report](qa/17592186092219.json) |
 | [17592186092273](../../scratch/17592186092273.py) | Converting from Polar Coordinates to Cartesian Coordinates | Finding the Cartesian Coordinates of a Point Using a Diagram | 0 / 0 / 8 / 2 | qa_passed | [Report](qa/17592186092273.json) |
@@ -272,7 +272,7 @@ Cumulative counts include previously approved KPs and two active KPs that left t
 | 17592186092376 | The Arc Length of a Parametric Curve | Finding an Integral Expression For the Arc Length of a Parametric Curve Containing Special Functions | 0 / 9 / 2 / 1 | queued | — |
 | [17592186124437](../../scratch/17592186124437.py) | Geometric Interpretations of Partial Derivatives | Finding the Slope of the Tangent Line to a Curve at a Point | 10 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186124437.json) |
 | [17592186124439](../../scratch/17592186124439.py) | Geometric Interpretations of Partial Derivatives | Finding the Tangent Vector to a Curve at a Point | 0 / 0 / 15 / 0 | qa_passed | [Report](qa/17592186124439.json) |
-| [17592186124438](../../scratch/17592186124438.py) | Geometric Interpretations of Partial Derivatives | Finding the Equation of the Tangent Line to a Curve at a Point | 0 / 14 / 0 / 0 | qa_passed | [Report](qa/17592186124438.json) |
+| [17592186124438](../../scratch/17592186124438.py) | Geometric Interpretations of Partial Derivatives | Finding the Equation of the Tangent Line to a Curve at a Point | 0 / 14 / 0 / 0 | needs_revalidation | [Report](qa/17592186124438.json) |
 | [17592186119743](../../scratch/17592186119743.py) | The Arc Length of a Vector-Valued Function | Finding an Integral Expression For the Arc Length of a Curve | 6 / 2 / 0 / 0 | qa_passed | [Report](qa/17592186119743.json) |
 | [17592186119860](../../scratch/17592186119860.py) | The Arc Length of a Vector-Valued Function | Computing the Arc Length of a Three-Dimensional Spatial Curve | 7 / 1 / 1 / 1 | qa_passed | [Report](qa/17592186119860.json) |
 | [17592186119744](../../scratch/17592186119744.py) | The Arc Length of a Vector-Valued Function | Computing the Arc Length of a Planar Curve | 5 / 5 / 0 / 0 | qa_passed | [Report](qa/17592186119744.json) |
@@ -282,40 +282,40 @@ Cumulative counts include previously approved KPs and two active KPs that left t
 | [17592186124443](../../scratch/17592186124443.py) | The Gradient Vector | Calculating the Gradient of a Function of Two Variables | 4 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186124443.json) |
 | [17592186124445](../../scratch/17592186124445.py) | The Gradient Vector | Finding the Points Where a Gradient Vanishes | 0 / 5 / 3 / 0 | qa_passed | [Report](qa/17592186124445.json) |
 | [17592186124444](../../scratch/17592186124444.py) | The Gradient Vector | Calculating the Gradient of a Function of Three Variables | 0 / 10 / 0 / 0 | qa_passed | [Report](qa/17592186124444.json) |
-| [17592186068874](../../scratch/17592186068874.py) | Completing the Square | Completing the Square When the Perfect Square is Isolated: Negative Linear Term | 5 / 1 / 0 / 2 | qa_passed | [Report](qa/17592186068874.json) |
+| [17592186068874](../../scratch/17592186068874.py) | Completing the Square | Completing the Square When the Perfect Square is Isolated: Negative Linear Term | 5 / 1 / 0 / 2 | needs_revalidation | [Report](qa/17592186068874.json) |
 | [17592186068873](../../scratch/17592186068873.py) | Completing the Square | Completing the Square When the Perfect Square is Isolated | 3 / 2 / 0 / 3 | qa_passed | [Report](qa/17592186068873.json) |
 | [17592186068875](../../scratch/17592186068875.py) | Completing the Square | Completing the Square on a Quadratic Expression | 5 / 2 / 0 / 2 | qa_passed | [Report](qa/17592186068875.json) |
 | [17592186068876](../../scratch/17592186068876.py) | Completing the Square | Completing the Square on a Quadratic Expression with a Negative Linear Term | 5 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186068876.json) |
-| [17592186176048](../../scratch/17592186176048.py) | Describing Properties of the Cosine Function | Utilizing the Periodicity Property of the Cosine Function | 0 / 4 / 1 / 2 | qa_passed | [Report](qa/17592186176048.json) |
-| [17592186176047](../../scratch/17592186176047.py) | Describing Properties of the Cosine Function | Describing Properties of the Cosine Function | 0 / 6 / 0 / 2 | qa_passed | [Report](qa/17592186176047.json) |
+| [17592186176048](../../scratch/17592186176048.py) | Describing Properties of the Cosine Function | Utilizing the Periodicity Property of the Cosine Function | 0 / 4 / 1 / 2 | needs_revalidation | [Report](qa/17592186176048.json) |
+| [17592186176047](../../scratch/17592186176047.py) | Describing Properties of the Cosine Function | Describing Properties of the Cosine Function | 0 / 6 / 0 / 2 | needs_revalidation | [Report](qa/17592186176047.json) |
 | [17592186129187](../../scratch/17592186129187.py) | The Jacobian | Finding the Jacobian Determinant of a Transformation | 5 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186129187.json) |
 | [17592186129263](../../scratch/17592186129263.py) | The Jacobian | Evaluating a Jacobian Determinant | 11 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186129263.json) |
 | [17592186129283](../../scratch/17592186129283.py) | The Jacobian | Finding Regions Where a Transformation is Orientation-Preserving or Reversing | 0 / 12 / 0 / 0 | qa_passed | [Report](qa/17592186129283.json) |
-| [17592186129282](../../scratch/17592186129282.py) | The Jacobian | Identifying the Local Area Scale Factor of a Transformation | 11 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186129282.json) |
-| [17592186124472](../../scratch/17592186124472.py) | Invertible Functions | Identifying an Invertible Function From Its Graph | 5 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186124472.json) |
-| [17592186124474](../../scratch/17592186124474.py) | Invertible Functions | Identifying the Intervals on Which a Function is Invertible Given a Description | 4 / 8 / 0 / 0 | qa_passed | [Report](qa/17592186124474.json) |
-| [17592186124473](../../scratch/17592186124473.py) | Invertible Functions | Identifying the Intervals on Which a Function is Invertible Given Its Graph | 0 / 6 / 7 / 0 | qa_passed | [Report](qa/17592186124473.json) |
+| [17592186129282](../../scratch/17592186129282.py) | The Jacobian | Identifying the Local Area Scale Factor of a Transformation | 11 / 0 / 0 / 0 | needs_revalidation | [Report](qa/17592186129282.json) |
+| [17592186124472](../../scratch/17592186124472.py) | Invertible Functions | Identifying an Invertible Function From Its Graph | 5 / 3 / 0 / 2 | needs_revalidation | [Report](qa/17592186124472.json) |
+| [17592186124474](../../scratch/17592186124474.py) | Invertible Functions | Identifying the Intervals on Which a Function is Invertible Given a Description | 4 / 8 / 0 / 0 | needs_revalidation | [Report](qa/17592186124474.json) |
+| [17592186124473](../../scratch/17592186124473.py) | Invertible Functions | Identifying the Intervals on Which a Function is Invertible Given Its Graph | 0 / 6 / 7 / 0 | needs_revalidation | [Report](qa/17592186124473.json) |
 | [17592186087822](../../scratch/17592186087822.py) | Vertical Translations of Exponential Growth Functions | Identifying the Shift Applied to an Exponential Growth Curve | 5 / 1 / 0 / 2 | qa_passed | [Report](qa/17592186087822.json) |
-| [17592186087821](../../scratch/17592186087821.py) | Vertical Translations of Exponential Growth Functions | Identifying a Vertically Shifted Exponential Growth Curve | 3 / 2 / 0 / 2 | qa_passed | [Report](qa/17592186087821.json) |
+| [17592186087821](../../scratch/17592186087821.py) | Vertical Translations of Exponential Growth Functions | Identifying a Vertically Shifted Exponential Growth Curve | 3 / 2 / 0 / 2 | needs_revalidation | [Report](qa/17592186087821.json) |
 | [17592186087823](../../scratch/17592186087823.py) | Vertical Translations of Exponential Growth Functions | Identifying a Vertically Shifted and Stretched Exponential Growth Curve | 1 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186087823.json) |
 | [17592186087824](../../scratch/17592186087824.py) | Vertical Translations of Exponential Growth Functions | Identifying the Shift and Stretch Applied to an Exponential Growth Curve | 1 / 4 / 0 / 2 | qa_passed | [Report](qa/17592186087824.json) |
-| [17592186068695](../../scratch/17592186068695.py) | Determining Continuity from Graphs | Determining Whether a Function Is Continuous at a Given Point | 4 / 5 / 0 / 0 | qa_passed | [Report](qa/17592186068695.json) |
-| [17592186068697](../../scratch/17592186068697.py) | Determining Continuity from Graphs | Determining the Behavior of a Function in the Neighborhood of a Point | 11 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186068697.json) |
+| [17592186068695](../../scratch/17592186068695.py) | Determining Continuity from Graphs | Determining Whether a Function Is Continuous at a Given Point | 4 / 5 / 0 / 0 | needs_revalidation | [Report](qa/17592186068695.json) |
+| [17592186068697](../../scratch/17592186068697.py) | Determining Continuity from Graphs | Determining the Behavior of a Function in the Neighborhood of a Point | 11 / 0 / 0 / 1 | needs_revalidation | [Report](qa/17592186068697.json) |
 | [17592186068696](../../scratch/17592186068696.py) | Determining Continuity from Graphs | Identifying Points of Discontinuity | 17 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186068696.json) |
-| [17592186110602](../../scratch/17592186110602.py) | Perpendicular Lines in the Coordinate Plane | Finding Equations of Perpendicular Horizontal and Vertical Lines | 6 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186110602.json) |
+| [17592186110602](../../scratch/17592186110602.py) | Perpendicular Lines in the Coordinate Plane | Finding Equations of Perpendicular Horizontal and Vertical Lines | 6 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186110602.json) |
 | [17592186110601](../../scratch/17592186110601.py) | Perpendicular Lines in the Coordinate Plane | Determining Unknown Parameters Given Two Perpendicular Lines | 1 / 4 / 3 / 3 | qa_passed | [Report](qa/17592186110601.json) |
 | [17592186110600](../../scratch/17592186110600.py) | Perpendicular Lines in the Coordinate Plane | Determining Whether Two Lines in Standard Form are Perpendicular | 5 / 3 / 0 / 0 | qa_passed | [Report](qa/17592186110600.json) |
 | [17592186110599](../../scratch/17592186110599.py) | Perpendicular Lines in the Coordinate Plane | Determining Whether Two Lines in Slope-Intercept Form are Perpendicular | 4 / 1 / 0 / 2 | qa_passed | [Report](qa/17592186110599.json) |
-| [17592186096701](../../scratch/17592186096701.py) | Describing the Position Vector of a Point Using Known Vectors | Finding a Scalar Factor in a Linear Combination | 7 / 7 / 0 / 0 | qa_passed | [Report](qa/17592186096701.json) |
+| [17592186096701](../../scratch/17592186096701.py) | Describing the Position Vector of a Point Using Known Vectors | Finding a Scalar Factor in a Linear Combination | 7 / 7 / 0 / 0 | needs_revalidation | [Report](qa/17592186096701.json) |
 | [17592186235285](../../scratch/17592186235285.py) | Describing the Position Vector of a Point Using Known Vectors | Finding a Scalar Factor When Direction Reverses | 0 / 7 / 7 / 0 | qa_passed | [Report](qa/17592186235285.json) |
 | [17592186096652](../../scratch/17592186096652.py) | Describing the Position Vector of a Point Using Known Vectors | Finding Two Scalar Factors in a Linear Combination | 2 / 19 / 0 / 0 | qa_passed | [Report](qa/17592186096652.json) |
-| [17592186096653](../../scratch/17592186096653.py) | Describing the Position Vector of a Point Using Known Vectors | Expressing a Vector That Satisfies a Ratio in Terms of Known Vectors | 0 / 22 / 0 / 1 | qa_passed | [Report](qa/17592186096653.json) |
-| [17592186176054](../../scratch/17592186176054.py) | Describing Properties of the Cosecant Function | Utilizing the Periodicity Property of the Cosecant Function | 2 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186176054.json) |
+| [17592186096653](../../scratch/17592186096653.py) | Describing the Position Vector of a Point Using Known Vectors | Expressing a Vector That Satisfies a Ratio in Terms of Known Vectors | 0 / 22 / 0 / 1 | needs_revalidation | [Report](qa/17592186096653.json) |
+| [17592186176054](../../scratch/17592186176054.py) | Describing Properties of the Cosecant Function | Utilizing the Periodicity Property of the Cosecant Function | 2 / 3 / 0 / 2 | needs_revalidation | [Report](qa/17592186176054.json) |
 | [17592186176060](../../scratch/17592186176060.py) | Describing Properties of the Cosecant Function | Utilizing the Oddness Property of the Cosecant Function | 3 / 0 / 2 / 2 | qa_passed | [Report](qa/17592186176060.json) |
-| [17592186176049](../../scratch/17592186176049.py) | Describing Properties of the Tangent Function | Describing Properties of the Tangent Function | 0 / 0 / 5 / 1 | qa_passed | [Report](qa/17592186176049.json) |
+| [17592186176049](../../scratch/17592186176049.py) | Describing Properties of the Tangent Function | Describing Properties of the Tangent Function | 0 / 0 / 5 / 1 | needs_revalidation | [Report](qa/17592186176049.json) |
 | [17592186176050](../../scratch/17592186176050.py) | Describing Properties of the Tangent Function | Utilizing the Periodicity Property of the Tangent Function | 0 / 5 / 0 / 2 | qa_passed | [Report](qa/17592186176050.json) |
 | [17592186176058](../../scratch/17592186176058.py) | Describing Properties of the Tangent Function | Utilizing the Oddness Property of the Tangent Function | 3 / 0 / 2 / 1 | qa_passed | [Report](qa/17592186176058.json) |
-| [17592186176053](../../scratch/17592186176053.py) | Describing Properties of the Cosecant Function | Describing the General Properties of the Cosecant Function | 0 / 5 / 0 / 2 | qa_passed | [Report](qa/17592186176053.json) |
+| [17592186176053](../../scratch/17592186176053.py) | Describing Properties of the Cosecant Function | Describing the General Properties of the Cosecant Function | 0 / 5 / 0 / 2 | needs_revalidation | [Report](qa/17592186176053.json) |
 | [17592186059668](../../scratch/17592186059668.py) | Finding Points on Transformed Curves | Finding a Point That Lies on a Transformed Curve | 7 / 6 / 0 / 0 | queued | — |
 | [17592186059669](../../scratch/17592186059669.py) | Finding Points on Transformed Curves | Finding a Point That Lies on a Transformed Curve Given Another Transformed Curve | 0 / 8 / 6 / 2 | queued | — |
 | [17592186059670](../../scratch/17592186059670.py) | Finding Points on Transformed Curves | Identifying Extrema on Transformed Curves | 9 / 6 / 0 / 0 | queued | — |
@@ -413,7 +413,7 @@ Cumulative counts include previously approved KPs and two active KPs that left t
 | [17592186064272](../../scratch/17592186064272.py) | Interpreting the Meaning of the Derivative in Context | Relating a Derivative to a Rate of Change | 7 / 1 / 0 / 1 | qa_passed | [Report](qa/17592186064272.json) |
 | [17592186064152](../../scratch/17592186064152.py) | Interpreting the Meaning of the Derivative in Context | Interpreting the Derivative of a Function | 0 / 3 / 3 / 1 | qa_passed | [Report](qa/17592186064152.json) |
 | [17592186064271](../../scratch/17592186064271.py) | Interpreting the Meaning of the Derivative in Context | Determining the Units of a Derivative | 7 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186064271.json) |
-| [17592186064154](../../scratch/17592186064154.py) | Interpreting the Meaning of the Derivative in Context | Determining a Rate of Change | 7 / 2 / 0 / 2 | qa_passed | [Report](qa/17592186064154.json) |
+| [17592186064154](../../scratch/17592186064154.py) | Interpreting the Meaning of the Derivative in Context | Determining a Rate of Change | 7 / 2 / 0 / 2 | needs_revalidation | [Report](qa/17592186064154.json) |
 | [17592186124673](../../scratch/17592186124673.py) | Inhibited Growth Models With First-Order ODEs | Identifying Inhibited Growth Equations and Initial Value Problems | 0 / 1 / 4 / 1 | qa_passed | [Report](qa/17592186124673.json) |
 | [17592186124674](../../scratch/17592186124674.py) | Inhibited Growth Models With First-Order ODEs | Modeling Inhibited Growth | 9 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186124674.json) |
 | [17592186229162](../../scratch/17592186229162.py) | Solving First-Order Linear ODEs With Exponential Forcing | Finding a Particular Solution to a First-Order Inhomogeneous ODE With Exponential Forcing | 4 / 3 / 1 / 2 | qa_passed | [Report](qa/17592186229162.json) |
@@ -429,11 +429,11 @@ Cumulative counts include previously approved KPs and two active KPs that left t
 | [17592186229183](../../scratch/17592186229183.py) | Modeling Mixture Problems With First-Order Linear ODEs | Determining an Amount at an Overflow Point | 6 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186229183.json) |
 | [17592186229181](../../scratch/17592186229181.py) | Modeling Mixture Problems With First-Order Linear ODEs | Constructing and Solving a Dilution Model: Inflow Equals Outflow | 3 / 2 / 0 / 2 | qa_passed | [Report](qa/17592186229181.json) |
 | [17592186129145](../../scratch/17592186129145.py) | Graphing General Polynomials | Identifying the Factored Polynomial Shown in a Graph | 4 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186129145.json) |
-| [17592186129147](../../scratch/17592186129147.py) | Graphing General Polynomials | Identifying the Graph of a Factored Polynomial | 0 / 5 / 2 / 0 | qa_passed | [Report](qa/17592186129147.json) |
-| [17592186129154](../../scratch/17592186129154.py) | Graphing General Polynomials | Identifying True Statements Regarding the Graph of a Given Polynomial | 5 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186129154.json) |
+| [17592186129147](../../scratch/17592186129147.py) | Graphing General Polynomials | Identifying the Graph of a Factored Polynomial | 0 / 5 / 2 / 0 | needs_revalidation | [Report](qa/17592186129147.json) |
+| [17592186129154](../../scratch/17592186129154.py) | Graphing General Polynomials | Identifying True Statements Regarding the Graph of a Given Polynomial | 5 / 3 / 0 / 2 | needs_revalidation | [Report](qa/17592186129154.json) |
 | [17592186129253](../../scratch/17592186129253.py) | Graphing General Polynomials | Identifying Multiplicity of a Root Given a Graph | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186129253.json) |
 | [17592186157438](../../scratch/17592186157438.py) | Solving Exponential Equations Using the Zero-Product Property | Solving an Exponential Equation by Rearranging the Equation and Then Factoring | 4 / 6 / 0 / 2 | qa_passed | [Report](qa/17592186157438.json) |
-| [17592186157437](../../scratch/17592186157437.py) | Solving Exponential Equations Using the Zero-Product Property | Solving an Exponential Equation by Factoring | 5 / 8 / 0 / 1 | qa_passed | [Report](qa/17592186157437.json) |
+| [17592186157437](../../scratch/17592186157437.py) | Solving Exponential Equations Using the Zero-Product Property | Solving an Exponential Equation by Factoring | 5 / 8 / 0 / 1 | needs_revalidation | [Report](qa/17592186157437.json) |
 | [17592186172085](../../scratch/17592186172085.py) | Vector Fields | Identifying Vector Fields on Two-Dimensions | 8 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186172085.json) |
 | [17592186172086](../../scratch/17592186172086.py) | Vector Fields | Finding the Domain of a Vector Field | 0 / 4 / 5 / 0 | qa_passed | [Report](qa/17592186172086.json) |
 | [17592186172087](../../scratch/17592186172087.py) | Vector Fields | Identifying Vector Fields on Three-Dimensions | 9 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186172087.json) |
@@ -466,7 +466,7 @@ Cumulative counts include previously approved KPs and two active KPs that left t
 | 17592186124630 | The Invertible Matrix Theorem in Terms of Dimension, Rank and Nullity | Recognizing Parts of the Invertible Matrix Theorem | 12 / 0 / 0 / 0 | queued | — |
 | [17592186124511](../../scratch/17592186124511.py) | The Invertible Matrix Theorem in Terms of Dimension, Rank and Nullity | Identifying True Statements Using the Invertible Matrix Theorem | 0 / 13 / 0 / 1 | queued | — |
 | 17592186100991 | Properties of Matrix Addition | Calculating the Sum or Difference of Three or More Matrices | 4 / 2 / 0 / 2 | queued | — |
-| 17592186147454 | Bernoulli Differential Equations | Solving a Bernoulli Differential Equation | 0 / 6 / 4 / 1 | queued | — |
+| [17592186147454](../../scratch/17592186147454.py) | Bernoulli Differential Equations | Solving a Bernoulli Differential Equation | 0 / 6 / 4 / 1 | queued | — |
 | 17592186147453 | Bernoulli Differential Equations | Reducing a Bernoulli Differential Equation to First Order Linear | 4 / 5 / 2 / 0 | queued | — |
 | [17592186147456](../../scratch/17592186147456.py) | Bernoulli Differential Equations | Identifying Bernoulli Differential Equations | 6 / 6 / 0 / 2 | queued | — |
 | 17592186184171 | The Rank-Nullity Theorem | Finding the Rank or Nullity of a Matrix Given a Description of the Column or Null Space | 5 / 4 / 0 / 0 | queued | — |
@@ -520,12 +520,12 @@ Cumulative counts include previously approved KPs and two active KPs that left t
 | [17592186133897](../../scratch/17592186133897.py) | Using Green's Theorem to Calculate Area | Calculating an Area Using Green's Theorem | 0 / 4 / 3 / 1 | qa_passed | [Report](qa/17592186133897.json) |
 | [17592186133896](../../scratch/17592186133896.py) | Using Green's Theorem to Calculate Area | Expressing the Area Bounded by a Closed Curve Using Green’s Theorem | 0 / 1 / 6 / 1 | qa_passed | [Report](qa/17592186133896.json) |
 | 17592186172100 | Green's Theorem in Flux Form | Expressing Flux as a Double Integral Using Green's Theorem in Flux Form | 5 / 5 / 0 / 0 | queued | — |
-| 17592186172101 | Green's Theorem in Flux Form | Calculating Flux Across Rectangles | 0 / 5 / 5 / 0 | queued | — |
+| [17592186172101](../../scratch/17592186172101.py) | Green's Theorem in Flux Form | Calculating Flux Across Rectangles | 0 / 5 / 5 / 0 | queued | — |
 | 17592186172099 | Green's Theorem in Flux Form | Calculating Flux Across Other Type I and Type II Regions | 0 / 5 / 6 / 0 | queued | — |
 | 17592186175970 | Parametrizations of Cylinders | Parametrizing an Elliptic Cylinder | 2 / 4 / 0 / 2 | queued | — |
 | [17592186176024](../../scratch/17592186176024.py) | Green's Theorem in Polar Coordinates | Expressing a Line Integral Along a Circular Path as a Double Integral Using Green's Theorem | 4 / 3 / 0 / 1 | qa_passed | [Report](qa/17592186176024.json) |
 | [17592186176023](../../scratch/17592186176023.py) | Green's Theorem in Polar Coordinates | Evaluating a Line Integral Using Green's Theorem | 0 / 6 / 3 / 1 | qa_passed | [Report](qa/17592186176023.json) |
-| [17592186175987](../../scratch/17592186175987.py) | Green's Theorem in Polar Coordinates | Expressing a Line Integral Along a Path as a Double Integral Using Green's Theorem | 0 / 11 / 0 / 0 | qa_passed | [Report](qa/17592186175987.json) |
+| [17592186175987](../../scratch/17592186175987.py) | Green's Theorem in Polar Coordinates | Expressing a Line Integral Along a Path as a Double Integral Using Green's Theorem | 0 / 11 / 0 / 0 | needs_revalidation | [Report](qa/17592186175987.json) |
 | [17592186133886](../../scratch/17592186133886.py) | Extending Green's Theorem | Applying Green's Theorem to Regions With Holes | 3 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186133886.json) |
 | [17592186133899](../../scratch/17592186133899.py) | Extending Green's Theorem | Calculating the Circulation of a Vector Field Over a Region Containing Holes | 4 / 6 / 0 / 1 | qa_passed | [Report](qa/17592186133899.json) |
 | [17592186133900](../../scratch/17592186133900.py) | Extending Green's Theorem | Applying Green's Theorem to Regions With Holes: Advanced Cases | 0 / 6 / 5 / 0 | qa_passed | [Report](qa/17592186133900.json) |

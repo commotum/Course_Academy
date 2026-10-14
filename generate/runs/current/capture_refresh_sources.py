@@ -10,7 +10,7 @@ ROOT=RUN/'refresh-2026-10-14'
 ROOT.mkdir(exist_ok=True)
 c=json.loads((RUN/'candidates-2026-10-14.json').read_text());basis=c['basis'];db=c['database']
 manifest=json.loads((RUN/'manifest.json').read_text())
-queued={j['kp_id'] for j in manifest['jobs'] if j['status']=='queued' and j['in_latest_candidates']}
+queued={j['kp_id'] for j in manifest['jobs'] if j['status'] in ('queued','needs_revalidation','working') and j['in_latest_candidates']}
 question='''[:db/id :question/id :question/math-academy-id :question/problem :question/worked-solution
  {:question/difficulty [:db/ident]}
  {[:question/answer-fields :limit nil] [:db/id :answer-field/id :answer-field/key

@@ -8,6 +8,20 @@ from PIL import Image
 ROOT=Path(__file__).resolve().parent
 spec=importlib.util.spec_from_file_location('generator',ROOT.with_suffix('.py'));g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
 
+def assert_parabola_label_bounds(side,lo,hi,low,high):
+ if side['family']not in ['simple','mixed','up','down','vertical']:return
+ label=next(z for z in side['artist_labels']if z['role']=='region')
+ bx,by,bw,bh=label['bbox_pixel'];ox,oy=side['origin_pixel']
+ xl,xr=side['axis_calibration']['xlim'];yb,yt=side['axis_calibration']['ylim']
+ if xl<=0<=xr:assert bx>ox+3.99 or bx+bw<ox-3.99,'Delta bbox crosses vertical zero axis'
+ if yb<=0<=yt:assert by>oy+3.99 or by+bh<oy-3.99,'Delta bbox crosses horizontal zero axis'
+ transform=sp.Matrix(side['data_to_pixel_matrix']);inverse=transform.inv();sy=abs(float(transform[1,1]))
+ for px,py in [(bx,by),(bx+bw,by),(bx,by+bh),(bx+bw,by+bh)]:
+  cu,cv,_=inverse*sp.Matrix([px,py,1]);cu,cv=float(cu),float(cv)
+  assert float(lo)<cu<float(hi)
+  assert float(low.subs(g.u,cu))+1.99/sy<cv<float(high.subs(g.u,cu))-1.99/sy,'Delta bbox crosses boundary'
+ assert abs(label['position'][0])>0
+
 def plot_readback(q,lo,hi,low,high):
  # Read the actual image reference in learner content, then check the measured
  # renderer sidecar against the PNG and independently parsed display domain.
@@ -41,6 +55,7 @@ def plot_readback(q,lo,hi,low,high):
   bx,by,bw,bh=label['bbox_pixel'];assert label['visible']and bw>0 and bh>0
   assert 0<=bx<bx+bw<=width and 0<=by<by+bh<=height
  mu,mv=labels['region']['position'];assert float(low.subs(g.u,mu))<mv<float(high.subs(g.u,mu))
+ assert_parabola_label_bounds(side,lo,hi,low,high)
  arrow=side['slice_arrow'];assert arrow['tail_data'][0]==arrow['head_data'][0]
  assert arrow['tail_data'][1]<arrow['head_data'][1]
  annotation_transform=sp.Matrix(arrow['data_to_pixel_matrix'])
@@ -230,6 +245,22 @@ def main():
   for gap,offset in [(10,3),(11,3),(5,2)]:
    r=g.generate('hard',template=family,parameters={'a':5,'h':gap,'k':offset});math_readback(r)
    narrow_cases.append({'family':family,'parameters':r['generation']['parameters'],'plot':r['generation']['plot']})
+ parabola_cases=[]
+ for family,level,params in [('simple','easy',{'a':1,'h':1,'k':0}),('mixed','moderate',{'a':3,'h':4,'k':0}),('up','hard',{'a':2,'h':5,'k':-3}),('up','hard',{'a':2,'h':1,'k':5}),('down','hard',{'a':1,'h':2,'k':1}),('vertical','hard',{'a':3,'h':9,'k':-5})]:
+  r=g.generate(level,template=family,parameters=params);math_readback(r)
+  side=json.loads(Path(r['generation']['plot']).with_suffix('.json').read_text())
+  # Reposition only the measured bbox onto either real zero axis. The anchor
+  # and claimed layout flags remain unchanged; actual extents must fail.
+  domain=re.search(r'Δ=\\\{\(u,v\)\\,:\\,(.*?)\\le u\\le (.*?),\\,(.*?)\\le v\\le (.*?)\\\}\.',r['question'][':question/worked-solution'])
+  lo,hi,low,high=map(g.parse,domain.groups())
+  for axis in [0,1]:
+   altered=copy.deepcopy(side);label=next(z for z in altered['artist_labels']if z['role']=='region');bbox=label['bbox_pixel']
+   bbox[axis]=altered['origin_pixel'][axis]-bbox[axis+2]/2
+   failed=False
+   try:assert_parabola_label_bounds(altered,lo,hi,low,high)
+   except AssertionError:failed=True
+   assert failed,'axis-overlap bbox mutation survived'
+  parabola_cases.append({'family':family,'parameters':params,'plot':r['generation']['plot']})
  for f,(_,level)in g.FAMILIES.items():
   seen={t:set()for t in ['a','h','k']};tasks=set()
   for seed in range(24):
@@ -323,6 +354,6 @@ def main():
   rendered.append({'image':str(path),'sidecar':str(side),'image_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'sidecar_sha256':hashlib.sha256(side.read_bytes()).hexdigest(),'family':data['family'],'parameters':data['parameters'],'axes_pixel_bbox':data['axes_pixel_bbox'],'origin_pixel':data['origin_pixel']})
  provenance={'renderer':'Matplotlib','renderer_version':g.RENDERER_VERSION,'runtime':{'python':sys.version.split()[0],'matplotlib':g.matplotlib.__version__,'sympy':sp.__version__},'coordinate_convention':'PNG/top-left; display/bottom-left; full affine matrices measured after canvas draw','generator_sha256':hashlib.sha256(ROOT.with_suffix('.py').read_bytes()).hexdigest(),'assets':rendered}
  (ROOT/'render-provenance.json').write_text(json.dumps(provenance,indent=2))
- report={'status':'pass','practice_questions':7,'raw_exact_prompts':7,'raw_exact_present_solutions':[6,6],'complete_original_banks':[8,8],'all_original_choices':[40,40],'designations':[6,6],'missing_original_designations':2,'attribute_omission_parity':True,'normal_readback_records':len(records),'normal_source_anchor_readbacks':source_anchors,'normal_present_source_backbone_count':6,'default_family_coverage':sorted(default_family),'sampled_task_counts':ids,'slot_coverage':slots,'native':json.loads((ROOT/'native-report.json').read_text()),'native_harness_sha256':hashlib.sha256(check.read_bytes()).hexdigest(),'concurrent_fresh_render_instances':4,'narrow_plot_bbox_regressions':narrow_cases,'renderer_version':g.RENDERER_VERSION,'source_field_count':8,'missing_second_field_regression':True,'changed_parameter_prose_mutation_checks':len(prose_mutations),'runtime':records[0]['generation']['runtime'],'source_errors':{'q-82874':'two selection widgets: older ref absent, later ref3/20 present; u³(u−1) should be u(u³−1)','q-82878':'y=v+1 should be y=v−1','q-83947':'source vertical axis is shifted from parabola symmetry center; regenerate correct geometry','multiple':'unescaped/unbalanced literal set/system braces; raw evidence only'},'authored_levels':['easy square-gap zero-shift shear','moderate mixed map nonunit determinant'],'unresolved_findings':[]}
+ report={'status':'pass','practice_questions':7,'raw_exact_prompts':7,'raw_exact_present_solutions':[6,6],'complete_original_banks':[8,8],'all_original_choices':[40,40],'designations':[6,6],'missing_original_designations':2,'attribute_omission_parity':True,'normal_readback_records':len(records),'normal_source_anchor_readbacks':source_anchors,'normal_present_source_backbone_count':6,'default_family_coverage':sorted(default_family),'sampled_task_counts':ids,'slot_coverage':slots,'native':json.loads((ROOT/'native-report.json').read_text()),'native_harness_sha256':hashlib.sha256(check.read_bytes()).hexdigest(),'concurrent_fresh_render_instances':4,'narrow_plot_bbox_regressions':narrow_cases,'parabola_label_bbox_regressions':parabola_cases,'parabola_axis_overlap_mutations':2*len(parabola_cases),'renderer_version':g.RENDERER_VERSION,'source_field_count':8,'missing_second_field_regression':True,'changed_parameter_prose_mutation_checks':len(prose_mutations),'runtime':records[0]['generation']['runtime'],'source_errors':{'q-82874':'two selection widgets: older ref absent, later ref3/20 present; u³(u−1) should be u(u³−1)','q-82878':'y=v+1 should be y=v−1','q-83947':'source vertical axis is shifted from parabola symmetry center; regenerate correct geometry','multiple':'unescaped/unbalanced literal set/system braces; raw evidence only'},'authored_levels':['easy square-gap zero-shift shear','moderate mixed map nonunit determinant'],'unresolved_findings':[]}
  (ROOT/'validation.json').write_text(json.dumps(report,ensure_ascii=False,indent=2));print(json.dumps({k:report[k]for k in ['status','normal_readback_records','complete_original_banks','all_original_choices','designations']},indent=2))
 if __name__=='__main__':main()

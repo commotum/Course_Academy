@@ -102,7 +102,9 @@ for rec in records:
  for role in ['tail','head']:
   au,av=arrow[role+'_data'];assert float(lo)<au<float(hi) and float(low.subs(u,au))<av<float(high.subs(u,au));assert np.allclose((np.array(arrow['data_to_pixel_matrix'])@np.array([au,av,1]))[:2],arrow[role+'_pixel']);C['actual_slice_arrow_constraints']+=1
 
- region=labels['region'];rl,rt,rw,rh=region['bbox_pixel'];al,at,aw,ah=arrow['artist_bbox_pixel'];assert rl>=al+aw or al>=rl+rw or rt>=at+ah or at>=rt+rh,(f,'arrow overlaps Delta',path)
+ region=labels['region'];rl,rt,rw,rh=region['bbox_pixel']
+ annotation_A=np.array(arrow['data_to_pixel_matrix']);zx,zy,_=annotation_A@np.array([0,0,1]);assert not rl-4<=zx<=rl+rw+4,(f,'Delta overlaps vertical zero axis',path);assert not rt-4<=zy<=rt+rh+4,(f,'Delta overlaps horizontal zero axis',path)
+ al,at,aw,ah=arrow['artist_bbox_pixel'];assert rl>=al+aw or al>=rl+rw or rt>=at+ah or at>=rt+rh,(f,'arrow overlaps Delta',path)
  assert black[max(0,int(at)):int(at+ah)+2,max(0,int(al)):int(al+aw)+2].sum()>15
  C['records']+=1
 out=dict(status='passed',source=S,readback=C,original_assets_full_resolution=9,script_sha256=hashlib.sha256(D.with_suffix('.py').read_bytes()).hexdigest());(R/f'qa/{K}-root-readback.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out))

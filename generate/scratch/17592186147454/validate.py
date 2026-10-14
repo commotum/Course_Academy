@@ -19,9 +19,14 @@ def ode(q):
  eq=re.search(r'\$\$([\s\S]*?)\$\$',q[':question/problem'])[1].strip().rstrip('.')
  lhs,rhs=eq.split('=');res=sp.expand(parse(lhs)-parse(rhs));F=sp.simplify(-res.subs(D,0)/sp.diff(res,D))
  powers={sp.simplify(y*sp.diff(term,y)/term) for term in sp.Add.make_args(sp.expand(F))};assert len(powers)==2 and 1 in powers
- n=next(p for p in powers if p!=1);linear=sp.expand(F).coeff(y,1);nonlinear=sp.simplify((F-linear*y)/y**n)
+ n=next(p for p in powers if p!=1)
+ terms=sp.Add.make_args(sp.expand(F))
+ linear=sp.simplify(sum(term/y for term in terms if sp.simplify(y*sp.diff(term,y)/term)==1))
+ nonlinear=sp.simplify(sum(term/y**n for term in terms if sp.simplify(y*sp.diff(term,y)/term)==n))
+ assert not linear.has(y) and not nonlinear.has(y)
  return F,-linear,nonlinear,n
 
+@lru_cache(None)
 def residual(value,p,q,n):
  z=sp.powdenest(value**(1-n),force=True)
  # The square inversion of y=(C exp(u/2)-1)^2 needs the documented
@@ -58,13 +63,15 @@ def independent(r):
  assert 'with respect to $x:$' in sol
  # Every concrete coefficient, solution, and key is rendered from one translation.
  template=r['generation']['template'];h=r['generation']['parameters']['shift'];source=g.SOURCES[template]
- prefix=g.translate(source[':question/worked-solution'],h)
+ source_solution=source[':question/worked-solution']
+ if h:source_solution=source_solution.replace('(1/4x)',r'(\frac{1}{4x})').replace('(3/2x)',r'(\frac{3}{2x})')
+ prefix=g.translate(source_solution,h)
  assert sol.startswith(prefix)
  if h:
   assert f'(x{h:+d})' in text and f'(x{h:+d})' in sol
   assert '{{selection}}' in text and 'general nonzero real solution' in text
   # Reverse the algebraic translation to check all source instructional stages.
-  restored=prefix.replace(f'(x{h:+d})','x');assert restored.replace(r'\cdot ','')==source[':question/worked-solution'].replace(r'\cdot ','')
+  restored=prefix.replace(f'(x{h:+d})','x');assert restored.replace(r'\cdot ','')==source_solution.replace(r'\cdot ','')
  return {'n':str(n),'linear_p':str(p),'nonlinear_q':str(coef),'correct_residual':'0'}
 def checks(r):
  f=r['question'][':question/answer-fields'][0]
@@ -79,7 +86,7 @@ def main():
   assert sorted(a[':answer/value'] for a in f[':answer-field/choices'])==sorted(a[':answer/value'] for a in sf[':answer-field/choices'])
   assert next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])==sf[':answer-field/correct'][':answer/value']
   replay.append({'source':t,'bank_values':'5/5','distractors':'4/4','correct_designation':True,'prompt_solution_exact':True});records.append(r)
-  coverage[t]=[]
+  coverage[t]=[];print('Validating',t,flush=True)
   if t=='q-109029':continue
   for h in g.SHIFTS:
    r=g.generate(level,template=t,parameters={'shift':h});independent(r);records.append(r);coverage[t].append(h)

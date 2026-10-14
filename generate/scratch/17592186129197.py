@@ -159,7 +159,7 @@ def recipes(f,d,p,profile):
   return [A,J*(L+D),-A,J*L,J*D]
  h=sp.Integer(p['h']);r=sp.sqrt(h);L=2*h*r;D=2*r**3/3
  return [A,J*(L+D),-A,J*L,J*D]
-RENDERER_VERSION='type-I-region-pixel-calibration-4'
+RENDERER_VERSION='type-I-region-pixel-calibration-5'
 _PLOT_LOCK=threading.RLock()
 def plot(f,p,d,output_dir=None):
  # Matplotlib's global mathtext parser is not thread-safe. Serialize rendering
@@ -200,7 +200,11 @@ def _plot_impl(f,p,d,output_dir=None):
   detail.set_yticks([float(yl.min()),float(yh.max())]);detail.set_yticklabels([f'${tex(d["low"])}$',f'${tex(d["high"].subs(u,d["lo"]))}$'],fontsize=8)
   detail.set_title('Same region: local view',fontsize=9,pad=4)
   annotation_axes=detail
- region_label=annotation_axes.text(mid,bottom+.45*(top-bottom),r'$\Delta$',ha='center',va='center'if detail is not None else'baseline',color='#226aaa',fontsize=13)
+ parabola=f in ['simple','mixed','up','down','vertical']
+ label_x=float(d['lo'])+.7*(float(d['hi'])-float(d['lo']))if parabola else mid
+ label_low=float(d['low'].subs(u,label_x));label_high=float(d['high'].subs(u,label_x))
+ label_y=(label_low+label_high)/2 if parabola else bottom+.45*(top-bottom)
+ region_label=annotation_axes.text(label_x,label_y,r'$\Delta$',ha='center',va='center'if detail is not None or parabola else'baseline',color='#226aaa',fontsize=13)
  slice_x=mid-.12*(float(d['hi'])-float(d['lo']))
  slice_low=float(d['low'].subs(u,slice_x));slice_high=float(d['high'].subs(u,slice_x))
  arrow_head=(slice_x,slice_low+.88*(slice_high-slice_low));arrow_tail=(slice_x,slice_low+.12*(slice_high-slice_low))
@@ -209,6 +213,32 @@ def _plot_impl(f,p,d,output_dir=None):
  lower_label=ax.text(.98,.06,f'$v={tex(d["low"])}$',transform=ax.transAxes,ha='right',color=lower_color,fontsize=11,bbox={'facecolor':'white','alpha':.8,'edgecolor':'none'})
  for z in ['top','right']:ax.spines[z].set_visible(False)
  fig.tight_layout();fig.canvas.draw()
+ region_layout=None
+ if parabola:
+  # Text is a finite-size object: a nonzero anchor alone does not prevent its
+  # glyph from crossing a zero axis or either curved boundary. Keep the font
+  # readable and choose among the same region's eligible nonzero positions.
+  origin=ax.transData.transform((0,0));inverse=ax.transData.inverted()
+  sy=float(ax.transData.get_affine().get_matrix()[1,1]);clearance=4.0
+  accepted=False
+  for x_fraction in [.7,.75,.65,.8,.6,.3,.25,.35]:
+   candidate_x=float(d['lo'])+x_fraction*float(d['hi']-d['lo'])
+   candidate_low=float(d['low'].subs(u,candidate_x));candidate_high=float(d['high'].subs(u,candidate_x))
+   for height_fraction in [.5,.4,.6,.3,.7,.2,.8]:
+    candidate_y=candidate_low+height_fraction*(candidate_high-candidate_low)
+    region_label.set_position((candidate_x,candidate_y));fig.canvas.draw()
+    glyph=region_label.get_window_extent(fig.canvas.get_renderer())
+    xclear=glyph.x1<origin[0]-clearance or glyph.x0>origin[0]+clearance
+    yclear=glyph.y1<origin[1]-clearance or glyph.y0>origin[1]+clearance
+    if not (xclear and yclear):continue
+    corners=inverse.transform([[glyph.x0,glyph.y0],[glyph.x1,glyph.y0],[glyph.x0,glyph.y1],[glyph.x1,glyph.y1]])
+    inside=all(float(d['lo'])<cu<float(d['hi'])and float(d['low'].subs(u,cu))+2/sy<cv<float(d['high'].subs(u,cu))-2/sy for cu,cv in corners)
+    if not inside:continue
+    region_layout={'axes_clearance_px':clearance,'boundary_clearance_px':2.0,'x_fraction':x_fraction,'height_fraction':height_fraction,'bbox_inside_region':True,'bbox_clear_of_zero_axes':True}
+    accepted=True;break
+   if accepted:break
+  if not accepted:
+   plt.close(fig);raise ValueError('no eligible readable region-label placement')
  renderer=fig.canvas.get_renderer();width_px,height_px=fig.canvas.get_width_height()
  def image_point(point,axis=ax):
   px,py=axis.transData.transform(point)
@@ -226,6 +256,7 @@ def _plot_impl(f,p,d,output_dir=None):
  annotation_matrix=np.array([[1,0,0],[0,-1,height_px],[0,0,1]],dtype=float)@annotation_axes.transData.get_affine().get_matrix()
  data={'renderer':'Matplotlib','renderer_version':RENDERER_VERSION,'version':matplotlib.__version__,'python':sys.version.split()[0],'runtime':{'python':sys.version.split()[0],'matplotlib':matplotlib.__version__,'sympy':sp.__version__},'family':f,'parameters':p,'bounds':[str(d[t]) for t in ['lo','hi','low','high']],'axis_calibration':{'xlim':list(map(float,ax.get_xlim())),'ylim':list(map(float,ax.get_ylim()))},'axes_bbox_display':list(map(float,axes_bbox.bounds)),'axes_pixel_bbox':image_bbox(axes_bbox),'origin_display':list(map(float,ax.transData.transform((0,0)))),'origin_pixel':image_point((0,0)),'data_to_display_matrix':transform.tolist(),'data_to_pixel_matrix':to_image.tolist(),'pixel_coordinate_convention':'top-left origin, x rightward, y downward; display coordinates use bottom-left origin','artist_labels':labels,'slice_arrow':{'axes_role':'detail'if detail is not None else'primary','data_to_pixel_matrix':annotation_matrix.tolist(),'tail_data':list(map(float,arrow_tail)),'head_data':list(map(float,arrow_head)),'tail_pixel':image_point(arrow_tail,annotation_axes),'head_pixel':image_point(arrow_head,annotation_axes),'artist_bbox_pixel':image_bbox(slice_arrow.arrow_patch.get_window_extent(renderer))},'boundaries':'all bounding segments included/solid','arrow':'vertical upward slice','pixel_size':[width_px,height_px]}
  data['boundary_colors']={'lower':lower_color,'upper':upper_color,'left_vertical':lower_color if f.startswith('hyper')else None}
+ if region_layout is not None:data['region_label_layout']=region_layout
  if detail is not None:
   data['detail_view']={'title':detail.title.get_text(),'axes_pixel_bbox':image_bbox(detail.get_window_extent(renderer)),'data_to_pixel_matrix':annotation_matrix.tolist(),'xlim':list(map(float,detail.get_xlim())),'ylim':list(map(float,detail.get_ylim())),'bounds':data['bounds'],'same_region':True}
  fd,tmp=tempfile.mkstemp(prefix=key+'-',suffix='.png',dir=folder);os.close(fd)
