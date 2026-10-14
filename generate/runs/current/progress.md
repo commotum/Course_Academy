@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Approved sources retain 
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 40**, **qa_passed: 324**, **queued: 211**, **working: 5**.
+**needs_revalidation: 38**, **qa_passed: 331**, **queued: 207**, **working: 4**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Existing approved work is preserved; other ready drafts await QA until these13 pass. Then finish any coverage-report KPs and the remaining script-ranked candidates.
 
@@ -67,7 +67,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186073778](../../scratch/17592186073778.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the General Solution to a System With Infinitely Many Intersection Points | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186073778.json) |
 | [17592186092217](../../scratch/17592186092217.py) | Converting from Polar Coordinates to Cartesian Coordinates | Finding the Cartesian Coordinates of a Point Given in Polar Coordinates | 4 / 1 / 0 / 2 | qa_passed | [Report](qa/17592186092217.json) |
 | [17592186110754](../../scratch/17592186110754-draft.py) | Using the Pythagorean Identity in the First Quadrant | Using the Pythagorean Theorem on the Unit Circle | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186110754.json) |
-| [17592186110756](../../scratch/17592186110756-draft.py) | Using the Pythagorean Identity in the First Quadrant | Computing a Reciprocal Ratio Using the Pythagorean Identity | 0 / 5 / 0 / 1 | working | — |
+| [17592186110756](../../scratch/17592186110756-draft.py) | Using the Pythagorean Identity in the First Quadrant | Computing a Reciprocal Ratio Using the Pythagorean Identity | 0 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186110756.json) |
 | [17592186176057](../../scratch/17592186176057.py) | Describing Properties of the Cosine Function | Utilizing the Evenness Property of the Cosine Function | 3 / 1 / 1 / 1 | qa_passed | [Report](qa/17592186176057.json) |
 | [17592186129268](../../scratch/17592186129268.py) | Triple Integrals in Cylindrical Polar Coordinates | Rewriting a Triple Integral Defined Over a Shifted Cylindrical Solid | 0 / 1 / 3 / 2 | qa_passed | [Report](qa/17592186129268.json) |
 | [17592186105903](../../scratch/17592186105903.py) | The Area of a General Triangle | Calculating the Area of a Triangle | 5 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186105903.json) |
@@ -80,7 +80,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186133830](../../scratch/17592186133830.py) | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function | 2 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186133830.json) |
 | [17592186162081](../../scratch/17592186162081.py) | Properties of Line Integrals of Scalar Functions | Calculating Line Integrals of Unity | 5 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186162081.json) |
 | [17592186162082](../../scratch/17592186162082.py) | Properties of Line Integrals of Scalar Functions | Calculating Line Integrals Over Piecewise-Smooth Curves | 2 / 3 / 0 / 1 | qa_passed | [Report](qa/17592186162082.json) |
-| [17592186162083](../../scratch/17592186162083-draft.py) | Properties of Line Integrals of Scalar Functions | Applying Independence of Parametrization and Orientation | 0 / 3 / 2 / 2 | working | — |
+| [17592186162083](../../scratch/17592186162083-draft.py) | Properties of Line Integrals of Scalar Functions | Applying Independence of Parametrization and Orientation | 0 / 3 / 2 / 2 | qa_passed | [Report](qa/17592186162083.json) |
 | [17592186179670](../../scratch/17592186179670.py) | Line Integrals of Scalar Functions Over Line Segments | Calculating a Line Integral Along a Segment in the Cartesian Plane | 0 / 3 / 2 / 2 | qa_passed | [Report](qa/17592186179670.json) |
 | [17592186179724](../../scratch/17592186179724.py) | Line Integrals of Scalar Functions Over Line Segments | Constructing a Line Integral Along a Segment in the Cartesian Plane | 5 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186179724.json) |
 | [17592186179725](../../scratch/17592186179725.py) | Line Integrals of Scalar Functions Over Line Segments | Line Integrals Along Segments in Three Dimensions | 2 / 1 / 2 / 2 | qa_passed | [Report](qa/17592186179725.json) |
@@ -89,23 +89,23 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186119887](../../scratch/17592186119887.py) | Areas of Parametric Surfaces | Calculating the Fundamental Vector Product of a Parametric Surface | 6 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186119887.json) |
 | [17592186175972](../../scratch/17592186175972.py) | Parametrizations of Cylinders | Parametrizing a Parabolic Cylinder | 4 / 1 / 0 / 1 | qa_passed | [Report](qa/17592186175972.json) |
 | [17592186175973](../../scratch/17592186175973.py) | Parametrizations of Cylinders | Parametrizing a Hyperbolic Cylinder | 0 / 2 / 3 / 1 | qa_passed | [Report](qa/17592186175973.json) |
-| [17592186073810](../../scratch/17592186073810-draft.py) | The Shortest Distance Between a Point and a Line | Finding the Distance Between a Point and a Horizontal or Vertical Line | 5 / 0 / 0 / 1 | working | — |
+| [17592186073810](../../scratch/17592186073810-draft.py) | The Shortest Distance Between a Point and a Line | Finding the Distance Between a Point and a Horizontal or Vertical Line | 5 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186073810.json) |
 | [17592186115200](../../scratch/17592186115200.py) | Solving Exponential Equations With Different Bases | Solving Exponential Equations Containing Different Bases by Rewriting One Exponent | 3 / 1 / 3 / 2 | qa_passed | [Report](qa/17592186115200.json) |
 | [17592186054804](../../scratch/17592186054804.py) | Factoring Quartic Polynomials Using the Factor Theorem | Factoring a Quartic Polynomial Given Two Roots | 3 / 1 / 1 / 2 | qa_passed | [Report](qa/17592186054804.json) |
 | [17592186054805](../../scratch/17592186054805.py) | Factoring Quartic Polynomials Using the Factor Theorem | Factoring a Quartic Polynomial With Only Two Real Factors | 1 / 4 / 1 / 2 | qa_passed | [Report](qa/17592186054805.json) |
-| [17592186096843](../../scratch/17592186096843.py) | The Chain Rule for Differentiation | Differentiating a Function Using the Chain Rule and Prime Notation | 0 / 5 / 5 / 2 | working | — |
-| [17592186100888](../../scratch/17592186100888-draft.py) | Verifying Solutions of Differential Equations | Identifying a Solution to a First-Order Differential Equation | 8 / 1 / 0 / 0 | working | [Report](qa/17592186100888.json) |
+| [17592186096843](../../scratch/17592186096843-draft.py) | The Chain Rule for Differentiation | Differentiating a Function Using the Chain Rule and Prime Notation | 0 / 5 / 5 / 2 | qa_passed | [Report](qa/17592186096843.json) |
+| [17592186100888](../../scratch/17592186100888-draft.py) | Verifying Solutions of Differential Equations | Identifying a Solution to a First-Order Differential Equation | 8 / 6 / 0 / 0 | qa_passed | [Report](qa/17592186100888.json) |
 | [17592186100959](../../scratch/17592186100959.py) | Verifying Solutions of Differential Equations | Identifying Solutions to First-Order Differential Equations | 0 / 11 / 0 / 0 | qa_passed | [Report](qa/17592186100959.json) |
 | [17592186100951](../../scratch/17592186100951.py) | Verifying Solutions of Differential Equations | Identifying Solutions to Initial Value Problems | 17 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186100951.json) |
-| [17592186064180](../../scratch/17592186064180.py) | Integrating Trigonometric Functions | Integrating Secant Squared | 6 / 7 / 0 / 2 | queued | — |
-| [17592186064179](../../scratch/17592186064179.py) | Integrating Trigonometric Functions | Integrating Secant-Tangent and Cosecant-Cotangent | 7 / 7 / 0 / 2 | queued | — |
-| [17592186064178](../../scratch/17592186064178.py) | Integrating Trigonometric Functions | Integrating Sine and Cosine | 10 / 6 / 0 / 2 | queued | — |
-| [17592186064181](../../scratch/17592186064181.py) | Integrating Trigonometric Functions | Integrating Cosecant Squared | 8 / 7 / 6 / 2 | queued | — |
+| [17592186064180](../../scratch/17592186064180-draft.py) | Integrating Trigonometric Functions | Integrating Secant Squared | 6 / 7 / 0 / 2 | qa_passed | [Report](qa/17592186064180.json) |
+| [17592186064179](../../scratch/17592186064179-draft.py) | Integrating Trigonometric Functions | Integrating Secant-Tangent and Cosecant-Cotangent | 7 / 7 / 0 / 2 | qa_passed | [Report](qa/17592186064179.json) |
+| [17592186064178](../../scratch/17592186064178-draft.py) | Integrating Trigonometric Functions | Integrating Sine and Cosine | 10 / 6 / 0 / 2 | working | — |
+| [17592186064181](../../scratch/17592186064181-draft.py) | Integrating Trigonometric Functions | Integrating Cosecant Squared | 8 / 7 / 6 / 2 | working | — |
 | [17592186087866](../../scratch/17592186087866.py) | Introduction to First-Order Linear ODEs | Writing First-Order Linear ODEs in Standard Form | 8 / 0 / 1 / 0 | qa_passed | [Report](qa/17592186087866.json) |
 | [17592186087868](../../scratch/17592186087868.py) | Introduction to First-Order Linear ODEs | Identifying Homogeneous and Inhomogeneous ODEs | 6 / 6 / 0 / 0 | qa_passed | [Report](qa/17592186087868.json) |
 | [17592186087878](../../scratch/17592186087878.py) | Solving First-Order Linear ODEs Using Integrating Factors | Solving First-Order Linear ODEs Using Integrating Factors | 2 / 2 / 1 / 3 | qa_passed | [Report](qa/17592186087878.json) |
-| [17592186087877](../../scratch/17592186087877.py) | Solving First-Order Linear ODEs Using Integrating Factors | Transforming First-Order Linear ODEs Using Integrating Factors | 2 / 3 / 0 / 2 | needs_revalidation | [Report](qa/17592186087877.json) |
-| [17592186087879](../../scratch/17592186087879.py) | Solving First-Order Linear ODEs Using Integrating Factors | Solving First-Order Initial Value Problems Using Integrating Factors | 0 / 5 / 1 / 2 | needs_revalidation | [Report](qa/17592186087879.json) |
+| [17592186087877](../../scratch/17592186087877-draft.py) | Solving First-Order Linear ODEs Using Integrating Factors | Transforming First-Order Linear ODEs Using Integrating Factors | 2 / 3 / 0 / 2 | working | [Report](qa/17592186087877.json) |
+| 17592186087879 | Solving First-Order Linear ODEs Using Integrating Factors | Solving First-Order Initial Value Problems Using Integrating Factors | 0 / 5 / 1 / 2 | working | [Report](qa/17592186087879.json) |
 | [17592186096610](../../scratch/17592186096610.py) | Differentiating Exponential Functions | Differentiating the Product of a Constant and the Exponential Function, Plus a Constant | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096610.json) |
 | [17592186096612](../../scratch/17592186096612.py) | Differentiating Exponential Functions | Differentiating an Exponential Function with a Base Other Than e | 3 / 2 / 0 / 2 | qa_passed | [Report](qa/17592186096612.json) |
 | [17592186096696](../../scratch/17592186096696.py) | Solving First-Order ODEs Using Direct Integration | Finding the General Solution of a Differential Equation Using Integration | 3 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186096696.json) |
@@ -278,7 +278,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186119744](../../scratch/17592186119744.py) | The Arc Length of a Vector-Valued Function | Computing the Arc Length of a Planar Curve | 5 / 5 / 0 / 0 | qa_passed | [Report](qa/17592186119744.json) |
 | [17592186110755](../../scratch/17592186110755.py) | Using the Pythagorean Identity in the First Quadrant | Computing a Trigonometric Ratio Using the Pythagorean Identity | 5 / 5 / 0 / 2 | queued | — |
 | [17592186110758](../../scratch/17592186110758.py) | Using the Pythagorean Identity in the First Quadrant | Computing a Tangent or Cotangent Using the Pythagorean Identity | 6 / 5 / 0 / 1 | queued | — |
-| [17592186124447](../../scratch/17592186124447.py) | The Gradient Vector | Calculating the Gradient Using the Properties of the Gradient | 0 / 6 / 1 / 1 | qa_passed | [Report](qa/17592186124447.json) |
+| [17592186124447](../../scratch/17592186124447.py) | The Gradient Vector | Calculating the Gradient Using the Properties of the Gradient | 0 / 6 / 2 / 1 | qa_passed | [Report](qa/17592186124447.json) |
 | [17592186124443](../../scratch/17592186124443.py) | The Gradient Vector | Calculating the Gradient of a Function of Two Variables | 4 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186124443.json) |
 | [17592186124445](../../scratch/17592186124445.py) | The Gradient Vector | Finding the Points Where a Gradient Vanishes | 0 / 5 / 3 / 0 | qa_passed | [Report](qa/17592186124445.json) |
 | [17592186124444](../../scratch/17592186124444.py) | The Gradient Vector | Calculating the Gradient of a Function of Three Variables | 0 / 10 / 0 / 0 | qa_passed | [Report](qa/17592186124444.json) |
@@ -487,7 +487,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | 17592186133893 | Line Integrals With Respect to X and Y | Evaluating Line Integrals With Respect to X and Y | 0 / 8 / 3 / 0 | queued | — |
 | 17592186166846 | Conservative Vector Fields in the Cartesian Plane | Identifying the Vector Field Corresponding to a Given Potential Function | 5 / 4 / 0 / 0 | queued | — |
 | 17592186166864 | Conservative Vector Fields in the Cartesian Plane | Finding a Parameter in a Given Conservative Vector Field | 10 / 0 / 0 / 0 | queued | — |
-| 17592186166863 | Conservative Vector Fields in the Cartesian Plane | Identifying Conservative Vector Fields | 0 / 11 / 0 / 0 | queued | — |
+| [17592186166863](../../scratch/17592186166863.py) | Conservative Vector Fields in the Cartesian Plane | Identifying Conservative Vector Fields | 0 / 11 / 0 / 0 | queued | — |
 | 17592186124569 | Calculating Potential Functions | Reconstructing a Two-Variable Function From Its Gradient | 13 / 0 / 0 / 1 | queued | — |
 | 17592186124574 | Calculating Potential Functions | Reconstructing a Three-Variable Function From Its Gradient | 0 / 0 / 13 / 1 | queued | — |
 | 17592186179739 | Interpreting Line Integrals of Vector-Valued Functions | Interpreting the Sign of a Line Integral Over a Constant Vector Field | 3 / 4 / 2 / 1 | queued | — |
