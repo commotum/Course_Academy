@@ -141,6 +141,7 @@ def main():
   a=g.generate(level,3,template=t,parameters=par);b=g.generate(level,83,template=t,parameters=par)
   assert a['question'][':question/id']==b['question'][':question/id']
   assert a['generation']['mathematical_fingerprint']==b['generation']['mathematical_fingerprint']
+  assert {v[':answer/id'] for v in a['question'][':question/answer-fields'][0][':answer-field/choices']}=={v[':answer/id'] for v in b['question'][':question/answer-fields'][0][':answer-field/choices']}
  assert g.generate_moderate(parameters={'a':2,'b':2,'c':1,'d':1,'h':1})['generation']['mathematical_fingerprint']==g.generate_moderate(parameters={'a':4,'b':4,'c':2,'d':2,'h':2})['generation']['mathematical_fingerprint']
  # Default sampling must serve every source-supported family.
  coverage={level:{g.generate(level,k)['generation']['template'] for k in range(24)} for level in g.LEVELS}

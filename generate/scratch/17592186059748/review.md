@@ -5,7 +5,7 @@ Original choices may be shuffled; full banks are compared independently. Scalar 
 ## Raw original q-1079
 
 Calculate $\text{det}(A)$, if
-$A=[\begin{aligned}1 & 2 \\ 3 & 0\end{aligned}].$
+$A=\begin{bmatrix}1 & 2 \\ 3 & 0\end{bmatrix}.$
 
 - $-6$
 - $0$
@@ -40,7 +40,7 @@ What is $\begin{vmatrix}2 & -4 \\ -2 & 7\end{vmatrix}$?
 ## Raw original q-1080
 
 Calculate $\text{det}(X)$, if
-    $X=[\begin{aligned}10 & -3 \\ 1 & 4\end{aligned}].$
+    $X=\begin{bmatrix}10 & -3 \\ 1 & 4\end{bmatrix}.$
 
 - $11$
 - $-34$
@@ -63,7 +63,7 @@ $$
 ## Raw original q-11646
 
 Calculate $\text{det}(L)$, if
-    $L=[\begin{aligned}4 & 5 \\ -2 & 3\end{aligned}].$
+    $L=\begin{bmatrix}4 & 5 \\ -2 & 3\end{bmatrix}.$
 
 - $12$
 - $-22$
@@ -130,7 +130,7 @@ $$
 ## Raw original q-317335
 
 Calculate $det(R)$ given that
-$R=[\begin{aligned}8 & -5 \\ 3 & 4\end{aligned}].$
+$R=\begin{bmatrix}8 & -5 \\ 3 & 4\end{bmatrix}.$
 
 $det(R)=$
 {{field-1}}
@@ -152,7 +152,7 @@ $$
 ## Raw original q-317336
 
 Calculate $det(S)$ given that
-$S=[\begin{aligned}2 & 4 \\ 1 & 3\end{aligned}].$
+$S=\begin{bmatrix}2 & 4 \\ 1 & 3\end{bmatrix}.$
 
 $det(S)=$
 {{field-1}}
@@ -174,7 +174,7 @@ $$
 ## Raw original q-317342
 
 Calculate $det(S)$ given that
-$S=[\begin{aligned}6 & -2 \\ 5 & 7\end{aligned}].$
+$S=\begin{bmatrix}6 & -2 \\ 5 & 7\end{bmatrix}.$
 
 $det(S)=$
 {{field-1}}
@@ -196,7 +196,7 @@ $$
 ## Observed replay q-1079
 
 Calculate $\text{det}(A)$, if
-$A=[\begin{aligned}1 & 2 \\ 3 & 0\end{aligned}].$
+$A=\begin{bmatrix}1 & 2 \\ 3 & 0\end{bmatrix}.$
 
 - $0$
 - $-6$
@@ -219,7 +219,7 @@ $$
 ## Generated observed scalar covariance variant q-1079 (opaque intent)
 
 Calculate $\text{det}(A)$, if
-$A=[\begin{aligned}-2 & -4 \\ -6 & 0\end{aligned}].$
+$A=\begin{bmatrix}-2 & -4 \\ -6 & 0\end{bmatrix}.$
 
 - $4$
 - $-4$
@@ -286,7 +286,7 @@ $$
 ## Observed replay q-1080
 
 Calculate $\text{det}(X)$, if
-    $X=[\begin{aligned}10 & -3 \\ 1 & 4\end{aligned}].$
+    $X=\begin{bmatrix}10 & -3 \\ 1 & 4\end{bmatrix}.$
 
 - $-34$
 - $11$
@@ -309,7 +309,7 @@ $$
 ## Generated observed scalar covariance variant q-1080 (opaque intent)
 
 Calculate $\text{det}(X)$, if
-    $X=[\begin{aligned}-20 & 6 \\ -2 & -8\end{aligned}].$
+    $X=\begin{bmatrix}-20 & 6 \\ -2 & -8\end{bmatrix}.$
 
 - $172$
 - $68$
@@ -332,7 +332,7 @@ $$
 ## Observed replay q-11646
 
 Calculate $\text{det}(L)$, if
-    $L=[\begin{aligned}4 & 5 \\ -2 & 3\end{aligned}].$
+    $L=\begin{bmatrix}4 & 5 \\ -2 & 3\end{bmatrix}.$
 
 - $-22$
 - $12$
@@ -355,7 +355,7 @@ $$
 ## Generated observed scalar covariance variant q-11646 (opaque intent)
 
 Calculate $\text{det}(L)$, if
-    $L=[\begin{aligned}-8 & -10 \\ 4 & -6\end{aligned}].$
+    $L=\begin{bmatrix}-8 & -10 \\ 4 & -6\end{bmatrix}.$
 
 - $-48$
 - $88$
@@ -466,7 +466,7 @@ $$
 ## Observed replay q-317335
 
 Calculate $det(R)$ given that
-$R=[\begin{aligned}8 & -5 \\ 3 & 4\end{aligned}].$
+$R=\begin{bmatrix}8 & -5 \\ 3 & 4\end{bmatrix}.$
 
 $det(R)=$
 {{field-1}}
@@ -488,7 +488,7 @@ $$
 ## Generated observed scalar covariance variant q-317335 (opaque intent)
 
 Calculate $det(R)$ given that
-$R=[\begin{aligned}-16 & 10 \\ -6 & -8\end{aligned}].$
+$R=\begin{bmatrix}-16 & 10 \\ -6 & -8\end{bmatrix}.$
 
 $det(R)=$
 {{field-1}}
@@ -510,7 +510,7 @@ $$
 ## Observed replay q-317336
 
 Calculate $det(S)$ given that
-$S=[\begin{aligned}2 & 4 \\ 1 & 3\end{aligned}].$
+$S=\begin{bmatrix}2 & 4 \\ 1 & 3\end{bmatrix}.$
 
 $det(S)=$
 {{field-1}}
@@ -532,7 +532,7 @@ $$
 ## Generated observed scalar covariance variant q-317336 (opaque intent)
 
 Calculate $det(S)$ given that
-$S=[\begin{aligned}-4 & -8 \\ -2 & -6\end{aligned}].$
+$S=\begin{bmatrix}-4 & -8 \\ -2 & -6\end{bmatrix}.$
 
 $det(S)=$
 {{field-1}}
@@ -554,7 +554,7 @@ $$
 ## Observed replay q-317342
 
 Calculate $det(S)$ given that
-$S=[\begin{aligned}6 & -2 \\ 5 & 7\end{aligned}].$
+$S=\begin{bmatrix}6 & -2 \\ 5 & 7\end{bmatrix}.$
 
 $det(S)=$
 {{field-1}}
@@ -576,7 +576,7 @@ $$
 ## Generated observed scalar covariance variant q-317342 (opaque intent)
 
 Calculate $det(S)$ given that
-$S=[\begin{aligned}-12 & 4 \\ -10 & -14\end{aligned}].$
+$S=\begin{bmatrix}-12 & 4 \\ -10 & -14\end{bmatrix}.$
 
 $det(S)=$
 {{field-1}}
@@ -598,7 +598,7 @@ $$
 ## Authored default easy named_dot
 
 Calculate $\text{det}(X)$, if
-$X=[\begin{aligned}-7 & 1 \\ 6 & 8\end{aligned}].$
+$X=\begin{bmatrix}-7 & 1 \\ 6 & 8\end{bmatrix}.$
 
 - $-55$
 - $-62$
@@ -621,7 +621,7 @@ $$
 ## Authored default easy named_dot
 
 Calculate $\text{det}(B)$, if
-$B=[\begin{aligned}5 & 6 \\ 8 & -2\end{aligned}].$
+$B=\begin{bmatrix}5 & 6 \\ 8 & -2\end{bmatrix}.$
 
 - $-58$
 - $58$
@@ -644,7 +644,7 @@ $$
 ## Authored default easy named_parentheses_blank
 
 Calculate $det(R)$ given that
-$R=[\begin{aligned}3 & 0 \\ 6 & 2\end{aligned}].$
+$R=\begin{bmatrix}3 & 0 \\ 6 & 2\end{bmatrix}.$
 
 $det(R)=$
 {{field-1}}
@@ -666,7 +666,7 @@ $$
 ## Authored default easy named_parentheses_blank
 
 Calculate $det(R)$ given that
-$R=[\begin{aligned}6 & 5 \\ 6 & 3\end{aligned}].$
+$R=\begin{bmatrix}6 & 5 \\ 6 & 3\end{bmatrix}.$
 
 $det(R)=$
 {{field-1}}
@@ -688,7 +688,7 @@ $$
 ## Authored default moderate named_dot
 
 Calculate $\text{det}(N)$, if
-$N=[\begin{aligned}2 & 3 \\ -9 & -2\end{aligned}].$
+$N=\begin{bmatrix}2 & 3 \\ -9 & -2\end{bmatrix}.$
 
 - $23$
 - $-12$
@@ -711,7 +711,7 @@ $$
 ## Authored default moderate named_dot
 
 Calculate $\text{det}(X)$, if
-$X=[\begin{aligned}-6 & 8 \\ -8 & -2\end{aligned}].$
+$X=\begin{bmatrix}-6 & 8 \\ -8 & -2\end{bmatrix}.$
 
 - $76$
 - $-76$
@@ -734,7 +734,7 @@ $$
 ## Authored default moderate named_dot_indented
 
 Calculate $\text{det}(N)$, if
-    $N=[\begin{aligned}2 & 3 \\ -9 & -2\end{aligned}].$
+    $N=\begin{bmatrix}2 & 3 \\ -9 & -2\end{bmatrix}.$
 
 - $23$
 - $-12$
@@ -757,7 +757,7 @@ $$
 ## Authored default moderate named_dot_indented
 
 Calculate $\text{det}(X)$, if
-    $X=[\begin{aligned}-6 & 8 \\ -8 & -2\end{aligned}].$
+    $X=\begin{bmatrix}-6 & 8 \\ -8 & -2\end{bmatrix}.$
 
 - $76$
 - $-76$
@@ -780,7 +780,7 @@ $$
 ## Authored default moderate named_dot_swapped
 
 Calculate $\text{det}(N)$, if
-    $N=[\begin{aligned}2 & 3 \\ -9 & -2\end{aligned}].$
+    $N=\begin{bmatrix}2 & 3 \\ -9 & -2\end{bmatrix}.$
 
 - $23$
 - $-12$
@@ -803,7 +803,7 @@ $$
 ## Authored default moderate named_dot_swapped
 
 Calculate $\text{det}(X)$, if
-    $X=[\begin{aligned}-6 & 8 \\ -8 & -2\end{aligned}].$
+    $X=\begin{bmatrix}-6 & 8 \\ -8 & -2\end{bmatrix}.$
 
 - $76$
 - $-76$
@@ -914,7 +914,7 @@ $$
 ## Authored default moderate named_parentheses_blank
 
 Calculate $det(N)$ given that
-$N=[\begin{aligned}2 & 3 \\ -9 & -2\end{aligned}].$
+$N=\begin{bmatrix}2 & 3 \\ -9 & -2\end{bmatrix}.$
 
 $det(N)=$
 {{field-1}}
@@ -936,7 +936,7 @@ $$
 ## Authored default moderate named_parentheses_blank
 
 Calculate $det(X)$ given that
-$X=[\begin{aligned}-6 & 8 \\ -8 & -2\end{aligned}].$
+$X=\begin{bmatrix}-6 & 8 \\ -8 & -2\end{bmatrix}.$
 
 $det(X)=$
 {{field-1}}
@@ -958,7 +958,7 @@ $$
 ## Authored default hard named_dot
 
 Calculate $\text{det}(B)$, if
-$B=[\begin{aligned}-6 & -12 \\ 8 & -13\end{aligned}].$
+$B=\begin{bmatrix}-6 & -12 \\ 8 & -13\end{bmatrix}.$
 
 - $176$
 - $-174$
@@ -981,7 +981,7 @@ $$
 ## Authored default hard named_dot
 
 Calculate $\text{det}(M)$, if
-$M=[\begin{aligned}15 & -6 \\ 14 & -15\end{aligned}].$
+$M=\begin{bmatrix}15 & -6 \\ 14 & -15\end{bmatrix}.$
 
 - $141$
 - $-309$
@@ -1048,7 +1048,7 @@ $$
 ## Authored default hard named_parentheses_blank
 
 Calculate $det(B)$ given that
-$B=[\begin{aligned}-6 & -12 \\ 8 & -13\end{aligned}].$
+$B=\begin{bmatrix}-6 & -12 \\ 8 & -13\end{bmatrix}.$
 
 $det(B)=$
 {{field-1}}
@@ -1070,7 +1070,7 @@ $$
 ## Authored default hard named_parentheses_blank
 
 Calculate $det(M)$ given that
-$M=[\begin{aligned}15 & -6 \\ 14 & -15\end{aligned}].$
+$M=\begin{bmatrix}15 & -6 \\ 14 & -15\end{bmatrix}.$
 
 $det(M)=$
 {{field-1}}

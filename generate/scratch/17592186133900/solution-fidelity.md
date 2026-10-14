@@ -352,7 +352,7 @@ The region $D$ can be represented in Cartesian coordinates as $\Delta_1\setminus
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D - 3 y^{2}\,\mathrm dA & =\iint_{\Delta_1}- 3 y^{2}\,\mathrm dA-\iint_{\Delta_2}- 3 y^{2}\,\mathrm dA\\ & =\int_{-4}^{2}\int_{-3}^{5}- 3 y^{2}\,\mathrm d x\,\mathrm d y-\int_{-2}^{1}\int_{1}^{3}- 3 y^{2}\,\mathrm d x\,\mathrm d y\\ & =\int_{-3}^{5}-3\,\mathrm d x\cdot \int_{-4}^{2}y^{2}\,\mathrm d y-\int_{1}^{3}-3\,\mathrm d x\cdot \int_{-2}^{1}y^{2}\,\mathrm d y\\ & =- 3 x\big|_{-3}^{5}\cdot \frac{y^3}{3}\big|_{-4}^{2}-- 3 x\big|_{1}^{3}\cdot \frac{y^3}{3}\big|_{-2}^{1}\\ & =(\left(-15\right)-\left(9\right))\cdot (\left(\frac{8}{3}\right)-\left(- \frac{64}{3}\right))-(\left(-9\right)-\left(-3\right))\cdot (\left(\frac{1}{3}\right)-\left(- \frac{8}{3}\right))\\ & =\left(-24\right)\cdot \left(24\right)-\left(-6\right)\cdot \left(3\right)\\ & =-558.\end{aligned}
+\begin{aligned}\iint_D - 3 y^{2}\,\mathrm dA & =\iint_{\Delta_1}- 3 y^{2}\,\mathrm dA-\iint_{\Delta_2}- 3 y^{2}\,\mathrm dA\\ & =\int_{-4}^{2}\int_{-3}^{5}- 3 y^{2}\,\mathrm d x\,\mathrm d y-\int_{-2}^{1}\int_{1}^{3}- 3 y^{2}\,\mathrm d x\,\mathrm d y\\ & =\int_{-3}^{5}-3\,\mathrm d x\cdot \int_{-4}^{2}y^{2}\,\mathrm d y-\int_{1}^{3}-3\,\mathrm d x\cdot \int_{-2}^{1}y^{2}\,\mathrm d y\\ & =- 3 x\big|_{-3}^{5}\cdot \frac{y^3}{3}\big|_{-4}^{2}-\left(- 3 x\big|_{1}^{3}\cdot \frac{y^3}{3}\big|_{-2}^{1}\right)\\ & =(\left(-15\right)-\left(9\right))\cdot (\left(\frac{8}{3}\right)-\left(- \frac{64}{3}\right))-(\left(-9\right)-\left(-3\right))\cdot (\left(\frac{1}{3}\right)-\left(- \frac{8}{3}\right))\\ & =\left(-24\right)\cdot \left(24\right)-\left(-6\right)\cdot \left(3\right)\\ & =-558.\end{aligned}
 $$
 
 Checked original operation fragments in order:
@@ -360,7 +360,7 @@ Checked original operation fragments in order:
 - `\iint_{\Delta_1}- 3 y^{2}\,\mathrm dA-\iint_{\Delta_2}- 3 y^{2}\,\mathrm dA`
 - `\int_{-4}^{2}\int_{-3}^{5}- 3 y^{2}\,\mathrm d x\,\mathrm d y-\int_{-2}^{1}\int_{1}^{3}- 3 y^{2}\,\mathrm d x\,\mathrm d y`
 - `\int_{-3}^{5}-3\,\mathrm d x\cdot \int_{-4}^{2}y^{2}\,\mathrm d y-\int_{1}^{3}-3\,\mathrm d x\cdot \int_{-2}^{1}y^{2}\,\mathrm d y`
-- `- 3 x\big|_{-3}^{5}\cdot \frac{y^3}{3}\big|_{-4}^{2}-- 3 x\big|_{1}^{3}\cdot \frac{y^3}{3}\big|_{-2}^{1}`
+- `- 3 x\big|_{-3}^{5}\cdot \frac{y^3}{3}\big|_{-4}^{2}-\left(- 3 x\big|_{1}^{3}\cdot \frac{y^3}{3}\big|_{-2}^{1}\right)`
 - `(\left(-15\right)-\left(9\right))\cdot (\left(\frac{8}{3}\right)-\left(- \frac{64}{3}\right))-(\left(-9\right)-\left(-3\right))\cdot (\left(\frac{1}{3}\right)-\left(- \frac{8}{3}\right))`
 - `\left(-24\right)\cdot \left(24\right)-\left(-6\right)\cdot \left(3\right)`
 
@@ -1234,7 +1234,7 @@ The region $D$ can be represented in Cartesian coordinates as $\Delta_1\setminus
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D - 6 x y\,\mathrm dA & =\iint_{\Delta_1}- 6 x y\,\mathrm dA-\iint_{\Delta_2}- 6 x y\,\mathrm dA\\ & =\int_{-2}^{1}\int_{-1}^{3}- 6 x y\,\mathrm d x\,\mathrm d y-\int_{-1}^{0}\int_{0}^{2}- 6 x y\,\mathrm d x\,\mathrm d y\\ & =\int_{-1}^{3}- 6 x\,\mathrm d x\cdot \int_{-2}^{1}y\,\mathrm d y-\int_{0}^{2}- 6 x\,\mathrm d x\cdot \int_{-1}^{0}y\,\mathrm d y\\ & =- 3 x^{2}\big|_{-1}^{3}\cdot \frac{y^2}{2}\big|_{-2}^{1}-- 3 x^{2}\big|_{0}^{2}\cdot \frac{y^2}{2}\big|_{-1}^{0}\\ & =(\left(-27\right)-\left(-3\right))\cdot (\left(\frac{1}{2}\right)-\left(2\right))-(\left(-12\right)-\left(0\right))\cdot (\left(0\right)-\left(\frac{1}{2}\right))\\ & =\left(-24\right)\cdot \left(- \frac{3}{2}\right)-\left(-12\right)\cdot \left(- \frac{1}{2}\right)\\ & =30.\end{aligned}
+\begin{aligned}\iint_D - 6 x y\,\mathrm dA & =\iint_{\Delta_1}- 6 x y\,\mathrm dA-\iint_{\Delta_2}- 6 x y\,\mathrm dA\\ & =\int_{-2}^{1}\int_{-1}^{3}- 6 x y\,\mathrm d x\,\mathrm d y-\int_{-1}^{0}\int_{0}^{2}- 6 x y\,\mathrm d x\,\mathrm d y\\ & =\int_{-1}^{3}- 6 x\,\mathrm d x\cdot \int_{-2}^{1}y\,\mathrm d y-\int_{0}^{2}- 6 x\,\mathrm d x\cdot \int_{-1}^{0}y\,\mathrm d y\\ & =- 3 x^{2}\big|_{-1}^{3}\cdot \frac{y^2}{2}\big|_{-2}^{1}-\left(- 3 x^{2}\big|_{0}^{2}\cdot \frac{y^2}{2}\big|_{-1}^{0}\right)\\ & =(\left(-27\right)-\left(-3\right))\cdot (\left(\frac{1}{2}\right)-\left(2\right))-(\left(-12\right)-\left(0\right))\cdot (\left(0\right)-\left(\frac{1}{2}\right))\\ & =\left(-24\right)\cdot \left(- \frac{3}{2}\right)-\left(-12\right)\cdot \left(- \frac{1}{2}\right)\\ & =30.\end{aligned}
 $$
 
 Checked original operation fragments in order:
@@ -1242,7 +1242,7 @@ Checked original operation fragments in order:
 - `\iint_{\Delta_1}- 6 x y\,\mathrm dA-\iint_{\Delta_2}- 6 x y\,\mathrm dA`
 - `\int_{-2}^{1}\int_{-1}^{3}- 6 x y\,\mathrm d x\,\mathrm d y-\int_{-1}^{0}\int_{0}^{2}- 6 x y\,\mathrm d x\,\mathrm d y`
 - `\int_{-1}^{3}- 6 x\,\mathrm d x\cdot \int_{-2}^{1}y\,\mathrm d y-\int_{0}^{2}- 6 x\,\mathrm d x\cdot \int_{-1}^{0}y\,\mathrm d y`
-- `- 3 x^{2}\big|_{-1}^{3}\cdot \frac{y^2}{2}\big|_{-2}^{1}-- 3 x^{2}\big|_{0}^{2}\cdot \frac{y^2}{2}\big|_{-1}^{0}`
+- `- 3 x^{2}\big|_{-1}^{3}\cdot \frac{y^2}{2}\big|_{-2}^{1}-\left(- 3 x^{2}\big|_{0}^{2}\cdot \frac{y^2}{2}\big|_{-1}^{0}\right)`
 - `(\left(-27\right)-\left(-3\right))\cdot (\left(\frac{1}{2}\right)-\left(2\right))-(\left(-12\right)-\left(0\right))\cdot (\left(0\right)-\left(\frac{1}{2}\right))`
 - `\left(-24\right)\cdot \left(- \frac{3}{2}\right)-\left(-12\right)\cdot \left(- \frac{1}{2}\right)`
 
@@ -1788,7 +1788,7 @@ The region $D$ can be represented in Cartesian coordinates as $\Delta_1\setminus
 Therefore, our double integral becomes
 
 $$
-\begin{aligned}\iint_D - 12 x y\,\mathrm dA & =\iint_{\Delta_1}- 12 x y\,\mathrm dA-\iint_{\Delta_2}- 12 x y\,\mathrm dA\\ & =\int_{-2}^{1}\int_{1}^{4}- 12 x y\,\mathrm d x\,\mathrm d y-\int_{-1}^{0}\int_{2}^{3}- 12 x y\,\mathrm d x\,\mathrm d y\\ & =\int_{1}^{4}- 6 x\,\mathrm d x\cdot \int_{-2}^{1}2 y\,\mathrm d y-\int_{2}^{3}- 6 x\,\mathrm d x\cdot \int_{-1}^{0}2 y\,\mathrm d y\\ & =- 3 x^{2}\big|_{1}^{4}\cdot y^2\big|_{-2}^{1}-- 3 x^{2}\big|_{2}^{3}\cdot y^2\big|_{-1}^{0}\\ & =(\left(-48\right)-\left(-3\right))\cdot (\left(1\right)-\left(4\right))-(\left(-27\right)-\left(-12\right))\cdot (\left(0\right)-\left(1\right))\\ & =\left(-45\right)\cdot \left(-3\right)-\left(-15\right)\cdot \left(-1\right)\\ & =120.\end{aligned}
+\begin{aligned}\iint_D - 12 x y\,\mathrm dA & =\iint_{\Delta_1}- 12 x y\,\mathrm dA-\iint_{\Delta_2}- 12 x y\,\mathrm dA\\ & =\int_{-2}^{1}\int_{1}^{4}- 12 x y\,\mathrm d x\,\mathrm d y-\int_{-1}^{0}\int_{2}^{3}- 12 x y\,\mathrm d x\,\mathrm d y\\ & =\int_{1}^{4}- 6 x\,\mathrm d x\cdot \int_{-2}^{1}2 y\,\mathrm d y-\int_{2}^{3}- 6 x\,\mathrm d x\cdot \int_{-1}^{0}2 y\,\mathrm d y\\ & =- 3 x^{2}\big|_{1}^{4}\cdot y^2\big|_{-2}^{1}-\left(- 3 x^{2}\big|_{2}^{3}\cdot y^2\big|_{-1}^{0}\right)\\ & =(\left(-48\right)-\left(-3\right))\cdot (\left(1\right)-\left(4\right))-(\left(-27\right)-\left(-12\right))\cdot (\left(0\right)-\left(1\right))\\ & =\left(-45\right)\cdot \left(-3\right)-\left(-15\right)\cdot \left(-1\right)\\ & =120.\end{aligned}
 $$
 
 Checked original operation fragments in order:
@@ -1796,7 +1796,7 @@ Checked original operation fragments in order:
 - `\iint_{\Delta_1}- 12 x y\,\mathrm dA-\iint_{\Delta_2}- 12 x y\,\mathrm dA`
 - `\int_{-2}^{1}\int_{1}^{4}- 12 x y\,\mathrm d x\,\mathrm d y-\int_{-1}^{0}\int_{2}^{3}- 12 x y\,\mathrm d x\,\mathrm d y`
 - `\int_{1}^{4}- 6 x\,\mathrm d x\cdot \int_{-2}^{1}2 y\,\mathrm d y-\int_{2}^{3}- 6 x\,\mathrm d x\cdot \int_{-1}^{0}2 y\,\mathrm d y`
-- `- 3 x^{2}\big|_{1}^{4}\cdot y^2\big|_{-2}^{1}-- 3 x^{2}\big|_{2}^{3}\cdot y^2\big|_{-1}^{0}`
+- `- 3 x^{2}\big|_{1}^{4}\cdot y^2\big|_{-2}^{1}-\left(- 3 x^{2}\big|_{2}^{3}\cdot y^2\big|_{-1}^{0}\right)`
 - `(\left(-48\right)-\left(-3\right))\cdot (\left(1\right)-\left(4\right))-(\left(-27\right)-\left(-12\right))\cdot (\left(0\right)-\left(1\right))`
 - `\left(-45\right)\cdot \left(-3\right)-\left(-15\right)\cdot \left(-1\right)`
 

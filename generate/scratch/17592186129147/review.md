@@ -1,6 +1,6 @@
 # Original banks and generated variants
 
-Original source assets were inspected at native resolution. The following source records preserve raw pixels, prompt and full worked-solution wording. Their layout label anomalies are explicitly evidence-only. Generated records use labeled main plots plus true-function local zooms. Coefficient magnitude is not an assessed slot.
+Original source assets were inspected at native resolution. The following source records preserve raw pixels, prompt and full worked-solution wording. All original panel labels are present; raw source records are evidence-only. Generated records use labeled main plots plus true-function local zooms. Coefficient magnitude is not an assessed slot.
 
 ## q-38630 — moderate
 

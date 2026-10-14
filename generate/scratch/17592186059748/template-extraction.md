@@ -25,3 +25,6 @@ Easy default bounds: |entry|<=9, at most one zero and at most one negative, at l
 Content UUIDs depend on actual printed prompt, full fixed solution, field layout and sorted complete bank. The mathematical fingerprint depends only on the ordered matrix; names, layout, profile, option order and seed cannot inflate assessed task counts. Choice shuffling is seeded after correct identity recording. Different banks on an identical matrix get different content IDs. Harmless profile aliases with identical learner output do not change IDs.
 
 Plot extraction/spec: none. No assessed image references or parameter-dependent visual objects; no image renderer is needed at steps 5/7.
+
+
+Current-source refresh at basis 2200: six named matrix prompts use bmatrix after an existing source formatting repair. All entries, choices, designations and worked solutions are unchanged. Generator v2 matches this repaired notation; original basis 1356 evidence is retained in reference/source-basis-1356.json. Native grading is rebuilt against the current application library in check-engine; native-build.json retains hashes.

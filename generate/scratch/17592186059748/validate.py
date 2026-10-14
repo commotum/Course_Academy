@@ -11,7 +11,7 @@ import sympy as sp
 from sympy.parsing.sympy_parser import parse_expr,standard_transformations,implicit_multiplication_application
 D=pathlib.Path(__file__).parent
 spec=importlib.util.spec_from_file_location('det_generator',D.with_suffix('.py'));g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
-MATRIX=re.compile(r'\\begin\{(aligned|vmatrix)\}(-?\d+) & (-?\d+) \\\\ (-?\d+) & (-?\d+)\\end\{\1\}')
+MATRIX=re.compile(r'\\begin\{(aligned|vmatrix|bmatrix)\}(-?\d+) & (-?\d+) \\\\ (-?\d+) & (-?\d+)\\end\{\1\}')
 def scalar(t):
     return parse_expr(t.strip().rstrip('.').replace('\\cdot','*'),transformations=standard_transformations+(implicit_multiplication_application,))
 def check(record):
@@ -181,7 +181,7 @@ def main():
         except AssertionError:pass
         else:raise AssertionError('Corrupt matrix/arithmetic structure escaped')
     (D/'native-input.json').write_text(json.dumps(native_cases,indent=2)+'\n')
-    engine=pathlib.Path('generate/runs/current/check-engine')
+    engine=D/'check-engine'
     subprocess.run([str(engine),str(D/'native-input.json'),str(D/'native-report.json')],check=True)
     nr=json.loads((D/'native-report.json').read_text())
     result={'passed':True,'provenance':g.PROVENANCE,'source_questions':9,'source_prompts_byte_exact':9,'source_complete_banks_exact':9,'source_radio_banks_exact':6,'source_choices_exact':33,'source_distractors_exact':24,'source_designations_matched':8,'source_designations_present':8,'source_designations_inferred':1,'source_solutions_byte_exact':8,'source_solutions_present':8,'source_solutions_authored':1,'source_mathematical_repairs':0,'source_presentation_repairs':0,'authored_unrated_level':'q-11648 moderate','authored_missing_level':'hard','printed_math_checks':checks,'exhaustive_observed_covariance_profile_instances':covariance_checks,'unique_math_tasks_in_140_samples_per_level_template':variety,'all_five_correct_option_positions_observed':True,'native_records':len(native_cases),'native_accepted':nr['accepted_checks'],'native_rejected':nr['rejected_checks'],'native_unresolved':nr['documented_unresolved_checks'],'native_engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'generator_sha256':hashlib.sha256(D.with_suffix('.py').read_bytes()).hexdigest(),'fidelity':fidelity,'limitations':['Scalar observed banks underdetermine original distractor errors; numerical covariance replay is limited to common integer scaling and excluded from default authored generation.','q-11648 has no captured rating/correct ref/solution; moderate, 6 and full solution are authored/inferred separately.','No original hard rating exists; integer arithmetic bounds are an authored same-KP scope claim.'],'database_writes':0}

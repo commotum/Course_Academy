@@ -9,6 +9,8 @@ an odd multiple root, using the same ordered graph-reading method.
 
 Public replay profiles retain original factor typography. Decoded source math
 contains single TeX command backslashes; JSON escaping needs no source repair.
+Explicit -raw profiles preserve source omissions and literal anchor assets;
+changed raw masks remain parameterized. These profiles are ineligible evidence.
 No DB writes. See adjoining extraction and validation evidence.
 """
 from __future__ import annotations
@@ -219,8 +221,11 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     rng=random.Random(seed)
     eligible=[k for k,v in DATA.items() if v[0]==level and k not in RAW_COLLISION_PROFILES]
     replay=[k for k,v in DATA.items() if v[0]==level]
-    sid=profile or template or rng.choice(eligible)
-    if sid not in replay or template not in (None,sid,'graph-to-polynomial'): raise ValueError('profile/template level mismatch')
+    selected=profile or template or rng.choice(eligible)
+    evidence_only=selected.endswith('-raw')
+    sid=selected.removesuffix('-raw')
+    if evidence_only and sid not in QS: raise ValueError('raw profiles require source family')
+    if sid not in replay or template not in (None,sid,selected,'graph-to-polynomial'): raise ValueError('profile/template level mismatch')
     if parameters is None: p={'h':rng.randint(-3,3),'s':rng.choice([1,2]) if level!='hard' else 1,'v':rng.choice(['1','2','1/2'])}
     else: p=dict(parameters)
     if set(p)!={'h','s','v'} or type(p['h'])!=int or type(p['s'])!=int or abs(p['h'])>3 or p['s'] not in ([1] if level=='hard' else [1,2]) or sp.Rational(p['v']) not in (sp.Rational(1,2),sp.Integer(1),sp.Integer(2)): raise ValueError('same-level parameter bounds')
@@ -229,20 +234,39 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     imagepath,plot=render_plot(roots,mults,c)
     prompt='![]('+imagepath+')\n\nWhich of the following could be the equation of the polynomial curve shown above?'
     base=sid.removesuffix('-authored')
+    if evidence_only:
+        # Identical unaltered geometry can reuse the captured raster; changed
+        # raw parameters use the same polynomial renderer as normal generation.
+        if h==0 and s==1 and sp.Rational(v)==1:
+            imagepath=str((HERE/'originals'/(sid+'.png')).resolve())
+            plot=dict(plot,asset_role='source-original',source_asset_sha256=hashlib.sha256(Path(imagepath).read_bytes()).hexdigest())
+        else: plot=dict(plot,asset_role='parameterized-raw-variant')
+        prompt=re.sub(r'!\[\]\(.*?\)',lambda _: '![]('+imagepath+')',QS[sid][':question/problem'])
     solution=source_solution(base,h,s,v,values[ci]) if base in QS else authored_solution(roots,mults,values[ci])
-    identity={'version':VERSION,'difficulty':level,'prompt':prompt,'solution':solution,'bank':sorted(values)}
+    identity={'version':VERSION,'difficulty':level if not evidence_only or ':question/difficulty' in QS[sid] else None,'prompt':prompt,'solution':solution if not evidence_only or ':question/worked-solution' in QS[sid] else None,'bank':sorted(values) if not evidence_only or ':question/answer-fields' in QS[sid] else []}
     digest=hashlib.sha256(json.dumps(identity,sort_keys=True).encode()).hexdigest()
     qid=str(uuid.uuid5(uuid.NAMESPACE_URL,digest));fid=str(uuid.uuid5(uuid.UUID(qid),'selection'))
     answers=[{':answer/id':str(uuid.uuid5(uuid.UUID(fid),str(parse_polynomial(z).as_expr()))),':answer/type':':answer.type/math',':answer/value':z} for z in values]
     correctid=answers[ci][':answer/id'];rng.shuffle(answers)
     mathkey={'roots':roots,'categories':list(map(category,mults)),'leading_sign':int(sp.sign(c)),'assessed_information':'unscaled graph local root behavior'}
-    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correctid]}]},'generation':{'version':VERSION,'seed':seed,'template':sid,'profile':sid,'parameters':p,'source':{k:SOURCE[k] for k in ('database','basis','lineage')},'source_ids':[base] if base in QS else [],'raw_graphical_pair_collision':sid in RAW_COLLISION_PROFILES,'eligible_default':sid not in RAW_COLLISION_PROFILES,'authored_bank':sid.endswith('-authored') or sid in ('q-38763','q-38765') or level=='hard','authored_hard':level=='hard','authored_field':sid in ('q-38763','q-38765'),'inferred_missing_key':sid=='q-38668','math_fingerprint':hashlib.sha256(json.dumps(mathkey,sort_keys=True).encode()).hexdigest(),'math_task':mathkey,'plot':plot,'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':matplotlib.__version__}}
+    record={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correctid]}]},'generation':{'version':VERSION,'seed':seed,'template':sid,'profile':selected,'parameters':p,'source':{k:SOURCE[k] for k in ('database','basis','lineage')},'source_ids':[base] if base in QS else [],'raw_graphical_pair_collision':sid in RAW_COLLISION_PROFILES,'evidence_only':evidence_only,'eligible_default':not evidence_only and sid not in RAW_COLLISION_PROFILES,'authored_bank':sid.endswith('-authored') or sid in ('q-38763','q-38765') or level=='hard','authored_hard':level=='hard','authored_field':sid in ('q-38763','q-38765'),'inferred_missing_key':sid=='q-38668','math_fingerprint':hashlib.sha256(json.dumps(mathkey,sort_keys=True).encode()).hexdigest(),'math_task':mathkey,'plot':plot,'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':matplotlib.__version__}}
+
+    if evidence_only:
+        q=record['question'];original=QS[sid]
+        for attr in (':question/difficulty',':question/worked-solution',':question/answer-fields'):
+            if attr not in original: q.pop(attr,None)
+        if ':question/answer-fields' in original:
+            for field,oldfield in zip(q[':question/answer-fields'],original[':question/answer-fields']):
+                if ':answer-field/correct' not in oldfield: field.pop(':answer-field/correct',None)
+        record['generation'].update(authored_bank=False,authored_field=False,inferred_missing_key=False,
+                                    original_attribute_presence={attr:attr in original for attr in (':question/difficulty',':question/worked-solution',':question/answer-fields')})
+    return record
 
 def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
 def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)
 def generate_hard(seed=0,**kw):return generate('hard',seed,**kw)
 def markdown(r):
- q=r['question'];return q[':question/problem']+'\n\n'+'\n\n'.join('- $'+a[':answer/value']+'$' for a in q[':question/answer-fields'][0][':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
+ q=r['question'];return q[':question/problem']+'\n\n'+'\n\n'.join('- $'+a[':answer/value']+'$' for f in q.get(':question/answer-fields',[]) for a in f[':answer-field/choices'])+'\n\n'+q.get(':question/worked-solution','')
 if __name__=='__main__':
  a=argparse.ArgumentParser();a.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');a.add_argument('--seed',type=int,default=0);a.add_argument('--count',type=int,default=1);a.add_argument('--format',choices=['markdown','json'],default='markdown');a.add_argument('--template');a.add_argument('--profile');args=a.parse_args()
  records=[generate(l,args.seed+i,template=args.template,profile=args.profile) for l in (['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]) for i in range(args.count)]

@@ -36,7 +36,10 @@ def equation(e):return tex(e[0])+'='+tex(e[1])
 def normalized(e):
  residual=s.expand(e[0]-e[1]);a=residual.coeff(D)
  if a==0:raise ValueError('No derivative coefficient')
- return s.simplify(s.expand(residual/a))
+ r=s.cancel(s.expand(residual/a))
+ if s.diff(r,y,2)==0 and s.diff(r,D,2)==0:
+  return D+canonical_expression(s.diff(r,y))*y+canonical_expression(r.subs({D:0,y:0}))
+ return s.simplify(r)
 def data(t,p):
  """Each branch preserves source operations, full bank and solution sequence."""
  if set(p)!=set(ORIGINAL[t]) or any(type(v)!=int for v in p.values()):raise ValueError('Integer parameter shape')
@@ -252,10 +255,15 @@ def generate_hard(seed=0,**kwargs):return generate('hard',seed,**kwargs)
 def standard(e):
  l,r=e
  return s.expand(l).coeff(D)==1 and not r.has(D,y) and s.simplify(l-D).subs(y,0)==0 and s.diff(l-D,y,2)==0
+def canonical_expression(e):
+ # Contract double-angle quotients using the actual denominator argument;
+ # CAS heuristics alone do not normalize sin(16x)/cos(8x) consistently.
+ for C in s.denom(s.together(e)).atoms(s.cos):
+  arg=C.args[0];e=e.xreplace({s.sin(2*arg):2*s.sin(arg)*C})
+ return s.factor(s.trigsimp(s.cancel(e)))
 def semantic(P,Q,domain,t=None):
- # Normalized ODE, domain and operative information workload; no bank/seed aliases.
  workload='square-expand-cancel' if t=='q-16401' else 'rational-collect-divide' if t=='rational-collect' else t
- return digest([s.srepr(s.factor(s.trigsimp(s.cancel(P)))),s.srepr(s.factor(s.trigsimp(s.cancel(Q)))),domain,workload])
+ return digest([s.srepr(canonical_expression(P)),s.srepr(canonical_expression(Q)),domain,workload])
 def markdown(r):
  q=r['question'];chunks=[q[':question/problem']]
  for f in q.get(':question/answer-fields',[]):
@@ -266,15 +274,18 @@ def markdown(r):
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=(*LEVELS,'all'),required=True);ap.add_argument('--count',type=int,default=1);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--format',choices=('json','markdown'),default='json');ap.add_argument('--template');ap.add_argument('--parameters');ap.add_argument('--profile');a=ap.parse_args()
  if a.count<1 or a.count>100:ap.error('Count must be in 1..100')
- out=[];seen=set()
- for i in range(2000):
-  if len(out)==a.count:break
-  try:r=generate(LEVELS[len(out)%3] if a.difficulty=='all' else a.difficulty,a.seed+i,a.template,parameters=json.loads(a.parameters) if a.parameters else None,profile=a.profile)
-  except ValueError:
-   if a.parameters or a.difficulty not in LEVELS:raise
-   continue
-  fp=r['generation']['mathematical_fingerprint']
-  if fp not in seen:out.append(r);seen.add(fp)
- if len(out)<a.count:raise ValueError('Bounded distinct count unavailable; returned count is not padded')
+ out=[]
+ for level in LEVELS if a.difficulty=='all' else (a.difficulty,):
+  seen=set();batch=[]
+  for i in range(2000):
+   if len(batch)==a.count:break
+   try:r=generate(level,a.seed+i,a.template,parameters=json.loads(a.parameters) if a.parameters else None,profile=a.profile)
+   except ValueError:
+    if a.parameters or a.template:raise
+    continue
+   fp=r['generation']['mathematical_fingerprint']
+   if fp not in seen:batch.append(r);seen.add(fp)
+  if len(batch)<a.count:raise ValueError('Bounded distinct count unavailable; returned count is not padded')
+  out.extend(batch)
  print(json.dumps(out,indent=2,ensure_ascii=False) if a.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in out))
 if __name__=='__main__':main()

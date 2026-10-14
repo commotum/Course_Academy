@@ -78,6 +78,31 @@ def check(r,raster=True):
    assert region.any(),'missing raster point'
  return True
 
+def check_raw(r,original,anchor):
+ q=r['question'];assert r['generation']['evidence_only'] and not r['generation']['eligible_default']
+ for attr in (':question/problem',':question/worked-solution',':question/difficulty',':question/answer-fields'):
+  assert (attr in q)==(attr in original),(original[':question/math-academy-id'],attr)
+ for f,old in zip(q.get(':question/answer-fields',[]),original.get(':question/answer-fields',[])):
+  assert (':answer-field/correct' in f)==(':answer-field/correct' in old)
+  assert len(f[':answer-field/choices'])==len(old[':answer-field/choices'])
+  if anchor:
+   assert sorted(a[':answer/value'] for a in f[':answer-field/choices'])==sorted(a[':answer/value'] for a in old[':answer-field/choices'])
+   if ':answer-field/correct' in old:
+    assert next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])==old[':answer-field/correct'][':answer/value']
+ if anchor:
+  if ':question/worked-solution' in original: assert q[':question/worked-solution']==original[':question/worked-solution']
+  prompt=q[':question/problem'];oldprompt=original[':question/problem']
+  dest=re.search(r'!\[\]\((.*?)\)',prompt).group(1);src=re.search(r'!\[\]\((.*?)\)',oldprompt).group(1)
+  assert hashlib.sha256(Path(dest).read_bytes()).digest()==hashlib.sha256((Path('/media/jake/SSD/EDB/math')/src).read_bytes()).digest()
+  assert prompt.replace(dest,src)==oldprompt
+ else:
+  assert r['generation']['plot']['asset_role']=='parameterized-raw-variant'
+  if ':question/worked-solution' in q:
+   final=re.findall(r'\$(y\s*=.*?)\$',q[':question/worked-solution'])[-1].rstrip('.')
+   assert roots_of(read(final))==sorted(zip(r['generation']['plot']['roots'],r['generation']['plot']['multiplicities']))
+ return True
+
+
 def main():
  cases=[];reviews=[];fidelity=[];native=[]
  transcription=json.loads((HERE/'source-plot-transcription.json').read_text());original_root_pixels=0
@@ -88,7 +113,10 @@ def main():
    py=v['zero_y'];assert red[max(0,py-3):py+4,max(0,px-3):px+4].any(),(sid,px,py);original_root_pixels+=1
  for sid,(level,_,_,_) in g.DATA.items():
   if sid not in g.QS:continue
-  case={'source_id':sid,'template':sid,'parameters':{'h':0,'s':1,'v':'1'},'bank_profile':sid,'level':level,'authored_level':sid=='q-38668'};cases.append(case)
+  case={'source_id':sid,'template':sid,'parameters':{'h':0,'s':1,'v':'1'},'bank_profile':sid+'-raw','level':level,'authored_level':sid=='q-38668'};cases.append(case)
+  raw=g.generate(level,template=sid,profile=sid+'-raw',parameters=case['parameters']);check_raw(raw,g.QS[sid],True)
+  changed_raw=g.generate(level,template=sid,profile=sid+'-raw',parameters={'h':2,'s':2,'v':'1/2'});check_raw(changed_raw,g.QS[sid],False)
+  reviews.append({'kind':'raw source evidence (omissions preserved; ineligible)','source_id':sid,'record':raw})
   r=g.generate(level,profile=sid,parameters=case['parameters']);check(r)
   oq=g.QS[sid];fields=oq.get(':question/answer-fields',[])
   original=[a[':answer/value'] for a in fields[0][':answer-field/choices']] if fields else []
@@ -116,6 +144,7 @@ def main():
    for j in range(2):
     r=g.generate(level,seed=j+12,profile=sid,parameters={'h':[-2,2][j],'s':1 if level=='hard' else [1,2][j],'v':['1/2','2'][j]});check(r);reviews.append({'kind':'generated variant','record':r})
  for item in reviews:
+  if item['record']['generation']['evidence_only']:continue
   r=item['record'];f=r['question'][':question/answer-fields'][0]
   checks=[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'owned radio choice native grading'} for a in f[':answer-field/choices']]
   native.append({'label':r['generation']['profile']+'-'+str(len(native)),'record':r,'checks':checks})
@@ -147,7 +176,7 @@ def main():
  (HERE/'source-cases.json').write_text(json.dumps(cases,indent=2));(HERE/'review.json').write_text(json.dumps(reviews,indent=2));(HERE/'native-input.json').write_text(json.dumps(native,indent=2))
  engine=ROOT/'generate/runs/current/check-engine'
  subprocess.run([str(engine),str(HERE/'native-input.json'),str(HERE/'native-report.json')],check=True)
- result={'status':'pass_with_documented_raw_bank_ineligibility','original_raster_root_points_checked':original_root_pixels,'source_total':10,'source_replayed':10,'original_banks_matched':8,'original_options_matched':40,'original_correct_designations_matched':7,'missing_correct_designation':1,'authored_fields':2,'source_solution_prose_stages_matched':9,'source_solution_prose_stages_total':9,'source_full_exact_solutions':sum(z['solution_full_exact'] for z in fidelity),'graphically_colliding_raw_banks':['q-38671','q-38774'],'all_normal_banks_graphically_distinct':True,'finite_mathematical_tasks':{l:len(v) for l,v in finite.items()},'exhaustive_bank_instances':operations,'native_checks':sum(len(z['checks']) for z in native),'review_count':len(reviews),'independent_raster_zero_axes_checked':len(reviews),'raster_points_use_independent_fixed_layout':True,'mutations_rejected':mutation_count,'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':g.matplotlib.__version__},'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'fidelity':fidelity}
+ result={'status':'pass_with_documented_raw_bank_ineligibility','original_raster_root_points_checked':original_root_pixels,'raw_source_prompts_assets_and_presence_matched':10,'changed_raw_masks_checked':10,'raw_missing_correct_ref_preserved':1,'raw_unrated_presence_preserved':1,'raw_fieldless_presence_preserved':2,'source_total':10,'source_replayed':10,'original_banks_matched':8,'original_options_matched':40,'original_correct_designations_matched':7,'missing_correct_designation':1,'authored_fields':2,'source_solution_prose_stages_matched':9,'source_solution_prose_stages_total':9,'source_full_exact_solutions':sum(z['solution_full_exact'] for z in fidelity),'graphically_colliding_raw_banks':['q-38671','q-38774'],'all_normal_banks_graphically_distinct':True,'finite_mathematical_tasks':{l:len(v) for l,v in finite.items()},'exhaustive_bank_instances':operations,'native_checks':sum(len(z['checks']) for z in native),'review_count':len(reviews),'independent_raster_zero_axes_checked':sum(not z['record']['generation']['evidence_only'] for z in reviews),'raster_points_use_independent_fixed_layout':True,'mutations_rejected':mutation_count,'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':g.matplotlib.__version__},'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'fidelity':fidelity}
  (HERE/'validation.json').write_text(json.dumps(result,indent=2))
  # Complete review originals (all banks) and variants, no withheld answer data.
  parts=['# Review — Identifying the Factored Polynomial Shown in a Graph\n\nSource math basis 1356. Original omission/normalization and bank ineligibility are recorded in template-extraction.md.']

@@ -36,8 +36,8 @@ import sympy as sp
 KP_ID = 17592186059748
 KP_UUID = '2129aee3-923d-57de-8bdc-983ffdf787f1'
 TITLE = 'Calculating the Determinant of a 2x2 Matrix With Integer Entries'
-VERSION = 'integer-determinant-v1'
-PROVENANCE = {'database': 'math', 'basis': 1356, 'lineage': '01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
+VERSION = 'integer-determinant-v2'
+PROVENANCE = {'database': 'math', 'basis': 2200, 'lineage': '01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
 TEMPLATES = {
     'named_dot': {'levels': ['easy','moderate','hard'], 'field_type': 'radio', 'sources': ['q-1079']},
     'named_dot_indented': {'levels': ['moderate'], 'field_type': 'radio', 'sources': ['q-1080']},
@@ -102,12 +102,12 @@ def prose(p,template):
     a,b,c,d=(p[k] for k in 'abcd');n=p['name'];m=mat(p);det=a*d-b*c
     bare=template=='bare_dot';vmatrix=template=='vmatrix_dot';blank=template=='named_parentheses_blank'
     if blank:
-        prompt=f'Calculate $det({n})$ given that\n${n}=[{m}].$\n\n$det({n})=$\n{{{{field-1}}}}'
+        prompt=f'Calculate $det({n})$ given that\n${n}={mat(p, 'bmatrix')}.$\n\n$det({n})=$\n{{{{field-1}}}}'
     elif bare: prompt=f'$|{m}|=$'
     elif vmatrix: prompt=f'What is ${mat(p,"vmatrix")}$?'
     else:
         indent='    ' if template in ['named_dot_indented','named_dot_swapped'] else ''
-        prompt=f'Calculate $\\text{{det}}({n})$, if\n{indent}${n}=[{m}].$'
+        prompt=f'Calculate $\\text{{det}}({n})$, if\n{indent}${n}={mat(p, 'bmatrix')}.$'
     if blank:
         substitution=f'({a})({d})-({b})({c})'
         products=f'{a*d}+{abs(b*c)}' if b*c<0 else f'{a*d}-{b*c}'
