@@ -324,7 +324,7 @@ $$
 Let $R$ be the solid region enclosed by $S.$ Then, using the divergence theorem, we have
 
 $$
-\begin{aligned}{∬}_{S}F\cdot dS & ={∭}_{R}8y+4z\,\text{d}V \\  & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{0}^{1}\,8y+4z\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
+\begin{aligned}{∬}_{S}F\cdot dS & ={∭}_{R}(8y+4z)\,\text{d}V \\  & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{0}^{1}\,8y+4z\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
 $$
 
 ## Generated legacy / :question.difficulty/easy
@@ -358,7 +358,7 @@ $$
 Let $R$ be the solid region enclosed by $S.$ Then, using the divergence theorem, we have
 
 $$
-\begin{aligned}{∬}_{S}F\cdot dS & ={∭}_{R}2y+2z\,\text{d}V \\  & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{0}^{1}\,2y+2z\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
+\begin{aligned}{∬}_{S}F\cdot dS & ={∭}_{R}(2y+2z)\,\text{d}V \\  & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{0}^{1}\,2y+2z\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
 $$
 
 ## Generated typeII / :question.difficulty/moderate
@@ -478,7 +478,7 @@ $$
 Therefore, using the divergence theorem, we have
 
 $$
-{∬}_{S}F\cdot dS={∭}_{R}x^{2}-4\,\text{d}V,
+{∬}_{S}F\cdot dS={∭}_{R}(x^{2}-4)\,\text{d}V,
 $$
 
 where $R$ is a type I solid region that can be written as
@@ -490,7 +490,7 @@ $$
 As a result,
 
 $$
-\begin{aligned}{∭}_{R}x^{2}-4\,\text{d}V & ={\int }_{0}^{2}{\int }_{0}^{1}{\int }_{y}^{x^{2}+y+2}\,x^{2}-4\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
+\begin{aligned}{∭}_{R}(x^{2}-4)\,\text{d}V & ={\int }_{0}^{2}{\int }_{0}^{1}{\int }_{y}^{x^{2}+y+2}\,x^{2}-4\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
 $$
 
 ## Generated typeI / :question.difficulty/moderate
@@ -656,7 +656,7 @@ $$
 Let $R$ be the solid region enclosed by $S.$ Then, using the divergence theorem, we have
 
 $$
-\begin{aligned}{∬}_{S}F\cdot dS & ={∭}_{R}x^{2}+4y+8\,\text{d}V \\  & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{0}^{1}\,x^{2}+4y+8\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
+\begin{aligned}{∬}_{S}F\cdot dS & ={∭}_{R}(x^{2}+4y+8)\,\text{d}V \\  & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{0}^{1}\,x^{2}+4y+8\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
 $$
 
 ## Generated box_product / :question.difficulty/easy
@@ -690,7 +690,7 @@ $$
 Let $R$ be the solid region enclosed by $S.$ Then, using the divergence theorem, we have
 
 $$
-\begin{aligned}{∬}_{S}F\cdot dS & ={∭}_{R}3x^{2}+2y+2\,\text{d}V \\  & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{0}^{1}\,3x^{2}+2y+2\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
+\begin{aligned}{∬}_{S}F\cdot dS & ={∭}_{R}(3x^{2}+2y+2)\,\text{d}V \\  & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{0}^{1}\,3x^{2}+2y+2\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
 $$
 
 ## Generated box_collect / :question.difficulty/easy
@@ -724,7 +724,7 @@ $$
 Let $R$ be the solid region enclosed by $S.$ Then, using the divergence theorem, we have
 
 $$
-\begin{aligned}{∬}_{S}F\cdot dS & ={∭}_{R}12x-4z\,\text{d}V \\  & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{0}^{1}\,12x-4z\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
+\begin{aligned}{∬}_{S}F\cdot dS & ={∭}_{R}(12x-4z)\,\text{d}V \\  & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{0}^{1}\,12x-4z\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
 $$
 
 ## Generated box_collect / :question.difficulty/easy
@@ -758,7 +758,7 @@ $$
 Let $R$ be the solid region enclosed by $S.$ Then, using the divergence theorem, we have
 
 $$
-\begin{aligned}{∬}_{S}F\cdot dS & ={∭}_{R}16x-z\,\text{d}V \\  & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{0}^{1}\,16x-z\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
+\begin{aligned}{∬}_{S}F\cdot dS & ={∭}_{R}(16x-z)\,\text{d}V \\  & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{0}^{1}\,16x-z\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
 $$
 
 ## Generated typeIIIlinear / :question.difficulty/moderate
@@ -790,7 +790,7 @@ $$
 Therefore, using the divergence theorem, we have
 
 $$
-{∬}_{S}F\cdot dS={∭}_{R}3z^{2}-16\,\text{d}V,
+{∬}_{S}F\cdot dS={∭}_{R}(3z^{2}-16)\,\text{d}V,
 $$
 
 where $R$ is a type III solid region that can be written as
@@ -802,7 +802,7 @@ $$
 As a result,
 
 $$
-\begin{aligned}{∭}_{R}3z^{2}-16\,\text{d}V & ={\int }_{0}^{1}{\int }_{0}^{1}{\int }_{x^{2}}^{x-z+4}\,3z^{2}-16\,\text{d}y\,\text{d}z\,\text{d}x.\end{aligned}
+\begin{aligned}{∭}_{R}(3z^{2}-16)\,\text{d}V & ={\int }_{0}^{1}{\int }_{0}^{1}{\int }_{x^{2}}^{x-z+4}\,3z^{2}-16\,\text{d}y\,\text{d}z\,\text{d}x.\end{aligned}
 $$
 
 ## Generated typeIIIlinear / :question.difficulty/moderate
@@ -834,7 +834,7 @@ $$
 Therefore, using the divergence theorem, we have
 
 $$
-{∬}_{S}F\cdot dS={∭}_{R}9z^{2}-4\,\text{d}V,
+{∬}_{S}F\cdot dS={∭}_{R}(9z^{2}-4)\,\text{d}V,
 $$
 
 where $R$ is a type III solid region that can be written as
@@ -846,7 +846,7 @@ $$
 As a result,
 
 $$
-\begin{aligned}{∭}_{R}9z^{2}-4\,\text{d}V & ={\int }_{0}^{1}{\int }_{0}^{1}{\int }_{x^{2}}^{x-z+2}\,9z^{2}-4\,\text{d}y\,\text{d}z\,\text{d}x.\end{aligned}
+\begin{aligned}{∭}_{R}(9z^{2}-4)\,\text{d}V & ={\int }_{0}^{1}{\int }_{0}^{1}{\int }_{x^{2}}^{x-z+2}\,9z^{2}-4\,\text{d}y\,\text{d}z\,\text{d}x.\end{aligned}
 $$
 
 ## Generated box_zero / :question.difficulty/easy
@@ -880,7 +880,7 @@ $$
 Let $R$ be the solid region enclosed by $S.$ Then, using the divergence theorem, we have
 
 $$
-\begin{aligned}{∬}_{S}F\cdot dS & ={∭}_{R}4xz+8x\,\text{d}V \\  & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{0}^{1}\,4xz+8x\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
+\begin{aligned}{∬}_{S}F\cdot dS & ={∭}_{R}(4xz+8x)\,\text{d}V \\  & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{0}^{1}\,4xz+8x\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
 $$
 
 ## Generated box_zero / :question.difficulty/easy
@@ -914,7 +914,7 @@ $$
 Let $R$ be the solid region enclosed by $S.$ Then, using the divergence theorem, we have
 
 $$
-\begin{aligned}{∬}_{S}F\cdot dS & ={∭}_{R}xz+4x\,\text{d}V \\  & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{0}^{1}\,xz+4x\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
+\begin{aligned}{∬}_{S}F\cdot dS & ={∭}_{R}(xz+4x)\,\text{d}V \\  & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{0}^{1}\,xz+4x\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
 $$
 
 ## Generated hard_z / :question.difficulty/hard
@@ -946,7 +946,7 @@ $$
 Therefore, using the divergence theorem, we have
 
 $$
-{∬}_{S}F\cdot dS={∭}_{R}x+4y+4z\,\text{d}V,
+{∬}_{S}F\cdot dS={∭}_{R}(x+4y+4z)\,\text{d}V,
 $$
 
 where $R$ is a type I solid region that can be written as
@@ -958,7 +958,7 @@ $$
 As a result,
 
 $$
-\begin{aligned}{∭}_{R}x+4y+4z\,\text{d}V & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{x+y}^{x^{2}+x+y^{2}+y+3}\,x+4y+4z\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
+\begin{aligned}{∭}_{R}(x+4y+4z)\,\text{d}V & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{x+y}^{x^{2}+x+y^{2}+y+3}\,x+4y+4z\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
 $$
 
 ## Generated hard_z / :question.difficulty/hard
@@ -990,7 +990,7 @@ $$
 Therefore, using the divergence theorem, we have
 
 $$
-{∬}_{S}F\cdot dS={∭}_{R}3x+2y+z\,\text{d}V,
+{∬}_{S}F\cdot dS={∭}_{R}(3x+2y+z)\,\text{d}V,
 $$
 
 where $R$ is a type I solid region that can be written as
@@ -1002,7 +1002,7 @@ $$
 As a result,
 
 $$
-\begin{aligned}{∭}_{R}3x+2y+z\,\text{d}V & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{x+y}^{x^{2}+x+y^{2}+y+1}\,3x+2y+z\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
+\begin{aligned}{∭}_{R}(3x+2y+z)\,\text{d}V & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{x+y}^{x^{2}+x+y^{2}+y+1}\,3x+2y+z\,\text{d}z\,\text{d}y\,\text{d}x.\end{aligned}
 $$
 
 ## Generated hard_x / :question.difficulty/hard
@@ -1034,7 +1034,7 @@ $$
 Therefore, using the divergence theorem, we have
 
 $$
-{∬}_{S}F\cdot dS={∭}_{R}4x+y+4z\,\text{d}V,
+{∬}_{S}F\cdot dS={∭}_{R}(4x+y+4z)\,\text{d}V,
 $$
 
 where $R$ is a type II solid region that can be written as
@@ -1046,7 +1046,7 @@ $$
 As a result,
 
 $$
-\begin{aligned}{∭}_{R}4x+y+4z\,\text{d}V & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{y+z}^{y^{2}+y+z^{2}+z+3}\,4x+y+4z\,\text{d}x\,\text{d}z\,\text{d}y.\end{aligned}
+\begin{aligned}{∭}_{R}(4x+y+4z)\,\text{d}V & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{y+z}^{y^{2}+y+z^{2}+z+3}\,4x+y+4z\,\text{d}x\,\text{d}z\,\text{d}y.\end{aligned}
 $$
 
 ## Generated hard_x / :question.difficulty/hard
@@ -1078,7 +1078,7 @@ $$
 Therefore, using the divergence theorem, we have
 
 $$
-{∬}_{S}F\cdot dS={∭}_{R}x+3y+2z\,\text{d}V,
+{∬}_{S}F\cdot dS={∭}_{R}(x+3y+2z)\,\text{d}V,
 $$
 
 where $R$ is a type II solid region that can be written as
@@ -1090,7 +1090,7 @@ $$
 As a result,
 
 $$
-\begin{aligned}{∭}_{R}x+3y+2z\,\text{d}V & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{y+z}^{y^{2}+y+z^{2}+z+1}\,x+3y+2z\,\text{d}x\,\text{d}z\,\text{d}y.\end{aligned}
+\begin{aligned}{∭}_{R}(x+3y+2z)\,\text{d}V & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{y+z}^{y^{2}+y+z^{2}+z+1}\,x+3y+2z\,\text{d}x\,\text{d}z\,\text{d}y.\end{aligned}
 $$
 
 ## Generated hard_y / :question.difficulty/hard
@@ -1122,7 +1122,7 @@ $$
 Therefore, using the divergence theorem, we have
 
 $$
-{∬}_{S}F\cdot dS={∭}_{R}4x+4y+z\,\text{d}V,
+{∬}_{S}F\cdot dS={∭}_{R}(4x+4y+z)\,\text{d}V,
 $$
 
 where $R$ is a type III solid region that can be written as
@@ -1134,7 +1134,7 @@ $$
 As a result,
 
 $$
-\begin{aligned}{∭}_{R}4x+4y+z\,\text{d}V & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{x+z}^{x^{2}+x+z^{2}+z+3}\,4x+4y+z\,\text{d}y\,\text{d}x\,\text{d}z.\end{aligned}
+\begin{aligned}{∭}_{R}(4x+4y+z)\,\text{d}V & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{x+z}^{x^{2}+x+z^{2}+z+3}\,4x+4y+z\,\text{d}y\,\text{d}x\,\text{d}z.\end{aligned}
 $$
 
 ## Generated hard_y / :question.difficulty/hard
@@ -1166,7 +1166,7 @@ $$
 Therefore, using the divergence theorem, we have
 
 $$
-{∬}_{S}F\cdot dS={∭}_{R}2x+y+3z\,\text{d}V,
+{∬}_{S}F\cdot dS={∭}_{R}(2x+y+3z)\,\text{d}V,
 $$
 
 where $R$ is a type III solid region that can be written as
@@ -1178,5 +1178,5 @@ $$
 As a result,
 
 $$
-\begin{aligned}{∭}_{R}2x+y+3z\,\text{d}V & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{x+z}^{x^{2}+x+z^{2}+z+1}\,2x+y+3z\,\text{d}y\,\text{d}x\,\text{d}z.\end{aligned}
+\begin{aligned}{∭}_{R}(2x+y+3z)\,\text{d}V & ={\int }_{0}^{2}{\int }_{0}^{2}{\int }_{x+z}^{x^{2}+x+z^{2}+z+1}\,2x+y+3z\,\text{d}y\,\text{d}x\,\text{d}z.\end{aligned}
 $$

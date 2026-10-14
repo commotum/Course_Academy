@@ -1,0 +1,694 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186133931,
+      "id": "c7866416-74af-5891-b8c9-f6c1a3a751ac",
+      "title": "Calculating Flux Across a Closed Surface"
+    },
+    "question": {
+      ":question/id": "b88ec328-b07b-59c8-b5ca-845c370aab48",
+      ":question/problem": "Let $S$ be the boundary of the rectangular prism enclosed by the planes $x=0$, $x=3$, $y=0$, $y=4$, $z=0$, $z=2$. Given that the surface $S$ is positively (outward) oriented and $F=(2x+1)\\,i+3z\\,j+xy\\,k$, find the flux of $F$ across $S$.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "1f59656c-3329-5740-b5f8-ddc326ea19de",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "032cfca0-d4c7-593f-a5a3-aab1012eda05",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12"
+            },
+            {
+              ":answer/id": "8cb4b3dc-c2cb-5d37-914a-f48a2864aa7d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-48"
+            },
+            {
+              ":answer/id": "91ff19b4-4fb1-5b33-8740-29fd4a13018e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "16"
+            },
+            {
+              ":answer/id": "6c898fe7-f938-5fa6-bfba-7f26e7e260b6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "24"
+            },
+            {
+              ":answer/id": "028e204c-3647-5d4e-bf9c-a05cd20a6115",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "48"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "028e204c-3647-5d4e-bf9c-a05cd20a6115"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "Let $R$ be a simple solid region bounded by a closed surface $S$ with positive (outward) orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $R,$ then the divergence theorem states that\n\n$$\n{∬}_{S}F\\cdot dS={∭}_{R}\\text{div}\\,F\\,\\text{d}V.\n$$\n\nComputing the divergence of $F,$ we obtain\n\n$$\n\\begin{aligned}\\text{div}\\,F & =\\frac{∂}{∂x}(2x+1)+\\frac{∂}{∂y}(3z)+\\frac{∂}{∂z}(xy) \\\\  & =2+0+0 \\\\  & =2.\\end{aligned}\n$$\n\nLet $R$ be the solid region enclosed by $S.$ Then, using the divergence theorem, we have\n\n$$\n\\begin{aligned}{∬}_{S}F\\cdot dS & ={∭}_{R}2\\,\\text{d}V \\\\  & ={\\int }_{0}^{3}{\\int }_{0}^{4}{\\int }_{0}^{2}2\\,\\text{d}z\\,\\text{d}y\\,\\text{d}x \\\\  & ={\\int }_{0}^{3}2\\,\\text{d}x\\cdot {\\int }_{0}^{4}\\text{d}y\\cdot {\\int }_{0}^{2}\\text{d}z \\\\  & =[2x]_{x=0}^{x=3}\\cdot (4-0)\\cdot (2-0) \\\\  & =(6-0)\\cdot 4\\cdot 2 \\\\  & =48.\\end{aligned}\n$$"
+    },
+    "generation": {
+      "version": "closed-flux-1",
+      "template": "constant",
+      "level": "easy",
+      "seed": 42,
+      "parameters": {
+        "bounds": [
+          "0",
+          "3",
+          "0",
+          "4",
+          "0",
+          "2"
+        ],
+        "a": 2
+      },
+      "profile": "method",
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "source_id": null,
+      "mathematical_fingerprint": "5915d19fa98429e4a207aa38cc40411ae955ff60f728812c22566feff2611ce8",
+      "recipes": [
+        "divergence_integral",
+        "reverse_orientation",
+        "omit_x_width",
+        "omit_y_width",
+        "omit_z_width"
+      ],
+      "bank_operations": [
+        {
+          "recipe": "divergence_integral",
+          "value": "48"
+        },
+        {
+          "recipe": "reverse_orientation",
+          "value": "-48"
+        },
+        {
+          "recipe": "omit_x_width",
+          "value": "16"
+        },
+        {
+          "recipe": "omit_y_width",
+          "value": "12"
+        },
+        {
+          "recipe": "omit_z_width",
+          "value": "24"
+        }
+      ],
+      "domain": {
+        "field_smoothness": "all real coordinates",
+        "geometry": "ordered rectangular box",
+        "workload": "constant divergence and three distinct widths"
+      },
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186133931,
+      "id": "c7866416-74af-5891-b8c9-f6c1a3a751ac",
+      "title": "Calculating Flux Across a Closed Surface"
+    },
+    "question": {
+      ":question/id": "a5929b70-2ba3-54e4-86f9-2085d246efc4",
+      ":question/problem": "Let $S$ be the boundary of the rectangular prism enclosed by the planes $x=0$, $x=2$, $y=0$, $y=3$, $z=0$, $z=4$. Given that the surface $S$ is positively (outward) oriented and $F=(6x+1)\\,i+3z\\,j+xy\\,k$, find the flux of $F$ across $S$.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "364bb67b-39c6-582f-aa52-37c8d59c90fa",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "4875c35e-5cc7-5f95-b56f-e0adf92e5dc9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-144"
+            },
+            {
+              ":answer/id": "62dc7505-0213-5de3-815a-2ab979e8692c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "36"
+            },
+            {
+              ":answer/id": "71d11491-6f80-5eaa-9323-a71daaaf1110",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "48"
+            },
+            {
+              ":answer/id": "1e0daee5-59e9-5d26-844b-9ca94d1535a3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "72"
+            },
+            {
+              ":answer/id": "3830cc86-f16f-5a08-b547-f3768c4a7ba3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "144"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "3830cc86-f16f-5a08-b547-f3768c4a7ba3"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/easy",
+      ":question/worked-solution": "Let $R$ be a simple solid region bounded by a closed surface $S$ with positive (outward) orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $R,$ then the divergence theorem states that\n\n$$\n{∬}_{S}F\\cdot dS={∭}_{R}\\text{div}\\,F\\,\\text{d}V.\n$$\n\nComputing the divergence of $F,$ we obtain\n\n$$\n\\begin{aligned}\\text{div}\\,F & =\\frac{∂}{∂x}(6 x + 1)+\\frac{∂}{∂y}(3z)+\\frac{∂}{∂z}(xy) \\\\  & =6+0+0 \\\\  & =6.\\end{aligned}\n$$\n\nLet $R$ be the solid region enclosed by $S.$ Then, using the divergence theorem, we have\n\n$$\n\\begin{aligned}{∬}_{S}F\\cdot dS & ={∭}_{R}6\\,\\text{d}V \\\\  & ={\\int }_{0}^{2}{\\int }_{0}^{3}{\\int }_{0}^{4}6\\,\\text{d}z\\,\\text{d}y\\,\\text{d}x \\\\  & ={\\int }_{0}^{2}6\\,\\text{d}x\\cdot {\\int }_{0}^{3}\\text{d}y\\cdot {\\int }_{0}^{4}\\text{d}z \\\\  & =[6x]_{x=0}^{x=2}\\cdot (3-0)\\cdot (4-0) \\\\  & =(12-0)\\cdot 3\\cdot 4 \\\\  & =144.\\end{aligned}\n$$"
+    },
+    "generation": {
+      "version": "closed-flux-1",
+      "template": "constant",
+      "level": "easy",
+      "seed": 43,
+      "parameters": {
+        "bounds": [
+          "0",
+          "2",
+          "0",
+          "3",
+          "0",
+          "4"
+        ],
+        "a": 6
+      },
+      "profile": "method",
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "source_id": null,
+      "mathematical_fingerprint": "7f1d0f69e0b2b9d5df61a91502bb5a95104bd6c1059623375311d27f2f47eb3e",
+      "recipes": [
+        "divergence_integral",
+        "reverse_orientation",
+        "omit_x_width",
+        "omit_y_width",
+        "omit_z_width"
+      ],
+      "bank_operations": [
+        {
+          "recipe": "divergence_integral",
+          "value": "144"
+        },
+        {
+          "recipe": "reverse_orientation",
+          "value": "-144"
+        },
+        {
+          "recipe": "omit_x_width",
+          "value": "72"
+        },
+        {
+          "recipe": "omit_y_width",
+          "value": "48"
+        },
+        {
+          "recipe": "omit_z_width",
+          "value": "36"
+        }
+      ],
+      "domain": {
+        "field_smoothness": "all real coordinates",
+        "geometry": "ordered rectangular box",
+        "workload": "constant divergence and three distinct widths"
+      },
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186133931,
+      "id": "c7866416-74af-5891-b8c9-f6c1a3a751ac",
+      "title": "Calculating Flux Across a Closed Surface"
+    },
+    "question": {
+      ":question/id": "03567a20-9924-5d83-a60e-0d5d04a50c36",
+      ":question/problem": "Let $S$ be the boundary of the rectangular prism enclosed by the planes $x=1,$ $x=3,$ $y=-1,$ $y=2,$ $z=\\frac{\\pi}{2},$ $z=\\frac{3 \\pi}{2}.$ Given that the surface $S$ is positively (outward) oriented and $F={x}^{2}\\operatorname{cos}⁡z\\,i+\\operatorname{sin}⁡z\\,j+(x+y)\\,k,$ find the flux of $F$ across $S.$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "c623e14e-6f9a-560a-a274-026f554e90d8",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "919997ee-3e94-5c4c-9579-c11b8fe1f9b7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "0"
+            },
+            {
+              ":answer/id": "0fcf5b97-1ef9-539c-99a0-aba78d8efd5e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "48"
+            },
+            {
+              ":answer/id": "83349fec-f781-5a23-a213-beddba8a7b06",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-24"
+            },
+            {
+              ":answer/id": "e4102f21-1712-55e6-a168-e80f82f42d59",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "24 \\pi"
+            },
+            {
+              ":answer/id": "3d90d6e2-7274-5b7b-9295-71136d89563c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-48"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "3d90d6e2-7274-5b7b-9295-71136d89563c"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "Let $R$ be a simple solid region bounded by a closed surface $S$ with positive (outward) orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $R,$ then the divergence theorem states that\n\n$$\n{∬}_{S}F\\cdot dS={∭}_{R}\\text{div}\\,F\\,\\text{d}V.\n$$\n\nComputing the divergence of $F,$ we obtain\n\n$$\n\\begin{aligned}\\text{div}\\,F & =\\frac{∂}{∂x}({x}^{2}\\operatorname{cos}⁡z)+\\frac{∂}{∂y}(\\operatorname{sin}⁡z)+\\frac{∂}{∂z}(x+y) \\\\  & =2x\\operatorname{cos}⁡z+0+0 \\\\  & =2x\\operatorname{cos}⁡z.\\end{aligned}\n$$\n\nLet $R$ be the solid region enclosed by $S.$ Then, using the divergence theorem, we have\n\n$$\n\\begin{aligned}{∬}_{S}F\\cdot dS & ={∭}_{R}2x\\operatorname{cos}⁡z\\,\\text{d}V \\\\  & ={\\int }_{1}^{3}{\\int }_{-1}^{2}{\\int }_{\\pi /2}^{\\frac{3 \\pi}{2}}2x\\operatorname{cos}⁡z\\,\\text{d}z\\,\\text{d}y\\,\\text{d}x \\\\  & ={\\int }_{1}^{3}2x\\,\\text{d}x\\cdot {\\int }_{-1}^{2}\\text{d}y\\cdot {\\int }_{\\pi /2}^{\\frac{3 \\pi}{2}}\\operatorname{cos}⁡z\\,\\text{d}z \\\\  & =[{x}^{2}]_{x=1}^{x=3}\\cdot (2-(-1))\\cdot [\\operatorname{sin}⁡z]_{z=\\pi /2}^{z=\\frac{3 \\pi}{2}} \\\\  & =({3}^{2}-{1}^{2})\\cdot 3\\cdot (\\operatorname{sin}⁡(\\frac{3 \\pi}{2})-\\operatorname{sin}⁡(\\frac{\\pi}{2})) \\\\  & =8\\cdot 3\\cdot -2 \\\\  & =-48.\\end{aligned}\n$$"
+    },
+    "generation": {
+      "version": "closed-flux-1",
+      "template": "cos",
+      "level": "moderate",
+      "seed": 42,
+      "parameters": {
+        "bounds": [
+          "1",
+          "3",
+          "-1",
+          "2",
+          "pi/2",
+          "3*pi/2"
+        ]
+      },
+      "profile": "method",
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "source_id": 17592186134140,
+      "mathematical_fingerprint": "1014d55a68df7130259bae0d4bd9f7e460e1ce5ea42143f182c88a0e96c42c3a",
+      "recipes": [
+        "divergence_integral",
+        "reverse_orientation",
+        "omit_power_derivative_factor",
+        "use_negative_cos_as_cos_primitive",
+        "replace_cos_by_one"
+      ],
+      "bank_operations": [
+        {
+          "recipe": "divergence_integral",
+          "value": "-48"
+        },
+        {
+          "recipe": "reverse_orientation",
+          "value": "48"
+        },
+        {
+          "recipe": "omit_power_derivative_factor",
+          "value": "-24"
+        },
+        {
+          "recipe": "use_negative_cos_as_cos_primitive",
+          "value": "0"
+        },
+        {
+          "recipe": "replace_cos_by_one",
+          "value": "24 \\pi"
+        }
+      ],
+      "domain": {
+        "field_smoothness": "all real coordinates",
+        "geometry": "ordered rectangular box",
+        "workload": "observed held-partial and source-specific separated-integral chain"
+      },
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186133931,
+      "id": "c7866416-74af-5891-b8c9-f6c1a3a751ac",
+      "title": "Calculating Flux Across a Closed Surface"
+    },
+    "question": {
+      ":question/id": "2b9c1655-984c-5577-bb08-439c63a17170",
+      ":question/problem": "Let $S$ be the boundary of the rectangular prism enclosed by the planes $x =0$, $x = 3$, $y = 0$, $y = 1$, $z = 1$, $z = 4$. Given that the surface $S$ is positively (outward) oriented and $F = 2xzi + (x^{2} + z)j + 2k$, find the flux of $F$ across $S$.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "14b70579-7eee-5c4b-b51b-c865785414e5",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "7f60182e-9047-569e-a443-17695531b6bb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-45"
+            },
+            {
+              ":answer/id": "e00ff654-ec22-5b29-9417-b1adb40011c1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "48"
+            },
+            {
+              ":answer/id": "b807da43-7887-5a55-bf90-96ebd5b461d8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "18"
+            },
+            {
+              ":answer/id": "b950570a-5f6a-5360-8f09-25806c9bf8ce",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{45}{2}"
+            },
+            {
+              ":answer/id": "2e824d46-c732-50bd-9a4e-c7fa62420bb2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "45"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2e824d46-c732-50bd-9a4e-c7fa62420bb2"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/worked-solution": "Let $R$ be a simple solid region bounded by a closed surface $S$ with positive (outward) orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $R,$ then the divergence theorem states that\n\n$$\n{∬}_{S}F\\cdot dS={∭}_{R}\\text{div}\\,F\\,\\text{d}V.\n$$\n\nComputing the divergence of $F,$ we obtain\n\n$$\n\\begin{aligned}\\text{div}\\,F & =\\frac{∂}{∂x}(2xz)+\\frac{∂}{∂y}(x^{2} + z)+\\frac{∂}{∂z}(2) \\\\  & =2z+0+0 \\\\  & =2z.\\end{aligned}\n$$\n\nLet $R$ be the solid region enclosed by $S.$ Then, using the divergence theorem, we have\n\n$$\n\\begin{aligned}{∬}_{S}F\\cdot dS & ={∭}_{R}2z\\,\\text{d}V \\\\  & ={\\int }_{0}^{3}{\\int }_{0}^{1}{\\int }_{1}^{4}2z\\,\\text{d}z\\,\\text{d}y\\,\\text{d}x \\\\  & ={\\int }_{0}^{3}\\text{d}x\\cdot {\\int }_{0}^{1}\\text{d}y\\cdot {\\int }_{1}^{4}2z\\,\\text{d}z \\\\  & =(3-0)\\cdot (1-0)\\cdot [{z}^{2}]_{z=1}^{z=4} \\\\  & =3\\cdot 1\\cdot (16-1) \\\\  & =45.\\end{aligned}\n$$"
+    },
+    "generation": {
+      "version": "closed-flux-1",
+      "template": "xz",
+      "level": "moderate",
+      "seed": 43,
+      "parameters": {
+        "bounds": [
+          "0",
+          "3",
+          "0",
+          "1",
+          "1",
+          "4"
+        ]
+      },
+      "profile": "method",
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "source_id": 17592186134139,
+      "mathematical_fingerprint": "f3d38fcc54c1b862228d9b003540078ee5a2c64633bbcf0d9f68e1bfccb84dfd",
+      "recipes": [
+        "divergence_integral",
+        "reverse_orientation",
+        "omit_x_derivative_coefficient",
+        "hold_z_as_one",
+        "omit_lower_z_endpoint"
+      ],
+      "bank_operations": [
+        {
+          "recipe": "divergence_integral",
+          "value": "45"
+        },
+        {
+          "recipe": "reverse_orientation",
+          "value": "-45"
+        },
+        {
+          "recipe": "omit_x_derivative_coefficient",
+          "value": "\\frac{45}{2}"
+        },
+        {
+          "recipe": "hold_z_as_one",
+          "value": "18"
+        },
+        {
+          "recipe": "omit_lower_z_endpoint",
+          "value": "48"
+        }
+      ],
+      "domain": {
+        "field_smoothness": "all real coordinates",
+        "geometry": "ordered rectangular box",
+        "workload": "observed held-partial and source-specific separated-integral chain"
+      },
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186133931,
+      "id": "c7866416-74af-5891-b8c9-f6c1a3a751ac",
+      "title": "Calculating Flux Across a Closed Surface"
+    },
+    "question": {
+      ":question/id": "826525fb-906a-5710-aa47-a0f429a99b7c",
+      ":question/problem": "Let $S$ be the boundary of the rectangular prism enclosed by the planes $x=1$, $x=3$, $y=1$, $y=3$, $z=0$, $z=2$. Given that the surface $S$ is positively (outward) oriented and $F={e}^{z}\\,i+{x}^{2}{y}^{2}\\,j+4{x}^{2}yz\\,k$, find the flux of $F$ across $S$.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "7dbf87e3-9f04-539f-95e8-04af24c39a40",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "fb79da93-8df0-5efe-85ff-3fede1779fff",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{208}{3}"
+            },
+            {
+              ":answer/id": "879e69dd-4168-59ed-9809-d9b35ca7bec2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-416"
+            },
+            {
+              ":answer/id": "e7cd0ce9-aa8e-5a0b-8626-0ede0e0e6159",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{416}{3}"
+            },
+            {
+              ":answer/id": "5a08a725-3e35-5154-9f6d-a8c7a30901a4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "208"
+            },
+            {
+              ":answer/id": "3474137a-6c88-5dee-9fe6-7d3fe8b9880e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "416"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "3474137a-6c88-5dee-9fe6-7d3fe8b9880e"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/worked-solution": "Let $R$ be a simple solid region bounded by a closed surface $S$ with positive (outward) orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $R,$ then the divergence theorem states that\n\n$$\n{∬}_{S}F\\cdot dS={∭}_{R}\\text{div}\\,F\\,\\text{d}V.\n$$\n\nComputing the divergence of $F,$ we obtain\n\n$$\n\\begin{aligned}\\text{div}\\,F & =\\frac{∂}{∂x}({e}^{z})+\\frac{∂}{∂y}({x}^{2}{y}^{2})+\\frac{∂}{∂z}(4{x}^{2}yz) \\\\  & =0+2 x^{2} y+4 x^{2} y \\\\  & =6{x}^{2}y.\\end{aligned}\n$$\n\nLet $R$ be the solid region enclosed by $S.$ Then, using the divergence theorem, we have\n\n$$\n\\begin{aligned}{∬}_{S}F\\cdot dS & ={∭}_{R}6{x}^{2}y\\,\\text{d}V \\\\  & ={\\int }_{1}^{3}{\\int }_{1}^{3}{\\int }_{0}^{2}6{x}^{2}y\\,\\text{d}z\\,\\text{d}y\\,\\text{d}x \\\\  & ={\\int }_{1}^{3}3{x}^{2}\\,\\text{d}x\\cdot {\\int }_{1}^{3}2y\\,\\text{d}y\\cdot {\\int }_{0}^{2}\\text{d}z \\\\  & =[{x}^{3}]_{x=1}^{x=3}\\cdot [{y}^{2}]_{y=1}^{y=3}\\cdot (2-0) \\\\  & =(27-1)\\cdot (9-1)\\cdot 2 \\\\  & =416.\\end{aligned}\n$$"
+    },
+    "generation": {
+      "version": "closed-flux-1",
+      "template": "canonical",
+      "level": "hard",
+      "seed": 42,
+      "parameters": {
+        "bounds": [
+          "1",
+          "3",
+          "1",
+          "3",
+          "0",
+          "2"
+        ]
+      },
+      "profile": "method",
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "source_id": null,
+      "mathematical_fingerprint": "392a2ad831be4a1dff886cf26e4ad697c3c002bff0a02f5c0755b5705bedc593",
+      "recipes": [
+        "divergence_integral",
+        "reverse_orientation",
+        "omit_second_nonzero_partial",
+        "differentiate_components_twice",
+        "omit_z_width"
+      ],
+      "bank_operations": [
+        {
+          "recipe": "divergence_integral",
+          "value": "416"
+        },
+        {
+          "recipe": "reverse_orientation",
+          "value": "-416"
+        },
+        {
+          "recipe": "omit_second_nonzero_partial",
+          "value": "\\frac{416}{3}"
+        },
+        {
+          "recipe": "differentiate_components_twice",
+          "value": "\\frac{208}{3}"
+        },
+        {
+          "recipe": "omit_z_width",
+          "value": "208"
+        }
+      ],
+      "domain": {
+        "field_smoothness": "all real coordinates",
+        "geometry": "ordered rectangular box",
+        "workload": "canonical cubic/quadratic translated endpoints"
+      },
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186133931,
+      "id": "c7866416-74af-5891-b8c9-f6c1a3a751ac",
+      "title": "Calculating Flux Across a Closed Surface"
+    },
+    "question": {
+      ":question/id": "d4d7eda8-5148-509c-8795-5e3a43f71d66",
+      ":question/problem": "Let $S$ be the boundary of the rectangular prism enclosed by the planes $x=1$, $x=4$, $y=2$, $y=4$, $z=2$, $z=4$. Given that the surface $S$ is positively (outward) oriented and $F={e}^{z}\\,i+{x}^{2}{y}^{2}\\,j+4{x}^{2}yz\\,k$, find the flux of $F$ across $S$.",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9c663598-1eef-545e-b85b-e6df47e8c9fd",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "db656ed5-50d2-5b45-85ea-349af197b9af",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "-1512"
+            },
+            {
+              ":answer/id": "5968aa25-4bce-5c1f-9ebb-aa82f2fba825",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "756"
+            },
+            {
+              ":answer/id": "9ca694f0-7991-564c-8bea-f6d5134a2777",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "168"
+            },
+            {
+              ":answer/id": "ae36ecc7-ad81-5d0d-bbeb-9653c004e80d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "504"
+            },
+            {
+              ":answer/id": "e1f925d4-2b67-57e2-b9ba-d9453a1d90d4",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "1512"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e1f925d4-2b67-57e2-b9ba-d9453a1d90d4"
+          ]
+        }
+      ],
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/worked-solution": "Let $R$ be a simple solid region bounded by a closed surface $S$ with positive (outward) orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $R,$ then the divergence theorem states that\n\n$$\n{∬}_{S}F\\cdot dS={∭}_{R}\\text{div}\\,F\\,\\text{d}V.\n$$\n\nComputing the divergence of $F,$ we obtain\n\n$$\n\\begin{aligned}\\text{div}\\,F & =\\frac{∂}{∂x}({e}^{z})+\\frac{∂}{∂y}({x}^{2}{y}^{2})+\\frac{∂}{∂z}(4{x}^{2}yz) \\\\  & =0+2 x^{2} y+4 x^{2} y \\\\  & =6{x}^{2}y.\\end{aligned}\n$$\n\nLet $R$ be the solid region enclosed by $S.$ Then, using the divergence theorem, we have\n\n$$\n\\begin{aligned}{∬}_{S}F\\cdot dS & ={∭}_{R}6{x}^{2}y\\,\\text{d}V \\\\  & ={\\int }_{1}^{4}{\\int }_{2}^{4}{\\int }_{2}^{4}6{x}^{2}y\\,\\text{d}z\\,\\text{d}y\\,\\text{d}x \\\\  & ={\\int }_{1}^{4}3{x}^{2}\\,\\text{d}x\\cdot {\\int }_{2}^{4}2y\\,\\text{d}y\\cdot {\\int }_{2}^{4}\\text{d}z \\\\  & =[{x}^{3}]_{x=1}^{x=4}\\cdot [{y}^{2}]_{y=2}^{y=4}\\cdot (4-2) \\\\  & =(64-1)\\cdot (16-4)\\cdot 2 \\\\  & =1512.\\end{aligned}\n$$"
+    },
+    "generation": {
+      "version": "closed-flux-1",
+      "template": "canonical",
+      "level": "hard",
+      "seed": 43,
+      "parameters": {
+        "bounds": [
+          "1",
+          "4",
+          "2",
+          "4",
+          "2",
+          "4"
+        ]
+      },
+      "profile": "method",
+      "eligible_for_learning": true,
+      "evidence_only": false,
+      "source_id": null,
+      "mathematical_fingerprint": "881b1a936f4baa62b23008bb8fe84aef5ade80421cb49eedc2dcfd40c4977b22",
+      "recipes": [
+        "divergence_integral",
+        "reverse_orientation",
+        "omit_second_nonzero_partial",
+        "differentiate_components_twice",
+        "omit_z_width"
+      ],
+      "bank_operations": [
+        {
+          "recipe": "divergence_integral",
+          "value": "1512"
+        },
+        {
+          "recipe": "reverse_orientation",
+          "value": "-1512"
+        },
+        {
+          "recipe": "omit_second_nonzero_partial",
+          "value": "504"
+        },
+        {
+          "recipe": "differentiate_components_twice",
+          "value": "168"
+        },
+        {
+          "recipe": "omit_z_width",
+          "value": "756"
+        }
+      ],
+      "domain": {
+        "field_smoothness": "all real coordinates",
+        "geometry": "ordered rectangular box",
+        "workload": "canonical cubic/quadratic translated endpoints"
+      },
+      "provenance": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    }
+  }
+]

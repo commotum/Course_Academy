@@ -15,7 +15,7 @@ import sympy as sp
 HERE=Path(__file__).with_suffix('');sys.path.insert(0,str(HERE))
 from math_parser import parse
 RAW=json.loads((HERE/'source.json').read_text());KP=RAW['record'];T=sp.Symbol('t',real=True)
-VERSION='parametric-derivative-1';NS=uuid.UUID(KP[':knowledge-point/id'])
+VERSION='parametric-derivative-2';NS=uuid.UUID(KP[':knowledge-point/id'])
 QUESTIONS={str(q[':db/id']):q for q in KP[':knowledge-point/questions']}
 FAMILIES=['trig','exp_poly','quadratic','expneg_poly','trig_double','exp_poly_chain','line_poly','sqrt_linear','exp_pair','quartic','exp_product','quintic','root_power','line_quad','sqrt_scaled','texp_poly','product_sin','trig_scaled']
 TEMPLATES={f:{'source_id':i,'level':q[':question/difficulty'][':db/ident'].split('/')[-1],'kind':q[':question/answer-fields'][-1][':answer-field/type'][':db/ident'].split('/')[-1]} for f,(i,q) in zip(FAMILIES,QUESTIONS.items())}
@@ -26,6 +26,28 @@ def tex(v):return sp.latex(sp.sympify(v)).replace(r'\log',r'\ln')
 def uid(v):return str(uuid.uuid5(NS,json.dumps(v,sort_keys=True,ensure_ascii=False)))
 def fingerprint(v):return hashlib.sha256(json.dumps(v,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
 def same(a,b):return sp.simplify(a-b)==0
+
+def semantic_components(x,y,point,domain,level):
+    """Remove common positive coordinate amplitude, retain shapes and ratio.
+
+    The rational content of x is a positive global amplitude for all supported
+    masks. Dividing both coordinates by that same amplitude identifies common
+    scaling, including authored a,c scaling, without erasing the relative y/x
+    amplitude or coordinate-function forms. Banks and raw coefficients still
+    participate in content identity.
+    """
+    amplitude,primitive=sp.sympify(x).as_content_primitive()
+    if amplitude<=0:raise ValueError('positive coordinate amplitude required')
+    return [str(sp.simplify(primitive)),str(sp.simplify(y/amplitude)),str(point),domain,level]
+
+def mathematical_fingerprint(x,y,point,domain,level):
+    return fingerprint(semantic_components(x,y,point,domain,level))
+
+def derivative_domain(template,p,curve_domain):
+    result={'within_curve_domain':curve_domain,'condition':"x'(t) and y'(t) exist and x'(t) != 0"}
+    if template=='product_pair':result['excluded_parameters']=[str(-sp.Rational(1,int(p['b'])))]
+    elif template=='quotient_pair':result['excluded_parameters']=[]
+    return result
 
 def scaled(text,k):
     """Unit coefficient elision is an arithmetic rendering rule, never source lookup."""
@@ -138,7 +160,10 @@ def authored_hard(template,p):
         steps=[formal,r"x'(t)="+dx+r",\quad y'(t)="+dy,r"x'(t)="+ex+r",\quad y'(t)="+ey,r"x'(t)="+fx+r",\quad y'(t)="+fy]
         domain=r't>0'
     problem='For the parametric curve\n\n$$\nx='+xt+r',\quad y='+yt+r',\quad '+domain+',\n$$\n\ncalculate $'+DY+'$ as a function of $t.$\n\n$'+DY+'=$\n{{field-1}}'
+    if template=='product_pair':
+        problem=problem.replace('as a function of $t.$','as a function of $t$ for $t\\ne '+tex(-sp.Rational(1,b))+'.$')
     sol='We will use the formula\n\n$$\n'+DY+r"=\frac{y'(t)}{x'(t)}."+'\n$$\n\nDifferentiating $x$ and $y,$ we get\n\n'+''.join('$$\n'+z+'\n$$\n\n' for z in steps)+'Therefore,\n\n$$\n'+DY+'='+'='.join(rows)+'.\n$$'
+    if template=='product_pair':sol+='\n\nThis derivative is defined for $t\\ne '+tex(-sp.Rational(1,b))+'.$'
     return problem,sol,x,y,domain,rows[-1]
 
 def operation_bank(x,y,tvalue,template):
@@ -227,8 +252,8 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         if not observed:f[':answer-field/correct']=[':answer/id',f[':answer-field/choices'][0][':answer/id']]
         elif fcorrect is not None:f[':answer-field/correct']=[':answer/id',next(a[':answer/id'] for a in f[':answer-field/choices'] if a[':answer/value']==fcorrect)]
         rng.shuffle(f[':answer-field/choices'])
-    task=fingerprint([str(sp.simplify(x)),str(sp.simplify(y)),str(point),domain,level])
-    return {'knowledge_point':{'db_id':17592186083240,'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'source':{k:RAW[k] for k in ['database','basis','lineage']},'template':template,'profile':profile or 'method','parameters':{k:str(v) for k,v in p.items()},'seed':seed,'domain':domain,'source_ids':sourceids,'evidence_only':observed,'eligible_for_learning':not observed,'recipes':labels,'mathematical_fingerprint':task,'content_fingerprint':identity,'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__}}}
+    task=mathematical_fingerprint(x,y,point,domain,level)
+    return {'knowledge_point':{'db_id':17592186083240,'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'source':{k:RAW[k] for k in ['database','basis','lineage']},'template':template,'profile':profile or 'method','parameters':{k:str(v) for k,v in p.items()},'seed':seed,'domain':domain,'curve_domain':domain,'derivative_domain':derivative_domain(template,p,domain),'source_ids':sourceids,'evidence_only':observed,'eligible_for_learning':not observed,'recipes':labels,'mathematical_fingerprint':task,'content_fingerprint':identity,'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__}}}
 
 # PLOTS: source's seven supplementary curve graphs. Frozen anchor references are
 # evidence only; normal plots compute each changed coordinate from this instance.

@@ -2233,7 +2233,7 @@ $$
 x=5t e^{2t},\quad y=3(t^2+1)e^{-2t},\quad -\infty<t<\infty,
 $$
 
-calculate $\frac{dy}{dx}$ as a function of $t.$
+calculate $\frac{dy}{dx}$ as a function of $t$ for $t\ne - \frac{1}{2}.$
 
 $\frac{dy}{dx}=$
 {{field-1}}
@@ -2266,6 +2266,8 @@ $$
 \frac{dy}{dx}=\frac{3(2t-2(t^2+1))e^{-2t}}{5(1+2t)e^{2t}}=\frac{3(2t-2(t^2+1))}{5(1+2t)}e^{-4t}.
 $$
 
+This derivative is defined for $t\ne - \frac{1}{2}.$
+
 ## Generated product_pair seed 31
 
 For the parametric curve
@@ -2274,7 +2276,7 @@ $$
 x=1t e^{2t},\quad y=1(t^2+4)e^{-2t},\quad -\infty<t<\infty,
 $$
 
-calculate $\frac{dy}{dx}$ as a function of $t.$
+calculate $\frac{dy}{dx}$ as a function of $t$ for $t\ne - \frac{1}{2}.$
 
 $\frac{dy}{dx}=$
 {{field-1}}
@@ -2306,6 +2308,8 @@ Therefore,
 $$
 \frac{dy}{dx}=\frac{1(2t-2(t^2+4))e^{-2t}}{1(1+2t)e^{2t}}=\frac{1(2t-2(t^2+4))}{1(1+2t)}e^{-4t}.
 $$
+
+This derivative is defined for $t\ne - \frac{1}{2}.$
 
 ## Generated quotient_pair seed 5
 

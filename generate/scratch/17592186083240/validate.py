@@ -35,6 +35,15 @@ def check_record(rec,faithful=False):
  x,y=displayed_curve(q);dx,dy=sp.diff(x,T),sp.diff(y,T)
  m=re.search(r'where \$t=(.*?)\.\$',q[':question/problem']);point=parse(m[1]) if m else None
  target=sp.simplify(dy/dx);correct=target.subs(T,point) if point is not None else target
+ assert md['curve_domain']==md['domain'] and md['derivative_domain']['within_curve_domain']==md['curve_domain']
+ assert md['mathematical_fingerprint']==g.mathematical_fingerprint(x,y,point,md['curve_domain'],q[':question/difficulty'].split('/')[-1])
+ if template=='product_pair':
+  excluded=-sp.Rational(1,int(md['parameters']['b']))
+  assert md['derivative_domain']['excluded_parameters']==[str(excluded)] and eq(dx.subs(T,excluded),0)
+  assert ('for $t'+r'\ne '+g.tex(excluded)+'.$') in q[':question/problem']
+  assert ('defined for $t'+r'\ne '+g.tex(excluded)+'.$') in q[':question/worked-solution']
+  assert not eq(dy.subs(T,excluded),0),'excluded vertical tangent must not be hidden by cancellation'
+ elif template=='quotient_pair':assert md['derivative_domain']['excluded_parameters']==[]
  b=mathblocks(q[':question/worked-solution'])
  # Preserve universal formal y'/x' relation independently of later rows.
  assert (r"\frac{y'(t)}{x'(t)}" in b[0] or r'\frac{{y}^{′}' in b[0])
@@ -120,15 +129,59 @@ for template,v in g.TEMPLATES.items():
  check_record(g.generate(v['level'],template=template,parameters={'r':'2','s':'3'},profile=case['bank_profile']),True)
  results.append({'source_id':v['source_id'],'prompt':'exact','solution':'exact','key_presence':'exact','banks':len(raw[':question/answer-fields'])})
 (D/'source-cases.json').write_text(json.dumps(cases,indent=2))
-unique={l:set() for l in ['easy','moderate','hard']};sampled=0
+unique={l:set() for l in ['easy','moderate','hard']};presentations={l:set() for l in unique};parameter_tasks={l:set() for l in unique};sampled=0
 for template,v in g.TEMPLATES.items():
  for seed in [5,31,71,113,271,331]:
-  rec=g.generate(v['level'],template=template,seed=seed);check_record(rec);sampled+=1;unique[v['level']].add(rec['generation']['mathematical_fingerprint'])
+  rec=g.generate(v['level'],template=template,seed=seed);check_record(rec);sampled+=1;unique[v['level']].add(rec['generation']['mathematical_fingerprint']);presentations[v['level']].add(rec['generation']['content_fingerprint']);parameter_tasks[v['level']].add(json.dumps([template,rec['generation']['parameters']],sort_keys=True))
   if seed in [5,31]:review.append({'label':'Generated '+template+' seed '+str(seed),'record':rec})
   # Stable identity under arbitrary option order/seed for fixed task/bank.
   again=g.generate(v['level'],template=template,seed=seed+1000,parameters=rec['generation']['parameters'])
   assert rec['question'][':question/id']==again['question'][':question/id']
 # Ensure default sampling actually serves every family.
+# Common amplitude is presentation data, not a new assessed mathematical task.
+identity_regressions=[]
+for template,v in g.TEMPLATES.items():
+ if v['level']=='hard':
+  first={'a':1,'b':2,'c':1,'d':3};second={'a':2,'b':2,'c':2,'d':3};profile=None
+ else:
+  first={'r':'1','s':'1'};second={'r':'2','s':'2'};profile='observed:'+v['source_id']
+ a=g.generate(v['level'],template=template,parameters=first,profile=profile)
+ b=g.generate(v['level'],template=template,parameters=second,profile=profile)
+ assert a['generation']['mathematical_fingerprint']==b['generation']['mathematical_fingerprint']
+ assert a['generation']['content_fingerprint']!=b['generation']['content_fingerprint'] and a['question'][':question/id']!=b['question'][':question/id']
+ ax,ay=displayed_curve(a['question']);bx,by=displayed_curve(b['question'])
+ assert eq(sp.diff(ay,T)/sp.diff(ax,T),sp.diff(by,T)/sp.diff(bx,T))
+ identity_regressions.append({'template':template,'same_semantic_fingerprint':True,'different_content_identity':True})
+# Enumerate finite semantic domains and eligible full parameter combinations.
+# Numeric source radio evaluations are exact rational Laurent polynomials in e;
+# expanded difference zero is an exact test, since e is transcendental. The two
+# symbolic trig banks have distinct tan/cot/constant/sin*cos shapes for every
+# positive amplitude and need no numeric-point approximation.
+semantic_domain={l:set() for l in unique};finite_counts={};R,S=sp.symbols('R S',positive=True)
+for template,v in g.TEMPLATES.items():
+ family_tasks=set();accepted=0
+ if v['level']=='hard':
+  for bb in range(1,4):
+   for dd in range(1,5):
+    for aa in range(1,6):
+     for cc in range(1,6):
+      if template=='product_pair':xx=aa*T*sp.exp(bb*T);yy=cc*(T**2+dd)*sp.exp(-bb*T);domain=r'-\infty<t<\infty'
+      else:xx=aa*T/(T+bb);yy=cc*T**2/(T+dd);domain=r't>0'
+      family_tasks.add(g.mathematical_fingerprint(xx,yy,None,domain,'hard'));accepted+=1
+ else:
+  raw=g.QUESTIONS[v['source_id']];xx,yy=displayed_curve(raw);point=g.evaluation_parameter(raw);domain=g.coordinate_components(raw)[2]
+  bank=None
+  if v['kind']=='radio' and template not in ['trig','trig_scaled']:bank=g.operation_bank(xx*R,yy*S,point,template)[0]
+  ratios=set()
+  for rr in g.SCALES:
+   for ss in g.SCALES:
+    if bank is not None:
+     values=[z.subs({R:rr,S:ss}) for z in bank]
+     if any(sp.expand(a-b)==0 for i,a in enumerate(values) for b in values[i+1:]):continue
+    ratios.add(ss/rr);accepted+=1
+  for ratio in ratios:family_tasks.add(g.mathematical_fingerprint(xx,yy*ratio,point,domain,v['level']))
+ semantic_domain[v['level']].update(family_tasks)
+ finite_counts[template]={'full_parameter_domain':300 if v['level']=='hard' else 144,'eligible_parameter_instances':accepted,'semantic_tasks':len(family_tasks)}
 coverage={l:set() for l in unique}
 for level in coverage:
  for seed in range(100):
@@ -170,5 +223,5 @@ for item in review:
  for f in q[':question/answer-fields']:reviewtext+='\n'.join('- $'+a[':answer/value']+'$' for a in f[':answer-field/choices'])+'\n\n'
  reviewtext+=q[':question/worked-solution']+'\n'
 (D/'review.md').write_text(reviewtext)
-report={'passed':True,'source':{k:g.RAW[k] for k in ['database','basis','lineage']},'coverage':{'practice_questions':18,'prompt_exact':18,'solution_exact':18,'key_presence_parity':18,'complete_banks_matched':banks,'answer_values_matched':values,'answer_values_total':values,'correct_designations_matched':designations,'correct_designations_present':18,'legacy_missing_correct_refs':1},'source_results':results,'cli_json_replay':{'records':6,'matches_public_api':True},'file_hashes':{str(p.relative_to(D.parent)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [D.with_suffix('.py'),D/'validate.py',D/'validate-plots.py',D/'math_parser.py',D/'source.json',D/'source-cases.json']},'plot_validation':json.loads((D/'plot-validation.json').read_text()),'normal_samples':sampled,'independent_displayed_stages_checked':stage_count,'default_family_coverage':{k:sorted(v) for k,v in coverage.items()},'sampled_mathematical_tasks':{k:len(v) for k,v in unique.items()},'native_grading':{k:engine[k] for k in ['accepted_checks','rejected_checks','documented_unresolved_checks']},'native_rejected_mathematically_equivalent_raw_entries':4,'invalid_inputs_rejected':invalid,'mutations_rejected':3,'authored_extensions':['hard product pair','hard quotient pair','method-derived complete radio banks'],'remaining_findings':['Legacy duplicate field has no correct designation and is retained only as evidence.','Observed scalar distractor intentions are unresolved; generalized expression shapes are evidence-only.','Two source exact-answer instructions contain round; native form-sensitive equivalent quotient submissions are documented rejected.','The source line-quadratic raster shows the unrestricted parabola although the printed parameter interval is restricted. Normal plot marks exactly the supplied segment.'],'grading_limits':['root_power radical quotient carries a parameter domain not used by the native comparison','quotient_pair unreduced coordinate quotient retains removed coordinate poles not in the simplified derivative','product_pair unreduced product derivatives lead to unresolved exponential denominator comparison'], 'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'engine_sha256':hashlib.sha256((REPO/'generate/runs/current/check-engine').read_bytes()).hexdigest(),'database_writes':0}
+report={'passed':True,'source':{k:g.RAW[k] for k in ['database','basis','lineage']},'coverage':{'practice_questions':18,'prompt_exact':18,'solution_exact':18,'key_presence_parity':18,'complete_banks_matched':banks,'answer_values_matched':values,'answer_values_total':values,'correct_designations_matched':designations,'correct_designations_present':18,'legacy_missing_correct_refs':1},'source_results':results,'cli_json_replay':{'records':6,'matches_public_api':True},'file_hashes':{str(p.relative_to(D.parent)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [D.with_suffix('.py'),D/'validate.py',D/'validate-plots.py',D/'math_parser.py',D/'source.json',D/'source-cases.json']},'plot_validation':json.loads((D/'plot-validation.json').read_text()),'normal_samples':sampled,'independent_displayed_stages_checked':stage_count,'default_family_coverage':{k:sorted(v) for k,v in coverage.items()},'sampled_mathematical_tasks':{k:len(v) for k,v in unique.items()},'sampled_full_parameter_instances':{k:len(v) for k,v in parameter_tasks.items()},'sampled_content_identities':{k:len(v) for k,v in presentations.items()},'finite_semantic_domain':{k:len(v) for k,v in semantic_domain.items()},'finite_family_counts':finite_counts,'common_scaling_identity_regressions':identity_regressions,'native_grading':{k:engine[k] for k in ['accepted_checks','rejected_checks','documented_unresolved_checks']},'native_rejected_mathematically_equivalent_raw_entries':4,'invalid_inputs_rejected':invalid,'mutations_rejected':3,'authored_extensions':['hard product pair','hard quotient pair','method-derived complete radio banks'],'remaining_findings':['Legacy duplicate field has no correct designation and is retained only as evidence.','Observed scalar distractor intentions are unresolved; generalized expression shapes are evidence-only.','Two source exact-answer instructions contain round; native form-sensitive equivalent quotient submissions are documented rejected.','The source line-quadratic raster shows the unrestricted parabola although the printed parameter interval is restricted. Normal plot marks exactly the supplied segment.'],'grading_limits':['root_power radical quotient carries a parameter domain not used by the native comparison','quotient_pair unreduced coordinate quotient retains removed coordinate poles not in the simplified derivative','product_pair unreduced product derivatives lead to unresolved exponential denominator comparison'], 'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'engine_sha256':hashlib.sha256((REPO/'generate/runs/current/check-engine').read_bytes()).hexdigest(),'database_writes':0}
 (D/'validation.json').write_text(json.dumps(report,indent=2));print(json.dumps(report,indent=2))
