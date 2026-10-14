@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-336451",
+      "sequence_position": 11,
+      "problem": "A de-icing salt reservoir can hold up to $300\\,\\text{gal}$ of liquid. Initially, it contains $180\\,\\text{gal}$ of brine with $54\\,\\text{lb}$ of dissolved salt. A stronger brine with concentration $0.8\\,\\text{lb/gal}$ flows into the reservoir at a rate of $6\\,\\text{gal/min},$ while the completely mixed brine drains out at a rate of $4\\,\\text{gal/min}.$\nFind the amount of salt in the reservoir at the moment it begins to overflow.",
+      "worked_solution": "Since $Q$ is the amount of salt in the tank at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which minerals enter the tank minus the rate at which minerals leave the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{′}-{Q}_{\\text{out}}^{′}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{′}$ and ${Q}_{\\text{out}}^{′}$ are $\\text{kg}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which minerals enter the tank.\n\nFirst, note that a brine solution containing $0.8\\,\\text{lb/gal}$ of salt enters the reservoir at a rate of $6\\,\\text{gal/min}.$ So, the rate at which the *salt* enters the reservoir is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{′} & =(0.8\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (6\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(0.8\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (6\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =4.8\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which minerals exit the tank.\n\nTo find the rate at which salt leaves the reservoir, we must first determine the volume of brine in the reservoir at time $t.$\n\nThe reservoir initially contains $180\\,\\text{gal}$ of brine; brine enters at $6\\,\\text{gal/min}$ and mixed brine leaves at $4\\,\\text{gal/min}.$\nAs a result, the amount of brine in the reservoir after $t$ minutes is \n\n$$\nV(t)=180+6t-4t=2(90+t)\\,\\text{gal}.\n$$\n\nNote that $V(t)$ is an increasing function, so the reservoir is filling.\n\nSince $Q$ is the amount of salt in the reservoir, the concentration of the brine at time $t$ is\n\n$$\n\\frac{Q}{2(90+t)}\\,\\text{lb/gal}.\n$$\n\nTherefore, as the completely mixed brine leaves at a rate of $4\\,\\text{gal/min},$ *salt* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{′} & =(4\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{2(90+t)}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(4\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{2(90+t)}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{4Q}{2(90+t)}\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{2Q}{90+t}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{′}-{Q}_{\\text{out}}^{′} \\\\  & =4.8-\\frac{2Q}{90+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}+\\frac{2}{90+t}\\,Q=4.8.\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 2/(90+t)\\,dt} \\\\  & ={e}^{2\\operatorname{ln}⁡|90+t|} \\\\  & ={e}^{\\operatorname{ln}⁡(90+t)^{2}} \\\\  & =(90+t)^{2}\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(90+t)^{2}$ yields\n\n$$\n\\begin{aligned}(90+t)^{2}\\cdot (\\frac{dQ}{dt}+\\frac{2}{90+t}\\,Q) & =(90+t)^{2}\\cdot 4.8 \\\\ (90+t)^{2}\\frac{dQ}{dt}+2(90+t)Q & =4.8(90+t)^{2} \\\\ \\frac{d}{dt}(Q(90+t)^{2}) & =4.8(90+t)^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(90+t)^{2})\\,dt & =\\int 4.8(90+t)^{2}\\,dt \\\\ Q(90+t)^{2} & =4.8\\cdot \\frac{1}{3}(90+t)^{3}+C \\\\ Q(t) & =1.6(90+t)+\\frac{C}{(90+t)^{2}}\\end{aligned}\n$$\n\nWe're told that the reservoir initially contains $54\\,\\text{lb}$ of salt. So, we can apply the initial condition $Q(0)=54,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =54 \\\\ 1.6(90+0)+\\frac{C}{(90+0)^{2}} & =54 \\\\ 144+\\frac{C}{(90)^{2}} & =54 \\\\ C & =-90(90)^{2}\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =1.6(90+t)-\\frac{90(90)^{2}}{(90+t)^{2}} \\\\  & =1.6(90+t)-90{(\\frac{90}{90+t})}^{2}\\end{aligned}\n$$\n\nNow, let ${t}_{o}$ be the time when the reservoir begins to overflow. The reservoir has a capacity of $300\\,\\text{gal},$ so we can use the condition $V({t}_{o})=300$ to solve for ${t}_{o}:$\n\n$$\n\\begin{aligned}V({t}_{o}) & =300 \\\\ 2(90+{t}_{o}) & =300 \\\\ 90+{t}_{o} & =150 \\\\ {t}_{o} & =60\\,\\text{min}\\end{aligned}\n$$\n\nFinally, the amount of salt in the reservoir at the moment it begins to overflow is\n\n$$\n\\begin{aligned}Q(60) & =1.6(90+60)-90{(\\frac{90}{90+60})}^{2} \\\\  & =240-90{(\\frac{9}{15})}^{2} \\\\  & =207.6\\,\\text{lb}.\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14189577/observations/history-q-336451-8faf44b113263f8127db.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14189577",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14189577/observations/history-solution-q-336451-470c67f5a215713231d7.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "207.6\\,\\text{lb}"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "205.4\\,\\text{lb}"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "204.3\\,\\text{lb}"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "206.2\\,\\text{lb}"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "201.0\\,\\text{lb}"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q336451",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "207.6\\,\\text{lb}",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Since $Q$ is the amount of salt in the tank at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which minerals enter the tank minus the rate at which minerals leave the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{′}-{Q}_{\\text{out}}^{′}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{′}$ and ${Q}_{\\text{out}}^{′}$ are $\\text{kg}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which minerals enter the tank.\n\nFirst, note that a brine solution containing $0.8\\,\\text{lb/gal}$ of salt enters the reservoir at a rate of $6\\,\\text{gal/min}.$ So, the rate at which the *salt* enters the reservoir is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{′} & =(0.8\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (6\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(0.8\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (6\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =4.8\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which minerals exit the tank.\n\nTo find the rate at which salt leaves the reservoir, we must first determine the volume of brine in the reservoir at time $t.$\n\nThe reservoir initially contains $180\\,\\text{gal}$ of brine; brine enters at $6\\,\\text{gal/min}$ and mixed brine leaves at $4\\,\\text{gal/min}.$\nAs a result, the amount of brine in the reservoir after $t$ minutes is \n\n$$\nV(t)=180+6t-4t=2(90+t)\\,\\text{gal}.\n$$\n\nNote that $V(t)$ is an increasing function, so the reservoir is filling.\n\nSince $Q$ is the amount of salt in the reservoir, the concentration of the brine at time $t$ is\n\n$$\n\\frac{Q}{2(90+t)}\\,\\text{lb/gal}.\n$$\n\nTherefore, as the completely mixed brine leaves at a rate of $4\\,\\text{gal/min},$ *salt* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{′} & =(4\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{2(90+t)}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(4\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{2(90+t)}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{4Q}{2(90+t)}\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{2Q}{90+t}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{′}-{Q}_{\\text{out}}^{′} \\\\  & =4.8-\\frac{2Q}{90+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}+\\frac{2}{90+t}\\,Q=4.8.\n$$\n\n**Step 4**: Integrate the equation.\n\nThis is a first-order linear equation with variable coefficients. So we find the general solution using an integrating factor:\n\n$$\n\\begin{aligned}I(t) & ={e}^{\\int 2/(90+t)\\,dt} \\\\  & ={e}^{2\\operatorname{ln}⁡|90+t|} \\\\  & ={e}^{\\operatorname{ln}⁡(90+t)^{2}} \\\\  & =(90+t)^{2}\\end{aligned}\n$$\n\nMultiplying both sides of the differential equation by $I(t)=(90+t)^{2}$ yields\n\n$$\n\\begin{aligned}(90+t)^{2}\\cdot (\\frac{dQ}{dt}+\\frac{2}{90+t}\\,Q) & =(90+t)^{2}\\cdot 4.8 \\\\ (90+t)^{2}\\frac{dQ}{dt}+2(90+t)Q & =4.8(90+t)^{2} \\\\ \\frac{d}{dt}(Q(90+t)^{2}) & =4.8(90+t)^{2}.\\end{aligned}\n$$\n\nNow, we integrate with respect to $t:$\n\n$$\n\\begin{aligned}\\int \\frac{d}{dt}(Q(90+t)^{2})\\,dt & =\\int 4.8(90+t)^{2}\\,dt \\\\ Q(90+t)^{2} & =4.8\\cdot \\frac{1}{3}(90+t)^{3}+C \\\\ Q(t) & =1.6(90+t)+\\frac{C}{(90+t)^{2}}\\end{aligned}\n$$\n\nWe're told that the reservoir initially contains $54\\,\\text{lb}$ of salt. So, we can apply the initial condition $Q(0)=54,$ and solve for $C:$\n\n$$\n\\begin{aligned}Q(0) & =54 \\\\ 1.6(90+0)+\\frac{C}{(90+0)^{2}} & =54 \\\\ 144+\\frac{C}{(90)^{2}} & =54 \\\\ C & =-90(90)^{2}\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =1.6(90+t)-\\frac{90(90)^{2}}{(90+t)^{2}} \\\\  & =1.6(90+t)-90{(\\frac{90}{90+t})}^{2}\\end{aligned}\n$$\n\nNow, let ${t}_{o}$ be the time when the reservoir begins to overflow. The reservoir has a capacity of $300\\,\\text{gal},$ so we can use the condition $V({t}_{o})=300$ to solve for ${t}_{o}:$\n\n$$\n\\begin{aligned}V({t}_{o}) & =300 \\\\ 2(90+{t}_{o}) & =300 \\\\ 90+{t}_{o} & =150 \\\\ {t}_{o} & =60\\,\\text{min}\\end{aligned}\n$$\n\nFinally, the amount of salt in the reservoir at the moment it begins to overflow is\n\n$$\n\\begin{aligned}Q(60) & =1.6(90+60)-90{(\\frac{90}{90+60})}^{2} \\\\  & =240-90{(\\frac{9}{15})}^{2} \\\\  & =207.6\\,\\text{lb}.\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14189577/observations/step-q336451-b18d0435515e7bc628e5.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a1375a-3186-7632-ba28-e2d6b4f78eae",
+  "previous_failures": []
+}
