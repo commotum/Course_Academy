@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-89427",
+      "sequence_position": 5,
+      "problem": "$$\nA=[\\begin{aligned}-4 & 0 & -4 \\\\ 3 & -3 & -3 \\\\ -4 & 0 & 2\\end{aligned}]\n$$\n\nThe vectors ${v}_{1}$ and ${v}_{2}$ are eigenvectors that correspond to the eigenvalues ${\\lambda }_{1}=4$ and ${\\lambda }_{2}=-3$ of the matrix $A,$ given above. Find the third eigenvector ${v}_{3}=[a,\\,b,\\,c]^{T}$ such that the set $\\{{v}_{1},{v}_{2},{v}_{3}\\}$ is linearly independent. What is the value of $\\frac{a}{b}?$",
+      "worked_solution": "First, we find all the eigenvalues of $A$ by solving the characteristic equation $det(A-\\lambda I)=0:$\n\n$$\n\\begin{aligned}det(A-\\lambda I) & =0 \\\\ |\\begin{aligned}-4-\\lambda  & 0 & -4 \\\\ 3 & -3-\\lambda  & -3 \\\\ -4 & 0 & 2-\\lambda \\end{aligned}| & =0 \\\\ (-3-\\lambda )|\\begin{aligned}-4-\\lambda  & -4 \\\\ -4 & 2-\\lambda \\end{aligned}| & =0 \\\\ (-3-\\lambda )((-4-\\lambda )(2-\\lambda )-(-4)(-4)) & =0 \\\\ (-3-\\lambda )({\\lambda }^{2}+2\\lambda -24) & =0 \\\\ (\\lambda +3)(\\lambda +6)(\\lambda -4) & =0\\end{aligned}\n$$\n\nHence, ${\\lambda }_{1}=4,$ ${\\lambda }_{2}=-3,$ and ${\\lambda }_{3}=-6.$ Since we obtained three distinct eigenvalues, the set of eigenvectors $\\{{v}_{1},{v}_{2},{v}_{3}\\},$ where each vector corresponds to different eigenvalue, will be linearly independent.\n\nNow, recall that ${v}_{1}$ and ${v}_{2}$ correspond to the eigenvalues ${\\lambda }_{1}=4$ and ${\\lambda }_{2}=-3.$ Thus, the third eigenvector ${v}_{3}$ must correspond to ${\\lambda }_{3}=-6.$ \n\nTo compute the eigenvectors of a matrix, we need to find non-zero solutions of the matrix equation \n\n$$\n(A-\\lambda I)\\text{x}=0.\n$$\n\n \n\nIn our case, we have $\\lambda =-6.$ So, we obtain\n\n$$\n\\begin{aligned}A-\\lambda I & =[\\begin{aligned}-4 & 0 & -4 \\\\ 3 & -3 & -3 \\\\ -4 & 0 & 2\\end{aligned}]-(-6)[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}2 & 0 & -4 \\\\ 3 & 3 & -3 \\\\ -4 & 0 & 8\\end{aligned}].\\end{aligned}\n$$\n\nTo find the eigenvectors corresponding to this eigenvalue, we have to solve the corresponding homogeneous system of linear equations:\n\n$$\n\\{\\begin{aligned}2{x}_{1}-4{x}_{3}=0 \\\\ 3{x}_{1}+3{x}_{2}-3{x}_{3}=0 \\\\ -4{x}_{1}+8{x}_{3}=0\\end{aligned}\n$$\n\nSo, we row-reduce the augmented matrix $M$ to row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}2 & 0 & -4 & 0 \\\\ 3 & 3 & -3 & 0 \\\\ -4 & 0 & 8 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{1}:=\\frac{1}{2}{R}_{1} \\\\ {R}_{2}:={R}_{2}+(-3){R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & 0 & -2 & 0 \\\\ 0 & 3 & 3 & 0 \\\\ -4 & 0 & 8 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+4{R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & 0 & -2 & 0 \\\\ 0 & 3 & 3 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}].\\end{aligned}\n$$\n\nIn the reduced matrix above, there are two pivot columns (the $1$st and the $2$nd). Thus, ${x}_{3}$ is a free variable. From the second equation, we obtain ${x}_{2}=-{x}_{3}.$ From the first equation, we get ${x}_{1}=2{x}_{3}.$\nTherefore, the general solution is\n\n$$\n[\\begin{aligned}2{x}_{3} \\\\ -{x}_{3} \\\\ {x}_{3}\\end{aligned}],\\,{x}_{3}\\in R.\n$$\n\nSetting, for instance, ${x}_{3}=1,$ we get the following eigenvector:\n\n$$\nv=[\\begin{aligned}a \\\\ b \\\\ c\\end{aligned}]=[\\begin{aligned}2 \\\\ -1 \\\\ 1\\end{aligned}]\n$$\n\nFinally, $\\frac{a}{b}=\\frac{2}{-1}=-2.$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14154701/observations/history-q-89427-4a343c3ee26f632ece48.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14154701",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14154701/observations/history-solution-q-89427-ee3c21ab42116b8f974d.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "\\frac{1}{2}"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "-2"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "2"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "-\\frac{1}{2}"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "-1"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q89427",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "-2",
+                "option": "b",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "First, we find all the eigenvalues of $A$ by solving the characteristic equation $det(A-\\lambda I)=0:$\n\n$$\n\\begin{aligned}det(A-\\lambda I) & =0 \\\\ |\\begin{aligned}-4-\\lambda  & 0 & -4 \\\\ 3 & -3-\\lambda  & -3 \\\\ -4 & 0 & 2-\\lambda \\end{aligned}| & =0 \\\\ (-3-\\lambda )|\\begin{aligned}-4-\\lambda  & -4 \\\\ -4 & 2-\\lambda \\end{aligned}| & =0 \\\\ (-3-\\lambda )((-4-\\lambda )(2-\\lambda )-(-4)(-4)) & =0 \\\\ (-3-\\lambda )({\\lambda }^{2}+2\\lambda -24) & =0 \\\\ (\\lambda +3)(\\lambda +6)(\\lambda -4) & =0\\end{aligned}\n$$\n\nHence, ${\\lambda }_{1}=4,$ ${\\lambda }_{2}=-3,$ and ${\\lambda }_{3}=-6.$ Since we obtained three distinct eigenvalues, the set of eigenvectors $\\{{v}_{1},{v}_{2},{v}_{3}\\},$ where each vector corresponds to different eigenvalue, will be linearly independent.\n\nNow, recall that ${v}_{1}$ and ${v}_{2}$ correspond to the eigenvalues ${\\lambda }_{1}=4$ and ${\\lambda }_{2}=-3.$ Thus, the third eigenvector ${v}_{3}$ must correspond to ${\\lambda }_{3}=-6.$ \n\nTo compute the eigenvectors of a matrix, we need to find non-zero solutions of the matrix equation \n\n$$\n(A-\\lambda I)\\text{x}=0.\n$$\n\n \n\nIn our case, we have $\\lambda =-6.$ So, we obtain\n\n$$\n\\begin{aligned}A-\\lambda I & =[\\begin{aligned}-4 & 0 & -4 \\\\ 3 & -3 & -3 \\\\ -4 & 0 & 2\\end{aligned}]-(-6)[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}] \\\\  & =[\\begin{aligned}2 & 0 & -4 \\\\ 3 & 3 & -3 \\\\ -4 & 0 & 8\\end{aligned}].\\end{aligned}\n$$\n\nTo find the eigenvectors corresponding to this eigenvalue, we have to solve the corresponding homogeneous system of linear equations:\n\n$$\n\\{\\begin{aligned}2{x}_{1}-4{x}_{3}=0 \\\\ 3{x}_{1}+3{x}_{2}-3{x}_{3}=0 \\\\ -4{x}_{1}+8{x}_{3}=0\\end{aligned}\n$$\n\nSo, we row-reduce the augmented matrix $M$ to row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}2 & 0 & -4 & 0 \\\\ 3 & 3 & -3 & 0 \\\\ -4 & 0 & 8 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{1}:=\\frac{1}{2}{R}_{1} \\\\ {R}_{2}:={R}_{2}+(-3){R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & 0 & -2 & 0 \\\\ 0 & 3 & 3 & 0 \\\\ -4 & 0 & 8 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+4{R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & 0 & -2 & 0 \\\\ 0 & 3 & 3 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}].\\end{aligned}\n$$\n\nIn the reduced matrix above, there are two pivot columns (the $1$st and the $2$nd). Thus, ${x}_{3}$ is a free variable. From the second equation, we obtain ${x}_{2}=-{x}_{3}.$ From the first equation, we get ${x}_{1}=2{x}_{3}.$\nTherefore, the general solution is\n\n$$\n[\\begin{aligned}2{x}_{3} \\\\ -{x}_{3} \\\\ {x}_{3}\\end{aligned}],\\,{x}_{3}\\in R.\n$$\n\nSetting, for instance, ${x}_{3}=1,$ we get the following eigenvector:\n\n$$\nv=[\\begin{aligned}a \\\\ b \\\\ c\\end{aligned}]=[\\begin{aligned}2 \\\\ -1 \\\\ 1\\end{aligned}]\n$$\n\nFinally, $\\frac{a}{b}=\\frac{2}{-1}=-2.$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14154701/observations/step-q89427-cbf3ed84edb77388ddad.html"
+        }
+      }
+    ]
+  }
+}
