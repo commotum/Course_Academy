@@ -1,0 +1,34 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "e-7285",
+      "problem": "Consider the region $D$ in the $xy$-plane, given by\n\n$$\nD = \\big\\{ (x,y) \\: : \\: -2 \\leq 4x+2y \\leq 2, \\:\\: 0 \\leq y-x \\leq 3 \\big\\}.\n$$\n\nBy performing the change of variables $u = 4x+2y$ and $v=y - x,$ write the following integral in terms of $u$ and $v.$ \n\n$$\n\\displaystyle \n\\iint\\limits_D \\sin \\left(3(x+y)\\right)  \\: \\mathrm{d}x \\, \\mathrm{d}y\n$$",
+      "worked_solution": "Let's define a transformation $\\mathbf{T}$ as follows:\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14180046/assets/e9a07b75be73621bb23edb6f4da67999c5f5ce07b8776f549cf12464e74fa702.svg)\n\nThis transformation maps some region $\\Delta$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n\\iint\\limits_{D} f(x,y) \\, \\mathrm d x \\, \\mathrm d y = \\iint\\limits_{\\Delta} \\ f(x(u,v), y(u,v))  \\left| \\dfrac{\\partial (x, y)}{\\partial (u, v)} \\right|  \\mathrm d u \\, \\mathrm d v\n$$\n\nwhere $\\dfrac{\\partial (x, y)}{\\partial (u, v)}$ is the Jacobian determinant corresponding to $\\mathbf{T}.$\n\nNote that the change of variables\n\n$$\nu = 4x + 2y, \\qquad v = y - x\n$$\n\n \n\ngives us the *inverse* function $\\mathbf T^{-1},$ that is\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14180046/assets/a1228e77194b92d8b2c527845273ae9f70d9b90d4c3091f5ed9dd9f8c430776c.svg)\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $\\Delta,$ which is the image of $D$ under the action of $\\mathbf{T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}Δ & =\\{(u,v)\\,:\\,-2\\le u\\le 2,\\,0\\le v\\le 3\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to $\\mathbf T^{-1}.$\n\nThe Jacobian determinant corresponding to $\\mathbf T^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}4 & 2 \\\\ -1 & \\text{ }\\text{ }1\\end{aligned}| \\\\  & =6.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $\\mathbf T.$\n\nThe Jacobian determinant corresponding to $\\mathbf T$ is\n\n$$\n\\dfrac{\\partial (x, y)}{\\partial (u, v)} = \\left( \\dfrac{\\partial (u, v)}{\\partial (x, y)} \\right)^{-1} = \\dfrac{1}{6}.\n$$\n\nNote that $\\dfrac{\\partial (x, y)}{\\partial (u, v)} \\neq 0$ everywhere inside $\\Delta.$ In other words, $\\mathbf T$ has no critical points inside $\\Delta.$\n\n**Step 4**: Perform the change of variables.\n\nIn this case, we first need to solve the transformation equations\n\n$$\nu = 4x+2y, \\qquad v = y-x\n$$\n\n \nfor $x$ and $y$, which gives\n\n$$\nx = \\dfrac{u-2v}6, \\qquad y =\\dfrac{u+4v}6.\n$$\n\n \n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{∬}_{D}\\operatorname{sin}⁡(3(x+y))\\,dx\\,dy & ={∬}_{Δ}\\operatorname{sin}⁡(3(\\frac{u-2v}{6}+\\frac{u+4v}{6}))|\\frac{∂(x,y)}{∂(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={∬}_{Δ}\\operatorname{sin}⁡(3(\\frac{2u+2v}{6}))|\\frac{1}{6}|\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{6}{\\int }_{0}^{3}{\\int }_{-2}^{2}sin\\,(u+v)\\,du\\,dv.\\end{aligned}\n$$",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14180046/observations/lesson-step-26978-0751323dbf1326f167df.html",
+      "source_url": "https://mathacademy.com/topics/4132",
+      "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14180046/observations/lesson-step-26978-0751323dbf1326f167df.png",
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14180046/assets/e9a07b75be73621bb23edb6f4da67999c5f5ce07b8776f549cf12464e74fa702.svg",
+          "sha256": "e9a07b75be73621bb23edb6f4da67999c5f5ce07b8776f549cf12464e74fa702",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 1,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14180046/assets/a1228e77194b92d8b2c527845273ae9f70d9b90d4c3091f5ed9dd9f8c430776c.svg",
+          "sha256": "a1228e77194b92d8b2c527845273ae9f70d9b90d4c3091f5ed9dd9f8c430776c",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        }
+      ]
+    }
+  },
+  "session_id": "01a13651-3288-7900-abfc-acd9dc786b46",
+  "previous_failures": [
+    "Agent answer fields do not match the current question"
+  ]
+}
