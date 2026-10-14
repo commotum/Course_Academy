@@ -6,7 +6,7 @@ def check(g,K,D,asset_relocation=False):
  frozen=json.load(open(R/f'sources/{K}.json'));assert json.load(open(D/'source.json'))==frozen
  originals={q[':question/math-academy-id']:q for q in frozen['record'][':knowledge-point/questions']};counts=dict(prompts=0,solutions=0,fields=0,values=0,refs=0,missing_refs=0,unrated=0)
  for c in json.load(open(D/'source-cases.json')):
-  o=originals.get(c.get('math_academy_id',c['source_id'])) or next(q for q in originals.values() if str(q[':db/id'])==str(c['source_id']));q=g.generate(c.get('level',c.get('difficulty',o.get(':question/difficulty',{}).get(':db/ident',':question.difficulty/easy').split('/')[-1])),template=c['template'],parameters=c['parameters'],profile=c.get('bank_profile',c.get('profile')))['question']
+  o=originals.get(c.get('math_academy_id',c.get('source_ma_id',c.get('source_math_academy_id',c['source_id'])))) or next(q for q in originals.values() if str(q[':db/id'])==str(c['source_id']) or q[':question/id']==c['source_id']);q=g.generate(c.get('level',c.get('difficulty',o.get(':question/difficulty',{}).get(':db/ident',':question.difficulty/easy').split('/')[-1])),template=c['template'],parameters=c['parameters'],profile=c.get('bank_profile',c.get('profile')))['question']
   for k in (':question/problem',':question/worked-solution',':question/difficulty',':question/answer-fields'):assert (k in q)==(k in o),(c['source_id'],k)
   new=q[':question/problem'];old=o[':question/problem']
   if asset_relocation:

@@ -4,7 +4,7 @@ Captured scope: **120 topics, 384 knowledge points**, 3757 practice questions; m
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**qa_passed: 324**, **queued: 57**, **working: 3**.
+**qa_passed: 327**, **queued: 54**, **working: 3**.
 
 Dispatch priority: the 15 KPs in `coverage-report.md`, while already-started workers finish.
 
@@ -336,12 +336,12 @@ Counts describe reviewed work; queued and working KPs are not complete. Source a
 | [17592186087866](../../scratch/17592186087866.py) | Introduction to First-Order Linear ODEs | Writing First-Order Linear ODEs in Standard Form | 8 / 0 / 1 / 0 | qa_passed | [Report](qa/17592186087866.json) |
 | [17592186087868](../../scratch/17592186087868.py) | Introduction to First-Order Linear ODEs | Identifying Homogeneous and Inhomogeneous ODEs | 6 / 6 / 0 / 0 | qa_passed | [Report](qa/17592186087868.json) |
 | [17592186096613](../../scratch/17592186096613.py) | Differentiating Logarithmic Functions | Differentiating the Product of a Constant and the Natural Logarithm Function | 7 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096613.json) |
-| [17592186096614](../../scratch/17592186096614.py) | Differentiating Logarithmic Functions | Differentiating a Sum Containing a Natural Logarithm Function | 6 / 1 / 3 / 1 | working | — |
-| [17592186096615](../../scratch/17592186096615.py) | Differentiating Logarithmic Functions | Differentiating a Logarithmic Function With a General Base | 9 / 0 / 1 / 2 | working | — |
-| [17592186096616](../../scratch/17592186096616.py) | Differentiating Logarithmic Functions | Calculating the Slope of the Tangent Line of a Logarithmic Function at a Point | 11 / 0 / 0 / 2 | working | — |
-| 17592186068779 | Combining Graph Transformations of Reciprocal Functions | Graphing a Transformed Reciprocal Function | 0 / 4 / 4 / 2 | queued | — |
-| 17592186068780 | Combining Graph Transformations of Reciprocal Functions | Solving for Some Unknowns Given the Graph of a Transformed Reciprocal Function | 0 / 4 / 3 / 1 | queued | — |
-| 17592186068813 | Combining Graph Transformations of Reciprocal Functions | Graphing a Stretched Reciprocal Function | 3 / 2 / 0 / 0 | queued | — |
+| [17592186096614](../../scratch/17592186096614.py) | Differentiating Logarithmic Functions | Differentiating a Sum Containing a Natural Logarithm Function | 6 / 1 / 3 / 1 | qa_passed | [Report](qa/17592186096614.json) |
+| [17592186096615](../../scratch/17592186096615.py) | Differentiating Logarithmic Functions | Differentiating a Logarithmic Function With a General Base | 9 / 0 / 1 / 2 | qa_passed | [Report](qa/17592186096615.json) |
+| [17592186096616](../../scratch/17592186096616.py) | Differentiating Logarithmic Functions | Calculating the Slope of the Tangent Line of a Logarithmic Function at a Point | 11 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096616.json) |
+| [17592186068779](../../scratch/17592186068779.py) | Combining Graph Transformations of Reciprocal Functions | Graphing a Transformed Reciprocal Function | 0 / 4 / 4 / 2 | working | — |
+| [17592186068780](../../scratch/17592186068780.py) | Combining Graph Transformations of Reciprocal Functions | Solving for Some Unknowns Given the Graph of a Transformed Reciprocal Function | 0 / 4 / 3 / 1 | working | — |
+| [17592186068813](../../scratch/17592186068813.py) | Combining Graph Transformations of Reciprocal Functions | Graphing a Stretched Reciprocal Function | 3 / 2 / 0 / 0 | working | — |
 | 17592186068814 | Combining Graph Transformations of Reciprocal Functions | Graphing a Stretched Negative Reciprocal Function | 3 / 4 / 0 / 2 | queued | — |
 | 17592186129197 | Computing Areas Using a Change of Variables | Finding an Area by Transforming to a Type I Region | 0 / 0 / 6 / 1 | queued | — |
 | 17592186129261 | Computing Areas Using a Change of Variables | Mapping an Area to a Rectangular Region: Transformations Given | 1 / 1 / 0 / 2 | queued | — |

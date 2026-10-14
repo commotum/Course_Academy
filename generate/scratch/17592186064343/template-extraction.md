@@ -1,0 +1,27 @@
+# Extraction and bounded capability
+
+Exact specific records are retained in source.json. They include every original field and answer UUID. templates.json holds the full original prose and operative stages for the two parameterized blanks. The generator retains the original source coefficients for replay. No captured identity is used for new content.
+
+q-304130: originally y=4x−2√x at (4,12), slope 7/2. One blank expects a scalar after m=, not an equation. Its backbone is y=ax−b√x at x=k²: rewrite the radical as a fractional power, apply the power rule to both terms, simplify the derivative, substitute the supplied x, evaluate the two terms, combine, then state the scalar slope and point. The solution's source wording and displays are retained. a is a positive linear coefficient (2..9); b is a positive even radical coefficient (2..10); k is a positive integer root (2..5). Dependent quantities are t=k², y=ak²−bk and m=a−b/(2k). Powers 1 and 1/2 and the subtraction are fixed because they define this observed method and workload. Even b is a conservative policy preserving the source's integer simplified derivative coefficient; it is not claimed to be a mathematical necessity. k varies the supplied evaluation point, with curve, point, derivative evaluation, solution prose, and key derived together. There are 160 distinct curve/point tasks before removing served or existing instances.
+
+q-343079: originally y=5√x−10x^(3/4) at (16,−60), slope −25/8. One blank expects a scalar after m=. Its stages rewrite the radical, differentiate both fractional powers, simplify coefficients, evaluate at the fourth power, combine, then state slope and point. a=2..9; positive even b=2..12; k=2..4. Dependent t=k⁴, y=ak²−bk³, m=a/(2k²)−3b/(4k). Powers 1/2 and 3/4 and subtraction remain fixed because these specify the method; bounded positive coefficients and perfect powers keep exact arithmetic comparable to the source. The policy allows positive, zero, and negative results, retaining observed negative y and m for replay. There are 144 distinct tasks before availability exclusions.
+
+Both operate on x>0; neither permits zero-point derivative singularities or branch ambiguity. Values are computed with SymPy exact rationals. Each slot's full bounded domain is exercised, not just random seeds. A changed-point case holds a and b fixed and independently reads the rendered curve, point, derivative, substitution, and key. No operators, fields, or reasoning stages are added. Both supplied y-coordinates are computed, never independently sampled.
+
+## Observed complete source choice banks
+
+The five supported complete source records contain 17 values, including 12 distractors. Exact banks are frozen in source.json and replayed in source-cases.json/source-replay.json, including every correct designation; engine-report.json tests all three radio banks through the actual grader. They are not merged or sampled to produce new content. Source-bank replay checks the complete numerical value, ignoring order.
+
+q-70535 (y=x²−3x+6√x at x=4) has choices 7/2, −7/2, −13/2, 13/2 (correct), 7/4. Let D=2t−b, R=c/(2√t). The complete observed pattern is [D−R, −(D−R), −(D+R), D+R, (D−R)/2]. These reproduce all five values at b=3,c=6,t=4; final division's misconception is unresolved. No general bank is selected by normal generation.
+
+q-102224 (y=x−cube-root(x) at x=8) has choices 7/8, 5/6, 11/12 (correct), 1/2, 3/4. With k=cube-root(t)=2, the exact source patterns are [1−1/(2k²),1−2/(3k²),1−1/(3k²),1−2/k²,1−1/k²]. These reproduce the complete bank. Interpretations of the nonstandard coefficients are unresolved; normal generation does not infer them.
+
+q-1901 (y=5x⁴+cube-root(x²) at x=1) has 20/3, −64/3, 95/3, 62/3 (correct), −19/3. Source derivative is 20x³+(2/3)x^(−1/3) and m=62/3. The distractors are retained as exact opaque rational literals, with no claimed generalization or invented error explanation. Replay uses the full literal bank at the original parameters. No new radio instance is produced.
+
+q-1894 and q-1906 lack rating, correct designation and worked solution. Their complete recorded values and questions remain preserved and are excluded from gradable inventory and generation. A mathematically inferred answer does not complete a missing authored bank or justify updating a previously served source. e-143 remains unchanged and excluded from practice counts.
+
+## Validation and distinction
+
+Replay of both parameterized blanks must match the original prompt, exact solution wording/layout, field contract, and answer value. The independent validator parses every rendered curve and point, differentiates symbolically, evaluates its canonical value, and checks every rendered solution stage. Native grading tests accepted exact and equivalent entries and rejected incorrect slopes. Negative controls corrupt points, target references, stages, and keys; invalid parameters and hard requests must fail.
+
+Content fingerprints use the expanded mathematical curve plus evaluation abscissa, across templates and difficulty. Changing a UUID, seed, ordering, or answer notation cannot create inventory. All source, canonical, existing and historical presented/reserved tasks are excluded under a fresh basis before preparation. Fresh UUIDs are deterministic from the authored content; answers belong to their field. Difficulty is inherited from the source workload and field type, not inferred by coefficient size.
