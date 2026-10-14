@@ -10,17 +10,17 @@ moderate evaluates a one-piece trig loop; hard evaluates two polynomial segments
 No EDB, registration, network, SVG or image models.
 """
 from __future__ import annotations
-import argparse, copy, hashlib, json, os, random, re, sys, tempfile, uuid
+import argparse, copy, functools, hashlib, json, os, random, re, sys, tempfile, threading, uuid
 from pathlib import Path
 import sympy as sp
-os.environ.setdefault('MPLCONFIGDIR',str(ROOT) if 'ROOT' in globals() else '/tmp/green-area-mpl')
+os.environ.setdefault('MPLCONFIGDIR','/tmp/green-area-mpl')
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 ROOT=Path(__file__).resolve().parent/'17592186133897'
 SOURCE=json.loads((ROOT/'source.json').read_text())
-RECORD=SOURCE['record']; KP=17592186133897; VERSION='green-area-v1'
+RECORD=SOURCE['record']; KP=17592186133897; VERSION='green-area-v2'
 T,U=sp.symbols('t u',real=True)
 A,B=sp.symbols('a b',positive=True)
 QS={str(q[':db/id']):q for q in RECORD[':knowledge-point/questions']}
@@ -52,7 +52,7 @@ def num_mask(s, mapping,p):
 # Omitted unit coefficients are complete coefficient-prefix slots, not number substitutions.
 INSERTIONS={
  'sin2_cos':[(r'=\operatorname{sin}⁡2t',r'={a}\operatorname{sin}⁡2t'),(r'i+\operatorname{cos}⁡t',r'i+{b}\operatorname{cos}⁡t'),(r'i-\operatorname{sin}⁡t',r'i-{b}\operatorname{sin}⁡t'),(r'}\operatorname{sin}⁡2t\cdot (-\operatorname{sin}⁡t)',r'}{a}\operatorname{sin}⁡2t\cdot (-{b}\operatorname{sin}⁡t)'),(r'= -',r'= -')],
- 'minus_cos_sin2':[(r'=-\operatorname{cos}⁡t',r'=-{a}\operatorname{cos}⁡t'),(r'=\operatorname{sin}⁡t\,i',r'={a}\operatorname{sin}⁡t\,i'),(r'\cdot \operatorname{sin}⁡t\,\text{d}t',r'\cdot {a}\operatorname{sin}⁡t\,\text{d}t')],
+ 'minus_cos_sin2':[(r'=-\operatorname{cos}⁡t',r'=-{a}\operatorname{cos}⁡t'),(r'=\operatorname{sin}⁡t\,i',r'={a}\operatorname{sin}⁡t\,i'),(r'sin}⁡2t\cdot \operatorname{sin}⁡t\,\text{d}t',r'sin}⁡2t\cdot {a}\operatorname{sin}⁡t\,\text{d}t')],
  'upper_polynomial':[(r'(t)={t}^{5}',r'(t)={a}{t}^{5}'),(r'i+{t}^{4}',r'i+{b}{t}^{4}'),(r'(t)=-t\,i',r'(t)=-{a}t\,i'),(r'(t)=-i',r'(t)=-{a}i'),(r'}{t}^{5}\cdot',r'}{a}{t}^{5}\cdot'),(r'(-t)\cdot',r'(-{a}t)\cdot')],
  'lower_polynomial':[(r'(t)={t}^{5}',r'(t)={a}{t}^{5}'),(r'(t)=-t\,i',r'(t)=-{a}t\,i'),(r'(t)=-i',r'(t)=-{a}i'),(r'}{t}^{5}\cdot',r'}{a}{t}^{5}\cdot'),(r'(-t)\cdot',r'(-{a}t)\cdot')],
  'right_polynomial':[(r'i - t^{3}',r'i - {b}t^{3}'),(r'i + tj',r'i + {b}tj')],
@@ -90,6 +90,14 @@ def calculate(family,p):
         ints.append(sp.integrate(f,(T,l,h)))
     return sp.simplify(sum(ints)),seg,orientation,variable
 
+_PLOT_LOCK=threading.RLock()
+def serialized_plot(fn):
+    @functools.wraps(fn)
+    def wrapped(*args,**kwargs):
+        with _PLOT_LOCK:return fn(*args,**kwargs)
+    return wrapped
+
+@serialized_plot
 def render_plots(family,p,output_dir=None):
     """Single-instance Matplotlib; unique temporary files + atomic final writes."""
     out=Path(output_dir or ROOT/'plots');out.mkdir(parents=True,exist_ok=True)
@@ -109,8 +117,13 @@ def render_plots(family,p,output_dir=None):
             for fraction in ([.18,.42,.68,.87] if len(seg)==1 else [.27,.74]):
                 k=int(fraction*(len(ts)-1));ax.annotate('',xy=(xx[k+9],yy[k+9]),xytext=(xx[k-9],yy[k-9]),arrowprops={'arrowstyle':'->','color':'black','lw':1})
             if len(seg)>1:
-                k=360 if n==0 else 300;ax.text(xx[k]+.03*(max(xs)-min(xs)),yy[k]+.06*(max(ys)-min(ys)),f'$C_{n+1}$',color=color)
-        ax.text(np.mean(xs),np.mean(ys),'$D$',color='#286eaa')
+                k=72 if n==0 else 300
+                dx=(-.12 if n==0 and family in ['upper_polynomial','lower_polynomial'] else .04)*(max(xs)-min(xs))
+                dy=(.06 if family!='upper_polynomial' else -.12)*(max(ys)-min(ys))
+                ax.text(xx[k]+dx,yy[k]+dy,f'$C_{n+1}$',color=color)
+        a,b=p['a'],p['b']
+        label={'ellipse':(.2*a,.15*b),'sin_sin2':(.65*a,.15*b),'minus_cos_sin2':(.65*a,.15*b),'sin2_minus_sin':(.35*a,-.5*b),'sin2_cos':(.35*a,-.5*b),'left_polynomial':(-.7*a,.15*b),'right_polynomial':(.7*a,.2*b),'upper_polynomial':(.2*a,.65*b),'lower_polynomial':(.2*a,-.65*b)}[family]
+        ax.text(*label,'$D$',color='#286eaa')
         if len(seg)==1:ax.text(max(xs)*.6,max(ys)+.09*(max(ys)-min(ys)),'$C$',color='#ef9b00')
         xr=max(max(xs)-min(xs),1);yr=max(max(ys)-min(ys),1)
         lo,hi=min(min(xs),0)-.25*xr,max(max(xs),0)+.4*xr
@@ -120,7 +133,7 @@ def render_plots(family,p,output_dir=None):
         ax.spines['left'].set_position('zero');ax.spines['bottom'].set_position('zero')
         ax.spines['left'].set_visible(False);ax.spines['bottom'].set_visible(False)
         ax.annotate('',xy=(hi,0),xytext=(lo,0),arrowprops={'arrowstyle':'->','lw':.9});ax.annotate('',xy=(0,top),xytext=(0,bottom),arrowprops={'arrowstyle':'->','lw':.9})
-        xt=sorted(set(int(v) for v in [min(xs),max(xs)] if abs(v)>1e-5));yt=sorted(set(int(v) for v in [min(ys),max(ys)] if abs(v)>1e-5))
+        xt=sorted(set(int(round(v)) for v in [min(xs),max(xs)] if abs(v)>1e-5));yt=sorted(set(int(round(v)) for v in [min(ys),max(ys)] if abs(v)>1e-5))
         ax.set_xticks(xt);ax.set_yticks(yt);ax.text(hi,0,'$x$');ax.text(0,top,'$y$');fig.tight_layout(pad=.7)
         fd,tmp=tempfile.mkstemp(suffix='.png',prefix='render-',dir=out);os.close(fd)
         try:fig.savefig(tmp,facecolor='white');os.replace(tmp,png)
@@ -235,7 +248,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     else:raise ValueError('no valid bank')
     area,segments,orientation,variable=calculate(family,p)
     if family=='ellipse':
-        prompt=r'Use Green\'s theorem to find the area of the region $D$ enclosed by the curve $C$ parametrized as $r(t)='+str(p['a'])+r'\cos t\,i+'+str(p['b'])+r'\sin t\,j$ for $t\in[0,2\pi].$'
+        prompt="Use Green's theorem to find the area of the region $D$ enclosed by the curve $C$ parametrized as $r(t)="+str(p['a'])+r'\cos t\,i+'+str(p['b'])+r'\sin t\,j$ for $t\in[0,2\pi].$'
         solution=ellipse_solution(p)
     else:
         source=QS[sid];prompt=fill(source[':question/problem'],sid,'prompt',p)
@@ -244,7 +257,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     plot=render_plots(family,p)
     if raw and anchor:pass
     else:prompt=re.sub(r'!\[\]\(.*?\)',f'![]({plot})',prompt) if '![](' in prompt else prompt+f'\n\n![]({plot})'
-    if not raw and family!='ellipse':solution=extra_endpoint_rows(family,p,solution)
+    if not raw and family!='ellipse':
+        solution=extra_endpoint_rows(family,p,solution)
+        if FAMILY_LEVEL[family]=='moderate':solution=solution.replace('simple, smooth, closed','simple, piecewise-smooth, closed')
     q={':question/problem':prompt}
     if not raw or ':question/difficulty' in QS[sid]:q[':question/difficulty']=':question.difficulty/'+level
     if solution is not None:q[':question/worked-solution']=solution
@@ -271,7 +286,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         rng.shuffle(f[':answer-field/choices'])
     # Mathematical identity: curve geometry/traversal and evaluation demand,
     # excluding complete bank, aliases and the incidental closing-segment speed.
-    mathematical=digest([family,level,[[str(x),str(y),str(l),str(h)] for x,y,l,h in segments],orientation,variable,'evaluate_area'])
+    mathematical=digest([family,level,sorted(p.values()) if family=='ellipse' else [[str(x),str(y),str(l),str(h)] for x,y,l,h in segments],orientation,variable,'evaluate_area'])
     return {'knowledge_point':{'db_id':KP,'id':RECORD[':knowledge-point/id'],'title':RECORD[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'template':family,'profile':profile if raw else 'method','parameters':p,'seed':seed,'mathematical_fingerprint':mathematical,'content_identity':identity,'source_id':sid,'basis':1356,'lineage':SOURCE['lineage'],'eligible_for_learning':not raw,'evidence_only':raw,'bank_recipes':(['opaque homogeneous scale; intent unresolved'] if raw else recipes),'area':str(area),'plot':plot,'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':matplotlib.__version__}}
 
 def main():

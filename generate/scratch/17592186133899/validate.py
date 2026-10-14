@@ -22,7 +22,7 @@ def parse(text):
     return sp.sympify(text)
 
 def read_prompt(prompt):
-    pattern=r'\\text\{d\}r=([^,\n$]+)' if r'\text{d}' in prompt else r' dr =\s*([^,\n$]+)'
+    pattern=r'\\text\{d\}r\s*=\s*([^,\n$]+)' if r'\text{d}' in prompt else r' dr =\s*([^,\n$]+)'
     values=[parse(t.replace(r'\,','')) for t in re.findall(pattern,prompt)]
     assert len(values)==3,('not three supplied operands',values)
     prose=prompt.split('where ',1)[1].split(', calculate',1)[0]
@@ -45,11 +45,11 @@ def check_format(text):
     assert text.count('$')%2==0,'unbalanced math delimiter'
     assert '+-' not in text and '--' not in text,'ungrouped signed arithmetic'
 
-def read_solution(solution,values,signs):
+def read_solution(solution,values,signs,hard=False):
     assert solution.count(r'\begin{aligned}')==1
     chain=solution.split(r'\begin{aligned}',1)[1].split(r'\end{aligned}',1)[0]
     rows=chain.split(r'\\')
-    assert len(rows)==3,('must preserve three operative rows',rows)
+    assert len(rows)==(4 if hard else 3),('source stages plus authored hard common-denominator row',rows)
     symbolic=rows[0].split('& =',1)[1].strip()
     tokens=re.findall(r'([+-]?)\{∮\}_\{\{C\}_\{([123])\}\}F\\cdot \\text\{d\}r',symbolic)
     assert len(tokens)==3 and [int(i) for _,i in tokens]==[1,2,3],'symbolic summation structure'
@@ -68,7 +68,18 @@ def read_solution(solution,values,signs):
     assert [v for sgn,v in items]==values,'printed substitution operands mismatch'
     total=sum(v*s for v,s in zip(values,signs))
     assert sp.simplify(parse(arithmetic)-total)==0,'signed arithmetic mismatch'
-    conclusion=rows[2].split('& =',1)[1].strip().removesuffix('.')
+    if hard:
+        common=rows[2].split('& =',1)[1].strip()
+        m=re.fullmatch(r'\\frac\{([^{}]+)\}\{(\d+)\}',common)
+        assert m,('missing common-denominator operation',common)
+        den=int(m[2]);assert den==sp.ilcm(*[v.q for v in values])
+        numerator=m[1];pos=0;scaled=[]
+        while pos<len(numerator):
+            match=matcher.match(numerator,pos);assert match
+            sign,term=match.groups();scaled.append((-1 if sign=='-' else 1,parse(term)));pos=match.end()
+        assert scaled==[(sign,value*den) for sign,value in zip(signs,values)],'individual common-denominator operands'
+        assert parse(numerator)/den==total
+    conclusion=rows[-1].split('& =',1)[1].strip().removesuffix('.')
     assert parse(conclusion)==total,'wrong concluding scalar'
     return total
 
@@ -79,7 +90,7 @@ def check_record(record,raw=False):
     assert field[':answer-field/type']==':answer-field.type/radio'
     values,signs=read_prompt(q[':question/problem']);total=sum(v*s for v,s in zip(values,signs))
     for text in [q[':question/problem'],q.get(':question/worked-solution','')]+[a[':answer/value'] for a in field[':answer-field/choices']]:check_format(text)
-    if ':question/worked-solution' in q:assert read_solution(q[':question/worked-solution'],values,signs)==total
+    if ':question/worked-solution' in q:assert read_solution(q[':question/worked-solution'],values,signs,hard=not raw and q[':question/difficulty'].endswith('/hard'))==total
     else:assert raw and meta['source_id']=='q-126558'
     answers=field[':answer-field/choices'];bank=[parse(a[':answer/value']) for a in answers]
     assert len(bank)==5 and len(set(bank))==5,'whole bank ambiguity'
@@ -89,6 +100,7 @@ def check_record(record,raw=False):
         assert parse(next(a[':answer/value'] for a in answers if a[':answer/id']==chosen))==total
     else:assert raw and meta['source_id']=='q-126558'
     if not raw:
+        assert '∮_(' not in q[':question/problem'],'legacy subscript presentation repaired'
         level=q[':question/difficulty'].split('/')[-1]
         assert all(0<abs(v)<=10 for v in values) and min(values)<0<max(values)
         if level=='easy':assert signs==[1,1,1] and all(v.q==1 for v in values)

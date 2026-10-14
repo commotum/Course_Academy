@@ -180,8 +180,9 @@ export function mountInlineFields(prompt, fieldList, fields, makeControl, idOf =
     // Repeated references show the same answer without creating a second field.
     const sync = () => {
       const input = inline.querySelector('input,select,math-field');
-      const selected = field.choices?.find(choice => String(idOf(choice)) === input?.value);
-      for (const slot of slots.slice(1)) slot.textContent = selected?.value || input?.value || '…';
+      const value = input?.value ?? (fieldType(field) === 'blank' ? field.response?.value : field.response?.choiceId ?? field.response?.id);
+      const selected = field.choices?.find(choice => String(idOf(choice)) === String(value));
+      for (const slot of slots.slice(1)) slot.textContent = selected?.value || value || '…';
     };
     inline.addEventListener('input', sync); inline.addEventListener('change', sync); sync();
   }

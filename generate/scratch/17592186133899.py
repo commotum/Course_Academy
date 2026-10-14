@@ -23,7 +23,7 @@ import sympy as sp
 KP_ID = 17592186133899
 KP_UUID = '56caab23-f54d-58ee-99db-99c651f78e5c'
 TITLE = 'Calculating the Circulation of a Vector Field Over a Region Containing Holes'
-VERSION = 'circulation-holes-1.0'
+VERSION = 'circulation-holes-1.1'
 HERE = Path(__file__).resolve().parent / str(KP_ID)
 WRAPPER = json.loads((HERE / 'source.json').read_text())
 SOURCE = WRAPPER['record']
@@ -111,14 +111,19 @@ def arithmetic_sum(values,signs):
     return ''.join(('-' if s<0 else ('+' if i else ''))+operand(v)
                    for i,(v,s) in enumerate(zip(values,signs)))
 
-def render_solution(q,values,signs):
+def render_solution(q,values,signs,hard=False):
     """Retain the family's original prose and exact operative row structure."""
     text=q[':question/worked-solution']
     start=text.index(r'\begin{aligned}')
     prefix=text[:start]
     suffix=text[text.index(r'\end{aligned}',start):]
     total=sum(v*s for v,s in zip(values,signs))
-    return prefix+r'\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & ='+symbolic_sum(signs)+r' \\  & ='+arithmetic_sum(values,signs)+r' \\  & ='+number(total)+'.'+suffix
+    common=''
+    if hard:
+        denominator=sp.ilcm(*[v.q for v in values])
+        scaled=[sp.Integer(v*denominator) for v in values]
+        common=r' \\  & ='+r'\frac{'+arithmetic_sum(scaled,signs)+'}{'+str(denominator)+'}'
+    return prefix+r'\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & ='+symbolic_sum(signs)+r' \\  & ='+arithmetic_sum(values,signs)+common+r' \\  & ='+number(total)+'.'+suffix
 
 def legacy_solution_asset():
     """Only new diagram: legacy all-positive geometry lacks a solution raster.
@@ -249,8 +254,12 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     vals,tex,recipes,total=result
     q=QUESTIONS[diagram];signs=FAMILIES[family]['signs']
     prompt=raw_prompt(q,values)
-    solution=render_solution(q,values,signs) if ':question/worked-solution' in q else (None if raw else completed_legacy_solution(values))
+    solution=render_solution(q,values,signs,hard=not raw and level=='hard') if ':question/worked-solution' in q else (None if raw else completed_legacy_solution(values))
     if not raw:
+        if family=='positive_legacy':
+            for index in (1,2,3):
+                prompt=prompt.replace('∮_(C_{'+str(index)+'})',r'{∮}_{{C}_{'+str(index)+'}}')
+            prompt=prompt.replace('∮_(∂D)',r'{∮}_{∂D}').replace(' dr =',r' \text{d}r =')
         prompt=replace_assets(prompt)
         if solution is not None:solution=replace_assets(solution)
     difficulty=q.get(':question/difficulty',{}).get(':db/ident') if raw else ':question.difficulty/'+level
@@ -285,7 +294,7 @@ def generate_easy(seed=0,**kwargs):return generate('easy',seed=seed,**kwargs)
 # Each preserves its own reversal prose, symbolic signs and substitution row.
 def generate_moderate(seed=0,**kwargs):return generate('moderate',seed=seed,**kwargs)
 
-# HARD (AUTHORED): same six arrangements and same three rows; all operands are
+# HARD (AUTHORED): same six arrangements and three source stages plus an explicit common-denominator row; all operands are
 # reduced noninteger halves/thirds, both denominators present, mixed signs and
 # |value|≤10 / |numerator|≤29. No curl, geometry/area or integration demand.
 def generate_hard(seed=0,**kwargs):return generate('hard',seed=seed,**kwargs)

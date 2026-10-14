@@ -4,7 +4,7 @@ Captured scope: **120 topics, 384 knowledge points**, 3757 practice questions; m
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**qa_passed: 308**, **queued: 71**, **working: 5**.
+**qa_passed: 311**, **queued: 68**, **working: 5**.
 
 Dispatch priority: the 15 KPs in `coverage-report.md`, while already-started workers finish.
 
@@ -319,15 +319,15 @@ Counts describe reviewed work; queued and working KPs are not complete. Source a
 | [17592186133931](../../scratch/17592186133931.py) | The Divergence Theorem | Calculating Flux Across a Closed Surface | 0 / 10 / 0 / 1 | qa_passed | [Report](qa/17592186133931.json) |
 | [17592186124458](../../scratch/17592186124458.py) | Directional Derivatives | Calculating a Directional Derivative | 5 / 1 / 0 / 2 | qa_passed | [Report](qa/17592186124458.json) |
 | [17592186124459](../../scratch/17592186124459.py) | Directional Derivatives | Finding the Direction of Maximum Increase or Maximum Decrease of a Function | 3 / 2 / 0 / 1 | qa_passed | [Report](qa/17592186124459.json) |
-| [17592186124460](../../scratch/17592186124460.py) | Directional Derivatives | Finding the Rate of Change of a Function in a Given Direction | 0 / 3 / 2 / 2 | working | — |
+| [17592186124460](../../scratch/17592186124460.py) | Directional Derivatives | Finding the Rate of Change of a Function in a Given Direction | 0 / 3 / 2 / 2 | qa_passed | [Report](qa/17592186124460.json) |
 | [17592186133886](../../scratch/17592186133886.py) | Extending Green's Theorem | Applying Green's Theorem to Regions With Holes | 3 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186133886.json) |
-| [17592186133899](../../scratch/17592186133899.py) | Extending Green's Theorem | Calculating the Circulation of a Vector Field Over a Region Containing Holes | 4 / 6 / 0 / 1 | working | — |
+| [17592186133899](../../scratch/17592186133899.py) | Extending Green's Theorem | Calculating the Circulation of a Vector Field Over a Region Containing Holes | 4 / 6 / 0 / 1 | qa_passed | [Report](qa/17592186133899.json) |
 | [17592186133900](../../scratch/17592186133900.py) | Extending Green's Theorem | Applying Green's Theorem to Regions With Holes: Advanced Cases | 0 / 6 / 5 / 0 | working | — |
-| [17592186133895](../../scratch/17592186133895.py) | Using Green's Theorem to Calculate Area | Identifying Vector Fields That Satisfy the Unit Curl Property | 2 / 5 / 0 / 0 | working | — |
+| [17592186133895](../../scratch/17592186133895.py) | Using Green's Theorem to Calculate Area | Identifying Vector Fields That Satisfy the Unit Curl Property | 2 / 5 / 0 / 0 | qa_passed | [Report](qa/17592186133895.json) |
 | [17592186133896](../../scratch/17592186133896.py) | Using Green's Theorem to Calculate Area | Expressing the Area Bounded by a Closed Curve Using Green’s Theorem | 0 / 1 / 6 / 1 | working | — |
-| 17592186133897 | Using Green's Theorem to Calculate Area | Calculating an Area Using Green's Theorem | 0 / 4 / 3 / 1 | queued | — |
-| 17592186068695 | Determining Continuity from Graphs | Determining Whether a Function Is Continuous at a Given Point | 4 / 5 / 0 / 0 | queued | — |
-| 17592186068696 | Determining Continuity from Graphs | Identifying Points of Discontinuity | 17 / 0 / 0 / 0 | queued | — |
+| [17592186133897](../../scratch/17592186133897.py) | Using Green's Theorem to Calculate Area | Calculating an Area Using Green's Theorem | 0 / 4 / 3 / 1 | working | — |
+| [17592186068695](../../scratch/17592186068695.py) | Determining Continuity from Graphs | Determining Whether a Function Is Continuous at a Given Point | 4 / 5 / 0 / 0 | working | — |
+| 17592186068696 | Determining Continuity from Graphs | Identifying Points of Discontinuity | 17 / 0 / 0 / 0 | working | — |
 | 17592186068697 | Determining Continuity from Graphs | Determining the Behavior of a Function in the Neighborhood of a Point | 11 / 0 / 0 / 1 | queued | — |
 | 17592186129145 | Graphing General Polynomials | Identifying the Factored Polynomial Shown in a Graph | 4 / 5 / 0 / 1 | queued | — |
 | 17592186129147 | Graphing General Polynomials | Identifying the Graph of a Factored Polynomial | 0 / 5 / 2 / 0 | queued | — |

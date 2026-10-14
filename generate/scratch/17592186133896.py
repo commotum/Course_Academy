@@ -31,7 +31,7 @@ import sympy as sp
 KP_ID=17592186133896
 KP_UUID='8644454b-ee25-59fd-ae65-9770a0b44442'
 TITLE='Expressing the Area Bounded by a Closed Curve Using Green’s Theorem'
-VERSION='green-area-setup-v1'
+VERSION='green-area-setup-v3'
 ROOT=Path(__file__).with_suffix('')
 SOURCE=json.loads((ROOT/'source.json').read_text())
 QUESTIONS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
@@ -201,7 +201,7 @@ def equivalent_scalar(a,b):
 def parse_math(value):
  """Independent restricted display reader for the actual rendered trig/exp values."""
  from sympy.parsing.sympy_parser import parse_expr,standard_transformations,implicit_multiplication_application
- s=value.replace('\\\\','\\').replace('⁡','').replace(r'\,','').replace(r'\cdot','*')
+ s=value.replace('⁡','').replace(r'\,','').replace(r'\cdot','*')
  s=s.replace(r'\left','').replace(r'\right','')
  s=re.sub(r'(\\(?:sin|cos)(?:\^\{\d+\})?)\{\((2?)\s*t\s*\)\}',r'\1\2t',s)
  s=re.sub(r'(\\(?:sin|cos)(?:\^\{\d+\})?)\((2?)\s*t\s*\)',r'\1\2t',s)
@@ -215,7 +215,7 @@ def parse_math(value):
  return parse_expr(s,local_dict={'t':t,'sin':sp.sin,'cos':sp.cos,'e':sp.E},transformations=standard_transformations+(implicit_multiplication_application,))
 
 def normalized(value):
- s=value.replace('\\\\','\\').replace('⁡','')
+ s=value.replace('⁡','')
  s=re.sub(r'\\operatorname\{(sin|cos)\}',r'\\\1',s)
  s=re.sub(r'\{(sin|cos)\}',r'\\\1',s)
  # Explicit trig argument parentheses improve renderer and engine support.
@@ -302,8 +302,8 @@ def _render_plots(template,p,output_dir=None):
 
 def guard(level,template,p):
  if set(p)!=({'a','b','m'} if template=='power' else {'a','b'}):raise ValueError('parameters must exactly match template slots')
- if any(type(p[z]) is not int or not 1<=p[z]<=6 for z in ('a','b')):raise ValueError('outer scales must be integers 1..6')
- if level=='easy' and (p['a']!=p['b'] or p['a']>6):raise ValueError('easy requires circles of radius 1..6')
+ if any(type(p[z]) is not int or not 1<=p[z]<=(20 if level=='easy' else 6) for z in ('a','b')):raise ValueError('outer scales must be integers 1..20 at easy, 1..6 otherwise')
+ if level=='easy' and (p['a']!=p['b'] or p['a']>20):raise ValueError('easy requires circles of radius 1..20')
  if level=='moderate' and p['a']==p['b']:raise ValueError('moderate requires unequal semiaxes')
  if template=='power' and p['m'] not in (3,5,7):raise ValueError('hard power workload uses odd m=3,5,7')
 
@@ -323,7 +323,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  for attempt in range(100):
   p=dict(parameters) if parameters is not None else {'a':rng.randint(1,6),'b':rng.randint(1,6)}
   if parameters is None:
-   if profile=='authored':p['a']=rng.randint(2,6)
+   if profile=='authored':p['a']=rng.randint(2,20 if level=='easy' else 6)
    if level=='easy':p['b']=p['a']
    if template=='power':p['m']=rng.choice((3,5,7))
   try:

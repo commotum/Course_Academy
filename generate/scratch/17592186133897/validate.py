@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 """Independent displayed mathematics + raw fidelity + native radio checks."""
-import faulthandler
-faulthandler.dump_traceback_later(20,repeat=True)
 import concurrent.futures,copy,importlib.util,json,re,subprocess,sys,tempfile
 from pathlib import Path
 import sympy as sp
@@ -11,6 +9,8 @@ spec=importlib.util.spec_from_file_location('green',ROOT.with_suffix('.py'));g=i
 t,u=sp.symbols('t u',real=True)
 TRANS=standard_transformations+(implicit_multiplication_application,)
 def expr(s):
+ if s.strip() in ('','+','-'):return sp.Integer(-1 if s.strip()=='-' else 1)
+ s=re.sub(r'_(\d+)',r'_{\1}',s)
  s=s.replace('⁡','').replace('∫',r'\int').replace('∮',r'\oint').replace('′',"'")
  s=re.sub(r'\\(?:operatorname|text)\{(.*?)\}',r'\1',s)
  s=s.replace(r'\left','').replace(r'\right','').replace(r'\limits','').replace(r'\,','').replace(r'\:','').replace(r'\cdot','*').replace(r'\pi','pi').replace(r'\sin','sin').replace(r'\cos','cos').replace(r'\dfrac',r'\frac')
@@ -99,13 +99,30 @@ def check_record(r):
     assert sp.simplify(dx-sp.diff(x,t))==0 and sp.simplify(dy-sp.diff(y,t))==0,('displayed derivative',eq,x,y)
   chain=sol.rsplit(r'\begin{aligned}',1)[1].split(r'\end{aligned}',1)[0]
   rows=chain.split(r'\\')
+  # Primitive derivative is checked before endpoint substitution: equal final
+  # endpoint differences cannot hide a wrong additional even-powered term.
+  if '[' in chain:
+   primitive_row=next(row for row in rows if '[' in row)
+   rhs=primitive_row.split('&',1)[1].strip().lstrip('=').strip()
+   rhs=rhs.replace(r'\left','').replace(r'\right','').replace('_0','_{0}')
+   m=re.search(r'\[(.*)\]_\{([^{}]+)\}\^\{([^{}]+)\}',rhs);assert m,rhs
+   primitive=expr(rhs[:m.start()])*expr(m[1]) if rhs[:m.start()].strip() else expr(m[1])
+   x,y,lo,hi=seg[0];variable='x' if '$P(x,y)=0$' in sol else 'y'
+   expected=sp.sign(signed)*(x*sp.diff(y,t) if variable=='x' else -y*sp.diff(x,t))
+   assert sp.trigsimp(sp.diff(primitive,t)-expected)==0,('primitive derivative',primitive,expected)
+  else:
+   primitive_row=next(row for row in rows if '|}' in row or '{|}' in row)
+   rhs=primitive_row.split('&',1)[1].strip().lstrip('=').strip()
+   m=re.search(r'\{*u\}*\^\{3\}',rhs);assert m,rhs
+   coefficient=expr(rhs[:m.start()]);assert sp.simplify(3*coefficient-3*area/2)==0
+   assert ('cos}⁡t\\cdot' in chain or 'cos}⁡t\\operatorname' in chain or 'sin}⁡t\\cdot' in chain), 'double-angle distribution stage missing'
   for row in rows:
    if '&' not in row:continue
    rhs=row.split('&',1)[1].strip().lstrip('=').strip()
    if '∮' in rhs or '\\oint' in rhs:continue
    value=sp.simplify(expr(rhs));assert sp.simplify(value-area)==0,('stage',rhs,value,area)
   if not raw:
-   if r['generation']['template']!='ellipse':assert len(rows)>=10,'individual endpoints missing'
+   if r['generation']['template']!='ellipse':assert len(rows)>=(11 if r['generation']['template'] in ['sin_sin2','sin2_minus_sin','sin2_cos','minus_cos_sin2'] else 9),'individual endpoints missing'
   for f in q[':question/answer-fields']:
    if ':answer-field/correct' in f:
     correct=[a for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1]][0]
@@ -128,14 +145,14 @@ def raw_compare(r,s):
    chosen=next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1]);assert chosen==original[':answer-field/correct'][':answer/value']
 
 def main():
- cases=[];replays=[];variants=[];checks=[]
+ cases=[];replays=[];variants=[];evidence_variants=[];checks=[]
  for sid,spec in g.SPECS.items():
-  family,a,b,level,_,_=spec;p={'a':a,'b':b};print('checking',sid,flush=True)
+  family,a,b,level,_,_=spec;p={'a':a,'b':b}
   r=g.generate(level,parameters=p,profile='original:'+sid);raw_compare(r,g.QS[sid]);check_record(r);replays.append(r)
   cases.append({'source_id':sid,'math_academy_id':g.QS[sid][':question/math-academy-id'],'template':family,'parameters':p,'bank_profile':'original:'+sid,'level':level,'authored_level_assignment':':question/difficulty' not in g.QS[sid]})
   # Changed coefficients through BOTH public raw and normal recipes.
   for p in [{'a':3,'b':5},{'a':7,'b':4}]:
-   rr=g.generate(level,parameters=p,profile='original:'+sid);check_record(rr)
+   rr=g.generate(level,parameters=p,profile='original:'+sid);check_record(rr);evidence_variants.append(rr)
    r=g.generate(level,parameters=p,template=family);check_record(r);variants.append(r)
  for p in [{'a':2,'b':3},{'a':5,'b':4}]:r=g.generate_easy(parameters=p);check_record(r);variants.append(r)
  for level in ['easy','moderate','hard']:
@@ -143,22 +160,35 @@ def main():
   for seed in range(35):
    r=g.generate(level,seed);check_record(r);coverage.add(r['generation']['template'])
   assert coverage=={k for k,v in g.FAMILY_LEVEL.items() if v==level},coverage
+ for family,level in g.FAMILY_LEVEL.items():
+  for p in ([{'a':2,'b':8},{'a':8,'b':2}] if family=='ellipse' else [{'a':1,'b':1},{'a':8,'b':8}]):check_record(g.generate(level,template=family,parameters=p))
+ for p in [{'a':0,'b':2},{'a':9,'b':2},{'a':1,'b':2},{'a':2,'b':2}]:
+  try:g.generate_easy(parameters=p)
+  except ValueError:pass
+  else:raise AssertionError('explicit easy domain guard failed')
  # Identity invariant: option shuffles do not alter content identity.
  for r in variants:
   rr=g.generate(r['question'][':question/difficulty'].split('/')[-1],999,template=r['generation']['template'],parameters=r['generation']['parameters'])
   assert rr['question'][':question/id']==r['question'][':question/id']
  # Meaningful mutation regressions; final answer alone must not hide them.
- for mutate in ['control','derivative','intermediate']:
+ for mutate in ['control','derivative','intermediate','operative_stage']:
   r=copy.deepcopy(variants[0]);s=r['question'][':question/worked-solution']
   if mutate=='control':s+='\x0c'
   elif mutate=='derivative':s=s.replace(r'3\operatorname{cos}',r'4\operatorname{cos}',1)
-  else:s=s.replace('=30{\\int }','=31{\\int }',1)
+  elif mutate=='intermediate':s=s.replace('=30{\\int }','=31{\\int }',1)
+  else:
+   chain=s.rsplit(r'\begin{aligned}',1)[1].split(r'\end{aligned}',1)[0];rows=chain.split(r'\\');old=rows[2];s=s.replace(old,'  & =20 ',1)
   r['question'][':question/worked-solution']=s
   try:check_record(r)
-  except (AssertionError,Exception):pass
+  except AssertionError:pass
   else:raise AssertionError('mutation escaped '+mutate)
  for r in variants:
   f=r['question'][':question/answer-fields'][0];checks.append({'label':r['generation']['template']+str(r['generation']['parameters']),'record':r,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'complete native bank'} for a in f[':answer-field/choices']]})
+ for raw in replays:
+  for n,f in enumerate(raw['question'][':question/answer-fields']):
+   if ':answer-field/correct' not in f:continue
+   fixture=copy.deepcopy(raw);fixture['question'][':question/answer-fields']=[copy.deepcopy(f)]
+   checks.append({'label':'original supported designation '+str(raw['generation']['source_id'])+' field '+str(n),'record':fixture,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'source supported native radio designation; fixture contains this field only'} for a in f[':answer-field/choices']]})
  (ROOT/'engine-input.json').write_text(json.dumps(checks,indent=2));subprocess.run(['generate/runs/current/check-engine',str(ROOT/'engine-input.json'),str(ROOT/'engine-results.json')],check=True)
  # Fresh concurrent renderer writes, same/different instances; inspect sidecar geometry.
  with tempfile.TemporaryDirectory(dir=ROOT,prefix='concurrent-') as tmp:
@@ -167,12 +197,13 @@ def main():
   assert paths[0]==paths[1]
   for path,(family,p) in zip(paths,work):assert json.loads(Path(path).with_suffix('.json').read_text())['parameters']==p
   assert not list(Path(tmp).glob('render-*')) and not list(Path(tmp).glob('sidecar-*'))
- (ROOT/'source-cases.json').write_text(json.dumps(cases,indent=2));(ROOT/'review.json').write_text(json.dumps({'original_replays':replays,'generated_variants':variants},indent=2))
+ (ROOT/'source-cases.json').write_text(json.dumps(cases,indent=2));(ROOT/'review.json').write_text(json.dumps({'original_replays':replays,'generated_variants':variants,'generated_evidence_variants':evidence_variants},indent=2))
  lines=['# Original questions and parameterized variants','All originals below are explicit ineligible historical evidence profiles. Normal variants use complete method banks.']
- for label,records in [('Original',replays),('Generated',variants)]:
+ for label,records in [('Original',replays),('Generated eligible',variants),('Generated opaque evidence only',evidence_variants)]:
   for r in records:
    q=r['question'];lines += ['\n## '+label+' '+r['generation']['template']+' '+str(r['generation']['parameters']),q[':question/problem'],'\nChoices: '+', '.join(a[':answer/value'] for f in q[':question/answer-fields'] for a in f[':answer-field/choices']),q.get(':question/worked-solution','[Absent in source; retained as absent in raw replay.]')]
+   if label=='Original':lines.append('Inspected source raster: ![]('+str(ROOT/('source-plot-'+r['generation']['source_id']+'.png'))+')')
  (ROOT/'review.md').write_text('\n\n'.join(lines))
- report={'status':'pass','practice_sources':8,'exact_prompt_replays':8,'exact_solution_replays':7,'source_solution_absence_replayed':1,'full_banks':9,'source_options':45,'correct_designations_matched':7,'missing_designations_preserved':2,'key_presence_parity':8,'normal_templates':9,'authored_easy':'ellipse evaluation, not sibling setup','source_opaque_banks':'8 evidence-only profiles; no recovered intent claimed','native':json.loads((ROOT/'engine-results.json').read_text()),'displayed_math_checked':'prompt closure/orientation/area, every coordinate derivative, every numerical integral and primitive/endpoint/final row','fresh_concurrency':'pass','mutation_regressions':['control','derivative','intermediate'],'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':g.matplotlib.__version__,'database_writes':0}
+ report={'status':'pass','practice_sources':8,'exact_prompt_replays':8,'exact_solution_replays':7,'source_solution_absence_replayed':1,'full_banks':9,'source_options':45,'correct_designations_matched':7,'missing_designations_preserved':2,'key_presence_parity':8,'normal_templates':9,'authored_easy':'ellipse evaluation, not sibling setup','source_opaque_banks':'8 evidence-only profiles; no recovered intent claimed','ungradeable_raw_fields_missing_correct':2,'normal_inferred_completion_sources':1,'normal_smoothness_wording_repairs':4,'bank_default_family_coverage':'all 9 families covered under 35 default seeds per level','domain_boundary_checks':'all families at coefficients1/8; easy2/8 unequal; invalid explicit easy rejected','native':json.loads((ROOT/'engine-results.json').read_text()),'displayed_math_checked':'prompt closure/orientation/area, every coordinate derivative, every numerical integral and primitive/endpoint/final row','fresh_concurrency':'pass','mutation_regressions':['control','derivative','intermediate','operative_stage'],'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':g.matplotlib.__version__,'database_writes':0}
  (ROOT/'validation.json').write_text(json.dumps(report,indent=2));print(json.dumps({k:v for k,v in report.items() if k!='native'},indent=2))
 if __name__=='__main__':main()

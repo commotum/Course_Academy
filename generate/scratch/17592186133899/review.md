@@ -44,9 +44,9 @@ where $C_{1}$ is oriented counterclockwise and $C_{2}$ and $C_{3}$ are oriented 
 
 Suppose that $F$ is a vector field on $R^{2}$ defined over the region $D$ above. Given that
 
-$∮_(C_{1})F \cdot dr = 4, ∮_(C_{2})F \cdot dr =8, ∮_(C_{3})F \cdot dr =-9$,
+${∮}_{{C}_{1}}F \cdot \text{d}r = 4, {∮}_{{C}_{2}}F \cdot \text{d}r =8, {∮}_{{C}_{3}}F \cdot \text{d}r =-9$,
 
-where $C_{1}$ is oriented counterclockwise and $C_{2}$ and $C_{3}$ are oriented clockwise, calculate the value of $∮_(∂D)F \cdot dr$.
+where $C_{1}$ is oriented counterclockwise and $C_{2}$ and $C_{3}$ are oriented clockwise, calculate the value of ${∮}_{∂D}F \cdot dr$.
 
 - $-13$
 - $21$
@@ -79,9 +79,9 @@ $$
 
 Suppose that $F$ is a vector field on $R^{2}$ defined over the region $D$ above. Given that
 
-$∮_(C_{1})F \cdot dr = 4, ∮_(C_{2})F \cdot dr =8, ∮_(C_{3})F \cdot dr =-9$,
+${∮}_{{C}_{1}}F \cdot \text{d}r = 4, {∮}_{{C}_{2}}F \cdot \text{d}r =8, {∮}_{{C}_{3}}F \cdot \text{d}r =-9$,
 
-where $C_{1}$ is oriented counterclockwise and $C_{2}$ and $C_{3}$ are oriented clockwise, calculate the value of $∮_(∂D)F \cdot dr$.
+where $C_{1}$ is oriented counterclockwise and $C_{2}$ and $C_{3}$ are oriented clockwise, calculate the value of ${∮}_{∂D}F \cdot dr$.
 
 - $-5$
 - $12$
@@ -1662,7 +1662,7 @@ Notice that the positive orientations of the inner curves ${C}_{2}$ and ${C}_{3}
 Therefore, we have
 
 $$
-\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & ={∮}_{{C}_{1}}F\cdot \text{d}r-{∮}_{{C}_{2}}F\cdot \text{d}r-{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =\frac{5}{2}-(- \frac{11}{3})-(- \frac{17}{2}) \\  & =\frac{44}{3}.\end{aligned}
+\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & ={∮}_{{C}_{1}}F\cdot \text{d}r-{∮}_{{C}_{2}}F\cdot \text{d}r-{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =\frac{5}{2}-(- \frac{11}{3})-(- \frac{17}{2}) \\  & =\frac{15-(-22)-(-51)}{6} \\  & =\frac{44}{3}.\end{aligned}
 $$
 
 ## Generated authored hard — all_ccw, method_omissions
@@ -1701,7 +1701,7 @@ Notice that the positive orientations of the inner curves ${C}_{2}$ and ${C}_{3}
 Therefore, we have
 
 $$
-\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & ={∮}_{{C}_{1}}F\cdot \text{d}r-{∮}_{{C}_{2}}F\cdot \text{d}r-{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =\frac{5}{2}-(- \frac{11}{3})-(- \frac{17}{2}) \\  & =\frac{44}{3}.\end{aligned}
+\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & ={∮}_{{C}_{1}}F\cdot \text{d}r-{∮}_{{C}_{2}}F\cdot \text{d}r-{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =\frac{5}{2}-(- \frac{11}{3})-(- \frac{17}{2}) \\  & =\frac{15-(-22)-(-51)}{6} \\  & =\frac{44}{3}.\end{aligned}
 $$
 
 ## Generated authored hard — inner3_reverse, method_signs
@@ -1740,7 +1740,7 @@ Notice that the positive orientation of the inner curve ${C}_{3}$ is opposite th
 Therefore, we have
 
 $$
-\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & ={∮}_{{C}_{1}}F\cdot \text{d}r+{∮}_{{C}_{2}}F\cdot \text{d}r-{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =\frac{5}{2}+(- \frac{11}{3})-(- \frac{17}{2}) \\  & =\frac{22}{3}.\end{aligned}
+\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & ={∮}_{{C}_{1}}F\cdot \text{d}r+{∮}_{{C}_{2}}F\cdot \text{d}r-{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =\frac{5}{2}+(- \frac{11}{3})-(- \frac{17}{2}) \\  & =\frac{15+(-22)-(-51)}{6} \\  & =\frac{22}{3}.\end{aligned}
 $$
 
 ## Generated authored hard — inner3_reverse, method_omissions
@@ -1779,7 +1779,7 @@ Notice that the positive orientation of the inner curve ${C}_{3}$ is opposite th
 Therefore, we have
 
 $$
-\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & ={∮}_{{C}_{1}}F\cdot \text{d}r+{∮}_{{C}_{2}}F\cdot \text{d}r-{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =\frac{5}{2}+(- \frac{11}{3})-(- \frac{17}{2}) \\  & =\frac{22}{3}.\end{aligned}
+\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & ={∮}_{{C}_{1}}F\cdot \text{d}r+{∮}_{{C}_{2}}F\cdot \text{d}r-{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =\frac{5}{2}+(- \frac{11}{3})-(- \frac{17}{2}) \\  & =\frac{15+(-22)-(-51)}{6} \\  & =\frac{22}{3}.\end{aligned}
 $$
 
 ## Generated authored hard — all_reverse, method_signs
@@ -1818,7 +1818,7 @@ Notice that the positive orientations of the outer and inner curves are opposite
 Therefore, we have
 
 $$
-\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & =-{∮}_{{C}_{1}}F\cdot \text{d}r-{∮}_{{C}_{2}}F\cdot \text{d}r-{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =-\frac{5}{2}-(- \frac{11}{3})-(- \frac{17}{2}) \\  & =\frac{29}{3}.\end{aligned}
+\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & =-{∮}_{{C}_{1}}F\cdot \text{d}r-{∮}_{{C}_{2}}F\cdot \text{d}r-{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =-\frac{5}{2}-(- \frac{11}{3})-(- \frac{17}{2}) \\  & =\frac{-15-(-22)-(-51)}{6} \\  & =\frac{29}{3}.\end{aligned}
 $$
 
 ## Generated authored hard — all_reverse, method_omissions
@@ -1857,7 +1857,7 @@ Notice that the positive orientations of the outer and inner curves are opposite
 Therefore, we have
 
 $$
-\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & =-{∮}_{{C}_{1}}F\cdot \text{d}r-{∮}_{{C}_{2}}F\cdot \text{d}r-{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =-\frac{5}{2}-(- \frac{11}{3})-(- \frac{17}{2}) \\  & =\frac{29}{3}.\end{aligned}
+\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & =-{∮}_{{C}_{1}}F\cdot \text{d}r-{∮}_{{C}_{2}}F\cdot \text{d}r-{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =-\frac{5}{2}-(- \frac{11}{3})-(- \frac{17}{2}) \\  & =\frac{-15-(-22)-(-51)}{6} \\  & =\frac{29}{3}.\end{aligned}
 $$
 
 ## Generated authored hard — outer_inner3_reverse, method_signs
@@ -1896,7 +1896,7 @@ Notice that the positive orientations of the outer curve ${C}_{1}$ and the inner
 Therefore, we have
 
 $$
-\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & =-{∮}_{{C}_{1}}F\cdot \text{d}r+{∮}_{{C}_{2}}F\cdot \text{d}r-{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =-\frac{5}{2}+(- \frac{11}{3})-(- \frac{17}{2}) \\  & =\frac{7}{3}.\end{aligned}
+\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & =-{∮}_{{C}_{1}}F\cdot \text{d}r+{∮}_{{C}_{2}}F\cdot \text{d}r-{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =-\frac{5}{2}+(- \frac{11}{3})-(- \frac{17}{2}) \\  & =\frac{-15+(-22)-(-51)}{6} \\  & =\frac{7}{3}.\end{aligned}
 $$
 
 ## Generated authored hard — outer_inner3_reverse, method_omissions
@@ -1935,7 +1935,7 @@ Notice that the positive orientations of the outer curve ${C}_{1}$ and the inner
 Therefore, we have
 
 $$
-\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & =-{∮}_{{C}_{1}}F\cdot \text{d}r+{∮}_{{C}_{2}}F\cdot \text{d}r-{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =-\frac{5}{2}+(- \frac{11}{3})-(- \frac{17}{2}) \\  & =\frac{7}{3}.\end{aligned}
+\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & =-{∮}_{{C}_{1}}F\cdot \text{d}r+{∮}_{{C}_{2}}F\cdot \text{d}r-{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =-\frac{5}{2}+(- \frac{11}{3})-(- \frac{17}{2}) \\  & =\frac{-15+(-22)-(-51)}{6} \\  & =\frac{7}{3}.\end{aligned}
 $$
 
 ## Generated authored hard — outer_reverse, method_signs
@@ -1974,7 +1974,7 @@ Notice that the positive orientation of the outer curve ${C}_{1}$ is opposite th
 Therefore, we have
 
 $$
-\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & =-{∮}_{{C}_{1}}F\cdot \text{d}r+{∮}_{{C}_{2}}F\cdot \text{d}r+{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =-\frac{5}{2}+(- \frac{11}{3})+(- \frac{17}{2}) \\  & =- \frac{44}{3}.\end{aligned}
+\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & =-{∮}_{{C}_{1}}F\cdot \text{d}r+{∮}_{{C}_{2}}F\cdot \text{d}r+{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =-\frac{5}{2}+(- \frac{11}{3})+(- \frac{17}{2}) \\  & =\frac{-15+(-22)+(-51)}{6} \\  & =- \frac{44}{3}.\end{aligned}
 $$
 
 ## Generated authored hard — outer_reverse, method_omissions
@@ -2013,7 +2013,7 @@ Notice that the positive orientation of the outer curve ${C}_{1}$ is opposite th
 Therefore, we have
 
 $$
-\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & =-{∮}_{{C}_{1}}F\cdot \text{d}r+{∮}_{{C}_{2}}F\cdot \text{d}r+{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =-\frac{5}{2}+(- \frac{11}{3})+(- \frac{17}{2}) \\  & =- \frac{44}{3}.\end{aligned}
+\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & =-{∮}_{{C}_{1}}F\cdot \text{d}r+{∮}_{{C}_{2}}F\cdot \text{d}r+{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =-\frac{5}{2}+(- \frac{11}{3})+(- \frac{17}{2}) \\  & =\frac{-15+(-22)+(-51)}{6} \\  & =- \frac{44}{3}.\end{aligned}
 $$
 
 ## Generated authored hard — inner2_reverse, method_signs
@@ -2052,7 +2052,7 @@ Notice that the positive orientation of the inner curve ${C}_{2}$ is opposite th
 Therefore, we have
 
 $$
-\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & ={∮}_{{C}_{1}}F\cdot \text{d}r-{∮}_{{C}_{2}}F\cdot \text{d}r+{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =\frac{5}{2}-(- \frac{11}{3})+(- \frac{17}{2}) \\  & =- \frac{7}{3}.\end{aligned}
+\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & ={∮}_{{C}_{1}}F\cdot \text{d}r-{∮}_{{C}_{2}}F\cdot \text{d}r+{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =\frac{5}{2}-(- \frac{11}{3})+(- \frac{17}{2}) \\  & =\frac{15-(-22)+(-51)}{6} \\  & =- \frac{7}{3}.\end{aligned}
 $$
 
 ## Generated authored hard — inner2_reverse, method_omissions
@@ -2091,5 +2091,5 @@ Notice that the positive orientation of the inner curve ${C}_{2}$ is opposite th
 Therefore, we have
 
 $$
-\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & ={∮}_{{C}_{1}}F\cdot \text{d}r-{∮}_{{C}_{2}}F\cdot \text{d}r+{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =\frac{5}{2}-(- \frac{11}{3})+(- \frac{17}{2}) \\  & =- \frac{7}{3}.\end{aligned}
+\begin{aligned}{∮}_{∂D}F\cdot \text{d}r & ={∮}_{{C}_{1}}F\cdot \text{d}r-{∮}_{{C}_{2}}F\cdot \text{d}r+{∮}_{{C}_{3}}F\cdot \text{d}r \\  & =\frac{5}{2}-(- \frac{11}{3})+(- \frac{17}{2}) \\  & =\frac{15-(-22)+(-51)}{6} \\  & =- \frac{7}{3}.\end{aligned}
 $$

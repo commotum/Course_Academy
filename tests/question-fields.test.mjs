@@ -97,6 +97,21 @@ test('rich selects keep choice IDs, show authored content, support keyboard navi
   options[1].click(); assert.equal(select.value, '31'); assert.equal(changed, 1);
 });
 
+test('read-only inline blanks repeat the saved value without adding an editable control', () => {
+  const f = fixture(), prompt = f.node('div'), list = f.node('div');
+  const slots = [f.node('span'), f.node('span')];
+  for (const slot of slots) { slot.dataset.fieldKey = 'blank-1'; prompt.append(slot); }
+  const saved = { ...field, response: { value: '3' } };
+  f.h.mountInlineFields(prompt, list, [saved], () => {
+    const control = f.node('fieldset'), value = f.node('span');
+    value.className = 'answer-saved-value'; value.textContent = '3'; control.append(value); return control;
+  });
+  assert.equal(slots[0].querySelector('.answer-saved-value').textContent, '3');
+  assert.equal(slots[1].textContent, '3');
+  assert.equal(prompt.querySelector('input'), null);
+  assert.equal(list.hidden, true);
+});
+
 test('assignment inline responses submit by entity ID and survive graded replacement; missing markers stay below', () => {
   const f = fixture();
   const question = { id: 'q', kind: 'question', stepId: 'step', gradable: true, status: 'paused',

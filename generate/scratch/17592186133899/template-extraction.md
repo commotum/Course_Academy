@@ -18,7 +18,7 @@ Database `math`, basis1356, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. Sour
 | q-126855 | :question.difficulty/easy | positive | 4, 9, -5 | (1, 1, 1) | symbolic positive sum → signed substitution → collected scalar |
 | q-126861 | :question.difficulty/easy | positive | 7, -3, 2 | (1, 1, 1) | symbolic positive sum → signed substitution → collected scalar |
 
-All original supplied numbers are nonzero integers of magnitude≤10. C1 is the outer curve; C2/C3 are distinct holes. The vector field is arbitrary, defined on the shown region; no formula for it is used. Every modern prompt has one display equation block with three supplied circulations, then an orientation sentence and a requested boundary circulation. The legacy prompt uses one inline math expression and different Unicode underscore notation.
+All original supplied numbers are nonzero integers of magnitude≤10. C1 is the outer curve; C2/C3 are distinct holes. The vector field is arbitrary, defined on the shown region; no formula for it is used. Every modern prompt has one display equation block with three supplied circulations, then an orientation sentence and a requested boundary circulation. The legacy prompt uses one inline math expression and malformed parenthesized underscore notation; raw replay preserves it exactly, while normal completion uses canonical braced subscripts and the differential text command.
 
 ## 2. Shared pattern
 
@@ -164,7 +164,7 @@ Profile `observed:q-126861`, radio `selection`, exactly five choices.
 
 Fixed: all shared prose, variable/curve notation, diagram geometry and placement, per-family orientation sentences, reversal notices, radio shape, number of choices, and three ordered worked-solution stages. Variable: complete RHS circulation scalars, the signed substitution operands, and collected scalar. Conditional: parentheses around each negative operand, omission of legacy raw difficulty/key/solution, and authored completion for default legacy output. Original source prefixes/suffixes are operative masks; numeric RHS slots are replaced only after complete circulation equations, never globally across text.
 
-Every family’s symbolic sum keeps its own ordered signs. Default solutions retain the entire corresponding source prose and reversal notice at changed values; they do not introduce helper letters or collapse the sum. Hard uses the same substitution structure with exact reduced fractions and one final collection row.
+Every family’s symbolic sum keeps its own ordered signs. Default solutions retain the entire corresponding source prose and reversal notice at changed values; they do not introduce helper letters or collapse the sum. Hard keeps the three source stages and adds an explicit common-denominator row with each individually scaled signed numerator before final collection.
 
 Authored banks are selected whole: `method_signs` = correct plus individually reversed C1/C2/C3 contribution signs and complete traversal reversal; `method_omissions` = correct plus each individually omitted component and complete traversal reversal. All five results must be pairwise unequal, and exactly one must equal the positive sum; otherwise the whole parameter instance is rejected. No individual option replacement or distractor diagnoses.
 

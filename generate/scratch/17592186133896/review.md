@@ -920,12 +920,12 @@ $$
 
 ### Generated variant — easy
 
-## circle_cw (authored; {'a': 2, 'b': 2})
+## circle_cw (authored; {'a': 5, 'b': 5})
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133896/plots/05beabbc375a6d6d6cd194fbb0a44d08953912c4767337ae6bdf44ebd072f045.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133896/plots/50ab8e0a2c6b80cd51668da18e2686ac2bca2c2fc01a9902b0a24958219a856e.png)
 
 Let $D$ be the region enclosed by the curve $C$ parametrized as
-$r(t)=⟨2\sin(t),\,2\cos(t)⟩$ for $t\in [0,2\pi ].$ 
+$r(t)=⟨5\sin(t),\,5\cos(t)⟩$ for $t\in [0,2\pi ].$ 
 The area of $D$ can be written as
 
 $$
@@ -936,11 +936,11 @@ where $P(x,y)=-y$ and $Q(x,y)=0.$ Determine the pointwise integrand obtained fro
 
 *Hint: Note that $C$ is negatively oriented.*
 
-- $4 \sin{\left(t \right)} \cos{\left(t \right)}$
-- $4 \cos^{2}{\left(t \right)}$
-- $2 \cos^{2}{\left(t \right)}$
-- $- 4 \cos^{2}{\left(t \right)}$
-- $8 \cos^{2}{\left(t \right)}$
+- $25 \sin{\left(t \right)} \cos{\left(t \right)}$
+- $25 \cos^{2}{\left(t \right)}$
+- $5 \cos^{2}{\left(t \right)}$
+- $- 25 \cos^{2}{\left(t \right)}$
+- $50 \cos^{2}{\left(t \right)}$
 
 Worked solution:
 
@@ -953,7 +953,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D)&=\iint_D\mathrm{d}A\&=\iint_D(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\mathrm{d}A\&=-\oint_C(P\,\mathrm{d}x+Q\,\mathrm{d}y)\end{aligned}
+\begin{aligned}\text{Area}(D)&=\iint_D\mathrm{d}A\\&=\iint_D(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\mathrm{d}A\\&=-\oint_C(P\,\mathrm{d}x+Q\,\mathrm{d}y)\end{aligned}
 $$
 
 Notice that we have to take the line integral with a minus sign since the path is negatively oriented.
@@ -967,23 +967,23 @@ $$
 The derivative of $r(t)$ is
 
 $$
-r'(t)=⟨2\cos(t),\,-2\sin(t)⟩.
+r'(t)=⟨5\cos(t),\,-5\sin(t)⟩.
 $$
 
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}\oint_Cy\,\mathrm{d}x&=\int_{0}^{2 \pi}2\cos(t)\cdot 2\cos(t)\,\mathrm{d}t\&=\int_{0}^{2 \pi}4\cos^{2}(t)\,\mathrm{d}t.\end{aligned}
+\begin{aligned}\oint_Cy\,\mathrm{d}x&=\int_{0}^{2 \pi}5\cos(t)\cdot 5\cos(t)\,\mathrm{d}t\\&=\int_{0}^{2 \pi}25\cos^{2}(t)\,\mathrm{d}t.\end{aligned}
 $$
 
 ### Generated variant — easy
 
-## circle_cw (authored; {'a': 3, 'b': 3})
+## circle_cw (authored; {'a': 6, 'b': 6})
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133896/plots/6de000cc545ce6425596e0bf63b0b9574f455a7f42e94c84a801fd9e6b71d18d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133896/plots/edd908bb73392cd5c245c74188fae09711575e0084b671f989304fa5f21135e7.png)
 
 Let $D$ be the region enclosed by the curve $C$ parametrized as
-$r(t)=⟨3\sin(t),\,3\cos(t)⟩$ for $t\in [0,2\pi ].$ 
+$r(t)=⟨6\sin(t),\,6\cos(t)⟩$ for $t\in [0,2\pi ].$ 
 The area of $D$ can be written as
 
 $$
@@ -994,11 +994,11 @@ where $P(x,y)=-y$ and $Q(x,y)=0.$ Determine the pointwise integrand obtained fro
 
 *Hint: Note that $C$ is negatively oriented.*
 
-- $- 9 \cos^{2}{\left(t \right)}$
-- $9 \cos^{2}{\left(t \right)}$
-- $9 \sin{\left(t \right)} \cos{\left(t \right)}$
-- $3 \cos^{2}{\left(t \right)}$
-- $18 \cos^{2}{\left(t \right)}$
+- $- 36 \cos^{2}{\left(t \right)}$
+- $36 \cos^{2}{\left(t \right)}$
+- $36 \sin{\left(t \right)} \cos{\left(t \right)}$
+- $6 \cos^{2}{\left(t \right)}$
+- $72 \cos^{2}{\left(t \right)}$
 
 Worked solution:
 
@@ -1011,7 +1011,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D)&=\iint_D\mathrm{d}A\&=\iint_D(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\mathrm{d}A\&=-\oint_C(P\,\mathrm{d}x+Q\,\mathrm{d}y)\end{aligned}
+\begin{aligned}\text{Area}(D)&=\iint_D\mathrm{d}A\\&=\iint_D(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\mathrm{d}A\\&=-\oint_C(P\,\mathrm{d}x+Q\,\mathrm{d}y)\end{aligned}
 $$
 
 Notice that we have to take the line integral with a minus sign since the path is negatively oriented.
@@ -1025,13 +1025,13 @@ $$
 The derivative of $r(t)$ is
 
 $$
-r'(t)=⟨3\cos(t),\,-3\sin(t)⟩.
+r'(t)=⟨6\cos(t),\,-6\sin(t)⟩.
 $$
 
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}\oint_Cy\,\mathrm{d}x&=\int_{0}^{2 \pi}3\cos(t)\cdot 3\cos(t)\,\mathrm{d}t\&=\int_{0}^{2 \pi}9\cos^{2}(t)\,\mathrm{d}t.\end{aligned}
+\begin{aligned}\oint_Cy\,\mathrm{d}x&=\int_{0}^{2 \pi}6\cos(t)\cdot 6\cos(t)\,\mathrm{d}t\\&=\int_{0}^{2 \pi}36\cos^{2}(t)\,\mathrm{d}t.\end{aligned}
 $$
 
 ### Generated variant — moderate
@@ -1066,7 +1066,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \  & ={∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
+\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \\  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & ={∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
 $$
 
   
@@ -1088,7 +1088,7 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}x\,dy & ={\int }_{0}^{2\pi }2\cos(t)\cdot 4\cos(t)\,dt \  & ={\int }_{0}^{2\pi }8\cos^{2}(t)\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}x\,dy & ={\int }_{0}^{2\pi }2\cos(t)\cdot 4\cos(t)\,dt \\  & ={\int }_{0}^{2\pi }8\cos^{2}(t)\,dt.\end{aligned}
 $$
 
 ### Generated variant — moderate
@@ -1123,7 +1123,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \  & ={∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
+\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \\  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & ={∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
 $$
 
   
@@ -1145,7 +1145,7 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}x\,dy & ={\int }_{0}^{2\pi }2\cos(t)\cdot 3\cos(t)\,dt \  & ={\int }_{0}^{2\pi }6\cos^{2}(t)\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}x\,dy & ={\int }_{0}^{2\pi }2\cos(t)\cdot 3\cos(t)\,dt \\  & ={\int }_{0}^{2\pi }6\cos^{2}(t)\,dt.\end{aligned}
 $$
 
 ### Generated variant — hard
@@ -1183,7 +1183,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\,\text{d}A \  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
+\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \\  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\,\text{d}A \\  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
 $$
 
   
@@ -1207,7 +1207,7 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}y\,\text{d}x & ={\int }_{0}^{2\pi }4\cos(t)\cdot 2\cos(t)\,dt \  & ={\int }_{0}^{2\pi }8\cos^{2}(t)\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}y\,\text{d}x & ={\int }_{0}^{2\pi }4\cos(t)\cdot 2\cos(t)\,dt \\  & ={\int }_{0}^{2\pi }8\cos^{2}(t)\,dt.\end{aligned}
 $$
 
 ### Generated variant — hard
@@ -1245,7 +1245,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\,\text{d}A \  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
+\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \\  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\,\text{d}A \\  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
 $$
 
   
@@ -1269,7 +1269,7 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}y\,\text{d}x & ={\int }_{0}^{2\pi }3\cos(t)\cdot 3\cos(t)\,dt \  & ={\int }_{0}^{2\pi }9\cos^{2}(t)\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}y\,\text{d}x & ={\int }_{0}^{2\pi }3\cos(t)\cdot 3\cos(t)\,dt \\  & ={\int }_{0}^{2\pi }9\cos^{2}(t)\,dt.\end{aligned}
 $$
 
 ### Generated variant — hard
@@ -1304,7 +1304,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D)&=\iint_D\mathrm{d}A\&=\iint_D(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\mathrm{d}A\&=\oint_C(P\,\mathrm{d}x+Q\,\mathrm{d}y)\end{aligned}
+\begin{aligned}\text{Area}(D)&=\iint_D\mathrm{d}A\\&=\iint_D(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\mathrm{d}A\\&=\oint_C(P\,\mathrm{d}x+Q\,\mathrm{d}y)\end{aligned}
 $$
 
 Substituting $P(x,y)=0$ and $Q(x,y)=x,$ we get
@@ -1322,7 +1322,7 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}\oint_Cx\,\mathrm{d}y&=\int_{0}^{2 \pi}2e^{\cos(t)}\cdot 4\cos(t) e^{\sin(t)}\,\mathrm{d}t\&=\int_{0}^{2 \pi}8\cos(t)e^{\cos(t) + \sin(t)}\,\mathrm{d}t.\end{aligned}
+\begin{aligned}\oint_Cx\,\mathrm{d}y&=\int_{0}^{2 \pi}2e^{\cos(t)}\cdot 4\cos(t) e^{\sin(t)}\,\mathrm{d}t\\&=\int_{0}^{2 \pi}8\cos(t)e^{\cos(t) + \sin(t)}\,\mathrm{d}t.\end{aligned}
 $$
 
 ### Generated variant — hard
@@ -1357,7 +1357,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D)&=\iint_D\mathrm{d}A\&=\iint_D(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\mathrm{d}A\&=\oint_C(P\,\mathrm{d}x+Q\,\mathrm{d}y)\end{aligned}
+\begin{aligned}\text{Area}(D)&=\iint_D\mathrm{d}A\\&=\iint_D(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\mathrm{d}A\\&=\oint_C(P\,\mathrm{d}x+Q\,\mathrm{d}y)\end{aligned}
 $$
 
 Substituting $P(x,y)=0$ and $Q(x,y)=x,$ we get
@@ -1375,7 +1375,7 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}\oint_Cx\,\mathrm{d}y&=\int_{0}^{2 \pi}3e^{\cos(t)}\cdot 3\cos(t) e^{\sin(t)}\,\mathrm{d}t\&=\int_{0}^{2 \pi}9\cos(t)e^{\cos(t) + \sin(t)}\,\mathrm{d}t.\end{aligned}
+\begin{aligned}\oint_Cx\,\mathrm{d}y&=\int_{0}^{2 \pi}3e^{\cos(t)}\cdot 3\cos(t) e^{\sin(t)}\,\mathrm{d}t\\&=\int_{0}^{2 \pi}9\cos(t)e^{\cos(t) + \sin(t)}\,\mathrm{d}t.\end{aligned}
 $$
 
 ### Generated variant — hard
@@ -1413,7 +1413,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
+\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \\  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
 $$
 
   
@@ -1437,7 +1437,7 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}y\,\text{d}x & ={\int }_{0}^{2\pi }4{e}^{\cos(t)}\cdot 2\cos(t)\,{e}^{\sin(t)}\,dt \  & ={\int }_{0}^{2\pi }8\cos(t)\,{e}^{\cos(t)+\sin(t)}\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}y\,\text{d}x & ={\int }_{0}^{2\pi }4{e}^{\cos(t)}\cdot 2\cos(t)\,{e}^{\sin(t)}\,dt \\  & ={\int }_{0}^{2\pi }8\cos(t)\,{e}^{\cos(t)+\sin(t)}\,dt.\end{aligned}
 $$
 
 ### Generated variant — hard
@@ -1475,7 +1475,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
+\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \\  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
 $$
 
   
@@ -1499,7 +1499,7 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}y\,\text{d}x & ={\int }_{0}^{2\pi }3{e}^{\cos(t)}\cdot 3\cos(t)\,{e}^{\sin(t)}\,dt \  & ={\int }_{0}^{2\pi }9\cos(t)\,{e}^{\cos(t)+\sin(t)}\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}y\,\text{d}x & ={\int }_{0}^{2\pi }3{e}^{\cos(t)}\cdot 3\cos(t)\,{e}^{\sin(t)}\,dt \\  & ={\int }_{0}^{2\pi }9\cos(t)\,{e}^{\cos(t)+\sin(t)}\,dt.\end{aligned}
 $$
 
 ### Generated variant — hard
@@ -1537,7 +1537,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
+\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \\  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
 $$
 
   
@@ -1561,7 +1561,7 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}-x\,\text{d}y & ={\int }_{0}^{\pi }(-2\sin(t))\cdot 8\cos(2t)\,dt \  & ={\int }_{0}^{\pi }-16\sin(t)\cos(2t)\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}-x\,\text{d}y & ={\int }_{0}^{\pi }(-2\sin(t))\cdot 8\cos(2t)\,dt \\  & ={\int }_{0}^{\pi }-16\sin(t)\cos(2t)\,dt.\end{aligned}
 $$
 
 ### Generated variant — hard
@@ -1599,7 +1599,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
+\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \\  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
 $$
 
   
@@ -1623,7 +1623,7 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}-x\,\text{d}y & ={\int }_{0}^{\pi }(-3\sin(t))\cdot 6\cos(2t)\,dt \  & ={\int }_{0}^{\pi }-18\sin(t)\cos(2t)\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}-x\,\text{d}y & ={\int }_{0}^{\pi }(-3\sin(t))\cdot 6\cos(2t)\,dt \\  & ={\int }_{0}^{\pi }-18\sin(t)\cos(2t)\,dt.\end{aligned}
 $$
 
 ### Generated variant — hard
@@ -1661,7 +1661,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
+\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \\  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
 $$
 
   
@@ -1685,7 +1685,7 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}y\,\text{d}x & ={\int }_{-\pi /2}^{\pi /2}4\cos(t)\cdot 4\cos(2t)\,dt \  & ={\int }_{-\pi /2}^{\pi /2}16\cos(t)\cos(2t)\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}y\,\text{d}x & ={\int }_{-\pi /2}^{\pi /2}4\cos(t)\cdot 4\cos(2t)\,dt \\  & ={\int }_{-\pi /2}^{\pi /2}16\cos(t)\cos(2t)\,dt.\end{aligned}
 $$
 
 ### Generated variant — hard
@@ -1723,7 +1723,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
+\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \\  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
 $$
 
   
@@ -1747,7 +1747,7 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}y\,\text{d}x & ={\int }_{-\pi /2}^{\pi /2}3\cos(t)\cdot 6\cos(2t)\,dt \  & ={\int }_{-\pi /2}^{\pi /2}18\cos(t)\cos(2t)\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}y\,\text{d}x & ={\int }_{-\pi /2}^{\pi /2}3\cos(t)\cdot 6\cos(2t)\,dt \\  & ={\int }_{-\pi /2}^{\pi /2}18\cos(t)\cos(2t)\,dt.\end{aligned}
 $$
 
 ### Generated variant — hard
@@ -1785,7 +1785,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
+\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \\  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
 $$
 
   
@@ -1809,7 +1809,7 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}-x\,\text{d}y & ={\int }_{\pi /3}^{5\pi /3}2(-\sin(t)+\sin(2t))\cdot 4(-\sin(t)+2\sin(2t))\,dt \  & ={\int }_{\pi /3}^{5\pi /3}8(\sin(2t)-\sin(t))(2\sin(2t)-\sin(t))\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}-x\,\text{d}y & ={\int }_{\pi /3}^{5\pi /3}2(-\sin(t)+\sin(2t))\cdot 4(-\sin(t)+2\sin(2t))\,dt \\  & ={\int }_{\pi /3}^{5\pi /3}8(\sin(2t)-\sin(t))(2\sin(2t)-\sin(t))\,dt.\end{aligned}
 $$
 
 ### Generated variant — hard
@@ -1847,7 +1847,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
+\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \\  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
 $$
 
   
@@ -1871,7 +1871,7 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}-x\,\text{d}y & ={\int }_{\pi /3}^{5\pi /3}3(-\sin(t)+\sin(2t))\cdot 3(-\sin(t)+2\sin(2t))\,dt \  & ={\int }_{\pi /3}^{5\pi /3}9(\sin(2t)-\sin(t))(2\sin(2t)-\sin(t))\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}-x\,\text{d}y & ={\int }_{\pi /3}^{5\pi /3}3(-\sin(t)+\sin(2t))\cdot 3(-\sin(t)+2\sin(2t))\,dt \\  & ={\int }_{\pi /3}^{5\pi /3}9(\sin(2t)-\sin(t))(2\sin(2t)-\sin(t))\,dt.\end{aligned}
 $$
 
 ### Generated variant — hard
@@ -1909,7 +1909,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
+\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \\  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
 $$
 
   
@@ -1933,7 +1933,7 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}-x\,\text{d}y & ={\int }_{0}^{2\pi }(-2\sin^{5}(t))\cdot (-20\cos^{4}(t)\sin(t))\,dt \  & ={\int }_{0}^{2\pi }40\sin^{6}(t)\cos^{4}(t)\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}-x\,\text{d}y & ={\int }_{0}^{2\pi }(-2\sin^{5}(t))\cdot (-20\cos^{4}(t)\sin(t))\,dt \\  & ={\int }_{0}^{2\pi }40\sin^{6}(t)\cos^{4}(t)\,dt.\end{aligned}
 $$
 
 ### Generated variant — hard
@@ -1971,7 +1971,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
+\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \\  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
 $$
 
   
@@ -1995,17 +1995,17 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}-x\,\text{d}y & ={\int }_{0}^{2\pi }(-3\sin^{5}(t))\cdot (-15\cos^{4}(t)\sin(t))\,dt \  & ={\int }_{0}^{2\pi }45\sin^{6}(t)\cos^{4}(t)\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}-x\,\text{d}y & ={\int }_{0}^{2\pi }(-3\sin^{5}(t))\cdot (-15\cos^{4}(t)\sin(t))\,dt \\  & ={\int }_{0}^{2\pi }45\sin^{6}(t)\cos^{4}(t)\,dt.\end{aligned}
 $$
 
 ### Generated variant — easy
 
-## circle_cw (authored; {'a': 6, 'b': 6})
+## circle_cw (authored; {'a': 20, 'b': 20})
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133896/plots/edd908bb73392cd5c245c74188fae09711575e0084b671f989304fa5f21135e7.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133896/plots/2ce44d5aa45c4262154a46f096d4b8728316cddf0d6de594b32b5dda6e3e393e.png)
 
 Let $D$ be the region enclosed by the curve $C$ parametrized as
-$r(t)=⟨6\sin(t),\,6\cos(t)⟩$ for $t\in [0,2\pi ].$ 
+$r(t)=⟨20\sin(t),\,20\cos(t)⟩$ for $t\in [0,2\pi ].$ 
 The area of $D$ can be written as
 
 $$
@@ -2016,11 +2016,11 @@ where $P(x,y)=-y$ and $Q(x,y)=0.$ Determine the pointwise integrand obtained fro
 
 *Hint: Note that $C$ is negatively oriented.*
 
-- $6 \cos^{2}{\left(t \right)}$
-- $72 \cos^{2}{\left(t \right)}$
-- $36 \sin{\left(t \right)} \cos{\left(t \right)}$
-- $- 36 \cos^{2}{\left(t \right)}$
-- $36 \cos^{2}{\left(t \right)}$
+- $20 \cos^{2}{\left(t \right)}$
+- $800 \cos^{2}{\left(t \right)}$
+- $400 \sin{\left(t \right)} \cos{\left(t \right)}$
+- $- 400 \cos^{2}{\left(t \right)}$
+- $400 \cos^{2}{\left(t \right)}$
 
 Worked solution:
 
@@ -2033,7 +2033,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D)&=\iint_D\mathrm{d}A\&=\iint_D(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\mathrm{d}A\&=-\oint_C(P\,\mathrm{d}x+Q\,\mathrm{d}y)\end{aligned}
+\begin{aligned}\text{Area}(D)&=\iint_D\mathrm{d}A\\&=\iint_D(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\mathrm{d}A\\&=-\oint_C(P\,\mathrm{d}x+Q\,\mathrm{d}y)\end{aligned}
 $$
 
 Notice that we have to take the line integral with a minus sign since the path is negatively oriented.
@@ -2047,13 +2047,13 @@ $$
 The derivative of $r(t)$ is
 
 $$
-r'(t)=⟨6\cos(t),\,-6\sin(t)⟩.
+r'(t)=⟨20\cos(t),\,-20\sin(t)⟩.
 $$
 
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}\oint_Cy\,\mathrm{d}x&=\int_{0}^{2 \pi}6\cos(t)\cdot 6\cos(t)\,\mathrm{d}t\&=\int_{0}^{2 \pi}36\cos^{2}(t)\,\mathrm{d}t.\end{aligned}
+\begin{aligned}\oint_Cy\,\mathrm{d}x&=\int_{0}^{2 \pi}20\cos(t)\cdot 20\cos(t)\,\mathrm{d}t\\&=\int_{0}^{2 \pi}400\cos^{2}(t)\,\mathrm{d}t.\end{aligned}
 $$
 
 ### Generated variant — moderate
@@ -2088,7 +2088,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \  & ={∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
+\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \\  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & ={∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
 $$
 
   
@@ -2110,7 +2110,7 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}x\,dy & ={\int }_{0}^{2\pi }6\cos(t)\cdot \cos(t)\,dt \  & ={\int }_{0}^{2\pi }6\cos^{2}(t)\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}x\,dy & ={\int }_{0}^{2\pi }6\cos(t)\cdot \cos(t)\,dt \\  & ={\int }_{0}^{2\pi }6\cos^{2}(t)\,dt.\end{aligned}
 $$
 
 ### Generated variant — hard
@@ -2148,7 +2148,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
+\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \\  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
 $$
 
   
@@ -2172,7 +2172,7 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}-x\,\text{d}y & ={\int }_{0}^{2\pi }(-6\sin^{3}(t))\cdot (-3\cos^{2}(t)\sin(t))\,dt \  & ={\int }_{0}^{2\pi }18\sin^{4}(t)\cos^{2}(t)\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}-x\,\text{d}y & ={\int }_{0}^{2\pi }(-6\sin^{3}(t))\cdot (-3\cos^{2}(t)\sin(t))\,dt \\  & ={\int }_{0}^{2\pi }18\sin^{4}(t)\cos^{2}(t)\,dt.\end{aligned}
 $$
 
 ### Generated variant — hard
@@ -2210,7 +2210,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
+\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \\  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
 $$
 
   
@@ -2234,7 +2234,7 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}-x\,\text{d}y & ={\int }_{0}^{2\pi }(-2\sin^{7}(t))\cdot (-42\cos^{6}(t)\sin(t))\,dt \  & ={\int }_{0}^{2\pi }84\sin^{8}(t)\cos^{6}(t)\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}-x\,\text{d}y & ={\int }_{0}^{2\pi }(-2\sin^{7}(t))\cdot (-42\cos^{6}(t)\sin(t))\,dt \\  & ={\int }_{0}^{2\pi }84\sin^{8}(t)\cos^{6}(t)\,dt.\end{aligned}
 $$
 
 ### Generated variant — hard
@@ -2272,7 +2272,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
+\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \\  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
 $$
 
   
@@ -2296,7 +2296,7 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}y\,\text{d}x & ={\int }_{0}^{2\pi }6{e}^{\cos(t)}\cdot \cos(t)\,{e}^{\sin(t)}\,dt \  & ={\int }_{0}^{2\pi }6\cos(t)\,{e}^{\cos(t)+\sin(t)}\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}y\,\text{d}x & ={\int }_{0}^{2\pi }6{e}^{\cos(t)}\cdot \cos(t)\,{e}^{\sin(t)}\,dt \\  & ={\int }_{0}^{2\pi }6\cos(t)\,{e}^{\cos(t)+\sin(t)}\,dt.\end{aligned}
 $$
 
 ### Generated variant — hard
@@ -2334,7 +2334,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
+\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \\  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
 $$
 
   
@@ -2358,7 +2358,7 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}-x\,\text{d}y & ={\int }_{0}^{\pi }(-6\sin(t))\cdot 2\cos(2t)\,dt \  & ={\int }_{0}^{\pi }-12\sin(t)\cos(2t)\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}-x\,\text{d}y & ={\int }_{0}^{\pi }(-6\sin(t))\cdot 2\cos(2t)\,dt \\  & ={\int }_{0}^{\pi }-12\sin(t)\cos(2t)\,dt.\end{aligned}
 $$
 
 ### Generated variant — hard
@@ -2396,7 +2396,7 @@ $$
 So, according to Green's theorem, we can write the area of the region $D$ enclosed by the curve $C$ as follows:
 
 $$
-\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
+\begin{aligned}\text{Area}(D) & ={∬}_{D}\text{d}A \\  & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & =-{∮}_{C}P\,\text{d}x+Q\,\text{d}y\end{aligned}
 $$
 
   
@@ -2420,6 +2420,6 @@ $$
 Therefore, we can write our line integral as
 
 $$
-\begin{aligned}{∮}_{C}y\,\text{d}x & ={\int }_{-\pi /2}^{\pi /2}6\cos(t)\cdot 2\cos(2t)\,dt \  & ={\int }_{-\pi /2}^{\pi /2}12\cos(t)\cos(2t)\,dt.\end{aligned}
+\begin{aligned}{∮}_{C}y\,\text{d}x & ={\int }_{-\pi /2}^{\pi /2}6\cos(t)\cdot 2\cos(2t)\,dt \\  & ={\int }_{-\pi /2}^{\pi /2}12\cos(t)\cos(2t)\,dt.\end{aligned}
 $$
 
