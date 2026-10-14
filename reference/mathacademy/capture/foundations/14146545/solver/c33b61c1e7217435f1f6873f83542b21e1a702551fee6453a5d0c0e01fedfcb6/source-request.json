@@ -1,0 +1,67 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-336815",
+      "sequence_position": 11,
+      "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14146545/assets/97d661baf511c1e99ee8eed7fbed2ad02d9f96c452ece5b765a3e2cf657c431b.png)\n\nFind the amplitude of the steady-state current for the RL circuit shown above, rounded to two decimal places.\n\nThe amplitude of the steady-state current is approximately\n{{field-1}} amperes.",
+      "worked_solution": "The diagram shows a series RL circuit with a source electromotive force (EMF) of $10\\operatorname{sin}⁡(3t)\\,\\text{V},$ a resistor of resistance $6\\,Ω,$ and an inductor of inductance $1\\,\\text{H}.$\n\nKirchhoff's voltage law states that in a series circuit, the source voltage (EMF) equals the sum of the voltage drops.\n\nIn an RL circuit, there are two voltage drops:\n\n- The voltage drop across the resistor is proportional to the current, with a constant of proportionality $R=6\\,Ω.$\n\n$$\n{V}_{R}=6I\n$$\n\n- The voltage drop across the inductor is proportional to the rate of change of current, with a constant of proportionality $L=1\\,\\text{H}.$\n\n$$\n{V}_{L}=1\\cdot \\frac{dI}{dt}=\\frac{dI}{dt}.\n$$\n\nTherefore, by Kirchhoff's voltage law, the differential equation governing the amount of current $I$ in the circuit is\n\n$$\n10\\operatorname{sin}⁡(3t)=6I+\\frac{dI}{dt}\n$$\n\nwhich gives\n\n$$\n\\frac{dI}{dt}+6I=10\\operatorname{sin}⁡(3t).\n$$\n\nThis is a first-order linear equation with constant coefficients. So, to find the general solution, we must find the sum of the complementary and particular solutions.\n\n- To find the complementary solution ${I}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n\\frac{d{I}_{c}}{dt}+6{I}_{c}=0.\n$$\n\nSolving using an integration technique, such as separation of variables, we obtain the complementary solution\n\n$$\n{I}_{c}(t)=A{e}^{-6t},\n$$\n\nwhere $A$ is a constant of integration.\n\n- Next, we find the particular solution. Note that the right-hand side of the inhomogeneous equation is sinusoidal with argument $3t.$ So, we assume that the particular solution is also sinusoidal with argument $3t,$ i.e.,\n\n$$\n{I}_{p}(t)=\\alpha \\operatorname{cos}⁡(3t)+\\beta \\operatorname{sin}⁡(3t).\n$$\n\nTo find the values of $\\alpha $ and $\\beta ,$ we substitute\n\n$$\n\\begin{aligned}{I}_{p} & =\\alpha \\operatorname{cos}⁡(3t)+\\beta \\operatorname{sin}⁡(3t), \\\\ \\frac{d{I}_{p}}{dt} & =-3\\alpha \\operatorname{sin}⁡(3t)+3\\beta \\operatorname{cos}⁡(3t),\\end{aligned}\n$$\n\ninto the inhomogeneous equation and group like terms on the left-hand side:\n\n$$\n\\begin{aligned}(-3\\alpha \\operatorname{sin}⁡(3t)+3\\beta \\operatorname{cos}⁡(3t))+6(\\alpha \\operatorname{cos}⁡(3t)+\\beta \\operatorname{sin}⁡(3t)) & =10\\operatorname{sin}⁡(3t) \\\\ (-3\\alpha +6\\beta )\\operatorname{sin}⁡(3t)+(6\\alpha +3\\beta )\\operatorname{cos}⁡(3t) & =10\\operatorname{sin}⁡(3t)\\end{aligned}\n$$\n\nEquating the coefficients, we get the following system of equations:\n\n$$\n\\{\\begin{aligned}-3\\alpha +6\\beta =10\\, & (\\text{equating the coefficients of}\\,\\operatorname{sin}⁡(3t)) \\\\ 6\\alpha +3\\beta =0\\, & (\\text{equating the coefficients of}\\,\\operatorname{cos}⁡(3t))\\end{aligned}\n$$\n\nSolving this system gives $\\alpha =-\\frac{2}{3},$ $\\beta =\\frac{4}{3}.$ Therefore, the particular solution is\n\n$$\n{I}_{p}(t)=-\\frac{2}{3}\\operatorname{cos}⁡(3t)+\\frac{4}{3}\\operatorname{sin}⁡(3t).\n$$\n\nNow, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is\n\n$$\nI(t)={I}_{c}(t)+{I}_{p}(t)=A{e}^{-6t}-\\frac{2}{3}\\operatorname{cos}⁡(3t)+\\frac{4}{3}\\operatorname{sin}⁡(3t).\n$$\n\nNote the following:\n\n- The quantity ${I}_{c}(t)=A{e}^{-6t}$ is the *transient current*, since it goes to zero as $t\\to \\infty .$\n\n- The function ${I}_{p}(t)=-\\frac{2}{3}\\operatorname{cos}⁡(3t)+\\frac{4}{3}\\operatorname{sin}⁡(3t)$ is the *steady-state current*. It governs the current's long-term behavior.\n\nTherefore, as $t\\to \\infty ,$ we have\n\n$$\nI(t)≈{I}_{p}(t)=-\\frac{2}{3}\\operatorname{cos}⁡(3t)+\\frac{4}{3}\\operatorname{sin}⁡(3t).\n$$\n\nFinally, the amplitude of the steady-state current is given by\n\n$$\n\\sqrt{{(-\\frac{2}{3})}^{2}+{(\\frac{4}{3})}^{2}}≈1.49\\,\\text{A},\n$$\n\nrounded to two decimal places.",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "problem_field_keys": [
+        "field-1"
+      ],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14146545/observations/history-q-336815-876775901b5528e626c5.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14146545",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14146545/observations/history-solution-q-336815-179ba2e313c43a476f0f.html",
+      "fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        }
+      ],
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14146545/assets/97d661baf511c1e99ee8eed7fbed2ad02d9f96c452ece5b765a3e2cf657c431b.png",
+          "sha256": "97d661baf511c1e99ee8eed7fbed2ad02d9f96c452ece5b765a3e2cf657c431b",
+          "source_url": "https://mathacademy.com/graphics/q-336815",
+          "content_type": "image/png",
+          "representation": "original"
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q336815",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "1.49",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "source_grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "The diagram shows a series RL circuit with a source electromotive force (EMF) of $10\\operatorname{sin}⁡(3t)\\,\\text{V},$ a resistor of resistance $6\\,Ω,$ and an inductor of inductance $1\\,\\text{H}.$\n\nKirchhoff's voltage law states that in a series circuit, the source voltage (EMF) equals the sum of the voltage drops.\n\nIn an RL circuit, there are two voltage drops:\n\n- The voltage drop across the resistor is proportional to the current, with a constant of proportionality $R=6\\,Ω.$\n\n$$\n{V}_{R}=6I\n$$\n\n- The voltage drop across the inductor is proportional to the rate of change of current, with a constant of proportionality $L=1\\,\\text{H}.$\n\n$$\n{V}_{L}=1\\cdot \\frac{dI}{dt}=\\frac{dI}{dt}.\n$$\n\nTherefore, by Kirchhoff's voltage law, the differential equation governing the amount of current $I$ in the circuit is\n\n$$\n10\\operatorname{sin}⁡(3t)=6I+\\frac{dI}{dt}\n$$\n\nwhich gives\n\n$$\n\\frac{dI}{dt}+6I=10\\operatorname{sin}⁡(3t).\n$$\n\nThis is a first-order linear equation with constant coefficients. So, to find the general solution, we must find the sum of the complementary and particular solutions.\n\n- To find the complementary solution ${I}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n\\frac{d{I}_{c}}{dt}+6{I}_{c}=0.\n$$\n\nSolving using an integration technique, such as separation of variables, we obtain the complementary solution\n\n$$\n{I}_{c}(t)=A{e}^{-6t},\n$$\n\nwhere $A$ is a constant of integration.\n\n- Next, we find the particular solution. Note that the right-hand side of the inhomogeneous equation is sinusoidal with argument $3t.$ So, we assume that the particular solution is also sinusoidal with argument $3t,$ i.e.,\n\n$$\n{I}_{p}(t)=\\alpha \\operatorname{cos}⁡(3t)+\\beta \\operatorname{sin}⁡(3t).\n$$\n\nTo find the values of $\\alpha $ and $\\beta ,$ we substitute\n\n$$\n\\begin{aligned}{I}_{p} & =\\alpha \\operatorname{cos}⁡(3t)+\\beta \\operatorname{sin}⁡(3t), \\\\ \\frac{d{I}_{p}}{dt} & =-3\\alpha \\operatorname{sin}⁡(3t)+3\\beta \\operatorname{cos}⁡(3t),\\end{aligned}\n$$\n\ninto the inhomogeneous equation and group like terms on the left-hand side:\n\n$$\n\\begin{aligned}(-3\\alpha \\operatorname{sin}⁡(3t)+3\\beta \\operatorname{cos}⁡(3t))+6(\\alpha \\operatorname{cos}⁡(3t)+\\beta \\operatorname{sin}⁡(3t)) & =10\\operatorname{sin}⁡(3t) \\\\ (-3\\alpha +6\\beta )\\operatorname{sin}⁡(3t)+(6\\alpha +3\\beta )\\operatorname{cos}⁡(3t) & =10\\operatorname{sin}⁡(3t)\\end{aligned}\n$$\n\nEquating the coefficients, we get the following system of equations:\n\n$$\n\\{\\begin{aligned}-3\\alpha +6\\beta =10\\, & (\\text{equating the coefficients of}\\,\\operatorname{sin}⁡(3t)) \\\\ 6\\alpha +3\\beta =0\\, & (\\text{equating the coefficients of}\\,\\operatorname{cos}⁡(3t))\\end{aligned}\n$$\n\nSolving this system gives $\\alpha =-\\frac{2}{3},$ $\\beta =\\frac{4}{3}.$ Therefore, the particular solution is\n\n$$\n{I}_{p}(t)=-\\frac{2}{3}\\operatorname{cos}⁡(3t)+\\frac{4}{3}\\operatorname{sin}⁡(3t).\n$$\n\nNow, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is\n\n$$\nI(t)={I}_{c}(t)+{I}_{p}(t)=A{e}^{-6t}-\\frac{2}{3}\\operatorname{cos}⁡(3t)+\\frac{4}{3}\\operatorname{sin}⁡(3t).\n$$\n\nNote the following:\n\n- The quantity ${I}_{c}(t)=A{e}^{-6t}$ is the *transient current*, since it goes to zero as $t\\to \\infty .$\n\n- The function ${I}_{p}(t)=-\\frac{2}{3}\\operatorname{cos}⁡(3t)+\\frac{4}{3}\\operatorname{sin}⁡(3t)$ is the *steady-state current*. It governs the current's long-term behavior.\n\nTherefore, as $t\\to \\infty ,$ we have\n\n$$\nI(t)≈{I}_{p}(t)=-\\frac{2}{3}\\operatorname{cos}⁡(3t)+\\frac{4}{3}\\operatorname{sin}⁡(3t).\n$$\n\nFinally, the amplitude of the steady-state current is given by\n\n$$\n\\sqrt{{(-\\frac{2}{3})}^{2}+{(\\frac{4}{3})}^{2}}≈1.49\\,\\text{A},\n$$\n\nrounded to two decimal places.",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14146545/observations/history-solution-q-336815-179ba2e313c43a476f0f.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14146545/observations/history-q-336815-876775901b5528e626c5.html"
+        }
+      }
+    ]
+  }
+}
