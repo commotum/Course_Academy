@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-161090",
+      "sequence_position": 4,
+      "problem": "Use a fundamental vector product to determine which of the following integrals gives the surface area generated when the curve $x=\\operatorname{cos}⁡(\\frac{y}{2})$ is rotated by $2\\pi $ radians about the $y$-axis for $y\\in [-\\pi ,\\pi ].$",
+      "worked_solution": "Notice that $x=\\operatorname{cos}⁡(\\frac{y}{2})\\ge 0$ for all $y\\in [-\\pi ,\\pi ].$ The parametrization of our surface of revolution is\n\n$$\n\\begin{aligned}r=⟨f(y)\\operatorname{cos}⁡\\theta ,\\,y,\\,f(y)\\operatorname{sin}⁡\\theta ⟩,\\,(y,\\theta )\\in D\\end{aligned}\n$$\n\nwhere $f(y)=\\operatorname{cos}⁡(\\frac{y}{2}),$ and\n\n$$\nD={(y,\\theta )\\,:\\,-\\pi \\le y\\le \\pi ,\\,0\\le \\theta \\le 2\\pi }.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{y}^{′} & =⟨\\frac{∂x}{∂y},\\,\\frac{∂y}{∂y}\\,\\frac{∂z}{∂y}⟩=⟨{f}^{′}\\operatorname{cos}⁡\\theta ,\\,1,\\,{f}^{′}\\operatorname{sin}⁡\\theta ⟩ \\\\ {r}_{\\theta }^{′} & =⟨\\frac{∂x}{∂\\theta },\\,\\frac{∂y}{∂\\theta },\\,\\frac{∂z}{∂\\theta }⟩=⟨-f\\operatorname{sin}⁡\\theta ,\\,0,\\,f\\operatorname{cos}⁡\\theta ⟩\\end{aligned}\n$$\n\nNext, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{y}^{′}\\times {r}_{\\theta }^{′} & =|\\begin{aligned}i & j & k \\\\ {f}^{′}\\operatorname{cos}⁡\\theta  & 1 & {f}^{′}\\operatorname{sin}⁡\\theta  \\\\ -f\\operatorname{sin}⁡\\theta  & 0 & f\\operatorname{cos}⁡\\theta \\end{aligned}| \\\\  & =⟨|\\begin{aligned}1 & {f}^{′}\\operatorname{sin}⁡\\theta  \\\\ 0 & f\\operatorname{cos}⁡\\theta \\end{aligned}|,\\,-|\\begin{aligned}{f}^{′}\\operatorname{cos}⁡\\theta  & {f}^{′}\\operatorname{sin}⁡\\theta  \\\\ -f\\operatorname{sin}⁡\\theta  & f\\operatorname{cos}⁡\\theta \\end{aligned}|,\\,|\\begin{aligned}{f}^{′}\\operatorname{cos}⁡\\theta  & 1 \\\\ -f\\operatorname{sin}⁡\\theta  & 0\\end{aligned}|⟩ \\\\  & =⟨f\\operatorname{cos}⁡\\theta ,\\,-f{f}^{′}{cos}^{2}⁡\\theta -f{f}^{′}{sin}^{2}⁡\\theta ,\\,f\\operatorname{sin}⁡\\theta ⟩ \\\\  & =⟨f\\operatorname{cos}⁡\\theta ,\\,-f{f}^{′},\\,f\\operatorname{sin}⁡\\theta ⟩\\end{aligned}\n$$\n\nand\n\n$$\n\\begin{aligned}‖{r}_{y}^{′}\\times {r}_{\\theta }^{′}‖ & =\\sqrt{(f\\operatorname{cos}⁡\\theta )^{2}+(-f{f}^{′})^{2}+(f\\operatorname{sin}⁡\\theta )^{2}} \\\\  & =\\sqrt{{f}^{2}({cos}^{2}⁡\\theta +{sin}^{2}⁡\\theta )+{f}^{2}({f}^{′})^{2}} \\\\  & =\\sqrt{{f}^{2}+{f}^{2}({f}^{′})^{2}} \\\\  & =f\\sqrt{1+({f}^{′})^{2}}.\\end{aligned}\n$$\n\nTherefore, the surface area is\n\n$$\n\\begin{aligned}A & ={∬}_{S}\\,\\text{d}S \\\\  & ={∬}_{D}‖{r}_{y}^{′}\\times {r}_{\\theta }^{′}‖\\text{d}y\\,\\text{d}\\theta  \\\\  & ={∬}_{D}f\\sqrt{1+({f}^{′})^{2}}\\,\\text{d}y\\,\\text{d}\\theta  \\\\  & ={\\int }_{-\\pi }^{\\pi }f\\sqrt{1+({f}^{′})^{2}}{\\int }_{0}^{2\\pi }\\,\\text{d}\\theta \\,\\text{d}y \\\\  & ={\\int }_{-\\pi }^{\\pi }f\\sqrt{1+({f}^{′})^{2}}\\cdot \\theta \\,{|}_{0}^{2\\pi }\\,\\text{d}y \\\\  & =2\\pi {\\int }_{-\\pi }^{\\pi }f\\sqrt{1+({f}^{′})^{2}}\\,\\text{d}y.\\end{aligned}\n$$\n\nSince $f(y)=\\operatorname{cos}⁡(\\frac{y}{2}),$ we obtain ${f}^{′}(y)=-\\frac{1}{2}\\operatorname{sin}⁡(\\frac{y}{2}).$ So, finally, we conclude that our expression for the surface area is\n\n$$\n\\begin{aligned}2\\pi {\\int }_{-\\pi }^{\\pi }f\\sqrt{1+({f}^{′})^{2}}\\,\\text{d}y & =2\\pi {\\int }_{-\\pi }^{\\pi }\\operatorname{cos}⁡(\\frac{y}{2})\\sqrt{1+{(-\\frac{1}{2}\\operatorname{sin}⁡(\\frac{y}{2}))}^{2}}\\,\\text{d}y \\\\  & =2\\pi {\\int }_{-\\pi }^{\\pi }\\operatorname{cos}⁡(\\frac{y}{2})\\sqrt{1+\\frac{1}{4}{sin}^{2}⁡(\\frac{y}{2})}\\,\\text{d}y.\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14118233/observations/history-q-161090-b3bd480b43424db56cb8.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14118233",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14118233/observations/history-solution-q-161090-0aa5a6a103570775064b.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "\\pi {\\int }_{-\\pi }^{\\pi }\\operatorname{sin}⁡(\\frac{y}{2})\\sqrt{1+{sin}^{2}⁡(\\frac{y}{2})}\\,\\text{d}y"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "2\\pi {\\int }_{-\\pi }^{\\pi }\\operatorname{sin}⁡(\\frac{y}{2})\\sqrt{1+{cos}^{2}⁡(\\frac{y}{2})}\\,\\text{d}y"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "2\\pi {\\int }_{-\\pi }^{\\pi }\\operatorname{cos}⁡(\\frac{y}{2})\\sqrt{1+\\frac{1}{4}{sin}^{2}⁡(\\frac{y}{2})}\\,\\text{d}y"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "\\pi {\\int }_{-\\pi }^{\\pi }\\operatorname{cos}⁡(\\frac{y}{2})\\sqrt{1+\\frac{1}{4}{sin}^{2}⁡(\\frac{y}{2})}\\,\\text{d}y"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "\\pi {\\int }_{-\\pi }^{\\pi }\\operatorname{cos}⁡(\\frac{y}{2})\\sqrt{1+{sin}^{2}⁡(\\frac{y}{2})}\\,\\text{d}y"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q161090",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "\\pi {\\int }_{-\\pi }^{\\pi }\\operatorname{sin}⁡(\\frac{y}{2})\\sqrt{1+{sin}^{2}⁡(\\frac{y}{2})}\\,\\text{d}y",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "Notice that $x=\\operatorname{cos}⁡(\\frac{y}{2})\\ge 0$ for all $y\\in [-\\pi ,\\pi ].$ The parametrization of our surface of revolution is\n\n$$\n\\begin{aligned}r=⟨f(y)\\operatorname{cos}⁡\\theta ,\\,y,\\,f(y)\\operatorname{sin}⁡\\theta ⟩,\\,(y,\\theta )\\in D\\end{aligned}\n$$\n\nwhere $f(y)=\\operatorname{cos}⁡(\\frac{y}{2}),$ and\n\n$$\nD={(y,\\theta )\\,:\\,-\\pi \\le y\\le \\pi ,\\,0\\le \\theta \\le 2\\pi }.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{y}^{′} & =⟨\\frac{∂x}{∂y},\\,\\frac{∂y}{∂y}\\,\\frac{∂z}{∂y}⟩=⟨{f}^{′}\\operatorname{cos}⁡\\theta ,\\,1,\\,{f}^{′}\\operatorname{sin}⁡\\theta ⟩ \\\\ {r}_{\\theta }^{′} & =⟨\\frac{∂x}{∂\\theta },\\,\\frac{∂y}{∂\\theta },\\,\\frac{∂z}{∂\\theta }⟩=⟨-f\\operatorname{sin}⁡\\theta ,\\,0,\\,f\\operatorname{cos}⁡\\theta ⟩\\end{aligned}\n$$\n\nNext, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{y}^{′}\\times {r}_{\\theta }^{′} & =|\\begin{aligned}i & j & k \\\\ {f}^{′}\\operatorname{cos}⁡\\theta  & 1 & {f}^{′}\\operatorname{sin}⁡\\theta  \\\\ -f\\operatorname{sin}⁡\\theta  & 0 & f\\operatorname{cos}⁡\\theta \\end{aligned}| \\\\  & =⟨|\\begin{aligned}1 & {f}^{′}\\operatorname{sin}⁡\\theta  \\\\ 0 & f\\operatorname{cos}⁡\\theta \\end{aligned}|,\\,-|\\begin{aligned}{f}^{′}\\operatorname{cos}⁡\\theta  & {f}^{′}\\operatorname{sin}⁡\\theta  \\\\ -f\\operatorname{sin}⁡\\theta  & f\\operatorname{cos}⁡\\theta \\end{aligned}|,\\,|\\begin{aligned}{f}^{′}\\operatorname{cos}⁡\\theta  & 1 \\\\ -f\\operatorname{sin}⁡\\theta  & 0\\end{aligned}|⟩ \\\\  & =⟨f\\operatorname{cos}⁡\\theta ,\\,-f{f}^{′}{cos}^{2}⁡\\theta -f{f}^{′}{sin}^{2}⁡\\theta ,\\,f\\operatorname{sin}⁡\\theta ⟩ \\\\  & =⟨f\\operatorname{cos}⁡\\theta ,\\,-f{f}^{′},\\,f\\operatorname{sin}⁡\\theta ⟩\\end{aligned}\n$$\n\nand\n\n$$\n\\begin{aligned}‖{r}_{y}^{′}\\times {r}_{\\theta }^{′}‖ & =\\sqrt{(f\\operatorname{cos}⁡\\theta )^{2}+(-f{f}^{′})^{2}+(f\\operatorname{sin}⁡\\theta )^{2}} \\\\  & =\\sqrt{{f}^{2}({cos}^{2}⁡\\theta +{sin}^{2}⁡\\theta )+{f}^{2}({f}^{′})^{2}} \\\\  & =\\sqrt{{f}^{2}+{f}^{2}({f}^{′})^{2}} \\\\  & =f\\sqrt{1+({f}^{′})^{2}}.\\end{aligned}\n$$\n\nTherefore, the surface area is\n\n$$\n\\begin{aligned}A & ={∬}_{S}\\,\\text{d}S \\\\  & ={∬}_{D}‖{r}_{y}^{′}\\times {r}_{\\theta }^{′}‖\\text{d}y\\,\\text{d}\\theta  \\\\  & ={∬}_{D}f\\sqrt{1+({f}^{′})^{2}}\\,\\text{d}y\\,\\text{d}\\theta  \\\\  & ={\\int }_{-\\pi }^{\\pi }f\\sqrt{1+({f}^{′})^{2}}{\\int }_{0}^{2\\pi }\\,\\text{d}\\theta \\,\\text{d}y \\\\  & ={\\int }_{-\\pi }^{\\pi }f\\sqrt{1+({f}^{′})^{2}}\\cdot \\theta \\,{|}_{0}^{2\\pi }\\,\\text{d}y \\\\  & =2\\pi {\\int }_{-\\pi }^{\\pi }f\\sqrt{1+({f}^{′})^{2}}\\,\\text{d}y.\\end{aligned}\n$$\n\nSince $f(y)=\\operatorname{cos}⁡(\\frac{y}{2}),$ we obtain ${f}^{′}(y)=-\\frac{1}{2}\\operatorname{sin}⁡(\\frac{y}{2}).$ So, finally, we conclude that our expression for the surface area is\n\n$$\n\\begin{aligned}2\\pi {\\int }_{-\\pi }^{\\pi }f\\sqrt{1+({f}^{′})^{2}}\\,\\text{d}y & =2\\pi {\\int }_{-\\pi }^{\\pi }\\operatorname{cos}⁡(\\frac{y}{2})\\sqrt{1+{(-\\frac{1}{2}\\operatorname{sin}⁡(\\frac{y}{2}))}^{2}}\\,\\text{d}y \\\\  & =2\\pi {\\int }_{-\\pi }^{\\pi }\\operatorname{cos}⁡(\\frac{y}{2})\\sqrt{1+\\frac{1}{4}{sin}^{2}⁡(\\frac{y}{2})}\\,\\text{d}y.\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14118233/observations/step-q161090-b503b2b593ade8c1b1d0.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a12b92-33ec-7420-9b5c-33da39663fc4",
+  "previous_failures": []
+}
