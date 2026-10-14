@@ -87,6 +87,19 @@ class DecoratedPhantomTests(unittest.TestCase):
         self.assertEqual(record['problem'], '$x+[]$')
         self.assertNotIn('phantom', record['problem'])
 
+    def test_completed_empty_mathjax_svg_is_not_a_missing_graphic(self):
+        svg = '<svg width="0.036ex" height="0.036ex" viewBox="0 0 16 16"><g><g data-mml-node="math"></g></g></svg>'
+        record = self.extract('<mjx-container jax="SVG">'+svg+'</mjx-container><p>Actual tutorial content.</p>')
+        self.assertEqual(record['errors'], [])
+        self.assertEqual(record['assets'], [])
+        self.assertEqual(record['problem'], 'Actual tutorial content.')
+        for altered in [svg.replace('0 0 16 16','0 0 32 16'),
+                        svg.replace('data-mml-node="math"></g>','data-mml-node="math"><g data-mml-node="mi"></g></g>'),
+                        svg.replace('data-mml-node="math"','data-mml-node="unknown"')]:
+            with self.subTest(source=altered):
+                record = self.extract('<mjx-container jax="SVG">'+altered+'</mjx-container>')
+                self.assertEqual(len(record['assets']), 1)
+
     def test_mathjax_solid_color_width_border_order_preserves_the_box(self):
         first=self.extract(self.boxed(decoration='style="border:1pt solid black"'))
         reordered=self.extract(self.boxed(decoration='style="border:solid black 1pt"'))

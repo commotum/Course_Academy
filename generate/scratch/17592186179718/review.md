@@ -1,3 +1,297 @@
+# Originals and generated variants
+
+All raw profiles are evidence-only. Changed raw endpoint variants demonstrate explicit parameterized replay; method banks are the learner defaults.
+
+## Original q-122271
+
+Evaluate the line integral
+${\int }_{C}\frac{24x}{y}\,\text{d}s,$
+where $C$ is the arc of the parabola ${y}^{2}=8x$ from $(0,0)$ to $(\frac{9}{8},3).$
+
+- $\frac{53}{4}$
+- $\frac{47}{4}$
+- $\frac{67}{4}$
+- $\frac{51}{4}$
+- $\frac{61}{4}$
+
+Notice that the given curve can be expressed in the form $x=x(y),$ as follows:
+
+$$
+{y}^{2}=8x\,⟹\,x=\frac{{y}^{2}}{8}.
+$$
+
+Therefore, by setting $y=t,$ we have
+
+$$
+x=x(t)=\frac{{t}^{2}}{8}.
+$$
+
+This gives the following parametrization of the curve:
+
+$$
+r(t)=⟨\frac{{t}^{2}}{8},\,t⟩,\,0\le t\le 3
+$$
+
+Note that the domain $0\le t\le 3$ is defined by the $y$-coordinates of the end-points on the path.
+
+Computing ${r}^{′}(t)$ and $‖{r}^{′}(t)‖,$ we get the following: 
+
+$$
+\begin{aligned}{r}^{′}(t) & =\frac{\text{d}x}{\text{d}t}\,i+\frac{\text{d}y}{\text{d}t}\,j \\  & =\frac{\text{d}}{\text{d}t}(\frac{{t}^{2}}{8})i+\frac{\text{d}}{\text{d}t}(t)j \\  & =\frac{t}{4}\,i+j \\ ‖{r}^{′}(t)‖ & =\sqrt{{(\frac{\text{d}x}{\text{d}t})}^{2}+{(\frac{\text{d}y}{\text{d}t})}^{2}} \\  & =\sqrt{{(\frac{t}{4})}^{2}+{1}^{2}} \\  & =\sqrt{\frac{{t}^{2}}{16}+1} \\  & =\frac{1}{4}\sqrt{{t}^{2}+16}\end{aligned}
+$$
+
+ 
+
+Now, if  $f(x,y)=\frac{24x}{y}$, then we obtain 
+
+$$
+\begin{aligned}f(r(t)) & =\frac{24x}{y} \\  & =\frac{24\cdot (\frac{{t}^{2}}{8})}{t} \\  & =3t.\end{aligned}
+$$
+
+Therefore, we can write the integral as 
+
+$$
+\begin{aligned}{\int }_{C}\frac{24x}{y}\,\text{d}s & ={\int }_{0}^{3}f(r(t))\,‖{r}^{′}(t)‖\,\text{d}t \\  & ={\int }_{0}^{3}3t\cdot \frac{1}{4}\sqrt{{t}^{2}+16}\cdot \text{d}t \\  & =\frac{3}{4}{\int }_{0}^{3}t\sqrt{{t}^{2}+16}\,\text{d}t.\end{aligned}
+$$
+
+Finally, we solve this using the substitution $u={t}^{2}+16,$ $\text{d}u=2t\,\text{d}t$ as follows:
+
+$$
+\begin{aligned}\frac{3}{4}{\int }_{0}^{3}t\sqrt{{t}^{2}+16}\,\text{d}t & =\frac{3}{8}{\int }_{16}^{25}\sqrt{u}\,\text{d}u \\  & =\frac{1}{4}\cdot {u}^{3/2}\,{|}_{16}^{25} \\  & =\frac{1}{4}({25}^{3/2}-{16}^{3/2}) \\  & =\frac{1}{4}(125-64) \\  & =\frac{61}{4}\end{aligned}
+$$
+
+## Original q-122579
+
+![](images/00/004a94ad9a64973b8e8d3edae709c75f0b76ea1a013d86dbfa87476b85742fc7.png)
+
+Evaluate the line integral
+$\displaystyle \int_(C)4xyds$,
+where $C$ is the section of the curve $x = \sqrt{y}$ from $(0, 0)$ to $(\sqrt{2}, 2)$, as shown above.
+
+- $\frac{144}{5}$
+- $\frac{121}{15}$
+- $\frac{125}{3}$
+- $\frac{213}{5}$
+- $\frac{149}{15}$
+
+Source worked solution, key and difficulty are absent.
+
+## Original q-122574
+
+![](images/02/02582b9146af7bfa73ade5c4bd26ec7102650f324fede161f98482153730e868.png)
+
+Evaluate the line integral
+${\int }_{C}\frac{12x}{y}\,\text{d}s,$
+where $C$ is the arc of the parabola $x={y}^{2}$ from $(1,1)$ to $(6,\sqrt{6}),$ as shown above.
+
+- $25-\sqrt{5}$
+- $6-\sqrt{5}$
+- $36-\sqrt{6}$
+- $6(36-\sqrt{6})$
+- $5(25-\sqrt{5})$
+
+Notice that the given curve is of the form $x=x(y),$ Therefore, by setting $y=t,$ we have
+
+$$
+x=x(t)={t}^{2}.
+$$
+
+This gives the following parametrization of the curve:
+
+$$
+r(t)=⟨{t}^{2},\,t⟩,\,1\le t\le \sqrt{6}
+$$
+
+Note that the domain $1\le t\le \sqrt{6}$ is defined by the $y$-coordinates of the end-points on the path.
+
+Computing ${r}^{′}(t)$ and $‖{r}^{′}(t)‖,$ we get the following: 
+
+$$
+\begin{aligned}{r}^{′}(t) & =\frac{\text{d}x}{\text{d}t}\,i+\frac{\text{d}y}{\text{d}t}\,j \\  & =\frac{\text{d}}{\text{d}t}({t}^{2})i+\frac{\text{d}}{\text{d}t}(t)j \\  & =2t\,i+j \\ ‖{r}^{′}(t)‖ & =\sqrt{{(\frac{\text{d}x}{\text{d}t})}^{2}+{(\frac{\text{d}y}{\text{d}t})}^{2}} \\  & =\sqrt{{(2t)}^{2}+{1}^{2}} \\  & =\sqrt{4{t}^{2}+1}\end{aligned}
+$$
+
+ 
+
+Now, if  $f(x,y)=\frac{12x}{y},$ then we obtain 
+
+$$
+\begin{aligned}f(r(t)) & =\frac{12{t}^{2}}{t} \\  & =12t.\end{aligned}
+$$
+
+Therefore, we can write the integral as 
+
+$$
+\begin{aligned}{\int }_{C}\frac{12x}{y}\,\text{d}s & ={\int }_{1}^{\sqrt{6}}f(r(t))\,‖{r}^{′}(t)‖\,\text{d}t \\  & ={\int }_{1}^{\sqrt{6}}12t\sqrt{4{t}^{2}+1}\,\text{d}t.\end{aligned}
+$$
+
+Finally, we solve this using the substitution $u=4{t}^{2}+1,$ $\text{d}u=8t\,\text{d}t$ as follows:
+
+$$
+\begin{aligned}{\int }_{1}^{\sqrt{6}}12t\sqrt{4{t}^{2}+1}\,\text{d}t & =12{\int }_{5}^{25}\sqrt{u}\cdot \frac{1}{8}\,\text{d}u \\  & =\frac{3}{2}{\int }_{5}^{25}\sqrt{u}\,\text{d}u \\  & =\frac{3}{2}\cdot \frac{2}{3}\sqrt{{u}^{3}}\,{|}_{5}^{25} \\  & =\sqrt{{25}^{3}}-\sqrt{{5}^{3}} \\  & =125-5\sqrt{5} \\  & =5(25-\sqrt{5})\end{aligned}
+$$
+
+## Original q-122593
+
+![](images/46/46f2f23c1cc2cb2caacd3703665af673a52a7e876665c7ba9420ae72138e1068.png)
+
+Evaluate the line integral
+${\int }_{C}x{y}^{6}\,\text{d}s,$
+where $C$ is the section of the curve $x=\frac{2}{y}$ from $(2,1)$ to $(1,2),$ as shown above.
+
+- $\frac{21\sqrt{3}}{5}$
+- $\frac{12\sqrt{5}}{7}$
+- $\frac{35}{12}$
+- $\frac{49}{15}$
+- $\frac{35\sqrt{5}}{3}$
+
+Notice that the given curve is of the form $x=x(y),$ Therefore, by setting $y=t,$ we have
+
+$$
+x=x(t)=\frac{2}{t}.
+$$
+
+This gives the following parametrization of the curve:
+
+$$
+r(t)=⟨\frac{2}{t},\,t⟩,\,1\le t\le 2
+$$
+
+Note that the domain $1\le t\le 2$ is defined by the $y$-coordinates of the end-points on the path.
+
+Computing ${r}^{′}(t)$ and $‖{r}^{′}(t)‖,$ we get the following: 
+
+$$
+\begin{aligned}{r}^{′}(t) & =\frac{\text{d}x}{\text{d}t}\,i+\frac{\text{d}y}{\text{d}t}\,j \\  & =\frac{\text{d}}{\text{d}t}(\frac{2}{t})i+\frac{\text{d}}{\text{d}t}(t)j \\  & =-\frac{2}{{t}^{2}}\,i+j \\ ‖{r}^{′}(t)‖ & =\sqrt{{(\frac{\text{d}x}{\text{d}t})}^{2}+{(\frac{\text{d}y}{\text{d}t})}^{2}} \\  & =\sqrt{{(-\frac{2}{{t}^{2}})}^{2}+{1}^{2}} \\  & =\sqrt{\frac{4}{{t}^{4}}+1} \\  & =\sqrt{\frac{{t}^{4}+4}{{t}^{4}}} \\  & =\frac{\sqrt{{t}^{4}+4}}{{t}^{2}}\end{aligned}
+$$
+
+ 
+
+Now, if  $f(x,y)=x{y}^{6},$ then we obtain 
+
+$$
+\begin{aligned}f(r(t)) & =\frac{2}{t}\cdot {t}^{6} \\  & =2{t}^{5}.\end{aligned}
+$$
+
+Therefore, we can write the integral as 
+
+$$
+\begin{aligned}{\int }_{C}x{y}^{6}\,\text{d}s & ={\int }_{1}^{2}f(r(t))\,‖{r}^{′}(t)‖\,\text{d}t \\  & ={\int }_{1}^{2}2{t}^{5}\cdot \frac{\sqrt{{t}^{4}+4}}{{t}^{2}}\,\text{d}t \\  & =2{\int }_{1}^{2}{t}^{3}\sqrt{{t}^{4}+4}\,\text{d}t\end{aligned}
+$$
+
+Finally, we solve this using the substitution $u={t}^{4}+4,$ $\text{d}u=4{t}^{3}\,\text{d}t$ as follows:
+
+$$
+\begin{aligned}2{\int }_{1}^{2}{t}^{3}\sqrt{{t}^{4}+4}\,\text{d}t & =2{\int }_{5}^{20}\sqrt{u}\cdot \frac{1}{4}\,\text{d}u \\  & =\frac{1}{2}{\int }_{5}^{20}\sqrt{u}\,\text{d}u \\  & =\frac{1}{2}\cdot \frac{2}{3}\sqrt{{u}^{3}}\,{|}_{5}^{20} \\  & =\frac{1}{3}[\sqrt{{20}^{3}}-\sqrt{{5}^{3}}] \\  & =\frac{40\sqrt{5}-5\sqrt{5}}{3} \\  & =\frac{35\sqrt{5}}{3}\end{aligned}
+$$
+
+## Original q-149727
+
+![](images/8d/8d060e257d74e6e0e6b7f35bfb89e9e974499059ddf4d029c0cace195ba67c13.png)
+
+Evaluate the line integral
+${\int }_{C}\frac{1}{y-x}\,\text{d}s,$
+where $C$ is the segment of the line $x=2y-4$ from $(0,2)$ to $(2,3),$ as shown above.
+
+- $\sqrt{2}\operatorname{ln}⁡5$
+- $4\sqrt{2}$
+- $\sqrt{5}\operatorname{ln}⁡2$
+- $2\sqrt{5}$
+- $2\operatorname{ln}⁡2$
+
+Notice that the given curve is of the form $x=x(y),$ Therefore, by setting $y=t,$ we have
+
+$$
+x=x(t)=2t-4.
+$$
+
+This gives the following parametrization of the curve:
+
+$$
+r(t)=⟨2t-4,\,t⟩,\,2\le t\le 3
+$$
+
+Note that the domain $2\le t\le 3$ is defined by the $y$-coordinates of the end-points on the path.
+
+Computing ${r}^{′}(t)$ and $‖{r}^{′}(t)‖,$ we get the following: 
+
+$$
+\begin{aligned}{r}^{′}(t) & =\frac{\text{d}x}{\text{d}t}\,i+\frac{\text{d}y}{\text{d}t}\,j \\  & =\frac{\text{d}}{\text{d}t}(2t-4)i+\frac{\text{d}}{\text{d}t}(t)j \\  & =2\,i+j \\ ‖{r}^{′}(t)‖ & =\sqrt{{(\frac{\text{d}x}{\text{d}t})}^{2}+{(\frac{\text{d}y}{\text{d}t})}^{2}} \\  & =\sqrt{{(2)}^{2}+{1}^{2}} \\  & =\sqrt{4+1} \\  & =\sqrt{5}\end{aligned}
+$$
+
+ 
+
+Now, if  $f(x,y)=\frac{1}{y-x},$ then we obtain 
+
+$$
+\begin{aligned}f(r(t)) & =\frac{1}{t-(2t-4)} \\  & =\frac{1}{4-t}.\end{aligned}
+$$
+
+Therefore, we can write the integral as 
+
+$$
+\begin{aligned}{\int }_{C}\frac{1}{y-x}\,\text{d}s & ={\int }_{2}^{3}f(r(t))\,‖{r}^{′}(t)‖\,\text{d}t \\  & ={\int }_{2}^{3}\frac{1}{4-t}\cdot \sqrt{5}\,\text{d}t \\  & =\sqrt{5}{\int }_{2}^{3}\frac{1}{4-t}\,\text{d}t.\end{aligned}
+$$
+
+Finally, we solve this using the substitution $u=4-t,$ $\text{d}u=-\,\text{d}t$ as follows:
+
+$$
+\begin{aligned}\sqrt{5}{\int }_{2}^{3}\frac{1}{4-t}\,\text{d}t & =\sqrt{5}{\int }_{2}^{1}\frac{1}{u}\cdot (-\text{d}u) \\  & =-\sqrt{5}{\int }_{2}^{1}\frac{1}{u}\,\text{d}u \\  & =\sqrt{5}{\int }_{1}^{2}\frac{1}{u}\,\text{d}u \\  & =\sqrt{5}[\operatorname{ln}⁡u]_{1}^{2} \\  & =\sqrt{5}[\operatorname{ln}⁡2-\operatorname{ln}⁡1] \\  & =\sqrt{5}[\operatorname{ln}⁡2-0] \\  & =\sqrt{5}\operatorname{ln}⁡2\end{aligned}
+$$
+
+## Original q-149745
+
+Evaluate the line integral
+${\int }_{C}6{x}^{6}{e}^{-2y}\,\text{d}s,$
+where $C$ is the section of the curve $x={e}^{y/2}$ from $(1,0)$ to $(\sqrt{2},\operatorname{ln}⁡2).$
+
+- $5\sqrt{6}-6\sqrt{5}$
+- $\sqrt{6}-\sqrt{5}$
+- $12\sqrt{6}-10\sqrt{5}$
+- $6\sqrt{3}-2\sqrt{5}$
+- $2\sqrt{6}-5\sqrt{5}$
+
+Notice that the given curve is of the form $x=x(y),$ Therefore, by setting $y=t,$ we have
+
+$$
+x=x(t)={e}^{t/2}.
+$$
+
+This gives the following parametrization of the curve:
+
+$$
+r(t)=⟨{e}^{t/2},\,t⟩,\,0\le t\le \operatorname{ln}⁡2
+$$
+
+Note that the domain $0\le t\le \operatorname{ln}⁡2$ is defined by the $y$-coordinates of the end-points on the path.
+
+Computing ${r}^{′}(t)$ and $‖{r}^{′}(t)‖,$ we get the following: 
+
+$$
+\begin{aligned}{r}^{′}(t) & =\frac{\text{d}x}{\text{d}t}\,i+\frac{\text{d}y}{\text{d}t}\,j \\  & =\frac{\text{d}}{\text{d}t}({e}^{t/2})i+\frac{\text{d}}{\text{d}t}(t)j \\  & =\frac{{e}^{t/2}}{2}\,i+j \\ ‖{r}^{′}(t)‖ & =\sqrt{{(\frac{\text{d}x}{\text{d}t})}^{2}+{(\frac{\text{d}y}{\text{d}t})}^{2}} \\  & =\sqrt{{(\frac{{e}^{t/2}}{2})}^{2}+{1}^{2}} \\  & =\sqrt{\frac{{e}^{t}}{4}+1} \\  & =\frac{1}{2}\sqrt{{e}^{t}+4}\end{aligned}
+$$
+
+ 
+
+Now, if  $f(x,y)=6{x}^{6}{e}^{-2y}$, then we obtain 
+
+$$
+\begin{aligned}f(r(t)) & =6{x}^{6}{e}^{-2y} \\  & =6{({e}^{t/2})}^{6}{e}^{-2t} \\  & =6{e}^{t}.\end{aligned}
+$$
+
+Therefore, we can write the integral as 
+
+$$
+\begin{aligned}{\int }_{C}6{x}^{6}{e}^{-2y}\,\text{d}s & ={\int }_{0}^{\operatorname{ln}⁡2}f(r(t))\,‖{r}^{′}(t)‖\,\text{d}t \\  & ={\int }_{0}^{\operatorname{ln}⁡2}6{e}^{t}\cdot \frac{1}{2}\sqrt{{e}^{t}+4}\cdot \text{d}t \\  & =3{\int }_{0}^{\operatorname{ln}⁡2}{e}^{t}\sqrt{{e}^{t}+4}\,\text{d}t.\end{aligned}
+$$
+
+Finally, we solve this using the substitution $u={e}^{t}+4,$ $\text{d}u={e}^{t}\,\text{d}t$ as follows:
+
+$$
+\begin{aligned}3{\int }_{0}^{\operatorname{ln}⁡2}{e}^{t}\sqrt{{e}^{t}+4}\,\text{d}t & =3{\int }_{5}^{6}\sqrt{u}\,\text{d}u \\  & =3\cdot \frac{2}{3}{u}^{3/2}\,{|}_{5}^{6} \\  & =2({6}^{3/2}-{5}^{3/2}) \\  & =2(6\sqrt{6}-5\sqrt{5}) \\  & =12\sqrt{6}-10\sqrt{5}\end{aligned}
+$$
+
+## Generated line_power / method
+
 Generated variant / easy / line_power / method
 
 Evaluate the line integral
@@ -50,8 +344,7 @@ $$
 \begin{aligned}{\int }_{2}^{3}10 \sqrt{5} t\,\text{d}t & =\left[5 \sqrt{5} t^{2}\right]_{2}^{3} \\  & =10 \sqrt{5}\left(\frac{3^2}{2}-\frac{2^2}{2}\right) \\  & =10 \sqrt{5}\left(\frac{9}{2}-2\right) \\  & =25 \sqrt{5}\end{aligned}
 $$
 
-
----
+## Generated line_power / method
 
 Generated variant / easy / line_power / method
 
@@ -105,8 +398,7 @@ $$
 \begin{aligned}{\int }_{1}^{3}3 \sqrt{5} t\,\text{d}t & =\left[\frac{3 \sqrt{5} t^{2}}{2}\right]_{1}^{3} \\  & =3 \sqrt{5}\left(\frac{3^2}{2}-\frac{1^2}{2}\right) \\  & =3 \sqrt{5}\left(\frac{9}{2}-\frac{1}{2}\right) \\  & =12 \sqrt{5}\end{aligned}
 $$
 
-
----
+## Generated parabola / method
 
 Generated variant / moderate / parabola / method
 
@@ -162,8 +454,7 @@ $$
 \begin{aligned}{\int }_{1}^{2 \sqrt{3}}10 t \sqrt{4 t^{2} + 1}\,\text{d}t & =10{\int }_{5}^{49}\sqrt{u}\cdot\left(\frac{1}{8}\right)\,\text{d}u \\  & ={\int }_{5}^{49}\frac{5 \sqrt{u}}{4}\,\text{d}u \\  & =\left[\frac{5}{4}\cdot\frac{2}{3}u^{3/2}\right]_{5}^{49} \\  & =\left[\frac{5 u^{\frac{3}{2}}}{6}\right]_{5}^{49} \\  & =\left(\left(\frac{5 \left(49\right)^{\frac{3}{2}}}{6}\right)\right)-\left(\left(\frac{5 \left(5\right)^{\frac{3}{2}}}{6}\right)\right) \\  & =\left(\left(\frac{1715}{6}\right)\right)-\left(\left(\frac{25 \sqrt{5}}{6}\right)\right) \\  & =\frac{1715}{6} - \frac{25 \sqrt{5}}{6}\end{aligned}
 $$
 
-
----
+## Generated parabola / method
 
 Generated variant / moderate / parabola / method
 
@@ -219,8 +510,7 @@ $$
 \begin{aligned}{\int }_{1}^{\sqrt{2}}3 t \sqrt{4 t^{2} + 1}\,\text{d}t & =3{\int }_{5}^{9}\sqrt{u}\cdot\left(\frac{1}{8}\right)\,\text{d}u \\  & ={\int }_{5}^{9}\frac{3 \sqrt{u}}{8}\,\text{d}u \\  & =\left[\frac{3}{8}\cdot\frac{2}{3}u^{3/2}\right]_{5}^{9} \\  & =\left[\frac{u^{\frac{3}{2}}}{4}\right]_{5}^{9} \\  & =\left(\left(\frac{\left(9\right)^{\frac{3}{2}}}{4}\right)\right)-\left(\left(\frac{\left(5\right)^{\frac{3}{2}}}{4}\right)\right) \\  & =\left(\left(\frac{27}{4}\right)\right)-\left(\left(\frac{5 \sqrt{5}}{4}\right)\right) \\  & =\frac{27}{4} - \frac{5 \sqrt{5}}{4}\end{aligned}
 $$
 
-
----
+## Generated reciprocal / method
 
 Generated variant / moderate / reciprocal / method
 
@@ -276,8 +566,7 @@ $$
 \begin{aligned}{\int }_{1}^{3}20 t^{3} \sqrt{t^{4} + 4}\,\text{d}t & =20{\int }_{5}^{85}\sqrt{u}\cdot\left(\frac{1}{4}\right)\,\text{d}u \\  & ={\int }_{5}^{85}5 \sqrt{u}\,\text{d}u \\  & =\left[5\cdot\frac{2}{3}u^{3/2}\right]_{5}^{85} \\  & =\left[\frac{10 u^{\frac{3}{2}}}{3}\right]_{5}^{85} \\  & =\left(\left(\frac{10 \left(85\right)^{\frac{3}{2}}}{3}\right)\right)-\left(\left(\frac{10 \left(5\right)^{\frac{3}{2}}}{3}\right)\right) \\  & =\left(\left(\frac{850 \sqrt{85}}{3}\right)\right)-\left(\left(\frac{50 \sqrt{5}}{3}\right)\right) \\  & =- \frac{50 \sqrt{5}}{3} + \frac{850 \sqrt{85}}{3}\end{aligned}
 $$
 
-
----
+## Generated reciprocal / method
 
 Generated variant / moderate / reciprocal / method
 
@@ -333,8 +622,7 @@ $$
 \begin{aligned}{\int }_{1}^{3}3 t^{3} \sqrt{t^{4} + 1}\,\text{d}t & =3{\int }_{2}^{82}\sqrt{u}\cdot\left(\frac{1}{4}\right)\,\text{d}u \\  & ={\int }_{2}^{82}\frac{3 \sqrt{u}}{4}\,\text{d}u \\  & =\left[\frac{3}{4}\cdot\frac{2}{3}u^{3/2}\right]_{2}^{82} \\  & =\left[\frac{u^{\frac{3}{2}}}{2}\right]_{2}^{82} \\  & =\left(\left(\frac{\left(82\right)^{\frac{3}{2}}}{2}\right)\right)-\left(\left(\frac{\left(2\right)^{\frac{3}{2}}}{2}\right)\right) \\  & =\left(\left(41 \sqrt{82}\right)\right)-\left(\left(\sqrt{2}\right)\right) \\  & =- \sqrt{2} + 41 \sqrt{82}\end{aligned}
 $$
 
-
----
+## Generated line_log / method
 
 Generated variant / moderate / line_log / method
 
@@ -390,8 +678,7 @@ $$
 \begin{aligned}{\int }_{1}^{4}- \frac{10 \sqrt{5}}{t - 6}\,\text{d}t & =10 \sqrt{5}{\int }_{5}^{2}\frac{1}{u}\cdot(-1)\,\text{d}u \\  & ={\int }_{5}^{2}- \frac{10 \sqrt{5}}{u}\,\text{d}u \\  & =\left[-(10 \sqrt{5})\cdot\ln{u}\right]_{5}^{2} \\  & =\left[- 10 \sqrt{5} \ln{\left(u \right)}\right]_{5}^{2} \\  & =\left(\left(- 10 \sqrt{5} \ln{\left(\left(2\right) \right)}\right)\right)-\left(\left(- 10 \sqrt{5} \ln{\left(\left(5\right) \right)}\right)\right) \\  & =\left(\left(- 10 \sqrt{5} \ln{\left(2 \right)}\right)\right)-\left(\left(- 10 \sqrt{5} \ln{\left(5 \right)}\right)\right) \\  & =10 \sqrt{5} \ln{\left(\frac{5}{2} \right)}\end{aligned}
 $$
 
-
----
+## Generated line_log / method
 
 Generated variant / moderate / line_log / method
 
@@ -447,8 +734,7 @@ $$
 \begin{aligned}{\int }_{1}^{2}- \frac{3 \sqrt{5}}{t - 4}\,\text{d}t & =3 \sqrt{5}{\int }_{3}^{2}\frac{1}{u}\cdot(-1)\,\text{d}u \\  & ={\int }_{3}^{2}- \frac{3 \sqrt{5}}{u}\,\text{d}u \\  & =\left[-(3 \sqrt{5})\cdot\ln{u}\right]_{3}^{2} \\  & =\left[- 3 \sqrt{5} \ln{\left(u \right)}\right]_{3}^{2} \\  & =\left(\left(- 3 \sqrt{5} \ln{\left(\left(2\right) \right)}\right)\right)-\left(\left(- 3 \sqrt{5} \ln{\left(\left(3\right) \right)}\right)\right) \\  & =\left(\left(- 3 \sqrt{5} \ln{\left(2 \right)}\right)\right)-\left(\left(- 3 \sqrt{5} \ln{\left(3 \right)}\right)\right) \\  & =3 \sqrt{5} \ln{\left(\frac{3}{2} \right)}\end{aligned}
 $$
 
-
----
+## Generated log_curve / method
 
 Generated variant / moderate / log_curve / method
 
@@ -502,8 +788,7 @@ $$
 \begin{aligned}{\int }_{1}^{\sqrt{15}}10 t \sqrt{t^{2} + 1}\,\text{d}t & =10{\int }_{2}^{16}\sqrt{u}\cdot\left(\frac{1}{2}\right)\,\text{d}u \\  & ={\int }_{2}^{16}5 \sqrt{u}\,\text{d}u \\  & =\left[5\cdot\frac{2}{3}u^{3/2}\right]_{2}^{16} \\  & =\left[\frac{10 u^{\frac{3}{2}}}{3}\right]_{2}^{16} \\  & =\left(\left(\frac{10 \left(16\right)^{\frac{3}{2}}}{3}\right)\right)-\left(\left(\frac{10 \left(2\right)^{\frac{3}{2}}}{3}\right)\right) \\  & =\left(\left(\frac{640}{3}\right)\right)-\left(\left(\frac{20 \sqrt{2}}{3}\right)\right) \\  & =\frac{640}{3} - \frac{20 \sqrt{2}}{3}\end{aligned}
 $$
 
-
----
+## Generated log_curve / method
 
 Generated variant / moderate / log_curve / method
 
@@ -557,8 +842,7 @@ $$
 \begin{aligned}{\int }_{1}^{\sqrt{3}}3 t \sqrt{t^{2} + 1}\,\text{d}t & =3{\int }_{2}^{4}\sqrt{u}\cdot\left(\frac{1}{2}\right)\,\text{d}u \\  & ={\int }_{2}^{4}\frac{3 \sqrt{u}}{2}\,\text{d}u \\  & =\left[\frac{3}{2}\cdot\frac{2}{3}u^{3/2}\right]_{2}^{4} \\  & =\left[u^{\frac{3}{2}}\right]_{2}^{4} \\  & =\left(\left(\left(4\right)^{\frac{3}{2}}\right)\right)-\left(\left(\left(2\right)^{\frac{3}{2}}\right)\right) \\  & =\left(\left(8\right)\right)-\left(\left(2 \sqrt{2}\right)\right) \\  & =8 - 2 \sqrt{2}\end{aligned}
 $$
 
-
----
+## Generated implicit_parabola / method
 
 Generated variant / hard / implicit_parabola / method
 
@@ -618,8 +902,7 @@ $$
 \begin{aligned}{\int }_{4}^{2 \sqrt{10}}\frac{5 t \sqrt{t^{2} + 9}}{9}\,\text{d}t & =\frac{5}{9}{\int }_{25}^{49}\sqrt{u}\cdot\left(\frac{1}{2}\right)\,\text{d}u \\  & ={\int }_{25}^{49}\frac{5 \sqrt{u}}{18}\,\text{d}u \\  & =\left[\frac{5}{18}\cdot\frac{2}{3}u^{3/2}\right]_{25}^{49} \\  & =\left[\frac{5 u^{\frac{3}{2}}}{27}\right]_{25}^{49} \\  & =\left(\left(\frac{5 \left(49\right)^{\frac{3}{2}}}{27}\right)\right)-\left(\left(\frac{5 \left(25\right)^{\frac{3}{2}}}{27}\right)\right) \\  & =\left(\left(\frac{1715}{27}\right)\right)-\left(\left(\frac{625}{27}\right)\right) \\  & =\frac{1090}{27}\end{aligned}
 $$
 
-
----
+## Generated implicit_parabola / method
 
 Generated variant / hard / implicit_parabola / method
 
@@ -679,8 +962,7 @@ $$
 \begin{aligned}{\int }_{2 \sqrt{3}}^{4 \sqrt{2}}\frac{3 t \sqrt{t^{2} + 4}}{8}\,\text{d}t & =\frac{3}{8}{\int }_{16}^{36}\sqrt{u}\cdot\left(\frac{1}{2}\right)\,\text{d}u \\  & ={\int }_{16}^{36}\frac{3 \sqrt{u}}{16}\,\text{d}u \\  & =\left[\frac{3}{16}\cdot\frac{2}{3}u^{3/2}\right]_{16}^{36} \\  & =\left[\frac{u^{\frac{3}{2}}}{8}\right]_{16}^{36} \\  & =\left(\left(\frac{\left(36\right)^{\frac{3}{2}}}{8}\right)\right)-\left(\left(\frac{\left(16\right)^{\frac{3}{2}}}{8}\right)\right) \\  & =\left(\left(27\right)\right)-\left(\left(8\right)\right) \\  & =19\end{aligned}
 $$
 
-
----
+## Generated exponential / method
 
 Generated variant / hard / exponential / method
 
@@ -734,8 +1016,7 @@ $$
 \begin{aligned}{\int }_{0}^{\ln{\left(4 \right)}}5 \sqrt{e^{t} + 4} e^{t}\,\text{d}t & =5{\int }_{5}^{8}\sqrt{u}\cdot\left(1\right)\,\text{d}u \\  & ={\int }_{5}^{8}5 \sqrt{u}\,\text{d}u \\  & =\left[5\cdot\frac{2}{3}u^{3/2}\right]_{5}^{8} \\  & =\left[\frac{10 u^{\frac{3}{2}}}{3}\right]_{5}^{8} \\  & =\left(\left(\frac{10 \left(8\right)^{\frac{3}{2}}}{3}\right)\right)-\left(\left(\frac{10 \left(5\right)^{\frac{3}{2}}}{3}\right)\right) \\  & =\left(\left(\frac{160 \sqrt{2}}{3}\right)\right)-\left(\left(\frac{50 \sqrt{5}}{3}\right)\right) \\  & =- \frac{50 \sqrt{5}}{3} + \frac{160 \sqrt{2}}{3}\end{aligned}
 $$
 
-
----
+## Generated exponential / method
 
 Generated variant / hard / exponential / method
 
@@ -789,8 +1070,7 @@ $$
 \begin{aligned}{\int }_{0}^{\ln{\left(2 \right)}}\frac{3 \sqrt{e^{t} + 4} e^{t}}{2}\,\text{d}t & =\frac{3}{2}{\int }_{5}^{6}\sqrt{u}\cdot\left(1\right)\,\text{d}u \\  & ={\int }_{5}^{6}\frac{3 \sqrt{u}}{2}\,\text{d}u \\  & =\left[\frac{3}{2}\cdot\frac{2}{3}u^{3/2}\right]_{5}^{6} \\  & =\left[u^{\frac{3}{2}}\right]_{5}^{6} \\  & =\left(\left(\left(6\right)^{\frac{3}{2}}\right)\right)-\left(\left(\left(5\right)^{\frac{3}{2}}\right)\right) \\  & =\left(\left(6 \sqrt{6}\right)\right)-\left(\left(5 \sqrt{5}\right)\right) \\  & =- 5 \sqrt{5} + 6 \sqrt{6}\end{aligned}
 $$
 
-
----
+## Generated sqrt / method
 
 Generated variant / hard / sqrt / method
 
@@ -846,8 +1126,7 @@ $$
 \begin{aligned}{\int }_{1}^{5}5 t \sqrt{12 t + 9}\,\text{d}t & =5 \sqrt{3}{\int }_{7}^{23}\frac{u-3}{4}\cdot\sqrt{u}\cdot\frac{1}{4}\,\text{d}u \\  & ={\int }_{7}^{23}\frac{5 \sqrt{3} u^{\frac{3}{2}}}{16} - \frac{15 \sqrt{3} \sqrt{u}}{16}\,\text{d}u \\  & =\left[\frac{5 \sqrt{3}}{16}\cdot\left(\frac{2}{5}u^{5/2}-(3)\cdot\frac{2}{3}u^{3/2}\right)\right]_{7}^{23} \\  & =\left[\frac{5 \sqrt{3} \left(\frac{2 u^{\frac{5}{2}}}{5} - 2 u^{\frac{3}{2}}\right)}{16}\right]_{7}^{23} \\  & =\left(\left(\frac{\sqrt{3} \left(23\right)^{\frac{5}{2}}}{8}\right)+\left(- \frac{5 \sqrt{3} \left(23\right)^{\frac{3}{2}}}{8}\right)\right)-\left(\left(\frac{\sqrt{3} \left(7\right)^{\frac{5}{2}}}{8}\right)+\left(- \frac{5 \sqrt{3} \left(7\right)^{\frac{3}{2}}}{8}\right)\right) \\  & =\left(\left(\frac{529 \sqrt{69}}{8}\right)+\left(- \frac{115 \sqrt{69}}{8}\right)\right)-\left(\left(\frac{49 \sqrt{21}}{8}\right)+\left(- \frac{35 \sqrt{21}}{8}\right)\right) \\  & =- \frac{7 \sqrt{21}}{4} + \frac{207 \sqrt{69}}{4}\end{aligned}
 $$
 
-
----
+## Generated sqrt / method
 
 Generated variant / hard / sqrt / method
 
@@ -903,8 +1182,7 @@ $$
 \begin{aligned}{\int }_{1}^{5}\frac{3 t \sqrt{4 t + 1}}{2}\,\text{d}t & =\frac{3}{2}{\int }_{5}^{21}\frac{u-1}{4}\cdot\sqrt{u}\cdot\frac{1}{4}\,\text{d}u \\  & ={\int }_{5}^{21}\frac{3 u^{\frac{3}{2}}}{32} - \frac{3 \sqrt{u}}{32}\,\text{d}u \\  & =\left[\frac{3}{32}\cdot\left(\frac{2}{5}u^{5/2}-(1)\cdot\frac{2}{3}u^{3/2}\right)\right]_{5}^{21} \\  & =\left[\frac{3 u^{\frac{5}{2}}}{80} - \frac{u^{\frac{3}{2}}}{16}\right]_{5}^{21} \\  & =\left(\left(\frac{3 \left(21\right)^{\frac{5}{2}}}{80}\right)+\left(- \frac{\left(21\right)^{\frac{3}{2}}}{16}\right)\right)-\left(\left(\frac{3 \left(5\right)^{\frac{5}{2}}}{80}\right)+\left(- \frac{\left(5\right)^{\frac{3}{2}}}{16}\right)\right) \\  & =\left(\left(\frac{1323 \sqrt{21}}{80}\right)+\left(- \frac{21 \sqrt{21}}{16}\right)\right)-\left(\left(\frac{15 \sqrt{5}}{16}\right)+\left(- \frac{5 \sqrt{5}}{16}\right)\right) \\  & =- \frac{5 \sqrt{5}}{8} + \frac{609 \sqrt{21}}{40}\end{aligned}
 $$
 
-
----
+## Generated implicit_parabola / source:q-122271
 
 Generated variant / hard / implicit_parabola / source:q-122271
 
@@ -964,8 +1242,7 @@ $$
 \begin{aligned}\frac{3}{4}{\int }_{0}^{4}t\sqrt{{t}^{2}+16}\,\text{d}t & =\frac{3}{8}{\int }_{16}^{32}\sqrt{u}\,\text{d}u \\  & =\frac{1}{4}\cdot {u}^{3/2}\,{|}_{16}^{32} \\  & =\frac{1}{4}({32}^{3/2}-{16}^{3/2}) \\  & =\frac{1}{4}(128\sqrt{2}-64) \\  & =-16+32\sqrt{2}\end{aligned}
 $$
 
-
----
+## Generated sqrt / source:q-122579
 
 Generated variant / not rated / sqrt / source:q-122579
 
@@ -984,8 +1261,7 @@ where $C$ is the section of the curve $x = \sqrt{y}$ from $(0, 0)$ to $(\sqrt{3}
 
 (Source worked solution absent.)
 
-
----
+## Generated parabola / source:q-122574
 
 Generated variant / moderate / parabola / source:q-122574
 
@@ -1041,8 +1317,7 @@ $$
 \begin{aligned}{\int }_{1}^{\frac{3\sqrt{11}}{2}}12t\sqrt{4{t}^{2}+1}\,\text{d}t & =12{\int }_{5}^{100}\sqrt{u}\cdot \frac{1}{8}\,\text{d}u \\  & =\frac{3}{2}{\int }_{5}^{100}\sqrt{u}\,\text{d}u \\  & =\frac{3}{2}\cdot \frac{2}{3}\sqrt{{u}^{3}}\,{|}_{5}^{100} \\  & =\sqrt{{100}^{3}}-\sqrt{{5}^{3}} \\  & =1000-5\sqrt{5} \\  & =5(200-\sqrt{5})\end{aligned}
 $$
 
-
----
+## Generated reciprocal / source:q-122593
 
 Generated variant / moderate / reciprocal / source:q-122593
 
@@ -1098,8 +1373,7 @@ $$
 \begin{aligned}2{\int }_{1}^{3}{t}^{3}\sqrt{{t}^{4}+4}\,\text{d}t & =2{\int }_{5}^{85}\sqrt{u}\cdot \frac{1}{4}\,\text{d}u \\  & =\frac{1}{2}{\int }_{5}^{85}\sqrt{u}\,\text{d}u \\  & =\frac{1}{2}\cdot \frac{2}{3}\sqrt{{u}^{3}}\,{|}_{5}^{85} \\  & =\frac{1}{3}[\sqrt{{85}^{3}}-\sqrt{{5}^{3}}] \\  & =\frac{85\sqrt{85}-5\sqrt{5}}{3} \\  & =-\frac{5\sqrt{5}}{3}+\frac{85\sqrt{85}}{3}\end{aligned}
 $$
 
-
----
+## Generated line_log / source:q-149727
 
 Generated variant / moderate / line_log / source:q-149727
 
@@ -1155,8 +1429,7 @@ $$
 \begin{aligned}\sqrt{5}{\int }_{2}^{\frac{5}{2}}\frac{1}{4-t}\,\text{d}t & =\sqrt{5}{\int }_{2}^{\frac{3}{2}}\frac{1}{u}\cdot (-\text{d}u) \\  & =-\sqrt{5}{\int }_{2}^{\frac{3}{2}}\frac{1}{u}\,\text{d}u \\  & =\sqrt{5}{\int }_{\frac{3}{2}}^{2}\frac{1}{u}\,\text{d}u \\  & =\sqrt{5}[\operatorname{ln}⁡u]_{\frac{3}{2}}^{2} \\  & =\sqrt{5}[\operatorname{ln}⁡2-\operatorname{ln}⁡\frac{3}{2}] \\  & =\sqrt{5}[\operatorname{ln}⁡2-\operatorname{ln}⁡\frac{3}{2}] \\  & =\sqrt{5}\operatorname{ln}⁡\frac{4}{3}\end{aligned}
 $$
 
-
----
+## Generated exponential / source:q-149745
 
 Generated variant / hard / exponential / source:q-149745
 
@@ -1209,4 +1482,3 @@ Finally, we solve this using the substitution $u={e}^{t}+4,$ $\text{d}u={e}^{t}\
 $$
 \begin{aligned}3{\int }_{0}^{\operatorname{ln}⁡3}{e}^{t}\sqrt{{e}^{t}+4}\,\text{d}t & =3{\int }_{5}^{7}\sqrt{u}\,\text{d}u \\  & =3\cdot \frac{2}{3}{u}^{3/2}\,{|}_{5}^{7} \\  & =2({7}^{3/2}-{5}^{3/2}) \\  & =2(7\sqrt{7}-5\sqrt{5}) \\  & =14\sqrt{7}-10\sqrt{5}\end{aligned}
 $$
-

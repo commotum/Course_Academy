@@ -48,10 +48,13 @@ def ranked_candidates(result):
                 inventories.append(("topic", topic["topic_inventory"]))
             tier, label = min(urgency(pool) for _, pool in inventories)
             available_total = min(sum(pool["available"].values()) for _, pool in inventories)
+            kp_available_total = sum(kp["inventory"]["available"].values())
             kp.update({"topic_entity": topic["db/id"], "topic_title": topic["topic/title"],
                        "activity_state": topic["activity_state"], "engine_priority": topic["engine_priority"],
                        "assignment_due": topic["assignment_due"], "urgency_tier": tier, "urgency": label,
                        "available_total": available_total,
+                       "kp_available_total": kp_available_total,
+                       "low_inventory": kp_available_total <= 5,
                        "waiting_since": topic.get("waiting_since"),
                        "inventory_scopes": {scope: pool for scope, pool in inventories}})
             ranked.append(kp)
@@ -59,7 +62,8 @@ def ranked_candidates(result):
     def key(kp):
         due = kp["assignment_due"]
         waiting = kp.get("waiting_since")
-        return (datetime.fromisoformat(due.replace("Z", "+00:00")).timestamp() if due else float("inf"),
+        return (not kp["low_inventory"],
+                datetime.fromisoformat(due.replace("Z", "+00:00")).timestamp() if due else float("inf"),
                 states[kp["activity_state"]], -kp["engine_priority"], kp["available_total"],
                 datetime.fromisoformat(waiting.replace("Z", "+00:00")).timestamp() if waiting else float("inf"),
                 kp["topic_entity"], kp["db/id"])
@@ -71,7 +75,7 @@ def ranked_candidates(result):
         topic["knowledge_points"].sort(key=lambda kp: kp["rank"])
     result["topics"].sort(key=lambda topic: min((kp["rank"] for kp in topic["knowledge_points"]), default=float("inf")))
     result["knowledge_points"] = ranked
-    result["sort_order"] = ["assignment_due", "activity_state", "engine_priority_desc", "available_total", "waiting_since", "entity_id"]
+    result["sort_order"] = ["low_inventory_first", "assignment_due", "activity_state", "engine_priority_desc", "available_total", "waiting_since", "entity_id"]
     return result
 
 

@@ -1,0 +1,76 @@
+{
+  "database": "math",
+  "basis": 2275,
+  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "record": [
+    {
+      ":activity/first-step": {
+        ":db/id": 17592186184937
+      },
+      ":activity/id": "45b54b13-346d-538c-876e-285764d59813",
+      ":activity/steps": [
+        {
+          ":db/id": 17592186184937,
+          ":step/content": {
+            ":db/id": 17592186185320,
+            ":tutorial/content": "When we reduce a matrix to row echelon form, the number of *pivot* columns plus the number of *non-pivot* columns always equals the total number of columns of the matrix. \n\nBy translating this into the language of vector spaces, we get the **rank-nullity theorem**. The rank-nullity theorem relates the rank of a matrix to the dimension of its null space:\n\n*Let $A$ be a matrix (not necessarily square) with $n$ columns. Then,*\n\n$$\n\\textrm{dim(Col}(A)) + \\textrm{dim(Null}(A)) = \\textrm{dim}(\\mathbb{R}^n),\n$$\n\n*or, equivalently,*\n\n$$\n\\textrm{rank}(A) + \\textrm{nullity}(A) = n.\n$$\n\nFor example, suppose that for some matrix $A,$ we have\n\n![](images/30/30f6472f02a4ac47f285fff05e0cdbf56367acdd18231271dc3dccf0040901bd.svg)\n\nWe can use the rank-nullity theorem to calculate $\\textrm{rank}(A).$\n\nIn this case, we must have $n=4,$ since this is the number of components in each of the vectors of the null space. \n\nAlso, we must have $\\textrm{nullity}(A)=2,$ since \n![](images/b5/b5f38590a71a2f8e1f29a5ba98920a10037737c1ebcbd3fd60f08a3e47555141.svg)\n\nTherefore, using the rank-nullity theorem, we have\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ \\text{rank}(A)+2 & =4 \\\\ \\text{rank}(A) & =4-2 \\\\  & =2.\\end{aligned}\n$$",
+            ":tutorial/title": "Introduction"
+          },
+          ":step/next": {
+            ":db/id": 17592186185007
+          }
+        },
+        {
+          ":db/id": 17592186184938,
+          ":step/content": {
+            ":db/id": 17592186184171,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186184070,
+              ":question/id": "10cc01a6-af19-5340-9743-ade4d5e252dc",
+              ":question/math-academy-id": "e-5425",
+              ":question/problem": "Let $A$ be a $3\\times 5$ matrix. If $\\mathcal{B}= \\{\\mathbf{b_1}, \\mathbf{b_2}, \\mathbf{b_3}\\}$ is a basis of $\\textrm{Col}(A)$, find $\\textrm{dim(Null}(A)).$",
+              ":question/worked-solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\textrm{rank}(A) + \\textrm{nullity}(A) = n.\n$$\n\nFor the given matrix, we have $n=5,$ and since $\\mathcal{B}$ is formed by $3$ vectors, $\\textrm{rank}(A) = 3.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ 3+\\text{nullity}(A) & =5 \\\\ \\text{nullity}(A) & =5-3 \\\\ \\text{dim(Null}(A)) & =2.\\end{aligned}\n$$"
+            },
+            ":knowledge-point/title": "Finding the Rank or Nullity of a Matrix Given a Description of the Column or Null Space"
+          },
+          ":step/next": {
+            ":db/id": 17592186184939
+          }
+        },
+        {
+          ":db/id": 17592186184939,
+          ":step/content": {
+            ":db/id": 17592186184172,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186184071,
+              ":question/id": "78547385-d46f-5a2a-bfc1-39e040208ca0",
+              ":question/math-academy-id": "e-5426",
+              ":question/problem": "Which of the following statements are true given that $A$ is a $3 \\times 3$ matrix, and  ![](images/a7/a7171d7bdd2b5c79b55ce6bd204e36304640468bd2ad533ac4032cd5a4ddc2ae.svg) \n\nI. $\\textrm{rank}(A)=1$\n\nII. $A$ is invertible\n\nIII. $\\textrm{Col}(A)$ is a $2$-dimensional subspace of $\\Bbb R^3$",
+              ":question/worked-solution": "Since $A$ is a $3 \\times 3$ matrix, the invertible matrix theorem states the following:\n\n![](images/ab/ab1cd4be22e0d3344318108914d506f9fc259446654eefff94a36d38afac3f8b.svg)\n\nAlso, according to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then \n\n$$\n\\textrm{rank}(A) + \\textrm{nullity}(A) = n.\n$$\n\nWith that in mind, let's examine each statement in turn.\n\n- Statement I is true. Indeed, we have that \n![](images/e7/e7660dfd412f13c5d20dd9e77ec439cdbf2916ebfbccc383d13b5f9ed4032cda.svg) \nwhich means that $\\textrm{nullity}(A) =2.$\n\nNow,  for the matrix $A,$ the number of columns is $n = 3,$ so according to the rank-nullity theorem, we obtain\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ \\text{rank}(A)+2 & =3 \\\\ \\text{rank}(A) & =3-2 \\\\  & =1.\\end{aligned}\n$$\n\n- Statement II is false. Since $\\textrm{nullity}(A) = 2 \\neq 0,$ then by the invertible matrix theorem, $A$ cannot be an invertible matrix.\n\n- Statement III is false. Since $\\textrm{rank}(A) = 1,$ we have that $\\textrm{Col}(A)$ is a $1$-dimensional subspace of $\\Bbb R^3.$\n\nTherefore, the correct answer is \"I only.\""
+            },
+            ":knowledge-point/title": "Identifying True Statements Using the Invertible Matrix Theorem and the Rank-Nullity Theorem"
+          }
+        },
+        {
+          ":db/id": 17592186185007,
+          ":step/content": {
+            ":db/id": 17592186184219,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186184124,
+              ":question/id": "9615d8af-b005-5449-be4b-a7487375c98f",
+              ":question/math-academy-id": "e-9963",
+              ":question/problem": "Consider a $8 \\times 6$ matrix $A.$ If $\\textrm{rank}(A)=5$ then what is $\\textrm{nullity}(A)?$",
+              ":question/worked-solution": "According to the rank-nullity theorem, if $A$ is a matrix with $n$ columns, then  \n\n$$\n\\textrm{rank}(A) + \\textrm{nullity}(A) = n.\n$$\n\nFor the given matrix, we have $n=6.$ Therefore,\n\n$$\n\\begin{aligned}\\text{rank}(A)+\\text{nullity}(A) & =n \\\\ 5+\\text{nullity}(A) & =6 \\\\ \\text{nullity}(A) & =6-5 \\\\  & =1.\\end{aligned}\n$$"
+            },
+            ":knowledge-point/title": "Finding the Rank or Nullity of a Matrix Using the Rank-Nullity Theorem"
+          },
+          ":step/next": {
+            ":db/id": 17592186184938
+          }
+        }
+      ],
+      ":activity/title": "The Rank-Nullity Theorem",
+      ":db/id": 17592186184421
+    }
+  ]
+}

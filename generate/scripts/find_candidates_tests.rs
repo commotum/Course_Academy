@@ -164,15 +164,45 @@ fn unchanged_database_still_finds_new_time_due_reviews_and_scheduler_selection()
 #[test]
 fn log_filter_ignores_withdrawals_and_unrelated_learners() {
     let mut changes = Changes::default();
-    changes.observe(1, 1, "learner/queue", &Value::Ref(5), false, 2, 3);
-    changes.observe(1, 9, "learner/targets", &Value::Ref(6), true, 2, 3);
-    changes.observe(1, 7, "learner-task/status", &Value::Ref(8), true, 2, 3);
+    let pending_states = [2, 3, 4, 5];
+    changes.observe(1, 1, "learner/queue", &Value::Ref(5), false, &pending_states);
+    changes.observe(1, 9, "learner/targets", &Value::Ref(6), true, &pending_states);
+    changes.observe(1, 7, "learner-task/status", &Value::Ref(8), true, &pending_states);
     assert!(changes.selections.is_empty());
     assert!(changes.tasks.is_empty());
-    changes.observe(1, 1, "learner/queue", &Value::Ref(5), true, 2, 3);
-    changes.observe(1, 7, "learner-task/status", &Value::Ref(2), true, 2, 3);
+    changes.observe(1, 1, "learner/queue", &Value::Ref(5), true, &pending_states);
+    changes.observe(1, 7, "learner-task/status", &Value::Ref(2), true, &pending_states);
     assert!(changes.selections.contains(&(5, "learner/queue".into())));
     assert!(changes.tasks.contains(&7));
+}
+
+#[test]
+fn ongoing_lessons_are_discovered_and_prioritized_without_queue_or_target_membership() -> Result<()> {
+    for state in ["started", "paused"] {
+        let db = fixture()?;
+        let learner = identity(&db, "learner/id", "test")?;
+        let task = eid(&query(&db,
+            "[:find ?task :where [?a :activity/scope ?t] [?t :topic/title \"Locked lesson\"] [?task :learner-task/activity ?a]]",
+            vec![])?[0][0])?;
+        let state_id = db.entid(&Keyword::new("learner-task.status", state)).unwrap();
+        let db = db.with_edn(
+            &format!("[[:db/add {task} :learner-task/status :learner-task.status/{state}]]"),
+            0, EntityRef::Ident(Keyword::new("db.source", "system")))?.db_after;
+        let now = at("2026-10-11T00:00:00Z");
+        let mut changes = Changes::default();
+        changes.observe(learner, task, "learner-task/status", &Value::Ref(state_id), true, &[state_id]);
+        for changed in [None, Some(&changes)] {
+            let mut result = candidates(&db, learner, now, changed, &BTreeSet::new(), "assessment")?;
+            find_candidates_ranking::annotate(&db, learner, now, &mut result)?;
+            let row = result.as_array().unwrap().iter()
+                .find(|r| r["topic/title"] == "Locked lesson").unwrap();
+            assert_eq!(row["activity_state"], "needed-now");
+            assert!(row["engine_priority"].as_f64().unwrap() >= 10000.0);
+            assert!(row["triggers"].as_array().unwrap().iter().any(|t| t["reason"] == state));
+            assert!(!titles(&result).contains("Completed review"));
+        }
+    }
+    Ok(())
 }
 
 #[test]

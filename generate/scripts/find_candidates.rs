@@ -122,8 +122,7 @@ impl Changes {
         attribute: &str,
         value: &Value,
         added: bool,
-        unlocked: u64,
-        locked: u64,
+        pending_states: &[u64],
     ) {
         if !added {
             return;
@@ -136,7 +135,7 @@ impl Changes {
                 self.tasks.insert(*task);
             }
             ("learner-task/status", Value::Ref(state))
-                if *state == unlocked || *state == locked =>
+                if pending_states.contains(state) =>
             {
                 self.tasks.insert(entity);
             }
@@ -256,7 +255,11 @@ fn candidates(
             add(
                 topic,
                 if kind == "lesson" {
-                    "unlocked"
+                    row[4]
+                        .as_str()
+                        .ok_or("activity state missing")?
+                        .strip_prefix("learner-task.status/")
+                        .ok_or("unexpected activity state")?
                 } else {
                     "assigned"
                 },
@@ -359,12 +362,13 @@ fn main() -> Result<()> {
             return Err("cursor is ahead of database basis".into());
         }
         let mut found = Changes::default();
-        let unlocked = db
-            .entid(&Keyword::new("learner-task.status", "unlocked"))
-            .ok_or("unlocked enum missing")?;
-        let locked = db
-            .entid(&Keyword::new("learner-task.status", "locked"))
-            .ok_or("locked enum missing")?;
+        let pending_states = ["unlocked", "locked", "started", "paused"]
+            .iter()
+            .map(|state| {
+                db.entid(&Keyword::new("learner-task.status", *state))
+                    .ok_or("pending status enum missing")
+            })
+            .collect::<std::result::Result<Vec<_>, _>>()?;
         let mut expected = after + 1;
         for tx in db
             .log_value()?
@@ -378,7 +382,7 @@ fn main() -> Result<()> {
             for d in tx.data {
                 let attribute = db.schema().attribute(d.attribute)?.ident.qualified_name();
                 found.observe(
-                    learner, d.entity, &attribute, &d.value, d.added, unlocked, locked,
+                    learner, d.entity, &attribute, &d.value, d.added, &pending_states,
                 );
             }
         }

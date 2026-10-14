@@ -3,7 +3,8 @@ import json,re,hashlib
 from pathlib import Path
 R=Path(__file__).resolve().parent
 def check(g,K,D,asset_relocation=False):
- frozen=json.load(open(R/f'sources/{K}.json'));assert json.load(open(D/'source.json'))==frozen
+ evidence=json.load(open(D/'source.json'));snapshot=R/json.load(open(R/'manifest.json')).get('source_snapshot_roots',{'1356':'.'})[str(evidence['basis'])]
+ frozen=json.load(open(snapshot/f'sources/{K}.json'));assert evidence==frozen
  originals={q[':question/math-academy-id']:q for q in frozen['record'][':knowledge-point/questions']};counts=dict(prompts=0,solutions=0,fields=0,values=0,refs=0,missing_refs=0,unrated=0)
  for c in json.load(open(D/'source-cases.json')):
   o=originals.get(c.get('math_academy_id',c.get('source_ma_id',c.get('source_math_academy_id',c['source_id'])))) or next(q for q in originals.values() if str(q[':db/id'])==str(c['source_id']) or q[':question/id']==c['source_id']);q=g.generate(c.get('level',c.get('difficulty',o.get(':question/difficulty',{}).get(':db/ident',':question.difficulty/easy').split('/')[-1])),template=c['template'],parameters=c['parameters'],profile=c.get('bank_profile',c.get('profile')))['question']

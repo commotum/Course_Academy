@@ -12,9 +12,19 @@
     part = name;
     try { return read(); } finally { part = previous; }
   };
-  const emptyFormula = n => n?.localName === 'svg' && n.closest('.mjpage, mjx-container, .MathJax') &&
-    n.getAttribute('width') === '0' && n.getAttribute('viewBox')?.trim().split(/\s+/)[2] === '0' &&
-    !n.textContent.trim() && !n.querySelector('path,use,text,line,polyline,polygon,circle,ellipse,rect,image,foreignObject');
+  const emptyFormula = n => {
+    if(n?.localName !== 'svg' || !n.closest('.mjpage, mjx-container, .MathJax') ||
+       n.textContent.trim() || n.querySelector('path,use,text,line,polyline,polygon,circle,ellipse,rect,image,foreignObject')) return false;
+    const box=n.getAttribute('viewBox')?.trim();
+    if(n.getAttribute('width') === '0' && box?.split(/\s+/)[2] === '0') return true;
+    // MathJax SVG also represents a completed empty formula with its minimum
+    // 16-unit box. Require its exact dimensions and empty math root; an empty
+    // arbitrary SVG or a formula still containing source nodes remains a gap.
+    const root=n.querySelector('g[data-mml-node="math"]');
+    return !!n.closest('mjx-container[jax="SVG"]') && box === '0 0 16 16' &&
+      n.getAttribute('width') === '0.036ex' && n.getAttribute('height') === '0.036ex' &&
+      !!root && !root.childNodes.length;
+  };
   // MathJax can render part of an SVG's TeX title again as nested MathML.
   // That MathML describes only the inner fragment (e.g. phantom spacing),
   // not the surrounding visible fbox. Preserve the whole rendered formula.

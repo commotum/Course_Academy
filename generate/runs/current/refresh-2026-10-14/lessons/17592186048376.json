@@ -1,0 +1,137 @@
+{
+  "database": "math",
+  "basis": 2275,
+  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "record": [
+    {
+      ":activity/first-step": {
+        ":db/id": 17592186180341
+      },
+      ":activity/id": "90074413-5fe3-5632-8eb0-3e0dc053df00",
+      ":activity/steps": [
+        {
+          ":db/id": 17592186180341,
+          ":step/content": {
+            ":db/id": 17592186180787,
+            ":tutorial/content": "Let $\\mathbf F$ be a vector field on $\\mathbb R^2$ and $C$ be a *closed* curve in the $xy$-plane. Imagine that $\\mathbf F$ represents the velocity field of a stream of flowing water, and $C$ is a curve that allows water to flow through it (like a fishing net). \n\nThe **flux of $\\mathbf F$ across $\\boldsymbol C$** is a scalar number that tells us how much water is escaping the region bounded by $C.$ \n\nWe have three possible scenarios: \n\n- If more water flows out through $C$ than in through $C$ (i.e., there is a net flow *out* through $C$), the flux is *positive*.\n\n![](images/6f/6ff4d006d3fbf4a434f35a13c8591fc166ff6c74adf2b7969752b7541e486df2.png)\n\n- If more water flows in through $C$ than out through $C$ (i.e., there is a net flow *in* through $C$), the flux is *negative*.\n\n![](images/38/3812148e855a84e3233316acc8bbf59bd7cd802a874c9e4807c6efd7ca6754cf.png)\n\n- If the net flow through $C$ is zero, the flux equals zero.\n\nThe following vector field has zero flux across $C$ because the amount of water flowing in through $C$ equals the amount of water flowing out through $C.$\n\n![](images/56/56aef4f217e9981755826745a97e8389d86b49518ffd7d3ebc75e5ee2dc28f8b.png)\n\nThe following two vector fields also have a zero flux across $C$ because the water flow is tangential to $C$ at every point along $C.$\n\n![](images/63/637677324152af3d428e405c89025f35dbe5d71e2e8f0a0797ef3aca30bae7e1.png)",
+            ":tutorial/title": "Introduction"
+          },
+          ":step/next": {
+            ":db/id": 17592186180342
+          }
+        },
+        {
+          ":db/id": 17592186180342,
+          ":step/content": {
+            ":db/id": 17592186180788,
+            ":tutorial/content": "If $\\mathbf{F}(x,y)$ is a vector field on $\\mathbb{R}^2$ and $C$ is a piecewise-smooth, simple, closed curve, then the flux of $\\mathbf F$ across $C$ is given by the line integral\n\n$$\n\\oint\\limits_C \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s,\n$$\n\nwhere $\\mathbf{n}$ denotes the outward-pointing unit normal vector to $C.$ The symbol $\\oint\\limits$ means integration over the closed curve.\n\nIt's helpful to spend some time understanding where this definition comes from, so let's derive it using the closed curve $C$ below.\n\n![](images/6d/6dfe8a071798c93f19507808596b7d32af90367b2666643d092a7c50afe5e929.png)\n\nFirst, we pick a point $P$ on $C.$ At this point, we draw the vector field $\\mathbf F$ and the outward-pointing normal vector $\\mathbf n$ to $C.$\n\n![](images/49/498e1afbaac8bc8297213eae09cc8bf8742b29f45dda1dfafff868c67ebb9de9.png)\n\nWe wish to calculate the flow of $\\mathbf F$ through $C$ at $P.$ Now, $\\mathbf F$ is made up of two components:\n\n- a component parallel to $\\mathbf n,$ which contributes to the flow of $\\mathbf F$ through $C,$ and\n\n- a component perpendicular to $\\mathbf n,$ which does *not* contribute to the flow of $\\mathbf F$ through $C.$\n\nWe're only interested in the contribution made to the flow of $\\mathbf F$ through $C.$ This is given by the scalar projection of $\\mathbf F$ in the direction of $\\mathbf n.$\n\n![](images/ac/ac3aae49f372908f2f9aeb53e3fc98bff117846fca05a8c696009e443390811c.png)\n\nTherefore, the flow of $\\mathbf F$ through $C$ at $P$ is given by\n\n$$\n\\begin{aligned}{\\text{comp}}_{n}F & =\\frac{F\\cdot n}{||n||}=F\\cdot n.\\end{aligned}\n$$\n\nThe expression above represents the flow of $\\mathbf F$ through $C$ at a single point only. Therefore, to calculate the total net flow of $\\mathbf F$ through $C,$ we sum (integrate) this expression over the entire curve. This gives\n\n$$\n\\oint\\limits_C \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s.\n$$",
+            ":tutorial/title": "Constructing an Integral Formula for the Flux"
+          },
+          ":step/next": {
+            ":db/id": 17592186180343
+          }
+        },
+        {
+          ":db/id": 17592186180343,
+          ":step/content": {
+            ":db/id": 17592186180789,
+            ":tutorial/content": "Consider the circle $S$ and vector field $\\mathbf F$ below. Let $C$ be any path where $S$ is traversed once in the counterclockwise direction. \n\n![](images/e6/e679efaa2612d45bbfe8b918de7148853b64eaf530af34a525ef1735e0946b09.png)\n\nBy drawing an outward-pointing unit normal vector, it's clear that there is a net flow *out* through $C.$ \n\n![](images/fb/fbcd6fd0fadcc955212a145de9edb4654ddb92ddebb8ba31eb775cff676efeeb.png)\n\nTherefore, the flux of $\\mathbf F$ across $C$ is positive, and we have\n\n$$\n\\oint\\limits_C \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s > 0.\n$$\n\nWhen measuring flux through a closed curve, the curve's orientation does not matter because the outward-pointing unit normal vector is the same in either case. \n\n![](images/a3/a3d398d382e6bc94ddde77e650d50a6b5ec050083f89f64104f6f2fd172a9239.png)\n\nSo, the flux of $\\mathbf F$ across $-C$ is also positive, and we have\n\n$$\n\\oint\\limits_{-C} \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s > 0.\n$$",
+            ":tutorial/title": "Orientation-Independence"
+          },
+          ":step/next": {
+            ":db/id": 17592186180344
+          }
+        },
+        {
+          ":db/id": 17592186180344,
+          ":step/content": {
+            ":db/id": 17592186179644,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186179482,
+              ":question/id": "c427d9b4-2944-5edc-8e19-363de348d23d",
+              ":question/math-academy-id": "e-15147",
+              ":question/problem": "Consider the circle $S$ and vector field $\\mathbf F$ shown below. Let $C$ be any path where $S$ is traversed once in the counterclockwise direction. \n\nWhich of the following statements are true?\n\nI. The flux of $\\mathbf F$ across $C$ is negative\n\nII. The flux of $\\mathbf F$ across $C$ is zero\n\nIII. The flux of $\\mathbf F$ across $-C$ is positive\n\n![](images/7e/7e7fbe6aaf1310b186344a3cf5a127075f11a86b51db2e687ddc7035d5d890f8.png)",
+              ":question/worked-solution": "If $\\mathbf{F}$ is a vector field and $C$ is a piecewise-smooth, simple, closed curve, then the flux of $\\mathbf F$ across $C$ is given by\n\n$$\n\\oint\\limits_C \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s,\n$$\n\nwhere $\\mathbf{n}$ denotes the outward-pointing unit normal vector to $C.$\n\nTo understand the flux intuitively, we imagine that $\\mathbf F$ represents a stream of flowing water. The flux of $\\mathbf F$ across $C$ represents the net flow of water escaping the region bounded by $C\\mathbin:$ \n\n- If more water flows out through $C$ than in through $C$ (i.e., there is a net flow *out* through $C$), the flux is *positive*.\n\n- If more water flows in through $C$ than out through $C$ (i.e., there is a net flow *in* through $C$), the flux is *negative*.\n\n![](images/a7/a72dc9866562a42a49590fd169424307675b2c14b36833bd729026f46b677eec.png)\n\n- If the net flow through $C$ is zero, the flux equals zero.\n\n![](images/3a/3a6ac8656b2e0b5cc482a16eb3a4fab57cb681c9a40cf634da47f9a4323d9fdf.png)\n\nThe outward-pointing unit normal vector tells us which direction is \"out.\"\n\nWith that in mind, let's check each statement.\n\n- Statement I is false, while statement II is true. From the diagram below we see that $\\mathbf F$ acts perpendicular to $\\mathbf n$ at every point on $C.$ Therefore, there is no net flow of $\\mathbf F$ through $C.$\n\n![](images/4a/4a3d9864bb6bada1fd218b299427bc5bb4ffcbcccb1a504fff77416d5d292151.png)\n\nSo, the flux of $\\mathbf F$ across $C$ is zero, and we must have\n\n$$\n\\oint\\limits_C \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s = 0.\n$$\n\n- Statement III is false. When measuring flux through a closed curve, the orientation of the curve does not matter because the outward-pointing unit normal vector is the same at each point on $C$ in either case.\n\n![](images/93/9310d17389f61de2984c0e23cfe1060e77d4a87a140d2f1c892bdbab9b99629b.png)\n\nSo, the flux of $\\mathbf F$ across $-C$ is zero, and we must have\n\n$$\n\\oint\\limits_{-C} \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s = 0.\n$$\n\nTherefore, the correct answer is \"II only.\""
+            },
+            ":knowledge-point/title": "Determining a Flux's Sign From a Diagram"
+          },
+          ":step/next": {
+            ":db/id": 17592186180345
+          }
+        },
+        {
+          ":db/id": 17592186180345,
+          ":step/content": {
+            ":db/id": 17592186180790,
+            ":tutorial/content": "To calculate the flux of a vector field over a smooth, closed curve, we can use the formula\n\n$$\n\\oint\\limits_C \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s.\n$$\n\nIf $C=C_1\\cup C_2 \\cup \\cdots \\cup C_n$ is piecewise smooth, we have to calculate the flux of $\\mathbf F$ over each smooth face. That is,\n\n$$\n\\oint\\limits_C \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s  =  \\int\\limits_{C_1} \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s + \\int\\limits_{C_2} \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s\n+ \\cdots +\n\\int\\limits_{C_n} \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s,\n$$\n\nwhere $\\mathbf{n}$ denotes the outward-pointing unit normal vector to $C$ on $C_i.$\n\nAs an example, let's consider the vector field $\\mathbf F(x,y) = xy\\,\\mathbf i + (y-x)^3\\,\\mathbf j$ and the rectangle $C$ shown below. \n\n![](images/5c/5cbd62feddcce7a676a76117de09154da21abdd8b039c0e45a7a0e7d5fb00e9c.png)\n\n \n\nTo calculate the flux of $\\mathbf F$ over $C,$ we sum the fluxes of $\\mathbf F$ over each side:\n\n$$\n\\oint\\limits_{C} \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s\n=\n\\int\\limits_{C_1} \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s\n+\n\\int\\limits_{C_2} \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s\n+\n\\int\\limits_{C_3} \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s\n+\n\\int\\limits_{C_4} \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s\n$$\n\nTo demonstrate how to compute these integrals, let's construct the flux integral across the side $C_4,$ given by\n\n$$\n\\int\\limits_{C_4} \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s.\n$$\n\nThe side $C_4$ and its outward-pointing unit normal are shown below.\n\n![](images/06/06fd5a2ecbd709e8e835f2a57ef3ada772526366d51e5e16474d9b8635500e8e.png)\n\nSince this side is perpendicular to the $y$-axis and we require an outward-pointing unit normal vector, we must have \n\n$$\n\\mathbf n = -\\mathbf j.\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}{\\int }_{{C}_{4}}F\\cdot n\\,\\text{d}s & ={\\int }_{{C}_{4}}(xy\\,i+(y-x)^{3}\\,j)\\cdot (-j)\\,\\text{d}s \\\\  & ={\\int }_{{C}_{4}}(xy\\,i)\\cdot (-j)+((y-x)^{3}\\,j))\\cdot (-j)\\,\\text{d}s \\\\  & ={\\int }_{{C}_{4}}0-(y-x)^{3}\\,\\text{d}s \\\\  & ={\\int }_{{C}_{4}}(x-y)^{3}\\,\\text{d}s.\\end{aligned}\n$$\n\nFollowing a similar procedure for the other sides, we can construct the full expression for the flux of $\\mathbf F$ over $C.$",
+            ":tutorial/title": "Calculating Flux"
+          },
+          ":step/next": {
+            ":db/id": 17592186180346
+          }
+        },
+        {
+          ":db/id": 17592186180346,
+          ":step/content": {
+            ":db/id": 17592186179645,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186179483,
+              ":question/id": "15426c37-1508-5407-ab49-b26f8761795c",
+              ":question/math-academy-id": "e-15148",
+              ":question/problem": "Consider the vector field $\\mathbf F(x,y) = 8y\\,\\mathbf i + 4x\\,\\mathbf j$ and the circle $C$ given by $x^2+y^2 = 4.$ If the flux of $\\mathbf F$ across $C$ is given by  \n\n![](images/9d/9d24a5f692535453b1b34c2bc9236bd44cd2c88c05724a2a5dbdf804b98957e5.svg)\n\nwhat is the missing expression?\n\n*Hint: The outward-pointing unit normal vector to $C$ is $\\mathbf n = \\dfrac x2\\,\\mathbf i + \\dfrac y2\\,\\mathbf j.$*",
+              ":question/worked-solution": "If $\\mathbf{F}$ is a vector field and $C$ is a piecewise-smooth, simple, closed curve, then the flux of $\\mathbf F$ across $C$ is given by\n\n$$\n\\oint\\limits_C \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s,\n$$\n\nwhere $\\mathbf{n}$ denotes the outward-pointing unit normal vector to $C.$\n\n![](images/ff/ff84680c55f5349431cf3d70066eeaba2c680569faa3b2210e5d14ef63ccd99e.png)\n\nIn our case, we have\n\n$$\n\\begin{aligned}{∮}_{C}F\\cdot n\\,\\text{d}s & ={∮}_{C}(8y\\,i+4x\\,j)\\cdot (\\frac{x}{2}i+\\frac{y}{2}\\,j)\\text{d}s \\\\  & ={∮}_{C}4xy+2xy\\,\\text{d}s \\\\  & ={∮}_{C}6xy\\,\\text{d}s.\\end{aligned}\n$$\n\nTherefore, the missing expression is $6xy.$"
+            },
+            ":knowledge-point/title": "Finding an Integral Expression for Flux"
+          },
+          ":step/next": {
+            ":db/id": 17592186180347
+          }
+        },
+        {
+          ":db/id": 17592186180347,
+          ":step/content": {
+            ":db/id": 17592186180791,
+            ":tutorial/content": "Calculating the flux of a vector field across a rectangle or square requires computing four flux integrals. However, we can often simplify our calculations if the vector field displays symmetry.\n\nTo demonstrate, consider the vector field $\\mathbf F = -5\\,\\mathbf i$ and a square $C$ with side length $6$ centered at $O,$ as shown below. Let's calculate the flux of $\\mathbf F$ across $C.$\n\n![](images/8e/8e1767b9bea45e742df4953f0ec50b2d43c9622994035342307dc2be6abba8de.png)\n\nIf $\\mathbf{F}$ is a vector field and $C$ is a piecewise-smooth, simple, closed curve, then the flux of $\\mathbf F$ across $C$ is given by\n\n$$\n\\oint\\limits_C \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s,\n$$\n\nwhere $\\mathbf{n}$ denotes the outward-pointing unit normal vector to $C.$ In this case, we have\n\n$$\n\\oint\\limits_C \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s\n=\n\\int\\limits_{C_1} \\mathbf F \\cdot \\mathbf{n}_1 \\: \\textrm{d}s\n+\n\\int\\limits_{C_2} \\mathbf F \\cdot \\mathbf{n}_2 \\: \\textrm{d}s\n+\n\\int\\limits_{C_3} \\mathbf F \\cdot \\mathbf{n}_3 \\: \\textrm{d}s\n+\n\\int\\limits_{C_4} \\mathbf F \\cdot \\mathbf{n}_4 \\: \\textrm{d}s,\n$$\n\nwhere the sides $C_i$ and unit vectors $\\mathbf n_i$ are shown below.\n\n![](images/65/65a8c37c64580f7d1f41f32722f20dfee2b8fd98333920a0feae781ea8d9541e.png)\n\nSince the vector field $\\mathbf F = -5\\,\\mathbf i$ is parallel to $C_2$ and $C_4,$ there is zero net flow through these two sides. Therefore,\n\n$$\n\\int\\limits_{C_2} \\mathbf F \\cdot \\mathbf{n}_2 \\: \\textrm{d}s\n=\n\\int\\limits_{C_4} \\mathbf F \\cdot \\mathbf{n}_4 \\: \\textrm{d}s = 0.\n$$\n\nThis is easy to verify, since, \n\n$$\n\\begin{aligned}{\\int }_{{C}_{2}}F\\cdot {n}_{2}\\,\\text{d}s & ={\\int }_{{C}_{2}}-5\\,i\\cdot j\\,\\text{d}s \\\\  & ={\\int }_{{C}_{2}}0\\,\\text{d}s \\\\  & =0\\end{aligned}\n$$\n\nand similarly for the integral along $C_4.$ \n\nSo, our expression for the flux reduces to\n\n$$\n\\oint\\limits_C \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s\n=\n\\int\\limits_{C_1} \\mathbf F \\cdot \\mathbf{n}_1 \\: \\textrm{d}s\n+\n\\int\\limits_{C_3} \\mathbf F \\cdot \\mathbf{n}_3 \\: \\textrm{d}s.\n$$\n\nSince the vector field is uniform, the net inflow through $C_1$ will cancel with the net outflow through $C_3.$ That is\n\n$$\n\\int\\limits_{C_1} \\mathbf F \\cdot \\mathbf{n}_1 \\: \\textrm{d}s\n=\n-\\int\\limits_{C_3} \\mathbf F \\cdot \\mathbf{n}_3 \\: \\textrm{d}s\n\\quad\\Longrightarrow\\quad\n\\int\\limits_{C_1} \\mathbf F \\cdot \\mathbf{n}_1 \\: \\textrm{d}s\n+\\int\\limits_{C_3} \\mathbf F \\cdot \\mathbf{n}_3 \\: \\textrm{d}s\n=0.\n$$\n\nTherefore, we conclude that\n\n$$\n\\oint\\limits_C \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s = 0.\n$$",
+            ":tutorial/title": "Using  Symmetry to Simplify Flux Calculations"
+          },
+          ":step/next": {
+            ":db/id": 17592186180348
+          }
+        },
+        {
+          ":db/id": 17592186180348,
+          ":step/content": {
+            ":db/id": 17592186179646,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186179484,
+              ":question/id": "f4a82102-6dd6-5a73-8370-9050e0f2323a",
+              ":question/math-academy-id": "e-15149",
+              ":question/problem": "![](images/05/05c91d681a0c84bbe9d8b6cab9bd8cdf1dca8bf88c851b8c7a7045f73ff9844c.png)\n\nConsider the vector field $\\mathbf F = 2x\\,\\mathbf i + 2y\\,\\mathbf j$ and a square $C$ with side length $2$ centered at $O,$ as shown below. Calculate the flux of $\\mathbf F$ across $C.$\n\n*Hint: You may use the fact that, due to symmetry, the flux is equal across all four sides of the square.*",
+              ":question/worked-solution": "If $\\mathbf{F}$ is a vector field and $C$ is a piecewise-smooth, simple, closed curve, then the flux of $\\mathbf F$ across $C$ is given by\n\n$$\n\\oint\\limits_C \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s,\n$$\n\nwhere $\\mathbf{n}$ denotes the outward-pointing unit normal vector to $C.$ In this case, we have\n\n$$\n\\oint\\limits_C \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s\n=\n\\int\\limits_{C_1} \\mathbf F \\cdot \\mathbf{n}_1 \\: \\textrm{d}s\n+\n\\int\\limits_{C_2} \\mathbf F \\cdot \\mathbf{n}_2 \\: \\textrm{d}s\n+\n\\int\\limits_{C_3} \\mathbf F \\cdot \\mathbf{n}_3 \\: \\textrm{d}s\n+\n\\int\\limits_{C_4} \\mathbf F \\cdot \\mathbf{n}_4 \\: \\textrm{d}s,\n$$\n\nwhere the sides $C_i$ and unit vectors $\\mathbf n_i$ are shown below.\n\n![](images/1d/1de4c4c55784b4a84a0493a4cc65082c430cadcc39c3d808001b2fd27665e968.png)\n\nFirst, consider the side $C_1.$ We have that $\\mathbf n_1 = \\mathbf i,$ and therefore,\n\n$$\n\\begin{aligned}{\\int }_{{C}_{1}}F\\cdot {n}_{1}\\,\\text{d}s & ={\\int }_{{C}_{1}}(2x\\,i+2y\\,j)\\cdot i\\,\\text{d}s \\\\  & =2{\\int }_{{C}_{1}}x\\,\\text{d}s.\\end{aligned}\n$$\n\nThis is a line integral with respect to arc length, which we can evaluate in the usual way. Parameterizing the side $C_1,$ we have\n\n$$\n\\mathbf r(t) = \\mathbf i + t\\,\\mathbf j, \\quad \\Rightarrow\\quad \\mathbf r'(t) = \\mathbf j, \\qquad t\\in [-1,1].\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}2{\\int }_{{C}_{1}}x\\,\\text{d}s & =2{\\int }_{-1}^{1}1\\cdot ||{r}^{′}(t)||\\,\\text{d}t \\\\  & =2{\\int }_{-1}^{1}\\text{d}t \\\\  & =2(1-(-1)) \\\\  & =2\\cdot 2 \\\\  & =4.\\end{aligned}\n$$\n\nBy symmetry, the flux integrals over the sides $C_2, C_3,$ and $C_4$ must be the same. Therefore,\n\n$$\n\\oint\\limits_C \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s = 4\\cdot 4 = 16.\n$$"
+            },
+            ":knowledge-point/title": "Calculating Flux Across a Square Using Symmetry"
+          },
+          ":step/next": {
+            ":db/id": 17592186180349
+          }
+        },
+        {
+          ":db/id": 17592186180349,
+          ":step/content": {
+            ":db/id": 17592186179647,
+            ":knowledge-point/canonical-example": {
+              ":db/id": 17592186179485,
+              ":question/id": "3f592794-e0e9-529c-9040-7b2806de2380",
+              ":question/math-academy-id": "e-15150",
+              ":question/problem": "![](images/59/59b5f1676f036f80e6aa2e9e331327ed9ec28e88bacda52a91ee0865736e9ce3.png)\n\nConsider the vector field $\\mathbf F = 5x\\,\\mathbf i - 3y\\,\\mathbf j$ and a rectangle $C$ with base $4$ and height $2$ centered at $O,$ as shown above. Calculate the flux of $\\mathbf F$ across $C.$ \n\n*Hint: You may use the fact that, due to symmetry, the flux is equal across the vertical sides, and similarly for the horizontal sides.*",
+              ":question/worked-solution": "If $\\mathbf{F}$ is a vector field and $C$ is a piecewise-smooth, simple, closed curve, then the flux of $\\mathbf F$ across $C$ is given by\n\n$$\n\\oint\\limits_C \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s,\n$$\n\nwhere $\\mathbf{n}$ denotes the outward-pointing unit normal vector to $C.$ In this case, we have\n\n$$\n\\oint\\limits_C \\mathbf F \\cdot \\mathbf{n} \\: \\textrm{d}s\n=\n\\int\\limits_{C_1} \\mathbf F \\cdot \\mathbf{n}_1 \\: \\textrm{d}s\n+\n\\int\\limits_{C_2} \\mathbf F \\cdot \\mathbf{n}_2 \\: \\textrm{d}s\n+\n\\int\\limits_{C_3} \\mathbf F \\cdot \\mathbf{n}_3 \\: \\textrm{d}s\n+\n\\int\\limits_{C_4} \\mathbf F \\cdot \\mathbf{n}_4 \\: \\textrm{d}s,\n$$\n\nwhere the sides $C_i$ and unit vectors $\\mathbf n_i$ are shown below.\n\n![](images/79/793755cda5243dbb427d8722c21ab150a4821c3957f0ccd0ef0fedbbd576e924.png)\n\nWe compute this integral in two stages. \n\n- First, consider the side $C_1.$ We have that $\\mathbf n_1 = \\mathbf i,$ and therefore,\n\n$$\n\\begin{aligned}{\\int }_{{C}_{1}}F\\cdot {n}_{1}\\,\\text{d}s & ={\\int }_{{C}_{1}}(5x\\,i-3y\\,j)\\cdot i\\,\\text{d}s \\\\  & =5{\\int }_{{C}_{1}}x\\,\\text{d}s.\\end{aligned}\n$$\n\nThis is a line integral with respect to arc length, which we can evaluate in the usual way. Parameterizing the side $C_1,$ we have\n\n$$\n\\mathbf r(t) = 2\\mathbf i + t\\,\\mathbf j, \\quad \\Rightarrow\\quad \\mathbf r'(t) = \\mathbf j, \\qquad t\\in [-1,1].\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}5{\\int }_{{C}_{1}}x\\,\\text{d}s & =5{\\int }_{-1}^{1}2\\cdot ||{r}^{′}(t)||\\,\\text{d}t \\\\  & =10{\\int }_{-1}^{1}\\text{d}t \\\\  & =10\\cdot 2 \\\\  & =20.\\end{aligned}\n$$\n\nBy symmetry, the flux integral across the side $C_3$ must be the same. Therefore,\n\n$$\n\\int\\limits_{C_1} \\mathbf F \\cdot \\mathbf{n}_1 \\: \\textrm{d}s = \\int\\limits_{C_3} \\mathbf F \\cdot \\mathbf{n}_3 \\: \\textrm{d}s = 20.\n$$\n\n- Next, we consider the side $C_2.$ We have that $\\mathbf n_2 = \\mathbf j,$ and therefore,\n\n$$\n\\begin{aligned}{\\int }_{{C}_{2}}F\\cdot {n}_{2}\\,\\text{d}s & ={\\int }_{{C}_{2}}(5x\\,i-3y\\,j)\\cdot j\\,\\text{d}s \\\\  & =-3{\\int }_{{C}_{2}}y\\,\\text{d}s.\\end{aligned}\n$$\n\nThis is a line integral with respect to arc length, which we can evaluate in the usual way. Parameterizing the side $C_2,$ we have\n\n$$\n\\mathbf r(t) = t\\,\\mathbf i + \\mathbf j, \\quad \\Rightarrow\\quad \\mathbf r'(t) = \\mathbf i, \\qquad t\\in [-2,2].\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}-3{\\int }_{{C}_{2}}y\\,\\text{d}s & =-3{\\int }_{-2}^{2}1\\cdot ||{r}^{′}(t)||\\,\\text{d}t \\\\  & =-3{\\int }_{-2}^{2}\\text{d}t \\\\  & =(-3)\\cdot 4 \\\\  & =-12.\\end{aligned}\n$$\n\nBy symmetry, the flux integral across the side $C_4$ must be the same. Therefore,\n\n$$\n\\int\\limits_{C_2} \\mathbf F \\cdot \\mathbf{n}_2 \\: \\textrm{d}s = \\int\\limits_{C_4} \\mathbf F \\cdot \\mathbf{n}_4 \\: \\textrm{d}s = -12.\n$$\n\nFinally, then\n\n$$\n\\oint\\limits_{C}\\mathbf F\\cdot\\mathbf n\\,\\textrm d s= 2 \\cdot 20 + 2 \\cdot (-12) = 16.\n$$"
+            },
+            ":knowledge-point/title": "Calculating Flux Across a Rectangle Using Two Symmetry Properties"
+          }
+        }
+      ],
+      ":activity/title": "Flux in Two-Dimensional Vector Fields",
+      ":db/id": 17592186179866
+    }
+  ]
+}

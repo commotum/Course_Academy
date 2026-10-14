@@ -23,18 +23,31 @@ class RankingTests(unittest.TestCase):
     def test_deadline_precedes_activity_state_and_priority(self):
         self.assertEqual(self.order(
             topic(1, "needed-now", 10000, inventory(0, 0, 0)),
-            topic(2, "target-related", 1, inventory(3, 2, 1), "2026-10-15T00:00:00Z"),
-            topic(3, "unlocked", 0, inventory(5, 5, 5), "2026-10-14T00:00:00Z")), [3, 2, 1])
+            topic(2, "target-related", 1, inventory(3, 1, 1), "2026-10-15T00:00:00Z"),
+            topic(3, "unlocked", 0, inventory(1, 1, 1), "2026-10-14T00:00:00Z")), [3, 2, 1])
 
     def test_activity_state_precedes_priority_and_exhaustion(self):
         self.assertEqual(self.order(
             topic(1, "target-related", 900, inventory(0, 0, 0)),
-            topic(2, "queued", 1, inventory(3, 2, 1))), [2, 1])
+            topic(2, "queued", 1, inventory(3, 1, 1))), [2, 1])
 
     def test_priority_precedes_urgency(self):
         self.assertEqual(self.order(
             topic(1, "target-related", 100, inventory(0, 0, 0)),
-            topic(2, "target-related", 200, inventory(3, 2, 1))), [2, 1])
+            topic(2, "target-related", 200, inventory(3, 1, 1))), [2, 1])
+
+    def test_five_or_fewer_precedes_every_other_priority(self):
+        result = ranked_candidates({"topics": [
+            topic(1, "needed-now", 10000, inventory(3, 2, 1), "2026-10-01T00:00:00Z"),
+            topic(2, "unlocked", 0, inventory(3, 1, 1))]})
+        self.assertEqual([kp["topic_entity"] for kp in result["knowledge_points"]], [2, 1])
+        self.assertEqual([kp["low_inventory"] for kp in result["knowledge_points"]], [True, False])
+        self.assertEqual(result["sort_order"][0], "low_inventory_first")
+
+    def test_current_activity_precedes_queued_within_same_inventory_group(self):
+        self.assertEqual(self.order(
+            topic(1, "queued", 900, inventory(0, 0, 0)),
+            topic(2, "needed-now", 10000, inventory(3, 1, 1))), [2, 1])
 
     def test_urgency_breaks_equal_priority_ties(self):
         self.assertEqual(self.order(
@@ -64,8 +77,16 @@ class RankingTests(unittest.TestCase):
         result = ranked_candidates({"basis":123,"topics":[t]})
         self.assertEqual(result["knowledge_points"][0]["urgency_tier"],4)
         self.assertEqual(result["knowledge_points"][0]["available_total"],15)
+        self.assertEqual(result["knowledge_points"][0]["kp_available_total"],0)
+        self.assertTrue(result["knowledge_points"][0]["low_inventory"])
         self.assertEqual(result["topics"][0]["knowledge_points"][0]["rank"],1)
         self.assertEqual(result["basis"],123)
+
+    def test_low_inventory_bucket_uses_own_kp_not_review_topic_pool(self):
+        low = topic(1, "unlocked", 0, inventory(5, 5, 5), kind="review")
+        low["knowledge_points"][0]["inventory"] = inventory(3, 1, 1)
+        ample = topic(2, "needed-now", 10000, inventory(3, 2, 1), "2026-10-01T00:00:00Z")
+        self.assertEqual(self.order(ample, low), [1, 2])
 
     def test_global_kp_order_is_deterministic(self):
         t=topic(1,"queued",10,inventory(3,2,1))

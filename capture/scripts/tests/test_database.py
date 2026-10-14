@@ -118,6 +118,28 @@ class ImageTests(unittest.TestCase):
             self.assertTrue(ImageLibrary(root/'math',capture).resolve('https://example.test/x.svg').startswith('images/'))
 
 class PrepareTests(unittest.TestCase):
+    def test_new_kp_can_use_its_separate_reference_lesson_definition(self):
+        example, practice = question('e-20'), question('q-21')
+        for q in (example, practice):
+            q['knowledge_point_id'] = '20'
+            q['knowledge_point'] = 'A new source skill'
+        content = {'questions':[practice], 'canonical_examples':[example],
+                   'source_lesson_definitions':{'1':{'topic_id':1,'complete':True}}}
+        result = Preparation(source_snapshot()).prepare(content)
+        self.assertEqual(result['omissions'], [])
+        self.assertEqual(len(result['content']['canonical_examples']), 1)
+        self.assertIn(':knowledge-point/questions', dumps(result['batches'][0]['forms']))
+        self.assertNotIn(':activity.type/lesson', dumps(result['batches'][0]['forms']))
+        for definition in [{'topic_id':2,'complete':True}, {'topic_id':1,'complete':False}]:
+            with self.subTest(definition=definition):
+                content['source_lesson_definitions']['1'] = definition
+                refused = Preparation(source_snapshot()).prepare(content)
+                self.assertTrue(any('complete example and practice pool' in o['reason'] for o in refused['omissions']))
+        content['source_lesson_definitions']['1'] = {'topic_id':1,'complete':True}
+        content['questions'] = []
+        refused = Preparation(source_snapshot()).prepare(content)
+        self.assertTrue(any('complete example and practice pool' in o['reason'] for o in refused['omissions']))
+
     def test_multistep_context_images_are_localized_and_markdown(self):
         with tempfile.TemporaryDirectory() as d:
             root=Path(d); capture=root/'capture'; capture.mkdir()

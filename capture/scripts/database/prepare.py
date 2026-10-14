@@ -420,7 +420,13 @@ class Preparation:
                         point = candidates[0] if len(candidates) == 1 else self.choose('knowledge-point', q, candidates)
                     if point is None:
                         siblings = [r for r, ex in records if not ex and str(r.get('knowledge_point_id') or r.get('kp_id') or '') == kid]
-                        if not source_example or not siblings or not content.get('lesson_definition', {}).get('complete'):
+                        definition = content.get('lesson_definition') or {}
+                        definition_topic = int(definition.get('topic_id') or content.get('topic_id') or 0)
+                        if definition_topic != tid:
+                            definition = (content.get('source_lesson_definitions') or {}).get(str(tid), {})
+                            definition_topic = int(definition.get('topic_id') or 0)
+                        if (not source_example or not siblings or not definition.get('complete')
+                                or definition_topic != tid):
                             raise UnsupportedContent('New KP lacks a complete example and practice pool')
                         identity = source_uuid('knowledge-point', f'{tid}:{source_example}')
                         point = {':knowledge-point/id': identity, ':knowledge-point/title': q.get('knowledge_point') or q.get('kp_title') or ''}
