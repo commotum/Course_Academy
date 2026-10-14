@@ -46,6 +46,7 @@ def plot_test(path,c,m):
 def check(r,raw=False):
  assert set(r['knowledge_point'])=={'db_id','id','title'}
  q=r['question'];f=q[':question/answer-fields'][0];a=printed(q);assert a>0
+ if r['generation']['bank_profile']=='raw_q-113324':assert r['generation']['evidence_only'] and not r['generation']['eligible_for_learning']
  fmt(q[':question/problem']);fmt(q[':question/worked-solution'])
  sol=q[':question/worked-solution'];es=re.findall(r'y=(\\frac\{\d+\}\{\d*x\})',sol)
  assert len(es)==3
@@ -105,13 +106,16 @@ def main():
   rq=r['question'];rf=rq[':question/answer-fields'][0];sf=q[':question/answer-fields'][0]
   assert rq[':question/problem']==q[':question/problem'] and rq[':question/worked-solution']==q[':question/worked-solution']
   assert set(rq)-{':question/id'}==set(q)-{':db/id',':question/id',':question/math-academy-id'}
-  assert set(rf)-{':answer-field/id'}==set(sf)-{':db/id',':answer-field/id'}
-  assert sorted(a[':answer/value'] for a in rf[':answer-field/choices'])==sorted(a[':answer/value'] for a in sf[':answer-field/choices'])
-  if ':answer-field/correct' in sf:
-   correct=next(a[':answer/value'] for a in rf[':answer-field/choices'] if a[':answer/id']==rf[':answer-field/correct'][1]);assert correct==sf[':answer-field/correct'][':answer/value']
-  for af in sf[':answer-field/choices']:
-   aa=next(a for a in rf[':answer-field/choices'] if a[':answer/value']==af[':answer/value']);assert set(aa)-{':answer/id'}==set(af)-{':db/id',':answer/id'}
-  fidelity.append({'source_id':q[':db/id'],'source':sid,'raw_prompt_exact':True,'raw_solution_exact':True,'bank_options_matched':5,'correct_designation_matched':':answer-field/correct' in sf,'attribute_presence_parity':True})
+  assert len(rq[':question/answer-fields'])==len(q[':question/answer-fields'])
+  refs=0
+  for rf,sf in zip(rq[':question/answer-fields'],q[':question/answer-fields']):
+   assert set(rf)-{':answer-field/id'}==set(sf)-{':db/id',':answer-field/id'}
+   assert sorted(a[':answer/value'] for a in rf[':answer-field/choices'])==sorted(a[':answer/value'] for a in sf[':answer-field/choices'])
+   if ':answer-field/correct' in sf:
+    correct=next(a[':answer/value'] for a in rf[':answer-field/choices'] if a[':answer/id']==rf[':answer-field/correct'][1]);assert correct==sf[':answer-field/correct'][':answer/value'];refs+=1
+   for af in sf[':answer-field/choices']:
+    aa=next(a for a in rf[':answer-field/choices'] if a[':answer/value']==af[':answer/value']);assert set(aa)-{':answer/id'}==set(af)-{':db/id',':answer/id'}
+  fidelity.append({'source_id':q[':db/id'],'source':sid,'raw_prompt_exact':True,'raw_solution_exact':True,'bank_options_matched':sum(len(f[':answer-field/choices']) for f in q[':question/answer-fields']),'correct_designations_matched':refs,'attribute_presence_parity':True})
   cases.append({'source_id':q[':db/id'],'math_academy_id':sid,'difficulty':level,'template':g.PROFILES[profile][1],'parameters':p,'bank_profile':profile})
   for seed in (41,73):review.append(check(g.generate(level,seed,profile=profile),True))
  for profile,(level,template,recipes) in g.PROFILES.items():
@@ -172,13 +176,13 @@ def main():
  engine=HERE.parents[1]/'runs/current/check-engine';subprocess.run([str(engine),str(HERE/'engine-input.json'),str(HERE/'engine-validation.json')],check=True)
  native=json.loads((HERE/'engine-validation.json').read_text())
  for name,obj in [('source-cases.json',cases),('review.json',review)]: (HERE/name).write_text(json.dumps(obj,indent=2))
- md=['# Positive reciprocal stretch review','All five original banks precede their generated parameter variants. Hard is an authored extension at the same two-stage method. Raw q-99064 preserves its absent correct ref.']
+ md=['# Positive reciprocal stretch review','All five original banks precede their generated parameter variants. Hard is an authored extension at the same two-stage method. Raw q-99064 preserves both captured widgets, including one absent and one present correct ref.']
  for r in review:
   z=r['generation'];sid=z['bank_profile'].removeprefix('raw_');anchor=z['raw_replay'] and (z['parameters']['n'],z['parameters']['d'])==g.SOURCE_PARAMETERS[sid]
   md+=['## '+('Original replay' if anchor else 'Generated variant')+' — '+z['bank_profile'],json.dumps(z['parameters']),g.markdown(r).replace('![](images/', '![](/media/jake/SSD/EDB/math/images/').replace('![](generate/scratch/17592186068813/', '![](')]
  (HERE/'review.md').write_text('\n\n'.join(md))
  for link in re.findall(r'!\[\]\(([^)]+)\)',(HERE/'review.md').read_text()):
   path=Path(link);assert (path if path.is_absolute() else HERE/path).is_file(), ('Unresolved review image',link)
- report={'status':'pass','source_questions':5,'raw_prompt_exact':5,'raw_whole_solution_exact':5,'source_banks_matched':5,'source_options_matched':25,'source_distractors_matched':20,'correct_designations_matched':4,'correct_designations_present':4,'missing_correct_designations':1,'attribute_presence_parity':5,'source_fidelity':fidelity,'normal_completed_inferred_designation':1,'authored_missing_levels':['hard'],'meaningful_variety':variety,'exhaustive_valid_profile_instances':checked_instances,'review_records':len(review),'native':{k:native[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'native_excluded_raw_missing_correct_records':3,'concurrency':'fresh identical/different renders passed','runtime':{'python':sys.version.split()[0],'sympy':g.sp.__version__,'matplotlib':g.matplotlib.__version__},'source_assets_native_inspected':source_raster_count,'source_practice_plot_occurrences':25,'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'database_writes':0}
+ report={'status':'pass','source_questions':5,'raw_prompt_exact':5,'raw_whole_solution_exact':5,'source_banks_matched':6,'source_options_matched':30,'source_distractors_matched':24,'correct_designations_matched':5,'correct_designations_present':5,'missing_correct_designations':1,'attribute_presence_parity':5,'source_fidelity':fidelity,'normal_authoritative_duplicate_widget':1,'authored_missing_levels':['hard'],'meaningful_variety':variety,'exhaustive_valid_profile_instances':checked_instances,'review_records':len(review),'native':{k:native[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'native_excluded_raw_missing_correct_records':3,'concurrency':'fresh identical/different renders passed','runtime':{'python':sys.version.split()[0],'sympy':g.sp.__version__,'matplotlib':g.matplotlib.__version__},'source_assets_native_inspected':source_raster_count,'source_practice_plot_occurrences':30,'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'database_writes':0}
  (HERE/'validation.json').write_text(json.dumps(report,indent=2));print(json.dumps(report,indent=2))
 if __name__=='__main__':main()

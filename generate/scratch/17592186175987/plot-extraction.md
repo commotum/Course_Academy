@@ -8,3 +8,5 @@
 Plot QA checks original native arrows and endpoints against these recipes, reviews changed radii with signed tick labels and boundary direction visible, verifies equal aspect and sidecar hashes, and tests same/different concurrent render calls. Incidental source font/axis-arrow styling is not claimed pixel-identical on regenerated variants.
 
 Original-geometry normal records resolve source PNGs to hash-verified private absolute paths under this evidence directory. Raw original replay preserves exact relative references; copied images/ subdirectories make those same references render in review.md. Source copies use unique temporary files and atomic replaces.
+
+Current q-126677 prompt/shaded assets eb2da6… / 4822bf… were visually inspected: radius 2, quadrant II, outward y-axis segment, increasing-angle arc to negative x, return inward on x. Current q-126707 assets 184b50… / 93a1c2… show radius 9, [0,3π/2], outward positive x, increasing-angle arc, inward negative y. Both are 360×304 and require the same paired moderate sector rendering for changed radii.

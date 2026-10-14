@@ -1,6 +1,6 @@
 # Original and generated review
 
-Sources: math basis1356. Raw observed records remain evidence-only.
+Sources: math basis2272 (earlier capture 1356 retained). Raw observed records remain evidence-only.
 
 ## q-108544 — observed moderate
 

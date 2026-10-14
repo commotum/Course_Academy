@@ -1,6 +1,6 @@
 # Positive reciprocal stretch review
 
-All five original banks precede their generated parameter variants. Hard is an authored extension at the same two-stage method. Raw q-99064 preserves its absent correct ref.
+All five original banks precede their generated parameter variants. Hard is an authored extension at the same two-stage method. Raw q-99064 preserves both captured widgets, including one absent and one present correct ref.
 
 ## Original replay — raw_q-16506
 
@@ -101,6 +101,8 @@ To plot $y=\frac{1}{7x},$ we apply the following steps:
 
 Which of the following is the graph of $y=\frac{3}{2x}?$
 
+**Captured widget 1 (raw evidence)**
+
 **A**
 ![](/media/jake/SSD/EDB/math/images/89/89233072deb8044ce467c1af083a3cafb680177efc602927fdd0192cf1c26fb4.png)
 
@@ -118,6 +120,23 @@ Which of the following is the graph of $y=\frac{3}{2x}?$
 
 Raw evidence: source correct designation absent.
 
+**Captured widget 2 (raw evidence)**
+
+**A**
+![](/media/jake/SSD/EDB/math/images/e2/e2a1274fc65341a659bb76923bb69677cc33bad1b78dfdf64ba97e0c8a00fb9c.png)
+
+**B**
+![](/media/jake/SSD/EDB/math/images/f3/f3a1cac41b2f9d6773226d76722508e6d7f368a42a0f7e86a5d8407d6f42c149.png)
+
+**C**
+![](/media/jake/SSD/EDB/math/images/79/79b496d28a0136f46e594a1b8dfddffcf4ed72557ded658259326e9ed09276ab.png)
+
+**D**
+![](/media/jake/SSD/EDB/math/images/89/89233072deb8044ce467c1af083a3cafb680177efc602927fdd0192cf1c26fb4.png)
+
+**E** (correct)
+![](/media/jake/SSD/EDB/math/images/5a/5a43656a35d47c7321e53d56238cd10f669bc807d57f72fcc002d79fb21aa111.png)
+
 To plot $y=\frac{3}{2x},$ we apply the following steps:
 
 - Take the curve $y=\frac{1}{x}.$
@@ -133,6 +152,8 @@ To plot $y=\frac{3}{2x},$ we apply the following steps:
 {"n": 9, "d": 4}
 
 Which of the following is the graph of $y=\frac{9}{4x}?$
+
+**Captured widget 1 (raw evidence)**
 
 **A**
 ![](plots/759544973e885dfee7a502c75f7f2b4e14ecf5a894eb48be513ac111d407e97b.png)
@@ -151,6 +172,23 @@ Which of the following is the graph of $y=\frac{9}{4x}?$
 
 Raw evidence: source correct designation absent.
 
+**Captured widget 2 (raw evidence)**
+
+**A**
+![](plots/759544973e885dfee7a502c75f7f2b4e14ecf5a894eb48be513ac111d407e97b.png)
+
+**B**
+![](plots/ed68dc5acd0dc25cda61d2abde91a158bf78dd07ccf8cd582f49d6a37239ca35.png)
+
+**C** (correct)
+![](plots/7bdb372ffea2088e9cd5231506e2a7d6fb5831eda6a035e2f10da33407169a72.png)
+
+**D**
+![](plots/6599140bbbd1516f921e5ec28602c977551b28712191a4eec32a655fe0aa1319.png)
+
+**E**
+![](plots/cbe3e1052adf976dc87246c3a3f5f179f97fa8e864218255790131195df46e5c.png)
+
 To plot $y=\frac{9}{4x},$ we apply the following steps:
 
 - Take the curve $y=\frac{1}{x}.$
@@ -166,6 +204,8 @@ To plot $y=\frac{9}{4x},$ we apply the following steps:
 {"n": 8, "d": 5}
 
 Which of the following is the graph of $y=\frac{8}{5x}?$
+
+**Captured widget 1 (raw evidence)**
 
 **A**
 ![](plots/04592448adfb0132e3a05f1db7937f5a6bcb4f5220065612a805e8b4f14bd70b.png)
@@ -183,6 +223,23 @@ Which of the following is the graph of $y=\frac{8}{5x}?$
 ![](plots/c82ad19c3f2feec408b95b2b6ecc1663bf6fd0268a978cfd169e9a4df52ecea0.png)
 
 Raw evidence: source correct designation absent.
+
+**Captured widget 2 (raw evidence)**
+
+**A**
+![](plots/c82ad19c3f2feec408b95b2b6ecc1663bf6fd0268a978cfd169e9a4df52ecea0.png)
+
+**B**
+![](plots/c3605cfda5213f5c9acd71643023fc7f26f58e2f0a6e808b53d454e114980c33.png)
+
+**C**
+![](plots/0c1324ce5f390a3e240a1ca682c5e831f0b4213a728d9f0f5aca29442c8a0cef.png)
+
+**D**
+![](plots/3f327628bcdf04f216f34c743defc9f3992385da4cb9759320dde3eb61118215.png)
+
+**E** (correct)
+![](plots/04592448adfb0132e3a05f1db7937f5a6bcb4f5220065612a805e8b4f14bd70b.png)
 
 To plot $y=\frac{8}{5x},$ we apply the following steps:
 

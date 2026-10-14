@@ -245,7 +245,7 @@ def latex_equiv(rec):
  return str(-s)+r'r^3\sin(2\theta)'+str(-2*s)+r'r^3\sin(2\theta)'
 
 def main():
- cases=[];reviews=[];engine=[];summary={'basis':1356,'python':sys.version.split()[0],'sympy':sp.__version__,'source_questions':len(gen.QS),'source_choices':0,'source_distractors':0,'source_banks':0,'raw_exact_prompt':0,'raw_exact_solution':0,'raw_complete_banks':0,'raw_correct_designations':0,'source_defects':[]}
+ cases=[];reviews=[];engine=[];summary={'basis':gen.SOURCE['basis'],'python':sys.version.split()[0],'sympy':sp.__version__,'source_questions':len(gen.QS),'source_choices':0,'source_distractors':0,'source_banks':0,'raw_exact_prompt':0,'raw_exact_solution':0,'raw_complete_banks':0,'raw_correct_designations':0,'source_defects':[]}
  for template,specification in gen.SPECS.items():
   sid,P,Q,rad,a,b=specification;q=gen.QS[sid]
   print('source/variants '+sid,flush=True)
@@ -334,12 +334,13 @@ def main():
  (BASE/'source-cases.json').write_text(json.dumps(cases,indent=2)+'\n');(BASE/'review.json').write_text(json.dumps(reviews,indent=2,ensure_ascii=False)+'\n');(BASE/'engine-input.json').write_text(json.dumps(engine,indent=2,ensure_ascii=False)+'\n')
  subprocess.run(['generate/runs/current/check-engine',str(BASE/'engine-input.json'),str(BASE/'engine-report.json')],check=True)
  report=json.loads((BASE/'engine-report.json').read_text());summary['native_grading']={k:report[k] for k in ['accepted_checks','rejected_checks','documented_unresolved_checks']};summary['sampled_unique_tasks']={k:len(v) for k,v in unique.items()};summary['normal_family_coverage']=sorted(families);summary['normal_review_records']=sum(r['generation']['eligible_for_learning'] for r in reviews);summary['changed_observed_evidence_records']=sum(r['generation']['evidence_only'] for r in reviews);summary['normal_correctness']='passed';summary['original_bank_fidelity']='passed all values and designations; source mathematical defects retained evidence-only';summary['source_correct_value_ambiguity_banks']=sum(any(q[':question/answer-fields'][0][':answer-field/choices'][i][':answer/id']==q[':question/answer-fields'][0][':answer-field/correct'][':answer/id'] or q[':question/answer-fields'][0][':answer-field/choices'][j][':answer/id']==q[':question/answer-fields'][0][':answer-field/correct'][':answer/id'] for i,j in d['choice_index_pairs']) for d in summary['source_defects'] if d['type']=='integral-value ambiguity' for q in [gen.QS[d['source_id']]])
- summary['source_solution_mathematical_repairs']=2
- summary['normal_supported_full_chains']=11
+ summary['source_defects'].append({'source_id':'q-126707','type':'wrong Cartesian coefficient in final substitution row','repair':'1-2y^2 replaces 1-3y^2'})
+ summary['source_solution_mathematical_repairs']=3
+ summary['normal_supported_full_chains']=len(gen.SPECS)
  summary['native_equivalent_entry_limitation']='Product/double-angle trig identity unresolved on integrand blank; nontrivial distributed double-angle and every canonical blank are accepted.'
  summary['raw_correct_math_banks']=summary['source_banks']-len([d for d in summary['source_defects'] if d['type']=='integral-value ambiguity']);summary['engine_sha256']=hashlib.sha256(Path('generate/runs/current/check-engine').read_bytes()).hexdigest()
  (BASE/'validation.json').write_text(json.dumps(summary,indent=2,ensure_ascii=False)+'\n')
- review='# Original and generated review\n\nSources: math basis1356. Raw observed records remain evidence-only.\n\n'
+ review='# Original and generated review\n\nSources: math basis2272 (earlier capture 1356 retained). Raw observed records remain evidence-only.\n\n'
  for case in cases:
   sid=case['source_id'];q=gen.QS[sid];review+='## '+sid+' — observed moderate\n\n'+q[':question/problem']+'\n\n'
   for f in q[':question/answer-fields']:

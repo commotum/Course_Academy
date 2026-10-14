@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Green's theorem setup in polar coordinates; math basis 1356.
+"""Green's theorem setup in polar coordinates; math source bases 1356 and 2272.
 
-The nine observed radio families retain their entire source operation chains and
+The twelve observed radio families retain their entire source operation chains and
 prose. A common positive amplitude multiplies the complete field; radial extent
 varies independently. Source-bank error intention is not recoverable from a
 single example: historical banks are public evidence-only profiles. Normal radio
@@ -9,7 +9,8 @@ banks use the complete method-derived profile (curl reversal, missing Jacobian,
 one cross partial, radius error), with whole-instance rejection by INTEGRAL VALUE.
 The three-blank continuation retains its source shape and trigonometric stages.
 Easy and hard are explicitly authored, bounded variants of this same setup skill.
-No evaluation is requested. No database registration or writes. Steps 3–7 only.
+No evaluation is requested. This script creates previews only; the package
+replenisher handles additive registration and commits after validation.
 """
 from __future__ import annotations
 import argparse, copy, shutil, hashlib, json, math, os, random, re, sys, tempfile, uuid

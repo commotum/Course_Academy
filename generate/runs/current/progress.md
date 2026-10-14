@@ -4,7 +4,7 @@ Captured scope: **120 topics, 384 knowledge points**, 3757 practice questions; m
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**qa_passed: 327**, **queued: 54**, **working: 3**.
+**qa_passed: 327**, **queued: 50**, **working: 7**.
 
 Dispatch priority: the 15 KPs in `coverage-report.md`, while already-started workers finish.
 
@@ -342,21 +342,21 @@ Counts describe reviewed work; queued and working KPs are not complete. Source a
 | [17592186068779](../../scratch/17592186068779.py) | Combining Graph Transformations of Reciprocal Functions | Graphing a Transformed Reciprocal Function | 0 / 4 / 4 / 2 | working | — |
 | [17592186068780](../../scratch/17592186068780.py) | Combining Graph Transformations of Reciprocal Functions | Solving for Some Unknowns Given the Graph of a Transformed Reciprocal Function | 0 / 4 / 3 / 1 | working | — |
 | [17592186068813](../../scratch/17592186068813.py) | Combining Graph Transformations of Reciprocal Functions | Graphing a Stretched Reciprocal Function | 3 / 2 / 0 / 0 | working | — |
-| 17592186068814 | Combining Graph Transformations of Reciprocal Functions | Graphing a Stretched Negative Reciprocal Function | 3 / 4 / 0 / 2 | queued | — |
-| 17592186129197 | Computing Areas Using a Change of Variables | Finding an Area by Transforming to a Type I Region | 0 / 0 / 6 / 1 | queued | — |
-| 17592186129261 | Computing Areas Using a Change of Variables | Mapping an Area to a Rectangular Region: Transformations Given | 1 / 1 / 0 / 2 | queued | — |
-| 17592186129262 | Computing Areas Using a Change of Variables | Mapping an Area to a Rectangular Region: Transformations Not Given | 0 / 3 / 2 / 1 | queued | — |
-| 17592186059668 | Finding Points on Transformed Curves | Finding a Point That Lies on a Transformed Curve | 6 / 3 / 0 / 0 | queued | — |
-| 17592186059669 | Finding Points on Transformed Curves | Finding a Point That Lies on a Transformed Curve Given Another Transformed Curve | 0 / 8 / 3 / 2 | queued | — |
-| 17592186059670 | Finding Points on Transformed Curves | Identifying Extrema on Transformed Curves | 6 / 6 / 0 / 0 | queued | — |
-| 17592186110754 | Using the Pythagorean Identity in the First Quadrant | Using the Pythagorean Theorem on the Unit Circle | 5 / 0 / 0 / 2 | queued | — |
-| 17592186110755 | Using the Pythagorean Identity in the First Quadrant | Computing a Trigonometric Ratio Using the Pythagorean Identity | 4 / 1 / 0 / 2 | queued | — |
-| 17592186110756 | Using the Pythagorean Identity in the First Quadrant | Computing a Reciprocal Ratio Using the Pythagorean Identity | 0 / 5 / 0 / 1 | queued | — |
-| 17592186110758 | Using the Pythagorean Identity in the First Quadrant | Computing a Tangent or Cotangent Using the Pythagorean Identity | 5 / 2 / 0 / 1 | queued | — |
+| [17592186068814](../../scratch/17592186068814.py) | Combining Graph Transformations of Reciprocal Functions | Graphing a Stretched Negative Reciprocal Function | 3 / 4 / 0 / 2 | working | — |
+| 17592186129197 | Computing Areas Using a Change of Variables | Finding an Area by Transforming to a Type I Region | 0 / 0 / 6 / 1 | working | — |
+| 17592186129261 | Computing Areas Using a Change of Variables | Mapping an Area to a Rectangular Region: Transformations Given | 1 / 1 / 0 / 2 | working | — |
+| 17592186129262 | Computing Areas Using a Change of Variables | Mapping an Area to a Rectangular Region: Transformations Not Given | 0 / 3 / 2 / 1 | working | — |
+| [17592186059668](../../scratch/17592186059668.py) | Finding Points on Transformed Curves | Finding a Point That Lies on a Transformed Curve | 6 / 3 / 0 / 0 | queued | — |
+| [17592186059669](../../scratch/17592186059669.py) | Finding Points on Transformed Curves | Finding a Point That Lies on a Transformed Curve Given Another Transformed Curve | 0 / 8 / 3 / 2 | queued | — |
+| [17592186059670](../../scratch/17592186059670.py) | Finding Points on Transformed Curves | Identifying Extrema on Transformed Curves | 6 / 6 / 0 / 0 | queued | — |
+| [17592186110754](../../scratch/17592186110754.py) | Using the Pythagorean Identity in the First Quadrant | Using the Pythagorean Theorem on the Unit Circle | 5 / 0 / 0 / 2 | queued | — |
+| [17592186110755](../../scratch/17592186110755.py) | Using the Pythagorean Identity in the First Quadrant | Computing a Trigonometric Ratio Using the Pythagorean Identity | 4 / 1 / 0 / 2 | queued | — |
+| [17592186110756](../../scratch/17592186110756.py) | Using the Pythagorean Identity in the First Quadrant | Computing a Reciprocal Ratio Using the Pythagorean Identity | 0 / 5 / 0 / 1 | queued | — |
+| [17592186110758](../../scratch/17592186110758.py) | Using the Pythagorean Identity in the First Quadrant | Computing a Tangent or Cotangent Using the Pythagorean Identity | 5 / 2 / 0 / 1 | queued | — |
 | 17592186087742 | Parametric Equations of Circles | Finding the Parametric Equations of a Circle Centered at the Origin | 5 / 5 / 0 / 2 | queued | — |
 | 17592186087743 | Parametric Equations of Circles | Finding the Parametric Equations of a Circle Centered at a General Point | 5 / 7 / 0 / 1 | queued | — |
 | 17592186087786 | Parametric Equations of Circles | Finding the Cartesian Equation of a Parametrized Circle | 0 / 4 / 11 / 1 | queued | — |
-| 17592186054803 | Factoring Quartic Polynomials Using the Factor Theorem | Factoring a Quartic Polynomial Given Two Factors | 3 / 2 / 0 / 3 | queued | — |
+| [17592186054803](../../scratch/17592186054803.py) | Factoring Quartic Polynomials Using the Factor Theorem | Factoring a Quartic Polynomial Given Two Factors | 3 / 2 / 0 / 3 | queued | — |
 | 17592186054804 | Factoring Quartic Polynomials Using the Factor Theorem | Factoring a Quartic Polynomial Given Two Roots | 3 / 1 / 1 / 2 | queued | — |
 | 17592186054805 | Factoring Quartic Polynomials Using the Factor Theorem | Factoring a Quartic Polynomial With Only Two Real Factors | 1 / 4 / 1 / 2 | queued | — |
 | [17592186054676](../../scratch/17592186054676.py) | Graphing Linear Equations | Identifying Points That Lie on a Line | 0 / 0 / 0 / 2 | queued | — |

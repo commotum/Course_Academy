@@ -31,3 +31,12 @@ Authored easy supplies the two constant cross partials for a field with simple h
 Moderate normal sampling serves all eleven observed families, including the independently contextualized three-blank continuation. A positive common amplitude 1..5 scales the entire field and complete source stage expressions; radius1..8 varies meaningful geometry. The square-root family restricts radius1..4 so y+5 stays positive on a neighborhood of the closed sector. Existing source coefficients, signs, trig cancellations and stage structures stay intact; these are unordered variants at the same workload.
 
 Authored hard uses P=a y³+xy²−y cos x and Q=a x³+2x²y+cxy−sin x, a1..4,c1..3. Each cross partial has two polynomial contributions plus a shared trig contribution, which cancels after subtraction. The result retains four nonzero Cartesian monomial contributions before polar substitution (x²,y²,xy,y). It uses the same differentiation/subtraction/substitution/Jacobian method with more substantive components, no new theorem or evaluation. Radius2..6 and quadrant I keep diagram reading comparable. The public easy parameters are radius,a,b; hard parameters are radius,a,c. No incidental unused coefficient slots are admitted.
+
+## Current inventory capture, basis 2272
+
+The current owning KP has 13 practice sources, all moderate. The earlier 11-source capture remains in source.json; source-current.json adds two complete current records. Both new families have one math-radio field, five choices, and moderate diagram requirements. There are 12 radio templates plus one three-blank continuation.
+
+- q-126677, linear_log: P=y²−ln(1+cos²x), Q=x²+3xy; curl 2x+y. Radius 2, quadrant II [π/2,π]. The derivative of the x-only logarithm is not required.
+- q-126707, cubic_log: P=y+(2/3)y³, Q=ln(y²+10)+2x; curl 1−2y². Radius 9, angles [0,3π/2]. The y-only logarithm is held constant for ∂Q/∂x. The final Cartesian row mistakenly says 1−3y²; generated normal solutions use 1−2y². The raw source is retained unchanged.
+
+Neither adds a level, operation, answer shape or reasoning stage. They remain separate because their polynomial supplied fields, derivative/subtraction stages and banks differ. The logarithms are smooth on the entire region. Authored easy and hard retain the previous workload rationale. Difficulty labels are authored judgments, not empirical learner calibration.

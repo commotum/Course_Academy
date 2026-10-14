@@ -4,7 +4,7 @@
 Public raw_<source> profiles parameterize the complete observed prompt, two-stage
 solution and every image-bank recipe. Original parameters retain native rasters;
 changed parameters render the same recipes. raw_q-99064 preserves absent correct
-ref and is evidence-only. Default complete method banks are selected before
+ref; it and the opaque doubled-scale raw_q-113324 bank are evidence-only. Default complete method banks are selected before
 parameters. Explicit inputs obey the identical workload and visibility bounds.
 No negative-reciprocal prompt, translations, unknown-coefficient or DB operations.
 """
@@ -161,7 +161,15 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  field={':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices}
  if not(raw and sid=='q-99064'):field[':answer-field/correct']=[':answer/id',correctid]
  q={':question/id':qid,':question/problem':prompt,':question/worked-solution':sol,':question/difficulty':':question.difficulty/'+level,':question/answer-fields':[field]}
- return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'template':actual_template,'bank_profile':profile,'parameters':p,'seed':seed,'source':{k:SOURCE[k] for k in ('database','basis','lineage')},'raw_replay':raw,'evidence_only':raw and sid=='q-99064','eligible_for_learning':not(raw and sid=='q-99064'),'mathematical_fingerprint':fp,'content_fingerprint':identity,'plot_coefficients':{image:str(v) for image,v in zip(bank,vs)},'mark_x':2 if level=='hard' else 1,'correct_plot':bank[ci],'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':matplotlib.__version__}}
+ # Raw q-99064 has two captured selection widgets: the older bank lacks a
+ # designation, while the later identical bank has one. Preserve both in
+ # evidence replay; normal output uses one complete authoritative widget.
+ if raw and sid=='q-99064':
+  duplicate={':answer-field/id':ident(identity+':legacy-complete'),':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio'}
+  duplicate[':answer-field/choices']=[{':answer/id':ident(identity+':legacy-complete:'+v),':answer/type':':answer.type/image',':answer/value':v} for v in bank]
+  duplicate[':answer-field/correct']=[':answer/id',duplicate[':answer-field/choices'][ci][':answer/id']]
+  rng.shuffle(duplicate[':answer-field/choices']);q[':question/answer-fields'].append(duplicate)
+ return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'template':actual_template,'bank_profile':profile,'parameters':p,'seed':seed,'source':{k:SOURCE[k] for k in ('database','basis','lineage')},'raw_replay':raw,'evidence_only':raw and sid in ('q-99064','q-113324'),'eligible_for_learning':not(raw and sid in ('q-99064','q-113324')),'mathematical_fingerprint':fp,'content_fingerprint':identity,'plot_coefficients':{image:str(v) for image,v in zip(bank,vs)},'mark_x':2 if level=='hard' else 1,'correct_plot':bank[ci],'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':matplotlib.__version__}}
 
 # EASY: positive integer stretch or unit-numerator contraction; direct x=1 marks.
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('easy',seed,template,field_type,parameters,profile)
@@ -172,10 +180,13 @@ def generate_moderate(seed=0,template=None,field_type=None,parameters=None,profi
 def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('hard',seed,template,field_type,parameters,profile)
 
 def markdown(r):
- q=r['question'];f=q[':question/answer-fields'][0];correct=f.get(':answer-field/correct',[None,None])[1]
+ q=r['question']
  lines=[q[':question/problem'],'']
- for i,a in enumerate(f[':answer-field/choices']):lines+=['**'+chr(65+i)+'**'+(' (correct)' if a[':answer/id']==correct else ''),'![]('+a[':answer/value']+')','']
- if correct is None:lines+=['Raw evidence: source correct designation absent.','']
+ for index,f in enumerate(q[':question/answer-fields']):
+  correct=f.get(':answer-field/correct',[None,None])[1]
+  if len(q[':question/answer-fields'])>1:lines+=['**Captured widget '+str(index+1)+' (raw evidence)**','']
+  for i,a in enumerate(f[':answer-field/choices']):lines+=['**'+chr(65+i)+'**'+(' (correct)' if a[':answer/id']==correct else ''),'![]('+a[':answer/value']+')','']
+  if correct is None:lines+=['Raw evidence: source correct designation absent.','']
  lines+=[q[':question/worked-solution']]
  return '\n'.join(lines)
 
