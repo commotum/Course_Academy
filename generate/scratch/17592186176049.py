@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
-"""Tangent properties; basis 1356. No EDB access or writes.
+"""Tangent properties: current three-field checkbox format, finite catalogs.
 
-All levels retain the observed three-statement, five-choice radio layout. Easy
-and moderate are explicitly authored, see classification.md for workload bounds.
-Hard default sampling covers every observed family and a labeled two-identity
-extension. Source replay profiles use complete component masks and preserve
-absent attributes. The unrated/incomplete raw profile is evidence-only; completion is
-an authored hard assignment. The unchanged standard tangent graph is rendered
-once with Matplotlib for normal output. Raw replay retains original asset paths.
-Finite categorical variety is enumerated, not inflated by variable aliases.
+Historical source evidence is preserved at basis 1356. Current source replay
+uses migrated Boolean fields at basis 2242. Easy/moderate workload assignments
+are authored; hard retains observed families and a two-identity extension.
+Only normal supported records are eligible for replenishment. This script
+performs no database reads or writes; scoped commit logic is in replenish.py.
 """
 from __future__ import annotations
 import argparse, hashlib, itertools, json, random, sys, uuid
@@ -18,7 +15,7 @@ import sympy as sp
 KP_ID=17592186176049
 KP_UUID='4241c7bd-4a2b-556f-be9f-8a884addebb9'
 TITLE='Describing Properties of the Tangent Function'
-VERSION='tangent-properties-1'
+VERSION='tangent-properties-2-checkbox'
 ROOT=Path(__file__).with_suffix('')
 SOURCE=json.loads((ROOT/'source.json').read_text())
 QUESTIONS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
@@ -241,7 +238,7 @@ def source_parameters(name,rng):
 # HARD: observed three-property classifications and one/two explicit periodic
 # identities. Defaults serve all six source-shaped families, including the
 # completed unrated family. No numeric tangent-value evaluation (sibling KP).
-def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+def generate_legacy(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
     if level not in ['easy','moderate','hard']:raise ValueError('Unknown difficulty')
     if field_type not in [None,'radio',':answer-field.type/radio']:raise ValueError('Only radio is supported')
     rng=random.Random(seed)
@@ -296,12 +293,58 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         'domain':'Untransformed tangent; n is an integer. Equalities hold on their common domain.',
         'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__}}}
 
+def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+    """Current three-field checkbox format; legacy radio profiles are evidence only."""
+    if profile and profile.startswith('observed:'):
+        return generate_legacy(level,seed,template,field_type,parameters,profile)
+    if field_type not in [None,'checkbox',':answer-field.type/checkbox']:
+        raise ValueError('Current format requires three Boolean checkbox fields')
+    current_replay=bool(profile and profile.startswith('current:'))
+    if current_replay:
+        template=profile.split(':',1)[1]
+        base=generate_legacy(level,seed,template,parameters=parameters,profile='observed:'+template)
+    else:
+        base=generate_legacy(level,seed,template,parameters=parameters,profile=profile)
+    q=base['question'];meta=base['generation'];rows=[]
+    import re
+    for line in q[':question/problem'].splitlines():
+        match=re.match(r'^(?:- |[123]\. |I{1,3}\. )(.*)$',line)
+        if match:rows.append(match[1])
+    if len(rows)!=3:raise ValueError('Three claims required')
+    header=q[':question/problem'].split('\n\n',1)[0]
+    # Current source migration puts the common-domain convention after the claims.
+    convention='\n\nIn tangent equalities, consider values of $x$ where both sides are defined.' if 'In tangent equalities' in q[':question/problem'] else ''
+    separator='\n\n' if meta['template'] in ('domain_zero_range','asym_identity_range') else '\n'
+    q[':question/problem']=header+'\n\nSelect all that apply.\n\n'+separator.join('- **'+ROMAN[i]+'.** '+row for i,row in enumerate(rows))+convention
+    radio=q[':question/answer-fields'][0]
+    if current_replay:
+        current=json.loads((ROOT/'current-source.json').read_text())['record']
+        source=next(z for z in current[':knowledge-point/questions'] if z[':question/math-academy-id']==OBSERVED[template][0])
+        truths=[next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][':answer/id'])=='true' for f in sorted(source[':question/answer-fields'],key=lambda f:ROMAN.index(f[':answer-field/key']))]
+        if template=='asym_range_domain':q[':question/worked-solution']=source[':question/worked-solution']
+        if ':question/difficulty' not in source:q.pop(':question/difficulty',None)
+        meta['profile']='current:'+template
+        meta['evidence_only']=':question/difficulty' not in source
+        meta['eligible_for_learning']=not meta['evidence_only']
+    else:
+        correct=next(a[':answer/value'] for a in radio[':answer-field/choices'] if a[':answer/id']==radio[':answer-field/correct'][1])
+        truths=[name in re.findall(r'\bI{1,3}\b',correct) for name in ROMAN]
+    identity=digest({'version':VERSION,'question':q[':question/problem'],'solution':q.get(':question/worked-solution'),'level':q.get(':question/difficulty'),'truth':truths,'field_type':'checkbox'})
+    q[':question/id']=uid(identity);fields=[]
+    for name,t in zip(ROMAN,truths):
+        field_id=uid(identity+':'+name)
+        answers=[{':answer/id':uid(field_id+':'+value),':answer/type':':answer.type/text',':answer/value':value} for value in ['false','true']]
+        fields.append({':answer-field/id':field_id,':answer-field/key':name,':answer-field/type':':answer-field.type/checkbox',':answer-field/choices':answers,':answer-field/correct':[':answer/id',next(a[':answer/id'] for a in answers if a[':answer/value']==str(t).lower())]})
+    q[':question/answer-fields']=fields;meta['content_identity']=identity;meta['truth_vector']=truths;meta['field_type']='checkbox'
+    meta['current_source_basis']=json.loads((ROOT/'current-source.json').read_text())['basis']
+    return base
+
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
 def generate_moderate(seed=0,**kwargs):return generate('moderate',seed,**kwargs)
 def generate_hard(seed=0,**kwargs):return generate('hard',seed,**kwargs)
 def markdown(rec):
     q=rec['question'];f=q[':question/answer-fields'][0]
-    return q[':question/problem']+'\n\n'+'\n'.join('- '+a[':answer/value'] for a in f[':answer-field/choices'])+'\n\n'+q.get(':question/worked-solution','[Source worked solution absent.]')
+    return q[':question/problem']+'\n\n'+q.get(':question/worked-solution','[Source worked solution absent.]')
 if __name__=='__main__':
     a=argparse.ArgumentParser();a.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');a.add_argument('--seed',type=int,default=0);a.add_argument('--count',type=int,default=1);a.add_argument('--format',choices=['markdown','json'],default='markdown');a.add_argument('--template');a.add_argument('--profile');args=a.parse_args()
     levels=['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]

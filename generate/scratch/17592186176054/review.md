@@ -1,6 +1,6 @@
 # Cosecant periodicity — original and generated review
 
-math basis 1356. Raw records are evidence-only; original omissions and references are retained. Normal banks are authored method-operation banks. Hard is an authored same-skill workload claim. All displayed banks below are complete.
+math basis 1356. Raw records are evidence-only; original omissions and references are retained. Normal banks are authored method-operation banks. Hard is unsupported and excluded from learner generation. All displayed banks below are complete.
 
 ## q-66472 — ORIGINAL, public raw replay
 
@@ -1042,90 +1042,6 @@ $$
 6\operatorname{csc}⁡(x+2\pi )-2=6\sqrt{5}-2.
 $$
 
-## AUTHORED hard two-reduction variant 1
-
-Template `two_terms`; profile `operations`; evidence-only `False`.
-
-If $\operatorname{csc}⁡x=\frac{11}{3},$ then what is $-\frac{1}{4}\operatorname{csc}⁡(x+16\pi )-1+\frac{4}{5}\operatorname{csc}⁡(x+10\pi )?$
-
-Complete choice bank:
-
-- $\frac{29}{15}$
-- $-\frac{23}{12}$
-- $-\frac{97}{20}$
-- $\frac{181}{60}$
-- $\frac{61}{60}$ — correct
-
-The period of $y=\operatorname{csc}⁡x$ is $2\pi .$ Therefore, for integer $n$ we have
-
-$$
-\operatorname{csc}⁡x=\operatorname{csc}⁡(x+2n\pi ).
-$$
-
-Substituting $n=8$ into the right-hand-side of the above gives
-
-$$
-\begin{aligned}\operatorname{csc}⁡x=\operatorname{csc}⁡(x+2\cdot 8\cdot \pi )=\operatorname{csc}⁡(x+16\pi ).\end{aligned}
-$$
-
-Therefore, if $\operatorname{csc}⁡x=\frac{11}{3},$ then $\operatorname{csc}⁡(x+16\pi )=\frac{11}{3}.$
-
-Substituting $n=5$ into the right-hand-side of the above gives
-
-$$
-\begin{aligned}\operatorname{csc}⁡x=\operatorname{csc}⁡(x+2\cdot 5\cdot \pi )=\operatorname{csc}⁡(x+10\pi ).\end{aligned}
-$$
-
-Therefore, if $\operatorname{csc}⁡x=\frac{11}{3},$ then $\operatorname{csc}⁡(x+10\pi )=\frac{11}{3}.$
-
-Finally, then
-
-$$
-\begin{aligned}-\frac{1}{4}\operatorname{csc}⁡(x+16\pi )-1+\frac{4}{5}\operatorname{csc}⁡(x+10\pi ) & =-\frac{1}{4}(\frac{11}{3})-1+\frac{4}{5}(\frac{11}{3}) \\  & =-\frac{11}{12}-1+\frac{44}{15} \\  & =\frac{61}{60}.\end{aligned}
-$$
-
-## AUTHORED hard two-reduction variant 2
-
-Template `two_terms`; profile `operations`; evidence-only `False`.
-
-If $\operatorname{csc}⁡x=\frac{5}{2},$ then what is $-\frac{2}{3}\operatorname{csc}⁡(x+14\pi )-1+\frac{1}{6}\operatorname{csc}⁡(x+10\pi )?$
-
-Complete choice bank:
-
-- $-\frac{8}{3}$
-- $-\frac{7}{12}$
-- $-\frac{9}{4}$ — correct
-- $-\frac{1}{4}$
-- $-\frac{37}{12}$
-
-The period of $y=\operatorname{csc}⁡x$ is $2\pi .$ Therefore, for integer $n$ we have
-
-$$
-\operatorname{csc}⁡x=\operatorname{csc}⁡(x+2n\pi ).
-$$
-
-Substituting $n=7$ into the right-hand-side of the above gives
-
-$$
-\begin{aligned}\operatorname{csc}⁡x=\operatorname{csc}⁡(x+2\cdot 7\cdot \pi )=\operatorname{csc}⁡(x+14\pi ).\end{aligned}
-$$
-
-Therefore, if $\operatorname{csc}⁡x=\frac{5}{2},$ then $\operatorname{csc}⁡(x+14\pi )=\frac{5}{2}.$
-
-Substituting $n=5$ into the right-hand-side of the above gives
-
-$$
-\begin{aligned}\operatorname{csc}⁡x=\operatorname{csc}⁡(x+2\cdot 5\cdot \pi )=\operatorname{csc}⁡(x+10\pi ).\end{aligned}
-$$
-
-Therefore, if $\operatorname{csc}⁡x=\frac{5}{2},$ then $\operatorname{csc}⁡(x+10\pi )=\frac{5}{2}.$
-
-Finally, then
-
-$$
-\begin{aligned}-\frac{2}{3}\operatorname{csc}⁡(x+14\pi )-1+\frac{1}{6}\operatorname{csc}⁡(x+10\pi ) & =-\frac{2}{3}(\frac{5}{2})-1+\frac{1}{6}(\frac{5}{2}) \\  & =-\frac{5}{3}-1+\frac{5}{12} \\  & =-\frac{9}{4}.\end{aligned}
-$$
-
 ## Review limits
 
-Seven exact raw question records and all 35 choices are reproduced. Five original correct designations and five original solutions exist and match; the two omitted designations/solutions cannot count as observed fidelity. All five normal source solutions retain exact source wording and stages. Historical bank error intent remains unresolved and raw profiles are ineligible for learning. There are four finite conceptual workloads; bounded numerical/domain counts are reported separately in validation.json. No plots are used.
+Seven exact raw question records and all 35 choices are reproduced. Five original correct designations and five original solutions exist and match; the two omitted designations/solutions cannot count as observed fidelity. All five normal source solutions retain exact source wording and stages. Historical bank error intent remains unresolved and raw profiles are ineligible for learning. There are three supported finite conceptual workloads; bounded numerical/domain counts are reported separately in validation.json. No plots are used.

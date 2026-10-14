@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Cosecant periodicity, math basis 1356. Local review records only; steps 3–7.
+"""Cosecant periodicity, math basis 1356. Validated scoped generator; steps 3–9.
 
 Observed source masks and all seven complete banks are public parameterized
 raw:<source-id> profiles. Opaque historical wrong-operation intent is unresolved;
 these profiles are evidence-only, never default learning banks. Normal generation
 uses separately authored complete method-derived banks and retains observed
-family prose and stages. Hard is explicitly authored: two full-period reductions
-and a signed rational linear combination, without oddness or other identities.
+family prose and stages. Hard is unsupported because the former two-term
+prototype adds solution stages not observed in this source backbone.
 
 API: generate(level, seed=0, template=None, field_type=None, parameters=None,
 profile=None); generate_easy/moderate/hard have the same optional arguments.
@@ -23,9 +23,9 @@ ROOT=Path(__file__).resolve().with_suffix('')
 SOURCE=json.loads((ROOT/'source.json').read_text())
 REC=SOURCE['record']
 SOURCES={q[':question/math-academy-id']:q for q in REC[':knowledge-point/questions']}
-VERSION='csc-periodicity-1'
+VERSION='csc-periodicity-2'
 C=r'\operatorname{csc}⁡'
-LEVELS=('easy','moderate','hard')
+LEVELS=('easy','moderate')
 ORIGINAL={
  'q-66472':dict(c='4',n=2,a='1',b='0'),
  'q-66473':dict(c='4/3',n=-1,a='1',b='0'),
@@ -41,8 +41,8 @@ FAMILY={
  'q-103822':'reciprocal_integer','q-66605':'reciprocal_fraction',
  'q-66667':'affine_radical',
 }
-TEMPLATES={**{v:k for k,v in FAMILY.items()},'two_terms':None}
-TLEVEL={f:('easy' if i<4 else 'moderate') for i,f in enumerate(FAMILY.values())}|{'two_terms':'hard'}
+TEMPLATES={v:k for k,v in FAMILY.items()}
+TLEVEL={f:('easy' if i<4 else 'moderate') for i,f in enumerate(FAMILY.values())}
 
 def tex(x):
     return sp.latex(sp.sympify(x),fold_short_frac=False).replace(' - ','-').replace(' + ','+').replace(' \\sqrt',r'\sqrt').replace('- ', '-')
@@ -289,8 +289,8 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
 # MODERATE: observed single reciprocal/radical scale plus nonzero offset.
 def generate_moderate(seed=0,**kwargs):return generate('moderate',seed,**kwargs)
-# HARD: authored two full-period reductions and opposite rational weighted terms.
-def generate_hard(seed=0,**kwargs):return generate('hard',seed,**kwargs)
+# HARD: unsupported; retained prototype helpers are unreachable from the API.
+def generate_hard(seed=0,**kwargs):raise ValueError('unsupported hard: two_terms adds unobserved solution stages')
 
 if __name__=='__main__':
     ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--difficulty',choices=(*LEVELS,'all'),default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=2);ap.add_argument('--format',choices=('markdown','json'),default='markdown');ap.add_argument('--template');ap.add_argument('--profile');args=ap.parse_args()

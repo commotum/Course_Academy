@@ -1,3 +1,10 @@
+# Current response contract
+
+At basis 2242, all six source practice questions have three checkbox fields keyed I, II, III, each with owned text values `false` and `true`. Preserve the supplied tangent claims and ordered explanation stages. The current renderer inserts `Select all that apply.` and bold Roman labels using the migrated source paragraph spacing. No subset radio distractor bank is shown in normal output. Each correct Boolean value comes from the actual statement; every true and false field response is exercised through the learner grader.
+
+The mathematical backbone, permitted parameter slots, domain conventions, and authored-level policy described below are unchanged. Historical radio profiles retain exact old banks for evidence. Current replay profiles preserve the unrated source's absent difficulty; the normal hard completion is an authored assignment and never alters that source. `current-source.json` and `source-replay-current.json` are the current evidence. Rendered-task fingerprints canonicalize algebraic expressions and complete lattices, and ignore template names, seeds, identities, aliases, statement order and choice order. Registration reuses the KP-derived stable generator UUID.
+
+
 # Template extraction
 
 ## 1. Specific original descriptions

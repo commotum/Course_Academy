@@ -190,8 +190,6 @@ def main():
             assert variant['generation']['parameters']!={k:str(v) for k,v in g.params(p).items()}
             displayed_check(variant);review.append(variant)
         variant=g.generate(level,891,template=f);displayed_check(variant);review.append(variant)
-    for seed in (29,57):
-        variant=g.generate_hard(seed);displayed_check(variant);review.append(variant)
     # Default family coverage and changed-parameter mathematics at every level.
     sample_count=0;coverage=set();tasks={level:set() for level in g.LEVELS};witnesses={level:set() for level in g.LEVELS}
     all_normal=[]
@@ -220,15 +218,9 @@ def main():
     alias=g.generate_easy(parameters=dict(p,c='8/2'),template='legacy_integer',profile='operations')
     assert alias['question'][':question/id']==a['question'][':question/id']
     assert alias['generation']['mathematical_fingerprint']==a['generation']['mathematical_fingerprint']
-    # Hard commutative term-order aliases share tasks, while each full displayed
-    # bank/prompt/solution keeps its own identity.
-    hard=g.generate_hard(912,parameters=dict(c='sqrt(2)',a='1/2',d='-1/3',b='2',n=1,m=2))
-    hp=dict(hard['generation']['parameters'])
-    hp['a'],hp['d']=hp['d'],hp['a'];hp['n'],hp['m']=hp['m'],hp['n']
-    swapped=g.generate_hard(11,parameters=hp)
-    assert swapped['generation']['mathematical_fingerprint']==hard['generation']['mathematical_fingerprint']
-    assert swapped['question'][':question/id']!=hard['question'][':question/id']
-    displayed_check(swapped)
+    try:g.generate_hard(912)
+    except ValueError:pass
+    else:raise AssertionError('unsupported hard generated content')
     first_positions={next(i for i,a in enumerate(r['question'][':question/answer-fields'][0][':answer-field/choices']) if a[':answer/id']==r['question'][':question/answer-fields'][0][':answer-field/correct'][1]) for r in all_normal}
     assert first_positions==set(range(5))
     invalid=[('easy','legacy_integer',dict(c='1/2',a='1',b='0',n=2)),('easy','scaled_integer',dict(c='2',a='2',b='0',n=2)),('moderate','reciprocal_fraction',dict(c='4',a='1/2',b='2',n=1)),('moderate','reciprocal_integer',dict(c='3',a='1/2',b='2',n=1)),('moderate','affine_radical',dict(c='sqrt(2)',a='1',b='-1',n=1)),('hard','two_terms',dict(c='4',a='1/2',d='-1/2',b='2',n=1,m=2)),('hard','two_terms',dict(c='4',a='1',d='-1/3',b='2',n=1,m=2)),('easy','legacy_integer',dict(c='4',a='1',b='0',n='1/2'))]
@@ -250,13 +242,13 @@ def main():
     # Real application grading all five owned choices for every native-eligible review
     # plus sample banks. Source omissions remain omissions; no invented designation.
     fixtures=[]
-    for i,r in enumerate(review+all_normal[:12]+all_normal[80:92]+all_normal[160:172]):
+    for i,r in enumerate(review+all_normal[:12]+all_normal[80:92]):
         if ':answer-field/correct' not in r['question'][':question/answer-fields'][0]:continue
         native=native_record(r);f=native['question'][':question/answer-fields'][0];cid=f[':answer-field/correct'][1]
         fixtures.append({'label':str(i)+':'+r['generation']['template'],'record':native,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==cid else 'rejected','purpose':'all original/authored owned bank choices'} for a in f[':answer-field/choices']]})
     # Meaningful typed equivalents through a private blank fixture, not a change to
     # observed radio shape: unsimplified substitution product/sum plus wrong sign.
-    for f in ('scaled_integer','reciprocal_integer','affine_radical','two_terms'):
+    for f in ('scaled_integer','reciprocal_integer','affine_radical'):
         r=g.generate(g.TLEVEL[f],703,template=f);native=native_record(r);field=native['question'][':question/answer-fields'][0]
         field[':answer-field/type']=':answer-field.type/blank';native['question'][':question/problem']+='\n\n{{selection}}'
         p=g.params(r['generation']['parameters']);equivalent='('+str(p['a'])+')*('+str(p['c'])+')+('+str(p['b'])+')'
@@ -281,9 +273,9 @@ def main():
     finite={'direct':len(rational)+6,'scaled_integer':sum(len({F(a*c),F(c),F(a+c),F(a,c)})==4 for c in range(2,13) for a in range(2,9)),
       'reciprocal_integer':sum(c%d==0 and b not in (F(c,d),2*F(c,d)) for c in range(2,13) for d in range(2,7) for b in range(1,9)),
       'reciprocal_fraction':sum(c%d!=0 and b not in (F(c,d),2*F(c,d)) for c in range(2,13) for d in range(2,7) for b in range(1,9)),
-      'affine_radical':6*7*6,'hard_two_terms':hard}
-    assert finite=={'direct':38,'scaled_integer':75,'reciprocal_integer':104,'reciprocal_fraction':296,'affine_radical':252,'hard_two_terms':108240}
-    write('validation.json',{'passed':True,'source':{k:g.SOURCE[k] for k in ('database','basis','lineage')},'raw_exact_questions':7,'complete_banks':7,'matched_source_choices':35,'total_source_choices':35,'matched_correct_designations':5,'total_present_correct_designations':5,'missing_source_correct_designations':2,'raw_exact_solutions':5,'total_present_source_solutions':5,'normal_exact_solutions_at_source_parameters':5,'normal_exact_prompts':7,'source_checks':source_rows,'normal_math_samples':sample_count,'default_family_coverage':sorted(coverage),'conceptual_workloads':4,'finite_numeric_task_domains':finite,'deduplicated_sample_tasks':{k:len(v) for k,v in tasks.items()},'numerical_presentation_witnesses':{k:len(v) for k,v in witnesses.items()},'finite_limits':'Four conceptual workloads (direct, one product, affine, two reductions); bank/family notation and full-period shifts are excluded from task counts. Numerical samples are bounded witnesses, not proof of unlimited conceptual variety.','explicit_rejection_checks':len(invalid),'mutation_checks':5,'native_accepted':native['accepted_checks'],'native_rejected':native['rejected_checks'],'native_unresolved':native['documented_unresolved_checks'],'engine_sha256':hashlib.sha256((WORK/'generate/runs/current/check-engine').read_bytes()).hexdigest(),'python':sys.version.split()[0],'sympy':sp.__version__,'plots':'none; no original assessed assets','unresolved':['Historical wrong-operation intent is underdetermined for several banks; all raw profiles evidence-only.','Two unrated originals lack correct designation/solution; normal designation and easy workload assignment are independently authored.','Hard has no observed examples; two-reduction workload is an authored same-skill design claim.']})
-    print('PASS: 7/7 exact raw sources, 35/35 source choices, 5/5 normal source solutions; 240 math variants and native grading.')
+      'affine_radical':6*7*6,'unsupported_hard_prototype':hard}
+    assert finite=={'direct':38,'scaled_integer':75,'reciprocal_integer':104,'reciprocal_fraction':296,'affine_radical':252,'unsupported_hard_prototype':108240}
+    write('validation.json',{'passed':True,'source':{k:g.SOURCE[k] for k in ('database','basis','lineage')},'raw_exact_questions':7,'complete_banks':7,'matched_source_choices':35,'total_source_choices':35,'matched_correct_designations':5,'total_present_correct_designations':5,'missing_source_correct_designations':2,'raw_exact_solutions':5,'total_present_source_solutions':5,'normal_exact_solutions_at_source_parameters':5,'normal_exact_prompts':7,'source_checks':source_rows,'normal_math_samples':sample_count,'supported_levels':list(g.LEVELS),'unsupported_levels':['hard'],'default_family_coverage':sorted(coverage),'conceptual_workloads':3,'finite_numeric_task_domains':finite,'deduplicated_sample_tasks':{k:len(v) for k,v in tasks.items()},'numerical_presentation_witnesses':{k:len(v) for k,v in witnesses.items()},'finite_limits':'Three supported conceptual workloads (direct, one product, affine); the hard prototype is unsupported and excluded. Bank/family notation and full-period shifts are excluded from task counts. Numerical samples are bounded witnesses, not proof of unlimited conceptual variety.','explicit_rejection_checks':len(invalid),'mutation_checks':5,'native_accepted':native['accepted_checks'],'native_rejected':native['rejected_checks'],'native_unresolved':native['documented_unresolved_checks'],'engine_sha256':hashlib.sha256((WORK/'generate/runs/current/check-engine').read_bytes()).hexdigest(),'python':sys.version.split()[0],'sympy':sp.__version__,'plots':'none; no original assessed assets','unresolved':['Historical wrong-operation intent is underdetermined for several banks; all raw profiles evidence-only.','Two unrated originals lack correct designation/solution; normal designation and easy workload assignment are independently authored.','Hard unsupported: two reductions add unobserved solution stages; no hard output is eligible.']})
+    print('PASS: 7/7 exact raw sources, 35/35 source choices, 5/5 normal source solutions; 160 supported math variants and native grading.')
 
 if __name__=='__main__':main()

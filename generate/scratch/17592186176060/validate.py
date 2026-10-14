@@ -165,6 +165,8 @@ def main():
  stats['native_engine_sha256']=hashlib.sha256(engine.read_bytes()).hexdigest();stats['native_exit_code']=result.returncode
  stats['limitations']=['Two raw captures lack observed correct refs/difficulty/solution; inferred normal answers are not observed designations.','Hard historical numeric banks and rational subtract-unit bank have unresolved error intent and remain evidence-only.','Radio fields have no typed equivalent-entry interface; blank equivalents are inapplicable.','Whole-period shifts and variable-letter aliases are excluded from mathematical variety counts.']
  stats['passed']=True
+ stats['generator_sha256']=hashlib.sha256(P.with_suffix('.py').read_bytes()).hexdigest()
+ stats['validator_sha256']=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
  (P/'validation.json').write_text(json.dumps(stats,indent=2));(P/'review.json').write_text(json.dumps({'originals':originals,'generated':review},ensure_ascii=False,indent=2))
  lines=['# Cosecant oddness review','Original raw evidence retains missing attributes. Generated evidence profiles are not eligible for learning. Normal variants retain source-shaped solutions with authored method banks.']
  for entry in originals:

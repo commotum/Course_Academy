@@ -1,3 +1,10 @@
+# Current classification at basis 2242
+
+The current source read (`current-source.json`) shows all six practice questions migrated to three Boolean checkbox fields, keyed I, II, III. Each field owns the complete text bank `false`, `true`; its key matches the independently computed claim truth. Five sources remain hard. q-27660 has its migrated Boolean keys and a concise worked solution but remains unrated, so it does not count as available practice. The canonical example remains unchanged. The migration changes the response contract, not the six mathematical templates or their slot roles.
+
+Version `tangent-properties-2-checkbox` emits this current field layout at each supported level. Current-source replay verifies all six prompts and solutions, all 18 field banks and keys, and rating presence. Historical radio evidence below remains available for provenance; legacy radio profiles are not replenishment output. Easy and moderate are authored curriculum-based difficulty assignments. Hard includes observed families and the documented two-identity extension. All changed questions use a fixed tangent graph; plot requirement remains none.
+
+
 # Classification
 
 Captured database `math`, basis **1356**, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. `source.json` retains the full wrapper and record. Six practice questions were inspected; the canonical example is curricular evidence, not a seventh practice question.
