@@ -1,0 +1,13 @@
+# Classification
+
+Frozen database `math`, basis 1356, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`; source wrapper retained unchanged in source.json.
+
+Nine practice questions: easy 3, moderate 4, hard 0, unrated 2. Every question has one `selection` radio field containing five image answers; no feedback attributes. Seven have worked solutions and correct designations. Both unrated questions omit difficulty, solution and correct ref. These omissions are preserved through public raw replay, including changed parameters. Unrated q-97963 gets an authored easy routing level; q-97958 an authored moderate routing level; these labels occur only in generation metadata for raw evidence.
+
+Observed easy families: negative integer stretch and negative unit-numerator contraction. Moderate: negative reduced nonunit numerator/denominator. One shared mathematical prompt/solution backbone with three parameter-form families and nine complete source bank profiles. Plot rating **heavy** at every level: all five answers are plots, plus base and final solution plots where present.
+
+Canonical e-8761 gives negative 1/(5x), base -1/x and positive vertical factor 1/5. The linked lesson route is Introduction → Applying a Stretch With a Scale Factor Less Than One → positive reciprocal KP68813 → Applying a Stretch to a Negative Reciprocal Curve → this KP68814 → translated reciprocal KP68779 → unknown-solving KP68780. This order comes from first-step/next IDs (69694, 69743, 69742, 69744, 69745, 69698, 69699), not collection order. Prerequisites are Vertical Reflections and Combining Graph Transformations: Two Operations.
+
+Authored hard stays at the same negative-reciprocal graph selection and the same two solution stages: reduced rational coefficients with denominator 6–12, numerator 2–24 and coefficient 1/3–4, marked points at x=±2. Compared with moderate denominator 2–5 at x=±1, hard requires reading a nonunit coordinate and comparing its scaled ordinate using one extra division by 2. This is a conservative design claim, not a recovered difficulty label. It introduces no translations, asymptote shifts, general transformed functions, unknown-solving, or positive target curves. Positive reciprocal curves remain sign-error distractors.
+
+Normal defaults choose each complete eligible method bank before choosing parameters, covering both easy families and all three moderate error profiles. The opaque extra doubled coefficient in q-99068 is retained only in its explicitly evidence-only raw profile. Two missing-designation sources are also evidence-only, with independently completed normal records reviewed separately.

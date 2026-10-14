@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-105280",
+      "sequence_position": 11,
+      "problem": "Find and categorize all the local extrema of the function \n$f(x,y)$ \ngiven that\n\n$$\n{f}^{′}(x,y)=[\\begin{aligned}{e}^{x}({x}^{2}+2x-{y}^{2}) & -2y{e}^{x}\\end{aligned}].\n$$",
+      "worked_solution": "The local extrema of $f$ occur at its critical points. A point $a$ in the domain of $f$ is a critical point of $f$ if ${f}^{′}(a)={0}^{T}$ (for stationary points) or ${f}^{′}(a)$ doesn't exist.\n\nThe second partial derivative test states that if $a\\in {R}^{2}$ is a stationary point of $f(x,y)$ with Hessian determinant $H(a),$ we have the following:\n\n- If $H(a)>0,$ then:\n\n- if $\\frac{{∂}^{2}f}{∂{x}^{2}}(a)<0,$ then $f$ has a local maximum at $a$\n\n- if $\\frac{{∂}^{2}f}{∂{x}^{2}}(a)>0,$ then $f$ has a local minimum at $a$\n\n- If $H(a)<0,$ then $f$ has a saddle point at $a$\n\n- If $H(a)=0,$ then the second partial derivatives test is inconclusive.\n\nFirst, notice that since ${f}^{′}(x,y)=[\\begin{aligned}{e}^{x}({x}^{2}+2x-{y}^{2}) & -2y{e}^{x}\\end{aligned}],$ we must have\n\n$$\n\\frac{∂f}{∂x}={e}^{x}({x}^{2}+2x-{y}^{2}),\\,\\frac{∂f}{∂y}=-2y{e}^{x}.\n$$\n\nThe first derivative exists for any $(x,y)$ in the domain of the function, so we only need to find the stationary points. Setting ${f}^{′}(x,y)={0}^{T},$ we obtain the following system:\n\n$$\n\\{\\begin{aligned}{e}^{x}({x}^{2}+2x-{y}^{2})=0 \\\\ -2y{e}^{x}=0\\end{aligned}\n$$\n\nSolving the second equation for $y,$ we get\n\n$$\n-2y{e}^{x}=0\\,⟹\\,y=0.\n$$\n\nThen, substituting this into the first equation, we get\n\n$$\n\\begin{aligned}{e}^{x}({x}^{2}+2x-{y}^{2}) & =0 \\\\ {e}^{x}({x}^{2}+2x-{0}^{2}) & =0 \\\\ {e}^{x}({x}^{2}+2x) & =0 \\\\ {x}^{2}+2x & =0 \\\\ x(x+2) & =0 \\\\ x & =-2,0.\\end{aligned}\n$$\n\nHence, $(0,0)$ and $(-2,0)$ are stationary points of $f(x,y).$\n\nTo classify these stationary points, we use the second partial derivative test.\n\nFirst, we compute the second partial derivatives:\n\n$$\n\\begin{aligned}\\frac{{∂}^{2}f}{∂{x}^{2}} & =\\frac{∂}{∂x}({e}^{x}({x}^{2}+2x-{y}^{2}))={e}^{x}({x}^{2}+4x-{y}^{2}+2)\\, & \\frac{{∂}^{2}f}{∂x∂y} & =\\frac{∂}{∂x}(-2y{e}^{x})=-2y{e}^{x} \\\\ \\frac{{∂}^{2}f}{∂y∂x} & =\\frac{∂}{∂y}({e}^{x}({x}^{2}+2x-{y}^{2}))=-2y{e}^{x}\\, & \\frac{{∂}^{2}f}{∂{y}^{2}} & =\\frac{∂}{∂y}(-2y{e}^{x})=-2{e}^{x}\\end{aligned}\n$$\n\nSo, the second derivative is \n\n$$\n\\begin{aligned}{f}^{″}(x,y) & =[\\begin{aligned}\\frac{{∂}^{2}f}{∂{x}^{2}} & \\frac{{∂}^{2}f}{∂x∂y} \\\\ \\frac{{∂}^{2}f}{∂y∂x} & \\frac{{∂}^{2}f}{∂{y}^{2}}\\end{aligned}]=[\\begin{aligned}{e}^{x}({x}^{2}+4x-{y}^{2}+2) & -2y{e}^{x} \\\\ -2y{e}^{x} & -2{e}^{x}\\end{aligned}].\\end{aligned}\n$$\n\nFinally, we evaluate the second derivative at each of the stationary points and use it to categorize them:\n\n- Evaluating the second derivative at $(0,0),$ we obtain\n\n$$\n\\begin{aligned}{f}^{″}(0,0)=[\\begin{aligned}2 & 0 \\\\ 0 & -2\\end{aligned}].\\end{aligned}\n$$\n\nComputing the determinant $H(0,0),$ we get\n\n$$\nH(0,0)=det({f}^{″}(0,0))=2\\cdot (-2)-{0}^{2}=-4<0,\n$$\n\nTherefore, $f(0,0)$ is a saddle point.\n\n- Evaluating the second derivative at $(-2,0),$ we obtain\n\n$$\n\\begin{aligned}{f}^{″}(-2,0)=[\\begin{aligned}-2{e}^{-2} & 0 \\\\ 0 & -2{e}^{-2}\\end{aligned}].\\end{aligned}\n$$\n\nComputing the determinant $H(-2,0),$ we get\n\n$$\nH(-2,0)=det({f}^{″}(-2,0))=(-2{e}^{-2})^{2}-{0}^{2}=4{e}^{-4}>0\n$$\n\nFinally, since $H(-2,0)>0$ and $\\frac{{∂}^{2}f}{∂{x}^{2}}(-2,0)=({f}^{″}(-2,0))_{11}=-2{e}^{-2}<0,$ the function $f$ has a local maximum at $(-2,0).$\n\nIn conclusion, $f(x,y)$ has a saddle point at $(0,0)$ and a local maximum at $(-2,0).$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14197541/observations/history-q-105280-566b3c1370503807492e.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14197541",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14197541/observations/history-solution-q-105280-50c060a06a0a0be5c14b.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "text",
+              "value": "$f(x,y)$ has a local minimum at $(0,0)$ and a local maximum at $(-2,0)$"
+            },
+            {
+              "option": "b",
+              "type": "text",
+              "value": "$f(x,y)$ has a local minimum at $(-1,0)$ and a saddle point at $(1,0)$"
+            },
+            {
+              "option": "c",
+              "type": "text",
+              "value": "$f(x,y)$ has saddles points at $(0,0)$ and $(-2,0)$"
+            },
+            {
+              "option": "d",
+              "type": "text",
+              "value": "$f(x,y)$ has a saddle point at $(0,0)$ and a local maximum at $(-2,0)$"
+            },
+            {
+              "option": "e",
+              "type": "text",
+              "value": "$f(x,y)$ has a local minimum at $(-1,0)$ and a local maximum at $(1,0)$"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q105280",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "$f(x,y)$ has a saddle point at $(0,0)$ and a local maximum at $(-2,0)$",
+                "option": "d",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "The local extrema of $f$ occur at its critical points. A point $a$ in the domain of $f$ is a critical point of $f$ if ${f}^{′}(a)={0}^{T}$ (for stationary points) or ${f}^{′}(a)$ doesn't exist.\n\nThe second partial derivative test states that if $a\\in {R}^{2}$ is a stationary point of $f(x,y)$ with Hessian determinant $H(a),$ we have the following:\n\n- If $H(a)>0,$ then:\n\n- if $\\frac{{∂}^{2}f}{∂{x}^{2}}(a)<0,$ then $f$ has a local maximum at $a$\n\n- if $\\frac{{∂}^{2}f}{∂{x}^{2}}(a)>0,$ then $f$ has a local minimum at $a$\n\n- If $H(a)<0,$ then $f$ has a saddle point at $a$\n\n- If $H(a)=0,$ then the second partial derivatives test is inconclusive.\n\nFirst, notice that since ${f}^{′}(x,y)=[\\begin{aligned}{e}^{x}({x}^{2}+2x-{y}^{2}) & -2y{e}^{x}\\end{aligned}],$ we must have\n\n$$\n\\frac{∂f}{∂x}={e}^{x}({x}^{2}+2x-{y}^{2}),\\,\\frac{∂f}{∂y}=-2y{e}^{x}.\n$$\n\nThe first derivative exists for any $(x,y)$ in the domain of the function, so we only need to find the stationary points. Setting ${f}^{′}(x,y)={0}^{T},$ we obtain the following system:\n\n$$\n\\{\\begin{aligned}{e}^{x}({x}^{2}+2x-{y}^{2})=0 \\\\ -2y{e}^{x}=0\\end{aligned}\n$$\n\nSolving the second equation for $y,$ we get\n\n$$\n-2y{e}^{x}=0\\,⟹\\,y=0.\n$$\n\nThen, substituting this into the first equation, we get\n\n$$\n\\begin{aligned}{e}^{x}({x}^{2}+2x-{y}^{2}) & =0 \\\\ {e}^{x}({x}^{2}+2x-{0}^{2}) & =0 \\\\ {e}^{x}({x}^{2}+2x) & =0 \\\\ {x}^{2}+2x & =0 \\\\ x(x+2) & =0 \\\\ x & =-2,0.\\end{aligned}\n$$\n\nHence, $(0,0)$ and $(-2,0)$ are stationary points of $f(x,y).$\n\nTo classify these stationary points, we use the second partial derivative test.\n\nFirst, we compute the second partial derivatives:\n\n$$\n\\begin{aligned}\\frac{{∂}^{2}f}{∂{x}^{2}} & =\\frac{∂}{∂x}({e}^{x}({x}^{2}+2x-{y}^{2}))={e}^{x}({x}^{2}+4x-{y}^{2}+2)\\, & \\frac{{∂}^{2}f}{∂x∂y} & =\\frac{∂}{∂x}(-2y{e}^{x})=-2y{e}^{x} \\\\ \\frac{{∂}^{2}f}{∂y∂x} & =\\frac{∂}{∂y}({e}^{x}({x}^{2}+2x-{y}^{2}))=-2y{e}^{x}\\, & \\frac{{∂}^{2}f}{∂{y}^{2}} & =\\frac{∂}{∂y}(-2y{e}^{x})=-2{e}^{x}\\end{aligned}\n$$\n\nSo, the second derivative is \n\n$$\n\\begin{aligned}{f}^{″}(x,y) & =[\\begin{aligned}\\frac{{∂}^{2}f}{∂{x}^{2}} & \\frac{{∂}^{2}f}{∂x∂y} \\\\ \\frac{{∂}^{2}f}{∂y∂x} & \\frac{{∂}^{2}f}{∂{y}^{2}}\\end{aligned}]=[\\begin{aligned}{e}^{x}({x}^{2}+4x-{y}^{2}+2) & -2y{e}^{x} \\\\ -2y{e}^{x} & -2{e}^{x}\\end{aligned}].\\end{aligned}\n$$\n\nFinally, we evaluate the second derivative at each of the stationary points and use it to categorize them:\n\n- Evaluating the second derivative at $(0,0),$ we obtain\n\n$$\n\\begin{aligned}{f}^{″}(0,0)=[\\begin{aligned}2 & 0 \\\\ 0 & -2\\end{aligned}].\\end{aligned}\n$$\n\nComputing the determinant $H(0,0),$ we get\n\n$$\nH(0,0)=det({f}^{″}(0,0))=2\\cdot (-2)-{0}^{2}=-4<0,\n$$\n\nTherefore, $f(0,0)$ is a saddle point.\n\n- Evaluating the second derivative at $(-2,0),$ we obtain\n\n$$\n\\begin{aligned}{f}^{″}(-2,0)=[\\begin{aligned}-2{e}^{-2} & 0 \\\\ 0 & -2{e}^{-2}\\end{aligned}].\\end{aligned}\n$$\n\nComputing the determinant $H(-2,0),$ we get\n\n$$\nH(-2,0)=det({f}^{″}(-2,0))=(-2{e}^{-2})^{2}-{0}^{2}=4{e}^{-4}>0\n$$\n\nFinally, since $H(-2,0)>0$ and $\\frac{{∂}^{2}f}{∂{x}^{2}}(-2,0)=({f}^{″}(-2,0))_{11}=-2{e}^{-2}<0,$ the function $f$ has a local maximum at $(-2,0).$\n\nIn conclusion, $f(x,y)$ has a saddle point at $(0,0)$ and a local maximum at $(-2,0).$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14197541/observations/step-q105280-0db80a736b6e85da58e2.html"
+        }
+      }
+    ]
+  }
+}
