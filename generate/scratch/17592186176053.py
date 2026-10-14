@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-"""Cosecant general-properties generator, steps 3–7 only, math basis 1356.
+"""Cosecant property generator refreshed against math basis 2244.
 
-Observed moderate families retain their own complete source sentences and steps.
-Unrated originals have explicit raw replay with missing attributes preserved.
-Easy and hard are authored curriculum-grounded workloads; no transformed curves,
-trig equations, derivatives, or given-value periodicity/oddness calculations.
-The graph is always the same untransformed y=csc x, so original assets are reused.
-Whole subset banks are chosen before finite mathematical parameters. See evidence.
+Normal instances use three Boolean checkbox fields, preserving current source
+prompt/solution families. All plots show unchanged untransformed y=csc x.
+Easy and hard are authored workloads documented in capabilities.json. Exact
+source replay is evidence-only and retains the malformed source delimiter.
 """
 from __future__ import annotations
 import argparse, hashlib, itertools, json, random, sys, uuid
@@ -16,9 +14,11 @@ import sympy as sp
 KP_ID=17592186176053
 ROOT=Path(__file__).with_suffix('')
 SNAPSHOT=json.loads((ROOT/'source.json').read_text())
-KP=SNAPSHOT['record']; VERSION='cosecant-properties-1'
+KP=SNAPSHOT['record']; VERSION='cosecant-properties-2-checkbox'
 SOURCES={q[':question/math-academy-id']:q for q in KP[':knowledge-point/questions']}
 NAMESPACE=uuid.UUID(KP[':knowledge-point/id'])
+GENERATOR_UUID=str(uuid.uuid5(NAMESPACE,'question-generator'))
+SUPPORTED_LEVELS=('easy','moderate','hard')
 SUBSETS=('None','I only','II only','III only','I and II only','I and III only','II and III only','I, II, and III')
 TRUTHS={'q-42912':7,'q-65310':5,'q-103811':4,'q-103814':6,'q-65307':4,'q-65308':2,'q-103812':0}
 ORIGINAL={'q-42912':{'point':1,'ordinate':-1,'range_value':2},'q-65310':{'zero':1},'q-103811':{'asymptote':9,'left':-4,'right':6},'q-103814':{'asymptote':9,'sign':1},'q-65307':{'asymptote':1},'q-65308':{'shift':2,'domain':5},'q-103812':{'domain':15}}
@@ -112,7 +112,7 @@ def authored_text(t,p):
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
     if level not in ('easy','moderate','hard'): raise ValueError('difficulty')
-    if field_type not in (None,'radio',':answer-field.type/radio'): raise ValueError('radio only')
+    if field_type not in (None,'checkbox',':answer-field.type/checkbox'): raise ValueError('checkbox only')
     r=random.Random(seed)
     # Pick a complete family/profile before its mathematical parameters.
     if profile and profile.startswith(('observed:','method:')):
@@ -122,38 +122,32 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     t=template or (r.choice(list(SOURCES)) if level=='moderate' else 'basic_properties' if level=='easy' else 'indexed_properties')
     allowed=list(SOURCES) if level=='moderate' else ['basic_properties'] if level=='easy' else ['indexed_properties']
     if t not in allowed: raise ValueError('template outside difficulty scope')
-    selected=profile or ('method:'+t if t in SOURCES else 'subset-errors')
+    selected=profile or ('method:'+t if t in SOURCES else 'boolean-properties')
     raw=selected.startswith('observed:')
-    if selected not in (['observed:'+t,'method:'+t] if t in SOURCES else ['subset-errors']): raise ValueError('profile')
-    # Authored full five-option bank: correct mask and four fixed bit-error operations.
-    # Error operations xor one bit or all bits; chosen as a whole before parameters.
+    if selected not in (['observed:'+t,'method:'+t] if t in SOURCES else ['boolean-properties']): raise ValueError('profile')
+    # Three independently owned true/false checkbox banks match the current sources.
     p=dict(parameters) if parameters is not None else sample(t,r); validate_parameters(t,p)
     prompt,solution,mask=source_text(t,p) if t in SOURCES else authored_text(t,p)
-    if t in SOURCES:
-        values=[a[':answer/value'] for a in SOURCES[t][':question/answer-fields'][0][':answer-field/choices']]
-    else: values=[subset(mask^e) for e in (0,1,2,4,7)]
-    correct=next((v for v in values if v==subset(mask) or (mask==0 and v=='None of the listed')),None)
-    if correct is None or len(set(values))!=5: raise ValueError('whole-bank rejection')
-    if not raw:
-        if t=='q-103814': prompt=prompt.replace('function. $$','function.')
-        if solution is None:
-            # Inferred missing solution, explicitly authored; no recovered wording claim.
-            if t=='q-42912':
-                rows=[f'The number ${p["point"]}\\pi$ is outside the domain, so the stated point is not on the graph.', 'The vertical asymptotes are $x=n\\pi$ for integer $n$.',f'The value ${p["range_value"]}$ lies in $(-\\infty,-1]\\cup[1,\\infty)$.']
-            else: rows=['The domain excludes exactly the integer multiples of $\\pi$.','The graph has no zeroes.','The cosecant takes the value $-1$ at $x=-\\frac{\\pi}{2}+2n\\pi$ for integer $n$.']
-            solution="Now, let's go through each statement.\n\n"+'\n\n'.join(f'- {v} Hence, statement {"I II III".split()[i]} is {str(bool(mask&(1<<i))).lower()}.' for i,v in enumerate(rows))
-    # Identity follows visible content, bank, difficulty, and presence; bank order/seed excluded.
-    rated=not(raw and ':question/difficulty' not in SOURCES[t])
-    content={'version':VERSION,'level':level if rated else None,'prompt':prompt,'solution':solution,'bank':sorted(values),'correct_presence':not raw or ':answer-field/correct' in SOURCES[t][':question/answer-fields'][0]}
-    uid=ident(digest(content)); fid=ident(uid+'/selection')
-    answers=[{':answer/id':ident(fid+'/'+v),':answer/type':':answer.type/text',':answer/value':v} for v in values]
-    field={':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers}
-    if content['correct_presence']: field[':answer-field/correct']=[':answer/id',next(a[':answer/id'] for a in answers if a[':answer/value']==correct)]
-    r.shuffle(answers)
-    question={':question/id':uid,':question/problem':prompt,':question/answer-fields':[field]}
-    if solution is not None: question[':question/worked-solution']=solution
-    if rated: question[':question/difficulty']=':question.difficulty/'+level
-    return {'knowledge_point':{'db_id':KP_ID,'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':question,'generation':{'version':VERSION,'template':t,'profile':selected,'parameters':p,'seed':seed,'source':{k:SNAPSHOT[k] for k in ('database','basis','lineage')},'truth_mask':mask,'correct_value':correct,'evidence_only':raw,'eligible_for_learning':not raw,'authorship':'observed masks' if t in SOURCES else 'authored missing-level workload','mathematical_fingerprint':digest({'level':level,'template':t,'parameters':{k:v for k,v in p.items() if not(t=='q-42912' and k=='ordinate')}}),'content_fingerprint':digest(content),'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__}}}
+    if raw:
+        # Current source replay keeps original presentation, including malformed TeX.
+        pass
+    elif t=='q-103814':
+        prompt=prompt.replace('function. $$','function.')
+    if t=='q-42912' and p!=ORIGINAL[t]:
+        solution=solution.replace('at pi and',f"at {p['point']}*pi and").replace('(pi,-1)',f"({p['point']}*pi,{p['ordinate']})").replace('value 2',f"value {p['range_value']}").replace('1/2',str(sp.Rational(1,p['range_value'])))
+    if t not in SOURCES:
+        prompt=prompt.replace('\n\nI.', '\n\nSelect all that apply.\n\n- **I.**').replace('\nII.','\n- **II.**').replace('\nIII.','\n- **III.**')
+    # Stable identities exclude seed, parameter aliases and choice ordering.
+    content={'version':VERSION,'level':level,'prompt':prompt,'solution':solution,'truth_mask':mask,'field_type':'checkbox'}
+    uid=ident(digest(content)); fields=[]
+    for i,key in enumerate(('I','II','III')):
+        fid=ident(uid+'/'+key)
+        answers=[{':answer/id':ident(fid+'/'+v),':answer/type':':answer.type/text',':answer/value':v} for v in ('false','true')]
+        correct='true' if mask&(1<<i) else 'false'
+        fields.append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/checkbox',':answer-field/choices':answers,':answer-field/correct':[':answer/id',next(a[':answer/id'] for a in answers if a[':answer/value']==correct)]})
+    correct=subset(mask)
+    question={':question/id':uid,':question/problem':prompt,':question/answer-fields':fields,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+level}
+    return {'knowledge_point':{'db_id':KP_ID,'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':question,'generation':{'version':VERSION,'template':t,'profile':selected,'parameters':p,'seed':seed,'source':{k:SNAPSHOT[k] for k in ('database','basis','lineage')},'truth_mask':mask,'correct_value':correct,'evidence_only':raw,'eligible_for_learning':not raw,'authorship':'current source masks; unrated templates assigned moderate in generated content' if t in SOURCES else 'authored missing-level workload','mathematical_fingerprint':digest({'level':level,'template':t,'parameters':{k:v for k,v in p.items() if not(t=='q-42912' and k=='ordinate')}}),'content_fingerprint':digest(content),'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__}}}
 
 # Easy: authored three direct global property recognitions, no indexed objects.
 def generate_easy(seed=0,**kw): return generate('easy',seed,**kw)
@@ -163,8 +157,8 @@ def generate_moderate(seed=0,**kw): return generate('moderate',seed,**kw)
 def generate_hard(seed=0,**kw): return generate('hard',seed,**kw)
 
 def markdown(record):
-    q=record['question']; f=q[':question/answer-fields'][0]
-    return q[':question/problem']+'\n\n'+'\n'.join('- '+a[':answer/value'] for a in f[':answer-field/choices'])+'\n\n'+q.get(':question/worked-solution','[Worked solution absent in raw source.]')
+    q=record['question']
+    return q[':question/problem']+'\n\n'+q[':question/worked-solution']
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');parser.add_argument('--seed',type=int,default=0);parser.add_argument('--count',type=int,default=1);parser.add_argument('--format',choices=['markdown','json'],default='markdown');parser.add_argument('--template');parser.add_argument('--profile');args=parser.parse_args()
     records=[generate(l,args.seed+i,template=args.template,profile=args.profile) for l in (['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]) for i in range(args.count)]
