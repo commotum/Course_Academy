@@ -6,13 +6,13 @@ The candidate at2275 reported no generator. Preserved numeric evidence establish
 
 | Original | Observed grade | Layout | Shape | Backbone | Bank |
 |---|---|---|---|---|---|
-| q-13535 | absent | one radio, correct ref absent |2x2| Q+R-(Q+P), cancel Q, R-P |5 options, opaque local cell offsets|
-| q-13536 |moderate| two duplicate-key radios, first lacks correct ref |2x2| (A+B)-C-(B-C), two cancellation pairs, A |each5 options, same complete bank|
+| q-13535 | absent | one radio, correct ref absent |2x2| Q+R-(Q+P), cancel Q, R-P |5 options, four explicit single-cell decrements|
+| q-13536 |moderate| two duplicate-key radios, first lacks correct ref |2x2| (A+B)-C-(B-C), two cancellation pairs, A |each5 options, same complete supplied/zero/symmetric-entry bank|
 | q-13550 |easy| answer fields absent |2x2| K+L-(K+J), cancel K, L-J |none captured|
 | q-13543 |easy|radio|2x2| M+O-(N+M), cancel M, O-N |5 options, four single-cell decrements|
 | q-279581 |easy|four blanks in2x2 table|2x2| A+B-(C+B), cancel B, A-C |one exact integer fragment per field|
-| q-69623 |easy|radio|2x3| G+H-(H+F), cancel H, G-F |5 matrices including permutations and compound changes|
-| q-69627 |easy|radio|3x2| C+V-(N+C), cancel C, V-N |5 matrices including supplied C and permutations|
+| q-69623 |easy|radio|2x3| G+H-(H+F), cancel H, G-F |5 matrices with recovered row/column swaps and compound entry operations|
+| q-69627 |easy|radio|3x2| C+V-(N+C), cancel C, V-N |5 matrices with supplied C, recovered row/cell swaps and mixed addition/subtraction|
 
 There are three broad instructional backbones: single cancellation with a whole-matrix radio response; the same single cancellation with four scalar blanks; and double cancellation with a whole-matrix radio response. Seven source-shaped implementation masks preserve their distinct symbolic order, matrix shape, prose, and layouts. Six complete historical radio banks include the duplicate moderate legacy occurrence; none is silently replaced in public evidence replay. Four blank banks have no distractors. Source anchors and every option/field are mapped in `source-components.json`.
 

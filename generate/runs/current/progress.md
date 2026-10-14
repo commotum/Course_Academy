@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Approved sources retain 
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 41**, **qa_passed: 322**, **queued: 214**, **working: 3**.
+**needs_revalidation: 40**, **qa_passed: 324**, **queued: 211**, **working: 5**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Existing approved work is preserved; other ready drafts await QA until these13 pass. Then finish any coverage-report KPs and the remaining script-ranked candidates.
 
@@ -66,21 +66,21 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186073777](../../scratch/17592186073777.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the Number of Intersection Points of Two Lines | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186073777.json) |
 | [17592186073778](../../scratch/17592186073778.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the General Solution to a System With Infinitely Many Intersection Points | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186073778.json) |
 | [17592186092217](../../scratch/17592186092217.py) | Converting from Polar Coordinates to Cartesian Coordinates | Finding the Cartesian Coordinates of a Point Given in Polar Coordinates | 4 / 1 / 0 / 2 | qa_passed | [Report](qa/17592186092217.json) |
-| [17592186110754](../../scratch/17592186110754-draft.py) | Using the Pythagorean Identity in the First Quadrant | Using the Pythagorean Theorem on the Unit Circle | 5 / 0 / 0 / 2 | working | — |
+| [17592186110754](../../scratch/17592186110754-draft.py) | Using the Pythagorean Identity in the First Quadrant | Using the Pythagorean Theorem on the Unit Circle | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186110754.json) |
 | [17592186110756](../../scratch/17592186110756-draft.py) | Using the Pythagorean Identity in the First Quadrant | Computing a Reciprocal Ratio Using the Pythagorean Identity | 0 / 5 / 0 / 1 | working | — |
 | [17592186176057](../../scratch/17592186176057.py) | Describing Properties of the Cosine Function | Utilizing the Evenness Property of the Cosine Function | 3 / 1 / 1 / 1 | qa_passed | [Report](qa/17592186176057.json) |
 | [17592186129268](../../scratch/17592186129268.py) | Triple Integrals in Cylindrical Polar Coordinates | Rewriting a Triple Integral Defined Over a Shifted Cylindrical Solid | 0 / 1 / 3 / 2 | qa_passed | [Report](qa/17592186129268.json) |
 | [17592186105903](../../scratch/17592186105903.py) | The Area of a General Triangle | Calculating the Area of a Triangle | 5 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186105903.json) |
 | [17592186083244](../../scratch/17592186083244.py) | Calculating Tangent and Normal Lines with Parametric Equations | Computing the Tangent Line to a Parametric Curve | 0 / 2 / 3 / 1 | qa_passed | [Report](qa/17592186083244.json) |
 | [17592186172038](../../scratch/17592186172038.py) | Slope Fields for Nonautonomous Differential Equations | Sketching the Slope Field of a Differential Equation at Some Isolated Points | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186172038.json) |
-| [17592186100992](../../scratch/17592186100992.py) | Properties of Matrix Addition | Calculating the Sum or Difference of Three or More Matrices Using Distributivity | 5 / 1 / 0 / 1 | working | — |
+| [17592186100992](../../scratch/17592186100992-draft.py) | Properties of Matrix Addition | Calculating the Sum or Difference of Three or More Matrices Using Distributivity | 5 / 1 / 0 / 1 | qa_passed | [Report](qa/17592186100992.json) |
 | [17592186087888](../../scratch/17592186087888.py) | Homogeneous First-Order ODEs | Identifying Homogeneous Differential Equations | 3 / 3 / 0 / 0 | qa_passed | [Report](qa/17592186087888.json) |
 | [17592186133827](../../scratch/17592186133827.py) | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function Using a Substitution | 0 / 4 / 1 / 1 | qa_passed | [Report](qa/17592186133827.json) |
 | [17592186133829](../../scratch/17592186133829.py) | Line Integrals of Scalar Functions | Writing the Line Integral of a Scalar Function as a Definite Integral | 1 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186133829.json) |
 | [17592186133830](../../scratch/17592186133830.py) | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function | 2 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186133830.json) |
 | [17592186162081](../../scratch/17592186162081.py) | Properties of Line Integrals of Scalar Functions | Calculating Line Integrals of Unity | 5 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186162081.json) |
 | [17592186162082](../../scratch/17592186162082.py) | Properties of Line Integrals of Scalar Functions | Calculating Line Integrals Over Piecewise-Smooth Curves | 2 / 3 / 0 / 1 | qa_passed | [Report](qa/17592186162082.json) |
-| [17592186162083](../../scratch/17592186162083.py) | Properties of Line Integrals of Scalar Functions | Applying Independence of Parametrization and Orientation | 0 / 3 / 2 / 2 | queued | — |
+| [17592186162083](../../scratch/17592186162083-draft.py) | Properties of Line Integrals of Scalar Functions | Applying Independence of Parametrization and Orientation | 0 / 3 / 2 / 2 | working | — |
 | [17592186179670](../../scratch/17592186179670.py) | Line Integrals of Scalar Functions Over Line Segments | Calculating a Line Integral Along a Segment in the Cartesian Plane | 0 / 3 / 2 / 2 | qa_passed | [Report](qa/17592186179670.json) |
 | [17592186179724](../../scratch/17592186179724.py) | Line Integrals of Scalar Functions Over Line Segments | Constructing a Line Integral Along a Segment in the Cartesian Plane | 5 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186179724.json) |
 | [17592186179725](../../scratch/17592186179725.py) | Line Integrals of Scalar Functions Over Line Segments | Line Integrals Along Segments in Three Dimensions | 2 / 1 / 2 / 2 | qa_passed | [Report](qa/17592186179725.json) |
@@ -89,12 +89,12 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186119887](../../scratch/17592186119887.py) | Areas of Parametric Surfaces | Calculating the Fundamental Vector Product of a Parametric Surface | 6 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186119887.json) |
 | [17592186175972](../../scratch/17592186175972.py) | Parametrizations of Cylinders | Parametrizing a Parabolic Cylinder | 4 / 1 / 0 / 1 | qa_passed | [Report](qa/17592186175972.json) |
 | [17592186175973](../../scratch/17592186175973.py) | Parametrizations of Cylinders | Parametrizing a Hyperbolic Cylinder | 0 / 2 / 3 / 1 | qa_passed | [Report](qa/17592186175973.json) |
-| [17592186073810](../../scratch/17592186073810.py) | The Shortest Distance Between a Point and a Line | Finding the Distance Between a Point and a Horizontal or Vertical Line | 5 / 0 / 0 / 1 | queued | — |
+| [17592186073810](../../scratch/17592186073810-draft.py) | The Shortest Distance Between a Point and a Line | Finding the Distance Between a Point and a Horizontal or Vertical Line | 5 / 0 / 0 / 1 | working | — |
 | [17592186115200](../../scratch/17592186115200.py) | Solving Exponential Equations With Different Bases | Solving Exponential Equations Containing Different Bases by Rewriting One Exponent | 3 / 1 / 3 / 2 | qa_passed | [Report](qa/17592186115200.json) |
 | [17592186054804](../../scratch/17592186054804.py) | Factoring Quartic Polynomials Using the Factor Theorem | Factoring a Quartic Polynomial Given Two Roots | 3 / 1 / 1 / 2 | qa_passed | [Report](qa/17592186054804.json) |
 | [17592186054805](../../scratch/17592186054805.py) | Factoring Quartic Polynomials Using the Factor Theorem | Factoring a Quartic Polynomial With Only Two Real Factors | 1 / 4 / 1 / 2 | qa_passed | [Report](qa/17592186054805.json) |
-| [17592186096843](../../scratch/17592186096843.py) | The Chain Rule for Differentiation | Differentiating a Function Using the Chain Rule and Prime Notation | 0 / 5 / 5 / 2 | queued | — |
-| [17592186100888](../../scratch/17592186100888.py) | Verifying Solutions of Differential Equations | Identifying a Solution to a First-Order Differential Equation | 8 / 1 / 0 / 0 | needs_revalidation | [Report](qa/17592186100888.json) |
+| [17592186096843](../../scratch/17592186096843.py) | The Chain Rule for Differentiation | Differentiating a Function Using the Chain Rule and Prime Notation | 0 / 5 / 5 / 2 | working | — |
+| [17592186100888](../../scratch/17592186100888-draft.py) | Verifying Solutions of Differential Equations | Identifying a Solution to a First-Order Differential Equation | 8 / 1 / 0 / 0 | working | [Report](qa/17592186100888.json) |
 | [17592186100959](../../scratch/17592186100959.py) | Verifying Solutions of Differential Equations | Identifying Solutions to First-Order Differential Equations | 0 / 11 / 0 / 0 | qa_passed | [Report](qa/17592186100959.json) |
 | [17592186100951](../../scratch/17592186100951.py) | Verifying Solutions of Differential Equations | Identifying Solutions to Initial Value Problems | 17 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186100951.json) |
 | [17592186064180](../../scratch/17592186064180.py) | Integrating Trigonometric Functions | Integrating Secant Squared | 6 / 7 / 0 / 2 | queued | — |
@@ -472,7 +472,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | 17592186184171 | The Rank-Nullity Theorem | Finding the Rank or Nullity of a Matrix Given a Description of the Column or Null Space | 5 / 4 / 0 / 0 | queued | — |
 | 17592186184219 | The Rank-Nullity Theorem | Finding the Rank or Nullity of a Matrix Using the Rank-Nullity Theorem | 9 / 0 / 0 / 0 | queued | — |
 | 17592186184172 | The Rank-Nullity Theorem | Identifying True Statements Using the Invertible Matrix Theorem and the Rank-Nullity Theorem | 0 / 7 / 3 / 2 | queued | — |
-| 17592186087886 | Homogeneous First-Order ODEs | Transforming a Homogeneous Differential Equation into a Separable Equation Using a Substitution | 7 / 0 / 0 / 0 | queued | — |
+| [17592186087886](../../scratch/17592186087886.py) | Homogeneous First-Order ODEs | Transforming a Homogeneous Differential Equation into a Separable Equation Using a Substitution | 7 / 0 / 0 / 0 | queued | — |
 | 17592186087887 | Homogeneous First-Order ODEs | Solving a Homogeneous Differential Equation | 3 / 5 / 0 / 1 | queued | — |
 | [17592186152158](../../scratch/17592186152158.py) | Line Integrals of Scalar Functions Over Paths Expressed as Functions of X | Computing a Line Integral of a Scalar Function Along a Curve Given in Explicit Cartesian Form | 0 / 3 / 4 / 1 | qa_passed | [Report](qa/17592186152158.json) |
 | [17592186152159](../../scratch/17592186152159.py) | Line Integrals of Scalar Functions Over Paths Expressed as Functions of X | Reducing the Line Integral of a Scalar Function Along a Curve to a Definite Integral | 8 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186152159.json) |

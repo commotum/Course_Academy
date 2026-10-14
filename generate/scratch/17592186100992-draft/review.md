@@ -384,6 +384,378 @@ $$
 \begin{aligned}V-N & =\begin{bmatrix}5 & 3 \\ 6 & -4 \\ -1 & -8\end{bmatrix}-\begin{bmatrix}1 & -7 \\ 2 & -6 \\ 3 & 5\end{bmatrix} \\  & =\begin{bmatrix}5-1 & 3-(-7) \\ 6-2 & -4-(-6) \\ -1-3 & -8-5\end{bmatrix} \\  & =\begin{bmatrix}4 & 10 \\ 4 & 2 \\ -4 & -13\end{bmatrix}\end{aligned}
 $$
 
+## Changed-parameter captured bank / q-13535 (evidence-only; ineligible)
+
+Find $Q + R - (Q + P)$, if
+
+$P = \begin{bmatrix}-4 & -1 \\ -4 & -4\end{bmatrix}, Q = \begin{bmatrix}1 & -5 \\ -8 & 3\end{bmatrix}, R = \begin{bmatrix}2 & 8 \\ -1 & 4\end{bmatrix}$.
+
+selection:
+- $\begin{bmatrix}6 & 9 \\ 3 & 8\end{bmatrix}$
+- $\begin{bmatrix}6 & 8 \\ 3 & 8\end{bmatrix}$
+- $\begin{bmatrix}6 & 9 \\ 2 & 8\end{bmatrix}$
+- $\begin{bmatrix}6 & 9 \\ 3 & 7\end{bmatrix}$
+- $\begin{bmatrix}5 & 9 \\ 3 & 8\end{bmatrix}$
+
+[Absent in raw source]
+
+## Changed-parameter captured bank / q-13535 (evidence-only; ineligible)
+
+Find $Q + R - (Q + P)$, if
+
+$P = \begin{bmatrix}1 & 8 \\ -4 & -9\end{bmatrix}, Q = \begin{bmatrix}7 & 5 \\ -4 & 1\end{bmatrix}, R = \begin{bmatrix}1 & -3 \\ 4 & 8\end{bmatrix}$.
+
+selection:
+- $\begin{bmatrix}0 & -11 \\ 7 & 17\end{bmatrix}$
+- $\begin{bmatrix}0 & -11 \\ 8 & 17\end{bmatrix}$
+- $\begin{bmatrix}0 & -11 \\ 8 & 16\end{bmatrix}$
+- $\begin{bmatrix}0 & -12 \\ 8 & 17\end{bmatrix}$
+- $\begin{bmatrix}-1 & -11 \\ 8 & 17\end{bmatrix}$
+
+[Absent in raw source]
+
+## Changed-parameter captured bank / q-13536 (evidence-only; ineligible)
+
+Find $(A+B)-C-(B-C)$, if
+
+$$
+A=\begin{bmatrix}-4 & -1 \\ -4 & -4\end{bmatrix},\,B=\begin{bmatrix}1 & -5 \\ -8 & 3\end{bmatrix},\,C=\begin{bmatrix}2 & 8 \\ -1 & 4\end{bmatrix}.
+$$
+
+selection:
+- $\begin{bmatrix}-4 & -1 \\ -4 & -4\end{bmatrix}$
+- $\begin{bmatrix}2 & 8 \\ -1 & 4\end{bmatrix}$
+- $\begin{bmatrix}1 & -5 \\ -8 & 3\end{bmatrix}$
+- $\begin{bmatrix}-4 & -1 \\ -1 & -4\end{bmatrix}$
+- $\begin{bmatrix}0 & 0 \\ 0 & 0\end{bmatrix}$
+
+selection:
+- $\begin{bmatrix}0 & 0 \\ 0 & 0\end{bmatrix}$
+- $\begin{bmatrix}2 & 8 \\ -1 & 4\end{bmatrix}$
+- $\begin{bmatrix}-4 & -1 \\ -4 & -4\end{bmatrix}$ (correct)
+- $\begin{bmatrix}1 & -5 \\ -8 & 3\end{bmatrix}$
+- $\begin{bmatrix}-4 & -1 \\ -1 & -4\end{bmatrix}$
+
+First, we simplify the expression by distributing the subtraction over the matrices in the parentheses:
+
+$$
+\begin{aligned}(A+B)-C-(B-C) & =A+B-C-B+C \\  & =A+\cancel{B}-\cancel{C}-\cancel{B}+\cancel{C} \\  & =A\end{aligned}
+$$
+
+We are left with a single matrix. So, the result is 
+
+$$
+\begin{aligned}A & =\begin{bmatrix}-4 & -1 \\ -4 & -4\end{bmatrix}\end{aligned}
+$$
+
+## Changed-parameter captured bank / q-13536 (evidence-only; ineligible)
+
+Find $(A+B)-C-(B-C)$, if
+
+$$
+A=\begin{bmatrix}1 & 8 \\ -4 & -9\end{bmatrix},\,B=\begin{bmatrix}7 & 5 \\ -4 & 1\end{bmatrix},\,C=\begin{bmatrix}1 & -3 \\ 4 & 8\end{bmatrix}.
+$$
+
+selection:
+- $\begin{bmatrix}7 & 5 \\ -4 & 1\end{bmatrix}$
+- $\begin{bmatrix}1 & 8 \\ -4 & -9\end{bmatrix}$
+- $\begin{bmatrix}-9 & 8 \\ 8 & -9\end{bmatrix}$
+- $\begin{bmatrix}1 & -3 \\ 4 & 8\end{bmatrix}$
+- $\begin{bmatrix}0 & 0 \\ 0 & 0\end{bmatrix}$
+
+selection:
+- $\begin{bmatrix}1 & 8 \\ -4 & -9\end{bmatrix}$ (correct)
+- $\begin{bmatrix}-9 & 8 \\ 8 & -9\end{bmatrix}$
+- $\begin{bmatrix}1 & -3 \\ 4 & 8\end{bmatrix}$
+- $\begin{bmatrix}0 & 0 \\ 0 & 0\end{bmatrix}$
+- $\begin{bmatrix}7 & 5 \\ -4 & 1\end{bmatrix}$
+
+First, we simplify the expression by distributing the subtraction over the matrices in the parentheses:
+
+$$
+\begin{aligned}(A+B)-C-(B-C) & =A+B-C-B+C \\  & =A+\cancel{B}-\cancel{C}-\cancel{B}+\cancel{C} \\  & =A\end{aligned}
+$$
+
+We are left with a single matrix. So, the result is 
+
+$$
+\begin{aligned}A & =\begin{bmatrix}1 & 8 \\ -4 & -9\end{bmatrix}\end{aligned}
+$$
+
+## Changed-parameter captured bank / q-13550 (evidence-only; ineligible)
+
+Find $K+L-(K+J)$, if
+
+$$
+J=\begin{bmatrix}-4 & -1 \\ -4 & -4\end{bmatrix},\,K=\begin{bmatrix}1 & -5 \\ -8 & 3\end{bmatrix},\,L=\begin{bmatrix}2 & 8 \\ -1 & 4\end{bmatrix}.
+$$
+
+First, we simplify the expression by distributing the subtraction over the matrices in the parentheses:
+
+$$
+\begin{aligned}K+L-(K+J) & =K+L-K-J \\  & =\cancel{K}+L-\cancel{K}-J \\  & =L-J\end{aligned}
+$$
+
+We are left with a single subtraction. So, we subtract the corresponding entries of the two matrices:
+
+$$
+\begin{aligned}L-J & =\begin{bmatrix}2 & 8 \\ -1 & 4\end{bmatrix}-\begin{bmatrix}-4 & -1 \\ -4 & -4\end{bmatrix} \\  & =\begin{bmatrix}2-(-4) & 8-(-1) \\ -1-(-4) & 4-(-4)\end{bmatrix} \\  & =\begin{bmatrix}6 & 9 \\ 3 & 8\end{bmatrix}\end{aligned}
+$$
+
+## Changed-parameter captured bank / q-13550 (evidence-only; ineligible)
+
+Find $K+L-(K+J)$, if
+
+$$
+J=\begin{bmatrix}1 & 8 \\ -4 & -9\end{bmatrix},\,K=\begin{bmatrix}7 & 5 \\ -4 & 1\end{bmatrix},\,L=\begin{bmatrix}1 & -3 \\ 4 & 8\end{bmatrix}.
+$$
+
+First, we simplify the expression by distributing the subtraction over the matrices in the parentheses:
+
+$$
+\begin{aligned}K+L-(K+J) & =K+L-K-J \\  & =\cancel{K}+L-\cancel{K}-J \\  & =L-J\end{aligned}
+$$
+
+We are left with a single subtraction. So, we subtract the corresponding entries of the two matrices:
+
+$$
+\begin{aligned}L-J & =\begin{bmatrix}1 & -3 \\ 4 & 8\end{bmatrix}-\begin{bmatrix}1 & 8 \\ -4 & -9\end{bmatrix} \\  & =\begin{bmatrix}1-1 & -3-8 \\ 4-(-4) & 8-(-9)\end{bmatrix} \\  & =\begin{bmatrix}0 & -11 \\ 8 & 17\end{bmatrix}\end{aligned}
+$$
+
+## Changed-parameter captured bank / q-13543 (evidence-only; ineligible)
+
+Find $M+O-(N+M)$, if
+
+$$
+M=\begin{bmatrix}-4 & -1 \\ -4 & -4\end{bmatrix},\,N=\begin{bmatrix}1 & -5 \\ -8 & 3\end{bmatrix},\,O=\begin{bmatrix}2 & 8 \\ -1 & 4\end{bmatrix}.
+$$
+
+selection:
+- $\begin{bmatrix}0 & 13 \\ 7 & 1\end{bmatrix}$
+- $\begin{bmatrix}1 & 13 \\ 7 & 1\end{bmatrix}$ (correct)
+- $\begin{bmatrix}1 & 12 \\ 7 & 1\end{bmatrix}$
+- $\begin{bmatrix}1 & 13 \\ 6 & 1\end{bmatrix}$
+- $\begin{bmatrix}1 & 13 \\ 7 & 0\end{bmatrix}$
+
+First, we simplify the expression by distributing the subtraction over the matrices in the parentheses:
+
+$$
+\begin{aligned}M+O-(N+M) & =M+O-N-M \\  & =\cancel{M}+O-N-\cancel{M} \\  & =O-N\end{aligned}
+$$
+
+We are left with a single subtraction. So, we subtract the corresponding entries of the two matrices:
+
+$$
+\begin{aligned}O-N & =\begin{bmatrix}2 & 8 \\ -1 & 4\end{bmatrix}-\begin{bmatrix}1 & -5 \\ -8 & 3\end{bmatrix} \\  & =\begin{bmatrix}2-1 & 8-(-5) \\ -1-(-8) & 4-3\end{bmatrix} \\  & =\begin{bmatrix}1 & 13 \\ 7 & 1\end{bmatrix}\end{aligned}
+$$
+
+## Changed-parameter captured bank / q-13543 (evidence-only; ineligible)
+
+Find $M+O-(N+M)$, if
+
+$$
+M=\begin{bmatrix}1 & 8 \\ -4 & -9\end{bmatrix},\,N=\begin{bmatrix}7 & 5 \\ -4 & 1\end{bmatrix},\,O=\begin{bmatrix}1 & -3 \\ 4 & 8\end{bmatrix}.
+$$
+
+selection:
+- $\begin{bmatrix}-6 & -9 \\ 8 & 7\end{bmatrix}$
+- $\begin{bmatrix}-7 & -8 \\ 8 & 7\end{bmatrix}$
+- $\begin{bmatrix}-6 & -8 \\ 7 & 7\end{bmatrix}$
+- $\begin{bmatrix}-6 & -8 \\ 8 & 7\end{bmatrix}$ (correct)
+- $\begin{bmatrix}-6 & -8 \\ 8 & 6\end{bmatrix}$
+
+First, we simplify the expression by distributing the subtraction over the matrices in the parentheses:
+
+$$
+\begin{aligned}M+O-(N+M) & =M+O-N-M \\  & =\cancel{M}+O-N-\cancel{M} \\  & =O-N\end{aligned}
+$$
+
+We are left with a single subtraction. So, we subtract the corresponding entries of the two matrices:
+
+$$
+\begin{aligned}O-N & =\begin{bmatrix}1 & -3 \\ 4 & 8\end{bmatrix}-\begin{bmatrix}7 & 5 \\ -4 & 1\end{bmatrix} \\  & =\begin{bmatrix}1-7 & -3-5 \\ 4-(-4) & 8-1\end{bmatrix} \\  & =\begin{bmatrix}-6 & -8 \\ 8 & 7\end{bmatrix}\end{aligned}
+$$
+
+## Changed-parameter captured bank / q-279581 (evidence-only; ineligible)
+
+Find $A+B-(C+B)$, if
+
+$$
+A=\begin{bmatrix}-4 & -1 \\ -4 & -4\end{bmatrix},\,B=\begin{bmatrix}1 & -5 \\ -8 & 3\end{bmatrix},\,C=\begin{bmatrix}2 & 8 \\ -1 & 4\end{bmatrix}.
+$$
+
+| $A+B-(C+B)=\,\,$ |  | {{field-1}} | {{field-2}} |  |
+| --- | --- | --- | --- | --- |
+|  | {{field-3}} | {{field-4}} |  |  |
+
+field-1:
+- $-6$ (correct)
+
+field-3:
+- $-3$ (correct)
+
+field-4:
+- $-8$ (correct)
+
+field-2:
+- $-9$ (correct)
+
+First, we simplify the expression by distributing the subtraction over the matrices in the parentheses:
+
+$$
+\begin{aligned}A+B-(C+B) & =A+B-C-B \\  & =A+\cancel{B}-C-\cancel{B} \\  & =A-C\end{aligned}
+$$
+
+We are left with a single subtraction. So, we subtract the corresponding entries of the two matrices:
+
+$$
+\begin{aligned}A-C & =\begin{bmatrix}-4 & -1 \\ -4 & -4\end{bmatrix}-\begin{bmatrix}2 & 8 \\ -1 & 4\end{bmatrix} \\  & =\begin{bmatrix}-4-2 & -1-8 \\ -4-(-1) & -4-4\end{bmatrix} \\  & =\begin{bmatrix}-6 & -9 \\ -3 & -8\end{bmatrix}\end{aligned}
+$$
+
+## Changed-parameter captured bank / q-279581 (evidence-only; ineligible)
+
+Find $A+B-(C+B)$, if
+
+$$
+A=\begin{bmatrix}1 & 8 \\ -4 & -9\end{bmatrix},\,B=\begin{bmatrix}7 & 5 \\ -4 & 1\end{bmatrix},\,C=\begin{bmatrix}1 & -3 \\ 4 & 8\end{bmatrix}.
+$$
+
+| $A+B-(C+B)=\,\,$ |  | {{field-1}} | {{field-2}} |  |
+| --- | --- | --- | --- | --- |
+|  | {{field-3}} | {{field-4}} |  |  |
+
+field-1:
+- $0$ (correct)
+
+field-3:
+- $-8$ (correct)
+
+field-4:
+- $-17$ (correct)
+
+field-2:
+- $11$ (correct)
+
+First, we simplify the expression by distributing the subtraction over the matrices in the parentheses:
+
+$$
+\begin{aligned}A+B-(C+B) & =A+B-C-B \\  & =A+\cancel{B}-C-\cancel{B} \\  & =A-C\end{aligned}
+$$
+
+We are left with a single subtraction. So, we subtract the corresponding entries of the two matrices:
+
+$$
+\begin{aligned}A-C & =\begin{bmatrix}1 & 8 \\ -4 & -9\end{bmatrix}-\begin{bmatrix}1 & -3 \\ 4 & 8\end{bmatrix} \\  & =\begin{bmatrix}1-1 & 8-(-3) \\ -4-4 & -9-8\end{bmatrix} \\  & =\begin{bmatrix}0 & 11 \\ -8 & -17\end{bmatrix}\end{aligned}
+$$
+
+## Changed-parameter captured bank / q-69623 (evidence-only; ineligible)
+
+Find $G+H-(H+F)$, if
+
+$$
+F=\begin{bmatrix}-4 & -1 & -4 \\ -4 & 1 & -5\end{bmatrix},\,G=\begin{bmatrix}-8 & 3 & 2 \\ 8 & -1 & 4\end{bmatrix},\,H=\begin{bmatrix}4 & 3 & 1 \\ 2 & -9 & 7\end{bmatrix}.
+$$
+
+selection:
+- $\begin{bmatrix}4 & -4 & 6 \\ -2 & 12 & 9\end{bmatrix}$
+- $\begin{bmatrix}-4 & 4 & 6 \\ -4 & 2 & -1\end{bmatrix}$
+- $\begin{bmatrix}12 & -2 & 9 \\ -4 & 4 & 6\end{bmatrix}$
+- $\begin{bmatrix}-4 & 4 & 6 \\ 12 & -2 & 9\end{bmatrix}$ (correct)
+- $\begin{bmatrix}-12 & 2 & -6 \\ 4 & -1 & -1\end{bmatrix}$
+
+First, we simplify the expression by distributing the subtraction over the matrices in the parentheses:
+
+$$
+\begin{aligned}G+H-(H+F) & =G+H-H-F \\  & =G+\cancel{H}-\cancel{H}-F \\  & =G-F\end{aligned}
+$$
+
+We are left with a single subtraction. So, we subtract the corresponding entries of the two matrices:
+
+$$
+\begin{aligned}G-F & =\begin{bmatrix}-8 & 3 & 2 \\ 8 & -1 & 4\end{bmatrix}-\begin{bmatrix}-4 & -1 & -4 \\ -4 & 1 & -5\end{bmatrix} \\  & =\begin{bmatrix}-8-(-4) & 3-(-1) & 2-(-4) \\ 8-(-4) & -1-1 & 4-(-5)\end{bmatrix} \\  & =\begin{bmatrix}-4 & 4 & 6 \\ 12 & -2 & 9\end{bmatrix}\end{aligned}
+$$
+
+## Changed-parameter captured bank / q-69623 (evidence-only; ineligible)
+
+Find $G+H-(H+F)$, if
+
+$$
+F=\begin{bmatrix}1 & 8 & -4 \\ -9 & 7 & 5\end{bmatrix},\,G=\begin{bmatrix}-4 & 1 & 1 \\ -3 & 4 & 8\end{bmatrix},\,H=\begin{bmatrix}3 & 6 & 8 \\ -5 & 3 & -9\end{bmatrix}.
+$$
+
+selection:
+- $\begin{bmatrix}6 & -3 & 3 \\ -5 & -7 & 5\end{bmatrix}$
+- $\begin{bmatrix}-7 & -5 & 5 \\ -3 & 6 & 3\end{bmatrix}$
+- $\begin{bmatrix}-5 & -7 & 5 \\ 6 & -3 & 3\end{bmatrix}$ (correct)
+- $\begin{bmatrix}-5 & -7 & 5 \\ 12 & 3 & 13\end{bmatrix}$
+- $\begin{bmatrix}-3 & 9 & -5 \\ -12 & 4 & 13\end{bmatrix}$
+
+First, we simplify the expression by distributing the subtraction over the matrices in the parentheses:
+
+$$
+\begin{aligned}G+H-(H+F) & =G+H-H-F \\  & =G+\cancel{H}-\cancel{H}-F \\  & =G-F\end{aligned}
+$$
+
+We are left with a single subtraction. So, we subtract the corresponding entries of the two matrices:
+
+$$
+\begin{aligned}G-F & =\begin{bmatrix}-4 & 1 & 1 \\ -3 & 4 & 8\end{bmatrix}-\begin{bmatrix}1 & 8 & -4 \\ -9 & 7 & 5\end{bmatrix} \\  & =\begin{bmatrix}-4-1 & 1-8 & 1-(-4) \\ -3-(-9) & 4-7 & 8-5\end{bmatrix} \\  & =\begin{bmatrix}-5 & -7 & 5 \\ 6 & -3 & 3\end{bmatrix}\end{aligned}
+$$
+
+## Changed-parameter captured bank / q-69627 (evidence-only; ineligible)
+
+Find $C+V-(N+C)$, if
+
+$$
+C=\begin{bmatrix}-4 & -1 \\ -4 & -4 \\ 1 & -5\end{bmatrix},\,V=\begin{bmatrix}-8 & 3 \\ 2 & 8 \\ -1 & 4\end{bmatrix},\,N=\begin{bmatrix}4 & 3 \\ 1 & 2 \\ -9 & 7\end{bmatrix}.
+$$
+
+selection:
+- $\begin{bmatrix}-12 & 0 \\ 6 & 1 \\ 8 & -3\end{bmatrix}$
+- $\begin{bmatrix}-12 & 0 \\ 1 & 6 \\ 8 & -3\end{bmatrix}$ (correct)
+- $\begin{bmatrix}-4 & -1 \\ -4 & -4 \\ 1 & -5\end{bmatrix}$
+- $\begin{bmatrix}-4 & 6 \\ 3 & 10 \\ 8 & 11\end{bmatrix}$
+- $\begin{bmatrix}-12 & 0 \\ 8 & -3 \\ 1 & 6\end{bmatrix}$
+
+First, we simplify the expression by distributing the subtraction over the matrices in the parentheses:
+
+$$
+\begin{aligned}C+V-(N+C) & =C+V-N-C \\  & =\cancel{C}+V-N-\cancel{C} \\  & =V-N\end{aligned}
+$$
+
+We are left with a single subtraction. So, we subtract the corresponding entries of the two matrices:
+
+$$
+\begin{aligned}V-N & =\begin{bmatrix}-8 & 3 \\ 2 & 8 \\ -1 & 4\end{bmatrix}-\begin{bmatrix}4 & 3 \\ 1 & 2 \\ -9 & 7\end{bmatrix} \\  & =\begin{bmatrix}-8-4 & 3-3 \\ 2-1 & 8-2 \\ -1-(-9) & 4-7\end{bmatrix} \\  & =\begin{bmatrix}-12 & 0 \\ 1 & 6 \\ 8 & -3\end{bmatrix}\end{aligned}
+$$
+
+## Changed-parameter captured bank / q-69627 (evidence-only; ineligible)
+
+Find $C+V-(N+C)$, if
+
+$$
+C=\begin{bmatrix}1 & 8 \\ -4 & -9 \\ 7 & 5\end{bmatrix},\,V=\begin{bmatrix}-4 & 1 \\ 1 & -3 \\ 4 & 8\end{bmatrix},\,N=\begin{bmatrix}3 & 6 \\ 8 & -5 \\ 3 & -9\end{bmatrix}.
+$$
+
+selection:
+- $\begin{bmatrix}1 & 8 \\ -4 & -9 \\ 7 & 5\end{bmatrix}$
+- $\begin{bmatrix}-7 & -5 \\ 2 & -7 \\ 1 & 17\end{bmatrix}$
+- $\begin{bmatrix}-1 & 7 \\ 9 & -8 \\ 1 & -1\end{bmatrix}$
+- $\begin{bmatrix}-7 & -5 \\ -7 & 2 \\ 1 & 17\end{bmatrix}$ (correct)
+- $\begin{bmatrix}-7 & -5 \\ 1 & 17 \\ -7 & 2\end{bmatrix}$
+
+First, we simplify the expression by distributing the subtraction over the matrices in the parentheses:
+
+$$
+\begin{aligned}C+V-(N+C) & =C+V-N-C \\  & =\cancel{C}+V-N-\cancel{C} \\  & =V-N\end{aligned}
+$$
+
+We are left with a single subtraction. So, we subtract the corresponding entries of the two matrices:
+
+$$
+\begin{aligned}V-N & =\begin{bmatrix}-4 & 1 \\ 1 & -3 \\ 4 & 8\end{bmatrix}-\begin{bmatrix}3 & 6 \\ 8 & -5 \\ 3 & -9\end{bmatrix} \\  & =\begin{bmatrix}-4-3 & 1-6 \\ 1-8 & -3-(-5) \\ 4-3 & 8-(-9)\end{bmatrix} \\  & =\begin{bmatrix}-7 & -5 \\ -7 & 2 \\ 1 & 17\end{bmatrix}\end{aligned}
+$$
+
 ## Generated q-13535 / easy
 
 Find $Q + R - (Q + P)$, if

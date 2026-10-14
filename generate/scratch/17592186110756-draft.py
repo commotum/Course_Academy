@@ -11,7 +11,7 @@ import argparse,functools,hashlib,json,math,os,random,re,subprocess,sys,uuid,thr
 from pathlib import Path
 import sympy as sp
 D=Path(__file__).with_suffix('');ROOT=D.parents[2];K=17592186110756
-SOURCE=json.loads((D/'source.json').read_text());REC=SOURCE['record'];VERSION='reciprocal-qi-draft-2'
+SOURCE=json.loads((D/'source.json').read_text());REC=SOURCE['record'];VERSION='reciprocal-qi-draft-2';RENDERER_REVISION='theta-centered-adaptive-2'
 SOURCES={q[':question/math-academy-id']:q for q in REC[':knowledge-point/questions']}
 CONFIG={'q-124750':('y',5,1),'q-65066':('y',5,9),'q-124743':('x',3,1),'q-65062':('y',3,3),'q-65064':('x',5,15),'q-85234':('y',3,2)}
 os.environ.setdefault('MPLCONFIGDIR','/tmp/reciprocal-qi-draft-mpl')
@@ -101,7 +101,7 @@ def _render_plots(axis,p,role):
  import numpy as np
  from matplotlib.patches import Wedge
  b,r,d,c,s,a,n,k,m,z=parts(p);x,y=(m,k) if axis=='y' else (k,m)
- spec={'axis':axis,'p':p,'point':[str(x),str(y)],'role':role,'version':VERSION};key=digest(spec)
+ spec={'axis':axis,'p':p,'point':[str(x),str(y)],'role':role,'version':VERSION,'renderer_revision':RENDERER_REVISION};key=digest(spec)
  folder=D/'plots';folder.mkdir(exist_ok=True);path=folder/(key+'.png');side=path.with_suffix('.json')
  if not (path.exists() and side.exists()):
   fig,ax=plt.subplots(figsize=(4.5,4.5),dpi=130);t=np.linspace(0,2*np.pi,600)
@@ -111,13 +111,19 @@ def _render_plots(axis,p,role):
   for v in [-1,1]:ax.text(v-.06,-.17,str(v),fontsize=9);ax.text(-.18,v-.03,str(v),fontsize=9)
   ax.text(2.05,-.10,'$x$');ax.text(.07,2.01,'$y$');angle=math.degrees(math.atan2(float(y),float(x)))
   ax.plot([0,float(x)],[0,float(y)],color='black',lw=1.4);ax.scatter([float(x)],[float(y)],s=10,c='black')
-  ax.add_patch(Wedge((0,0),.38,0,angle,color='#e8a900'));theta=math.radians(angle/2);ax.text(.46*math.cos(theta),.46*math.sin(theta),r'$\theta$',fontsize=10)
+  ax.add_patch(Wedge((0,0),.38,0,angle,color='#e8a900'))
+  # Shallow wedges have insufficient room for a glyph between axis and ray.
+  # Place the centered theta just above the ray; leave assessed geometry intact.
+  theta=math.radians(angle+13 if angle<25 else angle/2)
+  label_position=[.50*math.cos(theta),.50*math.sin(theta)]
+  ax.text(*label_position,r'$\theta$',fontsize=10,ha='center',va='center',bbox={'facecolor':'white','edgecolor':'none','pad':.12})
+  spec['theta_label']={'position':label_position,'centered':True,'shallow_adaptive':angle<25,'white_backing':True}
   label=r'$P$' if role=='prompt' else r'$P(\cos\theta,\sin\theta)$'
   ax.annotate(label,(float(x),float(y)),xytext=(6,8),textcoords='offset points',fontsize=10)
   fig.tight_layout(pad=.3)
   import tempfile
   with tempfile.NamedTemporaryFile(dir=folder,suffix='.png',delete=False) as f:temp=Path(f.name)
-  fig.savefig(temp,metadata={'Software':VERSION});plt.close(fig);os.replace(temp,path)
+  fig.savefig(temp,metadata={'Software':VERSION+'/'+RENDERER_REVISION});plt.close(fig);os.replace(temp,path)
   spec['renderer']='matplotlib';spec['matplotlib']=matplotlib.__version__;spec['sha256']=hashlib.sha256(path.read_bytes()).hexdigest()
   with tempfile.NamedTemporaryFile(dir=folder,suffix='.json',mode='w',delete=False) as f:json.dump(spec,f);temp=Path(f.name)
   os.replace(temp,side)
@@ -187,7 +193,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  if sol is not None:q[':question/worked-solution']=sol
  if not raw:q[':question/difficulty']=':question.difficulty/'+level
  elif ':question/difficulty' in qsource:q[':question/difficulty']=qsource[':question/difficulty'][':db/ident']
- out={'knowledge_point':{'db_id':K,'id':REC[':knowledge-point/id'],'title':REC[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'seed':seed,'template':name,'bank_profile':bankprofile,'parameters':p,'source_basis':SOURCE['basis'],'source_lineage':SOURCE['lineage'],'source_question':qsource[':db/id'],'authorship':'raw observed expression-pattern evidence' if raw else 'authored method-bank and level policy','evidence_only':raw,'eligible_for_learning':not raw,'assets':assets,'mathematical_fingerprint':digest({'axis':axis,'known':str(parts(p)[7]),'target':'sec' if axis=='y' else 'csc','quadrant':1}),'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},'repository_sha':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()}}
+ out={'knowledge_point':{'db_id':K,'id':REC[':knowledge-point/id'],'title':REC[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'seed':seed,'template':name,'bank_profile':bankprofile,'parameters':p,'source_basis':SOURCE['basis'],'source_lineage':SOURCE['lineage'],'source_question':qsource[':db/id'],'authorship':'raw observed expression-pattern evidence' if raw else 'authored method-bank and level policy','evidence_only':raw,'diagnostic_only':not raw and not plots,'missing_assets_reason':'plots=False omits the diagram that establishes the first-quadrant branch' if not raw and not plots else None,'eligible_for_learning':not raw and plots,'render_mode':'full plot presentation' if plots else 'math-only diagnostic','assets':assets,'mathematical_fingerprint':digest({'axis':axis,'known':str(parts(p)[7]),'target':'sec' if axis=='y' else 'csc','quadrant':1}),'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},'repository_sha':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()}}
  if not raw:validate_generated_record(out)
  return out
 

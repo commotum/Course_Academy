@@ -4,11 +4,11 @@
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{1}{5},$ use the Pythagorean identity to find $sec⁡\theta .$
 
-$\frac{\sqrt{6}}{2}$
-$\frac{5\sqrt{6}}{9}$
 $\frac{9\sqrt{6}}{2}$
-$\frac{7\sqrt{6}}{12}$
+$\frac{5\sqrt{6}}{9}$
+$\frac{\sqrt{6}}{2}$
 $\frac{5\sqrt{6}}{12}$ (correct)
+$\frac{7\sqrt{6}}{12}$
 
 ![](images/73/734eef45985ddfb6450666e1dd32c6d3beab9ca3aef66c87c6ba393d6960b08b.png)
 
@@ -58,13 +58,13 @@ $$
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{3}{5}$, use the Pythagorean identity to find $\sec θ$.
 
-$\frac{16}{25}$
-$\frac{5}{16}$
 $\frac{16}{5}$
-$\frac{5}{4}$
+$\frac{5}{16}$
+$\frac{16}{25}$
 $\frac{4}{5}$
+$\frac{5}{4}$
 
-[No captured worked solution]
+[No captured solution, designation or grade]
 
 ---
 
@@ -74,11 +74,11 @@ $\frac{4}{5}$
 
 The diagram above shows the unit circle. Given that the $x$-coordinate of the point $P$ is $\frac{1}{3},$ use the Pythagorean identity to find $csc⁡\theta .$
 
-$\frac{5\sqrt{2}}{2}$
-$\frac{2\sqrt{6}}{3}$
 $\frac{3\sqrt{2}}{4}$ (correct)
-$\frac{3}{2}$
+$\frac{2\sqrt{6}}{3}$
+$\frac{5\sqrt{2}}{2}$
 $\frac{3\sqrt{3}}{2}$
+$\frac{3}{2}$
 
 ![](images/a4/a479e8e7906a3a0dc43e925c5bccd6534b4ab2e02a289403b2d0c92d0b0eb1d9.png)
 
@@ -128,11 +128,11 @@ $$
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{\sqrt{3}}{3},$ use the Pythagorean identity to find $sec⁡\theta .$
 
-$\frac{\sqrt{6}}{6}$
-$-\frac{\sqrt{6}}{2}$
 $-\frac{\sqrt{3}}{\sqrt{6}}$
-$\frac{\sqrt{6}}{2}$ (correct)
+$-\frac{\sqrt{6}}{2}$
+$\frac{\sqrt{6}}{6}$
 $\frac{\sqrt{3}}{\sqrt{6}}$
+$\frac{\sqrt{6}}{2}$ (correct)
 
 ![](images/f5/f5219a363cdf18cfb628148ca7b9bbe6015b521799ed4487fa9b56843eaa3043.png)
 
@@ -182,11 +182,11 @@ $$
 
 The diagram above shows the unit circle. Given that the $x$-coordinate of the point $P$ is $\frac{\sqrt{15}}{5},$ use the Pythagorean identity to find $csc⁡\theta .$
 
-$\sqrt{5}$
-$\frac{\sqrt{5}}{2}$
 $\frac{\sqrt{10}}{2}$ (correct)
-$5$
+$\frac{\sqrt{5}}{2}$
+$\sqrt{5}$
 $\frac{\sqrt{10}}{5}$
+$5$
 
 ![](images/44/44a555d222e3f6ff85208e8722a728ad240c558de7982d2a480bf9ddfb23ac6f.png)
 
@@ -236,11 +236,11 @@ $$
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{\sqrt{2}}{3},$ use the Pythagorean identity to find $sec⁡\theta .$
 
-$\frac{5\sqrt{7}}{7}$
-$\frac{\sqrt{7}}{2}$
 $\frac{7}{2}$
-$\frac{7}{3}$
+$\frac{\sqrt{7}}{2}$
+$\frac{5\sqrt{7}}{7}$
 $\frac{3\sqrt{7}}{7}$ (correct)
+$\frac{7}{3}$
 
 ![](images/9f/9f64bae56998bca7d825780c8c2b437ae3106486053cc9c8ed1b1fca2a88d4ab.png)
 
@@ -286,7 +286,7 @@ $$
 
 ## changed observed expression-pattern evidence; ineligible q-124750
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/6c746212eed0566ec755ccf6e020c02e351b1d6b77f91bee27453fa9d02d687a.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/8c28019177e0d5b9afad3eb32a99049f472bfe176570a477f6a4394c2e4b5b94.png)
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{1}{3},$ use the Pythagorean identity to find $sec⁡\theta .$
 
@@ -296,7 +296,7 @@ $\frac{7\sqrt{2}}{2}$
 $\frac{5\sqrt{2}}{4}$
 $\frac{3\sqrt{2}}{4}$ (correct)
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/751e0fe488263cb6bbafe4d5b5909e7daeb6b893263cb9bb20124132a1d3c81d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/ae7e201acf69d319f96eba6fcd514e4af26f0230da2e7b2a6d1d0e56909503d2.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta $ as follows:
 
@@ -340,7 +340,7 @@ $$
 
 ## authored easy method-reciprocal q-124750
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/6379ec7f5092d999ddb9fbd74906c280382c2dd18088b2d648e1e458b9c95d2e.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/7c9c4ac99c2f7162b4efaab590dab5cd7d59729f45b7bf822241ab258fc56f43.png)
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{\sqrt{3}}{2},$ use the Pythagorean identity to find $sec⁡\theta .$
 
@@ -350,7 +350,7 @@ $\frac{1}{2}$
 $4$
 $\sqrt{3}$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/497be78483d522674054546e27aadf3dce7109e56199e87de61d04b473b25eda.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/e13315b852a6ae68164a2f14cbaeceffeef39e715460e7764e6aefaebd809f75.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta$ as follows:
 
@@ -386,7 +386,7 @@ $$
 
 ---
 
-## authored easy method-sign q-124750
+## authored easy method-sign (math-only diagnostic; ineligible) q-124750
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{\sqrt{11}}{6},$ use the Pythagorean identity to find $sec⁡\theta .$
 
@@ -432,7 +432,7 @@ $$
 
 ## authored moderate method-reciprocal q-124750
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/878a90246e4966496359b09c1cc12f44222767ab9cd8ba6957e34fd3f026f31c.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/7e36b133c0b90eb036ad2cf5d14750e664467d0f07e9d0f2af00d4a5e5827ba9.png)
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{\sqrt{14}}{4},$ use the Pythagorean identity to find $sec⁡\theta .$
 
@@ -442,7 +442,7 @@ $\frac{\sqrt{2}}{4}$
 $8$
 $\sqrt{7}$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/5a59729b23b70a0df826916f4a4b771e9cded665466cd0b17ebb9a16b590a6c3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/1989bbc51c7ee4e576fa255b81a6a7f7c35f7761967cea5c9e2cdc5d4165a005.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta$ as follows:
 
@@ -484,7 +484,7 @@ $$
 
 ---
 
-## authored moderate method-sign q-124750
+## authored moderate method-sign (math-only diagnostic; ineligible) q-124750
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{\sqrt{10}}{5},$ use the Pythagorean identity to find $sec⁡\theta .$
 
@@ -536,7 +536,7 @@ $$
 
 ## authored hard method-reciprocal q-124750
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/7f566176eb7c1fd31ba53936a08db52c6e2498ceada6fa5f6ba44cc663a17dbb.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/f44698f0fb8155f29051edd28927d9293bb229853e29ae006936ac402a4a2001.png)
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{3\sqrt{5}}{10},$ use the Pythagorean identity to find $sec⁡\theta .$
 
@@ -546,7 +546,7 @@ $\frac{\sqrt{55}}{10}$
 $\frac{20}{11}$
 $\frac{3\sqrt{11}}{11}$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/0de26b748713e51258677747af5060b4e8c93959c071ee8807d9d5886512b40c.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/80158f3aaea20cc1b1c9d74a91f17d5ca5eb41ba107a96baca73175b33fabea0.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta$ as follows:
 
@@ -588,7 +588,7 @@ $$
 
 ---
 
-## authored hard method-sign q-124750
+## authored hard method-sign (math-only diagnostic; ineligible) q-124750
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{2\sqrt{5}}{11},$ use the Pythagorean identity to find $sec⁡\theta .$
 
@@ -640,7 +640,7 @@ $$
 
 ## changed observed expression-pattern evidence; ineligible q-65066
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/a454afa94f20a496d9876c62a094395ecc4c60857134df84b0d62a490805f8c4.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/063f614f18a4060e5585fd1089428a675a02afecbff9e9627c348c7ed33a8a50.png)
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{4}{5}$, use the Pythagorean identity to find $\sec θ$.
 
@@ -650,13 +650,13 @@ $\frac{9}{5}$
 $\frac{5}{3}$
 $\frac{3}{5}$
 
-[No captured worked solution]
+[No captured solution, designation or grade]
 
 ---
 
 ## authored easy method-reciprocal q-65066
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/597e6f0c59fff8cae3b34a18ceb44f6f282fe21901a76cd15373e64dfd704d03.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/1d25ffa21e9cbbfd1c69da0fa08d3ea6fc78182cb1981d0486318680c7a84761.png)
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{6\sqrt{2}}{11}$, use the Pythagorean identity to find $\sec θ$.
 
@@ -666,7 +666,7 @@ $\frac{7}{11}$
 $\frac{121}{49}$
 $\frac{6\sqrt{2}}{7}$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/2d35e3f0b30e3ad1a3dae5c6c0c88947c65b7a8e484ae98a5c3e92c32bf734b6.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/03d8978c2b01356e1995c0e308fe3f76de723c2e1415466ee91babe48517421f.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta$ as follows:
 
@@ -702,7 +702,7 @@ $$
 
 ---
 
-## authored easy method-sign q-65066
+## authored easy method-sign (math-only diagnostic; ineligible) q-65066
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{5\sqrt{3}}{14}$, use the Pythagorean identity to find $\sec θ$.
 
@@ -748,7 +748,7 @@ $$
 
 ## authored moderate method-reciprocal q-65066
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/833e408a2a2b47c827db246f53c4be57de7f894c0a6638bdfe2629de77685644.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/5c0dc7da17c815a180a1153565ad912ae77b93836fdc46514e4b7770a6b589d1.png)
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{\sqrt{3}}{9}$, use the Pythagorean identity to find $\sec θ$.
 
@@ -758,7 +758,7 @@ $\frac{\sqrt{78}}{9}$
 $\frac{27}{26}$
 $\frac{\sqrt{26}}{26}$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/731d045bf87a6b883c87001a421b1df96ed3669ea5f1decc01ed1eb27b392489.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/0f51646c4c4f0de1af3da22fba284c9acb6c5b0a88dc82009db23f04956a9e72.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta$ as follows:
 
@@ -800,7 +800,7 @@ $$
 
 ---
 
-## authored moderate method-sign q-65066
+## authored moderate method-sign (math-only diagnostic; ineligible) q-65066
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{\sqrt{14}}{9}$, use the Pythagorean identity to find $\sec θ$.
 
@@ -852,7 +852,7 @@ $$
 
 ## authored hard method-reciprocal q-65066
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/51ae559d71262fd56585f14404c9af2ae193d861d98d685a70589787336839f9.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/60ff35414950d1543a4100b3cb0917a7aed2042643db9d5c970f348eddb5e12a.png)
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{3\sqrt{11}}{13}$, use the Pythagorean identity to find $\sec θ$.
 
@@ -862,7 +862,7 @@ $\frac{\sqrt{70}}{13}$
 $\frac{169}{70}$
 $\frac{3\sqrt{770}}{70}$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/7926e1dce18b087972c8994a679ed0b500e40cd741b65ddc31c2a10349b6d120.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/26768244a767bfb66a7b3e06a58a0f67aa484c2565e510c9a4000e815e17a652.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta$ as follows:
 
@@ -904,7 +904,7 @@ $$
 
 ---
 
-## authored hard method-sign q-65066
+## authored hard method-sign (math-only diagnostic; ineligible) q-65066
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{3\sqrt{6}}{14}$, use the Pythagorean identity to find $\sec θ$.
 
@@ -956,7 +956,7 @@ $$
 
 ## changed observed expression-pattern evidence; ineligible q-124743
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/15083effd4e42f7be2fc8c619b1a22231ec51c1e31e187ce7269990d638c75ae.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/3ac80bb9c9ebc462e0bd3e038d34c22bfd387e54ec8b1ab02400a4badd42ab0b.png)
 
 The diagram above shows the unit circle. Given that the $x$-coordinate of the point $P$ is $\frac{1}{4},$ use the Pythagorean identity to find $csc⁡\theta .$
 
@@ -966,7 +966,7 @@ $\frac{4\sqrt{15}}{15}$ (correct)
 $4$
 $8$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/38b917052ca6435b636d45ebcfff3ea1a1612e1d1b76f6e365f7b71b19045856.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/c4b6c71a83485f9924a64e492c704013a7d24ad528dde779d4906319990f4a89.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta $ as follows:
 
@@ -1010,7 +1010,7 @@ $$
 
 ## authored easy method-reciprocal q-124743
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/31c7b3ee34de870cf99fdbcc0df60ca8f3ea8d13a5084058d9898b85c76bb816.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/a7fd43894e2fb2aa4d296e9376d45c2cdaf8bb4580b345eed31ef99ee4334190.png)
 
 The diagram above shows the unit circle. Given that the $x$-coordinate of the point $P$ is $\frac{4}{5},$ use the Pythagorean identity to find $csc⁡\theta .$
 
@@ -1020,7 +1020,7 @@ $\frac{3}{5}$
 $\frac{25}{9}$
 $\frac{4}{3}$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/bcdf216d946cc3695f1cff273e97411a07fa6e3cd4ae5985bffb4bf0ecdc46e3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/bf4fd52164a28dd79edf0a50f20573fc2fd2c401f7909572e6cb383fcc82e86e.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta$ as follows:
 
@@ -1056,7 +1056,7 @@ $$
 
 ---
 
-## authored easy method-sign q-124743
+## authored easy method-sign (math-only diagnostic; ineligible) q-124743
 
 The diagram above shows the unit circle. Given that the $x$-coordinate of the point $P$ is $\frac{4\sqrt{2}}{9},$ use the Pythagorean identity to find $csc⁡\theta .$
 
@@ -1102,7 +1102,7 @@ $$
 
 ## authored moderate method-reciprocal q-124743
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/577c2259c7928b35cebddb7fd4999afd89cfd17317d029023de07590c53fa395.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/d55db82a28677c8b58d789ab48a05f2331430653912094603f8538ed534c80d2.png)
 
 The diagram above shows the unit circle. Given that the $x$-coordinate of the point $P$ is $\frac{\sqrt{13}}{13},$ use the Pythagorean identity to find $csc⁡\theta .$
 
@@ -1112,7 +1112,7 @@ $\frac{2\sqrt{39}}{13}$
 $\frac{13}{12}$
 $\frac{\sqrt{3}}{6}$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/0772244fdfa913f00bf33a41fe1a23f548f7376a1277861495b7acbca921e883.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/8ab7d76409f9105de4ee81acc002c03c821ee8d2173aaa9e2ef11ba079a69ebe.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta$ as follows:
 
@@ -1154,7 +1154,7 @@ $$
 
 ---
 
-## authored moderate method-sign q-124743
+## authored moderate method-sign (math-only diagnostic; ineligible) q-124743
 
 The diagram above shows the unit circle. Given that the $x$-coordinate of the point $P$ is $\frac{\sqrt{11}}{14},$ use the Pythagorean identity to find $csc⁡\theta .$
 
@@ -1206,7 +1206,7 @@ $$
 
 ## authored hard method-reciprocal q-124743
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/d7eb8550bbb0913c93d4e2354cd70214e02b908b39903eadcdcfb8fea935b808.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/f86d62a6fe352855600bf651456489e237d56af6c1361e8f111ee3f4d47c99a3.png)
 
 The diagram above shows the unit circle. Given that the $x$-coordinate of the point $P$ is $\frac{3\sqrt{2}}{8},$ use the Pythagorean identity to find $csc⁡\theta .$
 
@@ -1216,7 +1216,7 @@ $\frac{\sqrt{46}}{8}$
 $\frac{32}{23}$
 $\frac{3\sqrt{23}}{23}$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/31e08147bb9e87ae314c5931c6d410aca0e8285335fed44e240af4d6a74d1039.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/8d0573cc269db25940216c6c99bace63be2ff68394ac94d629e4893bc82614e1.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta$ as follows:
 
@@ -1258,7 +1258,7 @@ $$
 
 ---
 
-## authored hard method-sign q-124743
+## authored hard method-sign (math-only diagnostic; ineligible) q-124743
 
 The diagram above shows the unit circle. Given that the $x$-coordinate of the point $P$ is $\frac{2\sqrt{6}}{9},$ use the Pythagorean identity to find $csc⁡\theta .$
 
@@ -1310,7 +1310,7 @@ $$
 
 ## changed observed expression-pattern evidence; ineligible q-65062
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/35d9448d9d9ec9fef555900a9caf347892d38adc0174297d323576f02b448e98.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/6157de3630388bd7a07c61fb2f3c7ccc642255c6e04aed698a7522eaf2e70c0d.png)
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{\sqrt{2}}{3},$ use the Pythagorean identity to find $sec⁡\theta .$
 
@@ -1320,7 +1320,7 @@ $-\frac{\sqrt{2}}{\sqrt{7}}$
 $\frac{3\sqrt{7}}{7}$ (correct)
 $\frac{\sqrt{2}}{\sqrt{7}}$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/5f855c660ba1644be554995dbd050ebdb2365892c5ae3854787158f6592f45c0.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/970aad6ec84cd22a6430322d3d02ca1df94edc8c3fac47697cf33770998dc95c.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta $ as follows:
 
@@ -1364,7 +1364,7 @@ $$
 
 ## authored easy method-reciprocal q-65062
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/187198204046c1535ad840c118fb8ed11f681e9f6765d5ab7b9a1d39f6ea993e.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/65af24e38742745ff5368dfb0afc548d74c7c02cf4644f637bdfdd111ea396c0.png)
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{3\sqrt{3}}{14},$ use the Pythagorean identity to find $sec⁡\theta .$
 
@@ -1374,7 +1374,7 @@ $\frac{13}{14}$
 $\frac{196}{169}$
 $\frac{3\sqrt{3}}{13}$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/f7a79078eb90810a2827f08860e0e83be370b7ef3407b886717a379c68664a92.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/daa50f68fdb1471280ef60302875442cfc6e818f475c5cd5bbb317a73fe65176.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta$ as follows:
 
@@ -1410,7 +1410,7 @@ $$
 
 ---
 
-## authored easy method-sign q-65062
+## authored easy method-sign (math-only diagnostic; ineligible) q-65062
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{\sqrt{7}}{4},$ use the Pythagorean identity to find $sec⁡\theta .$
 
@@ -1456,7 +1456,7 @@ $$
 
 ## authored moderate method-reciprocal q-65062
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/53df4e500fcdf409cdde15e8720497877d9ac417d1f028a744ab49c5810fa194.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/f490e304cc44c05940c3c2a1938af7b63e651babb8c310607594f7d404fcbf38.png)
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{\sqrt{13}}{5},$ use the Pythagorean identity to find $sec⁡\theta .$
 
@@ -1466,7 +1466,7 @@ $\frac{2\sqrt{3}}{5}$
 $\frac{25}{12}$
 $\frac{\sqrt{39}}{6}$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/2227894b7d459255e0c5c1a54848b59c1b4e0b932827f50ac42fc9f4dc87e636.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/927f0ca82b550ac970ca834631f6528d84642f8b9ebb6002015bcd97dcc71f60.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta$ as follows:
 
@@ -1508,7 +1508,7 @@ $$
 
 ---
 
-## authored moderate method-sign q-65062
+## authored moderate method-sign (math-only diagnostic; ineligible) q-65062
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{\sqrt{6}}{6},$ use the Pythagorean identity to find $sec⁡\theta .$
 
@@ -1560,7 +1560,7 @@ $$
 
 ## authored hard method-reciprocal q-65062
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/8ddc7aa755a5009c9d3b9ca479f5e0ec75c6442604d6e68c10fbc4f446a553b5.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/4c75dade34f8e86331098243484c906745f226cdc5e50db0e30577992ac63f8d.png)
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{2\sqrt{5}}{13},$ use the Pythagorean identity to find $sec⁡\theta .$
 
@@ -1570,7 +1570,7 @@ $\frac{\sqrt{149}}{13}$
 $\frac{169}{149}$
 $\frac{2\sqrt{745}}{149}$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/86ae71a6205b4301112f495fb364a253bb1e73588a58edeb541b9d7fd16d531a.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/ccee63387e67590e5909d34db37ddf70dd9b42ec5e9a581e585bf6196f9d65f4.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta$ as follows:
 
@@ -1612,7 +1612,7 @@ $$
 
 ---
 
-## authored hard method-sign q-65062
+## authored hard method-sign (math-only diagnostic; ineligible) q-65062
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{3\sqrt{5}}{13},$ use the Pythagorean identity to find $sec⁡\theta .$
 
@@ -1664,7 +1664,7 @@ $$
 
 ## changed observed expression-pattern evidence; ineligible q-65064
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/290a2dfeee2644da8111858e445473930973d48da9778d31d40f68e67d9701f2.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/cd3db583f1e7f4a806c24dd203020ad6c31e172ae8aa4ad08355feee8433350d.png)
 
 The diagram above shows the unit circle. Given that the $x$-coordinate of the point $P$ is $\frac{\sqrt{2}}{3},$ use the Pythagorean identity to find $csc⁡\theta .$
 
@@ -1674,7 +1674,7 @@ $\frac{3\sqrt{7}}{7}$ (correct)
 $3$
 $\frac{\sqrt{7}}{3}$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/35c02572b4d073ad9e9f7ba72ca09d9954b85abe866db95cc65c4270f34d0e94.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/0d03e4f2aeab6bb4dd42b85228cc148c3aebabdb242ac254e84087c4049292cd.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta $ as follows:
 
@@ -1718,7 +1718,7 @@ $$
 
 ## authored easy method-reciprocal q-65064
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/dfbfca2626bfed181a7b89ca43fdbf40be8710fcb7a71e01dd35bc6374f2f2ce.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/fcaec9cce7c795d116d98ea81dfd0c0b3115b24438c0c77a287e62714df0442c.png)
 
 The diagram above shows the unit circle. Given that the $x$-coordinate of the point $P$ is $\frac{\sqrt{15}}{8},$ use the Pythagorean identity to find $csc⁡\theta .$
 
@@ -1728,7 +1728,7 @@ $\frac{7}{8}$
 $\frac{64}{49}$
 $\frac{\sqrt{15}}{7}$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/5ddc834b6f35bb90055382395f0b0cb08b30cfa7eefcf38a8d5c34742c162f04.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/22ce4f94750f2b9f69e04b586987d522a9af67ca716c04f180aa2f100b1d5b23.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta$ as follows:
 
@@ -1764,7 +1764,7 @@ $$
 
 ---
 
-## authored easy method-sign q-65064
+## authored easy method-sign (math-only diagnostic; ineligible) q-65064
 
 The diagram above shows the unit circle. Given that the $x$-coordinate of the point $P$ is $\frac{5}{13},$ use the Pythagorean identity to find $csc⁡\theta .$
 
@@ -1810,7 +1810,7 @@ $$
 
 ## authored moderate method-reciprocal q-65064
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/a70e8be17d190d21508a23b35fa49931d8466eb3044a77abc3121e6e3bd5b106.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/2b005803db220c6db27aa0cf3110f2a16b85d365c1c21b93efe54d4237134f7d.png)
 
 The diagram above shows the unit circle. Given that the $x$-coordinate of the point $P$ is $\frac{\sqrt{2}}{10},$ use the Pythagorean identity to find $csc⁡\theta .$
 
@@ -1820,7 +1820,7 @@ $\frac{7\sqrt{2}}{10}$
 $\frac{50}{49}$
 $\frac{1}{7}$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/5cd07823246eeb10a8f768a563a21cd5415104585a5967058ec0904be311d344.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/a3bbb2ed80b950a2a49272dac7689dcd6bfa43b0d1d0fc4830766cb567019d58.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta$ as follows:
 
@@ -1862,7 +1862,7 @@ $$
 
 ---
 
-## authored moderate method-sign q-65064
+## authored moderate method-sign (math-only diagnostic; ineligible) q-65064
 
 The diagram above shows the unit circle. Given that the $x$-coordinate of the point $P$ is $\frac{\sqrt{13}}{10},$ use the Pythagorean identity to find $csc⁡\theta .$
 
@@ -1914,7 +1914,7 @@ $$
 
 ## authored hard method-reciprocal q-65064
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/c97ce1eb400aab7adac00ffcecefa1047beaae86a4b6e9145b4c7c0267a720b5.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/3bb5f057b011e7ff9c9d29f49610f81c96b2b0942e4e10194a386723b672b730.png)
 
 The diagram above shows the unit circle. Given that the $x$-coordinate of the point $P$ is $\frac{4\sqrt{6}}{15},$ use the Pythagorean identity to find $csc⁡\theta .$
 
@@ -1924,7 +1924,7 @@ $\frac{\sqrt{129}}{15}$
 $\frac{75}{43}$
 $\frac{4\sqrt{86}}{43}$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/c42a05a79abba49c2b9b75cdf1510dd18580456c059909313c24b62f4dff48d8.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/16e0b752971cd54449be9d3db2304670c5f11c722c2b560d3c1ad96ccfbfeab4.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta$ as follows:
 
@@ -1966,7 +1966,7 @@ $$
 
 ---
 
-## authored hard method-sign q-65064
+## authored hard method-sign (math-only diagnostic; ineligible) q-65064
 
 The diagram above shows the unit circle. Given that the $x$-coordinate of the point $P$ is $\frac{2\sqrt{5}}{5},$ use the Pythagorean identity to find $csc⁡\theta .$
 
@@ -2018,7 +2018,7 @@ $$
 
 ## changed observed expression-pattern evidence; ineligible q-85234
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/d936e1e4dee8b3d391a100f728d5680c956977162d05b15bb9e905c7ef896682.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/08b50d6e7b0625827d8f2f99cb08c582be61b864954f3e432fc100f9aaa8b054.png)
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{\sqrt{6}}{3},$ use the Pythagorean identity to find $sec⁡\theta .$
 
@@ -2028,7 +2028,7 @@ $\frac{1}{2}$
 $1$
 $\sqrt{3}$ (correct)
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/d5200451583b62ab166786cc18d567bf463af8a8443b198e46045b53ae2b17ee.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/cfce5be0df254cd3f73ab6602b7614e91d9bb6e49b45fe942d6530bda1aedf25.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta $ as follows:
 
@@ -2072,7 +2072,7 @@ $$
 
 ## authored easy method-reciprocal q-85234
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/acb56cd7d8ea9e071e1e66278e8662350788280f993a63d64bcf9d78dbd171f5.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/78718634697e570305a5d38bb2d7613660fd970950e6d144ca25dc1b41161f2b.png)
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{2\sqrt{2}}{3},$ use the Pythagorean identity to find $sec⁡\theta .$
 
@@ -2082,7 +2082,7 @@ $\frac{1}{3}$
 $9$
 $2\sqrt{2}$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/6e88a0cbd965a09f904acf83c03d1786336214ff9be04f4a5f36b0557bd51689.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/e6fb1df83d7ddfbd7a3caa81480a3128bad64c622930b519ebc1063d855ca94b.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta$ as follows:
 
@@ -2118,7 +2118,7 @@ $$
 
 ---
 
-## authored easy method-sign q-85234
+## authored easy method-sign (math-only diagnostic; ineligible) q-85234
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{2\sqrt{6}}{7},$ use the Pythagorean identity to find $sec⁡\theta .$
 
@@ -2164,7 +2164,7 @@ $$
 
 ## authored moderate method-reciprocal q-85234
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/a849f6105bac26859ea25654db616028583134e98523c097f8963ef388865755.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/a421093434cdbf49956f82c0b0ce9a4e14d3eeae3c1d8b4da9ac347ddb57529a.png)
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{\sqrt{14}}{14},$ use the Pythagorean identity to find $sec⁡\theta .$
 
@@ -2174,7 +2174,7 @@ $\frac{\sqrt{182}}{14}$
 $\frac{14}{13}$
 $\frac{\sqrt{13}}{13}$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/30ebb156c32bb5421973bb31dea0c3e5df8f9efb6547d386bd0b9b190644c119.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/0e327b28fc635dd0933d32f6d7f298d3897f86dc4e88a467474fc0aa89058ef5.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta$ as follows:
 
@@ -2216,7 +2216,7 @@ $$
 
 ---
 
-## authored moderate method-sign q-85234
+## authored moderate method-sign (math-only diagnostic; ineligible) q-85234
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{\sqrt{13}}{15},$ use the Pythagorean identity to find $sec⁡\theta .$
 
@@ -2268,7 +2268,7 @@ $$
 
 ## authored hard method-reciprocal q-85234
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/ac91eb7dcfb1269cb58a46dc6508eb6664c8cd85aee37196575bc8d6a8dbe5e2.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/efe6d38472f2a02ff8dafe7f618c5f4073e6326e5b79ea79874c41fba951a939.png)
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{2\sqrt{7}}{11},$ use the Pythagorean identity to find $sec⁡\theta .$
 
@@ -2278,7 +2278,7 @@ $\frac{\sqrt{93}}{11}$
 $\frac{121}{93}$
 $\frac{2\sqrt{651}}{93}$
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/99ff7594bbbf6e2a388dd31f518c0db99186fa05252f102d98f249bed91464da.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186110756-draft/plots/4ee6d3204442007406eee041da6383dc58fb4a829c99b5c488ff997c1bd53178.png)
 
 Any point $(x,y)$ on the unit circle is related to the central angle $\theta$ as follows:
 
@@ -2320,7 +2320,7 @@ $$
 
 ---
 
-## authored hard method-sign q-85234
+## authored hard method-sign (math-only diagnostic; ineligible) q-85234
 
 The diagram above shows the unit circle. Given that the $y$-coordinate of the point $P$ is $\frac{2\sqrt{14}}{11},$ use the Pythagorean identity to find $sec⁡\theta .$
 

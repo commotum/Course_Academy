@@ -80,6 +80,51 @@ def inspect(r):
  g.validate_generated_record(r)
  return correct
 
+def inspect_raw_bank(r):
+ """Independent complete historical bank calculation from the printed givens."""
+ q=r['question'];t=r['generation']['template'];prompt=q[':question/problem']
+ matrices={m[1]:parse_cells(m[2]) for m in re.finditer(r'([A-Z])\s*=\s*(\\begin\{bmatrix\}.*?\\end\{bmatrix\})',prompt,re.S)}
+ expression=re.search(r'Find \$(.*?)\$',prompt)[1];correct=eval_expr(expression,matrices)
+ original=g.ORIGINALS[t]
+ for key in [':question/difficulty',':question/worked-solution',':question/answer-fields']:
+  assert (key in q)==(key in original),'Raw source presence changed'
+ if t=='q-13550':return
+ if t=='q-279581':
+  expected=None
+ elif t in ['q-13535','q-13543']:
+  expected=[correct]
+  for row in range(2):
+   for col in range(2):
+    v=correct.copy();v[row,col]-=1;expected.append(v)
+ elif t=='q-13536':
+  A=matrices['A'];expected=[A,matrices['B'],matrices['C'],sp.zeros(2),sp.Matrix([[A[1,1],A[0,1]],[A[0,1],A[1,1]]])]
+ elif t=='q-69623':
+  G,F=matrices['G'],matrices['F'];c=correct
+  expected=[c,sp.Matrix([list(c.row(1)),list(c.row(0))]),
+   sp.Matrix([[c[0,1],c[0,0],c[0,2]],[c[1,1],c[1,0],c[1,2]]]),
+   sp.Matrix([[G[0,0]+F[0,0],G[0,1]+F[0,1],F[0,2]-G[0,2]],[G[1,0]+F[1,0],G[1,1],G[1,2]+F[1,2]]]),
+   sp.Matrix([list(c.row(0)),[-G[1,0]-F[1,0],-G[1,1]+F[1,1],G[1,2]+F[1,2]]])]
+ elif t=='q-69627':
+  V,N=matrices['V'],matrices['N'];c=correct;added=V+N;added[2,0]=V[2,0]-N[2,0]
+  expected=[c,matrices['C'],sp.Matrix([list(c.row(0)),[c[1,1],c[1,0]],list(c.row(2))]),sp.Matrix([list(c.row(0)),list(c.row(2)),list(c.row(1))]),added]
+ else:raise AssertionError('Unexpected source family')
+ assert len(q[':question/answer-fields'])==len(original[':question/answer-fields'])
+ for field,old in zip(q[':question/answer-fields'],original[':question/answer-fields']):
+  assert field[':answer-field/key']==old[':answer-field/key']
+  assert (':answer-field/correct' in field)==(':answer-field/correct' in old)
+  if expected is None:
+   value=sp.sympify(field[':answer-field/choices'][0][':answer/value']);index=int(field[':answer-field/key'].split('-')[-1])-1
+   assert value==correct[index]
+  else:
+   displayed=[parse_cells(a[':answer/value']) for a in field[':answer-field/choices']]
+   assert len(displayed)==len(expected)==5
+   assert {tuple(m) for m in displayed}=={tuple(m) for m in expected},'Recovered complete source coordinate operations changed'
+   assert len({tuple(m) for m in displayed})==5
+   assert sum(m==correct for m in displayed)==1
+   if ':answer-field/correct' in field:
+    selected=next(a for a in field[':answer-field/choices'] if a[':answer/id']==field[':answer-field/correct'][1]);assert parse_cells(selected[':answer/value'])==correct
+ assert r['generation']['evidence_only'] and not r['generation']['eligible_for_learning']
+
 def native_item(r,label):
  checks=[]
  for i,f in enumerate(r['question'][':question/answer-fields']):
@@ -102,7 +147,7 @@ def main():
  assert {row['source_id']:row['captured_record'] for row in ledger['questions']}==originals
  reviews=[];native=[];coverage={l:{} for l in ['easy','moderate','hard']};keys={l:set() for l in coverage};positions=set()
  for c in cases:
-  raw=g.generate(c['level'],template=c['template'],parameters=c['parameters'],profile='source-original')
+  raw=g.generate(c['level'],template=c['template'],parameters=c['parameters'],profile='source-original');inspect_raw_bank(raw)
   prompt=raw['question'][':question/problem'];expr=re.search(r'Find \$(.*?)\$',prompt)[1]
   matrices={m[1]:parse_cells(m[2]) for m in re.finditer(r'([A-Z])\s*=\s*(\\begin\{bmatrix\}.*?\\end\{bmatrix\})',prompt,re.S)}
   expected=eval_expr(expr,matrices)
@@ -158,6 +203,32 @@ def main():
  m=copy.deepcopy(sample);m['question'][':question/worked-solution']=m['question'][':question/worked-solution'].replace(r'\cancel{M}','M');must_fail('operative-cancellation-removed',m)
  m=copy.deepcopy(sample);m['question'][':question/worked-solution']+='\f';must_fail('control-character',m)
  m=copy.deepcopy(b);m['question'][':question/answer-fields'][1][':answer-field/choices'][0][':answer/value']=aa['field-2'];must_fail('stale-changed-cell',m)
+ raw_checks=0;raw_variants=[]
+ for c in cases:
+  for seed in range(80):
+   raw=g.generate(c['level'],seed=6000+seed,template=c['template'],profile='source-original');inspect_raw_bank(raw);raw_checks+=1
+   if seed<2:
+    raw_variants.append(raw)
+    valid=[f for f in raw['question'].get(':question/answer-fields',[]) if ':answer-field/correct' in f]
+    if valid:
+     fixture=copy.deepcopy(raw);fixture['question'][':question/answer-fields']=valid;fixture['generation']['native_fixture_role']='changed-parameter captured valid fields only; complete raw public record preserved separately'
+     native.append(native_item(fixture,'changed-captured-valid-fields-'+c['source_id']+'-'+str(seed)))
+ # Explicit raw whole-bank collision guards apply even to ineligible evidence.
+ for t,p in [('q-13536',{'A':[[0,0],[0,0]],'B':[[1,2],[3,4]],'C':[[5,6],[7,8]]}),('q-69623',{'F':[[1,2,3],[4,5,6]],'G':[[2,4,6],[5,7,9]],'H':[[9,8,7],[6,5,4]]}),('q-69627',{'C':[[1,2],[3,4],[5,6]],'V':[[7,8],[5,6],[9,8]],'N':[[2,3],[1,2],[3,2]]})]:
+  try:g.generate(g.SPECS[t][0],template=t,parameters=p,profile='source-original')
+  except ValueError:pass
+  else:raise AssertionError('Raw complete-bank equivalence accepted '+t)
+ # The earlier anchor-only offset generalization must fail independently.
+ for t in ['q-13536','q-69623','q-69627']:
+  p=copy.deepcopy(g.anchor(t));p[g.SPECS[t][3]][0][0]+=1
+  raw=g.generate(g.SPECS[t][0],template=t,parameters=p,profile='source-original');inspect_raw_bank(raw)
+  mutated=copy.deepcopy(raw);delta=g.result(p,t)-g.result(g.anchor(t),t)
+  for f,original_field in zip(mutated['question'][':question/answer-fields'],g.ORIGINALS[t][':question/answer-fields']):
+   oldvalues=[parse_cells(a[':answer/value'])+delta for a in original_field[':answer-field/choices']]
+   for a,value in zip(f[':answer-field/choices'],oldvalues):a[':answer/value']=g.matrix(value.tolist())
+  try:inspect_raw_bank(mutated)
+  except AssertionError:mutation_tests.append('reject-anchor-offset-bank-'+t)
+  else:raise AssertionError('Literal source residual offsets passed '+t)
  # Source-profile replays under changed operands remain parameterized; original
  # metadata omissions and duplicated keys still remain evidence-only.
  for c in cases:
@@ -168,15 +239,16 @@ def main():
   try:g.generate(level,parameters=p,template=template)
   except ValueError:pass
   else:raise AssertionError('Explicit domain guard bypassed')
- dump('review.json',reviews);dump('native-input.json',native)
+ dump('review.json',reviews);dump('source-bank-review.json',raw_variants);dump('native-input.json',native)
  subprocess.run([str(ROOT/'generate/runs/current/check-engine'),str(D/'native-input.json'),str(D/'native-report.json')],check=True)
  report=json.loads((D/'native-report.json').read_text())
- validation={'status':'pass','script_sha256':hashlib.sha256(SCRIPT.read_bytes()).hexdigest(),'registered_baseline_unchanged_files':len(actual),'source_basis':2275,'source_fidelity':raw_counts,'source_cases':7,'normal_math_checks':900+len(reviews),'meaningful_task_counts_sampled':{l:len(v) for l,v in keys.items()},'default_family_coverage':coverage,'radio_correct_positions_seen':sorted(positions),'mutation_regressions_rejected':mutation_tests,'changed_cell_regression':'field-2 changed; other three fixed; actual prompt/solution/key parsed','native':{k:v for k,v in report.items() if k!='records'},'hard_calibration':'authored uncertain; double cancellation + residual signed 3x2 subtraction','runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'plots':'none','independent_inventory_count':0}
+ validation={'status':'pass','script_sha256':hashlib.sha256(SCRIPT.read_bytes()).hexdigest(),'registered_baseline_unchanged_files':len(actual),'source_basis':2275,'source_fidelity':raw_counts,'source_cases':7,'normal_math_checks':900+len(reviews),'changed_parameter_source_replays_checked':raw_checks,'changed_parameter_source_fields_checked':800,'meaningful_task_counts_sampled':{l:len(v) for l,v in keys.items()},'default_family_coverage':coverage,'radio_correct_positions_seen':sorted(positions),'mutation_regressions_rejected':mutation_tests,'changed_cell_regression':'field-2 changed; other three fixed; actual prompt/solution/key parsed','native':{k:v for k,v in report.items() if k!='records'},'hard_calibration':'authored uncertain; double cancellation + residual signed 3x2 subtraction','runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'plots':'none','independent_inventory_count':0}
  dump('validation.json',validation)
  review=['# Distributivity source and generated review','Frozen basis2275. Raw missing grade/key/solution/fields and duplicate legacy fields remain evidence-only. Normal variants below are authored method banks. Hard is authored; calibration remains uncertain.']
  for c in cases:
   raw=g.generate(c['level'],template=c['template'],parameters=c['parameters'],profile='source-original');normal=g.generate(c['level'],template=c['template'],parameters=c['parameters'],profile='authored-method')
   review+=['## Original '+c['source_id'],g.markdown(raw),'## Authored method bank at original parameters',g.markdown(normal)]
+ for r in raw_variants:review+=['## Changed-parameter captured bank / '+r['generation']['template']+' (evidence-only; ineligible)',g.markdown(r)]
  for r in reviews:review+=['## Generated '+r['generation']['template']+' / '+r['question'][':question/difficulty'].split('/')[-1],g.markdown(r)]
  (D/'review.md').write_text('\n\n'.join(review)+'\n')
  print(json.dumps(validation,indent=2))

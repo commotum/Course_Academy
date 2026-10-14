@@ -79,24 +79,50 @@ def problem(p,t):
  if t in ORIGINALS:return replace_matrices(ORIGINALS[t][':question/problem'],[p[n] for n in SPECS[t][1]])
  return 'Find $'+SPECS[t][2]+'$, if\n\n$$\n'+r',\,'.join(n+'='+matrix(p[n]) for n in SPECS[t][1])+'.\n$$'
 
+def source_bank_recipes(p,t):
+ """Recovered complete coordinate operations; unresolved intent stays evidence-only."""
+ residual=result(p,t);c=list(residual);rows,cols=residual.shape
+ def shaped(values):return sp.Matrix(rows,cols,values)
+ if t in ['q-13535','q-13543']:
+  recipes={'correct':residual}
+  for i in range(4):
+   cells=list(c);cells[i]-=1;recipes['decrement-cell-'+str(i)]=shaped(cells)
+  return recipes
+ if t=='q-13536':
+  a=p['A'];return {n:sp.Matrix(p[n]) for n in 'ABC'}|{'zero':sp.zeros(2),'symmetric-selected-A-entries':sp.Matrix([[a[1][1],a[0][1]],[a[0][1],a[1][1]]])}
+ if t=='q-69623':
+  G=list(sp.Matrix(p['G']));F=list(sp.Matrix(p['F']))
+  return {'correct':residual,'swap-rows':shaped([c[i] for i in [3,4,5,0,1,2]]),
+   'swap-first-two-columns':shaped([c[i] for i in [1,0,2,4,3,5]]),
+   'compound-add-and-reverse':shaped([G[0]+F[0],G[1]+F[1],F[2]-G[2],G[3]+F[3],G[4],G[5]+F[5]]),
+   'compound-last-row':shaped([c[0],c[1],c[2],-G[3]-F[3],-G[4]+F[4],G[5]+F[5]])}
+ if t=='q-69627':
+  V=list(sp.Matrix(p['V']));N=list(sp.Matrix(p['N']))
+  return {'correct':residual,'supplied-C':sp.Matrix(p['C']),
+   'swap-middle-row-cells':shaped([c[i] for i in [0,1,3,2,4,5]]),
+   'swap-last-two-rows':shaped([c[i] for i in [0,1,4,5,2,3]]),
+   'add-except-cell-four':shaped([V[i]-N[i] if i==4 else V[i]+N[i] for i in range(6)])}
+ raise ValueError('No captured matrix bank for template')
+
+def source_choice_recipe(t,value):
+ """Bind immutable source order to explicit recipes at the anchor, not offsets."""
+ observed=sp.Matrix(parse_matrix(value))
+ matches=[name for name,m in source_bank_recipes(anchor(t),t).items() if m==observed]
+ if len(matches)!=1:raise ValueError('Unmapped or multiply mapped complete source option')
+ return matches[0]
+
 def raw_bank(p,t,f):
- # Every complete historical bank is kept as an explicit evidence profile.
- # Relative-cell masks parameterize opaque choices, without asserting recovered
- # distractor intentions or allowing them into learner defaults.
- old=anchor(t);a=result(old,t);b=result(p,t)
- values=[]
- for v in f.get(':answer-field/choices',[]):
-  text=v[':answer/value']
-  if MATRIX.fullmatch(text):
-   m=sp.Matrix(parse_matrix(text))
-   # Genuine supplied objects remain supplied objects, not output offsets.
-   supplied=next((n for n in SPECS[t][1] if m==sp.Matrix(old[n])),None)
-   val=matrix(p[supplied]) if supplied else matrix(sp.zeros(*m.shape).tolist()) if m.is_zero_matrix else matrix((b+m-a).tolist())
-  else:
-   index=int(f[':answer-field/key'].split('-')[-1])-1
-   val=str(b[index//b.cols,index%b.cols]+int(text)-a[index//a.cols,index%a.cols])
-  values.append(val)
- return values
+ # Historical bank eligibility and recovered coordinate operations are distinct:
+ # all raw profiles remain ineligible. Duplicate legacy fields are preserved,
+ # but every within-field bank must be unambiguous under changed parameters.
+ if f[':answer-field/type'][':db/ident'].endswith('/blank'):
+  index=int(f[':answer-field/key'].split('-')[-1])-1
+  return [str(result(p,t)[index])]
+ recipes=source_bank_recipes(p,t)
+ objects=[recipes[source_choice_recipe(t,a[':answer/value'])] for a in f.get(':answer-field/choices',[])]
+ if len({tuple(m) for m in objects})!=len(objects):raise ValueError('Whole captured bank rejected: equivalent options')
+ if sum(m==result(p,t) for m in objects)!=1:raise ValueError('Whole captured bank rejected: correct-answer multiplicity')
+ return [matrix(m.tolist()) for m in objects]
 
 def authored_bank(p,t):
  a=sp.Matrix(p[SPECS[t][3]]);z=sp.Matrix(p[SPECS[t][5]]);r=result(p,t)
@@ -200,7 +226,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   else:canon.append(v)
  family='single-cancellation-difference' if SPECS[template][0]=='easy' else 'double-cancellation-survivor' if SPECS[template][0]=='moderate' else 'double-cancellation-difference'
  fp=digest([family,p[x],p[y] if y else None,('full-matrix',shape)])
- record={'knowledge_point':dict(KP),'question':q,'generation':{'version':VERSION,'template':template,'bank_profile':profile,'parameters':p,'seed':seed,'parameter_fingerprint':fp,'mathematical_key':fp,'content_hash':identity,'source':{k:v for k,v in SOURCE.items() if k!='record'},'source_question':template if template in ORIGINALS else None,'evidence_only':raw,'eligible_for_learning':not raw,'difficulty_evidence':'observed' if template in ORIGINALS and ':question/difficulty' in ORIGINALS[template] else 'authored; calibration uncertain','runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'bank_interpretation':'opaque relative-cell masks; supplied-object choices explicit; no recovered wrong-operation claim' if raw else 'complete method bank: correct; fail negative distribution on subtractand; reverse residual difference; retain positive canceled term; retain negative canceled term' if SPECS[template][4] else 'complete method bank: correct; fail reversing inner negative C; fail reversing inner B; drop leading B; drop final positive C','domain':'ordinary conformable integer matrices; source shapes; normal assessed entries -9..9; canceled entries -60..60; hard 3x2 mixed-sign surviving operands'}}
+ record={'knowledge_point':dict(KP),'question':q,'generation':{'version':VERSION,'template':template,'bank_profile':profile,'parameters':p,'seed':seed,'parameter_fingerprint':fp,'mathematical_key':fp,'content_hash':identity,'source':{k:v for k,v in SOURCE.items() if k!='record'},'source_question':template if template in ORIGINALS else None,'evidence_only':raw,'eligible_for_learning':not raw,'difficulty_evidence':'observed' if template in ORIGINALS and ':question/difficulty' in ORIGINALS[template] else 'authored; calibration uncertain','runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'bank_interpretation':'recovered coordinate permutations/compound operations; single-cell decrement and symmetric-entry selection intent unresolved; evidence-only' if raw else 'complete method bank: correct; fail negative distribution on subtractand; reverse residual difference; retain positive canceled term; retain negative canceled term' if SPECS[template][4] else 'complete method bank: correct; fail reversing inner negative C; fail reversing inner B; drop leading B; drop final positive C','domain':'ordinary conformable integer matrices; source shapes; normal assessed entries -9..9; canceled entries -60..60; hard 3x2 mixed-sign surviving operands'}}
  if not raw:validate_generated_record(record)
  return record
 

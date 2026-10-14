@@ -22,6 +22,10 @@ def number(text):
  v=sp.simplify(parse_expr(out,transformations=standard_transformations+(implicit_multiplication_application,)));assert not v.free_symbols;return v
 
 def displayed(rec):
+ meta=rec['generation'];raw=meta['bank_profile']=='raw'
+ assert meta['evidence_only']==raw
+ if not raw and not meta['assets']:assert meta['diagnostic_only'] and not meta['eligible_for_learning'] and meta['missing_assets_reason']
+ elif not raw:assert not meta['diagnostic_only'] and meta['eligible_for_learning'] and meta['missing_assets_reason'] is None
  q=rec['question'];prompt=q[':question/problem'];m=re.search(r'\$(x|y)\$-coordinate.*?is \$(.*?)\$',prompt);assert m,prompt
  axis=m[1];k=number(m[2].rstrip(', '));missing=sp.sqrt(1-k*k);expected=sp.simplify(1/missing);target='sec' if axis=='y' else 'csc';other='cos' if axis=='y' else 'sin';given='sin' if axis=='y' else 'cos'
  assert target in prompt and 0<k<1;f=q[':question/answer-fields'][0];values=[number(a[':answer/value']) for a in f[':answer-field/choices']];assert len(values)==5
@@ -127,7 +131,7 @@ def main():
  from concurrent.futures import ThreadPoolExecutor
  fresh=[]
  for pp in g.domain('moderate','method-sign'):
-  spec={'axis':'x','p':pp,'point':[str(sp.sqrt(pp['r'])/pp['b']),str(sp.sqrt(pp['b']**2-pp['r'])/pp['b'])],'role':'prompt','version':g.VERSION}
+  spec={'axis':'x','p':pp,'point':[str(sp.sqrt(pp['r'])/pp['b']),str(sp.sqrt(pp['b']**2-pp['r'])/pp['b'])],'role':'prompt','version':g.VERSION,'renderer_revision':g.RENDERER_REVISION}
   if not (D/'plots'/(g.digest(spec)+'.png')).exists():fresh.append(pp)
   if len(fresh)==2:break
  assert len(fresh)==2
