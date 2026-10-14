@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-147212",
+      "sequence_position": 7,
+      "problem": "Suppose we take a random sample of size $n=125$ from a population where $75%$ of the population has a particular characteristic. Find a normal approximation for the probability that more than $65%$ but less than $72%$ of the sample has the characteristic. You may assume that the population size is significantly larger than the sample size.\n\n*Hint: Two tables of values of $Φ(z)$ for different values of $z$ are given below, where $Φ(z)$ is the cumulative distribution function for the standard normal distribution. *\n\n<table align=\"center\">\n\n<tbody><tr>\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.05\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.06\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.07\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-0.7\\,$</th><td align=\"center\"> $\\,0.2266\\,$ </td><td align=\"center\"> $\\,0.2236\\,$ </td><td align=\"center\"> $\\,0.2206\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-0.6\\,$</th><td align=\"center\"> $\\,0.2578\\,$ </td><td align=\"center\"> $\\,0.2546\\,$ </td><td align=\"center\"> $\\,0.2514\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-0.5\\,$</th><td align=\"center\"> $\\,0.2912\\,$ </td><td align=\"center\"> $\\,0.2877\\,$ </td><td align=\"center\"> $\\,0.2843\\,$ </td></tr>\n</tbody></table>\n</th>\n\n<th width=\"5%\"></th>\n\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.06\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.07\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.08\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-2.5\\,$</th><td align=\"center\"> $\\,0.0052\\,$ </td><td align=\"center\"> $\\,0.0051\\,$ </td><td align=\"center\"> $\\,0.0049\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-2.4\\,$</th><td align=\"center\"> $\\,0.0069\\,$ </td><td align=\"center\"> $\\,0.0068\\,$ </td><td align=\"center\"> $\\,0.0066\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-2.3\\,$</th><td align=\"center\"> $\\,0.0091\\,$ </td><td align=\"center\"> $\\,0.0089\\,$ </td><td align=\"center\"> $\\,0.0087\\,$ </td></tr>\n</tbody></table>\n</th>\n</tr>\n\n</tbody></table>",
+      "worked_solution": "Given a population in which a proportion $p$ of the population has a particular characteristic, the sampling distribution of the sample proportion $\\overset{^}{\\,p}$ can be approximated as\n\n$$\n\\overset{^}{\\,p}∼N(p,\\frac{p(1-p)}{n}),\n$$\n\nwhere the sample size $n$ is much smaller than the population size, $np>5,$ and $n(1-p)>5.$\n\nIn our case\n\n- the sample size is $n=125,$ and\n\n- the population proportion is $p=0.75.$\n\nNow, since\n\n$$\nnp=125(0.75)=93.75>5\n$$\n\nand\n\n$$\nn(1-p)=125(1-0.75)=31.25>5,\n$$\n\nand $n=125$ is much smaller than the population size, we can apply the above approximation.\n\nThe sampling distribution of the sample proportion, in this case, can be approximated as\n\n$$\n\\begin{aligned}\\overset{^}{\\,p} & ∼N(p,\\frac{p(1-p)}{n}) \\\\  & ∼N(0.75,\\frac{0.75(1-0.75)}{125}) \\\\  & ∼N(0.75,0.0015).\\end{aligned}\n$$\n\nThe probability we wish to find is\n$P(0.65<\\overset{^}{\\,p}\\le 0.72).$\nSo, we convert $\\overset{^}{\\,p}$ to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(0.65<\\overset{^}{\\,p}<0.72) & =P(\\frac{0.65-0.75}{\\sqrt{0.0015}}<Z\\le \\frac{0.72-0.75}{\\sqrt{0.0015}}) \\\\  & ≈P(-2.58<Z\\le -0.77) \\\\  & =P(Z\\le -0.77)-P(Z\\le -2.58) \\\\  & =Φ(-0.77)-Φ(-2.58)\\end{aligned}\n$$\n\nFrom the table, we have\n\n$$\n\\begin{aligned}Φ(-0.77) & =0.2206 \\\\ Φ(-2.58) & =0.0049.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}P(0.65<\\overset{^}{\\,p}<0.72) & =Φ(-0.77)-Φ(-2.58) \\\\  & =0.2206-0.0049 \\\\  & =0.2157.\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14188482/observations/history-q-147212-32a2cb9f4662ad672ecb.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14188482",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14188482/observations/history-solution-q-147212-441808eb3dda29989173.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "0.2517"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "0.2157"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "0.2715"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "0.1752"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "0.5172"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q147212",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "0.2517",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "Given a population in which a proportion $p$ of the population has a particular characteristic, the sampling distribution of the sample proportion $\\overset{^}{\\,p}$ can be approximated as\n\n$$\n\\overset{^}{\\,p}∼N(p,\\frac{p(1-p)}{n}),\n$$\n\nwhere the sample size $n$ is much smaller than the population size, $np>5,$ and $n(1-p)>5.$\n\nIn our case\n\n- the sample size is $n=125,$ and\n\n- the population proportion is $p=0.75.$\n\nNow, since\n\n$$\nnp=125(0.75)=93.75>5\n$$\n\nand\n\n$$\nn(1-p)=125(1-0.75)=31.25>5,\n$$\n\nand $n=125$ is much smaller than the population size, we can apply the above approximation.\n\nThe sampling distribution of the sample proportion, in this case, can be approximated as\n\n$$\n\\begin{aligned}\\overset{^}{\\,p} & ∼N(p,\\frac{p(1-p)}{n}) \\\\  & ∼N(0.75,\\frac{0.75(1-0.75)}{125}) \\\\  & ∼N(0.75,0.0015).\\end{aligned}\n$$\n\nThe probability we wish to find is\n$P(0.65<\\overset{^}{\\,p}\\le 0.72).$\nSo, we convert $\\overset{^}{\\,p}$ to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(0.65<\\overset{^}{\\,p}<0.72) & =P(\\frac{0.65-0.75}{\\sqrt{0.0015}}<Z\\le \\frac{0.72-0.75}{\\sqrt{0.0015}}) \\\\  & ≈P(-2.58<Z\\le -0.77) \\\\  & =P(Z\\le -0.77)-P(Z\\le -2.58) \\\\  & =Φ(-0.77)-Φ(-2.58)\\end{aligned}\n$$\n\nFrom the table, we have\n\n$$\n\\begin{aligned}Φ(-0.77) & =0.2206 \\\\ Φ(-2.58) & =0.0049.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}P(0.65<\\overset{^}{\\,p}<0.72) & =Φ(-0.77)-Φ(-2.58) \\\\  & =0.2206-0.0049 \\\\  & =0.2157.\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14188482/observations/step-q147212-c6e20b4739e099dd8955.html"
+        }
+      }
+    ]
+  }
+}
