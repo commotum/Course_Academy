@@ -1,0 +1,529 @@
+{
+  "task_id": "14226965",
+  "task_type": "review",
+  "topic_id": "1713",
+  "questions": [
+    {
+      "dom_id": "question-336422",
+      "name": null,
+      "problem": "A $9\\,000\\,\\text{mL}$-capacity tank initially holds $6\\,000\\,\\text{mL}$ of a brine (salt-water) solution containing $180\\,\\text{g}$ of salt. Fresh water begins to flow into the tank at a rate of $90\\,\\text{mL/s},$ while the completely mixed brine flows out at a rate of $60\\,\\text{mL/s}.$ Find the amount of salt in the tank at the moment it begins to overflow.",
+      "worked_solution": "Let $Q$ be the amount of salt in the tank at time $t.$ Then, the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in seconds. This is equal to the rate at which salt enters the tank minus the rate at which salt leaves the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{′}-{Q}_{\\text{out}}^{′}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{′}$ and ${Q}_{\\text{out}}^{′}$ are $\\text{g}/\\text{s}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which salt enters the tank.\n\nFirst, note that fresh water (i.e., a brine solution containing $0\\,\\text{g/mL}$ of salt) enters the tank at a rate of $90\\,\\text{mL/s}.$ So, the rate at which the *salt* enters the tank is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{′} & =(0\\,\\frac{\\text{g}}{\\text{mL}})\\cdot (90\\,\\frac{\\text{mL}}{\\text{s}}) \\\\  & =(0\\,\\frac{\\text{g}}{\\cancel{\\text{mL}}})\\cdot (90\\,\\frac{\\cancel{\\text{mL}}}{\\text{s}}) \\\\  & =0\\,\\frac{\\text{g}}{\\text{s}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which salt exits the tank.\n\nTo find the rate at which salt leaves the tank, we must first determine the volume of brine in the tank at time $t.$\n\nThe tank initially contains $6\\,000\\,\\text{mL}$ of brine; fresh water enters at $90\\,\\text{mL/s},$ and mixed brine leaves at $60\\,\\text{mL/s}.$\nAs a result, the amount of brine in the tank after $t$ seconds is \n\n$$\nV(t)=6\\,000+90t-60t=30(200+t)\\,\\text{mL}.\n$$\n\nNote that $V(t)$ is an increasing function, so the tank is filling.\n\nSince $Q$ is the amount of salt in the tank, the concentration of the brine at time $t$ is\n\n$$\n\\frac{Q}{30(200+t)}\\,\\frac{\\text{g}}{\\text{mL}}.\n$$\n\nTherefore, as the completely mixed brine leaves at a rate of $60\\,\\text{mL/s},$ *salt* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{′} & =(60\\,\\frac{\\text{mL}}{\\text{s}})\\cdot (\\frac{Q}{30(200+t)}\\,\\frac{\\text{g}}{\\text{mL}}) \\\\  & =(60\\,\\frac{\\cancel{\\text{mL}}}{\\text{s}})\\cdot (\\frac{Q}{30(200+t)}\\,\\frac{\\text{g}}{\\cancel{\\text{mL}}}) \\\\  & =\\frac{2Q}{200+t}\\,\\frac{\\text{g}}{\\text{s}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{′}-{Q}_{\\text{out}}^{′} \\\\  & =0-\\frac{2Q}{200+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}=-\\frac{2}{200+t}\\,Q.\n$$\n\n**Step 4**: Integrate the equation\n\nSeparating variables and integrating both sides with respect to $t,$ we get\n\n$$\n\\begin{aligned}\\frac{1}{Q}\\cdot \\frac{dQ}{dt} & =-\\frac{2}{200+t} \\\\ \\int \\frac{1}{Q}\\cdot \\frac{dQ}{dt}dt & =\\int (-\\frac{2}{200+t})\\,dt \\\\ \\int \\frac{1}{Q}\\cdot \\,dQ & =-2\\int \\frac{1}{200+t}\\,dt \\\\ \\operatorname{ln}⁡|Q| & =-2(\\operatorname{ln}⁡|200+t|)+C \\\\ \\operatorname{ln}⁡|Q| & =\\operatorname{ln}⁡|(200+t)^{-2}|+C \\\\ |Q| & ={e}^{\\operatorname{ln}⁡|(200+t)^{-2}|+C} \\\\ Q(t) & =\\frac{A}{(200+t)^{2}},\\end{aligned}\n$$\n\nwhere $A=\\pm {e}^{C}$ is a constant of integration.\n\nWe're told that the tank initially contains $180\\,\\text{g}$ of salt. So, we can apply the initial condition $Q(0)=180,$ and solve for $A:$\n\n$$\n\\begin{aligned}Q(0) & =180 \\\\ \\frac{A}{(200+0)^{2}} & =180 \\\\ A & =180(200)^{2}\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =\\frac{180(200)^{2}}{(200+t)^{2}} \\\\  & =180{(\\frac{200}{200+t})}^{2}\\end{aligned}\n$$\n\nNow, let ${t}_{o}$ be the time when the tank begins to overflow. The tank has a capacity of $9\\,000\\,\\text{mL},$ so we can use the condition $V({t}_{o})=9\\,000$ to solve for ${t}_{o}:$\n\n$$\n\\begin{aligned}V({t}_{o}) & =9\\,000 \\\\ 30(200+{t}_{o}) & =9\\,000 \\\\ 200+{t}_{o} & =300 \\\\ {t}_{o} & =100\\,\\text{s}\\end{aligned}\n$$\n\nFinally, the amount of salt in the tank at the moment it begins to overflow is\n\n$$\n\\begin{aligned}Q(100) & =180{(\\frac{200}{200+100})}^{2} \\\\  & =180{(\\frac{2}{3})}^{2} \\\\  & =80\\,\\text{g}.\\end{aligned}\n$$",
+      "calculator_instructions": "",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "option": "a",
+              "dom_id": "source-choice-1",
+              "type": "math",
+              "value": "80\\,\\text{g}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mn>80</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>g</mtext></math>"
+            },
+            {
+              "option": "b",
+              "dom_id": "source-choice-2",
+              "type": "math",
+              "value": "82\\,\\text{g}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mn>82</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>g</mtext></math>"
+            },
+            {
+              "option": "c",
+              "dom_id": "source-choice-3",
+              "type": "math",
+              "value": "85\\,\\text{g}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mn>85</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>g</mtext></math> "
+            },
+            {
+              "option": "d",
+              "dom_id": "source-choice-4",
+              "type": "math",
+              "value": "90\\,\\text{g}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mn>90</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>g</mtext></math> "
+            },
+            {
+              "option": "e",
+              "dom_id": "source-choice-5",
+              "type": "math",
+              "value": "100\\,\\text{g}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mn>100</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>g</mtext></math> "
+            }
+          ],
+          "choices_complete": true
+        }
+      ],
+      "problem_field_keys": [],
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "proof_feedback": null,
+      "html": "<div id=\"question-336422\" class=\"question\"><div class=\"questionHeader\"><span class=\"questionNumber\">1.</span><a class=\"questionKP\" href=\"/topics/1713#21755\">Determining an Amount at an Overflow Point</a><span class=\"helpButton\" questionid=\"336422\">?</span></div><div class=\"questionText\"><p>A <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"1\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c39\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c30\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c4C\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>9</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mn>000</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>mL</mtext></math></mjx-assistive-mml></mjx-container>-capacity tank initially holds <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"2\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c36\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c30\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c4C\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>6</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mn>000</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>mL</mtext></math></mjx-assistive-mml></mjx-container> of a brine (salt-water) solution containing <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"3\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c><mjx-c class=\"mjx-c38\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c67\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>180</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>g</mtext></math></mjx-assistive-mml></mjx-container> of salt. Fresh water begins to flow into the tank at a rate of <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"4\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c39\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c4C\"></mjx-c><mjx-c class=\"mjx-c2F\"></mjx-c><mjx-c class=\"mjx-c73\"></mjx-c></mjx-mtext><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2C\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>90</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>mL/s</mtext><mo>,</mo></math></mjx-assistive-mml></mjx-container> while the completely mixed brine flows out at a rate of <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"5\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c36\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c4C\"></mjx-c><mjx-c class=\"mjx-c2F\"></mjx-c><mjx-c class=\"mjx-c73\"></mjx-c></mjx-mtext><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2E\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>60</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>mL/s</mtext><mo>.</mo></math></mjx-assistive-mml></mjx-container> Find the amount of salt in the tank at the moment it begins to overflow.</p>\n</div><div class=\"answerDetails\"><div class=\"questionDifficulty difficultyEasy\">E</div><span class=\"answerCreated\">Thu, Oct 15th @ 3:16 AM</span><span class=\"answerDetailsSeparator\">|</span><span class=\"timeElpased\">Elapsed: 0:16</span><span class=\"answerResult\"><span style=\"color: green;\">Correct</span></span></div></div>",
+      "errors": [],
+      "extraction_parts": [
+        "problem",
+        "solution",
+        "fields"
+      ],
+      "extraction_error_parts": {},
+      "assets": [],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/observations/history-q-336422-0c0eca6e92deb3f6d7f6.html",
+      "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/observations/history-q-336422-0c0eca6e92deb3f6d7f6.png",
+      "source_url": "https://mathacademy.com/learn?taskId=14226965",
+      "captured_at": 1792059473.4171264,
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/observations/history-solution-q-336422-cc0491180dfb4696da53.html",
+      "math_academy_id": "q-336422",
+      "sequence_position": 1,
+      "difficulty": "easy",
+      "knowledge_point": "Determining an Amount at an Overflow Point",
+      "topic_id": "1713",
+      "knowledge_point_source_id": 21755,
+      "kp_href": "/topics/1713#21755",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "raw_html": "<div class=\"question\" id=\"question-336422\"><div class=\"questionHeader\"><span class=\"questionNumber\">1.</span><a class=\"questionKP\" href=\"/topics/1713#21755\">Determining an Amount at an Overflow Point</a><span class=\"helpButton\" questionid=\"336422\">?</span></div><div class=\"questionText\"><p>A <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"1\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c39\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c30\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c4C\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>9</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mn>000</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>mL</mtext></math></mjx-assistive-mml></mjx-container>-capacity tank initially holds <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"2\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c36\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c30\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c4C\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>6</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mn>000</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>mL</mtext></math></mjx-assistive-mml></mjx-container> of a brine (salt-water) solution containing <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"3\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c><mjx-c class=\"mjx-c38\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c67\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>180</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>g</mtext></math></mjx-assistive-mml></mjx-container> of salt. Fresh water begins to flow into the tank at a rate of <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"4\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c39\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c4C\"></mjx-c><mjx-c class=\"mjx-c2F\"></mjx-c><mjx-c class=\"mjx-c73\"></mjx-c></mjx-mtext><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2C\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>90</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>mL/s</mtext><mo>,</mo></math></mjx-assistive-mml></mjx-container> while the completely mixed brine flows out at a rate of <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"5\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c36\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c4C\"></mjx-c><mjx-c class=\"mjx-c2F\"></mjx-c><mjx-c class=\"mjx-c73\"></mjx-c></mjx-mtext><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2E\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>60</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>mL/s</mtext><mo>.</mo></math></mjx-assistive-mml></mjx-container> Find the amount of salt in the tank at the moment it begins to overflow.</p>\n</div><div class=\"answerDetails\"><div class=\"questionDifficulty difficultyEasy\">E</div><span class=\"answerCreated\">Thu, Oct 15th @ 3:16 AM</span><span class=\"answerDetailsSeparator\">|</span><span class=\"timeElpased\">Elapsed: 0:16</span><span class=\"answerResult\"><span style=\"color: green;\">Correct</span></span></div></div>",
+      "field_recovery": {
+        "kind": "owned_task_answers",
+        "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/source/task-answers-939161efce4bd8422e9717f841653c49f014bef8da23289b7564b6801ff9c5f3.json",
+        "question_id": "q-336422",
+        "question_sha256": "231f0376162fac391a010d807850715ab1b57d1d7a5baeaa4c835da83631a20c",
+        "rendered_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/source/task-answer-q-336422-231f0376162fac39.html",
+        "order": "canonical source order; not the live shuffled order",
+        "learner_answer": {
+          "id": 62192564,
+          "created": "2026-10-15T03:16:18.000Z",
+          "choices": null,
+          "correct": 1,
+          "selectedChoice": 1,
+          "freeResponse": null,
+          "timeElapsed": 15703,
+          "number": 1,
+          "createdStr": "Thu, Oct 15th @ 3:16 AM",
+          "timeElapsedFormatted": "0:16"
+        }
+      }
+    },
+    {
+      "dom_id": "question-336663",
+      "name": null,
+      "problem": "A tank initially holds $450\\,\\text{gal}$ of a sugar-water solution containing $18\\,\\text{lb}$ of sugar.\nFresh water is poured into the tank at a rate of $15\\,\\text{gal/min},$ while the completely mixed sugar solution leaves the tank at a rate of $10\\,\\text{gal/min}.$\nFind an equation for the amount of sugar $Q(t),$ in pounds, in the tank $t$ minutes after the fresh water is first added.",
+      "worked_solution": "Since $Q$ is the amount of sugar in the tank at time $t,$ the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which sugar enters the tank minus the rate at which sugar leaves the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{′}-{Q}_{\\text{out}}^{′}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{′}$ and ${Q}_{\\text{out}}^{′}$ are $\\text{lb}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which sugar enters the tank.\n\nFirst, note that fresh water (i.e., a solution containing $0\\,\\text{lb/gal}$ of sugar) enters the tank at a rate of $15\\,\\text{gal/min}.$ So, the rate at which the *sugar* enters the tank is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{′} & =(0\\,\\frac{\\text{lb}}{\\text{gal}})\\cdot (15\\,\\frac{\\text{gal}}{\\text{min}}) \\\\  & =(0\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}})\\cdot (15\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}}) \\\\  & =0\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which sugar exits the tank.\n\nNow, to find the rate at which sugar leaves the tank, we must first determine the volume of solution in the tank at time $t.$\n\n- The tank initially contains $450\\,\\text{gal}$ of solution.\n\n- Fresh water enters the tank at a rate of $15\\,\\text{gal/min}.$ So, after $t$ minutes, $15t\\,\\text{gal}$ have entered the tank.\n\n- The completely mixed solution leaves the tank at a rate of $10\\,\\text{gal/min}.$ So, after $t$ minutes, $10t\\,\\text{gal}$ have left the tank.\n\nAs a result, the volume of solution in the tank after $t$ minutes is \n\n$$\n450+15t-10t=(450+5t)\\,\\text{gal}.\n$$\n\nThen, since $Q$ is the amount of sugar in the tank, the *concentration* of the solution at time $t$ is\n\n$$\n\\frac{Q}{450+5t}\\,\\frac{\\text{lb}}{\\text{gal}}.\n$$\n\nTherefore, as the completely mixed solution leaves at a rate of $10\\,\\text{gal/min},$ *sugar* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{′} & =(10\\,\\frac{\\text{gal}}{\\text{min}})\\cdot (\\frac{Q}{450+5t}\\,\\frac{\\text{lb}}{\\text{gal}}) \\\\  & =(10\\,\\frac{\\cancel{\\text{gal}}}{\\text{min}})\\cdot (\\frac{Q}{450+5t}\\,\\frac{\\text{lb}}{\\cancel{\\text{gal}}}) \\\\  & =\\frac{10Q}{450+5t}\\,\\frac{\\text{lb}}{\\text{min}} \\\\  & =\\frac{2Q}{90+t}\\,\\frac{\\text{lb}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{′}-{Q}_{\\text{out}}^{′} \\\\ \\frac{dQ}{dt} & =0-\\frac{2Q}{90+t} \\\\ \\frac{dQ}{dt} & =-\\frac{2}{90+t}\\,Q.\\end{aligned}\n$$\n\n**Step 4**: Integrate the equation.\n\nSeparating variables and integrating both sides with respect to $t,$ we get\n\n$$\n\\begin{aligned}\\frac{1}{Q}\\cdot \\frac{dQ}{dt} & =-\\frac{2}{90+t} \\\\ \\int \\frac{1}{Q}\\cdot \\frac{dQ}{dt}dt & =\\int (-\\frac{2}{90+t})\\,dt \\\\ \\int \\frac{1}{Q}\\cdot \\,dQ & =-2\\int \\frac{1}{90+t}\\,dt \\\\ \\operatorname{ln}⁡|Q| & =-2\\operatorname{ln}⁡|90+t|+C \\\\ |Q| & ={e}^{-2\\operatorname{ln}⁡|90+t|+C} \\\\ Q(t) & =\\frac{A}{(90+t)^{2}},\\end{aligned}\n$$\n\nwhere $A=\\pm {e}^{C}$ is a constant of integration.\n\nWe're told that the tank initially contains $18\\,\\text{lb}$ of sugar. So, we can apply the initial condition $Q(0)=18,$ and solve for $A:$\n\n$$\n\\begin{aligned}Q(0) & =18 \\\\ \\frac{A}{(90+0)^{2}} & =18 \\\\ A & =18\\cdot {90}^{2}\\end{aligned}\n$$\n\nFinally, we obtain the following expression for $Q(t):$\n\n$$\nQ(t)=18{(\\frac{90}{90+t})}^{2}\n$$",
+      "calculator_instructions": "",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "option": "a",
+              "dom_id": "source-choice-1",
+              "type": "math",
+              "value": "Q(t)=18{(\\frac{90}{90+t})}^{2}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mi>Q</mi><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo><mo>=</mo><mn>18</mn><msup><mrow data-mjx-texclass=\"INNER\"><mo data-mjx-texclass=\"OPEN\">(</mo><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mfrac><mn>90</mn><mrow><mn>90</mn><mo>+</mo><mi>t</mi></mrow></mfrac></mstyle><mo data-mjx-texclass=\"CLOSE\">)</mo></mrow><mn>2</mn></msup></math>"
+            },
+            {
+              "option": "b",
+              "dom_id": "source-choice-2",
+              "type": "math",
+              "value": "Q(t)=18\\frac{90}{(90+t)^{2}}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mi>Q</mi><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo><mo>=</mo><mn>18</mn><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mfrac><mn>90</mn><mrow><mo stretchy=\"false\">(</mo><mn>90</mn><mo>+</mo><mi>t</mi><msup><mo stretchy=\"false\">)</mo><mn>2</mn></msup></mrow></mfrac></mstyle></math>"
+            },
+            {
+              "option": "c",
+              "dom_id": "source-choice-3",
+              "type": "math",
+              "value": "Q(t)=24{(\\frac{90}{90+t})}^{2}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mi>Q</mi><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo><mo>=</mo><mn>24</mn><msup><mrow data-mjx-texclass=\"INNER\"><mo data-mjx-texclass=\"OPEN\">(</mo><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mfrac><mn>90</mn><mrow><mn>90</mn><mo>+</mo><mi>t</mi></mrow></mfrac></mstyle><mo data-mjx-texclass=\"CLOSE\">)</mo></mrow><mn>2</mn></msup></math>"
+            },
+            {
+              "option": "d",
+              "dom_id": "source-choice-4",
+              "type": "math",
+              "value": "Q(t)=1800{(\\frac{9}{90+t})}^{2}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mi>Q</mi><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo><mo>=</mo><mn>1800</mn><msup><mrow data-mjx-texclass=\"INNER\"><mo data-mjx-texclass=\"OPEN\">(</mo><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mfrac><mn>9</mn><mrow><mn>90</mn><mo>+</mo><mi>t</mi></mrow></mfrac></mstyle><mo data-mjx-texclass=\"CLOSE\">)</mo></mrow><mn>2</mn></msup></math>"
+            },
+            {
+              "option": "e",
+              "dom_id": "source-choice-5",
+              "type": "math",
+              "value": "Q(t)=24{(\\frac{9}{90+t})}^{2}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mi>Q</mi><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo><mo>=</mo><mn>24</mn><msup><mrow data-mjx-texclass=\"INNER\"><mo data-mjx-texclass=\"OPEN\">(</mo><mstyle displaystyle=\"true\" scriptlevel=\"0\"><mfrac><mn>9</mn><mrow><mn>90</mn><mo>+</mo><mi>t</mi></mrow></mfrac></mstyle><mo data-mjx-texclass=\"CLOSE\">)</mo></mrow><mn>2</mn></msup></math>"
+            }
+          ],
+          "choices_complete": true
+        }
+      ],
+      "problem_field_keys": [],
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "proof_feedback": null,
+      "html": "<div id=\"question-336663\" class=\"question\"><div class=\"questionHeader\"><span class=\"questionNumber\">2.</span><a class=\"questionKP\" href=\"/topics/1713#21752\">Constructing and Solving a Dilution Model</a><span class=\"helpButton\" questionid=\"336663\">?</span></div><div class=\"questionText\"><p>A tank initially holds <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"46\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c34\"></mjx-c><mjx-c class=\"mjx-c35\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c67\"></mjx-c><mjx-c class=\"mjx-c61\"></mjx-c><mjx-c class=\"mjx-c6C\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>450</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>gal</mtext></math></mjx-assistive-mml></mjx-container> of a sugar-water solution containing <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"47\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c><mjx-c class=\"mjx-c38\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6C\"></mjx-c><mjx-c class=\"mjx-c62\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>18</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>lb</mtext></math></mjx-assistive-mml></mjx-container> of sugar.\nFresh water is poured into the tank at a rate of <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"48\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c><mjx-c class=\"mjx-c35\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c67\"></mjx-c><mjx-c class=\"mjx-c61\"></mjx-c><mjx-c class=\"mjx-c6C\"></mjx-c><mjx-c class=\"mjx-c2F\"></mjx-c><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c69\"></mjx-c><mjx-c class=\"mjx-c6E\"></mjx-c></mjx-mtext><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2C\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>15</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>gal/min</mtext><mo>,</mo></math></mjx-assistive-mml></mjx-container> while the completely mixed sugar solution leaves the tank at a rate of <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"49\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c67\"></mjx-c><mjx-c class=\"mjx-c61\"></mjx-c><mjx-c class=\"mjx-c6C\"></mjx-c><mjx-c class=\"mjx-c2F\"></mjx-c><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c69\"></mjx-c><mjx-c class=\"mjx-c6E\"></mjx-c></mjx-mtext><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2E\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>10</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>gal/min</mtext><mo>.</mo></math></mjx-assistive-mml></mjx-container>\nFind an equation for the amount of sugar <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"50\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mi class=\"mjx-i\"><mjx-c class=\"mjx-c1D444 TEX-I\"></mjx-c></mjx-mi><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c28\"></mjx-c></mjx-mo><mjx-mi class=\"mjx-i\"><mjx-c class=\"mjx-c1D461 TEX-I\"></mjx-c></mjx-mi><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c29\"></mjx-c></mjx-mo><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2C\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>Q</mi><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo><mo>,</mo></math></mjx-assistive-mml></mjx-container> in pounds, in the tank <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"51\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mi class=\"mjx-i\"><mjx-c class=\"mjx-c1D461 TEX-I\"></mjx-c></mjx-mi></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>t</mi></math></mjx-assistive-mml></mjx-container> minutes after the fresh water is first added.</p>\n</div><div class=\"answerDetails\"><div class=\"questionDifficulty difficultyModerate\">M</div><span class=\"answerCreated\">Thu, Oct 15th @ 3:16 AM</span><span class=\"answerDetailsSeparator\">|</span><span class=\"timeElpased\">Elapsed: 0:16</span><span class=\"answerResult\"><span style=\"color: red;\">Incorrect</span></span></div></div>",
+      "errors": [],
+      "extraction_parts": [
+        "problem",
+        "solution",
+        "fields"
+      ],
+      "extraction_error_parts": {},
+      "assets": [],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/observations/history-q-336663-06f14f0ffddaf2be8cc2.html",
+      "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/observations/history-q-336663-06f14f0ffddaf2be8cc2.png",
+      "source_url": "https://mathacademy.com/learn?taskId=14226965",
+      "captured_at": 1792059477.3519108,
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/observations/history-solution-q-336663-68da6ef218d1b016661f.html",
+      "math_academy_id": "q-336663",
+      "sequence_position": 2,
+      "difficulty": "moderate",
+      "knowledge_point": "Constructing and Solving a Dilution Model",
+      "topic_id": "1713",
+      "knowledge_point_source_id": 21752,
+      "kp_href": "/topics/1713#21752",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "raw_html": "<div class=\"question\" id=\"question-336663\"><div class=\"questionHeader\"><span class=\"questionNumber\">2.</span><a class=\"questionKP\" href=\"/topics/1713#21752\">Constructing and Solving a Dilution Model</a><span class=\"helpButton\" questionid=\"336663\">?</span></div><div class=\"questionText\"><p>A tank initially holds <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"46\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c34\"></mjx-c><mjx-c class=\"mjx-c35\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c67\"></mjx-c><mjx-c class=\"mjx-c61\"></mjx-c><mjx-c class=\"mjx-c6C\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>450</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>gal</mtext></math></mjx-assistive-mml></mjx-container> of a sugar-water solution containing <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"47\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c><mjx-c class=\"mjx-c38\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6C\"></mjx-c><mjx-c class=\"mjx-c62\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>18</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>lb</mtext></math></mjx-assistive-mml></mjx-container> of sugar.\nFresh water is poured into the tank at a rate of <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"48\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c><mjx-c class=\"mjx-c35\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c67\"></mjx-c><mjx-c class=\"mjx-c61\"></mjx-c><mjx-c class=\"mjx-c6C\"></mjx-c><mjx-c class=\"mjx-c2F\"></mjx-c><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c69\"></mjx-c><mjx-c class=\"mjx-c6E\"></mjx-c></mjx-mtext><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2C\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>15</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>gal/min</mtext><mo>,</mo></math></mjx-assistive-mml></mjx-container> while the completely mixed sugar solution leaves the tank at a rate of <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"49\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c67\"></mjx-c><mjx-c class=\"mjx-c61\"></mjx-c><mjx-c class=\"mjx-c6C\"></mjx-c><mjx-c class=\"mjx-c2F\"></mjx-c><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c69\"></mjx-c><mjx-c class=\"mjx-c6E\"></mjx-c></mjx-mtext><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2E\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>10</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>gal/min</mtext><mo>.</mo></math></mjx-assistive-mml></mjx-container>\nFind an equation for the amount of sugar <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"50\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mi class=\"mjx-i\"><mjx-c class=\"mjx-c1D444 TEX-I\"></mjx-c></mjx-mi><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c28\"></mjx-c></mjx-mo><mjx-mi class=\"mjx-i\"><mjx-c class=\"mjx-c1D461 TEX-I\"></mjx-c></mjx-mi><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c29\"></mjx-c></mjx-mo><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2C\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>Q</mi><mo stretchy=\"false\">(</mo><mi>t</mi><mo stretchy=\"false\">)</mo><mo>,</mo></math></mjx-assistive-mml></mjx-container> in pounds, in the tank <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"51\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mi class=\"mjx-i\"><mjx-c class=\"mjx-c1D461 TEX-I\"></mjx-c></mjx-mi></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>t</mi></math></mjx-assistive-mml></mjx-container> minutes after the fresh water is first added.</p>\n</div><div class=\"answerDetails\"><div class=\"questionDifficulty difficultyModerate\">M</div><span class=\"answerCreated\">Thu, Oct 15th @ 3:16 AM</span><span class=\"answerDetailsSeparator\">|</span><span class=\"timeElpased\">Elapsed: 0:16</span><span class=\"answerResult\"><span style=\"color: red;\">Incorrect</span></span></div></div>",
+      "field_recovery": {
+        "kind": "owned_task_answers",
+        "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/source/task-answers-939161efce4bd8422e9717f841653c49f014bef8da23289b7564b6801ff9c5f3.json",
+        "question_id": "q-336663",
+        "question_sha256": "e04ffcb0453ea1073e6f83ca6405d936389efc276515d0e8097b02ff8ea43926",
+        "rendered_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/source/task-answer-q-336663-e04ffcb0453ea107.html",
+        "order": "canonical source order; not the live shuffled order",
+        "learner_answer": {
+          "id": 62192580,
+          "created": "2026-10-15T03:16:39.000Z",
+          "choices": null,
+          "correct": 0,
+          "selectedChoice": 3,
+          "freeResponse": null,
+          "timeElapsed": 16419,
+          "number": 2,
+          "createdStr": "Thu, Oct 15th @ 3:16 AM",
+          "timeElapsedFormatted": "0:16"
+        }
+      }
+    },
+    {
+      "dom_id": "question-336678",
+      "name": null,
+      "problem": "A vat initially holds $500\\,\\text{L}$ of a sugar-water solution containing $15\\,\\text{kg}$ of dissolved sugar.\nPure water is pumped into the vat at a rate of $14\\,\\text{L/min},$ while the completely mixed sugar-water solution leaves the vat at a rate of $10\\,\\text{L/min}.$\nFind, rounded to two decimal places, the amount of sugar in the vat $14$ minutes after the water pumping begins.",
+      "worked_solution": "Let $Q$ be the amount of sugar in the vat at time $t.$ Then, the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which sugar enters the vat minus the rate at which sugar leaves the vat.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{′}-{Q}_{\\text{out}}^{′}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{′}$ and ${Q}_{\\text{out}}^{′}$ are $\\text{kg}/\\text{min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which sugar enters the vat.\n\nNote that pure water (i.e., water containing $0\\,\\text{kg/L}$ of sugar) enters the vat at a rate of $14\\,\\text{L/min}.$ So, the rate at which the *sugar* enters the vat is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{′} & =(0\\,\\frac{\\text{kg}}{\\text{L}})\\cdot (14\\,\\frac{\\text{L}}{\\text{min}}) \\\\  & =(0\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}})\\cdot (14\\,\\frac{\\cancel{\\text{L}}}{\\text{min}}) \\\\  & =0\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which sugar exits the vat.\n\nTo find the rate at which sugar leaves the vat, we first determine the volume of solution in the vat at time $t.$\n\nThe vat initially contains $500\\,\\text{L}$ of solution; water enters at $14\\,\\text{L/min}$ and drains out at $10\\,\\text{L/min}.$\nAs a result, the amount of solution in the vat after $t$ minutes is \n\n$$\n500+14t-10t=(500+4t)\\,\\text{L}.\n$$\n\nSince $Q$ is the amount of sugar in the vat, the *concentration* of the solution at time $t$ is\n\n$$\n\\frac{Q}{500+4t}\\,\\frac{\\text{kg}}{\\text{L}}.\n$$\n\nTherefore, as the completely mixed sugar-water solution leaves at a rate of $10\\,\\text{L/min},$ *sugar* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{′} & =(10\\,\\frac{\\text{L}}{\\text{min}})\\cdot (\\frac{Q}{500+4t}\\,\\frac{\\text{kg}}{\\text{L}}) \\\\  & =(10\\,\\frac{\\cancel{\\text{L}}}{\\text{min}})\\cdot (\\frac{Q}{500+4t}\\,\\frac{\\text{kg}}{\\cancel{\\text{L}}}) \\\\  & =\\frac{10Q}{500+4t}\\,\\frac{\\text{kg}}{\\text{min}} \\\\  & =\\frac{5Q}{2(125+t)}\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{′}-{Q}_{\\text{out}}^{′} \\\\  & =0-\\frac{5Q}{2(125+t)}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}=-\\frac{5}{2(125+t)}\\,Q.\n$$\n\n**Step 4**: Integrate the equation.\n\nSeparating variables and integrating both sides with respect to $t,$ we get\n\n$$\n\\begin{aligned}\\frac{1}{Q}\\cdot \\frac{dQ}{dt} & =-\\frac{5}{2(125+t)} \\\\ \\int \\frac{1}{Q}\\cdot \\frac{dQ}{dt}dt & =\\int (-\\frac{5}{2(125+t)})\\,dt \\\\ \\int \\frac{1}{Q}\\cdot \\,dQ & =-\\frac{5}{2}\\int \\frac{1}{125+t}\\,dt \\\\ \\operatorname{ln}⁡|Q| & =-\\frac{5}{2}\\operatorname{ln}⁡|125+t|+C \\\\ |Q| & ={e}^{-\\frac{5}{2}\\operatorname{ln}⁡|125+t|+C} \\\\ Q(t) & =\\frac{A}{(125+t)^{5/2}},\\end{aligned}\n$$\n\nwhere $A=\\pm {e}^{C}$ is a constant of integration.\n\nWe're told that the vat initially contains $15\\,\\text{kg}$ of sugar. So, we can apply the initial condition $Q(0)=15,$ and solve for $A:$\n\n$$\n\\begin{aligned}Q(0) & =15 \\\\ \\frac{A}{(125+0)^{5/2}} & =15 \\\\ A & =15\\cdot {125}^{5/2}\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\nQ(t)=15{(\\frac{125}{125+t})}^{5/2}\n$$\n\nFinally, the amount of sugar in the vat $14$ minutes after the water is first pumped in is\n\n$$\nQ(12)=15{(\\frac{125}{139})}^{5/2}≈11.50\\,\\text{kg},\n$$\n\nrounded to two decimal places.",
+      "calculator_instructions": "",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "option": "a",
+              "dom_id": "source-choice-1",
+              "type": "math",
+              "value": "11.50\\,\\text{kg}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mrow data-mjx-texclass=\"ORD\"><mn>11.50</mn></mrow><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>kg</mtext></math>"
+            },
+            {
+              "option": "b",
+              "dom_id": "source-choice-2",
+              "type": "math",
+              "value": "11.96\\,\\text{kg}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mrow data-mjx-texclass=\"ORD\"><mn>11.96</mn></mrow><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>kg</mtext></math>"
+            },
+            {
+              "option": "c",
+              "dom_id": "source-choice-3",
+              "type": "math",
+              "value": "12.31\\,\\text{kg}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mrow data-mjx-texclass=\"ORD\"><mn>12.31</mn></mrow><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>kg</mtext></math>"
+            },
+            {
+              "option": "d",
+              "dom_id": "source-choice-4",
+              "type": "math",
+              "value": "10.84\\,\\text{kg}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mrow data-mjx-texclass=\"ORD\"><mn>10.84</mn></mrow><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>kg</mtext></math>"
+            },
+            {
+              "option": "e",
+              "dom_id": "source-choice-5",
+              "type": "math",
+              "value": "12.98\\,\\text{kg}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mrow data-mjx-texclass=\"ORD\"><mn>12.98</mn></mrow><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>kg</mtext></math>"
+            }
+          ],
+          "choices_complete": true
+        }
+      ],
+      "problem_field_keys": [],
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "proof_feedback": null,
+      "html": "<div id=\"question-336678\" class=\"question\"><div class=\"questionHeader\"><span class=\"questionNumber\">3.</span><a class=\"questionKP\" href=\"/topics/1713#21752\">Constructing and Solving a Dilution Model</a><span class=\"helpButton\" questionid=\"336678\">?</span></div><div class=\"questionText\"><p>A vat initially holds <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"89\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c35\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c4C\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>500</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>L</mtext></math></mjx-assistive-mml></mjx-container> of a sugar-water solution containing <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"90\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c><mjx-c class=\"mjx-c35\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6B\"></mjx-c><mjx-c class=\"mjx-c67\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>15</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>kg</mtext></math></mjx-assistive-mml></mjx-container> of dissolved sugar.\nPure water is pumped into the vat at a rate of <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"91\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c><mjx-c class=\"mjx-c34\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c4C\"></mjx-c><mjx-c class=\"mjx-c2F\"></mjx-c><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c69\"></mjx-c><mjx-c class=\"mjx-c6E\"></mjx-c></mjx-mtext><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2C\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>14</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>L/min</mtext><mo>,</mo></math></mjx-assistive-mml></mjx-container> while the completely mixed sugar-water solution leaves the vat at a rate of <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"92\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c4C\"></mjx-c><mjx-c class=\"mjx-c2F\"></mjx-c><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c69\"></mjx-c><mjx-c class=\"mjx-c6E\"></mjx-c></mjx-mtext><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2E\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>10</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>L/min</mtext><mo>.</mo></math></mjx-assistive-mml></mjx-container>\nFind, rounded to two decimal places, the amount of sugar in the vat <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"93\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c><mjx-c class=\"mjx-c34\"></mjx-c></mjx-mn></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>14</mn></math></mjx-assistive-mml></mjx-container> minutes after the water pumping begins.</p>\n</div><div class=\"answerDetails\"><div class=\"questionDifficulty difficultyHard\">H</div><span class=\"answerCreated\">Thu, Oct 15th @ 3:16 AM</span><span class=\"answerDetailsSeparator\">|</span><span class=\"timeElpased\">Elapsed: 0:17</span><span class=\"answerResult\"><span style=\"color: green;\">Correct</span></span></div></div>",
+      "errors": [],
+      "extraction_parts": [
+        "problem",
+        "solution",
+        "fields"
+      ],
+      "extraction_error_parts": {},
+      "assets": [],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/observations/history-q-336678-8be9b695e8d281fec0c6.html",
+      "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/observations/history-q-336678-8be9b695e8d281fec0c6.png",
+      "source_url": "https://mathacademy.com/learn?taskId=14226965",
+      "captured_at": 1792059480.9297194,
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/observations/history-solution-q-336678-4456e619208f5f99dd07.html",
+      "math_academy_id": "q-336678",
+      "sequence_position": 3,
+      "difficulty": "hard",
+      "knowledge_point": "Constructing and Solving a Dilution Model",
+      "topic_id": "1713",
+      "knowledge_point_source_id": 21752,
+      "kp_href": "/topics/1713#21752",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "raw_html": "<div class=\"question\" id=\"question-336678\"><div class=\"questionHeader\"><span class=\"questionNumber\">3.</span><a class=\"questionKP\" href=\"/topics/1713#21752\">Constructing and Solving a Dilution Model</a><span class=\"helpButton\" questionid=\"336678\">?</span></div><div class=\"questionText\"><p>A vat initially holds <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"89\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c35\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c4C\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>500</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>L</mtext></math></mjx-assistive-mml></mjx-container> of a sugar-water solution containing <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"90\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c><mjx-c class=\"mjx-c35\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6B\"></mjx-c><mjx-c class=\"mjx-c67\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>15</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>kg</mtext></math></mjx-assistive-mml></mjx-container> of dissolved sugar.\nPure water is pumped into the vat at a rate of <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"91\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c><mjx-c class=\"mjx-c34\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c4C\"></mjx-c><mjx-c class=\"mjx-c2F\"></mjx-c><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c69\"></mjx-c><mjx-c class=\"mjx-c6E\"></mjx-c></mjx-mtext><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2C\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>14</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>L/min</mtext><mo>,</mo></math></mjx-assistive-mml></mjx-container> while the completely mixed sugar-water solution leaves the vat at a rate of <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"92\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c4C\"></mjx-c><mjx-c class=\"mjx-c2F\"></mjx-c><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c69\"></mjx-c><mjx-c class=\"mjx-c6E\"></mjx-c></mjx-mtext><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2E\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>10</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>L/min</mtext><mo>.</mo></math></mjx-assistive-mml></mjx-container>\nFind, rounded to two decimal places, the amount of sugar in the vat <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"93\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c><mjx-c class=\"mjx-c34\"></mjx-c></mjx-mn></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>14</mn></math></mjx-assistive-mml></mjx-container> minutes after the water pumping begins.</p>\n</div><div class=\"answerDetails\"><div class=\"questionDifficulty difficultyHard\">H</div><span class=\"answerCreated\">Thu, Oct 15th @ 3:16 AM</span><span class=\"answerDetailsSeparator\">|</span><span class=\"timeElpased\">Elapsed: 0:17</span><span class=\"answerResult\"><span style=\"color: green;\">Correct</span></span></div></div>",
+      "field_recovery": {
+        "kind": "owned_task_answers",
+        "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/source/task-answers-939161efce4bd8422e9717f841653c49f014bef8da23289b7564b6801ff9c5f3.json",
+        "question_id": "q-336678",
+        "question_sha256": "4e4816d16e698285ad982c974c3875e8d5524a678950be1ea9a2d1e1afe8ed83",
+        "rendered_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/source/task-answer-q-336678-4e4816d16e698285.html",
+        "order": "canonical source order; not the live shuffled order",
+        "learner_answer": {
+          "id": 62192585,
+          "created": "2026-10-15T03:16:59.000Z",
+          "choices": null,
+          "correct": 1,
+          "selectedChoice": 1,
+          "freeResponse": null,
+          "timeElapsed": 16745,
+          "number": 3,
+          "createdStr": "Thu, Oct 15th @ 3:16 AM",
+          "timeElapsedFormatted": "0:17"
+        }
+      }
+    },
+    {
+      "dom_id": "question-336687",
+      "name": null,
+      "problem": "A $9\\,800\\,\\text{mL}$-capacity tank initially holds $7\\,000\\,\\text{mL}$ of a brine (salt-water) solution containing $196\\,\\text{g}$ of salt. Fresh water begins to flow into the tank at a rate of $105\\,\\text{mL/s},$ while the completely mixed brine flows out at a rate of $70\\,\\text{mL/s}.$ Find the amount of salt in the tank at the moment it begins to overflow.",
+      "worked_solution": "Let $Q$ be the amount of salt in the tank at time $t.$ Then, the derivative \n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in seconds. This is equal to the rate at which salt enters the tank minus the rate at which salt leaves the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{′}-{Q}_{\\text{out}}^{′}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{′}$ and ${Q}_{\\text{out}}^{′}$ are $\\text{g}/\\text{s}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which salt enters the tank.\n\nFirst, note that fresh water (i.e., a brine solution containing $0\\,\\text{g/mL}$ of salt) enters the tank at a rate of $105\\,\\text{mL/s}.$ So, the rate at which the *salt* enters the tank is \n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{′} & =(0\\,\\frac{\\text{g}}{\\text{mL}})\\cdot (105\\,\\frac{\\text{mL}}{\\text{s}}) \\\\  & =(0\\,\\frac{\\text{g}}{\\cancel{\\text{mL}}})\\cdot (105\\,\\frac{\\cancel{\\text{mL}}}{\\text{s}}) \\\\  & =0\\,\\frac{\\text{g}}{\\text{s}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which salt exits the tank.\n\nTo find the rate at which salt leaves the tank, we must first determine the volume of brine in the tank at time $t.$\n\nThe tank initially contains $7\\,000\\,\\text{mL}$ of brine; fresh water enters at $105\\,\\text{mL/s},$ and mixed brine leaves at $70\\,\\text{mL/s}.$\nAs a result, the amount of brine in the tank after $t$ seconds is \n\n$$\nV(t)=7\\,000+105t-70t=35(200+t)\\,\\text{mL}.\n$$\n\nNote that $V(t)$ is an increasing function, so the tank is filling.\n\nSince $Q$ is the amount of salt in the tank, the concentration of the brine at time $t$ is\n\n$$\n\\frac{Q}{35(200+t)}\\,\\frac{\\text{g}}{\\text{mL}}.\n$$\n\nTherefore, as the completely mixed brine leaves at a rate of $70\\,\\text{mL/s},$ *salt* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{′} & =(70\\,\\frac{\\text{mL}}{\\text{s}})\\cdot (\\frac{Q}{35(200+t)}\\,\\frac{\\text{g}}{\\text{mL}}) \\\\  & =(70\\,\\frac{\\cancel{\\text{mL}}}{\\text{s}})\\cdot (\\frac{Q}{35(200+t)}\\,\\frac{\\text{g}}{\\cancel{\\text{mL}}}) \\\\  & =\\frac{2Q}{200+t}\\,\\frac{\\text{g}}{\\text{s}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore, \n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{′}-{Q}_{\\text{out}}^{′} \\\\  & =0-\\frac{2Q}{200+t}\\end{aligned}\n$$\n\nwhich gives the equation\n\n$$\n\\frac{dQ}{dt}=-\\frac{2}{200+t}\\,Q.\n$$\n\n**Step 4**: Integrate the equation\n\nSeparating variables and integrating both sides with respect to $t,$ we get\n\n$$\n\\begin{aligned}\\frac{1}{Q}\\cdot \\frac{dQ}{dt} & =-\\frac{2}{200+t} \\\\ \\int \\frac{1}{Q}\\cdot \\frac{dQ}{dt}dt & =\\int (-\\frac{2}{200+t})\\,dt \\\\ \\int \\frac{1}{Q}\\cdot \\,dQ & =-2\\int \\frac{1}{200+t}\\,dt \\\\ \\operatorname{ln}⁡|Q| & =-2(\\operatorname{ln}⁡|200+t|)+C \\\\ \\operatorname{ln}⁡|Q| & =\\operatorname{ln}⁡|(200+t)^{-2}|+C \\\\ |Q| & ={e}^{\\operatorname{ln}⁡|(200+t)^{-2}|+C} \\\\ Q(t) & =\\frac{A}{(200+t)^{2}},\\end{aligned}\n$$\n\nwhere $A=\\pm {e}^{C}$ is a constant of integration.\n\nWe're told that the tank initially contains $196\\,\\text{g}$ of salt. So, we can apply the initial condition $Q(0)=196,$ and solve for $A:$\n\n$$\n\\begin{aligned}Q(0) & =196 \\\\ \\frac{A}{(200+0)^{2}} & =196 \\\\ A & =196(200)^{2}\\end{aligned}\n$$\n\nTherefore, we obtain the following expression for $Q(t):$\n\n$$\n\\begin{aligned}Q(t) & =\\frac{196(200)^{2}}{(200+t)^{2}} \\\\  & =196{(\\frac{200}{200+t})}^{2}\\end{aligned}\n$$\n\nNow, let ${t}_{o}$ be the time when the tank begins to overflow. The tank has a capacity of $9\\,800\\,\\text{mL},$ so we can use the condition $V({t}_{o})=9\\,800$ to solve for ${t}_{o}:$\n\n$$\n\\begin{aligned}V({t}_{o}) & =9\\,800 \\\\ 35(200+{t}_{o}) & =9\\,800 \\\\ 200+{t}_{o} & =280 \\\\ {t}_{o} & =80\\,\\text{s}\\end{aligned}\n$$\n\nFinally, the amount of salt in the tank at the moment it begins to overflow is\n\n$$\n\\begin{aligned}Q(80) & =196{(\\frac{200}{200+80})}^{2} \\\\  & =196{(\\frac{5}{7})}^{2} \\\\  & =100\\,\\text{g}.\\end{aligned}\n$$",
+      "calculator_instructions": "",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "option": "a",
+              "dom_id": "source-choice-1",
+              "type": "math",
+              "value": "100\\,\\text{g}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mn>100</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>g</mtext></math>"
+            },
+            {
+              "option": "b",
+              "dom_id": "source-choice-2",
+              "type": "math",
+              "value": "102\\,\\text{g}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mn>102</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>g</mtext></math>"
+            },
+            {
+              "option": "c",
+              "dom_id": "source-choice-3",
+              "type": "math",
+              "value": "105\\,\\text{g}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mn>105</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>g</mtext></math>"
+            },
+            {
+              "option": "d",
+              "dom_id": "source-choice-4",
+              "type": "math",
+              "value": "110\\,\\text{g}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mn>110</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>g</mtext></math>"
+            },
+            {
+              "option": "e",
+              "dom_id": "source-choice-5",
+              "type": "math",
+              "value": "120\\,\\text{g}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mn>120</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>g</mtext></math>"
+            }
+          ],
+          "choices_complete": true
+        }
+      ],
+      "problem_field_keys": [],
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "proof_feedback": null,
+      "html": "<div id=\"question-336687\" class=\"question\"><div class=\"questionHeader\"><span class=\"questionNumber\">4.</span><a class=\"questionKP\" href=\"/topics/1713#21755\">Determining an Amount at an Overflow Point</a><span class=\"helpButton\" questionid=\"336687\">?</span></div><div class=\"questionText\"><p>A <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"129\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c39\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c38\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c4C\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>9</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mn>800</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>mL</mtext></math></mjx-assistive-mml></mjx-container>-capacity tank initially holds <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"130\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c37\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c30\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c4C\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>7</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mn>000</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>mL</mtext></math></mjx-assistive-mml></mjx-container> of a brine (salt-water) solution containing <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"131\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c><mjx-c class=\"mjx-c39\"></mjx-c><mjx-c class=\"mjx-c36\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c67\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>196</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>g</mtext></math></mjx-assistive-mml></mjx-container> of salt. Fresh water begins to flow into the tank at a rate of <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"132\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c><mjx-c class=\"mjx-c35\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c4C\"></mjx-c><mjx-c class=\"mjx-c2F\"></mjx-c><mjx-c class=\"mjx-c73\"></mjx-c></mjx-mtext><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2C\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>105</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>mL/s</mtext><mo>,</mo></math></mjx-assistive-mml></mjx-container> while the completely mixed brine flows out at a rate of <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"133\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c37\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c4C\"></mjx-c><mjx-c class=\"mjx-c2F\"></mjx-c><mjx-c class=\"mjx-c73\"></mjx-c></mjx-mtext><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2E\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>70</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>mL/s</mtext><mo>.</mo></math></mjx-assistive-mml></mjx-container> Find the amount of salt in the tank at the moment it begins to overflow.</p>\n</div><div class=\"answerDetails\"><div class=\"questionDifficulty difficultyEasy\">E</div><span class=\"answerCreated\">Thu, Oct 15th @ 3:17 AM</span><span class=\"answerDetailsSeparator\">|</span><span class=\"timeElpased\">Elapsed: 0:15</span><span class=\"answerResult\"><span style=\"color: red;\">Incorrect</span></span></div></div>",
+      "errors": [],
+      "extraction_parts": [
+        "problem",
+        "solution",
+        "fields"
+      ],
+      "extraction_error_parts": {},
+      "assets": [],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/observations/history-q-336687-0a43f9620de1625acf70.html",
+      "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/observations/history-q-336687-0a43f9620de1625acf70.png",
+      "source_url": "https://mathacademy.com/learn?taskId=14226965",
+      "captured_at": 1792059484.017714,
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/observations/history-solution-q-336687-1f642665d6d7b665731a.html",
+      "math_academy_id": "q-336687",
+      "sequence_position": 4,
+      "difficulty": "easy",
+      "knowledge_point": "Determining an Amount at an Overflow Point",
+      "topic_id": "1713",
+      "knowledge_point_source_id": 21755,
+      "kp_href": "/topics/1713#21755",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "raw_html": "<div class=\"question\" id=\"question-336687\"><div class=\"questionHeader\"><span class=\"questionNumber\">4.</span><a class=\"questionKP\" href=\"/topics/1713#21755\">Determining an Amount at an Overflow Point</a><span class=\"helpButton\" questionid=\"336687\">?</span></div><div class=\"questionText\"><p>A <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"129\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c39\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c38\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c4C\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>9</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mn>800</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>mL</mtext></math></mjx-assistive-mml></mjx-container>-capacity tank initially holds <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"130\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c37\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c30\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c4C\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>7</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mn>000</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>mL</mtext></math></mjx-assistive-mml></mjx-container> of a brine (salt-water) solution containing <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"131\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c><mjx-c class=\"mjx-c39\"></mjx-c><mjx-c class=\"mjx-c36\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c67\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>196</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>g</mtext></math></mjx-assistive-mml></mjx-container> of salt. Fresh water begins to flow into the tank at a rate of <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"132\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c><mjx-c class=\"mjx-c35\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c4C\"></mjx-c><mjx-c class=\"mjx-c2F\"></mjx-c><mjx-c class=\"mjx-c73\"></mjx-c></mjx-mtext><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2C\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>105</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>mL/s</mtext><mo>,</mo></math></mjx-assistive-mml></mjx-container> while the completely mixed brine flows out at a rate of <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"133\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c37\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c4C\"></mjx-c><mjx-c class=\"mjx-c2F\"></mjx-c><mjx-c class=\"mjx-c73\"></mjx-c></mjx-mtext><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2E\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>70</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>mL/s</mtext><mo>.</mo></math></mjx-assistive-mml></mjx-container> Find the amount of salt in the tank at the moment it begins to overflow.</p>\n</div><div class=\"answerDetails\"><div class=\"questionDifficulty difficultyEasy\">E</div><span class=\"answerCreated\">Thu, Oct 15th @ 3:17 AM</span><span class=\"answerDetailsSeparator\">|</span><span class=\"timeElpased\">Elapsed: 0:15</span><span class=\"answerResult\"><span style=\"color: red;\">Incorrect</span></span></div></div>",
+      "field_recovery": {
+        "kind": "owned_task_answers",
+        "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/source/task-answers-939161efce4bd8422e9717f841653c49f014bef8da23289b7564b6801ff9c5f3.json",
+        "question_id": "q-336687",
+        "question_sha256": "f628ae6f4f106d968b7100a5190022750929a369cf050318ef274d5ec3ce232d",
+        "rendered_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/source/task-answer-q-336687-f628ae6f4f106d96.html",
+        "order": "canonical source order; not the live shuffled order",
+        "learner_answer": {
+          "id": 62192595,
+          "created": "2026-10-15T03:17:18.000Z",
+          "choices": null,
+          "correct": 0,
+          "selectedChoice": 5,
+          "freeResponse": null,
+          "timeElapsed": 14892,
+          "number": 4,
+          "createdStr": "Thu, Oct 15th @ 3:17 AM",
+          "timeElapsedFormatted": "0:15"
+        }
+      }
+    },
+    {
+      "dom_id": "question-336839",
+      "name": null,
+      "problem": "A $500\\,\\text{L}$-capacity water tank initially holds $320\\,\\text{L}$ of water containing $20\\,\\text{kg}$ of a dissolved contaminant. Clean water begins to flow into the tank at a rate of $9\\,\\text{L/min},$ while the completely mixed water flows out at a rate of $5\\,\\text{L/min}.$ Find, rounded to two decimal places, the amount of contaminant in the tank at the moment it begins to overflow.",
+      "worked_solution": "Let $Q$ be the amount of contaminant in the tank at time $t.$ Then, the derivative\n\n$$\n\\frac{dQ}{dt}\n$$\n\ndescribes how this amount changes with respect to time $t,$ in minutes. This is equal to the rate at which contaminant enters the tank minus the rate at which contaminant leaves the tank.\n\n$$\n\\frac{dQ}{dt}={Q}_{\\text{in}}^{′}-{Q}_{\\text{out}}^{′}\n$$\n\nNote that the units of $\\frac{dQ}{dt},{Q}_{\\text{in}}^{′}$ and ${Q}_{\\text{out}}^{′}$ are $\\text{kg/min}.$ Now, let's compute the required rates of change in steps.\n\n**Step 1**: Calculating the rate at which contaminant enters the tank.\n\nFirst, note that clean water (i.e., water containing $0\\,\\text{kg/L}$ of contaminant) enters the tank at a rate of $9\\,\\text{L/min}.$ So, the rate at which the *contaminant* enters the tank is\n\n$$\n\\begin{aligned}{Q}_{\\text{in}}^{′} & =(0\\,\\frac{\\text{kg}}{\\text{L}})\\cdot (9\\,\\frac{\\text{L}}{\\text{min}}) \\\\  & =0\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 2**: Calculating the rate at which contaminant exits the tank.\n\nTo find the rate at which contaminant leaves the tank, we must first determine the volume of water in the tank at time $t.$\n\nThe tank initially contains $320\\,\\text{L}$ of water; clean water enters at $9\\,\\text{L/min},$ and mixed water leaves at $5\\,\\text{L/min}.$\nAs a result, the amount of water in the tank after $t$ minutes is\n\n$$\nV(t)=320+9t-5t=(320+4t)\\,\\text{L}.\n$$\n\nNote that $V(t)$ is an increasing function, so the tank is filling.\n\nSince $Q$ is the amount of contaminant in the tank, the *concentration* of the water at time $t$ is\n\n$$\n\\frac{Q}{320+4t}\\,\\frac{\\text{kg}}{\\text{L}}.\n$$\n\nTherefore, as the completely mixed water leaves at a rate of $5\\,\\text{L/min},$ *contaminant* leaves at a rate of\n\n$$\n\\begin{aligned}{Q}_{\\text{out}}^{′} & =(5\\,\\frac{\\text{L}}{\\text{min}})\\cdot (\\frac{Q}{320+4t}\\,\\frac{\\text{kg}}{\\text{L}}) \\\\  & =\\frac{5Q}{320+4t}\\,\\frac{\\text{kg}}{\\text{min}} \\\\  & =\\frac{5Q}{4(80+t)}\\,\\frac{\\text{kg}}{\\text{min}}.\\end{aligned}\n$$\n\n**Step 3**: Calculate the overall rate of change.\n\nThe rate of change equals the rate of entry minus the rate of exit. Therefore,\n\n$$\n\\begin{aligned}\\frac{dQ}{dt} & ={Q}_{\\text{in}}^{′}-{Q}_{\\text{out}}^{′} \\\\  & =0-\\frac{5Q}{4(80+t)},\\end{aligned}\n$$\n\nwhich gives\n\n$$\n\\frac{dQ}{dt}=-\\frac{5}{4(80+t)}\\,Q.\n$$\n\n**Step 4**: Integrate the equation.\n\nSeparating variables and integrating both sides with respect to $t,$ we get\n\n$$\n\\begin{aligned}\\frac{1}{Q}\\cdot \\frac{dQ}{dt} & =-\\frac{5}{4(80+t)} \\\\ \\int \\frac{1}{Q}\\,dQ & =-\\frac{5}{4}\\int \\frac{1}{80+t}\\,dt \\\\ \\operatorname{ln}⁡|Q| & =-\\frac{5}{4}\\operatorname{ln}⁡|80+t|+C.\\end{aligned}\n$$\n\nThus,\n\n$$\nQ(t)=\\frac{A}{(80+t)^{5/4}}.\n$$\n\nUsing the initial condition $Q(0)=20,$\n\n$$\n\\begin{aligned}\\frac{A}{{80}^{5/4}} & =20 \\\\ A & =20(80)^{5/4}.\\end{aligned}\n$$\n\nSo,\n\n$$\nQ(t)=20{(\\frac{80}{80+t})}^{5/4}.\n$$\n\nNow, let ${t}_{o}$ be the time when the tank begins to overflow. Since the tank has a capacity of $500\\,\\text{L},$\n\n$$\n\\begin{aligned}V({t}_{o}) & =500 \\\\ 320+4{t}_{o} & =500 \\\\ 4{t}_{o} & =180 \\\\ {t}_{o} & =45\\,\\text{min}.\\end{aligned}\n$$\n\nFinally, the amount of contaminant in the tank at the moment it begins to overflow is\n\n$$\n\\begin{aligned}Q(45)7 & =20{(\\frac{80}{80+45})}^{5/4} \\\\  & =20{(\\frac{80}{125})}^{5/4} \\\\  & ≈11.45\\,\\text{kg},\\end{aligned}\n$$\n\nrounded to two decimal places.",
+      "calculator_instructions": "",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices": [
+            {
+              "option": "a",
+              "dom_id": "source-choice-1",
+              "type": "math",
+              "value": "11.45\\,\\text{kg}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mrow data-mjx-texclass=\"ORD\"><mn>11.45</mn></mrow><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>kg</mtext></math>"
+            },
+            {
+              "option": "b",
+              "dom_id": "source-choice-2",
+              "type": "math",
+              "value": "11.02\\,\\text{kg}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mrow data-mjx-texclass=\"ORD\"><mn>11.02</mn></mrow><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>kg</mtext></math>"
+            },
+            {
+              "option": "c",
+              "dom_id": "source-choice-3",
+              "type": "math",
+              "value": "12.10\\,\\text{kg}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mrow data-mjx-texclass=\"ORD\"><mn>12.10</mn></mrow><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>kg</mtext></math>"
+            },
+            {
+              "option": "d",
+              "dom_id": "source-choice-4",
+              "type": "math",
+              "value": "10.65\\,\\text{kg}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mrow data-mjx-texclass=\"ORD\"><mn>10.65</mn></mrow><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>kg</mtext></math>"
+            },
+            {
+              "option": "e",
+              "dom_id": "source-choice-5",
+              "type": "math",
+              "value": "12.85\\,\\text{kg}",
+              "html": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"false\"><mrow data-mjx-texclass=\"ORD\"><mn>12.85</mn></mrow><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>kg</mtext></math>"
+            }
+          ],
+          "choices_complete": true
+        }
+      ],
+      "problem_field_keys": [],
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "proof_feedback": null,
+      "html": "<div id=\"question-336839\" class=\"question\"><div class=\"questionHeader\"><span class=\"questionNumber\">5.</span><a class=\"questionKP\" href=\"/topics/1713#21755\">Determining an Amount at an Overflow Point</a><span class=\"helpButton\" questionid=\"336839\">?</span></div><div class=\"questionText\"><p>A <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"175\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c35\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c4C\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>500</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>L</mtext></math></mjx-assistive-mml></mjx-container>-capacity water tank initially holds <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"176\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c33\"></mjx-c><mjx-c class=\"mjx-c32\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c4C\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>320</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>L</mtext></math></mjx-assistive-mml></mjx-container> of water containing <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"177\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c32\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6B\"></mjx-c><mjx-c class=\"mjx-c67\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>20</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>kg</mtext></math></mjx-assistive-mml></mjx-container> of a dissolved contaminant. Clean water begins to flow into the tank at a rate of <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"178\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c39\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c4C\"></mjx-c><mjx-c class=\"mjx-c2F\"></mjx-c><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c69\"></mjx-c><mjx-c class=\"mjx-c6E\"></mjx-c></mjx-mtext><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2C\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>9</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>L/min</mtext><mo>,</mo></math></mjx-assistive-mml></mjx-container> while the completely mixed water flows out at a rate of <mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"179\" style=\"font-size: 119.4%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c35\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c4C\"></mjx-c><mjx-c class=\"mjx-c2F\"></mjx-c><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c69\"></mjx-c><mjx-c class=\"mjx-c6E\"></mjx-c></mjx-mtext><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2E\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>5</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>L/min</mtext><mo>.</mo></math></mjx-assistive-mml></mjx-container> Find, rounded to two decimal places, the amount of contaminant in the tank at the moment it begins to overflow.</p>\n</div><div class=\"answerDetails\"><div class=\"questionDifficulty difficultyEasy\">E</div><span class=\"answerCreated\">Thu, Oct 15th @ 3:17 AM</span><span class=\"answerDetailsSeparator\">|</span><span class=\"timeElpased\">Elapsed: 0:15</span><span class=\"answerResult\"><span style=\"color: green;\">Correct</span></span></div></div>",
+      "errors": [],
+      "extraction_parts": [
+        "problem",
+        "solution",
+        "fields"
+      ],
+      "extraction_error_parts": {},
+      "assets": [],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/observations/history-q-336839-92113c799a512b49a18d.html",
+      "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/observations/history-q-336839-92113c799a512b49a18d.png",
+      "source_url": "https://mathacademy.com/learn?taskId=14226965",
+      "captured_at": 1792059486.808588,
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/observations/history-solution-q-336839-9227524af87143c3d468.html",
+      "math_academy_id": "q-336839",
+      "sequence_position": 5,
+      "difficulty": "easy",
+      "knowledge_point": "Determining an Amount at an Overflow Point",
+      "topic_id": "1713",
+      "knowledge_point_source_id": 21755,
+      "kp_href": "/topics/1713#21755",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "raw_html": "<div class=\"question\" id=\"question-336839\"><div class=\"questionHeader\"><span class=\"questionNumber\">5.</span><a class=\"questionKP\" href=\"/topics/1713#21755\">Determining an Amount at an Overflow Point</a><span class=\"helpButton\" questionid=\"336839\">?</span></div><div class=\"questionText\"><p>A <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"175\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c35\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c4C\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>500</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>L</mtext></math></mjx-assistive-mml></mjx-container>-capacity water tank initially holds <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"176\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c33\"></mjx-c><mjx-c class=\"mjx-c32\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c4C\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>320</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>L</mtext></math></mjx-assistive-mml></mjx-container> of water containing <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"177\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c32\"></mjx-c><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c6B\"></mjx-c><mjx-c class=\"mjx-c67\"></mjx-c></mjx-mtext></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>20</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>kg</mtext></math></mjx-assistive-mml></mjx-container> of a dissolved contaminant. Clean water begins to flow into the tank at a rate of <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"178\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c39\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c4C\"></mjx-c><mjx-c class=\"mjx-c2F\"></mjx-c><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c69\"></mjx-c><mjx-c class=\"mjx-c6E\"></mjx-c></mjx-mtext><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2C\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>9</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>L/min</mtext><mo>,</mo></math></mjx-assistive-mml></mjx-container> while the completely mixed water flows out at a rate of <mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"179\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"0\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c35\"></mjx-c></mjx-mn><mjx-mstyle><mjx-mspace style=\"width: 0.167em;\"></mjx-mspace></mjx-mstyle><mjx-mtext class=\"mjx-n\"><mjx-c class=\"mjx-c4C\"></mjx-c><mjx-c class=\"mjx-c2F\"></mjx-c><mjx-c class=\"mjx-c6D\"></mjx-c><mjx-c class=\"mjx-c69\"></mjx-c><mjx-c class=\"mjx-c6E\"></mjx-c></mjx-mtext><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2E\"></mjx-c></mjx-mo></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>5</mn><mstyle scriptlevel=\"0\"><mspace width=\"0.167em\"></mspace></mstyle><mtext>L/min</mtext><mo>.</mo></math></mjx-assistive-mml></mjx-container> Find, rounded to two decimal places, the amount of contaminant in the tank at the moment it begins to overflow.</p>\n</div><div class=\"answerDetails\"><div class=\"questionDifficulty difficultyEasy\">E</div><span class=\"answerCreated\">Thu, Oct 15th @ 3:17 AM</span><span class=\"answerDetailsSeparator\">|</span><span class=\"timeElpased\">Elapsed: 0:15</span><span class=\"answerResult\"><span style=\"color: green;\">Correct</span></span></div></div>",
+      "field_recovery": {
+        "kind": "owned_task_answers",
+        "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/source/task-answers-939161efce4bd8422e9717f841653c49f014bef8da23289b7564b6801ff9c5f3.json",
+        "question_id": "q-336839",
+        "question_sha256": "cfc879c9f5b34a7379277f6a5cb5974e6014299a4a4c4a44ce58ecf6d4a8f8b2",
+        "rendered_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/source/task-answer-q-336839-cfc879c9f5b34a73.html",
+        "order": "canonical source order; not the live shuffled order",
+        "learner_answer": {
+          "id": 62192608,
+          "created": "2026-10-15T03:17:37.000Z",
+          "choices": null,
+          "correct": 1,
+          "selectedChoice": 1,
+          "freeResponse": null,
+          "timeElapsed": 14876,
+          "number": 5,
+          "createdStr": "Thu, Oct 15th @ 3:17 AM",
+          "timeElapsedFormatted": "0:15"
+        }
+      }
+    }
+  ],
+  "canonical_examples": [],
+  "tutorials": [],
+  "completion": {
+    "earned_xp": 5,
+    "base_xp": 9,
+    "source_text": "Congratulations! You've completed the review.\nYou've been awarded 5 of the task's 9 XP.\nContinue",
+    "text": "Congratulations! You've completed the review.\nYou've been awarded 5 of the task's 9 XP.\nContinue",
+    "task_id": "14226965"
+  },
+  "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/history-expanded-fa30fadfb19bd1739c77.html",
+  "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226965/history-expanded-fa30fadfb19bd1739c77.png",
+  "captured_at": 1792059488.2551832,
+  "source_url": "https://mathacademy.com/learn?taskId=14226965",
+  "evidence_errors": [],
+  "original_document": {
+    "url": "https://mathacademy.com/learn?taskId=14226965",
+    "captured_at": 1792059468.699202,
+    "source_sha256": "6906c448209a600e7f9ee2e5ab4cda47eb18df89808e6685cf9b33652c01d6c1",
+    "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/browser-originals/6906c448209a600e7f9ee2e5ab4cda47eb18df89808e6685cf9b33652c01d6c1.html",
+    "status": 200,
+    "headers": {
+      "date": "Thu, 15 Oct 2026 10:17:48 GMT",
+      "etag": "W/\"58524-Fv02OGqtVOnZpNWnKCo7RBhglu4\""
+    },
+    "transformation": null,
+    "rendered_sha256": "6906c448209a600e7f9ee2e5ab4cda47eb18df89808e6685cf9b33652c01d6c1"
+  }
+}
