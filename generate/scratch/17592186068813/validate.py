@@ -185,4 +185,7 @@ def main():
   path=Path(link);assert (path if path.is_absolute() else HERE/path).is_file(), ('Unresolved review image',link)
  report={'status':'pass','source_questions':5,'raw_prompt_exact':5,'raw_whole_solution_exact':5,'source_banks_matched':6,'source_options_matched':30,'source_distractors_matched':24,'correct_designations_matched':5,'correct_designations_present':5,'missing_correct_designations':1,'attribute_presence_parity':5,'source_fidelity':fidelity,'normal_authoritative_duplicate_widget':1,'authored_missing_levels':['hard'],'meaningful_variety':variety,'exhaustive_valid_profile_instances':checked_instances,'review_records':len(review),'native':{k:native[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'native_excluded_raw_missing_correct_records':3,'concurrency':'fresh identical/different renders passed','runtime':{'python':sys.version.split()[0],'sympy':g.sp.__version__,'matplotlib':g.matplotlib.__version__},'source_assets_native_inspected':source_raster_count,'source_practice_plot_occurrences':30,'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'database_writes':0}
  (HERE/'validation.json').write_text(json.dumps(report,indent=2));print(json.dumps(report,indent=2))
-if __name__=='__main__':main()
+if __name__=='__main__':
+ # Current source coverage and capability policy supersede the historical main.
+ import runpy
+ runpy.run_path(str(HERE/'validate_replenishment.py'),run_name='__main__')

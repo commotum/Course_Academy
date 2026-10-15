@@ -1,3 +1,5 @@
+> Current source refresh: see [classification-refresh.md](classification-refresh.md) for basis 2740, checkbox migrations, five newly observed families, and the preserved/excluded q-126572 solution error. The evidence below describes historical basis 1356.
+
 # Four-stage template extraction
 
 ## Stage 1 — specific source descriptions

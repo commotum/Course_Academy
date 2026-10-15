@@ -23,6 +23,8 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 
 KP_ID=17592186068814
 KP_UUID='52e11164-1929-594d-9f9e-460f6469421d'
+GENERATOR_UUID='0841a219-0fc2-5d31-83c4-a42b7a0a08db'
+SUPPORTED_LEVELS=('easy','moderate')
 TITLE='Graphing a Stretched Negative Reciprocal Function'
 VERSION='negative-reciprocal-stretch-1'
 HERE=Path(__file__).resolve().with_suffix('')
@@ -44,6 +46,7 @@ PROFILES={
  'rational_reversal':('moderate','rational',('-a','inverse','-inverse','-1','a')),
  'rational_numerator':('moderate','rational',('-a','a','1','-numerator','-1')),
  'rational_denominator':('moderate','rational',('a','-1','-denominator','-inverse','-a')),
+ 'rational_unit_denominator':('moderate','rational',('-numerator','unit_denominator','a','-a','-unit_denominator')),
  'nonunit_point_reversal':('hard','nonunit_point',('-a','a','inverse','-inverse','-1')),
  'nonunit_point_numerator':('hard','nonunit_point',('-a','a','1','-numerator','-1')),
 }

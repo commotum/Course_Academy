@@ -1107,6 +1107,68 @@ To plot $y=-\frac{8}{5x},$ we apply the following steps:
 
 ![](plots/48780c050da9dfb241f911d88a79bdd4c7e5afee1479704e6ff0ed496f432e26.png)
 
+## Generated variant — rational_unit_denominator
+
+{"n": 9, "d": 4}
+
+Which of the following is the graph of $y=-\frac{9}{4x}?$
+
+**A**
+![](plots/48c5b1861af38bdb7f39b736c98d1ff3dbfbafe6d6bfab37cdf9f5f8554dd2f9.png)
+
+**B**
+![](plots/315218216e06f6b7f347898b3765ef5df5f3c08fd5d66f9724da767c72c1d506.png)
+
+**C** (correct)
+![](plots/42bb6c201b0826e8c9fccf043f777668fbe217e3fce7be65ba5d724d36b57dbb.png)
+
+**D**
+![](plots/cbd07b9950d04f496de40ffd55ea0a47425db3778130b6f1bc3206b24cc54850.png)
+
+**E**
+![](plots/eb173993cd4e09ada2cb9466f097e149f7b75664c6d3328f674b998147078a1f.png)
+
+To plot $y=-\frac{9}{4x},$ we apply the following steps:
+
+- Take the curve $y=-\frac{1}{x}.$
+
+![](plots/51c8fd38e126afd05e67e9e538dd834692bb47d55a0f6189b99c1e8e5cb92604.png)
+
+- Stretch the result by a scale factor of $\frac{9}{4}$ parallel to the $y$-axis to get the graph of $y=-\frac{9}{4x}.$
+
+![](plots/42bb6c201b0826e8c9fccf043f777668fbe217e3fce7be65ba5d724d36b57dbb.png)
+
+## Generated variant — rational_unit_denominator
+
+{"n": 8, "d": 5}
+
+Which of the following is the graph of $y=-\frac{8}{5x}?$
+
+**A** (correct)
+![](plots/48780c050da9dfb241f911d88a79bdd4c7e5afee1479704e6ff0ed496f432e26.png)
+
+**B**
+![](plots/98a1fcdf83f4d031cceb0e8b2e76f28e35edbd3a5f06f88b4ad6029e7ffa46d5.png)
+
+**C**
+![](plots/49bd8fd48df65f736abe9bc48863ec37bde135f0e349c4e5e4c0d5d00ead1bff.png)
+
+**D**
+![](plots/89a787c1876b4510666ef033b237bbead99c78f9467d273e11b0fd10d8972a62.png)
+
+**E**
+![](plots/1d185fd435d6f9ffc5d4e3d7c70393bac80371f0a42457c3654851abe0fbcecf.png)
+
+To plot $y=-\frac{8}{5x},$ we apply the following steps:
+
+- Take the curve $y=-\frac{1}{x}.$
+
+![](plots/51c8fd38e126afd05e67e9e538dd834692bb47d55a0f6189b99c1e8e5cb92604.png)
+
+- Stretch the result by a scale factor of $\frac{8}{5}$ parallel to the $y$-axis to get the graph of $y=-\frac{8}{5x}.$
+
+![](plots/48780c050da9dfb241f911d88a79bdd4c7e5afee1479704e6ff0ed496f432e26.png)
+
 ## Generated variant — nonunit_point_reversal
 
 {"n": 7, "d": 10}

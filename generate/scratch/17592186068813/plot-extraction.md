@@ -1,3 +1,13 @@
+# Current replenishment amendment (2026-10-15, basis 2744)
+
+This amendment supersedes historical hard-band claims below. Only easy and moderate are supported. Hard remains unsupported, with a nominal reserve shortage of five; `capabilities.json` records why. The former nonunit-mark authored previews are not admitted to inventory.
+
+The live snapshot contains seven source questions. Newly captured easy q-99063 (4/x) uses the complete coefficient bank [-a,-1/a,1/a,1,a]; q-113320 (1/(5x)) uses [a,-a,1/a,-1,1], the same whole-bank set as the observed unit-numerator profile. They preserve the selection radio, five image choices and the ordered base-curve / vertical-stretch solution. Native coordinate-label inspection is retained in `reference/replenishment/new-source-bank.png`; exact current records are retained in `reference/replenishment/current.edn`. All eight source banks, forty options, thirty-two distractors and seven present correct designations now replay. The missing source designation remains missing and its question is excluded from usable inventory.
+
+The new `integer_signed_inverse` bank parameterizes the newly observed integer profile; its recipes reproduce every source mathematical value. No new Markdown/value template is required. New plots remain heavy and follow the existing positive c/x geometry with negative reciprocal distractors. Source decimal coordinate labels are retained at raw anchors. Fresh normal plots use exact fraction labels. Mathematical task deduplication uses the reduced coefficient without bank, seed, difficulty or point-mark aliases. `validate_replenishment.py` is the current validation entrypoint; the prior validation report remains historical.
+
+---
+
 # Plot extraction and rendering
 
 ## 1. Specific plots and full-native inspection

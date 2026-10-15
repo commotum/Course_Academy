@@ -63,6 +63,7 @@ REFERENCE_BANKS={
  'rational_reversal':('-a','inv','-inv','-1','a'),
  'rational_numerator':('-a','a','1','-n','-1'),
  'rational_denominator':('a','-1','-d','-inv','-a'),
+ 'rational_unit_denominator':('-n','unit_d','a','-a','-unit_d'),
  'nonunit_point_reversal':('-a','a','inv','-inv','-1'),
  'nonunit_point_numerator':('-a','a','1','-n','-1'),
 }
@@ -71,7 +72,7 @@ def independent_bank(q,profile):
  from decimal import Decimal,ROUND_HALF_UP
  m=re.search(r'y\s*=\s*-\\frac\{(\d+)\}\{(\d*)x\}',q[':question/problem']);n=int(m[1]);d=int(m[2] or 1)
  a=Fraction(n,d);inv=Fraction(d,n)
- vals={'a':a,'-a':-a,'inv':inv,'-inv':-inv,'-1':Fraction(-1),'1':Fraction(1),'-n':Fraction(-n),'-d':Fraction(-d),'-2a':-2*a,'-round_inverse':-Fraction((Decimal(d)/Decimal(n)).quantize(Decimal('.01'),rounding=ROUND_HALF_UP))}
+ vals={'a':a,'-a':-a,'inv':inv,'-inv':-inv,'-1':Fraction(-1),'1':Fraction(1),'-n':Fraction(-n),'-d':Fraction(-d),'-2a':-2*a,'unit_d':Fraction(1,d),'-unit_d':-Fraction(1,d),'-round_inverse':-Fraction((Decimal(d)/Decimal(n)).quantize(Decimal('.01'),rounding=ROUND_HALF_UP))}
  return [vals[t] for t in REFERENCE_BANKS[profile]]
 
 def check(r,raw=False):

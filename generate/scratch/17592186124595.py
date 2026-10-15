@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Polar function → Cartesian first derivatives, math basis 1356; stops at step 7.
+"""Polar function → Cartesian first derivatives, math source basis 2743; validated replenishment package.
 
-Nine source templates and entire five-option banks. Source banks are explicit
+Twelve source templates and entire five-option banks. Source banks are explicit
 inferred-expression replay profiles, not recovered cognitive error diagnoses.
 Default banks use authored chain-rule operations. Unevaluated substitution and
 identity/distribution masks retain teaching stages; source prose is a fixed
@@ -15,7 +15,7 @@ import sympy as s
 ROOT=Path(__file__).with_suffix('')
 RAW=json.loads((ROOT/'source.json').read_text())
 KP=RAW['record']; KP_ID=17592186124595
-VERSION='polar-cartesian-1'
+VERSION='polar-cartesian-2'
 R=s.Symbol('r',positive=True)
 T=s.Symbol('theta',real=True)
 C,S=s.cos(T),s.sin(T)
@@ -31,6 +31,9 @@ CASES={
  'cosine_y':('q-95133',dict(A=1,k=2,name='w')),
  'sine_y':('q-95020',dict(A=1,k=4,name='u')),
  'offset_sine_x':('q-95134',dict(A=1,b=2,name='u')),
+ 'offset_cosine_y':('q-95135',dict(A=1,b=1,k=2,name='v')),
+ 'quadratic_plus_cosine_x':('q-165283',dict(A=1,b=2,name='v')),
+ 'cosine_minus_x':('q-95137',dict(A=1,b=1,name='h')),
 }
 TEMPLATES={**{k:'moderate' for k in CASES},'radial_only':'easy','power_offset':'hard'}
 DOMAIN='r>0; real theta on any locally continuous polar angle branch; x=r*cos(theta), y=r*sin(theta).'
@@ -65,6 +68,9 @@ def object_math(template,p):
     elif template=='cosine_y': F=A*R*s.cos(k*T);axis='y'
     elif template=='sine_y': F=A*R*s.sin(k*T);axis='y'
     elif template=='offset_sine_x': F=A*R*(b+S);axis='x'
+    elif template=='offset_cosine_y': F=A*R*(b+s.cos(k*T));axis='y'
+    elif template=='quadratic_plus_cosine_x': F=A*(R**2+b*R*C);axis='x'
+    elif template=='cosine_minus_x': F=A*R*(C-b);axis='x'
     elif template=='radial_only': F=A*R**n;axis=p['axis']
     elif template=='power_offset':F=A*R**n*(b+(s.sin(k*T) if p['kind']=='sin' else s.cos(k*T)));axis=p['axis']
     else:raise ValueError('Unknown template')
@@ -76,6 +82,8 @@ def object_math(template,p):
     elif template=='sine_minus_y':answer=A*(1-b*S)
     elif template=='double_sine_x':answer=2*A*S**3
     elif template=='offset_sine_x':answer=A*b*C
+    elif template=='quadratic_plus_cosine_x':answer=A*(2*R*C+b)
+    elif template=='cosine_minus_x':answer=A*(1-b*C)
     return F,axis,fr,ft,u,v,answer
 
 def source_bank(template,p):
@@ -90,6 +98,9 @@ def source_bank(template,p):
     elif template=='cosine_y':bank=[-k*sk*C,ck*S-k*C*sk,S+k*C,ck*(S-k*C),sk*(S-k*C)];correct=1
     elif template=='sine_y':bank=[sk+k*ck*C,S*sk+k*C,S*sk+k*ck,S+k*ck*C,S*sk+k*ck*C];correct=4
     elif template=='offset_sine_x':bank=[b*R*C,b*C,b*R*S-s.sin(2*T),b*C+s.sin(2*T),b*S];correct=1
+    elif template=='offset_cosine_y':bank=[k*S*C**2-C*S**2,b*S-k*C*sk,S*ck-k*C*sk,b*S+ck-k*sk,b*S+S*ck-k*C*sk];correct=4
+    elif template=='quadratic_plus_cosine_x':bank=[R*C+b*S,2*R*C,2*R*C+b,R**2*(C+s.sin(2*T)),R*(C+b/2)];correct=2
+    elif template=='cosine_minus_x':bank=[-b*C,1-b*C,-b*S,1-b*S,S-b*C];correct=1
     else:raise ValueError('No observed bank for authored template')
     return [A*x for x in bank],correct
 
@@ -156,7 +167,7 @@ def render_math(template,p):
     if template=='power_cosine_y':
         final=scale(A,power(n-1)+'('+add(term(n,fn('sin')+fn('cos',k)),term(-k,fn('cos')+fn('sin',k)))+')')
         rows=[sub,final]
-    elif template in ('cosine_y','sine_y','offset_sine_y'):
+    elif template in ('cosine_y','sine_y','offset_sine_y','offset_cosine_y'):
         rows=[sub,distributed]
     elif template=='double_sine_x':
         # Keep separate trig substitution, multiplication and cancellation masks.
@@ -169,6 +180,12 @@ def render_math(template,p):
         distributed=add(add(term(A,fn('sin')+'^{2}'),term(-A*b,fn('sin'))),term(A,fn('cos')+'^{2}'))
         distributed=re.sub(r'\\(sin|cos) \\theta\^\{(\d)\}',lambda m:'\\'+m[1]+'^{'+m[2]+'} '+r'\theta',distributed)
         rows=[sub,distributed,final]
+    elif template=='cosine_minus_x':
+        distributed=add(add(term(A,fn('cos')+'^{2}'),term(-A*b,fn('cos'))),term(A,fn('sin')+'^{2}'))
+        distributed=re.sub(r'\\(sin|cos) \\theta\^\{(\d)\}',lambda m:'\\'+m[1]+'^{'+m[2]+'} '+r'\theta',distributed)
+        rows=[sub,distributed,final]
+    elif template=='quadratic_plus_cosine_x':
+        rows=[sub,add(add(term(2*A,'r'+fn('cos')),term(A*b,r'\cos^{2} \theta')),term(A*b,r'\sin^{2} \theta')),add(term(2*A,'r'+fn('cos')),term(A*b,r'(\cos^{2} \theta+\sin^{2} \theta)')),final]
     elif template=='offset_sine_x':
         rows=[sub,add(add(term(A*b,fn('cos')),term(A,fn('sin')+fn('cos'))),term(-A,fn('sin')+fn('cos'))),final]
     elif template=='radial_plus_sine_x':rows=[sub,distributed,add(term(A*p['a'],fn('cos')),tex(-s.Rational(A,2)/R*s.sin(2*T)))]
@@ -229,7 +246,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         template=matched[0]
     template=template or rng.choice([t for t,l in TEMPLATES.items() if l==level])
     if TEMPLATES.get(template)!=level:raise ValueError('template level')
-    profile=profile or 'authored:chain-rule'
+    profile=profile or ('observed:'+CASES[template][0] if template in CASES else 'authored:chain-rule')
     if profile!='authored:chain-rule' and profile!='observed:'+CASES.get(template,('',{}))[0]:raise ValueError('profile eligibility')
     for attempt in range(100):
         p=dict(parameters) if parameters is not None else sample(template,rng)

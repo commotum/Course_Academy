@@ -1,3 +1,5 @@
+> Current source refresh: see [classification-refresh.md](classification-refresh.md) for basis 2740, checkbox migrations, five newly observed families, and the preserved/excluded q-126572 solution error. The evidence below describes historical basis 1356.
+
 # Classification
 
 Snapshot: database math, basis 1356, lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. Seven practice questions; the canonical example is not counted. All require exactly the set of fields whose scalar curl is identically 1 on R². Equaling 1 at some points or enclosing one particular area does not qualify.

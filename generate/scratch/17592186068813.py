@@ -27,7 +27,11 @@ VERSION='reciprocal-stretch-3'
 HERE=Path(__file__).resolve().with_suffix('')
 SOURCE=json.loads((HERE/'source.json').read_text())
 QS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
-SOURCE_PARAMETERS={'q-16506':(1,2),'q-99064':(3,2),'q-113328':(5,3),'q-97952':(2,1),'q-113324':(5,1)}
+REFRESH=json.loads((HERE/'source-refresh.json').read_text())
+QS.update({q[':question/math-academy-id']:q for q in REFRESH['questions']})
+SUPPORTED_LEVELS=('easy','moderate')
+GENERATOR_UUID=str(uuid.uuid5(uuid.UUID(KP_UUID),'question-generator'))
+SOURCE_PARAMETERS={'q-16506':(1,2),'q-99064':(3,2),'q-113328':(5,3),'q-97952':(2,1),'q-113324':(5,1),'q-99063':(4,1),'q-113320':(1,5)}
 PROFILES={
  'raw_q-16506':('easy','unit_numerator',('-1','-a','1','inverse','a')),
  'raw_q-99064':('moderate','rational',('-unit_denominator','unit_denominator','numerator','a','-a')),
@@ -38,8 +42,9 @@ PROFILES={
  'unit_numerator_reversal':('easy','unit_numerator',('-1','-a','1','inverse','a')),
  'rational_denominator':('moderate','rational',('-unit_denominator','unit_denominator','numerator','a','-a')),
  'rational_reversal':('moderate','rational',('1','inverse','-a','-inverse','a')),
- 'nonunit_point_reversal':('hard','nonunit_point',('a','-a','inverse','1','numerator')),
- 'nonunit_point_denominator':('hard','nonunit_point',('a','-a','unit_denominator','numerator','-inverse')),
+ 'raw_q-99063':('easy','integer',('-a','-inverse','inverse','1','a')),
+ 'raw_q-113320':('easy','unit_numerator',('a','-a','inverse','-1','1')),
+ 'integer_signed_inverse':('easy','integer',('-a','-inverse','inverse','1','a')),
 }
 LOCK=threading.RLock()
 
@@ -129,7 +134,7 @@ def solution(p,base,correct):
  return 'To plot $y='+e+',$ we apply the following steps:\n\n- Take the curve $y='+r'\frac{1}{x}.$'+'\n\n![]('+base+')\n\n- Stretch the result by a scale factor of $'+a+'$ parallel to the $y$-axis to get the graph of $y='+e+'.$\n\n![]('+correct+')'
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
- if level not in ('easy','moderate','hard'):raise ValueError('Unknown level')
+ if level not in SUPPORTED_LEVELS:raise ValueError('Unsupported difficulty: no validated hard workload evidence; see capabilities.json')
  if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('Only observed image radio field')
  rng=random.Random(seed)
  if profile is None:
@@ -153,7 +158,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  prompt='Which of the following is the graph of $y='+expr(p['n'],p['d'])+'?$'
  sol=solution(p,base,bank[ci])
  # Same positive function/mapping task deduplicates spelling, source aliases and banks.
- fp=digest(['positive-reciprocal-selection',str(a),2 if level=='hard' else 1])
+ fp=digest(['positive-reciprocal-selection',str(a)])
  identity=digest([VERSION,level,prompt,sol,sorted(bank),not(raw and sid=='q-99064')])
  qid=ident(identity);fid=ident(identity+':selection')
  choices=[{':answer/id':ident(identity+':selection:'+value),':answer/type':':answer.type/image',':answer/value':value} for value in bank]
@@ -175,8 +180,8 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('easy',seed,template,field_type,parameters,profile)
 # MODERATE: reduced nonunit numerator/denominator (2 through 5), direct x=1 marks.
 def generate_moderate(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('moderate',seed,template,field_type,parameters,profile)
-# HARD (authored): same positive rational stretch with d=6..12 and x=±2 marks.
-# Mapping base ordinates ±1/2 demands one nonunit coordinate-scale comparison.
+# HARD unsupported: larger denominators/nonunit marks alone do not establish
+# a distinct hard workload. Historical authored hard previews are not inventory.
 def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('hard',seed,template,field_type,parameters,profile)
 
 def markdown(r):
@@ -193,7 +198,7 @@ def markdown(r):
 def main():
  ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['markdown','json'],default='markdown');ap.add_argument('--template');ap.add_argument('--profile');args=ap.parse_args()
  if args.count<1:ap.error('Count must be positive')
- levels=['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]
+ levels=list(SUPPORTED_LEVELS) if args.difficulty=='all' else [args.difficulty]
  try:rows=[generate(l,args.seed+i,args.template,profile=args.profile) for l in levels for i in range(args.count)]
  except ValueError as e:ap.error(str(e))
  print(json.dumps(rows,indent=2) if args.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in rows))
