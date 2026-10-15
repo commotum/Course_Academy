@@ -12,14 +12,16 @@ Easy/hard are authored missing-level design claims, documented in classification
 Matplotlib rendering uses the read-only cached Python3.10 fallback in render.py.
 """
 from __future__ import annotations
-import argparse, hashlib, json, random, re, subprocess, uuid, tempfile
+import argparse, hashlib, json, random, re, subprocess, uuid, tempfile, sys
 from pathlib import Path
 import sympy as sp
 HERE=Path(__file__).resolve().with_suffix('')
+sys.path.insert(0,str(HERE.parents[2]/'scripts/question_capture'))
+from math_format import normalize_prose, validate_generated_record
 KP_ID=17592186129283
 KP_UUID='091b8235-56d8-5a08-bc95-08c99772cfd8'
 TITLE='Finding Regions Where a Transformation is Orientation-Preserving or Reversing'
-VERSION='orientation-region-1'
+VERSION='orientation-region-2'
 SOURCE={'database':'math','basis':1356,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
 u,v=sp.symbols('u v',real=True)
 RAW=json.loads((HERE/'source.json').read_text())
@@ -179,6 +181,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     if observed:
         solution=re.sub(r'!\[\]\(images/[^)]+\)',lambda m:'![]('+correct_path+')',solution)
     else:solution=solution.replace('{{plot}}','![]('+correct_path+')')
+    problem=normalize_prose(problem);solution=normalize_prose(solution)
     transformation_fp=fingerprint({'x':sp.srepr(sp.expand(x)),'y':sp.srepr(sp.expand(y)),'orientation':('preserving' if 'orientation-preserving?' in problem else 'reversing'),'domain':'R2'})
     C=sp.Rational(correct['coefficient']);H=sp.Rational(correct['h']);K=sp.Rational(correct['k']);mode=correct['mode'];degree=correct['degree']
     if degree==0:region_expr=(v-K) if mode in ('top','bottom') else (u-H)

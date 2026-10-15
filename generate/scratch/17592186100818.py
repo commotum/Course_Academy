@@ -21,7 +21,7 @@ SOURCE=json.loads((H/'source.json').read_text());REC=SOURCE['record'];QS={q[':qu
 CONFIG={sid:q.get(':question/difficulty',{}).get(':db/ident',':question.difficulty/moderate').split('/')[-1]for sid,q in QS.items()}
 def digest(v):return hashlib.sha256(json.dumps(v,sort_keys=True,ensure_ascii=False,separators=(',',':')).encode()).hexdigest()
 def uid(v):return str(uuid.uuid5(uuid.NAMESPACE_URL,VERSION+str(v)))
-def tex(z):return fmt.normalize_tex(s.latex(z,fold_short_frac=False))
+def tex(z):return fmt.normalize_tex(s.latex(z,fold_short_frac=False).replace(r'\log',r'\ln'))
 def original(sid):return {'coefficient_num':1,'coefficient_den':1,'x_scale':1}
 REPAIRS={
  'q-49607':['Missing difficulty, worked solution and correct designation. Supported authored completion: moderate, correct answer19; raw source stays ineligible.'],
@@ -87,8 +87,8 @@ def rendered(sid,t,k):
  raw=source_integral(sid);newI=scaled_side(raw,t,k);prompt=prompt.replace(raw,newI)
  # Reconstruct the source's prose and ordered stages, changing every reference
  # to the same inner variable and interval coherently.
- U=R.scalar(re.search(r'\$u\s*=([^$]+)\$',source)[1].rstrip('.'));Unew=U.subs(x,x/k);du=s.diff(Unew,x)
- first=source.index('$$');pre=source[:first];pre=re.sub(r'\$u\s*=[^$]+\$',lambda m:'$u='+tex(Unew)+'.$',pre)
+ Uraw=re.search(r'\$u\s*=([^$]+)\$',source)[1].rstrip('.');U=R.scalar(Uraw);Unew=U.subs(x,x/k);du=s.diff(Unew,x);Unew_tex=Uraw.replace('x',r'\left(\frac{x}{'+str(k)+r'}\right)')
+ first=source.index('$$');pre=source[:first];pre=re.sub(r'\$u\s*=[^$]+\$',lambda m:'$u='+Unew_tex+'.$',pre)
  derivative='$$\n'+r'\frac{\text{d}u}{\text{d}x}='+tex(du)+r'\,⟹\,'+tex(1/(x*du))+r'\,\text{d}u=\frac{1}{x}\,\text{d}x.'+'\n$$'
  end=source.index('$$',first+2)+2;tail=source[end:]
  table=re.search(r'\| \$x\$ \| \$(.*?)\$ \| \$(.*?)\$ \|',tail)

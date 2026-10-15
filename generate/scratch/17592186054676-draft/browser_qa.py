@@ -42,7 +42,7 @@ try:
    if fields[0][':answer-field/type'].endswith('/radio'):assert row['solution_tables']==[{'rows':3,'columns':2}]*3,row
    else:assert row['solution_tables']==[],row
   shots=HERE/'screenshots';shots.mkdir(exist_ok=True)
-  for label in('source-2','source-3','easy-0','moderate-26','hard-52','controlled-easy-ABC','controlled-easy-BAC','controlled-moderate-BCA','controlled-hard-BAC'):
+  for label in('source-2','source-3','easy-0','moderate-26','hard-52','controlled-easy-ABC','controlled-easy-BAC','controlled-moderate-BCA','controlled-hard-ACB'):
    article=page.locator('article[data-label="'+label+'"]')
    if article.count():article.screenshot(path=str(shots/(label+'.png')))
   (HERE/'browser-rendering.json').write_text(json.dumps({'pipeline':'frozen actual ui/learning.js markdown + marked + DOMPurify + mathjax-config.js + MathJax tex-svg','browser_version':browser.version,'records':results,'page_errors':errors,'screenshots':[str(p.relative_to(HERE))for p in shots.glob('*.png')]},indent=2)+'\n');browser.close();print('Browser rendered',len(results),'complete question/solution/bank records')

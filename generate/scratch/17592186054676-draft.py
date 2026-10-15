@@ -139,7 +139,9 @@ def generate(level,seed=0,template=None,parameters=None,bank_profile=None,output
  template=template or SOURCE_TEMPLATES[level]
  if template not in SOURCE_TEMPLATES_BY_LEVEL.get(level,[]) and not(level=='hard'and template=='authored-rational'):raise ValueError('template/level mismatch')
  # Profile is selected as a complete object BEFORE numbers. Permutation maps roles.
- rng=random.Random(seed);permutation=tuple(rng.choice(ROLE_PERMUTATIONS))if bank_profile is None else tuple(bank_profile.split(':')[-1])
+ rng=random.Random(seed)
+ if bank_profile is None and template in SOURCES and parameters==DEFAULTS[template]:permutation=tuple('ABC')
+ else:permutation=tuple(rng.choice(ROLE_PERMUTATIONS))if bank_profile is None else tuple(bank_profile.split(':')[-1])
  if permutation not in ROLE_PERMUTATIONS:raise ValueError('unknown role profile')
  profile=level+'-source-bank:'+''.join(permutation)
  if bank_profile is not None and bank_profile!=profile:raise ValueError('unknown complete bank profile')

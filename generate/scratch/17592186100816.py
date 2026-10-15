@@ -38,7 +38,7 @@ def original(sid):
  _,_,k,a,n,p=CONFIG[sid];return dict(k=k,a=a,n=n,p_num=int(s.numer(p)),p_den=int(s.denom(p)))
 def digest(z):return hashlib.sha256(json.dumps(z,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()).hexdigest()
 def uid(z):return str(uuid.uuid5(uuid.NAMESPACE_URL,VERSION+str(z)))
-def tex(z):return fmt.normalize_tex(s.latex(z,fold_short_frac=False))
+def tex(z):return fmt.normalize_tex(s.latex(z,fold_short_frac=False).replace(r'\log',r'\ln'))
 def equivalent(a,b):return s.cancel(a-b)==0
 
 def parameters(sid,p):

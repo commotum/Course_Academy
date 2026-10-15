@@ -45,7 +45,7 @@ for index,(sid,(level,orig))in enumerate(G.CONFIG.items()):
  ledger.append({'source_id':sid,'profile':sid+'-observed','difficulty':level,'choices':choices});totals['complete_source_banks']+=1
  if sid in G.ERRORS:
   repaired=G.generate(level,index+500,template=sid,parameters=p,profile='repaired');P.check(repaired);variants.append(repaired)
-  source_errors.append({'source_id':sid,'problem':G.ERRORS[sid],'raw_record':r,'raw_validation':n,'repair':repaired,'repair_reason':'replace complete5-choice bank with explicitly authored distinct primitive patterns; keep captured source and errors unchanged'})
+  source_errors.append({'source_id':sid,'problem':G.ERRORS[sid],'raw_record':r,'raw_validation':n,'repair':repaired,'repair_reason':'repair only the minimum duplicate choices: q31395 two of three duplicate distractors, q210752 one duplicate-correct distractor; other recipes/key preserved'})
  for j in range(2):
   r=G.generate(level,1000+index*37+j,template=sid);P.check(r);variants.append(r);totals['variant_records']+=1
 write('source-cases.json',[{'source_id':r['generation']['template'],'template':r['generation']['template'],'parameters':r['generation']['parameters'],'bank_profile':r['generation']['bank_profile'],'profile':'observed','level':r['question'][':question/difficulty'].split('/')[-1],'record':r}for r in sources]);write('review-cases.json',variants);write('choice-ledger.json',ledger);write('source-errors-and-repairs.json',source_errors)

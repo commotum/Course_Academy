@@ -23,7 +23,7 @@ CONFIG={
 'q-73659':('hard',(7,4,1,-1,1,1)), 'q-31402':('hard',(5,3,1,-1,2,1)),
 'q-210752':('hard',(2,1,1,-1,1,1)), 'q-210781':('hard',(3,2,1,-1,3,1)),
 }
-SLOTS=('b','a','m','n','k','d');ERRORS={'q-210752':'first distractor is equivalent to key modulo a constant on x>0,x!=1','q-31395':'two incorrect options are identical since ln4=2ln2'}
+SLOTS=('b','a','m','n','k','d');ERRORS={'q-210752':'first distractor is equivalent to key modulo a constant on x>0,x!=1','q-31395':'three incorrect options are identical after change of base: ln(x)*log4(x)/2,ln4*log4(x)^2/2,ln2*log4(x)^2'}
 def parameters(v):return dict(zip(SLOTS,v))
 def digest(o):return hashlib.sha256(json.dumps(o,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()).hexdigest()
 def uid(v):return str(uuid.uuid5(uuid.NAMESPACE_URL,VERSION+str(v)))
@@ -88,9 +88,11 @@ def fingerprint(p):
 def render(sid,p,repair=False):
  b,a,m,n,k,d=guard(sid,p);c=k/d;vals,F=bank(sid,p)
  if repair and sid in ERRORS:
-  # Explicit authored replacement of erroneous banks, maintaining all5 options.
-  L=Blog(a*x**m,b);R=c*s.log(b)/m
-  vals=[F,F*2,F/2,R*L,F*3]if n!=-1 else[F,F*2,F/2,R*L,R*L**2]
+  # Repair only the conflicting source option; retain the other four recipes
+  # and original correct designation, rather than replacing an entire bank.
+  vals=list(vals)
+  if sid=='q-31395':vals[1]=-vals[1];vals[3]=3*vals[3]
+  else:vals[0]=-vals[0]
  arg=a*x**m;L=Blog(arg,b);R=c*s.log(b)/m
  integ=c*L**n/x
  I=r'\int '+tex(integ)+r'\,\text{d}x'
@@ -150,7 +152,7 @@ def generate(level,seed=0,template=None,parameters=None,profile=None,field_type=
  contents={'prompt':prompt,'solution':solution,'field':'radio','bank':values,'correct':correctindex};ch=digest(contents);qid=uid(ch);fid=uid(qid+'selection')
  answers=[{':answer/id':uid(fid+str(i)+v),':answer/type':':answer.type/math',':answer/value':v}for i,v in enumerate(values)];correctid=answers[correctindex][':answer/id'];rng.shuffle(answers)
  field={':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correctid]}
- return {'knowledge_point':{'db_id':KP,'id':REC[':knowledge-point/id'],'title':REC[':knowledge-point/title']},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[field]},'generation':{'version':VERSION,'seed':seed,'basis':2275,'template':sid,'parameters':p,'bank_profile':sid+'-'+profile,'source_ids':[sid],'math_fingerprint':fingerprint(p),'content_fingerprint':ch,'domain':math_domain(p),'eligible':not(sid in ERRORS and profile=='observed'),'evidence_only':sid in ERRORS and profile=='observed','source_error':ERRORS.get(sid)if profile=='observed'else None,'authored':not original or profile=='repaired','source_repairs':['authored complete replacement bank; original retained ineligible']if profile=='repaired'else[],'runtime':{'python':sys.version.split()[0],'sympy':s.__version__}}}
+ return {'knowledge_point':{'db_id':KP,'id':REC[':knowledge-point/id'],'title':REC[':knowledge-point/title']},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[field]},'generation':{'version':VERSION,'seed':seed,'basis':2275,'template':sid,'parameters':p,'bank_profile':sid+'-'+profile,'source_ids':[sid],'math_fingerprint':fingerprint(p),'content_fingerprint':ch,'domain':math_domain(p),'eligible':not(sid in ERRORS and profile=='observed'),'evidence_only':sid in ERRORS and profile=='observed','source_error':ERRORS.get(sid)if profile=='observed'else None,'authored':not original or profile=='repaired','source_repairs':['minimum conflicting choices repaired: q31395 two of three duplicate distractors; q210752 one duplicate-correct distractor; remaining source recipes/key preserved; raw original retained ineligible']if profile=='repaired'else[],'runtime':{'python':sys.version.split()[0],'sympy':s.__version__}}}
 def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
 def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)
 def generate_hard(seed=0,**kw):return generate('hard',seed,**kw)
