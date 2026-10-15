@@ -1,0 +1,110 @@
+[
+  {
+    "label": "q-49605 normal-2",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100818,
+        "id": "37a7aff6-d1b2-5383-bb26-aa6363594b05",
+        "title": "Evaluating Definite Integrals"
+      },
+      "question": {
+        ":question/id": "b71ce5ee-459d-5d07-acb0-971c9d705d13",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "What is the value of $\\frac{2}{25}\\int_{5 e^{2}}^{5 e^{4}}\\frac{8\\operatorname{ln}\\left(\\frac{x}{5}\\right)}{\\left(\\frac{x}{5}\\right)}\\,\\text{d}x?$",
+        ":question/worked-solution": "Let's set $u=\\log{\\left(\\frac{x}{5} \\right)}.$ Then  we have\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x}\\,\u27f9\\,1\\,\\text{d}u=\\frac{1}{x}\\,\\text{d}x.\n$$\n\nCalculating the limits for $u$  gives the following:\n\n| $x$ | $5 e^{2}$ | $5 e^{4}$ |\n| --- | --- | --- |\n| $u$ | $2$ | $4$ |\n\nWe now substitute and evaluate, as follows:\n\n$$\n\\begin{aligned}\\frac{2}{25}\\int_{5 e^{2}}^{5 e^{4}}\\frac{8\\operatorname{ln}\\left(\\frac{x}{5}\\right)}{\\left(\\frac{x}{5}\\right)}\\,\\text{d}x \\\\ & =\\frac{16}{25}\\int_{5 e^{2}}^{5 e^{4}}\\operatorname{ln}\\left(\\frac{x}{5}\\right)\\cdot \\frac{1}{\\left(\\frac{x}{5}\\right)}\\,\\text{d}x \\\\ & =\\frac{16}{5}\\int_{2}^{4}u\\,\\text{d}u \\\\ & =\\frac{2}{5}\\cdot\\left(8\\cdot {\\frac{{u}^{2}}{2}}\\right)|_{2}^{4} \\\\ & =\\frac{2}{5}\\cdot\\left(4\\cdot {u}^{2}\\right)|_{2}^{4} \\\\ & =\\frac{2}{5}\\cdot\\left(4\\cdot (16-4)\\right) \\\\ & =\\frac{2}{5}\\cdot\\left(48\\right)\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "7693ab9d-bd0c-5623-a7a7-cdc4be39eb4b",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "7a0ef8cb-16a0-5350-95ef-44c3d74a5636",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\log{\\left(2 \\right)}^{2}}{5}"
+              },
+              {
+                ":answer/id": "f16419c0-f86b-5824-ab5b-4c65e06197d2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{8 \\log{\\left(2 \\right)}}{5}"
+              },
+              {
+                ":answer/id": "bb65626e-c5e3-5f04-99d0-c4db9679ad0d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{4 \\log{\\left(4 \\right)}}{5}"
+              },
+              {
+                ":answer/id": "85568c27-8eb8-55eb-b7a4-794400802a5d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{96}{5}"
+              },
+              {
+                ":answer/id": "bedbe855-ab48-51c0-8480-b448623a9cba",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{136}{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "85568c27-8eb8-55eb-b7a4-794400802a5d"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-logarithmic-substitution-b2275-v1",
+        "seed": 3,
+        "source_basis": 2275,
+        "template": "q-49605",
+        "bank_profile": "q-49605",
+        "source_ids": [
+          "q-49605"
+        ],
+        "parameters": {
+          "coefficient_num": 2,
+          "coefficient_den": 5,
+          "x_scale": 5
+        },
+        "eligible": true,
+        "raw_source_eligible": true,
+        "evidence_only": false,
+        "origin": "observed_source_pattern",
+        "source_repairs": [],
+        "math_fingerprint": "a5d7fded4e3231072c6654ba4f2e94b09d6f8f825c1636d132d81c38041c0b67",
+        "domain": "positive x interval; original real logarithm branch; sqrt log>=0, denominator log nonzero in interior; q-31643 convergent improper lower endpoint",
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "7a0ef8cb-16a0-5350-95ef-44c3d74a5636",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "f16419c0-f86b-5824-ab5b-4c65e06197d2",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "bb65626e-c5e3-5f04-99d0-c4db9679ad0d",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "85568c27-8eb8-55eb-b7a4-794400802a5d",
+        "expected": "accepted",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "bedbe855-ab48-51c0-8480-b448623a9cba",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      }
+    ]
+  }
+]

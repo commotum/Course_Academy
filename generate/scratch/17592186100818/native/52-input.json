@@ -1,0 +1,82 @@
+[
+  {
+    "label": "q-346435 original",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100818,
+        "id": "37a7aff6-d1b2-5383-bb26-aa6363594b05",
+        "title": "Evaluating Definite Integrals"
+      },
+      "question": {
+        ":question/id": "0e6bde8f-e0cc-5861-81a5-bb67116cabda",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Evaluate the following integral. Do not round the answer.\n\n${\\int }_{4}^{32}\\frac{1}{x\\sqrt{{log}_{2}\u2061x}}\\,\\text{d}x=($\n{{field-1}}\n$)\\operatorname{ln}\u20612$",
+        ":question/worked-solution": "Let $u={log}_{2}\u2061x.$ Differentiating, we get\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x\\operatorname{ln}\u20612}\\,\u27f9\\,\\operatorname{ln}\u20612\\cdot \\text{d}u=\\frac{\\text{d}x}{x}.\n$$\n\nCalculating the limits for $u$ gives the following:\n\n| $x$ | $4$ | $32$ |\n| --- | --- | --- |\n| $u$ | $2$ | $5$ |\n\nWe now substitute and evaluate as follows:\n\n$$\n\\begin{aligned}{\\int }_{4}^{32}\\frac{1}{x\\sqrt{{log}_{2}\u2061x}}\\,\\text{d}x & ={\\int }_{4}^{32}\\frac{1}{\\sqrt{{log}_{2}\u2061x}}\\cdot \\frac{\\text{d}x}{x} \\\\  & ={\\int }_{2}^{5}\\frac{1}{\\sqrt{u}}\\cdot \\operatorname{ln}\u20612\\,\\text{d}u \\\\  & =\\operatorname{ln}\u20612{\\int }_{2}^{5}\\frac{1}{\\sqrt{u}}\\,\\text{d}u \\\\  & =\\operatorname{ln}\u20612\\cdot 2\\sqrt{u}\\,{|}_{2}^{5} \\\\  & =(2\\sqrt{5}-2\\sqrt{2})\\operatorname{ln}\u20612\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "5349225a-8d04-5379-83c6-e0fc4fa14f1a",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "42d7a3b5-8fa4-5bb4-ae95-b6d4b01375eb",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2\\sqrt{5}-2\\sqrt{2}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "42d7a3b5-8fa4-5bb4-ae95-b6d4b01375eb"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-logarithmic-substitution-b2275-v1",
+        "seed": 0,
+        "source_basis": 2275,
+        "template": "q-346435",
+        "bank_profile": "q-346435",
+        "source_ids": [
+          "q-346435"
+        ],
+        "parameters": {
+          "coefficient_num": 1,
+          "coefficient_den": 1,
+          "x_scale": 1
+        },
+        "eligible": true,
+        "raw_source_eligible": true,
+        "evidence_only": false,
+        "origin": "observed_source_pattern",
+        "source_repairs": [],
+        "math_fingerprint": "c0aa97d8c17173a3e75700d8e384bea4f91d0c9bf8ae44f6506ad34b5a7ea387",
+        "domain": "positive x interval; original real logarithm branch; sqrt log>=0, denominator log nonzero in interior; q-31643 convergent improper lower endpoint",
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "2\\sqrt{5}-2\\sqrt{2}",
+        "expected": "accepted",
+        "purpose": "canonical normal blank fragment"
+      },
+      {
+        "submitted": "(- 2 \\sqrt{2} + 2 \\sqrt{5})+0",
+        "expected": "rejected",
+        "purpose": "genuinely equivalent normal blank fragment",
+        "intended_expected": "accepted",
+        "qualification": "genuine mathematically correct normal blank false rejection"
+      },
+      {
+        "submitted": "- 2 \\sqrt{2} + 1 + 2 \\sqrt{5}",
+        "expected": "rejected",
+        "purpose": "wrong normal blank fragment"
+      }
+    ]
+  }
+]

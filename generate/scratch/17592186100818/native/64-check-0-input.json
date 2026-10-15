@@ -1,0 +1,75 @@
+[
+  {
+    "label": "q-351287 original",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100818,
+        "id": "37a7aff6-d1b2-5383-bb26-aa6363594b05",
+        "title": "Evaluating Definite Integrals"
+      },
+      "question": {
+        ":question/id": "2f013d89-9b76-51f2-b130-d58ced4fe297",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Evaluate the following integral. Do not round the answer.\n\n${\\int }_{5}^{125}\\frac{8}{3x{log}_{5}\u2061({x}^{2})}\\,\\text{d}x=($\n{{field-1}}\n$)\\,\\operatorname{ln}\u20615$",
+        ":question/worked-solution": "Let $u={log}_{5}\u2061({x}^{2}).$ Differentiating, we get\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{{x}^{2}\\operatorname{ln}\u20615}\\cdot 2x=\\frac{2}{x\\operatorname{ln}\u20615}\\,\u27f9\\,\\frac{\\operatorname{ln}\u20615}{2}\\cdot \\text{d}u=\\frac{\\text{d}x}{x}.\n$$\n\nCalculating the limits for $u$ gives the following:\n\n| $x$ | $5$ | $125$ |\n| --- | --- | --- |\n| $u$ | $2$ | $6$ |\n\nWe now substitute and evaluate as follows:\n\n$$\n\\begin{aligned}{\\int }_{5}^{125}\\frac{8}{3x{log}_{5}\u2061({x}^{2})}\\,\\text{d}x & =\\frac{8}{3}{\\int }_{5}^{125}\\frac{1}{{log}_{5}\u2061({x}^{2})}\\cdot \\frac{\\text{d}x}{x} \\\\  & =\\frac{8}{3}{\\int }_{2}^{6}\\frac{1}{u}\\cdot \\frac{\\operatorname{ln}\u20615}{2}\\,\\text{d}u \\\\  & =\\frac{4\\operatorname{ln}\u20615}{3}{\\int }_{2}^{6}\\frac{1}{u}\\,\\text{d}u \\\\  & =\\frac{4\\operatorname{ln}\u20615}{3}(\\operatorname{ln}\u2061|u|){|}_{2}^{6} \\\\  & =\\frac{4\\operatorname{ln}\u20615}{3}(\\operatorname{ln}\u20616-\\operatorname{ln}\u20612) \\\\  & =\\frac{4\\operatorname{ln}\u20615}{3}\\operatorname{ln}\u20613 \\\\  & =(\\frac{4}{3}\\operatorname{ln}\u20613)\\operatorname{ln}\u20615\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "8886695a-a638-58aa-b319-5fc7fbac792a",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "de42e316-f1ec-5143-aebd-c8d59d729281",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{4}{3}\\operatorname{ln}3"
+              },
+              {
+                ":answer/id": "eed03f2f-274e-56e9-82a9-6fdf7368a840",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{4}{3}\\ln 3"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "eed03f2f-274e-56e9-82a9-6fdf7368a840"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-logarithmic-substitution-b2275-v1",
+        "seed": 0,
+        "source_basis": 2275,
+        "template": "q-351287",
+        "bank_profile": "q-351287",
+        "source_ids": [
+          "q-351287"
+        ],
+        "parameters": {
+          "coefficient_num": 1,
+          "coefficient_den": 1,
+          "x_scale": 1
+        },
+        "eligible": true,
+        "raw_source_eligible": true,
+        "evidence_only": false,
+        "origin": "observed_source_pattern",
+        "source_repairs": [],
+        "math_fingerprint": "a838bbaa3ed2c3681fcaab056810793966505083cf07ace95d94ec8971f2b0d4",
+        "domain": "positive x interval; original real logarithm branch; sqrt log>=0, denominator log nonzero in interior; q-31643 convergent improper lower endpoint",
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{4}{3}\\ln 3",
+        "expected": "accepted",
+        "purpose": "canonical normal blank fragment"
+      }
+    ]
+  }
+]

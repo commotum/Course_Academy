@@ -1,0 +1,70 @@
+[
+  {
+    "label": "q-346435 normal-1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100818,
+        "id": "37a7aff6-d1b2-5383-bb26-aa6363594b05",
+        "title": "Evaluating Definite Integrals"
+      },
+      "question": {
+        ":question/id": "6d4a17b8-efc4-5415-836f-d3e8ea1936dd",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Evaluate the following integral. Do not round the answer.\n\n$\\frac{2}{5}\\int_{4}^{32}\\frac{1}{\\left(\\frac{x}{1}\\right)\\sqrt{{log}_{2}\\left(\\frac{x}{1}\\right)}}\\,\\text{d}x=($\n{{field-1}}\n$)\\operatorname{ln}\u20612$",
+        ":question/worked-solution": "Let $u=\\frac{\\log{\\left(x \\right)}}{\\log{\\left(2 \\right)}}.$ Differentiating, we get\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x \\log{\\left(2 \\right)}}\\,\u27f9\\,\\log{\\left(2 \\right)}\\,\\text{d}u=\\frac{1}{x}\\,\\text{d}x.\n$$\n\nCalculating the limits for $u$ gives the following:\n\n| $x$ | $4$ | $32$ |\n| --- | --- | --- |\n| $u$ | $2$ | $5$ |\n\nWe now substitute and evaluate as follows:\n\n$$\n\\begin{aligned}\\frac{2}{5}\\int_{4}^{32}\\frac{1}{\\left(\\frac{x}{1}\\right)\\sqrt{{log}_{2}\\left(\\frac{x}{1}\\right)}}\\,\\text{d}x \\\\ & =\\frac{2}{5}\\int_{4}^{32}\\frac{1}{\\sqrt{{log}_{2}\\left(\\frac{x}{1}\\right)}}\\cdot \\frac{1}{\\left(\\frac{x}{1}\\right)}\\,\\text{d}x \\\\ & =\\frac{2}{5}\\int_{2}^{5}\\frac{1}{\\sqrt{u}}\\cdot \\operatorname{ln}2\\,\\text{d}u \\\\ & =\\frac{2 \\log{\\left(2 \\right)}}{5}\\int_{2}^{5}\\frac{1}{\\sqrt{u}}\\,\\text{d}u \\\\ & =\\frac{2}{5}\\cdot\\left(\\operatorname{ln}2\\cdot 2\\sqrt{u}\\right)|_{2}^{5} \\\\ & =\\frac{2}{5}\\cdot\\left((2\\sqrt{5}-2\\sqrt{2})\\operatorname{ln}2\\right)\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "446bce20-3a7d-5ceb-8fe2-5fd13f94b83c",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "d1be88e0-9ca4-54b7-9883-77c348cf23a9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{4 \\sqrt{2}}{5} + \\frac{4 \\sqrt{5}}{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "d1be88e0-9ca4-54b7-9883-77c348cf23a9"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-logarithmic-substitution-b2275-v1",
+        "seed": 1,
+        "source_basis": 2275,
+        "template": "q-346435",
+        "bank_profile": "q-346435",
+        "source_ids": [
+          "q-346435"
+        ],
+        "parameters": {
+          "coefficient_num": 2,
+          "coefficient_den": 5,
+          "x_scale": 1
+        },
+        "eligible": true,
+        "raw_source_eligible": true,
+        "evidence_only": false,
+        "origin": "observed_source_pattern",
+        "source_repairs": [],
+        "math_fingerprint": "7d9cc413d82df700663d990eefffe0f16445fa024a856fcc09d2b5f3b1d90aac",
+        "domain": "positive x interval; original real logarithm branch; sqrt log>=0, denominator log nonzero in interior; q-31643 convergent improper lower endpoint",
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "(- \\frac{4 \\sqrt{2}}{5} + \\frac{4 \\sqrt{5}}{5})+0",
+        "expected": "accepted",
+        "purpose": "genuinely equivalent normal blank fragment"
+      }
+    ]
+  }
+]

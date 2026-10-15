@@ -1,0 +1,70 @@
+[
+  {
+    "label": "q-351283 original",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100818,
+        "id": "37a7aff6-d1b2-5383-bb26-aa6363594b05",
+        "title": "Evaluating Definite Integrals"
+      },
+      "question": {
+        ":question/id": "53bcb356-ede6-512f-ae6c-ef450371b128",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Evaluate the following integral. Do not round the answer.\n\n${\\int }_{3}^{81}\\frac{2}{x\\sqrt{{log}_{3}\u2061x}}\\,\\text{d}x=($\n{{field-1}}\n$)\\operatorname{ln}\u20613$",
+        ":question/worked-solution": "Let $u={log}_{3}\u2061x.$ Differentiating, we get\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x\\operatorname{ln}\u20613}\\,\u27f9\\,\\operatorname{ln}\u20613\\cdot \\text{d}u=\\frac{\\text{d}x}{x}.\n$$\n\nCalculating the limits for $u$ gives the following:\n\n| $x$ | $3$ | $81$ |\n| --- | --- | --- |\n| $u$ | $1$ | $4$ |\n\nWe now substitute and evaluate as follows:\n\n$$\n\\begin{aligned}{\\int }_{3}^{81}\\frac{2}{x\\sqrt{{log}_{3}\u2061x}}\\,\\text{d}x & =2{\\int }_{3}^{81}\\frac{1}{\\sqrt{{log}_{3}\u2061x}}\\cdot \\frac{\\text{d}x}{x} \\\\  & =2{\\int }_{1}^{4}\\frac{1}{\\sqrt{u}}\\cdot \\operatorname{ln}\u20613\\,\\text{d}u \\\\  & =2\\operatorname{ln}\u20613{\\int }_{1}^{4}{u}^{-1/2}\\,\\text{d}u \\\\  & =2\\operatorname{ln}\u20613\\cdot (2\\sqrt{u}){|}_{1}^{4} \\\\  & =4\\operatorname{ln}\u20613(\\sqrt{4}-\\sqrt{1}) \\\\  & =4\\operatorname{ln}\u20613(2-1) \\\\  & =(4)\\operatorname{ln}\u20613\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "73dfeed3-a186-5c97-ab67-89b63dee8f92",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "4d9057a8-81e1-507d-b4ca-9217e26c35f7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "4"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "4d9057a8-81e1-507d-b4ca-9217e26c35f7"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-logarithmic-substitution-b2275-v1",
+        "seed": 0,
+        "source_basis": 2275,
+        "template": "q-351283",
+        "bank_profile": "q-351283",
+        "source_ids": [
+          "q-351283"
+        ],
+        "parameters": {
+          "coefficient_num": 1,
+          "coefficient_den": 1,
+          "x_scale": 1
+        },
+        "eligible": true,
+        "raw_source_eligible": true,
+        "evidence_only": false,
+        "origin": "observed_source_pattern",
+        "source_repairs": [],
+        "math_fingerprint": "76a84425a8f187e3be33692dd9f32050cf56955a4b06e9b8403c7b0731ba6765",
+        "domain": "positive x interval; original real logarithm branch; sqrt log>=0, denominator log nonzero in interior; q-31643 convergent improper lower endpoint",
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "1 + \\frac{\\log{\\left(81 \\right)}}{\\log{\\left(3 \\right)}}",
+        "expected": "rejected",
+        "purpose": "wrong normal blank fragment"
+      }
+    ]
+  }
+]

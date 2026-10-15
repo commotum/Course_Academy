@@ -1,0 +1,110 @@
+[
+  {
+    "label": "q-31616 original",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100818,
+        "id": "37a7aff6-d1b2-5383-bb26-aa6363594b05",
+        "title": "Evaluating Definite Integrals"
+      },
+      "question": {
+        ":question/id": "db42bcbc-b191-57ce-964e-04c4ac231dbe",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "What is the value of ${\\int }_{5}^{25}\\frac{3}{x{log}_{5}\u2061x}\\,\\text{d}x?$",
+        ":question/worked-solution": "Let $u={log}_{5}\u2061x.$ Differentiating, we get\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x\\operatorname{ln}\u20615}\\,\u27f9\\,\\operatorname{ln}\u20615\\,\\text{d}u=\\frac{\\text{d}x}{x}.\n$$\n\nCalculating the limits for $u$ gives the following:\n\n| $x$ | $5$ | $25$ |\n| --- | --- | --- |\n| $u$ | $1$ | $2$ |\n\nWe now substitute and evaluate as follows:\n\n$$\n\\begin{aligned}{\\int }_{5}^{25}\\frac{3}{x{log}_{5}\u2061x}\\,\\text{d}x & =3{\\int }_{5}^{25}\\frac{1}{{log}_{5}\u2061x}\\cdot \\frac{\\text{d}x}{x} \\\\  & =3{\\int }_{1}^{2}\\frac{1}{u}\\cdot \\operatorname{ln}\u20615\\,\\text{d}u \\\\  & =3\\operatorname{ln}\u20615{\\int }_{1}^{2}\\frac{1}{u}\\,\\text{d}u \\\\  & =3\\operatorname{ln}\u20615(\\operatorname{ln}\u2061|u|){|}_{1}^{2} \\\\  & =3\\operatorname{ln}\u20615(\\operatorname{ln}\u20612-\\operatorname{ln}\u20611) \\\\  & =3\\operatorname{ln}\u20612\\operatorname{ln}\u20615\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "bc4c6029-3fea-5acc-8a1a-95c74659c8a7",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "76e533a7-ef79-5be9-9b23-1852e3833a9e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\operatorname{ln}\u20612\\operatorname{ln}\u20613"
+              },
+              {
+                ":answer/id": "c01b4988-7e55-5a28-aaa6-8cf77b279377",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2\\operatorname{ln}\u20613\\operatorname{ln}\u20615"
+              },
+              {
+                ":answer/id": "82188ff2-032d-5a40-84cc-31a8cdf49a31",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\operatorname{ln}\u20612\\operatorname{ln}\u20615"
+              },
+              {
+                ":answer/id": "82cc60e1-0c26-5ddf-812b-508604a80b42",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "3\\operatorname{ln}\u20612\\operatorname{ln}\u20615"
+              },
+              {
+                ":answer/id": "9faf129e-7c73-52fb-97c2-04b147ec89dc",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\operatorname{ln}\u2061x\\operatorname{ln}\u20615"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "82cc60e1-0c26-5ddf-812b-508604a80b42"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-logarithmic-substitution-b2275-v1",
+        "seed": 0,
+        "source_basis": 2275,
+        "template": "q-31616",
+        "bank_profile": "q-31616",
+        "source_ids": [
+          "q-31616"
+        ],
+        "parameters": {
+          "coefficient_num": 1,
+          "coefficient_den": 1,
+          "x_scale": 1
+        },
+        "eligible": true,
+        "raw_source_eligible": true,
+        "evidence_only": false,
+        "origin": "observed_source_pattern",
+        "source_repairs": [],
+        "math_fingerprint": "029bdffe319b096b9e913f478170de6cd667f0bcddc51837947c489bfccf9afa",
+        "domain": "positive x interval; original real logarithm branch; sqrt log>=0, denominator log nonzero in interior; q-31643 convergent improper lower endpoint",
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "76e533a7-ef79-5be9-9b23-1852e3833a9e",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "c01b4988-7e55-5a28-aaa6-8cf77b279377",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "82188ff2-032d-5a40-84cc-31a8cdf49a31",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "82cc60e1-0c26-5ddf-812b-508604a80b42",
+        "expected": "accepted",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "9faf129e-7c73-52fb-97c2-04b147ec89dc",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      }
+    ]
+  }
+]

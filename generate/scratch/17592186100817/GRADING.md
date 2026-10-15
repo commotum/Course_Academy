@@ -1,0 +1,9 @@
+# Native grading qualification
+
+The frozen native runner SHA256 is71d435e31aa0cdea66d992aa4d4bd1043cdd871aaffc7a3af9f54e9b0f846dea. Each run checks that exact generate/runs/current/check-engine binary before invoking the real application grade_field entry point in batches of at most3 records, with no database operations.
+
+There are232 requested checks. All220 source/review radio option selections pass the field identity contract. Separate synthetic blanks add12 checks: canonical answer, genuine change-of-base expression, genuine constant-offset antiderivative, and an incorrect extra x term at each level. Canonical3/3 and wrong3/3 behave as expected. The moderate change-of-base entry is accepted. The easy change-of-base entry is unresolved under the supported equivalence rules; the hard change-of-base entry is unresolved because of domain differences. All3 mathematically valid constant-offset antiderivatives are rejected. Thus227 checks pass and5 genuine expected-accepted checks fail.
+
+These are synthetic blank probes; the captured and normal generator fields are radio only. No normal radio instance is removed to disguise a parser/equivalence limitation. native-input.json preserves every requested expected result. native-grading.json and engine/*-process.json retain exact rejected/unresolved outcomes and process errors. Failed batches are isolated with expectations unchanged; no failure is relabeled to manufacture a passing native report. The aggregate contains2 failed batch processes and5 isolated failures, representing5 distinct grading gaps, not7 independent failing mathematical submissions.
+
+Symbolic correctness and source fidelity are established separately through readback.py and validate.py. The two bad source banks remain documented evidence-only; native radio identity behavior does not repair their mathematical ambiguity.

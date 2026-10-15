@@ -1,0 +1,110 @@
+[
+  {
+    "label": "q-49517 normal-3",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100818,
+        "id": "37a7aff6-d1b2-5383-bb26-aa6363594b05",
+        "title": "Evaluating Definite Integrals"
+      },
+      "question": {
+        ":question/id": "425a7d65-8104-5df3-8447-1bcf34ac01ab",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "What is the value of $\\frac{2}{3}\\int_{e}^{e^{2}}\\frac{1}{\\left(\\frac{x}{1}\\right)\\operatorname{ln}\\left(\\frac{x}{1}\\right)}\\,\\text{d}x?$",
+        ":question/worked-solution": "Let's set $u=\\log{\\left(x \\right)}.$ Then, we have\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x}\\,\u27f9\\,1\\,\\text{d}u=\\frac{1}{x}\\,\\text{d}x.\n$$\n\nCalculating the limits for $u$ gives the following:\n\n| $x$ | $e$ | $e^{2}$ |\n| --- | --- | --- |\n| $u$ | $1$ | $2$ |\n\nWe now substitute and evaluate as follows:\n\n$$\n\\begin{aligned}\\frac{2}{3}\\int_{e}^{e^{2}}\\frac{1}{\\left(\\frac{x}{1}\\right)\\operatorname{ln}\\left(\\frac{x}{1}\\right)}\\,\\text{d}x \\\\ & =\\frac{2}{3}\\int_{e}^{e^{2}}\\frac{1}{\\operatorname{ln}\\left(\\frac{x}{1}\\right)}\\cdot \\frac{1}{\\left(\\frac{x}{1}\\right)}\\,\\text{d}x \\\\ & =\\frac{2}{3}\\int_{1}^{2}\\frac{1}{u}\\,\\text{d}u \\\\ & =\\frac{2}{3}\\cdot\\left((\\operatorname{ln}Abs(u))\\right)|_{1}^{2} \\\\ & =\\frac{2}{3}\\cdot\\left(\\operatorname{ln}2-\\operatorname{ln}1\\right) \\\\ & =\\frac{2}{3}\\cdot\\left(\\operatorname{ln}2\\right)\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "c8812374-843d-5c4e-80b0-7abacb83ed79",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "6b40a5b5-7182-5270-be44-1181200c0fa9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2}{3}"
+              },
+              {
+                ":answer/id": "d26cb0ae-213c-51ee-9589-2920f395c714",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{4 \\log{\\left(2 \\right)}}{3}"
+              },
+              {
+                ":answer/id": "5d65954a-8c6d-54bd-b0dd-c560cd25a136",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 e}{3}"
+              },
+              {
+                ":answer/id": "de9db6b7-e652-5207-85b6-ad4db1f1ec15",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\log{\\left(2 \\right)}}{3}"
+              },
+              {
+                ":answer/id": "1ee08223-bf4e-5fdb-9745-1506b486d6a2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "0"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "de9db6b7-e652-5207-85b6-ad4db1f1ec15"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-logarithmic-substitution-b2275-v1",
+        "seed": 4,
+        "source_basis": 2275,
+        "template": "q-49517",
+        "bank_profile": "q-49517",
+        "source_ids": [
+          "q-49517"
+        ],
+        "parameters": {
+          "coefficient_num": 2,
+          "coefficient_den": 3,
+          "x_scale": 1
+        },
+        "eligible": true,
+        "raw_source_eligible": true,
+        "evidence_only": false,
+        "origin": "observed_source_pattern",
+        "source_repairs": [],
+        "math_fingerprint": "b68230e2c3783c6bb88f9e5949531c5253007796d53aca84d6bade32746e639d",
+        "domain": "positive x interval; original real logarithm branch; sqrt log>=0, denominator log nonzero in interior; q-31643 convergent improper lower endpoint",
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "6b40a5b5-7182-5270-be44-1181200c0fa9",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "d26cb0ae-213c-51ee-9589-2920f395c714",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "5d65954a-8c6d-54bd-b0dd-c560cd25a136",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "de9db6b7-e652-5207-85b6-ad4db1f1ec15",
+        "expected": "accepted",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "1ee08223-bf4e-5fdb-9745-1506b486d6a2",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      }
+    ]
+  }
+]

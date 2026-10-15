@@ -1,0 +1,110 @@
+[
+  {
+    "label": "q-73656 normal-2",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100818,
+        "id": "37a7aff6-d1b2-5383-bb26-aa6363594b05",
+        "title": "Evaluating Definite Integrals"
+      },
+      "question": {
+        ":question/id": "9e423f99-7956-583e-8ecb-c504a84edc32",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "What is the value of $\\frac{2}{25}\\int_{40}^{320}\\frac{1}{\\left(\\frac{x}{5}\\right)\\sqrt{{log}_{8}\\left(\\frac{x}{5}\\right)}}\\,\\text{d}x?$",
+        ":question/worked-solution": "Let $u=\\frac{\\log{\\left(\\frac{x}{5} \\right)}}{\\log{\\left(8 \\right)}}.$ Differentiating, we get\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x \\log{\\left(8 \\right)}}\\,\u27f9\\,\\log{\\left(8 \\right)}\\,\\text{d}u=\\frac{1}{x}\\,\\text{d}x.\n$$\n\nCalculating the limits for $u$ gives the following:\n\n| $x$ | $40$ | $320$ |\n| --- | --- | --- |\n| $u$ | $1$ | $2$ |\n\nWe now substitute and evaluate as follows:\n\n$$\n\\begin{aligned}\\frac{2}{25}\\int_{40}^{320}\\frac{1}{\\left(\\frac{x}{5}\\right)\\sqrt{{log}_{8}\\left(\\frac{x}{5}\\right)}}\\,\\text{d}x \\\\ & =\\frac{2}{25}\\int_{40}^{320}\\frac{1}{\\sqrt{{log}_{8}\\left(\\frac{x}{5}\\right)}}\\cdot \\frac{1}{\\left(\\frac{x}{5}\\right)}\\,\\text{d}x \\\\ & =\\frac{2}{5}\\int_{1}^{2}\\frac{1}{\\sqrt{u}}\\cdot \\operatorname{ln}8\\,\\text{d}u \\\\ & =\\frac{2 \\log{\\left(8 \\right)}}{5}\\int_{1}^{2}\\frac{1}{\\sqrt{u}}\\,\\text{d}u \\\\ & =\\frac{2}{5}\\cdot\\left(\\operatorname{ln}8(2\\sqrt{u})\\right)|_{1}^{2} \\\\ & =\\frac{2}{5}\\cdot\\left(2\\operatorname{ln}8(\\sqrt{2}-\\sqrt{1})\\right) \\\\ & =\\frac{2}{5}\\cdot\\left(2(\\sqrt{2}-1)\\operatorname{ln}8\\right)\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "3512d5b7-55eb-5471-97b6-9cb48be66e64",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "70aceeb9-8223-5e98-ae7a-14849a4bd67a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{4 \\sqrt{\\log{\\left(8 \\right)}}}{5}"
+              },
+              {
+                ":answer/id": "759a4038-61b0-522e-b552-00786ebbdc91",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\left(1 - \\sqrt{2}\\right) \\log{\\left(8 \\right)}}{5}"
+              },
+              {
+                ":answer/id": "fecd51f7-b8b0-506c-873f-610fc9e91240",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\left(-2 + 2 \\sqrt{2}\\right) \\log{\\left(8 \\right)}}{5}"
+              },
+              {
+                ":answer/id": "34caf7d1-0760-5cfd-a4fb-b424dde154d4",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\sqrt{2} \\log{\\left(8 \\right)}}{5}"
+              },
+              {
+                ":answer/id": "8b197ced-655d-5794-845b-6fe73954fdc0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\log{\\left(8 \\right)}}{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "fecd51f7-b8b0-506c-873f-610fc9e91240"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-logarithmic-substitution-b2275-v1",
+        "seed": 3,
+        "source_basis": 2275,
+        "template": "q-73656",
+        "bank_profile": "q-73656",
+        "source_ids": [
+          "q-73656"
+        ],
+        "parameters": {
+          "coefficient_num": 2,
+          "coefficient_den": 5,
+          "x_scale": 5
+        },
+        "eligible": true,
+        "raw_source_eligible": true,
+        "evidence_only": false,
+        "origin": "observed_source_pattern",
+        "source_repairs": [],
+        "math_fingerprint": "fa85f772fbb1c6e593060aca6d705ba2f44f091f9cf3a571e57bbf25e500c27c",
+        "domain": "positive x interval; original real logarithm branch; sqrt log>=0, denominator log nonzero in interior; q-31643 convergent improper lower endpoint",
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "70aceeb9-8223-5e98-ae7a-14849a4bd67a",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "759a4038-61b0-522e-b552-00786ebbdc91",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "fecd51f7-b8b0-506c-873f-610fc9e91240",
+        "expected": "accepted",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "34caf7d1-0760-5cfd-a4fb-b424dde154d4",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "8b197ced-655d-5794-845b-6fe73954fdc0",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      }
+    ]
+  }
+]

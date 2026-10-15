@@ -1,0 +1,75 @@
+[
+  {
+    "label": "q-351287 normal-1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100818,
+        "id": "37a7aff6-d1b2-5383-bb26-aa6363594b05",
+        "title": "Evaluating Definite Integrals"
+      },
+      "question": {
+        ":question/id": "67f97e39-5698-502a-bd97-5ef2a895060c",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Evaluate the following integral. Do not round the answer.\n\n$\\frac{2}{5}\\int_{5}^{125}\\frac{8}{3\\left(\\frac{x}{1}\\right){log}_{5}({\\left(\\frac{x}{1}\\right)}^{2})}\\,\\text{d}x=($\n{{field-1}}\n$)\\,\\operatorname{ln}\u20615$",
+        ":question/worked-solution": "Let $u=\\frac{\\log{\\left(x^{2} \\right)}}{\\log{\\left(5 \\right)}}.$ Differentiating, we get\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=\\frac{2}{x \\log{\\left(5 \\right)}}\\,\u27f9\\,\\frac{\\log{\\left(5 \\right)}}{2}\\,\\text{d}u=\\frac{1}{x}\\,\\text{d}x.\n$$\n\nCalculating the limits for $u$ gives the following:\n\n| $x$ | $5$ | $125$ |\n| --- | --- | --- |\n| $u$ | $2$ | $6$ |\n\nWe now substitute and evaluate as follows:\n\n$$\n\\begin{aligned}\\frac{2}{5}\\int_{5}^{125}\\frac{8}{3\\left(\\frac{x}{1}\\right){log}_{5}({\\left(\\frac{x}{1}\\right)}^{2})}\\,\\text{d}x \\\\ & =\\frac{16}{15}\\int_{5}^{125}\\frac{1}{{log}_{5}({\\left(\\frac{x}{1}\\right)}^{2})}\\cdot \\frac{1}{\\left(\\frac{x}{1}\\right)}\\,\\text{d}x \\\\ & =\\frac{16}{15}\\int_{2}^{6}\\frac{1}{u}\\cdot \\frac{\\operatorname{ln}5}{2}\\,\\text{d}u \\\\ & =\\frac{8 \\log{\\left(5 \\right)}}{15}\\int_{2}^{6}\\frac{1}{u}\\,\\text{d}u \\\\ & =\\frac{2}{5}\\cdot\\left(\\frac{4\\operatorname{ln}5}{3}(\\operatorname{ln}Abs(u))\\right)|_{2}^{6} \\\\ & =\\frac{2}{5}\\cdot\\left(\\frac{4\\operatorname{ln}5}{3}(\\operatorname{ln}6-\\operatorname{ln}2)\\right) \\\\ & =\\frac{2}{5}\\cdot\\left(\\frac{4\\operatorname{ln}5}{3}\\operatorname{ln}3\\right) \\\\ & =\\frac{2}{5}\\cdot\\left((\\frac{4}{3}\\operatorname{ln}3)\\operatorname{ln}5\\right)\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "b9c45301-aeb2-5d8d-a9ec-0503c1e4a560",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "a55bee16-f35a-59bc-9b37-35337073bfbd",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{8 \\log{\\left(3 \\right)}}{15}"
+              },
+              {
+                ":answer/id": "7b63fcfe-dc85-5ee4-8aaa-64a057c21cd4",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{8 \\log{\\left(3 \\right)}}{15}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "7b63fcfe-dc85-5ee4-8aaa-64a057c21cd4"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-logarithmic-substitution-b2275-v1",
+        "seed": 1,
+        "source_basis": 2275,
+        "template": "q-351287",
+        "bank_profile": "q-351287",
+        "source_ids": [
+          "q-351287"
+        ],
+        "parameters": {
+          "coefficient_num": 2,
+          "coefficient_den": 5,
+          "x_scale": 1
+        },
+        "eligible": true,
+        "raw_source_eligible": true,
+        "evidence_only": false,
+        "origin": "observed_source_pattern",
+        "source_repairs": [],
+        "math_fingerprint": "88fe09bd4d73641d5eb2a923d448113f5f82a60934ac63bed3e9cbc724a8bd57",
+        "domain": "positive x interval; original real logarithm branch; sqrt log>=0, denominator log nonzero in interior; q-31643 convergent improper lower endpoint",
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "(\\frac{8 \\log{\\left(3 \\right)}}{15})+0",
+        "expected": "accepted",
+        "purpose": "genuinely equivalent normal blank fragment"
+      }
+    ]
+  }
+]

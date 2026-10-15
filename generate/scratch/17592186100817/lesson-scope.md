@@ -1,0 +1,7 @@
+# Lesson scope
+
+The owning topic is17592186050898, Integrating Logarithmic Functions Using Substitution, basis2275. lesson-route.json follows activity/first-step and the actual step/next links: introduction → natural logarithm KP00816 → other logarithms KP00817 → definite-integral tutorial → definite-integral KP00818. Collection order is not used. The canonical example for this KP integrates log_3²(x)/x by u=log_3(x), carries ln3 into the power integral, and substitutes back. The preceding KP establishes substitution with ln(x). The following tutorial and KP add definite limits, which are outside this generator.
+
+The captured topic prerequisite is Calculating Definite Integrals Using Substitution (topic17592186048332); its exact topic and lesson captures are frozen under reference. These surrounding materials confirm substitution and ordinary small-power primitives as available operations. They do not authorize adding definite bounds, integration by parts, arbitrary affine shifts inside logarithms, a change of response type, or additional function families here.
+
+Conservative same-method variety uses small other bases, small outer rational coefficients, the observed easy log powers1/2, moderate argument powers2…4, and hard positive argument scales1…5. All three source difficulties have adequate coverage; no missing-level extension is claimed. Synthetic blanks are separate native-grading probes of the radio integrals, excluded from source inventory, normal output and mathematical-task counts.

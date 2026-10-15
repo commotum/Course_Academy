@@ -1,0 +1,15 @@
+# Frozen lesson scope
+
+Database math, basis2275, topic17592186050898: Integrating Logarithmic Functions Using Substitution. Practice KP17592186100818: Evaluating Definite Integrals. Topic predecessor is Calculating Definite Integrals Using Substitution (17592186048332).
+
+The actual activity first/next traversal is17592186101591 →17592186101592 →17592186101593 →17592186101594 →17592186101595. The opening tutorial introduces logarithmic substitution and differentiating an answer. It leads to natural-log indefinite integration (00816), then other-base indefinite integration (00817). The next tutorial explicitly teaches changing variable, finding new limits, and evaluating in the new variable. Its final step is this definite-integral KP and canonical example e-14422. The step array's incidental order was not used to infer progression.
+
+Each supported instance performs the same logarithmic substitution, reciprocal differential, x/u limit table, transformed integral, elementary power or real log-absolute primitive, and signed endpoint arithmetic. Definite integration and changing limits are required. No integration by parts, new rational substitutions, trigonometry, extra answer-field types, or additional reasoning stages are introduced.
+
+Original ratings are17easy,5moderate,11hard. q-49607 is unrated and incomplete. Its mathematically supported authored completion is explicitly moderate; it is not treated as rated evidence.
+
+Positive coefficient scale t and positive x-scale k are independent. Substituting the source function at x/k, dividing its integrand by k, and multiplying both x-bounds by k is a mathematically coherent change of the inner logarithm scale. This changes the presented integrand and interval while preserving transformed limits and workload. Multiplying the entire integral by t varies its supplied coefficient independently. All34 original mathematical tasks remain normally reachable at t=k=1, with explicit repairs for erroneous operative source stages.
+
+The small observed set does not establish formulas for new base/exponent/limit variations or new distractor mistakes. Those roles remain fixed conservatively. This is a stated variety limit, not an inference that repeated literal source values are mathematically essential. The23 reduced ratios with numerator and denominator1..6 and6 x-scales provide138 actual tasks per profile before cross-profile equivalence. Batch dedup uses canonical integrand, bounds and domain, excluding bank/seed/profile/field shape.
+
+Every interval has positive x and positive logarithm arguments. For half-power integrands the log is nonnegative and positive in the interior. For reciprocal logarithms it never vanishes on the whole interval. In q-31643 the reciprocal square root has u=0 at the lower endpoint: the integral is improper and converges because the primitive2sqrt(u) has a finite lower limit. Real log-absolute primitives are retained as log|u| and differentiated through g'/g only on their nonzero connected branch. No force=True logarithm identities are used.

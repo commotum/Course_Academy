@@ -1,0 +1,110 @@
+[
+  {
+    "label": "q-49552 normal-2",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100818,
+        "id": "37a7aff6-d1b2-5383-bb26-aa6363594b05",
+        "title": "Evaluating Definite Integrals"
+      },
+      "question": {
+        ":question/id": "67d61eae-2ea7-5b5d-a461-41ece103f8b5",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "What is the value of $\\frac{2}{25}\\int_{\\frac{5 e}{4}}^{\\frac{5 e^{3}}{4}}\\frac{3}{\\left(\\frac{x}{5}\\right)\\operatorname{ln}(4\\left(\\frac{x}{5}\\right))}\\,\\text{d}x?$",
+        ":question/worked-solution": "Let's set $u=\\log{\\left(\\frac{4 x}{5} \\right)}.$ Then, we have\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x}\\,\u27f9\\,1\\,\\text{d}u=\\frac{1}{x}\\,\\text{d}x.\n$$\n\nCalculating the limits for $u$ gives the following:\n\n| $x$ | $\\frac{5 e}{4}$ | $\\frac{5 e^{3}}{4}$ |\n| --- | --- | --- |\n| $u$ | $1$ | $3$ |\n\nWe now substitute and evaluate as follows:\n\n$$\n\\begin{aligned}\\frac{2}{25}\\int_{\\frac{5 e}{4}}^{\\frac{5 e^{3}}{4}}\\frac{3}{\\left(\\frac{x}{5}\\right)\\operatorname{ln}(4\\left(\\frac{x}{5}\\right))}\\,\\text{d}x \\\\ & =\\frac{6}{25}\\int_{\\frac{5 e}{4}}^{\\frac{5 e^{3}}{4}}\\frac{1}{\\operatorname{ln}(4\\left(\\frac{x}{5}\\right))}\\cdot \\frac{1}{\\left(\\frac{x}{5}\\right)}\\,\\text{d}x \\\\ & =\\frac{6}{5}\\int_{1}^{3}\\frac{1}{u}\\,\\text{d}u \\\\ & =\\frac{2}{5}\\cdot\\left(3(\\operatorname{ln}Abs(u))\\right)|_{1}^{3} \\\\ & =\\frac{2}{5}\\cdot\\left(3(\\operatorname{ln}3-\\operatorname{ln}1)\\right) \\\\ & =\\frac{2}{5}\\cdot\\left(3\\operatorname{ln}3\\right)\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "152bd807-ee68-5876-ac54-dddd87285714",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "d9cf75d4-6db0-5665-bddd-9d25f2fcd345",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{6 \\log{\\left(\\frac{3}{2} \\right)}}{5}"
+              },
+              {
+                ":answer/id": "82341821-918b-5d56-9e3f-ae40d8ede795",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\log{\\left(3 \\right)}}{5}"
+              },
+              {
+                ":answer/id": "6257b3e3-4f4a-58a5-9c52-875910dc577c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{6 \\log{\\left(3 \\right)}}{5}"
+              },
+              {
+                ":answer/id": "def46c4e-1560-52a3-9041-3969084d428a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 e^{3}}{5}"
+              },
+              {
+                ":answer/id": "ad63a039-c8a4-5af6-a858-58fdef928c34",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2}{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "6257b3e3-4f4a-58a5-9c52-875910dc577c"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-logarithmic-substitution-b2275-v1",
+        "seed": 3,
+        "source_basis": 2275,
+        "template": "q-49552",
+        "bank_profile": "q-49552",
+        "source_ids": [
+          "q-49552"
+        ],
+        "parameters": {
+          "coefficient_num": 2,
+          "coefficient_den": 5,
+          "x_scale": 5
+        },
+        "eligible": true,
+        "raw_source_eligible": true,
+        "evidence_only": false,
+        "origin": "observed_source_pattern",
+        "source_repairs": [],
+        "math_fingerprint": "869bd63d19e9bd02e1350c0ca7ce27619493f19cfc616e98d31274fc113fa728",
+        "domain": "positive x interval; original real logarithm branch; sqrt log>=0, denominator log nonzero in interior; q-31643 convergent improper lower endpoint",
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "d9cf75d4-6db0-5665-bddd-9d25f2fcd345",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "82341821-918b-5d56-9e3f-ae40d8ede795",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "6257b3e3-4f4a-58a5-9c52-875910dc577c",
+        "expected": "accepted",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "def46c4e-1560-52a3-9041-3969084d428a",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "ad63a039-c8a4-5af6-a858-58fdef928c34",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      }
+    ]
+  }
+]

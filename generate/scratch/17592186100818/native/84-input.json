@@ -1,0 +1,110 @@
+[
+  {
+    "label": "q-73656 original",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100818,
+        "id": "37a7aff6-d1b2-5383-bb26-aa6363594b05",
+        "title": "Evaluating Definite Integrals"
+      },
+      "question": {
+        ":question/id": "84598bd2-b906-5d24-a6a5-7d00bf20f32a",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "What is the value of ${\\int }_{8}^{64}\\frac{1}{x\\sqrt{{log}_{8}\u2061x}}\\,\\text{d}x?$",
+        ":question/worked-solution": "Let $u={log}_{8}\u2061x.$ Differentiating, we get\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x\\operatorname{ln}\u20618}\\,\u27f9\\,\\operatorname{ln}\u20618\\,\\text{d}u=\\frac{\\text{d}x}{x}.\n$$\n\nCalculating the limits for $u$ gives the following:\n\n| $x$ | $8$ | $64$ |\n| --- | --- | --- |\n| $u$ | $1$ | $2$ |\n\nWe now substitute and evaluate as follows:\n\n$$\n\\begin{aligned}{\\int }_{8}^{64}\\frac{1}{x\\sqrt{{log}_{8}\u2061x}}\\,\\text{d}x & ={\\int }_{8}^{64}\\frac{1}{\\sqrt{{log}_{8}\u2061x}}\\cdot \\frac{\\text{d}x}{x} \\\\  & ={\\int }_{1}^{2}\\frac{1}{\\sqrt{u}}\\cdot \\operatorname{ln}\u20618\\,\\text{d}u \\\\  & =\\operatorname{ln}\u20618{\\int }_{1}^{2}\\frac{1}{\\sqrt{u}}\\,\\text{d}u \\\\  & =\\operatorname{ln}\u20618(2\\sqrt{u}){|}_{1}^{2} \\\\  & =2\\operatorname{ln}\u20618(\\sqrt{2}-\\sqrt{1}) \\\\  & =2(\\sqrt{2}-1)\\operatorname{ln}\u20618\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "b99bb8ad-b6e8-5b17-980d-2d533d4f3dfb",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "74b27710-94d7-56e6-81e1-f67df1159fa7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\sqrt{2}\\,\\operatorname{ln}\u20618"
+              },
+              {
+                ":answer/id": "f609c1cc-9d1d-5eee-820c-a2dd6feb798a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\operatorname{ln}\u20618"
+              },
+              {
+                ":answer/id": "dac8d4f8-ee3e-5b80-9b29-e01b95421bf5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2\\sqrt{\\operatorname{ln}\u20618}"
+              },
+              {
+                ":answer/id": "c9071786-f238-55bf-91ae-9fcca780a1d9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "(1-\\sqrt{2})\\operatorname{ln}\u20618"
+              },
+              {
+                ":answer/id": "d27c56df-7c4e-5032-9928-517606c17125",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2(\\sqrt{2}-1)\\operatorname{ln}\u20618"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "d27c56df-7c4e-5032-9928-517606c17125"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-logarithmic-substitution-b2275-v1",
+        "seed": 0,
+        "source_basis": 2275,
+        "template": "q-73656",
+        "bank_profile": "q-73656",
+        "source_ids": [
+          "q-73656"
+        ],
+        "parameters": {
+          "coefficient_num": 1,
+          "coefficient_den": 1,
+          "x_scale": 1
+        },
+        "eligible": true,
+        "raw_source_eligible": true,
+        "evidence_only": false,
+        "origin": "observed_source_pattern",
+        "source_repairs": [],
+        "math_fingerprint": "9bddab735e203ebe3988a238cfb87dc62e7b7a1c520152d652b50c4ccac3dd2f",
+        "domain": "positive x interval; original real logarithm branch; sqrt log>=0, denominator log nonzero in interior; q-31643 convergent improper lower endpoint",
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "74b27710-94d7-56e6-81e1-f67df1159fa7",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "f609c1cc-9d1d-5eee-820c-a2dd6feb798a",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "dac8d4f8-ee3e-5b80-9b29-e01b95421bf5",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "c9071786-f238-55bf-91ae-9fcca780a1d9",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "d27c56df-7c4e-5032-9928-517606c17125",
+        "expected": "accepted",
+        "purpose": "full observed bank ID selection"
+      }
+    ]
+  }
+]

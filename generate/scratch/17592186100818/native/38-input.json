@@ -1,0 +1,112 @@
+[
+  {
+    "label": "q-31643 normal-2",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100818,
+        "id": "37a7aff6-d1b2-5383-bb26-aa6363594b05",
+        "title": "Evaluating Definite Integrals"
+      },
+      "question": {
+        ":question/id": "656271a7-6a2b-51be-b174-f099a9eab400",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "What is the value of $\\frac{2}{25}\\int_{\\frac{5}{2}}^{\\frac{5 e}{2}}\\frac{1}{\\left(\\frac{x}{5}\\right)\\sqrt{\\operatorname{ln}(2\\left(\\frac{x}{5}\\right))}}\\,\\text{d}x?$",
+        ":question/worked-solution": "Let's set $u=\\log{\\left(\\frac{2 x}{5} \\right)}.$ Then, we have\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x}\\,\u27f9\\,1\\,\\text{d}u=\\frac{1}{x}\\,\\text{d}x.\n$$\n\nCalculating the limits for $u$ gives the following:\n\n| $x$ | $\\frac{5}{2}$ | $\\frac{5 e}{2}$ |\n| --- | --- | --- |\n| $u$ | $0$ | $1$ |\n\nWe now substitute and evaluate as follows:\n\n$$\n\\begin{aligned}\\frac{2}{25}\\int_{\\frac{5}{2}}^{\\frac{5 e}{2}}\\frac{1}{\\left(\\frac{x}{5}\\right)\\sqrt{\\operatorname{ln}(2\\left(\\frac{x}{5}\\right))}}\\,\\text{d}x \\\\ & =\\frac{2}{25}\\int_{\\frac{5}{2}}^{\\frac{5 e}{2}}\\frac{1}{\\sqrt{\\operatorname{ln}(2\\left(\\frac{x}{5}\\right))}}\\cdot \\frac{1}{\\left(\\frac{x}{5}\\right)}\\,\\text{d}x \\\\ & =\\frac{2}{5}\\int_{0}^{1}\\frac{1}{\\sqrt{u}}\\,\\text{d}u \\\\ & =\\frac{2}{5}\\int_{0}^{1}{u}^{-1/2}\\,\\text{d}u \\\\ & =\\frac{2}{5}\\cdot\\left({\\frac{{u}^{1/2}}{1/2}}\\right)|_{0}^{1} \\\\ & =\\frac{2}{5}\\cdot\\left(2\\cdot {\\sqrt{u}}\\right)|_{0}^{1} \\\\ & =\\frac{2}{5}\\cdot\\left(2(\\sqrt{1}-\\sqrt{0})\\right) \\\\ & =\\frac{2}{5}\\cdot\\left(2\\right)\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "8320b9d5-d8a2-5432-8c7f-c23816906641",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "b13c530f-9348-52e8-a032-fbcede13e1f1",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3}{5}"
+              },
+              {
+                ":answer/id": "dd21bd82-a017-5cc4-8bcb-6a28c4387895",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{5}"
+              },
+              {
+                ":answer/id": "644dc91d-af17-5c86-b585-f496ca955f8c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{8}{5}"
+              },
+              {
+                ":answer/id": "8ea7dc17-d4de-5548-8ca9-0e2cdf58ac00",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{4}{5}"
+              },
+              {
+                ":answer/id": "f7764470-6c9b-5b90-9980-e59f6d1e72c2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2}{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "8ea7dc17-d4de-5548-8ca9-0e2cdf58ac00"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-logarithmic-substitution-b2275-v1",
+        "seed": 3,
+        "source_basis": 2275,
+        "template": "q-31643",
+        "bank_profile": "q-31643",
+        "source_ids": [
+          "q-31643"
+        ],
+        "parameters": {
+          "coefficient_num": 2,
+          "coefficient_den": 5,
+          "x_scale": 5
+        },
+        "eligible": true,
+        "raw_source_eligible": false,
+        "evidence_only": false,
+        "origin": "observed_source_pattern",
+        "source_repairs": [
+          "Correct derivative equality and restore x/u table order to lower then upper; integral is convergent improper at lower endpoint."
+        ],
+        "math_fingerprint": "20c9d61e5af6bbbb0a14f2a2583537d0c5319f1b50ba8d729f79cb58f8678b96",
+        "domain": "positive x interval; original real logarithm branch; sqrt log>=0, denominator log nonzero in interior; q-31643 convergent improper lower endpoint",
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "b13c530f-9348-52e8-a032-fbcede13e1f1",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "dd21bd82-a017-5cc4-8bcb-6a28c4387895",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "644dc91d-af17-5c86-b585-f496ca955f8c",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "8ea7dc17-d4de-5548-8ca9-0e2cdf58ac00",
+        "expected": "accepted",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "f7764470-6c9b-5b90-9980-e59f6d1e72c2",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      }
+    ]
+  }
+]

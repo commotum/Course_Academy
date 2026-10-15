@@ -1,0 +1,112 @@
+[
+  {
+    "label": "q-73655 normal-2",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100818,
+        "id": "37a7aff6-d1b2-5383-bb26-aa6363594b05",
+        "title": "Evaluating Definite Integrals"
+      },
+      "question": {
+        ":question/id": "b99cfa9e-35d4-50b2-a20e-157005d52be8",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "What is the value of $\\frac{2}{25}\\int_{20}^{80}\\frac{2}{\\left(\\frac{x}{5}\\right){log}_{4}\\left(\\frac{x}{5}\\right)}\\,\\text{d}x?$",
+        ":question/worked-solution": "Let $u=\\frac{\\log{\\left(\\frac{x}{5} \\right)}}{\\log{\\left(4 \\right)}}.$ Differentiating, we get\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x \\log{\\left(4 \\right)}}\\,\u27f9\\,\\log{\\left(4 \\right)}\\,\\text{d}u=\\frac{1}{x}\\,\\text{d}x.\n$$\n\nCalculating the limits for $u$ gives the following:\n\n| $x$ | $20$ | $80$ |\n| --- | --- | --- |\n| $u$ | $1$ | $2$ |\n\nWe now substitute and evaluate as follows:\n\n$$\n\\begin{aligned}\\frac{2}{25}\\int_{20}^{80}\\frac{2}{\\left(\\frac{x}{5}\\right){log}_{4}\\left(\\frac{x}{5}\\right)}\\,\\text{d}x \\\\ & =\\frac{4}{25}\\int_{20}^{80}\\frac{1}{{log}_{4}\\left(\\frac{x}{5}\\right)}\\cdot \\frac{1}{\\left(\\frac{x}{5}\\right)}\\,\\text{d}x \\\\ & =\\frac{4}{5}\\int_{1}^{2}\\frac{1}{u}\\cdot \\operatorname{ln}4\\,\\text{d}u \\\\ & =\\frac{4 \\log{\\left(4 \\right)}}{5}\\int_{1}^{2}\\frac{1}{u}\\,\\text{d}u \\\\ & =\\frac{2}{5}\\cdot\\left(2\\operatorname{ln}4(\\operatorname{ln}Abs(u))\\right)|_{1}^{2} \\\\ & =\\frac{2}{5}\\cdot\\left(2\\operatorname{ln}4\\cdot (\\operatorname{ln}2-\\operatorname{ln}1)\\right) \\\\ & =\\frac{2}{5}\\cdot\\left(2\\operatorname{ln}({2}^{2})\\operatorname{ln}2\\right) \\\\ & =\\frac{2}{5}\\cdot\\left(4{ln}^{2}2\\right)\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "342232f9-029f-5261-ac20-055c254f621b",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "1e7ed989-565f-5707-948f-931cd6b49d9f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{4 \\log{\\left(2 \\right)}}{5}"
+              },
+              {
+                ":answer/id": "c0f8f063-a67f-5808-8b4c-83d8fa0314d2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{16 \\log{\\left(2 \\right)}}{5}"
+              },
+              {
+                ":answer/id": "c02ad54a-afc7-5f34-ac1c-d4232a2d1769",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{8 \\log{\\left(2 \\right)}^{2}}{5}"
+              },
+              {
+                ":answer/id": "c521a6d6-19e3-5f9b-af85-61d801d5113e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{16 \\log{\\left(2 \\right)}^{2}}{5}"
+              },
+              {
+                ":answer/id": "a6931f29-f1bd-5def-9232-33e9195ab209",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{8 \\log{\\left(2 \\right)}}{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "c02ad54a-afc7-5f34-ac1c-d4232a2d1769"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-logarithmic-substitution-b2275-v1",
+        "seed": 3,
+        "source_basis": 2275,
+        "template": "q-73655",
+        "bank_profile": "q-73655",
+        "source_ids": [
+          "q-73655"
+        ],
+        "parameters": {
+          "coefficient_num": 2,
+          "coefficient_den": 5,
+          "x_scale": 5
+        },
+        "eligible": true,
+        "raw_source_eligible": false,
+        "evidence_only": false,
+        "origin": "observed_source_pattern",
+        "source_repairs": [
+          "Extracted x-integral bounds2..4 corrected to4..16."
+        ],
+        "math_fingerprint": "43643197edbf41938fe33666b89f739a48ae61abc03944c76ece2acab9f42eab",
+        "domain": "positive x interval; original real logarithm branch; sqrt log>=0, denominator log nonzero in interior; q-31643 convergent improper lower endpoint",
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "1e7ed989-565f-5707-948f-931cd6b49d9f",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "c0f8f063-a67f-5808-8b4c-83d8fa0314d2",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "c02ad54a-afc7-5f34-ac1c-d4232a2d1769",
+        "expected": "accepted",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "c521a6d6-19e3-5f9b-af85-61d801d5113e",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "a6931f29-f1bd-5def-9232-33e9195ab209",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      }
+    ]
+  }
+]

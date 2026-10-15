@@ -1,0 +1,112 @@
+[
+  {
+    "label": "q-31643 original",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100818,
+        "id": "37a7aff6-d1b2-5383-bb26-aa6363594b05",
+        "title": "Evaluating Definite Integrals"
+      },
+      "question": {
+        ":question/id": "d00acf9f-50d4-56a2-b8fb-722218231428",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "What is the value of ${\\int }_{1/2}^{e/2}\\frac{1}{x\\sqrt{\\operatorname{ln}\u2061(2x)}}\\,\\text{d}x?$",
+        ":question/worked-solution": "Let's set $u=\\operatorname{ln}\u2061(2x).$ Then, we have\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{2x}\\cdot 2=\\frac{1}{x}\\,\u27f9\\,\\text{d}u=\\frac{1}{x}\\,\\text{d}x.\n$$\n\nCalculating the limits for $u$ gives the following:\n\n| $x$ | $1/2$ | $e/2$ |\n| --- | --- | --- |\n| $u$ | $0$ | $1$ |\n\nWe now substitute and evaluate as follows:\n\n$$\n\\begin{aligned}{\\int }_{1/2}^{e/2}\\frac{1}{x\\sqrt{\\operatorname{ln}\u2061(2x)}}\\,\\text{d}x & ={\\int }_{1/2}^{e/2}\\frac{1}{\\sqrt{\\operatorname{ln}\u2061(2x)}}\\cdot \\frac{\\text{d}x}{x} \\\\  & ={\\int }_{0}^{1}\\frac{1}{\\sqrt{u}}\\,\\text{d}u \\\\  & ={\\int }_{0}^{1}{u}^{-1/2}\\,\\text{d}u \\\\  & ={\\frac{{u}^{1/2}}{1/2}|}_{0}^{1} \\\\  & =2\\cdot {\\sqrt{u}|}_{0}^{1} \\\\  & =2(\\sqrt{1}-\\sqrt{0}) \\\\  & =2\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "5c8f0d52-7a1e-5430-b000-173c42ecf83a",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "b0bd4a8c-0619-5f53-a0a5-a991753f1cf0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2"
+              },
+              {
+                ":answer/id": "e0287b22-574d-5650-ab3b-a22adb8762e5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "1"
+              },
+              {
+                ":answer/id": "a71f8246-50cd-5c7f-8d12-4ac9e9e9e820",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3}{2}"
+              },
+              {
+                ":answer/id": "d99d5563-125c-55b7-b8b3-524dd541c943",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{2}"
+              },
+              {
+                ":answer/id": "47a7941b-8cf8-550a-8e32-1a0dbbddd0a9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "4"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "b0bd4a8c-0619-5f53-a0a5-a991753f1cf0"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-logarithmic-substitution-b2275-v1",
+        "seed": 0,
+        "source_basis": 2275,
+        "template": "q-31643",
+        "bank_profile": "q-31643",
+        "source_ids": [
+          "q-31643"
+        ],
+        "parameters": {
+          "coefficient_num": 1,
+          "coefficient_den": 1,
+          "x_scale": 1
+        },
+        "eligible": true,
+        "raw_source_eligible": false,
+        "evidence_only": false,
+        "origin": "observed_source_pattern",
+        "source_repairs": [
+          "Correct derivative equality and restore x/u table order to lower then upper; integral is convergent improper at lower endpoint."
+        ],
+        "math_fingerprint": "6b9d0f618b7a91df57b35933c8d15df569123247630ff652c2e700531b71dd1d",
+        "domain": "positive x interval; original real logarithm branch; sqrt log>=0, denominator log nonzero in interior; q-31643 convergent improper lower endpoint",
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "b0bd4a8c-0619-5f53-a0a5-a991753f1cf0",
+        "expected": "accepted",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "e0287b22-574d-5650-ab3b-a22adb8762e5",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "a71f8246-50cd-5c7f-8d12-4ac9e9e9e820",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "d99d5563-125c-55b7-b8b3-524dd541c943",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "47a7941b-8cf8-550a-8e32-1a0dbbddd0a9",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      }
+    ]
+  }
+]

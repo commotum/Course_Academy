@@ -1,0 +1,110 @@
+[
+  {
+    "label": "q-31588 normal-1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100818,
+        "id": "37a7aff6-d1b2-5383-bb26-aa6363594b05",
+        "title": "Evaluating Definite Integrals"
+      },
+      "question": {
+        ":question/id": "9f65fd9a-d29f-50bb-8814-d77e089df88d",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "What is the value of $\\frac{2}{5}\\int_{1}^{3}\\frac{{log}_{3}\\left(\\frac{x}{1}\\right)}{\\left(\\frac{x}{1}\\right)}\\,\\text{d}x?$",
+        ":question/worked-solution": "Let $u=\\frac{\\log{\\left(x \\right)}}{\\log{\\left(3 \\right)}}.$ Differentiating, we get\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x \\log{\\left(3 \\right)}}\\,\u27f9\\,\\log{\\left(3 \\right)}\\,\\text{d}u=\\frac{1}{x}\\,\\text{d}x.\n$$\n\nCalculating the limits for $u$ gives the following:\n\n| $x$ | $1$ | $3$ |\n| --- | --- | --- |\n| $u$ | $0$ | $1$ |\n\nWe now substitute and evaluate as follows:\n\n$$\n\\begin{aligned}\\frac{2}{5}\\int_{1}^{3}\\frac{{log}_{3}\\left(\\frac{x}{1}\\right)}{\\left(\\frac{x}{1}\\right)}\\,\\text{d}x \\\\ & =\\frac{2}{5}\\int_{1}^{3}{log}_{3}\\left(\\frac{x}{1}\\right)\\cdot \\frac{1}{\\left(\\frac{x}{1}\\right)}\\,\\text{d}x \\\\ & =\\frac{2}{5}\\int_{0}^{1}u\\cdot \\operatorname{ln}3\\,\\text{d}u \\\\ & =\\frac{2 \\log{\\left(3 \\right)}}{5}\\int_{0}^{1}u\\,\\text{d}u \\\\ & =\\frac{2}{5}\\cdot\\left(\\operatorname{ln}3\\cdot \\frac{{u}^{2}}{2}\\right)|_{0}^{1} \\\\ & =\\frac{2}{5}\\cdot\\left(\\operatorname{ln}3\\cdot (\\frac{{1}^{2}}{2}-\\frac{{0}^{2}}{2})\\right) \\\\ & =\\frac{2}{5}\\cdot\\left(\\frac{\\operatorname{ln}3}{2}\\right)\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "09993f6b-aca3-5997-a34d-a42d9672209f",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "66de2d55-4a11-5e83-a9de-5bd637ffcaa6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\log{\\left(x \\right)}}{15}"
+              },
+              {
+                ":answer/id": "1fe14c86-0ee2-599b-835e-17df69fc120c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{4}{5 \\log{\\left(3 \\right)}}"
+              },
+              {
+                ":answer/id": "07b12257-4ef4-5309-9e97-373bf47ef4b8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{\\log{\\left(3 \\right)}}{5}"
+              },
+              {
+                ":answer/id": "098a87ee-05c0-5ec7-add4-78fabfcf205a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\log{\\left(3 \\right)}^{2}}{5 \\log{\\left(x \\right)}}"
+              },
+              {
+                ":answer/id": "3c977ee0-fc9c-5a37-8ca1-c9eb3c03087e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{\\log{\\left(x \\right)}}{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "07b12257-4ef4-5309-9e97-373bf47ef4b8"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-logarithmic-substitution-b2275-v1",
+        "seed": 1,
+        "source_basis": 2275,
+        "template": "q-31588",
+        "bank_profile": "q-31588",
+        "source_ids": [
+          "q-31588"
+        ],
+        "parameters": {
+          "coefficient_num": 2,
+          "coefficient_den": 5,
+          "x_scale": 1
+        },
+        "eligible": true,
+        "raw_source_eligible": true,
+        "evidence_only": false,
+        "origin": "observed_source_pattern",
+        "source_repairs": [],
+        "math_fingerprint": "10abd0f7b156f1f8e5787ef8ff3e521ad87c14a5057d82fd1f2e28eb4b81d57f",
+        "domain": "positive x interval; original real logarithm branch; sqrt log>=0, denominator log nonzero in interior; q-31643 convergent improper lower endpoint",
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "66de2d55-4a11-5e83-a9de-5bd637ffcaa6",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "1fe14c86-0ee2-599b-835e-17df69fc120c",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "07b12257-4ef4-5309-9e97-373bf47ef4b8",
+        "expected": "accepted",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "098a87ee-05c0-5ec7-add4-78fabfcf205a",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "3c977ee0-fc9c-5a37-8ca1-c9eb3c03087e",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      }
+    ]
+  }
+]

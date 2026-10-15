@@ -1,0 +1,112 @@
+[
+  {
+    "label": "q-13840 normal-2",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100818,
+        "id": "37a7aff6-d1b2-5383-bb26-aa6363594b05",
+        "title": "Evaluating Definite Integrals"
+      },
+      "question": {
+        ":question/id": "f358a6ea-43b4-5199-8479-a0be59c62f91",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "Evaluate the integral $\\frac{2}{25}\\int_{5 e}^{5 e^{2}}\\frac{2}{5\\left(\\frac{x}{5}\\right)\\operatorname{ln}({\\left(\\frac{x}{5}\\right)}^{2})}\\,\\text{d}x.$",
+        ":question/worked-solution": "Let's set $u=\\log{\\left(\\frac{x^{2}}{25} \\right)}.$ Then, we have\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=\\frac{2}{x}\\,\u27f9\\,\\frac{1}{2}\\,\\text{d}u=\\frac{1}{x}\\,\\text{d}x.\n$$\n\nCalculating the limits for $u$ gives the following:\n\n| $x$ | $5 e$ | $5 e^{2}$ |\n| --- | --- | --- |\n| $u$ | $2$ | $4$ |\n\nWe now substitute and evaluate as follows:\n\n$$\n\\begin{aligned}\\frac{2}{25}\\int_{5 e}^{5 e^{2}}\\frac{2}{5\\left(\\frac{x}{5}\\right)\\operatorname{ln}({\\left(\\frac{x}{5}\\right)}^{2})}\\,\\text{d}x \\\\ & =\\frac{2}{125}\\int_{5 e}^{5 e^{2}}\\frac{2}{\\operatorname{ln}({\\left(\\frac{x}{5}\\right)}^{2})}\\cdot \\frac{1}{\\left(\\frac{x}{5}\\right)}\\,\\text{d}x \\\\ & =\\frac{2}{25}\\int_{2}^{4}\\frac{2}{u}\\cdot \\frac{1}{2}\\,\\text{d}u \\\\ & =\\frac{2}{25}\\int_{2}^{4}\\frac{1}{u}\\,\\text{d}u \\\\ & =\\frac{2}{5}\\cdot\\left(\\frac{1}{5}(\\operatorname{ln}Abs(u))\\right)|_{2}^{4} \\\\ & =\\frac{2}{5}\\cdot\\left(\\frac{1}{5}(\\operatorname{ln}4-\\operatorname{ln}2)\\right) \\\\ & =\\frac{2}{5}\\cdot\\left(\\frac{1}{5}(\\operatorname{ln}{2}^{2}-\\operatorname{ln}2)\\right) \\\\ & =\\frac{2}{5}\\cdot\\left(\\frac{1}{5}(2\\operatorname{ln}2-\\operatorname{ln}2)\\right) \\\\ & =\\frac{2}{5}\\cdot\\left(\\frac{\\operatorname{ln}2}{5}\\right)\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "040011af-a402-5296-95f4-7f79d19f41f5",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "f47b073d-5e3a-5ec5-9cf7-9c32f1acb443",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\log{\\left(8 \\right)}}{5}"
+              },
+              {
+                ":answer/id": "2ba72d6b-9ad4-59ad-91d3-5ce3a2bb83c6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\log{\\left(4 \\right)}}{25}"
+              },
+              {
+                ":answer/id": "5073a01d-585f-5785-b5ba-b9490e1c9ac7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\log{\\left(2 \\right)}}{25}"
+              },
+              {
+                ":answer/id": "d16335b1-3409-5e7d-b5ea-e5eaa908f4ad",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{2 \\log{\\left(4 \\right)}}{5}"
+              },
+              {
+                ":answer/id": "f82a8667-0ad3-5542-9063-dc58c89a6481",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2 \\log{\\left(2 \\right)}}{5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "5073a01d-585f-5785-b5ba-b9490e1c9ac7"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-logarithmic-substitution-b2275-v1",
+        "seed": 3,
+        "source_basis": 2275,
+        "template": "q-13840",
+        "bank_profile": "q-13840",
+        "source_ids": [
+          "q-13840"
+        ],
+        "parameters": {
+          "coefficient_num": 2,
+          "coefficient_den": 5,
+          "x_scale": 5
+        },
+        "eligible": true,
+        "raw_source_eligible": false,
+        "evidence_only": false,
+        "origin": "observed_source_pattern",
+        "source_repairs": [
+          "Remove extra1/x from extracted x-integral operand."
+        ],
+        "math_fingerprint": "a692bb65f1bba78e8b8ff849b91ce469239054f8a557ea432215a75d8b6eef59",
+        "domain": "positive x interval; original real logarithm branch; sqrt log>=0, denominator log nonzero in interior; q-31643 convergent improper lower endpoint",
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "f47b073d-5e3a-5ec5-9cf7-9c32f1acb443",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "2ba72d6b-9ad4-59ad-91d3-5ce3a2bb83c6",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "5073a01d-585f-5785-b5ba-b9490e1c9ac7",
+        "expected": "accepted",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "d16335b1-3409-5e7d-b5ea-e5eaa908f4ad",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      },
+      {
+        "submitted_answer_id": "f82a8667-0ad3-5542-9063-dc58c89a6481",
+        "expected": "rejected",
+        "purpose": "full observed bank ID selection"
+      }
+    ]
+  }
+]
