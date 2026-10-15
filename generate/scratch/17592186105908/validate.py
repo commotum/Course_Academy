@@ -61,6 +61,14 @@ def check(r,raw=False):
    require(isinstance(a[':answer/type'],str),'Enum string')
    s=a[':answer/value'];require(s.count('$')%2==0 and s.count('{')==s.count('}'),'Answer formatting')
   if kind=='blank':require('{{'+f[':answer-field/key']+'}}'in q[':question/problem'],'Missing placeholder')
+  if kind=='checkbox':
+   require({a[':answer/value']for a in aa}=={'true','false'},'Boolean bank')
+   expression=re.search(r'- \*\*'+re.escape(f[':answer-field/key'])+r'\.\*\* \$([^$]+)\$',q[':question/problem'])[1]
+   lhs,rhs=expression.split('=');candidate=sp.solve(g.parse_math(lhs)-g.parse_math(rhs),sp.Symbol(v))
+   require(len(candidate)==1,'Checkbox statement must identify one root')
+   designated=next(a[':answer/value']for a in aa if a[':answer/id']==correct[1])
+   require(designated==('true'if candidate[0] in roots else'false'),'Checkbox truth disagrees with determinant')
+   continue
   if correct is None:require(raw,'Missing normal correct designation');continue
   ci=next(a for a in aa if a[':answer/id']==correct[1]);vals=root_values(ci[':answer/value'],v)
   if not raw:
@@ -92,7 +100,7 @@ def native(r,label):
  checks=[]
  for i,f in enumerate(r['question'][':question/answer-fields']):
   ci=f[':answer-field/correct'][1];correct=next(a for a in f[':answer-field/choices']if a[':answer/id']==ci)
-  if f[':answer-field/type'].endswith('/radio'):
+  if f[':answer-field/type'].endswith(('/radio','/checkbox')):
    checks.extend({'field_index':i,'submitted_answer_id':a[':answer/id'],'expected':'accepted'if a[':answer/id']==ci else'rejected','purpose':'owned choice grading'}for a in f[':answer-field/choices'])
   else:
    c=correct[':answer/value'];e=g.parse_math(c)
@@ -109,6 +117,7 @@ def native(r,label):
 
 def main():
  cases=[];replays=[];normal=[];variants=[];eng=[];values=banks=refs=solutions=stages=0
+ rated=sum(':question/difficulty'in q for q in g.ORIGINALS.values());raw_gradable=sum(all(':answer-field/correct'in f for f in q[':question/answer-fields'])for q in g.ORIGINALS.values());field_count=sum(len(q[':question/answer-fields'])for q in g.ORIGINALS.values());wrong=sum(len(f[':answer-field/choices'])-1 for q in g.ORIGINALS.values()for f in q[':question/answer-fields']if ':answer-field/correct'in f)
  for sid,q in g.ORIGINALS.items():
   case={'source_id':sid,'template':sid,'level':'moderate','parameters':{'shift':0},'bank_profile':'source:'+sid+':raw'};cases.append(case)
   r=g.generate('moderate',template=sid,parameters=case['parameters'],profile=case['bank_profile']);replays.append(r);a=r['question']
@@ -142,9 +151,9 @@ def main():
   try:g.generate(l,parameters=p,template=t);raise AssertionError('Invalid parameters admitted')
   except ValueError:pass
  # Bank/profile alone cannot inflate math fingerprints; actual content must distinguish banks.
- base=normal[2];other=g.generate('moderate',template='q-128436',profile='source:q-128436:raw',parameters={'shift':0});require(base['generation']['parameter_fingerprint']==other['generation']['parameter_fingerprint'],'Profile in math identity')
+ base=next(r for r in normal if r['generation']['template']=='q-128436');other=g.generate('moderate',template='q-128436',profile='source:q-128436:raw',parameters={'shift':0});require(base['generation']['parameter_fingerprint']==other['generation']['parameter_fingerprint'],'Profile in math identity')
  # Same displayed task must share math identity across authored and evidence banks.
- source_task=normal[2];p={'vectors':[[str(z)for z in row]for row in g.printed_vectors(source_task['question'][':question/problem']).tolist()],'variable':'k'}
+ source_task=base;p={'vectors':[[str(z)for z in row]for row in g.printed_vectors(source_task['question'][':question/problem']).tolist()],'variable':'k'}
  method_task=g.generate('moderate',parameters=p,template='linear',field_type='radio')
  require(method_task['generation']['parameter_fingerprint']==source_task['generation']['parameter_fingerprint'],'Cross-layout task identity')
  require(method_task['question'][':question/id']!=source_task['question'][':question/id'],'Distinct banks content identity')
@@ -153,13 +162,13 @@ def main():
  require(min(variety.values())>=75,'Insufficient meaningful parameter variety')
  (HERE/'source-cases.json').write_text(json.dumps(cases,indent=2)+'\n')
  (HERE/'engine-input.json').write_text(json.dumps(eng,indent=2)+'\n')
- engine=ROOT/'generate/runs/current/check-engine'
+ engine=HERE/'check-engine'
  run=subprocess.run([str(engine),str(HERE/'engine-input.json'),str(HERE/'engine-report.json')],capture_output=True,text=True)
  require(run.returncode==0,'Native grading failed '+run.stdout+run.stderr)
- result={'status':'passed','source':g.SOURCE,'source_coverage':{'practice_questions':len(cases),'observed_moderate':15,'unrated':2,'prompt_exact':len(cases),'full_solution_exact':solutions,'full_solution_total':solutions,'answer_values_matched':values,'answer_values_total':values,'complete_radio_banks_matched':banks,'complete_radio_banks_total':banks,'correct_field_refs_matched':refs,'correct_field_refs_total':refs,'source_questions_with_correct_refs':15,'source_questions_missing_correct_refs':2,'missing_correct_refs_preserved':2,'missing_solutions_preserved':2,'missing_ratings_preserved':2,'source_fields_preserved':19,'designated_source_wrong_choices_matched':36,'designated_source_wrong_choices_total':36,'unmarked_source_choices_preserved':10},'mathematics':{'printed_stages_checked':stages,'source_raw_correctness_exceptions':['q-18266 correct designation is a singleton; true root set is {-3,3}'],'normal_records_checked':len(eng)-15,'variety_100_seeds':variety,'all_choices_checked':'Full scalar/root-set equality and uniqueness; raw incorrect designation recorded separately','raw_native_records':15,'raw_missing_ref_records_not_gradable':2},'native':{'records':len(eng),'checks':sum(len(a['checks'])for a in eng),'status':'passed','engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest()},'authored_missing_levels':['easy sparse linear determinant','hard dense signed linear determinant'],'interpretation_limits':['All opaque source banks are evidence-only affine recipes, not inferred learner mistakes.'],'unresolved_findings':[]}
+ result={'status':'passed','source':g.SOURCE,'source_coverage':{'practice_questions':len(cases),'observed_moderate':rated,'unrated':2,'prompt_exact':len(cases),'full_solution_exact':solutions,'full_solution_total':solutions,'answer_values_matched':values,'answer_values_total':values,'complete_radio_banks_matched':banks,'complete_radio_banks_total':banks,'correct_field_refs_matched':refs,'correct_field_refs_total':refs,'source_questions_with_correct_refs':raw_gradable,'source_questions_missing_correct_refs':2,'missing_correct_refs_preserved':2,'missing_solutions_preserved':2,'missing_ratings_preserved':2,'source_fields_preserved':field_count,'designated_source_wrong_choices_matched':wrong,'designated_source_wrong_choices_total':wrong,'unmarked_source_choices_preserved':10},'mathematics':{'printed_stages_checked':stages,'source_raw_correctness_exceptions':['q-18266 correct designation is a singleton; true root set is {-3,3}'],'normal_records_checked':len(eng)-raw_gradable,'variety_100_seeds':variety,'all_choices_checked':'Full scalar/root-set equality and uniqueness; raw incorrect designation recorded separately','raw_native_records':raw_gradable,'raw_missing_ref_records_not_gradable':2},'native':{'records':len(eng),'checks':sum(len(a['checks'])for a in eng),'status':'passed','engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest()},'authored_missing_levels':['easy sparse linear determinant','hard dense signed linear determinant'],'interpretation_limits':['All opaque source banks are evidence-only affine recipes, not inferred learner mistakes.'],'unresolved_findings':[]}
  (HERE/'validation.json').write_text(json.dumps(result,indent=2)+'\n')
  (HERE/'review.json').write_text(json.dumps({'source_replays':replays,'normalized_source_replays':normal,'generated':variants},indent=2)+'\n')
- lines=['# Coplanarity review','','Source math basis 1356. Raw evidence is not normal learner output. Every observed bank is followed by a normalized replay and two labeled affine variants. All three authored levels have at least two examples for each supported field layout.','']
+ lines=['# Coplanarity review','','Source math basis 2535. Raw evidence is not normal learner output. Every observed bank is followed by a normalized replay and two labeled affine variants. All three authored levels have at least two examples for each supported field layout.','']
  for sid,q,r,n in zip(g.ORIGINALS,g.ORIGINALS.values(),replays,normal):
   lines+=['## Original '+sid,'',q[':question/problem'],'','Original fields: '+json.dumps(q[':question/answer-fields'],ensure_ascii=False),'',q.get(':question/worked-solution','Missing original worked solution, rating, and correct designation.'),'','### Raw parameterized replay','',g.markdown(r),'','### Normalized replay','',g.markdown(n),'']
  for r in variants:lines+=['## GENERATED '+r['generation']['level']+' / '+r['generation']['template']+' / '+str(r['generation']['parameters']),'',g.markdown(r),'']

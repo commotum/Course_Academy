@@ -178,7 +178,9 @@ def main():
     parser = argparse.ArgumentParser(); parser.add_argument('--difficulty', required=True)
     parser.add_argument('--count', type=int, default=5); parser.add_argument('--seed', type=int, default=0)
     parser.add_argument('--format', choices=('json', 'markdown'), default='json'); parser.add_argument('--output', type=Path)
-    args = parser.parse_args(); rows = batch(args.difficulty, args.count, args.seed)
+    args = parser.parse_args()
+    levels = SUPPORTED_LEVELS if args.difficulty == 'all' else (args.difficulty,)
+    rows = [record for level in levels for record in batch(level, args.count, args.seed)]
     text = (json.dumps(rows, indent=2) if args.format == 'json' else '\n\n---\n\n'.join(markdown(r) for r in rows))+'\n'
     if args.output: args.output.write_text(text)
     else: print(text, end='')

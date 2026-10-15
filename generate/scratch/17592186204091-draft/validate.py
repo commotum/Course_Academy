@@ -43,7 +43,7 @@ def main():
         assert [a[':answer/value'] for a in oldfield[':answer-field/choices']]==[a[':answer/value'] for a in newfield[':answer-field/choices']]
         assert oldfield[':answer-field/correct'][':answer/value']==newfield[':answer-field/choices'][0][':answer/value']
         assert all(':answer/feedback' not in a for a in oldfield[':answer-field/choices'])
-        fidelity.append(dict(source_id=mid,exact_prompt=True,exact_full_solution=True,full_fields_bank_correct_feedback=True,matched_options=1,total_options=1,missing_options=[],extra_options=[]));replays.append(rec)
+        fidelity.append(dict(source_id=mid,exact_prompt=True,raw_full_pull_exact=True,source_math_and_full_prose_preserved=True,solution_presentation='Legacy captured wrappers normalized to canonical underbrace; other prose and math unchanged',exact_solution_bytes=(new[':question/worked-solution']==q[':question/worked-solution']),full_fields_bank_correct_feedback=True,matched_options=1,total_options=1,missing_options=[],extra_options=[]));replays.append(rec)
     save('source-cases.json',cases);save('excluded-source.json',excluded)
     for case in cases: assert g.replay_source(case['source_id'],case['parameters'])==case['record']
     variants=[];coverage={};batches={}
@@ -84,7 +84,8 @@ def main():
             else: assert a.count('{{field-1}}')==2
     for target in ('question',):
         ref=g.generate('moderate',parameters=base)
-        mutations=[('key',lambda q:q[':question/answer-fields'][0][':answer-field/choices'][0].update({':answer/value':'0'})),('given',lambda q:q.update({':question/problem':q[':question/problem'].replace('=1','=8',1)})),('solution target',lambda q:q.update({':question/worked-solution':q[':question/worked-solution'].replace('k & =-3.','k & =2.').replace('p & =-3.','p & =2.')})),('condition',lambda q:q.update({':question/worked-solution':q[':question/worked-solution'].replace('-7(p+3)=0.','-7(p+3)=1.')})),('reduction',lambda q:q.update({':question/worked-solution':q[':question/worked-solution'].replace('{{-7}_{⏟}}_{b}','{{7}_{⏟}}_{b}')}))]
+        mutations=[('key',lambda q:q[':question/answer-fields'][0][':answer-field/choices'][0].update({':answer/value':'0'})),('given',lambda q:q.update({':question/problem':q[':question/problem'].replace('=1','=8',1)})),('solution target',lambda q:q.update({':question/worked-solution':q[':question/worked-solution'].replace('k & =-3.','k & =2.').replace('p & =-3.','p & =2.')})),('condition',lambda q:q.update({':question/worked-solution':q[':question/worked-solution'].replace('-7(p+3)=0.','-7(p+3)=1.')})),('reduction',lambda q:q.update({':question/worked-solution':q[':question/worked-solution'].replace(r'\underbrace{-7}_{b}',r'\underbrace{7}_{b}')}))]
+        mutations += [('stale annotation coefficient',lambda q:q.update({':question/worked-solution':q[':question/worked-solution'].replace(r'\underbrace{-7(p+3)}_{a}',r'\underbrace{-7(p-3)}_{a}')})),('stale annotation label',lambda q:q.update({':question/worked-solution':q[':question/worked-solution'].replace(r'\underbrace{-7(p+3)}_{a}',r'\underbrace{-7(p+3)}_{b}')})),('legacy annotation',lambda q:q.update({':question/worked-solution':q[':question/worked-solution'].replace(r'\underbrace{-7}_{b}','{{-7}_{⏟}}_{b}')}))]
         for label,fn in mutations:
             bad=copy.deepcopy(ref);fn(bad['question']);rejects('semantic mutation '+label,lambda bad=bad:independent(bad))
     records=replays+variants+boundaries+[r['record']for r in controlled]

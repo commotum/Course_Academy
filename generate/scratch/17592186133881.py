@@ -72,12 +72,12 @@ def parameters(sid,rng):
 
 def render_plots(params,output_dir):
  output_dir=Path(output_dir);output_dir.mkdir(parents=True,exist_ok=True)
- key=canonical_key(params);slug=hashlib.sha256(key.encode()).hexdigest();path=output_dir/(slug+'.png');data=output_dir/(slug+'.json')
+ key=canonical_key(params);slug=hashlib.sha256(json.dumps([list(params),'scale3']).encode()).hexdigest();path=output_dir/(slug+'.png');data=output_dir/(slug+'.json')
  if not path.exists():
   a,b,c,d,u,v=map(float,params);grid=np.linspace(-3,3,13);X,Y=np.meshgrid(grid,grid);U=a*X+b*Y+u;V=c*X+d*Y+v
   # One global normalization retains relative arrow magnitude. Never normalize
   # per arrow: that would change the visual evidence for local rotation.
-  factor=2*max(1,float(np.max(np.hypot(U,V))))
+  factor=3*max(1,float(np.max(np.hypot(U,V))))
   fig,ax=plt.subplots(figsize=(5,5));ax.quiver(X,Y,U,V,color='#333333',angles='xy',scale_units='xy',scale=factor,width=.0036)
   ax.axhline(0,color='black',lw=.7);ax.axvline(0,color='black',lw=.7)
   ax.annotate('',xy=(3.5,0),xytext=(3.2,0),arrowprops={'arrowstyle':'->','lw':.7});ax.annotate('',xy=(0,3.5),xytext=(0,3.2),arrowprops={'arrowstyle':'->','lw':.7})

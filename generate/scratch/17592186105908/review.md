@@ -1,6 +1,6 @@
 # Coplanarity review
 
-Source math basis 1356. Raw evidence is not normal learner output. Every observed bank is followed by a normalized replay and two labeled affine variants. All three authored levels have at least two examples for each supported field layout.
+Source math basis 2535. Raw evidence is not normal learner output. Every observed bank is followed by a normalized replay and two labeled affine variants. All three authored levels have at least two examples for each supported field layout.
 
 ## Original q-18260
 
@@ -40,36 +40,66 @@ Therefore, the three vectors are coplanar if and only if $k=\frac{9}{8}.$
 
 ## Original q-18268
 
-Find $t$ given that the vectors $p = ⟨3, t, t⟩$, $q = ⟨1, 3, 1⟩$, and $r = ⟨1, 1, 3⟩$ are coplanar.
+Find $t$ given that the vectors $p=⟨3,t,t⟩$, $q=⟨1,3,1⟩$, and $r=⟨1,1,3⟩$ are coplanar.
 
-Original fields: [{":answer-field/choices": [{":answer/id": "91deb4db-6b2a-544a-ba74-25f888d469ac", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "-1", ":db/id": 17592186102447}, {":answer/id": "c29df26f-2f8c-5d14-9196-e5107c54f911", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "15", ":db/id": 17592186102448}, {":answer/id": "cf8b0a72-6c5b-5545-80b7-68d22aa15109", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "4", ":db/id": 17592186102449}, {":answer/id": "d2285774-835c-5d92-9c39-8d811ec66713", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "6", ":db/id": 17592186102450}, {":answer/id": "0a269770-4d2f-5b51-8afe-9049f4a722d4", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "0", ":db/id": 17592186102451}], ":answer-field/id": "37b8f48f-b324-5fdc-82a9-632d1ad15e21", ":answer-field/key": "selection", ":answer-field/type": {":db/ident": ":answer-field.type/radio"}, ":db/id": 17592186102446}]
-
-Missing original worked solution, rating, and correct designation.
-
-### Raw parameterized replay
-
-Find $t$ given that the vectors $p = ⟨3, t, t⟩$, $q = ⟨1, 3, 1⟩$, and $r = ⟨1, 1, 3⟩$ are coplanar.
-
-selection: 6, 4, 15, -1, 0
-
-[No source solution supplied]
-
-### Normalized replay
-
-Find $t$ given that the vectors $p = ⟨3, t, t⟩$, $q = ⟨1, 3, 1⟩$, and $r = ⟨1, 1, 3⟩$ are coplanar.
-
-selection: 6, -1, 15, 0, 4
+Original fields: [{":answer-field/choices": [{":answer/id": "91deb4db-6b2a-544a-ba74-25f888d469ac", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "-1", ":db/id": 17592186102447}, {":answer/id": "c29df26f-2f8c-5d14-9196-e5107c54f911", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "15", ":db/id": 17592186102448}, {":answer/id": "cf8b0a72-6c5b-5545-80b7-68d22aa15109", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "4", ":db/id": 17592186102449}, {":answer/id": "d2285774-835c-5d92-9c39-8d811ec66713", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "6", ":db/id": 17592186102450}, {":answer/id": "0a269770-4d2f-5b51-8afe-9049f4a722d4", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "0", ":db/id": 17592186102451}], ":answer-field/correct": {":answer/id": "d2285774-835c-5d92-9c39-8d811ec66713", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "6", ":db/id": 17592186102450}, ":answer-field/id": "37b8f48f-b324-5fdc-82a9-632d1ad15e21", ":answer-field/key": "selection", ":answer-field/type": {":db/ident": ":answer-field.type/radio"}, ":db/id": 17592186102446}]
 
 Computing the triple product, we get
 
 $$
-\begin{aligned}p\cdot(q\times r)&=|\begin{aligned}3 & t & t \\ 1 & 3 & 1 \\ 1 & 1 & 3\end{aligned}|\\ &=((3)\cdot |\begin{aligned}3 & 1 \\ 1 & 3\end{aligned}|)+((-t)\cdot |\begin{aligned}1 & 1 \\ 1 & 3\end{aligned}|)+((t)\cdot |\begin{aligned}1 & 3 \\ 1 & 1\end{aligned}|)\\ &=((3)\cdot ((3)\cdot (3)-(1)\cdot (1)))+((-t)\cdot ((1)\cdot (3)-(1)\cdot (1)))+((t)\cdot ((1)\cdot (1)-(3)\cdot (1)))\\ &=((3)\cdot (8))+((-t)\cdot (2))+((t)\cdot (-2))\\ &=(24)+(-2t)+(-2t)\\ &=24-4t\end{aligned}
+\begin{aligned}p\cdot (q\times r) & =|\begin{aligned}3 & t & t \\ 1 & 3 & 1 \\ 1 & 1 & 3\end{aligned}| \\  & =3\cdot |\begin{aligned}3 & 1 \\ 1 & 3\end{aligned}|-t\cdot |\begin{aligned}1 & 1 \\ 1 & 3\end{aligned}|+t\cdot |\begin{aligned}1 & 3 \\ 1 & 1\end{aligned}| \\  & =3(3\cdot 3-1\cdot 1)-t(1\cdot 3-1\cdot 1)+t(1\cdot 1-3\cdot 1) \\  & =24-2t-2t \\  & =24-4t.\end{aligned}
 $$
+
+    
 
 Three vectors are coplanar if and only if their triple product is zero:
 
 $$
-\begin{aligned}24-4t&=0\\ -4t&=-24\\ t&=6\end{aligned}
+\begin{aligned}p\cdot (q\times r) & =0 \\ 24-4t & =0 \\ t & =6\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $t=6.$
+
+### Raw parameterized replay
+
+Find $t$ given that the vectors $p=⟨3,t,t⟩$, $q=⟨1,3,1⟩$, and $r=⟨1,1,3⟩$ are coplanar.
+
+selection: 6, 15, 4, 0, -1
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}p\cdot (q\times r) & =|\begin{aligned}3 & t & t \\ 1 & 3 & 1 \\ 1 & 1 & 3\end{aligned}| \\  & =3\cdot |\begin{aligned}3 & 1 \\ 1 & 3\end{aligned}|-t\cdot |\begin{aligned}1 & 1 \\ 1 & 3\end{aligned}|+t\cdot |\begin{aligned}1 & 3 \\ 1 & 1\end{aligned}| \\  & =3(3\cdot 3-1\cdot 1)-t(1\cdot 3-1\cdot 1)+t(1\cdot 1-3\cdot 1) \\  & =24-2t-2t \\  & =24-4t.\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}p\cdot (q\times r) & =0 \\ 24-4t & =0 \\ t & =6\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $t=6.$
+
+### Normalized replay
+
+Find $t$ given that the vectors $p=⟨3,t,t⟩$, $q=⟨1,3,1⟩$, and $r=⟨1,1,3⟩$ are coplanar.
+
+selection: 6, 15, 4, 0, -1
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}p\cdot (q\times r) & =|\begin{aligned}3 & t & t \\ 1 & 3 & 1 \\ 1 & 1 & 3\end{aligned}| \\  & =3\cdot |\begin{aligned}3 & 1 \\ 1 & 3\end{aligned}|-t\cdot |\begin{aligned}1 & 1 \\ 1 & 3\end{aligned}|+t\cdot |\begin{aligned}1 & 3 \\ 1 & 1\end{aligned}| \\  & =3(3\cdot 3-1\cdot 1)-t(1\cdot 3-1\cdot 1)+t(1\cdot 1-3\cdot 1) \\  & =24-2t-2t \\  & =24-4t.\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}p\cdot (q\times r) & =0 \\ 24-4t & =0 \\ t & =6\end{aligned}
 $$
 
 Therefore, the three vectors are coplanar if and only if $t=6.$
@@ -979,7 +1009,7 @@ and
 $\,$
 $k=${{field-2}}
 
-Original fields: [{":answer-field/choices": [{":answer/id": "e8d6275c-2c2f-59ab-b7b4-5b1eda58e833", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "\\sqrt{\\frac{1}{10}}", ":db/id": 17592186379357}], ":answer-field/correct": {":answer/id": "e8d6275c-2c2f-59ab-b7b4-5b1eda58e833", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "\\sqrt{\\frac{1}{10}}", ":db/id": 17592186379357}, ":answer-field/id": "10207b0f-c379-5c84-8c28-c24da6e3a13b", ":answer-field/key": "field-2", ":answer-field/type": {":db/ident": ":answer-field.type/blank"}, ":db/id": 17592186379356}, {":answer-field/choices": [{":answer/id": "bfbdee37-0e15-5189-bc70-8dfc3870c722", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "-\\sqrt{\\frac{1}{10}}", ":db/id": 17592186379359}], ":answer-field/correct": {":answer/id": "bfbdee37-0e15-5189-bc70-8dfc3870c722", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "-\\sqrt{\\frac{1}{10}}", ":db/id": 17592186379359}, ":answer-field/id": "62836b52-5826-5320-94c6-63c604cf8b0d", ":answer-field/key": "field-1", ":answer-field/type": {":db/ident": ":answer-field.type/blank"}, ":db/id": 17592186379358}]
+Original fields: [{":answer-field/choices": [{":answer/id": "e8d6275c-2c2f-59ab-b7b4-5b1eda58e833", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "\\sqrt{\\frac{1}{10}}", ":db/id": 17592186379357}, {":answer/id": "b445dedd-49e6-575a-8fa2-7a20bed64a1a", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "\\frac{1}{\\sqrt{10}}", ":db/id": 17592186458954}], ":answer-field/correct": {":answer/id": "b445dedd-49e6-575a-8fa2-7a20bed64a1a", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "\\frac{1}{\\sqrt{10}}", ":db/id": 17592186458954}, ":answer-field/id": "10207b0f-c379-5c84-8c28-c24da6e3a13b", ":answer-field/key": "field-2", ":answer-field/type": {":db/ident": ":answer-field.type/blank"}, ":db/id": 17592186379356}, {":answer-field/choices": [{":answer/id": "bfbdee37-0e15-5189-bc70-8dfc3870c722", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "-\\sqrt{\\frac{1}{10}}", ":db/id": 17592186379359}, {":answer/id": "76db5a28-a5e0-562a-b8e3-32e309b442e2", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "-\\frac{1}{\\sqrt{10}}", ":db/id": 17592186458838}], ":answer-field/correct": {":answer/id": "76db5a28-a5e0-562a-b8e3-32e309b442e2", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "-\\frac{1}{\\sqrt{10}}", ":db/id": 17592186458838}, ":answer-field/id": "62836b52-5826-5320-94c6-63c604cf8b0d", ":answer-field/key": "field-1", ":answer-field/type": {":db/ident": ":answer-field.type/blank"}, ":db/id": 17592186379358}]
 
 Computing the triple product, we get
 
@@ -1008,8 +1038,8 @@ and
 $\,$
 $k=${{field-2}}
 
-field-2: \sqrt{\frac{1}{10}}
-field-1: -\sqrt{\frac{1}{10}}
+field-2: \sqrt{\frac{1}{10}}, \frac{1}{\sqrt{10}}
+field-1: -\sqrt{\frac{1}{10}}, -\frac{1}{\sqrt{10}}
 
 Computing the triple product, we get
 
@@ -1038,8 +1068,8 @@ and
 $\,$
 $k=${{field-2}}
 
-field-2: \sqrt{\frac{1}{10}}
-field-1: -\sqrt{\frac{1}{10}}
+field-2: \sqrt{\frac{1}{10}}, \frac{1}{\sqrt{10}}
+field-1: -\sqrt{\frac{1}{10}}, -\frac{1}{\sqrt{10}}
 
 Computing the triple product, we get
 
@@ -1060,7 +1090,16 @@ $k=-\sqrt{\frac{1}{10}}$ or $k=\sqrt{\frac{1}{10}}.$
 
 Find $k$ given that the vectors $a=⟨{k}^{2},7,4⟩,$ $b=⟨6,7,4⟩,$ and $c=⟨3,0,2⟩$ are coplanar.
 
-Original fields: [{":answer-field/choices": [{":answer/id": "ce1c52bd-3b80-591c-b1ee-da79ec0a2f5b", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "$k=\\sqrt{6}$ only", ":db/id": 17592186400340}, {":answer/id": "0be7aabd-bcca-5a8a-a91e-5d1dfb6c9d3d", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "$k=-6$ or $k=6$", ":db/id": 17592186400341}, {":answer/id": "07cf905c-bfd7-597a-b011-0bc724c98f3c", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "$k=-\\sqrt{6}$ only", ":db/id": 17592186400342}, {":answer/id": "1c100f4f-e0f0-5fd4-9658-c15b9ace8765", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "$k=-\\sqrt{6}$ or $k=\\sqrt{6}$", ":db/id": 17592186400343}, {":answer/id": "7316d970-6133-533d-8bfb-659fe822cc85", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "$k=-\\sqrt{3}$ or $k=\\sqrt{3}$", ":db/id": 17592186400344}], ":answer-field/correct": {":answer/id": "1c100f4f-e0f0-5fd4-9658-c15b9ace8765", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "$k=-\\sqrt{6}$ or $k=\\sqrt{6}$", ":db/id": 17592186400343}, ":answer-field/id": "d47d5cb7-6394-509c-81ff-79c6a1373831", ":answer-field/key": "selection", ":answer-field/type": {":db/ident": ":answer-field.type/radio"}, ":db/id": 17592186400339}]
+Select all that apply. If none apply, leave all boxes unchecked.
+
+- **I.** $k=-6$
+- **II.** $k=- \sqrt{6}$
+- **III.** $k=- \sqrt{3}$
+- **IV.** $k=\sqrt{3}$
+- **V.** $k=\sqrt{6}$
+- **VI.** $k=6$
+
+Original fields: [{":answer-field/choices": [{":answer/id": "ae4f142e-64ca-5cf1-bba5-1bb7e5f38aea", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "false", ":db/id": 17592186439465}, {":answer/id": "de3a62f1-ef79-57d9-abd6-9050be028873", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "true", ":db/id": 17592186439466}], ":answer-field/correct": {":answer/id": "ae4f142e-64ca-5cf1-bba5-1bb7e5f38aea", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "false", ":db/id": 17592186439465}, ":answer-field/id": "f3764177-45a2-558b-9c90-1ce74f89c430", ":answer-field/key": "I", ":answer-field/type": {":db/ident": ":answer-field.type/checkbox"}, ":db/id": 17592186440090}, {":answer-field/choices": [{":answer/id": "df688db8-1580-5d94-85cf-dbb0c6d9127f", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "false", ":db/id": 17592186439467}, {":answer/id": "1ae03a63-04c8-5456-b96a-9013a1f5b82f", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "true", ":db/id": 17592186439468}], ":answer-field/correct": {":answer/id": "1ae03a63-04c8-5456-b96a-9013a1f5b82f", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "true", ":db/id": 17592186439468}, ":answer-field/id": "11639d2b-d2ea-5d08-842d-3b745466a699", ":answer-field/key": "II", ":answer-field/type": {":db/ident": ":answer-field.type/checkbox"}, ":db/id": 17592186440091}, {":answer-field/choices": [{":answer/id": "128fbcc5-8be0-5e60-a06c-abf2d6eca820", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "false", ":db/id": 17592186439469}, {":answer/id": "6ecdf463-5a28-58cd-a351-d2c71844f695", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "true", ":db/id": 17592186439470}], ":answer-field/correct": {":answer/id": "128fbcc5-8be0-5e60-a06c-abf2d6eca820", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "false", ":db/id": 17592186439469}, ":answer-field/id": "69898b28-d8e9-50e1-b234-003e24ab5cb8", ":answer-field/key": "III", ":answer-field/type": {":db/ident": ":answer-field.type/checkbox"}, ":db/id": 17592186440092}, {":answer-field/choices": [{":answer/id": "1254f4e8-0ffd-55db-be5c-7793e8aa2950", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "false", ":db/id": 17592186439471}, {":answer/id": "298296aa-5cbd-5415-8722-60d03896b5e1", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "true", ":db/id": 17592186439472}], ":answer-field/correct": {":answer/id": "1254f4e8-0ffd-55db-be5c-7793e8aa2950", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "false", ":db/id": 17592186439471}, ":answer-field/id": "74c1771a-b43f-5d42-8ca8-d39891554c3a", ":answer-field/key": "IV", ":answer-field/type": {":db/ident": ":answer-field.type/checkbox"}, ":db/id": 17592186440093}, {":answer-field/choices": [{":answer/id": "cdfb4c1c-a7e3-528c-ad38-0a25fa0c06e7", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "false", ":db/id": 17592186439473}, {":answer/id": "c1e62795-ea37-5a2c-a40d-79165b1c9fc7", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "true", ":db/id": 17592186439474}], ":answer-field/correct": {":answer/id": "c1e62795-ea37-5a2c-a40d-79165b1c9fc7", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "true", ":db/id": 17592186439474}, ":answer-field/id": "1a16e752-a6da-51f5-a176-d4c86eab7b66", ":answer-field/key": "V", ":answer-field/type": {":db/ident": ":answer-field.type/checkbox"}, ":db/id": 17592186440094}, {":answer-field/choices": [{":answer/id": "9817eb20-9e99-5e90-bece-d6fd670b6f03", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "false", ":db/id": 17592186439475}, {":answer/id": "49451522-b542-50df-a0e5-8b97f2634208", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "true", ":db/id": 17592186439476}], ":answer-field/correct": {":answer/id": "9817eb20-9e99-5e90-bece-d6fd670b6f03", ":answer/type": {":db/ident": ":answer.type/text"}, ":answer/value": "false", ":db/id": 17592186439475}, ":answer-field/id": "a7148c9c-1bda-595b-a2c5-e6841ac127f2", ":answer-field/key": "VI", ":answer-field/type": {":db/ident": ":answer-field.type/checkbox"}, ":db/id": 17592186440095}]
 
 Computing the triple product, we get
 
@@ -1082,7 +1121,21 @@ Therefore, the three vectors are coplanar if and only if $k=-\sqrt{6}$ or $k=\sq
 
 Find $k$ given that the vectors $a=⟨{k}^{2},7,4⟩,$ $b=⟨6,7,4⟩,$ and $c=⟨3,0,2⟩$ are coplanar.
 
-selection: $k=-\sqrt{3}$ or $k=\sqrt{3}$, $k=-\sqrt{6}$ or $k=\sqrt{6}$, $k=-\sqrt{6}$ only, $k=-6$ or $k=6$, $k=\sqrt{6}$ only
+Select all that apply. If none apply, leave all boxes unchecked.
+
+- **I.** $k=-6$
+- **II.** $k=- \sqrt{6}$
+- **III.** $k=- \sqrt{3}$
+- **IV.** $k=\sqrt{3}$
+- **V.** $k=\sqrt{6}$
+- **VI.** $k=6$
+
+I: false, true
+II: false, true
+III: false, true
+IV: false, true
+V: false, true
+VI: false, true
 
 Computing the triple product, we get
 
@@ -1104,7 +1157,21 @@ Therefore, the three vectors are coplanar if and only if $k=-\sqrt{6}$ or $k=\sq
 
 Find $k$ given that the vectors $a=⟨{k}^{2},7,4⟩,$ $b=⟨6,7,4⟩,$ and $c=⟨3,0,2⟩$ are coplanar.
 
-selection: $k=-\sqrt{3}$ or $k=\sqrt{3}$, $k=-\sqrt{6}$ or $k=\sqrt{6}$, $k=-\sqrt{6}$ only, $k=-6$ or $k=6$, $k=\sqrt{6}$ only
+Select all that apply. If none apply, leave all boxes unchecked.
+
+- **I.** $k=-6$
+- **II.** $k=- \sqrt{6}$
+- **III.** $k=- \sqrt{3}$
+- **IV.** $k=\sqrt{3}$
+- **V.** $k=\sqrt{6}$
+- **VI.** $k=6$
+
+I: false, true
+II: false, true
+III: false, true
+IV: false, true
+V: false, true
+VI: false, true
 
 Computing the triple product, we get
 
@@ -1121,6 +1188,396 @@ $$
 $$
 
 Therefore, the three vectors are coplanar if and only if $k=-\sqrt{6}$ or $k=\sqrt{6}.$
+
+## Original q-128442
+
+Find $k$ given that the vectors $p=⟨5,-2,2⟩,$ $q=⟨3,k,1⟩,$ and $r=⟨-8,3,-4⟩$ are coplanar.
+
+Original fields: [{":answer-field/choices": [{":answer/id": "12a3758c-f60c-5dae-92fa-afedc78160ff", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "-\\frac{5}{2}", ":db/id": 17592186458653}, {":answer/id": "1c111100-d619-5b93-b482-b6ec810b8df5", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "-\\frac{4}{5}", ":db/id": 17592186458679}, {":answer/id": "3f06b20c-1420-5939-96cc-465d37b4df29", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "\\frac{11}{4}", ":db/id": 17592186458746}, {":answer/id": "856f42a7-be02-543a-b498-4b18fecdaca0", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "\\frac{4}{11}", ":db/id": 17592186458860}, {":answer/id": "96678253-6e22-571e-98ff-a64d81bbbdd4", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "-\\frac{5}{4}", ":db/id": 17592186458889}], ":answer-field/correct": {":answer/id": "96678253-6e22-571e-98ff-a64d81bbbdd4", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "-\\frac{5}{4}", ":db/id": 17592186458889}, ":answer-field/id": "0ef466f3-b445-5f7c-961a-8d3a58c07b04", ":answer-field/key": "selection", ":answer-field/type": {":db/ident": ":answer-field.type/radio"}, ":db/id": 17592186459092}]
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}p\cdot (q\times r) & =|\begin{aligned}5 & -2 & 2 \\ 3 & k & 1 \\ -8 & 3 & -4\end{aligned}| \\  & =5\cdot |\begin{aligned}k & 1 \\ 3 & -4\end{aligned}|-(-2)\cdot |\begin{aligned}3 & 1 \\ -8 & -4\end{aligned}|+2\cdot |\begin{aligned}3 & k \\ -8 & 3\end{aligned}| \\  & =5(k\cdot (-4)-3\cdot 1)+2(3\cdot (-4)-(-8)\cdot 1)+2(3\cdot 3-(-8)\cdot k) \\  & =-20k-15-8+18+16k \\  & =-4k-5.\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}p\cdot (q\times r) & =0 \\ -4k-5 & =0 \\ k & =-\frac{5}{4}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $k=-\frac{5}{4}.$
+
+### Raw parameterized replay
+
+Find $k$ given that the vectors $p=⟨5,-2,2⟩,$ $q=⟨3,k,1⟩,$ and $r=⟨-8,3,-4⟩$ are coplanar.
+
+selection: -\frac{4}{5}, -\frac{5}{2}, -\frac{5}{4}, \frac{4}{11}, \frac{11}{4}
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}p\cdot (q\times r) & =|\begin{aligned}5 & -2 & 2 \\ 3 & k & 1 \\ -8 & 3 & -4\end{aligned}| \\  & =5\cdot |\begin{aligned}k & 1 \\ 3 & -4\end{aligned}|-(-2)\cdot |\begin{aligned}3 & 1 \\ -8 & -4\end{aligned}|+2\cdot |\begin{aligned}3 & k \\ -8 & 3\end{aligned}| \\  & =5(k\cdot (-4)-3\cdot 1)+2(3\cdot (-4)-(-8)\cdot 1)+2(3\cdot 3-(-8)\cdot k) \\  & =-20k-15-8+18+16k \\  & =-4k-5.\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}p\cdot (q\times r) & =0 \\ -4k-5 & =0 \\ k & =-\frac{5}{4}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $k=-\frac{5}{4}.$
+
+### Normalized replay
+
+Find $k$ given that the vectors $p=⟨5,-2,2⟩,$ $q=⟨3,k,1⟩,$ and $r=⟨-8,3,-4⟩$ are coplanar.
+
+selection: -\frac{4}{5}, -\frac{5}{2}, -\frac{5}{4}, \frac{4}{11}, \frac{11}{4}
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}p\cdot (q\times r) & =|\begin{aligned}5 & -2 & 2 \\ 3 & k & 1 \\ -8 & 3 & -4\end{aligned}| \\  & =5\cdot |\begin{aligned}k & 1 \\ 3 & -4\end{aligned}|-(-2)\cdot |\begin{aligned}3 & 1 \\ -8 & -4\end{aligned}|+2\cdot |\begin{aligned}3 & k \\ -8 & 3\end{aligned}| \\  & =5(k\cdot (-4)-3\cdot 1)+2(3\cdot (-4)-(-8)\cdot 1)+2(3\cdot 3-(-8)\cdot k) \\  & =-20k-15-8+18+16k \\  & =-4k-5.\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}p\cdot (q\times r) & =0 \\ -4k-5 & =0 \\ k & =-\frac{5}{4}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $k=-\frac{5}{4}.$
+
+## Original q-128457
+
+Find $t$ given that the vectors $p=⟨9,9,-2⟩,$ $q=⟨5,6,0⟩,$ and $r=⟨4,t,t⟩$ are coplanar.
+
+Original fields: [{":answer-field/choices": [{":answer/id": "2edcbb95-8455-53f6-ab2b-7ee4b7636b26", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "\\frac{48}{89}", ":db/id": 17592186458720}, {":answer/id": "952a2910-c243-5005-89e0-a85dc85a351b", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "-48", ":db/id": 17592186458888}, {":answer/id": "b7055a4c-b19c-53cc-bd20-a53224e1ac3d", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "-\\frac{48}{89}", ":db/id": 17592186458958}, {":answer/id": "d351447b-72b1-5263-b183-d42c3b9c1db5", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "24", ":db/id": 17592186458996}, {":answer/id": "fb3fdd87-8f4b-5ed1-abd8-52ae4ff972fd", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "48", ":db/id": 17592186459073}], ":answer-field/correct": {":answer/id": "fb3fdd87-8f4b-5ed1-abd8-52ae4ff972fd", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "48", ":db/id": 17592186459073}, ":answer-field/id": "20c78fd9-b62d-5bc1-a554-90d9058aa00b", ":answer-field/key": "selection", ":answer-field/type": {":db/ident": ":answer-field.type/radio"}, ":db/id": 17592186459098}]
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}p\cdot (q\times r) & =|\begin{aligned}9 & 9 & -2 \\ 5 & 6 & 0 \\ 4 & t & t\end{aligned}| \\  & =9\cdot |\begin{aligned}6 & 0 \\ t & t\end{aligned}|-9\cdot |\begin{aligned}5 & 0 \\ 4 & t\end{aligned}|+(-2)\cdot |\begin{aligned}5 & 6 \\ 4 & t\end{aligned}| \\  & =9(6\cdot t-t\cdot 0)-9(5\cdot t-4\cdot 0)-2(5\cdot t-4\cdot 6) \\  & =54t-45t-10t+48 \\  & =48-t.\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}p\cdot (q\times r) & =0 \\ 48-t & =0 \\ t & =48\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $t=48.$
+
+### Raw parameterized replay
+
+Find $t$ given that the vectors $p=⟨9,9,-2⟩,$ $q=⟨5,6,0⟩,$ and $r=⟨4,t,t⟩$ are coplanar.
+
+selection: \frac{48}{89}, -48, -\frac{48}{89}, 48, 24
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}p\cdot (q\times r) & =|\begin{aligned}9 & 9 & -2 \\ 5 & 6 & 0 \\ 4 & t & t\end{aligned}| \\  & =9\cdot |\begin{aligned}6 & 0 \\ t & t\end{aligned}|-9\cdot |\begin{aligned}5 & 0 \\ 4 & t\end{aligned}|+(-2)\cdot |\begin{aligned}5 & 6 \\ 4 & t\end{aligned}| \\  & =9(6\cdot t-t\cdot 0)-9(5\cdot t-4\cdot 0)-2(5\cdot t-4\cdot 6) \\  & =54t-45t-10t+48 \\  & =48-t.\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}p\cdot (q\times r) & =0 \\ 48-t & =0 \\ t & =48\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $t=48.$
+
+### Normalized replay
+
+Find $t$ given that the vectors $p=⟨9,9,-2⟩,$ $q=⟨5,6,0⟩,$ and $r=⟨4,t,t⟩$ are coplanar.
+
+selection: \frac{48}{89}, -48, -\frac{48}{89}, 48, 24
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}p\cdot (q\times r) & =|\begin{aligned}9 & 9 & -2 \\ 5 & 6 & 0 \\ 4 & t & t\end{aligned}| \\  & =9\cdot |\begin{aligned}6 & 0 \\ t & t\end{aligned}|-9\cdot |\begin{aligned}5 & 0 \\ 4 & t\end{aligned}|+(-2)\cdot |\begin{aligned}5 & 6 \\ 4 & t\end{aligned}| \\  & =9(6\cdot t-t\cdot 0)-9(5\cdot t-4\cdot 0)-2(5\cdot t-4\cdot 6) \\  & =54t-45t-10t+48 \\  & =48-t.\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}p\cdot (q\times r) & =0 \\ 48-t & =0 \\ t & =48\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $t=48.$
+
+## Original q-18261
+
+Find $x$ given that the vectors $a=⟨12,-2x,1⟩$ , $b=⟨1,5,-2⟩$ and $c=⟨-9,4,8⟩$  are coplanar.
+
+Original fields: [{":answer-field/choices": [{":answer/id": "097251b1-26d6-5cd9-bf4d-87268a9fc820", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "\\frac{25}{2}", ":db/id": 17592186458633}, {":answer/id": "1b54582f-21c1-5dbb-96a1-354563e5dd55", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "\\frac{5}{4}", ":db/id": 17592186458675}, {":answer/id": "2cada373-4b44-51da-8246-3a0563bdb1ad", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "\\frac{125}{2}", ":db/id": 17592186458715}, {":answer/id": "746350b5-80dc-5a7c-a6bb-5b2627a66dd4", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "\\frac{125}{4}", ":db/id": 17592186458833}, {":answer/id": "f5f276ab-f70a-50eb-8278-8d17070d15a9", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "\\frac{25}{4}", ":db/id": 17592186459064}], ":answer-field/correct": {":answer/id": "746350b5-80dc-5a7c-a6bb-5b2627a66dd4", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "\\frac{125}{4}", ":db/id": 17592186458833}, ":answer-field/id": "79226ded-2796-54ed-af2f-9b7e026caf73", ":answer-field/key": "selection", ":answer-field/type": {":db/ident": ":answer-field.type/radio"}, ":db/id": 17592186459137}]
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}a\cdot (b\times c) & =|\begin{aligned}12 & -2x & 1 \\ 1 & 5 & -2 \\ -9 & 4 & 8\end{aligned}| \\  & =12\cdot |\begin{aligned}5 & -2 \\ 4 & 8\end{aligned}|-(-2x)\cdot |\begin{aligned}1 & -2 \\ -9 & 8\end{aligned}|+1\cdot |\begin{aligned}1 & 5 \\ -9 & 4\end{aligned}| \\  & =12(5\cdot 8-4\cdot (-2))+2x(1\cdot 8-(-9)\cdot (-2))+(1\cdot 4-5\cdot (-9)) \\  & =576-20x+49 \\  & =625-20x.\end{aligned}
+$$
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}a\cdot (b\times c) & =0 \\ 625-20x & =0 \\ 20x & =625 \\ x & =\frac{125}{4}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $x=\frac{125}{4}.$
+
+### Raw parameterized replay
+
+Find $x$ given that the vectors $a=⟨12,-2x,1⟩$ , $b=⟨1,5,-2⟩$ and $c=⟨-9,4,8⟩$  are coplanar.
+
+selection: \frac{125}{2}, \frac{125}{4}, \frac{25}{4}, \frac{5}{4}, \frac{25}{2}
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}a\cdot (b\times c) & =|\begin{aligned}12 & -2x & 1 \\ 1 & 5 & -2 \\ -9 & 4 & 8\end{aligned}| \\  & =12\cdot |\begin{aligned}5 & -2 \\ 4 & 8\end{aligned}|-(-2x)\cdot |\begin{aligned}1 & -2 \\ -9 & 8\end{aligned}|+1\cdot |\begin{aligned}1 & 5 \\ -9 & 4\end{aligned}| \\  & =12(5\cdot 8-4\cdot (-2))+2x(1\cdot 8-(-9)\cdot (-2))+(1\cdot 4-5\cdot (-9)) \\  & =576-20x+49 \\  & =625-20x.\end{aligned}
+$$
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}a\cdot (b\times c) & =0 \\ 625-20x & =0 \\ 20x & =625 \\ x & =\frac{125}{4}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $x=\frac{125}{4}.$
+
+### Normalized replay
+
+Find $x$ given that the vectors $a=⟨12,-2x,1⟩$ , $b=⟨1,5,-2⟩$ and $c=⟨-9,4,8⟩$  are coplanar.
+
+selection: \frac{125}{2}, \frac{125}{4}, \frac{25}{4}, \frac{5}{4}, \frac{25}{2}
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}a\cdot (b\times c) & =|\begin{aligned}12 & -2x & 1 \\ 1 & 5 & -2 \\ -9 & 4 & 8\end{aligned}| \\  & =12\cdot |\begin{aligned}5 & -2 \\ 4 & 8\end{aligned}|-(-2x)\cdot |\begin{aligned}1 & -2 \\ -9 & 8\end{aligned}|+1\cdot |\begin{aligned}1 & 5 \\ -9 & 4\end{aligned}| \\  & =12(5\cdot 8-4\cdot (-2))+2x(1\cdot 8-(-9)\cdot (-2))+(1\cdot 4-5\cdot (-9)) \\  & =576-20x+49 \\  & =625-20x.\end{aligned}
+$$
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}a\cdot (b\times c) & =0 \\ 625-20x & =0 \\ 20x & =625 \\ x & =\frac{125}{4}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $x=\frac{125}{4}.$
+
+## Original q-280747
+
+Find $k$ given that the vectors $a=⟨2,k,-1⟩$, $b=⟨-3,4,5⟩$, and $c=⟨6,k,1⟩$ are coplanar.
+
+$k=${{field-1}}
+
+Original fields: [{":answer-field/choices": [{":answer/id": "eea5ea1b-1584-5bf8-9c56-60e082cc3b30", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "-\\frac{16}{13}", ":db/id": 17592186484039}], ":answer-field/correct": {":answer/id": "eea5ea1b-1584-5bf8-9c56-60e082cc3b30", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "-\\frac{16}{13}", ":db/id": 17592186484039}, ":answer-field/id": "aefbe563-901b-5005-9895-d7c05a2acfbf", ":answer-field/key": "field-1", ":answer-field/type": {":db/ident": ":answer-field.type/blank"}, ":db/id": 17592186484170}]
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}a\cdot (b\times c) & =|\begin{aligned}2 & k & -1 \\ -3 & 4 & 5 \\ 6 & k & 1\end{aligned}| \\  & =2\cdot |\begin{aligned}4 & 5 \\ k & 1\end{aligned}|-k\cdot |\begin{aligned}-3 & 5 \\ 6 & 1\end{aligned}|+(-1)\cdot |\begin{aligned}-3 & 4 \\ 6 & k\end{aligned}| \\  & =2(4\cdot 1-5\cdot k)-k(-3\cdot 1-5\cdot 6)-1(-3\cdot k-4\cdot 6) \\  & =8-10k+33k+3k+24 \\  & =26k+32\end{aligned}
+$$
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}a\cdot (b\times c) & =0 \\ 26k+32 & =0 \\ k & =-\frac{16}{13}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $k=-\frac{16}{13}.$
+
+### Raw parameterized replay
+
+Find $k$ given that the vectors $a=⟨2,k,-1⟩$, $b=⟨-3,4,5⟩$, and $c=⟨6,k,1⟩$ are coplanar.
+
+$k=${{field-1}}
+
+field-1: -\frac{16}{13}
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}a\cdot (b\times c) & =|\begin{aligned}2 & k & -1 \\ -3 & 4 & 5 \\ 6 & k & 1\end{aligned}| \\  & =2\cdot |\begin{aligned}4 & 5 \\ k & 1\end{aligned}|-k\cdot |\begin{aligned}-3 & 5 \\ 6 & 1\end{aligned}|+(-1)\cdot |\begin{aligned}-3 & 4 \\ 6 & k\end{aligned}| \\  & =2(4\cdot 1-5\cdot k)-k(-3\cdot 1-5\cdot 6)-1(-3\cdot k-4\cdot 6) \\  & =8-10k+33k+3k+24 \\  & =26k+32\end{aligned}
+$$
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}a\cdot (b\times c) & =0 \\ 26k+32 & =0 \\ k & =-\frac{16}{13}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $k=-\frac{16}{13}.$
+
+### Normalized replay
+
+Find $k$ given that the vectors $a=⟨2,k,-1⟩$, $b=⟨-3,4,5⟩$, and $c=⟨6,k,1⟩$ are coplanar.
+
+$k=${{field-1}}
+
+field-1: -\frac{16}{13}
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}a\cdot (b\times c) & =|\begin{aligned}2 & k & -1 \\ -3 & 4 & 5 \\ 6 & k & 1\end{aligned}| \\  & =2\cdot |\begin{aligned}4 & 5 \\ k & 1\end{aligned}|-k\cdot |\begin{aligned}-3 & 5 \\ 6 & 1\end{aligned}|+(-1)\cdot |\begin{aligned}-3 & 4 \\ 6 & k\end{aligned}| \\  & =2(4\cdot 1-5\cdot k)-k(-3\cdot 1-5\cdot 6)-1(-3\cdot k-4\cdot 6) \\  & =8-10k+33k+3k+24 \\  & =26k+32\end{aligned}
+$$
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}a\cdot (b\times c) & =0 \\ 26k+32 & =0 \\ k & =-\frac{16}{13}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $k=-\frac{16}{13}.$
+
+## Original q-73733
+
+Find $k$ given that the vectors $a=⟨-1,1,1⟩$, $b=⟨2,1,0⟩$, and $c=⟨k,-2,-3⟩$ are coplanar.
+
+Original fields: [{":answer-field/choices": [{":answer/id": "2cc5ee62-4f20-5c54-9e5a-bbb471927bb4", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "5", ":db/id": 17592186493468}, {":answer/id": "3135cadf-898b-5d47-89f0-df3060a008eb", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "7", ":db/id": 17592186493473}, {":answer/id": "389cf47a-7d3c-5e4e-b0ed-207e5d8a0087", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "9", ":db/id": 17592186493485}, {":answer/id": "9fcfd0be-c665-50f6-b594-87f4f9162f0b", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "3", ":db/id": 17592186493643}, {":answer/id": "ae7cc567-6679-5581-b389-e82348eb1ae3", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "13", ":db/id": 17592186493668}], ":answer-field/correct": {":answer/id": "2cc5ee62-4f20-5c54-9e5a-bbb471927bb4", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "5", ":db/id": 17592186493468}, ":answer-field/id": "0b436b69-27e7-557e-9669-3a80b22007ad", ":answer-field/key": "selection", ":answer-field/type": {":db/ident": ":answer-field.type/radio"}, ":db/id": 17592186493806}]
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}a\cdot (b\times c) & =|\begin{aligned}-1 & 1 & 1 \\ 2 & 1 & 0 \\ k & -2 & -3\end{aligned}| \\  & =(-1)\cdot |\begin{aligned}1 & 0 \\ -2 & -3\end{aligned}|-1\cdot |\begin{aligned}2 & 0 \\ k & -3\end{aligned}|+|\begin{aligned}2 & 1 \\ k & -2\end{aligned}| \\  & =-(1\cdot (-3)-(-2)\cdot 0)-(2\cdot (-3)-k\cdot 0)+(2\cdot (-2)-k\cdot 1) \\  & =3+6-4-k \\  & =5-k.\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}a\cdot (b\times c) & =0 \\ 5-k & =0 \\ k & =5\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $k=5.$
+
+### Raw parameterized replay
+
+Find $k$ given that the vectors $a=⟨-1,1,1⟩$, $b=⟨2,1,0⟩$, and $c=⟨k,-2,-3⟩$ are coplanar.
+
+selection: 7, 5, 3, 9, 13
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}a\cdot (b\times c) & =|\begin{aligned}-1 & 1 & 1 \\ 2 & 1 & 0 \\ k & -2 & -3\end{aligned}| \\  & =(-1)\cdot |\begin{aligned}1 & 0 \\ -2 & -3\end{aligned}|-1\cdot |\begin{aligned}2 & 0 \\ k & -3\end{aligned}|+|\begin{aligned}2 & 1 \\ k & -2\end{aligned}| \\  & =-(1\cdot (-3)-(-2)\cdot 0)-(2\cdot (-3)-k\cdot 0)+(2\cdot (-2)-k\cdot 1) \\  & =3+6-4-k \\  & =5-k.\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}a\cdot (b\times c) & =0 \\ 5-k & =0 \\ k & =5\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $k=5.$
+
+### Normalized replay
+
+Find $k$ given that the vectors $a=⟨-1,1,1⟩$, $b=⟨2,1,0⟩$, and $c=⟨k,-2,-3⟩$ are coplanar.
+
+selection: 7, 5, 3, 9, 13
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}a\cdot (b\times c) & =|\begin{aligned}-1 & 1 & 1 \\ 2 & 1 & 0 \\ k & -2 & -3\end{aligned}| \\  & =(-1)\cdot |\begin{aligned}1 & 0 \\ -2 & -3\end{aligned}|-1\cdot |\begin{aligned}2 & 0 \\ k & -3\end{aligned}|+|\begin{aligned}2 & 1 \\ k & -2\end{aligned}| \\  & =-(1\cdot (-3)-(-2)\cdot 0)-(2\cdot (-3)-k\cdot 0)+(2\cdot (-2)-k\cdot 1) \\  & =3+6-4-k \\  & =5-k.\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}a\cdot (b\times c) & =0 \\ 5-k & =0 \\ k & =5\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $k=5.$
+
+## Original q-280770
+
+Find $k$ given that the vectors $x=⟨1,k,2⟩$, $y=⟨5,-2,3⟩$, and $z=⟨-4,k,1⟩$ are coplanar.
+
+$k=${{field-1}}
+
+Original fields: [{":answer-field/choices": [{":answer/id": "a627e562-14bd-588f-a5f4-1d17e6cb6828", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "-\\frac{9}{5}", ":db/id": 17592186493653}], ":answer-field/correct": {":answer/id": "a627e562-14bd-588f-a5f4-1d17e6cb6828", ":answer/type": {":db/ident": ":answer.type/math"}, ":answer/value": "-\\frac{9}{5}", ":db/id": 17592186493653}, ":answer-field/id": "a9d8c1a0-222c-5144-9f47-a1a87a86c092", ":answer-field/key": "field-1", ":answer-field/type": {":db/ident": ":answer-field.type/blank"}, ":db/id": 17592186493858}]
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}x\cdot (y\times z) & =|\begin{aligned}1 & k & 2 \\ 5 & -2 & 3 \\ -4 & k & 1\end{aligned}| \\  & =1\cdot |\begin{aligned}-2 & 3 \\ k & 1\end{aligned}|-k\cdot |\begin{aligned}5 & 3 \\ -4 & 1\end{aligned}|+2\cdot |\begin{aligned}5 & -2 \\ -4 & k\end{aligned}| \\  & =1(-2\cdot 1-3\cdot k)-k(5\cdot 1-3\cdot -4)+2(5k-(-2)(-4)) \\  & =-2-3k-k(5+12)+2(5k-8) \\  & =-2-3k-17k+10k-16 \\  & =-10k-18\end{aligned}
+$$
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}x\cdot (y\times z) & =0 \\ -10k-18 & =0 \\ k & =-\frac{9}{5}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $k=-\frac{9}{5}.$
+
+### Raw parameterized replay
+
+Find $k$ given that the vectors $x=⟨1,k,2⟩$, $y=⟨5,-2,3⟩$, and $z=⟨-4,k,1⟩$ are coplanar.
+
+$k=${{field-1}}
+
+field-1: -\frac{9}{5}
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}x\cdot (y\times z) & =|\begin{aligned}1 & k & 2 \\ 5 & -2 & 3 \\ -4 & k & 1\end{aligned}| \\  & =1\cdot |\begin{aligned}-2 & 3 \\ k & 1\end{aligned}|-k\cdot |\begin{aligned}5 & 3 \\ -4 & 1\end{aligned}|+2\cdot |\begin{aligned}5 & -2 \\ -4 & k\end{aligned}| \\  & =1(-2\cdot 1-3\cdot k)-k(5\cdot 1-3\cdot -4)+2(5k-(-2)(-4)) \\  & =-2-3k-k(5+12)+2(5k-8) \\  & =-2-3k-17k+10k-16 \\  & =-10k-18\end{aligned}
+$$
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}x\cdot (y\times z) & =0 \\ -10k-18 & =0 \\ k & =-\frac{9}{5}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $k=-\frac{9}{5}.$
+
+### Normalized replay
+
+Find $k$ given that the vectors $x=⟨1,k,2⟩$, $y=⟨5,-2,3⟩$, and $z=⟨-4,k,1⟩$ are coplanar.
+
+$k=${{field-1}}
+
+field-1: -\frac{9}{5}
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}x\cdot (y\times z) & =|\begin{aligned}1 & k & 2 \\ 5 & -2 & 3 \\ -4 & k & 1\end{aligned}| \\  & =1\cdot |\begin{aligned}-2 & 3 \\ k & 1\end{aligned}|-k\cdot |\begin{aligned}5 & 3 \\ -4 & 1\end{aligned}|+2\cdot |\begin{aligned}5 & -2 \\ -4 & k\end{aligned}| \\  & =1(-2\cdot 1-3\cdot k)-k(5\cdot 1-3\cdot -4)+2(5k-(-2)(-4)) \\  & =-2-3k-k(5+12)+2(5k-8) \\  & =-2-3k-17k+10k-16 \\  & =-10k-18\end{aligned}
+$$
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}x\cdot (y\times z) & =0 \\ -10k-18 & =0 \\ k & =-\frac{9}{5}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $k=-\frac{9}{5}.$
 
 ## GENERATED moderate / q-18260 / {'shift': -2}
 
@@ -1164,43 +1621,51 @@ Therefore, the three vectors are coplanar if and only if $k=-\frac{15}{8}.$
 
 ## GENERATED moderate / q-18268 / {'shift': -2}
 
-Find $t$ given that the vectors $p = ⟨3, (t-2), (t-2)⟩$, $q = ⟨1, 3, 1⟩$, and $r = ⟨1, 1, 3⟩$ are coplanar.
+Find $t$ given that the vectors $p=⟨3,(t-2),(t-2)⟩$, $q=⟨1,3,1⟩$, and $r=⟨1,1,3⟩$ are coplanar.
 
-selection: 15+2, 0+2, 6+2, 4+2, -1+2
+selection: 6+2, 0+2, -1+2, 4+2, 15+2
 
 Computing the triple product, we get
 
 $$
-\begin{aligned}p\cdot(q\times r)&=|\begin{aligned}3 & t-2 & t-2 \\ 1 & 3 & 1 \\ 1 & 1 & 3\end{aligned}|\\ &=((3)\cdot |\begin{aligned}3 & 1 \\ 1 & 3\end{aligned}|)+((2-t)\cdot |\begin{aligned}1 & 1 \\ 1 & 3\end{aligned}|)+((t-2)\cdot |\begin{aligned}1 & 3 \\ 1 & 1\end{aligned}|)\\ &=((3)\cdot ((3)\cdot (3)-(1)\cdot (1)))+((2-t)\cdot ((1)\cdot (3)-(1)\cdot (1)))+((t-2)\cdot ((1)\cdot (1)-(3)\cdot (1)))\\ &=((3)\cdot (8))+((2-t)\cdot (2))+((t-2)\cdot (-2))\\ &=(24)+(4-2t)+(4-2t)\\ &=32-4t\end{aligned}
+\begin{aligned}p\cdot (q\times r) & =|\begin{aligned}3 & (t-2) & (t-2) \\ 1 & 3 & 1 \\ 1 & 1 & 3\end{aligned}| \\  & =3\cdot |\begin{aligned}3 & 1 \\ 1 & 3\end{aligned}|-(t-2)\cdot |\begin{aligned}1 & 1 \\ 1 & 3\end{aligned}|+(t-2)\cdot |\begin{aligned}1 & 3 \\ 1 & 1\end{aligned}| \\  & =3(3\cdot 3-1\cdot 1)-(t-2)(1\cdot 3-1\cdot 1)+(t-2)(1\cdot 1-3\cdot 1) \\  & =24-2(t-2)-2(t-2) \\  & =24-4(t-2).\end{aligned}
 $$
+
+    
 
 Three vectors are coplanar if and only if their triple product is zero:
 
 $$
-\begin{aligned}32-4t&=0\\ -4t&=-32\\ t&=8\end{aligned}
+\begin{aligned}p\cdot (q\times r) & =0 \\ 24-4(t-2) & =0 \\ (t-2) & =6\end{aligned}
 $$
 
-Therefore, the three vectors are coplanar if and only if $t=8.$
+Therefore, the three vectors are coplanar if and only if $(t-2)=6.$
+
+Thus $t=8.$
 
 ## GENERATED moderate / q-18268 / {'shift': 3}
 
-Find $t$ given that the vectors $p = ⟨3, (t+3), (t+3)⟩$, $q = ⟨1, 3, 1⟩$, and $r = ⟨1, 1, 3⟩$ are coplanar.
+Find $t$ given that the vectors $p=⟨3,(t+3),(t+3)⟩$, $q=⟨1,3,1⟩$, and $r=⟨1,1,3⟩$ are coplanar.
 
-selection: 15-3, 4-3, 6-3, 0-3, -1-3
+selection: 4-3, 0-3, -1-3, 6-3, 15-3
 
 Computing the triple product, we get
 
 $$
-\begin{aligned}p\cdot(q\times r)&=|\begin{aligned}3 & t+3 & t+3 \\ 1 & 3 & 1 \\ 1 & 1 & 3\end{aligned}|\\ &=((3)\cdot |\begin{aligned}3 & 1 \\ 1 & 3\end{aligned}|)+((-t-3)\cdot |\begin{aligned}1 & 1 \\ 1 & 3\end{aligned}|)+((t+3)\cdot |\begin{aligned}1 & 3 \\ 1 & 1\end{aligned}|)\\ &=((3)\cdot ((3)\cdot (3)-(1)\cdot (1)))+((-t-3)\cdot ((1)\cdot (3)-(1)\cdot (1)))+((t+3)\cdot ((1)\cdot (1)-(3)\cdot (1)))\\ &=((3)\cdot (8))+((-t-3)\cdot (2))+((t+3)\cdot (-2))\\ &=(24)+(-2t-6)+(-2t-6)\\ &=12-4t\end{aligned}
+\begin{aligned}p\cdot (q\times r) & =|\begin{aligned}3 & (t+3) & (t+3) \\ 1 & 3 & 1 \\ 1 & 1 & 3\end{aligned}| \\  & =3\cdot |\begin{aligned}3 & 1 \\ 1 & 3\end{aligned}|-(t+3)\cdot |\begin{aligned}1 & 1 \\ 1 & 3\end{aligned}|+(t+3)\cdot |\begin{aligned}1 & 3 \\ 1 & 1\end{aligned}| \\  & =3(3\cdot 3-1\cdot 1)-(t+3)(1\cdot 3-1\cdot 1)+(t+3)(1\cdot 1-3\cdot 1) \\  & =24-2(t+3)-2(t+3) \\  & =24-4(t+3).\end{aligned}
 $$
+
+    
 
 Three vectors are coplanar if and only if their triple product is zero:
 
 $$
-\begin{aligned}12-4t&=0\\ -4t&=-12\\ t&=3\end{aligned}
+\begin{aligned}p\cdot (q\times r) & =0 \\ 24-4(t+3) & =0 \\ (t+3) & =6\end{aligned}
 $$
 
-Therefore, the three vectors are coplanar if and only if $t=3.$
+Therefore, the three vectors are coplanar if and only if $(t+3)=6.$
+
+Thus $t=3.$
 
 ## GENERATED moderate / q-128436 / {'shift': -2}
 
@@ -1862,8 +2327,8 @@ and
 $\,$
 $k=${{field-2}}
 
-field-2: \sqrt{\frac{1}{10}}+2
-field-1: -\sqrt{\frac{1}{10}}+2
+field-2: \sqrt{\frac{1}{10}}+2, \frac{1}{\sqrt{10}}+2
+field-1: -\sqrt{\frac{1}{10}}+2, -\frac{1}{\sqrt{10}}+2
 
 Computing the triple product, we get
 
@@ -1894,8 +2359,8 @@ and
 $\,$
 $k=${{field-2}}
 
-field-2: \sqrt{\frac{1}{10}}-3
-field-1: -\sqrt{\frac{1}{10}}-3
+field-2: \sqrt{\frac{1}{10}}-3, \frac{1}{\sqrt{10}}-3
+field-1: -\sqrt{\frac{1}{10}}-3, -\frac{1}{\sqrt{10}}-3
 
 Computing the triple product, we get
 
@@ -1918,7 +2383,21 @@ Thus $k=-3-\frac{\sqrt{10}}{10}$ or $k=-3+\frac{\sqrt{10}}{10}.$
 
 Find $k$ given that the vectors $a=⟨{(k-2)}^{2},7,4⟩,$ $b=⟨6,7,4⟩,$ and $c=⟨3,0,2⟩$ are coplanar.
 
-selection: $k=-\sqrt{3}+2$ or $k=\sqrt{3}+2$, $k=-\sqrt{6}+2$ or $k=\sqrt{6}+2$, $k=-\sqrt{6}+2$ only, $k=\sqrt{6}+2$ only, $k=-6+2$ or $k=6+2$
+Select all that apply. If none apply, leave all boxes unchecked.
+
+- **I.** $(k-2)=-6$
+- **II.** $(k-2)=- \sqrt{6}$
+- **III.** $(k-2)=- \sqrt{3}$
+- **IV.** $(k-2)=\sqrt{3}$
+- **V.** $(k-2)=\sqrt{6}$
+- **VI.** $(k-2)=6$
+
+I: false, true
+II: false, true
+III: false, true
+IV: false, true
+V: false, true
+VI: false, true
 
 Computing the triple product, we get
 
@@ -1942,7 +2421,21 @@ Thus $k=2-\sqrt{6}$ or $k=2+\sqrt{6}.$
 
 Find $k$ given that the vectors $a=⟨{(k+3)}^{2},7,4⟩,$ $b=⟨6,7,4⟩,$ and $c=⟨3,0,2⟩$ are coplanar.
 
-selection: $k=-\sqrt{3}-3$ or $k=\sqrt{3}-3$, $k=\sqrt{6}-3$ only, $k=-\sqrt{6}-3$ only, $k=-6-3$ or $k=6-3$, $k=-\sqrt{6}-3$ or $k=\sqrt{6}-3$
+Select all that apply. If none apply, leave all boxes unchecked.
+
+- **I.** $(k+3)=-6$
+- **II.** $(k+3)=- \sqrt{6}$
+- **III.** $(k+3)=- \sqrt{3}$
+- **IV.** $(k+3)=\sqrt{3}$
+- **V.** $(k+3)=\sqrt{6}$
+- **VI.** $(k+3)=6$
+
+I: false, true
+II: false, true
+III: false, true
+IV: false, true
+V: false, true
+VI: false, true
 
 Computing the triple product, we get
 
@@ -1961,6 +2454,290 @@ $$
 Therefore, the three vectors are coplanar if and only if $(k+3)=-\sqrt{6}$ or $(k+3)=\sqrt{6}.$
 
 Thus $k=-3-\sqrt{6}$ or $k=-3+\sqrt{6}.$
+
+## GENERATED moderate / q-128442 / {'shift': -2}
+
+Find $k$ given that the vectors $p=⟨5,-2,2⟩,$ $q=⟨3,(k-2),1⟩,$ and $r=⟨-8,3,-4⟩$ are coplanar.
+
+selection: -\frac{4}{5}+2, \frac{11}{4}+2, -\frac{5}{2}+2, -\frac{5}{4}+2, \frac{4}{11}+2
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}p\cdot (q\times r) & =|\begin{aligned}5 & -2 & 2 \\ 3 & (k-2) & 1 \\ -8 & 3 & -4\end{aligned}| \\  & =5\cdot |\begin{aligned}(k-2) & 1 \\ 3 & -4\end{aligned}|-(-2)\cdot |\begin{aligned}3 & 1 \\ -8 & -4\end{aligned}|+2\cdot |\begin{aligned}3 & (k-2) \\ -8 & 3\end{aligned}| \\  & =5((k-2)\cdot (-4)-3\cdot 1)+2(3\cdot (-4)-(-8)\cdot 1)+2(3\cdot 3-(-8)\cdot (k-2)) \\  & =-20(k-2)-15-8+18+16(k-2) \\  & =-4(k-2)-5.\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}p\cdot (q\times r) & =0 \\ -4(k-2)-5 & =0 \\ (k-2) & =-\frac{5}{4}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $(k-2)=-\frac{5}{4}.$
+
+Thus $k=\frac{3}{4}.$
+
+## GENERATED moderate / q-128442 / {'shift': 3}
+
+Find $k$ given that the vectors $p=⟨5,-2,2⟩,$ $q=⟨3,(k+3),1⟩,$ and $r=⟨-8,3,-4⟩$ are coplanar.
+
+selection: -\frac{4}{5}-3, -\frac{5}{4}-3, \frac{4}{11}-3, -\frac{5}{2}-3, \frac{11}{4}-3
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}p\cdot (q\times r) & =|\begin{aligned}5 & -2 & 2 \\ 3 & (k+3) & 1 \\ -8 & 3 & -4\end{aligned}| \\  & =5\cdot |\begin{aligned}(k+3) & 1 \\ 3 & -4\end{aligned}|-(-2)\cdot |\begin{aligned}3 & 1 \\ -8 & -4\end{aligned}|+2\cdot |\begin{aligned}3 & (k+3) \\ -8 & 3\end{aligned}| \\  & =5((k+3)\cdot (-4)-3\cdot 1)+2(3\cdot (-4)-(-8)\cdot 1)+2(3\cdot 3-(-8)\cdot (k+3)) \\  & =-20(k+3)-15-8+18+16(k+3) \\  & =-4(k+3)-5.\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}p\cdot (q\times r) & =0 \\ -4(k+3)-5 & =0 \\ (k+3) & =-\frac{5}{4}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $(k+3)=-\frac{5}{4}.$
+
+Thus $k=-\frac{17}{4}.$
+
+## GENERATED moderate / q-128457 / {'shift': -2}
+
+Find $t$ given that the vectors $p=⟨9,9,-2⟩,$ $q=⟨5,6,0⟩,$ and $r=⟨4,(t-2),(t-2)⟩$ are coplanar.
+
+selection: 24+2, \frac{48}{89}+2, 48+2, -\frac{48}{89}+2, -48+2
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}p\cdot (q\times r) & =|\begin{aligned}9 & 9 & -2 \\ 5 & 6 & 0 \\ 4 & (t-2) & (t-2)\end{aligned}| \\  & =9\cdot |\begin{aligned}6 & 0 \\ (t-2) & (t-2)\end{aligned}|-9\cdot |\begin{aligned}5 & 0 \\ 4 & (t-2)\end{aligned}|+(-2)\cdot |\begin{aligned}5 & 6 \\ 4 & (t-2)\end{aligned}| \\  & =9(6\cdot (t-2)-(t-2)\cdot 0)-9(5\cdot (t-2)-4\cdot 0)-2(5\cdot (t-2)-4\cdot 6) \\  & =54(t-2)-45(t-2)-10(t-2)+48 \\  & =48-(t-2).\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}p\cdot (q\times r) & =0 \\ 48-(t-2) & =0 \\ (t-2) & =48\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $(t-2)=48.$
+
+Thus $t=50.$
+
+## GENERATED moderate / q-128457 / {'shift': 3}
+
+Find $t$ given that the vectors $p=⟨9,9,-2⟩,$ $q=⟨5,6,0⟩,$ and $r=⟨4,(t+3),(t+3)⟩$ are coplanar.
+
+selection: \frac{48}{89}-3, 48-3, -\frac{48}{89}-3, -48-3, 24-3
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}p\cdot (q\times r) & =|\begin{aligned}9 & 9 & -2 \\ 5 & 6 & 0 \\ 4 & (t+3) & (t+3)\end{aligned}| \\  & =9\cdot |\begin{aligned}6 & 0 \\ (t+3) & (t+3)\end{aligned}|-9\cdot |\begin{aligned}5 & 0 \\ 4 & (t+3)\end{aligned}|+(-2)\cdot |\begin{aligned}5 & 6 \\ 4 & (t+3)\end{aligned}| \\  & =9(6\cdot (t+3)-(t+3)\cdot 0)-9(5\cdot (t+3)-4\cdot 0)-2(5\cdot (t+3)-4\cdot 6) \\  & =54(t+3)-45(t+3)-10(t+3)+48 \\  & =48-(t+3).\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}p\cdot (q\times r) & =0 \\ 48-(t+3) & =0 \\ (t+3) & =48\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $(t+3)=48.$
+
+Thus $t=45.$
+
+## GENERATED moderate / q-18261 / {'shift': -2}
+
+Find $x$ given that the vectors $a=⟨12,-2(x-2),1⟩$ , $b=⟨1,5,-2⟩$ and $c=⟨-9,4,8⟩$  are coplanar.
+
+selection: \frac{25}{2}+2, \frac{5}{4}+2, \frac{125}{2}+2, \frac{125}{4}+2, \frac{25}{4}+2
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}a\cdot (b\times c) & =|\begin{aligned}12 & -2(x-2) & 1 \\ 1 & 5 & -2 \\ -9 & 4 & 8\end{aligned}| \\  & =12\cdot |\begin{aligned}5 & -2 \\ 4 & 8\end{aligned}|-(-2(x-2))\cdot |\begin{aligned}1 & -2 \\ -9 & 8\end{aligned}|+1\cdot |\begin{aligned}1 & 5 \\ -9 & 4\end{aligned}| \\  & =12(5\cdot 8-4\cdot (-2))+2(x-2)(1\cdot 8-(-9)\cdot (-2))+(1\cdot 4-5\cdot (-9)) \\  & =576-20(x-2)+49 \\  & =625-20(x-2).\end{aligned}
+$$
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}a\cdot (b\times c) & =0 \\ 625-20(x-2) & =0 \\ 20(x-2) & =625 \\ (x-2) & =\frac{125}{4}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $(x-2)=\frac{125}{4}.$
+
+Thus $x=\frac{133}{4}.$
+
+## GENERATED moderate / q-18261 / {'shift': 3}
+
+Find $x$ given that the vectors $a=⟨12,-2(x+3),1⟩$ , $b=⟨1,5,-2⟩$ and $c=⟨-9,4,8⟩$  are coplanar.
+
+selection: \frac{25}{4}-3, \frac{5}{4}-3, \frac{25}{2}-3, \frac{125}{2}-3, \frac{125}{4}-3
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}a\cdot (b\times c) & =|\begin{aligned}12 & -2(x+3) & 1 \\ 1 & 5 & -2 \\ -9 & 4 & 8\end{aligned}| \\  & =12\cdot |\begin{aligned}5 & -2 \\ 4 & 8\end{aligned}|-(-2(x+3))\cdot |\begin{aligned}1 & -2 \\ -9 & 8\end{aligned}|+1\cdot |\begin{aligned}1 & 5 \\ -9 & 4\end{aligned}| \\  & =12(5\cdot 8-4\cdot (-2))+2(x+3)(1\cdot 8-(-9)\cdot (-2))+(1\cdot 4-5\cdot (-9)) \\  & =576-20(x+3)+49 \\  & =625-20(x+3).\end{aligned}
+$$
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}a\cdot (b\times c) & =0 \\ 625-20(x+3) & =0 \\ 20(x+3) & =625 \\ (x+3) & =\frac{125}{4}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $(x+3)=\frac{125}{4}.$
+
+Thus $x=\frac{113}{4}.$
+
+## GENERATED moderate / q-280747 / {'shift': -2}
+
+Find $k$ given that the vectors $a=⟨2,(k-2),-1⟩$, $b=⟨-3,4,5⟩$, and $c=⟨6,(k-2),1⟩$ are coplanar.
+
+$k=${{field-1}}
+
+field-1: -\frac{16}{13}+2
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}a\cdot (b\times c) & =|\begin{aligned}2 & (k-2) & -1 \\ -3 & 4 & 5 \\ 6 & (k-2) & 1\end{aligned}| \\  & =2\cdot |\begin{aligned}4 & 5 \\ (k-2) & 1\end{aligned}|-(k-2)\cdot |\begin{aligned}-3 & 5 \\ 6 & 1\end{aligned}|+(-1)\cdot |\begin{aligned}-3 & 4 \\ 6 & (k-2)\end{aligned}| \\  & =2(4\cdot 1-5\cdot (k-2))-(k-2)(-3\cdot 1-5\cdot 6)-1(-3\cdot (k-2)-4\cdot 6) \\  & =8-10(k-2)+33(k-2)+3(k-2)+24 \\  & =26(k-2)+32\end{aligned}
+$$
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}a\cdot (b\times c) & =0 \\ 26(k-2)+32 & =0 \\ (k-2) & =-\frac{16}{13}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $(k-2)=-\frac{16}{13}.$
+
+Thus $k=\frac{10}{13}.$
+
+## GENERATED moderate / q-280747 / {'shift': 3}
+
+Find $k$ given that the vectors $a=⟨2,(k+3),-1⟩$, $b=⟨-3,4,5⟩$, and $c=⟨6,(k+3),1⟩$ are coplanar.
+
+$k=${{field-1}}
+
+field-1: -\frac{16}{13}-3
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}a\cdot (b\times c) & =|\begin{aligned}2 & (k+3) & -1 \\ -3 & 4 & 5 \\ 6 & (k+3) & 1\end{aligned}| \\  & =2\cdot |\begin{aligned}4 & 5 \\ (k+3) & 1\end{aligned}|-(k+3)\cdot |\begin{aligned}-3 & 5 \\ 6 & 1\end{aligned}|+(-1)\cdot |\begin{aligned}-3 & 4 \\ 6 & (k+3)\end{aligned}| \\  & =2(4\cdot 1-5\cdot (k+3))-(k+3)(-3\cdot 1-5\cdot 6)-1(-3\cdot (k+3)-4\cdot 6) \\  & =8-10(k+3)+33(k+3)+3(k+3)+24 \\  & =26(k+3)+32\end{aligned}
+$$
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}a\cdot (b\times c) & =0 \\ 26(k+3)+32 & =0 \\ (k+3) & =-\frac{16}{13}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $(k+3)=-\frac{16}{13}.$
+
+Thus $k=-\frac{55}{13}.$
+
+## GENERATED moderate / q-73733 / {'shift': -2}
+
+Find $k$ given that the vectors $a=⟨-1,1,1⟩$, $b=⟨2,1,0⟩$, and $c=⟨(k-2),-2,-3⟩$ are coplanar.
+
+selection: 9+2, 5+2, 7+2, 13+2, 3+2
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}a\cdot (b\times c) & =|\begin{aligned}-1 & 1 & 1 \\ 2 & 1 & 0 \\ (k-2) & -2 & -3\end{aligned}| \\  & =(-1)\cdot |\begin{aligned}1 & 0 \\ -2 & -3\end{aligned}|-1\cdot |\begin{aligned}2 & 0 \\ (k-2) & -3\end{aligned}|+|\begin{aligned}2 & 1 \\ (k-2) & -2\end{aligned}| \\  & =-(1\cdot (-3)-(-2)\cdot 0)-(2\cdot (-3)-(k-2)\cdot 0)+(2\cdot (-2)-(k-2)\cdot 1) \\  & =3+6-4-(k-2) \\  & =5-(k-2).\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}a\cdot (b\times c) & =0 \\ 5-(k-2) & =0 \\ (k-2) & =5\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $(k-2)=5.$
+
+Thus $k=7.$
+
+## GENERATED moderate / q-73733 / {'shift': 3}
+
+Find $k$ given that the vectors $a=⟨-1,1,1⟩$, $b=⟨2,1,0⟩$, and $c=⟨(k+3),-2,-3⟩$ are coplanar.
+
+selection: 9-3, 5-3, 7-3, 13-3, 3-3
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}a\cdot (b\times c) & =|\begin{aligned}-1 & 1 & 1 \\ 2 & 1 & 0 \\ (k+3) & -2 & -3\end{aligned}| \\  & =(-1)\cdot |\begin{aligned}1 & 0 \\ -2 & -3\end{aligned}|-1\cdot |\begin{aligned}2 & 0 \\ (k+3) & -3\end{aligned}|+|\begin{aligned}2 & 1 \\ (k+3) & -2\end{aligned}| \\  & =-(1\cdot (-3)-(-2)\cdot 0)-(2\cdot (-3)-(k+3)\cdot 0)+(2\cdot (-2)-(k+3)\cdot 1) \\  & =3+6-4-(k+3) \\  & =5-(k+3).\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}a\cdot (b\times c) & =0 \\ 5-(k+3) & =0 \\ (k+3) & =5\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $(k+3)=5.$
+
+Thus $k=2.$
+
+## GENERATED moderate / q-280770 / {'shift': -2}
+
+Find $k$ given that the vectors $x=⟨1,(k-2),2⟩$, $y=⟨5,-2,3⟩$, and $z=⟨-4,(k-2),1⟩$ are coplanar.
+
+$k=${{field-1}}
+
+field-1: -\frac{9}{5}+2
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}x\cdot (y\times z) & =|\begin{aligned}1 & (k-2) & 2 \\ 5 & -2 & 3 \\ -4 & (k-2) & 1\end{aligned}| \\  & =1\cdot |\begin{aligned}-2 & 3 \\ (k-2) & 1\end{aligned}|-(k-2)\cdot |\begin{aligned}5 & 3 \\ -4 & 1\end{aligned}|+2\cdot |\begin{aligned}5 & -2 \\ -4 & (k-2)\end{aligned}| \\  & =1(-2\cdot 1-3\cdot (k-2))-(k-2)(5\cdot 1-3\cdot -4)+2(5(k-2)-(-2)(-4)) \\  & =-2-3(k-2)-(k-2)(5+12)+2(5(k-2)-8) \\  & =-2-3(k-2)-17(k-2)+10(k-2)-16 \\  & =-10(k-2)-18\end{aligned}
+$$
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}x\cdot (y\times z) & =0 \\ -10(k-2)-18 & =0 \\ (k-2) & =-\frac{9}{5}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $(k-2)=-\frac{9}{5}.$
+
+Thus $k=\frac{1}{5}.$
+
+## GENERATED moderate / q-280770 / {'shift': 3}
+
+Find $k$ given that the vectors $x=⟨1,(k+3),2⟩$, $y=⟨5,-2,3⟩$, and $z=⟨-4,(k+3),1⟩$ are coplanar.
+
+$k=${{field-1}}
+
+field-1: -\frac{9}{5}-3
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}x\cdot (y\times z) & =|\begin{aligned}1 & (k+3) & 2 \\ 5 & -2 & 3 \\ -4 & (k+3) & 1\end{aligned}| \\  & =1\cdot |\begin{aligned}-2 & 3 \\ (k+3) & 1\end{aligned}|-(k+3)\cdot |\begin{aligned}5 & 3 \\ -4 & 1\end{aligned}|+2\cdot |\begin{aligned}5 & -2 \\ -4 & (k+3)\end{aligned}| \\  & =1(-2\cdot 1-3\cdot (k+3))-(k+3)(5\cdot 1-3\cdot -4)+2(5(k+3)-(-2)(-4)) \\  & =-2-3(k+3)-(k+3)(5+12)+2(5(k+3)-8) \\  & =-2-3(k+3)-17(k+3)+10(k+3)-16 \\  & =-10(k+3)-18\end{aligned}
+$$
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}x\cdot (y\times z) & =0 \\ -10(k+3)-18 & =0 \\ (k+3) & =-\frac{9}{5}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $(k+3)=-\frac{9}{5}.$
+
+Thus $k=-\frac{24}{5}.$
 
 ## GENERATED easy / linear / {'vectors': [['-3', '2', '-3'], ['3', 'k', '0'], ['0', '1', '-3']], 'variable': 'k'}
 

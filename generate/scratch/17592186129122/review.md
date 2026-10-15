@@ -27,7 +27,7 @@ Calculate the period of the function $f(x)=\frac{1}{5}\operatorname{sin}⁡(\fra
 - $\frac{5\pi }{12}$
 - $\frac{24\pi }{5}$
 - $\frac{5\pi }{3}$
-- $2\pi $
+- $2\pi$
 
 Worked solution:
 Given a function in the form $f(x)=A\operatorname{sin}⁡(Bx+C)+D,$ the period $T$ is given by $\frac{2\pi }{B}.$
@@ -40,11 +40,11 @@ In our case, we have that $B=\frac{12}{5}.$ Therefore, the period is $\frac{2\pi
 
 Calculate the period of the function $f(x)=\frac{1}{6}\operatorname{sin}⁡(\frac{2x}{5}-\frac{\pi }{3}).$
 
-- $10\pi $
-- $2\pi $
+- $10\pi$
+- $2\pi$
 - $\frac{5\pi }{2}$
 - $\frac{4\pi }{5}$
-- $5\pi $ (correct)
+- $5\pi$ (correct)
 
 Worked solution:
 Given a function in the form $f(x)=A\operatorname{sin}⁡(Bx+C)+D,$ the period $T$ is given by $\frac{2\pi }{B}.$
@@ -73,7 +73,7 @@ Calculate the period of the function $y = \frac{1}{5}\cos (\frac{12}{5}x)$.
 - $\frac{5\pi }{12}$
 - $\frac{24\pi }{5}$
 - $\frac{5\pi }{3}$
-- $2\pi $
+- $2\pi$
 
 Worked solution:
 Given a function in the form $y=A\cos(Bx+C)+D,$ the period is $\frac{2\pi }{|B|}.$
@@ -86,11 +86,11 @@ In our case, we have that $B=\frac{12}{5}.$ Therefore, the period is $\frac{2\pi
 
 Calculate the period of the function $y = \frac{1}{6}\cos (\frac{2}{5}x)$.
 
-- $10\pi $
-- $2\pi $
+- $10\pi$
+- $2\pi$
 - $\frac{5\pi }{2}$
 - $\frac{4\pi }{5}$
-- $5\pi $ (correct)
+- $5\pi$ (correct)
 
 Worked solution:
 Given a function in the form $y=A\cos(Bx+C)+D,$ the period is $\frac{2\pi }{|B|}.$
@@ -117,9 +117,9 @@ Calculate the period of the function $y=\operatorname{cos}(11x+\frac{\pi }{4}).$
 
 - $\frac{2\pi }{11}$ (correct)
 - $\frac{\pi }{11}$
-- $22\pi $
+- $22\pi$
 - $\frac{4\pi }{11}$
-- $2\pi $
+- $2\pi$
 
 Worked solution:
 Given a function in the form $y=A\operatorname{cos}(Bx+C)+D,$ the period is $\frac{2\pi }{B}.$
@@ -132,10 +132,10 @@ In our case, we have that $B=11.$ Therefore, the period is $\frac{2\pi }{11}=\fr
 
 Calculate the period of the function $y=\operatorname{cos}(4x-\frac{\pi }{3}).$
 
-- $\pi $
-- $2\pi $
+- $\pi$
+- $2\pi$
 - $\frac{\pi }{4}$
-- $8\pi $
+- $8\pi$
 - $\frac{\pi }{2}$ (correct)
 
 Worked solution:
@@ -216,7 +216,7 @@ What is the period of the function $f(x)=4\operatorname{sin}⁡(\frac{12x}{5}+\f
 - $\frac{5\pi }{12}$
 - $\frac{24\pi }{5}$
 - $\frac{5\pi }{3}$
-- $2\pi $
+- $2\pi$
 
 Worked solution:
 Given a function in the form $y=A\operatorname{sin}⁡(Bx+C)+D,$ the period is $\frac{2\pi }{B}.$
@@ -229,11 +229,11 @@ In our case, we have that $B=\frac{12}{5}.$ Therefore, the period is $\frac{2\pi
 
 What is the period of the function $f(x)=6\operatorname{sin}⁡(\frac{2x}{5}-\frac{\pi }{3})?$
 
-- $10\pi $
-- $2\pi $
+- $10\pi$
+- $2\pi$
 - $\frac{5\pi }{2}$
 - $\frac{4\pi }{5}$
-- $5\pi $ (correct)
+- $5\pi$ (correct)
 
 Worked solution:
 Given a function in the form $y=A\operatorname{sin}⁡(Bx+C)+D,$ the period is $\frac{2\pi }{B}.$
@@ -401,7 +401,7 @@ Calculate the period of the function $f(x)=3\cos\left(-\frac{7}{3}x-\frac{\pi }{
 
 - $\frac{6\pi }{7}$ (correct)
 - $\frac{14\pi }{3}$
-- $2\pi $
+- $2\pi$
 - $\frac{3\pi }{7}$
 - $\frac{12\pi }{7}$
 
@@ -468,8 +468,8 @@ In our case, we have that $B=-\frac{12}{5}.$ Therefore, the period is $\frac{{36
 Calculate the period of the function $f(x)=3\cos\left(-\frac{5}{6}\left(3x-\frac{\pi }{5}\right)\right).$
 
 - $\frac{4\pi }{5}$ (correct)
-- $5\pi $
-- $2\pi $
+- $5\pi$
+- $2\pi$
 - $\frac{2\pi }{5}$
 - $\frac{8\pi }{5}$
 

@@ -23,3 +23,5 @@ Every mathematical display is algebraic TeX; no diagrams or assets occur, so ste
 | q-288648 | easy | 1 | -5 | 9 | 0 | complete singleton blank |
 | q-288639 | moderate | 2 | -7 | 5 | 1 | complete singleton blank |
 | q-288637 | moderate | -7 | 3 | 8 | 1 | complete singleton blank |
+
+Served coefficient annotations use canonical `\underbrace{operand}_{a/b}`. The private formatter repairs legacy Unicode capture wrappers without changing operands, roles, source wording or raw Pull records. Fidelity separates mathematical/full-prose preservation from this presentation normalization. The private parser checks annotation operands and roles independently and rejects legacy wrappers, stale coefficients and stale role labels.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Coplanarity generators; math basis 1356; no database writes.
+"""Coplanarity generators; math basis 2535; no database writes.
 
 Observed evidence profiles preserve every source field, missing label/reference and
 worked-solution stage. Their public affine-coordinate recipes are evidence-only:
@@ -48,7 +48,7 @@ def printed_vectors(prompt):
     return sp.Matrix([[parse_math(x)for x in t.split(',')]for t in tuples])
 
 def roots_from_prompt(prompt):
-    v=re.search(r'Find \$([kt])\$',prompt)[1]
+    v=re.search(r'Find \$([ktx])\$',prompt)[1]
     x=sp.Symbol(v)
     d=sp.expand(printed_vectors(prompt).det())
     roots=sp.solve(d,x)
@@ -107,7 +107,7 @@ def observed(level,seed,template,parameters,profile,field_type):
         if h:solution+='\n\nThus $'+v+'='+('$ or $'+v+'=').join(tex(r-h)for r in rs)+'.$'
     fs=[]
     for f in source[':question/answer-fields']:
-        values=[observed_option(a[':answer/value'],v,h)for a in f[':answer-field/choices']]
+        values=[a[':answer/value'] if f[':answer-field/type'][':db/ident']==':answer-field.type/checkbox' else observed_option(a[':answer/value'],v,h)for a in f[':answer-field/choices']]
         oldcorrect=f.get(':answer-field/correct',{}).get(':answer/id')
         ci=next((i for i,a in enumerate(f[':answer-field/choices'])if a[':answer/id']==oldcorrect),None)
         if not raw:

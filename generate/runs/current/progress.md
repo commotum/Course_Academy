@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 36**, **qa_passed: 351**, **queued: 191**, **working: 2**.
+**needs_revalidation: 36**, **qa_passed: 356**, **queued: 184**, **working: 4**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -135,17 +135,17 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186092240](../../scratch/17592186092240-draft.py) | Calculating the Equation of a Normal Line Using Differentiation | Determining the Equation of a Normal Line to a Curve at a Point | 0 / 14 / 0 / 1 | qa_passed | [Report](qa/17592186092240.json) |
 | [17592186204089](../../scratch/17592186204089-draft.py) | Linear Equations With No Solutions | Identifying an Equation With No Solutions | 6 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186204089.json) |
 | [17592186110719](../../scratch/17592186110719.py) | Linear Equations With Infinitely Many Solutions | Identifying Equations With Infinitely Many Solutions | 5 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186110719.json) |
-| [17592186204090](../../scratch/17592186204090.py) | Linear Equations With No Solutions | Solving For an Unknown Parameter | 3 / 2 / 2 / 0 | working | — |
-| [17592186204092](../../scratch/17592186204092.py) | Linear Equations With No Solutions | Solving For an Unknown Parameter - Variables and Constants on Both Sides | 5 / 5 / 0 / 2 | working | — |
+| [17592186204090](../../scratch/17592186204090.py) | Linear Equations With No Solutions | Solving For an Unknown Parameter | 3 / 2 / 2 / 0 | qa_passed | [Report](qa/17592186204090.json) |
+| [17592186204092](../../scratch/17592186204092-draft.py) | Linear Equations With No Solutions | Solving For an Unknown Parameter - Variables and Constants on Both Sides | 5 / 5 / 0 / 2 | qa_passed | [Report](qa/17592186204092.json) |
 | [17592186110720](../../scratch/17592186110720.py) | Linear Equations With Infinitely Many Solutions | Solving For an Unknown Parameter | 4 / 1 / 0 / 0 | qa_passed | [Report](qa/17592186110720.json) |
 | [17592186110721](../../scratch/17592186110721.py) | Linear Equations With Infinitely Many Solutions | Solving a General Equation With Infinitely Many Solutions For Unknown Parameters | 3 / 2 / 0 / 2 | qa_passed | [Report](qa/17592186110721.json) |
-| [17592186204091](../../scratch/17592186204091.py) | Linear Equations With No Solutions | Solving For an Unknown Parameter - Constants on Both Sides | 5 / 7 / 0 / 1 | queued | — |
-| 17592186059677 | Second and Higher-Order Derivatives | Computing Second Order Derivatives | 8 / 1 / 2 / 2 | queued | — |
-| 17592186059679 | Second and Higher-Order Derivatives | Computing Higher Order Derivatives | 4 / 4 / 2 / 1 | queued | — |
-| [17592186059678](../../scratch/17592186059678.py) | Second and Higher-Order Derivatives | Computing Second Order Derivatives Using Leibnitz Notation | 7 / 5 / 0 / 1 | queued | — |
-| 17592186105716 | Integrating the Reciprocal Function | Integrating the Sum of a Reciprocal Function and a Power Function | 5 / 1 / 1 / 2 | queued | — |
-| 17592186184351 | Integrating Exponential Functions Using Substitution | More Complex Cases | 1 / 3 / 3 / 1 | queued | — |
-| 17592186184352 | Integrating Exponential Functions Using Substitution | Evaluating Definite Integrals | 3 / 3 / 1 / 1 | queued | — |
+| [17592186204091](../../scratch/17592186204091-draft.py) | Linear Equations With No Solutions | Solving For an Unknown Parameter - Constants on Both Sides | 5 / 7 / 0 / 1 | qa_passed | [Report](qa/17592186204091.json) |
+| [17592186059677](../../scratch/17592186059677.py) | Second and Higher-Order Derivatives | Computing Second Order Derivatives | 8 / 1 / 2 / 2 | qa_passed | [Report](qa/17592186059677.json) |
+| [17592186059679](../../scratch/17592186059679.py) | Second and Higher-Order Derivatives | Computing Higher Order Derivatives | 4 / 4 / 2 / 1 | working | — |
+| [17592186059678](../../scratch/17592186059678-draft.py) | Second and Higher-Order Derivatives | Computing Second Order Derivatives Using Leibnitz Notation | 7 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186059678.json) |
+| [17592186105716](../../scratch/17592186105716.py) | Integrating the Reciprocal Function | Integrating the Sum of a Reciprocal Function and a Power Function | 5 / 1 / 1 / 2 | working | — |
+| [17592186184351](../../scratch/17592186184351.py) | Integrating Exponential Functions Using Substitution | More Complex Cases | 1 / 3 / 3 / 1 | working | — |
+| 17592186184352 | Integrating Exponential Functions Using Substitution | Evaluating Definite Integrals | 3 / 3 / 1 / 1 | working | — |
 | [17592186105715](../../scratch/17592186105715.py) | Integrating the Reciprocal Function | Integrating a Reciprocal Function | 8 / 0 / 0 / 1 | queued | — |
 | 17592186068916 | Integrating Trigonometric Functions Using Substitution | Integrating Reciprocal Trigonometric Functions With Linear Arguments | 3 / 2 / 4 / 1 | queued | — |
 | [17592186064203](../../scratch/17592186064203.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Positive Integer Exponent | 5 / 5 / 0 / 2 | queued | — |
@@ -478,7 +478,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186152159](../../scratch/17592186152159.py) | Line Integrals of Scalar Functions Over Paths Expressed as Functions of X | Reducing the Line Integral of a Scalar Function Along a Curve to a Definite Integral | 8 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186152159.json) |
 | [17592186179718](../../scratch/17592186179718.py) | Line Integrals of Scalar Functions Over Paths Expressed as Functions of Y | Evaluating the Line Integral of a Function Over Curve Expressed as a Function of Y | 0 / 3 / 2 / 1 | qa_passed | [Report](qa/17592186179718.json) |
 | 17592186133877 | The Curl of a Vector Field | Calculating the Curl of a Vector Field | 4 / 5 / 0 / 2 | queued | — |
-| 17592186133881 | The Curl of a Vector Field | Interpreting the Curl of a Vector Field | 0 / 6 / 7 / 1 | queued | — |
+| [17592186133881](../../scratch/17592186133881.py) | The Curl of a Vector Field | Interpreting the Curl of a Vector Field | 0 / 6 / 7 / 1 | queued | — |
 | [17592186133898](../../scratch/17592186133898.py) | The Curl of a Vector Field | Calculating the Scalar Curl of a Vector Field | 7 / 8 / 0 / 1 | queued | — |
 | [17592186133894](../../scratch/17592186133894.py) | Line Integrals of Vector-Valued Functions Over Parametric Curves | Evaluating Line Integrals of Vector-Valued Functions Over Space Curves | 0 / 0 / 7 / 1 | qa_passed | [Report](qa/17592186133894.json) |
 | [17592186133828](../../scratch/17592186133828.py) | Line Integrals of Vector-Valued Functions Over Parametric Curves | Evaluating Line Integrals of a Vector-Valued Functions Over Plane Curves | 0 / 8 / 0 / 0 | qa_passed | [Report](qa/17592186133828.json) |

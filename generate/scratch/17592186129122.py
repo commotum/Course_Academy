@@ -9,6 +9,8 @@ No EDB access, registration, writes, plots or question-source lookup shortcuts.
 from __future__ import annotations
 import argparse, hashlib, json, math, pathlib, random, sys, uuid
 import sympy as sp
+sys.path.insert(0,str(pathlib.Path(__file__).resolve().parents[2]/'scripts/question_capture'))
+from math_format import normalize_prose, normalize_tex, checked_math_content
 HERE=pathlib.Path(__file__).with_suffix(''); VERSION='period-1356-v1'
 CAPTURE=json.loads((HERE/'source.json').read_text()); SPECS=json.loads((HERE/'template-masks.json').read_text())
 KP={'db_id':17592186129122,'id':'1eeb42af-74ee-53d7-af9f-be171f77968f','title':'Calculating the Period of a Transformed Sinusoidal Function'}
@@ -164,6 +166,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
    continue
   break
  else:raise SampleRejected('No collision-free whole instance')
+ if not raw:
+  prompt=normalize_prose(prompt);solution=normalize_prose(solution)
+  opts=[normalize_tex(option) for option in opts]
  s=SPECS.get(name);q={':question/problem':prompt}
  if solution is not None:q[':question/worked-solution']=solution
  if not raw or ':question/difficulty' in s['keys']:q[':question/difficulty']=':question.difficulty/'+level
@@ -185,7 +190,13 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
    field[':answer-field/correct']=[':answer/id',answers[matches[0]][':answer/id']]
   random.Random(seed).shuffle(answers);field[':answer-field/choices']=answers;q[':question/answer-fields']=[field]
  if raw:q.update({':db/id':s['db_id'],':question/math-academy-id':s['source_id']})
- return {'knowledge_point':dict(KP),'question':q,'generation':{'version':VERSION,'python_version':sys.version.split()[0],'sympy_version':sp.__version__,'seed':seed,'template':name,'parameters':p,'bank_profile':profile,'bank_origin':'opaque source evidence' if raw and opts else 'raw fieldless evidence' if raw else 'authored method operations','evidence_only':raw,'eligible_for_learning':not raw,'authored_extension':level!='easy' or not raw,'source_analysis':{k:CAPTURE[k] for k in ('database','basis','lineage')},'source_ids':[s['source_id']] if s else ['e-15610'],'parameter_fingerprint':task,'mathematical_task_fingerprint':task,'content_fingerprint':content,'plot_rating':'none','plot_assets':{},'domain_policy':{'frequency_numerator_max':12,'frequency_denominator_max':12 if level=='hard' else 6,'frequency_magnitude_max':12,'hard_multiplier_range':[2,6] if level=='hard' else None,'mandatory_cancellation':level=='hard'},'period_coefficient':str(correct),'unit':unit,'frequency':str(B),'recipes':[] if raw else ['base/abs(B)','base*abs(B)','base/(2*abs(B))','2*base/abs(B)','base']}}
+ record={'knowledge_point':dict(KP),'question':q,'generation':{'version':VERSION,'python_version':sys.version.split()[0],'sympy_version':sp.__version__,'seed':seed,'template':name,'parameters':p,'bank_profile':profile,'bank_origin':'opaque source evidence' if raw and opts else 'raw fieldless evidence' if raw else 'authored method operations','evidence_only':raw,'eligible_for_learning':not raw,'authored_extension':level!='easy' or not raw,'source_analysis':{k:CAPTURE[k] for k in ('database','basis','lineage')},'source_ids':[s['source_id']] if s else ['e-15610'],'parameter_fingerprint':task,'mathematical_task_fingerprint':task,'content_fingerprint':content,'plot_rating':'none','plot_assets':{},'domain_policy':{'frequency_numerator_max':12,'frequency_denominator_max':12 if level=='hard' else 6,'frequency_magnitude_max':12,'hard_multiplier_range':[2,6] if level=='hard' else None,'mandatory_cancellation':level=='hard'},'period_coefficient':str(correct),'unit':unit,'frequency':str(B),'recipes':[] if raw else ['base/abs(B)','base*abs(B)','base/(2*abs(B))','2*base/abs(B)','base']}}
+
+ return record if raw else _checked_record(record)
+
+@checked_math_content
+def _checked_record(record):
+ return record
 
 # EASY — eight observed source-shaped peers: identify positive B and divide.
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('easy',seed,template,field_type,parameters,profile)

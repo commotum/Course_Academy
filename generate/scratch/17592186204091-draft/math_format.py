@@ -197,6 +197,9 @@ def _matrix_layouts(text):
 
 def normalize_tex(value):
     text = str(value).strip()
+    # KP04091 private repair of captured underbrace presentation, preserving operands/roles.
+    text = re.sub(r'\{\{([^{}]*)\}_\{⏟\}\}_\{([ab])\}',
+                  lambda match: r'\underbrace{' + match[1] + '}_{' + match[2] + '}', text)
     if MATH.fullmatch(text):
         size = 2 if text.startswith(('$$', r'\[', r'\(')) else 1
         text = text[size:-size].strip()
@@ -256,7 +259,9 @@ def normalize_prose(value):
 
 def validate_tex(value):
     """Validate structural invariants; the UI's MathJax checks rendering."""
-    text = str(value); depth = 0; stack = []
+    text = str(value)
+    if '⏟' in text: raise ValueError('Legacy captured annotation is not canonical served TeX')
+    depth = 0; stack = []
     for token in re.findall(r'\\(?:begin|end)\{[^{}]+\}|\\[A-Za-z]+|\\.|.', text, re.S):
         env = ENV.fullmatch(token)
         if env:

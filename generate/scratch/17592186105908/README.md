@@ -16,3 +16,6 @@ All normal choices use determinant method operations, and each complete five-opt
 No plots, database writes, engine changes, or registration. The validator checks exact full source content, all displayed determinant/isolation stages, full scalar/root-set choice semantics, formatting, bounds, identities, seed variety, and the compiled native grader. Raw grading's q-18266 singleton acceptance is a source correctness exception; two raw sources with missing refs cannot form native fixtures. They are verified and graded in repaired evidence separately.
 
 Parent QA repaired the completed q-18268 solution to name its actual supplied vectors p,q,r; the validator now checks every formal triple against prompted names. Available original solution strings remain exact.
+
+
+Current inventory validation additionally uses `validate_inventory.py`, which reads all 23 current sources at basis 2535, checks the declared coordinate positions and controlled target changes, and runs the freshly compiled application grader in this package. `replenish.py` performs additive inventory preparation and commit under the application api.lock, retaining exact requests, previews, receipts, and historical readback in `reference/replenishment/`. The generator UUID is derived once from this KP UUID with the name `question-generator`; any existing registered UUID takes precedence.

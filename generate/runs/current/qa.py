@@ -72,7 +72,12 @@ def main():
  evidence=load(folder/'source.json');snapshot=ROOT/load(ROOT/'manifest.json').get('source_snapshot_roots',{'1356':'.'})[str(evidence['basis'])]
  source=load(snapshot/'sources'/f'{kp}.json')['record'];casefile=folder/'source-cases.json'
  assert evidence==load(snapshot/'sources'/f'{kp}.json'),'worker source evidence changed from immutable capture'
- cases=load(casefile);qids={q.get(':question/math-academy-id',str(q[':db/id'])) for q in source.get(':knowledge-point/questions',[])}
+ cases=load(casefile)
+ if isinstance(cases,dict):
+  assert cases['basis']==evidence['basis'] and cases['lineage']==evidence['lineage']
+  cases=cases['questions']
+ assert isinstance(cases,list)
+ qids={q.get(':question/math-academy-id',str(q[':db/id'])) for q in source.get(':knowledge-point/questions',[])}
  aliases={str(q[':db/id']):q.get(':question/math-academy-id',str(q[':db/id'])) for q in source.get(':knowledge-point/questions',[])}
  aliases.update({q[':question/id']:q.get(':question/math-academy-id',str(q[':db/id'])) for q in source.get(':knowledge-point/questions',[]) if ':question/id' in q})
  caseids={aliases.get(str(case.get('source_math_academy_id',case.get('math_academy_id',case.get('source_ma_id',case['source_id'])))),str(case.get('source_math_academy_id',case.get('math_academy_id',case.get('source_ma_id',case['source_id']))))) for case in cases}

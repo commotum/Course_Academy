@@ -723,7 +723,7 @@ $$
 \begin{aligned}(f(t)-2g(t))^{′}\big|_{t=1} & ={f}^{′}(1)-2{g}^{′}(1) \\  & =⟨2(1),\,\frac{1}{1},\,{e}^{1-1}⟩-2⟨\frac{1}{\sqrt{1}},\,3(1)^{2},\,0⟩ \\  & =⟨2,1,1⟩-2⟨1,3,0⟩ \\  & =⟨2,1,1⟩-⟨2,6,0⟩ \\  & =⟨0,-5,1⟩.\end{aligned}
 $$
 
-# Generated variants (observed profiles and authored defaults)
+# Generated observed-profile variants
 
 ## q-33122 — easy
 Profile: `q-33122`; parameters: `{"scales": [-2, 1, 3]}`.
@@ -1461,10 +1461,10 @@ $$
 $$
 
 - $12 t^{2}\,i+\frac{4}{\left(t - 1\right)^{2}}\,j- 6 \sin{\left(3 t \right)}\,k$
-- $(- 12 t^{2} - 3)\,i+(- 12 e^{4 t} - \frac{4}{\left(t - 1\right)^{2}})\,j+15 \sin{\left(3 t \right)}\,k$
 - $(4 t^{3} - 3 t + 8)\,i+\frac{3 \left(1 - t\right) e^{4 t} - 4}{t - 1}\,j- \cos{\left(3 t \right)}\,k$
 - $(12 t^{2} - 3)\,i+(- 12 e^{4 t} + \frac{4}{\left(t - 1\right)^{2}})\,j+3 \sin{\left(3 t \right)}\,k$ **correct**
 - $-3\,i- 12 e^{4 t}\,j+9 \sin{\left(3 t \right)}\,k$
+- $(- 12 t^{2} - 3)\,i+(- 12 e^{4 t} - \frac{4}{\left(t - 1\right)^{2}})\,j+15 \sin{\left(3 t \right)}\,k$
 
 Using the constant multiple rule and the sum rule, we have
 
@@ -1493,11 +1493,11 @@ $$
 \begin{aligned}f(t)&=(t^{2} + 1)\,i- \frac{1}{t - 3}\,j+\cos{\left(4 t \right)}\,k \\ g(t)&=(t - 1)\,i+e^{3 t}\,j+\cos{\left(4 t \right)}\,k\end{aligned}
 $$
 
-- $- 6 t\,i- \frac{3}{\left(t - 3\right)^{2}}\,j+12 \sin{\left(4 t \right)}\,k$
-- $2\,i+6 e^{3 t}\,j- 8 \sin{\left(4 t \right)}\,k$
 - $(6 t + 2)\,i+(6 e^{3 t} + \frac{3}{\left(t - 3\right)^{2}})\,j- 20 \sin{\left(4 t \right)}\,k$
-- $(- 3 t^{2} + 2 t - 5)\,i+\frac{2 \left(t - 3\right) e^{3 t} + 3}{t - 3}\,j- \cos{\left(4 t \right)}\,k$
 - $(2 - 6 t)\,i+(6 e^{3 t} - \frac{3}{\left(t - 3\right)^{2}})\,j+4 \sin{\left(4 t \right)}\,k$ **correct**
+- $(- 3 t^{2} + 2 t - 5)\,i+\frac{2 \left(t - 3\right) e^{3 t} + 3}{t - 3}\,j- \cos{\left(4 t \right)}\,k$
+- $2\,i+6 e^{3 t}\,j- 8 \sin{\left(4 t \right)}\,k$
+- $- 6 t\,i- \frac{3}{\left(t - 3\right)^{2}}\,j+12 \sin{\left(4 t \right)}\,k$
 
 Using the constant multiple rule and the sum rule, we have
 
@@ -1517,6 +1517,8 @@ $$
 \begin{aligned}(-3f(t)+2g(t))'&=-3f'(\!t)+2g'(\!t) \\ &=-3\left(2 t\,i+\frac{1}{\left(t - 3\right)^{2}}\,j- 4 \sin{\left(4 t \right)}\,k\right)+2\left(1\,i+3 e^{3 t}\,j- 4 \sin{\left(4 t \right)}\,k\right) \\ &=\left(- 6 t\,i- \frac{3}{\left(t - 3\right)^{2}}\,j+12 \sin{\left(4 t \right)}\,k\right)+\left(2\,i+6 e^{3 t}\,j- 8 \sin{\left(4 t \right)}\,k\right) \\ &=(2 - 6 t)\,i+(6 e^{3 t} - \frac{3}{\left(t - 3\right)^{2}})\,j+4 \sin{\left(4 t \right)}\,k.\end{aligned}
 $$
 
+# Generated normal authored-bank variants
+
 ## q-33122 — easy
 Profile: `authored-operations`; parameters: `{"scales": [1, -3, 1]}`.
 
@@ -1526,11 +1528,11 @@ $$
 \begin{aligned}f(t) & =⟨3 t - 1,\,3 t - 18,\,7 t⟩ \\ g(t) & =⟨t^{2},\,3 t^{2} - 3,\,t⟩\end{aligned}
 $$
 
-- $⟨3,\,3,\,7⟩$
-- $⟨2 t,\,6 t,\,1⟩$
 - $⟨t^{2} + 3 t - 1,\,3 t^{2} + 3 t - 21,\,8 t⟩$
+- $⟨3,\,3,\,7⟩$
 - $⟨2 t - 3,\,6 t - 3,\,-6⟩$
 - $⟨2 t + 3,\,6 t + 3,\,8⟩$ **correct**
+- $⟨2 t,\,6 t,\,1⟩$
 
 By the sum rule, we have
 
@@ -1559,11 +1561,11 @@ $$
 \begin{aligned}f(t) & =⟨2 - 6 t,\,2 t - 12,\,- 7 t⟩ \\ g(t) & =⟨- 2 t^{2},\,2 t^{2} - 2,\,- t⟩\end{aligned}
 $$
 
-- $⟨-6,\,2,\,-7⟩$
-- $⟨6 - 4 t,\,4 t - 2,\,6⟩$
 - $⟨- 2 t^{2} - 6 t + 2,\,2 t^{2} + 2 t - 14,\,- 8 t⟩$
-- $⟨- 4 t,\,4 t,\,-1⟩$
+- $⟨-6,\,2,\,-7⟩$
 - $⟨- 4 t - 6,\,4 t + 2,\,-8⟩$ **correct**
+- $⟨6 - 4 t,\,4 t - 2,\,6⟩$
+- $⟨- 4 t,\,4 t,\,-1⟩$
 
 By the sum rule, we have
 
@@ -1589,11 +1591,11 @@ Profile: `authored-operations`; parameters: `{"scales": [1, -3, 1]}`.
 Find the value of $(3h(t) - 2g(t))^{′}$ at $t = 2$, if
 $h(t)= ⟨2 t^{2},\,9 - 3 t,\,t^{3} + 8⟩; g(t)= ⟨t \left(t + 2\right),\,-24,\,2 t^{3}⟩$
 
-- $⟨24,\,-9,\,36⟩$
-- $⟨-12,\,0,\,-48⟩$
 - $⟨8,\,57,\,16⟩$
+- $⟨24,\,-9,\,36⟩$
 - $⟨-36,\,9,\,-84⟩$
 - $⟨12,\,-9,\,-12⟩$ **correct**
+- $⟨-12,\,0,\,-48⟩$
 
 Using the constant multiple rule and the sum rule, we have
 
@@ -1619,11 +1621,11 @@ Profile: `authored-operations`; parameters: `{"scales": [-2, -2, -1]}`.
 Find the value of $(3h(t) - 2g(t))^{′}$ at $t = 2$, if
 $h(t)= ⟨- 4 t^{2},\,6 - 2 t,\,- t^{3} - 8⟩; g(t)= ⟨2 t \left(- t - 2\right),\,-16,\,- 2 t^{3}⟩$
 
-- $⟨-48,\,-6,\,-36⟩$
-- $⟨72,\,6,\,84⟩$
 - $⟨-16,\,38,\,-16⟩$
-- $⟨24,\,0,\,48⟩$
+- $⟨-48,\,-6,\,-36⟩$
 - $⟨-24,\,-6,\,12⟩$ **correct**
+- $⟨72,\,6,\,84⟩$
+- $⟨24,\,0,\,48⟩$
 
 Using the constant multiple rule and the sum rule, we have
 
@@ -1652,11 +1654,11 @@ $$
 \begin{aligned}f(t)&=(4 t^{2} + 1)\,i- \frac{4}{t + 2}\,j+\cos{\left(2 t \right)}\,k \\ g(t)&=(t - 4)\,i+e^{4 t}\,j+\cos{\left(2 t \right)}\,k\end{aligned}
 $$
 
-- $24 t\,i+\frac{12}{\left(t + 2\right)^{2}}\,j- 6 \sin{\left(2 t \right)}\,k$
-- $-2\,i- 8 e^{4 t}\,j+4 \sin{\left(2 t \right)}\,k$
-- $(12 t^{2} - 2 t + 11)\,i+\frac{2 \left(\left(- t - 2\right) e^{4 t} - 6\right)}{t + 2}\,j+\cos{\left(2 t \right)}\,k$
 - $(- 24 t - 2)\,i+(- 8 e^{4 t} - \frac{12}{\left(t + 2\right)^{2}})\,j+10 \sin{\left(2 t \right)}\,k$
+- $24 t\,i+\frac{12}{\left(t + 2\right)^{2}}\,j- 6 \sin{\left(2 t \right)}\,k$
 - $(24 t - 2)\,i+(- 8 e^{4 t} + \frac{12}{\left(t + 2\right)^{2}})\,j- 2 \sin{\left(2 t \right)}\,k$ **correct**
+- $(12 t^{2} - 2 t + 11)\,i+\frac{2 \left(\left(- t - 2\right) e^{4 t} - 6\right)}{t + 2}\,j+\cos{\left(2 t \right)}\,k$
+- $-2\,i- 8 e^{4 t}\,j+4 \sin{\left(2 t \right)}\,k$
 
 Using the constant multiple rule and the sum rule, we have
 
@@ -1685,10 +1687,10 @@ $$
 \begin{aligned}f(t)&=(2 t^{3} + 2)\,i- \frac{2}{t + 3}\,j+\cos{\left(4 t \right)}\,k \\ g(t)&=(2 t - 2)\,i+e^{2 t}\,j+\cos{\left(4 t \right)}\,k\end{aligned}
 $$
 
-- $12 t^{2}\,i+\frac{4}{\left(t + 3\right)^{2}}\,j- 8 \sin{\left(4 t \right)}\,k$
-- $(- 12 t^{2} - 4)\,i+(- 4 e^{2 t} - \frac{4}{\left(t + 3\right)^{2}})\,j+16 \sin{\left(4 t \right)}\,k$
 - $(4 t^{3} - 4 t + 8)\,i+\frac{2 \left(\left(- t - 3\right) e^{2 t} - 2\right)}{t + 3}\,j$
 - $-4\,i- 4 e^{2 t}\,j+8 \sin{\left(4 t \right)}\,k$
+- $(- 12 t^{2} - 4)\,i+(- 4 e^{2 t} - \frac{4}{\left(t + 3\right)^{2}})\,j+16 \sin{\left(4 t \right)}\,k$
+- $12 t^{2}\,i+\frac{4}{\left(t + 3\right)^{2}}\,j- 8 \sin{\left(4 t \right)}\,k$
 - $(12 t^{2} - 4)\,i+(- 4 e^{2 t} + \frac{4}{\left(t + 3\right)^{2}})\,j$ **correct**
 
 Using the constant multiple rule and the sum rule, we have

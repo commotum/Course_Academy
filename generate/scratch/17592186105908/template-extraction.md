@@ -302,3 +302,290 @@ The normal matrix template constructs the displayed vector tuples and derives th
 - The authoritative local MA1287 lesson example identifies this exact determinant-zero skill and prerequisite MA66; it supplies no practice-level labels for the two legacy questions. No missing-label fidelity is claimed.
 
 Stop after steps 3–7: no EDB preparation, registration or transaction.
+
+## Current-basis extraction supplement (math basis 2535)
+
+The following current layouts supersede earlier versions of these IDs. `source.json` retains every exact current prompt, solution, field and value; `reference/initial/source-basis-1356.json` preserves historical evidence. Every listed profile replays at shift h=0. Whole source profiles remain evidence-only; no source record is modified in EDB.
+
+### q-18268
+
+Find $t$ given that the vectors $p=⟨3,t,t⟩$, $q=⟨1,3,1⟩$, and $r=⟨1,1,3⟩$ are coplanar.
+
+| Field | Kind | Original complete answer | Designated | Recipe |
+|---|---|---|---|---|
+| selection | radio | `-1` | incorrect | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| selection | radio | `15` | incorrect | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| selection | radio | `4` | incorrect | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| selection | radio | `6` | correct | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| selection | radio | `0` | incorrect | Translate complete scalar or root-set RHS by −h; preserve source notation |
+
+Profile: `source:q-18268:raw`. Prompt slots replace the unknown in vector components and candidate equations by (unknown+h); roots shift by −h. Fixed supplied vector roles, determinant-zero method, cofactor expansion order and source solution sequence remain unchanged. Checkbox booleans are fixed truth designations attached to their candidate equations. For blanks, equivalent stored expressions stay in their own field. No plots.
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}p\cdot (q\times r) & =|\begin{aligned}3 & t & t \\ 1 & 3 & 1 \\ 1 & 1 & 3\end{aligned}| \\  & =3\cdot |\begin{aligned}3 & 1 \\ 1 & 3\end{aligned}|-t\cdot |\begin{aligned}1 & 1 \\ 1 & 3\end{aligned}|+t\cdot |\begin{aligned}1 & 3 \\ 1 & 1\end{aligned}| \\  & =3(3\cdot 3-1\cdot 1)-t(1\cdot 3-1\cdot 1)+t(1\cdot 1-3\cdot 1) \\  & =24-2t-2t \\  & =24-4t.\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}p\cdot (q\times r) & =0 \\ 24-4t & =0 \\ t & =6\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $t=6.$
+
+### q-280772
+
+Find $k$ given that the vectors $x=⟨{k}^{2},-2,5⟩$, $y=⟨1,3,4⟩$, and $z=⟨0,-1,2⟩$ are coplanar.
+
+**In ascending order:** $\,$
+
+$k=${{field-1}}
+$\,$
+and
+$\,$
+$k=${{field-2}}
+
+| Field | Kind | Original complete answer | Designated | Recipe |
+|---|---|---|---|---|
+| field-2 | blank | `\sqrt{\frac{1}{10}}` | equivalent accepted alias, not canonical | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| field-2 | blank | `\frac{1}{\sqrt{10}}` | correct | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| field-1 | blank | `-\sqrt{\frac{1}{10}}` | equivalent accepted alias, not canonical | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| field-1 | blank | `-\frac{1}{\sqrt{10}}` | correct | Translate complete scalar or root-set RHS by −h; preserve source notation |
+
+Profile: `source:q-280772:raw`. Prompt slots replace the unknown in vector components and candidate equations by (unknown+h); roots shift by −h. Fixed supplied vector roles, determinant-zero method, cofactor expansion order and source solution sequence remain unchanged. Checkbox booleans are fixed truth designations attached to their candidate equations. For blanks, equivalent stored expressions stay in their own field. No plots.
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}x\cdot (y\times z) & =|\begin{aligned}{k}^{2} & -2 & 5 \\ 1 & 3 & 4 \\ 0 & -1 & 2\end{aligned}| \\  & ={k}^{2}\cdot |\begin{aligned}3 & 4 \\ -1 & 2\end{aligned}|-(-2)\cdot |\begin{aligned}1 & 4 \\ 0 & 2\end{aligned}|+5\cdot |\begin{aligned}1 & 3 \\ 0 & -1\end{aligned}| \\  & ={k}^{2}(3\cdot 2-4\cdot (-1))+2(1\cdot 2-4\cdot 0)+5(1\cdot -1-3\cdot 0) \\  & ={k}^{2}(6+4)+2(2)+5(-1) \\  & =10{k}^{2}+4-5 \\  & =10{k}^{2}-1\end{aligned}
+$$
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}x\cdot (y\times z) & =0 \\ 10{k}^{2}-1 & =0 \\ 10{k}^{2} & =1 \\ {k}^{2} & =\frac{1}{10} \\ k & =\pm \sqrt{\frac{1}{10}}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if 
+$k=-\sqrt{\frac{1}{10}}$ or $k=\sqrt{\frac{1}{10}}.$
+
+### q-128461
+
+Find $k$ given that the vectors $a=⟨{k}^{2},7,4⟩,$ $b=⟨6,7,4⟩,$ and $c=⟨3,0,2⟩$ are coplanar.
+
+Select all that apply. If none apply, leave all boxes unchecked.
+
+- **I.** $k=-6$
+- **II.** $k=- \sqrt{6}$
+- **III.** $k=- \sqrt{3}$
+- **IV.** $k=\sqrt{3}$
+- **V.** $k=\sqrt{6}$
+- **VI.** $k=6$
+
+| Field | Kind | Original complete answer | Designated | Recipe |
+|---|---|---|---|---|
+| I | checkbox | `false` | correct | Fixed boolean bank; candidate equation in prompt is the parameterized mathematical slot |
+| I | checkbox | `true` | incorrect | Fixed boolean bank; candidate equation in prompt is the parameterized mathematical slot |
+| II | checkbox | `false` | incorrect | Fixed boolean bank; candidate equation in prompt is the parameterized mathematical slot |
+| II | checkbox | `true` | correct | Fixed boolean bank; candidate equation in prompt is the parameterized mathematical slot |
+| III | checkbox | `false` | correct | Fixed boolean bank; candidate equation in prompt is the parameterized mathematical slot |
+| III | checkbox | `true` | incorrect | Fixed boolean bank; candidate equation in prompt is the parameterized mathematical slot |
+| IV | checkbox | `false` | correct | Fixed boolean bank; candidate equation in prompt is the parameterized mathematical slot |
+| IV | checkbox | `true` | incorrect | Fixed boolean bank; candidate equation in prompt is the parameterized mathematical slot |
+| V | checkbox | `false` | incorrect | Fixed boolean bank; candidate equation in prompt is the parameterized mathematical slot |
+| V | checkbox | `true` | correct | Fixed boolean bank; candidate equation in prompt is the parameterized mathematical slot |
+| VI | checkbox | `false` | correct | Fixed boolean bank; candidate equation in prompt is the parameterized mathematical slot |
+| VI | checkbox | `true` | incorrect | Fixed boolean bank; candidate equation in prompt is the parameterized mathematical slot |
+
+Profile: `source:q-128461:raw`. Prompt slots replace the unknown in vector components and candidate equations by (unknown+h); roots shift by −h. Fixed supplied vector roles, determinant-zero method, cofactor expansion order and source solution sequence remain unchanged. Checkbox booleans are fixed truth designations attached to their candidate equations. For blanks, equivalent stored expressions stay in their own field. No plots.
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}a\cdot (b\times c) & =|\begin{aligned}{k}^{2} & 7 & 4 \\ 6 & 7 & 4 \\ 3 & 0 & 2\end{aligned}| \\  & ={k}^{2}\cdot |\begin{aligned}7 & 4 \\ 0 & 2\end{aligned}|-7\cdot |\begin{aligned}6 & 4 \\ 3 & 2\end{aligned}|+4\cdot |\begin{aligned}6 & 7 \\ 3 & 0\end{aligned}| \\  & ={k}^{2}(7\cdot 2-0\cdot 4)-7(6\cdot 2-3\cdot 4)+4(6\cdot 0-3\cdot 7) \\  & =14{k}^{2}+0-84 \\  & =14{k}^{2}-84 \\  & =14({k}^{2}-6).\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}a\cdot (b\times c) & =0 \\ 14({k}^{2}-6) & =0 \\ {k}^{2}-6 & =0 \\ {k}^{2} & =6 \\ k & =\pm \sqrt{6}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $k=-\sqrt{6}$ or $k=\sqrt{6}.$
+
+### q-128442
+
+Find $k$ given that the vectors $p=⟨5,-2,2⟩,$ $q=⟨3,k,1⟩,$ and $r=⟨-8,3,-4⟩$ are coplanar.
+
+| Field | Kind | Original complete answer | Designated | Recipe |
+|---|---|---|---|---|
+| selection | radio | `-\frac{5}{2}` | incorrect | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| selection | radio | `-\frac{4}{5}` | incorrect | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| selection | radio | `\frac{11}{4}` | incorrect | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| selection | radio | `\frac{4}{11}` | incorrect | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| selection | radio | `-\frac{5}{4}` | correct | Translate complete scalar or root-set RHS by −h; preserve source notation |
+
+Profile: `source:q-128442:raw`. Prompt slots replace the unknown in vector components and candidate equations by (unknown+h); roots shift by −h. Fixed supplied vector roles, determinant-zero method, cofactor expansion order and source solution sequence remain unchanged. Checkbox booleans are fixed truth designations attached to their candidate equations. For blanks, equivalent stored expressions stay in their own field. No plots.
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}p\cdot (q\times r) & =|\begin{aligned}5 & -2 & 2 \\ 3 & k & 1 \\ -8 & 3 & -4\end{aligned}| \\  & =5\cdot |\begin{aligned}k & 1 \\ 3 & -4\end{aligned}|-(-2)\cdot |\begin{aligned}3 & 1 \\ -8 & -4\end{aligned}|+2\cdot |\begin{aligned}3 & k \\ -8 & 3\end{aligned}| \\  & =5(k\cdot (-4)-3\cdot 1)+2(3\cdot (-4)-(-8)\cdot 1)+2(3\cdot 3-(-8)\cdot k) \\  & =-20k-15-8+18+16k \\  & =-4k-5.\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}p\cdot (q\times r) & =0 \\ -4k-5 & =0 \\ k & =-\frac{5}{4}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $k=-\frac{5}{4}.$
+
+### q-128457
+
+Find $t$ given that the vectors $p=⟨9,9,-2⟩,$ $q=⟨5,6,0⟩,$ and $r=⟨4,t,t⟩$ are coplanar.
+
+| Field | Kind | Original complete answer | Designated | Recipe |
+|---|---|---|---|---|
+| selection | radio | `\frac{48}{89}` | incorrect | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| selection | radio | `-48` | incorrect | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| selection | radio | `-\frac{48}{89}` | incorrect | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| selection | radio | `24` | incorrect | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| selection | radio | `48` | correct | Translate complete scalar or root-set RHS by −h; preserve source notation |
+
+Profile: `source:q-128457:raw`. Prompt slots replace the unknown in vector components and candidate equations by (unknown+h); roots shift by −h. Fixed supplied vector roles, determinant-zero method, cofactor expansion order and source solution sequence remain unchanged. Checkbox booleans are fixed truth designations attached to their candidate equations. For blanks, equivalent stored expressions stay in their own field. No plots.
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}p\cdot (q\times r) & =|\begin{aligned}9 & 9 & -2 \\ 5 & 6 & 0 \\ 4 & t & t\end{aligned}| \\  & =9\cdot |\begin{aligned}6 & 0 \\ t & t\end{aligned}|-9\cdot |\begin{aligned}5 & 0 \\ 4 & t\end{aligned}|+(-2)\cdot |\begin{aligned}5 & 6 \\ 4 & t\end{aligned}| \\  & =9(6\cdot t-t\cdot 0)-9(5\cdot t-4\cdot 0)-2(5\cdot t-4\cdot 6) \\  & =54t-45t-10t+48 \\  & =48-t.\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}p\cdot (q\times r) & =0 \\ 48-t & =0 \\ t & =48\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $t=48.$
+
+### q-18261
+
+Find $x$ given that the vectors $a=⟨12,-2x,1⟩$ , $b=⟨1,5,-2⟩$ and $c=⟨-9,4,8⟩$  are coplanar.
+
+| Field | Kind | Original complete answer | Designated | Recipe |
+|---|---|---|---|---|
+| selection | radio | `\frac{25}{2}` | incorrect | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| selection | radio | `\frac{5}{4}` | incorrect | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| selection | radio | `\frac{125}{2}` | incorrect | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| selection | radio | `\frac{125}{4}` | correct | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| selection | radio | `\frac{25}{4}` | incorrect | Translate complete scalar or root-set RHS by −h; preserve source notation |
+
+Profile: `source:q-18261:raw`. Prompt slots replace the unknown in vector components and candidate equations by (unknown+h); roots shift by −h. Fixed supplied vector roles, determinant-zero method, cofactor expansion order and source solution sequence remain unchanged. Checkbox booleans are fixed truth designations attached to their candidate equations. For blanks, equivalent stored expressions stay in their own field. No plots.
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}a\cdot (b\times c) & =|\begin{aligned}12 & -2x & 1 \\ 1 & 5 & -2 \\ -9 & 4 & 8\end{aligned}| \\  & =12\cdot |\begin{aligned}5 & -2 \\ 4 & 8\end{aligned}|-(-2x)\cdot |\begin{aligned}1 & -2 \\ -9 & 8\end{aligned}|+1\cdot |\begin{aligned}1 & 5 \\ -9 & 4\end{aligned}| \\  & =12(5\cdot 8-4\cdot (-2))+2x(1\cdot 8-(-9)\cdot (-2))+(1\cdot 4-5\cdot (-9)) \\  & =576-20x+49 \\  & =625-20x.\end{aligned}
+$$
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}a\cdot (b\times c) & =0 \\ 625-20x & =0 \\ 20x & =625 \\ x & =\frac{125}{4}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $x=\frac{125}{4}.$
+
+### q-280747
+
+Find $k$ given that the vectors $a=⟨2,k,-1⟩$, $b=⟨-3,4,5⟩$, and $c=⟨6,k,1⟩$ are coplanar.
+
+$k=${{field-1}}
+
+| Field | Kind | Original complete answer | Designated | Recipe |
+|---|---|---|---|---|
+| field-1 | blank | `-\frac{16}{13}` | correct | Translate complete scalar or root-set RHS by −h; preserve source notation |
+
+Profile: `source:q-280747:raw`. Prompt slots replace the unknown in vector components and candidate equations by (unknown+h); roots shift by −h. Fixed supplied vector roles, determinant-zero method, cofactor expansion order and source solution sequence remain unchanged. Checkbox booleans are fixed truth designations attached to their candidate equations. For blanks, equivalent stored expressions stay in their own field. No plots.
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}a\cdot (b\times c) & =|\begin{aligned}2 & k & -1 \\ -3 & 4 & 5 \\ 6 & k & 1\end{aligned}| \\  & =2\cdot |\begin{aligned}4 & 5 \\ k & 1\end{aligned}|-k\cdot |\begin{aligned}-3 & 5 \\ 6 & 1\end{aligned}|+(-1)\cdot |\begin{aligned}-3 & 4 \\ 6 & k\end{aligned}| \\  & =2(4\cdot 1-5\cdot k)-k(-3\cdot 1-5\cdot 6)-1(-3\cdot k-4\cdot 6) \\  & =8-10k+33k+3k+24 \\  & =26k+32\end{aligned}
+$$
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}a\cdot (b\times c) & =0 \\ 26k+32 & =0 \\ k & =-\frac{16}{13}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $k=-\frac{16}{13}.$
+
+### q-73733
+
+Find $k$ given that the vectors $a=⟨-1,1,1⟩$, $b=⟨2,1,0⟩$, and $c=⟨k,-2,-3⟩$ are coplanar.
+
+| Field | Kind | Original complete answer | Designated | Recipe |
+|---|---|---|---|---|
+| selection | radio | `5` | correct | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| selection | radio | `7` | incorrect | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| selection | radio | `9` | incorrect | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| selection | radio | `3` | incorrect | Translate complete scalar or root-set RHS by −h; preserve source notation |
+| selection | radio | `13` | incorrect | Translate complete scalar or root-set RHS by −h; preserve source notation |
+
+Profile: `source:q-73733:raw`. Prompt slots replace the unknown in vector components and candidate equations by (unknown+h); roots shift by −h. Fixed supplied vector roles, determinant-zero method, cofactor expansion order and source solution sequence remain unchanged. Checkbox booleans are fixed truth designations attached to their candidate equations. For blanks, equivalent stored expressions stay in their own field. No plots.
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}a\cdot (b\times c) & =|\begin{aligned}-1 & 1 & 1 \\ 2 & 1 & 0 \\ k & -2 & -3\end{aligned}| \\  & =(-1)\cdot |\begin{aligned}1 & 0 \\ -2 & -3\end{aligned}|-1\cdot |\begin{aligned}2 & 0 \\ k & -3\end{aligned}|+|\begin{aligned}2 & 1 \\ k & -2\end{aligned}| \\  & =-(1\cdot (-3)-(-2)\cdot 0)-(2\cdot (-3)-k\cdot 0)+(2\cdot (-2)-k\cdot 1) \\  & =3+6-4-k \\  & =5-k.\end{aligned}
+$$
+
+    
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}a\cdot (b\times c) & =0 \\ 5-k & =0 \\ k & =5\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $k=5.$
+
+### q-280770
+
+Find $k$ given that the vectors $x=⟨1,k,2⟩$, $y=⟨5,-2,3⟩$, and $z=⟨-4,k,1⟩$ are coplanar.
+
+$k=${{field-1}}
+
+| Field | Kind | Original complete answer | Designated | Recipe |
+|---|---|---|---|---|
+| field-1 | blank | `-\frac{9}{5}` | correct | Translate complete scalar or root-set RHS by −h; preserve source notation |
+
+Profile: `source:q-280770:raw`. Prompt slots replace the unknown in vector components and candidate equations by (unknown+h); roots shift by −h. Fixed supplied vector roles, determinant-zero method, cofactor expansion order and source solution sequence remain unchanged. Checkbox booleans are fixed truth designations attached to their candidate equations. For blanks, equivalent stored expressions stay in their own field. No plots.
+
+Computing the triple product, we get
+
+$$
+\begin{aligned}x\cdot (y\times z) & =|\begin{aligned}1 & k & 2 \\ 5 & -2 & 3 \\ -4 & k & 1\end{aligned}| \\  & =1\cdot |\begin{aligned}-2 & 3 \\ k & 1\end{aligned}|-k\cdot |\begin{aligned}5 & 3 \\ -4 & 1\end{aligned}|+2\cdot |\begin{aligned}5 & -2 \\ -4 & k\end{aligned}| \\  & =1(-2\cdot 1-3\cdot k)-k(5\cdot 1-3\cdot -4)+2(5k-(-2)(-4)) \\  & =-2-3k-k(5+12)+2(5k-8) \\  & =-2-3k-17k+10k-16 \\  & =-10k-18\end{aligned}
+$$
+
+Three vectors are coplanar if and only if their triple product is zero:
+
+$$
+\begin{aligned}x\cdot (y\times z) & =0 \\ -10k-18 & =0 \\ k & =-\frac{9}{5}\end{aligned}
+$$
+
+Therefore, the three vectors are coplanar if and only if $k=-\frac{9}{5}.$
+

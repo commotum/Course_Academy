@@ -11,13 +11,15 @@ def parameters(problem):
     return dict(variable=variable, parameter=parameter, scale=int(scale or 1), shift=int(shift), left=int(left), right=int(right))
 
 def expr(text):
-    text = re.sub(r'\{\{(.*?)\}_\{⏟\}\}_\{[ab]\}', r'\1', text)
+    assert '⏟' not in text, 'Legacy annotation in served content'
+    text = re.sub(r'\\underbrace\{([^{}]*)\}_\{[ab]\}', r'\1', text)
     text = re.sub(r'\\frac\{([^{}]+)\}\{([^{}]+)\}', r'((\1)/(\2))', text.strip().rstrip('.'))
     assert re.fullmatch(r'[A-Za-z0-9+*/().\s-]+', text), text
     return parse_expr(text, transformations=standard_transformations+(implicit_multiplication_application,), local_dict={c:sp.Symbol(c) for c in 'xuvzwpkmqrab'})
 
 def rendered_math(record):
     q=record['question']; p=parameters(q[':question/problem'])
+    assert '⏟' not in q[':question/problem']+q[':question/worked-solution']
     displays=re.findall(r'\$\$\n(.*?)\n\$\$',q[':question/problem'],re.S)
     assert len(displays)==1
     lhs,rhs=map(expr,displays[0].split('='));x,k=sp.Symbol(p['variable']),sp.Symbol(p['parameter'])
@@ -37,6 +39,11 @@ def rendered_math(record):
         assert stage.startswith(r'\begin{aligned}') and stage.endswith(r'\end{aligned}')
         return stage[len(r'\begin{aligned}'):-len(r'\end{aligned}')].split(r'\\')
     reduction=lines(stages[1]);assert len(reduction)==3
+    annotations=re.findall(r'\\underbrace\{([^{}]*)\}_\{([^{}]*)\}', reduction[2])
+    assert len(annotations)==2 and [role for operand,role in annotations]==['a','b'], annotations
+    assert sp.expand(expr(annotations[0][0])-coefficient)==0
+    assert expr(annotations[1][0])==-constant
+    assert sol.count(r'\underbrace{')==2
     for line in reduction:
         a,b=map(expr,line.replace('&','').split('='));assert sp.expand(a-b-delta)==0,line
     a,b=map(expr,stages[2].split('='));assert b==0 and sp.solve(a-b,k)==roots

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Second derivatives. Frozen basis 2275; raw MA replay is evidence-only.
 
-All default practice is independently authored from the extracted fixed stages.
+Default practice includes faithful complete source profiles and separately
+documented authored variants of the extracted fixed stages.
 The bounded domain is the same for explicit calls, samplers, and CLI inventory.
 Derivative order is fixed at two: higher orders belong to a separate KP.
 """
@@ -16,6 +17,20 @@ _spec=importlib.util.spec_from_file_location('second_derivative_math_format',ROO
 _fmt=importlib.util.module_from_spec(_spec);_spec.loader.exec_module(_fmt)
 SOURCE=json.loads((ROOT/'source.json').read_text()); KP=SOURCE['record']
 ORIGINALS={q[':question/math-academy-id']:q for q in KP[':knowledge-point/questions']}
+SOURCE_PARAMETERS={
+ 'q-10573':{'function':'3x^4-7x^2-8','target':'f second derivative at x'},
+ 'q-1851':{'function':'5x^4-4x^2-7x','target':'f second derivative at x'},
+ 'q-10907':{'a':4,'b':-3,'powers':[5,4],'t':-1,'function_name':'f'},
+ 'q-1852':{'cubic_coefficient':12,'sin_coefficient':-5,'cos_coefficient':4,'function_name':'f'},
+ 'q-128287':{'a':-3,'b':-6,'c':24,'supplied_object':'first derivative','function_name':'f'},
+ 'q-167325':{'linear_coefficient':8,'cubic_coefficient':'-2/3','function_name':'g'},
+ 'q-167779':{'linear_coefficient':8,'cubic_coefficient':'-2/3','function_name':'g'},
+ 'q-166072':{'linear_coefficient':8,'cubic_coefficient':'-2/3','function_name':'g'},
+ 'q-10883':{'a':4,'b':5,'c':1,'function_name':'f'},
+ 'q-10892':{'a':2,'b':4,'c':-7,'t':-2,'function_name':'f'},
+ 'q-10902':{'a':1,'b':1,'powers':[6,5],'function_name':'f'},
+ 'q-28556':{'a':4,'b':-2,'c':7,'t':4,'function_name':'g'},
+ 'q-342851':{'a':-1,'b':4,'t':1,'function_name':'g'}}
 X=sp.Symbol('x', positive=True)
 # Fixed structure and source field contracts; coefficient domains are conservative.
 SPECS={
@@ -25,7 +40,7 @@ SPECS={
  'known_first':('easy','blank',{'a':(-3,-2,2),'b':(-6,-4,3),'c':(12,18,24)},['q-128287']),
  'linear_cubic':('easy','blank',{'a':(4,6,8),'b':(1,2,3)},['q-167325','q-167779','q-166072']),
  'sqrt_sum':('moderate','radio',{'a':(4,8,12),'b':(3,5,7),'c':(1,2,3)},['q-10883']),
- 'power_sqrt_evaluation':('hard','radio',{'a':(4,8,12),'b':(-3,-2,2),'c':(3,5,7),'t':(1,4,9)},['q-28556']),
+ 'power_sqrt_evaluation':('hard','radio',{'a':(4,8,12),'b':(-3,-2,2),'c':(3,5,7),'t':(4,9)},['q-28556']),
  'mixed_sqrt_evaluation':('hard','blank',{'a':(-3,-2,-1),'b':(4,8,12),'t':(1,4,9)},['q-342851'])}
 
 def digest(value):return hashlib.sha256(json.dumps(value,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
@@ -81,13 +96,13 @@ def authored_bank(template,p,f,d1,d2,result):
   return [result,d1,high,high-low,X*d2],['correct','stop after first derivative','omit lower-power term','reverse lower-term sign','fail to lower exponents at second differentiation']
  if template=='cubic_evaluation':
   t=p['t'];a=p['a'];b=p['b']
-  return [result,d1.subs(X,t),6*a*t,6*a*t-2*b,6*a*t+2*b*t],['correct','stop after first derivative','omit quadratic contribution','reverse quadratic contribution','retain x in quadratic second derivative']
+  return [result,d1.subs(X,t),6*a*t,6*a*t-2*b,6*t+2*b],['correct','stop after first derivative','omit quadratic contribution','reverse quadratic contribution','omit original constant multiplier on cubic term']
  if template=='sqrt_sum':
   a,b=p['a'],p['b'];r=-sp.Rational(a,4)*X**sp.Rational(-3,2)
   return [result,-r+2*b,r-2*b,-sp.Rational(a,4)*X**sp.Rational(-5,2)+2*b,r],['correct','reverse radical sign','reverse quadratic sign','decrease radical exponent by two at second step','omit quadratic contribution']
  if template=='power_sqrt_evaluation':
   t=p['t'];a=p['a'];base=sp.sqrt(t)
-  return [result,sp.Rational(5,2)*a*base,sp.Rational(15,4)*a*t,sp.Rational(5,4)*a*base,sp.Rational(15,2)*a*base],['correct','omit second exponent multiplier','evaluate x to power one rather than half','use one half instead of three halves at second derivative','double the second exponent multiplier']
+  return [result,sp.Rational(5,2)*a*base,sp.Rational(15,4)*a*t**sp.Rational(3,2),sp.Rational(5,4)*a*base,sp.Rational(15,2)*a*base],['correct','omit second exponent multiplier','retain exponent three halves after second differentiation','use one half instead of three halves at second derivative','double the second exponent multiplier']
  raise ValueError('blank has no bank')
 
 def parameters(template):
@@ -124,22 +139,44 @@ def _authored(level,seed,template,field_type,p):
  choices=[{':answer/id':uid(field_id+'/'+v),':answer/type':':answer.type/math',':answer/value':v} for v in values]
  field={':answer-field/id':field_id,':answer-field/key':key,':answer-field/type':':answer-field.type/'+kind,':answer-field/choices':choices,':answer-field/correct':[':answer/id',choices[0][':answer/id']]}
  q={':question/id':uid(identity),':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[field]}
- record={'knowledge_point':{'db_id':KP_ID,'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'level':level,'seed':seed,'template':template,'profile':'authored','bank_profile':template+'_procedure_bank' if kind=='radio' else None,'bank_recipes':recipes,'parameters':p,'domain':'x>0' if 'sqrt' in template else 'all real x','source':{k:SOURCE[k] for k in ['database','basis','lineage']},'source_ids':spec[3],'origin':'independently authored inventory','evidence_only':False,'eligible_for_learning':True,'relationship_to_source_templates':'Preserves source function structure, two successive derivative stages, target role, field contract, and optional evaluation; coefficients/points and bank are authored.','mathematical_fingerprint':digest([template,str(f),p.get('t')]),'content_fingerprint':identity}}
+ record={'knowledge_point':{'db_id':KP_ID,'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'level':level,'seed':seed,'template':template,'profile':'authored','bank_profile':template+'_procedure_bank' if kind=='radio' else None,'bank_recipes':recipes,'parameters':p,'domain':'x>0' if 'sqrt' in template else 'all real x','source':{k:SOURCE[k] for k in ['database','basis','lineage']},'source_ids':spec[3],'origin':'independently authored inventory','evidence_only':False,'eligible_for_learning':True,'relationship_to_source_templates':'Preserves source function structure, two successive derivative stages, target role, field contract, and optional evaluation; coefficients/points and bank are authored.','mathematical_fingerprint':digest(['given_first' if template=='known_first' else 'function',str(f),p.get('t')]),'content_fingerprint':identity}}
  return _fmt.validate_generated_record(record)
 
-def generate(level='easy',seed=0,template=None,field_type=None,parameters=None,profile='authored',source_id=None):
+_fs=importlib.util.spec_from_file_location('second_derivative_faithful',ROOT/'faithful.py')
+_faithful=importlib.util.module_from_spec(_fs);_fs.loader.exec_module(_faithful)
+FAITHFUL_SPECS={name:(ORIGINALS[sid][':question/difficulty'][':db/ident'].split('/')[-1],ORIGINALS[sid][':question/answer-fields'][0][':answer-field/type'][':db/ident'].split('/')[-1]) for name,sid in _faithful.SOURCES.items()}
+
+def generate(level='easy',seed=0,template=None,field_type=None,parameters=None,profile='auto',source_id=None):
  if type(seed) is not int:raise ValueError('integer seed required')
  if profile=='observed_raw':
   if template is not None or parameters is not None or field_type is not None:raise ValueError('raw replay accepts only original source_id; no unsupported mutations')
   if source_id not in ORIGINALS:raise ValueError('source_id required')
   original=copy.deepcopy(ORIGINALS[source_id]);original_level=original.get(':question/difficulty',{}).get(':db/ident')
-  return {'knowledge_point':{'db_id':KP_ID,'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':original,'generation':{'template':source_id,'version':VERSION,'seed':seed,'profile':'observed_raw','level':original_level.split('/')[-1] if original_level else None,'source_id':source_id,'parameters':{},'origin':'exact original evidence','evidence_only':True,'eligible_for_learning':False,'source':{k:SOURCE[k] for k in ['database','basis','lineage']}}}
- if profile!='authored' or source_id is not None:raise ValueError('unsupported profile')
+  return {'knowledge_point':{'db_id':KP_ID,'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':original,'generation':{'template':source_id,'version':VERSION,'seed':seed,'profile':'observed_raw','level':original_level.split('/')[-1] if original_level else None,'source_id':source_id,'parameters':copy.deepcopy(SOURCE_PARAMETERS[source_id]),'origin':'exact original evidence','evidence_only':True,'eligible_for_learning':False,'source':{k:SOURCE[k] for k in ['database','basis','lineage']}}}
+ if profile=='source_faithful' and source_id is not None:
+  if template is not None:raise ValueError('select source_id or template, not both')
+  template=next((name for name,sid in _faithful.SOURCES.items() if sid==source_id),None)
+  if template is None:raise ValueError('source has no complete served profile')
+  source_id=None
+ if profile not in ['auto','authored','source_faithful'] or source_id is not None:raise ValueError('unsupported profile')
+ if template in FAITHFUL_SPECS or profile=='source_faithful':
+  if profile=='authored':raise ValueError('faithful template requires source_faithful or auto profile')
+  if template not in FAITHFUL_SPECS:raise ValueError('faithful template required')
+  return _faithful.render(_module_proxy(),template,level,seed,parameters if parameters is not None else {'scale':random.Random(seed).choice(_faithful.SCALES)},field_type)
  if level not in ['easy','moderate','hard']:raise ValueError('unsupported difficulty')
- rng=random.Random(seed);template=template or rng.choice([k for k,v in SPECS.items() if v[0]==level])
+ if field_type not in [None,'radio','blank',':answer-field.type/radio',':answer-field.type/blank']:raise ValueError('unsupported field contract')
+ candidates=[k for k,v in {**SPECS,**FAITHFUL_SPECS}.items() if v[0]==level and (field_type is None or field_type in [v[1],':answer-field.type/'+v[1]])]
+ if profile=='authored':candidates=[k for k in candidates if k in SPECS]
+ if not candidates:raise ValueError('no supported template for field contract')
+ rng=random.Random(seed);template=template or rng.choice(candidates)
+ if template in FAITHFUL_SPECS:return _faithful.render(_module_proxy(),template,level,seed,parameters if parameters is not None else {'scale':rng.choice(_faithful.SCALES)},field_type)
  if template not in SPECS:raise ValueError('unknown template')
  candidates=parameters if parameters is not None else rng.choice(valid_parameters(template))
  return _authored(level,seed,template,field_type,dict(candidates))
+
+def _module_proxy():
+ from types import SimpleNamespace
+ return SimpleNamespace(**globals())
 
 from functools import lru_cache
 @lru_cache(None)
@@ -150,7 +187,6 @@ def valid_parameters(template):
   if SPECS[template][1]=='radio':
    bank,_=authored_bank(template,p,f,d1,d2,target)
    if any(sp.simplify(bank[i]-bank[j])==0 for i in range(len(bank)) for j in range(i)):continue
-  if target in [0,1]:continue
   result.append(p)
  return result
 
@@ -158,17 +194,29 @@ def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
 def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)
 def generate_hard(seed=0,**kw):return generate('hard',seed,**kw)
 
+def inventory_entries(level,template=None,field_type=None):
+ if level not in ['easy','moderate','hard']:raise ValueError('unsupported difficulty')
+ specs={**FAITHFUL_SPECS,**SPECS}
+ if template is not None and (template not in specs or specs[template][0]!=level):raise ValueError('template/difficulty mismatch')
+ if field_type not in [None,'radio','blank',':answer-field.type/radio',':answer-field.type/blank']:raise ValueError('unsupported field contract')
+ entries=[];seen=set()
+ for name,spec in specs.items():
+  if spec[0]!=level or (template is not None and name!=template) or (field_type is not None and field_type not in [spec[1],':answer-field.type/'+spec[1]]):continue
+  for p in ([{'scale':s} for s in _faithful.SCALES] if name in FAITHFUL_SPECS else valid_parameters(name)):
+   if name in FAITHFUL_SPECS:fp=generate(level,template=name,parameters=p)['generation']['mathematical_fingerprint']
+   else:
+    f,*_=math_instance(name,p);fp=digest(['given_first' if name=='known_first' else 'function',str(f),p.get('t')])
+   if fp in seen:continue
+   seen.add(fp);entries.append((name,p))
+ return entries
+
 def inventory(level,seed=0,count=1,template=None,field_type=None):
  if type(count) is not int or count<0:raise ValueError('nonnegative integer count')
- if level not in ['easy','moderate','hard']:raise ValueError('unsupported difficulty')
- if template is not None and (template not in SPECS or SPECS[template][0]!=level):raise ValueError('template/difficulty mismatch')
- entries=[]
- for name,spec in SPECS.items():
-  if spec[0]==level and (template is None or name==template) and (field_type is None or field_type in [spec[1],':answer-field.type/'+spec[1]]):
-   entries.extend((name,p) for p in valid_parameters(name))
+ if type(seed) is not int:raise ValueError('integer seed required')
+ entries=inventory_entries(level,template,field_type)
  if count>len(entries):raise ValueError('requested count exceeds mathematical capacity '+str(len(entries)))
  random.Random(seed).shuffle(entries)
- return {'database':SOURCE['database'],'basis':SOURCE['basis'],'lineage':SOURCE['lineage'],'questions':[{'record':generate(level,seed,template=name,parameters=p,field_type=field_type),'role':'independently authored inventory','relationship_to_source_templates':'Same fixed derivative method and source structures; authored coefficients, points, and complete procedure-error banks.'} for name,p in entries[:count]]}
+ return {'database':SOURCE['database'],'basis':SOURCE['basis'],'lineage':SOURCE['lineage'],'questions':[{'record':generate(level,seed,template=name,parameters=p,field_type=field_type),'role':'independently authored inventory','relationship_to_source_templates':('Faithful served whole-source scalar template, preserving complete original bank and ordered shared prose.' if name in FAITHFUL_SPECS else 'Same fixed derivative method and source structures; authored coefficients, points, and complete procedure-error banks.')} for name,p in entries[:count]]}
 
 def markdown(record):
  q=record['question'];m=record['generation'];lines=['### '+(m.get('level') or 'unrated')+' — '+m['template']+' — '+m['origin'],q[':question/problem']]
@@ -179,8 +227,10 @@ def markdown(record):
  return '\n\n'.join(lines)
 
 def main():
- parser=argparse.ArgumentParser();parser.add_argument('--difficulty','--level',dest='difficulty',choices=['easy','moderate','hard'],default='easy');parser.add_argument('--seed',type=int,default=0);parser.add_argument('--count',type=int,default=1);parser.add_argument('--template');parser.add_argument('--field-type',choices=['radio','blank']);parser.add_argument('--format',choices=['json','markdown'],default='json');args=parser.parse_args()
- try:data=inventory(args.difficulty,args.seed,args.count,args.template,args.field_type)
+ parser=argparse.ArgumentParser();parser.add_argument('--difficulty','--level',dest='difficulty',choices=['easy','moderate','hard','all'],default='easy');parser.add_argument('--seed',type=int,default=0);parser.add_argument('--count',type=int,default=1);parser.add_argument('--template');parser.add_argument('--field-type',choices=['radio','blank']);parser.add_argument('--format',choices=['json','markdown'],default='json');args=parser.parse_args()
+ try:
+  levels=['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]
+  records=[x['record'] for level in levels for x in inventory(level,args.seed,args.count,args.template,args.field_type)['questions']]
  except ValueError as error:parser.error(str(error))
- print(json.dumps(data,indent=2,ensure_ascii=False) if args.format=='json' else '\n\n'.join(markdown(x['record']) for x in data['questions']))
+ print(json.dumps(records,indent=2,ensure_ascii=False) if args.format=='json' else '\n\n'.join(markdown(x) for x in records))
 if __name__=='__main__':main()

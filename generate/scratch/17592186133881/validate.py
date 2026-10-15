@@ -46,7 +46,7 @@ def validate(rec,asset_root=None):
   assert hashlib.sha256(asset.read_bytes()).hexdigest()==m['assets'][0]['sha256']
   data=json.load(open(m['assets'][0]['data']));grid=np.array(data['grid']);X,Y=np.meshgrid(grid,grid)
   assert np.allclose(np.array(data['U']),float(a)*X+float(b)*Y+float(u));assert np.allclose(np.array(data['V']),float(c)*X+float(d)*Y+float(v))
-  assert data['scale']==2*max(1,float(np.max(np.hypot(np.array(data['U']),np.array(data['V'])))))
+  assert data['scale']==3*max(1,float(np.max(np.hypot(np.array(data['U']),np.array(data['V'])))))
   for s in (prompt,q[':question/worked-solution']):assert s.count('$')%2==0 and '{{' not in s and s.count('{')==s.count('}')
  assert q[':question/difficulty']==g.SOURCES[sid][':question/difficulty'][':db/ident']
  assert rec['knowledge_point']['db_id']==g.KP_ID and ':question/math-academy-id' not in q
@@ -60,7 +60,7 @@ def main():
   if level not in g.SUPPORTED:
    # Classify and audit unrated source but never synthesize its difficulty.
    flags=g.truth(sid,g.REALIZATIONS[sid][2]-g.REALIZATIONS[sid][1]);fields=g.fields(sid,flags,'audit-unrated')
-   rec={'knowledge_point':{'title':g.TITLE},'question':{':question/problem':source[':question/problem'],':question/answer-fields':fields},'generation':{'template':sid}}
+   rec={'knowledge_point':{'title':g.TITLE},'question':{':question/id':source[':question/id'],':question/problem':source[':question/problem'],':question/answer-fields':fields},'generation':{'template':sid}}
   else:
    rec=g.generate(level,template=sid,replay=True);validate(rec)
    assert rec['question'][':question/problem']==source[':question/problem'];assert rec['question'][':question/worked-solution']==source[':question/worked-solution']
