@@ -1,0 +1,23 @@
+--- prior-root-approved-fbb7
++++ registered-eeb7
+@@ -9,10 +9,19 @@
+ from pathlib import Path
+ import random
+ import uuid
+-import sympy as sp
++# The inventory worker uses system Python; reuse the repository dependency environment.
++try:
++ import sympy as sp
++except ModuleNotFoundError:
++ import os, sys
++ runtime = Path(__file__).resolve().parents[2] / '.venv/bin/python'
++ if not runtime.is_file() or Path(sys.executable).absolute() == runtime.absolute():
++  raise
++ os.execv(str(runtime), [str(runtime), str(Path(__file__).resolve()), *sys.argv[1:]])
+ 
+ KP = {'db_id':17592186059730,'id':'68abb4f0-c532-5cb6-882c-dacfe6a945dc','title':'Calculating the Dot Product Using the General Formula'}
+ VERSION = '59730-v1'
++GENERATOR_UUID = '4e729dd4-b331-5f5b-8c36-7bc58a5536ca'
+ EVIDENCE = Path(__file__).with_suffix('')
+ NS = uuid.UUID('9ad6f695-feca-460a-80b5-181c270b92db')
+ TEMPLATES = {
