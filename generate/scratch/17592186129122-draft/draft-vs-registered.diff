@@ -1,0 +1,34 @@
+--- immutable registered numeric source
++++ owned draft source
+@@ -8,6 +8,7 @@
+ """
+ from __future__ import annotations
+ import argparse, hashlib, json, math, pathlib, random, sys, uuid
++sys.dont_write_bytecode=True
+ import sympy as sp
+ sys.path.insert(0,str(pathlib.Path(__file__).resolve().parents[2]/'scripts/question_capture'))
+ from math_format import normalize_prose, normalize_tex, checked_math_content
+@@ -167,6 +168,7 @@
+   break
+  else:raise SampleRejected('No collision-free whole instance')
+  if not raw:
++  reject_controls([prompt,solution,*opts])
+   prompt=normalize_prose(prompt);solution=normalize_prose(solution)
+   opts=[normalize_tex(option) for option in opts]
+  s=SPECS.get(name);q={':question/problem':prompt}
+@@ -194,8 +196,15 @@
+ 
+  return record if raw else _checked_record(record)
+ 
++def reject_controls(values):
++ for value in values:
++  if value is not None and any(ord(c)<32 and c not in '\n\t' for c in value):
++   raise ValueError('Unintended C0 control character in learner content')
++
+ @checked_math_content
+ def _checked_record(record):
++ q=record['question']
++ reject_controls([q.get(':question/problem'),q.get(':question/worked-solution'),*[a[':answer/value'] for f in q.get(':question/answer-fields',[]) for a in f[':answer-field/choices']]])
+  return record
+ 
+ # EASY — eight observed source-shaped peers: identify positive B and divide.

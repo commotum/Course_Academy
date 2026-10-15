@@ -1,0 +1,7 @@
+# Actual player review
+
+The current exact player Markdown, answer rendering, radio fieldControl and collectResponses routines rendered 71 records and20 template/unit/evidence roles using current UI styles and MathJax. Every displayed radio was clicked and its collected value checked; no native grading endpoint or database request was made. render-report.json retains all71 automated results, actual Chromium/Python/Node versions and9 immutable UI asset hashes. Eight raw evidence profiles, eight completed normal anchors,24 original-family/missing-level variants and31 held-slot variants were rendered. Two raw fieldless originals correctly show no controls; the original missing solution remains absent.
+
+The worker visually inspected the20-role contact, and full-size raw radian scaled-sine, authored moderate radian and authored hard degree pages. Native radio circles, complete banks, fraction bars, signed arguments, degree marks and coefficient/period chains are clear. The hard page visibly retains the inner factor, cancellation and absolute-value steps. No clipping or overlap was found. Screenshots cover rendered appearance; independent printed-math checks establish correctness.
+
+Raw q43411's false opening is preserved as ineligible evidence; the corresponding normal opening is repaired. Normalization trims trailing TeX whitespace in53/90 compared question payloads, changing their presentation IDs; no new mathematical template is claimed. The draft's guard adds no content change for valid records.
