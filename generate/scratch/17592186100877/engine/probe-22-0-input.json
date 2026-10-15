@@ -1,0 +1,70 @@
+[
+  {
+    "label": "22 q-336729",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100877,
+        "id": "4d63e99a-9db4-565e-97c5-ffc3090b0074",
+        "title": "Calculating a Definite Integral of a Rational Function Using Substitution"
+      },
+      "question": {
+        ":question/id": "1a4f88b4-db38-529e-b9c9-c29873da15b9",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Compute the exact value of the definite integral.\n\n$\\int_{0}^{1}\\frac{8 x^{3}}{x^{4} + 12}\\,\\text{d}x=$\n{{field-1}}",
+        ":question/worked-solution": "We start by changing the variable:\n\n$$\n\\begin{aligned}u & =x^{4} + 12 \\\\ \\frac{\\text{d}u}{\\text{d}x} & =4 x^{3} \\\\ \\text{d}u & =4 x^{3}\\,\\text{d}x \\\\ \\frac{1}{4}\\,\\text{d}u & =x^{3}\\,\\text{d}x\\end{aligned}\n$$\n\nNext, we create a table for the limits of integration using the rule $u=x^{4} + 12.$\n\n$$\n\\begin{aligned}x & 0 & 1 \\\\ u & 12 & 13\\end{aligned}\n$$\n\nSo, the integral in terms of the new variable is\n\n$$\n\\int_{0}^{1}\\frac{8 x^{3}}{x^{4} + 12}\\,\\text{d}x=\\int_{12}^{13}\\frac{8}{u}\\cdot \\frac{1}{4}\\,\\text{d}u.\n$$\n\nFinally, we can solve it and get\n\n$$\n\\begin{aligned}\\int_{12}^{13}\\frac{8}{u}\\cdot \\frac{1}{4}\\,\\text{d}u & =2\\int_{12}^{13}\\frac{1}{u}\\,\\text{d}u \\\\  & =2\\ln(u)|_{12}^{13} \\\\  & =2(\\ln(13)-\\ln(12)) \\\\  & =- 2 \\log{\\left(12 \\right)} + 2 \\log{\\left(13 \\right)}.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "490d84a4-80ee-5af3-9066-b8987f630ece",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "e8104161-9db9-5d7c-b725-8686a8a68c2b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- 2 \\log{\\left(12 \\right)} + 2 \\log{\\left(13 \\right)}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "e8104161-9db9-5d7c-b725-8686a8a68c2b"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-rational-b2275-v1",
+        "seed": 0,
+        "basis": 2275,
+        "template": "q-336729",
+        "parameters": {
+          "n": 4,
+          "a": 1,
+          "b": 12,
+          "c": 8,
+          "lo": 0,
+          "hi": 1
+        },
+        "bank_profile": "observed",
+        "source_ids": [
+          "q-336729"
+        ],
+        "math_fingerprint": "eb080512ee59003dc9a2696773456f7d2220d6fd898688c39d1d9385e843cdf3",
+        "content_fingerprint": "c3e9261e178244ac49978732cad8a59826bf2fa91b4a53a6219b43bcd8625e53",
+        "domain": "a*x^n+b>0 throughout closed original x interval; no poles",
+        "authored": false,
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- 2 \\log{\\left(12 \\right)} + 2 \\log{\\left(13 \\right)}",
+        "expected": "accepted",
+        "purpose": "canonical exact blank"
+      }
+    ]
+  }
+]

@@ -1,0 +1,70 @@
+[
+  {
+    "label": "23 q-336729",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100877,
+        "id": "4d63e99a-9db4-565e-97c5-ffc3090b0074",
+        "title": "Calculating a Definite Integral of a Rational Function Using Substitution"
+      },
+      "question": {
+        ":question/id": "d4bb0a56-ae9b-504a-895b-6bc0bda9c759",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Compute the exact value of the definite integral.\n\n$\\int_{-1}^{0}\\frac{2 x^{3}}{2 x^{4} + 9}\\,\\text{d}x=$\n{{field-1}}",
+        ":question/worked-solution": "We start by changing the variable:\n\n$$\n\\begin{aligned}u & =2 x^{4} + 9 \\\\ \\frac{\\text{d}u}{\\text{d}x} & =8 x^{3} \\\\ \\text{d}u & =8 x^{3}\\,\\text{d}x \\\\ \\frac{1}{8}\\,\\text{d}u & =x^{3}\\,\\text{d}x\\end{aligned}\n$$\n\nNext, we create a table for the limits of integration using the rule $u=2 x^{4} + 9.$\n\n$$\n\\begin{aligned}x & -1 & 0 \\\\ u & 11 & 9\\end{aligned}\n$$\n\nSo, the integral in terms of the new variable is\n\n$$\n\\int_{-1}^{0}\\frac{2 x^{3}}{2 x^{4} + 9}\\,\\text{d}x=\\int_{11}^{9}\\frac{2}{u}\\cdot \\frac{1}{8}\\,\\text{d}u.\n$$\n\nFinally, we can solve it and get\n\n$$\n\\begin{aligned}\\int_{11}^{9}\\frac{2}{u}\\cdot \\frac{1}{8}\\,\\text{d}u & =\\frac{1}{4}\\int_{11}^{9}\\frac{1}{u}\\,\\text{d}u \\\\  & =\\frac{1}{4}\\ln(u)|_{11}^{9} \\\\  & =\\frac{1}{4}(\\ln(9)-\\ln(11)) \\\\  & =- \\frac{\\log{\\left(11 \\right)}}{4} + \\frac{\\log{\\left(3 \\right)}}{2}.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "73d63591-c63c-5afc-bc6b-35bb42cdff2c",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "dea03b6d-94d5-53d5-b98a-24e22778d822",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{\\log{\\left(11 \\right)}}{4} + \\frac{\\log{\\left(3 \\right)}}{2}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "dea03b6d-94d5-53d5-b98a-24e22778d822"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-rational-b2275-v1",
+        "seed": 1,
+        "basis": 2275,
+        "template": "q-336729",
+        "parameters": {
+          "n": 4,
+          "a": 2,
+          "b": 9,
+          "c": 2,
+          "lo": -1,
+          "hi": 0
+        },
+        "bank_profile": "observed",
+        "source_ids": [
+          "q-336729"
+        ],
+        "math_fingerprint": "616ea08a434b2ea7f79c9ad0be6ebfb06e5e1824cf8139755663cd792da431ea",
+        "content_fingerprint": "398682cafbcf8b36400f4c184b2a47f5f61fcf8c7b2a625d566de6ea5b77d956",
+        "domain": "a*x^n+b>0 throughout closed original x interval; no poles",
+        "authored": false,
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{\\log{\\left(11 \\right)}}{4} + \\frac{\\log{\\left(3 \\right)}}{2} + 1",
+        "expected": "rejected",
+        "purpose": "ordinary wrong arithmetic"
+      }
+    ]
+  }
+]

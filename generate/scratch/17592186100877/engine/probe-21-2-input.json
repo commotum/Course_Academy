@@ -1,0 +1,70 @@
+[
+  {
+    "label": "21 q-336729",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100877,
+        "id": "4d63e99a-9db4-565e-97c5-ffc3090b0074",
+        "title": "Calculating a Definite Integral of a Rational Function Using Substitution"
+      },
+      "question": {
+        ":question/id": "3e659ad0-30de-54df-a737-29fc87668c32",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Compute the exact value of the definite integral.\n\n$\\int_{0}^{1}\\frac{10 x^{3}}{5 x^{4} + 4}\\,\\text{d}x=$\n{{field-1}}",
+        ":question/worked-solution": "We start by changing the variable:\n\n$$\n\\begin{aligned}u & =5 x^{4} + 4 \\\\ \\frac{\\text{d}u}{\\text{d}x} & =20 x^{3} \\\\ \\text{d}u & =20 x^{3}\\,\\text{d}x \\\\ \\frac{1}{20}\\,\\text{d}u & =x^{3}\\,\\text{d}x\\end{aligned}\n$$\n\nNext, we create a table for the limits of integration using the rule $u=5 x^{4} + 4.$\n\n$$\n\\begin{aligned}x & 0 & 1 \\\\ u & 4 & 9\\end{aligned}\n$$\n\nSo, the integral in terms of the new variable is\n\n$$\n\\int_{0}^{1}\\frac{10 x^{3}}{5 x^{4} + 4}\\,\\text{d}x=\\int_{4}^{9}\\frac{10}{u}\\cdot \\frac{1}{20}\\,\\text{d}u.\n$$\n\nFinally, we can solve it and get\n\n$$\n\\begin{aligned}\\int_{4}^{9}\\frac{10}{u}\\cdot \\frac{1}{20}\\,\\text{d}u & =\\frac{1}{2}\\int_{4}^{9}\\frac{1}{u}\\,\\text{d}u \\\\  & =\\frac{1}{2}\\ln(u)|_{4}^{9} \\\\  & =\\frac{1}{2}(\\ln(9)-\\ln(4)) \\\\  & =- \\log{\\left(2 \\right)} + \\log{\\left(3 \\right)}.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "25305010-8d50-5f7a-8b1a-5e57cae1280f",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "c901f09e-7799-522b-8eed-a3b66a95e401",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\log{\\left(2 \\right)} + \\log{\\left(3 \\right)}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "c901f09e-7799-522b-8eed-a3b66a95e401"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-rational-b2275-v1",
+        "seed": 0,
+        "basis": 2275,
+        "template": "q-336729",
+        "parameters": {
+          "n": 4,
+          "a": 5,
+          "b": 4,
+          "c": 10,
+          "lo": 0,
+          "hi": 1
+        },
+        "bank_profile": "observed",
+        "source_ids": [
+          "q-336729"
+        ],
+        "math_fingerprint": "af4143c12fc1402db70c0a9758418e1761a9da56c78cff52dd536b50331196a0",
+        "content_fingerprint": "584e8d4384cbc758ac3ec6dfc624bc2d86216978434ad15cf94ec49ee8bfc1df",
+        "domain": "a*x^n+b>0 throughout closed original x interval; no poles",
+        "authored": false,
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{1}{2}\\ln(\\frac{9}{4})",
+        "expected": "accepted",
+        "purpose": "uncollected endpoint log-power quotient equivalent"
+      }
+    ]
+  }
+]

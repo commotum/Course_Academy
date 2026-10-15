@@ -1,0 +1,437 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186198361,
+      "id": "9fed8ac2-8d21-5bc9-b1cc-df20760cfbfb",
+      "title": "Performing a Change of Variables"
+    },
+    "question": {
+      ":question/problem": "Using the change of variables $u=\\frac{y}{{x}^{2}}$ and $v=xy,$ evaluate the double integral\n\n$$\n{\u222c}_{D}(xy)^{2}\\,dx\\,dy,\n$$\n\nwhere $D=\\{(x,y)\\,:\\,{x}^{2}\\le y\\le 4{x}^{2},\\,4\\le xy\\le 5\\}.$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\u27f6[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\,dx\\,dy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))|\\frac{\u2202(x,y)}{\u2202(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=\\frac{y}{{x}^{2}},\\,v=xy\n$$\n\n \ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v)\\,:\\,1\\le u\\le 4,\\,4\\le v\\le 5\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{aligned}| \\\\  & =|\\begin{aligned}-\\frac{2y}{{x}^{3}} & \\frac{1}{{x}^{2}} \\\\ y & \\text{\u00a0}\\text{\u00a0}x\\end{aligned}| \\\\  & =-\\frac{3y}{{x}^{2}}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=\\frac{1}{(-\\frac{3y}{{x}^{2}})}=-\\frac{1}{3u}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}(xy)^{2}\\,dx\\,dy & ={\u222c}_{\u0394}{v}^{2}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}{v}^{2}\\cdot |\\frac{1}{3u}|\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{4}^{5}{\\int }_{1}^{4}\\frac{{v}^{2}}{u}\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{4}^{5}{v}^{2}[{\\int }_{1}^{4}\\frac{1}{u}\\,\\text{d}u]\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{4}^{5}{v}^{2}[\\operatorname{ln}\u2061|u|\\,{|}_{1}^{4}]dv \\\\  & =\\frac{1}{3}{\\int }_{4}^{5}{v}^{2}(\\operatorname{ln}\u20614-\\operatorname{ln}\u20611)\\,dv \\\\  & =\\frac{2\\operatorname{ln}\u20612}{3}{\\int }_{4}^{5}{v}^{2}\\,dv \\\\  & =\\frac{2\\operatorname{ln}\u20612}{3}\\cdot \\frac{1}{3}{v}^{3}\\,{|}_{4}^{5} \\\\  & =\\frac{2\\operatorname{ln}\u20612}{9}\\cdot (125-64) \\\\  & =\\frac{122\\operatorname{ln}\u20612}{9}.\\end{aligned}\n$$",
+      ":question/id": "4ddd94b2-cc71-504e-a7a5-1df422f9b408",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "74e20894-f26f-5e9b-8de6-fcc616806ae9",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c0c5a825-f639-5ea1-9df7-8def67861623",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{122 \\ln{\\left(2 \\right)}}{9}"
+            },
+            {
+              ":answer/id": "4a95c0e4-a164-5d09-9222-9c149c45ab7d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{122 \\ln{\\left(2 \\right)}}{3}"
+            },
+            {
+              ":answer/id": "ddb39b70-4ea5-52bd-a660-df7df68c411f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{122 \\ln{\\left(2 \\right)}}{9}"
+            },
+            {
+              ":answer/id": "6e41dde2-dfa2-5092-b54e-8a8248dcf4a1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{123 \\ln{\\left(2 \\right)}}{2}"
+            },
+            {
+              ":answer/id": "4498327b-6560-51a2-b3e5-e74c8480729b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\ln{\\left(2 \\right)}}{3}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "c0c5a825-f639-5ea1-9df7-8def67861623"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "change-variables-2",
+      "seed": 598361,
+      "difficulty": "hard",
+      "template": "ratio_product_squared",
+      "profile": "authored",
+      "parameters": {
+        "ul": 1,
+        "uh": 4,
+        "vl": 4,
+        "vh": 5
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": 17592186373909,
+      "authored": true,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "mathematical_fingerprint": "02fd50336e9ed446602658589ffdd5bdbbf55a4e6d12163d4ec2e265ae0fda56",
+      "content_fingerprint": "aa39229f73649f5b575522e2c1b6af74460173386c6eb1e85e8104b43b8de1b1",
+      "recipes": [
+        "correct",
+        "omit_three_in_jacobian",
+        "signed_jacobian",
+        "omit_integrand_v_power",
+        "extra_v_factor"
+      ],
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198361,
+      "id": "9fed8ac2-8d21-5bc9-b1cc-df20760cfbfb",
+      "title": "Performing a Change of Variables"
+    },
+    "question": {
+      ":question/problem": "Using the change of variables $u=\\frac{y}{{x}^{2}}$ and $v=xy,$ evaluate the double integral\n\n$$\n{\u222c}_{D}(xy)^{2}\\,dx\\,dy,\n$$\n\nwhere $D=\\{(x,y)\\,:\\,{x}^{2}\\le y\\le 16{x}^{2},\\,1\\le xy\\le 4\\}.$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\u27f6[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\,dx\\,dy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))|\\frac{\u2202(x,y)}{\u2202(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=\\frac{y}{{x}^{2}},\\,v=xy\n$$\n\n \ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v)\\,:\\,1\\le u\\le 16,\\,1\\le v\\le 4\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{aligned}| \\\\  & =|\\begin{aligned}-\\frac{2y}{{x}^{3}} & \\frac{1}{{x}^{2}} \\\\ y & \\text{\u00a0}\\text{\u00a0}x\\end{aligned}| \\\\  & =-\\frac{3y}{{x}^{2}}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=\\frac{1}{(-\\frac{3y}{{x}^{2}})}=-\\frac{1}{3u}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}(xy)^{2}\\,dx\\,dy & ={\u222c}_{\u0394}{v}^{2}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}{v}^{2}\\cdot |\\frac{1}{3u}|\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{1}^{4}{\\int }_{1}^{16}\\frac{{v}^{2}}{u}\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{1}^{4}{v}^{2}[{\\int }_{1}^{16}\\frac{1}{u}\\,\\text{d}u]\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{1}^{4}{v}^{2}[\\operatorname{ln}\u2061|u|\\,{|}_{1}^{16}]dv \\\\  & =\\frac{1}{3}{\\int }_{1}^{4}{v}^{2}(\\operatorname{ln}\u206116-\\operatorname{ln}\u20611)\\,dv \\\\  & =\\frac{2\\operatorname{ln}\u20614}{3}{\\int }_{1}^{4}{v}^{2}\\,dv \\\\  & =\\frac{2\\operatorname{ln}\u20614}{3}\\cdot \\frac{1}{3}{v}^{3}\\,{|}_{1}^{4} \\\\  & =\\frac{2\\operatorname{ln}\u20614}{9}\\cdot (64-1) \\\\  & =14\\operatorname{ln}\u20614.\\end{aligned}\n$$",
+      ":question/id": "b880e9be-152d-5343-be07-baad51f74777",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "e0c9be7b-466c-5bfe-beef-e661d5145178",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d44bf487-a72f-5688-b79f-679c5c9843de",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "85 \\ln{\\left(2 \\right)}"
+            },
+            {
+              ":answer/id": "7ea0e4fa-607a-52bf-a6d1-09e1f76b57f0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "28 \\ln{\\left(2 \\right)}"
+            },
+            {
+              ":answer/id": "1760086a-7c09-5e8c-b8a1-c75d9fe9a51b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 \\ln{\\left(2 \\right)}"
+            },
+            {
+              ":answer/id": "cf2b0b28-1110-5655-97fd-3599b3b30adf",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "84 \\ln{\\left(2 \\right)}"
+            },
+            {
+              ":answer/id": "6a996faf-b917-5a49-b738-11415367209b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 28 \\ln{\\left(2 \\right)}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "7ea0e4fa-607a-52bf-a6d1-09e1f76b57f0"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "change-variables-2",
+      "seed": 598362,
+      "difficulty": "hard",
+      "template": "ratio_product_squared",
+      "profile": "authored",
+      "parameters": {
+        "ul": 1,
+        "uh": 16,
+        "vl": 1,
+        "vh": 4
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": 17592186373909,
+      "authored": true,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "mathematical_fingerprint": "17eda30375a5cba74cbbcbaaf88cd748b45f9f92ad8d741cf06ea3e933464279",
+      "content_fingerprint": "c87f42aac8b1d11f01f25d3127bc71615c19823f322403214c3acceada4c394a",
+      "recipes": [
+        "correct",
+        "omit_three_in_jacobian",
+        "signed_jacobian",
+        "omit_integrand_v_power",
+        "extra_v_factor"
+      ],
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198361,
+      "id": "9fed8ac2-8d21-5bc9-b1cc-df20760cfbfb",
+      "title": "Performing a Change of Variables"
+    },
+    "question": {
+      ":question/problem": "Using the change of variables $u=\\frac{y}{{x}^{2}}$ and $v=xy,$ evaluate the double integral\n\n$$\n{\u222c}_{D}(xy)^{2}\\,dx\\,dy,\n$$\n\nwhere $D=\\{(x,y)\\,:\\,{x}^{2}\\le y\\le 9{x}^{2},\\,2\\le xy\\le 4\\}.$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\u27f6[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\,dx\\,dy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))|\\frac{\u2202(x,y)}{\u2202(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=\\frac{y}{{x}^{2}},\\,v=xy\n$$\n\n \ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v)\\,:\\,1\\le u\\le 9,\\,2\\le v\\le 4\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{aligned}| \\\\  & =|\\begin{aligned}-\\frac{2y}{{x}^{3}} & \\frac{1}{{x}^{2}} \\\\ y & \\text{\u00a0}\\text{\u00a0}x\\end{aligned}| \\\\  & =-\\frac{3y}{{x}^{2}}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=\\frac{1}{(-\\frac{3y}{{x}^{2}})}=-\\frac{1}{3u}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}(xy)^{2}\\,dx\\,dy & ={\u222c}_{\u0394}{v}^{2}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}{v}^{2}\\cdot |\\frac{1}{3u}|\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{2}^{4}{\\int }_{1}^{9}\\frac{{v}^{2}}{u}\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{2}^{4}{v}^{2}[{\\int }_{1}^{9}\\frac{1}{u}\\,\\text{d}u]\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{2}^{4}{v}^{2}[\\operatorname{ln}\u2061|u|\\,{|}_{1}^{9}]dv \\\\  & =\\frac{1}{3}{\\int }_{2}^{4}{v}^{2}(\\operatorname{ln}\u20619-\\operatorname{ln}\u20611)\\,dv \\\\  & =\\frac{2\\operatorname{ln}\u20613}{3}{\\int }_{2}^{4}{v}^{2}\\,dv \\\\  & =\\frac{2\\operatorname{ln}\u20613}{3}\\cdot \\frac{1}{3}{v}^{3}\\,{|}_{2}^{4} \\\\  & =\\frac{2\\operatorname{ln}\u20613}{9}\\cdot (64-8) \\\\  & =\\frac{112\\operatorname{ln}\u20613}{9}.\\end{aligned}\n$$",
+      ":question/id": "a9bf5a72-2afe-55a9-8288-03e8e500cac8",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "58854fce-abbe-50be-9446-ce124d3d6e2f",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "719b5cba-94f5-5e18-8818-62c388bfb5f6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{112 \\ln{\\left(3 \\right)}}{3}"
+            },
+            {
+              ":answer/id": "088d3881-6f26-5c1e-8b70-605ffcbe6a13",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{4 \\ln{\\left(3 \\right)}}{3}"
+            },
+            {
+              ":answer/id": "cef2c8c7-9728-5e8f-b345-f1a76f0182b0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "40 \\ln{\\left(3 \\right)}"
+            },
+            {
+              ":answer/id": "13d60485-67ff-563a-a2f9-a27075387c5f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{112 \\ln{\\left(3 \\right)}}{9}"
+            },
+            {
+              ":answer/id": "4e49411c-8515-54df-bf3e-1b739c795ae9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{112 \\ln{\\left(3 \\right)}}{9}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4e49411c-8515-54df-bf3e-1b739c795ae9"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "change-variables-2",
+      "seed": 598363,
+      "difficulty": "hard",
+      "template": "ratio_product_squared",
+      "profile": "authored",
+      "parameters": {
+        "ul": 1,
+        "uh": 9,
+        "vl": 2,
+        "vh": 4
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": 17592186373909,
+      "authored": true,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "mathematical_fingerprint": "a1b305e8aedfbe42fb962c487e128fedeca90ccf4fea9f4e339b9ac24489cf6d",
+      "content_fingerprint": "19f877f295adda23e45a5d9fc79ebbf8c5acdb6f9e58180a930f877c6283a7c6",
+      "recipes": [
+        "correct",
+        "omit_three_in_jacobian",
+        "signed_jacobian",
+        "omit_integrand_v_power",
+        "extra_v_factor"
+      ],
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198361,
+      "id": "9fed8ac2-8d21-5bc9-b1cc-df20760cfbfb",
+      "title": "Performing a Change of Variables"
+    },
+    "question": {
+      ":question/problem": "Using the change of variables $u=\\frac{y}{{x}^{2}}$ and $v=xy,$ evaluate the double integral\n\n$$\n{\u222c}_{D}(xy)^{2}\\,dx\\,dy,\n$$\n\nwhere $D=\\{(x,y)\\,:\\,{x}^{2}\\le y\\le 4{x}^{2},\\,5\\le xy\\le 6\\}.$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\u27f6[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\,dx\\,dy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))|\\frac{\u2202(x,y)}{\u2202(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=\\frac{y}{{x}^{2}},\\,v=xy\n$$\n\n \ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v)\\,:\\,1\\le u\\le 4,\\,5\\le v\\le 6\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{aligned}| \\\\  & =|\\begin{aligned}-\\frac{2y}{{x}^{3}} & \\frac{1}{{x}^{2}} \\\\ y & \\text{\u00a0}\\text{\u00a0}x\\end{aligned}| \\\\  & =-\\frac{3y}{{x}^{2}}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=\\frac{1}{(-\\frac{3y}{{x}^{2}})}=-\\frac{1}{3u}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}(xy)^{2}\\,dx\\,dy & ={\u222c}_{\u0394}{v}^{2}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}{v}^{2}\\cdot |\\frac{1}{3u}|\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{5}^{6}{\\int }_{1}^{4}\\frac{{v}^{2}}{u}\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{5}^{6}{v}^{2}[{\\int }_{1}^{4}\\frac{1}{u}\\,\\text{d}u]\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{5}^{6}{v}^{2}[\\operatorname{ln}\u2061|u|\\,{|}_{1}^{4}]dv \\\\  & =\\frac{1}{3}{\\int }_{5}^{6}{v}^{2}(\\operatorname{ln}\u20614-\\operatorname{ln}\u20611)\\,dv \\\\  & =\\frac{2\\operatorname{ln}\u20612}{3}{\\int }_{5}^{6}{v}^{2}\\,dv \\\\  & =\\frac{2\\operatorname{ln}\u20612}{3}\\cdot \\frac{1}{3}{v}^{3}\\,{|}_{5}^{6} \\\\  & =\\frac{2\\operatorname{ln}\u20612}{9}\\cdot (216-125) \\\\  & =\\frac{182\\operatorname{ln}\u20612}{9}.\\end{aligned}\n$$",
+      ":question/id": "dc1cd88b-9881-56a3-9ef5-53708f7c4b33",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "2a87ecd3-6574-5e98-aac6-eaeb2a2a41af",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c8511436-e484-5251-a621-0417962a64ca",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{182 \\ln{\\left(2 \\right)}}{3}"
+            },
+            {
+              ":answer/id": "f7a1ff94-668d-56c9-ab15-77c13bfdd79a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- \\frac{182 \\ln{\\left(2 \\right)}}{9}"
+            },
+            {
+              ":answer/id": "2c8e42dd-1135-55d6-baea-5eaf5e395812",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{182 \\ln{\\left(2 \\right)}}{9}"
+            },
+            {
+              ":answer/id": "5775d9e0-17da-5f4b-97d4-d8327fe13f79",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{671 \\ln{\\left(2 \\right)}}{6}"
+            },
+            {
+              ":answer/id": "bee804f0-fe47-54f2-82b3-1ab225bbaa16",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2 \\ln{\\left(2 \\right)}}{3}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2c8e42dd-1135-55d6-baea-5eaf5e395812"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "change-variables-2",
+      "seed": 598364,
+      "difficulty": "hard",
+      "template": "ratio_product_squared",
+      "profile": "authored",
+      "parameters": {
+        "ul": 1,
+        "uh": 4,
+        "vl": 5,
+        "vh": 6
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": 17592186373909,
+      "authored": true,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "mathematical_fingerprint": "4c76f29dece30496b1ad899748abe36187756b79703574c8ce195ee39c125fc8",
+      "content_fingerprint": "b30c6934572fac7a8fae656039872f51005cffeb58b1da07cb5360a707b6da0b",
+      "recipes": [
+        "correct",
+        "omit_three_in_jacobian",
+        "signed_jacobian",
+        "omit_integrand_v_power",
+        "extra_v_factor"
+      ],
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186198361,
+      "id": "9fed8ac2-8d21-5bc9-b1cc-df20760cfbfb",
+      "title": "Performing a Change of Variables"
+    },
+    "question": {
+      ":question/problem": "Using the change of variables $u=\\frac{y}{{x}^{2}}$ and $v=xy,$ evaluate the double integral\n\n$$\n{\u222c}_{D}(xy)^{2}\\,dx\\,dy,\n$$\n\nwhere $D=\\{(x,y)\\,:\\,{x}^{2}\\le y\\le 16{x}^{2},\\,2\\le xy\\le 5\\}.$",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]\u27f6[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\,dx\\,dy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))|\\frac{\u2202(x,y)}{\u2202(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=\\frac{y}{{x}^{2}},\\,v=xy\n$$\n\n \ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v)\\,:\\,1\\le u\\le 16,\\,2\\le v\\le 5\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{aligned}| \\\\  & =|\\begin{aligned}-\\frac{2y}{{x}^{3}} & \\frac{1}{{x}^{2}} \\\\ y & \\text{\u00a0}\\text{\u00a0}x\\end{aligned}| \\\\  & =-\\frac{3y}{{x}^{2}}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=\\frac{1}{(-\\frac{3y}{{x}^{2}})}=-\\frac{1}{3u}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}(xy)^{2}\\,dx\\,dy & ={\u222c}_{\u0394}{v}^{2}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}{v}^{2}\\cdot |\\frac{1}{3u}|\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{2}^{5}{\\int }_{1}^{16}\\frac{{v}^{2}}{u}\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{2}^{5}{v}^{2}[{\\int }_{1}^{16}\\frac{1}{u}\\,\\text{d}u]\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{2}^{5}{v}^{2}[\\operatorname{ln}\u2061|u|\\,{|}_{1}^{16}]dv \\\\  & =\\frac{1}{3}{\\int }_{2}^{5}{v}^{2}(\\operatorname{ln}\u206116-\\operatorname{ln}\u20611)\\,dv \\\\  & =\\frac{2\\operatorname{ln}\u20614}{3}{\\int }_{2}^{5}{v}^{2}\\,dv \\\\  & =\\frac{2\\operatorname{ln}\u20614}{3}\\cdot \\frac{1}{3}{v}^{3}\\,{|}_{2}^{5} \\\\  & =\\frac{2\\operatorname{ln}\u20614}{9}\\cdot (125-8) \\\\  & =26\\operatorname{ln}\u20614.\\end{aligned}\n$$",
+      ":question/id": "5fc233a3-016d-5c4e-a242-9f02a02751f2",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "189e4d5c-7d67-5000-8ba2-67a9c86a5254",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "5ce3c7dc-caf4-59c6-bc90-66911b31b855",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 52 \\ln{\\left(2 \\right)}"
+            },
+            {
+              ":answer/id": "8b1f244f-0b28-5817-86a7-3ca216955106",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "52 \\ln{\\left(2 \\right)}"
+            },
+            {
+              ":answer/id": "f6dbc465-6dd3-5c31-801d-8e21abfc3c96",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "156 \\ln{\\left(2 \\right)}"
+            },
+            {
+              ":answer/id": "49693d90-a88f-5cc1-8d9c-4cdbfd34c316",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "203 \\ln{\\left(2 \\right)}"
+            },
+            {
+              ":answer/id": "66c4bff9-f18e-5a0a-ae8c-565ea3df5f96",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "4 \\ln{\\left(2 \\right)}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "8b1f244f-0b28-5817-86a7-3ca216955106"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "change-variables-2",
+      "seed": 598365,
+      "difficulty": "hard",
+      "template": "ratio_product_squared",
+      "profile": "authored",
+      "parameters": {
+        "ul": 1,
+        "uh": 16,
+        "vl": 2,
+        "vh": 5
+      },
+      "source": {
+        "database": "math",
+        "basis": 1356,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+      },
+      "source_id": 17592186373909,
+      "authored": true,
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "mathematical_fingerprint": "f139a76a09e377cdbf3eb7d1c469c92d1a4b074884d0c5f8eeb639cdecbdda04",
+      "content_fingerprint": "a9e590f0e41c62982f29fb39d7283c21f5ee3206e0eea80fe6bcdc64f0667d75",
+      "recipes": [
+        "correct",
+        "omit_three_in_jacobian",
+        "signed_jacobian",
+        "omit_integrand_v_power",
+        "extra_v_factor"
+      ],
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none"
+    }
+  }
+]

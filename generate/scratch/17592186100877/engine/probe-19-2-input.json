@@ -1,0 +1,70 @@
+[
+  {
+    "label": "19 q-336717",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100877,
+        "id": "4d63e99a-9db4-565e-97c5-ffc3090b0074",
+        "title": "Calculating a Definite Integral of a Rational Function Using Substitution"
+      },
+      "question": {
+        ":question/id": "63efff60-5c61-54ae-8c51-b786a869bde9",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Compute the exact value of the definite integral.\n\n$\\int_{0}^{1}\\frac{8}{x + 12}\\,\\text{d}x=$\n{{field-1}}",
+        ":question/worked-solution": "We start by changing the variable:\n\n$$\n\\begin{aligned}u & =x + 12 \\\\ \\frac{\\text{d}u}{\\text{d}x} & =1 \\\\ \\text{d}u & =1\\,\\text{d}x \\\\ 8\\,\\text{d}u & =8\\,\\text{d}x\\end{aligned}\n$$\n\nNext, we create a table for the limits of integration using the rule $u=x + 12.$\n\n$$\n\\begin{aligned}x & 0 & 1 \\\\ u & 12 & 13\\end{aligned}\n$$\n\nSo, the integral in terms of the new variable is\n\n$$\n\\int_{0}^{1}\\frac{8}{x + 12}\\,\\text{d}x=\\int_{12}^{13}\\frac{1}{u}\\cdot 8\\,\\text{d}u.\n$$\n\nFinally, we can solve it and get\n\n$$\n\\begin{aligned}\\int_{12}^{13}\\frac{1}{u}\\cdot 8\\,\\text{d}u & =8\\int_{12}^{13}\\frac{1}{u}\\,\\text{d}u \\\\  & =8\\ln(u)|_{12}^{13} \\\\  & =8(\\ln(13)-\\ln(12)) \\\\  & =- 8 \\log{\\left(12 \\right)} + 8 \\log{\\left(13 \\right)}.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "9a0f3bbe-d156-5b6c-b46b-9c8910e868a6",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ad8949f2-1838-56ec-8b3f-6b5af5f933cc",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- 8 \\log{\\left(12 \\right)} + 8 \\log{\\left(13 \\right)}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "ad8949f2-1838-56ec-8b3f-6b5af5f933cc"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-rational-b2275-v1",
+        "seed": 0,
+        "basis": 2275,
+        "template": "q-336717",
+        "parameters": {
+          "n": 1,
+          "a": 1,
+          "b": 12,
+          "c": 8,
+          "lo": 0,
+          "hi": 1
+        },
+        "bank_profile": "observed",
+        "source_ids": [
+          "q-336717"
+        ],
+        "math_fingerprint": "5bc49ea83dc4b3ebb41a3ccfe280950b8464010770a36166a248475ecb17b782",
+        "content_fingerprint": "2f7319075324132f90006c89aec59fe6d886c85a7a1a7da07df0fc31a22deedc",
+        "domain": "a*x^n+b>0 throughout closed original x interval; no poles",
+        "authored": false,
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "8\\ln(\\frac{13}{12})",
+        "expected": "accepted",
+        "purpose": "uncollected endpoint log-power quotient equivalent"
+      }
+    ]
+  }
+]

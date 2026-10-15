@@ -1,0 +1,542 @@
+{
+  "basis": 2590,
+  "rows": [
+    {
+      "entity": 17592186198948,
+      "source_id": "q-38129",
+      "difficulty": null,
+      "field_types": [
+        ":answer-field.type/radio"
+      ],
+      "choice_count": 5,
+      "plots": "none",
+      "prompt": "Consider the finite region $D$ in the $xy$-plane, given by\n\n$D = {(x, y): 0 \\le x + y \\le 3, 0 \\le y - x \\le 2}$.\n\nBy performing the change of variables\n$u = x + y$\nand\n$v = y - x$,\nthe integral\n$\u222c_(D)(y^{2} - x^{2})dxdy$\ncan be written in terms of $u$ and $v$ as",
+      "worked_solution": null,
+      "eligible": false,
+      "supplied_map": [
+        "x + y",
+        "-x + y"
+      ],
+      "integrand": "-x**2 + y**2",
+      "transformed_integrand": "u*v/2",
+      "bounds": [
+        "0",
+        "3",
+        "0",
+        "2"
+      ],
+      "inverse": {
+        "x": "u/2 - v/2",
+        "y": "u/2 + v/2"
+      },
+      "jacobian": "2",
+      "correct_value": "9/2",
+      "choice_values": [
+        "9/2",
+        "-10",
+        "9",
+        "18",
+        "5"
+      ],
+      "complete_bank_distinct": true,
+      "fingerprint": "46267340d920907d58f8d208c4d682290c4f2eb21ec3123bd273c3800503e43b",
+      "exclusion": "Unrated, absent correct reference and worked solution."
+    },
+    {
+      "entity": 17592186198950,
+      "source_id": "q-38371",
+      "difficulty": ":question.difficulty/moderate",
+      "field_types": [
+        ":answer-field.type/radio"
+      ],
+      "choice_count": 5,
+      "plots": "none",
+      "prompt": "Using the change of variables $u=xy$ and $v=y+x,$ evaluate the double integral\n\n$$\n{\u222c}_{D}|y-x|\\,{e}^{xy}\\,dxdy,\n$$\n\nwhere $D=\\{(x,y)\\,:\\,1\\le xy\\le 4,\\,1\\le y+x\\le 10\\}.$",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dxdy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))\\,|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{\u00a0}dudv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=xy,\\,v=y+x\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v)\\,:\\,1\\le u\\le 4,\\,1\\le v\\le 10\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}y & x \\\\ 1 & 1\\end{vmatrix} \\\\  & =y-x.\\end{aligned}\n$$\n\n.\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=\\frac{1}{y-x}\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}|y-x|\\,{e}^{xy}\\,dxdy & ={\u222c}_{\u0394}|y-x|\\,{e}^{u}\\,|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}|y-x|\\,{e}^{u}\\,\\frac{1}{|y-x|}\\,\\text{d}u\\text{d}v \\\\  & ={\u222c}_{\u0394}{e}^{u}\\,\\text{d}u\\text{d}v \\\\  & ={\\int }_{1}^{4}[{\\int }_{1}^{10}{e}^{u}\\,dv]du \\\\  & ={\\int }_{1}^{4}{e}^{u}[{\\int }_{1}^{10}dv]du \\\\  & ={\\int }_{1}^{4}{e}^{u}[v]_{1}^{10}\\,du \\\\  & =9{\\int }_{1}^{4}{e}^{u}\\,du \\\\  & =9[{e}^{u}]_{1}^{4} \\\\  & =9({e}^{4}-e).\\end{aligned}\n$$",
+      "eligible": false,
+      "exclusion": "Image constrained by v\u00b2>=4u; two inverse branches. Stored 9(e\u2074-e) is incorrect. True value 12e\u2074-16e+2sqrt(pi)(erfi(2)-erfi(1))."
+    },
+    {
+      "entity": 17592186373909,
+      "source_id": "q-160897",
+      "difficulty": ":question.difficulty/moderate",
+      "field_types": [
+        ":answer-field.type/radio"
+      ],
+      "choice_count": 5,
+      "plots": "none",
+      "prompt": "Using the change of variables $u=\\frac{y}{{x}^{2}}$ and $v=xy,$ evaluate the double integral\n\n$$\n{\u222c}_{D}xy\\,dx\\,dy,\n$$\n\nwhere $D={(x,y)\\,:\\,{x}^{2}\\le y\\le 4{x}^{2},\\,1\\le xy\\le 5}.$",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\,dx\\,dy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))|\\frac{\u2202(x,y)}{\u2202(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=\\frac{y}{{x}^{2}},\\,v=xy\n$$\n\n \ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required integral, we proceed as follows::\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & ={(u,v)\\,:\\,1\\le u\\le 4,\\,1\\le v\\le 5}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}-\\frac{2y}{{x}^{3}} & \\frac{1}{{x}^{2}} \\\\ y & \\text{\u00a0}\\text{\u00a0}x\\end{vmatrix} \\\\  & =-\\frac{3y}{{x}^{2}}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=\\frac{1}{(-\\frac{3y}{{x}^{2}})}=-\\frac{1}{3u}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}xy\\,dx\\,dy & ={\u222c}_{\u0394}v|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}v\\cdot |\\frac{1}{3u}|\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{1}^{5}{\\int }_{1}^{4}\\frac{v}{u}\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{1}^{5}v[{\\int }_{1}^{4}\\frac{1}{u}\\,\\text{d}u]\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{1}^{5}v[\\operatorname{ln}\u2061|u|\\,{|}_{1}^{4}]dv \\\\  & =\\frac{1}{3}{\\int }_{1}^{5}v(\\operatorname{ln}\u20614-\\operatorname{ln}\u20611)\\,dv \\\\  & =\\frac{2\\operatorname{ln}\u20612}{3}{\\int }_{1}^{5}v\\,dv \\\\  & =\\frac{2\\operatorname{ln}\u20612}{3}\\cdot \\frac{1}{2}{v}^{2}\\,{|}_{1}^{5} \\\\  & =\\frac{\\operatorname{ln}\u20612}{3}\\cdot (25-1) \\\\  & =8\\operatorname{ln}\u20612.\\end{aligned}\n$$",
+      "eligible": true,
+      "supplied_map": [
+        "y/x**2",
+        "x*y"
+      ],
+      "integrand": "x*y",
+      "transformed_integrand": "v/(3*u)",
+      "bounds": [
+        "1",
+        "4",
+        "1",
+        "5"
+      ],
+      "inverse": {
+        "x": "v**(1/3)/u**(1/3)",
+        "y": "u**(1/3)*v**(2/3)"
+      },
+      "jacobian": "-3*y/x**2",
+      "correct_value": "log(256)",
+      "choice_values": [
+        "9/2",
+        "11/4",
+        "3*log(2)",
+        "6",
+        "8*log(2)"
+      ],
+      "complete_bank_distinct": true,
+      "fingerprint": "62fc5b3d5cb84d69c901973e145747a1323339d5cd9729d16da64172f2a39586"
+    },
+    {
+      "entity": 17592186375103,
+      "source_id": "q-38369",
+      "difficulty": ":question.difficulty/easy",
+      "field_types": [
+        ":answer-field.type/radio"
+      ],
+      "choice_count": 5,
+      "plots": "none",
+      "prompt": "Consider the region $D$ in the $xy$-plane, given by\n\n$$\nD=\\{(x,y)\\,:\\,0\\le 2x+y\\le 5,\\,0\\le y\\le 1\\}.\n$$\n\n  \n\nBy performing the change of variables $u=2x+y$ and $v=y,$ the integral \n\n$$\n{\u222c}_{D}(2xy+{x}^{2})\\,dx\\,dy\n$$\n\ncan be written in terms of $u$ and $v$ as",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dx\\,dy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))|\\frac{\u2202(x,y)}{\u2202(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=2x+y,\\,v=y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v)\\,:\\,0\\le u\\le 5,\\,0\\le v\\le 1\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}2 & 1 \\\\ 0 & \\text{\u00a0}\\text{\u00a0}1\\end{vmatrix} \\\\  & =2.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=\\frac{1}{2}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\nIn this case, we first need to solve the transformation equations\n\n$$\nu=2x+y,\\,v=y\n$$\n\n \nfor $x$ and $y$, which gives\n\n$$\nx=\\frac{u-v}{2},\\,y=v.\n$$\n\n \n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}(2xy+{x}^{2})\\,dx\\,dy & ={\u222c}_{\u0394}[2\\cdot \\frac{u-v}{2}\\cdot v+{(\\frac{u-v}{2})}^{2}]|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}(uv-{v}^{2}+\\frac{{u}^{2}-2uv+{v}^{2}}{4})\\frac{1}{2}\\,du\\,dv \\\\  & =\\frac{1}{8}{\\int }_{0}^{1}{\\int }_{0}^{5}(2uv-3{v}^{2}+{u}^{2})\\,du\\,dv.\\end{aligned}\n$$",
+      "eligible": true,
+      "supplied_map": [
+        "2*x + y",
+        "y"
+      ],
+      "integrand": "x**2 + 2*x*y",
+      "transformed_integrand": "(u - v)*(u + 3*v)/8",
+      "bounds": [
+        "0",
+        "5",
+        "0",
+        "1"
+      ],
+      "inverse": {
+        "x": "u/2 - v/2",
+        "y": "v"
+      },
+      "jacobian": "2",
+      "correct_value": "295/48",
+      "choice_values": [
+        "-55/4",
+        "295/48",
+        "1555/96",
+        "55/48",
+        "-175/16"
+      ],
+      "complete_bank_distinct": true,
+      "fingerprint": "70a0f6bf1d29a72c278fb72a920d434b71cd05cfe172254e4b1d03bac169f9c9"
+    },
+    {
+      "entity": 17592186375495,
+      "source_id": "q-82808",
+      "difficulty": ":question.difficulty/easy",
+      "field_types": [
+        ":answer-field.type/radio"
+      ],
+      "choice_count": 5,
+      "plots": "none",
+      "prompt": "Consider the region $D$ in the $xy$-plane, given by\n\n$$\nD=\\{(x,y)\\,:\\,-1\\le y-x\\le 1,\\,0\\le x+y\\le 1\\}.\n$$\n\nBy performing the change of variables $u=y-x$ and $v=x+y,$ the integral\n\n$$\n{\u222c}_{D}8xy\\,dx\\,dy\n$$\n\ncan be written in terms of $u$ and $v$ as",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dx\\,dy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))|\\frac{\u2202(x,y)}{\u2202(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=y-x,\\,v=x+y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v)\\,:\\,-1\\le u\\le 1,\\,0\\le v\\le 1\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}-1 & 1 \\\\ 1 & \\text{\u00a0}\\text{\u00a0}1\\end{vmatrix} \\\\  & =-2.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=-\\frac{1}{2}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\nIn this case, we first need to solve the transformation equations\n\n$$\nu=y-x,\\,v=x+y\n$$\n\n \nfor $x$ and $y$, which gives\n\n$$\nx=\\frac{v-u}{2},\\,y=\\frac{v+u}{2}.\n$$\n\n \n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}8xy\\,dx\\,dy & ={\u222c}_{\u0394}8(\\frac{v-u}{2})(\\frac{v+u}{2})|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}2({v}^{2}-{u}^{2})|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}2({v}^{2}-{u}^{2})|-\\frac{1}{2}|\\text{d}u\\,\\text{d}v \\\\  & ={\\int }_{0}^{1}{\\int }_{-1}^{1}({v}^{2}-{u}^{2})\\,du\\,dv.\\end{aligned}\n$$",
+      "eligible": false,
+      "supplied_map": [
+        "-x + y",
+        "x + y"
+      ],
+      "integrand": "8*x*y",
+      "transformed_integrand": "-u**2 + v**2",
+      "bounds": [
+        "-1",
+        "1",
+        "0",
+        "1"
+      ],
+      "inverse": {
+        "x": "-u/2 + v/2",
+        "y": "u/2 + v/2"
+      },
+      "jacobian": "-2",
+      "correct_value": "0",
+      "choice_values": [
+        "32/15",
+        "0",
+        "8/3",
+        "0",
+        "2/3"
+      ],
+      "complete_bank_distinct": false,
+      "fingerprint": "c3b3276004263218e26247a95ee526f4f7e08172121855199642fb103ccb6692",
+      "exclusion": "Complete definite-integral choices collide at zero."
+    },
+    {
+      "entity": 17592186375502,
+      "source_id": "q-82827",
+      "difficulty": ":question.difficulty/easy",
+      "field_types": [
+        ":answer-field.type/radio"
+      ],
+      "choice_count": 5,
+      "plots": "none",
+      "prompt": "Consider the region $D$ in the $xy$-plane, given by\n\n$$\nD={(x,y)\\,:\\,0\\le 2x+5y\\le 2,\\,0\\le x+3y\\le 4}.\n$$\n\nBy performing the change of variables $u=2x+5y$ and $v=x+3y,$ the integral\n\n$$\n{\u222c}_{D}{e}^{x+y}\\,dx\\,dy\n$$\n\ncan be written in terms of $u$ and $v$ as",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\,dx\\,dy={\u222c}_{\u0394}f(x(u,v),y(u,v))|\\frac{\u2202(x,y)}{\u2202(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=2x+5y,\\,v=x+3y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & ={(u,v)\\,:\\,0\\le u\\le 2,\\,0\\le v\\le 4}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}2 & 5 \\\\ 1 & \\text{\u00a0}\\text{\u00a0}3\\end{vmatrix} \\\\  & =1.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=1.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\nIn this case, we first need to solve the transformation equations\n\n$$\nu=2x+5y,\\,v=x+3y\n$$\n\n \nfor $x$ and $y$, which gives\n\n$$\nx=3u-5v,\\,y=2v-u.\n$$\n\n \n\nNow, performing the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}{e}^{x+y}\\,dx\\,dy & ={\u222c}_{\u0394}{e}^{3u-5v+2v-u}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}{e}^{2u-3v}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\,\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}{e}^{2u-3v}\\cdot |1|\\,\\text{d}u\\,\\text{d}v \\\\  & ={\\int }_{0}^{4}{\\int }_{0}^{2}{e}^{2u-3v}\\,du\\,dv.\\end{aligned}\n$$",
+      "eligible": true,
+      "supplied_map": [
+        "2*x + 5*y",
+        "x + 3*y"
+      ],
+      "integrand": "exp(x + y)",
+      "transformed_integrand": "exp(2*u - 3*v)",
+      "bounds": [
+        "0",
+        "2",
+        "0",
+        "4"
+      ],
+      "inverse": {
+        "x": "3*u - 5*v",
+        "y": "-u + 2*v"
+      },
+      "jacobian": "1",
+      "correct_value": "(-exp(12) - exp(4) + 1 + exp(16))*exp(-12)/6",
+      "choice_values": [
+        "-1/3 + (1 - exp(6))*exp(-8)/3 + exp(6)/3",
+        "-1/6 + (1 - exp(4))*exp(-12)/6 + exp(4)/6",
+        "-1/2 + (1 - exp(4))*exp(-4)/2 + exp(4)/2",
+        "-exp(2) + 1 + (-1 + exp(2))*exp(4)",
+        "-1/12 + (1 - exp(6))*exp(-8)/12 + exp(6)/12"
+      ],
+      "complete_bank_distinct": true,
+      "fingerprint": "aeb306bb509c73a78627dcf65a0bc1734e903795c3259f2628e4d7471273dedd"
+    },
+    {
+      "entity": 17592186375509,
+      "source_id": "q-83647",
+      "difficulty": ":question.difficulty/easy",
+      "field_types": [
+        ":answer-field.type/radio"
+      ],
+      "choice_count": 5,
+      "plots": "none",
+      "prompt": "Consider the region $D$ in the $xy$-plane, given by\n\n$$\nD=\\{(x,y)\\,:\\,-1\\le x+y\\le 3,\\,-4\\le y-x\\le -1\\}.\n$$\n\nBy performing the change of variables $u=x+y$ and $v=y-x,$ the integral\n\n$$\n{\u222c}_{D}3(x+y)^{2}\\,dx\\,dy\n$$\n\ncan be written in terms of $u$ and $v$ as",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\,dx\\,dy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))|\\frac{\u2202(x,y)}{\u2202(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=x+y,\\,v=y-x\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v)\\,:\\,-1\\le u\\le 3,\\,-4\\le v\\le -1\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 1 \\\\ -1 & \\text{\u00a0}\\text{\u00a0}1\\end{vmatrix} \\\\  & =2.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=\\frac{1}{2}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}3(x+y)^{2}\\,dx\\,dy & ={\u222c}_{\u0394}3{u}^{2}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}3{u}^{2}|\\frac{1}{2}|\\text{d}u\\,\\text{d}v \\\\  & =\\frac{3}{2}{\\int }_{-1}^{3}{\\int }_{-4}^{-1}{u}^{2}\\,dv\\,du.\\end{aligned}\n$$",
+      "eligible": true,
+      "supplied_map": [
+        "x + y",
+        "-x + y"
+      ],
+      "integrand": "3*(x + y)**2",
+      "transformed_integrand": "3*u**2/2",
+      "bounds": [
+        "-1",
+        "3",
+        "-4",
+        "-1"
+      ],
+      "inverse": {
+        "x": "u/2 - v/2",
+        "y": "u/2 + v/2"
+      },
+      "jacobian": "2",
+      "correct_value": "42",
+      "choice_values": [
+        "168",
+        "78",
+        "39",
+        "42",
+        "126"
+      ],
+      "complete_bank_distinct": true,
+      "fingerprint": "dd93b1d3f67e81e778c017ca86897460e1188a71d2c939fa40f8f77343b0e237"
+    },
+    {
+      "entity": 17592186481371,
+      "source_id": "q-83656",
+      "difficulty": ":question.difficulty/moderate",
+      "field_types": [
+        ":answer-field.type/radio"
+      ],
+      "choice_count": 5,
+      "plots": "none",
+      "prompt": "Using the change of variables $u={e}^{x}$ and $v={e}^{y},$ evaluate the double integral\n\n$$\n{\u222c}_{D}y\\,dx\\,dy,\n$$\n\nwhere $D=\\{(x,y)\\,:\\,1\\le {e}^{x}\\le 2,\\,1\\le {e}^{y}\\le 4\\}.$",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\,dx\\,dy={\u222c}_{\u0394}f(x(u,v),y(u,v))|\\frac{\u2202(x,y)}{\u2202(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu={e}^{x},\\,v={e}^{y}\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v)\\,:\\,1\\le u\\le 2,\\,1\\le v\\le 4\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}{e}^{x} & 0 \\\\ 0 & \\text{\u00a0}\\text{\u00a0}{e}^{y}\\end{vmatrix} \\\\  & ={e}^{x+y}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=\\frac{1}{{e}^{x+y}}=\\frac{1}{uv}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}y\\,dx\\,dy & ={\u222c}_{\u0394}\\operatorname{ln}\u2061v\\,|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}\\operatorname{ln}\u2061v\\cdot |\\frac{1}{uv}|\\,\\text{d}u\\,\\text{d}v \\\\  & ={\\int }_{1}^{2}\\frac{1}{u}[{\\int }_{1}^{4}\\frac{\\operatorname{ln}\u2061v}{v}\\,dv]du \\\\  & ={\\int }_{1}^{2}\\frac{1}{u}{[\\frac{{ln}^{2}\u2061v}{2}]}_{1}^{4}du \\\\  & =\\frac{1}{2}{\\int }_{1}^{2}\\frac{1}{u}[{ln}^{2}\u20614-{ln}^{2}\u20611]\\,du \\\\  & =\\frac{{ln}^{2}\u20614}{2}{\\int }_{1}^{2}\\frac{1}{u}\\,du \\\\  & =2{ln}^{2}\u20612[\\operatorname{ln}\u2061u]_{1}^{2} \\\\  & =2{ln}^{2}\u20612(\\operatorname{ln}\u20612-\\operatorname{ln}\u20611) \\\\  & =2{ln}^{3}\u20612.\\end{aligned}\n$$",
+      "eligible": true,
+      "supplied_map": [
+        "exp(x)",
+        "exp(y)"
+      ],
+      "integrand": "y",
+      "transformed_integrand": "log(v)/(u*v)",
+      "bounds": [
+        "1",
+        "2",
+        "1",
+        "4"
+      ],
+      "inverse": {
+        "x": "log(u)",
+        "y": "log(v)"
+      },
+      "jacobian": "exp(x)*exp(y)",
+      "correct_value": "2*log(2)**3",
+      "choice_values": [
+        "2*log(2)",
+        "log(2)**3",
+        "2*log(2)**3",
+        "log(2)**2",
+        "2*log(2)**2"
+      ],
+      "complete_bank_distinct": true,
+      "fingerprint": "b3112b14a80fde74a3b9ca52ca8ff2c422608eaf3ac0787a04bff8ff08babf72"
+    },
+    {
+      "entity": 17592186481424,
+      "source_id": "q-82798",
+      "difficulty": ":question.difficulty/easy",
+      "field_types": [
+        ":answer-field.type/radio"
+      ],
+      "choice_count": 5,
+      "plots": "none",
+      "prompt": "Consider the region $D$ in the $xy$-plane, given by\n\n$$\nD=\\{(x,y)\\,:\\,1\\le 2y-x\\le 2,\\,0\\le y-x\\le 1\\}.\n$$\n\nBy performing the change of variables $u=2y-x$ and $v=y-x,$ the integral\n\n$$\n{\u222c}_{D}{x}^{2}\\,dx\\,dy\n$$\n\ncan be written in terms of $u$ and $v$ as",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\text{\u00a0}dx\\,dy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))|\\frac{\u2202(x,y)}{\u2202(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=2y-x,\\,v=y-x\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v)\\,:\\,1\\le u\\le 2,\\,0\\le v\\le 1\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}-1 & 2 \\\\ -1 & \\text{\u00a0}\\text{\u00a0}1\\end{vmatrix} \\\\  & =1.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=1.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\nIn this case, we first need to solve the transformation equations\n\n$$\nu=2y-x,\\,v=y-x\n$$\n\n \nfor $x$ and $y$, which gives\n\n$$\nx=u-2v,\\,y=u-v.\n$$\n\n \n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}{x}^{2}\\,dx\\,dy & ={\u222c}_{\u0394}{(u-2v)}^{2}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}{(u-2v)}^{2}\\cdot 1\\,\\text{d}u\\,\\text{d}v \\\\  & ={\\int }_{0}^{1}{\\int }_{1}^{2}{(u-2v)}^{2}\\text{d}u\\,\\text{d}v.\\end{aligned}\n$$",
+      "eligible": true,
+      "supplied_map": [
+        "-x + 2*y",
+        "-x + y"
+      ],
+      "integrand": "x**2",
+      "transformed_integrand": "(u - 2*v)**2",
+      "bounds": [
+        "1",
+        "2",
+        "0",
+        "1"
+      ],
+      "inverse": {
+        "x": "u - 2*v",
+        "y": "u - v"
+      },
+      "jacobian": "1",
+      "correct_value": "2/3",
+      "choice_values": [
+        "1/3",
+        "7/6",
+        "2/3",
+        "40/3",
+        "7/3"
+      ],
+      "complete_bank_distinct": true,
+      "fingerprint": "0c48f561f56c80a6dcc25cb6636af23f6e869279e46ca2f725a45d5078691170"
+    },
+    {
+      "entity": 17592186481429,
+      "source_id": "q-82818",
+      "difficulty": ":question.difficulty/easy",
+      "field_types": [
+        ":answer-field.type/radio"
+      ],
+      "choice_count": 5,
+      "plots": "none",
+      "prompt": "Consider the region $D$ in the $xy$-plane, given by\n\n$$\nD=\\{(x,y)\\,:\\,-1\\le x\\le 0,\\,\\,1-(x+1)^{2}\\le y\\le 2-(x+1)^{2}\\}.\n$$\n\nBy performing the change of variables $u=x+1$ and $v=y+(x+1)^{2},$ the integral\n\n$$\n{\u222c}_{D}(x-y+1)\\,dx\\,dy\n$$\n\ncan be written in terms of $u$ and $v$ as",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\,dx\\,dy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))|\\frac{\u2202(x,y)}{\u2202(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=x+1,\\,v=y+(x+1)^{2}\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required integral, we proceed as follows::\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v)\\,:\\,0\\le u\\le 1,\\,1\\le v\\le 2\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 0 \\\\ 2(x+1) & \\text{\u00a0}\\text{\u00a0}1\\end{vmatrix} \\\\  & =1.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=1.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\nIn this case, we first need to solve the transformation equations\n\n$$\nu=x+1,\\,v=y+(x+1)^{2}\n$$\n\n \nfor $x$ and $y$, which gives\n\n$$\nx=u-1,\\,y=v-{u}^{2}.\n$$\n\n \n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}(x-y+1)\\,dx\\,dy & ={\u222c}_{\u0394}[(u-1)-(v-{u}^{2})+1]|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}({u}^{2}+u-v)\\,|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}({u}^{2}+u-v)\\cdot |1|\\text{d}u\\,\\text{d}v \\\\  & ={\\int }_{1}^{2}{\\int }_{0}^{1}({u}^{2}+u-v)\\,\\text{d}u\\,\\text{d}v.\\end{aligned}\n$$",
+      "eligible": true,
+      "supplied_map": [
+        "x + 1",
+        "y + (x + 1)**2"
+      ],
+      "integrand": "x - y + 1",
+      "transformed_integrand": "u**2 + u - v",
+      "bounds": [
+        "0",
+        "1",
+        "1",
+        "2"
+      ],
+      "inverse": {
+        "x": "u - 1",
+        "y": "-u**2 + v"
+      },
+      "jacobian": "1",
+      "correct_value": "-2/3",
+      "choice_values": [
+        "-2/3",
+        "-7/3",
+        "-7/6",
+        "11/6",
+        "-4/3"
+      ],
+      "complete_bank_distinct": true,
+      "fingerprint": "3bf1f129ff15ca7bc90324d8a7bd3a104d7bfd946af329ba6ee87113a5826627"
+    },
+    {
+      "entity": 17592186481431,
+      "source_id": "q-160850",
+      "difficulty": ":question.difficulty/moderate",
+      "field_types": [
+        ":answer-field.type/radio"
+      ],
+      "choice_count": 5,
+      "plots": "none",
+      "prompt": "Using the change of variables $u=x+y$ and $v=x-y,$ evaluate the double integral\n\n$$\n{\u222c}_{D}(x+y)(x-y)^{3/2}\\,dx\\,dy,\n$$\n\nwhere $D=\\{(x,y)\\,:\\,1\\le x+y\\le 3,\\,0\\le x-y\\le 1\\}.$",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\,dx\\,dy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))|\\frac{\u2202(x,y)}{\u2202(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=x+y,\\,v=x-y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v)\\,:\\,1\\le u\\le 3,\\,0\\le v\\le 1\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 1 \\\\ 1 & \\text{\u00a0}\\text{\u00a0}-1\\end{vmatrix} \\\\  & =-2.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=-\\frac{1}{2}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}(x+y)(x-y)^{3/2}\\,dx\\,dy & ={\u222c}_{\u0394}u{v}^{3/2}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\\int }_{0}^{1}{\\int }_{1}^{3}u{v}^{3/2}|-\\frac{1}{2}|du\\,dv \\\\  & =\\frac{1}{2}{\\int }_{0}^{1}{v}^{3/2}[{\\int }_{1}^{3}u\\,du]dv \\\\  & =\\frac{1}{2}{\\int }_{0}^{1}{v}^{3/2}{[\\frac{{u}^{2}}{2}]}_{1}^{3}\\,dv \\\\  & =\\frac{1}{2}{\\int }_{0}^{1}{v}^{3/2}[\\frac{9}{2}-\\frac{1}{2}]dv \\\\  & =2{\\int }_{0}^{1}{v}^{3/2}\\,dv \\\\  & =2{[\\frac{2}{5}\\,{v}^{5/2}]}_{0}^{1} \\\\  & =\\frac{4}{5}[1-0] \\\\  & =\\frac{4}{5}.\\end{aligned}\n$$",
+      "eligible": true,
+      "supplied_map": [
+        "x + y",
+        "x - y"
+      ],
+      "integrand": "(x - y)**(3/2)*(x + y)",
+      "transformed_integrand": "u*v**(3/2)/2",
+      "bounds": [
+        "1",
+        "3",
+        "0",
+        "1"
+      ],
+      "inverse": {
+        "x": "u/2 + v/2",
+        "y": "u/2 - v/2"
+      },
+      "jacobian": "-2",
+      "correct_value": "4/5",
+      "choice_values": [
+        "2/3",
+        "2",
+        "3",
+        "1/2",
+        "4/5"
+      ],
+      "complete_bank_distinct": true,
+      "fingerprint": "aae652ffb03fd99c4b2f73a83d97f26378a37a4a7bb8a4be4ca99f9de92bef0a"
+    },
+    {
+      "entity": 17592186481440,
+      "source_id": "q-82911",
+      "difficulty": ":question.difficulty/moderate",
+      "field_types": [
+        ":answer-field.type/radio"
+      ],
+      "choice_count": 5,
+      "plots": "none",
+      "prompt": "Using the change of variables $u=x+y$ and $v=x-y,$ evaluate the double integral\n\n$$\n{\u222c}_{D}({x}^{2}-{y}^{2})\\,dx\\,dy,\n$$\n\nwhere $D=\\{(x,y)\\,:\\,0\\le x+y\\le 2,\\,2\\le x-y\\le 4\\}.$",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\,dx\\,dy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))|\\frac{\u2202(x,y)}{\u2202(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=x+y,\\,v=x-y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v)\\,:\\,0\\le u\\le 2,\\,2\\le v\\le 4\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 1 \\\\ 1 & \\text{\u00a0}\\text{\u00a0}-1\\end{vmatrix} \\\\  & =-2.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=-\\frac{1}{2}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}({x}^{2}-{y}^{2})\\,dx\\,dy & ={\u222c}_{\u0394}(x+y)(x-y)|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}uv\\cdot |-\\frac{1}{2}|\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{2}{\u222c}_{\u0394}uv\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{0}^{2}u[{\\int }_{2}^{4}v\\,dv]du \\\\  & =\\frac{1}{2}{\\int }_{0}^{2}u{[\\frac{{v}^{2}}{2}]}_{2}^{4}\\,du \\\\  & =\\frac{1}{2}{\\int }_{0}^{2}u(\\frac{{4}^{2}}{2}-\\frac{{2}^{2}}{2})\\,du \\\\  & =3{\\int }_{0}^{2}u\\,du \\\\  & =3[\\frac{{u}^{2}}{2}]_{0}^{2} \\\\  & =3\\cdot 2 \\\\  & =6.\\end{aligned}\n$$",
+      "eligible": true,
+      "supplied_map": [
+        "x + y",
+        "x - y"
+      ],
+      "integrand": "x**2 - y**2",
+      "transformed_integrand": "u*v/2",
+      "bounds": [
+        "0",
+        "2",
+        "2",
+        "4"
+      ],
+      "inverse": {
+        "x": "u/2 + v/2",
+        "y": "u/2 - v/2"
+      },
+      "jacobian": "-2",
+      "correct_value": "6",
+      "choice_values": [
+        "1/2",
+        "2",
+        "6",
+        "8",
+        "4"
+      ],
+      "complete_bank_distinct": true,
+      "fingerprint": "3ccc974f0e2f9044f37f8218128b5b2f36efd38d3855d83f6b95e8bb827feb17"
+    },
+    {
+      "entity": 17592186493956,
+      "source_id": "q-160899",
+      "difficulty": ":question.difficulty/moderate",
+      "field_types": [
+        ":answer-field.type/radio"
+      ],
+      "choice_count": 5,
+      "plots": "none",
+      "prompt": "Using the change of variables $u=\\frac{y}{x}$ and $v=xy,$ evaluate the double integral\n\n$$\n{\u222c}_{D}{e}^{-xy/2}\\,dx\\,dy,\n$$\n\nwhere $D=\\{(x,y)\\,:\\,\\frac{x}{4}\\le y\\le 2x,\\,1\\le xy\\le 4\\}.$",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\,dx\\,dy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))|\\frac{\u2202(x,y)}{\u2202(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=\\frac{y}{x},\\,v=xy\n$$\n\n \ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v)\\,:\\,\\frac{1}{4}\\le u\\le 2,\\,1\\le v\\le 4\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}-\\frac{y}{{x}^{2}} & \\frac{1}{x} \\\\ y & \\text{\u00a0}\\text{\u00a0}x\\end{vmatrix} \\\\  & =-\\frac{2y}{x}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=\\frac{1}{(-\\frac{2y}{x})}=-\\frac{1}{2u}.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}{e}^{-xy/2}\\,dx\\,dy & ={\u222c}_{\u0394}{e}^{-v/2}|\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}{e}^{-v/2}\\cdot |-\\frac{1}{2u}|\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{1}^{4}{\\int }_{1/4}^{2}\\frac{{e}^{-v/2}}{u}\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{1}^{4}{e}^{-v/2}[{\\int }_{1/4}^{2}\\frac{1}{u}\\,\\text{d}u]\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{1}^{4}{e}^{-v/2}[\\operatorname{ln}\u2061|u|\\,{|}_{1/4}^{2}]du \\\\  & =\\frac{1}{2}{\\int }_{1}^{4}{e}^{-v/2}[\\operatorname{ln}\u20612-\\operatorname{ln}\u2061\\frac{1}{4}]\\,du \\\\  & =\\frac{3\\operatorname{ln}\u20612}{2}{\\int }_{1}^{4}{e}^{-v/2}\\,du \\\\  & =\\frac{3\\operatorname{ln}\u20612}{2}\\cdot {[-2{e}^{-v/2}]}_{1}^{4} \\\\  & =-3\\operatorname{ln}\u20612\\cdot ({e}^{-2}-{e}^{-1/2}) \\\\  & =3({e}^{-1/2}-{e}^{-2})\\operatorname{ln}\u20612.\\end{aligned}\n$$",
+      "eligible": false,
+      "supplied_map": [
+        "y/x",
+        "x*y"
+      ],
+      "integrand": "exp(-x*y/2)",
+      "transformed_integrand": "exp(-v/2)/(2*u)",
+      "bounds": [
+        "1/4",
+        "2",
+        "1",
+        "4"
+      ],
+      "inverse": {
+        "x": "sqrt(v)/sqrt(u)",
+        "y": "sqrt(u)*sqrt(v)"
+      },
+      "jacobian": "-2*y/x",
+      "correct_value": "-3*(1 - exp(3/2))*exp(-2)*log(2)",
+      "choice_values": [
+        "(-3*exp(-2) + 3*exp(-1/2))*log(2)",
+        "E/8",
+        "-exp(-2)/4 + exp(-1)/4",
+        "8*exp(2)",
+        "(-e + exp(2))*log(2)"
+      ],
+      "complete_bank_distinct": true,
+      "fingerprint": "0166b41b4977280c5f32c17ab340cfe15fa2ee512b4a96b3e4c9bdce85161717",
+      "exclusion": "Solution changes dv to du while integrating a v-expression. Preserved, conservatively excluded."
+    },
+    {
+      "entity": 17592186493973,
+      "source_id": "q-82985",
+      "difficulty": ":question.difficulty/moderate",
+      "field_types": [
+        ":answer-field.type/radio"
+      ],
+      "choice_count": 5,
+      "plots": "none",
+      "prompt": "Using the change of variables $u=x+3y$ and $v=x+2y,$ evaluate the double integral\n\n$$\n{\u222c}_{D}\\frac{x+3y}{x+2y}\\,dx\\,dy,\n$$\n\nwhere $D=\\{(x,y)\\,:\\,0\\le x+3y\\le 2,\\,2\\le x+2y\\le 4\\}.$",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v) \\\\ y(u,v)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{\u222c}_{D}f(x,y)\\,dx\\,dy={\u222c}_{\u0394}\\text{\u00a0}f(x(u,v),y(u,v))|\\frac{\u2202(x,y)}{\u2202(u,v)}|du\\,dv\n$$\n\nwhere $\\frac{\u2202(x,y)}{\u2202(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=x+3y,\\,v=x+2y\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y\\end{bmatrix}\\to \\begin{bmatrix}u(x,y) \\\\ v(x,y)\\end{bmatrix}.\n$$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find $\u0394,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uv$-plane is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v)\\,:\\,0\\le u\\le 2,\\,2\\le v\\le 4\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v)}{\u2202(x,y)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 3 \\\\ 1 & \\text{\u00a0}\\text{\u00a0}2\\end{vmatrix} \\\\  & =-1.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y)}{\u2202(u,v)}={(\\frac{\u2202(u,v)}{\u2202(x,y)})}^{-1}=-1.\n$$\n\nNote that $\\frac{\u2202(x,y)}{\u2202(u,v)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{\u222c}_{D}\\frac{x+3y}{x+2y}\\,dx\\,dy & ={\u222c}_{\u0394}\\frac{u}{v}\\cdot |\\frac{\u2202(x,y)}{\u2202(u,v)}|\\text{d}u\\,\\text{d}v \\\\  & ={\u222c}_{\u0394}\\frac{u}{v}\\cdot |-1|\\text{d}u\\,\\text{d}v \\\\  & ={\\int }_{0}^{2}{\\int }_{2}^{4}\\frac{u}{v}\\,\\text{d}v\\,\\text{d}u \\\\  & ={\\int }_{0}^{2}u[{\\int }_{2}^{4}\\frac{1}{v}\\,dv]du \\\\  & ={\\int }_{0}^{2}u[\\operatorname{ln}\u2061v]_{2}^{4}\\,du \\\\  & ={\\int }_{0}^{2}u(\\operatorname{ln}\u20614-\\operatorname{ln}\u20612)\\,du \\\\  & =(2\\operatorname{ln}\u20612-\\operatorname{ln}\u20612){\\int }_{0}^{2}u\\,du \\\\  & =\\operatorname{ln}\u20612[\\frac{{u}^{2}}{2}]_{0}^{2} \\\\  & =\\operatorname{ln}\u20612\\cdot (2-0) \\\\  & =2\\operatorname{ln}\u20612.\\end{aligned}\n$$",
+      "eligible": true,
+      "supplied_map": [
+        "x + 3*y",
+        "x + 2*y"
+      ],
+      "integrand": "(x + 3*y)/(x + 2*y)",
+      "transformed_integrand": "u/v",
+      "bounds": [
+        "0",
+        "2",
+        "2",
+        "4"
+      ],
+      "inverse": {
+        "x": "-2*u + 3*v",
+        "y": "u - v"
+      },
+      "jacobian": "-1",
+      "correct_value": "log(4)",
+      "choice_values": [
+        "2*log(2)",
+        "log(3)",
+        "2",
+        "4",
+        "log(8)"
+      ],
+      "complete_bank_distinct": true,
+      "fingerprint": "7abd95a2e5827d73cc889eee0dba448a329278a33d1f4a7acc082d6a1c546a91"
+    }
+  ]
+}

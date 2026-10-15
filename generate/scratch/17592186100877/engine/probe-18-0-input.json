@@ -1,0 +1,70 @@
+[
+  {
+    "label": "18 q-336717",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100877,
+        "id": "4d63e99a-9db4-565e-97c5-ffc3090b0074",
+        "title": "Calculating a Definite Integral of a Rational Function Using Substitution"
+      },
+      "question": {
+        ":question/id": "cb7196e5-d7f5-57c6-8585-8f9e64cfa8a4",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Compute the exact value of the definite integral.\n\n$\\int_{1}^{3}\\frac{1}{4 x - 1}\\,\\text{d}x=$\n{{field-1}}",
+        ":question/worked-solution": "We start by changing the variable:\n\n$$\n\\begin{aligned}u & =4 x - 1 \\\\ \\frac{\\text{d}u}{\\text{d}x} & =4 \\\\ \\text{d}u & =4\\,\\text{d}x \\\\ \\frac{1}{4}\\,\\text{d}u & =1\\,\\text{d}x\\end{aligned}\n$$\n\nNext, we create a table for the limits of integration using the rule $u=4 x - 1.$\n\n$$\n\\begin{aligned}x & 1 & 3 \\\\ u & 3 & 11\\end{aligned}\n$$\n\nSo, the integral in terms of the new variable is\n\n$$\n\\int_{1}^{3}\\frac{1}{4 x - 1}\\,\\text{d}x=\\int_{3}^{11}\\frac{1}{u}\\cdot \\frac{1}{4}\\,\\text{d}u.\n$$\n\nFinally, we can solve it and get\n\n$$\n\\begin{aligned}\\int_{3}^{11}\\frac{1}{u}\\cdot \\frac{1}{4}\\,\\text{d}u & =\\frac{1}{4}\\int_{3}^{11}\\frac{1}{u}\\,\\text{d}u \\\\  & =\\frac{1}{4}\\ln(u)|_{3}^{11} \\\\  & =\\frac{1}{4}(\\ln(11)-\\ln(3)) \\\\  & =- \\frac{\\log{\\left(3 \\right)}}{4} + \\frac{\\log{\\left(11 \\right)}}{4}.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "497a5d81-8ed4-5843-a11d-881edeee921f",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "a4240b56-138b-5cf2-b98a-256bc696900b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{\\log{\\left(3 \\right)}}{4} + \\frac{\\log{\\left(11 \\right)}}{4}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "a4240b56-138b-5cf2-b98a-256bc696900b"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-rational-b2275-v1",
+        "seed": 0,
+        "basis": 2275,
+        "template": "q-336717",
+        "parameters": {
+          "n": 1,
+          "a": 4,
+          "b": -1,
+          "c": 1,
+          "lo": 1,
+          "hi": 3
+        },
+        "bank_profile": "observed",
+        "source_ids": [
+          "q-336717"
+        ],
+        "math_fingerprint": "ae8851132e7a9a3b4aff23bdf1e9fa9fcc3704e43bfc1889b157212a76c62acd",
+        "content_fingerprint": "3353eed2d56fe505f0354af4980417f691160f23a18339c8b3e4433e55e3cca5",
+        "domain": "a*x^n+b>0 throughout closed original x interval; no poles",
+        "authored": false,
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{\\log{\\left(3 \\right)}}{4} + \\frac{\\log{\\left(11 \\right)}}{4}",
+        "expected": "accepted",
+        "purpose": "canonical exact blank"
+      }
+    ]
+  }
+]

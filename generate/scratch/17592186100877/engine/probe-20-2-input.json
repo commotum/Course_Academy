@@ -1,0 +1,70 @@
+[
+  {
+    "label": "20 q-336717",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100877,
+        "id": "4d63e99a-9db4-565e-97c5-ffc3090b0074",
+        "title": "Calculating a Definite Integral of a Rational Function Using Substitution"
+      },
+      "question": {
+        ":question/id": "809fbfdd-4fc0-5b2f-b087-a45c0726ffcd",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Compute the exact value of the definite integral.\n\n$\\int_{-1}^{0}\\frac{2}{2 x + 9}\\,\\text{d}x=$\n{{field-1}}",
+        ":question/worked-solution": "We start by changing the variable:\n\n$$\n\\begin{aligned}u & =2 x + 9 \\\\ \\frac{\\text{d}u}{\\text{d}x} & =2 \\\\ \\text{d}u & =2\\,\\text{d}x \\\\ 1\\,\\text{d}u & =2\\,\\text{d}x\\end{aligned}\n$$\n\nNext, we create a table for the limits of integration using the rule $u=2 x + 9.$\n\n$$\n\\begin{aligned}x & -1 & 0 \\\\ u & 7 & 9\\end{aligned}\n$$\n\nSo, the integral in terms of the new variable is\n\n$$\n\\int_{-1}^{0}\\frac{2}{2 x + 9}\\,\\text{d}x=\\int_{7}^{9}\\frac{1}{u}\\cdot 1\\,\\text{d}u.\n$$\n\nFinally, we can solve it and get\n\n$$\n\\begin{aligned}\\int_{7}^{9}\\frac{1}{u}\\cdot 1\\,\\text{d}u & =1\\int_{7}^{9}\\frac{1}{u}\\,\\text{d}u \\\\  & =1\\ln(u)|_{7}^{9} \\\\  & =1(\\ln(9)-\\ln(7)) \\\\  & =- \\log{\\left(7 \\right)} + 2 \\log{\\left(3 \\right)}.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "96ee9919-97c5-515a-921c-28979ca24030",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "d5faaa8c-78a8-5f06-8433-9c723569ca6a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\log{\\left(7 \\right)} + 2 \\log{\\left(3 \\right)}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "d5faaa8c-78a8-5f06-8433-9c723569ca6a"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "definite-rational-b2275-v1",
+        "seed": 1,
+        "basis": 2275,
+        "template": "q-336717",
+        "parameters": {
+          "n": 1,
+          "a": 2,
+          "b": 9,
+          "c": 2,
+          "lo": -1,
+          "hi": 0
+        },
+        "bank_profile": "observed",
+        "source_ids": [
+          "q-336717"
+        ],
+        "math_fingerprint": "0c74d03c67c01affae255e8a457c7d5ce51ca291fe23bfa7f4892f370efaf412",
+        "content_fingerprint": "fb947505cb80330793c6b08c3804af71dc41d1dfe7d197a298fc541569845e82",
+        "domain": "a*x^n+b>0 throughout closed original x interval; no poles",
+        "authored": false,
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "1\\ln(\\frac{9}{7})",
+        "expected": "accepted",
+        "purpose": "uncollected endpoint log-power quotient equivalent"
+      }
+    ]
+  }
+]
