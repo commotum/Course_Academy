@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -19,7 +19,7 @@
+ KP_ID=17592186059848
+ KP_UUID='32df8909-a239-5167-b8ea-412f7cdaea93'
+ TITLE='Identifying Singular Matrices'
+-VERSION='singularity-cofactor-checkbox-3'
++VERSION='singularity-cofactor-checkbox-4-bmatrix'
+ D=Path(__file__).with_suffix('')
+ EXTRACTION=json.loads((D/'recipes.json').read_text())
+ TEMPLATES=EXTRACTION['templates']
+@@ -41,7 +41,7 @@
+ def par(x):return '('+tex(x)+')' if x.is_Add or x.could_extract_minus_sign() else tex(x)
+ def matrix_latex(vals, bars=False):
+     core=r'\begin{aligned}'+r' \\ '.join(' & '.join(tex(v)for v in vals[i:i+3])for i in range(0,9,3))+r'\end{aligned}'
+-    return '|'+core+'|' if bars else '['+core+']'
++    return '|'+core+'|' if bars else r'\begin{bmatrix}'+r' \\ '.join(' & '.join(tex(v)for v in vals[i:i+3])for i in range(0,9,3))+r'\end{bmatrix}'
+ def minor_latex(vals):return r'|\begin{aligned}'+tex(vals[0])+' & '+tex(vals[1])+r' \\ '+tex(vals[2])+' & '+tex(vals[3])+r'\end{aligned}|'
+ def sum_tex(vals,skip_zero=False):
+     parts=[]

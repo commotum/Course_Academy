@@ -1,0 +1,690 @@
+[
+  {
+    "source": "q-124120",
+    "source_db_id": 17592186134082,
+    "level": "moderate",
+    "field_type": "radio",
+    "field_key": "selection",
+    "integrand": "x + pi*cos(pi*y)",
+    "oriented_path": [
+      "t + 1",
+      "t"
+    ],
+    "bounds": [
+      "0",
+      "1"
+    ],
+    "differential": "x",
+    "source_prompt": "![](images/f5/f531f2467284ef84e0af0758a8e8554f1e5f72ea08d30d0b80c83076fbe5d7a3.png)\n\nEvaluate ${\\int }_{C}(x+\\pi \\operatorname{cos}\u2061\\pi y)\\,\\text{d}x,$ where $C$ is the path traversed along the line segment from the point $(1,0)$ to the point $(2,1),$ as shown above.",
+    "source_solution": "We will use the formula\n\n$$\n{\\int }_{C}f(x,y)\\,\\text{d}y={\\int }_{a}^{b}f(r(t))\\,\\frac{\\text{d}x}{\\text{d}t}\\,\\text{d}t.\n$$\n\nThe curve $C$ is a line segment with endpoints $(1,0)$ and $(2,1).$ It can be parametrized as \n\n$$\n\\begin{aligned}r(t) & =\u27e8(1+t(2-1)),\\,(0+t(1-0))\u27e9 \\\\  & =\u27e81+t,\\,t\u27e9,\\end{aligned}\n$$\n\nwhere $0\\le t\\le 1.$\n\nComputing $\\frac{\\text{d}x}{\\text{d}t},$ we get the following:\n\n$$\n\\begin{aligned}\\frac{\\text{d}x}{\\text{d}t} & =\\frac{\\text{d}}{\\text{d}t}(1+t)=1\\end{aligned}\n$$\n\nNow, since $f(x,y)=x+\\pi \\operatorname{cos}\u2061\\pi y$, we obtain\n\n$$\n\\begin{aligned}f(r(t)) & =(1+t)+\\pi \\operatorname{cos}\u2061\\pi t \\\\  & =1+t+\\pi \\operatorname{cos}\u2061\\pi t.\\end{aligned}\n$$\n\nWe can now evaluate the integral:\n\n$$\n\\begin{aligned}{\\int }_{C}f(x,y)\\,\\text{d}x & ={\\int }_{0}^{1}f(r(t))\\,\\frac{\\text{d}x}{\\text{d}t}\\,\\text{d}t \\\\  & ={\\int }_{0}^{1}(1+t+\\pi \\operatorname{cos}\u2061\\pi t)\\cdot 1\\cdot \\text{d}t \\\\  & ={\\int }_{0}^{1}1+t+\\pi \\operatorname{cos}\u2061\\pi t\\,\\text{d}t \\\\  & ={[t+\\frac{{t}^{2}}{2}+\\operatorname{sin}\u2061\\pi t]}_{0}^{1} \\\\  & =(1+\\frac{{1}^{2}}{2}+\\operatorname{sin}\u2061\\pi )-(0+\\operatorname{sin}\u20610) \\\\  & =\\frac{3}{2}\\end{aligned}\n$$",
+    "parameter_slot": {
+      "c": {
+        "observed": 1,
+        "sampled": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "role": "positive multiplier of the supplied integrand; same differential, path and workload",
+        "dependencies": [
+          "prompt integrand",
+          "f(x,y)",
+          "each f(r(t)) value",
+          "each evaluated integral or substitution value",
+          "entire source choice bank"
+        ],
+        "fixed_components_reason": "Path slots are deliberately narrow in this version because their endpoints and orientation control the integration and the reused diagram."
+      }
+    },
+    "profile": "source-bank:q-124120",
+    "choices": [
+      {
+        "answer_id": "4f5c27e6-6d15-5543-baca-509a958d1428",
+        "source_field": "29184995-008b-5dbe-af80-c01d22170858",
+        "observed_value": "\\frac{5}{2}",
+        "recipe": "c * (5/2)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "81b4c97c-6573-5711-9cd1-f51a4a264e66",
+        "source_field": "29184995-008b-5dbe-af80-c01d22170858",
+        "observed_value": "\\frac{1}{2}",
+        "recipe": "c * (1/2)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "4b80e13c-c214-5a76-9bff-a55badcb706d",
+        "source_field": "29184995-008b-5dbe-af80-c01d22170858",
+        "observed_value": "2",
+        "recipe": "c * (2)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "938debfc-b447-5b7c-a524-0c933d4da736",
+        "source_field": "29184995-008b-5dbe-af80-c01d22170858",
+        "observed_value": "1",
+        "recipe": "c * (1)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "977e7ec8-5c46-57e8-b421-0c2f023be513",
+        "source_field": "29184995-008b-5dbe-af80-c01d22170858",
+        "observed_value": "\\frac{3}{2}",
+        "recipe": "c * (3/2)",
+        "correct": true,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      }
+    ]
+  },
+  {
+    "source": "q-124167",
+    "source_db_id": 17592186259602,
+    "level": "hard",
+    "field_type": "radio",
+    "field_key": "selection",
+    "integrand": "x*y/2",
+    "oriented_path": [
+      "2*cos(t)",
+      "2*sin(t)"
+    ],
+    "bounds": [
+      "0",
+      "pi"
+    ],
+    "differential": "y",
+    "source_prompt": "![](images/55/559a6b6cb717c10e60b77da402e310fc5895c814655b4ca1748eba294d712a32.png)\n\nEvaluate ${\\int }_{C}\\frac{1}{2}xy\\,\\text{d}y,$ where $C$ is the path along the upper half of the circle of radius $2,$ traversed from the point $(2,0)$ to the point $(-2,0),$ as shown above.",
+    "source_solution": "We will use the formula\n\n$$\n{\\int }_{C}f(x,y)\\,\\text{d}y={\\int }_{a}^{b}f(r(t))\\,\\frac{\\text{d}y}{\\text{d}t}\\,\\text{d}t.\n$$\n\nThe curve $C$ is a half of a circle of radius $2$ centered at $O.$ It can be parameterized as \n\n$$\nr(t)=\u27e82\\operatorname{cos}\u2061t,\\,2\\operatorname{sin}\u2061t\u27e9,\\,0\\le t\\le \\pi .\n$$\n\nComputing $\\frac{\\text{d}y}{\\text{d}t},$ we get the following:\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}t} & =\\frac{\\text{d}}{\\text{d}t}(2\\operatorname{sin}\u2061t)=2\\operatorname{cos}\u2061t\\end{aligned}\n$$\n\nNow, since $f(x,y)=\\frac{1}{2}xy,$ we obtain\n\n$$\n\\begin{aligned}f(r(t)) & =\\frac{1}{2}(2\\operatorname{cos}\u2061t)(2\\operatorname{sin}\u2061t) \\\\  & =2\\operatorname{sin}\u2061t\\operatorname{cos}\u2061t.\\end{aligned}\n$$\n\nWe can now evaluate the integral:\n\n$$\n\\begin{aligned}{\\int }_{C}f(x,y)\\,\\text{d}y & ={\\int }_{0}^{\\pi }f(r(t))\\,\\frac{\\text{d}y}{\\text{d}t}\\,\\text{d}t \\\\  & ={\\int }_{0}^{\\pi }2\\operatorname{sin}\u2061t\\operatorname{cos}\u2061t\\cdot (2\\operatorname{cos}\u2061t)\\cdot \\text{d}t \\\\  & =4{\\int }_{0}^{\\pi }\\operatorname{sin}\u2061t{cos}^{2}\u2061t\\,\\text{d}t\\end{aligned}\n$$\n\nWe can solve this using the substitution $u=\\operatorname{cos}\u2061t,$ $\\text{d}u=-\\operatorname{sin}\u2061t\\,\\text{d}t$ as follows:\n\n$$\n\\begin{aligned}4{\\int }_{0}^{\\pi }\\operatorname{sin}\u2061t{cos}^{2}\u2061t\\,\\text{d}t & =4{\\int }_{1}^{-1}{u}^{2}\\,(-\\text{d}u) \\\\  & =4{\\int }_{-1}^{1}{u}^{2}\\,\\text{d}u \\\\  & =\\frac{4}{3}{u}^{3}{|}_{-1}^{1} \\\\  & =\\frac{4}{3}[(1)^{3}-(-1)^{3}] \\\\  & =\\frac{4}{3}\\cdot 2 \\\\  & =\\frac{8}{3}\\end{aligned}\n$$",
+    "parameter_slot": {
+      "c": {
+        "observed": 1,
+        "sampled": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "role": "positive multiplier of the supplied integrand; same differential, path and workload",
+        "dependencies": [
+          "prompt integrand",
+          "f(x,y)",
+          "each f(r(t)) value",
+          "each evaluated integral or substitution value",
+          "entire source choice bank"
+        ],
+        "fixed_components_reason": "Path slots are deliberately narrow in this version because their endpoints and orientation control the integration and the reused diagram."
+      }
+    },
+    "profile": "source-bank:q-124167",
+    "choices": [
+      {
+        "answer_id": "40dc00cd-4c24-526f-b0be-714180e4f0b8",
+        "source_field": "b9ebaf3f-afef-5801-a181-f3c0188294e1",
+        "observed_value": "\\frac{1}{6}",
+        "recipe": "c * (1/6)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "5febbd5f-4713-5fff-8f7f-17efac6589cd",
+        "source_field": "b9ebaf3f-afef-5801-a181-f3c0188294e1",
+        "observed_value": "\\frac{3}{4}",
+        "recipe": "c * (3/4)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "7696a3d2-8e7a-5c22-b23e-1b2752090aa1",
+        "source_field": "b9ebaf3f-afef-5801-a181-f3c0188294e1",
+        "observed_value": "-\\frac{2}{3}",
+        "recipe": "c * (-2/3)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "ad788cdb-65a4-5dfe-965b-6ccf2a1c8f7c",
+        "source_field": "b9ebaf3f-afef-5801-a181-f3c0188294e1",
+        "observed_value": "-\\frac{4}{3}",
+        "recipe": "c * (-4/3)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "e855ef6b-a065-56dc-b0dc-28e3c44034ab",
+        "source_field": "b9ebaf3f-afef-5801-a181-f3c0188294e1",
+        "observed_value": "\\frac{8}{3}",
+        "recipe": "c * (8/3)",
+        "correct": true,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      }
+    ]
+  },
+  {
+    "source": "q-124172",
+    "source_db_id": 17592186527980,
+    "level": "moderate",
+    "field_type": "radio",
+    "field_key": "selection",
+    "integrand": "-2*x + y**2",
+    "oriented_path": [
+      "2*t",
+      "2*t + 1"
+    ],
+    "bounds": [
+      "0",
+      "1"
+    ],
+    "differential": "y",
+    "source_prompt": "![](images/09/09a38bb4306728f97b7fecbf9ab1bda7aa957607352c1ab27af09489c271c3ed.png)\n\nEvaluate ${\\int }_{C}({y}^{2}-2x)\\,\\text{d}y,$ where $C$ is the path traversed along the line segment from the point $(0,1)$ to the point $(2,3),$ as shown above.",
+    "source_solution": "We will use the formula\n\n$$\n{\\int }_{C}f(x,y)\\,\\text{d}y={\\int }_{a}^{b}f(r(t))\\,\\frac{\\text{d}y}{\\text{d}t}\\,\\text{d}t.\n$$\n\nThe curve $C$ is a line segment with endpoints $(0,1)$ and $(2,3).$ It can be parametrized as \n\n$$\n\\begin{aligned}r(t) & =\u27e8(0+t(2-0)),\\,(1+t(3-1))\u27e9 \\\\  & =\u27e82t,\\,1+2t\u27e9,\\end{aligned}\n$$\n\nwhere $0\\le t\\le 1.$\n\nComputing $\\frac{\\text{d}y}{\\text{d}t},$ we get the following:\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}t} & =\\frac{\\text{d}}{\\text{d}t}(1+2t)=2\\end{aligned}\n$$\n\nNow, since $f(x,y)={y}^{2}-2x$, we obtain\n\n$$\n\\begin{aligned}f(r(t)) & =(1+2t)^{2}-2(2t) \\\\  & =1+4t+4{t}^{2}-4t \\\\  & =4{t}^{2}+1.\\end{aligned}\n$$\n\nWe can now evaluate the integral:\n\n$$\n\\begin{aligned}{\\int }_{C}f(x,y)\\,\\text{d}y & ={\\int }_{0}^{1}f(r(t))\\,\\frac{\\text{d}y}{\\text{d}t}\\,\\text{d}t \\\\  & ={\\int }_{0}^{1}(4{t}^{2}+1)\\cdot 2\\cdot \\text{d}t \\\\  & =2{\\int }_{0}^{1}(4{t}^{2}+1)\\,\\text{d}t \\\\  & =2{[\\frac{4{t}^{3}}{3}+t]}_{0}^{1} \\\\  & =2(\\frac{4}{3}+1)-2(0) \\\\  & =\\frac{14}{3}\\end{aligned}\n$$",
+    "parameter_slot": {
+      "c": {
+        "observed": 1,
+        "sampled": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "role": "positive multiplier of the supplied integrand; same differential, path and workload",
+        "dependencies": [
+          "prompt integrand",
+          "f(x,y)",
+          "each f(r(t)) value",
+          "each evaluated integral or substitution value",
+          "entire source choice bank"
+        ],
+        "fixed_components_reason": "Path slots are deliberately narrow in this version because their endpoints and orientation control the integration and the reused diagram."
+      }
+    },
+    "profile": "source-bank:q-124172",
+    "choices": [
+      {
+        "answer_id": "21702398-6680-552d-923f-027dff95a35a",
+        "source_field": "8b9c47c5-4e96-58fa-ac91-5791dc11f30c",
+        "observed_value": "\\frac{2}{3}",
+        "recipe": "c * (2/3)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "6029d8a7-a6ae-5959-9ee4-f8e3ebd8e072",
+        "source_field": "8b9c47c5-4e96-58fa-ac91-5791dc11f30c",
+        "observed_value": "\\frac{14}{3}",
+        "recipe": "c * (14/3)",
+        "correct": true,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "78ae96ca-4942-5362-807b-c0b65d2496c2",
+        "source_field": "8b9c47c5-4e96-58fa-ac91-5791dc11f30c",
+        "observed_value": "\\frac{7}{6}",
+        "recipe": "c * (7/6)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "c94fc212-35ff-5e38-9f57-12d4f4959a4c",
+        "source_field": "8b9c47c5-4e96-58fa-ac91-5791dc11f30c",
+        "observed_value": "\\frac{11}{6}",
+        "recipe": "c * (11/6)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "ea8f272e-677d-5489-96d8-1e29db88e990",
+        "source_field": "8b9c47c5-4e96-58fa-ac91-5791dc11f30c",
+        "observed_value": "\\frac{5}{3}",
+        "recipe": "c * (5/3)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      }
+    ]
+  },
+  {
+    "source": "q-124175",
+    "source_db_id": 17592186259605,
+    "level": "moderate",
+    "field_type": "radio",
+    "field_key": "selection",
+    "integrand": "y + sqrt(x - 1)",
+    "oriented_path": [
+      "t + 1",
+      "2 - t"
+    ],
+    "bounds": [
+      "0",
+      "1"
+    ],
+    "differential": "x",
+    "source_prompt": "![](images/ab/ab95b870025708090e40cbd7645072e8f4453cf50047b2a00036a30171c81994.png)\n\nEvaluate ${\\int }_{C}(\\sqrt{x-1}+y)\\,\\text{d}x,$ where $C$ is the path traversed along the line segment from the point $(1,2)$ to the point $(2,1),$ as shown above.",
+    "source_solution": "We will use the formula\n\n$$\n{\\int }_{C}f(x,y)\\,\\text{d}x={\\int }_{a}^{b}f(r(t))\\,\\frac{\\text{d}x}{\\text{d}t}\\,\\text{d}t.\n$$\n\nThe curve $C$ is a line segment with endpoints $(1,2)$ and $(2,1).$ It can be parametrized as \n\n$$\n\\begin{aligned}r(t) & =\u27e8(1+t(2-1)),\\,(2+t(1-2))\u27e9 \\\\  & =\u27e81+t,\\,2-t\u27e9,\\end{aligned}\n$$\n\nwhere $0\\le t\\le 1.$\n\nComputing $\\frac{\\text{d}x}{\\text{d}t},$ we get the following:\n\n$$\n\\begin{aligned}\\frac{\\text{d}x}{\\text{d}t} & =\\frac{\\text{d}}{\\text{d}t}(1+t)=1\\end{aligned}\n$$\n\nNow, since $f(x,y)=\\sqrt{x-1}+y$, we obtain\n\n$$\n\\begin{aligned}f(r(t)) & =\\sqrt{(1+t)-1}+2-t \\\\  & =\\sqrt{t}-t+2.\\end{aligned}\n$$\n\nWe can now evaluate the integral:\n\n$$\n\\begin{aligned}{\\int }_{C}f(x,y)\\,\\text{d}x & ={\\int }_{0}^{1}f(r(t))\\,\\frac{\\text{d}x}{\\text{d}t}\\,\\text{d}t \\\\  & ={\\int }_{0}^{1}(\\sqrt{t}-t+2)\\cdot 1\\cdot \\text{d}t \\\\  & ={\\int }_{0}^{1}({t}^{1/2}-t+2)\\,\\text{d}t \\\\  & ={[\\frac{2{t}^{3/2}}{3}-\\frac{{t}^{2}}{2}+2t]}_{0}^{1} \\\\  & =(\\frac{2}{3}-\\frac{1}{2}+2)-(0) \\\\  & =\\frac{13}{6}\\end{aligned}\n$$",
+    "parameter_slot": {
+      "c": {
+        "observed": 1,
+        "sampled": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "role": "positive multiplier of the supplied integrand; same differential, path and workload",
+        "dependencies": [
+          "prompt integrand",
+          "f(x,y)",
+          "each f(r(t)) value",
+          "each evaluated integral or substitution value",
+          "entire source choice bank"
+        ],
+        "fixed_components_reason": "Path slots are deliberately narrow in this version because their endpoints and orientation control the integration and the reused diagram."
+      }
+    },
+    "profile": "source-bank:q-124175",
+    "choices": [
+      {
+        "answer_id": "021c19b6-a87f-59bb-986b-654c56b918a1",
+        "source_field": "4358961a-328e-53e0-ad60-06b7463ba396",
+        "observed_value": "\\frac{10}{3}",
+        "recipe": "c * (10/3)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "54fdfd50-de07-5cfb-b6d6-270b66947185",
+        "source_field": "4358961a-328e-53e0-ad60-06b7463ba396",
+        "observed_value": "\\frac{1}{3}",
+        "recipe": "c * (1/3)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "6abe279c-1db9-56ef-99fe-6e272def1150",
+        "source_field": "4358961a-328e-53e0-ad60-06b7463ba396",
+        "observed_value": "\\frac{13}{6}",
+        "recipe": "c * (13/6)",
+        "correct": true,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "debdbff0-5139-5a2f-ac8e-84956824c0b1",
+        "source_field": "4358961a-328e-53e0-ad60-06b7463ba396",
+        "observed_value": "\\frac{15}{4}",
+        "recipe": "c * (15/4)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "f66ec332-aeec-5f7f-8bb0-93630c7f3749",
+        "source_field": "4358961a-328e-53e0-ad60-06b7463ba396",
+        "observed_value": "\\frac{3}{5}",
+        "recipe": "c * (3/5)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      }
+    ]
+  },
+  {
+    "source": "q-124217",
+    "source_db_id": 17592186259622,
+    "level": "moderate",
+    "field_type": "radio",
+    "field_key": "selection",
+    "integrand": "x**2 + pi*sin(pi*y/2)",
+    "oriented_path": [
+      "2",
+      "2*t"
+    ],
+    "bounds": [
+      "0",
+      "1"
+    ],
+    "differential": "y",
+    "source_prompt": "![](images/cb/cb4c4828626255e26e298a0cdc202b37852df9d39bcfe15e0e67d350d90f774a.png)\n\nEvaluate ${\\int }_{C}(\\pi \\operatorname{sin}\u2061(\\frac{\\pi y}{2})+{x}^{2})\\,\\text{d}y,$ where $C$ is the path traversed along the line segment from the point $(2,0)$ to the point $(2,2),$ as shown above.",
+    "source_solution": "We will use the formula\n\n$$\n{\\int }_{C}f(x,y)\\,\\text{d}y={\\int }_{a}^{b}f(r(t))\\,\\frac{\\text{d}y}{\\text{d}t}\\,\\text{d}t.\n$$\n\nThe curve $C$ is a line segment with endpoints $(2,0)$ and $(2,2).$ It can be parametrized as \n\n$$\n\\begin{aligned}r(t) & =\u27e8(2+t(2-2)),\\,(0+t(2-0))\u27e9 \\\\  & =\u27e82,\\,2t\u27e9,\\end{aligned}\n$$\n\nwhere $0\\le t\\le 1.$\n\nComputing $\\frac{\\text{d}y}{\\text{d}t},$ we get the following:\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}t} & =\\frac{\\text{d}}{\\text{d}t}(2t)=2\\end{aligned}\n$$\n\nNow, since $f(x,y)=\\pi \\operatorname{sin}\u2061(\\frac{\\pi y}{2})+{x}^{2}$, we obtain\n\n$$\n\\begin{aligned}f(r(t)) & =\\pi \\operatorname{sin}\u2061(\\frac{\\pi (2t)}{2})+(2)^{2} \\\\  & =\\pi \\operatorname{sin}\u2061\\pi t+4.\\end{aligned}\n$$\n\nWe can now evaluate the integral:\n\n$$\n\\begin{aligned}{\\int }_{C}f(x,y)\\,\\text{d}x & ={\\int }_{0}^{1}f(r(t))\\,\\frac{\\text{d}y}{\\text{d}t}\\,\\text{d}t \\\\  & ={\\int }_{0}^{1}(\\pi \\operatorname{sin}\u2061\\pi t+4)\\cdot 2\\cdot \\text{d}t \\\\  & =2{\\int }_{0}^{1}(4+\\pi \\operatorname{sin}\u2061\\pi t)\\,\\text{d}t \\\\  & =2(4t-\\operatorname{cos}\u2061\\pi t){|}_{0}^{1} \\\\  & =2[(4-\\operatorname{cos}\u2061\\pi )-(0-\\operatorname{cos}\u20610)] \\\\  & =2[4-(-1)+1] \\\\  & =12\\end{aligned}\n$$",
+    "parameter_slot": {
+      "c": {
+        "observed": 1,
+        "sampled": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "role": "positive multiplier of the supplied integrand; same differential, path and workload",
+        "dependencies": [
+          "prompt integrand",
+          "f(x,y)",
+          "each f(r(t)) value",
+          "each evaluated integral or substitution value",
+          "entire source choice bank"
+        ],
+        "fixed_components_reason": "Path slots are deliberately narrow in this version because their endpoints and orientation control the integration and the reused diagram."
+      }
+    },
+    "profile": "source-bank:q-124217",
+    "choices": [
+      {
+        "answer_id": "15f7b9b1-6205-5e9a-abd6-d1dfcd93b57c",
+        "source_field": "0e95fb8c-bf91-5786-bbd2-5640b44aefed",
+        "observed_value": "16",
+        "recipe": "c * (16)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "614bd43e-4103-5afd-b258-686e690c6a93",
+        "source_field": "0e95fb8c-bf91-5786-bbd2-5640b44aefed",
+        "observed_value": "2",
+        "recipe": "c * (2)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "ac79318b-520f-5618-92c3-a94976c39773",
+        "source_field": "0e95fb8c-bf91-5786-bbd2-5640b44aefed",
+        "observed_value": "6",
+        "recipe": "c * (6)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "c1e76e62-2425-5791-b451-5fd5063d747e",
+        "source_field": "0e95fb8c-bf91-5786-bbd2-5640b44aefed",
+        "observed_value": "14",
+        "recipe": "c * (14)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "fd5e0345-52da-5c07-878f-0a4c916fd920",
+        "source_field": "0e95fb8c-bf91-5786-bbd2-5640b44aefed",
+        "observed_value": "12",
+        "recipe": "c * (12)",
+        "correct": true,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      }
+    ]
+  },
+  {
+    "source": "q-124268",
+    "source_db_id": 17592186369272,
+    "level": "hard",
+    "field_type": "radio",
+    "field_key": "selection",
+    "integrand": "x**2*y",
+    "oriented_path": [
+      "cos(t)",
+      "2*sin(t)"
+    ],
+    "bounds": [
+      "pi",
+      "3*pi/2"
+    ],
+    "differential": "y",
+    "source_prompt": "![](images/be/be3ad044a611d99e67c89d053d4878a2835be65828a4dc9300697bfd61822994.png)\n\nEvaluate ${\\int }_{C}{x}^{2}y\\,\\text{d}y,$ where $C$ is the path along the below-left quarter of the ellipse $4{x}^{2}+{y}^{2}=4,$ traversed from the point $(-1,0)$ to the point $(0,-2),$ as shown above.",
+    "source_solution": "We will use the formula\n\n$$\n{\\int }_{C}f(x,y)\\,\\text{d}y={\\int }_{a}^{b}f(r(t))\\,\\frac{\\text{d}y}{\\text{d}t}\\,\\text{d}t.\n$$\n\nNote that we can write the equation of our ellipse in the form\n\n$$\n\\frac{{x}^{2}}{{1}^{2}}+\\frac{{y}^{2}}{{2}^{2}}=1.\n$$\n\nSo, the curve $C$ is an ellipse centered at $O$ with horizontal and vertical semiaxes of $1$ and $2,$ respectively. Therefore, it can be parametrized as \n\n$$\nr(t)=\u27e8\\operatorname{cos}\u2061t,\\,2\\operatorname{sin}\u2061t\u27e9,\\,\\pi \\le t\\le \\frac{3\\pi }{2}.\n$$\n\nComputing $\\frac{\\text{d}y}{\\text{d}t},$ we get the following:\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}t} & =\\frac{\\text{d}}{\\text{d}t}(2\\operatorname{sin}\u2061t)=2\\operatorname{cos}\u2061t\\end{aligned}\n$$\n\nNow, since $f(x,y)={x}^{2}y$, we obtain\n\n$$\n\\begin{aligned}f(r(t)) & =(\\operatorname{cos}\u2061t)^{2}(2\\operatorname{sin}\u2061t) \\\\  & =2\\operatorname{sin}\u2061t{cos}^{2}\u2061t.\\end{aligned}\n$$\n\nWe can now evaluate the integral:\n\n$$\n\\begin{aligned}{\\int }_{C}f(x,y)\\,\\text{d}y & ={\\int }_{\\pi }^{3\\pi /2}f(r(t))\\,\\frac{\\text{d}y}{\\text{d}t}\\,\\text{d}t \\\\  & ={\\int }_{\\pi }^{3\\pi /2}(2\\operatorname{sin}\u2061t{cos}^{2}\u2061t)\\cdot (2\\operatorname{cos}\u2061t)\\cdot \\text{d}t \\\\  & =4{\\int }_{\\pi }^{3\\pi /2}\\operatorname{sin}\u2061t{cos}^{3}\u2061t\\,\\text{d}t\\end{aligned}\n$$\n\nWe can solve this using the substitution $u=\\operatorname{cos}\u2061t,$ $\\text{d}u=-\\operatorname{sin}\u2061t\\,\\text{d}t$ as follows:\n\n$$\n\\begin{aligned}4{\\int }_{\\pi }^{3\\pi /2}\\operatorname{sin}\u2061t{cos}^{3}\u2061t\\,\\text{d}t & =4{\\int }_{-1}^{0}{u}^{3}\\,(-\\text{d}u) \\\\  & =-4{\\int }_{-1}^{0}{u}^{3}\\,\\text{d}u \\\\  & =-{u}^{4}{|}_{-1}^{0} \\\\  & =-[(0)^{4}-(-1)^{4}] \\\\  & =-(-1) \\\\  & =1\\end{aligned}\n$$",
+    "parameter_slot": {
+      "c": {
+        "observed": 1,
+        "sampled": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "role": "positive multiplier of the supplied integrand; same differential, path and workload",
+        "dependencies": [
+          "prompt integrand",
+          "f(x,y)",
+          "each f(r(t)) value",
+          "each evaluated integral or substitution value",
+          "entire source choice bank"
+        ],
+        "fixed_components_reason": "Path slots are deliberately narrow in this version because their endpoints and orientation control the integration and the reused diagram."
+      }
+    },
+    "profile": "source-bank:q-124268",
+    "choices": [
+      {
+        "answer_id": "ce947fb0-2af2-5578-bc88-f97fd8bc5195",
+        "source_field": "b8f91420-1dd1-57a3-bbc3-7cd1a732535b",
+        "observed_value": "9",
+        "recipe": "c * (9)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "7faeed0c-8c4d-51f9-816f-430b26355ead",
+        "source_field": "b8f91420-1dd1-57a3-bbc3-7cd1a732535b",
+        "observed_value": "1",
+        "recipe": "c * (1)",
+        "correct": true,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "d3b4e0df-ee12-54ca-90c1-55fd453aaffb",
+        "source_field": "b8f91420-1dd1-57a3-bbc3-7cd1a732535b",
+        "observed_value": "5",
+        "recipe": "c * (5)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "17c11c14-5bd8-5dfc-9bc8-39959c08d204",
+        "source_field": "b8f91420-1dd1-57a3-bbc3-7cd1a732535b",
+        "observed_value": "-2",
+        "recipe": "c * (-2)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "9230ca12-f5f1-5580-9077-a7bbc7def856",
+        "source_field": "b8f91420-1dd1-57a3-bbc3-7cd1a732535b",
+        "observed_value": "-6",
+        "recipe": "c * (-6)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      }
+    ]
+  },
+  {
+    "source": "q-124273",
+    "source_db_id": 17592186259646,
+    "level": "hard",
+    "field_type": "radio",
+    "field_key": "selection",
+    "integrand": "x*exp(1 - y**2)",
+    "oriented_path": [
+      "3*cos(t)",
+      "sin(t)"
+    ],
+    "bounds": [
+      "pi/2",
+      "2*pi"
+    ],
+    "differential": "x",
+    "source_prompt": "![](images/0e/0e5257867dae67451500793687a2da24ee31a73a17c691d8d8a6dcded46e8993.png)\n\nEvaluate ${\\int }_{C}x{e}^{1-{y}^{2}}\\,\\text{d}x,$ where $C$ is the path along the three-quarters of the ellipse ${x}^{2}+9{y}^{2}=9,$ traversed from the point $(0,1)$ to the point $(3,0),$ as shown above.",
+    "source_solution": "We will use the formula\n\n$$\n{\\int }_{C}f(x,y)\\,\\text{d}x={\\int }_{a}^{b}f(r(t))\\,\\frac{\\text{d}x}{\\text{d}t}\\,\\text{d}t.\n$$\n\nNote that we can write the equation of our ellipse in the form\n\n$$\n\\frac{{x}^{2}}{{3}^{2}}+\\frac{{y}^{2}}{{1}^{2}}=1.\n$$\n\nSo, the curve $C$ is an ellipse centered at $O$ with horizontal and vertical semiaxes of $3$ and $1,$ respectively. Therefore, it can be parametrized as \n\n$$\nr(t)=\u27e83\\operatorname{cos}\u2061t,\\,\\operatorname{sin}\u2061t\u27e9,\\,\\frac{\\pi }{2}\\le t\\le 2\\pi .\n$$\n\nComputing $\\frac{\\text{d}x}{\\text{d}t},$ we get the following:\n\n$$\n\\begin{aligned}\\frac{\\text{d}x}{\\text{d}t} & =\\frac{\\text{d}}{\\text{d}t}(3\\operatorname{cos}\u2061t)=-3\\operatorname{sin}\u2061t\\end{aligned}\n$$\n\nNow, since $f(x,y)=x{e}^{1-{y}^{2}}$, we obtain\n\n$$\n\\begin{aligned}f(r(t)) & =(3\\operatorname{cos}\u2061t){e}^{1-{sin}^{2}\u2061t} \\\\  & =3\\operatorname{cos}\u2061t{e}^{{cos}^{2}\u2061t}.\\end{aligned}\n$$\n\nWe can now evaluate the integral:\n\n$$\n\\begin{aligned}{\\int }_{C}f(x,y)\\,\\text{d}x & ={\\int }_{\\pi /2}^{2\\pi }f(r(t))\\,\\frac{\\text{d}x}{\\text{d}t}\\,\\text{d}t \\\\  & ={\\int }_{\\pi /2}^{2\\pi }(3\\operatorname{cos}\u2061t{e}^{{cos}^{2}\u2061t})\\cdot (-3\\operatorname{sin}\u2061t)\\cdot \\text{d}t \\\\  & =-9{\\int }_{\\pi /2}^{2\\pi }\\operatorname{sin}\u2061t\\operatorname{cos}\u2061t{e}^{{cos}^{2}\u2061t}\\,\\text{d}t\\end{aligned}\n$$\n\nWe can solve this using the substitution $u={cos}^{2}\u2061t,$ $\\text{d}u=-2\\operatorname{sin}\u2061t\\operatorname{cos}\u2061t\\,\\text{d}t$ as follows:\n\n$$\n\\begin{aligned}-9{\\int }_{\\pi /2}^{2\\pi }\\operatorname{sin}\u2061t\\operatorname{cos}\u2061t{e}^{{cos}^{2}\u2061t}\\,\\text{d}t & =-9{\\int }_{0}^{1}{e}^{u}\\,(-\\frac{1}{2}\\text{d}u) \\\\  & =\\frac{9}{2}{\\int }_{0}^{1}{e}^{u}\\,\\text{d}u \\\\  & =\\frac{9}{2}{e}^{u}{|}_{0}^{1} \\\\  & =\\frac{9}{2}[{e}^{1}-{e}^{0}] \\\\  & =\\frac{9}{2}\\cdot (e-1) \\\\  & =\\frac{9}{2}(e-1)\\end{aligned}\n$$",
+    "parameter_slot": {
+      "c": {
+        "observed": 1,
+        "sampled": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "role": "positive multiplier of the supplied integrand; same differential, path and workload",
+        "dependencies": [
+          "prompt integrand",
+          "f(x,y)",
+          "each f(r(t)) value",
+          "each evaluated integral or substitution value",
+          "entire source choice bank"
+        ],
+        "fixed_components_reason": "Path slots are deliberately narrow in this version because their endpoints and orientation control the integration and the reused diagram."
+      }
+    },
+    "profile": "source-bank:q-124273",
+    "choices": [
+      {
+        "answer_id": "57321071-ed92-5969-b645-38b2e65f944b",
+        "source_field": "9ae7cf10-da4c-5368-b5cf-081f5c11280f",
+        "observed_value": "\\frac{1}{2}(e-1)",
+        "recipe": "c * (-1/2 + E/2)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "62251978-7b64-514f-956c-3adbb9ea5ebe",
+        "source_field": "9ae7cf10-da4c-5368-b5cf-081f5c11280f",
+        "observed_value": "\\frac{9}{2}(e-1)",
+        "recipe": "c * (-9/2 + 9*E/2)",
+        "correct": true,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "6c038848-0fc0-55d3-b62d-414a628f5e51",
+        "source_field": "9ae7cf10-da4c-5368-b5cf-081f5c11280f",
+        "observed_value": "\\frac{3}{2}(e+1)",
+        "recipe": "c * (3/2 + 3*E/2)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "707e588a-fbf2-5a85-9ad2-4cf1abd166f0",
+        "source_field": "9ae7cf10-da4c-5368-b5cf-081f5c11280f",
+        "observed_value": "\\frac{e}{2}-1",
+        "recipe": "c * (-1 + E/2)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "de648ba3-07ad-5cb0-a4a0-5469d13b5ff7",
+        "source_field": "9ae7cf10-da4c-5368-b5cf-081f5c11280f",
+        "observed_value": "{e}^{2}+1",
+        "recipe": "c * (1 + exp(2))",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      }
+    ]
+  },
+  {
+    "source": "q-124278",
+    "source_db_id": 17592186411859,
+    "level": "moderate",
+    "field_type": "radio",
+    "field_key": "selection",
+    "integrand": "x + sqrt(3)*sqrt(y)",
+    "oriented_path": [
+      "2 - 2*t",
+      "3*t"
+    ],
+    "bounds": [
+      "0",
+      "1"
+    ],
+    "differential": "y",
+    "source_prompt": "![](images/4d/4d83f771aa650879909c33d7033e80ca044b7e6f8369e19667e6173aa8a40737.png)\n\nEvaluate ${\\int }_{C}(x+\\sqrt{3y})\\,\\text{d}y,$ where $C$ is the path traversed along the line segment from the point $(2,0)$ to the point $(0,3),$ as shown above.",
+    "source_solution": "We will use the formula\n\n$$\n{\\int }_{C}f(x,y)\\,\\text{d}y={\\int }_{a}^{b}f(r(t))\\,\\frac{\\text{d}y}{\\text{d}t}\\,\\text{d}t.\n$$\n\nThe curve $C$ is a line segment with endpoints $(2,0)$ and $(0,3).$ It can be parametrized as \n\n$$\n\\begin{aligned}r(t) & =\u27e8(2+t(0-2)),\\,(0+t(3-0))\u27e9 \\\\  & =\u27e82-2t,\\,3t\u27e9,\\end{aligned}\n$$\n\nwhere $0\\le t\\le 1.$\n\nComputing $\\frac{\\text{d}y}{\\text{d}t},$ we get the following:\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}t} & =\\frac{\\text{d}}{\\text{d}t}(3t)=3\\end{aligned}\n$$\n\nNow, since $f(x,y)=x+\\sqrt{3y}$, we obtain\n\n$$\n\\begin{aligned}f(r(t)) & =(2-2t)+\\sqrt{3(3t)} \\\\  & =2-2t+3\\sqrt{t}.\\end{aligned}\n$$\n\nWe can now evaluate the integral:\n\n$$\n\\begin{aligned}{\\int }_{C}f(x,y)\\,\\text{d}x & ={\\int }_{0}^{1}f(r(t))\\,\\frac{\\text{d}y}{\\text{d}t}\\,\\text{d}t \\\\  & ={\\int }_{0}^{1}(2-2t+3\\sqrt{t})\\cdot 3\\cdot \\text{d}t \\\\  & =3{\\int }_{0}^{1}(2-2t+3{t}^{1/2})\\,\\text{d}t \\\\  & =3{[2t-{t}^{2}+2{t}^{3/2}]}_{0}^{1} \\\\  & =3[(2(1)-(1)^{2}+2(1)^{3/2})-(0)] \\\\  & =3(3) \\\\  & =9\\end{aligned}\n$$",
+    "parameter_slot": {
+      "c": {
+        "observed": 1,
+        "sampled": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "role": "positive multiplier of the supplied integrand; same differential, path and workload",
+        "dependencies": [
+          "prompt integrand",
+          "f(x,y)",
+          "each f(r(t)) value",
+          "each evaluated integral or substitution value",
+          "entire source choice bank"
+        ],
+        "fixed_components_reason": "Path slots are deliberately narrow in this version because their endpoints and orientation control the integration and the reused diagram."
+      }
+    },
+    "profile": "source-bank:q-124278",
+    "choices": [
+      {
+        "answer_id": "18b329fb-ed63-5c9c-ba4f-1ae88547c789",
+        "source_field": "5ed96f7f-49a8-554d-a91d-a5525992b220",
+        "observed_value": "12",
+        "recipe": "c * (12)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "3565a038-62ce-5c59-8e95-c3505e80c675",
+        "source_field": "5ed96f7f-49a8-554d-a91d-a5525992b220",
+        "observed_value": "4",
+        "recipe": "c * (4)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "46436b71-8e85-5a39-bf27-5ed0f753e896",
+        "source_field": "5ed96f7f-49a8-554d-a91d-a5525992b220",
+        "observed_value": "8",
+        "recipe": "c * (8)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "c32ac31a-d68d-5bbe-8d37-51261f4658fe",
+        "source_field": "5ed96f7f-49a8-554d-a91d-a5525992b220",
+        "observed_value": "3",
+        "recipe": "c * (3)",
+        "correct": false,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      },
+      {
+        "answer_id": "fbdd4223-88ec-5c0a-a0b3-1dc095b07709",
+        "source_field": "5ed96f7f-49a8-554d-a91d-a5525992b220",
+        "observed_value": "9",
+        "recipe": "c * (9)",
+        "correct": true,
+        "interpretation": "observed exact value scaled by linearity; underlying distractor misconception unresolved"
+      }
+    ]
+  }
+]

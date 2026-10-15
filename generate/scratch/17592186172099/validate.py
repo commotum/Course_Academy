@@ -114,7 +114,7 @@ def main():
    assert all(sum(s.simplify(v-scale*z)==0 for v in vals)==1 for z in g.bank(source))
    if scale==1:
     assert g.signature(source)==g.signature(rec['question'])
-    reports.append({'source':key,'level':level,'choices_matched':5,'distractors_matched':4,'complete_bank':True,'correct_designation_matched':True,'missing':[],'extra':[],'notation':'Unicode source vector converted to explicit LaTeX angle brackets; captured doubled fraction escapes normalized; same scalar response and ordered theorem/region/integral stages'})
+    reports.append({'source':key,'level':level,'choices_matched':5,'distractors_matched':4,'complete_bank':True,'correct_designation_matched':True,'missing':[],'extra':[],'notation':'Unicode source vector converted to explicit LaTeX angle brackets; standard scalar TeX notation retained; same scalar response and ordered theorem/region/integral stages'})
    native.append({'label':key+'-scale-'+str(scale),'record':rec,'checks':engine_checks(rec)})
    if scale in (1,7):reviews.append({'source_id':key,'source_problem':source[':question/problem'],'source_solution':source[':question/worked-solution'],'generated':rec})
   for bad in ('key','primitive','bound','final'):
@@ -128,6 +128,11 @@ def main():
    else:raise AssertionError('Mutation not caught: '+bad)
   mappings.append({'source_id':key,'template':key,'profile':key,'original_field':source[':question/answer-fields'][0][':answer-field/id'],
    'components':[{ 'source_answer_id':a[':answer/id'],'original_exact_value':a[':answer/value'],'expression':str(g.scalar(a[':answer/value'])),'recipe':'scale * ('+str(g.scalar(a[':answer/value']))+')','correct':a[':answer/id']==source[':question/answer-fields'][0][':answer-field/correct'][':answer/id'],'interpretation':'Retained observed mathematical pattern; cognitive error unresolved'} for a in source[':question/answer-fields'][0][':answer-field/choices']]})
+ # The canonical example participates in duplicate exclusion but not inventory.
+ canonical=g.CAPTURE['kp'][':knowledge-point/canonical-example']
+ P,Q=g.components(canonical[':question/problem']);r=region(canonical[':question/problem'])
+ assert s.simplify(boundary_flux(P,Q,r)+20)==0
+ assert g.signature(canonical)
  # Parameter boundaries and unsupported contracts must reject before output.
  boundary_rejections=0
  for bad in (0,-1,True,1.5):

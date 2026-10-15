@@ -24,4 +24,3 @@ q-127318 is not a real vector field throughout D: x is negative on part of the r
 
 No easy band is claimed. Neither source absence nor choosing smaller coefficients establishes an easy classification. The unsupported reserve remains five and must reopen when new evidence arrives.
 
-Several captured answer values contain doubled TeX command escapes (for example q-127309's fraction distractors). The application protects math from Markdown and passes these bytes unchanged to MathJax, so this package excludes such unchanged source presentations from validated available inventory. This does not invalidate the mathematical profile: replay normalizes the evidence and generated answers use standard single-escaped TeX. The original source bytes remain untouched. See available-counts.json for the exact current exclusions.

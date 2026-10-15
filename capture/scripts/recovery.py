@@ -28,7 +28,7 @@ from .storage import atomic_json, atomic_text, file_lock, read_json
 def version():
     root = Path(__file__).parent
     paths = ['browser/extract.js', 'browser/assets.py', 'activity/capture.py', 'activity/evidence.py', 'database/evidence.py',
-             'recovery.py', 'browser/history.py', 'database/text.py']
+             'activity/solver.py', 'recovery.py', 'browser/history.py', 'database/text.py']
     return hashlib.sha256(b''.join((root/name).read_bytes() for name in paths)).hexdigest()
 
 

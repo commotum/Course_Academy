@@ -550,6 +550,10 @@ class Preparation:
         record_kind = record_kind or ('canonical_examples' if str(identity).startswith('e-') else 'questions')
         payload = task_payload('judge_question', {'question': question, 'gap': str(error),
             'source_limitations': content.get('source_limitations', [])})
+        # Bind final findings to the source-interpretation policy as well as the
+        # evidence, so a prior conclusion-only finding cannot mask fresh review.
+        from ..activity.solver import INSTRUCTIONS
+        payload['answer_evidence_policy'] = hashlib.sha256(INSTRUCTIONS.encode()).hexdigest()
         # Preparation can find gaps beyond answer correctness. Keep their scope
         # in the existing solver contract and bind even omitted compact metadata
         # (for example legacy fields_complete or original asset errors).

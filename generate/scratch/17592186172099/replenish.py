@@ -139,8 +139,6 @@ def available_counts(kp,basis,path):
         if q[':db/id'] in unavailable:reason = 'Presented or reserved, including retained history'
         elif level not in LEVELS:reason = 'Unrated; excluded from inventory'
         elif q.get(':question/math-academy-id') in g.EXCLUDED:reason = g.EXCLUDED[q[':question/math-academy-id']]
-        elif any('\\\\' in a[':answer/value'] for f in q.get(':question/answer-fields',[]) for a in f.get(':answer-field/choices',[])):
-            reason = 'Malformed doubled TeX escapes in a source option; mathematical replay normalizes evidence, but unchanged source presentation is excluded from validated inventory'
         else:
             try:
                 rec = record(q)

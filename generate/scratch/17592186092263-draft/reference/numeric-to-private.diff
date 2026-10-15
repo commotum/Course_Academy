@@ -1,0 +1,50 @@
+--- immutable-numeric
++++ private-draft
+@@ -5,15 +5,21 @@
+ normal defaults. No registration, transactions, plots or engine changes.
+ """
+ from __future__ import annotations
+-import argparse, hashlib, json, random, re, sys, uuid
++import sys
++sys.dont_write_bytecode=True
++import argparse, hashlib, json, random, re, uuid
+ from pathlib import Path
+ import sympy as s
++sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'scripts'/'question_capture'))
++from math_format import normalize_prose,normalize_tex,validate_prose,validate_tex,FORMAT_VERSION
+ KP=17592186092263
+ ROOT=Path(__file__).with_suffix('')
+ CAP=json.loads((ROOT/'source.json').read_text())
+-SRC={q[':question/math-academy-id']:q for q in CAP['record'][':knowledge-point/questions']}
++SUP=json.loads((ROOT/'source-supplemental-2548.json').read_text())
++SRC={q[':question/math-academy-id']:q for wrapper in (CAP,SUP) for q in wrapper['record'][':knowledge-point/questions'] if ':question/math-academy-id' in q}
++SOURCE={q[':question/math-academy-id']:wrapper for wrapper in (SUP,CAP) for q in wrapper['record'][':knowledge-point/questions'] if ':question/math-academy-id' in q}
+ X,U,H=s.symbols('x u h', real=True)
+-VERSION='nonlinear-chain-2'
++VERSION='nonlinear-chain-private-3'
+ # Each source has its own prompt/solution mask; differences in product and
+ # exponent-restoration rows and endpoint rows remain operative, not row counts.
+ SPECS={
+@@ -263,7 +269,12 @@
+    problem=opening+'\n\n'+defs+'\n\n'+layout
+   if template=='q-48628':solution=authored_solution(p,kind)
+  # ID based on full learner content and actual difficulty, order-independent.
+- vals_tex=[latex(v) for v in vals]
++ problem=normalize_prose(problem);solution=normalize_prose(solution)
++ validate_prose(problem);validate_prose(solution)
++ vals_tex=[normalize_tex(latex(v)) for v in vals]
++ for value in [problem,solution,*vals_tex]:
++  if any(ord(c)<32 and c not in '\n\t' for c in value):raise ValueError('Unintended C0 learner-content character')
++ for value in vals_tex:validate_tex(value)
+  difficulty=sourceq.get(':question/difficulty',{}).get(':db/ident') if observed else ':question.difficulty/'+level
+  designation='missing' if observed and ':answer-field/correct' not in sourceq[':question/answer-fields'][0] else latex(ans)
+  qid=content_identity(problem,solution,vals_tex,difficulty,ft,key,designation);fid=uid([qid,key]);answers=[{':answer/id':uid([fid,v]),':answer/type':':answer.type/math',':answer/value':v} for v in vals_tex]
+@@ -276,7 +287,7 @@
+  # derivative-only additive shifts do affect e^g and hence assessed derivative;
+  # unlike incidental prompt shifts they remain in this mathematical fingerprint.
+  task=uid(['slope' if kind=='slope' else 'derivative',s.srepr(s.diff(f,X)),str(p.get('t',''))])
+- return {'knowledge_point':{'db_id':KP,'id':CAP['record'][':knowledge-point/id'],'title':CAP['record'][':knowledge-point/title']},'question':question,'generation':{'version':VERSION,'seed':seed,'template':template,'profile':profile or 'method','parameters':{k:str(v) for k,v in p.items() if k!='constant_first'},'mathematical_fingerprint':task,'source':{k:CAP[k] for k in ('database','basis','lineage')},'evidence_only':observed,'eligible_for_learning':not observed,'inferred_missing_key':template=='q-48628' and not observed,'authored_difficulty':level=='hard' or (template=='q-48628' and not observed),'difficulty_origin':'captured_omission' if observed and template=='q-48628' else 'authored_missing_level' if level=='hard' or (template=='q-48628' and not observed) else 'captured_label','dependencies':{'python':sys.version.split()[0],'sympy':s.__version__}}}
++ return {'knowledge_point':{'db_id':KP,'id':CAP['record'][':knowledge-point/id'],'title':CAP['record'][':knowledge-point/title']},'question':question,'generation':{'version':VERSION,'seed':seed,'template':template,'profile':profile or 'method','parameters':{k:str(v) for k,v in p.items() if k!='constant_first'},'mathematical_fingerprint':task,'source':{k:(SOURCE.get(template,CAP))[k] for k in ('database','basis','lineage')},'math_format':FORMAT_VERSION,'evidence_only':observed,'eligible_for_learning':not observed,'inferred_missing_key':template=='q-48628' and not observed,'authored_difficulty':level=='hard' or (template=='q-48628' and not observed),'difficulty_origin':'captured_omission' if observed and template=='q-48628' else 'authored_missing_level' if level=='hard' or (template=='q-48628' and not observed) else 'captured_label','dependencies':{'python':sys.version.split()[0],'sympy':s.__version__}}}
+ 
+ def default_field(k):return 'blank' if k=='two_power_slope' else SRC[k][':question/answer-fields'][0][':answer-field/type'][':db/ident'].split('/')[-1]
+ def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)

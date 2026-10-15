@@ -1,0 +1,13 @@
+# Nonlinear exponential derivative private draft
+
+Run `.venv/bin/python -B generate/scratch/17592186092263-draft/validate.py`, then `.venv/bin/python -B generate/scratch/17592186092263-draft/render.py`. Preview `generate/scratch/17592186092263-draft.py --difficulty all --seed 42 --count 2 --format markdown` with the same Python interpreter.
+
+This local draft is unregistered and awaits independent root approval. The numeric script and its complete 132-file evidence/cache baseline are immutable; numeric-baseline.json records their original hashes and path set. No database writes, registration, engine edits or commits are part of this draft.
+
+source.json is the exact immutable basis1356 wrapper (14 MA practices, canonical e-729 separate). source-supplemental-2548.json preserves the full later numeric wrapper, adding two MA originals. Per-template metadata and source-cases identify the correct source basis. No independent practices occur in either wrapper. The topic/lesson wrappers are exact1356 captures; lesson route follows first-step/next, never collection order.
+
+Raw observed profiles preserve all captured attribute omissions and complete banks. Shared normalization precedes IDs: 15/16 served replay prompts remain byte-exact; q-167329 only loses incidental indentation. All16 match after documented normalization; all15 supplied solutions match exactly. Raw incomplete or opaque evidence is ineligible. Normal source-shaped method banks supply missing definitions and the inferred key/solution/authored easy level for q-48628. Hard is an explicitly authored two-power exponential tangent family. The linear q-340955 exception is evidence only.
+
+The validator reads actual printed functions, components, chain operands/rows, evaluation stages and complete choices. deep-check.py additionally enforces complete shared prose and source-specific operator/restoration stages, rejects a mathematically equivalent collapsed stage and C0 corruption, varies held coefficients, and submits independently unreduced entries. Real grading uses the current33510bf3 native binary after verifying all42 build inputs. One tested wrong scalar1 against a full trigonometric derivative returns unresolved; this is recorded separately and never counted as a rejection. Canonical keys and tested legitimate equivalents accept. No engine change is proposed.
+
+All rendering uses the current actual player Markdown, MathJax and field-control routines, with full worked solutions and actual radio/MathLive inputs. No plots are required. freeze.json covers all owned deliverables; numeric-baseline-verification.json proves the original numeric package remains unchanged.

@@ -1,0 +1,47 @@
+--- prior-reviewed
++++ immutable-numeric
+@@ -29,6 +29,8 @@
+ 'q-107452':('moderate',dict(a=1,n=3,b=-4,c=0,t=2),'slope'),
+ 'q-312451':('easy',dict(a=4,n=5,b=0,c=0),'derivative'),
+ 'q-340949':('moderate',dict(a=4,n=3,b=0,c=0,t=1),'slope'),
++'q-340954':('moderate',dict(a=-2,n=7,b=0,c=0,t=1),'slope'),
++'q-166076':('moderate',dict(a=-4,scale='1/2'),'trig_full'),
+ 'q-48629':('easy',dict(a=-2,n=3,b=0,c=8),'derivative'),
+ 'q-71873':('moderate',dict(a=2,n=4,b=0,c=0),'derivative'),
+ }
+@@ -94,7 +96,7 @@
+   if kind.startswith('trig'):
+    if p['a'] not in (-2,-3,-4,-5,-6) or p['scale'] not in (s.Rational(1,2),s.Rational(1,3),s.Rational(2,3)):raise ValueError('Observed trig workload bounds')
+   else:
+-   if not 1<=abs(p['a'])<=6 or not 1<=p['n']<=6 or abs(p.get('b',0))>5 or abs(p.get('c',0))>8:raise ValueError('Observed polynomial workload bounds')
++   if not 1<=abs(p['a'])<=6 or not 1<=p['n']<=7 or abs(p.get('b',0))>5 or abs(p.get('c',0))>8:raise ValueError('Observed polynomial workload bounds')
+    if (p['n']==1)!=(template=='q-340955'):raise ValueError('Only captured linear exception admits n=1')
+    for k in ('b','c'):
+     if bool(anchor.get(k,0))!=bool(p.get(k,0)):raise ValueError('Preserve observed primitive support')
+@@ -111,7 +113,7 @@
+    if template=='two_power_slope':
+     if p['n'] not in (3,4) or p['m']!=2 or not 1<=abs(p['a'])<=3 or not 1<=abs(p['b'])<=3 or p['t'] not in (-2,2) or abs(p['c'])>4:raise ValueError('Hard requires two nonlinear powers and nonunit evaluation')
+    g,d,_,ans=mathdata(p,kind)
+-   if kind=='slope' and (abs(g.subs(X,p['t']))>40 or abs(d.subs(X,p['t']))>100 or d.subs(X,p['t'])==0):raise ValueError('Evaluation arithmetic bounds or degenerate slope')
++   if kind=='slope' and (abs(g.subs(X,p['t']))>12 or abs(d.subs(X,p['t']))>100 or d.subs(X,p['t'])==0):raise ValueError('Evaluation arithmetic bounds or degenerate slope')
+  return p,kind,level
+ 
+ def rendered_components(p,kind):
+@@ -187,7 +189,7 @@
+ 
+ def bank(template,p,kind,observed):
+  g,d,f,ans,_,_=rendered_components(p,kind);a=p['a'];n=p.get('n');b=p.get('b',0);c=p.get('c',0);E=s.exp(g)
+- if kind.startswith('trig') or (template in SRC and SRC[template][':question/answer-fields'][0][':answer-field/type'][':db/ident'].endswith('/blank')):return [ans]
++ if template=='two_power_slope' or kind.startswith('trig') or (template in SRC and SRC[template][':question/answer-fields'][0][':answer-field/type'][':db/ident'].endswith('/blank')):return [ans]
+  if not observed:
+   if kind=='slope':
+    t=p['t'];v=d.subs(X,t);w=g.subs(X,t)
+@@ -257,7 +259,7 @@
+    # remain unchanged; public observed replay never enters this block.
+    opening=problem.split('\n',1)[0].strip()
+    placeholder='{{'+key+'}}'
+-   layout=(r'$\frac{dy}{dx}=$'+'\n'+placeholder+'\n'+r'$\cdot e^{'+latex(g)+'}$') if kind=='trig_product' else (r'$\frac{dy}{dx}=-($'+'\n'+placeholder+'\n'+'$)/e^{'+latex(-g)+'}$')
++   layout=(r'$\frac{dy}{dx}=$'+'\n'+placeholder) if kind=='trig_full' else (r'$\frac{dy}{dx}=$'+'\n'+placeholder+'\n'+r'$\cdot e^{'+latex(g)+'}$') if kind=='trig_product' else (r'$\frac{dy}{dx}=-($'+'\n'+placeholder+'\n'+'$)/e^{'+latex(-g)+'}$')
+    problem=opening+'\n\n'+defs+'\n\n'+layout
+   if template=='q-48628':solution=authored_solution(p,kind)
+  # ID based on full learner content and actual difficulty, order-independent.

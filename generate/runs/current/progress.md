@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 49**, **qa_passed: 391**, **queued: 137**, **working: 3**.
+**needs_revalidation: 46**, **qa_passed: 395**, **queued: 137**, **working: 2**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -56,21 +56,21 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186059655](../../scratch/17592186059655.py) | Simplifying Expressions Using the Pythagorean Identity | Simplifying an Expression by Expanding Parentheses and Using the Pythagorean Identity | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186059655.json) |
 | [17592186087655](../../scratch/17592186087655.py) | Equations of Circles | Finding the Equation of a Circle Given the Center and the Radius | 6 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186087655.json) |
 | [17592186129121](../../scratch/17592186129121.py) | Properties of Transformed Sine and Cosine Functions | Determining the Amplitude of a Transformed Sinusoidal Function | 4 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186129121.json) |
-| [17592186129122](../../scratch/17592186129122.py) | Properties of Transformed Sine and Cosine Functions | Calculating the Period of a Transformed Sinusoidal Function | 7 / 0 / 0 / 1 | working | [Report](qa/17592186129122.json) |
+| [17592186129122](../../scratch/17592186129122-draft.py) | Properties of Transformed Sine and Cosine Functions | Calculating the Period of a Transformed Sinusoidal Function | 7 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186129122.json) |
 | [17592186129123](../../scratch/17592186129123.py) | Properties of Transformed Sine and Cosine Functions | Finding the Midline of a Transformed Sinusoidal Function | 7 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186129123.json) |
 | [17592186129124](../../scratch/17592186129124.py) | Properties of Transformed Sine and Cosine Functions | Finding the Range of a Transformed Sinusoidal Function | 4 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186129124.json) |
 | [17592186092260](../../scratch/17592186092260.py) | The Chain Rule With Exponential Functions | Differentiating an Exponential Function with a Linear Exponent | 2 / 5 / 0 / 2 | qa_passed | [Report](qa/17592186092260.json) |
 | [17592186059740](../../scratch/17592186059740.py) | Scalar Multiplication of Matrices | Multiplying a Matrix by a Scalar | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186059740.json) |
 | [17592186059742](../../scratch/17592186059742.py) | Scalar Multiplication of Matrices | Calculating a Linear Combination of Two Matrices | 0 / 3 / 3 / 2 | qa_passed | [Report](qa/17592186059742.json) |
-| [17592186073776](../../scratch/17592186073776.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the Number of Solutions to a System | 0 / 0 / 0 / 3 | working | [Report](qa/17592186073776.json) |
+| [17592186073776](../../scratch/17592186073776-draft.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the Number of Solutions to a System | 0 / 0 / 0 / 3 | qa_passed | [Report](qa/17592186073776.json) |
 | [17592186073777](../../scratch/17592186073777.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the Number of Intersection Points of Two Lines | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186073777.json) |
-| [17592186073778](../../scratch/17592186073778.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the General Solution to a System With Infinitely Many Intersection Points | 0 / 0 / 0 / 2 | working | [Report](qa/17592186073778.json) |
+| [17592186073778](../../scratch/17592186073778-draft.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the General Solution to a System With Infinitely Many Intersection Points | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186073778.json) |
 | [17592186092217](../../scratch/17592186092217.py) | Converting from Polar Coordinates to Cartesian Coordinates | Finding the Cartesian Coordinates of a Point Given in Polar Coordinates | 4 / 1 / 0 / 2 | qa_passed | [Report](qa/17592186092217.json) |
 | [17592186110754](../../scratch/17592186110754-draft.py) | Using the Pythagorean Identity in the First Quadrant | Using the Pythagorean Theorem on the Unit Circle | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186110754.json) |
 | [17592186110756](../../scratch/17592186110756-draft.py) | Using the Pythagorean Identity in the First Quadrant | Computing a Reciprocal Ratio Using the Pythagorean Identity | 0 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186110756.json) |
 | [17592186176057](../../scratch/17592186176057.py) | Describing Properties of the Cosine Function | Utilizing the Evenness Property of the Cosine Function | 3 / 1 / 1 / 1 | qa_passed | [Report](qa/17592186176057.json) |
 | [17592186129268](../../scratch/17592186129268.py) | Triple Integrals in Cylindrical Polar Coordinates | Rewriting a Triple Integral Defined Over a Shifted Cylindrical Solid | 0 / 1 / 3 / 2 | qa_passed | [Report](qa/17592186129268.json) |
-| [17592186105903](../../scratch/17592186105903.py) | The Area of a General Triangle | Calculating the Area of a Triangle | 5 / 0 / 0 / 1 | needs_revalidation | [Report](qa/17592186105903.json) |
+| [17592186105903](../../scratch/17592186105903-draft.py) | The Area of a General Triangle | Calculating the Area of a Triangle | 5 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186105903.json) |
 | [17592186083244](../../scratch/17592186083244.py) | Calculating Tangent and Normal Lines with Parametric Equations | Computing the Tangent Line to a Parametric Curve | 0 / 2 / 3 / 1 | qa_passed | [Report](qa/17592186083244.json) |
 | [17592186172038](../../scratch/17592186172038.py) | Slope Fields for Nonautonomous Differential Equations | Sketching the Slope Field of a Differential Equation at Some Isolated Points | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186172038.json) |
 | [17592186100992](../../scratch/17592186100992-draft.py) | Properties of Matrix Addition | Calculating the Sum or Difference of Three or More Matrices Using Distributivity | 5 / 1 / 0 / 1 | qa_passed | [Report](qa/17592186100992.json) |
@@ -233,9 +233,9 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186087699](../../scratch/17592186087699-draft.py) | Introduction to the Inverse of a Matrix | Determining the Inverse of a 2x2 Matrix | 10 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186087699.json) |
 | [17592186087700](../../scratch/17592186087700-draft.py) | Introduction to the Inverse of a Matrix | Determining the Inverse of a Larger Matrix | 0 / 10 / 3 / 0 | qa_passed | [Report](qa/17592186087700.json) |
 | [17592186092261](../../scratch/17592186092261.py) | The Chain Rule With Exponential Functions | Differentiating a General Exponential Function Using the Chain Rule | 7 / 2 / 0 / 1 | qa_passed | [Report](qa/17592186092261.json) |
-| [17592186092263](../../scratch/17592186092263.py) | The Chain Rule With Exponential Functions | Differentiating an Exponential Function with a Nonlinear Exponent | 5 / 8 / 0 / 1 | needs_revalidation | [Report](qa/17592186092263.json) |
+| [17592186092263](../../scratch/17592186092263.py) | The Chain Rule With Exponential Functions | Differentiating an Exponential Function with a Nonlinear Exponent | 5 / 8 / 0 / 1 | working | [Report](qa/17592186092263.json) |
 | [17592186059741](../../scratch/17592186059741-draft.py) | Scalar Multiplication of Matrices | Calculating the Value of a Scalar | 6 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186059741.json) |
-| [17592186096617](../../scratch/17592186096617.py) | The Product Rule for Differentiation | Differentiating a Product Containing a Trigonometric Function | 8 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186096617.json) |
+| [17592186096617](../../scratch/17592186096617.py) | The Product Rule for Differentiation | Differentiating a Product Containing a Trigonometric Function | 8 / 0 / 0 / 2 | working | [Report](qa/17592186096617.json) |
 | [17592186096618](../../scratch/17592186096618.py) | The Product Rule for Differentiation | Differentiating a Product Containing an Exponential or Logarithmic Function | 11 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096618.json) |
 | [17592186096619](../../scratch/17592186096619.py) | The Product Rule for Differentiation | Finding the Slope of the Tangent Line to a Product  at a Given Point | 0 / 11 / 0 / 2 | qa_passed | [Report](qa/17592186096619.json) |
 | [17592186087717](../../scratch/17592186087717.py) | Graphing Curves Defined Parametrically | Filling a Table of Values for a Parametric Curve | 17 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186087717.json) |
@@ -245,8 +245,8 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186059847](../../scratch/17592186059847.py) | The Determinant of a 3x3 Matrix | Calculating the Determinant of a 3x3 Matrix | 13 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186059847.json) |
 | [17592186059848](../../scratch/17592186059848.py) | The Determinant of a 3x3 Matrix | Identifying Singular Matrices | 9 / 8 / 0 / 0 | needs_revalidation | [Report](qa/17592186059848.json) |
 | [17592186059849](../../scratch/17592186059849.py) | The Determinant of a 3x3 Matrix | Solving for an Unknown Given the Determinant | 11 / 10 / 1 / 2 | qa_passed | [Report](qa/17592186059849.json) |
-| 17592186100866 | Multiplying a Matrix by a Column Vector | Multiplying a 2x2 Matrix by a Column Vector | 10 / 0 / 0 / 1 | queued | — |
-| 17592186100867 | Multiplying a Matrix by a Column Vector | Multiplying a 3x3 Matrix by a Column Vector | 0 / 9 / 0 / 2 | queued | — |
+| [17592186100866](../../scratch/17592186100866.py) | Multiplying a Matrix by a Column Vector | Multiplying a 2x2 Matrix by a Column Vector | 10 / 0 / 0 / 1 | queued | — |
+| [17592186100867](../../scratch/17592186100867.py) | Multiplying a Matrix by a Column Vector | Multiplying a 3x3 Matrix by a Column Vector | 0 / 9 / 0 / 2 | queued | — |
 | 17592186100868 | Multiplying a Matrix by a Column Vector | Multiplying a Matrix With Variable Entries by a Column Vector | 0 / 4 / 5 / 1 | queued | — |
 | [17592186059737](../../scratch/17592186059737.py) | Calculating the Cross Product Using Determinants | Solving for an Unknown in an Equation Involving the Cross Product | 0 / 9 / 11 / 1 | qa_passed | [Report](qa/17592186059737.json) |
 | [17592186059736](../../scratch/17592186059736.py) | Calculating the Cross Product Using Determinants | Calculating the Cross Product Using Determinants | 26 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186059736.json) |
@@ -254,7 +254,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | 17592186124639 | Introduction to Partial Derivatives | Finding Partial Derivatives of Two-Variable Functions | 6 / 5 / 0 / 1 | queued | — |
 | 17592186124643 | Introduction to Partial Derivatives | Partial Derivatives as Limits of Difference Quotients | 6 / 5 / 0 / 1 | queued | — |
 | [17592186083240](../../scratch/17592186083240.py) | Differentiating Parametric Curves | Finding the Derivative of a Parametric Curve | 12 / 6 / 0 / 0 | qa_passed | [Report](qa/17592186083240.json) |
-| 17592186100870 | Conformability for Matrix Multiplication | Determining the Dimension of the Product of Two Matrices Given the Dimensions of the Factors | 4 / 5 / 0 / 2 | queued | — |
+| [17592186100870](../../scratch/17592186100870.py) | Conformability for Matrix Multiplication | Determining the Dimension of the Product of Two Matrices Given the Dimensions of the Factors | 4 / 5 / 0 / 2 | queued | — |
 | [17592186100871](../../scratch/17592186100871.py) | Conformability for Matrix Multiplication | Determining the Dimension of the Product of Two Matrices | 0 / 5 / 4 / 1 | queued | — |
 | 17592186100869 | Conformability for Matrix Multiplication | Determining Whether Two Matrices Are Conformable for Multiplication | 7 / 3 / 0 / 0 | queued | — |
 | [17592186092219](../../scratch/17592186092219.py) | Converting from Polar Coordinates to Cartesian Coordinates | Finding the Cartesian Coordinates of a Point Given Some Information About Another Point | 0 / 6 / 2 / 2 | qa_passed | [Report](qa/17592186092219.json) |
@@ -268,7 +268,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186064259](../../scratch/17592186064259.py) | Calculating the Slope of a Tangent Line Using Differentiation | Finding a Point on a Curve With a Certain Slope | 0 / 7 / 0 / 2 | queued | — |
 | [17592186064343](../../scratch/17592186064343.py) | Calculating the Slope of a Tangent Line Using Differentiation | Calculating the Slope of a Tangent Line of a Curve With Fractional Powers at a Given Point | 5 / 5 / 0 / 2 | queued | — |
 | [17592186064342](../../scratch/17592186064342.py) | Calculating the Slope of a Tangent Line Using Differentiation | Calculating the Slope of a Tangent Line of a Curve at a Given Point | 7 / 7 / 0 / 2 | queued | — |
-| 17592186092375 | The Arc Length of a Parametric Curve | Finding an Integral Expression For the Arc Length of a Parametric Curve | 8 / 0 / 0 / 2 | queued | — |
+| [17592186092375](../../scratch/17592186092375.py) | The Arc Length of a Parametric Curve | Finding an Integral Expression For the Arc Length of a Parametric Curve | 8 / 0 / 0 / 2 | queued | — |
 | [17592186092376](../../scratch/17592186092376.py) | The Arc Length of a Parametric Curve | Finding an Integral Expression For the Arc Length of a Parametric Curve Containing Special Functions | 0 / 9 / 2 / 1 | queued | — |
 | [17592186124437](../../scratch/17592186124437.py) | Geometric Interpretations of Partial Derivatives | Finding the Slope of the Tangent Line to a Curve at a Point | 10 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186124437.json) |
 | [17592186124439](../../scratch/17592186124439.py) | Geometric Interpretations of Partial Derivatives | Finding the Tangent Vector to a Curve at a Point | 0 / 0 / 15 / 0 | qa_passed | [Report](qa/17592186124439.json) |
@@ -395,17 +395,17 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | 17592186124480 | Identifying the Pivot Columns of a Matrix | Finding the Pivot Columns of a Matrix | 0 / 5 / 9 / 0 | queued | — |
 | 17592186124478 | Identifying the Pivot Columns of a Matrix | Finding the Non-Pivot Columns of a Matrix in Row Echelon Form | 16 / 0 / 0 / 0 | queued | — |
 | 17592186124479 | Identifying the Pivot Columns of a Matrix | Finding the Number of Pivot Columns of a Matrix | 0 / 16 / 0 / 1 | queued | — |
-| 17592186105745 | Solving 2x2 Singular Systems of Equations Using Gaussian Elimination | Reducing an Augmented Matrix for a Singular 2x2 System to REF and Solving the Resulting System | 7 / 7 / 0 / 0 | queued | — |
+| [17592186105745](../../scratch/17592186105745.py) | Solving 2x2 Singular Systems of Equations Using Gaussian Elimination | Reducing an Augmented Matrix for a Singular 2x2 System to REF and Solving the Resulting System | 7 / 7 / 0 / 0 | queued | — |
 | 17592186105746 | Solving 2x2 Singular Systems of Equations Using Gaussian Elimination | Solving a Singular 2x2 System of Equations Using Gaussian Elimination | 8 / 8 / 0 / 0 | queued | — |
 | [17592186068842](../../scratch/17592186068842.py) | Solving First-Order ODEs Using Separation of Variables | Separating the Variables in a Differential Equation | 6 / 4 / 0 / 0 | qa_passed | [Report](qa/17592186068842.json) |
 | [17592186068840](../../scratch/17592186068840.py) | Solving First-Order ODEs Using Separation of Variables | Finding a General Solution in Explicit Form | 4 / 7 / 0 / 0 | qa_passed | [Report](qa/17592186068840.json) |
 | [17592186068844](../../scratch/17592186068844.py) | Solving First-Order ODEs Using Separation of Variables | Finding a General Solution in Implicit Form | 11 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186068844.json) |
 | [17592186068841](../../scratch/17592186068841.py) | Solving First-Order ODEs Using Separation of Variables | Finding General Solutions by Rearranging Then Integrating | 0 / 8 / 6 / 0 | qa_passed | [Report](qa/17592186068841.json) |
-| 17592186096674 | Reduced Row Echelon Form | Finding the Reduced Row Echelon Form of a 3x3 System That Is Already in Row Echelon Form | 9 / 0 / 0 / 1 | queued | — |
+| [17592186096674](../../scratch/17592186096674.py) | Reduced Row Echelon Form | Finding the Reduced Row Echelon Form of a 3x3 System That Is Already in Row Echelon Form | 9 / 0 / 0 / 1 | queued | — |
 | [17592186096675](../../scratch/17592186096675.py) | Reduced Row Echelon Form | Finding the Reduced Row Echelon Form of a 3x3 System That Is Not in Row Echelon Form | 0 / 11 / 0 / 1 | queued | — |
 | 17592186096746 | Reduced Row Echelon Form | Finding the Reduced Row Echelon Form of a Singular 3x3 System With One Pivot | 6 / 6 / 0 / 1 | queued | — |
 | 17592186096745 | Reduced Row Echelon Form | Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots | 0 / 0 / 14 / 0 | queued | — |
-| 17592186100894 | Solving First-Order IVPs Using Separation of Variables | Finding Particular Solutions of Differential Equations by First Rearranging and Then Separating | 11 / 13 / 0 / 0 | queued | — |
+| [17592186100894](../../scratch/17592186100894.py) | Solving First-Order IVPs Using Separation of Variables | Finding Particular Solutions of Differential Equations by First Rearranging and Then Separating | 11 / 13 / 0 / 0 | queued | — |
 | [17592186115241](../../scratch/17592186115241.py) | Gaussian Elimination For NxM Systems of Equations | Solving a Consistent System of Equations Using Gauss-Jordan Elimination | 9 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186115241.json) |
 | [17592186115299](../../scratch/17592186115299.py) | Gaussian Elimination For NxM Systems of Equations | Classifying a System as Consistent Dependent, Consistent Independent, or Inconsistent | 0 / 14 / 0 / 0 | needs_revalidation | [Report](qa/17592186115299.json) |
 | [17592186115242](../../scratch/17592186115242.py) | Gaussian Elimination For NxM Systems of Equations | Determining the Value of a Constant for Which a Given Linear System Is Consistent or Inconsistent | 0 / 8 / 7 / 0 | needs_revalidation | [Report](qa/17592186115242.json) |
@@ -444,34 +444,34 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186119807](../../scratch/17592186119807.py) | Linear Combinations of Vectors in N-Dimensional Euclidean Space | Solving for Two Coefficients in a Linear Combination | 0 / 10 / 0 / 0 | queued | — |
 | [17592186119854](../../scratch/17592186119854.py) | Linear Combinations of Vectors in N-Dimensional Euclidean Space | Solving for Three Coefficients in a Linear Combination | 0 / 6 / 6 / 1 | queued | — |
 | [17592186119806](../../scratch/17592186119806.py) | Linear Combinations of Vectors in N-Dimensional Euclidean Space | Solving for a Vector in a Linear Combination | 13 / 0 / 0 / 1 | queued | — |
-| 17592186119847 | The Rank of a Matrix | Determining the Rank of a Matrix Given the Number of Pivot Columns | 4 / 4 / 0 / 1 | queued | — |
+| [17592186119847](../../scratch/17592186119847.py) | The Rank of a Matrix | Determining the Rank of a Matrix Given the Number of Pivot Columns | 4 / 4 / 0 / 1 | queued | — |
 | [17592186119848](../../scratch/17592186119848.py) | The Rank of a Matrix | Identifying the Matrix With a Given Rank by Inspection | 10 / 0 / 0 / 2 | queued | — |
 | 17592186119849 | The Rank of a Matrix | Finding the Rank of a Matrix Using Row Reduction | 4 / 3 / 5 / 0 | queued | — |
 | [17592186179714](../../scratch/17592186179714.py) | Gradient Vector Fields | Calculating the Gradient Vector Field of a Function | 3 / 5 / 0 / 1 | queued | — |
-| 17592186179719 | Gradient Vector Fields | Sketching the Gradient Vector Field of a Function | 11 / 0 / 0 / 0 | queued | — |
+| [17592186179719](../../scratch/17592186179719.py) | Gradient Vector Fields | Sketching the Gradient Vector Field of a Function | 11 / 0 / 0 / 0 | queued | — |
 | 17592186179712 | Gradient Vector Fields | Using the Relationship Between the Vector Field of a Function and Its Contour Plot | 0 / 6 / 5 / 0 | queued | — |
 | 17592186059743 | The Transpose of a Matrix | Finding the Transpose of a Matrix | 15 / 0 / 0 / 1 | queued | — |
-| 17592186059744 | The Transpose of a Matrix | Finding the Transpose of a Row Vector or Column Vector | 9 / 6 / 0 / 1 | queued | — |
+| [17592186059744](../../scratch/17592186059744.py) | The Transpose of a Matrix | Finding the Transpose of a Row Vector or Column Vector | 9 / 6 / 0 / 1 | queued | — |
 | 17592186059745 | The Transpose of a Matrix | Determining the Dimensions of the Transpose of a Matrix | 14 / 0 / 0 / 2 | queued | — |
 | [17592186100875](../../scratch/17592186100875.py) | Multiplying a Matrix by the Identity Matrix | Multiplying a Matrix by the Identity Matrix | 9 / 0 / 0 / 1 | queued | — |
-| 17592186100876 | Multiplying a Matrix by the Identity Matrix | Multiplying a Matrix by a Column or Row of the Identity Matrix | 5 / 5 / 0 / 1 | queued | — |
-| 17592186115227 | Properties of Matrix Multiplication | Calculating a Matrix Product Using the Associative Law | 2 / 12 / 0 / 1 | queued | — |
-| 17592186115228 | Properties of Matrix Multiplication | Identifying True Statements Regarding Matrix Multiplication | 0 / 9 / 4 / 0 | queued | — |
+| [17592186100876](../../scratch/17592186100876.py) | Multiplying a Matrix by the Identity Matrix | Multiplying a Matrix by a Column or Row of the Identity Matrix | 5 / 5 / 0 / 1 | queued | — |
+| [17592186115227](../../scratch/17592186115227.py) | Properties of Matrix Multiplication | Calculating a Matrix Product Using the Associative Law | 2 / 12 / 0 / 1 | queued | — |
+| [17592186115228](../../scratch/17592186115228.py) | Properties of Matrix Multiplication | Identifying True Statements Regarding Matrix Multiplication | 0 / 9 / 4 / 0 | queued | — |
 | [17592186115226](../../scratch/17592186115226.py) | Properties of Matrix Multiplication | Calculating a Matrix Product Using the Distributive Law | 4 / 10 / 0 / 1 | queued | — |
 | [17592186115229](../../scratch/17592186115229.py) | Powers of Matrices | Finding a Power of a Matrix | 7 / 12 / 0 / 1 | queued | — |
 | 17592186115230 | Powers of Matrices | Evaluating a Matrix Polynomial | 0 / 19 / 0 / 1 | queued | — |
 | 17592186162024 | Symmetric Matrices | Identifying True Statements Regarding Properties of Symmetric Matrices | 0 / 6 / 6 / 0 | queued | — |
 | 17592186161979 | Symmetric Matrices | Identifying Symmetric Matrices | 14 / 0 / 0 / 0 | queued | — |
-| 17592186124629 | The Invertible Matrix Theorem in Terms of Dimension, Rank and Nullity | Сompleting a Sentence Using the Invertible Matrix Theorem | 0 / 9 / 0 / 1 | queued | — |
+| [17592186124629](../../scratch/17592186124629.py) | The Invertible Matrix Theorem in Terms of Dimension, Rank and Nullity | Сompleting a Sentence Using the Invertible Matrix Theorem | 0 / 9 / 0 / 1 | queued | — |
 | [17592186124630](../../scratch/17592186124630.py) | The Invertible Matrix Theorem in Terms of Dimension, Rank and Nullity | Recognizing Parts of the Invertible Matrix Theorem | 12 / 0 / 0 / 0 | queued | — |
 | [17592186124511](../../scratch/17592186124511.py) | The Invertible Matrix Theorem in Terms of Dimension, Rank and Nullity | Identifying True Statements Using the Invertible Matrix Theorem | 0 / 13 / 0 / 1 | queued | — |
-| 17592186100991 | Properties of Matrix Addition | Calculating the Sum or Difference of Three or More Matrices | 4 / 2 / 0 / 2 | queued | — |
+| [17592186100991](../../scratch/17592186100991.py) | Properties of Matrix Addition | Calculating the Sum or Difference of Three or More Matrices | 4 / 2 / 0 / 2 | queued | — |
 | [17592186147454](../../scratch/17592186147454.py) | Bernoulli Differential Equations | Solving a Bernoulli Differential Equation | 0 / 6 / 4 / 1 | queued | — |
 | 17592186147453 | Bernoulli Differential Equations | Reducing a Bernoulli Differential Equation to First Order Linear | 4 / 5 / 2 / 0 | queued | — |
 | [17592186147456](../../scratch/17592186147456.py) | Bernoulli Differential Equations | Identifying Bernoulli Differential Equations | 6 / 6 / 0 / 2 | queued | — |
 | [17592186184171](../../scratch/17592186184171.py) | The Rank-Nullity Theorem | Finding the Rank or Nullity of a Matrix Given a Description of the Column or Null Space | 5 / 4 / 0 / 0 | queued | — |
 | 17592186184219 | The Rank-Nullity Theorem | Finding the Rank or Nullity of a Matrix Using the Rank-Nullity Theorem | 9 / 0 / 0 / 0 | queued | — |
-| 17592186184172 | The Rank-Nullity Theorem | Identifying True Statements Using the Invertible Matrix Theorem and the Rank-Nullity Theorem | 0 / 7 / 3 / 2 | queued | — |
+| [17592186184172](../../scratch/17592186184172.py) | The Rank-Nullity Theorem | Identifying True Statements Using the Invertible Matrix Theorem and the Rank-Nullity Theorem | 0 / 7 / 3 / 2 | queued | — |
 | [17592186087886](../../scratch/17592186087886.py) | Homogeneous First-Order ODEs | Transforming a Homogeneous Differential Equation into a Separable Equation Using a Substitution | 7 / 0 / 0 / 0 | queued | — |
 | 17592186087887 | Homogeneous First-Order ODEs | Solving a Homogeneous Differential Equation | 3 / 5 / 0 / 1 | queued | — |
 | [17592186152158](../../scratch/17592186152158.py) | Line Integrals of Scalar Functions Over Paths Expressed as Functions of X | Computing a Line Integral of a Scalar Function Along a Curve Given in Explicit Cartesian Form | 0 / 3 / 4 / 1 | needs_revalidation | [Report](qa/17592186152158.json) |
@@ -484,7 +484,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186133828](../../scratch/17592186133828.py) | Line Integrals of Vector-Valued Functions Over Parametric Curves | Evaluating Line Integrals of a Vector-Valued Functions Over Plane Curves | 0 / 8 / 0 / 0 | qa_passed | [Report](qa/17592186133828.json) |
 | [17592186133891](../../scratch/17592186133891.py) | Line Integrals With Respect to X and Y | Constructing Line Integrals With Respect to X | 6 / 0 / 0 / 1 | queued | — |
 | 17592186133892 | Line Integrals With Respect to X and Y | Constructing Line Integrals With Respect to Y | 9 / 0 / 0 / 0 | queued | — |
-| 17592186133893 | Line Integrals With Respect to X and Y | Evaluating Line Integrals With Respect to X and Y | 0 / 8 / 3 / 0 | queued | — |
+| [17592186133893](../../scratch/17592186133893.py) | Line Integrals With Respect to X and Y | Evaluating Line Integrals With Respect to X and Y | 0 / 8 / 3 / 0 | queued | — |
 | 17592186166846 | Conservative Vector Fields in the Cartesian Plane | Identifying the Vector Field Corresponding to a Given Potential Function | 5 / 4 / 0 / 0 | queued | — |
 | 17592186166864 | Conservative Vector Fields in the Cartesian Plane | Finding a Parameter in a Given Conservative Vector Field | 10 / 0 / 0 / 0 | queued | — |
 | [17592186166863](../../scratch/17592186166863.py) | Conservative Vector Fields in the Cartesian Plane | Identifying Conservative Vector Fields | 0 / 11 / 0 / 0 | queued | — |
@@ -493,35 +493,35 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | 17592186179739 | Interpreting Line Integrals of Vector-Valued Functions | Interpreting the Sign of a Line Integral Over a Constant Vector Field | 3 / 4 / 2 / 1 | queued | — |
 | 17592186179742 | Interpreting Line Integrals of Vector-Valued Functions | Interpreting the Sign of a Line Integral Over a Non-Constant Vector Field | 5 / 5 / 0 / 0 | queued | — |
 | 17592186179738 | Properties of Line Integrals of Vector-Valued Functions | Establishing the Connection With Line Integrals of Scalar Fields | 3 / 3 / 3 / 1 | queued | — |
-| 17592186179669 | Properties of Line Integrals of Vector-Valued Functions | Calculating the Line Integral of a Vector-Valued Function Along a Union of Curves | 0 / 6 / 4 / 0 | queued | — |
+| [17592186179669](../../scratch/17592186179669.py) | Properties of Line Integrals of Vector-Valued Functions | Calculating the Line Integral of a Vector-Valued Function Along a Union of Curves | 0 / 6 / 4 / 0 | queued | — |
 | 17592186179672 | Properties of Line Integrals of Vector-Valued Functions | Using the Properties of Line Integrals of Vector-Valued Functions | 10 / 0 / 0 / 0 | queued | — |
 | [17592186133878](../../scratch/17592186133878.py) | The Fundamental Theorem for Line Integrals | Applying the Fundamental Theorem of Line Integrals Over Parametric Curves | 7 / 5 / 0 / 0 | qa_passed | [Report](qa/17592186133878.json) |
 | [17592186133879](../../scratch/17592186133879.py) | The Fundamental Theorem for Line Integrals | Applying the Fundamental Theorem of Line Integrals When the Potential Function Is Not Given | 0 / 6 / 6 / 0 | qa_passed | [Report](qa/17592186133879.json) |
 | [17592186133890](../../scratch/17592186133890.py) | The Fundamental Theorem for Line Integrals | Applying the Fundamental Theorem of Line Integrals Over Cartesian Curves | 6 / 6 / 0 / 0 | qa_passed | [Report](qa/17592186133890.json) |
 | 17592186119889 | Areas of Parametric Surfaces | Finding an Integral That Represents the Surface Area of a Parametric Surface | 0 / 2 / 5 / 0 | queued | — |
-| 17592186119888 | Areas of Parametric Surfaces | Finding the Surface Area of a Parametric Surface | 0 / 4 / 4 / 0 | queued | — |
+| [17592186119888](../../scratch/17592186119888.py) | Areas of Parametric Surfaces | Finding the Surface Area of a Parametric Surface | 0 / 4 / 4 / 0 | queued | — |
 | [17592186179646](../../scratch/17592186179646.py) | Flux in Two-Dimensional Vector Fields | Calculating Flux Across a Square Using Symmetry | 3 / 5 / 0 / 1 | queued | — |
-| 17592186179644 | Flux in Two-Dimensional Vector Fields | Determining a Flux's Sign From a Diagram | 5 / 5 / 0 / 0 | queued | — |
+| [17592186179644](../../scratch/17592186179644.py) | Flux in Two-Dimensional Vector Fields | Determining a Flux's Sign From a Diagram | 5 / 5 / 0 / 0 | queued | — |
 | 17592186179647 | Flux in Two-Dimensional Vector Fields | Calculating Flux Across a Rectangle Using Two Symmetry Properties | 5 / 5 / 0 / 2 | queued | — |
 | 17592186179645 | Flux in Two-Dimensional Vector Fields | Finding an Integral Expression for Flux | 5 / 6 / 0 / 0 | queued | — |
 | [17592186133882](../../scratch/17592186133882.py) | Introduction to Green's Theorem | Expressing a Line Integral as a Double Integral Using Green's Theorem | 12 / 0 / 0 / 0 | queued | — |
 | [17592186133883](../../scratch/17592186133883.py) | Introduction to Green's Theorem | Evaluating Line Integrals Using Green's Theorem | 0 / 0 / 12 / 0 | queued | — |
-| 17592186133884 | Introduction to Green's Theorem | Expressing a Line Integral as a Repeated Integral Using Green's Theorem | 0 / 11 / 2 / 0 | queued | — |
+| [17592186133884](../../scratch/17592186133884.py) | Introduction to Green's Theorem | Expressing a Line Integral as a Repeated Integral Using Green's Theorem | 0 / 11 / 2 / 0 | queued | — |
 | [17592186179728](../../scratch/17592186179728.py) | Sums of Line Integrals With Respect to X and Y | Evaluating Line Integrals With Respect to X and Y Over Segments | 9 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186179728.json) |
 | [17592186179673](../../scratch/17592186179673.py) | Sums of Line Integrals With Respect to X and Y | Computing Line Integrals With Respect to X and Y Along Circles and Ellipses | 6 / 5 / 0 / 0 | qa_passed | [Report](qa/17592186179673.json) |
 | [17592186179674](../../scratch/17592186179674.py) | Sums of Line Integrals With Respect to X and Y | Evaluating Line Integrals With Respect to X and Y Along Cartesian Curves | 0 / 8 / 3 / 0 | qa_passed | [Report](qa/17592186179674.json) |
 | [17592186133880](../../scratch/17592186133880.py) | The Divergence of a Vector Field | Interpreting Divergence | 5 / 7 / 2 / 0 | qa_passed | [Report](qa/17592186133880.json) |
 | [17592186133889](../../scratch/17592186133889.py) | The Divergence of a Vector Field | Finding the Divergence of a Vector Field in Three Dimensions | 7 / 7 / 0 / 0 | qa_passed | [Report](qa/17592186133889.json) |
 | [17592186133876](../../scratch/17592186133876.py) | The Divergence of a Vector Field | Finding the Divergence of a Vector Field in Two Dimensions | 7 / 6 / 0 / 1 | qa_passed | [Report](qa/17592186133876.json) |
-| 17592186179744 | Calculating Flux in Two-Dimensional Vector Fields | Calculating the Flux of a Vector Field Over a Closed Curve in Parametric Form | 7 / 0 / 0 / 2 | queued | — |
+| [17592186179744](../../scratch/17592186179744.py) | Calculating Flux in Two-Dimensional Vector Fields | Calculating the Flux of a Vector Field Over a Closed Curve in Parametric Form | 7 / 0 / 0 / 2 | queued | — |
 | 17592186179745 | Calculating Flux in Two-Dimensional Vector Fields | Calculating the Flux of a Vector Field Over a Closed Curve in Cartesian Form | 0 / 12 / 0 / 0 | queued | — |
 | 17592186179746 | Calculating Flux in Two-Dimensional Vector Fields | Calculating the Flux of a Vector Field Over a Non-Closed Curve | 0 / 6 / 7 / 0 | queued | — |
 | [17592186133895](../../scratch/17592186133895.py) | Using Green's Theorem to Calculate Area | Identifying Vector Fields That Satisfy the Unit Curl Property | 2 / 5 / 0 / 0 | qa_passed | [Report](qa/17592186133895.json) |
 | [17592186133897](../../scratch/17592186133897.py) | Using Green's Theorem to Calculate Area | Calculating an Area Using Green's Theorem | 0 / 4 / 3 / 1 | qa_passed | [Report](qa/17592186133897.json) |
 | [17592186133896](../../scratch/17592186133896.py) | Using Green's Theorem to Calculate Area | Expressing the Area Bounded by a Closed Curve Using Green’s Theorem | 0 / 1 / 6 / 1 | needs_revalidation | [Report](qa/17592186133896.json) |
-| 17592186172100 | Green's Theorem in Flux Form | Expressing Flux as a Double Integral Using Green's Theorem in Flux Form | 5 / 5 / 0 / 0 | queued | — |
+| [17592186172100](../../scratch/17592186172100.py) | Green's Theorem in Flux Form | Expressing Flux as a Double Integral Using Green's Theorem in Flux Form | 5 / 5 / 0 / 0 | queued | — |
 | [17592186172101](../../scratch/17592186172101.py) | Green's Theorem in Flux Form | Calculating Flux Across Rectangles | 0 / 5 / 5 / 0 | queued | — |
-| 17592186172099 | Green's Theorem in Flux Form | Calculating Flux Across Other Type I and Type II Regions | 0 / 5 / 6 / 0 | queued | — |
+| [17592186172099](../../scratch/17592186172099.py) | Green's Theorem in Flux Form | Calculating Flux Across Other Type I and Type II Regions | 0 / 5 / 6 / 0 | queued | — |
 | 17592186175970 | Parametrizations of Cylinders | Parametrizing an Elliptic Cylinder | 2 / 4 / 0 / 2 | queued | — |
 | [17592186176024](../../scratch/17592186176024.py) | Green's Theorem in Polar Coordinates | Expressing a Line Integral Along a Circular Path as a Double Integral Using Green's Theorem | 4 / 3 / 0 / 1 | qa_passed | [Report](qa/17592186176024.json) |
 | [17592186176023](../../scratch/17592186176023.py) | Green's Theorem in Polar Coordinates | Evaluating a Line Integral Using Green's Theorem | 0 / 6 / 3 / 1 | qa_passed | [Report](qa/17592186176023.json) |

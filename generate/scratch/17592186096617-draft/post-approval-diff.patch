@@ -1,0 +1,33 @@
+--- approved
++++ current
+@@ -12,10 +12,12 @@
+ components in one pass, never learner prose or function-variable labels.
+ """
+ from __future__ import annotations
+-import argparse, hashlib, json, random, re, uuid
++import argparse, hashlib, json, random, re, uuid, sys
+ from functools import lru_cache
+ from pathlib import Path
+ import sympy as s
++sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts'))
++from question_capture.math_format import checked_math_content, normalize_prose, normalize_tex
+ X=s.Symbol('x', real=True)
+ KP_ID=17592186096617
+ KP_UUID='b194bf2f-feaa-5656-a3ee-0ff466a39e77'
+@@ -109,6 +111,7 @@
+     return (f'Here, we have the product of the two functions $u(x)={tex(u)}$ and $v(x)={tex(v)}.$ So, we apply the product rule:\n\n$$\n'
+       +r'\begin{aligned}(('+tex(u)+')('+tex(v)+r"))^{'} & =u'(x)\cdot v(x)+u(x)\cdot v'(x) \\ & =("+tex(u)+r")'\cdot ("+tex(v)+')+('+tex(u)+r")\cdot ("+tex(v)+r")' \\ & ="+applied+r' \\ & ='+tex(distributed)+r'\end{aligned}'+'\n$$')
+ 
++@checked_math_content
+ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+     if level not in ('easy','moderate','hard'):raise ValueError('Unknown difficulty')
+     if field_type is not None and field_type not in ('radio','blank'):raise ValueError('Unsupported field type')
+@@ -161,6 +164,8 @@
+         if len(matched)!=1 or any(equivalent(a,b) for i,a in enumerate(parsed) for b in parsed[i+1:]):
+             if parameters is not None:raise ValueError('Ambiguous complete bank')
+             continue
++        prompt=normalize_prose(prompt);worked=normalize_prose(worked)
++        values=[normalize_tex(value) for value in values]
+         key='selection' if kind=='radio' else 'field-1'
+         identity=hashlib.sha256(json.dumps([VERSION,level,prompt,worked,kind,sorted(values)],sort_keys=True).encode()).hexdigest()
+         qid=str(uuid.uuid5(uuid.UUID(KP_UUID),identity));fid=str(uuid.uuid5(uuid.UUID(qid),key))

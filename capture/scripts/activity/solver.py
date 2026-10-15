@@ -99,6 +99,17 @@ Keep explanations and authored source errors in reasoning, preserving MA's answe
 An answer can be equivalent to the stated solution without being in the same display form, but
 explain the equivalence. Merely being the only plausible choice is not captured MA answer evidence.
 
+A worked solution can contradict itself. If its concluding answer is absent from the current
+choices, inspect its earlier completed calculation or explicit judgments of every statement.
+When that captured result unambiguously gives one current choice (possibly in an equivalent
+form), you may use that result as worked_solution evidence. Quote the complete contiguous span
+that determines the answer and explain the equivalence. Keep status source_error, describe and
+quote the contradictory conclusion in reasoning, and retain the actual learner grade separately.
+This establishes support from the worked solution, not confirmation of the site's grading key.
+Do not derive source evidence from just the problem premises, the plausible choice, or your own
+calculation. If no complete source result supports an available choice, preserve the erroneous
+source answer in ma_value and leave the import unsupported as before.
+
 For match_topic, classify the tested skill against ONLY the supplied course/prerequisite topic IDs;
 when topic_catalog_reused is true, use the previously supplied topic_catalog_id in this session.
 Return null when unsupported. For resolve_identity, compare candidate source identities and

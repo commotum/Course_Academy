@@ -40,7 +40,7 @@ REGIONS={k:tuple(s.sympify(v) for v in vs) for k,vs in REGIONS.items()}
 def digest(v):return hashlib.sha256(json.dumps(v,sort_keys=True,default=str).encode()).hexdigest()
 def uid(v):return str(uuid.uuid5(uuid.UUID(KP_UUID),digest(v)))
 def L(v):return s.latex(s.sympify(v),mul_symbol=None).replace(r'\log',r'\ln')
-def scalar(t):return p.scalar(t.replace('\\\\','\\').replace(r'\;', '').replace(r'\quad', '').replace(r'\operatorname{arctan}', r'\arctan').replace(r'\operatorname{atan}', r'\arctan'))
+def scalar(t):return p.scalar(t.replace('\\\\','\\').replace(r'\;', '').replace(r'\:', '').replace(r'\quad', '').replace(r'\operatorname{arctan}', r'\arctan').replace(r'\operatorname{atan}', r'\arctan'))
 def components(problem):
  m=re.search(r'(?:⟨|\\langle)(.*?)(?:⟩|\\rangle)',problem,re.S)
  assert m,problem

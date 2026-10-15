@@ -278,6 +278,14 @@ def finalize_answers(question, presentations, judgment):
                     continue
                 # Preserve an explicit MA error even when no available choice matches;
                 # preparation validates how that answer can be stored by the schema.
+                if (source_fact and judgment.get('status') == 'source_error'
+                        and field.get('correct_value') is not None and field['correct_value'] != value):
+                    conflict = {'previous_value':field['correct_value'],
+                        'previous_evidence':deepcopy(field.get('evidence')),
+                        'reviewed_value':value, 'reasoning':judgment.get('reasoning')}
+                    history = field.setdefault('source_answer_conflicts',[])
+                    if conflict not in history:
+                        history.append(conflict)
                 field['correct_value'] = value
                 field.pop('correct_option', None)
                 field['value_type'] = value_type
