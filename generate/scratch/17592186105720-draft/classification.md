@@ -1,0 +1,11 @@
+# Classification
+
+Immutable source: math basis 2275, lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. `source.json` is the exact assigned wrapper. Numeric registered script and its entire existing evidence tree are retained unchanged; `registered-baseline.json` records every byte hash and path before work.
+
+Eight original MA practice questions: five rated moderate, two hard, one unrated. Seven additional captured questions lack MA IDs and are independent inventory, preserved completely in `independent-inventory.json`; their generated content is not source difficulty evidence. Every original uses one five-choice math radio field, key `selection`. There are no plots.
+
+Moderate has reciprocal fraction (positive halves, positive thirds, negative halves), negative-power reciprocal, and linear-minus-reciprocal numerator families. Hard has integer and half-integer binomial-square families. Unrated q-49096 uses a positive linear numerator and lacks both key and worked solution. Each separate source bank remains a distinct public profile through its source template and profile=`source`.
+
+The lesson order is followed from activity/first-step and each step/next: introduction to ln|x|, reciprocal integration KP, reciprocal-plus-power KP, arbitrary-constant logarithm tutorial, assigned KP. Explicit prerequisite: Combining the Laws of Logarithms. The canonical example divides a linear numerator, integrates, writes C=a ln K, and combines logarithms. This supports the completed unrated family without introducing substitution or another integration method.
+
+Easy is an authored integer-coefficient reciprocal a/x, 2<=|a|<=24. It avoids the fractional coefficient arithmetic of observed fraction questions and recognition of x^-1 in the observed power question. Moderate preserves those observed workloads, including linear numerator separation; integer powers n*x^-1 retain the original label. Hard expands a binomial and integrates all three terms, including the negative power. No parameter adds another mathematical operation. The easy negative integer cases use the same signed constant-factor and log-sum operation as the observed negative-half source. No authored levels are represented as recovered MA difficulty evidence.
