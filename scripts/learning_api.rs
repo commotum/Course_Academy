@@ -756,6 +756,12 @@ fn queue_preparation(
     l: u64,
     at: DateTime<Utc>,
 ) -> Result<(Vec<Json>, Vec<learning::PlannedActivity>)> {
+    // Repair older accidental opens before planning so their paused state no
+    // longer puts them ahead of the learner's actual selections.
+    let resets = reset_unstarted_lessons(s, l)?;
+    if !resets.is_empty() {
+        return Ok((resets, vec![]));
+    }
     let Some(c) = s.optional_ref(l, "learner/course")? else {
         return Ok((vec![], vec![]));
     };
@@ -998,6 +1004,18 @@ fn queue_preparation(
         engine
     };
     Ok((forms, candidates))
+}
+fn reset_unstarted_lessons(s: &EntitySnapshot, learner: u64) -> Result<Vec<Json>> {
+    let mut forms = vec![];
+    for task in s.refs(learner, "learner/activity")? {
+        if status(s, task, "learner-task/status")? == "paused"
+            && learning::lesson_has_no_progress(s, task)?
+        {
+            forms.push(cas(s, task, "learner-task/status", "learner-task.status/locked")?);
+            forms.push(add(json!(task), "learner-task/priority", json!(0.0)));
+        }
+    }
+    Ok(forms)
 }
 fn authored_step(
     steps: &[learning::LessonStep],
@@ -1990,8 +2008,9 @@ fn mutate_with_selection(
             let state = status(s, t, "learner-task/status")?;
             if matches!(state.as_str(), "locked" | "unlocked") {
                 pause_other_lessons(s, l, Some(t), at, &mut forms)?;
-                if !items(s, t)?.is_empty() {
-                    return Err("An unstarted task cannot already have presentations".into());
+                let chain = items(s, t)?;
+                if !chain.is_empty() && !learning::lesson_has_no_progress(s, t)? {
+                    return Err("An unstarted task cannot contain completed work".into());
                 }
                 forms.push(cas(
                     s,
@@ -2006,9 +2025,13 @@ fn mutate_with_selection(
                         json!(base_xp::activity_base(s, a)?),
                     ));
                 }
-                let content =
-                    learning::first_content(s, a, l)?.ok_or("Lesson has no available content")?;
-                append_item(json!(t), None, content, &mut forms)?;
+                if let Some(&item) = chain.last() {
+                    // Reuse the saved presentation and its timing checkpoint.
+                    transition(s, t, item, "started", at, &mut forms)?;
+                } else {
+                    let content = learning::first_content(s, a, l)?.ok_or("Lesson has no available content")?;
+                    append_item(json!(t), None, content, &mut forms)?;
+                }
                 if retrieval::kind(s, a)? == "assessment" {
                     forms.push(add(json!(t), "learner-task/active-item", json!("new-item")));
                 }
@@ -2038,6 +2061,14 @@ fn mutate_with_selection(
         return Err("Use the assignment question controls for this task".into());
     }
     let state = status(s, t, "learner-task/status")?;
+    if retrieval::kind(s, a)? == "lesson" && matches!(state.as_str(), "locked" | "unlocked") {
+        if action == "pause" {
+            return Ok((forms, json!({"taskId":t})));
+        }
+        if action == "resume" {
+            return mutate_with_selection(s, l, "start", &json!({"activityId":a}), at, selected_topic.or(s.optional_ref(a, "activity/scope")?));
+        }
+    }
     if retrieval::kind(s, a)? == "assessment" {
         return assessment_mutate(s, l, t, action, body, at);
     }
@@ -2120,21 +2151,25 @@ fn mutate_with_selection(
         if action == "resume" && matches!(state.as_str(), "started" | "paused") {
             pause_other_lessons(s, l, Some(t), at, &mut forms)?;
         }
-        if state == target || matches!(state.as_str(), "completed" | "failed") {
+        let reset = action == "pause" && learning::lesson_has_no_progress(s, t)?;
+        if state == target && !reset || matches!(state.as_str(), "completed" | "failed") {
             return Ok((forms, json!({"taskId":t})));
         }
         if !matches!(state.as_str(), "started" | "paused") {
             return Err("Task cannot change running state".into());
         }
-        if !terminal {
+        if !terminal && item_state != target {
             transition(s, t, i, target, at, &mut forms)?;
         }
         forms.push(cas(
             s,
             t,
             "learner-task/status",
-            &format!("learner-task.status/{target}"),
+            &format!("learner-task.status/{}", if reset { "locked" } else { target }),
         )?);
+        if reset {
+            forms.push(add(json!(t), "learner-task/priority", json!(0.0)));
+        }
     } else {
         let requested = required(body, "itemId")?;
         if requested != i {
@@ -2474,7 +2509,9 @@ impl Application {
             .ok_or("A stable requestId is required")?;
         let journal = PathBuf::from(std::env::var("LEARNING_REQUEST_DIR")?)
             .join(format!("{learner}-{request}.json"));
-        let cached_queue = if action == "queue" && body["background"] != true {
+        let cached_queue = if action == "queue" && body["background"] != true
+            && reset_unstarted_lessons(s, l)?.is_empty()
+        {
             self.cached_home(true)
         } else {
             None
@@ -2506,7 +2543,7 @@ impl Application {
                     .refs(l, "learner/activity")?
                     .into_iter()
                     .any(|t| retrieval::remaining(s, t, at).ok().flatten() == Some(0.0));
-                (forms, json!({"queue":true,"expired":expired}))
+                (forms, json!({"queue":true,"expired":expired,"resetUnstarted":!reset_unstarted_lessons(s,l)?.is_empty()}))
             } else {
                 mutate(&s, l, action, &body, at)?
             };
@@ -2553,6 +2590,11 @@ impl Application {
             return Ok(json!({"basis":s.basis_t,"learner":learner_json(s,l)}));
         }
         if action == "queue" {
+            if result["resetUnstarted"] == true {
+                let mut next = body.clone();
+                next["requestId"] = json!(format!("{request}-unstarted"));
+                return self.process(&next);
+            }
             if result["expired"] == true {
                 let mut next = body.clone();
                 next["requestId"] = json!(format!("{request}-expiry"));
@@ -3595,6 +3637,8 @@ mod study_queue_tests {
     fn self_directed_home_and_preparation_preserve_unselected_started_and_paused_lessons() {
         for state in ["started", "paused"] {
             let mut s = fixture();
+            s.entities.insert(95, json!({"task-item/content":70,"task-item/status":"task-item.status/correct"}).as_object().unwrap().clone());
+            s.entities.get_mut(&80).unwrap().insert("learner-task/items".into(), json!([95]));
             s.entities.get_mut(&80).unwrap().insert(
                 "learner-task/status".into(),
                 kw(&format!("learner-task.status/{state}")),

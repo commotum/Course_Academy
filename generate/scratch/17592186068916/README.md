@@ -1,0 +1,5 @@
+# KP68916 local generator
+
+Run `.venv/bin/python generate/scratch/17592186068916/validate.py`; preview `.venv/bin/python generate/scratch/17592186068916.py --difficulty all --count 1 --format json`. JSON all/count1 is a flat three-record list.
+
+Frozen math basis2275; no prior registered generator or evidence directory existed. All10 MA source records are covered, including authored completion of unrated q-10157. Nine ordinary E/M/H source families and stage omissions are parameterized; the incompatible nonlinear source is an exact-parameter reference profile only; normal q10578 uses an explicitly authored method bank because the observed distractor intent is unresolved. The nonlinear easy source is excluded from ordinary inventory because lesson order and prerequisites do not establish it within the linear-argument scope. Raw captures are preserved. See classification, extraction, review, validation and hash manifest for measured results and limits. No shared files, engine, queue, registration or live DB changed.

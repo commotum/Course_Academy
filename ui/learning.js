@@ -55,7 +55,7 @@ function preloadLessonRendering() {
 function refreshPauseControl() {
   const control = lessonView?.pause;
   if (!control) return;
-  const paused = short(task?.status) === 'paused';
+  const paused = ['paused', 'locked', 'unlocked'].includes(short(task?.status));
   control.textContent = paused ? 'Resume' : 'Pause';
   control.setAttribute('aria-label', paused ? 'Resume lesson working time' : 'Pause lesson working time');
   control.setAttribute('aria-pressed', String(paused));
@@ -67,7 +67,7 @@ function refreshPauseControl() {
 }
 async function toggleLessonPause() {
   if (busy || timerPausePending || !task || isDeveloperMode() || modeChanging || terminal(short(task.status)) || task.type === 'assessment') return;
-  const paused = short(task.status) === 'paused';
+  const paused = ['paused', 'locked', 'unlocked'].includes(short(task.status));
   if (!paused) { setManualPause(task.taskId, true); stopClock(); updateTaskTimer(); }
   timerPausePending = true;
   refreshPauseControl();
@@ -624,7 +624,7 @@ async function openTask(id) {
     if ((data.task || data).expired) {
       data = await api('/api/expire', { taskId: (data.task || data).taskId, requestId: crypto.randomUUID() });
     }
-    if (!document.hidden && short((data.task || data).status) === 'paused' && !isManuallyPaused(id)) {
+    if (!document.hidden && ['paused', 'locked', 'unlocked'].includes(short((data.task || data).status)) && !isManuallyPaused(id)) {
       try { data = await api('/api/resume', { taskId: (data.task || data).taskId, requestId: crypto.randomUUID() }); }
       catch (error) {
         if (error.code !== 'assessment-expired') throw error;
@@ -850,7 +850,7 @@ function taskContent(data, step, number, total, archived = false) {
   const prompt = markdown(step.markdown ?? step.problem ?? '', 'prose', step.fields || []);
   card.append(prompt);
   const isAnswered = answered(short(step.status));
-  const readOnly = archived || (data.type !== 'assessment' && isAnswered) || short(data.status) === 'paused';
+  const readOnly = archived || (data.type !== 'assessment' && isAnswered) || ['paused', 'locked', 'unlocked'].includes(short(data.status));
   const fields = step.fields || [];
   if (kind === 'question' && fields.length) {
     const form = el('form'); form.noValidate = false;
@@ -935,7 +935,7 @@ function taskContent(data, step, number, total, archived = false) {
   content.append(card);
   if (!archived) {
     const controls = el('div', 'lesson-controls');
-    if (short(data.status) === 'paused') {
+    if (['paused', 'locked', 'unlocked'].includes(short(data.status))) {
       controls.append(actionButton('Resume →', 'primary', () => mutation('/api/resume', { taskId: data.taskId })));
     } else if (step.canContinue) {
       if (step.practiceShortage) controls.append(el('p', 'continue-hint', 'No fresh questions remain for this skill. Continue now and return to its practice later.'));
@@ -1068,7 +1068,7 @@ function pauseWhenHidden({ unloading = false } = {}) {
   clearTimeout(assessmentSaveTimer);
   const responses = task.type === 'assessment' ? assessmentResponses?.() : undefined;
   pendingPause = assessmentSave.then(() => api('/api/pause', { taskId, responses, requestId: crypto.randomUUID() }, { keepalive: true }))
-    .then(() => { if (task?.taskId === taskId) task.status = 'paused'; })
+    .then(data => { if (task?.taskId === taskId) task.status = (data.task || data).status; })
     .catch(() => { /* Re-read authoritative state when the page becomes visible. */ })
     .finally(() => { pendingPause = null; if (!document.hidden) void syncAfterVisibility(); });
   return pendingPause;

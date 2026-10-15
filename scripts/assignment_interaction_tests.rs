@@ -180,7 +180,7 @@ fn profile_settings_validate_and_pause_a_lesson_atomically() -> Result<()> {
     assert_eq!(profile["courses"].as_array().unwrap().len(), 2);
     assert_eq!(
         status(&saved, f.lesson_task, "learner-task/status")?,
-        "paused"
+        "locked"
     );
     assert_eq!(status(&saved, f.lesson_item, "task-item/status")?, "paused");
     assert_eq!(
@@ -254,9 +254,9 @@ fn assignment_switches_clocks_without_reordering_or_crediting_lessons() -> Resul
     let s = f.focus(f.first, 2000)?;
     let task = task_for(&s, f.learner, f.activity)?.unwrap();
     let first = timing::active_item(&s, f.learner)?.unwrap();
-    assert_eq!(status(&s, f.lesson_task, "learner-task/status")?, "paused");
+    assert_eq!(status(&s, f.lesson_task, "learner-task/status")?, "locked");
     assert_eq!(number(&s, f.lesson_item, "task-item/elapsed-seconds"), 1.0);
-    assert_eq!(number(&s, f.lesson_task, "learner-task/priority"), 5.0);
+    assert_eq!(number(&s, f.lesson_task, "learner-task/priority"), 0.0);
     let s = f.focus(f.second, 3000)?;
     let second = timing::active_item(&s, f.learner)?.unwrap();
     assert_ne!(first, second);
@@ -322,7 +322,7 @@ fn assignment_switches_clocks_without_reordering_or_crediting_lessons() -> Resul
     assert_eq!(s.optional_ref(f.learner, "learner/performance")?, None);
     assert!(!s.entity(task)?.contains_key("learner-task/xp-earned"));
     assert!(!s.entity(task)?.contains_key("learner-task/xp-base"));
-    assert_eq!(status(&s, f.lesson_task, "learner-task/status")?, "paused");
+    assert_eq!(status(&s, f.lesson_task, "learner-task/status")?, "locked");
     assert!(
         s.refs(f.learner, "learner/activity")?
             .contains(&f.lesson_task)
@@ -340,7 +340,7 @@ fn assignment_switches_clocks_without_reordering_or_crediting_lessons() -> Resul
     }
     let s = f.snapshot()?;
     assert_eq!(s.refs(f.learner, "learner/activity")?, members);
-    assert_eq!(status(&s, f.lesson_task, "learner-task/status")?, "paused");
+    assert_eq!(status(&s, f.lesson_task, "learner-task/status")?, "locked");
     assert_eq!(s.entity(f.progress)?, &progress);
     Ok(())
 }

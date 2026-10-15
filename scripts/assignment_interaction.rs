@@ -299,12 +299,16 @@ fn pause_task(
         transition(s, task, item, "paused", at, forms)?;
     }
     if state == "started" {
+        let reset = learning::lesson_has_no_progress(s, task)?;
         forms.push(cas(
             s,
             task,
             "learner-task/status",
-            "learner-task.status/paused",
+            if reset { "learner-task.status/locked" } else { "learner-task.status/paused" },
         )?);
+        if reset {
+            forms.push(add(json!(task), "learner-task/priority", json!(0.0)));
+        }
     }
     Ok(())
 }

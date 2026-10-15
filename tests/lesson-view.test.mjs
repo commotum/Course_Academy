@@ -143,6 +143,26 @@ test('pause controls are hidden for previews, completed lessons, and fixed-deadl
   assert.match(f.h.view.timer.title, /Nothing recorded/);
 });
 
+test('a zero-progress lesson returned to unstarted keeps a stopped timer and can begin again', async () => {
+  const f = fixture();
+  f.server = activity(1, 1, { type: 'lesson' });
+  f.respond = async path => {
+    if (path !== '/api/pause') return null;
+    f.server.status = 'locked';
+    f.server.step.status = 'paused';
+    return { ok: true, json: async () => structuredClone(f.server) };
+  };
+  await f.h.render(structuredClone(f.server));
+  await f.h.toggleLessonPause();
+  assert.equal(f.h.clock.running, false);
+  assert.equal(f.h.view.pause.textContent, 'Resume');
+  assert.equal(f.h.view.current.querySelector('.lesson-controls').textContent, 'Resume →');
+  await f.h.toggleLessonPause();
+  assert.equal(f.calls.at(-1).path, '/api/resume');
+  assert.equal(f.h.clock.running, true);
+  assert.equal(f.h.view.timer.textContent, '0:10');
+});
+
 test('Study now starts the selected graph topic directly in the progressive lesson view', async () => {
   const f = fixture(); f.server = activity(1);
   await f.h.studyTopic('17592186050674');
