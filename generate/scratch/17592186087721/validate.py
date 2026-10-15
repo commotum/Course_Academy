@@ -83,85 +83,88 @@ def assess(r):
     assert [(int(s['lo']),int(s['hi'])) for s in gen['plots']]==[(-2,2),(-2,1),(-1,2),(-2,3),(-3,2)]
  return True
 
-start=time.monotonic();source_records=[];qs=g.SOURCE['record'][':knowledge-point/questions'];cases=json.loads((P/'source-cases.json').read_text());assert len(cases)==len(qs)==16
-for c in cases:
- r=g.generate('easy',template=c['template'],parameters=c['parameters'],profile=c['bank_profile']);original=next(q for q in qs if q[':question/id']==c['source_id']);q=r['question'];assess(r)
- assert q[':question/problem']==original[':question/problem']
- def normalize_assets(s):return re.sub(r'!\[\]\([^)]*\)','{ASSET}',s)
- assert normalize_assets(q[':question/worked-solution'])==normalize_assets(original[':question/worked-solution']),c
- f=q[':question/answer-fields'][0];of=original[':question/answer-fields'][0]
- assert sorted(a[':answer/value'] for a in f[':answer-field/choices'])==sorted(str(g.ASSET_ROOT/a[':answer/value']) for a in of[':answer-field/choices'])
- correct=next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1]);assert correct==str(g.ASSET_ROOT/of[':answer-field/correct'][':answer/value'])
- source_records.append(r)
-review=json.loads((P/'review.json').read_text())
-for r in review:assess(r)
-explicit=[]
-for t in g.SPECS:
- p={'m':2,'n':1,'h':2,'k':-2}
- if t in ('q-123781','q-73602','q-16169'):p['h']=1
- if t=='q-73602':p['k']=1
- if t=='q-123787':p['k']=2
- if t=='q-16192':p['k']=2
- explicit.append(g.generate('easy',template=t,parameters=p))
-for r in explicit:assess(r)
-assert len(explicit)==16
-assert all(sum(r['question'][':question/difficulty'].endswith('/'+level) for r in review)>=2 for level in ('easy','moderate','hard'))
-# Enumerate every bounded M/H mathematical bank without writing redundant PNGs.
-saved=g.render_plots;g.render_plots=lambda bank,ts:([f'choice-{i}.png' for i in range(5)],'solution.png')
-counts={}
-try:
- for level,profile in [('moderate','authored-sign-shift'),('hard','authored-domain-clips')]:
-  fingerprints=set()
-  for a in range(1,4):
-   for b in range(1,4):
-    if a==b:continue
-    for h in (-2,-1,1,2):
-     for k in (-2,-1,1,2):
-      _,_,_,_,bank,_=g.build(level,'factored-pair',{'a':a,'b':b,'h':h,'k':k},profile)
-      fingerprints.add(g.digest([g.geometry_key(v) for v in bank]))
-  counts[level]=len(fingerprints);assert counts[level]==96
-finally:g.render_plots=saved
-# Explicit bounds reject invalid calls without resampling.
-for level,p in [('moderate',{'a':1,'b':1,'h':1,'k':1}),('hard',{'a':4,'b':2,'h':1,'k':1}),('hard',{'a':1,'b':2,'h':0,'k':1}),('easy',{'m':3,'n':1,'h':1,'k':1})]:
- try:g.generate(level,parameters=p);raise AssertionError('invalid parameters accepted')
- except ValueError:pass
-# Same assessed source graph via exact observed and generated authored banks.
-original=g.generate('easy',template='q-16190',parameters={'m':1,'n':1,'h':0,'k':0},profile='observed:q-16190')
-authored=g.generate('easy',template='q-16190',parameters={'m':1,'n':1,'h':0,'k':0},profile='authored-coordinate')
-assess(authored)
-assert original['generation']['mathematical_fingerprint']==authored['generation']['mathematical_fingerprint']
-assert original['question'][':question/id']!=authored['question'][':question/id']
-# Explicit fixed curve/profile: order and seed do not affect content identity.
-for r in review:
- gen=r['generation'];level=r['question'][':question/difficulty'].split('/')[-1]
- rr=g.generate(level,999,template=gen['template'],parameters=gen['parameters'],profile=gen['bank_profile'])
- assert rr['question'][':question/id']==r['question'][':question/id']
- assert rr['generation']['mathematical_fingerprint']==gen['mathematical_fingerprint']
-# Complete geometric equivalence checks, not separate coordinate ranges.
-a=g.shape(T,T**2,-2,2);b=g.shape(-T,T**2,-2,2)
-assert g.geometry_key(a)==g.geometry_key(b)
-a=g.shape(2*T,5/T,0,sp.oo,'rational');b=g.shape(5/T,2*T,0,sp.oo,'rational');assert g.geometry_key(a)==g.geometry_key(b)
-assert g.geometry_key(g.shape(T,T**2,-2,1))!=g.geometry_key(g.shape(T,T**2,-1,2))
-# Force new assets so identical/different-instance concurrency tests exercise writes.
-params=[{'a':1,'b':3,'h':2,'k':-2},{'a':2,'b':1,'h':-2,'k':2}]
-for p in params:
- r=g.generate('hard',parameters=p)
- asset_dir=Path(r['question'][':question/answer-fields'][0][':answer-field/choices'][0][':answer/value']).parent
- shutil.rmtree(asset_dir)
-with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
- rs=list(pool.map(lambda p:g.generate('hard',parameters=p),[params[0],params[0],params[1],params[1]]))
-for r in rs:assess(r)
-assert rs[0]['question'][':question/id']==rs[1]['question'][':question/id'];assert rs[2]['question'][':question/id']==rs[3]['question'][':question/id'];assert rs[0]['question'][':question/id']!=rs[2]['question'][':question/id']
-assert not list(P.glob('render-????????.json'))
-subprocess.run([str(ROOT/'.venv/bin/python'),str(P/'render_labels.py')],check=True)
-assert (P/'math-labels-qa.png').is_file()
-records=source_records+review+explicit+rs
-native=[]
-for i,r in enumerate(records):
- f=r['question'][':question/answer-fields'][0];cid=f[':answer-field/correct'][1]
- native.append({'label':str(i),'record':r,'checks':[{'field_index':0,'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==cid else 'rejected','purpose':'all five complete plotted choices'} for a in f[':answer-field/choices']]})
-(P/'native-input.json').write_text(json.dumps(native,indent=2)+'\n')
-subprocess.run([str(ROOT/'generate/runs/current/check-engine'),str(P/'native-input.json'),str(P/'native-report.json')],check=True)
-nreport=json.loads((P/'native-report.json').read_text())
-result={'status':'pass','database':'math','basis':1356,'source_questions':16,'matched_source_prompts':16,'matched_complete_solution_sequences':16,'exact_unchanged_answer_assets':{'matched':80,'total':80},'matched_complete_asset_banks':16,'matched_correct_designations':16,'resolved_correct_parametrizations':16,'resolved_wrong_formulas':0,'residual_unchanged_wrong_graph_assets':64,'source_errors':[],'authored_variants_reviewed':len(review),'explicit_changed_family_checks':len(explicit),'visual_inspected_generated_plots':120,'authored_difficulty_labels':['moderate','hard'],'independent_displayed_math_and_table_checks':len(records),'native_accepted':nreport['accepted_checks'],'native_rejected':nreport['rejected_checks'],'concurrent_calls':4,'bounded_distinct_authored_banks':counts,'unique_temp_inputs_and_atomic_assets':True,'whole_graph_equivalence_regressions':3,'observed_authored_same_locus_fingerprint':True,'source_fidelity_limit':'Exact source rasters and complete prose/tables;64 residual wrong formulas are not claimed recovered or parameterized.','elapsed_seconds':round(time.monotonic()-start,2)}
-(P/'validation.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))
+def main():
+ start=time.monotonic();source_records=[];qs=g.SOURCE['record'][':knowledge-point/questions'];cases=json.loads((P/'source-cases.json').read_text());assert len(cases)==len(qs)==16
+ for c in cases:
+  r=g.generate('easy',template=c['template'],parameters=c['parameters'],profile=c['bank_profile']);original=next(q for q in qs if q[':question/id']==c['source_id']);q=r['question'];assess(r)
+  assert q[':question/problem']==original[':question/problem']
+  def normalize_assets(s):return re.sub(r'!\[\]\([^)]*\)','{ASSET}',s)
+  assert normalize_assets(q[':question/worked-solution'])==normalize_assets(original[':question/worked-solution']),c
+  f=q[':question/answer-fields'][0];of=original[':question/answer-fields'][0]
+  assert sorted(a[':answer/value'] for a in f[':answer-field/choices'])==sorted(str(g.ASSET_ROOT/a[':answer/value']) for a in of[':answer-field/choices'])
+  correct=next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1]);assert correct==str(g.ASSET_ROOT/of[':answer-field/correct'][':answer/value'])
+  source_records.append(r)
+ review=json.loads((P/'review.json').read_text())
+ for r in review:assess(r)
+ explicit=[]
+ for t in g.SPECS:
+  p={'m':2,'n':1,'h':2,'k':-2}
+  if t in ('q-123781','q-73602','q-16169'):p['h']=1
+  if t=='q-73602':p['k']=1
+  if t=='q-123787':p['k']=2
+  if t=='q-16192':p['k']=2
+  explicit.append(g.generate('easy',template=t,parameters=p))
+ for r in explicit:assess(r)
+ assert len(explicit)==16
+ assert all(sum(r['question'][':question/difficulty'].endswith('/'+level) for r in review)>=2 for level in ('easy','moderate','hard'))
+ # Enumerate every bounded M/H mathematical bank without writing redundant PNGs.
+ saved=g.render_plots;g.render_plots=lambda bank,ts:([f'choice-{i}.png' for i in range(5)],'solution.png')
+ counts={}
+ try:
+  for level,profile in [('moderate','authored-sign-shift'),('hard','authored-domain-clips')]:
+   fingerprints=set()
+   for a in range(1,4):
+    for b in range(1,4):
+     if a==b:continue
+     for h in (-2,-1,1,2):
+      for k in (-2,-1,1,2):
+       _,_,_,_,bank,_=g.build(level,'factored-pair',{'a':a,'b':b,'h':h,'k':k},profile)
+       fingerprints.add(g.digest([g.geometry_key(v) for v in bank]))
+   counts[level]=len(fingerprints);assert counts[level]==96
+ finally:g.render_plots=saved
+ # Explicit bounds reject invalid calls without resampling.
+ for level,p in [('moderate',{'a':1,'b':1,'h':1,'k':1}),('hard',{'a':4,'b':2,'h':1,'k':1}),('hard',{'a':1,'b':2,'h':0,'k':1}),('easy',{'m':3,'n':1,'h':1,'k':1})]:
+  try:g.generate(level,parameters=p);raise AssertionError('invalid parameters accepted')
+  except ValueError:pass
+ # Same assessed source graph via exact observed and generated authored banks.
+ original=g.generate('easy',template='q-16190',parameters={'m':1,'n':1,'h':0,'k':0},profile='observed:q-16190')
+ authored=g.generate('easy',template='q-16190',parameters={'m':1,'n':1,'h':0,'k':0},profile='authored-coordinate')
+ assess(authored)
+ assert original['generation']['mathematical_fingerprint']==authored['generation']['mathematical_fingerprint']
+ assert original['question'][':question/id']!=authored['question'][':question/id']
+ # Explicit fixed curve/profile: order and seed do not affect content identity.
+ for r in review:
+  gen=r['generation'];level=r['question'][':question/difficulty'].split('/')[-1]
+  rr=g.generate(level,999,template=gen['template'],parameters=gen['parameters'],profile=gen['bank_profile'])
+  assert rr['question'][':question/id']==r['question'][':question/id']
+  assert rr['generation']['mathematical_fingerprint']==gen['mathematical_fingerprint']
+ # Complete geometric equivalence checks, not separate coordinate ranges.
+ a=g.shape(T,T**2,-2,2);b=g.shape(-T,T**2,-2,2)
+ assert g.geometry_key(a)==g.geometry_key(b)
+ a=g.shape(2*T,5/T,0,sp.oo,'rational');b=g.shape(5/T,2*T,0,sp.oo,'rational');assert g.geometry_key(a)==g.geometry_key(b)
+ assert g.geometry_key(g.shape(T,T**2,-2,1))!=g.geometry_key(g.shape(T,T**2,-1,2))
+ # Force new assets so identical/different-instance concurrency tests exercise writes.
+ params=[{'a':1,'b':3,'h':2,'k':-2},{'a':2,'b':1,'h':-2,'k':2}]
+ for p in params:
+  r=g.generate('hard',parameters=p)
+  asset_dir=Path(r['question'][':question/answer-fields'][0][':answer-field/choices'][0][':answer/value']).parent
+  shutil.rmtree(asset_dir)
+ with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+  rs=list(pool.map(lambda p:g.generate('hard',parameters=p),[params[0],params[0],params[1],params[1]]))
+ for r in rs:assess(r)
+ assert rs[0]['question'][':question/id']==rs[1]['question'][':question/id'];assert rs[2]['question'][':question/id']==rs[3]['question'][':question/id'];assert rs[0]['question'][':question/id']!=rs[2]['question'][':question/id']
+ assert not list(P.glob('render-????????.json'))
+ subprocess.run([str(ROOT/'.venv/bin/python'),str(P/'render_labels.py')],check=True)
+ assert (P/'math-labels-qa.png').is_file()
+ records=source_records+review+explicit+rs
+ native=[]
+ for i,r in enumerate(records):
+  f=r['question'][':question/answer-fields'][0];cid=f[':answer-field/correct'][1]
+  native.append({'label':str(i),'record':r,'checks':[{'field_index':0,'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==cid else 'rejected','purpose':'all five complete plotted choices'} for a in f[':answer-field/choices']]})
+ (P/'native-input.json').write_text(json.dumps(native,indent=2)+'\n')
+ subprocess.run([str(ROOT/'generate/runs/current/check-engine'),str(P/'native-input.json'),str(P/'native-report.json')],check=True)
+ nreport=json.loads((P/'native-report.json').read_text())
+ result={'status':'pass','database':'math','basis':1356,'source_questions':16,'matched_source_prompts':16,'matched_complete_solution_sequences':16,'exact_unchanged_answer_assets':{'matched':80,'total':80},'matched_complete_asset_banks':16,'matched_correct_designations':16,'resolved_correct_parametrizations':16,'resolved_wrong_formulas':0,'residual_unchanged_wrong_graph_assets':64,'source_errors':[],'authored_variants_reviewed':len(review),'explicit_changed_family_checks':len(explicit),'visual_inspected_generated_plots':120,'authored_difficulty_labels':['moderate','hard'],'independent_displayed_math_and_table_checks':len(records),'native_accepted':nreport['accepted_checks'],'native_rejected':nreport['rejected_checks'],'concurrent_calls':4,'bounded_distinct_authored_banks':counts,'unique_temp_inputs_and_atomic_assets':True,'whole_graph_equivalence_regressions':3,'observed_authored_same_locus_fingerprint':True,'source_fidelity_limit':'Exact source rasters and complete prose/tables;64 residual wrong formulas are not claimed recovered or parameterized.','elapsed_seconds':round(time.monotonic()-start,2)}
+ (P/'validation.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))
+
+if __name__=='__main__':main()
