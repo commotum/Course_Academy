@@ -1,0 +1,9 @@
+# Classification at immutable basis 2275
+
+Database `math`, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. The snapshot contains ten Math Academy records: five easy (one blank, four radio), four moderate radio, and one unrated radio with neither a key nor a worked solution. One additional moderate record has no Math Academy ID and is recorded separately in `independent-inventory.json`.
+
+All rated practice templates assess substitution of the displayed polynomial denominator followed by integrating `1/u`. Easy questions first adjust a constant multiple of the derivative; moderate questions supply the derivative exactly. Prompt forms and solution sequences remain separate named source profiles, including the blank's supplied `+K` and the six-row signed-coefficient reduction in q-72605. Every radio contains its complete five-choice source bank. No plots or assets occur (plot rating none).
+
+No hard practice source was captured. The authored hard profile preserves the quartic denominator and exact-derivative numerator of q-113719, the same five-choice bank, the same substitution relation and four solution rows. It varies the nonzero leading and linear coefficients and positive constant without introducing another operation or method. This is a conservative same-method authored difficulty assignment, not an observed hard template.
+
+The prerequisite is Integrating Linear Rational Functions Using Substitution (topic 17592186048557). The ordered lesson first teaches direct and constant-multiple power substitution, then rational substitution and this KP, then other fractional expressions. The tutorial explicitly supports log absolute values and removal of bars for a positive quadratic. These provide the scope boundary: no partial fractions, division of polynomials, new transcendental functions, definite integrals, or denominator factorization tasks.

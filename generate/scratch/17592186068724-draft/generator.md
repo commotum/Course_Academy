@@ -1,0 +1,11 @@
+# Generator contract
+
+The isolated draft script loads only its own source snapshot, template extraction, parser and frozen formatter by explicit file paths. It never imports the registered generator or adds a mutable shared directory to sys.path. It emits existing question/field/answer representations and field-owned UUIDs, with canonical bare TeX answers validated by the frozen formatter.
+
+The public API is `generate(level, seed=0, template=None, parameters=None, profile=None, option_seed=None)` and `batch(level,count,seed=0,template=None)`. Seed, option seed, count and all numeric parameter fields require built-in integers; booleans are rejected. Parameters are a complete typed mapping confined to the finite domain. Explicit reference replay supports the legacy unrated record without repairing missing source attributes. Normal rated generation uses the operational named-slot templates for anchors and genuine variants.
+
+Batch enumeration deduplicates canceled actual integrands across profiles, including formatting and common-factor aliases, and rejects counts beyond finite capacity. Hard inputs additionally require primitive coefficient tuples. UUIDs depend on version, level, profile and canonical mathematical content, with each answer owned by its field. Option shuffling has its own RNG and leaves question/field/answer identities and mathematical parameters unchanged. Seed/parameters/profile/domain/basis/lineage/dependency metadata support exact replay.
+
+The CLI accepts easy/moderate/hard/all, a count per level, seed, template and json/markdown preview. `--difficulty all --count 3` returns one flat nine-record JSON list. No database calls, registration, queue mutations or engine changes occur.
+
+`validate.py` independently parses actual displayed integrands, u, du relations, all integral rows, final primitives and complete formal choice operands. It compares derivatives modulo constants, requires one correct derivative and pairwise distinct bank derivatives, checks exact source text/banks/keys and the entire finite domain, invokes the frozen native learner grader on every served instance, exercises all batch capacities and rejection contracts, verifies CLI flattening/replay, and rechecks the complete registered baseline path/hash inventory.
