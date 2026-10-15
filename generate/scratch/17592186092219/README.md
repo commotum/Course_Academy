@@ -1,17 +1,19 @@
 # Point-information coordinate generator
 
-Draft stops after steps 3–7. Script: `generate/scratch/17592186092219.py`. Only local review artifacts; no registration, database writes or shared engine changes.
+Script: `generate/scratch/17592186092219.py`. Supports easy, moderate and hard. Source-shaped default profiles are complete source banks under explicit positive whole-coordinate scaling, with independently checked printed mathematics and actual learner grading. Easy is an authored axis-radius family grounded in the frozen curriculum, not an observed easy practice band.
 
-Run from repository root:
+Run from the repository root:
 
 ```sh
-.venv/bin/python generate/scratch/17592186092219/validate.py
-.venv/bin/python generate/scratch/17592186092219.py --difficulty all --seed 2 --count 2 --format markdown
-.venv/bin/python generate/scratch/17592186092219.py --difficulty hard --profile raw_q-40826 --format json
+.venv/bin/python generate/scratch/17592186092219.py --difficulty hard --seed 42 --count 3 --format json
+.venv/bin/python generate/scratch/17592186092219/validate_release.py
+.venv/bin/python generate/scratch/17592186092219/replenish.py
 ```
 
-API: generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None); generate_easy, generate_moderate and generate_hard. Easy uses `radius,factor,angle`; source-shaped templates use `scale`. Explicit bounds and complete-bank validity match sampling. Original masks are public `raw_<source-id>` profiles, with missing source attributes preserved; `observed_<source-id>` profiles supply independently inferred missing keys/solutions. Both evidence modes are ineligible for learning because historical distractor operations are opaque. Defaults use source-shaped solutions and authored complete operation banks.
+The replenisher rechecks inventory under the application's `api.lock`, uses the configured `math` EDB integration and contributor, saves the original transaction and durable intent, previews with deployed validation predicates, submits with a basis guard, and holds the lock through exact-basis readback. It adds only fresh mathematical tasks and registers the generator UUID/path using the installed schema. Source questions, canonical example and learner history remain unchanged. Requests, receipts, readback and native-grading evidence are retained under `reference/replenishment/`.
 
-Raw exact fidelity, normal prose/stage fidelity, mathematics and real native grading are reported separately in validation.json. review.json / review.md show each original, two normal variants and two historical-bank evidence variants, plus two default examples per level. source-cases.json lists every practice record. build_masks.py regenerates documented extraction masks only; it is not a separate question-return branch.
+Finite declared mathematical domains: 384 easy, 56 moderate, 48 hard before source/served-task exclusions and cross-template deduplication. Choice order, seed and radio/blank layout never establish a new task. `capabilities.json` documents bounds and limitations; shortages remain explicit if those bounds are exhausted.
 
-Easy is curriculum-grounded authored scope; two unrated source assignments are authored. q-276838's axis/quadrant teaching error is retained in raw evidence and minimally repaired in normal output. No graphics are needed.
+Source replay and policy: `template-extraction.md`, `source-bank-replay.json`, `slot-coverage.json`, `release-review.md`, `release-validation.json`. Historical distractor intent is unresolved; the recipe is the explicit observed coordinate expression times its similarity factor. Raw and observed evidence profiles are ineligible for learning. Invented authored radio banks on source templates are also ineligible. Original missing ratings, keys and solutions are preserved in EDB; newly generated completions carry explicit authored metadata. The q-276838 axis/quadrant prose error is corrected only in generated output.
+
+`validate.py`, `validation.json` and `review.md` are the original exhaustive draft validation workflow and review; release eligibility and hashes come from `release-validation.json`. `reference/draft-generator.py` and `reference/draft-validation.json` retain the prior policy.

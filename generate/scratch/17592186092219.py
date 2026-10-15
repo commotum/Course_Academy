@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Point information -> Cartesian coordinates. Draft steps 3–7, no database writes.
+"""Point information -> Cartesian coordinates. Validated scoped generator; database submission is separate.
 
 Normal defaults serve every observed family, preserve field ordering and shared
-source solution sentences, and use complete authored operation banks. Historical
-opaque banks are public evidence profiles, never learner defaults. The source
+source solution sentences, and use complete source-bank profiles under positive similarity scaling.
+Historical distractor intent remains unresolved; explicit whole-coordinate
+recipes and complete-bank replay establish fidelity without inventing intent. The source
 scale masks are parameterized mathematical components, not literal-question
 returns. Source styles preserve unreduced square roots and all ordered stages.
 
@@ -19,7 +20,9 @@ from pathlib import Path
 import sympy as s
 HERE=Path(__file__).with_suffix('')
 CAPTURE=json.loads((HERE/'source.json').read_text()); KP=CAPTURE['record']
-VERSION='point-information-v1'
+VERSION='point-information-v2-source-banks'
+GENERATOR_UUID='03d0366e-7600-5400-8ccd-2792f45436bc'
+SUPPORTED_LEVELS=('easy','moderate','hard')
 Q={q[':question/math-academy-id']:q for q in KP[':knowledge-point/questions']}
 # x_A,y_A,theta_A/pi, radial operation, radial operand,theta_B/pi, inferred level.
 SPEC={
@@ -131,8 +134,8 @@ def unique_bank(values):return len({tuple(s.simplify(x) for x in v) for v in val
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  if level not in ('easy','moderate','hard'):raise ValueError('difficulty')
- rng=random.Random(seed);raw=bool(profile and profile.startswith('raw_'));observed=bool(profile and profile.startswith('observed_'))
- if raw or observed:
+ rng=random.Random(seed);raw=bool(profile and profile.startswith('raw_'));observed=bool(profile and profile.startswith('observed_'));source_profile=bool(profile and profile.startswith('source_'))
+ if raw or observed or source_profile:
   name=profile.split('_',1)[1]
   if template is not None and template!=name:raise ValueError('profile/template mismatch')
   template=name
@@ -156,8 +159,8 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   source_ft=source[':question/answer-fields'][0][':answer-field/type'][':db/ident'].split('/')[-1]
   if field_type not in (None,source_ft):raise ValueError('source-shaped field type')
   ft=source_ft;keys=[f[':answer-field/key'] for f in source[':question/answer-fields']]
-  profile='authored_'+kind if profile is None else profile
-  if profile not in ('authored_'+kind,'raw_'+name,'observed_'+name):raise ValueError('profile')
+  profile='source_'+name if profile is None else profile;source_profile=profile=='source_'+name
+  if profile not in ('authored_'+kind,'raw_'+name,'observed_'+name,'source_'+name):raise ValueError('profile')
   p=parameters if parameters is not None else {'scale':rng.randint(1,16 if level=='hard' else 8)}
   if set(p)!={'scale'} or isinstance(p['scale'],bool) or s.sympify(p['scale']) not in range(1,17 if level=='hard' else 9):raise ValueError('source scale outside level bounds')
   scale=int(p['scale']);d=data(name,scale)
@@ -166,7 +169,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   # q-276838 incorrectly calls an axis point first-quadrant. Preserve raw; repair normal.
   if not raw:solution=solution.replace('lies in the first quadrant','lies on the positive $x$-axis')
  if ft=='blank' and template=='axis_radius':problem+='\n\nThe Cartesian coordinates of $B$ are $(${{field-1}}$,$\n{{field-2}}$).$'
- if raw or observed:
+ if raw or observed or source_profile:
   scale=int(p['scale']);values=[]
   for f in source[':question/answer-fields']:
    vals=[]
@@ -192,7 +195,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  for fi,(key,vals) in enumerate(zip(keys,values)):
   fid=uid(identity+key);answers=[{':answer/id':uid(fid+v),':answer/type':':answer.type/math',':answer/value':v} for v in vals]
   f={':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/'+ft,':answer-field/choices':answers}
-  if raw or observed:
+  if raw or observed or source_profile:
    sf=source[':question/answer-fields'][fi]
    if ':answer-field/correct' in sf:ci=next(i for i,a in enumerate(sf[':answer-field/choices']) if a[':answer/id']==sf[':answer-field/correct'][':answer/id'])
    elif raw:ci=None
@@ -202,7 +205,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   if ft=='radio':rng.shuffle(answers)
   fields.append(f)
  q[':question/answer-fields']=fields
- return {'knowledge_point':{'db_id':KP[':db/id'],'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'seed':seed,'template':template,'profile':profile,'parameters':p,'source':{k:CAPTURE[k] for k in ('database','basis','lineage')},'difficulty_claim':'observed' if source and ':question/difficulty' in source else 'authored','evidence_only':raw or observed,'eligible_for_learning':not(raw or observed),'mathematical_fingerprint':task,'content_fingerprint':identity,'python':sys.version.split()[0],'sympy':s.__version__}}
+ return {'knowledge_point':{'db_id':KP[':db/id'],'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'seed':seed,'template':template,'profile':profile,'parameters':p,'source':{k:CAPTURE[k] for k in ('database','basis','lineage')},'difficulty_claim':'observed' if source and ':question/difficulty' in source else 'authored','evidence_only':raw or observed or (ft=='radio' and template!='axis_radius' and not source_profile),'eligible_for_learning':not(raw or observed) and (source_profile or ft=='blank' or template=='axis_radius'),'mathematical_fingerprint':task,'content_fingerprint':identity,'python':sys.version.split()[0],'sympy':s.__version__}}
 
 # Easy: authored axis-to-radius family, 12*4*8=384 mathematical tasks.
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
