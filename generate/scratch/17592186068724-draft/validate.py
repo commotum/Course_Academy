@@ -41,6 +41,23 @@ def check(rec):
    val=parse(value).subs(U,u);assert same(sp.diff(val,z),integrand),(meta,row)
  f=q[':question/answer-fields'][0];values=[parse(a[':answer/value'])for a in f[':answer-field/choices']];ds=[sp.cancel(sp.diff(a,z))for a in values]
  assert all(not same(a,b)for i,a in enumerate(ds)for b in ds[i+1:])
+ # Compare every formal bank operand, including wrong values, against an
+ # independently built recipe from the actual displayed denominator.
+ poly=sp.Poly(u,z);n=poly.degree();a=poly.LC();bcoef=poly.coeff_monomial(z);c=poly.coeff_monomial(1);L=sp.log(u);t=meta['bank_profile']
+ if t=='q-132982':expected_values=[-4*L]
+ elif t=='q-12501':expected_values=[L/3,L,L/2,L/c,3*L]
+ elif t=='q-49451':expected_values=[L/2,L/4,1/u**2,2*L,2/u**2]
+ elif t=='q-49572':expected_values=[10*L,1/u**2,L/2,L/10,c*L]
+ elif t=='q-72605':expected_values=[-2*L,sp.Rational(2,5)/u**2,-sp.Rational(5,2)/u**2,sp.Rational(5,2)*L,-sp.Rational(2,5)*L]
+ elif t=='q-72566':
+  shifted=a*z**n+bcoef+c;altered=n*a*z**(n-1)+bcoef*z+c;expected_values=[sp.log(v),sp.log(shifted),L,sp.log(altered),sp.log(1/shifted)]
+ else:
+  bank=[L/v,sp.log(v/u),L,sp.log(u/v),sp.log(v)]
+  expected_values=[bank[i]for i in {'q-113719':[0,1,2,3,4],'q-113720':[0,3,4,1,2],'q-113721':[0,4,2,3,1]}[t]]
+ # Source constants C/K are integration constants, otherwise compare complete
+ # formal objects exactly instead of treating all wrong answers as fungible.
+ stripped=[val.subs({sp.Symbol('C'):0,sp.Symbol('K'):0})for val in values]
+ assert all(same(actual,expected)for actual,expected in zip(stripped,expected_values)),(meta,stripped,expected_values)
  ids=[a[':answer/id']for a in f[':answer-field/choices']];correct=f[':answer-field/correct'][1];assert correct in ids and len(ids)==len(set(ids));assert [i for i,d in enumerate(ds)if same(d,integrand)]==[ids.index(correct)]
  assert g.task_fingerprint(q)==meta['mathematical_fingerprint']
  g.FORMAT.validate_generated_record(rec)
@@ -99,7 +116,7 @@ def main():
  report=json.loads((D/'native-report.json').read_text());assert report['documented_unresolved_checks']==0
  cli=json.loads(subprocess.check_output([sys.executable,str(D.with_suffix('.py')),'--difficulty','all','--count','3']));assert len(cli)==9 and all(sum(r['question'][':question/difficulty']==':question.difficulty/'+l for r in cli)==3 for l in g.SUPPORTED_LEVELS)
  for name,data in [('source-cases',cases),('source-replay',replay),('review',review),('capacity',capacities),('slot-coverage',slots)]: (D/(name+'.json')).write_text(json.dumps(data,indent=2))
- baseline=json.loads((D/'registered-baseline.json').read_text())['paths'];assert {str(p):hashlib.sha256(p.read_bytes()).hexdigest()for p in [D.with_name('17592186068724.py'),*sorted(p for p in D.with_name('17592186068724').rglob('*')if p.is_file())]}==baseline
+ baseline=json.loads((D/'registered-baseline.json').read_text())['paths'];assert {str(p.relative_to(D.parents[2])):hashlib.sha256(p.read_bytes()).hexdigest()for p in [D.with_name('17592186068724.py'),*sorted(p for p in D.with_name('17592186068724').rglob('*')if p.is_file())]}==baseline
  result={'passed':True,'basis':2275,'ma_rated_anchors':9,'ma_unrated_reference':1,'full_banks_exact':9,'options_exact':sum(x['values']for x in replay),'distractors_exact':sum(x['distractors']for x in replay),'every_public_profile_instance_checked':len(allrecords),'capacities':capacities,'native':{k:report[k]for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'registered_baseline_unchanged':True,'hard':'authored conservative same-backbone extension; no observed hard source','limitations':[]}
  (D/'validation.json').write_text(json.dumps(result,indent=2));print(json.dumps(result,indent=2))
 if __name__=='__main__':main()

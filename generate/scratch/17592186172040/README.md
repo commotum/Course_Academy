@@ -1,5 +1,9 @@
 # Whole-field slope-type generator
 
+Inventory integration on 2026-10-14 registered generator UUID `56deb810-148f-5109-b529-209db63b4225` at verified math basis 2573. Run `.venv/bin/python generate/scratch/17592186172040/replenish.py` to audit this job or recover its exact saved request. The registration uses the application contributor and holds `api.lock` through the basis check, preview, submission and readback. Requests, receipts and verification are in `reference/replenishment/basis-2572/`.
+
+This job has a **finite-limit** outcome: all three declared assessed categories already occur in the source pool, so its six newly executed template candidates were rejected as repeated tasks. No practice questions were added or repaired. Current available question counts remain easy 0, moderate 3, hard 4; the per-band shortages remain 5, 2, 1. The single unrated, ungradable source remains unchanged. See `capabilities.json` and `reference/replenishment/duplicate-audit.json`. The older steps 3–7 evidence below describes the original generator validation; the registration evidence is separate.
+
 Run `.venv/bin/python generate/scratch/17592186172040/validate.py` from the repository root. Preview with `.venv/bin/python generate/scratch/17592186172040.py --difficulty all --seed 19 --count 2 --format json`.
 
 The API exposes generate_easy, generate_moderate, generate_hard and generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None). Normal profile is authored_method. Eight q-ID profiles replay complete captured image banks; explicit replay parameters use `{"scale":1}` or another supported scale. Normal explicit parameters use a,b,c,px,py,orientation,single. Bounds and complete-bank validity apply to explicit inputs too.

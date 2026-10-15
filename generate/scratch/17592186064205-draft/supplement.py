@@ -9,6 +9,8 @@ def main():
  for sid,t in g.PROFILES.items():
   for b in g.DOMAIN:
    rec=g.generate(t['difficulty'],0,sid,{'b':b});q=rec['question'];blocks=re.findall(r'\$\$\s*(.*?)\s*\$\$',q[':question/worked-solution'],re.S)
+   substitution=re.search(r'let\s+\$u=([^$]+)\$',q[':question/worked-solution']);assert substitution
+   assert v.sp.expand(v.scalar(substitution[1],t['variable'])-(t['a']*v.x+b))==0
    lhs,rhs=blocks[1].split('⟹');assert lhs.split('=')[0].strip()==r'\frac{\text{d}u}{\text{d}'+t['variable']+'}'
    assert v.scalar(lhs.split('=')[1].rstrip(r'\,'),t['variable'])==t['a']
    prefix=r'\,\text{d}'+t['variable']+'=';assert rhs.startswith(prefix)

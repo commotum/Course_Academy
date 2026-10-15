@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 36**, **qa_passed: 361**, **queued: 179**, **working: 4**.
+**needs_revalidation: 36**, **qa_passed: 365**, **queued: 173**, **working: 6**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -147,16 +147,16 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186184351](../../scratch/17592186184351.py) | Integrating Exponential Functions Using Substitution | More Complex Cases | 1 / 3 / 3 / 1 | qa_passed | [Report](qa/17592186184351.json) |
 | [17592186184352](../../scratch/17592186184352.py) | Integrating Exponential Functions Using Substitution | Evaluating Definite Integrals | 3 / 3 / 1 / 1 | qa_passed | [Report](qa/17592186184352.json) |
 | [17592186105715](../../scratch/17592186105715-draft.py) | Integrating the Reciprocal Function | Integrating a Reciprocal Function | 8 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186105715.json) |
-| [17592186068916](../../scratch/17592186068916.py) | Integrating Trigonometric Functions Using Substitution | Integrating Reciprocal Trigonometric Functions With Linear Arguments | 3 / 2 / 4 / 1 | working | — |
-| [17592186064203](../../scratch/17592186064203.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Positive Integer Exponent | 5 / 5 / 0 / 2 | working | — |
+| [17592186068916](../../scratch/17592186068916.py) | Integrating Trigonometric Functions Using Substitution | Integrating Reciprocal Trigonometric Functions With Linear Arguments | 3 / 2 / 4 / 1 | qa_passed | [Report](qa/17592186068916.json) |
+| [17592186064203](../../scratch/17592186064203-draft.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Positive Integer Exponent | 5 / 5 / 0 / 2 | qa_passed | [Report](qa/17592186064203.json) |
 | [17592186064204](../../scratch/17592186064204.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Negative Integer Exponent | 5 / 5 / 0 / 1 | working | — |
 | [17592186064205](../../scratch/17592186064205.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Fractional Exponent | 0 / 5 / 5 / 1 | working | — |
-| [17592186068724](../../scratch/17592186068724.py) | Integration Using Substitution | Integrating a Rational Function Using Natural Logarithms | 5 / 5 / 0 / 1 | queued | — |
-| [17592186068786](../../scratch/17592186068786.py) | Integration Using Substitution | Integrating Other Fractional Expressions | 0 / 5 / 5 / 1 | queued | — |
-| [17592186068915](../../scratch/17592186068915.py) | Integrating Trigonometric Functions Using Substitution | Integrating Trigonometric Functions With Linear Arguments | 5 / 5 / 0 / 1 | queued | — |
-| [17592186068917](../../scratch/17592186068917.py) | Integrating Trigonometric Functions Using Substitution | Integrating Products Containing Trigonometric Functions Using Substitution | 0 / 5 / 5 / 1 | queued | — |
-| [17592186068723](../../scratch/17592186068723.py) | Integration Using Substitution | Integrating an Expression Involving a Power Function Multiplied by a Constant Multiple of Its Derivative | 6 / 5 / 0 / 1 | queued | — |
-| [17592186096656](../../scratch/17592186096656.py) | Integrating Exponential Functions Using Linear Substitution | Integrating a General Exponential Function With a Linear Exponent | 5 / 6 / 0 / 2 | queued | — |
+| [17592186068724](../../scratch/17592186068724-draft.py) | Integration Using Substitution | Integrating a Rational Function Using Natural Logarithms | 5 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186068724.json) |
+| [17592186068786](../../scratch/17592186068786-draft.py) | Integration Using Substitution | Integrating Other Fractional Expressions | 0 / 5 / 5 / 1 | qa_passed | [Report](qa/17592186068786.json) |
+| [17592186068915](../../scratch/17592186068915.py) | Integrating Trigonometric Functions Using Substitution | Integrating Trigonometric Functions With Linear Arguments | 5 / 5 / 0 / 1 | working | — |
+| [17592186068917](../../scratch/17592186068917.py) | Integrating Trigonometric Functions Using Substitution | Integrating Products Containing Trigonometric Functions Using Substitution | 0 / 5 / 5 / 1 | working | — |
+| [17592186068723](../../scratch/17592186068723.py) | Integration Using Substitution | Integrating an Expression Involving a Power Function Multiplied by a Constant Multiple of Its Derivative | 6 / 5 / 0 / 1 | working | — |
+| [17592186096656](../../scratch/17592186096656.py) | Integrating Exponential Functions Using Linear Substitution | Integrating a General Exponential Function With a Linear Exponent | 5 / 6 / 0 / 2 | working | — |
 | [17592186184350](../../scratch/17592186184350.py) | Integrating Exponential Functions Using Substitution | Integrating Products Containing Other Exponential Functions | 6 / 5 / 0 / 1 | queued | — |
 | [17592186068918](../../scratch/17592186068918.py) | Integrating Trigonometric Functions Using Substitution | Integrating Quotients Containing Trigonometric Functions Using Substitution | 5 / 0 / 7 / 2 | queued | — |
 | [17592186105720](../../scratch/17592186105720.py) | Integrating the Reciprocal Function | Integrating a Reciprocal Function and Simplifying the Arbitrary Constant Using the Laws of Logarithms | 0 / 8 / 6 / 1 | queued | — |
@@ -269,7 +269,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186064343](../../scratch/17592186064343.py) | Calculating the Slope of a Tangent Line Using Differentiation | Calculating the Slope of a Tangent Line of a Curve With Fractional Powers at a Given Point | 5 / 5 / 0 / 2 | queued | — |
 | [17592186064342](../../scratch/17592186064342.py) | Calculating the Slope of a Tangent Line Using Differentiation | Calculating the Slope of a Tangent Line of a Curve at a Given Point | 7 / 7 / 0 / 2 | queued | — |
 | 17592186092375 | The Arc Length of a Parametric Curve | Finding an Integral Expression For the Arc Length of a Parametric Curve | 8 / 0 / 0 / 2 | queued | — |
-| 17592186092376 | The Arc Length of a Parametric Curve | Finding an Integral Expression For the Arc Length of a Parametric Curve Containing Special Functions | 0 / 9 / 2 / 1 | queued | — |
+| [17592186092376](../../scratch/17592186092376.py) | The Arc Length of a Parametric Curve | Finding an Integral Expression For the Arc Length of a Parametric Curve Containing Special Functions | 0 / 9 / 2 / 1 | queued | — |
 | [17592186124437](../../scratch/17592186124437.py) | Geometric Interpretations of Partial Derivatives | Finding the Slope of the Tangent Line to a Curve at a Point | 10 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186124437.json) |
 | [17592186124439](../../scratch/17592186124439.py) | Geometric Interpretations of Partial Derivatives | Finding the Tangent Vector to a Curve at a Point | 0 / 0 / 15 / 0 | qa_passed | [Report](qa/17592186124439.json) |
 | [17592186124438](../../scratch/17592186124438.py) | Geometric Interpretations of Partial Derivatives | Finding the Equation of the Tangent Line to a Curve at a Point | 0 / 14 / 0 / 0 | needs_revalidation | [Report](qa/17592186124438.json) |

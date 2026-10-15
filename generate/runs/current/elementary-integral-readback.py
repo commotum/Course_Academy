@@ -33,10 +33,12 @@ def eq(a,b,positive=False):
  if positive:d=s.powdenest(d,force=True)
  return s.simplify(d)==0
 def fraction_measure(t):
+ # A differential inside a coefficient group still multiplies that coefficient.
+ t=re.sub(r'\(([^()]*)('+DIFF+r')\)',lambda m:'('+m[1]+')'+m[2],t)
  return re.sub(r'\\frac\{((?:\\(?:text|mathrm|textrm)\{d\}|d)\s*[xyzut])\}\{([^{}]+)\}',lambda m:r'\frac{1}{'+m[2]+'}'+m[1],t)
 def integrand(t):
  t=fraction_measure(t)
- m=re.search(r'\\int\s*(.*?)'+DIFF,t,re.S);assert m,('missing actual integral',t);body=m[1].strip();body=body[:-len(r'\cdot')]if body.endswith(r'\cdot')else body
+ m=re.search(r'\\int\s*(.*?)'+DIFF,t,re.S);assert m,('missing actual integral',t);body=m[1].replace(r'\,','').replace(r'\!','').strip();body=body[:-len(r'\cdot')]if body.endswith(r'\cdot')else body
  return scalar(body)if body else s.Integer(1),P.locals_[m[2]],m
 def prompt(t):
  if r'\int'in t:return integrand(t)[:2]

@@ -2,6 +2,7 @@
 import hashlib,importlib.util,json,re,subprocess
 from pathlib import Path
 import sympy as sp
+from functools import lru_cache
 HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[2]
 def load(path,name):
  s=importlib.util.spec_from_file_location(name,path);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
@@ -22,9 +23,15 @@ def scalar(t,var='x'):
   rad,end=group(t,start);expr=scalar(rad)
   t=t[:at]+'('+sp.latex(expr)+')^{1/'+str(d)+'}'+t[end:]
  return p.scalar(t)
+@lru_cache(maxsize=None)
+def zero_on_positive_domain(expression):
+ return sp.simplify(sp.powdenest(expression,force=False))==0
 def equal(a,b,t,shift):
- # Positive-base interval supports every bank, including altered radicands.
- z=(U+3-shift)/t['a'];return sp.simplify(sp.powdenest((a-b).subs(p.u,t['a']*x+shift).subs(x,z),force=False))==0
+ # U>0 parameterizes the entire declared open interval, including the
+ # source bank whose even-root radicand has offset -2.
+ lower=2 if any(r['offset']==-2 for r in t['bank']) else 0
+ z=(U+lower-shift)/t['a']
+ return zero_on_positive_domain((a-b).subs(p.u,t['a']*x+shift).subs(x,z))
 def prompt_data(q):
  text=q[':question/problem'].split(r'\int',1)[1];text=re.sub(r'\\textrm\s*d\s*([a-z])',r'\\text{d}\1',text);text=re.sub(r'(?<![a-z])d([a-z])',r'\\text{d}\1',text);m=re.search(r'(?:\\,)?\\text\{d\}([a-z])',text);assert m,text
  return scalar(text[:m.start()].replace(r'\displaystyle','').strip(),m[1]),m[1]
@@ -39,6 +46,8 @@ def fingerprint(q):
  return g.digest([int(a),int(b),int(exp.p),int(exp.q)])
 def solution_check(q,t,b,integrand):
  blocks=re.findall(r'\$\$\s*(.*?)\s*\$\$',q[':question/worked-solution'],re.S);assert len(blocks)==4
+ substitution=re.search(r'let\s+\$u=([^$]+)\$',q[':question/worked-solution']);assert substitution
+ assert equal(scalar(substitution[1],t['variable']),t['a']*x+b,t,b),(t,b,'actual substitution operand')
  intro=blocks[0].split(r'\int',1)[1].split(r'\,\text{d}')[0];assert equal(scalar(intro,t['variable']),integrand,t,b)
  differential=blocks[1].split('⟹')
  assert len(differential)==2
@@ -124,7 +133,7 @@ def main():
    dom=rec['generation']['domain'];assert dom['branch']=='positive radicands, principal real roots'
    # The independent parser's substitution maps the whole open domain to U>0;
    # each source altered radicand remains positive. No forced power rewriting.
-   assert sp.simplify((t['a']*x+b).subs(x,(U+3-b)/t['a'])-(U+3))==0
+   assert sp.simplify((t['a']*x+b).subs(x,(U+dom['base_lower_exclusive']-b)/t['a'])-(U+dom['base_lower_exclusive']))==0
    inputs.append(native(sid+' b='+str(b),rec))
   review.append('## Normal '+sid+'\n\n'+g.markdown(g.generate(t['difficulty'],0,sid,{'b':t['b']}))+'\n\n'+g.markdown(g.generate(t['difficulty'],1,sid,{'b':-3})))
  save('native-input.json',inputs)

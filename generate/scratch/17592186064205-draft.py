@@ -67,7 +67,7 @@ def _source_generate(level,seed,sid,parameters):
  if ':question/difficulty' in q:q[':question/difficulty']=q[':question/difficulty'][':db/ident']
  q.pop(':db/id',None);q.pop(':question/math-academy-id',None)
  _identities(q,['source',sid,p])
- return _record(q,level,seed,sid,p,t,'faithful_source_replay; includes documented source errors/omissions')
+ return _record(q,level,seed,sid,p,t,'independent_inventory_reference' if key is None else 'faithful_source_replay; includes documented source errors/omissions')
 def _parameters(parameters,default):
  if parameters is None:return {'b':default}
  if type(parameters) is not dict or set(parameters)!={'b'}:raise ValueError('parameters must be exactly {b: builtin int}')
@@ -82,11 +82,12 @@ def _identities(q,content):
    old=a[':answer/id'];a[':answer/id']=ident([fid,a[':answer/value']])
    if old==correct:f[':answer-field/correct']=[':answer/id',a[':answer/id']]
 def _record(q,level,seed,sid,p,t,role):
- return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'generator_id':GENERATOR_UUID,'seed':seed,'template':sid,'profile':sid,'bank_profile':sid,'parameters':p,'difficulty':level,'source_ids':[sid],'domain':domain_for(t,p['b']),'mathematical_fingerprint':fingerprint_parameters(t,p['b']),'parameter_fingerprint':fingerprint_parameters(t,p['b']),'basis':SOURCE['basis'],'lineage':SOURCE['lineage'],'evidence_role':role,'dependencies':{'sympy':sp.__version__,'python':sys.version.split()[0]},'sampling_policy':'Only affine constant b varies in -100..100. Slope, exponent, complete bank and ordered solution stages stay fixed.','plot_rating':'none'}}
+ return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'generator_id':GENERATOR_UUID,'seed':seed,'template':sid,'profile':sid,'bank_profile':sid,'parameters':p,'difficulty':level,'source_ids':(['q-12498','e-448'] if sid=='easy-square-root' else [sid]),'domain':domain_for(t,p['b']),'mathematical_fingerprint':fingerprint_parameters(t,p['b']),'parameter_fingerprint':fingerprint_parameters(t,p['b']),'basis':SOURCE['basis'],'lineage':SOURCE['lineage'],'evidence_role':role,'dependencies':{'sympy':sp.__version__,'python':sys.version.split()[0]},'sampling_policy':'Only affine constant b varies in -100..100. Slope, exponent, complete bank and ordered solution stages stay fixed.','plot_rating':'none'}}
 def generate(difficulty='moderate',seed=0,template=None,parameters=None,profile=None):
  integer(seed,'seed')
  if type(difficulty) is not str or difficulty not in LEVELS:raise ValueError('Unsupported difficulty')
  if any(v is not None and type(v) is not str for v in (template,profile)):raise ValueError('template/profile must be strings')
+ if any(v=='' for v in (template,profile) if v is not None):raise ValueError('Unknown empty profile')
  if template and profile and template!=profile:raise ValueError('template/profile mismatch')
  rng=random.Random(seed);sid=profile or template or rng.choice([s for s,t in PROFILES.items() if t['difficulty']==difficulty])
  if sid.startswith('source:'):return _source_generate(difficulty,seed,sid,parameters)

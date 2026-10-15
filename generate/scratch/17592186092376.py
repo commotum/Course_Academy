@@ -42,6 +42,7 @@ def parse_tex(text):
    if command!='sqrt':b,end=group(text,end);value='(('+str(parse_tex(a))+')/('+str(parse_tex(b))+'))'
    else:value='sqrt('+str(parse_tex(a))+')'
    text=text[:start]+value+text[end:]
+ text=re.sub(r'(sin|cos)\^(\d+)',r'\1^{\2}',text)
  text=re.sub(r'(sin|cos)\^\{(\d+)\}\s*\{\((.*?)\)\}',r'\1(\3)^\2',text)
  text=re.sub(r'(sin|cos)\^\{(\d+)\}t',r'\1(t)^\2',text)
  text=re.sub(r'(sin|cos)t',r'\1(t)',text)
@@ -57,9 +58,20 @@ def parse_tex(text):
  text=text.replace('{','(').replace('}',')')
  return parse_expr(text,local_dict={'t':T,'pi':s.pi,'e':s.E,'sin':S,'cos':C,'sqrt':R,'exp':E,'log':s.log},transformations=standard_transformations+(implicit_multiplication_application,convert_xor))
 
+def square_equal(a,b):
+ z=s.expand(s.expand_trig(a**2-b**2))
+ return z==0 or s.trigsimp(z)==0
+
 def eq(a,b):
+ if a==b:return True
  if isinstance(a,s.Integral)or isinstance(b,s.Integral):
-  return isinstance(a,s.Integral)and isinstance(b,s.Integral)and a.limits==b.limits and eq(a.function,b.function)
+  if not(isinstance(a,s.Integral)and isinstance(b,s.Integral)and a.limits==b.limits):return False
+  # Source banks contain only principal roots with positive external factors.
+  # Preserve branch/sign; squared comparison is valid only for this form.
+  def principal(f):
+   return all((exponent==s.Rational(1,2) or (base.is_positive is True))for base,exponent in f.as_powers_dict().items())
+  if principal(a.function)and principal(b.function):return square_equal(a.function,b.function)
+  return s.simplify(s.trigsimp(a.function-b.function))==0
  return s.simplify(s.trigsimp(a-b))==0
 
 def tex(x):return s.latex(x)
@@ -105,6 +117,7 @@ def evidence(mid):
 
 # Supported normal template families; fixed structural roles and response shape.
 def data(mid,p):
+ if set(p)!={'A','B'} or any(type(v)is not int for v in p.values()):raise ValueError('A and B must be exact integers')
  A=s.Integer(p['A']);B=s.Integer(p['B']);t=T
  if mid=='q-123027':
   assert 2<=A<=6 and 4<=B<=12 and B>A+1
@@ -188,5 +201,9 @@ def markdown(r):
  return q[':question/problem']+'\n\n'+'\n'.join('- $'+a[':answer/value']+'$'+(' (correct)'if a[':answer/id']==f[':answer-field/correct'][1]else'')for a in f[':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--difficulty',choices=LEVELS+('all',),default='all');p.add_argument('--seed',type=int,default=0);p.add_argument('--count',type=int,default=1);p.add_argument('--format',choices=('json','markdown'),default='json');a=p.parse_args()
- records=[generate(l,a.seed+i)for l in (LEVELS if a.difficulty=='all'else[a.difficulty])for i in range(a.count)]
+ records=[]
+ for l in (LEVELS if a.difficulty=='all'else[a.difficulty]):
+  pool=domain(DEFAULTS[l]);random.Random(a.seed).shuffle(pool)
+  if not 0<a.count<=len(pool):raise ValueError('Requested count exceeds bounded distinct '+l+' domain of '+str(len(pool)))
+  records.extend(generate(l,a.seed+i,parameters=params)for i,params in enumerate(pool[:a.count]))
  print(json.dumps(records,indent=2)if a.format=='json'else'\n\n---\n\n'.join(map(markdown,records)))

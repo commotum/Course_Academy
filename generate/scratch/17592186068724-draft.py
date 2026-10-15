@@ -26,7 +26,7 @@ def data(p,level):
  ratio=k/(a*n)if level=='easy'else sp.Integer(1)
  return z,u,v,numerator,sp.cancel(numerator/u),ratio
 # All dependencies are private file loads; sys.path and mutable shared helpers are unused.
-import copy,importlib.util,itertools,re,functools
+import copy,importlib.util,itertools,re,functools,math
 sys.dont_write_bytecode=True
 def private(name):
  spec=importlib.util.spec_from_file_location('kp68724_'+name,H/(name+'.py'));mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod);return mod
@@ -51,7 +51,8 @@ def render(t,p):
 def parameter_domain(t,level):
  base=defaults(case(t))
  if level=='hard':
-  for a,b,c in itertools.product((-2,-3),(2,3,4),range(2,9)):yield dict(base,a=a,b=b,c=c)
+  for a,b,c in itertools.product((-2,-3),(2,3,4),range(2,9)):
+   if math.gcd(abs(a),b,c)==1:yield dict(base,a=a,b=b,c=c)
  else:
   slot='c'if level=='easy'or t=='q-113719'else'b'
   for n in range(1,20 if t=='q-132982'else 21 if slot=='c'else 13):yield dict(base,**{slot:n*(1 if base[slot]>=0 else -1)})
@@ -76,6 +77,7 @@ def generate(level,seed=0,template=None,parameters=None,profile=None,option_seed
  if option_seed is not None:integer(option_seed,'option_seed')
  if level not in SUPPORTED_LEVELS:raise ValueError('unknown difficulty')
  if profile=='reference':
+  if parameters not in (None,{}):raise ValueError('reference replay has no parameter slots')
   if template not in SOURCES:raise ValueError('unknown reference')
   return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':copy.deepcopy(SOURCES[template]),'generation':{'template':template,'profile':'reference','source_basis':2275,'reference_only':True}}
  if profile not in (None,'source'):raise ValueError('unknown profile')
@@ -95,7 +97,8 @@ def generate(level,seed=0,template=None,parameters=None,profile=None,option_seed
  if option_seed is not None:random.Random(option_seed).shuffle(answers)
  field={':answer-field/id':fid,':answer-field/key':sourcefield[':answer-field/key'],':answer-field/type':sourcefield[':answer-field/type'][':db/ident'],':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct_id]}
  q={':question/id':qid,':question/problem':problem,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+level,':question/answer-fields':[field]}
- return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'generator_version':VERSION,'template':selected,'bank_profile':t,'profile':'source','seed':seed,'option_seed':option_seed,'parameters':p,'source_basis':2275,'source_lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1','source_question_id':original[':db/id'],'authored_extension':level=='hard','domain':'Each real connected interval where the displayed denominator is nonzero; logarithms of absolute values. For the positive quadratic blank the domain is all real numbers.','mathematical_fingerprint':fp,'sympy_version':sp.__version__,'plots':'none'}}
+ rec={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'generator_version':VERSION,'template':selected,'bank_profile':t,'profile':'source','seed':seed,'option_seed':option_seed,'parameters':p,'source_basis':2275,'source_lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1','source_question_id':original[':db/id'],'authored_extension':level=='hard','domain':'Each real connected interval where the displayed denominator is nonzero; logarithms of absolute values. For the positive quadratic blank the domain is all real numbers.','mathematical_fingerprint':fp,'sympy_version':sp.__version__,'plots':'none'}}
+ return FORMAT.validate_generated_record(rec)
 def all_instances(level,template=None):
  for selected in ([template]if template else eligible(level)):
   if selected not in eligible(level):raise ValueError('template difficulty mismatch')

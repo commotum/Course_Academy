@@ -4,4 +4,4 @@ Reviewable local replacement candidate only. The registered numeric script and i
 
 Source basis 2275 is copied from the manifest-selected refresh snapshot. See classification.md, template-extraction.md, templates.json, source-cases.json, normal-replay.json, source-errors.json, independent-inventory.json, capacity.json, validation.json, native-grading.json and review.md. Reference documentation covers generation stages 3–7. The freeze records script and dependency hashes and the actual application grader hash.
 
-Reproduce with `.venv/bin/python generate/scratch/17592186064205-draft/validate.py` and preview with `.venv/bin/python generate/scratch/17592186064205-draft.py --difficulty all --count 1`.
+Reproduce with `.venv/bin/python generate/scratch/17592186064205-draft/validate.py` then `.venv/bin/python generate/scratch/17592186064205-draft/supplement.py`; preview with `.venv/bin/python generate/scratch/17592186064205-draft.py --difficulty all --count 1`.
