@@ -1,0 +1,18 @@
+# Classification — KP17592186087699
+
+Immutable math snapshot basis2275, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`, refreshed2026-10-14. The original wrapper is `source.json`; topic/lesson wrappers are copied unchanged. Frozen dispatch rank206 reports no registered generator. The pre-import `immutable-baseline.json` records the exact absence of the numeric script, numeric tree and matching sibling pycs. No numeric module has been imported.
+
+The title is “Determining the Inverse of a 2x2 Matrix,” but the assessed method is **direct verification of supplied matrices by multiplication**. The lesson explicitly says that learners do not yet know how to find an inverse. Prerequisite is Multiplying Square Matrices, topic147. Follow the actual route16452-equivalent introduction → this KP → 3x3 verification sibling → singularity introduction, using activity/first-step and step/next (88524→88525→88526→88527). Topic864 teaches calculating inverses later. Thus determinant, adjugate, elimination and singular-system tasks are outside this generator.
+
+| Source group | Difficulty evidence | Fields | Mathematical backbone | Plots |
+|---|---|---|---|---|
+| q-11640,102666,102669,102670,102673,102674,102675,71817,71818 | easy | three independent Boolean checkboxes, true/false choices owned by each field | Three supplied 2x2 matrices; two pairs involving the first matrix, plus one inverse equality/inequality; verify each pair, stop a false pair at a witness and check both orders for a true pair | none |
+| q-11637 | easy | same three checkboxes | Second pair involves the middle and last matrix; first pair and redundant inverse claim share their result | none |
+| q-7908 | unrated | one text radio, five complete subset choices | Same first-matrix pair verification; inverse equality redundant with the first pair | none |
+| e-4499 | canonical, not practice | no captured fields | Direct verification of one supplied pair in both orders | none |
+
+There are three practice template backbones when field contract and supplied-pair roles are distinguished, with eleven source-specific prose/layout/profile masks. There are ten rated easy practice questions, one unrated original and one separate canonical. The unrated radio receives an authored easy placement only in normal completed output. There are no non-MA captured inventory records; `independent-inventory.json` retains the exact empty wrapper coverage.
+
+Moderate and hard are authored, uncalibrated arithmetic placements, not recovered MA labels. They retain every source-shaped family and exactly the same products, witness reasoning, Boolean claims and source prose stages. Moderate requires a dense integral first matrix, at least two entries with reduced denominator4 and denominators at most4. Hard requires all matrices dense, at least two fractional entries in the first matrix and at least five overall, denominators at most6. Absolute entries remain at most4. Easy has integral first matrix and denominator at most3, including all source parameters. Each level is a single bounded workload, with no progression within it. Hard adds rational arithmetic bookkeeping already within matrix multiplication prerequisites, never a new inversion method.
+
+Authored level domains are disjoint: easy uses reduced denominators at most3; moderate requires at least two reduced quarter entries and an integral first matrix; hard requires a genuinely fractional first matrix. Thus identical complete mathematical tasks cannot occur across those normal level domains. Source easy replay remains intact. Quarters extend familiar fraction multiplication within the stated prerequisite and retain the same verification stages.

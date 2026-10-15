@@ -1,0 +1,734 @@
+{
+  "schema_version": 2,
+  "topic_id": "863",
+  "topic_title": "Introduction to the Inverse of a Matrix",
+  "source_html": "/home/jake/Developer/MA/DATA/Lessons/863/Source/863.html",
+  "source_url": "https://mathacademy.com/topics/863",
+  "normalization": {
+    "math_placeholder": "[MATH: ...]",
+    "image_placeholder": "[IMG: /graphics/...]",
+    "free_entry_placeholder": "[FREE_ENTRY n]",
+    "select_placeholder": "[SELECT n]"
+  },
+  "toc": {
+    "sidebar_selector": "#sidebar",
+    "section_links_selector": "#sectionLinks .sectionLink",
+    "section_links": [
+      {
+        "index": 1,
+        "step_id": "16452",
+        "dom_id": "sectionLink-16452",
+        "name": "",
+        "title": "Introduction",
+        "selector": "#sectionLink-16452"
+      },
+      {
+        "index": 2,
+        "step_id": "16453",
+        "dom_id": "sectionLink-16453",
+        "name": "",
+        "title": "Determining the Inverse of a 2x2 Matrix",
+        "selector": "#sectionLink-16453"
+      },
+      {
+        "index": 3,
+        "step_id": "16454",
+        "dom_id": "sectionLink-16454",
+        "name": "",
+        "title": "Determining the Inverse of a Larger Matrix",
+        "selector": "#sectionLink-16454"
+      },
+      {
+        "index": 4,
+        "step_id": "16456",
+        "dom_id": "sectionLink-16456",
+        "name": "",
+        "title": "Not Every Matrix Has an Inverse",
+        "selector": "#sectionLink-16456"
+      }
+    ],
+    "topic_prerequisites": [
+      {
+        "topic_id": "147",
+        "name": "Multiplying Square Matrices",
+        "href": "/topics/multiplying-square-matrices-147"
+      }
+    ]
+  },
+  "lesson": {
+    "container_selector": "#lessonContent",
+    "item_count": 8,
+    "step_count": 4,
+    "question_count": 4,
+    "items": [
+      {
+        "lesson_index": 1,
+        "step_index": 1,
+        "item_type": "step",
+        "step_type": "tutorial",
+        "step_id": "16452",
+        "content_id": "3043",
+        "dom_id": "step-16452",
+        "selector": "#step-16452",
+        "step_anchor": "step-1",
+        "title": "Introduction",
+        "key_prerequisites": [],
+        "has_content_in_snapshot": true,
+        "sections": [
+          {
+            "section_type": "content",
+            "normalized_html": "<p>Given the scalar <span class=\"math\">[MATH: a,]</span> the <strong>multiplicative inverse</strong> of <span class=\"math\">[MATH: a]</span> is defined as the scalar <span class=\"math\">[MATH: a^{-1}]</span> such that\n<span class=\"math\">[MATH: a \\cdot a^{-1} = a^{-1} \\cdot a = 1.]</span></p>",
+            "readable_text": "Given the scalar [MATH: a,] the multiplicative inverse of [MATH: a] is defined as the scalar [MATH: a^{-1}] such that\n[MATH: a \\cdot a^{-1} = a^{-1} \\cdot a = 1.]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p>For example, the multiplicative inverse of <span class=\"math\">[MATH: 2]</span> is the number <span class=\"math\">[MATH: 2^{-1} = \\dfrac{1}{2}]</span> because </p>",
+            "readable_text": "For example, the multiplicative inverse of [MATH: 2] is the number [MATH: 2^{-1} = \\dfrac{1}{2}] because",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p><span class=\"math\">[MATH: \\dfrac{1}{2}\\cdot 2 =  2\\cdot \\dfrac{1}{2} = 1.]</span></p>",
+            "readable_text": "[MATH: \\dfrac{1}{2}\\cdot 2 = 2\\cdot \\dfrac{1}{2} = 1.]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p>Similarly, given a square <span class=\"math\">[MATH: n \\times n]</span> matrix <span class=\"math\">[MATH: A,]</span> the <strong>inverse</strong> of <span class=\"math\">[MATH: A]</span> is defined as the <span class=\"math\">[MATH: n \\times n]</span> matrix <span class=\"math\">[MATH: A^{-1}]</span> such that\n<span class=\"math\">[MATH: A \\cdot A^{-1} = A^{-1} \\cdot A = I_n,]</span>\nwhere <span class=\"math\">[MATH: I_n]</span> is the <span class=\"math\">[MATH: n\\times n]</span> identity matrix.</p>",
+            "readable_text": "Similarly, given a square [MATH: n \\times n] matrix [MATH: A,] the inverse of [MATH: A] is defined as the [MATH: n \\times n] matrix [MATH: A^{-1}] such that\n[MATH: A \\cdot A^{-1} = A^{-1} \\cdot A = I_n,]\nwhere [MATH: I_n] is the [MATH: n\\times n] identity matrix.",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p>For example, suppose we&#x27;re given the following <span class=\"math\">[MATH: 2\\times 2]</span> matrix:\n<span class=\"math\">[MATH: [\u2212 1|\u2212 1; 1|2]]</span></p>",
+            "readable_text": "For example, suppose we're given the following [MATH: 2\\times 2] matrix:\n[MATH: [\u2212 1|\u2212 1; 1|2]]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p>The inverse of the above matrix is given by</p>",
+            "readable_text": "The inverse of the above matrix is given by",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p><span class=\"math\">[MATH: [\u2212 2|\u2212 1; 1|1]]</span></p>",
+            "readable_text": "[MATH: [\u2212 2|\u2212 1; 1|1]]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p>To verify that the above matrix is in fact the inverse of <span class=\"math\">[MATH: A,]</span> first observe that if we multiply <span class=\"math\">[MATH: A]</span> by the above matrix <span class=\"math\">[MATH: A^{-1},]</span> then we get the identity matrix <span class=\"math\">[MATH: I_2\\mathbin{:}]</span>\n<span class=\"math\">[MATH: [\u2212 1|\u2212 1; 1|2]_(\u23df)_(A)[\u2212 2|\u2212 1; 1|1]_(\u23df)_(A^{\u2212 1})|= [\u2212 1 \u22c5 (\u2212 2) + (\u2212 1) \u22c5 1|\u2212 1 \u22c5 (\u2212 1) + (\u2212 1) \u22c5 1; 1 \u22c5 (\u2212 2) + 2 \u22c5 1|1 \u22c5 (\u2212 1) + 2 \u22c5 1]; = [1|0; 0|1]; = I_{2}\u2713]</span></p>",
+            "readable_text": "To verify that the above matrix is in fact the inverse of [MATH: A,] first observe that if we multiply [MATH: A] by the above matrix [MATH: A^{-1},] then we get the identity matrix [MATH: I_2\\mathbin{:}]\n[MATH: [\u2212 1|\u2212 1; 1|2]_(\u23df)_(A)[\u2212 2|\u2212 1; 1|1]_(\u23df)_(A^{\u2212 1})|= [\u2212 1 \u22c5 (\u2212 2) + (\u2212 1) \u22c5 1|\u2212 1 \u22c5 (\u2212 1) + (\u2212 1) \u22c5 1; 1 \u22c5 (\u2212 2) + 2 \u22c5 1|1 \u22c5 (\u2212 1) + 2 \u22c5 1]; = [1|0; 0|1]; = I_{2}\u2713]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p>Likewise, if we multiply <span class=\"math\">[MATH: A^{-1}]</span> by <span class=\"math\">[MATH: A,]</span> then we also get the identity matrix <span class=\"math\">[MATH: I_2\\mathbin{:}]</span></p>",
+            "readable_text": "Likewise, if we multiply [MATH: A^{-1}] by [MATH: A,] then we also get the identity matrix [MATH: I_2\\mathbin{:}]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p><span class=\"math\">[MATH: [\u2212 2|\u2212 1; 1|1][\u2212 1|\u2212 1; 1|2]_(\u23df)_(A)|= I_{2}\u2713]</span></p>",
+            "readable_text": "[MATH: [\u2212 2|\u2212 1; 1|1][\u2212 1|\u2212 1; 1|2]_(\u23df)_(A)|= I_{2}\u2713]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p>We do not yet know how to find the inverse of a matrix. However, we can verify that one matrix is the inverse of the other by carrying out the same procedure as we did here.</p>",
+            "readable_text": "We do not yet know how to find the inverse of a matrix. However, we can verify that one matrix is the inverse of the other by carrying out the same procedure as we did here.",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          }
+        ],
+        "images": [],
+        "free_entry_blanks": [],
+        "select_lists": [],
+        "readable_text": "Content:\nGiven the scalar [MATH: a,] the multiplicative inverse of [MATH: a] is defined as the scalar [MATH: a^{-1}] such that\n[MATH: a \\cdot a^{-1} = a^{-1} \\cdot a = 1.]\n\nContent:\nFor example, the multiplicative inverse of [MATH: 2] is the number [MATH: 2^{-1} = \\dfrac{1}{2}] because\n\nContent:\n[MATH: \\dfrac{1}{2}\\cdot 2 = 2\\cdot \\dfrac{1}{2} = 1.]\n\nContent:\nSimilarly, given a square [MATH: n \\times n] matrix [MATH: A,] the inverse of [MATH: A] is defined as the [MATH: n \\times n] matrix [MATH: A^{-1}] such that\n[MATH: A \\cdot A^{-1} = A^{-1} \\cdot A = I_n,]\nwhere [MATH: I_n] is the [MATH: n\\times n] identity matrix.\n\nContent:\nFor example, suppose we're given the following [MATH: 2\\times 2] matrix:\n[MATH: [\u2212 1|\u2212 1; 1|2]]\n\nContent:\nThe inverse of the above matrix is given by\n\nContent:\n[MATH: [\u2212 2|\u2212 1; 1|1]]\n\nContent:\nTo verify that the above matrix is in fact the inverse of [MATH: A,] first observe that if we multiply [MATH: A] by the above matrix [MATH: A^{-1},] then we get the identity matrix [MATH: I_2\\mathbin{:}]\n[MATH: [\u2212 1|\u2212 1; 1|2]_(\u23df)_(A)[\u2212 2|\u2212 1; 1|1]_(\u23df)_(A^{\u2212 1})|= [\u2212 1 \u22c5 (\u2212 2) + (\u2212 1) \u22c5 1|\u2212 1 \u22c5 (\u2212 1) + (\u2212 1) \u22c5 1; 1 \u22c5 (\u2212 2) + 2 \u22c5 1|1 \u22c5 (\u2212 1) + 2 \u22c5 1]; = [1|0; 0|1]; = I_{2}\u2713]\n\nContent:\nLikewise, if we multiply [MATH: A^{-1}] by [MATH: A,] then we also get the identity matrix [MATH: I_2\\mathbin{:}]\n\nContent:\n[MATH: [\u2212 2|\u2212 1; 1|1][\u2212 1|\u2212 1; 1|2]_(\u23df)_(A)|= I_{2}\u2713]\n\nContent:\nWe do not yet know how to find the inverse of a matrix. However, we can verify that one matrix is the inverse of the other by carrying out the same procedure as we did here."
+      },
+      {
+        "lesson_index": 2,
+        "step_index": 2,
+        "item_type": "step",
+        "step_type": "example",
+        "step_id": "16453",
+        "content_id": "4499",
+        "dom_id": "step-16453",
+        "selector": "#step-16453",
+        "step_anchor": "step-2",
+        "title": "Determining the Inverse of a 2x2 Matrix",
+        "key_prerequisites": [
+          {
+            "topic_id": "147",
+            "name": "Multiplying Square Matrices",
+            "href": "/topics/147",
+            "type": ""
+          }
+        ],
+        "has_content_in_snapshot": true,
+        "sections": [
+          {
+            "section_type": "example_question",
+            "normalized_html": "<p>Using the method of direct verification, determine whether the matrix <span class=\"math\">[MATH: B]</span> is the inverse of <span class=\"math\">[MATH: A,]</span> where\n<span class=\"math\">[MATH: [1|0; \u2212 1|1]]</span></p>",
+            "readable_text": "Using the method of direct verification, determine whether the matrix [MATH: B] is the inverse of [MATH: A,] where\n[MATH: [1|0; \u2212 1|1]]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p>EXPLANATION</p>",
+            "readable_text": "EXPLANATION",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "example_explanation",
+            "normalized_html": "<p>We must check whether <span class=\"math\">[MATH: AB = BA = I_2.]</span></p><p>Computing <span class=\"math\">[MATH: AB,]</span> we get\n<span class=\"math\">[MATH: AB|= [1|0; \u2212 1|1][1|0; 1|1]; = [1|0; 0|1]; = I_{2}.\u2713]</span></p><p>Likewise, computing <span class=\"math\">[MATH: BA,]</span> we get\n<span class=\"math\">[MATH: BA|= [1|0; 1|1][1|0; \u2212 1|1]; = [1|0; 0|1]; = I_{2}.\u2713]</span></p><p>Therefore, <span class=\"math\">[MATH: B = A^{-1}.]</span></p>",
+            "readable_text": "We must check whether [MATH: AB = BA = I_2.]\n\nComputing [MATH: AB,] we get\n[MATH: AB|= [1|0; \u2212 1|1][1|0; 1|1]; = [1|0; 0|1]; = I_{2}.\u2713]\n\nLikewise, computing [MATH: BA,] we get\n[MATH: BA|= [1|0; 1|1][1|0; \u2212 1|1]; = [1|0; 0|1]; = I_{2}.\u2713]\n\nTherefore, [MATH: B = A^{-1}.]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          }
+        ],
+        "images": [],
+        "free_entry_blanks": [],
+        "select_lists": [],
+        "readable_text": "Example Prompt:\nUsing the method of direct verification, determine whether the matrix [MATH: B] is the inverse of [MATH: A,] where\n[MATH: [1|0; \u2212 1|1]]\n\nContent:\nEXPLANATION\n\nExplanation:\nWe must check whether [MATH: AB = BA = I_2.]\n\nComputing [MATH: AB,] we get\n[MATH: AB|= [1|0; \u2212 1|1][1|0; 1|1]; = [1|0; 0|1]; = I_{2}.\u2713]\n\nLikewise, computing [MATH: BA,] we get\n[MATH: BA|= [1|0; 1|1][1|0; \u2212 1|1]; = [1|0; 0|1]; = I_{2}.\u2713]\n\nTherefore, [MATH: B = A^{-1}.]"
+      },
+      {
+        "lesson_index": 3,
+        "question_index": 1,
+        "item_type": "question",
+        "question_id": "11640",
+        "dom_id": "question-11640",
+        "selector": "#question-11640",
+        "title": "Question 1",
+        "question_number": 1,
+        "question_format": "multiple-choice",
+        "choice_count": 5,
+        "has_content_in_snapshot": true,
+        "hydration_required": false,
+        "graphic": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "calculator_instructions": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "prompt": {
+          "normalized_html": "<p>Consider the matrices\n<span class=\"math\">[MATH: B = [1|2; 1|1], C = [1|2; 0|1], D = [\u2212 1|2; 1|\u2212 1].]</span></p><p>Which of the following statements are true?</p><ol><li><p> <span class=\"math\">[MATH: BC = CB = I_{2}]</span> </p></li><li><p> <span class=\"math\">[MATH: BD = DB = I_{2}]</span> </p></li><li><p> <span class=\"math\">[MATH: D = B^{\u2212 1}]</span> </p></li></ol>",
+          "readable_text": "Consider the matrices\n[MATH: B = [1|2; 1|1], C = [1|2; 0|1], D = [\u2212 1|2; 1|\u2212 1].]\n\nWhich of the following statements are true?\n\n1. [MATH: BC = CB = I_{2}]\n2. [MATH: BD = DB = I_{2}]\n3. [MATH: D = B^{\u2212 1}]",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "body": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "choices": [
+          {
+            "choice_index": 1,
+            "label": "a",
+            "dom_id": "questionWidget-choiceLetterCircle-11640-a",
+            "content_type": "text",
+            "normalized_html": "<p>III only</p>",
+            "readable_text": "III only",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 2,
+            "label": "b",
+            "dom_id": "questionWidget-choiceLetterCircle-11640-b",
+            "content_type": "text",
+            "normalized_html": "<p>II only</p>",
+            "readable_text": "II only",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 3,
+            "label": "c",
+            "dom_id": "questionWidget-choiceLetterCircle-11640-c",
+            "content_type": "text",
+            "normalized_html": "<p>II and III only</p>",
+            "readable_text": "II and III only",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 4,
+            "label": "d",
+            "dom_id": "questionWidget-choiceLetterCircle-11640-d",
+            "content_type": "text",
+            "normalized_html": "<p>I and III only</p>",
+            "readable_text": "I and III only",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 5,
+            "label": "e",
+            "dom_id": "questionWidget-choiceLetterCircle-11640-e",
+            "content_type": "text",
+            "normalized_html": "<p>None</p>",
+            "readable_text": "None",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          }
+        ],
+        "images": [],
+        "free_entry_blanks": [],
+        "select_lists": [],
+        "readable_text": "Prompt:\nConsider the matrices\n[MATH: B = [1|2; 1|1], C = [1|2; 0|1], D = [\u2212 1|2; 1|\u2212 1].]\n\nWhich of the following statements are true?\n\n1. [MATH: BC = CB = I_{2}]\n2. [MATH: BD = DB = I_{2}]\n3. [MATH: D = B^{\u2212 1}]\n\nChoices:\na. III only\nb. II only\nc. II and III only\nd. I and III only\ne. None"
+      },
+      {
+        "lesson_index": 4,
+        "question_index": 2,
+        "item_type": "question",
+        "question_id": "7908",
+        "dom_id": "question-7908",
+        "selector": "#question-7908",
+        "title": "Question 2",
+        "question_number": 2,
+        "question_format": "multiple-choice",
+        "choice_count": 5,
+        "has_content_in_snapshot": true,
+        "hydration_required": false,
+        "graphic": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "calculator_instructions": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "prompt": {
+          "normalized_html": "<p>Consider the matrices\n<span class=\"math\">[MATH: A = [1|0; 1|1], B = [\u2212 1|1; \u2212 1|\u2212 1], C = [1|0; \u2212 1|1].]</span></p><p>Which of the following statements are true?</p><ol><li><p> <span class=\"math\">[MATH: AB = BA = I_{2}]</span> </p></li><li><p> <span class=\"math\">[MATH: AC = CA = I_{2}]</span> </p></li><li><p> <span class=\"math\">[MATH: B = A^{\u2212 1}]</span> </p></li></ol>",
+          "readable_text": "Consider the matrices\n[MATH: A = [1|0; 1|1], B = [\u2212 1|1; \u2212 1|\u2212 1], C = [1|0; \u2212 1|1].]\n\nWhich of the following statements are true?\n\n1. [MATH: AB = BA = I_{2}]\n2. [MATH: AC = CA = I_{2}]\n3. [MATH: B = A^{\u2212 1}]",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "body": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "choices": [
+          {
+            "choice_index": 1,
+            "label": "a",
+            "dom_id": "questionWidget-choiceLetterCircle-7908-a",
+            "content_type": "text",
+            "normalized_html": "<p>III only</p>",
+            "readable_text": "III only",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 2,
+            "label": "b",
+            "dom_id": "questionWidget-choiceLetterCircle-7908-b",
+            "content_type": "text",
+            "normalized_html": "<p>None</p>",
+            "readable_text": "None",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 3,
+            "label": "c",
+            "dom_id": "questionWidget-choiceLetterCircle-7908-c",
+            "content_type": "text",
+            "normalized_html": "<p>II only</p>",
+            "readable_text": "II only",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 4,
+            "label": "d",
+            "dom_id": "questionWidget-choiceLetterCircle-7908-d",
+            "content_type": "text",
+            "normalized_html": "<p>I only</p>",
+            "readable_text": "I only",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 5,
+            "label": "e",
+            "dom_id": "questionWidget-choiceLetterCircle-7908-e",
+            "content_type": "text",
+            "normalized_html": "<p>I and III only</p>",
+            "readable_text": "I and III only",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          }
+        ],
+        "images": [],
+        "free_entry_blanks": [],
+        "select_lists": [],
+        "readable_text": "Prompt:\nConsider the matrices\n[MATH: A = [1|0; 1|1], B = [\u2212 1|1; \u2212 1|\u2212 1], C = [1|0; \u2212 1|1].]\n\nWhich of the following statements are true?\n\n1. [MATH: AB = BA = I_{2}]\n2. [MATH: AC = CA = I_{2}]\n3. [MATH: B = A^{\u2212 1}]\n\nChoices:\na. III only\nb. None\nc. II only\nd. I only\ne. I and III only"
+      },
+      {
+        "lesson_index": 5,
+        "step_index": 3,
+        "item_type": "step",
+        "step_type": "example",
+        "step_id": "16454",
+        "content_id": "4500",
+        "dom_id": "step-16454",
+        "selector": "#step-16454",
+        "step_anchor": "step-5",
+        "title": "Determining the Inverse of a Larger Matrix",
+        "key_prerequisites": [],
+        "has_content_in_snapshot": true,
+        "sections": [
+          {
+            "section_type": "example_question",
+            "normalized_html": "<p>Using the method of direct verification, determine whether the matrix <span class=\"math\">[MATH: B]</span> is the inverse of <span class=\"math\">[MATH: A,]</span> where\n<span class=\"math\">[MATH: [1|1|1; 0|1|1; 0|0|1]]</span></p>",
+            "readable_text": "Using the method of direct verification, determine whether the matrix [MATH: B] is the inverse of [MATH: A,] where\n[MATH: [1|1|1; 0|1|1; 0|0|1]]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p>EXPLANATION</p>",
+            "readable_text": "EXPLANATION",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "example_explanation",
+            "normalized_html": "<p>First, we  check whether <span class=\"math\">[MATH: AB = BA = I_3.]</span></p><p>Computing <span class=\"math\">[MATH: AB,]</span> we get</p><p><span class=\"math\">[MATH: AB|= [1|1|1; 0|1|1; 0|0|1][1|\u2212 1|0; 0|1|\u2212 1; 0|0|1]; = [1|0|0; 0|1|0; 0|0|1]; = I_{3}.\u2713]</span></p><p>Likewise, computing <span class=\"math\">[MATH: BA,]</span> we get</p><p><span class=\"math\">[MATH: BA|= [1|\u2212 1|0; 0|1|\u2212 1; 0|0|1][1|1|1; 0|1|1; 0|0|1]; = [1|0|0; 0|1|0; 0|0|1]; = I_{3}.\u2713]</span></p><p>Therefore, <span class=\"math\">[MATH: B = A^{-1}.]</span></p>",
+            "readable_text": "First, we check whether [MATH: AB = BA = I_3.]\n\nComputing [MATH: AB,] we get\n\n[MATH: AB|= [1|1|1; 0|1|1; 0|0|1][1|\u2212 1|0; 0|1|\u2212 1; 0|0|1]; = [1|0|0; 0|1|0; 0|0|1]; = I_{3}.\u2713]\n\nLikewise, computing [MATH: BA,] we get\n\n[MATH: BA|= [1|\u2212 1|0; 0|1|\u2212 1; 0|0|1][1|1|1; 0|1|1; 0|0|1]; = [1|0|0; 0|1|0; 0|0|1]; = I_{3}.\u2713]\n\nTherefore, [MATH: B = A^{-1}.]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          }
+        ],
+        "images": [],
+        "free_entry_blanks": [],
+        "select_lists": [],
+        "readable_text": "Example Prompt:\nUsing the method of direct verification, determine whether the matrix [MATH: B] is the inverse of [MATH: A,] where\n[MATH: [1|1|1; 0|1|1; 0|0|1]]\n\nContent:\nEXPLANATION\n\nExplanation:\nFirst, we check whether [MATH: AB = BA = I_3.]\n\nComputing [MATH: AB,] we get\n\n[MATH: AB|= [1|1|1; 0|1|1; 0|0|1][1|\u2212 1|0; 0|1|\u2212 1; 0|0|1]; = [1|0|0; 0|1|0; 0|0|1]; = I_{3}.\u2713]\n\nLikewise, computing [MATH: BA,] we get\n\n[MATH: BA|= [1|\u2212 1|0; 0|1|\u2212 1; 0|0|1][1|1|1; 0|1|1; 0|0|1]; = [1|0|0; 0|1|0; 0|0|1]; = I_{3}.\u2713]\n\nTherefore, [MATH: B = A^{-1}.]"
+      },
+      {
+        "lesson_index": 6,
+        "question_index": 3,
+        "item_type": "question",
+        "question_id": "11642",
+        "dom_id": "question-11642",
+        "selector": "#question-11642",
+        "title": "Question 3",
+        "question_number": 3,
+        "question_format": "multiple-choice",
+        "choice_count": 5,
+        "has_content_in_snapshot": true,
+        "hydration_required": false,
+        "graphic": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "calculator_instructions": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "prompt": {
+          "normalized_html": "<p>Consider the matrices\n<span class=\"math\">[MATH: C = [1|2|1; 0|1|1; 1|2|0], D = [2|\u2212 2|\u2212 1; \u2212 1|1|1; 1|0|\u2212 1], E = [2|\u2212 2|\u2212 1; 1|1|1; 1|0|\u2212 1].]</span></p><p>Which of the following statements are true?</p><ol><li><p> <span class=\"math\">[MATH: CD = DC = I_{3}]</span> </p></li><li><p> <span class=\"math\">[MATH: CE = EC = I_{3}]</span> </p></li><li><p> <span class=\"math\">[MATH: E = C^{\u2212 1}]</span> </p></li></ol>",
+          "readable_text": "Consider the matrices\n[MATH: C = [1|2|1; 0|1|1; 1|2|0], D = [2|\u2212 2|\u2212 1; \u2212 1|1|1; 1|0|\u2212 1], E = [2|\u2212 2|\u2212 1; 1|1|1; 1|0|\u2212 1].]\n\nWhich of the following statements are true?\n\n1. [MATH: CD = DC = I_{3}]\n2. [MATH: CE = EC = I_{3}]\n3. [MATH: E = C^{\u2212 1}]",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "body": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "choices": [
+          {
+            "choice_index": 1,
+            "label": "a",
+            "dom_id": "questionWidget-choiceLetterCircle-11642-a",
+            "content_type": "text",
+            "normalized_html": "<p>I only</p>",
+            "readable_text": "I only",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 2,
+            "label": "b",
+            "dom_id": "questionWidget-choiceLetterCircle-11642-b",
+            "content_type": "text",
+            "normalized_html": "<p>I and III only</p>",
+            "readable_text": "I and III only",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 3,
+            "label": "c",
+            "dom_id": "questionWidget-choiceLetterCircle-11642-c",
+            "content_type": "text",
+            "normalized_html": "<p>None</p>",
+            "readable_text": "None",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 4,
+            "label": "d",
+            "dom_id": "questionWidget-choiceLetterCircle-11642-d",
+            "content_type": "text",
+            "normalized_html": "<p>I and II only</p>",
+            "readable_text": "I and II only",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 5,
+            "label": "e",
+            "dom_id": "questionWidget-choiceLetterCircle-11642-e",
+            "content_type": "text",
+            "normalized_html": "<p>II and II only</p>",
+            "readable_text": "II and II only",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          }
+        ],
+        "images": [],
+        "free_entry_blanks": [],
+        "select_lists": [],
+        "readable_text": "Prompt:\nConsider the matrices\n[MATH: C = [1|2|1; 0|1|1; 1|2|0], D = [2|\u2212 2|\u2212 1; \u2212 1|1|1; 1|0|\u2212 1], E = [2|\u2212 2|\u2212 1; 1|1|1; 1|0|\u2212 1].]\n\nWhich of the following statements are true?\n\n1. [MATH: CD = DC = I_{3}]\n2. [MATH: CE = EC = I_{3}]\n3. [MATH: E = C^{\u2212 1}]\n\nChoices:\na. I only\nb. I and III only\nc. None\nd. I and II only\ne. II and II only"
+      },
+      {
+        "lesson_index": 7,
+        "question_index": 4,
+        "item_type": "question",
+        "question_id": "7913",
+        "dom_id": "question-7913",
+        "selector": "#question-7913",
+        "title": "Question 4",
+        "question_number": 4,
+        "question_format": "multiple-choice",
+        "choice_count": 5,
+        "has_content_in_snapshot": true,
+        "hydration_required": false,
+        "graphic": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "calculator_instructions": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "prompt": {
+          "normalized_html": "<p>Consider the matrices\n<span class=\"math\">[MATH: A = [3|2|0|0; 4|3|0|0; 0|0|6|5; 0|0|7|6], B = [3|\u2212 2|0|0; \u2212 4|3|0|0; 0|0|6|\u2212 5; 0|0|\u2212 7|6], C = [\u2212 3|2|0|0; 4|\u2212 3|0|0; 0|0|\u2212 6|5; 0|0|7|\u2212 6].]</span></p><p>Which of the following statements are true?</p><ol><li><p> <span class=\"math\">[MATH: AB = BA = I_{4}]</span> </p></li><li><p> <span class=\"math\">[MATH: AC = CA = I_{4}]</span> </p></li><li><p> <span class=\"math\">[MATH: B = A^{\u2212 1}]</span> </p></li></ol>",
+          "readable_text": "Consider the matrices\n[MATH: A = [3|2|0|0; 4|3|0|0; 0|0|6|5; 0|0|7|6], B = [3|\u2212 2|0|0; \u2212 4|3|0|0; 0|0|6|\u2212 5; 0|0|\u2212 7|6], C = [\u2212 3|2|0|0; 4|\u2212 3|0|0; 0|0|\u2212 6|5; 0|0|7|\u2212 6].]\n\nWhich of the following statements are true?\n\n1. [MATH: AB = BA = I_{4}]\n2. [MATH: AC = CA = I_{4}]\n3. [MATH: B = A^{\u2212 1}]",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "body": {
+          "normalized_html": "",
+          "readable_text": "",
+          "images": [],
+          "free_entry_blanks": [],
+          "select_lists": []
+        },
+        "choices": [
+          {
+            "choice_index": 1,
+            "label": "a",
+            "dom_id": "questionWidget-choiceLetterCircle-7913-a",
+            "content_type": "text",
+            "normalized_html": "<p>II only</p>",
+            "readable_text": "II only",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 2,
+            "label": "b",
+            "dom_id": "questionWidget-choiceLetterCircle-7913-b",
+            "content_type": "text",
+            "normalized_html": "<p>II and III only</p>",
+            "readable_text": "II and III only",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 3,
+            "label": "c",
+            "dom_id": "questionWidget-choiceLetterCircle-7913-c",
+            "content_type": "text",
+            "normalized_html": "<p>I and III only</p>",
+            "readable_text": "I and III only",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 4,
+            "label": "d",
+            "dom_id": "questionWidget-choiceLetterCircle-7913-d",
+            "content_type": "text",
+            "normalized_html": "<p>None</p>",
+            "readable_text": "None",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "choice_index": 5,
+            "label": "e",
+            "dom_id": "questionWidget-choiceLetterCircle-7913-e",
+            "content_type": "text",
+            "normalized_html": "<p>I and II only</p>",
+            "readable_text": "I and II only",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          }
+        ],
+        "images": [],
+        "free_entry_blanks": [],
+        "select_lists": [],
+        "readable_text": "Prompt:\nConsider the matrices\n[MATH: A = [3|2|0|0; 4|3|0|0; 0|0|6|5; 0|0|7|6], B = [3|\u2212 2|0|0; \u2212 4|3|0|0; 0|0|6|\u2212 5; 0|0|\u2212 7|6], C = [\u2212 3|2|0|0; 4|\u2212 3|0|0; 0|0|\u2212 6|5; 0|0|7|\u2212 6].]\n\nWhich of the following statements are true?\n\n1. [MATH: AB = BA = I_{4}]\n2. [MATH: AC = CA = I_{4}]\n3. [MATH: B = A^{\u2212 1}]\n\nChoices:\na. II only\nb. II and III only\nc. I and III only\nd. None\ne. I and II only"
+      },
+      {
+        "lesson_index": 8,
+        "step_index": 4,
+        "item_type": "step",
+        "step_type": "tutorial",
+        "step_id": "16456",
+        "content_id": "3044",
+        "dom_id": "step-16456",
+        "selector": "#step-16456",
+        "step_anchor": "step-8",
+        "title": "Not Every Matrix Has an Inverse",
+        "key_prerequisites": [],
+        "has_content_in_snapshot": true,
+        "sections": [
+          {
+            "section_type": "content",
+            "normalized_html": "<p>The number <span class=\"math\">[MATH: 0]</span> does not have an inverse for multiplication over the real numbers, because there&#x27;s no such number <span class=\"math\">[MATH: a]</span> that <span class=\"math\">[MATH: a \\cdot 0 = 1.]</span> Instead, for every <span class=\"math\">[MATH: a]</span> we have <span class=\"math\">[MATH: a \\cdot 0 = 0.]</span></p>",
+            "readable_text": "The number [MATH: 0] does not have an inverse for multiplication over the real numbers, because there's no such number [MATH: a] that [MATH: a \\cdot 0 = 1.] Instead, for every [MATH: a] we have [MATH: a \\cdot 0 = 0.]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p>Similarly, not every matrix has an inverse.</p>",
+            "readable_text": "Similarly, not every matrix has an inverse.",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<ul><li><p>If a matrix is not square, an inverse does not exist. </p></li><li><p>Some square matrices do not have an inverse. If a square matrix does not have an inverse, then it is said to be <strong>singular</strong>. An example of a singular matrix is the zero matrix\n<span class=\"math\">[MATH: [0|0; 0|0]]</span></p></li></ul>",
+            "readable_text": "- If a matrix is not square, an inverse does not exist.\n- Some square matrices do not have an inverse. If a square matrix does not have an inverse, then it is said to be singular. An example of a singular matrix is the zero matrix\n[MATH: [0|0; 0|0]]",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          },
+          {
+            "section_type": "content",
+            "normalized_html": "<p>We will soon learn how to calculate the inverse of a square matrix, and we&#x27;ll also soon learn how to determine when a square matrix does not have an inverse.</p>",
+            "readable_text": "We will soon learn how to calculate the inverse of a square matrix, and we'll also soon learn how to determine when a square matrix does not have an inverse.",
+            "images": [],
+            "free_entry_blanks": [],
+            "select_lists": []
+          }
+        ],
+        "images": [],
+        "free_entry_blanks": [],
+        "select_lists": [],
+        "readable_text": "Content:\nThe number [MATH: 0] does not have an inverse for multiplication over the real numbers, because there's no such number [MATH: a] that [MATH: a \\cdot 0 = 1.] Instead, for every [MATH: a] we have [MATH: a \\cdot 0 = 0.]\n\nContent:\nSimilarly, not every matrix has an inverse.\n\nContent:\n- If a matrix is not square, an inverse does not exist.\n- Some square matrices do not have an inverse. If a square matrix does not have an inverse, then it is said to be singular. An example of a singular matrix is the zero matrix\n[MATH: [0|0; 0|0]]\n\nContent:\nWe will soon learn how to calculate the inverse of a square matrix, and we'll also soon learn how to determine when a square matrix does not have an inverse."
+      }
+    ],
+    "readable_text": "Item 1 \u2014 Tutorial: Introduction\n\nContent:\nGiven the scalar [MATH: a,] the multiplicative inverse of [MATH: a] is defined as the scalar [MATH: a^{-1}] such that\n[MATH: a \\cdot a^{-1} = a^{-1} \\cdot a = 1.]\n\nContent:\nFor example, the multiplicative inverse of [MATH: 2] is the number [MATH: 2^{-1} = \\dfrac{1}{2}] because\n\nContent:\n[MATH: \\dfrac{1}{2}\\cdot 2 = 2\\cdot \\dfrac{1}{2} = 1.]\n\nContent:\nSimilarly, given a square [MATH: n \\times n] matrix [MATH: A,] the inverse of [MATH: A] is defined as the [MATH: n \\times n] matrix [MATH: A^{-1}] such that\n[MATH: A \\cdot A^{-1} = A^{-1} \\cdot A = I_n,]\nwhere [MATH: I_n] is the [MATH: n\\times n] identity matrix.\n\nContent:\nFor example, suppose we're given the following [MATH: 2\\times 2] matrix:\n[MATH: [\u2212 1|\u2212 1; 1|2]]\n\nContent:\nThe inverse of the above matrix is given by\n\nContent:\n[MATH: [\u2212 2|\u2212 1; 1|1]]\n\nContent:\nTo verify that the above matrix is in fact the inverse of [MATH: A,] first observe that if we multiply [MATH: A] by the above matrix [MATH: A^{-1},] then we get the identity matrix [MATH: I_2\\mathbin{:}]\n[MATH: [\u2212 1|\u2212 1; 1|2]_(\u23df)_(A)[\u2212 2|\u2212 1; 1|1]_(\u23df)_(A^{\u2212 1})|= [\u2212 1 \u22c5 (\u2212 2) + (\u2212 1) \u22c5 1|\u2212 1 \u22c5 (\u2212 1) + (\u2212 1) \u22c5 1; 1 \u22c5 (\u2212 2) + 2 \u22c5 1|1 \u22c5 (\u2212 1) + 2 \u22c5 1]; = [1|0; 0|1]; = I_{2}\u2713]\n\nContent:\nLikewise, if we multiply [MATH: A^{-1}] by [MATH: A,] then we also get the identity matrix [MATH: I_2\\mathbin{:}]\n\nContent:\n[MATH: [\u2212 2|\u2212 1; 1|1][\u2212 1|\u2212 1; 1|2]_(\u23df)_(A)|= I_{2}\u2713]\n\nContent:\nWe do not yet know how to find the inverse of a matrix. However, we can verify that one matrix is the inverse of the other by carrying out the same procedure as we did here.\n\n---\n\nItem 2 \u2014 Example: Determining the Inverse of a 2x2 Matrix\n\nExample Prompt:\nUsing the method of direct verification, determine whether the matrix [MATH: B] is the inverse of [MATH: A,] where\n[MATH: [1|0; \u2212 1|1]]\n\nContent:\nEXPLANATION\n\nExplanation:\nWe must check whether [MATH: AB = BA = I_2.]\n\nComputing [MATH: AB,] we get\n[MATH: AB|= [1|0; \u2212 1|1][1|0; 1|1]; = [1|0; 0|1]; = I_{2}.\u2713]\n\nLikewise, computing [MATH: BA,] we get\n[MATH: BA|= [1|0; 1|1][1|0; \u2212 1|1]; = [1|0; 0|1]; = I_{2}.\u2713]\n\nTherefore, [MATH: B = A^{-1}.]\n\n---\n\nItem 3 \u2014 Question 1\n\nPrompt:\nConsider the matrices\n[MATH: B = [1|2; 1|1], C = [1|2; 0|1], D = [\u2212 1|2; 1|\u2212 1].]\n\nWhich of the following statements are true?\n\n1. [MATH: BC = CB = I_{2}]\n2. [MATH: BD = DB = I_{2}]\n3. [MATH: D = B^{\u2212 1}]\n\nChoices:\na. III only\nb. II only\nc. II and III only\nd. I and III only\ne. None\n\n---\n\nItem 4 \u2014 Question 2\n\nPrompt:\nConsider the matrices\n[MATH: A = [1|0; 1|1], B = [\u2212 1|1; \u2212 1|\u2212 1], C = [1|0; \u2212 1|1].]\n\nWhich of the following statements are true?\n\n1. [MATH: AB = BA = I_{2}]\n2. [MATH: AC = CA = I_{2}]\n3. [MATH: B = A^{\u2212 1}]\n\nChoices:\na. III only\nb. None\nc. II only\nd. I only\ne. I and III only\n\n---\n\nItem 5 \u2014 Example: Determining the Inverse of a Larger Matrix\n\nExample Prompt:\nUsing the method of direct verification, determine whether the matrix [MATH: B] is the inverse of [MATH: A,] where\n[MATH: [1|1|1; 0|1|1; 0|0|1]]\n\nContent:\nEXPLANATION\n\nExplanation:\nFirst, we check whether [MATH: AB = BA = I_3.]\n\nComputing [MATH: AB,] we get\n\n[MATH: AB|= [1|1|1; 0|1|1; 0|0|1][1|\u2212 1|0; 0|1|\u2212 1; 0|0|1]; = [1|0|0; 0|1|0; 0|0|1]; = I_{3}.\u2713]\n\nLikewise, computing [MATH: BA,] we get\n\n[MATH: BA|= [1|\u2212 1|0; 0|1|\u2212 1; 0|0|1][1|1|1; 0|1|1; 0|0|1]; = [1|0|0; 0|1|0; 0|0|1]; = I_{3}.\u2713]\n\nTherefore, [MATH: B = A^{-1}.]\n\n---\n\nItem 6 \u2014 Question 3\n\nPrompt:\nConsider the matrices\n[MATH: C = [1|2|1; 0|1|1; 1|2|0], D = [2|\u2212 2|\u2212 1; \u2212 1|1|1; 1|0|\u2212 1], E = [2|\u2212 2|\u2212 1; 1|1|1; 1|0|\u2212 1].]\n\nWhich of the following statements are true?\n\n1. [MATH: CD = DC = I_{3}]\n2. [MATH: CE = EC = I_{3}]\n3. [MATH: E = C^{\u2212 1}]\n\nChoices:\na. I only\nb. I and III only\nc. None\nd. I and II only\ne. II and II only\n\n---\n\nItem 7 \u2014 Question 4\n\nPrompt:\nConsider the matrices\n[MATH: A = [3|2|0|0; 4|3|0|0; 0|0|6|5; 0|0|7|6], B = [3|\u2212 2|0|0; \u2212 4|3|0|0; 0|0|6|\u2212 5; 0|0|\u2212 7|6], C = [\u2212 3|2|0|0; 4|\u2212 3|0|0; 0|0|\u2212 6|5; 0|0|7|\u2212 6].]\n\nWhich of the following statements are true?\n\n1. [MATH: AB = BA = I_{4}]\n2. [MATH: AC = CA = I_{4}]\n3. [MATH: B = A^{\u2212 1}]\n\nChoices:\na. II only\nb. II and III only\nc. I and III only\nd. None\ne. I and II only\n\n---\n\nItem 8 \u2014 Tutorial: Not Every Matrix Has an Inverse\n\nContent:\nThe number [MATH: 0] does not have an inverse for multiplication over the real numbers, because there's no such number [MATH: a] that [MATH: a \\cdot 0 = 1.] Instead, for every [MATH: a] we have [MATH: a \\cdot 0 = 0.]\n\nContent:\nSimilarly, not every matrix has an inverse.\n\nContent:\n- If a matrix is not square, an inverse does not exist.\n- Some square matrices do not have an inverse. If a square matrix does not have an inverse, then it is said to be singular. An example of a singular matrix is the zero matrix\n[MATH: [0|0; 0|0]]\n\nContent:\nWe will soon learn how to calculate the inverse of a square matrix, and we'll also soon learn how to determine when a square matrix does not have an inverse."
+  }
+}
