@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Evaluating scalar Cartesian surface integrals; draft v2, stops at step 7.
+"""Evaluating scalar Cartesian surface integrals; inventory capability revision.
 
 Ten source-shaped families are served by moderate defaults. Historical opaque
 banks are public evidence profiles, parameterized by a positive integrand scale.
-Easy/hard are explicitly authored: constant density after cancellation versus
-uncancelled quadratic expansion. Each level is unordered and bounded. Read the
-adjacent extraction and validation evidence for historical bank limitations.
+Easy is an authored constant-density workload. Hard draft helpers remain as
+historical evidence but are excluded: adding xy changes the source backbone.
+Read reference/current-classification.md and the inventory validation evidence.
 """
 from __future__ import annotations
 import argparse, copy, hashlib, json, random, re, sys, uuid
@@ -22,6 +22,7 @@ FAMILIES={'plane_xyz':'q-160836','trig_triangle':'q-161355','paraboloid_xy':'q-1
 MODERATE=list(FAMILIES)
 EASY=['constant_plane','canonical_cancel']
 HARD=['quadratic_rectangle_full','quadratic_triangle_full']
+SUPPORTED_LEVELS=('easy','moderate')
 
 def tex(v):
  return s.latex(s.sympify(v),ln_notation=True).replace(r'\log',r'\ln')
@@ -178,6 +179,7 @@ def sample(level,f,rng):
  return p
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+ if level=='hard':raise ValueError('Unsupported hard band: v2 added an xy term outside the extracted source backbone; shortage remains explicit')
  if level not in ('easy','moderate','hard'):raise ValueError('Unknown difficulty')
  if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('Only observed radio shape is supported')
  rng=random.Random(seed);f=template or rng.choice({'easy':EASY,'moderate':MODERATE,'hard':HARD}[level]);israw=profile is not None and profile.startswith('raw:')
@@ -209,7 +211,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
 # Moderate: ten observed families, method-derived complete default banks.
 def generate_moderate(seed=0,**kwargs):return generate('moderate',seed,**kwargs)
-# Hard: five distributed terms, three surviving terms; bounded slopes 2..4.
+# Hard draft retained for compatibility; public generation rejects this band.
 def generate_hard(seed=0,**kwargs):return generate('hard',seed,**kwargs)
 def markdown(r):
  q=r['question'];text=q[':question/problem']+'\n\n'
@@ -217,6 +219,6 @@ def markdown(r):
  return text+q.get(':question/worked-solution','[Original worked solution absent.]')
 if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['markdown','json'],default='markdown');ap.add_argument('--template');ap.add_argument('--profile');args=ap.parse_args()
- levels=['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]
+ levels=list(SUPPORTED_LEVELS) if args.difficulty=='all' else [args.difficulty]
  out=[generate(l,args.seed+i,template=args.template,profile=args.profile) for l in levels for i in range(args.count)]
  print(json.dumps(out,ensure_ascii=False,indent=2) if args.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in out))
