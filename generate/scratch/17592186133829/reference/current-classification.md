@@ -1,0 +1,9 @@
+# Current source and capability check
+
+At math basis 2585, immutable lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1, all six source questions match source.json. The only pull-shape difference is the additional resolved db/id on difficulty enums. No generator was registered and no job .generated file existed.
+
+Original classification, extraction, complete bank replay, and source anomalies remain applicable. Sources q-40253 and q-76356 have nonreal distractors; q-76368 is unrated and lacks its key and solution. They remain unchanged and are excluded from validated reserves. The remaining current validated reserve is easy 1, moderate 2, hard 0, after excluding shown/reserved questions. The application structurally counts two invalid moderate banks, so native raw inventory and mathematical inventory differ. No scheduler changes are made.
+
+Easy and moderate use the documented observed backbones with bounded amplitude/interval slots. The authored hard extension uses a three-coordinate polynomial curve and scalar xy-z², retaining substitution, differentiation, norm, polynomial expansion, and definite setup. Its difficulty is an explicit authored workload classification. No primitive evaluation or curve-finding operation is added. All three levels have passed displayed-math, complete-integral inequality, source fidelity, boundary, deterministic replay, and real learner radio grading checks. Candidate domain counts are pre-rejection bounds; no exhaustive accepted capacity is claimed.
+
+The commit worker rechecks source evidence and all reserves under api.lock, deduplicates actual curve/scalar/bounds against every existing practice, registers the existing or deterministic generator identity, and holds the lock through guarded submission and exact-basis readback. Only new content and this KP membership/generator reference may be asserted. Legacy unclassified inventory remains explicit because source omissions are preserved.
