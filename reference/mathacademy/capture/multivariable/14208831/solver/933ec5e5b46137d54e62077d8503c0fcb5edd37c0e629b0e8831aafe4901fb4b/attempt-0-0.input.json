@@ -1,0 +1,165 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-338900",
+      "sequence_position": 3,
+      "problem": "Consider the boundary value problem\n\n$$\n{y}^{″}-16\\lambda {y}^{′}+64{\\lambda }^{2}y=0,\\,{y}^{′}(0)=0,\\,y(1)+2{y}^{′}(1)=0,\\,0\\le x\\le 1,\\,\\lambda \\in R.\n$$\n\nFind the eigenvalues and eigenfunctions of this problem. Assume that $B$ and $C$ are constants.\n\n$\\,$ The eigenvalues are $\\lambda =$ {{field-1}}.\n\n$\\,$ The eigenfunctions are $y=$ {{field-2}}.",
+      "worked_solution": "We consider the cases $\\lambda =0$ and $\\lambda \\ne 0$ separately, since they correspond to different solutions. \n\n**Case 1**: First, we consider $\\lambda =0.$ \n\nSetting $\\lambda =0$ gives the equation\n\n$$\n{y}^{″}=0.\n$$\n\nIntegrating this equation gives\n\n$$\ny=Ax+B.\n$$\n\nApplying the conditions ${y}^{′}(0)=0$ and $y(1)+2{y}^{′}(1)=0$ yields the trivial solution $y≡0.$ Since the zero solution is not an eigenfunction, $\\lambda =0$ is not an eigenvalue.\n\n**Case 2**: Next, we consider $\\lambda \\ne 0.$\n\nTo find the fundamental solutions, we set $y={e}^{mx}.$ The auxiliary equation is\n\n$$\n\\begin{aligned}{m}^{2}-16\\lambda m+64{\\lambda }^{2} & =0 \\\\ (m-8\\lambda )(m-8\\lambda ) & =0.\\end{aligned}\n$$\n\nSo, we have the double root $m=8\\lambda .$ So, the fundamental solutions are \n\n$$\n{y}_{1}(x)={e}^{8\\lambda x},\\,{y}_{2}(x)=x{e}^{8\\lambda x}\n$$\n\nand the general solution is\n\n$$\ny=A{e}^{8\\lambda x}+Bx{e}^{8\\lambda x}.\n$$\n\nDifferentiating gives\n\n$$\n\\begin{aligned}{y}^{′} & =8A\\lambda {e}^{8\\lambda x}+B{e}^{8\\lambda x}+8B\\lambda x{e}^{8\\lambda x}.\\end{aligned}\n$$\n\nApplying the boundary condition ${y}^{′}(0)=0$ yields\n\n$$\n\\begin{aligned}8A\\lambda +B & =0 \\\\ (8\\lambda )A+B & =0.\\end{aligned}\n$$\n\nApplying the boundary condition $y(1)+2{y}^{′}(1)=0$ yields\n\n$$\n\\begin{aligned}A{e}^{8\\lambda }+B{e}^{8\\lambda }+2(8A\\lambda {e}^{8\\lambda }+B{e}^{8\\lambda }+8B\\lambda {e}^{8\\lambda }) & =0 \\\\ A+B+2(8A\\lambda +B+8B\\lambda ) & =0 \\\\ A+B+16A\\lambda +2B+16B\\lambda  & =0 \\\\ (1+16\\lambda )A+(3+16\\lambda )B & =0.\\end{aligned}\n$$\n\nSo, we have the following systems of equations for $A$ and $B:$\n\n$$\n\\{\\begin{aligned}(8\\lambda )A+B=0 \\\\ (1+16\\lambda )A+(3+16\\lambda )B=0\\end{aligned}\n$$\n\nThis homogeneous linear system has a nontrivial solution if and only if the determinant is zero. This gives\n\n$$\n|\\begin{aligned}8\\lambda  & 1 \\\\ 1+16\\lambda  & 3+16\\lambda \\end{aligned}|=0.\n$$\n\nSo, we get\n\n$$\n\\begin{aligned}8\\lambda (3+16\\lambda )-(1)(1+16\\lambda ) & =0 \\\\ 24\\lambda +128{\\lambda }^{2}-1-16\\lambda  & =0 \\\\ 128{\\lambda }^{2}+8\\lambda -1 & =0 \\\\ (16\\lambda -1)(8\\lambda +1) & =0.\\end{aligned}\n$$\n\nThus, we have the eigenvalues ${\\lambda }_{1}=-\\frac{1}{8}\\text{ and }{\\lambda }_{2}=\\frac{1}{16}.$\n\nFinally, we find the eigenfunction corresponding to each eigenvalue:\n\n- Consider ${\\lambda }_{1}=-\\frac{1}{8}.$ Then, we have the solution\n\n$$\n\\begin{aligned}{y}_{1}(x) & =A{e}^{8{\\lambda }_{1}x}+Bx{e}^{8{\\lambda }_{1}x} \\\\  & =A{e}^{-x}+Bx{e}^{-x}\\end{aligned}\n$$\n\nand substituting ${\\lambda }_{1}$ into\n\n$$\n(8\\lambda )A+B=0\n$$\n\n \nwe get \n\n$$\n-A+B=0\\,⇒\\,A=B\n$$\n\nwhere $B$ is a free parameter. Thus, the eigenfunction corresponding to this eigenvalue is\n\n$$\n{y}_{1}(x)=B{e}^{-x}(x+1).\n$$\n\n- For ${\\lambda }_{2}=\\frac{1}{16},$ we have\n\n$$\n\\begin{aligned}{y}_{2}(x) & =A{e}^{8{\\lambda }_{2}x}+Bx{e}^{8{\\lambda }_{2}x} \\\\  & =A{e}^{x/2}+Bx{e}^{x/2}\\end{aligned}\n$$\n\nand substituting ${\\lambda }_{2}$ into\n\n$$\n(8\\lambda )A+B=0\n$$\n\n \nwe get \n\n$$\n\\frac{1}{2}A+B=0\\,⇒\\,A=-2B\n$$\n\nwhere $B$ is a free parameter. Thus, the eigenfunction corresponding to this eigenvalue is\n\n$$\n\\begin{aligned}{y}_{2}(x) & =-2B{e}^{x/2}+Bx{e}^{x/2} \\\\  & =B{e}^{x/2}(x-2) \\\\  & =C{e}^{x/2}(x-2)\\end{aligned}\n$$\n\nwhere we have set $C=B.$\n\nSo, the eigenfunctions corresponding to ${\\lambda }_{1}$ and ${\\lambda }_{2},$ respectively, are $B{e}^{-x}(x+1)\\text{ and }C{e}^{x/2}(x-2).$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "problem_field_keys": [
+        "field-1",
+        "field-2"
+      ],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14208831/observations/history-q-338900-2d2fcda49d10fa29118d.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14208831",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14208831/observations/history-solution-q-338900-e4ec72b0bce7dfb65201.html",
+      "fields": [
+        {
+          "key": "field-1",
+          "type": "select",
+          "disabled": false,
+          "choices_complete": true,
+          "source_selected": {
+            "type": "text",
+            "value": "$-\\frac{1}{8}$ and $\\frac{1}{16}$"
+          },
+          "source_correct": {
+            "type": "text",
+            "value": "$-\\frac{1}{8}$ and $\\frac{1}{16}$"
+          },
+          "source_result": "Correct",
+          "correct_value": "$-\\frac{1}{8}$ and $\\frac{1}{16}$",
+          "value_type": "text",
+          "correct_origin": "ma_answer",
+          "evidence": {
+            "kind": "ma_correct_grade",
+            "value": "$-\\frac{1}{8}$ and $\\frac{1}{16}$",
+            "grade": "correct",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14208831/observations/step-q338900-f7350f32289b148b8919.html",
+            "presentation_key": "step-q338900"
+          },
+          "correct_evidence": {
+            "kind": "ma_answer",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14208831/observations/history-q-338900-2d2fcda49d10fa29118d.html",
+            "value": "$-\\frac{1}{8}$ and $\\frac{1}{16}$"
+          },
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "$-\\frac{1}{8}$ and $\\frac{1}{16}$"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "$-\\frac{1}{16}$ and $\\frac{1}{8}$"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "\\pm \\frac{1}{8}"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "\\pm \\frac{1}{16}"
+            }
+          ]
+        },
+        {
+          "key": "field-2",
+          "type": "select",
+          "disabled": false,
+          "choices_complete": true,
+          "source_selected": {
+            "type": "text",
+            "value": "$B{e}^{-x}(x+1)$ and $C{e}^{x/2}(x-2)$"
+          },
+          "source_correct": {
+            "type": "text",
+            "value": "$B{e}^{-x}(x+1)$ and $C{e}^{x/2}(x-2)$"
+          },
+          "source_result": "Correct",
+          "correct_value": "$B{e}^{-x}(x+1)$ and $C{e}^{x/2}(x-2)$",
+          "value_type": "text",
+          "correct_origin": "ma_answer",
+          "evidence": {
+            "kind": "ma_correct_grade",
+            "value": "$B{e}^{-x}(x+1)$ and $C{e}^{x/2}(x-2)$",
+            "grade": "correct",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14208831/observations/step-q338900-f7350f32289b148b8919.html",
+            "presentation_key": "step-q338900"
+          },
+          "correct_evidence": {
+            "kind": "ma_answer",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14208831/observations/history-q-338900-2d2fcda49d10fa29118d.html",
+            "value": "$B{e}^{-x}(x+1)$ and $C{e}^{x/2}(x-2)$"
+          },
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "$B{e}^{-x}(x+1)$ and $C{e}^{x/2}(x-2)$"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "$B{e}^{-x}(x-1)$ and $C{e}^{x/2}(x-2)$"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "$Bx{e}^{-2x}$ and $C{e}^{x}(x-3)$"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "$Bx{e}^{-x}$ and $C{e}^{x}(x-1)$"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q338900",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "$-\\frac{1}{8}$ and $\\frac{1}{16}$",
+                "option": "1",
+                "value_type": "text"
+              },
+              {
+                "key": "field-2",
+                "value": "$B{e}^{-x}(x+1)$ and $C{e}^{x/2}(x-2)$",
+                "option": "2",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "source_grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "We consider the cases $\\lambda =0$ and $\\lambda \\ne 0$ separately, since they correspond to different solutions. \n\n**Case 1**: First, we consider $\\lambda =0.$ \n\nSetting $\\lambda =0$ gives the equation\n\n$$\n{y}^{″}=0.\n$$\n\nIntegrating this equation gives\n\n$$\ny=Ax+B.\n$$\n\nApplying the conditions ${y}^{′}(0)=0$ and $y(1)+2{y}^{′}(1)=0$ yields the trivial solution $y≡0.$ Since the zero solution is not an eigenfunction, $\\lambda =0$ is not an eigenvalue.\n\n**Case 2**: Next, we consider $\\lambda \\ne 0.$\n\nTo find the fundamental solutions, we set $y={e}^{mx}.$ The auxiliary equation is\n\n$$\n\\begin{aligned}{m}^{2}-16\\lambda m+64{\\lambda }^{2} & =0 \\\\ (m-8\\lambda )(m-8\\lambda ) & =0.\\end{aligned}\n$$\n\nSo, we have the double root $m=8\\lambda .$ So, the fundamental solutions are \n\n$$\n{y}_{1}(x)={e}^{8\\lambda x},\\,{y}_{2}(x)=x{e}^{8\\lambda x}\n$$\n\nand the general solution is\n\n$$\ny=A{e}^{8\\lambda x}+Bx{e}^{8\\lambda x}.\n$$\n\nDifferentiating gives\n\n$$\n\\begin{aligned}{y}^{′} & =8A\\lambda {e}^{8\\lambda x}+B{e}^{8\\lambda x}+8B\\lambda x{e}^{8\\lambda x}.\\end{aligned}\n$$\n\nApplying the boundary condition ${y}^{′}(0)=0$ yields\n\n$$\n\\begin{aligned}8A\\lambda +B & =0 \\\\ (8\\lambda )A+B & =0.\\end{aligned}\n$$\n\nApplying the boundary condition $y(1)+2{y}^{′}(1)=0$ yields\n\n$$\n\\begin{aligned}A{e}^{8\\lambda }+B{e}^{8\\lambda }+2(8A\\lambda {e}^{8\\lambda }+B{e}^{8\\lambda }+8B\\lambda {e}^{8\\lambda }) & =0 \\\\ A+B+2(8A\\lambda +B+8B\\lambda ) & =0 \\\\ A+B+16A\\lambda +2B+16B\\lambda  & =0 \\\\ (1+16\\lambda )A+(3+16\\lambda )B & =0.\\end{aligned}\n$$\n\nSo, we have the following systems of equations for $A$ and $B:$\n\n$$\n\\{\\begin{aligned}(8\\lambda )A+B=0 \\\\ (1+16\\lambda )A+(3+16\\lambda )B=0\\end{aligned}\n$$\n\nThis homogeneous linear system has a nontrivial solution if and only if the determinant is zero. This gives\n\n$$\n|\\begin{aligned}8\\lambda  & 1 \\\\ 1+16\\lambda  & 3+16\\lambda \\end{aligned}|=0.\n$$\n\nSo, we get\n\n$$\n\\begin{aligned}8\\lambda (3+16\\lambda )-(1)(1+16\\lambda ) & =0 \\\\ 24\\lambda +128{\\lambda }^{2}-1-16\\lambda  & =0 \\\\ 128{\\lambda }^{2}+8\\lambda -1 & =0 \\\\ (16\\lambda -1)(8\\lambda +1) & =0.\\end{aligned}\n$$\n\nThus, we have the eigenvalues ${\\lambda }_{1}=-\\frac{1}{8}\\text{ and }{\\lambda }_{2}=\\frac{1}{16}.$\n\nFinally, we find the eigenfunction corresponding to each eigenvalue:\n\n- Consider ${\\lambda }_{1}=-\\frac{1}{8}.$ Then, we have the solution\n\n$$\n\\begin{aligned}{y}_{1}(x) & =A{e}^{8{\\lambda }_{1}x}+Bx{e}^{8{\\lambda }_{1}x} \\\\  & =A{e}^{-x}+Bx{e}^{-x}\\end{aligned}\n$$\n\nand substituting ${\\lambda }_{1}$ into\n\n$$\n(8\\lambda )A+B=0\n$$\n\n \nwe get \n\n$$\n-A+B=0\\,⇒\\,A=B\n$$\n\nwhere $B$ is a free parameter. Thus, the eigenfunction corresponding to this eigenvalue is\n\n$$\n{y}_{1}(x)=B{e}^{-x}(x+1).\n$$\n\n- For ${\\lambda }_{2}=\\frac{1}{16},$ we have\n\n$$\n\\begin{aligned}{y}_{2}(x) & =A{e}^{8{\\lambda }_{2}x}+Bx{e}^{8{\\lambda }_{2}x} \\\\  & =A{e}^{x/2}+Bx{e}^{x/2}\\end{aligned}\n$$\n\nand substituting ${\\lambda }_{2}$ into\n\n$$\n(8\\lambda )A+B=0\n$$\n\n \nwe get \n\n$$\n\\frac{1}{2}A+B=0\\,⇒\\,A=-2B\n$$\n\nwhere $B$ is a free parameter. Thus, the eigenfunction corresponding to this eigenvalue is\n\n$$\n\\begin{aligned}{y}_{2}(x) & =-2B{e}^{x/2}+Bx{e}^{x/2} \\\\  & =B{e}^{x/2}(x-2) \\\\  & =C{e}^{x/2}(x-2)\\end{aligned}\n$$\n\nwhere we have set $C=B.$\n\nSo, the eigenfunctions corresponding to ${\\lambda }_{1}$ and ${\\lambda }_{2},$ respectively, are $B{e}^{-x}(x+1)\\text{ and }C{e}^{x/2}(x-2).$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14208831/observations/history-solution-q-338900-e4ec72b0bce7dfb65201.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14208831/observations/history-q-338900-2d2fcda49d10fa29118d.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a13b96-036d-79c1-95e9-5fbbb2ba83cb",
+  "previous_failures": []
+}
