@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-269590",
+      "sequence_position": 15,
+      "problem": "Consider the function $L:{R}^{3\\times 2}\\to R$ defined by $L(A)=(3Ax-2b)^{T}(3Ax-2b),$ where\n\n$$\nx=[\\begin{aligned}0 \\\\ 4\\end{aligned}],\\,b=[\\begin{aligned}2 \\\\ 1 \\\\ 0\\end{aligned}].\n$$\n\nWhat is ${∇}_{A}L$ at \n$A=[\\begin{aligned}1 & 0 \\\\ 1 & 2 \\\\ 0 & 3\\end{aligned}]?$\n\n<table cellpadding=\"0\" cellspacing=\"0\">\n<tbody><tr>\n<td rowspan=\"3\" align=\"center\">\n${∇}_{A}=\\,\\,$\n</td>\n\n<td rowspan=\"3\" width=\"8px\"></td>\n\n<td width=\"45px\" height=\"35px\" align=\"center\">{{field-1}}</td>\n\n<td width=\"45px\" height=\"35px\" align=\"center\">$-96$</td>\n\n<td rowspan=\"3\" width=\"8px\"></td>\n</tr>\n\n<tr>\n<td height=\"35px\" align=\"center\">$0$</td>\n\n<td align=\"center\">{{field-2}}</td>\n</tr>\n\n<tr>\n<td height=\"35px\" align=\"center\">{{field-3}}</td>\n\n<td align=\"center\">$864$</td>\n</tr>\n</tbody></table>",
+      "worked_solution": "The gradient of $L$ with respect to $A$ is a matrix of the same shape as $A$, with $(i,j)$th entry given by\n\n$$\n\\frac{∂L}{∂{a}_{ij}},\n$$\n\nthe partial derivative of $L$ with respect to the $(i,j)$th entry of $A.$\n\nWe can compute $\\frac{∂L}{∂{a}_{ij}}$ by applying the chain rule.\n\nLet $y=3Ax-2b\\in {R}^{3}.$ Then, $L(A)={y}^{T}y$ and\n\n$$\n\\frac{∂L}{∂{a}_{ij}}={\\sum }_{k=1}^{3}\\frac{∂L}{∂{y}_{k}}\\cdot \\frac{∂{y}_{k}}{∂{a}_{ij}}\n$$\n\nNow, since \n\n$$\n{∇}_{y}L={∇}_{y}({y}^{T}y)=2y,\n$$\n\nwe have that\n\n$$\n\\frac{∂L}{∂{y}_{k}}=2{y}_{k}.\n$$\n\nWriting out $y=3Ax-2b$ in component-wise notation as \n\n$$\n{y}_{i}=3{\\sum }_{j=1}^{2}{a}_{ij}{x}_{j}-2{b}_{i},\n$$\n\nwe have \n\n- $\\frac{∂{y}_{k}}{∂{a}_{ij}}=3{x}_{j}$ if $i=k$, and\n\n- $\\frac{∂{y}_{k}}{∂{a}_{ij}}=0$ if $i\\ne k.$\n\nThis means that \n\n$$\n\\begin{aligned}\\frac{∂L}{∂{a}_{ij}} & ={\\sum }_{k=1}^{3}\\frac{∂L}{∂{y}_{k}}\\cdot \\frac{∂{y}_{k}}{∂{a}_{ij}} \\\\  & =\\frac{∂L}{∂{y}_{i}}\\cdot \\frac{∂{y}_{i}}{∂{a}_{ij}} \\\\  & =2{y}_{i}\\cdot \\frac{∂{y}_{i}}{∂{a}_{ij}} \\\\  & =2{y}_{i}\\cdot 3{x}_{j} \\\\  & =6{y}_{i}{x}_{j}.\\end{aligned}\n$$\n\nThe $(i,j)$th entry of ${∇}_{A}L$ is $6$ times the $i$th entry of $y$ multiplied by the $j$th entry of $x$, so\n\n$$\n{∇}_{A}L=6y\\cdot {x}^{T}.\n$$\n\nFinally, evaluating ${∇}_{A}L$ at $A=[\\begin{aligned}1 & 0 \\\\ 1 & 2 \\\\ 0 & 3\\end{aligned}],$ we get\n\n$$\n\\begin{aligned}{∇}_{A}L & =6y\\cdot {x}^{T} \\\\  & =6(3Ax-2b)\\cdot {x}^{T} \\\\  & =6(3[\\begin{aligned}1 & 0 \\\\ 1 & 2 \\\\ 0 & 3\\end{aligned}][\\begin{aligned}0 \\\\ 4\\end{aligned}]-2[\\begin{aligned}2 \\\\ 1 \\\\ 0\\end{aligned}])\\cdot [\\begin{aligned}0 & 4\\end{aligned}] \\\\  & =6(3[\\begin{aligned}0 \\\\ 8 \\\\ 12\\end{aligned}]-[\\begin{aligned}4 \\\\ 2 \\\\ 0\\end{aligned}])\\cdot [\\begin{aligned}0 & 4\\end{aligned}] \\\\  & =[\\begin{aligned}-24 \\\\ 132 \\\\ 216\\end{aligned}]\\cdot [\\begin{aligned}0 & 4\\end{aligned}] \\\\  & =[\\begin{aligned}0 & -96 \\\\ 0 & 528 \\\\ 0 & 864\\end{aligned}].\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "problem_field_keys": [
+        "field-1",
+        "field-2",
+        "field-3"
+      ],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14221174/observations/history-q-269590-baa2eecb961f78c83d3c.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14221174",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14221174/observations/history-solution-q-269590-f5f05ff46abafc886b1e.html",
+      "fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        },
+        {
+          "key": "field-2",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        },
+        {
+          "key": "field-3",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q269590",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "0",
+                "value_type": "math"
+              },
+              {
+                "key": "field-2",
+                "value": "528",
+                "value_type": "math"
+              },
+              {
+                "key": "field-3",
+                "value": "0",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "source_grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "The gradient of $L$ with respect to $A$ is a matrix of the same shape as $A$, with $(i,j)$th entry given by\n\n$$\n\\frac{∂L}{∂{a}_{ij}},\n$$\n\nthe partial derivative of $L$ with respect to the $(i,j)$th entry of $A.$\n\nWe can compute $\\frac{∂L}{∂{a}_{ij}}$ by applying the chain rule.\n\nLet $y=3Ax-2b\\in {R}^{3}.$ Then, $L(A)={y}^{T}y$ and\n\n$$\n\\frac{∂L}{∂{a}_{ij}}={\\sum }_{k=1}^{3}\\frac{∂L}{∂{y}_{k}}\\cdot \\frac{∂{y}_{k}}{∂{a}_{ij}}\n$$\n\nNow, since \n\n$$\n{∇}_{y}L={∇}_{y}({y}^{T}y)=2y,\n$$\n\nwe have that\n\n$$\n\\frac{∂L}{∂{y}_{k}}=2{y}_{k}.\n$$\n\nWriting out $y=3Ax-2b$ in component-wise notation as \n\n$$\n{y}_{i}=3{\\sum }_{j=1}^{2}{a}_{ij}{x}_{j}-2{b}_{i},\n$$\n\nwe have \n\n- $\\frac{∂{y}_{k}}{∂{a}_{ij}}=3{x}_{j}$ if $i=k$, and\n\n- $\\frac{∂{y}_{k}}{∂{a}_{ij}}=0$ if $i\\ne k.$\n\nThis means that \n\n$$\n\\begin{aligned}\\frac{∂L}{∂{a}_{ij}} & ={\\sum }_{k=1}^{3}\\frac{∂L}{∂{y}_{k}}\\cdot \\frac{∂{y}_{k}}{∂{a}_{ij}} \\\\  & =\\frac{∂L}{∂{y}_{i}}\\cdot \\frac{∂{y}_{i}}{∂{a}_{ij}} \\\\  & =2{y}_{i}\\cdot \\frac{∂{y}_{i}}{∂{a}_{ij}} \\\\  & =2{y}_{i}\\cdot 3{x}_{j} \\\\  & =6{y}_{i}{x}_{j}.\\end{aligned}\n$$\n\nThe $(i,j)$th entry of ${∇}_{A}L$ is $6$ times the $i$th entry of $y$ multiplied by the $j$th entry of $x$, so\n\n$$\n{∇}_{A}L=6y\\cdot {x}^{T}.\n$$\n\nFinally, evaluating ${∇}_{A}L$ at $A=[\\begin{aligned}1 & 0 \\\\ 1 & 2 \\\\ 0 & 3\\end{aligned}],$ we get\n\n$$\n\\begin{aligned}{∇}_{A}L & =6y\\cdot {x}^{T} \\\\  & =6(3Ax-2b)\\cdot {x}^{T} \\\\  & =6(3[\\begin{aligned}1 & 0 \\\\ 1 & 2 \\\\ 0 & 3\\end{aligned}][\\begin{aligned}0 \\\\ 4\\end{aligned}]-2[\\begin{aligned}2 \\\\ 1 \\\\ 0\\end{aligned}])\\cdot [\\begin{aligned}0 & 4\\end{aligned}] \\\\  & =6(3[\\begin{aligned}0 \\\\ 8 \\\\ 12\\end{aligned}]-[\\begin{aligned}4 \\\\ 2 \\\\ 0\\end{aligned}])\\cdot [\\begin{aligned}0 & 4\\end{aligned}] \\\\  & =[\\begin{aligned}-24 \\\\ 132 \\\\ 216\\end{aligned}]\\cdot [\\begin{aligned}0 & 4\\end{aligned}] \\\\  & =[\\begin{aligned}0 & -96 \\\\ 0 & 528 \\\\ 0 & 864\\end{aligned}].\\end{aligned}\n$$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14221174/observations/history-solution-q-269590-f5f05ff46abafc886b1e.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14221174/observations/history-q-269590-baa2eecb961f78c83d3c.html"
+        }
+      }
+    ]
+  }
+}
