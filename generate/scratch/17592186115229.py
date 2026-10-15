@@ -62,6 +62,9 @@ def generate(difficulty,seed=0,template=None,parameters=None):
     else:
         if len(parameters)!=n*n or any(type(z)!=int or not -5<=z<=5 for z in parameters):raise ValueError('Invalid matrix parameters')
         a=sp.Matrix(n,n,parameters)
+        if any(a[i]!=0 for i,z in enumerate(old) if z==0):raise ValueError('Observed zero-cell policy')
+        if sid=='q-279430' and a.trace()!=0:raise ValueError('Trace-zero shortcut policy')
+        if max(abs(z) for z in a**p)>1000:raise ValueError('Result magnitude boundary')
     answer=a**p;orig=t['source']
     # Replace the exact source matrices in every ordered solution stage.
     substitutions={tuple(old**k):a**k for k in [1,2,p]}

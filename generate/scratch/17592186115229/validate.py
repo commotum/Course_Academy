@@ -81,6 +81,26 @@ def main():
         try:g.generate(level)
         except ValueError:negative+=1
         else:raise AssertionError('Unsupported difficulty accepted')
+    for sid,t in g.PROFILES.items():
+        p=[-5 if i%2 else 5 for i in range(len(t['a']))]
+        for i,z in enumerate(t['a']):
+            if z==0:p[i]=0
+        if sid=='q-279430':p[3]=-p[0]
+        # Explicit-domain corners may exceed the workload cap; those must reject.
+        try:r=g.generate(t['level'],0,sid,p)
+        except ValueError:negative+=1
+        else:check(r)
+    same=[2,0,1,1,1,0,3,-1,2]
+    targets=[g.generate('moderate',0,sid,same) for sid in ['q-279444','q-279446']]
+    for z in targets:check(z)
+    assert targets[0]['generation']['target_cells']!=targets[1]['generation']['target_cells']
+    assert fingerprint(targets[0]['question'])==fingerprint(targets[1]['question'])
+    # Same matrix/power, different target mask: every supplied entry/key is read anew.
+    bad=copy.deepcopy(targets[1]);bad['question'][':question/problem']=targets[0]['question'][':question/problem']
+    try:check(bad)
+    except AssertionError:negative+=1
+    else:raise AssertionError('Stale target layout accepted')
+    save('changed-target-review.json',targets)
     native=rows[::20]+[g.generate(t['level'],0,sid,list(map(int,t['a']))) for sid,t in g.PROFILES.items()]
     save('engine-input.json',[engine_item(str(i),r) for i,r in enumerate(native)])
     subprocess.run([str(H/'check-engine'),str(H/'engine-input.json'),str(H/'engine-report.json')],check=True)

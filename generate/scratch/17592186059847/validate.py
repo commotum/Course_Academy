@@ -151,9 +151,9 @@ def main():
             found=True;break
     require(found,'No bank identity comparison witness')
     (HERE/'engine-input.json').write_text(json.dumps(native,indent=2)+'\n')
-    engine=ROOT/'generate/runs/current/check-engine'
+    engine=HERE/'reference/replenishment/check-engine'
     subprocess.run([str(engine),str(HERE/'engine-input.json'),str(HERE/'engine-report.json')],check=True,capture_output=True,text=True)
-    result={'status':'passed','source':g.SOURCE,'source_coverage':{'practice_questions':15,'easy_observed':13,'unrated_assigned_easy':2,'prompt_matches':15,'answer_values_matched':count,'answer_values_total':count,'radio_banks_matched':9,'radio_banks_total':9,'distractors_matched':distractors,'distractors_total':distractors,'blank_fragments_matched':6,'observed_correct_refs_matched':13,'missing_correct_refs_independently_inferred':2},
+    result={'status':'passed','generator_sha256':hashlib.sha256(HERE.with_suffix('.py').read_bytes()).hexdigest(),'source':g.SOURCE,'source_coverage':{'practice_questions':15,'easy_observed':13,'unrated_assigned_easy':2,'prompt_matches':15,'answer_values_matched':count,'answer_values_total':count,'radio_banks_matched':9,'radio_banks_total':9,'distractors_matched':distractors,'distractors_total':distractors,'blank_fragments_matched':6,'observed_correct_refs_matched':13,'missing_correct_refs_independently_inferred':2},
       'mathematics':{'generated_instances':len(native)-15,'source_instances':15,'rendered_arithmetic_rows':'all exact and equal to independent determinant','all_profiles_exercised':True,'identity_and_invalid_input_checks':'passed'},
       'native_grading':{'records':len(native),'checks':sum(len(x['checks']) for x in native),'status':'passed','engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'report':'engine-report.json'},
       'solution_fidelity':{'shared_opening_matches':13,'literal_markdown_match_required':False,'normalization':'Consistent signed products, parenthesized negative factors, zero-term simplification, and minor evaluation; same cofactor method and fixed worked solution. Older two originals supply no worked solution.'},
