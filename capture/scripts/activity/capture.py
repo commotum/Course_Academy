@@ -307,6 +307,12 @@ class ActivityCapture:
                 logging.warning('%s task %s: %s; retrying', method, self.activity['task_id'], error)
                 delay = self.pacer.backoff(attempts, retry_after=getattr(error, 'retry_after', 0))
                 available = self._remaining_seconds()
+                if (available is not None and method == 'respond'
+                        and getattr(error, 'submitted', None) is False
+                        and not getattr(error, 'retry_after', 0)):
+                    # A local editor failure made no network submission. Re-read
+                    # promptly so focused entry recovery can fit in the exam.
+                    delay = min(delay, 1.0)
                 # Ordinary recovery must leave enough time to submit the whole
                 # assessment. A server throttle is never shortened into a retry.
                 if available is not None and available > 0 and method != 'open' and not getattr(error, 'retry_after', 0):
@@ -511,7 +517,8 @@ class ActivityCapture:
         solution = record.get('solution')
         current_binding = self._answer_binding(question)
         failure = self.state.get('pending_browser_error') or {}
-        if failure.get('method') == 'respond' and failure.get('attempt', 0) >= 4 and not failure.get('not_submitted'):
+        reconsider_after = 2 if self.activity['kind'] == 'assessment' and failure.get('entry_failed') else 4
+        if failure.get('method') == 'respond' and failure.get('attempt', 0) >= reconsider_after and not failure.get('not_submitted'):
             recovery_key = failure.get('failure_key', '') + ':' + current_binding
             attempts = record.setdefault('entry_reconsiderations', {}).get(recovery_key, 0)
             if attempts < 2:

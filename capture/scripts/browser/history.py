@@ -79,7 +79,11 @@ class HistoryChoices:
             raise ValueError('Task answer MC rendering requires unsupported math or assets')
         # Compare the actual history prompt without its separately captured graphic.
         self.page.evaluate("html=>{document.body.innerHTML=html}", record.get('html', ''))
-        prompt = self.page.locator('.questionText,.questionWidget-text')
+        from .entry import by_id
+        root = by_id(self.page,'question-'+str(question['id']))
+        if root.count() != 1:
+            raise ValueError('History DOM question identity differs from task answer')
+        prompt = root.locator('.questionText,.questionWidget-text')
         if prompt.count() != 1:
             raise ValueError('History has no unique source prompt')
         observed = prompt.evaluate('(node,extract)=>{const root=document.createElement("div");root.append(node.cloneNode(true));document.body.append(root);try{return eval("("+extract+")")(root).problem}finally{root.remove()}}', EXTRACT)

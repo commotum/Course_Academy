@@ -256,3 +256,11 @@ Content identity includes generator version, displayed difficulty, prompt, fixed
 
 No practice plot exists; plot extraction/specification and Matplotlib/TikZ rendering are consequently unnecessary (rating none). Tutorial diagrams were treated solely as lesson context. No figure or unrelated demand is introduced just to require a plot. Freeze after step 7; no database preparation/registration/transactions are performed.
 
+
+## Basis-2620 addition: q-162890
+
+Observed hard source: r(t)=(cos t,2 sin t,2 cos t), F=(2z,x,3y), [0,2π). F(r)=(4 cos t,cos t,6 sin t), r′=(−sin t,2 cos t,−2 sin t). Their dot product is −4 sin t cos t+2 cos²t−12 sin²t, reducing to −2 sin(2t)−5+7 cos(2t). An antiderivative is cos(2t)−5t+(7/2)sin(2t); evaluating at 2π and 0 gives −10π. No plots occur.
+
+The fixed backbone has three coordinate substitutions, three tangent derivatives, three dot-product terms, full-turn sine/cosine reduction, integration and endpoint evaluation. Slots a,b,d multiply whole boundary coordinates and c multiplies the whole field, with the existing nonzero signed integer magnitude bound 3. Ordered solution stages, field types and positive orientation are preserved. The additional cos/sin cross term changes with a and d; all terms are derived from the same instance. Normal sampling uses the existing complete authored trigonometric method bank, chosen as a whole: correct circulation, reversed boundary, zero, half interval and doubled result from losing the squared-trig identity factor. Collision cases reject the entire bank. These recipes are authored and do not claim to recover the opaque original distractors.
+
+Raw replay uses the complete observed bank as parameterized values c·{3π/2,2π,−6π,−π/3,−10π}, preserving its five choices and designation. Scaling changes the whole supplied field and each dependent displayed stage. Full-bank replay must match 5/5 values and the correct designation, independently of the normal authored-bank correctness audit. q-162377's completed current bank is algebraically identical to the older captured bank; its current completion is evidence, while the frozen raw fixture retains the older omissions.

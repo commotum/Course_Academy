@@ -94,6 +94,31 @@ class ActivityTimingTests(unittest.TestCase):
         self.assertEqual(restored.state['assessment_timing'],plan)
         self.assertEqual(restored._remaining_seconds(),700)
 
+    def test_local_assessment_entry_failures_get_prompt_focused_recovery(self):
+        outer=self
+        class EntryBrowser(Browser):
+            failures=2
+            def observe(self,directory):
+                result=super().observe(directory)
+                result.update(remaining_seconds=1800-outer.now,observed_at=outer.now,
+                              question_count=2,sequence_position=self.index+1)
+                return result
+            def respond(self,observation,responses,directory):
+                if self.failures and isinstance(responses,list):
+                    self.failures-=1
+                    error=ValueError('Math editor readback differs')
+                    error.submitted=False
+                    raise error
+                return super().respond(observation,responses,directory)
+        agent=Agent();browser=EntryBrowser([question(),question('q-2')],'assessment')
+        capture=self.capture(browser,agent,{'task_id':'99','kind':'assessment','details':{'question_count':2}})
+        capture.run(capture.activity,capture.directory)
+        solves=[call for call in agent.calls if call[0]=='solve_question']
+        self.assertEqual(len(solves),3)  # Reconsider q1 after two local failures.
+        self.assertIn('reconsider_reason',capture.state['presentations']['presentation-0'])
+        self.assertEqual(sum(delay for delay in self.delays if delay==1),2)
+        self.assertEqual(browser.responses[-1],{'action':'submit_assessment'})
+
     def test_aged_timer_and_live_question_count_bound_solver_budget(self):
         capture = self.capture(activity={'task_id':'99','kind':'assessment','details':{}})
         observation={'remaining_seconds':120,'observed_at':970,'question_count':3,'sequence_position':1}

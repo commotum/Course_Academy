@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import re
 import uuid
 from .edn import kw, dumps
 from .evidence import UnsupportedContent, authoritative_question
@@ -21,6 +22,10 @@ def choice_signature(kind, value):
     # retaining field/answer identities and every historical response link.
     if kind == 'math' and isinstance(value, str):
         value = value.replace(r'\u2061', '\u2061')
+        # Legacy extraction dropped the ln operator wrapper but retained its
+        # explicit MathML function-application marker. Only that marked form
+        # establishes equivalence to today's operator spelling.
+        value = re.sub(r'\\operatorname\{ln\}(?=\u2061)', 'ln', value)
     return kind, value
 KINDS = ('topic', 'knowledge-point', 'question', 'answer-field', 'answer', 'tutorial',
          'activity', 'step', 'multistep', 'assigned-problem')

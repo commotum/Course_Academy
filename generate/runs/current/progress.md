@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 51**, **qa_passed: 389**, **queued: 137**, **working: 3**.
+**needs_revalidation: 49**, **qa_passed: 391**, **queued: 137**, **working: 3**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -56,15 +56,15 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186059655](../../scratch/17592186059655.py) | Simplifying Expressions Using the Pythagorean Identity | Simplifying an Expression by Expanding Parentheses and Using the Pythagorean Identity | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186059655.json) |
 | [17592186087655](../../scratch/17592186087655.py) | Equations of Circles | Finding the Equation of a Circle Given the Center and the Radius | 6 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186087655.json) |
 | [17592186129121](../../scratch/17592186129121.py) | Properties of Transformed Sine and Cosine Functions | Determining the Amplitude of a Transformed Sinusoidal Function | 4 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186129121.json) |
-| [17592186129122](../../scratch/17592186129122.py) | Properties of Transformed Sine and Cosine Functions | Calculating the Period of a Transformed Sinusoidal Function | 7 / 0 / 0 / 1 | needs_revalidation | [Report](qa/17592186129122.json) |
+| [17592186129122](../../scratch/17592186129122.py) | Properties of Transformed Sine and Cosine Functions | Calculating the Period of a Transformed Sinusoidal Function | 7 / 0 / 0 / 1 | working | [Report](qa/17592186129122.json) |
 | [17592186129123](../../scratch/17592186129123.py) | Properties of Transformed Sine and Cosine Functions | Finding the Midline of a Transformed Sinusoidal Function | 7 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186129123.json) |
 | [17592186129124](../../scratch/17592186129124.py) | Properties of Transformed Sine and Cosine Functions | Finding the Range of a Transformed Sinusoidal Function | 4 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186129124.json) |
 | [17592186092260](../../scratch/17592186092260.py) | The Chain Rule With Exponential Functions | Differentiating an Exponential Function with a Linear Exponent | 2 / 5 / 0 / 2 | qa_passed | [Report](qa/17592186092260.json) |
 | [17592186059740](../../scratch/17592186059740.py) | Scalar Multiplication of Matrices | Multiplying a Matrix by a Scalar | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186059740.json) |
 | [17592186059742](../../scratch/17592186059742.py) | Scalar Multiplication of Matrices | Calculating a Linear Combination of Two Matrices | 0 / 3 / 3 / 2 | qa_passed | [Report](qa/17592186059742.json) |
-| [17592186073776](../../scratch/17592186073776.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the Number of Solutions to a System | 0 / 0 / 0 / 3 | needs_revalidation | [Report](qa/17592186073776.json) |
+| [17592186073776](../../scratch/17592186073776.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the Number of Solutions to a System | 0 / 0 / 0 / 3 | working | [Report](qa/17592186073776.json) |
 | [17592186073777](../../scratch/17592186073777.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the Number of Intersection Points of Two Lines | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186073777.json) |
-| [17592186073778](../../scratch/17592186073778.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the General Solution to a System With Infinitely Many Intersection Points | 0 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186073778.json) |
+| [17592186073778](../../scratch/17592186073778.py) | Systems of Equations With No Solutions and Infinitely Many Solutions | Finding the General Solution to a System With Infinitely Many Intersection Points | 0 / 0 / 0 / 2 | working | [Report](qa/17592186073778.json) |
 | [17592186092217](../../scratch/17592186092217.py) | Converting from Polar Coordinates to Cartesian Coordinates | Finding the Cartesian Coordinates of a Point Given in Polar Coordinates | 4 / 1 / 0 / 2 | qa_passed | [Report](qa/17592186092217.json) |
 | [17592186110754](../../scratch/17592186110754-draft.py) | Using the Pythagorean Identity in the First Quadrant | Using the Pythagorean Theorem on the Unit Circle | 5 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186110754.json) |
 | [17592186110756](../../scratch/17592186110756-draft.py) | Using the Pythagorean Identity in the First Quadrant | Computing a Reciprocal Ratio Using the Pythagorean Identity | 0 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186110756.json) |
@@ -78,7 +78,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186133827](../../scratch/17592186133827.py) | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function Using a Substitution | 0 / 4 / 1 / 1 | qa_passed | [Report](qa/17592186133827.json) |
 | [17592186133829](../../scratch/17592186133829.py) | Line Integrals of Scalar Functions | Writing the Line Integral of a Scalar Function as a Definite Integral | 1 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186133829.json) |
 | [17592186133830](../../scratch/17592186133830.py) | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function | 2 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186133830.json) |
-| [17592186162081](../../scratch/17592186162081.py) | Properties of Line Integrals of Scalar Functions | Calculating Line Integrals of Unity | 5 / 0 / 0 / 1 | working | [Report](qa/17592186162081.json) |
+| [17592186162081](../../scratch/17592186162081-draft.py) | Properties of Line Integrals of Scalar Functions | Calculating Line Integrals of Unity | 5 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186162081.json) |
 | [17592186162082](../../scratch/17592186162082.py) | Properties of Line Integrals of Scalar Functions | Calculating Line Integrals Over Piecewise-Smooth Curves | 2 / 3 / 0 / 1 | qa_passed | [Report](qa/17592186162082.json) |
 | [17592186162083](../../scratch/17592186162083-draft.py) | Properties of Line Integrals of Scalar Functions | Applying Independence of Parametrization and Orientation | 0 / 3 / 2 / 2 | qa_passed | [Report](qa/17592186162083.json) |
 | [17592186179670](../../scratch/17592186179670.py) | Line Integrals of Scalar Functions Over Line Segments | Calculating a Line Integral Along a Segment in the Cartesian Plane | 0 / 3 / 2 / 2 | qa_passed | [Report](qa/17592186179670.json) |
@@ -86,7 +86,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186179725](../../scratch/17592186179725.py) | Line Integrals of Scalar Functions Over Line Segments | Line Integrals Along Segments in Three Dimensions | 2 / 1 / 2 / 2 | qa_passed | [Report](qa/17592186179725.json) |
 | [17592186179709](../../scratch/17592186179709.py) | Line Integrals of Scalar Functions Over Paths Expressed as Functions of Y | Constructing the Line Integral of a Function Over Curve Expressed as a Function of Y | 2 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186179709.json) |
 | [17592186133831](../../scratch/17592186133831.py) | Line Integrals of Vector-Valued Functions Over Parametric Curves | Constructing Line Integrals of a Vector-Valued Functions Over Plane Curves | 5 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186133831.json) |
-| [17592186119887](../../scratch/17592186119887.py) | Areas of Parametric Surfaces | Calculating the Fundamental Vector Product of a Parametric Surface | 6 / 0 / 0 / 1 | working | [Report](qa/17592186119887.json) |
+| [17592186119887](../../scratch/17592186119887-draft.py) | Areas of Parametric Surfaces | Calculating the Fundamental Vector Product of a Parametric Surface | 6 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186119887.json) |
 | [17592186175972](../../scratch/17592186175972.py) | Parametrizations of Cylinders | Parametrizing a Parabolic Cylinder | 4 / 1 / 0 / 1 | qa_passed | [Report](qa/17592186175972.json) |
 | [17592186175973](../../scratch/17592186175973.py) | Parametrizations of Cylinders | Parametrizing a Hyperbolic Cylinder | 0 / 2 / 3 / 1 | qa_passed | [Report](qa/17592186175973.json) |
 | [17592186073810](../../scratch/17592186073810-draft.py) | The Shortest Distance Between a Point and a Line | Finding the Distance Between a Point and a Horizontal or Vertical Line | 5 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186073810.json) |
@@ -234,7 +234,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186087700](../../scratch/17592186087700-draft.py) | Introduction to the Inverse of a Matrix | Determining the Inverse of a Larger Matrix | 0 / 10 / 3 / 0 | qa_passed | [Report](qa/17592186087700.json) |
 | [17592186092261](../../scratch/17592186092261.py) | The Chain Rule With Exponential Functions | Differentiating a General Exponential Function Using the Chain Rule | 7 / 2 / 0 / 1 | qa_passed | [Report](qa/17592186092261.json) |
 | [17592186092263](../../scratch/17592186092263.py) | The Chain Rule With Exponential Functions | Differentiating an Exponential Function with a Nonlinear Exponent | 5 / 8 / 0 / 1 | needs_revalidation | [Report](qa/17592186092263.json) |
-| [17592186059741](../../scratch/17592186059741.py) | Scalar Multiplication of Matrices | Calculating the Value of a Scalar | 6 / 0 / 0 / 1 | working | — |
+| [17592186059741](../../scratch/17592186059741-draft.py) | Scalar Multiplication of Matrices | Calculating the Value of a Scalar | 6 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186059741.json) |
 | [17592186096617](../../scratch/17592186096617.py) | The Product Rule for Differentiation | Differentiating a Product Containing a Trigonometric Function | 8 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186096617.json) |
 | [17592186096618](../../scratch/17592186096618.py) | The Product Rule for Differentiation | Differentiating a Product Containing an Exponential or Logarithmic Function | 11 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096618.json) |
 | [17592186096619](../../scratch/17592186096619.py) | The Product Rule for Differentiation | Finding the Slope of the Tangent Line to a Product  at a Given Point | 0 / 11 / 0 / 2 | qa_passed | [Report](qa/17592186096619.json) |
@@ -554,7 +554,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186198389](../../scratch/17592186198389.py) | Calculating Flux Through Cartesian Surfaces | Expressing Flux Over a Surface as a Repeated Integral | 12 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186198389.json) |
 | [17592186133926](../../scratch/17592186133926.py) | Stokes' Theorem | Circulation Over Space Curves | 5 / 2 / 0 / 1 | qa_passed | [Report](qa/17592186133926.json) |
 | [17592186133927](../../scratch/17592186133927.py) | Stokes' Theorem | Evaluating a Line Integral Using Stokes' Theorem | 0 / 5 / 5 / 1 | qa_passed | [Report](qa/17592186133927.json) |
-| [17592186133928](../../scratch/17592186133928.py) | Stokes' Theorem | Evaluating a Surface Integral Using Stokes' Theorem | 0 / 5 / 5 / 1 | qa_passed | [Report](qa/17592186133928.json) |
+| [17592186133928](../../scratch/17592186133928.py) | Stokes' Theorem | Evaluating a Surface Integral Using Stokes' Theorem | 0 / 5 / 5 / 1 | needs_revalidation | [Report](qa/17592186133928.json) |
 | [17592186133929](../../scratch/17592186133929.py) | The Divergence Theorem | Writing the Flux Across a Closed Surface as a Triple Integral | 3 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186133929.json) |
 | [17592186133930](../../scratch/17592186133930.py) | The Divergence Theorem | Calculating Flux Across the Surface of a Known Solid | 6 / 4 / 0 / 0 | qa_passed | [Report](qa/17592186133930.json) |
 | [17592186133931](../../scratch/17592186133931.py) | The Divergence Theorem | Calculating Flux Across a Closed Surface | 0 / 10 / 0 / 1 | qa_passed | [Report](qa/17592186133931.json) |

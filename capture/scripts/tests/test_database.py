@@ -13,7 +13,7 @@ from scripts.database.client import EDBClient
 from scripts.database.edn import dumps, loads, kw
 from scripts.database.images import ImageLibrary, MissingImage
 from scripts.database.evidence import authoritative_question, UnsupportedContent, image_answer
-from scripts.database.prepare import Preparation, Plan, Snapshot, source_uuid, ALLOWED
+from scripts.database.prepare import Preparation, Plan, Snapshot, source_uuid, ALLOWED, choice_signature
 from scripts.database.difficulty import calibrate
 from scripts.database.commit import Committer, validate_report, VerificationError
 from scripts.database.pipeline import DatabasePipeline
@@ -512,7 +512,7 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(plan.finish()['forms'],[])
 
     def test_function_application_escape_revision_reuses_response_owned_answer(self):
-        incoming = '6^x ln\u20616-10x+6'
+        incoming = '6^x \\operatorname{ln}\u20616-10x+6'
         legacy = r'6^x ln\u20616-10x+6'
         choice={':db/id':20,':answer/id':source_uuid('answer',20),
             ':answer/type':{':db/ident':kw('answer.type/math')},':answer/value':legacy,
@@ -528,6 +528,12 @@ class PipelineTests(unittest.TestCase):
         self.assertIn({kw(':db/id'):20,kw(':answer/value'):incoming},forms)
         self.assertNotIn([kw(':db/retract'),10,kw(':answer-field/choices'),20],forms)
         self.assertFalse(any(isinstance(f,dict) and kw(':answer/id') in f for f in forms))
+
+    def test_function_application_compatibility_requires_a_math_operator_marker(self):
+        self.assertEqual(choice_signature('math',r'ln\u20616'),choice_signature('math','\\operatorname{ln}\u20616'))
+        self.assertNotEqual(choice_signature('text',r'ln\u20616'),choice_signature('text','ln\u20616'))
+        self.assertNotEqual(choice_signature('math',r'\operatorname{ln}6'),choice_signature('math','ln6'))
+        self.assertNotEqual(choice_signature('math','ln\u20616'),choice_signature('math','ln\u20617'))
 
     def duplicate_typed_choices(self, field_type, *, owned=False, owned_first=False):
         first={':db/id':20,':answer/id':source_uuid('answer',20),
