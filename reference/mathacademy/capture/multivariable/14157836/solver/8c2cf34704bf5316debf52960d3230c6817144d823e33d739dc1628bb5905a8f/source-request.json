@@ -1,0 +1,89 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-160937",
+      "sequence_position": 15,
+      "problem": "Use a change of variables to evaluate the double integral \n\n$$\n{∬}_{D}\\frac{x+3y}{x}\\,dxdy,\n$$\n\nwhere $D$ is the quadrilateral region with vertices $(1,-\\frac{1}{3}),$  $(2,-\\frac{2}{3}),$  $(2,-\\frac{1}{3}),$ and $(1,0).$",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]⟶[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{∬}_{D}f(x,y)\\text{ }dxdy={∬}_{Δ}\\text{ }f(x(u,v),y(u,v))\\,|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=\\frac{x+3y}{x}\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=x,\\,v=x+3y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\n**Step 2**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $Δ$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}{T}^{-1}(1,-\\frac{1}{3}) & =(1,1+3(-\\frac{1}{3})) \\\\  & =(1,0) \\\\ {T}^{-1}(2,-\\frac{2}{3}) & =(2,2+3(-\\frac{2}{3})) \\\\  & =(2,0) \\\\ {T}^{-1}(2,-\\frac{1}{3}) & =(2,2+3(-\\frac{1}{3})) \\\\  & =(2,1) \\\\ {T}^{-1}(1,0) & =(1,1+3(0)) \\\\  & =(1,1)\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\nΔ=\\{(u,v)\\,:\\,1\\le u\\le 2,\\,0\\le v\\le 1\\}\n$$\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14157836/assets/33a7fa05505942d0729e5a5be2bd691a49c242937fdb9de18f6a6f97b5799424.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 \\\\ 1 & 3\\end{aligned}| \\\\  & =3.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=\\frac{1}{3}\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{∬}_{D}\\frac{x+3y}{x}\\,\\text{d}x\\text{d}y & ={∬}_{Δ}\\frac{v}{u}\\,|\\frac{∂(x,y)}{∂(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}\\frac{v}{u}\\,|\\frac{1}{3}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{0}^{1}{\\int }_{1}^{2}\\frac{v}{u}\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{0}^{1}v\\,\\text{d}v{\\int }_{1}^{2}\\frac{1}{u}\\,\\text{d}u \\\\  & =\\frac{1}{3}\\cdot {[\\frac{1}{2}{v}^{2}]}_{0}^{1}\\cdot [\\operatorname{ln}⁡u]_{1}^{2} \\\\  & =\\frac{1}{3}\\cdot \\frac{1}{2}\\cdot \\operatorname{ln}⁡2 \\\\  & =\\frac{\\operatorname{ln}⁡2}{6}.\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14157836/observations/history-q-160937-e8b3dd89a575d1b17ad3.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14157836",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14157836/observations/history-solution-q-160937-ff38e05bfea36cd34904.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "\\frac{\\operatorname{ln}⁡2}{6}"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "3\\operatorname{ln}⁡2"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "\\operatorname{ln}⁡2"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "2"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "\\frac{1}{6}"
+            }
+          ]
+        }
+      ],
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14157836/assets/33a7fa05505942d0729e5a5be2bd691a49c242937fdb9de18f6a6f97b5799424.png",
+          "sha256": "33a7fa05505942d0729e5a5be2bd691a49c242937fdb9de18f6a6f97b5799424",
+          "source_url": "https://mathacademy.com/graphics/q-160937-e-0",
+          "content_type": "image/png",
+          "representation": "original"
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q160937",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "\\frac{\\operatorname{ln}⁡2}{6}",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]⟶[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{∬}_{D}f(x,y)\\text{ }dxdy={∬}_{Δ}\\text{ }f(x(u,v),y(u,v))\\,|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=\\frac{x+3y}{x}\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=x,\\,v=x+3y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\n**Step 2**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $Δ$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}{T}^{-1}(1,-\\frac{1}{3}) & =(1,1+3(-\\frac{1}{3})) \\\\  & =(1,0) \\\\ {T}^{-1}(2,-\\frac{2}{3}) & =(2,2+3(-\\frac{2}{3})) \\\\  & =(2,0) \\\\ {T}^{-1}(2,-\\frac{1}{3}) & =(2,2+3(-\\frac{1}{3})) \\\\  & =(2,1) \\\\ {T}^{-1}(1,0) & =(1,1+3(0)) \\\\  & =(1,1)\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\nΔ=\\{(u,v)\\,:\\,1\\le u\\le 2,\\,0\\le v\\le 1\\}\n$$\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14157836/assets/33a7fa05505942d0729e5a5be2bd691a49c242937fdb9de18f6a6f97b5799424.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 \\\\ 1 & 3\\end{aligned}| \\\\  & =3.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=\\frac{1}{3}\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{∬}_{D}\\frac{x+3y}{x}\\,\\text{d}x\\text{d}y & ={∬}_{Δ}\\frac{v}{u}\\,|\\frac{∂(x,y)}{∂(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}\\frac{v}{u}\\,|\\frac{1}{3}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{0}^{1}{\\int }_{1}^{2}\\frac{v}{u}\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{3}{\\int }_{0}^{1}v\\,\\text{d}v{\\int }_{1}^{2}\\frac{1}{u}\\,\\text{d}u \\\\  & =\\frac{1}{3}\\cdot {[\\frac{1}{2}{v}^{2}]}_{0}^{1}\\cdot [\\operatorname{ln}⁡u]_{1}^{2} \\\\  & =\\frac{1}{3}\\cdot \\frac{1}{2}\\cdot \\operatorname{ln}⁡2 \\\\  & =\\frac{\\operatorname{ln}⁡2}{6}.\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14157836/observations/step-q160937-35620d340fcd484dad41.html"
+        }
+      }
+    ]
+  }
+}

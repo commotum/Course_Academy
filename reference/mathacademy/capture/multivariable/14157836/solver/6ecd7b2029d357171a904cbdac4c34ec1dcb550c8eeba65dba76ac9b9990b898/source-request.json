@@ -1,0 +1,79 @@
+{
+  "task": "solve_question",
+  "payload": {
+    "evidence_contract": "solve_question:1",
+    "question": {
+      "math_academy_id": "q-160938",
+      "problem": "Use a change of variables to evaluate the double integral \n\n$$\n{∬}_{D}({x}^{2}-xy)\\,dxdy,\n$$\n\nwhere $D$ is the quadrilateral region with vertices $(3,2),$ $(5,4),$ $(5,2),$ and $(3,0).$",
+      "answer_fields_complete": true,
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14157836/observations/step-q160938-1025dbaa2f0348328cbb.html",
+      "source_url": "https://mathacademy.com/tasks/14157836/topics/4132/lesson",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "\\frac{1}{2}"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "4"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "32"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "24"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "8"
+            }
+          ]
+        }
+      ]
+    },
+    "current_example": {
+      "math_academy_id": "e-12328",
+      "problem": "Use a change of variables to evaluate the double integral \n\n$$\n\\displaystyle\n\\iint\\limits_D (2x+y)y^2 \\:\\mathrm{d}x \\mathrm{d}y,\n$$\n\nwhere $D$ is the quadrilateral region with vertices $\\left(\\dfrac32,0\\right) ,$ $\\left(\\dfrac52,0\\right) ,$ $(1,3),$ and $(0,3).$",
+      "worked_solution": "Let's define a transformation $\\mathbf{T}$ as follows:\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14157836/assets/122f9038e3865a39b4b085429263dce7357c24140e734ba0025003eb1f10f7e1.svg)\n\nThis transformation maps some region $\\Delta$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n\\iint\\limits_{D} f(x,y) \\ \\mathrm d x \\mathrm d y = \\iint\\limits_{\\Delta} \\ f(x(u,v), y(u,v)) \\:  \\left| \\dfrac{\\partial (x, y)}{\\partial (u, v)} \\right|  \\ \\mathrm d u \\mathrm d v\n$$\n\nwhere $\\dfrac{\\partial (x, y)}{\\partial (u, v)}$ is the Jacobian determinant corresponding to $\\mathbf{T}.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y) =  (2x+y)y^2\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=2x+y,\n\\qquad\nv=y.\n$$\n\nThis change of variables gives us the *inverse* function $\\mathbf T^{-1},$ that is\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14157836/assets/2c6dc61789f9fca5d4008fc464a390fbab916d7670a6c85aefb421e039f5f30d.svg)\n\n**Step 2**: Find $\\Delta,$ which is the image of $D$ under the action of $\\mathbf{T}^{-1}.$ \n\nThe vertices of our domain $\\Delta$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}{T}^{-1}(\\frac{3}{2},0) & =(2\\cdot \\frac{3}{2}+0,0) \\\\  & =(3,0) \\\\ {T}^{-1}(\\frac{5}{2},0) & =(2\\cdot \\frac{5}{2}+0,0) \\\\  & =(5,0) \\\\ {T}^{-1}(1,3) & =(2\\cdot 1+3,3) \\\\  & =(5,3) \\\\ {T}^{-1}(0,3) & =(2\\cdot 0+3,3) \\\\  & =(3,3)\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\n\\Delta = \\big\\{ (u,v) \\: : \\: 3 \\leq u \\leq 5, \\quad 0 \\leq v \\leq 3 \\big\\}\n$$\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14157836/assets/c296b1ee0451686608ec4b06c29d114ff1918233886d8471d3b2c118851aa25e.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to $\\mathbf T^{-1}.$\n\nThe Jacobian determinant corresponding to $\\mathbf T^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}2 & 1 \\\\ 0 & 1\\end{aligned}| \\\\  & =2.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $\\mathbf T.$\n\n$$\n\\dfrac{\\partial (x, y)}{\\partial (u, v)} = \\left( \\dfrac{\\partial (u, v)}{\\partial (x, y)} \\right)^{-1} =\\dfrac12\n$$\n\nNote that $\\dfrac{\\partial (x, y)}{\\partial (u, v)} \\neq 0$ everywhere inside $\\Delta.$ In other words, $\\mathbf T$ has no critical points inside $\\Delta.$\n\n**Step 5**: Perform the change of variables, and evaluate the integral.\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{∬}_{D}(2x+y){y}^{2}\\,\\text{d}x\\text{d}y & ={∬}_{Δ}u{v}^{2}\\,|\\frac{∂(x,y)}{∂(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}u{v}^{2}\\,|\\frac{1}{2}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{0}^{3}{\\int }_{3}^{5}u{v}^{2}\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{0}^{3}{v}^{2}\\,\\text{d}v{\\int }_{3}^{5}u\\,\\text{d}u \\\\  & =\\frac{1}{2}\\cdot {[\\frac{1}{3}{v}^{3}]}_{0}^{3}\\cdot {[\\frac{1}{2}{u}^{2}]}_{3}^{5}\\,\\text{d}v \\\\  & =\\frac{1}{2}\\cdot 9\\cdot 8 \\\\  & =36.\\end{aligned}\n$$",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14157836/observations/step-e12328-7c691c7955a0719f592f.html",
+      "source_url": "https://mathacademy.com/tasks/14157836/topics/4132/lesson",
+      "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14157836/observations/step-e12328-7c691c7955a0719f592f.png",
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14157836/assets/122f9038e3865a39b4b085429263dce7357c24140e734ba0025003eb1f10f7e1.svg",
+          "sha256": "122f9038e3865a39b4b085429263dce7357c24140e734ba0025003eb1f10f7e1",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 1,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14157836/assets/2c6dc61789f9fca5d4008fc464a390fbab916d7670a6c85aefb421e039f5f30d.svg",
+          "sha256": "2c6dc61789f9fca5d4008fc464a390fbab916d7670a6c85aefb421e039f5f30d",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 2,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14157836/assets/c296b1ee0451686608ec4b06c29d114ff1918233886d8471d3b2c118851aa25e.png",
+          "sha256": "c296b1ee0451686608ec4b06c29d114ff1918233886d8471d3b2c118851aa25e",
+          "source_url": "https://mathacademy.com/graphics/8e8d1e0d3eac94c601515b685f9f75a9",
+          "content_type": "image/png",
+          "representation": "original"
+        }
+      ]
+    }
+  }
+}
