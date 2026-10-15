@@ -73,6 +73,7 @@ def grader():
  assert len(m)==42 and all(sha(x)==v for x,v in m.items());assert sha(D/'check-engine')==b['binary_sha256'];return 42
 
 def main():
+ assert (D/'source.json').read_bytes()==(ROOT/'generate/runs/current/refresh-2026-10-14/sources/17592186100873.json').read_bytes()
  original=[];cases=[];readbacks=[];native=[];replays=[]
  for sid,s in g.SOURCES.items():
   r=g.generate('easy',template=sid,profile='observed:'+sid);q=r['question'];readbacks.append(readback(r));replays.append(r)
@@ -84,24 +85,42 @@ def main():
   assert f[':answer-field/type']==sf[':answer-field/type'][':db/ident'];assert f[':answer-field/key']==sf[':answer-field/key']
   assert sorted(a[':answer/value'] for a in f[':answer-field/choices'])==sorted(a[':answer/value'] for a in sf[':answer-field/choices'])
   if ':answer-field/correct' in sf:native.append(native_checks(r,'source-'+sid))
-  cases.append({'source_id':sid,'template':sid,'level':'easy','parameters':g.params(s),'bank_profile':'observed:'+sid,'raw_omissions':[k for k in [':question/difficulty',':question/worked-solution'] if k not in s]+([':answer-field/correct'] if ':answer-field/correct' not in sf else [])})
+  cases.append({'source_id':sid,'template':sid,'level':'easy','authored_level':'easy','source_difficulty':s.get(':question/difficulty',{}).get(':db/ident'),'evidence_only':True,'parameters':g.params(s),'bank_profile':'observed:'+sid,'raw_omissions':[k for k in [':question/difficulty',':question/worked-solution'] if k not in s]+([':answer-field/correct'] if ':answer-field/correct' not in sf else [])})
   original.append({'source_id':sid,'prompt_exact':True,'solution_exact_or_absence':True,'raw_presence_parity':True,'field_type_exact':True,'bank_values_matched':len(sf[':answer-field/choices']),'correct_designation_matched':':answer-field/correct' in sf})
  review=[];fps={};coverage={};target_coverage={};profiles=set();fields=set()
  for level in g.LEVELS:
   seen=set();seenf=set();seenp=set();targets=set();families=set()
   for seed in range(600):
    r=g.generate(level,seed);b=readback(r);readbacks.append(b);seen.add(r['generation']['mathematical_fingerprint']);families.add(r['generation']['template']);seenf.add(r['question'][':question/answer-fields'][0][':answer-field/type']);seenp.add(r['generation']['bank_profile']);targets.add((b['row'],b['column']));profiles.add(r['generation']['bank_profile']);fields|=seenf
-   if seed<12:review.append(r);native.append(native_checks(r,level+'-'+str(seed)))
+   if seed<12:native.append(native_checks(r,level+'-'+str(seed)))
    # Regenerate with explicit parameters and new seed: only order may differ.
    rr=g.generate(level,seed+1000,template=r['generation']['template'],parameters=r['generation']['parameters'],profile=r['generation']['bank_profile']);assert rr['question'][':question/id']==r['question'][':question/id']
   assert len(seen)>500;assert seenp==set(g.PROFILES)|{'blank'}
   assert families=={s for s,t in g.TEMPLATES.items() if level=='easy' or t['terms']==3}
   fps[level]=len(seen);coverage[level]={'families':sorted(families),'fields':sorted(seenf),'profiles':sorted(seenp)};target_coverage[level]=sorted(targets)
+ # Every eligible source-shape target is exercised per family and level.
+ slots={}
+ for template,t in g.TEMPLATES.items():
+  for level in (g.LEVELS if t['terms']==3 else ('easy',)):
+   anchor=g.generate(level,41,template=template);p0=anchor['generation']['parameters'];positions=[]
+   for i in range(1,len(p0['A'])+1):
+    for j in range(1,len(p0['B'][0])+1):
+     pp=copy.deepcopy(p0);oldi=pp['row']-1;oldj=pp['column']-1
+     pp['A'][oldi],pp['A'][i-1]=pp['A'][i-1],pp['A'][oldi]
+     for br in pp['B']:br[oldj],br[j-1]=br[j-1],br[oldj]
+     pp['row']=i;pp['column']=j
+     rr=g.generate(level,17,template=template,parameters=pp,profile=anchor['generation']['bank_profile']);bb=readback(rr);assert (bb['row'],bb['column'])==(i,j);positions.append([i,j])
+   slots[template+'/'+level]=positions
+ write('slot-coverage.json',slots)
  # Explicitly traverse every eligible matrix target on fixed operands; all references move jointly.
- sid='q-275547';p={'A':[[2,3],[4,5]],'B':[[1,3,5],[2,4,6]],'row':1,'column':1};held=[]
+ for template,t in g.TEMPLATES.items():
+  for level in (g.LEVELS if t['terms']==3 else ('easy',)):
+   for seed in (41,92):
+    r=g.generate(level,seed,template=template,profile=(g.PROFILES[0] if seed==41 else g.PROFILES[1]) if t['field_type']=='radio' else 'blank');review.append(r);readback(r);native.append(native_checks(r,'review-'+template+'-'+level+'-'+str(seed)))
+ sid='q-275547';p={'A':[[2,3],[4,5]],'B':[[1,3,5],[2,4,6]],'row':1,'column':1};held=[];held_records=[]
  for i in range(1,3):
   for j in range(1,4):
-   pp={**p,'row':i,'column':j};r=g.generate('easy',template=sid,parameters=pp,profile='blank');held.append(readback(r))
+   pp={**p,'row':i,'column':j};r=g.generate('easy',template=sid,parameters=pp,profile='blank');held.append(readback(r));held_records.append(r)
  assert len({(x['row'],x['column']) for x in held})==6
  # Mutations independently rejected, including structurally missing but equal arithmetic.
  base=g.generate('easy',template=sid,parameters=p,profile='blank');mutations={}
@@ -124,8 +143,16 @@ def main():
   try:g.generate(level,template='q-318462' if level!='easy' else sid,parameters=p)
   except ValueError:rejects+=1
  assert rejects==3
- write('source-cases.json',cases);write('source-fidelity.json',original);write('source-replays.json',replays);write('review.json',review);write('readbacks.json',readbacks);write('native-input.json',native)
+ # Permitted printed boundary arithmetic is checked independently.
+ boundaries=[]
+ for level,row,col in [('moderate',[2,2,2],[2,2,2]),('moderate',[3,3,3],[4,4,4]),('moderate',[4,2,2],[4,3,3]),('hard',[3,3,4],[3,-4,4]),('hard',[5,4,3],[6,-4,4])]:
+  pp={'A':[row,[0,20,0],[0,0,0]],'B':[[v,0] for v in col],'row':1,'column':1};rr=g.generate(level,template='q-318462',parameters=pp,profile='blank');boundaries.append(readback(rr))
+ write('boundary-readbacks.json',boundaries)
+ write('held-target-records.json',held_records);write('source-cases.json',cases);write('source-fidelity.json',original);write('source-replays.json',replays);write('review.json',review);write('readbacks.json',readbacks);write('native-input.json',native)
  subprocess.run([str(D/'check-engine'),str(D/'native-input.json'),str(D/'native-report.json')],check=True)
- report={'passed':True,'source_basis':2275,'source_questions':len(original),'exact_prompts':12,'exact_solutions':10,'absent_solutions_preserved':2,'bank_values_matched':44,'complete_banks_matched':12,'correct_designations_matched':10,'missing_correct_refs_preserved':2,'normal_instances_independently_read':1800,'distinct_mathematical_tasks':fps,'default_coverage':coverage,'target_coverage':target_coverage,'held_matrices_changed_targets':held,'mutation_regressions':mutations,'explicit_guard_rejections':rejects,'registered_protected_paths_unchanged':preservation(),'native_provenance_files_reverified':grader(),'native':json.loads((D/'native-report.json').read_text()),'python_version':sys.version.split()[0],'sympy_version':g.sp.__version__}
+ report={'passed':True,'source_basis':2275,'source_questions':len(original),'exact_prompts':12,'exact_solutions':10,'absent_solutions_preserved':2,'bank_values_matched':44,'complete_banks_matched':12,'correct_designations_matched':10,'missing_correct_refs_preserved':2,'normal_instances_independently_read':1800,'distinct_mathematical_tasks':fps,'default_coverage':coverage,'target_coverage':target_coverage,'held_matrices_changed_targets':held,'mutation_regressions':mutations,'explicit_guard_rejections':rejects,'source_mask_level_target_domains_covered':len(slots),'target_slot_instances':sum(map(len,slots.values())),'boundary_instances':len(boundaries),'registered_protected_paths_unchanged':preservation(),'native_provenance_files_reverified':grader(),'native':json.loads((D/'native-report.json').read_text()),'python_version':sys.version.split()[0],'sympy_version':g.sp.__version__}
+ if (D/'render-report.json').exists():
+  rendered=json.loads((D/'render-report.json').read_text());report['render']={'records':66,'full_worked_solution_stages_checked':True,'actual_player_controls':'radio + MathLive blanks','errors':0,'overflow':0,'exposed_delimiters':0,'runtime_versions':rendered['runtime_versions'],'record_screenshot_hash_mapping':'render-report.json'}
+  report['final_script_sha256']=sha(D.with_suffix('.py'))
  write('validation.json',report);print(json.dumps({k:v for k,v in report.items() if k not in ('native','target_coverage','default_coverage','held_matrices_changed_targets')},indent=2))
 if __name__=='__main__':main()

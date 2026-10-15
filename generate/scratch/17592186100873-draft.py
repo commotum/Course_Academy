@@ -61,7 +61,7 @@ def bank_values(row,col,profile):
 
 def render_problem(src,p):
  text=src[':question/problem'];ms=list(MAT.finditer(text))
- for match,value in reversed(list(zip(ms,(p['A'],p['B'])))):text=text[:match.start()]+matrix_tex(value)+text[match.end():]
+ for match,value in reversed(list(zip(ms,(p['A'],p['B'])))):text=text[:match.start()]+matrix_tex(value,augmented=False)+text[match.end():]
  return TARGET.sub(lambda m: ('{'+m[1]+'}' if m[0].startswith('{') else m[1])+'_{'+str(p['row'])+str(p['column'])+'}',text)
 
 def render_solution(src,p):
@@ -77,7 +77,7 @@ def render_solution(src,p):
  implicit=bool(old and r'\cdot' not in old)
  expansion='+'.join(factor(x)+'('+str(y)+')' if implicit else factor(x)+r'\cdot '+factor(y) for x,y in zip(row,col))
  signed=''.join(('+' if k and x>=0 else '')+str(x) for k,x in enumerate(terms))
- stages=[matrix_tex(a)+matrix_tex(b),matrix_tex([row])+matrix_tex([[x] for x in col]),expansion,signed,str(sum(terms))+'.']
+ stages=[matrix_tex(a,augmented=False)+matrix_tex(b,augmented=False),matrix_tex([row],augmented=False)+matrix_tex([[x] for x in col],augmented=False),expansion,signed,str(sum(terms))+'.']
  return intro+'\n\n$$\n'+r'\begin{aligned}{'+letter+'}_{'+str(i)+str(j)+r'} & ='+(r' \\  & ='.join(stages))+r'\end{aligned}'+'\n$$'
 
 @checked_math_content
@@ -138,7 +138,10 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  f={':answer-field/id':fid,':answer-field/key':sf[':answer-field/key'],':answer-field/type':':answer-field.type/'+ft,':answer-field/choices':answers}
  if correct is not None:f[':answer-field/correct']=[':answer/id',correct]
  q[':question/answer-fields']=[f]
- r={'knowledge_point':{'db_id':KP_ID,'id':SOURCE[':knowledge-point/id'],'title':SOURCE[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'seed':seed,'template':template,'parameters':p,'bank_profile':profile,'mathematical_fingerprint':fp,'source_basis':CAPTURE['basis'],'source_lineage':CAPTURE['lineage'],'evidence_only':evidence,'eligible_for_learning':not evidence,'difficulty_evidence':'observed/inferred-unrated' if level=='easy' else 'authored missing-level extension','python_version':sys.version.split()[0],'sympy_version':sp.__version__,'bank_recipes':('opaque historical constants; computed designated key' if evidence else profile)}}
+ omissions=[k for k in (':question/difficulty',':question/worked-solution') if k not in src]+([':answer-field/correct'] if ':answer-field/correct' not in sf else [])
+ corrections=[] if evidence else (['Authored Easy rating, common row-column solution and independently computed key fill raw omissions'] if omissions else [])
+ if not evidence and ft=='radio':corrections.append('Opaque historical bank replaced with labeled authored method-derived complete bank')
+ r={'knowledge_point':{'db_id':KP_ID,'id':SOURCE[':knowledge-point/id'],'title':SOURCE[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'seed':seed,'template':template,'parameters':p,'bank_profile':profile,'mathematical_fingerprint':fp,'source_db_id':src[':db/id'],'source_question_id':src[':question/id'],'source_inventory_kind':'Math Academy original','source_attribute_omissions':omissions,'normal_corrections':corrections,'source_basis':CAPTURE['basis'],'source_lineage':CAPTURE['lineage'],'evidence_only':evidence,'eligible_for_learning':not evidence,'difficulty_evidence':(('raw unrated omission preserved' if evidence else 'authored Easy assignment for unrated original mask') if ':question/difficulty' not in src else 'observed Easy') if level=='easy' else 'authored missing-level extension','python_version':sys.version.split()[0],'sympy_version':sp.__version__,'bank_recipes':('opaque historical constants; computed designated key' if evidence else profile)}}
  if evidence:
   validate_prose(problem)
   if ':question/worked-solution' in q:validate_prose(solution)
