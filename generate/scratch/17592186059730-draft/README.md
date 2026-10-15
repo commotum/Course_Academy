@@ -1,0 +1,21 @@
+# Isolated dot-product revalidation
+
+KP 17592186059730, topic 17592186048954, frozen math basis 2275. Run the draft only:
+
+```sh
+.venv/bin/python generate/scratch/17592186059730-draft/validate.py
+.venv/bin/python generate/scratch/17592186059730-draft/revalidate.py
+.venv/bin/python generate/scratch/17592186059730-draft.py --difficulty all --count 1 --seed 42 --format json
+```
+
+This draft copies the existing good component-sum implementation. The actual topic, canonical example, original practice, and first/next activity chain establish component-sum scope despite the target title. All seven MA originals are unchanged from basis 1356. Ten existing generated non-MA questions are independent inventory and dedup/readback evidence, never observed templates. The magnitude-angle formula is introductory recalled context; the next actual KP solves an unknown using perpendicularity. Neither is a generated task here.
+
+`source.json` is the byte-exact fresh wrapper. `source-cases.json` has seven original-parameter generated records, including two explicitly supported repairs in `source-repairs.json` and `source-errors.json`: q-1355 lacks difficulty/key/solution; q-168035 omits the supplied vectors from its prompt. Five raw originals are eligible as standalone complete records. Every complete original bank (7/7), scalar value (23/23), distractor (16/16), existing correct designation (6/6), and existing solution (6/6) matches. Shared presentation normalization only removes browser indentation on one math line. Source radio error intent remains underdetermined; exact replay profiles are not claimed as recovered misconception models.
+
+The original component roles, five source layouts, complete banks, prose, and formal → signed-factor substitution → individual-product sum → scalar solution stages are preserved. Authored moderate uses three mixed-sign nonzero integer products; hard uses exact tenths with at least two fractional products. Each level has one comparable arithmetic workload across its layouts. Values are sampled independently; no numeric coincidences tie slots. All existing valid original practice vectors remain in the normal easy domain. No plotted objects, units, angle data, unknown-vector solving, or additional operations appear in generated prompts.
+
+Normal radio banks retain the prior separately authored complete operation bank. Strict public seed/count types reject booleans, floats, strings, and int subclasses. CLI JSON always returns a list; all/count=1 gives three records. Unique batching keys quotient corresponding-factor order and coordinate order and exclude seed, labels, profile, and bank. The 1000-per-level service cap is conservative; `capacity.json` records 1000 actually sampled distinct tasks at each level, with explicit rejection above the cap and on bounded exhaustion.
+
+`validate.py` independently reads 2250 actual prompts, complete banks, ordered formal coordinates, every signed multiplication factor, every evaluated product, final scalar, and blank placeholders. `revalidate.py` adds changed-component pairs, seven adversarial mutations that preserve the correct final key, current inventory readback, strict API/CLI checks, native canonical and genuine-equivalent probes, and baseline verification. Frozen native engine reports separately show 46 accepted / 86 rejected and 49 accepted / 65 rejected; zero unresolved or qualified false rejections were observed. All native submissions use the actual application's normal grading contract. Source cases, changed variants, inventory, and canonical probes remain separate.
+
+Registered eeb7 differs from prior root-approved fbb7 only by a SymPy runtime fallback and UUID constant. `reference/registered-baseline.json` inventories the untouched registered file and entire matching tree, including caches (78 files). No registered import, registration, database mutation, shared-engine edit, queue write, or commit occurred. The draft removes the registration constant and freezes its math-format helper and grading executable locally. `change-analysis.json` and `reference/registered-changes.diff` record the exact prior changes. `freeze.json` hashes this entire owned tree and adjacent draft script. Root independent QA remains required.
