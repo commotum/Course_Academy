@@ -14,6 +14,9 @@ X,Y,C,K=g.X,g.Y,g.C,g.K
 
 def norm(t):
     t=t.strip().replace('\u2061','').replace(r'\left','').replace(r'\right','').replace(r'\,','').replace(r'\cdot','*').replace(r'\dfrac',r'\frac')
+    # Lark otherwise reads sqrt(10) (x-h)^2 as an unsupported call.
+    # Explicit multiplication preserves the displayed mathematical product.
+    t=re.sub(r'(\\sqrt\{[^{}]+\})\s*(?=\()',r'\1*',t)
     t=re.sub(r'\\operatorname\{(ln|sin|cos|tan|cot|sec|arctan|arcsin)\}',lambda m:'\\'+m[1],t)
     t=re.sub(r'(?<=\))(?=\\(?:sqrt|sin|cos|tan|sec|ln|arcsin))','*',t)
     t=re.sub(r'(?<=[0-9xyz])(?=\\(?:sqrt|sin|cos|tan|sec|ln|arcsin))','*',t)

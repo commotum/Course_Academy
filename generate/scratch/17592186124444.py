@@ -13,6 +13,8 @@ from __future__ import annotations
 import argparse, hashlib, importlib.util, json, random, re, sys, uuid
 from pathlib import Path
 import sympy as s
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"scripts/question_capture"))
+from math_format import checked_math_content
 ROOT=Path(__file__).resolve().with_suffix('')
 SOURCE=json.loads((ROOT/'source.json').read_text())
 KP=SOURCE['record']; KP_ID=KP[':db/id']; VERSION='three-gradient-v1'
@@ -304,6 +306,7 @@ def sample(level,family,rng):
   return {'point':[str(a),b,str(rng.choice((-2,-1,1,2))*s.pi/b)]}
  return {'shifts':[rng.randint(-3,3) for _ in VARS]}
 
+@checked_math_content
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  if level not in TEMPLATES:raise ValueError('Difficulty must be easy, moderate or hard')
  if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('Only observed radio field supported')
