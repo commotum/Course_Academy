@@ -1,6 +1,6 @@
 # Parabolic-cylinder review
 
-Private evidence at math basis 2275. Parent approval pending.
+Source evidence at math basis 2275; easy/moderate supported, hard rejected.
 
 ## Original q-103986
 
@@ -335,7 +335,7 @@ Therefore, the first component of $f$ is $8{z}^{2}.$
 
 ## Generated variant 1 — easy / q-103986
 
-Authored parameter/axis extension; hard workload unobserved.
+Conservative parameter/axis extension within the observed graph-copy stages.
 
 $$
 f(x,z)=⟨x,\,{{selection}},\,z⟩
@@ -363,7 +363,7 @@ Therefore, the second component of $f$ is $3{x}^{2}.$
 
 ## Generated variant 2 — easy / q-103992
 
-Authored parameter/axis extension; hard workload unobserved.
+Conservative parameter/axis extension within the observed graph-copy stages.
 
 $f(y, x) = ⟨x, {{selection}}, 4x^{2}⟩$
 
@@ -391,7 +391,7 @@ Therefore, the second component of $f$ is $y.$
 
 ## Generated variant 3 — easy / q-164440
 
-Authored parameter/axis extension; hard workload unobserved.
+Conservative parameter/axis extension within the observed graph-copy stages.
 
 $$
 f(z,y)=⟨12{z}^{2},\,{{selection}},\,z⟩
@@ -421,7 +421,7 @@ Therefore, the second component of $f$ is $y.$
 
 ## Generated variant 4 — easy / q-164443
 
-Authored parameter/axis extension; hard workload unobserved.
+Conservative parameter/axis extension within the observed graph-copy stages.
 
 $$
 f(z,x)=⟨x,\,{{selection}},\,z⟩
@@ -449,7 +449,7 @@ Therefore, the second component of $f$ is $11{z}^{2}.$
 
 ## Generated variant 5 — easy / q-164441
 
-Authored parameter/axis extension; hard workload unobserved.
+Conservative parameter/axis extension within the observed graph-copy stages.
 
 $$
 f(z,x)=⟨x,\,{{selection}},\,z⟩
@@ -477,7 +477,7 @@ Therefore, the second component of $f$ is $4{z}^{2}.$
 
 ## Generated variant 6 — moderate / q-164450
 
-Authored parameter/axis extension; hard workload unobserved.
+Conservative parameter/axis extension within the observed graph-copy stages.
 
 $$
 f(z,y)=⟨{{selection}},\,y,\,z⟩
@@ -505,7 +505,7 @@ Therefore, the first component of $f$ is $2{y}^{2}.$
 
 ## Generated variant 7 — easy / q-164443
 
-Authored parameter/axis extension; hard workload unobserved.
+Conservative parameter/axis extension within the observed graph-copy stages.
 
 $$
 f(z,x)=⟨x,\,{{selection}},\,z⟩
@@ -533,7 +533,7 @@ Therefore, the second component of $f$ is $4{z}^{2}.$
 
 ## Generated variant 8 — easy / q-164440
 
-Authored parameter/axis extension; hard workload unobserved.
+Conservative parameter/axis extension within the observed graph-copy stages.
 
 $$
 f(y,z)=⟨10{y}^{2},\,y,\,{{selection}}⟩
@@ -563,7 +563,7 @@ Therefore, the third component of $f$ is $z.$
 
 ## Generated variant 9 — moderate / q-164450
 
-Authored parameter/axis extension; hard workload unobserved.
+Conservative parameter/axis extension within the observed graph-copy stages.
 
 $$
 f(x,z)=⟨x,\,{{selection}},\,z⟩
@@ -591,7 +591,7 @@ Therefore, the second component of $f$ is $4{z}^{2}.$
 
 ## Generated variant 10 — moderate / q-164450
 
-Authored parameter/axis extension; hard workload unobserved.
+Conservative parameter/axis extension within the observed graph-copy stages.
 
 $$
 f(z,y)=⟨{{selection}},\,y,\,z⟩
@@ -617,74 +617,6 @@ where $z\in (-\infty ,\infty )$ and $y\in (-\infty ,\infty ).$
 
 Therefore, the first component of $f$ is $10{y}^{2}.$
 
-## Generated variant 11 — hard / normalized
-
-Authored parameter/axis extension; hard workload unobserved.
-
-$$
-f(z,x)=⟨x,\,{{selection}},\,z⟩
-$$
-
-The vector-valued function $f(z,x)$ above parametrizes the parabolic cylinder defined in Cartesian coordinates as $3y=4{z}^{2}.$ What is the second component of $f?$
-
-Field 1:
-- $\frac{4}{3}{z}^{2}$
-- $\frac{3}{4}{z}^{2}$
-- $\frac{4}{3}z$
-- $4{z}^{2}$
-- $\frac{4}{3}{x}^{2}$
-
-Worked solution:
-First, write the dependent coordinate as an explicit function of $z.$
-
-$$
-3y=4{z}^{2}\quad\Longrightarrow\quad y=\frac{4}{3}{z}^{2}
-$$
-
-For any point $(x,y,z)$ on our surface, we obtain the following:
-
-$$
-\begin{aligned}f(z,x) & =⟨x,y,z⟩ \\  & =⟨x,\,\frac{4}{3}{z}^{2},\,z⟩\end{aligned}
-$$
-
-where $z\in (-\infty ,\infty )$ and $x\in (-\infty ,\infty ).$
-
-Therefore, the second component of $f$ is $\frac{4}{3}{z}^{2}.$
-
-## Generated variant 12 — hard / normalized
-
-Authored parameter/axis extension; hard workload unobserved.
-
-$$
-f(y,z)=⟨{{selection}},\,y,\,z⟩
-$$
-
-The vector-valued function $f(y,z)$ above parametrizes the parabolic cylinder defined in Cartesian coordinates as $2x=9{y}^{2}.$ What is the first component of $f?$
-
-Field 1:
-- $9{y}^{2}$
-- $\frac{9}{2}{y}^{2}$
-- $\frac{2}{9}{y}^{2}$
-- $\frac{9}{2}{z}^{2}$
-- $\frac{9}{2}y$
-
-Worked solution:
-First, write the dependent coordinate as an explicit function of $y.$
-
-$$
-2x=9{y}^{2}\quad\Longrightarrow\quad x=\frac{9}{2}{y}^{2}
-$$
-
-For any point $(x,y,z)$ on our surface, we obtain the following:
-
-$$
-\begin{aligned}f(y,z) & =⟨x,y,z⟩ \\  & =⟨\frac{9}{2}{y}^{2},\,y,\,z⟩\end{aligned}
-$$
-
-where $y\in (-\infty ,\infty )$ and $z\in (-\infty ,\infty ).$
-
-Therefore, the first component of $f$ is $\frac{9}{2}{y}^{2}.$
-
 ## Counts
 
 {
@@ -702,18 +634,17 @@ Therefore, the first component of $f$ is $\frac{9}{2}{y}^{2}.$
   },
   "meaningful_task_capacity": {
     "easy": 69,
-    "moderate": 66,
-    "hard": 156
+    "moderate": 66
   },
-  "global_distinct_tasks": 225,
+  "global_distinct_tasks": 69,
   "native_grading": {
-    "accepted_checks": 18,
-    "rejected_checks": 72,
+    "accepted_checks": 16,
+    "rejected_checks": 64,
     "documented_unresolved_checks": 0,
     "database_writes": 0
   },
   "unresolved": [
     "historical half-linear q103986 distractor intent underidentified; expression mask explicit",
-    "hard label calibration is authored and unobserved"
+    "hard remains unsupported; draft normalization stage excluded"
   ]
 }

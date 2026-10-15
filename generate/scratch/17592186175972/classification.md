@@ -1,3 +1,5 @@
+> Inventory decision, 2026-10-15: v2 certifies easy/moderate only. The hard normalization proposal below is retained as rejected draft analysis; it adds a solution stage and is not supported or generated. See capabilities.json and validation.json. All six captured sources are unchanged at the fresh pre-commit basis.
+
 # Classification
 
 Immutable source: math basis 2275, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`, refresh 2026-10-14. `source.json` is byte-for-byte the complete source wrapper. Topic 3596 / db17592186049482 is Parametrizations of Cylinders. The activity route is recovered from first-step/next: Introduction → this parabolic KP → Elliptic Cylinders → elliptic KP → Hyperbolic Cylinders → hyperbolic KP. Collection order is not used.

@@ -152,14 +152,14 @@ def run():
  # Show all source templates/banks in normal changed-parameter output, plus two/level.
  for i,c in enumerate(cases):
   n=g.generate(c['level'],seed=31+i,profile=c['source_id']);normal_math(n);review.append(n)
- for level in ('easy','moderate','hard'):
+ for level in g.SUPPORTED_LEVELS:
   for seed in (102,205):
    n=g.generate(level,seed=seed);normal_math(n);review.append(n)
  (HERE/'review.json').write_text(json.dumps(review,indent=2,ensure_ascii=False)+'\n')
  (HERE/'source-replays.json').write_text(json.dumps(raws,indent=2,ensure_ascii=False)+'\n')
  (HERE/'review-original-parameters.json').write_text(json.dumps(norms,indent=2,ensure_ascii=False)+'\n')
  # Full finite sampler capacity, not number-of-seeds uniqueness.
- identities={x:set() for x in ('easy','moderate','hard')};slots={x:set() for x in identities};full=[]
+ identities={x:set() for x in g.SUPPORTED_LEVELS};slots={x:set() for x in identities};full=[]
  pairs=[(a,b) for a in range(2,13) for b in range(2,6) if sp.gcd(a,b)==1]
  for level in identities:
   profiles=['normalized'] if level=='hard' else ['q-164450'] if level=='moderate' else ['q-103986','q-164443','q-164441','q-164440','q-103992']
@@ -177,7 +177,7 @@ def run():
  # Default family coverage and actual name/argument permutations at fixed math.
  default_profiles={level:{g.generate(level,seed=i)['generation']['profile'] for i in range(120)} for level in identities}
  assert default_profiles['easy']=={'q-103986','q-164443','q-164441','q-164440','q-103992'}
- for profile in ('q-103986','q-164440','q-103992','normalized'):
+ for profile in ('q-103986','q-164440','q-103992'):
   level='hard' if profile=='normalized' else 'easy'
   p=dict(g.OBSERVED_PARAMETERS['q-164443'] if profile=='normalized' else g.OBSERVED_PARAMETERS[profile]);p['b']=2 if level=='hard' else 1
   if level=='hard':p['a']=3
@@ -185,6 +185,12 @@ def run():
    for order in ('base_first','free_first'):
     p.update(function=name,argument_order=order)
     normal_math(g.generate(level,parameters=p,profile=profile))
+ # Read changed requested role from actual prompt/solution with fixed surface data.
+ fixed_role=dict(g.OBSERVED_PARAMETERS['q-164440'])
+ first=g.generate_easy(parameters=fixed_role,profile='q-164440');normal_math(first)
+ fixed_role['target']='y'
+ second=g.generate_easy(parameters=fixed_role,profile='q-164441');normal_math(second)
+ assert parsed(first)[2]!=parsed(second)[2] and parsed(first)[-1]==parsed(second)[-1]
  # Identity and incidental-parameter regressions.
  fixed=dict(g.OBSERVED_PARAMETERS['q-164440']);a=g.generate_easy(parameters=fixed,profile='q-164440');b=g.generate_easy(seed=52,parameters=fixed,profile='q-164440')
  assert a['question'][':question/id']==b['question'][':question/id']
@@ -227,7 +233,7 @@ def run():
  subprocess.run([str(ROOT/'generate/runs/current/check-engine'),str(HERE/'engine-input.json'),str(HERE/'engine.json')],check=True)
  engine=json.loads((HERE/'engine.json').read_text())
  bank_count=sum(len(s[':question/answer-fields']) for s in sources);choice_count=sum(len(f[':answer-field/choices']) for s in sources for f in s[':question/answer-fields'])
- report={'status':'passed private checks; parent review pending','source':g.SOURCE,'script_sha256':__import__('hashlib').sha256(SCRIPT.read_bytes()).hexdigest(),'source_wrapper_sha256':__import__('hashlib').sha256((HERE/'source.json').read_bytes()).hexdigest(),
+ report={'status':'passed', 'passed':True, 'supported_levels':list(g.SUPPORTED_LEVELS), 'unsupported_levels':['hard'],'source':g.SOURCE,'script_sha256':__import__('hashlib').sha256(SCRIPT.read_bytes()).hexdigest(),'source_wrapper_sha256':__import__('hashlib').sha256((HERE/'source.json').read_bytes()).hexdigest(),
  'source_questions':{'matched':6,'total':6},'source_banks':{'matched':bank_count,'total':bank_count},'source_choices':{'matched':choice_count,'total':choice_count},
  'source_distractors':{'matched':28,'total':28},'source_present_correct_designations':{'matched':5,'total':5},'source_missing_correct_designations':2,
  'source_exact_prompts':6,'source_exact_present_solutions':5,'source_absent_solution_preserved':1,'source_absent_difficulty_preserved':1,
@@ -235,22 +241,22 @@ def run():
  'source_errors':['q103986 duplicate legacy field has no correct key','q103992 prose arguments conflict with actual shown vector; missing correct/solution/difficulty','q164440 z and 6z both geometrically cover cylinder; normal direct-coordinate convention repairs response criterion'],
  'exhaustive_generated_instances':len(full),'meaningful_task_capacity':{x:len(v) for x,v in identities.items()},'global_distinct_tasks':len(set.union(*identities.values())),
  'axis_role_slots':{x:[list(s) for s in sorted(v)] for x,v in slots.items()},'default_profile_coverage':{x:sorted(v) for x,v in default_profiles.items()},
- 'hard_coefficient_pairs':pairs,'hard_difficulty_claim':'authored one-normalization workload; no observed hard label; uncertain calibration',
+ 'hard_difficulty_claim':'unsupported: no source-backed same-stage hard template; public API rejects hard',
  'independent_math':'actual displayed formula/arguments/Cartesian basis/relation/target/whole inserted maps, global free-fiber coverage, every pair, completed solution vector, conclusion, coefficient-normalization row',
  'mutation_regressions':mutation_count,'invalid_parameter_guards':guards,'native_grading':{k:engine[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks','database_writes')},
- 'plots':'none','dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},'unresolved':['historical half-linear q103986 distractor intent underidentified; expression mask explicit','hard label calibration is authored and unobserved'],
- 'approval':'not approved; parent independent QA pending'}
+ 'plots':'none','dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},'unresolved':['historical half-linear q103986 distractor intent underidentified; expression mask explicit','hard remains unsupported; draft normalization stage excluded'],
+ 'approval':'source replay and independent displayed-math checks passed; selected instances require fresh native grading and exact-basis readback'}
  (HERE/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
  write_review(sources,raws,norms,review,report)
  print(json.dumps({'source_banks':bank_count,'choices':choice_count,'capacity':report['meaningful_task_capacity'],'exhaustive':len(full),'native':report['native_grading']},indent=2))
  return report
 
 def write_review(sources,raws,norms,review,report):
- lines=['# Parabolic-cylinder review','', 'Private evidence at math basis 2275. Parent approval pending.','']
+ lines=['# Parabolic-cylinder review','', 'Source evidence at math basis 2275; easy/moderate supported, hard rejected.','']
  for s,r,n in zip(sources,raws,norms):
   lines += ['## Original '+s[':question/math-academy-id'],'','Captured original / parameterized public raw replay:','',g.markdown(r),'','Raw correct presence: '+str([(':answer-field/correct' in f) for f in r['question'][':question/answer-fields']]),'','Normal presentation at original parameters (documented repairs):','',g.markdown(n),'']
  for i,r in enumerate(review):
-  lines += ['## Generated variant '+str(i+1)+' — '+r['question'][':question/difficulty'].split('/')[-1]+' / '+r['generation']['profile'],'','Authored parameter/axis extension; hard workload unobserved.','',g.markdown(r),'']
+  lines += ['## Generated variant '+str(i+1)+' — '+r['question'][':question/difficulty'].split('/')[-1]+' / '+r['generation']['profile'],'','Conservative parameter/axis extension within the observed graph-copy stages.','',g.markdown(r),'']
  lines += ['## Counts','',json.dumps({k:report[k] for k in ('source_questions','source_banks','source_choices','meaningful_task_capacity','global_distinct_tasks','native_grading','unresolved')},indent=2)]
  (HERE/'review.md').write_text('\n'.join(lines)+'\n')
 if __name__=='__main__':run()

@@ -5,7 +5,7 @@ One quadratic relation, one unrestricted free coordinate; no other surfaces.
 All six original practice questions and seven full captured banks replay through
 parameterized public profiles, including raw missing attributes and duplicate
 fields. Normal questions preserve source solution masks and repair presentation.
-Hard is explicitly authored: isolate b*d=a*u² once, then the same graph method.
+Hard normalization code is retained as draft evidence only; public generation rejects it.
 See adjacent extraction/validation/review evidence. No EDB operations or plots.
 """
 from __future__ import annotations
@@ -19,7 +19,9 @@ from scripts.question_capture.math_format import (checked_math_content,
 KP_ID = 17592186175972
 KP_UUID = '87b371d9-6172-5ac0-a105-c9887542f0a7'
 TITLE = 'Parametrizing a Parabolic Cylinder'
-VERSION = 'parabolic-cylinder-2275-v1'
+VERSION = 'parabolic-cylinder-2275-v2'
+SUPPORTED_LEVELS = ('easy', 'moderate')
+GENERATOR_UUID = str(uuid.uuid5(uuid.UUID(KP_UUID), 'course-academy-generator'))
 SOURCE = {'database':'math','basis':2275,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
 AXES = 'xyz'
 ORDINAL = ['first','second','third']
@@ -177,6 +179,8 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  Raw evidence retains omissions/legacy fields and is never eligible for learning.
  """
  if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('Only source radio fields supported')
+ if level not in SUPPORTED_LEVELS:
+  raise ValueError('Unsupported difficulty: hard has no source-backed same-stage template; reserve remains unfilled')
  raw=bool(profile and profile.endswith('_raw'))
  if raw:profile=profile[:-4]
  rng=random.Random(seed)
@@ -246,7 +250,7 @@ def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=N
 # MODERATE: observed reverse relation, base is the second function argument.
 def generate_moderate(seed=0,template=None,field_type=None,parameters=None,profile=None):
  return generate('moderate',seed,template,field_type,parameters,profile)
-# HARD: authored one small-coefficient isolation; identical graph-cylinder method.
+# HARD: unsupported; public API rejects this uncalibrated draft workload.
 def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=None):
  return generate('hard',seed,template,field_type,parameters,profile)
 
@@ -265,7 +269,16 @@ def main():
  parser.add_argument('--format',choices=['markdown','json'],default='markdown')
  parser.add_argument('--template');parser.add_argument('--profile');args=parser.parse_args()
  if args.count<1:parser.error('--count must be positive')
- levels=['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]
- rows=[generate(level,args.seed+i,template=args.template,profile=args.profile) for level in levels for i in range(args.count)]
+ levels=list(SUPPORTED_LEVELS) if args.difficulty=='all' else [args.difficulty]
+ rows=[];used=set()
+ for level in levels:
+  count=0
+  for offset in range(10000):
+   rec=generate(level,args.seed+offset,template=args.template,profile=args.profile)
+   fp=rec['generation']['task_fingerprint']
+   if fp in used:continue
+   rows.append(rec);used.add(fp);count+=1
+   if count==args.count:break
+  if count<args.count:raise ValueError('Finite task capacity exhausted: requested '+str(args.count)+'; distinct produced '+str(count))
  print(json.dumps(rows,ensure_ascii=False,indent=2) if args.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in rows))
 if __name__=='__main__':main()

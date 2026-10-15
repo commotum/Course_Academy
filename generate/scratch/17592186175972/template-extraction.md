@@ -1,3 +1,5 @@
+> Inventory decision, 2026-10-15: v2 certifies easy/moderate only. The hard normalization proposal below is retained as rejected draft analysis; it adds a solution stage and is not supported or generated. See capabilities.json and validation.json. All six captured sources are unchanged at the fresh pre-commit basis.
+
 # Template extraction
 
 ## 1. Specific originals
