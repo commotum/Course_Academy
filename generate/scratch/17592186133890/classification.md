@@ -32,3 +32,15 @@ Default easy is a direct Cartesian quadratic with supplied cubic-sum potential; 
 Hard is authored, not an observed difficulty label. It combines canonical e-9502's line solved for the dependent coordinate with two supplied terms kx²y+ℓxeʸ, both contributing nonzero values at both endpoints. It uses the same parameterize → endpoints → supplied-potential difference method, eight displayed multiplications across two endpoints and familiar integer exponents, bounded by 4. It adds no potential reconstruction, line-integral integration, new branches or arbitrary symbolic algebra. Parameters vary this fixed workload; no progression exists within any level.
 
 The hard two-term evaluation is also supported by supplied-potential sibling e-8759, which evaluates two mixed contributions at endpoints. This design retains two-variable Cartesian curves. Easy dependent endpoints are bounded by absolute value 8, the largest cubic input in q-104626, to preserve comparable arithmetic.
+
+## Production classification, 2026-10-15
+
+Current source read: basis 2642, same lineage. All twelve source prompts, solutions,
+fields and complete banks match the captured evidence; extra reverse membership
+and enum entity IDs in the current Pull do not change that content. Six easy and
+six moderate questions remain. The public v2 generator supports those twelve
+observed families. The earlier authored defaults, including the proposed hard
+combination, are retired from production. Hard is unsupported in this bounded
+package and its nominal five-question shortage remains explicit. See
+capabilities.json and reference/initial/kp.edn. This section supersedes the earlier
+Authored scope section for generation and inventory claims.

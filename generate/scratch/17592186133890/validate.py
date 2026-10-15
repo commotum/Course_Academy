@@ -77,54 +77,54 @@ def check(r):
         assert not any(term in text for term in ['source_id','bank_profile','underidentified'])
     return len(rhsrows)-2
 
-cases=[];review=[];fidelity=[];stages=0;engine=[]
-def add_engine(r,label):
-    f=r['question'][':question/answer-fields'][0]
-    engine.append({'label':label,'record':r,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'Select each displayed option through native radio grading'} for a in f[':answer-field/choices']]})
+def native(records,path):
+    path.mkdir(parents=True,exist_ok=True)
+    fixtures=[]
+    for r in records:
+        f=r['question'][':question/answer-fields'][0]
+        fixtures.append({'label':r['generation']['template']+str(r['generation']['parameters']),'record':r,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'Every displayed option through application radio grader'} for a in f[':answer-field/choices']]})
+    (path/'input.json').write_text(json.dumps(fixtures,indent=2)+'\n')
+    subprocess.run([str(HERE/'reference/native/check-engine'),str(path/'input.json'),str(path/'report.json')],check=True)
+    return json.loads((path/'report.json').read_text())
 
-for name,q in g.QUESTIONS.items():
-    level=g.LEVELS[name];case={'source_id':q[':question/id'],'math_academy_id':name,'template':name,'parameters':{'scale':1},'bank_profile':'observed','difficulty':level};cases.append(case)
-    print('Checking source '+name,flush=True)
-    r=g.generate(level,template=name,parameters=case['parameters'],profile='observed');stages+=check(r);review.append({'label':'original replay '+name,'record':r});add_engine(r,name+' original')
-    f=q[':question/answer-fields'][0];gf=r['question'][':question/answer-fields'][0]
-    original=sorted(a[':answer/value'] for a in f[':answer-field/choices']);generated=sorted(a[':answer/value'] for a in gf[':answer-field/choices']);assert original==generated
-    assert r['question'][':question/problem']==q[':question/problem']
-    original_solution=q[':question/worked-solution']
-    repaired=original_solution.replace(')-f(0,0)',')-f(0,-1)').replace(r'-{0}^{2}\cdot 0',r'-{0}^{2}\cdot (-1)') if name=='q-39749' else original_solution
-    assert r['question'][':question/worked-solution']==repaired
-    gc=next(a for a in gf[':answer-field/choices'] if a[':answer/id']==gf[':answer-field/correct'][1]);assert gc[':answer/value']==f[':answer-field/correct'][':answer/value']
-    fidelity.append({'source':name,'bank_choices_matched':5,'distractors_matched':4,'prompt_exact':True,'correct_designation_exact':True,'raw_solution_exact':name!='q-39749','repaired_solution_exact':True,'arithmetic_row_count':len(re.findall(r'& =',repaired[repaired.rindex(r'\begin{aligned}'):]))-2})
-    for k in (2,-3):
-        v=g.generate(level,template=name,parameters={'scale':k});stages+=check(v);review.append({'label':'generated observed-bank variant '+name+' scale '+str(k),'record':v});add_engine(v,name+' scale '+str(k))
-        # Each original stage is visibly preserved, multiplied by coefficient.
-        source_tail=repaired[repaired.rindex(r'\begin{aligned}'):];variant_tail=v['question'][':question/worked-solution'][v['question'][':question/worked-solution'].rindex(r'\begin{aligned}'):]
-        assert len(source_tail.split(r'\\'))==len(variant_tail.split(r'\\'))
-for level,name in g.DEFAULTS.items():
-    seen=set()
-    print('Checking authored '+level,flush=True)
-    for seed in range(16):
-        r=g.generate(level,seed);stages+=check(r);seen.add(r['generation']['parameter_fingerprint']);add_engine(r,level+' authored seed '+str(seed))
-        if seed<2:review.append({'label':'generated authored '+level+' seed '+str(seed),'record':r})
-        same=g.generate(level,seed+991,template=name,parameters=r['generation']['parameters']);assert same['question'][':question/id']==r['question'][':question/id']
-        assert same['generation']['parameter_fingerprint']==r['generation']['parameter_fingerprint']
-    assert len(seen)>=12,(level,len(seen))
-# Invalid explicit parameters must fail rather than silently resample.
-invalid=[('easy','authored_direct',{'k':1,'m':1,'c':0,'a':0,'b':2}),('moderate','authored_inverse',{'k':2,'m':1,'c':0,'a':1,'b':5}),('hard','authored_mixed',{'k':2,'ell':1,'m':1,'n':2,'c':2,'a':1,'b':2})]
-for level,name,p in invalid:
-    try:g.generate(level,template=name,parameters=p)
+def fingerprint(q):
+    # Derivatives discard additive potential constants; banks, UUIDs and seed are absent.
+    prompt=q[':question/problem'];f=parse(re.search(r'Let \$f\(x,y\)=(.*?)\.\$',prompt)[1])
+    curve=re.search(r'curve \$(.*?)\$ for',prompt)[1];lhs,rhs=curve.split('=')
+    var,a,b=re.search(r'\$([xy])\\in \[(.*?),(.*?)\]',prompt).groups()
+    return g.hash_data([s.srepr(s.expand(s.diff(f,z))) for z in (g.X,g.Y)]+[s.srepr(s.expand(parse(lhs)-parse(rhs))),var,s.srepr(parse(a)),s.srepr(parse(b))])
+
+def main():
+    cases=[];review=[];fidelity=[];stages=0;records=[]
+    for name,q in g.QUESTIONS.items():
+        level=g.LEVELS[name];r=g.generate(level,template=name,parameters={'scale':1})
+        stages+=check(r);records.append(r)
+        f=q[':question/answer-fields'][0];gf=r['question'][':question/answer-fields'][0]
+        assert sorted(a[':answer/value'] for a in f[':answer-field/choices'])==sorted(a[':answer/value'] for a in gf[':answer-field/choices'])
+        assert r['question'][':question/problem']==q[':question/problem']
+        repair=q[':question/worked-solution']
+        if name=='q-39749':repair=repair.replace(')-f(0,0)',')-f(0,-1)').replace(r'-{0}^{2}\cdot 0',r'-{0}^{2}\cdot (-1)')
+        assert r['question'][':question/worked-solution']==repair
+        correct=next(a for a in gf[':answer-field/choices'] if a[':answer/id']==gf[':answer-field/correct'][1])
+        assert correct[':answer/value']==f[':answer-field/correct'][':answer/value']
+        fidelity.append({'source':name,'level':level,'complete_bank_matched':True,'choices_matched':5,'distractors_matched':4,'source_correct_matched':True,'prompt_exact':True,'solution_exact_after_documented_repair':True})
+        review.append({'label':'source replay '+name,'record':r})
+        for k in (2,-3):
+            variant=g.generate(level,template=name,parameters={'scale':k});stages+=check(variant);records.append(variant)
+            review.append({'label':name+' coefficient '+str(k),'record':variant})
+            replay=g.generate(level,seed=999,template=name,parameters={'scale':k})
+            assert replay['question'][':question/id']==variant['question'][':question/id']
+            assert fingerprint(variant['question'])!=fingerprint(r['question'])
+        print('Validated '+name,flush=True)
+    for level in g.SUPPORTED_LEVELS:
+        assert g.generate(level)['generation']['template'] in g.QUESTIONS
+    try:g.generate('hard')
     except ValueError:pass
-    else:raise AssertionError('Invalid explicit inputs accepted')
-(HERE/'source-cases.json').write_text(json.dumps(cases,indent=2)+'\n');(HERE/'review.json').write_text(json.dumps(review,indent=2,ensure_ascii=False)+'\n')
-(HERE/'engine-input.json').write_text(json.dumps(engine,indent=2,ensure_ascii=False)+'\n')
-subprocess.run([str(ROOT/'generate/runs/current/check-engine'),str(HERE/'engine-input.json'),str(HERE/'engine-validation.json')],check=True)
-engine_report=json.loads((HERE/'engine-validation.json').read_text())
-report={'passed':True,'source':{k:g.SOURCE[k] for k in ('database','basis','lineage')},'source_questions':12,'original_complete_banks_matched':12,'source_choices_matched':60,'source_distractors_matched':48,'correct_designations_matched':12,'raw_solutions_exact':11,'minimally_repaired_solutions_exact':12,'source_repairs':[{'source':'q-39749','raw':'f(0,0) and 0^2*0','repair':'f(0,-1) and 0^2*(-1)','final_answer_unchanged':True}],'fidelity':fidelity,'displayed_arithmetic_stages_checked':stages,'generated_source_variants':24,'authored_variants_checked':48,'authored_levels':['easy','moderate','hard'],'identity_checks':48,'native':{k:engine_report[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'grader_sha256':hashlib.sha256((ROOT/'generate/runs/current/check-engine').read_bytes()).hexdigest(),'parser_dependency':'read-only cached lark 1.2.2; SymPy '+s.__version__,'remaining_findings':['Observed homogeneous banks reproduce evidence but source error intent remains underidentified; excluded from authored defaults.'],'database_writes':0}
-(HERE/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
-lines=['# Source and generated review','Raw originals are retained in source.json; original replay q-39749 has the documented minimal correction. Each source profile has two changed-coefficient variants. Authored defaults are separately labeled.']
-for item in review:
-    name=item['record']['generation']['template'];lines+=['\n## '+item['label']]
-    if item['label'].startswith('original'):
-        q=g.QUESTIONS[name];lines+=['### Raw captured source',q[':question/problem'],q[':question/worked-solution'],'Source bank: '+', '.join('$'+a[':answer/value']+'$' for a in q[':question/answer-fields'][0][':answer-field/choices']), '### Normal generator replay']
-    lines+=[g.markdown(item['record'])]
-(HERE/'review.md').write_text('\n\n'.join(lines)+'\n')
-print(json.dumps({'passed':True,'banks':12,'choices':60,'stages':stages,'native':report['native']},indent=2))
+    else:raise AssertionError('Hard must be unsupported')
+    report=native(records,HERE/'reference/validation/native')
+    validation={'passed':True,'generator_sha256':hashlib.sha256(HERE.with_suffix('.py').read_bytes()).hexdigest(),'source_basis':g.SOURCE['basis'],'source_lineage':g.SOURCE['lineage'],'source_complete_banks_matched':12,'source_choices_matched':60,'source_distractors_matched':48,'fidelity':fidelity,'displayed_arithmetic_stages_checked':stages,'supported_levels':list(g.SUPPORTED_LEVELS),'unsupported_levels':['hard'],'source_repairs':['q-39749 start substitution corrected from (0,0) to (0,-1), final answer unchanged; source remains untouched'],'coefficient_slot_coverage':{'samples':[1,2,-3],'bounds':[-12,12],'zero_excluded':True,'proof':'For nonzero k, scaling all five distinct source values preserves pairwise inequality and the unique correct designation. Line integral and every evaluation stage scale linearly by k. Endpoint roles and curve are fixed.'},'native':{k:report[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'boundaries_checked_by_exact_scaling_proof':True}
+    (HERE/'validation.json').write_text(json.dumps(validation,indent=2)+'\n')
+    (HERE/'review.json').write_text(json.dumps(review,indent=2,ensure_ascii=False)+'\n')
+    (HERE/'review.md').write_text('\n\n---\n\n'.join(item['label']+'\n\n'+g.markdown(item['record']) for item in review)+'\n')
+    print(json.dumps(validation,indent=2))
+if __name__=='__main__':main()

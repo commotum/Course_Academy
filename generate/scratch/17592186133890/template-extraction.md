@@ -429,3 +429,16 @@ All explicit parameter guards enforce their level bounds; samples use the same g
 ## Plot extraction/specification
 
 No prompt, option or solution has a plot reference. Rating none; no assets or renderer required. Steps 5 and 7 are satisfied by this explicit no-plot specification.
+
+## Production boundary, 2026-10-15
+
+Only the twelve observed source backbones and their complete `observed` banks are
+production templates in v2. Their one declared slot is a nonzero integer potential
+coefficient k, bounded by |k| <= 12; every displayed arithmetic stage and every
+bank member is multiplied by k. This conservative generalization relies on
+linearity, not a claimed reconstruction of distractor psychology. It preserves
+all four incorrect complete values at k=1 and their inequalities for every
+nonzero k. Curves, endpoint targets, supplied-potential roles and radio layout
+remain fixed. The source q-39749 repair remains explicit. Earlier authored
+structures are outside the supported package. No plot extraction or rendering
+is needed because every source and generated template is text-only.

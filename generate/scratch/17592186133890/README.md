@@ -1,11 +1,26 @@
 # Cartesian supplied-potential FTLI generator
 
-Local review artifacts only, immutable math basis 1356. No database writes or registrations.
+Production v2 supports the twelve observed easy/moderate source families. Hard
+is unsupported; its five-question nominal shortage is explicit in
+capabilities.json. Earlier authored structures were review experiments and are
+excluded from production. No source questions or learner records are edited.
 
-Run `.venv/bin/python generate/scratch/17592186133890/validate.py` for independent checks of actual displayed prompts, parametrizations, endpoints, every arithmetic row, complete banks, identity and native radio grading. Cached read-only lark 1.2.2 supplies the LaTeX parser; it is not installed into or written to the environment.
+Run `.venv/bin/python generate/scratch/17592186133890/validate.py` for exact replay
+of all twelve complete source banks, independently parsed prompt/endpoint/solution
+mathematics for positive and negative coefficient variants, stable identities,
+and the current native application grader. The documented q-39749 zero-start
+substitution repair is applied only to generated solutions. Source evidence is
+retained in source.json and reference/initial/kp.edn.
 
-Preview: `.venv/bin/python generate/scratch/17592186133890.py --difficulty all --seed 17 --count 2 --format json`.
+Preview distinct bounded variants with:
+`.venv/bin/python generate/scratch/17592186133890.py --difficulty all --seed 17 --count 2 --format json`.
+The CLI samples without replacement and fails explicitly beyond the finite
+coefficient domain. Seed and option order do not create new question identities.
 
-API: generate_easy/generate_moderate/generate_hard and generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None). Explicit parameters reject invalid workloads and colliding whole banks.
-
-Observed templates are named by their q-ID, with profile observed and parameter scale. Their complete banks use homogeneous coefficient replay; their error interpretations remain underidentified. Normal defaults authored_direct/easy, authored_inverse/moderate, authored_mixed/hard use authored_operations. The authored hard design and q-39749 minimal source repair are explained in classification.md and template-extraction.md. Every source and two coefficient variants, plus two examples per authored level, appear in review.md/review.json.
+Run `.venv/bin/python generate/scratch/17592186133890/replenish.py` to recheck
+inventory and perform needed additive publication under application api.lock.
+The helper recovers saved exact requests before new work, uses the configured
+application contributor, previews native validation specs, commits with a basis
+guard, and verifies the exact committed basis. Registration reuses an existing
+UUID or the KP's stable generator identity. Requests, previews, receipts, scoped
+native inventory/grading checks and outcomes stay under reference/replenishment.
