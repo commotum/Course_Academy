@@ -89,6 +89,8 @@ $$
 
 ### Generated raw evidence variant h=2 — ineligible
 
+## Original evidence replay / moderate / linear_yz
+
 Find the volume bounded by the region $R,$ given by
 
 $$
@@ -113,7 +115,7 @@ $$
 
  - $30$
 
- - $\frac{12}{5}$
+ - $\frac{12}{5}$ **CORRECT**
 
 Recall that the volume of $R$ can be found as 
 
@@ -199,6 +201,8 @@ Original complete bank: $4$, $1$, $\frac{4}{5}$, $2$, $-\frac{2}{5}$
 Original solution absent. Original difficulty/correct designation absent.
 
 ### Generated raw evidence variant h=2 — ineligible
+
+## Original evidence replay / unrated / reciprocal
 
 Find the volume bounded by the region $R$, given by
 $R = {(x, y, z): 1 \le y \le 2, 2 \le \sqrt{y} + x \le 4, 1 \le \frac{1}{z + 1} \le 5}$.
@@ -299,13 +303,15 @@ $$
 
 ### Generated raw evidence variant h=2 — ineligible
 
+## Original evidence replay / hard / log
+
 Find the volume bounded by the region $R,$ given by
 
 $$
 R={(x,y,z)\,:\,\frac{1}{2}\le x\le 1,\,6\le y+{x}^{2}\le 20,\,1\le xz\le 2}.
 $$
 
- - $14\operatorname{ln}⁡2$
+ - $14\operatorname{ln}⁡2$ **CORRECT**
 
  - $4\operatorname{ln}⁡2$
 
@@ -475,13 +481,15 @@ $$
 
 ### Generated raw evidence variant h=2 — ineligible
 
+## Original evidence replay / moderate / shear
+
 Find the volume bounded by the region $R,$ given by
 
 $$
 R={(x,y,z)\,:\,0\le x\le 1,\,0\le x+y\le 2,\,-1\le z+{x}^{2}+{y}^{2}\le 1}.
 $$
 
- - $4$
+ - $4$ **CORRECT**
 
  - $1$
 
@@ -651,13 +659,15 @@ $$
 
 ### Generated raw evidence variant h=2 — ineligible
 
+## Original evidence replay / moderate / linear_xz
+
 Find the volume bounded by the region $R,$ given by
 
 $$
 R={(x,y,z)\,:\,-5\le x+z\le 5,\,0\le y\le 20,\,0\le y-z\le 6}.
 $$
 
- - $1200$
+ - $1200$ **CORRECT**
 
  - $240$
 
@@ -827,6 +837,8 @@ $$
 
 ### Generated raw evidence variant h=2 — ineligible
 
+## Original evidence replay / hard / sqrt
+
 Find the volume bounded by the region $R,$ given by
 
 $$
@@ -835,7 +847,7 @@ $$
 
  - $72$
 
- - $120$
+ - $120$ **CORRECT**
 
  - $24$
 
@@ -919,6 +931,8 @@ $$
 
 ## Authored/default easy — affine
 
+## Generated variant / easy / affine
+
 Find the volume bounded by the region $R,$ given by
 
 $$
@@ -929,7 +943,7 @@ $$
 
  - $60$
 
- - $15$
+ - $15$ **CORRECT**
 
  - $\frac{5}{2}$
 
@@ -1017,6 +1031,8 @@ $$
 
 ## Authored/default easy — affine
 
+## Generated variant / easy / affine
+
 Find the volume bounded by the region $R,$ given by
 
 $$
@@ -1029,7 +1045,7 @@ $$
 
  - $3$
 
- - $6$
+ - $6$ **CORRECT**
 
  - $36$
 
@@ -1115,6 +1131,8 @@ $$
 
 ## Authored/default moderate — linear_yz
 
+## Generated variant / moderate / linear_yz
+
 Find the volume bounded by the region $R,$ given by
 
 $$
@@ -1125,7 +1143,7 @@ $$
 
  - $4$
 
- - $20$
+ - $20$ **CORRECT**
 
  - $24$
 
@@ -1213,6 +1231,8 @@ $$
 
 ## Authored/default moderate — linear_yz
 
+## Generated variant / moderate / linear_yz
+
 Find the volume bounded by the region $R,$ given by
 
 $$
@@ -1225,7 +1245,7 @@ $$
 
  - $15$
 
- - $9$
+ - $9$ **CORRECT**
 
  - $3$
 
@@ -1311,6 +1331,8 @@ $$
 
 ## Authored/default moderate — shear
 
+## Generated variant / moderate / shear
+
 Find the volume bounded by the region $R,$ given by
 
 $$
@@ -1321,7 +1343,7 @@ $$
 
  - $12$
 
- - $60$
+ - $60$ **CORRECT**
 
  - $72$
 
@@ -1409,6 +1431,8 @@ $$
 
 ## Authored/default moderate — shear
 
+## Generated variant / moderate / shear
+
 Find the volume bounded by the region $R,$ given by
 
 $$
@@ -1421,7 +1445,7 @@ $$
 
  - $60$
 
- - $36$
+ - $36$ **CORRECT**
 
  - $12$
 
@@ -1507,6 +1531,8 @@ $$
 
 ## Authored/default moderate — linear_xz
 
+## Generated variant / moderate / linear_xz
+
 Find the volume bounded by the region $R,$ given by
 
 $$
@@ -1517,7 +1543,7 @@ $$
 
  - $12$
 
- - $60$
+ - $60$ **CORRECT**
 
  - $72$
 
@@ -1605,6 +1631,8 @@ $$
 
 ## Authored/default moderate — linear_xz
 
+## Generated variant / moderate / linear_xz
+
 Find the volume bounded by the region $R,$ given by
 
 $$
@@ -1617,7 +1645,7 @@ $$
 
  - $20$
 
- - $12$
+ - $12$ **CORRECT**
 
  - $4$
 
@@ -1703,6 +1731,8 @@ $$
 
 ## Authored/default hard — log
 
+## Generated variant / hard / log
+
 Find the volume bounded by the region $R,$ given by
 
 $$
@@ -1713,7 +1743,7 @@ $$
 
  - $42$
 
- - $18 \ln{\left(2 \right)}$
+ - $18 \ln{\left(2 \right)}$ **CORRECT**
 
  - $12 \ln{\left(2 \right)}$
 
@@ -1801,6 +1831,8 @@ $$
 
 ## Authored/default hard — log
 
+## Generated variant / hard / log
+
 Find the volume bounded by the region $R,$ given by
 
 $$
@@ -1813,7 +1845,7 @@ $$
 
  - $12 \ln{\left(3 \right)}$
 
- - $12 \ln{\left(6 \right)}$
+ - $12 \ln{\left(6 \right)}$ **CORRECT**
 
  - $30$
 
@@ -1899,6 +1931,8 @@ $$
 
 ## Authored/default hard — sqrt
 
+## Generated variant / hard / sqrt
+
 Find the volume bounded by the region $R,$ given by
 
 $$
@@ -1909,7 +1943,7 @@ $$
 
  - $120$
 
- - $720$
+ - $720$ **CORRECT**
 
  - $750$
 
@@ -1997,6 +2031,8 @@ $$
 
 ## Authored/default hard — sqrt
 
+## Generated variant / hard / sqrt
+
 Find the volume bounded by the region $R,$ given by
 
 $$
@@ -2009,7 +2045,7 @@ $$
 
  - $96$
 
- - $90$
+ - $90$ **CORRECT**
 
  - $18$
 
@@ -2095,6 +2131,8 @@ $$
 
 ## Authored/default hard — reciprocal
 
+## Generated variant / hard / reciprocal
+
 Find the volume bounded by the region $R,$ given by
 
 $$
@@ -2105,7 +2143,7 @@ $$
 
  - $120$
 
- - $24$
+ - $24$ **CORRECT**
 
  - $\frac{144}{5}$
 
@@ -2193,6 +2231,8 @@ $$
 
 ## Authored/default hard — reciprocal
 
+## Generated variant / hard / reciprocal
+
 Find the volume bounded by the region $R,$ given by
 
 $$
@@ -2205,7 +2245,7 @@ $$
 
  - $\frac{45}{8}$
 
- - $\frac{9}{2}$
+ - $\frac{9}{2}$ **CORRECT**
 
  - $18$
 
@@ -2291,6 +2331,8 @@ $$
 
 ## Authored/default hard — cube
 
+## Generated variant / hard / cube
+
 Find the volume bounded by the region $R,$ given by
 
 $$
@@ -2301,7 +2343,7 @@ $$
 
  - $126$
 
- - $\frac{9}{2}$
+ - $\frac{9}{2}$ **CORRECT**
 
  - $\frac{3}{4}$
 
@@ -2389,6 +2431,8 @@ $$
 
 ## Authored/default hard — cube
 
+## Generated variant / hard / cube
+
 Find the volume bounded by the region $R,$ given by
 
 $$
@@ -2401,7 +2445,7 @@ $$
 
  - $\frac{1}{2}$
 
- - $\frac{3}{2}$
+ - $\frac{3}{2}$ **CORRECT**
 
  - $42$
 
