@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-333578",
+      "sequence_position": 2,
+      "problem": "Which of the following statements are true when testing the stability of the trapezoidal method on the test equation ${y}^{′}=-\\lambda y$ with $y=y(x),y(0)=2,x\\ge 0,\\lambda =7,$ and step size $Δx?$  \n\nI. The stability function is $R(7Δx)=\\frac{1+7Δx/2}{1-7Δx/2}.$\n\nII. The stability region is $|\\frac{2-7Δx}{2+7Δx}|<1.$\n\nIII. The method is absolutely stable.\n\nIV. The method is **unstable** for step size $Δx=0.5.$\n\n*Hint:* The stability function $R$ is given by ${y}_{n+1}=R(\\lambda Δx){y}_{n}.$",
+      "worked_solution": "A numerical method\n${y}_{n+1}={y}_{n}+Δ{y}_{n}$\nis stable for a given step size $Δx$ if, when applied to the test equation\n\n$$\n{y}^{′}=-\\lambda y,\\,y(0)=2,\\,x\\ge 0,\\,\\lambda >0,\n$$\n\nthe numerical solution satisfies ${y}_{n}\\to 0$ as $n\\to \\infty ,$ just like the exact solution.\n\nWhen a method is applied to the test equation, the update takes the form\n\n$$\n{y}_{n+1}=R(\\lambda Δx){y}_{n},\n$$\n\nwhere $R(\\lambda Δx)$ is the stability function of the method. The set of values for which the method is stable, given by $|R(\\lambda Δx)|<1,$ is called the stability region of the method.\n\nA method that is stable for all possible values $\\lambda Δx>0$ is called absolutely stable.\n\nNow, let's check the stability of the trapezoidal method by applying it to the test equation\n\n$$\n{y}^{′}=-7y,\\,y(0)=2.\n$$\n\nFirst, for an initial value problem ${y}^{′}=f(x,y),y({x}_{0})={y}_{0},$ the trapezoidal method is given by the update formula\n\n$$\n{y}_{n+1}={y}_{n}+\\frac{1}{2}(f({x}_{n},{y}_{n})+f({x}_{n+1},{y}_{n+1}))\\cdot Δx.\n$$\n\nWe now examine our statements:\n\n- Applying the trapezoidal method to this test equation, we get the following:\n\n$$\n\\begin{aligned}{y}_{n+1} & ={y}_{n}+\\frac{1}{2}(f({x}_{n},{y}_{n})+f({x}_{n+1},{y}_{n+1}))\\cdot Δx \\\\ {y}_{n+1} & ={y}_{n}+\\frac{1}{2}(-7{y}_{n}+(-7{y}_{n+1}))\\cdot Δx \\\\ {y}_{n+1}+\\frac{7}{2}{y}_{n+1}\\cdot Δx & ={y}_{n}-\\frac{7}{2}{y}_{n}\\cdot Δx \\\\ (1+\\frac{7}{2}Δx){y}_{n+1} & =(1-\\frac{7}{2}Δx){y}_{n} \\\\ {y}_{n+1} & =\\frac{1-7Δx/2}{1+7Δx/2}\\cdot {y}_{n}\\end{aligned}\n$$\n\nSo, the stability function is $R(7Δx)=\\frac{1-7Δx/2}{1+7Δx/2}.$ Hence, statement I is false.\n\n- The stability region of the method is\n\n$$\n\\begin{aligned}|R(7Δx)| & <1 \\\\ |\\frac{1-7Δx/2}{1+7Δx/2}| & <1 \\\\ |\\frac{2-7Δx}{2+7Δx}| & <1.\\end{aligned}\n$$\n\nHence, statement II is true.\n\n- Rearranging, we have\n\n$$\n\\begin{aligned}\\frac{|2-7Δx|}{|2+7Δx|} & <1 \\\\ |2-7Δx| & <|2+7Δx| \\\\ (2-7Δx)^{2} & <(2+7Δx)^{2} \\\\ 4-28Δx+49(Δx)^{2} & <4+28Δx+49(Δx)^{2} \\\\ -28Δx & <28Δx.\\end{aligned}\n$$\n\nSince $Δx>0,$ this inequality is always true. Thus, the trapezoidal method is absolutely stable, and statement III is true.\n\n- Finally, since it is absolutely stable, the trapezoidal method is stable for step size $Δx=0.5,$ and hence statement IV is false.\n\nIn conclusion, the correct answer is \"II and III only\".",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14201297/observations/history-q-333578-b1273542be17c113b98a.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14201297",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14201297/observations/history-solution-q-333578-89fb61667c33518b821e.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "text",
+              "value": "I, II, and III only"
+            },
+            {
+              "option": "b",
+              "type": "text",
+              "value": "II and III only"
+            },
+            {
+              "option": "c",
+              "type": "text",
+              "value": "I and III only"
+            },
+            {
+              "option": "d",
+              "type": "text",
+              "value": "II only"
+            },
+            {
+              "option": "e",
+              "type": "text",
+              "value": "I and IV only"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q333578",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "II and III only",
+                "option": "b",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "A numerical method\n${y}_{n+1}={y}_{n}+Δ{y}_{n}$\nis stable for a given step size $Δx$ if, when applied to the test equation\n\n$$\n{y}^{′}=-\\lambda y,\\,y(0)=2,\\,x\\ge 0,\\,\\lambda >0,\n$$\n\nthe numerical solution satisfies ${y}_{n}\\to 0$ as $n\\to \\infty ,$ just like the exact solution.\n\nWhen a method is applied to the test equation, the update takes the form\n\n$$\n{y}_{n+1}=R(\\lambda Δx){y}_{n},\n$$\n\nwhere $R(\\lambda Δx)$ is the stability function of the method. The set of values for which the method is stable, given by $|R(\\lambda Δx)|<1,$ is called the stability region of the method.\n\nA method that is stable for all possible values $\\lambda Δx>0$ is called absolutely stable.\n\nNow, let's check the stability of the trapezoidal method by applying it to the test equation\n\n$$\n{y}^{′}=-7y,\\,y(0)=2.\n$$\n\nFirst, for an initial value problem ${y}^{′}=f(x,y),y({x}_{0})={y}_{0},$ the trapezoidal method is given by the update formula\n\n$$\n{y}_{n+1}={y}_{n}+\\frac{1}{2}(f({x}_{n},{y}_{n})+f({x}_{n+1},{y}_{n+1}))\\cdot Δx.\n$$\n\nWe now examine our statements:\n\n- Applying the trapezoidal method to this test equation, we get the following:\n\n$$\n\\begin{aligned}{y}_{n+1} & ={y}_{n}+\\frac{1}{2}(f({x}_{n},{y}_{n})+f({x}_{n+1},{y}_{n+1}))\\cdot Δx \\\\ {y}_{n+1} & ={y}_{n}+\\frac{1}{2}(-7{y}_{n}+(-7{y}_{n+1}))\\cdot Δx \\\\ {y}_{n+1}+\\frac{7}{2}{y}_{n+1}\\cdot Δx & ={y}_{n}-\\frac{7}{2}{y}_{n}\\cdot Δx \\\\ (1+\\frac{7}{2}Δx){y}_{n+1} & =(1-\\frac{7}{2}Δx){y}_{n} \\\\ {y}_{n+1} & =\\frac{1-7Δx/2}{1+7Δx/2}\\cdot {y}_{n}\\end{aligned}\n$$\n\nSo, the stability function is $R(7Δx)=\\frac{1-7Δx/2}{1+7Δx/2}.$ Hence, statement I is false.\n\n- The stability region of the method is\n\n$$\n\\begin{aligned}|R(7Δx)| & <1 \\\\ |\\frac{1-7Δx/2}{1+7Δx/2}| & <1 \\\\ |\\frac{2-7Δx}{2+7Δx}| & <1.\\end{aligned}\n$$\n\nHence, statement II is true.\n\n- Rearranging, we have\n\n$$\n\\begin{aligned}\\frac{|2-7Δx|}{|2+7Δx|} & <1 \\\\ |2-7Δx| & <|2+7Δx| \\\\ (2-7Δx)^{2} & <(2+7Δx)^{2} \\\\ 4-28Δx+49(Δx)^{2} & <4+28Δx+49(Δx)^{2} \\\\ -28Δx & <28Δx.\\end{aligned}\n$$\n\nSince $Δx>0,$ this inequality is always true. Thus, the trapezoidal method is absolutely stable, and statement III is true.\n\n- Finally, since it is absolutely stable, the trapezoidal method is stable for step size $Δx=0.5,$ and hence statement IV is false.\n\nIn conclusion, the correct answer is \"II and III only\".",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14201297/observations/step-q333578-1e1300d59c39d90d4540.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a13ab9-b1c1-7d30-812c-a7017d70a941",
+  "previous_failures": []
+}
