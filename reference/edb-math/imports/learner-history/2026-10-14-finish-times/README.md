@@ -1,0 +1,7 @@
+# Recovered completion dates for migrated lessons
+
+The October 11 migration preserved four completed lesson snapshots and 37 XP, but archived their original status transitions instead of replaying them. The scheduler subsequently required a local start event and excluded these valid outcomes. It now accepts recorded terminal outcomes without requiring a local start. It reads the optional `learner-task/finished-at` source date for lifecycle ordering and assessment learning age; activity history and dated XP use the same date. Ordinary completion continues to use status transaction history.
+
+The two transactions in `manifest.json` were committed to `math` at bases 2569 and 2570, attributed to `:application/ca-engine`. They install the optional instant attribute and set four original dates with compare-and-swap from absent. The dates were recovered by stable task UUID from `../2026-10-11-separated/history/original-status-history.edn`, whose checksum is retained in the manifest. EDB transaction times remain the actual repair times. Do not resubmit with fresh request keys.
+
+`before.edn`, `after.edn`, and `verification.json` verify that XP, elapsed time, status, items, and saved responses are unchanged. Learning credit was not reapplied. The running app at basis 2571 reports 136 practice XP, four mature topics, and a ready, optional assessment. `live-home.json` records the assessment in the displayed queue. Engine tests: 118 passed; native backend tests: 63 passed, seven optional live tests ignored; three relevant UI test files passed.
