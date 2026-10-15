@@ -1,0 +1,9 @@
+"""Freeze the validated generator and record its supported finite capability."""
+import json,hashlib
+from pathlib import Path
+HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[2]
+variety=json.loads((HERE/'variety.json').read_text())
+c={'supported_levels':['easy','moderate','hard'],'observed_levels':['easy'],'authored_levels':['moderate','hard'],'unsupported_levels':[], 'level_rationale':{'easy':'Observed field substitution, coordinate derivatives and two-term dot product.','moderate':'Canonical polynomial method, two unequal nonunit monomial coordinate derivatives and substituted powers.','hard':'Observed spiral product-rule parameterization, four mixed-component scalar products; construct only, without evaluation.'},'finite_domain_by_template':variety,'exclusions':{'q-124679':'Raw integral-choice ambiguity: four values coincide at zero.','q-124680':'Raw solution lacks j marker and uses singular endpoint.','q-124685':'Raw distributed row malformed.'},'source_preservation':'All source and canonical records retained unchanged; exclusions do not retract or alter history.','deduplication':'Constructed integrand and supplied bounds, ignoring bank, seed and order. Finite per-template counts must not be summed without cross-template deduplication.','limits':'No blank response or unobserved method. Reject all complete-bank collisions. Raw evidence profiles never published.'}
+(HERE/'capabilities.json').write_text(json.dumps(c,indent=2)+'\n')
+paths=[HERE.with_suffix('.py')]+[HERE/n for n in ['validate.py','math_parser.py','variety.py','source.json','classification.md','template-extraction.md','validation.json','variety.json','capabilities.json','replenish.py']]
+(HERE/'freeze.json').write_text(json.dumps({'version':'plane-vector-setup-1','sha256':{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}},indent=2)+'\n')
