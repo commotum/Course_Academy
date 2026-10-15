@@ -1,0 +1,11 @@
+# Singular 2×2 augmented systems
+
+Generator: `generate/scratch/17592186105745.py`, UUID `e0f0d1a1-c3b4-5f13-83aa-ac207126bbb9`. It implements 12 source bank profiles at easy and moderate difficulty. Hard is unsupported; malformed q-42156 and equivalent-bank q-73524 are preserved and excluded. Capabilities and bounded finite domains are in capabilities.json.
+
+Run `.venv/bin/python generate/scratch/17592186105745.py --difficulty easy --count 5 --seed 105745 --format json` for the application's registered-generator interface, or use `--format markdown` for a readable preview. Output JSON is a list of records with field-owned UUIDs, complete keys, concrete worked solutions and reproducibility metadata. A requested count beyond the distinct finite domain returns fewer records; the replenisher records any remaining shortage.
+
+Run `.venv/bin/python generate/scratch/17592186105745/validate.py` for full source-bank replay, 96 bounded mathematical checks, 480 actual learner grading checks and CLI integration checks. `review.json` presents source replay with negative and positive RHS variants. Source data, classification and choice mappings are retained alongside validation.
+
+Run `.venv/bin/python generate/scratch/17592186105745/replenish.py` to reconcile a retained request or recheck inventory, prepare additive content, preview, commit with a basis guard and verify readback under the application's api.lock. Durable evidence is in reference/replenishment. This run registered the generator at basis 2663 → 2664 through :application/ca-engine. Existing distinct inventory already held five easy and six moderate tasks, so no questions were added. All 14 sources and learner history were preserved. The saved outcome reports zero supported shortages and an explicit unsupported hard reserve of five; native inventory had no remaining jobs for this KP.
+
+`reference/replenishment/basis-2663/generator-at-commit.py` retains the script bytes recorded in the exact registration request. The current script additionally accepts the application's `--format json` switch and returns its required list representation; the mathematical generator is unchanged. Final validation hashes identify the current file.

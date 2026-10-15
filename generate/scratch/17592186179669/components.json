@@ -1,0 +1,533 @@
+[
+  {
+    "source": "q-39342",
+    "source_eid": 17592186180173,
+    "difficulty": "moderate",
+    "field_components": [
+      "x + y",
+      "x - y"
+    ],
+    "oriented_curves_and_bounds": [
+      [
+        "2*t",
+        "0",
+        "0",
+        "1"
+      ],
+      [
+        "2 - t",
+        "t",
+        "0",
+        "1"
+      ]
+    ],
+    "known_segment": 1,
+    "segment_integrals": [
+      "2",
+      "-1"
+    ],
+    "correct": "1",
+    "bank_exact_expressions": [
+      "2",
+      "1",
+      "3",
+      "4",
+      "6"
+    ],
+    "plot": {
+      "reference": "images/0e/0e4a78829ce8d1135d46dda1db59c968c0306937d9c5a45b24fa41648a679ea4.png",
+      "sha256": "0e4a78829ce8d1135d46dda1db59c968c0306937d9c5a45b24fa41648a679ea4",
+      "reused_unchanged": true
+    },
+    "solution_stages": [
+      "additivity",
+      "identify unknown piece",
+      "parametrization",
+      "substitution",
+      "derivative",
+      "dot product",
+      "antiderivative and endpoints",
+      "sum"
+    ],
+    "source_prompt": "![](images/0e/0e4a78829ce8d1135d46dda1db59c968c0306937d9c5a45b24fa41648a679ea4.png)\n\nThe path ${C}_{1}$ consists of a line segment from the point $O(0,0)$ to the point $A(2,0),$ and the path ${C}_{2}$ consists of a line segment from the point $A(2,0)$ to the point $B(1,1).$\n\nGiven that ${\\int }_{{C}_{1}}F\\cdot \\text{d}r=2,$ evaluate ${\\int }_{C}F\\cdot \\text{d}r,$ where $F(x,y)=(x+y)\\,i+(x-y)\\,j,$ and $C={C}_{1}\\cup {C}_{2}.$",
+    "source_solution": "We will use the fact that\n\n$$\n{\\int }_{C}F\\cdot \\text{d}r={\\int }_{{C}_{1}}F\\cdot \\text{d}r+{\\int }_{{C}_{2}}F\\cdot \\text{d}r.\n$$\n\nWe're given the value of the first integral, so we only need to work out the second.\n\nThe path ${C}_{2}$ is the line segment from $A$ to $B.$ It can be parametrized as\n\n$$\n\\begin{aligned}{r}_{2}(t) & =a+t(b-a) \\\\  & =\u27e82,0\u27e9+t(\u27e81,1\u27e9-\u27e82,0\u27e9) \\\\  & =\u27e82-t,t\u27e9 \\\\  & =(2-t)\\,i+t\\,j,\\end{aligned}\n$$\n\nwhere $0<t<1.$ Along this segment, we have $x=2-t$ and $y=t.$ Therefore, \n\n$$\n\\begin{aligned}F({r}_{2}(t)) & =(x+y)\\,i+(x-y)\\,j \\\\  & =(2-t+t)\\,i+(2-t-t)\\,j \\\\  & =2\\,i+(2-2t)\\,j.\\end{aligned}\n$$\n\nComputing the derivative, we get the following:\n\n$$\n\\begin{aligned}{r}_{2}^{\u2032}(t) & =\\frac{\\text{d}}{\\text{d}t}(2-t)i+\\frac{\\text{d}}{\\text{d}t}(t)j \\\\  & =-i+j\\end{aligned}\n$$\n\nWe can now compute the dot product:\n\n$$\n\\begin{aligned}F({r}_{2}(t))\\cdot {r}_{2}^{\u2032}(t) & =(2\\,i+(2-2t)\\,j)\\cdot (-i+j) \\\\  & =-2+(2-2t) \\\\  & =-2t\\end{aligned}\n$$\n\nFinally, we can evaluate the integral, as follows: \n\n$$\n\\begin{aligned}{\\int }_{C}F\\cdot \\text{d}r & ={\\int }_{{C}_{1}}F\\cdot \\text{d}r+{\\int }_{{C}_{2}}F\\cdot \\text{d}r \\\\  & =2+{\\int }_{0}^{1}F({r}_{2}(t))\\cdot {r}_{2}^{\u2032}(t)\\,\\text{d}t \\\\  & =2+{\\int }_{0}^{1}(-2t)\\,\\text{d}t \\\\  & =2-{t}^{2}{|}_{0}^{1} \\\\  & =2-(1-0) \\\\  & =1\\end{aligned}\n$$"
+  },
+  {
+    "source": "q-39674",
+    "source_eid": 17592186180175,
+    "difficulty": "hard",
+    "field_components": [
+      "x",
+      "y"
+    ],
+    "oriented_curves_and_bounds": [
+      [
+        "t",
+        "t**2",
+        "0",
+        "2"
+      ],
+      [
+        "2 - 2*t",
+        "4",
+        "0",
+        "1"
+      ]
+    ],
+    "known_segment": 2,
+    "segment_integrals": [
+      "10",
+      "-2"
+    ],
+    "correct": "8",
+    "bank_exact_expressions": [
+      "-2",
+      "8",
+      "0",
+      "2",
+      "10"
+    ],
+    "plot": {
+      "reference": "images/51/512905447203d1d3a96781d20d586f9c4cf5cc9392fab50607b6fc77e9b00121.png",
+      "sha256": "512905447203d1d3a96781d20d586f9c4cf5cc9392fab50607b6fc77e9b00121",
+      "reused_unchanged": true
+    },
+    "solution_stages": [
+      "additivity",
+      "identify unknown piece",
+      "parametrization",
+      "substitution",
+      "derivative",
+      "dot product",
+      "antiderivative and endpoints",
+      "sum"
+    ],
+    "source_prompt": "![](images/51/512905447203d1d3a96781d20d586f9c4cf5cc9392fab50607b6fc77e9b00121.png)\n\nThe path ${C}_{1}$ consists of a section of the parabola $y={x}^{2}$ from the point $O(0,0)$ to the point $A(2,4),$ and the path ${C}_{2}$ consists of a line segment from the point $A(2,4)$ to the point $B(0,4).$\n\nGiven that ${\\int }_{{C}_{2}}F\\cdot \\text{d}r=-2,$ evaluate ${\\int }_{C}F\\cdot \\text{d}r,$ where $F(x,y)=x\\,i+y\\,j$ and $C={C}_{1}\\cup {C}_{2}.$",
+    "source_solution": "We will use the fact that\n\n$$\n{\\int }_{C}F\\cdot \\text{d}r={\\int }_{{C}_{1}}F\\cdot \\text{d}r+{\\int }_{{C}_{2}}F\\cdot \\text{d}r.\n$$\n\nWe're given the value of the second integral, so we only need to work out the first.\n\n${C}_{1}$ is the section of parabola $y={x}^{2}$ from $O$ to $A.$ It can be parametrized as\n\n$$\n\\begin{aligned}{r}_{1}(t)=t\\,i+{t}^{2}\\,j,\\end{aligned}\n$$\n\nwhere $0<t<2.$ Along this curve, we have $x=t$ and $y={t}^{2}.$ Therefore, \n\n$$\n\\begin{aligned}F({r}_{1}(t)) & =x\\,i+y\\,j \\\\  & =t\\,i+{t}^{2}\\,j.\\end{aligned}\n$$\n\nComputing the derivative, we get the following:\n\n$$\n\\begin{aligned}{r}_{1}^{\u2032}(t) & =\\frac{\\text{d}}{\\text{d}t}(t)i+\\frac{\\text{d}}{\\text{d}t}({t}^{2})j \\\\  & =i+2t\\,j\\end{aligned}\n$$\n\nWe can now compute the dot product:\n\n$$\n\\begin{aligned}F({r}_{1}(t))\\cdot {r}_{1}^{\u2032}(t) & =(t\\,i+{t}^{2}\\,j)\\cdot (i+2t\\,j) \\\\  & =t+2{t}^{3}\\end{aligned}\n$$\n\nFinally, we can evaluate the integral, as follows:\n\n$$\n\\begin{aligned}{\\int }_{C}F\\cdot \\text{d}r & ={\\int }_{{C}_{1}}F\\cdot \\text{d}r+{\\int }_{{C}_{2}}F\\cdot \\text{d}r \\\\  & ={\\int }_{0}^{2}F({r}_{1}(t))\\cdot {r}_{1}^{\u2032}(t)\\,\\text{d}t-2 \\\\  & ={\\int }_{0}^{2}(t+2{t}^{3})\\,\\text{d}t-2 \\\\  & ={[\\frac{{t}^{2}}{2}+\\frac{{t}^{4}}{2}]}_{0}^{2}-2 \\\\  & =[2+8]-2 \\\\  & =10-2 \\\\  & =8\\end{aligned}\n$$"
+  },
+  {
+    "source": "q-39673",
+    "source_eid": 17592186326775,
+    "difficulty": "moderate",
+    "field_components": [
+      "2*x - 3*y",
+      "x + y"
+    ],
+    "oriented_curves_and_bounds": [
+      [
+        "t",
+        "t + 1",
+        "0",
+        "1"
+      ],
+      [
+        "1",
+        "t + 2",
+        "0",
+        "1"
+      ]
+    ],
+    "known_segment": 2,
+    "segment_integrals": [
+      "-3/2",
+      "7/2"
+    ],
+    "correct": "2",
+    "bank_exact_expressions": [
+      "E-2",
+      "-3/2",
+      "2+log(3)",
+      "2",
+      "7/2"
+    ],
+    "plot": {
+      "reference": "images/73/73c6a8268a179f72611fb65e099d1249d48501e4fd4731d03747800e1944fd97.png",
+      "sha256": "73c6a8268a179f72611fb65e099d1249d48501e4fd4731d03747800e1944fd97",
+      "reused_unchanged": true
+    },
+    "solution_stages": [
+      "additivity",
+      "identify unknown piece",
+      "parametrization",
+      "substitution",
+      "derivative",
+      "dot product",
+      "antiderivative and endpoints",
+      "sum"
+    ],
+    "source_prompt": "![](images/73/73c6a8268a179f72611fb65e099d1249d48501e4fd4731d03747800e1944fd97.png)\n\nThe path ${C}_{1}$ consists of a the line segment from the point $A(0,1)$ to the point $B(1,2),$ and the path ${C}_{2}$ consists of a line segment from the point $B(1,2)$ to the point $D(1,3).$\n\nGiven that ${\\int }_{{C}_{2}}F\\cdot \\text{d}r=\\frac{7}{2},$ evaluate ${\\int }_{C}F\\cdot \\text{d}r,$ where $F(x,y)=(2x-3y)\\,i+(x+y)\\,j,$ and $C={C}_{1}\\cup {C}_{2}.$",
+    "source_solution": "We will use the fact that\n\n$$\n{\\int }_{C}F\\cdot \\text{d}r={\\int }_{{C}_{1}}F\\cdot \\text{d}r+{\\int }_{{C}_{2}}F\\cdot \\text{d}r.\n$$\n\nWe're given the value of the second integral, so we only need to work out the first.\n\nThe path ${C}_{1}$ is the line segment from $A$ to $B.$  It can be parametrized as\n\n$$\n\\begin{aligned}{r}_{1}(t) & =a+t(b-a) \\\\  & =\u27e80,1\u27e9+t(\u27e81,2\u27e9-\u27e80,1\u27e9) \\\\  & =\u27e8t,1+t\u27e9 \\\\  & =t\\,i+(1+t)\\,j,\\end{aligned}\n$$\n\nwhere $0<t<1.$ Along this segment, we have $x=t$ and $y=1+t.$ Therefore, \n\n$$\n\\begin{aligned}F({r}_{1}(t)) & =(2x-3y)\\,i+(x+y)\\,j \\\\  & =(2t-3(1+t))\\,i+(t+(1+t))\\,j \\\\  & =(-3-t)\\,i+(2t+1)\\,j.\\end{aligned}\n$$\n\nComputing the derivative, we get the following:\n\n$$\n\\begin{aligned}{r}_{1}^{\u2032}(t) & =\\frac{\\text{d}}{\\text{d}t}(t)i+\\frac{\\text{d}}{\\text{d}t}(1+t)j \\\\  & =i+j\\end{aligned}\n$$\n\nWe can now compute the dot product:\n\n$$\n\\begin{aligned}F({r}_{1}(t))\\cdot {r}_{1}^{\u2032}(t) & =((-3-t)\\,i+(2t+1)\\,j)\\cdot (i+j) \\\\  & =-3-t+2t+1 \\\\  & =t-2\\end{aligned}\n$$\n\nFinally, we can evaluate the integral, as follows: \n\n$$\n\\begin{aligned}{\\int }_{C}F\\cdot \\text{d}r & ={\\int }_{{C}_{1}}F\\cdot \\text{d}r+{\\int }_{{C}_{2}}F\\cdot \\text{d}r \\\\  & ={\\int }_{0}^{1}F({r}_{1}(t))\\cdot {r}_{1}^{\u2032}(t)\\,\\text{d}t+\\frac{7}{2} \\\\  & ={\\int }_{0}^{1}(t-2)\\,\\text{d}t+\\frac{7}{2} \\\\  & ={[\\frac{{t}^{2}}{2}-2t]}_{0}^{1}+\\frac{7}{2} \\\\  & =[\\frac{1}{2}-2-0]+\\frac{7}{2} \\\\  & =-\\frac{3}{2}+\\frac{7}{2} \\\\  & =2\\end{aligned}\n$$"
+  },
+  {
+    "source": "q-77180",
+    "source_eid": 17592186345283,
+    "difficulty": "moderate",
+    "field_components": [
+      "2*x + y",
+      "x - 2*y"
+    ],
+    "oriented_curves_and_bounds": [
+      [
+        "1",
+        "2*t - 1",
+        "0",
+        "1"
+      ],
+      [
+        "1 - t",
+        "1 - t",
+        "0",
+        "1"
+      ]
+    ],
+    "known_segment": 1,
+    "segment_integrals": [
+      "2",
+      "-1"
+    ],
+    "correct": "1",
+    "bank_exact_expressions": [
+      "1",
+      "-4",
+      "5",
+      "-1",
+      "3"
+    ],
+    "plot": {
+      "reference": "images/93/93c6184f39b28a057866bb02e11e5e81a7abea4ff8a9a907670dd30cfc93d557.png",
+      "sha256": "93c6184f39b28a057866bb02e11e5e81a7abea4ff8a9a907670dd30cfc93d557",
+      "reused_unchanged": true
+    },
+    "solution_stages": [
+      "additivity",
+      "identify unknown piece",
+      "parametrization",
+      "substitution",
+      "derivative",
+      "dot product",
+      "antiderivative and endpoints",
+      "sum"
+    ],
+    "source_prompt": "![](images/93/93c6184f39b28a057866bb02e11e5e81a7abea4ff8a9a907670dd30cfc93d557.png)\n\nThe path ${C}_{1}$ consists of a line segment from the point $A(1,-1)$ to the point $B(1,1),$ and the path ${C}_{2}$ consists of a line segment from the point $B(1,1)$ to the point $O(0,0).$\n\nGiven that ${\\int }_{{C}_{1}}F\\cdot \\text{d}r=2,$ evaluate ${\\int }_{C}F\\cdot \\text{d}r,$ where $F(x,y)=(2x+y)\\,i+(x-2y)\\,j,$ and $C={C}_{1}\\cup {C}_{2}.$",
+    "source_solution": "We will use the fact that\n\n$$\n{\\int }_{C}F\\cdot \\text{d}r={\\int }_{{C}_{1}}F\\cdot \\text{d}r+{\\int }_{{C}_{2}}F\\cdot \\text{d}r.\n$$\n\nWe're given the value of the first integral, so we only need to work out the second.\n\nThe path ${C}_{2}$ is the line segment from $B$ to $O.$ It can be parametrized as\n\n$$\n\\begin{aligned}{r}_{2}(t) & =b+t(0-b) \\\\  & =\u27e81,1\u27e9+t(\u27e80,0\u27e9-\u27e81,1\u27e9) \\\\  & =\u27e81-t,1-t\u27e9 \\\\  & =(1-t)\\,i+(1-t)\\,j,\\end{aligned}\n$$\n\nwhere $0<t<1.$ Along this segment, we have $x=1-t$ and $y=1-t.$ Therefore, \n\n$$\n\\begin{aligned}F({r}_{2}(t)) & =(2x+y)\\,i+(x-2y)\\,j \\\\  & =(2(1-t)+(1-t))\\,i+((1-t)-2(1-t))\\,j \\\\  & =(3-3t)\\,i+(-1+t)\\,j.\\end{aligned}\n$$\n\nComputing the derivative, we get the following:\n\n$$\n\\begin{aligned}{r}_{2}^{\u2032}(t) & =\\frac{\\text{d}}{\\text{d}t}(1-t)i+\\frac{\\text{d}}{\\text{d}t}(1-t)j \\\\  & =-i-j\\end{aligned}\n$$\n\nWe can now compute the dot product:\n\n$$\n\\begin{aligned}F({r}_{2}(t))\\cdot {r}_{2}^{\u2032}(t) & =((3-3t)\\,i+(-1+t)\\,j)\\cdot (-i-j) \\\\  & =-3+3t+1-t \\\\  & =-2+2t\\end{aligned}\n$$\n\nFinally, we can evaluate the integral, as follows: \n\n$$\n\\begin{aligned}{\\int }_{C}F\\cdot \\text{d}r & ={\\int }_{{C}_{1}}F\\cdot \\text{d}r+{\\int }_{{C}_{2}}F\\cdot \\text{d}r \\\\  & =2+{\\int }_{0}^{1}F({r}_{2}(t))\\cdot {r}_{2}^{\u2032}(t)\\,\\text{d}t \\\\  & =2+{\\int }_{0}^{1}(-2+2t)\\,\\text{d}t \\\\  & =2+(-2t+{t}^{2})\\,{|}_{0}^{1} \\\\  & =2+(1-2) \\\\  & =1\\end{aligned}\n$$"
+  },
+  {
+    "source": "q-77182",
+    "source_eid": 17592186345284,
+    "difficulty": "moderate",
+    "field_components": [
+      "x**2 + y",
+      "x - y**2"
+    ],
+    "oriented_curves_and_bounds": [
+      [
+        "t",
+        "0",
+        "0",
+        "1"
+      ],
+      [
+        "1 - t",
+        "-2*t",
+        "0",
+        "1"
+      ]
+    ],
+    "known_segment": 2,
+    "segment_integrals": [
+      "1/3",
+      "7/3"
+    ],
+    "correct": "8/3",
+    "bank_exact_expressions": [
+      "8/3",
+      "8/5",
+      "5/2",
+      "2",
+      "5"
+    ],
+    "plot": {
+      "reference": "images/60/6087da076e65bda5240c428ff67c570ad59ae9a8e5a5a3c9e8406184998de56a.png",
+      "sha256": "6087da076e65bda5240c428ff67c570ad59ae9a8e5a5a3c9e8406184998de56a",
+      "reused_unchanged": true
+    },
+    "solution_stages": [
+      "additivity",
+      "identify unknown piece",
+      "parametrization",
+      "substitution",
+      "derivative",
+      "dot product",
+      "antiderivative and endpoints",
+      "sum"
+    ],
+    "source_prompt": "![](images/60/6087da076e65bda5240c428ff67c570ad59ae9a8e5a5a3c9e8406184998de56a.png)\n\nThe path ${C}_{1}$ consists of a the line segment from the point $O(0,0)$ to the point $A(1,0),$ and the path ${C}_{2}$ consists of a line segment from the point $A(1,0)$ to the point $B(0,-2).$\n\nGiven that ${\\int }_{{C}_{2}}F\\cdot \\text{d}r=\\frac{7}{3},$ evaluate ${\\int }_{C}F\\cdot \\text{d}r,$ where $F(x,y)=({x}^{2}+y)\\,i+(x-{y}^{2})\\,j,$ and $C={C}_{1}\\cup {C}_{2}.$",
+    "source_solution": "We will use the fact that\n\n$$\n{\\int }_{C}F\\cdot \\text{d}r={\\int }_{{C}_{1}}F\\cdot \\text{d}r+{\\int }_{{C}_{2}}F\\cdot \\text{d}r.\n$$\n\nWe're given the value of the second integral, so we only need to work out the first.\n\nThe path ${C}_{1}$ is the horizontal line segment from $O$ to $A.$ It can be parametrized as\n\n$$\n\\begin{aligned}{r}_{1}(t) & =0+t(a-0) \\\\  & =\u27e80,0\u27e9+t(\u27e81,0\u27e9-\u27e80,0\u27e9) \\\\  & =\u27e8t,0\u27e9 \\\\  & =t\\,i,\\end{aligned}\n$$\n\nwhere $0<t<1.$ Along this segment, we have $x=t$ and $y=0.$ Therefore, \n\n$$\n\\begin{aligned}F({r}_{1}(t)) & =({x}^{2}+y)\\,i+(x-{y}^{2})\\,j \\\\  & =({t}^{2}+0)\\,i+(t-{0}^{2})\\,j \\\\  & ={t}^{2}\\,i+t\\,j.\\end{aligned}\n$$\n\nComputing the derivative, we get the following:\n\n$$\n\\begin{aligned}{r}_{1}^{\u2032}(t) & =\\frac{\\text{d}}{\\text{d}t}(t)i+\\frac{\\text{d}}{\\text{d}t}(0)j \\\\  & =i\\end{aligned}\n$$\n\nWe can now compute the dot product:\n\n$$\n\\begin{aligned}F({r}_{1}(t))\\cdot {r}_{1}^{\u2032}(t) & =({t}^{2}\\,i+t\\,j)\\cdot (i) \\\\  & ={t}^{2}\\end{aligned}\n$$\n\nFinally, we can evaluate the integral, as follows: \n\n$$\n\\begin{aligned}{\\int }_{C}F\\cdot \\text{d}r & ={\\int }_{{C}_{1}}F\\cdot \\text{d}r+{\\int }_{{C}_{2}}F\\cdot \\text{d}r \\\\  & ={\\int }_{0}^{1}F({r}_{1}(t))\\cdot {r}_{1}^{\u2032}(t)\\,\\text{d}t+\\frac{7}{3} \\\\  & ={\\int }_{0}^{1}{t}^{2}\\,\\text{d}t+\\frac{7}{3} \\\\  & =\\frac{1}{3}{t}^{3}\\,{|}_{0}^{1}+\\frac{7}{3} \\\\  & =(\\frac{1}{3}-0)+\\frac{7}{3} \\\\  & =\\frac{1}{3}+\\frac{7}{3} \\\\  & =\\frac{8}{3}\\end{aligned}\n$$"
+  },
+  {
+    "source": "q-77185",
+    "source_eid": 17592186345285,
+    "difficulty": "moderate",
+    "field_components": [
+      "x - y",
+      "-x + y"
+    ],
+    "oriented_curves_and_bounds": [
+      [
+        "t - 2",
+        "2",
+        "0",
+        "1"
+      ],
+      [
+        "-1",
+        "2 - 2*t",
+        "0",
+        "1"
+      ]
+    ],
+    "known_segment": 1,
+    "segment_integrals": [
+      "-7/2",
+      "-4"
+    ],
+    "correct": "-15/2",
+    "bank_exact_expressions": [
+      "1/2",
+      "4",
+      "-3/2",
+      "-15/2",
+      "-6"
+    ],
+    "plot": {
+      "reference": "images/c0/c0a4f042748ddadd824bed4ee71bca9724d7ca7dcc376a0ccf7c1353d59ec4fc.png",
+      "sha256": "c0a4f042748ddadd824bed4ee71bca9724d7ca7dcc376a0ccf7c1353d59ec4fc",
+      "reused_unchanged": true
+    },
+    "solution_stages": [
+      "additivity",
+      "identify unknown piece",
+      "parametrization",
+      "substitution",
+      "derivative",
+      "dot product",
+      "antiderivative and endpoints",
+      "sum"
+    ],
+    "source_prompt": "![](images/c0/c0a4f042748ddadd824bed4ee71bca9724d7ca7dcc376a0ccf7c1353d59ec4fc.png)\n\nThe path ${C}_{1}$ consists of a line segment from the point $A(-2,2)$ to the point $B(-1,2),$ and the path ${C}_{2}$ consists of a line segment from the point $B(-1,2)$ to the point $D(-1,0).$\n\nGiven that ${\\int }_{{C}_{1}}F\\cdot \\text{d}r=-\\frac{7}{2},$ evaluate ${\\int }_{C}F\\cdot \\text{d}r,$ where $F(x,y)=(x-y)\\,i+(y-x)\\,j,$ and $C={C}_{1}\\cup {C}_{2}.$",
+    "source_solution": "We will use the fact that\n\n$$\n{\\int }_{C}F\\cdot \\text{d}r={\\int }_{{C}_{1}}F\\cdot \\text{d}r+{\\int }_{{C}_{2}}F\\cdot \\text{d}r.\n$$\n\nWe're given the value of the first integral, so we only need to work out the second.\n\nThe path ${C}_{2}$ is the vertical line segment from $B$ to $D.$ It can be parametrized as\n\n$$\n\\begin{aligned}{r}_{2}(t) & =b+t(d-b) \\\\  & =\u27e8-1,2\u27e9+t(\u27e8-1,0\u27e9-\u27e8-1,2\u27e9) \\\\  & =\u27e8-1,2-2t\u27e9 \\\\  & =-\\,i+(2-2t)\\,j,\\end{aligned}\n$$\n\nwhere $0<t<1.$ Along this segment, we have $x=-1$ and $y=2-2t.$ Therefore, \n\n$$\n\\begin{aligned}F({r}_{2}(t)) & =(x-y)\\,i+(y-x)\\,j \\\\  & =(-1-(2-2t))\\,i+(2-2t-(-1))\\,j \\\\  & =(-3+2t)\\,i+(3-2t)\\,j.\\end{aligned}\n$$\n\nComputing the derivative, we get the following:\n\n$$\n\\begin{aligned}{r}_{2}^{\u2032}(t) & =\\frac{\\text{d}}{\\text{d}t}(-1)i+\\frac{\\text{d}}{\\text{d}t}(2-2t)j \\\\  & =-2\\,j\\end{aligned}\n$$\n\nWe can now compute the dot product:\n\n$$\n\\begin{aligned}F({r}_{2}(t))\\cdot {r}_{2}^{\u2032}(t) & =((-3+2t)\\,i+(3-2t)\\,j)\\cdot (-2\\,j) \\\\  & =(3-2t)\\cdot (-2) \\\\  & =4t-6\\end{aligned}\n$$\n\nFinally, we can evaluate the integral, as follows: \n\n$$\n\\begin{aligned}{\\int }_{C}F\\cdot \\text{d}r & ={\\int }_{{C}_{1}}F\\cdot \\text{d}r+{\\int }_{{C}_{2}}F\\cdot \\text{d}r \\\\  & =-\\frac{7}{2}+{\\int }_{0}^{1}F({r}_{2}(t))\\cdot {r}_{2}^{\u2032}(t)\\,\\text{d}t \\\\  & =-\\frac{7}{2}+{\\int }_{0}^{1}(4t-6)\\,\\text{d}t \\\\  & =-\\frac{7}{2}+[2{t}^{2}-6t]_{0}^{1} \\\\  & =-\\frac{7}{2}+[2({1}^{2})-6(1)-0] \\\\  & =-\\frac{7}{2}-4 \\\\  & =-\\frac{15}{2}\\end{aligned}\n$$"
+  },
+  {
+    "source": "q-77191",
+    "source_eid": 17592186345286,
+    "difficulty": "moderate",
+    "field_components": [
+      "x - 2*y",
+      "-x + y"
+    ],
+    "oriented_curves_and_bounds": [
+      [
+        "2*t - 2",
+        "t",
+        "0",
+        "1"
+      ],
+      [
+        "t",
+        "1",
+        "0",
+        "1"
+      ]
+    ],
+    "known_segment": 2,
+    "segment_integrals": [
+      "-5/2",
+      "-3/2"
+    ],
+    "correct": "-4",
+    "bank_exact_expressions": [
+      "-4",
+      "5",
+      "-3/2",
+      "3/2",
+      "4"
+    ],
+    "plot": {
+      "reference": "images/04/0457cb819e6f39ef9c0978e356cff788e1cf5edbef9cbf844a054ab777b70eac.png",
+      "sha256": "0457cb819e6f39ef9c0978e356cff788e1cf5edbef9cbf844a054ab777b70eac",
+      "reused_unchanged": true
+    },
+    "solution_stages": [
+      "additivity",
+      "identify unknown piece",
+      "parametrization",
+      "substitution",
+      "derivative",
+      "dot product",
+      "antiderivative and endpoints",
+      "sum"
+    ],
+    "source_prompt": "![](images/04/0457cb819e6f39ef9c0978e356cff788e1cf5edbef9cbf844a054ab777b70eac.png)\n\nThe path ${C}_{1}$ consists of a the line segment from the point $A(-2,0)$ to the point $B(0,1),$ and the path ${C}_{2}$ consists of the line segment from the point $B(0,1)$ to the point $D(1,1).$\n\nGiven that ${\\int }_{{C}_{2}}F\\cdot \\text{d}r=-\\frac{3}{2},$ evaluate ${\\int }_{C}F\\cdot \\text{d}r,$ where $F(x,y)=(x-2y)\\,i+(y-x)\\,j,$ and $C={C}_{1}\\cup {C}_{2}.$",
+    "source_solution": "We will use the fact that\n\n$$\n{\\int }_{C}F\\cdot \\text{d}r={\\int }_{{C}_{1}}F\\cdot \\text{d}r+{\\int }_{{C}_{2}}F\\cdot \\text{d}r.\n$$\n\nWe're given the value of the second integral, so we only need to work out the first.\n\nThe path ${C}_{1}$ is the line segment from $A$ to $B.$  It can be parametrized as\n\n$$\n\\begin{aligned}{r}_{1}(t) & =a+t(b-a) \\\\  & =\u27e8-2,0\u27e9+t(\u27e80,1\u27e9-\u27e8-2,0\u27e9) \\\\  & =\u27e8-2+2t,t\u27e9 \\\\  & =(-2+2t)i+t\\,j,\\end{aligned}\n$$\n\nwhere $0<t<1.$ Along this segment, we have $x=-2+2t$ and $y=t.$ Therefore, \n\n$$\n\\begin{aligned}F({r}_{1}(t)) & =(x-2y)\\,i+(y-x)\\,j \\\\  & =((-2+2t)-2t)\\,i+(t-(-2+2t))\\,j \\\\  & =-2\\,i+(2-t)\\,j.\\end{aligned}\n$$\n\nComputing the derivative, we get the following:\n\n$$\n\\begin{aligned}{r}_{1}^{\u2032}(t) & =\\frac{\\text{d}}{\\text{d}t}(-2+2t)i+\\frac{\\text{d}}{\\text{d}t}(t)j \\\\  & =2\\,i+j\\end{aligned}\n$$\n\nWe can now compute the dot product:\n\n$$\n\\begin{aligned}F({r}_{1}(t))\\cdot {r}_{1}^{\u2032}(t) & =(-2\\,i+(2-t)\\,j)\\cdot (2\\,i+j) \\\\  & =-2-t\\end{aligned}\n$$\n\nFinally, we can evaluate the integral, as follows: \n\n$$\n\\begin{aligned}{\\int }_{C}F\\cdot \\text{d}r & ={\\int }_{{C}_{1}}F\\cdot \\text{d}r+{\\int }_{{C}_{2}}F\\cdot \\text{d}r \\\\  & ={\\int }_{0}^{1}F({r}_{1}(t))\\cdot {r}_{1}^{\u2032}(t)\\,\\text{d}t+(-\\frac{3}{2}) \\\\  & ={\\int }_{0}^{1}(-2-t)\\,\\text{d}t-\\frac{3}{2} \\\\  & ={[-2t-\\frac{{t}^{2}}{2}]}_{0}^{1}-\\frac{3}{2} \\\\  & =[-2(1)-\\frac{{1}^{2}}{2}-0]-\\frac{3}{2} \\\\  & =-\\frac{5}{2}-\\frac{3}{2} \\\\  & =-4\\end{aligned}\n$$"
+  },
+  {
+    "source": "q-77250",
+    "source_eid": 17592186415770,
+    "difficulty": "hard",
+    "field_components": [
+      "x",
+      "0"
+    ],
+    "oriented_curves_and_bounds": [
+      [
+        "t",
+        "0",
+        "0",
+        "2"
+      ],
+      [
+        "t",
+        "4 - t**2",
+        "2",
+        "0"
+      ]
+    ],
+    "known_segment": 1,
+    "segment_integrals": [
+      "2",
+      "-2"
+    ],
+    "correct": "0",
+    "bank_exact_expressions": [
+      "-2",
+      "2",
+      "-4",
+      "0",
+      "3"
+    ],
+    "plot": {
+      "reference": "images/87/87182d625f4e669a6b2791a17f3e12c34922043b8f3deefd6b2473e8fb529886.png",
+      "sha256": "87182d625f4e669a6b2791a17f3e12c34922043b8f3deefd6b2473e8fb529886",
+      "reused_unchanged": true
+    },
+    "solution_stages": [
+      "additivity",
+      "identify unknown piece",
+      "reverse orientation",
+      "parametrization",
+      "substitution",
+      "derivative",
+      "dot product",
+      "antiderivative and endpoints",
+      "sum"
+    ],
+    "source_prompt": "![](images/87/87182d625f4e669a6b2791a17f3e12c34922043b8f3deefd6b2473e8fb529886.png)\n\nThe path ${C}_{1}$ consists of a line segment from the point $O(0,0)$ to the point $A(2,0),$ and the path ${C}_{2}$ consists of a section of the parabola $y=4-{x}^{2}$ from the point $A(2,0)$ to the point $B(0,4).$\n\nGiven that ${\\int }_{{C}_{1}}F\\cdot \\text{d}r=2,$ evaluate ${\\int }_{C}F\\cdot \\text{d}r,$ where $F(x,y)=x\\,i$ and $C={C}_{1}\\cup {C}_{2}.$",
+    "source_solution": "We will use the fact that\n\n$$\n{\\int }_{C}F\\cdot \\text{d}r={\\int }_{{C}_{1}}F\\cdot \\text{d}r+{\\int }_{{C}_{2}}F\\cdot \\text{d}r.\n$$\n\nWe're given the value of the first integral, so we only need to work out the second.\n\nLet ${C}_{2}$ be the section of parabola $y=4-{x}^{2}$ from $A$ to $B.$ Then,\n $-{C}_{2}$ will be the same path but travelled from $B$ to $A.$ The path $-{C}_{2}$ can be parametrized as\n\n$$\n\\begin{aligned}{r}_{2}(t)=t\\,i+(4-{t}^{2})\\,j,\\end{aligned}\n$$\n\nwhere $0<t<2.$ Along this curve, we have $x=t$ and $y=4-{t}^{2}.$ Therefore, \n\n$$\n\\begin{aligned}F({r}_{2}(t)) & =x\\,i=t\\,i.\\end{aligned}\n$$\n\nComputing the derivative, we get the following:\n\n$$\n\\begin{aligned}{r}_{2}^{\u2032}(t) & =\\frac{\\text{d}}{\\text{d}t}(t)i+\\frac{\\text{d}}{\\text{d}t}(4-{t}^{2})j \\\\  & =i-2t\\,j\\end{aligned}\n$$\n\nWe can now compute the dot product:\n\n$$\n\\begin{aligned}F({r}_{2}(t))\\cdot {r}_{2}^{\u2032}(t) & =(t\\,i)\\cdot (i-2t\\,j) \\\\  & =t\\end{aligned}\n$$\n\nFinally, we can evaluate the integral, as follows:\n\n$$\n\\begin{aligned}{\\int }_{C}F\\cdot \\text{d}r & ={\\int }_{{C}_{1}}F\\cdot \\text{d}r+{\\int }_{{C}_{2}}F\\cdot \\text{d}r \\\\  & ={\\int }_{{C}_{1}}F\\cdot \\text{d}r-{\\int }_{-{C}_{2}}F\\cdot \\text{d}r \\\\  & =2-{\\int }_{0}^{2}F({r}_{2}(t))\\cdot {r}_{2}^{\u2032}(t)\\,\\text{d}t \\\\  & =2-{\\int }_{0}^{2}t\\,\\text{d}t \\\\  & =2-{[\\frac{{t}^{2}}{2}]}_{0}^{2} \\\\  & =2-[\\frac{{2}^{2}}{2}-\\frac{{0}^{2}}{2}] \\\\  & =0\\end{aligned}\n$$"
+  },
+  {
+    "source": "q-77244",
+    "source_eid": 17592186415774,
+    "difficulty": "hard",
+    "field_components": [
+      "x*y",
+      "y"
+    ],
+    "oriented_curves_and_bounds": [
+      [
+        "t",
+        "8",
+        "0",
+        "-2"
+      ],
+      [
+        "t",
+        "-t**3",
+        "-2",
+        "0"
+      ]
+    ],
+    "known_segment": 1,
+    "segment_integrals": [
+      "16",
+      "-192/5"
+    ],
+    "correct": "-112/5",
+    "bank_exact_expressions": [
+      "-51/5",
+      "-112/5",
+      "32/5",
+      "-23/5",
+      "8/5"
+    ],
+    "plot": {
+      "reference": "images/b4/b4ce481ac8babb7a3e5707f1ef44417b12e73abe4b4c2143c19b45332642c6d2.png",
+      "sha256": "b4ce481ac8babb7a3e5707f1ef44417b12e73abe4b4c2143c19b45332642c6d2",
+      "reused_unchanged": true
+    },
+    "solution_stages": [
+      "additivity",
+      "identify unknown piece",
+      "parametrization",
+      "substitution",
+      "derivative",
+      "dot product",
+      "antiderivative and endpoints",
+      "sum"
+    ],
+    "source_prompt": "![](images/b4/b4ce481ac8babb7a3e5707f1ef44417b12e73abe4b4c2143c19b45332642c6d2.png)\n\nThe path ${C}_{1}$ consists of a line segment  from the point $B(0,8)$ to the point $A(-2,8),$ and the path ${C}_{2}$ consists of a section of the curve $y=-{x}^{3}$ from the point $A(-2,8)$ to the point $O(0,0).$\n\nGiven that ${\\int }_{{C}_{1}}F\\cdot \\text{d}r=16,$ evaluate ${\\int }_{C}F\\cdot \\text{d}r,$ where $F(x,y)=xy\\,i+y\\,j$ and $C={C}_{1}\\cup {C}_{2}.$",
+    "source_solution": "We will use the fact that\n\n$$\n{\\int }_{C}F\\cdot \\text{d}r={\\int }_{{C}_{1}}F\\cdot \\text{d}r+{\\int }_{{C}_{2}}F\\cdot \\text{d}r.\n$$\n\nWe're given the value of the first integral, so we only need to work out the second.\n\nThe path ${C}_{2}$ is the section of the curve $y=-{x}^{3}$ from $A$ to $O.$ It can be parametrized as\n\n$$\n\\begin{aligned}{r}_{2}(t)=t\\,i-{t}^{3}\\,j,\\end{aligned}\n$$\n\nwhere $-2\\le t\\le 0.$ Along this curve, we have $x=t$ and $y=-{t}^{3}.$ Therefore, \n\n$$\n\\begin{aligned}F({r}_{2}(t)) & =xy\\,i+y\\,j \\\\  & =-{t}^{4}\\,i-{t}^{3}\\,j.\\end{aligned}\n$$\n\nComputing the derivative, we get the following:\n\n$$\n\\begin{aligned}{r}_{2}^{\u2032}(t) & =\\frac{\\text{d}}{\\text{d}t}(t)i+\\frac{\\text{d}}{\\text{d}t}(-{t}^{3})j \\\\  & =i-3{t}^{2}\\,j\\end{aligned}\n$$\n\nWe can now compute the dot product:\n\n$$\n\\begin{aligned}F({r}_{2}(t))\\cdot {r}_{2}^{\u2032}(t) & =(-{t}^{4}\\,i-{t}^{3}\\,j)\\cdot (i-3{t}^{2}\\,j) \\\\  & =-{t}^{4}+3{t}^{5}\\end{aligned}\n$$\n\nFinally, we can evaluate the integral, as follows:\n\n$$\n\\begin{aligned}{\\int }_{C}F\\cdot \\text{d}r & ={\\int }_{{C}_{1}}F\\cdot \\text{d}r+{\\int }_{{C}_{2}}F\\cdot \\text{d}r \\\\  & =16+{\\int }_{-2}^{0}F({r}_{2}(t))\\cdot {r}_{2}^{\u2032}(t)\\,\\text{d}t \\\\  & =16+{\\int }_{-2}^{0}(-{t}^{4}+3{t}^{5})\\,\\text{d}t \\\\  & =16+{[-\\frac{1}{5}{t}^{5}+\\frac{1}{2}{t}^{6}]}_{-2}^{0} \\\\  & =16+[0-(-\\frac{(-{2}^{5})}{5}+\\frac{(-2)^{6}}{2})] \\\\  & =16-\\frac{192}{5} \\\\  & =-\\frac{112}{5}\\end{aligned}\n$$"
+  },
+  {
+    "source": "q-77258",
+    "source_eid": 17592186424621,
+    "difficulty": "hard",
+    "field_components": [
+      "x",
+      "y**2"
+    ],
+    "oriented_curves_and_bounds": [
+      [
+        "t",
+        "-sqrt(t)",
+        "0",
+        "4"
+      ],
+      [
+        "4",
+        "2*t - 2",
+        "0",
+        "1"
+      ]
+    ],
+    "known_segment": 2,
+    "segment_integrals": [
+      "16/3",
+      "8/3"
+    ],
+    "correct": "8",
+    "bank_exact_expressions": [
+      "32",
+      "8",
+      "5",
+      "4",
+      "16"
+    ],
+    "plot": {
+      "reference": "images/4d/4d4c2c86ed8506ff034141ac20a5a56587a80370384ceeaf08c66f2ce3e8a315.png",
+      "sha256": "4d4c2c86ed8506ff034141ac20a5a56587a80370384ceeaf08c66f2ce3e8a315",
+      "reused_unchanged": true
+    },
+    "solution_stages": [
+      "additivity",
+      "identify unknown piece",
+      "parametrization",
+      "substitution",
+      "derivative",
+      "dot product",
+      "antiderivative and endpoints",
+      "sum"
+    ],
+    "source_prompt": "![](images/4d/4d4c2c86ed8506ff034141ac20a5a56587a80370384ceeaf08c66f2ce3e8a315.png)\n\nThe path ${C}_{1}$ consists of a section of the parabola $y=-\\sqrt{x}$ from the point $O(0,0)$ to the point $A(4,-2),$ and the path ${C}_{2}$ consists of a line segment from the point $A(4,-2)$ to the point $B(4,0).$\n\nGiven that ${\\int }_{{C}_{2}}F\\cdot \\text{d}r=\\frac{8}{3},$ evaluate ${\\int }_{C}F\\cdot \\text{d}r,$ where $F(x,y)=x\\,i+{y}^{2}\\,j$ and $C={C}_{1}\\cup {C}_{2}.$",
+    "source_solution": "We will use the fact that\n\n$$\n{\\int }_{C}F\\cdot \\text{d}r={\\int }_{{C}_{1}}F\\cdot \\text{d}r+{\\int }_{{C}_{2}}F\\cdot \\text{d}r.\n$$\n\nWe're given the value of the second integral, so we only need to work out the first.\n\nThe path ${C}_{1}$ is the section of the curve $y=-\\sqrt{x}$ from $O$ to $A.$ It can be parametrized as\n\n$$\n\\begin{aligned}{r}_{1}(t)=t\\,i-\\sqrt{t}\\,j,\\end{aligned}\n$$\n\nwhere $0\\le t\\le 4.$ Along this curve, we have $x=t$ and $y=-\\sqrt{t}.$ Therefore, \n\n$$\n\\begin{aligned}F({r}_{1}(t)) & =x\\,i+{y}^{2}\\,j \\\\  & =t\\,i+t\\,j.\\end{aligned}\n$$\n\nComputing the derivative, we get the following:\n\n$$\n\\begin{aligned}{r}_{1}^{\u2032}(t) & =\\frac{\\text{d}}{\\text{d}t}(t)i+\\frac{\\text{d}}{\\text{d}t}(-\\sqrt{t})j \\\\  & =i-\\frac{1}{2\\sqrt{t}}\\,j\\end{aligned}\n$$\n\nWe can now compute the dot product:\n\n$$\n\\begin{aligned}F({r}_{1}(t))\\cdot {r}_{1}^{\u2032}(t) & =(t\\,i+t\\,j)\\cdot (i-\\frac{1}{2\\sqrt{t}}\\,j) \\\\  & =t-\\frac{\\sqrt{t}}{2}\\end{aligned}\n$$\n\nFinally, we can evaluate the integral, as follows:\n\n$$\n\\begin{aligned}{\\int }_{C}F\\cdot \\text{d}r & ={\\int }_{{C}_{1}}F\\cdot \\text{d}r+{\\int }_{{C}_{2}}F\\cdot \\text{d}r \\\\  & ={\\int }_{0}^{4}F({r}_{1}(t))\\cdot {r}_{1}^{\u2032}(t)\\,\\text{d}t+\\frac{8}{3} \\\\  & ={\\int }_{0}^{4}(t-\\frac{\\sqrt{t}}{2})\\text{d}t+\\frac{8}{3} \\\\  & ={[\\frac{{t}^{2}}{2}-\\frac{{t}^{3/2}}{3}]}_{0}^{4}+\\frac{8}{3} \\\\  & =(\\frac{{4}^{2}}{2}-\\frac{{4}^{3/2}}{3}-0)+\\frac{8}{3} \\\\  & =\\frac{16}{3}+\\frac{8}{3} \\\\  & =8\\end{aligned}\n$$"
+  }
+]
