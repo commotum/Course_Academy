@@ -7,7 +7,7 @@ def scalar(raw):
  text=raw.strip().rstrip('.,').replace('⁡','').replace('−','-').replace('π','pi').replace(r'\left','').replace(r'\right','').replace(r'\,','').replace(r'\cdot','*')
  text=re.sub(r'\\operatorname\{(arccos|arcsin|arctan|Abs|sin|cos|tan|sec|csc|cot|ln|log)\}',r'\1',text)
  text=re.sub(r'\{(arccos|arcsin|arctan|Abs|sin|cos|tan|sec|csc|cot|ln|log|e)\}',r'\1',text).replace('\\','')
- tokens=re.findall(r'frac|sqrt|arccos|arcsin|arctan|Abs|sin|cos|tan|sec|csc|cot|ln|log|exp|pi|[tuvxyzijke]|\d+(?:\.\d+)?|[{}()+\-*/^]',text)
+ tokens=re.findall(r'frac|sqrt|arccos|arcsin|arctan|Abs|sin|cos|tan|sec|csc|cot|ln|log|exp|pi|[atuvxyzijke]|\d+(?:\.\d+)?|[{}()+\-*/^]',text)
  assert re.sub(r'\s+','',text)==''.join(tokens),('Unsupported parent math',text)
  pos=0
  def peek():return tokens[pos] if pos<len(tokens) else None

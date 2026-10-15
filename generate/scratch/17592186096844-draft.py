@@ -17,7 +17,7 @@ def tex(e):return s.latex(e).replace(r'\log',r'\ln')
 def parameters_for(m):
  if m in EXCLUDED:return [{}]
  if m=='authored-affine-square':return [{'a':a,'b':b} for a in range(2,6) for b in range(1,8)]
- key=next(iter(DEFAULTS[m]));bounds={'q-11973':range(3,10),'q-2396':range(-5,6),'q-313362':range(1,10),'q-132975':range(1,10),'q-11978':range(1,8),'q-2403':range(2,9),'q-313365':range(2,10),'q-313371':range(1,10),'q-343546':(1,3,5,7,9),'q-343576':range(1,10),'q-344143':range(1,10)}
+ key=next(iter(DEFAULTS[m]));bounds={'q-11973':range(3,10),'q-2396':range(-5,6),'q-313362':range(1,10),'q-132975':range(1,10),'q-11978':range(1,8),'q-2403':range(2,9),'q-313365':range(2,10),'q-313371':range(1,32),'q-343546':(1,3,5,7,9),'q-343576':range(1,10),'q-344143':range(1,10)}
  return [{key:v} for v in bounds[m]]
 def validate_parameters(m,p):
  if p not in parameters_for(m) or any(type(v)!=int for v in p.values()):raise ValueError('Outside documented finite parameter domain')
@@ -119,7 +119,7 @@ def generate(level,seed=0,template=None,parameters=None,profile=None,field_type=
  prompt=math_format.normalize_prose(prompt);sol=math_format.normalize_prose(sol);rendered=[math_format.normalize_tex(v) for v in rendered]
  fp=task_fingerprint(m,p);body=[prompt,sol,level,ft,key,rendered,ci,domain(m,p),VERSION];cid=digest(body);uid=lambda q:str(uuid.uuid5(uuid.UUID(KP_UUID),q));qid=uid(cid);fid=uid(qid+key)
  choices=[{':answer/id':uid(fid+v),':answer/type':':answer.type/math',':answer/value':v} for v in rendered];correct=choices[ci][':answer/id']
- if ft.endswith('/radio'):rng.shuffle(choices)
+ if ft.endswith('/radio'):random.Random(seed).shuffle(choices)
  q={':question/id':qid,':question/problem':prompt,':question/worked-solution':sol,':question/difficulty':':question.difficulty/'+level,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':key,':answer-field/type':ft,':answer-field/choices':choices,':answer-field/correct':[':answer/id',correct]}]}
  out={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'generator_id':uid(VERSION),'level':level,'seed':seed,'template':m,'profile':'authored-blank' if m=='authored-affine-square' else 'source-component-bank','bank_profile':m if ft.endswith('/radio') else None,'parameters':p,'parameter_fingerprint':fp,'mathematical_fingerprint':fp,'content_identity':cid,'domain':domain(m,p),'source_basis':SOURCE['basis'],'source_lineage':SOURCE['lineage'],'source_refs':[] if m=='authored-affine-square' else [m],'evidence_only':False,'eligible_for_learning':True,'difficulty_provenance':'authored conservative simple affine-square quotient' if m=='authored-affine-square' else 'observed MA level','dependencies':{'python':sys.version.split()[0],'sympy':s.__version__},'plots':'none'}}
  return math_format.validate_generated_record(out)

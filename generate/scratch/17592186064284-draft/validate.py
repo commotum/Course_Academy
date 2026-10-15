@@ -107,11 +107,18 @@ def displayed(r):
             # the correct derivative or an option count.
             a,fun=curve.as_coeff_Mul();inside=fun.args[0];z=inside.args[0];S=s.sin(z);C=s.cos(z)
             patterns={
-                'authored-easy':(a*C*s.cos(S),a*s.cos(S),-a*C*s.cos(S),a*C*s.sin(S),a*C*s.cos(C)),
-                'q-31356':(S*s.cot(C)**2,S*s.csc(C)**2,s.csc(z)*s.sin(C)**2,S*s.cos(s.csc(z))**2,s.csc(z)*s.cos(S)**2),
-                'q-48643':(-C*s.sin(C),-S*s.cos(C),-S*s.cos(S),-C*s.cos(S),-S*s.sin(C)),
-                'q-72161':(-C*s.csc(C)**2,-C*s.csc(S)**2,-s.csc(S)**2,s.csc(C)**2,C*s.csc(C)**2),
+                'authored-easy':(),
+                'q-31356':tuple(a*v for v in (S*s.cot(C)**2,S*s.csc(C)**2,s.csc(z)*s.sin(C)**2,S*s.cos(s.csc(z))**2,s.csc(z)*s.cos(S)**2)),
+                'q-48643':tuple(a*v for v in (-C*s.sin(C),-S*s.cos(C),-S*s.cos(S),-C*s.cos(S),-S*s.sin(C))),
+                'q-72161':tuple(a*v for v in (-C*s.csc(C)**2,-C*s.csc(S)**2,-s.csc(S)**2,s.csc(C)**2,C*s.csc(C)**2)),
                 'q-72173':(a*s.sec(z)*s.tan(-S),a*S*s.sec(-S)*s.tan(-S),a*C*s.sec(C)*s.tan(C),a*S*s.sec(z)*s.tan(C),-a*S*s.sec(C)*s.tan(C))}
+            if m=='authored-easy':
+                # Both operator identities and every argument are read from
+                # the printed curve; generator operator metadata is unused.
+                assert fun.func in (s.sin,s.cos) and inside.func in (s.sin,s.cos) and z==x
+                outer_primitive=fun.func(u);od=s.diff(outer_primitive,u);id=s.diff(inside,x);correct=a*od.subs(u,inside)*id
+                other=(s.cos if inside.func==s.sin else s.sin)(x)
+                patterns[m]=(correct,a*od.subs(u,inside),-correct,a*outer_primitive.subs(u,inside)*id,a*od.subs(u,other)*id)
             assert len(vals)==len(patterns[m])==5
             assert all(sum(eq(v,w) for w in vals)==1 for v in patterns[m]),(m,'full rendered whole-bank pattern')
 
@@ -230,7 +237,11 @@ def main():
         for i,p in enumerate(ps):
             r=g.generate(g.LEVELS[m],i,template=m,parameters=p);displayed(r);local.append(r);fingerprints[g.LEVELS[m]].add(r['generation']['mathematical_fingerprint'])
         normal+=local;reviews += [local[0],local[-1]]
-        coverage[m]={'records':len(local),'slot_values':{k:sorted({p[k] for p in ps},key=str) for k in ps[0]},'source_anchor_in_domain':g.DEFAULTS[m] in ps}
+        if m=='authored-easy':
+            for outer in ('sin','cos'):
+                for inner in ('sin','cos'):
+                    same_amplitude=g.generate('easy',template=m,parameters={'a':4,'b':0,'outer':outer,'inner':inner});displayed(same_amplitude);reviews.append(same_amplitude)
+        coverage[m]={'records':len(local),'slot_values':{k:sorted({p[k] for p in ps},key=str) for k in ps[0]},'source_anchor_in_domain':(g.DEFAULTS[m] in ps or dict(g.DEFAULTS[m],a=g.DEFAULTS[m].get('a',1)) in ps)}
         if m in g.SOURCES:
             for p in (ps[0],ps[-1]):displayed(g.generate(g.LEVELS[m],template=m,parameters=p,profile='observed_raw'))
     seeds={}
@@ -243,17 +254,27 @@ def main():
         if m in g.EVIDENCE_ONLY_TEMPLATES:continue
         a=g.generate(g.LEVELS[m],0,template=m,parameters=g.DEFAULTS[m]);b=g.generate(g.LEVELS[m],65,template=m,parameters=g.DEFAULTS[m]);assert a['question'][':question/id']==b['question'][':question/id']
     failure(lambda:g.generate('moderate',template='q-48643',parameters={'b':True}));failure(lambda:g.generate('moderate',template='q-341223',parameters={'a':0,'b':0}));negatives+=2
-    base=g.generate('moderate',template='q-341223',parameters={'a':7,'b':3})
+    for m in g.SERVED_TEMPLATES:
+        for nonzero in (-3,1,3):
+            par=dict(g.parameters_for(m)[0],b=nonzero);failure(lambda:g.generate(g.LEVELS[m],template=m,parameters=par));negatives+=1
+    easy=g.generate('easy',template='authored-easy',parameters={'a':4,'b':0,'outer':'sin','inner':'sin'})
+    for target in ('outer','inner'):
+        r=copy.deepcopy(easy);ptext=r['question'][':question/problem']
+        old='y=4 '+r'\sin' if target=='outer' else r'\sin{\left(x \right)}'
+        new='y=4 '+r'\cos' if target=='outer' else r'\cos{\left(x \right)}'
+        r['question'][':question/problem']=ptext.replace(old,new,1);assert r!=easy
+        failure(lambda:displayed(r));negatives+=1
+    base=g.generate('moderate',template='q-341223',parameters={'a':7,'b':0})
     for slot in ('prompt','inner-binding','outer-binding','formal-outer','formal-inner','formal-target','chain-factor','substitution','key','placeholder','domain','control'):
         r=copy.deepcopy(base);q=r['question'];sol=q[':question/worked-solution']
-        if slot=='prompt':q[':question/problem']=q[':question/problem'].replace('x+3','x+2',1)
-        elif slot=='inner-binding':q[':question/worked-solution']=sol.replace(r'u=\operatorname{sin}\left(x+3\right)',r'u=\operatorname{sin}\left(x+2\right)',1)
+        if slot=='prompt':q[':question/problem']=q[':question/problem'].replace('y=7','y=6',1)
+        elif slot=='inner-binding':q[':question/worked-solution']=sol.replace(r'u=\operatorname{sin}⁡(x)',r'u=\operatorname{cos}⁡(x)',1)
         elif slot=='outer-binding':q[':question/worked-solution']=sol.replace('y=7','y=6',1)
         elif slot=='formal-outer':q[':question/worked-solution']=sol.replace('=-7','=-6',1)
         elif slot=='formal-inner':q[':question/worked-solution']=sol.replace(r'\frac{\text{d}u}{\text{d}x}=\operatorname{cos}',r'\frac{\text{d}u}{\text{d}x}=\operatorname{sin}',1)
         elif slot=='formal-target':q[':question/worked-solution']=sol.replace(r'\frac{\text{d}y}{\text{d}u}=',r'\frac{\text{d}y}{\text{d}x}=',1)
         elif slot=='chain-factor':q[':question/worked-solution']=sol.replace(r'\cdot \operatorname{cos}',r'\cdot \operatorname{sin}',1)
-        elif slot=='substitution':q[':question/worked-solution']=sol.replace(r'\operatorname{sin}\left(x+3\right)).',r'\operatorname{cos}\left(x+3\right)).',1)
+        elif slot=='substitution':q[':question/worked-solution']=sol.replace(r'\operatorname{sin}⁡(x)).',r'\operatorname{cos}⁡(x)).',1)
         elif slot=='key':q[':question/answer-fields'][0][':answer-field/choices'][0][':answer/value']='1'
         elif slot=='placeholder':q[':question/problem']=q[':question/problem'].replace('{{field-2}}','{{field-4}}')
         elif slot=='domain':r['generation']['domain']['restriction']='sin(x) != 0'
@@ -262,7 +283,7 @@ def main():
     # Regression: formerly the printed outer SUM was not grouped and only
     # individually split factors were checked. Recreate that precise error,
     # keeping the correct final derivative and answer bank unchanged.
-    precedence_base=g.generate('moderate',template='q-31356',parameters={'b':8})
+    precedence_base=g.generate('moderate',template='q-31356',parameters={'a':1,'b':0})
     ps=precedence_base['question'][':question/worked-solution']
     block=re.findall(r'\\begin\{aligned\}(.*?)\\end\{aligned\}',ps,re.S)[0]
     row=block.split(r'\\')[1];middle=row.split('=',1)[1]
@@ -270,19 +291,19 @@ def main():
     regressions={
         'ungrouped-outer-sum':ps.replace(middle,factor[1:-1]+r'\cdot'+middle.split(r'\cdot',1)[1],1),
         'formal-outer-summand':ps.replace(r'=- \cot^{2}{\left(u \right)} - 1',r'=- \cot^{2}{\left(u \right)} + 1',1),
-        'formal-inner-argument':ps.replace(r'\frac{\text{d}u}{\text{d}x}=- \sin{\left(x + 8 \right)}',r'\frac{\text{d}u}{\text{d}x}=- \sin{\left(x + 7 \right)}',1),
-        'chain-inner-argument':ps.replace(r'\cdot (- \sin{\left(x + 8 \right)})',r'\cdot (- \sin{\left(x + 7 \right)})',1)}
+        'formal-inner-argument':ps.replace(r'\frac{\text{d}u}{\text{d}x}=- \sin{\left(x \right)}',r'\frac{\text{d}u}{\text{d}x}=- \sin{\left(x + 1 \right)}',1),
+        'chain-inner-argument':ps.replace(r'\cdot (- \sin{\left(x \right)})',r'\cdot (- \sin{\left(x + 1 \right)})',1)}
     for name,mutated in regressions.items():
         r=copy.deepcopy(precedence_base);assert mutated!=ps,(name,'operand mutation did not change actual display')
         r['question'][':question/worked-solution']=mutated
         assert r['question'][':question/answer-fields']==precedence_base['question'][':question/answer-fields']
         failure(lambda:displayed(r));negatives+=1
     save('chain-precedence-regression.json',{'correct_record':precedence_base,'negative_solution_mutations':regressions,'assertion':'The complete actual printed multiplication stage must equal the derivative under TeX precedence; the answer key alone cannot establish solution correctness.'})
-    hard=g.generate('hard',template='q-48644',parameters={'a':4,'b':3,'phase':'1/6'})
+    hard=g.generate('hard',template='q-48644',parameters={'a':4,'b':0,'phase':'1/6'})
     for name in ('point','evaluation','tangent-slope','final-line'):
         r=copy.deepcopy(hard);q=r['question']
-        if name=='point':q[':question/problem']=q[':question/problem'].replace('-3','-2',1)
-        elif name=='evaluation':q[':question/worked-solution']=q[':question/worked-solution'].replace("f'(-3)&=","f'(-2)&=",1)
+        if name=='point':q[':question/problem']=q[':question/problem'].replace(r'\left(0,',r'\left(1,',1)
+        elif name=='evaluation':q[':question/worked-solution']=q[':question/worked-solution'].replace("f'(0)&=","f'(1)&=",1)
         elif name=='tangent-slope':q[':question/worked-solution']=q[':question/worked-solution'].replace('(-2)\\cdot','(-1)\\cdot',1)
         elif name=='final-line':q[':question/worked-solution']=q[':question/worked-solution'].replace('y&=- 2 x','y&=- 3 x',1)
         assert r!=hard,(name,'mutation did not touch actual content');failure(lambda:displayed(r));negatives+=1
@@ -302,6 +323,6 @@ def main():
     own_report=json.loads((HERE/'native-ownership-report.json').read_text());assert all(c['reason']=='selected answer does not belong to this field' for r in own_report['records'] for c in r['checks'])
     baseline=json.loads((HERE/'registered-baseline.json').read_text());files=[ROOT/'generate/scratch/17592186064284.py']+sorted(p for p in (ROOT/'generate/scratch/17592186064284').rglob('*') if p.is_file());assert {str(p) for p in files}==set(baseline);assert all(hashlib.sha256(Path(p).read_bytes()).hexdigest()==h for p,h in baseline.items())
     inv=json.loads((HERE/'independent-inventory.json').read_text());assert [e['record'] for e in inv['questions']]==[q for q in g.SOURCE['record'][':knowledge-point/questions'] if ':question/math-academy-id' not in q]
-    report={'status':'pass','private_draft_only':True,'source_basis':2275,'source_fidelity':counts,'MA_source_originals':11,'complete_radio_banks':4,'source_bank_options_matched':20,'source_bank_options_total':20,'exact_independent_inventory':5,'all_bounded_normal_records':len(normal),'explicit_nonserved_templates':sorted(g.EVIDENCE_ONLY_TEMPLATES),'semantic_tasks':{l:len(v) for l,v in fingerprints.items()},'slot_coverage':coverage,'default_sampling_template_coverage':seeds,'fail_closed_negative_controls':negatives,'native_grading':{k:native[k] for k in ('entry_point','accepted_checks','rejected_checks','documented_unresolved_checks')},'registered_script_and_full_evidence_pathset_unchanged':True,'baseline_files':len(baseline),'expected_foreign_ID_ownership_errors':5,'supplemental_limitations':['No original easy MA practice exists: fixed sine-of-sine full-derivative radio and its complete five-pattern bank are explicitly authored.','The unlabeled q-31356 gains an authored moderate key and solution only in learning output.','The hard tangent original lacks fields: normal RHS blank is an explicit authored repair. q-72163/q-72170/q-342436 are explicitly evidence-only and rejected from normal serving due ordinary native wrong-probe failures.','Hard special-angle phase and coefficient/point translations are authored same-stage extensions, not observed MA slots.','No plots occur. Exact immutable raw legacy TeX is evidence-only; served aligned displays are normalized.','Ordinary wrong probes unsupported by the frozen grader are fully recorded and their source families are explicitly nonserved; native-nonserved-exclusions.json retains exact fixture records. Foreign radio IDs intentionally fail the ownership guard in a separate API-negative report.'],'hashes':{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [HERE.with_suffix('.py'),Path(__file__),HERE/'source.json',binary]}}
+    report={'status':'pass','private_draft_only':True,'source_basis':2275,'source_fidelity':counts,'MA_source_originals':11,'complete_radio_banks':4,'source_bank_options_matched':20,'source_bank_options_total':20,'exact_independent_inventory':5,'all_bounded_normal_records':len(normal),'explicit_nonserved_templates':sorted(g.EVIDENCE_ONLY_TEMPLATES),'semantic_tasks':{l:len(v) for l,v in fingerprints.items()},'slot_coverage':coverage,'default_sampling_template_coverage':seeds,'fail_closed_negative_controls':negatives,'native_grading':{k:native[k] for k in ('entry_point','accepted_checks','rejected_checks','documented_unresolved_checks')},'registered_script_and_full_evidence_pathset_unchanged':True,'baseline_files':len(baseline),'expected_foreign_ID_ownership_errors':5,'supplemental_limitations':['No original easy MA practice exists: four ordinary sin/cos composition full-derivative radios and its complete five-pattern bank are explicitly authored.','The unlabeled q-31356 gains an authored moderate key and solution only in learning output.','The hard tangent original lacks fields: normal RHS blank is an explicit authored repair. q-72163/q-72170/q-342436 are explicitly evidence-only and rejected from normal serving due ordinary native wrong-probe failures.','Hard special-angle phase and outer coefficients are authored same-stage extensions with supplied x=0 fixed, not observed MA slots.','No plots occur. Exact immutable raw legacy TeX is evidence-only; served aligned displays are normalized.','Ordinary wrong probes unsupported by the frozen grader are fully recorded and their source families are explicitly nonserved; native-nonserved-exclusions.json retains exact fixture records. Foreign radio IDs intentionally fail the ownership guard in a separate API-negative report.'],'hashes':{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [HERE.with_suffix('.py'),Path(__file__),HERE/'source.json',binary]}}
     save('validation.json',report);print(json.dumps(report,indent=2))
 if __name__=='__main__':main()

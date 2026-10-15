@@ -13,7 +13,7 @@ Fixed workload and variable slots:
 | q-11978 | (x+a)²/(x²+a²), full five-choice derivative | a=1..7; numerator inner shift, dependent a² denominator, every factor/expanded term/cancellation and full bank |
 | q-2403 | sqrt(ln x)/(ax), full five-choice derivative | a=2..8; denominator and derivative a, intermediate a/2 divided by sqrt(ln x), square a² and every bank recipe; x>1 for derivative |
 | q-313365 | (x+1)²/(x+b), numerator fragment | b=2..9; denominator shift, 2b intermediate, 2b-1 simplification, supplied square and excluded x=-b |
-| q-313371 | ln x/e^(ax), numerator fragment over xe^(ax) | a=1..9; exponential inner slope, derivative factor, every intermediate product and numerator1-ax ln x; x>0 |
+| q-313371 | ln x/e^(ax), numerator fragment over xe^(ax) | a=1..31; exponential inner slope, derivative factor, every intermediate product and numerator1-ax ln x; x>0 |
 | q-343546 | cos(ax)/x, tangent slope at pi/2 | odd a=1,3,5,7,9; inner slope/angle, exact sine ±1, cosine0, evaluated derivative and key; evaluation point fixed because changing it changes trig workload |
 | q-343576 | e^(ax)/(x+2), derivative at1 | a=1..9; inner slope, 2a-1 expansion, (3a-1)e^a/9 answer; evaluation1 fixed to preserve arithmetic workload |
 | q-344143 | e^(ax²)/(x-2), polynomial fragment | a=1..9; inner a x², inner derivative2ax, expansion2ax²-4ax-1; supplied exponential factor and square remain coherent |
@@ -26,3 +26,5 @@ Whole banks are selected before constructing recipes. Each radio bank retains fi
 Correct answers are derived first by exact differentiation, then the complete bank and all components are derived from that instance. Blanks contain the fragment required by the actually displayed denominator and multiplier. Radio prompts retain no extra placeholder. Source math is separately retained from normalized course-academy-tex-v1 presentation. Fingerprints use the mathematical function, requested evaluation point, fragment/full contract and assessed expression. Seed, option order, aliases and raw/normal profiles are excluded from semantic counts.
 
 No within-level progression, new operators, additional rules, variable powers, changed response types, new evaluation branches or new solution stages are introduced. Missing easy coverage is authored conservatively and labeled; hard retains the observed log/exponential family rather than relabeling moderate problems.
+
+Hard coverage uses the same ln(x)/e^(ax) family with a=1..31. Only the existing inner exponential coefficient slot is extended. Formula, response fragment, x>0 domain, subtraction/square rule, and ordered expansion/cancellation stages are unchanged. All coefficient values receive exhaustive actual rendered-math and native ordinary wrong/equivalent/canonical checks.

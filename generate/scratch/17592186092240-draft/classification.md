@@ -1,0 +1,9 @@
+# Basis-2275 normal-line classification
+
+Frozen `math` basis 2275, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`; capture in source.json. Owning topic 17592186049119 / MA987. KP UUID 55a323ba-f2a7-5a49-abd4-a9812518ef8c. Registered baseline remains intact; baseline.json records the entire registered path set and SHA256 before any import.
+
+15 captured originals: 14 moderate and q-47406 unrated. Six two-blank coefficient/right-hand-side layouts, five scalar radio banks, one fieldless scalar coefficient expression, and three context-dependent one-blank line expressions. Polynomial, reciprocal-square, reciprocal-square-root and cube-root operations share differentiation, tangent evaluation, negative reciprocal, point-slope and rearrangement. The three product fragments use a tangent slope computed in a previous part; their prompts omit necessary function bindings.
+
+All original records and all 40 captured answer values remain in source.json. No plots occur in original practice questions. The lesson's introductory illustration is explanatory tutorial material and does not become a practice plot.
+
+Easy and hard have no observed practice labels. Their authored definitions are conservative design claims. Canonical e-6080 determines the full equation; prerequisite 418 supplies point-slope rearrangement. Following activity/first-step and step/next gives introduction, sibling slope KP17592186092384, this equation KP, then intercept KP17592186092385. Authored tasks always determine the full line and do not ask for intercepts or introduce implicit/parametric calculus. Easy uses a small quadratic and constant; moderate uses a cubic, linear term and constant; hard uses the observed sextic/cubic rational-coefficient structure, plus a small additive constant. Each level has one stable workload, with no progression inside it.

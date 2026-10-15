@@ -1784,6 +1784,177 @@ $$
 $$
 
 
+## Original replay q-161259
+
+### q-161259 / observed:q-161259
+
+Evaluate the surface integral
+
+$$
+{∬}_{S}⟨x,\,y,\,-z⟩\cdot \text{d}S
+$$
+
+where the parametric surface $S$ is defined by
+
+$$
+r(u,v)=⟨u+v,\,v-u,\,uv⟩
+$$
+
+over the domain $D=\{(u,v)\,:\,-2\le u\le 0,\,0\le v\le 1\}.$
+
+*Hint: You can use the fact that ${r}_{u}^{′}\times {r}_{v}^{′}=⟨-u-v,\,v-u,\,2⟩.$*
+
+- $\frac{5}{2}$
+- $\frac{7}{3}$
+- $6$ (correct)
+- $2$
+- $3$
+
+For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\in D,$ the flux of a vector field $F$ over $S$ is given by
+
+$$
+{∬}_{S}F\cdot \text{d}S={∬}_{S}F\cdot n\,\text{d}S={∬}_{D}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′})\,\text{d}A.
+$$
+
+We're given that the fundamental vector product for our surface is
+
+$$
+{r}_{u}^{′}\times {r}_{v}^{′}=⟨-u-v,\,v-u,\,2⟩.
+$$
+
+Next, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$
+
+$$
+\begin{aligned}F(r(u,v)) & ={⟨x,\,y,\,-z⟩|}_{x=u+v\,y=v-u\,z=uv} \\  & =⟨u+v,\,v-u,\,-uv⟩\end{aligned}
+$$
+
+Then, we calculate the dot product of $F$ and ${r}_{u}^{′}\times {r}_{v}^{′}:$
+
+$$
+\begin{aligned}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′}) & =⟨u+v,\,v-u,\,-uv⟩\cdot ⟨-u-v,\,v-u,\,2⟩ \\  & =(u+v)\cdot (-u-v)+(v-u)\cdot (v-u)+(-uv)\cdot 2 \\  & =-{u}^{2}-2uv-{v}^{2}+{v}^{2}-2uv+{u}^{2}-2uv \\  & =-6uv\end{aligned}
+$$
+
+Therefore, the surface integral evaluates to
+
+$$
+\begin{aligned}{∬}_{S}⟨x,\,y,\,-z⟩\cdot \text{d}S & ={∬}_{D}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′})\,\text{d}A \\  & ={∬}_{D}(-6uv)\,\text{d}A \\  & =-6{\int }_{0}^{1}{\int }_{-2}^{0}uv\,\text{d}u\,\text{d}v \\  & =-6{\int }_{0}^{1}v\,\text{d}v{\int }_{-2}^{0}u\,\text{d}u \\  & =-6\cdot [\frac{1}{2}{v}^{2}]_{0}^{1}\cdot {[\frac{1}{2}{u}^{2}]}_{-2}^{0} \\  & =-6\cdot \frac{1}{2}\cdot (-2) \\  & =6.\end{aligned}
+$$
+
+
+## Generated empirical bank variant q-161259 1
+
+### q-161259 / observed:q-161259
+
+Evaluate the surface integral
+
+$$
+{∬}_{S}⟨x,\,y,\,-z⟩\cdot \text{d}S
+$$
+
+where the parametric surface $S$ is defined by
+
+$$
+r(u,v)=⟨u+v,\,v-u,\,uv⟩
+$$
+
+over the domain $D=\{(u,v)\,:\,-2\le u\le 0,\,0\le v\le 2\}.$
+
+*Hint: You can use the fact that ${r}_{u}^{′}\times {r}_{v}^{′}=⟨-u-v,\,v-u,\,2⟩.$*
+
+- $5$
+- $\frac{14}{3}$
+- $24$ (correct)
+- $4$
+- $6$
+
+For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\in D,$ the flux of a vector field $F$ over $S$ is given by
+
+$$
+{∬}_{S}F\cdot \text{d}S={∬}_{S}F\cdot n\,\text{d}S={∬}_{D}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′})\,\text{d}A.
+$$
+
+We're given that the fundamental vector product for our surface is
+
+$$
+{r}_{u}^{′}\times {r}_{v}^{′}=⟨-u-v,\,v-u,\,2⟩.
+$$
+
+Next, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$
+
+$$
+\begin{aligned}F(r(u,v)) & ={⟨x,\,y,\,-z⟩|}_{x=u+v\,y=v-u\,z=uv} \\  & =⟨u+v,\,v-u,\,-uv⟩\end{aligned}
+$$
+
+Then, we calculate the dot product of $F$ and ${r}_{u}^{′}\times {r}_{v}^{′}:$
+
+$$
+\begin{aligned}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′}) & =⟨u+v,\,v-u,\,-uv⟩\cdot ⟨-u-v,\,v-u,\,2⟩ \\  & =(u+v)\cdot (-u-v)+(v-u)\cdot (v-u)+(-uv)\cdot 2 \\  & =-{u}^{2}-2uv-{v}^{2}+{v}^{2}-2uv+{u}^{2}-2uv \\  & =-6uv\end{aligned}
+$$
+
+Therefore, the surface integral evaluates to
+
+$$
+\begin{aligned}{∬}_{S}⟨x,\,y,\,-z⟩\cdot \text{d}S & ={∬}_{D}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′})\,\text{d}A \\  & ={∬}_{D}(-6uv)\,\text{d}A \\  & =-6{\int }_{0}^{2}{\int }_{-2}^{0}uv\,\text{d}u\,\text{d}v \\  & =-6{\int }_{0}^{2}v\,\text{d}v{\int }_{-2}^{0}u\,\text{d}u \\  & =-6\cdot [\frac{1}{2}{v}^{2}]_{0}^{2}\cdot {[\frac{1}{2}{u}^{2}]}_{-2}^{0} \\  & =-6(-2)(2) \\  & =24.\end{aligned}
+$$
+
+
+## Generated empirical bank variant q-161259 2
+
+### q-161259 / observed:q-161259
+
+Evaluate the surface integral
+
+$$
+{∬}_{S}⟨x,\,y,\,-z⟩\cdot \text{d}S
+$$
+
+where the parametric surface $S$ is defined by
+
+$$
+r(u,v)=⟨u+v,\,v-u,\,uv⟩
+$$
+
+over the domain $D=\{(u,v)\,:\,-2\le u\le 0,\,0\le v\le 3\}.$
+
+*Hint: You can use the fact that ${r}_{u}^{′}\times {r}_{v}^{′}=⟨-u-v,\,v-u,\,2⟩.$*
+
+- $\frac{15}{2}$
+- $7$
+- $54$ (correct)
+- $6$
+- $9$
+
+For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\in D,$ the flux of a vector field $F$ over $S$ is given by
+
+$$
+{∬}_{S}F\cdot \text{d}S={∬}_{S}F\cdot n\,\text{d}S={∬}_{D}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′})\,\text{d}A.
+$$
+
+We're given that the fundamental vector product for our surface is
+
+$$
+{r}_{u}^{′}\times {r}_{v}^{′}=⟨-u-v,\,v-u,\,2⟩.
+$$
+
+Next, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$
+
+$$
+\begin{aligned}F(r(u,v)) & ={⟨x,\,y,\,-z⟩|}_{x=u+v\,y=v-u\,z=uv} \\  & =⟨u+v,\,v-u,\,-uv⟩\end{aligned}
+$$
+
+Then, we calculate the dot product of $F$ and ${r}_{u}^{′}\times {r}_{v}^{′}:$
+
+$$
+\begin{aligned}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′}) & =⟨u+v,\,v-u,\,-uv⟩\cdot ⟨-u-v,\,v-u,\,2⟩ \\  & =(u+v)\cdot (-u-v)+(v-u)\cdot (v-u)+(-uv)\cdot 2 \\  & =-{u}^{2}-2uv-{v}^{2}+{v}^{2}-2uv+{u}^{2}-2uv \\  & =-6uv\end{aligned}
+$$
+
+Therefore, the surface integral evaluates to
+
+$$
+\begin{aligned}{∬}_{S}⟨x,\,y,\,-z⟩\cdot \text{d}S & ={∬}_{D}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′})\,\text{d}A \\  & ={∬}_{D}(-6uv)\,\text{d}A \\  & =-6{\int }_{0}^{3}{\int }_{-2}^{0}uv\,\text{d}u\,\text{d}v \\  & =-6{\int }_{0}^{3}v\,\text{d}v{\int }_{-2}^{0}u\,\text{d}u \\  & =-6\cdot [\frac{1}{2}{v}^{2}]_{0}^{3}\cdot {[\frac{1}{2}{u}^{2}]}_{-2}^{0} \\  & =-6(-2)(\frac{9}{2}) \\  & =54.\end{aligned}
+$$
+
+
 ## Generated authored bank q-160845 / authored_primitive / 0
 
 ### q-160845 / authored_primitive
@@ -5345,6 +5516,348 @@ Therefore, the surface integral evaluates to
 
 $$
 \begin{aligned}{∬}_{S}⟨3z,\,-2x,\,-y⟩\cdot \text{d}S & ={∬}_{D}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′})\,\text{d}A \\  & ={∬}_{D}(-4uv-u)\,\text{d}A \\  & ={\int }_{1}^{5}{\int }_{-3}^{1}(-4uv-u)\,\text{d}u\,\text{d}v \\  & =-{\int }_{1}^{5}{\int }_{-3}^{1}(4uv+u)\,\text{d}u\,\text{d}v \\  & =-{\int }_{1}^{5}{[2{u}^{2}v+\frac{1}{2}{u}^{2}]}_{u=-3}^{u=1}\,\text{d}v \\  & =-{\int }_{1}^{5}(- 16 v - 4)\text{d}v \\  & =-{[4 v \left(- 2 v - 1\right)]}_{1}^{5} \\  & =208.\end{aligned}
+$$
+
+
+## Generated authored bank q-161259 / authored_primitive / 0
+
+### q-161259 / authored_primitive
+
+Evaluate the surface integral
+
+$$
+{∬}_{S}⟨x,\,y,\,-z⟩\cdot \text{d}S
+$$
+
+where the parametric surface $S$ is defined by
+
+$$
+r(u,v)=⟨u+v,\,v-u,\,uv⟩
+$$
+
+over the domain $D=\{(u,v)\,:\,0\le u\le 1,\,1\le v\le 4\}.$
+
+*Hint: You can use the fact that ${r}_{u}^{′}\times {r}_{v}^{′}=⟨-u-v,\,v-u,\,2⟩.$*
+
+- $- \frac{45}{2}$ (correct)
+- $-90$
+- $\frac{45}{2}$
+- $-10$
+- $-495$
+
+For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\in D,$ the flux of a vector field $F$ over $S$ is given by
+
+$$
+{∬}_{S}F\cdot \text{d}S={∬}_{S}F\cdot n\,\text{d}S={∬}_{D}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′})\,\text{d}A.
+$$
+
+We're given that the fundamental vector product for our surface is
+
+$$
+{r}_{u}^{′}\times {r}_{v}^{′}=⟨-u-v,\,v-u,\,2⟩.
+$$
+
+Next, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$
+
+$$
+\begin{aligned}F(r(u,v)) & ={⟨x,\,y,\,-z⟩|}_{x=u+v\,y=v-u\,z=uv} \\  & =⟨u+v,\,v-u,\,-uv⟩\end{aligned}
+$$
+
+Then, we calculate the dot product of $F$ and ${r}_{u}^{′}\times {r}_{v}^{′}:$
+
+$$
+\begin{aligned}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′}) & =⟨u+v,\,v-u,\,-uv⟩\cdot ⟨-u-v,\,v-u,\,2⟩ \\  & =(u+v)\cdot (-u-v)+(v-u)\cdot (v-u)+(-uv)\cdot 2 \\  & =-{u}^{2}-2uv-{v}^{2}+{v}^{2}-2uv+{u}^{2}-2uv \\  & =-6uv\end{aligned}
+$$
+
+Therefore, the surface integral evaluates to
+
+$$
+\begin{aligned}{∬}_{S}⟨x,\,y,\,-z⟩\cdot \text{d}S & ={∬}_{D}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′})\,\text{d}A \\  & ={∬}_{D}(-6uv)\,\text{d}A \\  & =-6{\int }_{1}^{4}{\int }_{0}^{1}uv\,\text{d}u\,\text{d}v \\  & =-6{\int }_{1}^{4}v\,\text{d}v{\int }_{0}^{1}u\,\text{d}u \\  & =-6\cdot [\frac{1}{2}{v}^{2}]_{1}^{4}\cdot {[\frac{1}{2}{u}^{2}]}_{0}^{1} \\  & =-6(\frac{1}{2})(\frac{15}{2}) \\  & =- \frac{45}{2}.\end{aligned}
+$$
+
+
+## Generated authored bank q-161259 / authored_primitive / 1
+
+### q-161259 / authored_primitive
+
+Evaluate the surface integral
+
+$$
+{∬}_{S}⟨x,\,y,\,-z⟩\cdot \text{d}S
+$$
+
+where the parametric surface $S$ is defined by
+
+$$
+r(u,v)=⟨u+v,\,v-u,\,uv⟩
+$$
+
+over the domain $D=\{(u,v)\,:\,-2\le u\le -1,\,2\le v\le 5\}.$
+
+*Hint: You can use the fact that ${r}_{u}^{′}\times {r}_{v}^{′}=⟨-u-v,\,v-u,\,2⟩.$*
+
+- $3591$
+- $378$
+- $- \frac{189}{2}$
+- $42$
+- $\frac{189}{2}$ (correct)
+
+For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\in D,$ the flux of a vector field $F$ over $S$ is given by
+
+$$
+{∬}_{S}F\cdot \text{d}S={∬}_{S}F\cdot n\,\text{d}S={∬}_{D}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′})\,\text{d}A.
+$$
+
+We're given that the fundamental vector product for our surface is
+
+$$
+{r}_{u}^{′}\times {r}_{v}^{′}=⟨-u-v,\,v-u,\,2⟩.
+$$
+
+Next, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$
+
+$$
+\begin{aligned}F(r(u,v)) & ={⟨x,\,y,\,-z⟩|}_{x=u+v\,y=v-u\,z=uv} \\  & =⟨u+v,\,v-u,\,-uv⟩\end{aligned}
+$$
+
+Then, we calculate the dot product of $F$ and ${r}_{u}^{′}\times {r}_{v}^{′}:$
+
+$$
+\begin{aligned}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′}) & =⟨u+v,\,v-u,\,-uv⟩\cdot ⟨-u-v,\,v-u,\,2⟩ \\  & =(u+v)\cdot (-u-v)+(v-u)\cdot (v-u)+(-uv)\cdot 2 \\  & =-{u}^{2}-2uv-{v}^{2}+{v}^{2}-2uv+{u}^{2}-2uv \\  & =-6uv\end{aligned}
+$$
+
+Therefore, the surface integral evaluates to
+
+$$
+\begin{aligned}{∬}_{S}⟨x,\,y,\,-z⟩\cdot \text{d}S & ={∬}_{D}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′})\,\text{d}A \\  & ={∬}_{D}(-6uv)\,\text{d}A \\  & =-6{\int }_{2}^{5}{\int }_{-2}^{-1}uv\,\text{d}u\,\text{d}v \\  & =-6{\int }_{2}^{5}v\,\text{d}v{\int }_{-2}^{-1}u\,\text{d}u \\  & =-6\cdot [\frac{1}{2}{v}^{2}]_{2}^{5}\cdot {[\frac{1}{2}{u}^{2}]}_{-2}^{-1} \\  & =-6(- \frac{3}{2})(\frac{21}{2}) \\  & =\frac{189}{2}.\end{aligned}
+$$
+
+
+## Generated authored bank q-161259 / authored_weighted / 0
+
+### q-161259 / authored_weighted
+
+Evaluate the surface integral
+
+$$
+{∬}_{S}⟨x,\,y,\,-z⟩\cdot \text{d}S
+$$
+
+where the parametric surface $S$ is defined by
+
+$$
+r(u,v)=⟨u+v,\,v-u,\,uv⟩
+$$
+
+over the domain $D=\{(u,v)\,:\,0\le u\le 1,\,1\le v\le 4\}.$
+
+*Hint: You can use the fact that ${r}_{u}^{′}\times {r}_{v}^{′}=⟨-u-v,\,v-u,\,2⟩.$*
+
+- $- \frac{45}{2}$ (correct)
+- $-15$
+- $\frac{45}{2}$
+- $-63$
+- $-42$
+
+For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\in D,$ the flux of a vector field $F$ over $S$ is given by
+
+$$
+{∬}_{S}F\cdot \text{d}S={∬}_{S}F\cdot n\,\text{d}S={∬}_{D}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′})\,\text{d}A.
+$$
+
+We're given that the fundamental vector product for our surface is
+
+$$
+{r}_{u}^{′}\times {r}_{v}^{′}=⟨-u-v,\,v-u,\,2⟩.
+$$
+
+Next, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$
+
+$$
+\begin{aligned}F(r(u,v)) & ={⟨x,\,y,\,-z⟩|}_{x=u+v\,y=v-u\,z=uv} \\  & =⟨u+v,\,v-u,\,-uv⟩\end{aligned}
+$$
+
+Then, we calculate the dot product of $F$ and ${r}_{u}^{′}\times {r}_{v}^{′}:$
+
+$$
+\begin{aligned}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′}) & =⟨u+v,\,v-u,\,-uv⟩\cdot ⟨-u-v,\,v-u,\,2⟩ \\  & =(u+v)\cdot (-u-v)+(v-u)\cdot (v-u)+(-uv)\cdot 2 \\  & =-{u}^{2}-2uv-{v}^{2}+{v}^{2}-2uv+{u}^{2}-2uv \\  & =-6uv\end{aligned}
+$$
+
+Therefore, the surface integral evaluates to
+
+$$
+\begin{aligned}{∬}_{S}⟨x,\,y,\,-z⟩\cdot \text{d}S & ={∬}_{D}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′})\,\text{d}A \\  & ={∬}_{D}(-6uv)\,\text{d}A \\  & =-6{\int }_{1}^{4}{\int }_{0}^{1}uv\,\text{d}u\,\text{d}v \\  & =-6{\int }_{1}^{4}v\,\text{d}v{\int }_{0}^{1}u\,\text{d}u \\  & =-6\cdot [\frac{1}{2}{v}^{2}]_{1}^{4}\cdot {[\frac{1}{2}{u}^{2}]}_{0}^{1} \\  & =-6(\frac{1}{2})(\frac{15}{2}) \\  & =- \frac{45}{2}.\end{aligned}
+$$
+
+
+## Generated authored bank q-161259 / authored_weighted / 1
+
+### q-161259 / authored_weighted
+
+Evaluate the surface integral
+
+$$
+{∬}_{S}⟨x,\,y,\,-z⟩\cdot \text{d}S
+$$
+
+where the parametric surface $S$ is defined by
+
+$$
+r(u,v)=⟨u+v,\,v-u,\,uv⟩
+$$
+
+over the domain $D=\{(u,v)\,:\,-2\le u\le -1,\,2\le v\le 5\}.$
+
+*Hint: You can use the fact that ${r}_{u}^{′}\times {r}_{v}^{′}=⟨-u-v,\,v-u,\,2⟩.$*
+
+- $-546$
+- $-147$
+- $- \frac{189}{2}$
+- $351$
+- $\frac{189}{2}$ (correct)
+
+For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\in D,$ the flux of a vector field $F$ over $S$ is given by
+
+$$
+{∬}_{S}F\cdot \text{d}S={∬}_{S}F\cdot n\,\text{d}S={∬}_{D}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′})\,\text{d}A.
+$$
+
+We're given that the fundamental vector product for our surface is
+
+$$
+{r}_{u}^{′}\times {r}_{v}^{′}=⟨-u-v,\,v-u,\,2⟩.
+$$
+
+Next, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$
+
+$$
+\begin{aligned}F(r(u,v)) & ={⟨x,\,y,\,-z⟩|}_{x=u+v\,y=v-u\,z=uv} \\  & =⟨u+v,\,v-u,\,-uv⟩\end{aligned}
+$$
+
+Then, we calculate the dot product of $F$ and ${r}_{u}^{′}\times {r}_{v}^{′}:$
+
+$$
+\begin{aligned}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′}) & =⟨u+v,\,v-u,\,-uv⟩\cdot ⟨-u-v,\,v-u,\,2⟩ \\  & =(u+v)\cdot (-u-v)+(v-u)\cdot (v-u)+(-uv)\cdot 2 \\  & =-{u}^{2}-2uv-{v}^{2}+{v}^{2}-2uv+{u}^{2}-2uv \\  & =-6uv\end{aligned}
+$$
+
+Therefore, the surface integral evaluates to
+
+$$
+\begin{aligned}{∬}_{S}⟨x,\,y,\,-z⟩\cdot \text{d}S & ={∬}_{D}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′})\,\text{d}A \\  & ={∬}_{D}(-6uv)\,\text{d}A \\  & =-6{\int }_{2}^{5}{\int }_{-2}^{-1}uv\,\text{d}u\,\text{d}v \\  & =-6{\int }_{2}^{5}v\,\text{d}v{\int }_{-2}^{-1}u\,\text{d}u \\  & =-6\cdot [\frac{1}{2}{v}^{2}]_{2}^{5}\cdot {[\frac{1}{2}{u}^{2}]}_{-2}^{-1} \\  & =-6(- \frac{3}{2})(\frac{21}{2}) \\  & =\frac{189}{2}.\end{aligned}
+$$
+
+
+## Generated authored bank q-161259 / authored_rectangle / 0
+
+### q-161259 / authored_rectangle
+
+Evaluate the surface integral
+
+$$
+{∬}_{S}⟨x,\,y,\,-z⟩\cdot \text{d}S
+$$
+
+where the parametric surface $S$ is defined by
+
+$$
+r(u,v)=⟨u+v,\,v-u,\,uv⟩
+$$
+
+over the domain $D=\{(u,v)\,:\,0\le u\le 1,\,1\le v\le 4\}.$
+
+*Hint: You can use the fact that ${r}_{u}^{′}\times {r}_{v}^{′}=⟨-u-v,\,v-u,\,2⟩.$*
+
+- $- \frac{45}{2}$ (correct)
+- $0$
+- $\frac{45}{2}$
+- $-72$
+- $- \frac{63}{8}$
+
+For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\in D,$ the flux of a vector field $F$ over $S$ is given by
+
+$$
+{∬}_{S}F\cdot \text{d}S={∬}_{S}F\cdot n\,\text{d}S={∬}_{D}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′})\,\text{d}A.
+$$
+
+We're given that the fundamental vector product for our surface is
+
+$$
+{r}_{u}^{′}\times {r}_{v}^{′}=⟨-u-v,\,v-u,\,2⟩.
+$$
+
+Next, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$
+
+$$
+\begin{aligned}F(r(u,v)) & ={⟨x,\,y,\,-z⟩|}_{x=u+v\,y=v-u\,z=uv} \\  & =⟨u+v,\,v-u,\,-uv⟩\end{aligned}
+$$
+
+Then, we calculate the dot product of $F$ and ${r}_{u}^{′}\times {r}_{v}^{′}:$
+
+$$
+\begin{aligned}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′}) & =⟨u+v,\,v-u,\,-uv⟩\cdot ⟨-u-v,\,v-u,\,2⟩ \\  & =(u+v)\cdot (-u-v)+(v-u)\cdot (v-u)+(-uv)\cdot 2 \\  & =-{u}^{2}-2uv-{v}^{2}+{v}^{2}-2uv+{u}^{2}-2uv \\  & =-6uv\end{aligned}
+$$
+
+Therefore, the surface integral evaluates to
+
+$$
+\begin{aligned}{∬}_{S}⟨x,\,y,\,-z⟩\cdot \text{d}S & ={∬}_{D}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′})\,\text{d}A \\  & ={∬}_{D}(-6uv)\,\text{d}A \\  & =-6{\int }_{1}^{4}{\int }_{0}^{1}uv\,\text{d}u\,\text{d}v \\  & =-6{\int }_{1}^{4}v\,\text{d}v{\int }_{0}^{1}u\,\text{d}u \\  & =-6\cdot [\frac{1}{2}{v}^{2}]_{1}^{4}\cdot {[\frac{1}{2}{u}^{2}]}_{0}^{1} \\  & =-6(\frac{1}{2})(\frac{15}{2}) \\  & =- \frac{45}{2}.\end{aligned}
+$$
+
+
+## Generated authored bank q-161259 / authored_rectangle / 1
+
+### q-161259 / authored_rectangle
+
+Evaluate the surface integral
+
+$$
+{∬}_{S}⟨x,\,y,\,-z⟩\cdot \text{d}S
+$$
+
+where the parametric surface $S$ is defined by
+
+$$
+r(u,v)=⟨u+v,\,v-u,\,uv⟩
+$$
+
+over the domain $D=\{(u,v)\,:\,-2\le u\le -1,\,2\le v\le 5\}.$
+
+*Hint: You can use the fact that ${r}_{u}^{′}\times {r}_{v}^{′}=⟨-u-v,\,v-u,\,2⟩.$*
+
+- $\frac{693}{8}$
+- $72$
+- $- \frac{189}{2}$
+- $90$
+- $\frac{189}{2}$ (correct)
+
+For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\in D,$ the flux of a vector field $F$ over $S$ is given by
+
+$$
+{∬}_{S}F\cdot \text{d}S={∬}_{S}F\cdot n\,\text{d}S={∬}_{D}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′})\,\text{d}A.
+$$
+
+We're given that the fundamental vector product for our surface is
+
+$$
+{r}_{u}^{′}\times {r}_{v}^{′}=⟨-u-v,\,v-u,\,2⟩.
+$$
+
+Next, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$
+
+$$
+\begin{aligned}F(r(u,v)) & ={⟨x,\,y,\,-z⟩|}_{x=u+v\,y=v-u\,z=uv} \\  & =⟨u+v,\,v-u,\,-uv⟩\end{aligned}
+$$
+
+Then, we calculate the dot product of $F$ and ${r}_{u}^{′}\times {r}_{v}^{′}:$
+
+$$
+\begin{aligned}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′}) & =⟨u+v,\,v-u,\,-uv⟩\cdot ⟨-u-v,\,v-u,\,2⟩ \\  & =(u+v)\cdot (-u-v)+(v-u)\cdot (v-u)+(-uv)\cdot 2 \\  & =-{u}^{2}-2uv-{v}^{2}+{v}^{2}-2uv+{u}^{2}-2uv \\  & =-6uv\end{aligned}
+$$
+
+Therefore, the surface integral evaluates to
+
+$$
+\begin{aligned}{∬}_{S}⟨x,\,y,\,-z⟩\cdot \text{d}S & ={∬}_{D}F(r(u,v))\cdot ({r}_{u}^{′}\times {r}_{v}^{′})\,\text{d}A \\  & ={∬}_{D}(-6uv)\,\text{d}A \\  & =-6{\int }_{2}^{5}{\int }_{-2}^{-1}uv\,\text{d}u\,\text{d}v \\  & =-6{\int }_{2}^{5}v\,\text{d}v{\int }_{-2}^{-1}u\,\text{d}u \\  & =-6\cdot [\frac{1}{2}{v}^{2}]_{2}^{5}\cdot {[\frac{1}{2}{u}^{2}]}_{-2}^{-1} \\  & =-6(- \frac{3}{2})(\frac{21}{2}) \\  & =\frac{189}{2}.\end{aligned}
 $$
 
 

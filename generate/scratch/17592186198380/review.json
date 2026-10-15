@@ -4554,6 +4554,459 @@
     }
   },
   {
+    "label": "Original replay q-161259",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186198380,
+        "id": "f322cca7-7530-50bf-b262-89faa81f5906",
+        "title": "Evaluating Flux Through a Surface"
+      },
+      "question": {
+        ":question/id": "13bb7702-90d7-54eb-91d2-7b02fa2911e0",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Evaluate the surface integral\n\n$$\n{∬}_{S}⟨x,\\,y,\\,-z⟩\\cdot \\text{d}S\n$$\n\nwhere the parametric surface $S$ is defined by\n\n$$\nr(u,v)=⟨u+v,\\,v-u,\\,uv⟩\n$$\n\nover the domain $D=\\{(u,v)\\,:\\,-2\\le u\\le 0,\\,0\\le v\\le 1\\}.$\n\n*Hint: You can use the fact that ${r}_{u}^{′}\\times {r}_{v}^{′}=⟨-u-v,\\,v-u,\\,2⟩.$*",
+        ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{∬}_{S}F\\cdot \\text{d}S={∬}_{S}F\\cdot n\\,\\text{d}S={∬}_{D}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′})\\,\\text{d}A.\n$$\n\nWe're given that the fundamental vector product for our surface is\n\n$$\n{r}_{u}^{′}\\times {r}_{v}^{′}=⟨-u-v,\\,v-u,\\,2⟩.\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & ={⟨x,\\,y,\\,-z⟩|}_{x=u+v\\,y=v-u\\,z=uv} \\\\  & =⟨u+v,\\,v-u,\\,-uv⟩\\end{aligned}\n$$\n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{′}\\times {r}_{v}^{′}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′}) & =⟨u+v,\\,v-u,\\,-uv⟩\\cdot ⟨-u-v,\\,v-u,\\,2⟩ \\\\  & =(u+v)\\cdot (-u-v)+(v-u)\\cdot (v-u)+(-uv)\\cdot 2 \\\\  & =-{u}^{2}-2uv-{v}^{2}+{v}^{2}-2uv+{u}^{2}-2uv \\\\  & =-6uv\\end{aligned}\n$$\n\nTherefore, the surface integral evaluates to\n\n$$\n\\begin{aligned}{∬}_{S}⟨x,\\,y,\\,-z⟩\\cdot \\text{d}S & ={∬}_{D}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′})\\,\\text{d}A \\\\  & ={∬}_{D}(-6uv)\\,\\text{d}A \\\\  & =-6{\\int }_{0}^{1}{\\int }_{-2}^{0}uv\\,\\text{d}u\\,\\text{d}v \\\\  & =-6{\\int }_{0}^{1}v\\,\\text{d}v{\\int }_{-2}^{0}u\\,\\text{d}u \\\\  & =-6\\cdot [\\frac{1}{2}{v}^{2}]_{0}^{1}\\cdot {[\\frac{1}{2}{u}^{2}]}_{-2}^{0} \\\\  & =-6\\cdot \\frac{1}{2}\\cdot (-2) \\\\  & =6.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "b06db553-8bc0-5178-81b4-80ceb0ca8b66",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "3e26055f-fece-5d7f-9bb8-f3da9ea4a543",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{5}{2}"
+              },
+              {
+                ":answer/id": "8e4e1d6b-14bd-52dd-a57a-cd2df89ca16e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{7}{3}"
+              },
+              {
+                ":answer/id": "814da33b-bea6-5b0b-bfdd-e1a21a2efa79",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "6"
+              },
+              {
+                ":answer/id": "ab17af1b-5993-5c4f-8c26-e275962ddaaa",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2"
+              },
+              {
+                ":answer/id": "9235606a-c232-5ddf-87c8-87637b169424",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "3"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "814da33b-bea6-5b0b-bfdd-e1a21a2efa79"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "flux-rectangular-1",
+        "sympy_version": "1.14.0",
+        "seed": 0,
+        "template": "q-161259",
+        "parameters": {
+          "u_min": "-2",
+          "u_max": "0",
+          "v_min": "0",
+          "v_max": "1"
+        },
+        "parameter_fingerprint": "2369cfb8cb2f4080e5412733d9004437db83bf76db95b3b98ed28f4fee8be926",
+        "content_fingerprint": "d4c9b0d4e2326df571830253d3a9554a6fa8ed4ba7f173fa15bec65712adb23d",
+        "bank_profile": "observed:q-161259",
+        "bank_origin": "observed_empirical_replay",
+        "authored_extension": false,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "source_analysis": {
+          "database": "math",
+          "basis": 2520,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "question_ids": [
+            "q-161259"
+          ],
+          "canonical": "e-12358"
+        },
+        "orientation": "r_u cross r_v",
+        "domain": "rectangle",
+        "math": {
+          "r": [
+            "u + v",
+            "-u + v",
+            "u*v"
+          ],
+          "F": [
+            "x",
+            "y",
+            "-z"
+          ],
+          "ru": [
+            "1",
+            "-1",
+            "v"
+          ],
+          "rv": [
+            "1",
+            "1",
+            "u"
+          ],
+          "normal": [
+            "-u - v",
+            "-u + v",
+            "2"
+          ],
+          "composed": [
+            "u + v",
+            "-u + v",
+            "-u*v"
+          ],
+          "f": "-6*u*v",
+          "correct": "6",
+          "area": "2"
+        },
+        "solution_steps": {
+          "inner": "u",
+          "factor": "-6",
+          "primitive": "u**2*v/2",
+          "reduced": "-2*v",
+          "outer_primitive": "-v**2",
+          "evaluated_terms": [
+            "-1"
+          ]
+        },
+        "answer_recipes": {
+          "814da33b-bea6-5b0b-bfdd-e1a21a2efa79": {
+            "recipe": "correct",
+            "value": "6"
+          },
+          "8e4e1d6b-14bd-52dd-a57a-cd2df89ca16e": {
+            "recipe": "unresolved_observed_area_density:0",
+            "value": "7/3"
+          },
+          "3e26055f-fece-5d7f-9bb8-f3da9ea4a543": {
+            "recipe": "unresolved_observed_area_density:1",
+            "value": "5/2"
+          },
+          "9235606a-c232-5ddf-87c8-87637b169424": {
+            "recipe": "unresolved_observed_area_density:2",
+            "value": "3"
+          },
+          "ab17af1b-5993-5c4f-8c26-e275962ddaaa": {
+            "recipe": "unresolved_observed_area_density:3",
+            "value": "2"
+          }
+        }
+      }
+    }
+  },
+  {
+    "label": "Generated empirical bank variant q-161259 1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186198380,
+        "id": "f322cca7-7530-50bf-b262-89faa81f5906",
+        "title": "Evaluating Flux Through a Surface"
+      },
+      "question": {
+        ":question/id": "c90185d5-ed88-572a-9eb3-daa5afdfb4c4",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Evaluate the surface integral\n\n$$\n{∬}_{S}⟨x,\\,y,\\,-z⟩\\cdot \\text{d}S\n$$\n\nwhere the parametric surface $S$ is defined by\n\n$$\nr(u,v)=⟨u+v,\\,v-u,\\,uv⟩\n$$\n\nover the domain $D=\\{(u,v)\\,:\\,-2\\le u\\le 0,\\,0\\le v\\le 2\\}.$\n\n*Hint: You can use the fact that ${r}_{u}^{′}\\times {r}_{v}^{′}=⟨-u-v,\\,v-u,\\,2⟩.$*",
+        ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{∬}_{S}F\\cdot \\text{d}S={∬}_{S}F\\cdot n\\,\\text{d}S={∬}_{D}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′})\\,\\text{d}A.\n$$\n\nWe're given that the fundamental vector product for our surface is\n\n$$\n{r}_{u}^{′}\\times {r}_{v}^{′}=⟨-u-v,\\,v-u,\\,2⟩.\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & ={⟨x,\\,y,\\,-z⟩|}_{x=u+v\\,y=v-u\\,z=uv} \\\\  & =⟨u+v,\\,v-u,\\,-uv⟩\\end{aligned}\n$$\n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{′}\\times {r}_{v}^{′}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′}) & =⟨u+v,\\,v-u,\\,-uv⟩\\cdot ⟨-u-v,\\,v-u,\\,2⟩ \\\\  & =(u+v)\\cdot (-u-v)+(v-u)\\cdot (v-u)+(-uv)\\cdot 2 \\\\  & =-{u}^{2}-2uv-{v}^{2}+{v}^{2}-2uv+{u}^{2}-2uv \\\\  & =-6uv\\end{aligned}\n$$\n\nTherefore, the surface integral evaluates to\n\n$$\n\\begin{aligned}{∬}_{S}⟨x,\\,y,\\,-z⟩\\cdot \\text{d}S & ={∬}_{D}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′})\\,\\text{d}A \\\\  & ={∬}_{D}(-6uv)\\,\\text{d}A \\\\  & =-6{\\int }_{0}^{2}{\\int }_{-2}^{0}uv\\,\\text{d}u\\,\\text{d}v \\\\  & =-6{\\int }_{0}^{2}v\\,\\text{d}v{\\int }_{-2}^{0}u\\,\\text{d}u \\\\  & =-6\\cdot [\\frac{1}{2}{v}^{2}]_{0}^{2}\\cdot {[\\frac{1}{2}{u}^{2}]}_{-2}^{0} \\\\  & =-6(-2)(2) \\\\  & =24.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "44bd8577-01df-51a1-b6a6-e753570b05e6",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "e920f045-c939-5211-b5a2-cdf4b57f384f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "5"
+              },
+              {
+                ":answer/id": "bf3c30a6-f085-5bcb-a76d-129df2ae96e5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{14}{3}"
+              },
+              {
+                ":answer/id": "a096c56f-880e-5639-a644-8be2bc8bc69b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "24"
+              },
+              {
+                ":answer/id": "83118d20-f3c3-525b-9c89-dd034e8b146c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "4"
+              },
+              {
+                ":answer/id": "25abe68a-9282-597f-ae14-a2d7b6c91530",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "6"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "a096c56f-880e-5639-a644-8be2bc8bc69b"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "flux-rectangular-1",
+        "sympy_version": "1.14.0",
+        "seed": 0,
+        "template": "q-161259",
+        "parameters": {
+          "u_min": "-2",
+          "u_max": "0",
+          "v_min": "0",
+          "v_max": "2"
+        },
+        "parameter_fingerprint": "2961a5be840119bd4a5602b7068f4576e7c81d639a26f89744f6b4d3c3bdbfa4",
+        "content_fingerprint": "083e1ebcfef9c3353a87604547bc124499954f99d3000804fccaea094c7e2b07",
+        "bank_profile": "observed:q-161259",
+        "bank_origin": "observed_empirical_replay",
+        "authored_extension": false,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "source_analysis": {
+          "database": "math",
+          "basis": 2520,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "question_ids": [
+            "q-161259"
+          ],
+          "canonical": "e-12358"
+        },
+        "orientation": "r_u cross r_v",
+        "domain": "rectangle",
+        "math": {
+          "r": [
+            "u + v",
+            "-u + v",
+            "u*v"
+          ],
+          "F": [
+            "x",
+            "y",
+            "-z"
+          ],
+          "ru": [
+            "1",
+            "-1",
+            "v"
+          ],
+          "rv": [
+            "1",
+            "1",
+            "u"
+          ],
+          "normal": [
+            "-u - v",
+            "-u + v",
+            "2"
+          ],
+          "composed": [
+            "u + v",
+            "-u + v",
+            "-u*v"
+          ],
+          "f": "-6*u*v",
+          "correct": "24",
+          "area": "4"
+        },
+        "solution_steps": {
+          "inner": "u",
+          "factor": "-6",
+          "primitive": "u**2*v/2",
+          "reduced": "-2*v",
+          "outer_primitive": "-v**2",
+          "evaluated_terms": [
+            "-4"
+          ]
+        },
+        "answer_recipes": {
+          "a096c56f-880e-5639-a644-8be2bc8bc69b": {
+            "recipe": "correct",
+            "value": "24"
+          },
+          "bf3c30a6-f085-5bcb-a76d-129df2ae96e5": {
+            "recipe": "unresolved_observed_area_density:0",
+            "value": "14/3"
+          },
+          "e920f045-c939-5211-b5a2-cdf4b57f384f": {
+            "recipe": "unresolved_observed_area_density:1",
+            "value": "5"
+          },
+          "25abe68a-9282-597f-ae14-a2d7b6c91530": {
+            "recipe": "unresolved_observed_area_density:2",
+            "value": "6"
+          },
+          "83118d20-f3c3-525b-9c89-dd034e8b146c": {
+            "recipe": "unresolved_observed_area_density:3",
+            "value": "4"
+          }
+        }
+      }
+    }
+  },
+  {
+    "label": "Generated empirical bank variant q-161259 2",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186198380,
+        "id": "f322cca7-7530-50bf-b262-89faa81f5906",
+        "title": "Evaluating Flux Through a Surface"
+      },
+      "question": {
+        ":question/id": "951df73a-e434-5de6-8612-070bba4b92f8",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Evaluate the surface integral\n\n$$\n{∬}_{S}⟨x,\\,y,\\,-z⟩\\cdot \\text{d}S\n$$\n\nwhere the parametric surface $S$ is defined by\n\n$$\nr(u,v)=⟨u+v,\\,v-u,\\,uv⟩\n$$\n\nover the domain $D=\\{(u,v)\\,:\\,-2\\le u\\le 0,\\,0\\le v\\le 3\\}.$\n\n*Hint: You can use the fact that ${r}_{u}^{′}\\times {r}_{v}^{′}=⟨-u-v,\\,v-u,\\,2⟩.$*",
+        ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{∬}_{S}F\\cdot \\text{d}S={∬}_{S}F\\cdot n\\,\\text{d}S={∬}_{D}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′})\\,\\text{d}A.\n$$\n\nWe're given that the fundamental vector product for our surface is\n\n$$\n{r}_{u}^{′}\\times {r}_{v}^{′}=⟨-u-v,\\,v-u,\\,2⟩.\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & ={⟨x,\\,y,\\,-z⟩|}_{x=u+v\\,y=v-u\\,z=uv} \\\\  & =⟨u+v,\\,v-u,\\,-uv⟩\\end{aligned}\n$$\n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{′}\\times {r}_{v}^{′}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′}) & =⟨u+v,\\,v-u,\\,-uv⟩\\cdot ⟨-u-v,\\,v-u,\\,2⟩ \\\\  & =(u+v)\\cdot (-u-v)+(v-u)\\cdot (v-u)+(-uv)\\cdot 2 \\\\  & =-{u}^{2}-2uv-{v}^{2}+{v}^{2}-2uv+{u}^{2}-2uv \\\\  & =-6uv\\end{aligned}\n$$\n\nTherefore, the surface integral evaluates to\n\n$$\n\\begin{aligned}{∬}_{S}⟨x,\\,y,\\,-z⟩\\cdot \\text{d}S & ={∬}_{D}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′})\\,\\text{d}A \\\\  & ={∬}_{D}(-6uv)\\,\\text{d}A \\\\  & =-6{\\int }_{0}^{3}{\\int }_{-2}^{0}uv\\,\\text{d}u\\,\\text{d}v \\\\  & =-6{\\int }_{0}^{3}v\\,\\text{d}v{\\int }_{-2}^{0}u\\,\\text{d}u \\\\  & =-6\\cdot [\\frac{1}{2}{v}^{2}]_{0}^{3}\\cdot {[\\frac{1}{2}{u}^{2}]}_{-2}^{0} \\\\  & =-6(-2)(\\frac{9}{2}) \\\\  & =54.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "e24d1384-f134-5747-9ede-bcd1e3fa399a",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "9c8e9fc9-2d0a-5fda-8ff2-cf37c0f73d37",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{15}{2}"
+              },
+              {
+                ":answer/id": "c58fe605-a6e7-50f8-aeea-2a0464b4d2ff",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "7"
+              },
+              {
+                ":answer/id": "7427fb5d-afe0-5bfc-8e2f-c46f1c070cd3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "54"
+              },
+              {
+                ":answer/id": "8db05dc1-8b95-5e94-aff3-be9e6f249b01",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "6"
+              },
+              {
+                ":answer/id": "b885d439-1544-5981-adcd-c01c63cf3f2d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "9"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "7427fb5d-afe0-5bfc-8e2f-c46f1c070cd3"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "flux-rectangular-1",
+        "sympy_version": "1.14.0",
+        "seed": 0,
+        "template": "q-161259",
+        "parameters": {
+          "u_min": "-2",
+          "u_max": "0",
+          "v_min": "0",
+          "v_max": "3"
+        },
+        "parameter_fingerprint": "c17bffdb9d79162dfdfc019ef1791e7f8312c91bd8970c9c7d3b6b68a013e494",
+        "content_fingerprint": "ac23fc322e8d797a1c7cfc44ad4c668ab12b01f7ec677d9151eb01b715f98d7e",
+        "bank_profile": "observed:q-161259",
+        "bank_origin": "observed_empirical_replay",
+        "authored_extension": false,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "source_analysis": {
+          "database": "math",
+          "basis": 2520,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "question_ids": [
+            "q-161259"
+          ],
+          "canonical": "e-12358"
+        },
+        "orientation": "r_u cross r_v",
+        "domain": "rectangle",
+        "math": {
+          "r": [
+            "u + v",
+            "-u + v",
+            "u*v"
+          ],
+          "F": [
+            "x",
+            "y",
+            "-z"
+          ],
+          "ru": [
+            "1",
+            "-1",
+            "v"
+          ],
+          "rv": [
+            "1",
+            "1",
+            "u"
+          ],
+          "normal": [
+            "-u - v",
+            "-u + v",
+            "2"
+          ],
+          "composed": [
+            "u + v",
+            "-u + v",
+            "-u*v"
+          ],
+          "f": "-6*u*v",
+          "correct": "54",
+          "area": "6"
+        },
+        "solution_steps": {
+          "inner": "u",
+          "factor": "-6",
+          "primitive": "u**2*v/2",
+          "reduced": "-2*v",
+          "outer_primitive": "-v**2",
+          "evaluated_terms": [
+            "-9"
+          ]
+        },
+        "answer_recipes": {
+          "7427fb5d-afe0-5bfc-8e2f-c46f1c070cd3": {
+            "recipe": "correct",
+            "value": "54"
+          },
+          "c58fe605-a6e7-50f8-aeea-2a0464b4d2ff": {
+            "recipe": "unresolved_observed_area_density:0",
+            "value": "7"
+          },
+          "9c8e9fc9-2d0a-5fda-8ff2-cf37c0f73d37": {
+            "recipe": "unresolved_observed_area_density:1",
+            "value": "15/2"
+          },
+          "b885d439-1544-5981-adcd-c01c63cf3f2d": {
+            "recipe": "unresolved_observed_area_density:2",
+            "value": "9"
+          },
+          "8db05dc1-8b95-5e94-aff3-be9e6f249b01": {
+            "recipe": "unresolved_observed_area_density:3",
+            "value": "6"
+          }
+        }
+      }
+    }
+  },
+  {
     "label": "Generated authored bank q-160845 / authored_primitive / 0",
     "record": {
       "knowledge_point": {
@@ -13656,6 +14109,912 @@
           "da0e0767-8ba3-549b-b31b-8ac0b4584e23": {
             "recipe": "quarter_point_rectangle",
             "value": "288"
+          }
+        }
+      }
+    }
+  },
+  {
+    "label": "Generated authored bank q-161259 / authored_primitive / 0",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186198380,
+        "id": "f322cca7-7530-50bf-b262-89faa81f5906",
+        "title": "Evaluating Flux Through a Surface"
+      },
+      "question": {
+        ":question/id": "3649fbc4-99ce-5abf-8c41-bca9bd2543e6",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Evaluate the surface integral\n\n$$\n{∬}_{S}⟨x,\\,y,\\,-z⟩\\cdot \\text{d}S\n$$\n\nwhere the parametric surface $S$ is defined by\n\n$$\nr(u,v)=⟨u+v,\\,v-u,\\,uv⟩\n$$\n\nover the domain $D=\\{(u,v)\\,:\\,0\\le u\\le 1,\\,1\\le v\\le 4\\}.$\n\n*Hint: You can use the fact that ${r}_{u}^{′}\\times {r}_{v}^{′}=⟨-u-v,\\,v-u,\\,2⟩.$*",
+        ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{∬}_{S}F\\cdot \\text{d}S={∬}_{S}F\\cdot n\\,\\text{d}S={∬}_{D}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′})\\,\\text{d}A.\n$$\n\nWe're given that the fundamental vector product for our surface is\n\n$$\n{r}_{u}^{′}\\times {r}_{v}^{′}=⟨-u-v,\\,v-u,\\,2⟩.\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & ={⟨x,\\,y,\\,-z⟩|}_{x=u+v\\,y=v-u\\,z=uv} \\\\  & =⟨u+v,\\,v-u,\\,-uv⟩\\end{aligned}\n$$\n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{′}\\times {r}_{v}^{′}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′}) & =⟨u+v,\\,v-u,\\,-uv⟩\\cdot ⟨-u-v,\\,v-u,\\,2⟩ \\\\  & =(u+v)\\cdot (-u-v)+(v-u)\\cdot (v-u)+(-uv)\\cdot 2 \\\\  & =-{u}^{2}-2uv-{v}^{2}+{v}^{2}-2uv+{u}^{2}-2uv \\\\  & =-6uv\\end{aligned}\n$$\n\nTherefore, the surface integral evaluates to\n\n$$\n\\begin{aligned}{∬}_{S}⟨x,\\,y,\\,-z⟩\\cdot \\text{d}S & ={∬}_{D}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′})\\,\\text{d}A \\\\  & ={∬}_{D}(-6uv)\\,\\text{d}A \\\\  & =-6{\\int }_{1}^{4}{\\int }_{0}^{1}uv\\,\\text{d}u\\,\\text{d}v \\\\  & =-6{\\int }_{1}^{4}v\\,\\text{d}v{\\int }_{0}^{1}u\\,\\text{d}u \\\\  & =-6\\cdot [\\frac{1}{2}{v}^{2}]_{1}^{4}\\cdot {[\\frac{1}{2}{u}^{2}]}_{0}^{1} \\\\  & =-6(\\frac{1}{2})(\\frac{15}{2}) \\\\  & =- \\frac{45}{2}.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "6ed04412-d7fb-54e6-9f0a-97fafe45d5c1",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "6f3285d8-4d22-5b71-ab07-7098faf72338",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{45}{2}"
+              },
+              {
+                ":answer/id": "13f4f81f-4ab5-51b6-afc0-0a3a124b7ba1",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-90"
+              },
+              {
+                ":answer/id": "4e95aa57-9601-5fe1-8aba-412c50e8f1bf",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{45}{2}"
+              },
+              {
+                ":answer/id": "94036cfe-67db-55cf-8557-dc1fbd8705ee",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-10"
+              },
+              {
+                ":answer/id": "3bb59134-05dd-5463-a57d-4882b8a62aa0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-495"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "6f3285d8-4d22-5b71-ab07-7098faf72338"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "flux-rectangular-1",
+        "sympy_version": "1.14.0",
+        "seed": 0,
+        "template": "q-161259",
+        "parameters": {
+          "u_min": "0",
+          "u_max": "1",
+          "v_min": "1",
+          "v_max": "4"
+        },
+        "parameter_fingerprint": "e20afcb90c75bfac3548404b9fd03fd7ee68fc601a0a613d0795f9c257e7b8d8",
+        "content_fingerprint": "4926d0c05c01f872dd98e8eda1d6b6c53b19a0227e93877c5c863fdd241bd476",
+        "bank_profile": "authored_primitive",
+        "bank_origin": "authored",
+        "authored_extension": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "source_analysis": {
+          "database": "math",
+          "basis": 2520,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "question_ids": [
+            "q-161259"
+          ],
+          "canonical": "e-12358"
+        },
+        "orientation": "r_u cross r_v",
+        "domain": "rectangle",
+        "math": {
+          "r": [
+            "u + v",
+            "-u + v",
+            "u*v"
+          ],
+          "F": [
+            "x",
+            "y",
+            "-z"
+          ],
+          "ru": [
+            "1",
+            "-1",
+            "v"
+          ],
+          "rv": [
+            "1",
+            "1",
+            "u"
+          ],
+          "normal": [
+            "-u - v",
+            "-u + v",
+            "2"
+          ],
+          "composed": [
+            "u + v",
+            "-u + v",
+            "-u*v"
+          ],
+          "f": "-6*u*v",
+          "correct": "-45/2",
+          "area": "3"
+        },
+        "solution_steps": {
+          "inner": "u",
+          "factor": "-6",
+          "primitive": "u**2*v/2",
+          "reduced": "v/2",
+          "outer_primitive": "v**2/4",
+          "evaluated_terms": [
+            "15/4"
+          ]
+        },
+        "answer_recipes": {
+          "6f3285d8-4d22-5b71-ab07-7098faf72338": {
+            "recipe": "correct",
+            "value": "-45/2"
+          },
+          "4e95aa57-9601-5fe1-8aba-412c50e8f1bf": {
+            "recipe": "reversed_cross_product",
+            "value": "45/2"
+          },
+          "13f4f81f-4ab5-51b6-afc0-0a3a124b7ba1": {
+            "recipe": "omitted_antiderivative_divisors",
+            "value": "-90"
+          },
+          "94036cfe-67db-55cf-8557-dc1fbd8705ee": {
+            "recipe": "divisors_one_too_large",
+            "value": "-10"
+          },
+          "3bb59134-05dd-5463-a57d-4882b8a62aa0": {
+            "recipe": "extra_squared_surface_jacobian",
+            "value": "-495"
+          }
+        }
+      }
+    }
+  },
+  {
+    "label": "Generated authored bank q-161259 / authored_primitive / 1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186198380,
+        "id": "f322cca7-7530-50bf-b262-89faa81f5906",
+        "title": "Evaluating Flux Through a Surface"
+      },
+      "question": {
+        ":question/id": "da916691-4fb5-51b3-b620-9aae8bb536bf",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Evaluate the surface integral\n\n$$\n{∬}_{S}⟨x,\\,y,\\,-z⟩\\cdot \\text{d}S\n$$\n\nwhere the parametric surface $S$ is defined by\n\n$$\nr(u,v)=⟨u+v,\\,v-u,\\,uv⟩\n$$\n\nover the domain $D=\\{(u,v)\\,:\\,-2\\le u\\le -1,\\,2\\le v\\le 5\\}.$\n\n*Hint: You can use the fact that ${r}_{u}^{′}\\times {r}_{v}^{′}=⟨-u-v,\\,v-u,\\,2⟩.$*",
+        ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{∬}_{S}F\\cdot \\text{d}S={∬}_{S}F\\cdot n\\,\\text{d}S={∬}_{D}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′})\\,\\text{d}A.\n$$\n\nWe're given that the fundamental vector product for our surface is\n\n$$\n{r}_{u}^{′}\\times {r}_{v}^{′}=⟨-u-v,\\,v-u,\\,2⟩.\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & ={⟨x,\\,y,\\,-z⟩|}_{x=u+v\\,y=v-u\\,z=uv} \\\\  & =⟨u+v,\\,v-u,\\,-uv⟩\\end{aligned}\n$$\n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{′}\\times {r}_{v}^{′}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′}) & =⟨u+v,\\,v-u,\\,-uv⟩\\cdot ⟨-u-v,\\,v-u,\\,2⟩ \\\\  & =(u+v)\\cdot (-u-v)+(v-u)\\cdot (v-u)+(-uv)\\cdot 2 \\\\  & =-{u}^{2}-2uv-{v}^{2}+{v}^{2}-2uv+{u}^{2}-2uv \\\\  & =-6uv\\end{aligned}\n$$\n\nTherefore, the surface integral evaluates to\n\n$$\n\\begin{aligned}{∬}_{S}⟨x,\\,y,\\,-z⟩\\cdot \\text{d}S & ={∬}_{D}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′})\\,\\text{d}A \\\\  & ={∬}_{D}(-6uv)\\,\\text{d}A \\\\  & =-6{\\int }_{2}^{5}{\\int }_{-2}^{-1}uv\\,\\text{d}u\\,\\text{d}v \\\\  & =-6{\\int }_{2}^{5}v\\,\\text{d}v{\\int }_{-2}^{-1}u\\,\\text{d}u \\\\  & =-6\\cdot [\\frac{1}{2}{v}^{2}]_{2}^{5}\\cdot {[\\frac{1}{2}{u}^{2}]}_{-2}^{-1} \\\\  & =-6(- \\frac{3}{2})(\\frac{21}{2}) \\\\  & =\\frac{189}{2}.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "c8fcf7ab-1b06-5b54-bea2-61d1246e4207",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "da5ec1ac-7dc2-59e4-a14d-00f691904a91",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "3591"
+              },
+              {
+                ":answer/id": "30f741c0-2ffe-52ca-87c6-954e41dca119",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "378"
+              },
+              {
+                ":answer/id": "a7254b17-db80-525c-b97e-c7b803fbf1ca",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{189}{2}"
+              },
+              {
+                ":answer/id": "cc116348-137d-51bb-9608-f95dc11bcf6c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "42"
+              },
+              {
+                ":answer/id": "4f95dd12-9b81-5f4b-a49a-940b78b21755",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{189}{2}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "4f95dd12-9b81-5f4b-a49a-940b78b21755"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "flux-rectangular-1",
+        "sympy_version": "1.14.0",
+        "seed": 1,
+        "template": "q-161259",
+        "parameters": {
+          "u_min": "-2",
+          "u_max": "-1",
+          "v_min": "2",
+          "v_max": "5"
+        },
+        "parameter_fingerprint": "5c1d9f3d2eafff9c3eb4631de150d0199a2438d82e558e65978e281cee48ae7a",
+        "content_fingerprint": "e262763c0f2b168c225af280f26f591915c47e001ce97ba7458c7456e258e058",
+        "bank_profile": "authored_primitive",
+        "bank_origin": "authored",
+        "authored_extension": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "source_analysis": {
+          "database": "math",
+          "basis": 2520,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "question_ids": [
+            "q-161259"
+          ],
+          "canonical": "e-12358"
+        },
+        "orientation": "r_u cross r_v",
+        "domain": "rectangle",
+        "math": {
+          "r": [
+            "u + v",
+            "-u + v",
+            "u*v"
+          ],
+          "F": [
+            "x",
+            "y",
+            "-z"
+          ],
+          "ru": [
+            "1",
+            "-1",
+            "v"
+          ],
+          "rv": [
+            "1",
+            "1",
+            "u"
+          ],
+          "normal": [
+            "-u - v",
+            "-u + v",
+            "2"
+          ],
+          "composed": [
+            "u + v",
+            "-u + v",
+            "-u*v"
+          ],
+          "f": "-6*u*v",
+          "correct": "189/2",
+          "area": "3"
+        },
+        "solution_steps": {
+          "inner": "u",
+          "factor": "-6",
+          "primitive": "u**2*v/2",
+          "reduced": "-3*v/2",
+          "outer_primitive": "-3*v**2/4",
+          "evaluated_terms": [
+            "-63/4"
+          ]
+        },
+        "answer_recipes": {
+          "4f95dd12-9b81-5f4b-a49a-940b78b21755": {
+            "recipe": "correct",
+            "value": "189/2"
+          },
+          "a7254b17-db80-525c-b97e-c7b803fbf1ca": {
+            "recipe": "reversed_cross_product",
+            "value": "-189/2"
+          },
+          "30f741c0-2ffe-52ca-87c6-954e41dca119": {
+            "recipe": "omitted_antiderivative_divisors",
+            "value": "378"
+          },
+          "cc116348-137d-51bb-9608-f95dc11bcf6c": {
+            "recipe": "divisors_one_too_large",
+            "value": "42"
+          },
+          "da5ec1ac-7dc2-59e4-a14d-00f691904a91": {
+            "recipe": "extra_squared_surface_jacobian",
+            "value": "3591"
+          }
+        }
+      }
+    }
+  },
+  {
+    "label": "Generated authored bank q-161259 / authored_weighted / 0",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186198380,
+        "id": "f322cca7-7530-50bf-b262-89faa81f5906",
+        "title": "Evaluating Flux Through a Surface"
+      },
+      "question": {
+        ":question/id": "83be6604-500a-5cc3-91db-b9fd1bbae9ba",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Evaluate the surface integral\n\n$$\n{∬}_{S}⟨x,\\,y,\\,-z⟩\\cdot \\text{d}S\n$$\n\nwhere the parametric surface $S$ is defined by\n\n$$\nr(u,v)=⟨u+v,\\,v-u,\\,uv⟩\n$$\n\nover the domain $D=\\{(u,v)\\,:\\,0\\le u\\le 1,\\,1\\le v\\le 4\\}.$\n\n*Hint: You can use the fact that ${r}_{u}^{′}\\times {r}_{v}^{′}=⟨-u-v,\\,v-u,\\,2⟩.$*",
+        ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{∬}_{S}F\\cdot \\text{d}S={∬}_{S}F\\cdot n\\,\\text{d}S={∬}_{D}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′})\\,\\text{d}A.\n$$\n\nWe're given that the fundamental vector product for our surface is\n\n$$\n{r}_{u}^{′}\\times {r}_{v}^{′}=⟨-u-v,\\,v-u,\\,2⟩.\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & ={⟨x,\\,y,\\,-z⟩|}_{x=u+v\\,y=v-u\\,z=uv} \\\\  & =⟨u+v,\\,v-u,\\,-uv⟩\\end{aligned}\n$$\n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{′}\\times {r}_{v}^{′}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′}) & =⟨u+v,\\,v-u,\\,-uv⟩\\cdot ⟨-u-v,\\,v-u,\\,2⟩ \\\\  & =(u+v)\\cdot (-u-v)+(v-u)\\cdot (v-u)+(-uv)\\cdot 2 \\\\  & =-{u}^{2}-2uv-{v}^{2}+{v}^{2}-2uv+{u}^{2}-2uv \\\\  & =-6uv\\end{aligned}\n$$\n\nTherefore, the surface integral evaluates to\n\n$$\n\\begin{aligned}{∬}_{S}⟨x,\\,y,\\,-z⟩\\cdot \\text{d}S & ={∬}_{D}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′})\\,\\text{d}A \\\\  & ={∬}_{D}(-6uv)\\,\\text{d}A \\\\  & =-6{\\int }_{1}^{4}{\\int }_{0}^{1}uv\\,\\text{d}u\\,\\text{d}v \\\\  & =-6{\\int }_{1}^{4}v\\,\\text{d}v{\\int }_{0}^{1}u\\,\\text{d}u \\\\  & =-6\\cdot [\\frac{1}{2}{v}^{2}]_{1}^{4}\\cdot {[\\frac{1}{2}{u}^{2}]}_{0}^{1} \\\\  & =-6(\\frac{1}{2})(\\frac{15}{2}) \\\\  & =- \\frac{45}{2}.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "64492d43-e946-55fa-b7d5-a939bb54e937",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "a17f7c59-540f-55b6-baec-66cde94f3bff",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{45}{2}"
+              },
+              {
+                ":answer/id": "d6257b4c-692c-5d8d-ab2a-9b47ec72ecdd",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-15"
+              },
+              {
+                ":answer/id": "f8a814b3-f5b1-522b-b162-ad65e989d638",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{45}{2}"
+              },
+              {
+                ":answer/id": "4e29c845-5e24-540e-b1af-b4a121bc62c2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-63"
+              },
+              {
+                ":answer/id": "2bd215e1-37f5-56dc-88df-692e8dc0efae",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-42"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "a17f7c59-540f-55b6-baec-66cde94f3bff"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "flux-rectangular-1",
+        "sympy_version": "1.14.0",
+        "seed": 0,
+        "template": "q-161259",
+        "parameters": {
+          "u_min": "0",
+          "u_max": "1",
+          "v_min": "1",
+          "v_max": "4"
+        },
+        "parameter_fingerprint": "e20afcb90c75bfac3548404b9fd03fd7ee68fc601a0a613d0795f9c257e7b8d8",
+        "content_fingerprint": "3ac8d9e0792471e895172dae10cc2d7c578068af94e8eda5946635d5c20a2c8c",
+        "bank_profile": "authored_weighted",
+        "bank_origin": "authored",
+        "authored_extension": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "source_analysis": {
+          "database": "math",
+          "basis": 2520,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "question_ids": [
+            "q-161259"
+          ],
+          "canonical": "e-12358"
+        },
+        "orientation": "r_u cross r_v",
+        "domain": "rectangle",
+        "math": {
+          "r": [
+            "u + v",
+            "-u + v",
+            "u*v"
+          ],
+          "F": [
+            "x",
+            "y",
+            "-z"
+          ],
+          "ru": [
+            "1",
+            "-1",
+            "v"
+          ],
+          "rv": [
+            "1",
+            "1",
+            "u"
+          ],
+          "normal": [
+            "-u - v",
+            "-u + v",
+            "2"
+          ],
+          "composed": [
+            "u + v",
+            "-u + v",
+            "-u*v"
+          ],
+          "f": "-6*u*v",
+          "correct": "-45/2",
+          "area": "3"
+        },
+        "solution_steps": {
+          "inner": "u",
+          "factor": "-6",
+          "primitive": "u**2*v/2",
+          "reduced": "v/2",
+          "outer_primitive": "v**2/4",
+          "evaluated_terms": [
+            "15/4"
+          ]
+        },
+        "answer_recipes": {
+          "a17f7c59-540f-55b6-baec-66cde94f3bff": {
+            "recipe": "correct",
+            "value": "-45/2"
+          },
+          "f8a814b3-f5b1-522b-b162-ad65e989d638": {
+            "recipe": "reversed_cross_product",
+            "value": "45/2"
+          },
+          "d6257b4c-692c-5d8d-ab2a-9b47ec72ecdd": {
+            "recipe": "erroneous_u_measure",
+            "value": "-15"
+          },
+          "4e29c845-5e24-540e-b1af-b4a121bc62c2": {
+            "recipe": "erroneous_v_measure",
+            "value": "-63"
+          },
+          "2bd215e1-37f5-56dc-88df-692e8dc0efae": {
+            "recipe": "erroneous_uv_measure",
+            "value": "-42"
+          }
+        }
+      }
+    }
+  },
+  {
+    "label": "Generated authored bank q-161259 / authored_weighted / 1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186198380,
+        "id": "f322cca7-7530-50bf-b262-89faa81f5906",
+        "title": "Evaluating Flux Through a Surface"
+      },
+      "question": {
+        ":question/id": "c218a4f7-5464-50a9-9211-caefaa7a596f",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Evaluate the surface integral\n\n$$\n{∬}_{S}⟨x,\\,y,\\,-z⟩\\cdot \\text{d}S\n$$\n\nwhere the parametric surface $S$ is defined by\n\n$$\nr(u,v)=⟨u+v,\\,v-u,\\,uv⟩\n$$\n\nover the domain $D=\\{(u,v)\\,:\\,-2\\le u\\le -1,\\,2\\le v\\le 5\\}.$\n\n*Hint: You can use the fact that ${r}_{u}^{′}\\times {r}_{v}^{′}=⟨-u-v,\\,v-u,\\,2⟩.$*",
+        ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{∬}_{S}F\\cdot \\text{d}S={∬}_{S}F\\cdot n\\,\\text{d}S={∬}_{D}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′})\\,\\text{d}A.\n$$\n\nWe're given that the fundamental vector product for our surface is\n\n$$\n{r}_{u}^{′}\\times {r}_{v}^{′}=⟨-u-v,\\,v-u,\\,2⟩.\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & ={⟨x,\\,y,\\,-z⟩|}_{x=u+v\\,y=v-u\\,z=uv} \\\\  & =⟨u+v,\\,v-u,\\,-uv⟩\\end{aligned}\n$$\n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{′}\\times {r}_{v}^{′}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′}) & =⟨u+v,\\,v-u,\\,-uv⟩\\cdot ⟨-u-v,\\,v-u,\\,2⟩ \\\\  & =(u+v)\\cdot (-u-v)+(v-u)\\cdot (v-u)+(-uv)\\cdot 2 \\\\  & =-{u}^{2}-2uv-{v}^{2}+{v}^{2}-2uv+{u}^{2}-2uv \\\\  & =-6uv\\end{aligned}\n$$\n\nTherefore, the surface integral evaluates to\n\n$$\n\\begin{aligned}{∬}_{S}⟨x,\\,y,\\,-z⟩\\cdot \\text{d}S & ={∬}_{D}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′})\\,\\text{d}A \\\\  & ={∬}_{D}(-6uv)\\,\\text{d}A \\\\  & =-6{\\int }_{2}^{5}{\\int }_{-2}^{-1}uv\\,\\text{d}u\\,\\text{d}v \\\\  & =-6{\\int }_{2}^{5}v\\,\\text{d}v{\\int }_{-2}^{-1}u\\,\\text{d}u \\\\  & =-6\\cdot [\\frac{1}{2}{v}^{2}]_{2}^{5}\\cdot {[\\frac{1}{2}{u}^{2}]}_{-2}^{-1} \\\\  & =-6(- \\frac{3}{2})(\\frac{21}{2}) \\\\  & =\\frac{189}{2}.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "af8e247b-0f8c-5045-85ca-7e6c4f6d4dce",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "9aa23c60-ccb4-5e40-a0ea-9f21d3ae24cc",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-546"
+              },
+              {
+                ":answer/id": "0f8ddfb7-b256-5bea-8df2-87b15e5229a9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-147"
+              },
+              {
+                ":answer/id": "a8fd8bcd-688a-52b8-b07b-dc55d198692f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{189}{2}"
+              },
+              {
+                ":answer/id": "08ecfaff-def4-5876-a7e4-e08f6188ac39",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "351"
+              },
+              {
+                ":answer/id": "67d82b73-ad32-51a5-af3c-cc07122e2db2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{189}{2}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "67d82b73-ad32-51a5-af3c-cc07122e2db2"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "flux-rectangular-1",
+        "sympy_version": "1.14.0",
+        "seed": 1,
+        "template": "q-161259",
+        "parameters": {
+          "u_min": "-2",
+          "u_max": "-1",
+          "v_min": "2",
+          "v_max": "5"
+        },
+        "parameter_fingerprint": "5c1d9f3d2eafff9c3eb4631de150d0199a2438d82e558e65978e281cee48ae7a",
+        "content_fingerprint": "8fb8feb1d8b8347ee3db403fc26dcf5dadab20d8f088cf0b61fe966293f2b7c2",
+        "bank_profile": "authored_weighted",
+        "bank_origin": "authored",
+        "authored_extension": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "source_analysis": {
+          "database": "math",
+          "basis": 2520,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "question_ids": [
+            "q-161259"
+          ],
+          "canonical": "e-12358"
+        },
+        "orientation": "r_u cross r_v",
+        "domain": "rectangle",
+        "math": {
+          "r": [
+            "u + v",
+            "-u + v",
+            "u*v"
+          ],
+          "F": [
+            "x",
+            "y",
+            "-z"
+          ],
+          "ru": [
+            "1",
+            "-1",
+            "v"
+          ],
+          "rv": [
+            "1",
+            "1",
+            "u"
+          ],
+          "normal": [
+            "-u - v",
+            "-u + v",
+            "2"
+          ],
+          "composed": [
+            "u + v",
+            "-u + v",
+            "-u*v"
+          ],
+          "f": "-6*u*v",
+          "correct": "189/2",
+          "area": "3"
+        },
+        "solution_steps": {
+          "inner": "u",
+          "factor": "-6",
+          "primitive": "u**2*v/2",
+          "reduced": "-3*v/2",
+          "outer_primitive": "-3*v**2/4",
+          "evaluated_terms": [
+            "-63/4"
+          ]
+        },
+        "answer_recipes": {
+          "67d82b73-ad32-51a5-af3c-cc07122e2db2": {
+            "recipe": "correct",
+            "value": "189/2"
+          },
+          "a8fd8bcd-688a-52b8-b07b-dc55d198692f": {
+            "recipe": "reversed_cross_product",
+            "value": "-189/2"
+          },
+          "0f8ddfb7-b256-5bea-8df2-87b15e5229a9": {
+            "recipe": "erroneous_u_measure",
+            "value": "-147"
+          },
+          "08ecfaff-def4-5876-a7e4-e08f6188ac39": {
+            "recipe": "erroneous_v_measure",
+            "value": "351"
+          },
+          "9aa23c60-ccb4-5e40-a0ea-9f21d3ae24cc": {
+            "recipe": "erroneous_uv_measure",
+            "value": "-546"
+          }
+        }
+      }
+    }
+  },
+  {
+    "label": "Generated authored bank q-161259 / authored_rectangle / 0",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186198380,
+        "id": "f322cca7-7530-50bf-b262-89faa81f5906",
+        "title": "Evaluating Flux Through a Surface"
+      },
+      "question": {
+        ":question/id": "194e6af0-0589-59e3-89eb-5da8e3e43403",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Evaluate the surface integral\n\n$$\n{∬}_{S}⟨x,\\,y,\\,-z⟩\\cdot \\text{d}S\n$$\n\nwhere the parametric surface $S$ is defined by\n\n$$\nr(u,v)=⟨u+v,\\,v-u,\\,uv⟩\n$$\n\nover the domain $D=\\{(u,v)\\,:\\,0\\le u\\le 1,\\,1\\le v\\le 4\\}.$\n\n*Hint: You can use the fact that ${r}_{u}^{′}\\times {r}_{v}^{′}=⟨-u-v,\\,v-u,\\,2⟩.$*",
+        ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{∬}_{S}F\\cdot \\text{d}S={∬}_{S}F\\cdot n\\,\\text{d}S={∬}_{D}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′})\\,\\text{d}A.\n$$\n\nWe're given that the fundamental vector product for our surface is\n\n$$\n{r}_{u}^{′}\\times {r}_{v}^{′}=⟨-u-v,\\,v-u,\\,2⟩.\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & ={⟨x,\\,y,\\,-z⟩|}_{x=u+v\\,y=v-u\\,z=uv} \\\\  & =⟨u+v,\\,v-u,\\,-uv⟩\\end{aligned}\n$$\n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{′}\\times {r}_{v}^{′}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′}) & =⟨u+v,\\,v-u,\\,-uv⟩\\cdot ⟨-u-v,\\,v-u,\\,2⟩ \\\\  & =(u+v)\\cdot (-u-v)+(v-u)\\cdot (v-u)+(-uv)\\cdot 2 \\\\  & =-{u}^{2}-2uv-{v}^{2}+{v}^{2}-2uv+{u}^{2}-2uv \\\\  & =-6uv\\end{aligned}\n$$\n\nTherefore, the surface integral evaluates to\n\n$$\n\\begin{aligned}{∬}_{S}⟨x,\\,y,\\,-z⟩\\cdot \\text{d}S & ={∬}_{D}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′})\\,\\text{d}A \\\\  & ={∬}_{D}(-6uv)\\,\\text{d}A \\\\  & =-6{\\int }_{1}^{4}{\\int }_{0}^{1}uv\\,\\text{d}u\\,\\text{d}v \\\\  & =-6{\\int }_{1}^{4}v\\,\\text{d}v{\\int }_{0}^{1}u\\,\\text{d}u \\\\  & =-6\\cdot [\\frac{1}{2}{v}^{2}]_{1}^{4}\\cdot {[\\frac{1}{2}{u}^{2}]}_{0}^{1} \\\\  & =-6(\\frac{1}{2})(\\frac{15}{2}) \\\\  & =- \\frac{45}{2}.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "161d6e42-3146-5023-8e6e-ef35db09289f",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "6b6da658-18b4-5b11-9390-1b4241564e94",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{45}{2}"
+              },
+              {
+                ":answer/id": "036a20e2-9790-5acc-9974-67b9fb99f6cd",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "0"
+              },
+              {
+                ":answer/id": "a79878ea-7c80-5d9e-9093-ac67a093a7ff",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{45}{2}"
+              },
+              {
+                ":answer/id": "84bbbadf-847c-5e96-a452-a12e8e8baf3b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-72"
+              },
+              {
+                ":answer/id": "86bed0d9-52a6-5316-bab1-b3708ba64532",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{63}{8}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "6b6da658-18b4-5b11-9390-1b4241564e94"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "flux-rectangular-1",
+        "sympy_version": "1.14.0",
+        "seed": 0,
+        "template": "q-161259",
+        "parameters": {
+          "u_min": "0",
+          "u_max": "1",
+          "v_min": "1",
+          "v_max": "4"
+        },
+        "parameter_fingerprint": "e20afcb90c75bfac3548404b9fd03fd7ee68fc601a0a613d0795f9c257e7b8d8",
+        "content_fingerprint": "e0d34048090a31d70bf7ed1b44f5a97a801c209557ae02a2d1720dcbaf8b4545",
+        "bank_profile": "authored_rectangle",
+        "bank_origin": "authored",
+        "authored_extension": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "source_analysis": {
+          "database": "math",
+          "basis": 2520,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "question_ids": [
+            "q-161259"
+          ],
+          "canonical": "e-12358"
+        },
+        "orientation": "r_u cross r_v",
+        "domain": "rectangle",
+        "math": {
+          "r": [
+            "u + v",
+            "-u + v",
+            "u*v"
+          ],
+          "F": [
+            "x",
+            "y",
+            "-z"
+          ],
+          "ru": [
+            "1",
+            "-1",
+            "v"
+          ],
+          "rv": [
+            "1",
+            "1",
+            "u"
+          ],
+          "normal": [
+            "-u - v",
+            "-u + v",
+            "2"
+          ],
+          "composed": [
+            "u + v",
+            "-u + v",
+            "-u*v"
+          ],
+          "f": "-6*u*v",
+          "correct": "-45/2",
+          "area": "3"
+        },
+        "solution_steps": {
+          "inner": "u",
+          "factor": "-6",
+          "primitive": "u**2*v/2",
+          "reduced": "v/2",
+          "outer_primitive": "v**2/4",
+          "evaluated_terms": [
+            "15/4"
+          ]
+        },
+        "answer_recipes": {
+          "6b6da658-18b4-5b11-9390-1b4241564e94": {
+            "recipe": "correct",
+            "value": "-45/2"
+          },
+          "a79878ea-7c80-5d9e-9093-ac67a093a7ff": {
+            "recipe": "reversed_cross_product",
+            "value": "45/2"
+          },
+          "036a20e2-9790-5acc-9974-67b9fb99f6cd": {
+            "recipe": "lower_corner_rectangle",
+            "value": "0"
+          },
+          "84bbbadf-847c-5e96-a452-a12e8e8baf3b": {
+            "recipe": "upper_corner_rectangle",
+            "value": "-72"
+          },
+          "86bed0d9-52a6-5316-bab1-b3708ba64532": {
+            "recipe": "quarter_point_rectangle",
+            "value": "-63/8"
+          }
+        }
+      }
+    }
+  },
+  {
+    "label": "Generated authored bank q-161259 / authored_rectangle / 1",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186198380,
+        "id": "f322cca7-7530-50bf-b262-89faa81f5906",
+        "title": "Evaluating Flux Through a Surface"
+      },
+      "question": {
+        ":question/id": "36777304-eb91-58c5-8fd0-8cada9fa6d84",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Evaluate the surface integral\n\n$$\n{∬}_{S}⟨x,\\,y,\\,-z⟩\\cdot \\text{d}S\n$$\n\nwhere the parametric surface $S$ is defined by\n\n$$\nr(u,v)=⟨u+v,\\,v-u,\\,uv⟩\n$$\n\nover the domain $D=\\{(u,v)\\,:\\,-2\\le u\\le -1,\\,2\\le v\\le 5\\}.$\n\n*Hint: You can use the fact that ${r}_{u}^{′}\\times {r}_{v}^{′}=⟨-u-v,\\,v-u,\\,2⟩.$*",
+        ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{∬}_{S}F\\cdot \\text{d}S={∬}_{S}F\\cdot n\\,\\text{d}S={∬}_{D}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′})\\,\\text{d}A.\n$$\n\nWe're given that the fundamental vector product for our surface is\n\n$$\n{r}_{u}^{′}\\times {r}_{v}^{′}=⟨-u-v,\\,v-u,\\,2⟩.\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & ={⟨x,\\,y,\\,-z⟩|}_{x=u+v\\,y=v-u\\,z=uv} \\\\  & =⟨u+v,\\,v-u,\\,-uv⟩\\end{aligned}\n$$\n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{′}\\times {r}_{v}^{′}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′}) & =⟨u+v,\\,v-u,\\,-uv⟩\\cdot ⟨-u-v,\\,v-u,\\,2⟩ \\\\  & =(u+v)\\cdot (-u-v)+(v-u)\\cdot (v-u)+(-uv)\\cdot 2 \\\\  & =-{u}^{2}-2uv-{v}^{2}+{v}^{2}-2uv+{u}^{2}-2uv \\\\  & =-6uv\\end{aligned}\n$$\n\nTherefore, the surface integral evaluates to\n\n$$\n\\begin{aligned}{∬}_{S}⟨x,\\,y,\\,-z⟩\\cdot \\text{d}S & ={∬}_{D}F(r(u,v))\\cdot ({r}_{u}^{′}\\times {r}_{v}^{′})\\,\\text{d}A \\\\  & ={∬}_{D}(-6uv)\\,\\text{d}A \\\\  & =-6{\\int }_{2}^{5}{\\int }_{-2}^{-1}uv\\,\\text{d}u\\,\\text{d}v \\\\  & =-6{\\int }_{2}^{5}v\\,\\text{d}v{\\int }_{-2}^{-1}u\\,\\text{d}u \\\\  & =-6\\cdot [\\frac{1}{2}{v}^{2}]_{2}^{5}\\cdot {[\\frac{1}{2}{u}^{2}]}_{-2}^{-1} \\\\  & =-6(- \\frac{3}{2})(\\frac{21}{2}) \\\\  & =\\frac{189}{2}.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "e14f2f27-7e5a-57cd-a752-5e6b2b10ad16",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "f9530164-7492-5929-a26b-4143ab5e83ab",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{693}{8}"
+              },
+              {
+                ":answer/id": "48b5b671-0872-5976-ab85-f3320ca09736",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "72"
+              },
+              {
+                ":answer/id": "564082e3-e238-55bc-81d4-3657fe2dfc84",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{189}{2}"
+              },
+              {
+                ":answer/id": "97dc1f23-1906-5385-a4da-7b12f1ee1d41",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "90"
+              },
+              {
+                ":answer/id": "81bb24ee-0643-5ad0-9639-f624f8dbe0c2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{189}{2}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "81bb24ee-0643-5ad0-9639-f624f8dbe0c2"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "flux-rectangular-1",
+        "sympy_version": "1.14.0",
+        "seed": 1,
+        "template": "q-161259",
+        "parameters": {
+          "u_min": "-2",
+          "u_max": "-1",
+          "v_min": "2",
+          "v_max": "5"
+        },
+        "parameter_fingerprint": "5c1d9f3d2eafff9c3eb4631de150d0199a2438d82e558e65978e281cee48ae7a",
+        "content_fingerprint": "fe545ff85f4914623a4d2944a18a52b45bb39cfc6c5eace64746f5454ecd18f7",
+        "bank_profile": "authored_rectangle",
+        "bank_origin": "authored",
+        "authored_extension": true,
+        "plot_rating": "none",
+        "plot_assets": {},
+        "source_analysis": {
+          "database": "math",
+          "basis": 2520,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+          "question_ids": [
+            "q-161259"
+          ],
+          "canonical": "e-12358"
+        },
+        "orientation": "r_u cross r_v",
+        "domain": "rectangle",
+        "math": {
+          "r": [
+            "u + v",
+            "-u + v",
+            "u*v"
+          ],
+          "F": [
+            "x",
+            "y",
+            "-z"
+          ],
+          "ru": [
+            "1",
+            "-1",
+            "v"
+          ],
+          "rv": [
+            "1",
+            "1",
+            "u"
+          ],
+          "normal": [
+            "-u - v",
+            "-u + v",
+            "2"
+          ],
+          "composed": [
+            "u + v",
+            "-u + v",
+            "-u*v"
+          ],
+          "f": "-6*u*v",
+          "correct": "189/2",
+          "area": "3"
+        },
+        "solution_steps": {
+          "inner": "u",
+          "factor": "-6",
+          "primitive": "u**2*v/2",
+          "reduced": "-3*v/2",
+          "outer_primitive": "-3*v**2/4",
+          "evaluated_terms": [
+            "-63/4"
+          ]
+        },
+        "answer_recipes": {
+          "81bb24ee-0643-5ad0-9639-f624f8dbe0c2": {
+            "recipe": "correct",
+            "value": "189/2"
+          },
+          "564082e3-e238-55bc-81d4-3657fe2dfc84": {
+            "recipe": "reversed_cross_product",
+            "value": "-189/2"
+          },
+          "48b5b671-0872-5976-ab85-f3320ca09736": {
+            "recipe": "lower_corner_rectangle",
+            "value": "72"
+          },
+          "97dc1f23-1906-5385-a4da-7b12f1ee1d41": {
+            "recipe": "upper_corner_rectangle",
+            "value": "90"
+          },
+          "f9530164-7492-5929-a26b-4143ab5e83ab": {
+            "recipe": "quarter_point_rectangle",
+            "value": "693/8"
           }
         }
       }

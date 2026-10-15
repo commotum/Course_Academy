@@ -40,7 +40,7 @@ def verify(record):
     q=record['question'];a=record['generation'];name=a['template'];p=g.exact_bounds(a['parameters']);m=independent(p,a['math'])
     assert record['knowledge_point']['db_id']==g.KP_ID
     assert q[':question/difficulty']==':question.difficulty/'+g.TEMPLATES[name]
-    assert a['source_analysis']['basis']==1356 and a['domain']=='rectangle' and a['orientation']=='r_u cross r_v'
+    assert a['source_analysis']['basis']==g.DATA.get(name,{}).get('source_basis',1356) and a['domain']=='rectangle' and a['orientation']=='r_u cross r_v'
     assert a['plot_rating']=='none' and a['plot_assets']=={}
     assert g.digest({'template':name,'parameters':a['parameters']})==a['parameter_fingerprint']
     for key in ('ru','rv','normal','composed'):
@@ -77,7 +77,7 @@ def verify(record):
     printed=[latex(t) for t in re.findall(r'\[([^\[\]]+)\]',final)]
     kind=g.DATA[name]['evaluation'] if name in g.DATA else 'generic'
     if kind=='separable_v':expect=[g.u,sp.integrate(m['f'],g.v)]
-    elif kind=='separable_uv':expect=[g.u**2/2,g.v**2/2]
+    elif kind=='separable_uv':expect=[g.SYMBOLS[t]**2/2 for t in g.DATA[name].get('separable_order',['u','v'])]
     else:expect=[primitive,op]
     assert len(printed)==len(expect),(name,'printed primitive count',printed)
     assert all(sp.simplify(a-b)==0 for a,b in zip(printed,expect)),(name,printed,expect)
@@ -107,7 +107,7 @@ def verify(record):
 
 def write(name,obj): (ROOT/name).write_text(json.dumps(obj,indent=2,ensure_ascii=False)+'\n')
 def main():
-    raw=json.loads((ROOT/'source.json').read_text());cases=json.loads((ROOT/'source-cases.json').read_text());source={q[':question/id']:q for q in raw['record'][':knowledge-point/questions']}
+    raw=json.loads((ROOT/'source-current.json').read_text());cases=json.loads((ROOT/'source-cases.json').read_text());source={q[':question/id']:q for q in raw['record'][':knowledge-point/questions']}
     assert len(cases)==len(source) and {c['source_id'] for c in cases}==set(source), 'Complete unique source coverage'
     records=[];coverage=[];generated=[]
     for case in cases:
@@ -174,7 +174,7 @@ def main():
         field=item['record']['question'][':question/answer-fields'][0]
         engine.append({**item,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==field[':answer-field/correct'][1] else 'rejected','purpose':'Full owned radio bank selection'} for a in field[':answer-field/choices']]})
     write('engine-input.json',engine)
-    subprocess.run([str(PROJECT/'generate/runs/current/check-engine'),str(ROOT/'engine-input.json'),str(ROOT/'engine-validation.json')],check=True)
+    subprocess.run([str(ROOT/'check-engine'),str(ROOT/'engine-input.json'),str(ROOT/'engine-validation.json')],check=True)
     native=json.loads((ROOT/'engine-validation.json').read_text());assert native['documented_unresolved_checks']==0
     write('review.json',records)
     lines=['# Flux original and generated review','\nDatabase math, basis 1356. Originals are generator replays compared exactly to the capture. Generated empirical bank variants preserve complete observed density profiles; these extrapolations have unresolved error intent. Authored bank variants use explicitly defined method errors. Metadata appears in review JSON only.']
@@ -184,9 +184,9 @@ def main():
         'source_count':len(cases),'complete_banks_matched':len(cases),'displayed_values_matched':5*len(cases),'source_distractors_matched':4*len(cases),
         'source_designations_matched':len(cases),'source_prompt_and_solution_exact':len(cases),'mathematics':'independent determinant and exact polynomial moment formula; all displayed vectors, dot-product rows and primitives parsed',
         'generated_profile_checks':checked_profiles,'generated_review_counts':{level:sum(item['record']['generation']['template'] in g.TEMPLATES and g.TEMPLATES[item['record']['generation']['template']]==level for item in records if item['label'].startswith('Generated')) for level in ('easy','moderate','hard')},
-        'native_grading':{'entry_point':native['entry_point'],'accepted':native['accepted_checks'],'rejected':native['rejected_checks'],'unresolved':0,'engine_sha256':hashlib.sha256((PROJECT/'generate/runs/current/check-engine').read_bytes()).hexdigest(),'engine_source_sha256':hashlib.sha256((PROJECT/'generate/runs/current/check-engine.rs').read_bytes()).hexdigest()},
+        'native_grading':{'entry_point':native['entry_point'],'accepted':native['accepted_checks'],'rejected':native['rejected_checks'],'unresolved':0,'engine_sha256':hashlib.sha256((ROOT/'check-engine').read_bytes()).hexdigest(),'engine_source_sha256':hashlib.sha256((PROJECT/'generate/runs/current/check-engine.rs').read_bytes()).hexdigest()},
         'rational_boundary_checks':rational_checks,'different_bank_identity_checked':True,'invalid_input_checks':len(invalid),'failing_validator_mutations':mutant_failures,'known_limits':['Observed scalar distractor intent is unresolved; empirical profiles are explicit replay-only profiles, never default.','The source q-161262 has a zero normal curve and signed parameterized-patch interpretation; same calculation retained without claiming globally regular geometry.'],
-        'database_writes':0})
+        'generator_sha256':hashlib.sha256(ROOT.with_suffix('.py').read_bytes()).hexdigest(),'database_writes':0})
     print(f'PASS: {len(cases)} complete source banks / {5*len(cases)} values / {4*len(cases)} distractors; {len(checked_profiles)*8} varied math checks; native {native["accepted_checks"]} accepted / {native["rejected_checks"]} rejected.')
 if __name__=='__main__':
     try:main()

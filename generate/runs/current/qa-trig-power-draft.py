@@ -38,7 +38,7 @@ def check(rec):
  else:expected=[answer]
  assert len(expected)==len(values) and all(sum(P.eq(v,e) for v in values)==1 for e in expected);N['whole_banks']+=1
  if field[':answer-field/type'].endswith('blank'):
-  text=prompt.split('\n\n',1)[1].replace('{{'+field[':answer-field/key']+'}}','('+field[':answer-field/choices'][0][':answer/value'].replace('t','x')+')').replace('$','').replace('\n','');rhs=text.split('=',1)[1];assert P.eq(P.scalar(rhs),der),(t,rhs,der);N['fragment_completions']+=1
+  text=prompt.split('\n\n',1)[1].replace('{{'+field[':answer-field/key']+'}}','('+canonical_math('$'+field[':answer-field/choices'][0][':answer/value']+'$',velocity).strip('$')+')').replace('$','').replace('\n','');rhs=text.split('=',1)[1];assert P.eq(P.scalar(rhs),der),(t,rhs,der);N['fragment_completions']+=1
  domain=meta['domain'];assert domain['variable']==('t' if velocity else 'x')
  if base.func==s.csc:assert domain['restriction']=='sin('+domain['variable']+') != 0'
  else:assert domain['restriction']=='all real x'

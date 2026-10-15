@@ -3,9 +3,9 @@
 Source math basis 2275. Every captured MA source has exact observed_raw replay;
 missing ratings/keys/solutions/fields remain missing in that evidence profile.
 Normal moderate uses entire source banks and source ordered solution sentences.
-Translations vary complete leaf trigonometric arguments without an additional
-chain-rule factor. Source coefficients vary only where observed. Easy is an
-explicit conservative sine-of-sine coefficient/translation band. Hard keeps the
+Normal leaf arguments are fixed at x: explicit nonzero translations are rejected.
+Outer amplitudes vary as observed/inferred constant-multiple slots. Easy is an
+explicit ordinary sin/cos two-function composition band. Hard keeps the
 cosine-of-sine tangent stages and adds documented special-angle phase slots.
 No database operations. See adjacent extraction, independent parser, and native
 application grading reports; five non-MA inventories never supply templates.
@@ -42,19 +42,49 @@ def normalize_prose(text):
     text=re.sub(r'\\begin\{align\*?\}(.*?)\\end\{align\*?\}',lambda m:'\n$$\n'+r'\begin{aligned}'+m[1]+r'\end{aligned}'+'\n$$\n',text,flags=re.S)
     return math_format.normalize_prose(text)
 def shifted(b):return 'x' if b==0 else 'x'+('+' if b>0 else '')+str(b)
-def parameters_for(m):
-    if m=='q-48644':return [{'a':a,'b':b,'phase':phase} for a in range(1,10) for b in (-3,0,3) for phase in PHASES]
-    if m in COEFF or m=='authored-easy':return [{'a':a,'b':b} for a in range(1,10) for b in range(-8,9)]
-    return [{'b':b} for b in range(-8,9)]
+def parameters_for(m,raw=False):
+    if raw:
+        if m=='q-48644':return [{'a':a,'b':b,'phase':phase} for a in range(1,10) for b in (-3,0,3) for phase in PHASES]
+        legacy=[{'a':a,'b':b} for a in range(1,10) for b in range(-8,9)] if m in COEFF else [{'b':b} for b in range(-8,9)]
+        return legacy+[p for p in parameters_for(m) if p not in legacy]
+    if m=='q-48644':return [{'a':a,'b':0,'phase':phase} for a in range(1,10) for phase in PHASES]
+    if m=='authored-easy':return [{'a':a,'b':0,'outer':o,'inner':i} for o in ('sin','cos') for i in ('sin','cos') for a in range(1,10)]
+    if m in SERVED_TEMPLATES:return [{'a':a,'b':0} for a in range(1,10)]
+    return [{'b':0}]
 def model(m,p):
-    a=p.get('a',1);z=x+p['b'];outer_name,inner_name=OPS[m];inner=TRIG[inner_name](z)
+    a=p.get('a',1);z=x+p['b'];outer_name,inner_name=OPS[m]
+    if m=='authored-easy':outer_name=p.get('outer','sin');inner_name=p.get('inner','sin')
+    inner=TRIG[inner_name](z)
     if m=='q-48644':inner+=s.Rational(p['phase'])*s.pi
     outer=a*TRIG[outer_name](u);curve=outer.subs(u,inner);deriv=s.diff(curve,x)
     if m=='q-48644':
         curve=a*s.cos(inner,evaluate=False);deriv=-a*s.sin(inner,evaluate=False)*s.cos(z,evaluate=False)
     return inner,outer,curve,deriv
 
-def components(text,m,p):
+def amplitude_components(text,m,a):
+    """Complete observed coefficient slots generalized to unit-coefficient sources.
+
+    Every original sentence and full formula pattern remains intact at a=1.
+    The outer constant scales y, dy/du, the evaluated outer factor and final
+    derivative together. Inner derivative/bindings remain unscaled.
+    """
+    c='' if a==1 else str(a)
+    if m=='q-31356':pairs=[(r'y = \cot',f'y = {c}'+r'\cot')]
+    elif m=='q-48643':pairs=[(r'y=\operatorname{sin}⁡',f'y={c}'+r'\operatorname{sin}⁡'),(r'\operatorname{cos}⁡u',c+r'\operatorname{cos}⁡u'),(r'-\operatorname{sin}⁡x\operatorname{cos}⁡(', '-'+c+r'\operatorname{sin}⁡x\operatorname{cos}⁡(')]
+    elif m=='q-72161':pairs=[(r'y=\operatorname{cot}⁡',f'y={c}'+r'\operatorname{cot}⁡'),(r'-{csc}^{2}⁡u','-'+c+r'{csc}^{2}⁡u'),(r'-\operatorname{cos}⁡x{csc}^{2}⁡(', '-'+c+r'\operatorname{cos}⁡x{csc}^{2}⁡(')]
+    elif m=='q-342445':pairs=[(r'y=\operatorname{sec}⁡',f'y={c}'+r'\operatorname{sec}⁡'),(r'\operatorname{sec}⁡(u)\operatorname{tan}⁡(u)',c+r'\operatorname{sec}⁡(u)\operatorname{tan}⁡(u)'),(r'& =-\operatorname{csc}⁡x','& =-'+c+r'\operatorname{csc}⁡x')]
+    else:return text
+    for n,(old,new) in enumerate(pairs):text=text.replace(old,f'@@AMP{n}@@')
+    for n,(old,new) in enumerate(pairs):text=text.replace(f'@@AMP{n}@@',new)
+    return text
+
+def value_components(text,m,p,key):
+    if m in ('q-31356','q-48643','q-72161') or (m=='q-342445' and key=='field-1'):
+        # This full expression is the outer-amplitude-dependent answer slot.
+        a=p.get('a',1);text=text if a==1 else str(a)+r'\left('+text+r'\right)'
+    return components(text,m,p,amplitude=False)
+
+def components(text,m,p,amplitude=True):
     """Mask every entire leaf trig-argument component, never differential x.
 
     The b=0 slot renders each captured mathematical component with its exact
@@ -62,6 +92,7 @@ def components(text,m,p):
     there is no special source-anchor return. Coefficients replace complete
     coefficient-and-operator components, rather than free numeric substrings.
     """
+    if amplitude:text=amplitude_components(text,m,p.get('a',1))
     command=r'(?:\\operatorname\{(?:sin|cos|tan|cot|sec|csc)\}|\\(?:sin|cos|tan|cot|sec|csc)|\{(?:sin|cos|tan|cot|sec|csc)\})'
     pattern=command+r'(?:\^\{[23]\})?[⁡\s]*(?:\(\s*x\s*\)|\{\s*x\s*\}|x)(?![A-Za-z])'
     # Coefficient/operator components and leaf arguments overlap in source
@@ -135,7 +166,7 @@ def hard_components(p):
 def domain(m,p):
     inn,out,curve,deriv=model(m,p)
     # Explicit nested pole restrictions retain both layers' differentiability.
-    on,iname=OPS[m];z='('+shifted(p['b'])+')';inner=tex(inn);restr=[]
+    on,iname=(p.get('outer','sin'),p.get('inner','sin')) if m=='authored-easy' else OPS[m];z='('+shifted(p['b'])+')';inner=tex(inn);restr=[]
     if iname in ('tan','sec'):restr.append('cos'+z+' != 0')
     if iname in ('cot','csc'):restr.append('sin'+z+' != 0')
     if on in ('tan','sec'):restr.append('cos('+inner+') != 0')
@@ -145,17 +176,20 @@ def domain(m,p):
 def complete_bank(m,p):
     """Every observed recipe is preserved together; no pooled choice search."""
     z=x+p['b'];S=s.sin(z);C=s.cos(z);a=p.get('a',1)
-    if m=='authored-easy':return (a*C*s.cos(S),a*s.cos(S),-a*C*s.cos(S),a*C*s.sin(S),a*C*s.cos(C))
-    if m=='q-31356':return (S*s.cot(C)**2,S*s.csc(C)**2,s.csc(z)*s.sin(C)**2,S*s.cos(s.csc(z))**2,s.csc(z)*s.cos(S)**2)
-    if m=='q-48643':return (-C*s.sin(C),-S*s.cos(C),-S*s.cos(S),-C*s.cos(S),-S*s.sin(C))
-    if m=='q-72161':return (-C*s.csc(C)**2,-C*s.csc(S)**2,-s.csc(S)**2,s.csc(C)**2,C*s.csc(C)**2)
+    if m=='authored-easy':
+        inn=TRIG[p.get('inner','sin')](z);out=TRIG[p.get('outer','sin')](u)
+        od=s.diff(out,u);id=s.diff(inn,x);correct=a*od.subs(u,inn)*id;other=TRIG['cos' if p.get('inner','sin')=='sin' else 'sin'](z)
+        return (correct,a*od.subs(u,inn),-correct,a*out.subs(u,inn)*id,a*od.subs(u,other)*id)
+    if m=='q-31356':return tuple(a*v for v in (S*s.cot(C)**2,S*s.csc(C)**2,s.csc(z)*s.sin(C)**2,S*s.cos(s.csc(z))**2,s.csc(z)*s.cos(S)**2))
+    if m=='q-48643':return tuple(a*v for v in (-C*s.sin(C),-S*s.cos(C),-S*s.cos(S),-C*s.cos(S),-S*s.sin(C)))
+    if m=='q-72161':return tuple(a*v for v in (-C*s.csc(C)**2,-C*s.csc(S)**2,-s.csc(S)**2,s.csc(C)**2,C*s.csc(C)**2))
     if m=='q-72173':return (a*s.sec(z)*s.tan(-S),a*S*s.sec(-S)*s.tan(-S),a*C*s.sec(C)*s.tan(C),a*S*s.sec(z)*s.tan(C),-a*S*s.sec(C)*s.tan(C))
     return ()
 
 from functools import lru_cache
 @lru_cache(None)
-def _reject_bank(m,a):
-    p={'a':a,'b':0}
+def _reject_bank(m,a,outer='sin',inner='sin'):
+    p={'a':a,'b':0,'outer':outer,'inner':inner}
     bank=complete_bank(m,p)
     for i,first in enumerate(bank):
         for second in bank[i+1:]:
@@ -168,7 +202,7 @@ def _reject_bank(m,a):
 def reject_bank_collisions(m,p):
     # Translation is an invertible substitution and common a is nonzero.
     # Collision proof may therefore be cached on each full profile/coefficient.
-    return _reject_bank(m,p.get('a',1))
+    return _reject_bank(m,p.get('a',1),p.get('outer','sin'),p.get('inner','sin'))
 
 def generate(level,seed=0,template=None,parameters=None,profile=None,field_type=None):
     if level not in SUPPORTED_LEVELS:raise ValueError('Unknown difficulty')
@@ -178,8 +212,13 @@ def generate(level,seed=0,template=None,parameters=None,profile=None,field_type=
     if profile not in (None,'default','observed_raw','raw-'+m,'source-bank','source-blank','authored-blank','authored-method-bank'):raise ValueError('Unknown profile')
     if raw and m not in SOURCES:raise ValueError('No source evidence for authored easy')
     if not raw and m in EVIDENCE_ONLY_TEMPLATES:raise ValueError('Template '+m+' is observed_raw-only/ineligible: frozen native grader cannot resolve ordinary wrong blank responses')
-    p=copy.deepcopy(parameters) if parameters is not None else rng.choice(parameters_for(m))
-    if p not in parameters_for(m) or any(type(v)!=int for k,v in p.items() if k!='phase'):raise ValueError('Parameters outside documented bounded domain')
+    p=copy.deepcopy(parameters) if parameters is not None else rng.choice(parameters_for(m,raw=raw))
+    if not raw:
+        if p.get('b',0)!=0:raise ValueError('Nonzero leaf translation adds an affine chain layer and is not served')
+        p.setdefault('b',0)
+        if m!='q-48644':p.setdefault('a',COEFF.get(m,1))
+        if m=='authored-easy':p.setdefault('outer','sin');p.setdefault('inner','sin')
+    if p not in parameters_for(m,raw=raw) or any(type(v)!=int for k,v in p.items() if k not in ('phase','outer','inner')):raise ValueError('Parameters outside documented bounded domain')
     inner,outer,curve,deriv=model(m,p);extra={}
     if not raw:reject_bank_collisions(m,p)
     if m=='q-48644':prompt,worked,answer,extra=hard_components(p)
@@ -212,7 +251,7 @@ def generate(level,seed=0,template=None,parameters=None,profile=None,field_type=
             if isinstance(f[':answer-field/type'],dict):f[':answer-field/type']=f[':answer-field/type'][':db/ident']
             for a in f[':answer-field/choices']:
                 if isinstance(a[':answer/type'],dict):a[':answer/type']=a[':answer/type'][':db/ident']
-                if m in SOURCES and m!='q-48644':a[':answer/value']=components(a[':answer/value'],m,p)
+                if m in SOURCES and m!='q-48644':a[':answer/value']=value_components(a[':answer/value'],m,p,f[':answer-field/key'])
                 if not raw:a[':answer/value']=math_format.normalize_tex(normalize_trig(a[':answer/value']))
         types={f[':answer-field/type'] for f in fields}
         if field_type is not None and field_type not in types and ':answer-field.type/'+field_type not in types:raise ValueError('Field contract cannot change')
@@ -223,7 +262,7 @@ def generate(level,seed=0,template=None,parameters=None,profile=None,field_type=
     normalized=[]
     for f in fields or []:
         correct=f.get(':answer-field/correct');cv=correct.get(':answer/value') if correct else None
-        if cv is not None and m in SOURCES and m!='q-48644':cv=components(cv,m,p)
+        if cv is not None and m in SOURCES and m!='q-48644':cv=value_components(cv,m,p,f[':answer-field/key'])
         if cv is not None and not raw:cv=math_format.normalize_tex(normalize_trig(cv))
         normalized.append({'key':f[':answer-field/key'],'type':f[':answer-field/type'],'values':sorted(a[':answer/value'] for a in f[':answer-field/choices']),'correct':cv})
     cid=digest({'q':q,'fields':normalized,'domain':domain(m,p),'version':VERSION});uid=lambda t:str(uuid.uuid5(uuid.UUID(KP_UUID),t));qid=uid(cid);q[':question/id']=qid

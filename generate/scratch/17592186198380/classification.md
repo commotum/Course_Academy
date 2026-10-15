@@ -33,3 +33,7 @@ Moderate and hard retain source labels and geometry/field structures. Source bou
 ## Parent variety extension
 
 Normal sampling uses translated integer rectangles: u lower bound −3..2 and v lower bound −2..2, independently chosen widths1..4. This offers480 affine easy domains rather than54, with the same two linear antiderivatives and short exact arithmetic. Families already restricted to nonnegative parameters keep lower bounds0..2; q-161262 retains u_max=v_min=0 with widths1..4. Geometry, field, orientation, question demand and every source replay remain the same. These are authored sampling bounds, not new observed templates or a within-level progression.
+
+## Current-basis replenishment refresh
+
+At basis 2520 the same lineage contains eleven practice questions: six moderate and five hard. The ten earlier sources remain unchanged in authored content. `source-current.json` retains the complete current pull, while `source.json` retains the original basis-1356 evidence. Added source q-161259 (UUID f5815497-10bb-5d31-b1ef-c78b6eb79a17) is a five-choice scalar radio field, key selection, moderate, plot rating none. Its fixed surface is `(u+v,v-u,uv)`, field `(x,y,-z)`, supplied normal `(-u-v,v-u,2)`, and integrand `-6uv`; its rectangle is `[-2,0] × [0,1]`. Its hinted substitution → dot product → separated integral sequence is a distinct geometry/solution template, with one complete observed bank. There are now eleven observed templates and one authored easy template.

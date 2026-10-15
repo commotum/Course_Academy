@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 36**, **qa_passed: 341**, **queued: 199**, **working: 4**.
+**needs_revalidation: 36**, **qa_passed: 348**, **queued: 194**, **working: 2**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -123,16 +123,16 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186096616](../../scratch/17592186096616.py) | Differentiating Logarithmic Functions | Calculating the Slope of the Tangent Line of a Logarithmic Function at a Point | 11 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096616.json) |
 | [17592186096614](../../scratch/17592186096614.py) | Differentiating Logarithmic Functions | Differentiating a Sum Containing a Natural Logarithm Function | 6 / 1 / 3 / 1 | qa_passed | [Report](qa/17592186096614.json) |
 | [17592186096615](../../scratch/17592186096615.py) | Differentiating Logarithmic Functions | Differentiating a Logarithmic Function With a General Base | 9 / 0 / 1 / 2 | qa_passed | [Report](qa/17592186096615.json) |
-| [17592186064282](../../scratch/17592186064282.py) | The Chain Rule With Trigonometric Functions | Differentiating a Reciprocal Trigonometric Function Using the Chain Rule | 3 / 5 / 3 / 2 | working | — |
+| [17592186064282](../../scratch/17592186064282.py) | The Chain Rule With Trigonometric Functions | Differentiating a Reciprocal Trigonometric Function Using the Chain Rule | 3 / 5 / 3 / 2 | qa_passed | [Report](qa/17592186064282.json) |
 | [17592186064281](../../scratch/17592186064281-draft.py) | The Chain Rule With Trigonometric Functions | Differentiating a Trigonometric Function Using the Chain Rule | 0 / 5 / 9 / 2 | qa_passed | [Report](qa/17592186064281.json) |
-| [17592186064284](../../scratch/17592186064284.py) | The Chain Rule With Trigonometric Functions | Differentiating a Composition of Trigonometric Functions Using the Chain Rule | 0 / 9 / 6 / 1 | working | — |
-| [17592186064283](../../scratch/17592186064283.py) | The Chain Rule With Trigonometric Functions | Differentiating a Power of a Trigonometric Function Using the Chain Rule | 8 / 6 / 0 / 1 | working | — |
-| [17592186096845](../../scratch/17592186096845.py) | Selecting Procedures for Calculating Derivatives | Calculating a Derivative Using the Chain and Product Rules | 7 / 10 / 0 / 2 | working | — |
-| [17592186096742](../../scratch/17592186096742.py) | Selecting Procedures for Calculating Derivatives | Calculating a Derivative Using Multiple Instances of the Chain Rule | 5 / 5 / 6 / 2 | queued | — |
-| [17592186096844](../../scratch/17592186096844.py) | Selecting Procedures for Calculating Derivatives | Calculating a Derivative Using the Chain and Quotient Rules | 0 / 11 / 6 / 0 | queued | — |
-| [17592186092384](../../scratch/17592186092384.py) | Calculating the Equation of a Normal Line Using Differentiation | Calculating the Slope of a Normal Line to a Curve at a Point | 11 / 0 / 0 / 2 | queued | — |
-| [17592186092385](../../scratch/17592186092385.py) | Calculating the Equation of a Normal Line Using Differentiation | Determining the Intercepts of a Normal Line | 7 / 6 / 0 / 0 | queued | — |
-| [17592186092240](../../scratch/17592186092240.py) | Calculating the Equation of a Normal Line Using Differentiation | Determining the Equation of a Normal Line to a Curve at a Point | 0 / 14 / 0 / 1 | queued | — |
+| [17592186064284](../../scratch/17592186064284-draft.py) | The Chain Rule With Trigonometric Functions | Differentiating a Composition of Trigonometric Functions Using the Chain Rule | 0 / 9 / 6 / 1 | qa_passed | [Report](qa/17592186064284.json) |
+| [17592186064283](../../scratch/17592186064283-draft.py) | The Chain Rule With Trigonometric Functions | Differentiating a Power of a Trigonometric Function Using the Chain Rule | 8 / 6 / 0 / 1 | qa_passed | [Report](qa/17592186064283.json) |
+| [17592186096845](../../scratch/17592186096845-draft.py) | Selecting Procedures for Calculating Derivatives | Calculating a Derivative Using the Chain and Product Rules | 7 / 10 / 0 / 2 | qa_passed | [Report](qa/17592186096845.json) |
+| [17592186096742](../../scratch/17592186096742-draft.py) | Selecting Procedures for Calculating Derivatives | Calculating a Derivative Using Multiple Instances of the Chain Rule | 5 / 5 / 6 / 2 | qa_passed | [Report](qa/17592186096742.json) |
+| [17592186096844](../../scratch/17592186096844-draft.py) | Selecting Procedures for Calculating Derivatives | Calculating a Derivative Using the Chain and Quotient Rules | 0 / 11 / 6 / 0 | qa_passed | [Report](qa/17592186096844.json) |
+| [17592186092384](../../scratch/17592186092384-draft.py) | Calculating the Equation of a Normal Line Using Differentiation | Calculating the Slope of a Normal Line to a Curve at a Point | 11 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186092384.json) |
+| [17592186092385](../../scratch/17592186092385.py) | Calculating the Equation of a Normal Line Using Differentiation | Determining the Intercepts of a Normal Line | 7 / 6 / 0 / 0 | working | — |
+| [17592186092240](../../scratch/17592186092240.py) | Calculating the Equation of a Normal Line Using Differentiation | Determining the Equation of a Normal Line to a Curve at a Point | 0 / 14 / 0 / 1 | working | — |
 | [17592186204089](../../scratch/17592186204089.py) | Linear Equations With No Solutions | Identifying an Equation With No Solutions | 6 / 0 / 0 / 2 | queued | — |
 | [17592186110719](../../scratch/17592186110719.py) | Linear Equations With Infinitely Many Solutions | Identifying Equations With Infinitely Many Solutions | 5 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186110719.json) |
 | 17592186204090 | Linear Equations With No Solutions | Solving For an Unknown Parameter | 3 / 2 / 2 / 0 | queued | — |
@@ -402,7 +402,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186068844](../../scratch/17592186068844.py) | Solving First-Order ODEs Using Separation of Variables | Finding a General Solution in Implicit Form | 11 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186068844.json) |
 | [17592186068841](../../scratch/17592186068841.py) | Solving First-Order ODEs Using Separation of Variables | Finding General Solutions by Rearranging Then Integrating | 0 / 8 / 6 / 0 | qa_passed | [Report](qa/17592186068841.json) |
 | 17592186096674 | Reduced Row Echelon Form | Finding the Reduced Row Echelon Form of a 3x3 System That Is Already in Row Echelon Form | 9 / 0 / 0 / 1 | queued | — |
-| 17592186096675 | Reduced Row Echelon Form | Finding the Reduced Row Echelon Form of a 3x3 System That Is Not in Row Echelon Form | 0 / 11 / 0 / 1 | queued | — |
+| [17592186096675](../../scratch/17592186096675.py) | Reduced Row Echelon Form | Finding the Reduced Row Echelon Form of a 3x3 System That Is Not in Row Echelon Form | 0 / 11 / 0 / 1 | queued | — |
 | 17592186096746 | Reduced Row Echelon Form | Finding the Reduced Row Echelon Form of a Singular 3x3 System With One Pivot | 6 / 6 / 0 / 1 | queued | — |
 | 17592186096745 | Reduced Row Echelon Form | Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots | 0 / 0 / 14 / 0 | queued | — |
 | 17592186100894 | Solving First-Order IVPs Using Separation of Variables | Finding Particular Solutions of Differential Equations by First Rearranging and Then Separating | 11 / 13 / 0 / 0 | queued | — |
@@ -469,7 +469,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186147454](../../scratch/17592186147454.py) | Bernoulli Differential Equations | Solving a Bernoulli Differential Equation | 0 / 6 / 4 / 1 | queued | — |
 | 17592186147453 | Bernoulli Differential Equations | Reducing a Bernoulli Differential Equation to First Order Linear | 4 / 5 / 2 / 0 | queued | — |
 | [17592186147456](../../scratch/17592186147456.py) | Bernoulli Differential Equations | Identifying Bernoulli Differential Equations | 6 / 6 / 0 / 2 | queued | — |
-| 17592186184171 | The Rank-Nullity Theorem | Finding the Rank or Nullity of a Matrix Given a Description of the Column or Null Space | 5 / 4 / 0 / 0 | queued | — |
+| [17592186184171](../../scratch/17592186184171.py) | The Rank-Nullity Theorem | Finding the Rank or Nullity of a Matrix Given a Description of the Column or Null Space | 5 / 4 / 0 / 0 | queued | — |
 | 17592186184219 | The Rank-Nullity Theorem | Finding the Rank or Nullity of a Matrix Using the Rank-Nullity Theorem | 9 / 0 / 0 / 0 | queued | — |
 | 17592186184172 | The Rank-Nullity Theorem | Identifying True Statements Using the Invertible Matrix Theorem and the Rank-Nullity Theorem | 0 / 7 / 3 / 2 | queued | — |
 | [17592186087886](../../scratch/17592186087886.py) | Homogeneous First-Order ODEs | Transforming a Homogeneous Differential Equation into a Separable Equation Using a Substitution | 7 / 0 / 0 / 0 | queued | — |

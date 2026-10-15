@@ -24,67 +24,76 @@
           "field_key": "selection",
           "answer_id": "b8138f99-7ec9-5256-bd35-e33c7e848dfc",
           "exact_captured_value": "\\sin x\\cot^{2} (\\cos x)",
-          "recipe": "sin(z) cot(cos(z))^2",
+          "recipe": "a * (sin(z) cot(cos(z))^2)",
           "whole_bank_profile": "q-31356",
           "original_parameters": {
             "b": 0
           },
           "reproduces_complete_value": true,
-          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+          "interpretation": "Exact captured pattern; error interpretation is not asserted.",
+          "recipe_amplitude_scope": "Normal authored outer amplitude; original amplitude is1."
         },
         {
           "field_key": "selection",
           "answer_id": "bfe44e20-3664-5950-8af4-4d1829f581e0",
           "exact_captured_value": "\\sin x\\csc^{2} (\\cos x)",
-          "recipe": "sin(z) csc(cos(z))^2 [correct; designation missing]",
+          "recipe": "a * (sin(z) csc(cos(z))^2 [correct; designation missing])",
           "whole_bank_profile": "q-31356",
           "original_parameters": {
             "b": 0
           },
           "reproduces_complete_value": true,
-          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+          "interpretation": "Exact captured pattern; error interpretation is not asserted.",
+          "recipe_amplitude_scope": "Normal authored outer amplitude; original amplitude is1."
         },
         {
           "field_key": "selection",
           "answer_id": "ecca65a3-9b8e-59f8-b57a-ab7326ffb1c5",
           "exact_captured_value": "\\csc x\\sin^{2} (\\cos x)",
-          "recipe": "csc(z) sin(cos(z))^2",
+          "recipe": "a * (csc(z) sin(cos(z))^2)",
           "whole_bank_profile": "q-31356",
           "original_parameters": {
             "b": 0
           },
           "reproduces_complete_value": true,
-          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+          "interpretation": "Exact captured pattern; error interpretation is not asserted.",
+          "recipe_amplitude_scope": "Normal authored outer amplitude; original amplitude is1."
         },
         {
           "field_key": "selection",
           "answer_id": "3f9ff75e-9b68-51c0-ab7d-23b5bb2fa18b",
           "exact_captured_value": "\\sin x\\cos^{2} (\\csc x)",
-          "recipe": "sin(z) cos(csc(z))^2",
+          "recipe": "a * (sin(z) cos(csc(z))^2)",
           "whole_bank_profile": "q-31356",
           "original_parameters": {
             "b": 0
           },
           "reproduces_complete_value": true,
-          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+          "interpretation": "Exact captured pattern; error interpretation is not asserted.",
+          "recipe_amplitude_scope": "Normal authored outer amplitude; original amplitude is1."
         },
         {
           "field_key": "selection",
           "answer_id": "679060c0-1bb6-505c-82ad-9ea21f50f18b",
           "exact_captured_value": "\\csc x\\cos^{2} (\\sin x)",
-          "recipe": "csc(z) cos(sin(z))^2",
+          "recipe": "a * (csc(z) cos(sin(z))^2)",
           "whole_bank_profile": "q-31356",
           "original_parameters": {
             "b": 0
           },
           "reproduces_complete_value": true,
-          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+          "interpretation": "Exact captured pattern; error interpretation is not asserted.",
+          "recipe_amplitude_scope": "Normal authored outer amplitude; original amplitude is1."
         }
       ],
       "slots": {
         "b": {
-          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "role": "Fixed normal leaf argument x and fixed hard tangent point 0",
           "bounds": [
+            0
+          ],
+          "normal_variable": false,
+          "raw_historical_bounds": [
             -8,
             -7,
             -6,
@@ -103,15 +112,32 @@
             7,
             8
           ],
+          "raw_eligibility": "evidence_only/ineligible",
+          "reason": "x+b would add an affine layer and repeated chain-rule reasoning; hard tied point translations are coordinate aliases."
+        },
+        "a": {
+          "role": "Outer constant amplitude",
+          "bounds": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "observed_original": 1,
+          "provenance": "Explicit authored unit-amplitude generalization, grounded in the three observed nonunit families and preceding constant-multiple trig examples",
           "dependencies": [
-            "prompt inner argument",
-            "inner binding",
-            "du/dx trig arguments",
-            "chain inner factor",
+            "prompt outer amplitude",
+            "outer binding",
+            "outer formal derivative",
+            "outer evaluated chain factor",
             "substituted derivative",
-            "entire bank",
-            "each inner-argument blank",
-            "domain poles"
+            "all amplitude-dependent field values and entire radio bank",
+            "hard height/slope/RHS"
           ]
         }
       },
@@ -122,7 +148,7 @@
         "multiply evaluated outer/inner factors",
         "substitute inner argument"
       ],
-      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "backbone_constraints": "Each normal family fixes two trig operators, leaf argument x, one explicit chain application, field layout, and ordered solution stages. Outer amplitudes use the prior constant-multiple derivative rule and introduce no inner composition. Historical raw x+b captures are not served.",
       "raw_preserves_missing": [
         ":question/difficulty",
         ":question/worked-solution",
@@ -147,67 +173,76 @@
           "field_key": "selection",
           "answer_id": "2b27ffe2-7676-50cf-8f85-63acc6816398",
           "exact_captured_value": "-\\operatorname{cos}\u2061x\\operatorname{sin}\u2061(\\operatorname{cos}\u2061x)",
-          "recipe": "-cos(z) sin(cos(z))",
+          "recipe": "a * (-cos(z) sin(cos(z)))",
           "whole_bank_profile": "q-48643",
           "original_parameters": {
             "b": 0
           },
           "reproduces_complete_value": true,
-          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+          "interpretation": "Exact captured pattern; error interpretation is not asserted.",
+          "recipe_amplitude_scope": "Normal authored outer amplitude; original amplitude is1."
         },
         {
           "field_key": "selection",
           "answer_id": "446323eb-ee99-55ba-b53a-c33b7f83bceb",
           "exact_captured_value": "-\\operatorname{sin}\u2061x\\operatorname{cos}\u2061(\\operatorname{cos}\u2061x)",
-          "recipe": "-sin(z) cos(cos(z)) [correct]",
+          "recipe": "a * (-sin(z) cos(cos(z)) [correct])",
           "whole_bank_profile": "q-48643",
           "original_parameters": {
             "b": 0
           },
           "reproduces_complete_value": true,
-          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+          "interpretation": "Exact captured pattern; error interpretation is not asserted.",
+          "recipe_amplitude_scope": "Normal authored outer amplitude; original amplitude is1."
         },
         {
           "field_key": "selection",
           "answer_id": "6e31cdb3-4a26-586a-a124-b350d2c5b39e",
           "exact_captured_value": "-\\operatorname{sin}\u2061x\\operatorname{cos}\u2061(\\operatorname{sin}\u2061x)",
-          "recipe": "-sin(z) cos(sin(z))",
+          "recipe": "a * (-sin(z) cos(sin(z)))",
           "whole_bank_profile": "q-48643",
           "original_parameters": {
             "b": 0
           },
           "reproduces_complete_value": true,
-          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+          "interpretation": "Exact captured pattern; error interpretation is not asserted.",
+          "recipe_amplitude_scope": "Normal authored outer amplitude; original amplitude is1."
         },
         {
           "field_key": "selection",
           "answer_id": "a5306166-8267-56b7-84f3-d958abd6020b",
           "exact_captured_value": "-\\operatorname{cos}\u2061x\\operatorname{cos}\u2061(\\operatorname{sin}\u2061x)",
-          "recipe": "-cos(z) cos(sin(z))",
+          "recipe": "a * (-cos(z) cos(sin(z)))",
           "whole_bank_profile": "q-48643",
           "original_parameters": {
             "b": 0
           },
           "reproduces_complete_value": true,
-          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+          "interpretation": "Exact captured pattern; error interpretation is not asserted.",
+          "recipe_amplitude_scope": "Normal authored outer amplitude; original amplitude is1."
         },
         {
           "field_key": "selection",
           "answer_id": "ad3ebbc8-ea7e-59c1-b950-2b9dc34de1a6",
           "exact_captured_value": "-\\operatorname{sin}\u2061x\\operatorname{sin}\u2061(\\operatorname{cos}\u2061x)",
-          "recipe": "-sin(z) sin(cos(z))",
+          "recipe": "a * (-sin(z) sin(cos(z)))",
           "whole_bank_profile": "q-48643",
           "original_parameters": {
             "b": 0
           },
           "reproduces_complete_value": true,
-          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+          "interpretation": "Exact captured pattern; error interpretation is not asserted.",
+          "recipe_amplitude_scope": "Normal authored outer amplitude; original amplitude is1."
         }
       ],
       "slots": {
         "b": {
-          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "role": "Fixed normal leaf argument x and fixed hard tangent point 0",
           "bounds": [
+            0
+          ],
+          "normal_variable": false,
+          "raw_historical_bounds": [
             -8,
             -7,
             -6,
@@ -226,15 +261,32 @@
             7,
             8
           ],
+          "raw_eligibility": "evidence_only/ineligible",
+          "reason": "x+b would add an affine layer and repeated chain-rule reasoning; hard tied point translations are coordinate aliases."
+        },
+        "a": {
+          "role": "Outer constant amplitude",
+          "bounds": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "observed_original": 1,
+          "provenance": "Explicit authored unit-amplitude generalization, grounded in the three observed nonunit families and preceding constant-multiple trig examples",
           "dependencies": [
-            "prompt inner argument",
-            "inner binding",
-            "du/dx trig arguments",
-            "chain inner factor",
+            "prompt outer amplitude",
+            "outer binding",
+            "outer formal derivative",
+            "outer evaluated chain factor",
             "substituted derivative",
-            "entire bank",
-            "each inner-argument blank",
-            "domain poles"
+            "all amplitude-dependent field values and entire radio bank",
+            "hard height/slope/RHS"
           ]
         }
       },
@@ -245,7 +297,7 @@
         "multiply evaluated outer/inner factors",
         "substitute inner argument"
       ],
-      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "backbone_constraints": "Each normal family fixes two trig operators, leaf argument x, one explicit chain application, field layout, and ordered solution stages. Outer amplitudes use the prior constant-multiple derivative rule and introduce no inner composition. Historical raw x+b captures are not served.",
       "raw_preserves_missing": [],
       "served_status": "served normal plus exact raw evidence"
     },
@@ -266,25 +318,21 @@
       "components": [],
       "slots": {
         "b": {
-          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "role": "Fixed normal leaf argument x and fixed hard tangent point 0",
           "bounds": [
+            0
+          ],
+          "normal_variable": false,
+          "raw_historical_bounds": [
             -3,
             0,
             3
           ],
-          "dependencies": [
-            "prompt inner argument",
-            "inner binding",
-            "du/dx trig arguments",
-            "chain inner factor",
-            "substituted derivative",
-            "entire bank",
-            "each inner-argument blank",
-            "domain poles"
-          ]
+          "raw_eligibility": "evidence_only/ineligible",
+          "reason": "x+b would add an affine layer and repeated chain-rule reasoning; hard tied point translations are coordinate aliases."
         },
         "a": {
-          "role": "Authored hard outer coefficient",
+          "role": "Outer constant amplitude",
           "bounds": [
             1,
             2,
@@ -296,13 +344,16 @@
             8,
             9
           ],
+          "observed_original": 1,
+          "provenance": "Explicit authored unit-amplitude generalization, grounded in the three observed nonunit families and preceding constant-multiple trig examples",
           "dependencies": [
-            "outer function binding",
-            "df/du or dy/du",
-            "prompt",
-            "scaled bank",
-            "coefficient blank",
-            "point height and slope for hard"
+            "prompt outer amplitude",
+            "outer binding",
+            "outer formal derivative",
+            "outer evaluated chain factor",
+            "substituted derivative",
+            "all amplitude-dependent field values and entire radio bank",
+            "hard height/slope/RHS"
           ]
         },
         "phase": {
@@ -330,7 +381,8 @@
             "slope evaluation rows",
             "point-slope equation",
             "final tangent RHS"
-          ]
+          ],
+          "scope": "Authored additive constant in u=sin(x)+phase. Its derivative is zero by the existing sum/constant rules; the decomposition still has one u and one explicit chain multiplication. It is not claimed to be an observed MA parameter."
         }
       },
       "source_solution_stages": [
@@ -343,7 +395,7 @@
         "point-slope equation",
         "simplify tangent equation"
       ],
-      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "backbone_constraints": "Each normal family fixes two trig operators, leaf argument x, one explicit chain application, field layout, and ordered solution stages. Outer amplitudes use the prior constant-multiple derivative rule and introduce no inner composition. Historical raw x+b captures are not served.",
       "raw_preserves_missing": [
         ":question/answer-fields"
       ],
@@ -364,8 +416,12 @@
       "components": [],
       "slots": {
         "b": {
-          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "role": "Fixed normal leaf argument x and fixed hard tangent point 0",
           "bounds": [
+            0
+          ],
+          "normal_variable": false,
+          "raw_historical_bounds": [
             -8,
             -7,
             -6,
@@ -384,16 +440,8 @@
             7,
             8
           ],
-          "dependencies": [
-            "prompt inner argument",
-            "inner binding",
-            "du/dx trig arguments",
-            "chain inner factor",
-            "substituted derivative",
-            "entire bank",
-            "each inner-argument blank",
-            "domain poles"
-          ]
+          "raw_eligibility": "evidence_only/ineligible",
+          "reason": "x+b would add an affine layer and repeated chain-rule reasoning; hard tied point translations are coordinate aliases."
         }
       },
       "source_solution_stages": [
@@ -403,7 +451,7 @@
         "multiply evaluated outer/inner factors",
         "substitute inner argument"
       ],
-      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "backbone_constraints": "Each normal family fixes two trig operators, leaf argument x, one explicit chain application, field layout, and ordered solution stages. Outer amplitudes use the prior constant-multiple derivative rule and introduce no inner composition. Historical raw x+b captures are not served.",
       "raw_preserves_missing": [
         ":question/answer-fields"
       ],
@@ -424,8 +472,12 @@
       "components": [],
       "slots": {
         "b": {
-          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "role": "Fixed normal leaf argument x and fixed hard tangent point 0",
           "bounds": [
+            0
+          ],
+          "normal_variable": false,
+          "raw_historical_bounds": [
             -8,
             -7,
             -6,
@@ -444,16 +496,8 @@
             7,
             8
           ],
-          "dependencies": [
-            "prompt inner argument",
-            "inner binding",
-            "du/dx trig arguments",
-            "chain inner factor",
-            "substituted derivative",
-            "entire bank",
-            "each inner-argument blank",
-            "domain poles"
-          ]
+          "raw_eligibility": "evidence_only/ineligible",
+          "reason": "x+b would add an affine layer and repeated chain-rule reasoning; hard tied point translations are coordinate aliases."
         }
       },
       "source_solution_stages": [
@@ -463,7 +507,7 @@
         "multiply evaluated outer/inner factors",
         "substitute inner argument"
       ],
-      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "backbone_constraints": "Each normal family fixes two trig operators, leaf argument x, one explicit chain application, field layout, and ordered solution stages. Outer amplitudes use the prior constant-multiple derivative rule and introduce no inner composition. Historical raw x+b captures are not served.",
       "raw_preserves_missing": [
         ":question/answer-fields"
       ],
@@ -512,8 +556,12 @@
       ],
       "slots": {
         "b": {
-          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "role": "Fixed normal leaf argument x and fixed hard tangent point 0",
           "bounds": [
+            0
+          ],
+          "normal_variable": false,
+          "raw_historical_bounds": [
             -8,
             -7,
             -6,
@@ -532,19 +580,11 @@
             7,
             8
           ],
-          "dependencies": [
-            "prompt inner argument",
-            "inner binding",
-            "du/dx trig arguments",
-            "chain inner factor",
-            "substituted derivative",
-            "entire bank",
-            "each inner-argument blank",
-            "domain poles"
-          ]
+          "raw_eligibility": "evidence_only/ineligible",
+          "reason": "x+b would add an affine layer and repeated chain-rule reasoning; hard tied point translations are coordinate aliases."
         },
         "a": {
-          "role": "Observed outer coefficient",
+          "role": "Outer constant amplitude",
           "bounds": [
             1,
             2,
@@ -556,13 +596,16 @@
             8,
             9
           ],
+          "observed_original": 4,
+          "provenance": "Observed family amplitude pattern",
           "dependencies": [
-            "outer function binding",
-            "df/du or dy/du",
-            "prompt",
-            "scaled bank",
-            "coefficient blank",
-            "point height and slope for hard"
+            "prompt outer amplitude",
+            "outer binding",
+            "outer formal derivative",
+            "outer evaluated chain factor",
+            "substituted derivative",
+            "all amplitude-dependent field values and entire radio bank",
+            "hard height/slope/RHS"
           ]
         }
       },
@@ -573,7 +616,7 @@
         "multiply evaluated outer/inner factors",
         "substitute inner argument"
       ],
-      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "backbone_constraints": "Each normal family fixes two trig operators, leaf argument x, one explicit chain application, field layout, and ordered solution stages. Outer amplitudes use the prior constant-multiple derivative rule and introduce no inner composition. Historical raw x+b captures are not served.",
       "raw_preserves_missing": [],
       "served_status": "served normal plus exact raw evidence"
     },
@@ -605,8 +648,12 @@
       ],
       "slots": {
         "b": {
-          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "role": "Fixed normal leaf argument x and fixed hard tangent point 0",
           "bounds": [
+            0
+          ],
+          "normal_variable": false,
+          "raw_historical_bounds": [
             -8,
             -7,
             -6,
@@ -625,16 +672,8 @@
             7,
             8
           ],
-          "dependencies": [
-            "prompt inner argument",
-            "inner binding",
-            "du/dx trig arguments",
-            "chain inner factor",
-            "substituted derivative",
-            "entire bank",
-            "each inner-argument blank",
-            "domain poles"
-          ]
+          "raw_eligibility": "evidence_only/ineligible",
+          "reason": "x+b would add an affine layer and repeated chain-rule reasoning; hard tied point translations are coordinate aliases."
         }
       },
       "source_solution_stages": [
@@ -644,7 +683,7 @@
         "multiply evaluated outer/inner factors",
         "substitute inner argument"
       ],
-      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "backbone_constraints": "Each normal family fixes two trig operators, leaf argument x, one explicit chain application, field layout, and ordered solution stages. Outer amplitudes use the prior constant-multiple derivative rule and introduce no inner composition. Historical raw x+b captures are not served.",
       "raw_preserves_missing": [],
       "served_status": "evidence-only; normal rejected due ordinary native grading failures"
     },
@@ -704,8 +743,12 @@
       ],
       "slots": {
         "b": {
-          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "role": "Fixed normal leaf argument x and fixed hard tangent point 0",
           "bounds": [
+            0
+          ],
+          "normal_variable": false,
+          "raw_historical_bounds": [
             -8,
             -7,
             -6,
@@ -724,19 +767,11 @@
             7,
             8
           ],
-          "dependencies": [
-            "prompt inner argument",
-            "inner binding",
-            "du/dx trig arguments",
-            "chain inner factor",
-            "substituted derivative",
-            "entire bank",
-            "each inner-argument blank",
-            "domain poles"
-          ]
+          "raw_eligibility": "evidence_only/ineligible",
+          "reason": "x+b would add an affine layer and repeated chain-rule reasoning; hard tied point translations are coordinate aliases."
         },
         "a": {
-          "role": "Observed outer coefficient",
+          "role": "Outer constant amplitude",
           "bounds": [
             1,
             2,
@@ -748,13 +783,16 @@
             8,
             9
           ],
+          "observed_original": 4,
+          "provenance": "Observed family amplitude pattern",
           "dependencies": [
-            "outer function binding",
-            "df/du or dy/du",
-            "prompt",
-            "scaled bank",
-            "coefficient blank",
-            "point height and slope for hard"
+            "prompt outer amplitude",
+            "outer binding",
+            "outer formal derivative",
+            "outer evaluated chain factor",
+            "substituted derivative",
+            "all amplitude-dependent field values and entire radio bank",
+            "hard height/slope/RHS"
           ]
         }
       },
@@ -765,7 +803,7 @@
         "multiply evaluated outer/inner factors",
         "substitute inner argument"
       ],
-      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "backbone_constraints": "Each normal family fixes two trig operators, leaf argument x, one explicit chain application, field layout, and ordered solution stages. Outer amplitudes use the prior constant-multiple derivative rule and introduce no inner composition. Historical raw x+b captures are not served.",
       "raw_preserves_missing": [],
       "served_status": "served normal plus exact raw evidence"
     },
@@ -786,7 +824,7 @@
           "field_key": "field-1",
           "answer_id": "fd80f4fc-d66d-5918-905b-16bb0d321fbc",
           "exact_captured_value": "-\\operatorname{csc}x\\operatorname{cot}x",
-          "recipe": "-csc(z) cot(z)",
+          "recipe": "-a csc(x) cot(x)",
           "whole_bank_profile": null,
           "original_parameters": {
             "b": 0
@@ -809,8 +847,12 @@
       ],
       "slots": {
         "b": {
-          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "role": "Fixed normal leaf argument x and fixed hard tangent point 0",
           "bounds": [
+            0
+          ],
+          "normal_variable": false,
+          "raw_historical_bounds": [
             -8,
             -7,
             -6,
@@ -829,15 +871,32 @@
             7,
             8
           ],
+          "raw_eligibility": "evidence_only/ineligible",
+          "reason": "x+b would add an affine layer and repeated chain-rule reasoning; hard tied point translations are coordinate aliases."
+        },
+        "a": {
+          "role": "Outer constant amplitude",
+          "bounds": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "observed_original": 1,
+          "provenance": "Explicit authored unit-amplitude generalization, grounded in the three observed nonunit families and preceding constant-multiple trig examples",
           "dependencies": [
-            "prompt inner argument",
-            "inner binding",
-            "du/dx trig arguments",
-            "chain inner factor",
+            "prompt outer amplitude",
+            "outer binding",
+            "outer formal derivative",
+            "outer evaluated chain factor",
             "substituted derivative",
-            "entire bank",
-            "each inner-argument blank",
-            "domain poles"
+            "all amplitude-dependent field values and entire radio bank",
+            "hard height/slope/RHS"
           ]
         }
       },
@@ -848,7 +907,7 @@
         "multiply evaluated outer/inner factors",
         "substitute inner argument"
       ],
-      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "backbone_constraints": "Each normal family fixes two trig operators, leaf argument x, one explicit chain application, field layout, and ordered solution stages. Outer amplitudes use the prior constant-multiple derivative rule and introduce no inner composition. Historical raw x+b captures are not served.",
       "raw_preserves_missing": [],
       "served_status": "served normal plus exact raw evidence"
     },
@@ -869,67 +928,76 @@
           "field_key": "selection",
           "answer_id": "2ad365d4-359a-52c4-805a-c1687b51bf98",
           "exact_captured_value": "-\\operatorname{cos}\u2061x{csc}^{2}\u2061(\\operatorname{cos}\u2061x)",
-          "recipe": "-cos(z) csc(cos(z))^2",
+          "recipe": "a * (-cos(z) csc(cos(z))^2)",
           "whole_bank_profile": "q-72161",
           "original_parameters": {
             "b": 0
           },
           "reproduces_complete_value": true,
-          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+          "interpretation": "Exact captured pattern; error interpretation is not asserted.",
+          "recipe_amplitude_scope": "Normal authored outer amplitude; original amplitude is1."
         },
         {
           "field_key": "selection",
           "answer_id": "646e64f6-f63d-5208-9dad-bae8b2423826",
           "exact_captured_value": "-\\operatorname{cos}\u2061x{csc}^{2}\u2061(\\operatorname{sin}\u2061x)",
-          "recipe": "-cos(z) csc(sin(z))^2 [correct]",
+          "recipe": "a * (-cos(z) csc(sin(z))^2 [correct])",
           "whole_bank_profile": "q-72161",
           "original_parameters": {
             "b": 0
           },
           "reproduces_complete_value": true,
-          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+          "interpretation": "Exact captured pattern; error interpretation is not asserted.",
+          "recipe_amplitude_scope": "Normal authored outer amplitude; original amplitude is1."
         },
         {
           "field_key": "selection",
           "answer_id": "785f85d3-99ed-5869-bb7a-14c4604ec1c8",
           "exact_captured_value": "-{csc}^{2}\u2061(\\operatorname{sin}\u2061x)",
-          "recipe": "-csc(sin(z))^2",
+          "recipe": "a * (-csc(sin(z))^2)",
           "whole_bank_profile": "q-72161",
           "original_parameters": {
             "b": 0
           },
           "reproduces_complete_value": true,
-          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+          "interpretation": "Exact captured pattern; error interpretation is not asserted.",
+          "recipe_amplitude_scope": "Normal authored outer amplitude; original amplitude is1."
         },
         {
           "field_key": "selection",
           "answer_id": "7d2e4cd6-fb63-51c7-b9f4-288b7402ef9a",
           "exact_captured_value": "{csc}^{2}\u2061(\\operatorname{cos}\u2061x)",
-          "recipe": "csc(cos(z))^2",
+          "recipe": "a * (csc(cos(z))^2)",
           "whole_bank_profile": "q-72161",
           "original_parameters": {
             "b": 0
           },
           "reproduces_complete_value": true,
-          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+          "interpretation": "Exact captured pattern; error interpretation is not asserted.",
+          "recipe_amplitude_scope": "Normal authored outer amplitude; original amplitude is1."
         },
         {
           "field_key": "selection",
           "answer_id": "e3ac1cf5-ef67-52e6-b531-518c01f08c90",
           "exact_captured_value": "\\operatorname{cos}\u2061x{csc}^{2}\u2061(\\operatorname{cos}\u2061x)",
-          "recipe": "cos(z) csc(cos(z))^2",
+          "recipe": "a * (cos(z) csc(cos(z))^2)",
           "whole_bank_profile": "q-72161",
           "original_parameters": {
             "b": 0
           },
           "reproduces_complete_value": true,
-          "interpretation": "Exact captured pattern; error interpretation is not asserted."
+          "interpretation": "Exact captured pattern; error interpretation is not asserted.",
+          "recipe_amplitude_scope": "Normal authored outer amplitude; original amplitude is1."
         }
       ],
       "slots": {
         "b": {
-          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "role": "Fixed normal leaf argument x and fixed hard tangent point 0",
           "bounds": [
+            0
+          ],
+          "normal_variable": false,
+          "raw_historical_bounds": [
             -8,
             -7,
             -6,
@@ -948,15 +1016,32 @@
             7,
             8
           ],
+          "raw_eligibility": "evidence_only/ineligible",
+          "reason": "x+b would add an affine layer and repeated chain-rule reasoning; hard tied point translations are coordinate aliases."
+        },
+        "a": {
+          "role": "Outer constant amplitude",
+          "bounds": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "observed_original": 1,
+          "provenance": "Explicit authored unit-amplitude generalization, grounded in the three observed nonunit families and preceding constant-multiple trig examples",
           "dependencies": [
-            "prompt inner argument",
-            "inner binding",
-            "du/dx trig arguments",
-            "chain inner factor",
+            "prompt outer amplitude",
+            "outer binding",
+            "outer formal derivative",
+            "outer evaluated chain factor",
             "substituted derivative",
-            "entire bank",
-            "each inner-argument blank",
-            "domain poles"
+            "all amplitude-dependent field values and entire radio bank",
+            "hard height/slope/RHS"
           ]
         }
       },
@@ -967,7 +1052,7 @@
         "multiply evaluated outer/inner factors",
         "substitute inner argument"
       ],
-      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "backbone_constraints": "Each normal family fixes two trig operators, leaf argument x, one explicit chain application, field layout, and ordered solution stages. Outer amplitudes use the prior constant-multiple derivative rule and introduce no inner composition. Historical raw x+b captures are not served.",
       "raw_preserves_missing": [],
       "served_status": "served normal plus exact raw evidence"
     },
@@ -1053,8 +1138,12 @@
       ],
       "slots": {
         "b": {
-          "role": "Translation of every leaf trig argument z=x+b; hard tangent point -b",
+          "role": "Fixed normal leaf argument x and fixed hard tangent point 0",
           "bounds": [
+            0
+          ],
+          "normal_variable": false,
+          "raw_historical_bounds": [
             -8,
             -7,
             -6,
@@ -1073,19 +1162,11 @@
             7,
             8
           ],
-          "dependencies": [
-            "prompt inner argument",
-            "inner binding",
-            "du/dx trig arguments",
-            "chain inner factor",
-            "substituted derivative",
-            "entire bank",
-            "each inner-argument blank",
-            "domain poles"
-          ]
+          "raw_eligibility": "evidence_only/ineligible",
+          "reason": "x+b would add an affine layer and repeated chain-rule reasoning; hard tied point translations are coordinate aliases."
         },
         "a": {
-          "role": "Observed outer coefficient",
+          "role": "Outer constant amplitude",
           "bounds": [
             1,
             2,
@@ -1097,13 +1178,16 @@
             8,
             9
           ],
+          "observed_original": 3,
+          "provenance": "Observed family amplitude pattern",
           "dependencies": [
-            "outer function binding",
-            "df/du or dy/du",
-            "prompt",
-            "scaled bank",
-            "coefficient blank",
-            "point height and slope for hard"
+            "prompt outer amplitude",
+            "outer binding",
+            "outer formal derivative",
+            "outer evaluated chain factor",
+            "substituted derivative",
+            "all amplitude-dependent field values and entire radio bank",
+            "hard height/slope/RHS"
           ]
         }
       },
@@ -1114,13 +1198,13 @@
         "multiply evaluated outer/inner factors",
         "substitute inner argument"
       ],
-      "backbone_constraints": "Trig operators, depth two, derivative target, field layout and ordered solution stages stay fixed per observed template; translation derivative is one and adds no chain-rule factor.",
+      "backbone_constraints": "Each normal family fixes two trig operators, leaf argument x, one explicit chain application, field layout, and ordered solution stages. Outer amplitudes use the prior constant-multiple derivative rule and introduce no inner composition. Historical raw x+b captures are not served.",
       "raw_preserves_missing": [],
       "served_status": "served normal plus exact raw evidence"
     }
   ],
   "authored_easy": {
-    "curve": "a sin(sin(x+b))",
+    "curve": "a O(I(x)), O and I each sin or cos",
     "a": [
       1,
       2,
@@ -1133,30 +1217,14 @@
       9
     ],
     "b": [
-      -8,
-      -7,
-      -6,
-      -5,
-      -4,
-      -3,
-      -2,
-      -1,
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8
+      0
     ],
     "field": "single full-derivative five-option radio",
     "solution_stages": [
-      "decompose y=a sin(u), u=sin(x+b)",
-      "dy/du=a cos(u), du/dx=cos(x+b)",
-      "formal chain rule",
-      "evaluated outer/inner multiplication",
+      "decompose y=a O(u), u=I(x)",
+      "dy/du=a O\u2032(u), du/dx=I\u2032(x)",
+      "formal single chain rule",
+      "evaluated whole outer/inner factor multiplication",
       "substitution"
     ],
     "grounding": [
@@ -1164,21 +1232,36 @@
       "KP canonical e-735 tan(sin(x)) establishes composition rather than affine-only chain rule",
       "topic lesson introduction and basic trig derivative prerequisites"
     ],
-    "authored_provenance": "No easy MA practice is captured; fixed sine/sine operators and two one-factor trig derivatives conservatively reduce moderate reciprocal/signed derivative work.",
+    "authored_provenance": "No easy MA practice is captured. Four ordinary sin/cos pairs all have two one-factor primitive trig derivatives, one explicit chain application and one full-derivative radio. These are conservative authored alternatives, not reconstructed MA easy labels. Observed moderate basic-trig examples retain their original labels; easy is differentiated from reciprocal-trig workloads, not claimed to be mathematically disjoint from every observed moderate card.",
     "whole_bank_profile": "authored-easy-five-patterns",
     "whole_bank_recipes": [
-      "a cos(z) cos(sin(z)) [correct]",
-      "a cos(sin(z)) [omits inner derivative]",
-      "-a cos(z) cos(sin(z)) [reversed sign]",
-      "a cos(z) sin(sin(z)) [wrong outer derivative]",
-      "a cos(z) cos(cos(z)) [wrong substituted inner argument]"
+      "a O\u2032(I(x)) I\u2032(x) [correct]",
+      "a O\u2032(I(x)) [omits inner derivative]",
+      "-a O\u2032(I(x)) I\u2032(x) [reversed sign]",
+      "a O(I(x)) I\u2032(x) [wrong outer derivative]",
+      "a O\u2032(J(x)) I\u2032(x), J the other ordinary trig operator [wrong substituted inner argument]"
     ],
-    "native_grading": "All five field-owned option IDs graded; foreign IDs trigger the field ownership API guard."
+    "native_grading": "All five field-owned option IDs graded; foreign IDs trigger the field ownership API guard.",
+    "outer": [
+      "sin",
+      "cos"
+    ],
+    "inner": [
+      "sin",
+      "cos"
+    ],
+    "normal_capacity": 36
   },
   "bank_policy": "Select the entire source profile by template before parameters. Preserve all five patterns, then reject the whole instance on any mathematical collision. No pooled candidate list or fitted offsets.",
   "nonserved_ordinary_grader_exclusions": [
     "q-342436",
     "q-72163",
     "q-72170"
-  ]
+  ],
+  "normal_capacity": {
+    "easy": 36,
+    "moderate": 63,
+    "hard": 117
+  },
+  "normal_translations_removed": true
 }

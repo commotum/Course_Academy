@@ -77,10 +77,15 @@ def solution_check(q):
   defs[name]=scalar(raw)
  assert len(defs)==2,(q.get(':question/math-academy-id'),defs)
  assert set(defs)==({'g','h'} if z==t else {'u','v'})
+ for name,arg in re.findall(r'([uvgh])\(([xt])\)',work):assert arg==str(z),'Stale solution variable reference'
  # Read formal quotient operator operands/order/square as printed, independently.
  formal=next(block for block in re.findall(r'\$\$(.*?)\$\$',work,re.S) if '&' in block)
  firstrow=re.sub(r'\\(?:begin|end)\{aligned\}','',formal).split(r'\\')[0]
- rule=firstrow.split(' & =',1)[1]
+ lhs,rule=firstrow.split(' & =',1)
+ target_norm=lambda txt:re.sub(r'[{}^\s]','',txt.replace("'",'′').replace(r'\prime','′'))
+ D=r'\frac{\text{d}y}{\text{d}x}'
+ targets=[r'{x}^{′}(t)'] if z==t else [r'{f}^{′}(x)'] if 'f(x)=' in q[':question/problem'] else [D,r'{y}^{′}',r'{y}^{′}(x)',r'{y}^{′}='+D]
+ assert target_norm(lhs) in {target_norm(v) for v in targets},('Printed derivative target',lhs)
  n,dn=('g','h') if z==t else ('u','v');Z=str(z)
  expected_rule=rf'\frac{{{{{n}}}^{{′}}({Z})\cdot {dn}({Z})-{n}({Z})\cdot {{{dn}}}^{{′}}({Z})}}{{[{dn}({Z})]^{{2}}}}'
  norm=lambda txt:re.sub(r'\s+','',txt.replace("'",'′'))
@@ -129,8 +134,18 @@ def independent(rec):
  assert rec['knowledge_point']=={'db_id':g.KP_ID,'id':g.KP_UUID,'title':g.TITLE}
  assert rec['question'][':question/difficulty']==':question.difficulty/'+g.LEVELS[m]
  assert gen['domain']==g.domain(m,gen['parameters'])
+ F,z,point=prompt_data(rec['question'])
+ actual_zeroes=[n for n in s.solve(s.denom(F),z) if n.is_real is not False]
+ reported_zeroes=[scalar(n) for n in gen['domain']['denominator_zeroes']]
+ assert len(actual_zeroes)==len(reported_zeroes) and all(any(equal(a,b) for b in reported_zeroes) for a in actual_zeroes),'Printed denominator zeroes/domain mismatch'
+ if F.has(s.log):assert gen['domain']['restriction']==('x>1' if F.has(s.sqrt(s.log(x))) else 'x>0')
+ if z==t:assert gen['domain']['restriction']=='t>0'
+ if point is not None:assert s.denom(F).subs(z,point)!=0
+ if F.has(s.tan):
+  I=next(iter(F.atoms(s.tan))).args[0];assert equal(scalar(gen['domain']['chain_inner']),I)
+ stages=solution_check(rec['question'])
  assert rec==g.generate(gen['level'],gen['seed'],template=m,parameters=gen['parameters'])
- return solution_check(rec['question'])
+ return stages
 
 def expected_bank_from_givens(q):
  F,z,pt=prompt_data(q);f=q[':question/answer-fields'][0]

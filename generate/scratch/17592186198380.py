@@ -17,6 +17,8 @@ ROOT=Path(__file__).resolve().parent/'17592186198380'
 KP_ID=17592186198380
 KP_UUID='f322cca7-7530-50bf-b262-89faa81f5906'
 TITLE='Evaluating Flux Through a Surface'
+SUPPORTED_LEVELS=('easy','moderate','hard')
+GENERATOR_UUID=str(uuid.uuid5(uuid.UUID(KP_UUID),'question-generator'))
 VERSION='flux-rectangular-1'
 u,v,x,y,z=sp.symbols('u v x y z', real=True)
 SYMBOLS={s.name:s for s in (u,v,x,y,z)}
@@ -84,7 +86,7 @@ def source_solution(name,p,m):
         slots['evaluation']=tex(p['u_max']-p['u_min'])+r'\cdot '+tex(ev)
     elif kind=='separable_uv':
         eu=sp.integrate(u,(u,p['u_min'],p['u_max']));ev=sp.integrate(v,(v,p['v_min'],p['v_max']))
-        slots['evaluation']=tex(factor)+'('+tex(eu)+')('+tex(ev)+')'
+        slots['evaluation']=d.get('evaluation_tex') if d.get('evaluation_tex') and p=={k:expr(str(t)) for k,t in d['bounds'].items()} else tex(factor)+'('+tex(eu)+')('+tex(ev)+')'
     final=d['final_template']
     for key,value in slots.items(): final=final.replace('<<'+key+'>>',value)
     if '<<' in final: raise AssertionError('Unexpanded solution slot')
@@ -198,7 +200,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
             'parameter_fingerprint':parameter_key,'content_fingerprint':content_key,'bank_profile':profile,
             'bank_origin':'observed_empirical_replay' if profile.startswith('observed:') else 'authored',
             'authored_extension':not profile.startswith('observed:'),'plot_rating':'none','plot_assets':{},
-            'source_analysis':{'database':'math','basis':1356,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1','question_ids':[template] if template in DATA else [],'canonical':'e-12358'},
+            'source_analysis':{'database':'math','basis':DATA.get(template,{}).get('source_basis',1356),'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1','question_ids':[template] if template in DATA else [],'canonical':'e-12358'},
             'orientation':'r_u cross r_v','domain':'rectangle','math':{key:[str(t) for t in value] if isinstance(value,sp.MatrixBase) else str(value) for key,value in m.items() if key!='integrate'},
             'solution_steps':steps,'answer_recipes':metadata}}
 
