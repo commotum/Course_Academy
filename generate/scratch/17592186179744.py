@@ -7,14 +7,26 @@ would change the extracted workload. Source replay uses explicit parameters.
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import random
+import sys
 import uuid
-import sympy as s
+try:
+    import sympy as s
+except ModuleNotFoundError as error:
+    # Inventory executes registered scripts with its own Python. Reuse the
+    # repository's installed dependencies when that Python lacks SymPy.
+    interpreter = Path(__file__).resolve().parents[2] / '.venv/bin/python'
+    if error.name != 'sympy' or __name__ != '__main__' or not interpreter.is_file():
+        raise
+    if interpreter.resolve() == Path(sys.executable).resolve():
+        raise
+    os.execv(str(interpreter), [str(interpreter), str(Path(__file__).resolve()), *sys.argv[1:]])
 
 KP_ID = 17592186179744
 KP_UUID = '4c9de11e-2195-5946-a19e-235667d39631'
-VERSION = '1.0.0'
+VERSION = '1.0.1'
 HERE = Path(__file__).with_suffix('')
 SOURCE = json.loads((HERE / 'reference/source.json').read_text())
 SOURCE['lineage'] = '01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'
