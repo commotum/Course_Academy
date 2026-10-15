@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Surface integrals in polar coordinates; local draft through step 7.
-Basis 1356. Observed opaque banks are public evidence profiles, never defaults.
+"""Surface integrals in polar coordinates; validated inventory generator.
+Source refresh basis 2721; historical basis 1356 retained under reference/. Observed opaque banks are public evidence profiles, never defaults.
 Raw templates permit a vertical plane translation h: this is deliberately an
 incidental parameter, excluded from assessed-task identity. Its sparse historical
 banks cannot justify new numeric error recipes. Normal families instead use
@@ -14,10 +14,10 @@ import argparse, hashlib, json, os, random, sys, uuid
 from pathlib import Path
 import sympy as sp
 KP=17592186105888; TITLE='Evaluating Surface Integrals Using Polar Coordinates'
-VERSION='polar-surface-2'; ROOT=Path(__file__).resolve().with_suffix('')
+VERSION='polar-surface-3'; ROOT=Path(__file__).resolve().with_suffix('')
 X,Y,R,T=sp.symbols('x y r theta',real=True)
 NS=uuid.UUID('65e5d5ea-f579-5871-924d-075a207c9aa7')
-FAMILIES=('x','y','xy','xy2','x_over_r2','x2y','exp','linear','xy_over_r2','radialpoly','r2')
+FAMILIES=('x','y','xy','xy2','x_over_r2','x2y','exp','linear','xy_over_r2','radialpoly','r2','radialsqrt')
 REGIONS={'disk':(0,2*sp.pi),'q1':(0,sp.pi/2),'q2':(sp.pi/2,sp.pi),'q4':(3*sp.pi/2,2*sp.pi),'upper':(0,sp.pi),'right':(-sp.pi/2,sp.pi/2),'left':(sp.pi/2,3*sp.pi/2)}
 SOURCE_CONFIG={
 'q-161146':('x',3,1,-1,2,'q1'),'q-161302':('r2',1,2,-1,2,'disk'),
@@ -25,17 +25,18 @@ SOURCE_CONFIG={
 'q-161301':('xy2',5,2,2,2,'right'),'q-161311':('x_over_r2',1,-1,sp.sqrt(2),3,'q2'),
 'q-161318':('x2y',3,-4,sp.sqrt(8),1,'upper'),'q-161322':('exp',1,1,sp.sqrt(3),2,'disk'),
 'q-161339':('linear',1,-2,2,1,'left'),'q-161316':('xy_over_r2',4,1,-sp.sqrt(2),3,'q4'),
-'q-161338':('radialpoly',1,4,sp.sqrt(3),1,'disk')}
+'q-161338':('radialpoly',1,4,sp.sqrt(3),1,'disk'),
+'q-161328':('radialsqrt',1,4,sp.sqrt(8),2,'disk')}
 def tex(e): return sp.latex(sp.sympify(e)).replace(r'\log',r'\ln')
 def canonical(e): return sp.srepr(sp.simplify(e))
 def digest(o): return hashlib.sha256(json.dumps(o,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
 def uid(s):return str(uuid.uuid5(NS,s))
 def expr(f,k,c=1):
- return {'constant':k,'x':k*X,'y':k*Y,'xy':k*X*Y,'xy2':k*X*Y**2,'x2y':k*X**2*Y,'x_over_r2':k*X/(X**2+Y**2),'xy_over_r2':k*X*Y/(X**2+Y**2),'r2':k*(X**2+Y**2),'exp':k*sp.exp(X**2+Y**2),'linear':k*(X+Y),'radialpoly':k*(c-X**2-Y**2)}[f]
+ return {'constant':k,'radialsqrt':k*sp.sqrt(X**2+Y**2),'x':k*X,'y':k*Y,'xy':k*X*Y,'xy2':k*X*Y**2,'x2y':k*X**2*Y,'x_over_r2':k*X/(X**2+Y**2),'xy_over_r2':k*X*Y/(X**2+Y**2),'r2':k*(X**2+Y**2),'exp':k*sp.exp(X**2+Y**2),'linear':k*(X+Y),'radialpoly':k*(c-X**2-Y**2)}[f]
 def components(f,k,c=1):
- return {'constant':(k*R,1),'x':(k*R**2,sp.cos(T)),'y':(k*R**2,sp.sin(T)),'xy':(k*R**3,sp.sin(T)*sp.cos(T)),'xy2':(k*R**4,sp.cos(T)*sp.sin(T)**2),'x2y':(k*R**4,sp.cos(T)**2*sp.sin(T)),'x_over_r2':(k,sp.cos(T)),'xy_over_r2':(k*R,sp.cos(T)*sp.sin(T)),'r2':(k*R**3,1),'exp':(k*R*sp.exp(R**2),1),'linear':(k*R**2,sp.sin(T)+sp.cos(T)),'radialpoly':(k*(c*R-R**3),1)}[f]
+ return {'constant':(k*R,1),'radialsqrt':(k*R**2,1),'x':(k*R**2,sp.cos(T)),'y':(k*R**2,sp.sin(T)),'xy':(k*R**3,sp.sin(T)*sp.cos(T)),'xy2':(k*R**4,sp.cos(T)*sp.sin(T)**2),'x2y':(k*R**4,sp.cos(T)**2*sp.sin(T)),'x_over_r2':(k,sp.cos(T)),'xy_over_r2':(k*R,sp.cos(T)*sp.sin(T)),'r2':(k*R**3,1),'exp':(k*R*sp.exp(R**2),1),'linear':(k*R**2,sp.sin(T)+sp.cos(T)),'radialpoly':(k*(c*R-R**3),1)}[f]
 def params(level,f,rng):
- reg={'constant':['disk'],'x':['q1','q2','right'],'y':['q1','q4','upper'],'xy':['q1','q2','q4'],'xy2':['q1','q2','right'],'x2y':['q1','q4','upper'],'x_over_r2':['q1','q2','right'],'xy_over_r2':['q1','q2','q4'],'linear':['q1','left','right'],'exp':['disk'],'r2':['disk'],'radialpoly':['disk']}[f]
+ reg={'constant':['disk'],'radialsqrt':['disk'],'x':['q1','q2','right'],'y':['q1','q4','upper'],'xy':['q1','q2','q4'],'xy2':['q1','q2','right'],'x2y':['q1','q4','upper'],'x_over_r2':['q1','q2','right'],'xy_over_r2':['q1','q2','q4'],'linear':['q1','left','right'],'exp':['disk'],'r2':['disk'],'radialpoly':['disk']}[f]
  slopes=[-1,1] if level!='hard' else [-4,-2,-1,1,2,4,sp.sqrt(2),-sp.sqrt(2),sp.sqrt(3),sp.sqrt(8),-sp.sqrt(8)]
  p=dict(k=rng.randint(1,6 if level!='hard' else 8),a=str(rng.choice(slopes)),b=str(rng.choice(slopes)),radius=rng.randint(1,3),region=rng.choice(reg))
  p['c']=p['radius']**2 if f=='radialpoly' else 1
@@ -49,7 +50,7 @@ def guard(level,f,p):
  allowed=[-1,1] if level!='hard' else [-4,-2,-1,1,2,4,sp.sqrt(2),-sp.sqrt(2),sp.sqrt(3),sp.sqrt(8),-sp.sqrt(8)]
  if a not in allowed or b not in allowed:raise ValueError('slope workload')
  if p['region'] not in REGIONS:raise ValueError('region')
- if f in ('constant','exp','r2','radialpoly') and p['region']!='disk':raise ValueError('radial disk family')
+ if f in ('constant','exp','r2','radialpoly','radialsqrt') and p['region']!='disk':raise ValueError('radial disk family')
  if level=='easy' and f!='constant':raise ValueError('easy constant density')
  if level=='moderate' and f not in ('x','y'):raise ValueError('moderate single linear density')
  if level=='hard' and f not in FAMILIES:raise ValueError('hard observed family')
@@ -168,7 +169,7 @@ def source_solution(f,p):
  text+=aligned(dsint(density_text,'S'),metric_rows)
  text+='\n\nNotice that in polar coordinates $(r,\\theta),$ our domain can be expressed as\n\n'+r'$$\Delta=\{(r,\theta):0\le r\le '+str(rr)+r',\ '+tex(lo)+r'\le\theta\le '+tex(hi)+r'\}.$$'+'\n\nTherefore, using the change of variables formula for polar coordinates, where $x=r\\cos\\theta$ and $y=r\\sin\\theta,$ we obtain\n\n'
  rc=r'r\cos\theta';rs=r'r\sin\theta';den=r'r^2\cos^2\theta+r^2\sin^2\theta';K='' if k==1 else tex(k)
- sub={'constant':tex(k),'x':K+'('+rc+')','y':K+'('+rs+')','xy':K+'('+rc+')('+rs+')','xy2':K+'('+rc+')('+rs+')^2','x2y':K+'('+rc+')^2('+rs+')','x_over_r2':r'\frac{'+K+'('+rc+')}{'+den+'}','xy_over_r2':r'\frac{'+K+'('+rc+')('+rs+')}{'+den+'}','linear':K+'('+rc+'+'+rs+')','exp':K+r'e^{'+den+'}','r2':K+'('+den+')','radialpoly':K+'('+tex(c)+'-r^2'+r'\cos^2\theta-r^2\sin^2\theta)'}[f]
+ sub={'constant':tex(k),'radialsqrt':K+r'\sqrt{'+den+'}','x':K+'('+rc+')','y':K+'('+rs+')','xy':K+'('+rc+')('+rs+')','xy2':K+'('+rc+')('+rs+')^2','x2y':K+'('+rc+')^2('+rs+')','x_over_r2':r'\frac{'+K+'('+rc+')}{'+den+'}','xy_over_r2':r'\frac{'+K+'('+rc+')('+rs+')}{'+den+'}','linear':K+'('+rc+'+'+rs+')','exp':K+r'e^{'+den+'}','r2':K+'('+den+')','radialpoly':K+'('+tex(c)+'-r^2'+r'\cos^2\theta-r^2\sin^2\theta)'}[f]
  rows=[mt+dsint(r'f(r\cos\theta,r\sin\theta)\cdot r',r'\Delta'),mt+dsint('('+sub+r')\cdot r',r'\Delta')];roles=['polar_formula','coordinate_substitution_with_jacobian']
  if f in ('x_over_r2','xy_over_r2'):
   numerator=K+r'r^2\cos\theta' if f=='x_over_r2' else K+r'r^3\cos\theta\sin\theta'
@@ -242,7 +243,7 @@ def assemble(level,seed,f,p,prompt,sol,vals,correct_index,math_key,profile,eligi
  if correct_index is not None:field[':answer-field/correct']=[':answer/id',answers[correct_index][':answer/id']]
  random.Random(seed).shuffle(answers);q[':question/answer-fields']=[field]
  if raw:q[':question/math-academy-id']=raw
- return {'knowledge_point':{'db_id':KP,'id':str(NS),'title':TITLE},'question':q,'generation':{'version':VERSION,'template':f,'profile':profile,'parameters':p,'seed':seed,'mathematical_fingerprint':math_key,'content_fingerprint':content,'eligible_for_learning':eligible,'evidence_only':not eligible,'source':{'database':'math','basis':1356,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'},'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__}}}
+ return {'knowledge_point':{'db_id':KP,'id':str(NS),'title':TITLE},'question':q,'generation':{'version':VERSION,'template':f,'profile':profile,'parameters':p,'seed':seed,'mathematical_fingerprint':math_key,'content_fingerprint':content,'eligible_for_learning':eligible,'evidence_only':not eligible,'source':{'database':'math','basis':2721,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'},'dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__}}}
 
 def raw_replay(source_id,seed,parameters):
  """Interpolate extracted full-component surface slots; preserve omissions/banks.

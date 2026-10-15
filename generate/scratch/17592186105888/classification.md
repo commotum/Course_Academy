@@ -31,3 +31,7 @@ Easy/moderate have no observed difficulty labels. Authored easy uses constant de
 | q-161316 | hard | original:q-161316, five choices | light |
 
 | q-161338 | hard | original:q-161338, five choices | light |
+
+## Current refresh, basis 2721
+
+All twelve current sources are hard, single-radio, five choices, light plots. q-161302 now has a solution and a canonical correct reference. q-161328 adds the radial-square-root density structure with one full source bank. Existing eleven structures remain; all current banks replay completely. Historical basis-1356 evidence is retained in reference/historical-1356. Easy/moderate remain explicitly authored scope assignments. Source q-161316 retains its differential typo and is excluded from validated inventory.

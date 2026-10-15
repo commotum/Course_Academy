@@ -154,17 +154,55 @@ Therefore, the surface integral is $8$.
 
 ![](/media/jake/SSD/EDB/math/images/78/7836860694ae6246dee36a70b86bc7fcd8cf7358d47a10586ea6880759fb1588.png)
 
-Evaluate the surface integral
-$∬_(S)(x^{2} + y^{2})dS$,
-where $S$ is defined by $z = 2x - y$ and whose domain is the circle of radius $2$ centered at $O$, as shown above.
+Evaluate the surface integral 
 
+$$
+{∬}_{S}({x}^{2}+{y}^{2})\,\text{d}S,
+$$
+
+where $S$ is defined by $z=2x-y$ and whose domain is the circle of radius $2$ centered at $O,$ as shown above.
+
+- $8\sqrt{6}\pi $
+- $3\sqrt{2}\pi $
 - $\sqrt{6}$
-- $3\sqrt{2}π$
-- $8\sqrt{6}π$
-- $π$
-- $\sqrt{3}π$
+- $\pi $
+- $\sqrt{3}\pi $
 
-[Source has no worked solution.]
+For a surface $S$ defined by $z=g(x,y)$ with $(x,y)\in D,$ the surface integral of a scalar function $f(x,y,z)$ over $S$ is given by
+
+$$
+{∬}_{S}f(x,y,z)\,\text{d}S={∬}_{D}f(x,y,g(x,y))\sqrt{1+{(\frac{∂z}{∂x})}^{2}+{(\frac{∂z}{∂y})}^{2}}\,\text{d}A.
+$$
+
+For the partial derivatives, we have
+
+$$
+\frac{∂z}{∂x}=\frac{∂}{∂x}(2x-y)=2,
+$$
+
+and
+
+$$
+\frac{∂z}{∂y}=\frac{∂}{∂y}(2x-y)=-1.
+$$
+
+Therefore, the surface integral can be expressed as follows:
+
+$$
+\begin{aligned}{∬}_{S}({x}^{2}+{y}^{2})\,\text{d}S & ={∬}_{D}f(x,y,g(x,y))\sqrt{1+{(\frac{∂z}{∂x})}^{2}+{(\frac{∂z}{∂y})}^{2}}\,\text{d}A \\  & ={∬}_{D}({x}^{2}+{y}^{2})\cdot \sqrt{1+{2}^{2}+(-1)^{2}}\,\text{d}A \\  & ={∬}_{D}({x}^{2}+{y}^{2})\cdot \sqrt{6}\,\text{d}A \\  & =\sqrt{6}{∬}_{D}\,({x}^{2}+{y}^{2})\,\text{d}A.\end{aligned}
+$$
+
+Notice that in polar coordinates $(r,\theta ),$ our domain can be expressed as 
+
+$$
+Δ=\{(r,\theta )\,:\,0\le r\le 2,\,0\le \theta \le 2\pi \}.
+$$
+
+Therefore, using the change of variables formula for polar coordinates, where $x=r\operatorname{cos}⁡\theta $ and $y=r\operatorname{sin}⁡\theta ,$ we obtain 
+
+$$
+\begin{aligned}\sqrt{6}{∬}_{D}\,({x}^{2}+{y}^{2})\,\text{d}A & =\sqrt{6}{∬}_{Δ}\text{ }f(r\operatorname{cos}⁡\theta ,r\operatorname{sin}⁡\theta )\,r\text{ }drd\theta  \\  & =\sqrt{6}{∬}_{Δ}({r}^{2}{cos}^{2}⁡\theta +{r}^{2}{sin}^{2}⁡\theta )\cdot r\text{d}r\text{d}\theta  \\  & =\sqrt{6}{\int }_{0}^{2\pi }{\int }_{0}^{2}{r}^{3}\,\text{d}r\,\text{d}\theta  \\  & =\sqrt{6}{\int }_{0}^{2\pi }{[\frac{{r}^{4}}{4}]}_{0}^{2}\,\text{d}\theta  \\  & =\sqrt{6}{\int }_{0}^{2\pi }4\,\text{d}\theta  \\  & =4\sqrt{6}{\int }_{0}^{2\pi }\,\text{d}\theta  \\  & =4\sqrt{6}[\theta ]_{0}^{2\pi } \\  & =8\sqrt{6}\pi .\end{aligned}
+$$
 
 ---
 
@@ -615,7 +653,7 @@ $$
 Notice that in polar coordinates $(r,\theta ),$ our domain can be expressed as 
 
 $$
-Δ={(r,\theta )\,:\,0\le r\le 2,\,-\frac{\pi }{2}\le \theta \le \frac{\pi }{2}}.
+Δ=\{(r,\theta )\,:\,0\le r\le 2,\,-\frac{\pi }{2}\le \theta \le \frac{\pi }{2}\}.
 $$
 
 Therefore, using the change of variables formula for polar coordinates, where $x=r\operatorname{cos}⁡\theta $ and $y=r\operatorname{sin}⁡\theta ,$ we obtain 
@@ -767,7 +805,7 @@ $$
 Notice that in polar coordinates $(r,\theta ),$ our domain can be expressed as 
 
 $$
-Δ={(r,\theta )\,:\,0\le r\le 3,\,\frac{\pi }{2}\le \theta \le \pi }.
+Δ=\{(r,\theta )\,:\,0\le r\le 3,\,\frac{\pi }{2}\le \theta \le \pi \}.
 $$
 
 Therefore, using the change of variables formula for polar coordinates, where $x=r\operatorname{cos}⁡\theta $ and $y=r\operatorname{sin}⁡\theta ,$ we obtain 
@@ -1073,7 +1111,7 @@ $$
 Notice that in polar coordinates $(r,\theta ),$ our domain can be expressed as 
 
 $$
-Δ={(r,\theta )\,:\,0\le r\le 2,\,0\le \theta \le 2\pi }.
+Δ=\{(r,\theta )\,:\,0\le r\le 2,\,0\le \theta \le 2\pi \}.
 $$
 
 Therefore, using the change of variables formula for polar coordinates, where $x=r\operatorname{cos}⁡\theta $ and $y=r\operatorname{sin}⁡\theta ,$ we obtain 
@@ -1227,7 +1265,7 @@ $$
 Notice that in polar coordinates $(r,\theta ),$ our domain can be expressed as 
 
 $$
-Δ={(r,\theta )\,:\,0\le r\le 1,\,\frac{\pi }{2}\le \theta \le \frac{3\pi }{2}}.
+Δ=\{(r,\theta )\,:\,0\le r\le 1,\,\frac{\pi }{2}\le \theta \le \frac{3\pi }{2}\}.
 $$
 
 Therefore, using the change of variables formula for polar coordinates, where $x=r\operatorname{cos}⁡\theta $ and $y=r\operatorname{sin}⁡\theta ,$ we obtain 
@@ -1531,7 +1569,7 @@ $$
 Notice that in polar coordinates $(r,\theta ),$ our domain can be expressed as 
 
 $$
-Δ={(r,\theta )\,:\,0\le r\le 1,\,0\le \theta \le 2\pi }.
+Δ=\{(r,\theta )\,:\,0\le r\le 1,\,0\le \theta \le 2\pi \}.
 $$
 
 Therefore, using the change of variables formula for polar coordinates, where $x=r\operatorname{cos}⁡\theta $ and $y=r\operatorname{sin}⁡\theta ,$ we obtain 
@@ -1635,6 +1673,158 @@ $$
 $$
 
 Therefore, the surface integral is $12 \pi$.
+
+---
+
+### original evidence q-161328
+
+![](/media/jake/SSD/EDB/math/images/78/7836860694ae6246dee36a70b86bc7fcd8cf7358d47a10586ea6880759fb1588.png)
+
+Evaluate the surface integral 
+
+$$
+{∬}_{S}\sqrt{{x}^{2}+{y}^{2}}\,\text{d}S,
+$$
+
+where $S$ is defined by $z=4x+\sqrt{8}y$ and whose domain is the circle of radius $2$ centered at $O,$ as shown above.
+
+- $40\pi $
+- $\frac{2\pi }{3}$
+- $\frac{\pi }{3}$
+- $\frac{\pi }{2}$
+- $\frac{80\pi }{3}$
+
+For a surface $S$ defined by $z=g(x,y)$ with $(x,y)\in D,$ the surface integral of a scalar function $f(x,y,z)$ over $S$ is given by
+
+$$
+{∬}_{S}f(x,y,z)\,\text{d}S={∬}_{D}f(x,y,g(x,y))\sqrt{1+{(\frac{∂z}{∂x})}^{2}+{(\frac{∂z}{∂y})}^{2}}\,\text{d}A.
+$$
+
+For the partial derivatives, we have
+
+$$
+\frac{∂z}{∂x}=\frac{∂}{∂x}(4x+\sqrt{8}y)=4,
+$$
+
+and
+
+$$
+\frac{∂z}{∂y}=\frac{∂}{∂y}(4x+\sqrt{8}y)=\sqrt{8}.
+$$
+
+Therefore, the surface integral can be expressed as follows:
+
+$$
+\begin{aligned}{∬}_{S}\sqrt{{x}^{2}+{y}^{2}}\,\text{d}S & ={∬}_{D}f(x,y,g(x,y))\sqrt{1+{(\frac{∂z}{∂x})}^{2}+{(\frac{∂z}{∂y})}^{2}}\,\text{d}A \\  & ={∬}_{D}\sqrt{{x}^{2}+{y}^{2}}\cdot \sqrt{1+{4}^{2}+(\sqrt{8})^{2}}\,\text{d}A \\  & ={∬}_{D}\sqrt{{x}^{2}+{y}^{2}}\cdot 5\,\text{d}A \\  & =5{∬}_{D}\,\sqrt{{x}^{2}+{y}^{2}}\,\text{d}A.\end{aligned}
+$$
+
+Notice that in polar coordinates $(r,\theta ),$ our domain can be expressed as 
+
+$$
+Δ=\{(r,\theta )\,:\,0\le r\le 2,\,0\le \theta \le 2\pi \}.
+$$
+
+Therefore, using the change of variables formula for polar coordinates, where $x=r\operatorname{cos}⁡\theta $ and $y=r\operatorname{sin}⁡\theta ,$ we obtain 
+
+$$
+\begin{aligned}5{∬}_{D}\,\sqrt{{x}^{2}+{y}^{2}}\,\text{d}A & =5{∬}_{Δ}\text{ }f(r\operatorname{cos}⁡\theta ,r\operatorname{sin}⁡\theta )\,r\text{ }drd\theta  \\  & =5{∬}_{Δ}\sqrt{{r}^{2}{cos}^{2}⁡\theta +{r}^{2}{sin}^{2}⁡\theta }\cdot r\text{d}r\text{d}\theta  \\  & =5{\int }_{0}^{2\pi }{\int }_{0}^{2}{r}^{2}\,\text{d}r\,\text{d}\theta  \\  & =5{\int }_{0}^{2\pi }{[\frac{{r}^{3}}{3}]}_{0}^{2}\,\text{d}\theta  \\  & =5{\int }_{0}^{2\pi }\frac{8}{3}\,\text{d}\theta  \\  & =\frac{40}{3}{\int }_{0}^{2\pi }\,\text{d}\theta  \\  & =\frac{40}{3}[\theta ]_{0}^{2\pi } \\  & =\frac{80\pi }{3}.\end{aligned}
+$$
+
+---
+
+### generated authored bank / source family q-161328
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105888/plots/52d23bb30ea29a9679a80533cd3fef5e0c10ae6bf26ac43ad7f1f79ed0d6f209.png)
+
+Evaluate the surface integral
+
+$$\iint_S 3 \sqrt{x^{2} + y^{2}}\,\mathrm{d}S,$$
+
+where $S$ is defined by $z=\sqrt{2} x + \sqrt{2} y$ and whose domain is the disk of radius $3$ centered at $O$, as shown above. Give an exact answer.
+
+- $54 \sqrt{5} \pi$
+- $\frac{27 \sqrt{5} \pi}{4}$
+- $270 \pi$
+- $27 \sqrt{5} \pi$
+- $54 \pi$
+
+For a surface $S$ defined by $z=g(x,y)$ with $(x,y)\in D,$ the surface integral of a scalar function $f(x,y,z)$ over $S$ is given by
+
+$$\iint_S f(x,y,z)\,\mathrm{d}S=\iint_D f(x,y,g(x,y))\sqrt{1+\left(\frac{\partial z}{\partial x}\right)^2+\left(\frac{\partial z}{\partial y}\right)^2}\,\mathrm{d}A.$$
+
+For the partial derivatives, we have
+
+$$\frac{\partial z}{\partial x}=\frac{\partial}{\partial x}(\sqrt{2} x + \sqrt{2} y)=\sqrt{2},$$
+
+and
+
+$$\frac{\partial z}{\partial y}=\frac{\partial}{\partial y}(\sqrt{2} x + \sqrt{2} y)=\sqrt{2}.$$
+
+Therefore, the surface integral can be expressed as follows:
+
+$$
+\begin{aligned}\iint_S{3 \sqrt{x^{2} + y^{2}}}\,\mathrm{d}S & =\iint_D{f(x,y,g(x,y))\sqrt{1+\left(\frac{\partial z}{\partial x}\right)^2+\left(\frac{\partial z}{\partial y}\right)^2}}\,\mathrm{d}A \\ & =\iint_D{(3 \sqrt{x^{2} + y^{2}})\cdot\sqrt{1+(\sqrt{2})^2+(\sqrt{2})^2}}\,\mathrm{d}A \\ & =\iint_D{(3 \sqrt{x^{2} + y^{2}})\cdot\sqrt{5}}\,\mathrm{d}A \\ & =(\sqrt{5})\iint_D{3 \sqrt{x^{2} + y^{2}}}\,\mathrm{d}A.\end{aligned}
+$$
+
+Notice that in polar coordinates $(r,\theta),$ our domain can be expressed as
+
+$$\Delta=\{(r,\theta):0\le r\le 3,\ 0\le\theta\le 2 \pi\}.$$
+
+Therefore, using the change of variables formula for polar coordinates, where $x=r\cos\theta$ and $y=r\sin\theta,$ we obtain
+
+$$
+\begin{aligned}(\sqrt{5})\iint_D{3 \sqrt{x^{2} + y^{2}}}\,\mathrm{d}A & =(\sqrt{5})\iint_\Delta{f(r\cos\theta,r\sin\theta)\cdot r}\,\mathrm{d}r\,\mathrm{d}\theta \\ & =(\sqrt{5})\iint_\Delta{(3\sqrt{r^2\cos^2\theta+r^2\sin^2\theta})\cdot r}\,\mathrm{d}r\,\mathrm{d}\theta \\ & =(\sqrt{5})\iint_\Delta{3 r^{2}}\,\mathrm{d}r\,\mathrm{d}\theta \\ & =(\sqrt{5})\int_{0}^{2 \pi}{\int_{0}^{3}{3 r^{2}}\,\mathrm{d}r}\,\mathrm{d}\theta \\ & =(\sqrt{5})\int_{0}^{2 \pi}{\left[r^{3}\right]_{0}^{3}}\,\mathrm{d}\theta \\ & =(\sqrt{5})\int_{0}^{2 \pi}{\left[((27))-((0))\right]}\,\mathrm{d}\theta \\ & =(\sqrt{5})\int_{0}^{2 \pi}{27}\,\mathrm{d}\theta \\ & =(27 \sqrt{5})\left[\theta\right]_{0}^{2 \pi} \\ & =(27 \sqrt{5})\left[((2 \pi))-((0))\right] \\ & =(27 \sqrt{5})\cdot((2 \pi)-(0)) \\ & =54 \sqrt{5} \pi.\end{aligned}
+$$
+
+Therefore, the surface integral is $54 \sqrt{5} \pi$.
+
+---
+
+### generated authored bank / source family q-161328
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105888/plots/c65e6ecdea7e108d29ef494a88a55112e0e4cfa54bec96b124c7109f42112915.png)
+
+Evaluate the surface integral
+
+$$\iint_S 8 \sqrt{x^{2} + y^{2}}\,\mathrm{d}S,$$
+
+where $S$ is defined by $z=2 x + 2 y$ and whose domain is the disk of radius $1$ centered at $O$, as shown above. Give an exact answer.
+
+- $2 \pi$
+- $16 \pi$
+- $\frac{16 \pi}{3}$
+- $48 \pi$
+- $8 \pi$
+
+For a surface $S$ defined by $z=g(x,y)$ with $(x,y)\in D,$ the surface integral of a scalar function $f(x,y,z)$ over $S$ is given by
+
+$$\iint_S f(x,y,z)\,\mathrm{d}S=\iint_D f(x,y,g(x,y))\sqrt{1+\left(\frac{\partial z}{\partial x}\right)^2+\left(\frac{\partial z}{\partial y}\right)^2}\,\mathrm{d}A.$$
+
+For the partial derivatives, we have
+
+$$\frac{\partial z}{\partial x}=\frac{\partial}{\partial x}(2 x + 2 y)=2,$$
+
+and
+
+$$\frac{\partial z}{\partial y}=\frac{\partial}{\partial y}(2 x + 2 y)=2.$$
+
+Therefore, the surface integral can be expressed as follows:
+
+$$
+\begin{aligned}\iint_S{8 \sqrt{x^{2} + y^{2}}}\,\mathrm{d}S & =\iint_D{f(x,y,g(x,y))\sqrt{1+\left(\frac{\partial z}{\partial x}\right)^2+\left(\frac{\partial z}{\partial y}\right)^2}}\,\mathrm{d}A \\ & =\iint_D{(8 \sqrt{x^{2} + y^{2}})\cdot\sqrt{1+(2)^2+(2)^2}}\,\mathrm{d}A \\ & =\iint_D{(8 \sqrt{x^{2} + y^{2}})\cdot\sqrt{9}}\,\mathrm{d}A \\ & =(3)\iint_D{8 \sqrt{x^{2} + y^{2}}}\,\mathrm{d}A.\end{aligned}
+$$
+
+Notice that in polar coordinates $(r,\theta),$ our domain can be expressed as
+
+$$\Delta=\{(r,\theta):0\le r\le 1,\ 0\le\theta\le 2 \pi\}.$$
+
+Therefore, using the change of variables formula for polar coordinates, where $x=r\cos\theta$ and $y=r\sin\theta,$ we obtain
+
+$$
+\begin{aligned}(3)\iint_D{8 \sqrt{x^{2} + y^{2}}}\,\mathrm{d}A & =(3)\iint_\Delta{f(r\cos\theta,r\sin\theta)\cdot r}\,\mathrm{d}r\,\mathrm{d}\theta \\ & =(3)\iint_\Delta{(8\sqrt{r^2\cos^2\theta+r^2\sin^2\theta})\cdot r}\,\mathrm{d}r\,\mathrm{d}\theta \\ & =(3)\iint_\Delta{8 r^{2}}\,\mathrm{d}r\,\mathrm{d}\theta \\ & =(3)\int_{0}^{2 \pi}{\int_{0}^{1}{8 r^{2}}\,\mathrm{d}r}\,\mathrm{d}\theta \\ & =(3)\int_{0}^{2 \pi}{\left[\frac{8 r^{3}}{3}\right]_{0}^{1}}\,\mathrm{d}\theta \\ & =(3)\int_{0}^{2 \pi}{\left[((\frac{8}{3}))-((0))\right]}\,\mathrm{d}\theta \\ & =(3)\int_{0}^{2 \pi}{\frac{8}{3}}\,\mathrm{d}\theta \\ & =(8)\left[\theta\right]_{0}^{2 \pi} \\ & =(8)\left[((2 \pi))-((0))\right] \\ & =(8)\cdot((2 \pi)-(0)) \\ & =16 \pi.\end{aligned}
+$$
+
+Therefore, the surface integral is $16 \pi$.
 
 ---
 

@@ -7,3 +7,8 @@ Raw original records retain stored images/... paths. Markdown previews alone res
 Renderer region-render-5 uses a fixed 504×441 PNG canvas, nominal saved DPI 140 and records the actual PNG DPI metadata. Every sidecar includes saved dimensions, data bounds, saved-coordinate origin and x/y pixel scales, PNG SHA-256, software versions, line width and colors. Text is drawn directly, with no background masks. Measured saved-pixel text boxes must contain actual dark glyph ink, lie inside the canvas and remain at least 4 pixels from the actual blue ink, transformed axes and every other label box.
 
 Raster QA checks 17 interior arc sample locations within a 3-pixel stroke/antialias window; filled-pixel radial extents; equal transformed x/y scale; polar-angle membership; filled area against the analytic circular-sector area using a stated stroke/axis allowance; and more than 99.5% pale-color coverage of the analytic interior away from a 4-pixel boundary/axis band. That last diagnostic excludes measured text boxes from its denominator to account for dark glyphs; it does not modify the PNG. Fresh concurrent processes render identical and different geometries into a unique private directory and verify sidecar geometry, hashes, clearance, interior coverage and no unfinished temporary outputs. Old assets and old renderer caches remain available for root review. The new fourth-quadrant and left-semicircle diagrams were also inspected individually at full resolution.
+
+
+## Current source refresh
+
+q-161328 reuses the same radius-2 disk asset as q-161302 and q-161322; the new density does not change domain geometry. The existing disk renderer applies unchanged.
