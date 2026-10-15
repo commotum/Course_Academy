@@ -76,7 +76,12 @@ def source_fidelity():
   r=g.generate(source_id='authored-easy',parameters=params,seed=j);p.read_record(r)
   cases.append({'source_id':'authored-easy','difficulty':'easy','template':'affine-blank','parameters':params,'bank_profile':None,'case':'authored-reference' if j==0 else 'changed-'+str(j),'record':r})
  write('raw-source-replays.json',raws);write('source-cases.json',cases)
- write('source-fidelity.json',{'basis':2275,'practice_records':len(raws),'ma_records':sum(not k.startswith('nonMA') for k in g.ROWS),'non_ma_records':sum(k.startswith('nonMA') for k in g.ROWS),'complete_banks_matched':banks,'complete_banks_total':banks,'choices_matched':choices,'choices_total':choices,'distractors_matched':distractors,'distractors_total':distractors,'records':fidelity})
+ groups={}
+ for label,is_nonma in [('MA_practice_observations',False),('existing_non_MA_inventory',True)]:
+  group=[r for r in fidelity if r['source_id'].startswith('nonMA')==is_nonma]
+  with_banks=[r for r in group if 'complete_bank' in r]
+  groups[label]={'records':len(group),'observed_banks':len(with_banks),'observed_values':sum(r['complete_bank']['total'] for r in with_banks),'observed_distractors':sum(r['complete_bank']['total']-1 for r in with_banks),'all_values_matched':True,'counts_as_MA_evidence':not is_nonma}
+ write('source-fidelity.json',{'basis':2275,'practice_records':len(raws),'ma_records':sum(not k.startswith('nonMA') for k in g.ROWS),'non_ma_records':sum(k.startswith('nonMA') for k in g.ROWS),'groups':groups,'complete_banks_matched':banks,'complete_banks_total':banks,'choices_matched':choices,'choices_total':choices,'distractors_matched':distractors,'distractors_total':distractors,'records':fidelity})
  return cases
 
 def coverage():
@@ -151,15 +156,21 @@ def mutations(cases):
   r1=copy.deepcopy(r);blocks=list(re.finditer(r'\$\$(.*?)\$\$',sol,re.S));b=blocks[2];body=b[1];rows=body.split(r'\\');assert len(rows)>2
   body=r'\\'.join(rows[:1]+rows[2:]);r1['question'][':question/worked-solution']=sol[:b.start(1)]+body+sol[b.end(1):];must_reject(r1,base+':erased-equal-stage')
   r1=copy.deepcopy(r);f=r1['question'][':question/answer-fields'][0];a=f[':answer-field/choices'][0];a[':answer/value']='y=x+999' if r['generation']['template'].startswith('tangent-') else '999+x';must_reject(r1,base+':changed-bank')
-  if 't=' in '':pass
   if 't' in case['parameters']:
    r1=copy.deepcopy(r);pt=case['parameters']['t'];r1['question'][':question/worked-solution']=sol.replace('_{x='+str(pt)+'}','_{x='+str(pt+1)+'}',1);must_reject(r1,base+':stale-evaluation-target')
  # Branch and legitimate zero/one checks are explicit actual-print facts.
  even=g.generate(template='power-radio',parameters={'n':4});rd=p.read_record(even)
  assert rd['domain'].contains(-2) and rd['domain'].contains(2) and not rd['domain'].contains(0)
  odd=g.generate(template='power-radio',parameters={'n':3});rd=p.read_record(odd);assert not rd['domain'].contains(-2) and rd['domain'].contains(2)
+ shifted=g.generate(template='shift-power-radio',parameters={'n':4,'b':1});sd=p.read_record(shifted)
+ assert all(sd['domain'].contains(v) for v in (-2,2)) and all(not sd['domain'].contains(v) for v in (-1,0,1))
+ bounded=g.source_case('q-341676');bd=p.read_record(bounded);edge=(p.s.Rational(3,5))**p.s.Rational(1,6)
+ assert bd['domain'].contains(0) and all(not bd['domain'].contains(v) for v in (-edge,edge,-1,1))
+ negative=g.generate(source_id='q-341671',parameters={'a':-2});nd=p.read_record(negative)
+ assert nd['domain'].contains(-2) and not nd['domain'].contains(0) and not nd['domain'].contains(2)
  zero=g.generate(source_id='q-310144',parameters={'a':2,'b':3,'t':0});assert p.read_record(zero)['target']==0
  one=g.generate(source_id='q-341671',parameters={'a':1});assert p.equal(p.read_record(one)['target'],1/p.X)
+ write('domain-checks.json',{'unrestricted_real_x':True,'even_monomial_two_branches':str(p.read_record(even)['domain']),'shifted_even_two_branches_and_excluded_roots':str(sd['domain']),'bounded_even_polynomial_excluded_endpoints':str(bd['domain']),'negative_scale_domain':str(nd['domain']),'odd_power_positive_domain':str(rd['domain']),'legitimate_zero_slope':True,'legitimate_unit_scale':True,'no_forced_log_expansion':True})
  # Whole-bank rejection, rather than first-valid recipe filtering.
  for src,pp in [('q-11930',{'a':1}),('q-28632',{'a':1}),('q-150015',{'t':0}),('q-107469',{'a':2,'b':2,'t':0})]:
   try:g.generate(source_id=src,parameters=pp)
@@ -194,6 +205,9 @@ def native(cases):
 
 def baseline():
  b=json.loads((H/'baseline.json').read_text());changed=[k for k,v in b.items() if not Path(k).exists() or hashlib.sha256(Path(k).read_bytes()).hexdigest()!=v]
+ numeric=H.parent/'17592186092264.py';registered=H.parent/'17592186092264'
+ actual={str(numeric.resolve()),*(str(z.resolve()) for z in registered.rglob('*') if z.is_file())}
+ assert actual==set(b),{'added':sorted(actual-set(b)),'removed':sorted(set(b)-actual)}
  assert not changed,changed
  return len(b)
 def run():

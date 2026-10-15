@@ -1,0 +1,76 @@
+[
+  {
+    "label": "q-341676:changed-2",
+    "record": {
+      "knowledge_point": {
+        "id": "b4ac7f7e-1e07-57d7-a82a-d6545588c2de",
+        "db_id": 17592186092264,
+        "title": "Differentiating a Natural Logarithm Function Using the Chain Rule"
+      },
+      "question": {
+        ":question/id": "44c306f6-7f25-512c-91c2-23011f0bf41c",
+        ":question/problem": "Given that $f(x)=\\ln(- x^{4} + 5)$, find $\\frac{\\text{d}f}{\\text{d}x}.$\n\n$\\frac{\\text{d}f}{\\text{d}x}=$\n{{field-1}}",
+        ":question/worked-solution": "First, we express $f(x)$ as the composite function\n\n$$\nf=\\ln u,\\,u=- x^{4} + 5.\n$$\n\nDifferentiating gives\n\n$$\n\\frac{\\text{d}f}{\\text{d}u}=\\frac{1}{u},\\,\\frac{\\text{d}u}{\\text{d}x}=- 4 x^{3}.\n$$\n\nWe now apply the chain rule, and we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}f}{\\text{d}x} &=\\frac{\\text{d}f}{\\text{d}u}\\cdot \\frac{\\text{d}u}{\\text{d}x} \\\\ &=\\frac{1}{u}\\cdot (- 4 x^{3}) \\\\ &=\\frac{1}{- x^{4} + 5}\\cdot (- 4 x^{3}) \\\\ &=\\frac{- 4 x^{3}}{- x^{4} + 5}.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "a6a56b32-65c8-51ef-a586-50f695a12645",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "18bbccfa-03e1-5b38-8a46-23d3bf5f5fee",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{4 x^{3}}{x^{4} - 5}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "18bbccfa-03e1-5b38-8a46-23d3bf5f5fee"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "generator_id": "f4aeeb80-4a3e-5dc6-ba00-a4d66431dbe1",
+        "version": "ln-chain-private-2275-v1",
+        "source_basis": 2275,
+        "source_id": "q-341676",
+        "template": "polynomial-blank",
+        "difficulty": "moderate",
+        "parameters": {
+          "a": 5,
+          "b": 1,
+          "n": 4
+        },
+        "bank_profile": null,
+        "seed": 2,
+        "mathematical_key": "9bce04cf952626325dddfb3f64514dc7e4a872e7dc21fe8d8c94572b7a581657",
+        "domain": "Interval.open(-5**(1/4), 5**(1/4))",
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "authored_changes": [],
+        "eligible": true,
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{4 x^{3}}{x^{4} - 5}",
+        "expected": "accepted",
+        "purpose": "canonical blank in full prompt context"
+      },
+      {
+        "submitted": "\\frac{8 x^{3}}{2 x^{4} - 10}",
+        "expected": "accepted",
+        "purpose": "genuinely noncanonical doubled numerator and denominator"
+      },
+      {
+        "submitted": "(\\frac{4 x^{3}}{x^{4} - 5})+1",
+        "expected": "rejected",
+        "purpose": "incorrect canonical value plus one"
+      }
+    ]
+  }
+]

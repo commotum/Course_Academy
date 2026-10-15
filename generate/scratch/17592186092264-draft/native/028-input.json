@@ -1,0 +1,74 @@
+[
+  {
+    "label": "q-341671:changed-1",
+    "record": {
+      "knowledge_point": {
+        "id": "b4ac7f7e-1e07-57d7-a82a-d6545588c2de",
+        "db_id": 17592186092264,
+        "title": "Differentiating a Natural Logarithm Function Using the Chain Rule"
+      },
+      "question": {
+        ":question/id": "a51dbc49-7b0a-5e55-aa1c-1a25cf6e7e59",
+        ":question/problem": "Given that $f(x)=\\ln(x)$, find $\\frac{\\text{d}f}{\\text{d}x}.$\n\n$\\frac{\\text{d}f}{\\text{d}x}=$\n{{field-1}}",
+        ":question/worked-solution": "First, we express $f(x)$ as the composite function\n\n$$\nf=\\ln u,\\,u=x.\n$$\n\nDifferentiating gives\n\n$$\n\\frac{\\text{d}f}{\\text{d}u}=\\frac{1}{u},\\,\\frac{\\text{d}u}{\\text{d}x}=1.\n$$\n\nWe now apply the chain rule, and we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}f}{\\text{d}x} &=\\frac{\\text{d}f}{\\text{d}u}\\cdot \\frac{\\text{d}u}{\\text{d}x} \\\\ &=\\frac{1}{u}\\cdot (1) \\\\ &=\\frac{1}{x}\\cdot (1) \\\\ &=\\frac{1}{x} \\\\ &=\\frac{\\cancel{1}}{\\cancel{1}x} \\\\ &=\\frac{1}{x}.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "bd036d99-a2c1-5a63-91f4-1ff5fa7ee05c",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "2d9d3dc9-2103-524d-abcc-7c16cff5e4a0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{x}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "2d9d3dc9-2103-524d-abcc-7c16cff5e4a0"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "generator_id": "f4aeeb80-4a3e-5dc6-ba00-a4d66431dbe1",
+        "version": "ln-chain-private-2275-v1",
+        "source_basis": 2275,
+        "source_id": "q-341671",
+        "template": "scale-blank",
+        "difficulty": "moderate",
+        "parameters": {
+          "a": 1
+        },
+        "bank_profile": null,
+        "seed": 1,
+        "mathematical_key": "6a6f5aeabca0f2554371e0eaf48fc26ebcd990956a41be90d81e00ae1dee3268",
+        "domain": "Interval.open(0, oo)",
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "authored_changes": [],
+        "eligible": true,
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{1}{x}",
+        "expected": "accepted",
+        "purpose": "canonical blank in full prompt context"
+      },
+      {
+        "submitted": "\\frac{2}{2 x}",
+        "expected": "accepted",
+        "purpose": "genuinely noncanonical doubled numerator and denominator"
+      },
+      {
+        "submitted": "(\\frac{1}{x})+1",
+        "expected": "rejected",
+        "purpose": "incorrect canonical value plus one"
+      }
+    ]
+  }
+]

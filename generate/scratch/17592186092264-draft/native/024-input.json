@@ -1,0 +1,76 @@
+[
+  {
+    "label": "q-310144:original",
+    "record": {
+      "knowledge_point": {
+        "id": "b4ac7f7e-1e07-57d7-a82a-d6545588c2de",
+        "db_id": 17592186092264,
+        "title": "Differentiating a Natural Logarithm Function Using the Chain Rule"
+      },
+      "question": {
+        ":question/id": "849f84e9-4588-5c53-bae3-5b410d7d1407",
+        ":question/problem": "Find the slope $m$ of the tangent to the curve $f(x)=\\ln(5 x^{2} + 4)$ at the point where $x=1.$\n\n$m=$\n{{field-1}}",
+        ":question/worked-solution": "First, we express $f(x)$ as the composite function\n\n$$\nf=\\ln u,\\,u=5 x^{2} + 4.\n$$\n\nDifferentiating gives\n\n$$\n\\frac{\\text{d}f}{\\text{d}u}=\\frac{1}{u},\\,\\frac{\\text{d}u}{\\text{d}x}=10 x.\n$$\n\nWe now apply the chain rule, and we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}f}{\\text{d}x} &=\\frac{\\text{d}f}{\\text{d}u}\\cdot \\frac{\\text{d}u}{\\text{d}x} \\\\ &=\\frac{1}{u}\\cdot (10 x) \\\\ &=\\frac{1}{5 x^{2} + 4}\\cdot (10 x) \\\\ &=\\frac{10 x}{5 x^{2} + 4}.\\end{aligned}\n$$\n\nTherefore, the slope $m$ of the tangent line at the point where $x=1$ is \n\n$$\n\\begin{aligned}m=\\left.(\\frac{\\text{d}f}{\\text{d}x})\\right|_{x=1} &=\\left.(\\frac{10 x}{5 x^{2} + 4})\\right|_{x=1} \\\\ &=\\frac{(10 (1))}{(5 (1)^{2} + 4)} \\\\ &=\\frac{10}{9}.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "1fc2196d-d537-5bc1-ba92-dac9c57bba80",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "95d97e25-cf41-5c56-bcbc-9f2fd1f07ddb",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{10}{9}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "95d97e25-cf41-5c56-bcbc-9f2fd1f07ddb"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "generator_id": "f4aeeb80-4a3e-5dc6-ba00-a4d66431dbe1",
+        "version": "ln-chain-private-2275-v1",
+        "source_basis": 2275,
+        "source_id": "q-310144",
+        "template": "slope-polynomial",
+        "difficulty": "moderate",
+        "parameters": {
+          "a": 5,
+          "b": 4,
+          "t": 1
+        },
+        "bank_profile": null,
+        "seed": 0,
+        "mathematical_key": "cee750218236c7d0cd93fe26137691bebb538f0fd732e5215f6b2103e9179df0",
+        "domain": "Reals",
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "authored_changes": [],
+        "eligible": true,
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{10}{9}",
+        "expected": "accepted",
+        "purpose": "canonical blank in full prompt context"
+      },
+      {
+        "submitted": "\\frac{20}{18}",
+        "expected": "accepted",
+        "purpose": "genuinely noncanonical doubled numerator and denominator"
+      },
+      {
+        "submitted": "(\\frac{10}{9})+1",
+        "expected": "rejected",
+        "purpose": "incorrect canonical value plus one"
+      }
+    ]
+  }
+]

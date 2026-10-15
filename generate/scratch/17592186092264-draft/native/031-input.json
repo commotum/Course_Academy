@@ -1,0 +1,76 @@
+[
+  {
+    "label": "q-341679:changed-1",
+    "record": {
+      "knowledge_point": {
+        "id": "b4ac7f7e-1e07-57d7-a82a-d6545588c2de",
+        "db_id": 17592186092264,
+        "title": "Differentiating a Natural Logarithm Function Using the Chain Rule"
+      },
+      "question": {
+        ":question/id": "8553be98-2175-5a48-9068-c276ce942683",
+        ":question/problem": "Find the slope $m$ of the tangent to the curve $f(x)=\\ln(- x)$ at the point where $x=-2.$\n\n$m=$\n{{field-1}}",
+        ":question/worked-solution": "First, we express $f(x)$ as the composite function\n\n$$\nf=\\ln u,\\,u=- x.\n$$\n\nDifferentiating gives\n\n$$\n\\frac{\\text{d}f}{\\text{d}u}=\\frac{1}{u},\\,\\frac{\\text{d}u}{\\text{d}x}=-1.\n$$\n\nWe now apply the chain rule, and we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}f}{\\text{d}x} &=\\frac{\\text{d}f}{\\text{d}u}\\cdot \\frac{\\text{d}u}{\\text{d}x} \\\\ &=\\frac{1}{u}\\cdot (-1) \\\\ &=\\frac{1}{- x}\\cdot (-1) \\\\ &=\\frac{-1}{- x}.\\end{aligned}\n$$\n\nTherefore, the slope $m$ of the tangent line at the point where $x=-2$ is \n\n$$\n\\begin{aligned}m=\\left.(\\frac{\\text{d}f}{\\text{d}x})\\right|_{x=-2} &=\\left.(\\frac{1}{x})\\right|_{x=-2} \\\\ &=\\frac{(-1)}{(- (-2))} \\\\ &=- \\frac{1}{2}.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "0cfb8c12-8e88-5f66-8420-733de0eba580",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "4c4046eb-9dc3-5781-ada6-d5f4f5f8bf3d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{1}{2}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "4c4046eb-9dc3-5781-ada6-d5f4f5f8bf3d"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "generator_id": "f4aeeb80-4a3e-5dc6-ba00-a4d66431dbe1",
+        "version": "ln-chain-private-2275-v1",
+        "source_basis": 2275,
+        "source_id": "q-341679",
+        "template": "slope-affine",
+        "difficulty": "moderate",
+        "parameters": {
+          "a": 1,
+          "b": 0,
+          "t": -2
+        },
+        "bank_profile": null,
+        "seed": 1,
+        "mathematical_key": "18c8f2be49244a861b8577036450e67bc25cb5a26739807da2f7242d56cc07c1",
+        "domain": "Interval.open(-oo, 0)",
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "authored_changes": [],
+        "eligible": true,
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{1}{2}",
+        "expected": "accepted",
+        "purpose": "canonical blank in full prompt context"
+      },
+      {
+        "submitted": "\\frac{-2}{4}",
+        "expected": "accepted",
+        "purpose": "genuinely noncanonical doubled numerator and denominator"
+      },
+      {
+        "submitted": "(- \\frac{1}{2})+1",
+        "expected": "rejected",
+        "purpose": "incorrect canonical value plus one"
+      }
+    ]
+  }
+]

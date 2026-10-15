@@ -1,0 +1,77 @@
+[
+  {
+    "label": "authored-easy:authored-reference",
+    "record": {
+      "knowledge_point": {
+        "id": "b4ac7f7e-1e07-57d7-a82a-d6545588c2de",
+        "db_id": 17592186092264,
+        "title": "Differentiating a Natural Logarithm Function Using the Chain Rule"
+      },
+      "question": {
+        ":question/id": "4f2207f5-6078-5693-8c1e-4e19d28643b7",
+        ":question/problem": "Given that $f(x)=\\ln(2 x + 1)$, find $\\frac{\\text{d}f}{\\text{d}x}.$\n\n$\\frac{\\text{d}f}{\\text{d}x}=$\n{{field-1}}",
+        ":question/worked-solution": "First, we express $f(x)$ as the composite function\n\n$$\nf=\\ln u,\\,u=2 x + 1.\n$$\n\nDifferentiating gives\n\n$$\n\\frac{\\text{d}f}{\\text{d}u}=\\frac{1}{u},\\,\\frac{\\text{d}u}{\\text{d}x}=2.\n$$\n\nWe now apply the chain rule, and we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}f}{\\text{d}x} &=\\frac{\\text{d}f}{\\text{d}u}\\cdot \\frac{\\text{d}u}{\\text{d}x} \\\\ &=\\frac{1}{u}\\cdot (2) \\\\ &=\\frac{1}{2 x + 1}\\cdot (2) \\\\ &=\\frac{2}{2 x + 1}.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "5d729212-ccf0-52b4-8f5e-077a06ac5fa4",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "c88b2593-abad-5146-bd08-9481a47cb822",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{2}{2 x + 1}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "c88b2593-abad-5146-bd08-9481a47cb822"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "generator_id": "f4aeeb80-4a3e-5dc6-ba00-a4d66431dbe1",
+        "version": "ln-chain-private-2275-v1",
+        "source_basis": 2275,
+        "source_id": "authored-easy",
+        "template": "affine-blank",
+        "difficulty": "easy",
+        "parameters": {
+          "a": 2,
+          "b": 1
+        },
+        "bank_profile": null,
+        "seed": 0,
+        "mathematical_key": "9cb5bd97ea6188bb136ad35a334511d0a2b1c18547c4eb1f0659df0203df422d",
+        "domain": "Interval.open(-1/2, oo)",
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "authored_changes": [
+          "Easy extension: introductory affine inner function and observed derivative-RHS blank contract; same three chain-rule stages."
+        ],
+        "eligible": true,
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{2}{2 x + 1}",
+        "expected": "accepted",
+        "purpose": "canonical blank in full prompt context"
+      },
+      {
+        "submitted": "\\frac{4}{4 x + 2}",
+        "expected": "accepted",
+        "purpose": "genuinely noncanonical doubled numerator and denominator"
+      },
+      {
+        "submitted": "(\\frac{2}{2 x + 1})+1",
+        "expected": "rejected",
+        "purpose": "incorrect canonical value plus one"
+      }
+    ]
+  }
+]

@@ -1,0 +1,21 @@
+# Template extraction and sampling contract
+
+The assessed move is recognizing that compatible multiplication by an identity matrix preserves every matrix entry. The backbone supplies a named square integer matrix and the matching identity matrix, asks for their product, and requires either the whole matrix through one five-choice radio field or all scalar entries through four/nine blank fields. The solution states the identity property, checks the matrix dimensions, and concludes with product = named matrix = concrete entries. `source.json` retains each exact prompt, notation, dimensions, entry signs, bank, field layout and solution. `source-components.json` maps every original choice to its exact recipe and original parameters.
+
+Variable slots are the matrix entries; sampling uses signed integers from −9 through 9 inclusive, of unchanged dimension. Name, multiplication side, layout and dimension-order wording remain fixed within each source subtemplate because they are coupled to the exact prompt and solution references. Across subtemplates both sides and dimensions occur. There are no target-cell slots: the complete product is always requested. These bounds conservatively generalize the observed small signed integers without adding reasoning stages. Identity is never replaced by another matrix. Whole-matrix mathematical fingerprints ignore name, side, bank, seed and field type, preventing cosmetic changes from creating new inventory.
+
+Radio bank recipes, with M=[[a,b],[c,d]], are as follows. The literal text option is `The product is undefined`; all matrix values are bare bmatrix TeX.
+
+- q-13762: undefined, diag(M), −M, zero matrix, M. Both source fields replay this complete profile, regardless of order.
+- q-13763: undefined, zero matrix, identity, M, −M. This profile is evidence-only because its source is unrated and incomplete.
+- q-130243: zero, [[b,a],[d,c]], [[c,d],[a,b]], M, all-ones matrix.
+- q-75472: [[−a,b],[−a,b]], M, −M, [[−a,b],[b,−a]], [[b,a],[b,a]]. Retain the source structure M=[[a,b],[b,a]], a<0<b. Repeated rows and selected sign changes are observed patterns; psychological interpretations are unresolved.
+- q-75473: M, [[−a,b],[c,−d]], [[d,b],[−c,a]], [[b,a],[c,d]], [[−d,b],[−c,−a]]. Preserve b=0 and a,c,d<0.
+- q-75479: −M, [[c,d],[−a,−b]], M, [[−a,−b],[c,d]], [[−a,−b],[d,c]]. Preserve b=−a, c=0, a>0, d>0.
+- q-75474: M=[[a,b,c],[d,e,f],[g,h,i]]; M, [[−g,h,c],[d,e,f],[a,b,i]], three copies of M's first row, M with its first two columns swapped, M with its first and last rows swapped. The first distractor includes a sign change as well as moving four entries; no simpler permutation is substituted.
+
+Choose the complete profile before sampling; reject and resample if any choices coincide or any distractor equals M. Never pool recipes between profiles. Annotations about mistakes stay out of learner content. Blank answers are field-1…field-n², each expecting exactly its row-major integer entry; one field-owned canonical answer is present in its bank. The original Markdown placeholder layouts are retained.
+
+Prompt and worked-solution rendering replaces the source matrix with the same instance matrix, then uses the shared math-content normalization before stable UUID generation. `matrix_tex(..., augmented=False)` explicitly produces ordinary coefficient matrices. Numeric values, solution matrices, answer values and reproducibility metadata all derive from that one matrix. Parameter constraints are enforced before exposing instances. Seed is metadata only and never establishes mathematical novelty.
+
+Validation replays all ten source banks/blank answer sets at their original parameters (62 values, including the duplicated q-13762 bank), checks prompt and solution skeletons, tests 40 seeds per eligible subtemplate, independently multiplies with SymPy identities, checks each entire selected bank and every blank, tests replay determinism and changed-entry dependencies, and invokes the application's actual grader for correct, equivalent and wrong submissions. Fidelity is reported separately from correctness and engine grading. `side-by-side.json` contains each original, replay and two variants for review. Moderate/hard cannot be generated and raise a capability error.

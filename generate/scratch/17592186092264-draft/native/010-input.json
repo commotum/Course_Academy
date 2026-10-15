@@ -1,0 +1,76 @@
+[
+  {
+    "label": "q-341676:changed-1",
+    "record": {
+      "knowledge_point": {
+        "id": "b4ac7f7e-1e07-57d7-a82a-d6545588c2de",
+        "db_id": 17592186092264,
+        "title": "Differentiating a Natural Logarithm Function Using the Chain Rule"
+      },
+      "question": {
+        ":question/id": "15f10f40-1d92-5579-ac81-5c338b10c76b",
+        ":question/problem": "Given that $f(x)=\\ln(- 2 x^{3} + 1)$, find $\\frac{\\text{d}f}{\\text{d}x}.$\n\n$\\frac{\\text{d}f}{\\text{d}x}=$\n{{field-1}}",
+        ":question/worked-solution": "First, we express $f(x)$ as the composite function\n\n$$\nf=\\ln u,\\,u=- 2 x^{3} + 1.\n$$\n\nDifferentiating gives\n\n$$\n\\frac{\\text{d}f}{\\text{d}u}=\\frac{1}{u},\\,\\frac{\\text{d}u}{\\text{d}x}=- 6 x^{2}.\n$$\n\nWe now apply the chain rule, and we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}f}{\\text{d}x} &=\\frac{\\text{d}f}{\\text{d}u}\\cdot \\frac{\\text{d}u}{\\text{d}x} \\\\ &=\\frac{1}{u}\\cdot (- 6 x^{2}) \\\\ &=\\frac{1}{- 2 x^{3} + 1}\\cdot (- 6 x^{2}) \\\\ &=\\frac{- 6 x^{2}}{- 2 x^{3} + 1}.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "a73b876d-3444-59bd-89e4-6305ef129cf6",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "7b5c01e1-9227-54c4-b13f-140824f4b437",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{6 x^{2}}{2 x^{3} - 1}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "7b5c01e1-9227-54c4-b13f-140824f4b437"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "generator_id": "f4aeeb80-4a3e-5dc6-ba00-a4d66431dbe1",
+        "version": "ln-chain-private-2275-v1",
+        "source_basis": 2275,
+        "source_id": "q-341676",
+        "template": "polynomial-blank",
+        "difficulty": "moderate",
+        "parameters": {
+          "a": 1,
+          "b": 2,
+          "n": 3
+        },
+        "bank_profile": null,
+        "seed": 1,
+        "mathematical_key": "b36390fb84df79e135d3e85c04c8aa5da5c3186a033f90d82416639008a7fe83",
+        "domain": "Interval.open(-oo, 2**(2/3)/2)",
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "authored_changes": [],
+        "eligible": true,
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{6 x^{2}}{2 x^{3} - 1}",
+        "expected": "accepted",
+        "purpose": "canonical blank in full prompt context"
+      },
+      {
+        "submitted": "\\frac{12 x^{2}}{4 x^{3} - 2}",
+        "expected": "accepted",
+        "purpose": "genuinely noncanonical doubled numerator and denominator"
+      },
+      {
+        "submitted": "(\\frac{6 x^{2}}{2 x^{3} - 1})+1",
+        "expected": "rejected",
+        "purpose": "incorrect canonical value plus one"
+      }
+    ]
+  }
+]

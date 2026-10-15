@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 36**, **qa_passed: 381**, **queued: 160**, **working: 3**.
+**needs_revalidation: 36**, **qa_passed: 382**, **queued: 159**, **working: 3**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -171,9 +171,9 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186115193](../../scratch/17592186115193-draft.py) | Differentiating Reciprocal Trigonometric Functions | Finding the Slope of the Tangent at a Point of a Function Involving Reciprocal Trigonometric Functions | 5 / 6 / 0 / 0 | qa_passed | [Report](qa/17592186115193.json) |
 | [17592186115191](../../scratch/17592186115191-draft.py) | Differentiating Reciprocal Trigonometric Functions | Differentiating Expressions Involving the Cotangent Function | 2 / 6 / 6 / 2 | qa_passed | [Report](qa/17592186115191.json) |
 | [17592186096621](../../scratch/17592186096621.py) | The Quotient Rule for Differentiation | Differentiating a Quotient Containing Other Functions | 8 / 6 / 5 / 2 | working | — |
-| [17592186092265](../../scratch/17592186092265.py) | The Chain Rule With Logarithmic Functions | Differentiating a General Logarithm Function Using the Chain Rule | 7 / 5 / 2 / 2 | working | — |
+| [17592186092265](../../scratch/17592186092265.py) | The Chain Rule With Logarithmic Functions | Differentiating a General Logarithm Function Using the Chain Rule | 7 / 5 / 2 / 2 | qa_passed | [Report](qa/17592186092265.json) |
 | [17592186092264](../../scratch/17592186092264.py) | The Chain Rule With Logarithmic Functions | Differentiating a Natural Logarithm Function Using the Chain Rule | 0 / 6 / 6 / 2 | working | — |
-| [17592186175924](../../scratch/17592186175924.py) | Finding Equations of Perpendicular Lines | Finding the Equation of a Line Perpendicular to a Line in Standard Form | 5 / 5 / 0 / 2 | queued | — |
+| [17592186175924](../../scratch/17592186175924.py) | Finding Equations of Perpendicular Lines | Finding the Equation of a Line Perpendicular to a Line in Standard Form | 5 / 5 / 0 / 2 | working | — |
 | [17592186175923](../../scratch/17592186175923.py) | Finding Equations of Perpendicular Lines | Finding the Equation of a Line Perpendicular to a Line Through Two Points | 6 / 5 / 0 / 2 | queued | — |
 | [17592186064208](../../scratch/17592186064208.py) | Integrating Linear Rational Functions Using Substitution | Integrating a Combination of Linear Rational Functions Using the General Formula | 0 / 0 / 9 / 1 | queued | — |
 | 17592186100877 | Calculating Definite Integrals Using Substitution | Calculating a Definite Integral of a Rational Function Using Substitution | 3 / 5 / 1 / 2 | queued | — |
