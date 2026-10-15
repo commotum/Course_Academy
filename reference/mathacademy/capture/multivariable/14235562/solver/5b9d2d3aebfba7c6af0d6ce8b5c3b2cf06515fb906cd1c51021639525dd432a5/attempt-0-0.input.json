@@ -1,0 +1,25 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "e-5611",
+      "problem": "An experiment consists of measuring how much a spring stretches (in inches) when one end of the spring is attached to the ceiling while a mass of $x$ ounces hangs from the other end. This data is shown below.\n\n| Mass $(x)$ | **$1$** | **$2$** | **$4$** | **$5$** |\n| --- | --- | --- | --- | --- |\n| Stretch $(y)$ | $0.8$ | $1.8$ | $3.2$ | $4.2$ |\n\nFind the line of the form $y=\\beta_0 + \\beta_1 x$ that best fits the data above. According to the model, how much will the spring stretch if we use an $8$-ounce mass, assuming that the trend continues?  \n\n*Hint: You can use the fact that* \n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235562/assets/cdd8fc2a837f3f86293c0c591c3cd7d1fb6bb9c4cbaeb990ec9acdafbc9264fb.svg)\n*where $X$ is the corresponding design matrix and $\\mathbf{y}$ is the observation vector.*",
+      "worked_solution": "The coefficients of the line that best fits the data can be found as the least-squares solution ${\\hat{\\boldsymbol{\\beta}}}$ to the system  \n\n$$\n\\begin{aligned}\\overset{X}{\\overset{⏞}{[\\begin{aligned}1 & 1 \\\\ 1 & 2 \\\\ 1 & 4 \\\\ 1 & 5\\end{aligned}]}}\\overset{\\beta }{\\overset{⏞}{[\\begin{aligned}{\\beta }_{0} \\\\ {\\beta }_{1}\\end{aligned}]}} & =\\overset{y}{\\overset{⏞}{[\\begin{aligned}0.8 \\\\ 1.8 \\\\ 3.2 \\\\ 4.2\\end{aligned}]}},\\end{aligned}\n$$\n\nwhere $X$ is the design matrix, $\\boldsymbol{\\beta}$ is the parameter vector, and $\\mathbf{y}$ is the observation vector.\n\nPre-multiplying this equation by $X^T,$ we obtain the corresponding normal equation\n\n$$\nX^T \\! X {\\hat{\\boldsymbol{\\beta}}} = X^T \\mathbf{y}.\n$$\n\nSince the columns of $X$ are linearly independent, the matrix ${X^T}X$ is invertible and \n\n$$\n{\\hat{\\boldsymbol{\\beta}}} = (X^T \\! X )^{-1} X^T \\mathbf{y}.\n$$\n\nSubstituting the given values of $({X^T} X )^{-1}$ and $X^T \\mathbf{y}$ into the formula, we get\n\n$$\n\\begin{aligned}\\overset{^}{\\beta } & =({X}^{T}\\,X)^{-1}{X}^{T}\\,y \\\\  & =\\frac{1}{20}[\\begin{aligned}23 & -6 \\\\ -6 & 2\\end{aligned}]\\cdot [\\begin{aligned}10 \\\\ 38.2\\end{aligned}] \\\\  & =[\\begin{aligned}0.04 \\\\ 0.82\\end{aligned}].\\end{aligned}\n$$\n\nTherefore, we have the line $y = 0.04+ 0.82x.$\n\nFinally, to predict how much the spring will stretch if an $8$-ounce mass is hung from it,  we substitute $x=8$ into the equation of the line:\n\n$$\n\\begin{aligned}y & =0.04+0.82(8) \\\\  & =6.6\\end{aligned}\n$$\n\nThus, according to the model, if an $8$ ounce mass is hung on the spring, the spring will stretch $6.6$ inches. \n\n**Note**: Since we're extrapolating ($x=8$ is not within the range of the original set of $x$-values), our result *may* be unreliable.",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235562/observations/lesson-step-20310-b6e92886d88cad59851a.html",
+      "source_url": "https://mathacademy.com/topics/2169",
+      "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235562/observations/lesson-step-20310-b6e92886d88cad59851a.png",
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235562/assets/cdd8fc2a837f3f86293c0c591c3cd7d1fb6bb9c4cbaeb990ec9acdafbc9264fb.svg",
+          "sha256": "cdd8fc2a837f3f86293c0c591c3cd7d1fb6bb9c4cbaeb990ec9acdafbc9264fb",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        }
+      ]
+    }
+  },
+  "session_id": "01a1408a-d18f-74c1-9e4b-da5f7914ab81",
+  "previous_failures": []
+}
