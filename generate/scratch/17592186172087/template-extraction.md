@@ -225,3 +225,29 @@ The lesson route is followed by links: Introduction (17592186172991) → identif
 Semantic fingerprints are ordered dimension pairs. Positive coefficient magnitude, function letters, source formula aliases, domain spellings, profile and choice order do not inflate meaningful-task counts. Per-level counts overlap and must not be summed as disjoint mathematical categories. Full presentation identity separately includes version, displayed difficulty/presence, prompt, entire worked solution, field layout, complete answer bank and correct-value/presence. Changing incidental displayed coefficients changes presentation identity, not mathematical-task identity.
 
 No parameters remove a defining level demand: explicit inputs and samplers obey the same finite signature and coefficient bounds. Raw evidence-only profiles preserve source mistakes; normal generated records are eligible for learning. Missing fields/labels are not invented as source evidence: none are absent in this capture. Native checks test all five radio submissions, including every incorrect categorical value.
+
+## Current three-checkbox extraction, basis 2632
+
+The legacy extraction remains the complete mapping of expression slots and
+solution stages. `legacy.py` freezes those recipes with source.json; the public
+script adapts the response contract to current source-current.json. Prompt rows
+are now `- **I.** $...$`, through III, preceded by “Select all that apply.”
+The nine original parameter cases replay current prompts and solutions exactly.
+Each candidate owns one checkbox field with its Roman-numeral key and a complete
+`false`/`true` bank. The correct Boolean is true exactly when both declared input
+arity and output dimension equal three. No inferred distractor bank is mixed
+into the current checkbox contract. Source replay validates 54/54 values and
+27/27 complete banks, including all 27 correct Boolean designations.
+
+All coefficient/name/order slots and constraints stay as documented above.
+Normal authored catalogs fix names A/B/C and coefficient 2 during replenishment;
+this is a narrower sampling policy, not a new source constraint. The validator
+exercises every ordered catalog assignment, all six permutations of each source,
+and coefficient boundaries. A changed-target regression holds the coefficient
+and output expressions fixed, moves declared arities between candidates, and
+independently reads both rendered solution claims and all checkbox keys.
+
+Question, field and answer UUIDs derive from full rendered content and the
+current format version. Separate conservative task fingerprints collapse aliases
+including permutations, across difficulty bands. New content never receives a
+captured Math Academy content ID. Boolean answer UUIDs are field-owned.

@@ -1,17 +1,24 @@
 # Three-dimensional vector-field recognition
 
-Verification:
+The public generator is `generate/scratch/17592186172087.py`.
+Run `.venv/bin/python generate/scratch/17592186172087.py --difficulty all --seed 23 --count 2 --format json`.
+Validate with `.venv/bin/python generate/scratch/17592186172087/validate.py`.
+Replenish only this KP with `.venv/bin/python generate/scratch/17592186172087/replenish.py`.
 
-```bash
-.venv/bin/python generate/scratch/17592186172087/validate.py
-.venv/bin/python generate/scratch/17592186172087.py --difficulty all --seed 23 --count 2 --format markdown
-.venv/bin/python generate/scratch/17592186172087.py --difficulty easy --profile observed_q-122697 --format json
-```
+Version vector-field-3d-checkbox-3 follows the current three-checkbox field
+contract. source-current.json preserves the complete basis-2632 source snapshot;
+source.json and reference/legacy-v2 preserve prior radio evidence. legacy.py
+retains the reviewed mathematical templates, parameter domains and repairs.
 
-Public functions: generate_easy, generate_moderate, generate_hard; generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None). Source replay cases carry exact coefficient/name/order parameters and original complete bank profiles. The CLI exposes difficulty, seed, count, template, profile and JSON/Markdown previews.
+Validation independently reads declared input arity and output dimension,
+checks each solution claim and Boolean key, replays 9/9 exact current prompts and
+solutions and 27/27 complete checkbox banks, and uses the current application
+native grader for every choice on 127 source, position and finite-catalog cases.
+Review JSON/Markdown show originals and authored variants. No plots are required.
 
-Nine observed easy masks + authored easy/moderate/hard catalogs. Moderate and hard are missing-level designs. Scope: three candidate functions, declared input dimension and actual output-vector dimension; no domain-finding or vector calculus. No plots required. source.json preserves the entire basis-1356 wrapper, classification/extraction document complete banks, review shows raw originals and labeled normal variants. Raw profiles are evidence only. Normal generation repairs three scalar-output prose errors.
-
-Validation independently reads printed declarations and outputs, enumerates every finite authored task, checks all six source permutations, key presence and full bank/solution fidelity, source/prose/domain slots, deterministic identities, public profile selection, bounds, and C0/arity/grading/content mutations. engine-report.json contains actual application grade_field results, with no database access. Runtime versions are recorded in validation.json. Review JSON is local evidence, not a transaction payload.
-
-Meaningful finite counts: easy 51 including observed families (27 authored), moderate 19, hard 18; letter/coefficient/bank aliases excluded. 9/9 raw solutions reproduce exactly; 6 normal solutions remain exact and 3 minimally replace scalar-output “functions” with “values”. 45/45 source choices and 9/9 original correct designations match. Native: 82 accepted, 328 rejected, zero unresolved. No EDB/engine/shared-file changes.
+Only unordered dimension classes count as distinct. Capabilities and finite
+exceptions are in capabilities.json. Moderate/hard are explicitly authored bands.
+Replenishment uses the existing application integration, serializes against
+api.lock, checks current and historical usage, registers the stable generator
+UUID, requests writer-native validation, saves exact EDN and basis-guarded
+requests, and verifies exact receipt-basis readback and additive datoms.
