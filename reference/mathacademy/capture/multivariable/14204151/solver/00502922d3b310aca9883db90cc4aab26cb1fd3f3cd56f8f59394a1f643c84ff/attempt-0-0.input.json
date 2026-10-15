@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-96354",
+      "sequence_position": 4,
+      "problem": "$$\nA=[\\begin{aligned}4 & 1 \\\\ 1 & 4\\end{aligned}],\\,Σ=[\\begin{aligned}5 & 0 \\\\ 0 & 3\\end{aligned}]\n$$\n\nConsider the matrices $A$ and $Σ$ shown above. Given that $A=UΣ{V}^{T}$ is a singular value decomposition of $A,$ which of the following could be the matrices $U$ and $V?$",
+      "worked_solution": "Let's find the singular value decomposition of $A$ using the usual algorithm.\n\n- **Step 1.** Compute ${A}^{T}\\,A:$\n\n$$\n\\begin{aligned}{A}^{T}\\,A & ={[\\begin{aligned}4 & 1 \\\\ 1 & 4\\end{aligned}]}^{T}[\\begin{aligned}4 & 1 \\\\ 1 & 4\\end{aligned}] \\\\  & =[\\begin{aligned}4 & 1 \\\\ 1 & 4\\end{aligned}][\\begin{aligned}4 & 1 \\\\ 1 & 4\\end{aligned}] \\\\  & =[\\begin{aligned}17 & 8 \\\\ 8 & 17\\end{aligned}]\\end{aligned}\n$$\n\n- **Step 2.** Find the singular values: From the matrix $Σ,$ we deduce that ${\\sigma }_{1}=5$ and ${\\sigma }_{2}=3.$\n\n- **Step 3.** Find the right singular vectors of $A$ (i.e., the unit eigenvectors of ${A}^{T}\\,A$):\n\n- For ${\\lambda }_{1}={\\sigma }_{1}^{2}=25,$ we have\n\n$$\n\\begin{aligned}{A}^{T}\\,A-25I & =[\\begin{aligned}17 & 8 \\\\ 8 & 17\\end{aligned}]-25[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}-8 & 8 \\\\ 8 & -8\\end{aligned}].\\end{aligned}\n$$\n\nSeeking a non-zero solution of $({A}^{T}\\,A-25I)v=0$ gives a unit eigenvector\n\n$$\n{v}_{1}=[\\begin{aligned}\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}].\n$$\n\n- For ${\\lambda }_{2}={\\sigma }_{2}^{2}=9,$ we have\n\n$$\n\\begin{aligned}{A}^{T}\\,A-9I & =[\\begin{aligned}17 & 8 \\\\ 8 & 17\\end{aligned}]-9[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}8 & 8 \\\\ 8 & 8\\end{aligned}].\\end{aligned}\n$$\n\nSeeking a non-zero solution of $({A}^{T}\\,A-9I)v=0$ gives a unit eigenvector\n\n$$\n{v}_{2}=[\\begin{aligned}-\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}].\n$$\n\n- **Step 4.** Find the left singular vectors of $A$: Since we know the singular values and right singular vectors, we can compute the columns of $U$ as follows:\n\n- First, we compute ${u}_{1}:$\n\n$$\n\\begin{aligned}{u}_{1} & =\\frac{1}{{\\sigma }_{1}}A{v}_{1} \\\\  & =\\frac{1}{5}[\\begin{aligned}4 & 1 \\\\ 1 & 4\\end{aligned}][\\begin{aligned}\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}] \\\\  & =\\frac{1}{5}[\\begin{aligned}\\frac{5}{\\sqrt{2}} \\\\ \\frac{5}{\\sqrt{2}}\\end{aligned}] \\\\  & =[\\begin{aligned}\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}]\\end{aligned}\n$$\n\n- Then, we compute ${u}_{2}:$\n\n$$\n\\begin{aligned}{u}_{2} & =\\frac{1}{{\\sigma }_{2}}A{v}_{2} \\\\  & =\\frac{1}{3}[\\begin{aligned}4 & 1 \\\\ 1 & 4\\end{aligned}][\\begin{aligned}-\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}] \\\\  & =\\frac{1}{3}[\\begin{aligned}-\\frac{3}{\\sqrt{2}} \\\\ \\frac{3}{\\sqrt{2}}\\end{aligned}] \\\\  & =[\\begin{aligned}-\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}]\\end{aligned}\n$$\n\nFinally, we construct the matrices $U$ and $V:$\n\n$$\nU=[\\begin{aligned}\\frac{1}{\\sqrt{2}} & -\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}}\\end{aligned}],\\,V=[\\begin{aligned}\\frac{1}{\\sqrt{2}} & -\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}}\\end{aligned}]\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14204151/observations/history-q-96354-cf7b878844e010dae7dd.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14204151",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14204151/observations/history-solution-q-96354-4ae225ca3727f5430ea4.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "text",
+              "value": "$U=[\\begin{aligned}\\frac{2}{\\sqrt{13}} & -\\frac{3}{\\sqrt{13}} \\\\ \\frac{3}{\\sqrt{13}} & \\frac{2}{\\sqrt{13}}\\end{aligned}]$\nand\n$V=[\\begin{aligned}\\frac{3}{\\sqrt{13}} & -\\frac{2}{\\sqrt{13}} \\\\ \\frac{2}{\\sqrt{13}} & \\frac{3}{\\sqrt{13}}\\end{aligned}]$"
+            },
+            {
+              "option": "b",
+              "type": "text",
+              "value": "$U=[\\begin{aligned}\\frac{3}{\\sqrt{10}} & -\\frac{1}{\\sqrt{10}} \\\\ \\frac{1}{\\sqrt{10}} & \\frac{3}{\\sqrt{10}}\\end{aligned}]$\nand\n$V=[\\begin{aligned}\\frac{1}{\\sqrt{10}} & -\\frac{3}{\\sqrt{10}} \\\\ \\frac{3}{\\sqrt{10}} & \\frac{1}{\\sqrt{10}}\\end{aligned}]$"
+            },
+            {
+              "option": "c",
+              "type": "text",
+              "value": "$U=[\\begin{aligned}-\\frac{1}{\\sqrt{2}} & -\\frac{1}{\\sqrt{2}} \\\\ -\\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}}\\end{aligned}]$\nand\n$V=[\\begin{aligned}\\frac{1}{\\sqrt{2}} & -\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}}\\end{aligned}]$"
+            },
+            {
+              "option": "d",
+              "type": "text",
+              "value": "$U=[\\begin{aligned}\\frac{1}{\\sqrt{10}} & -\\frac{3}{\\sqrt{10}} \\\\ \\frac{3}{\\sqrt{10}} & \\frac{1}{\\sqrt{10}}\\end{aligned}]$\nand\n$V=[\\begin{aligned}\\frac{3}{\\sqrt{10}} & -\\frac{1}{\\sqrt{10}} \\\\ \\frac{1}{\\sqrt{10}} & \\frac{3}{\\sqrt{10}}\\end{aligned}]$"
+            },
+            {
+              "option": "e",
+              "type": "text",
+              "value": "$U=[\\begin{aligned}\\frac{1}{\\sqrt{2}} & -\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}}\\end{aligned}]$\nand\n$V=[\\begin{aligned}\\frac{1}{\\sqrt{2}} & -\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}}\\end{aligned}]$"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q96354",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "$U=[\\begin{aligned}\\frac{2}{\\sqrt{13}} & -\\frac{3}{\\sqrt{13}} \\\\ \\frac{3}{\\sqrt{13}} & \\frac{2}{\\sqrt{13}}\\end{aligned}]$\nand\n$V=[\\begin{aligned}\\frac{3}{\\sqrt{13}} & -\\frac{2}{\\sqrt{13}} \\\\ \\frac{2}{\\sqrt{13}} & \\frac{3}{\\sqrt{13}}\\end{aligned}]$",
+                "option": "a",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "Let's find the singular value decomposition of $A$ using the usual algorithm.\n\n- **Step 1.** Compute ${A}^{T}\\,A:$\n\n$$\n\\begin{aligned}{A}^{T}\\,A & ={[\\begin{aligned}4 & 1 \\\\ 1 & 4\\end{aligned}]}^{T}[\\begin{aligned}4 & 1 \\\\ 1 & 4\\end{aligned}] \\\\  & =[\\begin{aligned}4 & 1 \\\\ 1 & 4\\end{aligned}][\\begin{aligned}4 & 1 \\\\ 1 & 4\\end{aligned}] \\\\  & =[\\begin{aligned}17 & 8 \\\\ 8 & 17\\end{aligned}]\\end{aligned}\n$$\n\n- **Step 2.** Find the singular values: From the matrix $Σ,$ we deduce that ${\\sigma }_{1}=5$ and ${\\sigma }_{2}=3.$\n\n- **Step 3.** Find the right singular vectors of $A$ (i.e., the unit eigenvectors of ${A}^{T}\\,A$):\n\n- For ${\\lambda }_{1}={\\sigma }_{1}^{2}=25,$ we have\n\n$$\n\\begin{aligned}{A}^{T}\\,A-25I & =[\\begin{aligned}17 & 8 \\\\ 8 & 17\\end{aligned}]-25[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}-8 & 8 \\\\ 8 & -8\\end{aligned}].\\end{aligned}\n$$\n\nSeeking a non-zero solution of $({A}^{T}\\,A-25I)v=0$ gives a unit eigenvector\n\n$$\n{v}_{1}=[\\begin{aligned}\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}].\n$$\n\n- For ${\\lambda }_{2}={\\sigma }_{2}^{2}=9,$ we have\n\n$$\n\\begin{aligned}{A}^{T}\\,A-9I & =[\\begin{aligned}17 & 8 \\\\ 8 & 17\\end{aligned}]-9[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}8 & 8 \\\\ 8 & 8\\end{aligned}].\\end{aligned}\n$$\n\nSeeking a non-zero solution of $({A}^{T}\\,A-9I)v=0$ gives a unit eigenvector\n\n$$\n{v}_{2}=[\\begin{aligned}-\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}].\n$$\n\n- **Step 4.** Find the left singular vectors of $A$: Since we know the singular values and right singular vectors, we can compute the columns of $U$ as follows:\n\n- First, we compute ${u}_{1}:$\n\n$$\n\\begin{aligned}{u}_{1} & =\\frac{1}{{\\sigma }_{1}}A{v}_{1} \\\\  & =\\frac{1}{5}[\\begin{aligned}4 & 1 \\\\ 1 & 4\\end{aligned}][\\begin{aligned}\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}] \\\\  & =\\frac{1}{5}[\\begin{aligned}\\frac{5}{\\sqrt{2}} \\\\ \\frac{5}{\\sqrt{2}}\\end{aligned}] \\\\  & =[\\begin{aligned}\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}]\\end{aligned}\n$$\n\n- Then, we compute ${u}_{2}:$\n\n$$\n\\begin{aligned}{u}_{2} & =\\frac{1}{{\\sigma }_{2}}A{v}_{2} \\\\  & =\\frac{1}{3}[\\begin{aligned}4 & 1 \\\\ 1 & 4\\end{aligned}][\\begin{aligned}-\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}] \\\\  & =\\frac{1}{3}[\\begin{aligned}-\\frac{3}{\\sqrt{2}} \\\\ \\frac{3}{\\sqrt{2}}\\end{aligned}] \\\\  & =[\\begin{aligned}-\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}}\\end{aligned}]\\end{aligned}\n$$\n\nFinally, we construct the matrices $U$ and $V:$\n\n$$\nU=[\\begin{aligned}\\frac{1}{\\sqrt{2}} & -\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}}\\end{aligned}],\\,V=[\\begin{aligned}\\frac{1}{\\sqrt{2}} & -\\frac{1}{\\sqrt{2}} \\\\ \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}}\\end{aligned}]\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14204151/observations/step-q96354-2f8845ef8b69db88269e.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a13b28-a6d1-7561-81db-fd25c8aaf7da",
+  "previous_failures": []
+}
