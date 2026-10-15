@@ -1,0 +1,83 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-248223",
+      "sequence_position": 5,
+      "problem": "A newspaper in a town has $100\\,000$ subscribers, and $56\\,000$ of them have a digital subscription. If the newspaper randomly samples $224$ subscribers, find a normal approximation for the probability that between $112$ and $140$ subscribers (inclusive) in the sample have a digital subscription. You may assume that the population size is significantly larger than the sample size.\n\n*Hint: Two tables of values of $Φ(z)$ for different values of $z$ are given below, where $Φ(z)$ is the cumulative distribution function for the standard normal distribution. *\n\n<table align=\"center\">\n\n<tbody><tr>\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.00\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.01\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.02\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-1.8\\,$</th><td align=\"center\"> $\\,0.0359\\,$ </td><td align=\"center\"> $\\,0.0351\\,$ </td><td align=\"center\"> $\\,0.0344\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-1.7\\,$</th><td align=\"center\"> $\\,0.0446\\,$ </td><td align=\"center\"> $\\,0.0436\\,$ </td><td align=\"center\"> $\\,0.0427\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-1.6\\,$</th><td align=\"center\"> $\\,0.0548\\,$ </td><td align=\"center\"> $\\,0.0537\\,$ </td><td align=\"center\"> $\\,0.0526\\,$ </td></tr>\n</tbody></table>\n</th>\n\n<th width=\"5%\"></th>\n\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.05\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.06\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.07\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.7\\,$</th><td align=\"center\"> $\\,0.9599\\,$ </td><td align=\"center\"> $\\,0.9608\\,$ </td><td align=\"center\"> $\\,0.9616\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.8\\,$</th><td align=\"center\"> $\\,0.9678\\,$ </td><td align=\"center\"> $\\,0.9686\\,$ </td><td align=\"center\"> $\\,0.9693\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.9\\,$</th><td align=\"center\"> $\\,0.9744\\,$ </td><td align=\"center\"> $\\,0.9750\\,$ </td><td align=\"center\"> $\\,0.9756\\,$ </td></tr>\n</tbody></table>\n</th>\n</tr>\n\n</tbody></table>",
+      "worked_solution": "Given a population in which a proportion $p$ of the population has a particular characteristic, the sampling distribution of the sample proportion $\\overset{^}{\\,p}$ can be approximated as\n\n$$\n\\overset{^}{\\,p}∼N(p,\\frac{p(1-p)}{n}),\n$$\n\nwhere the sample size $n$ is much smaller than the population size, $np>5,$ and $n(1-p)>5.$\n\nIn our case\n\n- the sample size is $n=224,$ and\n\n- the population proportion is $p=\\frac{56\\,000}{100\\,000}=0.56.$\n\nNow, since\n\n$$\nnp=224(0.56)=125.44>5\n$$\n\nand\n\n$$\nn(1-p)=224(1-0.56)=98.56>5,\n$$\n\nand the $n=224$ is much smaller than the population size, we can apply the above approximation.\n\nThe sampling distribution of the sample proportion, in this case, can be approximated as\n\n$$\n\\begin{aligned}\\overset{^}{\\,p} & ∼N(p,\\frac{p(1-p)}{n}) \\\\  & ∼N(0.56,\\frac{0.56(1-0.56)}{224}) \\\\  & ∼N(0.56,0.0011).\\end{aligned}\n$$\n\nNext, we determine the probability we wish to find. If between $112$ and $140$ of subscribers in the sample have a digital subscription, then\n\n$$\n\\begin{aligned}\\frac{112}{224}\\le \\overset{^}{\\,p} & \\le \\frac{140}{224} \\\\ 0.5\\le \\overset{^}{\\,p} & \\le 0.625.\\end{aligned}\n$$\n\nHence, the probability we wish to find is\n$P(0.5\\le \\overset{^}{\\,p}\\le 0.625).$\nSo, we convert $\\overset{^}{\\,p}$ to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(0.5\\le \\overset{^}{\\,p}\\le 0.625) & =P(\\frac{0.5-0.56}{\\sqrt{0.0011}}\\le Z\\le \\frac{0.625-0.56}{\\sqrt{0.0011}}) \\\\  & ≈P(-1.81\\le Z\\le 1.96) \\\\  & =P(Z\\le 1.96)-P(Z\\le -1.81) \\\\  & =Φ(1.96)-Φ(-1.81)\\end{aligned}\n$$\n\nFrom the table, we have\n\n$$\n\\begin{aligned}Φ(1.96)=0.9750,\\,Φ(-1.81)=0.0351.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}P(0.5\\le \\overset{^}{\\,p}\\le 0.625) & =Φ(1.96)-Φ(-1.81) \\\\  & =0.9750-0.0351 \\\\  & =0.9399.\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14230296/observations/history-q-248223-debe0fcc70ce5dcf9687.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14230296",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14230296/observations/history-solution-q-248223-7458dd61a6c37d86b33c.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "0.9399"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "0.8966"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "0.9678"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "0.9456"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "0.8993"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q248223",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "0.9399",
+                "option": "e",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "source_grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Given a population in which a proportion $p$ of the population has a particular characteristic, the sampling distribution of the sample proportion $\\overset{^}{\\,p}$ can be approximated as\n\n$$\n\\overset{^}{\\,p}∼N(p,\\frac{p(1-p)}{n}),\n$$\n\nwhere the sample size $n$ is much smaller than the population size, $np>5,$ and $n(1-p)>5.$\n\nIn our case\n\n- the sample size is $n=224,$ and\n\n- the population proportion is $p=\\frac{56\\,000}{100\\,000}=0.56.$\n\nNow, since\n\n$$\nnp=224(0.56)=125.44>5\n$$\n\nand\n\n$$\nn(1-p)=224(1-0.56)=98.56>5,\n$$\n\nand the $n=224$ is much smaller than the population size, we can apply the above approximation.\n\nThe sampling distribution of the sample proportion, in this case, can be approximated as\n\n$$\n\\begin{aligned}\\overset{^}{\\,p} & ∼N(p,\\frac{p(1-p)}{n}) \\\\  & ∼N(0.56,\\frac{0.56(1-0.56)}{224}) \\\\  & ∼N(0.56,0.0011).\\end{aligned}\n$$\n\nNext, we determine the probability we wish to find. If between $112$ and $140$ of subscribers in the sample have a digital subscription, then\n\n$$\n\\begin{aligned}\\frac{112}{224}\\le \\overset{^}{\\,p} & \\le \\frac{140}{224} \\\\ 0.5\\le \\overset{^}{\\,p} & \\le 0.625.\\end{aligned}\n$$\n\nHence, the probability we wish to find is\n$P(0.5\\le \\overset{^}{\\,p}\\le 0.625).$\nSo, we convert $\\overset{^}{\\,p}$ to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(0.5\\le \\overset{^}{\\,p}\\le 0.625) & =P(\\frac{0.5-0.56}{\\sqrt{0.0011}}\\le Z\\le \\frac{0.625-0.56}{\\sqrt{0.0011}}) \\\\  & ≈P(-1.81\\le Z\\le 1.96) \\\\  & =P(Z\\le 1.96)-P(Z\\le -1.81) \\\\  & =Φ(1.96)-Φ(-1.81)\\end{aligned}\n$$\n\nFrom the table, we have\n\n$$\n\\begin{aligned}Φ(1.96)=0.9750,\\,Φ(-1.81)=0.0351.\\end{aligned}\n$$\n\nTherefore,\n\n$$\n\\begin{aligned}P(0.5\\le \\overset{^}{\\,p}\\le 0.625) & =Φ(1.96)-Φ(-1.81) \\\\  & =0.9750-0.0351 \\\\  & =0.9399.\\end{aligned}\n$$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14230296/observations/history-solution-q-248223-7458dd61a6c37d86b33c.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14230296/observations/history-q-248223-debe0fcc70ce5dcf9687.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a13ff4-7a23-7370-a8cc-79f7c375bb4e",
+  "previous_failures": []
+}
