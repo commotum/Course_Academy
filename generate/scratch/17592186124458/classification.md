@@ -1,3 +1,23 @@
+# Current classification — math basis 2640
+
+Lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. The exact eleven-question Pull is retained in `reference/initial/kp-record.edn`. It supersedes the older classification below where they differ. Current source validation accounts for 51 answer values across eleven practice questions. Canonical examples remain excluded.
+
+There are six easy labels (five independent radio questions and one context-limited blank), four moderate radio questions, and one unrated/incomplete radio question. All radio banks have five math choices. No source uses mixed or multiple fields. All plot ratings remain **none**: no prompt, answer, or solution contains a mathematical figure.
+
+The refreshed `q-36273` now has an easy label, correct ref and solution. Its exact answer is 14/√29. Existing source records remain untouched. `q-37077` is still unrated and lacks a correct ref and solution; its uniquely correct bank member is −78/5, but it does not count as available practice. `q-168116` still needs a vector field or prior gradient that its standalone prompt omits; it is excluded from independent fresh inventory.
+
+| Additional template | Source entity / MA ID | Level / field | Backbone / choice profile / plots |
+|---|---|---|---|
+| square_x2_y | 17592186446241 / q-36306 | moderate / radio | (x²+y)² at A(−1,1) toward B(3,4); partials, endpoint subtraction, normalization, dot / its own five-option bank / none |
+| radius | 17592186446242 / q-130268 | moderate / radio | √(x²+y²) at A(4,3) toward B(1,1); nonzero radius, quotient partials, endpoint subtraction, normalization, dot / its own bank / none |
+| square_difference | 17592186518124 / q-86533 | moderate / radio | (2x²−3y²)² at A(−1,−1) toward B(2,0); two chain partials, endpoint subtraction, normalization, dot / its own bank / none |
+
+There are eleven source prompt/value families and ten distinct radio-bank profiles plus the blank. The original eight families below are retained as historical extraction evidence. Three additional templates are independently checked but are not sampled by this bounded package.
+
+Comparable squared compositions now have observed **moderate** ratings. The previous authored hard claim for `(x+b y²)²` is withdrawn; its validated sampler is moderate. Easy and moderate are supported. Hard is explicitly unsupported by this package, with a five-question target left unfilled in `capability.json`; no higher coefficients or alternate identities are used to manufacture that band.
+
+## Historical extraction at basis 1356
+
 # Classification at frozen math basis 1356
 
 Database `math`, basis 1356, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. Eight captured practice records; the canonical example is not included in the counts. All plots: **none**. There are no image references in these practice questions or their worked solutions; lesson illustrations are outside the assessed calculation.

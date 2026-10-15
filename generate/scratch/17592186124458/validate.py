@@ -118,7 +118,7 @@ def check_normal(r):
     assert q[':question/id']==r2['question'][':question/id'],'seed identity'
     return C
 
-def tex_no_space(e):return g.tex(e).replace(' ','')
+def tex_no_space(e):return g.expr_tex(e).replace(' ','')
 
 
 def ib_vector(t):
@@ -242,17 +242,20 @@ if __name__=='__main__':
     assert one['generation']['mathematical_fingerprint']==two['generation']['mathematical_fingerprint']
     assert one['question'][':question/id']!=two['question'][':question/id']
     excessive={'a':4,'b':4,'c':1,'d':1,'x0':3,'y0':3,'dx':3,'dy':4}
-    try:g.generate('hard',template='chain_square',parameters=excessive)
+    try:g.generate('moderate',template='chain_square',parameters=excessive)
     except ValueError:pass
     else:raise AssertionError('hard arithmetic ceiling bypass')
-    defaults={l:set() for l in ('easy','moderate','hard')};tasks={l:set() for l in defaults}
+    defaults={l:set() for l in g.SUPPORTED_LEVELS};tasks={l:set() for l in defaults}
     for l in defaults:
         for seed in range(160):
             r=g.generate(l,seed);check_normal(r);defaults[l].add(r['generation']['template']);tasks[l].add(r['generation']['mathematical_fingerprint'])
         assert defaults[l]=={f for f,lev in g.FAMILIES.items() if lev==l}
+    try:g.generate_hard()
+    except ValueError:pass
+    else:raise AssertionError('unsupported hard must fail')
     native(normal)
     (ROOT/'source-cases.json').write_text(json.dumps(SOURCE_CASES,indent=2)+'\n')
     (ROOT/'review.json').write_text(json.dumps(review,indent=2,ensure_ascii=False)+'\n')
     (ROOT/'review.md').write_text('# Directional derivative review\n\nRaw evidence is explicitly ineligible. Normal variants use authored method-derived banks.\n\n'+'\n\n---\n\n'.join('## '+v['label']+'\n\n'+g.markdown(v['record']) for v in review))
-    report={'passed':True,'source_questions':8,'source_fidelity':source_results,'complete_banks_matched':8,'source_values_matched':36,'source_correct_designations_matched':6,'missing_original_designations':2,'exact_source_solutions':6,'absent_original_solutions_preserved':2,'normal_semantic_math_checks':len(normal)+480,'raw_original_and_changed_stage_checks':16,'default_family_coverage':{l:sorted(v) for l,v in defaults.items()},'distinct_sampled_mathematical_tasks':{l:len(v) for l,v in tasks.items()},'native':json.loads((ROOT/'engine-validation.json').read_text()),'limits':['Opaque observed scalar banks are evidence-only; homogeneous scaling is a reproduction recipe, not recovered wrong-operation intent.','The div V source lacks prior context; stated gradient (4,2) is verified only as a datum for directional calculation.','Hard and two unrated difficulty assignments are authored.'],'runtime':{'python':sys.version.split()[0],'sympy':S.__version__},'engine_sha256':hashlib.sha256(Path('generate/runs/current/check-engine').read_bytes()).hexdigest()}
+    report={'passed':True,'source_questions':8,'source_fidelity':source_results,'complete_banks_matched':8,'source_values_matched':36,'source_correct_designations_matched':6,'missing_original_designations':2,'exact_source_solutions':6,'absent_original_solutions_preserved':2,'normal_semantic_math_checks':len(normal)+160*len(g.SUPPORTED_LEVELS),'raw_original_and_changed_stage_checks':16,'default_family_coverage':{l:sorted(v) for l,v in defaults.items()},'distinct_sampled_mathematical_tasks':{l:len(v) for l,v in tasks.items()},'native':json.loads((ROOT/'engine-validation.json').read_text()),'limits':['Opaque observed scalar banks are evidence-only; homogeneous scaling is a reproduction recipe, not recovered wrong-operation intent.','The div V source lacks prior context; stated gradient (4,2) is verified only as a datum for directional calculation.','Nested-square sampling is moderate after current source review. Hard is unsupported; no hard questions generated.'],'runtime':{'python':sys.version.split()[0],'sympy':S.__version__},'engine_sha256':hashlib.sha256(Path('generate/runs/current/check-engine').read_bytes()).hexdigest()}
     (ROOT/'validation.json').write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n');print(json.dumps({k:v for k,v in report.items() if k not in ('native','source_fidelity')},indent=2))

@@ -4,8 +4,8 @@ Raw source profiles are homogeneous-function parameterized evidence replays;
 opaque scalar banks are never default learner banks. Normal generators retain
 source formal derivative, unit-vector, substitution and dot-product stages.
 Easy: supplied gradient or elementary 2D partials; moderate: two-term
-exponential/polynomial gradient and A-to-B; hard (authored): nested square
-chain-rule gradient and A-to-B, grounded in the unrated observed question.
+exponential/polynomial gradient and A-to-B; moderate also includes the nested-square chain-rule family. Current moderate
+source evidence supersedes the earlier authored hard claim; hard is unsupported.
 """
 import argparse, copy, hashlib, json, random, re, sys, uuid
 from pathlib import Path
@@ -14,12 +14,14 @@ KP=17592186124458
 ROOT=Path(__file__).with_suffix('')
 CAPTURE=json.loads((ROOT/'source.json').read_text())
 REC=CAPTURE['record']; ORIGINALS={str(q[':db/id']):q for q in REC[':knowledge-point/questions']}
-VERSION='directional-derivative-1'
+VERSION='directional-derivative-2'
+SUPPORTED_LEVELS=('easy','moderate')
 x,y=S.symbols('x y',real=True)
-FAMILIES={'linear_y2':'easy','chain_square':'hard','supplied_gradient':'easy','xy':'easy','log':'easy','quadratic':'easy','exp':'moderate','x2_linear':'easy'}
+FAMILIES={'linear_y2':'easy','chain_square':'moderate','supplied_gradient':'easy','xy':'easy','log':'easy','quadratic':'easy','exp':'moderate','x2_linear':'easy'}
 SOURCE_IDS=dict(zip(FAMILIES,ORIGINALS))
 
 def tex(a):return S.latex(S.simplify(a)).replace(r'\log',r'\ln')
+def expr_tex(a):return S.latex(a).replace(r'\log',r'\ln')
 def grp(a):return '('+tex(a)+')'
 def vec(a,b):return '⟨'+tex(a)+','+tex(b)+'⟩'
 def ib(a,b):
@@ -174,7 +176,7 @@ def normal_solution(f,p,data):
     else:
         wording='calculate' if f in ('exp','chain_square') else 'compute'
         intro+='\n\nNow, we '+wording+' the gradient $∇f(x,y)$ and evaluate it at the point $'+('A' if f in ('exp','chain_square') else '')+point+':$\n\n'
-        rows=[r'∇f(x,y) & =⟨\frac{∂}{∂x}('+tex(F)+r'),\frac{∂}{∂y}('+tex(F)+')⟩']
+        rows=[r'∇f(x,y) & =⟨\frac{∂}{∂x}('+expr_tex(F)+r'),\frac{∂}{∂y}('+expr_tex(F)+')⟩']
         if f=='chain_square':
             inn='x+'+str(p['b'])+'y^{2}';common=str(2*p['a'])+'('+inn+')'
             rows.append(r' & =⟨'+common+r'\cdot 1,'+common+r'\cdot '+str(2*p['b'])+'y⟩')
@@ -219,7 +221,7 @@ def finish(q,f,level,seed,p,profile,eligible,extra):
     return {'knowledge_point':{'db_id':KP,'id':REC[':knowledge-point/id'],'title':REC[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'source':{k:CAPTURE[k] for k in ('database','basis','lineage')},'seed':seed,'template':f,'profile':profile,'parameters':p,'content_fingerprint':identity,'mathematical_fingerprint':task,'eligible_for_learning':eligible,'evidence_only':not eligible,'runtime':{'python':sys.version.split()[0],'sympy':S.__version__},**extra}}
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
-    if level not in ('easy','moderate','hard'):raise ValueError('difficulty')
+    if level not in SUPPORTED_LEVELS:raise ValueError('unsupported difficulty: '+level)
     r=random.Random(seed)
     if profile and profile.startswith('raw_'):
         f=profile[4:]
@@ -244,7 +246,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         F,G,E,dx,dy,N,T,C=data;point='('+str(p['x0'])+','+str(p['y0'])+')'
         if f=='supplied_gradient':problem='The gradient of $f(x,y)$ at the point $'+point+'$ is $∇f'+point+'='+vec(*E)+'$. Find the directional derivative in the direction of $v='+ib(dx,dy)+'.$'
         else:
-            problem='Find the directional derivative of the function $f(x,y)='+tex(F)+'$ at the point $'+('A' if f in ('exp','chain_square') else '')+point+'$ '
+            problem='Find the directional derivative of the function $f(x,y)='+expr_tex(F)+'$ at the point $'+('A' if f in ('exp','chain_square') else '')+point+'$ '
             if f in ('exp','chain_square'):problem+='in the direction towards the point $B('+tex(p['x0']+dx)+','+tex(p['y0']+dy)+').$'
             else:problem+='in the direction of the vector $v='+ib(dx,dy)+'.$'
         key='field-1' if kind=='blank' else 'selection'
@@ -260,7 +262,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
 # Moderate preserves exponential+polynomial partials at y=0 and A-to-B direction.
 def generate_moderate(seed=0,**kwargs):return generate('moderate',seed,**kwargs)
-# Hard is authored classification of observed unrated nested square, no optimization.
+# Current evidence has comparable nested squares at moderate; no validated hard template.
 def generate_hard(seed=0,**kwargs):return generate('hard',seed,**kwargs)
 
 def markdown(rec):
@@ -270,5 +272,5 @@ def markdown(rec):
     return out+q.get(':question/worked-solution','[Source omits worked solution.]')
 if __name__=='__main__':
     ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['json','markdown'],default='markdown');ap.add_argument('--template');ap.add_argument('--profile');args=ap.parse_args()
-    out=[generate(l,args.seed+i,template=args.template,profile=args.profile) for l in (['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]) for i in range(args.count)]
+    out=[generate(l,args.seed+i,template=args.template,profile=args.profile) for l in (list(SUPPORTED_LEVELS) if args.difficulty=='all' else [args.difficulty]) for i in range(args.count)]
     print(json.dumps(out,indent=2,ensure_ascii=False) if args.format=='json' else '\n\n---\n\n'.join(map(markdown,out)))

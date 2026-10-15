@@ -1,0 +1,19 @@
+# Rank from column counts
+
+Captured all nine source questions and the canonical example at basis 2639 in source.json. classification.json retains every prompt, solution, parameter and source choice, with field-owned answer IDs and a complete recipe map. source-bank-replay.json verifies all eight supported banks (40/40 options, 32/32 distractors); the incomplete unrated bank is also mapped separately.
+
+Easy: one radio field named selection, five scalar integer choices. Given an m by n matrix and c pivot columns, request its rank r=c. Fixed reasoning: rank counts pivot columns; substitute the given count. Observed c values are 3,4,6,7; observed matrices are 4x5,8x9,7x12,8x8. q-34825 has 5x7 and five pivots but no rating, key or solution. Preserve it as incomplete evidence; do not rewrite it or count it as inventory.
+
+Moderate: one radio field named selection, five scalar integer choices. Given m by n and c non-pivot columns, request rank r=n-c. Fixed stages: define rank as pivot count, count n-c pivots with one displayed subtraction, conclude rank. Observed (m,n,c) are (6,11,8), (6,8,3), (9,8,2), (8,6,4). Row count is irrelevant to the arithmetic but constrains feasibility. A candidate requires 1<=r<=min(m,n).
+
+Slots are matrix letter, rows m, total columns n, supplied count c. All references in prompt and solution derive from one parameter record. Normal sampling varies letters A,B,C,P,Q,T, dimensions 3..15 and positive supplied counts 1..12. Rank is positive and at most 12. These are conservative same-method bounds beyond observed examples, not claims of source coverage or an infinite supply. Easy task identity is its pivot count; moderate identity is (total columns, non-pivot count). Names, row counts, source profile, seed and option order do not create new tasks. This finite package has 12 easy tasks and 91 moderate tasks, before subtracting source/canonical/historical use.
+
+Each profile selects its complete five-expression bank before evaluating it; reject collisions or any missing unique correct value. classification.json maps each original option to an exact expression, with m=rows, n=columns, c=supplied count, r=rank. The constant 1 in two easy profiles is retained literally. The other offsets are observed numeric patterns; their psychological interpretation is unresolved. Do not describe these inferred recipes as diagnosed misconceptions or add feedback. The unrated profile is replay evidence only and is excluded from normal generation.
+
+Source wording and solution stages are parameterized; exact source replay keeps the original text byte for byte. General variants normalize the dimension spacing only. No new operations, fields, requests or solution stages are introduced. Matrix dimensions and names are supplied roles rather than assessed choices, so varying those alone never replenishes inventory.
+
+Plot extraction: no source prompt, bank, solution or canonical example contains a graph, diagram or image reference. The matrix dimensions are inline LaTeX, not plots. Plot rating is none, no asset publishing or plot rendering is required.
+
+Hard is unsupported: no rated hard source or hard backbone exists. Relabeling count-reading or subtraction as hard would be unsupported. This exception remains visible. New evidence reopens classification. The incomplete unrated source also keeps an explicit unresolved classification exception.
+
+Validation reads the rendered counts, determines rank independently, checks feasibility, every option and correct designation, every concrete solution reference, exact source text and full banks, formatting, profile coverage, bounds, deterministic replay, changed-count negative controls and the real application radio grader. review.md places exact replays beside ordinary variants and held-dimension count changes.

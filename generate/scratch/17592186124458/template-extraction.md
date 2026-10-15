@@ -1,3 +1,19 @@
+# Current source addendum — basis 2640
+
+The exact current Pull and `current-source-validation.json` preserve complete field-owned banks and source designation presence. The following additions remain evidence-only templates: no opaque distractor is presented as a recovered error operation and no changed-parameter source fidelity is claimed for them.
+
+| Source | Function, point, direction | Source choice values (correct in bold) | Solution sequence |
+|---|---|---|---|
+| 17592186446241 | (x²+y)²; (−1,1); (4,3) | −1/5; −8/5; 8/5; **−4**; 8 | AB subtraction; unit vector (4/5,3/5); formal partials; (−8,4); component dot; −4 |
+| 17592186446242 | √(x²+y²); (4,3); (−3,−2) | **−18/(5√13)**; 7/5; 7√13; −5/13; 0 | AB subtraction; unit vector; radial partials; (4/5,3/5); products over 5√13; final value |
+| 17592186518124 | (2x²−3y²)²; (−1,−1); (3,1) | 6√5/5; 5√10/3; −5√10/6; −3√5/5; **6√10/5** | AB subtraction; unit vector; chain partials; (8,−12); signed dot products; rationalized final value |
+
+Every option maps one-to-one to its exact field-owned answer UUID in the retained Pull. Recipes for these three evidence banks are literal observed values at their printed parameters; mathematical distractor intent and generalized recipes remain unresolved. These complete profiles are separate from the implemented, explicitly authored `method` and `zero_method` banks. No new plots are required.
+
+Normal package version 2 prints the unsimplified additive function form, so SymPy cannot silently replace the two-term exponential/polynomial prompt with a factored product-rule prompt. It retains the original function/point/direction slots and arithmetic guards. The nested-square family is now moderate, based on the refreshed moderate squared-composition examples. Hard has no validated sampler. Replenishment prefers the observed exponential/polynomial family for the moderate shortage. All existing eight frozen raw source profiles still replay complete source banks with original attribute presence, separately from learner eligibility.
+
+## Historical extraction
+
 # Template extraction
 
 ## 1. Specific source descriptions

@@ -638,7 +638,7 @@ $$
 
 ---
 
-## Generated hard chain_square 0
+## Generated moderate chain_square 0
 
 Find the directional derivative of the function $f(x,y)=\left(x + 3 y^{2}\right)^{2}$ at the point $A(1,-1)$ in the direction towards the point $B(0,0).$
 
@@ -676,7 +676,7 @@ $$
 
 ---
 
-## Generated hard chain_square 1
+## Generated moderate chain_square 1
 
 Find the directional derivative of the function $f(x,y)=\left(x + y^{2}\right)^{2}$ at the point $A(2,-2)$ in the direction towards the point $B(5,-6).$
 
@@ -1024,7 +1024,7 @@ $$
 
 ## Generated moderate exp 0
 
-Find the directional derivative of the function $f(x,y)=4 x \left(x y + e^{y}\right)$ at the point $A(1,0)$ in the direction towards the point $B(4,1).$
+Find the directional derivative of the function $f(x,y)=4 x^{2} y + 4 x e^{y}$ at the point $A(1,0)$ in the direction towards the point $B(4,1).$
 
 - $\frac{2 \sqrt{10}}{5}$
 - $\frac{6 \sqrt{10}}{5}$
@@ -1049,7 +1049,7 @@ $$
 Now, we calculate the gradient $∇f(x,y)$ and evaluate it at the point $A(1,0):$
 
 $$
-\begin{aligned}∇f(x,y) & =⟨\frac{∂}{∂x}(4 x \left(x y + e^{y}\right)),\frac{∂}{∂y}(4 x \left(x y + e^{y}\right))⟩ \\  & =⟨8 x y + 4 e^{y},4 x \left(x + e^{y}\right)⟩ \\ ∇f(1,0) & =⟨8 (1) (0) + 4 e^{(0)},4 (1)^{2} + 4 (1) e^{(0)}⟩ \\  & =⟨4,8⟩\end{aligned}
+\begin{aligned}∇f(x,y) & =⟨\frac{∂}{∂x}(4 x^{2} y + 4 x e^{y}),\frac{∂}{∂y}(4 x^{2} y + 4 x e^{y})⟩ \\  & =⟨8 x y + 4 e^{y},4 x \left(x + e^{y}\right)⟩ \\ ∇f(1,0) & =⟨8 (1) (0) + 4 e^{(0)},4 (1)^{2} + 4 (1) e^{(0)}⟩ \\  & =⟨4,8⟩\end{aligned}
 $$
 
 Therefore, the directional derivative is:
@@ -1062,7 +1062,7 @@ $$
 
 ## Generated moderate exp 1
 
-Find the directional derivative of the function $f(x,y)=x \left(x y + 2 e^{y}\right)$ at the point $A(3,0)$ in the direction towards the point $B(7,4).$
+Find the directional derivative of the function $f(x,y)=x^{2} y + 2 x e^{y}$ at the point $A(3,0)$ in the direction towards the point $B(7,4).$
 
 - $- \frac{13 \sqrt{2}}{2}$
 - $68$
@@ -1087,7 +1087,7 @@ $$
 Now, we calculate the gradient $∇f(x,y)$ and evaluate it at the point $A(3,0):$
 
 $$
-\begin{aligned}∇f(x,y) & =⟨\frac{∂}{∂x}(x \left(x y + 2 e^{y}\right)),\frac{∂}{∂y}(x \left(x y + 2 e^{y}\right))⟩ \\  & =⟨2 x y + 2 e^{y},x \left(x + 2 e^{y}\right)⟩ \\ ∇f(3,0) & =⟨2 (3) (0) + 2 e^{(0)},(3)^{2} + 2 (3) e^{(0)}⟩ \\  & =⟨2,15⟩\end{aligned}
+\begin{aligned}∇f(x,y) & =⟨\frac{∂}{∂x}(x^{2} y + 2 x e^{y}),\frac{∂}{∂y}(x^{2} y + 2 x e^{y})⟩ \\  & =⟨2 x y + 2 e^{y},x \left(x + 2 e^{y}\right)⟩ \\ ∇f(3,0) & =⟨2 (3) (0) + 2 e^{(0)},(3)^{2} + 2 (3) e^{(0)}⟩ \\  & =⟨2,15⟩\end{aligned}
 $$
 
 Therefore, the directional derivative is:
