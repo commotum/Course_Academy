@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-114900",
+      "sequence_position": 13,
+      "problem": "Evaluate ${\\int }_{1}^{e}4x({log}_{3}⁡x)^{2}\\,\\text{d}x.$",
+      "worked_solution": "We need to use integration by parts. We'll work out the indefinite integral first, and then proceed to work out the definite integral.\n\nIn this case, we define\n\n$$\n\\begin{aligned}u=({log}_{3}⁡x)^{2}\\, & ⟹\\,\\frac{\\text{d}u}{\\text{d}x}=\\frac{2{log}_{3}⁡x}{x\\operatorname{ln}⁡3} \\\\ \\frac{\\text{d}v}{\\text{d}x}=4x\\, & ⟹\\,v=\\int \\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x=\\int 4x\\,\\text{d}x=2{x}^{2}.\\end{aligned}\n$$\n\nThis gives\n\n$$\n\\begin{aligned}\\int 4x({log}_{3}⁡x)^{2}\\,\\text{d}x & =\\int u\\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x \\\\  & =uv-\\int v\\frac{\\text{d}u}{\\text{d}x}\\,\\text{d}x \\\\  & ={({log}_{3}⁡x)}^{2}(2{x}^{2})-\\int (2{x}^{2})(\\frac{2{log}_{3}⁡x}{x\\operatorname{ln}⁡3})\\,\\text{d}x \\\\  & =2{x}^{2}({log}_{3}⁡x)^{2}-\\frac{4}{\\operatorname{ln}⁡3}\\int x{log}_{3}⁡(x)\\,\\text{d}x.\\end{aligned}\n$$\n\nWe use integration by parts once again to evaluate $\\int x{log}_{3}⁡(x)\\text{d}x.$ We take\n\n$$\n\\begin{aligned}u={log}_{3}⁡(x)\\, & ⟹\\,\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x\\operatorname{ln}⁡3} \\\\ \\frac{\\text{d}v}{\\text{d}x}=x\\, & ⟹\\,v=\\int \\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x=\\int x\\,\\text{d}x=\\frac{{x}^{2}}{2}.\\end{aligned}\n$$\n\nIn this case, the formula for integration by parts gives\n\n$$\n\\begin{aligned}\\int x{log}_{3}⁡x\\,\\text{d}x & =\\int u\\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x \\\\  & =uv-\\int v\\frac{\\text{d}u}{\\text{d}x}\\,\\text{d}x \\\\  & =({log}_{3}⁡x)(\\frac{{x}^{2}}{2})-\\int (\\frac{{x}^{2}}{2})(\\frac{1}{x\\operatorname{ln}⁡3})\\,\\text{d}x \\\\  & =\\frac{{x}^{2}{log}_{3}⁡x}{2}-\\frac{1}{2\\operatorname{ln}⁡3}\\int x\\,\\text{d}x \\\\  & =\\frac{{x}^{2}{log}_{3}⁡x}{2}-\\frac{{x}^{2}}{4\\operatorname{ln}⁡3}+D,\\end{aligned}\n$$\n\nwhere $D$ is a constant. \n\nSo, we get that the indefinite integral is \n\n$$\n\\begin{aligned}\\int 4x({log}_{3}⁡x)^{2}\\,\\text{d}x & =2{x}^{2}({log}_{3}⁡x)^{2}-\\frac{4}{\\operatorname{ln}⁡3}(\\frac{{x}^{2}{log}_{3}⁡x}{2}-\\frac{{x}^{2}}{4\\operatorname{ln}⁡3}+D) \\\\  & =2{x}^{2}({log}_{3}⁡x)^{2}-\\frac{2{x}^{2}{log}_{3}⁡x}{\\operatorname{ln}⁡3}+\\frac{{x}^{2}}{{ln}^{2}⁡3}+C \\\\  & =\\frac{2{x}^{2}{ln}^{2}⁡x}{{ln}^{2}⁡3}-\\frac{2{x}^{2}\\operatorname{ln}⁡x}{{ln}^{2}⁡3}+\\frac{{x}^{2}}{{ln}^{2}⁡3}+C \\\\  & =\\frac{{x}^{2}}{{ln}^{2}⁡3}(2{ln}^{2}⁡x-2\\operatorname{ln}⁡x+1)+C,\\end{aligned}\n$$\n\nwhere $C=-\\frac{4D}{\\operatorname{ln}⁡3}.$ \n\nNote that in the above calculation we used the change of base formula ${log}_{3}⁡x=\\frac{\\operatorname{ln}⁡x}{\\operatorname{ln}⁡3}.$\n\nFinally then, we can work out the definite integral:\n\n$$\n\\begin{aligned}{\\int }_{1}^{e}4x({log}_{3}⁡x)^{2}\\,\\text{d}x & ={[\\frac{{x}^{2}}{{ln}^{2}⁡3}(2{ln}^{2}⁡x-2\\operatorname{ln}⁡x+1)]}_{1}^{e} \\\\  & =\\frac{{e}^{2}}{{ln}^{2}⁡3}(2{ln}^{2}⁡e-2\\operatorname{ln}⁡e+1)-\\frac{{1}^{2}}{{ln}^{2}⁡3}(2{ln}^{2}⁡1-2\\operatorname{ln}⁡1+1) \\\\  & =\\frac{{e}^{2}}{{ln}^{2}⁡3}(2-2+1)-\\frac{1}{{ln}^{2}⁡3}(0-0+1) \\\\  & =\\frac{{e}^{2}-1}{{ln}^{2}⁡3}.\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226668/observations/history-q-114900-07354b0b8b04daa2fd1a.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14226668",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226668/observations/history-solution-q-114900-9b3bec58d3d93f8147ba.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "\\frac{{e}^{2}-1}{{ln}^{2}⁡3}"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "\\frac{1-2e}{{ln}^{2}⁡3}"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "\\frac{{e}^{2}+2}{{ln}^{2}⁡3}"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "2{e}^{2}-1"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "8e"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q114900",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "\\frac{{e}^{2}-1}{{ln}^{2}⁡3}",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "We need to use integration by parts. We'll work out the indefinite integral first, and then proceed to work out the definite integral.\n\nIn this case, we define\n\n$$\n\\begin{aligned}u=({log}_{3}⁡x)^{2}\\, & ⟹\\,\\frac{\\text{d}u}{\\text{d}x}=\\frac{2{log}_{3}⁡x}{x\\operatorname{ln}⁡3} \\\\ \\frac{\\text{d}v}{\\text{d}x}=4x\\, & ⟹\\,v=\\int \\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x=\\int 4x\\,\\text{d}x=2{x}^{2}.\\end{aligned}\n$$\n\nThis gives\n\n$$\n\\begin{aligned}\\int 4x({log}_{3}⁡x)^{2}\\,\\text{d}x & =\\int u\\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x \\\\  & =uv-\\int v\\frac{\\text{d}u}{\\text{d}x}\\,\\text{d}x \\\\  & ={({log}_{3}⁡x)}^{2}(2{x}^{2})-\\int (2{x}^{2})(\\frac{2{log}_{3}⁡x}{x\\operatorname{ln}⁡3})\\,\\text{d}x \\\\  & =2{x}^{2}({log}_{3}⁡x)^{2}-\\frac{4}{\\operatorname{ln}⁡3}\\int x{log}_{3}⁡(x)\\,\\text{d}x.\\end{aligned}\n$$\n\nWe use integration by parts once again to evaluate $\\int x{log}_{3}⁡(x)\\text{d}x.$ We take\n\n$$\n\\begin{aligned}u={log}_{3}⁡(x)\\, & ⟹\\,\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x\\operatorname{ln}⁡3} \\\\ \\frac{\\text{d}v}{\\text{d}x}=x\\, & ⟹\\,v=\\int \\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x=\\int x\\,\\text{d}x=\\frac{{x}^{2}}{2}.\\end{aligned}\n$$\n\nIn this case, the formula for integration by parts gives\n\n$$\n\\begin{aligned}\\int x{log}_{3}⁡x\\,\\text{d}x & =\\int u\\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x \\\\  & =uv-\\int v\\frac{\\text{d}u}{\\text{d}x}\\,\\text{d}x \\\\  & =({log}_{3}⁡x)(\\frac{{x}^{2}}{2})-\\int (\\frac{{x}^{2}}{2})(\\frac{1}{x\\operatorname{ln}⁡3})\\,\\text{d}x \\\\  & =\\frac{{x}^{2}{log}_{3}⁡x}{2}-\\frac{1}{2\\operatorname{ln}⁡3}\\int x\\,\\text{d}x \\\\  & =\\frac{{x}^{2}{log}_{3}⁡x}{2}-\\frac{{x}^{2}}{4\\operatorname{ln}⁡3}+D,\\end{aligned}\n$$\n\nwhere $D$ is a constant. \n\nSo, we get that the indefinite integral is \n\n$$\n\\begin{aligned}\\int 4x({log}_{3}⁡x)^{2}\\,\\text{d}x & =2{x}^{2}({log}_{3}⁡x)^{2}-\\frac{4}{\\operatorname{ln}⁡3}(\\frac{{x}^{2}{log}_{3}⁡x}{2}-\\frac{{x}^{2}}{4\\operatorname{ln}⁡3}+D) \\\\  & =2{x}^{2}({log}_{3}⁡x)^{2}-\\frac{2{x}^{2}{log}_{3}⁡x}{\\operatorname{ln}⁡3}+\\frac{{x}^{2}}{{ln}^{2}⁡3}+C \\\\  & =\\frac{2{x}^{2}{ln}^{2}⁡x}{{ln}^{2}⁡3}-\\frac{2{x}^{2}\\operatorname{ln}⁡x}{{ln}^{2}⁡3}+\\frac{{x}^{2}}{{ln}^{2}⁡3}+C \\\\  & =\\frac{{x}^{2}}{{ln}^{2}⁡3}(2{ln}^{2}⁡x-2\\operatorname{ln}⁡x+1)+C,\\end{aligned}\n$$\n\nwhere $C=-\\frac{4D}{\\operatorname{ln}⁡3}.$ \n\nNote that in the above calculation we used the change of base formula ${log}_{3}⁡x=\\frac{\\operatorname{ln}⁡x}{\\operatorname{ln}⁡3}.$\n\nFinally then, we can work out the definite integral:\n\n$$\n\\begin{aligned}{\\int }_{1}^{e}4x({log}_{3}⁡x)^{2}\\,\\text{d}x & ={[\\frac{{x}^{2}}{{ln}^{2}⁡3}(2{ln}^{2}⁡x-2\\operatorname{ln}⁡x+1)]}_{1}^{e} \\\\  & =\\frac{{e}^{2}}{{ln}^{2}⁡3}(2{ln}^{2}⁡e-2\\operatorname{ln}⁡e+1)-\\frac{{1}^{2}}{{ln}^{2}⁡3}(2{ln}^{2}⁡1-2\\operatorname{ln}⁡1+1) \\\\  & =\\frac{{e}^{2}}{{ln}^{2}⁡3}(2-2+1)-\\frac{1}{{ln}^{2}⁡3}(0-0+1) \\\\  & =\\frac{{e}^{2}-1}{{ln}^{2}⁡3}.\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14226668/observations/step-q114900-cbb1b53e15a625cebc37.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a13efa-dc64-7db0-b798-9fa7d43d0599",
+  "previous_failures": []
+}
