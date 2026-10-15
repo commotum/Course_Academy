@@ -1,6 +1,6 @@
 # Template extraction: four stages
 
-Source provenance is the unchanged math basis-1356 wrapper in `source.json`; canonical and lesson-context provenance are the same captured basis. Practice sources have no worked solutions. The canonical solution supplies shared prose for separately authored normal output, not recovered practice solutions.
+Source provenance is the unchanged math basis-2275 wrapper in `source.json`; canonical and lesson-context provenance are the same captured basis. The two MA original practice sources have no worked solutions; the 15 non-MA generated inventory records are audited separately below. The canonical solution supplies shared prose for separately authored normal output, not recovered practice solutions.
 
 ## 1. Specific descriptions before generalization
 
@@ -46,3 +46,13 @@ Normal **normalization** bank: `[m·v, 1/m (scalar), v/m², v, v/m]`; each wrong
 Normal solution uses the canonical shared sentence and equality sequence. Easy: `u=v/|v|=(1/m)v`. Moderate/hard: `u=v/|v|=(1/m)v=(simplified reciprocal)v`. The first substituted reciprocal remains structurally unsimplified, including the stated rational or radical magnitude. Every actual printed row is independently checked. No chosen-answer-dependent feedback or diagnosis is invented.
 
 All bounds in classification apply to explicit inputs and sampling. Names (`a,b,c,v,w`) and endpoints (`AB,CD,PQ,RS`) are complete notation variants. Seed changes cannot alter identity at fixed components; the mathematical fingerprint excludes these aliases and complete answer banks. Presentation identity includes actual prompt, solution, full answer bank, type and authored rating. All normal outputs use balanced math delimiters/braces and valid LaTeX directed-vector notation. Sources with missing keys remain excluded from normal learning eligibility, while normal authored questions receive independently verified keys and solutions.
+
+## Basis-2275 inventory and original-instance preservation
+
+The two MA original records and canonical problem/solution remain unchanged at the fresh basis. The source wrapper additionally includes 15 generated inventory records independently recorded by the prior basis-2077 replenishment run. These are replays of the already authored normalization bank and prior authored E/M/H number forms, not a third MA source bank. `independent-inventory.json` retains every complete raw record, its role and relationship. Their exact questions, entire choice banks, field contracts, correct lookups, complete worked prose and all operative stages are compared against the recorded prior generated batch, and against fresh draft generation at those original parameters.
+
+Both banks and both templates are exhaustively checked over the full declared finite domains. Exact question-record and content-fingerprint equality against the owned reconstructed prior-approved generator verifies preservation of all 644 valid original normal instances. Shared formatting does not change their printed content. A mathematical fingerprint contains only supplied magnitude and normalization operation; independently computed uniqueness reads magnitude from the actual rendered prompt.
+
+Native grading uses the frozen real `check-engine` binary copied into `reference/`; all canonical IDs, leading-zero decimal equivalents of those same IDs, and all four owned wrong-choice IDs are submitted. This is the radio contract: it does not accept free vector-expression entries. Rejections count only when the native result is `Ok(false)` (`reason=null`), never parser errors. Separate source-bank memory fixtures explicitly add independently inferred keys, while original records/replay keep their missing keys and remain ineligible.
+
+Mutation controls deliberately retain the final correct expression while corrupting an earlier normalization equality or its norm argument. Further controls insert the opposite unit vector as a second eligible option, duplicate a full displayed vector, change the solution's declared target, and assign a wrong key. The independent parser must reject every mutation. These checks audit both orientations under “parallel”; they do not narrow the original source wording to “same direction.”

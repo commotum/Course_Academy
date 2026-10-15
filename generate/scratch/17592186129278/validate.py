@@ -255,7 +255,7 @@ def main():
         field=record['question'][':question/answer-fields'][0];correct=field[':answer-field/correct'][1]
         checks=[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==correct else 'rejected','purpose':'Complete owned radio bank'} for a in field[':answer-field/choices']]
         inputs.append({'label':str(i),'record':record,'checks':checks})
-    write('engine-input.json',inputs);engine=REPO/'generate/runs/current/check-engine';subprocess.run([str(engine),str(HERE/'engine-input.json'),str(HERE/'engine-report.json')],check=True)
+    write('engine-input.json',inputs);engine=HERE/'reference/check-engine';subprocess.run([str(engine),str(HERE/'engine-input.json'),str(HERE/'engine-report.json')],check=True)
     write('review.json',normal+raw_variants)
     chunks=['# Original and generated cylindrical evaluation review','Original raw records preserve source bytes and missing attributes. Generated records use authored complete method banks.']
     def local_review(record):

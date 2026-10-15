@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 33**, **qa_passed: 401**, **queued: 142**, **working: 4**.
+**needs_revalidation: 30**, **qa_passed: 405**, **queued: 141**, **working: 4**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -191,16 +191,16 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186100817](../../scratch/17592186100817.py) | Integrating Logarithmic Functions Using Substitution | Integrating Functions Containing Other Logarithms | 5 / 3 / 6 / 0 | qa_passed | [Report](qa/17592186100817.json) |
 | [17592186100818](../../scratch/17592186100818.py) | Integrating Logarithmic Functions Using Substitution | Evaluating Definite Integrals | 17 / 5 / 11 / 1 | qa_passed | [Report](qa/17592186100818.json) |
 | [17592186138428](../../scratch/17592186138428.py) | Introduction to Systems of Linear Equations | Finding the Solution to a System From Its Graph | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186138428.json) |
-| [17592186138429](../../scratch/17592186138429-draft.py) | Introduction to Systems of Linear Equations | Word Problems | 0 / 0 / 0 / 2 | working | [Report](qa/17592186138429.json) |
-| [17592186059731](../../scratch/17592186059731-draft.py) | Calculating the Dot Product Using Components | Solving for an Unknown Given Two Perpendicular Vectors | 3 / 3 / 0 / 2 | working | [Report](qa/17592186059731.json) |
-| [17592186059730](../../scratch/17592186059730-draft.py) | Calculating the Dot Product Using Components | Calculating the Dot Product Using the General Formula | 6 / 0 / 0 / 1 | working | [Report](qa/17592186059730.json) |
-| [17592186054676](../../scratch/17592186054676-draft.py) | Graphing Linear Equations | Identifying Points That Lie on a Line | 5 / 5 / 0 / 2 | working | — |
-| [17592186059716](../../scratch/17592186059716.py) | Calculating the Magnitude of Cartesian Vectors in 2D | Calculating a Unit Vector Parallel to a Given Vector | 0 / 2 / 6 / 2 | queued | — |
-| [17592186096813](../../scratch/17592186096813.py) | Unit Vectors | Finding a Unit Vector Parallel to a Given Vector | 0 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186096813.json) |
+| [17592186138429](../../scratch/17592186138429-draft.py) | Introduction to Systems of Linear Equations | Word Problems | 6 / 5 / 5 / 2 | qa_passed | [Report](qa/17592186138429.json) |
+| [17592186059731](../../scratch/17592186059731-draft.py) | Calculating the Dot Product Using Components | Solving for an Unknown Given Two Perpendicular Vectors | 5 / 5 / 5 / 2 | qa_passed | [Report](qa/17592186059731.json) |
+| [17592186059730](../../scratch/17592186059730-draft.py) | Calculating the Dot Product Using Components | Calculating the Dot Product Using the General Formula | 6 / 5 / 5 / 1 | qa_passed | [Report](qa/17592186059730.json) |
+| [17592186054676](../../scratch/17592186054676-draft.py) | Graphing Linear Equations | Identifying Points That Lie on a Line | 5 / 5 / 0 / 2 | qa_passed | [Report](qa/17592186054676.json) |
+| [17592186059716](../../scratch/17592186059716-draft.py) | Calculating the Magnitude of Cartesian Vectors in 2D | Calculating a Unit Vector Parallel to a Given Vector | 0 / 2 / 6 / 2 | working | — |
+| [17592186096813](../../scratch/17592186096813-draft.py) | Unit Vectors | Finding a Unit Vector Parallel to a Given Vector | 0 / 0 / 0 / 2 | working | [Report](qa/17592186096813.json) |
 | [17592186096815](../../scratch/17592186096815.py) | Unit Vectors | Finding a Unit Vector Parallel to a Vector Sum | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096815.json) |
 | [17592186096814](../../scratch/17592186096814.py) | Unit Vectors | Finding a Unit Vector Parallel to a Given Vector in a Diagram | 0 / 0 / 1 / 2 | qa_passed | [Report](qa/17592186096814.json) |
-| [17592186059827](../../scratch/17592186059827.py) | Interval Notation | Translating Between Half-Open Intervals and Inequalities | 0 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186059827.json) |
-| [17592186059829](../../scratch/17592186059829.py) | Interval Notation | Converting Between Intervals and Inequalities: Closed Intervals | 0 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186059829.json) |
+| [17592186059827](../../scratch/17592186059827-draft.py) | Interval Notation | Translating Between Half-Open Intervals and Inequalities | 0 / 0 / 0 / 2 | working | [Report](qa/17592186059827.json) |
+| [17592186059829](../../scratch/17592186059829.py) | Interval Notation | Converting Between Intervals and Inequalities: Closed Intervals | 0 / 0 / 0 / 2 | working | [Report](qa/17592186059829.json) |
 | [17592186059828](../../scratch/17592186059828.py) | Interval Notation | Translating Between Half-Open Intervals and Number Lines | 0 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186059828.json) |
 | [17592186064167](../../scratch/17592186064167.py) | The Antiderivative | Finding the Antiderivative of a Monomial | 4 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186064167.json) |
 | [17592186064168](../../scratch/17592186064168.py) | The Antiderivative | Finding the Antiderivative of a Radical Function | 4 / 0 / 2 / 2 | qa_passed | [Report](qa/17592186064168.json) |
@@ -440,7 +440,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186172084](../../scratch/17592186172084.py) | Visualizing Vector Fields | Identifying a Two-Dimensional Vector Field | 3 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186172084.json) |
 | [17592186172088](../../scratch/17592186172088.py) | Visualizing Vector Fields | Identifying a Three-Dimensional Vector Field | 0 / 7 / 3 / 0 | qa_passed | [Report](qa/17592186172088.json) |
 | [17592186172083](../../scratch/17592186172083.py) | Visualizing Vector Fields | Sketching a Two-Dimensional Vector Field | 9 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186172083.json) |
-| 17592186119805 | Linear Combinations of Vectors in N-Dimensional Euclidean Space | Solving for One Coefficient in a Linear Combination | 6 / 3 / 0 / 1 | queued | — |
+| [17592186119805](../../scratch/17592186119805.py) | Linear Combinations of Vectors in N-Dimensional Euclidean Space | Solving for One Coefficient in a Linear Combination | 6 / 3 / 0 / 1 | queued | — |
 | [17592186119807](../../scratch/17592186119807.py) | Linear Combinations of Vectors in N-Dimensional Euclidean Space | Solving for Two Coefficients in a Linear Combination | 0 / 10 / 0 / 0 | queued | — |
 | [17592186119854](../../scratch/17592186119854.py) | Linear Combinations of Vectors in N-Dimensional Euclidean Space | Solving for Three Coefficients in a Linear Combination | 0 / 6 / 6 / 1 | queued | — |
 | [17592186119806](../../scratch/17592186119806.py) | Linear Combinations of Vectors in N-Dimensional Euclidean Space | Solving for a Vector in a Linear Combination | 13 / 0 / 0 / 1 | queued | — |

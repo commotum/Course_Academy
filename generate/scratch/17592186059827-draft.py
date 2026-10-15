@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-"""Half-open endpoint translation; basis1356, no database operations.
+"""Finite half-open endpoint translation; frozen basis2275, no database operations.
 
-Two unrated practice families have complete radio banks but no key or solution.
-`observed_1253_raw` / `observed_25754_raw` preserve those absences through the
-public parameterized API. Unsuffixed observed profiles supply independently
-verified keys and canonical-anchored authored solutions. All levels are authored
-workload claims: integer / signed rational / signed surd endpoints, with exactly
-one included endpoint. No solving, graphing, unions or unbounded intervals.
+Four MA originals comprise two unrated raw captures and two newly rated profiles.
+Thirteen retained generated records validate lineage, not independent MA evidence.
+Raw profiles preserve missing assessment fields; completed profiles derive a key
+and canonical-anchored solution. Normal workload is signed integer / exact
+rational / signed surd reading, always the same two endpoint decisions. No
+solving, graphs, unions, or unbounded tasks are added. One observed incorrect
+unbounded choice remains exclusive to its exact complete source bank.
 """
 from __future__ import annotations
 import argparse, hashlib, json, random, uuid, importlib.util, copy, functools
@@ -107,24 +108,27 @@ def solution(a,b,v,c,t):
     given=inequality(a,b,v,c) if t=='inequality_to_interval' else interval(a,b,v,c)
     return OPENING+'\n\nFor the given '+('inequality' if t=='inequality_to_interval' else 'interval')+'\n\n$$\n'+given+'\n$$\n\nwe note the following:\n\n'+f'- The left endpoint ${tex(a)}$ {left} included in the interval. Therefore, we use '+(('$[$.' if c else '$( $.') if t=='inequality_to_interval' else ('$\\le$.' if c else '$<$.'))+'\n'+f'- The right endpoint ${tex(b)}$ {right} included in the interval. Therefore, we use '+(('$) $.' if c else '$]$.') if t=='inequality_to_interval' else ('$<$.' if c else '$\\le$.'))+'\n\nTherefore, the '+('interval' if t=='inequality_to_interval' else 'inequality')+' that corresponds to the given '+('inequality' if t=='inequality_to_interval' else 'interval')+' is\n\n$$\n'+result+'\n$$'
 
-def current_render(a,b,v,profile):
+def current_render(a,b,v,profile,c):
     """Exact newly captured source masks, parameterized by complete endpoint slots."""
     aa,bb=tex(a),tex(b)
+    lop,rop=(r'\le','<') if c else ('<',r'\le')
+    lb,rb=('[',')') if c else ('(',']')
     if profile=='observed_28834':
-        prompt=f'The inequality ${aa}\\le {v}<{bb}$ can be expressed in interval notation as'
+        prompt=f'The inequality ${aa}{lop} {v}{rop}{bb}$ can be expressed in interval notation as'
         opening="Every inequality can be expressed as an interval. We use the following notations:\n\n- Parentheses $()$ if the endpoints are *not* included.\n\n- Brackets $[]$ if the endpoints *are* included."
-        given=f'{aa}\\,\\,\\le \\,\\,{v}\\,\\,<\\,\\,{bb}'
-        left=r'[\,.';right=r')\,.'
-        end=f'Therefore, the corresponding interval is\n\n$$\n{v}\\in [{aa},{bb}).\n$$'
+        given=f'{aa}\\,\\,{lop} \\,\\,{v}\\,\\,{rop}\\,\\,{bb}'
+        left=lb+r'\,.';right=rb+r'\,.'
+        end=f'Therefore, the corresponding interval is\n\n$$\n{v}\\in {lb}{aa},{bb}{rb}.\n$$'
         noun='inequality'
     else:
-        prompt=f'The interval ${v}\\in [{aa},{bb})$ corresponds to the inequality'
+        prompt=f'The interval ${v}\\in {lb}{aa},{bb}{rb}$ corresponds to the inequality'
         opening="Every interval can be expressed as an inequality. We use the following notations:\n\n- Parentheses $()$ to indicate that the endpoints are *not* included.\n\n- Brackets $[]$ to indicate that the endpoints *are* included."
-        given=f'[{aa},{bb}\\,)'
-        left=r'\le \,.';right=r'<\,.'
-        end=f'Therefore, the inequality that corresponds to the given interval is \n\n$$\n{aa}\\,\\,\\le \\,\\,{v}\\,\\,<\\,\\,{bb}.\n$$'
+        given=f'{lb}{aa},{bb}\\,{rb}'
+        left=lop+r' \,.';right=rop+r'\,.'
+        end=f'Therefore, the inequality that corresponds to the given interval is \n\n$$\n{aa}\\,\\,{lop} \\,\\,{v}\\,\\,{rop}\\,\\,{bb}.\n$$'
         noun='interval'
-    sol=opening+f'\n\nFor the given {noun} \n\n$$\n{given}\n$$\n\nwe note the following:\n\n'+f'- The left endpoint ${aa}$ *is* included in the interval. Therefore, we use ${left}$\n\n'+f'- The right endpoint ${bb}$ is *not* included in the interval. Therefore, we use ${right}$\n\n'+end
+    leftword='*is*' if c else 'is *not*';rightword='is *not*' if c else '*is*'
+    sol=opening+f'\n\nFor the given {noun} \n\n$$\n{given}\n$$\n\nwe note the following:\n\n'+f'- The left endpoint ${aa}$ {leftword} included in the interval. Therefore, we use ${left}$\n\n'+f'- The right endpoint ${bb}$ {rightword} included in the interval. Therefore, we use ${right}$\n\n'+end
     return prompt,sol
 
 @checked_public_math_content
@@ -143,12 +147,10 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     if parameters is None:p['variable']=rng.choice(('x','y','t','u'))
     a,b=guard(level,p,raw or profile=='observed_73902');v=p['variable'];c=p['left_closed']
     if profile in ('observed_28834','observed_73902'):
-        if not c:raise ValueError('New observed banks require left-closed input')
         if profile=='observed_28834' and level!='easy':raise ValueError('Observed28834 is easy')
         if profile=='observed_73902' and (level!='moderate' or not(a.is_Integer and b.is_Integer and -15<=a<0<b<=15)):
             raise ValueError('Observed73902: moderate signed integer straddling zero')
-    if '25754' in profile and (not c or a==0):raise ValueError('Observed sign-omission bank requires left-closed and nonzero left endpoint')
-    if '1253' in profile and c:raise ValueError('Observed1253 requires right-closed interval')
+    if '25754' in profile and a==0:raise ValueError('Observed sign-omission bank requires nonzero left endpoint')
     values=bank(a,b,v,c,template,profile)
     if profile=='observed_28834':
         values=[f'{v}\\in ({tex(a)},{tex(b)})',f'{v}\\in [{tex(a)},\\infty )',f'{v}\\in [{tex(a)},{tex(b)}]',f'{v}\\in ({tex(a)},{tex(b)}]',f'{v}\\in [{tex(a)},{tex(b)})']
@@ -156,7 +158,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         values=[f'{tex(-b)}<{v}\\le {tex(-a)}',f'{tex(a)}<{v}\\le {tex(b)}',f'{tex(a)}\\le {v}\\le {tex(b)}',f'{tex(a)}<{v}<{tex(b)}',f'{tex(a)}\\le {v}<{tex(b)}']
     if len(set(values))!=5 or len(set(mathematical_bank(a,b,c,template,profile)))!=5:raise ValueError('Whole bank rejected: duplicate or mathematically equivalent choice')
     correct=interval(a,b,v,c) if template=='inequality_to_interval' else inequality(a,b,v,c)
-    if profile in ('observed_28834','observed_73902'):correct=values[-1]
+    if profile in ('observed_28834','observed_73902'):correct=values[-1] if c else values[3 if profile=='observed_28834' else 1]
     if values.count(correct)!=1:raise ValueError('Whole bank rejected: missing/nonunique correct')
     if template=='inequality_to_interval':prompt='The inequality $'+inequality(a,b,v,c)+'$ can be expressed in interval notation as'
     else:
@@ -166,7 +168,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         prompt='The interval $'+v+' ∈ '+('[' if c else '(')+left+', '+tex(b)+(')' if c else ']')+'$ corresponds to the inequality'
     sol=solution(a,b,v,c,template)
     if profile in ('observed_28834','observed_73902'):
-        prompt,sol=current_render(a,b,v,profile)
+        prompt,sol=current_render(a,b,v,profile,c)
     prompt=fmt.normalize_prose(prompt);sol=fmt.normalize_prose(sol)
     normalized=[fmt.normalize_tex(value) for value in values]
     correct=fmt.normalize_tex(correct);values=normalized

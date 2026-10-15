@@ -37,15 +37,20 @@ def render(level,p,profile,seed=0):
   if k not in ('mode','label'):strict_int(v,k)
  x,y=p['x'],p['y'];n=sp.sqrt(x*x+y*y)
  if x==0 or y==0 or abs(x)==abs(y) or n==1:raise ValueError('Domain excludes zero components, equal absolute components and unit input')
+ if p['mode'] not in ('direct','combination'):raise ValueError('Unknown template')
+ if profile=='q-125135' and n.is_Integer is not True:raise ValueError('Integer-length profile only')
+ if profile=='q-18058' and y==1:raise ValueError('Bank collision for y=1')
  combination=p['mode']=='combination'
  if combination:
-  ca,cb=p['ca'],p['cb'];a=(p['a1'],p['a2']);b=(sp.Rational(x-ca*a[0],cb),sp.Rational(y-ca*a[1],cb))
+  ca,cb=p['ca'],p['cb']
+  if (ca,cb) not in ((2,1),(3,1),(1,2),(1,3)):raise ValueError('Unsupported scalar roles')
+  a=(p['a1'],p['a2']);b=(sp.Rational(x-ca*a[0],cb),sp.Rational(y-ca*a[1],cb))
   if any(z.q!=1 for z in b):raise ValueError('Operands must be integer vectors')
   target=('' if ca==1 else str(ca))+'a+'+('' if cb==1 else str(cb))+'b'
   prompt=f'Let $a={vector(a)}$ and $b={vector(b)}$.'
  else:target=p.get('label','b');prompt=f'Let ${target}={vector((x,y))}$.'
  prompt+=f' Find a unit vector that is parallel to ${target}$ and points the same direction.'
- solution='Remember that to find a unit vector that is parallel to a given vector'+(' and points the same direction' if combination else '')+', we need to divide the given vector by its length:\n'+align([f'u &= \\frac{{{target}}}{{|{target}|}}'])
+ solution='Remember that to find a unit vector that is parallel to a given vector'+(' and points the same direction' if combination or target=='n' else '')+', we need to divide the given vector by its length:\n'+align([f'u &= \\frac{{{target}}}{{|{target}|}}'])
  if combination:
   scaled_a=tuple(ca*z for z in a);scaled_b=tuple(cb*z for z in b)
   expression=lambda c,v:('' if c==1 else str(c)+r'\cdot ')+vector(v)
@@ -88,6 +93,7 @@ def catalog(level):
    if not x or not y or abs(x)==abs(y):continue
    s=x*x+y*y;n=math.isqrt(s)
    if level=='easy' and (n*n!=s or n>13):continue
+   if level=='moderate' and y==1 and n*n!=s:continue
    if level=='hard':
     # Operand coordinates and coefficient-side roles vary independently of output.
     for ca,cb,a1,a2 in ((2,1,1,-2),(3,1,-2,3),(1,2,x%2,y%2)):

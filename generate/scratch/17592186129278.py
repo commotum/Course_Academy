@@ -14,6 +14,8 @@ import argparse, copy, hashlib, json, math, os, random, re, sys, tempfile, uuid
 from functools import lru_cache
 from pathlib import Path
 import sympy as sp
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'scripts/question_capture'))
+from math_format import checked_math_content, normalize_prose, normalize_tex
 
 KP_ID=17592186129278
 ROOT=Path(__file__).resolve().with_suffix('')
@@ -320,7 +322,7 @@ def raw_text(f,c):
 def digest(v):return hashlib.sha256(json.dumps(v,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 def uid(v):return str(uuid.uuid5(uuid.NAMESPACE_URL,'course-academy:'+v))
 
-def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+def _generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
     if level not in ('easy','moderate','hard'):raise ValueError(level)
     if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('Only source-shaped radio fields')
     rng=random.Random(seed);profile=profile or DEFAULT_PROFILE
@@ -353,6 +355,10 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         vals=list(map(tex,vals0));correct=0;problem,solution=normal_text(f,p);source=None
         mathmodel=model(f,p);inferred_value=vals0[0]
         fingerprint=digest({'assessed':str(mathmodel['F']),'bounds':[str(mathmodel[k]) for k in ('R','a','d','low','high')]})
+    if not raw:
+        problem=normalize_prose(problem)
+        solution=normalize_prose(solution)
+        vals=[normalize_tex(value) for value in vals]
     attributes={':question/problem':problem}
     if solution is not None:attributes[':question/worked-solution']=solution
     if not raw or ':question/difficulty' in source:attributes[':question/difficulty']=':question.difficulty/'+level
@@ -363,6 +369,17 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     if correctid is not None:field[':answer-field/correct']=[':answer/id',correctid]
     attributes[':question/id']=uid(identity);attributes[':question/answer-fields']=[field]
     return {'knowledge_point':{'db_id':KP_ID,'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':attributes,'generation':{'version':VERSION,'template':f,'level':level,'parameters':p,'profile':profile,'seed':seed,'source':{k:SOURCE[k] for k in ('database','basis','lineage')},'source_id':SPECS[f][1],'content_identity':identity,'mathematical_fingerprint':fingerprint,'evidence_only':raw,'eligible_for_learning':not raw,'inferred_exact_value':str(inferred_value),'bank_recipes':None if raw else ['correct','duplicate_jacobian_twice','halve_radial_bound','double_angular_span','omit_cos_double_angle'] if f=='reciprocal' else ['correct','duplicate_jacobian','halve_radial_bound','wrong_halfplane' if f=='half_linear' else 'halve_angular_span','double_angular_span'],'python':sys.version.split()[0],'sympy':sp.__version__}}
+
+
+@checked_math_content
+def _learning_generate(*args,**kwargs):
+    return _generate(*args,**kwargs)
+
+
+def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+    """Serve checked canonical content; source_raw is immutable evidence only."""
+    producer=_generate if profile=='source_raw' else _learning_generate
+    return producer(level,seed,template,field_type,parameters,profile)
 
 
 def sample(f,rng):
