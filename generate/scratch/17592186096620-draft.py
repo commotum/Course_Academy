@@ -72,7 +72,11 @@ def allowed(t,level,p):
 
 def answer_tex(u,v):
  n=s.expand(s.diff(u,X)*v-u*s.diff(v,X));content=s.Poly(v,X).content();base=s.cancel(v/content);top=s.cancel(n/content**2)
- if s.degree(s.gcd(top,base),X)>0:return tex(s.factor(s.cancel(n/v**2)))
+ if s.degree(s.gcd(top,base),X)>0:
+  reduced=s.cancel(n/v**2);reduced_den=s.fraction(reduced)[1]
+  # A rational expression must retain every originally excluded denominator
+  # root. Cancel powers only when the excluded set remains identical.
+  if s.Poly(reduced_den,X).sqf_part().monic()==s.Poly(v,X).sqf_part().monic():return tex(s.factor(reduced))
  return frac(tex(top),tex(s.Pow(base,2,evaluate=False)))
 
 def bank(t,p,profile,u,v,field):
@@ -86,7 +90,7 @@ def bank(t,p,profile,u,v,field):
   # Complete operation bank: correct; reversed subtraction; added products;
   # unsquared denominator; quotient of polynomial derivatives (when defined).
   if dv==0:raise ValueError('bank requires nonzero denominator derivative')
-  values=[answer,-answer,(du*v+u*dv)/v**2,(du*v-u*dv)/v,du/dv]
+  values=([answer,-answer,-u/v**2,-u*dv/v,s.Integer(0)] if du==0 else [answer,-answer,(du*v+u*dv)/v**2,(du*v-u*dv)/v,du/dv])
  else:raise ValueError('unknown complete bank')
  if sum(s.cancel(z-answer)==0 for z in values)!=1 or any(s.cancel(z-y)==0 for i,z in enumerate(values) for y in values[:i]):raise ValueError('complete bank collision')
  return values,answer
@@ -130,7 +134,7 @@ def solution(t,u,v):
   # Source keeps the common factor4 in the denominator before cancellation.
   rows += [expanded,frac(tex(n),(tex(content**2) if content**2!=1 else '')+tex(s.Pow(base,2,evaluate=False))),final]
  elif t in ('q-340290','q-340287'):
-  rows += [combined,final]
+  rows += [frac(tex(n),tex(s.expand(v**2))) if t=='q-340290' else combined,final]
  else:rows += [expanded,final]
  prose='The numerator and denominator are $u(x)='+tex(u)+'$ and $v(x)='+tex(v)+',$ respectively. Their derivatives are given by\n\n'
  if t=='q-128335':prose+='$$\n'+r'u^{\prime}(x)='+tex(du)+r',\,v^{\prime}(x)='+tex(dv)+'.\n$$'
@@ -164,7 +168,12 @@ def assemble(level,seed,t,p,profile,field,u,v):
  domain=s.Poly(v,X).sqf_part().monic().as_expr()
  task=digest([s.srepr(s.cancel(u/v)),s.srepr(domain),'find fprime'])
  evidence=profile.startswith('observed-')
- return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'seed':seed,'template':t,'profile':profile,'parameters':p,'source_ids':[t] if t in SOURCES else ['e-3637','q-104309','q-340298'],'source_basis':RAW['basis'],'source_lineage':RAW['lineage'],'math_fingerprint':task,'content_fingerprint':content,'domain':tex(v)+r'\ne0','evidence_only':evidence,'eligible_for_learning':not evidence,'origin':'observed family with method-derived authored bank' if profile=='method' else 'opaque observed bank transport' if evidence else 'source-shaped blank' if t in SOURCES else 'authored missing-level extension','python_version':sys.version.split()[0],'sympy_version':s.__version__,'plot_rating':'none'}}
+ result={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'seed':seed,'template':t,'profile':profile,'parameters':p,'source_ids':[t] if t in SOURCES else ['e-3637','q-104309','q-340298'],'source_basis':RAW['basis'],'source_lineage':RAW['lineage'],'math_fingerprint':task,'content_fingerprint':content,'domain':tex(v)+r'\ne0','evidence_only':evidence,'eligible_for_learning':not evidence,'source_repairs':({'q-11966':['authored easy placement, correct designation and worked solution'],'q-104305':['authored supported blank field'],'q-104309':['authored supported blank field'],'q-128235':['restore supplied function from solution'],'q-128335':['restore supplied function from solution']}.get(t,[])),'origin':'observed family with method-derived authored bank' if profile=='method' else 'opaque observed bank transport' if evidence else 'source-shaped blank' if t in SOURCES else 'authored missing-level extension','python_version':sys.version.split()[0],'sympy_version':s.__version__,'plot_rating':'none'}}
+
+ FORMAT.validate_generated_record(result)
+ for text in [q[":question/problem"],q[":question/worked-solution"],*rendered]:
+  if any(ord(ch)<32 and ch not in "\n\t\r" for ch in text):raise ValueError("unintended control character")
+ return result
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  if level not in SUPPORTED_LEVELS:raise ValueError('unknown difficulty')
@@ -234,6 +243,11 @@ def markdown(r):
  q=r['question'];return q[':question/problem']+'\n\n'+'\n'.join('$'+a[':answer/value']+'$' for f in q.get(':question/answer-fields',[]) for a in f[':answer-field/choices'])+'\n\n'+q.get(':question/worked-solution','[Source solution absent.]')
 if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=(*SUPPORTED_LEVELS,'all'),default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=('json','markdown'),default='json');ap.add_argument('--template');ap.add_argument('--profile');a=ap.parse_args()
- try:out=[r for level in SUPPORTED_LEVELS if a.difficulty in (level,'all') for r in batch(level,a.count,a.seed,a.template,a.profile)]
+ try:
+  if a.profile=='raw':
+   if a.count!=1 or a.difficulty not in ('easy','all'):raise ValueError('raw CLI evidence requires count1 and easy difficulty')
+   targets=[a.template] if a.template else list(SOURCES)
+   out=[generate('easy',a.seed,template=t,profile='raw') for t in targets]
+  else:out=[r for level in SUPPORTED_LEVELS if a.difficulty in (level,'all') for r in batch(level,a.count,a.seed,a.template,a.profile)]
  except ValueError as e:ap.error(str(e))
  print(json.dumps(out,indent=2) if a.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in out))

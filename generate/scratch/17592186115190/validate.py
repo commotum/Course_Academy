@@ -113,7 +113,7 @@ def source_fidelity():
             if ':answer-field/correct' in a:
                 correct=next(v for v in b[':answer-field/choices'] if v[':answer/id']==b[':answer-field/correct'][1]);assert correct[':answer/value']==a[':answer-field/correct'][':answer/value']
             opts+=len(a[':answer-field/choices'])
-        row.update(complete_bank_exact=True,options=opts,correct_designation_observed=bool(sourcefields and ':answer-field/correct' in sourcefields[0]));out.append(row)
+        row.update(complete_bank_exact=bool(sourcefields),options=opts,correct_designation_observed=bool(sourcefields and ':answer-field/correct' in sourcefields[0]));out.append(row)
         cases.append({'source_id':t,'template':t,'level':G.LEVELS[t],'parameters':p,'profile':'evidence','bank_profile':'evidence','evidence_only':True,'eligible_for_learning':False})
     write('source-cases.json',cases);write('source-fidelity.json',out);return out
 
@@ -138,6 +138,16 @@ def native(records):
             reciprocal=s.expand(expected.xreplace({s.csc(x):1/s.sin(x),s.cot(x):s.cos(x)/s.sin(x)}))
             probes.append(({'submitted':s.latex(reciprocal).replace(r'\log',r'\ln')},'accepted','equivalent reciprocal trig form'))
         for j,(entry,expected,purpose) in enumerate(probes):tests.append({'label':f'{i}-{j}','record':r,'checks':[dict(entry,expected=expected,purpose=purpose)]})
+    # Retain previously observed valid equivalences that exceed native rules.
+    # Their failures are never erased by selecting simpler supported equivalents.
+    exploratory=json.loads((D/'native-exploratory-first.json').read_text())
+    known=[]
+    for row in exploratory['records']:
+        for probe in row['checks']:
+            if probe['outcome']=='unresolved' and probe['purpose'].startswith('equivalent'):
+                t=row['template'];rec=G.generate(G.LEVELS[t],template=t,parameters=G.ANCHORS[t])
+                known.append({'label':f'900-{len(known)}','record':rec,'checks':[{'submitted':probe['submitted'],'expected':'unresolved','purpose':'preserved valid equivalent beyond native supported rules'}]})
+    tests.extend(known)
     # Each mismatch is measured directly by the unmodified native checker. Update
     # only the expected observational outcome and retain the mismatch verbatim.
     observations=[]
@@ -158,7 +168,7 @@ def native(records):
                 observations.append({'label':m[1],'purpose':item['checks'][0]['purpose'],'requested':m[2],'measured':m[3],'native_output':text.strip()});item['checks'][0]['expected']=m[3]
             else:raise AssertionError('native observation loop did not converge')
     report['initial_expectation_mismatches']=observations;report['binary_sha256']=hashlib.sha256(frozen.read_bytes()).hexdigest();report['valid_outputs_excluded_for_engine_gaps']=0
-    write('native-input.json',tests);write('native-validation.json',report);return {'accepted':report['accepted_checks'],'rejected':report['rejected_checks'],'unresolved':report['documented_unresolved_checks'],'initial_expectation_mismatches':len(observations)}
+    write('native-input.json',tests);write('native-validation.json',report);return {'accepted':report['accepted_checks'],'rejected':report['rejected_checks'],'unresolved':report['documented_unresolved_checks'],'initial_expectation_mismatches':len(observations),'known_valid_equivalent_unresolved':len(known)}
 
 def main():
     fidelity=source_fidelity();records=[];domaincoverage={};review=[];print('Source replay passed',flush=True)
@@ -171,6 +181,8 @@ def main():
                 assert r['question']==G.generate(level,seed=1001,template=t,parameters=p,profile=profile)['question'] or sorted(r['question'][':question/answer-fields'][0][':answer-field/choices'],key=lambda a:a[':answer/id'])==sorted(G.generate(level,seed=1001,template=t,parameters=p,profile=profile)['question'][':question/answer-fields'][0][':answer-field/choices'],key=lambda a:a[':answer/id'])
                 assert r['question'][':question/id']==G.generate(level,seed=1001,template=t,parameters=p,profile=profile)['question'][':question/id']
             review.extend([G.generate(level,template=t,parameters=domain[0],profile=profile),G.generate(level,template=t,parameters=domain[-1],profile=profile)])
+    for seed in range(16):assert G.generate('hard',seed=seed,profile='authored-evaluation')['generation']['template']=='q-105298'
+    assert len(G.batch('hard',2,seed=19,profile='authored-evaluation'))==2
     bad=[('easy','q-31283',{'c':True}),('easy','q-31283',{'c':0}),('moderate','q-105299',{'b':1}),('moderate','q-313722',{'c':25}),('hard','q-105298',{'c':1}),('hard','q-313723',{'c':-2})]
     for level,t,p in bad:
         try:G.generate(level,template=t,parameters=p,profile='observed')
@@ -201,6 +213,6 @@ def main():
     source_review=[G.generate(G.LEVELS[t],template=t,parameters=G.ANCHORS[t],profile='evidence') for t in G.LEVELS]
     (D/'review.md').write_text('\n\n---\n\n'.join('## '+('Original raw evidence' if i<len(source_review) else 'Changed generated variant')+' '+r['generation']['template']+' / '+r['generation']['profile']+'\n\n'+G.markdown(r) for i,r in enumerate(source_review+review)))
     print('Bounded checks and mutations passed; native grading',flush=True);native_result=native(records)
-    report={'status':'passed mathematical/source/identity/scope checks; native outcomes measured separately','source_basis':G.SOURCE['basis'],'source_originals':len(fidelity),'exact_complete_banks':sum(r['complete_bank_exact'] for r in fidelity),'source_option_values':sum(r['options'] for r in fidelity),'observed_correct_designations':sum(r['correct_designation_observed'] for r in fidelity),'missing_designations':1,'fieldless_originals':1,'raw_fidelity':fidelity,'bounded_domain_coverage':domaincoverage,'readback':COUNTS,'distinct_mathematical_tasks':diversity,'mutation_regressions':mutations,'native':native_result,'script_sha256':hashlib.sha256(D.with_suffix('.py').read_bytes()).hexdigest(),'python':sys.version.split()[0],'sympy':s.__version__,'plots':'none','database_writes':0,'limits':['q1889 key/solution and easy rating authored in normal output, not observed','q104316 blank response authored; no captured authoritative widget available','q313723 formal first operand sign corrected only in normal output','q105298 original bank error intentions opaque; retained observed replay, separate authored method-derived bank for familiar-angle extension']}
+    report={'status':'passed mathematical/source/identity/scope checks; native outcomes measured separately','source_basis':G.SOURCE['basis'],'source_originals':len(fidelity),'captured_banks':7,'exact_complete_banks':sum(r['complete_bank_exact'] for r in fidelity),'captured_worked_solutions':7,'raw_exact_existing_solutions':7,'source_option_values':sum(r['options'] for r in fidelity),'observed_correct_designations':sum(r['correct_designation_observed'] for r in fidelity),'missing_designations':1,'fieldless_originals':1,'raw_fidelity':fidelity,'bounded_domain_coverage':domaincoverage,'readback':COUNTS,'distinct_mathematical_tasks':diversity,'mutation_regressions':mutations,'native':native_result,'script_sha256':hashlib.sha256(D.with_suffix('.py').read_bytes()).hexdigest(),'python':sys.version.split()[0],'sympy':s.__version__,'plots':'none','database_writes':0,'limits':['q1889 key/solution and easy rating authored in normal output, not observed','q104316 blank response authored; no captured authoritative widget available','q313723 formal first operand sign corrected only in normal output','q105298 original bank error intentions opaque; retained observed replay, separate authored method-derived bank for familiar-angle extension','Three retained exploratory valid equivalents (hyperbolic or double-angle rewrites) remain native-unresolved; scope-preserving equivalents are additionally tested; no normal record excluded']}
     write('validation.json',report);print(json.dumps(report,indent=2))
 if __name__=='__main__':main()

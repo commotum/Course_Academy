@@ -108,7 +108,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     if level not in ('easy','moderate','hard'):raise ValueError('unknown difficulty')
     if type(seed) is not int:raise ValueError('integer seed required')
     rng=random.Random(seed)
-    eligible=[t for t,l in LEVELS.items() if l==level and (field_type is None or field_type==KINDS[t])]
+    eligible=[t for t,l in LEVELS.items() if l==level and (field_type is None or field_type==KINDS[t]) and (profile!='authored-evaluation' or t=='q-105298')]
     if template is None:
         if not eligible:raise ValueError('no matching family')
         template=rng.choice(eligible)
@@ -172,7 +172,7 @@ def batch(level,count,seed=0,template=None,profile=None):
     if type(count) is not int or count<1:raise ValueError('positive integer count required')
     rng=random.Random(seed);candidates=[]
     for t,l in LEVELS.items():
-        if l!=level or template not in (None,t):continue
+        if l!=level or template not in (None,t) or (profile=='authored-evaluation' and t!='q-105298'):continue
         pr=profile or ('authored-evaluation' if t=='q-105298' else 'observed')
         for p in parameters_domain(t,pr):candidates.append((t,pr,p))
     rng.shuffle(candidates);out=[];seen=set()

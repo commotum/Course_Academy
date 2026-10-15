@@ -54,7 +54,7 @@ def given(q):
   c,F,var,lo,hi,end=D.integral(raw);assert not end and var==x;return c*F,lo,hi
  F,var,_=P.integrand(raw);assert var==x;return F,None,None
 
-def check(q,pole_components=True,affine_required=True,positive_slope_required=True):
+def check(q,pole_components=True,affine_required=True,positive_slope_required=True,endpoint_order_required=True):
  F,lo,hi=given(q);sol=q[':question/worked-solution'];match=re.search(r'\$u=([^$]+)\$',sol);assert match;U=D.scalar(match[1].rstrip(','));a=s.diff(U,x)
  # Ordinary profiles are affine; the one nonaffine record is evidence-only.
  affine=not a.has(x)
@@ -92,6 +92,9 @@ def check(q,pole_components=True,affine_required=True,positive_slope_required=Tr
     else:
      terms=endpoint_contributions(raw)
      if terms is not None:
-      assert bar is not None and eq(terms[0],bar.subs(u,uh))and eq(terms[1],-bar.subs(u,ul)),('correlated signed endpoint error',raw,terms,bar);counts['endpoint_components']+=2
+      assert bar is not None
+      ordered=eq(terms[0],bar.subs(u,uh))and eq(terms[1],-bar.subs(u,ul))
+      reordered=not endpoint_order_required and eq(terms[1],bar.subs(u,uh))and eq(terms[0],-bar.subs(u,ul))
+      assert ordered or reordered,('correlated signed endpoint error',raw,terms,bar);counts['endpoint_components']+=2
  if lo is not None:assert counts['primitive_bars']==1 and counts['endpoint_components']>=2,(q[':question/problem'],counts)
  return F,expected,counts

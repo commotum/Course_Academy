@@ -181,16 +181,16 @@ $$
 
 Find ${f}^{′}(x)$ if $f(x)={x}^{2}-1\csc x.$
 
-$-2+1\csc xcot⁡x$
-$2{x}^{2}-1\csc xcot⁡x$
-$x+1\csc xcot⁡x$
-$2x+1\csc xcot⁡x$ [correct]
-$2+1\csc xcot⁡x$
+$-2+1\csc x\cot x$
+$2{x}^{2}-1\csc x\cot x$
+$x+1\csc x\cot x$
+$2x+1\csc x\cot x$ [correct]
+$2+1\csc x\cot x$
 
 We take the derivative of each term and then add them, as follows:
 
 $$
-\begin{aligned}{f}^{′}(x) & =\frac{\text{d}}{\text{d}x}({x}^{2}-1\csc x) \\  & =2x-1(-\csc xcot⁡x) \\  & =2x+1\csc xcot⁡x\end{aligned}
+\begin{aligned}{f}^{′}(x) & =\frac{\text{d}}{\text{d}x}({x}^{2}-1\csc x) \\  & =2x-1(-\csc x\cot x) \\  & =2x+1\csc x\cot x\end{aligned}
 $$
 
 ---
@@ -199,16 +199,16 @@ $$
 
 Find ${f}^{′}(x)$ if $f(x)={x}^{2}-24\csc x.$
 
-$-2+24\csc xcot⁡x$
-$2{x}^{2}-24\csc xcot⁡x$
-$x+24\csc xcot⁡x$
-$2x+24\csc xcot⁡x$ [correct]
-$2+24\csc xcot⁡x$
+$-2+24\csc x\cot x$
+$2{x}^{2}-24\csc x\cot x$
+$x+24\csc x\cot x$
+$2x+24\csc x\cot x$ [correct]
+$2+24\csc x\cot x$
 
 We take the derivative of each term and then add them, as follows:
 
 $$
-\begin{aligned}{f}^{′}(x) & =\frac{\text{d}}{\text{d}x}({x}^{2}-24\csc x) \\  & =2x-24(-\csc xcot⁡x) \\  & =2x+24\csc xcot⁡x\end{aligned}
+\begin{aligned}{f}^{′}(x) & =\frac{\text{d}}{\text{d}x}({x}^{2}-24\csc x) \\  & =2x-24(-\csc x\cot x) \\  & =2x+24\csc x\cot x\end{aligned}
 $$
 
 ---
@@ -294,7 +294,7 @@ $\frac{4}{\pi }$
 We take the derivative of each term and then add them, as follows:
 
 $$
-\begin{aligned}{f}^{′}(x) & =\frac{\text{d}}{\text{d}x}(\ln x-2\csc x) \\  & =\frac{1}{x}-2(-\csc xcot⁡x) \\  & =\frac{1}{x}+2\csc xcot⁡x\end{aligned}
+\begin{aligned}{f}^{′}(x) & =\frac{\text{d}}{\text{d}x}(\ln x-2\csc x) \\  & =\frac{1}{x}-2(-\csc x\cot x) \\  & =\frac{1}{x}+2\csc x\cot x\end{aligned}
 $$
 
 Then, we substitute $x=\frac{\pi }{2}$ in the derivative and get
@@ -318,7 +318,7 @@ $\frac{48}{\pi }$
 We take the derivative of each term and then add them, as follows:
 
 $$
-\begin{aligned}{f}^{′}(x) & =\frac{\text{d}}{\text{d}x}(\ln x-24\csc x) \\  & =\frac{1}{x}-24(-\csc xcot⁡x) \\  & =\frac{1}{x}+24\csc xcot⁡x\end{aligned}
+\begin{aligned}{f}^{′}(x) & =\frac{\text{d}}{\text{d}x}(\ln x-24\csc x) \\  & =\frac{1}{x}-24(-\csc x\cot x) \\  & =\frac{1}{x}+24\csc x\cot x\end{aligned}
 $$
 
 Then, we substitute $x=\frac{\pi }{2}$ in the derivative and get
@@ -384,13 +384,13 @@ Find ${f}^{′}(x)$ if $f(x)={2}^{x}\csc x.$
 ${2}^{x}\csc x(\ln 2-\cot x)$ [correct]
 $\csc x({2}^{x}\ln 2-\cot x)$
 ${2}^{x}\csc x(\ln 2+\cot x)$
-${2}^{x}\ln 2\csc xcot⁡x$
+${2}^{x}\ln 2\csc x\cot x$
 $\csc x({2}^{x}\ln 2+\cot x)$
 
 We calculate the derivative using the product rule, as follows:
 
 $$
-\begin{aligned}{f}^{′}(x) & =\frac{\text{d}}{\text{d}x}({2}^{x}\csc x) \\  & ={2}^{x}\ln 2(\csc x)+{2}^{x}(-\csc xcot⁡x) \\  & ={2}^{x}\csc x(\ln 2-\cot x)\end{aligned}
+\begin{aligned}{f}^{′}(x) & =\frac{\text{d}}{\text{d}x}({2}^{x}\csc x) \\  & ={2}^{x}\ln 2(\csc x)+{2}^{x}(-\csc x\cot x) \\  & ={2}^{x}\csc x(\ln 2-\cot x)\end{aligned}
 $$
 
 ---
@@ -402,13 +402,13 @@ Find ${f}^{′}(x)$ if $f(x)={12}^{x}\csc x.$
 ${12}^{x}\csc x(\ln 12-\cot x)$ [correct]
 $\csc x({12}^{x}\ln 12-\cot x)$
 ${12}^{x}\csc x(\ln 12+\cot x)$
-${12}^{x}\ln 12\csc xcot⁡x$
+${12}^{x}\ln 12\csc x\cot x$
 $\csc x({12}^{x}\ln 12+\cot x)$
 
 We calculate the derivative using the product rule, as follows:
 
 $$
-\begin{aligned}{f}^{′}(x) & =\frac{\text{d}}{\text{d}x}({12}^{x}\csc x) \\  & ={12}^{x}\ln 12(\csc x)+{12}^{x}(-\csc xcot⁡x) \\  & ={12}^{x}\csc x(\ln 12-\cot x)\end{aligned}
+\begin{aligned}{f}^{′}(x) & =\frac{\text{d}}{\text{d}x}({12}^{x}\csc x) \\  & ={12}^{x}\ln 12(\csc x)+{12}^{x}(-\csc x\cot x) \\  & ={12}^{x}\csc x(\ln 12-\cot x)\end{aligned}
 $$
 
 ---
@@ -425,7 +425,7 @@ $-\frac{3\sqrt{2}}{2}-\frac{3}{16}{\pi }^{2}$ [correct]
 We take the derivative of each term and then add them, as follows:
 
 $$
-\begin{aligned}{g}^{′}(x) & =\frac{\text{d}}{\text{d}x}(\csc x-1{x}^{3}+\cos x) \\  & =(-\csc xcot⁡x)-1\cdot 3{x}^{2}+(-\sin x) \\  & =-\csc xcot⁡x-3{x}^{2}-\sin x\end{aligned}
+\begin{aligned}{g}^{′}(x) & =\frac{\text{d}}{\text{d}x}(\csc x-1{x}^{3}+\cos x) \\  & =(-\csc x\cot x)-1\cdot 3{x}^{2}+(-\sin x) \\  & =-\csc x\cot x-3{x}^{2}-\sin x\end{aligned}
 $$
 
 Then, we substitute $x=\frac{\pi }{4}$ in the derivative and get
@@ -448,7 +448,7 @@ $-\frac{3\sqrt{2}}{2}-\frac{9}{2}{\pi }^{2}$ [correct]
 We take the derivative of each term and then add them, as follows:
 
 $$
-\begin{aligned}{g}^{′}(x) & =\frac{\text{d}}{\text{d}x}(\csc x-24{x}^{3}+\cos x) \\  & =(-\csc xcot⁡x)-24\cdot 3{x}^{2}+(-\sin x) \\  & =-\csc xcot⁡x-72{x}^{2}-\sin x\end{aligned}
+\begin{aligned}{g}^{′}(x) & =\frac{\text{d}}{\text{d}x}(\csc x-24{x}^{3}+\cos x) \\  & =(-\csc x\cot x)-24\cdot 3{x}^{2}+(-\sin x) \\  & =-\csc x\cot x-72{x}^{2}-\sin x\end{aligned}
 $$
 
 Then, we substitute $x=\frac{\pi }{4}$ in the derivative and get
@@ -471,7 +471,7 @@ $\frac{\operatorname{csc}(x)}{x}-\operatorname{ln}(x)\operatorname{csc}(x)\opera
 We calculate the derivative using the product rule, as follows:
 
 $$
-\begin{aligned}{h}^{′}(x) & =\frac{\text{d}}{\text{d}x}(\ln (x)\csc (x)) \\  & =\frac{1}{x}(\csc x)+(\ln (x))(-\csc (x)\cot (x)) \\  & =\frac{csc⁡(x)}{x}-\ln (x)\csc (x)\cot (x)\end{aligned}
+\begin{aligned}{h}^{′}(x) & =\frac{\text{d}}{\text{d}x}(\ln (x)\csc (x)) \\  & =\frac{1}{x}(\csc x)+(\ln (x))(-\csc (x)\cot (x)) \\  & =\frac{\csc (x)}{x}-\ln (x)\csc (x)\cot (x)\end{aligned}
 $$
 
 ---

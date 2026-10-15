@@ -37,3 +37,11 @@ to ordering and typography, but neither supplies a visible key or worked
 solution. `review.md` includes all originals and two changed variants for every
 normal family/profile. `review.json` is the machine-readable generated review.
 `bounded-records.json` holds complete finite-domain validation data.
+
+Native limitations are retained explicitly: preliminary general CAS sine
+rewriting produced three valid source-anchor equivalents outside the grader's
+supported rules (one rewrites exp(x) with sinh/cosh; two introduce sin(2x)).
+`native-exploratory-first.json` preserves those first measurements. The final
+native suite retests these exact submissions as documented unresolved cases,
+alongside ordinary expanded/factored/common-denominator and direct reciprocal
+trig equivalents for every bounded blank. No generated record is excluded.

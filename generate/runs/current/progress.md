@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 36**, **qa_passed: 373**, **queued: 167**, **working: 4**.
+**needs_revalidation: 36**, **qa_passed: 378**, **queued: 163**, **working: 3**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -158,18 +158,18 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186068723](../../scratch/17592186068723-draft.py) | Integration Using Substitution | Integrating an Expression Involving a Power Function Multiplied by a Constant Multiple of Its Derivative | 6 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186068723.json) |
 | [17592186096656](../../scratch/17592186096656-draft.py) | Integrating Exponential Functions Using Linear Substitution | Integrating a General Exponential Function With a Linear Exponent | 5 / 6 / 0 / 2 | qa_passed | [Report](qa/17592186096656.json) |
 | [17592186184350](../../scratch/17592186184350-draft.py) | Integrating Exponential Functions Using Substitution | Integrating Products Containing Other Exponential Functions | 6 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186184350.json) |
-| [17592186068918](../../scratch/17592186068918.py) | Integrating Trigonometric Functions Using Substitution | Integrating Quotients Containing Trigonometric Functions Using Substitution | 5 / 0 / 7 / 2 | working | — |
+| [17592186068918](../../scratch/17592186068918-draft.py) | Integrating Trigonometric Functions Using Substitution | Integrating Quotients Containing Trigonometric Functions Using Substitution | 5 / 0 / 7 / 2 | qa_passed | [Report](qa/17592186068918.json) |
 | [17592186105720](../../scratch/17592186105720-draft.py) | Integrating the Reciprocal Function | Integrating a Reciprocal Function and Simplifying the Arbitrary Constant Using the Laws of Logarithms | 0 / 8 / 6 / 1 | qa_passed | [Report](qa/17592186105720.json) |
-| [17592186096655](../../scratch/17592186096655.py) | Integrating Exponential Functions Using Linear Substitution | Integrating the Exponential Function With a Linear Exponent | 5 / 9 / 0 / 1 | working | — |
+| [17592186096655](../../scratch/17592186096655-draft.py) | Integrating Exponential Functions Using Linear Substitution | Integrating the Exponential Function With a Linear Exponent | 5 / 9 / 0 / 1 | qa_passed | [Report](qa/17592186096655.json) |
 | [17592186087686](../../scratch/17592186087686.py) | Parallel Lines in the Coordinate Plane | Identifying Parallel Lines Given in Slope-Intercept Form | 0 / 0 / 0 / 3 | qa_passed | [Report](qa/17592186087686.json) |
 | [17592186087687](../../scratch/17592186087687.py) | Parallel Lines in the Coordinate Plane | Identifying Parallel Lines Given in Standard Form | 0 / 0 / 0 / 3 | qa_passed | [Report](qa/17592186087687.json) |
 | [17592186087688](../../scratch/17592186087688.py) | Parallel Lines in the Coordinate Plane | Finding Unknown Parameters | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186087688.json) |
-| [17592186115190](../../scratch/17592186115190.py) | Differentiating Reciprocal Trigonometric Functions | Differentiating Expressions Involving the Cosecant Function | 1 / 4 / 2 / 1 | working | — |
-| [17592186115192](../../scratch/17592186115192.py) | Differentiating Reciprocal Trigonometric Functions | Differentiating Expressions Involving the Secant Function | 3 / 5 / 1 / 2 | queued | — |
-| [17592186096620](../../scratch/17592186096620.py) | The Quotient Rule for Differentiation | Differentiating a Quotient of Two Polynomials | 10 / 0 / 0 / 1 | working | — |
-| 17592186096622 | The Quotient Rule for Differentiation | Differentiating a Quotient Using Leibniz Notation | 4 / 4 / 1 / 2 | queued | — |
-| [17592186115193](../../scratch/17592186115193.py) | Differentiating Reciprocal Trigonometric Functions | Finding the Slope of the Tangent at a Point of a Function Involving Reciprocal Trigonometric Functions | 5 / 6 / 0 / 0 | queued | — |
-| [17592186115191](../../scratch/17592186115191.py) | Differentiating Reciprocal Trigonometric Functions | Differentiating Expressions Involving the Cotangent Function | 2 / 6 / 6 / 2 | queued | — |
+| [17592186115190](../../scratch/17592186115190.py) | Differentiating Reciprocal Trigonometric Functions | Differentiating Expressions Involving the Cosecant Function | 1 / 4 / 2 / 1 | qa_passed | [Report](qa/17592186115190.json) |
+| [17592186115192](../../scratch/17592186115192.py) | Differentiating Reciprocal Trigonometric Functions | Differentiating Expressions Involving the Secant Function | 3 / 5 / 1 / 2 | qa_passed | [Report](qa/17592186115192.json) |
+| [17592186096620](../../scratch/17592186096620-draft.py) | The Quotient Rule for Differentiation | Differentiating a Quotient of Two Polynomials | 10 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186096620.json) |
+| [17592186096622](../../scratch/17592186096622.py) | The Quotient Rule for Differentiation | Differentiating a Quotient Using Leibniz Notation | 4 / 4 / 1 / 2 | working | — |
+| [17592186115193](../../scratch/17592186115193.py) | Differentiating Reciprocal Trigonometric Functions | Finding the Slope of the Tangent at a Point of a Function Involving Reciprocal Trigonometric Functions | 5 / 6 / 0 / 0 | working | — |
+| [17592186115191](../../scratch/17592186115191.py) | Differentiating Reciprocal Trigonometric Functions | Differentiating Expressions Involving the Cotangent Function | 2 / 6 / 6 / 2 | working | — |
 | [17592186096621](../../scratch/17592186096621.py) | The Quotient Rule for Differentiation | Differentiating a Quotient Containing Other Functions | 8 / 6 / 5 / 2 | queued | — |
 | 17592186092265 | The Chain Rule With Logarithmic Functions | Differentiating a General Logarithm Function Using the Chain Rule | 7 / 5 / 2 / 2 | queued | — |
 | [17592186092264](../../scratch/17592186092264.py) | The Chain Rule With Logarithmic Functions | Differentiating a Natural Logarithm Function Using the Chain Rule | 0 / 6 / 6 / 2 | queued | — |
@@ -445,7 +445,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | 17592186119854 | Linear Combinations of Vectors in N-Dimensional Euclidean Space | Solving for Three Coefficients in a Linear Combination | 0 / 6 / 6 / 1 | queued | — |
 | [17592186119806](../../scratch/17592186119806.py) | Linear Combinations of Vectors in N-Dimensional Euclidean Space | Solving for a Vector in a Linear Combination | 13 / 0 / 0 / 1 | queued | — |
 | 17592186119847 | The Rank of a Matrix | Determining the Rank of a Matrix Given the Number of Pivot Columns | 4 / 4 / 0 / 1 | queued | — |
-| 17592186119848 | The Rank of a Matrix | Identifying the Matrix With a Given Rank by Inspection | 10 / 0 / 0 / 2 | queued | — |
+| [17592186119848](../../scratch/17592186119848.py) | The Rank of a Matrix | Identifying the Matrix With a Given Rank by Inspection | 10 / 0 / 0 / 2 | queued | — |
 | 17592186119849 | The Rank of a Matrix | Finding the Rank of a Matrix Using Row Reduction | 4 / 3 / 5 / 0 | queued | — |
 | [17592186179714](../../scratch/17592186179714.py) | Gradient Vector Fields | Calculating the Gradient Vector Field of a Function | 3 / 5 / 0 / 1 | queued | — |
 | 17592186179719 | Gradient Vector Fields | Sketching the Gradient Vector Field of a Function | 11 / 0 / 0 / 0 | queued | — |
