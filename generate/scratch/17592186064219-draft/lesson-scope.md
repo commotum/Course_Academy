@@ -1,0 +1,7 @@
+# Lesson and scope
+
+Topic 17592186048189, Integration by Substitution With Inverse Trigonometric Functions, at basis 2275. Activity first-step/next links, not pull array order, give: Introduction (65076), inverse sine (65077), inverse tangent (65078), inverse secant (65124), definite integrals (65079). The inverse tangent canonical is e-471, factoring 3/(2+50x²) before u=5x. The introduction demonstrates substitution followed by a derivative check. Prerequisite incoming topics in the supplied snapshot are Calculating Definite Integrals Using Substitution and Evaluating Expressions Containing Inverse Trigonometric Functions. Outgoing topics include completing the square and improper integrals; these are outside this generator.
+
+Backbone E: n/(1+b x²), u=√b x, dx=du/√b, extract coefficient, inverse tangent, restore x. Backbone M: n/(b+x²), factor b, u=x/√b, dx=√b du, same primitive. H uses canonical two-coefficient factoring only. The requested object stays an indefinite primitive with +C: varying that target would alter the method or field contract. Variable slots change actual integrands and chain-rule arithmetic; labels and answer ordering stay fixed.
+
+All scales are positive and nonzero. Real principal arctan is smooth for all real arguments. The pullback of arbitrary real C remains arbitrary; nonzero constant prefactors do not constrain the family. No arctan inverse or root identities are forced. Source asin distractors have their proper bounded real domains; arcsec distractors require |argument|≥1 and cannot be global arctan primitives.
