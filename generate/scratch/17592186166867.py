@@ -20,6 +20,9 @@ X,Y=sp.symbols('x y',real=True)
 DY=r'\frac{\text{d}y}{\text{d}x}';DX=r'\frac{\text{d}}{\text{d}x}'
 SOURCES=json.loads((HERE/'source.json').read_text());QS={q[':question/math-academy-id']:q for q in SOURCES['record'][':knowledge-point/questions']}
 SOURCE_PARAMS={'q-127372':(1,2),'q-127374':(-2,2),'q-127510':(3,6),'q-127515':(-1,2),'q-127520':(-8,4),'q-312780':(5,7),'q-342215':(-3,-1),'q-342218':(-6,6),'q-342354':(8,-8),'q-342355':(6,-2)}
+CURRENT_SOURCES=json.loads((HERE/'source-current.json').read_text())
+CURRENT_QS={q[':question/math-academy-id']:q for q in CURRENT_SOURCES['record'][':knowledge-point/questions']}
+SOURCE_PARAMS['q-127503']=(2,-3)
 TEMPLATES=('point_radio','point_blank','equation_radio','equation_blank')
 def tex(v): return sp.latex(sp.sympify(v)).replace(' ','')
 def uid(v):return str(uuid.uuid5(uuid.NAMESPACE_URL,json.dumps(v,sort_keys=True,separators=(',',':'))))
@@ -46,6 +49,7 @@ def bank(profile,a,b):
  if profile=='q-127374':return [-Y/c,-m,m,c/Y,c/(4*Y)],['negative inverse','negative correct','correct','omit 2','extra factor 2']
  if profile=='q-127510':return [-sp.Rational(a,b)/Y,m,-2/(c*Y),sp.Rational(b,a)/Y,p/(2*Y)],['negative inverse point ratio (opaque)','correct','negative inverse coefficient','point ratio (opaque)','differentiate p as c (opaque)']
  if profile=='q-127515':return [m,c/(4*Y),-2/(c*Y),-m,-c/Y],['correct','extra factor 2','negative inverse coefficient','negative correct','negative omit 2']
+ if profile=='q-127503':return [-c*Y,sp.Rational(b,2*a)/Y,-sp.Rational(b,2*a)*Y,c/Y,m],['negative coefficient times y','signed point ratio (opaque)','negative signed point ratio times y (opaque)','omit 2','correct']
  if profile=='q-127520':return [c/Y,m,-1/(2*c*Y),c/(4*Y),-2*c/Y],['omit 2','correct','negative inverse double coefficient','extra factor 2','negative double coefficient']
  return [m],['correct']
 def solution(a,b,style=None,repair=True):
@@ -71,9 +75,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  rng=random.Random(seed);source=None;mode=None
  if profile and ':' in profile:
   mode,source=profile.split(':',1)
-  if mode not in ('raw','completed') or source not in QS:raise ValueError('Unknown source profile')
+  if mode not in ('raw','completed','current') or source not in (CURRENT_QS if mode=='current' else QS):raise ValueError('Unknown source profile')
  if source:
-  q0=QS[source];kind=q0[':question/answer-fields'][0][':answer-field/type'][':db/ident'].rsplit('/',1)[1]
+  q0=(CURRENT_QS if mode=='current' else QS)[source];kind=q0[':question/answer-fields'][0][':answer-field/type'][':db/ident'].rsplit('/',1)[1]
   template=template or 'point_'+kind
   expected='hard' if SOURCE_PARAMS[source][0]<0 else 'moderate'
   if level!=expected:raise ValueError('Source geometry requires its documented level')
@@ -96,13 +100,13 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  if source and (a,b)==SOURCE_PARAMS[source]:asset=q0[':question/problem'].split(')')[0].split('(')[1]
  else:asset=render_plots(a,b)
  direction='left' if a<0 else 'right'
- deriv=r'\frac{dy}{dx}' if source in ('q-127372','q-127374') else DY
+ deriv=r'\frac{dy}{dx}' if source in ('q-127372','q-127374') and mode!='current' else DY
  prompt=f'![]({asset})\n\n'+('The parabola shown above has equation\n\n$$\n'+r'{y}^{2}='+tex(c)+'x.\n$$\n\n' if level=='easy' else '')+f'Find ${deriv}$ for the {direction}-opening parabola shown above.'
  if kind=='blank':prompt+=' Express the answer in terms of the variable $y.$\n\n$'+DY+'=$\n{{field-1}}'
- sol=solution_easy(c) if level=='easy' else solution(a,b,source,repair=mode!='raw')
- present_solution=not(mode=='raw' and ':question/worked-solution' not in q0)
- present_diff=not(mode=='raw' and ':question/difficulty' not in q0)
- correct_present=not(mode=='raw' and ':answer-field/correct' not in q0[':question/answer-fields'][0])
+ sol=solution_easy(c) if level=='easy' else solution(a,b,source,repair=mode not in ('raw','current'))
+ present_solution=not(mode in ('raw','current') and ':question/worked-solution' not in q0)
+ present_diff=not(mode in ('raw','current') and ':question/difficulty' not in q0)
+ correct_present=not(mode in ('raw','current') and ':answer-field/correct' not in q0[':question/answer-fields'][0])
  # Presentation identity excludes seed, option order, profile aliases, and inputs
  # that did not change actual displayed content. Task identity is the curve.
  key='selection' if kind=='radio' else 'field-1'
@@ -115,7 +119,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  if present_solution:q[':question/worked-solution']=sol
  if present_diff:q[':question/difficulty']=':question.difficulty/'+level
  evidence_only=bool(source and kind=='radio') or mode=='raw'
- return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'seed':seed,'template':template,'bank_profile':profile or chosen,'parameters':p,'domain':'integer marked-point finite '+level,'assessment_mode':'given equation' if level=='easy' else 'reconstruct equation from plot','mathematical_fingerprint':digest(['given equation' if level=='easy' else 'reconstruct equation from plot','y²=cx',str(c)]),'dependencies':dependency_metadata(asset),'content_fingerprint':digest(content),'source_id':source,'origin':'raw observed evidence' if mode=='raw' else 'completed observed template' if source else 'authored same-method variation','evidence_only':evidence_only,'eligible_for_learning':not evidence_only,'recipes':recipes,'coefficient':str(c),'plot':asset,'source':{k:SOURCES[k] for k in ('database','basis','lineage')},'difficulty_assignment':'authored missing easy' if level=='easy' else 'inferred unrated right/left alignment' if source in ('q-127372','q-127374') else 'observed right/moderate or left/hard scope'}}
+ return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'seed':seed,'template':template,'bank_profile':profile or chosen,'parameters':p,'domain':'integer marked-point finite '+level,'assessment_mode':'given equation' if level=='easy' else 'reconstruct equation from plot','mathematical_fingerprint':digest(['given equation' if level=='easy' else 'reconstruct equation from plot','y²=cx',str(c)]),'dependencies':dependency_metadata(asset),'content_fingerprint':digest(content),'source_id':source,'origin':'raw observed evidence' if mode=='raw' else 'completed observed template' if source else 'authored same-method variation','evidence_only':evidence_only,'eligible_for_learning':not evidence_only,'recipes':recipes,'coefficient':str(c),'plot':asset,'source':{k:(CURRENT_SOURCES if mode=='current' else SOURCES)[k] for k in ('database','basis','lineage')},'difficulty_assignment':'authored missing easy' if level=='easy' else 'inferred unrated right/left alignment' if source in ('q-127372','q-127374') else 'observed right/moderate or left/hard scope'}}
 # EASY: explicitly authored supplied equation; formal derivative/chain/isolation.
 # Removing graph-to-p reconstruction separates its demand from moderate/hard.
 def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
@@ -131,5 +135,17 @@ def markdown(r):
  return s+'\n'+q.get(':question/worked-solution','(Original has no worked solution.)')+'\n'
 if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=2);ap.add_argument('--format',choices=['markdown','json'],default='markdown');ap.add_argument('--template');ap.add_argument('--profile');args=ap.parse_args()
- rows=[generate(l,args.seed+i,template=args.template,profile=args.profile) for l in (['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]) for i in range(args.count)]
+ if args.count<1:ap.error('count must be positive')
+ rows=[]
+ for level in (['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]):
+  candidates=domain(level);random.Random(args.seed).shuffle(candidates);selected=[];seen=set()
+  for index,(a,b) in enumerate(candidates):
+   task=digest(['given equation' if level=='easy' else 'reconstruct equation from plot','y²=cx',str(sp.Rational(b*b,a))])
+   if task in seen:continue
+   try:r=generate(level,args.seed+index,template=args.template,profile=args.profile,parameters={'a':a,'b':b})
+   except ValueError:continue
+   selected.append(r);seen.add(task)
+   if len(selected)==args.count:break
+  if len(selected)<args.count:ap.error(f'finite-limit: {level} profile has only {len(selected)} distinct valid tasks; requested {args.count}')
+  rows.extend(selected)
  print(json.dumps(rows,indent=2) if args.format=='json' else '\n'.join(map(markdown,rows)))

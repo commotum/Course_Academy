@@ -14,7 +14,7 @@ from __future__ import annotations
 import argparse,hashlib,json,random,re,sys,uuid,subprocess,tempfile,os
 from pathlib import Path
 import sympy as sp
-D=Path(__file__).with_suffix('');SPECS={x['id']:x for x in json.loads((D/'specs.json').read_text())}
+D=Path(__file__).with_suffix('');SPECS={x['id']:x for x in json.loads((D/'specs.json').read_text())+json.loads((D/'specs-current-additions.json').read_text())}
 KP_ID=17592186152189;KP_UUID='6d82541c-40ca-5df9-aa17-c20b201fadd4';TITLE='The Parametric Equations of an Ellipse Centered at a General Point';VERSION='ellipse-general-1'
 T=sp.Symbol('theta',real=True)
 def digest(x):return hashlib.sha256(json.dumps(x,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
