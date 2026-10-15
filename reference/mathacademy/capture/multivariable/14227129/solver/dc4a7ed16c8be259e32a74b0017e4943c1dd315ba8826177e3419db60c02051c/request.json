@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-83014",
+      "sequence_position": 11,
+      "problem": "Evaluate ${\\int }_{0}^{\\pi /3}{e}^{-x}\\operatorname{sin}⁡(3x)\\,\\text{d}x.$",
+      "worked_solution": "Let's denote the indefinite integral by $I=\\int {e}^{-x}\\operatorname{sin}⁡(3x)\\,\\text{d}x.$\n\nTo use integration by parts, let's suppose that\n\n$$\n\\begin{aligned}u={e}^{-x}\\, & ⇒\\,\\frac{\\text{d}u}{\\text{d}x}=-{e}^{-x}\\,, \\\\ \\frac{\\text{d}v}{\\text{d}x}=\\operatorname{sin}⁡(3x)\\, & ⇒\\,v=\\int \\operatorname{sin}⁡(3x)\\,\\text{d}x=-\\frac{\\operatorname{cos}⁡(3x)}{3}.\\end{aligned}\n$$\n\nThen, using the formula of integration by parts, we get\n\n$$\n\\begin{aligned}I & =\\int {e}^{-x}\\operatorname{sin}⁡(3x)\\,\\text{d}x \\\\  & =\\int u\\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x \\\\  & =uv-\\int v\\frac{\\text{d}u}{\\text{d}x}\\,\\text{d}x \\\\  & ={e}^{-x}(-\\frac{\\operatorname{cos}⁡(3x)}{3})-\\int (-\\frac{\\operatorname{cos}⁡(3x)}{3})(-{e}^{-x})\\text{d}x \\\\  & =-\\frac{{e}^{-x}\\operatorname{cos}⁡(3x)}{3}-\\frac{1}{3}\\int {e}^{-x}\\operatorname{cos}⁡(3x)\\,\\text{d}x \\\\  & =-\\frac{{e}^{-x}\\operatorname{cos}⁡(3x)}{3}-\\frac{1}{3}J.\\end{aligned}\n$$\n\nAgain, we can use integration by parts to evaluate\n\n$$\nJ=\\int {e}^{-x}\\operatorname{cos}⁡(3x)\\,\\text{d}x.\n$$\n\nTo do this, let's suppose that\n\n$$\n\\begin{aligned}u={e}^{-x}\\, & ⇒\\,\\frac{\\text{d}u}{\\text{d}x}=-{e}^{-x}\\,, \\\\ \\frac{\\text{d}v}{\\text{d}x}=\\operatorname{cos}⁡(3x)\\, & ⇒\\,v=\\int \\operatorname{cos}⁡(3x)\\,\\text{d}x=\\frac{\\operatorname{sin}⁡(3x)}{3}.\\end{aligned}\n$$\n\nUsing the formula of integration by parts, we get\n\n$$\n\\begin{aligned}J & =\\int {e}^{-x}\\operatorname{cos}⁡(3x)\\,\\text{d}x \\\\  & =\\int u\\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x \\\\  & =uv-\\int v\\frac{\\text{d}u}{\\text{d}x}\\,\\text{d}x \\\\  & ={e}^{-x}(\\frac{\\operatorname{sin}⁡(3x)}{3})-\\int (\\frac{\\operatorname{sin}⁡(3x)}{3})(-{e}^{-x})\\text{d}x \\\\  & =\\frac{{e}^{-x}\\operatorname{sin}⁡(3x)}{3}+\\frac{1}{3}\\int {e}^{-x}\\operatorname{sin}⁡(3x)\\,\\text{d}x \\\\  & =\\frac{{e}^{-x}\\operatorname{sin}⁡(3x)}{3}+\\frac{1}{3}I.\\end{aligned}\n$$\n\nSo, substituting this into our equation for $I,$ we can subsequently solve for $I:$\n\n$$\n\\begin{aligned}I & =-\\frac{{e}^{-x}\\operatorname{cos}⁡(3x)}{3}-\\frac{1}{3}J \\\\ I & =-\\frac{{e}^{-x}\\operatorname{cos}⁡(3x)}{3}-\\frac{1}{3}(\\frac{{e}^{-x}\\operatorname{sin}⁡(3x)}{3}+\\frac{1}{3}I) \\\\ I & =-\\frac{{e}^{-x}\\operatorname{cos}⁡(3x)}{3}-\\frac{{e}^{-x}\\operatorname{sin}⁡(3x)}{9}-\\frac{1}{9}I \\\\ \\frac{10}{9}I & =-\\frac{{e}^{-x}\\operatorname{sin}⁡(3x)+3{e}^{-x}\\operatorname{cos}⁡(3x)}{9} \\\\ I & =-\\frac{{e}^{-x}(\\operatorname{sin}⁡(3x)+3\\operatorname{cos}⁡(3x))}{10}\\end{aligned}\n$$\n\nFinally, we evaluate our definite integral, as follows:\n\n$$\n\\begin{aligned}{\\int }_{0}^{\\pi /3}{e}^{-x}\\operatorname{sin}⁡(3x)\\,\\text{d}x & =(-\\frac{{e}^{-x}(\\operatorname{sin}⁡(3x)+3\\operatorname{cos}⁡(3x))}{10}){|}_{0}^{\\pi /3} \\\\  & =-\\frac{{e}^{-\\pi /3}(\\operatorname{sin}⁡(3\\cdot \\frac{\\pi }{3})+3\\operatorname{cos}⁡(3\\cdot \\frac{\\pi }{3}))}{10}+\\frac{{e}^{-0}(\\operatorname{sin}⁡(3\\cdot 0)+3\\operatorname{cos}⁡(3\\cdot 0))}{10} \\\\  & =\\frac{3{e}^{-\\pi /3}}{10}+\\frac{3}{10} \\\\  & =\\frac{3}{10}({e}^{-\\pi /3}+1)\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14227129/observations/history-q-83014-3b6fdf882b85817755e7.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14227129",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14227129/observations/history-solution-q-83014-3073f7531ff8d97b7b1e.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "\\frac{3}{10}({e}^{-\\pi /3}+1)"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "3{e}^{-\\pi /3}+10"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "\\frac{1}{5}({e}^{-\\pi /3}+3)"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "2{e}^{-\\pi /3}-5"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "\\frac{3}{5}({e}^{-\\pi /3}-1)"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q83014",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "\\frac{3}{10}({e}^{-\\pi /3}+1)",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Let's denote the indefinite integral by $I=\\int {e}^{-x}\\operatorname{sin}⁡(3x)\\,\\text{d}x.$\n\nTo use integration by parts, let's suppose that\n\n$$\n\\begin{aligned}u={e}^{-x}\\, & ⇒\\,\\frac{\\text{d}u}{\\text{d}x}=-{e}^{-x}\\,, \\\\ \\frac{\\text{d}v}{\\text{d}x}=\\operatorname{sin}⁡(3x)\\, & ⇒\\,v=\\int \\operatorname{sin}⁡(3x)\\,\\text{d}x=-\\frac{\\operatorname{cos}⁡(3x)}{3}.\\end{aligned}\n$$\n\nThen, using the formula of integration by parts, we get\n\n$$\n\\begin{aligned}I & =\\int {e}^{-x}\\operatorname{sin}⁡(3x)\\,\\text{d}x \\\\  & =\\int u\\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x \\\\  & =uv-\\int v\\frac{\\text{d}u}{\\text{d}x}\\,\\text{d}x \\\\  & ={e}^{-x}(-\\frac{\\operatorname{cos}⁡(3x)}{3})-\\int (-\\frac{\\operatorname{cos}⁡(3x)}{3})(-{e}^{-x})\\text{d}x \\\\  & =-\\frac{{e}^{-x}\\operatorname{cos}⁡(3x)}{3}-\\frac{1}{3}\\int {e}^{-x}\\operatorname{cos}⁡(3x)\\,\\text{d}x \\\\  & =-\\frac{{e}^{-x}\\operatorname{cos}⁡(3x)}{3}-\\frac{1}{3}J.\\end{aligned}\n$$\n\nAgain, we can use integration by parts to evaluate\n\n$$\nJ=\\int {e}^{-x}\\operatorname{cos}⁡(3x)\\,\\text{d}x.\n$$\n\nTo do this, let's suppose that\n\n$$\n\\begin{aligned}u={e}^{-x}\\, & ⇒\\,\\frac{\\text{d}u}{\\text{d}x}=-{e}^{-x}\\,, \\\\ \\frac{\\text{d}v}{\\text{d}x}=\\operatorname{cos}⁡(3x)\\, & ⇒\\,v=\\int \\operatorname{cos}⁡(3x)\\,\\text{d}x=\\frac{\\operatorname{sin}⁡(3x)}{3}.\\end{aligned}\n$$\n\nUsing the formula of integration by parts, we get\n\n$$\n\\begin{aligned}J & =\\int {e}^{-x}\\operatorname{cos}⁡(3x)\\,\\text{d}x \\\\  & =\\int u\\frac{\\text{d}v}{\\text{d}x}\\,\\text{d}x \\\\  & =uv-\\int v\\frac{\\text{d}u}{\\text{d}x}\\,\\text{d}x \\\\  & ={e}^{-x}(\\frac{\\operatorname{sin}⁡(3x)}{3})-\\int (\\frac{\\operatorname{sin}⁡(3x)}{3})(-{e}^{-x})\\text{d}x \\\\  & =\\frac{{e}^{-x}\\operatorname{sin}⁡(3x)}{3}+\\frac{1}{3}\\int {e}^{-x}\\operatorname{sin}⁡(3x)\\,\\text{d}x \\\\  & =\\frac{{e}^{-x}\\operatorname{sin}⁡(3x)}{3}+\\frac{1}{3}I.\\end{aligned}\n$$\n\nSo, substituting this into our equation for $I,$ we can subsequently solve for $I:$\n\n$$\n\\begin{aligned}I & =-\\frac{{e}^{-x}\\operatorname{cos}⁡(3x)}{3}-\\frac{1}{3}J \\\\ I & =-\\frac{{e}^{-x}\\operatorname{cos}⁡(3x)}{3}-\\frac{1}{3}(\\frac{{e}^{-x}\\operatorname{sin}⁡(3x)}{3}+\\frac{1}{3}I) \\\\ I & =-\\frac{{e}^{-x}\\operatorname{cos}⁡(3x)}{3}-\\frac{{e}^{-x}\\operatorname{sin}⁡(3x)}{9}-\\frac{1}{9}I \\\\ \\frac{10}{9}I & =-\\frac{{e}^{-x}\\operatorname{sin}⁡(3x)+3{e}^{-x}\\operatorname{cos}⁡(3x)}{9} \\\\ I & =-\\frac{{e}^{-x}(\\operatorname{sin}⁡(3x)+3\\operatorname{cos}⁡(3x))}{10}\\end{aligned}\n$$\n\nFinally, we evaluate our definite integral, as follows:\n\n$$\n\\begin{aligned}{\\int }_{0}^{\\pi /3}{e}^{-x}\\operatorname{sin}⁡(3x)\\,\\text{d}x & =(-\\frac{{e}^{-x}(\\operatorname{sin}⁡(3x)+3\\operatorname{cos}⁡(3x))}{10}){|}_{0}^{\\pi /3} \\\\  & =-\\frac{{e}^{-\\pi /3}(\\operatorname{sin}⁡(3\\cdot \\frac{\\pi }{3})+3\\operatorname{cos}⁡(3\\cdot \\frac{\\pi }{3}))}{10}+\\frac{{e}^{-0}(\\operatorname{sin}⁡(3\\cdot 0)+3\\operatorname{cos}⁡(3\\cdot 0))}{10} \\\\  & =\\frac{3{e}^{-\\pi /3}}{10}+\\frac{3}{10} \\\\  & =\\frac{3}{10}({e}^{-\\pi /3}+1)\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14227129/observations/step-q83014-b9856c963a210a7202b3.html"
+        }
+      }
+    ]
+  }
+}
