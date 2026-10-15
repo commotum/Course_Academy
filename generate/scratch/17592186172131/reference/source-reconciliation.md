@@ -1,0 +1,5 @@
+# Source reconciliation
+
+The live read at basis 2593 and subsequent preflight captures contain escaped literal set braces in q-161127, q-161182, q-161212 and q-161242. These are presentation repairs: after replacing only `\\{`/`\\}` by `{`/`}`, all captured source facts agree. No mathematical expressions, answer values, correct designations, identities, difficulties or solution stages changed. The frozen source snapshot remains unchanged. Both original source evidence and live-before EDN are retained. Receipt verification requires every live source record to remain byte-for-byte unchanged through this replenishment.
+
+The package supports easy, moderate and hard. Easy is an authored reduced-workload canonical cancellation with supplied metric; moderate and hard retain the observed supplied-metric and computed-metric split. Historical opaque distractors remain evidence-only, and normal variants use complete documented method banks. The shell subfamily has 32 bounded endpoint/coefficient tasks; it is not the limit of the whole moderate pool. No unsupported band is marked filled.

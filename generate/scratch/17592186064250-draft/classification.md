@@ -1,0 +1,13 @@
+# 3. Classification — inverse secant substitution
+
+The frozen Math EDB read is basis 2275, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. `source.json` contains exactly 17 MA practice questions: no easy, five moderate, twelve hard. There are no independently authored inventory entries in that read. `independent-inventory.json` records that absence separately. The canonical example e-5014 is support, not an eighteenth practice question.
+
+Every practice question has one `selection` radio field, five bare math choices, and one correct answer. None has a blank, mixed fields, plot reference, image, or diagram. Preserve the explicit source “Calculate” versus trailing-equals prompts. Source-specific prompts, complete banks, correct designations, and solutions are recorded in `choice-ledger.json`; `source-replay.json` gives all 17 profile assignments and matches.
+
+Moderate has two Markdown/value backbones: `m-prefactor` (q-69476, q-69475, q-69477, q-73715), with a supplied numerator extracted before substitution; and `m-unit` (q-73716), with unit numerator and no extraction stage. The four prefactor banks are distinct profiles, even where their mathematical integrands coincide. All plots: none.
+
+Hard has five backbones: `h-prefactor` q-73717; `h-root-unit` q-114051 through q-114054 (four profiles); `h-root-prefactor` q-114055 and q-114056 (two profiles); `h-square-calculate-prefactor` q-114057; and `h-denominator` q-49519, q-49554, q-49555, q-73718 (four profiles). Rewriting the supplied absolute denominator is an operative stage. Radical coefficients have nonsquare radicands. The square Calculate prompt remains distinct from the trailing-equals prefactor template. All plots: none.
+
+The missing easy level is an explicitly authored direct substitution template based on e-5014. It uses the observed single-radio contract and five-choice algebraic bank. It introduces no new operator, shift, trigonometric identity, definite integration, or progression. Each easy question has the same direct-substitution workload.
+
+Lesson context is read through actual pointers: first step 65076 (Introduction) → 65077 (inverse sine KP64218) → 65078 (inverse tangent KP64219) → 65124 (this inverse secant KP64250) → 65079 (definite inverse-trig substitution KP64220) → 65182 (summary), with common prefix 175921860. Array order differs from pointer order. `topic/_next` lists prior topic dependencies Calculating Definite Integrals Using Substitution (48332) and Evaluating Expressions Containing Inverse Trigonometric Functions (50071). The canonical example uses u=5x and the standard 1/(|u|sqrt(u²−1)) primitive. Definite integrals and later topics are outside these variants.
