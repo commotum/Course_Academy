@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-162170",
+      "sequence_position": 13,
+      "problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR=\\{(x,y,z)\\,:\\,1\\le {y}^{2}-x\\le 2,\\,-1\\le y\\le 1,\\,1\\le z\\le e\\}.\n$$",
+      "worked_solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n1\\le {y}^{2}-x\\le 2,\\,-1\\le y\\le 1,\\,1\\le z\\le e,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu={y}^{2}-x,\\,v=y,\\,w=z.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}Δ & =\\{(u,v,w)\\,:\\,1\\le u\\le 2,\\,-1\\le v\\le 1,\\,1\\le w\\le e\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}-1 & 2y & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}| \\\\  & =-1.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}=-1.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{∭}_{R}dV & ={∭}_{Δ}1\\cdot |-1|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{1}^{2}{\\int }_{-1}^{1}{\\int }_{1}^{e}1\\,dw\\,dv\\,du \\\\  & ={\\int }_{1}^{2}du\\cdot {\\int }_{-1}^{1}dv\\cdot {\\int }_{1}^{e}dw \\\\  & =[u]_{u=1}^{u=2}\\cdot [v]_{v=-1}^{v=1}\\cdot [w]_{w=1}^{w=e} \\\\  & =(2-1)\\cdot (1-(-1))\\cdot (e-1) \\\\  & =2(e-1).\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14158136/observations/history-q-162170-ecc21f755bef41461738.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14158136",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14158136/observations/history-solution-q-162170-468985e31a387496b1fc.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "2e"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "1+e"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "2(e-1)"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "e"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q162170",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "2(e-1)",
+                "option": "d",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n1\\le {y}^{2}-x\\le 2,\\,-1\\le y\\le 1,\\,1\\le z\\le e,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu={y}^{2}-x,\\,v=y,\\,w=z.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}Δ & =\\{(u,v,w)\\,:\\,1\\le u\\le 2,\\,-1\\le v\\le 1,\\,1\\le w\\le e\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}-1 & 2y & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}| \\\\  & =-1.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}=-1.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{∭}_{R}dV & ={∭}_{Δ}1\\cdot |-1|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{1}^{2}{\\int }_{-1}^{1}{\\int }_{1}^{e}1\\,dw\\,dv\\,du \\\\  & ={\\int }_{1}^{2}du\\cdot {\\int }_{-1}^{1}dv\\cdot {\\int }_{1}^{e}dw \\\\  & =[u]_{u=1}^{u=2}\\cdot [v]_{v=-1}^{v=1}\\cdot [w]_{w=1}^{w=e} \\\\  & =(2-1)\\cdot (1-(-1))\\cdot (e-1) \\\\  & =2(e-1).\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14158136/observations/step-q162170-5778bde5717466e08f85.html"
+        }
+      }
+    ]
+  }
+}

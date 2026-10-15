@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-161889",
+      "sequence_position": 3,
+      "problem": "Consider the finite region $R$ in the $xyz$-space, given by\n\n$$\nR=\\{(x,y,z)\\,:\\,2\\le x-y\\le 3,\\,1\\le {x}^{2}-{y}^{2}\\le 4,\\,1\\le z\\le 2\\}.\n$$\n\nBy performing the change of variables\n\n$$\nu=x-y,\\,v={x}^{2}-{y}^{2}\\,w=3z,\n$$\n\nthe triple integral\n\n$$\n{∭}_{R}6z\\operatorname{ln}⁡(x-y)\\,dV\n$$\n\ncan be written in terms of $u,$ $v,$ and $w$ as",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo find the required integral, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=x-y,\\,v={x}^{2}-{y}^{2}\\,w=3z,\n$$\n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo find the required integral, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}Δ & =\\{(u,v,w)\\,:\\,2\\le u\\le 3,\\,1\\le v\\le 4,\\,3\\le w\\le 6\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & -1 & 0 \\\\ 2x & -2y & 0 \\\\ 0 & 0 & 3\\end{aligned}| \\\\  & =3|\\begin{aligned}1 & -1 \\\\ 2x & -2y\\end{aligned}| \\\\  & =3(-2y+2x) \\\\  & =6(x-y) \\\\  & =6u\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}=\\frac{1}{6u}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{∭}_{R}6z\\operatorname{ln}⁡(x-y)\\,dV & ={∭}_{Δ}2w\\operatorname{ln}⁡u\\cdot |-\\frac{1}{6u}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={∭}_{Δ}\\frac{w\\operatorname{ln}⁡u}{3u}\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{2}^{3}{\\int }_{1}^{4}{\\int }_{3}^{6}\\frac{w\\operatorname{ln}⁡u}{3u}\\,dw\\,dv\\,du\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14158136/observations/history-q-161889-0471f0b194992315ffac.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14158136",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14158136/observations/history-solution-q-161889-29893b3b7433e16fc8d5.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "{\\int }_{2}^{3}{\\int }_{1}^{4}{\\int }_{3}^{w}\\frac{w\\operatorname{ln}⁡v}{2v}\\,dw\\,dv\\,du"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "{\\int }_{2}^{3}{\\int }_{1}^{4}{\\int }_{1}^{2w}\\frac{w\\operatorname{ln}⁡u}{6u}\\,dw\\,dv\\,du"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "{\\int }_{2}^{3}{\\int }_{1}^{4}{\\int }_{3}^{6}\\frac{w\\operatorname{ln}⁡u}{3u}\\,dw\\,dv\\,du"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "{\\int }_{2}^{3}{\\int }_{1}^{4}{\\int }_{1}^{3w}\\frac{w\\operatorname{ln}⁡u}{6}\\,dw\\,dv\\,du"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "{\\int }_{2}^{3}{\\int }_{1}^{4}{\\int }_{2}^{2w}w\\operatorname{ln}⁡u\\,dw\\,dv\\,du"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q161889",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "{\\int }_{2}^{3}{\\int }_{1}^{4}{\\int }_{3}^{w}\\frac{w\\operatorname{ln}⁡v}{2v}\\,dw\\,dv\\,du",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo find the required integral, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=x-y,\\,v={x}^{2}-{y}^{2}\\,w=3z,\n$$\n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo find the required integral, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}Δ & =\\{(u,v,w)\\,:\\,2\\le u\\le 3,\\,1\\le v\\le 4,\\,3\\le w\\le 6\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & -1 & 0 \\\\ 2x & -2y & 0 \\\\ 0 & 0 & 3\\end{aligned}| \\\\  & =3|\\begin{aligned}1 & -1 \\\\ 2x & -2y\\end{aligned}| \\\\  & =3(-2y+2x) \\\\  & =6(x-y) \\\\  & =6u\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}=\\frac{1}{6u}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{∭}_{R}6z\\operatorname{ln}⁡(x-y)\\,dV & ={∭}_{Δ}2w\\operatorname{ln}⁡u\\cdot |-\\frac{1}{6u}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={∭}_{Δ}\\frac{w\\operatorname{ln}⁡u}{3u}\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{2}^{3}{\\int }_{1}^{4}{\\int }_{3}^{6}\\frac{w\\operatorname{ln}⁡u}{3u}\\,dw\\,dv\\,du\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14158136/observations/step-q161889-64a20d87f63c8f2b24d1.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a13396-e2a1-7733-b367-bb18a50ad83c",
+  "previous_failures": []
+}

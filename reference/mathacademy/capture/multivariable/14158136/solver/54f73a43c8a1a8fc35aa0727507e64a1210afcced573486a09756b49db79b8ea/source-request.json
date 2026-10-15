@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-39060",
+      "sequence_position": 12,
+      "problem": "Find the volume bounded by the region $R,$ given by\n\n$$\nR=\\{(x,y,z)\\,:\\,1\\le y\\le 2,\\,1\\le \\sqrt{y}+x\\le 2,\\,1\\le \\frac{1}{z+1}\\le 5\\}.\n$$",
+      "worked_solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∬}_{R}f(x,y,z)\\text{ }dA={∬}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n1\\le y\\le 2,\\,1\\le \\sqrt{y}+x\\le 2,\\,1\\le \\frac{1}{z+1}\\le 5,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=y,\\,v=\\sqrt{y}+x,\\,w=\\frac{1}{z+1}.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}Δ & =\\{(u,v,w)\\,:\\,1\\le u\\le 2,\\,1\\le v\\le 2,\\,1\\le w\\le 5\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}0 & 1 & 0 \\\\ 1 & \\frac{1}{2\\sqrt{y}} & 0 \\\\ 0 & 0 & -(z+1)^{-2}\\end{aligned}| \\\\  & =1(-1)^{1+2}|\\begin{aligned}1 & 0 \\\\ 0 & -(z+1)^{-2}\\end{aligned}| \\\\  & =-(-(z+1)^{-2}-0) \\\\  & =\\frac{1}{(z+1)^{2}} \\\\  & ={w}^{2}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}=\\frac{1}{{w}^{2}}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{∭}_{R}dV & ={∭}_{Δ}1\\cdot |\\frac{1}{{w}^{2}}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{1}^{2}{\\int }_{1}^{2}{\\int }_{1}^{5}{w}^{-2}\\,dw\\,dv\\,du \\\\  & ={\\int }_{1}^{2}du\\cdot {\\int }_{1}^{2}dv\\cdot {\\int }_{1}^{5}{w}^{-2}dw \\\\  & =[u]_{u=1}^{u=2}\\cdot [v]_{v=1}^{v=2}\\cdot [-{w}^{-1}]_{w=1}^{w=5} \\\\  & =(2-1)\\cdot (2-1)\\cdot (-\\frac{1}{5}+1) \\\\  & =\\frac{4}{5}.\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14158136/observations/history-q-39060-c425c5a1934c9cf41d87.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14158136",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14158136/observations/history-solution-q-39060-ca916a5ea1caf2de2177.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "4"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "\\frac{4}{5}"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "2"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "-\\frac{2}{5}"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q39060",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "4",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "Recall that the volume of $R$ can be found as \n\n$$\nV={∭}_{R}\\text{d}V.\n$$\n\nLet's define a transformation $T$ as follows:\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo compute the required volume, we can use the change of variables formula\n\n$$\n{∬}_{R}f(x,y,z)\\text{ }dA={∬}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nThe inequalities that define the region $R,$\n\n$$\n1\\le y\\le 2,\\,1\\le \\sqrt{y}+x\\le 2,\\,1\\le \\frac{1}{z+1}\\le 5,\n$$\n\nsuggest that we use the change of variables\n\n$$\nu=y,\\,v=\\sqrt{y}+x,\\,w=\\frac{1}{z+1}.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo compute the required volume, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}Δ & =\\{(u,v,w)\\,:\\,1\\le u\\le 2,\\,1\\le v\\le 2,\\,1\\le w\\le 5\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}0 & 1 & 0 \\\\ 1 & \\frac{1}{2\\sqrt{y}} & 0 \\\\ 0 & 0 & -(z+1)^{-2}\\end{aligned}| \\\\  & =1(-1)^{1+2}|\\begin{aligned}1 & 0 \\\\ 0 & -(z+1)^{-2}\\end{aligned}| \\\\  & =-(-(z+1)^{-2}-0) \\\\  & =\\frac{1}{(z+1)^{2}} \\\\  & ={w}^{2}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}=\\frac{1}{{w}^{2}}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{∭}_{R}dV & ={∭}_{Δ}1\\cdot |\\frac{1}{{w}^{2}}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{1}^{2}{\\int }_{1}^{2}{\\int }_{1}^{5}{w}^{-2}\\,dw\\,dv\\,du \\\\  & ={\\int }_{1}^{2}du\\cdot {\\int }_{1}^{2}dv\\cdot {\\int }_{1}^{5}{w}^{-2}dw \\\\  & =[u]_{u=1}^{u=2}\\cdot [v]_{v=1}^{v=2}\\cdot [-{w}^{-1}]_{w=1}^{w=5} \\\\  & =(2-1)\\cdot (2-1)\\cdot (-\\frac{1}{5}+1) \\\\  & =\\frac{4}{5}.\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14158136/observations/step-q39060-ec555000f756b827a75d.html"
+        }
+      }
+    ]
+  }
+}

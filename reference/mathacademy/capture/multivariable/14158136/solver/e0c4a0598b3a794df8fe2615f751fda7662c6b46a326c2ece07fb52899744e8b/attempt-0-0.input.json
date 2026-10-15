@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-161871",
+      "sequence_position": 5,
+      "problem": "Consider the finite region $R$ in the $xyz$-space, given by\n\n$$\nR=\\{(x,y,z)\\,:\\,1\\le x\\le 2,\\,0\\le xy\\le 2,\\,0\\le z\\le 1\\}.\n$$\n\nBy performing the change of variables\n\n$$\nu=x,\\,v=xy,\\,w=3z,\n$$\n\n \n\nthe triple integral\n\n$$\n{∭}_{R}({x}^{2}y+3xyz)\\,dV\n$$\n\ncan be written in terms of $u,$ $v,$ and $w$ as",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo find the required integral, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=x,\\,v=xy,\\,w=3z,\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo find the required integral, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}Δ & =\\{(u,v,w)\\,:\\,1\\le u\\le 2,\\,0\\le v\\le 2,\\,0\\le w\\le 3\\}.\\end{aligned}\n$$\n\n \n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 & 0 \\\\ y & x & 0 \\\\ 0 & 0 & 3\\end{aligned}| \\\\  & =3|\\begin{aligned}1 & 0 \\\\ y & x\\end{aligned}| \\\\  & =3(x-0) \\\\  & =3x \\\\  & =3u.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}=\\frac{1}{3u}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{∭}_{R}({x}^{2}y+3xyz)\\,dV & ={∭}_{Δ}(uv+vw)\\cdot |\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,du\\,dv\\,dw \\\\  & ={∭}_{Δ}(uv+vw)\\cdot |\\frac{1}{3u}|\\,du\\,dv\\,dw \\\\  & ={\\int }_{1}^{2}{\\int }_{0}^{2}{\\int }_{0}^{3}\\,\\frac{1}{3}(v+\\frac{vw}{u})\\,\\,dw\\,dv\\,du\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14158136/observations/history-q-161871-04e2bdbf377654979b3e.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14158136",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14158136/observations/history-solution-q-161871-b57910542210a22d1abf.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "{\\int }_{1}^{2}{\\int }_{0}^{2}{\\int }_{0}^{v}(\\frac{w}{u}+3vu)\\,dw\\,dv\\,du"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "{\\int }_{1}^{2}{\\int }_{0}^{2}{\\int }_{0}^{3}(\\frac{u}{3}+\\frac{vw}{u})\\,dw\\,dv\\,du"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "{\\int }_{1}^{2}{\\int }_{0}^{2}{\\int }_{0}^{3}\\frac{1}{3}(v+\\frac{vw}{u})\\,dw\\,dv\\,du"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "{\\int }_{1}^{2}{\\int }_{0}^{2}{\\int }_{0}^{3w}\\frac{1}{3}(u+\\frac{vw}{u})\\,dw\\,dv\\,du"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "{\\int }_{1}^{2}{\\int }_{0}^{2}{\\int }_{0}^{3w}\\frac{1}{3}(v+\\frac{vw}{u})\\,dw\\,dv\\,du"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q161871",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "{\\int }_{1}^{2}{\\int }_{0}^{2}{\\int }_{0}^{3}\\frac{1}{3}(v+\\frac{vw}{u})\\,dw\\,dv\\,du",
+                "option": "c",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo find the required integral, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=x,\\,v=xy,\\,w=3z,\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo find the required integral, we proceed in four steps:\n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}Δ & =\\{(u,v,w)\\,:\\,1\\le u\\le 2,\\,0\\le v\\le 2,\\,0\\le w\\le 3\\}.\\end{aligned}\n$$\n\n \n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 & 0 \\\\ y & x & 0 \\\\ 0 & 0 & 3\\end{aligned}| \\\\  & =3|\\begin{aligned}1 & 0 \\\\ y & x\\end{aligned}| \\\\  & =3(x-0) \\\\  & =3x \\\\  & =3u.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}=\\frac{1}{3u}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{∭}_{R}({x}^{2}y+3xyz)\\,dV & ={∭}_{Δ}(uv+vw)\\cdot |\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,du\\,dv\\,dw \\\\  & ={∭}_{Δ}(uv+vw)\\cdot |\\frac{1}{3u}|\\,du\\,dv\\,dw \\\\  & ={\\int }_{1}^{2}{\\int }_{0}^{2}{\\int }_{0}^{3}\\,\\frac{1}{3}(v+\\frac{vw}{u})\\,\\,dw\\,dv\\,du\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14158136/observations/step-q161871-b49bed64f5b065bd6ab3.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a13396-e2a1-7733-b367-bb18a50ad83c",
+  "previous_failures": []
+}

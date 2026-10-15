@@ -1,0 +1,34 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "e-12406",
+      "problem": "Consider the finite region $R$ in Cartesian $xyz$-space, given by\n\n$$\nR = \\big\\{ (x,y,z) \\: : \\:1 \\leq xy \\leq  2, \\: 1 \\leq y \\leq 2, \\: 0 \\leq z\\leq 1 \\big\\}.\n$$\n\nBy performing the change of variables\n\n$$\nu=xy,  \\qquad\nv=y, \\qquad\nw=2z,\n$$\n\n \n\nwrite down the triple integral\n\n$$\n\\displaystyle \n\\iiint\\limits_R 3xy^2+6yz \\, \\mathrm{d}V\n$$\n\nas a repeated integral in terms of $u,$ $v,$ and $w.$",
+      "worked_solution": "Let's define a transformation $\\mathbf{T}$ as follows:\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14158136/assets/b072e1c4e9b4eee6d79c46996af36a570696aa43b52009aed4c0242bbdbc174b.svg)\n\nThis transformation maps some region $\\Delta$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo find the required integral, we can use the change of variables formula\n\n$$\n\\iiint\\limits_{R} f(x,y,z) \\ \\mathrm{d}V = \\iiint\\limits_{\\Delta} \\ f(x(u,v,w), y(u,v,w), z(u,v,w)) \\: \\left| \\dfrac{\\partial (x, y, z)}{\\partial (u, v, w)} \\right|  \\: \\textrm{d}u \\textrm{d}v \\textrm{d}w\n$$\n\nwhere $\\dfrac{\\partial (x, y, z)}{\\partial (u, v, w)}$ is the Jacobian determinant corresponding to $\\mathbf{T}.$\n\nNote that the change of variables\n\n$$\nu=xy,  \\qquad\nv=y, \\qquad\nw=2z,\n$$\n\n \n\ngives us the *inverse* function $\\mathbf T^{-1},$ that is\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14158136/assets/43eda6a90b6650ff4e9fe8b73bb22126201c860e33060a256ff71761ff1530be.svg)\n\nTo find the required integral, we proceed in four steps:\n\n**Step 1**: Find $\\Delta,$ which is the image of $R$ under the action of $\\mathbf{T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}Δ & =\\{(u,v,w)\\,:\\,1\\le u\\le 2,\\,1\\le v\\le 2,\\,0\\le w\\le 2\\}.\\end{aligned}\n$$\n\n  \n\n**Step 2**: Compute the Jacobian determinant corresponding to $\\mathbf T^{-1}{:}$\n\nThe Jacobian determinant corresponding to $\\mathbf T^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}y & x & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 2\\end{aligned}| \\\\  & =2|\\begin{aligned}y & x \\\\ 0 & 1\\end{aligned}| \\\\  & =2(y-0) \\\\  & =2y \\\\  & =2v.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $\\mathbf T{:}$\n\nThe Jacobian determinant corresponding to $\\mathbf T$ is\n\n$$\n\\dfrac{\\partial (x, y, z)}{\\partial (u, v, w)} = \\left( \\dfrac{\\partial (u, v, w)}{\\partial (x, y, z)} \\right)^{-1} =\\dfrac{1}{2v}.\n$$\n\nNote that $\\dfrac{\\partial (x, y, z)}{\\partial (u, v, w)} \\neq 0$ everywhere inside $\\Delta.$ In other words, $\\mathbf{T}$ has no critical points inside $\\Delta.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{∭}_{R}3x{y}^{2}+6yz\\,dV & ={∭}_{Δ}(3uv+3vw)\\cdot |\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={∭}_{Δ}3v(u+w)\\cdot |\\frac{1}{2v}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{1}^{2}{\\int }_{1}^{2}{\\int }_{0}^{2}\\frac{3}{2}(u+w)\\,dw\\,dv\\,du\\end{aligned}\n$$",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14158136/observations/lesson-step-44576-52a9f9030d928d335914.html",
+      "source_url": "https://mathacademy.com/topics/4151",
+      "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14158136/observations/lesson-step-44576-52a9f9030d928d335914.png",
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14158136/assets/b072e1c4e9b4eee6d79c46996af36a570696aa43b52009aed4c0242bbdbc174b.svg",
+          "sha256": "b072e1c4e9b4eee6d79c46996af36a570696aa43b52009aed4c0242bbdbc174b",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 1,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14158136/assets/43eda6a90b6650ff4e9fe8b73bb22126201c860e33060a256ff71761ff1530be.svg",
+          "sha256": "43eda6a90b6650ff4e9fe8b73bb22126201c860e33060a256ff71761ff1530be",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        }
+      ]
+    }
+  },
+  "session_id": "01a13396-e2a1-7733-b367-bb18a50ad83c",
+  "previous_failures": [
+    "Agent answer fields do not match the current question"
+  ]
+}
