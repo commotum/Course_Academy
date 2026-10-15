@@ -1,5 +1,17 @@
 # Triple integral change-of-variables setup
 
+Current inventory version: `triple-setup-2`. Run `revalidate.py` for current
+source classification and mathematical/native grading checks, then `replenish.py`
+for locked, basis-guarded preparation, submission and exact readback. Current
+evidence lives in `reference/replenishment/`; the earlier documents below retain
+their basis-1356 historical scope. `validation-freeze.json` identifies version 2.
+
+Supported levels are easy (exp/log/cos2/sin) and moderate (product/sqrt). Current
+q-38941 rates the square-root family moderate, superseding its earlier authored
+hard assignment. Hard emits no learner content and retains an explicit five-item
+shortage. The seven newly captured banks have been classified; they are not
+claimed as newly implemented generator profiles. Source records are preserved.
+
 Frozen draft `triple-setup-1`, math basis1356. No database access, registration or writes.
 
 Run validation:

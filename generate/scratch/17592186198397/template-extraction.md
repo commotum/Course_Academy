@@ -1,5 +1,13 @@
 # Template extraction
 
+Version 2 note: the basis-2712 source audit moves the existing sqrt backbone to
+moderate and makes hard unsupported. The historical extraction below is retained
+with its original evidence. No new mathematical operation or bank recipe is
+introduced by that reassignment. Current newly captured profiles remain outside
+implemented replay coverage. `reference/replenishment/revalidation-review.md`
+shows the current supported families and `source-audit.json` records all 12
+source decisions. Neither source questions nor their learner history are edited.
+
 ## Stage1: individual source descriptions
 
 All sources show finite xyz-space constraints, supplied u/v/w coordinates and a change-of-variables setup request. Source exact number forms, TeX/Unicode spelling, all fields and complete prose are retained in source.json. Original component masks are in raw-templates.json. q-38941 uses positive square-root z, source rectangular u,v ranges1..2 and dependent original z≤uv. q-39054 uses familiar pi endpoints and a constant positive determinant2. q-161880 uses u=x+y,v=y-x,w=z, determinant2, and a polynomial-times-exponential integrand. q-39057 uses u=x²+y,v=2x+z,w=z, determinant-2, logarithm with positive argument, and originally inconsistent repeated limits. q-161879 uses u=x+3y,v=z-3y,w=z, determinant-3, two trigonometric argument substitutions. No source plots occur.

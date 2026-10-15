@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Triple integral change-of-variables SETUP only, frozen draft v1.
+"""Triple integral change-of-variables SETUP only, validated version 2.
 
 Read-only snapshot: math basis1356. Five raw evidence profiles preserve absent
 attributes and faulty mathematics; these are explicitly ineligible for learning.
 Normal easy serves every observed family with independent method-derived banks;
-moderate follows canonical variable Jacobian/product cancellation; hard follows
-the observed square-root coordinate with a dependent limit. No integral evaluation
+moderate follows canonical variable Jacobian/product cancellation or the observed
+square-root coordinate with a dependent limit. Hard is currently unsupported.
+No integral evaluation
 is requested. Full integrals are checked for value ambiguity before publication.
 All APIs accept explicit parameters without silent mutation. No database writes.
 """
@@ -14,13 +15,14 @@ from pathlib import Path
 import sympy as s
 ROOT=Path(__file__).resolve().parent
 EVIDENCE=ROOT/'17592186198397'
-VERSION='triple-setup-1'
+VERSION='triple-setup-2'
 CAPTURE=json.loads((EVIDENCE/'source.json').read_text())
 KP=CAPTURE['record']; KP_ID=KP[':db/id']
 X,Y,Z=s.symbols('x y z', real=True)
 U,V,W=s.symbols('u v w', real=True)
 SOURCE_QUESTIONS=KP[':knowledge-point/questions']
-FAMILIES={'easy':('exp','log','cos2','sin'), 'moderate':('product',), 'hard':('sqrt',)}
+FAMILIES={'easy':('exp','log','cos2','sin'), 'moderate':('product','sqrt')}
+UNSUPPORTED_LEVELS={'hard':'Current source q-38941 rates the dependent square-root setup moderate. No source-grounded harder setup backbone has been validated; five hard questions remain unavailable.'}
 TEMPLATES={a:level for level,aa in FAMILIES.items() for a in aa}
 RAW_TEMPLATES=json.loads((EVIDENCE/'raw-templates.json').read_text()) if (EVIDENCE/'raw-templates.json').exists() else {}
 
@@ -73,13 +75,13 @@ def parameters(level,template,rng):
 
 def derive(level,t,p):
  """Independent exact model; domain guards also apply to explicit API inputs."""
- required={'easy':{'a','c','height'},'moderate':{'a','c','d','sign','height'},'hard':{'a','c','upper'}}[level]
+ required={'a','c','upper'} if t=='sqrt' else {'a','c','d','sign','height'} if t=='product' else {'a','c','height'}
  if set(p)!=required:raise ValueError('Expected parameters '+str(sorted(required)))
  if any(type(v)!=int for v in p.values()):raise ValueError('integer parameters required')
  if not 1<=p['c']<=4:raise ValueError('c1..4')
  if level=='easy' and (not 2<=p['a']<=5 or not 2<=p['height']<=5):raise ValueError('easy a2..5, height2..5')
- if level=='moderate' and (not 2<=p['a']<=4 or not 1<=p['d']<=4 or p['sign'] not in (-1,1) or not 1<=p['height']<=3):raise ValueError('moderate bounds')
- if level=='hard' and (not 1<=p['a']<=3 or not 2<=p['upper']<=4):raise ValueError('hard bounds')
+ if t=='product' and (not 2<=p['a']<=4 or not 1<=p['d']<=4 or p['sign'] not in (-1,1) or not 1<=p['height']<=3):raise ValueError('product bounds')
+ if t=='sqrt' and (not 1<=p['a']<=3 or not 2<=p['upper']<=4):raise ValueError('sqrt bounds')
  a,c=p['a'],p['c']
  if t=='exp':
   coords=(X+a*Y,Y-X,Z);inv=((U-a*V)/(a+1),(U+V)/(a+1),W)
@@ -179,11 +181,11 @@ def finish(q,f,vals,correct,t,p,profile,seed,evidence_only=False):
  return {'knowledge_point':{'db_id':KP_ID,'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'template':t,'parameters':p,'seed':seed,'bank_profile':profile,'source':{k:CAPTURE[k] for k in ('database','basis','lineage')},'evidence_only':evidence_only,'eligible_for_learning':not evidence_only,'mathematical_fingerprint':digest([t,taskp]),'content_identity':ident,'python':sys.version.split()[0],'sympy':s.__version__}}
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
- if level not in FAMILIES:raise ValueError('difficulty')
  if field_type not in (None,'radio'):raise ValueError('only observed radio supported')
  if profile=='raw':
   if template not in RAW_TEMPLATES:raise ValueError('raw source template required')
   return raw_generate(template,{'scale':1,'height':RAW_TEMPLATES[template]['height']} if parameters is None else parameters,seed)
+ if level not in FAMILIES:raise ValueError(UNSUPPORTED_LEVELS.get(level,'difficulty'))
  if profile not in (None,'method'):raise ValueError('profile raw or method')
  rng=random.Random(seed);t=template or rng.choice(FAMILIES[level])
  if t not in FAMILIES[level]:raise ValueError('template difficulty mismatch')
@@ -200,11 +202,11 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
 
 # EASY: supplied repeated-integral limits; direct substitutions, constant Jacobian.
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('easy',seed,template,field_type,parameters,profile)
-# MODERATE (authored): product coordinate with fixed nonzero y sign, reciprocal
-# variable Jacobian and two nonzero integrand terms; full setup, no evaluation.
+# MODERATE: product coordinate with a fixed y sign, or the observed square-root
+# coordinate with a dependent bound; full setup, no evaluation.
 def generate_moderate(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('moderate',seed,template,field_type,parameters,profile)
-# HARD (authored label for observed unrated family): square-root third coordinate,
-# a dependent bound and variable Jacobian; same setup demand at every parameter.
+# HARD: unsupported after current source difficulty evidence; raw historical
+# replay remains available, but no new hard learner questions are emitted.
 def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('hard',seed,template,field_type,parameters,profile)
 
 def markdown(r):

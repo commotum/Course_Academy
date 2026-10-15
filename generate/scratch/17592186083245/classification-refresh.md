@@ -1,0 +1,20 @@
+# Current-source classification and replenishment
+
+The original package freezes math basis 1356, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. The current read at basis 2714 contains 12 practice questions: seven moderate, four hard, and one unrated incomplete question. The eight original prompts, worked solutions, complete banks and difficulty designations are checked against the current database during preparation and again under the application lock. Exact current source captures and mathematical checks are retained in `reference/replenishment/*/source-refresh.json` and `kp.edn`.
+
+The five original moderate radio templates, two original hard two-blank templates, and incomplete unrated template retain their classification in `classification.md`. Four newly captured templates are distinct from those families:
+
+| Source | Difficulty | Response | Mathematical backbone | Plot |
+|---|---|---|---|---|
+| q-122943 / 17592186527922 | hard | radio, five coordinate tuples | Product derivatives of x=4t ln(t/π), y=t cos t at t=π; normal at (0,−π), slope 4; x-intercept (π/4,0). | none |
+| q-350393 / 17592186527965 | hard | blanks field-2 then field-1 | Ellipse x=3 cos t, y=sin t at π/6; trigonometric ratio and exact radicals; normal slope √3; y-intercept (0,−4). | none |
+| q-350384 / 17592186527972 | moderate | blank field-1, RHS of y= | Polynomial x=2t⁵−4t³, y=t² at t=1; normal at (−2,1), slope 1; exact RHS x+3. | none |
+| q-122928 / 17592186528013 | moderate | radio, five whole equations | Product/log derivatives of x=4 ln t, y=2t ln t at t=e; normal slope −1/e; y=−x/e+(2e²+4)/e. | none |
+
+Each radio source is a separate observed whole-bank profile. The current capture retains every literal option and correct designation. These four templates are classified and independently checked for inventory counting, but excluded from generator sampling; no source-bank replay or inferred distractor fidelity is claimed for them. The existing generator's supported families provide sufficient distinct variants. The new moderate RHS blank is not merged with whole-equation radio responses. The ellipse and logarithmic/trigonometric intercept chains remain separate from the polynomial intercept templates.
+
+All four added sources have complete mathematically correct keys. q-122928 incorrectly calls the target a tangent once in the solution prose, while the prompt, negative reciprocal and computed line consistently specify the normal. This source is preserved. The historical grading harness treated “Do not round” as a form restriction; the rebuilt current harness accepts the exact equivalents. Both canonical and equivalent entries are tested against the current learner grader. Generated coordinate blanks retain the package's “Give exact answers” wording.
+
+Easy remains an explicitly authored supported extension: linear x and quadratic y at ±1, with one-term derivatives, nonzero finite tangent slope, negative reciprocal and point-slope form. It is not an observed easy source band. The generator's finite domains and sampling restrictions remain in `finite-domain.json` and `template-extraction.md`. No new plots are required for generated output. The incomplete unrated source remains excluded from available inventory; its generated textual hard completion has independent keys and solution.
+
+Replenishment counts only fresh, unreserved, mathematically validated, engine-gradable distinct tasks, excluding the canonical example. Semantic fingerprints use the implicit polynomial curve and assessed point where possible, otherwise exact displayed functions and parameter, plus the requested normal/intercept role. Seed, identities, choice order and difficulty labels are excluded. The additive transaction is prepared and previewed under `api.lock`, uses the configured `:application/ca-engine` contributor and a basis guard, registers the generator identity and script, and preserves every preexisting question and learner fact. Exact requests, receipts and readback checks are retained under `reference/replenishment/`.

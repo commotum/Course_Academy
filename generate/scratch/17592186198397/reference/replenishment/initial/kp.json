@@ -1,0 +1,865 @@
+{
+  ":db/id": 17592186198397,
+  ":knowledge-point/canonical-example": {
+    ":db/id": 17592186198039,
+    ":question/id": "d123b7fd-5a13-50c0-aa8c-dc196f4b1bcd",
+    ":question/math-academy-id": "e-12406",
+    ":question/problem": "Consider the finite region $R$ in Cartesian $xyz$-space, given by\n\n$$\nR = \\big\\{ (x,y,z) \\: : \\:1 \\leq xy \\leq  2, \\: 1 \\leq y \\leq 2, \\: 0 \\leq z\\leq 1 \\big\\}.\n$$\n\nBy performing the change of variables\n\n$$\nu=xy,  \\qquad\nv=y, \\qquad\nw=2z,\n$$\n\n \n\nwrite down the triple integral\n\n$$\n\\displaystyle \n\\iiint\\limits_R 3xy^2+6yz \\, \\mathrm{d}V\n$$\n\nas a repeated integral in terms of $u,$ $v,$ and $w.$",
+    ":question/worked-solution": "Let's define a transformation $\\mathbf{T}$ as follows:\n\n![](images/b0/b072e1c4e9b4eee6d79c46996af36a570696aa43b52009aed4c0242bbdbc174b.svg)\n\nThis transformation maps some region $\\Delta$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo find the required integral, we can use the change of variables formula\n\n$$\n\\iiint\\limits_{R} f(x,y,z) \\ \\mathrm{d}V = \\iiint\\limits_{\\Delta} \\ f(x(u,v,w), y(u,v,w), z(u,v,w)) \\: \\left| \\dfrac{\\partial (x, y, z)}{\\partial (u, v, w)} \\right|  \\: \\textrm{d}u \\textrm{d}v \\textrm{d}w\n$$\n\nwhere $\\dfrac{\\partial (x, y, z)}{\\partial (u, v, w)}$ is the Jacobian determinant corresponding to $\\mathbf{T}.$\n\nNote that the change of variables\n\n$$\nu=xy,  \\qquad\nv=y, \\qquad\nw=2z,\n$$\n\n \n\ngives us the *inverse* function $\\mathbf T^{-1},$ that is\n\n![](images/43/43eda6a90b6650ff4e9fe8b73bb22126201c860e33060a256ff71761ff1530be.svg)\n\nTo find the required integral, we proceed in four steps:\n\n**Step 1**: Find $\\Delta,$ which is the image of $R$ under the action of $\\mathbf{T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v,w)\\,:\\,1\\le u\\le 2,\\,1\\le v\\le 2,\\,0\\le w\\le 2\\}.\\end{aligned}\n$$\n\n  \n\n**Step 2**: Compute the Jacobian determinant corresponding to $\\mathbf T^{-1}{:}$\n\nThe Jacobian determinant corresponding to $\\mathbf T^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v,w)}{\u2202(x,y,z)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} & \\frac{\u2202u}{\u2202z} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y} & \\frac{\u2202v}{\u2202z} \\\\ \\frac{\u2202w}{\u2202x} & \\frac{\u2202w}{\u2202y} & \\frac{\u2202w}{\u2202z}\\end{aligned}| \\\\  & =|\\begin{aligned}y & x & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 2\\end{aligned}| \\\\  & =2|\\begin{aligned}y & x \\\\ 0 & 1\\end{aligned}| \\\\  & =2(y-0) \\\\  & =2y \\\\  & =2v.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $\\mathbf T{:}$\n\nThe Jacobian determinant corresponding to $\\mathbf T$ is\n\n$$\n\\dfrac{\\partial (x, y, z)}{\\partial (u, v, w)} = \\left( \\dfrac{\\partial (u, v, w)}{\\partial (x, y, z)} \\right)^{-1} =\\dfrac{1}{2v}.\n$$\n\nNote that $\\dfrac{\\partial (x, y, z)}{\\partial (u, v, w)} \\neq 0$ everywhere inside $\\Delta.$ In other words, $\\mathbf{T}$ has no critical points inside $\\Delta.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{\u222d}_{R}3x{y}^{2}+6yz\\,dV & ={\u222d}_{\u0394}(3uv+3vw)\\cdot |\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\u222d}_{\u0394}3v(u+w)\\cdot |\\frac{1}{2v}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{1}^{2}{\\int }_{1}^{2}{\\int }_{0}^{2}\\frac{3}{2}(u+w)\\,dw\\,dv\\,du\\end{aligned}\n$$"
+  },
+  ":knowledge-point/id": "a898f345-9210-5976-9a42-f415a0e7eaf5",
+  ":knowledge-point/key-prerequisites": [
+    {
+      ":db/id": 17592186048839
+    },
+    {
+      ":db/id": 17592186049530
+    },
+    {
+      ":db/id": 17592186050482
+    }
+  ],
+  ":knowledge-point/questions": [
+    {
+      ":db/id": 17592186198959,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "04edc689-9e29-5c9b-8da2-da4420287986",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{1}^{2}{\\int }_{1}^{uv}3{w}^{2}\\,dw\\,dv\\,du",
+              ":db/id": 17592186498740
+            },
+            {
+              ":answer/id": "314e6482-a456-5bda-8904-887833458d85",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{1}^{2}{\\int }_{1}^{2}3\\sqrt{w}\\,dw\\,dv\\,du",
+              ":db/id": 17592186498844
+            },
+            {
+              ":answer/id": "57cc1828-6342-5346-b05d-7d143db10ddf",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{1}^{2}{\\int }_{1}^{uv}3\\sqrt{w}\\,dw\\,dv\\,du",
+              ":db/id": 17592186498931
+            },
+            {
+              ":answer/id": "9156d344-2302-5c4e-b0e7-6f7c95dca531",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{1}^{2}{\\int }_{1}^{2}3{w}^{2}\\,dw\\,dv\\,du",
+              ":db/id": 17592186499047
+            },
+            {
+              ":answer/id": "cd799ece-9c4a-56a0-b053-cc390590f85c",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{1}^{2}{\\int }_{1}^{u+v}3w\\,dw\\,dv\\,du",
+              ":db/id": 17592186499183
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "04edc689-9e29-5c9b-8da2-da4420287986",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "{\\int }_{1}^{2}{\\int }_{1}^{2}{\\int }_{1}^{uv}3{w}^{2}\\,dw\\,dv\\,du",
+            ":db/id": 17592186498740
+          },
+          ":answer-field/id": "fbe99af2-8c2c-533c-80a0-ca42ec737c5e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186197624
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/moderate"
+      },
+      ":question/id": "96fa59d6-c144-5393-a4a7-7b8198eb987c",
+      ":question/math-academy-id": "q-38941",
+      ":question/problem": "Consider the finite region $R$ in the $xyz$-space, given by\n\n$$\nR=\\{(x,y,z)\\,:\\,1\\le x+y\\le 2,\\,1\\le x-y\\le 2,\\,1\\le z\\le (x-y)(x+y)\\}.\n$$\n\nBy performing the change of variables\n\n$$\nu=x+y,\\,v=x-y,\\,w=\\sqrt{z},\n$$\n\nthe triple integral\n\n$$\n{\u222d}_{R}3\\sqrt{z}\\,dV\n$$\n\ncan be written in terms of $u,$ $v,$ and $w$ as",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo find the required integral, we can use the change of variables formula\n\n$$\n{\u222d}_{R}f(x,y,z)\\text{\u00a0}dV={\u222d}_{\u0394}\\text{\u00a0}f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=x+y,\\,v=x-y,\\,w=\\sqrt{z}\n$$\n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}\\to \\begin{bmatrix}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{bmatrix}.\n$$\n\nTo find the required integral, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v,w)\\,:\\,1\\le u\\le 2,\\,1\\le v\\le 2,\\,1\\le {w}^{2}\\le uv\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v,w)}{\u2202(x,y,z)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} & \\frac{\u2202u}{\u2202z} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y} & \\frac{\u2202v}{\u2202z} \\\\ \\frac{\u2202w}{\u2202x} & \\frac{\u2202w}{\u2202y} & \\frac{\u2202w}{\u2202z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 1 & 0 \\\\ 1 & -1 & 0 \\\\ 0 & 0 & \\frac{1}{2\\sqrt{z}}\\end{vmatrix} \\\\  & =\\frac{1}{2\\sqrt{z}}(-1)^{3+3}\\begin{vmatrix}1 & 1 \\\\ 1 & -1\\end{vmatrix} \\\\  & =\\frac{1}{2\\sqrt{z}}(-1-1) \\\\  & =-\\frac{1}{\\sqrt{z}} \\\\  & =-\\frac{1}{w}\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1}=-w.\n$$\n\nNote that $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{\u222d}_{R}3\\sqrt{z}\\,dV & ={\u222d}_{\u0394}3w\\cdot |-w|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\u222d}_{\u0394}3{w}^{2}\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{1}^{2}{\\int }_{1}^{2}{\\int }_{1}^{uv}3{w}^{2}\\,dw\\,dv\\,du\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186198963,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "118c0a6d-2d86-5402-ab17-e9a5a70e791e",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "3\\operatorname{sin}\u2061u\\operatorname{cos}\u2061v",
+              ":db/id": 17592186481820
+            },
+            {
+              ":answer/id": "1a807e54-a4b6-5ff5-bbcc-a7cd1282fba2",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\operatorname{sin}\u2061u\\operatorname{cos}\u2061v",
+              ":db/id": 17592186481845
+            },
+            {
+              ":answer/id": "8da2e5ae-0945-59a5-8ed1-21ba6659c06f",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{1}{2}\\operatorname{sin}\u2061u\\operatorname{cos}\u2061v",
+              ":db/id": 17592186482107
+            },
+            {
+              ":answer/id": "97ba92a3-dcbc-53fc-b77a-c4ddb79e17c9",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "2\\operatorname{sin}\u2061u\\operatorname{cos}\u2061v",
+              ":db/id": 17592186482131
+            },
+            {
+              ":answer/id": "feda8ec9-58b4-5dda-999b-6d6a16d95a6a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{1}{3}\\operatorname{sin}\u2061u\\operatorname{cos}\u2061v",
+              ":db/id": 17592186482377
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "8da2e5ae-0945-59a5-8ed1-21ba6659c06f",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\frac{1}{2}\\operatorname{sin}\u2061u\\operatorname{cos}\u2061v",
+            ":db/id": 17592186482107
+          },
+          ":answer-field/id": "92bb2c37-88bf-542c-b72c-3da1ea32bcd2",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186197648
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/easy"
+      },
+      ":question/id": "9d27a7ac-3737-5071-b997-af83c998bd7d",
+      ":question/math-academy-id": "q-39054",
+      ":question/problem": "Consider the finite region $R$ in the $xyz$-space, given by\n\n$$\nR=\\{(x,y,z)\\,:\\,\\frac{3\\pi }{4}\\le 2x+y\\le \\pi ,\\,0\\le y+z\\le \\frac{\\pi }{2},\\,-1\\le z\\le 1\\}.\n$$\n\nGiven the change of variables\n\n$$\nu=2x+y,\\,v=y+z,\\,w=z,\n$$\n\nwhich of the following could be the missing part of the expression below?\n\n$$\n{\u222d}_{R}\\operatorname{sin}\u2061(2x+y)\\operatorname{cos}\u2061(y+z)\\,dV={\\int }_{3\\pi /4}^{\\pi }{\\int }_{0}^{\\pi /2}{\\int }_{-1}^{1}\\bbox[3pt,border: 1pt solid black]{\\phantom{AAAAAA}}\\,dw\\,dv\\,du\n$$",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo find the required integral, we can use the change of variables formula\n\n$$\n{\u222d}_{R}f(x,y,z)\\text{\u00a0}dV={\u222d}_{\u0394}\\text{\u00a0}f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=2x+y,\\,v=y+z,\\,w=z\n$$\n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}\\to \\begin{bmatrix}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{bmatrix}.\n$$\n\nTo find the required integral, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v,w)\\,:\\,\\frac{3\\pi }{4}\\le u\\le \\pi ,\\,0\\le v\\le \\frac{\\pi }{2},\\,-1\\le w\\le 1\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v,w)}{\u2202(x,y,z)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} & \\frac{\u2202u}{\u2202z} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y} & \\frac{\u2202v}{\u2202z} \\\\ \\frac{\u2202w}{\u2202x} & \\frac{\u2202w}{\u2202y} & \\frac{\u2202w}{\u2202z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}2 & 1 & 0 \\\\ 0 & 1 & 1 \\\\ 0 & 0 & 1\\end{vmatrix} \\\\  & =2\\begin{vmatrix}1 & 1 \\\\ 0 & 1\\end{vmatrix} \\\\  & =2(1-0) \\\\  & =2.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1}=\\frac{1}{2}.\n$$\n\nNote that $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{\u222d}_{R}\\operatorname{sin}\u2061(2x+y)\\operatorname{cos}\u2061(y+z)\\,dV & ={\u222d}_{\u0394}\\operatorname{sin}\u2061u\\operatorname{cos}\u2061v\\cdot |\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\u222d}_{\u0394}\\operatorname{sin}\u2061u\\operatorname{cos}\u2061v\\cdot |\\frac{1}{2}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{3\\pi /4}^{\\pi }{\\int }_{0}^{\\pi /2}{\\int }_{-1}^{1}\\,\\frac{1}{2}\\operatorname{sin}\u2061u\\operatorname{cos}\u2061v\\,\\,dw\\,dv\\,du\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186374083,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "19590723-9dbc-594f-9f4e-6ca0160553fe",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{{e}^{u}}{2}",
+              ":db/id": 17592186374085
+            },
+            {
+              ":answer/id": "e319ca87-b89a-5147-977c-a329bf0ff49e",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "u{e}^{v}",
+              ":db/id": 17592186374086
+            },
+            {
+              ":answer/id": "e89988d6-d0a3-55a0-b505-58a6138e15f0",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{v{e}^{u}}{2}",
+              ":db/id": 17592186374087
+            },
+            {
+              ":answer/id": "26fa2b15-0257-541e-aadc-bc6d9526fdc6",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{{e}^{v}}{2}",
+              ":db/id": 17592186374088
+            },
+            {
+              ":answer/id": "fbfe48d4-fab5-5337-a025-f32c4db8dd7f",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "2u{e}^{v}",
+              ":db/id": 17592186374089
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "e319ca87-b89a-5147-977c-a329bf0ff49e",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "u{e}^{v}",
+            ":db/id": 17592186374086
+          },
+          ":answer-field/id": "9448f758-7aaf-5272-b5f6-88f1b32ee8d2",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186374084
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/easy"
+      },
+      ":question/id": "2efc4cf1-75d6-520b-94c1-d854f8fd8b64",
+      ":question/math-academy-id": "q-161880",
+      ":question/problem": "Consider the finite region $R$ in the $xyz$-space, given by\n\n$$\nR={(x,y,z)\\,:\\,1\\le x+y\\le 2,\\,0\\le y-x\\le 1,\\,0\\le z\\le 3}.\n$$\n\nGiven the change of variables\n\n$$\nu=x+y,\\,v=y-x,\\,w=z,\n$$\n\nwhich of the following could be the missing part of the expression below?\n\n$$\n{\u222d}_{R}2(x+y){e}^{y-x}\\,dV={\\int }_{1}^{2}{\\int }_{0}^{1}{\\int }_{0}^{3}\\,dw\\,dv\\,du\n$$",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo find the required integral, we can use the change of variables formula\n\n$$\n{\u222d}_{R}f(x,y,z)\\text{\u00a0}dV={\u222d}_{\u0394}\\text{\u00a0}f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=x+y,\\,v=y-x,\\,w=z\n$$\n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}\\to \\begin{bmatrix}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{bmatrix}.\n$$\n\nTo find the required integral, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}\u0394 & ={(u,v,w)\\,:\\,0\\le u\\le 1,\\,0\\le v\\le 1,\\,0\\le w\\le 3}.\\end{aligned}\n$$\n\n   \n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v,w)}{\u2202(x,y,z)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} & \\frac{\u2202u}{\u2202z} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y} & \\frac{\u2202v}{\u2202z} \\\\ \\frac{\u2202w}{\u2202x} & \\frac{\u2202w}{\u2202y} & \\frac{\u2202w}{\u2202z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 1 & 0 \\\\ -1 & 1 & 0 \\\\ 0 & 0 & 1\\end{vmatrix} \\\\  & =1\\begin{vmatrix}1 & 1 \\\\ -1 & 1\\end{vmatrix} \\\\  & =1(1+1) \\\\  & =2.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1}=\\frac{1}{2}.\n$$\n\nNote that $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{\u222d}_{R}2(x+y){e}^{y-x}\\,dV & ={\u222d}_{\u0394}2u{e}^{v}\\cdot |\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\u222d}_{\u0394}2u{e}^{v}\\cdot |\\frac{1}{2}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{1}^{2}{\\int }_{0}^{1}{\\int }_{0}^{3}\\,u{e}^{v}\\,\\,dw\\,dv\\,du\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186375123,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e650b073-7e42-5a29-a5f0-49b40ec48ce8",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{1}{3}v\\operatorname{ln}\u2061u",
+              ":db/id": 17592186375125
+            },
+            {
+              ":answer/id": "5769b11c-c825-5eeb-8948-b8c15db36333",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{1}{2}v\\operatorname{ln}\u2061u",
+              ":db/id": 17592186375126
+            },
+            {
+              ":answer/id": "e83ba63d-1a5b-5b95-80a3-c20f0bf16584",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "u\\operatorname{ln}\u2061v",
+              ":db/id": 17592186375127
+            },
+            {
+              ":answer/id": "2be95ca7-c78a-5b21-980c-e49c00d94791",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "2u\\operatorname{ln}\u2061v",
+              ":db/id": 17592186375128
+            },
+            {
+              ":answer/id": "976dc3c1-b29e-52db-a43c-419b89323c0e",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "3v\\operatorname{ln}\u2061u",
+              ":db/id": 17592186375129
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "5769b11c-c825-5eeb-8948-b8c15db36333",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\frac{1}{2}v\\operatorname{ln}\u2061u",
+            ":db/id": 17592186375126
+          },
+          ":answer-field/id": "e86f996d-8724-5990-98a1-29212aad3144",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186375124
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/easy"
+      },
+      ":question/id": "8c4bdde5-7a56-510d-ac15-d76aed6084be",
+      ":question/math-academy-id": "q-39057",
+      ":question/problem": "Consider the finite region $R$ in the $xyz$-space, given by \n\n$$\nR={(x,y,z)\\,:\\,1\\le {x}^{2}+y\\le 2,\\,-1\\le x\\le 1,\\,1\\le z\\le 4}.\n$$\n\n \n\nGiven the change of variables\n\n$$\nu={x}^{2}+y,\\,v=2x+z,\\,w=z,\n$$\n\nwhich of the following could be the missing part of the expression below?\n\n$$\n{\u222d}_{R}(2x+z)\\operatorname{ln}\u2061({x}^{2}+y)\\,dV={\\int }_{1}^{2}{\\int }_{-1}^{6}{\\int }_{1}^{4}\\,dw\\,dv\\,du\n$$",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo find the required integral, we can use the change of variables formula\n\n$$\n{\u222d}_{R}f(x,y,z)\\text{\u00a0}dV={\u222d}_{\u0394}\\text{\u00a0}f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}$ is the Jacobian determinant corresponding to $T.$ \n\nNote that the change of variables\n\n$$\nu={x}^{2}+y,\\,v=2x+z,\\,w=z,\n$$\n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}\\to \\begin{bmatrix}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{bmatrix}.\n$$\n\nTo find the required integral, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}\u0394 & ={(u,v,w)\\,:\\,1\\le u\\le 2,\\,-1\\le v\\le 6,\\,1\\le w\\le 4}.\\end{aligned}\n$$\n\n \n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$ \n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v,w)}{\u2202(x,y,z)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} & \\frac{\u2202u}{\u2202z} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y} & \\frac{\u2202v}{\u2202z} \\\\ \\frac{\u2202w}{\u2202x} & \\frac{\u2202w}{\u2202y} & \\frac{\u2202w}{\u2202z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}2x & 1 & 0 \\\\ 2 & 0 & 1 \\\\ 0 & 0 & 1\\end{vmatrix} \\\\  & =-\\begin{vmatrix}2 & 1 \\\\ 0 & 1\\end{vmatrix} \\\\  & =-(2-0) \\\\  & =-2.\\end{aligned}\n$$\n\n \n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1}=-\\frac{1}{2}.\n$$\n\nNote that $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{\u222d}_{R}(2x+z)\\operatorname{ln}\u2061({x}^{2}+y)\\,dV & ={\u222d}_{\u0394}\\operatorname{sin}\u2061u\\operatorname{cos}\u2061v\\cdot |\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\u222d}_{\u0394}v\\operatorname{ln}\u2061u\\cdot |-\\frac{1}{2}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{1}^{2}{\\int }_{-1}^{6}{\\int }_{1}^{4}\\,\\frac{1}{2}v\\operatorname{ln}\u2061u\\,\\,dw\\,dv\\,du\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186401302,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9e70215a-59ba-5fc4-8869-08fd079debf2",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{1}{3}{cos}^{2}\u2061(u+v)\\operatorname{cos}\u2061v",
+              ":db/id": 17592186401304
+            },
+            {
+              ":answer/id": "2e6baa46-2362-5360-8c5f-7031d62e1411",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{1}{2}{cos}^{2}\u2061v\\operatorname{cos}\u2061v",
+              ":db/id": 17592186401305
+            },
+            {
+              ":answer/id": "7adad8b8-d3ef-52ef-b487-e4018ac1507b",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{1}{2}{cos}^{2}\u2061(u-v)\\operatorname{cos}\u2061v",
+              ":db/id": 17592186401306
+            },
+            {
+              ":answer/id": "06bed278-63d1-5662-b5c3-13bc65e1ffc5",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{1}{3}{cos}^{2}\u2061(u)\\operatorname{cos}\u2061v",
+              ":db/id": 17592186401307
+            },
+            {
+              ":answer/id": "03678aa6-e1ae-5bec-8d2a-faf8e1de8ec2",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{1}{4}{cos}^{2}\u2061(uv)\\operatorname{cos}\u2061v-u",
+              ":db/id": 17592186401308
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "9e70215a-59ba-5fc4-8869-08fd079debf2",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\frac{1}{3}{cos}^{2}\u2061(u+v)\\operatorname{cos}\u2061v",
+            ":db/id": 17592186401304
+          },
+          ":answer-field/id": "6b627816-1293-53a9-a8e8-93bf2fb0fcef",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186401303
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/easy"
+      },
+      ":question/id": "4004275e-59e4-54d2-bbaa-29203ac29308",
+      ":question/math-academy-id": "q-161879",
+      ":question/problem": "Consider the finite region $R$ in the $xyz$-space, given by\n\n$$\nR={(x,y,z)\\,:\\,0\\le x+3y\\le \\frac{\\pi }{2},\\,0\\le z-3y\\le \\frac{\\pi }{2},\\,0\\le z\\le 2}.\n$$\n\nGiven the change of variables\n\n$$\nu=x+3y,\\,v=z-3y,\\,w=z,\n$$\n\nwhich of the following could be the missing part of the expression below?\n\n$$\n{\u222d}_{R}{cos}^{2}\u2061(x+z)\\operatorname{cos}\u2061(z-3y)\\,dV={\\int }_{0}^{\\pi /2}{\\int }_{0}^{\\pi /2}{\\int }_{0}^{2}\\,dw\\,dv\\,du\n$$",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo find the required integral, we can use the change of variables formula\n\n$$\n{\u222d}_{R}f(x,y,z)\\text{\u00a0}dV={\u222d}_{\u0394}\\text{\u00a0}f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=x+3y,\\,v=z-3y,\\,w=z\n$$\n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}\\to \\begin{bmatrix}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{bmatrix}.\n$$\n\nTo find the required integral, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}\u0394 & ={(x,y,z)\\,:\\,0\\le u\\le \\frac{\\pi }{2},\\,0\\le v\\le \\frac{\\pi }{2},\\,0\\le w\\le 2}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v,w)}{\u2202(x,y,z)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} & \\frac{\u2202u}{\u2202z} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y} & \\frac{\u2202v}{\u2202z} \\\\ \\frac{\u2202w}{\u2202x} & \\frac{\u2202w}{\u2202y} & \\frac{\u2202w}{\u2202z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 3 & 0 \\\\ 0 & -3 & 1 \\\\ 0 & 0 & 1\\end{vmatrix} \\\\  & =1\\begin{vmatrix}-3 & 1 \\\\ 0 & 1\\end{vmatrix} \\\\  & =1(-3-0) \\\\  & =-3.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1}=-\\frac{1}{3}.\n$$\n\nNote that $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{\u222d}_{R}{cos}^{2}\u2061(x+z)\\operatorname{cos}\u2061(z-3y)\\,dV & ={\u222d}_{\u0394}{cos}^{2}\u2061(u+v)\\operatorname{cos}\u2061v\\cdot |\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\u222d}_{\u0394}{cos}^{2}\u2061(u+v)\\operatorname{cos}\u2061v\\cdot |-\\frac{1}{3}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{0}^{\\pi /2}{\\int }_{0}^{\\pi /2}{\\int }_{0}^{2}\\,\\frac{1}{3}{cos}^{2}\u2061(u+v)\\operatorname{cos}\u2061v\\,\\,dw\\,dv\\,du\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186482511,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "8685f08f-d476-5822-b98a-1d7e181d364e",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "2\\operatorname{sin}\u2061u\\operatorname{cos}\u2061v",
+              ":db/id": 17592186482089
+            },
+            {
+              ":answer/id": "abcdf334-5232-5108-815d-8544de96b5b1",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "2\\operatorname{sin}\u2061v\\operatorname{cos}\u2061u",
+              ":db/id": 17592186482177
+            },
+            {
+              ":answer/id": "acad01e2-2ec4-510b-8062-e56c2b02423d",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{1}{2}\\operatorname{sin}\u2061u\\operatorname{cos}\u2061v",
+              ":db/id": 17592186482180
+            },
+            {
+              ":answer/id": "b73ed2ab-45c7-58bf-8285-14105b905660",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "3\\operatorname{sin}\u2061v\\operatorname{cos}\u2061u",
+              ":db/id": 17592186482210
+            },
+            {
+              ":answer/id": "ee553bba-00ce-56b8-8960-df4b7c0e9646",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\operatorname{sin}\u2061u\\operatorname{cos}\u2061v",
+              ":db/id": 17592186482343
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "ee553bba-00ce-56b8-8960-df4b7c0e9646",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "\\operatorname{sin}\u2061u\\operatorname{cos}\u2061v",
+            ":db/id": 17592186482343
+          },
+          ":answer-field/id": "e977d9ba-fc00-5472-b57e-d5737f833b3e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186482496
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/easy"
+      },
+      ":question/id": "15e16006-8a30-5d22-b639-4bcd0e964462",
+      ":question/math-academy-id": "q-39058",
+      ":question/problem": "Consider the finite region $R$ in the $xyz$-space, given by \n\n$$\nR=\\{(x,y,z)\\,:\\,\\pi \\le x+y\\le 2\\pi ,\\,0\\le y+z\\le \\pi ,\\,0\\le z\\le 1\\}.\n$$\n\nGiven the change of variables\n\n$$\nu=x+y,\\,v=y+z,\\,w=z,\n$$\n\nwhich of the following could be the missing part of the expression below?\n\n$$\n{\u222d}_{R}\\operatorname{sin}\u2061(x+y)\\operatorname{cos}\u2061(y+z)\\,dV={\\int }_{\\pi }^{2\\pi }{\\int }_{0}^{\\pi }{\\int }_{0}^{1}\\bbox[3pt,border: 1pt solid black]{\\phantom{AAAAAA}}\\,dw\\,dv\\,du\n$$",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo find the required integral, we can use the change of variables formula\n\n$$\n{\u222d}_{R}f(x,y,z)\\text{\u00a0}dV={\u222d}_{\u0394}\\text{\u00a0}f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}$ is the Jacobian determinant corresponding to $T.$ \n\nNote that the change of variables\n\n$$\nu=x+y,\\,v=y+z,\\,w=z,\n$$\n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}\\to \\begin{bmatrix}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{bmatrix}.\n$$\n\nTo find the required integral, we proceed in four steps: \n\n**Step 1**: Find $\u0394,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v,w)\\,:\\,\\pi \\le u\\le 2\\pi ,\\,0\\le v\\le \\pi ,\\,0\\le w\\le 1\\}.\\end{aligned}\n$$\n\n \n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v,w)}{\u2202(x,y,z)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} & \\frac{\u2202u}{\u2202z} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y} & \\frac{\u2202v}{\u2202z} \\\\ \\frac{\u2202w}{\u2202x} & \\frac{\u2202w}{\u2202y} & \\frac{\u2202w}{\u2202z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 1 & 0 \\\\ 0 & 1 & 1 \\\\ 0 & 0 & 1\\end{vmatrix} \\\\  & =1.\\end{aligned}\n$$\n\n  \n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1}=1.\n$$\n\nNote that $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{\u222d}_{R}\\operatorname{sin}\u2061(x+y)\\operatorname{cos}\u2061(y+z)\\,dV & ={\u222d}_{\u0394}\\operatorname{sin}\u2061u\\operatorname{cos}\u2061v\\cdot |\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\u222d}_{\u0394}\\operatorname{sin}\u2061u\\operatorname{cos}\u2061v\\cdot |1|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{\\pi }^{2\\pi }{\\int }_{0}^{\\pi }{\\int }_{0}^{1}\\,\\operatorname{sin}\u2061u\\operatorname{cos}\u2061v\\,\\,dw\\,dv\\,du\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186482515,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "524eda41-ddb8-5f48-ab3e-43c84e18bcd6",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{1}^{3}{\\int }_{-uv}^{3}u(w+v)\\,dw\\,dv\\,du",
+              ":db/id": 17592186481972
+            },
+            {
+              ":answer/id": "8c235bdb-c968-5d76-8236-6fd1197822e0",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{1}^{3}{\\int }_{u-v}^{3}\\frac{v(w+v)}{2u}\\,dw\\,dv\\,du",
+              ":db/id": 17592186482102
+            },
+            {
+              ":answer/id": "cbe036c6-1bc2-5a04-8662-ddfdd4bc5170",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{1}^{3}{\\int }_{u+v}^{2}u(w+v)\\,dw\\,dv\\,du",
+              ":db/id": 17592186482258
+            },
+            {
+              ":answer/id": "e72adb6e-7faa-57b5-8126-d2e42feeb89a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{1}^{3}{\\int }_{-v}^{3}\\frac{v(w+v)}{2u}\\,dw\\,dv\\,du",
+              ":db/id": 17592186482327
+            },
+            {
+              ":answer/id": "f97b8fcd-b3a2-520e-9d92-adc67193b681",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{1}^{3}{\\int }_{-v}^{3}\\frac{u(w+v)}{2v}\\,dw\\,dv\\,du",
+              ":db/id": 17592186482364
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "e72adb6e-7faa-57b5-8126-d2e42feeb89a",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "{\\int }_{1}^{2}{\\int }_{1}^{3}{\\int }_{-v}^{3}\\frac{v(w+v)}{2u}\\,dw\\,dv\\,du",
+            ":db/id": 17592186482327
+          },
+          ":answer-field/id": "d68eca02-5016-5081-b3c3-150bae83f3f0",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186482491
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/moderate"
+      },
+      ":question/id": "22a02818-7cda-52f6-bd03-f172a29927f5",
+      ":question/math-academy-id": "q-161892",
+      ":question/problem": "Consider the finite region $R$ in the $xyz$-space, given by\n\n$$\nR=\\{(x,y,z)\\,:\\,1\\le \\frac{y}{x}\\le 2,\\,1\\le xy\\le 3,\\,0\\le z\\le xy+3\\}.\n$$\n\nBy performing the change of variables\n\n$$\nu=\\frac{y}{x},\\,v=xy,\\,w=z-xy,\n$$\n\nthe triple integral\n\n$$\n{\u222d}_{R}xyz\\,dV\n$$\n\ncan be written in terms of $u,$ $v,$ and $w$ as",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo find the required integral, we can use the change of variables formula\n\n$$\n{\u222d}_{R}f(x,y,z)\\text{\u00a0}dV={\u222d}_{\u0394}\\text{\u00a0}f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=\\frac{y}{x},\\,v=xy,\\,w=z-xy,\n$$\n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}\\to \\begin{bmatrix}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{bmatrix}.\n$$\n\nTo find the required integral, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v,w)\\,:\\,1\\le u\\le 2,\\,1\\le v\\le 3,\\,-v\\le w\\le 3\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v,w)}{\u2202(x,y,z)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} & \\frac{\u2202u}{\u2202z} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y} & \\frac{\u2202v}{\u2202z} \\\\ \\frac{\u2202w}{\u2202x} & \\frac{\u2202w}{\u2202y} & \\frac{\u2202w}{\u2202z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}-\\frac{y}{{x}^{2}} & \\frac{1}{x} & 0 \\\\ y & x & 0 \\\\ -y & -x & 1\\end{vmatrix} \\\\  & =\\begin{vmatrix}-\\frac{y}{{x}^{2}} & \\frac{1}{x} \\\\ y & x\\end{vmatrix} \\\\  & =-\\frac{y}{x}-\\frac{y}{x} \\\\  & =-\\frac{2y}{x} \\\\  & =-2u\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1}=-\\frac{1}{2u}.\n$$\n\nNote that $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{\u222d}_{R}xyz\\,dV & ={\u222d}_{\u0394}v(w+v)\\cdot |-\\frac{1}{2u}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\u222d}_{\u0394}\\frac{v(w+v)}{2u}\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{1}^{2}{\\int }_{1}^{3}{\\int }_{-v}^{3}\\frac{v(w+v)}{2u}\\,dw\\,dv\\,du\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186482534,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0a545db6-b2c1-5af7-bab8-a92a067e183d",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{0}^{2}{\\int }_{0}^{3w}\\frac{1}{3}(u+\\frac{vw}{u})\\,dw\\,dv\\,du",
+              ":db/id": 17592186481792
+            },
+            {
+              ":answer/id": "68e6ba86-dd63-5072-80c7-8937c30e291d",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{0}^{2}{\\int }_{0}^{v}(\\frac{w}{u}+3vu)\\,dw\\,dv\\,du",
+              ":db/id": 17592186482015
+            },
+            {
+              ":answer/id": "6c9f7ec3-cf1f-5f6e-8b5d-a4981ae3628c",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{0}^{2}{\\int }_{0}^{3w}\\frac{1}{3}(v+\\frac{vw}{u})\\,dw\\,dv\\,du",
+              ":db/id": 17592186482026
+            },
+            {
+              ":answer/id": "ad6f11e6-c760-5ae7-8acd-14a00b864038",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{0}^{2}{\\int }_{0}^{3}(\\frac{u}{3}+\\frac{vw}{u})\\,dw\\,dv\\,du",
+              ":db/id": 17592186482181
+            },
+            {
+              ":answer/id": "e4dfc26b-d49c-54ee-9547-1ec07e222142",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{0}^{2}{\\int }_{0}^{3}\\frac{1}{3}(v+\\frac{vw}{u})\\,dw\\,dv\\,du",
+              ":db/id": 17592186482319
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "e4dfc26b-d49c-54ee-9547-1ec07e222142",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "{\\int }_{1}^{2}{\\int }_{0}^{2}{\\int }_{0}^{3}\\frac{1}{3}(v+\\frac{vw}{u})\\,dw\\,dv\\,du",
+            ":db/id": 17592186482319
+          },
+          ":answer-field/id": "176c3a3c-6656-5311-869f-fdb6f745be21",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186482389
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/moderate"
+      },
+      ":question/id": "46b1b539-1890-56ee-b628-8f298fa77da5",
+      ":question/math-academy-id": "q-161871",
+      ":question/problem": "Consider the finite region $R$ in the $xyz$-space, given by\n\n$$\nR=\\{(x,y,z)\\,:\\,1\\le x\\le 2,\\,0\\le xy\\le 2,\\,0\\le z\\le 1\\}.\n$$\n\nBy performing the change of variables\n\n$$\nu=x,\\,v=xy,\\,w=3z,\n$$\n\n \n\nthe triple integral\n\n$$\n{\u222d}_{R}({x}^{2}y+3xyz)\\,dV\n$$\n\ncan be written in terms of $u,$ $v,$ and $w$ as",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo find the required integral, we can use the change of variables formula\n\n$$\n{\u222d}_{R}f(x,y,z)\\text{\u00a0}dV={\u222d}_{\u0394}\\text{\u00a0}f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=x,\\,v=xy,\\,w=3z,\n$$\n\n \n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}\\to \\begin{bmatrix}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{bmatrix}.\n$$\n\nTo find the required integral, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v,w)\\,:\\,1\\le u\\le 2,\\,0\\le v\\le 2,\\,0\\le w\\le 3\\}.\\end{aligned}\n$$\n\n \n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v,w)}{\u2202(x,y,z)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} & \\frac{\u2202u}{\u2202z} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y} & \\frac{\u2202v}{\u2202z} \\\\ \\frac{\u2202w}{\u2202x} & \\frac{\u2202w}{\u2202y} & \\frac{\u2202w}{\u2202z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & 0 & 0 \\\\ y & x & 0 \\\\ 0 & 0 & 3\\end{vmatrix} \\\\  & =3\\begin{vmatrix}1 & 0 \\\\ y & x\\end{vmatrix} \\\\  & =3(x-0) \\\\  & =3x \\\\  & =3u.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1}=\\frac{1}{3u}.\n$$\n\nNote that $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{\u222d}_{R}({x}^{2}y+3xyz)\\,dV & ={\u222d}_{\u0394}(uv+vw)\\cdot |\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,du\\,dv\\,dw \\\\  & ={\u222d}_{\u0394}(uv+vw)\\cdot |\\frac{1}{3u}|\\,du\\,dv\\,dw \\\\  & ={\\int }_{1}^{2}{\\int }_{0}^{2}{\\int }_{0}^{3}\\,\\frac{1}{3}(v+\\frac{vw}{u})\\,\\,dw\\,dv\\,du\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186482540,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0eca66db-cc53-5a4d-aca7-eaf9a7ab3b31",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{2}^{3}{\\int }_{1}^{4}{\\int }_{2}^{2w}w\\operatorname{ln}\u2061u\\,dw\\,dv\\,du",
+              ":db/id": 17592186481811
+            },
+            {
+              ":answer/id": "47bf8ad5-d857-5c65-9120-529840b5d37f",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{2}^{3}{\\int }_{1}^{4}{\\int }_{3}^{6}\\frac{w\\operatorname{ln}\u2061u}{3u}\\,dw\\,dv\\,du",
+              ":db/id": 17592186481950
+            },
+            {
+              ":answer/id": "d8a29ad8-5f0f-54a0-a2fe-7f5f6a9c57e2",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{2}^{3}{\\int }_{1}^{4}{\\int }_{3}^{w}\\frac{w\\operatorname{ln}\u2061v}{2v}\\,dw\\,dv\\,du",
+              ":db/id": 17592186482289
+            },
+            {
+              ":answer/id": "f069b42f-d4b1-545c-b713-4a2714ba1128",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{2}^{3}{\\int }_{1}^{4}{\\int }_{1}^{3w}\\frac{w\\operatorname{ln}\u2061u}{6}\\,dw\\,dv\\,du",
+              ":db/id": 17592186482347
+            },
+            {
+              ":answer/id": "fa08f136-85ba-53cf-9533-f666c9d80525",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{2}^{3}{\\int }_{1}^{4}{\\int }_{1}^{2w}\\frac{w\\operatorname{ln}\u2061u}{6u}\\,dw\\,dv\\,du",
+              ":db/id": 17592186482367
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "47bf8ad5-d857-5c65-9120-529840b5d37f",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "{\\int }_{2}^{3}{\\int }_{1}^{4}{\\int }_{3}^{6}\\frac{w\\operatorname{ln}\u2061u}{3u}\\,dw\\,dv\\,du",
+            ":db/id": 17592186481950
+          },
+          ":answer-field/id": "976640a1-1292-535e-95ff-f6793512061b",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186482457
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/moderate"
+      },
+      ":question/id": "4f86e12d-91a6-559a-805d-f5f0798ca229",
+      ":question/math-academy-id": "q-161889",
+      ":question/problem": "Consider the finite region $R$ in the $xyz$-space, given by\n\n$$\nR=\\{(x,y,z)\\,:\\,2\\le x-y\\le 3,\\,1\\le {x}^{2}-{y}^{2}\\le 4,\\,1\\le z\\le 2\\}.\n$$\n\nBy performing the change of variables\n\n$$\nu=x-y,\\,v={x}^{2}-{y}^{2}\\,w=3z,\n$$\n\nthe triple integral\n\n$$\n{\u222d}_{R}6z\\operatorname{ln}\u2061(x-y)\\,dV\n$$\n\ncan be written in terms of $u,$ $v,$ and $w$ as",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo find the required integral, we can use the change of variables formula\n\n$$\n{\u222d}_{R}f(x,y,z)\\text{\u00a0}dV={\u222d}_{\u0394}\\text{\u00a0}f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=x-y,\\,v={x}^{2}-{y}^{2}\\,w=3z,\n$$\n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}\\to \\begin{bmatrix}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{bmatrix}.\n$$\n\nTo find the required integral, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v,w)\\,:\\,2\\le u\\le 3,\\,1\\le v\\le 4,\\,3\\le w\\le 6\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v,w)}{\u2202(x,y,z)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} & \\frac{\u2202u}{\u2202z} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y} & \\frac{\u2202v}{\u2202z} \\\\ \\frac{\u2202w}{\u2202x} & \\frac{\u2202w}{\u2202y} & \\frac{\u2202w}{\u2202z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & -1 & 0 \\\\ 2x & -2y & 0 \\\\ 0 & 0 & 3\\end{vmatrix} \\\\  & =3\\begin{vmatrix}1 & -1 \\\\ 2x & -2y\\end{vmatrix} \\\\  & =3(-2y+2x) \\\\  & =6(x-y) \\\\  & =6u\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1}=\\frac{1}{6u}.\n$$\n\nNote that $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{\u222d}_{R}6z\\operatorname{ln}\u2061(x-y)\\,dV & ={\u222d}_{\u0394}2w\\operatorname{ln}\u2061u\\cdot |-\\frac{1}{6u}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\u222d}_{\u0394}\\frac{w\\operatorname{ln}\u2061u}{3u}\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{2}^{3}{\\int }_{1}^{4}{\\int }_{3}^{6}\\frac{w\\operatorname{ln}\u2061u}{3u}\\,dw\\,dv\\,du\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186499449,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "0c97c988-3336-5cff-9def-ec7413102202",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "6(u+w)",
+              ":db/id": 17592186498757
+            },
+            {
+              ":answer/id": "1c002a85-7881-5d55-b3a3-c0858f2a52d4",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{1}{6}(u+v-w)",
+              ":db/id": 17592186498789
+            },
+            {
+              ":answer/id": "449afe6a-6893-523f-8969-4d9facf23e7a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "6(v-w)",
+              ":db/id": 17592186498886
+            },
+            {
+              ":answer/id": "5760564c-6d75-5aa4-a9ab-7873348de3bc",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "(u-w-v)",
+              ":db/id": 17592186498930
+            },
+            {
+              ":answer/id": "9cc9fd42-c83a-5ec5-bb24-9d73b0ba363e",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "\\frac{1}{6}(v-w)",
+              ":db/id": 17592186499061
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "0c97c988-3336-5cff-9def-ec7413102202",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "6(u+w)",
+            ":db/id": 17592186498757
+          },
+          ":answer-field/id": "219a7147-3bde-5244-974f-5c2639b194f2",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186499325
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/easy"
+      },
+      ":question/id": "21557ab9-79b3-55a0-a104-51c3d273599e",
+      ":question/math-academy-id": "q-161868",
+      ":question/problem": "Consider the finite region $R$ in the $xyz$-space, given by\n\n$$\nR=\\{(x,y,z)\\,:\\,0\\le \\frac{2x-y}{2}\\le 1,\\,0\\le \\frac{y}{2}\\le 2,\\,0\\le z\\le 3\\}.\n$$\n\nGiven the change of variables\n\n$$\nu=\\frac{2x-y}{2},\\,v=\\frac{y}{2},\\,w=\\frac{z}{3},\n$$\n\nwhich of the following could be the missing part of the expression below?\n\n$$\n{\u222d}_{R}(\\frac{2x-y}{2}+\\frac{z}{3})\\,dV={\\int }_{0}^{1}{\\int }_{0}^{2}{\\int }_{0}^{1}\\bbox[3pt,border:1pt solid black]{\\phantom{AAAAAA}}\\,dw\\,dv\\,du\n$$",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\u27f6\\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix}\n$$\n\nThis transformation maps some region $\u0394$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo find the required integral, we can use the change of variables formula\n\n$$\n{\u222d}_{R}f(x,y,z)\\text{\u00a0}dV={\u222d}_{\u0394}\\text{\u00a0}f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}$ is the Jacobian determinant corresponding to $T.$\n\nNote that the change of variables\n\n$$\nu=\\frac{2x-y}{2},\\,v=\\frac{y}{2},\\,w=\\frac{z}{3},\n$$\n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}\\to \\begin{bmatrix}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{bmatrix}.\n$$\n\nTo find the required integral, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v,w)\\,:\\,0\\le u\\le 1,\\,0\\le v\\le 2,\\,0\\le w\\le 1\\}.\\end{aligned}\n$$\n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v,w)}{\u2202(x,y,z)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} & \\frac{\u2202u}{\u2202z} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y} & \\frac{\u2202v}{\u2202z} \\\\ \\frac{\u2202w}{\u2202x} & \\frac{\u2202w}{\u2202y} & \\frac{\u2202w}{\u2202z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}1 & -\\frac{1}{2} & 0 \\\\ 0 & \\,\\,\\,\\frac{1}{2} & 0 \\\\ 0 & 0 & \\frac{1}{3}\\end{vmatrix} \\\\  & =\\frac{1}{3}\\begin{vmatrix}1 & -\\frac{1}{2} \\\\ 0 & \\,\\,\\,\\frac{1}{2}\\end{vmatrix} \\\\  & =\\frac{1}{3}(\\frac{1}{2}-0) \\\\  & =\\frac{1}{6}.\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1}=6.\n$$\n\nNote that $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{\u222d}_{R}(\\frac{2x-y}{2}+\\frac{z}{3})\\,dV & ={\u222d}_{\u0394}(u+w)\\cdot |\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\u222d}_{\u0394}(u+w)\\cdot |6|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{0}^{1}{\\int }_{0}^{2}{\\int }_{0}^{1}\\,6(u+w)\\,dw\\,dv\\,du\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186522753,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "1f1a2079-1fc1-5955-bbfb-db810024db1a",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{1}^{2}{\\int }_{1}^{u}\\frac{{e}^{w}}{uv}\\,dw\\,dv\\,du",
+              ":db/id": 17592186522088
+            },
+            {
+              ":answer/id": "7e097b3d-1787-51eb-8d0e-f6ddc058f730",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{1}^{u}{\\int }_{1}^{2}\\frac{{e}^{w}}{v}\\,dw\\,dv\\,du",
+              ":db/id": 17592186522267
+            },
+            {
+              ":answer/id": "9096297c-682f-58dc-8315-adc51907dab4",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{1}^{v}{\\int }_{1}^{2}\\frac{{e}^{w}}{v}\\,dw\\,dv\\,du",
+              ":db/id": 17592186522314
+            },
+            {
+              ":answer/id": "942264b3-d374-50be-87f0-6ee36149aa06",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{1}^{2}{\\int }_{1}^{2}\\frac{{e}^{w}}{uv}\\,dw\\,dv\\,du",
+              ":db/id": 17592186522323
+            },
+            {
+              ":answer/id": "b31ba118-b4ec-54ec-bb50-628c0cc67dda",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{1}^{2}{\\int }_{1}^{2}uv{e}^{w}\\,dw\\,dv\\,du",
+              ":db/id": 17592186522386
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "942264b3-d374-50be-87f0-6ee36149aa06",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "{\\int }_{1}^{2}{\\int }_{1}^{2}{\\int }_{1}^{2}\\frac{{e}^{w}}{uv}\\,dw\\,dv\\,du",
+            ":db/id": 17592186522323
+          },
+          ":answer-field/id": "fd889248-045c-5336-9e14-01871b41eb76",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186522688
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/moderate"
+      },
+      ":question/id": "8a7a1582-d778-5af4-af63-1b6090d14c6e",
+      ":question/math-academy-id": "q-39062",
+      ":question/problem": "Consider the finite region $R$ in the $xyz$-space, given by\n\n$$\nR=\\{(x,y,z)\\,:\\,1\\le x\\le 2,\\,\\frac{1}{x}\\le y\\le \\frac{2}{x},\\,\\frac{1}{xy}\\le z\\le \\frac{2}{xy}\\}.\n$$\n\nBy performing the change of variables\n\n$$\nu=x,\\,v=xy,\\,w=xyz,\n$$\n\nthe triple integral\n\n$$\n{\u222d}_{R}\\,{e}^{xyz}\\,dV\n$$\n\ncan be written in terms of $u,$ $v,$ and $w$ as",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]\u27f6[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $\u0394$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo find the required integral, we can use the change of variables formula\n\n$$\n{\u222d}_{R}f(x,y,z)\\text{\u00a0}dV={\u222d}_{\u0394}\\text{\u00a0}f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}$ is the Jacobian determinant corresponding to $T.$ \n\nNote that the change of variables\n\n$$\nu=x,\\,v=xy,\\,w=xyz\n$$\n\ngives us the *inverse* function ${T}^{-1},$ that is \n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo find the required integral, we proceed in four steps:\n\n**Step 1**: Find $\u0394,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v,w)\\,:\\,1\\le u\\le 2,\\,1\\le v\\le 2,\\,1\\le w\\le 2\\}.\\end{aligned}\n$$\n\n \n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v,w)}{\u2202(x,y,z)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} & \\frac{\u2202u}{\u2202z} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y} & \\frac{\u2202v}{\u2202z} \\\\ \\frac{\u2202w}{\u2202x} & \\frac{\u2202w}{\u2202y} & \\frac{\u2202w}{\u2202z}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & 0 & 0 \\\\ y & x & 0 \\\\ yz & xz & xy\\end{aligned}| \\\\  & =xy|\\begin{aligned}1 & 0 \\\\ y & x\\end{aligned}| \\\\  & =xy(x-0) \\\\  & ={x}^{2}y \\\\  & =uv\\end{aligned}\n$$\n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1}=\\frac{1}{uv}.\n$$\n\nNote that $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$\n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{\u222d}_{R}{e}^{xyz}\\,dV & ={\u222d}_{\u0394}{e}^{w}\\cdot |\\frac{1}{uv}|\\,\\,dw\\,dv\\,du \\\\  & ={\u222d}_{\u0394}\\frac{{e}^{w}}{uv}\\,\\,dw\\,dv\\,du \\\\  & ={\\int }_{1}^{2}{\\int }_{1}^{2}{\\int }_{1}^{2}\\frac{{e}^{w}}{uv}\\,dw\\,dv\\,du\\end{aligned}\n$$"
+    },
+    {
+      ":db/id": 17592186522809,
+      ":question/answer-fields": [
+        {
+          ":answer-field/choices": [
+            {
+              ":answer/id": "167c9635-d107-553c-80f2-728998f64f44",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{2}^{4}{\\int }_{0}^{v}\\frac{\\operatorname{sinh}\u2061u}{2}\\,dw\\,dv\\,du",
+              ":db/id": 17592186522065
+            },
+            {
+              ":answer/id": "208798f3-1213-54c2-9110-17dc3e4b81b8",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{2}^{4}{\\int }_{0}^{uv}2v\\operatorname{sinh}\u2061u\\,dw\\,dv\\,du",
+              ":db/id": 17592186522093
+            },
+            {
+              ":answer/id": "41084583-9221-587e-a746-0339cfa254c3",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{2}^{4}{\\int }_{0}^{1}\\frac{\\operatorname{sinh}\u2061u}{2}\\,dw\\,dv\\,du",
+              ":db/id": 17592186522161
+            },
+            {
+              ":answer/id": "8c6d471a-064f-5e70-bfd7-077a3c169ff3",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{2}^{4}{\\int }_{0}^{uv}2v\\operatorname{sinh}\u2061uv\\,dw\\,dv\\,du",
+              ":db/id": 17592186522305
+            },
+            {
+              ":answer/id": "f6cc9b29-5be4-54fe-8424-7c6e39a3e9a1",
+              ":answer/type": {
+                ":db/ident": ":answer.type/math"
+              },
+              ":answer/value": "{\\int }_{1}^{2}{\\int }_{2}^{4}{\\int }_{0}^{v}\\frac{u\\operatorname{sinh}\u2061u}{2}\\,dw\\,dv\\,du",
+              ":db/id": 17592186522542
+            }
+          ],
+          ":answer-field/correct": {
+            ":answer/id": "41084583-9221-587e-a746-0339cfa254c3",
+            ":answer/type": {
+              ":db/ident": ":answer.type/math"
+            },
+            ":answer/value": "{\\int }_{1}^{2}{\\int }_{2}^{4}{\\int }_{0}^{1}\\frac{\\operatorname{sinh}\u2061u}{2}\\,dw\\,dv\\,du",
+            ":db/id": 17592186522161
+          },
+          ":answer-field/id": "4072ebe9-e356-5a8b-bdd6-bdedd4bc5d7f",
+          ":answer-field/key": "selection",
+          ":answer-field/type": {
+            ":db/ident": ":answer-field.type/radio"
+          },
+          ":db/id": 17592186522591
+        }
+      ],
+      ":question/difficulty": {
+        ":db/ident": ":question.difficulty/moderate"
+      },
+      ":question/id": "f849acac-b165-56ce-af0c-ee1d4893cc84",
+      ":question/math-academy-id": "q-39056",
+      ":question/problem": "Consider the finite region $R$ in the $xyz$-space, given by\n\n$$\nR=\\{(x,y,z)\\,:\\,1\\le {x}^{2}-{y}^{2}\\le 2,\\,2\\le x+y\\le 4,\\,0\\le z\\le 1\\}.\n$$\n\nBy performing the change of variables\n\n$$\nu={x}^{2}-{y}^{2},\\,v=x+y,\\,w=z,\n$$\n\nthe triple integral\n\n$$\n{\u222d}_{R}(x+y)\\operatorname{sinh}\u2061({x}^{2}-{y}^{2})\\,dV\n$$\n\ncan be written in terms of $u,$ $v,$ and $w$ as",
+      ":question/worked-solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]\u27f6[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $\u0394$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo find the required integral, we can use the change of variables formula\n\n$$\n{\u222d}_{R}f(x,y,z)\\text{\u00a0}dV={\u222d}_{\u0394}\\text{\u00a0}f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}$ is the Jacobian determinant corresponding to $T.$ \n\nNote that the change of variables\n\n$$\nu={x}^{2}-{y}^{2},\\,v=x+y,\\,w=z,\n$$\n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo find the required integral, we proceed in four steps: \n\n**Step 1**: Find $\u0394,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}\u0394 & =\\{(u,v,w)\\,:\\,1\\le u\\le 2,\\,2\\le v\\le 4,\\,0\\le w\\le 1\\}.\\end{aligned}\n$$\n\n \n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v,w)}{\u2202(x,y,z)} & =|\\begin{aligned}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} & \\frac{\u2202u}{\u2202z} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y} & \\frac{\u2202v}{\u2202z} \\\\ \\frac{\u2202w}{\u2202x} & \\frac{\u2202w}{\u2202y} & \\frac{\u2202w}{\u2202z}\\end{aligned}| \\\\  & =|\\begin{aligned}2x & -2y & 0 \\\\ 1 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}| \\\\  & =1|\\begin{aligned}2x & -2y \\\\ 1 & 1\\end{aligned}| \\\\  & =2x+2y \\\\  & =2(x+y) \\\\  & =2v\\end{aligned}\n$$\n\n \n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1}=\\frac{1}{2v}.\n$$\n\nNote that $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}\\ne 0$ everywhere inside $\u0394.$ In other words, $T$ has no critical points inside $\u0394.$ \n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{\u222d}_{R}(x+y)\\operatorname{sinh}\u2061({x}^{2}-{y}^{2})\\,dV & ={\u222d}_{\u0394}v\\operatorname{sinh}\u2061u\\cdot |\\frac{1}{2v}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\u222d}_{\u0394}\\frac{\\operatorname{sinh}\u2061u}{2}\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{1}^{2}{\\int }_{2}^{4}{\\int }_{0}^{1}\\frac{\\operatorname{sinh}\u2061u}{2}\\,dw\\,dv\\,du\\end{aligned}\n$$"
+    }
+  ],
+  ":knowledge-point/title": "Performing a Change of Variables in a Triple Integral"
+}

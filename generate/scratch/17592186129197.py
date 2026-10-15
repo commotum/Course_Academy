@@ -395,5 +395,20 @@ def markdown(r):
  return s
 if __name__=='__main__':
  a=argparse.ArgumentParser();a.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');a.add_argument('--seed',type=int,default=0);a.add_argument('--count',type=int,default=1);a.add_argument('--format',choices=['markdown','json'],default='markdown');a.add_argument('--template');a.add_argument('--profile');args=a.parse_args()
- results=[generate(l,args.seed+i,template=args.template,profile=args.profile)for l in (['easy','moderate','hard']if args.difficulty=='all'else[args.difficulty])for i in range(args.count)]
+ if args.count<1:a.error('--count must be positive')
+ results=[]
+ for level in (['easy','moderate','hard']if args.difficulty=='all'else[args.difficulty]):
+  capacities={'simple':48,'mixed':42,'quartic':24,'hyper_y':176,'hyper_x':176,'down':256,'up':960,'vertical':960}
+  limit=1 if args.profile and args.profile.startswith('raw:') else capacities[args.template] if args.template else sum(capacities[f]for f,(_,band)in FAMILIES.items()if band==level)
+  if args.count>limit:a.error(f'finite catalog limit for {level}: {limit}; requested {args.count}')
+  seen=set();selected=[]
+  for offset in range(500+args.count*200):
+   rec=generate(level,args.seed+offset,template=args.template,profile=args.profile)
+   task=rec['generation']['mathematical_fingerprint']
+   if task in seen:continue
+   seen.add(task);selected.append(rec)
+   if len(selected)==args.count:break
+  if len(selected)!=args.count:
+   a.error(f'bounded sampling exhausted: {len(selected)} distinct {level} questions; requested {args.count}')
+  results.extend(selected)
  print(json.dumps(results,indent=2,ensure_ascii=False)if args.format=='json'else'\n\n---\n\n'.join(map(markdown,results)))
