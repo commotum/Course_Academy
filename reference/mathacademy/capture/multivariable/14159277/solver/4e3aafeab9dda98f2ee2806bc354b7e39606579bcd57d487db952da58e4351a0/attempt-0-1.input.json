@@ -1,0 +1,61 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-337306",
+      "sequence_position": 12,
+      "problem": "$$\n{x}^{′}(t)=[\\begin{aligned}-5 & 2 \\\\ -6 & 3\\end{aligned}]x(t)+[\\begin{aligned}3t \\\\ t\\end{aligned}]\n$$\n\nConsider the system of differential equations. Using the method of variation of parameters, the general solution of the equation can be written in the form\n\n<table align=\"l\" cellpadding=\"0\" rules=\"all\">\n<tbody><tr>\n<td rowspan=\"2\" height=\"40px\" align=\"center\">$x(t)={c}_{1}[\\begin{aligned}1 \\\\ 1\\end{aligned}]{e}^{-3t}+{c}_{2}[\\begin{aligned}1 \\\\ 3\\end{aligned}]{e}^{t}+\\,\\,\\frac{1}{9}$</td>\n<td width=\"5px\" height=\"30px\"></td>\n<td align=\"center\">{{field-1}}</td>\n<td width=\"5px\" align=\"center\"></td>\n<td rowspan=\"2\" height=\"40px\" align=\"center\">.</td>\n</tr>\n\n<tr>\n<td width=\"5px\" height=\"30px\"></td>\n<td align=\"center\">$39t+23$</td>\n<td align=\"center\"></td>\n</tr>\n</tbody></table>",
+      "worked_solution": "Recall that the general solution of an inhomogeneous system can be written as \n\n$$\nx(t)={x}_{c}(t)+{x}_{p}(t)\n$$\n\nwhere ${x}_{c}(t)$ is the complementary solution (solution of the corresponding homogeneous system) and ${x}_{p}(t)$ is a particular solution.\n\nNotice that we are given that\n\n$$\n{x}_{c}(t)={c}_{1}[\\begin{aligned}1 \\\\ 1\\end{aligned}]{e}^{-3t}+{c}_{2}[\\begin{aligned}1 \\\\ 3\\end{aligned}]{e}^{t}.\n$$\n\nWe'll look for a particular solution in the form\n\n$$\n{x}_{p}(t)=Φ\\,u(t)\n$$\n\nwhere $Φ$ is a fundamental matrix for the corresponding homogeneous system, $f(t)$ is the forcing column vector and\n\n$$\nu(t)=\\int {Φ}^{-1}\\,f(t)\\,\\text{d}t.\n$$\n\nIn our case,\n\n$$\nΦ=[\\begin{aligned}{e}^{-3t} & {e}^{t} \\\\ {e}^{-3t} & 3{e}^{t}\\end{aligned}],\\,f(t)=[\\begin{aligned}3t \\\\ t\\end{aligned}].\n$$\n\nSince $Φ$ is a fundamental matrix, it must be invertible. Using the formula for the inverse of a $2\\times 2$ matrix, we get the following:\n\n$$\n\\begin{aligned}{Φ}^{-1} & =\\frac{1}{{e}^{-3t}\\cdot 3{e}^{t}-{e}^{t}\\cdot {e}^{-3t}}[\\begin{aligned}3{e}^{t} & -{e}^{t} \\\\ -{e}^{-3t} & {e}^{-3t}\\end{aligned}] \\\\  & =\\frac{1}{2{e}^{-2t}}[\\begin{aligned}3{e}^{t} & -{e}^{t} \\\\ -{e}^{-3t} & {e}^{-3t}\\end{aligned}] \\\\  & =\\frac{1}{2}[\\begin{aligned}3{e}^{3t} & -{e}^{3t} \\\\ -{e}^{-t} & {e}^{-t}\\end{aligned}]. \\\\ {Φ}^{-1}\\,f(t) & =\\frac{1}{2}[\\begin{aligned}3{e}^{3t} & -{e}^{3t} \\\\ -{e}^{-t} & {e}^{-t}\\end{aligned}][\\begin{aligned}3t \\\\ t\\end{aligned}] \\\\  & =[\\begin{aligned}4t{e}^{3t} \\\\ -t{e}^{-t}\\end{aligned}].\\end{aligned}\n$$\n\nNow, using our formula for $u(t),$ we obtain\n\n$$\n\\begin{aligned}u(t) & =\\int {Φ}^{-1}\\,f(t)\\,\\text{d}t \\\\  & =\\int [\\begin{aligned}4t{e}^{3t} \\\\ -t{e}^{-t}\\end{aligned}]\\,\\text{d}t \\\\  & =[\\begin{aligned}\\int 4t{e}^{3t}\\,\\text{d}t \\\\ \\int -t{e}^{-t}\\,\\text{d}t\\end{aligned}].\\end{aligned}\n$$\n\nIntegrating the components by parts, we get the following:\n\n- For the first component, let $u=4t$ and $\\text{d}v={e}^{3t}\\,\\text{d}t.$ Then, $\\text{d}u=4\\,\\text{d}t$ and $v=\\frac{1}{3}{e}^{3t}.$ So,\n\n$$\n\\begin{aligned}\\int 4t{e}^{3t}\\,\\text{d}t & =4t\\cdot \\frac{1}{3}{e}^{3t}-\\int \\frac{1}{3}{e}^{3t}\\cdot (4\\,\\text{d}t) \\\\  & =\\frac{4}{3}t{e}^{3t}-\\frac{4}{3}\\int {e}^{3t}\\,\\text{d}t \\\\  & =\\frac{4}{3}t{e}^{3t}-\\frac{4}{9}{e}^{3t} \\\\  & =\\frac{4}{9}{e}^{3t}(3t-1).\\end{aligned}\n$$\n\n- For the second component, let $u=-t$ and $\\text{d}v={e}^{-t}\\,\\text{d}t.$ Then, $\\text{d}u=-\\,\\text{d}t$ and $v=-{e}^{-t}.$ So,\n\n$$\n\\begin{aligned}\\int -t{e}^{-t}\\,\\text{d}t & =(-t)\\cdot (-{e}^{-t})-\\int (-{e}^{-t})\\cdot (-\\,\\text{d}t) \\\\  & =t{e}^{-t}-\\int {e}^{-t}\\,\\text{d}t \\\\  & =t{e}^{-t}+{e}^{-t} \\\\  & ={e}^{-t}(t+1).\\end{aligned}\n$$\n\nTherefore, our particular solution is\n\n$$\n\\begin{aligned}{x}_{p}(t) & =Φ\\,u(t) \\\\  & =[\\begin{aligned}{e}^{-3t} & {e}^{t} \\\\ {e}^{-3t} & 3{e}^{t}\\end{aligned}][\\begin{aligned}\\frac{4}{9}{e}^{3t}(3t-1) \\\\ {e}^{-t}(t+1)\\end{aligned}] \\\\  & =\\frac{1}{9}[\\begin{aligned}4(3t-1)+9(t+1) \\\\ 4(3t-1)+27(t+1)\\end{aligned}] \\\\  & =\\frac{1}{9}[\\begin{aligned}21t+5 \\\\ 39t+23\\end{aligned}].\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "problem_field_keys": [
+        "field-1"
+      ],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14159277/observations/history-q-337306-24762f235e7d897ad398.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14159277",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14159277/observations/history-solution-q-337306-fa3e8c633f61f2306f42.html",
+      "fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q337306",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "21t+5",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "source_grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Recall that the general solution of an inhomogeneous system can be written as \n\n$$\nx(t)={x}_{c}(t)+{x}_{p}(t)\n$$\n\nwhere ${x}_{c}(t)$ is the complementary solution (solution of the corresponding homogeneous system) and ${x}_{p}(t)$ is a particular solution.\n\nNotice that we are given that\n\n$$\n{x}_{c}(t)={c}_{1}[\\begin{aligned}1 \\\\ 1\\end{aligned}]{e}^{-3t}+{c}_{2}[\\begin{aligned}1 \\\\ 3\\end{aligned}]{e}^{t}.\n$$\n\nWe'll look for a particular solution in the form\n\n$$\n{x}_{p}(t)=Φ\\,u(t)\n$$\n\nwhere $Φ$ is a fundamental matrix for the corresponding homogeneous system, $f(t)$ is the forcing column vector and\n\n$$\nu(t)=\\int {Φ}^{-1}\\,f(t)\\,\\text{d}t.\n$$\n\nIn our case,\n\n$$\nΦ=[\\begin{aligned}{e}^{-3t} & {e}^{t} \\\\ {e}^{-3t} & 3{e}^{t}\\end{aligned}],\\,f(t)=[\\begin{aligned}3t \\\\ t\\end{aligned}].\n$$\n\nSince $Φ$ is a fundamental matrix, it must be invertible. Using the formula for the inverse of a $2\\times 2$ matrix, we get the following:\n\n$$\n\\begin{aligned}{Φ}^{-1} & =\\frac{1}{{e}^{-3t}\\cdot 3{e}^{t}-{e}^{t}\\cdot {e}^{-3t}}[\\begin{aligned}3{e}^{t} & -{e}^{t} \\\\ -{e}^{-3t} & {e}^{-3t}\\end{aligned}] \\\\  & =\\frac{1}{2{e}^{-2t}}[\\begin{aligned}3{e}^{t} & -{e}^{t} \\\\ -{e}^{-3t} & {e}^{-3t}\\end{aligned}] \\\\  & =\\frac{1}{2}[\\begin{aligned}3{e}^{3t} & -{e}^{3t} \\\\ -{e}^{-t} & {e}^{-t}\\end{aligned}]. \\\\ {Φ}^{-1}\\,f(t) & =\\frac{1}{2}[\\begin{aligned}3{e}^{3t} & -{e}^{3t} \\\\ -{e}^{-t} & {e}^{-t}\\end{aligned}][\\begin{aligned}3t \\\\ t\\end{aligned}] \\\\  & =[\\begin{aligned}4t{e}^{3t} \\\\ -t{e}^{-t}\\end{aligned}].\\end{aligned}\n$$\n\nNow, using our formula for $u(t),$ we obtain\n\n$$\n\\begin{aligned}u(t) & =\\int {Φ}^{-1}\\,f(t)\\,\\text{d}t \\\\  & =\\int [\\begin{aligned}4t{e}^{3t} \\\\ -t{e}^{-t}\\end{aligned}]\\,\\text{d}t \\\\  & =[\\begin{aligned}\\int 4t{e}^{3t}\\,\\text{d}t \\\\ \\int -t{e}^{-t}\\,\\text{d}t\\end{aligned}].\\end{aligned}\n$$\n\nIntegrating the components by parts, we get the following:\n\n- For the first component, let $u=4t$ and $\\text{d}v={e}^{3t}\\,\\text{d}t.$ Then, $\\text{d}u=4\\,\\text{d}t$ and $v=\\frac{1}{3}{e}^{3t}.$ So,\n\n$$\n\\begin{aligned}\\int 4t{e}^{3t}\\,\\text{d}t & =4t\\cdot \\frac{1}{3}{e}^{3t}-\\int \\frac{1}{3}{e}^{3t}\\cdot (4\\,\\text{d}t) \\\\  & =\\frac{4}{3}t{e}^{3t}-\\frac{4}{3}\\int {e}^{3t}\\,\\text{d}t \\\\  & =\\frac{4}{3}t{e}^{3t}-\\frac{4}{9}{e}^{3t} \\\\  & =\\frac{4}{9}{e}^{3t}(3t-1).\\end{aligned}\n$$\n\n- For the second component, let $u=-t$ and $\\text{d}v={e}^{-t}\\,\\text{d}t.$ Then, $\\text{d}u=-\\,\\text{d}t$ and $v=-{e}^{-t}.$ So,\n\n$$\n\\begin{aligned}\\int -t{e}^{-t}\\,\\text{d}t & =(-t)\\cdot (-{e}^{-t})-\\int (-{e}^{-t})\\cdot (-\\,\\text{d}t) \\\\  & =t{e}^{-t}-\\int {e}^{-t}\\,\\text{d}t \\\\  & =t{e}^{-t}+{e}^{-t} \\\\  & ={e}^{-t}(t+1).\\end{aligned}\n$$\n\nTherefore, our particular solution is\n\n$$\n\\begin{aligned}{x}_{p}(t) & =Φ\\,u(t) \\\\  & =[\\begin{aligned}{e}^{-3t} & {e}^{t} \\\\ {e}^{-3t} & 3{e}^{t}\\end{aligned}][\\begin{aligned}\\frac{4}{9}{e}^{3t}(3t-1) \\\\ {e}^{-t}(t+1)\\end{aligned}] \\\\  & =\\frac{1}{9}[\\begin{aligned}4(3t-1)+9(t+1) \\\\ 4(3t-1)+27(t+1)\\end{aligned}] \\\\  & =\\frac{1}{9}[\\begin{aligned}21t+5 \\\\ 39t+23\\end{aligned}].\\end{aligned}\n$$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14159277/observations/history-solution-q-337306-fa3e8c633f61f2306f42.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14159277/observations/history-q-337306-24762f235e7d897ad398.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a133d8-4727-7873-bc0c-accb46fd698d",
+  "previous_failures": [
+    "Agent process exited 1: \n{\"type\":\"thread.started\",\"thread_id\":\"01a133d8-4727-7873-bc0c-accb46fd698d\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"error\",\"message\":\"Reconnecting... 2/5 (unexpected status 503 Service Unavailable: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists.)\"}\n{\"type\":\"error\",\"message\":\"Selected model is at capacity. Please try a different model.\"}\n{\"type\":\"turn.failed\",\"error\":{\"message\":\"Selected model is at capacity. Please try a different model.\"}}\n"
+  ]
+}
