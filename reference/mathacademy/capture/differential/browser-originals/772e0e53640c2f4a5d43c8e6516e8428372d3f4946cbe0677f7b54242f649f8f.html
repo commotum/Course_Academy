@@ -1,0 +1,887 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Math Academy</title>
+        <meta charset="utf-8"/>
+
+        <link rel="shortcut icon" href="/img/favicon.ico"/>
+        <link rel="stylesheet" href="/css/app.css?v=2" />
+        <link rel="stylesheet" href="/css/mathquill.css" />
+        <link rel="stylesheet" href="/css/math-editor.css" />
+
+        <link rel="stylesheet" href="/css/prism.css">
+        <script type="text/javascript" src="/js/prism.js"></script>
+
+        <script type="text/javascript" src="/js/jquery.1.11.0.min.js"></script>
+
+        <script>
+            $.noConflict();
+            // Code that uses other library's $ can follow here.
+        </script>
+
+        <script type="text/javascript" src="/js/mathquill.v2.1.min.js"></script>
+        <script type="text/javascript" src="/js/math-editor.js"></script> 
+        <script type="text/javascript" src="/js/mathjax-config.js?v=2"></script>
+        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="loadMathJaxFallback()"></script>
+        <!--
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>        
+        <script type="text/javascript" src="/js/katex-config.js"></script>
+        -->
+
+        <script>
+            function showSupportDialog() {
+                const dlg = new SupportDialog();
+                dlg.show();
+            }            
+        </script>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+        <script type="text/javascript" src='/js/commonFunctions.js'></script>
+        <script type="text/javascript" src="/js/core.js"></script>
+        <script type="text/javascript" src="/js/core-ui.js"></script>
+        <script type="text/javascript" src="/js/api.js"></script>
+        <script type="text/javascript" src="/js/api-new.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+        <script type="text/javascript" src="/js/jdom.js"></script>
+        <script type="text/javascript" src="/js/header.js"></script>
+
+        <script>
+            var userTimeZone = 'America/Los_Angeles';
+            checkTimeZone(userTimeZone);
+        </script>
+
+        <style>
+            div#courseNameHeader {
+                margin-top: 50px;
+            }            
+        </style>        
+    </head>
+
+    <body>
+        
+        <div id="topRibbon"></div>
+        
+
+        <div id="wrap">
+
+            
+            <div id="topBarContainer">
+
+                <table style="width: 1080px;">
+                    <tr>
+                        <td style="width: 100px;">
+                            <a href="/"><img class="logo" src="/img/math-academy-350-logo.png" /></a>
+                        </td>
+                        <td>
+                            <div id="headerLinks">
+                                
+                                    
+                                        <a id="learnHeaderLink" class="headerLink" href="/learn">LEARN</a>
+                                        
+                                     
+
+                                         
+
+                                                                     
+                                                                                        
+                                                                                                   
+                                                    
+                                             
+                                    
+                                             
+
+                                                                          
+                                        <a id="coursesHeaderLink" class="headerLink" onmouseover="showCoursesMenu(this, 'coursesMenu');">COURSES</a>  
+                                      
+                                  
+                            </div>
+
+                            
+
+                            <div id="coursesMenu">
+                                <table id="coursesMenu-coursesTable" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td class="coursesMenu-categoryList" style="padding-right: 15px;">
+                                        <div class="coursesMenu-categoryHeader">Elementary School</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/4th-grade-math">4th Grade Math</a></div>                                             
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/5th-grade-math">5th Grade Math</a></div>         
+                                        
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">Middle School</div>                                        
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/6th-grade-math">6th Grade Math</a></div>         
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/7th-grade-math">7th Grade Math</a></div>         
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/8th-grade-math">8th Grade Math</a></div>         
+
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/prealgebra">Prealgebra</a></div>
+                                
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">High School</div>
+
+                                        <div class="coursesMenu-courseSequence" style="margin-top: 20px;">Traditional</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/algebra-i">Algebra I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/geometry">Geometry</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/algebra-ii">Algebra II</a></div>       
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/precalculus">Precalculus</a></div> 
+
+                                        <div class="coursesMenu-courseSequence">Integrated Math</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-i">Integrated Math I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-ii">Integrated Math II</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-iii">Integrated Math III</a></div>   
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/precalculus">Precalculus</a></div> 
+                                
+
+                                        <div class="coursesMenu-courseSequence">Integrated Math (Honors)</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-i-honors">Integrated Math I (Honors)</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-ii-honors">Integrated Math II (Honors)</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-iii-honors">Integrated Math III (Honors)</a></div>                                     
+
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">Test Prep</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/sat-math-fundamentals">SAT Math Fundamentals</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/sat-math-prep">SAT Math Prep</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/act-math">ACT Math</a> *</div>
+                                    </td>
+                                    <td class="coursesMenu-categoryList">
+
+                                        <div class="coursesMenu-categoryHeader">AP Courses</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/ap-calculus-ab">AP Calculus AB</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/ap-calculus-bc">AP Calculus BC</a></div>
+
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">Foundations Series</div>
+
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-foundations-i">Mathematical Foundations I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-foundations-ii">Mathematical Foundations II</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-foundations-iii">Mathematical Foundations III</a></div>                                        
+
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">University</div>            
+
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/calculus-i">Calculus I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/calculus-ii">Calculus II</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/linear-algebra">Linear Algebra</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/multivariable-calculus">Multivariable Calculus</a></div>                                     
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/methods-of-proof">Methods of Proof</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/differential-equations">Differential Equations</a></div>                                           
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/discrete-mathematics">Discrete Mathematics</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/probability-and-statistics">Probability & Statistics</a></div>                                        
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematics-for-machine-learning">Mathematics For Machine Learning</a></div>      
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-methods-for-the-physical-sciences-i">Mathematical Methods for the Physical Sciences I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-methods-for-the-physical-sciences-ii">Mathematical Methods for the Physical Sciences II</a></div>                                                                             
+                                                            
+                                        <div class="coursesMenu-course">
+                                            <a class="coursesMenu-courseLink" href="/courses/abstract-algebra">Abstract Algebra</a> *
+                                        </div>        
+                                    </td>
+                                </tr>
+                                </table>
+
+                                <div style="margin-top: 20px;">
+                                    * <span id="coursesMenu-underDevelopment">Currently under development</span> 
+                                </div>                            
+                            </div>                        
+                        </td>
+                        <td style="width: 250px;">
+                            <div id="topMenu">
+                                
+                                    
+
+                                        
+
+                                        
+                                            <div id="userHeader" onmouseover="showMenu(this, 'userMenu');">TW</div>
+                                        
+
+                                        <div id="userMenu">
+                                            <div id="userMenu-info">
+                                                <div id="userMenu-name">Thomas Walker</div>
+                                                
+                                                    <div id="userMenu-username">differentwalker</div>
+                                                
+                                            </div>
+
+                                            <div class="headerMenuItem" onmousedown="Core.navigate('/settings/profile');">Settings</div>
+
+                                            
+
+                                            <div class="headerMenuItem" onmousedown="Core.navigate('/help');">Help</div>
+
+                                            <div class="headerMenuItem" onmousedown="showSupportDialog();">Support</div>
+
+                                            <div class="headerMenuItem" onmousedown="Core.navigate('/logout');">Logout</div>                                        
+                                        </div>
+                                    
+                                                            
+                            </div> 
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+
+            <div id="mathjaxCommands" style="display: none;">
+                $
+                \newcommand{\sech}{\mathop{\rm sech}\nolimits}
+                \newcommand{\csch}{\mathop{\rm csch}\nolimits}
+                \newcommand{\coth}{\mathop{\rm coth}\nolimits}
+                \newcommand{\arsinh}{\mathop{\rm arsinh}\nolimits}
+                \newcommand{\arcosh}{\mathop{\rm arcosh}\nolimits}
+                \newcommand{\artanh}{\mathop{\rm artanh}\nolimits}
+                \newcommand{\arsech}{\mathop{\rm arsech}\nolimits}
+                \newcommand{\arcsch}{\mathop{\rm arcsch}\nolimits}
+                \newcommand{\arcoth}{\mathop{\rm arcoth}\nolimits}
+                $
+            </div>
+
+            <div id="content">
+                <link rel="stylesheet" href="/css/student-test.css">
+
+<script type="text/javascript" src="/js/disable-back-button.js"></script>
+<script type="text/javascript" src="/js/mathdown.js?v=3"></script>
+<script type="text/javascript" src="/js/free-response-parser.js"></script>
+<script type="text/javascript" src="/js/task-event-storage.js"></script>
+<script type="text/javascript" src="/js/task-event.js"></script>
+<script type="text/javascript" src="/js/student-test.js"></script>
+
+<link href="/css/mathquill.css" rel="stylesheet">
+<link href="/css/math-editor.css" rel="stylesheet">
+
+<script type="text/javascript" src="/js/jquery.1.11.0.min.js"></script>
+
+<script>
+    $.noConflict();
+    // Code that uses other library's $ can follow here.
+</script>
+
+<script type="text/javascript" src="/js/mathquill.v2.1.min.js"></script>
+<script type="text/javascript" src="/js/math-editor.js"></script> 
+
+
+<div id="questionAnswerContainer">
+    <table style="display: inline;">
+        <tr>
+            <td style="text-align: center;">
+                <div id="questionNavigator"></div>
+
+
+                <div id="questions">
+                        
+                    
+                    <div id="question-149704" class="question">
+                        <div class="questionNumber">Question 1</div>
+
+                        
+                               
+                         
+        
+
+                        
+
+                        <div id="questionText-149704" class="questionText">
+                            <p>A continuous random variable $X$ has the probability density function </p>
+<p>\[
+f(x) = \dfrac34(2x-x^2), \quad 0 \leq x \leq 2.
+\]</p>
+<p>Calculate $\textrm{E}[X^3].$</p>
+                                     
+                        </div>
+
+                        
+                            <table class="choicesTable">
+                                <tr>
+                                    <td id="choiceALetter" class="choiceLetter">
+                                          
+                                        <div id="question-149704-choiceA" class="choiceLetterCircle " letter="a">a</div>
+                                    </td>
+                                    <td class="choiceText">$\dfrac{17}5$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceBLetter" class="choiceLetter">
+                                          
+                                        <div id="question-149704-choiceB" class="choiceLetterCircle " letter="b">b</div>
+                                    </td>
+                                    <td id="choiceBText" class="choiceText">$\dfrac85$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceCLetter" class="choiceLetter">
+                                          
+                                        <div id="question-149704-choiceC" class="choiceLetterCircle " letter="c">c</div>
+                                    </td>
+                                    <td id="choiceCText" class="choiceText">$\dfrac{23}5$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceDLetter" class="choiceLetter">
+                                          
+                                        <div  id="question-149704-choiceD" class="choiceLetterCircle " letter="d">d</div>
+                                    </td>
+                                    <td id="choiceDText" class="choiceText">$\dfrac{18}5$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceELetter" class="choiceLetter">
+                                        
+                                        <div  id="question-149704-choiceE" class="choiceLetterCircle " letter="e">e</div>
+                                    </td>
+                                    <td id="choiceEText" class="choiceText">$\dfrac75$</td>
+                                </tr>
+                            </table> 
+                              
+                    </div>
+                    
+                    <div id="question-81246" class="question">
+                        <div class="questionNumber">Question 2</div>
+
+                        
+                               
+                         
+        
+
+                        
+
+                        <div id="questionText-81246" class="questionText">
+                            <p>Given that $C$ and $D$ are finite, non-overlapping regions and that
+\[
+\iint\limits_{C}  f(x,y)\ \textrm{d}A = -7,
+\qquad
+\iint\limits_{D}  f(x,y)\ \textrm{d}A = 19,
+\]
+find the value of 
+\[
+\iint\limits_{C \cup D}  2f(x,y)\ \textrm{d}A.
+\]</p>
+                                     
+                        </div>
+
+                        
+                            <table class="choicesTable">
+                                <tr>
+                                    <td id="choiceALetter" class="choiceLetter">
+                                          
+                                        <div id="question-81246-choiceA" class="choiceLetterCircle " letter="a">a</div>
+                                    </td>
+                                    <td class="choiceText">$36$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceBLetter" class="choiceLetter">
+                                          
+                                        <div id="question-81246-choiceB" class="choiceLetterCircle " letter="b">b</div>
+                                    </td>
+                                    <td id="choiceBText" class="choiceText">$60$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceCLetter" class="choiceLetter">
+                                          
+                                        <div id="question-81246-choiceC" class="choiceLetterCircle " letter="c">c</div>
+                                    </td>
+                                    <td id="choiceCText" class="choiceText">$12$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceDLetter" class="choiceLetter">
+                                          
+                                        <div  id="question-81246-choiceD" class="choiceLetterCircle " letter="d">d</div>
+                                    </td>
+                                    <td id="choiceDText" class="choiceText">$48$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceELetter" class="choiceLetter">
+                                        
+                                        <div  id="question-81246-choiceE" class="choiceLetterCircle " letter="e">e</div>
+                                    </td>
+                                    <td id="choiceEText" class="choiceText">$24$</td>
+                                </tr>
+                            </table> 
+                              
+                    </div>
+                    
+                    <div id="question-109956" class="question">
+                        <div class="questionNumber">Question 3</div>
+
+                        
+                            
+                                <div id="calculatorInstructions-109956" class="calculatorInstructions">A calculator is required to answer the following question.</div>
+                               
+                         
+        
+
+                        
+
+                        <div id="questionText-109956" class="questionText">
+                            <p>For two independent random variables $X$ and $Y,$ we have $\textrm{Var}[X]=16$ and $\textrm{Var}[Y]=6.$ Find $\textrm{Var}\left[\dfrac 38X+\dfrac 12Y\right].$</p>
+                                     
+                        </div>
+
+                        
+                            <table class="choicesTable">
+                                <tr>
+                                    <td id="choiceALetter" class="choiceLetter">
+                                          
+                                        <div id="question-109956-choiceA" class="choiceLetterCircle " letter="a">a</div>
+                                    </td>
+                                    <td class="choiceText">$9$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceBLetter" class="choiceLetter">
+                                          
+                                        <div id="question-109956-choiceB" class="choiceLetterCircle " letter="b">b</div>
+                                    </td>
+                                    <td id="choiceBText" class="choiceText">$\dfrac{15}{4}$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceCLetter" class="choiceLetter">
+                                          
+                                        <div id="question-109956-choiceC" class="choiceLetterCircle " letter="c">c</div>
+                                    </td>
+                                    <td id="choiceCText" class="choiceText">$\dfrac{41}{4}$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceDLetter" class="choiceLetter">
+                                          
+                                        <div  id="question-109956-choiceD" class="choiceLetterCircle " letter="d">d</div>
+                                    </td>
+                                    <td id="choiceDText" class="choiceText">$\dfrac{155}{32}$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceELetter" class="choiceLetter">
+                                        
+                                        <div  id="question-109956-choiceE" class="choiceLetterCircle " letter="e">e</div>
+                                    </td>
+                                    <td id="choiceEText" class="choiceText">$6$</td>
+                                </tr>
+                            </table> 
+                              
+                    </div>
+                    
+                    <div id="question-141200" class="question">
+                        <div class="questionNumber">Question 4</div>
+
+                        
+                               
+                         
+        
+
+                        
+
+                        <div id="questionText-141200" class="questionText">
+                            <p><p>Which of the following statements are true, given that $A$ is a $6 \times 6$ matrix and  $\det(A)=-1?$ </p></p>
+<ol class="questionStatements"><li>  $A$ is invertible </li><li>  $\textrm{Null}(A)=\{\mathbf{0}\}$ </li><li>  $\textrm{nullity}(A) = 6$ </li></ol>                                     
+                        </div>
+
+                        
+                            <table class="choicesTable">
+                                <tr>
+                                    <td id="choiceALetter" class="choiceLetter">
+                                          
+                                        <div id="question-141200-choiceA" class="choiceLetterCircle " letter="a">a</div>
+                                    </td>
+                                    <td class="choiceText">I only</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceBLetter" class="choiceLetter">
+                                          
+                                        <div id="question-141200-choiceB" class="choiceLetterCircle " letter="b">b</div>
+                                    </td>
+                                    <td id="choiceBText" class="choiceText">II and III only</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceCLetter" class="choiceLetter">
+                                          
+                                        <div id="question-141200-choiceC" class="choiceLetterCircle " letter="c">c</div>
+                                    </td>
+                                    <td id="choiceCText" class="choiceText">I and II only</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceDLetter" class="choiceLetter">
+                                          
+                                        <div  id="question-141200-choiceD" class="choiceLetterCircle " letter="d">d</div>
+                                    </td>
+                                    <td id="choiceDText" class="choiceText">I and III only</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceELetter" class="choiceLetter">
+                                        
+                                        <div  id="question-141200-choiceE" class="choiceLetterCircle " letter="e">e</div>
+                                    </td>
+                                    <td id="choiceEText" class="choiceText">III only</td>
+                                </tr>
+                            </table> 
+                              
+                    </div>
+                    
+                    <div id="question-40561" class="question">
+                        <div class="questionNumber">Question 5</div>
+
+                        
+                                        
+                                <div id="calculatorInstructions-40561" class="calculatorInstructions">A scientific calculator is required to answer the following question.</div>
+                               
+                         
+        
+
+                        
+
+                        <div id="questionText-40561" class="questionText">
+                            <p>Rounded to two decimal places, what is the acute angle between the vectors  $\mathbf{v}=\begin{bmatrix}-1 \\2 \\ 3 \\ -4 \end{bmatrix}$ and $\mathbf{w}=\begin{bmatrix} -1\\-1 \\ 2 \\ 0 \end{bmatrix}?$</p>
+                                     
+                        </div>
+
+                        
+                            <table class="choicesTable">
+                                <tr>
+                                    <td id="choiceALetter" class="choiceLetter">
+                                          
+                                        <div id="question-40561-choiceA" class="choiceLetterCircle " letter="a">a</div>
+                                    </td>
+                                    <td class="choiceText"> $60.67^\circ$
+</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceBLetter" class="choiceLetter">
+                                          
+                                        <div id="question-40561-choiceB" class="choiceLetterCircle " letter="b">b</div>
+                                    </td>
+                                    <td id="choiceBText" class="choiceText">$15.25^\circ$
+</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceCLetter" class="choiceLetter">
+                                          
+                                        <div id="question-40561-choiceC" class="choiceLetterCircle " letter="c">c</div>
+                                    </td>
+                                    <td id="choiceCText" class="choiceText"> $60.01^\circ$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceDLetter" class="choiceLetter">
+                                          
+                                        <div  id="question-40561-choiceD" class="choiceLetterCircle " letter="d">d</div>
+                                    </td>
+                                    <td id="choiceDText" class="choiceText"> $33.87^\circ$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceELetter" class="choiceLetter">
+                                        
+                                        <div  id="question-40561-choiceE" class="choiceLetterCircle " letter="e">e</div>
+                                    </td>
+                                    <td id="choiceEText" class="choiceText"> $68.12^\circ$
+</td>
+                                </tr>
+                            </table> 
+                              
+                    </div>
+                    
+                    <div id="question-132655" class="question">
+                        <div class="questionNumber">Question 6</div>
+
+                        
+                               
+                         
+        
+
+                        
+
+                        <div id="questionText-132655" class="questionText">
+                            <p>Given that $f(x,y)= \dfrac{e^{-x}}{y}$ and
+\[
+\dfrac{\partial f}{\partial x} = -\dfrac{e^{-x}}{y}, \qquad
+\dfrac{\partial f}{\partial y} = -\dfrac{e^{-x}}{y^2},
+\]
+find the set of values $(x,y)$ where all partial derivatives of $f$ exist.</p>
+                                     
+                        </div>
+
+                        
+                            <table class="choicesTable">
+                                <tr>
+                                    <td id="choiceALetter" class="choiceLetter">
+                                          
+                                        <div id="question-132655-choiceA" class="choiceLetterCircle " letter="a">a</div>
+                                    </td>
+                                    <td class="choiceText">$ \{(x,y) \, : \, y \neq 0  \:\text{and}\: x \geq 0 \}$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceBLetter" class="choiceLetter">
+                                          
+                                        <div id="question-132655-choiceB" class="choiceLetterCircle " letter="b">b</div>
+                                    </td>
+                                    <td id="choiceBText" class="choiceText">$ \{(x,y) \, : \, y \geq 0 \}$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceCLetter" class="choiceLetter">
+                                          
+                                        <div id="question-132655-choiceC" class="choiceLetterCircle " letter="c">c</div>
+                                    </td>
+                                    <td id="choiceCText" class="choiceText">$ \{(x,y) \, : \, y \neq 0 \}$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceDLetter" class="choiceLetter">
+                                          
+                                        <div  id="question-132655-choiceD" class="choiceLetterCircle " letter="d">d</div>
+                                    </td>
+                                    <td id="choiceDText" class="choiceText">$ \{(x,y) \, : \, y > 0 \}$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceELetter" class="choiceLetter">
+                                        
+                                        <div  id="question-132655-choiceE" class="choiceLetterCircle " letter="e">e</div>
+                                    </td>
+                                    <td id="choiceEText" class="choiceText">$ \{(x,y) \, : \, y >  0  \:\text{and}\: x > 0 \}$</td>
+                                </tr>
+                            </table> 
+                              
+                    </div>
+                    
+                    <div id="question-93679" class="question">
+                        <div class="questionNumber">Question 7</div>
+
+                        
+                               
+                         
+        
+
+                        
+
+                        <div id="questionText-93679" class="questionText">
+                            <p>Consider the bilinear form $B(\mathbf{x},\mathbf{y}),$ given by </p>
+<p>\[
+B(\mathbf{x},\mathbf{y})= x_1y_1 - 3x_1y_3 - x_2y_3 + x_3y_3.
+\] </p>
+<p>Evaluate $B(\mathbf{x},\mathbf{y})$ when $\mathbf{x}=\begin{bmatrix} 1 \\ 0 \\ -4 \end{bmatrix}$ and $\mathbf{y}=\begin{bmatrix} 2 \\ -1 \\ 1 \end{bmatrix}.$</p>
+                                     
+                        </div>
+
+                        
+                            <table class="choicesTable">
+                                <tr>
+                                    <td id="choiceALetter" class="choiceLetter">
+                                          
+                                        <div id="question-93679-choiceA" class="choiceLetterCircle " letter="a">a</div>
+                                    </td>
+                                    <td class="choiceText">$-11$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceBLetter" class="choiceLetter">
+                                          
+                                        <div id="question-93679-choiceB" class="choiceLetterCircle " letter="b">b</div>
+                                    </td>
+                                    <td id="choiceBText" class="choiceText">$1$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceCLetter" class="choiceLetter">
+                                          
+                                        <div id="question-93679-choiceC" class="choiceLetterCircle " letter="c">c</div>
+                                    </td>
+                                    <td id="choiceCText" class="choiceText">$7$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceDLetter" class="choiceLetter">
+                                          
+                                        <div  id="question-93679-choiceD" class="choiceLetterCircle " letter="d">d</div>
+                                    </td>
+                                    <td id="choiceDText" class="choiceText">$-5$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceELetter" class="choiceLetter">
+                                        
+                                        <div  id="question-93679-choiceE" class="choiceLetterCircle " letter="e">e</div>
+                                    </td>
+                                    <td id="choiceEText" class="choiceText">$2$</td>
+                                </tr>
+                            </table> 
+                              
+                    </div>
+                    
+                    <div id="question-108269" class="question">
+                        <div class="questionNumber">Question 8</div>
+
+                        
+                               
+                         
+        
+
+                        
+
+                        <div id="questionText-108269" class="questionText">
+                            <p><p>The table below gives the values of $x$ that satisfy $P(X\geq x) = p,$ where $X\sim \chi^2(k).$  Given that the random variable $X \sim \chi^2(10),$ find the value of $x$ such that $P(X &gt; x) = 0.950.$</p></p>
+<table rules=all cellpadding=5 align="center" style="border:1px solid black; margin: auto;">
+<tr style="text-align:center" > 
+<td bgcolor="#D6EAF8">$k \setminus p$</td>
+<td bgcolor="#D6EAF8">$0.995$</td>
+<td bgcolor="#D6EAF8">$0.990$</td>
+<td bgcolor="#D6EAF8">$0.975$</td>
+<td bgcolor="#D6EAF8">$0.950$</td>
+<td bgcolor="#D6EAF8">$0.900$</td>
+</tr>
+<tr>
+<td bgcolor="#D6EAF8" style="text-align:center">$ 8 $</td>
+<td>$\,1.344\,$ </td>
+<td>$\,1.646\,$ </td>
+<td>$\,2.180\,$ </td>
+<td>$\,2.733\,$ </td>
+<td>$\,3.490\,$ </td>
+</tr>
+</tr>
+<tr>
+<td bgcolor="#D6EAF8" style="text-align:center">$ 9 $</td>
+<td>$\,1.735\,$ </td>
+<td>$\,2.088\,$ </td>
+<td>$\,2.700\,$ </td>
+<td>$\,3.325\,$ </td>
+<td>$\,4.168\,$ </td>
+</tr>
+</tr>
+<tr>
+<td bgcolor="#D6EAF8" style="text-align:center">$ 10 $</td>
+<td>$\,2.156\,$ </td>
+<td>$\,2.558\,$ </td>
+<td>$\,3.247\,$ </td>
+<td>$\,3.940\,$ </td>
+<td>$\,4.865\,$ </td>
+</tr>
+</table>                                     
+                        </div>
+
+                        
+                            <table class="choicesTable">
+                                <tr>
+                                    <td id="choiceALetter" class="choiceLetter">
+                                          
+                                        <div id="question-108269-choiceA" class="choiceLetterCircle " letter="a">a</div>
+                                    </td>
+                                    <td class="choiceText">$3.940$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceBLetter" class="choiceLetter">
+                                          
+                                        <div id="question-108269-choiceB" class="choiceLetterCircle " letter="b">b</div>
+                                    </td>
+                                    <td id="choiceBText" class="choiceText">$2.156$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceCLetter" class="choiceLetter">
+                                          
+                                        <div id="question-108269-choiceC" class="choiceLetterCircle " letter="c">c</div>
+                                    </td>
+                                    <td id="choiceCText" class="choiceText">$2.700$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceDLetter" class="choiceLetter">
+                                          
+                                        <div  id="question-108269-choiceD" class="choiceLetterCircle " letter="d">d</div>
+                                    </td>
+                                    <td id="choiceDText" class="choiceText">$1.735$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceELetter" class="choiceLetter">
+                                        
+                                        <div  id="question-108269-choiceE" class="choiceLetterCircle " letter="e">e</div>
+                                    </td>
+                                    <td id="choiceEText" class="choiceText">$1.646$</td>
+                                </tr>
+                            </table> 
+                              
+                    </div>
+                    
+                </div>
+
+                <table id="buttonBar">
+                    <tr>
+                        <td id="questionsAnswered"></td>                       
+                        <td id="timeRemaining"></td>      
+
+                        <td id="buttons">
+
+                            <div id="prevButton">Prev</div>    
+                            <div id="nextButton">Next</div>   
+ 
+        
+                            <div id="submitTestButton" class="disabledButton">Submit Test</div>   
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+            
+            </div> 
+        </div>
+
+        <link rel="stylesheet" href="/css/support-dialog.css">
+
+<script type="text/javascript" src="/js/support-dialog.js"></script>
+
+<div id="supportDialog">
+    <div id="supportDialog-title">Support</div>
+
+    <div id="supportDialog-message">
+        If you need support, please email <b>support@mathacademy.com</b>.
+    </div>
+
+    <div id="supportDialog-buttons">
+        <div id="supportDialog-closeButton">Close</div>
+    </div>
+</div>
+        <link rel="stylesheet" href="/css/xp-goals-dialog.css">
+
+<script type="text/javascript" src="/js/xp-goals-dialog.js"></script>
+
+<div id="xpGoalsDialog">
+    <div id="xpGoalsDialog-title">XP Goals</div>
+
+    <table id="xpGoalsDialog-goals" cellpadding="0" cellspacing="0">
+        <tr>
+            <td class="xpGoalsDialog-dayOfWeek">Sun</td>
+            <td class="xpGoalsDialog-dayOfWeek">Mon</td>
+            <td class="xpGoalsDialog-dayOfWeek">Tue</td>
+            <td class="xpGoalsDialog-dayOfWeek">Wed</td>
+            <td class="xpGoalsDialog-dayOfWeek">Thu</td>
+            <td class="xpGoalsDialog-dayOfWeek">Fri</td>
+            <td class="xpGoalsDialog-dayOfWeek">Sat</td>
+        </tr>
+        <tr>
+            <td><input id="xpGoalsDialog-sunGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-monGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-tueGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-wedGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-thuGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-friGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-satGoal" class="xpGoalsDialog-goal" type="text"> </td>
+        </tr> 
+    </table>
+
+
+    <div id="xpGoalsDialog-courseCompletionText"></div>
+
+    <div id="xpGoalsDialog-pausedFrame">
+        <input id="xpGoalsDialog-paused" name="xpGoalsDialog-paused" type="checkbox" /> 
+        <label id="xpGoalsDialog-pausedLabel" for="xpGoalsDialog-paused">Paused</label>
+    </div>
+
+    <div id="xpGoalsDialog-buttonBar">
+        <div id="xpGoalsDialog-submitButton">SUBMIT</div>
+        <div id="xpGoalsDialog-cancelButton">CANCEL</div>
+    </div>
+</div>
+        <link rel="stylesheet" href="/css/course-dialog.css">
+
+<script type="text/javascript" src="/js/course-dialog.js"></script>
+
+<div id="courseDialog">
+    <div id="courseDialog-title">Change Course</div>
+
+    <div id="courseDialog-course">
+        <label id="courseDialog-courseLabel">Course</label>
+
+        <select id="courseDialog-courseSelect">
+            <option selected>-</option>
+        </select>
+    </div>
+
+    <div id="courseDialog-buttonBar">
+        <div id="courseDialog-submitButton">SUBMIT</div>
+        <div id="courseDialog-cancelButton">CANCEL</div>
+    </div>
+</div>
+
+                
+
+                                    
+    </body>
+    </html>          
+    
