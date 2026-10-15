@@ -1,0 +1,83 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-333011",
+      "sequence_position": 12,
+      "problem": "Consider the following inhomogeneous system of linear differential equations:\n\n$$\n{x}^{′}(t)=[\\begin{aligned}2 & -1 \\\\ 1 & 0\\end{aligned}]x(t)+[\\begin{aligned}-3{t}^{2}+4t-4 \\\\ -{t}^{2}-2t+1\\end{aligned}].\n$$\n\nThe complementary solution to this system is given by\n\n$$\n{x}_{c}(t)={c}_{1}[\\begin{aligned}1 \\\\ 1\\end{aligned}]{e}^{t}+{c}_{2}[\\begin{aligned}t+2 \\\\ t+1\\end{aligned}]{e}^{t},\\,{c}_{1},{c}_{2}\\in R.\n$$\n\nThen, the general solution of the system is\n\n<table align=\"l\" cellpadding=\"0\" rules=\"all\">\n<tbody><tr>\n  <td rowspan=\"2\" height=\"40px\" align=\"center\">\n    $x(t)={x}_{c}(t)+\\,\\,$\n  </td>\n\n  \n  <td width=\"5px\" height=\"30px\"></td>\n  \n  <td align=\"center\">$1$</td>\n  <td width=\"5px\" align=\"center\"></td>\n\n  \n  <td rowspan=\"2\" height=\"40px\" align=\"center\">\n    $\\,\\,{t}^{2}+\\,\\,$\n  </td>\n\n  \n  <td width=\"5px\" height=\"30px\"></td>\n  \n  <td align=\"center\">{{field-1}}</td>\n  <td width=\"5px\" align=\"center\"></td>\n\n  \n  <td rowspan=\"2\" height=\"40px\" align=\"center\">\n    $\\,\\,t+\\,\\,$\n  </td>\n\n  \n  <td width=\"5px\" height=\"30px\"></td>\n  \n  <td align=\"center\">$1$</td>\n  <td width=\"5px\" align=\"center\"></td>\n\n  \n  <td rowspan=\"2\" height=\"40px\" align=\"center\">\n    .\n  </td>\n</tr>\n\n<tr>\n  \n  <td width=\"5px\" height=\"30px\"></td>\n  \n  <td align=\"center\">{{field-2}}</td>\n  <td align=\"center\"></td>\n\n  \n  <td width=\"5px\" height=\"30px\"></td>\n  \n  <td align=\"center\">$2$</td>\n  <td align=\"center\"></td>\n\n  \n  <td width=\"5px\" height=\"30px\"></td>\n  \n  <td align=\"center\">\n    {{field-3}}\n  </td>\n  <td align=\"center\"></td>\n</tr>\n</tbody></table>",
+      "worked_solution": "Recall that the general solution of an inhomogeneous system can be written as \n\n$$\nx(t)={x}_{c}(t)+{x}_{p}(t)\n$$\n\nwhere ${x}_{c}(t)$ is the complementary solution (solution of the corresponding homogeneous system) and ${x}_{p}(t)$ is a particular solution.\n\nThe forcing term\n\n$$\n[\\begin{aligned}-3{t}^{2}+4t-4 \\\\ -{t}^{2}-2t+1\\end{aligned}]\n$$\n\nof the inhomogeneous system of ODEs is polynomial of degree $2.$ Therefore, we assume that the particular solution is also polynomial of degree $2,$ i.e.\n\n$$\n{x}_{p}(t)=[\\begin{aligned}{a}_{1}{t}^{2}+{b}_{1}t+{c}_{1} \\\\ {a}_{2}{t}^{2}+{b}_{2}t+{c}_{2}\\end{aligned}]=[\\begin{aligned}{a}_{1} \\\\ {a}_{2}\\end{aligned}]{t}^{2}+[\\begin{aligned}{b}_{1} \\\\ {b}_{2}\\end{aligned}]t+[\\begin{aligned}{c}_{1} \\\\ {c}_{2}\\end{aligned}],\n$$\n\nwhere ${a}_{1},{a}_{2},{b}_{1},{b}_{2},{c}_{1},{c}_{2}$ are constants that are to be determined. \n\nCalculating the derivative of ${x}_{p}$ with respect to $t$ gives\n\n$$\n{x}_{p}^{′}(t)=[\\begin{aligned}2{a}_{1}t+{b}_{1} \\\\ 2{a}_{2}t+{b}_{2}\\end{aligned}]=[\\begin{aligned}2{a}_{1} \\\\ 2{a}_{2}\\end{aligned}]t+[\\begin{aligned}{b}_{1} \\\\ {b}_{2}\\end{aligned}].\n$$\n\nTo find the unknown constants, we substitute ${x}_{p}$ and ${x}_{p}^{′}$ into our system:\n\n$$\n\\begin{aligned}[\\begin{aligned}2{a}_{1} \\\\ 2{a}_{2}\\end{aligned}]t+[\\begin{aligned}{b}_{1} \\\\ {b}_{2}\\end{aligned}] & =[\\begin{aligned}2 & -1 \\\\ 1 & 0\\end{aligned}]([\\begin{aligned}{a}_{1} \\\\ {a}_{2}\\end{aligned}]{t}^{2}+[\\begin{aligned}{b}_{1} \\\\ {b}_{2}\\end{aligned}]t+[\\begin{aligned}{c}_{1} \\\\ {c}_{2}\\end{aligned}])+[\\begin{aligned}-3{t}^{2}+4t-4 \\\\ -{t}^{2}-2t+1\\end{aligned}] \\\\ [\\begin{aligned}2{a}_{1}t+{b}_{1} \\\\ 2{a}_{2}t+{b}_{2}\\end{aligned}] & =[\\begin{aligned}2({a}_{1}{t}^{2}+{b}_{1}t+{c}_{1})-({a}_{2}{t}^{2}+{b}_{2}t+{c}_{2}) \\\\ {a}_{1}{t}^{2}+{b}_{1}t+{c}_{1}\\end{aligned}]+[\\begin{aligned}-3{t}^{2}+4t-4 \\\\ -{t}^{2}-2t+1\\end{aligned}] \\\\ [\\begin{aligned}0{t}^{2}+2{a}_{1}t+{b}_{1} \\\\ 0{t}^{2}+2{a}_{2}t+{b}_{2}\\end{aligned}] & =[\\begin{aligned}(2{a}_{1}-{a}_{2}-3){t}^{2}+(2{b}_{1}-{b}_{2}+4)t+(2{c}_{1}-{c}_{2}-4) \\\\ ({a}_{1}-1){t}^{2}+({b}_{1}-2)t+({c}_{1}+1)\\end{aligned}]\\end{aligned}\n$$\n\nEquating the corresponding components, we get the following system:\n\n$$\n\\{\\begin{aligned}2{a}_{1}-{a}_{2}-3=0 \\\\ 2{b}_{1}-{b}_{2}+4=2{a}_{1} \\\\ 2{c}_{1}-{c}_{2}-4={b}_{1} \\\\ {a}_{1}-1=0 \\\\ {b}_{1}-2=2{a}_{2} \\\\ {c}_{1}+1={b}_{2}\\end{aligned}\n$$\n\nSolving the fourth equation and then substituting the corresponding values ​​into the first and fifth equations to solve for ${a}_{2}$ and ${b}_{2},$ we get \n\n$$\n{a}_{1}=1,\\,{a}_{2}=-1,\\,{b}_{1}=0.\n$$\n\n \n\nWe substitute these into the second equation to solve for ${b}_{2},$ and then into the sixth and third equations to solve for ${c}_{1}$ and ${c}_{2}.$ We finally get\n\n$$\n{b}_{2}=2,\\,{c}_{1}=-1,\\,{c}_{2}=-2.\n$$\n\n \n\nTherefore, the particular solution is\n\n$$\n{x}_{p}(t)=[\\begin{aligned}{t}^{2}+1 \\\\ -\\,{t}^{2}+2t-2\\end{aligned}]=[\\begin{aligned}1 \\\\ -1\\end{aligned}]{t}^{2}+[\\begin{aligned}0 \\\\ 2\\end{aligned}]t+[\\begin{aligned}1 \\\\ -2\\end{aligned}].\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "problem_field_keys": [
+        "field-1",
+        "field-2",
+        "field-3"
+      ],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14219741/observations/history-q-333011-7b007b3b88ba578f0fab.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14219741",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14219741/observations/history-solution-q-333011-e5837b62435052b443fe.html",
+      "fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        },
+        {
+          "key": "field-2",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        },
+        {
+          "key": "field-3",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q333011",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "0",
+                "value_type": "math"
+              },
+              {
+                "key": "field-2",
+                "value": "-1",
+                "value_type": "math"
+              },
+              {
+                "key": "field-3",
+                "value": "-2",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "source_grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Recall that the general solution of an inhomogeneous system can be written as \n\n$$\nx(t)={x}_{c}(t)+{x}_{p}(t)\n$$\n\nwhere ${x}_{c}(t)$ is the complementary solution (solution of the corresponding homogeneous system) and ${x}_{p}(t)$ is a particular solution.\n\nThe forcing term\n\n$$\n[\\begin{aligned}-3{t}^{2}+4t-4 \\\\ -{t}^{2}-2t+1\\end{aligned}]\n$$\n\nof the inhomogeneous system of ODEs is polynomial of degree $2.$ Therefore, we assume that the particular solution is also polynomial of degree $2,$ i.e.\n\n$$\n{x}_{p}(t)=[\\begin{aligned}{a}_{1}{t}^{2}+{b}_{1}t+{c}_{1} \\\\ {a}_{2}{t}^{2}+{b}_{2}t+{c}_{2}\\end{aligned}]=[\\begin{aligned}{a}_{1} \\\\ {a}_{2}\\end{aligned}]{t}^{2}+[\\begin{aligned}{b}_{1} \\\\ {b}_{2}\\end{aligned}]t+[\\begin{aligned}{c}_{1} \\\\ {c}_{2}\\end{aligned}],\n$$\n\nwhere ${a}_{1},{a}_{2},{b}_{1},{b}_{2},{c}_{1},{c}_{2}$ are constants that are to be determined. \n\nCalculating the derivative of ${x}_{p}$ with respect to $t$ gives\n\n$$\n{x}_{p}^{′}(t)=[\\begin{aligned}2{a}_{1}t+{b}_{1} \\\\ 2{a}_{2}t+{b}_{2}\\end{aligned}]=[\\begin{aligned}2{a}_{1} \\\\ 2{a}_{2}\\end{aligned}]t+[\\begin{aligned}{b}_{1} \\\\ {b}_{2}\\end{aligned}].\n$$\n\nTo find the unknown constants, we substitute ${x}_{p}$ and ${x}_{p}^{′}$ into our system:\n\n$$\n\\begin{aligned}[\\begin{aligned}2{a}_{1} \\\\ 2{a}_{2}\\end{aligned}]t+[\\begin{aligned}{b}_{1} \\\\ {b}_{2}\\end{aligned}] & =[\\begin{aligned}2 & -1 \\\\ 1 & 0\\end{aligned}]([\\begin{aligned}{a}_{1} \\\\ {a}_{2}\\end{aligned}]{t}^{2}+[\\begin{aligned}{b}_{1} \\\\ {b}_{2}\\end{aligned}]t+[\\begin{aligned}{c}_{1} \\\\ {c}_{2}\\end{aligned}])+[\\begin{aligned}-3{t}^{2}+4t-4 \\\\ -{t}^{2}-2t+1\\end{aligned}] \\\\ [\\begin{aligned}2{a}_{1}t+{b}_{1} \\\\ 2{a}_{2}t+{b}_{2}\\end{aligned}] & =[\\begin{aligned}2({a}_{1}{t}^{2}+{b}_{1}t+{c}_{1})-({a}_{2}{t}^{2}+{b}_{2}t+{c}_{2}) \\\\ {a}_{1}{t}^{2}+{b}_{1}t+{c}_{1}\\end{aligned}]+[\\begin{aligned}-3{t}^{2}+4t-4 \\\\ -{t}^{2}-2t+1\\end{aligned}] \\\\ [\\begin{aligned}0{t}^{2}+2{a}_{1}t+{b}_{1} \\\\ 0{t}^{2}+2{a}_{2}t+{b}_{2}\\end{aligned}] & =[\\begin{aligned}(2{a}_{1}-{a}_{2}-3){t}^{2}+(2{b}_{1}-{b}_{2}+4)t+(2{c}_{1}-{c}_{2}-4) \\\\ ({a}_{1}-1){t}^{2}+({b}_{1}-2)t+({c}_{1}+1)\\end{aligned}]\\end{aligned}\n$$\n\nEquating the corresponding components, we get the following system:\n\n$$\n\\{\\begin{aligned}2{a}_{1}-{a}_{2}-3=0 \\\\ 2{b}_{1}-{b}_{2}+4=2{a}_{1} \\\\ 2{c}_{1}-{c}_{2}-4={b}_{1} \\\\ {a}_{1}-1=0 \\\\ {b}_{1}-2=2{a}_{2} \\\\ {c}_{1}+1={b}_{2}\\end{aligned}\n$$\n\nSolving the fourth equation and then substituting the corresponding values ​​into the first and fifth equations to solve for ${a}_{2}$ and ${b}_{2},$ we get \n\n$$\n{a}_{1}=1,\\,{a}_{2}=-1,\\,{b}_{1}=0.\n$$\n\n \n\nWe substitute these into the second equation to solve for ${b}_{2},$ and then into the sixth and third equations to solve for ${c}_{1}$ and ${c}_{2}.$ We finally get\n\n$$\n{b}_{2}=2,\\,{c}_{1}=-1,\\,{c}_{2}=-2.\n$$\n\n \n\nTherefore, the particular solution is\n\n$$\n{x}_{p}(t)=[\\begin{aligned}{t}^{2}+1 \\\\ -\\,{t}^{2}+2t-2\\end{aligned}]=[\\begin{aligned}1 \\\\ -1\\end{aligned}]{t}^{2}+[\\begin{aligned}0 \\\\ 2\\end{aligned}]t+[\\begin{aligned}1 \\\\ -2\\end{aligned}].\n$$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14219741/observations/history-solution-q-333011-e5837b62435052b443fe.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14219741/observations/history-q-333011-7b007b3b88ba578f0fab.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a13cd6-f3cd-74a1-a8f8-d319724ae3d7",
+  "previous_failures": []
+}
