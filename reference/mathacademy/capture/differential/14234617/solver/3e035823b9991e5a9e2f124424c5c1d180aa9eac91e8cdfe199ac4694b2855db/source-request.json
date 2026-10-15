@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-143260",
+      "sequence_position": 7,
+      "problem": "| **Age ($x$)** | **$3$** | **$5$** | **$7$** | **$9$** |\n| --- | --- | --- | --- | --- |\n| **Height ($y$)** | $95$ | $106$ | $115$ | $125$ |\n\nThe table above gives the ages, in years, and the corresponding heights, in centimeters, of four children. The corresponding linear regression line fitted using this sample is $\\overset{^}{\\,y}=80.6+5x.$\nAssuming that all conditions for the simple regression model are satisfied, $\\overset{―}{x}=6,$ and $\\text{MSE}=0.35,$ find a $95%$ confidence interval for the slope of the regression line.\n\n*Hint: Use the fact that $P(T>4.303)=0.025,$ where $T$ has a student's $t$-distribution with $2$ degrees of freedom. Also, the standard error for the slope is given by* \n\n$$\n\\text{SE}[{\\overset{^}{\\,\\beta }}_{1}\\,]=\\sqrt{\\frac{\\text{MSE}}{{S}_{xx}}}.\n$$",
+      "worked_solution": "We use the following notations:\n\n- $y={\\beta }_{0}+{\\beta }_{1}x$ is the regression line that best fits the population, and\n\n- $\\overset{^}{\\,y}={\\overset{^}{\\,\\beta }}_{0}+{\\overset{^}{\\,\\beta }}_{1}x$ is the estimate of the \"true\" regression line given by the data in our sample.\n\nIn this case, we have that  \n\n$$\n\\overset{^}{\\,y}={\\overset{^}{\\,\\beta }}_{0}+{\\overset{^}{\\,\\beta }}_{1}x=80.6+5x.\n$$\n\nWe are told that all assumptions for a simple regression model are held. So, given a value $\\alpha $ between $0$ and $1,$ the corresponding $[100(1-\\alpha )]%$ confidence interval for the slope ${\\beta }_{1}$ of our model can be written as\n\n$$\n{\\overset{^}{\\,\\beta }}_{1}\\,\\pm \\,\\overset{\\text{margin of error}}{\\overset{⏞}{{t}_{n-2,\\alpha /2}\\cdot \\text{SE}[{\\overset{^}{\\,\\beta }}_{1}\\,]}}.\n$$\n\nNote the following:\n\n- $\\,{\\overset{^}{\\,\\beta }}_{1}$ is our point estimate for the slope, computed using the data points from our sample.\n\n- $P(T>{t}_{n-2,\\alpha /2})=\\frac{\\alpha }{2},$ where $T$ has a student's $t$-distribution with $n-2$ degrees of freedom.\n\n- $\\text{SE}[{\\overset{^}{\\,\\beta }}_{1}\\,]$ is the standard error of ${\\overset{^}{\\,\\beta }}_{1},$ given by\n\n$$\n\\text{SE}[{\\overset{^}{\\,\\beta }}_{1}\\,]=\\sqrt{\\frac{\\text{MSE}}{{S}_{xx}}}\n$$\n\nwhere we have:\n\n- $\\text{MSE}$ is the mean squared error of the model:\n\n$$\n\\text{MSE}=\\frac{1}{n-2}{\\sum }_{i=1}^{n}({y}_{i}-{\\overset{^}{\\,y}}_{i})^{2}\n$$\n\nwhere ${\\overset{^}{\\,y}}_{i}$ is the estimate of ${y}_{i}$ given by our regression model.\n\n- ${S}_{xx}$ is the usual sum of squares formula:\n\n$$\n{S}_{xx}={\\sum }_{i=1}^{n}({x}_{i}-\\overset{―}{x})^{2}\n$$\n\nTo construct the confidence interval, we proceed as follows:\n\n- **Step 1.** Find the point estimate. From the regression equation $\\overset{^}{\\,y}=80.6+5x,$ our point estimate is\n\n$$\n{\\overset{^}{\\,\\beta }}_{1}=5.\n$$\n\n- **Step 2.** Find the margin of error. \n\n- Since we are interested in finding a $95%$ confidence interval, we have \n\n$$\n\\alpha =1-0.95=0.05\\,⟹\\,\\frac{\\alpha }{2}=0.025.\n$$\n\nWe are given that $P(T>4.303)=0.025.$ As a result, \n\n$$\n{t}_{n-2,\\alpha /2}={t}_{2,0.025}=4.303.\n$$\n\n- Computing ${S}_{xx},$ we get\n\n$$\n\\begin{aligned}{\\sum }_{i=1}^{n}({x}_{i}-\\overset{―}{x})^{2} & =(3-6)^{2}+(5-6)^{2}+(7-6)^{2}+(9-6)^{2} \\\\  & =9+1+1+9 \\\\  & =20.\\end{aligned}\n$$\n\n- Now, we can compute the margin of error:\n\n$$\n{t}_{n-2,\\alpha /2}\\cdot \\text{SE}[{\\overset{^}{\\,\\beta }}_{1}\\,]=4.303\\cdot \\sqrt{\\frac{0.35}{20}}≈0.6\n$$\n\n- **Step 3.** Determine the limits of the confidence interval:\n\n$$\n{\\overset{^}{\\,\\beta }}_{1}\\,\\pm \\,{t}_{n-2,\\alpha /2}\\cdot \\text{SE}[{\\overset{^}{\\,\\beta }}_{1}\\,]=5\\pm 0.6\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14234617/observations/history-q-143260-e61434f956495160b5bf.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14234617",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14234617/observations/history-solution-q-143260-e3cf2c213a7df49fe441.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "5\\pm 0.2"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "5\\pm 1.2"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "5\\pm 1.4"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "5\\pm 0.6"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "5\\pm 0.8"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q143260",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "5\\pm 0.6",
+                "option": "d",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "We use the following notations:\n\n- $y={\\beta }_{0}+{\\beta }_{1}x$ is the regression line that best fits the population, and\n\n- $\\overset{^}{\\,y}={\\overset{^}{\\,\\beta }}_{0}+{\\overset{^}{\\,\\beta }}_{1}x$ is the estimate of the \"true\" regression line given by the data in our sample.\n\nIn this case, we have that  \n\n$$\n\\overset{^}{\\,y}={\\overset{^}{\\,\\beta }}_{0}+{\\overset{^}{\\,\\beta }}_{1}x=80.6+5x.\n$$\n\nWe are told that all assumptions for a simple regression model are held. So, given a value $\\alpha $ between $0$ and $1,$ the corresponding $[100(1-\\alpha )]%$ confidence interval for the slope ${\\beta }_{1}$ of our model can be written as\n\n$$\n{\\overset{^}{\\,\\beta }}_{1}\\,\\pm \\,\\overset{\\text{margin of error}}{\\overset{⏞}{{t}_{n-2,\\alpha /2}\\cdot \\text{SE}[{\\overset{^}{\\,\\beta }}_{1}\\,]}}.\n$$\n\nNote the following:\n\n- $\\,{\\overset{^}{\\,\\beta }}_{1}$ is our point estimate for the slope, computed using the data points from our sample.\n\n- $P(T>{t}_{n-2,\\alpha /2})=\\frac{\\alpha }{2},$ where $T$ has a student's $t$-distribution with $n-2$ degrees of freedom.\n\n- $\\text{SE}[{\\overset{^}{\\,\\beta }}_{1}\\,]$ is the standard error of ${\\overset{^}{\\,\\beta }}_{1},$ given by\n\n$$\n\\text{SE}[{\\overset{^}{\\,\\beta }}_{1}\\,]=\\sqrt{\\frac{\\text{MSE}}{{S}_{xx}}}\n$$\n\nwhere we have:\n\n- $\\text{MSE}$ is the mean squared error of the model:\n\n$$\n\\text{MSE}=\\frac{1}{n-2}{\\sum }_{i=1}^{n}({y}_{i}-{\\overset{^}{\\,y}}_{i})^{2}\n$$\n\nwhere ${\\overset{^}{\\,y}}_{i}$ is the estimate of ${y}_{i}$ given by our regression model.\n\n- ${S}_{xx}$ is the usual sum of squares formula:\n\n$$\n{S}_{xx}={\\sum }_{i=1}^{n}({x}_{i}-\\overset{―}{x})^{2}\n$$\n\nTo construct the confidence interval, we proceed as follows:\n\n- **Step 1.** Find the point estimate. From the regression equation $\\overset{^}{\\,y}=80.6+5x,$ our point estimate is\n\n$$\n{\\overset{^}{\\,\\beta }}_{1}=5.\n$$\n\n- **Step 2.** Find the margin of error. \n\n- Since we are interested in finding a $95%$ confidence interval, we have \n\n$$\n\\alpha =1-0.95=0.05\\,⟹\\,\\frac{\\alpha }{2}=0.025.\n$$\n\nWe are given that $P(T>4.303)=0.025.$ As a result, \n\n$$\n{t}_{n-2,\\alpha /2}={t}_{2,0.025}=4.303.\n$$\n\n- Computing ${S}_{xx},$ we get\n\n$$\n\\begin{aligned}{\\sum }_{i=1}^{n}({x}_{i}-\\overset{―}{x})^{2} & =(3-6)^{2}+(5-6)^{2}+(7-6)^{2}+(9-6)^{2} \\\\  & =9+1+1+9 \\\\  & =20.\\end{aligned}\n$$\n\n- Now, we can compute the margin of error:\n\n$$\n{t}_{n-2,\\alpha /2}\\cdot \\text{SE}[{\\overset{^}{\\,\\beta }}_{1}\\,]=4.303\\cdot \\sqrt{\\frac{0.35}{20}}≈0.6\n$$\n\n- **Step 3.** Determine the limits of the confidence interval:\n\n$$\n{\\overset{^}{\\,\\beta }}_{1}\\,\\pm \\,{t}_{n-2,\\alpha /2}\\cdot \\text{SE}[{\\overset{^}{\\,\\beta }}_{1}\\,]=5\\pm 0.6\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14234617/observations/step-q143260-0f654c63fa3a00012b49.html"
+        }
+      }
+    ]
+  }
+}
