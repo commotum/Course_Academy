@@ -1,0 +1,21 @@
+# Classification
+
+Assigned snapshot: math basis2275, lineage01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. The exact wrapper is source.json. The registered package's later basis2659 wrapper is retained unchanged in reference/supplemental-source-basis2659.json; its record equals the assigned record. No registered files are imported or changed. The manifest job is copied in reference/manifest-job.json.
+
+The11 Math Academy practice originals consist of9 moderate and2 unrated questions. There is no independently authored captured inventory; independent-inventory.json records this separately. The canonical example e-4398 is separate from practice counts. Its two original raster assets were inspected: they show the same3×3 matrix and3×1 column as the worked solution, with A=[[-3,1,1],[2,0,0],[-1,-2,5]] and x=[1,-2,0]. They are typeset mathematics, with no graph or geometry. Plot rating is none throughout; no plot generator is necessary.
+
+| Family | Originals | Observed fields | Solution backbone |
+| --- | --- | --- | --- |
+| named-radio | q-70188, q-70190, q-77350, q-13557 | one radio, five whole-column options | named product, row products, evaluated terms, final column |
+| inline-radio | q-127267, q-70191, q-77349, q-77351 | one radio, five whole-column options | printed product, row products, evaluated terms, final column |
+| named-blank | q-318606 | three scalar blanks, original table positions | named product; nested aligned product and evaluated-term columns |
+| inline-blank | q-318622 | three scalar blanks, original table positions and source field order | product; nested aligned products, evaluated-term array, final column |
+| what-radio | q-13558 | one radio, five whole-column options | source has no solution; normal completion uses the inline row-dot-product chain |
+
+There are9 radio banks (45 values) and2 three-field blank records (6 values):51 original displayed values across15 fields. Thirteen original correct designations are present; two radio designations are absent. Both unrated sources q-13557 and q-13558 omit difficulty and worked solution. Raw public observed replay retains all three omissions. Mathematical inference locates the correct source-bank vector, respectively(5,14,-19) and(-6,15,-3); these are explicitly authored completions only. Missing designations do not count as matched designations.
+
+The family grouping treats named letters and numerical entries as slots, while preserving complete expression roles, field contracts, table layouts and teaching stages. All three ordered output coordinates remain assessed. A row permutation varies which row occupies each eligible output role; it does not introduce selected-cell questions or change the method. Names vary across six matrix and five vector letters and update every complete named component.
+
+The lesson route follows first-step/next: Introduction →2×2 matrix-column KP00866 →this3×3 KP00867 →variable-entry KP00868 →Alternative Rule. Prerequisite topic captures name zero/diagonal/identity matrices, component dot products and scalar matrix multiplication. These anchors support only numeric row dot products here. No symbolic entries, matrix inverses, linear-system solving, multiple columns or multistep transformations are added.
+
+Authored easy has exactly one zero vector entry, small nonzero matrix coefficients1–4 and nonzero vector magnitudes1–3: exactly six active products with three two-term sums. This is anchored to canonical e-4398's sparse numeric products and the zero-matrix prerequisite. Authored moderate has nine nonzero products, exactly one unit coefficient per matrix row, and at least one unit vector entry; all other coefficients and vector magnitudes are2–8. Authored hard has nine nonzero, nonunit products with magnitudes2–8 in both operands and mixed product signs in each row. It retains the identical three-product and three-sum stages with increased signed arithmetic workload, without entering variable-entry KP00868. Moderate and hard workloads are disjoint by their unit-coefficient constraints. These are design claims, never recovered easy/hard source labels. Every question within a level obeys the same active-product and number-form requirements. Source replay retains original labels and values independently of authored bounds.
