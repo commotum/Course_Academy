@@ -1,0 +1,69 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-269429",
+      "sequence_position": 4,
+      "problem": "Consider the function $L:{R}^{2\\times 2}\\to R$ defined by $L(A)=\\frac{1}{2}(Ax-b)^{T}(Ax-b),$ where\n\n$$\nx=[\\begin{aligned}2 \\\\ 3\\end{aligned}],\\,b=[\\begin{aligned}-1 \\\\ 4\\end{aligned}].\n$$\n\nWhat is ${∇}_{A}L$ at \n$A=[\\begin{aligned}1 & 0 \\\\ 2 & -1\\end{aligned}]?$\n\n<table cellpadding=\"0\" rules=\"all\">\n<tbody><tr>\n<td rowspan=\"2\" width=\"30px\" height=\"70px\" align=\"center\">\n${∇}_{A}=\\,\\,$\n</td>\n<td width=\"5px\" height=\"35px\" align=\"center\"></td>\n\n<td width=\"30px\" align=\"center\">{{field-1}}</td>\n\n<td width=\"30px\" align=\"center\">$9$</td>\n\n<td width=\"5px\" align=\"center\"></td>\n</tr>\n\n<tr> \n\n<td height=\"35px\" align=\"center\"></td>\n<td align=\"center\">$-6$</td>\n\n<td align=\"center\">{{field-2}}</td>\n\n<td align=\"center\"></td>\n\n</tr>\n\n</tbody></table>",
+      "worked_solution": "The gradient of $L$ with respect to $A$ is a matrix of the same shape as $A$, with $(i,j)$th entry given by\n\n$$\n\\frac{∂L}{∂{a}_{ij}},\n$$\n\nthe partial derivative of $L$ with respect to the $(i,j)$th entry of $A.$\n\nWe can compute $\\frac{∂L}{∂{a}_{ij}}$ by applying the chain rule.\n\nLet $y=Ax-b\\in {R}^{2}.$ Then, $L(A)=\\frac{1}{2}{y}^{T}y$ and\n\n$$\n\\frac{∂L}{∂{a}_{ij}}={\\sum }_{k=1}^{2}\\frac{∂L}{∂{y}_{k}}\\cdot \\frac{∂{y}_{k}}{∂{a}_{ij}}\n$$\n\nNow, since \n\n$$\n{∇}_{y}L={∇}_{y}(\\frac{1}{2}{y}^{T}y)=y,\n$$\n\nwe have that\n\n$$\n\\frac{∂L}{∂{y}_{k}}={y}_{k}.\n$$\n\nWriting out $y=Ax-b$ in component-wise notation as \n\n$$\n{y}_{i}={\\sum }_{j=1}^{2}{a}_{ij}{x}_{j}-{b}_{i},\n$$\n\nwe have \n\n- $\\frac{∂{y}_{k}}{∂{a}_{ij}}={x}_{j}$ if $i=k$, and\n\n- $\\frac{∂{y}_{k}}{∂{a}_{ij}}=0$ if $i\\ne k.$\n\nThis means that \n\n$$\n\\begin{aligned}\\frac{∂L}{∂{a}_{ij}} & ={\\sum }_{k=1}^{2}\\frac{∂L}{∂{y}_{k}}\\cdot \\frac{∂{y}_{k}}{∂{a}_{ij}} \\\\  & =\\frac{∂L}{∂{y}_{i}}\\cdot \\frac{∂{y}_{i}}{∂{a}_{ij}} \\\\  & ={y}_{i}\\cdot \\frac{∂{y}_{i}}{∂{a}_{ij}} \\\\  & ={y}_{i}{x}_{j}.\\end{aligned}\n$$\n\nThe $(i,j)$th entry of ${∇}_{A}L$ is the $i$th entry of $y$ multiplied by the $j$th entry of $x$, so\n\n$$\n{∇}_{A}L=y\\cdot {x}^{T}.\n$$\n\nFinally, evaluating ${∇}_{A}L$ at $A=[\\begin{aligned}1 & 0 \\\\ 2 & -1\\end{aligned}],$ we get\n\n$$\n\\begin{aligned}{∇}_{A}L & =y\\cdot {x}^{T} \\\\  & =(Ax-b)\\cdot {x}^{T} \\\\  & =([\\begin{aligned}1 & 0 \\\\ 2 & -1\\end{aligned}][\\begin{aligned}2 \\\\ 3\\end{aligned}]-[\\begin{aligned}-1 \\\\ 4\\end{aligned}])\\cdot [\\begin{aligned}2 & 3\\end{aligned}] \\\\  & =([\\begin{aligned}2 \\\\ 1\\end{aligned}]-[\\begin{aligned}-1 \\\\ 4\\end{aligned}])\\cdot [\\begin{aligned}2 & 3\\end{aligned}] \\\\  & =[\\begin{aligned}3 \\\\ -3\\end{aligned}]\\cdot [\\begin{aligned}2 & 3\\end{aligned}] \\\\  & =[\\begin{aligned}6 & 9 \\\\ -6 & -9\\end{aligned}].\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "problem_field_keys": [
+        "field-1",
+        "field-2"
+      ],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14224980/observations/history-q-269429-5750dfd01f7e3c656856.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14224980",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14224980/observations/history-solution-q-269429-3914aa9a17b68473bdfd.html",
+      "fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        },
+        {
+          "key": "field-2",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q269429",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "0",
+                "value_type": "math"
+              },
+              {
+                "key": "field-2",
+                "value": "-9",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "source_grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "The gradient of $L$ with respect to $A$ is a matrix of the same shape as $A$, with $(i,j)$th entry given by\n\n$$\n\\frac{∂L}{∂{a}_{ij}},\n$$\n\nthe partial derivative of $L$ with respect to the $(i,j)$th entry of $A.$\n\nWe can compute $\\frac{∂L}{∂{a}_{ij}}$ by applying the chain rule.\n\nLet $y=Ax-b\\in {R}^{2}.$ Then, $L(A)=\\frac{1}{2}{y}^{T}y$ and\n\n$$\n\\frac{∂L}{∂{a}_{ij}}={\\sum }_{k=1}^{2}\\frac{∂L}{∂{y}_{k}}\\cdot \\frac{∂{y}_{k}}{∂{a}_{ij}}\n$$\n\nNow, since \n\n$$\n{∇}_{y}L={∇}_{y}(\\frac{1}{2}{y}^{T}y)=y,\n$$\n\nwe have that\n\n$$\n\\frac{∂L}{∂{y}_{k}}={y}_{k}.\n$$\n\nWriting out $y=Ax-b$ in component-wise notation as \n\n$$\n{y}_{i}={\\sum }_{j=1}^{2}{a}_{ij}{x}_{j}-{b}_{i},\n$$\n\nwe have \n\n- $\\frac{∂{y}_{k}}{∂{a}_{ij}}={x}_{j}$ if $i=k$, and\n\n- $\\frac{∂{y}_{k}}{∂{a}_{ij}}=0$ if $i\\ne k.$\n\nThis means that \n\n$$\n\\begin{aligned}\\frac{∂L}{∂{a}_{ij}} & ={\\sum }_{k=1}^{2}\\frac{∂L}{∂{y}_{k}}\\cdot \\frac{∂{y}_{k}}{∂{a}_{ij}} \\\\  & =\\frac{∂L}{∂{y}_{i}}\\cdot \\frac{∂{y}_{i}}{∂{a}_{ij}} \\\\  & ={y}_{i}\\cdot \\frac{∂{y}_{i}}{∂{a}_{ij}} \\\\  & ={y}_{i}{x}_{j}.\\end{aligned}\n$$\n\nThe $(i,j)$th entry of ${∇}_{A}L$ is the $i$th entry of $y$ multiplied by the $j$th entry of $x$, so\n\n$$\n{∇}_{A}L=y\\cdot {x}^{T}.\n$$\n\nFinally, evaluating ${∇}_{A}L$ at $A=[\\begin{aligned}1 & 0 \\\\ 2 & -1\\end{aligned}],$ we get\n\n$$\n\\begin{aligned}{∇}_{A}L & =y\\cdot {x}^{T} \\\\  & =(Ax-b)\\cdot {x}^{T} \\\\  & =([\\begin{aligned}1 & 0 \\\\ 2 & -1\\end{aligned}][\\begin{aligned}2 \\\\ 3\\end{aligned}]-[\\begin{aligned}-1 \\\\ 4\\end{aligned}])\\cdot [\\begin{aligned}2 & 3\\end{aligned}] \\\\  & =([\\begin{aligned}2 \\\\ 1\\end{aligned}]-[\\begin{aligned}-1 \\\\ 4\\end{aligned}])\\cdot [\\begin{aligned}2 & 3\\end{aligned}] \\\\  & =[\\begin{aligned}3 \\\\ -3\\end{aligned}]\\cdot [\\begin{aligned}2 & 3\\end{aligned}] \\\\  & =[\\begin{aligned}6 & 9 \\\\ -6 & -9\\end{aligned}].\\end{aligned}\n$$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14224980/observations/history-solution-q-269429-3914aa9a17b68473bdfd.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14224980/observations/history-q-269429-5750dfd01f7e3c656856.html"
+        }
+      }
+    ]
+  }
+}
