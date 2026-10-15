@@ -1,0 +1,1 @@
+Reviewed candidate-plots.png: all five moderate projection regions at a=2 agree with the displayed integration bounds; axis ticks, region labels, boundary equations and vertical slice arrows are readable and unclipped. The selected triangle, tilted-square blank and lower-right triangle plots carry the same instance parameters as their prompts, answers and worked solutions.
