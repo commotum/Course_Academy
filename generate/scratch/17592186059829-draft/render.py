@@ -1,0 +1,37 @@
+"""Render actual draft outputs with the player's Markdown/sanitization/MathJax pipeline."""
+import functools,http.server,json,threading,re,hashlib
+from pathlib import Path
+import subprocess
+D=Path(__file__).resolve().parent;ROOT=D.parents[2]
+source=(ROOT/'ui/learning.js').read_text()
+parts=[source[source.index('function el('):source.index('function button(')],source[source.index('function fieldLabel('):source.index('function fieldLabel(')+source[source.index('function fieldLabel('):].index('\n}')+2],source[source.index('function escapeHTML('):source.index('function answerValue(')]]
+js="import { marked } from '/ui/vendor/marked/marked.esm.js';\nimport { romanLists } from '/ui/prose-lists.js';\nimport { inlinePrompt } from '/ui/question-fields.js';\n"+'\n'.join(parts)+"\nconst short=value=>String(value||'').split('/').pop();\n"+source[source.index('function answerValue('):source.index('function loadMath(')]+r'''
+window.renderRecord=async record=>{
+ await MathJax.startup.promise; MathJax.typesetClear([document.body]);document.body.replaceChildren();
+ const q=record.question;const fields=q[':question/answer-fields'].map(f=>({key:f[':answer-field/key'],type:f[':answer-field/type']}));
+ const prompt=markdown(q[':question/problem'],'prose prompt',fields);document.body.append(prompt);
+ for(const f of q[':question/answer-fields']) {const list=el('div','choices');for(const a of f[':answer-field/choices']){const option=el('label','choice');const input=el('input');input.type='radio';input.disabled=true;option.append(input,answerValue({type:a[':answer/type'],value:a[':answer/value']}));list.append(option);}document.body.append(list);}
+ document.body.append(markdown(q[':question/worked-solution']||'','prose solution'));
+ await MathJax.typesetPromise([document.body]);
+ const tables=[];for(const item of MathJax.startup.document.math)item.root.walkTree(node=>{if(node.kind==='mtable')tables.push({rows:node.childNodes.length,columns:node.childNodes[0].childNodes.length});});
+ const clone=document.body.cloneNode(true);clone.querySelectorAll('mjx-container').forEach(n=>n.remove());
+ return {errors:document.querySelectorAll('[data-mml-node="merror"]').length,exposed:/\$|\\begin|\\end|\{\{field-/.test(clone.textContent),tables,blanks:prompt.querySelectorAll('[data-field-key]').length,overflow:[...document.querySelectorAll('mjx-container')].some(n=>n.getBoundingClientRect().width>1050)};
+};
+'''
+(D/'render-harness.js').write_text(js)
+(D/'render-harness.html').write_text('<html><head><meta charset="utf-8"><link rel="stylesheet" href="/ui/learning.css"><style>body{max-width:1000px;margin:32px auto;background:white;color:#222;padding:20px}.choices{margin:20px 0 30px}</style><script src="/ui/vendor/dompurify/purify.min.js"></script><script src="/ui/mathjax-config.js"></script><script src="/ui/vendor/mathjax/tex-svg.js"></script><script type="module" src="render-harness.js"></script></head><body></body></html>')
+class Quiet(http.server.SimpleHTTPRequestHandler):
+ def log_message(self,*args):pass
+server=http.server.ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Quiet,directory=str(ROOT)));threading.Thread(target=server.serve_forever,daemon=True).start();origin=f'http://127.0.0.1:{server.server_port}'
+records=json.loads((D/'render-samples.json').read_text())
+for z in json.loads((D/'source-cases.json').read_text()):
+ q=z['record']
+ for f in q[':question/answer-fields']:
+  f[':answer-field/type']=f[':answer-field/type'][':db/ident']
+  for a in f[':answer-field/choices']:a[':answer/type']=a[':answer/type'][':db/ident']
+ records.append({'question':q,'generation':{'template':'original-'+z['source_id']}})
+(D/'render-records.json').write_text(json.dumps(records)+'\n')
+try:
+ subprocess.run(['node',str(D/'render-cdp.js'),origin,str(D.relative_to(ROOT))],cwd=ROOT,check=True)
+finally:server.shutdown();server.server_close()
+report=json.loads((D/'render-report.json').read_text());report['ui_source_hashes']={str(x.relative_to(ROOT)):hashlib.sha256(x.read_bytes()).hexdigest() for x in (ROOT/'ui/learning.js',ROOT/'ui/question-fields.js',ROOT/'ui/mathjax-config.js')};(D/'render-report.json').write_text(json.dumps(report,indent=2)+'\n')

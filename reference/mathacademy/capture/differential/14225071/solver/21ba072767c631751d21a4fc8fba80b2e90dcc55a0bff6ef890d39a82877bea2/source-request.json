@@ -1,0 +1,581 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-355958",
+      "sequence_position": 4,
+      "problem": "Suppose we have a dataset consisting of $5$ datapoints with $3$ features in the form of the $5\\times 3$ matrix\n\n$$\nX=[\\begin{aligned}0.795 & -5.044 & 1.480 \\\\ 2.471 & -4.893 & 1.132 \\\\ 2.589 & -6.272 & -0.161 \\\\ 0.548 & -6.608 & 1.020 \\\\ 5.379 & -3.807 & 3.126\\end{aligned}]\n$$\n\nWe wish to reduce the dimensionality of the dataset while still preserving as much variance as possible.\n\nSelect the correct options in the following reasoning that walks through the process of reducing the dimensionality of the dataset.\n\nWe will use principal component analysis to reduce the dimensionality of the dataset. The first principal component is \n{{field-1}} \nwith the \n{{field-2}} \nvariance.\n\nThe second principal component is the direction in feature space \n{{field-3}} \nto the first\n{{field-4}}. \n\nIn order to reduce the dimensionality of the dataset, we will project the data onto the first few principal components, picking the number of components based on the amount of cumulative variance preserved.\n\nThe first step is to {{field-5}}.\n\nThe standardized data matrix is\n\n$$\n{X}_{\\text{std}}=[\\begin{aligned}-0.81 & 0.25 & 0.14 \\\\ 0.06 & 0.38 & -0.16 \\\\ 0.12 & -0.84 & -1.25 \\\\ -0.94 & -1.13 & -0.25 \\\\ 1.57 & 1.34 & 1.53\\end{aligned}].\n$$\n\nThe SVD of the standardized data matrix is\n\n$$\n\\begin{aligned}{X}_{\\text{std}} & =UΣ{V}^{T},\\,\\text{where} \\\\ U & =[\\begin{aligned}-0.066 & 0.590 & -0.424 & -0.067 & 0.680 \\\\ 0.055 & -0.056 & -0.505 & 0.841 & -0.178 \\\\ -0.374 & -0.731 & -0.063 & 0.057 & 0.565 \\\\ -0.430 & 0.317 & 0.675 & 0.487 & 0.152 \\\\ 0.817 & -0.116 & 0.325 & 0.220 & 0.405\\end{aligned}], \\\\ Σ & =[\\begin{aligned}3.124 & 0 & 0 \\\\ 0 & 1.309 & 0 \\\\ 0 & 0 & 0.738 \\\\ 0 & 0 & 0 \\\\ 0 & 0 & 0\\end{aligned}], \\\\ V & =[\\begin{aligned}0.544 & -0.802 & 0.248 \\\\ 0.608 & 0.173 & -0.775 \\\\ 0.578 & 0.572 & 0.581\\end{aligned}].\\end{aligned}\n$$\n\nWe compute the cumulative variance preserved for different numbers of components.\n\nThe fraction of variance preserved by projecting the data onto the first principal component is \n{{field-6}}.\n\nThe fraction of variance preserved by projecting the data onto the first two principal components is \n{{field-7}}.\n\nIf we wish to preserve $90%$ of the variance, we should reduce the dataset to \n{{field-8}}.\n\nWriting ${v}_{1},{v}_{2},{v}_{3}$ for the columns of $V$ and ${u}_{1},{u}_{2},{u}_{3},{u}_{4},{u}_{5}$ for the columns of $U$, the reduced dataset is\n\n$$\n{X}_{\\text{red}}={{field-9}}.\n$$",
+      "worked_solution": "We will use principal component analysis to reduce the dimensionality of the dataset. The first principal component is $\\text{the direction in feature space}$ with the $\\text{most}$ variance.\n\nThe second principal component is the direction $\\text{orthogonal}$ to the first $\\text{principal component}.$\n\nIn order to reduce the dimensionality of the dataset, we will project the data onto the first few principal components, picking the number of components based on the amount of cumulative variance preserved.\n\nThe first step is to $\\text{standardize the data}.$\n\nThe standardized data matrix is\n\n$$\n{X}_{\\text{std}}=[\\begin{aligned}-0.81 & 0.25 & 0.14 \\\\ 0.06 & 0.38 & -0.16 \\\\ 0.12 & -0.84 & -1.25 \\\\ -0.94 & -1.13 & -0.25 \\\\ 1.57 & 1.34 & 1.53\\end{aligned}].\n$$\n\nThe SVD of the standardized data matrix is\n\n$$\n\\begin{aligned}{X}_{\\text{std}} & =UΣ{V}^{T},\\,\\text{where} \\\\ U & =[\\begin{aligned}-0.066 & 0.590 & -0.424 & -0.067 & 0.680 \\\\ 0.055 & -0.056 & -0.505 & 0.841 & -0.178 \\\\ -0.374 & -0.731 & -0.063 & 0.057 & 0.565 \\\\ -0.430 & 0.317 & 0.675 & 0.487 & 0.152 \\\\ 0.817 & -0.116 & 0.325 & 0.220 & 0.405\\end{aligned}], \\\\ Σ & =[\\begin{aligned}3.124 & 0 & 0 \\\\ 0 & 1.309 & 0 \\\\ 0 & 0 & 0.738 \\\\ 0 & 0 & 0 \\\\ 0 & 0 & 0\\end{aligned}], \\\\ V & =[\\begin{aligned}0.544 & -0.802 & 0.248 \\\\ 0.608 & 0.173 & -0.775 \\\\ 0.578 & 0.572 & 0.581\\end{aligned}].\\end{aligned}\n$$\n\nWe compute the cumulative variance preserved for different numbers of components.\n\nThe variance along a principal component is equal to the corresponding eigenvalue of the covariance matrix, which is proportional to the square of the corresponding singular value of the data matrix.\n\n- The fraction of variance preserved by projecting the data onto the first principal component is \n\n$$\n\\frac{{3.124}^{2}}{{3.124}^{2}+{1.309}^{2}+{0.738}^{2}}≈81.2%.\n$$\n\n- The fraction of variance preserved by projecting the data onto the first two principal components is \n\n$$\n\\frac{{3.124}^{2}+{1.309}^{2}}{{3.124}^{2}+{1.309}^{2}+{0.738}^{2}}≈95.5%.\n$$\n\nThus, we have that \n\n- reducing the dataset to $1$ dimension would preserve $81.2%$ of the variance, while\n\n- reducing the dataset to $2$ dimensions would preserve $95.5%$ of the variance.\n\nIf we wish to preserve $90%$ of the variance, we should reduce the dataset to $2\\text{ dimensions}$ , since this is the minimum number of components that preserves at least $90%$ of the variance.\n\nWriting ${v}_{1},{v}_{2},{v}_{3}$ for the columns of $V$ and ${u}_{1},{u}_{2},{u}_{3},{u}_{4},{u}_{5}$ for the columns of $U$, the reduced dataset is\n\n$$\n{X}_{\\text{red}}={X}_{\\text{std}}\\cdot [\\begin{aligned}{v}_{1} & {v}_{2}\\end{aligned}],\n$$\n\nsince we need to project the data onto the first two principal components, which are the first two columns of $V.$\n\n**Note:** In order to invert the projection and interpret any further analysis in terms of the original features, we need to know the means and standard deviations of the original dataset $X.$ Additionally, in case we have more data, we can use the means and standard deviations of the original dataset to map the new data into the original feature space.",
+      "answer_fields_complete": true,
+      "proof_feedback": "Oops, that's not quite right. Please try again.",
+      "result": "Partial Credit",
+      "grade": "Partial Credit",
+      "source_grade": "Partial Credit",
+      "problem_field_keys": [
+        "field-1",
+        "field-2",
+        "field-3",
+        "field-4",
+        "field-5",
+        "field-6",
+        "field-7",
+        "field-8",
+        "field-9"
+      ],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/history-q-355958-70c393cd2b357275fa7f.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14225071",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/history-solution-q-355958-808f547d0d38835dd07f.html",
+      "fields": [
+        {
+          "key": "field-1",
+          "type": "select",
+          "disabled": false,
+          "choices_complete": true,
+          "source_selected": {
+            "type": "text",
+            "value": "the direction in feature space"
+          },
+          "source_correct": {
+            "type": "text",
+            "value": "the direction in feature space"
+          },
+          "source_result": "Correct",
+          "correct_value": "the direction in feature space",
+          "value_type": "text",
+          "correct_origin": "ma_answer",
+          "evidence": {
+            "kind": "ma_correct_grade",
+            "value": "the direction in feature space",
+            "grade": "correct",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/step-q355958-ff4745631ac56e7e9caa.html",
+            "presentation_key": "step-q355958"
+          },
+          "correct_evidence": {
+            "kind": "ma_answer",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/history-q-355958-70c393cd2b357275fa7f.html",
+            "value": "the direction in feature space"
+          },
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "the direction in feature space"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "the datapoint"
+            }
+          ]
+        },
+        {
+          "key": "field-2",
+          "type": "select",
+          "disabled": false,
+          "choices_complete": true,
+          "source_selected": {
+            "type": "text",
+            "value": "most"
+          },
+          "source_correct": {
+            "type": "text",
+            "value": "most"
+          },
+          "source_result": "Correct",
+          "correct_value": "most",
+          "value_type": "text",
+          "correct_origin": "ma_answer",
+          "evidence": {
+            "kind": "ma_correct_grade",
+            "value": "most",
+            "grade": "correct",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/step-q355958-ff4745631ac56e7e9caa.html",
+            "presentation_key": "step-q355958"
+          },
+          "correct_evidence": {
+            "kind": "ma_answer",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/history-q-355958-70c393cd2b357275fa7f.html",
+            "value": "most"
+          },
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "most"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "least"
+            }
+          ]
+        },
+        {
+          "key": "field-3",
+          "type": "select",
+          "disabled": false,
+          "choices_complete": true,
+          "source_selected": {
+            "type": "text",
+            "value": "orthogonal"
+          },
+          "source_correct": {
+            "type": "text",
+            "value": "orthogonal"
+          },
+          "source_result": "Correct",
+          "correct_value": "orthogonal",
+          "value_type": "text",
+          "correct_origin": "ma_answer",
+          "evidence": {
+            "kind": "ma_correct_grade",
+            "value": "orthogonal",
+            "grade": "correct",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/step-q355958-ff4745631ac56e7e9caa.html",
+            "presentation_key": "step-q355958"
+          },
+          "correct_evidence": {
+            "kind": "ma_answer",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/history-q-355958-70c393cd2b357275fa7f.html",
+            "value": "orthogonal"
+          },
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "orthogonal"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "parallel"
+            }
+          ]
+        },
+        {
+          "key": "field-4",
+          "type": "select",
+          "disabled": false,
+          "choices_complete": true,
+          "source_selected": {
+            "type": "text",
+            "value": "principal component"
+          },
+          "source_correct": {
+            "type": "text",
+            "value": "principal component"
+          },
+          "source_result": "Correct",
+          "correct_value": "principal component",
+          "value_type": "text",
+          "correct_origin": "ma_answer",
+          "evidence": {
+            "kind": "ma_correct_grade",
+            "value": "principal component",
+            "grade": "correct",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/step-q355958-ff4745631ac56e7e9caa.html",
+            "presentation_key": "step-q355958"
+          },
+          "correct_evidence": {
+            "kind": "ma_answer",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/history-q-355958-70c393cd2b357275fa7f.html",
+            "value": "principal component"
+          },
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "principal component"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "datapoint"
+            }
+          ]
+        },
+        {
+          "key": "field-5",
+          "type": "select",
+          "disabled": false,
+          "choices_complete": true,
+          "source_selected": {
+            "type": "text",
+            "value": "standardize the data"
+          },
+          "source_correct": {
+            "type": "text",
+            "value": "standardize the data"
+          },
+          "source_result": "Correct",
+          "correct_value": "standardize the data",
+          "value_type": "text",
+          "correct_origin": "ma_answer",
+          "evidence": {
+            "kind": "ma_correct_grade",
+            "value": "standardize the data",
+            "grade": "correct",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/step-q355958-ff4745631ac56e7e9caa.html",
+            "presentation_key": "step-q355958"
+          },
+          "correct_evidence": {
+            "kind": "ma_answer",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/history-q-355958-70c393cd2b357275fa7f.html",
+            "value": "standardize the data"
+          },
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "standardize the data"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "center the data"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "find the SVD of the data matrix"
+            }
+          ]
+        },
+        {
+          "key": "field-6",
+          "type": "select",
+          "disabled": false,
+          "choices_complete": true,
+          "source_selected": {
+            "type": "math",
+            "value": "81.2%"
+          },
+          "source_correct": {
+            "type": "math",
+            "value": "81.2%"
+          },
+          "source_result": "Correct",
+          "correct_value": "81.2%",
+          "value_type": "math",
+          "correct_origin": "ma_answer",
+          "evidence": {
+            "kind": "ma_correct_grade",
+            "value": "81.2%",
+            "grade": "correct",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/step-q355958-ff4745631ac56e7e9caa.html",
+            "presentation_key": "step-q355958"
+          },
+          "correct_evidence": {
+            "kind": "ma_answer",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/history-q-355958-70c393cd2b357275fa7f.html",
+            "value": "81.2%"
+          },
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "81.2%"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "95.5%"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "72.3%"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "89.8%"
+            }
+          ]
+        },
+        {
+          "key": "field-7",
+          "type": "select",
+          "disabled": false,
+          "choices_complete": true,
+          "source_selected": {
+            "type": "math",
+            "value": "95.5%"
+          },
+          "source_correct": {
+            "type": "math",
+            "value": "95.5%"
+          },
+          "source_result": "Correct",
+          "correct_value": "95.5%",
+          "value_type": "math",
+          "correct_origin": "ma_answer",
+          "evidence": {
+            "kind": "ma_correct_grade",
+            "value": "95.5%",
+            "grade": "correct",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/step-q355958-ff4745631ac56e7e9caa.html",
+            "presentation_key": "step-q355958"
+          },
+          "correct_evidence": {
+            "kind": "ma_answer",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/history-q-355958-70c393cd2b357275fa7f.html",
+            "value": "95.5%"
+          },
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "95.5%"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "81.2%"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "98.4%"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "100.0%"
+            }
+          ]
+        },
+        {
+          "key": "field-8",
+          "type": "select",
+          "disabled": false,
+          "choices_complete": true,
+          "source_selected": {
+            "type": "text",
+            "value": "$2$ dimensions"
+          },
+          "source_correct": {
+            "type": "text",
+            "value": "$2$ dimensions"
+          },
+          "source_result": "Correct",
+          "correct_value": "$2$ dimensions",
+          "value_type": "text",
+          "correct_origin": "ma_answer",
+          "evidence": {
+            "kind": "ma_correct_grade",
+            "value": "$2$ dimensions",
+            "grade": "correct",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/step-q355958-ff4745631ac56e7e9caa.html",
+            "presentation_key": "step-q355958"
+          },
+          "correct_evidence": {
+            "kind": "ma_answer",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/history-q-355958-70c393cd2b357275fa7f.html",
+            "value": "$2$ dimensions"
+          },
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "$2$ dimensions"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "$1$ dimension"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "$3$ dimensions"
+            }
+          ]
+        },
+        {
+          "key": "field-9",
+          "type": "select",
+          "disabled": false,
+          "choices_complete": true,
+          "source_selected": {
+            "type": "math",
+            "value": "{X}_{\\text{std}}\\cdot [\\begin{aligned}{v}_{1} & {v}_{2}\\end{aligned}]"
+          },
+          "source_correct": {
+            "type": "math",
+            "value": "{X}_{\\text{std}}\\cdot [\\begin{aligned}{v}_{1} & {v}_{2}\\end{aligned}]"
+          },
+          "source_result": "Correct",
+          "correct_value": "{X}_{\\text{std}}\\cdot [\\begin{aligned}{v}_{1} & {v}_{2}\\end{aligned}]",
+          "value_type": "math",
+          "correct_origin": "ma_answer",
+          "evidence": {
+            "kind": "ma_correct_grade",
+            "value": "{X}_{\\text{std}}\\cdot [\\begin{aligned}{v}_{1} & {v}_{2}\\end{aligned}]",
+            "grade": "correct",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/step-q355958-ff4745631ac56e7e9caa.html",
+            "presentation_key": "step-q355958"
+          },
+          "correct_evidence": {
+            "kind": "ma_answer",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/history-q-355958-70c393cd2b357275fa7f.html",
+            "value": "{X}_{\\text{std}}\\cdot [\\begin{aligned}{v}_{1} & {v}_{2}\\end{aligned}]"
+          },
+          "choices": [
+            {
+              "option": "0",
+              "type": "math",
+              "value": "{X}_{\\text{std}}\\cdot [\\begin{aligned}{v}_{1} & {v}_{2}\\end{aligned}]"
+            },
+            {
+              "option": "1",
+              "type": "math",
+              "value": "{X}_{\\text{std}}\\cdot V"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "{[\\begin{aligned}{u}_{1} & {u}_{2} & {u}_{3}\\end{aligned}]}^{T}\\cdot {X}_{\\text{std}}"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "{[\\begin{aligned}{u}_{1} & {u}_{2}\\end{aligned}]}^{T}\\cdot {X}_{\\text{std}}"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q355958",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "the datapoint",
+                "option": "0",
+                "value_type": "text"
+              },
+              {
+                "key": "field-2",
+                "value": "most",
+                "option": "1",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          },
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "the direction in feature space",
+                "option": "1",
+                "value_type": "text"
+              },
+              {
+                "key": "field-2",
+                "value": "most",
+                "option": "1",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          },
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-3",
+                "value": "orthogonal",
+                "option": "0",
+                "value_type": "text"
+              },
+              {
+                "key": "field-4",
+                "value": "principal component",
+                "option": "1",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          },
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-5",
+                "value": "standardize the data",
+                "option": "0",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          },
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-6",
+                "value": "81.2%",
+                "option": "0",
+                "value_type": "math"
+              },
+              {
+                "key": "field-7",
+                "value": "95.5%",
+                "option": "0",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          },
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-8",
+                "value": "$2$ dimensions",
+                "option": "2",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          },
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-9",
+                "value": "{X}_{\\text{std}}\\cdot [\\begin{aligned}{v}_{1} & {v}_{2}\\end{aligned}]",
+                "option": "3",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Partial Credit",
+          "source_grade": "Partial Credit",
+          "result": "Partial Credit",
+          "worked_solution": "We will use principal component analysis to reduce the dimensionality of the dataset. The first principal component is $\\text{the direction in feature space}$ with the $\\text{most}$ variance.\n\nThe second principal component is the direction $\\text{orthogonal}$ to the first $\\text{principal component}.$\n\nIn order to reduce the dimensionality of the dataset, we will project the data onto the first few principal components, picking the number of components based on the amount of cumulative variance preserved.\n\nThe first step is to $\\text{standardize the data}.$\n\nThe standardized data matrix is\n\n$$\n{X}_{\\text{std}}=[\\begin{aligned}-0.81 & 0.25 & 0.14 \\\\ 0.06 & 0.38 & -0.16 \\\\ 0.12 & -0.84 & -1.25 \\\\ -0.94 & -1.13 & -0.25 \\\\ 1.57 & 1.34 & 1.53\\end{aligned}].\n$$\n\nThe SVD of the standardized data matrix is\n\n$$\n\\begin{aligned}{X}_{\\text{std}} & =UΣ{V}^{T},\\,\\text{where} \\\\ U & =[\\begin{aligned}-0.066 & 0.590 & -0.424 & -0.067 & 0.680 \\\\ 0.055 & -0.056 & -0.505 & 0.841 & -0.178 \\\\ -0.374 & -0.731 & -0.063 & 0.057 & 0.565 \\\\ -0.430 & 0.317 & 0.675 & 0.487 & 0.152 \\\\ 0.817 & -0.116 & 0.325 & 0.220 & 0.405\\end{aligned}], \\\\ Σ & =[\\begin{aligned}3.124 & 0 & 0 \\\\ 0 & 1.309 & 0 \\\\ 0 & 0 & 0.738 \\\\ 0 & 0 & 0 \\\\ 0 & 0 & 0\\end{aligned}], \\\\ V & =[\\begin{aligned}0.544 & -0.802 & 0.248 \\\\ 0.608 & 0.173 & -0.775 \\\\ 0.578 & 0.572 & 0.581\\end{aligned}].\\end{aligned}\n$$\n\nWe compute the cumulative variance preserved for different numbers of components.\n\nThe variance along a principal component is equal to the corresponding eigenvalue of the covariance matrix, which is proportional to the square of the corresponding singular value of the data matrix.\n\n- The fraction of variance preserved by projecting the data onto the first principal component is \n\n$$\n\\frac{{3.124}^{2}}{{3.124}^{2}+{1.309}^{2}+{0.738}^{2}}≈81.2%.\n$$\n\n- The fraction of variance preserved by projecting the data onto the first two principal components is \n\n$$\n\\frac{{3.124}^{2}+{1.309}^{2}}{{3.124}^{2}+{1.309}^{2}+{0.738}^{2}}≈95.5%.\n$$\n\nThus, we have that \n\n- reducing the dataset to $1$ dimension would preserve $81.2%$ of the variance, while\n\n- reducing the dataset to $2$ dimensions would preserve $95.5%$ of the variance.\n\nIf we wish to preserve $90%$ of the variance, we should reduce the dataset to $2\\text{ dimensions}$ , since this is the minimum number of components that preserves at least $90%$ of the variance.\n\nWriting ${v}_{1},{v}_{2},{v}_{3}$ for the columns of $V$ and ${u}_{1},{u}_{2},{u}_{3},{u}_{4},{u}_{5}$ for the columns of $U$, the reduced dataset is\n\n$$\n{X}_{\\text{red}}={X}_{\\text{std}}\\cdot [\\begin{aligned}{v}_{1} & {v}_{2}\\end{aligned}],\n$$\n\nsince we need to project the data onto the first two principal components, which are the first two columns of $V.$\n\n**Note:** In order to invert the projection and interpret any further analysis in terms of the original features, we need to know the means and standard deviations of the original dataset $X.$ Additionally, in case we have more data, we can use the means and standard deviations of the original dataset to map the new data into the original feature space.",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/history-solution-q-355958-808f547d0d38835dd07f.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14225071/observations/history-q-355958-70c393cd2b357275fa7f.html"
+        }
+      }
+    ]
+  }
+}
