@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-159778",
+      "sequence_position": 8,
+      "problem": "Let $X=[{X}_{1},{X}_{2}]^{T}$ be a bivariate normal random vector with mean vector $\\mu $ and covariance matrix $Σ$ given by\n\n$$\n\\begin{aligned}\\mu =[\\begin{aligned}5 \\\\ 1\\end{aligned}],\\,Σ=[\\begin{aligned}1 & -2 \\\\ -2 & 5\\end{aligned}].\\end{aligned}\n$$\n\nLet $Y={X}_{1}+3{X}_{2}.$ Calculate $P(1\\le Y\\le 5).$\n\n*Hint: Tables of values of $Φ(z)$ for different values of $z$ are given below, where $Φ(z)$ is the cumulative distribution function for the standard normal distribution. *\n\n<table align=\"center\">\n<tbody><tr>\n<th>\n\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.00\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.01\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.02\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-1.2\\,$</th><td align=\"center\"> $\\,0.1151\\,$ </td><td align=\"center\"> $\\,0.1131\\,$ </td><td align=\"center\"> $\\,0.1112\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-1.1\\,$</th><td align=\"center\"> $\\,0.1357\\,$ </td><td align=\"center\"> $\\,0.1335\\,$ </td><td align=\"center\"> $\\,0.1314\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-1.0\\,$</th><td align=\"center\"> $\\,0.1587\\,$ </td><td align=\"center\"> $\\,0.1562\\,$ </td><td align=\"center\"> $\\,0.1539\\,$ </td></tr>\n</tbody></table>\n\n<p></p></th>\n<th width=\"5%\"></th>\n\n<th><p></p>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.01\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.02\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.03\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-0.6\\,$</th><td align=\"center\"> $\\,0.2709\\,$ </td><td align=\"center\"> $\\,0.2676\\,$ </td><td align=\"center\"> $\\,0.2643\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-0.5\\,$</th><td align=\"center\"> $\\,0.3050\\,$ </td><td align=\"center\"> $\\,0.3015\\,$ </td><td align=\"center\"> $\\,0.2981\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,-0.4\\,$</th><td align=\"center\"> $\\,0.3409\\,$ </td><td align=\"center\"> $\\,0.3372\\,$ </td><td align=\"center\"> $\\,0.3336\\,$ </td></tr>\n</tbody></table>\n\n<p></p></th>\n</tr>\n</tbody></table>",
+      "worked_solution": "Recall that if $X=[{X}_{1},{X}_{2}]^{T}$ is a bivariate normal random vector with mean vector $\\mu $ and covariance matrix $Σ,$ given by\n\n$$\n\\begin{aligned}\\mu =[\\begin{aligned}{\\mu }_{1} \\\\ {\\mu }_{2}\\end{aligned}],\\,Σ=[\\begin{aligned}{\\sigma }_{1}^{2} & {\\sigma }_{12} \\\\ {\\sigma }_{21} & {\\sigma }_{2}^{2}\\end{aligned}],\\end{aligned}\n$$\n\nthen the random variable $Y,$ defined as\n\n$$\nY=a{X}_{1}+b{X}_{2}\n$$\n\nis a normally distributed random variable for all values of $a$ and $b,$ where\n\n$$\n\\begin{aligned}E[Y] & =a{\\mu }_{1}+b{\\mu }_{2}, \\\\ Var[Y] & ={a}^{2}{\\sigma }_{1}^{2}+{b}^{2}{\\sigma }_{2}^{2}+2ab{\\sigma }_{12}.\\end{aligned}\n$$\n\nIn our case, we have ${\\mu }_{1}=5$ and ${\\mu }_{2}=1.$ Therefore,\n\n$$\n\\begin{aligned}\\text{E}[Y] & =\\text{E}[{X}_{1}+3{X}_{2}] \\\\  & =\\text{E}[{X}_{1}]+3\\text{E}[{X}_{2}] \\\\  & ={\\mu }_{1}+3\\cdot {\\mu }_{2} \\\\  & =5+3\\cdot 1 \\\\  & =8.\\end{aligned}\n$$\n\nAlso, we have ${\\sigma }_{1}^{2}=1,{\\sigma }_{2}^{2}=5,$ and ${\\sigma }_{12}={\\sigma }_{21}=-2.$ Therefore, \n\n$$\n\\begin{aligned}Var[Y] & =Var[{X}_{1}+3{X}_{2}] \\\\  & ={1}^{2}\\cdot 1+{3}^{2}\\cdot 5+2\\cdot 1\\cdot 3\\cdot (-2) \\\\  & =1+45-12 \\\\  & =34.\\end{aligned}\n$$\n\nTherefore, \n\n$$\nY∼N(8,34).\n$$\n\nNow, we need to compute $P(1\\le Y\\le 5).$ First, transform $Y$ into a standard normal random variable $Z$ by $z$-scoring:\n\n$$\n\\begin{aligned}P(1\\le Y\\le 5) & =P(\\frac{1-8}{\\sqrt{34}}\\le Z\\le \\frac{5-8}{\\sqrt{34}}) \\\\  & =P(-1.20\\le Z\\le -0.51)\\end{aligned}\n$$\n\nNow, we express the required probability in terms of $Φ(z):$\n\n$$\n\\begin{aligned}P(-1.20\\le Z\\le -0.51) & =P(Z\\le -0.51)-P(Z<-1.20) \\\\  & =P(Z\\le -0.51)-P(Z\\le -1.20) \\\\  & =Φ(-0.51)-Φ(-1.20)\\end{aligned}\n$$\n\nFrom the table, we have the following:\n\n$$\n\\begin{aligned}Φ(-1.20) & =0.1151 \\\\ Φ(-0.51) & =0.3050\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}P(-1.20\\le Z\\le -0.51) & =Φ(-0.51)-Φ(-1.20) \\\\  & =0.3050-0.1151 \\\\  & =0.1899.\\end{aligned}\n$$\n\nFinally, we conclude that\n\n$$\nP(1\\le Y\\le 5)=0.1899.\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14227571/observations/history-q-159778-917065b869df7ede41f5.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14227571",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14227571/observations/history-solution-q-159778-180a2b554d171b109838.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "0.2002"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "0.2109"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "0.1558"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "0.1762"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "0.1899"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q159778",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "0.1899",
+                "option": "e",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Recall that if $X=[{X}_{1},{X}_{2}]^{T}$ is a bivariate normal random vector with mean vector $\\mu $ and covariance matrix $Σ,$ given by\n\n$$\n\\begin{aligned}\\mu =[\\begin{aligned}{\\mu }_{1} \\\\ {\\mu }_{2}\\end{aligned}],\\,Σ=[\\begin{aligned}{\\sigma }_{1}^{2} & {\\sigma }_{12} \\\\ {\\sigma }_{21} & {\\sigma }_{2}^{2}\\end{aligned}],\\end{aligned}\n$$\n\nthen the random variable $Y,$ defined as\n\n$$\nY=a{X}_{1}+b{X}_{2}\n$$\n\nis a normally distributed random variable for all values of $a$ and $b,$ where\n\n$$\n\\begin{aligned}E[Y] & =a{\\mu }_{1}+b{\\mu }_{2}, \\\\ Var[Y] & ={a}^{2}{\\sigma }_{1}^{2}+{b}^{2}{\\sigma }_{2}^{2}+2ab{\\sigma }_{12}.\\end{aligned}\n$$\n\nIn our case, we have ${\\mu }_{1}=5$ and ${\\mu }_{2}=1.$ Therefore,\n\n$$\n\\begin{aligned}\\text{E}[Y] & =\\text{E}[{X}_{1}+3{X}_{2}] \\\\  & =\\text{E}[{X}_{1}]+3\\text{E}[{X}_{2}] \\\\  & ={\\mu }_{1}+3\\cdot {\\mu }_{2} \\\\  & =5+3\\cdot 1 \\\\  & =8.\\end{aligned}\n$$\n\nAlso, we have ${\\sigma }_{1}^{2}=1,{\\sigma }_{2}^{2}=5,$ and ${\\sigma }_{12}={\\sigma }_{21}=-2.$ Therefore, \n\n$$\n\\begin{aligned}Var[Y] & =Var[{X}_{1}+3{X}_{2}] \\\\  & ={1}^{2}\\cdot 1+{3}^{2}\\cdot 5+2\\cdot 1\\cdot 3\\cdot (-2) \\\\  & =1+45-12 \\\\  & =34.\\end{aligned}\n$$\n\nTherefore, \n\n$$\nY∼N(8,34).\n$$\n\nNow, we need to compute $P(1\\le Y\\le 5).$ First, transform $Y$ into a standard normal random variable $Z$ by $z$-scoring:\n\n$$\n\\begin{aligned}P(1\\le Y\\le 5) & =P(\\frac{1-8}{\\sqrt{34}}\\le Z\\le \\frac{5-8}{\\sqrt{34}}) \\\\  & =P(-1.20\\le Z\\le -0.51)\\end{aligned}\n$$\n\nNow, we express the required probability in terms of $Φ(z):$\n\n$$\n\\begin{aligned}P(-1.20\\le Z\\le -0.51) & =P(Z\\le -0.51)-P(Z<-1.20) \\\\  & =P(Z\\le -0.51)-P(Z\\le -1.20) \\\\  & =Φ(-0.51)-Φ(-1.20)\\end{aligned}\n$$\n\nFrom the table, we have the following:\n\n$$\n\\begin{aligned}Φ(-1.20) & =0.1151 \\\\ Φ(-0.51) & =0.3050\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\begin{aligned}P(-1.20\\le Z\\le -0.51) & =Φ(-0.51)-Φ(-1.20) \\\\  & =0.3050-0.1151 \\\\  & =0.1899.\\end{aligned}\n$$\n\nFinally, we conclude that\n\n$$\nP(1\\le Y\\le 5)=0.1899.\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14227571/observations/step-q159778-a7888eeb4640c84815d1.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a13f58-1365-7692-a36a-5bf7d49ffcf1",
+  "previous_failures": []
+}
