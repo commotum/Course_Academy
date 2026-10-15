@@ -1,0 +1,31 @@
+Waiting for application api.lock
+Application api.lock acquired
+Native grading: 6 accepted, 24 rejected, 0 explicitly unresolved; no database operations.
+Validated shortages {'easy': 2, 'moderate': 2, 'hard': 5}
+Traceback (most recent call last):
+  File "/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/replenish.py", line 233, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/replenish.py", line 195, in main
+    used={cv.task(q) for q in kp[':knowledge-point/questions']};used.add(cv.task(kp[':knowledge-point/canonical-example']))
+                                                                         ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/validate_current.py", line 28, in task
+    return tuple(str(s.trigsimp(s.sympify(a))) for a in expected(q))
+                                                        ~~~~~~~~^^^
+  File "/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/validate_current.py", line 12, in expected
+    fragment=re.split(r'\\(?:,|mathrm|text)',block)[0].strip();F=v.expr(fragment) if fragment else s.Integer(1)
+                                                                 ~~~~~~^^^^^^^^^^
+  File "/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/validate.py", line 33, in expr
+    def expr(a):return s.sympify(component(a),locals={'r':g.r,'theta':g.theta,'z':g.z,'x':g.x,'y':g.y})
+                                 ~~~~~~~~~^^^
+  File "/home/jake/Developer/Course_Academy/generate/scratch/17592186129267/validate.py", line 32, in component
+    return str(parse_expr(a,local_dict={'r':g.r,'theta':g.theta,'z':g.z,'x':g.x,'y':g.y,'pi':s.pi,'cos':s.cos,'sin':s.sin,'sqrt':s.sqrt},transformations=TRANS))
+               ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jake/Developer/Course_Academy/.venv/lib/python3.13/site-packages/sympy/parsing/sympy_parser.py", line 1075, in parse_expr
+    code = stringify_expr(s, local_dict, global_dict, _transformations)
+  File "/home/jake/Developer/Course_Academy/.venv/lib/python3.13/site-packages/sympy/parsing/sympy_parser.py", line 890, in stringify_expr
+    for toknum, tokval, _, _, _ in generate_tokens(input_code.readline):
+                                   ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jake/.local/share/uv/python/cpython-3.13.5-linux-x86_64-gnu/lib/python3.13/tokenize.py", line 588, in _generate_tokens_from_c_tokenizer
+    raise TokenError(msg, (e.lineno, e.offset)) from None
+tokenize.TokenError: ('unexpected character after line continuation character', (1, 35))
