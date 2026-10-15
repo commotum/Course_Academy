@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-170561",
+      "sequence_position": 14,
+      "problem": "The minimum value of $Q(x)=4{x}_{1}^{2}-36{x}_{1}{x}_{2}+9{x}_{2}^{2},$ when $4{x}_{1}^{2}+9{x}_{2}^{2}=36,$ is $-72.$ Which of the following is a vector $x$ at which the minimum is attained?",
+      "worked_solution": "First, we write down the matrix of our quadratic form:\n\n$$\nA=[\\begin{aligned}4 & -18 \\\\ -18 & 9\\end{aligned}]\n$$\n\nNotice that we can write the constraint equation as follows:\n\n$$\n\\frac{{x}_{1}^{2}}{{3}^{2}}+\\frac{{x}_{2}^{2}}{{2}^{2}}=1\n$$\n\nThis is an ellipse with semiaxes $a=3$ (along the ${x}_{1}$-axis) and $b=2$ (along the ${x}_{2}$-axis). If we introduce new variables\n\n$\\,$ ${y}_{1}=\\frac{{x}_{1}}{3}\\,$ and $\\,{y}_{2}=\\frac{{x}_{2}}{2},$\n\nthe equation of the ellipse will transform into ${y}_{1}^{2}+{y}_{2}^{2}=1$ or $‖y‖=1.$\n\nSo, introducing a change-of-coordinate matrix \n\n$$\nP=[\\begin{aligned}3 & 0 \\\\ 0 & 2\\end{aligned}],\n$$\n\n \n\nwe obtain that $x=Py.$ Substituting this into the expression of the quadratic form, we get\n\n$$\nQ(x)={x}^{T}\\,Ax=(Py)^{T}A\\,(Py)={y}^{T}\\,({P}^{T}AP)y={Q}^{′}(y).\n$$\n\nAs a result, since ${P}^{T}=P,$ the matrix of our quadratic form in new coordinates is \n\n$$\n\\begin{aligned}B & ={P}^{T}\\,AP \\\\  & =PAP \\\\  & =[\\begin{aligned}3 & 0 \\\\ 0 & 2\\end{aligned}][\\begin{aligned}4 & -18 \\\\ -18 & 9\\end{aligned}][\\begin{aligned}3 & 0 \\\\ 0 & 2\\end{aligned}] \\\\  & =[\\begin{aligned}12 & -54 \\\\ -36 & 18\\end{aligned}][\\begin{aligned}3 & 0 \\\\ 0 & 2\\end{aligned}] \\\\  & =[\\begin{aligned}36 & -108 \\\\ -108 & 36\\end{aligned}].\\end{aligned}\n$$\n\n \n\nNow, we minimize ${Q}^{′}(y)$ when $‖y‖=1,$ as usual.\n\nSince we are told that the minimum value of the quadratic form is $-72,$ we have\n\n$$\nmin\\{{Q}^{′}(y)\\,|\\,‖y‖=1\\}={\\lambda }_{min}=-72.\n$$\n\nNext, we need the unit eigenvector that corresponds to the eigenvalue ${\\lambda }_{\\text{min}}=-72:$\n\n$$\n\\begin{aligned}B-(-72)I & =[\\begin{aligned}36 & -108 \\\\ -108 & 36\\end{aligned}]+72[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}108 & -108 \\\\ -108 & 108\\end{aligned}]\\end{aligned}\n$$\n\nSeeking a non-zero solution of $(B-(-72)I)x=0$ gives the  eigenvector $v=[\\begin{aligned}1 \\\\ 1\\end{aligned}].$ Dividing $v$ by its norm $‖v‖=\\sqrt{2},$ we get \n\n$$\n{u}_{\\text{min}}=\\frac{v}{‖v‖}=\\frac{1}{\\sqrt{2}}[\\begin{aligned}1 \\\\ 1\\end{aligned}].\n$$\n\n \n\nFinally, we map this vector back to the initial coordinate  system using the change-of-coordinates matrix:\n\n$$\n\\begin{aligned}{x}_{\\text{min}} & =P{u}_{\\text{min}} \\\\  & =[\\begin{aligned}3 & 0 \\\\ 0 & 2\\end{aligned}]\\cdot \\frac{1}{\\sqrt{2}}[\\begin{aligned}1 \\\\ 1\\end{aligned}] \\\\  & =\\frac{1}{\\sqrt{2}}[\\begin{aligned}3 \\\\ 2\\end{aligned}]\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14225259/observations/history-q-170561-56b4a1b88d9fe445025c.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14225259",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14225259/observations/history-solution-q-170561-120b36f372fc56230b07.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "\\frac{1}{\\sqrt{5}}[\\begin{aligned}1 \\\\ 2\\end{aligned}]"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "\\frac{1}{\\sqrt{5}}[\\begin{aligned}-1 \\\\ 2\\end{aligned}]"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "\\frac{1}{5}[\\begin{aligned}-2 \\\\ 3\\end{aligned}]"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "\\frac{1}{\\sqrt{2}}[\\begin{aligned}3 \\\\ 2\\end{aligned}]"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "\\frac{1}{\\sqrt{10}}[\\begin{aligned}2 \\\\ 1\\end{aligned}]"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q170561",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "\\frac{1}{\\sqrt{2}}[\\begin{aligned}3 \\\\ 2\\end{aligned}]",
+                "option": "d",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "First, we write down the matrix of our quadratic form:\n\n$$\nA=[\\begin{aligned}4 & -18 \\\\ -18 & 9\\end{aligned}]\n$$\n\nNotice that we can write the constraint equation as follows:\n\n$$\n\\frac{{x}_{1}^{2}}{{3}^{2}}+\\frac{{x}_{2}^{2}}{{2}^{2}}=1\n$$\n\nThis is an ellipse with semiaxes $a=3$ (along the ${x}_{1}$-axis) and $b=2$ (along the ${x}_{2}$-axis). If we introduce new variables\n\n$\\,$ ${y}_{1}=\\frac{{x}_{1}}{3}\\,$ and $\\,{y}_{2}=\\frac{{x}_{2}}{2},$\n\nthe equation of the ellipse will transform into ${y}_{1}^{2}+{y}_{2}^{2}=1$ or $‖y‖=1.$\n\nSo, introducing a change-of-coordinate matrix \n\n$$\nP=[\\begin{aligned}3 & 0 \\\\ 0 & 2\\end{aligned}],\n$$\n\n \n\nwe obtain that $x=Py.$ Substituting this into the expression of the quadratic form, we get\n\n$$\nQ(x)={x}^{T}\\,Ax=(Py)^{T}A\\,(Py)={y}^{T}\\,({P}^{T}AP)y={Q}^{′}(y).\n$$\n\nAs a result, since ${P}^{T}=P,$ the matrix of our quadratic form in new coordinates is \n\n$$\n\\begin{aligned}B & ={P}^{T}\\,AP \\\\  & =PAP \\\\  & =[\\begin{aligned}3 & 0 \\\\ 0 & 2\\end{aligned}][\\begin{aligned}4 & -18 \\\\ -18 & 9\\end{aligned}][\\begin{aligned}3 & 0 \\\\ 0 & 2\\end{aligned}] \\\\  & =[\\begin{aligned}12 & -54 \\\\ -36 & 18\\end{aligned}][\\begin{aligned}3 & 0 \\\\ 0 & 2\\end{aligned}] \\\\  & =[\\begin{aligned}36 & -108 \\\\ -108 & 36\\end{aligned}].\\end{aligned}\n$$\n\n \n\nNow, we minimize ${Q}^{′}(y)$ when $‖y‖=1,$ as usual.\n\nSince we are told that the minimum value of the quadratic form is $-72,$ we have\n\n$$\nmin\\{{Q}^{′}(y)\\,|\\,‖y‖=1\\}={\\lambda }_{min}=-72.\n$$\n\nNext, we need the unit eigenvector that corresponds to the eigenvalue ${\\lambda }_{\\text{min}}=-72:$\n\n$$\n\\begin{aligned}B-(-72)I & =[\\begin{aligned}36 & -108 \\\\ -108 & 36\\end{aligned}]+72[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}108 & -108 \\\\ -108 & 108\\end{aligned}]\\end{aligned}\n$$\n\nSeeking a non-zero solution of $(B-(-72)I)x=0$ gives the  eigenvector $v=[\\begin{aligned}1 \\\\ 1\\end{aligned}].$ Dividing $v$ by its norm $‖v‖=\\sqrt{2},$ we get \n\n$$\n{u}_{\\text{min}}=\\frac{v}{‖v‖}=\\frac{1}{\\sqrt{2}}[\\begin{aligned}1 \\\\ 1\\end{aligned}].\n$$\n\n \n\nFinally, we map this vector back to the initial coordinate  system using the change-of-coordinates matrix:\n\n$$\n\\begin{aligned}{x}_{\\text{min}} & =P{u}_{\\text{min}} \\\\  & =[\\begin{aligned}3 & 0 \\\\ 0 & 2\\end{aligned}]\\cdot \\frac{1}{\\sqrt{2}}[\\begin{aligned}1 \\\\ 1\\end{aligned}] \\\\  & =\\frac{1}{\\sqrt{2}}[\\begin{aligned}3 \\\\ 2\\end{aligned}]\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14225259/observations/step-q170561-dee4644a1dfc6d79b25d.html"
+        }
+      }
+    ]
+  }
+}

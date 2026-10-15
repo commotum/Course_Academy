@@ -1,0 +1,87 @@
+{
+  "task": "solve_question",
+  "payload": {
+    "evidence_contract": "solve_question:1",
+    "question": {
+      "math_academy_id": "q-170160",
+      "problem": "Find the minimum value of $Q(x)=5{x}_{1}^{2}-16{x}_{1}{x}_{2}-4{x}_{2}^{2}$ given that $25{x}_{1}^{2}+4{x}_{2}^{2}=100.$",
+      "answer_fields_complete": true,
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14225259/observations/step-q170160-dcafb80b4efa60502527.html",
+      "source_url": "https://mathacademy.com/tasks/14225259/topics/4238/lesson",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "-80"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "-100"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "-40"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "-140"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "-160"
+            }
+          ]
+        }
+      ]
+    },
+    "current_example": {
+      "math_academy_id": "e-12664",
+      "problem": "Find the minimum value of $Q(\\mathbf{x})=16x_1^2+16x_1x_2+x_2^2$ given that $16x_1^2 + x_2^2=16,$ and find the vector $\\mathbf{x}$ at which the minimum is obtained.",
+      "worked_solution": "First, we write down the matrix of our quadratic form:\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14225259/assets/948a750abb0affbe6ea348c5c2bdae2e28a4e9ac4832d09ed4245acc3eb0fc84.svg)\n\nNotice that we can write the constraint equation as follows:\n\n$$\n\\dfrac{x_1^2}{1^2}+\\dfrac{x_2^2}{4^2}=1\n$$\n\nThis is an ellipse with semiaxes $a=1$ (along the $x_1$-axis) and $b=4$ (along the $x_2$-axis). \n\nIf we introduce new variables\n\n$\\qquad$ $y_1={x_1} \\quad$ and $\\quad y_2 = \\dfrac{x_2}{4},$\n\nthe equation of the ellipse will transform into $y_1^2+y_2^2 = 1,$ or $\\|\\mathbf{y}\\|=1.$\n\nSo, introducing a change-of-coordinates matrix \n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14225259/assets/ee3547989cd719e3f5eef02a613cf203eb1062cff63d419f340dd8494b80f21c.svg) \n\nwe obtain that $\\mathbf{x} = P \\mathbf{y}.$ Substituting this into the expression of the quadratic form, we get\n\n$$\nQ(\\mathbf{x}) = \\mathbf{x}^T \\! A \\mathbf{x} = (P\\mathbf{y})^T A \\, (P\\mathbf{y}) = \\mathbf{y}^T \\! (P^TAP) \\mathbf{y}= Q'(\\mathbf{y}).\n$$\n\nAs a result, since $P^T=P,$ the matrix of our quadratic form in new coordinates is \n\n$$\n\\begin{aligned}B & ={P}^{T}\\,AP \\\\  & =PAP \\\\  & =[\\begin{aligned}1 & 0 \\\\ 0 & 4\\end{aligned}][\\begin{aligned}16 & 8 \\\\ 8 & 1\\end{aligned}][\\begin{aligned}1 & 0 \\\\ 0 & 4\\end{aligned}] \\\\  & =[\\begin{aligned}16 & 8 \\\\ 32 & 4\\end{aligned}][\\begin{aligned}1 & 0 \\\\ 0 & 4\\end{aligned}] \\\\  & =[\\begin{aligned}16 & 32 \\\\ 32 & 16\\end{aligned}].\\end{aligned}\n$$\n\n \n\nNow, we minimise $Q'(\\mathbf{y})$ when $\\| \\mathbf{y} \\|=1,$ as usual. Calculating the eigenvalues $B,$ we obtain the following:\n\n$$\n\\begin{aligned}|B-\\lambda I| & =0 \\\\ |\\begin{aligned}16-\\lambda  & 32 \\\\ 32 & 16-\\lambda \\end{aligned}| & =0 \\\\ (16-\\lambda )(16-\\lambda )-1\\,024 & =0 \\\\ {\\lambda }^{2}-32\\lambda -768 & =0 \\\\ (\\lambda -48)(\\lambda +16) & =0 \\\\ \\lambda  & =48,\\,-16\\end{aligned}\n$$\n\nTherefore, we have\n\n$$\n\\min \\{ Q'(\\mathbf{y}) \\: | \\: \\| \\mathbf{y} \\|=1 \\} = \\lambda_{\\textrm{min}} = -16.\n$$\n\nNext, we need the unit eigenvector that corresponds to the eigenvalue $\\lambda_{\\textrm{min}}=-16{:}$\n\n$$\n\\begin{aligned}B-(-16I) & =[\\begin{aligned}16 & 32 \\\\ 32 & 16\\end{aligned}]+16[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}32 & 32 \\\\ 32 & 32\\end{aligned}]\\end{aligned}\n$$\n\nSeeking a non-zero solution of $(B-(-16I))\\mathbf{y}=\\mathbf{0}$ gives the eigenvector ![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14225259/assets/16a0ec8e2e70a74e6908d4b9888a2b28f92b3ee5a1f5ae882e11d4087a414339.svg) Dividing $\\mathbf{v}$ by its norm $\\| \\mathbf{v} \\| = \\sqrt{2},$ we get \n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14225259/assets/dcbcf144ce55a2525c8d2b3d25a0dbf4e464361a46bd32d16712598f5b5268d4.svg) \n\nFinally, we map this vector back to the initial coordinate  system using the change-of-coordinates matrix:\n\n$$\n\\begin{aligned}{x}_{\\text{min}} & =P{u}_{\\text{min}} \\\\  & =[\\begin{aligned}1 & 0 \\\\ 0 & 4\\end{aligned}]\\cdot \\frac{1}{\\sqrt{2}}[\\begin{aligned}-1 \\\\ 1\\end{aligned}] \\\\  & =\\frac{1}{\\sqrt{2}}[\\begin{aligned}-1 \\\\ 4\\end{aligned}]\\end{aligned}\n$$",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14225259/observations/step-e12664-d9085918eb05ff0243ff.html",
+      "source_url": "https://mathacademy.com/tasks/14225259/topics/4238/lesson",
+      "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14225259/observations/step-e12664-d9085918eb05ff0243ff.png",
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14225259/assets/948a750abb0affbe6ea348c5c2bdae2e28a4e9ac4832d09ed4245acc3eb0fc84.svg",
+          "sha256": "948a750abb0affbe6ea348c5c2bdae2e28a4e9ac4832d09ed4245acc3eb0fc84",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 1,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14225259/assets/ee3547989cd719e3f5eef02a613cf203eb1062cff63d419f340dd8494b80f21c.svg",
+          "sha256": "ee3547989cd719e3f5eef02a613cf203eb1062cff63d419f340dd8494b80f21c",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 2,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14225259/assets/16a0ec8e2e70a74e6908d4b9888a2b28f92b3ee5a1f5ae882e11d4087a414339.svg",
+          "sha256": "16a0ec8e2e70a74e6908d4b9888a2b28f92b3ee5a1f5ae882e11d4087a414339",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 3,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14225259/assets/dcbcf144ce55a2525c8d2b3d25a0dbf4e464361a46bd32d16712598f5b5268d4.svg",
+          "sha256": "dcbcf144ce55a2525c8d2b3d25a0dbf4e464361a46bd32d16712598f5b5268d4",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        }
+      ]
+    }
+  },
+  "session_id": "01a13e60-c5dd-7053-bf7a-8efcafbc68cb",
+  "previous_failures": []
+}
