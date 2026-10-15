@@ -29,6 +29,8 @@ SPECS={
 'q-107452':('moderate',dict(a=1,n=3,b=-4,c=0,t=2),'slope'),
 'q-312451':('easy',dict(a=4,n=5,b=0,c=0),'derivative'),
 'q-340949':('moderate',dict(a=4,n=3,b=0,c=0,t=1),'slope'),
+'q-340954':('moderate',dict(a=-2,n=7,b=0,c=0,t=1),'slope'),
+'q-166076':('moderate',dict(a=-4,scale='1/2'),'trig_full'),
 'q-48629':('easy',dict(a=-2,n=3,b=0,c=8),'derivative'),
 'q-71873':('moderate',dict(a=2,n=4,b=0,c=0),'derivative'),
 }
@@ -94,7 +96,7 @@ def prepare(template,parameters,observed):
   if kind.startswith('trig'):
    if p['a'] not in (-2,-3,-4,-5,-6) or p['scale'] not in (s.Rational(1,2),s.Rational(1,3),s.Rational(2,3)):raise ValueError('Observed trig workload bounds')
   else:
-   if not 1<=abs(p['a'])<=6 or not 1<=p['n']<=6 or abs(p.get('b',0))>5 or abs(p.get('c',0))>8:raise ValueError('Observed polynomial workload bounds')
+   if not 1<=abs(p['a'])<=6 or not 1<=p['n']<=7 or abs(p.get('b',0))>5 or abs(p.get('c',0))>8:raise ValueError('Observed polynomial workload bounds')
    if (p['n']==1)!=(template=='q-340955'):raise ValueError('Only captured linear exception admits n=1')
    for k in ('b','c'):
     if bool(anchor.get(k,0))!=bool(p.get(k,0)):raise ValueError('Preserve observed primitive support')
@@ -257,7 +259,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
    # remain unchanged; public observed replay never enters this block.
    opening=problem.split('\n',1)[0].strip()
    placeholder='{{'+key+'}}'
-   layout=(r'$\frac{dy}{dx}=$'+'\n'+placeholder+'\n'+r'$\cdot e^{'+latex(g)+'}$') if kind=='trig_product' else (r'$\frac{dy}{dx}=-($'+'\n'+placeholder+'\n'+'$)/e^{'+latex(-g)+'}$')
+   layout=(r'$\frac{dy}{dx}=$'+'\n'+placeholder) if kind=='trig_full' else (r'$\frac{dy}{dx}=$'+'\n'+placeholder+'\n'+r'$\cdot e^{'+latex(g)+'}$') if kind=='trig_product' else (r'$\frac{dy}{dx}=-($'+'\n'+placeholder+'\n'+'$)/e^{'+latex(-g)+'}$')
    problem=opening+'\n\n'+defs+'\n\n'+layout
   if template=='q-48628':solution=authored_solution(p,kind)
  # ID based on full learner content and actual difficulty, order-independent.

@@ -1,0 +1,131 @@
+[
+  {
+    "label": "4ed6e5af-2150-51ed-b676-4ac61ca8579d",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186198389,
+        "id": "a3486150-b3c2-5faf-99d5-b42ced350996",
+        "title": "Expressing Flux Over a Surface as a Repeated Integral"
+      },
+      "question": {
+        ":question/id": "4ed6e5af-2150-51ed-b676-4ac61ca8579d",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "Consider the vector field $F(x,y,z)=\u27e8x + y,\\,2 x + y,\\,- z - 1\u27e9$ and the surface $S$ defined by $z=- 2 x^{2} - y^{2}$ for $1\\le x\\le 4$ and $-1\\le y\\le 2.$ Using the parametrization $x=u$ and $y=v,$ the flux of $F$ through $S$ can be expressed as\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\\int }_{1}^{4}{\\int }_{-1}^{2}\\boxed{}\\,\\text{d}v\\,\\text{d}u.\n$$\n\nWhat is the missing expression?",
+        ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the flux of a vector field $F$ over $S$ is given by\n\n$$\n{\u222c}_{S}F\\cdot \\text{d}S={\u222c}_{S}F\\cdot n\\,\\text{d}S={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A.\n$$\n\nUsing the parametrization, where $x=u$ and $y=v,$ our surface can be parameterized as\n\n$$\nr(u,v)=\u27e8u,\\,v,\\,- 2 u^{2} - v^{2}\u27e9\n$$\n\nover the domain \n\n$$\nD=\\{(u,v)\\,:\\,1\\le u\\le 4,\\,-1\\le v\\le 2\\}.\n$$\n\nWe now compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202u},\\,\\frac{\u2202y}{\u2202u},\\,\\frac{\u2202z}{\u2202u}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202u}(u),\\,\\frac{\u2202}{\u2202u}(v),\\,\\frac{\u2202}{\u2202u}(- 2 u^{2} - v^{2})\u27e9 \\\\  & =\u27e81,\\,0,\\,- 4 u\u27e9 \\\\ {r}_{v}^{\u2032} & =\u27e8\\frac{\u2202x}{\u2202v},\\,\\frac{\u2202y}{\u2202v},\\,\\frac{\u2202z}{\u2202v}\u27e9 \\\\  & =\u27e8\\frac{\u2202}{\u2202v}(u),\\,\\frac{\u2202}{\u2202v}(v),\\,\\frac{\u2202}{\u2202v}(- 2 u^{2} - v^{2})\u27e9 \\\\  & =\u27e80,\\,1,\\,- 2 v\u27e9\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}{r}_{u}^{\u2032}\\times {r}_{v}^{\u2032} & =|\\begin{aligned}i & j & k \\\\ 1 & 0 & - 4 u \\\\ 0 & 1 & - 2 v\\end{aligned}| \\\\  & =\u27e8|\\begin{aligned}0 & - 4 u \\\\ 1 & - 2 v\\end{aligned}|,\\,-|\\begin{aligned}1 & - 4 u \\\\ 0 & - 2 v\\end{aligned}|,\\,|\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}|\u27e9 \\\\  & =\u27e84 u,\\,2 v,\\,1\u27e9.\\end{aligned}\n$$\n\nNext, we substitute the coordinate expressions of $r(u,v)$ into $F(x,y,z):$\n\n$$\n\\begin{aligned}F(r(u,v)) & =\u27e8x + y,\\,2 x + y,\\,- z - 1\u27e9{|}_{x=u,\\,\\,y=v,\\,\\,z=- 2 u^{2} - v^{2}} \\\\  & =\u27e8u + v,\\,2 u + v,\\,- (- 2 u^{2} - v^{2}) - 1\u27e9 \\\\  & =\u27e8u + v,\\,2 u + v,\\,2 u^{2} + v^{2} - 1\u27e9\\end{aligned}\n$$\n\n \n\nThen, we calculate the dot product of $F$ and ${r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}:$\n\n$$\n\\begin{aligned}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032}) & =\u27e8u + v,\\,2 u + v,\\,2 u^{2} + v^{2} - 1\u27e9\\cdot \u27e84 u,\\,2 v,\\,1\u27e9 \\\\  & =(u + v)\\cdot (4 u)+(2 u + v)\\cdot (2 v)+(2 u^{2} + v^{2} - 1)\\cdot (1) \\\\  & =4 u^{2} + 4 uv+4 uv + 2 v^{2}+2 u^{2} + v^{2} - 1 \\\\  & =6 u^{2} + 8 uv + 3 v^{2} - 1.\\end{aligned}\n$$\n\nTherefore, the surface integral can be written as\n\n$$\n\\begin{aligned}{\u222c}_{S}\u27e8x + y,\\,2 x + y,\\,- z - 1\u27e9\\cdot \\text{d}S & ={\u222c}_{D}F(r(u,v))\\cdot ({r}_{u}^{\u2032}\\times {r}_{v}^{\u2032})\\,\\text{d}A. \\\\  & ={\u222c}_{D}(6 u^{2} + 8 uv + 3 v^{2} - 1)\\,\\text{d}A \\\\  & ={\\int }_{1}^{4}{\\int }_{-1}^{2}(6 u^{2} + 8 uv + 3 v^{2} - 1)\\,\\text{d}v\\,\\text{d}u.\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "cf94c05a-12ff-5582-8b0f-1126b1a459c1",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "a8b6cc4a-eef9-568d-bb45-387ac415e38c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "6 u^{2} - v^{2} - 1"
+              },
+              {
+                ":answer/id": "7436a512-84c9-591c-9ce9-fcc70e1d47ce",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "4 u^{2} + 8 uv + 2 v^{2}"
+              },
+              {
+                ":answer/id": "f2b20ec7-b848-5947-b64a-04215b62f1b5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "6 u^{2} + 8 uv + 3 v^{2} - 1"
+              },
+              {
+                ":answer/id": "8f050df9-ff08-51a6-b322-512385345065",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- 6 u^{2} - 8 uv - 3 v^{2} + 1"
+              },
+              {
+                ":answer/id": "da71da48-1d04-5e46-96ca-c7e90bbff07c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- 2 u^{2} + 3 v^{2} - 1"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "f2b20ec7-b848-5947-b64a-04215b62f1b5"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "cartesian-flux-setup-1",
+        "seed": 977479570,
+        "template": "quadratic_graph",
+        "profile": "authored_operations",
+        "parameters": {
+          "a": -2,
+          "b": -1,
+          "px": 1,
+          "py": 1,
+          "qx": 2,
+          "qy": 1,
+          "rz": -1,
+          "r0": -1,
+          "bounds": [
+            1,
+            4,
+            -1,
+            2
+          ]
+        },
+        "mathematical_fingerprint": "f177835aebb95f80d1a73c65db382e5b30135e17a12a7f7868d173f303d2c2db",
+        "presentation_fingerprint": "670e9a6a052d4c4c85cf5224ffa9a862af38160d8c396ab7ed7637193ae0d98e",
+        "provenance": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "origin": "authored",
+        "bank_origin": "authored",
+        "recipes": [
+          "correct_cross_dot",
+          "reverse_cross_order",
+          "reverse_first_normal_component",
+          "reverse_second_normal_component",
+          "omit_third_dot_term"
+        ],
+        "orientation": "ru cross rv, upward",
+        "dependencies": {
+          "sympy": "1.14.0"
+        },
+        "plots": []
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted_answer_id": "a8b6cc4a-eef9-568d-bb45-387ac415e38c",
+        "expected": "rejected",
+        "purpose": "independently verified complete bank"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "7436a512-84c9-591c-9ce9-fcc70e1d47ce",
+        "expected": "rejected",
+        "purpose": "independently verified complete bank"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "f2b20ec7-b848-5947-b64a-04215b62f1b5",
+        "expected": "accepted",
+        "purpose": "independently verified complete bank"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "8f050df9-ff08-51a6-b322-512385345065",
+        "expected": "rejected",
+        "purpose": "independently verified complete bank"
+      },
+      {
+        "field_index": 0,
+        "submitted_answer_id": "da71da48-1d04-5e46-96ca-c7e90bbff07c",
+        "expected": "rejected",
+        "purpose": "independently verified complete bank"
+      }
+    ]
+  }
+]

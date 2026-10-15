@@ -6,7 +6,7 @@ Each bank is a complete empirical expression profile; historical error intent
 is not inferred. Slots change the substituted function and proportional scale.
 """
 from __future__ import annotations
-import argparse, hashlib, importlib.util, itertools, json, random, re, uuid
+import argparse, functools, hashlib, importlib.util, itertools, json, random, re, uuid
 from pathlib import Path
 import sympy as s
 HERE=Path(__file__).with_suffix('')
@@ -52,6 +52,7 @@ def parameters_for(name):
  if name=='shifted_base_inverse_root':return [dict(base=base,b=b) for base,b in itertools.product(range(3,8),range(1,9))]
  return [dict(base=base,b=b) for base,b in itertools.product(range(2,8),range(1,10))]
 def admissible(name,p):
+ if any(type(v)!=int for v in p.values()):raise ValueError('Parameter values must be integers')
  if p not in parameters_for(name):raise ValueError('Parameters outside explicit bounded family domain')
 def level_templates(level):return [name for name,sid in TEMPLATES.items() if DIFFICULTY[sid]==level]
 def masks(name,p):
@@ -106,7 +107,26 @@ def authored_bank(name,p,correct):
  wrong_exponent=scale+root(U)+'+C' if n==3 else frac(scale,root(U))+'+C'
  return [correct,scale+root(U,n+2)+'+C',inverse+root(U,n)+'+C','-'+scale+root(U,n)+'+C',wrong_exponent],0
 
+def integer(value,label):
+ if type(value)!=int:raise ValueError(label+' must be an integer')
+ return value
+@functools.lru_cache(maxsize=2048)
+def semantic_key(prompt):
+ """Read the actual displayed integrand; ignore bank, seed and TeX aliases."""
+ if not hasattr(semantic_key,'reader'):
+  spec=importlib.util.spec_from_file_location('kp17592186184351_semantic_reader',HERE/'reference/separable-ode-parser.py')
+  semantic_key.reader=importlib.util.module_from_spec(spec);spec.loader.exec_module(semantic_key.reader)
+ reader=semantic_key.reader
+ body=next(b for b in reader.blocks(prompt) if r'\int' in b).replace(r'\displaystyle','')
+ body=body.replace(r'\text{d}','d').replace(r'\,','').strip().rstrip('.,')
+ match=re.fullmatch(r'\\int\s*(.*?)\s*d([xz])',body,re.S)
+ if not match:raise ValueError('Unrecognized displayed integral for semantic catalog')
+ expression=reader.scalar(match[1])
+ normalized=s.factor_terms(s.cancel(s.expand_power_exp(expression)))
+ return digest({'integrand':s.srepr(normalized),'integration_variable':match[2],'method_target':'whole indefinite primitive modulo additive constant'})
+
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+ integer(seed,'seed')
  if level not in LEVELS:raise ValueError('Unknown difficulty')
  if field_type not in (None,'radio'):raise ValueError('Only observed radio fields supported')
  rng=random.Random(seed)
@@ -118,7 +138,10 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
    if template not in (None,selected):raise ValueError('Template/profile mismatch')
    template=selected
   elif profile not in ('empirical','method_errors'):raise ValueError('Unknown profile')
- name=template or rng.choice(level_templates(level));sid=TEMPLATES.get(name)
+ names=level_templates(level)
+ if profile=='method_errors':names=[n for n in names if n in OPAQUE]
+ if not names:raise ValueError('No eligible template for difficulty/profile')
+ name=template or rng.choice(names);sid=TEMPLATES.get(name)
  if sid is None or DIFFICULTY[sid]!=level:raise ValueError('Template/difficulty mismatch')
  origin='observed' if profile and profile.startswith('observed:') else 'completed'
  p=dict(parameters) if parameters is not None else rng.choice(parameters_for(name));admissible(name,p)
@@ -140,7 +163,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  f={':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers}
  if complete:f[':answer-field/correct']=[':answer/id',correct]
  q[':question/id']=qid;q[':question/answer-fields']=[f]
- record={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'template':name,'profile':selected_profile,'bank_profile':('authored:method_errors' if selected_profile=='method_errors' else 'empirical:'+sid),'bank_interpretation':('wrong power, inverted scale, sign, omitted power increment' if selected_profile=='method_errors' else 'complete observed expression patterns; historical error intent unresolved'),'parameters':p,'seed':seed,'source_ids':[sid],'basis':CAPTURE['basis'],'lineage':CAPTURE['lineage'],'domain':domain(name,p),'plot_rating':'none','content_fingerprint':content,'mathematical_fingerprint':digest([name,p]),'eligible_for_learning':complete,'authored_extension':selected_profile=='method_errors' or p!=ANCHORS[sid] or sid=='q-113876' and complete,'python_sampling':'finite uniformly sampled parameter tuples'}}
+ record={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'template':name,'profile':selected_profile,'bank_profile':('authored:method_errors' if selected_profile=='method_errors' else 'empirical:'+sid),'bank_interpretation':('wrong power, inverted scale, sign, omitted power increment' if selected_profile=='method_errors' else 'complete observed expression patterns; historical error intent unresolved'),'parameters':p,'seed':seed,'source_ids':[sid],'basis':CAPTURE['basis'],'lineage':CAPTURE['lineage'],'domain':domain(name,p),'plot_rating':'none','content_fingerprint':content,'mathematical_fingerprint':semantic_key(prompt),'eligible_for_learning':complete,'authored_extension':selected_profile=='method_errors' or p!=ANCHORS[sid] or sid=='q-113876' and complete,'python_sampling':'single finite parameter tuple; batch samples semantic catalog without replacement'}}
  if complete:mf.validate_generated_record(record)
  else:
   mf.validate_prose(prompt)
@@ -149,11 +172,54 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
 def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
 def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)
 def generate_hard(seed=0,**kw):return generate('hard',seed,**kw)
+@functools.lru_cache(maxsize=64)
+def _catalog(level,template,field_type,profile,parameter_items):
+ if level not in LEVELS:raise ValueError('Unknown difficulty')
+ names=level_templates(level)
+ if profile and ':' in profile:
+  origin,sid=profile.split(':',1)
+  if origin not in ('observed','completed') or sid not in STYLE:raise ValueError('Unknown profile')
+  name=STYLE[sid]
+  if template not in (None,name):raise ValueError('Template/profile mismatch')
+  names=[name] if name in names else []
+ elif profile=='method_errors':names=[n for n in names if n in OPAQUE]
+ elif profile not in (None,'empirical'):raise ValueError('Unknown profile')
+ if template is not None:
+  if template not in names:raise ValueError('Template/difficulty/profile mismatch')
+  names=[template]
+ if not names:raise ValueError('No eligible template for difficulty/profile')
+ groups={}
+ for name in names:
+  params=[dict(parameter_items)] if parameter_items is not None else parameters_for(name)
+  for p in params:
+   r=generate(level,0,template=name,field_type=field_type,parameters=p,profile=profile)
+   groups.setdefault(r['generation']['mathematical_fingerprint'],[]).append((name,tuple(sorted(p.items()))))
+ return tuple((key,tuple(alternatives)) for key,alternatives in sorted(groups.items()))
+def semantic_catalog(level,template=None,field_type=None,parameters=None,profile=None):
+ """Finite normalized-integrand groups, with original bank alternatives."""
+ items=None
+ if parameters is not None:
+  if any(type(v)!=int for v in parameters.values()):raise ValueError('Parameter values must be integers')
+  items=tuple(sorted(parameters.items()))
+ return [{'semantic_key':key,'alternatives':[{'template':name,'parameters':dict(p)} for name,p in alternatives]} for key,alternatives in _catalog(level,template,field_type,profile,items)]
+def capacity(level,**kwargs):return len(semantic_catalog(level,**kwargs))
+def generate_batch(level,count=1,seed=0,template=None,field_type=None,parameters=None,profile=None):
+ """Sample mathematical tasks without replacement, even across bank profiles."""
+ integer(seed,'seed');integer(count,'count')
+ if count<1:raise ValueError('count must be positive')
+ catalog=semantic_catalog(level,template,field_type,parameters,profile)
+ if count>len(catalog):raise ValueError('count '+str(count)+' exceeds finite semantic capacity '+str(len(catalog)))
+ rng=random.Random(seed);chosen=rng.sample(catalog,count);records=[]
+ for group in chosen:
+  alternative=rng.choice(group['alternatives'])
+  records.append(generate(level,rng.randrange(2**63),template=alternative['template'],field_type=field_type,parameters=alternative['parameters'],profile=profile))
+ return records
+generate_many=generate_batch
 def markdown(record):
  q=record['question'];f=q[':question/answer-fields'][0];return q[':question/problem']+'\n\n'+'\n'.join('- $'+a[':answer/value']+'$' for a in f[':answer-field/choices'])+'\n\n'+q.get(':question/worked-solution','')
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=(*LEVELS,'all'),default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=('json','markdown'),default='markdown');ap.add_argument('--template');ap.add_argument('--profile');args=ap.parse_args()
- if args.count<1:ap.error('count must be positive')
- records=[generate(l,args.seed+i,template=args.template,profile=args.profile) for l in (LEVELS if args.difficulty=='all' else (args.difficulty,)) for i in range(args.count)]
+ try:records=[r for level in (LEVELS if args.difficulty=='all' else (args.difficulty,)) for r in generate_batch(level,count=args.count,seed=args.seed,template=args.template,profile=args.profile)]
+ except ValueError as error:ap.error(str(error))
  print(json.dumps(records,indent=2,ensure_ascii=False) if args.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in records))
 if __name__=='__main__':main()

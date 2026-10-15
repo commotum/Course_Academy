@@ -14,8 +14,12 @@ def save(name,v):(HERE/name).write_text(json.dumps(v,indent=2,ensure_ascii=False
 def scalar(raw):return p.scalar(raw.strip().rstrip('.,'))
 @functools.lru_cache(maxsize=16000)
 def derivative(F,var):
- F=F.xreplace({node:s.log(node.args[0].args[0]) for node in s.preorder_traversal(F) if node.func==s.log and node.args[0].func==s.Abs})
- return s.diff(F,var)
+ logs={node:s.Dummy('real_log_absolute_'+str(i)) for i,node in enumerate(s.preorder_traversal(F)) if node.func==s.log and node.args[0].func==s.Abs}
+ held=F.xreplace(logs);result=s.diff(held,var)
+ for node,symbol in logs.items():
+  inner=node.args[0].args[0]
+  result+=s.diff(held,symbol)*s.diff(inner,var)/inner
+ return result.xreplace({symbol:node for node,symbol in logs.items()})
 @functools.lru_cache(maxsize=24000)
 def reduced(expr):return s.simplify(s.powdenest(expr,force=False))
 @functools.lru_cache(maxsize=24000)
@@ -28,7 +32,21 @@ def simple(expr,U,var):
   E=exponentials[0];rest=s.simplify(U-E)
   if not rest.has(var):expr=expr.subs(E,positive-rest)
  return reduced(expr)
-def equal(a,b,U,var):return simple(a-b,U,var)==0
+def equal(a,b,U,var):
+ difference=a-b
+ if difference==0:return True
+ # The derivative-ratio U has U(0)=1, so its real logarithm is analytic on
+ # an open interval about zero for every supported k,c. A nonzero exact
+ # derivative jet there proves inequality without forcing log(abs(U)) into
+ # a complex logarithm on negative-denominator intervals.
+ E=[node for node in s.preorder_traversal(U) if node.func==s.exp]
+ if E and (U-E[0]).has(var) and U.subs(var,0)==1:
+  jet=difference
+  for _ in range(3):
+   witness=s.simplify(jet.subs(var,0))
+   if witness.is_zero is False:return False
+   jet=derivative(jet,var)
+ return simple(difference,U,var)==0
 def read_integral(raw):
  raw=raw.strip().rstrip('.,').replace(r'\text{d}','d').replace(r'\,','').replace(r'\cdot','*')
  m=re.fullmatch(r'(.*?)\\int\s*(.*?)\s*d([xzu])',raw,re.S)
@@ -96,6 +114,21 @@ def check(r):
      assert equal(ld,integrand,U,var),'Stale integral LHS'
     stage_rows.append(row)
   assert len(stage_rows)=={'positive_integer_power':5,'natural_positive_root':6,'base_inverse_root':5,'shifted_base_positive_root':8,'derivative_ratio':4,'base_ratio_linear_bank':6,'base_ratio_log_bank':6,'shifted_base_inverse_root':4}[name]
+  # Independent source stage obligations, beyond row counts or equality. A
+  # power-form row cannot replace the source's preceding root-form row.
+  required={
+   'positive_integer_power':{0:[r'\cdot'],1:[r'\int {u}^{3}'],2:[r'\int {u}^{3}'],3:[r'\frac{{u}^{4}}{4}']},
+   'natural_positive_root':{0:[r'\cdot'],1:[r'\sqrt{u}'],2:[r'{u}^{1/2}'],3:[r'{u}^{3/2}'],4:[r'\sqrt{{u}^{3}}']},
+   'base_inverse_root':{0:[r'\cdot'],1:[r'\frac{1}{\sqrt{u}}'],2:[r'{u}^{-1/2}'],3:[r'{u}^{1/2}',r'(\frac{1}{2})']},
+   'shifted_base_positive_root':{0:[r'\cdot'],1:[r'\cdot'],2:[r'\sqrt{u}',r'\cdot'],3:[r'{u}^{1/2}'],4:[r'{u}^{3/2}',r'(\frac{3}{2})'],5:[r'\frac{2}{3}'],6:[r'\sqrt{{u}^{3}}']},
+   'derivative_ratio':{0:[r'\cdot'],1:[r'\frac{1}{u}',r'\cdot'],2:[r'|u|'],3:['|']},
+   'base_ratio_linear_bank':{0:[r'\cdot'],1:[r'\frac{1}{u}',r'\cdot'],2:[r'\int \frac{1}{u}'],3:[r'|u|'],4:['|']},
+   'base_ratio_log_bank':{0:[r'\cdot'],1:[r'\frac{1}{u}',r'\cdot'],2:[r'\int \frac{1}{u}'],3:[r'|u|'],4:['|']},
+   'shifted_base_inverse_root':{0:[r'\frac{1}{\sqrt{u}}',r'\cdot'],1:[r'\int u^{-1/2}'],2:[r'\sqrt{u}']}
+  }[name]
+  for index,fragments in required.items():
+   actual_rhs=stage_rows[index].split('=',1)[1]
+   assert all(fragment in actual_rhs for fragment in fragments),('Operative stage replaced',name,index,actual_rhs)
  else:
   assert sid=='q-113876' and ':answer-field/correct' not in f and ':question/worked-solution' not in q and ':question/difficulty' not in q
  return r
@@ -129,7 +162,7 @@ def main():
   for i,params in enumerate(g.parameters_for(name)):
    r=check(g.generate(level,i,template=name,parameters=params));bounded.append(r);native_inputs.append(native(name+'-'+str(i),r));count+=1
    for k,v in params.items():observed_slots[k].add(v)
-   fp=r['generation']['mathematical_fingerprint'];assert fp not in fingerprints;fingerprints.add(fp)
+   fp=r['generation']['mathematical_fingerprint'];fingerprints.add(fp)
    assert r['question'][':question/id']==g.generate(level,i+99,template=name,parameters=params)['question'][':question/id']
   capacity[name]=count;slots[name]={k:sorted(v) for k,v in observed_slots.items()}
   if name in g.OPAQUE:
@@ -152,14 +185,16 @@ def main():
  mutant=copy.deepcopy(bounded[0]);mutant['question'][':question/worked-solution']=mutant['question'][':question/worked-solution'].replace(r'\int {u}^{3}',r'\int {u}^{2}')
  reject(lambda:check(mutant))
  mutant=copy.deepcopy(bounded[0]);mutant['question'][':question/problem']+='\x0c';reject(lambda:check(mutant))
+ root_record=next(r for r in bounded if r['generation']['template']=='natural_positive_root')
+ mutant=copy.deepcopy(root_record);mutant['question'][':question/worked-solution']=mutant['question'][':question/worked-solution'].replace(r'\sqrt{u}',r'{u}^{1/2}',1);reject(lambda:check(mutant))
  reject(lambda:g.generate('easy',template='positive_integer_power',parameters=dict(a=3,k=3,b=2)))
  reject(lambda:g.generate('hard',template='derivative_ratio',parameters=dict(k=0,c=1)))
  save('source-cases.json',sourcecases);save('review.json',review);save('bounded-records.json',bounded);save('native-input.json',native_inputs);save('ownership-input.json',diag)
  engine=HERE/'reference/check-engine';assert hashlib.sha256(engine.read_bytes()).hexdigest()=='71d435e31aa0cdea66d992aa4d4bd1043cdd871aaffc7a3af9f54e9b0f846dea'
  subprocess.run([str(engine),str(HERE/'native-input.json'),str(HERE/'native-report.json')],check=True)
  subprocess.run([str(engine),str(HERE/'ownership-input.json'),str(HERE/'ownership-report.json')],check=True)
- nr=json.loads((HERE/'native-report.json').read_text());save('capacity.json',{'complete_bounded_domain':capacity,'by_level':{level:sum(capacity[n] for n in g.level_templates(level)) for level in g.LEVELS},'slot_coverage':slots,'default_sampler_coverage':sampled,'question_identity_deterministic':True,'capacity_basis':'distinct substituted functions/proportional scales; cosmetic order excluded'})
- save('validation.json',{'status':'passed','database_writes':0,'basis':g.CAPTURE['basis'],'source_fidelity':fidelity,'source_prompts':8,'source_solutions':7,'complete_source_banks':8,'source_values_matched':40,'source_distractors_matched':32,'source_correct_references':7,'source_missing_ref_and_solution':1,'bounded_instances':len(bounded),'native_accepted_checks':nr['accepted_checks'],'native_rejected_checks':nr['rejected_checks'],'native_unresolved_checks':nr['documented_unresolved_checks'],'rendered_math':'every prompt integrand, all five choices modulo C, displayed du derivative and every ordered integration row differentiated independently over the declared domain','equivalence_probes':4*len(bounded),'actual_field_contract':'all radio; canonical and wrong choice identities checked, typed equivalent math is not its input contract','ownership_diagnostics':'separate ownership-report.json','mutation_regressions':4,'python':sys.version.split()[0],'sympy':s.__version__,'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'mutable_dependencies':False})
+ nr=json.loads((HERE/'native-report.json').read_text());save('capacity.json',{'complete_bounded_domain':capacity,'by_level':{level:len({r['generation']['mathematical_fingerprint'] for r in bounded if r['question'][':question/difficulty']==':question.difficulty/'+level}) for level in g.LEVELS},'distinct_mathematical_prompts':len(fingerprints),'distinct_bounded_profile_records':len(bounded),'slot_coverage':slots,'default_sampler_coverage':sampled,'question_identity_deterministic':True,'capacity_basis':'distinct substituted functions/proportional scales; repeated base-ratio bank profiles, authored choice banks and cosmetic order do not add mathematical capacity'})
+ save('validation.json',{'status':'passed','database_writes':0,'basis':g.CAPTURE['basis'],'source_fidelity':fidelity,'source_prompts':8,'source_solutions':7,'complete_source_banks':8,'source_values_matched':40,'source_distractors_matched':32,'source_correct_references':7,'source_missing_ref_and_solution':1,'bounded_instances':len(bounded),'native_accepted_checks':nr['accepted_checks'],'native_rejected_checks':nr['rejected_checks'],'native_unresolved_checks':nr['documented_unresolved_checks'],'rendered_math':'every prompt integrand, all five choices modulo C, displayed du derivative/factorization/proportional relation and every ordered integration row differentiated independently over the declared domain; explicit operative-stage obligations','equivalence_probes':4*len(bounded),'actual_field_contract':'all radio; canonical and wrong choice identities checked, typed equivalent math is not its input contract','ownership_diagnostics':'separate ownership-report.json','mutation_regressions':5,'python':sys.version.split()[0],'sympy':s.__version__,'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'mutable_dependencies':False})
  lines=['# Source and generated review','']
  for row in review:
   lines+=['## '+row['source_id'],'','### Original source','',''+row['original'][':question/problem'],'',row['original'].get(':question/worked-solution','(Source has no worked solution.)'),'','### Served anchor','',g.markdown(row['normal_anchor']),'','### Changed parameters','',g.markdown(row['changed_parameters']),'']

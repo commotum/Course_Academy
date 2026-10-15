@@ -8,6 +8,7 @@ No new question forms, operators, plots, field types or database writes.
 from __future__ import annotations
 import argparse,hashlib,importlib.util,itertools,json,math,random,re,sys,uuid
 from pathlib import Path
+from functools import lru_cache
 import sympy as s
 sys.dont_write_bytecode=True
 HERE=Path(__file__).with_suffix('')
@@ -127,6 +128,7 @@ def uid(v):return str(uuid.uuid5(uuid.NAMESPACE_URL,VERSION+':'+v))
 def digest(v):return hashlib.sha256(json.dumps(v,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
 @fmt.checked_math_content
 def generate(level,seed=0,template=None,parameters=None,profile=None,field_type=None):
+ if type(seed) is not int:raise ValueError('seed must be an integer')
  if level not in ('easy','moderate','hard'):raise ValueError('unknown difficulty')
  if field_type not in (None,'radio'):raise ValueError('source uses radio fields only')
  if profile is not None:
@@ -150,6 +152,42 @@ def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
 def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)
 def generate_hard(seed=0,**kw):return generate('hard',seed,**kw)
 GENERATORS={'easy':generate_easy,'moderate':generate_moderate,'hard':generate_hard}
+@lru_cache(maxsize=None)
+def semantic_catalog(level,template=None):
+ if level not in GENERATORS:raise ValueError('unknown difficulty')
+ names=[name for name,t in TEMPLATES.items() if t['level']==level]
+ if template is not None:
+  if template not in names:raise ValueError('template/level mismatch')
+  names=[template]
+ catalog={}
+ for name in names:
+  for params in DOMAINS[name]:
+   f=build(name,params)[2]
+   key=s.srepr(s.expand(f))
+   catalog.setdefault(key,[]).append((name,params))
+ return catalog
+
+def generate_batch(level,seed=0,count=1,template=None,profile=None,field_type=None):
+ """Sample distinct canonical integrands without replacement at one level.
+
+ Aliases of an integrand are grouped across all eligible source profiles.
+ Parameters within an alias group are selected only after its task is selected.
+ """
+ if type(seed) is not int:raise ValueError('seed must be an integer')
+ if type(count) is not int or count<1:raise ValueError('count must be a positive integer')
+ if field_type not in (None,'radio'):raise ValueError('source uses radio fields only')
+ if profile is not None:
+  if template is not None and template!=profile:raise ValueError('profile belongs to another template')
+  template=profile
+ catalog=semantic_catalog(level,template)
+ if count>len(catalog):raise ValueError(f'{level} count {count} exceeds semantic capacity {len(catalog)}')
+ rng=random.Random(seed);keys=list(catalog);rng.shuffle(keys)
+ selected=[]
+ for key in keys[:count]:
+  name,params=rng.choice(catalog[key])
+  selected.append(generate(level,seed=rng.randrange(2**63),template=name,parameters=params,profile=name,field_type=field_type))
+ return selected
+
 def markdown(r):
  q=r['question'];g=r['generation'];f=q[':question/answer-fields'][0]
  rows=['## '+g['template']+' — '+q[':question/difficulty'].split('/')[-1],json.dumps(g['parameters']),q[':question/problem']]
@@ -158,6 +196,8 @@ def markdown(r):
 def main():
  a=argparse.ArgumentParser(description=__doc__);a.add_argument('--difficulty',choices=['all',*GENERATORS],default='all');a.add_argument('--seed',type=int,default=0);a.add_argument('--count',type=int,default=1);a.add_argument('--format',choices=['json','markdown'],default='markdown');a.add_argument('--template',choices=list(TEMPLATES));a.add_argument('--profile',choices=list(BANK_PROFILES));args=a.parse_args()
  if args.count<1 or args.difficulty=='all' and (args.template or args.profile):a.error('positive count and specific difficulty required for template/profile')
- records=[generate(l,args.seed+i,template=args.template,profile=args.profile) for l in (GENERATORS if args.difficulty=='all' else [args.difficulty]) for i in range(args.count)]
+ try:
+  records=[r for l in (GENERATORS if args.difficulty=='all' else [args.difficulty]) for r in generate_batch(l,args.seed,args.count,template=args.template,profile=args.profile)]
+ except ValueError as exc:a.error(str(exc))
  print(json.dumps(records,indent=2,ensure_ascii=False) if args.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in records))
 if __name__=='__main__':main()

@@ -19,3 +19,5 @@ Parent QA repaired the completed q-18268 solution to name its actual supplied ve
 
 
 Current inventory validation additionally uses `validate_inventory.py`, which reads all 23 current sources at basis 2535, checks the declared coordinate positions and controlled target changes, and runs the freshly compiled application grader in this package. `replenish.py` performs additive inventory preparation and commit under the application api.lock, retaining exact requests, previews, receipts, and historical readback in `reference/replenishment/`. The generator UUID is derived once from this KP UUID with the name `question-generator`; any existing registered UUID takes precedence.
+
+Current-source correction: q-18268 is now completed and moderate in the database; only q-18260 remains unrated and incomplete. The historical descriptions above refer to the retained basis-1356 snapshot. Current replay includes six checkbox fields and the equivalent stored blank aliases.

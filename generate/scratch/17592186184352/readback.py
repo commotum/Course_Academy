@@ -11,7 +11,7 @@ sp=importlib.util.spec_from_file_location('definite_independent_scalar',Path(__f
 x,u=p.x,p.u
 def equal(a,b):return s.simplify(s.expand_log(a-b,force=True))==0
 def clean(t):
- t=t.strip().rstrip('.,').replace(r'\displaystyle','').replace(r'\left','').replace(r'\right','').replace(r'\big','').replace(r'\,','').replace('⁡','')
+ t=t.strip().replace(r'\displaystyle','').replace(r'\left','').replace(r'\right','').replace(r'\big','').replace(r'\,','').replace('⁡','').strip().rstrip('.,')
  t=t.replace(r'{\int }',r'\int').replace(r'\text{d}',r'\mathrm{d}').replace(r'\textrm{d}',r'\mathrm{d}').replace(r'{|}',r'|').replace(r'\operatorname{ln}',r'\ln').replace(r'\dfrac',r'\frac')
  t=t.replace('{e}','e')
  t=re.sub(r'(?<![A-Za-z])d([xu])\s*$',lambda m:r'\mathrm{d}'+m[1],t)
@@ -80,6 +80,25 @@ def signatures(solution):
   elif '(' in rhs and '\\ln' not in rhs and '\\operatorname{ln}' not in rhs:result.append('endpoint_product')
   else:result.append('arithmetic_or_log_reduction')
  return result
+def endpoint_components(rhs):
+ """Read each signed endpoint term before taking their difference."""
+ t=clean(rhs);depth=0;start=None;pairs=[]
+ for i,ch in enumerate(t):
+  if ch=='(':
+   if depth==0:start=i
+   depth+=1
+  elif ch==')':
+   depth-=1
+   if depth==0:pairs.append((start,i))
+ for start,end in pairs:
+  inside=t[start+1:end];nest=0
+  for j,ch in enumerate(inside):
+   nest+=(ch in '({')-(ch in ')}')
+   if ch=='-' and nest==0:
+    assert end==len(t)-1,t
+    prefix=t[:start];coef=scalar(prefix) if prefix else s.Integer(1)
+    return coef*scalar(inside[:j]),coef*scalar(inside[j+1:])
+ return None
 def check(question,expected_signature=None):
  prompt=question[':question/problem'];solution=question[':question/worked-solution']
  for text in [prompt,solution,*[a[':answer/value'] for f in question[':question/answer-fields'] for a in f[':answer-field/choices']]]:assert not any(ord(c)<32 and c not in '\n\t\r' for c in text)
@@ -91,7 +110,8 @@ def check(question,expected_signature=None):
  left,right=re.split(r'\\quad\\Longrightarrow\\quad|⟹',form,maxsplit=1)
  derivative=scalar(left.split('=',1)[1]);assert equal(derivative,s.diff(substitution,x))
  lhs,rhs=right.strip().rstrip('.').split('=',1)
- left_factor=scalar(re.sub(r'\\(?:text|mathrm)\{d\}u','',lhs)) if re.sub(r'\\(?:text|mathrm)\{d\}u','',lhs).strip() else s.Integer(1)
+ left_text=clean(re.sub(r'\\(?:text|mathrm)\{d\}u','',lhs)).strip()
+ left_factor=scalar(left_text) if left_text else s.Integer(1)
  right_factor=scalar(re.sub(r'\\(?:text|mathrm)\{d\}x','',rhs))
  assert equal(left_factor*derivative,right_factor)
  table=re.findall(r'^\| \$([xu])\$ \| \$(.*?)\$ \| \$(.*?)\$ \|',solution,re.M);assert len(table)==2
@@ -99,7 +119,7 @@ def check(question,expected_signature=None):
  assert equal(table_x[0],low) and equal(table_x[1],high)
  assert all(equal(substitution.subs(x,a),b) for a,b in zip(table_x,table_u))
  stage_rows=rows(solution);assert equal(expression(stage_rows[0].split('=',1)[0]),correct_value)
- prior_body=None;count=0
+ prior_body=None;displayed_primitive=None;count=0
  for row in stage_rows:
   rhs=row.split('=',1)[1];assert equal(expression(rhs),correct_value),(rhs,expression(rhs),correct_value)
   if r'\int' in rhs:
@@ -111,11 +131,18 @@ def check(question,expected_signature=None):
    prior_body=(c*G,w)
   elif '|' in rhs:
    before=clean(rhs).split('|',1)[0];assert prior_body is not None
+   if before.startswith('{') and before.count('{')>before.count('}'):before=before[1:]
+   displayed_primitive=scalar(before)
    derived=s.diff(scalar(before),prior_body[1])
    if derived.has(s.sign(u)):
     assert all(v>0 for v in table_u)
     derived=derived.subs(s.sign(u),1).subs(s.Abs(u),u)
    assert equal(derived,prior_body[0])
+  elif displayed_primitive is not None:
+   terms=endpoint_components(rhs)
+   if terms is not None:
+    assert equal(terms[0],displayed_primitive.subs(u,table_u[1]))
+    assert equal(terms[1],displayed_primitive.subs(u,table_u[0]))
   count+=1
  f=question[':question/answer-fields'][0];values=[scalar(a[':answer/value']) for a in f[':answer-field/choices']]
  assert len({a[':answer/id'] for a in f[':answer-field/choices']})==len(values)

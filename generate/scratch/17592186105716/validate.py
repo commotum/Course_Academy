@@ -78,5 +78,31 @@ subprocess.run([str(HERE/'check-engine'),str(HERE/'native-input.json'),str(HERE/
 cli=json.loads(subprocess.check_output([sys.executable,str(HERE.with_suffix('.py')),'--difficulty','all','--format','json','--seed','91'],text=True));assert isinstance(cli,list) and len(cli)==3
 for r in cli:check(r)
 dump('cli-preview.json',cli)
-result={'status':'passed','source_basis':2275,'counts':counts,'source_fidelity':{'complete_banks':9,'values':45,'exact_prompts':9,'exact_observed_solutions':7,'authored_missing_solutions':2},'capacity':capacity,'profile_capacity':profile_capacity,'slot_coverage':coverage,'native_grader_sha256':hashlib.sha256((HERE/'check-engine').read_bytes()).hexdigest(),'antiderivative_semantics':'differentiate actual rendered answers and all formal integral rows on connected source domain; equivalence modulo constant checked independently of native radio selection','generator_sha256':hashlib.sha256(HERE.with_suffix('.py').read_bytes()).hexdigest(),'database_writes':0}
+batch_checks={}
+for level in g.GENERATORS:
+ total=capacity[level]['semantic_tasks']
+ rows=g.generate_batch(level,seed=17,count=total)
+ keys=[p.s.srepr(p.s.expand(p.integrand(r['question'][':question/problem']))) for r in rows]
+ assert len(keys)==len(set(keys))==total
+ assert rows==g.generate_batch(level,seed=17,count=total)
+ try:g.generate_batch(level,count=total+1)
+ except ValueError:pass
+ else:raise AssertionError('semantic batch exhaustion did not fail closed')
+ batch_checks[level]={'full_capacity_batch':total,'independently_read_unique_integrands':len(set(keys)),'excess_count_rejected':True}
+for bad in (True,False,1.5,'2',None):
+ for api in (g.generate,g.generate_batch):
+  try:api('easy',seed=bad)
+  except ValueError:pass
+  else:raise AssertionError(('noninteger seed accepted',api,bad))
+for bad in (True,0,-1,1.5,'2'):
+ try:g.generate_batch('hard',count=bad)
+ except ValueError:pass
+ else:raise AssertionError(('invalid batch count accepted',bad))
+cli_many=json.loads(subprocess.check_output([sys.executable,str(HERE.with_suffix('.py')),'--difficulty','all','--format','json','--seed','18','--count','24'],text=True));assert len(cli_many)==72
+for level in g.GENERATORS:
+ keys=[p.s.srepr(p.s.expand(p.integrand(r['question'][':question/problem']))) for r in cli_many if r['question'][':question/difficulty']==':question.difficulty/'+level]
+ assert len(keys)==len(set(keys))==24
+excess=subprocess.run([sys.executable,str(HERE.with_suffix('.py')),'--difficulty','all','--format','json','--count','25'],text=True,capture_output=True);assert excess.returncode!=0 and 'exceeds semantic capacity' in excess.stderr
+dump('batch-validation.json',batch_checks)
+result={'status':'passed','source_basis':2275,'counts':counts,'source_fidelity':{'complete_banks':9,'values':45,'exact_prompts':9,'exact_observed_solutions':7,'authored_missing_solutions':2},'capacity':capacity,'profile_capacity':profile_capacity,'slot_coverage':coverage,'native_grader_sha256':hashlib.sha256((HERE/'check-engine').read_bytes()).hexdigest(),'antiderivative_semantics':'differentiate actual rendered answers and all formal integral rows on connected source domain; equivalence modulo constant checked independently of native radio selection','batch_validation':batch_checks,'generator_sha256':hashlib.sha256(HERE.with_suffix('.py').read_bytes()).hexdigest(),'database_writes':0}
 dump('validation.json',result);print(json.dumps(result,indent=2))

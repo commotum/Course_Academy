@@ -110,6 +110,19 @@ def valid_bank(values,A):
   for b in values[:i]:
    if s.simplify(a-b)==0:return False
  return sum(s.simplify(a-A)==0 for a in values)==1
+def task_fingerprint(name,p):
+ """Canonical given, independent of layout/profile and common ratio scaling."""
+ x=s.Symbol('x',real=True);b=p.get('b')
+ if name=='natural_integer_radio':F=p['c']*x*s.exp(x*x);L=0;H=s.sqrt(s.log(b))
+ elif name=='natural_fraction_radio':F=x*s.exp(2*x*x)/p['d'];L=0;H=s.sqrt(s.log(b))
+ elif name=='shifted_natural_blank':F=b*x*s.exp(p['k']*x*x);L=0;H=s.sqrt(s.log(b))
+ elif name=='exponential_ratio_blank':F=s.cancel(p['a']*p['c']*s.exp(x)/(p['a']*s.exp(x)+p['h']));L=s.log(p['l']);H=s.log(p['r'])
+ else:
+  base=b*b if name=='square_base_radio' else b;k=p.get('k',1);lb=s.expand_log(s.log(base),force=True)
+  if name=='linear_base_blank':F=k*base**p['h']*s.exp(s.expand(k*x*lb))
+  else:F=(2 if name=='quadratic_base_blank' else 1)*x*s.exp(s.expand(k*x*x*lb))
+  L=0;H=1
+ return digest([s.srepr(s.cancel(F)),s.srepr(s.sympify(L)),s.srepr(s.sympify(H))])
 @mf.checked_math_content
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  if level not in LEVELS:raise ValueError('Unknown difficulty')
@@ -121,6 +134,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  profile=profile or ('authored_method_bank' if template.endswith('radio') else 'source_blank')
  if not template.endswith('radio') and profile not in ('source_blank','source_presentation'):raise ValueError('Blank profile')
  candidates=parameters_for(template)
+ if profile=='source_presentation':
+  if parameters is None:parameters=dict(ANCHORS[template])
+  if parameters!=ANCHORS[template]:raise ValueError('Source presentation replay is restricted to the original anchor')
  if parameters is not None and parameters not in candidates:raise ValueError('Parameters outside bounded family domain')
  for attempt in range(500):
   p=dict(parameters) if parameters is not None else rng.choice(candidates)
@@ -136,6 +152,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  correct=answers[next(i for i,v in enumerate(values) if s.simplify(v-A)==0)][':answer/id']
  rng.shuffle(answers)
  record={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':sol,':question/difficulty':':question.difficulty/'+level,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/'+field,':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]},'generation':{'version':VERSION,'seed':seed,'template':template,'bank_profile':profile,'parameters':p,'source_ids':[TEMPLATES[template]],'basis':SOURCE['basis'],'lineage':SOURCE['lineage'],'domain':'real x on the finite displayed interval; positive exponential bases and denominator','fingerprint':digest({'template':template,'parameters':p}),'task_fingerprint':digest({'prompt':prompt.replace('Do not round the answer.','Give an exact answer.')}),'python':sys.version.split()[0],'sympy':s.__version__,'plots':[],'authorship':'observed source family; bounded numeric slots; unrated q-30977 assigned moderate; method bank separately authored when selected'}}
+ record['generation']['task_fingerprint']=task_fingerprint(template,p)
  return record
 def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
 def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)
