@@ -11,7 +11,7 @@ const visibility = source.slice(source.indexOf('async function syncAfterVisibili
 const fieldUI = (await readFile(new URL('../ui/question-fields.js', import.meta.url), 'utf8')).replace(/^[\s\S]*?(?=\/\/ Shared presentation)/, '').replaceAll('export ', '');
 
 function fixture(storage = new Map()) {
-  const f = { storage, calls: [], scrolls: [], focused: [], cleared: [], dev: false, now: 10000 };
+  const f = { storage, calls: [], scrolls: [], focused: [], cleared: [], notifications: [], dev: false, now: 10000 };
   class Element extends EventTarget {
     constructor(tag) { super(); this.tagName = tag; this.childNodes = []; this.dataset = {}; this.style = {}; this.attrs = {}; this.className = ''; }
     get children() { return this.childNodes.filter(node => node.tagName !== '#text'); }
@@ -63,6 +63,7 @@ function fixture(storage = new Map()) {
     isDeveloperMode: () => f.dev,
     attachStepMenu(node, id, mathAcademyId, options = {}) { node.dataset.stepDbId = id; node.dataset.mathAcademyId = mathAcademyId; node.dataset.contentKind = options.kind; },
     sessionStorage: { getItem: key => storage.get(key) ?? null, setItem(key, value) { storage.set(key, value); }, removeItem(key) { storage.delete(key); } },
+    localStorage: { setItem: (key, value) => f.notifications.push({ key, value }) },
     history: { replaceState() {} }, location: { replace() {}, assign() {} },
     createStudySidebar: () => new Element('aside'),
     loadMathInputs: async () => {},
@@ -141,6 +142,21 @@ test('pause controls are hidden for previews, completed lessons, and fixed-deadl
   await f.h.preview({ activityId: 500, type: 'lesson', learner: { id: 'test' }, steps: [{ ...question(1), fields: [] }] }, 0);
   assert.equal(f.h.view.pause.hidden, true);
   assert.match(f.h.view.timer.title, /Nothing recorded/);
+});
+
+test('only successful lesson completion invalidates queue state in other tabs', async () => {
+  for (const status of ['started', 'paused', 'failed', 'completed']) {
+    const f = fixture();
+    await f.h.render(activity(1, 1, { type: 'lesson' }));
+    f.server = activity(1, 1, { type: 'lesson', status });
+    await f.h.mutation('/api/continue', { taskId: 123, itemId: 1 });
+    assert.equal(f.notifications.length, status === 'completed' ? 1 : 0);
+    if (status === 'completed') {
+      assert.equal(f.notifications[0].key, 'course-academy-queue-changed');
+      await f.h.mutation('/api/continue', { taskId: 123, itemId: 1 });
+      assert.equal(f.notifications.length, 1, 'replaying a completion does not notify twice');
+    }
+  }
 });
 
 test('a zero-progress lesson returned to unstarted keeps a stopped timer and can begin again', async () => {

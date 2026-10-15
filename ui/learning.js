@@ -237,6 +237,12 @@ async function mutation(path, values) {
         }
       }
       if (revision !== settingsRevision || modeChanging || isDeveloperMode()) return;
+      const nextTask = result.task || result;
+      if (nextTask.type === 'lesson' && short(nextTask.status) === 'completed'
+          && (task?.taskId !== nextTask.taskId || short(task?.status) !== 'completed')) {
+        // Invalidate other tabs only after the completion transaction succeeds.
+        try { localStorage.setItem('course-academy-queue-changed', crypto.randomUUID()); } catch { /* Other pages also refresh on return. */ }
+      }
       task = result.task || result;
       if (path === '/api/resume' || path === '/api/start' || path === '/api/study-topic') setManualPause(task.taskId, false);
       if (path === '/api/pause' || path === '/api/resume') timerPausePending = false;

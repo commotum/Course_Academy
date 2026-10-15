@@ -2255,6 +2255,29 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   });
 
   let loading=false;
+  let progressRefresh=null;
+  async function refreshLearningProgress() {
+    if(!snapshot || loading || document.hidden || progressRefresh)return;
+    const current=snapshot;
+    progressRefresh=(async()=>{
+      try {
+        const response=await readRequest('/api/graph-explorer');
+        if(!response.ok)return;
+        const data=await response.json();
+        if(snapshot!==current || loading || data.learner.id!==current.learner.id)return;
+        // Membership controllers refresh their own collections. Replace only
+        // learning evidence here, preserving camera, filters, and pending edits.
+        repetitions=data.repetitions; snapshot.repetitions=data.repetitions;
+        snapshot.learned=data.learned;
+        refreshTargetColors(); updateCompetencyReadout();
+      } catch { /* Keep the current graph; retry on the next return. */ }
+    })();
+    try { await progressRefresh; } finally { progressRefresh=null; }
+  }
+  window.addEventListener('focus',refreshLearningProgress);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)void refreshLearningProgress();});
+  window.addEventListener('pageshow',event=>{if(event.persisted)void refreshLearningProgress();});
+  window.addEventListener('storage',event=>{if(event.key==='course-academy-queue-changed')void refreshLearningProgress();});
   async function loadData() {
     if(loading)return;loading=true;
     $('refreshData').disabled=true;$('courseBrowse').disabled=true;$('retryLoad').hidden=true;$('loadState').hidden=false;

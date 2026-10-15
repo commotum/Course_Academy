@@ -49,6 +49,35 @@ function fixture() {
   return { c, elements, fills, storage };
 }
 
+test('returning from a completed lesson refreshes mastery without moving the graph', async () => {
+  const { c, elements } = fixture();
+  c.snapshot.learner.id = 'test';
+  c.snapshot.learner.queue = [1, 2];
+  c.snapshot.learned = { 1: false, 2: false };
+  c.setColorCode(true);
+  const layout = c.state.layout, view = c.state.view;
+  const progressSource = html.slice(html.indexOf('  let progressRefresh=null;'), html.indexOf("  window.addEventListener('focus',refreshLearningProgress);"));
+  let reads = 0, readouts = 0;
+  c.readRequest = async () => {
+    reads++;
+    return { ok: true, json: async () => ({ learner: { id: 'test' }, repetitions: { 1: 4, 2: 3 }, learned: { 1: true, 2: true } }) };
+  };
+  c.updateCompetencyReadout = () => { readouts++; };
+  vm.runInContext(progressSource, c);
+  c.queueChanged({ queue: [] });
+  await Promise.all([c.refreshLearningProgress(), c.refreshLearningProgress()]);
+  assert.equal(reads, 1);
+  assert.equal(readouts, 1);
+  assert.equal(c.nodeAppearance(1).status, 'completed-target');
+  assert.equal(c.nodeAppearance(2).status, null);
+  assert.equal(elements.get('topic-2').styles['--node'], c.competencyFor(2).fill);
+  assert.equal(c.state.layout, layout);
+  assert.equal(c.state.view, view);
+  c.document.hidden = true;
+  await c.refreshLearningProgress();
+  assert.equal(reads, 1);
+});
+
 test('Color Code toggles red, green, and blue together in both graph views and themes', () => {
   assert.match(html, />Color Code<\/label>/);
   const { c, elements, fills, storage } = fixture();
