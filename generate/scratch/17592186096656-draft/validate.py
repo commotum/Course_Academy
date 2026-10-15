@@ -105,7 +105,7 @@ def audit(r):
  if t in g.CA and not(t in('q-31405','q-31418')and not raw):
   source_rows=rows_of(g.MASKS[t]['solution']);assert sig==stage_signature(source_rows),'ordered operative source stages'
  elif limits is None:assert sig==['integral','integral','powers','powers']
- else:assert sig==['integral','integral','evaluated_primitive','powers','collected','collected']
+ else:assert sig==['integral','integral','evaluated_primitive','powers','collected','collected'],'ordered authored operative stages'
  firstleft=rows[0][0].replace('&','').strip();_,left_f,leftlim,leftvar,_=integral_parts(firstleft);assert eq(left_f,actual)and leftlim==limits
  for i,(_,rhs)in enumerate(rows):
   value=expression(rhs.strip());value=value.subs(u,z)
@@ -175,8 +175,14 @@ def api_regressions():
  else:raise AssertionError('control mutation escaped')
  # Same row count and equal mathematics cannot hide a missing extracted-integral stage.
  mutated=copy.deepcopy(r);sol=mutated['question'][':question/worked-solution'];rows=rows_of(sol);old=rows[1][0]+'='+rows[1][1];replacement=' & ='+rows[-1][1];mutated['question'][':question/worked-solution']=sol.replace(old,replacement)
+ # Rebuild identities from mutated displayed content so this regression proves
+ # the stage checker itself, rather than merely detecting a stale digest.
+ mf=mutated['question'][':question/answer-fields'][0]
+ mutated=g.record('hard',1,'affine','method',mutated['generation']['parameters'],mutated['question'][':question/problem'],mutated['question'][':question/worked-solution'],[a[':answer/value']for a in mf[':answer-field/choices']],0,'blank')
  try:audit(mutated)
- except AssertionError:rejected+=1
+ except AssertionError as exc:
+  assert str(exc)=='ordered authored operative stages',str(exc)
+  rejected+=1
  else:raise AssertionError('operative-stage deletion escaped')
  # Prime-base and reciprocal-slope aliases are one assessed mathematical task.
  alias_a=g.generate('moderate',template='affine',parameters=dict(n=4,k=1,b=1,a=1,L=0,H=1))

@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 36**, **qa_passed: 368**, **queued: 172**, **working: 4**.
+**needs_revalidation: 36**, **qa_passed: 373**, **queued: 167**, **working: 4**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -149,24 +149,24 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186105715](../../scratch/17592186105715-draft.py) | Integrating the Reciprocal Function | Integrating a Reciprocal Function | 8 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186105715.json) |
 | [17592186068916](../../scratch/17592186068916.py) | Integrating Trigonometric Functions Using Substitution | Integrating Reciprocal Trigonometric Functions With Linear Arguments | 3 / 2 / 4 / 1 | qa_passed | [Report](qa/17592186068916.json) |
 | [17592186064203](../../scratch/17592186064203-draft.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Positive Integer Exponent | 5 / 5 / 0 / 2 | qa_passed | [Report](qa/17592186064203.json) |
-| [17592186064204](../../scratch/17592186064204.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Negative Integer Exponent | 5 / 5 / 0 / 1 | working | — |
+| [17592186064204](../../scratch/17592186064204-draft.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Negative Integer Exponent | 5 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186064204.json) |
 | [17592186064205](../../scratch/17592186064205-draft.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Fractional Exponent | 0 / 5 / 5 / 1 | qa_passed | [Report](qa/17592186064205.json) |
 | [17592186068724](../../scratch/17592186068724-draft.py) | Integration Using Substitution | Integrating a Rational Function Using Natural Logarithms | 5 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186068724.json) |
 | [17592186068786](../../scratch/17592186068786-draft.py) | Integration Using Substitution | Integrating Other Fractional Expressions | 0 / 5 / 5 / 1 | qa_passed | [Report](qa/17592186068786.json) |
 | [17592186068915](../../scratch/17592186068915-draft.py) | Integrating Trigonometric Functions Using Substitution | Integrating Trigonometric Functions With Linear Arguments | 5 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186068915.json) |
-| [17592186068917](../../scratch/17592186068917.py) | Integrating Trigonometric Functions Using Substitution | Integrating Products Containing Trigonometric Functions Using Substitution | 0 / 5 / 5 / 1 | working | — |
+| [17592186068917](../../scratch/17592186068917-draft.py) | Integrating Trigonometric Functions Using Substitution | Integrating Products Containing Trigonometric Functions Using Substitution | 0 / 5 / 5 / 1 | qa_passed | [Report](qa/17592186068917.json) |
 | [17592186068723](../../scratch/17592186068723-draft.py) | Integration Using Substitution | Integrating an Expression Involving a Power Function Multiplied by a Constant Multiple of Its Derivative | 6 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186068723.json) |
-| [17592186096656](../../scratch/17592186096656.py) | Integrating Exponential Functions Using Linear Substitution | Integrating a General Exponential Function With a Linear Exponent | 5 / 6 / 0 / 2 | working | — |
-| [17592186184350](../../scratch/17592186184350.py) | Integrating Exponential Functions Using Substitution | Integrating Products Containing Other Exponential Functions | 6 / 5 / 0 / 1 | working | — |
-| [17592186068918](../../scratch/17592186068918.py) | Integrating Trigonometric Functions Using Substitution | Integrating Quotients Containing Trigonometric Functions Using Substitution | 5 / 0 / 7 / 2 | queued | — |
-| [17592186105720](../../scratch/17592186105720.py) | Integrating the Reciprocal Function | Integrating a Reciprocal Function and Simplifying the Arbitrary Constant Using the Laws of Logarithms | 0 / 8 / 6 / 1 | queued | — |
-| [17592186096655](../../scratch/17592186096655.py) | Integrating Exponential Functions Using Linear Substitution | Integrating the Exponential Function With a Linear Exponent | 5 / 9 / 0 / 1 | queued | — |
+| [17592186096656](../../scratch/17592186096656-draft.py) | Integrating Exponential Functions Using Linear Substitution | Integrating a General Exponential Function With a Linear Exponent | 5 / 6 / 0 / 2 | qa_passed | [Report](qa/17592186096656.json) |
+| [17592186184350](../../scratch/17592186184350-draft.py) | Integrating Exponential Functions Using Substitution | Integrating Products Containing Other Exponential Functions | 6 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186184350.json) |
+| [17592186068918](../../scratch/17592186068918.py) | Integrating Trigonometric Functions Using Substitution | Integrating Quotients Containing Trigonometric Functions Using Substitution | 5 / 0 / 7 / 2 | working | — |
+| [17592186105720](../../scratch/17592186105720-draft.py) | Integrating the Reciprocal Function | Integrating a Reciprocal Function and Simplifying the Arbitrary Constant Using the Laws of Logarithms | 0 / 8 / 6 / 1 | qa_passed | [Report](qa/17592186105720.json) |
+| [17592186096655](../../scratch/17592186096655.py) | Integrating Exponential Functions Using Linear Substitution | Integrating the Exponential Function With a Linear Exponent | 5 / 9 / 0 / 1 | working | — |
 | [17592186087686](../../scratch/17592186087686.py) | Parallel Lines in the Coordinate Plane | Identifying Parallel Lines Given in Slope-Intercept Form | 0 / 0 / 0 / 3 | qa_passed | [Report](qa/17592186087686.json) |
 | [17592186087687](../../scratch/17592186087687.py) | Parallel Lines in the Coordinate Plane | Identifying Parallel Lines Given in Standard Form | 0 / 0 / 0 / 3 | qa_passed | [Report](qa/17592186087687.json) |
 | [17592186087688](../../scratch/17592186087688.py) | Parallel Lines in the Coordinate Plane | Finding Unknown Parameters | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186087688.json) |
-| 17592186115190 | Differentiating Reciprocal Trigonometric Functions | Differentiating Expressions Involving the Cosecant Function | 1 / 4 / 2 / 1 | queued | — |
-| 17592186115192 | Differentiating Reciprocal Trigonometric Functions | Differentiating Expressions Involving the Secant Function | 3 / 5 / 1 / 2 | queued | — |
-| [17592186096620](../../scratch/17592186096620.py) | The Quotient Rule for Differentiation | Differentiating a Quotient of Two Polynomials | 10 / 0 / 0 / 1 | queued | — |
+| [17592186115190](../../scratch/17592186115190.py) | Differentiating Reciprocal Trigonometric Functions | Differentiating Expressions Involving the Cosecant Function | 1 / 4 / 2 / 1 | working | — |
+| [17592186115192](../../scratch/17592186115192.py) | Differentiating Reciprocal Trigonometric Functions | Differentiating Expressions Involving the Secant Function | 3 / 5 / 1 / 2 | queued | — |
+| [17592186096620](../../scratch/17592186096620.py) | The Quotient Rule for Differentiation | Differentiating a Quotient of Two Polynomials | 10 / 0 / 0 / 1 | working | — |
 | 17592186096622 | The Quotient Rule for Differentiation | Differentiating a Quotient Using Leibniz Notation | 4 / 4 / 1 / 2 | queued | — |
 | [17592186115193](../../scratch/17592186115193.py) | Differentiating Reciprocal Trigonometric Functions | Finding the Slope of the Tangent at a Point of a Function Involving Reciprocal Trigonometric Functions | 5 / 6 / 0 / 0 | queued | — |
 | [17592186115191](../../scratch/17592186115191.py) | Differentiating Reciprocal Trigonometric Functions | Differentiating Expressions Involving the Cotangent Function | 2 / 6 / 6 / 2 | queued | — |
@@ -504,7 +504,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | 17592186179644 | Flux in Two-Dimensional Vector Fields | Determining a Flux's Sign From a Diagram | 5 / 5 / 0 / 0 | queued | — |
 | 17592186179647 | Flux in Two-Dimensional Vector Fields | Calculating Flux Across a Rectangle Using Two Symmetry Properties | 5 / 5 / 0 / 2 | queued | — |
 | 17592186179645 | Flux in Two-Dimensional Vector Fields | Finding an Integral Expression for Flux | 5 / 6 / 0 / 0 | queued | — |
-| 17592186133882 | Introduction to Green's Theorem | Expressing a Line Integral as a Double Integral Using Green's Theorem | 12 / 0 / 0 / 0 | queued | — |
+| [17592186133882](../../scratch/17592186133882.py) | Introduction to Green's Theorem | Expressing a Line Integral as a Double Integral Using Green's Theorem | 12 / 0 / 0 / 0 | queued | — |
 | 17592186133883 | Introduction to Green's Theorem | Evaluating Line Integrals Using Green's Theorem | 0 / 0 / 12 / 0 | queued | — |
 | 17592186133884 | Introduction to Green's Theorem | Expressing a Line Integral as a Repeated Integral Using Green's Theorem | 0 / 11 / 2 / 0 | queued | — |
 | [17592186179728](../../scratch/17592186179728.py) | Sums of Line Integrals With Respect to X and Y | Evaluating Line Integrals With Respect to X and Y Over Segments | 9 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186179728.json) |

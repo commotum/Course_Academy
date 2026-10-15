@@ -1,5 +1,6 @@
 """Restricted printed LaTeX reader; no generation metadata is consulted."""
 import re
+from functools import lru_cache
 import sympy as sp
 from sympy.parsing.sympy_parser import parse_expr,standard_transformations,implicit_multiplication_application
 x=sp.Symbol('x',real=True);u=sp.Symbol('u',real=True);C=sp.Symbol('C')
@@ -12,6 +13,7 @@ def group(t,i):
         j+=1
     return t[i+1:j-1],j
 
+@lru_cache(maxsize=30000)
 def scalar(t):
     t=t.strip().replace('y','x').replace('π','pi').replace('K','C').replace('⁡','').replace(r'\left','').replace(r'\right','').replace(r'\,','').rstrip('.,')
     t=re.sub(r'\\operatorname\{(sin|cos|tan|cot|sec|csc|ln)\}',r'\\\1',t)
@@ -62,3 +64,29 @@ def integral(prompt):
         assert t[start]=='^';b,start=group(t,start+1);lo=scalar(a);hi=scalar(b)
     stop=t.index('dx',start)
     return scalar(t[start:stop]),lo,hi
+
+# Frozen draft extensions. Inputs are actual displayed strings, never metadata.
+def clean(t):
+    return t.replace(r'\text{d}', 'D').replace(r'\textrm{d}', 'D').replace(r'\textrm d ', 'D').replace(r'\,','').replace('⁡','').replace(r'\left','').replace(r'\right','').replace(r'\displaystyle','').replace(r'{\int }',r'\int')
+
+def read_integral(t):
+    """Read one displayed integral, including outside factor and signed du."""
+    t=clean(t).strip();start=t.index(r'\int');pre=t[:start].strip();factor=-sp.Integer(1) if pre=='-' else (scalar(pre) if pre else sp.Integer(1))
+    i=start+4
+    while t[i:i+1].isspace():i+=1
+    lo=hi=None
+    if t[i:i+1]=='_':
+        if t[i+1]=='{':a,i=group(t,i+1)
+        else:a=t[i+1];i+=2
+        assert t[i]=='^';b,i=group(t,i+1);lo=scalar(a);hi=scalar(b)
+    match=re.search(r'(?:D|d)\s*([xyu])',t[i:]);assert match,t
+    end=i+match.start();v=match[1];operand=t[i:end].strip()
+    # Differential may be parenthesized and carry its own minus sign.
+    if operand.endswith('(-'):operand=operand[:-2]+'(-1)'
+    elif operand.endswith('('):operand=operand[:-1]
+    operand=operand.rstrip().rstrip(r'\cdot').strip()
+    expr=scalar(operand)*factor
+    return expr,lo,hi,v
+
+def integral(prompt):
+    return read_integral(prompt[prompt.index(r'\int'):] if r'{\int }' not in prompt else prompt[prompt.index(r'{\int }'):])[:3]

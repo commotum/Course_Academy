@@ -37,3 +37,12 @@ Scalar or compound wrong expressions do not reveal a unique causal mistake. Prof
 Hard uses only first partial derivatives of supplied component functions, product/chain rules and the same sine/cosine identities already displayed in the Introduction. Spherical coordinate interpretation, conversion, and geometric properties are not assessed or requested.
 
 The actual source SVG formula glyph sequence was read and decoded (formula-inspection.json): [x,y,z] = T([u,v,w]) = [u sin(v) cos(w), u sin(v) sin(w), u cos(v)]. Its original asset hash is retained. This is a rendered formula, not a geometric assessment diagram.
+
+## Current-source refresh, basis 2579
+
+All eleven current source practice questions were read together with canonical example and generator metadata. The nine previous families retain their mathematical content; older matrix typography has been repaired in the database. Raw previous evidence remains in `source.json.basis-1356`. The two added sources are easy, single five-choice math radio fields, key `selection`, with no plots:
+
+- q-161795: `sparse_cos`, vector map `(u+cos(w), v, cos(u)+w)`. Expand row 2, compute one minor, return `1-sin(u)sin(w)`. Three displayed determinant stages. One observed bank profile.
+- q-161799: `sparse_angle`, vector map `(u+v cos(theta)+w sin(theta), 3v, u sin(theta)+w)`, theta fixed. Expand row 2, compute one minor, use `1-sin²(theta)=cos²(theta)`. Four displayed determinant stages. One observed bank profile.
+
+Updated totals: easy six templates and six source banks; moderate five templates and five source banks; hard one authored lesson-grounded template. Every template has plot rating none. The two new observed banks retain opaque expression-pattern recipes as evidence-only replay profiles. Normal sampling uses explicitly authored complete method banks. No new field shapes or learning objectives are introduced.

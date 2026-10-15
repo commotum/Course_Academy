@@ -1,0 +1,20 @@
+# Classification — math basis2275
+
+This is a private replacement draft. The numeric script is registered, as shown by its captured basis1942 replenishment outcome. `registered-baseline.json` records SHA256, size and exact paths for the numeric script and **every file** in its existing evidence/cache tree before any imports. Nothing in that baseline is modified.
+
+The immutable refreshed wrapper contains 12 MA-identified practice questions and 3 independently authored inventory records. The canonical example is e-459; it is context, not a thirteenth practice question. Source wrappers retain database math, basis2275 and captured lineage. No queries, transactions, registration, shared checker edits or shared QA edits occur.
+
+| Difficulty | Original families | Field contract | Plot requirement |
+|---|---|---|---|
+| Easy | q-113833 reciprocal slope/offset; q-13732 outside integer scale | five-choice radio primitive, including arbitrary C | none |
+| Unrated | q-13733 negative slope/outside scale; no solution or correct designation | five-choice radio primitive | none |
+| Moderate | q-30923 reciprocal slope with unit transformed bounds; q-13775 positive log-bound; q-13786 negative-slope log-bound; q-30922 negative outside coefficient/log-bound; q-349595 and q-349596 positive log-bound blanks with distinct final arithmetic rows; q-349601 shifted integer-bound blank; q-362689 descending transformed bounds; q-51160 product simplification | five-choice radio or single-value blank as captured | none |
+| Hard | no original examples | authored single-value definite-integral blank | none |
+
+There are 12 separately preserved original prompt/solution/profile masks; they are not 12 newly claimed skills. q-349595/596 share a mathematical family but retain different original multiplication/collection stages. Every observed bank is replayable publicly with `profile='observed_raw'`. All raw profiles are evidence-only and ineligible for learning, including otherwise mathematically sound ones. No opaque observed scalar bank is silently promoted to a method-derived bank.
+
+Lesson ordering is recovered by activity/first-step and step/next, not array order: Introduction (17592186097492), this natural-exponential KP (17592186097493), sibling general-base KP (17592186097494), General Formulas (17592186097495). Introduction explicitly teaches linear u substitution, primitive of e^u and derivative confirmation. Prerequisites are Integrating Exponential Functions, Integrating Algebraic Functions Using Substitution, and Calculating Definite Integrals Using Substitution. No nonlinear substitution, general-base logarithmic factor, integration by parts, new response type or mathematical branch is introduced.
+
+Normal easy keeps four substitution/primitive/back-substitution stages. Normal moderate serves **every** captured family (including product preprocessing and source logarithmic endpoint stages) and an expanded definite family with one supplied zero endpoint. Authored hard uses exactly the same linear substitution and endpoint method but both supplied endpoints are nonzero, both transformed exponents have magnitude at least2, the outside scale and slope are nonunit, and the offset is nonzero. That adds two substantive endpoint evaluations to the bookkeeping without introducing another technique. This is an authored difficulty claim, not recovered Math Academy evidence. Questions within a level have the same relevant reasoning demands; there is no progression.
+
+Expanded parameters are strict built-in integers: signed outside scale 1..6, signed slope integer magnitude1..4 or reciprocal1/2..1/4 (easy only), offset -3..3. The complete easy bank rejects unit slopes. Definite limits are ordered integers -2..2, with transformed exponent magnitude at most10. The same guards constrain explicit inputs and sampling. Original masks separately retain their exact larger original arithmetic, with a complete coordinate shift -4..4. All dependent quantities follow that shift, including source x/z bounds, u definition, answer functions and table entries; transformed-u endpoints remain unchanged.

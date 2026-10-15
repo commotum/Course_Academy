@@ -203,6 +203,12 @@ def generate(level='easy',seed=0,template=None,field_type=None,parameters=None,p
 def batch(level,count,seed=0,template=None,profile=None):
  strict_int(count,'count')
  if count<1:raise ValueError('Positive count required')
+ if template in CA:
+  capacity=0
+  for n in range(2,10):
+   try:params_for_source(template,{'n':n});capacity+=1
+   except ValueError:pass
+  if count>capacity:raise ValueError('Requested count exceeds the finite source-template mathematical domain')
  out=[];seen=set()
  for i in range(max(1000,count*100)):
   r=generate(level,seed+i,template,profile=profile);fp=r['generation']['math_fingerprint']

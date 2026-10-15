@@ -182,6 +182,24 @@ def markdown(rec):
  if ':question/worked-solution' in q:lines+=['','Worked solution:',q[':question/worked-solution']]
  return '\n'.join(lines)
 
+# Current-source replay is evidence only; it never expands normal learner sampling.
+CURRENT_SOURCES=json.loads((BASE/'current-source-recipes.json').read_text())['sources']
+BANK_PROFILES.update({'current_'+mid:{'template':'current_'+mid,'origin':'observed-current-evidence'} for mid in CURRENT_SOURCES})
+
+def replay_current_source(source_id,capacity=None,initial=None,seed=0):
+ spec=CURRENT_SOURCES[source_id];A=spec['capacity'] if capacity is None else integer(capacity,'capacity',10,5000)
+ p={'capacity':A}
+ if spec['initial'] is not None:
+  p['initial']=spec['initial'] if initial is None else integer(initial,'initial',1,A-1)
+ elif initial is not None:raise ValueError('source has no initial-stock slot')
+ values=[];correct=0
+ for i,choice in enumerate(spec['choices']):
+  n=sp.Rational(choice['numerator'],choice['denominator'])*A
+  if n.q!=1 or not 1<=n<=20000:raise ValueError('complete bank requires bounded integer constants')
+  values.append(slot(choice['mask'],{'constant':int(n)}))
+  if choice['correct']:correct=i
+ return assemble('easy',seed,'current_'+source_id,'current_'+source_id,p,slot(spec['problem_mask'],p),slot(spec['solution_mask'],p) if spec['solution_mask'] else None,values,correct,raw=True,symbol=spec['symbol'],source_id=source_id,include_difficulty=spec['difficulty'] is not None,include_correct=any(c['correct'] for c in spec['choices']))
+
 if __name__=='__main__':
  cli=argparse.ArgumentParser(description=__doc__);cli.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');cli.add_argument('--seed',type=int,default=0);cli.add_argument('--count',type=int,default=1);cli.add_argument('--format',choices=['markdown','json'],default='markdown');cli.add_argument('--template');cli.add_argument('--profile');args=cli.parse_args()
  if args.count<1:cli.error('count must be positive')

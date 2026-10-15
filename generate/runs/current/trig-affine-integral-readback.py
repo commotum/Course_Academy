@@ -54,7 +54,7 @@ def given(q):
   c,F,var,lo,hi,end=D.integral(raw);assert not end and var==x;return c*F,lo,hi
  F,var,_=P.integrand(raw);assert var==x;return F,None,None
 
-def check(q,pole_components=True,affine_required=True):
+def check(q,pole_components=True,affine_required=True,positive_slope_required=True):
  F,lo,hi=given(q);sol=q[':question/worked-solution'];match=re.search(r'\$u=([^$]+)\$',sol);assert match;U=D.scalar(match[1].rstrip(','));a=s.diff(U,x)
  # Ordinary profiles are affine; the one nonaffine record is evidence-only.
  affine=not a.has(x)
@@ -67,7 +67,7 @@ def check(q,pole_components=True,affine_required=True):
  if lo is not None:
   assert (affine or not affine_required)and a!=0 and len(table)==2;xl,xh=[D.scalar(t)for t in table[0][1:]];ul,uh=[D.scalar(t)for t in table[1][1:]];assert eq(xl,lo)and eq(xh,hi)and eq(U.subs(x,lo),ul)and eq(U.subs(x,hi),uh);counts['bound_references']+=4
   assert lo<hi
-  if affine:assert a>0
+  if affine:assert a>0 if positive_slope_required else a!=0
   else:
    assert s.Poly(U,x).degree()==2 and U.subs(x,0)==0 and s.diff(U,x).subs(x,0)==0 and s.diff(U,x,2)>0 and lo>=0
   # Exactly the captured sin/cos pole-free components are supported.

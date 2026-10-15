@@ -1205,3 +1205,8 @@ Then, we can write the integral in terms of $u$ and evaluate:
 $$
 \begin{aligned}\int_{0}^{1} 2\cdot {4}^{3 - 3 x}\,\text{d}x & =\int_{3}^{0} 2\cdot {4}^{u}\cdot (- \frac{1}{3})\,\text{d}u \\  & =(- \frac{2}{3})\int_{3}^{0} {4}^{u}\,\text{d}u \\  & =(- \frac{2}{3})(\frac{{4}^{u}}{\ln 4})|_{3}^{0} \\  & =(- \frac{2}{3 \ln{(4 )}})({4}^{0}-{4}^{3}) \\  & =(- \frac{2}{3 \ln{(4 )}})(1-64) \\  & =\frac{42}{\ln 4}\end{aligned}
 $$
+
+
+## Review findings
+
+All source anchors retain complete prose and ordered operators. Changed-base masks recompute numerical endpoint powers and final scalars; the unit-positive definite masks retain their shorter five-row chain. Normal variants preserve these masks, use complete method-derived banks and exact-answer wording, and remain separate from raw fidelity evidence. Expanded signed easy and definite examples retain four and six calculation rows respectively. Hard combines the two already observed nonunit scales before cancellation without introducing another integration method. Historical q-31413 offset7 and q-30973 scalar-bank intentions remain unresolved and evidence-only. Raw q-31405 and q-31418 are incomplete evidence; their normal completions are explicitly authored.

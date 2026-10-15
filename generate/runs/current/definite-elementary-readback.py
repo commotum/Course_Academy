@@ -31,18 +31,19 @@ def primitive(F,var):
  assert denominator.has(var)and not c.has(var),('outside source definite primitive families',F)
  return c*s.log(denominator)
 def integral(raw):
- text=clean(raw);i=text.index(r'\int');pos=i+4
+ text=clean(P.fraction_measure(raw));i=text.index(r'\int');pos=i+4
  while text[pos].isspace():pos+=1
  assert text[pos]=='_',text;lo,pos=group(text,pos+1);assert text[pos]=='^';hi,pos=group(text,pos+1)
  m=re.search(P.DIFF,text[pos:]);assert m,text;body=text[pos:pos+m.start()].strip();body=body[:-len(r'\cdot')]if body.endswith(r'\cdot')else body
- coefficient=scalar(text[:i])if text[:i].strip()else s.Integer(1);F=scalar(body);var=P.P.locals_[m[1]];return coefficient,F,var,scalar(lo),scalar(hi),text[pos+m.end():]
+ coefficient=s.Integer(-1)if text[:i].strip()=='-'else scalar(text[:i])if text[:i].strip()else s.Integer(1);F=scalar(body);var=P.P.locals_[m[1]];return coefficient,F,var,scalar(lo),scalar(hi),text[pos+m.end():]
 def value(raw):
  text=clean(raw)
  if r'\int'in text:
   c,F,var,lo,hi,end=integral(text);assert not end,end;prim=primitive(F,var);return c*(prim.subs(var,hi)-prim.subs(var,lo)),('integral',c*F,var,lo,hi)
  m=re.search(r'\|_',text)
  if m:
-  before=text[:m.start()];after=text[m.end():];lo,pos=group(after,0);assert after[pos]=='^';hi,pos=group(after,pos+1);assert not after[pos:]
+  before=text[:m.start()];after=text[m.end():];lo,pos=group(after,0);assert after[pos]=='^';hi,pos=group(after,pos+1);suffix=after[pos:].strip();assert re.fullmatch(r'\)*',suffix),suffix
+  before+=suffix
   # Normalize the source's extra MathML grouping brace around a bar.
   if before.startswith('{')and before.count('{')>before.count('}'):before=before[1:]
   prim=scalar(before);lo,hi=scalar(lo),scalar(hi);assert prim.has(u)

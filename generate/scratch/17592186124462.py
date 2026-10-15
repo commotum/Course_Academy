@@ -8,6 +8,8 @@ No plots occur in this KP's practice/canonical questions. No database operations
 from pathlib import Path
 import argparse,copy,hashlib,json,random,re,sys,uuid
 import sympy as s
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'scripts/question_capture'))
+from math_format import checked_math_content, normalize_prose, normalize_tex
 ROOT=Path(__file__).with_suffix('')
 SOURCE=json.loads((ROOT/'source.json').read_text())
 KP=SOURCE['record']; ID=17592186124462; VERSION='plane-normal-1'
@@ -16,7 +18,7 @@ QS={q[':question/math-academy-id']:q for q in KP[':knowledge-point/questions']}
 # f, original level value, original point, original prompt sides.
 DATA={
 'q-36339':(5*x*x+y*y-6*x*y,0,(1,1),6*x*y,5*x*x+y*y),
-'q-65173':(x*x+y*y-x*y,7,(2,-1),x*y,x*x+y*y-7),
+'q-65173':(x*x+y*y-x*y-7,0,(2,-1),x*y,x*x+y*y-7),
 'q-130718':(x*x-3*y*y,6,(3,1),x*x-3*y*y,s.Integer(6)),
 'q-130723':(4*x*y+2*x*x-x-2*y,0,(2,-1),4*x*y+2*x*x,x+2*y),
 'q-130724':(s.sqrt(x*x+y*y)-2*y+x,-2,(0,2),s.sqrt(x*x+y*y),2*y-x-2),
@@ -29,7 +31,8 @@ DATA={
 'q-71386':(x*x/9+y*y,1,(3,0),x*x/9+y*y,s.Integer(1)),
 'q-71389':(s.cos(x*y)-x*x-y,0,(-1,0),s.cos(x*y),x*x+y),
 'q-130719':(s.log(x/(2*y))-2*y+x,0,(2,1),2*y-x,s.log(x/(2*y))),
-'q-130721':(s.exp(x*x*y)-y*y+x**3,9,(2,0),s.exp(x*x*y),y*y-x**3+9)}
+'q-130721':(s.exp(x*x*y)-y*y+x**3,9,(2,0),s.exp(x*x*y),y*y-x**3+9),
+'q-130720':(x**3*y**2-2*x-y,0,(-1,1),x**3*y**2,2*x+y)}
 HARD=['q-71385','q-71394','q-71386']; MOD=[k for k in DATA if k not in HARD]
 TEMPLATES={'easy_quadratic':'easy',**{k:('hard' if k in HARD else 'moderate') for k in DATA}}
 def tex(v): return s.latex(v,fold_short_frac=False).replace('\\log','\\ln')
@@ -121,7 +124,8 @@ def wrap(q,template,level,p,profile,f,c,pt,eligible):
  fingerprint=digest([s.srepr(obj),list(pt),'normal-line'])
  identity=digest([VERSION,level,q.get(':question/problem'),q.get(':question/worked-solution'),sorted(a[':answer/value'] for fld in q.get(':question/answer-fields',[]) for a in fld[':answer-field/choices'])])
  if eligible:q[':question/id']=uid(identity)
- return {'knowledge_point':{'db_id':ID,'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'template':template,'level':level,'profile':profile,'parameters':p,'mathematical_fingerprint':fingerprint,'content_identity':identity,'eligible_for_learning':eligible,'evidence_only':not eligible,'source':{k:SOURCE[k] for k in ('database','basis','lineage')},'python':sys.version.split()[0],'sympy':s.__version__}}
+ source=SOURCE
+ return {'knowledge_point':{'db_id':ID,'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'template':template,'level':level,'profile':profile,'parameters':p,'mathematical_fingerprint':fingerprint,'content_identity':identity,'eligible_for_learning':eligible,'evidence_only':not eligible,'source':{k:source[k] for k in ('database','basis','lineage')},'python':sys.version.split()[0],'sympy':s.__version__}}
 
 def normal_solution(template,f,c,pt,lhs,rhs):
  p,q=pt;a,b=[s.diff(f,v) for v in (x,y)];aa,bb=[v.subs({x:p,y:q}) for v in (a,b)];P=f'({p},{q})'
@@ -160,6 +164,7 @@ def normal_solution(template,f,c,pt,lhs,rhs):
   elif template=='q-130719':lines += [crossed,f'({tex(2*bb)}){sx} & =({tex(2*aa)}){sy}',reduced,expanded]
   elif template=='q-71389':lines += [tex((x-p)/aa)+' & ='+tex(s.expand((y-q)/bb)),tex(x-p)+' & ='+tex(s.expand(aa*(y-q)/bb))]
   elif template=='q-130721':lines += [crossed,reduced]
+  elif template=='q-130720':lines += [crossed,expanded]
   else:lines += [crossed,reduced,expanded]
   lines+=[equation(full).replace('=',' & =')]
  text+=block(lines)
@@ -172,7 +177,7 @@ def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
 def generate_moderate(seed=0,**kwargs):return generate('moderate',seed,**kwargs)
 # Hard: observed zero-component cases, avoiding division by zero using cross form.
 def generate_hard(seed=0,**kwargs):return generate('hard',seed,**kwargs)
-def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+def _generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  if level not in ('easy','moderate','hard'):raise ValueError('difficulty')
  if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('radio only')
  rng=random.Random(seed)
@@ -209,13 +214,21 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
    if parameters is not None:raise
  else:raise ValueError('no eligible whole instance')
  prompt=f'Consider the plane curve ${tex(lhs)}={tex(rhs)}.$  Find the equation of the normal line to the curve at the point $({pt[0]},{pt[1]}).$'
- vals=[equation(e) for e in bank];ident=digest([level,prompt,sol,sorted(vals)])
+ prompt=normalize_prose(prompt);sol=normalize_prose(sol)
+ vals=[normalize_tex(equation(e)) for e in bank];ident=digest([level,prompt,sol,sorted(vals)])
  fid=uid([ident,'selection']);answers=[{':answer/id':uid([fid,v]),':answer/type':':answer.type/math',':answer/value':v} for v in vals]
  correctid=answers[[key(e) for e in bank].index(key(correct))][':answer/id'];rng.shuffle(answers)
  q={':question/id':uid(ident),':question/problem':prompt,':question/worked-solution':sol,':question/difficulty':':question.difficulty/'+level,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correctid]}]}
  record=wrap(q,template,level,p,expected,f,c,pt,True)
  record['generation'].update({'seed':seed,'domain':{'point_on_curve':True,'nonzero_gradient':True,'familiar_exact_evaluation':True,'scope':'plane curve only'},'bank_operations':['axis/intercept/diagonal confusions'] if level=='hard' else ['correct normal','tangent','double x partial','omit point','negate point']})
  return record
+@checked_math_content
+def generate_learning(*args,**kwargs):
+ return _generate(*args,**kwargs)
+def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+ # Historical evidence includes an incomplete source and is never served.
+ fn=_generate if profile and profile.startswith('observed:') else generate_learning
+ return fn(level,seed,template,field_type,parameters,profile)
 def guard(t,pt):
  p,q=pt
  if t in HARD:

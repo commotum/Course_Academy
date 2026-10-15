@@ -19,3 +19,11 @@
 |q-71389 / 17592186385522|moderate|one radio `selection`, complete relation|none|
 |q-130719 / 17592186406787|moderate|one radio `selection`, complete relation|none|
 |q-130721 / 17592186423051|moderate|one radio `selection`, complete relation|none|
+
+## Refresh at basis 2577
+
+The current bank has 16 practice sources: 13 moderate and 3 hard, all one-field radio questions with five complete equations. There is still no observed easy source; the documented easy workload remains an authored extension. The historical snapshot is retained as `source-basis-1356.json`; `source.json` captures the refreshed bank. q-65173 now has its repaired, fully designated bank and solution. Its level function includes the constant −7 and its level is zero. Historical omissions are no longer current inventory defects.
+
+New template q-130720 (17592186527143) uses x³y²=2x+y at (−1,1), moderate, one `selection` radio, plot rating none. It adds a product monomial to the observed polynomial families while preserving the same gradient and normal-line stages. Its five complete bank values are replayed through its own observed affine profile. The concluding source prose gives the vector components (1,−3) as the point; the actual point is (−1,1). Generated solutions derive every point reference from the instance. No source question is changed.
+
+The current source profiles remain evidence-only because their distractor interpretations are unresolved. Authored complete method banks remain separate from source fidelity. q-71393's equivalent distractors are excluded from the conservative validated-availability count, while preserving the question and its history. All three difficulty bands have sufficient distinct eligible variants for this replenishment; no unsupported band is claimed filled.

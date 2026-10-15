@@ -164,6 +164,7 @@ def main():
   if ':answer-field/correct' in fld:assert fld[':answer-field/choices'][correct_values[0]][':answer/id']==fld[':answer-field/correct'][1]
   if len(set(g.key(z) for z in vals))<5:source_issues[t]='equivalent distractors retained in evidence only'
   if ':answer-field/correct' not in r['question'][':question/answer-fields'][0]:source_issues[t]='correct designation/solution/difficulty absent; first option derived correct, raw preserves omissions'
+  if t=='q-130720':source_issues[t]='concluding prose point (1,-3) must be (-1,1); raw preserved'
   if t=='q-130719':source_issues[t]='worked-solution prose ∇f(3,1) must be ∇f(2,1); raw preserved'
  default_coverage={g.generate_moderate(seed)['generation']['template'] for seed in range(100)};assert default_coverage==set(g.MOD)
  # Scope boundary guards share normal explicit/random path.
@@ -175,7 +176,7 @@ def main():
   try:g.generate(level,template=t,parameters=p)
   except ValueError:pass
   else:raise AssertionError('explicit guard failure')
- report={'status':'passed with documented source anomalies','runtime':{'python':sys.version.split()[0],'sympy':s.__version__},'sources':15,'raw_vector_and_line_chains_checked':14,'changed_affine_source_chains_checked':28,'normal_source_row_count_matches':14,'finite_variety':json.loads((D/'variety.json').read_text()),'raw_complete_banks_exact':15,'raw_options_exact':75,'raw_correct_designations_exact':14,'missing_original_correct':1,'default_moderate_families_100_seeds':sorted(default_coverage),'normal_displayed_math_records':samples,'generated_review_records':len(review),'variety_35_seeds':variety,'source_issues':source_issues,'native':json.loads((D/'engine-validation.json').read_text()),'plots':'none in assessed sources/canonical; no generated plot needed','limitations':['Opaque source distractor intent unresolved; observed profiles evidence-only.','Raw affine-translated legacy solutions preserve source evaluated arithmetic; normal output uses full fresh substituted stages.','Normal source-parameter presentation preserves operation sequence but uses SymPy notation normalization; raw replay alone is byte-exact.']}
+ report={'status':'passed with documented source anomalies','runtime':{'python':sys.version.split()[0],'sympy':s.__version__},'sources':len(g.QS),'raw_vector_and_line_chains_checked':len(g.QS),'changed_affine_source_chains_checked':2*len(g.QS),'normal_source_row_count_matches':len(g.QS),'finite_variety':json.loads((D/'variety.json').read_text()),'raw_complete_banks_exact':len(g.QS),'raw_options_exact':5*len(g.QS),'raw_correct_designations_exact':len(g.QS),'missing_original_correct':0,'default_moderate_families_100_seeds':sorted(default_coverage),'normal_displayed_math_records':samples,'generated_review_records':len(review),'variety_35_seeds':variety,'source_issues':source_issues,'native':json.loads((D/'engine-validation.json').read_text()),'plots':'none in assessed sources/canonical; no generated plot needed','limitations':['Opaque source distractor intent unresolved; observed profiles evidence-only.','Raw affine-translated legacy solutions preserve source evaluated arithmetic; normal output uses full fresh substituted stages.','Normal source-parameter presentation preserves operation sequence but uses SymPy notation normalization; raw replay alone is byte-exact.']}
  (D/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
  text='# Original evidence and generated variants\n\nAll originals below are faithful evidence-only replays; generated examples are explicitly authored/default presentations.\n\n'
  for t in g.TEMPLATES:
@@ -183,5 +184,5 @@ def main():
   if t in g.QS:text+='### Original\n\n'+g.markdown(next(r for r in raws if r['generation']['template']==t))+'\n\n'
   for n,r in enumerate(z for z in review if z['generation']['template']==t):text+='### Generated variant '+str(n+1)+' ('+r['generation']['level']+')\n\n'+g.markdown(r)+'\n\n'
  (D/'review.md').write_text(text)
- print('PASS:',samples,'displayed mathematics records; 15 exact raw banks / 75 options; 46 native records')
+ print('PASS:',samples,'displayed mathematics records;',len(g.QS),'exact raw banks /',5*len(g.QS),'options')
 if __name__=='__main__':main()

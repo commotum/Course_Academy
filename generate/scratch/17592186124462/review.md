@@ -168,15 +168,37 @@ $$
 
 ### Original
 
-Consider the plane curve $xy = x^{2} + y^{2} - 7$. Find the equation of the normal line to the curve at the point $(2,-1)$.
+Consider the plane curve $xy={x}^{2}+{y}^{2}-7.$  Find the equation of the normal line to the curve at the point $(2,-1).$
 
-- $4x + 5y - 3 = 0$
-- $-x - 3y + 5 = 0$
-- $-5x - 4y + 1 = 0$
-- $3x - 5y + 1 = 0$
-- $-2x - 2y + 3 = 0$
+- $3x-5y+1=0$
+- $-x-3y+5=0$
+- $-2x-2y+3=0$
+- $4x+5y-3=0$
+- $-5x-4y+1=0$
 
-[Original has no worked solution.]
+First, we bring all variables to one side:
+
+$$
+\begin{aligned}xy & ={x}^{2}+{y}^{2}-7 \\ 0 & ={x}^{2}+{y}^{2}-xy-7\end{aligned}
+$$
+
+If we set $f(x,y)={x}^{2}+{y}^{2}-xy-7$, our curve can be viewed as the level curve $f(x,y)=0.$  
+
+A normal vector to the level curve that passes through the point $(2,-1)$ can be found by computing $∇f(2,-1).$ 
+
+So, we find the gradient and evaluate it at $(2,-1):$ 
+
+$$
+\begin{aligned}∇f(x,y) & ={f}_{x}(x,y)\,i+{f}_{y}(x,y)\,j \\  & =\frac{∂}{∂x}({x}^{2}+{y}^{2}-xy-7)\,i+\frac{∂}{∂y}({x}^{2}+{y}^{2}-xy-7)\,j \\  & =(2x-y)\,i+(2y-x)\,j \\ ∇f(2,-1) & =(2(2)-(-1))\,i+(2(-1)-2)\,j \\  & =5\,i-4\,j \\  & =⟨5,-4⟩\end{aligned}
+$$
+
+Hence, $∇f(2,-1)=⟨5,-4⟩$ is a normal vector to the curve at $(2,-1).$
+
+Finally, the Cartesian equation of the line that is parallel to $v=⟨{v}_{x},{v}_{y}⟩$ and passes through the point $({x}_{0},{y}_{0})$ can be written as:
+
+$$
+\begin{aligned}\frac{x-{x}_{0}}{{v}_{x}} & =\frac{y-{y}_{0}}{{v}_{y}} \\ \frac{x-2}{5} & =\frac{y-(-1)}{-4} \\ -4(x-2) & =5(y+1) \\ -4x-5y+8-5 & =0 \\ -4x-5y+3 & =0 \\ 4x+5y-3 & =0\end{aligned}
+$$
 
 ### Generated variant 1 (moderate)
 
@@ -191,17 +213,17 @@ Consider the plane curve $x y + 12=x^{2} + y^{2} - 7.$  Find the equation of the
 First, we bring all variables to one side:
 
 $$
-\begin{aligned}x y + 12 & =x^{2} + y^{2} - 7 \\ x^{2} - x y + y^{2} & =19\end{aligned}
+\begin{aligned}x y + 12 & =x^{2} + y^{2} - 7 \\ x^{2} - x y + y^{2} - 7 & =12\end{aligned}
 $$
 
-If we set $f(x,y)=x^{2} - x y + y^{2}$, our curve can be viewed as the level curve $f(x,y)=19.$  
+If we set $f(x,y)=x^{2} - x y + y^{2} - 7$, our curve can be viewed as the level curve $f(x,y)=12.$  
 
 A normal vector to the level curve that passes through the point $(5,3)$ can be found by computing $∇f(5,3).$ 
 
 So, we find the gradient and evaluate it at $(5,3):$
 
 $$
-\begin{aligned}∇f(x,y) & ={f}_{x}(x,y)\,i+{f}_{y}(x,y)\,j \\  & =\frac{∂}{∂x}(x^{2} - x y + y^{2})\,i+\frac{∂}{∂y}(x^{2} - x y + y^{2})\,j \\  & =(2 x - y)\,i+(- x + 2 y)\,j \\ ∇f(5,3) & =(2 (5) - (3))\,i+(- (5) + 2 (3))\,j \\  & =(7)\,i+(1)\,j \\  & =⟨7,1⟩\end{aligned}
+\begin{aligned}∇f(x,y) & ={f}_{x}(x,y)\,i+{f}_{y}(x,y)\,j \\  & =\frac{∂}{∂x}(x^{2} - x y + y^{2} - 7)\,i+\frac{∂}{∂y}(x^{2} - x y + y^{2} - 7)\,j \\  & =(2 x - y)\,i+(- x + 2 y)\,j \\ ∇f(5,3) & =(2 (5) - (3))\,i+(- (5) + 2 (3))\,j \\  & =(7)\,i+(1)\,j \\  & =⟨7,1⟩\end{aligned}
 $$
 
 Hence, $∇f(5,3)=⟨7,1⟩$ is a normal vector to the curve at $(5,3).$
@@ -225,17 +247,17 @@ Consider the plane curve $x y + 6=x^{2} + y^{2} - 7.$  Find the equation of the 
 First, we bring all variables to one side:
 
 $$
-\begin{aligned}x y + 6 & =x^{2} + y^{2} - 7 \\ x^{2} - x y + y^{2} & =13\end{aligned}
+\begin{aligned}x y + 6 & =x^{2} + y^{2} - 7 \\ x^{2} - x y + y^{2} - 7 & =6\end{aligned}
 $$
 
-If we set $f(x,y)=x^{2} - x y + y^{2}$, our curve can be viewed as the level curve $f(x,y)=13.$  
+If we set $f(x,y)=x^{2} - x y + y^{2} - 7$, our curve can be viewed as the level curve $f(x,y)=6.$  
 
 A normal vector to the level curve that passes through the point $(-4,-3)$ can be found by computing $∇f(-4,-3).$ 
 
 So, we find the gradient and evaluate it at $(-4,-3):$
 
 $$
-\begin{aligned}∇f(x,y) & ={f}_{x}(x,y)\,i+{f}_{y}(x,y)\,j \\  & =\frac{∂}{∂x}(x^{2} - x y + y^{2})\,i+\frac{∂}{∂y}(x^{2} - x y + y^{2})\,j \\  & =(2 x - y)\,i+(- x + 2 y)\,j \\ ∇f(-4,-3) & =(2 (-4) - (-3))\,i+(- (-4) + 2 (-3))\,j \\  & =(-5)\,i+(-2)\,j \\  & =⟨-5,-2⟩\end{aligned}
+\begin{aligned}∇f(x,y) & ={f}_{x}(x,y)\,i+{f}_{y}(x,y)\,j \\  & =\frac{∂}{∂x}(x^{2} - x y + y^{2} - 7)\,i+\frac{∂}{∂y}(x^{2} - x y + y^{2} - 7)\,j \\  & =(2 x - y)\,i+(- x + 2 y)\,j \\ ∇f(-4,-3) & =(2 (-4) - (-3))\,i+(- (-4) + 2 (-3))\,j \\  & =(-5)\,i+(-2)\,j \\  & =⟨-5,-2⟩\end{aligned}
 $$
 
 Hence, $∇f(-4,-3)=⟨-5,-2⟩$ is a normal vector to the curve at $(-4,-3).$
@@ -1524,5 +1546,109 @@ Finally, the Cartesian equation of the line that is parallel to $v=⟨{v}_{x},{v
 
 $$
 \begin{aligned}\frac{x-{x}_{0}}{{v}_{x}} & =\frac{y-{y}_{0}}{{v}_{y}} \\ \frac{x-(-2)}{12} & =\frac{y-(0)}{4} \\ (4)(x-(-2)) & =(12)(y-(0)) \\ (1)(x-(-2)) & =(3)(y-(0)) \\ x - 3 y + 2 & =0\end{aligned}
+$$
+
+## q-130720
+
+### Original
+
+Consider the plane curve ${x}^{3}{y}^{2}=2x+y.$  Find the equation of the normal line to the curve at the point $(-1,1).$
+
+- $x-2y+3=0$
+- $3x+y+2=0$
+- $x-y+2=0$
+- $x+y=0$
+- $2x+y+1=0$
+
+First, we bring all variables to one side:
+
+$$
+\begin{aligned}{x}^{3}{y}^{2} & =2x+y \\ {x}^{3}{y}^{2}-2x-y & =0\end{aligned}
+$$
+
+If we set $f(x,y)={x}^{3}{y}^{2}-2x-y$, our curve can be viewed as the level curve $f(x,y)=0.$  
+
+A normal vector to the level curve that passes through the point $(-1,1)$ can be found by computing $∇f(-1,1).$ 
+
+So, we find the gradient and evaluate it at $(-1,1):$ 
+
+$$
+\begin{aligned}∇f(x,y) & ={f}_{x}(x,y)\,i+{f}_{y}(x,y)\,j \\  & =\frac{∂}{∂x}({x}^{3}{y}^{2}-2x-y)i+\frac{∂}{∂y}({x}^{3}{y}^{2}-2x-y)j \\  & =(3{x}^{2}{y}^{2}-2)\,i+(2{x}^{3}y-1)\,j \\ ∇f(-1,1) & =(3(-1)^{2}(1)^{2}-2)\,i+(2(-1)^{3}(1)-1)\,j \\  & =\,i-3\,j \\  & =⟨1,-3⟩\end{aligned}
+$$
+
+Hence, $∇f(-1,1)=⟨1,-3⟩$ is a normal vector to the curve at $(1,-3).$
+
+Finally, the Cartesian equation of the line that is parallel to $v=⟨{v}_{x},{v}_{y}⟩$ and passes through the point $({x}_{0},{y}_{0})$ can be written as:
+
+$$
+\begin{aligned}\frac{x-{x}_{0}}{{v}_{x}} & =\frac{y-{y}_{0}}{{v}_{y}} \\ \frac{x-(-1)}{1} & =\frac{y-1}{(-3)} \\ -3(x+1) & =y-1 \\ -3x-3 & =y-1 \\ 3x+y+2 & =0\end{aligned}
+$$
+
+### Generated variant 1 (moderate)
+
+Consider the plane curve $x^{3} y^{2}=2 x + y + 1112.$  Find the equation of the normal line to the curve at the point $(5,3).$
+
+- $749 x - 673 y + 1726=0$
+- $673 x + 749 y - 5612=0$
+- $749 x - 673 y=0$
+- $749 x - 1346 y + 293=0$
+- $749 x - 673 y - 1726=0$
+
+First, we bring all variables to one side:
+
+$$
+\begin{aligned}x^{3} y^{2} & =2 x + y + 1112 \\ x^{3} y^{2} - 2 x - y & =1112\end{aligned}
+$$
+
+If we set $f(x,y)=x^{3} y^{2} - 2 x - y$, our curve can be viewed as the level curve $f(x,y)=1112.$  
+
+A normal vector to the level curve that passes through the point $(5,3)$ can be found by computing $∇f(5,3).$ 
+
+So, we find the gradient and evaluate it at $(5,3):$
+
+$$
+\begin{aligned}∇f(x,y) & ={f}_{x}(x,y)\,i+{f}_{y}(x,y)\,j \\  & =\frac{∂}{∂x}(x^{3} y^{2} - 2 x - y)\,i+\frac{∂}{∂y}(x^{3} y^{2} - 2 x - y)\,j \\  & =(3 x^{2} y^{2} - 2)\,i+(2 x^{3} y - 1)\,j \\ ∇f(5,3) & =(3 (5)^{2} (3)^{2} - 2)\,i+(2 (5)^{3} (3) - 1)\,j \\  & =(673)\,i+(749)\,j \\  & =⟨673,749⟩\end{aligned}
+$$
+
+Hence, $∇f(5,3)=⟨673,749⟩$ is a normal vector to the curve at $(5,3).$
+
+Finally, the Cartesian equation of the line that is parallel to $v=⟨{v}_{x},{v}_{y}⟩$ and passes through the point $({x}_{0},{y}_{0})$ can be written as:
+
+$$
+\begin{aligned}\frac{x-{x}_{0}}{{v}_{x}} & =\frac{y-{y}_{0}}{{v}_{y}} \\ \frac{x-(5)}{673} & =\frac{y-(3)}{749} \\ (749)(x-(5)) & =(673)(y-(3)) \\ 749 x - 3745 & =673 y - 2019 \\ 749 x - 673 y - 1726 & =0\end{aligned}
+$$
+
+### Generated variant 2 (moderate)
+
+Consider the plane curve $x^{3} y^{2}=2 x + y - 565.$  Find the equation of the normal line to the curve at the point $(-4,-3).$
+
+- $383 x - 430 y=0$
+- $383 x - 430 y - 242=0$
+- $430 x + 383 y + 2869=0$
+- $383 x - 430 y + 242=0$
+- $383 x - 860 y - 1048=0$
+
+First, we bring all variables to one side:
+
+$$
+\begin{aligned}x^{3} y^{2} & =2 x + y - 565 \\ x^{3} y^{2} - 2 x - y & =-565\end{aligned}
+$$
+
+If we set $f(x,y)=x^{3} y^{2} - 2 x - y$, our curve can be viewed as the level curve $f(x,y)=-565.$  
+
+A normal vector to the level curve that passes through the point $(-4,-3)$ can be found by computing $∇f(-4,-3).$ 
+
+So, we find the gradient and evaluate it at $(-4,-3):$
+
+$$
+\begin{aligned}∇f(x,y) & ={f}_{x}(x,y)\,i+{f}_{y}(x,y)\,j \\  & =\frac{∂}{∂x}(x^{3} y^{2} - 2 x - y)\,i+\frac{∂}{∂y}(x^{3} y^{2} - 2 x - y)\,j \\  & =(3 x^{2} y^{2} - 2)\,i+(2 x^{3} y - 1)\,j \\ ∇f(-4,-3) & =(3 (-4)^{2} (-3)^{2} - 2)\,i+(2 (-4)^{3} (-3) - 1)\,j \\  & =(430)\,i+(383)\,j \\  & =⟨430,383⟩\end{aligned}
+$$
+
+Hence, $∇f(-4,-3)=⟨430,383⟩$ is a normal vector to the curve at $(-4,-3).$
+
+Finally, the Cartesian equation of the line that is parallel to $v=⟨{v}_{x},{v}_{y}⟩$ and passes through the point $({x}_{0},{y}_{0})$ can be written as:
+
+$$
+\begin{aligned}\frac{x-{x}_{0}}{{v}_{x}} & =\frac{y-{y}_{0}}{{v}_{y}} \\ \frac{x-(-4)}{430} & =\frac{y-(-3)}{383} \\ (383)(x-(-4)) & =(430)(y-(-3)) \\ 383 x + 1532 & =430 y + 1290 \\ 383 x - 430 y + 242 & =0\end{aligned}
 $$
 

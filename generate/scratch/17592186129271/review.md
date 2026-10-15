@@ -5,7 +5,7 @@ All generated records are labeled. Raw source strings remain in source.json. Sou
 Find the Jacobian determinant of the transformation $T,$ defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}4v \\ 3{u}^{2}+2\operatorname{cos}⁡(vw) \\ vw\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}4v \\ 3{u}^{2}+2\operatorname{cos}⁡(vw) \\ vw\end{bmatrix}.
 $$
 
 - $12uv$
@@ -19,13 +19,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -43,7 +43,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}0 & 4 & 0 \\ 6u & -2w\operatorname{sin}⁡(vw) & -2v\operatorname{sin}⁡(vw) \\ 0 & w & v\end{aligned}| \\  & =4(-1)^{1+2}|\begin{aligned}6u & -2v\operatorname{sin}⁡(vw) \\ 0 & v\end{aligned}| \\  & =-4(6uv-0) \\  & =-24uv.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}0 & 4 & 0 \\ 6u & -2w\operatorname{sin}⁡(vw) & -2v\operatorname{sin}⁡(vw) \\ 0 & w & v\end{vmatrix} \\  & =4(-1)^{1+2}\begin{vmatrix}6u & -2v\operatorname{sin}⁡(vw) \\ 0 & v\end{vmatrix} \\  & =-4(6uv-0) \\  & =-24uv.\end{aligned}
 $$
 
 ### Generated — easy
@@ -52,7 +52,7 @@ Template: `sparse_trig`; bank: `sparse_trig-observed`; evidence-only replay.
 Find the Jacobian determinant of the transformation $T,$ defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}4 v \\ 3 u^{2} + 2 \cos{\left(v w \right)} \\ v w\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}4 v \\ 3 u^{2} + 2 \cos{\left(v w \right)} \\ v w\end{bmatrix}.
 $$
 
 - $4 v w$
@@ -66,13 +66,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -90,7 +90,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}0 & 4 & 0 \\ 6 u & - 2 w \sin{\left(v w \right)} & - 2 v \sin{\left(v w \right)} \\ 0 & w & v\end{aligned}| \\  & =\left(4\right)(-1)^{1+2}|\begin{aligned}6 u & - 2 v \sin{\left(v w \right)} \\ 0 & v\end{aligned}| \\  & =\left(-4\right)\left(6 u v-\left(0\right)\right) \\  & =- 24 u v.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}0 & 4 & 0 \\ 6 u & - 2 w \sin{\left(v w \right)} & - 2 v \sin{\left(v w \right)} \\ 0 & w & v\end{vmatrix} \\  & =\left(4\right)(-1)^{1+2}\begin{vmatrix}6 u & - 2 v \sin{\left(v w \right)} \\ 0 & v\end{vmatrix} \\  & =\left(-4\right)\left(6 u v-\left(0\right)\right) \\  & =- 24 u v.\end{aligned}
 $$
 
 ### Generated — easy
@@ -99,7 +99,7 @@ Template: `sparse_trig`; bank: `sparse_trig-observed`; evidence-only replay.
 Find the Jacobian determinant of the transformation $T,$ defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}2 v \\ - 4 u^{2} + \cos{\left(v w \right)} \\ - 2 v w\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}2 v \\ - 4 u^{2} + \cos{\left(v w \right)} \\ - 2 v w\end{bmatrix}.
 $$
 
 - $- 32 u v$ **Correct**
@@ -113,13 +113,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -137,7 +137,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}0 & 2 & 0 \\ - 8 u & - w \sin{\left(v w \right)} & - v \sin{\left(v w \right)} \\ 0 & - 2 w & - 2 v\end{aligned}| \\  & =\left(2\right)(-1)^{1+2}|\begin{aligned}- 8 u & - v \sin{\left(v w \right)} \\ 0 & - 2 v\end{aligned}| \\  & =\left(-2\right)\left(16 u v-\left(0\right)\right) \\  & =- 32 u v.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}0 & 2 & 0 \\ - 8 u & - w \sin{\left(v w \right)} & - v \sin{\left(v w \right)} \\ 0 & - 2 w & - 2 v\end{vmatrix} \\  & =\left(2\right)(-1)^{1+2}\begin{vmatrix}- 8 u & - v \sin{\left(v w \right)} \\ 0 & - 2 v\end{vmatrix} \\  & =\left(-2\right)\left(16 u v-\left(0\right)\right) \\  & =- 32 u v.\end{aligned}
 $$
 
 ### Generated — easy
@@ -146,7 +146,7 @@ Template: `sparse_trig`; bank: `sparse_trig-method`; eligible learner variant.
 Find the Jacobian determinant of the transformation $T,$ defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}3 v \\ u^{2} + 2 \cos{\left(v w \right)} \\ v w\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}3 v \\ u^{2} + 2 \cos{\left(v w \right)} \\ v w\end{bmatrix}.
 $$
 
 - $- 6 u v$ **Correct**
@@ -160,13 +160,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -184,7 +184,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}0 & 3 & 0 \\ 2 u & - 2 w \sin{\left(v w \right)} & - 2 v \sin{\left(v w \right)} \\ 0 & w & v\end{aligned}| \\  & =\left(3\right)(-1)^{1+2}|\begin{aligned}2 u & - 2 v \sin{\left(v w \right)} \\ 0 & v\end{aligned}| \\  & =\left(-3\right)\left(2 u v-\left(0\right)\right) \\  & =- 6 u v.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}0 & 3 & 0 \\ 2 u & - 2 w \sin{\left(v w \right)} & - 2 v \sin{\left(v w \right)} \\ 0 & w & v\end{vmatrix} \\  & =\left(3\right)(-1)^{1+2}\begin{vmatrix}2 u & - 2 v \sin{\left(v w \right)} \\ 0 & v\end{vmatrix} \\  & =\left(-3\right)\left(2 u v-\left(0\right)\right) \\  & =- 6 u v.\end{aligned}
 $$
 
 ### Generated — easy
@@ -193,7 +193,7 @@ Template: `sparse_trig`; bank: `sparse_trig-method`; eligible learner variant.
 Find the Jacobian determinant of the transformation $T,$ defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}- 3 v \\ 3 u^{2} + 2 \cos{\left(v w \right)} \\ 3 v w\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}- 3 v \\ 3 u^{2} + 2 \cos{\left(v w \right)} \\ 3 v w\end{bmatrix}.
 $$
 
 - $54 u w$
@@ -207,13 +207,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -231,14 +231,14 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}0 & -3 & 0 \\ 6 u & - 2 w \sin{\left(v w \right)} & - 2 v \sin{\left(v w \right)} \\ 0 & 3 w & 3 v\end{aligned}| \\  & =\left(-3\right)(-1)^{1+2}|\begin{aligned}6 u & - 2 v \sin{\left(v w \right)} \\ 0 & 3 v\end{aligned}| \\  & =\left(3\right)\left(18 u v-\left(0\right)\right) \\  & =54 u v.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}0 & -3 & 0 \\ 6 u & - 2 w \sin{\left(v w \right)} & - 2 v \sin{\left(v w \right)} \\ 0 & 3 w & 3 v\end{vmatrix} \\  & =\left(-3\right)(-1)^{1+2}\begin{vmatrix}6 u & - 2 v \sin{\left(v w \right)} \\ 0 & 3 v\end{vmatrix} \\  & =\left(3\right)\left(18 u v-\left(0\right)\right) \\  & =54 u v.\end{aligned}
 $$
 
 ## Original — q-161793 (easy)
 Find the Jacobian determinant of the transformation $T,$ defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}u{e}^{w} \\ w-u \\ w{e}^{u}-3v\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}u{e}^{w} \\ w-u \\ w{e}^{u}-3v\end{bmatrix}.
 $$
 
 - ${e}^{w}$
@@ -252,13 +252,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -276,7 +276,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}{e}^{w} & 0 & u{e}^{w} \\ -1 & 0 & 1 \\ w{e}^{u} & -3 & {e}^{u}\end{aligned}| \\  & =(-3)(-1)^{3+2}|\begin{aligned}{e}^{w} & u{e}^{w} \\ -1 & 1\end{aligned}| \\  & =3({e}^{w}+u{e}^{w}) \\  & =3{e}^{w}(1+u).\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}{e}^{w} & 0 & u{e}^{w} \\ -1 & 0 & 1 \\ w{e}^{u} & -3 & {e}^{u}\end{vmatrix} \\  & =(-3)(-1)^{3+2}\begin{vmatrix}{e}^{w} & u{e}^{w} \\ -1 & 1\end{vmatrix} \\  & =3({e}^{w}+u{e}^{w}) \\  & =3{e}^{w}(1+u).\end{aligned}
 $$
 
 ### Generated — easy
@@ -285,7 +285,7 @@ Template: `sparse_exp`; bank: `sparse_exp-observed`; evidence-only replay.
 Find the Jacobian determinant of the transformation $T,$ defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}u e^{w} \\ - u + w \\ - 3 v + w e^{u}\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}u e^{w} \\ - u + w \\ - 3 v + w e^{u}\end{bmatrix}.
 $$
 
 - $- u w e^{u + w}$
@@ -299,13 +299,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -323,7 +323,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}e^{w} & 0 & u e^{w} \\ -1 & 0 & 1 \\ w e^{u} & -3 & e^{u}\end{aligned}| \\  & =\left(-3\right)(-1)^{3+2}|\begin{aligned}e^{w} & u e^{w} \\ -1 & 1\end{aligned}| \\  & =\left(3\right)\left(e^{w}-\left(- u e^{w}\right)\right) \\  & =3 \left(u + 1\right) e^{w}.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}e^{w} & 0 & u e^{w} \\ -1 & 0 & 1 \\ w e^{u} & -3 & e^{u}\end{vmatrix} \\  & =\left(-3\right)(-1)^{3+2}\begin{vmatrix}e^{w} & u e^{w} \\ -1 & 1\end{vmatrix} \\  & =\left(3\right)\left(e^{w}-\left(- u e^{w}\right)\right) \\  & =3 \left(u + 1\right) e^{w}.\end{aligned}
 $$
 
 ### Generated — easy
@@ -332,7 +332,7 @@ Template: `sparse_exp`; bank: `sparse_exp-observed`; evidence-only replay.
 Find the Jacobian determinant of the transformation $T,$ defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}2 u e^{w} \\ 4 u + w \\ 2 v + w e^{u}\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}2 u e^{w} \\ 4 u + w \\ 2 v + w e^{u}\end{bmatrix}.
 $$
 
 - $- 2 w e^{u + v}$
@@ -346,13 +346,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -370,7 +370,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}2 e^{w} & 0 & 2 u e^{w} \\ 4 & 0 & 1 \\ w e^{u} & 2 & e^{u}\end{aligned}| \\  & =\left(2\right)(-1)^{3+2}|\begin{aligned}2 e^{w} & 2 u e^{w} \\ 4 & 1\end{aligned}| \\  & =\left(-2\right)\left(2 e^{w}-\left(8 u e^{w}\right)\right) \\  & =4 \left(4 u - 1\right) e^{w}.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}2 e^{w} & 0 & 2 u e^{w} \\ 4 & 0 & 1 \\ w e^{u} & 2 & e^{u}\end{vmatrix} \\  & =\left(2\right)(-1)^{3+2}\begin{vmatrix}2 e^{w} & 2 u e^{w} \\ 4 & 1\end{vmatrix} \\  & =\left(-2\right)\left(2 e^{w}-\left(8 u e^{w}\right)\right) \\  & =4 \left(4 u - 1\right) e^{w}.\end{aligned}
 $$
 
 ### Generated — easy
@@ -379,7 +379,7 @@ Template: `sparse_exp`; bank: `sparse_exp-method`; eligible learner variant.
 Find the Jacobian determinant of the transformation $T,$ defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}- 2 u e^{w} \\ - u - 3 w \\ 4 v + w e^{u}\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}- 2 u e^{w} \\ - u - 3 w \\ 4 v + w e^{u}\end{bmatrix}.
 $$
 
 - $8 u e^{w} - 24 e^{w}$ **Correct**
@@ -393,13 +393,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -417,7 +417,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}- 2 e^{w} & 0 & - 2 u e^{w} \\ -1 & 0 & -3 \\ w e^{u} & 4 & e^{u}\end{aligned}| \\  & =\left(4\right)(-1)^{3+2}|\begin{aligned}- 2 e^{w} & - 2 u e^{w} \\ -1 & -3\end{aligned}| \\  & =\left(-4\right)\left(6 e^{w}-\left(2 u e^{w}\right)\right) \\  & =8 \left(u - 3\right) e^{w}.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}- 2 e^{w} & 0 & - 2 u e^{w} \\ -1 & 0 & -3 \\ w e^{u} & 4 & e^{u}\end{vmatrix} \\  & =\left(4\right)(-1)^{3+2}\begin{vmatrix}- 2 e^{w} & - 2 u e^{w} \\ -1 & -3\end{vmatrix} \\  & =\left(-4\right)\left(6 e^{w}-\left(2 u e^{w}\right)\right) \\  & =8 \left(u - 3\right) e^{w}.\end{aligned}
 $$
 
 ### Generated — easy
@@ -426,7 +426,7 @@ Template: `sparse_exp`; bank: `sparse_exp-method`; eligible learner variant.
 Find the Jacobian determinant of the transformation $T,$ defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}- u e^{w} \\ - u + 3 w \\ 4 v + w e^{u}\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}- u e^{w} \\ - u + 3 w \\ 4 v + w e^{u}\end{bmatrix}.
 $$
 
 - $4 u e^{w}$
@@ -440,13 +440,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -464,14 +464,14 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}- e^{w} & 0 & - u e^{w} \\ -1 & 0 & 3 \\ w e^{u} & 4 & e^{u}\end{aligned}| \\  & =\left(4\right)(-1)^{3+2}|\begin{aligned}- e^{w} & - u e^{w} \\ -1 & 3\end{aligned}| \\  & =\left(-4\right)\left(- 3 e^{w}-\left(u e^{w}\right)\right) \\  & =4 \left(u + 3\right) e^{w}.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}- e^{w} & 0 & - u e^{w} \\ -1 & 0 & 3 \\ w e^{u} & 4 & e^{u}\end{vmatrix} \\  & =\left(4\right)(-1)^{3+2}\begin{vmatrix}- e^{w} & - u e^{w} \\ -1 & 3\end{vmatrix} \\  & =\left(-4\right)\left(- 3 e^{w}-\left(u e^{w}\right)\right) \\  & =4 \left(u + 3\right) e^{w}.\end{aligned}
 $$
 
 ## Original — q-161794 (easy)
 Find the Jacobian determinant of the transformation $T,$ defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}{u}^{2}+{v}^{2} \\ u+3w \\ -v\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}{u}^{2}+{v}^{2} \\ u+3w \\ -v\end{bmatrix}.
 $$
 
 - $2(u-v)$
@@ -485,13 +485,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -509,7 +509,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}2u & 2v & 0 \\ 1 & 0 & 3 \\ 0 & -1 & 0\end{aligned}| \\  & =(-1)(-1)^{3+2}|\begin{aligned}2u & 0 \\ 1 & 3\end{aligned}| \\  & =6u-0 \\  & =6u.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}2u & 2v & 0 \\ 1 & 0 & 3 \\ 0 & -1 & 0\end{vmatrix} \\  & =(-1)(-1)^{3+2}\begin{vmatrix}2u & 0 \\ 1 & 3\end{vmatrix} \\  & =6u-0 \\  & =6u.\end{aligned}
 $$
 
 ### Generated — easy
@@ -518,7 +518,7 @@ Template: `sparse_square`; bank: `sparse_square-observed`; evidence-only replay.
 Find the Jacobian determinant of the transformation $T,$ defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}u^{2} + v^{2} \\ u + 3 w \\ - v\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}u^{2} + v^{2} \\ u + 3 w \\ - v\end{bmatrix}.
 $$
 
 - $6 u$ **Correct**
@@ -532,13 +532,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -556,7 +556,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}2 u & 2 v & 0 \\ 1 & 0 & 3 \\ 0 & -1 & 0\end{aligned}| \\  & =\left(-1\right)(-1)^{3+2}|\begin{aligned}2 u & 0 \\ 1 & 3\end{aligned}| \\  & =\left(6 u-\left(0\right)\right) \\  & =6 u.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}2 u & 2 v & 0 \\ 1 & 0 & 3 \\ 0 & -1 & 0\end{vmatrix} \\  & =\left(-1\right)(-1)^{3+2}\begin{vmatrix}2 u & 0 \\ 1 & 3\end{vmatrix} \\  & =\left(6 u-\left(0\right)\right) \\  & =6 u.\end{aligned}
 $$
 
 ### Generated — easy
@@ -565,7 +565,7 @@ Template: `sparse_square`; bank: `sparse_square-observed`; evidence-only replay.
 Find the Jacobian determinant of the transformation $T,$ defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}2 u^{2} - 4 v^{2} \\ u - 2 w \\ v\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}2 u^{2} - 4 v^{2} \\ u - 2 w \\ v\end{bmatrix}.
 $$
 
 - $0$
@@ -579,13 +579,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -603,7 +603,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}4 u & - 8 v & 0 \\ 1 & 0 & -2 \\ 0 & 1 & 0\end{aligned}| \\  & =\left(1\right)(-1)^{3+2}|\begin{aligned}4 u & 0 \\ 1 & -2\end{aligned}| \\  & =\left(-1\right)\left(- 8 u-\left(0\right)\right) \\  & =8 u.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}4 u & - 8 v & 0 \\ 1 & 0 & -2 \\ 0 & 1 & 0\end{vmatrix} \\  & =\left(1\right)(-1)^{3+2}\begin{vmatrix}4 u & 0 \\ 1 & -2\end{vmatrix} \\  & =\left(-1\right)\left(- 8 u-\left(0\right)\right) \\  & =8 u.\end{aligned}
 $$
 
 ### Generated — easy
@@ -612,7 +612,7 @@ Template: `sparse_square`; bank: `sparse_square-method`; eligible learner varian
 Find the Jacobian determinant of the transformation $T,$ defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}3 u^{2} + v^{2} \\ 2 u + 3 w \\ 2 v\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}3 u^{2} + v^{2} \\ 2 u + 3 w \\ 2 v\end{bmatrix}.
 $$
 
 - $- 36 u$ **Correct**
@@ -626,13 +626,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -650,7 +650,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}6 u & 2 v & 0 \\ 2 & 0 & 3 \\ 0 & 2 & 0\end{aligned}| \\  & =\left(2\right)(-1)^{3+2}|\begin{aligned}6 u & 0 \\ 2 & 3\end{aligned}| \\  & =\left(-2\right)\left(18 u-\left(0\right)\right) \\  & =- 36 u.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}6 u & 2 v & 0 \\ 2 & 0 & 3 \\ 0 & 2 & 0\end{vmatrix} \\  & =\left(2\right)(-1)^{3+2}\begin{vmatrix}6 u & 0 \\ 2 & 3\end{vmatrix} \\  & =\left(-2\right)\left(18 u-\left(0\right)\right) \\  & =- 36 u.\end{aligned}
 $$
 
 ### Generated — easy
@@ -659,7 +659,7 @@ Template: `sparse_square`; bank: `sparse_square-method`; eligible learner varian
 Find the Jacobian determinant of the transformation $T,$ defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}- u^{2} + v^{2} \\ 3 u - 4 w \\ v\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}- u^{2} + v^{2} \\ 3 u - 4 w \\ v\end{bmatrix}.
 $$
 
 - $- 8 v$
@@ -673,13 +673,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -697,14 +697,14 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}- 2 u & 2 v & 0 \\ 3 & 0 & -4 \\ 0 & 1 & 0\end{aligned}| \\  & =\left(1\right)(-1)^{3+2}|\begin{aligned}- 2 u & 0 \\ 3 & -4\end{aligned}| \\  & =\left(-1\right)\left(8 u-\left(0\right)\right) \\  & =- 8 u.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}- 2 u & 2 v & 0 \\ 3 & 0 & -4 \\ 0 & 1 & 0\end{vmatrix} \\  & =\left(1\right)(-1)^{3+2}\begin{vmatrix}- 2 u & 0 \\ 3 & -4\end{vmatrix} \\  & =\left(-1\right)\left(8 u-\left(0\right)\right) \\  & =- 8 u.\end{aligned}
 $$
 
 ## Original — q-161796 (easy)
 Find the Jacobian determinant of the transformation $T,$ defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}\operatorname{ln}⁡(u\,v\,w) \\ u+2w \\ uv\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}\operatorname{ln}⁡(u\,v\,w) \\ u+2w \\ uv\end{bmatrix}.
 $$
 
 - $\frac{1}{w}$
@@ -718,13 +718,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -742,7 +742,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{1}{u} & \frac{1}{v} & \frac{1}{w} \\ 1 & 0 & 2 \\ v & u & 0\end{aligned}| \\  & =\frac{1}{w}(-1)^{1+3}|\begin{aligned}1 & 0 \\ v & u\end{aligned}|+2(-1)^{2+3}|\begin{aligned}\frac{1}{u} & \frac{1}{v} \\ v & u\end{aligned}| \\  & =\frac{1}{w}(u-0)-2(1-1) \\  & =\frac{u}{w}.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{1}{u} & \frac{1}{v} & \frac{1}{w} \\ 1 & 0 & 2 \\ v & u & 0\end{vmatrix} \\  & =\frac{1}{w}(-1)^{1+3}\begin{vmatrix}1 & 0 \\ v & u\end{vmatrix}+2(-1)^{2+3}\begin{vmatrix}\frac{1}{u} & \frac{1}{v} \\ v & u\end{vmatrix} \\  & =\frac{1}{w}(u-0)-2(1-1) \\  & =\frac{u}{w}.\end{aligned}
 $$
 
 ### Generated — easy
@@ -751,7 +751,7 @@ Template: `log_product`; bank: `log_product-observed`; evidence-only replay.
 Find the Jacobian determinant of the transformation $T,$ defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}\ln{\left(u v w \right)} \\ u + 2 w \\ u v\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}\ln{\left(u v w \right)} \\ u + 2 w \\ u v\end{bmatrix}.
 $$
 
 - $0$
@@ -765,13 +765,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -789,7 +789,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{1}{u} & \frac{1}{v} & \frac{1}{w} \\ 1 & 0 & 2 \\ v & u & 0\end{aligned}| \\  & =\left(\frac{1}{w}\right)(-1)^{1+3}|\begin{aligned}1 & 0 \\ v & u\end{aligned}|+\left(2\right)(-1)^{2+3}|\begin{aligned}\frac{1}{u} & \frac{1}{v} \\ v & u\end{aligned}| \\  & =\left(\frac{1}{w}\right)\left(u-\left(0\right)\right)+\left(-2\right)\left(1-\left(1\right)\right) \\  & =\frac{u}{w}.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{1}{u} & \frac{1}{v} & \frac{1}{w} \\ 1 & 0 & 2 \\ v & u & 0\end{vmatrix} \\  & =\left(\frac{1}{w}\right)(-1)^{1+3}\begin{vmatrix}1 & 0 \\ v & u\end{vmatrix}+\left(2\right)(-1)^{2+3}\begin{vmatrix}\frac{1}{u} & \frac{1}{v} \\ v & u\end{vmatrix} \\  & =\left(\frac{1}{w}\right)\left(u-\left(0\right)\right)+\left(-2\right)\left(1-\left(1\right)\right) \\  & =\frac{u}{w}.\end{aligned}
 $$
 
 ### Generated — easy
@@ -798,7 +798,7 @@ Template: `log_product`; bank: `log_product-observed`; evidence-only replay.
 Find the Jacobian determinant of the transformation $T,$ defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}2 \ln{\left(u v w \right)} \\ - 4 u + w \\ - 2 u v\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}2 \ln{\left(u v w \right)} \\ - 4 u + w \\ - 2 u v\end{bmatrix}.
 $$
 
 - $\frac{16 u}{w}$ **Correct**
@@ -812,13 +812,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -836,7 +836,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{2}{u} & \frac{2}{v} & \frac{2}{w} \\ -4 & 0 & 1 \\ - 2 v & - 2 u & 0\end{aligned}| \\  & =\left(\frac{2}{w}\right)(-1)^{1+3}|\begin{aligned}-4 & 0 \\ - 2 v & - 2 u\end{aligned}|+\left(1\right)(-1)^{2+3}|\begin{aligned}\frac{2}{u} & \frac{2}{v} \\ - 2 v & - 2 u\end{aligned}| \\  & =\left(\frac{2}{w}\right)\left(8 u-\left(0\right)\right)+\left(-1\right)\left(-4-\left(-4\right)\right) \\  & =\frac{16 u}{w}.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{2}{u} & \frac{2}{v} & \frac{2}{w} \\ -4 & 0 & 1 \\ - 2 v & - 2 u & 0\end{vmatrix} \\  & =\left(\frac{2}{w}\right)(-1)^{1+3}\begin{vmatrix}-4 & 0 \\ - 2 v & - 2 u\end{vmatrix}+\left(1\right)(-1)^{2+3}\begin{vmatrix}\frac{2}{u} & \frac{2}{v} \\ - 2 v & - 2 u\end{vmatrix} \\  & =\left(\frac{2}{w}\right)\left(8 u-\left(0\right)\right)+\left(-1\right)\left(-4-\left(-4\right)\right) \\  & =\frac{16 u}{w}.\end{aligned}
 $$
 
 ### Generated — easy
@@ -845,7 +845,7 @@ Template: `log_product`; bank: `log_product-method`; eligible learner variant.
 Find the Jacobian determinant of the transformation $T,$ defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}3 \ln{\left(u v w \right)} \\ u + 2 w \\ u v\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}3 \ln{\left(u v w \right)} \\ u + 2 w \\ u v\end{bmatrix}.
 $$
 
 - $\frac{3 u}{w}$ **Correct**
@@ -859,13 +859,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -883,7 +883,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{3}{u} & \frac{3}{v} & \frac{3}{w} \\ 1 & 0 & 2 \\ v & u & 0\end{aligned}| \\  & =\left(\frac{3}{w}\right)(-1)^{1+3}|\begin{aligned}1 & 0 \\ v & u\end{aligned}|+\left(2\right)(-1)^{2+3}|\begin{aligned}\frac{3}{u} & \frac{3}{v} \\ v & u\end{aligned}| \\  & =\left(\frac{3}{w}\right)\left(u-\left(0\right)\right)+\left(-2\right)\left(3-\left(3\right)\right) \\  & =\frac{3 u}{w}.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{3}{u} & \frac{3}{v} & \frac{3}{w} \\ 1 & 0 & 2 \\ v & u & 0\end{vmatrix} \\  & =\left(\frac{3}{w}\right)(-1)^{1+3}\begin{vmatrix}1 & 0 \\ v & u\end{vmatrix}+\left(2\right)(-1)^{2+3}\begin{vmatrix}\frac{3}{u} & \frac{3}{v} \\ v & u\end{vmatrix} \\  & =\left(\frac{3}{w}\right)\left(u-\left(0\right)\right)+\left(-2\right)\left(3-\left(3\right)\right) \\  & =\frac{3 u}{w}.\end{aligned}
 $$
 
 ### Generated — easy
@@ -892,7 +892,7 @@ Template: `log_product`; bank: `log_product-method`; eligible learner variant.
 Find the Jacobian determinant of the transformation $T,$ defined as
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}- \ln{\left(u v w \right)} \\ u + 3 w \\ - 4 u v\end{aligned}].
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}- \ln{\left(u v w \right)} \\ u + 3 w \\ - 4 u v\end{bmatrix}.
 $$
 
 - $\frac{4 u}{v}$
@@ -906,13 +906,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 Here, we have 
@@ -930,7 +930,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}- \frac{1}{u} & - \frac{1}{v} & - \frac{1}{w} \\ 1 & 0 & 3 \\ - 4 v & - 4 u & 0\end{aligned}| \\  & =\left(- \frac{1}{w}\right)(-1)^{1+3}|\begin{aligned}1 & 0 \\ - 4 v & - 4 u\end{aligned}|+\left(3\right)(-1)^{2+3}|\begin{aligned}- \frac{1}{u} & - \frac{1}{v} \\ - 4 v & - 4 u\end{aligned}| \\  & =\left(- \frac{1}{w}\right)\left(- 4 u-\left(0\right)\right)+\left(-3\right)\left(4-\left(4\right)\right) \\  & =\frac{4 u}{w}.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}- \frac{1}{u} & - \frac{1}{v} & - \frac{1}{w} \\ 1 & 0 & 3 \\ - 4 v & - 4 u & 0\end{vmatrix} \\  & =\left(- \frac{1}{w}\right)(-1)^{1+3}\begin{vmatrix}1 & 0 \\ - 4 v & - 4 u\end{vmatrix}+\left(3\right)(-1)^{2+3}\begin{vmatrix}- \frac{1}{u} & - \frac{1}{v} \\ - 4 v & - 4 u\end{vmatrix} \\  & =\left(- \frac{1}{w}\right)\left(- 4 u-\left(0\right)\right)+\left(-3\right)\left(4-\left(4\right)\right) \\  & =\frac{4 u}{w}.\end{aligned}
 $$
 
 ## Original — q-39299 (moderate)
@@ -953,13 +953,13 @@ You may assume that $\theta $ is a fixed constant.
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -971,7 +971,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\operatorname{cos}⁡\theta  & \operatorname{sin}⁡\theta  & 0 \\ -\operatorname{sin}⁡\theta  & \operatorname{cos}⁡\theta  & 0 \\ 0 & 0 & 1\end{aligned}| \\  & =1(-1)^{3+3}|\begin{aligned}\operatorname{cos}⁡\theta  & \operatorname{sin}⁡\theta  \\ -\operatorname{sin}⁡\theta  & \operatorname{cos}⁡\theta \end{aligned}| \\  & ={cos}^{2}⁡\theta +{sin}^{2}⁡\theta  \\  & =1.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\operatorname{cos}⁡\theta  & \operatorname{sin}⁡\theta  & 0 \\ -\operatorname{sin}⁡\theta  & \operatorname{cos}⁡\theta  & 0 \\ 0 & 0 & 1\end{vmatrix} \\  & =1(-1)^{3+3}\begin{vmatrix}\operatorname{cos}⁡\theta  & \operatorname{sin}⁡\theta  \\ -\operatorname{sin}⁡\theta  & \operatorname{cos}⁡\theta \end{vmatrix} \\  & ={cos}^{2}⁡\theta +{sin}^{2}⁡\theta  \\  & =1.\end{aligned}
 $$
 
 ### Generated — moderate
@@ -983,7 +983,7 @@ $$
 x=u \cos{\left(\theta \right)} + v \sin{\left(\theta \right)}\, y=- u \sin{\left(\theta \right)} + v \cos{\left(\theta \right)}\, z=w.
 $$
 
-You may assume that $\theta $ is a fixed constant.
+You may assume that $\theta$ is a fixed constant.
 
 - $0$
 - $\sin{\left(\theta \right)}$
@@ -996,13 +996,13 @@ You may assume that $\theta $ is a fixed constant.
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1014,7 +1014,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\cos{\left(\theta \right)} & \sin{\left(\theta \right)} & 0 \\ - \sin{\left(\theta \right)} & \cos{\left(\theta \right)} & 0 \\ 0 & 0 & 1\end{aligned}| \\  & =\left(1\right)(-1)^{3+3}|\begin{aligned}\cos{\left(\theta \right)} & \sin{\left(\theta \right)} \\ - \sin{\left(\theta \right)} & \cos{\left(\theta \right)}\end{aligned}| \\  & =\left(\cos^{2}{\left(\theta \right)}\right)+\left(\sin^{2}{\left(\theta \right)}\right) \\  & =1.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\cos{\left(\theta \right)} & \sin{\left(\theta \right)} & 0 \\ - \sin{\left(\theta \right)} & \cos{\left(\theta \right)} & 0 \\ 0 & 0 & 1\end{vmatrix} \\  & =\left(1\right)(-1)^{3+3}\begin{vmatrix}\cos{\left(\theta \right)} & \sin{\left(\theta \right)} \\ - \sin{\left(\theta \right)} & \cos{\left(\theta \right)}\end{vmatrix} \\  & =\left(\cos^{2}{\left(\theta \right)}\right)+\left(\sin^{2}{\left(\theta \right)}\right) \\  & =1.\end{aligned}
 $$
 
 ### Generated — moderate
@@ -1026,7 +1026,7 @@ $$
 x=2 u \cos{\left(\theta \right)} + 2 v \sin{\left(\theta \right)}\, y=4 u \sin{\left(\theta \right)} - 4 v \cos{\left(\theta \right)}\, z=w.
 $$
 
-You may assume that $\theta $ is a fixed constant.
+You may assume that $\theta$ is a fixed constant.
 
 - $- 8 \sin{\left(\theta \right)} \cos{\left(\theta \right)}$
 - $-8$ **Correct**
@@ -1039,13 +1039,13 @@ You may assume that $\theta $ is a fixed constant.
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1057,7 +1057,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}2 \cos{\left(\theta \right)} & 2 \sin{\left(\theta \right)} & 0 \\ 4 \sin{\left(\theta \right)} & - 4 \cos{\left(\theta \right)} & 0 \\ 0 & 0 & 1\end{aligned}| \\  & =\left(1\right)(-1)^{3+3}|\begin{aligned}2 \cos{\left(\theta \right)} & 2 \sin{\left(\theta \right)} \\ 4 \sin{\left(\theta \right)} & - 4 \cos{\left(\theta \right)}\end{aligned}| \\  & =\left(- 8 \cos^{2}{\left(\theta \right)}\right)+\left(- 8 \sin^{2}{\left(\theta \right)}\right) \\  & =-8.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}2 \cos{\left(\theta \right)} & 2 \sin{\left(\theta \right)} & 0 \\ 4 \sin{\left(\theta \right)} & - 4 \cos{\left(\theta \right)} & 0 \\ 0 & 0 & 1\end{vmatrix} \\  & =\left(1\right)(-1)^{3+3}\begin{vmatrix}2 \cos{\left(\theta \right)} & 2 \sin{\left(\theta \right)} \\ 4 \sin{\left(\theta \right)} & - 4 \cos{\left(\theta \right)}\end{vmatrix} \\  & =\left(- 8 \cos^{2}{\left(\theta \right)}\right)+\left(- 8 \sin^{2}{\left(\theta \right)}\right) \\  & =-8.\end{aligned}
 $$
 
 ### Generated — moderate
@@ -1069,7 +1069,7 @@ $$
 x=3 u \cos{\left(\theta \right)} + 3 v \sin{\left(\theta \right)}\, y=- u \sin{\left(\theta \right)} + v \cos{\left(\theta \right)}\, z=2 w.
 $$
 
-You may assume that $\theta $ is a fixed constant.
+You may assume that $\theta$ is a fixed constant.
 
 - $6$ **Correct**
 - $6 \cos^{2}{\left(\theta \right)}$
@@ -1082,13 +1082,13 @@ You may assume that $\theta $ is a fixed constant.
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1100,7 +1100,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}3 \cos{\left(\theta \right)} & 3 \sin{\left(\theta \right)} & 0 \\ - \sin{\left(\theta \right)} & \cos{\left(\theta \right)} & 0 \\ 0 & 0 & 2\end{aligned}| \\  & =\left(2\right)(-1)^{3+3}|\begin{aligned}3 \cos{\left(\theta \right)} & 3 \sin{\left(\theta \right)} \\ - \sin{\left(\theta \right)} & \cos{\left(\theta \right)}\end{aligned}| \\  & =\left(6 \cos^{2}{\left(\theta \right)}\right)+\left(6 \sin^{2}{\left(\theta \right)}\right) \\  & =6.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}3 \cos{\left(\theta \right)} & 3 \sin{\left(\theta \right)} & 0 \\ - \sin{\left(\theta \right)} & \cos{\left(\theta \right)} & 0 \\ 0 & 0 & 2\end{vmatrix} \\  & =\left(2\right)(-1)^{3+3}\begin{vmatrix}3 \cos{\left(\theta \right)} & 3 \sin{\left(\theta \right)} \\ - \sin{\left(\theta \right)} & \cos{\left(\theta \right)}\end{vmatrix} \\  & =\left(6 \cos^{2}{\left(\theta \right)}\right)+\left(6 \sin^{2}{\left(\theta \right)}\right) \\  & =6.\end{aligned}
 $$
 
 ### Generated — moderate
@@ -1112,7 +1112,7 @@ $$
 x=- u \cos{\left(\theta \right)} - v \sin{\left(\theta \right)}\, y=- u \sin{\left(\theta \right)} + v \cos{\left(\theta \right)}\, z=3 w.
 $$
 
-You may assume that $\theta $ is a fixed constant.
+You may assume that $\theta$ is a fixed constant.
 
 - $- 3 \sin^{2}{\left(\theta \right)}$
 - $-3$ **Correct**
@@ -1125,13 +1125,13 @@ You may assume that $\theta $ is a fixed constant.
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1143,7 +1143,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}- \cos{\left(\theta \right)} & - \sin{\left(\theta \right)} & 0 \\ - \sin{\left(\theta \right)} & \cos{\left(\theta \right)} & 0 \\ 0 & 0 & 3\end{aligned}| \\  & =\left(3\right)(-1)^{3+3}|\begin{aligned}- \cos{\left(\theta \right)} & - \sin{\left(\theta \right)} \\ - \sin{\left(\theta \right)} & \cos{\left(\theta \right)}\end{aligned}| \\  & =\left(- 3 \cos^{2}{\left(\theta \right)}\right)+\left(- 3 \sin^{2}{\left(\theta \right)}\right) \\  & =-3.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}- \cos{\left(\theta \right)} & - \sin{\left(\theta \right)} & 0 \\ - \sin{\left(\theta \right)} & \cos{\left(\theta \right)} & 0 \\ 0 & 0 & 3\end{vmatrix} \\  & =\left(3\right)(-1)^{3+3}\begin{vmatrix}- \cos{\left(\theta \right)} & - \sin{\left(\theta \right)} \\ - \sin{\left(\theta \right)} & \cos{\left(\theta \right)}\end{vmatrix} \\  & =\left(- 3 \cos^{2}{\left(\theta \right)}\right)+\left(- 3 \sin^{2}{\left(\theta \right)}\right) \\  & =-3.\end{aligned}
 $$
 
 ## Original — q-161792 (moderate)
@@ -1164,13 +1164,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1182,7 +1182,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}{v}^{2} & 2uv & 1 \\ 3{u}^{2} & 1 & 0 \\ v & u & 0\end{aligned}| \\  & =1(-1)^{1+3}|\begin{aligned}3{u}^{2} & 1 \\ v & u\end{aligned}| \\  & =3{u}^{3}-v.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}{v}^{2} & 2uv & 1 \\ 3{u}^{2} & 1 & 0 \\ v & u & 0\end{vmatrix} \\  & =1(-1)^{1+3}\begin{vmatrix}3{u}^{2} & 1 \\ v & u\end{vmatrix} \\  & =3{u}^{3}-v.\end{aligned}
 $$
 
 ### Generated — moderate
@@ -1205,13 +1205,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1223,7 +1223,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}v^{2} & 2 u v & 1 \\ 3 u^{2} & 1 & 0 \\ v & u & 0\end{aligned}| \\  & =\left(1\right)(-1)^{1+3}|\begin{aligned}3 u^{2} & 1 \\ v & u\end{aligned}| \\  & =3 u^{3} - v.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}v^{2} & 2 u v & 1 \\ 3 u^{2} & 1 & 0 \\ v & u & 0\end{vmatrix} \\  & =\left(1\right)(-1)^{1+3}\begin{vmatrix}3 u^{2} & 1 \\ v & u\end{vmatrix} \\  & =3 u^{3} - v.\end{aligned}
 $$
 
 ### Generated — moderate
@@ -1246,13 +1246,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1264,7 +1264,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}2 v^{2} & 4 u v & -4 \\ 3 u^{2} & -2 & 0 \\ - v & - u & 0\end{aligned}| \\  & =\left(-4\right)(-1)^{1+3}|\begin{aligned}3 u^{2} & -2 \\ - v & - u\end{aligned}| \\  & =12 u^{3} + 8 v.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}2 v^{2} & 4 u v & -4 \\ 3 u^{2} & -2 & 0 \\ - v & - u & 0\end{vmatrix} \\  & =\left(-4\right)(-1)^{1+3}\begin{vmatrix}3 u^{2} & -2 \\ - v & - u\end{vmatrix} \\  & =12 u^{3} + 8 v.\end{aligned}
 $$
 
 ### Generated — moderate
@@ -1287,13 +1287,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1305,7 +1305,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}3 v^{2} & 6 u v & 1 \\ 6 u^{2} & 1 & 0 \\ - 2 v & - 2 u & 0\end{aligned}| \\  & =\left(1\right)(-1)^{1+3}|\begin{aligned}6 u^{2} & 1 \\ - 2 v & - 2 u\end{aligned}| \\  & =- 12 u^{3} + 2 v.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}3 v^{2} & 6 u v & 1 \\ 6 u^{2} & 1 & 0 \\ - 2 v & - 2 u & 0\end{vmatrix} \\  & =\left(1\right)(-1)^{1+3}\begin{vmatrix}6 u^{2} & 1 \\ - 2 v & - 2 u\end{vmatrix} \\  & =- 12 u^{3} + 2 v.\end{aligned}
 $$
 
 ### Generated — moderate
@@ -1328,13 +1328,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1346,7 +1346,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}- v^{2} & - 2 u v & 1 \\ 9 u^{2} & -4 & 0 \\ - v & - u & 0\end{aligned}| \\  & =\left(1\right)(-1)^{1+3}|\begin{aligned}9 u^{2} & -4 \\ - v & - u\end{aligned}| \\  & =- 9 u^{3} - 4 v.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}- v^{2} & - 2 u v & 1 \\ 9 u^{2} & -4 & 0 \\ - v & - u & 0\end{vmatrix} \\  & =\left(1\right)(-1)^{1+3}\begin{vmatrix}9 u^{2} & -4 \\ - v & - u\end{vmatrix} \\  & =- 9 u^{3} - 4 v.\end{aligned}
 $$
 
 ## Original — q-39710 (moderate)
@@ -1367,13 +1367,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1385,7 +1385,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}2u & w & v \\ -v & -u & 0 \\ 0 & 2v & -1\end{aligned}| \\  & =2u(-1)^{1+1}|\begin{aligned}-u & 0 \\ 2v & -1\end{aligned}|+(-v)(-1)^{2+1}|\begin{aligned}w & v \\ 2v & -1\end{aligned}| \\  & =2u(u-0)+v(-w-2{v}^{2}) \\  & =2{u}^{2}-2{v}^{3}-vw.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}2u & w & v \\ -v & -u & 0 \\ 0 & 2v & -1\end{vmatrix} \\  & =2u(-1)^{1+1}\begin{vmatrix}-u & 0 \\ 2v & -1\end{vmatrix}+(-v)(-1)^{2+1}\begin{vmatrix}w & v \\ 2v & -1\end{vmatrix} \\  & =2u(u-0)+v(-w-2{v}^{2}) \\  & =2{u}^{2}-2{v}^{3}-vw.\end{aligned}
 $$
 
 ### Generated — moderate
@@ -1408,13 +1408,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1426,7 +1426,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}2 u & w & v \\ - v & - u & 0 \\ 0 & 2 v & -1\end{aligned}| \\  & =\left(2 u\right)(-1)^{1+1}|\begin{aligned}- u & 0 \\ 2 v & -1\end{aligned}|+\left(- v\right)(-1)^{2+1}|\begin{aligned}w & v \\ 2 v & -1\end{aligned}| \\  & =\left(2 u\right)\left(u-\left(0\right)\right)+\left(v\right)\left(- w-\left(2 v^{2}\right)\right) \\  & =2 u^{2} - 2 v^{3} - v w.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}2 u & w & v \\ - v & - u & 0 \\ 0 & 2 v & -1\end{vmatrix} \\  & =\left(2 u\right)(-1)^{1+1}\begin{vmatrix}- u & 0 \\ 2 v & -1\end{vmatrix}+\left(- v\right)(-1)^{2+1}\begin{vmatrix}w & v \\ 2 v & -1\end{vmatrix} \\  & =\left(2 u\right)\left(u-\left(0\right)\right)+\left(v\right)\left(- w-\left(2 v^{2}\right)\right) \\  & =2 u^{2} - 2 v^{3} - v w.\end{aligned}
 $$
 
 ### Generated — moderate
@@ -1449,13 +1449,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1467,7 +1467,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}4 u & - 4 w & - 4 v \\ - v & - u & 0 \\ 0 & - 4 v & -1\end{aligned}| \\  & =\left(4 u\right)(-1)^{1+1}|\begin{aligned}- u & 0 \\ - 4 v & -1\end{aligned}|+\left(- v\right)(-1)^{2+1}|\begin{aligned}- 4 w & - 4 v \\ - 4 v & -1\end{aligned}| \\  & =\left(4 u\right)\left(u-\left(0\right)\right)+\left(v\right)\left(4 w-\left(16 v^{2}\right)\right) \\  & =4 u^{2} - 16 v^{3} + 4 v w.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}4 u & - 4 w & - 4 v \\ - v & - u & 0 \\ 0 & - 4 v & -1\end{vmatrix} \\  & =\left(4 u\right)(-1)^{1+1}\begin{vmatrix}- u & 0 \\ - 4 v & -1\end{vmatrix}+\left(- v\right)(-1)^{2+1}\begin{vmatrix}- 4 w & - 4 v \\ - 4 v & -1\end{vmatrix} \\  & =\left(4 u\right)\left(u-\left(0\right)\right)+\left(v\right)\left(4 w-\left(16 v^{2}\right)\right) \\  & =4 u^{2} - 16 v^{3} + 4 v w.\end{aligned}
 $$
 
 ### Generated — moderate
@@ -1490,13 +1490,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1508,7 +1508,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}6 u & w & v \\ - 2 v & - 2 u & 0 \\ 0 & 2 v & -1\end{aligned}| \\  & =\left(6 u\right)(-1)^{1+1}|\begin{aligned}- 2 u & 0 \\ 2 v & -1\end{aligned}|+\left(- 2 v\right)(-1)^{2+1}|\begin{aligned}w & v \\ 2 v & -1\end{aligned}| \\  & =\left(6 u\right)\left(2 u-\left(0\right)\right)+\left(2 v\right)\left(- w-\left(2 v^{2}\right)\right) \\  & =12 u^{2} - 4 v^{3} - 2 v w.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}6 u & w & v \\ - 2 v & - 2 u & 0 \\ 0 & 2 v & -1\end{vmatrix} \\  & =\left(6 u\right)(-1)^{1+1}\begin{vmatrix}- 2 u & 0 \\ 2 v & -1\end{vmatrix}+\left(- 2 v\right)(-1)^{2+1}\begin{vmatrix}w & v \\ 2 v & -1\end{vmatrix} \\  & =\left(6 u\right)\left(2 u-\left(0\right)\right)+\left(2 v\right)\left(- w-\left(2 v^{2}\right)\right) \\  & =12 u^{2} - 4 v^{3} - 2 v w.\end{aligned}
 $$
 
 ### Generated — moderate
@@ -1531,13 +1531,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1549,7 +1549,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}- 2 u & w & v \\ - 3 v & - 3 u & 0 \\ 0 & - 8 v & -1\end{aligned}| \\  & =\left(- 2 u\right)(-1)^{1+1}|\begin{aligned}- 3 u & 0 \\ - 8 v & -1\end{aligned}|+\left(- 3 v\right)(-1)^{2+1}|\begin{aligned}w & v \\ - 8 v & -1\end{aligned}| \\  & =\left(- 2 u\right)\left(3 u-\left(0\right)\right)+\left(3 v\right)\left(- w-\left(- 8 v^{2}\right)\right) \\  & =- 6 u^{2} + 24 v^{3} - 3 v w.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}- 2 u & w & v \\ - 3 v & - 3 u & 0 \\ 0 & - 8 v & -1\end{vmatrix} \\  & =\left(- 2 u\right)(-1)^{1+1}\begin{vmatrix}- 3 u & 0 \\ - 8 v & -1\end{vmatrix}+\left(- 3 v\right)(-1)^{2+1}\begin{vmatrix}w & v \\ - 8 v & -1\end{vmatrix} \\  & =\left(- 2 u\right)\left(3 u-\left(0\right)\right)+\left(3 v\right)\left(- w-\left(- 8 v^{2}\right)\right) \\  & =- 6 u^{2} + 24 v^{3} - 3 v w.\end{aligned}
 $$
 
 ## Original — q-39294 (moderate)
@@ -1570,13 +1570,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1588,7 +1588,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}0 & 1 & 1 \\ 1 & 0 & 1 \\ 1 & 1 & 0\end{aligned}| \\  & =1(-1)^{1+2}|\begin{aligned}1 & 1 \\ 1 & 0\end{aligned}|+1(-1)^{1+3}|\begin{aligned}1 & 0 \\ 1 & 1\end{aligned}| \\  & =(-1)(0-1)+(1-0) \\  & =2.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}0 & 1 & 1 \\ 1 & 0 & 1 \\ 1 & 1 & 0\end{vmatrix} \\  & =1(-1)^{1+2}\begin{vmatrix}1 & 1 \\ 1 & 0\end{vmatrix}+1(-1)^{1+3}\begin{vmatrix}1 & 0 \\ 1 & 1\end{vmatrix} \\  & =(-1)(0-1)+(1-0) \\  & =2.\end{aligned}
 $$
 
 ### Generated — moderate
@@ -1611,13 +1611,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1629,7 +1629,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}0 & 1 & 1 \\ 1 & 0 & 1 \\ 1 & 1 & 0\end{aligned}| \\  & =\left(1\right)(-1)^{1+2}|\begin{aligned}1 & 1 \\ 1 & 0\end{aligned}|+\left(1\right)(-1)^{1+3}|\begin{aligned}1 & 0 \\ 1 & 1\end{aligned}| \\  & =\left(-1\right)\left(0-\left(1\right)\right)+\left(1-\left(0\right)\right) \\  & =2.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}0 & 1 & 1 \\ 1 & 0 & 1 \\ 1 & 1 & 0\end{vmatrix} \\  & =\left(1\right)(-1)^{1+2}\begin{vmatrix}1 & 1 \\ 1 & 0\end{vmatrix}+\left(1\right)(-1)^{1+3}\begin{vmatrix}1 & 0 \\ 1 & 1\end{vmatrix} \\  & =\left(-1\right)\left(0-\left(1\right)\right)+\left(1-\left(0\right)\right) \\  & =2.\end{aligned}
 $$
 
 ### Generated — moderate
@@ -1652,13 +1652,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1670,7 +1670,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}0 & -3 & -1 \\ -4 & 0 & -1 \\ -4 & 2 & 0\end{aligned}| \\  & =\left(-3\right)(-1)^{1+2}|\begin{aligned}-4 & -1 \\ -4 & 0\end{aligned}|+\left(-1\right)(-1)^{1+3}|\begin{aligned}-4 & 0 \\ -4 & 2\end{aligned}| \\  & =\left(3\right)\left(0-\left(4\right)\right)+\left(-1\right)\left(-8-\left(0\right)\right) \\  & =-4.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}0 & -3 & -1 \\ -4 & 0 & -1 \\ -4 & 2 & 0\end{vmatrix} \\  & =\left(-3\right)(-1)^{1+2}\begin{vmatrix}-4 & -1 \\ -4 & 0\end{vmatrix}+\left(-1\right)(-1)^{1+3}\begin{vmatrix}-4 & 0 \\ -4 & 2\end{vmatrix} \\  & =\left(3\right)\left(0-\left(4\right)\right)+\left(-1\right)\left(-8-\left(0\right)\right) \\  & =-4.\end{aligned}
 $$
 
 ### Generated — moderate
@@ -1693,13 +1693,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1711,7 +1711,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}0 & 3 & 1 \\ 2 & 0 & 1 \\ -2 & 1 & 0\end{aligned}| \\  & =\left(3\right)(-1)^{1+2}|\begin{aligned}2 & 1 \\ -2 & 0\end{aligned}|+\left(1\right)(-1)^{1+3}|\begin{aligned}2 & 0 \\ -2 & 1\end{aligned}| \\  & =\left(-3\right)\left(0-\left(-2\right)\right)+\left(2-\left(0\right)\right) \\  & =-4.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}0 & 3 & 1 \\ 2 & 0 & 1 \\ -2 & 1 & 0\end{vmatrix} \\  & =\left(3\right)(-1)^{1+2}\begin{vmatrix}2 & 1 \\ -2 & 0\end{vmatrix}+\left(1\right)(-1)^{1+3}\begin{vmatrix}2 & 0 \\ -2 & 1\end{vmatrix} \\  & =\left(-3\right)\left(0-\left(-2\right)\right)+\left(2-\left(0\right)\right) \\  & =-4.\end{aligned}
 $$
 
 ### Generated — moderate
@@ -1734,13 +1734,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1752,7 +1752,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}0 & -1 & 1 \\ 3 & 0 & -4 \\ -1 & -1 & 0\end{aligned}| \\  & =\left(-1\right)(-1)^{1+2}|\begin{aligned}3 & -4 \\ -1 & 0\end{aligned}|+\left(1\right)(-1)^{1+3}|\begin{aligned}3 & 0 \\ -1 & -1\end{aligned}| \\  & =\left(0-\left(4\right)\right)+\left(-3-\left(0\right)\right) \\  & =-7.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}0 & -1 & 1 \\ 3 & 0 & -4 \\ -1 & -1 & 0\end{vmatrix} \\  & =\left(-1\right)(-1)^{1+2}\begin{vmatrix}3 & -4 \\ -1 & 0\end{vmatrix}+\left(1\right)(-1)^{1+3}\begin{vmatrix}3 & 0 \\ -1 & -1\end{vmatrix} \\  & =\left(0-\left(4\right)\right)+\left(-3-\left(0\right)\right) \\  & =-7.\end{aligned}
 $$
 
 ## Original — q-39664 (moderate)
@@ -1775,13 +1775,13 @@ You may assume that $a$, $b$ and $c$ are fixed constants.
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1793,7 +1793,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}a & 0 & 0 \\ 0 & b & 0 \\ 0 & 0 & c\end{aligned}| \\  & =a(-1)^{1+1}|\begin{aligned}b & 0 \\ 0 & c\end{aligned}| \\  & =a(bc-0) \\  & =abc.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}a & 0 & 0 \\ 0 & b & 0 \\ 0 & 0 & c\end{vmatrix} \\  & =a(-1)^{1+1}\begin{vmatrix}b & 0 \\ 0 & c\end{vmatrix} \\  & =a(bc-0) \\  & =abc.\end{aligned}
 $$
 
 ### Generated — moderate
@@ -1818,13 +1818,13 @@ You may assume that $a$, $b$ and $c$ are fixed constants.
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1836,7 +1836,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}a & 0 & 0 \\ 0 & b & 0 \\ 0 & 0 & c\end{aligned}| \\  & =\left(a\right)(-1)^{1+1}|\begin{aligned}b & 0 \\ 0 & c\end{aligned}| \\  & =\left(a\right)\left(b c-\left(0\right)\right) \\  & =a b c.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}a & 0 & 0 \\ 0 & b & 0 \\ 0 & 0 & c\end{vmatrix} \\  & =\left(a\right)(-1)^{1+1}\begin{vmatrix}b & 0 \\ 0 & c\end{vmatrix} \\  & =\left(a\right)\left(b c-\left(0\right)\right) \\  & =a b c.\end{aligned}
 $$
 
 ### Generated — moderate
@@ -1861,13 +1861,13 @@ You may assume that $a$, $b$ and $c$ are fixed constants.
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1879,7 +1879,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}2 a & 0 & 0 \\ 0 & - 4 b & 0 \\ 0 & 0 & c\end{aligned}| \\  & =\left(2 a\right)(-1)^{1+1}|\begin{aligned}- 4 b & 0 \\ 0 & c\end{aligned}| \\  & =\left(2 a\right)\left(- 4 b c-\left(0\right)\right) \\  & =- 8 a b c.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}2 a & 0 & 0 \\ 0 & - 4 b & 0 \\ 0 & 0 & c\end{vmatrix} \\  & =\left(2 a\right)(-1)^{1+1}\begin{vmatrix}- 4 b & 0 \\ 0 & c\end{vmatrix} \\  & =\left(2 a\right)\left(- 4 b c-\left(0\right)\right) \\  & =- 8 a b c.\end{aligned}
 $$
 
 ### Generated — moderate
@@ -1904,13 +1904,13 @@ You may assume that $a$, $b$ and $c$ are fixed constants.
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1922,7 +1922,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}3 a & 0 & 0 \\ 0 & b & 0 \\ 0 & 0 & 2 c\end{aligned}| \\  & =\left(3 a\right)(-1)^{1+1}|\begin{aligned}b & 0 \\ 0 & 2 c\end{aligned}| \\  & =\left(3 a\right)\left(2 b c-\left(0\right)\right) \\  & =6 a b c.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}3 a & 0 & 0 \\ 0 & b & 0 \\ 0 & 0 & 2 c\end{vmatrix} \\  & =\left(3 a\right)(-1)^{1+1}\begin{vmatrix}b & 0 \\ 0 & 2 c\end{vmatrix} \\  & =\left(3 a\right)\left(2 b c-\left(0\right)\right) \\  & =6 a b c.\end{aligned}
 $$
 
 ### Generated — moderate
@@ -1947,13 +1947,13 @@ You may assume that $a$, $b$ and $c$ are fixed constants.
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -1965,7 +1965,483 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}- a & 0 & 0 \\ 0 & b & 0 \\ 0 & 0 & 3 c\end{aligned}| \\  & =\left(- a\right)(-1)^{1+1}|\begin{aligned}b & 0 \\ 0 & 3 c\end{aligned}| \\  & =\left(- a\right)\left(3 b c-\left(0\right)\right) \\  & =- 3 a b c.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}- a & 0 & 0 \\ 0 & b & 0 \\ 0 & 0 & 3 c\end{vmatrix} \\  & =\left(- a\right)(-1)^{1+1}\begin{vmatrix}b & 0 \\ 0 & 3 c\end{vmatrix} \\  & =\left(- a\right)\left(3 b c-\left(0\right)\right) \\  & =- 3 a b c.\end{aligned}
+$$
+
+## Original — q-161795 (easy)
+Find the Jacobian determinant of the transformation $T,$ defined as
+
+$$
+T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}u+\operatorname{cos}⁡w \\ v \\ \operatorname{cos}⁡u+w\end{aligned}].
+$$
+
+- $\operatorname{sin}⁡u+\operatorname{sin}⁡w$
+- $-\operatorname{sin}⁡u$
+- $1$
+- $1-\operatorname{sin}⁡u\,\operatorname{sin}⁡w$ **Correct**
+- $1+{sin}^{2}⁡u$
+
+**Original worked solution**
+
+For a transformation 
+
+$$
+T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+$$
+
+the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
+
+$$
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+$$
+
+Here, we have 
+
+$$
+x(u,v,w)=u+\operatorname{cos}⁡w,\,y(u,v,w)=v,\,z(u,v,w)=\operatorname{cos}⁡u+w.
+$$
+
+First, we find the partial derivatives:
+
+$$
+\begin{aligned}\frac{∂x}{∂u} & =1 & \,\frac{∂x}{∂v} & =0 & \,\frac{∂x}{∂w} & =-\operatorname{sin}⁡w \\ \frac{∂y}{∂u} & =0 & \,\frac{∂y}{∂v} & =1 & \,\frac{∂y}{∂w} & =0 \\ \frac{∂z}{∂u} & =-\operatorname{sin}⁡u & \,\frac{∂z}{∂v} & =0, & \,\frac{∂z}{∂w} & =1\end{aligned}
+$$
+
+Therefore, the corresponding Jacobian determinant is
+
+$$
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}1 & 0 & -\operatorname{sin}⁡w \\ 0 & 1 & 0 \\ -\operatorname{sin}⁡u & 0 & 1\end{aligned}| \\  & =1(-1)^{2+2}|\begin{aligned}1 & -\operatorname{sin}⁡w \\ -\operatorname{sin}⁡u & 1\end{aligned}| \\  & =1-\operatorname{sin}⁡u\,\operatorname{sin}⁡w.\end{aligned}
+$$
+
+### Generated — easy
+Template: `sparse_cos`; bank: `sparse_cos-observed`; evidence-only replay.
+
+Find the Jacobian determinant of the transformation $T,$ defined as
+
+$$
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}u + \cos{\left(w \right)} \\ v \\ w + \cos{\left(u \right)}\end{bmatrix}.
+$$
+
+- $1$
+- $- \sin{\left(u \right)}$
+- $\sin{\left(u \right)} + \sin{\left(w \right)}$
+- $\sin^{2}{\left(u \right)} + 1$
+- $- \sin{\left(u \right)} \sin{\left(w \right)} + 1$ **Correct**
+
+**Worked solution**
+
+For a transformation 
+
+$$
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
+$$
+
+the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
+
+$$
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
+$$
+
+Here, we have 
+
+$$
+x(u,v,w)=u + \cos{\left(w \right)}\, y(u,v,w)=v\, z(u,v,w)=w + \cos{\left(u \right)}.
+$$
+
+First, we find the partial derivatives:
+
+$$
+\begin{aligned}\frac{∂x}{∂u} & =1 & \frac{∂x}{∂v} & =0 & \frac{∂x}{∂w} & =- \sin{\left(w \right)} \\ \frac{∂y}{∂u} & =0 & \frac{∂y}{∂v} & =1 & \frac{∂y}{∂w} & =0 \\ \frac{∂z}{∂u} & =- \sin{\left(u \right)} & \frac{∂z}{∂v} & =0, & \frac{∂z}{∂w} & =1\end{aligned}
+$$
+
+Therefore, the corresponding Jacobian determinant is
+
+$$
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}1 & 0 & - \sin{\left(w \right)} \\ 0 & 1 & 0 \\ - \sin{\left(u \right)} & 0 & 1\end{vmatrix} \\  & =\left(1\right)(-1)^{2+2}\begin{vmatrix}1 & - \sin{\left(w \right)} \\ - \sin{\left(u \right)} & 1\end{vmatrix} \\  & =- \sin{\left(u \right)} \sin{\left(w \right)} + 1.\end{aligned}
+$$
+
+### Generated — easy
+Template: `sparse_cos`; bank: `sparse_cos-observed`; evidence-only replay.
+
+Find the Jacobian determinant of the transformation $T,$ defined as
+
+$$
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}2 u - 4 \cos{\left(w \right)} \\ v \\ - w - 2 \cos{\left(u \right)}\end{bmatrix}.
+$$
+
+- $8 \sin^{2}{\left(u \right)} - 2$
+- $- 8 \sin{\left(u \right)} \sin{\left(w \right)} - 2$ **Correct**
+- $2 \sin{\left(u \right)}$
+- $- 2 \sin{\left(u \right)} - 4 \sin{\left(w \right)}$
+- $-2$
+
+**Worked solution**
+
+For a transformation 
+
+$$
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
+$$
+
+the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
+
+$$
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
+$$
+
+Here, we have 
+
+$$
+x(u,v,w)=2 u - 4 \cos{\left(w \right)}\, y(u,v,w)=v\, z(u,v,w)=- w - 2 \cos{\left(u \right)}.
+$$
+
+First, we find the partial derivatives:
+
+$$
+\begin{aligned}\frac{∂x}{∂u} & =2 & \frac{∂x}{∂v} & =0 & \frac{∂x}{∂w} & =4 \sin{\left(w \right)} \\ \frac{∂y}{∂u} & =0 & \frac{∂y}{∂v} & =1 & \frac{∂y}{∂w} & =0 \\ \frac{∂z}{∂u} & =2 \sin{\left(u \right)} & \frac{∂z}{∂v} & =0, & \frac{∂z}{∂w} & =-1\end{aligned}
+$$
+
+Therefore, the corresponding Jacobian determinant is
+
+$$
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}2 & 0 & 4 \sin{\left(w \right)} \\ 0 & 1 & 0 \\ 2 \sin{\left(u \right)} & 0 & -1\end{vmatrix} \\  & =\left(1\right)(-1)^{2+2}\begin{vmatrix}2 & 4 \sin{\left(w \right)} \\ 2 \sin{\left(u \right)} & -1\end{vmatrix} \\  & =- 8 \sin{\left(u \right)} \sin{\left(w \right)} - 2.\end{aligned}
+$$
+
+### Generated — easy
+Template: `sparse_cos`; bank: `sparse_cos-method`; eligible learner variant.
+
+Find the Jacobian determinant of the transformation $T,$ defined as
+
+$$
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}3 u + \cos{\left(w \right)} \\ 2 v \\ - 2 w + \cos{\left(u \right)}\end{bmatrix}.
+$$
+
+- $- 2 \sin{\left(u \right)} \sin{\left(w \right)} - 12$ **Correct**
+- $-12$
+- $2 \sin{\left(u \right)} \sin{\left(w \right)} + 12$
+- $2 \sin{\left(u \right)} \sin{\left(w \right)}$
+- $2 \sin{\left(u \right)} \sin{\left(w \right)} - 12$
+
+**Worked solution**
+
+For a transformation 
+
+$$
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
+$$
+
+the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
+
+$$
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
+$$
+
+Here, we have 
+
+$$
+x(u,v,w)=3 u + \cos{\left(w \right)}\, y(u,v,w)=2 v\, z(u,v,w)=- 2 w + \cos{\left(u \right)}.
+$$
+
+First, we find the partial derivatives:
+
+$$
+\begin{aligned}\frac{∂x}{∂u} & =3 & \frac{∂x}{∂v} & =0 & \frac{∂x}{∂w} & =- \sin{\left(w \right)} \\ \frac{∂y}{∂u} & =0 & \frac{∂y}{∂v} & =2 & \frac{∂y}{∂w} & =0 \\ \frac{∂z}{∂u} & =- \sin{\left(u \right)} & \frac{∂z}{∂v} & =0, & \frac{∂z}{∂w} & =-2\end{aligned}
+$$
+
+Therefore, the corresponding Jacobian determinant is
+
+$$
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}3 & 0 & - \sin{\left(w \right)} \\ 0 & 2 & 0 \\ - \sin{\left(u \right)} & 0 & -2\end{vmatrix} \\  & =\left(2\right)(-1)^{2+2}\begin{vmatrix}3 & - \sin{\left(w \right)} \\ - \sin{\left(u \right)} & -2\end{vmatrix} \\  & =- 2 \sin{\left(u \right)} \sin{\left(w \right)} - 12.\end{aligned}
+$$
+
+### Generated — easy
+Template: `sparse_cos`; bank: `sparse_cos-method`; eligible learner variant.
+
+Find the Jacobian determinant of the transformation $T,$ defined as
+
+$$
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}- u + \cos{\left(w \right)} \\ 3 v \\ - w - 4 \cos{\left(u \right)}\end{bmatrix}.
+$$
+
+- $- 12 \sin{\left(u \right)} \sin{\left(w \right)}$
+- $12 \sin{\left(u \right)} \sin{\left(w \right)} + 3$ **Correct**
+- $- 12 \sin{\left(u \right)} \sin{\left(w \right)} + 3$
+- $3$
+- $- 12 \sin{\left(u \right)} \sin{\left(w \right)} - 3$
+
+**Worked solution**
+
+For a transformation 
+
+$$
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
+$$
+
+the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
+
+$$
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
+$$
+
+Here, we have 
+
+$$
+x(u,v,w)=- u + \cos{\left(w \right)}\, y(u,v,w)=3 v\, z(u,v,w)=- w - 4 \cos{\left(u \right)}.
+$$
+
+First, we find the partial derivatives:
+
+$$
+\begin{aligned}\frac{∂x}{∂u} & =-1 & \frac{∂x}{∂v} & =0 & \frac{∂x}{∂w} & =- \sin{\left(w \right)} \\ \frac{∂y}{∂u} & =0 & \frac{∂y}{∂v} & =3 & \frac{∂y}{∂w} & =0 \\ \frac{∂z}{∂u} & =4 \sin{\left(u \right)} & \frac{∂z}{∂v} & =0, & \frac{∂z}{∂w} & =-1\end{aligned}
+$$
+
+Therefore, the corresponding Jacobian determinant is
+
+$$
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}-1 & 0 & - \sin{\left(w \right)} \\ 0 & 3 & 0 \\ 4 \sin{\left(u \right)} & 0 & -1\end{vmatrix} \\  & =\left(3\right)(-1)^{2+2}\begin{vmatrix}-1 & - \sin{\left(w \right)} \\ 4 \sin{\left(u \right)} & -1\end{vmatrix} \\  & =12 \sin{\left(u \right)} \sin{\left(w \right)} + 3.\end{aligned}
+$$
+
+## Original — q-161799 (easy)
+Find the Jacobian determinant of the transformation $T,$ defined as
+
+$$
+T:[\begin{aligned}u \\ v \\ w\end{aligned}]⟶[\begin{aligned}u+v\operatorname{cos}⁡\theta +w\operatorname{sin}⁡\theta  \\ 3v \\ u\operatorname{sin}⁡\theta +w\end{aligned}].
+$$
+
+You may assume that $\theta $ is a fixed constant.
+
+- $3{cos}^{2}⁡\theta $ **Correct**
+- $3$
+- $3\operatorname{cos}⁡\theta $
+- $\operatorname{sin}⁡\theta \operatorname{cos}⁡\theta $
+- $3{sin}^{2}⁡\theta $
+
+**Original worked solution**
+
+For a transformation 
+
+$$
+T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+$$
+
+the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
+
+$$
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+$$
+
+Here, we have 
+
+$$
+x(u,v,w)=u+v\operatorname{cos}⁡\theta +w\operatorname{sin}⁡\theta ,\,y(u,v,w)=3v,\,z(u,v,w)=u\operatorname{sin}⁡\theta +w.
+$$
+
+First, we find the partial derivatives:
+
+$$
+\begin{aligned}\frac{∂x}{∂u} & =1 & \,\frac{∂x}{∂v} & =\operatorname{cos}⁡\theta  & \,\frac{∂x}{∂w} & =\operatorname{sin}⁡\theta  \\ \frac{∂y}{∂u} & =0 & \,\frac{∂y}{∂v} & =3 & \,\frac{∂y}{∂w} & =0 \\ \frac{∂z}{∂u} & =\operatorname{sin}⁡\theta  & \,\frac{∂z}{∂v} & =0, & \,\frac{∂z}{∂w} & =1\end{aligned}
+$$
+
+Therefore, the corresponding Jacobian determinant is
+
+$$
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}1 & \operatorname{cos}⁡\theta  & \operatorname{sin}⁡\theta  \\ 0 & 3 & 0 \\ \operatorname{sin}⁡\theta  & 0 & 1\end{aligned}| \\  & =3(-1)^{2+2}|\begin{aligned}1 & \operatorname{sin}⁡\theta  \\ \operatorname{sin}⁡\theta  & 1\end{aligned}| \\  & =3(1-{sin}^{2}⁡\theta ) \\  & =3{cos}^{2}⁡\theta .\end{aligned}
+$$
+
+### Generated — easy
+Template: `sparse_angle`; bank: `sparse_angle-observed`; evidence-only replay.
+
+Find the Jacobian determinant of the transformation $T,$ defined as
+
+$$
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}u + v \cos{\left(\theta \right)} + w \sin{\left(\theta \right)} \\ 3 v \\ u \sin{\left(\theta \right)} + w\end{bmatrix}.
+$$
+
+You may assume that $\theta$ is a fixed constant.
+
+- $3 \cos{\left(\theta \right)}$
+- $3$
+- $3 \cos^{2}{\left(\theta \right)}$ **Correct**
+- $3 \sin^{2}{\left(\theta \right)}$
+- $\sin{\left(\theta \right)} \cos{\left(\theta \right)}$
+
+**Worked solution**
+
+For a transformation 
+
+$$
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
+$$
+
+the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
+
+$$
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
+$$
+
+Here, we have 
+
+$$
+x(u,v,w)=u + v \cos{\left(\theta \right)} + w \sin{\left(\theta \right)}\, y(u,v,w)=3 v\, z(u,v,w)=u \sin{\left(\theta \right)} + w.
+$$
+
+First, we find the partial derivatives:
+
+$$
+\begin{aligned}\frac{∂x}{∂u} & =1 & \frac{∂x}{∂v} & =\cos{\left(\theta \right)} & \frac{∂x}{∂w} & =\sin{\left(\theta \right)} \\ \frac{∂y}{∂u} & =0 & \frac{∂y}{∂v} & =3 & \frac{∂y}{∂w} & =0 \\ \frac{∂z}{∂u} & =\sin{\left(\theta \right)} & \frac{∂z}{∂v} & =0, & \frac{∂z}{∂w} & =1\end{aligned}
+$$
+
+Therefore, the corresponding Jacobian determinant is
+
+$$
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}1 & \cos{\left(\theta \right)} & \sin{\left(\theta \right)} \\ 0 & 3 & 0 \\ \sin{\left(\theta \right)} & 0 & 1\end{vmatrix} \\  & =\left(3\right)(-1)^{2+2}\begin{vmatrix}1 & \sin{\left(\theta \right)} \\ \sin{\left(\theta \right)} & 1\end{vmatrix} \\  & =\left(3\right)\left(1-\left(\sin^{2}{\left(\theta \right)}\right)\right) \\  & =3 \cos^{2}{\left(\theta \right)}.\end{aligned}
+$$
+
+### Generated — easy
+Template: `sparse_angle`; bank: `sparse_angle-observed`; evidence-only replay.
+
+Find the Jacobian determinant of the transformation $T,$ defined as
+
+$$
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}2 u + 2 v \cos{\left(\theta \right)} + 2 w \sin{\left(\theta \right)} \\ - 4 v \\ u \sin{\left(\theta \right)} + w\end{bmatrix}.
+$$
+
+You may assume that $\theta$ is a fixed constant.
+
+- $- 8 \sin^{2}{\left(\theta \right)}$
+- $\sin{\left(\theta \right)} \cos{\left(\theta \right)}$
+- $-8$
+- $- 8 \cos^{2}{\left(\theta \right)}$ **Correct**
+- $- 8 \cos{\left(\theta \right)}$
+
+**Worked solution**
+
+For a transformation 
+
+$$
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
+$$
+
+the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
+
+$$
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
+$$
+
+Here, we have 
+
+$$
+x(u,v,w)=2 u + 2 v \cos{\left(\theta \right)} + 2 w \sin{\left(\theta \right)}\, y(u,v,w)=- 4 v\, z(u,v,w)=u \sin{\left(\theta \right)} + w.
+$$
+
+First, we find the partial derivatives:
+
+$$
+\begin{aligned}\frac{∂x}{∂u} & =2 & \frac{∂x}{∂v} & =2 \cos{\left(\theta \right)} & \frac{∂x}{∂w} & =2 \sin{\left(\theta \right)} \\ \frac{∂y}{∂u} & =0 & \frac{∂y}{∂v} & =-4 & \frac{∂y}{∂w} & =0 \\ \frac{∂z}{∂u} & =\sin{\left(\theta \right)} & \frac{∂z}{∂v} & =0, & \frac{∂z}{∂w} & =1\end{aligned}
+$$
+
+Therefore, the corresponding Jacobian determinant is
+
+$$
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}2 & 2 \cos{\left(\theta \right)} & 2 \sin{\left(\theta \right)} \\ 0 & -4 & 0 \\ \sin{\left(\theta \right)} & 0 & 1\end{vmatrix} \\  & =\left(-4\right)(-1)^{2+2}\begin{vmatrix}2 & 2 \sin{\left(\theta \right)} \\ \sin{\left(\theta \right)} & 1\end{vmatrix} \\  & =\left(-4\right)\left(2-\left(2 \sin^{2}{\left(\theta \right)}\right)\right) \\  & =- 8 \cos^{2}{\left(\theta \right)}.\end{aligned}
+$$
+
+### Generated — easy
+Template: `sparse_angle`; bank: `sparse_angle-method`; eligible learner variant.
+
+Find the Jacobian determinant of the transformation $T,$ defined as
+
+$$
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}3 u + 3 v \cos{\left(\theta \right)} + 3 w \sin{\left(\theta \right)} \\ v \\ 2 u \sin{\left(\theta \right)} + 2 w\end{bmatrix}.
+$$
+
+You may assume that $\theta$ is a fixed constant.
+
+- $6 \cos^{2}{\left(\theta \right)}$ **Correct**
+- $6$
+- $- 6 \cos^{2}{\left(\theta \right)}$
+- $6 \sin^{2}{\left(\theta \right)}$
+- $6 \cos{\left(\theta \right)}$
+
+**Worked solution**
+
+For a transformation 
+
+$$
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
+$$
+
+the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
+
+$$
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
+$$
+
+Here, we have 
+
+$$
+x(u,v,w)=3 u + 3 v \cos{\left(\theta \right)} + 3 w \sin{\left(\theta \right)}\, y(u,v,w)=v\, z(u,v,w)=2 u \sin{\left(\theta \right)} + 2 w.
+$$
+
+First, we find the partial derivatives:
+
+$$
+\begin{aligned}\frac{∂x}{∂u} & =3 & \frac{∂x}{∂v} & =3 \cos{\left(\theta \right)} & \frac{∂x}{∂w} & =3 \sin{\left(\theta \right)} \\ \frac{∂y}{∂u} & =0 & \frac{∂y}{∂v} & =1 & \frac{∂y}{∂w} & =0 \\ \frac{∂z}{∂u} & =2 \sin{\left(\theta \right)} & \frac{∂z}{∂v} & =0, & \frac{∂z}{∂w} & =2\end{aligned}
+$$
+
+Therefore, the corresponding Jacobian determinant is
+
+$$
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}3 & 3 \cos{\left(\theta \right)} & 3 \sin{\left(\theta \right)} \\ 0 & 1 & 0 \\ 2 \sin{\left(\theta \right)} & 0 & 2\end{vmatrix} \\  & =\left(1\right)(-1)^{2+2}\begin{vmatrix}3 & 3 \sin{\left(\theta \right)} \\ 2 \sin{\left(\theta \right)} & 2\end{vmatrix} \\  & =\left(6-\left(6 \sin^{2}{\left(\theta \right)}\right)\right) \\  & =6 \cos^{2}{\left(\theta \right)}.\end{aligned}
+$$
+
+### Generated — easy
+Template: `sparse_angle`; bank: `sparse_angle-method`; eligible learner variant.
+
+Find the Jacobian determinant of the transformation $T,$ defined as
+
+$$
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}⟶\begin{bmatrix}- u - v \cos{\left(\theta \right)} - w \sin{\left(\theta \right)} \\ v \\ 3 u \sin{\left(\theta \right)} + 3 w\end{bmatrix}.
+$$
+
+You may assume that $\theta$ is a fixed constant.
+
+- $- 3 \sin^{2}{\left(\theta \right)}$
+- $- 3 \cos^{2}{\left(\theta \right)}$ **Correct**
+- $- 3 \cos{\left(\theta \right)}$
+- $-3$
+- $3 \cos^{2}{\left(\theta \right)}$
+
+**Worked solution**
+
+For a transformation 
+
+$$
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
+$$
+
+the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
+
+$$
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
+$$
+
+Here, we have 
+
+$$
+x(u,v,w)=- u - v \cos{\left(\theta \right)} - w \sin{\left(\theta \right)}\, y(u,v,w)=v\, z(u,v,w)=3 u \sin{\left(\theta \right)} + 3 w.
+$$
+
+First, we find the partial derivatives:
+
+$$
+\begin{aligned}\frac{∂x}{∂u} & =-1 & \frac{∂x}{∂v} & =- \cos{\left(\theta \right)} & \frac{∂x}{∂w} & =- \sin{\left(\theta \right)} \\ \frac{∂y}{∂u} & =0 & \frac{∂y}{∂v} & =1 & \frac{∂y}{∂w} & =0 \\ \frac{∂z}{∂u} & =3 \sin{\left(\theta \right)} & \frac{∂z}{∂v} & =0, & \frac{∂z}{∂w} & =3\end{aligned}
+$$
+
+Therefore, the corresponding Jacobian determinant is
+
+$$
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}-1 & - \cos{\left(\theta \right)} & - \sin{\left(\theta \right)} \\ 0 & 1 & 0 \\ 3 \sin{\left(\theta \right)} & 0 & 3\end{vmatrix} \\  & =\left(1\right)(-1)^{2+2}\begin{vmatrix}-1 & - \sin{\left(\theta \right)} \\ 3 \sin{\left(\theta \right)} & 3\end{vmatrix} \\  & =\left(-3-\left(- 3 \sin^{2}{\left(\theta \right)}\right)\right) \\  & =- 3 \cos^{2}{\left(\theta \right)}.\end{aligned}
 $$
 
 ### Generated — hard
@@ -1988,13 +2464,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -2006,7 +2482,7 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}3 \sin{\left(v \right)} \cos{\left(w \right)} & 3 u \cos{\left(v \right)} \cos{\left(w \right)} & - 3 u \sin{\left(v \right)} \sin{\left(w \right)} \\ \sin{\left(v \right)} \sin{\left(w \right)} & u \sin{\left(w \right)} \cos{\left(v \right)} & u \sin{\left(v \right)} \cos{\left(w \right)} \\ 2 \cos{\left(v \right)} & - 2 u \sin{\left(v \right)} & 0\end{aligned}| \\  & =\left(2 \cos{\left(v \right)}\right)(-1)^{3+1}|\begin{aligned}3 u \cos{\left(v \right)} \cos{\left(w \right)} & - 3 u \sin{\left(v \right)} \sin{\left(w \right)} \\ u \sin{\left(w \right)} \cos{\left(v \right)} & u \sin{\left(v \right)} \cos{\left(w \right)}\end{aligned}|+\left(- 2 u \sin{\left(v \right)}\right)(-1)^{3+2}|\begin{aligned}3 \sin{\left(v \right)} \cos{\left(w \right)} & - 3 u \sin{\left(v \right)} \sin{\left(w \right)} \\ \sin{\left(v \right)} \sin{\left(w \right)} & u \sin{\left(v \right)} \cos{\left(w \right)}\end{aligned}| \\  & =\left(6 u^{2} \sin{\left(v \right)} \cos^{2}{\left(v \right)}\right)\left(\cos^2 w+\sin^2 w\right)+\left(6 u^{2} \sin^{3}{\left(v \right)}\right)\left(\cos^2 w+\sin^2 w\right) \\  & =\left(6 u^{2} \sin{\left(v \right)} \cos^{2}{\left(v \right)}\right)+\left(6 u^{2} \sin^{3}{\left(v \right)}\right) \\  & =6 u^{2} \sin{\left(v \right)}\left(\cos^2 v+\sin^2 v\right) \\  & =6 u^{2} \sin{\left(v \right)}.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}3 \sin{\left(v \right)} \cos{\left(w \right)} & 3 u \cos{\left(v \right)} \cos{\left(w \right)} & - 3 u \sin{\left(v \right)} \sin{\left(w \right)} \\ \sin{\left(v \right)} \sin{\left(w \right)} & u \sin{\left(w \right)} \cos{\left(v \right)} & u \sin{\left(v \right)} \cos{\left(w \right)} \\ 2 \cos{\left(v \right)} & - 2 u \sin{\left(v \right)} & 0\end{vmatrix} \\  & =\left(2 \cos{\left(v \right)}\right)(-1)^{3+1}\begin{vmatrix}3 u \cos{\left(v \right)} \cos{\left(w \right)} & - 3 u \sin{\left(v \right)} \sin{\left(w \right)} \\ u \sin{\left(w \right)} \cos{\left(v \right)} & u \sin{\left(v \right)} \cos{\left(w \right)}\end{vmatrix}+\left(- 2 u \sin{\left(v \right)}\right)(-1)^{3+2}\begin{vmatrix}3 \sin{\left(v \right)} \cos{\left(w \right)} & - 3 u \sin{\left(v \right)} \sin{\left(w \right)} \\ \sin{\left(v \right)} \sin{\left(w \right)} & u \sin{\left(v \right)} \cos{\left(w \right)}\end{vmatrix} \\  & =\left(6 u^{2} \sin{\left(v \right)} \cos^{2}{\left(v \right)}\right)\left(\cos^2 w+\sin^2 w\right)+\left(6 u^{2} \sin^{3}{\left(v \right)}\right)\left(\cos^2 w+\sin^2 w\right) \\  & =\left(6 u^{2} \sin{\left(v \right)} \cos^{2}{\left(v \right)}\right)+\left(6 u^{2} \sin^{3}{\left(v \right)}\right) \\  & =6 u^{2} \sin{\left(v \right)}\left(\cos^2 v+\sin^2 v\right) \\  & =6 u^{2} \sin{\left(v \right)}.\end{aligned}
 $$
 
 ### Generated — hard
@@ -2029,13 +2505,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 First, we find the partial derivatives:
@@ -2047,5 +2523,5 @@ $$
 Therefore, the corresponding Jacobian determinant is
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}- \sin{\left(v \right)} \cos{\left(w \right)} & - u \cos{\left(v \right)} \cos{\left(w \right)} & u \sin{\left(v \right)} \sin{\left(w \right)} \\ \sin{\left(v \right)} \sin{\left(w \right)} & u \sin{\left(w \right)} \cos{\left(v \right)} & u \sin{\left(v \right)} \cos{\left(w \right)} \\ 3 \cos{\left(v \right)} & - 3 u \sin{\left(v \right)} & 0\end{aligned}| \\  & =\left(3 \cos{\left(v \right)}\right)(-1)^{3+1}|\begin{aligned}- u \cos{\left(v \right)} \cos{\left(w \right)} & u \sin{\left(v \right)} \sin{\left(w \right)} \\ u \sin{\left(w \right)} \cos{\left(v \right)} & u \sin{\left(v \right)} \cos{\left(w \right)}\end{aligned}|+\left(- 3 u \sin{\left(v \right)}\right)(-1)^{3+2}|\begin{aligned}- \sin{\left(v \right)} \cos{\left(w \right)} & u \sin{\left(v \right)} \sin{\left(w \right)} \\ \sin{\left(v \right)} \sin{\left(w \right)} & u \sin{\left(v \right)} \cos{\left(w \right)}\end{aligned}| \\  & =\left(- 3 u^{2} \sin{\left(v \right)} \cos^{2}{\left(v \right)}\right)\left(\cos^2 w+\sin^2 w\right)+\left(- 3 u^{2} \sin^{3}{\left(v \right)}\right)\left(\cos^2 w+\sin^2 w\right) \\  & =\left(- 3 u^{2} \sin{\left(v \right)} \cos^{2}{\left(v \right)}\right)+\left(- 3 u^{2} \sin^{3}{\left(v \right)}\right) \\  & =- 3 u^{2} \sin{\left(v \right)}\left(\cos^2 v+\sin^2 v\right) \\  & =- 3 u^{2} \sin{\left(v \right)}.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}- \sin{\left(v \right)} \cos{\left(w \right)} & - u \cos{\left(v \right)} \cos{\left(w \right)} & u \sin{\left(v \right)} \sin{\left(w \right)} \\ \sin{\left(v \right)} \sin{\left(w \right)} & u \sin{\left(w \right)} \cos{\left(v \right)} & u \sin{\left(v \right)} \cos{\left(w \right)} \\ 3 \cos{\left(v \right)} & - 3 u \sin{\left(v \right)} & 0\end{vmatrix} \\  & =\left(3 \cos{\left(v \right)}\right)(-1)^{3+1}\begin{vmatrix}- u \cos{\left(v \right)} \cos{\left(w \right)} & u \sin{\left(v \right)} \sin{\left(w \right)} \\ u \sin{\left(w \right)} \cos{\left(v \right)} & u \sin{\left(v \right)} \cos{\left(w \right)}\end{vmatrix}+\left(- 3 u \sin{\left(v \right)}\right)(-1)^{3+2}\begin{vmatrix}- \sin{\left(v \right)} \cos{\left(w \right)} & u \sin{\left(v \right)} \sin{\left(w \right)} \\ \sin{\left(v \right)} \sin{\left(w \right)} & u \sin{\left(v \right)} \cos{\left(w \right)}\end{vmatrix} \\  & =\left(- 3 u^{2} \sin{\left(v \right)} \cos^{2}{\left(v \right)}\right)\left(\cos^2 w+\sin^2 w\right)+\left(- 3 u^{2} \sin^{3}{\left(v \right)}\right)\left(\cos^2 w+\sin^2 w\right) \\  & =\left(- 3 u^{2} \sin{\left(v \right)} \cos^{2}{\left(v \right)}\right)+\left(- 3 u^{2} \sin^{3}{\left(v \right)}\right) \\  & =- 3 u^{2} \sin{\left(v \right)}\left(\cos^2 v+\sin^2 v\right) \\  & =- 3 u^{2} \sin{\left(v \right)}.\end{aligned}
 $$

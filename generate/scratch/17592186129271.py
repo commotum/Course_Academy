@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Direct three-dimensional Jacobians, basis 1356; local review data only.
+"""Direct three-dimensional Jacobians, basis 2579; local review data only.
 
 Observed banks with opaque error intent are public, evidence-only replay profiles.
 Normal defaults use complete method-derived banks. Source display notation is
@@ -14,13 +14,15 @@ import re
 import uuid
 import sys
 import sympy as s
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"scripts/question_capture"))
+from math_format import normalize_prose, normalize_tex
 
-VERSION = '1.0.0'
+VERSION = '1.1.0'
 KP_ID = 17592186129271
 KP_UUID = 'd433063f-f145-5bf4-8bd4-8d5e5b36b3d8'
 TITLE = 'Finding the Jacobian of a Three-Dimensional Transformation'
 BASE = Path(__file__).with_suffix('')
-SOURCE = {'database':'math','basis':1356,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
+SOURCE = {'database':'math','basis':2579,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
 u,v,w,theta,a,b,c = s.symbols('u v w theta a b c', real=True)
 VARS = (u,v,w)
 CAPTURE = json.loads((BASE/'source.json').read_text())['record']
@@ -35,6 +37,8 @@ TEMPLATES = {
  'polynomial_mixed':('moderate','q-39710',{'a':1,'b':1,'c':1,'d':1,'k':2}),
  'linear_offdiag':('moderate','q-39294',{'a':1,'b':1,'c':1,'d':1,'e':1,'f':1}),
  'symbolic_diagonal':('moderate','q-39664',{'a':1,'b':1,'c':1}),
+ 'sparse_cos':('easy','q-161795',{'a':1,'b':1,'c':1,'d':1,'e':1}),
+ 'sparse_angle':('easy','q-161799',{'a':1,'b':3,'c':1}),
  'spherical':('hard',None,{'a':1,'b':1,'c':1}),
 }
 PROFILES = {name+'-observed':{'template':name,'origin':'observed','evidence_only':True}
@@ -75,6 +79,8 @@ def components(name,p):
     if name=='polynomial_mixed': return [A*u**2+B*v*w,z['k']-C*u*v,z['d']*v**2-w]
     if name=='linear_offdiag': return [A*v+B*w,C*u+z['d']*w,z['e']*u+z['f']*v]
     if name=='symbolic_diagonal': return [A*a*u,B*b*v,C*c*w]
+    if name=='sparse_cos': return [A*u+B*s.cos(w),C*v,z['d']*s.cos(u)+z['e']*w]
+    if name=='sparse_angle': return [A*(u+v*s.cos(theta)+w*s.sin(theta)),B*v,C*(u*s.sin(theta)+w)]
     if name=='spherical': return [A*u*s.sin(v)*s.cos(w),B*u*s.sin(v)*s.sin(w),C*u*s.cos(v)]
     raise ValueError(name)
 
@@ -92,6 +98,8 @@ def bank(name,p,J,D,profile):
         elif name=='polynomial_mixed': vals=[2*A*C*u*v-2*B*C*d*u*v**2-C*v*u,D,2*B*v*w,2*A*C*u*v-2*B*C*d*u*v**2+C*v*u,2*A*C*u**2-2*B*C*d*v**3+B*C*v*w]
         elif name=='linear_offdiag': vals=[D,0,-A,-D,A]
         elif name=='symbolic_diagonal': vals=[-(A*a+B*b+C*c),-D,A*a+B*b+C*c,D,0]
+        elif name=='sparse_cos': vals=[d*s.sin(u)+B*s.sin(w),-d*s.sin(u),C*A*e,D,C*A*e+C*B*d*s.sin(u)**2]
+        elif name=='sparse_angle': vals=[D,A*B*C,A*B*C*s.cos(theta),s.sin(theta)*s.cos(theta),A*B*C*s.sin(theta)**2]
         else: raise ValueError('No observed spherical bank')
         return list(map(s.sympify,vals)),['observed-pattern-'+str(i) for i in range(5)]
     if name=='sparse_trig': vals=[D,-D,D/2,-2*A*B*d*u*w,-2*B*d*u*v]; recipes=['determinant','omit-cofactor-sign','omit-power-factor','wrong-held-coordinate','omit-pivot-scale']
@@ -104,6 +112,10 @@ def bank(name,p,J,D,profile):
     elif name=='linear_offdiag':
         P=A*d*e;Q=B*C*p['f'];vals=[D,-D,P-Q,P,Q];recipes=['determinant','reverse-cofactor-signs','subtract-laplace-products','omit-second-cofactor','omit-first-cofactor']
     elif name=='symbolic_diagonal': vals=[D,-D,A*a+B*b+C*c,-(A*a+B*b+C*c),0];recipes=['determinant','reverse-cofactor-sign','sum-diagonal','negative-trace','multiply-offdiagonal-zeros']
+    elif name=='sparse_cos':
+        vals=[D,-D,C*A*e,C*B*d*s.sin(u)*s.sin(w),C*A*e+C*B*d*s.sin(u)*s.sin(w)];recipes=['determinant','wrong-cofactor-sign','omit-offdiagonal-product','omit-diagonal-product','add-minor-products']
+    elif name=='sparse_angle':
+        vals=[D,-D,A*B*C,A*B*C*s.sin(theta)**2,A*B*C*s.cos(theta)];recipes=['determinant','wrong-cofactor-sign','omit-offdiagonal-product','keep-offdiagonal-product','omit-square']
     else:
         vals=[D,-D,A*B*C*u*s.sin(v),A*B*C*u**2*s.sin(v)**3,A*B*C*u**2*s.sin(v)*s.cos(v)**2];recipes=['determinant','wrong-cofactor-sign','omit-radial-product-factor','omit-first-cofactor','omit-second-cofactor']
     return list(map(s.sympify,vals)),recipes
@@ -113,7 +125,7 @@ def expansion(name,J):
     rc={'sparse_trig':('row',0),'sparse_exp':('col',1),'sparse_square':('row',2),
         'log_product':('col',2),'rotation':('row',2),'polynomial_column':('col',2),
         'polynomial_mixed':('col',0),'linear_offdiag':('row',0),'symbolic_diagonal':('row',0),
-        'spherical':('row',2)}[name]
+        'spherical':('row',2),'sparse_cos':('row',1),'sparse_angle':('row',1)}[name]
     kind,index=rc; terms=[]
     for n in range(3):
         i,j=(index,n) if kind=='row' else (n,index)
@@ -128,7 +140,7 @@ def stages(name,J,D):
     products=[m[0,0]*m[1,1] for _,_,_,m,_ in terms]
     opposites=[m[0,1]*m[1,0] for _,_,_,m,_ in terms]
     arithmetic='+'.join(('' if sign*p==1 else par(sign*p))+r'\left('+tex(x)+'-'+par(y)+r'\right)' for (i,j,p,m,sign),x,y in zip(terms,products,opposites))
-    if name=='polynomial_column': return [cofactor,tex(D)]
+    if name in ('polynomial_column','sparse_cos'): return [cofactor,tex(D)]
     if name=='spherical':
         # Keep the separate w-identity and v-identity instructional stages.
         scale=s.simplify(J[0,0]/(s.sin(v)*s.cos(w))*J[1,0]/(s.sin(v)*s.sin(w))*J[2,0]/s.cos(v))
@@ -197,9 +209,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
             continue
         break
     else: raise SampleRejected('No valid whole-bank sample in 256 attempts')
-    problem=prompt(name,F);worked=solution(name,F,J,D)
+    problem=normalize_prose(prompt(name,F));worked=normalize_prose(solution(name,F,J,D))
     mathfp=digest([s.srepr(s.expand(f)) for f in J])
-    displayed=[tex(z) for z in values]
+    displayed=[normalize_tex(tex(z)) for z in values]
     content=digest([VERSION,level,problem,worked,sorted(displayed),displayed[hits[0]],'radio','selection'])
     qid=uid(content);fid=uid(content+':selection')
     answers=[{':answer/id':uid(fid+':'+z),':answer/type':':answer.type/math',':answer/value':z} for z in displayed]
