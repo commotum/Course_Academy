@@ -1,0 +1,411 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186119889,
+      "id": "2928b0de-fadb-5ffa-b30f-72c0051f0ac6",
+      "title": "Finding an Integral That Represents the Surface Area of a Parametric Surface"
+    },
+    "question": {
+      ":question/id": "eea814a5-ab77-51e1-9a4c-6ba2c44847da",
+      ":question/problem": "$$\n\\iint_D\\boxed{}\\,\\mathrm{d}A,\\quad D=\\{(u,v):0\\le u\\le 2,\\,0\\le v\\le 2\\}\n$$\n\nThe integral above gives the surface area of the parametric surface $r(u,v)=\\langle 4 u^{2},\\,u - v^{2},\\,v^{2}\\rangle$ for $0\\le u\\le 2,\\,0\\le v\\le 2.$ What is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the surface area of $S$ is given by\n\n$$\n\\iint_S\\mathrm{d}S=\\iint_D\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\|\\,\\mathrm{d}A.\n$$\n\nWe first compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}\\mathbf r_u &=\\langle \\frac{\\partial x}{\\partial u},\\,\\frac{\\partial y}{\\partial u},\\,\\frac{\\partial z}{\\partial u}\\rangle \\\\  &=\\langle \\frac{\\partial}{\\partial u}\\left(4 u^{2}\\right),\\,\\frac{\\partial}{\\partial u}\\left(u - v^{2}\\right),\\,\\frac{\\partial}{\\partial u}\\left(v^{2}\\right)\\rangle \\\\  &=\\langle 8 u,\\,1,\\,0\\rangle \\\\ \\mathbf r_v &=\\langle \\frac{\\partial x}{\\partial v},\\,\\frac{\\partial y}{\\partial v},\\,\\frac{\\partial z}{\\partial v}\\rangle \\\\  &=\\langle \\frac{\\partial}{\\partial v}\\left(4 u^{2}\\right),\\,\\frac{\\partial}{\\partial v}\\left(u - v^{2}\\right),\\,\\frac{\\partial}{\\partial v}\\left(v^{2}\\right)\\rangle \\\\  &=\\langle 0,\\,- 2 v,\\,2 v\\rangle\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}\\mathbf r_u\\times\\mathbf r_v &=\\begin{vmatrix}i & j & k \\\\ 8 u & 1 & 0 \\\\ 0 & - 2 v & 2 v\\end{vmatrix} \\\\  &=\\langle \\begin{vmatrix}1 & 0 \\\\ - 2 v & 2 v\\end{vmatrix},\\,-\\begin{vmatrix}8 u & 0 \\\\ 0 & 2 v\\end{vmatrix},\\,\\begin{vmatrix}8 u & 1 \\\\ 0 & - 2 v\\end{vmatrix}\\rangle \\\\  &=\\langle 2 v,\\,- 16 u v,\\,- 16 u v\\rangle\\end{aligned}\n$$\n\nand\n\n$$\n\\begin{aligned}\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\| &=\\left\\|\\langle 2 v,\\,- 16 u v,\\,- 16 u v\\rangle\\right\\| \\\\  &=\\sqrt{\\left(2 v\\right)^2+\\left(- 16 u v\\right)^2+\\left(- 16 u v\\right)^2} \\\\  &=\\sqrt{4 v^{2}+256 u^{2} v^{2}+256 u^{2} v^{2}} \\\\  &=\\sqrt{512 u^{2} v^{2} + 4 v^{2}} \\\\  &=\\sqrt{4 v^{2} \\left(128 u^{2} + 1\\right)} \\\\  &=\\sqrt{4 v^{2}}\\sqrt{128 u^{2} + 1} \\\\  &=2 v \\sqrt{128 u^{2} + 1}\\end{aligned}\n$$\n\nNotice that $\\sqrt{v^2}=v$ since $v\\ge 0$ on $D.$\n\nTherefore, the surface area is\n\n$$\n\\begin{aligned}\\iint_S\\mathrm{d}S &=\\iint_D\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\|\\,\\mathrm{d}A \\\\  &=\\iint_D 2 v \\sqrt{128 u^{2} + 1}\\,\\mathrm{d}A\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "32e14aec-94fb-5c2a-967b-3a286511e375",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "c92b9988-dcde-5bbd-a6ba-843f43c0bab2",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\sqrt{- 16 u^{2} + v^{2}}"
+            },
+            {
+              ":answer/id": "85a5fdc0-acc6-50b1-abed-73dd0cfa75f7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "v^{2} \\sqrt{64 u^{2} + 1}"
+            },
+            {
+              ":answer/id": "013e5db9-8e0e-5d89-a5bf-4a5f8dbff76a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 v \\sqrt{128 u^{2} + 1}"
+            },
+            {
+              ":answer/id": "fd9eb2d4-db92-501c-8ef5-33d7f6606543",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "u \\sqrt{64 v + 1}"
+            },
+            {
+              ":answer/id": "05f84cc5-a541-52bf-a435-042912e0c959",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\sqrt{16 u^{2} + v^{2}}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "013e5db9-8e0e-5d89-a5bf-4a5f8dbff76a"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "surface-integrand-v1",
+      "template": "q-109941",
+      "bank_profile": "observed-expression-pattern:q-109941",
+      "seed": 771,
+      "parameters": {
+        "a": 4
+      },
+      "bounds": {
+        "u": [
+          0,
+          "2"
+        ],
+        "v": [
+          0,
+          "2"
+        ]
+      },
+      "source_question": 17592186120091,
+      "source_basis": 2718,
+      "mathematical_task_fingerprint": "daa702174a309ef21ac4e53e567aaa6634832e3cb2a7e9f527bcf92a516e16d8",
+      "content_fingerprint": "d4a087e05c8f361a27afad134de61b5f63d8452d3d636c930f1dcebbbd3f7740",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none",
+      "correct_expression": "2*v*sqrt(128*u**2 + 1)",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186119889,
+      "id": "2928b0de-fadb-5ffa-b30f-72c0051f0ac6",
+      "title": "Finding an Integral That Represents the Surface Area of a Parametric Surface"
+    },
+    "question": {
+      ":question/id": "68373cab-fa0b-5bff-980f-d9e7ecccb49b",
+      ":question/problem": "$$\n\\iint_D\\boxed{}\\,\\mathrm{d}A,\\quad D=\\{(u,v):0\\le u\\le 1,\\,0\\le v\\le 2\\}\n$$\n\nThe integral above gives the surface area of the parametric surface $r(u,v)=\\langle u + v,\\,3 - v,\\,7 u + 9 v + 1\\rangle$ for $0\\le u\\le 1,\\,0\\le v\\le 2.$ What is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the surface area of $S$ is given by\n\n$$\n\\iint_S\\mathrm{d}S=\\iint_D\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\|\\,\\mathrm{d}A.\n$$\n\nWe first compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}\\mathbf r_u &=\\langle \\frac{\\partial x}{\\partial u},\\,\\frac{\\partial y}{\\partial u},\\,\\frac{\\partial z}{\\partial u}\\rangle \\\\  &=\\langle \\frac{\\partial}{\\partial u}\\left(u + v\\right),\\,\\frac{\\partial}{\\partial u}\\left(3 - v\\right),\\,\\frac{\\partial}{\\partial u}\\left(7 u + 9 v + 1\\right)\\rangle \\\\  &=\\langle 1,\\,0,\\,7\\rangle \\\\ \\mathbf r_v &=\\langle \\frac{\\partial x}{\\partial v},\\,\\frac{\\partial y}{\\partial v},\\,\\frac{\\partial z}{\\partial v}\\rangle \\\\  &=\\langle \\frac{\\partial}{\\partial v}\\left(u + v\\right),\\,\\frac{\\partial}{\\partial v}\\left(3 - v\\right),\\,\\frac{\\partial}{\\partial v}\\left(7 u + 9 v + 1\\right)\\rangle \\\\  &=\\langle 1,\\,-1,\\,9\\rangle\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}\\mathbf r_u\\times\\mathbf r_v &=\\begin{vmatrix}i & j & k \\\\ 1 & 0 & 7 \\\\ 1 & -1 & 9\\end{vmatrix} \\\\  &=\\langle \\begin{vmatrix}0 & 7 \\\\ -1 & 9\\end{vmatrix},\\,-\\begin{vmatrix}1 & 7 \\\\ 1 & 9\\end{vmatrix},\\,\\begin{vmatrix}1 & 0 \\\\ 1 & -1\\end{vmatrix}\\rangle \\\\  &=\\langle 7,\\,-2,\\,-1\\rangle\\end{aligned}\n$$\n\nand\n\n$$\n\\begin{aligned}\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\| &=\\left\\|\\langle 7,\\,-2,\\,-1\\rangle\\right\\| \\\\  &=\\sqrt{\\left(7\\right)^2+\\left(-2\\right)^2+\\left(-1\\right)^2} \\\\  &=\\sqrt{49+4+1} \\\\  &=\\sqrt{54} \\\\  &=3 \\sqrt{6}\\end{aligned}\n$$\n\nTherefore, the surface area is\n\n$$\n\\begin{aligned}\\iint_S\\mathrm{d}S &=\\iint_D\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\|\\,\\mathrm{d}A \\\\  &=\\iint_D 3 \\sqrt{6}\\,\\mathrm{d}A\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4a4bc7c5-8191-5c26-ba3a-d105990e1e1d",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "d330c09c-d56a-5e30-8d81-c7abb85ba85e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2"
+            },
+            {
+              ":answer/id": "df195b61-5052-55cd-a367-12cf45791d2a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\sqrt{6}"
+            },
+            {
+              ":answer/id": "9c33398c-a805-5a73-ba75-9551f1ac3e21",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\sqrt{u + v}"
+            },
+            {
+              ":answer/id": "13f9f154-7a4c-57bd-a421-7ada196980d9",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "u \\sqrt{v^{2} + 1}"
+            },
+            {
+              ":answer/id": "b1af5160-5527-5899-95e6-a2a3b225a014",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\sqrt{17}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "df195b61-5052-55cd-a367-12cf45791d2a"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "surface-integrand-v1",
+      "template": "q-109943",
+      "bank_profile": "observed-expression-pattern:q-109943",
+      "seed": 772,
+      "parameters": {
+        "a": 7,
+        "b": 9
+      },
+      "bounds": {
+        "u": [
+          0,
+          "1"
+        ],
+        "v": [
+          0,
+          "2"
+        ]
+      },
+      "source_question": 17592186397957,
+      "source_basis": 2718,
+      "mathematical_task_fingerprint": "c64d58d0140a4e9daae6bfc9ad9d89bfecf7f348b19e7e8a77e098774db9ffc4",
+      "content_fingerprint": "958cf3177c97563a0717c41d7bec7b2fb96fbe8fb016e64a9f8b2953af886526",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none",
+      "correct_expression": "3*sqrt(6)",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186119889,
+      "id": "2928b0de-fadb-5ffa-b30f-72c0051f0ac6",
+      "title": "Finding an Integral That Represents the Surface Area of a Parametric Surface"
+    },
+    "question": {
+      ":question/id": "6ce03692-58d4-5830-8d97-d77704c638fb",
+      ":question/problem": "$$\n\\iint_D\\boxed{}\\,\\mathrm{d}A,\\quad D=\\{(u,v):0\\le u\\le 1,\\,0\\le v\\le 2\\}\n$$\n\nThe integral above gives the surface area of the parametric surface $r(u,v)=\\langle u + v,\\,3 - v,\\,3 u + 5 v + 1\\rangle$ for $0\\le u\\le 1,\\,0\\le v\\le 2.$ What is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the surface area of $S$ is given by\n\n$$\n\\iint_S\\mathrm{d}S=\\iint_D\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\|\\,\\mathrm{d}A.\n$$\n\nWe first compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}\\mathbf r_u &=\\langle \\frac{\\partial x}{\\partial u},\\,\\frac{\\partial y}{\\partial u},\\,\\frac{\\partial z}{\\partial u}\\rangle \\\\  &=\\langle \\frac{\\partial}{\\partial u}\\left(u + v\\right),\\,\\frac{\\partial}{\\partial u}\\left(3 - v\\right),\\,\\frac{\\partial}{\\partial u}\\left(3 u + 5 v + 1\\right)\\rangle \\\\  &=\\langle 1,\\,0,\\,3\\rangle \\\\ \\mathbf r_v &=\\langle \\frac{\\partial x}{\\partial v},\\,\\frac{\\partial y}{\\partial v},\\,\\frac{\\partial z}{\\partial v}\\rangle \\\\  &=\\langle \\frac{\\partial}{\\partial v}\\left(u + v\\right),\\,\\frac{\\partial}{\\partial v}\\left(3 - v\\right),\\,\\frac{\\partial}{\\partial v}\\left(3 u + 5 v + 1\\right)\\rangle \\\\  &=\\langle 1,\\,-1,\\,5\\rangle\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}\\mathbf r_u\\times\\mathbf r_v &=\\begin{vmatrix}i & j & k \\\\ 1 & 0 & 3 \\\\ 1 & -1 & 5\\end{vmatrix} \\\\  &=\\langle \\begin{vmatrix}0 & 3 \\\\ -1 & 5\\end{vmatrix},\\,-\\begin{vmatrix}1 & 3 \\\\ 1 & 5\\end{vmatrix},\\,\\begin{vmatrix}1 & 0 \\\\ 1 & -1\\end{vmatrix}\\rangle \\\\  &=\\langle 3,\\,-2,\\,-1\\rangle\\end{aligned}\n$$\n\nand\n\n$$\n\\begin{aligned}\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\| &=\\left\\|\\langle 3,\\,-2,\\,-1\\rangle\\right\\| \\\\  &=\\sqrt{\\left(3\\right)^2+\\left(-2\\right)^2+\\left(-1\\right)^2} \\\\  &=\\sqrt{9+4+1} \\\\  &=\\sqrt{14} \\\\  &=\\sqrt{14}\\end{aligned}\n$$\n\nTherefore, the surface area is\n\n$$\n\\begin{aligned}\\iint_S\\mathrm{d}S &=\\iint_D\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\|\\,\\mathrm{d}A \\\\  &=\\iint_D \\sqrt{14}\\,\\mathrm{d}A\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "32a31c4b-f831-5da9-8f29-1b931744a7c9",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "011655a2-c520-5cd0-a439-defc348c17b1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3"
+            },
+            {
+              ":answer/id": "a0bde4ca-48f5-5c86-ad8e-88083b8a8731",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\sqrt{14}"
+            },
+            {
+              ":answer/id": "ed23ef92-0aad-5b95-947e-ba7002f159c6",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "u \\sqrt{v^{2} + 1}"
+            },
+            {
+              ":answer/id": "91e08695-6405-567c-8d4e-0b8f3347a5f0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\sqrt{u + v}"
+            },
+            {
+              ":answer/id": "48815a36-e11f-5e50-85f2-1df30f980d9f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "a0bde4ca-48f5-5c86-ad8e-88083b8a8731"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "surface-integrand-v1",
+      "template": "q-109943",
+      "bank_profile": "observed-expression-pattern:q-109943",
+      "seed": 773,
+      "parameters": {
+        "a": 3,
+        "b": 5
+      },
+      "bounds": {
+        "u": [
+          0,
+          "1"
+        ],
+        "v": [
+          0,
+          "2"
+        ]
+      },
+      "source_question": 17592186397957,
+      "source_basis": 2718,
+      "mathematical_task_fingerprint": "7b7154c0d89e9efcdb1e8dd7b753ec1b1c1e2f7f5404d02ae6bd8d2583880ea1",
+      "content_fingerprint": "fdb66c10545fc689af0cd00ca3151a82bc9af2b9ee1fc726c067cd67dbfa4c52",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none",
+      "correct_expression": "sqrt(14)",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186119889,
+      "id": "2928b0de-fadb-5ffa-b30f-72c0051f0ac6",
+      "title": "Finding an Integral That Represents the Surface Area of a Parametric Surface"
+    },
+    "question": {
+      ":question/id": "2fb91bf5-d10a-5b53-87c6-a85d987fc3ed",
+      ":question/problem": "$$\n\\iint_D\\boxed{}\\,\\mathrm{d}A,\\quad D=\\{(u,v):0\\le u\\le 1,\\,0\\le v\\le 2\\}\n$$\n\nThe integral above gives the surface area of the parametric surface $r(u,v)=\\langle u + v,\\,3 - v,\\,7 u + 10 v + 1\\rangle$ for $0\\le u\\le 1,\\,0\\le v\\le 2.$ What is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the surface area of $S$ is given by\n\n$$\n\\iint_S\\mathrm{d}S=\\iint_D\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\|\\,\\mathrm{d}A.\n$$\n\nWe first compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}\\mathbf r_u &=\\langle \\frac{\\partial x}{\\partial u},\\,\\frac{\\partial y}{\\partial u},\\,\\frac{\\partial z}{\\partial u}\\rangle \\\\  &=\\langle \\frac{\\partial}{\\partial u}\\left(u + v\\right),\\,\\frac{\\partial}{\\partial u}\\left(3 - v\\right),\\,\\frac{\\partial}{\\partial u}\\left(7 u + 10 v + 1\\right)\\rangle \\\\  &=\\langle 1,\\,0,\\,7\\rangle \\\\ \\mathbf r_v &=\\langle \\frac{\\partial x}{\\partial v},\\,\\frac{\\partial y}{\\partial v},\\,\\frac{\\partial z}{\\partial v}\\rangle \\\\  &=\\langle \\frac{\\partial}{\\partial v}\\left(u + v\\right),\\,\\frac{\\partial}{\\partial v}\\left(3 - v\\right),\\,\\frac{\\partial}{\\partial v}\\left(7 u + 10 v + 1\\right)\\rangle \\\\  &=\\langle 1,\\,-1,\\,10\\rangle\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}\\mathbf r_u\\times\\mathbf r_v &=\\begin{vmatrix}i & j & k \\\\ 1 & 0 & 7 \\\\ 1 & -1 & 10\\end{vmatrix} \\\\  &=\\langle \\begin{vmatrix}0 & 7 \\\\ -1 & 10\\end{vmatrix},\\,-\\begin{vmatrix}1 & 7 \\\\ 1 & 10\\end{vmatrix},\\,\\begin{vmatrix}1 & 0 \\\\ 1 & -1\\end{vmatrix}\\rangle \\\\  &=\\langle 7,\\,-3,\\,-1\\rangle\\end{aligned}\n$$\n\nand\n\n$$\n\\begin{aligned}\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\| &=\\left\\|\\langle 7,\\,-3,\\,-1\\rangle\\right\\| \\\\  &=\\sqrt{\\left(7\\right)^2+\\left(-3\\right)^2+\\left(-1\\right)^2} \\\\  &=\\sqrt{49+9+1} \\\\  &=\\sqrt{59} \\\\  &=\\sqrt{59}\\end{aligned}\n$$\n\nTherefore, the surface area is\n\n$$\n\\begin{aligned}\\iint_S\\mathrm{d}S &=\\iint_D\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\|\\,\\mathrm{d}A \\\\  &=\\iint_D \\sqrt{59}\\,\\mathrm{d}A\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "1b42c57c-faf7-56e3-92e9-1a8e36ecb3c3",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "f12332de-4674-5f71-a94e-0ed5c33d2189",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\sqrt{59}"
+            },
+            {
+              ":answer/id": "c9316e18-1be5-58be-a553-6c87abdf967d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\sqrt{5}"
+            },
+            {
+              ":answer/id": "2cefab1e-7c10-5197-9b59-9b3c66e0b67e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\sqrt{u + v}"
+            },
+            {
+              ":answer/id": "f50099bb-00fe-5aca-a5e4-49aa2015073d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\sqrt{2}"
+            },
+            {
+              ":answer/id": "add8bfc9-ade6-544c-8c23-d7cc805fda9f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "u \\sqrt{v^{2} + 1}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "f12332de-4674-5f71-a94e-0ed5c33d2189"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "surface-integrand-v1",
+      "template": "q-109943",
+      "bank_profile": "observed-expression-pattern:q-109943",
+      "seed": 774,
+      "parameters": {
+        "a": 7,
+        "b": 10
+      },
+      "bounds": {
+        "u": [
+          0,
+          "1"
+        ],
+        "v": [
+          0,
+          "2"
+        ]
+      },
+      "source_question": 17592186397957,
+      "source_basis": 2718,
+      "mathematical_task_fingerprint": "d19b9e18ba5245c4c28bdc212832684cffa30949d12d2ea6c2448d95b7d8c70c",
+      "content_fingerprint": "bc1f38f32195860f318cc17737fc81aaf35a443b9cce0713d40781d74a057383",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none",
+      "correct_expression": "sqrt(59)",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186119889,
+      "id": "2928b0de-fadb-5ffa-b30f-72c0051f0ac6",
+      "title": "Finding an Integral That Represents the Surface Area of a Parametric Surface"
+    },
+    "question": {
+      ":question/id": "b2c3a132-656e-56fc-a1f5-318d744daaf5",
+      ":question/problem": "$$\n\\iint_D\\boxed{}\\,\\mathrm{d}A,\\quad D=\\{(u,v):0\\le u\\le 1,\\,0\\le v\\le 2\\}\n$$\n\nThe integral above gives the surface area of the parametric surface $r(u,v)=\\langle u + v,\\,3 - v,\\,8 u + 9 v + 1\\rangle$ for $0\\le u\\le 1,\\,0\\le v\\le 2.$ What is the missing expression?",
+      ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the surface area of $S$ is given by\n\n$$\n\\iint_S\\mathrm{d}S=\\iint_D\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\|\\,\\mathrm{d}A.\n$$\n\nWe first compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}\\mathbf r_u &=\\langle \\frac{\\partial x}{\\partial u},\\,\\frac{\\partial y}{\\partial u},\\,\\frac{\\partial z}{\\partial u}\\rangle \\\\  &=\\langle \\frac{\\partial}{\\partial u}\\left(u + v\\right),\\,\\frac{\\partial}{\\partial u}\\left(3 - v\\right),\\,\\frac{\\partial}{\\partial u}\\left(8 u + 9 v + 1\\right)\\rangle \\\\  &=\\langle 1,\\,0,\\,8\\rangle \\\\ \\mathbf r_v &=\\langle \\frac{\\partial x}{\\partial v},\\,\\frac{\\partial y}{\\partial v},\\,\\frac{\\partial z}{\\partial v}\\rangle \\\\  &=\\langle \\frac{\\partial}{\\partial v}\\left(u + v\\right),\\,\\frac{\\partial}{\\partial v}\\left(3 - v\\right),\\,\\frac{\\partial}{\\partial v}\\left(8 u + 9 v + 1\\right)\\rangle \\\\  &=\\langle 1,\\,-1,\\,9\\rangle\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}\\mathbf r_u\\times\\mathbf r_v &=\\begin{vmatrix}i & j & k \\\\ 1 & 0 & 8 \\\\ 1 & -1 & 9\\end{vmatrix} \\\\  &=\\langle \\begin{vmatrix}0 & 8 \\\\ -1 & 9\\end{vmatrix},\\,-\\begin{vmatrix}1 & 8 \\\\ 1 & 9\\end{vmatrix},\\,\\begin{vmatrix}1 & 0 \\\\ 1 & -1\\end{vmatrix}\\rangle \\\\  &=\\langle 8,\\,-1,\\,-1\\rangle\\end{aligned}\n$$\n\nand\n\n$$\n\\begin{aligned}\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\| &=\\left\\|\\langle 8,\\,-1,\\,-1\\rangle\\right\\| \\\\  &=\\sqrt{\\left(8\\right)^2+\\left(-1\\right)^2+\\left(-1\\right)^2} \\\\  &=\\sqrt{64+1+1} \\\\  &=\\sqrt{66} \\\\  &=\\sqrt{66}\\end{aligned}\n$$\n\nTherefore, the surface area is\n\n$$\n\\begin{aligned}\\iint_S\\mathrm{d}S &=\\iint_D\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\|\\,\\mathrm{d}A \\\\  &=\\iint_D \\sqrt{66}\\,\\mathrm{d}A\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "bade2cdc-30f4-50b0-9bf4-292e7dab8d88",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "9a5cac18-92c9-580c-890f-8c4f90949622",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "u \\sqrt{v^{2} + 1}"
+            },
+            {
+              ":answer/id": "e197d111-e5b8-59bd-9843-1eaafbe2b703",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\sqrt{3}"
+            },
+            {
+              ":answer/id": "4d72a553-cacf-5cdd-b72c-a5fb35d514af",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\sqrt{66}"
+            },
+            {
+              ":answer/id": "55edec23-2ca0-5fbd-b96c-dc50dda81217",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3 \\sqrt{2}"
+            },
+            {
+              ":answer/id": "025e5ec7-d129-5172-a6e4-d2a61e1add71",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2 \\sqrt{u + v}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "4d72a553-cacf-5cdd-b72c-a5fb35d514af"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "surface-integrand-v1",
+      "template": "q-109943",
+      "bank_profile": "observed-expression-pattern:q-109943",
+      "seed": 775,
+      "parameters": {
+        "a": 8,
+        "b": 9
+      },
+      "bounds": {
+        "u": [
+          0,
+          "1"
+        ],
+        "v": [
+          0,
+          "2"
+        ]
+      },
+      "source_question": 17592186397957,
+      "source_basis": 2718,
+      "mathematical_task_fingerprint": "bea0e61625405e7e83248008015e867a84b6e73ff0b5c38575b769a9b9cb1b5b",
+      "content_fingerprint": "49c027a14cc274ba05791e768b091f9aab8cd772b345f0bd63ca4fa4d56bef6e",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none",
+      "correct_expression": "sqrt(66)",
+      "math_format": "course-academy-tex-v1"
+    }
+  }
+]

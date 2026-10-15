@@ -1,0 +1,337 @@
+[
+  {
+    "label": "q-109943:{\"a\": 3, \"b\": 5}",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186119889,
+        "id": "2928b0de-fadb-5ffa-b30f-72c0051f0ac6",
+        "title": "Finding an Integral That Represents the Surface Area of a Parametric Surface"
+      },
+      "question": {
+        ":question/id": "6ce03692-58d4-5830-8d97-d77704c638fb",
+        ":question/problem": "$$\n\\iint_D\\boxed{}\\,\\mathrm{d}A,\\quad D=\\{(u,v):0\\le u\\le 1,\\,0\\le v\\le 2\\}\n$$\n\nThe integral above gives the surface area of the parametric surface $r(u,v)=\\langle u + v,\\,3 - v,\\,3 u + 5 v + 1\\rangle$ for $0\\le u\\le 1,\\,0\\le v\\le 2.$ What is the missing expression?",
+        ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the surface area of $S$ is given by\n\n$$\n\\iint_S\\mathrm{d}S=\\iint_D\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\|\\,\\mathrm{d}A.\n$$\n\nWe first compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}\\mathbf r_u &=\\langle \\frac{\\partial x}{\\partial u},\\,\\frac{\\partial y}{\\partial u},\\,\\frac{\\partial z}{\\partial u}\\rangle \\\\  &=\\langle \\frac{\\partial}{\\partial u}\\left(u + v\\right),\\,\\frac{\\partial}{\\partial u}\\left(3 - v\\right),\\,\\frac{\\partial}{\\partial u}\\left(3 u + 5 v + 1\\right)\\rangle \\\\  &=\\langle 1,\\,0,\\,3\\rangle \\\\ \\mathbf r_v &=\\langle \\frac{\\partial x}{\\partial v},\\,\\frac{\\partial y}{\\partial v},\\,\\frac{\\partial z}{\\partial v}\\rangle \\\\  &=\\langle \\frac{\\partial}{\\partial v}\\left(u + v\\right),\\,\\frac{\\partial}{\\partial v}\\left(3 - v\\right),\\,\\frac{\\partial}{\\partial v}\\left(3 u + 5 v + 1\\right)\\rangle \\\\  &=\\langle 1,\\,-1,\\,5\\rangle\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}\\mathbf r_u\\times\\mathbf r_v &=\\begin{vmatrix}i & j & k \\\\ 1 & 0 & 3 \\\\ 1 & -1 & 5\\end{vmatrix} \\\\  &=\\langle \\begin{vmatrix}0 & 3 \\\\ -1 & 5\\end{vmatrix},\\,-\\begin{vmatrix}1 & 3 \\\\ 1 & 5\\end{vmatrix},\\,\\begin{vmatrix}1 & 0 \\\\ 1 & -1\\end{vmatrix}\\rangle \\\\  &=\\langle 3,\\,-2,\\,-1\\rangle\\end{aligned}\n$$\n\nand\n\n$$\n\\begin{aligned}\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\| &=\\left\\|\\langle 3,\\,-2,\\,-1\\rangle\\right\\| \\\\  &=\\sqrt{\\left(3\\right)^2+\\left(-2\\right)^2+\\left(-1\\right)^2} \\\\  &=\\sqrt{9+4+1} \\\\  &=\\sqrt{14} \\\\  &=\\sqrt{14}\\end{aligned}\n$$\n\nTherefore, the surface area is\n\n$$\n\\begin{aligned}\\iint_S\\mathrm{d}S &=\\iint_D\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\|\\,\\mathrm{d}A \\\\  &=\\iint_D \\sqrt{14}\\,\\mathrm{d}A\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "32a31c4b-f831-5da9-8f29-1b931744a7c9",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "ed23ef92-0aad-5b95-947e-ba7002f159c6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "u \\sqrt{v^{2} + 1}"
+              },
+              {
+                ":answer/id": "011655a2-c520-5cd0-a439-defc348c17b1",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "3"
+              },
+              {
+                ":answer/id": "a0bde4ca-48f5-5c86-ad8e-88083b8a8731",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\sqrt{14}"
+              },
+              {
+                ":answer/id": "91e08695-6405-567c-8d4e-0b8f3347a5f0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2 \\sqrt{u + v}"
+              },
+              {
+                ":answer/id": "48815a36-e11f-5e50-85f2-1df30f980d9f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "a0bde4ca-48f5-5c86-ad8e-88083b8a8731"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "surface-integrand-v1",
+        "template": "q-109943",
+        "bank_profile": "observed-expression-pattern:q-109943",
+        "seed": 100,
+        "parameters": {
+          "a": 3,
+          "b": 5
+        },
+        "bounds": {
+          "u": [
+            0,
+            "1"
+          ],
+          "v": [
+            0,
+            "2"
+          ]
+        },
+        "source_question": 17592186397957,
+        "source_basis": 2718,
+        "mathematical_task_fingerprint": "7b7154c0d89e9efcdb1e8dd7b753ec1b1c1e2f7f5404d02ae6bd8d2583880ea1",
+        "content_fingerprint": "fdb66c10545fc689af0cd00ca3151a82bc9af2b9ee1fc726c067cd67dbfa4c52",
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "plot_rating": "none",
+        "correct_expression": "sqrt(14)",
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "ed23ef92-0aad-5b95-947e-ba7002f159c6",
+        "expected": "rejected",
+        "purpose": "every displayed radio option"
+      },
+      {
+        "submitted_answer_id": "011655a2-c520-5cd0-a439-defc348c17b1",
+        "expected": "rejected",
+        "purpose": "every displayed radio option"
+      },
+      {
+        "submitted_answer_id": "a0bde4ca-48f5-5c86-ad8e-88083b8a8731",
+        "expected": "accepted",
+        "purpose": "every displayed radio option"
+      },
+      {
+        "submitted_answer_id": "91e08695-6405-567c-8d4e-0b8f3347a5f0",
+        "expected": "rejected",
+        "purpose": "every displayed radio option"
+      },
+      {
+        "submitted_answer_id": "48815a36-e11f-5e50-85f2-1df30f980d9f",
+        "expected": "rejected",
+        "purpose": "every displayed radio option"
+      }
+    ]
+  },
+  {
+    "label": "q-109943:{\"a\": 5, \"b\": 7}",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186119889,
+        "id": "2928b0de-fadb-5ffa-b30f-72c0051f0ac6",
+        "title": "Finding an Integral That Represents the Surface Area of a Parametric Surface"
+      },
+      "question": {
+        ":question/id": "f12a3689-dba6-56d9-843d-c0f7bf0ac72a",
+        ":question/problem": "$$\n\\iint_D\\boxed{}\\,\\mathrm{d}A,\\quad D=\\{(u,v):0\\le u\\le 1,\\,0\\le v\\le 2\\}\n$$\n\nThe integral above gives the surface area of the parametric surface $r(u,v)=\\langle u + v,\\,3 - v,\\,5 u + 7 v + 1\\rangle$ for $0\\le u\\le 1,\\,0\\le v\\le 2.$ What is the missing expression?",
+        ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the surface area of $S$ is given by\n\n$$\n\\iint_S\\mathrm{d}S=\\iint_D\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\|\\,\\mathrm{d}A.\n$$\n\nWe first compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}\\mathbf r_u &=\\langle \\frac{\\partial x}{\\partial u},\\,\\frac{\\partial y}{\\partial u},\\,\\frac{\\partial z}{\\partial u}\\rangle \\\\  &=\\langle \\frac{\\partial}{\\partial u}\\left(u + v\\right),\\,\\frac{\\partial}{\\partial u}\\left(3 - v\\right),\\,\\frac{\\partial}{\\partial u}\\left(5 u + 7 v + 1\\right)\\rangle \\\\  &=\\langle 1,\\,0,\\,5\\rangle \\\\ \\mathbf r_v &=\\langle \\frac{\\partial x}{\\partial v},\\,\\frac{\\partial y}{\\partial v},\\,\\frac{\\partial z}{\\partial v}\\rangle \\\\  &=\\langle \\frac{\\partial}{\\partial v}\\left(u + v\\right),\\,\\frac{\\partial}{\\partial v}\\left(3 - v\\right),\\,\\frac{\\partial}{\\partial v}\\left(5 u + 7 v + 1\\right)\\rangle \\\\  &=\\langle 1,\\,-1,\\,7\\rangle\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}\\mathbf r_u\\times\\mathbf r_v &=\\begin{vmatrix}i & j & k \\\\ 1 & 0 & 5 \\\\ 1 & -1 & 7\\end{vmatrix} \\\\  &=\\langle \\begin{vmatrix}0 & 5 \\\\ -1 & 7\\end{vmatrix},\\,-\\begin{vmatrix}1 & 5 \\\\ 1 & 7\\end{vmatrix},\\,\\begin{vmatrix}1 & 0 \\\\ 1 & -1\\end{vmatrix}\\rangle \\\\  &=\\langle 5,\\,-2,\\,-1\\rangle\\end{aligned}\n$$\n\nand\n\n$$\n\\begin{aligned}\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\| &=\\left\\|\\langle 5,\\,-2,\\,-1\\rangle\\right\\| \\\\  &=\\sqrt{\\left(5\\right)^2+\\left(-2\\right)^2+\\left(-1\\right)^2} \\\\  &=\\sqrt{25+4+1} \\\\  &=\\sqrt{30} \\\\  &=\\sqrt{30}\\end{aligned}\n$$\n\nTherefore, the surface area is\n\n$$\n\\begin{aligned}\\iint_S\\mathrm{d}S &=\\iint_D\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\|\\,\\mathrm{d}A \\\\  &=\\iint_D \\sqrt{30}\\,\\mathrm{d}A\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "6ffdcbfe-e3c8-554c-90ac-7c7fa5fdd703",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "cd1295a6-0f95-51f3-8fd1-ee96277ead12",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\sqrt{13}"
+              },
+              {
+                ":answer/id": "6ce6fda6-b951-5d87-8a85-6283f433ac85",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2 \\sqrt{u + v}"
+              },
+              {
+                ":answer/id": "0f83c76d-ec99-5241-aebf-9c4270e1a7ef",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "u \\sqrt{v^{2} + 1}"
+              },
+              {
+                ":answer/id": "00cee569-5cea-5d57-9bc3-3903a71989af",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2"
+              },
+              {
+                ":answer/id": "d2a1a18a-411a-5224-a056-02a4076cbe0e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\sqrt{30}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "d2a1a18a-411a-5224-a056-02a4076cbe0e"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "surface-integrand-v1",
+        "template": "q-109943",
+        "bank_profile": "observed-expression-pattern:q-109943",
+        "seed": 101,
+        "parameters": {
+          "a": 5,
+          "b": 7
+        },
+        "bounds": {
+          "u": [
+            0,
+            "1"
+          ],
+          "v": [
+            0,
+            "2"
+          ]
+        },
+        "source_question": 17592186397957,
+        "source_basis": 2718,
+        "mathematical_task_fingerprint": "199ebc77cd4ce24c1d4a0028c8c6886bdf691a76f1fac26870d315bc75345936",
+        "content_fingerprint": "64b41f8af9e6ff83400671b6168281a51034fdbf31458efa3bc680aad39b1bc8",
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "plot_rating": "none",
+        "correct_expression": "sqrt(30)",
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "cd1295a6-0f95-51f3-8fd1-ee96277ead12",
+        "expected": "rejected",
+        "purpose": "every displayed radio option"
+      },
+      {
+        "submitted_answer_id": "6ce6fda6-b951-5d87-8a85-6283f433ac85",
+        "expected": "rejected",
+        "purpose": "every displayed radio option"
+      },
+      {
+        "submitted_answer_id": "0f83c76d-ec99-5241-aebf-9c4270e1a7ef",
+        "expected": "rejected",
+        "purpose": "every displayed radio option"
+      },
+      {
+        "submitted_answer_id": "00cee569-5cea-5d57-9bc3-3903a71989af",
+        "expected": "rejected",
+        "purpose": "every displayed radio option"
+      },
+      {
+        "submitted_answer_id": "d2a1a18a-411a-5224-a056-02a4076cbe0e",
+        "expected": "accepted",
+        "purpose": "every displayed radio option"
+      }
+    ]
+  },
+  {
+    "label": "q-109941:{\"a\": 2}",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186119889,
+        "id": "2928b0de-fadb-5ffa-b30f-72c0051f0ac6",
+        "title": "Finding an Integral That Represents the Surface Area of a Parametric Surface"
+      },
+      "question": {
+        ":question/id": "c17b6edc-1f0e-51cb-a0ce-11f93aba061f",
+        ":question/problem": "$$\n\\iint_D\\boxed{}\\,\\mathrm{d}A,\\quad D=\\{(u,v):0\\le u\\le 2,\\,0\\le v\\le 2\\}\n$$\n\nThe integral above gives the surface area of the parametric surface $r(u,v)=\\langle 2 u^{2},\\,u - v^{2},\\,v^{2}\\rangle$ for $0\\le u\\le 2,\\,0\\le v\\le 2.$ What is the missing expression?",
+        ":question/worked-solution": "For a surface $S$ with parametrization $r(u,v)$ for $(u,v)\\in D,$ the surface area of $S$ is given by\n\n$$\n\\iint_S\\mathrm{d}S=\\iint_D\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\|\\,\\mathrm{d}A.\n$$\n\nWe first compute the tangent vectors to the grid curves:\n\n$$\n\\begin{aligned}\\mathbf r_u &=\\langle \\frac{\\partial x}{\\partial u},\\,\\frac{\\partial y}{\\partial u},\\,\\frac{\\partial z}{\\partial u}\\rangle \\\\  &=\\langle \\frac{\\partial}{\\partial u}\\left(2 u^{2}\\right),\\,\\frac{\\partial}{\\partial u}\\left(u - v^{2}\\right),\\,\\frac{\\partial}{\\partial u}\\left(v^{2}\\right)\\rangle \\\\  &=\\langle 4 u,\\,1,\\,0\\rangle \\\\ \\mathbf r_v &=\\langle \\frac{\\partial x}{\\partial v},\\,\\frac{\\partial y}{\\partial v},\\,\\frac{\\partial z}{\\partial v}\\rangle \\\\  &=\\langle \\frac{\\partial}{\\partial v}\\left(2 u^{2}\\right),\\,\\frac{\\partial}{\\partial v}\\left(u - v^{2}\\right),\\,\\frac{\\partial}{\\partial v}\\left(v^{2}\\right)\\rangle \\\\  &=\\langle 0,\\,- 2 v,\\,2 v\\rangle\\end{aligned}\n$$\n\nNow, the fundamental vector product is\n\n$$\n\\begin{aligned}\\mathbf r_u\\times\\mathbf r_v &=\\begin{vmatrix}i & j & k \\\\ 4 u & 1 & 0 \\\\ 0 & - 2 v & 2 v\\end{vmatrix} \\\\  &=\\langle \\begin{vmatrix}1 & 0 \\\\ - 2 v & 2 v\\end{vmatrix},\\,-\\begin{vmatrix}4 u & 0 \\\\ 0 & 2 v\\end{vmatrix},\\,\\begin{vmatrix}4 u & 1 \\\\ 0 & - 2 v\\end{vmatrix}\\rangle \\\\  &=\\langle 2 v,\\,- 8 u v,\\,- 8 u v\\rangle\\end{aligned}\n$$\n\nand\n\n$$\n\\begin{aligned}\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\| &=\\left\\|\\langle 2 v,\\,- 8 u v,\\,- 8 u v\\rangle\\right\\| \\\\  &=\\sqrt{\\left(2 v\\right)^2+\\left(- 8 u v\\right)^2+\\left(- 8 u v\\right)^2} \\\\  &=\\sqrt{4 v^{2}+64 u^{2} v^{2}+64 u^{2} v^{2}} \\\\  &=\\sqrt{128 u^{2} v^{2} + 4 v^{2}} \\\\  &=\\sqrt{4 v^{2} \\left(32 u^{2} + 1\\right)} \\\\  &=\\sqrt{4 v^{2}}\\sqrt{32 u^{2} + 1} \\\\  &=2 v \\sqrt{32 u^{2} + 1}\\end{aligned}\n$$\n\nNotice that $\\sqrt{v^2}=v$ since $v\\ge 0$ on $D.$\n\nTherefore, the surface area is\n\n$$\n\\begin{aligned}\\iint_S\\mathrm{d}S &=\\iint_D\\left\\|\\mathbf r_u\\times\\mathbf r_v\\right\\|\\,\\mathrm{d}A \\\\  &=\\iint_D 2 v \\sqrt{32 u^{2} + 1}\\,\\mathrm{d}A\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "8cf6d408-766c-507b-a6fd-42b33e06fe2a",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "a2f43bf4-274b-5f91-890a-212b06e6e8c7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "v^{2} \\sqrt{16 u^{2} + 1}"
+              },
+              {
+                ":answer/id": "3bbc89bf-4b41-500d-a74f-a5a23cc77a9a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\sqrt{4 u^{2} + v^{2}}"
+              },
+              {
+                ":answer/id": "43feaff8-ab49-5cc0-a22e-c79061a43457",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2 v \\sqrt{32 u^{2} + 1}"
+              },
+              {
+                ":answer/id": "733b93c8-4090-5697-9f6e-1b3b25a0447f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\sqrt{- 4 u^{2} + v^{2}}"
+              },
+              {
+                ":answer/id": "0b115ea7-8c75-582e-bcb9-c63407864ed8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "u \\sqrt{16 v + 1}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "43feaff8-ab49-5cc0-a22e-c79061a43457"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "surface-integrand-v1",
+        "template": "q-109941",
+        "bank_profile": "observed-expression-pattern:q-109941",
+        "seed": 102,
+        "parameters": {
+          "a": 2
+        },
+        "bounds": {
+          "u": [
+            0,
+            "2"
+          ],
+          "v": [
+            0,
+            "2"
+          ]
+        },
+        "source_question": 17592186120091,
+        "source_basis": 2718,
+        "mathematical_task_fingerprint": "cd87c90e41b8e6cc8e9f7e41e6fb8d90bc2608ef8c3bebc33a8497d17aee0a83",
+        "content_fingerprint": "85f7bc99db46ba15af02c3f0b5357b36145bfbc84a09e008e7ca6760547074b1",
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "plot_rating": "none",
+        "correct_expression": "2*v*sqrt(32*u**2 + 1)",
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "a2f43bf4-274b-5f91-890a-212b06e6e8c7",
+        "expected": "rejected",
+        "purpose": "every displayed radio option"
+      },
+      {
+        "submitted_answer_id": "3bbc89bf-4b41-500d-a74f-a5a23cc77a9a",
+        "expected": "rejected",
+        "purpose": "every displayed radio option"
+      },
+      {
+        "submitted_answer_id": "43feaff8-ab49-5cc0-a22e-c79061a43457",
+        "expected": "accepted",
+        "purpose": "every displayed radio option"
+      },
+      {
+        "submitted_answer_id": "733b93c8-4090-5697-9f6e-1b3b25a0447f",
+        "expected": "rejected",
+        "purpose": "every displayed radio option"
+      },
+      {
+        "submitted_answer_id": "0b115ea7-8c75-582e-bcb9-c63407864ed8",
+        "expected": "rejected",
+        "purpose": "every displayed radio option"
+      }
+    ]
+  }
+]
