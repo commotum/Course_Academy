@@ -1,0 +1,149 @@
+{
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "confirmed",
+        "source_error",
+        "ambiguous",
+        "unavailable"
+      ]
+    },
+    "reasoning": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "number"
+    },
+    "answers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "correct_value": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "correct_option": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "value_type": {
+            "type": "string",
+            "enum": [
+              "math",
+              "text",
+              "image"
+            ]
+          },
+          "wrong_value": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "correct_keys": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "key": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "text",
+                "key"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "wrong_keys": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "key": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "text",
+                "key"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "ma_value": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "ma_basis": {
+            "type": "string",
+            "enum": [
+              "explicit_answer",
+              "correct_grade",
+              "worked_solution",
+              "none"
+            ]
+          },
+          "ma_evidence": {
+            "type": "string"
+          },
+          "disagrees": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "key",
+          "correct_value",
+          "correct_option",
+          "value_type",
+          "wrong_value",
+          "correct_keys",
+          "wrong_keys",
+          "ma_value",
+          "ma_basis",
+          "ma_evidence",
+          "disagrees"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "status",
+    "reasoning",
+    "confidence",
+    "answers"
+  ],
+  "additionalProperties": false
+}
