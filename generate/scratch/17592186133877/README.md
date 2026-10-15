@@ -1,0 +1,7 @@
+Validated bounded generator for Calculating the Curl of a Vector Field.
+
+Run `.venv/bin/python generate/scratch/17592186133877/validate.py` for exhaustive mathematics, complete bank replay, displayed-reference checks and native learner grading. The native check-engine binary uses the existing application engine (native-build.json records the exact library and build). No new plots are needed.
+
+The generator CLI accepts --difficulty, --count, --seed, and --format json|markdown. Easy has 12 coefficient cases plus 2 source-only cases; moderate has 16 relevant-coordinate cases plus 4 source-only cases. Source-only cases are useful for fidelity and never become fresh inventory merely by obtaining a new UUID. Normal generation stays inside the declared domain. No hard support is claimed.
+
+Run `replenish.py` for a fresh inventory check, validated gradable counts, exact prepared EDN, deployed native-spec preview, saved basis-guarded request, durable submission and exact-basis verification. It holds the application's api.lock across all database-dependent preparation/submission/readback and recovers saved requests before new intent. Source, canonical and historical learner content remain unchanged; only scoped additive question facts and generator registration are permitted by datom checks. Evidence and receipts are retained under reference/replenishment. The requested job result is written only after verification.

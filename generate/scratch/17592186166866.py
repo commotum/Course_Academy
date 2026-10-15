@@ -1,4 +1,4 @@
-"""Ellipse plot reading -> standard equation -> implicit differentiation (basis 1356).
+"""Ellipse plot reading -> standard equation -> implicit differentiation (current source basis 2563).
 Raw observed profiles are evidence only; completions infer missing answer/solution.
 All sampled and explicit normal parameters use the same finite workload domains.
 No EDB access. Render exclusively with cached Matplotlib; never prune assets.
@@ -9,10 +9,12 @@ from pathlib import Path
 from fractions import Fraction
 import argparse,hashlib,itertools,json,math,random,re,subprocess,tempfile,uuid
 import sympy as sp
-HERE=Path(__file__).resolve().with_suffix('');VERSION='ellipse-2.0'
-SOURCE=json.loads((HERE/'source.json').read_text());KP=SOURCE['record'];X,Y=sp.symbols('x y')
-GEOMETRIES=[(0,0,3,2),(2,-1,3,4),(0,0,1,2),(0,0,5,3),(0,0,2,5),(0,0,3,1),(-1,-1,2,1),(0,1,2,3),(3,0,3,2)]
-CODES=[['-lXY','+rXY','+iXY','-vXY','-rXY'],['-vYX','-rXY','-lXY','+rXY','+iYX'],['-iYX','+vXY','-rXY','-lXY','+vYX'],['-rYX','+iYX','+vYX','-rXY','-lXY'],['-rXY','+lXY','-lYX','-lXY','+rYX'],['-lXY','-rXY','-vXY','-iYX','-vYX'],['-rXY','+rWV','-vYX','+rVW','-vXY'],['-vYX','+lYX','+lXY','-rXY','+vXY'],['-iYX','+lXY','-rYXt','+vXYt','-rXY']]
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'scripts/question_capture'))
+from math_format import normalize_prose,normalize_tex,checked_math_content
+HERE=Path(__file__).resolve().with_suffix('');VERSION='ellipse-3.0'
+SOURCE=json.loads((HERE/'reference/source-current.json').read_text());KP=SOURCE['record'];X,Y=sp.symbols('x y')
+GEOMETRIES=[(0,0,3,2),(2,-1,3,4),(0,0,1,2),(0,0,5,3),(0,0,2,5),(0,0,3,1),(-1,-1,2,1),(0,1,2,3),(3,0,3,2),(-1,2,4,2)]
+CODES=[['-lXY','+rXY','+iXY','-vXY','-rXY'],['-vYX','-rXY','-lXY','+rXY','+iYX'],['-iYX','+vXY','-rXY','-lXY','+vYX'],['-rYX','+iYX','+vYX','-rXY','-lXY'],['-rXY','+lXY','-lYX','-lXY','+rYX'],['-lXY','-rXY','-vXY','-iYX','-vYX'],['-rXY','+rWV','-vYX','+rVW','-vXY'],['-vYX','+lYX','+lXY','-rXY','+vXY'],['-iYX','+lXY','-rYXt','+vXYt','-rXY'],['-iYX','-vXY','+rYX','-rXY','+lXY']]
 DEFAULT=['-rXY','+rXY','-vXY','-lXY','-vYX']
 CASES={q[':question/math-academy-id']:{'source_id':q[':question/math-academy-id'],'template':'origin' if p[:2]==(0,0) else 'shifted','level':q.get(':question/difficulty',{}).get(':db/ident','/easy' if p[:2]==(0,0) else '/hard' if p[0]*p[1]!=0 and min(p[2]//math.gcd(p[2],p[3]),p[3]//math.gcd(p[2],p[3]))>1 else '/moderate').split('/')[-1],'parameters':dict(zip(('h','k','a','b'),p)),'bank_profile':'observed-'+q[':question/math-academy-id'],'index':i} for i,(q,p) in enumerate(zip(KP[':knowledge-point/questions'],GEOMETRIES))}
 def digest(v):return hashlib.sha256(json.dumps(v,sort_keys=True,separators=(',',':')).encode()).hexdigest()
@@ -73,14 +75,16 @@ def solution(p,extra=False):
  if extra:rows.append(fs+'+'+gs+r'\cdot '+D+' & =0')
  rows += [gs+r'\cdot '+D+' & =-'+fs,D+' & ='+final]
  return opening+'\n\n$$\n'+'+'.join(initial)+r'=1\,⟹\,'+eq+'=1.\n$$\n\nNow, to calculate $'+D+',$ we use implicit differentiation:\n\n$$\n'+r'\begin{aligned}'+r' \\ '.join(rows)+r'\end{aligned}'+'\n$$'
+SUPPORTED_LEVELS=('easy','moderate')
+KP_ID=17592186166866
+KP_UUID=KP[':knowledge-point/id']
+GENERATOR_UUID=str(uuid.uuid5(uuid.NAMESPACE_URL,'course-academy:question-generator:'+KP_UUID))
 def domain(level):
- # Easy: origin, familiar integer semiaxes. Moderate has two equal bookkeeping peers:
- # one translated input / two nonunit reduced ratio terms, or two translated inputs / unit ratio term.
+ # Observed easy: origin. Current moderate evidence includes two shifted coordinates
+ # and nonunit reduced ratios. No evidence supports a separate hard workload.
  if level=='easy':return [dict(h=0,k=0,a=a,b=b) for a in range(1,6) for b in range(1,6) if a!=b]
- if level=='moderate':return [dict(h=h,k=k,a=a,b=b) for h in range(-3,4) for k in range(-3,4) for a in range(1,6) for b in range(1,6) if a!=b and (((h==0)!=(k==0) and min(a//math.gcd(a,b),b//math.gcd(a,b))>1) or (h*k!=0 and min(a//math.gcd(a,b),b//math.gcd(a,b))==1))]
- # Hard authored: both translated inputs, coprime nonunit ratio, squares <=64.
- if level=='hard':return [dict(h=h,k=k,a=a,b=b) for h in range(-4,5) for k in range(-4,5) for a in range(3,9) for b in range(3,9) if h*k!=0 and a!=b and math.gcd(a,b)==1]
- raise ValueError('unknown level')
+ if level=='moderate':return [dict(h=h,k=k,a=a,b=b) for h in range(-3,4) for k in range(-3,4) for a in range(1,6) for b in range(1,6) if a!=b and (h or k)]
+ raise ValueError('Unsupported difficulty: '+str(level))
 def check_parameters(level,p,observed=False):
  if set(p)!=set(('h','k','a','b')) or any(type(v)!=int for v in p.values()):raise ValueError('four integer parameters required')
  if p['a']<1 or p['b']<1 or p['a']==p['b']:raise ValueError('positive unequal semiaxes required')
@@ -109,7 +113,7 @@ def source_metadata(p,profile=None):
  return {'database':SOURCE['database'],'basis':SOURCE['basis'],'lineage':SOURCE['lineage'],'source_ids':[case['source_id']] if case else [c['source_id'] for c in CASES.values() if c['template']==family],'canonical_example_id':KP[':knowledge-point/canonical-example'][':question/math-academy-id'],'topic_db_id':17592186049506,'role':'observed bank provenance' if case else 'supporting family evidence for authored parameter variant'}
 def dependency_metadata():
  return {'python':sys.version.split()[0],'sympy':sp.__version__}
-def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+def replay(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  if level not in ('easy','moderate','hard'):raise ValueError('level')
  if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('radio only')
  raw=bool(profile and profile.startswith('observed-'));completed=bool(profile and profile.startswith('completed-'))
@@ -122,18 +126,25 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  if template and template!=expected_template:raise ValueError('template incompatible with geometry')
  if case and level!=case['level']:raise ValueError('replay level')
  codes=CODES[case['index']] if case else DEFAULT
- vals=bank(p,codes,'ascii' if case and case['index']==1 else 'tex')
+ vals=bank(p,codes,'tex')
  correct=sp.factor(-sp.Rational(p['b']**2,p['a']**2)*(X-p['h'])/(Y-p['k']))
  ci=next(i for i,v in enumerate(vals) if sp.cancel(v[1]-correct)==0)
  sourceq=KP[':knowledge-point/questions'][case['index']] if case else None
  exact=bool(case and p==case['parameters'])
  # Geometry-dependent source path is replayed only for the original actual geometry.
  plot={'prompt':re.search(r'!\[\]\((.*?)\)',sourceq[':question/problem']).group(1)} if exact else render_plots(p)
- derivative=r'\frac{dy}{dx}' if case and case['index']<2 else D
- prompt=f"![]({plot['prompt']})\n\nFind ${derivative}$ for the ellipse shown above."
+ derivative=r'\frac{dy}{dx}' if case and case['source_id']=='q-127362' else D
+ plot_reference=plot['prompt']
+ if not exact:
+  asset_hash=hashlib.sha256(Path(plot_reference).read_bytes()).hexdigest()
+  plot_reference=f'images/{asset_hash[:2]}/{asset_hash}.png'
+ prompt=f"![]({plot_reference})\n\nFind ${derivative}$ for the ellipse shown above."
  sol=solution(p)
  # only the canonical example contains a redundant fully simplified sum; practice rows omit it.
  if raw and ':question/worked-solution' not in sourceq:sol=None
+ prompt=normalize_prose(prompt)
+ sol=normalize_prose(sol) if sol is not None else None
+ vals=[(code,value,normalize_tex(text)) for code,value,text in vals]
  bank_strings=[v[2] for v in vals]
  ident=digest({'version':VERSION,'difficulty':level,'problem':prompt,'solution':sol,'bank':sorted(bank_strings)})
  fid=uid(ident+'field');answers=[{':answer/id':uid(ident+'answer'+v[2]),':answer/type':':answer.type/math',':answer/value':v[2]} for v in vals]
@@ -149,7 +160,12 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
    for a in answers:a[':db/id']=next(v[':db/id'] for v in original_field[':answer-field/choices'] if v[':answer/value']==a[':answer/value'])
   q[':db/id']=sourceq[':db/id'];q[':question/math-academy-id']=sourceq[':question/math-academy-id']
   # Captured field/answer database IDs are provenance, not generated ownership identifiers.
- return {'knowledge_point':{'db_id':KP[':db/id'],'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'basis':1356,'lineage':SOURCE['lineage'],'seed':seed,'level':level,'parameters':p,'domain':domain_metadata(p),'source':source_metadata(p,profile),'dependencies':dependency_metadata(),'template':expected_template,'bank_profile':profile or 'authored-method','operations':codes,'origin':('raw observed evidence' if exact else 'parameterized historical bank evidence') if raw else ('supported source completion' if exact else 'generated historical bank variant') if completed else 'authored hard extension' if level=='hard' else 'authored parameter variant','evidence_only':raw or completed,'eligible_for_learning':not (raw or completed),'inferred_correct_value':tex(correct) if raw and ':answer-field/correct' not in field else None,'mathematical_fingerprint':digest({'center':[p['h'],p['k']],'reduced_ratio':str(Fraction(p['b'],p['a']))}),'content_fingerprint':ident,'plot':plot}}
+ return {'knowledge_point':{'db_id':KP[':db/id'],'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'basis':SOURCE['basis'],'lineage':SOURCE['lineage'],'seed':seed,'level':level,'parameters':p,'domain':domain_metadata(p),'source':source_metadata(p,profile),'dependencies':dependency_metadata(),'template':expected_template,'bank_profile':profile or 'authored-method','operations':codes,'origin':('raw observed evidence' if exact else 'parameterized historical bank evidence') if raw else ('supported source completion' if exact else 'generated historical bank variant') if completed else 'authored parameter variant','evidence_only':raw or completed,'eligible_for_learning':not (raw or completed),'inferred_correct_value':tex(correct) if raw and ':answer-field/correct' not in field else None,'mathematical_fingerprint':digest({'center':[p['h'],p['k']],'reduced_ratio':str(Fraction(p['b'],p['a']))}),'content_fingerprint':ident,'plot':plot}}
+@checked_math_content
+def generate(level='easy',seed=0,**kwargs):
+ if kwargs.get('profile','authored-method') not in (None,'authored-method'):
+  raise ValueError('Historical banks are evidence-only; use replay() for fidelity')
+ return replay(level,seed,**kwargs)
 # Individually documented entrypoints: no within-level progression.
 def generate_easy(seed=0,**kwargs):
  """Observed origin ellipse; axes 1..5, same two derivative terms."""
@@ -172,5 +188,5 @@ def markdown(r):
  return '\n\n'.join(lines)
 if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['markdown','json'],default='markdown');ap.add_argument('--template');ap.add_argument('--profile');args=ap.parse_args()
- records=[generate(level,args.seed+i,template=args.template,profile=args.profile) for level in (('easy','moderate','hard') if args.difficulty=='all' else (args.difficulty,)) for i in range(args.count)]
+ records=[generate(level,args.seed+i,template=args.template,profile=args.profile) for level in (SUPPORTED_LEVELS if args.difficulty=='all' else (args.difficulty,)) for i in range(args.count)]
  print(json.dumps(records,indent=2) if args.format=='json' else '\n\n'.join(map(markdown,records)))
