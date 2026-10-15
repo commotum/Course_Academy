@@ -232,19 +232,23 @@ def generate_moderate(seed=0,**kwargs):return generate('moderate',seed,**kwargs)
 # HARD: reciprocal with negative differential, or exact definite endpoints.
 def generate_hard(seed=0,**kwargs):return generate('hard',seed,**kwargs)
 def batch(level,count,seed=0,template=None,profile=None):
- if level not in SUPPORTED_LEVELS or type(count) is not int or count<1:raise ValueError('batch')
- profile=profile or 'authored_method';pool=[];seen=set()
+ if level not in SUPPORTED_LEVELS or type(count) is not int or count<1 or type(seed) is not int:raise ValueError('batch')
+ profile=profile or 'authored_method'
+ if profile not in PROFILES:raise ValueError('profile')
+ pool=[]
  for t in LEVELS:
   if LEVELS[t]!=level or template is not None and t!=template or profile=='observed_raw' and t not in SOURCES:continue
-  for p in domain(t,profile=='observed_raw'):
-   try:r=generate(level,seed,t,parameters=p,profile=profile)
-   except ValueError as e:
-    if str(e)=='whole-bank ambiguity':continue
-    raise
-   fp=r['generation']['mathematical_fingerprint']
-   if fp not in seen:seen.add(fp);pool.append(r)
- if count>len(pool):raise ValueError('finite unique domain capacity '+str(len(pool)))
- random.Random(seed).shuffle(pool);return pool[:count]
+  pool.extend((t,p) for p in domain(t,profile=='observed_raw'))
+ random.Random(seed).shuffle(pool);records=[];seen=set()
+ for t,p in pool:
+  try:r=generate(level,seed,t,parameters=p,profile=profile)
+  except ValueError as e:
+   if str(e)=='whole-bank ambiguity':continue
+   raise
+  fp=r['generation']['mathematical_fingerprint']
+  if fp not in seen:seen.add(fp);records.append(r)
+  if len(records)==count:return records
+ raise ValueError('finite unique domain capacity '+str(len(records)))
 def markdown(r):
  q=r['question'];return q[':question/problem']+'\n\n'+'\n'.join('- $'+a[':answer/value']+'$' for f in q.get(':question/answer-fields',[]) for a in f[':answer-field/choices'])+'\n\n'+q.get(':question/worked-solution','[No captured worked solution.]')
 if __name__=='__main__':

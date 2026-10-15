@@ -34,7 +34,7 @@ def eq(a,b,positive=False):
  return s.simplify(d)==0
 def fraction_measure(t):
  # A differential inside a coefficient group still multiplies that coefficient.
- t=re.sub(r'\(([^()]*)('+DIFF+r')\)',lambda m:'('+m[1]+')'+m[2],t)
+ t=re.sub(r'\(([^()]*)('+DIFF+r')\)',lambda m:'('+('-1'if m[1].strip()=='-'else'1'if m[1].strip()=='+'else m[1])+')'+m[2],t)
  return re.sub(r'\\frac\{((?:\\(?:text|mathrm|textrm)\{d\}|d)\s*[xyzut])\}\{([^{}]+)\}',lambda m:r'\frac{1}{'+m[2]+'}'+m[1],t)
 def integrand(t):
  t=fraction_measure(t)

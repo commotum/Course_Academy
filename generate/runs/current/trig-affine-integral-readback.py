@@ -40,7 +40,7 @@ def endpoint_contributions(raw):
    depth+=(c in '({')-(c in ')}')
  # Some captured solutions print the two trig endpoints without outer brackets.
  # Require an actual trig call: a final simplified sum may reorder terms freely.
- if re.search(r'sec|csc|tan|cot',text):
+ if re.search(r'sec|csc|tan|cot|sin|cos',text):
   depth=0
   for i,c in enumerate(text):
    if c in '+-' and i>0 and depth==0 and text[i-1] not in '+-*/^':
@@ -54,23 +54,27 @@ def given(q):
   c,F,var,lo,hi,end=D.integral(raw);assert not end and var==x;return c*F,lo,hi
  F,var,_=P.integrand(raw);assert var==x;return F,None,None
 
-def check(q):
+def check(q,pole_components=True,affine_required=True):
  F,lo,hi=given(q);sol=q[':question/worked-solution'];match=re.search(r'\$u=([^$]+)\$',sol);assert match;U=D.scalar(match[1].rstrip(','));a=s.diff(U,x)
  # Ordinary profiles are affine; the one nonaffine record is evidence-only.
  affine=not a.has(x)
  differential=next(b for b in D.blocks(sol)if '⟹'in b);left,right=differential.split('⟹');assert D.clean(left.split('=',1)[0])==r'\frac{\mathrm{d}u}{\mathrm{d}x}';assert eq(D.scalar(left.split('=',1)[1]),a)
  l,r=right.strip().rstrip('.').split('=');lm=re.fullmatch(r'(.*?)'+P.DIFF,l.strip());rm=re.fullmatch(r'(.*?)'+P.DIFF,r.strip());assert lm and rm and{lm[2],rm[2]}=={'x','u'}
- def coeff(raw):return D.scalar(raw)if D.clean(raw).strip()else s.Integer(1)
+ def coeff(raw):return s.Integer(-1)if D.clean(raw).strip()=='-'else D.scalar(raw)if D.clean(raw).strip()else s.Integer(1)
  assert eq(coeff(lm[1])*(a if lm[2]=='u'else 1),coeff(rm[1])*(a if rm[2]=='u'else 1))
  counts=dict(integral_sides=0,primitive_sides=0,primitive_bars=0,bound_references=0,endpoint_components=0,differentials=2)
  table=re.findall(r'^\| \$([xu])\$ \| \$(.*?)\$ \| \$(.*?)\$ \|',sol,re.M)
  if lo is not None:
-  assert affine and a!=0 and len(table)==2;xl,xh=[D.scalar(t)for t in table[0][1:]];ul,uh=[D.scalar(t)for t in table[1][1:]];assert eq(xl,lo)and eq(xh,hi)and eq(U.subs(x,lo),ul)and eq(U.subs(x,hi),uh);counts['bound_references']+=4
-  assert a>0 and lo<hi
+  assert (affine or not affine_required)and a!=0 and len(table)==2;xl,xh=[D.scalar(t)for t in table[0][1:]];ul,uh=[D.scalar(t)for t in table[1][1:]];assert eq(xl,lo)and eq(xh,hi)and eq(U.subs(x,lo),ul)and eq(U.subs(x,hi),uh);counts['bound_references']+=4
+  assert lo<hi
+  if affine:assert a>0
+  else:
+   assert s.Poly(U,x).degree()==2 and U.subs(x,0)==0 and s.diff(U,x).subs(x,0)==0 and s.diff(U,x,2)>0 and lo>=0
   # Exactly the captured sin/cos pole-free components are supported.
   # SymPy may rewrite a shifted secant as a shifted cosecant; component
   # boundaries belong to the actual printed u, not that canonical rewrite.
-  kernel='cos'if re.search(r'\\(?:sec|tan)|\\operatorname\{(?:sec|tan)\}|\{(?:sec|tan)\}',q[':question/problem'])else'sin';assert(-s.pi/2<ul<uh<s.pi/2)if kernel=='cos'else(0<ul<uh<s.pi)
+  kernel='cos'if re.search(r'\\(?:sec|tan)|\\operatorname\{(?:sec|tan)\}|\{(?:sec|tan)\}',q[':question/problem'])else'sin'
+  if pole_components:assert(-s.pi/2<ul<uh<s.pi/2)if kernel=='cos'else(0<ul<uh<s.pi)
   prim=primitive(F,x);expected=s.simplify(prim.subs(x,hi)-prim.subs(x,lo))
  else:assert not table;expected=None
  block=next(b for b in D.blocks(sol)if r'\begin{aligned}'in b);text=re.sub(r'\\(?:begin|end)\{aligned\}','',block).replace('&','');bar=None

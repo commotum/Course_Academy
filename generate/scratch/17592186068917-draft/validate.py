@@ -57,6 +57,31 @@ def rows(solution):
  body=m[1].replace(r'\begin{aligned}','');rr=re.split(r'\\\\\s*',body)
  return [rr[0].split('&')[0].strip()]+[r.split('=',1)[1].strip() for r in rr]
 
+def endpoint_components(text):
+ # Read two displayed endpoint components BEFORE collecting their difference.
+ # A common error added at both endpoints must not disappear in aggregate QA.
+ text=text.strip().replace(r'\left','').replace(r'\right','').replace(r'\,','')
+ factor=s.Integer(1);body=text
+ brace=0
+ for i,c in enumerate(text):
+  if c=='{':brace+=1
+  elif c=='}':brace-=1
+  elif c=='(' and brace==0:
+   prefix=text[:i]
+   try:scale=p.scalar(prefix or '1')
+   except Exception:break
+   if scale.free_symbols or scale.has(s.sin,s.cos,s.tan,s.cot,s.sec,s.csc):break
+   inner,end=p.group(text,i)
+   if end==len(text):factor=scale;body=inner
+   break
+ depth=0
+ for i,c in enumerate(body):
+  if c in '({':depth+=1
+  elif c in ')}':depth-=1
+  elif c=='-' and depth==0 and i>0:
+   return factor*p.scalar(body[:i]),factor*p.scalar(body[i+1:])
+ raise AssertionError(('no individual endpoint difference',text))
+
 def validate_display(r):
  q=r['question'];assert set(r['knowledge_point'])=={'db_id','id','title'}
  prompt=q[':question/problem'];f,lo,hi=p.integral(prompt);F=canonical_primitive(f,x)
@@ -93,6 +118,14 @@ def validate_display(r):
   assert r'\int' in rr[3] and r'\cdot' not in rr[3],('missing extracted coefficient stage',t)
  if lo is not None:
   assert '|' in rr[-4 if t=='q-13533' else -5 if t=='q-13537' else -4],('endpoint stage',t)
+ if lo is not None:
+  # The source cosine-zero family has only an evaluated delta row; all other
+  # definite families display both evaluated primitive components distinctly.
+  endpoint_index=5 if t in ('q-13533','q-13537') else 4
+  expected_upper=F.subs(x,hi);expected_lower=F.subs(x,lo)
+  for index in [endpoint_index]+([] if t=='q-13533' else [endpoint_index+1]):
+   upper,lower=endpoint_components(rr[index])
+   assert eq(upper,expected_upper) and eq(lower,expected_lower),('wrong individual endpoint',t,index,rr[index])
  for text in [prompt,sol]+[a[':answer/value'] for a in field[':answer-field/choices']]:
   assert not any(ord(c)<32 and c not in '\n\t\r' for c in text)
  if not r['generation']['evidence_only']:g.fmt.validate_generated_record(r)
@@ -120,7 +153,7 @@ def main():
    try:r=g.generate(level,template=t,parameters=params)
    except ValueError as e:
     assert str(e)=='whole-bank ambiguity',(t,params,e);rejections[t]+=1;continue
-   validate_display(r);counts[t]+=1;slots[t].add((params['A'],params['k']));allrecs.append(r)
+   validate_display(r);counts[t]+=1;slots[t].add((params['A'],params['k'],params.get('kind')));allrecs.append(r)
    fp=r['generation']['mathematical_fingerprint'];identities.setdefault(level,set()).add(fp)
    # Seed changes only order, never identity/key ownership.
    if counts[t] in (1,2):
@@ -163,6 +196,10 @@ def main():
  try:validate_display(endpoint)
  except AssertionError:pass
  else:raise AssertionError('endpoint mutation undetected')
+ correlated=copy.deepcopy(next(z for z in review if z['generation']['template']=='q-350203'));ss=correlated['question'][':question/worked-solution'];chain=rows(ss);upper,lower=endpoint_components(chain[-2]);bad=g.tex(upper+1)+r'-\left('+g.tex(lower+1)+r'\right)';correlated['question'][':question/worked-solution']=ss.replace(chain[-2],bad,1)
+ try:validate_display(correlated)
+ except AssertionError:pass
+ else:raise AssertionError('correlated endpoint errors undetected')
  save('validation-review.json',review);save('full-domain-records.json',allrecs)
  # Native grading: all owned radio IDs / scalar blanks. Radio mathtext,
  # malformed and foreign identifiers are separate checks, not semantic proof.

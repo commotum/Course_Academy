@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 36**, **qa_passed: 365**, **queued: 173**, **working: 6**.
+**needs_revalidation: 36**, **qa_passed: 368**, **queued: 172**, **working: 4**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -150,14 +150,14 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186068916](../../scratch/17592186068916.py) | Integrating Trigonometric Functions Using Substitution | Integrating Reciprocal Trigonometric Functions With Linear Arguments | 3 / 2 / 4 / 1 | qa_passed | [Report](qa/17592186068916.json) |
 | [17592186064203](../../scratch/17592186064203-draft.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Positive Integer Exponent | 5 / 5 / 0 / 2 | qa_passed | [Report](qa/17592186064203.json) |
 | [17592186064204](../../scratch/17592186064204.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Negative Integer Exponent | 5 / 5 / 0 / 1 | working | — |
-| [17592186064205](../../scratch/17592186064205.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Fractional Exponent | 0 / 5 / 5 / 1 | working | — |
+| [17592186064205](../../scratch/17592186064205-draft.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Fractional Exponent | 0 / 5 / 5 / 1 | qa_passed | [Report](qa/17592186064205.json) |
 | [17592186068724](../../scratch/17592186068724-draft.py) | Integration Using Substitution | Integrating a Rational Function Using Natural Logarithms | 5 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186068724.json) |
 | [17592186068786](../../scratch/17592186068786-draft.py) | Integration Using Substitution | Integrating Other Fractional Expressions | 0 / 5 / 5 / 1 | qa_passed | [Report](qa/17592186068786.json) |
-| [17592186068915](../../scratch/17592186068915.py) | Integrating Trigonometric Functions Using Substitution | Integrating Trigonometric Functions With Linear Arguments | 5 / 5 / 0 / 1 | working | — |
+| [17592186068915](../../scratch/17592186068915-draft.py) | Integrating Trigonometric Functions Using Substitution | Integrating Trigonometric Functions With Linear Arguments | 5 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186068915.json) |
 | [17592186068917](../../scratch/17592186068917.py) | Integrating Trigonometric Functions Using Substitution | Integrating Products Containing Trigonometric Functions Using Substitution | 0 / 5 / 5 / 1 | working | — |
-| [17592186068723](../../scratch/17592186068723.py) | Integration Using Substitution | Integrating an Expression Involving a Power Function Multiplied by a Constant Multiple of Its Derivative | 6 / 5 / 0 / 1 | working | — |
+| [17592186068723](../../scratch/17592186068723-draft.py) | Integration Using Substitution | Integrating an Expression Involving a Power Function Multiplied by a Constant Multiple of Its Derivative | 6 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186068723.json) |
 | [17592186096656](../../scratch/17592186096656.py) | Integrating Exponential Functions Using Linear Substitution | Integrating a General Exponential Function With a Linear Exponent | 5 / 6 / 0 / 2 | working | — |
-| [17592186184350](../../scratch/17592186184350.py) | Integrating Exponential Functions Using Substitution | Integrating Products Containing Other Exponential Functions | 6 / 5 / 0 / 1 | queued | — |
+| [17592186184350](../../scratch/17592186184350.py) | Integrating Exponential Functions Using Substitution | Integrating Products Containing Other Exponential Functions | 6 / 5 / 0 / 1 | working | — |
 | [17592186068918](../../scratch/17592186068918.py) | Integrating Trigonometric Functions Using Substitution | Integrating Quotients Containing Trigonometric Functions Using Substitution | 5 / 0 / 7 / 2 | queued | — |
 | [17592186105720](../../scratch/17592186105720.py) | Integrating the Reciprocal Function | Integrating a Reciprocal Function and Simplifying the Arbitrary Constant Using the Laws of Logarithms | 0 / 8 / 6 / 1 | queued | — |
 | [17592186096655](../../scratch/17592186096655.py) | Integrating Exponential Functions Using Linear Substitution | Integrating the Exponential Function With a Linear Exponent | 5 / 9 / 0 / 1 | queued | — |
@@ -345,7 +345,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | 17592186157299 | Double Integrals Between Polar Curves | Evaluating a Double Integral Over a Region Enclosed Between Two Curves | 5 / 2 / 5 / 0 | queued | — |
 | [17592186129267](../../scratch/17592186129267.py) | Triple Integrals in Cylindrical Polar Coordinates | Rewriting a Triple Integral Defined Over a Cylindrical Solid | 4 / 3 / 0 / 1 | qa_passed | [Report](qa/17592186129267.json) |
 | [17592186129278](../../scratch/17592186129278.py) | Triple Integrals in Cylindrical Polar Coordinates | Evaluating a Triple Integral by Converting to Cylindrical Coordinates | 0 / 3 / 5 / 2 | qa_passed | [Report](qa/17592186129278.json) |
-| 17592186087742 | Parametric Equations of Circles | Finding the Parametric Equations of a Circle Centered at the Origin | 5 / 5 / 0 / 2 | queued | — |
+| [17592186087742](../../scratch/17592186087742.py) | Parametric Equations of Circles | Finding the Parametric Equations of a Circle Centered at the Origin | 5 / 5 / 0 / 2 | queued | — |
 | 17592186087743 | Parametric Equations of Circles | Finding the Parametric Equations of a Circle Centered at a General Point | 5 / 7 / 0 / 1 | queued | — |
 | [17592186087786](../../scratch/17592186087786.py) | Parametric Equations of Circles | Finding the Cartesian Equation of a Parametrized Circle | 0 / 4 / 11 / 1 | queued | — |
 | [17592186152187](../../scratch/17592186152187.py) | Parametric Equations of Ellipses | The Parametric Equations of an Ellipse Centered at the Origin | 5 / 7 / 0 / 1 | qa_passed | [Report](qa/17592186152187.json) |

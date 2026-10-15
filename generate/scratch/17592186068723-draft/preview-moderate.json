@@ -1,0 +1,188 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186068723,
+      "id": "8fe2a279-0b92-561e-b17d-b902f43725ac",
+      "title": "Integrating an Expression Involving a Power Function Multiplied by a Constant Multiple of Its Derivative"
+    },
+    "question": {
+      ":question/problem": "Calculate $\\int 2{x}^{2}\\sqrt{{x}^{3}-7}\\,\\text{d}x.$",
+      ":question/worked-solution": "In this case, the $2{x}^{2}$ that's outside the square root isn't quite the derivative of ${x}^{3}-7.$ But the derivative is $3{x}^{2},$ so we're only out by a constant factor.\n\nSo we make the substitution\n\n$$\nu={x}^{3}-7.\n$$\n\nIts derivative is given by\n\n$$\n\\begin{aligned}\\frac{\\text{d}u}{\\text{d}x} & =3{x}^{2}\\,⟹\\,\\frac{2}{3}\\text{d}u=2{x}^{2}\\,\\text{d}x,\\end{aligned}\n$$\n\nand we can now write our integral in terms of $u,$ as follows:\n\n$$\n\\begin{aligned}\\int 2{x}^{2}\\sqrt{{x}^{3}-7}\\,\\text{d}x & =\\int \\sqrt{{x}^{3}-7}\\cdot 2{x}^{2}\\,\\text{d}x \\\\  & =\\int \\sqrt{u}\\cdot \\frac{2}{3}\\text{d}u \\\\  & =\\frac{2}{3}\\int {u}^{1/2}\\,\\text{d}u\\end{aligned}\n$$\n\nFinally, we can solve the integral in terms of $u$ and then write the final result in terms of $x.$ We get\n\n$$\n\\begin{aligned}\\frac{2}{3}\\int {u}^{1/2}\\,\\text{d}u & =\\frac{2}{3}\\cdot \\frac{{u}^{3/2}}{(\\frac{3}{2})}+C \\\\  & =\\frac{2}{3}\\cdot \\frac{2}{3}\\cdot {u}^{3/2}+C \\\\  & =\\frac{4}{9}{u}^{3/2}+C \\\\  & =\\frac{4}{9}\\sqrt{{u}^{3}}+C \\\\  & =\\frac{4\\sqrt{({x}^{3}-7)^{3}}}{9}+C.\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "e80c6a1d-0b28-5b60-b519-f6e256310a3e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{2\\sqrt{({x}^{3}-7)^{3}}}{3}+C"
+            },
+            {
+              ":answer/id": "025e2be2-d79e-5b04-942b-1d4c2560c63d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\sqrt{({x}^{3}-7)^{3}}+C"
+            },
+            {
+              ":answer/id": "19cc7cfb-3a94-5a20-9ae0-b5d8398840c1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{3\\sqrt{({x}^{3}-7)^{3}}}{2}+C"
+            },
+            {
+              ":answer/id": "2b18da53-5580-5b1d-bce3-1a78e1ad2754",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{4\\sqrt{({x}^{3}-7)^{3}}}{9}+C"
+            },
+            {
+              ":answer/id": "b86b12ee-817c-541a-9054-a805d9609d67",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{9\\sqrt{({x}^{3}-7)^{3}}}{4}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "2b18da53-5580-5b1d-bce3-1a78e1ad2754"
+          ],
+          ":answer-field/id": "990b7398-8110-59c0-b16d-a8bf4ec4105f"
+        }
+      ],
+      ":question/id": "0ba19c88-fe84-5918-b1d6-fbadcefd8e01"
+    },
+    "generation": {
+      "version": "constant-power-substitution-v2-draft",
+      "generator_id": "6d27df3f-00b8-523f-a56c-43a057ae4954",
+      "seed": 41,
+      "template": "q-113715",
+      "profile": "q-113715",
+      "bank_profile": "q-113715",
+      "parameters": {
+        "b": -7
+      },
+      "mathematical_parameters": {
+        "k": 2,
+        "a": 1,
+        "m": 3,
+        "n": "1/2",
+        "b": -7
+      },
+      "mathematical_fingerprint": "64d516a31d8452ca1737db9446fc50e9bc665d4a842b0101920c3ae5e87074a1",
+      "parameter_fingerprint": "64d516a31d8452ca1737db9446fc50e9bc665d4a842b0101920c3ae5e87074a1",
+      "domain": {
+        "number_system": "real",
+        "constraint": "{x}^{3}-7>0",
+        "branch": "principal real square root",
+        "variable": "x"
+      },
+      "source_basis": 2275,
+      "basis": 2275,
+      "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "source_ids": [
+        "q-113715"
+      ],
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "evidence_role": "source-shaped parameterized normal record",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none",
+      "sampling_policy": "Only the nonzero inner constant varies in -40..40; negative even radicands require positive shift. All other source parameters and ordered stages fixed.",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186068723,
+      "id": "8fe2a279-0b92-561e-b17d-b902f43725ac",
+      "title": "Integrating an Expression Involving a Power Function Multiplied by a Constant Multiple of Its Derivative"
+    },
+    "question": {
+      ":question/problem": "Calculate $\\int x\\sqrt{{x}^{2}-16}\\,\\text{d}x.$",
+      ":question/worked-solution": "In this case, the $x$ that's outside the square root isn't quite the derivative of $({x}^{2}-16).$ But the derivative is $2x,$ so we're only out by a constant factor.\n\nSo we make the substitution\n\n$$\nu={x}^{2}-16.\n$$\n\nIts derivative is given by\n\n$$\n\\begin{aligned}\\frac{\\text{d}u}{\\text{d}x} & =2x\\,⟹\\,\\frac{1}{2}\\text{d}u=x\\,\\text{d}x,\\end{aligned}\n$$\n\nand we can now write our integral in terms of $u,$ as follows:\n\n$$\n\\begin{aligned}\\int x\\sqrt{{x}^{2}-16}\\,\\text{d}x & =\\int \\sqrt{{x}^{2}-16}\\cdot x\\,\\text{d}x \\\\  & =\\int \\sqrt{u}\\cdot \\frac{1}{2}\\text{d}u \\\\  & =\\frac{1}{2}\\int {u}^{1/2}\\,\\text{d}u\\end{aligned}\n$$\n\nFinally, we can solve the integral in terms of $u$ and then write the final result in terms of $x.$ We get\n\n$$\n\\begin{aligned}\\frac{1}{2}\\int {u}^{1/2}\\,\\text{d}u & =\\frac{1}{2}\\cdot \\frac{{u}^{3/2}}{(\\frac{3}{2})}+C \\\\  & =\\frac{1}{2}\\cdot \\frac{2}{3}\\cdot {u}^{3/2}+C \\\\  & =\\frac{1}{3}{u}^{3/2}+C \\\\  & =\\frac{1}{3}\\sqrt{{u}^{3}}+C \\\\  & =\\frac{1}{3}\\sqrt{({x}^{2}-16)^{3}}+C.\\end{aligned}\n$$",
+      ":question/difficulty": ":question.difficulty/moderate",
+      ":question/answer-fields": [
+        {
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "da27df06-8e15-57d0-876c-9d5331d12dab",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "3\\sqrt{({x}^{2}-16)^{3}}+C"
+            },
+            {
+              ":answer/id": "280e53ac-15b4-5350-9525-be9be4ce3616",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{2}\\sqrt{({x}^{2}-16)^{3}}+C"
+            },
+            {
+              ":answer/id": "fe63a80e-22b4-576d-840a-b2160274004d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "2\\sqrt{({x}^{2}-16)^{3}}+C"
+            },
+            {
+              ":answer/id": "59a90f95-2d3a-5f5c-96e4-8ae0ddddebd8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\sqrt{({x}^{2}-16)^{3}}+C"
+            },
+            {
+              ":answer/id": "84843dc4-f159-5a5d-a4ef-5a8cb1d08fbd",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "\\frac{1}{3}\\sqrt{({x}^{2}-16)^{3}}+C"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "84843dc4-f159-5a5d-a4ef-5a8cb1d08fbd"
+          ],
+          ":answer-field/id": "8ea96cc4-d44e-5ce8-8e3b-9c90e92c190c"
+        }
+      ],
+      ":question/id": "656c53b4-92cb-5c9c-b795-356c702d3eb6"
+    },
+    "generation": {
+      "version": "constant-power-substitution-v2-draft",
+      "generator_id": "6d27df3f-00b8-523f-a56c-43a057ae4954",
+      "seed": 41,
+      "template": "q-72467",
+      "profile": "q-72467",
+      "bank_profile": "q-72467",
+      "parameters": {
+        "b": -16
+      },
+      "mathematical_parameters": {
+        "k": 1,
+        "a": 1,
+        "m": 2,
+        "n": "1/2",
+        "b": -16
+      },
+      "mathematical_fingerprint": "44e21614388584f74f01282ba5732f3453861f3eff1a5954bf8adffd63487357",
+      "parameter_fingerprint": "44e21614388584f74f01282ba5732f3453861f3eff1a5954bf8adffd63487357",
+      "domain": {
+        "number_system": "real",
+        "constraint": "{x}^{2}-16>0",
+        "branch": "principal real square root",
+        "variable": "x"
+      },
+      "source_basis": 2275,
+      "basis": 2275,
+      "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "source_ids": [
+        "q-72467"
+      ],
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "evidence_role": "source-shaped parameterized normal record",
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none",
+      "sampling_policy": "Only the nonzero inner constant varies in -40..40; negative even radicands require positive shift. All other source parameters and ordered stages fixed.",
+      "math_format": "course-academy-tex-v1"
+    }
+  }
+]
