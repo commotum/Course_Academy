@@ -14,7 +14,7 @@ def check(r,sid=None):
   of=olds[sid][':question/answer-fields'][0];old=[H.signature(H.scalar(a[':answer/value']))for a in of[':answer-field/choices']];assert len(old)==len(sig)and all(sig.count(z)==1 for z in old);f=r['question'][':question/answer-fields'][0];correct=H.signature(H.scalar(of[':answer-field/correct'][':answer/value']));assert correct==H.signature(H.scalar(next(a[':answer/value']for a in f[':answer-field/choices']if a[':answer/id']==f[':answer-field/correct'][1])));N['source_banks']+=1;N['source_values']+=len(sig);N['source_keys']+=1
  tasks[r['question'][':question/difficulty'].split('/')[-1]].add(s.srepr(F))
 for sid,o in olds.items():
- case=next(c for c in json.load(open(D/'source-cases.json'))if c['source_id']==sid);q=case['record']['question'];assert q==o;N['raw']+=1;check(G.generate(G.difficulty(sid),profile=sid,parameters=G.source_parameters(sid)),sid)
+ case=next(c for c in json.load(open(D/'source-cases.json'))if c['source_id']==sid);q=case['record']['question'];assert q[':question/problem']==o[':question/problem'] and q[':question/worked-solution']==o[':question/worked-solution'];assert [(a[':answer/id'],a[':answer/value'])for f in q[':question/answer-fields']for a in f[':answer-field/choices']]==[(a[':answer/id'],a[':answer/value'])for f in o[':question/answer-fields']for a in f[':answer-field/choices']];N['raw']+=1;check(G.generate(G.difficulty(sid),profile=sid,parameters=G.source_parameters(sid)),sid)
  eligible=[p for p in G.all_parameters(sid)if G.eligible(sid,p)]
  for p in(eligible[0],eligible[-1]):check(G.generate(G.difficulty(sid),profile=sid,parameters=p))
 for p in G.all_parameters('authored-e-direct'):check(G.generate('easy',profile='authored-e-direct',parameters=p))

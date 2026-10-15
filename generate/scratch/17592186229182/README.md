@@ -1,4 +1,8 @@
-Unequal-rate variable-volume dilution generator; local review only, frozen after step 7.
+Unequal-rate variable-volume dilution generator. Inventory replenishment verified through database commit at math basis 2599 (prepared at 2598).
+
+Registered generator UUID: `37b98d39-b83f-58ad-afb3-d7dad2da616a`; script: `generate/scratch/17592186229182.py`. Five easy and two moderate questions were committed through `:application/ca-engine`, under the application `api.lock`, with a basis guard. Exact requests, preview, receipt, native grading and exact-basis readback are in `reference/replenishment/basis-2598/`. Verified fresh distinct inventory is easy=5, moderate=5, hard=5. All nine source questions and learner history were preserved.
+
+Read `classification-current.md` for all current source evidence and explicit normal-sampling limits. Historical `source.json` and the seven-mask source replay remain unchanged. The positive-transient and fractional-initial-mass source additions are validated, but those parameter branches are not sampled. Easy has 37 meaningful initial-mass tasks; changing context, seed, bank or option order does not increase that bound.
 
 Run `.venv/bin/python generate/scratch/17592186229182/validate.py` for full source, independent printed-math, shape, scope, identity and native engine checks.
 

@@ -102,7 +102,7 @@ def generate(difficulty='easy',seed=0,template=None,parameters=None,bank_profile
  prompt=fmt.normalize_prose(prompt);solution=fmt.normalize_prose(solution)
  # Keep the malformed raw original as ineligible evidence; serve a separately
  # documented presentation repair rather than bare italic operator letters.
- if sid=='q-351850':solution=solution.replace(r'\,arctan\,',r'\,\operatorname{arctan}\,')
+ if sid in ('q-351839','q-351850'):solution=solution.replace(r'\,arctan\,',r'\,\operatorname{arctan}\,')
  values=[]
  for fi,f in enumerate(old[':question/answer-fields']):
   factor=1 if t['field_shape']=='asin-argument'or(t['field_shape']=='atan-coefficient-argument'and fi==1)else d['bank_scale']
@@ -116,7 +116,7 @@ def generate(difficulty='easy',seed=0,template=None,parameters=None,bank_profile
  for f,vs,ci in values:
   fid=ident([qid,f[':answer-field/key']]);answers=[{':answer/id':ident([fid,v,old_a[':answer/id'] if vs.count(v)>1 else 'unique']),':answer/type':':answer.type/math',':answer/value':v}for v,old_a in zip(vs,f[':answer-field/choices'])]
   fields.append({':answer-field/id':fid,':answer-field/key':f[':answer-field/key'],':answer-field/type':f[':answer-field/type'][':db/ident'],':answer-field/choices':answers,':answer-field/correct':[':answer/id',answers[ci][':answer/id']]})
- return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+difficulty,':question/answer-fields':fields},'generation':{'version':VERSION,'seed':seed,'template':sid,'bank_profile':profile,'parameters':p,'source_ids':[sid],'source_basis':SOURCE['basis'],'lineage':SOURCE['lineage'],'original_parameters':original,'source_presentation_repair':sid=='q-351850' and original,'task_fingerprint':digest(task),'domain':'h,k builtin integers 1..9; positive scale; asin argument fragment k=1; principal asin [-pi/2,pi/2] and atan (-pi/2,pi/2); original normalized interval retained','dependencies':{'sympy':sp.__version__},'plots':'none'}}
+ return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+difficulty,':question/answer-fields':fields},'generation':{'version':VERSION,'seed':seed,'template':sid,'bank_profile':profile,'parameters':p,'source_ids':[sid],'source_basis':SOURCE['basis'],'lineage':SOURCE['lineage'],'original_parameters':original,'source_presentation_repair':sid in ('q-351839','q-351850') and original,'task_fingerprint':digest(task),'domain':'h,k builtin integers 1..9; positive scale; asin argument fragment k=1; principal asin [-pi/2,pi/2] and atan (-pi/2,pi/2); original normalized interval retained','dependencies':{'sympy':sp.__version__},'plots':'none'}}
 
 def batch(difficulty='all',count=1,seed=0):
  integer(seed,'seed');integer(count,'count',True)

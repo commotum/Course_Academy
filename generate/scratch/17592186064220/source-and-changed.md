@@ -1419,7 +1419,7 @@ Before substituting, we use the table below to change the limits from $x$ to $u.
 Using the above, we can now write the integral in terms of $u$ and evaluate:
 
 $$
-\begin{aligned}{\int }_{0}^{4}\frac{12}{3+27{x}^{2}}\,\text{d}x & =4{\int }_{0}^{4}\frac{1}{1+(3x)^{2}}\,\text{d}x \\  & =4{\int }_{0}^{12}\frac{1}{1+{u}^{2}}\,\cdot (\frac{1}{3}\text{d}u) \\  & =\frac{4}{3}{\int }_{0}^{12}\frac{\text{d}u}{1+{u}^{2}} \\  & =\frac{4}{3}\operatorname{arctan}⁡u{|}_{0}^{12} \\  & =\frac{4}{3}\operatorname{arctan}⁡(12)-\frac{4}{3}\operatorname{arctan}⁡(0) \\  & =\frac{4}{3}\,arctan\,(12)\end{aligned}
+\begin{aligned}{\int }_{0}^{4}\frac{12}{3+27{x}^{2}}\,\text{d}x & =4{\int }_{0}^{4}\frac{1}{1+(3x)^{2}}\,\text{d}x \\  & =4{\int }_{0}^{12}\frac{1}{1+{u}^{2}}\,\cdot (\frac{1}{3}\text{d}u) \\  & =\frac{4}{3}{\int }_{0}^{12}\frac{\text{d}u}{1+{u}^{2}} \\  & =\frac{4}{3}\operatorname{arctan}⁡u{|}_{0}^{12} \\  & =\frac{4}{3}\operatorname{arctan}⁡(12)-\frac{4}{3}\operatorname{arctan}⁡(0) \\  & =\frac{4}{3}\,\operatorname{arctan}\,(12)\end{aligned}
 $$
 
 ---

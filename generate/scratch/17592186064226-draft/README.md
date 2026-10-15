@@ -1,0 +1,13 @@
+# Isolated quotient-identity generator draft
+
+Run `.venv/bin/python -B generate/scratch/17592186064226-draft/validate.py` from the repository root. Preview with `.venv/bin/python -B generate/scratch/17592186064226-draft.py --difficulty all --count 1 --seed 821`.
+
+The frozen basis-2275 wrapper contains 19 Math Academy questions (6 easy,13 moderate). Every complete original bank replays:71 options including52 distractors. All original scale-1 tasks remain in normal public sampling. Hard has no observed questions and is explicitly authored from the source's two-term quotient reductions and already observed definite-evaluation workload.
+
+The bounded normal domain contains72 easy,141 moderate and384 hard distinct integrand/interval tasks across612 profile instances. Signed scalar variations preserve source prose and every operative display stage. Authored hard coefficients vary independently; endpoints stay inside a pole-free interval. No plots, extra substitution branch, database writes, registrations, manifest edits or engine edits are part of this draft.
+
+`review.md` pairs all originals with normal variants and demonstrates independent hard coefficient changes. `source-cases.json` contains original-ID fixtures only. `review-cases.json` contains normal generated variants. `rendered-math-readback.json` records every operative term and exact domain checks. `negative-mutations.json` demonstrates rejection of false intermediate stages even when the correct final result remains.
+
+Native grading is qualified: every canonical blank and correct radio selection is accepted, and every wrong value/owned distractor rejects. All462 tested equivalent blank submissions `(canonical)+0` falsely reject in the frozen engine. These are normal supported blank grading limitations, retained with exact submissions and actual native errors in `grading-qualifications.json`, not diagnostic response shapes. `native-report.json` reports the actual outcomes, and `validation.json` distinguishes this qualification from mathematical/fidelity verification. No engine fix is attempted.
+
+Limits: scalar sampling is conservative; inner source frequencies and source endpoint pairs are not generalized. Original distractor misconception interpretations are unresolved, so the entire observed expression patterns are transported exactly. Hard difficulty is authored and needs reviewer calibration. Source endpoint and TeX repairs are documented in `source-errors.json`. The registered numeric script and entire numeric evidence/cache tree are immutable; `registered-baseline.json` and `final-preservation.json` verify preservation. `freeze.json` hashes the generator and complete owned tree except its own self-referential manifest.

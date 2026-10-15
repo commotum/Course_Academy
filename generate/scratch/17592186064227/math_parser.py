@@ -59,9 +59,9 @@ def latex(s):
  return sp.sympify(''.join(out),locals={'x':X,'u':U,'C':C,'pi':sp.pi,'Abs':sp.Abs,'sqrt':sp.sqrt,**FUNCTIONS},rational=True)
 
 def clean(s):
- for t in (r'\text{d}x',r'\text{d}u',r'\textrm{d}x',r'\textrm{d}u'):s=s.replace(t,'1')
+ for t in (r'\text{d}x',r'\text{d}u',r'\textrm{d}x',r'\textrm{d}u'):s=s.replace(t,'{1}')
  return s.replace(r'\,','').replace(r'\cdot','*').strip().rstrip('.')
 
 def log_derivative(z,v):
  # d ln|f| = f'/f on each open domain component; no log identity rewrite.
- return sp.diff(z.replace(lambda t:t.func==sp.log and t.args[0].func==sp.Abs,lambda t:sp.log(t.args[0].args[0])),v)
+ return sp.diff(z.replace(lambda t:t.func==sp.log,lambda t:sp.log(t.args[0].replace(lambda a:a.func==sp.Abs,lambda a:a.args[0]))),v)

@@ -88,7 +88,7 @@ def easy(profile,p):
   bank=[-a*s.sin(x)-b*s.csc(x),F,a*s.cos(x)+b*s.sec(x),a*s.cos(x)-b*s.cot(x),a*s.sin(x)-b*s.cot(x)]
  prose=('We use the identity 'if f in('cot-sin','tan-cos')else'We multiply out the parentheses and then use the '+('identities 'if f=='cot-difference'else'identity '))+'$'+identity+',$ as follows:'
  prompt=('Calculate $'+I(body)+'.$')if f in('cot-sin','tan-cos')else'$'+I(body)+'=$'
- return prompt,prose+'\n\n'+aligned(stages),bank,F,{'exclusions':['sin(x)=0']if f in('cot-sin','cot-csc')else['cos(x)=0']if f in('tan-sum','tan-cos')else['sin(x)=0','cos(x)=0']}
+ return prompt,prose+'\n\n'+aligned(stages),bank,F,(s.srepr(s.trigsimp(scalar(body).rewrite(s.sin))),None,None),{'exclusions':['sin(x)=0']if f in('cot-sin','cot-csc')else['cos(x)=0']if f in('tan-sum','tan-cos')else['sin(x)=0','cos(x)=0']}
 
 def definite(profile,p):
  f=constraints(profile,p);a=p.get('a',1);b=p.get('b',1);k=p.get('k',1);L,H=ANGLES[p['l']],ANGLES[p['h']];lo,hi=L/k,H/k;z=tex(k*x);J=lambda t:integ(t,'x',lo,hi)
@@ -135,7 +135,7 @@ def definite(profile,p):
   evaluated=mul(scale,'('+evaluated_primitive(H)+')')+'-'+mul(scale,'('+evaluated_primitive(L)+')')
  tail=[primitive,endpoint,evaluated]
  if profile=='q-114304':
-  A,B=s.cos(L),s.cos(H);tail += [tex(s.Add(A,-B,evaluate=False)),r'rac{'+tex(s.Add(2*A,-2*B,evaluate=False))+'}{2}']
+  A,B=s.cos(L),s.cos(H);tail += [tex(s.Add(A,-B,evaluate=False)),r'\frac{'+tex(s.Add(2*A,-2*B,evaluate=False))+'}{2}']
  else:tail.append(tex(answer))
 
  if sub:
@@ -153,7 +153,7 @@ def definite(profile,p):
   D=s.cos(L)-s.cos(H);bank=[D,-2*D,-D,D/k,-D/k]
  else:bank=[answer]
  field=SOURCES[profile][':question/answer-fields'][0];blank=field[':answer-field/type'][':db/ident'].endswith('/blank');prompt=('Evaluate the following integral. Do not round the answer.\n\n'if blank else'')+'$'+J(body)+'=$'+('\n{{field-1}}'if blank else'')
- return prompt,sol,bank,answer,{'exclusions':['cos('+tex(k*x)+')=0'],'interval':[tex(lo),tex(hi)],'transformed_interval':[tex(L),tex(H)]}
+ return prompt,sol,bank,answer,(s.srepr(s.trigsimp(scalar(body).rewrite(s.sin))),s.srepr(lo),s.srepr(hi)),{'exclusions':['cos('+tex(k*x)+')=0'],'interval':[tex(lo),tex(hi)],'transformed_interval':[tex(L),tex(H)]}
 
 def uid(t):return str(uuid.uuid5(uuid.UUID(KP[':knowledge-point/id']),t))
 
@@ -166,26 +166,29 @@ def sample_parameters(profile,rng):
  if 'l'in base:p['l'],p['h']=sorted(rng.sample(list(ANGLES),2))
  return p
 
-def generate(difficulty,seed=0,template=None,parameters=None,bank_profile=None):
+def generate(difficulty,seed=0,template=None,parameters=None,bank_profile=None,profile=None):
  if difficulty not in SUPPORTED_LEVELS:raise ValueError('unsupported difficulty')
  if type(seed)is not int:raise ValueError('seed must be a builtin integer')
- rng=random.Random(seed);profile=bank_profile or template or rng.choice([q for q in PROFILES if level(q)==difficulty])
+ if profile is not None and bank_profile is not None and profile!=bank_profile:raise ValueError('conflicting profile arguments')
+ rng=random.Random(seed);profile=profile or bank_profile or template or rng.choice([q for q in PROFILES if level(q)==difficulty])
  if profile not in PROFILES or level(profile)!=difficulty or template not in(None,profile,PROFILES[profile][0]):raise ValueError('profile/difficulty mismatch')
  explicit=parameters is not None
  for attempt in range(200):
   p=dict(parameters)if explicit else sample_parameters(profile,rng);f=constraints(profile,p)
-  prompt,solution,bank,correct,domain=easy(profile,p)if difficulty=='easy'else definite(profile,p)
+  prompt,solution,bank,correct,assessed_math,domain=easy(profile,p)if difficulty=='easy'else definite(profile,p)
   compare=(lambda a,b:exact(s.diff(a-b,x)))if difficulty=='easy'else(lambda a,b:s.simplify(a-b)==0)
   chosen=[i for i,z in enumerate(bank)if compare(z,correct)]
   if len(chosen)==1 and all(not compare(a,b)for i,a in enumerate(bank)for b in bank[i+1:]):break
   if explicit:raise ValueError('whole selected profile collides at parameters')
  else:raise ValueError('no eligible instance')
  prompt=fmt.normalize_prose(prompt);solution=fmt.normalize_prose(solution);values=[fmt.normalize_tex(tex(z)+(r'+C'if difficulty=='easy'else''))for z in bank]
- task=hashlib.sha256(json.dumps([difficulty,prompt,domain],sort_keys=True).encode()).hexdigest();identity=hashlib.sha256(json.dumps([task,profile,values],sort_keys=True).encode()).hexdigest();qid=uid(identity);fid=uid(qid+':field')
+ task=hashlib.sha256(json.dumps([difficulty,assessed_math,domain],sort_keys=True).encode()).hexdigest();identity=hashlib.sha256(json.dumps([task,profile,values],sort_keys=True).encode()).hexdigest();qid=uid(identity);fid=uid(qid+':field')
  answers=[{':answer/id':uid(fid+':'+v),':answer/type':':answer.type/math',':answer/value':v}for v in values]
  oldf=SOURCES[profile][':question/answer-fields'][0]
  q={':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+difficulty,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':oldf[':answer-field/key'],':answer-field/type':oldf[':answer-field/type'][':db/ident'],':answer-field/choices':answers,':answer-field/correct':[':answer/id',answers[chosen[0]][':answer/id']]}]}
- rec={'knowledge_point':{'db_id':KP_ID,'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'seed':seed,'template':profile,'family':f,'bank_profile':profile,'parameters':p,'source_basis':SOURCE['basis'],'source_lineage':SOURCE['lineage'],'source_question':profile,'domain':domain,'task_fingerprint':task,'content_fingerprint':identity,'dependencies':{'python':sys.version.split()[0],'sympy':s.__version__},'eligible_for_learning':True,'recipe_policy':'One complete observed profile; symbolic slots; opaque interpretations explicitly unresolved in ledger.'}}
+ rec={'knowledge_point':{'db_id':KP_ID,'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'seed':seed,'template':profile,'family':f,'bank_profile':profile,'parameters':p,'source_basis':SOURCE['basis'],'source_lineage':SOURCE['lineage'],'source_question':profile,'domain':domain,'task_fingerprint':task,'mathematical_task_fingerprint':task,'content_fingerprint':identity,'dependencies':{'python':sys.version.split()[0],'sympy':s.__version__},'eligible_for_learning':True,'recipe_policy':'One complete observed profile; symbolic slots; opaque interpretations explicitly unresolved in ledger.'}}
+ for text in(prompt,solution,*values):
+  if any(ord(c)<32 and c not in'\n\t\r'for c in text):raise ValueError('unintended control byte')
  return fmt.validate_generated_record(rec)
 
 def batch(difficulty,count=1,seed=0):

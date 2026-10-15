@@ -54,6 +54,7 @@ def rowparts(t):
 
 def endpoint_terms(raw):
  text=clean(raw);depth=0
+ if '('not in text:return None
  for i,c in enumerate(text):
   if c=='-'and i>0 and depth==0:
    return E.scalar(text[:i]),-E.scalar(text[i+1:])
@@ -66,7 +67,7 @@ def endpoint_terms(raw):
   elif c==')':
    depth-=1
    if depth==0 and i==len(text)-1:
-    prefix=text[:start];co=E.scalar(prefix)if prefix not in('','-')else s.Integer(-1 if prefix=='-'else 1);body=text[start+1:i];d=0
+    prefix=text[:start].strip();prefix=prefix[:-len(r'\cdot')]if prefix.endswith(r'\cdot')else prefix;co=E.scalar(prefix)if prefix not in('','-')else s.Integer(-1 if prefix=='-'else 1);body=text[start+1:i];d=0
     for j,ch in enumerate(body):
      if ch=='-'and j>0 and d==0:return co*E.scalar(body[:j]),-co*E.scalar(body[j+1:])
      d+=(ch in '({')-(ch in ')}')
@@ -130,6 +131,14 @@ def check(rec,structural=True):
   f=rec['generation']['family'];assert len(list(rowparts(sol)))==EXPECTED_ROWS[f]+(rec['generation']['bank_profile']=='q-114304'),(f,len(list(rowparts(sol))))
   if f in('tan-sum','cot-square','cot-difference','cot-csc','sec-difference'):assert r'\cdot'in sol,'lost explicit distribution/identity stage'
   if f=='cot-square':assert sum('frac' in t for t in rowparts(sol))>=4,'lost quotient cancellation stage'
+  rows=list(rowparts(sol));distribution=rows[1]
+  if f in('tan-sum','cot-difference','cot-csc'):
+   token=r'\tan'if f=='tan-sum'else r'\cot';assert distribution.count(token)==2,'missing two distributed product factors'
+  if f=='cot-square':assert r'\cot^{2}'in distribution and distribution.count(r'\frac')==2,'lost unsimplified squared-factor distribution'
+  if f in('cos-tan','scaled-cos-tan','cot-sin','tan-cos','sec-cos-square','sec-difference'):assert r'\frac'in distribution and r'\cdot'in distribution,'lost explicit substituted product'
+  if f=='reciprocal-sec':assert r'\frac{\sin'in distribution and r'\cos'in distribution and r'\tan'not in distribution,'lost grouped reciprocal identity row'
+  if f=='reciprocal-cos-square':assert r'\frac'in distribution and '})^{2}'in distribution,'lost reciprocal factor square row'
+
  return notes
 
 def main():
@@ -145,6 +154,7 @@ def main():
   so,oo,oh=prompt(old);sn,no,nh=prompt(q);assert zero(so-sn)and oo==no and oh==nh
   # Prose is exact apart from normalized math and captured punctuation spaces.
   assert source_prose(old[':question/worked-solution'])==source_prose(q[':question/worked-solution']),(profile,source_prose(old[':question/worked-solution']),source_prose(q[':question/worked-solution']))
+  source_rec=copy.deepcopy(r);source_rec['question'][':question/problem']=G.fmt.normalize_prose(old[':question/problem']);source_rec['question'][':question/worked-solution']=G.fmt.normalize_prose(old[':question/worked-solution']);check(source_rec,False)
   summary['source_prose_matches']+=1;summary['source_bank_options']+=len(sourcebank);summary['source_distractors']+=len(sourcebank)-1;summary['source_complete_banks']+=1
   cases.append({'source_id':old[':db/id'],'math_academy_id':profile,'template':profile,'parameters':base,'bank_profile':profile})
   notes=[n];variants=[r]
@@ -163,6 +173,11 @@ def main():
     checks=[{'submitted':raw,'expected':'accepted','purpose':'canonical exact scalar'},{'submitted':r'\frac{'+G.tex(2*v)+'}{2}','expected':'accepted','purpose':'genuine uncollected equivalent'},{'submitted':G.tex(-v),'expected':'rejected','purpose':'reversed bounds/sign'},{'submitted':G.tex(v+1),'expected':'rejected','purpose':'incorrect endpoint arithmetic'}]
    engine.append({'label':profile+':'+str(j),'record':rec,'checks':checks})
   reviews.append({'profile':profile,'source':old,'at_original_parameters':r,'changed_parameters':variants[-1]})
+  # Algebraically equivalent replacement must still preserve operative stage.
+  rawsolution=r['question'][':question/worked-solution'];parts=list(rowparts(rawsolution));lost=copy.deepcopy(r);lost['question'][':question/worked-solution']=rawsolution.replace(parts[1],parts[2],1)
+  try:check(lost)
+  except (AssertionError,ValueError):summary['mutations_rejected']+=1
+  else:raise AssertionError('equality-preserving missing operative stage escaped '+profile)
   # Mutation is independent of generation metadata and must corrupt actual math.
   bad=copy.deepcopy(r);bad['question'][':question/worked-solution']=bad['question'][':question/worked-solution'].replace(r'\text{d}x',r'\cdot 2\,\text{d}x',1)
   try:check(bad)
@@ -190,6 +205,17 @@ def main():
     try:r=G.generate(G.level(profile),0,profile,p)
     except ValueError as e:assert 'collides'in str(e);continue
     check(r)
+  if 'l'in base:
+   endpoints=[]
+   for lower in G.ANGLES:
+    for upper in G.ANGLES:
+     if lower>=upper:continue
+     params=dict(base,l=lower,h=upper)
+     try:instance=G.generate(G.level(profile),0,profile,params)
+     except ValueError as err:
+      assert 'collides'in str(err);endpoints.append({'l':lower,'h':upper,'status':'whole-profile collision rejection'});continue
+     check(instance);endpoints.append({'l':lower,'h':upper,'status':'selected complete bank passed'})
+   summary['profiles'][profile]['all_endpoint_slot_pairs']=endpoints
   bad=copy.deepcopy(G.generate(G.level(profile),0,profile,base));bad['question'][':question/problem']+='\x0c'
   try:check(bad)
   except (AssertionError,ValueError):summary['mutations_rejected']+=1
@@ -203,7 +229,7 @@ def main():
   for chk in item['checks']:
    if chk['purpose']!='genuine uncollected equivalent':continue
    probe=copy.deepcopy(item);probe['checks']=[chk]
-   probe_path=HERE/'native-equivalent-probe.json';probe_report=HERE/'native-equivalent-probe-report.json';probe_path.write_text(json.dumps([probe]))
+   probe_path=Path('/tmp/kp64225-native-equivalent-probe.json');probe_report=Path('/tmp/kp64225-native-equivalent-probe-report.json');probe_path.write_text(json.dumps([probe]))
    result=subprocess.run([str(ROOT/'generate/runs/current/check-engine'),str(probe_path),str(probe_report)],text=True,capture_output=True)
    if result.returncode:
     outcome='rejected'if 'got rejected'in result.stderr else'unresolved'if 'got unresolved'in result.stderr else None
