@@ -45,6 +45,7 @@ def guard(sid,p):
  if set(p)!=set(SLOTS)or any(type(p[z])is not int for z in SLOTS):raise ValueError('builtin integer slots required')
  b,a,m,n,k,d=[p[z]for z in SLOTS];level=CONFIG[sid][0]
  if not(2<=b<=9 and 1<=a<=5 and 1<=m<=4 and 1<=k<=4 and 1<=d<=3):raise ValueError('comparable arithmetic bounds')
+ if (sid=='q-31394'and b<4)or(sid=='q-31401'and b<3)or(sid=='q-31399'and b<5):raise ValueError('all logarithm bases in selected profile must exceed one')
  if level=='easy'and not(a==m==1 and n in(1,2)):raise ValueError('easy log power backbone')
  if level=='moderate'and not(a==1 and 2<=m<=4 and n==1):raise ValueError('moderate powered argument backbone')
  if level=='hard'and not(m==1 and n==-1):raise ValueError('hard reciprocal logarithm backbone')
@@ -53,8 +54,9 @@ def guard(sid,p):
  if sid in('q-31397','q-31399','q-210752')and a!=1:raise ValueError('unscaled-argument source profile')
  return tuple(s.Integer(p[z])for z in SLOTS)
 
-def bank(sid,p):
- b,a,m,n,k,d=guard(sid,p);c=k/d;ln=s.log;L=Blog(a*x**m,b);L0=Blog(x,b);A=LogAbs(L);A0=LogAbs(L0);R=c*ln(b)/m;F=R*L**(n+1)/(n+1)if n!=-1 else R*A
+def bank(sid,p):return recipes(sid,*guard(sid,p))
+def recipes(sid,b,a,m,n,k,d):
+ c=k/d;ln=s.log;L=Blog(a*x**m,b);L0=Blog(x,b);A=LogAbs(L);A0=LogAbs(L0);R=c*ln(b)/m;F=R*L**(n+1)/(n+1)if CONFIG[sid][0]!='hard' else R*A
  # Each list is a complete observed bank, selected by sid before parameters.
  if sid=='q-31329':vals=[c*ln(b+1)*L/2,ln(x)*c*L**2/2,c*ln(b)*L/2,ln(x)*c*L**2/x,F]
  elif sid=='q-31394':vals=[c*ln(b)*Blog(x,b-2)/2,c*ln(b)*L/2,c*ln(x)*L**2/2,F,c*ln(x)*L**2/x]
@@ -117,7 +119,7 @@ def sample(sid,rng):
   # change their recipe roles. The n=2 source family varies this eligible slot.
   if level=='easy'and sid!='q-114020':n=1
   p=parameters((b,a,m,n,rng.randint(1,4),rng.randint(1,3)))
-  if sid in('q-31394','q-31401','q-31399')and b<(5 if sid=='q-31399'else 4):continue
+  if(sid=='q-31394'and b<4)or(sid=='q-31401'and b<3)or(sid=='q-31399'and b<5):continue
   try:
    vals,F=bank(sid,p)
    if sid not in ERRORS:
@@ -138,7 +140,11 @@ def generate(level,seed=0,template=None,parameters=None,profile=None,field_type=
  if profile not in('observed','repaired'):raise ValueError('profile')
  if profile=='repaired'and sid not in ERRORS:raise ValueError('repair profile only applies to documented source errors')
  p=dict(parameters)if parameters is not None else sample(sid,rng)
- prompt,solution,vals,F=render(sid,p,profile=='repaired');original=tuple(p[z]for z in SLOTS)==CONFIG[sid][1]
+ prompt,solution,vals,F=render(sid,p,profile=='repaired')
+ if not(sid in ERRORS and profile=='observed'):
+  ds=[derivative(v)for v in vals]
+  if any(equal(v,z)for i,v in enumerate(ds)for z in ds[:i]):raise ValueError('whole source profile collision; change parameters')
+ original=tuple(p[z]for z in SLOTS)==CONFIG[sid][1]
  values=[tex(v)+'+C'for v in vals]
  correctindex=next(i for i,v in enumerate(vals)if v==F)
  contents={'prompt':prompt,'solution':solution,'field':'radio','bank':values,'correct':correctindex};ch=digest(contents);qid=uid(ch);fid=uid(qid+'selection')

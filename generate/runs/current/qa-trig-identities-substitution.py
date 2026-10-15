@@ -13,6 +13,12 @@ def scalar(raw):
  raw=re.sub(r'(?<![A-Za-z\\])(sin|cos|tan|sec|cot|csc)(?![A-Za-z])',lambda m:'\\'+m[1]+' ',raw)
  return E.scalar(raw)
 B.scalar=scalar
+base_derivative=E.derivative
+def real_derivative(value,var,inner=None):
+ # d log(|g|^r)=r*g'/g on each actual real g!=0 component.
+ value=value.replace(lambda z:z.func==s.log and z.args[0].is_Pow and z.args[0].base.func==s.Abs,lambda z:z.args[0].exp*s.log(z.args[0].base))
+ return base_derivative(value,var,inner)
+E.derivative=real_derivative
 def zero(a,b=0):
  delta=s.cancel(a-b)
  if delta==0:return True
@@ -20,6 +26,12 @@ def zero(a,b=0):
  except s.PolynomialError:return s.simplify(s.trigsimp(delta))==0
 def equal(a,b):return s.simplify(s.expand_log(a-b))==0
 def clean(raw):return B.clean(H.measure_text(raw)).replace(r'\big','')
+def integral(raw):
+ text=clean(raw);at=text.index(r'\int');i=at+4
+ while text[i].isspace():i+=1
+ assert text[i]=='_';lo,i=B.group(text,i+1);assert text[i]=='^';hi,i=B.group(text,i+1)
+ m=re.search(E.DIFF,text[i:]);assert m;body=scalar(text[i:i+m.start()]);outside=text[:at]+'(i)'+text[i+m.end():];value=scalar(outside);symbol=E.P.locals_['i'];coef=s.expand(value).coeff(symbol);assert equal(value,coef*symbol)and not coef.has(x,u)
+ return s.Integer(1),coef*body,E.P.locals_[m[1]],scalar(lo),scalar(hi),''
 def parts(sol):
  for block in B.blocks(sol):
   if r'\begin{aligned}'not in block:continue
@@ -43,7 +55,7 @@ source=json.load(open(D/'source.json'));manifest=json.load(open(R/'manifest.json
 N=dict(records=0,source_banks=0,source_values=0,source_keys=0,formal_inputs=0,primitive_stages=0,differentials=0,bounds=0,individual_endpoint_components=0,values=0,pairs=0);tasks={l:set()for l in G.LEVELS}
 def check(rec,sid=None):
  q=rec['question'];sol=q[':question/worked-solution'];given=clean(next(b for b in B.blocks(q[':question/problem'])if r'\int'in b).split('=')[0].strip().rstrip('.,?'));definite=bool(re.search(r'\\int\s*_',given))
- if definite:c,F,v,L,U,end=B.integral(given);F=c*F;assert not end and v==x and L<U
+ if definite:c,F,v,L,U,end=integral(given);F=c*F;assert not end and v==x and L<U
  else:F,ops=E.side(given,x);assert len(ops)==1;L=U=None
  sm=re.search(r'\$u=(.*?)\$',sol);assert sm;V=scalar(sm[1]);der=s.diff(V,x)
  dm=next((b for b in B.blocks(sol)if r'\frac{\text{d}u}{\text{d}x}'in b),None)
@@ -53,7 +65,10 @@ def check(rec,sid=None):
    raw=raw.strip().rstrip('.').replace(r'\,','');raw=re.sub(E.DIFF,lambda m:'(j)'if m[1]=='u'else'(k)',raw);val=scalar(raw);j,k=E.P.locals_['j'],E.P.locals_['k'];assert s.diff(val,j,2)==0 and s.diff(val,k,2)==0;return val.subs({j:der,k:1})
   a,b=right.split('=');assert zero(measure(a),measure(b));N['differentials']+=2
  else:
-  dm=re.search(r'\$\\text\{d\}x=(.*?)\\text\{d\}u\.\$',sol);assert dm and zero(scalar(dm[1])*der,1);N['differentials']+=1
+  dm=re.search(r'\$(\\text\{d\}x=.*?)\$',sol);assert dm
+  a,b=dm[1].rstrip('.').split('=');j,k=E.P.locals_['j'],E.P.locals_['k']
+  measure=lambda raw:scalar(re.sub(E.DIFF,lambda m:'(j)'if m[1]=='u'else'(k)',raw)).subs({j:der,k:1})
+  assert zero(measure(a),measure(b));N['differentials']+=1
  terms=list(parts(sol));prim=None;expected=None;ul=uh=None
  if definite:
   table=re.findall(r'^\| \$([xu])\$ \| \$(.*?)\$ \| \$(.*?)\$ \|',sol,re.M);assert[t[0]for t in table]==['x','u'];ul,uh=map(scalar,table[1][1:]);assert all(equal(scalar(a),b)for a,b in zip(table[0][1:]+table[1][1:],[L,U,V.subs(x,L),V.subs(x,U)]));N['bounds']+=4
@@ -69,7 +84,7 @@ def check(rec,sid=None):
   if not definite:
    actual,ops=E.side(text,x,V);assert zero(actual,F),('operative integral/primitive',term,actual,F);N['formal_inputs']+=len(ops);N['primitive_stages']+=not bool(ops)
   elif r'\int'in text:
-   c,body,v,a,b,end=B.integral(text);assert not end and v in(x,u);assert equal(a,L if v==x else ul)and equal(b,U if v==x else uh);effective=c*body if v==x else c*body.subs(u,V)*der;assert zero(effective,F),('operative definite integral',term,effective,F);N['formal_inputs']+=1;N['bounds']+=2
+   c,body,v,a,b,end=integral(text);assert not end and v in(x,u);assert equal(a,L if v==x else ul)and equal(b,U if v==x else uh);effective=c*body if v==x else c*body.subs(u,V)*der;assert zero(effective,F),('operative definite integral',term,effective,F);N['formal_inputs']+=1;N['bounds']+=2
   elif '|_'in text:N['primitive_stages']+=1
   else:
    assert equal(scalar(text),expected),('definite value',term,expected)

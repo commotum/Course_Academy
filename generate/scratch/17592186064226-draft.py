@@ -16,11 +16,13 @@ def strict(v,n):
  if type(v) is not int:raise ValueError(n+' must be a built-in integer')
 def level(t):return SOURCES[t][':question/difficulty'][':db/ident'].split('/')[-1]
 def tex(z):return sp.latex(z)
+def operator_notation(text):
+ return re.sub(r'(?<![A-Za-z])\{(sin|cos|tan|sec|cot|csc)\}',lambda m:'\\'+m[1]+' ',text)
 def fix(s,t):
  # Captured malformed nested aligned environments are redundant wrappers.
  s=s.replace(r'\begin{aligned}\begin{aligned}',r'\begin{aligned}').replace(r'\end{aligned}\end{aligned}',r'\end{aligned}')
  if t=='q-73361':s=s.replace(r'\\  & (',r'\\  & =(')
- return fmt.normalize_prose(s)
+ return fmt.normalize_prose(operator_notation(s))
 def scaled(term,a):
  if a==1:return term
  term=term.strip().rstrip('.,');hasC=term.endswith('+C')
@@ -89,6 +91,12 @@ def generate(difficulty,seed=0,template=None,parameters=None):
   if set(slots)!={'scale'} or a not in SCALES:raise ValueError('outside declared slots')
   q=SOURCES[t];f=q[':question/answer-fields'][0];ft=f[':answer-field/type'][':db/ident'].split('/')[-1];key=f[':answer-field/key'];problem,solution=source_render(t,a)
   values=[fmt.normalize_tex(z[':answer/value']) if a==1 else tex(sp.expand(a*(p.scalar(z[':answer/value'])-p.C)+p.C)) if '+C' in z[':answer/value'] else tex(sp.simplify(a*p.scalar(z[':answer/value']))) for z in f[':answer-field/choices']]
+  if t=='q-74279':
+   # The captured +csc²/2 differs from cot²/2 only by a constant; they
+   # represent one primitive error. Keep the raw bank in source evidence and
+   # serve a labeled sign-error repair for the duplicate fourth distractor.
+   values[3]=tex(-a*sp.csc(4*p.x)**2/2+p.C)
+  values=[operator_notation(v)for v in values]
   ci=[z[':answer/id']for z in f[':answer-field/choices']].index(f[':answer-field/correct'][':answer/id']);sourceids=[q[':db/id']]
  if ft=='blank' and '{{'+key+'}}' not in problem:problem+='\n\n{{'+key+'}}'
  expr,lo,hi=p.integral(problem);mathkey=str((sp.sstr(canonical(expr)),str(lo),str(hi)))
@@ -96,7 +104,7 @@ def generate(difficulty,seed=0,template=None,parameters=None):
  for v in values:
   v=fmt.normalize_tex(v);choices.append({':answer/id':str(uuid.uuid5(uuid.UUID(fid),v)),':answer/type':':answer.type/math',':answer/value':v})
  q={':question/id':qid,':question/problem':problem,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+difficulty,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/'+ft,':answer-field/choices':choices,':answer-field/correct':[':answer/id',choices[ci][':answer/id']]}]}
- return fmt.validate_generated_record({'knowledge_point':{'db_id':KP,'id':KP_UUID,'title':K[':knowledge-point/title']},'question':q,'generation':{'generator_id':GENERATOR_ID,'version':VERSION,'seed':seed,'template':t,'profile':t,'parameters':slots,'source_basis':SOURCE['basis'],'lineage':SOURCE['lineage'],'source_question_ids':sourceids,'source':'basis-2275-frozen-snapshot','eligibility':'normal-public','authored_extension':difficulty=='hard','mathematical_key':mathkey,'domain':domains(t),'dependencies':{'sympy':sp.__version__,'python':sys.version.split()[0]},'plots':[]}})
+ return fmt.validate_generated_record({'knowledge_point':{'db_id':KP,'id':KP_UUID,'title':K[':knowledge-point/title']},'question':q,'generation':{'generator_id':GENERATOR_ID,'version':VERSION,'seed':seed,'template':t,'profile':t,'parameters':slots,'source_basis':SOURCE['basis'],'lineage':SOURCE['lineage'],'source_question_ids':sourceids,'source':'basis-2275-frozen-snapshot','eligibility':'normal-public','source_bank_repair':t=='q-74279','source_presentation_normalization':'legacy bare trig names to proper operators','authored_extension':difficulty=='hard','mathematical_key':mathkey,'domain':domains(t),'dependencies':{'sympy':sp.__version__,'python':sys.version.split()[0]},'plots':[]}})
 
 def canonical(expr):
  return sp.cancel(expr.xreplace({z:{sp.tan:sp.sin(z.args[0])/sp.cos(z.args[0]),sp.cot:sp.cos(z.args[0])/sp.sin(z.args[0]),sp.sec:1/sp.cos(z.args[0]),sp.csc:1/sp.sin(z.args[0])}[z.func]for z in expr.atoms(sp.tan,sp.cot,sp.sec,sp.csc)}))

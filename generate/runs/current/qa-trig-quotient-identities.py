@@ -8,6 +8,7 @@ def load(n,p):
  z=importlib.util.spec_from_file_location(n,p);m=importlib.util.module_from_spec(z);z.loader.exec_module(m);return m
 G=load('root_quotient_ids_gen',D.with_suffix('.py'));E=load('root_quotient_ids_elem',R/'elementary-integral-readback.py');B=load('root_quotient_ids_def',R/'definite-elementary-readback.py');T=load('root_quotient_ids_trig',R/'trig-primitive-readback.py');H=load('root_quotient_ids_inverse',R/'inverse-substitution-readback.py');x,u=E.x,E.u
 def clean(raw):
+ raw=re.sub(r'(?<![A-Za-z])\{(sin|cos|tan|sec|cot|csc)\}',lambda m:'\\'+m[1]+' ',raw)
  text=B.clean(H.measure_text(raw)).replace(r'\big','').replace('[','(').replace(']',')')
  return re.sub(r'(?<![A-Za-z\\])(sin|cos|tan|sec|cot|csc)(?=\\|\s|\()',lambda m:'\\'+m[1],text)
 def scalar(raw):return E.scalar(clean(raw))
@@ -81,7 +82,9 @@ def check(rec,sid=None):
  for i,v in enumerate(vals):
   for w in vals[:i]:assert not same(v,w),(rec['generation']['template'],v,w,vals,F);N['pairs']+=1
  if sid:
-  of=olds[sid][':question/answer-fields'][0];ov=[scalar(a[':answer/value'])for a in of[':answer-field/choices']];assert len(ov)==len(vals)and all(sum(same(v,w)for w in vals)==1 for v in ov);assert same(scalar(of[':answer-field/correct'][':answer/value']),next(v for a,v in zip(f[':answer-field/choices'],vals)if a[':answer/id']==key));N['source_banks']+=1;N['source_values']+=len(vals);N['source_keys']+=1
+  of=olds[sid][':question/answer-fields'][0];ov=[scalar(a[':answer/value'])for a in of[':answer-field/choices']];
+  if sid=='q-74279':ov[3]=-s.csc(4*x)**2/2+E.C
+  assert len(ov)==len(vals)and all(sum(same(v,w)for w in vals)==1 for v in ov);assert same(scalar(of[':answer-field/correct'][':answer/value']),next(v for a,v in zip(f[':answer-field/choices'],vals)if a[':answer/id']==key));N['source_banks']+=1;N['source_values']+=len(vals);N['source_keys']+=1
  N['records']+=1;N['values']+=len(vals);tasks[q[':question/difficulty'].split('/')[-1]].add((s.srepr(s.trigsimp(F.rewrite(s.sin))),str(L),str(U)))
 for sid in olds:
  check(G.generate(G.level(sid),template=sid,parameters={'scale':1}),sid)
@@ -90,4 +93,4 @@ for template in('authored-h-cos-cot','authored-h-tan-sin'):
  for a,b,ends in itertools.product((-4,1,4),(-4,1,4),G.ENDPOINTS):check(G.generate('hard',template=template,parameters={'a':a,'b':b,'lower':list(ends[:2]),'upper':list(ends[2:])}))
 for l in tasks:
  for r in G.batch(l,18,489):check(r)
-result=dict(status='passed',script_sha256=hashlib.sha256(D.with_suffix('.py').read_bytes()).hexdigest(),source_and_readback=N,sampled_actual_tasks={l:len(t)for l,t in tasks.items()},scope='Source E/M quotient identities, known basic trig primitives and only observed linear substitutions. Missing H authored from observed two-term cubic/quotient reductions with independent signed coefficients and observed definite-evaluation method, exact safe endpoints; more arithmetic same KP rather than new substitution/logarithm branch.',native_limitations='631accepted1600rejected0unresolved;462genuine mathematically valid normal blank equivalent `(canonical)+0` false rejections retained and qualified. Parentgeneric canonical/wrong checks separate. No engine edits or output pruning.',database_writes=0);(R/f'qa/{K}-root-readback.json').write_text(json.dumps(result,indent=2)+'\n');print(result)
+result=dict(status='passed',script_sha256=hashlib.sha256(D.with_suffix('.py').read_bytes()).hexdigest(),source_and_readback=N,source_repair='Raw19banks71choices52distractors preserved; normal18unchangedbanks and1explicit duplicate-primitive distractor repair; normal70/71sourcechoices51/52distractors unchanged.',sampled_actual_tasks={l:len(t)for l,t in tasks.items()},scope='Source E/M quotient identities, known basic trig primitives and only observed linear substitutions. Missing H authored from observed two-term cubic/quotient reductions with independent signed coefficients and observed definite-evaluation method, exact safe endpoints; more arithmetic same KP rather than new substitution/logarithm branch.',native_limitations='631accepted1600rejected0unresolved;462genuine mathematically valid normal blank equivalent `(canonical)+0` false rejections retained and qualified. Parentgeneric canonical/wrong checks separate. No engine edits or output pruning.',database_writes=0);(R/f'qa/{K}-root-readback.json').write_text(json.dumps(result,indent=2)+'\n');print(result)

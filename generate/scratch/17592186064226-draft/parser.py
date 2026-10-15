@@ -22,6 +22,7 @@ def scalar(t):
   t=t[:m.start()]+v+t[j:]
  while (m:=re.search(r'\\(sin|cos|tan|cot|sec|csc)',t)):
   j=m.end();power='1'
+  while t[j:j+1]==' ':j+=1
   if t[j:j+1]=='^':
    if t[j+1]=='{':power,j=group(t,j+1)
    else:power=t[j+1];j+=2

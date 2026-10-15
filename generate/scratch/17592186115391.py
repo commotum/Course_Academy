@@ -23,7 +23,7 @@ BASE=Path(__file__).with_suffix('')
 SOURCE=json.loads((BASE/'source.json').read_text())
 QUESTIONS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
 T=sp.Symbol('t',positive=True)
-VEC_RE=re.compile(r'\[\\begin\{aligned\}.*?\\end\{aligned\}\]|⟨.*?⟩',re.S)
+VEC_RE=re.compile(r'\[\\begin\{aligned\}.*?\\end\{aligned\}\]|\\begin\{bmatrix\}.*?\\end\{bmatrix\}|⟨.*?⟩',re.S)
 D=r'\frac{\text{d}}{\text{d}t}'
 TRANS=standard_transformations+(implicit_multiplication_application,)
 
@@ -69,6 +69,7 @@ def parse(text):
 
 def cells(vector):
     if vector.startswith('⟨'):return re.split(r'(?<!\\),',vector[1:-1])
+    if vector.startswith(r'\begin{bmatrix}'):return vector[len(r'\begin{bmatrix}'):-len(r'\end{bmatrix}')].split(r'\\')
     return vector[len(r'[\begin{aligned}'):-len(r'\end{aligned}]')].split(r'\\')
 
 def vector_read(vector):return [parse(x) for x in cells(vector)]
@@ -76,7 +77,7 @@ def vector_read(vector):return [parse(x) for x in cells(vector)]
 def equal(a,b):return sp.simplify(sp.trigsimp(a-b))==0
 def vequal(a,b):return len(a)==len(b) and all(equal(x,y) for x,y in zip(a,b))
 def tex(x):return sp.latex(x).replace(r'\log',r'\ln')
-def vector(v,angle=False):return ('⟨'+r',\,'.join(tex(x) for x in v)+'⟩') if angle else r'[\begin{aligned}'+r' \\ '.join(tex(x) for x in v)+r'\end{aligned}]'
+def vector(v,angle=False):return ('⟨'+r',\,'.join(tex(x) for x in v)+'⟩') if angle else r'\begin{bmatrix}'+r' \\ '.join(tex(x) for x in v)+r'\end{bmatrix}'
 
 def scale_cell(cell,c):
     """A complete component slot, including a derivative's whole argument."""
@@ -92,6 +93,7 @@ def scale_vector(raw,scales):
     rawcells=cells(raw)
     out=[scale_cell(x,c) for x,c in zip(rawcells,scales)]
     if raw.startswith('⟨'):return '⟨'+','.join(out)+'⟩'
+    if raw.startswith(r'\begin{bmatrix}'):return r'\begin{bmatrix}'+r'\\'.join(out)+r'\end{bmatrix}'
     return r'[\begin{aligned}'+r'\\'.join(out)+r'\end{aligned}]'
 
 def scale_text(raw,scales):return VEC_RE.sub(lambda m:scale_vector(m.group(),scales),raw)
@@ -137,7 +139,7 @@ def authored(level,p):
 
 def derivative_vector(v,angle=False):
     cs=[D+'('+tex(x)+')' for x in v]
-    return ('⟨'+r',\,'.join(cs)+'⟩') if angle else r'[\begin{aligned}'+r' \\ '.join(cs)+r'\end{aligned}]'
+    return ('⟨'+r',\,'.join(cs)+'⟩') if angle else r'\begin{bmatrix}'+r' \\ '.join(cs)+r'\end{bmatrix}'
 
 def authored_solution(u,v,angle=False):
     up=sp.diff(u,T);vp=[sp.diff(x,T) for x in v]

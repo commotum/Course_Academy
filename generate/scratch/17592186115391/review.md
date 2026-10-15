@@ -90,11 +90,11 @@ $$
 
 Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}2 \sin{\left(t \right)}\\8 - 2 t\\3 \cdot 5^{t}\end{aligned}]$ and $u(t)={t}^{2}.$
 
-- $[\begin{aligned}4 t \sin{\left(t \right)} \\ - 4 t^{2} + 16 t \\ 6 \cdot 5^{t} t\end{aligned}]$
-- $[\begin{aligned}2 t^{2} \cos{\left(t \right)} \\ - 2 t^{2} \\ 3 \cdot 5^{t} t^{2} \ln{\left(5 \right)}\end{aligned}]$
-- $[\begin{aligned}2 t^{2} \cos{\left(t \right)} + 4 t \sin{\left(t \right)} \\ - 6 t^{2} + 16 t \\ 3 \cdot 5^{t} t^{2} \ln{\left(5 \right)} + 6 \cdot 5^{t} t\end{aligned}]$
-- $[\begin{aligned}4 t \cos{\left(t \right)} \\ - 4 t \\ 6 \cdot 5^{t} t \ln{\left(5 \right)}\end{aligned}]$
-- $[\begin{aligned}- 2 t^{2} \cos{\left(t \right)} + 4 t \sin{\left(t \right)} \\ - 2 t^{2} + 16 t \\ - 3 \cdot 5^{t} t^{2} \ln{\left(5 \right)} + 6 \cdot 5^{t} t\end{aligned}]$
+- $\begin{bmatrix}4 t \sin{\left(t \right)} \\ - 4 t^{2} + 16 t \\ 6 \cdot 5^{t} t\end{bmatrix}$
+- $\begin{bmatrix}2 t^{2} \cos{\left(t \right)} \\ - 2 t^{2} \\ 3 \cdot 5^{t} t^{2} \ln{\left(5 \right)}\end{bmatrix}$
+- $\begin{bmatrix}2 t^{2} \cos{\left(t \right)} + 4 t \sin{\left(t \right)} \\ - 6 t^{2} + 16 t \\ 3 \cdot 5^{t} t^{2} \ln{\left(5 \right)} + 6 \cdot 5^{t} t\end{bmatrix}$
+- $\begin{bmatrix}4 t \cos{\left(t \right)} \\ - 4 t \\ 6 \cdot 5^{t} t \ln{\left(5 \right)}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{2} \cos{\left(t \right)} + 4 t \sin{\left(t \right)} \\ - 2 t^{2} + 16 t \\ - 3 \cdot 5^{t} t^{2} \ln{\left(5 \right)} + 6 \cdot 5^{t} t\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -298,11 +298,11 @@ $$
 
 Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}2 \sin{\left(t \right)}\\- \tan{\left(t \right)}\\3\end{aligned}]$ and $u(t)=-\operatorname{cos}⁡t.$
 
-- $[\begin{aligned}2 \sin^{2}{\left(t \right)} \\ - \sin{\left(t \right)} \tan{\left(t \right)} \\ 3 \sin{\left(t \right)}\end{aligned}]$
-- $[\begin{aligned}- 2 \cos^{2}{\left(t \right)} \\ \cos{\left(t \right)} \tan^{2}{\left(t \right)} + \cos{\left(t \right)} \\ 0\end{aligned}]$
-- $[\begin{aligned}2 \sin^{2}{\left(t \right)} - 2 \cos^{2}{\left(t \right)} \\ - \sin{\left(t \right)} \tan{\left(t \right)} + \cos{\left(t \right)} \tan^{2}{\left(t \right)} + \cos{\left(t \right)} \\ 3 \sin{\left(t \right)}\end{aligned}]$
-- $[\begin{aligned}2 \sin^{2}{\left(t \right)} + 2 \cos{\left(t \right)} \\ - \sin{\left(t \right)} \tan{\left(t \right)} - \tan^{2}{\left(t \right)} - 1 \\ 3 \sin{\left(t \right)}\end{aligned}]$
-- $[\begin{aligned}2 \sin^{2}{\left(t \right)} + 2 \cos^{2}{\left(t \right)} \\ - \sin{\left(t \right)} \tan{\left(t \right)} - \cos{\left(t \right)} \tan^{2}{\left(t \right)} - \cos{\left(t \right)} \\ 3 \sin{\left(t \right)}\end{aligned}]$
+- $\begin{bmatrix}2 \sin^{2}{\left(t \right)} \\ - \sin{\left(t \right)} \tan{\left(t \right)} \\ 3 \sin{\left(t \right)}\end{bmatrix}$
+- $\begin{bmatrix}- 2 \cos^{2}{\left(t \right)} \\ \cos{\left(t \right)} \tan^{2}{\left(t \right)} + \cos{\left(t \right)} \\ 0\end{bmatrix}$
+- $\begin{bmatrix}2 \sin^{2}{\left(t \right)} - 2 \cos^{2}{\left(t \right)} \\ - \sin{\left(t \right)} \tan{\left(t \right)} + \cos{\left(t \right)} \tan^{2}{\left(t \right)} + \cos{\left(t \right)} \\ 3 \sin{\left(t \right)}\end{bmatrix}$
+- $\begin{bmatrix}2 \sin^{2}{\left(t \right)} + 2 \cos{\left(t \right)} \\ - \sin{\left(t \right)} \tan{\left(t \right)} - \tan^{2}{\left(t \right)} - 1 \\ 3 \sin{\left(t \right)}\end{bmatrix}$
+- $\begin{bmatrix}2 \sin^{2}{\left(t \right)} + 2 \cos^{2}{\left(t \right)} \\ - \sin{\left(t \right)} \tan{\left(t \right)} - \cos{\left(t \right)} \tan^{2}{\left(t \right)} - \cos{\left(t \right)} \\ 3 \sin{\left(t \right)}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -866,11 +866,11 @@ $$
 
 Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}2 t\\- t^{2}\\3 t^{3}\end{aligned}]$ and $u(t)=\operatorname{ln}⁡t.$
 
-- $[\begin{aligned}2 \\ - t \\ 3 t^{2}\end{aligned}]$
-- $[\begin{aligned}2 \ln{\left(t \right)} \\ - 2 t \ln{\left(t \right)} \\ 9 t^{2} \ln{\left(t \right)}\end{aligned}]$
-- $[\begin{aligned}2 \ln{\left(t \right)} + 2 \\ - 2 t \ln{\left(t \right)} - t \\ 9 t^{2} \ln{\left(t \right)} + 3 t^{2}\end{aligned}]$
-- $[\begin{aligned}\frac{2}{t} \\ -2 \\ 9 t\end{aligned}]$
-- $[\begin{aligned}2 - 2 \ln{\left(t \right)} \\ 2 t \ln{\left(t \right)} - t \\ - 9 t^{2} \ln{\left(t \right)} + 3 t^{2}\end{aligned}]$
+- $\begin{bmatrix}2 \\ - t \\ 3 t^{2}\end{bmatrix}$
+- $\begin{bmatrix}2 \ln{\left(t \right)} \\ - 2 t \ln{\left(t \right)} \\ 9 t^{2} \ln{\left(t \right)}\end{bmatrix}$
+- $\begin{bmatrix}2 \ln{\left(t \right)} + 2 \\ - 2 t \ln{\left(t \right)} - t \\ 9 t^{2} \ln{\left(t \right)} + 3 t^{2}\end{bmatrix}$
+- $\begin{bmatrix}\frac{2}{t} \\ -2 \\ 9 t\end{bmatrix}$
+- $\begin{bmatrix}2 - 2 \ln{\left(t \right)} \\ 2 t \ln{\left(t \right)} - t \\ - 9 t^{2} \ln{\left(t \right)} + 3 t^{2}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -978,11 +978,11 @@ $$
 
 Find ${(u(t)f(t))}^{′}$ where $f(t)=[\begin{aligned}8 t - 2\\- 3 t - 2\\15 t + 18\end{aligned}]$ and $u(t)=2t-3.$
 
-- $[\begin{aligned}16 t - 4 \\ - 6 t - 4 \\ 30 t + 36\end{aligned}]$
-- $[\begin{aligned}16 t - 24 \\ 9 - 6 t \\ 30 t - 45\end{aligned}]$
-- $[\begin{aligned}32 t - 28 \\ 5 - 12 t \\ 60 t - 9\end{aligned}]$
-- $[\begin{aligned}16 \\ -6 \\ 30\end{aligned}]$
-- $[\begin{aligned}20 \\ -13 \\ 81\end{aligned}]$
+- $\begin{bmatrix}16 t - 4 \\ - 6 t - 4 \\ 30 t + 36\end{bmatrix}$
+- $\begin{bmatrix}16 t - 24 \\ 9 - 6 t \\ 30 t - 45\end{bmatrix}$
+- $\begin{bmatrix}32 t - 28 \\ 5 - 12 t \\ 60 t - 9\end{bmatrix}$
+- $\begin{bmatrix}16 \\ -6 \\ 30\end{bmatrix}$
+- $\begin{bmatrix}20 \\ -13 \\ 81\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -1090,11 +1090,11 @@ $$
 
 Find ${(u(t)f(t))}^{′}$ where $f(t)=[\begin{aligned}2 e^{t}\\-8\\3 e^{- t}\end{aligned}]$ and $u(t)={t}^{2}.$
 
-- $[\begin{aligned}4 t e^{t} \\ - 16 t \\ 6 t e^{- t}\end{aligned}]$
-- $[\begin{aligned}2 t^{2} e^{t} \\ 0 \\ - 3 t^{2} e^{- t}\end{aligned}]$
-- $[\begin{aligned}2 t^{2} e^{t} + 4 t e^{t} \\ - 16 t \\ - 3 t^{2} e^{- t} + 6 t e^{- t}\end{aligned}]$
-- $[\begin{aligned}4 t e^{t} \\ 0 \\ - 6 t e^{- t}\end{aligned}]$
-- $[\begin{aligned}- 2 t^{2} e^{t} + 4 t e^{t} \\ - 16 t \\ 3 t^{2} e^{- t} + 6 t e^{- t}\end{aligned}]$
+- $\begin{bmatrix}4 t e^{t} \\ - 16 t \\ 6 t e^{- t}\end{bmatrix}$
+- $\begin{bmatrix}2 t^{2} e^{t} \\ 0 \\ - 3 t^{2} e^{- t}\end{bmatrix}$
+- $\begin{bmatrix}2 t^{2} e^{t} + 4 t e^{t} \\ - 16 t \\ - 3 t^{2} e^{- t} + 6 t e^{- t}\end{bmatrix}$
+- $\begin{bmatrix}4 t e^{t} \\ 0 \\ - 6 t e^{- t}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{2} e^{t} + 4 t e^{t} \\ - 16 t \\ 3 t^{2} e^{- t} + 6 t e^{- t}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -1202,11 +1202,11 @@ $$
 
 Find ${(u(t)f(t))}^{′}$ where $f(t)=[\begin{aligned}2 e^{t}\\- t^{3}\\3 e^{2 t}\end{aligned}]$ and $u(t)={e}^{-t}.$
 
-- $[\begin{aligned}-2 \\ t^{3} e^{- t} \\ - 3 e^{t}\end{aligned}]$
-- $[\begin{aligned}2 \\ - 3 t^{2} e^{- t} \\ 6 e^{t}\end{aligned}]$
-- $[\begin{aligned}0 \\ t^{3} e^{- t} - 3 t^{2} e^{- t} \\ 3 e^{t}\end{aligned}]$
-- $[\begin{aligned}2 e^{t} - 2 \\ t^{3} e^{- t} - 3 t^{2} \\ 6 e^{2 t} - 3 e^{t}\end{aligned}]$
-- $[\begin{aligned}-4 \\ t^{3} e^{- t} + 3 t^{2} e^{- t} \\ - 9 e^{t}\end{aligned}]$
+- $\begin{bmatrix}-2 \\ t^{3} e^{- t} \\ - 3 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}2 \\ - 3 t^{2} e^{- t} \\ 6 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}0 \\ t^{3} e^{- t} - 3 t^{2} e^{- t} \\ 3 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}2 e^{t} - 2 \\ t^{3} e^{- t} - 3 t^{2} \\ 6 e^{2 t} - 3 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}-4 \\ t^{3} e^{- t} + 3 t^{2} e^{- t} \\ - 9 e^{t}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -1314,11 +1314,11 @@ $$
 
 Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}4 \sin{\left(t \right)}\\- \cos{\left(t \right)}\\3 e^{t}\end{aligned}]$ and $u(t)=\operatorname{sin}⁡t.$
 
-- $[\begin{aligned}4 \sin{\left(t \right)} \cos{\left(t \right)} \\ - \cos^{2}{\left(t \right)} \\ 3 e^{t} \cos{\left(t \right)}\end{aligned}]$
-- $[\begin{aligned}4 \sin{\left(t \right)} \cos{\left(t \right)} \\ \sin^{2}{\left(t \right)} \\ 3 e^{t} \sin{\left(t \right)}\end{aligned}]$
-- $[\begin{aligned}8 \sin{\left(t \right)} \cos{\left(t \right)} \\ \sin^{2}{\left(t \right)} - \cos^{2}{\left(t \right)} \\ 3 e^{t} \sin{\left(t \right)} + 3 e^{t} \cos{\left(t \right)}\end{aligned}]$
-- $[\begin{aligned}4 \sin{\left(t \right)} \cos{\left(t \right)} + 4 \cos{\left(t \right)} \\ \sin{\left(t \right)} - \cos^{2}{\left(t \right)} \\ 3 e^{t} \cos{\left(t \right)} + 3 e^{t}\end{aligned}]$
-- $[\begin{aligned}0 \\ - \sin^{2}{\left(t \right)} - \cos^{2}{\left(t \right)} \\ - 3 e^{t} \sin{\left(t \right)} + 3 e^{t} \cos{\left(t \right)}\end{aligned}]$
+- $\begin{bmatrix}4 \sin{\left(t \right)} \cos{\left(t \right)} \\ - \cos^{2}{\left(t \right)} \\ 3 e^{t} \cos{\left(t \right)}\end{bmatrix}$
+- $\begin{bmatrix}4 \sin{\left(t \right)} \cos{\left(t \right)} \\ \sin^{2}{\left(t \right)} \\ 3 e^{t} \sin{\left(t \right)}\end{bmatrix}$
+- $\begin{bmatrix}8 \sin{\left(t \right)} \cos{\left(t \right)} \\ \sin^{2}{\left(t \right)} - \cos^{2}{\left(t \right)} \\ 3 e^{t} \sin{\left(t \right)} + 3 e^{t} \cos{\left(t \right)}\end{bmatrix}$
+- $\begin{bmatrix}4 \sin{\left(t \right)} \cos{\left(t \right)} + 4 \cos{\left(t \right)} \\ \sin{\left(t \right)} - \cos^{2}{\left(t \right)} \\ 3 e^{t} \cos{\left(t \right)} + 3 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}0 \\ - \sin^{2}{\left(t \right)} - \cos^{2}{\left(t \right)} \\ - 3 e^{t} \sin{\left(t \right)} + 3 e^{t} \cos{\left(t \right)}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -1426,11 +1426,11 @@ $$
 
 Find ${(u(t)f(t))}^{′}$ where $f(t)=[\begin{aligned}2 e^{3 t}\\- e^{4 t}\\3 e^{5 t}\end{aligned}]$ and $u(t)=t.$
 
-- $[\begin{aligned}2 e^{3 t} \\ - e^{4 t} \\ 3 e^{5 t}\end{aligned}]$
-- $[\begin{aligned}6 t e^{3 t} \\ - 4 t e^{4 t} \\ 15 t e^{5 t}\end{aligned}]$
-- $[\begin{aligned}6 t e^{3 t} + 2 e^{3 t} \\ - 4 t e^{4 t} - e^{4 t} \\ 15 t e^{5 t} + 3 e^{5 t}\end{aligned}]$
-- $[\begin{aligned}6 e^{3 t} \\ - 4 e^{4 t} \\ 15 e^{5 t}\end{aligned}]$
-- $[\begin{aligned}- 6 t e^{3 t} + 2 e^{3 t} \\ 4 t e^{4 t} - e^{4 t} \\ - 15 t e^{5 t} + 3 e^{5 t}\end{aligned}]$
+- $\begin{bmatrix}2 e^{3 t} \\ - e^{4 t} \\ 3 e^{5 t}\end{bmatrix}$
+- $\begin{bmatrix}6 t e^{3 t} \\ - 4 t e^{4 t} \\ 15 t e^{5 t}\end{bmatrix}$
+- $\begin{bmatrix}6 t e^{3 t} + 2 e^{3 t} \\ - 4 t e^{4 t} - e^{4 t} \\ 15 t e^{5 t} + 3 e^{5 t}\end{bmatrix}$
+- $\begin{bmatrix}6 e^{3 t} \\ - 4 e^{4 t} \\ 15 e^{5 t}\end{bmatrix}$
+- $\begin{bmatrix}- 6 t e^{3 t} + 2 e^{3 t} \\ 4 t e^{4 t} - e^{4 t} \\ - 15 t e^{5 t} + 3 e^{5 t}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -1538,11 +1538,11 @@ $$
 
 Find ${(u(t)f(t))}^{′}$ where $f(t)=[\begin{aligned}4 t^{3} - 6\\- t^{2} - 1\\12 t - 21\end{aligned}]$ and $u(t)={e}^{t}.$
 
-- $[\begin{aligned}4 t^{3} e^{t} - 6 e^{t} \\ - t^{2} e^{t} - e^{t} \\ 12 t e^{t} - 21 e^{t}\end{aligned}]$
-- $[\begin{aligned}12 t^{2} e^{t} \\ - 2 t e^{t} \\ 12 e^{t}\end{aligned}]$
-- $[\begin{aligned}4 t^{3} e^{t} + 12 t^{2} e^{t} - 6 e^{t} \\ - t^{2} e^{t} - 2 t e^{t} - e^{t} \\ 12 t e^{t} - 9 e^{t}\end{aligned}]$
-- $[\begin{aligned}4 t^{3} e^{t} + 12 t^{2} - 6 e^{t} \\ - t^{2} e^{t} - 2 t - e^{t} \\ 12 t e^{t} - 21 e^{t} + 12\end{aligned}]$
-- $[\begin{aligned}4 t^{3} e^{t} - 12 t^{2} e^{t} - 6 e^{t} \\ - t^{2} e^{t} + 2 t e^{t} - e^{t} \\ 12 t e^{t} - 33 e^{t}\end{aligned}]$
+- $\begin{bmatrix}4 t^{3} e^{t} - 6 e^{t} \\ - t^{2} e^{t} - e^{t} \\ 12 t e^{t} - 21 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}12 t^{2} e^{t} \\ - 2 t e^{t} \\ 12 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}4 t^{3} e^{t} + 12 t^{2} e^{t} - 6 e^{t} \\ - t^{2} e^{t} - 2 t e^{t} - e^{t} \\ 12 t e^{t} - 9 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}4 t^{3} e^{t} + 12 t^{2} - 6 e^{t} \\ - t^{2} e^{t} - 2 t - e^{t} \\ 12 t e^{t} - 21 e^{t} + 12\end{bmatrix}$
+- $\begin{bmatrix}4 t^{3} e^{t} - 12 t^{2} e^{t} - 6 e^{t} \\ - t^{2} e^{t} + 2 t e^{t} - e^{t} \\ 12 t e^{t} - 33 e^{t}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -1564,13 +1564,13 @@ $$
 
 ## Generated authored_easy seed 0
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}t + 1 \\ - 3 e^{t} \\ - t^{3}\end{aligned}]$ and $u(t)=t^{2}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}t + 1 \\ - 3 e^{t} \\ - t^{3}\end{bmatrix}$ and $u(t)=t^{2}.$
 
-- $[\begin{aligned}3 t^{2} + 2 t \\ - 3 t^{2} e^{t} - 6 t e^{t} \\ - 5 t^{4}\end{aligned}]$
-- $[\begin{aligned}2 t^{2} + 2 t \\ - 6 t e^{t} \\ - 2 t^{4}\end{aligned}]$
-- $[\begin{aligned}t^{2} \\ - 3 t^{2} e^{t} \\ - 3 t^{4}\end{aligned}]$
-- $[\begin{aligned}t^{2} + 2 t \\ 3 t^{2} e^{t} - 6 t e^{t} \\ t^{4}\end{aligned}]$
-- $[\begin{aligned}2 t \\ - 6 t e^{t} \\ - 6 t^{3}\end{aligned}]$
+- $\begin{bmatrix}3 t^{2} + 2 t \\ - 3 t^{2} e^{t} - 6 t e^{t} \\ - 5 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}2 t^{2} + 2 t \\ - 6 t e^{t} \\ - 2 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}t^{2} \\ - 3 t^{2} e^{t} \\ - 3 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}t^{2} + 2 t \\ 3 t^{2} e^{t} - 6 t e^{t} \\ t^{4}\end{bmatrix}$
+- $\begin{bmatrix}2 t \\ - 6 t e^{t} \\ - 6 t^{3}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -1581,24 +1581,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(t + 1) \\ \frac{\text{d}}{\text{d}t}(- 3 e^{t}) \\ \frac{\text{d}}{\text{d}t}(- t^{3})\end{aligned}]=[\begin{aligned}1 \\ - 3 e^{t} \\ - 3 t^{2}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(t + 1) \\ \frac{\text{d}}{\text{d}t}(- 3 e^{t}) \\ \frac{\text{d}}{\text{d}t}(- t^{3})\end{bmatrix}=\begin{bmatrix}1 \\ - 3 e^{t} \\ - 3 t^{2}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)[\begin{aligned}t + 1 \\ - 3 e^{t} \\ - t^{3}\end{aligned}]+(t^{2})[\begin{aligned}1 \\ - 3 e^{t} \\ - 3 t^{2}\end{aligned}]\\&=[\begin{aligned}2 t \left(t + 1\right) \\ - 6 t e^{t} \\ - 2 t^{4}\end{aligned}]+[\begin{aligned}t^{2} \\ - 3 t^{2} e^{t} \\ - 3 t^{4}\end{aligned}]\\&=[\begin{aligned}t \left(3 t + 2\right) \\ 3 t \left(- t - 2\right) e^{t} \\ - 5 t^{4}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)\begin{bmatrix}t + 1 \\ - 3 e^{t} \\ - t^{3}\end{bmatrix}+(t^{2})\begin{bmatrix}1 \\ - 3 e^{t} \\ - 3 t^{2}\end{bmatrix}\\&=\begin{bmatrix}2 t \left(t + 1\right) \\ - 6 t e^{t} \\ - 2 t^{4}\end{bmatrix}+\begin{bmatrix}t^{2} \\ - 3 t^{2} e^{t} \\ - 3 t^{4}\end{bmatrix}\\&=\begin{bmatrix}t \left(3 t + 2\right) \\ 3 t \left(- t - 2\right) e^{t} \\ - 5 t^{4}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_easy seed 1
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}2 - 2 t \\ - 3 e^{t} \\ - t^{3}\end{aligned}]$ and $u(t)=t^{2}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}2 - 2 t \\ - 3 e^{t} \\ - t^{3}\end{bmatrix}$ and $u(t)=t^{2}.$
 
-- $[\begin{aligned}- 4 t \\ - 6 t e^{t} \\ - 6 t^{3}\end{aligned}]$
-- $[\begin{aligned}- 4 t^{2} + 4 t \\ - 6 t e^{t} \\ - 2 t^{4}\end{aligned}]$
-- $[\begin{aligned}- 2 t^{2} \\ - 3 t^{2} e^{t} \\ - 3 t^{4}\end{aligned}]$
-- $[\begin{aligned}- 2 t^{2} + 4 t \\ 3 t^{2} e^{t} - 6 t e^{t} \\ t^{4}\end{aligned}]$
-- $[\begin{aligned}- 6 t^{2} + 4 t \\ - 3 t^{2} e^{t} - 6 t e^{t} \\ - 5 t^{4}\end{aligned}]$
+- $\begin{bmatrix}- 4 t \\ - 6 t e^{t} \\ - 6 t^{3}\end{bmatrix}$
+- $\begin{bmatrix}- 4 t^{2} + 4 t \\ - 6 t e^{t} \\ - 2 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{2} \\ - 3 t^{2} e^{t} \\ - 3 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{2} + 4 t \\ 3 t^{2} e^{t} - 6 t e^{t} \\ t^{4}\end{bmatrix}$
+- $\begin{bmatrix}- 6 t^{2} + 4 t \\ - 3 t^{2} e^{t} - 6 t e^{t} \\ - 5 t^{4}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -1609,24 +1609,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(2 - 2 t) \\ \frac{\text{d}}{\text{d}t}(- 3 e^{t}) \\ \frac{\text{d}}{\text{d}t}(- t^{3})\end{aligned}]=[\begin{aligned}-2 \\ - 3 e^{t} \\ - 3 t^{2}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(2 - 2 t) \\ \frac{\text{d}}{\text{d}t}(- 3 e^{t}) \\ \frac{\text{d}}{\text{d}t}(- t^{3})\end{bmatrix}=\begin{bmatrix}-2 \\ - 3 e^{t} \\ - 3 t^{2}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)[\begin{aligned}2 - 2 t \\ - 3 e^{t} \\ - t^{3}\end{aligned}]+(t^{2})[\begin{aligned}-2 \\ - 3 e^{t} \\ - 3 t^{2}\end{aligned}]\\&=[\begin{aligned}2 t \left(2 - 2 t\right) \\ - 6 t e^{t} \\ - 2 t^{4}\end{aligned}]+[\begin{aligned}- 2 t^{2} \\ - 3 t^{2} e^{t} \\ - 3 t^{4}\end{aligned}]\\&=[\begin{aligned}2 t \left(2 - 3 t\right) \\ 3 t \left(- t - 2\right) e^{t} \\ - 5 t^{4}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)\begin{bmatrix}2 - 2 t \\ - 3 e^{t} \\ - t^{3}\end{bmatrix}+(t^{2})\begin{bmatrix}-2 \\ - 3 e^{t} \\ - 3 t^{2}\end{bmatrix}\\&=\begin{bmatrix}2 t \left(2 - 2 t\right) \\ - 6 t e^{t} \\ - 2 t^{4}\end{bmatrix}+\begin{bmatrix}- 2 t^{2} \\ - 3 t^{2} e^{t} \\ - 3 t^{4}\end{bmatrix}\\&=\begin{bmatrix}2 t \left(2 - 3 t\right) \\ 3 t \left(- t - 2\right) e^{t} \\ - 5 t^{4}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_easy seed 2
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}- 3 t - 3 \\ - 3 e^{t} \\ - t^{3}\end{aligned}]$ and $u(t)=t^{2}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}- 3 t - 3 \\ - 3 e^{t} \\ - t^{3}\end{bmatrix}$ and $u(t)=t^{2}.$
 
-- $[\begin{aligned}- 3 t^{2} - 6 t \\ 3 t^{2} e^{t} - 6 t e^{t} \\ t^{4}\end{aligned}]$
-- $[\begin{aligned}- 9 t^{2} - 6 t \\ - 3 t^{2} e^{t} - 6 t e^{t} \\ - 5 t^{4}\end{aligned}]$
-- $[\begin{aligned}- 6 t \\ - 6 t e^{t} \\ - 6 t^{3}\end{aligned}]$
-- $[\begin{aligned}- 6 t^{2} - 6 t \\ - 6 t e^{t} \\ - 2 t^{4}\end{aligned}]$
-- $[\begin{aligned}- 3 t^{2} \\ - 3 t^{2} e^{t} \\ - 3 t^{4}\end{aligned}]$
+- $\begin{bmatrix}- 3 t^{2} - 6 t \\ 3 t^{2} e^{t} - 6 t e^{t} \\ t^{4}\end{bmatrix}$
+- $\begin{bmatrix}- 9 t^{2} - 6 t \\ - 3 t^{2} e^{t} - 6 t e^{t} \\ - 5 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}- 6 t \\ - 6 t e^{t} \\ - 6 t^{3}\end{bmatrix}$
+- $\begin{bmatrix}- 6 t^{2} - 6 t \\ - 6 t e^{t} \\ - 2 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}- 3 t^{2} \\ - 3 t^{2} e^{t} \\ - 3 t^{4}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -1637,24 +1637,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(- 3 t - 3) \\ \frac{\text{d}}{\text{d}t}(- 3 e^{t}) \\ \frac{\text{d}}{\text{d}t}(- t^{3})\end{aligned}]=[\begin{aligned}-3 \\ - 3 e^{t} \\ - 3 t^{2}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(- 3 t - 3) \\ \frac{\text{d}}{\text{d}t}(- 3 e^{t}) \\ \frac{\text{d}}{\text{d}t}(- t^{3})\end{bmatrix}=\begin{bmatrix}-3 \\ - 3 e^{t} \\ - 3 t^{2}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)[\begin{aligned}- 3 t - 3 \\ - 3 e^{t} \\ - t^{3}\end{aligned}]+(t^{2})[\begin{aligned}-3 \\ - 3 e^{t} \\ - 3 t^{2}\end{aligned}]\\&=[\begin{aligned}2 t \left(- 3 t - 3\right) \\ - 6 t e^{t} \\ - 2 t^{4}\end{aligned}]+[\begin{aligned}- 3 t^{2} \\ - 3 t^{2} e^{t} \\ - 3 t^{4}\end{aligned}]\\&=[\begin{aligned}3 t \left(- 3 t - 2\right) \\ 3 t \left(- t - 2\right) e^{t} \\ - 5 t^{4}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)\begin{bmatrix}- 3 t - 3 \\ - 3 e^{t} \\ - t^{3}\end{bmatrix}+(t^{2})\begin{bmatrix}-3 \\ - 3 e^{t} \\ - 3 t^{2}\end{bmatrix}\\&=\begin{bmatrix}2 t \left(- 3 t - 3\right) \\ - 6 t e^{t} \\ - 2 t^{4}\end{bmatrix}+\begin{bmatrix}- 3 t^{2} \\ - 3 t^{2} e^{t} \\ - 3 t^{4}\end{bmatrix}\\&=\begin{bmatrix}3 t \left(- 3 t - 2\right) \\ 3 t \left(- t - 2\right) e^{t} \\ - 5 t^{4}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_easy seed 3
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}2 - 2 t \\ 2 e^{t} \\ - 2 t^{3}\end{aligned}]$ and $u(t)=t^{2}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}2 - 2 t \\ 2 e^{t} \\ - 2 t^{3}\end{bmatrix}$ and $u(t)=t^{2}.$
 
-- $[\begin{aligned}- 2 t^{2} \\ 2 t^{2} e^{t} \\ - 6 t^{4}\end{aligned}]$
-- $[\begin{aligned}- 6 t^{2} + 4 t \\ 2 t^{2} e^{t} + 4 t e^{t} \\ - 10 t^{4}\end{aligned}]$
-- $[\begin{aligned}- 4 t \\ 4 t e^{t} \\ - 12 t^{3}\end{aligned}]$
-- $[\begin{aligned}- 2 t^{2} + 4 t \\ - 2 t^{2} e^{t} + 4 t e^{t} \\ 2 t^{4}\end{aligned}]$
-- $[\begin{aligned}- 4 t^{2} + 4 t \\ 4 t e^{t} \\ - 4 t^{4}\end{aligned}]$
+- $\begin{bmatrix}- 2 t^{2} \\ 2 t^{2} e^{t} \\ - 6 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}- 6 t^{2} + 4 t \\ 2 t^{2} e^{t} + 4 t e^{t} \\ - 10 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}- 4 t \\ 4 t e^{t} \\ - 12 t^{3}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{2} + 4 t \\ - 2 t^{2} e^{t} + 4 t e^{t} \\ 2 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}- 4 t^{2} + 4 t \\ 4 t e^{t} \\ - 4 t^{4}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -1665,24 +1665,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(2 - 2 t) \\ \frac{\text{d}}{\text{d}t}(2 e^{t}) \\ \frac{\text{d}}{\text{d}t}(- 2 t^{3})\end{aligned}]=[\begin{aligned}-2 \\ 2 e^{t} \\ - 6 t^{2}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(2 - 2 t) \\ \frac{\text{d}}{\text{d}t}(2 e^{t}) \\ \frac{\text{d}}{\text{d}t}(- 2 t^{3})\end{bmatrix}=\begin{bmatrix}-2 \\ 2 e^{t} \\ - 6 t^{2}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)[\begin{aligned}2 - 2 t \\ 2 e^{t} \\ - 2 t^{3}\end{aligned}]+(t^{2})[\begin{aligned}-2 \\ 2 e^{t} \\ - 6 t^{2}\end{aligned}]\\&=[\begin{aligned}2 t \left(2 - 2 t\right) \\ 4 t e^{t} \\ - 4 t^{4}\end{aligned}]+[\begin{aligned}- 2 t^{2} \\ 2 t^{2} e^{t} \\ - 6 t^{4}\end{aligned}]\\&=[\begin{aligned}2 t \left(2 - 3 t\right) \\ 2 t \left(t + 2\right) e^{t} \\ - 10 t^{4}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)\begin{bmatrix}2 - 2 t \\ 2 e^{t} \\ - 2 t^{3}\end{bmatrix}+(t^{2})\begin{bmatrix}-2 \\ 2 e^{t} \\ - 6 t^{2}\end{bmatrix}\\&=\begin{bmatrix}2 t \left(2 - 2 t\right) \\ 4 t e^{t} \\ - 4 t^{4}\end{bmatrix}+\begin{bmatrix}- 2 t^{2} \\ 2 t^{2} e^{t} \\ - 6 t^{4}\end{bmatrix}\\&=\begin{bmatrix}2 t \left(2 - 3 t\right) \\ 2 t \left(t + 2\right) e^{t} \\ - 10 t^{4}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_easy seed 4
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}- 2 t - 1 \\ - 3 e^{t} \\ 3 t^{3}\end{aligned}]$ and $u(t)=t^{2}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}- 2 t - 1 \\ - 3 e^{t} \\ 3 t^{3}\end{bmatrix}$ and $u(t)=t^{2}.$
 
-- $[\begin{aligned}- 2 t^{2} \\ - 3 t^{2} e^{t} \\ 9 t^{4}\end{aligned}]$
-- $[\begin{aligned}- 4 t^{2} - 2 t \\ - 6 t e^{t} \\ 6 t^{4}\end{aligned}]$
-- $[\begin{aligned}- 6 t^{2} - 2 t \\ - 3 t^{2} e^{t} - 6 t e^{t} \\ 15 t^{4}\end{aligned}]$
-- $[\begin{aligned}- 4 t \\ - 6 t e^{t} \\ 18 t^{3}\end{aligned}]$
-- $[\begin{aligned}- 2 t^{2} - 2 t \\ 3 t^{2} e^{t} - 6 t e^{t} \\ - 3 t^{4}\end{aligned}]$
+- $\begin{bmatrix}- 2 t^{2} \\ - 3 t^{2} e^{t} \\ 9 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}- 4 t^{2} - 2 t \\ - 6 t e^{t} \\ 6 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}- 6 t^{2} - 2 t \\ - 3 t^{2} e^{t} - 6 t e^{t} \\ 15 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}- 4 t \\ - 6 t e^{t} \\ 18 t^{3}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{2} - 2 t \\ 3 t^{2} e^{t} - 6 t e^{t} \\ - 3 t^{4}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -1693,24 +1693,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(- 2 t - 1) \\ \frac{\text{d}}{\text{d}t}(- 3 e^{t}) \\ \frac{\text{d}}{\text{d}t}(3 t^{3})\end{aligned}]=[\begin{aligned}-2 \\ - 3 e^{t} \\ 9 t^{2}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(- 2 t - 1) \\ \frac{\text{d}}{\text{d}t}(- 3 e^{t}) \\ \frac{\text{d}}{\text{d}t}(3 t^{3})\end{bmatrix}=\begin{bmatrix}-2 \\ - 3 e^{t} \\ 9 t^{2}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)[\begin{aligned}- 2 t - 1 \\ - 3 e^{t} \\ 3 t^{3}\end{aligned}]+(t^{2})[\begin{aligned}-2 \\ - 3 e^{t} \\ 9 t^{2}\end{aligned}]\\&=[\begin{aligned}2 t \left(- 2 t - 1\right) \\ - 6 t e^{t} \\ 6 t^{4}\end{aligned}]+[\begin{aligned}- 2 t^{2} \\ - 3 t^{2} e^{t} \\ 9 t^{4}\end{aligned}]\\&=[\begin{aligned}2 t \left(- 3 t - 1\right) \\ 3 t \left(- t - 2\right) e^{t} \\ 15 t^{4}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)\begin{bmatrix}- 2 t - 1 \\ - 3 e^{t} \\ 3 t^{3}\end{bmatrix}+(t^{2})\begin{bmatrix}-2 \\ - 3 e^{t} \\ 9 t^{2}\end{bmatrix}\\&=\begin{bmatrix}2 t \left(- 2 t - 1\right) \\ - 6 t e^{t} \\ 6 t^{4}\end{bmatrix}+\begin{bmatrix}- 2 t^{2} \\ - 3 t^{2} e^{t} \\ 9 t^{4}\end{bmatrix}\\&=\begin{bmatrix}2 t \left(- 3 t - 1\right) \\ 3 t \left(- t - 2\right) e^{t} \\ 15 t^{4}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_easy seed 5
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}2 t - 1 \\ 3 e^{t} \\ - t^{3}\end{aligned}]$ and $u(t)=t^{2}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}2 t - 1 \\ 3 e^{t} \\ - t^{3}\end{bmatrix}$ and $u(t)=t^{2}.$
 
-- $[\begin{aligned}4 t^{2} - 2 t \\ 6 t e^{t} \\ - 2 t^{4}\end{aligned}]$
-- $[\begin{aligned}2 t^{2} - 2 t \\ - 3 t^{2} e^{t} + 6 t e^{t} \\ t^{4}\end{aligned}]$
-- $[\begin{aligned}2 t^{2} \\ 3 t^{2} e^{t} \\ - 3 t^{4}\end{aligned}]$
-- $[\begin{aligned}6 t^{2} - 2 t \\ 3 t^{2} e^{t} + 6 t e^{t} \\ - 5 t^{4}\end{aligned}]$
-- $[\begin{aligned}4 t \\ 6 t e^{t} \\ - 6 t^{3}\end{aligned}]$
+- $\begin{bmatrix}4 t^{2} - 2 t \\ 6 t e^{t} \\ - 2 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}2 t^{2} - 2 t \\ - 3 t^{2} e^{t} + 6 t e^{t} \\ t^{4}\end{bmatrix}$
+- $\begin{bmatrix}2 t^{2} \\ 3 t^{2} e^{t} \\ - 3 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}6 t^{2} - 2 t \\ 3 t^{2} e^{t} + 6 t e^{t} \\ - 5 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}4 t \\ 6 t e^{t} \\ - 6 t^{3}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -1721,24 +1721,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(2 t - 1) \\ \frac{\text{d}}{\text{d}t}(3 e^{t}) \\ \frac{\text{d}}{\text{d}t}(- t^{3})\end{aligned}]=[\begin{aligned}2 \\ 3 e^{t} \\ - 3 t^{2}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(2 t - 1) \\ \frac{\text{d}}{\text{d}t}(3 e^{t}) \\ \frac{\text{d}}{\text{d}t}(- t^{3})\end{bmatrix}=\begin{bmatrix}2 \\ 3 e^{t} \\ - 3 t^{2}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)[\begin{aligned}2 t - 1 \\ 3 e^{t} \\ - t^{3}\end{aligned}]+(t^{2})[\begin{aligned}2 \\ 3 e^{t} \\ - 3 t^{2}\end{aligned}]\\&=[\begin{aligned}2 t \left(2 t - 1\right) \\ 6 t e^{t} \\ - 2 t^{4}\end{aligned}]+[\begin{aligned}2 t^{2} \\ 3 t^{2} e^{t} \\ - 3 t^{4}\end{aligned}]\\&=[\begin{aligned}2 t \left(3 t - 1\right) \\ 3 t \left(t + 2\right) e^{t} \\ - 5 t^{4}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)\begin{bmatrix}2 t - 1 \\ 3 e^{t} \\ - t^{3}\end{bmatrix}+(t^{2})\begin{bmatrix}2 \\ 3 e^{t} \\ - 3 t^{2}\end{bmatrix}\\&=\begin{bmatrix}2 t \left(2 t - 1\right) \\ 6 t e^{t} \\ - 2 t^{4}\end{bmatrix}+\begin{bmatrix}2 t^{2} \\ 3 t^{2} e^{t} \\ - 3 t^{4}\end{bmatrix}\\&=\begin{bmatrix}2 t \left(3 t - 1\right) \\ 3 t \left(t + 2\right) e^{t} \\ - 5 t^{4}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_easy seed 6
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}2 t - 3 \\ e^{t} \\ - t^{3}\end{aligned}]$ and $u(t)=t^{2}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}2 t - 3 \\ e^{t} \\ - t^{3}\end{bmatrix}$ and $u(t)=t^{2}.$
 
-- $[\begin{aligned}4 t^{2} - 6 t \\ 2 t e^{t} \\ - 2 t^{4}\end{aligned}]$
-- $[\begin{aligned}2 t^{2} \\ t^{2} e^{t} \\ - 3 t^{4}\end{aligned}]$
-- $[\begin{aligned}2 t^{2} - 6 t \\ - t^{2} e^{t} + 2 t e^{t} \\ t^{4}\end{aligned}]$
-- $[\begin{aligned}4 t \\ 2 t e^{t} \\ - 6 t^{3}\end{aligned}]$
-- $[\begin{aligned}6 t^{2} - 6 t \\ t^{2} e^{t} + 2 t e^{t} \\ - 5 t^{4}\end{aligned}]$
+- $\begin{bmatrix}4 t^{2} - 6 t \\ 2 t e^{t} \\ - 2 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}2 t^{2} \\ t^{2} e^{t} \\ - 3 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}2 t^{2} - 6 t \\ - t^{2} e^{t} + 2 t e^{t} \\ t^{4}\end{bmatrix}$
+- $\begin{bmatrix}4 t \\ 2 t e^{t} \\ - 6 t^{3}\end{bmatrix}$
+- $\begin{bmatrix}6 t^{2} - 6 t \\ t^{2} e^{t} + 2 t e^{t} \\ - 5 t^{4}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -1749,24 +1749,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(2 t - 3) \\ \frac{\text{d}}{\text{d}t}(e^{t}) \\ \frac{\text{d}}{\text{d}t}(- t^{3})\end{aligned}]=[\begin{aligned}2 \\ e^{t} \\ - 3 t^{2}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(2 t - 3) \\ \frac{\text{d}}{\text{d}t}(e^{t}) \\ \frac{\text{d}}{\text{d}t}(- t^{3})\end{bmatrix}=\begin{bmatrix}2 \\ e^{t} \\ - 3 t^{2}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)[\begin{aligned}2 t - 3 \\ e^{t} \\ - t^{3}\end{aligned}]+(t^{2})[\begin{aligned}2 \\ e^{t} \\ - 3 t^{2}\end{aligned}]\\&=[\begin{aligned}2 t \left(2 t - 3\right) \\ 2 t e^{t} \\ - 2 t^{4}\end{aligned}]+[\begin{aligned}2 t^{2} \\ t^{2} e^{t} \\ - 3 t^{4}\end{aligned}]\\&=[\begin{aligned}6 t \left(t - 1\right) \\ t \left(t + 2\right) e^{t} \\ - 5 t^{4}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)\begin{bmatrix}2 t - 3 \\ e^{t} \\ - t^{3}\end{bmatrix}+(t^{2})\begin{bmatrix}2 \\ e^{t} \\ - 3 t^{2}\end{bmatrix}\\&=\begin{bmatrix}2 t \left(2 t - 3\right) \\ 2 t e^{t} \\ - 2 t^{4}\end{bmatrix}+\begin{bmatrix}2 t^{2} \\ t^{2} e^{t} \\ - 3 t^{4}\end{bmatrix}\\&=\begin{bmatrix}6 t \left(t - 1\right) \\ t \left(t + 2\right) e^{t} \\ - 5 t^{4}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_easy seed 7
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}- t - 2 \\ e^{t} \\ 3 t^{3}\end{aligned}]$ and $u(t)=t^{2}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}- t - 2 \\ e^{t} \\ 3 t^{3}\end{bmatrix}$ and $u(t)=t^{2}.$
 
-- $[\begin{aligned}- t^{2} \\ t^{2} e^{t} \\ 9 t^{4}\end{aligned}]$
-- $[\begin{aligned}- t^{2} - 4 t \\ - t^{2} e^{t} + 2 t e^{t} \\ - 3 t^{4}\end{aligned}]$
-- $[\begin{aligned}- 2 t^{2} - 4 t \\ 2 t e^{t} \\ 6 t^{4}\end{aligned}]$
-- $[\begin{aligned}- 2 t \\ 2 t e^{t} \\ 18 t^{3}\end{aligned}]$
-- $[\begin{aligned}- 3 t^{2} - 4 t \\ t^{2} e^{t} + 2 t e^{t} \\ 15 t^{4}\end{aligned}]$
+- $\begin{bmatrix}- t^{2} \\ t^{2} e^{t} \\ 9 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}- t^{2} - 4 t \\ - t^{2} e^{t} + 2 t e^{t} \\ - 3 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{2} - 4 t \\ 2 t e^{t} \\ 6 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t \\ 2 t e^{t} \\ 18 t^{3}\end{bmatrix}$
+- $\begin{bmatrix}- 3 t^{2} - 4 t \\ t^{2} e^{t} + 2 t e^{t} \\ 15 t^{4}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -1777,24 +1777,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(- t - 2) \\ \frac{\text{d}}{\text{d}t}(e^{t}) \\ \frac{\text{d}}{\text{d}t}(3 t^{3})\end{aligned}]=[\begin{aligned}-1 \\ e^{t} \\ 9 t^{2}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(- t - 2) \\ \frac{\text{d}}{\text{d}t}(e^{t}) \\ \frac{\text{d}}{\text{d}t}(3 t^{3})\end{bmatrix}=\begin{bmatrix}-1 \\ e^{t} \\ 9 t^{2}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)[\begin{aligned}- t - 2 \\ e^{t} \\ 3 t^{3}\end{aligned}]+(t^{2})[\begin{aligned}-1 \\ e^{t} \\ 9 t^{2}\end{aligned}]\\&=[\begin{aligned}2 t \left(- t - 2\right) \\ 2 t e^{t} \\ 6 t^{4}\end{aligned}]+[\begin{aligned}- t^{2} \\ t^{2} e^{t} \\ 9 t^{4}\end{aligned}]\\&=[\begin{aligned}t \left(- 3 t - 4\right) \\ t \left(t + 2\right) e^{t} \\ 15 t^{4}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)\begin{bmatrix}- t - 2 \\ e^{t} \\ 3 t^{3}\end{bmatrix}+(t^{2})\begin{bmatrix}-1 \\ e^{t} \\ 9 t^{2}\end{bmatrix}\\&=\begin{bmatrix}2 t \left(- t - 2\right) \\ 2 t e^{t} \\ 6 t^{4}\end{bmatrix}+\begin{bmatrix}- t^{2} \\ t^{2} e^{t} \\ 9 t^{4}\end{bmatrix}\\&=\begin{bmatrix}t \left(- 3 t - 4\right) \\ t \left(t + 2\right) e^{t} \\ 15 t^{4}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_easy seed 8
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}- 2 t - 1 \\ e^{t} \\ - 2 t^{3}\end{aligned}]$ and $u(t)=t^{2}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}- 2 t - 1 \\ e^{t} \\ - 2 t^{3}\end{bmatrix}$ and $u(t)=t^{2}.$
 
-- $[\begin{aligned}- 4 t \\ 2 t e^{t} \\ - 12 t^{3}\end{aligned}]$
-- $[\begin{aligned}- 4 t^{2} - 2 t \\ 2 t e^{t} \\ - 4 t^{4}\end{aligned}]$
-- $[\begin{aligned}- 2 t^{2} - 2 t \\ - t^{2} e^{t} + 2 t e^{t} \\ 2 t^{4}\end{aligned}]$
-- $[\begin{aligned}- 6 t^{2} - 2 t \\ t^{2} e^{t} + 2 t e^{t} \\ - 10 t^{4}\end{aligned}]$
-- $[\begin{aligned}- 2 t^{2} \\ t^{2} e^{t} \\ - 6 t^{4}\end{aligned}]$
+- $\begin{bmatrix}- 4 t \\ 2 t e^{t} \\ - 12 t^{3}\end{bmatrix}$
+- $\begin{bmatrix}- 4 t^{2} - 2 t \\ 2 t e^{t} \\ - 4 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{2} - 2 t \\ - t^{2} e^{t} + 2 t e^{t} \\ 2 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}- 6 t^{2} - 2 t \\ t^{2} e^{t} + 2 t e^{t} \\ - 10 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{2} \\ t^{2} e^{t} \\ - 6 t^{4}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -1805,24 +1805,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(- 2 t - 1) \\ \frac{\text{d}}{\text{d}t}(e^{t}) \\ \frac{\text{d}}{\text{d}t}(- 2 t^{3})\end{aligned}]=[\begin{aligned}-2 \\ e^{t} \\ - 6 t^{2}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(- 2 t - 1) \\ \frac{\text{d}}{\text{d}t}(e^{t}) \\ \frac{\text{d}}{\text{d}t}(- 2 t^{3})\end{bmatrix}=\begin{bmatrix}-2 \\ e^{t} \\ - 6 t^{2}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)[\begin{aligned}- 2 t - 1 \\ e^{t} \\ - 2 t^{3}\end{aligned}]+(t^{2})[\begin{aligned}-2 \\ e^{t} \\ - 6 t^{2}\end{aligned}]\\&=[\begin{aligned}2 t \left(- 2 t - 1\right) \\ 2 t e^{t} \\ - 4 t^{4}\end{aligned}]+[\begin{aligned}- 2 t^{2} \\ t^{2} e^{t} \\ - 6 t^{4}\end{aligned}]\\&=[\begin{aligned}2 t \left(- 3 t - 1\right) \\ t \left(t + 2\right) e^{t} \\ - 10 t^{4}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)\begin{bmatrix}- 2 t - 1 \\ e^{t} \\ - 2 t^{3}\end{bmatrix}+(t^{2})\begin{bmatrix}-2 \\ e^{t} \\ - 6 t^{2}\end{bmatrix}\\&=\begin{bmatrix}2 t \left(- 2 t - 1\right) \\ 2 t e^{t} \\ - 4 t^{4}\end{bmatrix}+\begin{bmatrix}- 2 t^{2} \\ t^{2} e^{t} \\ - 6 t^{4}\end{bmatrix}\\&=\begin{bmatrix}2 t \left(- 3 t - 1\right) \\ t \left(t + 2\right) e^{t} \\ - 10 t^{4}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_easy seed 9
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}t + 2 \\ - e^{t} \\ - t^{3}\end{aligned}]$ and $u(t)=t^{2}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}t + 2 \\ - e^{t} \\ - t^{3}\end{bmatrix}$ and $u(t)=t^{2}.$
 
-- $[\begin{aligned}t^{2} + 4 t \\ t^{2} e^{t} - 2 t e^{t} \\ t^{4}\end{aligned}]$
-- $[\begin{aligned}3 t^{2} + 4 t \\ - t^{2} e^{t} - 2 t e^{t} \\ - 5 t^{4}\end{aligned}]$
-- $[\begin{aligned}2 t^{2} + 4 t \\ - 2 t e^{t} \\ - 2 t^{4}\end{aligned}]$
-- $[\begin{aligned}2 t \\ - 2 t e^{t} \\ - 6 t^{3}\end{aligned}]$
-- $[\begin{aligned}t^{2} \\ - t^{2} e^{t} \\ - 3 t^{4}\end{aligned}]$
+- $\begin{bmatrix}t^{2} + 4 t \\ t^{2} e^{t} - 2 t e^{t} \\ t^{4}\end{bmatrix}$
+- $\begin{bmatrix}3 t^{2} + 4 t \\ - t^{2} e^{t} - 2 t e^{t} \\ - 5 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}2 t^{2} + 4 t \\ - 2 t e^{t} \\ - 2 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}2 t \\ - 2 t e^{t} \\ - 6 t^{3}\end{bmatrix}$
+- $\begin{bmatrix}t^{2} \\ - t^{2} e^{t} \\ - 3 t^{4}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -1833,24 +1833,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(t + 2) \\ \frac{\text{d}}{\text{d}t}(- e^{t}) \\ \frac{\text{d}}{\text{d}t}(- t^{3})\end{aligned}]=[\begin{aligned}1 \\ - e^{t} \\ - 3 t^{2}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(t + 2) \\ \frac{\text{d}}{\text{d}t}(- e^{t}) \\ \frac{\text{d}}{\text{d}t}(- t^{3})\end{bmatrix}=\begin{bmatrix}1 \\ - e^{t} \\ - 3 t^{2}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)[\begin{aligned}t + 2 \\ - e^{t} \\ - t^{3}\end{aligned}]+(t^{2})[\begin{aligned}1 \\ - e^{t} \\ - 3 t^{2}\end{aligned}]\\&=[\begin{aligned}2 t \left(t + 2\right) \\ - 2 t e^{t} \\ - 2 t^{4}\end{aligned}]+[\begin{aligned}t^{2} \\ - t^{2} e^{t} \\ - 3 t^{4}\end{aligned}]\\&=[\begin{aligned}t \left(3 t + 4\right) \\ t \left(- t - 2\right) e^{t} \\ - 5 t^{4}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)\begin{bmatrix}t + 2 \\ - e^{t} \\ - t^{3}\end{bmatrix}+(t^{2})\begin{bmatrix}1 \\ - e^{t} \\ - 3 t^{2}\end{bmatrix}\\&=\begin{bmatrix}2 t \left(t + 2\right) \\ - 2 t e^{t} \\ - 2 t^{4}\end{bmatrix}+\begin{bmatrix}t^{2} \\ - t^{2} e^{t} \\ - 3 t^{4}\end{bmatrix}\\&=\begin{bmatrix}t \left(3 t + 4\right) \\ t \left(- t - 2\right) e^{t} \\ - 5 t^{4}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_easy seed 10
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}2 t - 3 \\ e^{t} \\ t^{3}\end{aligned}]$ and $u(t)=t^{2}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}2 t - 3 \\ e^{t} \\ t^{3}\end{bmatrix}$ and $u(t)=t^{2}.$
 
-- $[\begin{aligned}4 t^{2} - 6 t \\ 2 t e^{t} \\ 2 t^{4}\end{aligned}]$
-- $[\begin{aligned}2 t^{2} \\ t^{2} e^{t} \\ 3 t^{4}\end{aligned}]$
-- $[\begin{aligned}2 t^{2} - 6 t \\ - t^{2} e^{t} + 2 t e^{t} \\ - t^{4}\end{aligned}]$
-- $[\begin{aligned}6 t^{2} - 6 t \\ t^{2} e^{t} + 2 t e^{t} \\ 5 t^{4}\end{aligned}]$
-- $[\begin{aligned}4 t \\ 2 t e^{t} \\ 6 t^{3}\end{aligned}]$
+- $\begin{bmatrix}4 t^{2} - 6 t \\ 2 t e^{t} \\ 2 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}2 t^{2} \\ t^{2} e^{t} \\ 3 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}2 t^{2} - 6 t \\ - t^{2} e^{t} + 2 t e^{t} \\ - t^{4}\end{bmatrix}$
+- $\begin{bmatrix}6 t^{2} - 6 t \\ t^{2} e^{t} + 2 t e^{t} \\ 5 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}4 t \\ 2 t e^{t} \\ 6 t^{3}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -1861,24 +1861,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(2 t - 3) \\ \frac{\text{d}}{\text{d}t}(e^{t}) \\ \frac{\text{d}}{\text{d}t}(t^{3})\end{aligned}]=[\begin{aligned}2 \\ e^{t} \\ 3 t^{2}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(2 t - 3) \\ \frac{\text{d}}{\text{d}t}(e^{t}) \\ \frac{\text{d}}{\text{d}t}(t^{3})\end{bmatrix}=\begin{bmatrix}2 \\ e^{t} \\ 3 t^{2}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)[\begin{aligned}2 t - 3 \\ e^{t} \\ t^{3}\end{aligned}]+(t^{2})[\begin{aligned}2 \\ e^{t} \\ 3 t^{2}\end{aligned}]\\&=[\begin{aligned}2 t \left(2 t - 3\right) \\ 2 t e^{t} \\ 2 t^{4}\end{aligned}]+[\begin{aligned}2 t^{2} \\ t^{2} e^{t} \\ 3 t^{4}\end{aligned}]\\&=[\begin{aligned}6 t \left(t - 1\right) \\ t \left(t + 2\right) e^{t} \\ 5 t^{4}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)\begin{bmatrix}2 t - 3 \\ e^{t} \\ t^{3}\end{bmatrix}+(t^{2})\begin{bmatrix}2 \\ e^{t} \\ 3 t^{2}\end{bmatrix}\\&=\begin{bmatrix}2 t \left(2 t - 3\right) \\ 2 t e^{t} \\ 2 t^{4}\end{bmatrix}+\begin{bmatrix}2 t^{2} \\ t^{2} e^{t} \\ 3 t^{4}\end{bmatrix}\\&=\begin{bmatrix}6 t \left(t - 1\right) \\ t \left(t + 2\right) e^{t} \\ 5 t^{4}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_easy seed 11
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}t + 2 \\ e^{t} \\ t^{3}\end{aligned}]$ and $u(t)=t^{2}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}t + 2 \\ e^{t} \\ t^{3}\end{bmatrix}$ and $u(t)=t^{2}.$
 
-- $[\begin{aligned}2 t^{2} + 4 t \\ 2 t e^{t} \\ 2 t^{4}\end{aligned}]$
-- $[\begin{aligned}t^{2} + 4 t \\ - t^{2} e^{t} + 2 t e^{t} \\ - t^{4}\end{aligned}]$
-- $[\begin{aligned}3 t^{2} + 4 t \\ t^{2} e^{t} + 2 t e^{t} \\ 5 t^{4}\end{aligned}]$
-- $[\begin{aligned}t^{2} \\ t^{2} e^{t} \\ 3 t^{4}\end{aligned}]$
-- $[\begin{aligned}2 t \\ 2 t e^{t} \\ 6 t^{3}\end{aligned}]$
+- $\begin{bmatrix}2 t^{2} + 4 t \\ 2 t e^{t} \\ 2 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}t^{2} + 4 t \\ - t^{2} e^{t} + 2 t e^{t} \\ - t^{4}\end{bmatrix}$
+- $\begin{bmatrix}3 t^{2} + 4 t \\ t^{2} e^{t} + 2 t e^{t} \\ 5 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}t^{2} \\ t^{2} e^{t} \\ 3 t^{4}\end{bmatrix}$
+- $\begin{bmatrix}2 t \\ 2 t e^{t} \\ 6 t^{3}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -1889,24 +1889,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(t + 2) \\ \frac{\text{d}}{\text{d}t}(e^{t}) \\ \frac{\text{d}}{\text{d}t}(t^{3})\end{aligned}]=[\begin{aligned}1 \\ e^{t} \\ 3 t^{2}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(t + 2) \\ \frac{\text{d}}{\text{d}t}(e^{t}) \\ \frac{\text{d}}{\text{d}t}(t^{3})\end{bmatrix}=\begin{bmatrix}1 \\ e^{t} \\ 3 t^{2}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2})=2 t\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)[\begin{aligned}t + 2 \\ e^{t} \\ t^{3}\end{aligned}]+(t^{2})[\begin{aligned}1 \\ e^{t} \\ 3 t^{2}\end{aligned}]\\&=[\begin{aligned}2 t \left(t + 2\right) \\ 2 t e^{t} \\ 2 t^{4}\end{aligned}]+[\begin{aligned}t^{2} \\ t^{2} e^{t} \\ 3 t^{4}\end{aligned}]\\&=[\begin{aligned}t \left(3 t + 4\right) \\ t \left(t + 2\right) e^{t} \\ 5 t^{4}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t)\begin{bmatrix}t + 2 \\ e^{t} \\ t^{3}\end{bmatrix}+(t^{2})\begin{bmatrix}1 \\ e^{t} \\ 3 t^{2}\end{bmatrix}\\&=\begin{bmatrix}2 t \left(t + 2\right) \\ 2 t e^{t} \\ 2 t^{4}\end{bmatrix}+\begin{bmatrix}t^{2} \\ t^{2} e^{t} \\ 3 t^{4}\end{bmatrix}\\&=\begin{bmatrix}t \left(3 t + 4\right) \\ t \left(t + 2\right) e^{t} \\ 5 t^{4}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_moderate seed 0
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}t^{3} + 1 \\ 1 - 3 t^{2} \\ - t - 2\end{aligned}]$ and $u(t)=e^{t}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}t^{3} + 1 \\ 1 - 3 t^{2} \\ - t - 2\end{bmatrix}$ and $u(t)=e^{t}.$
 
-- $[\begin{aligned}t^{3} e^{t} + 3 t^{2} e^{t} + e^{t} \\ - 3 t^{2} e^{t} - 6 t e^{t} + e^{t} \\ - t e^{t} - 3 e^{t}\end{aligned}]$
-- $[\begin{aligned}t^{3} e^{t} + e^{t} \\ - 3 t^{2} e^{t} + e^{t} \\ - t e^{t} - 2 e^{t}\end{aligned}]$
-- $[\begin{aligned}3 t^{2} e^{t} \\ - 6 t e^{t} \\ - e^{t}\end{aligned}]$
-- $[\begin{aligned}t^{3} e^{t} - 3 t^{2} e^{t} + e^{t} \\ - 3 t^{2} e^{t} + 6 t e^{t} + e^{t} \\ - t e^{t} - e^{t}\end{aligned}]$
-- $[\begin{aligned}t^{3} e^{t} + 3 t^{2} + e^{t} \\ - 3 t^{2} e^{t} - 6 t + e^{t} \\ - t e^{t} - 2 e^{t} - 1\end{aligned}]$
+- $\begin{bmatrix}t^{3} e^{t} + 3 t^{2} e^{t} + e^{t} \\ - 3 t^{2} e^{t} - 6 t e^{t} + e^{t} \\ - t e^{t} - 3 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}t^{3} e^{t} + e^{t} \\ - 3 t^{2} e^{t} + e^{t} \\ - t e^{t} - 2 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}3 t^{2} e^{t} \\ - 6 t e^{t} \\ - e^{t}\end{bmatrix}$
+- $\begin{bmatrix}t^{3} e^{t} - 3 t^{2} e^{t} + e^{t} \\ - 3 t^{2} e^{t} + 6 t e^{t} + e^{t} \\ - t e^{t} - e^{t}\end{bmatrix}$
+- $\begin{bmatrix}t^{3} e^{t} + 3 t^{2} + e^{t} \\ - 3 t^{2} e^{t} - 6 t + e^{t} \\ - t e^{t} - 2 e^{t} - 1\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -1917,24 +1917,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(t^{3} + 1) \\ \frac{\text{d}}{\text{d}t}(1 - 3 t^{2}) \\ \frac{\text{d}}{\text{d}t}(- t - 2)\end{aligned}]=[\begin{aligned}3 t^{2} \\ - 6 t \\ -1\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(t^{3} + 1) \\ \frac{\text{d}}{\text{d}t}(1 - 3 t^{2}) \\ \frac{\text{d}}{\text{d}t}(- t - 2)\end{bmatrix}=\begin{bmatrix}3 t^{2} \\ - 6 t \\ -1\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})[\begin{aligned}t^{3} + 1 \\ 1 - 3 t^{2} \\ - t - 2\end{aligned}]+(e^{t})[\begin{aligned}3 t^{2} \\ - 6 t \\ -1\end{aligned}]\\&=[\begin{aligned}\left(t^{3} + 1\right) e^{t} \\ \left(1 - 3 t^{2}\right) e^{t} \\ \left(- t - 2\right) e^{t}\end{aligned}]+[\begin{aligned}3 t^{2} e^{t} \\ - 6 t e^{t} \\ - e^{t}\end{aligned}]\\&=[\begin{aligned}\left(t^{3} + 3 t^{2} + 1\right) e^{t} \\ \left(- 3 t^{2} - 6 t + 1\right) e^{t} \\ \left(- t - 3\right) e^{t}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})\begin{bmatrix}t^{3} + 1 \\ 1 - 3 t^{2} \\ - t - 2\end{bmatrix}+(e^{t})\begin{bmatrix}3 t^{2} \\ - 6 t \\ -1\end{bmatrix}\\&=\begin{bmatrix}\left(t^{3} + 1\right) e^{t} \\ \left(1 - 3 t^{2}\right) e^{t} \\ \left(- t - 2\right) e^{t}\end{bmatrix}+\begin{bmatrix}3 t^{2} e^{t} \\ - 6 t e^{t} \\ - e^{t}\end{bmatrix}\\&=\begin{bmatrix}\left(t^{3} + 3 t^{2} + 1\right) e^{t} \\ \left(- 3 t^{2} - 6 t + 1\right) e^{t} \\ \left(- t - 3\right) e^{t}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_moderate seed 1
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}2 - 2 t^{3} \\ 1 - 3 t^{2} \\ - t - 2\end{aligned}]$ and $u(t)=e^{t}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}2 - 2 t^{3} \\ 1 - 3 t^{2} \\ - t - 2\end{bmatrix}$ and $u(t)=e^{t}.$
 
-- $[\begin{aligned}- 2 t^{3} e^{t} - 6 t^{2} + 2 e^{t} \\ - 3 t^{2} e^{t} - 6 t + e^{t} \\ - t e^{t} - 2 e^{t} - 1\end{aligned}]$
-- $[\begin{aligned}- 2 t^{3} e^{t} + 2 e^{t} \\ - 3 t^{2} e^{t} + e^{t} \\ - t e^{t} - 2 e^{t}\end{aligned}]$
-- $[\begin{aligned}- 6 t^{2} e^{t} \\ - 6 t e^{t} \\ - e^{t}\end{aligned}]$
-- $[\begin{aligned}- 2 t^{3} e^{t} + 6 t^{2} e^{t} + 2 e^{t} \\ - 3 t^{2} e^{t} + 6 t e^{t} + e^{t} \\ - t e^{t} - e^{t}\end{aligned}]$
-- $[\begin{aligned}- 2 t^{3} e^{t} - 6 t^{2} e^{t} + 2 e^{t} \\ - 3 t^{2} e^{t} - 6 t e^{t} + e^{t} \\ - t e^{t} - 3 e^{t}\end{aligned}]$
+- $\begin{bmatrix}- 2 t^{3} e^{t} - 6 t^{2} + 2 e^{t} \\ - 3 t^{2} e^{t} - 6 t + e^{t} \\ - t e^{t} - 2 e^{t} - 1\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{3} e^{t} + 2 e^{t} \\ - 3 t^{2} e^{t} + e^{t} \\ - t e^{t} - 2 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}- 6 t^{2} e^{t} \\ - 6 t e^{t} \\ - e^{t}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{3} e^{t} + 6 t^{2} e^{t} + 2 e^{t} \\ - 3 t^{2} e^{t} + 6 t e^{t} + e^{t} \\ - t e^{t} - e^{t}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{3} e^{t} - 6 t^{2} e^{t} + 2 e^{t} \\ - 3 t^{2} e^{t} - 6 t e^{t} + e^{t} \\ - t e^{t} - 3 e^{t}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -1945,24 +1945,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(2 - 2 t^{3}) \\ \frac{\text{d}}{\text{d}t}(1 - 3 t^{2}) \\ \frac{\text{d}}{\text{d}t}(- t - 2)\end{aligned}]=[\begin{aligned}- 6 t^{2} \\ - 6 t \\ -1\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(2 - 2 t^{3}) \\ \frac{\text{d}}{\text{d}t}(1 - 3 t^{2}) \\ \frac{\text{d}}{\text{d}t}(- t - 2)\end{bmatrix}=\begin{bmatrix}- 6 t^{2} \\ - 6 t \\ -1\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})[\begin{aligned}2 - 2 t^{3} \\ 1 - 3 t^{2} \\ - t - 2\end{aligned}]+(e^{t})[\begin{aligned}- 6 t^{2} \\ - 6 t \\ -1\end{aligned}]\\&=[\begin{aligned}\left(2 - 2 t^{3}\right) e^{t} \\ \left(1 - 3 t^{2}\right) e^{t} \\ \left(- t - 2\right) e^{t}\end{aligned}]+[\begin{aligned}- 6 t^{2} e^{t} \\ - 6 t e^{t} \\ - e^{t}\end{aligned}]\\&=[\begin{aligned}2 \left(- t^{3} - 3 t^{2} + 1\right) e^{t} \\ \left(- 3 t^{2} - 6 t + 1\right) e^{t} \\ \left(- t - 3\right) e^{t}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})\begin{bmatrix}2 - 2 t^{3} \\ 1 - 3 t^{2} \\ - t - 2\end{bmatrix}+(e^{t})\begin{bmatrix}- 6 t^{2} \\ - 6 t \\ -1\end{bmatrix}\\&=\begin{bmatrix}\left(2 - 2 t^{3}\right) e^{t} \\ \left(1 - 3 t^{2}\right) e^{t} \\ \left(- t - 2\right) e^{t}\end{bmatrix}+\begin{bmatrix}- 6 t^{2} e^{t} \\ - 6 t e^{t} \\ - e^{t}\end{bmatrix}\\&=\begin{bmatrix}2 \left(- t^{3} - 3 t^{2} + 1\right) e^{t} \\ \left(- 3 t^{2} - 6 t + 1\right) e^{t} \\ \left(- t - 3\right) e^{t}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_moderate seed 2
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}- 3 t^{3} - 3 \\ 1 - 3 t^{2} \\ - t - 2\end{aligned}]$ and $u(t)=e^{t}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}- 3 t^{3} - 3 \\ 1 - 3 t^{2} \\ - t - 2\end{bmatrix}$ and $u(t)=e^{t}.$
 
-- $[\begin{aligned}- 3 t^{3} e^{t} + 9 t^{2} e^{t} - 3 e^{t} \\ - 3 t^{2} e^{t} + 6 t e^{t} + e^{t} \\ - t e^{t} - e^{t}\end{aligned}]$
-- $[\begin{aligned}- 3 t^{3} e^{t} - 9 t^{2} e^{t} - 3 e^{t} \\ - 3 t^{2} e^{t} - 6 t e^{t} + e^{t} \\ - t e^{t} - 3 e^{t}\end{aligned}]$
-- $[\begin{aligned}- 3 t^{3} e^{t} - 9 t^{2} - 3 e^{t} \\ - 3 t^{2} e^{t} - 6 t + e^{t} \\ - t e^{t} - 2 e^{t} - 1\end{aligned}]$
-- $[\begin{aligned}- 3 t^{3} e^{t} - 3 e^{t} \\ - 3 t^{2} e^{t} + e^{t} \\ - t e^{t} - 2 e^{t}\end{aligned}]$
-- $[\begin{aligned}- 9 t^{2} e^{t} \\ - 6 t e^{t} \\ - e^{t}\end{aligned}]$
+- $\begin{bmatrix}- 3 t^{3} e^{t} + 9 t^{2} e^{t} - 3 e^{t} \\ - 3 t^{2} e^{t} + 6 t e^{t} + e^{t} \\ - t e^{t} - e^{t}\end{bmatrix}$
+- $\begin{bmatrix}- 3 t^{3} e^{t} - 9 t^{2} e^{t} - 3 e^{t} \\ - 3 t^{2} e^{t} - 6 t e^{t} + e^{t} \\ - t e^{t} - 3 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}- 3 t^{3} e^{t} - 9 t^{2} - 3 e^{t} \\ - 3 t^{2} e^{t} - 6 t + e^{t} \\ - t e^{t} - 2 e^{t} - 1\end{bmatrix}$
+- $\begin{bmatrix}- 3 t^{3} e^{t} - 3 e^{t} \\ - 3 t^{2} e^{t} + e^{t} \\ - t e^{t} - 2 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}- 9 t^{2} e^{t} \\ - 6 t e^{t} \\ - e^{t}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -1973,24 +1973,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(- 3 t^{3} - 3) \\ \frac{\text{d}}{\text{d}t}(1 - 3 t^{2}) \\ \frac{\text{d}}{\text{d}t}(- t - 2)\end{aligned}]=[\begin{aligned}- 9 t^{2} \\ - 6 t \\ -1\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(- 3 t^{3} - 3) \\ \frac{\text{d}}{\text{d}t}(1 - 3 t^{2}) \\ \frac{\text{d}}{\text{d}t}(- t - 2)\end{bmatrix}=\begin{bmatrix}- 9 t^{2} \\ - 6 t \\ -1\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})[\begin{aligned}- 3 t^{3} - 3 \\ 1 - 3 t^{2} \\ - t - 2\end{aligned}]+(e^{t})[\begin{aligned}- 9 t^{2} \\ - 6 t \\ -1\end{aligned}]\\&=[\begin{aligned}\left(- 3 t^{3} - 3\right) e^{t} \\ \left(1 - 3 t^{2}\right) e^{t} \\ \left(- t - 2\right) e^{t}\end{aligned}]+[\begin{aligned}- 9 t^{2} e^{t} \\ - 6 t e^{t} \\ - e^{t}\end{aligned}]\\&=[\begin{aligned}3 \left(- t^{3} - 3 t^{2} - 1\right) e^{t} \\ \left(- 3 t^{2} - 6 t + 1\right) e^{t} \\ \left(- t - 3\right) e^{t}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})\begin{bmatrix}- 3 t^{3} - 3 \\ 1 - 3 t^{2} \\ - t - 2\end{bmatrix}+(e^{t})\begin{bmatrix}- 9 t^{2} \\ - 6 t \\ -1\end{bmatrix}\\&=\begin{bmatrix}\left(- 3 t^{3} - 3\right) e^{t} \\ \left(1 - 3 t^{2}\right) e^{t} \\ \left(- t - 2\right) e^{t}\end{bmatrix}+\begin{bmatrix}- 9 t^{2} e^{t} \\ - 6 t e^{t} \\ - e^{t}\end{bmatrix}\\&=\begin{bmatrix}3 \left(- t^{3} - 3 t^{2} - 1\right) e^{t} \\ \left(- 3 t^{2} - 6 t + 1\right) e^{t} \\ \left(- t - 3\right) e^{t}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_moderate seed 3
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}2 - 2 t^{3} \\ 2 t^{2} + 1 \\ - 2 t - 2\end{aligned}]$ and $u(t)=e^{t}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}2 - 2 t^{3} \\ 2 t^{2} + 1 \\ - 2 t - 2\end{bmatrix}$ and $u(t)=e^{t}.$
 
-- $[\begin{aligned}- 6 t^{2} e^{t} \\ 4 t e^{t} \\ - 2 e^{t}\end{aligned}]$
-- $[\begin{aligned}- 2 t^{3} e^{t} - 6 t^{2} e^{t} + 2 e^{t} \\ 2 t^{2} e^{t} + 4 t e^{t} + e^{t} \\ - 2 t e^{t} - 4 e^{t}\end{aligned}]$
-- $[\begin{aligned}- 2 t^{3} e^{t} - 6 t^{2} + 2 e^{t} \\ 2 t^{2} e^{t} + 4 t + e^{t} \\ - 2 t e^{t} - 2 e^{t} - 2\end{aligned}]$
-- $[\begin{aligned}- 2 t^{3} e^{t} + 6 t^{2} e^{t} + 2 e^{t} \\ 2 t^{2} e^{t} - 4 t e^{t} + e^{t} \\ - 2 t e^{t}\end{aligned}]$
-- $[\begin{aligned}- 2 t^{3} e^{t} + 2 e^{t} \\ 2 t^{2} e^{t} + e^{t} \\ - 2 t e^{t} - 2 e^{t}\end{aligned}]$
+- $\begin{bmatrix}- 6 t^{2} e^{t} \\ 4 t e^{t} \\ - 2 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{3} e^{t} - 6 t^{2} e^{t} + 2 e^{t} \\ 2 t^{2} e^{t} + 4 t e^{t} + e^{t} \\ - 2 t e^{t} - 4 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{3} e^{t} - 6 t^{2} + 2 e^{t} \\ 2 t^{2} e^{t} + 4 t + e^{t} \\ - 2 t e^{t} - 2 e^{t} - 2\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{3} e^{t} + 6 t^{2} e^{t} + 2 e^{t} \\ 2 t^{2} e^{t} - 4 t e^{t} + e^{t} \\ - 2 t e^{t}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{3} e^{t} + 2 e^{t} \\ 2 t^{2} e^{t} + e^{t} \\ - 2 t e^{t} - 2 e^{t}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -2001,24 +2001,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(2 - 2 t^{3}) \\ \frac{\text{d}}{\text{d}t}(2 t^{2} + 1) \\ \frac{\text{d}}{\text{d}t}(- 2 t - 2)\end{aligned}]=[\begin{aligned}- 6 t^{2} \\ 4 t \\ -2\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(2 - 2 t^{3}) \\ \frac{\text{d}}{\text{d}t}(2 t^{2} + 1) \\ \frac{\text{d}}{\text{d}t}(- 2 t - 2)\end{bmatrix}=\begin{bmatrix}- 6 t^{2} \\ 4 t \\ -2\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})[\begin{aligned}2 - 2 t^{3} \\ 2 t^{2} + 1 \\ - 2 t - 2\end{aligned}]+(e^{t})[\begin{aligned}- 6 t^{2} \\ 4 t \\ -2\end{aligned}]\\&=[\begin{aligned}\left(2 - 2 t^{3}\right) e^{t} \\ \left(2 t^{2} + 1\right) e^{t} \\ \left(- 2 t - 2\right) e^{t}\end{aligned}]+[\begin{aligned}- 6 t^{2} e^{t} \\ 4 t e^{t} \\ - 2 e^{t}\end{aligned}]\\&=[\begin{aligned}2 \left(- t^{3} - 3 t^{2} + 1\right) e^{t} \\ \left(2 t^{2} + 4 t + 1\right) e^{t} \\ 2 \left(- t - 2\right) e^{t}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})\begin{bmatrix}2 - 2 t^{3} \\ 2 t^{2} + 1 \\ - 2 t - 2\end{bmatrix}+(e^{t})\begin{bmatrix}- 6 t^{2} \\ 4 t \\ -2\end{bmatrix}\\&=\begin{bmatrix}\left(2 - 2 t^{3}\right) e^{t} \\ \left(2 t^{2} + 1\right) e^{t} \\ \left(- 2 t - 2\right) e^{t}\end{bmatrix}+\begin{bmatrix}- 6 t^{2} e^{t} \\ 4 t e^{t} \\ - 2 e^{t}\end{bmatrix}\\&=\begin{bmatrix}2 \left(- t^{3} - 3 t^{2} + 1\right) e^{t} \\ \left(2 t^{2} + 4 t + 1\right) e^{t} \\ 2 \left(- t - 2\right) e^{t}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_moderate seed 4
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}- 2 t^{3} - 1 \\ 1 - 3 t^{2} \\ 3 t - 2\end{aligned}]$ and $u(t)=e^{t}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}- 2 t^{3} - 1 \\ 1 - 3 t^{2} \\ 3 t - 2\end{bmatrix}$ and $u(t)=e^{t}.$
 
-- $[\begin{aligned}- 6 t^{2} e^{t} \\ - 6 t e^{t} \\ 3 e^{t}\end{aligned}]$
-- $[\begin{aligned}- 2 t^{3} e^{t} - e^{t} \\ - 3 t^{2} e^{t} + e^{t} \\ 3 t e^{t} - 2 e^{t}\end{aligned}]$
-- $[\begin{aligned}- 2 t^{3} e^{t} - 6 t^{2} e^{t} - e^{t} \\ - 3 t^{2} e^{t} - 6 t e^{t} + e^{t} \\ 3 t e^{t} + e^{t}\end{aligned}]$
-- $[\begin{aligned}- 2 t^{3} e^{t} - 6 t^{2} - e^{t} \\ - 3 t^{2} e^{t} - 6 t + e^{t} \\ 3 t e^{t} - 2 e^{t} + 3\end{aligned}]$
-- $[\begin{aligned}- 2 t^{3} e^{t} + 6 t^{2} e^{t} - e^{t} \\ - 3 t^{2} e^{t} + 6 t e^{t} + e^{t} \\ 3 t e^{t} - 5 e^{t}\end{aligned}]$
+- $\begin{bmatrix}- 6 t^{2} e^{t} \\ - 6 t e^{t} \\ 3 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{3} e^{t} - e^{t} \\ - 3 t^{2} e^{t} + e^{t} \\ 3 t e^{t} - 2 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{3} e^{t} - 6 t^{2} e^{t} - e^{t} \\ - 3 t^{2} e^{t} - 6 t e^{t} + e^{t} \\ 3 t e^{t} + e^{t}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{3} e^{t} - 6 t^{2} - e^{t} \\ - 3 t^{2} e^{t} - 6 t + e^{t} \\ 3 t e^{t} - 2 e^{t} + 3\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{3} e^{t} + 6 t^{2} e^{t} - e^{t} \\ - 3 t^{2} e^{t} + 6 t e^{t} + e^{t} \\ 3 t e^{t} - 5 e^{t}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -2029,24 +2029,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(- 2 t^{3} - 1) \\ \frac{\text{d}}{\text{d}t}(1 - 3 t^{2}) \\ \frac{\text{d}}{\text{d}t}(3 t - 2)\end{aligned}]=[\begin{aligned}- 6 t^{2} \\ - 6 t \\ 3\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(- 2 t^{3} - 1) \\ \frac{\text{d}}{\text{d}t}(1 - 3 t^{2}) \\ \frac{\text{d}}{\text{d}t}(3 t - 2)\end{bmatrix}=\begin{bmatrix}- 6 t^{2} \\ - 6 t \\ 3\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})[\begin{aligned}- 2 t^{3} - 1 \\ 1 - 3 t^{2} \\ 3 t - 2\end{aligned}]+(e^{t})[\begin{aligned}- 6 t^{2} \\ - 6 t \\ 3\end{aligned}]\\&=[\begin{aligned}\left(- 2 t^{3} - 1\right) e^{t} \\ \left(1 - 3 t^{2}\right) e^{t} \\ \left(3 t - 2\right) e^{t}\end{aligned}]+[\begin{aligned}- 6 t^{2} e^{t} \\ - 6 t e^{t} \\ 3 e^{t}\end{aligned}]\\&=[\begin{aligned}\left(- 2 t^{3} - 6 t^{2} - 1\right) e^{t} \\ \left(- 3 t^{2} - 6 t + 1\right) e^{t} \\ \left(3 t + 1\right) e^{t}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})\begin{bmatrix}- 2 t^{3} - 1 \\ 1 - 3 t^{2} \\ 3 t - 2\end{bmatrix}+(e^{t})\begin{bmatrix}- 6 t^{2} \\ - 6 t \\ 3\end{bmatrix}\\&=\begin{bmatrix}\left(- 2 t^{3} - 1\right) e^{t} \\ \left(1 - 3 t^{2}\right) e^{t} \\ \left(3 t - 2\right) e^{t}\end{bmatrix}+\begin{bmatrix}- 6 t^{2} e^{t} \\ - 6 t e^{t} \\ 3 e^{t}\end{bmatrix}\\&=\begin{bmatrix}\left(- 2 t^{3} - 6 t^{2} - 1\right) e^{t} \\ \left(- 3 t^{2} - 6 t + 1\right) e^{t} \\ \left(3 t + 1\right) e^{t}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_moderate seed 5
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}2 t^{3} - 1 \\ 3 t^{2} + 1 \\ - t - 2\end{aligned}]$ and $u(t)=e^{t}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}2 t^{3} - 1 \\ 3 t^{2} + 1 \\ - t - 2\end{bmatrix}$ and $u(t)=e^{t}.$
 
-- $[\begin{aligned}2 t^{3} e^{t} - e^{t} \\ 3 t^{2} e^{t} + e^{t} \\ - t e^{t} - 2 e^{t}\end{aligned}]$
-- $[\begin{aligned}2 t^{3} e^{t} - 6 t^{2} e^{t} - e^{t} \\ 3 t^{2} e^{t} - 6 t e^{t} + e^{t} \\ - t e^{t} - e^{t}\end{aligned}]$
-- $[\begin{aligned}6 t^{2} e^{t} \\ 6 t e^{t} \\ - e^{t}\end{aligned}]$
-- $[\begin{aligned}2 t^{3} e^{t} + 6 t^{2} e^{t} - e^{t} \\ 3 t^{2} e^{t} + 6 t e^{t} + e^{t} \\ - t e^{t} - 3 e^{t}\end{aligned}]$
-- $[\begin{aligned}2 t^{3} e^{t} + 6 t^{2} - e^{t} \\ 3 t^{2} e^{t} + 6 t + e^{t} \\ - t e^{t} - 2 e^{t} - 1\end{aligned}]$
+- $\begin{bmatrix}2 t^{3} e^{t} - e^{t} \\ 3 t^{2} e^{t} + e^{t} \\ - t e^{t} - 2 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}2 t^{3} e^{t} - 6 t^{2} e^{t} - e^{t} \\ 3 t^{2} e^{t} - 6 t e^{t} + e^{t} \\ - t e^{t} - e^{t}\end{bmatrix}$
+- $\begin{bmatrix}6 t^{2} e^{t} \\ 6 t e^{t} \\ - e^{t}\end{bmatrix}$
+- $\begin{bmatrix}2 t^{3} e^{t} + 6 t^{2} e^{t} - e^{t} \\ 3 t^{2} e^{t} + 6 t e^{t} + e^{t} \\ - t e^{t} - 3 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}2 t^{3} e^{t} + 6 t^{2} - e^{t} \\ 3 t^{2} e^{t} + 6 t + e^{t} \\ - t e^{t} - 2 e^{t} - 1\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -2057,24 +2057,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(2 t^{3} - 1) \\ \frac{\text{d}}{\text{d}t}(3 t^{2} + 1) \\ \frac{\text{d}}{\text{d}t}(- t - 2)\end{aligned}]=[\begin{aligned}6 t^{2} \\ 6 t \\ -1\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(2 t^{3} - 1) \\ \frac{\text{d}}{\text{d}t}(3 t^{2} + 1) \\ \frac{\text{d}}{\text{d}t}(- t - 2)\end{bmatrix}=\begin{bmatrix}6 t^{2} \\ 6 t \\ -1\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})[\begin{aligned}2 t^{3} - 1 \\ 3 t^{2} + 1 \\ - t - 2\end{aligned}]+(e^{t})[\begin{aligned}6 t^{2} \\ 6 t \\ -1\end{aligned}]\\&=[\begin{aligned}\left(2 t^{3} - 1\right) e^{t} \\ \left(3 t^{2} + 1\right) e^{t} \\ \left(- t - 2\right) e^{t}\end{aligned}]+[\begin{aligned}6 t^{2} e^{t} \\ 6 t e^{t} \\ - e^{t}\end{aligned}]\\&=[\begin{aligned}\left(2 t^{3} + 6 t^{2} - 1\right) e^{t} \\ \left(3 t^{2} + 6 t + 1\right) e^{t} \\ \left(- t - 3\right) e^{t}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})\begin{bmatrix}2 t^{3} - 1 \\ 3 t^{2} + 1 \\ - t - 2\end{bmatrix}+(e^{t})\begin{bmatrix}6 t^{2} \\ 6 t \\ -1\end{bmatrix}\\&=\begin{bmatrix}\left(2 t^{3} - 1\right) e^{t} \\ \left(3 t^{2} + 1\right) e^{t} \\ \left(- t - 2\right) e^{t}\end{bmatrix}+\begin{bmatrix}6 t^{2} e^{t} \\ 6 t e^{t} \\ - e^{t}\end{bmatrix}\\&=\begin{bmatrix}\left(2 t^{3} + 6 t^{2} - 1\right) e^{t} \\ \left(3 t^{2} + 6 t + 1\right) e^{t} \\ \left(- t - 3\right) e^{t}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_moderate seed 6
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}2 t^{3} - 3 \\ t^{2} + 1 \\ - t - 2\end{aligned}]$ and $u(t)=e^{t}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}2 t^{3} - 3 \\ t^{2} + 1 \\ - t - 2\end{bmatrix}$ and $u(t)=e^{t}.$
 
-- $[\begin{aligned}2 t^{3} e^{t} - 3 e^{t} \\ t^{2} e^{t} + e^{t} \\ - t e^{t} - 2 e^{t}\end{aligned}]$
-- $[\begin{aligned}6 t^{2} e^{t} \\ 2 t e^{t} \\ - e^{t}\end{aligned}]$
-- $[\begin{aligned}2 t^{3} e^{t} - 6 t^{2} e^{t} - 3 e^{t} \\ t^{2} e^{t} - 2 t e^{t} + e^{t} \\ - t e^{t} - e^{t}\end{aligned}]$
-- $[\begin{aligned}2 t^{3} e^{t} + 6 t^{2} - 3 e^{t} \\ t^{2} e^{t} + 2 t + e^{t} \\ - t e^{t} - 2 e^{t} - 1\end{aligned}]$
-- $[\begin{aligned}2 t^{3} e^{t} + 6 t^{2} e^{t} - 3 e^{t} \\ t^{2} e^{t} + 2 t e^{t} + e^{t} \\ - t e^{t} - 3 e^{t}\end{aligned}]$
+- $\begin{bmatrix}2 t^{3} e^{t} - 3 e^{t} \\ t^{2} e^{t} + e^{t} \\ - t e^{t} - 2 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}6 t^{2} e^{t} \\ 2 t e^{t} \\ - e^{t}\end{bmatrix}$
+- $\begin{bmatrix}2 t^{3} e^{t} - 6 t^{2} e^{t} - 3 e^{t} \\ t^{2} e^{t} - 2 t e^{t} + e^{t} \\ - t e^{t} - e^{t}\end{bmatrix}$
+- $\begin{bmatrix}2 t^{3} e^{t} + 6 t^{2} - 3 e^{t} \\ t^{2} e^{t} + 2 t + e^{t} \\ - t e^{t} - 2 e^{t} - 1\end{bmatrix}$
+- $\begin{bmatrix}2 t^{3} e^{t} + 6 t^{2} e^{t} - 3 e^{t} \\ t^{2} e^{t} + 2 t e^{t} + e^{t} \\ - t e^{t} - 3 e^{t}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -2085,24 +2085,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(2 t^{3} - 3) \\ \frac{\text{d}}{\text{d}t}(t^{2} + 1) \\ \frac{\text{d}}{\text{d}t}(- t - 2)\end{aligned}]=[\begin{aligned}6 t^{2} \\ 2 t \\ -1\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(2 t^{3} - 3) \\ \frac{\text{d}}{\text{d}t}(t^{2} + 1) \\ \frac{\text{d}}{\text{d}t}(- t - 2)\end{bmatrix}=\begin{bmatrix}6 t^{2} \\ 2 t \\ -1\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})[\begin{aligned}2 t^{3} - 3 \\ t^{2} + 1 \\ - t - 2\end{aligned}]+(e^{t})[\begin{aligned}6 t^{2} \\ 2 t \\ -1\end{aligned}]\\&=[\begin{aligned}\left(2 t^{3} - 3\right) e^{t} \\ \left(t^{2} + 1\right) e^{t} \\ \left(- t - 2\right) e^{t}\end{aligned}]+[\begin{aligned}6 t^{2} e^{t} \\ 2 t e^{t} \\ - e^{t}\end{aligned}]\\&=[\begin{aligned}\left(2 t^{3} + 6 t^{2} - 3\right) e^{t} \\ \left(t^{2} + 2 t + 1\right) e^{t} \\ \left(- t - 3\right) e^{t}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})\begin{bmatrix}2 t^{3} - 3 \\ t^{2} + 1 \\ - t - 2\end{bmatrix}+(e^{t})\begin{bmatrix}6 t^{2} \\ 2 t \\ -1\end{bmatrix}\\&=\begin{bmatrix}\left(2 t^{3} - 3\right) e^{t} \\ \left(t^{2} + 1\right) e^{t} \\ \left(- t - 2\right) e^{t}\end{bmatrix}+\begin{bmatrix}6 t^{2} e^{t} \\ 2 t e^{t} \\ - e^{t}\end{bmatrix}\\&=\begin{bmatrix}\left(2 t^{3} + 6 t^{2} - 3\right) e^{t} \\ \left(t^{2} + 2 t + 1\right) e^{t} \\ \left(- t - 3\right) e^{t}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_moderate seed 7
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}- t^{3} - 2 \\ t^{2} + 1 \\ 3 t - 2\end{aligned}]$ and $u(t)=e^{t}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}- t^{3} - 2 \\ t^{2} + 1 \\ 3 t - 2\end{bmatrix}$ and $u(t)=e^{t}.$
 
-- $[\begin{aligned}- 3 t^{2} e^{t} \\ 2 t e^{t} \\ 3 e^{t}\end{aligned}]$
-- $[\begin{aligned}- t^{3} e^{t} + 3 t^{2} e^{t} - 2 e^{t} \\ t^{2} e^{t} - 2 t e^{t} + e^{t} \\ 3 t e^{t} - 5 e^{t}\end{aligned}]$
-- $[\begin{aligned}- t^{3} e^{t} - 2 e^{t} \\ t^{2} e^{t} + e^{t} \\ 3 t e^{t} - 2 e^{t}\end{aligned}]$
-- $[\begin{aligned}- t^{3} e^{t} - 3 t^{2} - 2 e^{t} \\ t^{2} e^{t} + 2 t + e^{t} \\ 3 t e^{t} - 2 e^{t} + 3\end{aligned}]$
-- $[\begin{aligned}- t^{3} e^{t} - 3 t^{2} e^{t} - 2 e^{t} \\ t^{2} e^{t} + 2 t e^{t} + e^{t} \\ 3 t e^{t} + e^{t}\end{aligned}]$
+- $\begin{bmatrix}- 3 t^{2} e^{t} \\ 2 t e^{t} \\ 3 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}- t^{3} e^{t} + 3 t^{2} e^{t} - 2 e^{t} \\ t^{2} e^{t} - 2 t e^{t} + e^{t} \\ 3 t e^{t} - 5 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}- t^{3} e^{t} - 2 e^{t} \\ t^{2} e^{t} + e^{t} \\ 3 t e^{t} - 2 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}- t^{3} e^{t} - 3 t^{2} - 2 e^{t} \\ t^{2} e^{t} + 2 t + e^{t} \\ 3 t e^{t} - 2 e^{t} + 3\end{bmatrix}$
+- $\begin{bmatrix}- t^{3} e^{t} - 3 t^{2} e^{t} - 2 e^{t} \\ t^{2} e^{t} + 2 t e^{t} + e^{t} \\ 3 t e^{t} + e^{t}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -2113,24 +2113,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(- t^{3} - 2) \\ \frac{\text{d}}{\text{d}t}(t^{2} + 1) \\ \frac{\text{d}}{\text{d}t}(3 t - 2)\end{aligned}]=[\begin{aligned}- 3 t^{2} \\ 2 t \\ 3\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(- t^{3} - 2) \\ \frac{\text{d}}{\text{d}t}(t^{2} + 1) \\ \frac{\text{d}}{\text{d}t}(3 t - 2)\end{bmatrix}=\begin{bmatrix}- 3 t^{2} \\ 2 t \\ 3\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})[\begin{aligned}- t^{3} - 2 \\ t^{2} + 1 \\ 3 t - 2\end{aligned}]+(e^{t})[\begin{aligned}- 3 t^{2} \\ 2 t \\ 3\end{aligned}]\\&=[\begin{aligned}\left(- t^{3} - 2\right) e^{t} \\ \left(t^{2} + 1\right) e^{t} \\ \left(3 t - 2\right) e^{t}\end{aligned}]+[\begin{aligned}- 3 t^{2} e^{t} \\ 2 t e^{t} \\ 3 e^{t}\end{aligned}]\\&=[\begin{aligned}\left(- t^{3} - 3 t^{2} - 2\right) e^{t} \\ \left(t^{2} + 2 t + 1\right) e^{t} \\ \left(3 t + 1\right) e^{t}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})\begin{bmatrix}- t^{3} - 2 \\ t^{2} + 1 \\ 3 t - 2\end{bmatrix}+(e^{t})\begin{bmatrix}- 3 t^{2} \\ 2 t \\ 3\end{bmatrix}\\&=\begin{bmatrix}\left(- t^{3} - 2\right) e^{t} \\ \left(t^{2} + 1\right) e^{t} \\ \left(3 t - 2\right) e^{t}\end{bmatrix}+\begin{bmatrix}- 3 t^{2} e^{t} \\ 2 t e^{t} \\ 3 e^{t}\end{bmatrix}\\&=\begin{bmatrix}\left(- t^{3} - 3 t^{2} - 2\right) e^{t} \\ \left(t^{2} + 2 t + 1\right) e^{t} \\ \left(3 t + 1\right) e^{t}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_moderate seed 8
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}- 2 t^{3} - 1 \\ t^{2} + 1 \\ - 2 t - 2\end{aligned}]$ and $u(t)=e^{t}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}- 2 t^{3} - 1 \\ t^{2} + 1 \\ - 2 t - 2\end{bmatrix}$ and $u(t)=e^{t}.$
 
-- $[\begin{aligned}- 2 t^{3} e^{t} - 6 t^{2} - e^{t} \\ t^{2} e^{t} + 2 t + e^{t} \\ - 2 t e^{t} - 2 e^{t} - 2\end{aligned}]$
-- $[\begin{aligned}- 2 t^{3} e^{t} - e^{t} \\ t^{2} e^{t} + e^{t} \\ - 2 t e^{t} - 2 e^{t}\end{aligned}]$
-- $[\begin{aligned}- 2 t^{3} e^{t} + 6 t^{2} e^{t} - e^{t} \\ t^{2} e^{t} - 2 t e^{t} + e^{t} \\ - 2 t e^{t}\end{aligned}]$
-- $[\begin{aligned}- 2 t^{3} e^{t} - 6 t^{2} e^{t} - e^{t} \\ t^{2} e^{t} + 2 t e^{t} + e^{t} \\ - 2 t e^{t} - 4 e^{t}\end{aligned}]$
-- $[\begin{aligned}- 6 t^{2} e^{t} \\ 2 t e^{t} \\ - 2 e^{t}\end{aligned}]$
+- $\begin{bmatrix}- 2 t^{3} e^{t} - 6 t^{2} - e^{t} \\ t^{2} e^{t} + 2 t + e^{t} \\ - 2 t e^{t} - 2 e^{t} - 2\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{3} e^{t} - e^{t} \\ t^{2} e^{t} + e^{t} \\ - 2 t e^{t} - 2 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{3} e^{t} + 6 t^{2} e^{t} - e^{t} \\ t^{2} e^{t} - 2 t e^{t} + e^{t} \\ - 2 t e^{t}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t^{3} e^{t} - 6 t^{2} e^{t} - e^{t} \\ t^{2} e^{t} + 2 t e^{t} + e^{t} \\ - 2 t e^{t} - 4 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}- 6 t^{2} e^{t} \\ 2 t e^{t} \\ - 2 e^{t}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -2141,24 +2141,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(- 2 t^{3} - 1) \\ \frac{\text{d}}{\text{d}t}(t^{2} + 1) \\ \frac{\text{d}}{\text{d}t}(- 2 t - 2)\end{aligned}]=[\begin{aligned}- 6 t^{2} \\ 2 t \\ -2\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(- 2 t^{3} - 1) \\ \frac{\text{d}}{\text{d}t}(t^{2} + 1) \\ \frac{\text{d}}{\text{d}t}(- 2 t - 2)\end{bmatrix}=\begin{bmatrix}- 6 t^{2} \\ 2 t \\ -2\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})[\begin{aligned}- 2 t^{3} - 1 \\ t^{2} + 1 \\ - 2 t - 2\end{aligned}]+(e^{t})[\begin{aligned}- 6 t^{2} \\ 2 t \\ -2\end{aligned}]\\&=[\begin{aligned}\left(- 2 t^{3} - 1\right) e^{t} \\ \left(t^{2} + 1\right) e^{t} \\ \left(- 2 t - 2\right) e^{t}\end{aligned}]+[\begin{aligned}- 6 t^{2} e^{t} \\ 2 t e^{t} \\ - 2 e^{t}\end{aligned}]\\&=[\begin{aligned}\left(- 2 t^{3} - 6 t^{2} - 1\right) e^{t} \\ \left(t^{2} + 2 t + 1\right) e^{t} \\ 2 \left(- t - 2\right) e^{t}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})\begin{bmatrix}- 2 t^{3} - 1 \\ t^{2} + 1 \\ - 2 t - 2\end{bmatrix}+(e^{t})\begin{bmatrix}- 6 t^{2} \\ 2 t \\ -2\end{bmatrix}\\&=\begin{bmatrix}\left(- 2 t^{3} - 1\right) e^{t} \\ \left(t^{2} + 1\right) e^{t} \\ \left(- 2 t - 2\right) e^{t}\end{bmatrix}+\begin{bmatrix}- 6 t^{2} e^{t} \\ 2 t e^{t} \\ - 2 e^{t}\end{bmatrix}\\&=\begin{bmatrix}\left(- 2 t^{3} - 6 t^{2} - 1\right) e^{t} \\ \left(t^{2} + 2 t + 1\right) e^{t} \\ 2 \left(- t - 2\right) e^{t}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_moderate seed 9
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}t^{3} + 2 \\ 1 - t^{2} \\ - t - 2\end{aligned}]$ and $u(t)=e^{t}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}t^{3} + 2 \\ 1 - t^{2} \\ - t - 2\end{bmatrix}$ and $u(t)=e^{t}.$
 
-- $[\begin{aligned}t^{3} e^{t} - 3 t^{2} e^{t} + 2 e^{t} \\ - t^{2} e^{t} + 2 t e^{t} + e^{t} \\ - t e^{t} - e^{t}\end{aligned}]$
-- $[\begin{aligned}t^{3} e^{t} + 3 t^{2} e^{t} + 2 e^{t} \\ - t^{2} e^{t} - 2 t e^{t} + e^{t} \\ - t e^{t} - 3 e^{t}\end{aligned}]$
-- $[\begin{aligned}t^{3} e^{t} + 2 e^{t} \\ - t^{2} e^{t} + e^{t} \\ - t e^{t} - 2 e^{t}\end{aligned}]$
-- $[\begin{aligned}t^{3} e^{t} + 3 t^{2} + 2 e^{t} \\ - t^{2} e^{t} - 2 t + e^{t} \\ - t e^{t} - 2 e^{t} - 1\end{aligned}]$
-- $[\begin{aligned}3 t^{2} e^{t} \\ - 2 t e^{t} \\ - e^{t}\end{aligned}]$
+- $\begin{bmatrix}t^{3} e^{t} - 3 t^{2} e^{t} + 2 e^{t} \\ - t^{2} e^{t} + 2 t e^{t} + e^{t} \\ - t e^{t} - e^{t}\end{bmatrix}$
+- $\begin{bmatrix}t^{3} e^{t} + 3 t^{2} e^{t} + 2 e^{t} \\ - t^{2} e^{t} - 2 t e^{t} + e^{t} \\ - t e^{t} - 3 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}t^{3} e^{t} + 2 e^{t} \\ - t^{2} e^{t} + e^{t} \\ - t e^{t} - 2 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}t^{3} e^{t} + 3 t^{2} + 2 e^{t} \\ - t^{2} e^{t} - 2 t + e^{t} \\ - t e^{t} - 2 e^{t} - 1\end{bmatrix}$
+- $\begin{bmatrix}3 t^{2} e^{t} \\ - 2 t e^{t} \\ - e^{t}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -2169,24 +2169,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(t^{3} + 2) \\ \frac{\text{d}}{\text{d}t}(1 - t^{2}) \\ \frac{\text{d}}{\text{d}t}(- t - 2)\end{aligned}]=[\begin{aligned}3 t^{2} \\ - 2 t \\ -1\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(t^{3} + 2) \\ \frac{\text{d}}{\text{d}t}(1 - t^{2}) \\ \frac{\text{d}}{\text{d}t}(- t - 2)\end{bmatrix}=\begin{bmatrix}3 t^{2} \\ - 2 t \\ -1\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})[\begin{aligned}t^{3} + 2 \\ 1 - t^{2} \\ - t - 2\end{aligned}]+(e^{t})[\begin{aligned}3 t^{2} \\ - 2 t \\ -1\end{aligned}]\\&=[\begin{aligned}\left(t^{3} + 2\right) e^{t} \\ \left(1 - t^{2}\right) e^{t} \\ \left(- t - 2\right) e^{t}\end{aligned}]+[\begin{aligned}3 t^{2} e^{t} \\ - 2 t e^{t} \\ - e^{t}\end{aligned}]\\&=[\begin{aligned}\left(t^{3} + 3 t^{2} + 2\right) e^{t} \\ \left(- t^{2} - 2 t + 1\right) e^{t} \\ \left(- t - 3\right) e^{t}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})\begin{bmatrix}t^{3} + 2 \\ 1 - t^{2} \\ - t - 2\end{bmatrix}+(e^{t})\begin{bmatrix}3 t^{2} \\ - 2 t \\ -1\end{bmatrix}\\&=\begin{bmatrix}\left(t^{3} + 2\right) e^{t} \\ \left(1 - t^{2}\right) e^{t} \\ \left(- t - 2\right) e^{t}\end{bmatrix}+\begin{bmatrix}3 t^{2} e^{t} \\ - 2 t e^{t} \\ - e^{t}\end{bmatrix}\\&=\begin{bmatrix}\left(t^{3} + 3 t^{2} + 2\right) e^{t} \\ \left(- t^{2} - 2 t + 1\right) e^{t} \\ \left(- t - 3\right) e^{t}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_moderate seed 10
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}2 t^{3} - 3 \\ t^{2} + 1 \\ t - 2\end{aligned}]$ and $u(t)=e^{t}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}2 t^{3} - 3 \\ t^{2} + 1 \\ t - 2\end{bmatrix}$ and $u(t)=e^{t}.$
 
-- $[\begin{aligned}2 t^{3} e^{t} - 3 e^{t} \\ t^{2} e^{t} + e^{t} \\ t e^{t} - 2 e^{t}\end{aligned}]$
-- $[\begin{aligned}6 t^{2} e^{t} \\ 2 t e^{t} \\ e^{t}\end{aligned}]$
-- $[\begin{aligned}2 t^{3} e^{t} - 6 t^{2} e^{t} - 3 e^{t} \\ t^{2} e^{t} - 2 t e^{t} + e^{t} \\ t e^{t} - 3 e^{t}\end{aligned}]$
-- $[\begin{aligned}2 t^{3} e^{t} + 6 t^{2} e^{t} - 3 e^{t} \\ t^{2} e^{t} + 2 t e^{t} + e^{t} \\ t e^{t} - e^{t}\end{aligned}]$
-- $[\begin{aligned}2 t^{3} e^{t} + 6 t^{2} - 3 e^{t} \\ t^{2} e^{t} + 2 t + e^{t} \\ t e^{t} - 2 e^{t} + 1\end{aligned}]$
+- $\begin{bmatrix}2 t^{3} e^{t} - 3 e^{t} \\ t^{2} e^{t} + e^{t} \\ t e^{t} - 2 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}6 t^{2} e^{t} \\ 2 t e^{t} \\ e^{t}\end{bmatrix}$
+- $\begin{bmatrix}2 t^{3} e^{t} - 6 t^{2} e^{t} - 3 e^{t} \\ t^{2} e^{t} - 2 t e^{t} + e^{t} \\ t e^{t} - 3 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}2 t^{3} e^{t} + 6 t^{2} e^{t} - 3 e^{t} \\ t^{2} e^{t} + 2 t e^{t} + e^{t} \\ t e^{t} - e^{t}\end{bmatrix}$
+- $\begin{bmatrix}2 t^{3} e^{t} + 6 t^{2} - 3 e^{t} \\ t^{2} e^{t} + 2 t + e^{t} \\ t e^{t} - 2 e^{t} + 1\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -2197,24 +2197,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(2 t^{3} - 3) \\ \frac{\text{d}}{\text{d}t}(t^{2} + 1) \\ \frac{\text{d}}{\text{d}t}(t - 2)\end{aligned}]=[\begin{aligned}6 t^{2} \\ 2 t \\ 1\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(2 t^{3} - 3) \\ \frac{\text{d}}{\text{d}t}(t^{2} + 1) \\ \frac{\text{d}}{\text{d}t}(t - 2)\end{bmatrix}=\begin{bmatrix}6 t^{2} \\ 2 t \\ 1\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})[\begin{aligned}2 t^{3} - 3 \\ t^{2} + 1 \\ t - 2\end{aligned}]+(e^{t})[\begin{aligned}6 t^{2} \\ 2 t \\ 1\end{aligned}]\\&=[\begin{aligned}\left(2 t^{3} - 3\right) e^{t} \\ \left(t^{2} + 1\right) e^{t} \\ \left(t - 2\right) e^{t}\end{aligned}]+[\begin{aligned}6 t^{2} e^{t} \\ 2 t e^{t} \\ e^{t}\end{aligned}]\\&=[\begin{aligned}\left(2 t^{3} + 6 t^{2} - 3\right) e^{t} \\ \left(t^{2} + 2 t + 1\right) e^{t} \\ \left(t - 1\right) e^{t}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})\begin{bmatrix}2 t^{3} - 3 \\ t^{2} + 1 \\ t - 2\end{bmatrix}+(e^{t})\begin{bmatrix}6 t^{2} \\ 2 t \\ 1\end{bmatrix}\\&=\begin{bmatrix}\left(2 t^{3} - 3\right) e^{t} \\ \left(t^{2} + 1\right) e^{t} \\ \left(t - 2\right) e^{t}\end{bmatrix}+\begin{bmatrix}6 t^{2} e^{t} \\ 2 t e^{t} \\ e^{t}\end{bmatrix}\\&=\begin{bmatrix}\left(2 t^{3} + 6 t^{2} - 3\right) e^{t} \\ \left(t^{2} + 2 t + 1\right) e^{t} \\ \left(t - 1\right) e^{t}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_moderate seed 11
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}t^{3} + 2 \\ t^{2} + 1 \\ t - 2\end{aligned}]$ and $u(t)=e^{t}.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}t^{3} + 2 \\ t^{2} + 1 \\ t - 2\end{bmatrix}$ and $u(t)=e^{t}.$
 
-- $[\begin{aligned}t^{3} e^{t} + 2 e^{t} \\ t^{2} e^{t} + e^{t} \\ t e^{t} - 2 e^{t}\end{aligned}]$
-- $[\begin{aligned}t^{3} e^{t} - 3 t^{2} e^{t} + 2 e^{t} \\ t^{2} e^{t} - 2 t e^{t} + e^{t} \\ t e^{t} - 3 e^{t}\end{aligned}]$
-- $[\begin{aligned}t^{3} e^{t} + 3 t^{2} e^{t} + 2 e^{t} \\ t^{2} e^{t} + 2 t e^{t} + e^{t} \\ t e^{t} - e^{t}\end{aligned}]$
-- $[\begin{aligned}3 t^{2} e^{t} \\ 2 t e^{t} \\ e^{t}\end{aligned}]$
-- $[\begin{aligned}t^{3} e^{t} + 3 t^{2} + 2 e^{t} \\ t^{2} e^{t} + 2 t + e^{t} \\ t e^{t} - 2 e^{t} + 1\end{aligned}]$
+- $\begin{bmatrix}t^{3} e^{t} + 2 e^{t} \\ t^{2} e^{t} + e^{t} \\ t e^{t} - 2 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}t^{3} e^{t} - 3 t^{2} e^{t} + 2 e^{t} \\ t^{2} e^{t} - 2 t e^{t} + e^{t} \\ t e^{t} - 3 e^{t}\end{bmatrix}$
+- $\begin{bmatrix}t^{3} e^{t} + 3 t^{2} e^{t} + 2 e^{t} \\ t^{2} e^{t} + 2 t e^{t} + e^{t} \\ t e^{t} - e^{t}\end{bmatrix}$
+- $\begin{bmatrix}3 t^{2} e^{t} \\ 2 t e^{t} \\ e^{t}\end{bmatrix}$
+- $\begin{bmatrix}t^{3} e^{t} + 3 t^{2} + 2 e^{t} \\ t^{2} e^{t} + 2 t + e^{t} \\ t e^{t} - 2 e^{t} + 1\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -2225,24 +2225,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(t^{3} + 2) \\ \frac{\text{d}}{\text{d}t}(t^{2} + 1) \\ \frac{\text{d}}{\text{d}t}(t - 2)\end{aligned}]=[\begin{aligned}3 t^{2} \\ 2 t \\ 1\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(t^{3} + 2) \\ \frac{\text{d}}{\text{d}t}(t^{2} + 1) \\ \frac{\text{d}}{\text{d}t}(t - 2)\end{bmatrix}=\begin{bmatrix}3 t^{2} \\ 2 t \\ 1\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(e^{t})=e^{t}\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})[\begin{aligned}t^{3} + 2 \\ t^{2} + 1 \\ t - 2\end{aligned}]+(e^{t})[\begin{aligned}3 t^{2} \\ 2 t \\ 1\end{aligned}]\\&=[\begin{aligned}\left(t^{3} + 2\right) e^{t} \\ \left(t^{2} + 1\right) e^{t} \\ \left(t - 2\right) e^{t}\end{aligned}]+[\begin{aligned}3 t^{2} e^{t} \\ 2 t e^{t} \\ e^{t}\end{aligned}]\\&=[\begin{aligned}\left(t^{3} + 3 t^{2} + 2\right) e^{t} \\ \left(t^{2} + 2 t + 1\right) e^{t} \\ \left(t - 1\right) e^{t}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(e^{t})\begin{bmatrix}t^{3} + 2 \\ t^{2} + 1 \\ t - 2\end{bmatrix}+(e^{t})\begin{bmatrix}3 t^{2} \\ 2 t \\ 1\end{bmatrix}\\&=\begin{bmatrix}\left(t^{3} + 2\right) e^{t} \\ \left(t^{2} + 1\right) e^{t} \\ \left(t - 2\right) e^{t}\end{bmatrix}+\begin{bmatrix}3 t^{2} e^{t} \\ 2 t e^{t} \\ e^{t}\end{bmatrix}\\&=\begin{bmatrix}\left(t^{3} + 3 t^{2} + 2\right) e^{t} \\ \left(t^{2} + 2 t + 1\right) e^{t} \\ \left(t - 1\right) e^{t}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_hard seed 0
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}- 3 \ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{aligned}]$ and $u(t)=t^{2} + t + 1.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}- 3 \ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{bmatrix}$ and $u(t)=t^{2} + t + 1.$
 
-- $[\begin{aligned}- 6 t \ln{\left(t \right)} - 3 t - 3 \ln{\left(t \right)} - 3 - \frac{3}{t} \\ - t^{2} e^{t} - 3 t e^{t} - 2 e^{t} \\ 1 - \frac{1}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}- 6 t \ln{\left(t \right)} - 3 \ln{\left(t \right)} \\ - 2 t e^{t} - e^{t} \\ 2 + \frac{1}{t}\end{aligned}]$
-- $[\begin{aligned}- 3 t - 3 - \frac{3}{t} \\ - t^{2} e^{t} - t e^{t} - e^{t} \\ -1 - \frac{1}{t} - \frac{1}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}- 6 t \ln{\left(t \right)} + 3 t - 3 \ln{\left(t \right)} + 3 + \frac{3}{t} \\ t^{2} e^{t} - t e^{t} \\ 3 + \frac{2}{t} + \frac{1}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}-6 - \frac{3}{t} \\ - 2 t e^{t} - e^{t} \\ - \frac{2}{t} - \frac{1}{t^{2}}\end{aligned}]$
+- $\begin{bmatrix}- 6 t \ln{\left(t \right)} - 3 t - 3 \ln{\left(t \right)} - 3 - \frac{3}{t} \\ - t^{2} e^{t} - 3 t e^{t} - 2 e^{t} \\ 1 - \frac{1}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}- 6 t \ln{\left(t \right)} - 3 \ln{\left(t \right)} \\ - 2 t e^{t} - e^{t} \\ 2 + \frac{1}{t}\end{bmatrix}$
+- $\begin{bmatrix}- 3 t - 3 - \frac{3}{t} \\ - t^{2} e^{t} - t e^{t} - e^{t} \\ -1 - \frac{1}{t} - \frac{1}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}- 6 t \ln{\left(t \right)} + 3 t - 3 \ln{\left(t \right)} + 3 + \frac{3}{t} \\ t^{2} e^{t} - t e^{t} \\ 3 + \frac{2}{t} + \frac{1}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}-6 - \frac{3}{t} \\ - 2 t e^{t} - e^{t} \\ - \frac{2}{t} - \frac{1}{t^{2}}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -2253,24 +2253,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(- 3 \ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(- e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{aligned}]=[\begin{aligned}- \frac{3}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} + t + 1)=2 t + 1\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(- 3 \ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(- e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{bmatrix}=\begin{bmatrix}- \frac{3}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} + t + 1)=2 t + 1\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t + 1)[\begin{aligned}- 3 \ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{aligned}]+(t^{2} + t + 1)[\begin{aligned}- \frac{3}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\&=[\begin{aligned}- 3 \left(2 t + 1\right) \ln{\left(t \right)} \\ - \left(2 t + 1\right) e^{t} \\ \frac{2 t + 1}{t}\end{aligned}]+[\begin{aligned}- \frac{3 \left(t^{2} + t + 1\right)}{t} \\ - \left(t^{2} + t + 1\right) e^{t} \\ - \frac{t^{2} + t + 1}{t^{2}}\end{aligned}]\\&=[\begin{aligned}- 6 t \ln{\left(t \right)} - 3 t - 3 \ln{\left(t \right)} - 3 - \frac{3}{t} \\ \left(- t^{2} - 3 t - 2\right) e^{t} \\ 1 - \frac{1}{t^{2}}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t + 1)\begin{bmatrix}- 3 \ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{bmatrix}+(t^{2} + t + 1)\begin{bmatrix}- \frac{3}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}- 3 \left(2 t + 1\right) \ln{\left(t \right)} \\ - \left(2 t + 1\right) e^{t} \\ \frac{2 t + 1}{t}\end{bmatrix}+\begin{bmatrix}- \frac{3 \left(t^{2} + t + 1\right)}{t} \\ - \left(t^{2} + t + 1\right) e^{t} \\ - \frac{t^{2} + t + 1}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}- 6 t \ln{\left(t \right)} - 3 t - 3 \ln{\left(t \right)} - 3 - \frac{3}{t} \\ \left(- t^{2} - 3 t - 2\right) e^{t} \\ 1 - \frac{1}{t^{2}}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_hard seed 1
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}- 3 \ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{aligned}]$ and $u(t)=t^{2} - 2 t + 2.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}- 3 \ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{bmatrix}$ and $u(t)=t^{2} - 2 t + 2.$
 
-- $[\begin{aligned}-6 + \frac{6}{t} \\ - 2 t e^{t} + 2 e^{t} \\ - \frac{2}{t} + \frac{2}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}- 6 t \ln{\left(t \right)} + 6 \ln{\left(t \right)} \\ - 2 t e^{t} + 2 e^{t} \\ 2 - \frac{2}{t}\end{aligned}]$
-- $[\begin{aligned}- 3 t + 6 - \frac{6}{t} \\ - t^{2} e^{t} + 2 t e^{t} - 2 e^{t} \\ -1 + \frac{2}{t} - \frac{2}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}- 6 t \ln{\left(t \right)} + 3 t + 6 \ln{\left(t \right)} - 6 + \frac{6}{t} \\ t^{2} e^{t} - 4 t e^{t} + 4 e^{t} \\ 3 - \frac{4}{t} + \frac{2}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}- 6 t \ln{\left(t \right)} - 3 t + 6 \ln{\left(t \right)} + 6 - \frac{6}{t} \\ - t^{2} e^{t} \\ 1 - \frac{2}{t^{2}}\end{aligned}]$
+- $\begin{bmatrix}-6 + \frac{6}{t} \\ - 2 t e^{t} + 2 e^{t} \\ - \frac{2}{t} + \frac{2}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}- 6 t \ln{\left(t \right)} + 6 \ln{\left(t \right)} \\ - 2 t e^{t} + 2 e^{t} \\ 2 - \frac{2}{t}\end{bmatrix}$
+- $\begin{bmatrix}- 3 t + 6 - \frac{6}{t} \\ - t^{2} e^{t} + 2 t e^{t} - 2 e^{t} \\ -1 + \frac{2}{t} - \frac{2}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}- 6 t \ln{\left(t \right)} + 3 t + 6 \ln{\left(t \right)} - 6 + \frac{6}{t} \\ t^{2} e^{t} - 4 t e^{t} + 4 e^{t} \\ 3 - \frac{4}{t} + \frac{2}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}- 6 t \ln{\left(t \right)} - 3 t + 6 \ln{\left(t \right)} + 6 - \frac{6}{t} \\ - t^{2} e^{t} \\ 1 - \frac{2}{t^{2}}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -2281,24 +2281,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(- 3 \ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(- e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{aligned}]=[\begin{aligned}- \frac{3}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} - 2 t + 2)=2 t - 2\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(- 3 \ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(- e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{bmatrix}=\begin{bmatrix}- \frac{3}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} - 2 t + 2)=2 t - 2\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t - 2)[\begin{aligned}- 3 \ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{aligned}]+(t^{2} - 2 t + 2)[\begin{aligned}- \frac{3}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\&=[\begin{aligned}- 3 \left(2 t - 2\right) \ln{\left(t \right)} \\ - \left(2 t - 2\right) e^{t} \\ \frac{2 t - 2}{t}\end{aligned}]+[\begin{aligned}- \frac{3 \left(t^{2} - 2 t + 2\right)}{t} \\ - \left(t^{2} - 2 t + 2\right) e^{t} \\ - \frac{t^{2} - 2 t + 2}{t^{2}}\end{aligned}]\\&=[\begin{aligned}- 6 t \ln{\left(t \right)} - 3 t + 6 \ln{\left(t \right)} + 6 - \frac{6}{t} \\ - t^{2} e^{t} \\ 1 - \frac{2}{t^{2}}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t - 2)\begin{bmatrix}- 3 \ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{bmatrix}+(t^{2} - 2 t + 2)\begin{bmatrix}- \frac{3}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}- 3 \left(2 t - 2\right) \ln{\left(t \right)} \\ - \left(2 t - 2\right) e^{t} \\ \frac{2 t - 2}{t}\end{bmatrix}+\begin{bmatrix}- \frac{3 \left(t^{2} - 2 t + 2\right)}{t} \\ - \left(t^{2} - 2 t + 2\right) e^{t} \\ - \frac{t^{2} - 2 t + 2}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}- 6 t \ln{\left(t \right)} - 3 t + 6 \ln{\left(t \right)} + 6 - \frac{6}{t} \\ - t^{2} e^{t} \\ 1 - \frac{2}{t^{2}}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_hard seed 2
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}- 3 \ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{aligned}]$ and $u(t)=t^{2} - 3 t - 3.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}- 3 \ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{bmatrix}$ and $u(t)=t^{2} - 3 t - 3.$
 
-- $[\begin{aligned}- 6 t \ln{\left(t \right)} + 3 t + 9 \ln{\left(t \right)} - 9 - \frac{9}{t} \\ t^{2} e^{t} - 5 t e^{t} \\ 3 - \frac{6}{t} - \frac{3}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}- 6 t \ln{\left(t \right)} - 3 t + 9 \ln{\left(t \right)} + 9 + \frac{9}{t} \\ - t^{2} e^{t} + t e^{t} + 6 e^{t} \\ 1 + \frac{3}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}-6 + \frac{9}{t} \\ - 2 t e^{t} + 3 e^{t} \\ - \frac{2}{t} + \frac{3}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}- 6 t \ln{\left(t \right)} + 9 \ln{\left(t \right)} \\ - 2 t e^{t} + 3 e^{t} \\ 2 - \frac{3}{t}\end{aligned}]$
-- $[\begin{aligned}- 3 t + 9 + \frac{9}{t} \\ - t^{2} e^{t} + 3 t e^{t} + 3 e^{t} \\ -1 + \frac{3}{t} + \frac{3}{t^{2}}\end{aligned}]$
+- $\begin{bmatrix}- 6 t \ln{\left(t \right)} + 3 t + 9 \ln{\left(t \right)} - 9 - \frac{9}{t} \\ t^{2} e^{t} - 5 t e^{t} \\ 3 - \frac{6}{t} - \frac{3}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}- 6 t \ln{\left(t \right)} - 3 t + 9 \ln{\left(t \right)} + 9 + \frac{9}{t} \\ - t^{2} e^{t} + t e^{t} + 6 e^{t} \\ 1 + \frac{3}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}-6 + \frac{9}{t} \\ - 2 t e^{t} + 3 e^{t} \\ - \frac{2}{t} + \frac{3}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}- 6 t \ln{\left(t \right)} + 9 \ln{\left(t \right)} \\ - 2 t e^{t} + 3 e^{t} \\ 2 - \frac{3}{t}\end{bmatrix}$
+- $\begin{bmatrix}- 3 t + 9 + \frac{9}{t} \\ - t^{2} e^{t} + 3 t e^{t} + 3 e^{t} \\ -1 + \frac{3}{t} + \frac{3}{t^{2}}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -2309,24 +2309,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(- 3 \ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(- e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{aligned}]=[\begin{aligned}- \frac{3}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} - 3 t - 3)=2 t - 3\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(- 3 \ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(- e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{bmatrix}=\begin{bmatrix}- \frac{3}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} - 3 t - 3)=2 t - 3\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t - 3)[\begin{aligned}- 3 \ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{aligned}]+(t^{2} - 3 t - 3)[\begin{aligned}- \frac{3}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\&=[\begin{aligned}- 3 \left(2 t - 3\right) \ln{\left(t \right)} \\ - \left(2 t - 3\right) e^{t} \\ \frac{2 t - 3}{t}\end{aligned}]+[\begin{aligned}- \frac{3 \left(t^{2} - 3 t - 3\right)}{t} \\ - \left(t^{2} - 3 t - 3\right) e^{t} \\ - \frac{t^{2} - 3 t - 3}{t^{2}}\end{aligned}]\\&=[\begin{aligned}- 6 t \ln{\left(t \right)} - 3 t + 9 \ln{\left(t \right)} + 9 + \frac{9}{t} \\ \left(- t^{2} + t + 6\right) e^{t} \\ 1 + \frac{3}{t^{2}}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t - 3)\begin{bmatrix}- 3 \ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{bmatrix}+(t^{2} - 3 t - 3)\begin{bmatrix}- \frac{3}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}- 3 \left(2 t - 3\right) \ln{\left(t \right)} \\ - \left(2 t - 3\right) e^{t} \\ \frac{2 t - 3}{t}\end{bmatrix}+\begin{bmatrix}- \frac{3 \left(t^{2} - 3 t - 3\right)}{t} \\ - \left(t^{2} - 3 t - 3\right) e^{t} \\ - \frac{t^{2} - 3 t - 3}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}- 6 t \ln{\left(t \right)} - 3 t + 9 \ln{\left(t \right)} + 9 + \frac{9}{t} \\ \left(- t^{2} + t + 6\right) e^{t} \\ 1 + \frac{3}{t^{2}}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_hard seed 3
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}2 \ln{\left(t \right)} \\ - 2 e^{t} \\ \frac{1}{t}\end{aligned}]$ and $u(t)=t^{2} - 2 t + 2.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}2 \ln{\left(t \right)} \\ - 2 e^{t} \\ \frac{1}{t}\end{bmatrix}$ and $u(t)=t^{2} - 2 t + 2.$
 
-- $[\begin{aligned}2 t - 4 + \frac{4}{t} \\ - 2 t^{2} e^{t} + 4 t e^{t} - 4 e^{t} \\ -1 + \frac{2}{t} - \frac{2}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}4 t \ln{\left(t \right)} + 2 t - 4 \ln{\left(t \right)} - 4 + \frac{4}{t} \\ - 2 t^{2} e^{t} \\ 1 - \frac{2}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}4 - \frac{4}{t} \\ - 4 t e^{t} + 4 e^{t} \\ - \frac{2}{t} + \frac{2}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}4 t \ln{\left(t \right)} - 2 t - 4 \ln{\left(t \right)} + 4 - \frac{4}{t} \\ 2 t^{2} e^{t} - 8 t e^{t} + 8 e^{t} \\ 3 - \frac{4}{t} + \frac{2}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}4 t \ln{\left(t \right)} - 4 \ln{\left(t \right)} \\ - 4 t e^{t} + 4 e^{t} \\ 2 - \frac{2}{t}\end{aligned}]$
+- $\begin{bmatrix}2 t - 4 + \frac{4}{t} \\ - 2 t^{2} e^{t} + 4 t e^{t} - 4 e^{t} \\ -1 + \frac{2}{t} - \frac{2}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}4 t \ln{\left(t \right)} + 2 t - 4 \ln{\left(t \right)} - 4 + \frac{4}{t} \\ - 2 t^{2} e^{t} \\ 1 - \frac{2}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}4 - \frac{4}{t} \\ - 4 t e^{t} + 4 e^{t} \\ - \frac{2}{t} + \frac{2}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}4 t \ln{\left(t \right)} - 2 t - 4 \ln{\left(t \right)} + 4 - \frac{4}{t} \\ 2 t^{2} e^{t} - 8 t e^{t} + 8 e^{t} \\ 3 - \frac{4}{t} + \frac{2}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}4 t \ln{\left(t \right)} - 4 \ln{\left(t \right)} \\ - 4 t e^{t} + 4 e^{t} \\ 2 - \frac{2}{t}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -2337,24 +2337,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(2 \ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(- 2 e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{aligned}]=[\begin{aligned}\frac{2}{t} \\ - 2 e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} - 2 t + 2)=2 t - 2\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(2 \ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(- 2 e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{bmatrix}=\begin{bmatrix}\frac{2}{t} \\ - 2 e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} - 2 t + 2)=2 t - 2\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t - 2)[\begin{aligned}2 \ln{\left(t \right)} \\ - 2 e^{t} \\ \frac{1}{t}\end{aligned}]+(t^{2} - 2 t + 2)[\begin{aligned}\frac{2}{t} \\ - 2 e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\&=[\begin{aligned}2 \left(2 t - 2\right) \ln{\left(t \right)} \\ - 2 \left(2 t - 2\right) e^{t} \\ \frac{2 t - 2}{t}\end{aligned}]+[\begin{aligned}\frac{2 \left(t^{2} - 2 t + 2\right)}{t} \\ - 2 \left(t^{2} - 2 t + 2\right) e^{t} \\ - \frac{t^{2} - 2 t + 2}{t^{2}}\end{aligned}]\\&=[\begin{aligned}4 t \ln{\left(t \right)} + 2 t - 4 \ln{\left(t \right)} - 4 + \frac{4}{t} \\ - 2 t^{2} e^{t} \\ 1 - \frac{2}{t^{2}}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t - 2)\begin{bmatrix}2 \ln{\left(t \right)} \\ - 2 e^{t} \\ \frac{1}{t}\end{bmatrix}+(t^{2} - 2 t + 2)\begin{bmatrix}\frac{2}{t} \\ - 2 e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}2 \left(2 t - 2\right) \ln{\left(t \right)} \\ - 2 \left(2 t - 2\right) e^{t} \\ \frac{2 t - 2}{t}\end{bmatrix}+\begin{bmatrix}\frac{2 \left(t^{2} - 2 t + 2\right)}{t} \\ - 2 \left(t^{2} - 2 t + 2\right) e^{t} \\ - \frac{t^{2} - 2 t + 2}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}4 t \ln{\left(t \right)} + 2 t - 4 \ln{\left(t \right)} - 4 + \frac{4}{t} \\ - 2 t^{2} e^{t} \\ 1 - \frac{2}{t^{2}}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_hard seed 4
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}- 3 \ln{\left(t \right)} \\ 3 e^{t} \\ \frac{1}{t}\end{aligned}]$ and $u(t)=t^{2} - 2 t - 1.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}- 3 \ln{\left(t \right)} \\ 3 e^{t} \\ \frac{1}{t}\end{bmatrix}$ and $u(t)=t^{2} - 2 t - 1.$
 
-- $[\begin{aligned}- 3 t + 6 + \frac{3}{t} \\ 3 t^{2} e^{t} - 6 t e^{t} - 3 e^{t} \\ -1 + \frac{2}{t} + \frac{1}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}- 6 t \ln{\left(t \right)} + 6 \ln{\left(t \right)} \\ 6 t e^{t} - 6 e^{t} \\ 2 - \frac{2}{t}\end{aligned}]$
-- $[\begin{aligned}- 6 t \ln{\left(t \right)} - 3 t + 6 \ln{\left(t \right)} + 6 + \frac{3}{t} \\ 3 t^{2} e^{t} - 9 e^{t} \\ 1 + \frac{1}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}-6 + \frac{6}{t} \\ 6 t e^{t} - 6 e^{t} \\ - \frac{2}{t} + \frac{2}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}- 6 t \ln{\left(t \right)} + 3 t + 6 \ln{\left(t \right)} - 6 - \frac{3}{t} \\ - 3 t^{2} e^{t} + 12 t e^{t} - 3 e^{t} \\ 3 - \frac{4}{t} - \frac{1}{t^{2}}\end{aligned}]$
+- $\begin{bmatrix}- 3 t + 6 + \frac{3}{t} \\ 3 t^{2} e^{t} - 6 t e^{t} - 3 e^{t} \\ -1 + \frac{2}{t} + \frac{1}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}- 6 t \ln{\left(t \right)} + 6 \ln{\left(t \right)} \\ 6 t e^{t} - 6 e^{t} \\ 2 - \frac{2}{t}\end{bmatrix}$
+- $\begin{bmatrix}- 6 t \ln{\left(t \right)} - 3 t + 6 \ln{\left(t \right)} + 6 + \frac{3}{t} \\ 3 t^{2} e^{t} - 9 e^{t} \\ 1 + \frac{1}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}-6 + \frac{6}{t} \\ 6 t e^{t} - 6 e^{t} \\ - \frac{2}{t} + \frac{2}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}- 6 t \ln{\left(t \right)} + 3 t + 6 \ln{\left(t \right)} - 6 - \frac{3}{t} \\ - 3 t^{2} e^{t} + 12 t e^{t} - 3 e^{t} \\ 3 - \frac{4}{t} - \frac{1}{t^{2}}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -2365,24 +2365,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(- 3 \ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(3 e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{aligned}]=[\begin{aligned}- \frac{3}{t} \\ 3 e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} - 2 t - 1)=2 t - 2\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(- 3 \ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(3 e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{bmatrix}=\begin{bmatrix}- \frac{3}{t} \\ 3 e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} - 2 t - 1)=2 t - 2\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t - 2)[\begin{aligned}- 3 \ln{\left(t \right)} \\ 3 e^{t} \\ \frac{1}{t}\end{aligned}]+(t^{2} - 2 t - 1)[\begin{aligned}- \frac{3}{t} \\ 3 e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\&=[\begin{aligned}- 3 \left(2 t - 2\right) \ln{\left(t \right)} \\ 3 \left(2 t - 2\right) e^{t} \\ \frac{2 t - 2}{t}\end{aligned}]+[\begin{aligned}- \frac{3 \left(t^{2} - 2 t - 1\right)}{t} \\ 3 \left(t^{2} - 2 t - 1\right) e^{t} \\ - \frac{t^{2} - 2 t - 1}{t^{2}}\end{aligned}]\\&=[\begin{aligned}- 6 t \ln{\left(t \right)} - 3 t + 6 \ln{\left(t \right)} + 6 + \frac{3}{t} \\ 3 \left(t^{2} - 3\right) e^{t} \\ 1 + \frac{1}{t^{2}}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t - 2)\begin{bmatrix}- 3 \ln{\left(t \right)} \\ 3 e^{t} \\ \frac{1}{t}\end{bmatrix}+(t^{2} - 2 t - 1)\begin{bmatrix}- \frac{3}{t} \\ 3 e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}- 3 \left(2 t - 2\right) \ln{\left(t \right)} \\ 3 \left(2 t - 2\right) e^{t} \\ \frac{2 t - 2}{t}\end{bmatrix}+\begin{bmatrix}- \frac{3 \left(t^{2} - 2 t - 1\right)}{t} \\ 3 \left(t^{2} - 2 t - 1\right) e^{t} \\ - \frac{t^{2} - 2 t - 1}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}- 6 t \ln{\left(t \right)} - 3 t + 6 \ln{\left(t \right)} + 6 + \frac{3}{t} \\ 3 \left(t^{2} - 3\right) e^{t} \\ 1 + \frac{1}{t^{2}}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_hard seed 5
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}3 \ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{aligned}]$ and $u(t)=t^{2} + 2 t - 1.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}3 \ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{bmatrix}$ and $u(t)=t^{2} + 2 t - 1.$
 
-- $[\begin{aligned}6 t \ln{\left(t \right)} + 6 \ln{\left(t \right)} \\ - 2 t e^{t} - 2 e^{t} \\ 2 + \frac{2}{t}\end{aligned}]$
-- $[\begin{aligned}6 t \ln{\left(t \right)} - 3 t + 6 \ln{\left(t \right)} - 6 + \frac{3}{t} \\ t^{2} e^{t} - 3 e^{t} \\ 3 + \frac{4}{t} - \frac{1}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}3 t + 6 - \frac{3}{t} \\ - t^{2} e^{t} - 2 t e^{t} + e^{t} \\ -1 - \frac{2}{t} + \frac{1}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}6 t \ln{\left(t \right)} + 3 t + 6 \ln{\left(t \right)} + 6 - \frac{3}{t} \\ - t^{2} e^{t} - 4 t e^{t} - e^{t} \\ 1 + \frac{1}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}6 + \frac{6}{t} \\ - 2 t e^{t} - 2 e^{t} \\ - \frac{2}{t} - \frac{2}{t^{2}}\end{aligned}]$
+- $\begin{bmatrix}6 t \ln{\left(t \right)} + 6 \ln{\left(t \right)} \\ - 2 t e^{t} - 2 e^{t} \\ 2 + \frac{2}{t}\end{bmatrix}$
+- $\begin{bmatrix}6 t \ln{\left(t \right)} - 3 t + 6 \ln{\left(t \right)} - 6 + \frac{3}{t} \\ t^{2} e^{t} - 3 e^{t} \\ 3 + \frac{4}{t} - \frac{1}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}3 t + 6 - \frac{3}{t} \\ - t^{2} e^{t} - 2 t e^{t} + e^{t} \\ -1 - \frac{2}{t} + \frac{1}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}6 t \ln{\left(t \right)} + 3 t + 6 \ln{\left(t \right)} + 6 - \frac{3}{t} \\ - t^{2} e^{t} - 4 t e^{t} - e^{t} \\ 1 + \frac{1}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}6 + \frac{6}{t} \\ - 2 t e^{t} - 2 e^{t} \\ - \frac{2}{t} - \frac{2}{t^{2}}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -2393,24 +2393,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(3 \ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(- e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{aligned}]=[\begin{aligned}\frac{3}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} + 2 t - 1)=2 t + 2\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(3 \ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(- e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{bmatrix}=\begin{bmatrix}\frac{3}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} + 2 t - 1)=2 t + 2\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t + 2)[\begin{aligned}3 \ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{aligned}]+(t^{2} + 2 t - 1)[\begin{aligned}\frac{3}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\&=[\begin{aligned}3 \left(2 t + 2\right) \ln{\left(t \right)} \\ - \left(2 t + 2\right) e^{t} \\ \frac{2 t + 2}{t}\end{aligned}]+[\begin{aligned}\frac{3 \left(t^{2} + 2 t - 1\right)}{t} \\ - \left(t^{2} + 2 t - 1\right) e^{t} \\ - \frac{t^{2} + 2 t - 1}{t^{2}}\end{aligned}]\\&=[\begin{aligned}6 t \ln{\left(t \right)} + 3 t + 6 \ln{\left(t \right)} + 6 - \frac{3}{t} \\ \left(- t^{2} - 4 t - 1\right) e^{t} \\ 1 + \frac{1}{t^{2}}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t + 2)\begin{bmatrix}3 \ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{bmatrix}+(t^{2} + 2 t - 1)\begin{bmatrix}\frac{3}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}3 \left(2 t + 2\right) \ln{\left(t \right)} \\ - \left(2 t + 2\right) e^{t} \\ \frac{2 t + 2}{t}\end{bmatrix}+\begin{bmatrix}\frac{3 \left(t^{2} + 2 t - 1\right)}{t} \\ - \left(t^{2} + 2 t - 1\right) e^{t} \\ - \frac{t^{2} + 2 t - 1}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}6 t \ln{\left(t \right)} + 3 t + 6 \ln{\left(t \right)} + 6 - \frac{3}{t} \\ \left(- t^{2} - 4 t - 1\right) e^{t} \\ 1 + \frac{1}{t^{2}}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_hard seed 6
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}\ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{aligned}]$ and $u(t)=t^{2} + 2 t - 3.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}\ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{bmatrix}$ and $u(t)=t^{2} + 2 t - 3.$
 
-- $[\begin{aligned}2 t \ln{\left(t \right)} + 2 \ln{\left(t \right)} \\ - 2 t e^{t} - 2 e^{t} \\ 2 + \frac{2}{t}\end{aligned}]$
-- $[\begin{aligned}t + 2 - \frac{3}{t} \\ - t^{2} e^{t} - 2 t e^{t} + 3 e^{t} \\ -1 - \frac{2}{t} + \frac{3}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}2 t \ln{\left(t \right)} - t + 2 \ln{\left(t \right)} - 2 + \frac{3}{t} \\ t^{2} e^{t} - 5 e^{t} \\ 3 + \frac{4}{t} - \frac{3}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}2 + \frac{2}{t} \\ - 2 t e^{t} - 2 e^{t} \\ - \frac{2}{t} - \frac{2}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}2 t \ln{\left(t \right)} + t + 2 \ln{\left(t \right)} + 2 - \frac{3}{t} \\ - t^{2} e^{t} - 4 t e^{t} + e^{t} \\ 1 + \frac{3}{t^{2}}\end{aligned}]$
+- $\begin{bmatrix}2 t \ln{\left(t \right)} + 2 \ln{\left(t \right)} \\ - 2 t e^{t} - 2 e^{t} \\ 2 + \frac{2}{t}\end{bmatrix}$
+- $\begin{bmatrix}t + 2 - \frac{3}{t} \\ - t^{2} e^{t} - 2 t e^{t} + 3 e^{t} \\ -1 - \frac{2}{t} + \frac{3}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}2 t \ln{\left(t \right)} - t + 2 \ln{\left(t \right)} - 2 + \frac{3}{t} \\ t^{2} e^{t} - 5 e^{t} \\ 3 + \frac{4}{t} - \frac{3}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}2 + \frac{2}{t} \\ - 2 t e^{t} - 2 e^{t} \\ - \frac{2}{t} - \frac{2}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}2 t \ln{\left(t \right)} + t + 2 \ln{\left(t \right)} + 2 - \frac{3}{t} \\ - t^{2} e^{t} - 4 t e^{t} + e^{t} \\ 1 + \frac{3}{t^{2}}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -2421,24 +2421,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(\ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(- e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{aligned}]=[\begin{aligned}\frac{1}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} + 2 t - 3)=2 t + 2\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(\ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(- e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{bmatrix}=\begin{bmatrix}\frac{1}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} + 2 t - 3)=2 t + 2\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t + 2)[\begin{aligned}\ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{aligned}]+(t^{2} + 2 t - 3)[\begin{aligned}\frac{1}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\&=[\begin{aligned}\left(2 t + 2\right) \ln{\left(t \right)} \\ - \left(2 t + 2\right) e^{t} \\ \frac{2 t + 2}{t}\end{aligned}]+[\begin{aligned}\frac{t^{2} + 2 t - 3}{t} \\ - \left(t^{2} + 2 t - 3\right) e^{t} \\ - \frac{t^{2} + 2 t - 3}{t^{2}}\end{aligned}]\\&=[\begin{aligned}2 t \ln{\left(t \right)} + t + 2 \ln{\left(t \right)} + 2 - \frac{3}{t} \\ \left(- t^{2} - 4 t + 1\right) e^{t} \\ 1 + \frac{3}{t^{2}}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t + 2)\begin{bmatrix}\ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{bmatrix}+(t^{2} + 2 t - 3)\begin{bmatrix}\frac{1}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}\left(2 t + 2\right) \ln{\left(t \right)} \\ - \left(2 t + 2\right) e^{t} \\ \frac{2 t + 2}{t}\end{bmatrix}+\begin{bmatrix}\frac{t^{2} + 2 t - 3}{t} \\ - \left(t^{2} + 2 t - 3\right) e^{t} \\ - \frac{t^{2} + 2 t - 3}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}2 t \ln{\left(t \right)} + t + 2 \ln{\left(t \right)} + 2 - \frac{3}{t} \\ \left(- t^{2} - 4 t + 1\right) e^{t} \\ 1 + \frac{3}{t^{2}}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_hard seed 7
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}\ln{\left(t \right)} \\ 3 e^{t} \\ \frac{1}{t}\end{aligned}]$ and $u(t)=t^{2} - t - 2.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}\ln{\left(t \right)} \\ 3 e^{t} \\ \frac{1}{t}\end{bmatrix}$ and $u(t)=t^{2} - t - 2.$
 
-- $[\begin{aligned}t - 1 - \frac{2}{t} \\ 3 t^{2} e^{t} - 3 t e^{t} - 6 e^{t} \\ -1 + \frac{1}{t} + \frac{2}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}2 t \ln{\left(t \right)} - t - \ln{\left(t \right)} + 1 + \frac{2}{t} \\ - 3 t^{2} e^{t} + 9 t e^{t} + 3 e^{t} \\ 3 - \frac{2}{t} - \frac{2}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}2 t \ln{\left(t \right)} - \ln{\left(t \right)} \\ 6 t e^{t} - 3 e^{t} \\ 2 - \frac{1}{t}\end{aligned}]$
-- $[\begin{aligned}2 - \frac{1}{t} \\ 6 t e^{t} - 3 e^{t} \\ - \frac{2}{t} + \frac{1}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}2 t \ln{\left(t \right)} + t - \ln{\left(t \right)} - 1 - \frac{2}{t} \\ 3 t^{2} e^{t} + 3 t e^{t} - 9 e^{t} \\ 1 + \frac{2}{t^{2}}\end{aligned}]$
+- $\begin{bmatrix}t - 1 - \frac{2}{t} \\ 3 t^{2} e^{t} - 3 t e^{t} - 6 e^{t} \\ -1 + \frac{1}{t} + \frac{2}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}2 t \ln{\left(t \right)} - t - \ln{\left(t \right)} + 1 + \frac{2}{t} \\ - 3 t^{2} e^{t} + 9 t e^{t} + 3 e^{t} \\ 3 - \frac{2}{t} - \frac{2}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}2 t \ln{\left(t \right)} - \ln{\left(t \right)} \\ 6 t e^{t} - 3 e^{t} \\ 2 - \frac{1}{t}\end{bmatrix}$
+- $\begin{bmatrix}2 - \frac{1}{t} \\ 6 t e^{t} - 3 e^{t} \\ - \frac{2}{t} + \frac{1}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}2 t \ln{\left(t \right)} + t - \ln{\left(t \right)} - 1 - \frac{2}{t} \\ 3 t^{2} e^{t} + 3 t e^{t} - 9 e^{t} \\ 1 + \frac{2}{t^{2}}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -2449,24 +2449,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(\ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(3 e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{aligned}]=[\begin{aligned}\frac{1}{t} \\ 3 e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} - t - 2)=2 t - 1\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(\ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(3 e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{bmatrix}=\begin{bmatrix}\frac{1}{t} \\ 3 e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} - t - 2)=2 t - 1\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t - 1)[\begin{aligned}\ln{\left(t \right)} \\ 3 e^{t} \\ \frac{1}{t}\end{aligned}]+(t^{2} - t - 2)[\begin{aligned}\frac{1}{t} \\ 3 e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\&=[\begin{aligned}\left(2 t - 1\right) \ln{\left(t \right)} \\ 3 \left(2 t - 1\right) e^{t} \\ \frac{2 t - 1}{t}\end{aligned}]+[\begin{aligned}\frac{t^{2} - t - 2}{t} \\ 3 \left(t^{2} - t - 2\right) e^{t} \\ - \frac{t^{2} - t - 2}{t^{2}}\end{aligned}]\\&=[\begin{aligned}2 t \ln{\left(t \right)} + t - \ln{\left(t \right)} - 1 - \frac{2}{t} \\ 3 \left(t^{2} + t - 3\right) e^{t} \\ 1 + \frac{2}{t^{2}}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t - 1)\begin{bmatrix}\ln{\left(t \right)} \\ 3 e^{t} \\ \frac{1}{t}\end{bmatrix}+(t^{2} - t - 2)\begin{bmatrix}\frac{1}{t} \\ 3 e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}\left(2 t - 1\right) \ln{\left(t \right)} \\ 3 \left(2 t - 1\right) e^{t} \\ \frac{2 t - 1}{t}\end{bmatrix}+\begin{bmatrix}\frac{t^{2} - t - 2}{t} \\ 3 \left(t^{2} - t - 2\right) e^{t} \\ - \frac{t^{2} - t - 2}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}2 t \ln{\left(t \right)} + t - \ln{\left(t \right)} - 1 - \frac{2}{t} \\ 3 \left(t^{2} + t - 3\right) e^{t} \\ 1 + \frac{2}{t^{2}}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_hard seed 8
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}\ln{\left(t \right)} \\ - 2 e^{t} \\ \frac{1}{t}\end{aligned}]$ and $u(t)=t^{2} - 2 t - 1.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}\ln{\left(t \right)} \\ - 2 e^{t} \\ \frac{1}{t}\end{bmatrix}$ and $u(t)=t^{2} - 2 t - 1.$
 
-- $[\begin{aligned}2 - \frac{2}{t} \\ - 4 t e^{t} + 4 e^{t} \\ - \frac{2}{t} + \frac{2}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}2 t \ln{\left(t \right)} - 2 \ln{\left(t \right)} \\ - 4 t e^{t} + 4 e^{t} \\ 2 - \frac{2}{t}\end{aligned}]$
-- $[\begin{aligned}2 t \ln{\left(t \right)} - t - 2 \ln{\left(t \right)} + 2 + \frac{1}{t} \\ 2 t^{2} e^{t} - 8 t e^{t} + 2 e^{t} \\ 3 - \frac{4}{t} - \frac{1}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}2 t \ln{\left(t \right)} + t - 2 \ln{\left(t \right)} - 2 - \frac{1}{t} \\ - 2 t^{2} e^{t} + 6 e^{t} \\ 1 + \frac{1}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}t - 2 - \frac{1}{t} \\ - 2 t^{2} e^{t} + 4 t e^{t} + 2 e^{t} \\ -1 + \frac{2}{t} + \frac{1}{t^{2}}\end{aligned}]$
+- $\begin{bmatrix}2 - \frac{2}{t} \\ - 4 t e^{t} + 4 e^{t} \\ - \frac{2}{t} + \frac{2}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}2 t \ln{\left(t \right)} - 2 \ln{\left(t \right)} \\ - 4 t e^{t} + 4 e^{t} \\ 2 - \frac{2}{t}\end{bmatrix}$
+- $\begin{bmatrix}2 t \ln{\left(t \right)} - t - 2 \ln{\left(t \right)} + 2 + \frac{1}{t} \\ 2 t^{2} e^{t} - 8 t e^{t} + 2 e^{t} \\ 3 - \frac{4}{t} - \frac{1}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}2 t \ln{\left(t \right)} + t - 2 \ln{\left(t \right)} - 2 - \frac{1}{t} \\ - 2 t^{2} e^{t} + 6 e^{t} \\ 1 + \frac{1}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}t - 2 - \frac{1}{t} \\ - 2 t^{2} e^{t} + 4 t e^{t} + 2 e^{t} \\ -1 + \frac{2}{t} + \frac{1}{t^{2}}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -2477,24 +2477,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(\ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(- 2 e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{aligned}]=[\begin{aligned}\frac{1}{t} \\ - 2 e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} - 2 t - 1)=2 t - 2\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(\ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(- 2 e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{bmatrix}=\begin{bmatrix}\frac{1}{t} \\ - 2 e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} - 2 t - 1)=2 t - 2\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t - 2)[\begin{aligned}\ln{\left(t \right)} \\ - 2 e^{t} \\ \frac{1}{t}\end{aligned}]+(t^{2} - 2 t - 1)[\begin{aligned}\frac{1}{t} \\ - 2 e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\&=[\begin{aligned}\left(2 t - 2\right) \ln{\left(t \right)} \\ - 2 \left(2 t - 2\right) e^{t} \\ \frac{2 t - 2}{t}\end{aligned}]+[\begin{aligned}\frac{t^{2} - 2 t - 1}{t} \\ - 2 \left(t^{2} - 2 t - 1\right) e^{t} \\ - \frac{t^{2} - 2 t - 1}{t^{2}}\end{aligned}]\\&=[\begin{aligned}2 t \ln{\left(t \right)} + t - 2 \ln{\left(t \right)} - 2 - \frac{1}{t} \\ 2 \left(3 - t^{2}\right) e^{t} \\ 1 + \frac{1}{t^{2}}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t - 2)\begin{bmatrix}\ln{\left(t \right)} \\ - 2 e^{t} \\ \frac{1}{t}\end{bmatrix}+(t^{2} - 2 t - 1)\begin{bmatrix}\frac{1}{t} \\ - 2 e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}\left(2 t - 2\right) \ln{\left(t \right)} \\ - 2 \left(2 t - 2\right) e^{t} \\ \frac{2 t - 2}{t}\end{bmatrix}+\begin{bmatrix}\frac{t^{2} - 2 t - 1}{t} \\ - 2 \left(t^{2} - 2 t - 1\right) e^{t} \\ - \frac{t^{2} - 2 t - 1}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}2 t \ln{\left(t \right)} + t - 2 \ln{\left(t \right)} - 2 - \frac{1}{t} \\ 2 \left(3 - t^{2}\right) e^{t} \\ 1 + \frac{1}{t^{2}}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_hard seed 9
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}- \ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{aligned}]$ and $u(t)=t^{2} + t + 2.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}- \ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{bmatrix}$ and $u(t)=t^{2} + t + 2.$
 
-- $[\begin{aligned}- 2 t \ln{\left(t \right)} + t - \ln{\left(t \right)} + 1 + \frac{2}{t} \\ t^{2} e^{t} - t e^{t} + e^{t} \\ 3 + \frac{2}{t} + \frac{2}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}- 2 t \ln{\left(t \right)} - t - \ln{\left(t \right)} - 1 - \frac{2}{t} \\ - t^{2} e^{t} - 3 t e^{t} - 3 e^{t} \\ 1 - \frac{2}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}- 2 t \ln{\left(t \right)} - \ln{\left(t \right)} \\ - 2 t e^{t} - e^{t} \\ 2 + \frac{1}{t}\end{aligned}]$
-- $[\begin{aligned}-2 - \frac{1}{t} \\ - 2 t e^{t} - e^{t} \\ - \frac{2}{t} - \frac{1}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}- t - 1 - \frac{2}{t} \\ - t^{2} e^{t} - t e^{t} - 2 e^{t} \\ -1 - \frac{1}{t} - \frac{2}{t^{2}}\end{aligned}]$
+- $\begin{bmatrix}- 2 t \ln{\left(t \right)} + t - \ln{\left(t \right)} + 1 + \frac{2}{t} \\ t^{2} e^{t} - t e^{t} + e^{t} \\ 3 + \frac{2}{t} + \frac{2}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t \ln{\left(t \right)} - t - \ln{\left(t \right)} - 1 - \frac{2}{t} \\ - t^{2} e^{t} - 3 t e^{t} - 3 e^{t} \\ 1 - \frac{2}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}- 2 t \ln{\left(t \right)} - \ln{\left(t \right)} \\ - 2 t e^{t} - e^{t} \\ 2 + \frac{1}{t}\end{bmatrix}$
+- $\begin{bmatrix}-2 - \frac{1}{t} \\ - 2 t e^{t} - e^{t} \\ - \frac{2}{t} - \frac{1}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}- t - 1 - \frac{2}{t} \\ - t^{2} e^{t} - t e^{t} - 2 e^{t} \\ -1 - \frac{1}{t} - \frac{2}{t^{2}}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -2505,24 +2505,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(- \ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(- e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{aligned}]=[\begin{aligned}- \frac{1}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} + t + 2)=2 t + 1\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(- \ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(- e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{bmatrix}=\begin{bmatrix}- \frac{1}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} + t + 2)=2 t + 1\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t + 1)[\begin{aligned}- \ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{aligned}]+(t^{2} + t + 2)[\begin{aligned}- \frac{1}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\&=[\begin{aligned}- \left(2 t + 1\right) \ln{\left(t \right)} \\ - \left(2 t + 1\right) e^{t} \\ \frac{2 t + 1}{t}\end{aligned}]+[\begin{aligned}- \frac{t^{2} + t + 2}{t} \\ - \left(t^{2} + t + 2\right) e^{t} \\ - \frac{t^{2} + t + 2}{t^{2}}\end{aligned}]\\&=[\begin{aligned}- 2 t \ln{\left(t \right)} - t - \ln{\left(t \right)} - 1 - \frac{2}{t} \\ \left(- t^{2} - 3 t - 3\right) e^{t} \\ 1 - \frac{2}{t^{2}}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t + 1)\begin{bmatrix}- \ln{\left(t \right)} \\ - e^{t} \\ \frac{1}{t}\end{bmatrix}+(t^{2} + t + 2)\begin{bmatrix}- \frac{1}{t} \\ - e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}- \left(2 t + 1\right) \ln{\left(t \right)} \\ - \left(2 t + 1\right) e^{t} \\ \frac{2 t + 1}{t}\end{bmatrix}+\begin{bmatrix}- \frac{t^{2} + t + 2}{t} \\ - \left(t^{2} + t + 2\right) e^{t} \\ - \frac{t^{2} + t + 2}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}- 2 t \ln{\left(t \right)} - t - \ln{\left(t \right)} - 1 - \frac{2}{t} \\ \left(- t^{2} - 3 t - 3\right) e^{t} \\ 1 - \frac{2}{t^{2}}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_hard seed 10
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}\ln{\left(t \right)} \\ e^{t} \\ \frac{1}{t}\end{aligned}]$ and $u(t)=t^{2} + 2 t - 3.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}\ln{\left(t \right)} \\ e^{t} \\ \frac{1}{t}\end{bmatrix}$ and $u(t)=t^{2} + 2 t - 3.$
 
-- $[\begin{aligned}2 t \ln{\left(t \right)} + 2 \ln{\left(t \right)} \\ 2 t e^{t} + 2 e^{t} \\ 2 + \frac{2}{t}\end{aligned}]$
-- $[\begin{aligned}t + 2 - \frac{3}{t} \\ t^{2} e^{t} + 2 t e^{t} - 3 e^{t} \\ -1 - \frac{2}{t} + \frac{3}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}2 t \ln{\left(t \right)} - t + 2 \ln{\left(t \right)} - 2 + \frac{3}{t} \\ - t^{2} e^{t} + 5 e^{t} \\ 3 + \frac{4}{t} - \frac{3}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}2 t \ln{\left(t \right)} + t + 2 \ln{\left(t \right)} + 2 - \frac{3}{t} \\ t^{2} e^{t} + 4 t e^{t} - e^{t} \\ 1 + \frac{3}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}2 + \frac{2}{t} \\ 2 t e^{t} + 2 e^{t} \\ - \frac{2}{t} - \frac{2}{t^{2}}\end{aligned}]$
+- $\begin{bmatrix}2 t \ln{\left(t \right)} + 2 \ln{\left(t \right)} \\ 2 t e^{t} + 2 e^{t} \\ 2 + \frac{2}{t}\end{bmatrix}$
+- $\begin{bmatrix}t + 2 - \frac{3}{t} \\ t^{2} e^{t} + 2 t e^{t} - 3 e^{t} \\ -1 - \frac{2}{t} + \frac{3}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}2 t \ln{\left(t \right)} - t + 2 \ln{\left(t \right)} - 2 + \frac{3}{t} \\ - t^{2} e^{t} + 5 e^{t} \\ 3 + \frac{4}{t} - \frac{3}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}2 t \ln{\left(t \right)} + t + 2 \ln{\left(t \right)} + 2 - \frac{3}{t} \\ t^{2} e^{t} + 4 t e^{t} - e^{t} \\ 1 + \frac{3}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}2 + \frac{2}{t} \\ 2 t e^{t} + 2 e^{t} \\ - \frac{2}{t} - \frac{2}{t^{2}}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -2533,24 +2533,24 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(\ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{aligned}]=[\begin{aligned}\frac{1}{t} \\ e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} + 2 t - 3)=2 t + 2\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(\ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{bmatrix}=\begin{bmatrix}\frac{1}{t} \\ e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} + 2 t - 3)=2 t + 2\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t + 2)[\begin{aligned}\ln{\left(t \right)} \\ e^{t} \\ \frac{1}{t}\end{aligned}]+(t^{2} + 2 t - 3)[\begin{aligned}\frac{1}{t} \\ e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\&=[\begin{aligned}\left(2 t + 2\right) \ln{\left(t \right)} \\ \left(2 t + 2\right) e^{t} \\ \frac{2 t + 2}{t}\end{aligned}]+[\begin{aligned}\frac{t^{2} + 2 t - 3}{t} \\ \left(t^{2} + 2 t - 3\right) e^{t} \\ - \frac{t^{2} + 2 t - 3}{t^{2}}\end{aligned}]\\&=[\begin{aligned}2 t \ln{\left(t \right)} + t + 2 \ln{\left(t \right)} + 2 - \frac{3}{t} \\ \left(t^{2} + 4 t - 1\right) e^{t} \\ 1 + \frac{3}{t^{2}}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t + 2)\begin{bmatrix}\ln{\left(t \right)} \\ e^{t} \\ \frac{1}{t}\end{bmatrix}+(t^{2} + 2 t - 3)\begin{bmatrix}\frac{1}{t} \\ e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}\left(2 t + 2\right) \ln{\left(t \right)} \\ \left(2 t + 2\right) e^{t} \\ \frac{2 t + 2}{t}\end{bmatrix}+\begin{bmatrix}\frac{t^{2} + 2 t - 3}{t} \\ \left(t^{2} + 2 t - 3\right) e^{t} \\ - \frac{t^{2} + 2 t - 3}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}2 t \ln{\left(t \right)} + t + 2 \ln{\left(t \right)} + 2 - \frac{3}{t} \\ \left(t^{2} + 4 t - 1\right) e^{t} \\ 1 + \frac{3}{t^{2}}\end{bmatrix}\end{aligned}
 $$
 
 ## Generated authored_hard seed 11
 
-Find $(u(t)f(t))^{′}$ where $f(t)=[\begin{aligned}\ln{\left(t \right)} \\ e^{t} \\ \frac{1}{t}\end{aligned}]$ and $u(t)=t^{2} + t + 2.$
+Find $(u(t)f(t))^{′}$ where $f(t)=\begin{bmatrix}\ln{\left(t \right)} \\ e^{t} \\ \frac{1}{t}\end{bmatrix}$ and $u(t)=t^{2} + t + 2.$
 
-- $[\begin{aligned}2 t \ln{\left(t \right)} + \ln{\left(t \right)} \\ 2 t e^{t} + e^{t} \\ 2 + \frac{1}{t}\end{aligned}]$
-- $[\begin{aligned}2 t \ln{\left(t \right)} - t + \ln{\left(t \right)} - 1 - \frac{2}{t} \\ - t^{2} e^{t} + t e^{t} - e^{t} \\ 3 + \frac{2}{t} + \frac{2}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}2 t \ln{\left(t \right)} + t + \ln{\left(t \right)} + 1 + \frac{2}{t} \\ t^{2} e^{t} + 3 t e^{t} + 3 e^{t} \\ 1 - \frac{2}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}t + 1 + \frac{2}{t} \\ t^{2} e^{t} + t e^{t} + 2 e^{t} \\ -1 - \frac{1}{t} - \frac{2}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}2 + \frac{1}{t} \\ 2 t e^{t} + e^{t} \\ - \frac{2}{t} - \frac{1}{t^{2}}\end{aligned}]$
+- $\begin{bmatrix}2 t \ln{\left(t \right)} + \ln{\left(t \right)} \\ 2 t e^{t} + e^{t} \\ 2 + \frac{1}{t}\end{bmatrix}$
+- $\begin{bmatrix}2 t \ln{\left(t \right)} - t + \ln{\left(t \right)} - 1 - \frac{2}{t} \\ - t^{2} e^{t} + t e^{t} - e^{t} \\ 3 + \frac{2}{t} + \frac{2}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}2 t \ln{\left(t \right)} + t + \ln{\left(t \right)} + 1 + \frac{2}{t} \\ t^{2} e^{t} + 3 t e^{t} + 3 e^{t} \\ 1 - \frac{2}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}t + 1 + \frac{2}{t} \\ t^{2} e^{t} + t e^{t} + 2 e^{t} \\ -1 - \frac{1}{t} - \frac{2}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}2 + \frac{1}{t} \\ 2 t e^{t} + e^{t} \\ - \frac{2}{t} - \frac{1}{t^{2}}\end{bmatrix}$
 
 Using the scalar function multiple rule, we can write
 
@@ -2561,11 +2561,11 @@ $$
 Let's find $u^{′}(t)$ and $f^{′}(t).$
 
 $$
-\begin{aligned}f^{′}(t)&=[\begin{aligned}\frac{\text{d}}{\text{d}t}(\ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{aligned}]=[\begin{aligned}\frac{1}{t} \\ e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} + t + 2)=2 t + 1\end{aligned}
+\begin{aligned}f^{′}(t)&=\begin{bmatrix}\frac{\text{d}}{\text{d}t}(\ln{\left(t \right)}) \\ \frac{\text{d}}{\text{d}t}(e^{t}) \\ \frac{\text{d}}{\text{d}t}(\frac{1}{t})\end{bmatrix}=\begin{bmatrix}\frac{1}{t} \\ e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\u^{′}(t)&=\frac{\text{d}}{\text{d}t}(t^{2} + t + 2)=2 t + 1\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t + 1)[\begin{aligned}\ln{\left(t \right)} \\ e^{t} \\ \frac{1}{t}\end{aligned}]+(t^{2} + t + 2)[\begin{aligned}\frac{1}{t} \\ e^{t} \\ - \frac{1}{t^{2}}\end{aligned}]\\&=[\begin{aligned}\left(2 t + 1\right) \ln{\left(t \right)} \\ \left(2 t + 1\right) e^{t} \\ \frac{2 t + 1}{t}\end{aligned}]+[\begin{aligned}\frac{t^{2} + t + 2}{t} \\ \left(t^{2} + t + 2\right) e^{t} \\ - \frac{t^{2} + t + 2}{t^{2}}\end{aligned}]\\&=[\begin{aligned}2 t \ln{\left(t \right)} + t + \ln{\left(t \right)} + 1 + \frac{2}{t} \\ \left(t^{2} + 3 t + 3\right) e^{t} \\ 1 - \frac{2}{t^{2}}\end{aligned}]\end{aligned}
+\begin{aligned}(u(t)f(t))^{′}&=u^{′}(t)f(t)+u(t)f^{′}(t)\\&=(2 t + 1)\begin{bmatrix}\ln{\left(t \right)} \\ e^{t} \\ \frac{1}{t}\end{bmatrix}+(t^{2} + t + 2)\begin{bmatrix}\frac{1}{t} \\ e^{t} \\ - \frac{1}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}\left(2 t + 1\right) \ln{\left(t \right)} \\ \left(2 t + 1\right) e^{t} \\ \frac{2 t + 1}{t}\end{bmatrix}+\begin{bmatrix}\frac{t^{2} + t + 2}{t} \\ \left(t^{2} + t + 2\right) e^{t} \\ - \frac{t^{2} + t + 2}{t^{2}}\end{bmatrix}\\&=\begin{bmatrix}2 t \ln{\left(t \right)} + t + \ln{\left(t \right)} + 1 + \frac{2}{t} \\ \left(t^{2} + 3 t + 3\right) e^{t} \\ 1 - \frac{2}{t^{2}}\end{bmatrix}\end{aligned}
 $$

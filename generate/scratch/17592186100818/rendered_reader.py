@@ -53,7 +53,7 @@ def value(raw):
   before=text[:m.start()];after=text[m.end():];lo,pos=group(after,0);assert after[pos]=='^';hi,pos=group(after,pos+1);suffix=after[pos:].strip();assert re.fullmatch(r'\)*',suffix),suffix
   before+=suffix
   # Normalize the source's extra MathML grouping brace around a bar.
-  if before.startswith('{')and before.count('{')>before.count('}'):before=before[1:]
+  before+='}'*(before.count('{')-before.count('}'))
   prim=scalar(before);lo,hi=scalar(lo),scalar(hi);assert prim.has(u)
   return prim.subs(u,hi)-prim.subs(u,lo),('bar',prim,lo,hi)
  return scalar(text),('value',)
@@ -72,7 +72,7 @@ def endpoint_terms(raw):
     prefix=text[:start]if start>=0 else'';suffix=text[end+1:]if end<len(text)else''
     # Only a whole arithmetic group with scalar outside factors is eligible.
     try:
-     co=scalar(prefix+suffix)if prefix+suffix else s.Integer(1)
+     outside=text[:start]+'(1)'+text[end+1:]if start>=0 else'1';co=scalar(outside)
      return co*scalar(body[:i]),co*scalar(body[i+1:])
     except (AssertionError,ValueError,IndexError):pass
    depth+=(c in '({')-(c in ')}')
@@ -80,18 +80,18 @@ def endpoint_terms(raw):
 
 def blocks(text):return [next(t for t in pair if t)for pair in re.findall(r'\$\$(.*?)\$\$|(?<!\$)\$(?!\$)(.*?)(?<!\$)\$(?!\$)',text,re.S)]
 def stages(q):
- prompt=q[':question/problem'];sol=q[':question/worked-solution'];given=next(b for b in blocks(prompt)if r'\int'in b).rstrip('= .?');c,F,var,lo,hi,end=integral(given);assert var==x and not end,(given,end)
+ prompt=q[':question/problem'];sol=q[':question/worked-solution'];given=next(b for b in blocks(prompt)if r'\int'in b).rstrip('= .?(');c,F,var,lo,hi,end=integral(given);assert var==x and not end,(given,end)
  U=scalar(re.search(r'\$u\s*=([^$]+)\$',sol)[1].rstrip('.'));du=s.diff(U,x)
  # Log arguments and sqrt/pole restrictions on the actual definite interval.
  assert lo.is_positive and hi.is_positive
  for L in U.atoms(s.log):
   for bound in (lo,hi):assert s.simplify(L.args[0].subs(x,bound)).is_positive
  ul=s.simplify(U.subs(x,lo));uh=s.simplify(U.subs(x,hi));assert ul.is_nonnegative and uh.is_nonnegative
- derivative_block=next(b for b in blocks(sol)if '⟹'in b or r'\Longrightarrow'in b);a,b=re.split(r'⟹|\quad\Longrightarrow\quad',derivative_block,maxsplit=1)
+ derivative_block=next(b for b in blocks(sol)if '⟹'in b or r'\Longrightarrow'in b);a,b=re.split(r'⟹|\\quad\\Longrightarrow\\quad',derivative_block,maxsplit=1)
  assert clean(a.split('=',1)[0])==r'\frac{\mathrm{d}u}{\mathrm{d}x}'
  for part in a.split('=')[1:]:assert equal(scalar(part),du),('false displayed derivative',part,du)
  a,b=b.split('=');a=clean(P.fraction_measure(a));b=clean(P.fraction_measure(b));l=re.fullmatch(r'(.*?)'+P.DIFF,a.strip());r=re.fullmatch(r'(.*?)'+P.DIFF+r'[.]?',b.strip());assert l and r and l[2]=='u'and r[2]=='x',(a,b)
- co=lambda z:scalar(z)if clean(z).strip()else s.Integer(1)
+ co=lambda z:scalar(re.sub(r'\\cdot\s*$','',z).strip())if re.sub(r'\\cdot\s*$','',clean(z)).strip()else s.Integer(1)
  assert equal(co(l[1])*du,co(r[1])),('false reciprocal differential',a,b)
  table=re.findall(r'^\| \$([xu])\$ \| \$(.*?)\$ \| \$(.*?)\$ \|',sol,re.M);assert [z[0]for z in table]==['x','u'],table
  xl,xh=map(scalar,table[0][1:]);tl,th=map(scalar,table[1][1:]);assert equal(xl,lo)and equal(xh,hi)and equal(tl,ul)and equal(th,uh),('false table',table)
@@ -112,11 +112,13 @@ def stages(q):
     assert equal(body if ivar==x else body.subs(u,U)*du,c*F),('wrong displayed integral operand',part,body,c*F)
     N['integral_inputs']+=1;N['bound_references']+=2
    elif info[0]=='bar':
-    _,pr,bl,bh=info;assert equal(bl,ul)and equal(bh,uh)and equal(P.derivative(pr,x,U),c*F),('wrong primitive despite endpoint result',part)
+    _,pr,bl,bh=info;assert equal(bl,ul)and equal(bh,uh)and equal(P.derivative(pr,u).subs(u,U)*du,c*F),('wrong primitive despite endpoint result',part)
     last_primitive=pr;N['primitive_bars']+=1;N['bound_references']+=2
    elif (terms:=endpoint_terms(part))and last_primitive is not None:
     assert equal(terms[0],last_primitive.subs(u,uh))and equal(terms[1],last_primitive.subs(u,ul)),('compensating endpoint error',part,terms,last_primitive)
     N['individual_endpoints']+=2
+   elif last_primitive is not None and equal(last_primitive.subs(u,ul),s.Integer(0)):
+    assert equal(v,last_primitive.subs(u,uh));N['individual_endpoints']+=1
    N['rows']+=1
- assert N['primitive_bars']>=1 and N['individual_endpoints']>=2,N
+ assert N['primitive_bars']>=1 and N['individual_endpoints']>=1,N
  return expected,N

@@ -1,6 +1,6 @@
 # Scalar function multiple rule generator
 
-Local scratch implementation; math basis 1356; no database writes. Stop at steps 3–7.
+Generator source capture: math basis 1356. The generator itself performs no database writes. `replenish.py` follows stages 8–9 through the application integration, serializes with `api.lock`, checks current inventory and identities, saves exact requests, uses a basis guard, and verifies additive requested-KP datoms at the receipt basis. Re-run it with `.venv/bin/python generate/scratch/17592186115391/replenish.py`; an existing saved request is recovered before new intent.
 
 Run verification from repository root:
 

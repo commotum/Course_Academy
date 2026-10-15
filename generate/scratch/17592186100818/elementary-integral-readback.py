@@ -49,9 +49,11 @@ def eq(a,b,positive=False):
  if positive:d=s.powdenest(d,force=True)
  return s.simplify(d)==0
 def fraction_measure(t):
- # A differential inside a coefficient group still multiplies that coefficient.
- t=re.sub(r'\(([^()]*)('+DIFF+r')\)',lambda m:'('+('-1'if m[1].strip()=='-'else'1'if m[1].strip()=='+'else m[1])+')'+m[2],t)
- return re.sub(r'\\frac\{((?:\\(?:text|mathrm|textrm)\{d\}|d)\s*[xyzut])\}\{([^{}]+)\}',lambda m:r'\frac{1}{'+m[2]+'}'+m[1],t)
+ for m in list(re.finditer(r'\\frac\{(?:\\(?:text|mathrm|textrm)\{d\}|d)\s*([xu])\}\{',t))[::-1]:
+  start=m.end()-1;den,end=group(t,start)
+  t=t[:m.start()]+r'\frac{1}{'+den+r'}\,\text{d}'+m[1]+t[end:]
+ return t
+
 def integrand(t):
  t=fraction_measure(t)
  m=re.search(r'\\int\s*(.*?)'+DIFF,t,re.S);assert m,('missing actual integral',t);body=m[1].replace(r'\,','').replace(r'\!','').strip();body=body[:-len(r'\cdot')]if body.endswith(r'\cdot')else body

@@ -103,6 +103,7 @@ def audit(q):
  ci=[z[':answer/id']for z in f[':answer-field/choices']].index(correct)
  equivalent=lambda z:p.same(sp.diff(z,p.x),expr) if lo is None else p.same(z,expected)
  assert equivalent(values[ci]);assert sum(equivalent(z)for z in values)==1
- assert all(not p.same(a,b)for i,a in enumerate(values)for b in values[i+1:]),'duplicate complete bank'
+ same_choice=(lambda a,b:p.same(sp.diff(a-b,p.x),0))if lo is None else p.same
+ assert all(not same_choice(a,b)for i,a in enumerate(values)for b in values[i+1:]),'duplicate complete bank, including arbitrary-C equivalence'
  assert checked
  return {'real_domain':domain,'operative_terms':len(checked),'terms':checked,'signed_endpoint_contributions':signed,'bank_choices':len(values),'computed_value':str(expected)}

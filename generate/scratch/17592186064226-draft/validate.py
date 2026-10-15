@@ -58,8 +58,10 @@ def main():
    if a==1:
     f=r['question'][':question/answer-fields'][0];old=q[':question/answer-fields'][0]
     expected=[p.scalar(z[':answer/value'])for z in old[':answer-field/choices']];actual=[p.scalar(z[':answer/value'])for z in f[':answer-field/choices']]
-    assert len(expected)==len(actual)and all(p.same(x,y)for x,y in zip(expected,actual));assert r['question'][':question/worked-solution']==g.source_render(t,1)[1]
-    replay.append({'source':t,'matched_options':len(actual),'matched_distractors':len(actual)-1,'complete_bank':True,'missing':[],'extra':[],'prose_and_stage_replay':'original wording and every operative stage, documented markup/endpoint interpretation repairs only'})
+    assert len(expected)==len(actual)and all(p.same(x,y)for i,(x,y)in enumerate(zip(expected,actual))if not(t=='q-74279'and i==3));
+    if t=='q-74279':assert p.same(actual[3],-sp.csc(4*p.x)**2/2+p.C)
+    assert r['question'][':question/worked-solution']==g.source_render(t,1)[1]
+    replay.append({'source':t,'matched_options':len(actual)-(t=='q-74279'),'matched_distractors':len(actual)-1-(t=='q-74279'),'complete_bank':t!='q-74279','raw_matched_options':len(expected),'raw_complete_bank_preserved':True,'raw_source_bank_preserved':True,'normal_source_error_repair':t=='q-74279','missing':[],'extra':[],'prose_and_stage_replay':'original wording and every operative stage, documented markup/endpoint interpretation repairs only'})
  for t in ['authored-h-cos-cot','authored-h-tan-sin']:
   print('Authored hard bounded domain',t,flush=True)
   for a,b,ends in itertools.product(g.HARD_COEFFICIENTS,g.HARD_COEFFICIENTS,g.ENDPOINTS):
@@ -90,9 +92,9 @@ def main():
   else:raise AssertionError('invalid hard slot shape accepted')
  # Exact real intervals: authored endpoints are strictly between 0 and pi/2; both original denominators stay nonzero.
  assert all(0<sp.Rational(e[0],e[1])<sp.Rational(e[2],e[3])<sp.Rational(1,2)for e in g.ENDPOINTS)
- dump('source-cases.json',[{'source_id':r['generation']['template'],'record':r}for r in originals]);dump('review-cases.json',rows);dump('source-replay.json',replay);dump('rendered-math-readback.json',audits);dump('negative-mutations.json',mutations);dump('previews.json',preview)
+ dump('source-cases.json',[{'source_id':r['generation']['template'],'record':r,'eligible_for_serving':False,'role':'raw original evidence; normal formatting/repair differs'}for r in originals]);dump('review-cases.json',rows);dump('source-replay.json',replay);dump('rendered-math-readback.json',audits);dump('negative-mutations.json',mutations);dump('previews.json',preview)
  dump('native-input.json',native);runner=ROOT/'generate/runs/current/check-engine';shutil.copy2(runner,H/'check-engine');dump('engine-build.json',{'frozen_runner':str(runner.relative_to(ROOT)),'runner_sha256':sha(runner),'owned_copy_sha256':sha(H/'check-engine'),'harness_sha256':sha(H/'check-engine.rs')});qualify_native(native)
  subprocess.run([str(H/'check-engine'),str(H/'native-input.json'),str(H/'native-report.json')],check=True)
  report=json.loads((H/'native-report.json').read_text());dump('final-preservation.json',preserve())
- result={'passed':True,'status':'mathematics-and-fidelity-verified; native-equivalence-qualified','basis':g.SOURCE['basis'],'source_cases':len(originals),'source_complete_banks':len(replay),'source_options':sum(z['matched_options']for z in replay),'source_distractors':sum(z['matched_distractors']for z in replay),'validated_instances':len(rows),'mathematical_tasks':{l:len(v)for l,v in mathkeys.items()},'operative_terms_checked':sum(z['operative_terms']for z in audits),'normal_grading_qualifications':len(json.loads((H/'grading-qualifications.json').read_text())),'native':{k:report[k]for k in ['accepted_checks','rejected_checks','documented_unresolved_checks']},'mutations':mutations};dump('validation.json',result);print(json.dumps(result,indent=2))
+ result={'passed':True,'status':'mathematics-and-fidelity-verified; native-equivalence-qualified','basis':g.SOURCE['basis'],'source_cases':len(originals),'source_complete_banks':sum(z['complete_bank']for z in replay),'raw_source_complete_banks':len(replay),'normal_repaired_source_banks':1,'source_options':sum(z['matched_options']for z in replay),'source_distractors':sum(z['matched_distractors']for z in replay),'validated_instances':len(rows),'mathematical_tasks':{l:len(v)for l,v in mathkeys.items()},'operative_terms_checked':sum(z['operative_terms']for z in audits),'normal_grading_qualifications':len(json.loads((H/'grading-qualifications.json').read_text())),'native':{k:report[k]for k in ['accepted_checks','rejected_checks','documented_unresolved_checks']},'mutations':mutations};dump('validation.json',result);print(json.dumps(result,indent=2))
 if __name__=='__main__':main()

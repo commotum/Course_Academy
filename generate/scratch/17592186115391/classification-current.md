@@ -1,0 +1,5 @@
+# Current-source classification
+
+At math basis 2600, all 14 source practice questions and the canonical example match the basis-1356 capture after exactly the column-vector notation migration from bracketed aligned to bmatrix and removal of derived reverse Pull links. Question, field and answer identities, difficulty, choices, correct designations, solutions and mathematical operands otherwise agree. The original capture remains unchanged in source.json; source-current.json retains this current read. The existing template/profile classification remains applicable. Normal authored output now uses bmatrix; old source replay retains original notation. The parser/validator supports both.
+
+The unrated q-32501 still has no correct designation, worked solution or difficulty. It stays excluded from inventory and is never revised or duplicated by this replenishment. Hard remains an explicit authored workload, with no observed hard source, as documented in classification.md. No plots are required.

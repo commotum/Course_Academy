@@ -12,7 +12,9 @@ def atom(t,i):
   opener=t[i];closer='}'if opener=='{'else')';depth=1;j=i+1
   while depth:
    assert j<len(t),t;depth+=(t[j]==opener)-(t[j]==closer);j+=1
-  return t[i+1:j-1],j
+  a=t[i+1:j-1]
+  if j<len(t)and t[j]=='^':p,j=atom(t,j+1);a+='^{'+p+'}'
+  return a,j
  m=re.match(r'\d+|[xu]',t[i:]);assert m,(t,i);j=i+len(m[0]);a=m[0]
  if j<len(t)and t[j]=='^':p,j=atom(t,j+1);a+='^{'+p+'}'
  return a,j
@@ -61,3 +63,13 @@ def check(record,allow_source_error=False):
  if not allow_source_error:assert correct==[f[':answer-field/correct'][1]]and not duplicates,('equivalent bank',correct,duplicates)
  counts.update({'answer_values':len(vals),'correct_choices':len(correct),'duplicate_pairs':duplicates,'differentials':2})
  return F,U,counts
+
+def mathematical_task(record):
+ """Canonical actual integrand and real log domain, independent of metadata."""
+ F,var=E.prompt(record['question'][':question/problem']);positive=s.Symbol('positive_x',positive=True);v=s.Symbol('ln_abs_x',real=True)
+ actual=s.expand_log(F.subs(x,positive));actual=actual.xreplace({s.log(positive):v,positive:x});actual=s.cancel(s.expand(s.expand_log(actual)))
+ logs=[z for z in F.atoms(s.log)if z.has(x)]
+ negative_branch=all(z.args[0].subs(x,-1).is_positive is True for z in logs)
+ # A logarithm factor in the actual denominator creates the reciprocal family.
+ hard=any(z in s.denom(F).atoms(s.log)for z in logs)
+ return s.srepr(actual),negative_branch,hard
