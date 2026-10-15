@@ -1,0 +1,37 @@
+Waiting for application api.lock
+Application api.lock acquired; rechecking current inventory and basis
+ValueError: Error from parse_expr with transformed code: ":Symbol ('x' )-Symbol ('y' )"
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/jake/Developer/Course_Academy/generate/scratch/17592186198378/replenish.py", line 132, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/home/jake/Developer/Course_Academy/generate/scratch/17592186198378/replenish.py", line 119, in main
+    c=counts(kp,b,path/'inventory-before');needed={l:max(0,5-c['distinct_available'][l]) for l in LEVELS};records,added,duplicates=select(kp,needed,path,b)
+                                                                                                                                   ~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/home/jake/Developer/Course_Academy/generate/scratch/17592186198378/replenish.py", line 69, in select
+    used={fingerprint(q) for q in kp[':knowledge-point/questions']+[kp[':knowledge-point/canonical-example']]};records=[];added={l:0 for l in LEVELS};duplicates=0
+          ~~~~~~~~~~~^^^
+  File "/home/jake/Developer/Course_Academy/generate/scratch/17592186198378/inventory_validation.py", line 27, in fingerprint
+    F,r=printed(q);N=r.diff(g.u).cross(r.diff(g.v))
+        ~~~~~~~^^^
+  File "/home/jake/Developer/Course_Academy/generate/scratch/17592186198378/inventory_validation.py", line 22, in printed
+    F,r=[sp.Matrix([parse(t.strip()) for t in re.split(r'\\,|,',a or b) if t.strip()]) for a,b in vectors[:2]]
+                    ~~~~~^^^^^^^^^^^
+  File "/home/jake/Developer/Course_Academy/generate/scratch/17592186198378/inventory_validation.py", line 17, in parse
+    e=v.parse_math(t)
+  File "/home/jake/Developer/Course_Academy/generate/scratch/17592186198378/validate.py", line 30, in parse_math
+    return parse_expr(text,local_dict=g.LOCALS,transformations=TRANS)
+  File "/home/jake/Developer/Course_Academy/.venv/lib/python3.13/site-packages/sympy/parsing/sympy_parser.py", line 1090, in parse_expr
+    raise e from ValueError(f"Error from parse_expr with transformed code: {code!r}")
+  File "/home/jake/Developer/Course_Academy/.venv/lib/python3.13/site-packages/sympy/parsing/sympy_parser.py", line 1081, in parse_expr
+    rv = eval_expr(code, local_dict, global_dict)
+  File "/home/jake/Developer/Course_Academy/.venv/lib/python3.13/site-packages/sympy/parsing/sympy_parser.py", line 905, in eval_expr
+    expr = eval(
+        code, global_dict, local_dict)  # take local objects in preference
+  File "<string>", line 1
+    :Symbol ('x' )-Symbol ('y' )
+    ^
+SyntaxError: invalid syntax
