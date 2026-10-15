@@ -1,6 +1,6 @@
 import { marked } from '/ui/vendor/marked/marked.esm.js';
 import { romanLists } from '/ui/prose-lists.js';
-import { inlinePrompt, mountInlineFields, richSelect, blankInput, checkboxControl, freeInput, choiceIndicator, fieldFeedback } from '/ui/question-fields.js';
+import { loadMathInputs, inlinePrompt, mountInlineFields, richSelect, blankInput, checkboxControl, freeInput, choiceIndicator, fieldFeedback } from '/ui/question-fields.js';
 function el(tag, className, text) {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -118,7 +118,7 @@ function fieldControl(field, readOnly, itemId, promptText = '', status = '') {
 }
 
 window.renderRecord=async record=>{
- await MathJax.startup.promise; MathJax.typesetClear([document.body]);document.body.replaceChildren();
+ await loadMathInputs(); await MathJax.startup.promise; MathJax.typesetClear([document.body]);document.body.replaceChildren();
  const q=record.question;const fields=q[':question/answer-fields'].map(f=>({id:f[':answer-field/id'],key:f[':answer-field/key'],type:f[':answer-field/type'],answerType:'math',choices:f[':answer-field/choices'].map(a=>({id:a[':answer/id'],type:a[':answer/type'],value:a[':answer/value']}))}));
  const prompt=markdown(q[':question/problem'],'prose prompt',fields);document.body.append(prompt);
  const fieldList=el('div','answer-fields');mountInlineFields(prompt,fieldList,fields,field=>fieldControl(field,false,q[':question/id'],q[':question/problem']));document.body.append(fieldList);
@@ -126,5 +126,5 @@ window.renderRecord=async record=>{
  await MathJax.typesetPromise([document.body]);
  const tables=[];for(const item of MathJax.startup.document.math)item.root.walkTree(node=>{if(node.kind==='mtable')tables.push({rows:node.childNodes.length,columns:node.childNodes[0].childNodes.length});});
  const clone=document.body.cloneNode(true);clone.querySelectorAll('mjx-container').forEach(n=>n.remove());
- return {errors:document.querySelectorAll('[data-mml-node="merror"],.math-error,mjx-merror').length,undefined:/Undefined|NaN/.test(document.body.textContent),exposed:/\$|\\begin|\\end|\{\{field-/.test(clone.textContent),tables,blanks:prompt.querySelectorAll('[data-field-key]').length,overflow:[...document.querySelectorAll('mjx-container')].some(n=>n.getBoundingClientRect().width>1050)};
+ return {errors:document.querySelectorAll('[data-mml-node="merror"],.math-error,mjx-merror').length,undefined:/Undefined|NaN/.test(document.body.textContent),literal_markup:/<span|data-field-key=/.test(document.body.textContent),red_error:[...document.querySelectorAll('mjx-container *')].some(n=>/rgb\(255, 0, 0\)|red/.test(n.getAttribute('fill')||'')),controls:document.querySelectorAll('input[type=radio],math-field').length,exposed:/\$|\\begin|\\end|\{\{field-/.test(clone.textContent),tables,blanks:prompt.querySelectorAll('[data-field-key]').length,overflow:[...document.querySelectorAll('mjx-container')].some(n=>n.getBoundingClientRect().width>1050)};
 };

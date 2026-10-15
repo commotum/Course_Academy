@@ -34,9 +34,12 @@ FAMILIES={
 'q-162891':('hard',('cos(t)','sin(t)','1-sin(t)'),('y-z','z-x','x-y'),'0','2*pi'),
 'q-162999':('moderate',('t**2-t','t**2-t**3','t**2-t'),('2*z','0','3*y'),'0','1'),
 'q-162314':('hard',('2*t**3-2*t','t+t**2','-t-t**2'),('y','0','x'),'-1','0'),
+'q-162890':('hard',('cos(t)','2*sin(t)','2*cos(t)'),('2*z','x','3*y'),'0','2*pi'),
 'easy-circle':('easy',('cos(t)','sin(t)','1'),('-y','x','0'),'0','2*pi'),
 }
 SOURCES={q[':question/math-academy-id']:q for q in KP[':knowledge-point/questions']}
+CURRENT_CAPTURE=json.loads((ROOT/'source-basis-2620.json').read_text())
+SOURCES.update({q[':question/math-academy-id']:q for q in CURRENT_CAPTURE['record'][':knowledge-point/questions'] if q[':question/math-academy-id'] not in SOURCES})
 MASKS=json.loads((ROOT/'source-masks.json').read_text())
 def expr(text): return s.sympify(text,locals=LOC)
 def tex(e): return s.latex(e).replace(r'\log',r'\ln')

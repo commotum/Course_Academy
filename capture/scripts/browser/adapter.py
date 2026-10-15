@@ -918,6 +918,37 @@ class MathAcademyBrowser:
             questions.append({**item, **info, "result": info["grade"],
                               "topic_id": info.get("topic_id") or activity.get("topic_id")})
         evidence = self._evidence(self.page, directory, "history-expanded")
+        if any(not q.get('fields') for q in questions):
+            from .history import HistoryChoices, task_answers
+            renderer = None
+            try:
+                self._check()
+                url = f"{BASE}/api/tasks/{activity['task_id']}/answers"
+                response = self.context.request.get(url, timeout=self.timeout_ms())
+                from ..storage import atomic_bytes
+                raw = response.body()
+                source = directory/'source'/('task-answers-'+hashlib.sha256(raw).hexdigest()+'.json')
+                atomic_bytes(source,raw)
+                atomic_json(source.with_suffix('.response.json'), {'url':url,'status':response.status,'observed_at':time.time()})
+                if not response.ok:
+                    raise BrowserUnavailable('Task answers source HTTP '+str(response.status))
+                answers = task_answers(json.loads(raw),activity['task_id'])
+                renderer = HistoryChoices(self.context,self.config.repo_root)
+                for index, question in enumerate(questions):
+                    if not question.get('fields') and question.get('math_academy_id') in answers:
+                        try:
+                            questions[index] = renderer.recover(question,answers[question['math_academy_id']],source,directory)
+                        except ValueError as error:
+                            question.setdefault('field_recovery_errors',[]).append(str(error))
+            except StopRequested:
+                raise
+            except Exception as error:
+                for question in questions:
+                    if not question.get('fields'):
+                        question.setdefault('field_recovery_errors',[]).append(str(error))
+            finally:
+                if renderer:
+                    renderer.close()
         content = {"task_id": str(activity["task_id"]), "task_type": activity["kind"],
                    "topic_id": activity.get("topic_id"), "questions": questions,
                    "canonical_examples": [], "tutorials": [], "completion": self.state.get("completion", {}), **evidence}

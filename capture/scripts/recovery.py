@@ -28,7 +28,7 @@ from .storage import atomic_json, atomic_text, file_lock, read_json
 def version():
     root = Path(__file__).parent
     paths = ['browser/extract.js', 'browser/assets.py', 'activity/capture.py', 'activity/evidence.py', 'database/evidence.py',
-             'recovery.py', 'database/text.py']
+             'recovery.py', 'browser/history.py', 'database/text.py']
     return hashlib.sha256(b''.join((root/name).read_bytes() for name in paths)).hexdigest()
 
 
@@ -153,7 +153,7 @@ def reextract_record(record, page, repair, *, history=False, prior=None):
     return merge_question(record,parsed)
 
 
-def repair_saved_capture(config, directory, page, *, apply=True):
+def repair_saved_capture(config, directory, page, *, apply=True, task_answers_source=None):
     """Repair saved source structure; retain judgments and use the normal batch queue."""
     directory = Path(directory).resolve()
     if directory.parent != config.output_root or not (directory/'capture-complete.json').exists():
@@ -175,6 +175,16 @@ def repair_saved_capture(config, directory, page, *, apply=True):
     if not checkpoint or not original:
         raise ValueError('Completed source repair requires its original checkpoint and content')
     history = deepcopy(checkpoint['history'])
+    if task_answers_source:
+        from .browser.history import HistoryChoices, task_answers
+        answers = task_answers(read_json(Path(task_answers_source)),checkpoint['activity']['task_id'])
+        renderer = HistoryChoices(page.context,config.repo_root)
+        try:
+            history['questions'] = [renderer.recover(q,answers[q['math_academy_id']],task_answers_source,repair)
+                if not q.get('fields') and not q.get('answer_fields') and q.get('math_academy_id') in answers else q
+                for q in history.get('questions',[])]
+        finally:
+            renderer.close()
     records = list(checkpoint['presentations'].values())
     for bucket in ('questions','canonical_examples','tutorials'):
         for index, question in enumerate(history.get(bucket,[])):

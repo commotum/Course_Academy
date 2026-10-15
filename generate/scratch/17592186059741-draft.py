@@ -6,6 +6,7 @@ and use complete method-derived banks. See the private extraction document.
 """
 import argparse, copy, functools, hashlib, json, random, re, sys, uuid
 from pathlib import Path
+sys.dont_write_bytecode=True
 import sympy as sp
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'scripts/question_capture'))
@@ -57,6 +58,7 @@ def components(sid,a,c,i,j,raw):
     it=iter([mat(b),mat(a)]);problem=MAT.sub(lambda _:next(it),q[':question/problem'])
     if sid=='q-139431' and not raw:
         problem=re.sub(r'\n[ \t]+','\n',problem)
+        problem=problem[:problem.index(r'$\,k=$')]+r'$k=$'+'\n{{field-1}}.'
         problem=problem.replace('This new matrix is obtained',f'The original payoff matrix is $P={mat(a)}$.\n\nThis new matrix is obtained')
     solution=q.get(':question/worked-solution')
     if solution is None and not raw:
@@ -86,6 +88,7 @@ def generate(level='easy',seed=0,template=None,field_type=None,parameters=None,p
     rng=random.Random(seed)
     if profile is not None and profile!='method' and not profile.startswith('raw-'):raise ValueError('unknown profile')
     raw=bool(profile and profile.startswith('raw-'))
+    if raw and level!='easy':raise ValueError('raw source replay uses observed easy level or retained unrated omission')
     sid=template or (profile[4:] if raw else rng.choice(list(CASES) if level=='easy' else [s for s in CASES if s!='q-139431']))
     if sid not in CASES or (raw and profile!='raw-'+sid):raise ValueError('unknown/incompatible template/profile')
     q=CASES[sid];f=q[':question/answer-fields'][0];ft=f[':answer-field/type'][':db/ident']

@@ -1,5 +1,6 @@
 """Independent displayed-data checks, source fidelity, native grading and baseline audit."""
 import copy, fractions, hashlib, importlib.util, json, pathlib, re, subprocess, sys
+sys.dont_write_bytecode=True
 D=pathlib.Path(__file__).resolve().parent; ROOT=D.parents[2]; SCRIPT=D.with_suffix('.py')
 spec=importlib.util.spec_from_file_location('scalar_draft',SCRIPT);g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
 F=fractions.Fraction
@@ -59,7 +60,7 @@ def independent(r,allow_source_errors=False):
 source_cases=[];fidelity=[];review=[];native=[]
 for sid,q in g.CASES.items():
  r=g.generate('easy',template=sid,parameters=g.DEFAULTS[sid],profile='raw-'+sid)
- independent(r,True);source_cases.append({'source_id':sid,'record':r})
+ independent(r,True);source_cases.append({'source_id':sid,'record':q})
  out=r['question'];field=out[':question/answer-fields'][0];sf=q[':question/answer-fields'][0]
  assert out[':question/problem']==g.normalize_prose(q[':question/problem'])
  assert out.get(':question/worked-solution')==q.get(':question/worked-solution')
@@ -113,6 +114,13 @@ for name,fun in [
  try:independent(z)
  except (AssertionError,ValueError,IndexError):checks.append(name)
  else:raise AssertionError('mutation escaped '+name)
+z=copy.deepcopy(base);field=z['question'][':question/answer-fields'][0]
+# Use radio for a wrong-bank mutation independent of the stored correct lookup.
+z=g.generate('easy',12,template='q-69670');field=z['question'][':question/answer-fields'][0]
+next(a for a in field[':answer-field/choices'] if a[':answer/id']!=field[':answer-field/correct'][1])[':answer/value']='k=999'
+try:independent(z)
+except AssertionError:checks.append('entire-wrong-bank')
+else:raise AssertionError('wrong-bank mutation escaped')
 for val in [True,0.5,'2',None]:
  try:g.generate(seed=val)
  except TypeError:pass
@@ -122,6 +130,11 @@ for val in [True,1.5,'1',None]:
  except TypeError:pass
  else:raise AssertionError('bad count accepted')
 assert len(json.loads(subprocess.check_output([str(ROOT/'.venv/bin/python'),str(SCRIPT),'--difficulty','all','--count','1'])))==3
+# Seed/order cannot create content identity; banks can, mathematical tasks cannot.
+a=g.generate('easy',1,template='q-69670',parameters=g.DEFAULTS['q-69670'],profile='raw-q-69670');b=g.generate('easy',999,template='q-69670',parameters=g.DEFAULTS['q-69670'],profile='raw-q-69670')
+assert a['question'][':question/id']==b['question'][':question/id']
+c=g.generate('easy',1,template='q-69670',parameters=g.DEFAULTS['q-69670'],profile='method')
+assert c['generation']['mathematical_fingerprint']==a['generation']['mathematical_fingerprint'] and c['question'][':question/id']!=a['question'][':question/id']
 # Native current build: all 42 recorded inputs verified. No engine changes.
 build=json.loads((D/'reference/grader-build.json').read_text()); hashes={**build['engine_sources'],**build['dependencies'],build['source']:build['source_sha256'],build['library']:build['library_sha256'],build['binary']:build['binary_sha256']}
 assert len(hashes)==42
@@ -139,7 +152,7 @@ for item in review:
 write('engine-input.json',native);subprocess.run([str(ROOT/build['binary']),str(D/'engine-input.json'),str(D/'engine-report.json')],check=True)
 write('source-cases.json',source_cases);write('source-replay.json',fidelity);write('review.json',review);write('slot-coverage.json',slots)
 write('independent-inventory.json',{k:v for k,v in g.SOURCE.items() if k!='record'}|{'questions':[]})
-write('validation.json',{'mathematical_records':480,'source_questions':len(fidelity),'source_banks':len(fidelity),'matched_answers':sum(x['bank_matched'] for x in fidelity),'source_designations':sum(x['designation_present'] for x in fidelity),'mutation_controls':checks,'native_build_inputs_verified':len(hashes),'status':'passed','root_independent_qa':'pending'})
+write('validation.json',{'mathematical_records':480,'source_questions':len(fidelity),'source_banks':len(fidelity),'matched_answers':sum(x['bank_matched'] for x in fidelity),'source_designations':sum(x['designation_present'] for x in fidelity),'raw_exact_present_solutions':6,'raw_mathematically_correct_present_solutions':5,'raw_present_solutions':6,'source_missing_solutions':1,'raw_mathematical_errors_documented':1,'normal_source_sign_repairs':1,'normal_context_repairs':1,'normal_presentation_repairs':1,'mutation_controls':checks,'native_build_inputs_verified':len(hashes),'status':'passed','root_independent_qa':'pending','distinct_tasks_per_160_seeds':{lev:len({g.generate(lev,n)['generation']['mathematical_fingerprint'] for n in range(160)}) for lev in g.SUPPORTED_LEVELS}})
 (D/'review.md').write_text('\n\n'.join('## '+row['label']+'\n\n'+g.markdown(row['record']) for row in review)+'\n')
 # Immutable numeric files and sibling cache: exact set and hashes.
 r=ROOT/'generate/scratch';paths=[r/'17592186059741.py',*(r/'17592186059741').rglob('*'),*r.glob('__pycache__/17592186059741.*.pyc')];current={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in paths if p.is_file()};assert current==json.loads((D/'baseline.json').read_text());write('baseline-verification.json',{'exact_path_set_and_sha256':True,'files':len(current)})

@@ -14,8 +14,8 @@ const endpoint=new Promise((resolve,reject)=>{browser.stderr.on('data',b=>{const
  const records=JSON.parse(fs.readFileSync(dir+'/render-records.json'));const results=[],seen=new Set();fs.mkdirSync(dir+'/renders',{recursive:true});
  for(let i=0;i<records.length;i++){
   const record=records[i];const got=await evaluate('window.renderRecord('+JSON.stringify(record)+')');
-  if(got.errors||got.undefined||got.exposed||got.overflow)throw Error('render '+i+' '+JSON.stringify(got));
-  const f=record.question[':question/answer-fields'][0];const rawIndented=record.generation.evidence_only&&record.generation.template.includes('q-139431');if(got.blanks!==(f[':answer-field/type'].endsWith('/blank')&&!rawIndented?1:0))throw Error('blank mismatch '+i);
+  if(got.errors||got.undefined||got.red_error||got.exposed||got.overflow)throw Error('render '+i+' '+JSON.stringify(got));
+  const f=record.question[':question/answer-fields'][0];const rawIndented=record.generation.evidence_only&&record.generation.template.includes('q-139431');if(got.literal_markup&&!rawIndented)throw Error('literal markup '+i);if(got.controls!==(f[':answer-field/type'].endsWith('/radio')?5:1))throw Error('actual control count '+i);if(got.blanks!==(f[':answer-field/type'].endsWith('/blank')&&!rawIndented?1:0))throw Error('blank mismatch '+i);
   const vectors=[...record.question[':question/problem'].matchAll(/\\begin\{bmatrix\}(.*?)\\end\{bmatrix\}/g)].map(m=>({rows:m[1].split('\\\\').length,columns:m[1].split('\\\\')[0].split('&').length}));
   if(JSON.stringify(got.tables.slice(0,vectors.length))!==JSON.stringify(vectors))throw Error('matrix row mismatch '+i);
   const template=record.generation.template;
@@ -26,7 +26,7 @@ const endpoint=new Promise((resolve,reject)=>{browser.stderr.on('data',b=>{const
   }
   results.push({index:i,template,...got});
  }
- fs.writeFileSync(dir+'/render-report.json',JSON.stringify({pipeline:'Exact player learning.js markdown/escapeHTML/assetURL/el/fieldLabel routines; actual marked/romanLists/inlinePrompt/DOMPurify and MathJax config+SVG. Local immutable assets; native Chromium CDP.',records:records.length,errors:0,exposed_delimiters:0,matrix_row_column_checks:true,blank_slot_checks:true,overflow:0,screenshots:[...seen].sort(),checks:results},null,2)+'\n');
+ fs.writeFileSync(dir+'/render-report.json',JSON.stringify({pipeline:'Exact player learning.js markdown/escapeHTML/assetURL/el/fieldLabel routines; actual marked/romanLists/inlinePrompt/DOMPurify and MathJax config+SVG. Local immutable assets; native Chromium CDP.',records:records.length,errors:0,exposed_delimiters:0,matrix_row_column_checks:true,blank_slot_checks:true,documented_raw_indentation_markup_cases:2,normal_literal_markup:0,actual_player_controls:true,overflow:0,screenshots:[...seen].sort(),checks:results},null,2)+'\n');
  console.log(`Rendered ${records.length} actual records; ${seen.size} template screenshots; zero errors, exposed delimiters or overflow.`);
  await send('Browser.close');ws.close();
 })().catch(e=>{console.error(e.stack);browser.kill();process.exitCode=1;}).finally(async()=>{browser.kill();await new Promise(resolve=>{if(browser.exitCode!==null)resolve();else {browser.once('exit',resolve);setTimeout(resolve,2000);}});await new Promise(resolve=>setTimeout(resolve,1000));try{await fs.promises.rm(profile,{recursive:true,force:true,maxRetries:20,retryDelay:200});}catch(error){console.warn('Temporary browser profile cleanup: '+error.message);}});

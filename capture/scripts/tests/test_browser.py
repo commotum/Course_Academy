@@ -198,6 +198,13 @@ class SourceParsingTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validated_keys([{"text": None, "key": "Enter"}])
 
+    def test_mathquill_relation_aliases_preserve_the_operator(self):
+        for long, short in ((r'\leq', r'\le'), (r'\geq', r'\ge'), (r'\neq', r'\ne')):
+            self.assertEqual(normalized_math(long), normalized_math(short))
+            self.assertEqual(normalized_math('x'+long+'2'), normalized_math('x'+short+'2'))
+        for other in ('<', r'\ge', r'\leqq', r'\leqslant'):
+            self.assertNotEqual(normalized_math(r'\leq'), normalized_math(other))
+
 
 class OfflineBrowserTests(unittest.TestCase):
     @classmethod
@@ -242,6 +249,16 @@ class OfflineBrowserTests(unittest.TestCase):
           window.MathQuill={getInterface:()=>()=>field};
         }''')
         self.assertEqual(write_math(self.page.locator('#wrapper'),r'2\,\frac{2}{5}',[]),r'2\frac{2}{5}')
+
+    def test_relation_alias_readback_succeeds_without_entry_retry(self):
+        self.page.set_content('<div id="wrapper"><span class="mq-editable-field"></span></div>')
+        self.page.evaluate(r'''() => {
+          let latex='';window.writes=0;
+          const field={focus(){},select(){},write(v){window.writes++;latex=v.replace('\\leq','\\le')},latex(){return latex}};
+          window.MathQuill={getInterface:()=>()=>field};
+        }''')
+        self.assertEqual(write_math(self.page.locator('#wrapper'),r'\leq',[{'text':r'\leq'}]),r'\le')
+        self.assertEqual(self.page.evaluate('writes'),1)
 
     def test_partially_visible_dropdown_option_uses_an_exposed_point_without_scrolling(self):
         from scripts.browser.entry import click_dropdown

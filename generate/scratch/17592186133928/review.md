@@ -5,6 +5,10 @@ Raw evidence is explicitly ineligible. Normal examples use authored complete met
 
 ## original raw evidence — q-161928
 
+## Original source evidence — moderate
+
+observed
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=({t}^{2}-t)\,i+(t-{t}^{3})\,j+(2{t}^{2}-2t)\,k$ for $t\in [0,1).$
 Given that $F(x,y,z)=y\,i+x\,k,$ evaluate the integral
 
@@ -22,7 +26,9 @@ $$
 
 - $\frac{3}{32}$
 
-- $\frac{1}{60}$
+Original correct designation absent.
+
+- $\frac{1}{60}$ **(source designation)**
 
 - $0$
 
@@ -31,6 +37,8 @@ $$
 - $\frac{3}{32}$
 
 - $-1$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -71,6 +79,10 @@ $$
 
 ## authored bank/coefficient variant of observed family — q-161928
 
+## Generated variant — moderate
+
+observed family, authored bank and coefficient variation
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle - 2 t^{2} + 2 t, t^{3} - t, - 6 t^{2} + 6 t\rangle$ for $t\in [0,1).$
 Given that $F(x,y,z)=\langle 3 y, 0, 3 x\rangle,$ evaluate the integral
 
@@ -82,11 +94,13 @@ $$
 
 - $9$
 
-- $\frac{1}{10}$
+- $\frac{1}{10}$ **(correct)**
 
 - $\frac{9}{10}$
 
 - $- \frac{1}{10}$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -127,6 +141,10 @@ $$
 
 ## authored bank/coefficient variant of observed family — q-161928
 
+## Generated variant — moderate
+
+observed family, authored bank and coefficient variation
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle 2 t^{2} - 2 t, - t^{3} + t, - 2 t^{2} + 2 t\rangle$ for $t\in [0,1).$
 Given that $F(x,y,z)=\langle - y, 0, - x\rangle,$ evaluate the integral
 
@@ -134,7 +152,7 @@ $$
 \iint_S\operatorname{curl}F\cdot\mathrm{d}S.
 $$
 
-- $- \frac{1}{30}$
+- $- \frac{1}{30}$ **(correct)**
 
 - $\frac{7}{30}$
 
@@ -143,6 +161,8 @@ $$
 - $\frac{1}{12}$
 
 - $\frac{7}{3}$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -183,6 +203,10 @@ $$
 
 ## original raw evidence — q-162377
 
+## Original source evidence — unrated
+
+authored hard for unrated trigonometric source
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t) = \sin (πt)i + \cos (πt)j + \sin (πt)k$ for $t ∈ [- 1, 1)$.
 Given that $F(x, y, z) = xi + yk$, evaluate the integral
 $∬_(S)curlF \cdot dS$.
@@ -197,8 +221,18 @@ $∬_(S)curlF \cdot dS$.
 
 - $π$
 
+Original correct designation absent.
+
+**Worked solution**
+
+Original worked solution absent.
+
 
 ## authored bank/coefficient variant of observed family — q-162377
+
+## Generated variant — hard
+
+authored hard assignment of unrated source
 
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle - 2 \sin{\left(\pi t \right)}, - \cos{\left(\pi t \right)}, - 3 \sin{\left(\pi t \right)}\rangle$ for $t\in [-1,1).$
 Given that $F(x,y,z)=\langle 3 x, 0, 3 y\rangle,$ evaluate the integral
@@ -211,11 +245,13 @@ $$
 
 - $9$
 
-- $9 \pi$
+- $9 \pi$ **(correct)**
 
 - $0$
 
 - $- 9 \pi$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -256,6 +292,10 @@ $$
 
 ## authored bank/coefficient variant of observed family — q-162377
 
+## Generated variant — hard
+
+authored hard assignment of unrated source
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle 2 \sin{\left(\pi t \right)}, \cos{\left(\pi t \right)}, - \sin{\left(\pi t \right)}\rangle$ for $t\in [-1,1).$
 Given that $F(x,y,z)=\langle - x, 0, - y\rangle,$ evaluate the integral
 
@@ -263,7 +303,7 @@ $$
 \iint_S\operatorname{curl}F\cdot\mathrm{d}S.
 $$
 
-- $\pi$
+- $\pi$ **(correct)**
 
 - $0$
 
@@ -272,6 +312,8 @@ $$
 - $\frac{\pi}{2}$
 
 - $1$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -312,6 +354,10 @@ $$
 
 ## original raw evidence — q-162316
 
+## Original source evidence — moderate
+
+observed
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=(2{t}^{3}-2t)\,i+(3{t}^{2}+3t)\,j+({t}^{3}-t)\,k$ for $t\in [-1,0).$
 Given that $F(x,y,z)=z\,i+y\,k,$ evaluate the integral
 
@@ -319,7 +365,7 @@ $$
 {∬}_{S}\text{curl}\,F\cdot \text{d}S.
 $$
 
-- $\frac{1}{20}$
+- $\frac{1}{20}$ **(source designation)**
 
 - $\frac{1}{5}$
 
@@ -328,6 +374,8 @@ $$
 - $\frac{-5}{103}$
 
 - $7$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -368,6 +416,10 @@ $$
 
 ## authored bank/coefficient variant of observed family — q-162316
 
+## Generated variant — moderate
+
+observed family, authored bank and coefficient variation
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle - 4 t^{3} + 4 t, - 3 t^{2} - 3 t, - 3 t^{3} + 3 t\rangle$ for $t\in [-1,0).$
 Given that $F(x,y,z)=\langle 3 z, 0, 3 y\rangle,$ evaluate the integral
 
@@ -379,11 +431,13 @@ $$
 
 - $\frac{153}{10}$
 
-- $\frac{9}{20}$
+- $\frac{9}{20}$ **(correct)**
 
 - $\frac{39}{28}$
 
 - $- \frac{9}{20}$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -424,6 +478,10 @@ $$
 
 ## authored bank/coefficient variant of observed family — q-162316
 
+## Generated variant — moderate
+
+observed family, authored bank and coefficient variation
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle 4 t^{3} - 4 t, 3 t^{2} + 3 t, - t^{3} + t\rangle$ for $t\in [-1,0).$
 Given that $F(x,y,z)=\langle - z, 0, - y\rangle,$ evaluate the integral
 
@@ -431,7 +489,7 @@ $$
 \iint_S\operatorname{curl}F\cdot\mathrm{d}S.
 $$
 
-- $\frac{1}{20}$
+- $\frac{1}{20}$ **(correct)**
 
 - $\frac{13}{84}$
 
@@ -440,6 +498,8 @@ $$
 - $\frac{3}{4}$
 
 - $\frac{17}{10}$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -480,6 +540,10 @@ $$
 
 ## original raw evidence — q-162324
 
+## Original source evidence — hard
+
+observed
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\operatorname{cos}⁡(\pi t)\,i+\operatorname{sin}⁡(\pi t)\,j+\operatorname{cos}⁡(\pi t)\,k$ for $t\in [-1,1).$
 Given that $F(x,y,z)=y\,i+x\,k,$ evaluate the integral
 
@@ -495,7 +559,9 @@ $$
 
 - $-1$
 
-- $-\pi $
+- $-\pi $ **(source designation)**
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -536,6 +602,10 @@ $$
 
 ## authored bank/coefficient variant of observed family — q-162324
 
+## Generated variant — hard
+
+observed family, authored bank and coefficient variation
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle - 2 \cos{\left(\pi t \right)}, - \sin{\left(\pi t \right)}, - 3 \cos{\left(\pi t \right)}\rangle$ for $t\in [-1,1).$
 Given that $F(x,y,z)=\langle 3 y, 0, 3 x\rangle,$ evaluate the integral
 
@@ -547,11 +617,13 @@ $$
 
 - $-6$
 
-- $- 6 \pi$
+- $- 6 \pi$ **(correct)**
 
 - $0$
 
 - $6 \pi$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -592,6 +664,10 @@ $$
 
 ## authored bank/coefficient variant of observed family — q-162324
 
+## Generated variant — hard
+
+observed family, authored bank and coefficient variation
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle 2 \cos{\left(\pi t \right)}, \sin{\left(\pi t \right)}, - \cos{\left(\pi t \right)}\rangle$ for $t\in [-1,1).$
 Given that $F(x,y,z)=\langle - y, 0, - x\rangle,$ evaluate the integral
 
@@ -599,7 +675,7 @@ $$
 \iint_S\operatorname{curl}F\cdot\mathrm{d}S.
 $$
 
-- $2 \pi$
+- $2 \pi$ **(correct)**
 
 - $0$
 
@@ -608,6 +684,8 @@ $$
 - $\pi$
 
 - $2$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -648,6 +726,10 @@ $$
 
 ## original raw evidence — q-162886
 
+## Original source evidence — moderate
+
+observed
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=({t}^{2}+t)\,i+({t}^{3}+{t}^{2})\,j+(2{t}^{2}+2t)\,k$ for $t\in [-1,0).$
 Given that $F(x,y,z)=y\,i+z\,j+x\,k,$ evaluate the integral
 
@@ -661,9 +743,11 @@ $$
 
 - $\frac{2}{15}$
 
-- $\frac{1}{60}$
+- $\frac{1}{60}$ **(source designation)**
 
 - $\frac{1}{15}$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -704,6 +788,10 @@ $$
 
 ## authored bank/coefficient variant of observed family — q-162886
 
+## Generated variant — moderate
+
+observed family, authored bank and coefficient variation
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle - 2 t^{2} - 2 t, - t^{3} - t^{2}, - 6 t^{2} - 6 t\rangle$ for $t\in [-1,0).$
 Given that $F(x,y,z)=\langle 3 y, 3 z, 3 x\rangle,$ evaluate the integral
 
@@ -715,11 +803,13 @@ $$
 
 - $8$
 
-- $\frac{1}{5}$
+- $\frac{1}{5}$ **(correct)**
 
 - $\frac{4}{5}$
 
 - $- \frac{1}{5}$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -760,6 +850,10 @@ $$
 
 ## authored bank/coefficient variant of observed family — q-162886
 
+## Generated variant — moderate
+
+observed family, authored bank and coefficient variation
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle 2 t^{2} + 2 t, t^{3} + t^{2}, - 2 t^{2} - 2 t\rangle$ for $t\in [-1,0).$
 Given that $F(x,y,z)=\langle - y, - z, - x\rangle,$ evaluate the integral
 
@@ -767,7 +861,7 @@ $$
 \iint_S\operatorname{curl}F\cdot\mathrm{d}S.
 $$
 
-- $\frac{1}{15}$
+- $\frac{1}{15}$ **(correct)**
 
 - $\frac{2}{15}$
 
@@ -776,6 +870,8 @@ $$
 - $- \frac{1}{12}$
 
 - $\frac{4}{3}$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -816,6 +912,10 @@ $$
 
 ## original raw evidence — q-162887
 
+## Original source evidence — moderate
+
+observed
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=({t}^{3}-t)\,i+(2{t}^{2}+1)\,j+({t}^{2}-1)\,k$ for $t\in [-1,1).$
 Given that $F(x,y,z)=y\,i+3\,j+yz\,k,$ evaluate the integral
 
@@ -831,7 +931,9 @@ $$
 
 - $\frac{9}{8}$
 
-- $\frac{16}{15}$
+- $\frac{16}{15}$ **(source designation)**
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -872,6 +974,10 @@ $$
 
 ## authored bank/coefficient variant of observed family — q-162887
 
+## Generated variant — moderate
+
+observed family, authored bank and coefficient variation
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle - 2 t^{3} + 2 t, 4 t^{2} + 2, 2 t^{2} - 2\rangle$ for $t\in [-1,1).$
 Given that $F(x,y,z)=\langle 3 y, 9, 3 y z\rangle,$ evaluate the integral
 
@@ -883,11 +989,13 @@ $$
 
 - $0$
 
-- $- \frac{64}{5}$
+- $- \frac{64}{5}$ **(correct)**
 
 - $\frac{3252}{35}$
 
 - $\frac{64}{5}$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -928,6 +1036,10 @@ $$
 
 ## authored bank/coefficient variant of observed family — q-162887
 
+## Generated variant — moderate
+
+observed family, authored bank and coefficient variation
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle 2 t^{3} - 2 t, 2 t^{2} + 1, 1 - t^{2}\rangle$ for $t\in [-1,1).$
 Given that $F(x,y,z)=\langle - y, -3, - y z\rangle,$ evaluate the integral
 
@@ -935,7 +1047,7 @@ $$
 \iint_S\operatorname{curl}F\cdot\mathrm{d}S.
 $$
 
-- $- \frac{32}{15}$
+- $- \frac{32}{15}$ **(correct)**
 
 - $- \frac{398}{35}$
 
@@ -944,6 +1056,8 @@ $$
 - $- \frac{56}{5}$
 
 - $0$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -984,6 +1098,10 @@ $$
 
 ## original raw evidence — q-162892
 
+## Original source evidence — hard
+
+observed
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\operatorname{cos}⁡(\pi t)\,i+\operatorname{sin}⁡(\pi t)\,j+2\operatorname{sin}⁡(\pi t)\,k$ for $t\in [-1,1).$
 Given that $F(x,y,z)=2y\,i-2x\,j+{e}^{z-2y}\,k,$ evaluate the integral
 
@@ -999,7 +1117,9 @@ $$
 
 - $0$
 
-- $-4\pi $
+- $-4\pi $ **(source designation)**
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -1040,6 +1160,10 @@ $$
 
 ## authored bank/coefficient variant of observed family — q-162892
 
+## Generated variant — hard
+
+observed family, authored bank and coefficient variation
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle - 2 \cos{\left(\pi t \right)}, - \sin{\left(\pi t \right)}, - 2 \sin{\left(\pi t \right)}\rangle$ for $t\in [-1,1).$
 Given that $F(x,y,z)=\langle 6 y, - 6 x, 3 e^{- 2 y + z}\rangle,$ evaluate the integral
 
@@ -1051,11 +1175,13 @@ $$
 
 - $-24$
 
-- $- 24 \pi$
+- $- 24 \pi$ **(correct)**
 
 - $0$
 
 - $24 \pi$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -1096,6 +1222,10 @@ $$
 
 ## authored bank/coefficient variant of observed family — q-162892
 
+## Generated variant — hard
+
+observed family, authored bank and coefficient variation
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle 2 \cos{\left(\pi t \right)}, \sin{\left(\pi t \right)}, 2 \sin{\left(\pi t \right)}\rangle$ for $t\in [-1,1).$
 Given that $F(x,y,z)=\langle - 2 y, 2 x, - e^{- 2 y + z}\rangle,$ evaluate the integral
 
@@ -1103,7 +1233,7 @@ $$
 \iint_S\operatorname{curl}F\cdot\mathrm{d}S.
 $$
 
-- $8 \pi$
+- $8 \pi$ **(correct)**
 
 - $0$
 
@@ -1112,6 +1242,8 @@ $$
 - $4 \pi$
 
 - $8$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -1152,6 +1284,10 @@ $$
 
 ## original raw evidence — q-162889
 
+## Original source evidence — hard
+
+observed
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\operatorname{cos}⁡t\,i+\operatorname{sin}⁡t\,j+k$ for $t\in [0,2\pi ).$
 Given that $F(x,y,z)=z\,i+3x\,j+2{y}^{2}\,k,$ evaluate the integral
 
@@ -1167,7 +1303,9 @@ $$
 
 - $2\pi -1$
 
-- $3\pi $
+- $3\pi $ **(source designation)**
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -1208,6 +1346,10 @@ $$
 
 ## authored bank/coefficient variant of observed family — q-162889
 
+## Generated variant — hard
+
+observed family, authored bank and coefficient variation
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle - 2 \cos{\left(t \right)}, - \sin{\left(t \right)}, -3\rangle$ for $t\in [0,2 \pi).$
 Given that $F(x,y,z)=\langle 3 z, 9 x, 6 y^{2}\rangle,$ evaluate the integral
 
@@ -1219,11 +1361,13 @@ $$
 
 - $36 \pi$
 
-- $18 \pi$
+- $18 \pi$ **(correct)**
 
 - $0$
 
 - $- 18 \pi$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -1264,6 +1408,10 @@ $$
 
 ## authored bank/coefficient variant of observed family — q-162889
 
+## Generated variant — hard
+
+observed family, authored bank and coefficient variation
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle 2 \cos{\left(t \right)}, \sin{\left(t \right)}, -1\rangle$ for $t\in [0,2 \pi).$
 Given that $F(x,y,z)=\langle - z, - 3 x, - 2 y^{2}\rangle,$ evaluate the integral
 
@@ -1271,7 +1419,7 @@ $$
 \iint_S\operatorname{curl}F\cdot\mathrm{d}S.
 $$
 
-- $- 6 \pi$
+- $- 6 \pi$ **(correct)**
 
 - $0$
 
@@ -1280,6 +1428,8 @@ $$
 - $- 3 \pi - 4$
 
 - $- 12 \pi$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -1320,6 +1470,10 @@ $$
 
 ## original raw evidence — q-162891
 
+## Original source evidence — hard
+
+observed
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\operatorname{cos}⁡t\,i+\operatorname{sin}⁡t\,j+(1-\operatorname{sin}⁡t)\,k$ for $t\in [0,2\pi ).$
 Given that $F(x,y,z)=(y-z)\,i+(z-x)\,j+(x-y)\,k,$ evaluate the integral
 
@@ -1327,7 +1481,7 @@ $$
 {∬}_{S}\text{curl}\,F\cdot \text{d}S.
 $$
 
-- $-4\pi $
+- $-4\pi $ **(source designation)**
 
 - $-2\pi $
 
@@ -1336,6 +1490,8 @@ $$
 - $3\pi $
 
 - $\pi $
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -1376,6 +1532,10 @@ $$
 
 ## authored bank/coefficient variant of observed family — q-162891
 
+## Generated variant — hard
+
+observed family, authored bank and coefficient variation
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle - 2 \cos{\left(t \right)}, - \sin{\left(t \right)}, 3 \sin{\left(t \right)} - 3\rangle$ for $t\in [0,2 \pi).$
 Given that $F(x,y,z)=\langle 3 y - 3 z, - 3 x + 3 z, 3 x - 3 y\rangle,$ evaluate the integral
 
@@ -1387,11 +1547,13 @@ $$
 
 - $- 96 \pi$
 
-- $- 48 \pi$
+- $- 48 \pi$ **(correct)**
 
 - $0$
 
 - $48 \pi$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -1432,6 +1594,10 @@ $$
 
 ## authored bank/coefficient variant of observed family — q-162891
 
+## Generated variant — hard
+
+observed family, authored bank and coefficient variation
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle - \cos{\left(t \right)}, - 2 \sin{\left(t \right)}, 3 - 3 \sin{\left(t \right)}\rangle$ for $t\in [0,2 \pi).$
 Given that $F(x,y,z)=\langle 3 y - 3 z, - 3 x + 3 z, 3 x - 3 y\rangle,$ evaluate the integral
 
@@ -1439,7 +1605,7 @@ $$
 \iint_S\operatorname{curl}F\cdot\mathrm{d}S.
 $$
 
-- $6 \pi$
+- $6 \pi$ **(correct)**
 
 - $0$
 
@@ -1448,6 +1614,8 @@ $$
 - $-18 + 3 \pi$
 
 - $12 \pi$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -1488,6 +1656,10 @@ $$
 
 ## original raw evidence — q-162999
 
+## Original source evidence — moderate
+
+observed
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=({t}^{2}-t)\,i+({t}^{2}-{t}^{3})\,j+({t}^{2}-t)\,k$ for $t\in [0,1).$
 Given that $F(x,y,z)=2z\,i+3y\,k,$ evaluate the integral
 
@@ -1503,7 +1675,9 @@ $$
 
 - $\frac{1}{15}$
 
-- $\frac{1}{20}$
+- $\frac{1}{20}$ **(source designation)**
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -1544,6 +1718,10 @@ $$
 
 ## authored bank/coefficient variant of observed family — q-162999
 
+## Generated variant — moderate
+
+observed family, authored bank and coefficient variation
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle - 2 t^{2} + 2 t, t^{3} - t^{2}, - 3 t^{2} + 3 t\rangle$ for $t\in [0,1).$
 Given that $F(x,y,z)=\langle 6 z, 0, 9 y\rangle,$ evaluate the integral
 
@@ -1555,11 +1733,13 @@ $$
 
 - $\frac{15}{2}$
 
-- $\frac{9}{20}$
+- $\frac{9}{20}$ **(correct)**
 
 - $\frac{3}{4}$
 
 - $- \frac{9}{20}$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -1600,6 +1780,10 @@ $$
 
 ## authored bank/coefficient variant of observed family — q-162999
 
+## Generated variant — moderate
+
+observed family, authored bank and coefficient variation
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle 2 t^{2} - 2 t, - t^{3} + t^{2}, - t^{2} + t\rangle$ for $t\in [0,1).$
 Given that $F(x,y,z)=\langle - 2 z, 0, - 3 y\rangle,$ evaluate the integral
 
@@ -1607,7 +1791,7 @@ $$
 \iint_S\operatorname{curl}F\cdot\mathrm{d}S.
 $$
 
-- $\frac{1}{20}$
+- $\frac{1}{20}$ **(correct)**
 
 - $\frac{1}{12}$
 
@@ -1616,6 +1800,8 @@ $$
 - $- \frac{7}{12}$
 
 - $\frac{5}{6}$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -1656,6 +1842,10 @@ $$
 
 ## original raw evidence — q-162314
 
+## Original source evidence — hard
+
+observed
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=(2{t}^{3}-2t)\,i+(t+{t}^{2})\,j+(-t-{t}^{2})\,k$ for $t\in [-1,0).$
 Given that $F(x,y,z)=y\,i+x\,k,$ evaluate the integral
 
@@ -1671,7 +1861,9 @@ $$
 
 - $0$
 
-- $\frac{1}{15}$
+- $\frac{1}{15}$ **(source designation)**
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -1712,6 +1904,10 @@ $$
 
 ## authored bank/coefficient variant of observed family — q-162314
 
+## Generated variant — hard
+
+observed family, authored bank and coefficient variation
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle - 4 t^{3} + 4 t, - t^{2} - t, 3 t^{2} + 3 t\rangle$ for $t\in [-1,0).$
 Given that $F(x,y,z)=\langle 3 y, 0, 3 x\rangle,$ evaluate the integral
 
@@ -1723,11 +1919,13 @@ $$
 
 - $12$
 
-- $\frac{4}{5}$
+- $\frac{4}{5}$ **(correct)**
 
 - $\frac{6}{5}$
 
 - $- \frac{4}{5}$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -1768,6 +1966,10 @@ $$
 
 ## authored bank/coefficient variant of observed family — q-162314
 
+## Generated variant — hard
+
+observed family, authored bank and coefficient variation
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle - 2 t^{3} + 2 t, - 2 t^{2} - 2 t, - 3 t^{2} - 3 t\rangle$ for $t\in [-1,0).$
 Given that $F(x,y,z)=\langle 3 y, 0, 3 x\rangle,$ evaluate the integral
 
@@ -1775,7 +1977,7 @@ $$
 \iint_S\operatorname{curl}F\cdot\mathrm{d}S.
 $$
 
-- $- \frac{1}{10}$
+- $- \frac{1}{10}$ **(correct)**
 
 - $- \frac{3}{2}$
 
@@ -1784,6 +1986,8 @@ $$
 - $- \frac{1}{2}$
 
 - $-15$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -1822,7 +2026,197 @@ $$
 $$
 
 
+## original raw evidence — q-162890
+
+## Original source evidence — hard
+
+observed
+
+Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\operatorname{cos}⁡t\,i+2\operatorname{sin}⁡t\,j+2\operatorname{cos}⁡t\,k$ for $t\in [0,2\pi ).$
+Given that $F(x,y,z)=2z\,i+x\,j+3y\,k,$ evaluate the integral
+
+$$
+{∬}_{S}\text{curl}\,F\cdot \text{d}S.
+$$
+
+- $-6\pi $
+
+- $2\pi $
+
+- $\frac{3\pi }{2}$
+
+- $-10\pi $ **(source designation)**
+
+- $-\frac{\pi }{3}$
+
+**Worked solution**
+
+Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
+
+$$
+{∮}_{C}F\cdot dr={∬}_{S}\text{curl}\,F\cdot \text{d}S.
+$$
+
+Along the curve $C,$ we have
+
+$$
+x=\operatorname{cos}⁡t,\,y=2\operatorname{sin}⁡t,\,z=2\operatorname{cos}⁡t.
+$$
+
+So,
+
+$$
+\begin{aligned}F(r(t)) & =2z\,i+x\,j+3y\,k \\  & =4\operatorname{cos}⁡t\,i+\operatorname{cos}⁡t\,j+6\operatorname{sin}⁡t\,k.\end{aligned}
+$$
+
+Computing ${r}^{′}(t),$ we get
+
+$$
+\begin{aligned}{r}^{′}(t) & =\frac{\text{d}}{\text{d}t}(\operatorname{cos}⁡t)\,i+\frac{\text{d}}{\text{d}t}(2\operatorname{sin}⁡t)\,j+\frac{\text{d}}{\text{d}t}(2\operatorname{cos}⁡t)\,k \\  & =-\operatorname{sin}⁡t\,i+2\operatorname{cos}⁡t\,j-2\operatorname{sin}⁡t\,k.\end{aligned}
+$$
+
+Therefore,
+
+$$
+\begin{aligned}F(r(t))\cdot {r}^{′}(t) & =(4\operatorname{cos}⁡t\,i+\operatorname{cos}⁡t\,j+6\operatorname{sin}⁡t\,k)\cdot (-\operatorname{sin}⁡t\,i+2\operatorname{cos}⁡t\,j-2\operatorname{sin}⁡t\,k) \\  & =4\operatorname{cos}⁡t\cdot (-\operatorname{sin}⁡t)+\operatorname{cos}⁡t\cdot 2\operatorname{cos}⁡t+6\operatorname{sin}⁡t\cdot (-2\operatorname{sin}⁡t) \\  & =-4\operatorname{sin}⁡t\operatorname{cos}⁡t+2{cos}^{2}⁡t-12{sin}^{2}⁡t \\  & =-2\operatorname{sin}⁡(2t)+2{cos}^{2}⁡t+2{sin}^{2}⁡t-14{sin}^{2}⁡t \\  & =-2\operatorname{sin}⁡2t-14{sin}^{2}⁡t+2.\end{aligned}
+$$
+
+Finally, we evaluate the integral as follows:
+
+$$
+\begin{aligned}{∬}_{S}\text{curl}\,F\cdot \text{d}S & ={∮}_{C}F\cdot dr \\  & ={\int }_{0}^{2\pi }F(r(t))\cdot {r}^{′}(t)\,\text{d}t \\  & ={\int }_{0}^{2\pi }(-2\operatorname{sin}⁡2t-14{sin}^{2}⁡t+2)\,\text{d}t \\  & ={\int }_{0}^{2\pi }(-2\operatorname{sin}⁡2t-7(1-\operatorname{cos}⁡2t)+2)\,\text{d}t \\  & ={\int }_{0}^{2\pi }(-2\operatorname{sin}⁡2t-5+7\operatorname{cos}⁡2t)\,\text{d}t \\  & ={[\operatorname{cos}⁡2t-5t+\frac{7}{2}\operatorname{sin}⁡2t]}_{0}^{2\pi } \\  & =(1-5(2\pi )+0)-(1-5(0)+0) \\  & =-10\pi \end{aligned}
+$$
+
+
+## authored bank/coefficient variant of observed family — q-162890
+
+## Generated variant — hard
+
+observed family, authored bank and coefficient variation
+
+Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle - 2 \cos{\left(t \right)}, - 2 \sin{\left(t \right)}, - 6 \cos{\left(t \right)}\rangle$ for $t\in [0,2 \pi).$
+Given that $F(x,y,z)=\langle 6 z, 3 x, 9 y\rangle,$ evaluate the integral
+
+$$
+\iint_S\operatorname{curl}F\cdot\mathrm{d}S.
+$$
+
+- $- 48 \pi$
+
+- $- 192 \pi$
+
+- $- 96 \pi$ **(correct)**
+
+- $0$
+
+- $96 \pi$
+
+**Worked solution**
+
+Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
+
+$$
+{∮}_{C}F\cdot dr={∬}_{S}\text{curl}\,F\cdot \text{d}S.
+$$
+
+Along the curve $C,$ we have
+
+$$
+x=- 2 \cos{\left(t \right)},\quad y=- 2 \sin{\left(t \right)},\quad z=- 6 \cos{\left(t \right)}
+$$
+
+So,
+
+$$
+\begin{aligned}F(r(t)) & =\langle 6 z, 3 x, 9 y\rangle \\ & =\langle 6 \left(- 6 \cos{\left(t \right)}\right), 3 \left(- 2 \cos{\left(t \right)}\right), 9 \left(- 2 \sin{\left(t \right)}\right)\rangle \\ & =\langle - 36 \cos{\left(t \right)}, - 6 \cos{\left(t \right)}, - 18 \sin{\left(t \right)}\rangle\end{aligned}
+$$
+
+Computing $r\prime(t),$ we get
+
+$$
+\begin{aligned}r\prime(t) & =\langle \frac{\mathrm d}{\mathrm dt}\left(- 2 \cos{\left(t \right)}\right), \frac{\mathrm d}{\mathrm dt}\left(- 2 \sin{\left(t \right)}\right), \frac{\mathrm d}{\mathrm dt}\left(- 6 \cos{\left(t \right)}\right)\rangle \\ & =\langle 2 \sin{\left(t \right)}, - 2 \cos{\left(t \right)}, 6 \sin{\left(t \right)}\rangle\end{aligned}
+$$
+
+Therefore,
+
+$$
+\begin{aligned}F(r(t))\cdot r\prime(t) & =\langle - 36 \cos{\left(t \right)}, - 6 \cos{\left(t \right)}, - 18 \sin{\left(t \right)}\rangle\cdot \langle 2 \sin{\left(t \right)}, - 2 \cos{\left(t \right)}, 6 \sin{\left(t \right)}\rangle \\ & =\left(- 36 \cos{\left(t \right)}\right)\cdot \left(2 \sin{\left(t \right)}\right)+\left(- 6 \cos{\left(t \right)}\right)\cdot \left(- 2 \cos{\left(t \right)}\right)+\left(- 18 \sin{\left(t \right)}\right)\cdot \left(6 \sin{\left(t \right)}\right) \\ & =\left(- 72 \sin{\left(t \right)} \cos{\left(t \right)}\right)+\left(12 \cos^{2}{\left(t \right)}\right)+\left(- 108 \sin^{2}{\left(t \right)}\right) \\ & =- 108 \sin^{2}{\left(t \right)} - 72 \sin{\left(t \right)} \cos{\left(t \right)} + 12 \cos^{2}{\left(t \right)} \\ & =- 72 \sin{\left(t \right)} \cos{\left(t \right)} + 60 \cos{\left(2 t \right)} - 48\end{aligned}
+$$
+
+Finally, we evaluate the integral as follows:
+
+$$
+\begin{aligned}\iint_S\operatorname{curl}F\cdot\mathrm dS & =\oint_C F\cdot\mathrm dr \\ & =\int_{0}^{2 \pi} F(r(t))\cdot r\prime(t)\,\mathrm dt \\ & =\int_{0}^{2 \pi}\left(- 72 \sin{\left(t \right)} \cos{\left(t \right)} + 60 \cos{\left(2 t \right)} - 48\right)\,\mathrm dt \\ & =\left[\left(- 48 t\right) + \left(30 \sin{\left(2 t \right)}\right) + \left(- 36 \sin^{2}{\left(t \right)}\right)\right]_{0}^{2 \pi} \\ & =\left(\left(- 96 \pi\right) + \left(0\right) + \left(0\right)\right)-\left(\left(0\right) + \left(0\right) + \left(0\right)\right) \\ & =- 96 \pi\end{aligned}
+$$
+
+
+## authored bank/coefficient variant of observed family — q-162890
+
+## Generated variant — hard
+
+observed family, authored bank and coefficient variation
+
+Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle 2 \cos{\left(t \right)}, 2 \sin{\left(t \right)}, - 2 \cos{\left(t \right)}\rangle$ for $t\in [0,2 \pi).$
+Given that $F(x,y,z)=\langle - 2 z, - x, - 3 y\rangle,$ evaluate the integral
+
+$$
+\iint_S\operatorname{curl}F\cdot\mathrm{d}S.
+$$
+
+- $- 16 \pi$ **(correct)**
+
+- $0$
+
+- $16 \pi$
+
+- $- 8 \pi$
+
+- $- 32 \pi$
+
+**Worked solution**
+
+Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
+
+$$
+{∮}_{C}F\cdot dr={∬}_{S}\text{curl}\,F\cdot \text{d}S.
+$$
+
+Along the curve $C,$ we have
+
+$$
+x=2 \cos{\left(t \right)},\quad y=2 \sin{\left(t \right)},\quad z=- 2 \cos{\left(t \right)}
+$$
+
+So,
+
+$$
+\begin{aligned}F(r(t)) & =\langle - 2 z, - x, - 3 y\rangle \\ & =\langle - 2 \left(- 2 \cos{\left(t \right)}\right), - \left(2 \cos{\left(t \right)}\right), - 3 \left(2 \sin{\left(t \right)}\right)\rangle \\ & =\langle 4 \cos{\left(t \right)}, - 2 \cos{\left(t \right)}, - 6 \sin{\left(t \right)}\rangle\end{aligned}
+$$
+
+Computing $r\prime(t),$ we get
+
+$$
+\begin{aligned}r\prime(t) & =\langle \frac{\mathrm d}{\mathrm dt}\left(2 \cos{\left(t \right)}\right), \frac{\mathrm d}{\mathrm dt}\left(2 \sin{\left(t \right)}\right), \frac{\mathrm d}{\mathrm dt}\left(- 2 \cos{\left(t \right)}\right)\rangle \\ & =\langle - 2 \sin{\left(t \right)}, 2 \cos{\left(t \right)}, 2 \sin{\left(t \right)}\rangle\end{aligned}
+$$
+
+Therefore,
+
+$$
+\begin{aligned}F(r(t))\cdot r\prime(t) & =\langle 4 \cos{\left(t \right)}, - 2 \cos{\left(t \right)}, - 6 \sin{\left(t \right)}\rangle\cdot \langle - 2 \sin{\left(t \right)}, 2 \cos{\left(t \right)}, 2 \sin{\left(t \right)}\rangle \\ & =\left(4 \cos{\left(t \right)}\right)\cdot \left(- 2 \sin{\left(t \right)}\right)+\left(- 2 \cos{\left(t \right)}\right)\cdot \left(2 \cos{\left(t \right)}\right)+\left(- 6 \sin{\left(t \right)}\right)\cdot \left(2 \sin{\left(t \right)}\right) \\ & =\left(- 8 \sin{\left(t \right)} \cos{\left(t \right)}\right)+\left(- 4 \cos^{2}{\left(t \right)}\right)+\left(- 12 \sin^{2}{\left(t \right)}\right) \\ & =- 12 \sin^{2}{\left(t \right)} - 8 \sin{\left(t \right)} \cos{\left(t \right)} - 4 \cos^{2}{\left(t \right)} \\ & =- 8 \sin{\left(t \right)} \cos{\left(t \right)} + 4 \cos{\left(2 t \right)} - 8\end{aligned}
+$$
+
+Finally, we evaluate the integral as follows:
+
+$$
+\begin{aligned}\iint_S\operatorname{curl}F\cdot\mathrm dS & =\oint_C F\cdot\mathrm dr \\ & =\int_{0}^{2 \pi} F(r(t))\cdot r\prime(t)\,\mathrm dt \\ & =\int_{0}^{2 \pi}\left(- 8 \sin{\left(t \right)} \cos{\left(t \right)} + 4 \cos{\left(2 t \right)} - 8\right)\,\mathrm dt \\ & =\left[\left(- 8 t\right) + \left(2 \sin{\left(2 t \right)}\right) + \left(- 4 \sin^{2}{\left(t \right)}\right)\right]_{0}^{2 \pi} \\ & =\left(\left(- 16 \pi\right) + \left(0\right) + \left(0\right)\right)-\left(\left(0\right) + \left(0\right) + \left(0\right)\right) \\ & =- 16 \pi\end{aligned}
+$$
+
+
 ## authored missing easy — easy-circle
+
+## Generated variant — easy
+
+authored easy
 
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle - \cos{\left(t \right)}, - 3 \sin{\left(t \right)}, 1\rangle$ for $t\in [0,2 \pi).$
 Given that $F(x,y,z)=\langle - y, x, 0\rangle,$ evaluate the integral
@@ -1835,11 +2229,13 @@ $$
 
 - $6$
 
-- $6 \pi$
+- $6 \pi$ **(correct)**
 
 - $0$
 
 - $- 6 \pi$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 
@@ -1880,6 +2276,10 @@ $$
 
 ## authored missing easy — easy-circle
 
+## Generated variant — easy
+
+authored easy
+
 Let $S$ be an oriented piecewise-smooth surface bounded by the closed curve $C$ with positive orientation and parametrization $r(t)=\langle - \cos{\left(t \right)}, - \sin{\left(t \right)}, 1\rangle$ for $t\in [0,2 \pi).$
 Given that $F(x,y,z)=\langle 2 y, - 2 x, 0\rangle,$ evaluate the integral
 
@@ -1887,7 +2287,7 @@ $$
 \iint_S\operatorname{curl}F\cdot\mathrm{d}S.
 $$
 
-- $- 4 \pi$
+- $- 4 \pi$ **(correct)**
 
 - $0$
 
@@ -1896,6 +2296,8 @@ $$
 - $- 2 \pi$
 
 - $-4$
+
+**Worked solution**
 
 Let $S$ be an oriented piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary $C$ with positive orientation. If a vector field $F$ has continuous partial derivatives for all its components in an open region in space that contains $S,$ then Stokes' theorem states that
 

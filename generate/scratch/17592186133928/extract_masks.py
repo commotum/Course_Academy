@@ -3,7 +3,10 @@ import json,re
 from pathlib import Path
 ROOT=Path(__file__).parent
 cap=json.loads((ROOT/'source.json').read_text());masks={};cases=[]
-for q in cap['record'][':knowledge-point/questions']:
+questions=list(cap['record'][':knowledge-point/questions'])
+known={q[':question/math-academy-id'] for q in questions}
+questions.extend(q for q in json.loads((ROOT/'source-basis-2620.json').read_text())['record'][':knowledge-point/questions'] if q[':question/math-academy-id'] not in known)
+for q in questions:
  sid=q[':question/math-academy-id'];slots={};attrs={}
  for key in [':question/problem',':question/worked-solution',':question/difficulty']:
   if key not in q:continue

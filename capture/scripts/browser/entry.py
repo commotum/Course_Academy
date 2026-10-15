@@ -20,6 +20,10 @@ def by_id(scope, identifier):
 def normalized_math(value):
     """Normalize editor spelling/group notation, without solving the expression."""
     value = re.sub(r"\s+|\\(?:left|right)|\\[,;!:]", "", str(value)).replace("\\dfrac", "\\frac").replace("\\tfrac", "\\frac").replace("−", "-")
+    # MathQuill reads these equivalent TeX commands back using their short
+    # spelling. Match whole commands so distinct operators remain distinct.
+    value = re.sub(r"\\(leq|geq|neq)(?![A-Za-z])", lambda match: {
+        'leq': r'\le', 'geq': r'\ge', 'neq': r'\ne'}[match[1]], value)
     value = re.sub(r"\^([A-Za-z0-9])", r"^{\1}", value)
     def group(start):
         if start >= len(value) or value[start] != "{":

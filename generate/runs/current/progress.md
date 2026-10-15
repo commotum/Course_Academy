@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 50**, **qa_passed: 390**, **queued: 137**, **working: 3**.
+**needs_revalidation: 51**, **qa_passed: 389**, **queued: 137**, **working: 3**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -78,7 +78,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186133827](../../scratch/17592186133827.py) | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function Using a Substitution | 0 / 4 / 1 / 1 | qa_passed | [Report](qa/17592186133827.json) |
 | [17592186133829](../../scratch/17592186133829.py) | Line Integrals of Scalar Functions | Writing the Line Integral of a Scalar Function as a Definite Integral | 1 / 4 / 0 / 1 | qa_passed | [Report](qa/17592186133829.json) |
 | [17592186133830](../../scratch/17592186133830.py) | Line Integrals of Scalar Functions | Evaluating the Line Integral of a Scalar Function | 2 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186133830.json) |
-| [17592186162081](../../scratch/17592186162081.py) | Properties of Line Integrals of Scalar Functions | Calculating Line Integrals of Unity | 5 / 0 / 0 / 1 | needs_revalidation | [Report](qa/17592186162081.json) |
+| [17592186162081](../../scratch/17592186162081.py) | Properties of Line Integrals of Scalar Functions | Calculating Line Integrals of Unity | 5 / 0 / 0 / 1 | working | [Report](qa/17592186162081.json) |
 | [17592186162082](../../scratch/17592186162082.py) | Properties of Line Integrals of Scalar Functions | Calculating Line Integrals Over Piecewise-Smooth Curves | 2 / 3 / 0 / 1 | qa_passed | [Report](qa/17592186162082.json) |
 | [17592186162083](../../scratch/17592186162083-draft.py) | Properties of Line Integrals of Scalar Functions | Applying Independence of Parametrization and Orientation | 0 / 3 / 2 / 2 | qa_passed | [Report](qa/17592186162083.json) |
 | [17592186179670](../../scratch/17592186179670.py) | Line Integrals of Scalar Functions Over Line Segments | Calculating a Line Integral Along a Segment in the Cartesian Plane | 0 / 3 / 2 / 2 | qa_passed | [Report](qa/17592186179670.json) |
@@ -86,7 +86,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186179725](../../scratch/17592186179725.py) | Line Integrals of Scalar Functions Over Line Segments | Line Integrals Along Segments in Three Dimensions | 2 / 1 / 2 / 2 | qa_passed | [Report](qa/17592186179725.json) |
 | [17592186179709](../../scratch/17592186179709.py) | Line Integrals of Scalar Functions Over Paths Expressed as Functions of Y | Constructing the Line Integral of a Function Over Curve Expressed as a Function of Y | 2 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186179709.json) |
 | [17592186133831](../../scratch/17592186133831.py) | Line Integrals of Vector-Valued Functions Over Parametric Curves | Constructing Line Integrals of a Vector-Valued Functions Over Plane Curves | 5 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186133831.json) |
-| [17592186119887](../../scratch/17592186119887.py) | Areas of Parametric Surfaces | Calculating the Fundamental Vector Product of a Parametric Surface | 6 / 0 / 0 / 1 | needs_revalidation | [Report](qa/17592186119887.json) |
+| [17592186119887](../../scratch/17592186119887.py) | Areas of Parametric Surfaces | Calculating the Fundamental Vector Product of a Parametric Surface | 6 / 0 / 0 / 1 | working | [Report](qa/17592186119887.json) |
 | [17592186175972](../../scratch/17592186175972.py) | Parametrizations of Cylinders | Parametrizing a Parabolic Cylinder | 4 / 1 / 0 / 1 | qa_passed | [Report](qa/17592186175972.json) |
 | [17592186175973](../../scratch/17592186175973.py) | Parametrizations of Cylinders | Parametrizing a Hyperbolic Cylinder | 0 / 2 / 3 / 1 | qa_passed | [Report](qa/17592186175973.json) |
 | [17592186073810](../../scratch/17592186073810-draft.py) | The Shortest Distance Between a Point and a Line | Finding the Distance Between a Point and a Horizontal or Vertical Line | 5 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186073810.json) |
@@ -230,8 +230,8 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186087768](../../scratch/17592186087768.py) | Equations of Circles | Finding the Equation of a Circle Given the Center and a Point on the Circle | 0 / 6 / 0 / 1 | qa_passed | [Report](qa/17592186087768.json) |
 | [17592186087656](../../scratch/17592186087656.py) | Equations of Circles | Finding the Center and Radius of a Circle Given Its Equation | 7 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186087656.json) |
 | [17592186087657](../../scratch/17592186087657.py) | Equations of Circles | Finding the Equation of a Circle Given the Endpoints of a Diameter | 0 / 3 / 4 / 2 | qa_passed | [Report](qa/17592186087657.json) |
-| 17592186087699 | Introduction to the Inverse of a Matrix | Determining the Inverse of a 2x2 Matrix | 10 / 0 / 0 / 1 | working | — |
-| 17592186087700 | Introduction to the Inverse of a Matrix | Determining the Inverse of a Larger Matrix | 0 / 10 / 3 / 0 | working | — |
+| [17592186087699](../../scratch/17592186087699-draft.py) | Introduction to the Inverse of a Matrix | Determining the Inverse of a 2x2 Matrix | 10 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186087699.json) |
+| [17592186087700](../../scratch/17592186087700-draft.py) | Introduction to the Inverse of a Matrix | Determining the Inverse of a Larger Matrix | 0 / 10 / 3 / 0 | qa_passed | [Report](qa/17592186087700.json) |
 | [17592186092261](../../scratch/17592186092261.py) | The Chain Rule With Exponential Functions | Differentiating a General Exponential Function Using the Chain Rule | 7 / 2 / 0 / 1 | qa_passed | [Report](qa/17592186092261.json) |
 | [17592186092263](../../scratch/17592186092263.py) | The Chain Rule With Exponential Functions | Differentiating an Exponential Function with a Nonlinear Exponent | 5 / 8 / 0 / 1 | needs_revalidation | [Report](qa/17592186092263.json) |
 | [17592186059741](../../scratch/17592186059741.py) | Scalar Multiplication of Matrices | Calculating the Value of a Scalar | 6 / 0 / 0 / 1 | working | — |
@@ -406,9 +406,9 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | 17592186096746 | Reduced Row Echelon Form | Finding the Reduced Row Echelon Form of a Singular 3x3 System With One Pivot | 6 / 6 / 0 / 1 | queued | — |
 | 17592186096745 | Reduced Row Echelon Form | Finding the Reduced Row Echelon Form of a Singular 3x3 System With Two Pivots | 0 / 0 / 14 / 0 | queued | — |
 | 17592186100894 | Solving First-Order IVPs Using Separation of Variables | Finding Particular Solutions of Differential Equations by First Rearranging and Then Separating | 11 / 13 / 0 / 0 | queued | — |
-| [17592186115241](../../scratch/17592186115241.py) | Gaussian Elimination For NxM Systems of Equations | Solving a Consistent System of Equations Using Gauss-Jordan Elimination | 9 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186115241.json) |
-| [17592186115299](../../scratch/17592186115299.py) | Gaussian Elimination For NxM Systems of Equations | Classifying a System as Consistent Dependent, Consistent Independent, or Inconsistent | 0 / 14 / 0 / 0 | qa_passed | [Report](qa/17592186115299.json) |
-| [17592186115242](../../scratch/17592186115242.py) | Gaussian Elimination For NxM Systems of Equations | Determining the Value of a Constant for Which a Given Linear System Is Consistent or Inconsistent | 0 / 8 / 7 / 0 | qa_passed | [Report](qa/17592186115242.json) |
+| [17592186115241](../../scratch/17592186115241.py) | Gaussian Elimination For NxM Systems of Equations | Solving a Consistent System of Equations Using Gauss-Jordan Elimination | 9 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186115241.json) |
+| [17592186115299](../../scratch/17592186115299.py) | Gaussian Elimination For NxM Systems of Equations | Classifying a System as Consistent Dependent, Consistent Independent, or Inconsistent | 0 / 14 / 0 / 0 | needs_revalidation | [Report](qa/17592186115299.json) |
+| [17592186115242](../../scratch/17592186115242.py) | Gaussian Elimination For NxM Systems of Equations | Determining the Value of a Constant for Which a Given Linear System Is Consistent or Inconsistent | 0 / 8 / 7 / 0 | needs_revalidation | [Report](qa/17592186115242.json) |
 | [17592186064153](../../scratch/17592186064153.py) | Interpreting the Meaning of the Derivative in Context | Interpreting the Derivative of a Function in a Given Context | 1 / 3 / 1 / 1 | qa_passed | [Report](qa/17592186064153.json) |
 | [17592186064272](../../scratch/17592186064272.py) | Interpreting the Meaning of the Derivative in Context | Relating a Derivative to a Rate of Change | 7 / 1 / 0 / 1 | qa_passed | [Report](qa/17592186064272.json) |
 | [17592186064152](../../scratch/17592186064152.py) | Interpreting the Meaning of the Derivative in Context | Interpreting the Derivative of a Function | 0 / 3 / 3 / 1 | qa_passed | [Report](qa/17592186064152.json) |

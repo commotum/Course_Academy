@@ -619,34 +619,24 @@ This new matrix is obtained from matrix $P$ using the scalar multiplication $kP$
 
 
 
-$\,k=$
-
-
-
-
-
-{{field-1}}                
-
-
-
-
-.
+$k=$
+{{field-1}}.
 
 [
   {
-    ":answer-field/id": "02f5afcd-05dd-54af-b5ba-d09eb022bbbe",
+    ":answer-field/id": "8d5697db-2d70-5217-b029-0bf33461a01e",
     ":answer-field/key": "field-1",
     ":answer-field/type": ":answer-field.type/blank",
     ":answer-field/choices": [
       {
-        ":answer/id": "3e3da42e-f480-54cc-bc50-02c28fb7681b",
+        ":answer/id": "9c099840-e4cb-55e9-8f27-fdfacaa71440",
         ":answer/type": ":answer.type/math",
         ":answer/value": "5"
       }
     ],
     ":answer-field/correct": [
       ":answer/id",
-      "3e3da42e-f480-54cc-bc50-02c28fb7681b"
+      "9c099840-e4cb-55e9-8f27-fdfacaa71440"
     ]
   }
 ]
@@ -686,34 +676,24 @@ This new matrix is obtained from matrix $P$ using the scalar multiplication $kP$
 
 
 
-$\,k=$
-
-
-
-
-
-{{field-1}}                
-
-
-
-
-.
+$k=$
+{{field-1}}.
 
 [
   {
-    ":answer-field/id": "8d297f11-9e12-5145-b696-5f7b270c89e3",
+    ":answer-field/id": "47debe26-0ee7-53a2-8d72-ccb60cd887ba",
     ":answer-field/key": "field-1",
     ":answer-field/type": ":answer-field.type/blank",
     ":answer-field/choices": [
       {
-        ":answer/id": "226bf31c-fdfa-53c9-b822-b16c51795c3c",
+        ":answer/id": "1f6a5265-497f-55be-8733-f43ad77192d7",
         ":answer/type": ":answer.type/math",
         ":answer/value": "9"
       }
     ],
     ":answer-field/correct": [
       ":answer/id",
-      "226bf31c-fdfa-53c9-b822-b16c51795c3c"
+      "1f6a5265-497f-55be-8733-f43ad77192d7"
     ]
   }
 ]
@@ -2335,34 +2315,24 @@ This new matrix is obtained from matrix $P$ using the scalar multiplication $kP$
 
 
 
-$\,k=$
-
-
-
-
-
-{{field-1}}                
-
-
-
-
-.
+$k=$
+{{field-1}}.
 
 [
   {
-    ":answer-field/id": "18ef48b9-3df7-580b-a84f-6ef239c45938",
+    ":answer-field/id": "a7ab6710-9a4a-5a70-b318-1a1a4f67b9b0",
     ":answer-field/key": "field-1",
     ":answer-field/type": ":answer-field.type/blank",
     ":answer-field/choices": [
       {
-        ":answer/id": "a4404a06-eac7-574f-b44c-6356e52b6034",
+        ":answer/id": "234f2e7a-ce2a-5212-b747-21c1fe1c8476",
         ":answer/type": ":answer.type/math",
         ":answer/value": "3"
       }
     ],
     ":answer-field/correct": [
       ":answer/id",
-      "a4404a06-eac7-574f-b44c-6356e52b6034"
+      "234f2e7a-ce2a-5212-b747-21c1fe1c8476"
     ]
   }
 ]
@@ -2402,34 +2372,24 @@ This new matrix is obtained from matrix $P$ using the scalar multiplication $kP$
 
 
 
-$\,k=$
-
-
-
-
-
-{{field-1}}                
-
-
-
-
-.
+$k=$
+{{field-1}}.
 
 [
   {
-    ":answer-field/id": "24e6e813-636e-59fc-8778-2c4b286601db",
+    ":answer-field/id": "10854870-ed08-554c-a3f8-6e40511d4570",
     ":answer-field/key": "field-1",
     ":answer-field/type": ":answer-field.type/blank",
     ":answer-field/choices": [
       {
-        ":answer/id": "3778a2e7-50be-5c39-a30b-650e6a0bc682",
+        ":answer/id": "f142d9b2-f7f8-5cbe-b1b2-7a4e5f270d5e",
         ":answer/type": ":answer.type/math",
         ":answer/value": "3"
       }
     ],
     ":answer-field/correct": [
       ":answer/id",
-      "3778a2e7-50be-5c39-a30b-650e6a0bc682"
+      "f142d9b2-f7f8-5cbe-b1b2-7a4e5f270d5e"
     ]
   }
 ]
@@ -2469,34 +2429,24 @@ This new matrix is obtained from matrix $P$ using the scalar multiplication $kP$
 
 
 
-$\,k=$
-
-
-
-
-
-{{field-1}}                
-
-
-
-
-.
+$k=$
+{{field-1}}.
 
 [
   {
-    ":answer-field/id": "4a5d1bb0-1a05-50bd-a6c0-77fd3ba10196",
+    ":answer-field/id": "197d92fc-df60-5992-8a89-49f47a08b1ce",
     ":answer-field/key": "field-1",
     ":answer-field/type": ":answer-field.type/blank",
     ":answer-field/choices": [
       {
-        ":answer/id": "0e8b8139-23ee-505f-bdcd-ca13eddb2e26",
+        ":answer/id": "c562392f-c03a-5485-9c23-e7eba1a505e7",
         ":answer/type": ":answer.type/math",
         ":answer/value": "3"
       }
     ],
     ":answer-field/correct": [
       ":answer/id",
-      "0e8b8139-23ee-505f-bdcd-ca13eddb2e26"
+      "c562392f-c03a-5485-9c23-e7eba1a505e7"
     ]
   }
 ]
@@ -2536,34 +2486,24 @@ This new matrix is obtained from matrix $P$ using the scalar multiplication $kP$
 
 
 
-$\,k=$
-
-
-
-
-
-{{field-1}}                
-
-
-
-
-.
+$k=$
+{{field-1}}.
 
 [
   {
-    ":answer-field/id": "91421546-1815-53a1-8d97-3979a31e6330",
+    ":answer-field/id": "d4fff304-bc2d-57c5-a820-a2ccbd2696d9",
     ":answer-field/key": "field-1",
     ":answer-field/type": ":answer-field.type/blank",
     ":answer-field/choices": [
       {
-        ":answer/id": "7c764768-162b-53cc-b72b-16d1851e8c3e",
+        ":answer/id": "484ac613-fd3e-5c19-a263-67abcb0a2427",
         ":answer/type": ":answer.type/math",
         ":answer/value": "3"
       }
     ],
     ":answer-field/correct": [
       ":answer/id",
-      "7c764768-162b-53cc-b72b-16d1851e8c3e"
+      "484ac613-fd3e-5c19-a263-67abcb0a2427"
     ]
   }
 ]
@@ -2603,34 +2543,24 @@ This new matrix is obtained from matrix $P$ using the scalar multiplication $kP$
 
 
 
-$\,k=$
-
-
-
-
-
-{{field-1}}                
-
-
-
-
-.
+$k=$
+{{field-1}}.
 
 [
   {
-    ":answer-field/id": "504dfd38-3060-5552-852a-b7031996d237",
+    ":answer-field/id": "abdf6c03-d713-5575-b98e-45ed425b1108",
     ":answer-field/key": "field-1",
     ":answer-field/type": ":answer-field.type/blank",
     ":answer-field/choices": [
       {
-        ":answer/id": "71c98d10-25ca-5332-b515-389aa0016aa2",
+        ":answer/id": "0cd1b922-97fa-5c91-98fb-fb9a186d5e3f",
         ":answer/type": ":answer.type/math",
         ":answer/value": "3"
       }
     ],
     ":answer-field/correct": [
       ":answer/id",
-      "71c98d10-25ca-5332-b515-389aa0016aa2"
+      "0cd1b922-97fa-5c91-98fb-fb9a186d5e3f"
     ]
   }
 ]
@@ -2670,34 +2600,24 @@ This new matrix is obtained from matrix $P$ using the scalar multiplication $kP$
 
 
 
-$\,k=$
-
-
-
-
-
-{{field-1}}                
-
-
-
-
-.
+$k=$
+{{field-1}}.
 
 [
   {
-    ":answer-field/id": "b11d381c-9075-5400-9d3e-8807a7723b6a",
+    ":answer-field/id": "e605968b-f935-5aad-90bf-ca546cd35be4",
     ":answer-field/key": "field-1",
     ":answer-field/type": ":answer-field.type/blank",
     ":answer-field/choices": [
       {
-        ":answer/id": "3cbab831-728e-589d-b060-289995338552",
+        ":answer/id": "0ee53aae-7759-5369-a555-66611170f76c",
         ":answer/type": ":answer.type/math",
         ":answer/value": "3"
       }
     ],
     ":answer-field/correct": [
       ":answer/id",
-      "3cbab831-728e-589d-b060-289995338552"
+      "0ee53aae-7759-5369-a555-66611170f76c"
     ]
   }
 ]
