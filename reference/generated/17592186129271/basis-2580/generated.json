@@ -1,0 +1,457 @@
+[
+  {
+    "knowledge_point": {
+      "db_id": 17592186129271,
+      "id": "d433063f-f145-5bf4-8bd4-8d5e5b36b3d8",
+      "title": "Finding the Jacobian of a Three-Dimensional Transformation"
+    },
+    "question": {
+      ":question/id": "a098c802-39d1-511b-a349-0ab807ea00b6",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the Jacobian determinant of the transformation $T$ that maps the $uvw$-space into the $xyz$-space by means of the equations\n\n$$\nx=4 u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)}\\, y=u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)}\\, z=- 2 u \\cos{\\left(v \\right)}.\n$$",
+      ":question/worked-solution": "For a transformation \n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\\to \\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix},\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)},$ is given by\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & =\\begin{vmatrix}\\frac{\u2202x}{\u2202u} & \\frac{\u2202x}{\u2202v} & \\frac{\u2202x}{\u2202w} \\\\ \\frac{\u2202y}{\u2202u} & \\frac{\u2202y}{\u2202v} & \\frac{\u2202y}{\u2202w} \\\\ \\frac{\u2202z}{\u2202u} & \\frac{\u2202z}{\u2202v} & \\frac{\u2202z}{\u2202w}\\end{vmatrix}.\\end{aligned}\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\u2202x}{\u2202u} & =4 \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} & \\frac{\u2202x}{\u2202v} & =4 u \\cos{\\left(v \\right)} \\cos{\\left(w \\right)} & \\frac{\u2202x}{\u2202w} & =- 4 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} \\\\ \\frac{\u2202y}{\u2202u} & =\\sin{\\left(v \\right)} \\sin{\\left(w \\right)} & \\frac{\u2202y}{\u2202v} & =u \\sin{\\left(w \\right)} \\cos{\\left(v \\right)} & \\frac{\u2202y}{\u2202w} & =u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} \\\\ \\frac{\u2202z}{\u2202u} & =- 2 \\cos{\\left(v \\right)} & \\frac{\u2202z}{\u2202v} & =2 u \\sin{\\left(v \\right)} & \\frac{\u2202z}{\u2202w} & =0\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant is\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & =\\begin{vmatrix}4 \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} & 4 u \\cos{\\left(v \\right)} \\cos{\\left(w \\right)} & - 4 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} \\\\ \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} & u \\sin{\\left(w \\right)} \\cos{\\left(v \\right)} & u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} \\\\ - 2 \\cos{\\left(v \\right)} & 2 u \\sin{\\left(v \\right)} & 0\\end{vmatrix} \\\\  & =\\left(- 2 \\cos{\\left(v \\right)}\\right)(-1)^{3+1}\\begin{vmatrix}4 u \\cos{\\left(v \\right)} \\cos{\\left(w \\right)} & - 4 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} \\\\ u \\sin{\\left(w \\right)} \\cos{\\left(v \\right)} & u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)}\\end{vmatrix}+\\left(2 u \\sin{\\left(v \\right)}\\right)(-1)^{3+2}\\begin{vmatrix}4 \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} & - 4 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} \\\\ \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} & u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)}\\end{vmatrix} \\\\  & =\\left(- 8 u^{2} \\sin{\\left(v \\right)} \\cos^{2}{\\left(v \\right)}\\right)\\left(\\cos^2 w+\\sin^2 w\\right)+\\left(- 8 u^{2} \\sin^{3}{\\left(v \\right)}\\right)\\left(\\cos^2 w+\\sin^2 w\\right) \\\\  & =\\left(- 8 u^{2} \\sin{\\left(v \\right)} \\cos^{2}{\\left(v \\right)}\\right)+\\left(- 8 u^{2} \\sin^{3}{\\left(v \\right)}\\right) \\\\  & =- 8 u^{2} \\sin{\\left(v \\right)}\\left(\\cos^2 v+\\sin^2 v\\right) \\\\  & =- 8 u^{2} \\sin{\\left(v \\right)}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "b9788c2a-17e2-5bc6-b3b2-10eb15534e45",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "93f201c2-2807-52fc-8eb4-d528a5a92114",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 8 u \\sin{\\left(v \\right)}"
+            },
+            {
+              ":answer/id": "d8b8d957-d16d-59c3-b069-322a9e119da0",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 8 u^{2} \\sin{\\left(v \\right)} \\cos^{2}{\\left(v \\right)}"
+            },
+            {
+              ":answer/id": "4b164324-6818-54e6-8c89-068adf9f97cb",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "8 u^{2} \\sin{\\left(v \\right)}"
+            },
+            {
+              ":answer/id": "cb9ed056-0f15-5af6-bf97-d96d493b309a",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 8 u^{2} \\sin^{3}{\\left(v \\right)}"
+            },
+            {
+              ":answer/id": "132328d8-571d-54c1-a382-e07fe4ab0e8f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 8 u^{2} \\sin{\\left(v \\right)}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "132328d8-571d-54c1-a382-e07fe4ab0e8f"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.0",
+      "seed": 292710,
+      "template": "spherical",
+      "parameters": {
+        "a": 4,
+        "b": 1,
+        "c": -2
+      },
+      "bank_profile": "spherical-method",
+      "bank_origin": "authored",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "authored_extension": true,
+      "parameter_fingerprint": "ddce8792f67dd570a83e86d0a164d7ad15349d53e6a98f421b418d65d525418a",
+      "content_fingerprint": "61c6b9c877bd970cddb8eb003dec0b0cb00250368adb92840c54caaa4fc42851",
+      "domain": "u,v,w real; theta,a,b,c fixed real constants",
+      "source": {
+        "database": "math",
+        "basis": 2579,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": [],
+        "method_reference": "lesson Introduction spherical transformation"
+      },
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none",
+      "plot_assets": {},
+      "distractor_recipes": [
+        "determinant",
+        "wrong-cofactor-sign",
+        "omit-radial-product-factor",
+        "omit-first-cofactor",
+        "omit-second-cofactor"
+      ],
+      "notation_normalization": "SymPy LaTeX; same prose and stage sequence",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129271,
+      "id": "d433063f-f145-5bf4-8bd4-8d5e5b36b3d8",
+      "title": "Finding the Jacobian of a Three-Dimensional Transformation"
+    },
+    "question": {
+      ":question/id": "a4148d41-ff0c-544e-a801-c54fea1c172d",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the Jacobian determinant of the transformation $T$ that maps the $uvw$-space into the $xyz$-space by means of the equations\n\n$$\nx=3 u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)}\\, y=3 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)}\\, z=4 u \\cos{\\left(v \\right)}.\n$$",
+      ":question/worked-solution": "For a transformation \n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\\to \\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix},\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)},$ is given by\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & =\\begin{vmatrix}\\frac{\u2202x}{\u2202u} & \\frac{\u2202x}{\u2202v} & \\frac{\u2202x}{\u2202w} \\\\ \\frac{\u2202y}{\u2202u} & \\frac{\u2202y}{\u2202v} & \\frac{\u2202y}{\u2202w} \\\\ \\frac{\u2202z}{\u2202u} & \\frac{\u2202z}{\u2202v} & \\frac{\u2202z}{\u2202w}\\end{vmatrix}.\\end{aligned}\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\u2202x}{\u2202u} & =3 \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} & \\frac{\u2202x}{\u2202v} & =3 u \\cos{\\left(v \\right)} \\cos{\\left(w \\right)} & \\frac{\u2202x}{\u2202w} & =- 3 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} \\\\ \\frac{\u2202y}{\u2202u} & =3 \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} & \\frac{\u2202y}{\u2202v} & =3 u \\sin{\\left(w \\right)} \\cos{\\left(v \\right)} & \\frac{\u2202y}{\u2202w} & =3 u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} \\\\ \\frac{\u2202z}{\u2202u} & =4 \\cos{\\left(v \\right)} & \\frac{\u2202z}{\u2202v} & =- 4 u \\sin{\\left(v \\right)} & \\frac{\u2202z}{\u2202w} & =0\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant is\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & =\\begin{vmatrix}3 \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} & 3 u \\cos{\\left(v \\right)} \\cos{\\left(w \\right)} & - 3 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} \\\\ 3 \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} & 3 u \\sin{\\left(w \\right)} \\cos{\\left(v \\right)} & 3 u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} \\\\ 4 \\cos{\\left(v \\right)} & - 4 u \\sin{\\left(v \\right)} & 0\\end{vmatrix} \\\\  & =\\left(4 \\cos{\\left(v \\right)}\\right)(-1)^{3+1}\\begin{vmatrix}3 u \\cos{\\left(v \\right)} \\cos{\\left(w \\right)} & - 3 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} \\\\ 3 u \\sin{\\left(w \\right)} \\cos{\\left(v \\right)} & 3 u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)}\\end{vmatrix}+\\left(- 4 u \\sin{\\left(v \\right)}\\right)(-1)^{3+2}\\begin{vmatrix}3 \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} & - 3 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} \\\\ 3 \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} & 3 u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)}\\end{vmatrix} \\\\  & =\\left(36 u^{2} \\sin{\\left(v \\right)} \\cos^{2}{\\left(v \\right)}\\right)\\left(\\cos^2 w+\\sin^2 w\\right)+\\left(36 u^{2} \\sin^{3}{\\left(v \\right)}\\right)\\left(\\cos^2 w+\\sin^2 w\\right) \\\\  & =\\left(36 u^{2} \\sin{\\left(v \\right)} \\cos^{2}{\\left(v \\right)}\\right)+\\left(36 u^{2} \\sin^{3}{\\left(v \\right)}\\right) \\\\  & =36 u^{2} \\sin{\\left(v \\right)}\\left(\\cos^2 v+\\sin^2 v\\right) \\\\  & =36 u^{2} \\sin{\\left(v \\right)}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "d08d3ad2-917b-5e7d-8e9b-9aa5cfd9d08e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "eb1933b7-d000-5a91-889e-9974df4f68f8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "36 u^{2} \\sin{\\left(v \\right)} \\cos^{2}{\\left(v \\right)}"
+            },
+            {
+              ":answer/id": "d58ab3c0-af56-5de4-ae75-7fd52aa5fe86",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "36 u \\sin{\\left(v \\right)}"
+            },
+            {
+              ":answer/id": "0e1688fd-9312-57f7-9c64-e1d3ad42a239",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 36 u^{2} \\sin{\\left(v \\right)}"
+            },
+            {
+              ":answer/id": "02cc8b0b-3b33-504e-9fcf-49fefb81af1f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "36 u^{2} \\sin^{3}{\\left(v \\right)}"
+            },
+            {
+              ":answer/id": "cbd03066-c83d-5019-9485-37cb3cc2441b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "36 u^{2} \\sin{\\left(v \\right)}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "cbd03066-c83d-5019-9485-37cb3cc2441b"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.0",
+      "seed": 292712,
+      "template": "spherical",
+      "parameters": {
+        "a": 3,
+        "b": 3,
+        "c": 4
+      },
+      "bank_profile": "spherical-method",
+      "bank_origin": "authored",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "authored_extension": true,
+      "parameter_fingerprint": "5dab726d7af9cd8b7164de16c755f87aa0c5836e1c28505247835ee91bb9d805",
+      "content_fingerprint": "624bac081c24c8f8290010a87a6f9f130a3e0a93e12656f14210a6375ec8c649",
+      "domain": "u,v,w real; theta,a,b,c fixed real constants",
+      "source": {
+        "database": "math",
+        "basis": 2579,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": [],
+        "method_reference": "lesson Introduction spherical transformation"
+      },
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none",
+      "plot_assets": {},
+      "distractor_recipes": [
+        "determinant",
+        "wrong-cofactor-sign",
+        "omit-radial-product-factor",
+        "omit-first-cofactor",
+        "omit-second-cofactor"
+      ],
+      "notation_normalization": "SymPy LaTeX; same prose and stage sequence",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129271,
+      "id": "d433063f-f145-5bf4-8bd4-8d5e5b36b3d8",
+      "title": "Finding the Jacobian of a Three-Dimensional Transformation"
+    },
+    "question": {
+      ":question/id": "59981040-63de-5d77-9b31-e55b40556f43",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the Jacobian determinant of the transformation $T$ that maps the $uvw$-space into the $xyz$-space by means of the equations\n\n$$\nx=- 2 u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)}\\, y=- 4 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)}\\, z=3 u \\cos{\\left(v \\right)}.\n$$",
+      ":question/worked-solution": "For a transformation \n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\\to \\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix},\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)},$ is given by\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & =\\begin{vmatrix}\\frac{\u2202x}{\u2202u} & \\frac{\u2202x}{\u2202v} & \\frac{\u2202x}{\u2202w} \\\\ \\frac{\u2202y}{\u2202u} & \\frac{\u2202y}{\u2202v} & \\frac{\u2202y}{\u2202w} \\\\ \\frac{\u2202z}{\u2202u} & \\frac{\u2202z}{\u2202v} & \\frac{\u2202z}{\u2202w}\\end{vmatrix}.\\end{aligned}\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\u2202x}{\u2202u} & =- 2 \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} & \\frac{\u2202x}{\u2202v} & =- 2 u \\cos{\\left(v \\right)} \\cos{\\left(w \\right)} & \\frac{\u2202x}{\u2202w} & =2 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} \\\\ \\frac{\u2202y}{\u2202u} & =- 4 \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} & \\frac{\u2202y}{\u2202v} & =- 4 u \\sin{\\left(w \\right)} \\cos{\\left(v \\right)} & \\frac{\u2202y}{\u2202w} & =- 4 u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} \\\\ \\frac{\u2202z}{\u2202u} & =3 \\cos{\\left(v \\right)} & \\frac{\u2202z}{\u2202v} & =- 3 u \\sin{\\left(v \\right)} & \\frac{\u2202z}{\u2202w} & =0\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant is\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & =\\begin{vmatrix}- 2 \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} & - 2 u \\cos{\\left(v \\right)} \\cos{\\left(w \\right)} & 2 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} \\\\ - 4 \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} & - 4 u \\sin{\\left(w \\right)} \\cos{\\left(v \\right)} & - 4 u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} \\\\ 3 \\cos{\\left(v \\right)} & - 3 u \\sin{\\left(v \\right)} & 0\\end{vmatrix} \\\\  & =\\left(3 \\cos{\\left(v \\right)}\\right)(-1)^{3+1}\\begin{vmatrix}- 2 u \\cos{\\left(v \\right)} \\cos{\\left(w \\right)} & 2 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} \\\\ - 4 u \\sin{\\left(w \\right)} \\cos{\\left(v \\right)} & - 4 u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)}\\end{vmatrix}+\\left(- 3 u \\sin{\\left(v \\right)}\\right)(-1)^{3+2}\\begin{vmatrix}- 2 \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} & 2 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} \\\\ - 4 \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} & - 4 u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)}\\end{vmatrix} \\\\  & =\\left(24 u^{2} \\sin{\\left(v \\right)} \\cos^{2}{\\left(v \\right)}\\right)\\left(\\cos^2 w+\\sin^2 w\\right)+\\left(24 u^{2} \\sin^{3}{\\left(v \\right)}\\right)\\left(\\cos^2 w+\\sin^2 w\\right) \\\\  & =\\left(24 u^{2} \\sin{\\left(v \\right)} \\cos^{2}{\\left(v \\right)}\\right)+\\left(24 u^{2} \\sin^{3}{\\left(v \\right)}\\right) \\\\  & =24 u^{2} \\sin{\\left(v \\right)}\\left(\\cos^2 v+\\sin^2 v\\right) \\\\  & =24 u^{2} \\sin{\\left(v \\right)}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "697c4afa-b74b-58e9-8673-20fb02c283a6",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "bd61b5ac-cd11-592e-bc2f-458d8703fe2c",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "24 u^{2} \\sin^{3}{\\left(v \\right)}"
+            },
+            {
+              ":answer/id": "aafe06af-f994-53ab-b2f9-00ddee90e21f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "24 u^{2} \\sin{\\left(v \\right)} \\cos^{2}{\\left(v \\right)}"
+            },
+            {
+              ":answer/id": "44333139-cdf6-5139-b942-4aef72fea8fe",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "24 u \\sin{\\left(v \\right)}"
+            },
+            {
+              ":answer/id": "6d411a6c-64a4-53c2-8f4e-1505fb27596f",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 24 u^{2} \\sin{\\left(v \\right)}"
+            },
+            {
+              ":answer/id": "e7b1e996-8fcc-5b36-9cb4-719bfe1f008e",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "24 u^{2} \\sin{\\left(v \\right)}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "e7b1e996-8fcc-5b36-9cb4-719bfe1f008e"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.0",
+      "seed": 292713,
+      "template": "spherical",
+      "parameters": {
+        "a": -2,
+        "b": -4,
+        "c": 3
+      },
+      "bank_profile": "spherical-method",
+      "bank_origin": "authored",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "authored_extension": true,
+      "parameter_fingerprint": "555e79bb8b9f83c779358de1a140b1fc0edf98dc036c5370fe6028042f8265d5",
+      "content_fingerprint": "a24772429f4ff5b9bea8d5a1b6e101b258275d4def182118a4af286c4857137f",
+      "domain": "u,v,w real; theta,a,b,c fixed real constants",
+      "source": {
+        "database": "math",
+        "basis": 2579,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": [],
+        "method_reference": "lesson Introduction spherical transformation"
+      },
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none",
+      "plot_assets": {},
+      "distractor_recipes": [
+        "determinant",
+        "wrong-cofactor-sign",
+        "omit-radial-product-factor",
+        "omit-first-cofactor",
+        "omit-second-cofactor"
+      ],
+      "notation_normalization": "SymPy LaTeX; same prose and stage sequence",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129271,
+      "id": "d433063f-f145-5bf4-8bd4-8d5e5b36b3d8",
+      "title": "Finding the Jacobian of a Three-Dimensional Transformation"
+    },
+    "question": {
+      ":question/id": "919907af-8ddc-5bf6-a360-dfd46736eef8",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the Jacobian determinant of the transformation $T$ that maps the $uvw$-space into the $xyz$-space by means of the equations\n\n$$\nx=- 4 u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)}\\, y=3 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)}\\, z=- u \\cos{\\left(v \\right)}.\n$$",
+      ":question/worked-solution": "For a transformation \n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\\to \\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix},\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)},$ is given by\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & =\\begin{vmatrix}\\frac{\u2202x}{\u2202u} & \\frac{\u2202x}{\u2202v} & \\frac{\u2202x}{\u2202w} \\\\ \\frac{\u2202y}{\u2202u} & \\frac{\u2202y}{\u2202v} & \\frac{\u2202y}{\u2202w} \\\\ \\frac{\u2202z}{\u2202u} & \\frac{\u2202z}{\u2202v} & \\frac{\u2202z}{\u2202w}\\end{vmatrix}.\\end{aligned}\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\u2202x}{\u2202u} & =- 4 \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} & \\frac{\u2202x}{\u2202v} & =- 4 u \\cos{\\left(v \\right)} \\cos{\\left(w \\right)} & \\frac{\u2202x}{\u2202w} & =4 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} \\\\ \\frac{\u2202y}{\u2202u} & =3 \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} & \\frac{\u2202y}{\u2202v} & =3 u \\sin{\\left(w \\right)} \\cos{\\left(v \\right)} & \\frac{\u2202y}{\u2202w} & =3 u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} \\\\ \\frac{\u2202z}{\u2202u} & =- \\cos{\\left(v \\right)} & \\frac{\u2202z}{\u2202v} & =u \\sin{\\left(v \\right)} & \\frac{\u2202z}{\u2202w} & =0\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant is\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & =\\begin{vmatrix}- 4 \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} & - 4 u \\cos{\\left(v \\right)} \\cos{\\left(w \\right)} & 4 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} \\\\ 3 \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} & 3 u \\sin{\\left(w \\right)} \\cos{\\left(v \\right)} & 3 u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} \\\\ - \\cos{\\left(v \\right)} & u \\sin{\\left(v \\right)} & 0\\end{vmatrix} \\\\  & =\\left(- \\cos{\\left(v \\right)}\\right)(-1)^{3+1}\\begin{vmatrix}- 4 u \\cos{\\left(v \\right)} \\cos{\\left(w \\right)} & 4 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} \\\\ 3 u \\sin{\\left(w \\right)} \\cos{\\left(v \\right)} & 3 u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)}\\end{vmatrix}+\\left(u \\sin{\\left(v \\right)}\\right)(-1)^{3+2}\\begin{vmatrix}- 4 \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} & 4 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} \\\\ 3 \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} & 3 u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)}\\end{vmatrix} \\\\  & =\\left(12 u^{2} \\sin{\\left(v \\right)} \\cos^{2}{\\left(v \\right)}\\right)\\left(\\cos^2 w+\\sin^2 w\\right)+\\left(12 u^{2} \\sin^{3}{\\left(v \\right)}\\right)\\left(\\cos^2 w+\\sin^2 w\\right) \\\\  & =\\left(12 u^{2} \\sin{\\left(v \\right)} \\cos^{2}{\\left(v \\right)}\\right)+\\left(12 u^{2} \\sin^{3}{\\left(v \\right)}\\right) \\\\  & =12 u^{2} \\sin{\\left(v \\right)}\\left(\\cos^2 v+\\sin^2 v\\right) \\\\  & =12 u^{2} \\sin{\\left(v \\right)}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "9546b493-b9ab-5ead-83a2-adc2664bc22e",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "69d81a15-f9af-5fb0-bf28-29b987a5cbd1",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 12 u^{2} \\sin{\\left(v \\right)}"
+            },
+            {
+              ":answer/id": "5241ee4a-85f2-5f97-b688-cf1417ac8cb3",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12 u^{2} \\sin^{3}{\\left(v \\right)}"
+            },
+            {
+              ":answer/id": "00621579-98b8-5fc9-8c16-b5eb82de0221",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12 u \\sin{\\left(v \\right)}"
+            },
+            {
+              ":answer/id": "be3bed3d-b68a-5bcb-b8a2-d2d2b35e63ea",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12 u^{2} \\sin{\\left(v \\right)}"
+            },
+            {
+              ":answer/id": "05b79517-df53-5b79-ac36-4cbcb1efc025",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "12 u^{2} \\sin{\\left(v \\right)} \\cos^{2}{\\left(v \\right)}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "be3bed3d-b68a-5bcb-b8a2-d2d2b35e63ea"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.0",
+      "seed": 292714,
+      "template": "spherical",
+      "parameters": {
+        "a": -4,
+        "b": 3,
+        "c": -1
+      },
+      "bank_profile": "spherical-method",
+      "bank_origin": "authored",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "authored_extension": true,
+      "parameter_fingerprint": "5fbbdaeca06de9f724d8f42ad8c431ac353b81dce89f8f0b239c714dbad87398",
+      "content_fingerprint": "3ee73737fece730b26dcb5b5da5608cb5ae4c440f04d706ffa66b92c7cae121f",
+      "domain": "u,v,w real; theta,a,b,c fixed real constants",
+      "source": {
+        "database": "math",
+        "basis": 2579,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": [],
+        "method_reference": "lesson Introduction spherical transformation"
+      },
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none",
+      "plot_assets": {},
+      "distractor_recipes": [
+        "determinant",
+        "wrong-cofactor-sign",
+        "omit-radial-product-factor",
+        "omit-first-cofactor",
+        "omit-second-cofactor"
+      ],
+      "notation_normalization": "SymPy LaTeX; same prose and stage sequence",
+      "math_format": "course-academy-tex-v1"
+    }
+  },
+  {
+    "knowledge_point": {
+      "db_id": 17592186129271,
+      "id": "d433063f-f145-5bf4-8bd4-8d5e5b36b3d8",
+      "title": "Finding the Jacobian of a Three-Dimensional Transformation"
+    },
+    "question": {
+      ":question/id": "68a40794-ec75-5300-a01a-332543287ac4",
+      ":question/difficulty": ":question.difficulty/hard",
+      ":question/problem": "Find the Jacobian determinant of the transformation $T$ that maps the $uvw$-space into the $xyz$-space by means of the equations\n\n$$\nx=- 3 u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)}\\, y=3 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)}\\, z=u \\cos{\\left(v \\right)}.\n$$",
+      ":question/worked-solution": "For a transformation \n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\\to \\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix},\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)},$ is given by\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & =\\begin{vmatrix}\\frac{\u2202x}{\u2202u} & \\frac{\u2202x}{\u2202v} & \\frac{\u2202x}{\u2202w} \\\\ \\frac{\u2202y}{\u2202u} & \\frac{\u2202y}{\u2202v} & \\frac{\u2202y}{\u2202w} \\\\ \\frac{\u2202z}{\u2202u} & \\frac{\u2202z}{\u2202v} & \\frac{\u2202z}{\u2202w}\\end{vmatrix}.\\end{aligned}\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\u2202x}{\u2202u} & =- 3 \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} & \\frac{\u2202x}{\u2202v} & =- 3 u \\cos{\\left(v \\right)} \\cos{\\left(w \\right)} & \\frac{\u2202x}{\u2202w} & =3 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} \\\\ \\frac{\u2202y}{\u2202u} & =3 \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} & \\frac{\u2202y}{\u2202v} & =3 u \\sin{\\left(w \\right)} \\cos{\\left(v \\right)} & \\frac{\u2202y}{\u2202w} & =3 u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} \\\\ \\frac{\u2202z}{\u2202u} & =\\cos{\\left(v \\right)} & \\frac{\u2202z}{\u2202v} & =- u \\sin{\\left(v \\right)} & \\frac{\u2202z}{\u2202w} & =0\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant is\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & =\\begin{vmatrix}- 3 \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} & - 3 u \\cos{\\left(v \\right)} \\cos{\\left(w \\right)} & 3 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} \\\\ 3 \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} & 3 u \\sin{\\left(w \\right)} \\cos{\\left(v \\right)} & 3 u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} \\\\ \\cos{\\left(v \\right)} & - u \\sin{\\left(v \\right)} & 0\\end{vmatrix} \\\\  & =\\left(\\cos{\\left(v \\right)}\\right)(-1)^{3+1}\\begin{vmatrix}- 3 u \\cos{\\left(v \\right)} \\cos{\\left(w \\right)} & 3 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} \\\\ 3 u \\sin{\\left(w \\right)} \\cos{\\left(v \\right)} & 3 u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)}\\end{vmatrix}+\\left(- u \\sin{\\left(v \\right)}\\right)(-1)^{3+2}\\begin{vmatrix}- 3 \\sin{\\left(v \\right)} \\cos{\\left(w \\right)} & 3 u \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} \\\\ 3 \\sin{\\left(v \\right)} \\sin{\\left(w \\right)} & 3 u \\sin{\\left(v \\right)} \\cos{\\left(w \\right)}\\end{vmatrix} \\\\  & =\\left(- 9 u^{2} \\sin{\\left(v \\right)} \\cos^{2}{\\left(v \\right)}\\right)\\left(\\cos^2 w+\\sin^2 w\\right)+\\left(- 9 u^{2} \\sin^{3}{\\left(v \\right)}\\right)\\left(\\cos^2 w+\\sin^2 w\\right) \\\\  & =\\left(- 9 u^{2} \\sin{\\left(v \\right)} \\cos^{2}{\\left(v \\right)}\\right)+\\left(- 9 u^{2} \\sin^{3}{\\left(v \\right)}\\right) \\\\  & =- 9 u^{2} \\sin{\\left(v \\right)}\\left(\\cos^2 v+\\sin^2 v\\right) \\\\  & =- 9 u^{2} \\sin{\\left(v \\right)}.\\end{aligned}\n$$",
+      ":question/answer-fields": [
+        {
+          ":answer-field/id": "4739e7c6-b451-564c-ac39-bba86db75337",
+          ":answer-field/key": "selection",
+          ":answer-field/type": ":answer-field.type/radio",
+          ":answer-field/choices": [
+            {
+              ":answer/id": "a3b1ab11-7d9e-52c2-aac3-7a93e1a2576b",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 9 u^{2} \\sin^{3}{\\left(v \\right)}"
+            },
+            {
+              ":answer/id": "eebf4344-774e-5d8c-bf8f-9ad590e630f7",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 9 u \\sin{\\left(v \\right)}"
+            },
+            {
+              ":answer/id": "b6eb2d3b-bd8f-50ea-8736-5da858c8a892",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 9 u^{2} \\sin{\\left(v \\right)} \\cos^{2}{\\left(v \\right)}"
+            },
+            {
+              ":answer/id": "a4caba16-1039-5e14-be47-fdf13dfcd67d",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "- 9 u^{2} \\sin{\\left(v \\right)}"
+            },
+            {
+              ":answer/id": "8639633e-7629-5d2f-945f-aa8ce0e5f0c8",
+              ":answer/type": ":answer.type/math",
+              ":answer/value": "9 u^{2} \\sin{\\left(v \\right)}"
+            }
+          ],
+          ":answer-field/correct": [
+            ":answer/id",
+            "a4caba16-1039-5e14-be47-fdf13dfcd67d"
+          ]
+        }
+      ]
+    },
+    "generation": {
+      "version": "1.1.0",
+      "seed": 292715,
+      "template": "spherical",
+      "parameters": {
+        "a": -3,
+        "b": 3,
+        "c": 1
+      },
+      "bank_profile": "spherical-method",
+      "bank_origin": "authored",
+      "evidence_only": false,
+      "eligible_for_learning": true,
+      "authored_extension": true,
+      "parameter_fingerprint": "5720d1300225ac914f03574902eebd4ac161b905593f310884c372799fc6691f",
+      "content_fingerprint": "189df5ec539dddf1a5c5a6b9b6219d5806b0c5a0ff84eb2067c0241eee796bea",
+      "domain": "u,v,w real; theta,a,b,c fixed real constants",
+      "source": {
+        "database": "math",
+        "basis": 2579,
+        "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "question_ids": [],
+        "method_reference": "lesson Introduction spherical transformation"
+      },
+      "dependencies": {
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      },
+      "plot_rating": "none",
+      "plot_assets": {},
+      "distractor_recipes": [
+        "determinant",
+        "wrong-cofactor-sign",
+        "omit-radial-product-factor",
+        "omit-first-cofactor",
+        "omit-second-cofactor"
+      ],
+      "notation_normalization": "SymPy LaTeX; same prose and stage sequence",
+      "math_format": "course-academy-tex-v1"
+    }
+  }
+]
