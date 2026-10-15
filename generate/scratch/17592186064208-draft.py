@@ -44,6 +44,7 @@ def allowed(sid,p,difficulty='hard'):
 
 def _render(sid,p):
  t=PROFILES[sid];ds=denominators(t['style'],p)
+ if sid=='q-49521-completed':ds=[d.replace('+',' + ').replace('-',' - ') for d in ds]
  def render(z):
   for k,v in {'@@D1@@':ds[0],'@@D2@@':ds[1],'@@INV@@':tex(sp.Rational(1,p[0]))}.items():z=z.replace(k,v)
   return z
@@ -109,3 +110,12 @@ def markdown(z):
 if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=(*LEVELS,'all'),default='all');ap.add_argument('--count',type=int,default=1);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--format',choices=('json','markdown'),default='json');a=ap.parse_args();rows=[z for d in LEVELS if a.difficulty in (d,'all') for z in batch(d,a.count,a.seed)]
  print(json.dumps(rows,indent=2) if a.format=='json' else '\n\n---\n\n'.join(map(markdown,rows)))
+
+def canonical_reference(parameters=(2,1,1)):
+ """Source canonical example as a reference (no invented answer-field contract)."""
+ a,b,c=parameters
+ if not (isinstance(a,int) and 2<=a<=8 and b==c and 1<=b<=9):raise ValueError('canonical symmetric reference domain')
+ ds=denominators('opposite-symmetric',parameters);raw=copy.deepcopy(SOURCE[':knowledge-point/canonical-example'])
+ raw[':question/problem']=raw[':question/problem'].replace('1+2x',ds[0]).replace('1-2x',ds[1])
+ raw[':question/worked-solution']=raw[':question/worked-solution'].replace('1+2x',ds[0]).replace('1-2x',ds[1]).replace(r'\frac{1}{2}',tex(sp.Rational(1,a)))
+ return {'source_id':'e-451','difficulty':'unrated canonical','template':'canonical-two-linear-reciprocals','parameters':list(parameters),'bank_profile':None,'public_replay_eligible':False,'raw':raw}

@@ -1,0 +1,3 @@
+Private reviewed generator pair for KP17592186175923 at basis 2275. E/M/H implemented; hard is authored at moderate-family workload, with no observed hard evidence. Registered numeric script and full evidence/cache tree untouched (94 paths, 86 hashed files). No shared/DB/registration/engine/git writes.
+
+See classification.md, template-extraction.md, choice-ledger.json, plot-extraction.md, template-generator.md, source-replay.json, sourcecases.json, review.md, validation.json and native-grading.json. Raw MA source attributes are exact and ineligible; nonMA inventory is separate. Two source records lacked keys/solutions; q-167797 lacks its graph. All three have explicitly authored normal completions/repairs, with evidence limitations stated rather than hidden.

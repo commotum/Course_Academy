@@ -119,6 +119,7 @@ def sample(s,rng):
 
 @fmt.checked_math_content
 def generate(level,seed=0,template=None,parameters=None):
+ if type(seed)is not int:raise ValueError('builtin integer seed required')
  if level not in LEVELS:raise ValueError('invalid difficulty')
  rng=random.Random(seed);available=[s for s in SOURCES if source_level(s)==('moderate' if level=='hard' else level)];s=template or rng.choice(available)
  if s not in available:raise ValueError('template/level mismatch')
@@ -140,6 +141,9 @@ def generate(level,seed=0,template=None,parameters=None):
  return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'seed':seed,'template':s,'parameters':p,'bank_profile':s if kind.endswith('/radio') else None,'source_id':s,'source_basis':2275,'eligible':True,'mathematical_fingerprint':semantic,'content_hash':digest(contract),'domain':'real coordinate plane; source finite nonzero reference slopes; integer coefficients/points','origin':'normalized source replay' if replay else ('authored completion of incomplete raw source' if s in INCOMPLETE else 'authored parameter variation of source stages'),'difficulty_origin':'authored hard at same moderate workload; no hard source' if level=='hard' else ('authored inferred level for incomplete source' if s in INCOMPLETE else 'observed level'),'dependencies':{'sympy':sp.__version__}}}
 
 def batch(level,count,seed=0):
+ if type(seed)is not int:raise ValueError('builtin integer seed required')
+ if type(count)is not int or count<1:raise ValueError('positive builtin integer count required')
+ if level not in LEVELS:raise ValueError('invalid difficulty')
  out=[];seen=set()
  for i in range(count*50):
   r=generate(level,seed+i);fp=r['generation']['mathematical_fingerprint']
@@ -149,4 +153,4 @@ def batch(level,count,seed=0):
 def markdown(r):
  q=r['question'];return q[':question/problem']+'\n\n'+'\n'.join(a[':answer/value'] for f in q[':question/answer-fields'] for a in f[':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
 if __name__=='__main__':
- a=argparse.ArgumentParser();a.add_argument('--difficulty',choices=LEVELS,required=True);a.add_argument('--count',type=int,default=1);a.add_argument('--seed',type=int,default=0);a.add_argument('--format',choices=['json','markdown'],default='json');o=a.parse_args();rs=batch(o.difficulty,o.count,o.seed);print(json.dumps(rs,indent=2) if o.format=='json' else '\n\n'.join(map(markdown,rs)))
+ a=argparse.ArgumentParser();a.add_argument('--difficulty',choices=('all',*LEVELS),default='all');a.add_argument('--count',type=int,default=1);a.add_argument('--seed',type=int,default=0);a.add_argument('--format',choices=['json','markdown'],default='json');o=a.parse_args();rs=[r for level in (LEVELS if o.difficulty=='all' else (o.difficulty,)) for r in batch(level,o.count,o.seed)];print(json.dumps(rs,indent=2) if o.format=='json' else '\n\n'.join(map(markdown,rs)))

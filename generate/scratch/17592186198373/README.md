@@ -1,3 +1,11 @@
+# Inventory publication status
+
+Verified at database `math` basis **2590**, from preparation basis **2589**, using the unchanged validated `domain-inferred-1` generator. Registered UUID `27afb95b-6e94-5412-95d8-8411c71548a3` with repository path `generate/scratch/17592186198373.py`. Added five easy and five hard questions; conservative validated fresh inventory is **5 easy, 9 moderate, 5 hard**. All 12 pre-existing source questions and learner facts are unchanged.
+
+`reference/replenishment/basis-2589/` contains the complete original EDN, basis-guarded exact request, speculative preview, durable receipt, exact-basis readback, native grading reports and verification. The application `api.lock` was held from inventory/basis recheck through submission and readback. `capabilities.json` records authored difficulty provenance, finite family bounds and the six newly observed source templates outside the sampling scope. Three existing source defects are preserved and excluded from the validated count. No unsupported band is marked filled.
+
+The following sections describe the original steps 3–7 capture and its evidence limitations.
+
 # Domain-inferred change of variables draft
 
 Run `.venv/bin/python generate/scratch/17592186198373/validate.py` from the repository root. It checks original public replay, omissions, all displayed bank values, inverse/domain/Jacobian, each operative integration equality, primitives and every endpoint component, stable identities, explicit difficulty limits, mutation rejection and native radio grading. `validation.json` separates fidelity from mathematics/grading.

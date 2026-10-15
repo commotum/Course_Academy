@@ -119,6 +119,8 @@ def main():
   z=g.generate('easy',1,'q-237232',changed);assert a['generation']['mathematical_fingerprint']==z['generation']['mathematical_fingerprint'];assert a['question'][':question/id']!=z['question'][':question/id']
  # Exact 0/1 intercepts remain eligible.
  for py in (0,1):check(g.generate('easy',0,'q-237232',{'A':4,'B':-3,'C':7,'px':0,'py':py}))
+ save('source-cases.json',[c for c in cases if c['case_role']=='original parameters with explicit completion if missing']);save('review-cases.json',cases)
+ save('independent-inventory.json',{'basis':g.SOURCE['basis'],'lineage':g.SOURCE['lineage'],'questions':[{'record':q,'role':'independently authored inventory','relationship_to_source_templates':'Existing nonMA practice inventory, not evidence for recovered MA templates.'} for q in g.SOURCE['record'][':knowledge-point/questions'] if ':question/math-academy-id' not in q]})
  save('sourcecases.json',{'source_basis':2275,'cases':cases});save('source-replay.json',{'source_basis':2275,'sources':summary,'raw_exact':len(raws),'complete_banks':sum(bool(v['complete_bank_matched']) for v in summary),'observed_values':sum(v['matched_values'] for v in summary),'observed_distractors':sum(v['matched_distractors'] for v in summary),'ineligible_missing_evidence':sorted(g.INCOMPLETE)})
  save('native-input.json',inputs)
  subprocess.run([str(ROOT/'generate/runs/current/check-engine'),str(H/'native-input.json'),str(H/'native-grading.json')],check=True)
