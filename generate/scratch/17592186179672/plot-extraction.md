@@ -1,0 +1,9 @@
+# Plot extraction and generation
+
+The source set is shown in reference/source-contact-sheet.png. Each source has one prompt diagram and no answer or solution diagrams: a nondegenerate triangle, three named black vertices, coordinate axes without measurements, three colored edge paths C1,C2,C3 with repeated arrowheads, and no scale-dependent calculations. Source vertex placement, axis crossings and colors differ; mathematical content consists of endpoint connectivity and arrow direction. No assets are unreadable.
+
+Source-specific directed endpoints, traversal paths and consequent signs appear in validate.py's independently transcribed EDGES table and source-replay.json. All eleven original image references are retained in source.json. Plots are central and new orientation variants need changed arrows: rating heavy. Original assets remain unchanged for source evidence.
+
+Normal specification: A=(-2,-1), B=(3,-1), C=(0.7,3); ABCA counterclockwise (positive determinant). Edge i joins vertex i to i+1 cyclically. If sign i is +1 its reference arrows follow that traversal; otherwise they reverse. Red/brown/blue distinguish C1,C2,C3 without carrying answer information. Black vertices, readable offset labels, x/y axes and arrowheads remain visible. Geometry, color and label font are fixed to prevent cosmetic novelty. All edge directions and solution signs come from one parameter vector.
+
+Matplotlib Agg raster renderer only; no SVG renderer. Deterministic names derive from the mathematical state, PNG bytes have SHA-256 manifests in each instance, and Matplotlib/SymPy versions are recorded. Validation enumerates all eight arrow combinations and each bank profile, checks endpoint directions independently, and includes a changed-edge case at fixed geometry. reference/generated-contact-sheet.png supports visual inspection at display size. Local plots are review artifacts; none are published unless a current easy shortage requires new content.

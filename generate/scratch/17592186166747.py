@@ -12,10 +12,14 @@ import argparse, copy, hashlib, json, random, re, sys, uuid
 from pathlib import Path
 import sympy as sp
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts/question_capture'))
+from math_format import normalize_prose, normalize_tex, validate_generated_record
+
 KP=17592186166747
 HERE=Path(__file__).with_suffix('')
 SNAPSHOT=json.loads((HERE/'source.json').read_text())
-REC=SNAPSHOT['record']; TITLE=REC[':knowledge-point/title']; VERSION='one-independent-v1'
+REC=SNAPSHOT['record']; TITLE=REC[':knowledge-point/title']; VERSION='one-independent-v2'
+GENERATOR_UUID=str(uuid.uuid5(uuid.UUID(REC[':knowledge-point/id']), 'question-generator'))
 SOURCES=REC[':knowledge-point/questions']
 NAMES=['exp_product','log_trig','trig_product','power_exp','root_log','linear_cos','exp_power','linear_log','trig_quotient','rational_power','exp_trig','root_exp']
 QMAP=dict(zip(NAMES,SOURCES)); LEVELS=('easy','moderate','hard')
@@ -228,6 +232,12 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
             except ValueError:
                 if parameters is not None:raise
         else:raise RuntimeError('Failed whole-instance sampling')
+    if profile=='method_branches':
+        for key in (':question/problem', ':question/worked-solution'):
+            q[key]=normalize_prose(q[key])
+        for field in q[':question/answer-fields']:
+            for answer in field[':answer-field/choices']:
+                answer[':answer/value']=normalize_tex(answer[':answer/value'])
     fs=q[':question/answer-fields']
     content={'version':VERSION,'level':q.get(':question/difficulty'),'prompt':q[':question/problem'],'solution':q.get(':question/worked-solution'),'bank':sorted(a[':answer/value'] for f in fs for a in f[':answer-field/choices']),'correct':[f[':answer-field/choices'][f['_correct_index']][':answer/value'] if '_correct_index' in f else None for f in fs]}
     qid=uid(content); q[':question/id']=qid
@@ -252,10 +262,11 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
             argcore=sp.expand(exponent.as_expr()-exponent.TC())
             composite=sp.Mul(prefcore,sp.exp(argcore),evaluate=False)
         scale,core=composite.as_independent(sp.Symbol('u',positive=True),as_Add=False)
-        fingerprint=digest([level,sp.srepr(core),'differentiate two-branch dependency'])
+        fingerprint=digest([sp.srepr(core),'differentiate two-branch dependency'])
     else:fingerprint=digest(['evidence',name])
     gen={'version':VERSION,'seed':seed,'template':name,'profile':profile,'parameters':p,'source':{k:SNAPSHOT[k] for k in ('database','basis','lineage')},'source_ids':[QMAP[name][':db/id']] if name in QMAP else [REC[':knowledge-point/canonical-example'][':db/id'],QMAP['exp_product'][':db/id']],'original_refs':copy.deepcopy(QMAP[name]) if profile!='method_branches' else None,'eligible_for_learning':profile=='method_branches','evidence_only':profile!='method_branches','authored_level':level!='easy' or name=='exp_product','mathematical_fingerprint':fingerprint,'content_fingerprint':digest(content),'stage_expressions':[sp.srepr(z) for z in stage],'bank_expressions':bank_expr,'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'plot_rating':'none'}
-    return {'knowledge_point':{'db_id':KP,'id':REC[':knowledge-point/id'],'title':TITLE},'question':q,'generation':gen}
+    record={'knowledge_point':{'db_id':KP,'id':REC[':knowledge-point/id'],'title':TITLE},'question':q,'generation':gen}
+    return validate_generated_record(record) if profile=='method_branches' else record
 
 # EASY: observed two branch families; modest coefficient, power and offset changes.
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('easy',seed,template,field_type,parameters,profile)

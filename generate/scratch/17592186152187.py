@@ -13,7 +13,7 @@ source-shaped complete banks. Opaque q-106701 is raw evidence only.
 from pathlib import Path
 import argparse,copy,hashlib,json,os,random,re,subprocess,sys,tempfile,uuid
 import sympy as sp
-KP=17592186152187;HERE=Path(__file__).resolve().with_suffix('');VERSION='origin-ellipse-v7'
+KP=17592186152187;HERE=Path(__file__).resolve().with_suffix('');VERSION='origin-ellipse-v8'
 SOURCE=json.loads((HERE/'source.json').read_text());RECIPES=json.loads((HERE/'recipes.json').read_text());a,b=sp.symbols('a b',positive=True);theta=sp.symbols('theta',real=True)
 LEVELS=('easy','moderate','hard');NS=uuid.UUID('179b5937-4b80-4c64-88b3-82e83583da95')
 def digest(v):return hashlib.sha256(json.dumps(v,sort_keys=True,ensure_ascii=False,separators=(',',':')).encode()).hexdigest()
@@ -38,9 +38,9 @@ def bounds(level,p,raw=False):
  if set(p)-{'a','b','point'}:raise ValueError('Unknown parameter')
  A=sp.Rational(str(p['a']));B=sp.Rational(str(p['b']))
  if A<=0 or B<=0 or A==B:raise ValueError('Positive unequal semiaxes required')
- if p.get('point','A') not in ('A','J'):raise ValueError('Point label outside source scope')
+ if p.get('point','A') not in ('A','H','I','J'):raise ValueError('Point label outside source scope')
  if raw:
-  if A.q!=1 or B.q!=1 or not(2<=A<=9 and 2<=B<=9):raise ValueError('Observed workload: unequal integers 2..9')
+  if A.q!=1 or B.q!=1 or not(2<=A<=10 and 2<=B<=10):raise ValueError('Observed workload: unequal integers 2..10')
  elif level in ('easy','moderate'):
   if A.q!=1 or B.q!=1 or not(2<=A<=9 and 2<=B<=9):raise ValueError('Easy/moderate semiaxes must be unequal integers 2..9')
  else:
@@ -146,7 +146,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  if r:
   prompt=fill(r['prompt_mask'],PLOT=asset['prompt'],A=tex(p['a']),B=tex(p['b']))
   # Point label changes are complete point-component replacements.
-  prompt=re.sub(r'([AJ])\('+re.escape(tex(p['a']))+r',0\)',lambda m:p['point']+'('+tex(p['a'])+',0)',prompt)
+  prompt=re.sub(r'([AHIJ])\('+re.escape(tex(p['a']))+r',0\)',lambda m:p['point']+'('+tex(p['a'])+',0)',prompt)
   solution=fill(r['solution_mask'],A=tex(p['a']),B=tex(p['b'])) if r['solution_mask'] else (None if raw else common_solution(p,False))
  else:
   prompt='![]('+asset['prompt']+')\n\nThe axes have half-unit ticks, with even integers labeled on the grid margins. '

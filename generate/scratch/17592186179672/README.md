@@ -1,0 +1,5 @@
+# Finite triangle line-integral generator
+
+Script: ../17592186179672.py. Source/classification/extraction are local to this KP. Run `.venv/bin/python generate/scratch/17592186179672/validate.py` for complete source-bank replay, all 80 profile/state pairs and actual learner grading. Run the generator with `--difficulty easy --count 5 --seed 0 --format json`; counts above eight and unsupported bands fail explicitly. The generator never accesses the database.
+
+Six mathematical states already exist in the unchanged source bank. Only two additional states are possible under this backbone. Replenishment must deduplicate across profiles, seeds, geometry, winding and labels, count actual gradable fresh practice, and preserve current reserves. This classification job has no easy shortage at its current basis. See reference/ for exact application inventory, speculative preview, saved request, verified receipt and readback. Moderate/hard remain shortages under the bounded package capability in capabilities.json.

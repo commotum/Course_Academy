@@ -24,7 +24,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=x y e^{x y} + e^{x y},\,\frac{∂f}{∂y}=x^{2} e^{x y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=x y e^{x y} + e^{x y},\,\frac{∂f}{∂y}=x^{2} e^{x y}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -36,7 +36,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=15 t^{2},\,\frac{\text{d}y}{\text{d}t}=4.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=15 t^{2},\,\frac{\text{d}y}{\text{d}t}=4.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -66,7 +66,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=x y e^{x y} + e^{x y},\,\frac{∂f}{∂y}=x^{2} e^{x y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=x y e^{x y} + e^{x y},\,\frac{∂f}{∂y}=x^{2} e^{x y}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -78,7 +78,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=8 t^{3},\,\frac{\text{d}y}{\text{d}t}=1.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=8 t^{3},\,\frac{\text{d}y}{\text{d}t}=1.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -204,7 +204,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=x y e^{x y} + e^{x y},\,\frac{∂f}{∂y}=x^{2} e^{x y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=x y e^{x y} + e^{x y},\,\frac{∂f}{∂y}=x^{2} e^{x y}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -216,7 +216,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=2 t,\,\frac{\text{d}y}{\text{d}t}=1.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=2 t,\,\frac{\text{d}y}{\text{d}t}=1.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -246,7 +246,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\frac{y^{3}}{x y^{3}}=\frac{1}{x},\,\frac{∂f}{∂y}=\frac{3 x y^{2}}{x y^{3}}=\frac{3}{y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\frac{y^{3}}{x y^{3}}=\frac{1}{x},\,\frac{∂f}{∂y}=\frac{3 x y^{2}}{x y^{3}}=\frac{3}{y}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -258,7 +258,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=- 5 \sin{(5 t )},\,\frac{\text{d}y}{\text{d}t}=5 \cos{(5 t )}.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=- 5 \sin{(5 t )},\,\frac{\text{d}y}{\text{d}t}=5 \cos{(5 t )}.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -288,7 +288,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\frac{y^{4}}{x y^{4}}=\frac{1}{x},\,\frac{∂f}{∂y}=\frac{4 x y^{3}}{x y^{4}}=\frac{4}{y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\frac{y^{4}}{x y^{4}}=\frac{1}{x},\,\frac{∂f}{∂y}=\frac{4 x y^{3}}{x y^{4}}=\frac{4}{y}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -300,7 +300,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=- 2 \sin{(2 t )},\,\frac{\text{d}y}{\text{d}t}=2 \cos{(2 t )}.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=- 2 \sin{(2 t )},\,\frac{\text{d}y}{\text{d}t}=2 \cos{(2 t )}.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -456,7 +456,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\frac{y^{2}}{x y^{2}}=\frac{1}{x},\,\frac{∂f}{∂y}=\frac{2 x y}{x y^{2}}=\frac{2}{y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\frac{y^{2}}{x y^{2}}=\frac{1}{x},\,\frac{∂f}{∂y}=\frac{2 x y}{x y^{2}}=\frac{2}{y}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -468,7 +468,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=- \sin{(t )},\,\frac{\text{d}y}{\text{d}t}=\cos{(t )}.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=- \sin{(t )},\,\frac{\text{d}y}{\text{d}t}=\cos{(t )}.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -498,7 +498,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\cos{(x )} \cos{(y )},\,\frac{∂f}{∂y}=- \sin{(x )} \sin{(y )}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\cos{(x )} \cos{(y )},\,\frac{∂f}{∂y}=- \sin{(x )} \sin{(y )}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -510,7 +510,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=15 t^{2},\,\frac{\text{d}y}{\text{d}t}=4.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=15 t^{2},\,\frac{\text{d}y}{\text{d}t}=4.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -540,7 +540,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\cos{(x )} \cos{(y )},\,\frac{∂f}{∂y}=- \sin{(x )} \sin{(y )}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\cos{(x )} \cos{(y )},\,\frac{∂f}{∂y}=- \sin{(x )} \sin{(y )}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -552,7 +552,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=8 t^{3},\,\frac{\text{d}y}{\text{d}t}=1.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=8 t^{3},\,\frac{\text{d}y}{\text{d}t}=1.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -708,7 +708,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\cos{(x )} \cos{(y )},\,\frac{∂f}{∂y}=- \sin{(x )} \sin{(y )}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\cos{(x )} \cos{(y )},\,\frac{∂f}{∂y}=- \sin{(x )} \sin{(y )}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -720,7 +720,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=2 t,\,\frac{\text{d}y}{\text{d}t}=1.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=2 t,\,\frac{\text{d}y}{\text{d}t}=1.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -750,7 +750,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2 x e^{y},\,\frac{∂f}{∂y}=x^{2} e^{y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2 x e^{y},\,\frac{∂f}{∂y}=x^{2} e^{y}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -762,7 +762,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=5,\,\frac{\text{d}y}{\text{d}t}=12 t^{2}.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=5,\,\frac{\text{d}y}{\text{d}t}=12 t^{2}.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -792,7 +792,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2 x e^{y},\,\frac{∂f}{∂y}=x^{2} e^{y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2 x e^{y},\,\frac{∂f}{∂y}=x^{2} e^{y}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -804,7 +804,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=2,\,\frac{\text{d}y}{\text{d}t}=4 t^{3}.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=2,\,\frac{\text{d}y}{\text{d}t}=4 t^{3}.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -960,7 +960,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=2 x e^{y},\,\frac{∂f}{∂y}=x^{2} e^{y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=2 x e^{y},\,\frac{∂f}{∂y}=x^{2} e^{y}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -972,7 +972,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=2,\,\frac{\text{d}y}{\text{d}t}=2 t.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=2,\,\frac{\text{d}y}{\text{d}t}=2 t.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -1002,7 +1002,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\frac{y}{\sqrt{2xy}},\,\frac{∂f}{∂y}=\frac{x}{\sqrt{2xy}}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\frac{y}{\sqrt{2xy}},\,\frac{∂f}{∂y}=\frac{x}{\sqrt{2xy}}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -1014,7 +1014,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=15 t^{2},\,\frac{\text{d}y}{\text{d}t}=\frac{1}{t}.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=15 t^{2},\,\frac{\text{d}y}{\text{d}t}=\frac{1}{t}.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -1044,7 +1044,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\frac{y}{\sqrt{2xy}},\,\frac{∂f}{∂y}=\frac{x}{\sqrt{2xy}}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\frac{y}{\sqrt{2xy}},\,\frac{∂f}{∂y}=\frac{x}{\sqrt{2xy}}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -1056,7 +1056,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=8 t^{3},\,\frac{\text{d}y}{\text{d}t}=\frac{1}{t}.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=8 t^{3},\,\frac{\text{d}y}{\text{d}t}=\frac{1}{t}.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -1212,7 +1212,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\frac{y}{\sqrt{2xy}},\,\frac{∂f}{∂y}=\frac{x}{\sqrt{2xy}}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\frac{y}{\sqrt{2xy}},\,\frac{∂f}{∂y}=\frac{x}{\sqrt{2xy}}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -1224,7 +1224,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=1,\,\frac{\text{d}y}{\text{d}t}=\frac{1}{t}.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=1,\,\frac{\text{d}y}{\text{d}t}=\frac{1}{t}.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -1254,7 +1254,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\cos{(y )},\,\frac{∂f}{∂y}=- x \sin{(y )}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\cos{(y )},\,\frac{∂f}{∂y}=- x \sin{(y )}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -1266,7 +1266,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=5,\,\frac{\text{d}y}{\text{d}t}=4.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=5,\,\frac{\text{d}y}{\text{d}t}=4.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -1296,7 +1296,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\cos{(y )},\,\frac{∂f}{∂y}=- x \sin{(y )}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\cos{(y )},\,\frac{∂f}{∂y}=- x \sin{(y )}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -1308,7 +1308,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=2,\,\frac{\text{d}y}{\text{d}t}=1.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=2,\,\frac{\text{d}y}{\text{d}t}=1.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -1464,7 +1464,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\cos{(y )},\,\frac{∂f}{∂y}=- x \sin{(y )}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\cos{(y )},\,\frac{∂f}{∂y}=- x \sin{(y )}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -1476,7 +1476,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=4,\,\frac{\text{d}y}{\text{d}t}=1.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=4,\,\frac{\text{d}y}{\text{d}t}=1.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -1506,7 +1506,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=e^{x + 4 y},\,\frac{∂f}{∂y}=4 e^{x + 4 y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=e^{x + 4 y},\,\frac{∂f}{∂y}=4 e^{x + 4 y}\end{aligned}
 $$
 
 Writing the above results in terms of $s,$ we get
@@ -1518,7 +1518,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $s,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}s}=15 s^{2},\,\frac{\text{d}y}{\text{d}s}=1.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}s} &=15 s^{2},\,\frac{\text{d}y}{\text{d}s}=1.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -1548,7 +1548,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=e^{x + y},\,\frac{∂f}{∂y}=e^{x + y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=e^{x + y},\,\frac{∂f}{∂y}=e^{x + y}\end{aligned}
 $$
 
 Writing the above results in terms of $s,$ we get
@@ -1560,7 +1560,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $s,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}s}=8 s^{3},\,\frac{\text{d}y}{\text{d}s}=1.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}s} &=8 s^{3},\,\frac{\text{d}y}{\text{d}s}=1.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -1716,7 +1716,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=e^{x + 2 y},\,\frac{∂f}{∂y}=2 e^{x + 2 y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=e^{x + 2 y},\,\frac{∂f}{∂y}=2 e^{x + 2 y}\end{aligned}
 $$
 
 Writing the above results in terms of $s,$ we get
@@ -1728,7 +1728,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $s,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}s}=2 s,\,\frac{\text{d}y}{\text{d}s}=1.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}s} &=2 s,\,\frac{\text{d}y}{\text{d}s}=1.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -1758,7 +1758,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\ln{(y )},\,\frac{∂f}{∂y}=\frac{x}{y} + 1\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\ln{(y )},\,\frac{∂f}{∂y}=\frac{x}{y} + 1\end{aligned}
 $$
 
 Writing the above results in terms of $s,$ we get
@@ -1770,7 +1770,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $s,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}s}=5,\,\frac{\text{d}y}{\text{d}s}=4.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}s} &=5,\,\frac{\text{d}y}{\text{d}s}=4.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -1800,7 +1800,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\ln{(y )},\,\frac{∂f}{∂y}=\frac{x}{y} + 1\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\ln{(y )},\,\frac{∂f}{∂y}=\frac{x}{y} + 1\end{aligned}
 $$
 
 Writing the above results in terms of $s,$ we get
@@ -1812,7 +1812,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $s,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}s}=2,\,\frac{\text{d}y}{\text{d}s}=1.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}s} &=2,\,\frac{\text{d}y}{\text{d}s}=1.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -1968,7 +1968,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\ln{(y )},\,\frac{∂f}{∂y}=\frac{x}{y} + 1\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\ln{(y )},\,\frac{∂f}{∂y}=\frac{x}{y} + 1\end{aligned}
 $$
 
 Writing the above results in terms of $s,$ we get
@@ -1980,7 +1980,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $s,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}s}=1,\,\frac{\text{d}y}{\text{d}s}=2.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}s} &=1,\,\frac{\text{d}y}{\text{d}s}=2.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -2010,7 +2010,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\frac{1}{y},\,\frac{∂f}{∂y}=- \frac{x}{y^{2}}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\frac{1}{y},\,\frac{∂f}{∂y}=- \frac{x}{y^{2}}\end{aligned}
 $$
 
 Writing the above results in terms of $s,$ we get
@@ -2022,7 +2022,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $s,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}s}=- 5 \sin{(5 s )},\,\frac{\text{d}y}{\text{d}s}=5 \cos{(5 s )}.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}s} &=- 5 \sin{(5 s )},\,\frac{\text{d}y}{\text{d}s}=5 \cos{(5 s )}.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -2052,7 +2052,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\frac{1}{y},\,\frac{∂f}{∂y}=- \frac{x}{y^{2}}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\frac{1}{y},\,\frac{∂f}{∂y}=- \frac{x}{y^{2}}\end{aligned}
 $$
 
 Writing the above results in terms of $s,$ we get
@@ -2064,7 +2064,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $s,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}s}=- 2 \sin{(2 s )},\,\frac{\text{d}y}{\text{d}s}=2 \cos{(2 s )}.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}s} &=- 2 \sin{(2 s )},\,\frac{\text{d}y}{\text{d}s}=2 \cos{(2 s )}.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -2220,7 +2220,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\frac{1}{y},\,\frac{∂f}{∂y}=- \frac{x}{y^{2}}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\frac{1}{y},\,\frac{∂f}{∂y}=- \frac{x}{y^{2}}\end{aligned}
 $$
 
 Writing the above results in terms of $s,$ we get
@@ -2232,7 +2232,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $s,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}s}=- 2 \sin{(2 s )},\,\frac{\text{d}y}{\text{d}s}=2 \cos{(2 s )}.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}s} &=- 2 \sin{(2 s )},\,\frac{\text{d}y}{\text{d}s}=2 \cos{(2 s )}.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -2262,7 +2262,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\frac{1}{y + 4},\,\frac{∂f}{∂y}=- \frac{x}{(y + 4)^{2}}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\frac{1}{y + 4},\,\frac{∂f}{∂y}=- \frac{x}{(y + 4)^{2}}\end{aligned}
 $$
 
 Writing the above results in terms of $s,$ we get
@@ -2274,7 +2274,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $s,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}s}=15 s^{2},\,\frac{\text{d}y}{\text{d}s}=1.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}s} &=15 s^{2},\,\frac{\text{d}y}{\text{d}s}=1.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -2304,7 +2304,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\frac{1}{y + 1},\,\frac{∂f}{∂y}=- \frac{x}{(y + 1)^{2}}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\frac{1}{y + 1},\,\frac{∂f}{∂y}=- \frac{x}{(y + 1)^{2}}\end{aligned}
 $$
 
 Writing the above results in terms of $s,$ we get
@@ -2316,7 +2316,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $s,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}s}=8 s^{3},\,\frac{\text{d}y}{\text{d}s}=1.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}s} &=8 s^{3},\,\frac{\text{d}y}{\text{d}s}=1.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -2472,7 +2472,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=\frac{1}{y + 1},\,\frac{∂f}{∂y}=- \frac{x}{(y + 1)^{2}}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=\frac{1}{y + 1},\,\frac{∂f}{∂y}=- \frac{x}{(y + 1)^{2}}\end{aligned}
 $$
 
 Writing the above results in terms of $s,$ we get
@@ -2484,7 +2484,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $s,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}s}=2 s,\,\frac{\text{d}y}{\text{d}s}=1.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}s} &=2 s,\,\frac{\text{d}y}{\text{d}s}=1.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -2514,7 +2514,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=- e^{- x + 4 y},\,\frac{∂f}{∂y}=4 e^{- x + 4 y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=- e^{- x + 4 y},\,\frac{∂f}{∂y}=4 e^{- x + 4 y}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -2526,7 +2526,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=- 5 \sin{(5 t )},\,\frac{\text{d}y}{\text{d}t}=5 \cos{(5 t )}.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=- 5 \sin{(5 t )},\,\frac{\text{d}y}{\text{d}t}=5 \cos{(5 t )}.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -2556,7 +2556,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=- e^{- x + y},\,\frac{∂f}{∂y}=e^{- x + y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=- e^{- x + y},\,\frac{∂f}{∂y}=e^{- x + y}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -2568,7 +2568,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=- 2 \sin{(2 t )},\,\frac{\text{d}y}{\text{d}t}=2 \cos{(2 t )}.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=- 2 \sin{(2 t )},\,\frac{\text{d}y}{\text{d}t}=2 \cos{(2 t )}.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -2724,7 +2724,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=- e^{- x + 2 y},\,\frac{∂f}{∂y}=2 e^{- x + 2 y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=- e^{- x + 2 y},\,\frac{∂f}{∂y}=2 e^{- x + 2 y}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -2736,7 +2736,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=- \sin{(t )},\,\frac{\text{d}y}{\text{d}t}=\cos{(t )}.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=- \sin{(t )},\,\frac{\text{d}y}{\text{d}t}=\cos{(t )}.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -2766,7 +2766,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=y e^{x},\,\frac{∂f}{∂y}=e^{x}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=y e^{x},\,\frac{∂f}{∂y}=e^{x}\end{aligned}
 $$
 
 Writing the above results in terms of $s,$ we get
@@ -2778,7 +2778,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $s,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}s}=\frac{5}{2 \sqrt{s}},\,\frac{\text{d}y}{\text{d}s}=12 s^{2}.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}s} &=\frac{5}{2 \sqrt{s}},\,\frac{\text{d}y}{\text{d}s}=12 s^{2}.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -2808,7 +2808,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=y e^{x},\,\frac{∂f}{∂y}=e^{x}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=y e^{x},\,\frac{∂f}{∂y}=e^{x}\end{aligned}
 $$
 
 Writing the above results in terms of $s,$ we get
@@ -2820,7 +2820,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $s,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}s}=\frac{1}{\sqrt{s}},\,\frac{\text{d}y}{\text{d}s}=4 s^{3}.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}s} &=\frac{1}{\sqrt{s}},\,\frac{\text{d}y}{\text{d}s}=4 s^{3}.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -2976,7 +2976,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=y e^{x},\,\frac{∂f}{∂y}=e^{x}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=y e^{x},\,\frac{∂f}{∂y}=e^{x}\end{aligned}
 $$
 
 Writing the above results in terms of $s,$ we get
@@ -2988,7 +2988,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $s,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}s}=\frac{1}{2 \sqrt{s}},\,\frac{\text{d}y}{\text{d}s}=1.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}s} &=\frac{1}{2 \sqrt{s}},\,\frac{\text{d}y}{\text{d}s}=1.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -3018,7 +3018,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=x y e^{x y} + e^{x y},\,\frac{∂f}{∂y}=x^{2} e^{x y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=x y e^{x y} + e^{x y},\,\frac{∂f}{∂y}=x^{2} e^{x y}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -3030,7 +3030,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=15 t^{4},\,\frac{\text{d}y}{\text{d}t}=2 t.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=15 t^{4},\,\frac{\text{d}y}{\text{d}t}=2 t.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -3060,7 +3060,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=x y e^{x y} + e^{x y},\,\frac{∂f}{∂y}=x^{2} e^{x y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=x y e^{x y} + e^{x y},\,\frac{∂f}{∂y}=x^{2} e^{x y}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -3072,7 +3072,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=2 t,\,\frac{\text{d}y}{\text{d}t}=4 t^{3}.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=2 t,\,\frac{\text{d}y}{\text{d}t}=4 t^{3}.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -3102,7 +3102,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=x y e^{x y} + e^{x y},\,\frac{∂f}{∂y}=x^{2} e^{x y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=x y e^{x y} + e^{x y},\,\frac{∂f}{∂y}=x^{2} e^{x y}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -3114,7 +3114,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=3 (t + 2)^{2},\,\frac{\text{d}y}{\text{d}t}=8 t + 4.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=3 (t + 2)^{2},\,\frac{\text{d}y}{\text{d}t}=8 t + 4.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
@@ -3144,7 +3144,7 @@ $$
 First, we find the partial derivatives of $f$ with respect to $x$ and $y:$ 
 
 $$
-\begin{aligned}\frac{∂f}{∂x}=x y e^{x y} + e^{x y},\,\frac{∂f}{∂y}=x^{2} e^{x y}\end{aligned}
+\begin{aligned}\frac{∂f}{∂x} &=x y e^{x y} + e^{x y},\,\frac{∂f}{∂y}=x^{2} e^{x y}\end{aligned}
 $$
 
 Writing the above results in terms of $t,$ we get
@@ -3156,7 +3156,7 @@ $$
 Next, we take the derivatives of $x$ and $y$ with respect to $t,$ and we get
 
 $$
-\begin{aligned}\frac{\text{d}x}{\text{d}t}=8 t + 4,\,\frac{\text{d}y}{\text{d}t}=2 t + 2.\end{aligned}
+\begin{aligned}\frac{\text{d}x}{\text{d}t} &=8 t + 4,\,\frac{\text{d}y}{\text{d}t}=2 t + 2.\end{aligned}
 $$
 
 Finally, substituting all of our derivatives into the multivariable chain rule, we get
