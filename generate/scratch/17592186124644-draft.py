@@ -14,7 +14,7 @@ import sympy as S
 ROOT=Path(__file__).resolve().parent.parent.parent
 PRIVATE=Path(__file__).with_suffix('')
 ID=17592186124644
-VERSION='partial-point-draft-v1'
+VERSION='partial-point-draft-v2-arithmetic-bounds'
 SOURCE=json.loads((PRIVATE/'source.json').read_text())
 KP=SOURCE['record']
 TITLE=KP[':knowledge-point/title']
@@ -65,6 +65,34 @@ FAMILIES={
  # Authored easy: two nonzero monomial contributions, familiar integer inputs.
  'easy-polynomial':family(None,'x','easy',a*v**2,u**2,b*v,u,1,dict(a=1,b=1,n=2,m=2,U=1,V=2),([1,2,3,4],[1,2,3,4]))
 }
+# Candidate catalogs are deliberately small; coupled evaluated-value guards below
+# decide eligibility. Coefficients alone do not control substitution workload.
+FAMILIES['tan-reciprocal']['coords']=([S.pi,2*S.pi,-S.pi,-2*S.pi],[2,3])
+FAMILIES['base-exponential-tan']['coords']=([1],[S.pi/4,3*S.pi/4])
+FAMILIES['power-log-root']['coords']=([1,4],[S.E,S.E**2])
+FAMILIES['exp-log-power']['coords']=([S.Rational(1,2),1,2],[1,2])
+FAMILIES['exp-log-power']['ns']=(2,3,4,5,6,7)
+FAMILIES['polynomial']['coords']=([1,2],[-2,-1,1,2])
+FAMILIES['polynomial']['ns']=(3,4)
+FAMILIES['sec-power']['coords']=([S.pi/4,-S.pi/4,3*S.pi/4],[S.sqrt(2),-S.sqrt(2)])
+FAMILIES['root-reciprocal']['coords']=([1,2],[1,4])
+FAMILIES['cross-roots']['coords']=([1,4],[1,4])
+FAMILIES['cos-log-sin']['coords']=([S.pi/3,S.pi/2],[S.pi,2*S.pi,-S.pi,-2*S.pi])
+FAMILIES['cot-polynomial']['coords']=([S.pi/2,3*S.pi/2,-S.pi/2],[1,-1])
+FAMILIES['cot-polynomial']['ns']=(3,)
+FAMILIES['cot-polynomial']['ms']=(2,)
+FAMILIES['log-power-exp']['coords']=([1,2],[S.log(2),S.log(3),S.log(4),S.log(5)])
+FAMILIES['easy-polynomial']['coords']=([-3,-2,-1,1,2,3],[1,2])
+for family_key,family_spec in FAMILIES.items():family_spec['key']=family_key
+
+# Maximum rational coefficient numerator/denominator in every normal option.
+# Source-anchor-derived factor/product checks are listed explicitly in workload.
+WORKLOAD_HEIGHTS={
+ 'tan-reciprocal':(9,4),'base-exponential-tan':(6,4),
+ 'sin-cos-linear':(3,1),'power-log-root':(9,4),'exp-log-power':(4,2),
+ 'polynomial':(24,1),'sec-power':(8,1),'root-reciprocal':(32,4),
+ 'cross-roots':(24,4),'cos-log-sin':(6,2),'cot-polynomial':(3,1),
+ 'log-power-exp':(30,1),'easy-polynomial':(16,1)}
 SOURCE_FAMILY={f['source']:k for k,f in FAMILIES.items() if f['source']}
 
 def parameters_for(f,parameters,rng,observed=False):
@@ -98,6 +126,90 @@ def instance(f,p):
     t1=S.expand_mul((h1*d1).subs(pt));t2=S.expand_mul((f['sign']*h2*d2).subs(pt));correct=S.expand_mul(t1+t2)
     if any(z.has(S.zoo,S.nan,S.oo,-S.oo) for z in (t1,t2,correct)):raise ValueError('Undefined point')
     return dict(h1=h1,g1=g1,h2=h2,g2=g2,d1=d1,d2=d2,fun=fun,derivative=derivative,t1=t1,t2=t2,correct=correct,subs=pt)
+
+def coefficient_height(expression):
+    """Height of actual reduced rational coefficients, not numeric magnitudes
+    of pi/e/log atoms. For a rational scalar this checks its complete fraction.
+    """
+    coefficients=[term.as_coeff_Mul(rational=True)[0] for term in S.Add.make_args(S.expand_mul(expression))]
+    return max(abs(int(c.p)) for c in coefficients),max(int(c.q) for c in coefficients)
+
+def workload(f,p,z,bank=None):
+    """Identical coupled bounds for explicit calls and normal resampling.
+
+    All powers/factors here are the ones actually used by the displayed partial
+    derivative and its point-substitution chain. Normal bank heights are checked
+    on complete evaluated values, including wrong/wrong options.
+    """
+    key=f['key'];U,V,A,B,N,M=[p[k] for k in ('U','V','a','b','n','m')]
+    checks=[]
+    def cap(label,value,maximum):
+        value=S.simplify(value);maximum=S.sympify(maximum)
+        checks.append((label,value,maximum))
+        if (S.Abs(value)<=maximum)!=True:raise ValueError('Arithmetic workload: '+label+' exceeds '+str(maximum))
+    def height(label,value,numerator,denominator):
+        hn,hd=coefficient_height(value);checks.append((label+' numerator',S.Integer(hn),S.Integer(numerator)));checks.append((label+' denominator',S.Integer(hd),S.Integer(denominator)))
+        if hn>numerator or hd>denominator:raise ValueError('Arithmetic workload: '+label+' rational height')
+    T1,T2=z['t1'],z['t2']
+    if key=='tan-reciprocal':
+        k=U/S.pi;cap('held square',V**2,9);cap('first contribution',T1,9)
+        cap('reciprocal point-square coefficient',k**2,4);cap('second numerator before reciprocal',B*V,8)
+        cap('reciprocal contribution coefficient',B*V/k**2,4)
+    elif key=='base-exponential-tan':
+        cap('exponential point value',2**U,2);cap('active reciprocal power',U**(N+1),1)
+        cap('log coefficient',A*2**U,6);cap('reciprocal derivative factor',N,3)
+        cap('reciprocal contribution',T2,3);height('reciprocal contribution',T2,6,4)
+    elif key=='sin-cos-linear':
+        cap('cosine contribution',T1,3);cap('linear pi coefficient',T2/S.pi,3)
+    elif key=='power-log-root':
+        cap('evaluated active power',U**(N-1),4);cap('power derivative factor',N*U**(N-1),8)
+        cap('evaluated logarithm',S.log(V),2);cap('polynomial logarithm contribution',T1,9)
+        cap('square-root derivative denominator',2*S.sqrt(U),4)
+        cap('root contribution coefficient',B/(2*S.sqrt(U)),2)
+    elif key=='exp-log-power':
+        cap('evaluated held power',V**N,4);cap('held contribution',T2,4)
+        cap('reciprocal derivative factor',1/U,2);cap('exponential coefficient',A/U,4)
+        height('exponential coefficient',A/U,4,2)
+    elif key=='polynomial':
+        cap('evaluated active power',U**(N-1),2);cap('held square',V**2,4)
+        cap('second derivative factor',B*N*U**(N-1),4)
+        cap('first contribution',T1,16);cap('second contribution',T2,8)
+        cap('total signed-term arithmetic',abs(T1)+abs(T2),24)
+    elif key=='sec-power':
+        cap('held power',V**N,4);cap('first contribution',T1,6);cap('second contribution',T2,4)
+        cap('complete-bank largest magnitude',abs(T1)+abs(T2),8)
+    elif key=='root-reciprocal':
+        cap('power derivative factor',N*U**(N-1),4);cap('held square-root coefficient',A*S.sqrt(V),4)
+        cap('held reciprocal numerator',B*V,8);cap('reciprocal square',U**2,4)
+        cap('first contribution',T1,12);cap('second contribution',T2,4)
+        cap('complete-bank largest magnitude',abs(T1)+abs(T2),12)
+        height('collected key',z['correct'],24,4)
+    elif key=='cross-roots':
+        cap('active square root',S.sqrt(U),2);cap('held square root',S.sqrt(V),2)
+        cap('held second coefficient',B*V,16);cap('sqrt derivative denominator',2*S.sqrt(U),4)
+        cap('first contribution',T1,8);cap('second contribution',T2,8)
+        cap('complete-bank largest magnitude',abs(T1)+abs(T2),12)
+        height('collected key',z['correct'],24,4)
+    elif key=='cos-log-sin':
+        cap('reciprocal pi coefficient',T1*S.pi,6)
+        cap('held sine coefficient',B*V/S.pi,4);cap('sine pi contribution coefficient',T2/S.pi,2)
+    elif key=='cot-polynomial':
+        cap('first held power',V**N,1);cap('second held power',V**M,1)
+        cap('quadratic derivative pi coefficient',2*U/S.pi,3)
+        cap('cosecant contribution',T1,3);cap('polynomial pi contribution',T2/S.pi,3)
+    elif key=='log-power-exp':
+        cap('evaluated active power',U**(N-1),1);cap('logarithm coefficient',A/U,4)
+        cap('exponential held factor',B*S.exp(V),6)
+        cap('power derivative prefactor',B*N*U**(N-1),10)
+        cap('evaluated exponential contribution',T2,30)
+    elif key=='easy-polynomial':
+        cap('held square',V**2,4);cap('held first factor',A*V**2,4)
+        cap('active derivative factor',2*U,6);cap('first contribution',T1,12);cap('second contribution',T2,4)
+        cap('two integer contributions',abs(T1)+abs(T2),16)
+    if bank is not None:
+        hn,hd=WORKLOAD_HEIGHTS[key]
+        for i,value in enumerate(bank):height('complete option '+str(i),value,hn,hd)
+    return {label:{'actual':str(value),'maximum':str(maximum)} for label,value,maximum in checks}
 
 def rename(text,target):
     # Only complete role tokens, never letters inside commands or prose.
@@ -220,7 +332,16 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     for attempt in range(300):
         p=parameters_for(f,parameters,rng,observed)
         z=instance(f,p)
+        try:workload_metrics=workload(f,p,z)
+        except ValueError:
+            if parameters is not None or observed:raise
+            continue
         bank=observed_bank(template,p,z) if observed else authored_bank(z)
+        if not observed:
+            try:workload_metrics=workload(f,p,z,bank)
+            except ValueError:
+                if parameters is not None:raise
+                continue
         if nonambiguous(bank):break
         if parameters is not None or observed:raise ValueError('Complete bank collision; whole instance rejected')
     else:raise ValueError('No valid complete bank')
@@ -280,7 +401,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     q[':question/id']=actualqid;field[':answer-field/id']=actualfid
     if correct is not None:field[':answer-field/correct']=[':answer/id',remap[correct[1]]]
     format_checks(q)
-    return {'knowledge_point':{'db_id':ID,'id':KP[':knowledge-point/id'],'title':TITLE},'question':q,'generation':{'version':VERSION,'template':template,'seed':seed,'parameters':{k:str(val) for k,val in p.items()},'bank_profile':profile or 'method-sum-bank','mathematical_fingerprint':fingerprint(z,p),'source_id':f['source'],'source_basis':SOURCE['basis'],'source_lineage':SOURCE['lineage'],'evidence_only':observed,'eligible_for_learning':not observed,'difficulty_evidence':'observed' if f['source'] and ':question/difficulty' in ORIGINALS[f['source']] else 'authored','solution_stages':{'derivative':drows,'point_evaluation':erows},'runtime':{'python':sys.version.split()[0],'sympy':S.__version__}}}
+    return {'knowledge_point':{'db_id':ID,'id':KP[':knowledge-point/id'],'title':TITLE},'question':q,'generation':{'version':VERSION,'template':template,'seed':seed,'parameters':{k:str(val) for k,val in p.items()},'bank_profile':profile or 'method-sum-bank','mathematical_fingerprint':fingerprint(z,p),'source_id':f['source'],'source_basis':SOURCE['basis'],'source_lineage':SOURCE['lineage'],'evidence_only':observed,'eligible_for_learning':not observed,'difficulty_evidence':'observed' if f['source'] and ':question/difficulty' in ORIGINALS[f['source']] else 'authored','solution_stages':{'derivative':drows,'point_evaluation':erows},'arithmetic_workload':workload_metrics,'runtime':{'python':sys.version.split()[0],'sympy':S.__version__}}}
 
 def generate_easy(seed=0,**kw):return generate('easy',seed=seed,**kw)
 def generate_moderate(seed=0,**kw):return generate('moderate',seed=seed,**kw)

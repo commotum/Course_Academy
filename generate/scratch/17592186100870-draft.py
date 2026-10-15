@@ -178,12 +178,14 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         template=rng.choice(eligible)
     if template not in eligible: raise ValueError('Template/level/field type mismatch')
     raw=bool(profile and profile.startswith('raw-'))
+    if raw and template not in SOURCES: raise ValueError('Authored hard templates have no raw source profile')
     if raw and profile!='raw-'+template: raise ValueError('Raw profile/template mismatch')
     normal_profile=('method-derived' if template.startswith('symbolic-') or template in ('q-129461','q-70702') else 'observed-'+template)
     profile=profile or normal_profile
     if profile not in (normal_profile,'raw-'+template): raise ValueError('Unsupported complete bank profile')
     if parameters is None:
         candidates=(list(itertools.product(range(1,7),repeat=3)) if level=='hard' else list(itertools.permutations(range(1,11),3)))
+        if template=='q-42379':candidates.extend((m,n,m) for m in range(1,11) for n in range(1,11) if m!=n)
         rng.shuffle(candidates)
         for triple in candidates:
             p=dict(zip(('m','n','p'),(f'{v}+{n}' for v,n in zip(('r','s','t'),triple)))) if level=='hard' else dict(zip(('m','n','p'),triple))
@@ -192,7 +194,8 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
             except ValueError: continue
             break
         else: raise ValueError('No eligible whole bank')
-    else:p=valid_parameters(level,template,parameters)
+    else:p=dict(parameters)
+    p=valid_parameters(level,template,p)
     if template.startswith('symbolic-'):
         labels=['X','Y'];target='YX';a,b=target
         problem=(f'Suppose $X$ is a ${dims_text(p["n"],p["p"])}$ matrix and $Y$ is a ${dims_text(p["m"],p["n"])}$ matrix. '
@@ -233,7 +236,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     rec={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':SNAPSHOT['record'][':knowledge-point/title']},'question':q,
       'generation':{'version':VERSION,'seed':seed,'template':template,'profile':profile,'bank_profile':profile,'parameters':p,'ordering':ordering,
        'source_basis':SNAPSHOT['basis'],'source_lineage':SNAPSHOT['lineage'],'raw_evidence':raw,'eligible_for_learning':not raw,
-       'authored_completion':template in ('q-42379','q-42380') and not raw,'authored_level':level=='hard',
+       'authored_completion':template in ('q-42379','q-42380') and not raw,'authored_level':level=='hard' or (not raw and ':question/difficulty' not in source),
        'python_version':sys.version.split()[0],'sympy_version':sp.__version__}}
     rec['generation']['mathematical_fingerprint']=hashlib.sha256(task_key(rec).encode()).hexdigest()
     return rec

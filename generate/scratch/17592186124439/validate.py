@@ -192,7 +192,7 @@ def run():
  write('source-cases.json',cases);write('byte-audit.json',byte_audit)
  native=[native_item(r,'original/'+str(i)) for i,r in enumerate(raws)]+[native_item(r,'generated/'+str(i)) for i,r in enumerate(records)]
  write('engine-input.json',native)
- cmd=['generate/runs/current/check-engine',str(HERE/'engine-input.json'),str(HERE/'engine-report.json')]
+ cmd=[str(HERE/'reference/native/check-engine'),str(HERE/'engine-input.json'),str(HERE/'engine-report.json')]
  subprocess.run(cmd,check=True,cwd=HERE.parents[2])
  engine=json.loads((HERE/'engine-report.json').read_text())
  # Review includes every source and three changed instances per observed family;

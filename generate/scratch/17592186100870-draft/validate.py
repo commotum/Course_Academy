@@ -3,6 +3,7 @@ import sys
 sys.dont_write_bytecode=True
 import copy
 import hashlib
+import functools
 import importlib.util
 import itertools
 import json
@@ -20,6 +21,7 @@ g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
 def save(name,value): (HERE/name).write_text(json.dumps(value,indent=2,ensure_ascii=False)+'\n')
 def sha(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 def ungroup(s):return s.replace(r'\left(','').replace(r'\right)','').strip()
+@functools.lru_cache(maxsize=None)
 def expr(s):return sp.sympify(ungroup(s))
 def dimensions(s):
     a,b=re.split(r'\s*\\(?:times|cdot)\s*',s)
@@ -37,6 +39,10 @@ def readback(rec):
     left,right=bylabel[a],bylabel[b]
     assert left[1]==right[0]
     correct=(left[0],right[1])
+    ordering='forward' if [label for label,_ in factors]==list(target) else 'reverse'
+    semantic=[str(x).replace(' ','') for x in (left[0],left[1],right[1])]
+    fingerprint=hashlib.sha256(json.dumps([ordering,semantic],separators=(',',':')).encode()).hexdigest()
+    assert rec['generation']['mathematical_fingerprint']==fingerprint
     for field in q[':question/answer-fields']:
         choices=field[':answer-field/choices']
         answer=next(x for x in choices if x[':answer/id']==field[':answer-field/correct'][1])
@@ -132,9 +138,10 @@ def main():
                 assert a[':answer/value']==g.normalize_tex(original_f[':answer-field/correct'][':answer/value']);corrects+=1
             count+=len(actual)
         case={'source_id':template,'template':template,'level':level,'parameters':params,'profile':'raw-'+template,'authored_level_assignment':':question/difficulty' not in old}
-        cases.append(case);fidelity.append({'source_id':template,'matched_values':count,'correct_designations_matched':corrects,'complete_bank':True,'raw_attribute_presence':True,'raw_exact_prompt':q[':question/problem']==old[':question/problem'],'raw_exact_solution':q.get(':question/worked-solution')==old.get(':question/worked-solution')})
+        cases.append(case);fidelity.append({'source_id':template,'matched_values':count,'correct_designations_matched':corrects,'complete_bank':True,'raw_attribute_presence':True,'raw_exact_prompt':q[':question/problem']==old[':question/problem'],'solution_present':':question/worked-solution' in old,'raw_exact_solution_when_present':q[':question/worked-solution']==old[':question/worked-solution'] if ':question/worked-solution' in old else None})
         normal=g.generate(level,template=template,parameters=params);readback(normal);normals.append(normal)
         native.append(normal)
+        if all(':answer-field/correct' in f for f in raw['question'][':question/answer-fields']):native.append(raw)
         review.extend(['## Original '+template+' (immutable evidence)\n\n'+g.markdown(raw),'### Normal original-parameter completion/repair\n\n'+g.markdown(normal)])
         accepted=0;rejected=0;slots={k:set() for k in params}
         # Exhaust the entire numeric domain for every default complete bank.
@@ -182,6 +189,15 @@ def main():
     assert invalid==6
     default_coverage={level:sorted({g.generate(level,i)['generation']['template'] for i in range(250)}) for level in g.SUPPORTED_LEVELS}
     for level,templates in default_coverage.items():assert set(templates)==set(t for t in list(g.SOURCES)+['symbolic-radio','symbolic-blank'] if g.level_of(t)==level)
+    square_shapes={g.generate('easy',i,template='q-42379')['generation']['parameters']['m']==g.generate('easy',i,template='q-42379')['generation']['parameters']['p'] for i in range(100)}
+    assert square_shapes=={True,False}
+    try:g.generate('hard',template='symbolic-radio',profile='raw-symbolic-radio')
+    except ValueError:invalid+=1
+    else:raise AssertionError('Authored template accepted nonexistent source profile')
+    catalog={}
+    for level, triples in [('easy',list(itertools.permutations(range(1,11),3))+[(m,n,m) for m in range(1,11) for n in range(1,11) if m!=n]),('moderate',list(itertools.permutations(range(1,11),3))),('hard',list(itertools.product(range(1,7),repeat=3)))]:
+        catalog[level]={'meaningful_tasks':len(triples),'notation_bank_layout_aliases_counted':False,'domain':'m,n,p in1..10 pairwise distinct; easy additionally m=p not n' if level!='hard' else 'r+a,s+b,t+c, offsets1..6; symbolic general formulas'}
+    save('semantic-catalog.json',catalog)
     # Seed/order independence for fixed parameters; math identity also excludes banks.
     for rec in normals:
         meta=rec['generation'];level=rec['question'][':question/difficulty'].split('/')[-1]
@@ -196,7 +212,7 @@ def main():
     (HERE/'engine.log').write_text(run.stdout+run.stderr);assert run.returncode==0,run.stderr
     engine=json.loads((HERE/'engine-report.json').read_text());assert engine['documented_unresolved_checks']==0
     verify_immutable();provenance()
-    results={'status':'pass','source_basis':2275,'MA_sources':11,'independent_inventory':0,'matched_complete_source_banks':11,'matched_source_values':sum(x['matched_values'] for x in fidelity),'matched_correct_designations':sum(x['correct_designations_matched'] for x in fidelity),'source_missing_correct_fields':2,'source_missing_ratings':2,'source_missing_solutions':2,'source_error_display_labels':1,'normal_numeric_exhaustive_checks':sum(x['normal_tasks'] for k,x in domains.items() if not k.startswith('symbolic')),'hard_domain_tasks':216,'hard_layout_checks':432,'scope_limit':'Authored hard symbolic dimensions; classification is a design claim. No matrix multiplication, equation solving, chain products or entry counting.','mutations_caught':mutations,'invalid_inputs_rejected':invalid,'default_template_coverage':default_coverage,'native_grading':{k:v for k,v in engine.items() if k!='records'},'generator_sha256':sha(HERE.with_suffix('.py'))}
+    results={'status':'pass','source_basis':2275,'MA_sources':11,'independent_inventory':0,'matched_complete_source_banks':11,'matched_source_values':sum(x['matched_values'] for x in fidelity),'matched_correct_designations':sum(x['correct_designations_matched'] for x in fidelity),'raw_exact_prompts':sum(x['raw_exact_prompt'] for x in fidelity),'raw_exact_present_solutions':sum(x['raw_exact_solution_when_present'] is True for x in fidelity),'present_source_solutions':sum(x['solution_present'] for x in fidelity),'source_missing_correct_fields':2,'source_missing_ratings':2,'source_missing_solutions':2,'source_error_display_labels':1,'normal_numeric_exhaustive_checks':sum(x['normal_tasks'] for k,x in domains.items() if not k.startswith('symbolic')),'hard_domain_tasks':216,'hard_layout_checks':432,'scope_limit':'Authored hard symbolic dimensions; classification is a design claim. No matrix multiplication, equation solving, chain products or entry counting.','mutations_caught':mutations,'invalid_inputs_rejected':invalid,'default_template_coverage':default_coverage,'native_grading':{k:v for k,v in engine.items() if k!='records'},'generator_sha256':sha(HERE.with_suffix('.py'))}
     save('validation.json',results);print(json.dumps(results,indent=2))
 
 if __name__=='__main__':main()

@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 45**, **qa_passed: 403**, **queued: 129**, **working: 3**.
+**needs_revalidation: 45**, **qa_passed: 407**, **queued: 126**, **working: 2**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -250,18 +250,18 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186100868](../../scratch/17592186100868-draft.py) | Multiplying a Matrix by a Column Vector | Multiplying a Matrix With Variable Entries by a Column Vector | 0 / 4 / 5 / 1 | qa_passed | [Report](qa/17592186100868.json) |
 | [17592186059737](../../scratch/17592186059737.py) | Calculating the Cross Product Using Determinants | Solving for an Unknown in an Equation Involving the Cross Product | 0 / 9 / 11 / 1 | qa_passed | [Report](qa/17592186059737.json) |
 | [17592186059736](../../scratch/17592186059736.py) | Calculating the Cross Product Using Determinants | Calculating the Cross Product Using Determinants | 26 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186059736.json) |
-| 17592186124644 | Introduction to Partial Derivatives | Evaluating a Partial Derivative at a Point | 0 / 6 / 4 / 2 | working | — |
+| [17592186124644](../../scratch/17592186124644-draft.py) | Introduction to Partial Derivatives | Evaluating a Partial Derivative at a Point | 0 / 6 / 4 / 2 | qa_passed | [Report](qa/17592186124644.json) |
 | [17592186124639](../../scratch/17592186124639-draft.py) | Introduction to Partial Derivatives | Finding Partial Derivatives of Two-Variable Functions | 6 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186124639.json) |
 | [17592186124643](../../scratch/17592186124643-draft.py) | Introduction to Partial Derivatives | Partial Derivatives as Limits of Difference Quotients | 6 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186124643.json) |
 | [17592186083240](../../scratch/17592186083240.py) | Differentiating Parametric Curves | Finding the Derivative of a Parametric Curve | 12 / 6 / 0 / 0 | qa_passed | [Report](qa/17592186083240.json) |
-| [17592186100870](../../scratch/17592186100870.py) | Conformability for Matrix Multiplication | Determining the Dimension of the Product of Two Matrices Given the Dimensions of the Factors | 4 / 5 / 0 / 2 | working | — |
-| [17592186100871](../../scratch/17592186100871.py) | Conformability for Matrix Multiplication | Determining the Dimension of the Product of Two Matrices | 0 / 5 / 4 / 1 | working | — |
-| 17592186100869 | Conformability for Matrix Multiplication | Determining Whether Two Matrices Are Conformable for Multiplication | 7 / 3 / 0 / 0 | queued | — |
+| [17592186100870](../../scratch/17592186100870-draft.py) | Conformability for Matrix Multiplication | Determining the Dimension of the Product of Two Matrices Given the Dimensions of the Factors | 4 / 5 / 0 / 2 | qa_passed | [Report](qa/17592186100870.json) |
+| [17592186100871](../../scratch/17592186100871-draft.py) | Conformability for Matrix Multiplication | Determining the Dimension of the Product of Two Matrices | 0 / 5 / 4 / 1 | qa_passed | [Report](qa/17592186100871.json) |
+| [17592186100869](../../scratch/17592186100869-draft.py) | Conformability for Matrix Multiplication | Determining Whether Two Matrices Are Conformable for Multiplication | 7 / 3 / 0 / 0 | qa_passed | [Report](qa/17592186100869.json) |
 | [17592186092219](../../scratch/17592186092219.py) | Converting from Polar Coordinates to Cartesian Coordinates | Finding the Cartesian Coordinates of a Point Given Some Information About Another Point | 0 / 6 / 2 / 2 | qa_passed | [Report](qa/17592186092219.json) |
 | [17592186092273](../../scratch/17592186092273.py) | Converting from Polar Coordinates to Cartesian Coordinates | Finding the Cartesian Coordinates of a Point Using a Diagram | 0 / 0 / 8 / 2 | qa_passed | [Report](qa/17592186092273.json) |
 | [17592186092218](../../scratch/17592186092218.py) | Converting from Polar Coordinates to Cartesian Coordinates | Finding the Cartesian Coordinates of a Point Given a Description of the Radius and Angle | 0 / 10 / 0 / 2 | qa_passed | [Report](qa/17592186092218.json) |
-| 17592186100872 | Multiplying Matrices | Multiplying Two Matrices When They Are Conformable | 9 / 0 / 0 / 2 | queued | — |
-| 17592186100913 | Multiplying Matrices | Multiplying a Column-Vector By a Row-Vector | 8 / 1 / 0 / 2 | queued | — |
+| 17592186100872 | Multiplying Matrices | Multiplying Two Matrices When They Are Conformable | 9 / 0 / 0 / 2 | working | — |
+| 17592186100913 | Multiplying Matrices | Multiplying a Column-Vector By a Row-Vector | 8 / 1 / 0 / 2 | working | — |
 | [17592186100873](../../scratch/17592186100873.py) | Multiplying Matrices | Finding an Entry of the Product of Two Matrices | 10 / 0 / 0 / 2 | queued | — |
 | 17592186064246 | Introduction to Integration by Parts | Using Integration by Parts to Compute an Indefinite Integral Containing a Trigonometric Expression | 8 / 6 / 1 / 0 | queued | — |
 | 17592186064274 | Introduction to Integration by Parts | Computing a Definite Integral Using Integration by Parts | 0 / 23 / 0 / 0 | queued | — |

@@ -52,24 +52,24 @@ $$
 
 Level: :question.difficulty/easy | Template: q-42379 | Profile: observed-q-42379
 
-Suppose $A$ is a $7 \times 1$ matrix and $B$ is a $1 \times 3$ matrix. What are the dimensions of $AB$?
+Suppose $A$ is a $2 \times 4$ matrix and $B$ is a $4 \times 7$ matrix. What are the dimensions of $AB$?
 
 selection (:answer-field.type/radio)
 
-- $7\times 1$
+- $4\times 4$
 
-- $7\times 3$ [correct]
+- $2\times 4$
 
-- $1\times 1$
+- $2\times 7$ [correct]
 
-- $1\times 7$
+- $4\times 2$
 
 - The product is undefined
 
-There are $1$ columns in $A$ and $1$ rows in $B.$ Since the number of columns in $A$ equals the number of rows in $B,$ the matrices $A$ and $B$ are conformable for multiplication, and $AB$ is a $7\times 3$ matrix:
+There are $4$ columns in $A$ and $4$ rows in $B.$ Since the number of columns in $A$ equals the number of rows in $B,$ the matrices $A$ and $B$ are conformable for multiplication, and $AB$ is a $2\times 7$ matrix:
 
 $$
-{A}_{7\times \boxed{\text{1}}}{\times }_{✓}{B}_{\boxed{\text{1}}\times 3}={AB}_{7\times 3}
+{A}_{2\times \boxed{\text{4}}}{\times }_{✓}{B}_{\boxed{\text{4}}\times 7}={AB}_{2\times 7}
 $$
 
 ---
@@ -78,24 +78,24 @@ $$
 
 Level: :question.difficulty/easy | Template: q-42379 | Profile: observed-q-42379
 
-Suppose $A$ is a $9 \times 1$ matrix and $B$ is a $1 \times 7$ matrix. What are the dimensions of $AB$?
+Suppose $A$ is a $3 \times 5$ matrix and $B$ is a $5 \times 3$ matrix. What are the dimensions of $AB$?
 
 selection (:answer-field.type/radio)
 
-- $9\times 7$ [correct]
+- $3\times 5$
 
-- $1\times 1$
+- $5\times 5$
 
-- $1\times 9$
+- $5\times 3$
 
-- $9\times 1$
+- $3\times 3$ [correct]
 
 - The product is undefined
 
-There are $1$ columns in $A$ and $1$ rows in $B.$ Since the number of columns in $A$ equals the number of rows in $B,$ the matrices $A$ and $B$ are conformable for multiplication, and $AB$ is a $9\times 7$ matrix:
+There are $5$ columns in $A$ and $5$ rows in $B.$ Since the number of columns in $A$ equals the number of rows in $B,$ the matrices $A$ and $B$ are conformable for multiplication, and $AB$ is a $3\times 3$ matrix:
 
 $$
-{A}_{9\times \boxed{\text{1}}}{\times }_{✓}{B}_{\boxed{\text{1}}\times 7}={AB}_{9\times 7}
+{A}_{3\times \boxed{\text{5}}}{\times }_{✓}{B}_{\boxed{\text{5}}\times 3}={AB}_{3\times 3}
 $$
 
 ---
@@ -168,7 +168,7 @@ selection (:answer-field.type/radio)
 
 - $3\times 1$
 
-There are $1$ columns in $X$ and $1$ rows in $Y.$ Since the number of columns in $X$ equals the number of rows in $Y,$ the matrices $X$ and $Y$ are conformable for multiplication, and $XY$ is a $7\times 3$ matrix:
+There is $1$ column in $X$ and $1$ row in $Y.$ Since the number of columns in $X$ equals the number of rows in $Y,$ the matrices $X$ and $Y$ are conformable for multiplication, and $XY$ is a $7\times 3$ matrix:
 
 $$
 {X}_{7\times \boxed{\text{1}}}{\times }_{✓}{Y}_{\boxed{\text{1}}\times 3}={XY}_{7\times 3}
@@ -194,7 +194,7 @@ selection (:answer-field.type/radio)
 
 - $7\times 1$
 
-There are $1$ columns in $X$ and $1$ rows in $Y.$ Since the number of columns in $X$ equals the number of rows in $Y,$ the matrices $X$ and $Y$ are conformable for multiplication, and $XY$ is a $9\times 7$ matrix:
+There is $1$ column in $X$ and $1$ row in $Y.$ Since the number of columns in $X$ equals the number of rows in $Y,$ the matrices $X$ and $Y$ are conformable for multiplication, and $XY$ is a $9\times 7$ matrix:
 
 $$
 {X}_{9\times \boxed{\text{1}}}{\times }_{✓}{Y}_{\boxed{\text{1}}\times 7}={XY}_{9\times 7}
@@ -272,7 +272,7 @@ selection (:answer-field.type/radio)
 
 - $1\times 3$
 
-There are $1$ columns in $B$ and $1$ rows in $A.$ Since the number of columns in $B$ equals the number of rows in $A,$ the matrices $B$ and $A$ are conformable for multiplication, and $BA$ is a $7\times 3$ matrix:
+There is $1$ column in $B$ and $1$ row in $A.$ Since the number of columns in $B$ equals the number of rows in $A,$ the matrices $B$ and $A$ are conformable for multiplication, and $BA$ is a $7\times 3$ matrix:
 
 $$
 {B}_{7\times \boxed{\text{1}}}{\times }_{✓}{A}_{\boxed{\text{1}}\times 3}={BA}_{7\times 3}
@@ -298,7 +298,7 @@ selection (:answer-field.type/radio)
 
 - $1\times 7$
 
-There are $1$ columns in $B$ and $1$ rows in $A.$ Since the number of columns in $B$ equals the number of rows in $A,$ the matrices $B$ and $A$ are conformable for multiplication, and $BA$ is a $9\times 7$ matrix:
+There is $1$ column in $B$ and $1$ row in $A.$ Since the number of columns in $B$ equals the number of rows in $A,$ the matrices $B$ and $A$ are conformable for multiplication, and $BA$ is a $9\times 7$ matrix:
 
 $$
 {B}_{9\times \boxed{\text{1}}}{\times }_{✓}{A}_{\boxed{\text{1}}\times 7}={BA}_{9\times 7}
@@ -376,7 +376,7 @@ selection (:answer-field.type/radio)
 
 - $1\times 3$
 
-There are $1$ columns in $B$ and $1$ rows in $A.$ Since the number of columns in $B$ equals the number of rows in $A,$ the matrices $B$ and $A$ are conformable for multiplication, and $BA$ is a $7\times 3$ matrix: 
+There is $1$ column in $B$ and $1$ row in $A.$ Since the number of columns in $B$ equals the number of rows in $A,$ the matrices $B$ and $A$ are conformable for multiplication, and $BA$ is a $7\times 3$ matrix: 
 
 $$
 {B}_{7\times \boxed{\text{1}}}{\times }_{✓}{A}_{\boxed{\text{1}}\times 3}={BA}_{7\times 3}
@@ -402,7 +402,7 @@ selection (:answer-field.type/radio)
 
 - $1\times 7$
 
-There are $1$ columns in $B$ and $1$ rows in $A.$ Since the number of columns in $B$ equals the number of rows in $A,$ the matrices $B$ and $A$ are conformable for multiplication, and $BA$ is a $9\times 7$ matrix: 
+There is $1$ column in $B$ and $1$ row in $A.$ Since the number of columns in $B$ equals the number of rows in $A,$ the matrices $B$ and $A$ are conformable for multiplication, and $BA$ is a $9\times 7$ matrix: 
 
 $$
 {B}_{9\times \boxed{\text{1}}}{\times }_{✓}{A}_{\boxed{\text{1}}\times 7}={BA}_{9\times 7}
@@ -471,7 +471,7 @@ field-2 (:answer-field.type/blank)
 
 - $3$ [correct]
 
-There are $1$ columns in $P$ and $1$ rows in $Q.$ Since the number of columns in $P$ equals the number of rows in $Q,$ the matrices $P$ and $Q$ are conformable for multiplication, and $PQ$ is a $7\times 3$ matrix:
+There is $1$ column in $P$ and $1$ row in $Q.$ Since the number of columns in $P$ equals the number of rows in $Q,$ the matrices $P$ and $Q$ are conformable for multiplication, and $PQ$ is a $7\times 3$ matrix:
 
 $$
 {P}_{7\times \boxed{\text{1}}}{\times }_{✓}{Q}_{\boxed{\text{1}}\times 3}={PQ}_{7\times 3}
@@ -494,7 +494,7 @@ field-2 (:answer-field.type/blank)
 
 - $7$ [correct]
 
-There are $1$ columns in $P$ and $1$ rows in $Q.$ Since the number of columns in $P$ equals the number of rows in $Q,$ the matrices $P$ and $Q$ are conformable for multiplication, and $PQ$ is a $9\times 7$ matrix:
+There is $1$ column in $P$ and $1$ row in $Q.$ Since the number of columns in $P$ equals the number of rows in $Q,$ the matrices $P$ and $Q$ are conformable for multiplication, and $PQ$ is a $9\times 7$ matrix:
 
 $$
 {P}_{9\times \boxed{\text{1}}}{\times }_{✓}{Q}_{\boxed{\text{1}}\times 7}={PQ}_{9\times 7}
@@ -563,7 +563,7 @@ field-2 (:answer-field.type/blank)
 
 - $3$ [correct]
 
-There are $1$ columns in $Y$ and $1$ rows in $X.$ Since the number of columns in $Y$ equals the number of rows in $X,$ the matrices $Y$ and $X$ are conformable for multiplication, and $YX$ is a $7\times 3$ matrix:
+There is $1$ column in $Y$ and $1$ row in $X.$ Since the number of columns in $Y$ equals the number of rows in $X,$ the matrices $Y$ and $X$ are conformable for multiplication, and $YX$ is a $7\times 3$ matrix:
 
 $$
 {Y}_{7\times \boxed{\text{1}}}{\times }_{✓}{X}_{\boxed{\text{1}}\times 3}={YX}_{7\times 3}
@@ -586,7 +586,7 @@ field-2 (:answer-field.type/blank)
 
 - $7$ [correct]
 
-There are $1$ columns in $Y$ and $1$ rows in $X.$ Since the number of columns in $Y$ equals the number of rows in $X,$ the matrices $Y$ and $X$ are conformable for multiplication, and $YX$ is a $9\times 7$ matrix:
+There is $1$ column in $Y$ and $1$ row in $X.$ Since the number of columns in $Y$ equals the number of rows in $X,$ the matrices $Y$ and $X$ are conformable for multiplication, and $YX$ is a $9\times 7$ matrix:
 
 $$
 {Y}_{9\times \boxed{\text{1}}}{\times }_{✓}{X}_{\boxed{\text{1}}\times 7}={YX}_{9\times 7}
@@ -664,7 +664,7 @@ selection (:answer-field.type/radio)
 
 - $1\times 3$
 
-There are $1$ columns in $S$ and $1$ rows in $R.$ Since the number of columns in $S$ equals the number of rows in $R,$ the matrices $S$ and $R$ are conformable for multiplication, and $SR$ is a $7\times 3$ matrix:
+There is $1$ column in $S$ and $1$ row in $R.$ Since the number of columns in $S$ equals the number of rows in $R,$ the matrices $S$ and $R$ are conformable for multiplication, and $SR$ is a $7\times 3$ matrix:
 
 $$
 {S}_{7\times \boxed{\text{1}}}{\times }_{✓}{R}_{\boxed{\text{1}}\times 3}={SR}_{7\times 3}
@@ -690,7 +690,7 @@ selection (:answer-field.type/radio)
 
 - $1\times 7$
 
-There are $1$ columns in $S$ and $1$ rows in $R.$ Since the number of columns in $S$ equals the number of rows in $R,$ the matrices $S$ and $R$ are conformable for multiplication, and $SR$ is a $9\times 7$ matrix:
+There is $1$ column in $S$ and $1$ row in $R.$ Since the number of columns in $S$ equals the number of rows in $R,$ the matrices $S$ and $R$ are conformable for multiplication, and $SR$ is a $9\times 7$ matrix:
 
 $$
 {S}_{9\times \boxed{\text{1}}}{\times }_{✓}{R}_{\boxed{\text{1}}\times 7}={SR}_{9\times 7}
@@ -768,7 +768,7 @@ selection (:answer-field.type/radio)
 
 - $7\times 3$ [correct]
 
-There are $1$ columns in $V$ and $1$ rows in $U.$ Since the number of columns in $V$ equals the number of rows in $U,$ the matrices $V$ and $U$ are conformable for multiplication, and $VU$ is a $7\times 3$ matrix:
+There is $1$ column in $V$ and $1$ row in $U.$ Since the number of columns in $V$ equals the number of rows in $U,$ the matrices $V$ and $U$ are conformable for multiplication, and $VU$ is a $7\times 3$ matrix:
 
 $$
 {V}_{7\times \boxed{\text{1}}}{\times }_{✓}{U}_{\boxed{\text{1}}\times 3}={VU}_{7\times 3}
@@ -794,7 +794,7 @@ selection (:answer-field.type/radio)
 
 - $9\times 7$ [correct]
 
-There are $1$ columns in $V$ and $1$ rows in $U.$ Since the number of columns in $V$ equals the number of rows in $U,$ the matrices $V$ and $U$ are conformable for multiplication, and $VU$ is a $9\times 7$ matrix:
+There is $1$ column in $V$ and $1$ row in $U.$ Since the number of columns in $V$ equals the number of rows in $U,$ the matrices $V$ and $U$ are conformable for multiplication, and $VU$ is a $9\times 7$ matrix:
 
 $$
 {V}_{9\times \boxed{\text{1}}}{\times }_{✓}{U}_{\boxed{\text{1}}\times 7}={VU}_{9\times 7}
@@ -872,7 +872,7 @@ selection (:answer-field.type/radio)
 
 - $7\times 7$
 
-There are $1$ columns in $H$ and $1$ rows in $K.$ Since the number of columns in $H$ equals the number of rows in $K,$ the matrices $H$ and $K$ are conformable for multiplication, and $HK$ is a $7\times 3$ matrix:
+There is $1$ column in $H$ and $1$ row in $K.$ Since the number of columns in $H$ equals the number of rows in $K,$ the matrices $H$ and $K$ are conformable for multiplication, and $HK$ is a $7\times 3$ matrix:
 
 $$
 {H}_{7\times \boxed{\text{1}}}{\times }_{✓}{K}_{\boxed{\text{1}}\times 3}={HK}_{7\times 3}
@@ -898,7 +898,7 @@ selection (:answer-field.type/radio)
 
 - $9\times 9$
 
-There are $1$ columns in $H$ and $1$ rows in $K.$ Since the number of columns in $H$ equals the number of rows in $K,$ the matrices $H$ and $K$ are conformable for multiplication, and $HK$ is a $9\times 7$ matrix:
+There is $1$ column in $H$ and $1$ row in $K.$ Since the number of columns in $H$ equals the number of rows in $K,$ the matrices $H$ and $K$ are conformable for multiplication, and $HK$ is a $9\times 7$ matrix:
 
 $$
 {H}_{9\times \boxed{\text{1}}}{\times }_{✓}{K}_{\boxed{\text{1}}\times 7}={HK}_{9\times 7}
@@ -976,7 +976,7 @@ selection (:answer-field.type/radio)
 
 - The product is undefined
 
-There are $1$ columns in $C$ and $1$ rows in $D.$ Since the number of columns in $C$ equals the number of rows in $D,$ the matrices $C$ and $D$ are conformable for multiplication, and $CD$ is a $7\times 3$ matrix: 
+There is $1$ column in $C$ and $1$ row in $D.$ Since the number of columns in $C$ equals the number of rows in $D,$ the matrices $C$ and $D$ are conformable for multiplication, and $CD$ is a $7\times 3$ matrix: 
 
 $$
 {C}_{7\times \boxed{\text{1}}}{\times }_{✓}{D}_{\boxed{\text{1}}\times 3}={CD}_{7\times 3}
@@ -1002,7 +1002,7 @@ selection (:answer-field.type/radio)
 
 - The product is undefined
 
-There are $1$ columns in $C$ and $1$ rows in $D.$ Since the number of columns in $C$ equals the number of rows in $D,$ the matrices $C$ and $D$ are conformable for multiplication, and $CD$ is a $9\times 7$ matrix: 
+There is $1$ column in $C$ and $1$ row in $D.$ Since the number of columns in $C$ equals the number of rows in $D,$ the matrices $C$ and $D$ are conformable for multiplication, and $CD$ is a $9\times 7$ matrix: 
 
 $$
 {C}_{9\times \boxed{\text{1}}}{\times }_{✓}{D}_{\boxed{\text{1}}\times 7}={CD}_{9\times 7}
@@ -1080,7 +1080,7 @@ selection (:answer-field.type/radio)
 
 - $7\times 3$ [correct]
 
-There are $1$ columns in $M$ and $1$ rows in $L.$ Since the number of columns in $M$ equals the number of rows in $L,$ the matrices $M$ and $L$ are conformable for multiplication, and $ML$ is a $7\times 3$ matrix:
+There is $1$ column in $M$ and $1$ row in $L.$ Since the number of columns in $M$ equals the number of rows in $L,$ the matrices $M$ and $L$ are conformable for multiplication, and $ML$ is a $7\times 3$ matrix:
 
 $$
 {M}_{7\times \boxed{\text{1}}}{\times }_{✓}{L}_{\boxed{\text{1}}\times 3}={ML}_{7\times 3}
@@ -1106,7 +1106,7 @@ selection (:answer-field.type/radio)
 
 - $9\times 7$ [correct]
 
-There are $1$ columns in $M$ and $1$ rows in $L.$ Since the number of columns in $M$ equals the number of rows in $L,$ the matrices $M$ and $L$ are conformable for multiplication, and $ML$ is a $9\times 7$ matrix:
+There is $1$ column in $M$ and $1$ row in $L.$ Since the number of columns in $M$ equals the number of rows in $L,$ the matrices $M$ and $L$ are conformable for multiplication, and $ML$ is a $9\times 7$ matrix:
 
 $$
 {M}_{9\times \boxed{\text{1}}}{\times }_{✓}{L}_{\boxed{\text{1}}\times 7}={ML}_{9\times 7}

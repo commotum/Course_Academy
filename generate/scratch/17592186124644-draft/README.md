@@ -5,6 +5,7 @@ Script: `../17592186124644-draft.py`. Source wrapper is frozen math basis2275. N
 ```sh
 .venv/bin/python -B generate/scratch/17592186124644-draft.py --difficulty all --seed 7 --count 2 --format json
 .venv/bin/python -B generate/scratch/17592186124644-draft/validate.py
+.venv/bin/python -B generate/scratch/17592186124644-draft/enumerate-domain.py
 .venv/bin/python -B generate/scratch/17592186124644-draft/build-docs.py
 .venv/bin/python -B generate/scratch/17592186124644-draft/render.py
 ```

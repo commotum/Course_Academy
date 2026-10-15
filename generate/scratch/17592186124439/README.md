@@ -1,6 +1,6 @@
 # Tangent-vector generator
 
-Local review generator for KP17592186124439, math basis1356. Stop after guide step7; no registration, engine changes or DB writes.
+Validated generator for KP17592186124439. The frozen source evidence is from math basis 1356; current-source compatibility and replenishment were verified at basis 2692, with commit readback at basis 2693. The generator itself has no database side effects; `replenish.py` uses the existing integration for additive, application-attributed commits under `api.lock`.
 
 ```bash
 .venv/bin/python generate/scratch/17592186124439.py --difficulty all --seed 42 --count 2 --format markdown
@@ -18,3 +18,15 @@ Validation independently reads printed derivative, point, partial evaluation sta
 Fidelity:15/15 prompts, raw solutions, complete banks and correct designations;75/75 values,60/60 distractors. Verified270 normal records plus15 originals,1425 choice-criterion checks and675 evaluation-stage checks. Finite meaningful task counts are32 easy,192 moderate and127 hard (height, held-coordinate aliases, seed/order and bank aliases excluded). Python3.13.5 and SymPy1.14.0. No assessed plot exists; the two lesson explanatory rasters were inspected full resolution, so no renderer/cache output applies.
 
 Review.md has every original bank and at least two labeled variants per observed family, plus two examples each of the authored levels. Review.json contains all285 records. Classification, template-extraction, full source-bank-map, byte-audit and validation reports separate exact evidence, source errors, presentation normalization, mathematical correctness and grading.
+
+## Inventory replenishment — 2026-10-15
+
+Reused this package and generator version `tangent-vector-1`. No supplied `.generated` handoff existed. Current source questions were read at one basis, and `reference/replenishment/basis-2692/live-source-comparison.json` verifies that the only differences from the frozen source were repaired system braces and equation alignment. Original content and learner history were preserved. Two historical stale prose references remain excluded from usable counts, without editing them.
+
+Rebuilt `reference/native/check-engine` against the deployed application engine library; build inputs and hashes are in `reference/native/build.json`. All 15 complete source banks replayed exactly against frozen evidence; the current grader accepted 285 correct selections and rejected 1140 incorrect selections with none unresolved. The ten submitted instances separately passed 10 correct and 40 incorrect selection checks.
+
+The additive commit at **2692 → 2693** added **5 easy and 5 moderate** questions; independently validated fresh task counts are **5 easy, 5 moderate, 13 hard**. All supported-band shortages are zero. No capability exception was needed. The existing bounded domains remain 32 easy, 192 moderate and 127 hard method tasks; exhaustion must remain explicit on future requests.
+
+Generator UUID: `1517b8a7-b8eb-5039-9dec-9ce81c5652e6`. Registered script: `generate/scratch/17592186124439.py`. Registration uses `question-generator/id`, `question-generator/script`, and the existing KP reference.
+
+Exact EDN, durable request, native preview, confirmed receipt, source-aware datom checks, exact-basis readback, post-commit inventory and outcome are retained in `reference/replenishment/basis-2692/`. Repeated preparation produces no content changes. `replenish.py` first recovers a saved request under its original key before considering fresh intent.

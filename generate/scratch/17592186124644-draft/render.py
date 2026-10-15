@@ -40,9 +40,19 @@ window.renderRecord=async record=>{
 records=json.loads((D/'source-replays.json').read_text())+[r['record'] for r in json.loads((D/'review.json').read_text())]
 for i,r in enumerate(records):r['generation']['render_label']=('source-' if i<12 else 'generated-')+str(i)+'-'+r['generation']['template']
 (D/'render-records.json').write_text(json.dumps(records,ensure_ascii=False)+'\n')
+selected_label=sys.argv[1] if len(sys.argv)>1 else None
+if selected_label:
+ selected=[r for r in records if r['generation']['render_label']==selected_label];assert len(selected)==1
+ (D/'render-selected-records.json').write_text(json.dumps(selected,ensure_ascii=False)+'\n')
 class Quiet(http.server.SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
 server=http.server.ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Quiet,directory=str(ROOT)));threading.Thread(target=server.serve_forever,daemon=True).start();origin=f'http://127.0.0.1:{server.server_port}'
-try:subprocess.run(['node',str(D/'render-cdp.js'),origin,str(D.relative_to(ROOT))],cwd=ROOT,check=True)
+try:subprocess.run(['node',str(D/'render-cdp.js'),origin,str(D.relative_to(ROOT)),*(['render-selected-records.json','render-selected-report.json'] if selected_label else [])],cwd=ROOT,check=True)
 finally:server.shutdown();server.server_close()
-r=json.loads((D/'render-report.json').read_text());r['ui_source_hashes']={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [ROOT/'ui/learning.js',ROOT/'ui/question-fields.js',ROOT/'ui/mathjax-config.js',ROOT/'ui/learning.css',ROOT/'ui/navigation.css']};(D/'render-report.json').write_text(json.dumps(r,indent=2)+'\n')
+r=json.loads((D/'render-report.json').read_text())
+if selected_label:
+ single=json.loads((D/'render-selected-report.json').read_text());replacement=single['checks'][0]
+ for i,item in enumerate(r['checks']):
+  if item['template']==selected_label:replacement['index']=item['index'];r['checks'][i]=replacement
+ r['targeted_refreshed_labels']=[selected_label]
+r['ui_source_hashes']={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [ROOT/'ui/learning.js',ROOT/'ui/question-fields.js',ROOT/'ui/mathjax-config.js',ROOT/'ui/learning.css',ROOT/'ui/navigation.css']};(D/'render-report.json').write_text(json.dumps(r,indent=2)+'\n')

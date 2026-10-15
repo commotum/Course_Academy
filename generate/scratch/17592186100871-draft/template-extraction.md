@@ -1,0 +1,27 @@
+# Template extraction
+
+## 1. Individual source descriptions
+
+source-components.json contains every complete original record, its exact fields, choices, correct links and missing attributes. Source cases identify all original dimensions and public replay profiles. Moderate sources supply factors in the order requested; hard sources supply the second factor before the first. q-77475 is row-by-column; q-77476 and unrated q-22065 are column-by-row; q-129492 is a square factor times a rectangular factor. Hard radio q-22067 has a square output, while q-129489 has three distinct dimension values. The four blank sources expect separate outer row/column fragments, never a complete dimension equation. Entries include signed integers, fractions and radicals, all incidental to counting.
+
+## 2. Shared pattern
+
+Read two displayed matrix shapes, use the target product's operand order, check equality of inner dimensions, and retain the two outer dimensions. All normal products are conformable, as in the sources. The hard distinction is the reversed supplied order; no new multiplication operation is introduced. Difficulty labels on observed records remain observed; the unrated completion and all easy labels are authored design claims.
+
+## 3. Complete components and banks
+
+For product X(r×k)Y(k×c), the common complete radio bank is undefined, r×k, k×r, k×k, r×c. This reproduces q-22065, q-22067, q-77475 and q-77476. q-129489 instead uses k×c, c×r, c×c, r×c, undefined. q-129492 uses r×c, c×r, undefined, c×c, r×r. Every original option is independently matched one-to-one in source-fidelity.json; dimension pairs are ordered objects, not scalar products. These are defensible dimension-selection operations; no arbitrary numerical offset is used. Blank contracts have one integer answer for each outer-role slot. Correct designations:13 exact original field refs; q-22065's missing ref is inferred only in normal completion.
+
+Source q-22067's erroneous literal3 in the first shape sentence remains fixed solely in raw evidence. Its other operands, bank and annotation are parameterized. That raw profile is ineligible for learning. Normal first dimensions are always derived from printed matrices. Raw q-22065 omits all originally absent attributes; there is no returned literal question payload branch.
+
+## 4. Stable masks and variable slots
+
+Fixed backbone: two actual bmatrix factors; one product in a defined supplied-order role; original radio/two-blank contracts; the four prose/annotation stages. Complete matrix blocks are replaced as units using matrix_tex(augmented=False). Source numeric entries are retained at original dimensions; deterministic incidental integers fill changed shapes. Entry changes are not task variety. Every prompt, first shape statement, inner-count sentence, target product, final sentence, boxed inner dimensions and output subscript derives from the same ordered shapes.
+
+Slots r,k,c range over1–4, grounded in the observed/canonical row/column counts and counting prerequisites. The bounds retain at most16 visible entries per factor; there is no arithmetic on entries. Exact normal eligible domains are enumerated in domains.json, including bank-collision rejection of complete instances. Observed radio shape relations are preserved: q-129492 r=k≠c; q-77475 r=c=1; q-77476/q-22065 k=1,r=c; q-22067 r=c≠k; q-129489 all distinct. Generic same-method blank extensions allow independent outer and shared-inner slots. All unscaffolded moderate/hard normal domains have max(r,k,c)≥3, preserving source counting workload. Explicit inputs follow identical guards.
+
+Authored easy supplies the source outer-dimension rule verbatim in meaning: “For conformable factors, use the number of rows of the first factor and the number of columns of the second.” This reminder appears in every easy question. It reduces rule recall while retaining actual counting, inner-match and outer-selection stages. It is grounded in the canonical dimension annotation and immediately preceding tutorial, rather than a small arbitrary numeric cutoff. Every easy variant uses the same support and method; there is no progression within easy. Its64 ordered dimension triples are finite. Moderate has56 forward triples and hard56 reversed-supply triples. Across levels there are120 distinct mathematical tasks when easy/moderate overlap is deduplicated. The reminder, labels, entries, banks, difficulty and field layout do not inflate mathematical fingerprints; the full normalized learner presentation still determines content IDs. The easy level is an authored instructional judgement, not recovered source evidence.
+
+Complete bank selection precedes sampling; all required members are constructed, and a collision rejects the whole instance. Seed only controls sampling/option order; fixed parameters and presentation yield stable IDs. Profile names themselves never create identities. No field-specific feedback or learner error diagnosis is invented. All solution prose is fixed per sampled instance, independent of chosen answer.
+
+Presentation accounting: all10 source prompts reproduce after shared math normalization;6 are byte-exact raw prompt strings and4 differ only in shared matrix normalization. All9 present raw worked solutions are byte-exact at original parameters; the tenth source has no solution. Every one of38 source choice values matches after shared math normalization, with complete banks and field types preserved. No normalization hides the q-22067 mathematical correction.

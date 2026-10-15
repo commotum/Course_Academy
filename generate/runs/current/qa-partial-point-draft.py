@@ -132,7 +132,12 @@ if __name__=='__main__':
    counts['source_solutions']+=1
  samples=json.loads((R/'qa'/f'{K}-sampled.json').read_text())
  for record in samples:check(record)
- for record in json.loads((D/'samples.json').read_text()):check(record)
+ selected={}
+ for record in json.loads((D/'samples.json').read_text()):
+  family=record['generation']['template'];var=record['generation']['parameters']['target'];sign='negative' if str(record['generation']['parameters']['U']).startswith('-') else 'positive'
+  key=(family,var,sign)
+  if key not in selected:selected[key]=record
+ for record in selected.values():check(record)
  mutant=copy.deepcopy(samples[0]);original=mutant['question'][':question/worked-solution'];groups=stages(original);bad=groups[0][-2][1];mutant['question'][':question/worked-solution']=original.replace(bad,'('+bad+')+1',1);assert original!=mutant['question'][':question/worked-solution']
  saved=copy.deepcopy(counts)
  try:check(mutant)

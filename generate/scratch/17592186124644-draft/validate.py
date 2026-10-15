@@ -10,6 +10,7 @@ from pathlib import Path
 import sympy as S
 D=Path(__file__).resolve().parent;ROOT=D.parents[2]
 sys.path.insert(0,str(D));import texmath as tm
+audit_spec=importlib.util.spec_from_file_location('partial_workload_audit',D/'audit-workload.py');audit_module=importlib.util.module_from_spec(audit_spec);audit_spec.loader.exec_module(audit_module)
 spec=importlib.util.spec_from_file_location('partial_draft',D.with_suffix('.py'));g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
 COUNTS={'records':0,'displayed_solution_rows':0,'displayed_bank_options':0,'bank_pair_comparisons':0,'held_coefficient_derivative_checks':0,'substitution_coordinate_operands':0}
 def write(name,value):
@@ -144,7 +145,7 @@ def main():
     for sid,original in g.ORIGINALS.items():
         key=g.SOURCE_FAMILY[sid];f=g.FAMILIES[key]
         record=g.generate(f['level'],template=key,parameters=f['anchor'],profile='observed-'+sid)
-        result=source_fidelity(original,record);sources.append(result);replays.append((sid,record))
+        result=source_fidelity(original,record);audit_module.audit(original,key);audit_module.audit(record['question'],key);sources.append(result);replays.append((sid,record))
         shuffled=g.generate(f['level'],seed=99991,template=key,parameters=f['anchor'],profile='observed-'+sid)
         assert shuffled['question'][':question/id']==record['question'][':question/id']
         assert {z[':answer/id'] for z in shuffled['question'][':question/answer-fields'][0][':answer-field/choices']}=={z[':answer/id'] for z in record['question'][':question/answer-fields'][0][':answer-field/choices']}
@@ -158,13 +159,14 @@ def main():
             assert tm.equivalent(val,S.diff(fun,t) if section_index==0 else S.diff(fun,t).subs(pt));canonical_rows+=1
     coverage={};identity_checks=0;target_checks=0;boundary_checks=0;negatives=[]
     for key,f in g.FAMILIES.items():
-        fingerprints=set();targets=set();coords=set();samples=[]
-        for seed in range(24):
-            r=g.generate(f['level'],seed=seed,template=key);check(r['question']);generated.append((key+'-'+str(seed),r));samples.append(r)
+        fingerprints=set();targets=set();coords=set();samples=[];review_signs=set()
+        for seed in range(48):
+            r=g.generate(f['level'],seed=seed,template=key);check(r['question']);audit_module.audit(r['question'],key);generated.append((key+'-'+str(seed),r));samples.append(r)
             fingerprints.add(r['generation']['mathematical_fingerprint']);targets.add(r['generation']['parameters']['target']);coords.add((r['generation']['parameters']['U'],r['generation']['parameters']['V']))
             same=g.generate(f['level'],seed=seed+100000,template=key,parameters=r['generation']['parameters'],profile='method-sum-bank')
             assert same['question'][':question/id']==r['question'][':question/id'];assert same['question'][':question/answer-fields'][0][':answer-field/id']==r['question'][':question/answer-fields'][0][':answer-field/id'];identity_checks+=1
-            if seed<2:reviews.append({'role':'generated variant','level':f['level'],'template':key,'record':r})
+            if (int(S.sign(g.sym(r['generation']['parameters']['U']))) not in review_signs if key=='easy-polynomial' else seed<2):
+                reviews.append({'role':'generated variant','level':f['level'],'template':key,'record':r});review_signs.add(int(S.sign(g.sym(r['generation']['parameters']['U']))))
         assert targets=={'x','y'};assert len(fingerprints)>=16
         # Hold all mathematical data fixed, switch physical differentiated
         # variable, then independently read point order, derivative and bank.
@@ -176,12 +178,12 @@ def main():
             p={'a':1,'b':4,'U':str(U),'V':str(V),'n':N,'m':M}
             try:r=g.generate(f['level'],template=key,parameters=p)
             except ValueError as exc:
-                assert 'collision' in str(exc);continue
+                assert 'collision' in str(exc) or 'Arithmetic workload:' in str(exc);continue
             check(r['question']);boundary_checks+=1
         for name,value in [('a',0),('b',-1),('a',5),('U',-100),('V',0),('n',99),('m',99),('target','z')]:
             p=dict(samples[0]['generation']['parameters']);p[name]=value
             negatives.append(must_fail(lambda p=p:g.generate(f['level'],template=key,parameters=p),'out-of-domain '+key+' '+name))
-        coverage[key]={'level':f['level'],'sampled_records':len(samples),'distinct_mathematical_tasks':len(fingerprints),'targets':sorted(targets),'role_coordinate_pairs':sorted(coords),'first_24_seeds':True}
+        coverage[key]={'level':f['level'],'sampled_records':len(samples),'distinct_mathematical_tasks':len(fingerprints),'targets':sorted(targets),'role_coordinate_pairs':sorted(coords),'first_48_seeds':True}
         # Normal source-family solution at its original mathematical inputs,
         # using the raw profile solely where a zero term makes five-term method
         # bank ineligible; the arithmetic stage comparison is unchanged.
@@ -192,12 +194,17 @@ def main():
                 original_rows=tm.rows(expected_source[':question/worked-solution']);current_rows=tm.rows(source['question'][':question/worked-solution'])
                 assert [len(z) for z in original_rows]==[len(z) for z in current_rows]
     # Default sampling must actually serve every family in each supported level.
-    alias_a=g.generate('hard',template='log-power-exp',parameters={'a':1,'b':2,'U':1,'V':'ln(4)','n':5})
-    alias_b=g.generate('hard',template='log-power-exp',parameters={'a':1,'b':2,'U':1,'V':'2*ln(2)','n':5})
+    alias_a=g.generate('hard',template='log-power-exp',parameters={'a':1,'b':1,'U':1,'V':'ln(4)','n':5})
+    alias_b=g.generate('hard',template='log-power-exp',parameters={'a':1,'b':1,'U':1,'V':'2*ln(2)','n':5})
     assert alias_a['question'][':question/id']==alias_b['question'][':question/id']
-    defaults={}
+    defaults={};easy_default_signs=set()
     for level in ('easy','moderate','hard'):
-        seen={g.generate(level,seed=i)['generation']['template'] for i in range(150)}
+        default_records=[g.generate(level,seed=i) for i in range(150)]
+        seen={r['generation']['template'] for r in default_records}
+        if level=='easy':
+            for r in default_records:
+                _,target,point=tm.prompt(r['question'][':question/problem']);easy_default_signs.add(int(S.sign(point[target])))
+            assert easy_default_signs=={-1,1}
         required={k for k,f in g.FAMILIES.items() if f['level']==level};assert seen==required;defaults[level]=sorted(seen)
     # Mutations exercise mathematical parsing, source stage topology, target
     # roles, full wrong/wrong equivalence, coordinate order and C0 rejection.
@@ -227,11 +234,13 @@ def main():
     collapsed=g.tex(tm.parse(old))
     sec[':question/worked-solution']=sec[':question/worked-solution'].replace(old,collapsed)
     negatives.append(must_fail(lambda:check(sec),'equal-but-collapsed secant tangent operand row'))
+    for regression_key,regression_parameters in [('power-log-root',{'a':2,'b':4,'n':4,'U':9,'V':'e**2'}),('power-log-root',{'a':3,'b':3,'n':4,'U':9,'V':'e'}),('root-reciprocal',{'a':4,'b':3,'n':3,'U':4,'V':1}),('log-power-exp',{'a':1,'b':2,'n':5,'U':1,'V':'ln(5)'})]:
+        negatives.append(must_fail(lambda k=regression_key,p=regression_parameters:g.generate(g.FAMILIES[k]['level'],template=k,parameters=p),'oversized coupled arithmetic '+regression_key))
     source_native=native(replays,'source-native');generated_native=native(generated,'generated-native')
     subprocess.run([sys.executable,'-B',str(D/'scalar-probes.py')],check=True)
     scalar_report=json.loads((D/'scalar-native-report.json').read_text())
     write('source-cases.json',cases);write('source-replays.json',[r for _,r in replays]);write('source-maps.json',source_maps);write('review.json',reviews);write('independent-inventory.json',{'database':g.SOURCE['database'],'basis':g.SOURCE['basis'],'lineage':g.SOURCE['lineage'],'questions':[]});write('samples.json',[r for _,r in generated]);write('canonical-validation.json',{'source':canonical,'checked_rows':canonical_rows,'fieldless':True,'role':'canonical, excluded from practice fidelity denominator'})
     final=baseline()
-    report={'status':'ready for independent root QA; not registered or approved','source_basis':g.SOURCE['basis'],'source_lineage':g.SOURCE['lineage'],'source_sha256':hashlib.sha256((D/'source.json').read_bytes()).hexdigest(),'source_counts':{'MA_practice_originals':12,'canonical':1,'independent_inventory':0,'complete_banks':12,'matched_options':60,'matched_distractors':48,'observed_correct_designations':10,'matched_correct_designations':10,'missing_correct_designations':2,'observed_worked_solutions':10,'matched_solution_stage_chains':10,'raw_exact_prompt_strings':sum(original[':question/problem']==record['question'][':question/problem'] for original,(_,record) in zip(g.ORIGINALS.values(),replays)),'presentation_normalized_prompt_math_and_prose':12},'source_fidelity':sources,'math_checks':COUNTS,'variation':coverage,'default_family_coverage':defaults,'seed_order_identity_checks':identity_checks,'held_data_target_swap_checks':target_checks,'boundary_records':boundary_checks,'negative_controls':negatives,'native':{'binary_sha256':build['binary_sha256'],'verified_build_hashes':len(verified),'source':{k:source_native[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'generated':{k:generated_native[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'limitation':'Observed and generated fields are radio ID selection; two missing-key sources are tested only as explicitly synthetic inferred-key fixtures. Separate synthetic blank probes verify explicit-Euler-e semantics and preserve the known raw source scientific-notation limitation without engine changes.','scalar_diagnostics':{k:scalar_report[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks','normal_explicit_e_semantic_checks','raw_source_known_semantic_failures')}},'numeric_baseline':final,'runtime':{'python':sys.version.split()[0],'sympy':S.__version__},'plots':'none','canonical_checked_rows':canonical_rows}
+    report={'status':'ready for independent root QA; not registered or approved','source_basis':g.SOURCE['basis'],'source_lineage':g.SOURCE['lineage'],'source_sha256':hashlib.sha256((D/'source.json').read_bytes()).hexdigest(),'source_counts':{'MA_practice_originals':12,'canonical':1,'independent_inventory':0,'complete_banks':12,'matched_options':60,'matched_distractors':48,'observed_correct_designations':10,'matched_correct_designations':10,'missing_correct_designations':2,'observed_worked_solutions':10,'matched_solution_stage_chains':10,'raw_exact_prompt_strings':sum(original[':question/problem']==record['question'][':question/problem'] for original,(_,record) in zip(g.ORIGINALS.values(),replays)),'presentation_normalized_prompt_math_and_prose':12},'source_fidelity':sources,'math_checks':COUNTS,'variation':coverage,'default_family_coverage':defaults,'default_easy_active_sign_coverage':sorted(easy_default_signs),'seed_order_identity_checks':identity_checks,'held_data_target_swap_checks':target_checks,'boundary_records':boundary_checks,'negative_controls':negatives,'native':{'binary_sha256':build['binary_sha256'],'verified_build_hashes':len(verified),'source':{k:source_native[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'generated':{k:generated_native[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'limitation':'Observed and generated fields are radio ID selection; two missing-key sources are tested only as explicitly synthetic inferred-key fixtures. Separate synthetic blank probes verify explicit-Euler-e semantics and preserve the known raw source scientific-notation limitation without engine changes.','scalar_diagnostics':{k:scalar_report[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks','normal_explicit_e_semantic_checks','raw_source_known_semantic_failures')}},'numeric_baseline':final,'runtime':{'python':sys.version.split()[0],'sympy':S.__version__},'plots':'none','canonical_checked_rows':canonical_rows,'arithmetic_domain_report':'finite-domain-counts.json; every finite explicit tuple accepted/rejected through public API, every accepted prompt and bank independently audited'}
     write('validation.json',report);print(json.dumps({k:report[k] for k in ('source_counts','math_checks','native','numeric_baseline')},indent=2))
 if __name__=='__main__':main()

@@ -1,0 +1,70 @@
+/* Canonical route tables: external axis labels and bordered station headers. */
+.prose .route-matrix {
+  --matrix-header-size: 2.5em;
+  --matrix-row-header-width: var(--matrix-header-size);
+  display: grid;
+  grid-template-columns: max-content max-content;
+  gap: .2em .65em;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 1.4em auto;
+  line-height: 1.25;
+}
+.prose .route-matrix-wide { --matrix-row-header-width: 9ch; }
+.route-matrix > .matrix-to {
+  grid-column: 2;
+  grid-row: 1;
+  padding-inline-start: var(--matrix-row-header-width);
+  text-align: center;
+}
+.route-matrix > .matrix-from {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: center;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  position: relative;
+  top: calc(var(--matrix-header-size) / 2);
+}
+.prose .route-matrix > table {
+  grid-column: 2;
+  grid-row: 2;
+  display: table;
+  max-width: none;
+  overflow: visible;
+  margin: 0;
+  border-collapse: collapse;
+  font-size: inherit;
+}
+.prose .route-matrix th,
+.prose .route-matrix td {
+  height: var(--matrix-header-size);
+  min-width: var(--matrix-header-size);
+  padding: .45em .65em;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.prose .route-matrix th {
+  border: 1px solid var(--tone-55);
+  background: var(--tone-15);
+  color: var(--ink);
+  font-weight: 600;
+}
+.prose .route-matrix thead th {
+  padding-block: 0;
+}
+.prose .route-matrix tbody th,
+.prose .route-matrix .matrix-corner {
+  width: var(--matrix-row-header-width);
+  min-width: var(--matrix-row-header-width);
+  padding: 0;
+}
+.prose .route-matrix .matrix-corner {
+  border: 0;
+}
+.prose .route-matrix tbody td {
+  border: 1px solid var(--tone-55);
+  color: var(--ink);
+}
