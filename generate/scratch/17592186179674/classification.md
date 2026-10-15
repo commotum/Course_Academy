@@ -1,6 +1,6 @@
 # Classification
 
-Database math, basis 1356, lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. All 11 practice records are retained. No unrated or fieldless records.
+Database math, basis 2731, lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. All 12 practice records are retained. No unrated or fieldless records.
 
 | Level | observed templates/banks | field layout | plots |
 
@@ -8,7 +8,7 @@ Database math, basis 1356, lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. All 11 
 
 | Easy | 0/0 | authored one math radio, five choices | none |
 
-| Moderate | 8/8 | one math radio, five scalar choices, selection | none |
+| Moderate | 9/9 | one math radio, five scalar choices, selection | none |
 
 | Hard | 3/3 | one math radio, five scalar choices, selection | none |
 
@@ -45,3 +45,9 @@ q-124664 contains equivalent wrong options 6 and 42/7. It is raw evidence only, 
 - trig_cos: q-90871, hard, source stages 8.
 
 - square_cancel: q-124666, moderate, source stages 9.
+
+## Current-source refresh (basis 2731)
+
+The current inventory adds q-90869, one moderate, five-choice math-radio question with no plots. Its shifted-cubic curve y=x³+1 and one-form x dx+(y−1) dy require x=t, y=t³+1, derivatives (1,3t²), substitution, integration of t+3t⁵, and endpoint evaluation on [0,1]. This is a separate `shift_cubic` template: its shift cancellation differs from the other cubic reciprocal and quadratic templates. All 12 source questions are replayed at original parameters; source identities and learner records are preserved.
+
+The duplicate wrong options in q-124664 and the unstated endpoint extension in q-90871 disqualify those unchanged originals from the independently validated inventory. Their corrected generated variants are supported; neither invalid original counts toward the reserve. No supported difficulty is declared filled from those records.

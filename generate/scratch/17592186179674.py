@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Exact Cartesian-curve one-form generators; local review only, no DB operations.
 
-Basis 1356; evidence, scope, source anomalies and verification beside this file.
+Basis 2731; evidence, scope, source anomalies and verification beside this file.
 Source recipes reconstruct extracted prose/math slots under uniform one-form
 scaling. Original scalar distractor intent is underdetermined: observed profiles
 are explicitly replay-only, never the default practice bank. Normal generators
@@ -19,7 +19,7 @@ VERSION='cartesian-oneform-v1'
 X,Y,T=sp.symbols('x y t',real=True)
 SOURCE_QUESTIONS={q[':question/math-academy-id']:q for q in KP[':knowledge-point/questions']}
 # Exactly observed source families; source order is not curriculum ordering.
-FAMILIES={'parabola_xy':'q-39344','shift_log':'q-81178','sqrt_linear':'q-124664','cubic_recip':'q-124668','cuberoot_exp':'q-39679','sqrt_poly':'q-80983','shift_cross':'q-81098','trig_sin':'q-81180','hard_poly':'q-90848','trig_cos':'q-90871','square_cancel':'q-124666'}
+FAMILIES={'parabola_xy':'q-39344','shift_log':'q-81178','sqrt_linear':'q-124664','cubic_recip':'q-124668','cuberoot_exp':'q-39679','sqrt_poly':'q-80983','shift_cross':'q-81098','trig_sin':'q-81180','hard_poly':'q-90848','trig_cos':'q-90871','square_cancel':'q-124666','shift_cubic':'q-90869'}
 TEMPLATES={name:{'level':SOURCE_QUESTIONS[sid][':question/difficulty'][':db/ident'].rsplit('/',1)[1],'source_id':sid} for name,sid in FAMILIES.items()}
 TEMPLATES.update({'easy_xy':{'level':'easy','source_id':None},'easy_cross':{'level':'easy','source_id':None}})
 BASE={
@@ -34,6 +34,7 @@ BASE={
 'hard_poly':dict(a=5,b=1,h=1,u=0,v=2),
  'trig_cos':dict(a=4,c=1,d=1,u=0,v=1),
 'square_cancel':dict(a=1,b=1,h=1,u=1,v=2),
+'shift_cubic':dict(a=1,b=1,h=1,u=0,v=1),
 'easy_xy':dict(a=1,b=1,c=1,u=0,v=1),
 'easy_cross':dict(a=1,b=1,c=1,u=0,v=1)}
 
@@ -73,6 +74,7 @@ def math_object(name,p):
     elif name=='trig_sin':yt=c*sp.pi*T**2;curve=c*sp.pi*X**2;P,Q=sp.sin(Y/(d*X**2)),a*X
     elif name=='hard_poly':yt=T**2-h;curve=X**2-h;P,Q=a*X**2*Y,b*X**2*(Y+h)
     elif name=='trig_cos':yt=c*sp.pi*T**2;curve=c*sp.pi*X**2;P,Q=sp.cos(Y/(d*X**2)),a*X**2
+    elif name=='shift_cubic':yt=T**3+h;curve=X**3+h;P,Q=a*X,b*(Y-h)
     elif name=='square_cancel':yt=T**2-h;curve=X**2-h;P,Q=a*Y**2,b*X
     else:raise ValueError(name)
     P,Q=map(sp.sympify,(P,Q))

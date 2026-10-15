@@ -1279,6 +1279,122 @@ $$
 $$
 
 
+## Original raw evidence q-90869
+
+If the path $C$ is a part of the curve $y={x}^{3}+1$ traversed from the point $A(0,1)$ to point $B(1,2),$ then ${\int }_{C}x\,dx+(y-1)\,dy=$
+
+1. $2$
+2. $4$
+3. $10$
+4. $5$
+5. $1$
+
+Notice that our curve is given by the explicit Cartesian equation $y={x}^{3}+1.$ As a result, we obtain the following parametrization of the curve:
+
+$$
+\begin{aligned}r(t)=x(t)\,i+y(t)\,j=t\,i+({t}^{3}+1)\,j,\,t\in [0,1]\end{aligned}
+$$
+
+The derivative of $r(t)$ is given by
+
+$$
+\begin{aligned}{r}^{′}(t) & =\frac{\text{d}x}{\text{d}t}\,i+\frac{\text{d}y}{\text{d}t}\,j=i+3{t}^{2}\,j.\end{aligned}
+$$
+
+We can now evaluate the line integral:
+
+$$
+\begin{aligned}{\int }_{C}x\,dx+(y-1)\,dy & ={\int }_{0}^{1}x\,\frac{\text{d}x}{\text{d}t}\,\text{d}t+(y-1)\,\frac{\text{d}y}{\text{d}t}\,\text{d}t \\  & ={\int }_{0}^{1}(x\,\frac{\text{d}x}{\text{d}t}+(y-1)\,\frac{\text{d}y}{\text{d}t})\text{d}t \\  & ={\int }_{0}^{1}t\cdot 1+({t}^{3}+1-1)\cdot 3{t}^{2}\,dt \\  & ={\int }_{0}^{1}t+3{t}^{5}\,dt \\  & ={[\frac{{t}^{2}}{2}+\frac{{t}^{6}}{2}]}_{0}^{1} \\  & =[\frac{1}{2}+\frac{1}{2}]-[0] \\  & =1\end{aligned}
+$$
+
+
+## Observed replay with documented corrections q-90869
+
+If the path $C$ is a part of the curve $y={x}^{3}+1$ traversed from the point $A(0,1)$ to point $B(1,2),$ then ${\int }_{C}x\,dx+(y-1)\,dy=$
+
+1. $2$
+2. $4$
+3. $10$
+4. $5$
+5. $1$
+
+Notice that our curve is given by the explicit Cartesian equation $y={x}^{3}+1.$ As a result, we obtain the following parametrization of the curve:
+
+$$
+\begin{aligned}r(t)=x(t)\,i+y(t)\,j=t\,i+({t}^{3}+1)\,j,\,t\in [0,1]\end{aligned}
+$$
+
+The derivative of $r(t)$ is given by
+
+$$
+\begin{aligned}{r}^{′}(t) & =\frac{\text{d}x}{\text{d}t}\,i+\frac{\text{d}y}{\text{d}t}\,j=i+3{t}^{2}\,j.\end{aligned}
+$$
+
+We can now evaluate the line integral:
+
+$$
+\begin{aligned}{\int }_{C}x\,dx+(y-1)\,dy & ={\int }_{0}^{1}x\,\frac{\text{d}x}{\text{d}t}\,\text{d}t+(y-1)\,\frac{\text{d}y}{\text{d}t}\,\text{d}t \\  & ={\int }_{0}^{1}(x\,\frac{\text{d}x}{\text{d}t}+(y-1)\,\frac{\text{d}y}{\text{d}t})\text{d}t \\  & ={\int }_{0}^{1}t\cdot 1+({t}^{3}+1-1)\cdot 3{t}^{2}\,dt \\  & ={\int }_{0}^{1}t+3{t}^{5}\,dt \\  & ={[\frac{{t}^{2}}{2}+\frac{{t}^{6}}{2}]}_{0}^{1} \\  & =[\frac{1}{2}+\frac{1}{2}]-[0] \\  & =1\end{aligned}
+$$
+
+
+## Generated observed-profile scaling q-90869
+
+If the path $C$ is a part of the curve $y={x}^{3}+1$ traversed from the point $A(0,1)$ to point $B(1,2),$ then $2\left({\int }_{C}x\,dx+(y-1)\,dy\right)=$
+
+1. $2\left(2\right)$
+2. $2\left(4\right)$
+3. $2\left(10\right)$
+4. $2\left(5\right)$
+5. $2\left(1\right)$
+
+Notice that our curve is given by the explicit Cartesian equation $y={x}^{3}+1.$ As a result, we obtain the following parametrization of the curve:
+
+$$
+\begin{aligned}r(t)=x(t)\,i+y(t)\,j=t\,i+({t}^{3}+1)\,j,\,t\in [0,1]\end{aligned}
+$$
+
+The derivative of $r(t)$ is given by
+
+$$
+\begin{aligned}{r}^{′}(t) & =\frac{\text{d}x}{\text{d}t}\,i+\frac{\text{d}y}{\text{d}t}\,j=i+3{t}^{2}\,j.\end{aligned}
+$$
+
+We can now evaluate the line integral:
+
+$$
+\begin{aligned}2\left({\int }_{C}x\,dx+(y-1)\,dy\right) & = 2\left({\int }_{0}^{1}x\,\frac{\text{d}x}{\text{d}t}\,\text{d}t+(y-1)\,\frac{\text{d}y}{\text{d}t}\,\text{d}t\right)\\  & = 2\left({\int }_{0}^{1}(x\,\frac{\text{d}x}{\text{d}t}+(y-1)\,\frac{\text{d}y}{\text{d}t})\text{d}t\right)\\  & = 2\left({\int }_{0}^{1}t\cdot 1+({t}^{3}+1-1)\cdot 3{t}^{2}\,dt\right)\\  & = 2\left({\int }_{0}^{1}t+3{t}^{5}\,dt\right)\\  & = 2\left({[\frac{{t}^{2}}{2}+\frac{{t}^{6}}{2}]}_{0}^{1}\right)\\  & = 2\left([\frac{1}{2}+\frac{1}{2}]-[0]\right)\\  & = 2\left(1\right)\end{aligned}
+$$
+
+
+## Generated observed-profile scaling q-90869
+
+If the path $C$ is a part of the curve $y={x}^{3}+1$ traversed from the point $A(0,1)$ to point $B(1,2),$ then $3\left({\int }_{C}x\,dx+(y-1)\,dy\right)=$
+
+1. $3\left(2\right)$
+2. $3\left(4\right)$
+3. $3\left(10\right)$
+4. $3\left(5\right)$
+5. $3\left(1\right)$
+
+Notice that our curve is given by the explicit Cartesian equation $y={x}^{3}+1.$ As a result, we obtain the following parametrization of the curve:
+
+$$
+\begin{aligned}r(t)=x(t)\,i+y(t)\,j=t\,i+({t}^{3}+1)\,j,\,t\in [0,1]\end{aligned}
+$$
+
+The derivative of $r(t)$ is given by
+
+$$
+\begin{aligned}{r}^{′}(t) & =\frac{\text{d}x}{\text{d}t}\,i+\frac{\text{d}y}{\text{d}t}\,j=i+3{t}^{2}\,j.\end{aligned}
+$$
+
+We can now evaluate the line integral:
+
+$$
+\begin{aligned}3\left({\int }_{C}x\,dx+(y-1)\,dy\right) & = 3\left({\int }_{0}^{1}x\,\frac{\text{d}x}{\text{d}t}\,\text{d}t+(y-1)\,\frac{\text{d}y}{\text{d}t}\,\text{d}t\right)\\  & = 3\left({\int }_{0}^{1}(x\,\frac{\text{d}x}{\text{d}t}+(y-1)\,\frac{\text{d}y}{\text{d}t})\text{d}t\right)\\  & = 3\left({\int }_{0}^{1}t\cdot 1+({t}^{3}+1-1)\cdot 3{t}^{2}\,dt\right)\\  & = 3\left({\int }_{0}^{1}t+3{t}^{5}\,dt\right)\\  & = 3\left({[\frac{{t}^{2}}{2}+\frac{{t}^{6}}{2}]}_{0}^{1}\right)\\  & = 3\left([\frac{1}{2}+\frac{1}{2}]-[0]\right)\\  & = 3\left(1\right)\end{aligned}
+$$
+
+
 ## Generated authored moderate parabola_xy
 
 If the path $C$ is a part of the graph $y=x^{2}$ traversed from the point $A(1,1)$ to point $B(3,9),$ then ${\int }_C\left(2 x\right)\,dx+\left(2 y\right)\,dy=$
@@ -1914,6 +2030,64 @@ We can now evaluate the line integral:
 
 $$
 \begin{aligned}{\int }_C\left(y^{2}\right)\,dx+\left(3 x\right)\,dy &={\int }_{1}^{2}\left(y^{2}\right)\frac{\text{d}x}{\text{d}t}\,\text{d}t+\left(3 x\right)\frac{\text{d}y}{\text{d}t}\,\text{d}t \\  &={\int }_{1}^{2}\left(\left(y^{2}\right)\frac{\text{d}x}{\text{d}t}+\left(3 x\right)\frac{\text{d}y}{\text{d}t}\right)\,dt \\  &={\int }_{1}^{2}\left(\left(t^{2} - 1\right)^{2}\right)\cdot \left(1\right)+\left(3 \left(t\right)\right)\cdot \left(2 t\right)\,dt \\  &={\int }_{1}^{2}t^{4} - 2 t^{2} + 1+6 t^{2}\,dt \\  &={\int }_{1}^{2}t^{4} + 4 t^{2} + 1\,dt \\  &=\left[t+\frac{t^{5}}{5}+\frac{4 t^{3}}{3}\right]_{1}^{2} \\  &=[\left(2\right)+\frac{\left(2\right)^{5}}{5}+\frac{4 \left(2\right)^{3}}{3}]-[\left(1\right)+\frac{\left(1\right)^{5}}{5}+\frac{4 \left(1\right)^{3}}{3}] \\  &=[2+\frac{32}{5}+\frac{32}{3}]-[1+\frac{1}{5}+\frac{4}{3}] \\  &=\frac{248}{15}\end{aligned}
+$$
+
+
+## Generated authored moderate shift_cubic
+
+If the path $C$ is a part of the graph $y=x^{3} + 1$ traversed from the point $A(1,2)$ to point $B(3,28),$ then ${\int }_C\left(2 x\right)\,dx+\left(2 y - 2\right)\,dy=$
+
+1. $736$
+2. $-720$
+3. $8$
+4. $728$
+5. $-736$
+
+Notice that our curve is given by the explicit Cartesian equation $y=x^{3} + 1.$ As a result, we obtain the following parametrization of the curve:
+
+$$
+\begin{aligned}r(t)=x(t)\,i+y(t)\,j=\left(t\right)\,i+\left(t^{3} + 1\right)\,j,\,t\in [1,3]\end{aligned}
+$$
+
+The derivative of $r(t)$ is given by
+
+$$
+\begin{aligned}{r}^{′}(t)&=\frac{\text{d}x}{\text{d}t}\,i+\frac{\text{d}y}{\text{d}t}\,j=\left(1\right)\,i+\left(3 t^{2}\right)\,j.\end{aligned}
+$$
+
+We can now evaluate the line integral:
+
+$$
+\begin{aligned}{\int }_C\left(2 x\right)\,dx+\left(2 y - 2\right)\,dy &={\int }_{1}^{3}\left(2 x\right)\frac{\text{d}x}{\text{d}t}\,\text{d}t+\left(2 y - 2\right)\frac{\text{d}y}{\text{d}t}\,\text{d}t \\  &={\int }_{1}^{3}\left(\left(2 x\right)\frac{\text{d}x}{\text{d}t}+\left(2 y - 2\right)\frac{\text{d}y}{\text{d}t}\right)\,dt \\  &={\int }_{1}^{3}\left(2 \left(t\right)\right)\cdot \left(1\right)+\left(2 \left(t^{3} + 1\right) - 2\right)\cdot \left(3 t^{2}\right)\,dt \\  &={\int }_{1}^{3}2 t+6 t^{5}\,dt \\  &={\int }_{1}^{3}6 t^{5} + 2 t\,dt \\  &=\left[t^{2}+t^{6}\right]_{1}^{3} \\  &=[\left(3\right)^{2}+\left(3\right)^{6}]-[\left(1\right)^{2}+\left(1\right)^{6}] \\  &=[9+729]-[1+1] \\  &=736\end{aligned}
+$$
+
+
+## Generated authored moderate shift_cubic
+
+If the path $C$ is a part of the graph $y=x^{3} + 1$ traversed from the point $A(1,2)$ to point $B(2,9),$ then ${\int }_C\left(x\right)\,dx+\left(3 y - 3\right)\,dy=$
+
+1. $96$
+2. $\frac{189}{2}$
+3. $\frac{3}{2}$
+4. $-93$
+5. $-96$
+
+Notice that our curve is given by the explicit Cartesian equation $y=x^{3} + 1.$ As a result, we obtain the following parametrization of the curve:
+
+$$
+\begin{aligned}r(t)=x(t)\,i+y(t)\,j=\left(t\right)\,i+\left(t^{3} + 1\right)\,j,\,t\in [1,2]\end{aligned}
+$$
+
+The derivative of $r(t)$ is given by
+
+$$
+\begin{aligned}{r}^{′}(t)&=\frac{\text{d}x}{\text{d}t}\,i+\frac{\text{d}y}{\text{d}t}\,j=\left(1\right)\,i+\left(3 t^{2}\right)\,j.\end{aligned}
+$$
+
+We can now evaluate the line integral:
+
+$$
+\begin{aligned}{\int }_C\left(x\right)\,dx+\left(3 y - 3\right)\,dy &={\int }_{1}^{2}\left(x\right)\frac{\text{d}x}{\text{d}t}\,\text{d}t+\left(3 y - 3\right)\frac{\text{d}y}{\text{d}t}\,\text{d}t \\  &={\int }_{1}^{2}\left(\left(x\right)\frac{\text{d}x}{\text{d}t}+\left(3 y - 3\right)\frac{\text{d}y}{\text{d}t}\right)\,dt \\  &={\int }_{1}^{2}\left(\left(t\right)\right)\cdot \left(1\right)+\left(3 \left(t^{3} + 1\right) - 3\right)\cdot \left(3 t^{2}\right)\,dt \\  &={\int }_{1}^{2}t+9 t^{5}\,dt \\  &={\int }_{1}^{2}9 t^{5} + t\,dt \\  &=\left[\frac{t^{2}}{2}+\frac{3 t^{6}}{2}\right]_{1}^{2} \\  &=[\frac{\left(2\right)^{2}}{2}+\frac{3 \left(2\right)^{6}}{2}]-[\frac{\left(1\right)^{2}}{2}+\frac{3 \left(1\right)^{6}}{2}] \\  &=[2+96]-[\frac{1}{2}+\frac{3}{2}] \\  &=96\end{aligned}
 $$
 
 

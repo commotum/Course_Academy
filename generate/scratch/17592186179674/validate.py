@@ -134,7 +134,7 @@ def inspect(record,allow_ambiguity=False):
 
 def main():
     assert set(g.FAMILIES.values())==set(g.SOURCE_QUESTIONS)
-    counts=dict(source_questions=11,source_values=55,source_designations=11,raw_exact_prompts=0,raw_exact_solutions=0,raw_exact_values=0,raw_banks_replayed=0,valid_raw_banks=10,repaired_valid_banks=11,repaired_original_value_matches=54,authored_questions=0,displayed_math_rows=0,native_checks=0)
+    counts=dict(source_questions=len(g.FAMILIES),source_values=5*len(g.FAMILIES),source_designations=len(g.FAMILIES),raw_exact_prompts=0,raw_exact_solutions=0,raw_exact_values=0,raw_banks_replayed=0,valid_raw_banks=len(g.FAMILIES)-1,repaired_valid_banks=len(g.FAMILIES),repaired_original_value_matches=5*len(g.FAMILIES)-1,authored_questions=0,displayed_math_rows=0,native_checks=0)
     cases=[];reviews=[];fixtures=[]
     for name,sid in g.FAMILIES.items():
         level=g.TEMPLATES[name]['level'];case={'source_id':sid,'template':name,'level':level,'parameters':{'scale':1},'bank_profile':'raw_observed'};cases.append(case)

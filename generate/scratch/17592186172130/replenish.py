@@ -35,7 +35,18 @@ QUERY = '''[:find (pull ?kp [* {:knowledge-point/question-generator [*]}
  {:answer-field/correct [* {:answer/type [:db/ident]}]}
  {:answer-field/choices [* {:answer/type [:db/ident]}]}]}]}])
  :in $ ?kp :where [?kp :knowledge-point/id _]]'''
-ANOMALIES = {'q-160711':'duplicate field missing correct designation', 'q-160712':'incorrect displayed metric and missing half-plane restriction', 'q-161134':'missing half-plane restriction for norm', 'q-161286':'incorrect cross-product row and missing half-plane restriction', 'q-161135':'incorrect signed-coordinate substitution label'}
+ANOMALIES = {'q-160712':'incorrect displayed metric and missing half-plane restriction', 'q-161134':'missing half-plane restriction for norm', 'q-161286':'incorrect cross-product row and missing half-plane restriction', 'q-161135':'incorrect signed-coordinate substitution label'}
+
+def captured_shape(q):
+    sid = q[':question/math-academy-id']
+    old = next(x for x in g.Q if x[':question/math-academy-id']==sid)
+    old = {k:x for k,x in old.items() if not k.startswith(':knowledge-point/_')}
+    if sid == 'q-160711':
+        # The current source has already retired the unkeyed duplicate field.
+        # Its remaining field exactly matches the keyed historical field.
+        assert {f[':db/id'] for f in q[':question/answer-fields']} == {17592186401200}
+        old[':question/answer-fields'] = [f for f in old[':question/answer-fields'] if ':answer-field/correct' in f]
+    return old
 
 def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
@@ -117,8 +128,9 @@ def counts(kp, basis, path):
             if sid:
                 name = next(n for n,s in g.BY_NAME.items() if s[':question/math-academy-id']==sid)
                 rec = g.generate(level,template=name,profile='observed',parameters={'k':1})
-                captured = {k:x for k,x in g.BY_NAME[name].items() if not k.startswith(':knowledge-point/_')}
+                captured = captured_shape(q)
                 assert h.source_shape(q,captured) == h.canonical(captured)
+                rec['question'] = h.normalize(q)
                 # Source bank correctness was independently checked by source_math_audit.
             else:
                 rec = known[str(q[':question/id'])]
@@ -192,10 +204,10 @@ def main():
         kp = read_kp(path,basis)
         atomic_text(path/'before.edn',dumps(kp)+'\n')
         current = {q.get(':question/math-academy-id'):q for q in kp[':knowledge-point/questions']}
-        for sid,old in [(q[':question/math-academy-id'],q) for q in g.Q]:
-            # Ignore reverse memberships absent from this projection.
-            old = {k:x for k,x in old.items() if not k.startswith(':knowledge-point/_')}
+        for sid in [q[':question/math-academy-id'] for q in g.Q]:
+            old = captured_shape(current[sid])
             assert h.source_shape(current[sid],old) == h.canonical(old),'Source changed; reclassification required'
+        atomic_json(path/'source-refresh.json',{'historical_basis':1356,'current_basis':basis,'source_questions':12,'current_banks':12,'change':{'question':'q-160711','historical_fields':[17592186169113,17592186401200],'current_fields':[17592186401200],'removed_field':'legacy unkeyed duplicate; already absent before this job','remaining_field':'exact historical keyed bank preserved; all five options and correct designation match'},'remaining_source_content_matches_historical':True,'current_exclusions':ANOMALIES})
         source = DB.query('[:find ?e :where [?e :db/ident :application/ca-engine]]',[],path,'contributor',basis)
         assert len(source)==1
         gen = kp.get(':knowledge-point/question-generator')

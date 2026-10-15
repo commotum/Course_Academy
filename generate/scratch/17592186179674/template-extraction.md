@@ -460,7 +460,7 @@ Parameterize the same Cartesian graph using its convenient coordinate, compute x
 
 ## 3. Components and bank accounting
 
-Every original option is mapped above to its original field, exact value, designation, original parameters, complete source profile and explicit scaling operation. Prompt curve/endpoints, source parameterization and derivative stay fixed in replay; the complete assessed one-form and every evaluation stage scale together by an integer 1..6. k=1 yields all 11 exact raw prompts, all 11 exact raw solutions and all 55 exact raw choice strings. Raw q-124664 retains one wrong/wrong equivalence and is evidence-only. Normal observed replay minimally changes that one option; its other 54 values match their sources mathematically, and all 11 repaired profiles are valid.
+Every original option is mapped above to its original field, exact value, designation, original parameters, complete source profile and explicit scaling operation. Prompt curve/endpoints, source parameterization and derivative stay fixed in replay; the complete assessed one-form and every evaluation stage scale together by an integer 1..6. k=1 yields all 12 exact raw prompts, all 12 exact raw solutions and all 60 exact raw choice strings. Raw q-124664 retains one wrong/wrong equivalence and is evidence-only. Normal observed replay minimally changes that one option; its other 59 values match their sources mathematically, and all 12 repaired profiles are valid.
 
 ## 4. Reusable templates and constraints
 
@@ -483,3 +483,11 @@ Content UUID depends on version and actual printed prompt, fixed solution, full 
 ## Original widget inspection
 
 Original MA3703 widgets q39344/q81178 confirm five-option multiple-choice layout and captured values. Other assigned question widgets are absent from the local six-question lesson snapshot; fixed-basis source capture remains their evidence. widget-evidence.json preserves those checks and the explicit linked curriculum order.
+
+## Current-source addition: q-90869 / shift_cubic
+
+Observed prompt: curve y=x³+1, endpoints A(0,1), B(1,2), and integral ∫[x dx+(y−1)dy]. Moderate, field `selection`, one math radio with five answers. Original bank/profile, in captured order: 10 (incorrect), 4 (incorrect), 2 (incorrect), 1 (correct), 5 (incorrect). Every complete scalar pattern is replayed under uniform one-form scaling k: 10k, 4k, 2k, k, 5k. Original error intentions remain unresolved, so this profile stays replay-only.
+
+Observed parameters are a=b=h=1, u=0, v=1. The full ordered evaluation is the separate dx/dy integral; their combined integrand; coordinate substitution t·1+(t³+1−1)·3t²; t+3t⁵; [t²/2+t⁶/2]₀¹; [1/2+1/2]−[0]; 1. The literal parameterization/derivative prose and all seven source evaluation rows replay exactly.
+
+Authored slots: curve y=x³+h, P=ax, Q=b(y−h), positive a,b,h∈{1,2,3}, 0≤u<v≤3. The shift in the graph and Q changes together so the same cancellation, derivative, substitution, polynomial integration, and endpoint stages are preserved. The authored bank is the existing complete method profile I, I_dx, I_dy, −I, I_dx−I_dy, rejected as a whole on any collision. Equal dx/dy values at the original parameters make the authored bank unsuitable there; raw source replay still reproduces the five valid original answers exactly. No graph image is required. Current source capture is retained at basis 2731, and original basis-1356 capture is archived under reference/.
