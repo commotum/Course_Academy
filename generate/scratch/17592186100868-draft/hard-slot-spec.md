@@ -1,0 +1,11 @@
+# Hard slots defined before the revision
+
+The existing hard templates keep their three rows, nine ordered dot-product positions, scalar-variable roles, zero positions, cancellations, full-column radio/three-component blank response contracts, shared solution prose, and original stage sequence.
+
+Normal authored hard instances multiply each whole matrix row by its independent gain in {-2,-1,1,2}. No gain is zero. The matching vector operand remains the source column. Thus each cancellation within a row remains a cancellation; an originally zero row result remains zero, and a nonzero row polynomial remains nonzero. This changes the assessed signed products and resulting components without adding operations. Each row gain applies to all its nonzero matrix entries, ordered product factors, evaluated terms, final component and every authored bank vector component.
+
+Existing hard caps remain: absolute numeric coefficients of factors ≤2, individual products ≤4, collected result components and complete displayed banks ≤4. Whole instances that violate any cap are ineligible. This restricts a source row already containing a coefficient2 to gain±1. Otherwise gain±1/±2 is eligible. Source observed profiles require row gains [1,1,1]; their complete original banks remain under their existing restricted recipes. The normal authored radio banks derive from the actual operands, and authored blanks derive their exact scalar components.
+
+For normal hard sampling, scalar substitutions and any older common matrix gain stay at1; each eligible row-gain tuple is visited by seed modulo the finite per-family domain. Explicit positive scalar/matrix-gain parameters remain supported under the same caps, but do not inflate the new domain counts. Names, option orders, profiles, and zero-multiplied entries do not count as mathematical variety.
+
+Expected finite row-gain domains before canonical task deduplication: q-12727016, q-27559764, q-31858964, q-31859132, q-7022664. Validation will enumerate actual valid combinations, independently read displayed operands/products/results/banks, verify held-other-row changes and cancellation/zero patterns, exercise public default generators at every per-family domain index, and report actual canonical union size and unqualified default-seed coverage separately.

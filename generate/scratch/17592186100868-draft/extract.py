@@ -10,7 +10,7 @@ R=D/'reference'; F=ROOT/'generate/runs/current/refresh-2026-10-14'
 for name,src in [('topic.json',F/'topics/17592186050825.json'),('lesson.json',F/'lessons/17592186050825.json'),('supplemental-current-source.json',ROOT/'generate/runs/current/sources/17592186100868.json'),('ma-original-1195.json',Path('/home/jake/Developer/MA/DATA/Lessons/1195/Source/1195.json'))]:
  if src.exists():shutil.copyfile(src,R/name)
 for p in [ROOT/'generate/principles.md',ROOT/'generate/runs/current/worker-instructions.md',ROOT/'docs/math-content.md',*sorted((ROOT/'generate/docs').glob('[3-7]-*.md'))]:shutil.copyfile(p,R/p.name)
-wrapper=json.loads((R/'source-wrapper.json').read_text());src=wrapper['record'];(D/'source.json').write_text(json.dumps(src,indent=2)+'\n')
+wrapper=json.loads((R/'source-wrapper.json').read_text());src=wrapper['record'];shutil.copyfile(R/'source-wrapper.json',D/'source.json');(D/'source-record.json').write_text(json.dumps(src,indent=2)+'\n')
 shutil.copyfile(ROOT/'scripts/question_capture/math_format.py',D/'math_format.py')
 def spans(text):
  out=[];end=0

@@ -1,0 +1,197 @@
+[
+  {
+    "label": "normal-explicit-e",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124644,
+        "id": "facdd9e7-8fcb-5ad1-b9c1-82c0f753df1a",
+        "title": "Evaluating a Partial Derivative at a Point"
+      },
+      "question": {
+        ":question/problem": "For the function $f(x,y)=e^{x} \\ln{(y )}+y x^{7},$ evaluate $\\frac{\u2202f}{\u2202y}$ at the point $(1,\\frac{1}{2}).$ Give an exact answer: {{value}}",
+        ":question/worked-solution": "We differentiate the given function with respect to $y,$ treating all other variables as constants:\n\nAdditionally, we use the sum and constant multiple rules for differentiation, as follows:\n\n$$\n\\begin{aligned}\\frac{\u2202f}{\u2202y} & =\\frac{\u2202}{\u2202y}(e^{x} \\ln{(y )}+y x^{7}) \\\\  & =\\frac{\u2202}{\u2202y}(e^{x} \\ln{(y )})+\\frac{\u2202}{\u2202y}(y x^{7}) \\\\  & =e^{x}\\cdot \\frac{\u2202}{\u2202y}(\\ln{(y )})+x^{7}\\cdot \\frac{\u2202}{\u2202y}(y) \\\\  & =e^{x}\\cdot (\\frac{1}{y})+x^{7}\\cdot (1) \\\\  & =\\frac{e^{x}}{y}+x^{7}\\end{aligned}\n$$\n\nFinally, we evaluate the partial derivative at the point $(1,\\frac{1}{2}):$\n\n$$\n\\begin{aligned}\\frac{\u2202f}{\u2202y}{|}_{(1,\\frac{1}{2})} & =\\frac{e^{(1)}}{(\\frac{1}{2})}+(1)^{7} \\\\  & =1 + 2 \\cdot e\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/id": "e0960235-4829-5b67-bc8b-e57f542e53b7",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "01e1d9ad-ad61-529b-aef8-22ee064550b0",
+            ":answer-field/key": "value",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "f6873f7f-2335-54ee-9eff-b262520b2c61",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "1 + 2 \\cdot e"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "f6873f7f-2335-54ee-9eff-b262520b2c61"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "partial-point-draft-v1",
+        "template": "synthetic-scalar-parser-diagnostic-normal-explicit-e",
+        "seed": 0,
+        "parameters": {
+          "a": "1",
+          "b": "1",
+          "n": "7",
+          "m": "2",
+          "U": "1/2",
+          "V": "1",
+          "target": "y"
+        },
+        "bank_profile": "method-sum-bank",
+        "mathematical_fingerprint": "72f7b867f3dcd786a2cd37aa4aea7de1ef272ed077b12e57ea157c1789a06015",
+        "source_id": "q-159599",
+        "source_basis": 2275,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "difficulty_evidence": "observed",
+        "solution_stages": {
+          "derivative": [
+            "\\frac{\u2202}{\u2202y}(e^{x} \\ln{(y )}+y x^{7})",
+            "\\frac{\u2202}{\u2202y}(e^{x} \\ln{(y )})+\\frac{\u2202}{\u2202y}(y x^{7})",
+            "e^{x}\\cdot \\frac{\u2202}{\u2202y}(\\ln{(y )})+x^{7}\\cdot \\frac{\u2202}{\u2202y}(y)",
+            "e^{x}\\cdot (\\frac{1}{y})+x^{7}\\cdot (1)",
+            "\\frac{e^{x}}{y}+x^{7}"
+          ],
+          "point_evaluation": [
+            "\\frac{e^{(1)}}{(\\frac{1}{2})}+(1)^{7}",
+            "1 + 2 \\cdot e"
+          ]
+        },
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted": "1 + 2 \\cdot e",
+        "expected": "accepted",
+        "purpose": "actual normalized generated scalar"
+      },
+      {
+        "submitted": "1+2*e",
+        "expected": "accepted",
+        "purpose": "legitimate reordered equivalent"
+      },
+      {
+        "submitted": "e/(1/2)+1",
+        "expected": "accepted",
+        "purpose": "legitimate uncollected substitution quotient"
+      },
+      {
+        "submitted": "20",
+        "expected": "rejected",
+        "purpose": "known-wrong scientific value of raw2e+1"
+      },
+      {
+        "submitted": "2e+1",
+        "expected": "rejected",
+        "purpose": "native reads this raw string as scientific20"
+      }
+    ]
+  },
+  {
+    "label": "raw-source-e-typography",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186124644,
+        "id": "facdd9e7-8fcb-5ad1-b9c1-82c0f753df1a",
+        "title": "Evaluating a Partial Derivative at a Point"
+      },
+      "question": {
+        ":question/problem": "For the function $f(x,y)=e^{x} \\ln{(y )}+y x^{7},$ evaluate $\\frac{\u2202f}{\u2202y}$ at the point $(1,\\frac{1}{2}).$ Give an exact answer: {{value}}",
+        ":question/worked-solution": "We differentiate the given function with respect to $y,$ treating all other variables as constants:\n\nAdditionally, we use the sum and constant multiple rules for differentiation, as follows:\n\n$$\n\\begin{aligned}\\frac{\u2202f}{\u2202y} & =\\frac{\u2202}{\u2202y}(e^{x} \\ln{(y )}+y x^{7}) \\\\  & =\\frac{\u2202}{\u2202y}(e^{x} \\ln{(y )})+\\frac{\u2202}{\u2202y}(y x^{7}) \\\\  & =e^{x}\\cdot \\frac{\u2202}{\u2202y}(\\ln{(y )})+x^{7}\\cdot \\frac{\u2202}{\u2202y}(y) \\\\  & =e^{x}\\cdot (\\frac{1}{y})+x^{7}\\cdot (1) \\\\  & =\\frac{e^{x}}{y}+x^{7}\\end{aligned}\n$$\n\nFinally, we evaluate the partial derivative at the point $(1,\\frac{1}{2}):$\n\n$$\n\\begin{aligned}\\frac{\u2202f}{\u2202y}{|}_{(1,\\frac{1}{2})} & =\\frac{e^{(1)}}{(\\frac{1}{2})}+(1)^{7} \\\\  & =1 + 2 \\cdot e\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/id": "e0960235-4829-5b67-bc8b-e57f542e53b7",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "92bb7a30-965f-5c96-bc78-533c2d28ac11",
+            ":answer-field/key": "value",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "6c22c8c5-c47e-5e55-8944-b77ddc81577e",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2e+1"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "6c22c8c5-c47e-5e55-8944-b77ddc81577e"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "partial-point-draft-v1",
+        "template": "synthetic-scalar-parser-diagnostic-raw-source-e-typography",
+        "seed": 0,
+        "parameters": {
+          "a": "1",
+          "b": "1",
+          "n": "7",
+          "m": "2",
+          "U": "1/2",
+          "V": "1",
+          "target": "y"
+        },
+        "bank_profile": "method-sum-bank",
+        "mathematical_fingerprint": "72f7b867f3dcd786a2cd37aa4aea7de1ef272ed077b12e57ea157c1789a06015",
+        "source_id": "q-159599",
+        "source_basis": 2275,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "difficulty_evidence": "observed",
+        "solution_stages": {
+          "derivative": [
+            "\\frac{\u2202}{\u2202y}(e^{x} \\ln{(y )}+y x^{7})",
+            "\\frac{\u2202}{\u2202y}(e^{x} \\ln{(y )})+\\frac{\u2202}{\u2202y}(y x^{7})",
+            "e^{x}\\cdot \\frac{\u2202}{\u2202y}(\\ln{(y )})+x^{7}\\cdot \\frac{\u2202}{\u2202y}(y)",
+            "e^{x}\\cdot (\\frac{1}{y})+x^{7}\\cdot (1)",
+            "\\frac{e^{x}}{y}+x^{7}"
+          ],
+          "point_evaluation": [
+            "\\frac{e^{(1)}}{(\\frac{1}{2})}+(1)^{7}",
+            "1 + 2 \\cdot e"
+          ]
+        },
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        }
+      }
+    },
+    "checks": [
+      {
+        "submitted": "2e+1",
+        "expected": "accepted",
+        "purpose": "raw source scalar equals itself through parser"
+      },
+      {
+        "submitted": "20",
+        "expected": "accepted",
+        "purpose": "KNOWN native parser semantic failure: wrong scientific value accepted by synthetic blank"
+      },
+      {
+        "submitted": "1+2*e",
+        "expected": "rejected",
+        "purpose": "KNOWN native parser semantic failure: genuine equivalent rejected by synthetic blank"
+      },
+      {
+        "submitted": "e/(1/2)+1",
+        "expected": "rejected",
+        "purpose": "KNOWN native parser semantic failure: genuine uncollected equivalent rejected"
+      }
+    ]
+  }
+]

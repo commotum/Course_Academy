@@ -95,7 +95,8 @@ def check(r):
  math_counts['records']+=1
  return out
 
-sources=json.loads((D/'source.json').read_text())[':knowledge-point/questions'];byid={q[':question/math-academy-id']:q for q in sources};cases=json.loads((D/'source-cases.json').read_text())
+source_wrapper=json.loads((D/'source.json').read_text());assert source_wrapper['database']=='math' and source_wrapper['basis']==2275 and source_wrapper['lineage']=='01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1';assert (D/'source.json').read_bytes()==(REPO/'generate/runs/current/refresh-2026-10-14/sources/17592186100868.json').read_bytes()
+sources=source_wrapper['record'][':knowledge-point/questions'];byid={q[':question/math-academy-id']:q for q in sources};cases=json.loads((D/'source-cases.json').read_text())
 replays=[];fidelity={'originals':len(sources),'complete_banks_matched':0,'choices_matched':0,'distractors_matched':0,'original_correct_designations_matched':0,'original_correct_designations_present':0,'field_shapes_matched':0,'solution_prose_sequence_matched':0,'solution_prose_sequence_present':0,'prompt_masks_matched':0,'raw_exact_solution_strings':0,'source_correct_repairs':1,'source_solution_repairs':1}
 for c in cases:
  r=G.generate(c['level'],template=c['template'],parameters=c['parameters'],profile=c['profile']);check(r);replays.append(r);src=byid[c['source_id']]
@@ -123,7 +124,7 @@ save('source-replays.json',replays);save('source-fidelity.json',fidelity)
 # coefficient held-data change and renaming probes. Fixed target is the entire vector.
 review=[];allrecords=list(replays);slots=[];ids={};unique={l:set() for l in ['easy','moderate','hard']}
 for sid,t in G.TEMPLATES.items():
- for profile in (['observed','authored-operations'] if t['fields'][0]['type']=='radio' and sid!='q-13554' else ['observed']):
+ for profile in (['observed','authored-operations'] if (t['fields'][0]['type']=='radio' and sid!='q-13554') or t['level']=='hard' else ['observed']):
   for seed in range(20):
    r=G.generate(t['level'],seed+40,template=sid,profile=profile);check(r);allrecords.append(r);unique[t['level']].add(r['generation']['mathematical_fingerprint'])
    if seed<2:review.append({'label':'Generated '+sid+' '+profile+' '+str(seed),'record':r})
@@ -168,6 +169,43 @@ for sid in ['q-275597','q-318589','q-70226']:
  for gain in [1,2]:
   p=copy.deepcopy(next(c['parameters'] for c in cases if c['source_id']==sid));p['matrix_gain']=gain;r=G.generate('hard',template=sid,parameters=p,profile='observed');check(r);allrecords.append(r)
  slots.append({'template':sid,'slot':'matrix_gain','held_other_data':True,'values':[1,2]})
+# Enumerate the exact finite normal hard row-gain domains through the public
+# default profile, independently validating printed factors, zero patterns and banks.
+hard_domains={};hard_union=set();default_union=set();domain_records=[]
+for sid,domain in G.HARD_ROW_GAINS.items():
+ t=G.TEMPLATES[sid];hashes=set();gain_seen=[set(),set(),set()]
+ sourcecase=next(c for c in cases if c['source_id']==sid)
+ anchor=G.generate_hard(template=sid,parameters=sourcecase['parameters'],profile='observed')
+ anchor_mats=matrices(anchor['question'][':question/problem']);anchor_rows=[[parse(c) for c in row] for row in anchor_mats[0]];anchor_vector=[parse(row[0]) for row in anchor_mats[1]]
+ anchor_out=[S.expand(sum(a*b for a,b in zip(row,anchor_vector))) for row in anchor_rows]
+ for idx,gains in enumerate(domain):
+  r=G.generate_hard(idx,template=sid);assert r['generation']['profile']=='authored-operations';assert r['generation']['parameters']['row_gains']==list(gains)
+  check(r);allrecords.append(r);domain_records.append(r);fp=r['generation']['mathematical_fingerprint'];hashes.add(fp);hard_union.add(fp)
+  # Read actual printed objects; row gains cannot move zeros or break cancellation.
+  rm=matrices(r['question'][':question/problem']);rows=[[parse(c) for c in row] for row in rm[0]];vec=[parse(row[0]) for row in rm[1]];assert vec==anchor_vector
+  for i,row in enumerate(rows):
+   gain_seen[i].add(gains[i]);assert all(equal(a,gains[i]*b) for a,b in zip(row,anchor_rows[i]));assert [a==0 for a in row]==[a==0 for a in anchor_rows[i]]
+   out=S.expand(sum(a*b for a,b in zip(row,vec)));assert equal(out,gains[i]*anchor_out[i]);assert (out==0)==(anchor_out[i]==0)
+  same=G.generate_hard(idx+len(domain),template=sid);assert same['question'][':question/id']==r['question'][':question/id']
+ assert len(hashes)==len(domain)
+ # Held-other-row changes test the permitted gain of each row independently.
+ held=[]
+ for rowidx in range(3):
+  eligible=[]
+  for gain in [-2,-1,1,2]:
+   params=copy.deepcopy(sourcecase['parameters']);params['row_gains']=[1,1,1];params['row_gains'][rowidx]=gain
+   try:r=G.generate_hard(template=sid,parameters=params,profile='authored-operations')
+   except ValueError as e:assert 'workload' in str(e);continue
+   check(r);eligible.append(gain);rm=matrices(r['question'][':question/problem']);rows=[[parse(c) for c in row] for row in rm[0]]
+   for i,row in enumerate(rows):assert all(equal(a,(gain if i==rowidx else 1)*b) for a,b in zip(row,anchor_rows[i]))
+  held.append(eligible);slots.append({'template':sid,'slot':'row_gain/'+str(rowidx+1),'held_other_rows':True,'values':eligible})
+ hard_domains[sid]={'eligible_gain_tuples':len(domain),'distinct_canonical_tasks':len(hashes),'normal_default_seeds_tested':len(domain),'normal_default_coverage':len(hashes),'gain_values_by_row':[sorted(x) for x in gain_seen],'held_other_rows_values':held}
+# Unqualified default selects a template as well as gains. Report the actual
+# bounded seed coverage separately from complete per-family default coverage.
+for seed in range(512):
+ r=G.generate_hard(seed);fp=r['generation']['mathematical_fingerprint'];assert fp in hard_union;default_union.add(fp)
+save('hard-domain.json',{'source_basis':2275,'normal_scope':'source scalar coefficients and column; independent eligible signed row gains; fixed source zero/cancellation patterns and stage contracts','per_family':hard_domains,'canonical_union_size':len(hard_union),'normal_per_family_default_coverage':sum(v['normal_default_coverage'] for v in hard_domains.values()),'unqualified_default_seed_count':512,'unqualified_default_distinct_tasks':len(default_union),'all_names_profiles_and_zero_multiplied_entries_excluded':True})
+save('hard-domain-records.json',domain_records)
 save('slot-coverage.json',slots);save('review.json',review)
 # Exhaustive meaningful coefficient domains, without name/option inflation.
 enumerated={}
@@ -246,5 +284,5 @@ for item in review:
  reviewmd+=[r['question'][':question/worked-solution']]
 (D/'review.md').write_text('\n\n'.join(reviewmd)+'\n')
 save('render-records.json',replays+[x['record'] for x in review])
-report={'status':'pass','source_fidelity':fidelity,'mathematics':math_counts,'generated_native_records':len(allrecords),'workload_caps':G.WORKLOAD,'numeric_workload_negative_controls':['q-318595 p-scale4 q-scale5 (96p²)','matrix coefficient7','matrix coefficient wrong sign'],'enumerated_domains':enumerated,'sampled_unique_math_tasks':{k:len(v) for k,v in unique.items()},'negative_controls_detected':negative,'runtime':{'python':platform.python_version(),'sympy':S.__version__},'registered_numeric_work':'absent before imports; untouched; final baseline recheck required','limits':['No source difficulty/correct/solution for q-13554: easy level and mathematical repair are authored, never counted as observed designations/solution.','All source banks match as complete algebraic vectors; source distractor intent remains unverified. Observed bank profiles preserve expression patterns, normal radio defaults use a separate authored operations profile.','Raw exact worked-solution TeX differs due to structural matrix normalization; complete shared prose, stage count, ordered row products, evaluated terms and final mathematical values are checked separately.','Native scalar equivalence is tested on actual uncollected row products; native radio grading tests selected owned answer identities, with vector equivalence checked independently.']}
+report={'status':'pass','source_fidelity':fidelity,'mathematics':math_counts,'generated_native_records':len(allrecords),'workload_caps':G.WORKLOAD,'numeric_workload_negative_controls':['q-318595 p-scale4 q-scale5 (96p²)','matrix coefficient7','matrix coefficient wrong sign'],'enumerated_domains':enumerated,'sampled_unique_math_tasks':{k:len(v) for k,v in unique.items()},'normal_hard_domain_size':len(hard_union),'normal_hard_per_family_default_coverage':sum(v['normal_default_coverage'] for v in hard_domains.values()),'unqualified_default_hard_512_seed_coverage':len(default_union),'source_provenance':{k:source_wrapper[k] for k in ['database','basis','lineage']},'negative_controls_detected':negative,'runtime':{'python':platform.python_version(),'sympy':S.__version__},'registered_numeric_work':'absent before imports; untouched; final baseline recheck required','limits':['No source difficulty/correct/solution for q-13554: easy level and mathematical repair are authored, never counted as observed designations/solution.','All source banks match as complete algebraic vectors; source distractor intent remains unverified. Observed bank profiles preserve expression patterns, normal radio defaults use a separate authored operations profile.','Raw exact worked-solution TeX differs due to structural matrix normalization; complete shared prose, stage count, ordered row products, evaluated terms and final mathematical values are checked separately.','Native scalar equivalence is tested on actual uncollected row products; native radio grading tests selected owned answer identities, with vector equivalence checked independently.','Native reserved ln token is documented by separate parser-limit-report.json: two supported disambiguated/uncollected checks accepted and one deliberately unspaced diagnostic unresolved.','Normal hard row-gain domain is exhaustively enumerated separately; broader explicit legacy scalar combinations remain bounded by the same workload caps. Names, profiles, option order and zero-multiplied matrix entries do not inflate canonical counts.']}
 save('validation.json',report);print(json.dumps(report,indent=2))

@@ -36,10 +36,10 @@ SPECS={
 }
 
 def tex(e):
- return MF.normalize_tex(S.latex(e, mul_symbol=None, inv_trig_style='full', order='lex'))
+ return MF.normalize_tex(S.latex(e, mul_symbol=None, inv_trig_style='full', ln_notation=True, order='lex'))
 def ident(value): return str(uuid.uuid5(NS,json.dumps(value,sort_keys=True,ensure_ascii=False,separators=(',',':'))))
 def c0(text):
- if any(ord(c)<32 and c not in '\n\t\r' for c in text): raise ValueError('C0 control character')
+ if any(ord(c)<32 and c not in '\n\t' for c in text): raise ValueError('C0 control character')
 def exprs(name,p):
  """Return ordered (held coefficient,target factor) components and complete bank.
  Each wrong expression is an explicit observed operation pattern, not perturbation.
@@ -118,7 +118,7 @@ def row_data(name,p):
   split.append(sign+derivative(ah*g,u))
   extract.append(sign+tex(ah)+r'\cdot '+derivative(g,u))
   dg=S.sec(u)**2 if name=='tan_power' and i==0 else S.diff(g,u)
-  evaluated.append(sign+tex(ah)+r'\cdot '+('('+tex(dg)+')' if name in ('sin_poly','reciprocal','constant_sin','inverse_power') else tex(dg)))
+  evaluated.append(sign+tex(ah)+r'\cdot '+('('+tex(dg)+')' if name in ('sin_poly','reciprocal','constant_sin','inverse_power') or dg.could_extract_minus_sign() else tex(dg)))
  if name=='exp_sum':
   split[0]=derivative(S.exp(p['a']*v)*S.exp(p['b']*u),u)
   # Keep explicitly separated exponential factors even though SymPy can combine.
@@ -142,7 +142,7 @@ def validate_parameters(name,p):
  _,_,_,bank,C=exprs(name,p)
  for i,e in enumerate(bank):
   for z in bank[:i]:
-   if S.simplify(S.trigsimp(e-z))==0:raise ValueError('colliding complete bank')
+   if S.expand(e-z)==0:raise ValueError('colliding complete bank')
 
 def sample(name,rng):
  p=dict(SPECS[name][2])
@@ -154,7 +154,7 @@ def sample(name,rng):
 
 def raw_layout(name,p,F,rows):
  """Parameterized source prose/masks, no original-payload return branch.
- Anchors use original glyph spellings through atomic mathematical normalization;
+ Shared prose is preserved and mathematical spelling is normalized;
  generated solution stages remain the same five operations.
  """
  sid,level,_=SPECS[name];u=p['target']
@@ -169,12 +169,6 @@ def raw_layout(name,p,F,rows):
  intro+='Additionally, we use the '+rule+' for differentiation, as follows:\n\n'
  solution=intro+'$$\n'+r'\begin{aligned}'+op+' & ='+(' \\\\  & ='.join(rows))+r'\end{aligned}'+'\n$$'
  return MF.normalize_prose(problem),MF.normalize_prose(solution)
-
-def raw_parameterized(name,p,problem,solution,bank):
- # Source-normalized literal masks are reconstructed from exact complete expressions
- # at anchors only for presentation parity; mathematical payload always comes from
- # recipe bank/rows. Source notation mapping is applied to all parameter values.
- return problem,solution,[tex(e) for e in bank]
 
 @MF.checked_math_content
 def _generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
@@ -204,7 +198,7 @@ def _generate(level,seed=0,template=None,field_type=None,parameters=None,profile
  payload={'version':VERSION,'level':level,'problem':problem,'solution':solution,'values':sorted(values),'parameters':p,'template':name,'profile':'raw' if profile=='raw' else 'completed'}
  qid=ident(payload);fid=ident([qid,'selection'])
  answers=[{':answer/id':ident([fid,z]),':answer/type':':answer.type/math',':answer/value':z} for z in values]
- idx=next(i for i,e in enumerate(bank) if S.simplify(S.trigsimp(e-C))==0)
+ idx=next(i for i,e in enumerate(bank) if e==C)
  correct=answers[idx][':answer/id'];rng.shuffle(answers)
  q={':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':problem,':question/worked-solution':solution,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]}
  for text in [problem,solution,*values]:c0(text)
@@ -246,7 +240,7 @@ def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
 def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)
 def generate_hard(seed=0,**kw):return generate('hard',seed,**kw)
 def markdown(r):
- q=r['question'];out=['### '+q.get(':question/difficulty','unrated').split('/')[-1]+' — '+r['generation']['template'],q[':question/problem']]
+ q=r['question'];out=['### '+q.get(':question/difficulty','unrated').split('/')[-1]+' — '+r['generation']['template'],'Bank profile: `'+r['generation']['bank_profile']+'`',q[':question/problem']]
  for f in q[':question/answer-fields']:
   out.append('Field `'+f[':answer-field/key']+'` — '+f[':answer-field/type'])
   for a in f[':answer-field/choices']:out.append('- $'+a[':answer/value']+'$'+(' **correct**' if f.get(':answer-field/correct',[None,None])[1]==a[':answer/id'] else ''))

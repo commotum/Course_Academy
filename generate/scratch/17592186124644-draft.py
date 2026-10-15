@@ -34,6 +34,9 @@ def tex(z):
     text=S.latex(S.sympify(z),ln_notation=True).replace(r'\left', '').replace(r'\right','')
     for variable in ('u','v','x','y'):
         text=text.replace(r'\tan{('+variable+r' )} \sec{('+variable+r' )}',r'\sec{('+variable+r' )} \tan{('+variable+r' )}')
+    # A numeric coefficient followed by Euler e is written as an actual
+    # product, avoiding the native parser's scientific-notation ambiguity.
+    text=re.sub(r'(?<=[0-9}]) e(?=\b|\^)',lambda _:r' \cdot e',text)
     return text
 def group(z):return '('+tex(z)+')'
 def coef(z):return '' if sym(z)==1 else tex(z)
@@ -76,8 +79,11 @@ def parameters_for(f,parameters,rng,observed=False):
     if p['target'] not in ('x','y'):raise ValueError('Target must be x or y')
     for k in ('a','b'):
         if p[k].is_Integer is not True or not 1<=p[k]<=4:raise ValueError(k+' must be an integer 1..4')
-    if p['n'] not in f['ns'] or p['m'] not in f['ms']:raise ValueError('Exponent outside equal-workload family')
-    if p['U'] not in f['coords'][0] or p['V'] not in f['coords'][1]:raise ValueError('Coordinate outside familiar evaluation domain')
+    if any(p[k].is_Integer is not True for k in ('n','m')) or p['n'] not in f['ns'] or p['m'] not in f['ms']:raise ValueError('Exponent outside equal-workload family')
+    for name,domain in (('U',f['coords'][0]),('V',f['coords'][1])):
+        matches=[sym(value) for value in domain if S.simplify(p[name]-sym(value))==0]
+        if not matches:raise ValueError('Coordinate outside familiar evaluation domain')
+        p[name]=matches[0]
     return p
 
 def instance(f,p):
@@ -89,7 +95,7 @@ def instance(f,p):
     fun=h1*g1+f['sign']*h2*g2
     derivative=h1*d1+f['sign']*h2*d2
     pt={u:p['U'],v:p['V']}
-    t1=S.simplify((h1*d1).subs(pt));t2=S.simplify((f['sign']*h2*d2).subs(pt));correct=S.simplify(t1+t2)
+    t1=S.expand_mul((h1*d1).subs(pt));t2=S.expand_mul((f['sign']*h2*d2).subs(pt));correct=S.expand_mul(t1+t2)
     if any(z.has(S.zoo,S.nan,S.oo,-S.oo) for z in (t1,t2,correct)):raise ValueError('Undefined point')
     return dict(h1=h1,g1=g1,h2=h2,g2=g2,d1=d1,d2=d2,fun=fun,derivative=derivative,t1=t1,t2=t2,correct=correct,subs=pt)
 
@@ -135,8 +141,8 @@ def solution(f,z,p):
     substituted=re.sub(r'(?<![A-Za-z\\])([xy])(?=[^A-Za-z]|$)',lambda mt:'('+tex(physical[mt[1]])+')',derivative)
     ers=[substituted]
     kind=f['eval_kind']
-    h1v=S.simplify(z['h1'].subs(v,p['V']));h2v=S.simplify(z['h2'].subs(v,p['V']))
-    d1v=S.simplify(z['d1'].subs(u,p['U']));d2v=S.simplify(z['d2'].subs(u,p['U']))
+    h1v=S.expand_mul(z['h1'].subs(v,p['V']));h2v=S.expand_mul(z['h2'].subs(v,p['V']))
+    d1v=S.expand_mul(z['d1'].subs(u,p['U']));d2v=S.expand_mul(z['d2'].subs(u,p['U']))
     if kind!='omit':
         if kind in ('cos-product','sec-product','csc-product'):
             # Retain each elementary trigonometric value before collection.
@@ -145,10 +151,10 @@ def solution(f,z,p):
             elif kind=='csc-product':
                 first=group(-h1v)+r'\cdot '+group(S.csc(p['U'])**2)
             else:first=group(h1v)+r'\cdot '+group(d1v)
-            second=tex(S.simplify(h2v*d2v))
+            second=tex(S.expand_mul(h2v*d2v))
             ers.append(first+sgn+'('+second+')')
         elif kind=='exp-product':
-            c2=S.simplify(p['b']*p['n']*p['U']**(p['n']-1))
+            c2=S.expand_mul(p['b']*p['n']*p['U']**(p['n']-1))
             ers.append(tex(z['t1'])+'-'+tex(c2)+r'\cdot '+tex(S.exp(p['V'])))
         else:ers.append(tex(z['t1'])+('+' if z['t2']>=0 else '-')+'('+tex(abs(z['t2']))+')')
     ers.append(tex(z['correct']))
@@ -174,11 +180,11 @@ def observed_bank(key,p,z):
       'cot-polynomial':[T2,-2*T1-T2,-3*T2,C,-T1+2*T2],
       'log-power-exp':[-T1*T2,T1-N,T1*S.exp(V),C,T1+T2/S.exp(V)]
     }
-    return [S.simplify(t) for t in patterns[key]]
+    return [S.expand_mul(t) for t in patterns[key]]
 def authored_bank(z):
     # Omit a differentiated summand, or apply the wrong sum/sign rule to it.
     t1,t2=z['t1'],z['t2']
-    return [z['correct'],S.simplify(t1-t2),S.simplify(-t1+t2),t1,t2]
+    return [z['correct'],S.expand_mul(t1-t2),S.expand_mul(-t1+t2),t1,t2]
 def nonambiguous(bank):
     return len(bank)==5 and all(S.simplify(bank[i]-bank[j])!=0 for i in range(5) for j in range(i))
 def canonical(z):return S.srepr(S.simplify(z))
@@ -189,7 +195,7 @@ def fingerprint(z,p):
 def uid(*parts):return str(uuid.uuid5(uuid.NAMESPACE_URL,json.dumps(parts,sort_keys=True,ensure_ascii=False)))
 def format_checks(q):
     for value in [q[':question/problem'],q.get(':question/worked-solution','')]+[a[':answer/value'] for f in q[':question/answer-fields'] for a in f[':answer-field/choices']]:
-        if any(ord(c)<32 and c not in '\n\t\r' for c in value):raise ValueError('C0 control character in learner content')
+        if any(ord(c)<32 and c not in '\n\t' for c in value):raise ValueError('C0 control character in learner content')
     # The shared full-record validator requires a solution; an observed raw
     # omission is validated with a temporary empty prose slot, without adding
     # that attribute to the public record.
@@ -280,8 +286,13 @@ def generate_easy(seed=0,**kw):return generate('easy',seed=seed,**kw)
 def generate_moderate(seed=0,**kw):return generate('moderate',seed=seed,**kw)
 def generate_hard(seed=0,**kw):return generate('hard',seed=seed,**kw)
 def markdown(record):
-    q=record['question'];field=q[':question/answer-fields'][0]
-    return q[':question/problem']+'\n\n'+'\n'.join('- $'+c[':answer/value']+'$' for c in field[':answer-field/choices'])+'\n\n'+q.get(':question/worked-solution','[No worked solution in the original captured record.]')
+    q=record['question'];field=q[':question/answer-fields'][0];generation=record['generation']
+    difficulty=q.get(':question/difficulty','unrated (source omission)').split('/')[-1]
+    header='Difficulty: '+difficulty+' · Template: `'+generation['template']+'` · Profile: `'+generation['bank_profile']+'`'
+    reference=field.get(':answer-field/correct');correct=reference[1] if reference else None
+    designation='' if correct else '\n\nCorrect-answer designation: absent in the captured source.'
+    options='\n'.join('- $'+choice[':answer/value']+'$'+(' **(correct)**' if choice[':answer/id']==correct else '') for choice in field[':answer-field/choices'])
+    return header+'\n\n'+q[':question/problem']+designation+'\n\n'+options+'\n\n'+q.get(':question/worked-solution','[No worked solution in the original captured record.]')
 if __name__=='__main__':
     ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['markdown','json'],default='markdown');ap.add_argument('--template');ap.add_argument('--profile');args=ap.parse_args()
     records=[generate(level,args.seed+i,template=args.template,profile=args.profile) for level in (('easy','moderate','hard') if args.difficulty=='all' else [args.difficulty]) for i in range(args.count)]

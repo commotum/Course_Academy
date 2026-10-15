@@ -8,7 +8,7 @@ Observed bank expressions encode patterns, not diagnoses of learner intent.
 """
 import sys
 sys.dont_write_bytecode = True
-import argparse, hashlib, importlib.util, json, random, re, uuid
+import argparse, hashlib, importlib.util, itertools, json, random, re, uuid
 from pathlib import Path
 import sympy as S
 from sympy.parsing.sympy_parser import parse_expr, standard_transformations, implicit_multiplication_application
@@ -16,7 +16,7 @@ ROOT=Path(__file__).with_suffix(''); ASSETS=ROOT/'assets'
 _spec=importlib.util.spec_from_file_location('kp100868_math_format',ROOT/'math_format.py')
 mf=importlib.util.module_from_spec(_spec);_spec.loader.exec_module(mf)
 TEMPLATES=json.loads((ROOT/'templates.json').read_text())
-VERSION='100868-v1.0'; KP={'db_id':17592186100868,'id':'8451e22a-247e-51dd-8fb1-9ce9b212dc65','title':'Multiplying a Matrix With Variable Entries by a Column Vector'}
+VERSION='100868-v1.1'; KP={'db_id':17592186100868,'id':'8451e22a-247e-51dd-8fb1-9ce9b212dc65','title':'Multiplying a Matrix With Variable Entries by a Column Vector'}
 NS=uuid.UUID('c8ec906d-40ec-515b-a67d-87bc2daf608b')
 TRANS=standard_transformations+(implicit_multiplication_application,)
 def scalar(tex):
@@ -45,11 +45,11 @@ def summed(terms):
         t=tex(x);out+=t if t.startswith('-') else '+'+t
     return out
 
-def _parameters(t,rng,given):
+def _parameters(t,rng,given,profile,seed):
     variables=t['variables'];explicit=given is not None;given={} if given is None else dict(given)
     if explicit and not {'scales','names'}<=set(given):raise ValueError('Explicit parameters require complete scales and names maps')
-    if set(given)-{'scales','names','vector','matrix_coefficients','matrix_gain'}:raise ValueError('Unknown parameter key')
-    scales=given.get('scales',{v:(1 if t['source_id']=='q-318595' else rng.randint(1,3 if t['level']=='easy' else 2)) for v in variables})
+    if set(given)-{'scales','names','vector','matrix_coefficients','matrix_gain','row_gains'}:raise ValueError('Unknown parameter key')
+    scales=given.get('scales',{v:(1 if t['source_id']=='q-318595' or t['level']=='hard' else rng.randint(1,3 if t['level']=='easy' else 2)) for v in variables})
     # Names are complete symbol slots, never replacements across prose or labels.
     names=given.get('names',{v:v for v in variables})
     if set(scales)!=set(variables) or set(names)!=set(variables):raise ValueError('Every symbol slot is required')
@@ -70,10 +70,16 @@ def _parameters(t,rng,given):
         p['matrix_coefficients']=coeff
     elif 'matrix_coefficients' in given:raise ValueError('Independent matrix coefficients are fixed outside q-318595')
     if t['source_id'] in {'q-275597','q-318589','q-70226'}:
-        gain=given.get('matrix_gain',1 if given else rng.randint(1,2))
+        gain=given.get('matrix_gain',1 if explicit or t['level']=='hard' else rng.randint(1,2))
         if type(gain)!=int or gain not in [1,2]:raise ValueError('Matrix gain1..2')
         p['matrix_gain']=gain
     elif 'matrix_gain' in given:raise ValueError('Matrix gain fixed for this family')
+    if t['level']=='hard':
+        gains=given.get('row_gains',[1,1,1] if explicit or profile=='observed' else list(HARD_ROW_GAINS[t['source_id']][seed%len(HARD_ROW_GAINS[t['source_id']])]))
+        if not isinstance(gains,list) or len(gains)!=3 or any(type(x)!=int or x not in [-2,-1,1,2] for x in gains):raise ValueError('Hard row gains must be three members of ±1/±2')
+        if profile=='observed' and gains!=[1,1,1]:raise ValueError('Observed profile fixes original row gains')
+        p['row_gains']=gains
+    elif 'row_gains' in given:raise ValueError('Row gains are hard-only slots')
     return p
 
 def _substitute(t,p):return {S.Symbol(v):p['scales'][v]*S.Symbol(p['names'][v]) for v in t['variables']}
@@ -106,6 +112,19 @@ def _workload(level,M,V,products,answer):
     cap=WORKLOAD[level]
     if _max_coefficient([x for row in M for x in row]+list(V))>cap['factor'] or _max_coefficient([x for row in products for x in row])>cap['product'] or _max_coefficient(answer)>cap['collected']:raise ValueError('Actual displayed arithmetic exceeds '+level+' workload caps')
 
+# Bounded source-derived signed row domain. No extra learner operation is added.
+HARD_ROW_GAINS={}
+for _sid,_t in TEMPLATES.items():
+    if _t['level']!='hard':continue
+    _M=[[scalar(c) for c in row] for row in _t['inputs'][0]];_V=[scalar(row[0]) for row in _t['inputs'][1]];_domain=[]
+    for _g in itertools.product([-2,-1,1,2],repeat=3):
+        _rows=[[_g[i]*x for x in row] for i,row in enumerate(_M)]
+        _prods=[[S.expand(a*b) for a,b in zip(row,_V)] for row in _rows];_out=[S.expand(sum(row)) for row in _prods]
+        try:_workload('hard',_rows,_V,_prods,_out)
+        except ValueError:continue
+        _domain.append(_g)
+    HARD_ROW_GAINS[_sid]=tuple(_domain)
+
 # Easy: canonical two-row variable matrix, two positive numeric vector entries.
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
 # Moderate: observed two-row collection and symbolic products; no new operators.
@@ -121,11 +140,11 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     template=template or rng.choice(eligible);t=TEMPLATES[template]
     expected_type=t['fields'][0]['type']
     if field_type and field_type.split('/')[-1]!=expected_type:raise ValueError('Field type is fixed by template')
-    profile=profile or ('authored-operations' if expected_type=='radio' and template!='q-13554' else 'observed')
-    if profile not in ({'observed','authored-operations'} if expected_type=='radio' and template!='q-13554' else {'observed'}):raise ValueError('Unsupported complete profile')
+    profile=profile or ('authored-operations' if (expected_type=='radio' and template!='q-13554') or level=='hard' else 'observed')
+    if profile not in ({'observed','authored-operations'} if (expected_type=='radio' and template!='q-13554') or level=='hard' else {'observed'}):raise ValueError('Unsupported complete profile')
     # Reject a whole sampled instance; explicit parameters fail without alteration.
     for attempt in range(100):
-        try:p=_parameters(t,rng,parameters)
+        try:p=_parameters(t,rng,parameters,profile,seed)
         except ValueError:
             if parameters is not None:raise
             continue
@@ -135,7 +154,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         if template=='q-318595':
             a,b,c,d=p['matrix_coefficients'];pp,qq=[S.Symbol(p['names'][v]) for v in ['p','q']]
             M=[[a*p['scales']['p']*pp,b*p['scales']['q']*qq],[c*p['scales']['p']*pp,d*p['scales']['q']*qq]]
-        M=[[p.get('matrix_gain',1)*x for x in row] for row in M]
+        M=[[p.get('matrix_gain',1)*p.get('row_gains',[1]*len(M))[i]*x for x in row] for i,row in enumerate(M)]
         products=[[S.expand(a*b) for a,b in zip(row,V)] for row in M];answer=[S.expand(sum(row)) for row in products]
         try:_workload(level,M,V,products,answer)
         except ValueError:
@@ -209,8 +228,14 @@ def main():
     if a.format=='json':print(json.dumps(out,indent=2))
     else:
         for r in out:
-            q=r['question'];print(q[':question/problem'])
+            q=r['question'];meta=r['generation']
+            print('### '+q[':question/difficulty'].split('/')[-1]+' | '+meta['template']+' | '+meta['profile']+'\n')
+            if meta['repairs']:print('Authored completions: '+'; '.join(meta['repairs'])+'.\n')
+            print(q[':question/problem'])
             for f in q[':question/answer-fields']:
-                print('\n'+f[':answer-field/key']+': '+', '.join('$'+x[':answer/value']+'$' for x in f[':answer-field/choices']))
-            print('\n'+q[':question/worked-solution']+'\n')
+                print('\nField '+f[':answer-field/key']+' ('+f[':answer-field/type'].split('/')[-1]+'):\n')
+                for i,a in enumerate(f[':answer-field/choices'],1):
+                    mark=' [correct]' if a[':answer/id']==f[':answer-field/correct'][1] else ''
+                    print(str(i)+'.'+mark+' $'+a[':answer/value']+'$')
+            print('\nWorked solution:\n\n'+q[':question/worked-solution']+'\n')
 if __name__=='__main__':main()

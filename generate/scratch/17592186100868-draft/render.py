@@ -14,7 +14,7 @@ ROOT = D.parents[2]
 # Rebuild review inputs so validate -> render remains reproducible.
 import copy
 replays=json.loads((D/'source-replays.json').read_text()); originals=[]
-for source,replay in zip(json.loads((D/'source.json').read_text())[':knowledge-point/questions'],replays):
+for source,replay in zip(json.loads((D/'source.json').read_text())['record'][':knowledge-point/questions'],replays):
     r=copy.deepcopy(replay);r['question'][':question/problem']=source[':question/problem'];r['question'][':question/worked-solution']=source.get(':question/worked-solution','');r['generation']['review_label']='Original '+r['generation']['template'];originals.append(r)
 records=originals+replays+[x['record'] for x in json.loads((D/'review.json').read_text())]
 for i,r in enumerate(records[10:]):r['generation']['review_label']=('Normalized source replay ' if i<10 else 'Generated variant ')+r['generation']['template']+' / '+r['generation']['profile']

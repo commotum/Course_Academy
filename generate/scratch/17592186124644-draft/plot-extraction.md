@@ -1,0 +1,1 @@
+No plots occur in the 12 originals, canonical, authored easy extension or any supported variant. Plot rating: none. No image assets, SVG construction, Matplotlib or image models are used. Actual player MathJax rendering is verified separately.

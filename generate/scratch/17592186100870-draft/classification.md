@@ -1,0 +1,13 @@
+# Classification at math basis2275
+
+Frozen database math; lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. All 11 captured practice records have MA IDs; there is no independent inventory in this wrapper. The numeric registered generator and all its evidence remain immutable. This draft reconciles its nine supported records and adds the two incomplete originals plus an authored hard level.
+
+Easy observed: q-320315 two scalar math blanks; q-77473, q-129480, q-70703 five-option radios. Forward factor order. Unrated q-42379 and q-42380 are preserved unrated in public raw replay; their normal completions receive an explicitly authored easy assignment. Moderate observed: q-320344 two scalar math blanks; q-129461, q-129486, q-70702, q-70705 five-option radios. Factors are listed opposite to requested product order. All source products are conformable.
+
+Distinct presentation families: forward `Suppose`, forward `What ... if`, forward `If ... are` blanks, reversed `Suppose`, reversed `If ... are` blanks. Nine complete radio bank profiles remain separate. Labels are presentation slots fixed per family; all three dimension roles vary. Every layout has plot rating **none**: the dimension annotation is mathematical notation, not a graph.
+
+Hard is absent from observed practice. Its authoring claim uses the same reversed product and full source solution stages, replacing the three numeric dimensions by whole affine expressions r+a, s+b, t+c, offsets1..6. The extra demand is maintaining symbolic dimensions as whole components while reversing factor order; no values need to be solved or multiplied. It preserves both radio and two-blank contracts. Numeric moderate accepts only integer dimensions; hard accepts only its declared symbolic forms, so neither level admits the other's instance. The captured lesson describes generic outer dimensions m and k, and its source canonical example teaches inner matching and outer selection. This is conservative symbolic abstraction of that method, not recovered source difficulty evidence.
+
+Lesson route, reconstructed by first-step/next: Introduction → Conformability tutorial → KP00869 conformability recognition → this KP00870 explicitly supplied dimensions → KP00871 dimensions from actual matrices. This draft does not ask learners to count entries (00871), perform multiplication (later topics), solve dimension equations, chain products, or assess two Boolean conformability statements (00869).
+
+The lesson's introductory generic dimension prose is visibly truncated in capture (n/n); it is context, not a template. The canonical worked example supplies the valid m×n times n×p rule.

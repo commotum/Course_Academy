@@ -1,0 +1,262 @@
+[
+  {
+    "template": "monomial",
+    "source_id": "q-158412",
+    "level": "easy",
+    "target": "x",
+    "anchor": {
+      "a": 3,
+      "n": 2
+    },
+    "prompt_mask": "Given that $f(x,y)=@@a@@{x}^{@@n@@}y,$ then $\\frac{∂f}{∂x}=$",
+    "solution_mask": "The partial derivative of $f$ with respect to $x$ is given by the limit \n\n$$\n\\frac{∂f}{∂x}={lim}_{h\\to 0}(\\frac{f(x+h,y)-f(x,y)}{h}).\n$$\n\nSince $f(x)=@@a@@{x}^{@@n@@}y$,  we have that \n\n$$\nf(x+h,y)=@@a@@(x+h)^{@@n@@}y.\n$$\n\nTherefore,\n\n$$\n\\frac{∂f}{∂x}={lim}_{h\\to 0}(\\frac{@@a@@(x+h)^{@@n@@}y-@@a@@{x}^{@@n@@}y}{h}).\n$$",
+    "bank_masks": [
+      "{lim}_{h\\to 0}(\\frac{@@a@@(x+h)^{@@n@@}y-@@a@@{x}^{@@n@@}y}{h})",
+      "{lim}_{h\\to 0}(\\frac{@@a@@{x}^{@@n@@}y-@@a@@{x}^{@@n@@}(y+h)}{h})",
+      "{lim}_{h\\to 0}(\\frac{@@a@@{x}^{@@n@@}(y+h)+@@a@@{x}^{@@n@@}y}{h})",
+      "{lim}_{h\\to 0}(\\frac{@@a@@(x+h)^{@@n@@}y+@@a@@{x}^{@@n@@}y}{h})",
+      "{lim}_{h\\to 0}(\\frac{@@a@@{x}^{@@n@@}(y+h)-@@a@@{x}^{@@n@@}y}{h})"
+    ],
+    "correct_index": 0,
+    "source_correct_present": true,
+    "source_difficulty_present": true,
+    "source_solution_present": true
+  },
+  {
+    "template": "root_product",
+    "source_id": "q-158413",
+    "level": "easy",
+    "target": "y",
+    "anchor": {},
+    "prompt_mask": "Given that $f(x, y) = x\\sqrt{y}$, then $\\frac{∂f}{∂y} =$",
+    "solution_mask": "",
+    "bank_masks": [
+      "lim_(h → 0)(\\frac{x\\sqrt{y + h} + x\\sqrt{y}}{h})",
+      "lim_(h → 0)(((x + h)\\sqrt{y} - x\\sqrt{y + h})/(h))",
+      "lim_(h → 0)(((x + h)\\sqrt{y} - x\\sqrt{y})/(h))",
+      "lim_(h → 0)(\\frac{x\\sqrt{y + h} - x\\sqrt{y}}{h})",
+      "lim_(h → 0)((x\\sqrt{y + h} - (x + h)\\sqrt{y})/(h))"
+    ],
+    "correct_index": 3,
+    "source_correct_present": false,
+    "source_difficulty_present": false,
+    "source_solution_present": false
+  },
+  {
+    "template": "exponential_linear",
+    "source_id": "q-159574",
+    "level": "easy",
+    "target": "x",
+    "anchor": {
+      "b": 2,
+      "c": 2
+    },
+    "prompt_mask": "Given that $f(x,y)={@@b@@}^{x+@@c@@y},$ then $\\frac{∂f}{∂x}=$",
+    "solution_mask": "The partial derivative of $f$ with respect to $x$ is given by the limit \n\n$$\n\\frac{∂f}{∂x}={lim}_{h\\to 0}(\\frac{f(x+h,y)-f(x,y)}{h}).\n$$\n\nSince $f(x)={@@b@@}^{x+@@c@@y},$  we have that \n\n$$\nf(x+h,y)={@@b@@}^{x+h+@@c@@y}.\n$$\n\nTherefore,\n\n$$\n\\frac{∂f}{∂x}={lim}_{h\\to 0}(\\frac{{@@b@@}^{x+h+@@c@@y}-{@@b@@}^{x+@@c@@y}}{h}).\n$$",
+    "bank_masks": [
+      "{lim}_{h\\to 0}(\\frac{{@@b@@}^{xh+@@c@@y}+{@@b@@}^{x+@@c@@y}}{h})",
+      "{lim}_{h\\to 0}(\\frac{{@@b@@}^{xh+@@c@@y}-{@@b@@}^{x+@@c@@y}}{h})",
+      "{lim}_{h\\to 0}(\\frac{{@@b@@}^{x+h+@@c@@y}-{@@b@@}^{x+@@c@@y}}{h})",
+      "{lim}_{h\\to 0}(\\frac{{@@b@@}^{x+@@c@@h+@@c@@y}-{@@b@@}^{x+@@c@@yy}}{h})",
+      "{lim}_{h\\to 0}(\\frac{{@@b@@}^{x+h+@@c@@y}+{@@b@@}^{x+@@c@@y}}{h})"
+    ],
+    "correct_index": 2,
+    "source_correct_present": true,
+    "source_difficulty_present": true,
+    "source_solution_present": true
+  },
+  {
+    "template": "log_linear",
+    "source_id": "q-159579",
+    "level": "easy",
+    "target": "x",
+    "anchor": {
+      "c": 3
+    },
+    "prompt_mask": "Given that $f(x,y)=\\operatorname{log}⁡(x+@@c@@y),$ then $\\frac{∂f}{∂x}=$",
+    "solution_mask": "The partial derivative of $f$ with respect to $x$ is given by the limit \n\n$$\n\\frac{∂f}{∂x}={lim}_{h\\to 0}(\\frac{f(x+h,y)-f(x,y)}{h}).\n$$\n\nSince $f(x)=\\operatorname{log}⁡(x+@@c@@y),$  we have that \n\n$$\nf(x+h,y)=\\operatorname{log}⁡(x+h+@@c@@y).\n$$\n\nTherefore,\n\n$$\n\\frac{∂f}{∂x}={lim}_{h\\to 0}(\\frac{\\operatorname{log}⁡(x+h+@@c@@y)-\\operatorname{log}⁡(x+@@c@@y)}{h}).\n$$",
+    "bank_masks": [
+      "{lim}_{h\\to 0}(\\frac{\\operatorname{log}⁡(x-h+@@c@@y)+\\operatorname{log}⁡(x+@@c@@y)}{h})",
+      "{lim}_{h\\to 0}(\\frac{h\\operatorname{log}⁡(x+@@c@@y)-\\operatorname{log}⁡(x+@@c@@y)}{h})",
+      "{lim}_{h\\to 0}(\\frac{\\operatorname{log}⁡(x+@@c@@h+@@c@@y)-\\operatorname{log}⁡(x+@@c@@y)}{h})",
+      "{lim}_{h\\to 0}(\\frac{\\operatorname{log}⁡(x+h+@@c@@y)-\\operatorname{log}⁡(x+@@c@@y)}{h})",
+      "{lim}_{h\\to 0}(\\frac{\\operatorname{log}⁡(xh+@@c@@y)-\\operatorname{log}⁡(x+@@c@@y)}{h})"
+    ],
+    "correct_index": 3,
+    "source_correct_present": true,
+    "source_difficulty_present": true,
+    "source_solution_present": true
+  },
+  {
+    "template": "rational",
+    "source_id": "q-159589",
+    "level": "moderate",
+    "target": "y",
+    "anchor": {
+      "p": 2,
+      "q": 3,
+      "a": 2
+    },
+    "prompt_mask": "Given that $f(x,y)=\\frac{{x}^{@@p@@}}{(y+@@a@@)^{@@q@@}},$ then $\\frac{∂f}{∂y}=$",
+    "solution_mask": "The derivative of $f$ with respect to $y$ is given by the limit \n\n$$\n\\frac{∂f}{∂y}={lim}_{h\\to 0}(\\frac{f(x,y+h)-f(x,y)}{h}).\n$$\n\nSince $f(x)=\\frac{{x}^{@@p@@}}{(y+@@a@@)^{@@q@@}},$  we have that \n\n$$\nf(x,y+h)=\\frac{{x}^{@@p@@}}{(y+h+@@a@@)^{@@q@@}}.\n$$\n\nTherefore,\n\n$$\n\\frac{∂f}{∂y}={lim}_{h\\to 0}[\\frac{1}{h}(\\frac{{x}^{@@p@@}}{(y+h+@@a@@)^{@@q@@}}-\\frac{{x}^{@@p@@}}{(y+@@a@@)^{@@q@@}})].\n$$",
+    "bank_masks": [
+      "{lim}_{h\\to 0}[\\frac{1}{h}(\\frac{{x}^{@@p@@}}{(y-h+@@a@@)^{@@q@@}}+\\frac{{x}^{@@p@@}}{(y+@@a@@)^{@@q@@}})]",
+      "{lim}_{h\\to 0}[\\frac{1}{h}(\\frac{(x+h)^{@@p@@}}{(y+h+@@a@@)^{@@q@@}}-\\frac{{x}^{@@p@@}}{(y+@@a@@)^{@@q@@}})]",
+      "{lim}_{h\\to 0}[\\frac{1}{h}(\\frac{{x}^{@@p@@}}{(y+h+@@a@@)^{@@q@@}}-\\frac{{x}^{@@p@@}}{(y+@@a@@)^{@@q@@}})]",
+      "{lim}_{h\\to 0}[\\frac{1}{h}(\\frac{{x}^{@@p@@}}{(y+@@a@@h)^{@@q@@}}-\\frac{{x}^{@@p@@}}{(y+@@a@@)^{@@q@@}})]",
+      "{lim}_{h\\to 0}[\\frac{1}{h}(\\frac{(x+h)^{@@p@@}}{(y+@@a@@)^{@@q@@}}-\\frac{{x}^{@@p@@}}{(y+@@a@@)^{@@q@@}})]"
+    ],
+    "correct_index": 2,
+    "source_correct_present": true,
+    "source_difficulty_present": true,
+    "source_solution_present": true
+  },
+  {
+    "template": "exponential_product",
+    "source_id": "q-159593",
+    "level": "moderate",
+    "target": "y",
+    "anchor": {
+      "b": 3
+    },
+    "prompt_mask": "Given that $f(x,y)={@@b@@}^{xy},$ then $\\frac{∂f}{∂y}=$",
+    "solution_mask": "The derivative of $f$ with respect to $y$ is given by the limit \n\n$$\n\\frac{∂f}{∂y}={lim}_{h\\to 0}(\\frac{f(x,y+h)-f(x,y)}{h}).\n$$\n\nSince $f(x)={@@b@@}^{xy},$  we have that \n\n$$\nf(x,y+h)={@@b@@}^{x(y+h)}.\n$$\n\nTherefore,\n\n$$\n\\frac{∂f}{∂y}={lim}_{h\\to 0}(\\frac{{@@b@@}^{x(y+h)}-{@@b@@}^{xy}}{h}).\n$$",
+    "bank_masks": [
+      "{lim}_{h\\to 0}(\\frac{{@@b@@}^{xyh}-{@@b@@}^{xy}}{h})",
+      "{lim}_{h\\to 0}(\\frac{{@@b@@}^{xy+h}-{@@b@@}^{xy}}{h})",
+      "{lim}_{h\\to 0}(\\frac{{@@b@@}^{x(y+h)}-{@@b@@}^{xy}}{h})",
+      "{lim}_{h\\to 0}(\\frac{{@@b@@}^{x(y-h)}+{@@b@@}^{xy}}{h})",
+      "{lim}_{h\\to 0}(\\frac{{@@b@@}^{xy-h}+{@@b@@}^{xy}}{h})"
+    ],
+    "correct_index": 2,
+    "source_correct_present": true,
+    "source_difficulty_present": true,
+    "source_solution_present": true
+  },
+  {
+    "template": "cube_root",
+    "source_id": "q-159594",
+    "level": "moderate",
+    "target": "y",
+    "anchor": {
+      "p": 2
+    },
+    "prompt_mask": "Given that $f(x,y)=\\sqrt[3]{{x}^{@@p@@}-y},$ then $\\frac{∂f}{∂y}=$",
+    "solution_mask": "The derivative of $f$ with respect to $y$ is given by the limit \n\n$$\n\\frac{∂f}{∂y}={lim}_{h\\to 0}(\\frac{f(x,y+h)-f(x,y)}{h}).\n$$\n\nSince $f(x)=\\sqrt[3]{{x}^{@@p@@}-y},$  we have that \n\n$$\nf(x,y+h)=\\sqrt[3]{{x}^{@@p@@}-(y+h)}.\n$$\n\nTherefore,\n\n$$\n\\frac{∂f}{∂y}={lim}_{h\\to 0}(\\frac{\\sqrt[3]{{x}^{@@p@@}-(y+h)}-\\sqrt[3]{{x}^{@@p@@}-y}}{h}).\n$$",
+    "bank_masks": [
+      "{lim}_{h\\to 0}(\\frac{\\sqrt[3]{{x}^{@@p@@}-yh}+\\sqrt[3]{{x}^{@@p@@}-y}}{h})",
+      "{lim}_{h\\to 0}(\\frac{h\\sqrt[3]{{x}^{@@p@@}-y}-\\sqrt[3]{{x}^{@@p@@}-y}}{h})",
+      "{lim}_{h\\to 0}(\\frac{\\sqrt[3]{{x}^{@@p@@}-(y-h)}+\\sqrt[3]{{x}^{@@p@@}-y}}{h})",
+      "{lim}_{h\\to 0}(\\frac{\\sqrt[3]{{x}^{@@p@@}-yh}-\\sqrt[3]{{x}^{@@p@@}-y}}{h})",
+      "{lim}_{h\\to 0}(\\frac{\\sqrt[3]{{x}^{@@p@@}-(y+h)}-\\sqrt[3]{{x}^{@@p@@}-y}}{h})"
+    ],
+    "correct_index": 4,
+    "source_correct_present": true,
+    "source_difficulty_present": true,
+    "source_solution_present": true
+  },
+  {
+    "template": "log_product",
+    "source_id": "q-159584",
+    "level": "moderate",
+    "target": "y",
+    "anchor": {
+      "a": 7
+    },
+    "prompt_mask": "Given that $f(x,y)=\\operatorname{ln}⁡(@@a@@xy),$ then $\\frac{∂f}{∂y}=$",
+    "solution_mask": "The derivative of $f$ with respect to $y$ is given by the limit \n\n$$\n\\frac{∂f}{∂y}={lim}_{h\\to 0}(\\frac{f(x,y+h)-f(x,y)}{h}).\n$$\n\nSince $f(x)=\\operatorname{ln}⁡(@@a@@xy),$  we have that \n\n$$\nf(x,y+h)=\\operatorname{ln}⁡(@@a@@x(y+h)).\n$$\n\nTherefore,\n\n$$\n\\frac{∂f}{∂y}={lim}_{h\\to 0}(\\frac{\\operatorname{ln}⁡(@@a@@x(y+h))-\\operatorname{ln}⁡(@@a@@xy)}{h}).\n$$",
+    "bank_masks": [
+      "{lim}_{h\\to 0}(\\frac{\\operatorname{ln}⁡(@@a@@x(y+h))-\\operatorname{ln}⁡(@@a@@xy)}{h})",
+      "{lim}_{h\\to 0}(\\frac{\\operatorname{ln}⁡(@@a@@x(y-h))+\\operatorname{ln}⁡(@@a@@xy)}{h})",
+      "{lim}_{h\\to 0}(\\frac{\\operatorname{ln}⁡(@@a@@(x+h)(y+h))-\\operatorname{ln}⁡(@@a@@xy)}{h})",
+      "{lim}_{h\\to 0}(\\frac{h\\operatorname{ln}⁡(@@a@@xy)-\\operatorname{ln}⁡(@@a@@xy)}{h})",
+      "{lim}_{h\\to 0}(\\frac{\\operatorname{ln}⁡(@@a@@xyh)-\\operatorname{ln}⁡(@@a@@xy)}{h})"
+    ],
+    "correct_index": 0,
+    "source_correct_present": true,
+    "source_difficulty_present": true,
+    "source_solution_present": true
+  },
+  {
+    "template": "variable_power_exponent",
+    "source_id": "q-159592",
+    "level": "moderate",
+    "target": "y",
+    "anchor": {},
+    "prompt_mask": "Given that $f(x,y)={x}^{y},$ then $\\frac{∂f}{∂y}=$",
+    "solution_mask": "The derivative of $f$ with respect to $y$ is given by the limit \n\n$$\n\\frac{∂f}{∂y}={lim}_{h\\to 0}(\\frac{f(x,y+h)-f(x,y)}{h}).\n$$\n\nSince $f(x)={x}^{y},$  we have that \n\n$$\nf(x,y+h)={x}^{y+h}.\n$$\n\nTherefore,\n\n$$\n\\frac{∂f}{∂y}={lim}_{h\\to 0}(\\frac{{x}^{y+h}-{x}^{y}}{h}).\n$$",
+    "bank_masks": [
+      "{lim}_{h\\to 0}(\\frac{{x}^{y-h}+{x}^{y}}{h})",
+      "{lim}_{h\\to 0}(\\frac{{x}^{yh}-{x}^{y}}{h})",
+      "{lim}_{h\\to 0}(\\frac{(x+h)^{y+h}-{x}^{y}}{h})",
+      "{lim}_{h\\to 0}(\\frac{{x}^{y+h}-{x}^{y}}{h})",
+      "{lim}_{h\\to 0}(\\frac{(x+h)^{y}-{x}^{y}}{h})"
+    ],
+    "correct_index": 3,
+    "source_correct_present": true,
+    "source_difficulty_present": true,
+    "source_solution_present": true
+  },
+  {
+    "template": "variable_power_base",
+    "source_id": "q-159575",
+    "level": "easy",
+    "target": "x",
+    "anchor": {},
+    "prompt_mask": "Given that $f(x,y)={x}^{y},$ then $\\frac{∂f}{∂x}=$",
+    "solution_mask": "The partial derivative of $f$ with respect to $x$ is given by the limit \n\n$$\n\\frac{∂f}{∂x}={lim}_{h\\to 0}(\\frac{f(x+h,y)-f(x,y)}{h}).\n$$\n\nSince $f(x)={x}^{y},$  we have that \n\n$$\nf(x+h,y)=(x+h)^{y}.\n$$\n\nTherefore,\n\n$$\n\\frac{∂f}{∂x}={lim}_{h\\to 0}(\\frac{(x+h)^{y}-{x}^{y}}{h}).\n$$",
+    "bank_masks": [
+      "{lim}_{h\\to 0}(\\frac{(x+h)^{y}+{x}^{y}}{h})",
+      "{lim}_{h\\to 0}(\\frac{(x+h)^{y}-{x}^{y}}{h})",
+      "{lim}_{h\\to 0}(\\frac{{x}^{y+h}-{x}^{y}}{h})",
+      "{lim}_{h\\to 0}(\\frac{(x+h)^{y+h}-{x}^{y}}{h})",
+      "{lim}_{h\\to 0}(\\frac{{x}^{y+h}+{x}^{y}}{h})"
+    ],
+    "correct_index": 1,
+    "source_correct_present": true,
+    "source_difficulty_present": true,
+    "source_solution_present": true
+  },
+  {
+    "template": "cosine",
+    "source_id": "q-159576",
+    "level": "easy",
+    "target": "x",
+    "anchor": {
+      "p": 2
+    },
+    "prompt_mask": "Given that $f(x,y)=\\operatorname{cos}⁡(x-{y}^{@@p@@}),$ then $\\frac{∂f}{∂x}=$",
+    "solution_mask": "The partial derivative of $f$ with respect to $x$ is given by the limit \n\n$$\n\\frac{∂f}{∂x}={lim}_{h\\to 0}(\\frac{f(x+h,y)-f(x,y)}{h}).\n$$\n\nSince $f(x)=\\operatorname{cos}⁡(x-{y}^{@@p@@}),$  we have that \n\n$$\nf(x+h,y)=\\operatorname{cos}⁡(x+h-{y}^{@@p@@}).\n$$\n\nTherefore,\n\n$$\n\\frac{∂f}{∂x}={lim}_{h\\to 0}(\\frac{\\operatorname{cos}⁡(x+h-{y}^{@@p@@})-\\operatorname{cos}⁡(x-{y}^{@@p@@})}{h}).\n$$",
+    "bank_masks": [
+      "{lim}_{h\\to 0}(\\frac{\\operatorname{cos}⁡(x+h-{y}^{@@p@@})-\\operatorname{cos}⁡(x-{y}^{@@p@@})}{h})",
+      "{lim}_{h\\to 0}(\\frac{\\operatorname{cos}⁡(xh-{y}^{@@p@@})-\\operatorname{cos}⁡(x-{y}^{@@p@@})}{h})",
+      "{lim}_{h\\to 0}(\\frac{\\operatorname{cos}⁡(x+h-{y}^{@@p@@})+\\operatorname{cos}⁡(x-{y}^{@@p@@})}{h})",
+      "{lim}_{h\\to 0}(\\frac{\\operatorname{cos}⁡(xh-{y}^{@@p@@})+\\operatorname{cos}⁡(x-{y}^{@@p@@})}{h})",
+      "{lim}_{h\\to 0}(\\frac{h\\operatorname{cos}⁡(x-{y}^{@@p@@})-\\operatorname{cos}⁡(x-{y}^{@@p@@})}{h})"
+    ],
+    "correct_index": 0,
+    "source_correct_present": true,
+    "source_difficulty_present": true,
+    "source_solution_present": true
+  },
+  {
+    "template": "sine_product",
+    "source_id": "q-159572",
+    "level": "easy",
+    "target": "x",
+    "anchor": {},
+    "prompt_mask": "Given that $f(x,y)=\\operatorname{sin}⁡(xy),$ then $\\frac{∂f}{∂x}=$",
+    "solution_mask": "The partial derivative of $f$ with respect to $x$ is given by the limit \n\n$$\n\\frac{∂f}{∂x}={lim}_{h\\to 0}(\\frac{f(x+h,y)-f(x,y)}{h}).\n$$\n\nSince $f(x)=\\operatorname{sin}⁡(xy),$  we have that \n\n$$\nf(x+h,y)=\\operatorname{sin}⁡((x+h)y).\n$$\n\nTherefore,\n\n$$\n\\frac{∂f}{∂x}={lim}_{h\\to 0}(\\frac{\\operatorname{sin}⁡((x+h)y)-\\operatorname{sin}⁡(xy)}{h}).\n$$",
+    "bank_masks": [
+      "{lim}_{h\\to 0}(\\frac{\\operatorname{sin}⁡((x+h)(y+h))-\\operatorname{sin}⁡(xy)}{h})",
+      "{lim}_{h\\to 0}(\\frac{\\operatorname{sin}⁡(xy+h)-\\operatorname{sin}⁡(xy)}{h})",
+      "{lim}_{h\\to 0}(\\frac{\\operatorname{sin}⁡(xy+h)+\\operatorname{sin}⁡(xy)}{h})",
+      "{lim}_{h\\to 0}(\\frac{\\operatorname{sin}⁡((x+h)y)-\\operatorname{sin}⁡(xy)}{h})",
+      "{lim}_{h\\to 0}(\\frac{\\operatorname{sin}⁡(x(y+h))-\\operatorname{sin}⁡(xy)}{h})"
+    ],
+    "correct_index": 3,
+    "source_correct_present": true,
+    "source_difficulty_present": true,
+    "source_solution_present": true
+  }
+]
