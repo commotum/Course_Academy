@@ -34,6 +34,13 @@ def validate_record(rec):
  assert set(rec['knowledge_point'])=={'db_id','id','title'}
  formatting(q[':question/problem'],raw);formatting(q.get(':question/worked-solution',''),raw)
  P,Q=prompt_model(q);expected=sp.trigsimp((sp.diff(Q,g.X)-sp.diff(P,g.Y)).subs({g.X:g.R*g.C,g.Y:g.R*g.S})*g.R)
+ # Independently read every concrete line-integral rewrite, including rows
+ # before the partial derivatives. A correct curl/key cannot hide stale operands.
+ for body in re.findall(r'\{∮\}_\{C\}([^=\n]*?)\\,dy',q.get(':question/worked-solution','')):
+  if r'\,dx' not in body:continue
+  lhs,rhs=body.split(r'\,dx',1)
+  if 'P' in lhs or 'F' in lhs:continue
+  assert eq(g.parse_math(lhs),P) and eq(g.parse_math(rhs.lstrip('+')),Q),'stale line-integral operands'
  assert eq(P,g.model(name,p)[0])and eq(Q,g.model(name,p)[1]),'actual prompt model'
  f=q[':question/answer-fields'][0];values=[g.parse_math(a[':answer/value'])for a in f[':answer-field/choices']]
  for answer in f[':answer-field/choices']:formatting(answer[':answer/value'],raw)
@@ -146,6 +153,10 @@ def main():
  neutral=[g.generate('moderate',template='offset',parameters={'a':2,'b':2,'radius':4,'h':h}) for h in range(1,5)]
  assert len({r['generation']['mathematical_fingerprint'] for r in neutral})==1
  assert len({r['question'][':question/id'] for r in neutral})==4
+ stale=copy.deepcopy(neutral[0]);z=g.pieces('offset',stale['generation']['parameters'])
+ stale['question'][':question/worked-solution']=stale['question'][':question/worked-solution'].replace(z['P']+r'\,dx+'+z['Q']+r'\,dy',r'y(x-1)\,dx+x(y-1)\,dy')
+ try:validate_record(stale);raise AssertionError('stale operands accepted')
+ except AssertionError as e:assert str(e)!='stale operands accepted'
  # Exact finite family domain counts exclude bounds/common offsets.
  counts={'easy':36*3+15,'moderate':6+36+6+36,'hard':30}
  plotdir=ROOT/'concurrent-plots';plotdir.mkdir(exist_ok=True)
@@ -155,7 +166,7 @@ def main():
  assert not list(plotdir.glob('tmp*'))
  (ROOT/'source-cases.json').write_text(json.dumps(cases,indent=2)+'\n');(ROOT/'full-integral-audit.json').write_text(json.dumps(full_evidence,indent=2,ensure_ascii=False)+'\n')
  (ROOT/'review.json').write_text(json.dumps(reviews,indent=2,ensure_ascii=False)+'\n');(ROOT/'engine-input.json').write_text(json.dumps(native,indent=2)+'\n')
- harness=SCRIPT.parents[1]/'runs/current/check-engine';subprocess.run([str(harness),str(ROOT/'engine-input.json'),str(ROOT/'engine-validation.json')],check=True)
+ harness=ROOT/'reference/native/check-engine';subprocess.run([str(harness),str(ROOT/'engine-input.json'),str(ROOT/'engine-validation.json')],check=True)
  engine=json.loads((ROOT/'engine-validation.json').read_text());report={'status':'passed','source_basis':1356,'practice_sources':8,'source_prompts_exact':8,'existing_solutions_exact':7,'existing_solution_denominator':7,'missing_solution_presence_preserved':1,'source_banks_matched':8,'source_options_matched':40,'source_correct_designations_matched':7,'source_correct_designations_present':7,'unrated_missing_correct_designations':1,'independently_parsed_samples':sample_count,'finite_meaningful_task_counts':counts,'sampled_task_counts':{l:len(v)for l,v in tasks.items()},'default_family_coverage':{l:sorted(v)for l,v in seen.items()},'native':{k:engine[k]for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'python':sys.version.split()[0],'sympy':sp.__version__,'format_repairs':['normal disk region braces are escaped visible glyphs','normal q-125716 placeholder repaired','all normal prompts expressly request pointwise simplification'],'evidence_only_profiles':['unrated_cross/original'],'source_notation_normalization':'Answer values rendered in standard TeX; exact source values remain in source.json. Raw prompts/solutions unchanged at source parameters.'}
  (ROOT/'validation.json').write_text(json.dumps(report,indent=2)+'\n');write_review(cases,reviews);print(json.dumps(report,indent=2))
 

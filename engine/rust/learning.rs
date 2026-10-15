@@ -2198,6 +2198,11 @@ pub fn credit(
     }
     let mut forms = writeback(&loaded, &engine, vec![], "learning", event_id, at)?.forms;
     forms.retain(|v| v.get("db/id") != Some(&json!("edb.tx")));
+    if completed && correct && s.refs(learner, "learner/queue")?.contains(&topic_eid) {
+        // Queue membership ends with successful learning, in the same guarded
+        // transaction as the completion and mastery update. Targets are retained.
+        forms.push(json!([crate::schema::keyword("db/retract"), learner, crate::schema::keyword("learner/queue"), topic_eid]));
+    }
     Ok(forms)
 }
 
@@ -3653,6 +3658,31 @@ pub(crate) mod tests {
             assert_eq!(xp, expected);
             assert_eq!(passed, lesson_passed(&s, 20, &items(&s)).unwrap());
         }
+    }
+
+    #[test]
+    fn successful_lesson_credit_removes_only_its_topic_from_the_queue() {
+        let mut s = fixture();
+        put(&mut s.entities, 99, json!({"topic/id": id(99), "topic/title": "Other queued topic"}));
+        s.entities.get_mut(&1).unwrap().insert("learner/queue".into(), json!([3, 99]));
+        s.entities.get_mut(&1).unwrap().insert("learner/targets".into(), json!([3]));
+        let before = s.entities.clone();
+        let at = DateTime::from_timestamp_millis(1_790_760_000_000).unwrap();
+        let removal = json!([crate::schema::keyword("db/retract"), 1, crate::schema::keyword("learner/queue"), 3]);
+        for (question, correct, completed, removed) in [
+            (Some(100), true, false, false),
+            (None, false, true, false),
+            (None, true, false, false),
+            (None, true, true, true),
+        ] {
+            let forms = credit(&s, 1, 20, question, correct, completed, "queue-completion", at).unwrap();
+            assert_eq!(forms.contains(&removal), removed);
+            assert!(!forms.iter().any(|form| form.get(2) == Some(&crate::schema::keyword("learner/targets"))));
+            assert!(!forms.contains(&json!([crate::schema::keyword("db/retract"), 1, crate::schema::keyword("learner/queue"), 99])));
+        }
+        assert_eq!(s.entities, before, "planning must not mutate the captured database");
+        s.entities.get_mut(&1).unwrap().insert("learner/queue".into(), json!([99]));
+        assert!(!credit(&s, 1, 20, None, true, true, "not-queued", at).unwrap().contains(&removal));
     }
 
     #[test]

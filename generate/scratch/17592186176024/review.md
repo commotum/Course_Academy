@@ -1097,7 +1097,7 @@ where $F(x,y)=⟨6y(x-1),\,6x(y-1)⟩$ and $C$ is the circle ${x}^{2}+{y}^{2}=25
 First, notice that we can rewrite our integral as 
 
 $$
-{∮}_{C}F\cdot dr={∮}_{C}y(x-1)\,dx+x(y-1)\,dy.
+{∮}_{C}F\cdot dr={∮}_{C}6y(x-1)\,dx+6x(y-1)\,dy.
 $$
 
 Green's theorem states that
@@ -1119,7 +1119,7 @@ $$
 Applying Green's theorem, we get
 
 $$
-\begin{aligned}{∮}_{C}y(x-1)\,dx+x(y-1)\,dy & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & ={∬}_{D}((6(y-1))-(6(x-1)))\,\text{d}A \\  & ={∬}_{D}(6(y-x))\,\text{d}A.\end{aligned}
+\begin{aligned}{∮}_{C}6y(x-1)\,dx+6x(y-1)\,dy & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & ={∬}_{D}((6(y-1))-(6(x-1)))\,\text{d}A \\  & ={∬}_{D}(6(y-x))\,\text{d}A.\end{aligned}
 $$
 
 Now, notice that the region $D$ can be represented in polar coordinates as
@@ -1159,7 +1159,7 @@ where $F(x,y)=⟨y(x-2),\,x(y-2)⟩$ and $C$ is the circle ${x}^{2}+{y}^{2}=36$ 
 First, notice that we can rewrite our integral as 
 
 $$
-{∮}_{C}F\cdot dr={∮}_{C}y(x-1)\,dx+x(y-1)\,dy.
+{∮}_{C}F\cdot dr={∮}_{C}y(x-2)\,dx+x(y-2)\,dy.
 $$
 
 Green's theorem states that
@@ -1181,7 +1181,7 @@ $$
 Applying Green's theorem, we get
 
 $$
-\begin{aligned}{∮}_{C}y(x-1)\,dx+x(y-1)\,dy & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & ={∬}_{D}((y-2)-(x-2))\,\text{d}A \\  & ={∬}_{D}(y-x)\,\text{d}A.\end{aligned}
+\begin{aligned}{∮}_{C}y(x-2)\,dx+x(y-2)\,dy & ={∬}_{D}(\frac{∂Q}{∂x}-\frac{∂P}{∂y})\text{d}A \\  & ={∬}_{D}((y-2)-(x-2))\,\text{d}A \\  & ={∬}_{D}(y-x)\,\text{d}A.\end{aligned}
 $$
 
 Now, notice that the region $D$ can be represented in polar coordinates as

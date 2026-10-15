@@ -1,14 +1,9 @@
-# Circular-path Green's theorem generator
+# Circular-path Green theorem generator
 
-Local review only. Source: math basis 1356. No EDB access/writes, shared edits or registration.
+Validated generator script: `generate/scratch/17592186176024.py` (green-circular-v2). The stable registration is in registration.json. CLI: `.venv/bin/python generate/scratch/17592186176024.py --difficulty hard --seed 19 --count 2 --format json`.
 
-```sh
-.venv/bin/python generate/scratch/17592186176024/validate.py
-.venv/bin/python generate/scratch/17592186176024.py --difficulty all --seed 19 --count 2 --format json
-```
+Historical template extraction, exact source replay and mathematical validation remain at basis 1356. Current basis-2751 classification and all eleven source-bank checks are in classification-current.md and reference/current-source-audit/. Current classification supersedes old statements about unrated content and operative domain counts. Hard is explicitly authored; see capabilities.json for bounded domains, unimplemented supplemental samplers and excluded source defects.
 
-Public API: `generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None)` plus easy/moderate/hard entrypoints. `source-cases.json` contains every original replay call. Profiles are `normal`, `original`, `authored`. Normal samples all source-shaped families; explicit original preserves absent difficulty/solution/correct refs. Opaque unrated original is evidence only. Hard is an authored unequal-cubic extension anchored to observed moderate cubic work. All banks have five owned mathematical radio answers.
+Run validate.py for original full template/solution fidelity and symbolic checks; live_validate.py for current complete source-bank replay and native grading. reference/native/ contains grading/pool helpers compiled against the current application engine and build hashes. Replenishment uses stricter reduced-curl task deduplication across levels, including the canonical example, and current historical-presentation/reservation reads.
 
-See classification, template extraction, plot extraction, source.json, full-integral audit, source cases, review and validation for separate fidelity/correctness/grading evidence. The selected fragment is pointwise; complete integral values are audited separately. Parent independent QA is required before approval.
-
-Parent QA corrected version2 mathematical fingerprints to remove the cancelled common offset from offset-family task identity. The four displayed shifts retain distinct content IDs and one mathematical task; validation includes that regression. Finite task counts remain123easy,84moderate,30hard.
+`replenish.py` rechecks inventory, preserves source questions and learner history, publishes Matplotlib assets through ImageLibrary, prepares typed EDN with native specs, serializes on the application api.lock, previews, saves exact basis-guarded requests, commits through existing EDB integration and verifies exact-basis readback. reference/replenishment/ retains preparation, requests, receipts and verification. A saved intent is reconciled before any new plan. No other KP or application code is changed.

@@ -99,6 +99,10 @@ def masks(name,p):
   def g(s):return '('+s+')'if '+'in s or '-'in s else s
   return g(z['P'])+r'\,dx+'+g(z['Q'])+r'\,dy'
  replacements={line(old):line(new),f'P(x,y)={old["P"]}':f'P(x,y)={new["P"]}',f'Q(x,y)={old["Q"]}':f'Q(x,y)={new["Q"]}'}
+ # The offset source prints the two operands without grouping parentheses.
+ # Update both source spellings from the same parameter data.
+ if name=='offset':
+  replacements[old['P']+r'\,dx+'+old['Q']+r'\,dy']=new['P']+r'\,dx+'+new['Q']+r'\,dy'
  replacements[r'\frac{∂P}{∂y}='+old['dp']]=r'\frac{∂P}{∂y}='+new['dp']
  replacements[r'\frac{∂Q}{∂x}='+old['dq']]=r'\frac{∂Q}{∂x}='+new['dq']
  for k in ('raw','reduced','pol','last'):
