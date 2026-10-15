@@ -27,7 +27,7 @@ def normalize(q):
     return z
 
 def task(U,V,f,bounds):
-    return v.g.digest([str(s.simplify(t)) for t in (U,V,f)]+list(bounds))
+    return v.g.digest([str(s.simplify(t)) for t in (U,V,f)]+[str(z) for z in bounds])
 
 # Supplied transformations, integrands, transformed bounds and one-to-one inverses
 # independently transcribed from all 14 current prompts. sum/product is excluded.
@@ -86,6 +86,6 @@ def main():
     out=D/'reference/initial'
     (out/'source-audit.json').write_text(json.dumps({'basis':json.loads((out/'basis.json').read_text())['basis'],'rows':rows},indent=2,default=str)+'\n')
     (out/'native-input.json').write_text(json.dumps(inputs,indent=2)+'\n')
-    subprocess.run([str(ROOT/'generate/runs/current/check-engine'),str(out/'native-input.json'),str(out/'native-report.json')],check=True)
+    subprocess.run([str(D/'reference/check-engine'),str(out/'native-input.json'),str(out/'native-report.json')],check=True)
     print([(r['source_id'],r['eligible'],r.get('exclusion')) for r in rows])
 if __name__=='__main__':main()

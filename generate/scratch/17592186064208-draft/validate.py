@@ -98,4 +98,12 @@ def run():
   native.append({'label':str(i),'record':z,'checks':checks})
  for name,obj in [('sourcecases.json',sourcecases),('raw-replay.json',rawcases),('previews.json',previews),('validation.json',report),('native-input.json',native)]: (HERE/name).write_text(json.dumps(obj,indent=2)+'\n')
  print(json.dumps({'replay':len(report['source_replay']),'profile_cases':len(previews),'distinct_task_counts':report['distinct_task_counts'],'mutations':len(report['mutations'])}))
-if __name__=='__main__':run()
+
+# Maintain standard parent integration evidence names without mixing authored cases.
+def write_parent_evidence():
+    src=json.loads((HERE/'source.json').read_text());old=json.loads((HERE/'sourcecases.json').read_text());rows=old['cases'] if isinstance(old,dict) else old
+    original=[c for c in rows if c.get('case_role')=='original parameters or explicit repair' or c.get('variant')==0]
+    for name,value in [('source-cases.json',original),('review-cases.json',rows),('independent-inventory.json',{'basis':src['basis'],'lineage':src['lineage'],'questions':[{'record':q,'role':'independently authored inventory','relationship_to_source_templates':'Existing nonMA inventory, separate from recovered original templates.'} for q in src['record'][':knowledge-point/questions'] if ':question/math-academy-id' not in q]})]:
+        (HERE/name).write_text(json.dumps(value,indent=2)+'\n')
+
+if __name__=='__main__':run();write_parent_evidence()

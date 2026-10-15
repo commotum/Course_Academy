@@ -52,8 +52,8 @@ validator compares every original option one-to-one with the generated bank,
 ignoring order, and compares the nine existing keys. Missing keys are reported
 separately. Whole profiles are rejected on ANY collision or missing unique key.
 
-Authored radio bank: A, -A, an*A, A/(an), r*(ln(h)+ln(l)). These are omitted sign,
-wrong derivative scale, inverse scale, and added endpoints operations. All are
+Authored radio bank: A, -A, an*A, A/(an), r*(h ln(h)-l ln(l)). These are omitted sign,
+wrong derivative scale, inverse scale, and incorrect u ln(u) primitive operations. All are
 computed together before acceptance; no replacement option is picked. A zero
 or one result is not directly filtered. A collision can reject an entire bank;
 blank families retain natural zero results and one endpoints.
@@ -94,3 +94,5 @@ Integrals, Partial Fractions, inverse-trig substitution, Further Algebraic
 Substitution, exponential/log/trig substitution and polynomial division; those
 are excluded. The hard radical is directly observed here and uses exactly its
 source inverse3/2 power method. No missing E/M/H level is invented.
+
+The q-15877 lower transformed endpoint is fixed at one because its observed log-power rows drop ln(1). Its original x-lower bound remains variable.

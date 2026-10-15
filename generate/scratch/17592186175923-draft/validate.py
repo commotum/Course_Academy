@@ -150,4 +150,12 @@ def main():
     (H/'review.md').write_text('\n\n'.join(review)+'\n')
     save('validation.json',{'mathematics_passed':True,'distinct_random_records_checked':counts,'sourcecases_checked':len(cases),'slot_coverage':coverage,'mutations':mutations,'changed_target_reference_fixed_checked':True,'registered_full_tree_immutable':True,'no_valid_answers_pruned':True,'native_counts':{k:v for k,v in report.items() if k.endswith('checks')},'limitations':['q-167797 reference graph missing in evidence; raw replay ineligible; served text repair uses explicitly authored reference points at evidenced slope -3.','Hard source absent; hard is authored same-method moderate workload.','Full equations unsupported for RHS-only blanks, separate from valid equivalent RHS.','Malformed/foreign submissions unresolved, separately reported.']})
     print('Verified',counts,'sourcecases',len(cases),'native',report['accepted_checks'],report['rejected_checks'],report['documented_unresolved_checks'])
-if __name__=='__main__':main()
+
+# Maintain standard parent integration evidence names without mixing authored cases.
+def write_parent_evidence():
+    src=json.loads((H/'source.json').read_text());old=json.loads((H/'sourcecases.json').read_text());rows=old['cases'] if isinstance(old,dict) else old
+    original=[c for c in rows if c.get('case_role')=='original parameters or explicit repair' or c.get('variant')==0]
+    for name,value in [('source-cases.json',original),('review-cases.json',rows),('independent-inventory.json',{'basis':src['basis'],'lineage':src['lineage'],'questions':[{'record':q,'role':'independently authored inventory','relationship_to_source_templates':'Existing nonMA inventory, separate from recovered original templates.'} for q in src['record'][':knowledge-point/questions'] if ':question/math-academy-id' not in q]})]:
+        (H/name).write_text(json.dumps(value,indent=2)+'\n')
+
+if __name__=='__main__':main();write_parent_evidence()

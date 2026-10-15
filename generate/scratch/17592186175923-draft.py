@@ -146,6 +146,7 @@ def sample(s,rng):
 
 @fmt.checked_math_content
 def generate(level,seed=0,template=None,parameters=None,bank_profile=None):
+    if type(seed)is not int:raise ValueError('builtin integer seed required')
     if level not in LEVELS:raise ValueError('invalid difficulty')
     rng=random.Random(seed);available=[s for s in SOURCES if source_level(s)==('moderate' if level=='hard' else level)]
     s=template or rng.choice(available)
@@ -172,6 +173,7 @@ def generate(level,seed=0,template=None,parameters=None,bank_profile=None):
     return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'seed':seed,'template':s,'family':FAMILY[s],'parameters':p,'bank_profile':selected,'source_id':s,'source_basis':2275,'eligible':True,'mathematical_fingerprint':task_key(p,kind),'content_hash':content,'plot_rating':'none','origin':'normalized source replay' if replay else 'authored missing-diagram textual repair' if s==GRAPH else 'authored completion of incomplete source' if s in INCOMPLETE else 'authored parameter variation','difficulty_origin':'authored hard; same moderate workload, no observed hard source' if level=='hard' else 'inferred for incomplete source' if s in INCOMPLETE else 'observed source level','domain':'real plane; finite nonzero reference slope; exact integer points','dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__}}}
 
 def batch(level,count,seed=0,**kwargs):
+    if type(seed)is not int:raise ValueError('builtin integer seed required')
     if type(count)!=int or not 1<=count<=1000:raise ValueError('count must be 1..1000')
     out=[];seen=set()
     for i in range(count*50):

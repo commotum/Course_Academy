@@ -12,10 +12,21 @@ G=load('root_otherquotient_gen',D.with_suffix('.py'));P=load('root_otherquotient
 def parse(t):return P.scalar(t.strip().rstrip('.,').replace('[','(').replace(']',')').replace(r'\cancel',''))
 @lru_cache(maxsize=20000)
 def eq(a,b):
- d=s.expand(a-b)
+ d=a-b
  if d==0:return True
  w=s.Symbol('root_circle_w',real=True);circle={s.sin(x):2*w/(1+w*w),s.cos(x):(1-w*w)/(1+w*w),s.tan(x):2*w/(1-w*w),s.sec(x):(1+w*w)/(1-w*w)}
- assert all(f.args[0]==x for f in d.atoms(s.sin,s.cos,s.tan,s.sec));return s.cancel(s.expand_log(d.xreplace(circle)))==0
+ assert all(f.args[0]==x for f in d.atoms(s.sin,s.cos,s.tan,s.sec))
+ # Exact transcendental substitutions keep the rational proof small. e^(kx)
+ # becomes E0^k with E0=e^x; log(x) is kept independent. No forced log laws.
+ e0=s.Symbol('root_E0',positive=True);l0=s.Symbol('root_L0',real=True)
+ replacements={s.log(x):l0}
+ numerator=d.as_numer_denom()[0]
+ for term in numerator.atoms(s.exp):
+  k=s.cancel(term.args[0]/x)
+  if k.is_Integer:replacements[term]=e0**k
+ numerator=numerator.xreplace(circle).xreplace(replacements)
+ numerator=s.together(numerator).as_numer_denom()[0]
+ return s.expand(numerator)==0
 source=json.load(open(D/'source.json'));manifest=json.load(open(R/'manifest.json'));assert source==json.load(open(R/manifest['source_snapshot_roots'][str(source['basis'])]/f'sources/{K}.json'));olds={q[':question/math-academy-id']:q for q in source['record'][':knowledge-point/questions']if ':question/math-academy-id'in q};N=dict(raw_records=0,records=0,bindings=0,formal_derivatives=0,stages=0,points=0,values=0,pairs=0,fragment_contexts=0,source_banks=0,source_values=0,source_keys=0,scaled_bank_values=0);tasks={l:set()for l in G.SUPPORTED_LEVELS}
 def quotient(raw):
  raw=raw.strip().rstrip('.,');assert raw.startswith(r'\frac');a,e=B.group(raw,5);b,e=B.group(raw,e);assert not raw[e:];return parse(a),parse(b)
@@ -68,10 +79,13 @@ def check(r,sid=None):
    if ':answer-field/correct'in of:assert eq(parse(of[':answer-field/correct'][':answer/value']),target);N['source_keys']+=1
  N['records']+=1;N['values']+=len(values);tasks[q[':question/difficulty'].split('/')[-1]].add((s.srepr(s.cancel(u/v)),str(point)))
 for sid,o in olds.items():
+ print('source',sid,flush=True)
  assert G.replay_raw(sid)['question']==o;N['raw_records']+=1;p=G.original_parameters(sid);check(G.generate(G.SPEC[sid][3],template=sid,parameters=p),sid)
  if o.get(':question/answer-fields') and sid!='q-167782':
   q=G.generate(G.SPEC[sid][3],template=sid,parameters=dict(p,scale=2))['question'];orig=[parse(a[':answer/value'])for a in o[':question/answer-fields'][0][':answer-field/choices']];vals=[parse(a[':answer/value'])for a in q[':question/answer-fields'][0][':answer-field/choices']];assert len(orig)==len(vals)and all(sum(eq(2*z,w)for w in vals)==1 for z in orig);N['scaled_bank_values']+=len(vals)
-for r in json.load(open(D/'sample-records.json')):check(r)
+for i,r in enumerate(json.load(open(D/'sample-records.json'))):
+ if i>=80 or i%20==0:print('root sample',i,flush=True)
+ check(r)
 for l in G.SUPPORTED_LEVELS:
  for seed in range(24):check(G.generate(l,seed))
 result=dict(status='passed',script_sha256=hashlib.sha256(D.with_suffix('.py').read_bytes()).hexdigest(),source_and_readback=N,sampled_actual_tasks={l:len(t)for l,t in tasks.items()},scope='Observed complete quotients, original real domains and exact-point slopes; authored hard two-sum quotient uses same quotient and known basic derivatives without chain extension. Every source bank and coefficient-doubled bank independently read; partial numerator response substituted into actual table.',native_limitations='One genuine -2ln2 versus -ln4 equivalent unresolved; canonical, wrong owned options and response diagnostics separate. Qualified local approval, no engine change.',database_writes=0);(R/f'qa/{K}-root-readback.json').write_text(json.dumps(result,indent=2)+'\n');print(result)

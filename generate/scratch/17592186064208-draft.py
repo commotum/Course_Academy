@@ -65,6 +65,7 @@ def source_case(source_id):
  return {'source_id':source_id,'public_replay_eligible':eligible,'raw':copy.deepcopy(raw)}
 @fmt.checked_math_content
 def generate(difficulty='hard',seed=0,template=None,parameters=None,bank_profile=None):
+ if type(seed)is not int:raise ValueError('builtin integer seed required')
  if difficulty not in LEVELS:raise ValueError('difficulty must be easy, moderate, or hard')
  rng=random.Random(seed);sid=bank_profile or template or rng.choice(profiles(difficulty))
  if sid not in PROFILES:raise ValueError('unknown bank profile')
@@ -96,7 +97,8 @@ def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
 def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)
 def generate_hard(seed=0,**kw):return generate('hard',seed,**kw)
 def batch(difficulty,count=1,seed=0):
- if count<1:raise ValueError('positive count required')
+ if type(seed)is not int:raise ValueError('builtin integer seed required')
+ if type(count)is not int or count<1:raise ValueError('positive builtin integer count required')
  out=[];used=set()
  for attempt in range(count*200):
   z=generate(difficulty,seed+attempt);fp=z['generation']['mathematical_fingerprint']

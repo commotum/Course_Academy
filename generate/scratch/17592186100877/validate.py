@@ -5,14 +5,17 @@ sys.dont_write_bytecode=True
 from pathlib import Path
 import importlib.util,json,hashlib,re,copy,subprocess,random
 import sympy as s
+from functools import lru_cache
 H=Path(__file__).parent;ROOT=H.parents[2]
 def load(name,path):
  spec=importlib.util.spec_from_file_location(name,path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
 G=load('kp00877',H.with_suffix('.py'));P=load('kp00877_reader',H/'reference/ode-scalar-parser.py');x,u=P.x,P.u
 
+@lru_cache(maxsize=40000)
 def scalar(t):
  t=t.strip().rstrip('.,').replace(r'\displaystyle','').replace(r'\dfrac',r'\frac').replace(r'\textrm{d}',r'\text{d}').replace(r'\mathrm{d}',r'\text{d}').replace(r'\!','')
  return P.scalar(t)
+@lru_cache(maxsize=40000)
 def same(a,b):return s.simplify(s.expand_log(a-b))==0
 
 def group(t,i):
@@ -35,11 +38,24 @@ def integral(raw):
  return c*F,var,scalar(L),scalar(Hh)
 def blocks(t):return [next(v for v in z if v)for z in re.findall(r'\$\$(.*?)\$\$|(?<!\$)\$(?!\$)(.*?)(?<!\$)\$(?!\$)',t,re.S)]
 
-def derive_integral(F,var):
+@lru_cache(maxsize=4000)
+def derive_integral(F,var,L,Hh):
+ if F.has(s.Abs(var)):
+  assert L>0 or Hh<0,'absolute-value branch must be fixed by the actual original interval'
+  F=F.subs(s.Abs(var),var if L>0 else -var)
  # Read denominator and numerator from the actual printed integral. No generator
  # metadata and no generated correct value enter this primitive derivation.
- num,den=s.fraction(s.cancel(F));q=s.cancel(num/s.diff(den,var))
+ num,den=s.fraction(F);q=s.cancel(num/s.diff(den,var))
  if den.has(var)and not q.has(var):return q*s.log(den)
+ # The radical family's actual denominator is sqrt(T^3). Work on its
+ # explicitly certified positive-inner branch using a positive symbol, never
+ # force=True or a global branch-erasing power identity.
+ for power in den.atoms(s.Pow):
+  T=power.base
+  if power.exp==3 and T.is_polynomial(var) and s.degree(T,var)==2:
+   coeff=s.cancel(num/s.diff(T,var));positive=s.Symbol('_positive_inner',positive=True)
+   if not coeff.has(var) and same((F/s.diff(T,var)).subs(T,positive),coeff/positive**s.Rational(3,2)):
+    return -2*coeff/s.sqrt(T)
  candidate=s.integrate(F,var)
  assert not candidate.has(s.Integral)and same(s.diff(candidate,var),F),(F,candidate)
  return candidate
@@ -85,7 +101,7 @@ def readback(q,sid=None):
  F,var,L,Hh=integral(given);assert var==x and L<Hh
  # Independently derive the exact definite value and validate pole-free domain.
  denominator=s.denom(s.cancel(F));roots=s.solveset(denominator,x,domain=s.Interval(L,Hh));assert roots==s.EmptySet,roots
- A=derive_integral(F,x);expected=s.simplify(A.subs(x,Hh)-A.subs(x,L))
+ A=derive_integral(F,x,L,Hh);expected=s.simplify(A.subs(x,Hh)-A.subs(x,L))
  bks=blocks(sol);first=next(z for z in bks if r'\frac{\text{d}u}'in z);rows=re.sub(r'\\(?:begin|end)\{aligned\}','',first).split(r'\\')
  eqs=[z.replace('&','').strip().rstrip('.,').split('=',1)for z in rows]
  assert eqs[0][0].strip()=='u';T=scalar(eqs[0][1]);D=s.diff(T,x)
@@ -100,6 +116,11 @@ def readback(q,sid=None):
  table=re.sub(r'\\(?:begin|end)\{aligned\}','',table);tr=[z.strip().split('&')for z in table.split(r'\\')];assert [z[0].strip()for z in tr]==['x','u']
  xl,xh=map(scalar,tr[0][1:]);ul,uh=map(scalar,tr[1][1:]);assert same(xl,L)and same(xh,Hh)and same(T.subs(x,xl),ul)and same(T.subs(x,xh),uh)
  crit=[L,Hh]+([s.Integer(0)]if L<=0<=Hh else[]);assert min(T.subs(x,z)for z in crit)>0
+ def domain_same(a,b):
+  difference=a-b
+  if L>0 or Hh<0:
+   difference=s.refine(difference,s.Q.positive(x)if L>0 else s.Q.negative(x))
+  return same(difference.subs(T,s.Symbol('_positive_inner',positive=True)),0)
  count={'formal_integrals':0,'primitive_bars':0,'individual_signed_endpoints':0,'operative_sides':0,'bound_operands':4,'du_relations':len(eqs)-2};primitive=None;checked_endpoints=False
  for bk in bks:
   if r'\int'not in bk:continue
@@ -112,10 +133,10 @@ def readback(q,sid=None):
      fn,v,lo,hi=integral(side)
      assert same(lo,L if v==x else ul)and same(hi,Hh if v==x else uh),('stale input bound',side)
      actual=fn if v==x else fn.subs(u,T)*D
-     assert same(actual,F),('wrong formal integrand',side,actual,F)
+     assert domain_same(actual,F),('wrong formal integrand',side,actual,F)
      count['formal_integrals']+=1;count['bound_operands']+=2
     elif '|_'in clean(side):
-     primitive,lo,hi=primitive_bar(side);assert same(lo,ul)and same(hi,uh);assert same(s.diff(primitive.subs(u,T),x),F)
+     primitive,lo,hi=primitive_bar(side);assert same(lo,ul)and same(hi,uh);assert domain_same(s.diff(primitive.subs(u,T),x),F)
      value=primitive.subs(u,hi)-primitive.subs(u,lo);assert same(value,expected);count['primitive_bars']+=1;count['bound_operands']+=2
     else:
      actual=scalar(side);assert same(actual,expected),('wrong scalar stage',side,actual,expected)
@@ -176,14 +197,17 @@ def main():
    except (AssertionError,ValueError,TypeError,IndexError,StopIteration):mutations.append({'source_id':sid,'mutation':label,'caught':True})
    else:raise AssertionError((sid,'uncaught',label))
  # Slot coverage and genuine mathematical dedup across default templates.
+ default_records=[]
  for level in ('easy','moderate','hard'):
   rr=[G.generate(level,seed)for seed in range(75)];[readback(r['question'],r['generation']['template'])for r in rr]
   coverage[level]={'samples':len(rr),'mathematical_tasks':len({r['generation']['math_fingerprint']for r in rr}),'slots':{k:sorted({r['generation']['parameters'][k]for r in rr})for k in G.SLOTS},'profiles':sorted({r['generation']['bank_profile']for r in rr})}
   allrecords+=rr[:4]
+  default_records+=rr[:2]
+  for i,r in enumerate(rr[:2]):reviews.append({'label':level+' default bank '+str(i),'record':r})
  # Determinism and stable IDs with option permutation.
  for r in allrecords:
   md=r['generation'];a=G.generate(r['question'][':question/difficulty'].split('/')[-1],1234,template=md['template'],parameters=md['parameters'],profile=md['bank_profile']);assert a['question'][':question/id']==r['question'][':question/id'];assert set(a['knowledge_point'])=={'db_id','id','title'}
- write('source-cases.json',source_cases);write('raw-source-replay.json',raw);write('non-ma-inventory.json',{'basis':2275,'entries':[],'count':0});write('review.json',reviews)
+ write('source-cases.json',source_cases);write('raw-source-replay.json',raw);write('non-ma-inventory.json',{'basis':2275,'entries':[],'count':0});write('review.json',reviews);write('review-cases.json',[dict(label=v['label'],difficulty=v['record']['question'][':question/difficulty'].split('/')[-1],template=v['record']['generation']['template'],parameters=v['record']['generation']['parameters'],bank_profile=v['record']['generation']['bank_profile'])for v in reviews])
  md=[]
  for row in reviews:md.append('## '+row['label']+'\n\n'+G.markdown(row['record']))
  (H/'review.md').write_text('\n\n'.join(md)+'\n')
@@ -191,8 +215,9 @@ def main():
  # Native checks batched, foreign/malformed submissions separate from ordinary
  # mathematical wrongs. No valid-output pruning based on grader restrictions.
  engine=ROOT/'generate/runs/current/check-engine';assert hashlib.sha256(engine.read_bytes()).hexdigest()=='71d435e31aa0cdea66d992aa4d4bd1043cdd871aaffc7a3af9f54e9b0f846dea'
+ edge_records=[G.generate('hard',template='q-336745',parameters=p,profile='observed')for p in [dict(n=2,a=1,b=1,c=6,lo=-1,hi=1),dict(n=2,a=3,b=4,c=12,lo=0,hi=2),dict(n=2,a=5,b=-1,c=10,lo=1,hi=2)]]
  fixtures=[]
- for idx,r in enumerate(allrecords[:33]):
+ for idx,r in enumerate(allrecords[:33]+edge_records+default_records):
   f=r['question'][':question/answer-fields'][0];checks=[]
   if f[':answer-field/type'].endswith('/radio'):
    checks=[{'submitted_answer_id':a[':answer/id'],'expected':'accepted'if a[':answer/id']==f[':answer-field/correct'][1]else'rejected','purpose':'owned whole-bank choice'}for a in f[':answer-field/choices']]
@@ -200,11 +225,18 @@ def main():
    expected,_=readback(r['question']);canonical=f[':answer-field/choices'][0][':answer/value'];checks=[{'submitted':canonical,'expected':'accepted','purpose':'canonical exact blank'},{'submitted':G.tex(expected+1),'expected':'rejected','purpose':'ordinary wrong arithmetic'}]
    # Actual uncollected endpoint form derived independently from printed u/table.
    sol=r['question'][':question/worked-solution'];bk=next(b for b in blocks(sol)if '|_'in b);bar=next(row.split('=',1)[1].strip()for row in bk.split(r'\\')if '|_'in row);pr,ul,uh=primitive_bar(bar)
-   alt='('+G.tex(pr.subs(u,uh))+')-('+G.tex(pr.subs(u,ul))+')'
+   if pr.has(s.log(u)):
+    coeff=s.cancel(pr/s.log(u));alt=G.tex(coeff)+r'(\ln('+G.tex(uh)+r')-\ln('+G.tex(ul)+'))'
+    power_alt=G.tex(coeff)+r'\ln(\frac{'+G.tex(uh)+'}{'+G.tex(ul)+'})'
+    checks.append({'submitted':power_alt,'expected':'accepted','purpose':'uncollected endpoint log-power quotient equivalent'})
+   else:
+    coeff=s.simplify(pr*s.sqrt(u));alt=G.tex(coeff)+r'\frac{1}{\sqrt{'+G.tex(uh)+'}}-('+G.tex(coeff)+r'\frac{1}{\sqrt{'+G.tex(ul)+'}})'
    checks.append({'submitted':alt,'expected':'accepted','purpose':'true uncollected signed endpoint equivalent'})
   fixtures.append({'label':str(idx)+' '+r['generation']['template'],'record':r,'checks':checks})
  write('engine-input.json',fixtures)
  # Caller runs the native harness; preserve real failures for diagnosis, then
  # freeze observed outcomes without relabeling unsupported equivalence success.
- print('Independent mathematics, source banks, mutations and variety passed.')
+ print('Independent mathematics, source banks, mutations and variety passed.',flush=True)
+ subprocess.run([sys.executable,'-B',str(H/'edge-cases.py')],check=True)
+ subprocess.run([sys.executable,'-B',str(H/'native.py')],check=True)
 if __name__=='__main__':main()

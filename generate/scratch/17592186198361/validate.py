@@ -324,7 +324,8 @@ def main():
         f=r['question'][':question/answer-fields'][0];checks=[dict(submitted_answer_id=a[':answer/id'],expected='accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected',purpose='owned radio selection') for a in f[':answer-field/choices']]
         inputs.append(dict(label=str(i),record=r,checks=checks))
     (D/'native-input.json').write_text(json.dumps(inputs,ensure_ascii=False,indent=2)+'\n')
-    root=D.parents[2];engine=root/'generate/runs/current/check-engine'
+    root=D.parents[2];engine=D/'reference/check-engine'
+    if not engine.exists():engine=root/'generate/runs/current/check-engine'
     subprocess.run([str(engine),str(D/'native-input.json'),str(D/'native-report.json')],check=True)
     native=json.loads((D/'native-report.json').read_text())
     # Per observed template/bank, original plus a clearly labeled changed-bound variant.

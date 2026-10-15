@@ -66,7 +66,7 @@ def integral(body,var,L,H):return r'\int_{'+tex(L)+'}^{'+tex(H)+'}'+body+r'\,\te
 def bank(sid,p,profile,correct,ul,uh,r):
  n,a,b,c,L,H=[s.Integer(p[k])for k in SLOTS]
  if CONFIG[sid][1]=='blank':return [correct]
- if profile=='authored':return [correct,-correct,(a*n)*correct,correct/(a*n),r*(s.log(uh)+s.log(ul))]
+ if profile=='authored':return [correct,-correct,(a*n)*correct,correct/(a*n),r*(uh*s.log(uh)-ul*s.log(ul))]
  # Complete observed banks. Some scalar evidence underdetermines intent; these
  # explicitly recorded algebraic patterns are replay-only, never inferred intent.
  if sid=='q-12912':return [s.log(uh),s.Integer(0),correct,2*s.log(uh),r]
@@ -115,10 +115,13 @@ def core(sid,p,profile):
  elif sid=='q-336729':transbody=r'\frac{'+tex(c)+r'}{u}\cdot '+tex(1/(a*n))
  else:transbody=r'\frac{1}{u}\cdot '+tex(r)
  J=integral(transbody,'u',ul,uh)
- solution+='\n\nSo, the integral in terms of the new variable is'+display(I+'='+J+'.')
+ conversion=I
+ if sid in ('q-113747','q-19129','q-73432','q-73434'):
+  conversion=integral(r'\frac{1}{('+tex(T)+r')}\cdot '+tex(N),'x',L,H)
+ solution+='\n\nSo, the integral in terms of the new variable is'+display(conversion+'='+J+'.')
  if hard:
   prim=-2*r/s.sqrt(u);evalrow=tex(-2*r)+r'\frac{1}{\sqrt{'+tex(uh)+'}}+'+tex(2*r)+r'\frac{1}{\sqrt{'+tex(ul)+'}}'
-  finalrows=[integral(tex(r)+r'u^{-3/2}','u',ul,uh)+' & ='+tex(prim)+r'|_{'+tex(ul)+'}^{'+tex(uh)+'}', ' & ='+evalrow,' & ='+tex(2*r/s.sqrt(ul))+'-'+tex(2*r/s.sqrt(uh)),' & ='+tex(correct)+'.']
+  finalrows=[integral(tex(r)+r'u^{-3/2}','u',ul,uh)+' & ='+tex(prim)+r'|_{'+tex(ul)+'}^{'+tex(uh)+'}', ' & ='+evalrow,' & ='+tex(2*r/s.sqrt(ul))+'-'+tex(2*r)+r'\frac{1}{\sqrt{'+tex(uh)+'}}',' & ='+tex(correct)+'.']
  else:
   prim=r*s.log(u);evalrow=tex(r)+r'(\ln('+tex(uh)+r')-\ln('+tex(ul)+'))'
   finalrows=[J+' & ='+tex(r)+integral(r'\frac{1}{u}','u',ul,uh),' & ='+tex(r)+r'\ln(u)|_{'+tex(ul)+'}^{'+tex(uh)+'}',' & ='+evalrow]
