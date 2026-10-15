@@ -16,3 +16,8 @@ Lesson order is recovered by following activity/first-step 17592186088758 and ne
 Hard is a declared authored extension, never an inferred source label. It replaces exact half-unit radius labels with exact thirds/quarters (both noninteger), requiring the same graph reading, fraction squaring and reciprocal simplification. All hard instances share that workload. Its extra fraction arithmetic stays within the same ellipse equation skill.
 
 q-7605 lacks difficulty, worked solution and correct ref; its lower raster intercept is mislabeled +4. Raw replay retains every omission and exact asset. The supported repair assigns easy, infers x²/9+y²/16=1 from the graph, supplies the shared solution, and renders -4 below the origin. No designation-match credit is claimed for that missing source attribute.
+
+
+## Inventory revalidation at basis 2661
+
+All 21 earlier source records retain their authored content. New easy radio q-16458 (17592186434278) has a=2, b=3 and the same integer-radio backbone. Its full bank is x²/4+y²/3=1 (a²,b), x²/3+y²/2=1 (b,a), x²/9+y²/4=1 (b²,a²), x²/2+y²/3=1 (a,b), and x²/4+y²/9=1 (a²,b², correct). Its solution follows formula, squared-radius substitution, then evaluated denominators. The unchanged source plot images/2a/2adb84964a605495c84921943ec76f9820ba18851cda817037dd6022808d1fd7.png shows the intercepts ±2 and ±3; changed parameters use the existing Matplotlib renderer. This adds one complete evidence bank, no template or field layout. There are now 22 source practice records: 12 rated easy radio, 2 rated easy blank, 7 moderate blank, and 1 incomplete unrated radio. Original source capture and manifest are retained in reference/replenishment.

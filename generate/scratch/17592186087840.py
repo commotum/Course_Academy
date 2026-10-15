@@ -15,6 +15,8 @@ from pathlib import Path
 import sympy as sp
 KP_ID=17592186087840
 KP_UUID='de557d1d-5f27-50e3-bcba-22b21f83267f'
+GENERATOR_UUID='d4491310-401d-5065-a825-13199d423032'
+SUPPORTED_LEVELS=('easy','moderate','hard')
 TITLE='Determining the Equation of a Tall Ellipse'
 VERSION='tall-ellipse-1'
 HERE=Path(__file__).resolve().with_suffix('')
@@ -22,10 +24,11 @@ SOURCE=json.loads((HERE/'source.json').read_text())
 PROVENANCE={k:SOURCE[k] for k in ('database','basis','lineage')}
 X,Y=sp.symbols('x y')
 # Exact source-derived geometry; observed styles are kept separate from math.
-SOURCE_GEOMETRY={'q-279153':('3/2','9/2'),'q-7605':(3,4),'q-115123':(6,9),'q-115124':(2,6),'q-115126':(3,8),'q-115129':(1,4),'q-16451':(3,6),'q-277921':(2,7),'q-279151':('7/2',4),'q-279158':('9/2','13/2'),'q-69892':(1,2),'q-69893':(2,5),'q-73627':(4,6),'q-7602':(1,3),'q-7608':(3,5),'q-279141':(4,9),'q-279143':(4,'15/2'),'q-279145':(5,'17/2'),'q-279154':('5/2','7/2'),'q-279155':('7/2','11/2'),'q-73631':(5,7)}
+SOURCE_GEOMETRY={'q-16458':(2,3),'q-279153':('3/2','9/2'),'q-7605':(3,4),'q-115123':(6,9),'q-115124':(2,6),'q-115126':(3,8),'q-115129':(1,4),'q-16451':(3,6),'q-277921':(2,7),'q-279151':('7/2',4),'q-279158':('9/2','13/2'),'q-69892':(1,2),'q-69893':(2,5),'q-73627':(4,6),'q-7602':(1,3),'q-7608':(3,5),'q-279141':(4,9),'q-279143':(4,'15/2'),'q-279145':(5,'17/2'),'q-279154':('5/2','7/2'),'q-279155':('7/2','11/2'),'q-73631':(5,7)}
 RECORDS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
 # Whole bank first. Each tuple gives exact x/y denominators. No first-valid pool.
 BANKS={
+'q-16458':('a2,b','b,a','b2,a2','a,b','a2,b2'),
 'q-115123':('a2,b2','b,a','2a,2b','b2,a2','a,b'),
 'q-115124':('b2,a2','a2,2b','a2,b2','a,b','b,a2'),
 'q-115126':('2a,2b','b2,a2','a2,b2','b,a','a,b'),
