@@ -126,6 +126,7 @@ def main():
             if template=='point_sine' and X==Y:continue
             for a in ([-5,-4,-3,-2,-1,1,2,3,4,5] if template=='point_monomial' else [None]):
                 if template=='point_monomial' and abs(a*((Y if swap else X)**2)*(X if swap else Y))>24:continue
+                if template=='point_monomial' and (Y if swap else X)==2*(X if swap else Y):continue
                 p={'X':X,'Y':Y,'swap':swap}|({'a':a} if a else {});r=g.generate('hard',template=template,parameters=p);check(r);records.append(r)
     for level in g.LEVELS:
         for seed in range(80):
@@ -150,7 +151,7 @@ def main():
     try:g.guard('bad\x0cfrac')
     except ValueError:mutations.append('C0-formfeed')
     else:raise AssertionError('C0 survived')
-    for level,template,p in [('easy','monomial',{'a':10,'n':2}),('moderate','rational',{'p':2,'q':6,'a':1}),('hard','point_monomial',{'a':-3,'X':3,'Y':1})]:
+    for level,template,p in [('easy','monomial',{'a':10,'n':2}),('moderate','rational',{'p':2,'q':6,'a':1}),('hard','point_monomial',{'a':-3,'X':3,'Y':1}),('hard','point_monomial',{'a':1,'X':2,'Y':1}),('hard','point_monomial',{'a':1,'X':1,'Y':2,'swap':True})]:
         try:g.generate(level,template=template,parameters=p)
         except ValueError:mutations.append('workload-'+level)
         else:raise AssertionError('Workload boundary escaped')
@@ -162,7 +163,7 @@ def main():
             p={k:(min(v) if j==0 else max(v)) for k,v in g.DOMAINS[name].items()}|{'swap':bool(j)}
             review.append(g.generate(spec['level'],template=name,parameters=p,seed=j))
     for name in ['point_monomial','point_sine']:
-        for j in range(2):review.append(g.generate('hard',template=name,parameters={'X':j+1,'Y':2-j,'swap':bool(j)}|({'a':j+1} if name=='point_monomial' else {}),seed=j))
+        for j in range(2):review.append(g.generate('hard',template=name,parameters={'X':1 if j==0 else -1,'Y':2,'swap':bool(j)}|({'a':j+1} if name=='point_monomial' else {}),seed=j))
     review.extend([g.generate('hard',template='point_monomial',parameters={'a':-3,'X':-2,'Y':-2,'swap':False}),g.generate('hard',template='point_sine',parameters={'X':-3,'Y':2,'swap':True})])
     write('review.json',review);write('samples.json',records)
     markdown=['# Source originals and generated variants','All originals are evidence only; generated variants are labeled by difficulty and bank profile.']

@@ -1374,39 +1374,39 @@ Here $h\ne 0$ before taking the limit, and $y=2$ is held constant.
 
 ### hard — point_monomial — bank profile: method
 
-Given that $f(x,y)=2{y}^{2}x,$ express $f_y(2,1)$ as the limit of a difference quotient.
+Given that $f(x,y)=2{y}^{2}x,$ express $f_y(-1,2)$ as the limit of a difference quotient.
 
-1. $\lim_{h\to 0}(\frac{(2(1+h)^{2}(2+h))-(2(1)^{2}(2))}{h})$
+1. $\lim_{h\to 0}(\frac{(2(2+h)^{2}(-1+h))-(2(2)^{2}(-1))}{h})$
 
-2. $\lim_{h\to 0}(\frac{(2(1+h)^{2}(2))+(2(1)^{2}(2))}{h})$
+2. $\lim_{h\to 0}(\frac{(2(2+h)^{2}(-1))+(2(2)^{2}(-1))}{h})$
 
-3. $\lim_{h\to 0}(\frac{(2(1)^{2}(2))-(2(1+h)^{2}(2))}{h})$
+3. $\lim_{h\to 0}(\frac{(2(2)^{2}(-1))-(2(2+h)^{2}(-1))}{h})$
 
-4. $\lim_{h\to 0}(\frac{(2(1+h)^{2}(2))-(2(1)^{2}(2))}{h})$ **Correct**
+4. $\lim_{h\to 0}(\frac{(2(2+h)^{2}(-1))-(2(2)^{2}(-1))}{h})$ **Correct**
 
-5. $\lim_{h\to 0}(\frac{(2(1)^{2}(2+h))-(2(1)^{2}(2))}{h})$
+5. $\lim_{h\to 0}(\frac{(2(2)^{2}(-1+h))-(2(2)^{2}(-1))}{h})$
 
 Worked solution:
 
 The partial derivative of $f$ with respect to $y$ is given by the limit
 
 $$
-f_y(2,1)=\lim_{h\to 0}(\frac{f(2, 1+h)-f(2,1)}{h}).
+f_y(-1,2)=\lim_{h\to 0}(\frac{f(-1, 2+h)-f(-1,2)}{h}).
 $$
 
 Since $f(x,y)=2{y}^{2}x,$ we have that
 
 $$
-f(2, 1+h)=2(1+h)^{2}(2),\qquad f(2,1)=2(1)^{2}(2).
+f(-1, 2+h)=2(2+h)^{2}(-1),\qquad f(-1,2)=2(2)^{2}(-1).
 $$
 
 Therefore,
 
 $$
-f_y(2,1)=\lim_{h\to 0}(\frac{(2(1+h)^{2}(2))-(2(1)^{2}(2))}{h}).
+f_y(-1,2)=\lim_{h\to 0}(\frac{(2(2+h)^{2}(-1))-(2(2)^{2}(-1))}{h}).
 $$
 
-Here $h\ne 0$ before taking the limit, and $x=2$ is held constant.
+Here $h\ne 0$ before taking the limit, and $x=-1$ is held constant.
 
 ## Generated variant
 
@@ -1450,39 +1450,39 @@ Here $h\ne 0$ before taking the limit, and $y=2$ is held constant.
 
 ### hard — point_sine — bank profile: method
 
-Given that $f(x,y)=\operatorname{sin}(yx),$ express $f_y(2,1)$ as the limit of a difference quotient.
+Given that $f(x,y)=\operatorname{sin}(yx),$ express $f_y(-1,2)$ as the limit of a difference quotient.
 
-1. $\lim_{h\to 0}(\frac{(\operatorname{sin}((1+h)(2+h)))-(\operatorname{sin}((1)(2)))}{h})$
+1. $\lim_{h\to 0}(\frac{(\operatorname{sin}((2+h)(-1+h)))-(\operatorname{sin}((2)(-1)))}{h})$
 
-2. $\lim_{h\to 0}(\frac{(\operatorname{sin}((1+h)(2)))+(\operatorname{sin}((1)(2)))}{h})$
+2. $\lim_{h\to 0}(\frac{(\operatorname{sin}((2+h)(-1)))+(\operatorname{sin}((2)(-1)))}{h})$
 
-3. $\lim_{h\to 0}(\frac{(\operatorname{sin}((1)(2)))-(\operatorname{sin}((1+h)(2)))}{h})$
+3. $\lim_{h\to 0}(\frac{(\operatorname{sin}((2)(-1)))-(\operatorname{sin}((2+h)(-1)))}{h})$
 
-4. $\lim_{h\to 0}(\frac{(\operatorname{sin}((1+h)(2)))-(\operatorname{sin}((1)(2)))}{h})$ **Correct**
+4. $\lim_{h\to 0}(\frac{(\operatorname{sin}((2+h)(-1)))-(\operatorname{sin}((2)(-1)))}{h})$ **Correct**
 
-5. $\lim_{h\to 0}(\frac{(\operatorname{sin}((1)(2+h)))-(\operatorname{sin}((1)(2)))}{h})$
+5. $\lim_{h\to 0}(\frac{(\operatorname{sin}((2)(-1+h)))-(\operatorname{sin}((2)(-1)))}{h})$
 
 Worked solution:
 
 The partial derivative of $f$ with respect to $y$ is given by the limit
 
 $$
-f_y(2,1)=\lim_{h\to 0}(\frac{f(2, 1+h)-f(2,1)}{h}).
+f_y(-1,2)=\lim_{h\to 0}(\frac{f(-1, 2+h)-f(-1,2)}{h}).
 $$
 
 Since $f(x,y)=\operatorname{sin}(yx),$ we have that
 
 $$
-f(2, 1+h)=\operatorname{sin}((1+h)(2)),\qquad f(2,1)=\operatorname{sin}((1)(2)).
+f(-1, 2+h)=\operatorname{sin}((2+h)(-1)),\qquad f(-1,2)=\operatorname{sin}((2)(-1)).
 $$
 
 Therefore,
 
 $$
-f_y(2,1)=\lim_{h\to 0}(\frac{(\operatorname{sin}((1+h)(2)))-(\operatorname{sin}((1)(2)))}{h}).
+f_y(-1,2)=\lim_{h\to 0}(\frac{(\operatorname{sin}((2+h)(-1)))-(\operatorname{sin}((2)(-1)))}{h}).
 $$
 
-Here $h\ne 0$ before taking the limit, and $x=2$ is held constant.
+Here $h\ne 0$ before taking the limit, and $x=-1$ is held constant.
 
 ## Generated variant
 

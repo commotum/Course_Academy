@@ -1,10 +1,12 @@
 # Generator creation progress
 
+**Queue stopped at the user’s request. All four KPs that were in progress passed parent QA; no additional KPs were started.**
+
 Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrapper retains its database basis; refreshed queue: basis2275.
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 45**, **qa_passed: 408**, **queued: 124**, **working: 3**.
+**needs_revalidation: 45**, **qa_passed: 411**, **queued: 124**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -261,9 +263,9 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186092273](../../scratch/17592186092273.py) | Converting from Polar Coordinates to Cartesian Coordinates | Finding the Cartesian Coordinates of a Point Using a Diagram | 0 / 0 / 8 / 2 | qa_passed | [Report](qa/17592186092273.json) |
 | [17592186092218](../../scratch/17592186092218.py) | Converting from Polar Coordinates to Cartesian Coordinates | Finding the Cartesian Coordinates of a Point Given a Description of the Radius and Angle | 0 / 10 / 0 / 2 | qa_passed | [Report](qa/17592186092218.json) |
 | [17592186100872](../../scratch/17592186100872-draft.py) | Multiplying Matrices | Multiplying Two Matrices When They Are Conformable | 9 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186100872.json) |
-| 17592186100913 | Multiplying Matrices | Multiplying a Column-Vector By a Row-Vector | 8 / 1 / 0 / 2 | working | — |
-| [17592186100873](../../scratch/17592186100873.py) | Multiplying Matrices | Finding an Entry of the Product of Two Matrices | 10 / 0 / 0 / 2 | working | — |
-| 17592186064246 | Introduction to Integration by Parts | Using Integration by Parts to Compute an Indefinite Integral Containing a Trigonometric Expression | 8 / 6 / 1 / 0 | working | — |
+| [17592186100913](../../scratch/17592186100913-draft.py) | Multiplying Matrices | Multiplying a Column-Vector By a Row-Vector | 8 / 1 / 0 / 2 | qa_passed | [Report](qa/17592186100913.json) |
+| [17592186100873](../../scratch/17592186100873-draft.py) | Multiplying Matrices | Finding an Entry of the Product of Two Matrices | 10 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186100873.json) |
+| [17592186064246](../../scratch/17592186064246-draft.py) | Introduction to Integration by Parts | Using Integration by Parts to Compute an Indefinite Integral Containing a Trigonometric Expression | 8 / 6 / 1 / 0 | qa_passed | [Report](qa/17592186064246.json) |
 | [17592186064274](../../scratch/17592186064274.py) | Introduction to Integration by Parts | Computing a Definite Integral Using Integration by Parts | 0 / 23 / 0 / 0 | queued | — |
 | [17592186064259](../../scratch/17592186064259.py) | Calculating the Slope of a Tangent Line Using Differentiation | Finding a Point on a Curve With a Certain Slope | 0 / 7 / 0 / 2 | queued | — |
 | [17592186064343](../../scratch/17592186064343.py) | Calculating the Slope of a Tangent Line Using Differentiation | Calculating the Slope of a Tangent Line of a Curve With Fractional Powers at a Given Point | 5 / 5 / 0 / 2 | queued | — |

@@ -13,6 +13,10 @@ C=dict(records=0,definition_derivatives=0,ordered_parts_factors=0,concrete_integ
 def equal(a,b):
  diff=s.expand(a-b)
  if diff==0:return True
+ # A nonzero evaluation disproves identity; only exact algebra can establish it.
+ for point in (s.Rational(1,7),s.Rational(2,7)):
+  value=diff.subs(x,point).evalf(35)
+  if value.is_real and abs(value)>s.Float('1e-24'):return False
  return s.trigsimp(diff,method='fu')==0 or s.simplify(diff.rewrite(s.sin))==0
 @lru_cache(maxsize=12000)
 def deriv(t,inner=None):return E.derivative(E.scalar(t),x,inner)
@@ -60,7 +64,7 @@ def check(r,raw=False):
  assert equal(values[next(i for i,a in enumerate(answers)if a[':answer/id']==f[':answer-field/correct'][1])],F)
  assert all(not equal(a,b)for i,a in enumerate(values)for b in values[:i])
  if not g['evidence_only']:
-  final=E.scalar(fc[-1].split('=',1)[1]);residual=final-u*v;expected=[final,u*v-residual,u*v,-u*v+residual,u*v+residual*u/du];wanted=[E.derivative(z,x)for z in expected];assert all(sum(equal(a,b)for b in wanted)==1 for a in values);C['whole_banks']+=1
+  final=E.scalar(fc[-1].split('=',1)[1]).subs(E.C,0);residual=final-u*v;expected=[final,u*v-residual,u*v,-u*v+residual,u*v+residual*u/du];wanted=[E.derivative(z,x)for z in expected];assert all(sum(equal(a,b)for b in wanted)==1 for a in values);C['whole_banks']+=1
   # Independently recover shift roles and arithmetic from printed definitions.
   a=du;b=s.expand(u).coeff(x,0);arg=vp.args[0] if vp.func in (s.sin,s.cos)else vp.base.args[0];k=s.diff(arg,x);h=s.expand(arg).coeff(x,0);level=q[':question/difficulty'].split('/')[-1];assert all(z.is_Integer for z in (a,b,k,h)) and abs(b)<=8 and abs(h)<=8 and 1<=k<=5
   if level=='easy':assert b==h==0
@@ -82,7 +86,9 @@ if __name__=='__main__':
   assert not remaining;C['source_fields']+=1
   correct=next(z[':answer/value']for z in nf[':answer-field/choices']if z[':answer/id']==nf[':answer-field/correct'][1]);assert equal(deriv(correct),deriv(of[':answer-field/correct'][':answer/value']));C['source_keys']+=1
  samples=json.loads((R/'qa'/f'{K}-sampled.json').read_text())
- for r in samples:check(r)
+ for index,r in enumerate(samples):
+  check(r)
+  if index%18==17:print('normal readback',index+1,flush=True)
  for name,data in G.TEMPLATES.items():
   for seed in (903,1206):check(G.generate(data[0],seed=seed,template=name))
  probe=copy.deepcopy(samples[0]);text=probe['question'][':question/worked-solution'];bad=text.replace(r'\cdot', '+',1);assert text!=bad;probe['question'][':question/worked-solution']=bad;saved=copy.deepcopy(C)

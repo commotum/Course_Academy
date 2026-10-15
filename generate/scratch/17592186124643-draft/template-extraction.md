@@ -1,5 +1,12 @@
 # Template extraction
 
+Current point-specialization constraint: for the monomial hard extension, the
+target coordinate must differ from twice the held coordinate. Otherwise the
+held-coordinate distractor has the same evaluated limit as the correct quotient.
+This is enforced for explicit parameters and seeded sampling. See
+reference/replenishment/hard-domain-limit-validation.json for an independent
+check of every supported hard record's rendered limits.
+
 ## 1. Specific original descriptions
 
 Every original is reproduced in review.md and source-replays.json. Raw records are in source.json and all sixty exact answer values, field ownership, designation presence and parameterized masks are in bank-map.json. Original display syntax, including the ASCII sqrt limit syntax and the source's f(x) versus f(x,y) prose mismatch, is retained by observed evidence profiles. Normalization uses the frozen shared math_format.py before IDs. No distractor diagnosis or feedback is fabricated.

@@ -152,6 +152,10 @@ def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=N
     allowed={'a','X','Y','swap'} if template=='point_monomial' else {'X','Y','swap'}
     if parameters is None:
         eligible=[{'X':X,'Y':Y,'swap':swap}|({'a':a} if template=='point_monomial' else {}) for X in [-3,-2,-1,1,2,3] for Y in [-3,-2,-1,1,2,3] for swap in [False,True] for a in ([-5,-4,-3,-2,-1,1,2,3,4,5] if template=='point_monomial' else [1]) if (abs(a*((Y if swap else X)**2)*(X if swap else Y))<=24 if template=='point_monomial' else X!=Y)]
+        # At a fixed point, incrementing the held coordinate must not give
+        # the same derivative value as incrementing the requested coordinate.
+        if template=='point_monomial':
+            eligible=[p for p in eligible if (p['Y'] if p['swap'] else p['X'])!=2*(p['X'] if p['swap'] else p['Y'])]
         p=rng.choice(eligible)
     else:p=dict(parameters)
     p.setdefault('swap',False)
@@ -159,6 +163,7 @@ def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=N
     for k in allowed-{'swap'}:
         if type(p[k]) is not int or p[k] not in ([-5,-4,-3,-2,-1,1,2,3,4,5] if k=='a' else [-3,-2,-1,1,2,3]):raise ValueError('Hard arithmetic cap')
     if template=='point_monomial' and abs(p['a']*((p['Y'] if p['swap'] else p['X'])**2)*(p['X'] if p['swap'] else p['Y']))>24:raise ValueError('Hard evaluated monomial arithmetic cap is 24')
+    if template=='point_monomial' and (p['Y'] if p['swap'] else p['X'])==2*(p['X'] if p['swap'] else p['Y']):raise ValueError('Hard held-coordinate distractor has the same limit as the correct answer')
     if template=='point_sine' and p['X']==p['Y']:raise ValueError('Whole sine bank collides at equal coordinates')
     X,Y=p['X'],p['Y'];t='y' if p['swap'] else 'x';u='x' if p['swap'] else 'y';base=Y if p['swap'] else X;held=X if p['swap'] else Y
     if template=='point_monomial':

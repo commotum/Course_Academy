@@ -9,6 +9,8 @@ lines=['# Generator creation progress','',f"Cumulative scope: **{m['topics']} to
  'Cumulative counts retain seven earlier KPs outside the latest list. Only qa_passed jobs have current parent verification; queued, working and needs_revalidation jobs are not complete. Captured counts can include independently authored inventory as well as original MA examples; per-KP evidence separates them. Source anomalies and authored missing-level designs are recorded with each KP.','',
  '| KP | Topic | Knowledge point | Captured E / M / H / unrated | Status | Parent QA |',
  '|---|---|---|---|---|---|']
+if m.get('execution_control',{}).get('status')=='finished_and_stopped':
+ lines[2:2]=['**Queue stopped at the user’s request. All four KPs that were in progress passed parent QA; no additional KPs were started.**','']
 for j in jobs:
  c=j['source_counts'];s=' / '.join(str(c.get(':question.difficulty/'+x,0)) for x in ('easy','moderate','hard'))+' / '+str(c.get('unrated',0))
  script='../../scratch/'+Path(j['script']).name
