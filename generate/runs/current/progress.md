@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 28**, **qa_passed: 408**, **queued: 141**, **working: 3**.
+**needs_revalidation: 23**, **qa_passed: 413**, **queued: 140**, **working: 4**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -200,24 +200,24 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186096815](../../scratch/17592186096815.py) | Unit Vectors | Finding a Unit Vector Parallel to a Vector Sum | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096815.json) |
 | [17592186096814](../../scratch/17592186096814.py) | Unit Vectors | Finding a Unit Vector Parallel to a Given Vector in a Diagram | 0 / 0 / 1 / 2 | qa_passed | [Report](qa/17592186096814.json) |
 | [17592186059827](../../scratch/17592186059827-draft.py) | Interval Notation | Translating Between Half-Open Intervals and Inequalities | 5 / 5 / 5 / 2 | qa_passed | [Report](qa/17592186059827.json) |
-| [17592186059829](../../scratch/17592186059829.py) | Interval Notation | Converting Between Intervals and Inequalities: Closed Intervals | 0 / 0 / 0 / 2 | working | [Report](qa/17592186059829.json) |
-| [17592186059828](../../scratch/17592186059828.py) | Interval Notation | Translating Between Half-Open Intervals and Number Lines | 0 / 0 / 0 / 2 | working | [Report](qa/17592186059828.json) |
-| [17592186064167](../../scratch/17592186064167.py) | The Antiderivative | Finding the Antiderivative of a Monomial | 4 / 0 / 0 / 2 | working | [Report](qa/17592186064167.json) |
+| [17592186059829](../../scratch/17592186059829-draft.py) | Interval Notation | Converting Between Intervals and Inequalities: Closed Intervals | 5 / 5 / 5 / 1 | qa_passed | [Report](qa/17592186059829.json) |
+| [17592186059828](../../scratch/17592186059828-draft.py) | Interval Notation | Translating Between Half-Open Intervals and Number Lines | 6 / 5 / 5 / 2 | qa_passed | [Report](qa/17592186059828.json) |
+| [17592186064167](../../scratch/17592186064167-draft.py) | The Antiderivative | Finding the Antiderivative of a Monomial | 11 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186064167.json) |
 | [17592186064168](../../scratch/17592186064168.py) | The Antiderivative | Finding the Antiderivative of a Radical Function | 4 / 0 / 2 / 2 | qa_passed | [Report](qa/17592186064168.json) |
 | [17592186064169](../../scratch/17592186064169.py) | The Antiderivative | Finding the Antiderivative of a Reciprocal Function | 1 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186064169.json) |
 | [17592186096648](../../scratch/17592186096648.py) | Parallel Vectors | Determining Whether Two Vectors are Parallel | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096648.json) |
-| [17592186096649](../../scratch/17592186096649.py) | Parallel Vectors | Creating Parallel Vectors | 0 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186096649.json) |
-| [17592186096700](../../scratch/17592186096700.py) | Parallel Vectors | Identifying Parallel Vectors From a Diagram | 0 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186096700.json) |
+| [17592186096649](../../scratch/17592186096649-draft.py) | Parallel Vectors | Creating Parallel Vectors | 5 / 5 / 5 / 2 | qa_passed | [Report](qa/17592186096649.json) |
+| [17592186096700](../../scratch/17592186096700-draft.py) | Parallel Vectors | Identifying Parallel Vectors From a Diagram | 5 / 5 / 5 / 2 | qa_passed | [Report](qa/17592186096700.json) |
 | [17592186073753](../../scratch/17592186073753.py) | Solving Systems of Equations by Substitution | Solving a Challenging System of Linear Equations Using Substitution | 0 / 0 / 0 / 3 | qa_passed | [Report](qa/17592186073753.json) |
-| [17592186073752](../../scratch/17592186073752.py) | Solving Systems of Equations by Substitution | Solving a System of Linear Equations Using Substitution | 3 / 0 / 0 / 3 | needs_revalidation | [Report](qa/17592186073752.json) |
+| [17592186073752](../../scratch/17592186073752.py) | Solving Systems of Equations by Substitution | Solving a System of Linear Equations Using Substitution | 3 / 0 / 0 / 3 | working | [Report](qa/17592186073752.json) |
 | [17592186192654](../../scratch/17592186192654.py) | Solving Systems of Linear Equations Using Elimination: One Transformation | Eliminating the First Variable | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186192654.json) |
-| [17592186192656](../../scratch/17592186192656.py) | Solving Systems of Linear Equations Using Elimination: One Transformation | Solving a System of Equations by Eliminating the First Variable | 0 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186192656.json) |
+| [17592186192656](../../scratch/17592186192656.py) | Solving Systems of Linear Equations Using Elimination: One Transformation | Solving a System of Equations by Eliminating the First Variable | 0 / 0 / 0 / 2 | working | [Report](qa/17592186192656.json) |
 | [17592186192657](../../scratch/17592186192657.py) | Solving Systems of Linear Equations Using Elimination: One Transformation | Solving a System of Equations by Eliminating the Second Variable | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186192657.json) |
 | [17592186192655](../../scratch/17592186192655.py) | Solving Systems of Linear Equations Using Elimination: One Transformation | Eliminating the Second Variable | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186192655.json) |
-| [17592186059711](../../scratch/17592186059711.py) | Addition and Scalar Multiplication of Cartesian Vectors in 2D | Calculating Sums and Scalar Multiplication of Vectors Using Angle Bracket Notation | 2 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186059711.json) |
+| [17592186059711](../../scratch/17592186059711.py) | Addition and Scalar Multiplication of Cartesian Vectors in 2D | Calculating Sums and Scalar Multiplication of Vectors Using Angle Bracket Notation | 2 / 0 / 0 / 2 | working | [Report](qa/17592186059711.json) |
 | [17592186059710](../../scratch/17592186059710.py) | Addition and Scalar Multiplication of Cartesian Vectors in 2D | Addition and Scalar Multiplication of Vectors in Component Form | 2 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186059710.json) |
 | [17592186059712](../../scratch/17592186059712.py) | Addition and Scalar Multiplication of Cartesian Vectors in 2D | Calculating Sums and Scalar Multiplication of Column Vectors | 0 / 2 / 0 / 2 | qa_passed | [Report](qa/17592186059712.json) |
-| [17592186087695](../../scratch/17592186087695.py) | Zero, Square, Diagonal and Identity Matrices | Identifying a Zero Matrix | 6 / 0 / 0 / 2 | queued | — |
+| [17592186087695](../../scratch/17592186087695.py) | Zero, Square, Diagonal and Identity Matrices | Identifying a Zero Matrix | 6 / 0 / 0 / 2 | working | — |
 | [17592186059750](../../scratch/17592186059750.py) | The Determinant of a 2x2 Matrix | Solving for an Unknown in an Expression Involving the Determinant of a 2x2 Matrix | 6 / 6 / 1 / 2 | qa_passed | [Report](qa/17592186059750.json) |
 | [17592186059748](../../scratch/17592186059748.py) | The Determinant of a 2x2 Matrix | Calculating the Determinant of a 2x2 Matrix With Integer Entries | 4 / 4 / 0 / 1 | needs_revalidation | [Report](qa/17592186059748.json) |
 | [17592186059749](../../scratch/17592186059749.py) | The Determinant of a 2x2 Matrix | Calculating the Determinant of a 2x2 Matrix With Non-Integer Entries | 6 / 6 / 0 / 1 | qa_passed | [Report](qa/17592186059749.json) |

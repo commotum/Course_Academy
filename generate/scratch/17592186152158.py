@@ -10,9 +10,11 @@ profile=None), with individually documented easy/moderate/hard entrypoints.
 Run .venv/bin/python generate/scratch/17592186152158/validate.py.
 """
 from __future__ import annotations
-import argparse, hashlib, json, random, uuid
+import argparse, hashlib, json, random, uuid, sys
 from pathlib import Path
 import sympy as sp
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'scripts/question_capture'))
+from math_format import checked_math_content, normalize_prose, normalize_tex
 D=Path(__file__).with_suffix('')
 MASKS=json.loads((D/'templates.json').read_text())
 KP_ID=17592186152158
@@ -28,6 +30,7 @@ def tex(e):
  return sp.latex(sp.sympify(e)).replace(r'\log',r'\ln')
 def digest(x): return hashlib.sha256(json.dumps(x,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
 def uid(s): return str(uuid.uuid5(uuid.UUID(KP_UUID),s))
+GENERATOR_ID=uid('question-generator')
 def block(s): return '$$\n'+s+'\n$$'
 def aligned(rows): return block(r'\begin{aligned}'+r' \\ '.join(rows)+r'\end{aligned}')
 def math_data(name,p):
@@ -150,6 +153,7 @@ def generic_render(d):
   r'&='+tex(d['result'])+'.'])
  return prompt,sol
 
+@checked_math_content
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  if field_type not in (None,'radio'):raise ValueError('Only observed radio fields supported')
  if level not in ('easy','moderate','hard'):raise ValueError('Unknown difficulty')
@@ -176,7 +180,8 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   corrects=[i for i,v in enumerate(vals) if sp.simplify(v-d['result'])==0]
   if len(corrects)!=1:raise ValueError('Incorrect complete bank')
   prompt,solution=generic_render(d) if name=='easy_linear' else render_source(name,p,d)
-  bank=[tex(v) for v in vals]
+  prompt,solution=normalize_prose(prompt),normalize_prose(solution)
+  bank=[normalize_tex(tex(v)) for v in vals]
   task=digest([sp.srepr(d['g']),sp.srepr(d['f']),sp.srepr(d['a']),sp.srepr(d['b'])])
   content=digest([VERSION,prompt,solution,sorted(bank)])
   qid=uid(content);fid=uid(content+':selection')
