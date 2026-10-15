@@ -1,0 +1,91 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-160895",
+      "sequence_position": 1,
+      "problem": "Use a change of variables to evaluate the double integral \n\n$$\n{∬}_{D}(x-y){e}^{x+y}\\,dxdy,\n$$\n\nwhere $D$ is the quadrilateral region with vertices $(0,0),$ $(2,-2),$ $(3,-1),$ and $(1,1).$",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]⟶[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{∬}_{D}f(x,y)\\text{ }dxdy={∬}_{Δ}\\text{ }f(x(u,v),y(u,v))\\,|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=(x-y){e}^{x+y}\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=x-y,\\,v=x+y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\n**Step 2**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $Δ$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}{T}^{-1}(0,0) & =(0-0,0+0) \\\\  & =(0,0) \\\\ {T}^{-1}(2,-2) & =(2-(-2),2+(-2)) \\\\  & =(4,0) \\\\ {T}^{-1}(3,-1) & =(3-(-1),3+(-1)) \\\\  & =(4,2) \\\\ {T}^{-1}(1,1) & =(1-1,1+1) \\\\  & =(0,2)\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\nΔ=\\{(u,v)\\,:\\,0\\le u\\le 4,\\,0\\le v\\le 2\\}\n$$\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14187642/assets/0b23c6463447aa1fb64bdeeca689a40711f8dad59b348bb7943c2b9d2de7e8fc.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & -1 \\\\ 1 & \\text{ }\\text{ }1\\end{aligned}| \\\\  & =2.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=\\frac{1}{2}\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{∬}_{D}(x-y){e}^{x+y}\\,\\text{d}x\\text{d}y & ={∬}_{Δ}u{e}^{v}\\,|\\frac{∂(x,y)}{∂(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}u{e}^{v}\\,|\\frac{1}{2}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{0}^{2}{\\int }_{0}^{4}u{e}^{v}\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{0}^{2}{e}^{v}\\,\\text{d}v{\\int }_{0}^{4}u\\,\\text{d}u \\\\  & =\\frac{1}{2}\\cdot [{e}^{v}]_{0}^{2}\\cdot {[\\frac{1}{2}{u}^{2}]}_{0}^{4}\\,\\text{d}v \\\\  & =\\frac{1}{2}\\cdot ({e}^{2}-1)\\cdot 8 \\\\  & =4({e}^{2}-1).\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14187642/observations/history-q-160895-3d8270ec446c8aabd17b.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14187642",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14187642/observations/history-solution-q-160895-89ce9024b2474c4fdf50.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "\\frac{{e}^{2}}{2}"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "4({e}^{2}-1)"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "{e}^{4}-1"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "1-\\frac{{e}^{2}}{2}"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "{e}^{4}"
+            }
+          ]
+        }
+      ],
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14187642/assets/0b23c6463447aa1fb64bdeeca689a40711f8dad59b348bb7943c2b9d2de7e8fc.png",
+          "sha256": "0b23c6463447aa1fb64bdeeca689a40711f8dad59b348bb7943c2b9d2de7e8fc",
+          "source_url": "https://mathacademy.com/graphics/q-160895-e-0",
+          "content_type": "image/png",
+          "representation": "original"
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q160895",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "4({e}^{2}-1)",
+                "option": "b",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v\\end{aligned}]⟶[\\begin{aligned}x(u,v) \\\\ y(u,v)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uv$-plane to our region $D$ in the $xy$-plane.\n\nTo compute the required integral, we can use the change of variables formula\n\n$$\n{∬}_{D}f(x,y)\\text{ }dxdy={∬}_{Δ}\\text{ }f(x(u,v),y(u,v))\\,|\\frac{∂(x,y)}{∂(u,v)}|\\text{ }dudv\n$$\n\nwhere $\\frac{∂(x,y)}{∂(u,v)}$ is the Jacobian determinant corresponding to $T.$\n\nTo compute the required integral, we proceed as follows:\n\n**Step 1**: Find a suitable change of variables.\n\nThe integrand\n\n$$\nf(x,y)=(x-y){e}^{x+y}\n$$\n\nsuggests that we use the change of variables \n\n$$\nu=x-y,\\,v=x+y.\n$$\n\nThis change of variables gives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y\\end{aligned}]\\to [\\begin{aligned}u(x,y) \\\\ v(x,y)\\end{aligned}].\n$$\n\n**Step 2**: Find $Δ,$ which is the image of $D$ under the action of ${T}^{-1}.$ \n\nThe vertices of our domain $Δ$ in the $uv$-plane are as follows:\n\n$$\n\\begin{aligned}{T}^{-1}(0,0) & =(0-0,0+0) \\\\  & =(0,0) \\\\ {T}^{-1}(2,-2) & =(2-(-2),2+(-2)) \\\\  & =(4,0) \\\\ {T}^{-1}(3,-1) & =(3-(-1),3+(-1)) \\\\  & =(4,2) \\\\ {T}^{-1}(1,1) & =(1-1,1+1) \\\\  & =(0,2)\\end{aligned}\n$$\n\nTherefore, our domain in the $uv$-plane is the following rectangle:\n\n$$\nΔ=\\{(u,v)\\,:\\,0\\le u\\le 4,\\,0\\le v\\le 2\\}\n$$\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14187642/assets/0b23c6463447aa1fb64bdeeca689a40711f8dad59b348bb7943c2b9d2de7e8fc.png)\n\n**Step 3**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v)}{∂(x,y)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y}\\end{aligned}| \\\\  & =|\\begin{aligned}1 & -1 \\\\ 1 & \\text{ }\\text{ }1\\end{aligned}| \\\\  & =2.\\end{aligned}\n$$\n\n**Step 4**: Compute the Jacobian determinant corresponding to $T:$\n\n$$\n\\frac{∂(x,y)}{∂(u,v)}={(\\frac{∂(u,v)}{∂(x,y)})}^{-1}=\\frac{1}{2}\n$$\n\nNote that $\\frac{∂(x,y)}{∂(u,v)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$\n\n**Step 5**: Perform the change of variables, and evaluate the integral:\n\nPerforming the change of variables, we obtain\n\n$$\n\\begin{aligned}{∬}_{D}(x-y){e}^{x+y}\\,\\text{d}x\\text{d}y & ={∬}_{Δ}u{e}^{v}\\,|\\frac{∂(x,y)}{∂(u,v)}|\\,\\text{d}u\\text{d}v \\\\  & ={∬}_{Δ}u{e}^{v}\\,|\\frac{1}{2}|\\,\\text{d}u\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{0}^{2}{\\int }_{0}^{4}u{e}^{v}\\,\\text{d}u\\,\\text{d}v \\\\  & =\\frac{1}{2}{\\int }_{0}^{2}{e}^{v}\\,\\text{d}v{\\int }_{0}^{4}u\\,\\text{d}u \\\\  & =\\frac{1}{2}\\cdot [{e}^{v}]_{0}^{2}\\cdot {[\\frac{1}{2}{u}^{2}]}_{0}^{4}\\,\\text{d}v \\\\  & =\\frac{1}{2}\\cdot ({e}^{2}-1)\\cdot 8 \\\\  & =4({e}^{2}-1).\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14187642/observations/step-q160895-0966dc886b70b1a8e0b5.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a13715-1819-70e2-8c7b-ad3ed155790b",
+  "previous_failures": []
+}
