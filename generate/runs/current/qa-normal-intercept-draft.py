@@ -14,14 +14,19 @@ def clean(text):
  while r'\sqrt[' in text:
   m=re.search(r'\\sqrt\[(\d+)\]',text);assert m;arg,end=P.group(text,m.end());text=text[:m.start()]+'('+arg+r')^{\frac{1}{'+m[1]+'}}'+text[end:]
  return text
-def scalar(text):return P.scalar(clean(text))
+def scalar(text):
+ value=P.scalar(clean(text))
+ if POSITIVE:
+  xp=s.Symbol('root_positive_x',positive=True)
+  value=s.powdenest(value.subs(x,xp),force=True).subs(xp,x)
+ return value
 def eq(a,b):
  if P.eq(a,b):return True
  if POSITIVE:
   xp=s.Symbol('root_positive_x',positive=True);return s.simplify((a-b).subs(x,xp))==0
  return False
 def point(text):
- z=clean(text).strip().strip('()');parts=z.split(',');assert len(parts)==2;return tuple(scalar(z) for z in parts)
+ z=clean(text).replace(r'\,','').strip().strip('()');parts=z.split(',');assert len(parts)==2;return tuple(scalar(z) for z in parts)
 def value(raw,fun,at,m):
  raw=clean(raw);raw=re.sub(r'\{m\}', 'm',raw)
  for arg in re.findall(r"\{?f\}?(?:\^\{\x27\}|\x27)\((.*?)\)",raw):
@@ -30,9 +35,13 @@ def value(raw,fun,at,m):
   while operator in raw:
    start=raw.index(operator);pos=start+len(operator)
    while raw[pos].isspace():pos+=1
-   arg,end=P.group(raw,pos);f=scalar(arg);raw=raw[:start]+'('+s.latex(s.diff(f,x))+')'+raw[end:];N['derivative_operands']+=1
+   arg,end=P.group(raw,pos);f=scalar(arg);raw=raw[:start]+'('+s.latex(s.diff(f,x),root_notation=False)+')'+raw[end:];N['derivative_operands']+=1
+ def formal(matched):
+  target=scalar(matched[1]) if matched[1] is not None else x
+  return '('+s.latex(s.diff(fun,x).subs(x,target),root_notation=False)+')'
+ raw=re.sub(r"\{?f\}?(?:\^\{\x27\}|\x27)(?:\((.*?)\))?",formal,raw)
  raw=re.sub(r"m(?:\^\{\x27\}|\x27)",lambda _: '('+s.latex(-1/m)+')',raw);raw=re.sub(r'\bm\b',lambda _: '('+s.latex(m)+')',raw)
- return P.value(raw,fun,'f',dict(formal_derivative_inputs=0))
+ return scalar(raw)
 source=json.load(open(D/'source.json'));manifest=json.load(open(R/'manifest.json'));assert source==json.load(open(R/manifest['source_snapshot_roots'][str(source['basis'])]/f'sources/{K}.json'));fidelity=dict(prompts=0,solutions=0,values=0,refs=0,missing_refs=0)
 for tid,o in G.ROWS.items():
  if ':question/math-academy-id' not in o:continue
@@ -60,7 +69,7 @@ def check(r):
    else:vals=[z.subs({x:answer,y:0} if axis=='x' else {x:0,y:answer}) for z in vals];assert all(eq(z,vals[0]) for z in vals),(tid,row,vals)
    N[('derivative_rows','slope_rows','normal_rows','line_rows','intercept_rows')[i]]+=len(vals)
  for actualaxis in re.findall(r'(?:intersects|intersection with) the \$([xy])\$-axis',sol):assert actualaxis==axis
- conclusion=re.search(r'intersects the \$[xy]\$-axis at\s*(?:\$\s*)?(\(.*?\))',sol);assert conclusion,sol;assert all(eq(z,w) for z,w in zip(point(conclusion[1]),correctpoint));N['conclusions']+=1
+ conclusion=re.search(r'intersects the\s+\$[xy]\$-axis at\s*(?:\$\s*)?(\(.*?\))',sol);assert conclusion,sol;assert all(eq(z,w) for z,w in zip(point(conclusion[1]),correctpoint));N['conclusions']+=1
  fs=q[':question/answer-fields'];isradio=fs[0][':answer-field/type'].endswith('/radio')
  if isradio:
   assert len(fs)==1;f=fs[0];vals=[point(z[':answer/value']) for z in f[':answer-field/choices']];ispoint=lambda a,b:all(eq(z,w) for z,w in zip(a,b))

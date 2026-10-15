@@ -5,7 +5,7 @@ sys.dont_write_bytecode=True
 HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[2]
 def module(name,path):
  spec=importlib.util.spec_from_file_location(name,path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
-EXPECTED_PRIVATE_SHA={'source.json': 'e78a579d319b28f89eab504094ebc10274b9783ff6a7ebd9e5b0b32ac3ff937a', 'display_parser.py': '419fcdff3edd55ab6db0164359e80ac8a79777705d301d0742f3814a64fb60d0', 'math_format.py': '723744b896f1ff5290bce3ac7e70a15eb60e810df118686164f87bd412295291'}
+EXPECTED_PRIVATE_SHA={'source.json': 'e78a579d319b28f89eab504094ebc10274b9783ff6a7ebd9e5b0b32ac3ff937a', 'display_parser.py': 'fb78f4e5d89e138a5bd74b5dd635a0e852536f6089c972ebfa53b2cb5a2a5091', 'math_format.py': '723744b896f1ff5290bce3ac7e70a15eb60e810df118686164f87bd412295291'}
 for name,expected in EXPECTED_PRIVATE_SHA.items():
  assert hashlib.sha256((HERE/name).read_bytes()).hexdigest()==expected,'frozen private dependency changed: '+name
 g=module('private_generator',HERE.with_suffix('.py'));p=module('private_display_parser',HERE/'display_parser.py')
@@ -54,6 +54,49 @@ for level in g.SUPPORTED_LEVELS:
  try:g.batch(level,257)
  except ValueError:pass
  else:raise AssertionError('capacity overflow accepted')
+# Controlled radio target changes retain every coefficient while transforming
+# the whole source bank with all six permutations. No extra learner skill.
+target_reviews=[];target_coverage={}
+for level in g.SUPPORTED_LEVELS:
+ group=g.CATALOG[level]['radio-detailed-scaled'][:6];assert len(group)==6
+ bases=[];positions=set();permutations=set()
+ for params in group:
+  order=params['label_permutation'];base=[None,None,None]
+  for new_index,old_index in enumerate(order):base[old_index]=params['equations'][new_index]
+  bases.append(base);rec=g.generate(level,template='radio-detailed-scaled',parameters=params);detail=p.validate(rec)
+  selected=next(a[':answer/value'] for a in rec['question'][':question/answer-fields'][0][':answer-field/choices'] if a[':answer/id']==rec['question'][':question/answer-fields'][0][':answer-field/correct'][1])
+  positions.add(selected);permutations.add(tuple(order));target_reviews.append(rec)
+ assert all(base==bases[0] for base in bases) and positions=={'I only','II only','III only'} and len(permutations)==6
+ all_radio=[r for r in records if r['question'][':question/difficulty']==':question.difficulty/'+level and r['generation']['template']=='radio-detailed-scaled']
+ counts={key:0 for key in ('I','II','III')}
+ for rec in all_radio:
+  _,_,_,statuses=p.read_prompt(rec['question'][':question/problem']);index=next(i for i,status in enumerate(statuses) if status==p.sp.S.EmptySet);counts[p.LABELS[index]]+=1
+ assert all(counts.values());target_coverage[level]={'inconsistent_positions':counts,'controlled_same_coefficients_permutations':6}
+save('target-change-review.json',target_reviews)
+radio_mutations=[]
+anchor=target_reviews[0];changed=target_reviews[1]
+for kind in ('stale_footer','stale_key','stale_bank','stale_label_role','stale_prompt_label'):
+ bad=copy.deepcopy(changed);q=bad['question'];f=q[':question/answer-fields'][0]
+ if kind=='stale_footer':q[':question/worked-solution']=q[':question/worked-solution'].rsplit('Therefore, the correct answer',1)[0]+'Therefore, the correct answer is "I only."'
+ elif kind=='stale_key':f[':answer-field/correct'][1]=f[':answer-field/choices'][1][':answer/id']
+ elif kind=='stale_bank':
+  for a,b in zip(f[':answer-field/choices'],anchor['question'][':question/answer-fields'][0][':answer-field/choices']):a[':answer/value']=b[':answer/value']
+ elif kind=='stale_label_role':bad['generation']['parameters']['label_permutation']=[0,1,2]
+ else:q[':question/problem']=q[':question/problem'].replace('I. $','II. $',1)
+ try:p.validate(bad)
+ except (AssertionError,ValueError,KeyError):radio_mutations.append(kind)
+ else:raise AssertionError('stale radio target mutation passed '+kind)
+assert len(radio_mutations)==5
+for level in g.SUPPORTED_LEVELS:
+ params=copy.deepcopy(g.CATALOG[level]['radio-detailed-scaled'][0]);a=g.generate(level,seed=0,template='radio-detailed-scaled',parameters=params);b=g.generate(level,seed=999,template='radio-detailed-scaled',parameters=params)
+ assert a['question']==b['question'] and a['generation']['parameter_fingerprint']==b['generation']['parameter_fingerprint']
+ renamed=copy.deepcopy(params);renamed['variable']='x' if params['variable']!='x' else 'u';assert g.fingerprint(renamed)==g.fingerprint(params)
+ for invalid in ([0,0,2],[False,1,2],[0,1,3],[1,0,2]):
+  bad=copy.deepcopy(params);bad['label_permutation']=invalid
+  try:g.generate(level,template='radio-detailed-scaled',parameters=bad)
+  except ValueError:pass
+  else:raise AssertionError('invalid permutation accepted '+repr(invalid))
+
 # Fail-closed arbitrary input and mutation checks.
 negative=[]
 for change in ('prompt','intermediate','bank','key','conclusion','domain'):
@@ -100,8 +143,8 @@ save('independent-inventory.json',{'basis':2275,'lineage':source['lineage'],'que
 review=[]
 for level in g.SUPPORTED_LEVELS:
  for i,t in enumerate(g.TEMPLATES):review.append(g.generate(level,811+i,template=t))
-save('review.json',{'original_replays':replays,'generated_variants':review})
-(HERE/'review.md').write_text('\n\n'.join(['# Complete originals and representative variants']+[f'## Source {c["source_id"]}\n\n'+g.markdown(r) for c,r in zip(cases,replays)]+[f'## {r["question"][":question/difficulty"]} / {r["generation"]["template"]}\n\n'+g.markdown(r) for r in review])+'\n')
+save('review.json',{'original_replays':replays,'generated_variants':review,'controlled_radio_target_changes':target_reviews})
+(HERE/'review.md').write_text('\n\n'.join(['# Complete originals and representative variants']+[f'## Source {c["source_id"]}\n\n'+g.markdown(r) for c,r in zip(cases,replays)]+[f'## {r["question"][":question/difficulty"]} / {r["generation"]["template"]}\n\n'+g.markdown(r) for r in review]+['## Controlled radio target change\n\n'+g.markdown(r) for r in target_reviews])+'\n')
 baseline=json.loads((HERE/'baseline.json').read_text());baseline_ok=all(Path(r['path']).exists() and sha(Path(r['path']))==r['sha256'] for r in baseline['files']);assert baseline_ok
-validation={'status':'worker_validated_root_review_pending','basis':2275,'source_coverage':{'practice_questions':8,'raw_whole_question_replays':8,'exact_prompts':8,'exact_full_worked_solutions_before_served_typography_repair':8,'complete_field_banks':22,'complete_question_banks':8,'matched_values':47,'total_values':47,'matched_correct_designations':22,'missing_options':[],'extra_options':[]},'mathematics':{'records':len(records),'finite_catalog_records_exhausted':768,'displayed_intermediate_stages':stages,'independent_parser':str(HERE/'display_parser.py'),'patterns':sorted(patterns),'slot_coverage':{k:sorted(v) for k,v in slotvalues.items()},'negative_controls':negative},'capacity':capacity,'native_grading':{k:report[k] for k in ('entry_point','accepted_checks','rejected_checks','documented_unresolved_checks')},'checkbox_subset_coverage':{'all_subsets_per_question':8,'question_instances':len(subset_cases)//8,'subset_cases':len(subset_cases),'empty_all_singletons_wrong_subsets':'all enumerated; correct iff every native field grade accepts','duplicate_normalization':'not applicable: one scalar owned true/false choice entity ID per field, no list-valued submission'},'native_unresolved_reason':'Separate malformed-input diagnostics only: 0/1/+1, foreign IDs, boolean text; no unresolved owned mathematical responses. Native grade_field reports errors for non-owned choices; exact error messages retained without converting to rejection. Valid owned canonical choices all accepted and all owned distractors rejected. No blank fields and no algebraic-equivalence text contract.','source_errors':[],'served_repairs':[{'sources':['q-287964','q-288058'],'repair':'Wrap three mathematical reductions in inline math delimiters; raw exact replay preserved.'}],'registered_baseline':{'unchanged':baseline_ok,'files':len(baseline['files']),'script_sha256':baseline['script_sha256']},'generator_sha256':sha(HERE.with_suffix('.py')),'engine_sha256':sha(engine),'database_writes':0,'registration_changes':0}
+validation={'status':'worker_validated_root_review_pending','basis':2275,'source_coverage':{'practice_questions':8,'raw_whole_question_replays':8,'exact_prompts':8,'exact_full_worked_solutions_before_served_typography_repair':8,'complete_field_banks':22,'complete_question_banks':8,'matched_values':47,'total_values':47,'matched_correct_designations':22,'missing_options':[],'extra_options':[]},'mathematics':{'records':len(records),'finite_catalog_records_exhausted':768,'displayed_intermediate_stages':stages,'independent_parser':str(HERE/'display_parser.py'),'patterns':sorted(patterns),'slot_coverage':{k:sorted(v) for k,v in slotvalues.items()},'negative_controls':negative},'capacity':capacity,'radio_target_position_coverage':target_coverage,'radio_target_mutation_controls':radio_mutations,'native_grading':{k:report[k] for k in ('entry_point','accepted_checks','rejected_checks','documented_unresolved_checks')},'checkbox_subset_coverage':{'all_subsets_per_question':8,'question_instances':len(subset_cases)//8,'subset_cases':len(subset_cases),'empty_all_singletons_wrong_subsets':'all enumerated; correct iff every native field grade accepts','duplicate_normalization':'not applicable: one scalar owned true/false choice entity ID per field, no list-valued submission'},'native_unresolved_reason':'Separate malformed-input diagnostics only: 0/1/+1, foreign IDs, boolean text; no unresolved owned mathematical responses. Native grade_field reports errors for non-owned choices; exact error messages retained without converting to rejection. Valid owned canonical choices all accepted and all owned distractors rejected. No blank fields and no algebraic-equivalence text contract.','source_errors':[],'served_repairs':[{'sources':['q-287964','q-288058'],'repair':'Wrap three mathematical reductions in inline math delimiters; raw exact replay preserved.'}],'registered_baseline':{'unchanged':baseline_ok,'files':len(baseline['files']),'script_sha256':baseline['script_sha256']},'generator_sha256':sha(HERE.with_suffix('.py')),'engine_sha256':sha(engine),'database_writes':0,'registration_changes':0}
 save('validation.json',validation);print(json.dumps(validation,indent=2))

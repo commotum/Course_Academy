@@ -4,10 +4,11 @@ Source interpolation retains every observed bank and complete solution sequence.
 Easy/moderate/hard authored defaults use the same derivative, evaluation,
 negative-reciprocal and point-slope/rearrangement stages. No vertical tangents.
 """
-import argparse, hashlib, itertools, json, random, re, uuid
+import argparse, copy, hashlib, importlib.util, itertools, json, random, re, uuid
 from pathlib import Path
 import sympy as s
 H=Path(__file__).with_suffix(''); SOURCE=json.loads((H/'source.json').read_text()); K=SOURCE['record']; T=json.loads((H/'templates.json').read_text())
+_f=importlib.util.spec_from_file_location('normal_private_math_format',H/'math_format.py');F=importlib.util.module_from_spec(_f);_f.loader.exec_module(F)
 x=s.Symbol('x',positive=True); NS=uuid.UUID(K[':knowledge-point/id']); VERSION='2.0.0-draft'; GENERATOR_ID=str(uuid.uuid5(NS,'normal-line-all-levels-basis2275'))
 def tex(v):return s.latex(s.expand(v))
 def fmt(v):return '('+tex(v)+')'
@@ -16,6 +17,8 @@ def interp(text,values):
  if '@@' in text:raise ValueError('Unfilled source slot')
  return text
 def make(level,seed,template,profile,params,prompt,solution,field_specs,key,domain,raw=False):
+ if not raw:
+  prompt=F.normalize_prose(prompt);solution=F.normalize_prose(solution);field_specs=[(k,t,[F.normalize_tex(v) for v in vs],F.normalize_tex(c)) for k,t,vs,c in field_specs]
  content={'version':VERSION,'level':level,'prompt':prompt,'solution':solution,'fields':field_specs,'profile':profile,'domain':domain}
  qid=str(uuid.uuid5(NS,json.dumps(content,sort_keys=True)));fields=[]
  for fieldkey,kind,values,correct in field_specs:
@@ -27,7 +30,8 @@ def make(level,seed,template,profile,params,prompt,solution,field_specs,key,doma
   if cid not in [c[':answer/id'] for c in choices]:raise ValueError('Correct absent from bank')
   if kind=='radio':random.Random(seed).shuffle(choices)
   fields.append({':answer-field/id':fid,':answer-field/key':fieldkey,':answer-field/type':':answer-field.type/'+kind,':answer-field/choices':choices,':answer-field/correct':[':answer/id',cid]})
- return {'knowledge_point':{'db_id':K[':db/id'],'id':str(NS),'title':K[':knowledge-point/title']},'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+level,':question/answer-fields':fields},'generation':{'generator_id':GENERATOR_ID,'version':VERSION,'template':template,'profile':profile,'seed':seed,'parameters':params,'mathematical_key':key,'domain':domain,'source_references':[profile] if profile in T else ['e-6080'],'authored':profile not in T,'raw_context':raw,'dependencies':{'sympy':s.__version__},'plots':[]}}
+ record={'knowledge_point':{'db_id':K[':db/id'],'id':str(NS),'title':K[':knowledge-point/title']},'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+level,':question/answer-fields':fields},'generation':{'generator_id':GENERATOR_ID,'version':VERSION,'template':template,'profile':profile,'seed':seed,'parameters':params,'mathematical_key':key,'domain':domain,'source_references':[profile] if profile in T else ['e-6080'],'authored':profile not in T,'raw_context':raw,'dependencies':{'sympy':s.__version__},'plots':[]}}
+ return record if raw else F.validate_generated_record(record)
 def concise_solution(expr,point,y,m,L=1,response='blank'):
  n=-1/m; B=L*(point+m*y)
  sol=(rf'Let $f(x)={tex(expr)}.$ First, we compute the derivative:'+'\n\n$$\n'+rf"f'(x)=\frac{{\text{{d}}}}{{\text{{d}}x}}\left({tex(expr)}\right)={tex(s.diff(expr,x))}"+'\n$$\n\n'+rf'Then, we compute the slope of the tangent at the point $({tex(point)},{tex(y)}):$'+'\n\n$$\n'+rf"m=f'({tex(point)})={tex(s.diff(expr,x).subs(x,point))}"+'\n$$\n\nTherefore, the slope of the normal line is\n\n$$\n'+rf"m'=-\frac{{1}}{{m}}={tex(n)}."+'\n$$\n\nFinally, the equation of the normal line is\n\n$$\n'+rf'\begin{{aligned}}y-{fmt(y)}&={tex(n)}(x-{fmt(point)}) \\ {tex(L*x+L*m*s.Symbol("y"))}&={tex(B)}.\end{{aligned}}'+'\n$$')
@@ -45,7 +49,7 @@ def authored_parameters(level):
  raise ValueError('Unknown difficulty')
 def _authored(level,seed,parameters):
  allowed=authored_parameters(level);p=parameters if parameters is not None else random.Random(seed).choice(allowed)
- if p not in allowed or set(p)!=set(allowed[0]):raise ValueError('Parameters outside documented level bounds')
+ if not isinstance(p,dict) or any(type(v) is not int for v in p.values()) or p not in allowed or set(p)!=set(allowed[0]):raise ValueError('Parameters outside documented level bounds')
  a=s.Integer(p['a']);c=s.Integer(p['c']);point=s.Integer(p['point'])
  expr=a*x*x+c if level=='easy' else a*x**3+s.Integer(p['b'])*x+c if level=='moderate' else a*x**6/8-s.Integer(p['b'])*x**3/4+c
  y=expr.subs(x,point);m=s.diff(expr,x).subs(x,point);A=abs(m);B=point+m*y;sign='+' if m>0 else '-'
@@ -56,7 +60,7 @@ def source_parameters(profile):return [{'shift':i} for i in ([0] if T[profile].g
 def _source(level,seed,profile,parameters,raw=False):
  if profile not in T or level!='moderate':raise ValueError('Observed replay profiles belong to moderate; unrated q-47406 assigned moderate')
  p=parameters if parameters is not None else random.Random(seed).choice(source_parameters(profile))
- if p not in source_parameters(profile) or set(p)!={'shift'}:raise ValueError('Unsupported source parameter')
+ if not isinstance(p,dict) or any(type(v) is not int for v in p.values()) or p not in source_parameters(profile) or set(p)!={'shift'}:raise ValueError('Unsupported source parameter')
  c=T[profile];shift=s.Integer(p['shift'])
  if c.get('context'):
   # Raw fragments omit prior-part bindings. Normal public replay supplies them.
@@ -91,9 +95,13 @@ def _source(level,seed,profile,parameters,raw=False):
    'q-47410':[q,q-m,-m-q,m+q,-q]}[profile]
   if len({s.simplify(t) for t in vals})!=len(vals):raise ValueError('Observed profile collision: whole instance rejected')
   specs=[('selection','radio',[tex(t) for t in vals],tex(v))]
- return make(level,seed,'source-'+response,profile,p,prompt,solution,specs,'normal:'+str(s.expand(base+shift))+':at:'+str(point),'real x; positive x for radical/reciprocal; tangent slope nonzero')
+ return make(level,seed,'source-'+response,profile,p,prompt,solution,specs,'normal:'+str(s.expand(base+shift))+':at:'+str(point),'real x; positive x for radical/reciprocal; tangent slope nonzero',raw)
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
  if level not in ('easy','moderate','hard'):raise ValueError('Unknown difficulty')
+ if profile=='observed_raw':
+  if template not in T or not isinstance(parameters,dict) or parameters!={'shift':0} or type(parameters.get('shift')) is not int or field_type is not None:raise ValueError('Raw evidence accepts one original template and its original parameters only')
+  question=next(q for q in K[':knowledge-point/questions'] if q[':question/math-academy-id']==template)
+  return {'knowledge_point':{'db_id':K[':db/id'],'id':str(NS),'title':K[':knowledge-point/title']},'question':copy.deepcopy(question),'generation':{'version':VERSION,'template':template,'profile':'observed_raw','parameters':{'shift':0},'seed':seed,'evidence_only':True,'eligible_for_learning':False,'source_basis':SOURCE['basis'],'source_lineage':SOURCE['lineage'],'plots':[]}}
  if profile is not None and profile!='authored':
   if template is not None and template not in ('source-'+T.get(profile,{}).get('response',''), 'context-normal'):raise ValueError('Template/profile mismatch')
   r=_source(level,seed,profile,parameters)
@@ -105,18 +113,21 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
 def generate_moderate(seed=0,**kwargs):return generate('moderate',seed,**kwargs)
 def generate_hard(seed=0,**kwargs):return generate('hard',seed,**kwargs)
-def candidates(level,profile=None):
+def candidates(level,profile=None,template=None):
+ if profile=='observed_raw':
+  if template not in T:raise ValueError('Raw evidence requires an original MA template ID')
+  return [('observed_raw',{'shift':0})]
  if profile and profile!='authored':return [(profile,p) for p in source_parameters(profile)]
  return [('authored',p) for p in authored_parameters(level)]
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],required=True);ap.add_argument('--count',type=int,default=1);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--format',choices=['json','markdown'],default='json');ap.add_argument('--profile');ap.add_argument('--template');a=ap.parse_args();out=[]
  if a.count<1:raise ValueError('Positive count required')
  for level in (['easy','moderate','hard'] if a.difficulty=='all' else [a.difficulty]):
-  cs=candidates(level,a.profile);random.Random(a.seed).shuffle(cs);seen=set();batch=[]
+  cs=candidates(level,a.profile,a.template);random.Random(a.seed).shuffle(cs);seen=set();batch=[]
   for profile,p in cs:
    try:r=generate(level,a.seed,template=a.template,profile=profile,parameters=p)
    except ValueError:continue
-   key=r['generation']['mathematical_key']
+   key=r['generation'].get('mathematical_key',r['question'].get(':question/math-academy-id'))
    if key in seen:continue
    seen.add(key);batch.append(r)
    if len(batch)==a.count:break

@@ -420,7 +420,10 @@ test('Study identifies the selected queue mode and distinguishes empty from unav
   f.server = { learner: { selfDirected: true, queue: [6] }, activities: [activity(1, 1)] };
   await f.h.home();
   assert.equal(main.querySelector('h1').textContent, 'Your queue');
-  assert.match(main.querySelector('.subheading').textContent, /topics you selected/);
+  assert.equal(main.querySelector('h1').className, 'sr-only');
+  assert.equal(main.querySelector('.page-heading'), null);
+  assert.equal(main.querySelector('.subheading'), null);
+  assert.equal(main.querySelector('.eyebrow'), null);
   f.server.activities = [];
   await f.h.home();
   assert.equal(main.querySelector('.empty-state').querySelector('h2').textContent, 'No ready activities yet');
@@ -431,7 +434,8 @@ test('Study identifies the selected queue mode and distinguishes empty from unav
   f.server.learner.selfDirected = false;
   await f.h.home();
   assert.equal(main.querySelector('h1').textContent, 'Next up');
-  assert.match(main.querySelector('.subheading').textContent, /interleaved/);
+  assert.equal(main.querySelector('h1').className, 'sr-only');
+  assert.equal(main.querySelector('.subheading'), null);
   f.dev = true;
   f.server.learner.selfDirected = true;
   await f.h.home();

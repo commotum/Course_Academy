@@ -177,7 +177,7 @@ def main():
     subprocess.run([str(ROOT/'check-engine'),str(ROOT/'engine-input.json'),str(ROOT/'engine-validation.json')],check=True)
     native=json.loads((ROOT/'engine-validation.json').read_text());assert native['documented_unresolved_checks']==0
     write('review.json',records)
-    lines=['# Flux original and generated review','\nDatabase math, basis 1356. Originals are generator replays compared exactly to the capture. Generated empirical bank variants preserve complete observed density profiles; these extrapolations have unresolved error intent. Authored bank variants use explicitly defined method errors. Metadata appears in review JSON only.']
+    lines=['# Flux original and generated review',f'\nDatabase math, basis {raw["basis"]}. Originals are generator replays compared exactly to the capture. Generated empirical bank variants preserve complete observed density profiles; these extrapolations have unresolved error intent. Authored bank variants use explicitly defined method errors. Metadata appears in review JSON only.']
     for item in records:lines+=['\n## '+item['label']+'\n',g.markdown(item['record'])]
     (ROOT/'review.md').write_text('\n'.join(lines))
     write('validation.json',{'passed':True,'source_provenance':{k:raw[k] for k in ('database','basis','lineage')},'source_coverage':coverage,

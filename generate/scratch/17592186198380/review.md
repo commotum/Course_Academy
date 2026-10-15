@@ -1,6 +1,6 @@
 # Flux original and generated review
 
-Database math, basis 1356. Originals are generator replays compared exactly to the capture. Generated empirical bank variants preserve complete observed density profiles; these extrapolations have unresolved error intent. Authored bank variants use explicitly defined method errors. Metadata appears in review JSON only.
+Database math, basis 2520. Originals are generator replays compared exactly to the capture. Generated empirical bank variants preserve complete observed density profiles; these extrapolations have unresolved error intent. Authored bank variants use explicitly defined method errors. Metadata appears in review JSON only.
 
 ## Original replay q-160845
 

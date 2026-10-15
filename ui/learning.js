@@ -526,11 +526,8 @@ async function loadHome(signal, preserve) {
       homeRendered = revision === targetRevision;
       return;
     }
-    const head = el('div', 'page-heading');
     const selfDirected = data.learner?.selfDirected === true;
-    const intro = el('div'); intro.append(el('p', 'eyebrow', 'Your study desk'), el('h1', '', selfDirected ? 'Your queue' : 'Next up'), el('p', 'subheading', isDeveloperMode() ? 'Preview activities without starting an attempt or recording progress.' : selfDirected ? 'Resume unfinished lessons or study topics you selected.' : 'Lessons interleaved across your course modules, with spaced reviews and assessments.'));
-    head.append(intro);
-    page.append(head);
+    page.append(el('h1', 'sr-only', selfDirected ? 'Your queue' : 'Next up'));
     const queue = el('section', 'queue'); queue.setAttribute('aria-label', 'Next five activities');
     const activities = (data.activities || []).slice(0, 5);
     activities.forEach((activity, index) => {

@@ -75,7 +75,7 @@ def main():
   except ValueError as exc:case['served_exclusion']=str(exc)
   else:validate_record(sr);served.append(sr);case['served']=sr
   sourcecases.append(case)
- allnormal=[];capacity={};review=[]
+ allnormal=[];capacity={};review=[];batch_boundaries=[]
  for level in g.SUPPORTED_LEVELS:
   pertype={}
   for ft in ('radio','blank'):
@@ -93,7 +93,21 @@ def main():
      except ValueError:pass
      else:raise AssertionError('Degenerate error profile escaped explicit normal API')
    allnormal.extend(records)
-   assert len(g.batch(level,999,17,field_type=ft))==pertype[ft]['distinct_math_tasks']
+   eligible=pertype[ft]['distinct_math_tasks'];assert g.batch(level,0,17,field_type=ft)==[];assert len(g.batch(level,eligible,17,field_type=ft))==eligible
+   batch_boundaries.append({'level':level,'field_type':ft,'zero_result':[],'eligible_capacity':eligible,'capacity_request_exact':True})
+   for bad in (eligible+1,-1,1.0,0.0,True,False):
+    try:g.batch(level,bad,17,field_type=ft)
+    except ValueError:batch_boundaries.append({'level':level,'field_type':ft,'invalid_count':bad,'count_type':type(bad).__name__,'rejected':True})
+    else:raise AssertionError('Invalid/oversized count accepted')
+   for bad_seed in (1.0,True,False):
+    for requested in (0,1):
+     try:g.batch(level,requested,bad_seed,field_type=ft)
+     except ValueError:batch_boundaries.append({'level':level,'field_type':ft,'count':requested,'invalid_seed':bad_seed,'seed_type':type(bad_seed).__name__,'rejected':True})
+     else:raise AssertionError('Invalid seed accepted')
+    for fn,args in [(g.generate,(level,)),(getattr(g,'generate_'+level),())]:
+     try:fn(*args,seed=bad_seed,field_type=ft)
+     except ValueError:pass
+     else:raise AssertionError('Invalid generate seed accepted')
    assert g.batch(level,5,33,field_type=ft)==g.batch(level,5,33,field_type=ft)
    examples=[]
    for axis in ('x','y'):
@@ -139,7 +153,11 @@ def main():
  checker=ROOT/'generate/runs/current/check-engine';assert hashlib.sha256(checker.read_bytes()).hexdigest()=='71d435e31aa0cdea66d992aa4d4bd1043cdd871aaffc7a3af9f54e9b0f846dea'
  subprocess.run([str(checker),str(H/'engine-input.json'),str(H/'engine-validation.json')],check=True)
  native_report=json.loads((H/'engine-validation.json').read_text());assert native_report['documented_unresolved_checks']==0
- save('source-cases.json',sourcecases);save('independent-inventory.json',independent);save('source-fidelity.json',fidelity);save('capacity.json',capacity);save('review.json',{'originals':raws,'served_replays':served,'normal_examples':review,'source_bank_examples':[r for r in bankvariants if r['generation']['parameters']['scale'] in (1,8)]})
- result={'status':'pass','approval_status':'working; root independent QA required','basis':2275,'registered_baseline':base,'ma_originals':len(fidelity),'ma_exact_prompts':len(fidelity),'ma_exact_solutions':len(fidelity),'ma_answer_values':sum(a['values'] for a in fidelity),'non_ma_inventory':len(independent),'served_source_replays':len(served),'normal_records':len(allnormal),'distinct_normal_math_tasks':len({r['generation']['mathematical_fingerprint'] for r in allnormal}),'source_bank_variants':len(bankvariants),'capacity':capacity,'source_exclusions':exclusions,'native':{k:native_report[k] for k in ('entry_point','accepted_checks','rejected_checks','documented_unresolved_checks','database_writes')},'native_records':len(native_records),'mutation_controls':controls,'cli_all_validation':cli,'boundary_controls':boundary,'default_seeds_checked_per_level_and_field':50,'private_parser_sha256':hashlib.sha256((H/'private_readback.py').read_bytes()).hexdigest()}
- save('validation.json',result);assert baseline()==base;print(json.dumps(result,indent=2))
+ save('source-cases.json',[case for case in sourcecases if case['source_id'].startswith('q-')]);save('independent-inventory.json',{'basis':g.SOURCE['basis'],'lineage':g.SOURCE['lineage'],'questions':[{'record':case['raw']['question'],'origin':'captured non-MA later generated question','role':'independently authored inventory','relationship_to_source_templates':'Captured scaled variant of a normal-intercept source backbone; retained as existing inventory and excluded from MA-original template evidence.','raw_replay':case['raw'],'readback':case['readback'],'served_replay':case.get('served')} for case in independent]});save('source-fidelity.json',fidelity);save('capacity.json',capacity);save('review.json',{'originals':raws,'served_replays':served,'normal_examples':review,'source_bank_examples':[r for r in bankvariants if r['generation']['parameters']['scale'] in (1,8)]})
+ result={'status':'pass','approval_status':'working; root independent QA required','basis':2275,'registered_baseline':base,'ma_originals':len(fidelity),'ma_exact_prompts':len(fidelity),'ma_exact_solutions':len(fidelity),'ma_answer_values':sum(a['values'] for a in fidelity),'non_ma_inventory':len(independent),'served_source_replays':len(served),'normal_records':len(allnormal),'distinct_normal_math_tasks':len({r['generation']['mathematical_fingerprint'] for r in allnormal}),'source_bank_variants':len(bankvariants),'capacity':capacity,'source_exclusions':exclusions,'native':{k:native_report[k] for k in ('entry_point','accepted_checks','rejected_checks','documented_unresolved_checks','database_writes')},'native_records':len(native_records),'mutation_controls':controls,'cli_all_validation':cli,'batch_boundary_controls':batch_boundaries,'boundary_controls':boundary,'default_seeds_checked_per_level_and_field':50,'private_parser_sha256':hashlib.sha256((H/'private_readback.py').read_bytes()).hexdigest()}
+ save('validation.json',result)
+ original_cases=json.loads((H/'source-cases.json').read_text());assert len(original_cases)==10 and all(case['source_id'].startswith('q-') for case in original_cases)
+ inventory=json.loads((H/'independent-inventory.json').read_text());assert inventory['basis']==2275 and inventory['lineage']==g.SOURCE['lineage'] and len(inventory['questions'])==3
+ expected_non_ma=[q for q in g.KP[':knowledge-point/questions'] if ':question/math-academy-id' not in q];assert [item['record'] for item in inventory['questions']]==expected_non_ma
+ assert baseline()==base;print(json.dumps(result,indent=2))
 if __name__=='__main__':main()

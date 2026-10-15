@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 36**, **qa_passed: 348**, **queued: 194**, **working: 2**.
+**needs_revalidation: 36**, **qa_passed: 351**, **queued: 191**, **working: 2**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -131,12 +131,12 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186096742](../../scratch/17592186096742-draft.py) | Selecting Procedures for Calculating Derivatives | Calculating a Derivative Using Multiple Instances of the Chain Rule | 5 / 5 / 6 / 2 | qa_passed | [Report](qa/17592186096742.json) |
 | [17592186096844](../../scratch/17592186096844-draft.py) | Selecting Procedures for Calculating Derivatives | Calculating a Derivative Using the Chain and Quotient Rules | 0 / 11 / 6 / 0 | qa_passed | [Report](qa/17592186096844.json) |
 | [17592186092384](../../scratch/17592186092384-draft.py) | Calculating the Equation of a Normal Line Using Differentiation | Calculating the Slope of a Normal Line to a Curve at a Point | 11 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186092384.json) |
-| [17592186092385](../../scratch/17592186092385.py) | Calculating the Equation of a Normal Line Using Differentiation | Determining the Intercepts of a Normal Line | 7 / 6 / 0 / 0 | working | — |
-| [17592186092240](../../scratch/17592186092240.py) | Calculating the Equation of a Normal Line Using Differentiation | Determining the Equation of a Normal Line to a Curve at a Point | 0 / 14 / 0 / 1 | working | — |
-| [17592186204089](../../scratch/17592186204089.py) | Linear Equations With No Solutions | Identifying an Equation With No Solutions | 6 / 0 / 0 / 2 | queued | — |
+| [17592186092385](../../scratch/17592186092385-draft.py) | Calculating the Equation of a Normal Line Using Differentiation | Determining the Intercepts of a Normal Line | 7 / 6 / 0 / 0 | qa_passed | [Report](qa/17592186092385.json) |
+| [17592186092240](../../scratch/17592186092240-draft.py) | Calculating the Equation of a Normal Line Using Differentiation | Determining the Equation of a Normal Line to a Curve at a Point | 0 / 14 / 0 / 1 | qa_passed | [Report](qa/17592186092240.json) |
+| [17592186204089](../../scratch/17592186204089-draft.py) | Linear Equations With No Solutions | Identifying an Equation With No Solutions | 6 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186204089.json) |
 | [17592186110719](../../scratch/17592186110719.py) | Linear Equations With Infinitely Many Solutions | Identifying Equations With Infinitely Many Solutions | 5 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186110719.json) |
-| 17592186204090 | Linear Equations With No Solutions | Solving For an Unknown Parameter | 3 / 2 / 2 / 0 | queued | — |
-| [17592186204092](../../scratch/17592186204092.py) | Linear Equations With No Solutions | Solving For an Unknown Parameter - Variables and Constants on Both Sides | 5 / 5 / 0 / 2 | queued | — |
+| [17592186204090](../../scratch/17592186204090.py) | Linear Equations With No Solutions | Solving For an Unknown Parameter | 3 / 2 / 2 / 0 | working | — |
+| [17592186204092](../../scratch/17592186204092.py) | Linear Equations With No Solutions | Solving For an Unknown Parameter - Variables and Constants on Both Sides | 5 / 5 / 0 / 2 | working | — |
 | [17592186110720](../../scratch/17592186110720.py) | Linear Equations With Infinitely Many Solutions | Solving For an Unknown Parameter | 4 / 1 / 0 / 0 | qa_passed | [Report](qa/17592186110720.json) |
 | [17592186110721](../../scratch/17592186110721.py) | Linear Equations With Infinitely Many Solutions | Solving a General Equation With Infinitely Many Solutions For Unknown Parameters | 3 / 2 / 0 / 2 | qa_passed | [Report](qa/17592186110721.json) |
 | [17592186204091](../../scratch/17592186204091.py) | Linear Equations With No Solutions | Solving For an Unknown Parameter - Constants on Both Sides | 5 / 7 / 0 / 1 | queued | — |

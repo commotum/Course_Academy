@@ -24,6 +24,7 @@ def equation(text,variable):
 def read_prompt(text):
     assert text.startswith('Which of the following equations has no solutions?\n\n')
     raw=re.findall(r'\$([^$]*=[^$]*)\$',text);assert len(raw)==3
+    labels=re.findall(r'(?:^|\n)(?:- \*\*)?(III|II|I)\.',text);assert labels==list(LABELS),labels
     variable=re.search('[xuyzwv]',raw[0])[0];x=sp.Symbol(variable,real=True)
     equations=[equation(t,variable) for t in raw];rows=[]
     for lhs,rhs in equations:
@@ -39,15 +40,23 @@ def selection(text):
 
 def validate(rec):
     q=rec['question'];meta=rec['generation'];variable,equations,rows,statuses=read_prompt(q[':question/problem']);x=sp.Symbol(variable,real=True)
-    assert {'variable':variable,'equations':rows}==meta['parameters']
+    assert variable==meta['parameters']['variable'] and rows==meta['parameters']['equations']
     assert meta['domain']['domain']=='real numbers'
     no_solutions={i for i,s in enumerate(statuses) if s==sp.S.EmptySet}
     fields=q[':question/answer-fields'];radio=meta['template']=='radio-detailed-scaled'
+    assert set(meta['parameters'])==({'variable','equations','label_permutation'} if radio else {'variable','equations'})
     if radio:
         assert len(fields)==1 and fields[0][':answer-field/key']=='selection' and fields[0][':answer-field/type']==':answer-field.type/radio'
         assert q[':question/problem'].count('Select all that apply.')==0
         bank=fields[0][':answer-field/choices'];sets=[selection(a[':answer/value']) for a in bank]
-        assert sets==[{0},{0,2},{0,1},{0,1,2},{1,2}] and len({tuple(sorted(s)) for s in sets})==5
+        order=meta['parameters']['label_permutation'];assert len(order)==3 and all(type(i) is int for i in order) and sorted(order)==[0,1,2]
+        role_status=[sp.S.EmptySet,None,sp.S.Reals]
+        for i,old_index in enumerate(order):
+            if old_index==1:assert isinstance(statuses[i],sp.FiniteSet) and len(statuses[i])==1
+            else:assert statuses[i]==role_status[old_index]
+        source_subsets=({0},{0,2},{0,1},{0,1,2},{1,2})
+        wanted=[{new_index for new_index,old_index in enumerate(order) if old_index in old_subset} for old_subset in source_subsets]
+        assert sets==wanted and len({tuple(sorted(s)) for s in sets})==5
         ref=fields[0][':answer-field/correct'];assert next(sets[i] for i,a in enumerate(bank) if a[':answer/id']==ref[1])==no_solutions
     else:
         assert [f[':answer-field/key'] for f in fields]==list(LABELS)

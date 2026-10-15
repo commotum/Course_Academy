@@ -71,6 +71,10 @@ def validate(record,raw_context=False):
  if any(power.exp.is_negative or not power.exp.is_integer for power in fun.atoms(s.Pow) if power.base.has(x)):assert point>0
  normal=x+ m*y-(point+m*ordinate)
  bindings['coefficients']={'p':m,'q':point+m*ordinate,'a':-1/m,'b':ordinate+point/m}
+ # The first formal derivative must take the printed curve itself as its operand.
+ der=r'\frac{\text{d}}{\text{d}x}'
+ if der in sol:
+  first=clean(sol);at=first.index(der)+len(der);operand,_=group(first,at);assert eq(scalar(operand),fun),(operand,fun)
  # Each display equation, including every aligned row and each equality-chain term.
  for block in re.findall(r'\$\$\s*(.*?)\s*\$\$',sol,re.S):
   block=block.replace(r'\begin{aligned}','').replace(r'\end{aligned}','');prev=None
@@ -109,4 +113,13 @@ def validate(record,raw_context=False):
   else:
    target=re.search(r'Find the value of \$(.*?)\$',prompt);assert target;expected=expr(target[1],fun,point,ordinate,m,bindings,counters)
   assert eq(answer,expected),(answer,expected,prompt)
+  if f[':answer-field/type'].endswith('/radio'):
+   target=target[1].rstrip('.').replace(' ','')
+   qcoef=point+m*ordinate
+   if target=='a+b':bank=[ordinate+1/(2*m),expected,ordinate+2/m,ordinate+4/m,ordinate+1/m]
+   elif target=='p-q':bank=[m+qcoef,expected,-m-qcoef,point,-2*m+ordinate]
+   elif target=='q-p':bank=[-m*ordinate,expected,-point,-ordinate,ordinate-point]
+   elif target=='p+q' and s.expand(fun).coeff(x)==0:bank=[qcoef+m+3,qcoef+m,qcoef,qcoef-m-2,qcoef-m]
+   else:bank=[qcoef,qcoef-m,-m-qcoef,m+qcoef,-qcoef]
+   assert len(bank)==len(vals) and all(sum(eq(a,b) for b in bank)==1 for a in vals),(vals,bank)
  return counters

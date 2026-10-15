@@ -1,6 +1,6 @@
 # Exponential IVP review
 
-Raw originals retain absent fields/solutions. Generated records are explicitly labeled. No plots. Worker review covers all 15 profiles, all bank members and 30 profile variants, plus two default examples per method family (8 records). Final stage verification and native grading are recorded in validation.json; parent independent QA remains required.
+Raw originals retain absent fields/solutions. Generated records are explicitly labeled. No plots.
 
 ## Original raw q-332426
 

@@ -1,6 +1,6 @@
 # Sinusoidal range generator
 
-Local draft at basis 1356; stops after steps 3–7. No registration or database operations.
+Source analysis at basis 1356; scoped replenishment completed through step 9. Generator UUID `c3a9a8c0-3774-558d-b354-ef2d45eaf5b1` is registered as `generate/scratch/17592186129124.py`. The additive transaction committed from basis 2528 to 2529 under the application lock and configured `:application/ca-engine` contributor.
 
 ```sh
 .venv/bin/python generate/scratch/17592186129124/validate.py
@@ -13,4 +13,8 @@ API: generate(level, seed=0, template=None, field_type=None, parameters=None, pr
 
 Hard uses authored small rational scale/translation arithmetic. Task counts exclude horizontal/notation/bank aliases: easy 96 range + 76 minimum, moderate 96 + 76, hard 1080 + 1016. Source difficulty overlaps are preserved, while normal authored bounds distinguish easy positive integers, moderate negative integers and hard negative noninteger rationals.
 
-Generator version 1.0.0 frozen for parent QA. Validation records actual Python/SymPy versions and native executable hash. No plots required.
+Generator version 1.0.0 validated and registered. Validation records actual Python/SymPy versions and native executable hash. No plots required.
+
+`reference/replenishment/basis-2528/` retains the original job request, selected questions and review, mathematical/native grading checks, speculative preview, exact basis-guarded request, verified durable receipt and exact-basis readback. Ten new questions (2 easy, 3 moderate, 5 authored hard) bring distinct validated unshown/unreserved inventory to 5 at every supported level. All nine source questions and learner history are unchanged. Incomplete/unrated originals remain excluded; their legacy classification job may stay visible. See `capabilities.json` for finite domains and evidence-only exclusions.
+
+`.venv/bin/python generate/scratch/17592186129124/replenish.py` reconciles the saved request before fresh intent and holds `api.lock` from inventory recheck through commit/readback. It reuses this package identity, excludes source/canonical and previous tasks, validates every new radio option with the application grader, and counts no seed/choice-order aliases as new tasks.

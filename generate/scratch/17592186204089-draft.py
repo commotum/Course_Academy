@@ -32,7 +32,7 @@ GENERATOR_UUID = str(uuid.uuid5(uuid.UUID(KP_UUID), 'question-generator'))
 HERE = Path(__file__).resolve().with_suffix('')
 KEYS = ('I', 'II', 'III')
 DOMAIN = {'variable': 'x,u,y,z,w,v', 'coefficients': [-9, 9], 'constants': [-9, 9],
-          'equations': 3, 'domain': 'real numbers', 'patterns': ['UIN', 'NIU', 'NNU', 'UNI', 'NUI'],
+          'equations': 3, 'domain': 'real numbers', 'patterns': ['UIN', 'NIU', 'NNU', 'UNI', 'NUI', 'INU', 'IUN'],
           'sampling_policy': 'Observed integer affine forms; all coefficient signs permitted; one or two contradictions; at least one unique solution. No distribution or fractions in equation inputs.'}
 
 def digest(value):
@@ -42,7 +42,7 @@ def uid(value):
     return str(uuid.uuid5(uuid.UUID(KP_UUID), value))
 
 def parameters(p):
-    if set(p) != {'variable', 'equations'} or p['variable'] not in 'xuyzwv' or len(p['variable']) != 1:
+    if set(p) not in ({'variable', 'equations'},{'variable', 'equations','label_permutation'}) or p['variable'] not in 'xuyzwv' or len(p['variable']) != 1:
         raise ValueError('Invalid variable/parameter keys')
     eqs = p['equations']
     if not isinstance(eqs, list) or len(eqs) != 3 or any(not isinstance(e, list) or len(e) != 4 for e in eqs):
@@ -51,7 +51,13 @@ def parameters(p):
         raise ValueError('Nonzero integer coefficients and bounded integer constants required')
     if ''.join(kind(e) for e in eqs) not in DOMAIN['patterns']:
         raise ValueError('Unobserved classification pattern')
-    return {'variable': p['variable'], 'equations': [e[:] for e in eqs]}
+    result={'variable': p['variable'], 'equations': [e[:] for e in eqs]}
+    if 'label_permutation' in p:
+        order=p['label_permutation']
+        if not isinstance(order,list) or len(order)!=3 or any(type(i) is not int for i in order) or sorted(order)!=[0,1,2]:raise ValueError('Invalid Roman-label permutation')
+        if ''.join(kind(e) for e in eqs)!=''.join('NUI'[i] for i in order):raise ValueError('Permutation must preserve the source N/U/I roles')
+        result['label_permutation']=order[:]
+    return result
 
 def kind(e):
     a,b,c,d = e
@@ -137,6 +143,13 @@ for _name,_expected in FROZEN_DEPENDENCIES.items():
 SOURCE = json.loads((HERE/'source.json').read_text())
 ORIGINALS = {q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions'] if ':question/math-academy-id' in q}
 RADIO_BANK = ('I only','I and III only','I and II only','I, II, and III','II and III only')
+RADIO_SOURCE_SUBSETS=((0,),(0,2),(0,1),(0,1,2),(1,2))
+RADIO_PERMUTATIONS=((0,1,2),(1,0,2),(1,2,0),(0,2,1),(2,0,1),(2,1,0))
+def subset_text(indices):
+    names=[KEYS[i] for i in sorted(indices)]
+    return names[0]+' only' if len(names)==1 else ' and '.join(names)+' only' if len(names)==2 else 'I, II, and III'
+def radio_bank(order):
+    return tuple(subset_text(i for i,old_index in enumerate(order) if old_index in source_subset) for source_subset in RADIO_SOURCE_SUBSETS)
 
 def source_parameters(question):
     import re
@@ -154,7 +167,7 @@ def source_parameters(question):
 def original_template(mid):
     return 'radio-detailed-scaled' if mid=='q-288069' else 'summary-spaced' if mid in ('q-287964','q-288058') else 'detailed-unit' if mid=='q-288073' else 'detailed-scaled'
 
-SOURCE_CASES = [{'source_id':mid,'parameters':source_parameters(q),'template':original_template(mid),'level':'easy','bank_profile':'subset-five' if mid=='q-288069' else 'boolean-per-equation'} for mid,q in ORIGINALS.items()]
+SOURCE_CASES = [{'source_id':mid,'parameters':dict(source_parameters(q),**({'label_permutation':[0,1,2]} if mid=='q-288069' else {})),'template':original_template(mid),'level':'easy','bank_profile':'subset-five' if mid=='q-288069' else 'boolean-per-equation'} for mid,q in ORIGINALS.items()]
 CATALOG={};excluded={fingerprint(c['parameters']) for c in SOURCE_CASES}
 excluded.add(fingerprint(source_parameters(SOURCE['record'][':knowledge-point/canonical-example'])))
 for band_index,band in enumerate(SUPPORTED_LEVELS):
@@ -162,11 +175,17 @@ for band_index,band in enumerate(SUPPORTED_LEVELS):
     for template_index,template in enumerate(TEMPLATES):
         rows=[];offset=0
         while len(rows)<CATALOG_SIZE_PER_TEMPLATE:
-            candidate=parameters(sample(random.Random(100000*band_index+10000*template_index+offset),template));offset+=1
+            index=offset//len(RADIO_PERMUTATIONS) if template=='radio-detailed-scaled' else offset
+            candidate=sample(random.Random(100000*band_index+10000*template_index+index),template)
+            if template=='radio-detailed-scaled':
+                order=RADIO_PERMUTATIONS[offset%len(RADIO_PERMUTATIONS)]
+                candidate['equations']=[candidate['equations'][i] for i in order]
+                candidate['label_permutation']=list(order)
+            candidate=parameters(candidate);offset+=1
             fp=fingerprint(candidate)
             if fp not in excluded: rows.append(candidate);excluded.add(fp)
         CATALOG[band][template]=rows
-DOMAIN.update({'public_domain':'finite catalog: 64 exact parameter records per template per band, plus eight original replay parameter records on easy', 'catalog_size_per_band':256,'level_policy':'same backbone, same coefficient/constant bounds and workload; moderate/hard are conservative sparse-band assignments, not observed difficulty evidence','exclusions':'all source and canonical mathematical fingerprints; no cross-band duplicate tasks; variable-only and common-scaling changes do not count'})
+DOMAIN.update({'public_domain':'finite catalog: 64 exact parameter records per template per band, plus eight original replay parameter records on easy', 'catalog_size_per_band':256,'radio_label_permutation_slot':'new label position maps to original N/U/I row; all six permutations transform the complete five-choice source bank together','level_policy':'same backbone, same coefficient/constant bounds and workload; moderate/hard are conservative sparse-band assignments, not observed difficulty evidence','exclusions':'all source and canonical mathematical fingerprints; no cross-band duplicate tasks; variable-only and common-scaling changes do not count'})
 
 # Freeze formatting privately. The generator never imports mutable root QA helpers.
 import importlib.util
@@ -187,18 +206,21 @@ def generate(level,seed=0,template=None,parameters=None,profile=None):
     if p not in allowed:raise ValueError('Parameters outside frozen finite public domain')
     if template not in ('summary-spaced',) and any((e[0]-e[2]==1)!=(template=='detailed-unit') for e in p['equations'] if kind(e)=='U'):raise ValueError('Parameter/solution sequence mismatch')
     if template=='summary-spaced' and ''.join(kind(e) for e in p['equations']) not in ('UIN','NIU'):raise ValueError('Summary requires one contradiction and one identity')
-    if template=='radio-detailed-scaled' and ''.join(kind(e) for e in p['equations'])!='NUI':raise ValueError('Complete observed radio profile requires NUI')
+    if template=='radio-detailed-scaled' and 'label_permutation' not in p:raise ValueError('Radio requires its whole-bank label permutation')
+    if template!='radio-detailed-scaled' and 'label_permutation' in p:raise ValueError('Label permutation only belongs to radio')
     radio=template=='radio-detailed-scaled'
     prompt='Which of the following equations has no solutions?\n\n'+('\n\n'.join(key+'. $'+equation(e,p['variable'])+'$' for key,e in zip(KEYS,p['equations'])) if radio else 'Select all that apply.\n\n'+'\n'.join('- **'+key+'.** $'+equation(e,p['variable'],template=='summary-spaced')+'$' for key,e in zip(KEYS,p['equations'])))
     solution=worked(p,'detailed-scaled' if radio else template)
     if template=='summary-spaced':
-        import re
-        solution=re.sub(r'(?<![a-zA-Z])(?:[xuyzwv]=(?:-?\d+|\\frac\{-?\d+\}\{\d+\})|-?\d+=-?\d+)',lambda m:'$'+m[0]+'$',solution)
+        reduced=['$'+p['variable']+'='+sp.latex(sp.Rational(d-b,a-c))+'$' if a!=c else 'an identity' if b==d else '$'+str(b)+'='+str(d)+'$' for a,b,c,d in p['equations']]
+        ordinal=('first','second','third')[next(i for i,e in enumerate(p['equations']) if kind(e)=='N')]
+        solution='The equations reduce respectively to '+', '.join(reduced[:2])+', and '+reduced[2]+'. Only the '+ordinal+' has no solutions.'
     prompt=_format.normalize_prose(prompt);solution=_format.normalize_prose(solution)
-    task=fingerprint(p);content=digest({'problem':prompt,'solution':solution,'bank':bank,'difficulty':level});qid=uid('question:'+content)
+    values=radio_bank(p['label_permutation']) if radio else ('false','true')
+    task=fingerprint(p);content=digest({'problem':prompt,'solution':solution,'bank':values if radio else bank,'difficulty':level});qid=uid('question:'+content)
     fields=[]
     for key,e in ([('selection',None)] if radio else zip(KEYS,p['equations'])):
-        fid=uid(qid+':field:'+key);values=RADIO_BANK if radio else ('false','true')
+        fid=uid(qid+':field:'+key)
         answers=[{':answer/id':uid(fid+':answer:'+value),':answer/type':':answer.type/text',':answer/value':value} for value in values]
         correct=selection(p['equations']) if radio else 'true' if kind(e)=='N' else 'false'
         fields.append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/'+('radio' if radio else 'checkbox'),':answer-field/choices':answers,':answer-field/correct':[':answer/id',next(a[':answer/id'] for a in answers if a[':answer/value']==correct)]})

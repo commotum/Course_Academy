@@ -148,6 +148,7 @@ def finish(q,t,p,seed,profile,eligible=True):
  out={'question':q,'knowledge_point':{'db_id':KP_ID,'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'generation':meta};fmt.validate_generated_record(out);return out
 
 def generate(level,seed=0,template=None,parameters=None,profile='authored',field_type='radio'):
+ if type(seed) is not int:raise ValueError('Seed must be an integer')
  if level not in SUPPORTED_LEVELS:raise ValueError('Unsupported level')
  if profile in ('observed_raw','observed_served'):
   if not template or template not in ROWS:raise ValueError('Explicit source required')
@@ -184,6 +185,7 @@ def generate(level,seed=0,template=None,parameters=None,profile='authored',field
    aid=uid('temporary:'+key);q[':question/answer-fields'].append({':answer-field/key':key,':answer-field/type':':answer-field.type/blank',':answer-field/choices':[{':answer/id':aid,':answer/type':':answer.type/math',':answer/value':tex(v)}],':answer-field/correct':[':answer/id',aid]})
  return finish(q,t,p,seed,profile)
 def catalog(level,field_type='radio'):
+ if field_type not in ('radio','blank'):raise ValueError('Unsupported field type')
  if level not in SUPPORTED_LEVELS:raise ValueError('Unsupported level')
  out=[]
  for t in NORMAL_TEMPLATES[level]:
@@ -195,13 +197,17 @@ def catalog(level,field_type='radio'):
      except ValueError:continue
      out.append(r)
  return out
-def batch(level,count,seed=0,**kwargs):
- if count<0:raise ValueError('Negative count')
- rows=catalog(level,**kwargs);random.Random(seed).shuffle(rows);seen=set();out=[]
+def batch(level,count,seed=0,field_type='radio'):
+ if type(count) is not int or count<0:raise ValueError('Count must be a nonnegative integer')
+ if type(seed) is not int:raise ValueError('Seed must be an integer')
+ if level not in SUPPORTED_LEVELS:raise ValueError('Unsupported level')
+ if field_type not in ('radio','blank'):raise ValueError('Unsupported field type')
+ if count==0:return []
+ rows=catalog(level,field_type);random.Random(seed).shuffle(rows);seen=set();out=[]
  for r in rows:
   fp=r['generation']['mathematical_fingerprint']
   if fp not in seen:seen.add(fp);r['generation']['seed']=seed;out.append(r)
-  if len(out)>=count:break
+ if count>len(out):raise ValueError('Requested count exceeds distinct eligible catalog capacity: '+str(len(out)))
  return out[:count]
 def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
 def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)
@@ -212,5 +218,6 @@ if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=(*SUPPORTED_LEVELS,'all'),default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=5);ap.add_argument('--field-type',choices=['radio','blank'],default='radio');ap.add_argument('--format',choices=['json','markdown'],default='json');args=ap.parse_args()
  if args.count<0:ap.error('Nonnegative count required')
  levels=SUPPORTED_LEVELS if args.difficulty=='all' else (args.difficulty,)
- rs=[r for level in levels for r in batch(level,args.count,args.seed,field_type=args.field_type)]
+ try:rs=[r for level in levels for r in batch(level,args.count,args.seed,field_type=args.field_type)]
+ except ValueError as exc:ap.error(str(exc))
  print(json.dumps(rs,indent=2) if args.format=='json' else '\n\n'.join(map(markdown,rs)))

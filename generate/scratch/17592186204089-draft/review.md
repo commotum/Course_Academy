@@ -344,39 +344,39 @@ The equations reduce respectively to $x=5$, an identity, and $-4=4$. Only the th
 
 Which of the following equations has no solutions?
 
-I. $y=y-3$
+I. $-3z+7=-3z+7$
 
-II. $y-8=-2y-6$
+II. $7z+9=-z+2$
 
-III. $-7y-3=-7y-3$
+III. $z+2=z-4$
 
 Let's attempt to solve each equation in turn:
 
 - For the first equation, we have
 
 $$
-\begin{aligned}y & =y-3 \\ y-y & =y-3-y \\ 0 & =-3.\end{aligned}
+\begin{aligned}-3z+7 & =-3z+7 \\ -3z+7+3z & =-3z+7+3z \\ 7 & =7.\end{aligned}
 $$
 
-This equation is false for all values of $y.$ Therefore, the equation $y=y-3$ has no solutions.
+This equation is true for all values of $z.$
 
 - For the second equation, we have
 
 $$
-\begin{aligned}y-8 & =-2y-6 \\ y-8+2y+8 & =-2y-6+2y+8 \\ 3y & =2 \\ y & =\frac{2}{3}.\end{aligned}
+\begin{aligned}7z+9 & =-z+2 \\ 7z+9+z-9 & =-z+2+z-9 \\ 8z & =-7 \\ z & =- \frac{7}{8}.\end{aligned}
 $$
 
-Therefore, the equation $y-8=-2y-6$ has the unique solution $y=\frac{2}{3}.$
+Therefore, the equation $7z+9=-z+2$ has the unique solution $z=- \frac{7}{8}.$
 
 - For the third equation, we have
 
 $$
-\begin{aligned}-7y-3 & =-7y-3 \\ -7y-3+7y & =-7y-3+7y \\ -3 & =-3.\end{aligned}
+\begin{aligned}z+2 & =z-4 \\ z+2-z & =z-4-z \\ 2 & =-4.\end{aligned}
 $$
 
-This equation is true for all values of $y.$
+This equation is false for all values of $z.$ Therefore, the equation $z+2=z-4$ has no solutions.
 
-Therefore, the correct answer is "I only."
+Therefore, the correct answer is "III only."
 
 ## :question.difficulty/moderate / detailed-scaled
 
@@ -470,39 +470,39 @@ The equations reduce respectively to $-7=-2$, an identity, and $y=\frac{7}{4}$. 
 
 Which of the following equations has no solutions?
 
-I. $-2w+5=-2w-9$
+I. $-4v=-4v$
 
-II. $-7w+8=4w-7$
+II. $-7v-1=5v+8$
 
-III. $w-5=w-5$
+III. $-5v-3=-5v-2$
 
 Let's attempt to solve each equation in turn:
 
 - For the first equation, we have
 
 $$
-\begin{aligned}-2w+5 & =-2w-9 \\ -2w+5+2w & =-2w-9+2w \\ 5 & =-9.\end{aligned}
+\begin{aligned}-4v & =-4v \\ -4v+4v & =-4v+4v \\ 0 & =0.\end{aligned}
 $$
 
-This equation is false for all values of $w.$ Therefore, the equation $-2w+5=-2w-9$ has no solutions.
+This equation is true for all values of $v.$
 
 - For the second equation, we have
 
 $$
-\begin{aligned}-7w+8 & =4w-7 \\ -7w+8-4w-8 & =4w-7-4w-8 \\ -11w & =-15 \\ w & =\frac{15}{11}.\end{aligned}
+\begin{aligned}-7v-1 & =5v+8 \\ -7v-1-5v+1 & =5v+8-5v+1 \\ -12v & =9 \\ v & =- \frac{3}{4}.\end{aligned}
 $$
 
-Therefore, the equation $-7w+8=4w-7$ has the unique solution $w=\frac{15}{11}.$
+Therefore, the equation $-7v-1=5v+8$ has the unique solution $v=- \frac{3}{4}.$
 
 - For the third equation, we have
 
 $$
-\begin{aligned}w-5 & =w-5 \\ w-5-w & =w-5-w \\ -5 & =-5.\end{aligned}
+\begin{aligned}-5v-3 & =-5v-2 \\ -5v-3+5v & =-5v-2+5v \\ -3 & =-2.\end{aligned}
 $$
 
-This equation is true for all values of $w.$
+This equation is false for all values of $v.$ Therefore, the equation $-5v-3=-5v-2$ has no solutions.
 
-Therefore, the correct answer is "I only."
+Therefore, the correct answer is "III only."
 
 ## :question.difficulty/hard / detailed-scaled
 
@@ -590,42 +590,726 @@ Select all that apply.
 - **II.** $z + 3 = z + 3$
 - **III.** $-8z - 3 = -8z - 2$
 
-The equations reduce respectively to z=- \frac{11}{4}, an identity, and $-3=-2$. Only the third has no solutions.
+The equations reduce respectively to $z=- \frac{11}{4}$, an identity, and $-3=-2$. Only the third has no solutions.
 
 ## :question.difficulty/hard / radio-detailed-scaled
 
 Which of the following equations has no solutions?
 
-I. $-w+3=-w-1$
+I. $4v+5=4v+5$
 
-II. $8w+9=5w-1$
+II. $2v-3=-6v-5$
 
-III. $-w+6=-w+6$
+III. $-2v+8=-2v$
 
 Let's attempt to solve each equation in turn:
 
 - For the first equation, we have
 
 $$
-\begin{aligned}-w+3 & =-w-1 \\ -w+3+w & =-w-1+w \\ 3 & =-1.\end{aligned}
+\begin{aligned}4v+5 & =4v+5 \\ 4v+5-4v & =4v+5-4v \\ 5 & =5.\end{aligned}
 $$
 
-This equation is false for all values of $w.$ Therefore, the equation $-w+3=-w-1$ has no solutions.
+This equation is true for all values of $v.$
 
 - For the second equation, we have
 
 $$
-\begin{aligned}8w+9 & =5w-1 \\ 8w+9-5w-9 & =5w-1-5w-9 \\ 3w & =-10 \\ w & =- \frac{10}{3}.\end{aligned}
+\begin{aligned}2v-3 & =-6v-5 \\ 2v-3+6v+3 & =-6v-5+6v+3 \\ 8v & =-2 \\ v & =- \frac{1}{4}.\end{aligned}
 $$
 
-Therefore, the equation $8w+9=5w-1$ has the unique solution $w=- \frac{10}{3}.$
+Therefore, the equation $2v-3=-6v-5$ has the unique solution $v=- \frac{1}{4}.$
 
 - For the third equation, we have
 
 $$
-\begin{aligned}-w+6 & =-w+6 \\ -w+6+w & =-w+6+w \\ 6 & =6.\end{aligned}
+\begin{aligned}-2v+8 & =-2v \\ -2v+8+2v & =-2v+2v \\ 8 & =0.\end{aligned}
 $$
 
-This equation is true for all values of $w.$
+This equation is false for all values of $v.$ Therefore, the equation $-2v+8=-2v$ has no solutions.
+
+Therefore, the correct answer is "III only."
+
+## Controlled radio target change
+
+Which of the following equations has no solutions?
+
+I. $-3y-9=-3y+7$
+
+II. $-6y-2=-9y-6$
+
+III. $2y+5=2y+5$
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}-3y-9 & =-3y+7 \\ -3y-9+3y & =-3y+7+3y \\ -9 & =7.\end{aligned}
+$$
+
+This equation is false for all values of $y.$ Therefore, the equation $-3y-9=-3y+7$ has no solutions.
+
+- For the second equation, we have
+
+$$
+\begin{aligned}-6y-2 & =-9y-6 \\ -6y-2+9y+2 & =-9y-6+9y+2 \\ 3y & =-4 \\ y & =- \frac{4}{3}.\end{aligned}
+$$
+
+Therefore, the equation $-6y-2=-9y-6$ has the unique solution $y=- \frac{4}{3}.$
+
+- For the third equation, we have
+
+$$
+\begin{aligned}2y+5 & =2y+5 \\ 2y+5-2y & =2y+5-2y \\ 5 & =5.\end{aligned}
+$$
+
+This equation is true for all values of $y.$
 
 Therefore, the correct answer is "I only."
+
+## Controlled radio target change
+
+Which of the following equations has no solutions?
+
+I. $-6y-2=-9y-6$
+
+II. $-3y-9=-3y+7$
+
+III. $2y+5=2y+5$
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}-6y-2 & =-9y-6 \\ -6y-2+9y+2 & =-9y-6+9y+2 \\ 3y & =-4 \\ y & =- \frac{4}{3}.\end{aligned}
+$$
+
+Therefore, the equation $-6y-2=-9y-6$ has the unique solution $y=- \frac{4}{3}.$
+
+- For the second equation, we have
+
+$$
+\begin{aligned}-3y-9 & =-3y+7 \\ -3y-9+3y & =-3y+7+3y \\ -9 & =7.\end{aligned}
+$$
+
+This equation is false for all values of $y.$ Therefore, the equation $-3y-9=-3y+7$ has no solutions.
+
+- For the third equation, we have
+
+$$
+\begin{aligned}2y+5 & =2y+5 \\ 2y+5-2y & =2y+5-2y \\ 5 & =5.\end{aligned}
+$$
+
+This equation is true for all values of $y.$
+
+Therefore, the correct answer is "II only."
+
+## Controlled radio target change
+
+Which of the following equations has no solutions?
+
+I. $-6y-2=-9y-6$
+
+II. $2y+5=2y+5$
+
+III. $-3y-9=-3y+7$
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}-6y-2 & =-9y-6 \\ -6y-2+9y+2 & =-9y-6+9y+2 \\ 3y & =-4 \\ y & =- \frac{4}{3}.\end{aligned}
+$$
+
+Therefore, the equation $-6y-2=-9y-6$ has the unique solution $y=- \frac{4}{3}.$
+
+- For the second equation, we have
+
+$$
+\begin{aligned}2y+5 & =2y+5 \\ 2y+5-2y & =2y+5-2y \\ 5 & =5.\end{aligned}
+$$
+
+This equation is true for all values of $y.$
+
+- For the third equation, we have
+
+$$
+\begin{aligned}-3y-9 & =-3y+7 \\ -3y-9+3y & =-3y+7+3y \\ -9 & =7.\end{aligned}
+$$
+
+This equation is false for all values of $y.$ Therefore, the equation $-3y-9=-3y+7$ has no solutions.
+
+Therefore, the correct answer is "III only."
+
+## Controlled radio target change
+
+Which of the following equations has no solutions?
+
+I. $-3y-9=-3y+7$
+
+II. $2y+5=2y+5$
+
+III. $-6y-2=-9y-6$
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}-3y-9 & =-3y+7 \\ -3y-9+3y & =-3y+7+3y \\ -9 & =7.\end{aligned}
+$$
+
+This equation is false for all values of $y.$ Therefore, the equation $-3y-9=-3y+7$ has no solutions.
+
+- For the second equation, we have
+
+$$
+\begin{aligned}2y+5 & =2y+5 \\ 2y+5-2y & =2y+5-2y \\ 5 & =5.\end{aligned}
+$$
+
+This equation is true for all values of $y.$
+
+- For the third equation, we have
+
+$$
+\begin{aligned}-6y-2 & =-9y-6 \\ -6y-2+9y+2 & =-9y-6+9y+2 \\ 3y & =-4 \\ y & =- \frac{4}{3}.\end{aligned}
+$$
+
+Therefore, the equation $-6y-2=-9y-6$ has the unique solution $y=- \frac{4}{3}.$
+
+Therefore, the correct answer is "I only."
+
+## Controlled radio target change
+
+Which of the following equations has no solutions?
+
+I. $2y+5=2y+5$
+
+II. $-3y-9=-3y+7$
+
+III. $-6y-2=-9y-6$
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}2y+5 & =2y+5 \\ 2y+5-2y & =2y+5-2y \\ 5 & =5.\end{aligned}
+$$
+
+This equation is true for all values of $y.$
+
+- For the second equation, we have
+
+$$
+\begin{aligned}-3y-9 & =-3y+7 \\ -3y-9+3y & =-3y+7+3y \\ -9 & =7.\end{aligned}
+$$
+
+This equation is false for all values of $y.$ Therefore, the equation $-3y-9=-3y+7$ has no solutions.
+
+- For the third equation, we have
+
+$$
+\begin{aligned}-6y-2 & =-9y-6 \\ -6y-2+9y+2 & =-9y-6+9y+2 \\ 3y & =-4 \\ y & =- \frac{4}{3}.\end{aligned}
+$$
+
+Therefore, the equation $-6y-2=-9y-6$ has the unique solution $y=- \frac{4}{3}.$
+
+Therefore, the correct answer is "II only."
+
+## Controlled radio target change
+
+Which of the following equations has no solutions?
+
+I. $2y+5=2y+5$
+
+II. $-6y-2=-9y-6$
+
+III. $-3y-9=-3y+7$
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}2y+5 & =2y+5 \\ 2y+5-2y & =2y+5-2y \\ 5 & =5.\end{aligned}
+$$
+
+This equation is true for all values of $y.$
+
+- For the second equation, we have
+
+$$
+\begin{aligned}-6y-2 & =-9y-6 \\ -6y-2+9y+2 & =-9y-6+9y+2 \\ 3y & =-4 \\ y & =- \frac{4}{3}.\end{aligned}
+$$
+
+Therefore, the equation $-6y-2=-9y-6$ has the unique solution $y=- \frac{4}{3}.$
+
+- For the third equation, we have
+
+$$
+\begin{aligned}-3y-9 & =-3y+7 \\ -3y-9+3y & =-3y+7+3y \\ -9 & =7.\end{aligned}
+$$
+
+This equation is false for all values of $y.$ Therefore, the equation $-3y-9=-3y+7$ has no solutions.
+
+Therefore, the correct answer is "III only."
+
+## Controlled radio target change
+
+Which of the following equations has no solutions?
+
+I. $7z+8=7z+4$
+
+II. $5z+2=7z+2$
+
+III. $8z+8=8z+8$
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}7z+8 & =7z+4 \\ 7z+8-7z & =7z+4-7z \\ 8 & =4.\end{aligned}
+$$
+
+This equation is false for all values of $z.$ Therefore, the equation $7z+8=7z+4$ has no solutions.
+
+- For the second equation, we have
+
+$$
+\begin{aligned}5z+2 & =7z+2 \\ 5z+2-7z-2 & =7z+2-7z-2 \\ -2z & =0 \\ z & =0.\end{aligned}
+$$
+
+Therefore, the equation $5z+2=7z+2$ has the unique solution $z=0.$
+
+- For the third equation, we have
+
+$$
+\begin{aligned}8z+8 & =8z+8 \\ 8z+8-8z & =8z+8-8z \\ 8 & =8.\end{aligned}
+$$
+
+This equation is true for all values of $z.$
+
+Therefore, the correct answer is "I only."
+
+## Controlled radio target change
+
+Which of the following equations has no solutions?
+
+I. $5z+2=7z+2$
+
+II. $7z+8=7z+4$
+
+III. $8z+8=8z+8$
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}5z+2 & =7z+2 \\ 5z+2-7z-2 & =7z+2-7z-2 \\ -2z & =0 \\ z & =0.\end{aligned}
+$$
+
+Therefore, the equation $5z+2=7z+2$ has the unique solution $z=0.$
+
+- For the second equation, we have
+
+$$
+\begin{aligned}7z+8 & =7z+4 \\ 7z+8-7z & =7z+4-7z \\ 8 & =4.\end{aligned}
+$$
+
+This equation is false for all values of $z.$ Therefore, the equation $7z+8=7z+4$ has no solutions.
+
+- For the third equation, we have
+
+$$
+\begin{aligned}8z+8 & =8z+8 \\ 8z+8-8z & =8z+8-8z \\ 8 & =8.\end{aligned}
+$$
+
+This equation is true for all values of $z.$
+
+Therefore, the correct answer is "II only."
+
+## Controlled radio target change
+
+Which of the following equations has no solutions?
+
+I. $5z+2=7z+2$
+
+II. $8z+8=8z+8$
+
+III. $7z+8=7z+4$
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}5z+2 & =7z+2 \\ 5z+2-7z-2 & =7z+2-7z-2 \\ -2z & =0 \\ z & =0.\end{aligned}
+$$
+
+Therefore, the equation $5z+2=7z+2$ has the unique solution $z=0.$
+
+- For the second equation, we have
+
+$$
+\begin{aligned}8z+8 & =8z+8 \\ 8z+8-8z & =8z+8-8z \\ 8 & =8.\end{aligned}
+$$
+
+This equation is true for all values of $z.$
+
+- For the third equation, we have
+
+$$
+\begin{aligned}7z+8 & =7z+4 \\ 7z+8-7z & =7z+4-7z \\ 8 & =4.\end{aligned}
+$$
+
+This equation is false for all values of $z.$ Therefore, the equation $7z+8=7z+4$ has no solutions.
+
+Therefore, the correct answer is "III only."
+
+## Controlled radio target change
+
+Which of the following equations has no solutions?
+
+I. $7z+8=7z+4$
+
+II. $8z+8=8z+8$
+
+III. $5z+2=7z+2$
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}7z+8 & =7z+4 \\ 7z+8-7z & =7z+4-7z \\ 8 & =4.\end{aligned}
+$$
+
+This equation is false for all values of $z.$ Therefore, the equation $7z+8=7z+4$ has no solutions.
+
+- For the second equation, we have
+
+$$
+\begin{aligned}8z+8 & =8z+8 \\ 8z+8-8z & =8z+8-8z \\ 8 & =8.\end{aligned}
+$$
+
+This equation is true for all values of $z.$
+
+- For the third equation, we have
+
+$$
+\begin{aligned}5z+2 & =7z+2 \\ 5z+2-7z-2 & =7z+2-7z-2 \\ -2z & =0 \\ z & =0.\end{aligned}
+$$
+
+Therefore, the equation $5z+2=7z+2$ has the unique solution $z=0.$
+
+Therefore, the correct answer is "I only."
+
+## Controlled radio target change
+
+Which of the following equations has no solutions?
+
+I. $8z+8=8z+8$
+
+II. $7z+8=7z+4$
+
+III. $5z+2=7z+2$
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}8z+8 & =8z+8 \\ 8z+8-8z & =8z+8-8z \\ 8 & =8.\end{aligned}
+$$
+
+This equation is true for all values of $z.$
+
+- For the second equation, we have
+
+$$
+\begin{aligned}7z+8 & =7z+4 \\ 7z+8-7z & =7z+4-7z \\ 8 & =4.\end{aligned}
+$$
+
+This equation is false for all values of $z.$ Therefore, the equation $7z+8=7z+4$ has no solutions.
+
+- For the third equation, we have
+
+$$
+\begin{aligned}5z+2 & =7z+2 \\ 5z+2-7z-2 & =7z+2-7z-2 \\ -2z & =0 \\ z & =0.\end{aligned}
+$$
+
+Therefore, the equation $5z+2=7z+2$ has the unique solution $z=0.$
+
+Therefore, the correct answer is "II only."
+
+## Controlled radio target change
+
+Which of the following equations has no solutions?
+
+I. $8z+8=8z+8$
+
+II. $5z+2=7z+2$
+
+III. $7z+8=7z+4$
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}8z+8 & =8z+8 \\ 8z+8-8z & =8z+8-8z \\ 8 & =8.\end{aligned}
+$$
+
+This equation is true for all values of $z.$
+
+- For the second equation, we have
+
+$$
+\begin{aligned}5z+2 & =7z+2 \\ 5z+2-7z-2 & =7z+2-7z-2 \\ -2z & =0 \\ z & =0.\end{aligned}
+$$
+
+Therefore, the equation $5z+2=7z+2$ has the unique solution $z=0.$
+
+- For the third equation, we have
+
+$$
+\begin{aligned}7z+8 & =7z+4 \\ 7z+8-7z & =7z+4-7z \\ 8 & =4.\end{aligned}
+$$
+
+This equation is false for all values of $z.$ Therefore, the equation $7z+8=7z+4$ has no solutions.
+
+Therefore, the correct answer is "III only."
+
+## Controlled radio target change
+
+Which of the following equations has no solutions?
+
+I. $u+5=u-4$
+
+II. $-4u-2=-8u+7$
+
+III. $9u+1=9u+1$
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}u+5 & =u-4 \\ u+5-u & =u-4-u \\ 5 & =-4.\end{aligned}
+$$
+
+This equation is false for all values of $u.$ Therefore, the equation $u+5=u-4$ has no solutions.
+
+- For the second equation, we have
+
+$$
+\begin{aligned}-4u-2 & =-8u+7 \\ -4u-2+8u+2 & =-8u+7+8u+2 \\ 4u & =9 \\ u & =\frac{9}{4}.\end{aligned}
+$$
+
+Therefore, the equation $-4u-2=-8u+7$ has the unique solution $u=\frac{9}{4}.$
+
+- For the third equation, we have
+
+$$
+\begin{aligned}9u+1 & =9u+1 \\ 9u+1-9u & =9u+1-9u \\ 1 & =1.\end{aligned}
+$$
+
+This equation is true for all values of $u.$
+
+Therefore, the correct answer is "I only."
+
+## Controlled radio target change
+
+Which of the following equations has no solutions?
+
+I. $-4u-2=-8u+7$
+
+II. $u+5=u-4$
+
+III. $9u+1=9u+1$
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}-4u-2 & =-8u+7 \\ -4u-2+8u+2 & =-8u+7+8u+2 \\ 4u & =9 \\ u & =\frac{9}{4}.\end{aligned}
+$$
+
+Therefore, the equation $-4u-2=-8u+7$ has the unique solution $u=\frac{9}{4}.$
+
+- For the second equation, we have
+
+$$
+\begin{aligned}u+5 & =u-4 \\ u+5-u & =u-4-u \\ 5 & =-4.\end{aligned}
+$$
+
+This equation is false for all values of $u.$ Therefore, the equation $u+5=u-4$ has no solutions.
+
+- For the third equation, we have
+
+$$
+\begin{aligned}9u+1 & =9u+1 \\ 9u+1-9u & =9u+1-9u \\ 1 & =1.\end{aligned}
+$$
+
+This equation is true for all values of $u.$
+
+Therefore, the correct answer is "II only."
+
+## Controlled radio target change
+
+Which of the following equations has no solutions?
+
+I. $-4u-2=-8u+7$
+
+II. $9u+1=9u+1$
+
+III. $u+5=u-4$
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}-4u-2 & =-8u+7 \\ -4u-2+8u+2 & =-8u+7+8u+2 \\ 4u & =9 \\ u & =\frac{9}{4}.\end{aligned}
+$$
+
+Therefore, the equation $-4u-2=-8u+7$ has the unique solution $u=\frac{9}{4}.$
+
+- For the second equation, we have
+
+$$
+\begin{aligned}9u+1 & =9u+1 \\ 9u+1-9u & =9u+1-9u \\ 1 & =1.\end{aligned}
+$$
+
+This equation is true for all values of $u.$
+
+- For the third equation, we have
+
+$$
+\begin{aligned}u+5 & =u-4 \\ u+5-u & =u-4-u \\ 5 & =-4.\end{aligned}
+$$
+
+This equation is false for all values of $u.$ Therefore, the equation $u+5=u-4$ has no solutions.
+
+Therefore, the correct answer is "III only."
+
+## Controlled radio target change
+
+Which of the following equations has no solutions?
+
+I. $u+5=u-4$
+
+II. $9u+1=9u+1$
+
+III. $-4u-2=-8u+7$
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}u+5 & =u-4 \\ u+5-u & =u-4-u \\ 5 & =-4.\end{aligned}
+$$
+
+This equation is false for all values of $u.$ Therefore, the equation $u+5=u-4$ has no solutions.
+
+- For the second equation, we have
+
+$$
+\begin{aligned}9u+1 & =9u+1 \\ 9u+1-9u & =9u+1-9u \\ 1 & =1.\end{aligned}
+$$
+
+This equation is true for all values of $u.$
+
+- For the third equation, we have
+
+$$
+\begin{aligned}-4u-2 & =-8u+7 \\ -4u-2+8u+2 & =-8u+7+8u+2 \\ 4u & =9 \\ u & =\frac{9}{4}.\end{aligned}
+$$
+
+Therefore, the equation $-4u-2=-8u+7$ has the unique solution $u=\frac{9}{4}.$
+
+Therefore, the correct answer is "I only."
+
+## Controlled radio target change
+
+Which of the following equations has no solutions?
+
+I. $9u+1=9u+1$
+
+II. $u+5=u-4$
+
+III. $-4u-2=-8u+7$
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}9u+1 & =9u+1 \\ 9u+1-9u & =9u+1-9u \\ 1 & =1.\end{aligned}
+$$
+
+This equation is true for all values of $u.$
+
+- For the second equation, we have
+
+$$
+\begin{aligned}u+5 & =u-4 \\ u+5-u & =u-4-u \\ 5 & =-4.\end{aligned}
+$$
+
+This equation is false for all values of $u.$ Therefore, the equation $u+5=u-4$ has no solutions.
+
+- For the third equation, we have
+
+$$
+\begin{aligned}-4u-2 & =-8u+7 \\ -4u-2+8u+2 & =-8u+7+8u+2 \\ 4u & =9 \\ u & =\frac{9}{4}.\end{aligned}
+$$
+
+Therefore, the equation $-4u-2=-8u+7$ has the unique solution $u=\frac{9}{4}.$
+
+Therefore, the correct answer is "II only."
+
+## Controlled radio target change
+
+Which of the following equations has no solutions?
+
+I. $9u+1=9u+1$
+
+II. $-4u-2=-8u+7$
+
+III. $u+5=u-4$
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}9u+1 & =9u+1 \\ 9u+1-9u & =9u+1-9u \\ 1 & =1.\end{aligned}
+$$
+
+This equation is true for all values of $u.$
+
+- For the second equation, we have
+
+$$
+\begin{aligned}-4u-2 & =-8u+7 \\ -4u-2+8u+2 & =-8u+7+8u+2 \\ 4u & =9 \\ u & =\frac{9}{4}.\end{aligned}
+$$
+
+Therefore, the equation $-4u-2=-8u+7$ has the unique solution $u=\frac{9}{4}.$
+
+- For the third equation, we have
+
+$$
+\begin{aligned}u+5 & =u-4 \\ u+5-u & =u-4-u \\ 5 & =-4.\end{aligned}
+$$
+
+This equation is false for all values of $u.$ Therefore, the equation $u+5=u-4$ has no solutions.
+
+Therefore, the correct answer is "III only."
