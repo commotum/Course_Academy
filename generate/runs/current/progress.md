@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 36**, **qa_passed: 340**, **queued: 201**, **working: 3**.
+**needs_revalidation: 36**, **qa_passed: 341**, **queued: 199**, **working: 4**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -124,10 +124,10 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186096614](../../scratch/17592186096614.py) | Differentiating Logarithmic Functions | Differentiating a Sum Containing a Natural Logarithm Function | 6 / 1 / 3 / 1 | qa_passed | [Report](qa/17592186096614.json) |
 | [17592186096615](../../scratch/17592186096615.py) | Differentiating Logarithmic Functions | Differentiating a Logarithmic Function With a General Base | 9 / 0 / 1 / 2 | qa_passed | [Report](qa/17592186096615.json) |
 | [17592186064282](../../scratch/17592186064282.py) | The Chain Rule With Trigonometric Functions | Differentiating a Reciprocal Trigonometric Function Using the Chain Rule | 3 / 5 / 3 / 2 | working | — |
-| [17592186064281](../../scratch/17592186064281.py) | The Chain Rule With Trigonometric Functions | Differentiating a Trigonometric Function Using the Chain Rule | 0 / 5 / 9 / 2 | working | — |
+| [17592186064281](../../scratch/17592186064281-draft.py) | The Chain Rule With Trigonometric Functions | Differentiating a Trigonometric Function Using the Chain Rule | 0 / 5 / 9 / 2 | qa_passed | [Report](qa/17592186064281.json) |
 | [17592186064284](../../scratch/17592186064284.py) | The Chain Rule With Trigonometric Functions | Differentiating a Composition of Trigonometric Functions Using the Chain Rule | 0 / 9 / 6 / 1 | working | — |
-| [17592186064283](../../scratch/17592186064283.py) | The Chain Rule With Trigonometric Functions | Differentiating a Power of a Trigonometric Function Using the Chain Rule | 8 / 6 / 0 / 1 | queued | — |
-| [17592186096845](../../scratch/17592186096845.py) | Selecting Procedures for Calculating Derivatives | Calculating a Derivative Using the Chain and Product Rules | 7 / 10 / 0 / 2 | queued | — |
+| [17592186064283](../../scratch/17592186064283.py) | The Chain Rule With Trigonometric Functions | Differentiating a Power of a Trigonometric Function Using the Chain Rule | 8 / 6 / 0 / 1 | working | — |
+| [17592186096845](../../scratch/17592186096845.py) | Selecting Procedures for Calculating Derivatives | Calculating a Derivative Using the Chain and Product Rules | 7 / 10 / 0 / 2 | working | — |
 | [17592186096742](../../scratch/17592186096742.py) | Selecting Procedures for Calculating Derivatives | Calculating a Derivative Using Multiple Instances of the Chain Rule | 5 / 5 / 6 / 2 | queued | — |
 | [17592186096844](../../scratch/17592186096844.py) | Selecting Procedures for Calculating Derivatives | Calculating a Derivative Using the Chain and Quotient Rules | 0 / 11 / 6 / 0 | queued | — |
 | [17592186092384](../../scratch/17592186092384.py) | Calculating the Equation of a Normal Line Using Differentiation | Calculating the Slope of a Normal Line to a Curve at a Point | 11 / 0 / 0 / 2 | queued | — |
@@ -234,7 +234,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | 17592186087700 | Introduction to the Inverse of a Matrix | Determining the Inverse of a Larger Matrix | 0 / 10 / 3 / 0 | queued | — |
 | [17592186092261](../../scratch/17592186092261.py) | The Chain Rule With Exponential Functions | Differentiating a General Exponential Function Using the Chain Rule | 7 / 2 / 0 / 1 | qa_passed | [Report](qa/17592186092261.json) |
 | [17592186092263](../../scratch/17592186092263.py) | The Chain Rule With Exponential Functions | Differentiating an Exponential Function with a Nonlinear Exponent | 5 / 8 / 0 / 1 | qa_passed | [Report](qa/17592186092263.json) |
-| 17592186059741 | Scalar Multiplication of Matrices | Calculating the Value of a Scalar | 6 / 0 / 0 / 1 | queued | — |
+| [17592186059741](../../scratch/17592186059741.py) | Scalar Multiplication of Matrices | Calculating the Value of a Scalar | 6 / 0 / 0 / 1 | queued | — |
 | [17592186096617](../../scratch/17592186096617.py) | The Product Rule for Differentiation | Differentiating a Product Containing a Trigonometric Function | 8 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096617.json) |
 | [17592186096618](../../scratch/17592186096618.py) | The Product Rule for Differentiation | Differentiating a Product Containing an Exponential or Logarithmic Function | 11 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096618.json) |
 | [17592186096619](../../scratch/17592186096619.py) | The Product Rule for Differentiation | Finding the Slope of the Tangent Line to a Product  at a Given Point | 0 / 11 / 0 / 2 | qa_passed | [Report](qa/17592186096619.json) |
@@ -482,7 +482,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186133898](../../scratch/17592186133898.py) | The Curl of a Vector Field | Calculating the Scalar Curl of a Vector Field | 7 / 8 / 0 / 1 | queued | — |
 | [17592186133894](../../scratch/17592186133894.py) | Line Integrals of Vector-Valued Functions Over Parametric Curves | Evaluating Line Integrals of Vector-Valued Functions Over Space Curves | 0 / 0 / 7 / 1 | qa_passed | [Report](qa/17592186133894.json) |
 | [17592186133828](../../scratch/17592186133828.py) | Line Integrals of Vector-Valued Functions Over Parametric Curves | Evaluating Line Integrals of a Vector-Valued Functions Over Plane Curves | 0 / 8 / 0 / 0 | qa_passed | [Report](qa/17592186133828.json) |
-| 17592186133891 | Line Integrals With Respect to X and Y | Constructing Line Integrals With Respect to X | 6 / 0 / 0 / 1 | queued | — |
+| [17592186133891](../../scratch/17592186133891.py) | Line Integrals With Respect to X and Y | Constructing Line Integrals With Respect to X | 6 / 0 / 0 / 1 | queued | — |
 | 17592186133892 | Line Integrals With Respect to X and Y | Constructing Line Integrals With Respect to Y | 9 / 0 / 0 / 0 | queued | — |
 | 17592186133893 | Line Integrals With Respect to X and Y | Evaluating Line Integrals With Respect to X and Y | 0 / 8 / 3 / 0 | queued | — |
 | 17592186166846 | Conservative Vector Fields in the Cartesian Plane | Identifying the Vector Field Corresponding to a Given Potential Function | 5 / 4 / 0 / 0 | queued | — |

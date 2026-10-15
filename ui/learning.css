@@ -140,21 +140,17 @@ body:has(.answer-math) { --keyboard-background: var(--bg); --keyboard-border: 1p
 .completion-actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; margin-top: 27px; }
 .completion-actions > .primary, .completion-actions > .small-button { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; width: 154px; max-width: 100%; min-height: 34px; padding: 8px 14px; font-size: 11px; font-weight: 500; line-height: 16px; white-space: nowrap; }
 .completion .completion-actions .primary { margin-top: 0; }
-.study-layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; align-items: start; gap: 36px; }
-.study-activities { min-width: 0; }
-.study-sidebar { position: sticky; top: calc(var(--site-header-height) + 24px); display: grid; gap: 18px; }
-.study-stat-card { border: 1px solid var(--line); background: var(--panel); padding: 22px 18px; min-width: 0; }
+.study-layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); grid-template-areas: "sidebar activities"; align-items: start; gap: 36px; }
+.study-activities { grid-area: activities; min-width: 0; }
+.study-sidebar { grid-area: sidebar; position: sticky; top: calc(var(--site-header-height) + 24px); border: 1px solid var(--line); background: var(--panel); }
+.study-stat-card { padding: 22px 18px; min-width: 0; }
+.study-stat-card + .study-stat-card { border-top: 1px solid var(--line); }
 .stat-heading { font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 0 18px; }
 .stat-xp { font-size: 26px; line-height: 1.25; margin: 0 0 16px; font-variant-numeric: tabular-nums; }
 .stat-unit { font-size: 12px; color: var(--muted); }
 .stat-note { color: var(--muted); font-size: 11px; line-height: 1.6; margin: 10px 0 0; }
 .stat-progress { height: 6px; background: var(--tone-25); overflow: hidden; }
 .stat-progress-fill { display: block; height: 100%; background: var(--ink); }
-.stat-goal-form { display: flex; flex-wrap: wrap; align-items: end; gap: 8px; margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--line); }
-.stat-goal-form label { flex: 1; margin: 0; }
-.stat-goal-input { display: block; width: 100%; min-width: 0; margin-top: 6px; padding: 6px 8px; height: 32px; border: 1px solid var(--line); color: var(--ink); background: var(--bg); font-size: 12px; }
-.stat-goal-form .small-button { height: 32px; padding: 5px 10px; font-size: 11px; }
-.stat-error { flex-basis: 100%; }
 .stat-week-chart { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 7px; margin-top: 22px; }
 .stat-day { display: grid; gap: 8px; min-width: 0; text-align: center; color: var(--muted); border: 0; background: transparent; padding: 0; }
 .stat-day:hover .stat-day-column, .stat-day[aria-pressed="true"] .stat-day-column { outline: 1px solid var(--ink); outline-offset: 2px; }
@@ -163,13 +159,10 @@ body:has(.answer-math) { --keyboard-background: var(--bg); --keyboard-border: 1p
 .stat-day[data-goal-reached="true"] .stat-day-fill, .stat-day[aria-current="date"] .stat-day-fill { background: var(--ink); }
 .stat-day[data-future="true"] { opacity: .4; }
 .stat-day-label { font-size: 9px; }
-.stat-history-link { display: inline-block; margin-top: 18px; color: var(--ink); font-size: 11px; }
-.stat-history-link:hover { text-decoration: underline; }
 @media (max-width: 900px) {
-  .study-layout { grid-template-columns: minmax(0, 1fr); gap: 28px; }
-  .study-sidebar { position: static; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .study-layout { grid-template-columns: minmax(0, 1fr); grid-template-areas: "activities" "sidebar"; gap: 28px; }
+  .study-sidebar { position: static; }
 }
-@media (max-width: 520px) { .study-sidebar { grid-template-columns: minmax(0, 1fr); } }
 .answer-free:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .answer-free:disabled { opacity: .8; }
 .answer-free-editor .answer-preview summary { cursor: pointer; font-size: 12px; color: var(--tone-bb); }

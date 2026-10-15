@@ -9,7 +9,7 @@ def load(name,path):
 G=load('root_chain_generator',D.with_suffix('.py'));P=load('root_chain_math',R/'trig-chain-readback.py');F=load('root_chain_fidelity',R/'root-source-fidelity.py');originals,fidelity=F.check(G,K,D);x,u=P.x,P.u
 N=dict(records=0,composite_bindings=0,outer_derivatives=0,inner_derivatives=0,chain_rows=0,evaluation_rows=0,tangent_rows=0,values=0,pairs=0,whole_banks=0,blank_completions=0,domains=0)
 def check(rec):
- q,meta=rec['question'],rec['generation'];t=meta['template'];fun,at,y0=P.givens(q[':question/problem']);defs,label,outer,inner=P.bindings(q[':question/worked-solution'],fun);der=s.diff(fun,x);termder=s.diff(defs[label],x);N['composite_bindings']+=1
+ q,meta=rec['question'],rec['generation'];t=meta['template'];fun,at,y0=P.givens(q[':question/problem']);P.TARGET=at;defs,label,outer,inner=P.bindings(q[':question/worked-solution'],fun);der=s.diff(fun,x);termder=s.diff(defs[label],x);N['composite_bindings']+=1
  sol=P.clean(q[':question/worked-solution']);body=sol.split('Differentiating gives',1)[1].split('We now apply',1)[0]
  # Actual formal derivative identities bind the printed outer variable u and inner x.
  for name,var,wanted in ((label,'u',s.diff(outer,u)),('u','x',s.diff(inner,x))):

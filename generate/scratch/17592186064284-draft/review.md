@@ -330,7 +330,7 @@ $$
 We now apply the chain rule, and get
 
 $$
-\begin{aligned}\frac{\text{d}y}{\text{d}x} &=\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\ &=- \cot^{2}{\left(u \right)} - 1\cdot (- \sin{\left(x - 8 \right)}) \\ &=- \left(- \cot^{2}{\left(\cos{\left(x - 8 \right)} \right)} - 1\right) \sin{\left(x - 8 \right)}.\end{aligned}
+\begin{aligned}\frac{\text{d}y}{\text{d}x} &=\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\ &=(- \cot^{2}{\left(u \right)} - 1)\cdot (- \sin{\left(x - 8 \right)}) \\ &=- \left(- \cot^{2}{\left(\cos{\left(x - 8 \right)} \right)} - 1\right) \sin{\left(x - 8 \right)}.\end{aligned}
 $$
 
 ## Eligible moderate / q-31356 / {'b': 8}
@@ -358,7 +358,7 @@ $$
 We now apply the chain rule, and get
 
 $$
-\begin{aligned}\frac{\text{d}y}{\text{d}x} &=\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\ &=- \cot^{2}{\left(u \right)} - 1\cdot (- \sin{\left(x + 8 \right)}) \\ &=- \left(- \cot^{2}{\left(\cos{\left(x + 8 \right)} \right)} - 1\right) \sin{\left(x + 8 \right)}.\end{aligned}
+\begin{aligned}\frac{\text{d}y}{\text{d}x} &=\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\ &=(- \cot^{2}{\left(u \right)} - 1)\cdot (- \sin{\left(x + 8 \right)}) \\ &=- \left(- \cot^{2}{\left(\cos{\left(x + 8 \right)} \right)} - 1\right) \sin{\left(x + 8 \right)}.\end{aligned}
 $$
 
 ## Eligible moderate / q-48643 / {'b': -8}
@@ -527,126 +527,6 @@ y&=9 x + 27.
 $$
 
 
-## Eligible moderate / q-72163 / {'b': -8}
-
-Find the derivative of $y=\operatorname{sin}(\operatorname{sec}\left(x-8\right)).$
-
-$\frac{\text{d}y}{\text{d}x}=$ {{field-1}}
-
-* \cos{\left(\sec{\left(x - 8 \right)} \right)} \tan{\left(x - 8 \right)} \sec{\left(x - 8 \right)}
-
-First, we express $y$ as the composite function
-
-$$
-y=\operatorname{sin}u,\,u=\operatorname{sec}\left(x-8\right).
-$$
-
-Differentiating gives
-
-$$
-\frac{\text{d}y}{\text{d}u}=\operatorname{cos}u,\,\frac{\text{d}u}{\text{d}x}=\operatorname{sec}\left(x-8\right)\operatorname{tan}\left(x-8\right).
-$$
-
-We now apply the chain rule, and get
-
-$$
-\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\  & =\operatorname{cos}u\cdot (\operatorname{sec}\left(x-8\right)\operatorname{tan}\left(x-8\right)) \\  & =\operatorname{sec}\left(x-8\right)\operatorname{tan}\left(x-8\right)\operatorname{cos}(\operatorname{sec}\left(x-8\right)).\end{aligned}
-$$
-
-## Eligible moderate / q-72163 / {'b': 8}
-
-Find the derivative of $y=\operatorname{sin}(\operatorname{sec}\left(x+8\right)).$
-
-$\frac{\text{d}y}{\text{d}x}=$ {{field-1}}
-
-* \cos{\left(\sec{\left(x + 8 \right)} \right)} \tan{\left(x + 8 \right)} \sec{\left(x + 8 \right)}
-
-First, we express $y$ as the composite function
-
-$$
-y=\operatorname{sin}u,\,u=\operatorname{sec}\left(x+8\right).
-$$
-
-Differentiating gives
-
-$$
-\frac{\text{d}y}{\text{d}u}=\operatorname{cos}u,\,\frac{\text{d}u}{\text{d}x}=\operatorname{sec}\left(x+8\right)\operatorname{tan}\left(x+8\right).
-$$
-
-We now apply the chain rule, and get
-
-$$
-\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\  & =\operatorname{cos}u\cdot (\operatorname{sec}\left(x+8\right)\operatorname{tan}\left(x+8\right)) \\  & =\operatorname{sec}\left(x+8\right)\operatorname{tan}\left(x+8\right)\operatorname{cos}(\operatorname{sec}\left(x+8\right)).\end{aligned}
-$$
-
-## Eligible moderate / q-72170 / {'b': -8}
-
-Find the derivative of $y =\csc ( \cos\left(x-8\right)).$
-
-$\frac{\text{d}y}{\text{d}x}=$ {{field-1}}
-
-* \sin{\left(x - 8 \right)} \cot{\left(\cos{\left(x - 8 \right)} \right)} \csc{\left(\cos{\left(x - 8 \right)} \right)}
-
-First, we express $y$ as the composite function
-
-$$
-y = \csc{u}, \qquad u = \cos\left(x-8\right).
-$$
-
-Differentiating gives
-
-$$
-\dfrac{\textrm d y}{\textrm d u} = -\csc{u}\cot u,\qquad \dfrac{\textrm{d}u}{\textrm d x} = -\sin\left(x-8\right).
-$$
-
-We now apply the chain rule, and get
-
-
-$$
-\begin{aligned}
-\dfrac{\textrm d y}{\textrm d x} &= \dfrac{\textrm d y}{\textrm d u} \cdot \dfrac{\textrm d u}{\textrm d x}\\
-
-&=-\csc u \cot u \cdot  (-\sin\left(x-8\right))\\
-
-&=\sin\left(x-8\right)\csc \left(\cos\left(x-8\right)\right) \cot \left(\cos\left(x-8\right)\right).
-\end{aligned}
-$$
-
-
-## Eligible moderate / q-72170 / {'b': 8}
-
-Find the derivative of $y =\csc ( \cos\left(x+8\right)).$
-
-$\frac{\text{d}y}{\text{d}x}=$ {{field-1}}
-
-* \sin{\left(x + 8 \right)} \cot{\left(\cos{\left(x + 8 \right)} \right)} \csc{\left(\cos{\left(x + 8 \right)} \right)}
-
-First, we express $y$ as the composite function
-
-$$
-y = \csc{u}, \qquad u = \cos\left(x+8\right).
-$$
-
-Differentiating gives
-
-$$
-\dfrac{\textrm d y}{\textrm d u} = -\csc{u}\cot u,\qquad \dfrac{\textrm{d}u}{\textrm d x} = -\sin\left(x+8\right).
-$$
-
-We now apply the chain rule, and get
-
-
-$$
-\begin{aligned}
-\dfrac{\textrm d y}{\textrm d x} &= \dfrac{\textrm d y}{\textrm d u} \cdot \dfrac{\textrm d u}{\textrm d x}\\
-
-&=-\csc u \cot u \cdot  (-\sin\left(x+8\right))\\
-
-&=\sin\left(x+8\right)\csc \left(\cos\left(x+8\right)\right) \cot \left(\cos\left(x+8\right)\right).
-\end{aligned}
-$$
-
-
 ## Eligible moderate / q-341223 / {'a': 1, 'b': -8}
 
 Given that $y=1\operatorname{cos}⁡(\operatorname{sin}\left(x-8\right)),$ we have
@@ -705,60 +585,6 @@ We now apply the chain rule, and get
 
 $$
 \begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\  & =-9\operatorname{sin}⁡(u)\cdot \operatorname{cos}\left(x+8\right) \\  & =-9\operatorname{cos}\left(x+8\right)\cdot \operatorname{sin}⁡(\operatorname{sin}\left(x+8\right)).\end{aligned}
-$$
-
-## Eligible moderate / q-342436 / {'b': -8}
-
-Given that $y=\operatorname{tan}⁡(\operatorname{tan}\left(x-8\right)),$ we have
-
-$\frac{\text{d}y}{\text{d}x}={sec}^{2}\left(x-8\right)\,\cdot$
-{{field-1}}.
-
-* {sec}^{2}(\operatorname{tan}\left(x-8\right))
-
-First, we express $y$ as the composite function
-
-$$
-y=\operatorname{tan}⁡(u),\,u=\operatorname{tan}\left(x-8\right).
-$$
-
-Differentiating gives
-
-$$
-\frac{\text{d}y}{\text{d}u}={sec}^{2}⁡(u),\,\frac{\text{d}u}{\text{d}x}={sec}^{2}\left(x-8\right).
-$$
-
-We now apply the chain rule, and get
-
-$$
-\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\  & ={sec}^{2}⁡(u)\cdot {sec}^{2}\left(x-8\right) \\  & ={sec}^{2}\left(x-8\right)\cdot {sec}^{2}⁡(\operatorname{tan}\left(x-8\right)).\end{aligned}
-$$
-
-## Eligible moderate / q-342436 / {'b': 8}
-
-Given that $y=\operatorname{tan}⁡(\operatorname{tan}\left(x+8\right)),$ we have
-
-$\frac{\text{d}y}{\text{d}x}={sec}^{2}\left(x+8\right)\,\cdot$
-{{field-1}}.
-
-* {sec}^{2}(\operatorname{tan}\left(x+8\right))
-
-First, we express $y$ as the composite function
-
-$$
-y=\operatorname{tan}⁡(u),\,u=\operatorname{tan}\left(x+8\right).
-$$
-
-Differentiating gives
-
-$$
-\frac{\text{d}y}{\text{d}u}={sec}^{2}⁡(u),\,\frac{\text{d}u}{\text{d}x}={sec}^{2}\left(x+8\right).
-$$
-
-We now apply the chain rule, and get
-
-$$
-\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\  & ={sec}^{2}⁡(u)\cdot {sec}^{2}\left(x+8\right) \\  & ={sec}^{2}\left(x+8\right)\cdot {sec}^{2}⁡(\operatorname{tan}\left(x+8\right)).\end{aligned}
 $$
 
 ## Eligible moderate / q-342443 / {'a': 1, 'b': -8}
@@ -891,11 +717,11 @@ $$
 
 Find the derivative of $y=\operatorname{cot}⁡(\operatorname{sin}\left(x-8\right)).$
 
-- -{csc}^{2}⁡(\operatorname{sin}\left(x-8\right))
-* -\operatorname{cos}\left(x-8\right){csc}^{2}⁡(\operatorname{sin}\left(x-8\right))
-- -\operatorname{cos}\left(x-8\right){csc}^{2}⁡(\operatorname{cos}\left(x-8\right))
-- \operatorname{cos}\left(x-8\right){csc}^{2}⁡(\operatorname{cos}\left(x-8\right))
-- {csc}^{2}⁡(\operatorname{cos}\left(x-8\right))
+- -\csc^{2}⁡(\operatorname{sin}\left(x-8\right))
+* -\operatorname{cos}\left(x-8\right)\csc^{2}⁡(\operatorname{sin}\left(x-8\right))
+- -\operatorname{cos}\left(x-8\right)\csc^{2}⁡(\operatorname{cos}\left(x-8\right))
+- \operatorname{cos}\left(x-8\right)\csc^{2}⁡(\operatorname{cos}\left(x-8\right))
+- \csc^{2}⁡(\operatorname{cos}\left(x-8\right))
 
 First, we express $y$ as the composite function
 
@@ -906,24 +732,24 @@ $$
 Differentiating gives
 
 $$
-\frac{\text{d}y}{\text{d}u}=-{csc}^{2}⁡u,\,\frac{\text{d}u}{\text{d}x}=\operatorname{cos}\left(x-8\right).
+\frac{\text{d}y}{\text{d}u}=-\csc^{2}⁡u,\,\frac{\text{d}u}{\text{d}x}=\operatorname{cos}\left(x-8\right).
 $$
 
 We now apply the chain rule, and get
 
 $$
-\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\  & =-{csc}^{2}⁡u\cdot (\operatorname{cos}\left(x-8\right)) \\  & =-\operatorname{cos}\left(x-8\right){csc}^{2}⁡(\operatorname{sin}\left(x-8\right)).\end{aligned}
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\  & =-\csc^{2}⁡u\cdot (\operatorname{cos}\left(x-8\right)) \\  & =-\operatorname{cos}\left(x-8\right)\csc^{2}⁡(\operatorname{sin}\left(x-8\right)).\end{aligned}
 $$
 
 ## Eligible moderate / q-72161 / {'b': 8}
 
 Find the derivative of $y=\operatorname{cot}⁡(\operatorname{sin}\left(x+8\right)).$
 
-- -\operatorname{cos}\left(x+8\right){csc}^{2}⁡(\operatorname{cos}\left(x+8\right))
-- \operatorname{cos}\left(x+8\right){csc}^{2}⁡(\operatorname{cos}\left(x+8\right))
-* -\operatorname{cos}\left(x+8\right){csc}^{2}⁡(\operatorname{sin}\left(x+8\right))
-- {csc}^{2}⁡(\operatorname{cos}\left(x+8\right))
-- -{csc}^{2}⁡(\operatorname{sin}\left(x+8\right))
+- -\operatorname{cos}\left(x+8\right)\csc^{2}⁡(\operatorname{cos}\left(x+8\right))
+- \operatorname{cos}\left(x+8\right)\csc^{2}⁡(\operatorname{cos}\left(x+8\right))
+* -\operatorname{cos}\left(x+8\right)\csc^{2}⁡(\operatorname{sin}\left(x+8\right))
+- \csc^{2}⁡(\operatorname{cos}\left(x+8\right))
+- -\csc^{2}⁡(\operatorname{sin}\left(x+8\right))
 
 First, we express $y$ as the composite function
 
@@ -934,13 +760,13 @@ $$
 Differentiating gives
 
 $$
-\frac{\text{d}y}{\text{d}u}=-{csc}^{2}⁡u,\,\frac{\text{d}u}{\text{d}x}=\operatorname{cos}\left(x+8\right).
+\frac{\text{d}y}{\text{d}u}=-\csc^{2}⁡u,\,\frac{\text{d}u}{\text{d}x}=\operatorname{cos}\left(x+8\right).
 $$
 
 We now apply the chain rule, and get
 
 $$
-\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\  & =-{csc}^{2}⁡u\cdot (\operatorname{cos}\left(x+8\right)) \\  & =-\operatorname{cos}\left(x+8\right){csc}^{2}⁡(\operatorname{sin}\left(x+8\right)).\end{aligned}
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\  & =-\csc^{2}⁡u\cdot (\operatorname{cos}\left(x+8\right)) \\  & =-\operatorname{cos}\left(x+8\right)\csc^{2}⁡(\operatorname{sin}\left(x+8\right)).\end{aligned}
 $$
 
 ## Eligible moderate / q-72173 / {'a': 1, 'b': -8}
@@ -1003,9 +829,11 @@ $$
 
 Find the derivative of $y=\sin{\left(\sin{\left(x - 8 \right)} \right)}.$
 
-$\frac{\text{d}y}{\text{d}x}=$ {{field-1}}
-
+- - \cos{\left(x - 8 \right)} \cos{\left(\sin{\left(x - 8 \right)} \right)}
+- \cos{\left(\sin{\left(x - 8 \right)} \right)}
 * \cos{\left(x - 8 \right)} \cos{\left(\sin{\left(x - 8 \right)} \right)}
+- \cos{\left(x - 8 \right)} \cos{\left(\cos{\left(x - 8 \right)} \right)}
+- \sin{\left(\sin{\left(x - 8 \right)} \right)} \cos{\left(x - 8 \right)}
 
 First, we express $y$ as the composite function
 
@@ -1022,16 +850,18 @@ $$
 We now apply the chain rule, and get
 
 $$
-\begin{aligned}\frac{\text{d}y}{\text{d}x} &=\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\ &=\cos{\left(u \right)}\cdot (\cos{\left(x - 8 \right)}) \\ &=\cos{\left(x - 8 \right)} \cos{\left(\sin{\left(x - 8 \right)} \right)}.\end{aligned}
+\begin{aligned}\frac{\text{d}y}{\text{d}x} &=\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\ &=(\cos{\left(u \right)})\cdot (\cos{\left(x - 8 \right)}) \\ &=\cos{\left(x - 8 \right)} \cos{\left(\sin{\left(x - 8 \right)} \right)}.\end{aligned}
 $$
 
 ## Eligible easy / authored-easy / {'a': 9, 'b': 8}
 
 Find the derivative of $y=9 \sin{\left(\sin{\left(x + 8 \right)} \right)}.$
 
-$\frac{\text{d}y}{\text{d}x}=$ {{field-1}}
-
+- - 9 \cos{\left(x + 8 \right)} \cos{\left(\sin{\left(x + 8 \right)} \right)}
 * 9 \cos{\left(x + 8 \right)} \cos{\left(\sin{\left(x + 8 \right)} \right)}
+- 9 \cos{\left(x + 8 \right)} \cos{\left(\cos{\left(x + 8 \right)} \right)}
+- 9 \cos{\left(\sin{\left(x + 8 \right)} \right)}
+- 9 \sin{\left(\sin{\left(x + 8 \right)} \right)} \cos{\left(x + 8 \right)}
 
 First, we express $y$ as the composite function
 
@@ -1048,5 +878,5 @@ $$
 We now apply the chain rule, and get
 
 $$
-\begin{aligned}\frac{\text{d}y}{\text{d}x} &=\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\ &=9 \cos{\left(u \right)}\cdot (\cos{\left(x + 8 \right)}) \\ &=9 \cos{\left(x + 8 \right)} \cos{\left(\sin{\left(x + 8 \right)} \right)}.\end{aligned}
+\begin{aligned}\frac{\text{d}y}{\text{d}x} &=\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\ &=(9 \cos{\left(u \right)})\cdot (\cos{\left(x + 8 \right)}) \\ &=9 \cos{\left(x + 8 \right)} \cos{\left(\sin{\left(x + 8 \right)} \right)}.\end{aligned}
 $$

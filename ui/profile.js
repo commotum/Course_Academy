@@ -60,6 +60,14 @@ if (trigger) {
   const help = node('p', 'profile-help', 'Choose the course shown in Study.');
   help.id = 'profileCourseHelp'; courses.setAttribute('aria-describedby', help.id);
   fields.append(courseLabel, courseSelect.element, help);
+  const goalForm = node('form', 'profile-goal-form');
+  const goalLabel = node('label', 'profile-label', 'Daily XP goal'); goalLabel.htmlFor = 'dailyXpGoal';
+  const goalInput = node('input', 'profile-goal-input'); goalInput.id = 'dailyXpGoal'; goalInput.type = 'number';
+  goalInput.min = '1'; goalInput.step = '1'; goalInput.required = true; goalInput.placeholder = 'Not set';
+  const goalSave = node('button', 'profile-goal-save', 'Save'); goalSave.type = 'submit'; goalSave.id = 'saveDailyXpGoal';
+  const goalControls = node('div', 'profile-goal-controls'); goalControls.append(goalInput, goalSave);
+  const goalHelp = node('p', 'profile-help', 'Daily earned XP across all courses.'); goalHelp.id = 'dailyXpGoalHelp'; goalInput.setAttribute('aria-describedby', goalHelp.id);
+  goalForm.append(goalLabel, goalControls, goalHelp); fields.append(goalForm);
 
   function modeRow(label, description, control) {
     const row = node('div', 'profile-mode');
@@ -101,7 +109,7 @@ if (trigger) {
     window.dispatchEvent(new Event('course-academy:profile-changing'));
   }
   async function request(body) {
-    const response = await fetch(body ? '/api/profile-settings' : '/api/profile', {
+    const response = await fetch(body ? ('dailyXpGoal' in body ? '/api/daily-xp-goal' : '/api/profile-settings') : '/api/profile', {
       method: body ? 'POST' : 'GET', cache: 'no-store', credentials: 'same-origin',
       headers: body ? { 'Content-Type': 'application/json' } : {},
       body: body ? JSON.stringify(body) : undefined,
@@ -118,6 +126,7 @@ if (trigger) {
     courseSelect.update(profile.course, profile.courses);
     help.textContent = profile.course ? 'Choose the course shown in Study.' : 'Choose a course to begin studying.';
     directed.disabled = !profile.course;
+    goalInput.value = operation && 'dailyXpGoal' in operation ? operation.dailyXpGoal : profile.learner.dailyXpGoal ?? '';
     const checked = String(profile.learner.selfDirected);
     if (directed.getAttribute('aria-checked') !== checked) directed.setAttribute('aria-checked', checked);
   }
@@ -146,19 +155,25 @@ if (trigger) {
   }
   async function save() {
     if (busy || !operation) return;
+    const goalChange = 'dailyXpGoal' in operation;
     busy = true; fields.disabled = true; fields.setAttribute('aria-busy', 'true'); retry.hidden = true; error.hidden = true;
-    if (directed.getAttribute('aria-checked') !== String(operation.selfDirected)) {
+    if (!goalChange && directed.getAttribute('aria-checked') !== String(operation.selfDirected)) {
       directed.dataset.animate = 'true';
       directed.setAttribute('aria-checked', String(operation.selfDirected));
     }
-    freeze();
+    if (!goalChange) freeze();
     try {
       const result = await request(operation);
       try {
-        sessionStorage.removeItem('course-academy.study-header');
-        localStorage.setItem(changeKey, crypto.randomUUID());
+        if (!goalChange) sessionStorage.removeItem('course-academy.study-header');
+        localStorage.setItem(goalChange ? 'course-academy.daily-xp-goal-changed' : changeKey, crypto.randomUUID());
       } catch { /* Settings are persisted on the server. */ }
-      operation = null; applyProfile(result, true); fields.disabled = false;
+      operation = null;
+      if (goalChange) {
+        profile.learner = result.learner; render();
+        window.dispatchEvent(new CustomEvent('course-academy:daily-xp-goal-changed', { detail: { dailyXpGoal: result.learner.dailyXpGoal } }));
+      } else applyProfile(result, true);
+      fields.disabled = false;
     } catch (failure) { render(); fail(failure); }
     finally {
       busy = false; fields.setAttribute('aria-busy', 'false');
@@ -171,6 +186,16 @@ if (trigger) {
     void save();
   }
   courses.addEventListener('change', () => change(profile.learner.selfDirected));
+  goalForm.addEventListener('submit', event => {
+    event.preventDefault();
+    if (!profile || busy || frozen || operation) return;
+    const value = Number(goalInput.value);
+    if (!Number.isSafeInteger(value) || value <= 0) {
+      error.textContent = 'Enter a positive whole number for your daily XP goal.'; error.hidden = false; retry.hidden = true; return;
+    }
+    operation = { dailyXpGoal: value, requestId: crypto.randomUUID() };
+    void save();
+  });
   directed.addEventListener('click', () => change(!profile.learner.selfDirected));
   retry.addEventListener('click', () => { if (operation) void save(); else void load(); });
   trigger.addEventListener('click', () => {

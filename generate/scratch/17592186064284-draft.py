@@ -25,12 +25,19 @@ LEVELS={m:('hard' if m=='q-48644' else 'moderate') for m in SOURCES};LEVELS['aut
 COEFF={'q-341223':4,'q-342443':4,'q-72173':3}
 OPS={'q-31356':('cot','cos'),'q-48643':('sin','cos'),'q-72163':('sin','sec'),'q-72170':('csc','cos'),'q-341223':('cos','sin'),'q-342436':('tan','tan'),'q-342443':('sec','sin'),'q-342445':('sec','csc'),'q-72161':('cot','sin'),'q-72173':('sec','cos'),'authored-easy':('sin','sin'),'q-48644':('cos','sin')}
 PHASES=('0','1/6','1/4','1/3','1/2','2/3','3/4','5/6','1','-1/6','-1/4','-1/3','-1/2')
+EVIDENCE_ONLY_TEMPLATES={'q-72163','q-72170','q-342436'}
+SERVED_TEMPLATES={m for m in LEVELS if m not in EVIDENCE_ONLY_TEMPLATES}
 DEFAULTS={m:({'a':1,'b':0,'phase':'0'} if m=='q-48644' else {'a':2,'b':0} if m=='authored-easy' else {'a':COEFF[m],'b':0} if m in COEFF else {'b':0}) for m in LEVELS}
 TRIG={n:getattr(s,n) for n in ('sin','cos','tan','cot','sec','csc')}
 
 def digest(o):return hashlib.sha256(json.dumps(o,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
 def tex(v):return s.latex(v)
+def normalize_trig(text):
+    # Legacy bare roman-function braces render as letter products in MathJax.
+    text=re.sub(r'(?<!operatorname)(?<!mathrm)\{(sin|cos|tan|cot|sec|csc)\}',lambda m:chr(92)+m[1],text)
+    return text
 def normalize_prose(text):
+    text=normalize_trig(text)
     text=re.sub(r'\\\\\[[^\]]*pt\]',lambda m:r'\\',text)
     text=re.sub(r'\\begin\{align\*?\}(.*?)\\end\{align\*?\}',lambda m:'\n$$\n'+r'\begin{aligned}'+m[1]+r'\end{aligned}'+'\n$$\n',text,flags=re.S)
     return math_format.normalize_prose(text)
@@ -84,7 +91,7 @@ def common_solution(inner,outer,curve,deriv):
     # Exact common instructional sentences of all observed derivative sources.
     return ('First, we express $y$ as the composite function\n\n$$\n'+f'y={tex(outer)},\\qquad u={tex(inner)}.\n'+'$$\n\nDifferentiating gives\n\n$$\n'
        +r'\frac{\text{d}y}{\text{d}u}='+tex(s.diff(outer,u))+r',\qquad \frac{\text{d}u}{\text{d}x}='+tex(s.diff(inner,x))+'.\n$$\n\nWe now apply the chain rule, and get\n\n$$\n'
-       +r'\begin{aligned}\frac{\text{d}y}{\text{d}x} &=\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\ &='+tex(s.diff(outer,u))+r'\cdot ('+tex(s.diff(inner,x))+r') \\ &='+tex(deriv)+r'.\end{aligned}'+'\n$$')
+       +r'\begin{aligned}\frac{\text{d}y}{\text{d}x} &=\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\ &='+r'('+tex(s.diff(outer,u))+r')\cdot ('+tex(s.diff(inner,x))+r') \\ &='+tex(deriv)+r'.\end{aligned}'+'\n$$')
 
 def hard_components(p):
     """Source q-48644 complete formal derivatives and each tangent equation."""
@@ -138,6 +145,7 @@ def domain(m,p):
 def complete_bank(m,p):
     """Every observed recipe is preserved together; no pooled choice search."""
     z=x+p['b'];S=s.sin(z);C=s.cos(z);a=p.get('a',1)
+    if m=='authored-easy':return (a*C*s.cos(S),a*s.cos(S),-a*C*s.cos(S),a*C*s.sin(S),a*C*s.cos(C))
     if m=='q-31356':return (S*s.cot(C)**2,S*s.csc(C)**2,s.csc(z)*s.sin(C)**2,S*s.cos(s.csc(z))**2,s.csc(z)*s.cos(S)**2)
     if m=='q-48643':return (-C*s.sin(C),-S*s.cos(C),-S*s.cos(S),-C*s.cos(S),-S*s.sin(C))
     if m=='q-72161':return (-C*s.csc(C)**2,-C*s.csc(S)**2,-s.csc(S)**2,s.csc(C)**2,C*s.csc(C)**2)
@@ -164,19 +172,18 @@ def reject_bank_collisions(m,p):
 
 def generate(level,seed=0,template=None,parameters=None,profile=None,field_type=None):
     if level not in SUPPORTED_LEVELS:raise ValueError('Unknown difficulty')
-    rng=random.Random(seed);eligible=[m for m in LEVELS if LEVELS[m]==level];m=template or rng.choice(eligible)
+    rng=random.Random(seed);eligible=[m for m in LEVELS if LEVELS[m]==level];sample_eligible=[m for m in eligible if m in SERVED_TEMPLATES];m=template or rng.choice(sample_eligible)
     if m not in eligible:raise ValueError('Template/difficulty mismatch')
     raw=profile in ('observed_raw','raw-'+m)
-    if profile not in (None,'default','observed_raw','raw-'+m,'source-bank','source-blank','authored-blank'):raise ValueError('Unknown profile')
+    if profile not in (None,'default','observed_raw','raw-'+m,'source-bank','source-blank','authored-blank','authored-method-bank'):raise ValueError('Unknown profile')
     if raw and m not in SOURCES:raise ValueError('No source evidence for authored easy')
+    if not raw and m in EVIDENCE_ONLY_TEMPLATES:raise ValueError('Template '+m+' is observed_raw-only/ineligible: frozen native grader cannot resolve ordinary wrong blank responses')
     p=copy.deepcopy(parameters) if parameters is not None else rng.choice(parameters_for(m))
     if p not in parameters_for(m) or any(type(v)!=int for k,v in p.items() if k!='phase'):raise ValueError('Parameters outside documented bounded domain')
     inner,outer,curve,deriv=model(m,p);extra={}
     if not raw:reject_bank_collisions(m,p)
     if m=='q-48644':prompt,worked,answer,extra=hard_components(p)
-    elif m=='authored-easy':
-        prompt=f'Given that $y={tex(curve)},$ we have\n\n'+r'$\frac{\text{d}y}{\text{d}x}=$'+'\n{{field-1}}'+r'$\cdot \cos($'+'\n{{field-2}} $).$'
-        worked=common_solution(inner,outer,curve,deriv);answer=deriv
+    elif m=='authored-easy':prompt=f'Find the derivative of $y={tex(curve)}.$';worked=common_solution(inner,outer,curve,deriv);answer=deriv
     else:prompt=components(SOURCES[m][':question/problem'],m,p);worked=components(SOURCES[m].get(':question/worked-solution',''),m,p);answer=deriv
     q={':question/problem':prompt}
     if raw:
@@ -190,10 +197,11 @@ def generate(level,seed=0,template=None,parameters=None,profile=None,field_type=
         q[':question/worked-solution']=worked
         fields=copy.deepcopy(SOURCES.get(m,{}).get(':question/answer-fields',[]))
         if not fields:
-            fragments=[('field-1',p['a']*s.cos(x+p['b'])),('field-2',inner)] if m=='authored-easy' else [('field-1',answer)]
-            fields=[{':answer-field/key':key,':answer-field/type':{':db/ident':':answer-field.type/blank'},':answer-field/choices':[{':answer/value':tex(val),':answer/type':{':db/ident':':answer.type/math'}}]} for key,val in fragments]
-            if m!='authored-easy':prompt+='\n\n'+('$y=$ {{field-1}}' if m=='q-48644' else r'$\frac{\text{d}y}{\text{d}x}=$ {{field-1}}')
-            q[':question/problem']=prompt
+            if m=='authored-easy':
+                fields=[{':answer-field/key':'selection',':answer-field/type':{':db/ident':':answer-field.type/radio'},':answer-field/choices':[{':answer/value':tex(val),':answer/type':{':db/ident':':answer.type/math'}} for val in complete_bank(m,p)]}]
+            else:
+                fields=[{':answer-field/key':'field-1',':answer-field/type':{':db/ident':':answer-field.type/blank'},':answer-field/choices':[{':answer/value':tex(answer),':answer/type':{':db/ident':':answer.type/math'}}]}]
+                prompt+='\n\n$y=$ {{field-1}}';q[':question/problem']=prompt
         for f in fields:
             if ':answer-field/correct' not in f:
                 index=1 if m=='q-31356' else 0;f[':answer-field/correct']=copy.deepcopy(f[':answer-field/choices'][index])
@@ -205,7 +213,7 @@ def generate(level,seed=0,template=None,parameters=None,profile=None,field_type=
             for a in f[':answer-field/choices']:
                 if isinstance(a[':answer/type'],dict):a[':answer/type']=a[':answer/type'][':db/ident']
                 if m in SOURCES and m!='q-48644':a[':answer/value']=components(a[':answer/value'],m,p)
-                if not raw:a[':answer/value']=math_format.normalize_tex(a[':answer/value'])
+                if not raw:a[':answer/value']=math_format.normalize_tex(normalize_trig(a[':answer/value']))
         types={f[':answer-field/type'] for f in fields}
         if field_type is not None and field_type not in types and ':answer-field.type/'+field_type not in types:raise ValueError('Field contract cannot change')
     elif field_type is not None:raise ValueError('Raw source has no field contract')
@@ -216,7 +224,7 @@ def generate(level,seed=0,template=None,parameters=None,profile=None,field_type=
     for f in fields or []:
         correct=f.get(':answer-field/correct');cv=correct.get(':answer/value') if correct else None
         if cv is not None and m in SOURCES and m!='q-48644':cv=components(cv,m,p)
-        if cv is not None and not raw:cv=math_format.normalize_tex(cv)
+        if cv is not None and not raw:cv=math_format.normalize_tex(normalize_trig(cv))
         normalized.append({'key':f[':answer-field/key'],'type':f[':answer-field/type'],'values':sorted(a[':answer/value'] for a in f[':answer-field/choices']),'correct':cv})
     cid=digest({'q':q,'fields':normalized,'domain':domain(m,p),'version':VERSION});uid=lambda t:str(uuid.uuid5(uuid.UUID(KP_UUID),t));qid=uid(cid);q[':question/id']=qid
     if fields is not None:
@@ -229,7 +237,7 @@ def generate(level,seed=0,template=None,parameters=None,profile=None,field_type=
             if not raw and f[':answer-field/type'].endswith('/radio'):random.Random(seed).shuffle(f[':answer-field/choices'])
         q[':question/answer-fields']=fields
     fp=digest({'curve':s.srepr(curve),'task':'tangent' if m=='q-48644' else 'derivative','answer':s.srepr(answer),'field_shape':[(f[':answer-field/key'],f[':answer-field/type']) for f in fields or []]})
-    r={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'generator_id':uid(VERSION),'version':VERSION,'seed':seed,'level':level,'template':m,'parameters':p,'profile':'observed_raw' if raw else 'source-bank' if any(f[':answer-field/type'].endswith('/radio') for f in fields or []) else 'authored-blank' if m in ('q-48644','q-72163','q-72170','authored-easy') else 'source-blank','bank_profile':m if any(f[':answer-field/type'].endswith('/radio') for f in fields or []) else None,'mathematical_fingerprint':fp,'parameter_fingerprint':fp,'content_identity':cid,'domain':domain(m,p),'source_references':[m] if m in SOURCES else ['q-48643','e-735'],'source_basis':SOURCE['basis'],'source_lineage':SOURCE['lineage'],'evidence_only':raw,'eligible_for_learning':not raw,'difficulty_provenance':'authored conservative basic composition' if m=='authored-easy' else 'authored moderate completion of unrated source' if m=='q-31356' else 'observed MA level; documented same-backbone slot extension','origin':'captured MA template' if m in SOURCES else 'authored same-KP extension','dependencies':{'python':sys.version.split()[0],'sympy':s.__version__},'plots':[],'tangent':extra}}
+    r={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'generator_id':uid(VERSION),'version':VERSION,'seed':seed,'level':level,'template':m,'parameters':p,'profile':'observed_raw' if raw else 'authored-method-bank' if m=='authored-easy' else 'source-bank' if any(f[':answer-field/type'].endswith('/radio') for f in fields or []) else 'authored-blank' if m in ('q-48644','q-72163','q-72170','authored-easy') else 'source-blank','bank_profile':'authored-easy-five-patterns' if m=='authored-easy' else m if any(f[':answer-field/type'].endswith('/radio') for f in fields or []) else None,'mathematical_fingerprint':fp,'parameter_fingerprint':fp,'content_identity':cid,'domain':domain(m,p),'source_references':[m] if m in SOURCES else ['q-48643','e-735'],'source_basis':SOURCE['basis'],'source_lineage':SOURCE['lineage'],'evidence_only':raw,'eligible_for_learning':not raw,'difficulty_provenance':'authored conservative basic composition' if m=='authored-easy' else 'authored moderate completion of unrated source' if m=='q-31356' else 'observed MA level; documented same-backbone slot extension','origin':'captured MA template' if m in SOURCES else 'authored same-KP extension','dependencies':{'python':sys.version.split()[0],'sympy':s.__version__},'plots':[],'tangent':extra}}
     if raw:return r
     return math_format.validate_generated_record(r)
 

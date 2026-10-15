@@ -1,9 +1,38 @@
-"""Parent's fail-closed parser for displayed elementary ODE expressions."""
+"""Private scalar readback; fraction shorthand accepts single TeX tokens only."""
 import re
 import sympy as s
 t,u,v,x,y,z=s.symbols('t u v x y z',real=True);i,j,k=s.symbols('i j k');locals_={'t':t,'u':u,'v':v,'x':x,'y':y,'z':z,'i':i,'j':j,'k':k,'e':s.E,'pi':s.pi}
 functions={'arccos':s.acos,'arcsin':s.asin,'arctan':s.atan,'Abs':s.Abs,'sin':s.sin,'cos':s.cos,'tan':s.tan,'sec':s.sec,'csc':s.csc,'cot':s.cot,'ln':s.log,'log':s.log,'exp':s.exp}
+def validate_fraction_shorthand(raw):
+ """Reject a multi-digit unbraced fraction component before math readback.
+
+ TeX consumes one character/control sequence per unbraced argument. Numeric
+ lexical tokens such as 13 cannot stand for a complete fraction argument.
+ """
+ for match in re.finditer(r'\\(?:d?frac)(?![A-Za-z])',raw):
+  pos=match.end()
+  for _ in range(2):
+   while pos<len(raw) and raw[pos].isspace():pos+=1
+   if pos>=len(raw):raise ValueError('Missing TeX fraction argument')
+   if raw[pos]=='{':
+    depth=1;pos+=1
+    while pos<len(raw) and depth:
+     depth+=(raw[pos]=='{')-(raw[pos]=='}');pos+=1
+    if depth:raise ValueError('Unclosed TeX fraction argument')
+   elif raw[pos].isdigit():
+    end=pos+1
+    while end<len(raw) and raw[end].isdigit():end+=1
+    if end-pos>1:raise ValueError('Multi-digit TeX fraction argument requires braces')
+    pos=end
+   elif raw[pos]=='\\':
+    command=re.match(r'\\(?:[A-Za-z]+|.)',raw[pos:])
+    if not command:raise ValueError('Missing TeX control-sequence argument')
+    pos+=command.end()
+   elif raw[pos].isalpha():pos+=1
+   else:raise ValueError('TeX fraction argument requires explicit braces')
+
 def scalar(raw):
+ validate_fraction_shorthand(raw)
  text=raw.strip().rstrip('.,').replace('⁡','').replace('−','-').replace('π','pi').replace(r'\left','').replace(r'\right','').replace(r'\,','').replace(r'\cdot','*')
  text=re.sub(r'\\operatorname\{(arccos|arcsin|arctan|Abs|sin|cos|tan|sec|csc|cot|ln|log)\}',r'\1',text)
  text=re.sub(r'\{(arccos|arcsin|arctan|Abs|sin|cos|tan|sec|csc|cot|ln|log|e)\}',r'\1',text).replace('\\','')
@@ -21,7 +50,16 @@ def scalar(raw):
   if tok in ('+','-'):eat();return atom()*(1 if tok=='+' else -1)
   if tok in ('(','{'):z=group()
   elif tok=='frac':
-   eat();numerator=group() if peek() in ('{','(') else atom();denominator=group() if peek() in ('{','(') else atom();z=numerator/denominator
+   eat()
+   def argument():
+    if peek()=='{':return group()
+    token=peek()
+    # A multi-digit lexical token is several TeX argument tokens. Never read
+    # an unbraced 13 as a complete numerator/denominator or grouped argument.
+    if token in locals_ and len(token)==1:eat();return locals_[token]
+    if token is not None and re.fullmatch(r'\d',token):eat();return s.Integer(token)
+    raise ValueError(('Fraction argument requires explicit braces',text,token))
+   numerator=argument();denominator=argument();z=numerator/denominator
   elif tok=='sqrt':eat();z=s.sqrt(group() if peek() in ('{','(') else atom())
   elif tok in functions:
    eat();power=None

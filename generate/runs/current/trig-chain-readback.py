@@ -4,6 +4,7 @@ from pathlib import Path
 import sympy as s
 z=importlib.util.spec_from_file_location('root_trig_chain_scalar',Path(__file__).with_name('ode-scalar-parser.py'));P=importlib.util.module_from_spec(z);z.loader.exec_module(P)
 x,u=P.x,P.u
+TARGET=None
 
 def group(t,at):
  assert t[at] in '({';depth=1;j=at+1
@@ -12,16 +13,19 @@ def group(t,at):
  return t[at+1:j-1],j
 
 def clean(t):
+ t=re.sub(r'\\\\\[[^]]*pt\]',lambda _:r'\\',t)
+ t=t.replace(r'\require{cancel}','').replace(r'\cancel','')
  t=t.strip().rstrip('.,?').replace('′',"'").replace('⁡','').replace(r'\left','').replace(r'\right','').replace(r'\dfrac',r'\frac').replace(r'\prime',"'")
- t=t.replace(r'\textrm d ',r'\mathrm{d}')
- t=re.sub(r'\\(?:text|mathrm)\{d\}\s*',r'\\mathrm{d}',t)
+ t=re.sub(r'\\textrm\s+d\s*([fgyuhvx])',lambda m:r'\mathrm{d}'+m[1],t)
+ t=re.sub(r'\\(?:text|mathrm|textrm)\{d\}\s*',r'\\mathrm{d}',t)
  t=re.sub(r'\\(?:begin|end)\{aligned\}','',t)
- t=t.replace(r'\qquad',',').replace(r'\quad',',').replace(r'\,\text{and}\,',',').replace(r'\text{and}',',').replace(r'\,',',')
+ t=t.replace(r'\qquad',',').replace(r'\quad',',').replace(r'\,\text{and}\,',',').replace(r'\text{and}',',').replace(r'\,','')
  for cmd in (r'\bbox',r'\eqalign'):
   while cmd in t:
    at=t.index(cmd);start=at+len(cmd)
    if start<len(t) and t[start]=='[':start=t.index(']',start)+1
    arg,end=group(t,start);t=t[:at]+arg+t[end:]
+ t=re.sub(r'\\frac\s*([0-9])\s*([0-9])(?![0-9])',lambda m:r'\frac{'+m[1]+'}{'+m[2]+'}',t)
  return t
 
 def scalar(t):return P.scalar(clean(t).replace('[','(').replace(']',')'))
@@ -67,7 +71,9 @@ def value(raw,defs,label,outer,inner):
  text=re.sub(pattern,formal,text)
  # Scalar f/g/h and their concrete prime evaluation inputs.
  def named(m):
-  name,isprime,arg=m[1],bool(m[2]),m[3];expr=defs[name];expr=s.diff(expr,x) if isprime else expr;return '('+s.latex(expr.subs(x,scalar(arg)))+')'
+  name,isprime,rawarg=m[1],bool(m[2]),m[3];arg=scalar(rawarg)
+  if isprime and arg!=x:assert TARGET is not None and eq(arg,TARGET),('formal prime target',arg,TARGET)
+  expr=defs[name];expr=s.diff(expr,x) if isprime else expr;return '('+s.latex(expr.subs(x,arg))+')'
  text=re.sub(r'\{?([fgyh])\}?(\^\{\x27\}|\x27)?\((.*?)\)',named,text)
  text=re.sub(r'\{?([fygh])\}?(?:\^\{\x27\}|\x27)',lambda m:'('+s.latex(s.diff(defs[m[1]],x))+')',text)
  if text=='m':return s.Symbol('m')

@@ -221,6 +221,29 @@ def main():
  try:verify(pole,source_fidelity=False)
  except AssertionError as e:assert 'pole' in str(e);negative.append('evaluation-pole')
  else:raise AssertionError('evaluation pole accepted')
+ for bad in (r'\dfrac x 13',r'\dfrac 1 13',r'\dfrac 12 13',r'\frac{12}13',r'\frac12{13}'):
+  try:read(bad)
+  except ValueError:negative.append('unbraced-multi-digit:'+bad)
+  else:raise AssertionError('multi-digit TeX fraction shorthand accepted')
+ shorthand=g.generate('moderate',template='q-31341',parameters={'a':9})
+ shorthand['question'][':question/problem']=shorthand['question'][':question/problem'].replace(r'\dfrac{x}{13}',r'\dfrac x 13')
+ try:verify(shorthand,source_fidelity=False)
+ except ValueError:negative.append('rendered-fraction-argument-mutation')
+ else:raise AssertionError('rendered multi-digit fraction mutation survived')
+ assert read(r'\frac{12}{13}')==s.Rational(12,13)
+ assert read(r'\dfrac 4 5')==s.Rational(4,5)
+ fraction_cases=[]
+ for a in range(1,10):
+  for profile in (None,'observed_raw'):
+   r=g.generate('moderate',template='q-31341',parameters={'a':a},profile=profile);q=r['question']
+   for key in (':question/problem',':question/worked-solution'):p.validate_fraction_shorthand(q[key])
+   F,x0,inner,outer,tail=prompt(q);assert equivalent(inner,1-x/(a+4));assert x0==1
+   if a>=6:
+    assert r'\dfrac{x}{'+str(a+4)+'}' in q[':question/problem']
+    assert r'\dfrac{1}{'+str(a+4)+'}' in q[':question/worked-solution']
+    assert r'\dfrac{'+str(a+3)+'}{'+str(a+4)+'}' in q[':question/worked-solution']
+   fraction_cases.append({'a':a,'profile':profile or 'normal','denominator':a+4,'fraction_argument_guard':'pass'})
+ save('fraction-render-validation.json',fraction_cases)
  for a in (0,10,-1,1.5):
   try:g.generate('easy',template='q-31333',parameters={'a':a})
   except ValueError:negative.append('bound:'+str(a))
@@ -249,8 +272,9 @@ def main():
   if 'original' in row:out.extend(['Original:\n'+row['original'][':question/problem']+'\n\n'+row['original'].get(':question/worked-solution','[Absent]'),'Exact raw replay:\n'+g.markdown(row['replay']),'Changed raw (evidence only):\n'+g.markdown(row['changed_raw'])])
   else:out.extend('Normal generated:\n'+g.markdown(r) for r in row['records'])
  (D/'review.md').write_text('\n\n'.join(out)+'\n')
- inv=[{'role':'independently authored inventory','relationship_to_source_templates':{'source_id':k,'kind':'source-family normal field completion; no independent MA evidence'},'record':g.generate(l,template=k,parameters={'a':a})} for l,k in [('easy','q-31333'),('moderate','q-31341'),('hard','q-48510')] for a in (2,3)]
- save('independent-inventory.json',inv)
- save('validation.json',{'status':'pass','source_basis':2275,'source_fidelity':counts,'original_values_independently_parsed':len(source_values),'all_parameterized_raw_bank_values_checked':raw_changed_values,'all_parameterized_raw_records_checked':117,'math':{'normal_instances':len(records),'printed_equality_rows':rows,'negative_controls':negative,'slot_coverage':coverage,'native_bound_repair':'q-310222 learner eligible a1..8; original evidence/domain diagnostics retain a9; served wrong0/+1 and reciprocal equivalents tested at upper bound8','meaningful_task_counts':{l:len(v) for l,v in tasks.items()},'fingerprint_exclusions':['raw/default aliases','seed','option order','profile banks'],'fingerprint_inclusions':['printed function','actual requested point','derivative/slope/tangent task']},'native_serving_unresolved':0,'native_contract_gates':sum(len(r['question'][':question/answer-fields']) for r in records),'raw_only_unsupported_diagnostics':2,'native_grading':{k:native[k] for k in ['entry_point','accepted_checks','rejected_checks','documented_unresolved_checks']},'raw_ineligible':['all raw profiles evidence-only; unrated missing key/solution preserved','missing answer fields preserved','q-31341 f prime x evaluation label preserved','q-342412 nested csc bracket error preserved'],'database_writes':0,'registration_writes':0,'baseline':'No registered generator entity at current frozen candidate snapshot; no existing numeric script found.'})
+ inv=[{'role':'authored field-completion review variant','relationship_to_source_templates':{'source_id':k,'kind':'source-family normal field completion; no independent MA evidence'},'record':g.generate(l,template=k,parameters={'a':a})} for l,k in [('easy','q-31333'),('moderate','q-31341'),('hard','q-48510')] for a in (2,3)]
+ save('authored-field-completions.json',inv)
+ save('independent-inventory.json',{'basis':g.SOURCE['basis'],'lineage':g.SOURCE['lineage'],'questions':[]})
+ save('validation.json',{'status':'pass','source_basis':2275,'source_fidelity':counts,'original_values_independently_parsed':len(source_values),'all_parameterized_raw_bank_values_checked':raw_changed_values,'all_parameterized_raw_records_checked':117,'math':{'normal_instances':len(records),'printed_equality_rows':rows,'negative_controls':negative,'fraction_argument_cases':len(fraction_cases),'slot_coverage':coverage,'native_bound_repair':'q-310222 learner eligible a1..8; original evidence/domain diagnostics retain a9; served wrong0/+1 and reciprocal equivalents tested at upper bound8','meaningful_task_counts':{l:len(v) for l,v in tasks.items()},'fingerprint_exclusions':['raw/default aliases','seed','option order','profile banks'],'fingerprint_inclusions':['printed function','actual requested point','derivative/slope/tangent task']},'native_serving_unresolved':0,'native_contract_gates':sum(len(r['question'][':question/answer-fields']) for r in records),'raw_only_unsupported_diagnostics':2,'native_grading':{k:native[k] for k in ['entry_point','accepted_checks','rejected_checks','documented_unresolved_checks']},'raw_ineligible':['all raw profiles evidence-only; unrated missing key/solution preserved','missing answer fields preserved','q-31341 f prime x evaluation label preserved','q-342412 nested csc bracket error preserved'],'database_writes':0,'registration_writes':0,'baseline':'No registered generator entity at current frozen candidate snapshot; no existing numeric script found.'})
  print(json.dumps({'pass':True,'source':counts,'math_instances':len(records),'rows':rows,'task_counts':{l:len(v) for l,v in tasks.items()},'native':{k:native[k] for k in ['accepted_checks','rejected_checks']}}))
 if __name__=='__main__':main()

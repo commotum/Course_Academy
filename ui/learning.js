@@ -504,7 +504,7 @@ async function loadHome(signal, preserve) {
     const layout = el('div', 'study-layout');
     page = el('section', 'study-activities');
     page.append(el('div', 'loading', 'Loading your next activities…'));
-    layout.append(page, createStudySidebar()); $('main').append(layout);
+    layout.append(createStudySidebar(), page); $('main').append(layout);
   }
   setBusy(true); clearError();
   try {

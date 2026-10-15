@@ -1,0 +1,105 @@
+[
+  {
+    "label": "excluded-raw-q-342927",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186096742,
+        "id": "f3ee0d5d-0821-5f6b-b613-6b814e65df50",
+        "title": "Calculating a Derivative Using Multiple Instances of the Chain Rule"
+      },
+      "question": {
+        ":question/id": "90807a48-33c7-5211-9575-5f7936d0cb60",
+        ":question/problem": "Find ${y}^{′}$ when $y=\\sqrt{\\operatorname{cos}⁡(2x-31)}.$\n\n| ${y}^{′}$ | $=$ | {{field-1}} |\n| --- | --- | --- |\n|  |  | $\\sqrt{\\operatorname{cos}⁡(2x-31)}$ |",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "d1efff0a-f944-5f5a-932a-77747bfeca8b",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "4b93f142-32d6-5472-877d-c3d1d8ffc50b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-\\operatorname{sin}(2x-31)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "4b93f142-32d6-5472-877d-c3d1d8ffc50b"
+            ]
+          }
+        ],
+        ":question/worked-solution": "First, we express $y$ as the composite function\n\n$$\ny=\\sqrt{u},\\,u=\\operatorname{cos}⁡v,\\,v=2x-31.\n$$\n\nDifferentiating gives\n\n$$\n\\frac{\\text{d}y}{\\text{d}u}=\\frac{1}{2\\sqrt{u}},\\,\\frac{\\text{d}u}{\\text{d}v}=-\\operatorname{sin}⁡v,\\,\\frac{\\text{d}v}{\\text{d}x}=2.\n$$\n\nApplying now the chain rule twice, we get\n\n$$\n\\begin{aligned}\\frac{\\text{d}y}{\\text{d}x} & =\\frac{\\text{d}y}{\\text{d}u}\\cdot \\frac{\\text{d}u}{\\text{d}x} \\\\  & =\\frac{\\text{d}y}{\\text{d}u}\\cdot \\frac{\\text{d}u}{\\text{d}v}\\cdot \\frac{\\text{d}v}{\\text{d}x} \\\\  & =\\frac{1}{2\\sqrt{u}}\\cdot (-\\operatorname{sin}⁡v)\\cdot 2 \\\\  & =\\frac{1}{2\\sqrt{\\operatorname{cos}⁡(2x-31)}}\\cdot (-\\operatorname{sin}⁡(2x-31))\\cdot 2 \\\\  & =\\frac{-2\\operatorname{sin}⁡(2x-31)}{2\\sqrt{\\operatorname{cos}⁡(2x-31)}} \\\\  & =\\frac{-\\operatorname{sin}⁡(2x-31)}{\\sqrt{\\operatorname{cos}⁡(2x-31)}}.\\end{aligned}\n$$",
+        ":question/difficulty": ":question.difficulty/moderate"
+      },
+      "generation": {
+        "generator_id": "f3dc2fe6-20a6-54cd-9e28-999bc06a9bc2",
+        "version": "repeated-chain-rule-basis2275-draft-2",
+        "level": "moderate",
+        "seed": 0,
+        "template": "q-342927",
+        "profile": "observed_raw",
+        "bank_profile": "observed_raw",
+        "parameters": {
+          "b": 31
+        },
+        "mathematical_fingerprint": "39e583ad246148f89b64fdbb936b021a77d5bc732f9b16e8883d45b8b0e64cda",
+        "content_identity": "45702b1266fdbbe44faaad3e6956e4fd79015864326b207ac0a5b286df45b4b4",
+        "domain": {
+          "real_x": true,
+          "radians": true,
+          "restriction": "\\cos(2 x - 31)>0"
+        },
+        "source_basis": 2275,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "source_references": [
+          "q-342927"
+        ],
+        "dependencies": {
+          "python": "3.13.5",
+          "sympy": "1.14.0",
+          "math_format": "private frozen helper"
+        },
+        "plots": "none",
+        "evidence_only": true,
+        "eligible_for_learning": false,
+        "difficulty_provenance": "observed MA rating",
+        "authored_missing_key": false,
+        "authored_missing_solution": false,
+        "raw_only_exclusion": null,
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "field_index": 0,
+        "submitted": "-\\operatorname{sin}(2x-31)",
+        "expected": "accepted",
+        "purpose": "Canonical / unreduced equivalent / ordinary incorrect blank fragment"
+      },
+      {
+        "field_index": 0,
+        "submitted": "2(-\\operatorname{sin}(2x-31))/2",
+        "expected": "accepted",
+        "purpose": "Canonical / unreduced equivalent / ordinary incorrect blank fragment"
+      },
+      {
+        "field_index": 0,
+        "submitted": "0",
+        "expected": "unresolved",
+        "purpose": "Changed-shift raw evidence outside ALL normal bounds: native engine cannot resolve ordinary incorrect nested-trig entry"
+      },
+      {
+        "field_index": 0,
+        "submitted": "1",
+        "expected": "unresolved",
+        "purpose": "Changed-shift raw evidence outside ALL normal bounds: native engine cannot resolve ordinary incorrect nested-trig entry"
+      },
+      {
+        "field_index": 0,
+        "submitted": "(-\\operatorname{sin}(2x-31))+1",
+        "expected": "rejected",
+        "purpose": "Canonical / unreduced equivalent / ordinary incorrect blank fragment"
+      }
+    ]
+  }
+]

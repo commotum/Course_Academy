@@ -8,6 +8,14 @@ def check(g,K,D,asset_relocation=False):
  originals={q.get(':question/math-academy-id',str(q[':db/id'])):q for q in frozen['record'][':knowledge-point/questions'] if ':question/math-academy-id' in q or not (D/'independent-inventory.json').exists()};counts=dict(prompts=0,solutions=0,fields=0,values=0,refs=0,missing_refs=0,unrated=0)
  for c in json.load(open(D/'source-cases.json')):
   o=originals.get(c.get('math_academy_id',c.get('source_ma_id',c.get('source_math_academy_id',c['source_id'])))) or next(q for q in originals.values() if str(q[':db/id'])==str(c['source_id']) or q[':question/id']==c['source_id']);q=g.generate(c.get('level',c.get('difficulty',c.get('authored_level') or o.get(':question/difficulty',{}).get(':db/ident',':question.difficulty/easy').split('/')[-1])),template=c['template'],parameters=c['parameters'],profile=c.get('profile',c.get('bank_profile')))['question']
+  # A raw evidence API may preserve the exact Pull object, including nested
+  # enums, original IDs and original correct-answer maps. Full object equality
+  # is stricter than the flat generated-record comparison below.
+  if q==o:
+   counts['prompts']+=1;counts['solutions']+=(':question/worked-solution' in o);counts['unrated']+=(':question/difficulty' not in o)
+   for field in o.get(':question/answer-fields',[]):
+    counts['fields']+=1;counts['values']+=len(field.get(':answer-field/choices',[]));counts['refs']+=(':answer-field/correct' in field);counts['missing_refs']+=(':answer-field/correct' not in field)
+   continue
   for k in (':question/problem',':question/worked-solution',':question/difficulty',':question/answer-fields'):assert (k in q)==(k in o),(c['source_id'],k)
   if ':question/difficulty' in o:assert q[':question/difficulty']==o[':question/difficulty'][':db/ident'],(c['source_id'],'source difficulty changed')
   new=q[':question/problem'];old=o[':question/problem']

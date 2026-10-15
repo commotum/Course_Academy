@@ -63,7 +63,13 @@ def transform(k,t,a):
  elif k=='q-310222':mappings=[('2{x}^{3}',str(2*a)+'{x}^{3}'),('6{x}^{2}',str(6*a)+'{x}^{2}')]
  elif k=='q-31320':mappings=[('2x',str(2*a)+'x'),('=2.',f'={2*a}.'),('=2\\operatorname',f'={2*a}'+r'\operatorname'),('=2\\',f'={2*a}'+'\\'),(' 2 ',f' {2*a} '),('-2\\operatorname',f'-{2*a}'+r'\operatorname'),('2\\operatorname',f'{2*a}'+r'\operatorname')]
  elif k=='q-31341':
-  d=4+a;mappings=[('\\dfrac{4}{5}',r'\dfrac{'+str(d-1)+'}{'+str(d)+'}'),('\\dfrac 4 5',r'\dfrac '+str(d-1)+' '+str(d)),('\\dfrac{1}{5}',r'\dfrac{1}{'+str(d)+'}'),('\\dfrac 1 5',r'\dfrac 1 '+str(d)),('\\dfrac x 5',r'\dfrac x '+str(d)),('\\dfrac{x}{5}',r'\dfrac{x}{'+str(d)+'}')]
+  d=4+a
+  def component(n):
+   # TeX fraction arguments are single tokens unless braced. Keep original
+   # single-digit shorthand; brace the complete components when d is 10..13.
+   return (r'\dfrac{'+str(n)+'}{'+str(d)+'}') if d>=10 else (r'\dfrac '+str(n)+' '+str(d))
+  mappings=[(r'\dfrac{4}{5}',r'\dfrac{'+str(d-1)+'}{'+str(d)+'}'),(r'\dfrac 4 5',component(d-1)),(r'\dfrac{1}{5}',r'\dfrac{1}{'+str(d)+'}'),(r'\dfrac 1 5',component(1)),(r'\dfrac x 5',component('x')),(r'\dfrac{x}{5}',r'\dfrac{x}{'+str(d)+'}')]
+
  elif k=='q-342405':mappings=[(r'\sec',pre+r'\sec'),(r'\pi\sqrt{2}',pre+r'\pi\sqrt{2}'),(r'\pi \cdot \sqrt{2}',pre+r'\pi \cdot \sqrt{2}')]
  elif k=='q-342412':
   mappings=[(r'\pi\sqrt{3}+2',pre+r'\pi\sqrt{3}+'+str(2*a)),(r'\pi\sqrt{3} + 2',pre+r'\pi\sqrt{3} + '+str(2*a)),(r'\pi\sqrt{3}',pre+r'\pi\sqrt{3}'),(r'\csc',pre+r'\csc'),('(1,2)',f'(1,{2*a})'),(r'1,2\right',f'1,{2*a}'+r'\right'),('y-2',f'y-{2*a}'),(r'\cdot 2 \cdot',r'\cdot '+str(2*a)+r' \cdot')]
@@ -168,6 +174,10 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
    vals=[scalar(z[':answer/value'].split('=')[-1]) for z in f[':answer-field/choices']]
    if any(eq(v,w) for i,v in enumerate(vals) for w in vals[:i]):raise ValueError('complete profile equivalence collision')
   validate_generated_record({'question':q})
+ for key in (':question/problem',':question/worked-solution'):
+  if key in q:reader.validate_fraction_shorthand(q[key])
+ for f in q.get(':question/answer-fields',[]):
+  for z in f[':answer-field/choices']:reader.validate_fraction_shorthand(z[':answer/value'])
  if field_type and any(f[':answer-field/type'].split('/')[-1]!=field_type.split('/')[-1] for f in q.get(':question/answer-fields',[])):raise ValueError('field contract mismatch')
  bare=copy.deepcopy(q)
  for f in bare.get(':question/answer-fields',[]):f[':answer-field/choices']=sorted(f[':answer-field/choices'],key=lambda z:json.dumps(z,sort_keys=True))

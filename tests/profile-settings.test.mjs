@@ -37,7 +37,7 @@ async function fixture(theme = 'dark', courseId = 'one') {
   const window = new EventTarget();
   const profile = { learner: { name: 'Test learner', selfDirected: true }, course: courseId ? { id: courseId } : null, courses: [{ id: 'one', title: 'One' }, { id: 'two', title: 'Two' }] };
   const state = { enabled: false, fail: null, calls: [], events: [], stored: new Map() };
-  for (const name of ['developer-mode-changing', 'developer-mode-settled', 'profile-changing', 'profile-changed']) {
+  for (const name of ['developer-mode-changing', 'developer-mode-settled', 'profile-changing', 'profile-changed', 'daily-xp-goal-changed']) {
     window.addEventListener(`course-academy:${name}`, event => state.events.push({ name, detail: event.detail }));
   }
   const storage = {
@@ -52,12 +52,13 @@ async function fixture(theme = 'dark', courseId = 'one') {
       if (body) {
         if (state.hold?.path === path) await state.hold.promise;
         if (path === '/api/developer-mode') state.enabled = body.enabled;
+        else if (path === '/api/daily-xp-goal') profile.learner.dailyXpGoal = body.dailyXpGoal;
         else { profile.learner.selfDirected = body.selfDirected; profile.course = { id: body.courseId }; }
         if (state.fail === path) { state.fail = null; throw new Error('Reply lost after commit'); }
       }
       return { ok: true, json: async () => structuredClone(path === '/api/developer-mode' ? { enabled: state.enabled } : path === '/api/course' ? {
         courseGroups: [{ id: 'group', title: 'Example group', courses: [profile.courses[1], profile.courses[0]] }],
-      } : profile) };
+      } : path === '/api/daily-xp-goal' ? { learner: profile.learner } : profile) };
     },
   });
   const dev = (await readFile(new URL('../ui/developer-mode.js', import.meta.url), 'utf8')).replaceAll('export ', '');
@@ -96,6 +97,35 @@ test('switches save in place, preserve the other switch, and keep the same dialo
   assert.equal(f.state.events.filter(e => e.name === 'developer-mode-settled').length, 2);
   f.get('profileCourse').value = 'two'; f.get('profileCourse').dispatchEvent(new Event('change')); await f.settle();
   assert.equal(f.state.events.at(-1).detail.changedCourse, true);
+});
+
+test('daily XP goal saves in the profile without changing course, modes, or the running lesson', async () => {
+  const f = await fixture();
+  const input = f.get('dailyXpGoal'); input.value = '150';
+  f.find(node => node.className === 'profile-goal-form').dispatchEvent(new Event('submit', { cancelable: true }));
+  await f.settle();
+  assert.equal(f.profile.learner.dailyXpGoal, 150);
+  assert.equal(f.profile.course.id, 'one');
+  assert.equal(f.profile.learner.selfDirected, true);
+  assert.equal(f.state.enabled, false);
+  assert.equal(f.get('userProfile').open, true);
+  assert.equal(f.state.events.some(event => event.name === 'profile-changing' || event.name === 'profile-changed'), false);
+  assert.equal(f.state.events.at(-1).name, 'daily-xp-goal-changed');
+  assert.equal(f.state.stored.has('course-academy.daily-xp-goal-changed'), true);
+});
+
+test('daily goal validation and uncertain replies preserve an exact retry in the profile', async () => {
+  const f = await fixture('dark', null);
+  const input = f.get('dailyXpGoal'), form = f.find(node => node.className === 'profile-goal-form');
+  input.value = '0'; form.dispatchEvent(new Event('submit', { cancelable: true })); await f.settle();
+  assert.equal(f.state.calls.filter(call => call.body).length, 0);
+  input.value = '200'; f.state.fail = '/api/daily-xp-goal';
+  form.dispatchEvent(new Event('submit', { cancelable: true })); await f.settle();
+  f.find(node => node.className === 'profile-retry').click(); await f.settle();
+  const writes = f.state.calls.filter(call => call.path === '/api/daily-xp-goal');
+  assert.equal(writes.length, 2); assert.deepEqual(writes[0].body, writes[1].body);
+  assert.equal(f.profile.learner.dailyXpGoal, 200);
+  assert.equal(f.profile.course, null);
 });
 
 test('light mode switches immediately, preserves the open profile and settings, and makes no API request', async () => {
