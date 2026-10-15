@@ -1,6 +1,6 @@
 # Stokes circulation generator
 
-Frozen local draft; steps 3–7 only. No registration or database writes.
+Validated generator and scoped inventory replenishment package. The original step 7 freeze remains historical evidence; current preparation, registration and verified database receipts are under reference/replenishment/.
 
 ```sh
 .venv/bin/python generate/scratch/17592186133927/validate.py
@@ -17,3 +17,5 @@ Final QA: 66 normal records independently checked from displayed math; 83 native
 Finite-domain enumeration (`.venv/bin/python generate/scratch/17592186133927/enumerate.py`) gives 32 easy, 168 moderate and 152 hard mathematical tasks; source-math-audit.json records independent complete historical bank evaluation, and render-concurrency.json records fresh concurrent atomic writes. freeze.json records final file hashes for parent QA.
 
 Root QA updated the region renderer to version 4: plain labels clear of axes, arrows inside actual integration slices, and actual 140-dpi geometry/hash sidecars. Markdown CLI output now labels provenance, actual difficulty and designated answers; source image paths resolve in previews. Stored question values were unchanged by the Markdown-only patch.
+
+Inventory replenishment now uses prepare_replenishment.py and replenish.py. The former refreshes source evidence, validates distinct candidates and compiles the real grader against the current engine; the latter rechecks inventory under api.lock, preserves all current source records, publishes selected content-addressed plots, previews native specs, submits one exact basis-guarded request, and verifies its receipt and exact-basis readback. Requests, receipts, generator registration, source exclusions, native checks and inventory counts are retained under reference/. The original frozen generator version and source capture remain unchanged. Current source deltas and bounded family exclusions are recorded in current-source-audit.json and capabilities.json.
