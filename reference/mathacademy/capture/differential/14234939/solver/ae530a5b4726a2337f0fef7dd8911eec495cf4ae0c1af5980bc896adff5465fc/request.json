@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-159922",
+      "sequence_position": 5,
+      "problem": "Let $X=[{X}_{1},{X}_{2},{X}_{3}]^{T}$ be a multivariate normal random vector with mean vector $\\mu $ and covariance matrix $Σ$ given by\n\n$$\n\\begin{aligned}\\mu =[\\begin{aligned}-1 \\\\ 0 \\\\ 1\\end{aligned}],\\,Σ=[\\begin{aligned}3 & -1 & 1 \\\\ -1 & 4 & 2 \\\\ 1 & 2 & 3\\end{aligned}].\\end{aligned}\n$$\n\nLet $Y=2{X}_{1}+{X}_{2}+2{X}_{3}.$ Find $P(-6<Y\\le 12).$\n\n*Hint: A table of values of $Φ(z)$ for different values of $z$ is given below, where $Φ(z)$ is the cumulative distribution function for the standard normal distribution. *\n\n<table align=\"center\">\n\n<tbody><tr>\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.03\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.04\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.05\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.7\\,$</th><td align=\"center\"> $\\,0.7673\\,$ </td><td align=\"center\"> $\\,0.7704\\,$ </td><td align=\"center\"> $\\,0.7734\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.8\\,$</th><td align=\"center\"> $\\,0.7967\\,$ </td><td align=\"center\"> $\\,0.7995\\,$ </td><td align=\"center\"> $\\,0.8023\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.9\\,$</th><td align=\"center\"> $\\,0.8238\\,$ </td><td align=\"center\"> $\\,0.8264\\,$ </td><td align=\"center\"> $\\,0.8289\\,$ </td></tr>\n</tbody></table>\n</th>\n\n<th width=\"5%\"></th>\n\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.00\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.01\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.02\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.7\\,$</th><td align=\"center\"> $\\,0.9554\\,$ </td><td align=\"center\"> $\\,0.9564\\,$ </td><td align=\"center\"> $\\,0.9573\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.8\\,$</th><td align=\"center\"> $\\,0.9641\\,$ </td><td align=\"center\"> $\\,0.9649\\,$ </td><td align=\"center\"> $\\,0.9656\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.9\\,$</th><td align=\"center\"> $\\,0.9713\\,$ </td><td align=\"center\"> $\\,0.9719\\,$ </td><td align=\"center\"> $\\,0.9726\\,$ </td></tr>\n</tbody></table>\n</th>\n</tr>\n\n</tbody></table>",
+      "worked_solution": "Recall that if $X=[{X}_{1},{X}_{2},…,{X}_{k}]^{T}$ is a multivariate normal random vector with mean vector $\\mu $ and covariance matrix $Σ,$ then the random variable $Y,$ defined as\n\n$$\nY={c}^{T}X={\\sum }_{i=1}^{k}{c}_{i}{X}_{i}\n$$\n\nis a normally distributed random variable, where $c$ is any $k\\times 1$ column vector, and  \n\n$$\n\\begin{aligned}E[Y] & ={c}^{T}\\mu , \\\\ Var[Y] & ={c}^{T}Σc.\\end{aligned}\n$$\n\nIn our case, since we wish to know the distribution of $Y=2{X}_{1}+{X}_{2}+2{X}_{3},$ we have \n\n$$\nc=[\\begin{aligned}2 \\\\ 1 \\\\ 2\\end{aligned}].\n$$\n\nTherefore, for the mean of $Y,$ we have\n\n$$\n\\begin{aligned}\\text{E}[Y] & ={c}^{T}\\mu  \\\\  & =[\\begin{aligned}2 & 1 & 2\\end{aligned}][\\begin{aligned}-1 \\\\ 0 \\\\ 1\\end{aligned}] \\\\  & =-2+0+2 \\\\  & =0,\\end{aligned}\n$$\n\nand for the variance of $Y,$ we have\n\n$$\n\\begin{aligned}\\text{Var}[Y] & ={c}^{T}Σc \\\\  & =[\\begin{aligned}2 & 1 & 2\\end{aligned}][\\begin{aligned}3 & -1 & 1 \\\\ -1 & 4 & 2 \\\\ 1 & 2 & 3\\end{aligned}][\\begin{aligned}2 \\\\ 1 \\\\ 2\\end{aligned}] \\\\  & =[\\begin{aligned}2 & 1 & 2\\end{aligned}][\\begin{aligned}7 \\\\ 6 \\\\ 10\\end{aligned}] \\\\  & =14+6+20 \\\\  & =40.\\end{aligned}\n$$\n\nTherefore, \n\n$$\nY∼N(0,40).\n$$\n\nNow, we need to compute $P(-6<Y\\le 12).$ First, transform $Y$ into a standard normal random variable $Z$ by $z$-scoring:\n\n$$\n\\begin{aligned}P(-6<Y\\le 12) & =P(\\frac{-6-0}{\\sqrt{40}}<Z\\le \\frac{12-0}{\\sqrt{40}}) \\\\  & =P(-0.95<Z\\le 1.90)\\end{aligned}\n$$\n\nNow, we express the required probability in terms of $Φ(z):$\n\n$$\n\\begin{aligned}P(-0.95<Z\\le 1.90) & =P(Z\\le 1.90)-P(Z\\le -0.95) \\\\  & =Φ(1.90)-Φ(-0.95).\\end{aligned}\n$$\n\nFrom the table, we know that\n\n$$\n\\begin{aligned}Φ(0.95) & =0.8289 \\\\ Φ(1.90) & =0.9713\\end{aligned}\n$$\n\nBy the symmetry of the normal distribution, we have\n\n$$\nΦ(-0.95)=1-Φ(0.95)=1-0.8289=0.1711.\n$$\n\nAs a result,\n\n$$\n\\begin{aligned}P(-0.95<Z\\le 1.90)=0.9713-0.1711=0.8002.\\end{aligned}\n$$\n\nTherefore, we conclude that\n\n$$\nP(-6<Y\\le 12)=0.8002.\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14234939/observations/history-q-159922-932719b34325a0ca9296.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14234939",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14234939/observations/history-solution-q-159922-ca185679af6df4a223d2.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "0.8611"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "0.8002"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "0.8289"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "0.9424"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "0.9713"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q159922",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "0.8002",
+                "option": "b",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Recall that if $X=[{X}_{1},{X}_{2},…,{X}_{k}]^{T}$ is a multivariate normal random vector with mean vector $\\mu $ and covariance matrix $Σ,$ then the random variable $Y,$ defined as\n\n$$\nY={c}^{T}X={\\sum }_{i=1}^{k}{c}_{i}{X}_{i}\n$$\n\nis a normally distributed random variable, where $c$ is any $k\\times 1$ column vector, and  \n\n$$\n\\begin{aligned}E[Y] & ={c}^{T}\\mu , \\\\ Var[Y] & ={c}^{T}Σc.\\end{aligned}\n$$\n\nIn our case, since we wish to know the distribution of $Y=2{X}_{1}+{X}_{2}+2{X}_{3},$ we have \n\n$$\nc=[\\begin{aligned}2 \\\\ 1 \\\\ 2\\end{aligned}].\n$$\n\nTherefore, for the mean of $Y,$ we have\n\n$$\n\\begin{aligned}\\text{E}[Y] & ={c}^{T}\\mu  \\\\  & =[\\begin{aligned}2 & 1 & 2\\end{aligned}][\\begin{aligned}-1 \\\\ 0 \\\\ 1\\end{aligned}] \\\\  & =-2+0+2 \\\\  & =0,\\end{aligned}\n$$\n\nand for the variance of $Y,$ we have\n\n$$\n\\begin{aligned}\\text{Var}[Y] & ={c}^{T}Σc \\\\  & =[\\begin{aligned}2 & 1 & 2\\end{aligned}][\\begin{aligned}3 & -1 & 1 \\\\ -1 & 4 & 2 \\\\ 1 & 2 & 3\\end{aligned}][\\begin{aligned}2 \\\\ 1 \\\\ 2\\end{aligned}] \\\\  & =[\\begin{aligned}2 & 1 & 2\\end{aligned}][\\begin{aligned}7 \\\\ 6 \\\\ 10\\end{aligned}] \\\\  & =14+6+20 \\\\  & =40.\\end{aligned}\n$$\n\nTherefore, \n\n$$\nY∼N(0,40).\n$$\n\nNow, we need to compute $P(-6<Y\\le 12).$ First, transform $Y$ into a standard normal random variable $Z$ by $z$-scoring:\n\n$$\n\\begin{aligned}P(-6<Y\\le 12) & =P(\\frac{-6-0}{\\sqrt{40}}<Z\\le \\frac{12-0}{\\sqrt{40}}) \\\\  & =P(-0.95<Z\\le 1.90)\\end{aligned}\n$$\n\nNow, we express the required probability in terms of $Φ(z):$\n\n$$\n\\begin{aligned}P(-0.95<Z\\le 1.90) & =P(Z\\le 1.90)-P(Z\\le -0.95) \\\\  & =Φ(1.90)-Φ(-0.95).\\end{aligned}\n$$\n\nFrom the table, we know that\n\n$$\n\\begin{aligned}Φ(0.95) & =0.8289 \\\\ Φ(1.90) & =0.9713\\end{aligned}\n$$\n\nBy the symmetry of the normal distribution, we have\n\n$$\nΦ(-0.95)=1-Φ(0.95)=1-0.8289=0.1711.\n$$\n\nAs a result,\n\n$$\n\\begin{aligned}P(-0.95<Z\\le 1.90)=0.9713-0.1711=0.8002.\\end{aligned}\n$$\n\nTherefore, we conclude that\n\n$$\nP(-6<Y\\le 12)=0.8002.\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14234939/observations/step-q159922-a0e81f950dea90e98665.html"
+        }
+      }
+    ]
+  }
+}
