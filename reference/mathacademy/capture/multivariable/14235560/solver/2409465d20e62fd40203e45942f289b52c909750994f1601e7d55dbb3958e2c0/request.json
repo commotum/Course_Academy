@@ -1,0 +1,85 @@
+{
+  "task": "solve_question",
+  "payload": {
+    "evidence_contract": "solve_question:1",
+    "question": {
+      "math_academy_id": "q-111172",
+      "problem": "The migration table below describes the movement of the population between cities and suburbs every year in a certain state. \n\n<table align=\"center\" cellpadding=\"10\" rules=\"all\">\n<tbody><tr>\n<td></td>\n<td></td>\n<td colspan=\"2\" align=\"center\">From:</td> \n</tr>\n<tr>\n<td></td>\n<td></td>\n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Cities</b></td>\n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Suburbs</b></td> \n</tr>\n<tr> \n<td rowspan=\"2\" align=\"center\">To:</td>\n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Cities</b></td>\n<td align=\"center\">$0.8$</td>\n<td align=\"center\">$0.7$</td>\n</tr>\n<tr> \n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Suburbs</b></td>\n<td align=\"center\">$0.2$</td>\n<td align=\"center\">$0.3$</td>\n</tr>\n</tbody></table>\n\nThat is, $20%$ of those living in cities move to the suburbs each year, and $70%$ of those living in suburbs move to the cities.\n\nAssuming that the population of the state is $9$ million and remains constant, how many people would eventually live in cities if the given probabilities remain constant over many years?",
+      "answer_fields_complete": true,
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/observations/step-q111172-8f625728e8edc7263a3e.html",
+      "source_url": "https://mathacademy.com/tasks/14235560/topics/1913/lesson",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "text",
+              "value": "$9$ million"
+            },
+            {
+              "option": "b",
+              "type": "text",
+              "value": "$3$ million"
+            },
+            {
+              "option": "c",
+              "type": "text",
+              "value": "$8.5$ million"
+            },
+            {
+              "option": "d",
+              "type": "text",
+              "value": "$6.5$ million"
+            },
+            {
+              "option": "e",
+              "type": "text",
+              "value": "$7$ million"
+            }
+          ]
+        }
+      ]
+    },
+    "current_example": {
+      "math_academy_id": "e-9179",
+      "problem": "The table below describes how the customers of a particular electronics store feel about their next computer purchase.\n\n<table align=\"center\" cellpadding=\"10\" rules=\"all\">\n<tbody><tr>\n<td></td>\n<td></td>\n<td colspan=\"2\" align=\"center\">From:</td> \n</tr>\n<tr>\n<td></td>\n<td></td>\n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Laptop</b></td>\n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Desktop</b></td> \n</tr>\n<tr> \n<td rowspan=\"2\" align=\"center\">To:</td>\n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Laptop</b></td>\n<td align=\"center\">$0.9$</td>\n<td align=\"center\">$0.8$</td>\n</tr>\n<tr> \n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Desktop</b></td>\n<td align=\"center\">$0.1$</td>\n<td align=\"center\">$0.2$</td>\n</tr>\n</tbody></table>\n\nIt is found that $10 \\%$ of customers who currently use a laptop would choose a desktop on their next purchase, while $80 \\%$ of customers who currently use a desktop would choose a laptop on their next purchase. \n\nGiven that the store has $5\\,400$ customers, all of whom purchase a new computer every two years, how many customers would eventually own a desktop computer if the given probabilities remain constant over many two-year periods?",
+      "worked_solution": "From the table, we get the corresponding stochastic matrix \n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/assets/bef567f11c33cf20c7e721c5b682229a7b74ee5f0307f1778a5bf5d504f7a39a.svg)\n\nNotice that $P$ contains only positive entries. So, the matrix $P$ is regular. As a result, after many two-year periods, the distribution will eventually converge to the unique steady-state vector of $P,$ and this convergence does not depend on the initial state.\n\nRecall that a steady-state vector of a stochastic matrix $P$ is a stochastic vector $\\mathbf{q}$ such that \n\n$$\n\\begin{aligned}Pq=q\\,⟹\\,(P-I)q=0.\\end{aligned}\n$$\n\nComputing $P-I,$ we get\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/assets/af965232dabb86a68715806e40489f6785b51721b72e32a9eb3c47f22390664d.svg)\n\nSo, the matrix equation $(P-I)\\mathbf{q} = \\mathbf{0}$ is equivalent to the system of linear equations with the augmented matrix $M,$ which we reduce to row echelon form using Gaussian elimination as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-0.1 & 0.8 & 0 \\\\ 0.1 & -0.8 & 0\\end{aligned}] & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & ∼[\\begin{aligned}-0.1 & 0.8 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, $x_2$ is a free variable. From the first equation, we obtain \n\n$$\n\\begin{aligned}{x}_{1}=8{x}_{2}.\\end{aligned}\n$$\n\nHence, the general solution is\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/assets/63ee2b9eb36892b3269adf896ea9352d2a54168668b11f62159a336d0d031f91.svg)\n\nSince the steady-state vector must be stochastic, its entries should add up to $1.$ Therefore, we have \n\n$$\n\\begin{aligned}8{x}_{2}+{x}_{2} & =1 \\\\ 9{x}_{2} & =1 \\\\ {x}_{2} & =\\frac{1}{9}.\\end{aligned}\n$$\n\nOur steady-state vector is\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/assets/d79825c16d233accb2a0f263e00cb2229dd76e0f2120d330e49a6842b26b8a4a.svg)\n\nSo, ${\\color{blue}{\\dfrac{1}{9}}}$ of the $5\\,400$ customers would eventually own a desktop computer. Therefore, the total number of people who would eventually own a desktop computer is\n\n$$\n\\dfrac{1}{9} \\cdot 5\\,400 = 600.\n$$",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/observations/step-e9179-456ffb6034932c19e702.html",
+      "source_url": "https://mathacademy.com/tasks/14235560/topics/1913/lesson",
+      "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/observations/step-e9179-456ffb6034932c19e702.png",
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/assets/bef567f11c33cf20c7e721c5b682229a7b74ee5f0307f1778a5bf5d504f7a39a.svg",
+          "sha256": "bef567f11c33cf20c7e721c5b682229a7b74ee5f0307f1778a5bf5d504f7a39a",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 1,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/assets/af965232dabb86a68715806e40489f6785b51721b72e32a9eb3c47f22390664d.svg",
+          "sha256": "af965232dabb86a68715806e40489f6785b51721b72e32a9eb3c47f22390664d",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 2,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/assets/63ee2b9eb36892b3269adf896ea9352d2a54168668b11f62159a336d0d031f91.svg",
+          "sha256": "63ee2b9eb36892b3269adf896ea9352d2a54168668b11f62159a336d0d031f91",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 3,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/assets/d79825c16d233accb2a0f263e00cb2229dd76e0f2120d330e49a6842b26b8a4a.svg",
+          "sha256": "d79825c16d233accb2a0f263e00cb2229dd76e0f2120d330e49a6842b26b8a4a",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        }
+      ]
+    }
+  }
+}

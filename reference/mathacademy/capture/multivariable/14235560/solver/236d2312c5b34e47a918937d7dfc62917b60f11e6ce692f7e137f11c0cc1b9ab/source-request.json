@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-141035",
+      "sequence_position": 14,
+      "problem": "A study shows how the sports preferences of young people in a certain community vary from year to year. The following table shows the results of this study. \n\n<table align=\"center\" cellpadding=\"10\" rules=\"all\">\n<tbody><tr>\n<td></td>\n<td></td>\n<td colspan=\"3\" align=\"center\">From:</td> \n</tr>\n<tr>\n<td></td>\n<td></td>\n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Baseball</b></td>\n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Basketball</b></td> \n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Football</b></td> \n</tr>\n<tr> \n<td rowspan=\"3\" align=\"center\">To:</td>\n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Baseball</b></td>\n<td align=\"center\">$0.8$</td>\n<td align=\"center\">$0.2$</td>\n<td align=\"center\">$0$</td>\n</tr>\n<tr> \n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Basketball</b></td>\n<td align=\"center\">$0.1$</td>\n<td align=\"center\">$0.6$</td>\n<td align=\"center\">$0.2$</td>\n</tr>\n<tr> \n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Football</b></td>\n<td align=\"center\">$0.1$</td>\n<td align=\"center\">$0.2$</td>\n<td align=\"center\">$0.8$</td>\n</tr>\n</tbody></table>\n\nFor example, $10%$ of people who used to prefer baseball now prefer football. \n\nGiven that $1\\,260$ young people were interviewed for the study and that the probabilities listed remain constant for many years, how many of those people will eventually prefer baseball?",
+      "worked_solution": "From the table, we get the corresponding stochastic matrix \n\n$$\nP=[\\begin{aligned}0.8 & 0.2 & 0 \\\\ 0.1 & 0.6 & 0.2 \\\\ 0.1 & 0.2 & 0.8\\end{aligned}].\n$$\n\nNotice that the matrix ${P}^{2}$ contains only positive entries. So, the matrix $P$ is regular. \nAs a result, after many years, the distribution will eventually converge to the steady-state vector of $P,$ and this convergence does not depend on the initial state.\n\nRecall that a steady-state vector of a stochastic matrix $P$ is a stochastic vector $q$ such that \n\n$$\n\\begin{aligned}Pq=q\\,⟹\\,(P-I)q=0.\\end{aligned}\n$$\n\nComputing $P-I,$ we get\n\n$$\nP-I=[\\begin{aligned}0.8 & 0.2 & 0 \\\\ 0.1 & 0.6 & 0.2 \\\\ 0.1 & 0.2 & 0.8\\end{aligned}]-[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}-0.2 & 0.2 & 0 \\\\ 0.1 & -0.4 & 0.2 \\\\ 0.1 & 0.2 & -0.2\\end{aligned}].\n$$\n\nThe matrix equation $(P-I)q=0$ is equivalent to the system of linear equations with the augmented matrix $M,$ which we reduce to row echelon form using Gaussian elimination as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-0.2 & 0.2 & 0 \\\\ 0.1 & -0.4 & 0.2 \\\\ 0.1 & 0.2 & -0.2\\end{aligned}] &  & \\begin{aligned}{R}_{1}:=-5{R}_{1} \\\\ {R}_{2}:=10{R}_{2} \\\\ {R}_{3}:=10{R}_{3}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & -1 & 0 & 0 \\\\ 1 & -4 & 2 & 0 \\\\ 1 & 2 & -2 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+(-1){R}_{1} \\\\ {R}_{3}:={R}_{3}+(-1){R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & -1 & 0 & 0 \\\\ 0 & -3 & 2 & 0 \\\\ 0 & 3 & -2 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+{R}_{2}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & -1 & 0 & 0 \\\\ 0 & -3 & 2 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has two pivot columns (the $1$st and $2$nd). Thus, ${x}_{3}$ is a free variable. From the second equation, we obtain \n\n$$\n{x}_{2}=\\frac{2}{3}{x}_{3}.\n$$\n\n \nSubstituting this into the first equation, we obtain\n\n$$\n{x}_{1}-\\frac{2}{3}{x}_{3}+0{x}_{3}=0\\,⟹\\,{x}_{1}=\\frac{2}{3}{x}_{3}.\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}\\frac{2}{3}{x}_{3} \\\\ \\frac{2}{3}{x}_{3} \\\\ {x}_{3}\\end{aligned}],\\,{x}_{3}\\in R.\n$$\n\nSince the steady-state vector must be stochastic, its entries should add up to $1.$ Therefore, we have\n\n$$\n\\begin{aligned}\\frac{2}{3}{x}_{3}+\\frac{2}{3}{x}_{3}+{x}_{3} & =1 \\\\ \\frac{7}{3}{x}_{3} & =1 \\\\ {x}_{3} & =\\frac{3}{7}.\\end{aligned}\n$$\n\nTherefore,\n\n$$\nq=[\\begin{aligned}\\frac{2}{7} \\\\ \\frac{2}{7} \\\\ \\frac{3}{7}\\end{aligned}].\n$$\n\nSo, after many years, $\\frac{2}{7}$ of the people will prefer baseball. Therefore, the number of people who will prefer baseball is\n\n$$\n\\frac{2}{7}\\cdot 1\\,260=360\\,\\text{people}.\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/observations/history-q-141035-53bf984906772256a743.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14235560",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/observations/history-solution-q-141035-cfdc9282afe3baa5799b.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "180"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "360"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "630"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "540"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "720"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q141035",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "360",
+                "option": "b",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "From the table, we get the corresponding stochastic matrix \n\n$$\nP=[\\begin{aligned}0.8 & 0.2 & 0 \\\\ 0.1 & 0.6 & 0.2 \\\\ 0.1 & 0.2 & 0.8\\end{aligned}].\n$$\n\nNotice that the matrix ${P}^{2}$ contains only positive entries. So, the matrix $P$ is regular. \nAs a result, after many years, the distribution will eventually converge to the steady-state vector of $P,$ and this convergence does not depend on the initial state.\n\nRecall that a steady-state vector of a stochastic matrix $P$ is a stochastic vector $q$ such that \n\n$$\n\\begin{aligned}Pq=q\\,⟹\\,(P-I)q=0.\\end{aligned}\n$$\n\nComputing $P-I,$ we get\n\n$$\nP-I=[\\begin{aligned}0.8 & 0.2 & 0 \\\\ 0.1 & 0.6 & 0.2 \\\\ 0.1 & 0.2 & 0.8\\end{aligned}]-[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}-0.2 & 0.2 & 0 \\\\ 0.1 & -0.4 & 0.2 \\\\ 0.1 & 0.2 & -0.2\\end{aligned}].\n$$\n\nThe matrix equation $(P-I)q=0$ is equivalent to the system of linear equations with the augmented matrix $M,$ which we reduce to row echelon form using Gaussian elimination as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-0.2 & 0.2 & 0 \\\\ 0.1 & -0.4 & 0.2 \\\\ 0.1 & 0.2 & -0.2\\end{aligned}] &  & \\begin{aligned}{R}_{1}:=-5{R}_{1} \\\\ {R}_{2}:=10{R}_{2} \\\\ {R}_{3}:=10{R}_{3}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & -1 & 0 & 0 \\\\ 1 & -4 & 2 & 0 \\\\ 1 & 2 & -2 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+(-1){R}_{1} \\\\ {R}_{3}:={R}_{3}+(-1){R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & -1 & 0 & 0 \\\\ 0 & -3 & 2 & 0 \\\\ 0 & 3 & -2 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+{R}_{2}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & -1 & 0 & 0 \\\\ 0 & -3 & 2 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has two pivot columns (the $1$st and $2$nd). Thus, ${x}_{3}$ is a free variable. From the second equation, we obtain \n\n$$\n{x}_{2}=\\frac{2}{3}{x}_{3}.\n$$\n\n \nSubstituting this into the first equation, we obtain\n\n$$\n{x}_{1}-\\frac{2}{3}{x}_{3}+0{x}_{3}=0\\,⟹\\,{x}_{1}=\\frac{2}{3}{x}_{3}.\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}\\frac{2}{3}{x}_{3} \\\\ \\frac{2}{3}{x}_{3} \\\\ {x}_{3}\\end{aligned}],\\,{x}_{3}\\in R.\n$$\n\nSince the steady-state vector must be stochastic, its entries should add up to $1.$ Therefore, we have\n\n$$\n\\begin{aligned}\\frac{2}{3}{x}_{3}+\\frac{2}{3}{x}_{3}+{x}_{3} & =1 \\\\ \\frac{7}{3}{x}_{3} & =1 \\\\ {x}_{3} & =\\frac{3}{7}.\\end{aligned}\n$$\n\nTherefore,\n\n$$\nq=[\\begin{aligned}\\frac{2}{7} \\\\ \\frac{2}{7} \\\\ \\frac{3}{7}\\end{aligned}].\n$$\n\nSo, after many years, $\\frac{2}{7}$ of the people will prefer baseball. Therefore, the number of people who will prefer baseball is\n\n$$\n\\frac{2}{7}\\cdot 1\\,260=360\\,\\text{people}.\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/observations/step-q141035-985b5c235d134bfdb89a.html"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "e-9179",
+      "problem": "The table below describes how the customers of a particular electronics store feel about their next computer purchase.\n\n<table align=\"center\" cellpadding=\"10\" rules=\"all\">\n<tbody><tr>\n<td></td>\n<td></td>\n<td colspan=\"2\" align=\"center\">From:</td> \n</tr>\n<tr>\n<td></td>\n<td></td>\n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Laptop</b></td>\n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Desktop</b></td> \n</tr>\n<tr> \n<td rowspan=\"2\" align=\"center\">To:</td>\n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Laptop</b></td>\n<td align=\"center\">$0.9$</td>\n<td align=\"center\">$0.8$</td>\n</tr>\n<tr> \n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Desktop</b></td>\n<td align=\"center\">$0.1$</td>\n<td align=\"center\">$0.2$</td>\n</tr>\n</tbody></table>\n\nIt is found that $10 \\%$ of customers who currently use a laptop would choose a desktop on their next purchase, while $80 \\%$ of customers who currently use a desktop would choose a laptop on their next purchase. \n\nGiven that the store has $5\\,400$ customers, all of whom purchase a new computer every two years, how many customers would eventually own a desktop computer if the given probabilities remain constant over many two-year periods?",
+      "worked_solution": "From the table, we get the corresponding stochastic matrix \n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/assets/30bdf02b3878802e65a722f40ba1f02a1e27be8004a6bc19a31073c9a46fdd1a.svg)\n\nNotice that $P$ contains only positive entries. So, the matrix $P$ is regular. As a result, after many two-year periods, the distribution will eventually converge to the unique steady-state vector of $P,$ and this convergence does not depend on the initial state.\n\nRecall that a steady-state vector of a stochastic matrix $P$ is a stochastic vector $\\mathbf{q}$ such that \n\n$$\n\\begin{aligned}Pq=q\\,⟹\\,(P-I)q=0.\\end{aligned}\n$$\n\nComputing $P-I,$ we get\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/assets/7d76dd51e6a18be167b9f8d477475f0b2c50c799f763b59b77f7b94a54b45d22.svg)\n\nSo, the matrix equation $(P-I)\\mathbf{q} = \\mathbf{0}$ is equivalent to the system of linear equations with the augmented matrix $M,$ which we reduce to row echelon form using Gaussian elimination as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-0.1 & 0.8 & 0 \\\\ 0.1 & -0.8 & 0\\end{aligned}] & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & ∼[\\begin{aligned}-0.1 & 0.8 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, $x_2$ is a free variable. From the first equation, we obtain \n\n$$\n\\begin{aligned}{x}_{1}=8{x}_{2}.\\end{aligned}\n$$\n\nHence, the general solution is\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/assets/96ec226492c36f9e4ea589ac736b296548489a6d076cfaf85f672eccf12b4992.svg)\n\nSince the steady-state vector must be stochastic, its entries should add up to $1.$ Therefore, we have \n\n$$\n\\begin{aligned}8{x}_{2}+{x}_{2} & =1 \\\\ 9{x}_{2} & =1 \\\\ {x}_{2} & =\\frac{1}{9}.\\end{aligned}\n$$\n\nOur steady-state vector is\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/assets/47dc46374390a39e38c4888c470b6c8f545b500a4fe07b8f0c92a07c9783df9a.svg)\n\nSo, ${\\color{blue}{\\dfrac{1}{9}}}$ of the $5\\,400$ customers would eventually own a desktop computer. Therefore, the total number of people who would eventually own a desktop computer is\n\n$$\n\\dfrac{1}{9} \\cdot 5\\,400 = 600.\n$$",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/observations/lesson-step-34233-a6872b45cdf846413abe.html",
+      "source_url": "https://mathacademy.com/topics/1913",
+      "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/observations/lesson-step-34233-a6872b45cdf846413abe.png",
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/assets/30bdf02b3878802e65a722f40ba1f02a1e27be8004a6bc19a31073c9a46fdd1a.svg",
+          "sha256": "30bdf02b3878802e65a722f40ba1f02a1e27be8004a6bc19a31073c9a46fdd1a",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 1,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/assets/7d76dd51e6a18be167b9f8d477475f0b2c50c799f763b59b77f7b94a54b45d22.svg",
+          "sha256": "7d76dd51e6a18be167b9f8d477475f0b2c50c799f763b59b77f7b94a54b45d22",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 2,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/assets/96ec226492c36f9e4ea589ac736b296548489a6d076cfaf85f672eccf12b4992.svg",
+          "sha256": "96ec226492c36f9e4ea589ac736b296548489a6d076cfaf85f672eccf12b4992",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 3,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/assets/47dc46374390a39e38c4888c470b6c8f545b500a4fe07b8f0c92a07c9783df9a.svg",
+          "sha256": "47dc46374390a39e38c4888c470b6c8f545b500a4fe07b8f0c92a07c9783df9a",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        }
+      ]
+    }
+  },
+  "session_id": "01a1406d-3e21-7e40-b605-f31ae79491b1",
+  "previous_failures": []
+}

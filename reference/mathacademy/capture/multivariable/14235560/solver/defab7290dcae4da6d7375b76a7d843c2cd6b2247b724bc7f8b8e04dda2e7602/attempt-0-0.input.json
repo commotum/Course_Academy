@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-135408",
+      "sequence_position": 7,
+      "problem": "There are two groups of people In a small town: those who travel to work by car and those who travel by train. Every year a study is done in which people are asked about their preference between using trains versus cars. The table below shows the results of this study.\n\n<table align=\"center\" cellpadding=\"10\" rules=\"all\">\n<tbody><tr>\n<td></td>\n<td></td>\n<td colspan=\"2\" align=\"center\">From:</td> \n</tr>\n<tr>\n<td></td>\n<td></td>\n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Car</b></td>\n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Train</b></td> \n</tr>\n<tr> \n<td rowspan=\"2\" align=\"center\">To:</td>\n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Car</b></td>\n<td align=\"center\">$0.35$</td>\n<td align=\"center\">$0.25$</td>\n</tr>\n<tr> \n<td width=\"60\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Train</b></td>\n<td align=\"center\">$0.65$</td>\n<td align=\"center\">$0.75$</td>\n</tr>\n</tbody></table>\n\nIt's found that $65%$ of people who currently travel by car will switch to train next year, while $25%$ of people who currently travel by train will switch to their car next year.\n\nAssuming that the town has $90\\,000$ people that travel to work by train or car, and the given probabilities remain constant over many years, how many people will eventually use the train to travel to work?",
+      "worked_solution": "From the table, we get the corresponding stochastic matrix \n\n$$\nP=[\\begin{aligned}0.35 & 0.25 \\\\ 0.65 & 0.75\\end{aligned}].\n$$\n\nNotice that $P$ contains only positive entries. So, the matrix $P$ is regular. As a result, after many years, the distribution will eventually converge to the unique steady-state vector of $P,$ and this convergence does not depend on the initial state.\n\nRecall that a steady-state vector of a stochastic matrix $P$ is a stochastic vector $q$ such that \n\n$$\n\\begin{aligned}Pq=q\\,⟹\\,(P-I)q=0.\\end{aligned}\n$$\n\nComputing $P-I,$ we get\n\n$$\nP-I=[\\begin{aligned}0.35 & 0.25 \\\\ 0.65 & 0.75\\end{aligned}]-[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}-0.65 & 0.25 \\\\ 0.65 & -0.25\\end{aligned}].\n$$\n\nSo, the matrix equation $(P-I)q=0$ is equivalent to the system of linear equations with the augmented matrix $M,$ which we reduce to row echelon form using Gaussian elimination as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-0.65 & 0.25 & 0 \\\\ 0.65 & -0.25 & 0\\end{aligned}] & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & ∼[\\begin{aligned}-0.65 & 0.25 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain \n\n$$\n\\begin{aligned}{x}_{1}=\\frac{5}{13}{x}_{2}.\\end{aligned}\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}\\frac{5}{13}{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nSince the steady-state vector must be stochastic, its entries should add up to $1.$ Therefore, we have \n\n$$\n\\begin{aligned}\\frac{5}{13}{x}_{2}+{x}_{2} & =1 \\\\ \\frac{18}{13}{x}_{2} & =1 \\\\ {x}_{2} & =\\frac{13}{18}.\\end{aligned}\n$$\n\nTherefore,\n\n$$\nq=[\\begin{aligned}\\frac{5}{18} \\\\ \\frac{13}{18}\\end{aligned}].\n$$\n\nSo, $\\frac{13}{18}$ of the people will eventually use the train to travel. Therefore, the number of people who will eventually use the train is\n\n$$\n\\frac{13}{18}\\cdot 90\\,000=65\\,000.\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/observations/history-q-135408-0e9c12589e9145a8c646.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14235560",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/observations/history-solution-q-135408-5df3070466a21988ebbd.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "65\\,000"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "64\\,000"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "63\\,000"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "62\\,000"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "60\\,000"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q135408",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "64\\,000",
+                "option": "b",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "From the table, we get the corresponding stochastic matrix \n\n$$\nP=[\\begin{aligned}0.35 & 0.25 \\\\ 0.65 & 0.75\\end{aligned}].\n$$\n\nNotice that $P$ contains only positive entries. So, the matrix $P$ is regular. As a result, after many years, the distribution will eventually converge to the unique steady-state vector of $P,$ and this convergence does not depend on the initial state.\n\nRecall that a steady-state vector of a stochastic matrix $P$ is a stochastic vector $q$ such that \n\n$$\n\\begin{aligned}Pq=q\\,⟹\\,(P-I)q=0.\\end{aligned}\n$$\n\nComputing $P-I,$ we get\n\n$$\nP-I=[\\begin{aligned}0.35 & 0.25 \\\\ 0.65 & 0.75\\end{aligned}]-[\\begin{aligned}1 & 0 \\\\ 0 & 1\\end{aligned}]=[\\begin{aligned}-0.65 & 0.25 \\\\ 0.65 & -0.25\\end{aligned}].\n$$\n\nSo, the matrix equation $(P-I)q=0$ is equivalent to the system of linear equations with the augmented matrix $M,$ which we reduce to row echelon form using Gaussian elimination as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-0.65 & 0.25 & 0 \\\\ 0.65 & -0.25 & 0\\end{aligned}] & {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & ∼[\\begin{aligned}-0.65 & 0.25 & 0 \\\\ 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has one pivot column (the $1$st one). Thus, ${x}_{2}$ is a free variable. From the first equation, we obtain \n\n$$\n\\begin{aligned}{x}_{1}=\\frac{5}{13}{x}_{2}.\\end{aligned}\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}\\frac{5}{13}{x}_{2} \\\\ {x}_{2}\\end{aligned}],\\,{x}_{2}\\in R.\n$$\n\nSince the steady-state vector must be stochastic, its entries should add up to $1.$ Therefore, we have \n\n$$\n\\begin{aligned}\\frac{5}{13}{x}_{2}+{x}_{2} & =1 \\\\ \\frac{18}{13}{x}_{2} & =1 \\\\ {x}_{2} & =\\frac{13}{18}.\\end{aligned}\n$$\n\nTherefore,\n\n$$\nq=[\\begin{aligned}\\frac{5}{18} \\\\ \\frac{13}{18}\\end{aligned}].\n$$\n\nSo, $\\frac{13}{18}$ of the people will eventually use the train to travel. Therefore, the number of people who will eventually use the train is\n\n$$\n\\frac{13}{18}\\cdot 90\\,000=65\\,000.\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/observations/step-q135408-a3d220af5a9d0e5cecf4.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a1406d-3e21-7e40-b605-f31ae79491b1",
+  "previous_failures": []
+}

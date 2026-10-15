@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-141024",
+      "sequence_position": 15,
+      "problem": "A study conducted on $3\\,400$ teenagers by the transportation department of a particular city reveals that teenagers' preference for the type of home-to-school transportation changes with time. The following table shows the results of this study.  \n\n<table align=\"center\" cellpadding=\"10\" rules=\"all\">\n<tbody><tr>\n<td></td>\n<td></td>\n<td colspan=\"3\" align=\"center\">From:</td> \n</tr>\n<tr>\n<td></td>\n<td></td>\n<td width=\"70\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Bus</b></td>\n<td width=\"70\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Bicycle</b></td> \n<td width=\"70\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Electric Scooter </b></td> \n</tr>\n<tr> \n<td rowspan=\"3\" align=\"center\">To:</td>\n<td width=\"70\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Bus</b></td>\n<td align=\"center\">$0.2$</td>\n<td align=\"center\">$0.2$</td>\n<td align=\"center\">$0$</td>\n</tr>\n<tr> \n<td width=\"70\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Bicycle</b></td>\n<td align=\"center\">$0.4$</td>\n<td align=\"center\">$0.4$</td>\n<td align=\"center\">$0.4$</td>\n</tr>\n<tr> \n<td width=\"70\" bgcolor=\"#D6EAF8\" align=\"center\"><b>Electric Scooter</b></td>\n<td align=\"center\">$0.4$</td>\n<td align=\"center\">$0.4$</td>\n<td align=\"center\">$0.6$</td> \n</tr>\n</tbody></table>\n\nFor example, $40%$ of teenagers who used to go to school by bus now go by bicycle.  \n\nHow many teenagers would eventually go to school on electric scooters if the listed probabilities remained constant over many years?",
+      "worked_solution": "From the table, we get the corresponding stochastic matrix \n\n$$\nP=[\\begin{aligned}0.2 & 0.2 & 0 \\\\ 0.4 & 0.4 & 0.4 \\\\ 0.4 & 0.4 & 0.6\\end{aligned}].\n$$\n\nNotice that the matrix ${P}^{2}$ contains only positive entries. So, the matrix $P$ is regular. \nAs a result, after many years, the distribution will eventually converge to the steady-state vector of $P,$ and this convergence does not depend on the initial state.\n\nRecall that a steady-state vector of a stochastic matrix $P$ is a stochastic vector $q$ such that \n\n$$\n\\begin{aligned}Pq=q\\,⟹\\,(P-I)q=0.\\end{aligned}\n$$\n\nComputing $P-I,$ we get\n\n$$\nP-I=[\\begin{aligned}0.2 & 0.2 & 0 \\\\ 0.4 & 0.4 & 0.4 \\\\ 0.4 & 0.4 & 0.6\\end{aligned}]-[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}-0.8 & 0.2 & 0 \\\\ 0.4 & -0.6 & 0.4 \\\\ 0.4 & 0.4 & -0.4\\end{aligned}].\n$$\n\nThe matrix equation $(P-I)q=0$ is equivalent to the system of linear equations with the augmented matrix $M,$ which we reduce to row echelon form using Gaussian elimination as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-0.8 & 0.2 & 0 & 0 \\\\ 0.4 & -0.6 & 0.4 & 0 \\\\ 0.4 & 0.4 & -0.4 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{1}:=5{R}_{1} \\\\ {R}_{2}:=5{R}_{2} \\\\ {R}_{3}:=\\frac{5}{2}{R}_{3}\\end{aligned} \\\\  & ∼[\\begin{aligned}-4 & 1 & 0 & 0 \\\\ 2 & -3 & 2 & 0 \\\\ 1 & 1 & -1 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{1}↔{R}_{3}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & 1 & -1 & 0 \\\\ 2 & -3 & 2 & 0 \\\\ -4 & 1 & 0 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+(-2){R}_{1} \\\\ {R}_{3}:={R}_{3}+4{R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & 1 & -1 & 0 \\\\ 0 & -5 & 4 & 0 \\\\ 0 & 5 & -4 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{2}+{R}_{3}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & 1 & -1 & 0 \\\\ 0 & -5 & 4 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has two pivot columns (the $1$st and $2$nd). Thus, ${x}_{3}$ is a free variable. From the second equation, we obtain \n\n$$\n{x}_{2}=\\frac{4}{5}{x}_{3}.\n$$\n\n \nSubstituting this into the first equation, we obtain\n\n$$\n{x}_{1}+(\\frac{4}{5}{x}_{3})-{x}_{3}=0\\,⟹\\,{x}_{1}=\\frac{1}{5}{x}_{3}.\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}\\frac{1}{5}{x}_{3} \\\\ \\frac{4}{5}{x}_{3} \\\\ {x}_{3}\\end{aligned}],\\,{x}_{3}\\in R.\n$$\n\nSince the steady-state vector must be stochastic, its entries should add up to $1.$ Therefore, we have\n\n$$\n\\begin{aligned}\\frac{1}{5}{x}_{3}+\\frac{4}{5}{x}_{3}+{x}_{3} & =1 \\\\ 2{x}_{3} & =1 \\\\ {x}_{3} & =\\frac{1}{2}.\\end{aligned}\n$$\n\nTherefore,\n\n$$\nq=[\\begin{aligned}\\frac{1}{10} \\\\ \\frac{4}{10} \\\\ \\frac{1}{2}\\end{aligned}].\n$$\n\nSo, after many years, $\\frac{1}{2}$ of the teenagers will go to school in electric scooters. Therefore, the total number of teenagers in the city that will go to school in electric scooters will be\n\n$$\n\\frac{1}{2}\\cdot 3\\,400=1\\,700.\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/observations/history-q-141024-7bb0ae92405bb6f63582.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14235560",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/observations/history-solution-q-141024-705735c421b445690f9a.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "2\\,040"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "680"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "1\\,700"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "1\\,360"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "340"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q141024",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "1\\,700",
+                "option": "c",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "From the table, we get the corresponding stochastic matrix \n\n$$\nP=[\\begin{aligned}0.2 & 0.2 & 0 \\\\ 0.4 & 0.4 & 0.4 \\\\ 0.4 & 0.4 & 0.6\\end{aligned}].\n$$\n\nNotice that the matrix ${P}^{2}$ contains only positive entries. So, the matrix $P$ is regular. \nAs a result, after many years, the distribution will eventually converge to the steady-state vector of $P,$ and this convergence does not depend on the initial state.\n\nRecall that a steady-state vector of a stochastic matrix $P$ is a stochastic vector $q$ such that \n\n$$\n\\begin{aligned}Pq=q\\,⟹\\,(P-I)q=0.\\end{aligned}\n$$\n\nComputing $P-I,$ we get\n\n$$\nP-I=[\\begin{aligned}0.2 & 0.2 & 0 \\\\ 0.4 & 0.4 & 0.4 \\\\ 0.4 & 0.4 & 0.6\\end{aligned}]-[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}-0.8 & 0.2 & 0 \\\\ 0.4 & -0.6 & 0.4 \\\\ 0.4 & 0.4 & -0.4\\end{aligned}].\n$$\n\nThe matrix equation $(P-I)q=0$ is equivalent to the system of linear equations with the augmented matrix $M,$ which we reduce to row echelon form using Gaussian elimination as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-0.8 & 0.2 & 0 & 0 \\\\ 0.4 & -0.6 & 0.4 & 0 \\\\ 0.4 & 0.4 & -0.4 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{1}:=5{R}_{1} \\\\ {R}_{2}:=5{R}_{2} \\\\ {R}_{3}:=\\frac{5}{2}{R}_{3}\\end{aligned} \\\\  & ∼[\\begin{aligned}-4 & 1 & 0 & 0 \\\\ 2 & -3 & 2 & 0 \\\\ 1 & 1 & -1 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{1}↔{R}_{3}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & 1 & -1 & 0 \\\\ 2 & -3 & 2 & 0 \\\\ -4 & 1 & 0 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+(-2){R}_{1} \\\\ {R}_{3}:={R}_{3}+4{R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & 1 & -1 & 0 \\\\ 0 & -5 & 4 & 0 \\\\ 0 & 5 & -4 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{2}+{R}_{3}\\end{aligned} \\\\  & ∼[\\begin{aligned}1 & 1 & -1 & 0 \\\\ 0 & -5 & 4 & 0 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has two pivot columns (the $1$st and $2$nd). Thus, ${x}_{3}$ is a free variable. From the second equation, we obtain \n\n$$\n{x}_{2}=\\frac{4}{5}{x}_{3}.\n$$\n\n \nSubstituting this into the first equation, we obtain\n\n$$\n{x}_{1}+(\\frac{4}{5}{x}_{3})-{x}_{3}=0\\,⟹\\,{x}_{1}=\\frac{1}{5}{x}_{3}.\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}\\frac{1}{5}{x}_{3} \\\\ \\frac{4}{5}{x}_{3} \\\\ {x}_{3}\\end{aligned}],\\,{x}_{3}\\in R.\n$$\n\nSince the steady-state vector must be stochastic, its entries should add up to $1.$ Therefore, we have\n\n$$\n\\begin{aligned}\\frac{1}{5}{x}_{3}+\\frac{4}{5}{x}_{3}+{x}_{3} & =1 \\\\ 2{x}_{3} & =1 \\\\ {x}_{3} & =\\frac{1}{2}.\\end{aligned}\n$$\n\nTherefore,\n\n$$\nq=[\\begin{aligned}\\frac{1}{10} \\\\ \\frac{4}{10} \\\\ \\frac{1}{2}\\end{aligned}].\n$$\n\nSo, after many years, $\\frac{1}{2}$ of the teenagers will go to school in electric scooters. Therefore, the total number of teenagers in the city that will go to school in electric scooters will be\n\n$$\n\\frac{1}{2}\\cdot 3\\,400=1\\,700.\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14235560/observations/step-q141024-fbf7b85beb0da020cdbe.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a1406d-3e21-7e40-b605-f31ae79491b1",
+  "previous_failures": []
+}
