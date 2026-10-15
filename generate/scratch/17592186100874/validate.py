@@ -171,6 +171,9 @@ def validate_display(record):
 
 
 def main():
+ provenance=json.loads((HERE/'provenance.json').read_text())
+ for item in provenance['files']:
+  assert hashlib.sha256((HERE/item['local']).read_bytes()).hexdigest()==item['sha256'],('frozen provenance changed',item['local'])
  replays=[];reviews=[];cases=[];source_stats={'questions':0,'banks':0,'options':0,'distractors':0,'correct_designations':0,'provided_solutions':0,'missing_key_and_solution':[]};sourcecases=[]
  for t,src in g.SOURCES.items():
   level=g.LEVELS[t] if g.LEVELS[t]!='unrated' else 'easy';r=g.generate(level,template=t,parameters=g.defaults(t),profile='observed_raw');q=r['question'];sf=src[':question/answer-fields'][0];f=q[':question/answer-fields'][0]
@@ -279,11 +282,13 @@ def main():
  result=subprocess.run([str(HERE/'check-engine'),str(HERE/'engine-input.json'),str(HERE/'engine-report.json')],capture_output=True,text=True)
  if result.returncode:raise AssertionError(result.stderr+result.stdout)
  engine=json.loads((HERE/'engine-report.json').read_text())
+ subprocess.run([sys.executable,str(HERE/'profile-domain.py')],cwd='/tmp',capture_output=True,text=True,check=True)
+ profile_report=json.loads((HERE/'profile-coverage.json').read_text())
  # CLI operation from unrelated cwd; actual flags and JSON/Markdown contracts.
  script=str(HERE.with_suffix('.py'))
  out=subprocess.run([sys.executable,script,'--difficulty','all','--count','2','--seed','8','--format','json'],cwd='/tmp',capture_output=True,text=True,check=True);assert len(json.loads(out.stdout))==6
  out=subprocess.run([sys.executable,script,'--difficulty','all','--count','1','--seed','8','--format','markdown'],cwd='/tmp',capture_output=True,text=True,check=True);assert out.stdout.count('Answer:')==3
- save('validation-report.json',{'status':'passed','database_writes':0,'source':source_stats,'display':COUNTS,'boundary_cases':len(boundaries),'single_slot_experiments':len(slot_audit),'observed_profile_changed_instances':len(observed_variants),'invalid_api_cases':invalid,'deterministic_batch_records':len(batch),'review_records':len(reviews),'unique_review_tasks':len(task_count),'identity_checks':{'source_question_uuid_collisions':0,'different_content_same_id':0,'same_content_different_id':0,'source_task_overlaps_in_normal_batch':sum(bool(r['generation']['reproduces_source_task']) for r in batch),'authored_explicit_source_task_replays':sum(bool(r['generation']['reproduces_source_task']) for r in reviews)},'native_engine':{k:v for k,v in engine.items() if k!='records'},'limitations':['Observed numeric banks with unresolved interpretations retain complete expressions and original transformed bounds; every choice scales by the differential-multiplier ratio. Authored method banks vary those bounds separately.','q-49527 has no observed difficulty/key/solution. Raw evidence stays ineligible; authored easy completion is separate.','No non-MA inventory exists in the frozen source.','Structural degree and exponent stay fixed per source family; numeric slots vary without an instructional progression.']})
+ save('validation-report.json',{'status':'passed','database_writes':0,'source':source_stats,'display':COUNTS,'boundary_cases':len(boundaries),'single_slot_experiments':len(slot_audit),'bounded_observed_profile_instances':profile_report['bounded_instances'],'observed_profile_changed_instances':len(observed_variants),'invalid_api_cases':invalid,'deterministic_batch_records':len(batch),'review_records':len(reviews),'unique_review_tasks':len(task_count),'identity_checks':{'source_question_uuid_collisions':0,'different_content_same_id':0,'same_content_different_id':0,'source_task_overlaps_in_normal_batch':sum(bool(r['generation']['reproduces_source_task']) for r in batch),'authored_explicit_source_task_replays':sum(bool(r['generation']['reproduces_source_task']) for r in reviews)},'native_engine':{k:v for k,v in engine.items() if k!='records'},'limitations':['Observed numeric banks with unresolved interpretations retain complete expressions and original transformed bounds; every choice scales by the differential-multiplier ratio. Authored method banks vary those bounds separately.','q-49527 has no observed difficulty/key/solution. Raw evidence stays ineligible; authored easy completion is separate.','No non-MA inventory exists in the frozen source.','Structural degree and exponent stay fixed per source family; numeric slots vary without an instructional progression.']})
  print(json.dumps({'status':'passed','source':source_stats,'display':COUNTS,'native':{k:v for k,v in engine.items() if k!='records'}},indent=2))
 
 def grade_case(label,r):

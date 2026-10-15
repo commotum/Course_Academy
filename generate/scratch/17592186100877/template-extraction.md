@@ -30,8 +30,8 @@ trigonometric substitution, or extra integration stage is introduced.
 Let l=T(lo), h=T(hi), r=c/(an), A=r*ln(h/l), and K=sqrt(h), J=sqrt(l).
 The following lists preserve original bank order. They are exact mathematical
 recipes, not claims about the source author's intent. Several sparse scalar
-banks underdetermine intent, so these profiles remain explicit observed-pattern
-replay; authored default radios use a distinct whole profile. No mixed pool or
+banks underdetermine intent, so these profiles remain selectable observed-pattern
+variants in normal generation; authored default radios use a distinct whole profile. No mixed pool or
 first-valid distractor selection is used.
 
 | Source | Complete observed recipe list |
@@ -96,3 +96,15 @@ are excluded. The hard radical is directly observed here and uses exactly its
 source inverse3/2 power method. No missing E/M/H level is invented.
 
 The q-15877 lower transformed endpoint is fixed at one because its observed log-power rows drop ln(1). Its original x-lower bound remains variable.
+
+The captured prerequisite Integration Using Substitution was also traversed by
+its actual first-step→next links (`prerequisite-routes.json`): Introduction →
+power function times derivative → constant multiple of derivative → rational
+substitution → rational natural logarithms → other fractional expressions.
+Its rational canonical is x²/(x³+1), and its fractional canonical is
+x²/sqrt(1-x³). These support the derivative matching and fractional-power step
+already present in this KP. The other named predecessor has no lesson wrapper
+in the basis2275 capture; that evidence limit is recorded rather than silently
+using a different basis or inventing its route.
+
+The observed q-12917 whole bank explicitly requires transformed lower endpoint one, rather than relying on accidental key uniqueness to enforce its omitted log(lower) term.

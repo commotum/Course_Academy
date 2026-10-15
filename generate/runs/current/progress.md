@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 36**, **qa_passed: 388**, **queued: 153**, **working: 3**.
+**needs_revalidation: 36**, **qa_passed: 391**, **queued: 149**, **working: 4**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -176,14 +176,14 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186175924](../../scratch/17592186175924-draft.py) | Finding Equations of Perpendicular Lines | Finding the Equation of a Line Perpendicular to a Line in Standard Form | 5 / 5 / 0 / 2 | qa_passed | [Report](qa/17592186175924.json) |
 | [17592186175923](../../scratch/17592186175923-draft.py) | Finding Equations of Perpendicular Lines | Finding the Equation of a Line Perpendicular to a Line Through Two Points | 6 / 5 / 0 / 2 | qa_passed | [Report](qa/17592186175923.json) |
 | [17592186064208](../../scratch/17592186064208-draft.py) | Integrating Linear Rational Functions Using Substitution | Integrating a Combination of Linear Rational Functions Using the General Formula | 0 / 0 / 9 / 1 | qa_passed | [Report](qa/17592186064208.json) |
-| [17592186100877](../../scratch/17592186100877.py) | Calculating Definite Integrals Using Substitution | Calculating a Definite Integral of a Rational Function Using Substitution | 3 / 5 / 1 / 2 | working | — |
+| [17592186100877](../../scratch/17592186100877.py) | Calculating Definite Integrals Using Substitution | Calculating a Definite Integral of a Rational Function Using Substitution | 3 / 5 / 1 / 2 | qa_passed | [Report](qa/17592186100877.json) |
 | [17592186064207](../../scratch/17592186064207-draft.py) | Integrating Linear Rational Functions Using Substitution | Integrating a Linear Rational Function and Simplifying the Arbitrary Constant | 6 / 6 / 0 / 2 | qa_passed | [Report](qa/17592186064207.json) |
-| [17592186100874](../../scratch/17592186100874.py) | Calculating Definite Integrals Using Substitution | Calculating a Definite Integral of Function Using Substitution | 5 / 1 / 6 / 1 | working | — |
-| [17592186064177](../../scratch/17592186064177-draft.py) | Integrating Exponential Functions | Integrating a Sum of Exponential Functions | 5 / 9 / 0 / 2 | working | — |
-| [17592186064218](../../scratch/17592186064218.py) | Integration by Substitution With Inverse Trigonometric Functions | Calculating Indefinite Integrals Using Substitution with Inverse Sine | 9 / 5 / 0 / 0 | queued | — |
-| [17592186064219](../../scratch/17592186064219.py) | Integration by Substitution With Inverse Trigonometric Functions | Calculating Indefinite Integrals Using Substitution with Inverse Tangent | 9 / 7 / 0 / 0 | queued | — |
-| [17592186064250](../../scratch/17592186064250.py) | Integration by Substitution With Inverse Trigonometric Functions | Calculating Indefinite Integrals Using Substitution with Inverse Secant | 0 / 5 / 12 / 0 | queued | — |
-| 17592186064220 | Integration by Substitution With Inverse Trigonometric Functions | Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions | 3 / 11 / 8 / 0 | queued | — |
+| [17592186100874](../../scratch/17592186100874.py) | Calculating Definite Integrals Using Substitution | Calculating a Definite Integral of Function Using Substitution | 5 / 1 / 6 / 1 | qa_passed | [Report](qa/17592186100874.json) |
+| [17592186064177](../../scratch/17592186064177-draft.py) | Integrating Exponential Functions | Integrating a Sum of Exponential Functions | 5 / 9 / 0 / 2 | qa_passed | [Report](qa/17592186064177.json) |
+| [17592186064218](../../scratch/17592186064218-draft.py) | Integration by Substitution With Inverse Trigonometric Functions | Calculating Indefinite Integrals Using Substitution with Inverse Sine | 9 / 5 / 0 / 0 | working | — |
+| [17592186064219](../../scratch/17592186064219-draft.py) | Integration by Substitution With Inverse Trigonometric Functions | Calculating Indefinite Integrals Using Substitution with Inverse Tangent | 9 / 7 / 0 / 0 | working | — |
+| [17592186064250](../../scratch/17592186064250-draft.py) | Integration by Substitution With Inverse Trigonometric Functions | Calculating Indefinite Integrals Using Substitution with Inverse Secant | 0 / 5 / 12 / 0 | working | — |
+| 17592186064220 | Integration by Substitution With Inverse Trigonometric Functions | Calculating Definite Integrals Using Substitution with Inverse Trigonometric Functions | 3 / 11 / 8 / 0 | working | — |
 | 17592186064225 | Integration Using Basic Trigonometric Identities | Integrating a Product of Trigonometric Functions Using Trigonometric Identities | 6 / 5 / 3 / 0 | queued | — |
 | 17592186064227 | Integration Using Basic Trigonometric Identities | Integrating a Trigonometric Expression Using Identities and Substitution | 2 / 7 / 11 / 0 | queued | — |
 | [17592186064226](../../scratch/17592186064226.py) | Integration Using Basic Trigonometric Identities | Integrating a Quotient of Trigonometric Functions Using Trigonometric Identities | 6 / 13 / 0 / 0 | queued | — |
@@ -500,7 +500,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186133890](../../scratch/17592186133890.py) | The Fundamental Theorem for Line Integrals | Applying the Fundamental Theorem of Line Integrals Over Cartesian Curves | 6 / 6 / 0 / 0 | qa_passed | [Report](qa/17592186133890.json) |
 | 17592186119889 | Areas of Parametric Surfaces | Finding an Integral That Represents the Surface Area of a Parametric Surface | 0 / 2 / 5 / 0 | queued | — |
 | 17592186119888 | Areas of Parametric Surfaces | Finding the Surface Area of a Parametric Surface | 0 / 4 / 4 / 0 | queued | — |
-| 17592186179646 | Flux in Two-Dimensional Vector Fields | Calculating Flux Across a Square Using Symmetry | 3 / 5 / 0 / 1 | queued | — |
+| [17592186179646](../../scratch/17592186179646.py) | Flux in Two-Dimensional Vector Fields | Calculating Flux Across a Square Using Symmetry | 3 / 5 / 0 / 1 | queued | — |
 | 17592186179644 | Flux in Two-Dimensional Vector Fields | Determining a Flux's Sign From a Diagram | 5 / 5 / 0 / 0 | queued | — |
 | 17592186179647 | Flux in Two-Dimensional Vector Fields | Calculating Flux Across a Rectangle Using Two Symmetry Properties | 5 / 5 / 0 / 2 | queued | — |
 | 17592186179645 | Flux in Two-Dimensional Vector Fields | Finding an Integral Expression for Flux | 5 / 6 / 0 / 0 | queued | — |

@@ -38,3 +38,5 @@ for label,record,submitted in [('foreign numeric choice',radio,'999999999'),('ma
 out={'engine_sha256':EXPECTED,'batches_max_records':3,'reports':allreports,'gaps':gaps,'invalid_inputs':invalid,'database_writes':0}
 (H/'engine-validation.json').write_text(json.dumps(out,indent=2)+'\n')
 v=json.loads((H/'validation.json').read_text());v['status']='passed with disclosed native equivalent-entry gaps'if gaps else'passed';v['native']={'reports':len(allreports),'accepted':sum(r['accepted_checks']for r in allreports),'rejected':sum(r['rejected_checks']for r in allreports),'unresolved':sum(r['documented_unresolved_checks']for r in allreports),'valid_equivalent_entry_gaps':len(gaps),'engine_sha256':EXPECTED};(H/'validation.json').write_text(json.dumps(v,indent=2)+'\n');print(v['native'])
+
+subprocess.run([sys.executable,'-B',str(H/'notation.py')],check=True)

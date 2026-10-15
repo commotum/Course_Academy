@@ -3,8 +3,8 @@
 
 The source power/radical, substitution degree, response contract and four
 instructional stages are fixed by each family. Numerical coefficient, shift,
-and both endpoints are explicit slots. Observed opaque banks replay exactly;
-normal radio sampling uses the separately declared complete method bank.
+and both endpoints are explicit slots. Observed numeric banks preserve transformed bounds and scale as complete
+profiles; separately authored method banks also vary those bounds.
 """
 import argparse,copy,hashlib,importlib.util,json,random,sys,uuid
 from functools import lru_cache
@@ -88,7 +88,7 @@ def recipes(t,m,profile):
    r=m['r'];L,H=m['L'],m['H'];scale=k/(r+1)
    values=[-scale*(L**r-H**(r+1)),T,-T,-scale*(L**(r+1)+H**(r+1)),-3*T]
    # Original final choice is +3T (differential multiplier omitted).
-   values[-1]=3*T;names=['lower exponent r instead of r+1','correct','reverse endpoints','sum positive endpoint magnitudes','omit factor1/3']
+   values[-1]=3*T;names=['lower exponent r instead of r+1','correct','reverse endpoints','sum positive endpoint magnitudes','3T; source-scale pattern (source omits factor1/3)']
   else:
    origin=allowed(t,defaults(t))
    if m['L']!=origin['L'] or m['H']!=origin['H']:raise ValueError('observed profile requires original transformed bounds')

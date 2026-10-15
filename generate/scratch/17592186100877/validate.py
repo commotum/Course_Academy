@@ -165,7 +165,7 @@ def main():
   if ':answer-field/correct'in sf:assert same(answer,scalar(sf[':answer-field/correct'][':answer/value']))
   assert ':question/worked-solution'not in src or all(sentence in q[':question/worked-solution']for sentence in ['We start by changing the variable:','Next, we create a table for the limits of integration using the rule','So, the integral in terms of the new variable is','Finally, we can solve it and get'])
   fidelity.append({'source_id':sid,'bank_matched':len(want),'bank_total':len(want),'original_key_present':':answer-field/correct'in sf,'original_solution_present':':question/worked-solution'in src,'counts':counts,'repair':None if ':question/worked-solution'in src else 'authored missing key and solution, not counted as exact designation/solution replay'})
-  raw.append({'source_id':sid,'raw':src,'public_eligible':':question/worked-solution'in src,'reason':None if ':question/worked-solution'in src else 'missing key/solution; supported public completion separate'})
+  raw.append({'source_id':sid,'raw':src,'eligible':False,'evidence_only':True,'source_basis':2275,'public_eligible':False,'supported_normal_output':True,'reason':'exact immutable source evidence; public repairs/completions separate'})
   reviews.append({'label':sid+' original-parameters','record':r});allrecords.append(r)
   seen={r['generation']['math_fingerprint']};variants=[]
   for seed in range(300):

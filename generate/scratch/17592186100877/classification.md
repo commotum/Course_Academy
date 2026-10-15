@@ -31,3 +31,17 @@ The snapshot's manifest says has_generator=false; neither numeric script nor its
 evidence directory existed. This is a new unregistered numeric pair. Queue state
 alone was not used as registration evidence. No registration or database write
 was performed.
+
+The 11 source selectors are not a claim of 11 different mathematical methods.
+They specialize seven Markdown/field/operative-layout groups: (1) moderate
+matched-numerator logarithm radio (q-113747/q-19129/q-73434, with authored
+completions q-12912/q-12917), (2) easy cube-expanded linear logarithm radio,
+(3) easy negative-numerator square-expanded radio, (4) easy linear logarithm
+blank, (5) moderate quartic logarithm blank with its unscaled differential row,
+(6) moderate two-square logarithm radio with an extra factoring row, and (7)
+hard fractional-power blank. The eight radio sources have distinct complete
+bank patterns. Source-specialized selectors keep those patterns and observed
+row presence explicit; mathematically equivalent tasks across all selectors
+are deduplicated by actual integrand, original bounds and domain. Distinct seed,
+selector name, option order or equivalent bank spelling never increases the
+reported mathematical-task count.

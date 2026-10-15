@@ -14,3 +14,12 @@ Source capture basis is 1356. Review pairs show originals and two generated vari
 Parent version2 repair: primitive bound slots include both plain `[P]` and TeX-wrapped `{[P]}` forms, preserving original variable-labelled bounds. Changed u bounds now update every inner and separated primitive bracket. Raw anchor bytes remain the fidelity requirement.
 
 The v2 validator independently checks every displayed primitive endpoint and coordinate label against the parsed domain, and differentiates each separated primitive against its own printed factor. Six mutation regressions now include a stale wrapped primitive bound and compensating primitive scalings. Explicit fractional and labelled-bound cases are included in full native validation.
+
+Replenishment uses `replenish.py`, the existing application inventory reader, native
+predicates, and configured application contributor. It retains exact requests,
+previews, receipts, and exact-basis readbacks below `reference/replenishment/`.
+The application `api.lock` is held across the authoritative inventory recheck,
+preparation, guarded submission, and readback. Generator registration reuses the
+existing UUID, or derives the package's stable identity from the KP UUID if absent.
+`reference/source-reconciliation.md` records the live set-brace presentation
+repairs without changing the frozen source or any live source record.

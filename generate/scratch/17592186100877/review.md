@@ -136,36 +136,36 @@ $$
 
 ## q-12917 changed 1
 
-Calculate the definite integral $\int_{0}^{1}\frac{x^{2}}{2 x^{3} + 2}\,\text{d}x.$
+Calculate the definite integral $\int_{0}^{1}\frac{12 x^{2}}{3 x^{3} + 1}\,\text{d}x.$
 
-- $\frac{3 \log{\left(2 \right)}}{2}$
-- $\log{\left(2 \right)}$
+- $\frac{8 \log{\left(2 \right)}}{3}$
 - $2 \log{\left(2 \right)}$
-- $\frac{\log{\left(2 \right)}}{3}$
-- $\frac{\log{\left(2 \right)}}{6}$
+- $\frac{4 \log{\left(2 \right)}}{3}$
+- $\log{\left(2 \right)}$
+- $\frac{3 \log{\left(2 \right)}}{2}$
 
 We start by changing the variable:
 
 $$
-\begin{aligned}u & =2 x^{3} + 2 \\ \frac{\text{d}u}{\text{d}x} & =6 x^{2} \\ \text{d}u & =6 x^{2}\,\text{d}x \\ \frac{1}{6}\,\text{d}u & =x^{2}\,\text{d}x\end{aligned}
+\begin{aligned}u & =3 x^{3} + 1 \\ \frac{\text{d}u}{\text{d}x} & =9 x^{2} \\ \text{d}u & =9 x^{2}\,\text{d}x \\ \frac{4}{3}\,\text{d}u & =12 x^{2}\,\text{d}x\end{aligned}
 $$
 
-Next, we create a table for the limits of integration using the rule $u=2 x^{3} + 2.$
+Next, we create a table for the limits of integration using the rule $u=3 x^{3} + 1.$
 
 $$
-\begin{aligned}x & 0 & 1 \\ u & 2 & 4\end{aligned}
+\begin{aligned}x & 0 & 1 \\ u & 1 & 4\end{aligned}
 $$
 
 So, the integral in terms of the new variable is
 
 $$
-\int_{0}^{1}\frac{x^{2}}{2 x^{3} + 2}\,\text{d}x=\int_{2}^{4}\frac{1}{u}\cdot \frac{1}{6}\,\text{d}u.
+\int_{0}^{1}\frac{12 x^{2}}{3 x^{3} + 1}\,\text{d}x=\int_{1}^{4}\frac{1}{u}\cdot \frac{4}{3}\,\text{d}u.
 $$
 
 Finally, we can solve it and get
 
 $$
-\begin{aligned}\int_{2}^{4}\frac{1}{u}\cdot \frac{1}{6}\,\text{d}u & =\frac{1}{6}\int_{2}^{4}\frac{1}{u}\,\text{d}u \\  & =\frac{1}{6}\ln(u)|_{2}^{4} \\  & =\frac{1}{6}(\ln(4)-\ln(2)) \\  & =\frac{\log{\left(2 \right)}}{6}.\end{aligned}
+\begin{aligned}\int_{1}^{4}\frac{1}{u}\cdot \frac{4}{3}\,\text{d}u & =\frac{4}{3}\int_{1}^{4}\frac{1}{u}\,\text{d}u \\  & =\frac{4}{3}\ln(u)|_{1}^{4} \\  & =\frac{4}{3}(\ln(4)-\ln(1)) \\  & =\frac{8 \log{\left(2 \right)}}{3}.\end{aligned}
 $$
 
 ## q-12917 changed 2

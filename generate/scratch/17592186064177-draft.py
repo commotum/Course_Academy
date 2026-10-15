@@ -2,6 +2,7 @@
 """Local, unregistered termwise exponential-sum generator; no database operations."""
 import argparse, copy, hashlib, importlib.util, itertools, json, os, random, re, sys, uuid
 from pathlib import Path
+sys.dont_write_bytecode=True
 try:
  import sympy as sp
 except ModuleNotFoundError:
@@ -180,6 +181,16 @@ def authored_instance(level,p,profile):
  q={':question/problem':'$'+integral(tex(expr))+'=$',':question/worked-solution':direct_solution(expr),':question/difficulty':':question.difficulty/'+level,':question/answer-fields':fields(vals)}
  return q,[]
 
+def profile_recipes(template,profile):
+ if template in TEMPLATES:return list(TEMPLATES[template]['choices'])
+ if template in AUTHORED:
+  if profile=='authored-omit-log':return ['A+C','A-b*base^x/log(base)+b*base^x+C','A-2*a*e^x+C','A+a*e^x+C','A-b*base^x/log(base)+C']
+  return ['A+C','A-b*base^x/log(base)+b*base^x*log(base)+C','A-2*b*base^x/log(base)+C','A-2*a*e^x+C','A-a*e^x+C']
+ if template in ('q-31311','q-51102'):
+  original=SPECS[template][1]
+  return [a[':answer/value'].replace(str(original)+'^{x}','@@base@@^{x}').replace(r'\ln '+str(original),r'\ln @@base@@') for a in MA[template][':question/answer-fields'][0][':answer-field/choices']]
+ return []
+
 @fmt.checked_math_content
 def generate(difficulty,seed=0,template=None,parameters=None,bank_profile=None):
  integer(seed,'seed')
@@ -202,7 +213,12 @@ def generate(difficulty,seed=0,template=None,parameters=None,bank_profile=None):
    f[':answer-field/correct']=[':answer/id',str(index)]
  q=normalize(q)
  # Whole content/profile identity prevents distinct authored banks colliding. Task ID ignores bank/order.
- task=digest({k:v for k,v in q.items() if k in (':question/problem',':question/difficulty')})
+ if template in ('q-167332','q-167786','q-166079'):
+  task_expr=2*sp.exp(X)+24*X-2*X**3
+ else:
+  m=re.search(r'\\int\s*',q[':question/problem']);d=re.search(r'(?:\\,)?\\text\{d\}x|(?<![A-Za-z])dx',q[':question/problem'][m.end():])
+  task_expr=expression(q[':question/problem'][m.end():m.end()+d.start()])
+ task=digest({'difficulty':difficulty,'integrand':sp.srepr(sp.expand(task_expr))})
  skeleton=copy.deepcopy(q);skeleton.pop(':question/id',None)
  for f in skeleton[':question/answer-fields']:
   f.pop(':answer-field/id',None)
@@ -217,7 +233,7 @@ def generate(difficulty,seed=0,template=None,parameters=None,bank_profile=None):
    old=a[':answer/id'];a[':answer/id']=uid(fid+':answer:'+str(i)+':'+a[':answer/value'])
    if old==cid:f[':answer-field/correct']=[':answer/id',a[':answer/id']]
  domain='x real' if r'\frac{1}{x}' not in q[':question/problem'] and not ('reciprocal'==p.get('tail')) and template not in ('q-31256','q-31261') else 'x real, x != 0; each connected interval has its own arbitrary constant'
- return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'generator_id':uid('question-generator-draft-v2'),'version':VERSION,'source_basis':SOURCE['basis'],'lineage':SOURCE['lineage'],'seed':seed,'template':template,'bank_profile':profile,'parameters':p,'task_id':uid('task:'+task),'content_fingerprint':content,'domain':domain,'source_references':[] if authored else [template],'authored_extension':authored,'source_repairs':repairs,'dependencies':{'sympy':sp.__version__,'math_format':'private copy'}}}
+ return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'generator_id':uid('question-generator-draft-v2'),'version':VERSION,'source_basis':SOURCE['basis'],'lineage':SOURCE['lineage'],'seed':seed,'template':template,'bank_profile':profile,'recipes':profile_recipes(template,profile),'parameters':p,'task_id':uid('task:'+task),'content_fingerprint':content,'domain':domain,'source_references':[] if authored else [template],'authored_extension':authored,'source_repairs':repairs,'dependencies':{'sympy':sp.__version__,'math_format':'private copy'}}}
 
 def batch(difficulty,count=5,seed=0):
  integer(seed,'seed');integer(count,'count',0)
@@ -240,6 +256,6 @@ if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=(*SUPPORTED_LEVELS,'all'),required=True);ap.add_argument('--count',type=int,default=5);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--format',choices=('json','markdown'),default='json');ap.add_argument('--output');a=ap.parse_args()
  try:r=batch(a.difficulty,a.count,a.seed)
  except ValueError as e:ap.error(str(e))
- s=json.dumps({'instances':r,'supported_levels':SUPPORTED_LEVELS,'version':VERSION},indent=2) if a.format=='json' else '\n\n---\n\n'.join(markdown(z) for z in r)
+ s=json.dumps(r,indent=2) if a.format=='json' else '\n\n---\n\n'.join(markdown(z) for z in r)
  if a.output:Path(a.output).write_text(s+'\n')
  else:print(s)

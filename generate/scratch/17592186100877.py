@@ -68,7 +68,7 @@ def bank(sid,p,profile,correct,ul,uh,r):
  if CONFIG[sid][1]=='blank':return [correct]
  if profile=='authored':return [correct,-correct,(a*n)*correct,correct/(a*n),r*(uh*s.log(uh)-ul*s.log(ul))]
  # Complete observed banks. Some scalar evidence underdetermines intent; these
- # explicitly recorded algebraic patterns are replay-only, never inferred intent.
+ # explicitly recorded algebraic patterns are selectable source-pattern variants, never inferred intent.
  if sid=='q-12912':return [s.log(uh),s.Integer(0),correct,2*s.log(uh),r]
  if sid=='q-12917':return [r*s.log(s.sqrt(uh)),2*r*s.log(s.sqrt(uh)),s.log(s.sqrt(uh)),s.Rational(3,2)*s.log(s.sqrt(uh)),2*s.log(s.sqrt(uh))]
  if sid=='q-113747':return [r*s.log(a),s.log(uh),a*n*s.log(uh),s.log(a),correct]
@@ -83,6 +83,7 @@ def bank(sid,p,profile,correct,ul,uh,r):
 
 def core(sid,p,profile):
  n,a,b,c,L,H=guard(sid,p);T=a*x**n+b;D=s.diff(T,x);N=c*x**(n-1);r=c/(a*n);ul=T.subs(x,L);uh=T.subs(x,H);hard=CONFIG[sid][0]=='hard'
+ if sid=='q-12917'and profile=='observed'and ul!=1:raise ValueError('observed q12917 bank assumes transformed lower endpoint one')
  # The source explicitly uses a radical denominator in its hard family.
  den=r'\sqrt{('+tex(T)+r')^{3}}'if hard else tex(T)
  F=N/(T**s.Rational(3,2))if hard else N/T
@@ -159,6 +160,7 @@ def sample(sid,rng,profile):
 # HARD: quadratic inner, inverse3/2 power, same root evaluation workload.
 @fmt.checked_math_content
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+ if type(seed)is not int:raise ValueError('seed must be a builtin integer')
  level={'medium':'moderate'}.get(level,level)
  if level not in ('easy','moderate','hard'):raise ValueError('difficulty')
  rng=random.Random(seed);eligible=[k for k,v in CONFIG.items()if v[0]==level and(field_type is None or field_type in(v[1],':answer-field.type/'+v[1]))]
@@ -179,7 +181,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  if fieldkind=='radio':rng.shuffle(answers)
  field={':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/'+fieldkind,':answer-field/choices':answers,':answer-field/correct':[':answer/id',correctid]}
  math_id=digest({'integrand':s.srepr(s.cancel(data['F'])),'bounds':[str(data['L']),str(data['H'])],'domain':'inner>0 on closed real interval'})
- return {'knowledge_point':{'db_id':KP,'id':REC[':knowledge-point/id'],'title':REC[':knowledge-point/title']},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[field]},'generation':{'version':VERSION,'seed':seed,'basis':2275,'template':sid,'parameters':p,'bank_profile':profile,'source_ids':[sid],'math_fingerprint':math_id,'content_fingerprint':content_id,'domain':'a*x^n+b>0 throughout closed original x interval; no poles','authored':profile=='authored' or sid in('q-12912','q-12917'),'runtime':{'python':sys.version.split()[0],'sympy':s.__version__}}}
+ return {'knowledge_point':{'db_id':KP,'id':REC[':knowledge-point/id'],'title':REC[':knowledge-point/title']},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[field]},'generation':{'version':VERSION,'seed':seed,'basis':2275,'template':sid,'parameters':p,'bank_profile':profile,'source_ids':[sid],'math_fingerprint':math_id,'content_fingerprint':content_id,'domain':'a*x^n+b>0 throughout closed original x interval; no poles','eligible':True,'evidence_only':False,'source_basis':2275,'origin':'authored_completion'if sid in('q-12912','q-12917')else'authored_bank'if profile=='authored'else'observed_source_pattern','authored_completion':sid in('q-12912','q-12917'),'source_repairs':['independently derived missing key','authored shared-method worked solution']if sid in('q-12912','q-12917')else['normalize malformed bare ln TeX in final solution']if sid=='q-336717'else[],'authored':profile=='authored' or sid in('q-12912','q-12917'),'runtime':{'python':sys.version.split()[0],'sympy':s.__version__}}}
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
 def generate_moderate(seed=0,**kwargs):return generate('moderate',seed,**kwargs)
 def generate_hard(seed=0,**kwargs):return generate('hard',seed,**kwargs)
@@ -188,5 +190,6 @@ def markdown(record):
  return q[':question/problem']+'\n\n'+'\n'.join('- $'+a[':answer/value']+'$'for a in f[':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
 if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['json','markdown'],default='json');ap.add_argument('--template');ap.add_argument('--profile');args=ap.parse_args()
+ if args.count<=0:ap.error('--count must be positive')
  rows=[generate(l,args.seed+i,template=args.template,profile=args.profile)for l in(['easy','moderate','hard']if args.difficulty=='all'else[args.difficulty])for i in range(args.count)]
  print(json.dumps(rows,indent=2,ensure_ascii=False)if args.format=='json'else'\n\n---\n\n'.join(markdown(r)for r in rows))
