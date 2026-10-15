@@ -1,0 +1,3 @@
+# Interpreting the Curl of a Vector Field
+
+Generator: ../17592186133881.py. Run with the repository .venv Python, --difficulty moderate|hard --count N --seed S --format json|markdown. validate.py replays all complete source banks and validates the full declared coefficient-ratio domain through exact circulation, plotted numeric arrays, field keys and the application grader. replenish.py handles current inventory, application lock, configured attribution, schema validation, basis guard, saved exact request and verified readback. Easy remains unsupported. Original sources and learner state are preserved.

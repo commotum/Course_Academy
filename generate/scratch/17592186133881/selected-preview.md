@@ -1,0 +1,114 @@
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186133881/assets/6216e262e3ef6b95d444e355d030ee122790527ce707f8d835ec11954ca55497.png)
+
+Consider the vector field $F(x,y,z),$ shown above. Given that $F(x,y,z)$ is independent of $z,$ which of the following statements are true?
+
+Select all that apply.
+
+- **I.** $\text{curl}\,F=0$
+- **II.** $\text{curl}\,F\ne 0$
+- **III.** $F$ is irrotational
+- **IV.** $\text{curl}\,F$ points in the positive $z$-direction.
+
+Recall that $\text{curl}\,F$ denotes the curl of the vector field $F.$
+
+To understand intuitively whether a vector field has curl at a point $P$, imagine that $F$ represents the velocity field of flowing water. Place a paddlewheel at $P$ with its axis in the $z$-direction. If it rotates, the field has nonzero curl; if it does not, the field has zero curl.
+
+The arrows turn a paddlewheel counterclockwise. Thus $\text{curl}\,F\ne 0$ throughout space, so $F$ is not irrotational. Curl measures local rotation, even when the arrows also spread outward. Wrap the fingers of your right hand in the counterclockwise direction: your thumb points out of the screen, in the positive $z$-direction.
+
+With that in mind, check each statement:
+
+- Statement I is false.
+- Statement II is true.
+- Statement III is false.
+- Statement IV is true.
+
+Therefore, the correct answer is "II and IV only."
+
+```json
+[
+  {
+    ":answer-field/id": "902b4a07-6d8b-5503-adc1-c2e50d71cada",
+    ":answer-field/key": "I",
+    ":answer-field/type": ":answer-field.type/checkbox",
+    ":answer-field/choices": [
+      {
+        ":answer/id": "f1bf54e5-cbe9-579a-a9d4-b978428e5567",
+        ":answer/type": ":answer.type/text",
+        ":answer/value": "false"
+      },
+      {
+        ":answer/id": "088fe0c1-c315-512f-86fb-109ae98d416a",
+        ":answer/type": ":answer.type/text",
+        ":answer/value": "true"
+      }
+    ],
+    ":answer-field/correct": [
+      ":answer/id",
+      "f1bf54e5-cbe9-579a-a9d4-b978428e5567"
+    ]
+  },
+  {
+    ":answer-field/id": "6b93784d-4281-5760-8eef-4865819e8b08",
+    ":answer-field/key": "II",
+    ":answer-field/type": ":answer-field.type/checkbox",
+    ":answer-field/choices": [
+      {
+        ":answer/id": "83d545a1-3cb7-50ad-afd2-99914e5c776e",
+        ":answer/type": ":answer.type/text",
+        ":answer/value": "false"
+      },
+      {
+        ":answer/id": "e99e88eb-25ca-5d9e-a643-ad008b0e980a",
+        ":answer/type": ":answer.type/text",
+        ":answer/value": "true"
+      }
+    ],
+    ":answer-field/correct": [
+      ":answer/id",
+      "e99e88eb-25ca-5d9e-a643-ad008b0e980a"
+    ]
+  },
+  {
+    ":answer-field/id": "d88cb888-c4d7-5ba8-baab-76faa9062e42",
+    ":answer-field/key": "III",
+    ":answer-field/type": ":answer-field.type/checkbox",
+    ":answer-field/choices": [
+      {
+        ":answer/id": "19cc02c5-93de-526b-a4a3-d3c40f42c505",
+        ":answer/type": ":answer.type/text",
+        ":answer/value": "false"
+      },
+      {
+        ":answer/id": "072a3f6e-5df0-5342-bc7b-11b9d8003818",
+        ":answer/type": ":answer.type/text",
+        ":answer/value": "true"
+      }
+    ],
+    ":answer-field/correct": [
+      ":answer/id",
+      "19cc02c5-93de-526b-a4a3-d3c40f42c505"
+    ]
+  },
+  {
+    ":answer-field/id": "5de480c0-0dd0-5de8-af4e-b39414765809",
+    ":answer-field/key": "IV",
+    ":answer-field/type": ":answer-field.type/checkbox",
+    ":answer-field/choices": [
+      {
+        ":answer/id": "38be668d-9ab7-5436-b034-cb331b91c492",
+        ":answer/type": ":answer.type/text",
+        ":answer/value": "false"
+      },
+      {
+        ":answer/id": "0505bfb8-fbfd-554c-8e3d-44ac942e0b16",
+        ":answer/type": ":answer.type/text",
+        ":answer/value": "true"
+      }
+    ],
+    ":answer-field/correct": [
+      ":answer/id",
+      "0505bfb8-fbfd-554c-8e3d-44ac942e0b16"
+    ]
+  }
+]
+```
