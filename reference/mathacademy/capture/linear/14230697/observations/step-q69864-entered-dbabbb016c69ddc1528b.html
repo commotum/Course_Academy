@@ -1,0 +1,1439 @@
+<!DOCTYPE html><html><head>
+        <title>Math Academy</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">    
+
+        <link rel="shortcut icon" href="/img/favicon.ico">
+        <link rel="stylesheet" href="/css/app.css?v=2">
+        <link rel="stylesheet" href="/css/mathquill.css">
+        <link rel="stylesheet" href="/css/math-editor.css">
+
+        <link rel="stylesheet" href="/css/prism.css">
+        <script type="text/javascript" src="/js/prism.js"></script>
+
+        <script type="text/javascript" src="/js/jquery.1.11.0.min.js"></script>
+
+        <script>
+            $.noConflict();
+            // Code that uses other library's $ can follow here.
+        </script>
+
+        <script type="text/javascript" src="/js/mathquill.v2.1.min.js"></script>
+        <script type="text/javascript" src="/js/math-editor.js"></script>         
+        <script type="text/javascript" src="/js/mathjax-config.js?v=2"></script>
+        <script type="text/javascript" id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="loadMathJaxFallback()"></script>
+        <!--
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>        
+        <script type="text/javascript" src="/js/katex-config.js"></script>
+        -->
+
+          
+
+        <script type="text/javascript" src="/js/core.js"></script>
+        <script type="text/javascript" src="/js/core-ui.js"></script>
+        <script type="text/javascript" src="/js/api.js"></script>
+        <script type="text/javascript" src="/js/api-new.js"></script>
+           
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/input/tex/extensions/color.js" charset="UTF-8"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/input/tex/extensions/enclose.js" charset="UTF-8"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/input/tex/extensions/bbox.js" charset="UTF-8"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/input/tex/extensions/cancel.js" charset="UTF-8"></script><style type="text/css">.CtxtMenu_InfoClose {  top:.2em; right:.2em;}
+.CtxtMenu_InfoContent {  overflow:auto; text-align:left; font-size:80%;  padding:.4em .6em; border:1px inset; margin:1em 0px;  max-height:20em; max-width:30em; background-color:#EEEEEE;  white-space:normal;}
+.CtxtMenu_Info.CtxtMenu_MousePost {outline:none;}
+.CtxtMenu_Info {  position:fixed; left:50%; width:auto; text-align:center;  border:3px outset; padding:1em 2em; background-color:#DDDDDD;  color:black;  cursor:default; font-family:message-box; font-size:120%;  font-style:normal; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 15px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius:15px;               /* Safari and Chrome */  -moz-border-radius:15px;                  /* Firefox */  -khtml-border-radius:15px;                /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */  filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color="gray", Positive="true"); /* IE */}
+</style><style type="text/css">.CtxtMenu_MenuClose {  position:absolute;  cursor:pointer;  display:inline-block;  border:2px solid #AAA;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  font-family: "Courier New", Courier;  font-size:24px;  color:#F0F0F0}
+.CtxtMenu_MenuClose span {  display:block; background-color:#AAA; border:1.5px solid;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  line-height:0;  padding:8px 0 6px     /* may need to be browser-specific */}
+.CtxtMenu_MenuClose:hover {  color:white!important;  border:2px solid #CCC!important}
+.CtxtMenu_MenuClose:hover span {  background-color:#CCC!important}
+.CtxtMenu_MenuClose:hover:focus {  outline:none}
+</style><style type="text/css">.CtxtMenu_Menu {  position:absolute;  background-color:white;  color:black;  width:auto; padding:5px 0px;  border:1px solid #CCCCCC; margin:0; cursor:default;  font: menu; text-align:left; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 5px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius: 5px;             /* Safari and Chrome */  -moz-border-radius: 5px;                /* Firefox */  -khtml-border-radius: 5px;              /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */}
+.CtxtMenu_MenuItem {  padding: 1px 2em;  background:transparent;}
+.CtxtMenu_MenuArrow {  position:absolute; right:.5em; padding-top:.25em; color:#666666;  font-family: null; font-size: .75em}
+.CtxtMenu_MenuActive .CtxtMenu_MenuArrow {color:white}
+.CtxtMenu_MenuArrow.CtxtMenu_RTL {left:.5em; right:auto}
+.CtxtMenu_MenuCheck {  position:absolute; left:.7em;  font-family: null}
+.CtxtMenu_MenuCheck.CtxtMenu_RTL { right:.7em; left:auto }
+.CtxtMenu_MenuRadioCheck {  position:absolute; left: .7em;}
+.CtxtMenu_MenuRadioCheck.CtxtMenu_RTL {  right: .7em; left:auto}
+.CtxtMenu_MenuInputBox {  padding-left: 1em; right:.5em; color:#666666;  font-family: null;}
+.CtxtMenu_MenuInputBox.CtxtMenu_RTL {  left: .1em;}
+.CtxtMenu_MenuComboBox {  left:.1em; padding-bottom:.5em;}
+.CtxtMenu_MenuSlider {  left: .1em;}
+.CtxtMenu_SliderValue {  position:absolute; right:.1em; padding-top:.25em; color:#333333;  font-size: .75em}
+.CtxtMenu_SliderBar {  outline: none; background: #d3d3d3}
+.CtxtMenu_MenuLabel {  padding: 1px 2em 3px 1.33em;  font-style:italic}
+.CtxtMenu_MenuRule {  border-top: 1px solid #DDDDDD;  margin: 4px 3px;}
+.CtxtMenu_MenuDisabled {  color:GrayText}
+.CtxtMenu_MenuActive {  background-color: #606872;  color: white;}
+.CtxtMenu_MenuDisabled:focus {  background-color: #E8E8E8}
+.CtxtMenu_MenuLabel:focus {  background-color: #E8E8E8}
+.CtxtMenu_ContextMenu:focus {  outline:none}
+.CtxtMenu_ContextMenu .CtxtMenu_MenuItem:focus {  outline:none}
+.CtxtMenu_SelectionMenu {  position:relative; float:left;  border-bottom: none; -webkit-box-shadow:none; -webkit-border-radius:0px; }
+.CtxtMenu_SelectionItem {  padding-right: 1em;}
+.CtxtMenu_Selection {  right: 40%; width:50%; }
+.CtxtMenu_SelectionBox {  padding: 0em; max-height:20em; max-width: none;  background-color:#FFFFFF;}
+.CtxtMenu_SelectionDivider {  clear: both; border-top: 2px solid #000000;}
+.CtxtMenu_Menu .CtxtMenu_MenuClose {  top:-10px; left:-10px}
+</style><style id="MJX-CHTML-styles">
+mjx-container[jax="CHTML"] {
+  line-height: 0;
+}
+
+mjx-container [space="1"] {
+  margin-left: .111em;
+}
+
+mjx-container [space="2"] {
+  margin-left: .167em;
+}
+
+mjx-container [space="3"] {
+  margin-left: .222em;
+}
+
+mjx-container [space="4"] {
+  margin-left: .278em;
+}
+
+mjx-container [space="5"] {
+  margin-left: .333em;
+}
+
+mjx-container [rspace="1"] {
+  margin-right: .111em;
+}
+
+mjx-container [rspace="2"] {
+  margin-right: .167em;
+}
+
+mjx-container [rspace="3"] {
+  margin-right: .222em;
+}
+
+mjx-container [rspace="4"] {
+  margin-right: .278em;
+}
+
+mjx-container [rspace="5"] {
+  margin-right: .333em;
+}
+
+mjx-container [size="s"] {
+  font-size: 70.7%;
+}
+
+mjx-container [size="ss"] {
+  font-size: 50%;
+}
+
+mjx-container [size="Tn"] {
+  font-size: 60%;
+}
+
+mjx-container [size="sm"] {
+  font-size: 85%;
+}
+
+mjx-container [size="lg"] {
+  font-size: 120%;
+}
+
+mjx-container [size="Lg"] {
+  font-size: 144%;
+}
+
+mjx-container [size="LG"] {
+  font-size: 173%;
+}
+
+mjx-container [size="hg"] {
+  font-size: 207%;
+}
+
+mjx-container [size="HG"] {
+  font-size: 249%;
+}
+
+mjx-container [width="full"] {
+  width: 100%;
+}
+
+mjx-box {
+  display: inline-block;
+}
+
+mjx-block {
+  display: block;
+}
+
+mjx-itable {
+  display: inline-table;
+}
+
+mjx-row {
+  display: table-row;
+}
+
+mjx-row > * {
+  display: table-cell;
+}
+
+mjx-mtext {
+  display: inline-block;
+}
+
+mjx-mstyle {
+  display: inline-block;
+}
+
+mjx-merror {
+  display: inline-block;
+  color: red;
+  background-color: yellow;
+}
+
+mjx-mphantom {
+  visibility: hidden;
+}
+
+_::-webkit-full-page-media, _:future, :root mjx-container {
+  will-change: opacity;
+}
+
+mjx-assistive-mml {
+  position: absolute !important;
+  top: 0px;
+  left: 0px;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 1px 0px 0px 0px !important;
+  border: 0px !important;
+  display: block !important;
+  width: auto !important;
+  overflow: hidden !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+mjx-assistive-mml[display="block"] {
+  width: 100% !important;
+}
+
+mjx-c::before {
+  display: block;
+  width: 0;
+}
+
+.MJX-TEX {
+  font-family: MJXZERO, MJXTEX;
+}
+
+.TEX-B {
+  font-family: MJXZERO, MJXTEX-B;
+}
+
+.TEX-I {
+  font-family: MJXZERO, MJXTEX-I;
+}
+
+.TEX-MI {
+  font-family: MJXZERO, MJXTEX-MI;
+}
+
+.TEX-BI {
+  font-family: MJXZERO, MJXTEX-BI;
+}
+
+.TEX-S1 {
+  font-family: MJXZERO, MJXTEX-S1;
+}
+
+.TEX-S2 {
+  font-family: MJXZERO, MJXTEX-S2;
+}
+
+.TEX-S3 {
+  font-family: MJXZERO, MJXTEX-S3;
+}
+
+.TEX-S4 {
+  font-family: MJXZERO, MJXTEX-S4;
+}
+
+.TEX-A {
+  font-family: MJXZERO, MJXTEX-A;
+}
+
+.TEX-C {
+  font-family: MJXZERO, MJXTEX-C;
+}
+
+.TEX-CB {
+  font-family: MJXZERO, MJXTEX-CB;
+}
+
+.TEX-FR {
+  font-family: MJXZERO, MJXTEX-FR;
+}
+
+.TEX-FRB {
+  font-family: MJXZERO, MJXTEX-FRB;
+}
+
+.TEX-SS {
+  font-family: MJXZERO, MJXTEX-SS;
+}
+
+.TEX-SSB {
+  font-family: MJXZERO, MJXTEX-SSB;
+}
+
+.TEX-SSI {
+  font-family: MJXZERO, MJXTEX-SSI;
+}
+
+.TEX-SC {
+  font-family: MJXZERO, MJXTEX-SC;
+}
+
+.TEX-T {
+  font-family: MJXZERO, MJXTEX-T;
+}
+
+.TEX-V {
+  font-family: MJXZERO, MJXTEX-V;
+}
+
+.TEX-VB {
+  font-family: MJXZERO, MJXTEX-VB;
+}
+
+mjx-stretchy-v mjx-c, mjx-stretchy-h mjx-c {
+  font-family: MJXZERO, MJXTEX-S1, MJXTEX-S4, MJXTEX, MJXTEX-A ! important;
+}
+
+@font-face /* 0 */ {
+  font-family: MJXZERO;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Zero.woff") format("woff");
+}
+
+@font-face /* 1 */ {
+  font-family: MJXTEX;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Regular.woff") format("woff");
+}
+
+@font-face /* 2 */ {
+  font-family: MJXTEX-B;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Bold.woff") format("woff");
+}
+
+@font-face /* 3 */ {
+  font-family: MJXTEX-I;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-Italic.woff") format("woff");
+}
+
+@font-face /* 4 */ {
+  font-family: MJXTEX-MI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Italic.woff") format("woff");
+}
+
+@font-face /* 5 */ {
+  font-family: MJXTEX-BI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-BoldItalic.woff") format("woff");
+}
+
+@font-face /* 6 */ {
+  font-family: MJXTEX-S1;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size1-Regular.woff") format("woff");
+}
+
+@font-face /* 7 */ {
+  font-family: MJXTEX-S2;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size2-Regular.woff") format("woff");
+}
+
+@font-face /* 8 */ {
+  font-family: MJXTEX-S3;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size3-Regular.woff") format("woff");
+}
+
+@font-face /* 9 */ {
+  font-family: MJXTEX-S4;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size4-Regular.woff") format("woff");
+}
+
+@font-face /* 10 */ {
+  font-family: MJXTEX-A;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_AMS-Regular.woff") format("woff");
+}
+
+@font-face /* 11 */ {
+  font-family: MJXTEX-C;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Regular.woff") format("woff");
+}
+
+@font-face /* 12 */ {
+  font-family: MJXTEX-CB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Bold.woff") format("woff");
+}
+
+@font-face /* 13 */ {
+  font-family: MJXTEX-FR;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Regular.woff") format("woff");
+}
+
+@font-face /* 14 */ {
+  font-family: MJXTEX-FRB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Bold.woff") format("woff");
+}
+
+@font-face /* 15 */ {
+  font-family: MJXTEX-SS;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Regular.woff") format("woff");
+}
+
+@font-face /* 16 */ {
+  font-family: MJXTEX-SSB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Bold.woff") format("woff");
+}
+
+@font-face /* 17 */ {
+  font-family: MJXTEX-SSI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Italic.woff") format("woff");
+}
+
+@font-face /* 18 */ {
+  font-family: MJXTEX-SC;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Script-Regular.woff") format("woff");
+}
+
+@font-face /* 19 */ {
+  font-family: MJXTEX-T;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Typewriter-Regular.woff") format("woff");
+}
+
+@font-face /* 20 */ {
+  font-family: MJXTEX-V;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Regular.woff") format("woff");
+}
+
+@font-face /* 21 */ {
+  font-family: MJXTEX-VB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Bold.woff") format("woff");
+}
+</style><style data-calcw-skins="">.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}.calcw[data-skin="edu-square"]{--calc-title-font:"Trebuchet MS", sans-serif;--calc-title-size:15px;--calc-key-font:"Trebuchet MS", sans-serif;--calc-key-size:20px;--calc-num-weight:100;}</style></head>    
+    <body>
+        <div id="wrap">
+            <link rel="stylesheet" href="/css/select-list.css">
+<link rel="stylesheet" href="/css/help-menu.css">
+<link rel="stylesheet" href="/css/question-widget.css">
+<link rel="stylesheet" href="/css/student-lesson.css">
+
+<link rel="stylesheet" href="/css/calculator.css">
+<link rel="stylesheet" href="/css/calculator-skins-app.css">
+<link rel="stylesheet" href="/css/calculator-skins-edu.css">
+
+<script type="text/javascript" src="/js/core/utils/splitter.js"></script>
+<script type="text/javascript" src="/js/core/utils/segment-parser.js?v=3"></script>
+<script type="text/javascript" src="/js/core/utils/graphics-parser.js"></script>
+<script type="text/javascript" src="/js/core/utils/block-parser.js?v=2"></script>
+<script type="text/javascript" src="/js/core/utils/code-renderer.js?v=2"></script>
+<script type="text/javascript" src="/js/core/question/components/input/input.js"></script>
+<script type="text/javascript" src="/js/core/question/components/input/select.js"></script>
+<script type="text/javascript" src="/js/core/question/components/input/textbox.js"></script>
+<script type="text/javascript" src="/js/core/question/components/question-body-section.js"></script>
+<script type="text/javascript" src="/js/core/question/components/question-body.js"></script>
+
+<script type="text/javascript" src="/js/error-reporter.js?v=4"></script>
+<script type="text/javascript" src="/js/marked.min.js"></script>
+<script type="text/javascript" src="/js/mathdown.js?v=3"></script>
+<script type="text/javascript" src="/js/task-event-storage.js"></script>
+<script type="text/javascript" src="/js/task-event.js"></script>
+<script type="text/javascript" src="/js/free-response-parser.js"></script>
+<script type="text/javascript" src="/js/select-list.js"></script>
+<script type="text/javascript" src="/js/question-body-widget.js"></script>
+<script type="text/javascript" src="/js/question-body-renderer.js"></script>
+
+<script type="text/javascript" src="/js/calculator-expression.js"></script>
+<script type="text/javascript" src="/js/calculator-graphing.js"></script>
+<script type="text/javascript" src="/js/calculator-engine.js"></script>
+<script type="text/javascript" src="/js/calculator-widget.js"></script>
+
+<script type="text/javascript" src="/js/help-menu.js"></script>
+<script type="text/javascript" src="/js/question-widget.js?v=2"></script>
+<script type="text/javascript" src="/js/multiple-choice-question-widget.js"></script>
+<script type="text/javascript" src="/js/free-response-question-widget.js"></script>
+<script type="text/javascript" src="/js/static-select-question-widget.js"></script>
+<script type="text/javascript" src="/js/dynamic-select-question-widget.js"></script>
+<script type="text/javascript" src="/js/proof-question-widget.js"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@rive-app/canvas@latest/rive.js" defer=""></script>
+
+<script>
+    var taskAlreadyCompleted = false;
+    var initialPointsAwarded = null;
+    var initialTaskPoints = null;
+    var initialTaskPassed = null;
+</script>
+
+<script type="text/javascript" src="/js/student-lesson.js"></script>
+
+<div id="header" style="display: block;">
+    <div id="progressBar"><div id="progressBarPreviousButton" class="progressBarPreviousButtonEnabled"></div><div id="stepButton-t2202" class="stepButton visited"></div><div id="stepButton-t2248" class="stepButton visited"></div><div id="stepButton-e2662" class="stepButton visited"></div><div id="stepButton-q107239" class="stepButton visited"></div><div id="stepButton-q61658" class="stepButton visited"></div><div id="stepButton-q61545" class="stepButton visited"></div><div id="stepButton-q61643" class="stepButton visited"></div><div id="stepButton-q117624" class="stepButton" style="display: none;"></div><div id="stepButton-e2757" class="stepButton visited"></div><div id="stepButton-q93196" class="stepButton visited"></div><div id="stepButton-q69864" class="stepButton current"></div><div id="stepButton-q69863" class="stepButton" style="display: none;"></div><div id="stepButton-q69861" class="stepButton" style="display: none;"></div><div id="stepButton-q117652" class="stepButton" style="display: none;"></div><div id="stepButton-t2250" class="stepButton"></div><div id="stepButton-e8975" class="stepButton"></div><div id="stepButton-q107175" class="stepButton"></div><div id="stepButton-q117677" class="stepButton"></div><div id="stepButton-q107279" class="stepButton" style="display: none;"></div><div id="stepButton-q107278" class="stepButton" style="display: none;"></div><div id="stepButton-q107247" class="stepButton" style="display: none;"></div><div id="stepButton-e2668" class="stepButton"></div><div id="stepButton-q117720" class="stepButton"></div><div id="stepButton-q93200" class="stepButton"></div><div id="stepButton-q117705" class="stepButton" style="display: none;"></div><div id="stepButton-q93199" class="stepButton" style="display: none;"></div><div id="stepButton-q117717" class="stepButton" style="display: none;"></div><div id="progressBarNextButton" class="progressBarNextButtonEnabled"></div></div>
+
+    <div id="exitButton"></div>
+</div>
+
+
+<div id="stepsFrame" style="display: block;">
+    <div id="steps">        
+        
+    
+            
+    
+            <div id="step-t2202" class="step" style="display: block">
+    
+               
+                <div class="tutorial">
+                    <div class="stepHeader">
+                        <div class="stepName"><span class="stepType">Introduction</span></div>       
+                        <div class="helpButton" stepid="t2202">?</div>
+                    </div>                    
+    
+                    <style type="text/css">
+                            .mjpage .MJX-monospace {
+                            font-family: monospace
+                            }
+
+                            .mjpage .MJX-sans-serif {
+                            font-family: sans-serif
+                            }
+
+                            .mjpage {
+                            display: inline;
+                            font-style: normal;
+                            font-weight: normal;
+                            line-height: normal;
+                            font-size: 100%;
+                            font-size-adjust: none;
+                            text-indent: 0;
+                            text-align: left;
+                            text-transform: none;
+                            letter-spacing: normal;
+                            word-spacing: normal;
+                            word-wrap: normal;
+                            white-space: nowrap;
+                            float: none;
+                            direction: ltr;
+                            max-width: none;
+                            max-height: none;
+                            min-width: 0;
+                            min-height: 0;
+                            border: 0;
+                            padding: 0;
+                            margin: 0
+                            }
+
+                            .mjpage * {
+                            transition: none;
+                            -webkit-transition: none;
+                            -moz-transition: none;
+                            -ms-transition: none;
+                            -o-transition: none
+                            }
+
+                            .mjx-svg-href {
+                            fill: blue;
+                            stroke: blue
+                            }
+
+                            .MathJax_SVG_LineBox {
+                            display: table!important
+                            }
+
+                            .MathJax_SVG_LineBox span {
+                            display: table-cell!important;
+                            width: 10000em!important;
+                            min-width: 0;
+                            max-width: none;
+                            padding: 0;
+                            border: 0;
+                            margin: 0
+                            }
+
+                            .mjpage__block {
+                            text-align: center;
+                            margin: 1em 0em;
+                            position: relative;
+                            display: block!important;
+                            text-indent: 0;
+                            max-width: none;
+                            max-height: none;
+                            min-width: 0;
+                            min-height: 0;
+                            width: 100%
+                            }</style><p>A <strong>polyhedron</strong> is a <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1.162ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 500.5 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-1-Title">
+<title id="MathJax-SVG-1-Title">3</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E1-MJMAIN-33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E1-MJMAIN-33" x="0" y="0"></use>
+</g>
+</svg></span>-dimensional shape where each side is a polygon. These flat polygonal sides are called <strong>faces</strong>.</p>
+<p><strong>Prisms</strong> are polyhedrons made of two identical polygonal faces (called <strong>bases</strong>) connected by equal parallel line segments. If these line segments are perpendicular to the bases, we have a <strong>right</strong> prism.</p>
+<p>Let's take a look at some common prisms.</p>
+<ul>
+<li>A <strong>triangular (right) prism</strong> consists of two identical triangular faces connected by equal parallel line segments.</li>
+</ul>
+<div id="graphic-c8fbfb306c61e5d397e8c8db898213cd" class="graphic"><img src="/graphics/c8fbfb306c61e5d397e8c8db898213cd"></div>
+
+
+
+<ul>
+<li>A <strong>rectangular (right) prism</strong> consists of two identical rectangular faces connected by equal parallel line segments. Notice that each face is a rectangle.</li>
+</ul>
+<div id="graphic-1b3bbeaca26b7551afb93a8f41621a53" class="graphic"><img src="/graphics/1b3bbeaca26b7551afb93a8f41621a53"></div>
+
+<ul>
+<li>A <strong>cube</strong> is a special case of a rectangular prism that consists of six equal square faces.</li>
+</ul>
+<div id="graphic-5eeaa36f43863fbdcbd355fb766543e3" class="graphic"><img src="/graphics/5eeaa36f43863fbdcbd355fb766543e3"></div>
+
+<p>By adding more sides to the polygonal base, we can make more prisms. For example, the following shape is a pentagonal prism.</p>
+<div id="graphic-cfd4d398f6c3a2b2c6b7469925b3be1f" class="graphic"><img src="/graphics/cfd4d398f6c3a2b2c6b7469925b3be1f"></div> 
+
+<p>We can also construct hexagonal prisms, heptagonal prisms, etc. </p>
+           
+                </div>        
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-t2202" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-t2248" class="step" style="display: block;">
+    
+               
+                <div class="tutorial">
+                    <div class="stepHeader">
+                        <div class="stepName"><span class="stepType">Pyramids</span></div>       
+                        <div class="helpButton" stepid="t2248">?</div>
+                    </div>                    
+    
+                    <style type="text/css">
+                            .mjpage .MJX-monospace {
+                            font-family: monospace
+                            }
+
+                            .mjpage .MJX-sans-serif {
+                            font-family: sans-serif
+                            }
+
+                            .mjpage {
+                            display: inline;
+                            font-style: normal;
+                            font-weight: normal;
+                            line-height: normal;
+                            font-size: 100%;
+                            font-size-adjust: none;
+                            text-indent: 0;
+                            text-align: left;
+                            text-transform: none;
+                            letter-spacing: normal;
+                            word-spacing: normal;
+                            word-wrap: normal;
+                            white-space: nowrap;
+                            float: none;
+                            direction: ltr;
+                            max-width: none;
+                            max-height: none;
+                            min-width: 0;
+                            min-height: 0;
+                            border: 0;
+                            padding: 0;
+                            margin: 0
+                            }
+
+                            .mjpage * {
+                            transition: none;
+                            -webkit-transition: none;
+                            -moz-transition: none;
+                            -ms-transition: none;
+                            -o-transition: none
+                            }
+
+                            .mjx-svg-href {
+                            fill: blue;
+                            stroke: blue
+                            }
+
+                            .MathJax_SVG_LineBox {
+                            display: table!important
+                            }
+
+                            .MathJax_SVG_LineBox span {
+                            display: table-cell!important;
+                            width: 10000em!important;
+                            min-width: 0;
+                            max-width: none;
+                            padding: 0;
+                            border: 0;
+                            margin: 0
+                            }
+
+                            .mjpage__block {
+                            text-align: center;
+                            margin: 1em 0em;
+                            position: relative;
+                            display: block!important;
+                            text-indent: 0;
+                            max-width: none;
+                            max-height: none;
+                            min-width: 0;
+                            min-height: 0;
+                            width: 100%
+                            }</style><p><strong>Pyramids</strong> are polyhedrons made of a polygonal base, with the other triangular faces meeting at a single point. </p>
+<p>Let's take a look at some common pyramids.</p>
+<ul>
+<li>A <strong>triangular pyramid</strong> has a triangular base with <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1.162ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 500.5 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-1-Title">
+<title id="MathJax-SVG-1-Title">3</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E1-MJMAIN-33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E1-MJMAIN-33" x="0" y="0"></use>
+</g>
+</svg></span> other triangular faces that meet at a single point.</li>
+</ul>
+<div id="graphic-bcbe0e4914077352e77072349fd4edf6" class="graphic"><img src="/graphics/bcbe0e4914077352e77072349fd4edf6"></div>
+
+
+
+<ul>
+<li>A <strong>rectangular pyramid</strong> has a rectangular base with <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1.162ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 500.5 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-2-Title">
+<title id="MathJax-SVG-2-Title">4</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E2-MJMAIN-34" d="M462 0Q444 3 333 3Q217 3 199 0H190V46H221Q241 46 248 46T265 48T279 53T286 61Q287 63 287 115V165H28V211L179 442Q332 674 334 675Q336 677 355 677H373L379 671V211H471V165H379V114Q379 73 379 66T385 54Q393 47 442 46H471V0H462ZM293 211V545L74 212L183 211H293Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E2-MJMAIN-34" x="0" y="0"></use>
+</g>
+</svg></span> triangular faces that meet at a single point. If the base is a square, we call this a <strong>square pyramid.</strong></li>
+</ul>
+<div id="graphic-d3ac4e980627a17e6c160069d4f1901a" class="graphic"><img src="/graphics/d3ac4e980627a17e6c160069d4f1901a"></div>
+
+
+
+
+<ul>
+<li>A <strong>pentagonal pyramid</strong> has a pentagonal base with <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1.162ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 500.5 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-3-Title">
+<title id="MathJax-SVG-3-Title">5</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E3-MJMAIN-35" d="M164 157Q164 133 148 117T109 101H102Q148 22 224 22Q294 22 326 82Q345 115 345 210Q345 313 318 349Q292 382 260 382H254Q176 382 136 314Q132 307 129 306T114 304Q97 304 95 310Q93 314 93 485V614Q93 664 98 664Q100 666 102 666Q103 666 123 658T178 642T253 634Q324 634 389 662Q397 666 402 666Q410 666 410 648V635Q328 538 205 538Q174 538 149 544L139 546V374Q158 388 169 396T205 412T256 420Q337 420 393 355T449 201Q449 109 385 44T229 -22Q148 -22 99 32T50 154Q50 178 61 192T84 210T107 214Q132 214 148 197T164 157Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E3-MJMAIN-35" x="0" y="0"></use>
+</g>
+</svg></span> triangular faces that meet at a single point.</li>
+</ul>
+<div id="graphic-a3fd2aa17b6bd452a0b37d76ee53af38" class="graphic"><img src="/graphics/a3fd2aa17b6bd452a0b37d76ee53af38"></div>
+
+<p>Similarly to prisms, we can add more sides to the polygonal base to make more types of pyramids.</p>
+           
+                </div>        
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-t2248" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-e2662" class="step" style="display: block;">
+    
+                 
+                <div class="example">
+                    <div class="stepHeader">
+                        <div class="stepName"><span class="stepType">Example:</span> Naming Prisms</div>       
+                        <div class="helpButton" stepid="e2662">?</div>
+                    </div>
+            
+                    <div class="exampleQuestion">
+                        <p>What is the name of the polyhedron shown below?</p>
+<p><br></p>
+<div id="graphic-1c238eb63a24655f9394b7ead716bf10" class="graphic"><img src="/graphics/1c238eb63a24655f9394b7ead716bf10"></div> 
+                    </div>     
+            
+                    <div class="exampleExplanationHeader">EXPLANATION</div>
+            
+                    <div class="exampleExplanation">
+                        <p>The polyhedron is a <strong>heptagonal prism</strong> since it has two identical heptagonal faces connected by equal parallel line segments.</p>
+<p>Also, notice that:</p>
+<ul>
+<li><p>The solid is not an octagonal (pentagonal or hexagonal) prism since it does not have an octagonal (pentagonal or hexagonal)  base.</p>
+</li>
+<li><p>The solid is not a cube since not all of its faces are squares.</p>
+</li>
+</ul>
+
+                    </div>     
+                </div>                            
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-e2662" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q107239" class="step questionWidget" style="display: block;"><div class="questionWidget-header"><div class="questionWidget-title">Question 1</div><div class="questionWidget-helpButton">?</div></div><div class="questionWidget-graphic"><img src="/graphics/q-107239"></div><div class="questionWidget-text"><p>What is the name of the polyhedron shown above?</p>
+</div><table class="questionWidget-choicesTable"><tbody><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-107239-a" class="questionWidget-choiceLetterCircle" style="background: rgb(64, 64, 64); color: white;">a</div></td><td class="questionWidget-choiceText">Pentagonal prism</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-107239-b" class="questionWidget-choiceLetterCircle">b</div></td><td class="questionWidget-choiceText">Cube</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-107239-c" class="questionWidget-choiceLetterCircle">c</div></td><td class="questionWidget-choiceText">Rectangular prism</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-107239-d" class="questionWidget-choiceLetterCircle">d</div></td><td class="questionWidget-choiceText">Pentagonal pyramid</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-107239-e" class="questionWidget-choiceLetterCircle">e</div></td><td class="questionWidget-choiceText">Rectangular pyramid</td></tr></tbody></table><div class="questionWidget-buttonBar"><div class="questionWidget-submitButton disabledButton" style="display: none;">Submit</div></div><div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner" style="display: block;"></div></div><div class="questionWidget-result"><div class="questionWidget-correctIncorrectIcon"><img src="/img/correct-answer.svg"></div><div class="questionWidget-correctText">Correct</div></div><div class="questionWidget-explanationHeader">EXPLANATION</div><div class="questionWidget-explanation"><p></p><p>The polyhedron is a <strong>pentagonal prism</strong> since it has two identical pentagonal faces connected by equal parallel line segments.</p><p></p>
+<p></p><p>Also, notice that:</p><p></p>
+<ul>
+<li><p>The solid is not a pyramid since a pyramid must have triangular faces (except, possibly, for the base) that meet at a single point.</p>
+</li>
+<li><p>The solid is not a rectangular prism since not all of its faces are rectangles.</p>
+</li>
+</ul>
+</div></div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q107239" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q61658" class="step questionWidget" style="display: block;"><div class="questionWidget-header"><div class="questionWidget-title">Question 2</div><div class="questionWidget-helpButton">?</div></div><div class="questionWidget-graphic"><img src="/graphics/q-61658"></div><div class="questionWidget-text"><p>What is the name of the polyhedron shown above?</p>
+</div><table class="questionWidget-choicesTable"><tbody><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-61658-a" class="questionWidget-choiceLetterCircle" style="background: rgb(64, 64, 64); color: white;">a</div></td><td class="questionWidget-choiceText">Rectangular prism</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-61658-b" class="questionWidget-choiceLetterCircle">b</div></td><td class="questionWidget-choiceText">Pentagonal prism</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-61658-c" class="questionWidget-choiceLetterCircle">c</div></td><td class="questionWidget-choiceText">Cube</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-61658-d" class="questionWidget-choiceLetterCircle">d</div></td><td class="questionWidget-choiceText">Pentagonal pyramid</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-61658-e" class="questionWidget-choiceLetterCircle">e</div></td><td class="questionWidget-choiceText">Triangular pyramid</td></tr></tbody></table><div class="questionWidget-buttonBar"><div class="questionWidget-submitButton disabledButton" style="display: none;">Submit</div></div><div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner" style="display: block;"></div></div><div class="questionWidget-result"><div class="questionWidget-incorrectIcon"><img src="/img/incorrect-answer.svg"></div><div class="questionWidget-incorrectText">Incorrect</div></div><div class="questionWidget-explanationHeader">EXPLANATION</div><div class="questionWidget-explanation"><p>The polyhedron is a <strong>pentagonal prism</strong> since it has two identical pentagonal faces connected by equal parallel line segments.</p>
+<p>Also, notice that:</p>
+<ul>
+<li><p>The solid is not a pyramid since a pyramid must have triangular faces (except, possibly, for the base) that meet at a single point.</p>
+</li>
+<li><p>The solid is not a rectangular prism since not all of its faces are rectangles. Due to the same reasons, the solid is not a cube.</p>
+</li>
+</ul>
+</div></div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q61658" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q61545" class="step questionWidget" style="display: block;"><div class="questionWidget-header"><div class="questionWidget-title">Question 3</div><div class="questionWidget-helpButton">?</div></div><div class="questionWidget-graphic"><img src="/graphics/q-61545"></div><div class="questionWidget-text"><p>What is the name of the polyhedron shown above?</p>
+</div><table class="questionWidget-choicesTable"><tbody><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-61545-a" class="questionWidget-choiceLetterCircle">a</div></td><td class="questionWidget-choiceText">Pentagonal prism</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-61545-b" class="questionWidget-choiceLetterCircle">b</div></td><td class="questionWidget-choiceText">Triangular prism</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-61545-c" class="questionWidget-choiceLetterCircle" style="background: rgb(64, 64, 64); color: white;">c</div></td><td class="questionWidget-choiceText">Rectangular prism</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-61545-d" class="questionWidget-choiceLetterCircle">d</div></td><td class="questionWidget-choiceText">Cube</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-61545-e" class="questionWidget-choiceLetterCircle">e</div></td><td class="questionWidget-choiceText">Hexagonal prism</td></tr></tbody></table><div class="questionWidget-buttonBar"><div class="questionWidget-submitButton disabledButton" style="display: none;">Submit</div></div><div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner" style="display: block;"></div></div><div class="questionWidget-result"><div class="questionWidget-correctIncorrectIcon"><img src="/img/correct-answer.svg"></div><div class="questionWidget-correctText">Correct</div></div><div class="questionWidget-explanationHeader">EXPLANATION</div><div class="questionWidget-explanation"><p>The solid is a <strong>rectangular prism</strong> since all its faces are rectangles.</p>
+<p>Also, notice that:</p>
+<ul>
+<li><p>The solid is not a triangular (pentagonal or hexagonal) prism since it does not have a triangular (pentagonal or hexagonal) base.</p>
+</li>
+<li><p>The solid is not a cube since its faces are not squares.</p>
+</li>
+</ul>
+</div></div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q61545" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q61643" class="step questionWidget" style="display: block;"><div class="questionWidget-header"><div class="questionWidget-title">Question 4</div><div class="questionWidget-helpButton">?</div></div><div class="questionWidget-graphic"><img src="/graphics/q-61643"></div><div class="questionWidget-text"><p>What is the name of the polyhedron shown above?</p>
+</div><table class="questionWidget-choicesTable"><tbody><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-61643-a" class="questionWidget-choiceLetterCircle">a</div></td><td class="questionWidget-choiceText">Pyramid</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-61643-b" class="questionWidget-choiceLetterCircle" style="background: rgb(64, 64, 64); color: white;">b</div></td><td class="questionWidget-choiceText">Cube</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-61643-c" class="questionWidget-choiceLetterCircle">c</div></td><td class="questionWidget-choiceText">Triangular prism </td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-61643-d" class="questionWidget-choiceLetterCircle">d</div></td><td class="questionWidget-choiceText">Triangular pyramid</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-61643-e" class="questionWidget-choiceLetterCircle">e</div></td><td class="questionWidget-choiceText">Rectangular pyramid</td></tr></tbody></table><div class="questionWidget-buttonBar"><div class="questionWidget-submitButton disabledButton" style="display: none;">Submit</div></div><div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner" style="display: block;"></div></div><div class="questionWidget-result"><div class="questionWidget-correctIncorrectIcon"><img src="/img/correct-answer.svg"></div><div class="questionWidget-correctText">Correct</div></div><div class="questionWidget-explanationHeader">EXPLANATION</div><div class="questionWidget-explanation"><p>The polyhedron is a <strong>cube</strong> since all its faces are squares.</p>
+<p>Also, notice that:</p>
+<ul>
+<li><p>The solid is not a pyramid since a pyramid must have triangular faces (except, possibly, for the base). </p>
+</li>
+<li><p>The solid is not a triangular prism because it does not have two triangular bases connected by parallel lines.  </p>
+</li>
+</ul>
+</div></div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q61643" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q117624" class="step questionWidget" style="display: none">
+    
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q117624" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-e2757" class="step" style="display: block;">
+    
+                 
+                <div class="example">
+                    <div class="stepHeader">
+                        <div class="stepName"><span class="stepType">Example:</span> Naming Pyramids</div>       
+                        <div class="helpButton" stepid="e2757">?</div>
+                    </div>
+            
+                    <div class="exampleQuestion">
+                        <div id="graphic-7a44e30ad1620f2b49d53e0c8fefa532" class="graphic"><img src="/graphics/7a44e30ad1620f2b49d53e0c8fefa532"></div>
+
+<p>What is the name of the polyhedron shown above?</p>
+<ol class="questionStatements">
+<li>  Hexagonal prism </li>
+<li>  Hexagonal pyramid </li>
+<li>  Rectangular prism </li>
+</ol>
+                    </div>     
+            
+                    <div class="exampleExplanationHeader">EXPLANATION</div>
+            
+                    <div class="exampleExplanation">
+                        <style type="text/css">
+                            .mjpage .MJX-monospace {
+                            font-family: monospace
+                            }
+
+                            .mjpage .MJX-sans-serif {
+                            font-family: sans-serif
+                            }
+
+                            .mjpage {
+                            display: inline;
+                            font-style: normal;
+                            font-weight: normal;
+                            line-height: normal;
+                            font-size: 100%;
+                            font-size-adjust: none;
+                            text-indent: 0;
+                            text-align: left;
+                            text-transform: none;
+                            letter-spacing: normal;
+                            word-spacing: normal;
+                            word-wrap: normal;
+                            white-space: nowrap;
+                            float: none;
+                            direction: ltr;
+                            max-width: none;
+                            max-height: none;
+                            min-width: 0;
+                            min-height: 0;
+                            border: 0;
+                            padding: 0;
+                            margin: 0
+                            }
+
+                            .mjpage * {
+                            transition: none;
+                            -webkit-transition: none;
+                            -moz-transition: none;
+                            -ms-transition: none;
+                            -o-transition: none
+                            }
+
+                            .mjx-svg-href {
+                            fill: blue;
+                            stroke: blue
+                            }
+
+                            .MathJax_SVG_LineBox {
+                            display: table!important
+                            }
+
+                            .MathJax_SVG_LineBox span {
+                            display: table-cell!important;
+                            width: 10000em!important;
+                            min-width: 0;
+                            max-width: none;
+                            padding: 0;
+                            border: 0;
+                            margin: 0
+                            }
+
+                            .mjpage__block {
+                            text-align: center;
+                            margin: 1em 0em;
+                            position: relative;
+                            display: block!important;
+                            text-indent: 0;
+                            max-width: none;
+                            max-height: none;
+                            min-width: 0;
+                            min-height: 0;
+                            width: 100%
+                            }</style><p>The solid is a <strong>hexagonal pyramid</strong> since its base is a hexagon and all other <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1.162ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 500.5 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-1-Title">
+<title id="MathJax-SVG-1-Title">6</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E1-MJMAIN-36" d="M42 313Q42 476 123 571T303 666Q372 666 402 630T432 550Q432 525 418 510T379 495Q356 495 341 509T326 548Q326 592 373 601Q351 623 311 626Q240 626 194 566Q147 500 147 364L148 360Q153 366 156 373Q197 433 263 433H267Q313 433 348 414Q372 400 396 374T435 317Q456 268 456 210V192Q456 169 451 149Q440 90 387 34T253 -22Q225 -22 199 -14T143 16T92 75T56 172T42 313ZM257 397Q227 397 205 380T171 335T154 278T148 216Q148 133 160 97T198 39Q222 21 251 21Q302 21 329 59Q342 77 347 104T352 209Q352 289 347 316T329 361Q302 397 257 397Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E1-MJMAIN-36" x="0" y="0"></use>
+</g>
+</svg></span> faces meet at a single point</p>
+<p>Also, notice that:</p>
+<ul>
+<li><p>The solid is not a hexagonal prism since it doesn't have two identical hexagonal faces connected by equal parallel lines.</p>
+</li>
+<li><p>The solid is not a rectangular prism since not all of its faces are rectangles.</p>
+</li>
+</ul>
+
+                    </div>     
+                </div>                            
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-e2757" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q93196" class="step questionWidget" style="display: block;"><div class="questionWidget-header"><div class="questionWidget-title">Question 5</div><div class="questionWidget-helpButton">?</div></div><div class="questionWidget-graphic"><img src="/graphics/q-93196"></div><div class="questionWidget-text"><p>What is the name of the polyhedron shown above?</p>
+</div><table class="questionWidget-choicesTable"><tbody><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-93196-a" class="questionWidget-choiceLetterCircle">a</div></td><td class="questionWidget-choiceText">Heptagonal prism</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-93196-b" class="questionWidget-choiceLetterCircle">b</div></td><td class="questionWidget-choiceText">Rectangular prism</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-93196-c" class="questionWidget-choiceLetterCircle" style="background: rgb(64, 64, 64); color: white;">c</div></td><td class="questionWidget-choiceText">Heptagonal pyramid</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-93196-d" class="questionWidget-choiceLetterCircle">d</div></td><td class="questionWidget-choiceText">Cube</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-93196-e" class="questionWidget-choiceLetterCircle">e</div></td><td class="questionWidget-choiceText">Hexagonal pyramid</td></tr></tbody></table><div class="questionWidget-buttonBar"><div class="questionWidget-submitButton disabledButton" style="display: none;">Submit</div></div><div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner" style="display: block;"></div></div><div class="questionWidget-result"><div class="questionWidget-correctIncorrectIcon"><img src="/img/correct-answer.svg"></div><div class="questionWidget-correctText">Correct</div></div><div class="questionWidget-explanationHeader">EXPLANATION</div><div class="questionWidget-explanation"><p>The solid is a <strong>heptagonal pyramid</strong> since it is a pyramid whose base is a heptagon.</p>
+<p>Also, notice that:</p>
+<ul>
+<li><p>The solid is not a heptagonal prism since it has only one heptagonal face.</p>
+</li>
+<li><p>The solid is not a hexagonal pyramid since it has no hexagonal face.</p>
+</li>
+<li><p>The solid is not a rectangular prism since not all of its faces are rectangles. Due to the same reasons, the solid is not a cube. </p>
+</li>
+</ul>
+</div></div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q93196" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q69864" class="step questionWidget" style="display: block;"><div class="questionWidget-header"><div class="questionWidget-title">Question 6</div><div class="questionWidget-helpButton">?</div></div><div class="questionWidget-graphic"><img src="/graphics/q-69864"></div><div class="questionWidget-text"><p>What is the name of the polyhedron shown above?</p>
+</div><table class="questionWidget-choicesTable"><tbody><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-69864-a" class="questionWidget-choiceLetterCircle">a</div></td><td class="questionWidget-choiceText">Triangular pyramid</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-69864-b" class="questionWidget-choiceLetterCircle">b</div></td><td class="questionWidget-choiceText">Rectangular pyramid</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-69864-c" class="questionWidget-choiceLetterCircle">c</div></td><td class="questionWidget-choiceText">Hexagonal prism</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-69864-d" class="questionWidget-choiceLetterCircle">d</div></td><td class="questionWidget-choiceText">Rectangular prism</td></tr><tr><td class="questionWidget-choiceLetter"><div id="questionWidget-choiceLetterCircle-69864-e" class="questionWidget-choiceLetterCircle" style="background: rgb(64, 64, 64); color: white;">e</div></td><td class="questionWidget-choiceText">Hexagonal pyramid</td></tr></tbody></table><div class="questionWidget-buttonBar"><div class="questionWidget-submitButton enabledButton">Submit</div></div><div class="questionWidget-spinnerFrame"><div class="questionWidget-spinner"></div></div></div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q69864" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q69863" class="step questionWidget" style="display: none">
+    
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q69863" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q69861" class="step questionWidget" style="display: none">
+    
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q69861" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q117652" class="step questionWidget" style="display: none">
+    
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q117652" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-t2250" class="step" style="display: none">
+    
+               
+                <div class="tutorial">
+                    <div class="stepHeader">
+                        <div class="stepName"><span class="stepType">Other Three-Dimensional Shapes</span></div>       
+                        <div class="helpButton" stepid="t2250">?</div>
+                    </div>                    
+    
+                    <style type="text/css">
+                            .mjpage .MJX-monospace {
+                            font-family: monospace
+                            }
+
+                            .mjpage .MJX-sans-serif {
+                            font-family: sans-serif
+                            }
+
+                            .mjpage {
+                            display: inline;
+                            font-style: normal;
+                            font-weight: normal;
+                            line-height: normal;
+                            font-size: 100%;
+                            font-size-adjust: none;
+                            text-indent: 0;
+                            text-align: left;
+                            text-transform: none;
+                            letter-spacing: normal;
+                            word-spacing: normal;
+                            word-wrap: normal;
+                            white-space: nowrap;
+                            float: none;
+                            direction: ltr;
+                            max-width: none;
+                            max-height: none;
+                            min-width: 0;
+                            min-height: 0;
+                            border: 0;
+                            padding: 0;
+                            margin: 0
+                            }
+
+                            .mjpage * {
+                            transition: none;
+                            -webkit-transition: none;
+                            -moz-transition: none;
+                            -ms-transition: none;
+                            -o-transition: none
+                            }
+
+                            .mjx-svg-href {
+                            fill: blue;
+                            stroke: blue
+                            }
+
+                            .MathJax_SVG_LineBox {
+                            display: table!important
+                            }
+
+                            .MathJax_SVG_LineBox span {
+                            display: table-cell!important;
+                            width: 10000em!important;
+                            min-width: 0;
+                            max-width: none;
+                            padding: 0;
+                            border: 0;
+                            margin: 0
+                            }
+
+                            .mjpage__block {
+                            text-align: center;
+                            margin: 1em 0em;
+                            position: relative;
+                            display: block!important;
+                            text-indent: 0;
+                            max-width: none;
+                            max-height: none;
+                            min-width: 0;
+                            min-height: 0;
+                            width: 100%
+                            }</style><p>Not all three-dimensional shapes are polyhedrons. Let's see some examples.</p>
+<ul>
+<li>A <strong> sphere</strong> is the set of points with the same distance to a fixed point called the <strong>center.</strong> A sphere is a <span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1.162ex" height="2.009ex" style="vertical-align: -0.255ex;" viewBox="0 -755.5 500.5 865.1" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg" aria-labelledby="MathJax-SVG-1-Title">
+<title id="MathJax-SVG-1-Title">3</title>
+<defs aria-hidden="true">
+<path stroke-width="1" id="E1-MJMAIN-33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)" aria-hidden="true">
+ <use xlink:href="#E1-MJMAIN-33" x="0" y="0"></use>
+</g>
+</svg></span>-dimensional analog of a circle. A <strong> hemisphere </strong> is half of a sphere.</li>
+</ul>
+<div id="graphic-54c136636d6adbb4902130b9d1a43c95" class="graphic"><img src="/graphics/54c136636d6adbb4902130b9d1a43c95"></div>
+
+<ul>
+<li><p>A <strong>cylinder</strong> is a solid shape with two parallel circular bases. There are two types of cylinders.</p>
+<p>A cylinder is <strong>right</strong> if the axis that passes through the centers of the circular bases is perpendicular to the bases. Otherwise, the cylinder is <strong>oblique.</strong> </p>
+</li>
+</ul>
+<div id="graphic-b8098957de71393d8e8b3de026818efc" class="graphic"><img src="/graphics/b8098957de71393d8e8b3de026818efc"></div>
+
+
+
+<ul>
+<li><p>A <strong>cone</strong> is a solid shape with one circular base and one vertex called the <strong>apex</strong>. There are two types of cones.</p>
+<p>A cone is <strong>right</strong> if the axis that passes through the center of the circular base and the vertex is perpendicular to the base. Otherwise, the cone is <strong>oblique.</strong> </p>
+</li>
+</ul>
+<div id="graphic-d954878b8453cfe635d3abe5e604af34" class="graphic"><img src="/graphics/d954878b8453cfe635d3abe5e604af34"></div>
+
+           
+                </div>        
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-t2250" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-e8975" class="step" style="display: none">
+    
+                 
+                <div class="example">
+                    <div class="stepHeader">
+                        <div class="stepName"><span class="stepType">Example:</span> Identifying Spheres, Hemispheres, Cones, and Cylinders</div>       
+                        <div class="helpButton" stepid="e8975">?</div>
+                    </div>
+            
+                    <div class="exampleQuestion">
+                        <p>What is the name of the solid shown below?</p>
+<div id="graphic-15913d6c9560052d02c213fef4d82c79" class="graphic"><img src="/graphics/15913d6c9560052d02c213fef4d82c79"></div>
+                    </div>     
+            
+                    <div class="exampleExplanationHeader">EXPLANATION</div>
+            
+                    <div class="exampleExplanation">
+                        <p>The solid is a <strong>right cone</strong>. </p>
+<p>Notice the following:</p>
+<ul>
+<li><p>The solid has one circular base and one vertex. So, it's a cone. </p>
+</li>
+<li><p>The axis that passes through the center of the circle and the vertex is perpendicular to the base. So, it's right.</p>
+</li>
+</ul>
+
+                    </div>     
+                </div>                            
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-e8975" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q107175" class="step questionWidget" style="display: none">
+    
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q107175" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q117677" class="step questionWidget" style="display: none">
+    
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q117677" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q107279" class="step questionWidget" style="display: none">
+    
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q107279" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q107278" class="step questionWidget" style="display: none">
+    
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q107278" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q107247" class="step questionWidget" style="display: none">
+    
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q107247" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-e2668" class="step" style="display: none">
+    
+                 
+                <div class="example">
+                    <div class="stepHeader">
+                        <div class="stepName"><span class="stepType">Example:</span> Identifying Non-Polyhedra</div>       
+                        <div class="helpButton" stepid="e2668">?</div>
+                    </div>
+            
+                    <div class="exampleQuestion">
+                        <p>Which of the following is <strong>not</strong> a polyhedron?</p>
+<p><br></p>
+<div id="graphic-4efe20841a64bdb15fd00b399be9b633" class="graphic"><img src="/graphics/4efe20841a64bdb15fd00b399be9b633"></div>
+                    </div>     
+            
+                    <div class="exampleExplanationHeader">EXPLANATION</div>
+            
+                    <div class="exampleExplanation">
+                        <p>Each face in a polyhedron must be a polygon. Therefore, the only option that is <strong>not</strong> a polyhedron is:</p>
+<p><br></p>
+<div id="graphic-e7c018cff615575f30d66457c542d427" class="graphic"><img src="/graphics/e7c018cff615575f30d66457c542d427"></div>
+
+<p><br></p>
+<p>Notice that one of its faces is not a polygon (it has <font style="color:red">curved</font> sides).</p>
+
+                    </div>     
+                </div>                            
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-e2668" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q117720" class="step questionWidget" style="display: none">
+    
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q117720" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q93200" class="step questionWidget" style="display: none">
+    
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q93200" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q117705" class="step questionWidget" style="display: none">
+    
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q117705" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q93199" class="step questionWidget" style="display: none">
+    
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q93199" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+        
+    
+            
+    
+            <div id="step-q117717" class="step questionWidget" style="display: none">
+    
+                    
+            </div>                    
+
+            <div class="continueButtonFrame">             
+                <div id="continueButton-q117717" class="continueButton" style="display: none;">Continue</div>                                  
+            </div>                            
+          
+    </div>         
+</div>
+
+<div id="finalScreen">        
+    <div id="finalScreen-completionMessage"></div>
+    <div id="finalScreen-pointsMessage"></div>
+
+    <div id="finalScreen-buttonBar">
+        <div id="finalScreen-doneButton">Continue</div>  
+    </div>
+</div>   
+
+<link rel="stylesheet" href="/css/flag-content-dialog.css">
+
+<script type="text/javascript" src="/js/flag-content-dialog.js"></script>
+
+<div id="flagContentDialog">
+    <div id="flagContentDialog-title">Flag Content</div>
+
+    <div id="flagContentDialog-instructions">Did you notice an error, or do you simply believe that something could be improved? Please explain below.</div>
+
+    <textarea id="flagContentDialog-description" style=""></textarea>
+
+    <div id="flagContentDialog-submitButton">Submit</div>
+    <div id="flagContentDialog-cancelButton">Cancel</div>
+</div>
+<link rel="stylesheet" href="/css/bookmark-dialog.css">
+
+<script type="text/javascript" src="/js/bookmark-dialog.js"></script>
+
+<div id="bookmarkDialog">
+    <div id="bookmarkDialog-title">Bookmark</div>
+
+    <div id="bookmarkDialog-contentTitle"></div>    
+
+    <div id="bookmarkDialog-instructions">Notes</div>
+
+    <textarea id="bookmarkDialog-notes" style=""></textarea>
+
+    <div id="bookmarkDialog-submitButton">SUBMIT</div>
+    <div id="bookmarkDialog-cancelButton">CANCEL</div>
+</div>
+
+        </div>
+    
+                      
+
+    
+</body></html>
