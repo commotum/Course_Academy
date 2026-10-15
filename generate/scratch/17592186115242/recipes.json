@@ -418,5 +418,33 @@
       "t"
     ],
     "bank_interpretation": "Explicit observed arithmetic expression patterns; opaque offsets have unresolved error intent and are never default banks."
+  },
+  "q-131725": {
+    "template": "inconsistent_shift",
+    "level": "moderate",
+    "parameters": {
+      "a": 2,
+      "b": -1,
+      "c": 3,
+      "d": -4,
+      "u": 1,
+      "v": -5,
+      "e": -1
+    },
+    "style": {
+      "swap": false,
+      "rowop": "plus",
+      "negative_coeff_factored": false
+    },
+    "problem_mask": "Determine the value of $k$ for which the following system of linear equations is inconsistent:\n\n$$\n\\left\\{\\begin{aligned}@@equation1@@ \\\\ @@equation2@@\\end{aligned}\\right.\n$$",
+    "solution_mask": "The augmented matrix for this system is\n\n$$\nM=@@matrix0@@.\n$$\n\nUsing the method of Gaussian elimination, we can reduce this matrix to row echelon form, as follows:\n\n$$\n\\begin{aligned}M & =@@matrix0@@ & @@rowop@@ \\\\  & \u223c@@matrix2@@\\end{aligned}\n$$\n\nThe corresponding system is now \n\n$$\n\\left\\{\\begin{aligned}@@equation1@@ \\\\ @@reduced_equation@@.\\end{aligned}\\right.\n$$\n\nThe system is inconsistent if it has no solutions. For the system to have no solutions, one of the equations above must be false.\n\nIf $@@answer@@,$ then the second equation is $@@zero_equation@@,$ which is false, and the system will have no solution.\n\nTherefore, our system is inconsistent when $@@answer@@.$",
+    "bank": [
+      "t+3",
+      "t+1",
+      "t",
+      "t-2",
+      "t-1"
+    ],
+    "bank_interpretation": "Observed complete bank: offsets +3,+1,0,-2,-1 from t=7. Error intent unresolved; explicit replay profile, never default."
   }
 }

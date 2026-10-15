@@ -21,7 +21,7 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from matplotlib.patches import Wedge
 ROOT=Path(__file__).resolve().parents[2];HERE=Path(__file__).with_suffix('')
-KP_ID=17592186105904;VERSION='inverse-triangle-area-4'
+KP_ID=17592186105904;VERSION='inverse-triangle-area-5'
 CAP=json.loads((ROOT/'generate/runs/current/sources/17592186105904.json').read_text())
 REC=CAP['record'];TITLE=REC[':knowledge-point/title'];KP_UUID=REC[':knowledge-point/id']
 SOURCES={q[':question/math-academy-id']:q for q in REC[':knowledge-point/questions']}
@@ -112,7 +112,7 @@ def plot(b,c,t,unit,kind,output_dir=None):
   ax.text(B[0]/2-.07*maxlen,B[1]/2+.025*maxlen,'$'+tex(c)+'$ '+unit,fontsize=12,ha='right')
   if kind=='angle':ax.annotate('$'+tex(b)+'$ '+unit,(C[0]/2,0),xytext=(0,-34),textcoords='offset points',fontsize=12,ha='center')
   if kind=='side':
-   if t<35 or max(float(b),float(c))/min(float(b),float(c))>2.5:
+   if t<35 or t>=90 or max(float(b),float(c))/min(float(b),float(c))>2.5:
     ax.annotate('$'+str(t)+r'^\circ$',(radius*math.cos(math.radians(t/2)),radius*math.sin(math.radians(t/2))),xytext=(.2*maxlen,-.12*maxlen),textcoords='data',fontsize=11,ha='center',arrowprops={'arrowstyle':'-','linestyle':':','color':'#666666','linewidth':.7})
    else:ax.annotate('$'+str(t)+r'^\circ$',(radius*1.4*math.cos(math.radians(t/2)),radius*1.4*math.sin(math.radians(t/2))),xytext=(0,6),textcoords='offset points',fontsize=11)
   ax.set_xlim(min(0,B[0])-.27*maxlen,max(C[0],B[0])+.2*maxlen);ax.set_ylim(-.18*maxlen,B[1]+.2*maxlen)
@@ -122,7 +122,7 @@ def plot(b,c,t,unit,kind,output_dir=None):
   try:fig.savefig(tmp,dpi=150,facecolor='white');os.replace(tmp,target)
   finally:
    if os.path.exists(tmp):os.unlink(tmp)
-  meta={**data,'renderer':'Matplotlib','matplotlib':matplotlib.__version__,'python':sys.version.split()[0],'dpi':150,'vertices':{'A':A,'B':B,'C':C},'labels':{'AB':tex(c),'AC':tex(b) if kind=='angle' else None,'angle':t if kind=='side' else None},'sha256':hashlib.sha256(target.read_bytes()).hexdigest(),'equal_aspect':True,'pixel_vertices_bottom_origin':pixel_vertices,'image_pixels':[705,525]}
+  meta={**data,'renderer':'Matplotlib','matplotlib':matplotlib.__version__,'python':sys.version.split()[0],'dpi':150,'vertices':{'A':A,'B':B,'C':C},'labels':{'AB':tex(c),'AC':tex(b) if kind=='angle' else None,'angle':t if kind=='side' else None},'sha256':hashlib.sha256(target.read_bytes()).hexdigest(),'angle_label_placement':('external-callout' if kind=='side' and (t<35 or t>=90 or max(float(b),float(c))/min(float(b),float(c))>2.5) else 'interior' if kind=='side' else None),'equal_aspect':True,'pixel_vertices_bottom_origin':pixel_vertices,'image_pixels':[705,525]}
   # API replay must retain the same shape on a cold render and a cache hit.
   meta=json.loads(json.dumps(meta))
   fd,tmp=tempfile.mkstemp(suffix='.json',dir=out);os.close(fd);Path(tmp).write_text(json.dumps(meta,indent=2));os.replace(tmp,side)

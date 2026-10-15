@@ -440,3 +440,27 @@ q-42021: original initial augmented matrix says first RHS -3 while prompt and el
 
 Raw evidence remains in source.json and originals in review.md. Four of fifteen original prompt strings and three original solution strings are byte-exact. After escaping the malformed system braces, fifteen prompt strings and thirteen full source solution strings match; after the two mathematical repairs as well, all fifteen full solution strings match. Matrices and row operations retain their original stage count and notation. No incorrect teaching rules are copied to normal output. Raw source masks retain captured literal left-system braces as evidence. Rendering escapes every unescaped left-system brace in observed replays; authored masks already use escaped visible braces. This presentation repair prevents unclosed TeX groups. All remaining component groups and math delimiters must balance.
 
+
+## Additional captured profile: q-131725
+
+At the live capture basis recorded in `reference/replenishment/initial/basis.json`,
+the first equation is 2x-y=3 and the second is -4x+(k-5)y=-1. Adding twice
+the first row to the second yields (k-7)y=5. Thus k=7 makes the system
+inconsistent. This is the existing shifted-coefficient template, with no new
+operations, field layout, solution stage or plotting requirement.
+
+The complete observed choice profile has recipes t+3, t+1, t, t-2, t-1,
+where t=(db/a-v)/u. These reproduce every source value and its designation.
+The offset error intent is unresolved; the profile is explicitly replay-only
+unless requested, while the normal generator keeps its already documented
+authored method-based banks. The profile is chosen as a whole, with collisions
+rejected, and is exercised at ten changed parameter settings. Full-object
+comparison here means complete equations k=value, so their unique solutions
+establish mathematical equality. Every generated correct equation is verified
+against determinant and augmented-rank conditions independently from the key.
+
+No eligible target-position slot exists in this family: the assessed object is
+the affine coefficient of y in the second equation. Coefficient slots change
+under the previously declared bounds. Moving k to another role would change the
+extracted elimination and response contract, so the implementation keeps that
+structural role fixed. No new diagram or asset is required.

@@ -15,7 +15,7 @@ The area of ​​the triangle $△ABC$ is $\frac{21}{4}cm^{2}$. Find $AC$.
 
 ### Generated observed-profile dilation ×2 (opaque bank intent unresolved)
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/b47dc40450d3f51ada723b9f0133398aa8e6c8efa991be8c285dd0dfea273f0f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/23383921bdf7e3c75b48fe0f8bd9542f872f2812ec9f686b2106a547f46096a6.png)
 
 The area of ​​the triangle $△ABC$ is $21cm^{2}$. Find $AC$.
 
@@ -30,7 +30,7 @@ The area of ​​the triangle $△ABC$ is $21cm^{2}$. Find $AC$.
 
 ### Generated eligible moderate variant 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/dd239ae74386e8d5e2aa263c4fce5d4ed76a158e79559a03e85a079fc9c03410.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/e7c43f179c41d11e65bde41b6c281a077192e62c867bdd07ba48523f0f86fcee.png)
 
 The area of ​​the triangle $△ABC$ is $6cm^{2}$. Find $AC$.
 
@@ -71,7 +71,7 @@ We conclude that $AC=2\,\text{cm}.$
 
 ### Generated eligible moderate variant 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/436b9e7e249214e6ea7cb6cba2f24a478db70bb81f9bafcf8a1970f09cd31e84.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/eacdc80e3fa4b68df6064ea5bb1390d890334a3e0bd08a2beb44fad49a3311be.png)
 
 The area of ​​the triangle $△ABC$ is $\frac{55}{4}cm^{2}$. Find $AC$.
 
@@ -127,7 +127,7 @@ The area of ​​the triangle $△ABC$ is $\frac{15\sqrt{3}}{2}cm^{2}$. Determi
 
 ### Generated observed-profile dilation ×2 (opaque bank intent unresolved)
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/3df88e29a946edc167db96192206a2c7fe02636605eeb8c7680e66e3d2465274.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/3f7020ce959f77f13538560a255e8e26cadea817a690659a75a7fd855b28bf69.png)
 
 The area of ​​the triangle $△ABC$ is $30\sqrt{3}cm^{2}$. Determine $m∠A$.
 
@@ -142,7 +142,7 @@ The area of ​​the triangle $△ABC$ is $30\sqrt{3}cm^{2}$. Determine $m∠A$
 
 ### Generated eligible moderate variant 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/3c19cece93b5261930021100c76d2aaa0644db3b75e55a08fdc0b169b3d416c8.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/019f6e9475672d3b5a77b65d49202aefc30158eb4a18cf98ce29356cb31a0a60.png)
 
 The area of ​​the triangle $△ABC$ with acute $∠A$ is $6\sqrt{3}cm^{2}$. Determine $m∠A$.
 
@@ -175,7 +175,7 @@ $$
 
 ### Generated eligible moderate variant 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/a118a7d193c765b473be7cd06e6db09cc91282ef83b872b9819b43b8a8fe8dc3.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/cbebe36c9f25cd535cb5fc1c1d4af8c408ee2a7cb44e64db71aed11808a15074.png)
 
 The area of ​​the triangle $△ABC$ with acute $∠A$ is $\frac{55\sqrt{3}}{4}cm^{2}$. Determine $m∠A$.
 
@@ -249,7 +249,7 @@ We conclude that $AC=4\,\text{cm}.$
 
 ### Generated observed-profile dilation ×2 (opaque bank intent unresolved)
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/de7d2f4baacc485041e443983f855aecd48bd3340ee8cd70c24ea51681d663ea.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/7f468014aa76163106a1219756cc80fbcd358ad32ab93c2ef1bfbc7046674136.png)
 
 The area of ​​the triangle $△ABC$ is $20\sqrt{3}\,{\text{cm}}^{2}.$ Find $AC.$
 
@@ -290,7 +290,7 @@ We conclude that $AC=8\,\text{cm}.$
 
 ### Generated eligible moderate variant 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/e03512e3f48f1eefd9fb69cf56830e2809ad4df1877f47f29e23c6f0ba3c8b4c.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/8907321eb2a190e9af68bd133ae2731a572915a0cd6a280d483a639a99a73bf7.png)
 
 The area of ​​the triangle $△ABC$ is $6\sqrt{3}\,{\text{cm}}^{2}.$ Find $AC.$
 
@@ -331,7 +331,7 @@ We conclude that $AC=2\,\text{cm}.$
 
 ### Generated eligible moderate variant 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/c5743680710918bfa9194e97e4bb479f473289c624fcc8bb02d87dd13d2a1231.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/908287aa565da76ed31e1810c31725b61e21e4c5ba9cccc81a2c053776d77edb.png)
 
 The area of ​​the triangle $△ABC$ is $\frac{55\sqrt{3}}{4}\,{\text{cm}}^{2}.$ Find $AC.$
 
@@ -413,7 +413,7 @@ We conclude that $AC=7\,\text{cm}.$
 
 ### Generated observed-profile dilation ×2 (opaque bank intent unresolved)
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/4e9850bad6ac387cddd6c7f9b918fd345f35f51883c4de5e01e50df93a7d9a2f.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/baac00e1d4841dd61e8f016d8f0bbb9557ce9ea7b80dc998f426e0e09cef1141.png)
 
 The area of ​​the triangle $△ABC$ is $42\sqrt{2}{\text{ cm}}^{2}.$ Find $AC.$
 
@@ -454,7 +454,7 @@ We conclude that $AC=14\,\text{cm}.$
 
 ### Generated eligible moderate variant 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/3d8ebfe74691c4096abae4c493281df95476cad3e3f241b4d5657b0993488fea.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/48378b8044b3a6ff8522db9e50a708d3d6d7787f5a87f0e238314dd4a237d5e3.png)
 
 The area of ​​the triangle $△ABC$ is $6\sqrt{2}{\text{ cm}}^{2}.$ Find $AC.$
 
@@ -495,7 +495,7 @@ We conclude that $AC=2\,\text{cm}.$
 
 ### Generated eligible moderate variant 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/3c0ead60e6efd5efb72e4d495a6eabd72b4385854ae6e400190a6c94be4323f2.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/63ced82ac3d4a132215308cf720d36a87c9014df313a39b8b4892bb818d0c340.png)
 
 The area of ​​the triangle $△ABC$ is $\frac{55\sqrt{2}}{4}{\text{ cm}}^{2}.$ Find $AC.$
 
@@ -573,7 +573,7 @@ We conclude that $AC=5\,\text{ cm}.$
 
 ### Generated observed-profile dilation ×2 (opaque bank intent unresolved)
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/d922b2296a5ac9e156618ab64259fd0a4012683d1eb82c3ced7d1d53e18773aa.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/e482ff8f478a8f0c669ae63793267ab78419e1b9b675cbc9897b6e0bee27f3a5.png)
 
 The area of ​​the triangle $△ABC$ is $50\sqrt{3}{\text{cm}}^{2}.$ Then,  $AC=${{field-1}} $\text{cm}.$
 
@@ -610,7 +610,7 @@ We conclude that $AC=10\,\text{ cm}.$
 
 ### Generated eligible moderate variant 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/dcf3f7e656c6afb4c28925276bee3483b3b64e9afe0678759d8e4148bdf632ef.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/05147b66b33950670f1dc74dd10cc1b6a34e9e5f6f463a5147a6f4cc328a3709.png)
 
 The area of ​​the triangle $△ABC$ is $6\sqrt{3}{\text{cm}}^{2}.$ Then,  $AC=${{field-1}} $\text{cm}.$
 
@@ -647,7 +647,7 @@ We conclude that $AC=2\,\text{ cm}.$
 
 ### Generated eligible moderate variant 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/6aeb159a8260dcbce38719cc958f09322ead8a47fed42ef0eb5a303e65f652db.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/adf14e2219e7df45167d2e4144451bb2a44b91b371d2d3f4020cbecd911bb44e.png)
 
 The area of ​​the triangle $△ABC$ is $\frac{55\sqrt{3}}{4}{\text{cm}}^{2}.$ Then,  $AC=${{field-1}} $\text{cm}.$
 
@@ -713,7 +713,7 @@ $$
 
 ### Generated observed-profile dilation ×2 (opaque bank intent unresolved)
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/82e24671b6dede233de23239c8ea95aa9536ada6663e3752bd534802e7770979.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/7400749e46c1d4a4d49244bf276aa9eaa6af029f3720a79b99aaf319b1450f8e.png)
 
 The area of ​​the acute triangle $△ABC$ is $12{\text{ mm}}^{2}.$ Then, the measure of $∠A$ is{{field-1}} ${}^{∘}.$
 
@@ -742,7 +742,7 @@ $$
 
 ### Generated eligible moderate variant 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/3fae1baa182a3f01018b052bdb03c78c4f623d6d7dc33657adf39e99dbe9f771.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/ee9ee2335b89463bb0bddf5cf0093182aaab4b850cb783169c62396b1cf59ca6.png)
 
 The area of ​​the triangle $△ABC$ with acute $∠A$ is $\frac{15}{2}{\text{ mm}}^{2}.$ Then, the measure of $∠A$ is{{field-1}} ${}^{∘}.$
 
@@ -771,7 +771,7 @@ $$
 
 ### Generated eligible moderate variant 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/774c7e2f7c7c9a316abb4b716f8109088e27cce8e96ddf40bbf9222f34a1d8e0.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/665c7fb9e1c3f3e7adfa350246df9eed4b55a5ebd0db190ae64056c73a1fb941.png)
 
 The area of ​​the triangle $△ABC$ with acute $∠A$ is $12{\text{ mm}}^{2}.$ Then, the measure of $∠A$ is{{field-1}} ${}^{∘}.$
 
@@ -829,7 +829,7 @@ $$
 
 ### Generated observed-profile dilation ×2 (opaque bank intent unresolved)
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/386adf9c13e5f0039a2a50439554a796b2527fb670451e73968f3fa65991e0e1.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/5a49c3c7815e9a0d41efb5d726cf9cb86c862b646ee3b56bfcba32f94eb7c208.png)
 
 The area of the acute triangle $△ABC$ is $80\sqrt{2}{\text{ cm}}^{2}.$ Then, the measure of $∠A$ is{{field-1}} ${}^{∘}.$
 
@@ -858,7 +858,7 @@ $$
 
 ### Generated eligible moderate variant 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/7cd7be8040a5b5f0683060ee10370d4330ec5f705ff655790189d30a6aee270d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/0e5270673410c73c7484b6ddde876d5ef77b9c4b2f74e0cdf28458389a69b4ce.png)
 
 The area of the triangle $△ABC$ with acute $∠A$ is $6\sqrt{2}{\text{ cm}}^{2}.$ Then, the measure of $∠A$ is{{field-1}} ${}^{∘}.$
 
@@ -887,7 +887,7 @@ $$
 
 ### Generated eligible moderate variant 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/cf73c935c1d6d27f3ff4564fd32f5b2ef41862255c51d488dd0fcf39683dfc0c.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/8fc1e76aaba992bb5d60c9c22a2fe78eec774f90d10c58d3f68a06bbeab572ee.png)
 
 The area of the triangle $△ABC$ with acute $∠A$ is $\frac{55\sqrt{2}}{4}{\text{ cm}}^{2}.$ Then, the measure of $∠A$ is{{field-1}} ${}^{∘}.$
 
@@ -949,7 +949,7 @@ $$
 
 ### Generated observed-profile dilation ×2 (opaque bank intent unresolved)
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/c3a560fcf24a192b87a436015fd8ba6043da6ba11829b3ee0c291f8a34fb4af5.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/917579381699a251825b4c8990c535e4eb238f91d456b1d0868b7194064a37a7.png)
 
 The area of ​​the triangle $△ABC$ is $2\sqrt{6}{\text{ cm}}^{2}.$ Find the measure of $∠A.$
 
@@ -982,7 +982,7 @@ $$
 
 ### Generated eligible moderate variant 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/cef0b416ddfc06bea63d32b7563ad462135f51ee2da9a9aee8aee9e4e2ebacc8.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/3f3d9215855f045ddba25b201d401d227421d4ca0c66084db4affdf6d1aac65d.png)
 
 The area of ​​the triangle $△ABC$ with acute $∠A$ is $\sqrt{6}{\text{ cm}}^{2}.$ Find the measure of $∠A.$
 
@@ -1015,7 +1015,7 @@ $$
 
 ### Generated eligible moderate variant 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/2cc8d16c3930ffc021eafc59a4ab7ce45a61b13fdfd3282e39db0e13f8966b2d.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/5856f0f695faa2dabc9baf4607f02ef0a5b6b3b3f19e58a30c8b16c05bfa99fe.png)
 
 The area of ​​the triangle $△ABC$ with acute $∠A$ is $\frac{\sqrt{6}}{2}{\text{ cm}}^{2}.$ Find the measure of $∠A.$
 
@@ -1081,7 +1081,7 @@ $$
 
 ### Generated observed-profile dilation ×2 (opaque bank intent unresolved)
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/699d6cc0d680e3001d8a3bbc0efa295ab8cb3f2d2f44a5c45f876991f0b5f8b0.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/792cd855f80ffd55325efd687c1b058663c71291f2b52ad8dcdb664d8fe9acfb.png)
 
 The area of ​​the triangle $△ABC$ is $60{\text{ cm}}^{2}.$ Find $m∠A.$
 
@@ -1114,7 +1114,7 @@ $$
 
 ### Generated eligible moderate variant 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/22d81c36bf89d338ed6e05bad41728d7357399af4506f59aba530a0a4ad8c5bb.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/11fc234a05c6ec25c55945f9f0405b418db42c5487314cf88c783894c7972b51.png)
 
 The area of ​​the triangle $△ABC$ with acute $∠A$ is $6{\text{ cm}}^{2}.$ Find $m∠A.$
 
@@ -1147,7 +1147,7 @@ $$
 
 ### Generated eligible moderate variant 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/43121c0d1494182675f7942f0f5ba85d740ecbddc85a5fb0ae94dcccbf825b35.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/0b5ba3228b2b3ea3cd343c4e214c3a93fb59b6c52d60e31160ab730375c54768.png)
 
 The area of ​​the triangle $△ABC$ with acute $∠A$ is $\frac{55}{4}{\text{ cm}}^{2}.$ Find $m∠A.$
 
@@ -1180,7 +1180,7 @@ $$
 
 ## Authored/default easy variant 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/65ba867823fa207d75bdac70ebaa7132e5d7703551852a5f6419ee03b6afb0ef.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/956c5a4bdfa475bdb90c5746174326b804e2c488ed9fad46ddcf095b2df17b79.png)
 
 The area of the triangle $△ABC$ is $\frac{9}{2}\,\text{mm}^{2}.$ Use $\sin30^{\circ}=\frac{1}{2}.$ Then, $AC=${{field-1}} $\text{mm}.$
 
@@ -1217,7 +1217,7 @@ We conclude that $AC=2\,\text{mm}.$
 
 ## Authored/default easy variant 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/035a0e4f3b5acaa37804efbd3692fec82594994f2484be15d23ccde2ee08a47c.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/064a7aa0310056c40fa1bba0be42becbd865ae70d4252231e761bb50b5877269.png)
 
 The area of the triangle $△ABC$ is $33\,\text{cm}^{2}.$ Use $\sin30^{\circ}=\frac{1}{2}.$ Find $AC.$
 
@@ -1258,7 +1258,7 @@ We conclude that $AC=12\,\text{cm}.$
 
 ## Authored/default moderate variant 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/9490870d1d2971a06517189c20627fec57f637b2348658971713f896744bed65.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/12a0e4ca2e3c7b9f9d1177dfb04d775330b49108928d8d3a17150f38bd76d149.png)
 
 The area of ​​the triangle $△ABC$ with acute $∠A$ is $\frac{7\sqrt{6}}{4}{\text{ cm}}^{2}.$ Find the measure of $∠A.$
 
@@ -1291,7 +1291,7 @@ $$
 
 ## Authored/default moderate variant 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/041305a9ca3cb365a78c296c62c8fdf70d44e70f327a8ffcd0ea7fc46d9e6e11.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/a4ca46014910c65e48fada5de73b71f7fe4e7550be9045f52fa807634a49b8c0.png)
 
 The area of ​​the triangle $△ABC$ is $9cm^{2}$. Find $AC$.
 
@@ -1332,7 +1332,7 @@ We conclude that $AC=3\,\text{cm}.$
 
 ## Authored/default hard variant 1
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/90c45e1a35cf002b7b147a548fadf46b353f1e5eef2df8556252f877dddeefba.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/c8d6e6ca1f043f7d21124fe43b971f6018c9958409a33980be2a93a327c336c3.png)
 
 The area of the triangle $△ABC$ is $\frac{333\sqrt{2}}{32}\,\text{mm}^{2}.$ Then, $AC=${{field-1}} $\text{mm}.$
 
@@ -1369,7 +1369,7 @@ We conclude that $AC=\frac{9}{2}\,\text{mm}.$
 
 ## Authored/default hard variant 2
 
-![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/a7105b78be80198adb953c8d0e268d3951023081742531b0c0cbb28ee5bcb44a.png)
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105904/plots/af6cd60d555b7f5dd0542107273891becf9ee49acb2a7e5e9fb4f2a49b85303f.png)
 
 The area of the triangle $△ABC$ is $\frac{451\sqrt{2}}{24}\,\text{cm}^{2}.$ Find $AC.$
 

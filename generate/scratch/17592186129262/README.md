@@ -1,5 +1,8 @@
-Local draft for KP17592186129262, stopped after step7. No EDB transactions, registration, shared-file edits, commits or child agents.
+Generator package for KP17592186129262. Historical basis1356 draft and replay evidence are retained; the inventory continuation below covers steps8–9 against the current bank.
 
 Run `.venv/bin/python generate/scratch/17592186129262/validate.py` for source, actual displayed mathematics, formatting, deterministic identity, complete-bank collisions, scoped parameter guards, real native radio grading and fresh concurrent Matplotlib checks. Preview with `.venv/bin/python generate/scratch/17592186129262.py --difficulty all --seed 0 --count 2 --format markdown`.
 
 API: generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None), plus generate_easy/moderate/hard. Parameters are exactly a,b,c,d, integer and bounded as documented. `method` is normal default; source_<source-id> preserves original profiles/omissions and is explicitly evidence-only. Review artifacts distinguish raw malformed/incomplete evidence from repaired normal records. Easy is authored from the unrated first-power product/ratio source; observed moderate/hard masks remain transformation-choice tasks.
+
+
+Inventory continuation: `current-classification.md` and `capabilities.json` reclassify all nine current source records. Run `.venv/bin/python generate/scratch/17592186129262/replenish.py` for an additive, basis-guarded commit under the application lock, including exact receipt recovery and readback. `--prepare-only` makes no database transaction. Six validated parameterized masks support easy/moderate/hard. The three new source masks are independently validated but are not parameterized by this bounded generator. Source and legacy learner data remain unchanged. Evidence and durable requests are under `reference/replenishment/`.

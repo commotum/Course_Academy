@@ -70,6 +70,7 @@ def verify(r):
   assert abs(float(c)-cgeom)<1e-9 and abs(float(b)-bgeom)<1e-9 and abs(angle-t)<1e-8
   assert pm['labels']['AC']==(g.tex(b) if kind=='angle' else None) and pm['labels']['angle']==(t if kind=='side' else None)
   if kind=='angle':assert parse(pm['labels']['AC'])==b
+  if kind=='side' and t>=90:assert pm['angle_label_placement']=='external-callout'
   # Equal-scale geometric area independently agrees with actual area statement.
   geomarea=abs((B[0]-A[0])*(C[1]-A[1])-(C[0]-A[0])*(B[1]-A[1]))/2;assert abs(float(area)-geomarea)<1e-8
  else:
@@ -190,6 +191,8 @@ def main():
  # using the renderer's exterior angle callout; parent inspects the PNGs.
  for b,c in ((12,2),(2,12)):
   verify(g.generate_easy(template='easy_blank',parameters={'b':str(b),'c':str(c),'theta':30,'unit':'cm'}))
+ for b,c,t in (('21/4','20/3',135),('11/3','22/3',120)):
+  verify(g.generate_hard(template='hard_blank',parameters={'b':b,'c':c,'theta':t,'unit':'cm'}))
  dump('source-cases.json',cases);dump('review.json',raws+records);(HERE/'review.md').write_text('\n\n'.join(review)+'\n')
  dump('engine-input.json',checks);cp=subprocess.run([str(ROOT/'generate/runs/current/check-engine'),str(HERE/'engine-input.json'),str(HERE/'engine.json')],text=True,capture_output=True)
  dump('validation.json',{'passed':cp.returncode==0,'source_questions':9,'source_exact_prompts':9,'source_exact_present_solutions':7,'source_solution_absences_preserved':2,'source_banks':9,'source_option_values':33,'source_correct_designations_matched':7,'missing_designations_preserved':2,'raw_evidence_only':True,'source_prose_anomalies':[{'source_id':'q-280282','issue':'claims whole triangle acute although angle B is obtuse','proof':'sqrt(3)-4*cos(60°)=sqrt(3)-2<0','raw_exact':True,'normal_repair':'only included angle A acute'}],'checked_records':len(records)+len(raws),'mutation_tests':3,'native_returncode':cp.returncode,'native_stdout':cp.stdout,'native_stderr':cp.stderr,'details':details,'dependencies':{'python':g.sys.version.split()[0],'sympy':sp.__version__,'matplotlib':g.matplotlib.__version__},'engine_sha256':hashlib.sha256((ROOT/'generate/runs/current/check-engine').read_bytes()).hexdigest()})
