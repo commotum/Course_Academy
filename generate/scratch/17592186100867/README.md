@@ -1,0 +1,7 @@
+# 17592186100867 — Multiplying a 3×3 Matrix by a Column Vector
+
+`../17592186100867.py` is a pure seeded generator. It supports moderate questions in four source templates and seven complete source profiles. `--difficulty moderate --count 5 --seed 123 --format json` emits instances; `--format markdown` provides previews. Easy and hard are unsupported and remain unfilled.
+
+`validate.py` independently reads rendered operands, factors, intermediate sums and keys; replays every source answer; checks slot coverage, boundary cases, deterministic replay and stale names/keys; and invokes the existing native learner grader. `classification.json`, `template-extraction.json` and `source-bank-replay.json` retain all source evidence and distinguish generalized profiles from original-only replay. Two incomplete sources and two irregular generalized banks are excluded as documented in capabilities.json. No source content is repaired in this task.
+
+`replenish.py` rechecks the current learner inventory, validates fresh source members, and registers the generator using existing identity attributes. Durable preview, exact request, receipt and exact-basis readback are saved in reference/replenishment. It holds the application's api.lock from recheck through submission and verification. Existing inventory already contains nine usable moderate items; no redundant questions need publication. All source questions and learner history are preserved.
