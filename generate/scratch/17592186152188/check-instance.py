@@ -6,7 +6,7 @@ D=Path(__file__).parent
 spec=importlib.util.spec_from_file_location('ellipse',D.with_suffix('.py'));g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
 C,S=s.symbols('C S',real=True)
 def read(expr):
- expr=expr.strip().rstrip('.,').replace('&','').strip()
+ expr=expr.strip().rstrip('.,').replace('&','').replace(r'\,','').strip()
  for trig,token in [('cos','C'),('sin','S')]:
   expr=re.sub(r'\{'+trig+r'\}\^\{2\}⁡(?:\\theta|t)',token+'^{2}',expr)
   expr=re.sub(r'\\'+trig+r'\^2\\theta',token+'^{2}',expr)
@@ -22,7 +22,7 @@ def formula_from_prompt(q):
   for v,eq in zip([g.X,g.Y],eqs):
    left,right=eq.split('=');vals.append(s.solve(read(left)-read(right),v)[0])
  else:
-  m=re.search(r'x=(.*?),\\(?:,|quad )y=(.*?),\\(?:,|quad )0',block)
+  m=re.search(r'x=(.*?),\s*\\(?:,|quad\s*)y=(.*?),\s*\\(?:,|quad\s*)0',block)
   assert m,block
   vals=[read(m.group(1)),read(m.group(2))]
  ax=vals[0].coeff(C);by=vals[1].coeff(S);h=vals[0].subs(C,0);k=vals[1].subs(S,0)
@@ -65,6 +65,7 @@ def check(record):
    lhs,rhs=answer[':answer/value'].split('=');res=g.tex_expr(lhs)-g.tex_expr(rhs)
   else:res=g.tex_expr(answer[':answer/value'])-1
   res=s.Poly(res,g.X,g.Y,extension=True);res=res.monic().as_expr();residuals.append(res)
- assert len(set(map(str,residuals)))==len(residuals)
+ if f[':answer-field/type'].endswith('/radio'):assert len(set(map(str,residuals)))==len(residuals)
+ else:assert all(s.simplify(z-residuals[0])==0 for z in residuals), 'Blank aliases must be equivalent'
  return {'template':record['generation']['template'],'parameters':p,'rows_checked':rows_checked,'block_row_counts':counts,'correct_displayed_math':True}
 

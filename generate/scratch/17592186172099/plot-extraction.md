@@ -1,0 +1,7 @@
+# Plot extraction and reuse
+
+All 12 source diagrams, including canonical e-9563, were read from the database image library, assembled into reference/initial/plots.png and visually inspected. Each source has one solution-only plane region diagram; no prompt or option diagrams. Each shows black coordinate axes with arrowheads, orange solid boundaries with dotted continuations where appropriate, a light blue region D, boundary equations and endpoint labels. There are no vector arrows or field-dependent plotted values.
+
+The triangle diagrams show their specific slopes and upper bounds: ±y at height 1 (q-126814), ±2y at height 1 (q-127323), ±y/2 at height 2 (q-127325), and ±y at height 2 for the canonical example. q-126817 and q-127302 shade below x² and x³ from x=0 to1. q-127309 shades below sqrt(x) from0 to2 with sqrt(2) endpoint. q-127365 shades between -sqrt(y) and y up to y=1, while q-127328 uses -y and sqrt(y). q-127370 shades between 1-y and e^y up to y=1. Excluded q-127316/q-127318 show their sine/cosine regions but do not repair the field-domain issues.
+
+All geometry, labels, positions and meaningful colors stay unchanged because only the vector field is scaled. Existing content-addressed PNG bytes are reused unchanged, so the classification is **none** for new plots. No renderer is needed for this supported parameter slot. Replenishment verifies every referenced file against its SHA-256 filename and preserves its database-relative reference. New geometry or values would reopen plot extraction and require Matplotlib or TikZ under step 7.
