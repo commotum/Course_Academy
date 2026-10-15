@@ -1,0 +1,91 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-345131",
+      "sequence_position": 5,
+      "problem": "![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14228291/assets/34df0d1bec2fbee41f1d2b81711e83ed3def50d1a439ad2543e7d55743638741.png)\n\nConsider the RCL circuit shown above. Given that the charge $q(t)$ of the capacitor at time $t$ seconds is given by\n\n$$\nq(t)=A{e}^{-2t}+B{e}^{-t}+\\frac{P}{10}\\operatorname{cos}⁡(2t)+\\frac{Q}{10}\\operatorname{sin}⁡(2t)\n$$\n\nwhere $A,$ $B,$ $P,$ and $Q$ are constants, find the value of $P+Q.$\n\n*Hint: The voltage drop ${V}_{C}$ across the capacitor is related to its charge by $q=C{V}_{C},$ where $C$ is the capacitance measured in Farads.*",
+      "worked_solution": "The diagram shows a series RCL circuit with a source electromotive force (EMF) of $4\\operatorname{sin}⁡(2t)\\,\\text{V},$ a resistor of resistance $6\\,Ω,$ a capacitor of capacitance $0.25\\,\\text{F},$ and an inductor of inductance $2\\,\\text{H}.$\n\nThe current $I,$ measured in amperes, is defined as the rate of flow of charge $q,$ measured in coulombs.\n\n$$\nI=\\frac{dq}{dt}\n$$\n\nKirchhoff's voltage law states that in a series circuit, the source voltage (EMF) equals the sum of the voltage drops.\n\nIn an RCL circuit, there are three voltage drops:\n\n- The voltage drop across the resistor is proportional to the current, with a constant of proportionality $R=6\\,Ω.$ So,\n\n$$\n{V}_{R}=6I=6\\,\\frac{dq}{dt}.\n$$\n\n- The voltage drop across the capacitor is related to its charge by $q=C{V}_{C}.$ Therefore,\n\n$$\n{V}_{C}=\\frac{q}{C}=\\frac{q}{0.25}=4q.\n$$\n\n- The voltage drop across the inductor is proportional to the rate of change of current, with a constant of proportionality $L=2\\,\\text{H}.$ Hence,\n\n$$\n{V}_{L}=2\\,\\frac{dI}{dt}=2\\,\\frac{d}{dt}(\\frac{dq}{dt})=2\\,\\frac{{d}^{2}q}{d{t}^{2}}.\n$$\n\nTherefore, by Kirchhoff's voltage law, the differential equation governing the amount of charge $q$ on the capacitor is\n\n$$\n4\\operatorname{sin}⁡(2t)=6\\,\\frac{dq}{dt}+4q+2\\,\\frac{{d}^{2}q}{d{t}^{2}},\n$$\n\nwhich gives\n\n$$\n\\frac{{d}^{2}q}{d{t}^{2}}+3\\cdot \\frac{dq}{dt}+2q=2\\operatorname{sin}⁡(2t).\n$$\n\nThe given equation is a second-order linear equation with constant coefficients. To find the general solution, we must sum the complementary and particular solutions.\n\n- To find the complementary solution ${q}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n\\frac{{d}^{2}{q}_{c}}{d{t}^{2}}+3\\cdot \\frac{d{q}_{c}}{dt}+2{q}_{c}=0.\n$$\n\nSolving using an integration technique, such as a trial solution, we obtain the complementary solution\n\n$$\n{q}_{c}(t)=A{e}^{-2t}+B{e}^{-t},\n$$\n\nwhere $A$ and $B$ are constants.\n\n- Next, we find the particular solution. Note that the right-hand side of the inhomogeneous equation is sinusoidal with argument $2t.$ So, we assume that the particular solution is also a sinusoidal with argument $2t,$ i.e.,\n\n$$\n{q}_{p}(t)=\\alpha \\operatorname{cos}⁡(2t)+\\beta \\operatorname{sin}⁡(2t).\n$$\n\nTo find the values of $\\alpha $ and $\\beta ,$ we substitute\n\n$$\n\\begin{aligned}{q}_{p} & =\\alpha \\operatorname{cos}⁡(2t)+\\beta \\operatorname{sin}⁡(2t), \\\\ \\frac{d{q}_{p}}{dt} & =-2\\alpha \\operatorname{sin}⁡(2t)+2\\beta \\operatorname{cos}⁡(2t), \\\\ \\frac{{d}^{2}{q}_{p}}{d{t}^{2}} & =-4\\alpha \\operatorname{cos}⁡(2t)-4\\beta \\operatorname{sin}⁡(2t),\\end{aligned}\n$$\n\ninto the inhomogeneous equation and group like terms on the left-hand side:\n\n$$\n\\begin{aligned}\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,(-4\\alpha \\operatorname{cos}⁡(2t)-4\\beta \\operatorname{sin}⁡(2t))+3(-2\\alpha \\operatorname{sin}⁡(2t)+2\\beta \\operatorname{cos}⁡(2t))\\,\\,\\, &  \\\\ +2(\\alpha \\operatorname{cos}⁡(2t)+\\beta \\operatorname{sin}⁡(2t)) & =2\\operatorname{sin}⁡(2t) \\\\ (-2\\alpha +6\\beta )\\operatorname{cos}⁡(2t)+(-6\\alpha -2\\beta )\\operatorname{sin}⁡(2t) & =2\\operatorname{sin}⁡(2t)\\end{aligned}\n$$\n\nEquating the coefficients, we get the following system of equations:\n\n$$\n\\{\\begin{aligned}-2\\alpha +6\\beta =0\\, & (\\text{equating the coefficients of}\\,\\operatorname{cos}⁡(2t)) \\\\ -6\\alpha -2\\beta =2\\, & (\\text{equating the coefficients of}\\,\\operatorname{sin}⁡(2t))\\end{aligned}\n$$\n\nSolving this system gives $\\alpha =-\\frac{3}{10},$ $\\beta =-\\frac{1}{10}.$ Therefore, the particular solution is\n\n$$\n{q}_{p}(t)=-\\frac{3}{10}\\operatorname{cos}⁡(2t)-\\frac{1}{10}\\operatorname{sin}⁡(2t).\n$$\n\nNow, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is\n\n$$\nq(t)={q}_{c}(t)+{q}_{p}(t)=A{e}^{-2t}+B{e}^{-t}-\\frac{3}{10}\\operatorname{cos}⁡(2t)-\\frac{1}{10}\\operatorname{sin}⁡(2t).\n$$\n\nTherefore, we have $P=-3,$ $Q=-1,$ and\n\n$$\nP+Q=-3+(-1)=-4.\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14228291/observations/history-q-345131-4b942d855662b1c3e69c.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14228291",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14228291/observations/history-solution-q-345131-8830812996da212084fa.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "-4"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "-3"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "-1"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "4"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "5"
+            }
+          ]
+        }
+      ],
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14228291/assets/34df0d1bec2fbee41f1d2b81711e83ed3def50d1a439ad2543e7d55743638741.png",
+          "sha256": "34df0d1bec2fbee41f1d2b81711e83ed3def50d1a439ad2543e7d55743638741",
+          "source_url": "https://mathacademy.com/graphics/q-345131",
+          "content_type": "image/png",
+          "representation": "original"
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q345131",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "-4",
+                "option": "c",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "source_grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "The diagram shows a series RCL circuit with a source electromotive force (EMF) of $4\\operatorname{sin}⁡(2t)\\,\\text{V},$ a resistor of resistance $6\\,Ω,$ a capacitor of capacitance $0.25\\,\\text{F},$ and an inductor of inductance $2\\,\\text{H}.$\n\nThe current $I,$ measured in amperes, is defined as the rate of flow of charge $q,$ measured in coulombs.\n\n$$\nI=\\frac{dq}{dt}\n$$\n\nKirchhoff's voltage law states that in a series circuit, the source voltage (EMF) equals the sum of the voltage drops.\n\nIn an RCL circuit, there are three voltage drops:\n\n- The voltage drop across the resistor is proportional to the current, with a constant of proportionality $R=6\\,Ω.$ So,\n\n$$\n{V}_{R}=6I=6\\,\\frac{dq}{dt}.\n$$\n\n- The voltage drop across the capacitor is related to its charge by $q=C{V}_{C}.$ Therefore,\n\n$$\n{V}_{C}=\\frac{q}{C}=\\frac{q}{0.25}=4q.\n$$\n\n- The voltage drop across the inductor is proportional to the rate of change of current, with a constant of proportionality $L=2\\,\\text{H}.$ Hence,\n\n$$\n{V}_{L}=2\\,\\frac{dI}{dt}=2\\,\\frac{d}{dt}(\\frac{dq}{dt})=2\\,\\frac{{d}^{2}q}{d{t}^{2}}.\n$$\n\nTherefore, by Kirchhoff's voltage law, the differential equation governing the amount of charge $q$ on the capacitor is\n\n$$\n4\\operatorname{sin}⁡(2t)=6\\,\\frac{dq}{dt}+4q+2\\,\\frac{{d}^{2}q}{d{t}^{2}},\n$$\n\nwhich gives\n\n$$\n\\frac{{d}^{2}q}{d{t}^{2}}+3\\cdot \\frac{dq}{dt}+2q=2\\operatorname{sin}⁡(2t).\n$$\n\nThe given equation is a second-order linear equation with constant coefficients. To find the general solution, we must sum the complementary and particular solutions.\n\n- To find the complementary solution ${q}_{c},$ we solve the corresponding homogeneous equation, given by\n\n$$\n\\frac{{d}^{2}{q}_{c}}{d{t}^{2}}+3\\cdot \\frac{d{q}_{c}}{dt}+2{q}_{c}=0.\n$$\n\nSolving using an integration technique, such as a trial solution, we obtain the complementary solution\n\n$$\n{q}_{c}(t)=A{e}^{-2t}+B{e}^{-t},\n$$\n\nwhere $A$ and $B$ are constants.\n\n- Next, we find the particular solution. Note that the right-hand side of the inhomogeneous equation is sinusoidal with argument $2t.$ So, we assume that the particular solution is also a sinusoidal with argument $2t,$ i.e.,\n\n$$\n{q}_{p}(t)=\\alpha \\operatorname{cos}⁡(2t)+\\beta \\operatorname{sin}⁡(2t).\n$$\n\nTo find the values of $\\alpha $ and $\\beta ,$ we substitute\n\n$$\n\\begin{aligned}{q}_{p} & =\\alpha \\operatorname{cos}⁡(2t)+\\beta \\operatorname{sin}⁡(2t), \\\\ \\frac{d{q}_{p}}{dt} & =-2\\alpha \\operatorname{sin}⁡(2t)+2\\beta \\operatorname{cos}⁡(2t), \\\\ \\frac{{d}^{2}{q}_{p}}{d{t}^{2}} & =-4\\alpha \\operatorname{cos}⁡(2t)-4\\beta \\operatorname{sin}⁡(2t),\\end{aligned}\n$$\n\ninto the inhomogeneous equation and group like terms on the left-hand side:\n\n$$\n\\begin{aligned}\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,\\,(-4\\alpha \\operatorname{cos}⁡(2t)-4\\beta \\operatorname{sin}⁡(2t))+3(-2\\alpha \\operatorname{sin}⁡(2t)+2\\beta \\operatorname{cos}⁡(2t))\\,\\,\\, &  \\\\ +2(\\alpha \\operatorname{cos}⁡(2t)+\\beta \\operatorname{sin}⁡(2t)) & =2\\operatorname{sin}⁡(2t) \\\\ (-2\\alpha +6\\beta )\\operatorname{cos}⁡(2t)+(-6\\alpha -2\\beta )\\operatorname{sin}⁡(2t) & =2\\operatorname{sin}⁡(2t)\\end{aligned}\n$$\n\nEquating the coefficients, we get the following system of equations:\n\n$$\n\\{\\begin{aligned}-2\\alpha +6\\beta =0\\, & (\\text{equating the coefficients of}\\,\\operatorname{cos}⁡(2t)) \\\\ -6\\alpha -2\\beta =2\\, & (\\text{equating the coefficients of}\\,\\operatorname{sin}⁡(2t))\\end{aligned}\n$$\n\nSolving this system gives $\\alpha =-\\frac{3}{10},$ $\\beta =-\\frac{1}{10}.$ Therefore, the particular solution is\n\n$$\n{q}_{p}(t)=-\\frac{3}{10}\\operatorname{cos}⁡(2t)-\\frac{1}{10}\\operatorname{sin}⁡(2t).\n$$\n\nNow, since the general solution is given by the sum of the complementary solution and the particular solution, the general solution in our case is\n\n$$\nq(t)={q}_{c}(t)+{q}_{p}(t)=A{e}^{-2t}+B{e}^{-t}-\\frac{3}{10}\\operatorname{cos}⁡(2t)-\\frac{1}{10}\\operatorname{sin}⁡(2t).\n$$\n\nTherefore, we have $P=-3,$ $Q=-1,$ and\n\n$$\nP+Q=-3+(-1)=-4.\n$$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14228291/observations/history-solution-q-345131-8830812996da212084fa.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14228291/observations/history-q-345131-4b942d855662b1c3e69c.html"
+        }
+      }
+    ]
+  }
+}
