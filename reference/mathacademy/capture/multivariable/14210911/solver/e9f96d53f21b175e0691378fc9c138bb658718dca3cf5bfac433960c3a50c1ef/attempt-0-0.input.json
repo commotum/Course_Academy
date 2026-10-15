@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-39056",
+      "sequence_position": 1,
+      "problem": "Consider the finite region $R$ in the $xyz$-space, given by\n\n$$\nR=\\{(x,y,z)\\,:\\,1\\le {x}^{2}-{y}^{2}\\le 2,\\,2\\le x+y\\le 4,\\,0\\le z\\le 1\\}.\n$$\n\nBy performing the change of variables\n\n$$\nu={x}^{2}-{y}^{2},\\,v=x+y,\\,w=z,\n$$\n\nthe triple integral\n\n$$\n{∭}_{R}(x+y)\\operatorname{sinh}⁡({x}^{2}-{y}^{2})\\,dV\n$$\n\ncan be written in terms of $u,$ $v,$ and $w$ as",
+      "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo find the required integral, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$ \n\nNote that the change of variables\n\n$$\nu={x}^{2}-{y}^{2},\\,v=x+y,\\,w=z,\n$$\n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo find the required integral, we proceed in four steps: \n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}Δ & =\\{(u,v,w)\\,:\\,1\\le u\\le 2,\\,2\\le v\\le 4,\\,0\\le w\\le 1\\}.\\end{aligned}\n$$\n\n \n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}2x & -2y & 0 \\\\ 1 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}| \\\\  & =1|\\begin{aligned}2x & -2y \\\\ 1 & 1\\end{aligned}| \\\\  & =2x+2y \\\\  & =2(x+y) \\\\  & =2v\\end{aligned}\n$$\n\n \n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}=\\frac{1}{2v}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$ \n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{∭}_{R}(x+y)\\operatorname{sinh}⁡({x}^{2}-{y}^{2})\\,dV & ={∭}_{Δ}v\\operatorname{sinh}⁡u\\cdot |\\frac{1}{2v}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={∭}_{Δ}\\frac{\\operatorname{sinh}⁡u}{2}\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{1}^{2}{\\int }_{2}^{4}{\\int }_{0}^{1}\\frac{\\operatorname{sinh}⁡u}{2}\\,dw\\,dv\\,du\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14210911/observations/history-q-39056-ae50a3349bd1b2f4c724.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14210911",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14210911/observations/history-solution-q-39056-cca280544c443d3ed7f7.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "{\\int }_{1}^{2}{\\int }_{2}^{4}{\\int }_{0}^{v}\\frac{\\operatorname{sinh}⁡u}{2}\\,dw\\,dv\\,du"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "{\\int }_{1}^{2}{\\int }_{2}^{4}{\\int }_{0}^{v}\\frac{u\\operatorname{sinh}⁡u}{2}\\,dw\\,dv\\,du"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "{\\int }_{1}^{2}{\\int }_{2}^{4}{\\int }_{0}^{1}\\frac{\\operatorname{sinh}⁡u}{2}\\,dw\\,dv\\,du"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "{\\int }_{1}^{2}{\\int }_{2}^{4}{\\int }_{0}^{uv}2v\\operatorname{sinh}⁡uv\\,dw\\,dv\\,du"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "{\\int }_{1}^{2}{\\int }_{2}^{4}{\\int }_{0}^{uv}2v\\operatorname{sinh}⁡u\\,dw\\,dv\\,du"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q39056",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "{\\int }_{1}^{2}{\\int }_{2}^{4}{\\int }_{0}^{v}\\frac{\\operatorname{sinh}⁡u}{2}\\,dw\\,dv\\,du",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "Let's define a transformation $T$ as follows:\n\n$$\nT:[\\begin{aligned}u \\\\ v \\\\ w\\end{aligned}]⟶[\\begin{aligned}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{aligned}]\n$$\n\nThis transformation maps some region $Δ$ in the $uvw$-space to our region $R$ in the $xyz$-space.\n\nTo find the required integral, we can use the change of variables formula\n\n$$\n{∭}_{R}f(x,y,z)\\text{ }dV={∭}_{Δ}\\text{ }f(x(u,v,w),y(u,v,w),z(u,v,w))\\,|\\frac{∂(x,y,z)}{∂(u,v,w)}|\\,\\text{d}u\\text{d}v\\text{d}w\n$$\n\nwhere $\\frac{∂(x,y,z)}{∂(u,v,w)}$ is the Jacobian determinant corresponding to $T.$ \n\nNote that the change of variables\n\n$$\nu={x}^{2}-{y}^{2},\\,v=x+y,\\,w=z,\n$$\n\ngives us the *inverse* function ${T}^{-1},$ that is\n\n$$\n{T}^{-1}:[\\begin{aligned}x \\\\ y \\\\ z\\end{aligned}]\\to [\\begin{aligned}u(x,y,z) \\\\ v(x,y,z) \\\\ w(x,y,z)\\end{aligned}].\n$$\n\nTo find the required integral, we proceed in four steps: \n\n**Step 1**: Find $Δ,$ which is the image of $R$ under the action of ${T}^{-1}.$ \n\nOur domain in the $uvw$-space is\n\n$$\n\\begin{aligned}Δ & =\\{(u,v,w)\\,:\\,1\\le u\\le 2,\\,2\\le v\\le 4,\\,0\\le w\\le 1\\}.\\end{aligned}\n$$\n\n \n\n**Step 2**: Compute the Jacobian determinant corresponding to ${T}^{-1}:$\n\nThe Jacobian determinant corresponding to ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{∂(u,v,w)}{∂(x,y,z)} & =|\\begin{aligned}\\frac{∂u}{∂x} & \\frac{∂u}{∂y} & \\frac{∂u}{∂z} \\\\ \\frac{∂v}{∂x} & \\frac{∂v}{∂y} & \\frac{∂v}{∂z} \\\\ \\frac{∂w}{∂x} & \\frac{∂w}{∂y} & \\frac{∂w}{∂z}\\end{aligned}| \\\\  & =|\\begin{aligned}2x & -2y & 0 \\\\ 1 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}| \\\\  & =1|\\begin{aligned}2x & -2y \\\\ 1 & 1\\end{aligned}| \\\\  & =2x+2y \\\\  & =2(x+y) \\\\  & =2v\\end{aligned}\n$$\n\n \n\n**Step 3**: Compute the Jacobian determinant corresponding to $T:$\n\nThe Jacobian determinant corresponding to $T$ is\n\n$$\n\\frac{∂(x,y,z)}{∂(u,v,w)}={(\\frac{∂(u,v,w)}{∂(x,y,z)})}^{-1}=\\frac{1}{2v}.\n$$\n\nNote that $\\frac{∂(x,y,z)}{∂(u,v,w)}\\ne 0$ everywhere inside $Δ.$ In other words, $T$ has no critical points inside $Δ.$ \n\n**Step 4**: Perform the change of variables:\n\n$$\n\\begin{aligned}{∭}_{R}(x+y)\\operatorname{sinh}⁡({x}^{2}-{y}^{2})\\,dV & ={∭}_{Δ}v\\operatorname{sinh}⁡u\\cdot |\\frac{1}{2v}|\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={∭}_{Δ}\\frac{\\operatorname{sinh}⁡u}{2}\\,\\text{d}u\\text{d}v\\text{d}w \\\\  & ={\\int }_{1}^{2}{\\int }_{2}^{4}{\\int }_{0}^{1}\\frac{\\operatorname{sinh}⁡u}{2}\\,dw\\,dv\\,du\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14210911/observations/step-q39056-a2387cb514f9e0445e99.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a13b7d-9b1d-7ba1-8553-0f3972fa13b4",
+  "previous_failures": []
+}
