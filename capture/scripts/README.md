@@ -100,6 +100,15 @@ Preparation rejects explicit incomplete-field sets and requires a final judgment
 
 Original content uses `:org/Math-Academy`, including source errors. Agent corrections remain separate evidence for later separately sourced transactions. Learner attempts, XP, and progress are saved locally. Calculated topic difficulty is also saved locally unless `--derived-source` names an existing source for it.
 
+Question identity and answer agreement are separate checks. When saved live and
+complete history HTML both prove the same permanent question ID, a rendering or
+content revision retains that identity. The complete history version is judged
+independently; the earlier version remains in `source_variants` and its actual
+learner observations remain in the checkpoint. A grade transfers only when the
+full source content agrees. Diagnostic position IDs cannot establish permanent
+identity. Task-answer choices are rendered offline with MathJax's own delimiter
+finder, and literal dollar signs are escaped when extracting MathML into TeX.
+
 ## Configuration and saved captures
 
 Use `--config path/to/config.json` for fields defined in [config.py](config.py); command-line options override them. Account-specific `run` commands accept separate state, output, profile, and course paths. `fleet` reserves those settings for its four account processes.

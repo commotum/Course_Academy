@@ -20,20 +20,23 @@ class HistoryChoices:
         self.page.route('**/*', lambda route: route.fulfill(path=str(local[route.request.url]),
             content_type='application/javascript') if route.request.url in local else route.abort())
         self.page.set_content('<body></body>')
-        self.page.evaluate("window.MathJax={loader:{paths:{mathjax:'https://capture.invalid/mathjax'}},startup:{typeset:false}}")
+        self.page.evaluate(r"window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]},loader:{paths:{mathjax:'https://capture.invalid/mathjax'}},startup:{typeset:false}}")
         self.page.add_script_tag(path=str(vendor/'tex-svg.js'))
         self.page.evaluate('MathJax.startup.promise')
 
     def close(self):
         self.page.close()
 
-    def recover(self, record, answer, source_file, directory):
+    def recover(self, record, answer, source_file, directory, *, refresh=False):
         from ..activity.capture import ActivityCapture
         question = answer.get('question', {})
         identity = 'q-' + str(question.get('id'))
         if record.get('math_academy_id') != identity:
             raise ValueError('Task answer question ID does not match history')
-        if record.get('fields') or record.get('answer_fields'):
+        if refresh and (record.get('field_recovery',{}).get('kind') != 'owned_task_answers'
+                        or record['field_recovery'].get('question_id') != identity):
+            raise ValueError('Only verified task-answer fields can be refreshed')
+        if not refresh and (record.get('fields') or record.get('answer_fields')):
             return deepcopy(record)
         if question.get('format') != 'MC':
             return deepcopy(record)  # Other formats require their own source renderer.
@@ -54,20 +57,23 @@ class HistoryChoices:
           }
           root.querySelectorAll('script,iframe,object,embed').forEach(n=>n.remove());
           const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),nodes=[];while(walker.nextNode()) nodes.push(walker.currentNode);
-          const pattern=/(?<!\\)\$\$([\s\S]*?)(?<!\\)\$\$|\\\[([\s\S]*?)\\\]|(?<!\\)\$([^$]*?)(?<!\\)\$|\\\(([\s\S]*?)\\\)/g;
+          // Use MathJax's own delimiter finder, including escaped dollars and
+          // backslashes. A second TeX tokenizer can disagree with the live UI.
+          const input=MathJax.startup.document.inputJax[0];
           for(const node of nodes) {
             const fragment=document.createDocumentFragment();let start=0,found=false;
-            for(const match of node.textContent.matchAll(pattern)) {
-              found=true;fragment.append(node.textContent.slice(start,match.index));
-              const display=match[1]!==undefined || match[2]!==undefined;
-              const math=new DOMParser().parseFromString(await MathJax.tex2mmlPromise(match[1]??match[2]??match[3]??match[4]),'text/xml').documentElement;
+            for(const match of input.findMath([node.textContent])) {
+              found=true;fragment.append(node.textContent.slice(start,match.start.n));
+              start=match.end.n;
+              if(match.display===null) {fragment.append(match.math);continue;}
+              const math=new DOMParser().parseFromString(await MathJax.tex2mmlPromise(match.math),'text/xml').documentElement;
               // tex2mml pretty prints container indentation. It is not authored
               // spacing inside a token such as mtext.
               const spaces=document.createTreeWalker(math,NodeFilter.SHOW_TEXT),empty=[];
               while(spaces.nextNode()) if(!spaces.currentNode.textContent.trim() &&
                 !['mi','mo','mn','mtext','ms'].includes(spaces.currentNode.parentNode.localName)) empty.push(spaces.currentNode);
               empty.forEach(n=>n.remove());
-              math.setAttribute('display',String(display));fragment.append(document.importNode(math,true));start=match.index+match[0].length;
+              math.setAttribute('display',String(match.display));fragment.append(document.importNode(math,true));
             }
             if(found) {fragment.append(node.textContent.slice(start));node.replaceWith(fragment);}
           }
@@ -93,6 +99,7 @@ class HistoryChoices:
         rendered = Path(directory)/'source'/('task-answer-'+identity+'-'+digest[:16]+'.html')
         atomic_text(rendered,parsed['html'])
         result = deepcopy(record)
+        result.pop('answer_fields',None)
         result['fields'] = parsed['fields']
         result['answer_fields_complete'] = True
         result['extraction_parts'] = list(dict.fromkeys(record.get('extraction_parts',[]) + ['fields']))

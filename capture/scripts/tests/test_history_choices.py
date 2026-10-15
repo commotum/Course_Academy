@@ -62,5 +62,37 @@ class HistoryChoiceRecoveryTests(unittest.TestCase):
         self.assertTrue(result['answer_fields_complete'])
         self.assertIn(r'\bbox',result['fields'][0]['choices'][-1]['value'])
 
+    def test_currency_uses_native_tex_delimiters_and_matches_live_mathml(self):
+        from scripts.browser.adapter import EXTRACT
+        self.answer['question']['choice5']=r'The initial price is $\$25\, 500$'
+        result=self.renderer.recover(self.record,self.answer,self.directory/'raw.json',self.directory)
+        choice=result['fields'][0]['choices'][-1]
+        self.assertEqual(choice['value'],r'The initial price is $\$25\,500$')
+        self.assertIn('<math',choice['html'])
+        self.renderer.page.set_content('<div id="live"><div class="questionText">'+
+            'The initial price is <math><mi mathvariant="normal">$</mi><mn>25</mn>'+
+            '<mstyle><mspace width="0.167em"></mspace></mstyle><mn>500</mn></math></div></div>')
+        live=self.renderer.page.locator('#live').evaluate(EXTRACT)
+        self.assertEqual(live['problem'],choice['value'])
+        self.assertEqual(live['errors'],[])
+
+    def test_native_finder_handles_multiple_formulas_and_escaped_currency_in_prose(self):
+        self.answer['question']['choice5']=r'Pay \$5 for $x+1$ or \(y+2\).'
+        result=self.renderer.recover(self.record,self.answer,self.directory/'raw.json',self.directory)
+        choice=result['fields'][0]['choices'][-1]
+        self.assertEqual(choice['value'],r'Pay $5 for $x+1$ or $y+2$.')
+        self.assertEqual(choice['html'].count('<math '),2)
+
+    def test_refresh_requires_owned_task_provenance_and_replaces_stale_fields(self):
+        record=deepcopy(self.record);record['fields']=[{'key':'selection','choices':[{'value':'old'}]}]
+        with self.assertRaises(ValueError):
+            self.renderer.recover(record,self.answer,self.directory/'raw.json',self.directory,refresh=True)
+        record['field_recovery']={'kind':'owned_task_answers','question_id':'q-42'}
+        record['answer_fields']=deepcopy(record['fields'])
+        result=self.renderer.recover(record,self.answer,self.directory/'raw.json',self.directory,refresh=True)
+        self.assertEqual(result['fields'][0]['choices'][0]['value'],'0')
+        self.assertNotIn('answer_fields',result)
+        self.assertEqual(record['fields'][0]['choices'][0]['value'],'old')
+
 
 if __name__=='__main__':unittest.main()

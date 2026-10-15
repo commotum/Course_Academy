@@ -17,10 +17,12 @@ window.renderRecord=async record=>{
  const matricesPrompt=document.querySelectorAll('.prompt [data-mml-node="mtable"]').length;
  const matricesSolution=document.querySelectorAll('.solution [data-mml-node="mtable"]').length;
  const tables=[...document.querySelectorAll('.solution [data-mml-node="mtable"]')];
+ const firstAlignedRow=tables[0]?[...tables[0].children].find(n=>n.dataset.mmlNode==='mtr'):null;
+ const firstStageSubscripts=firstAlignedRow?firstAlignedRow.querySelectorAll('[data-mml-node="msub"]').length:0;
  const alignedRows=tables[0]?[...tables[0].children].filter(n=>n.dataset.mmlNode==='mtr').length:0;
  const clone=document.body.cloneNode(true);clone.querySelectorAll('mjx-container,math-field').forEach(n=>n.remove());
  const controls=[...document.querySelectorAll('input[type=radio],math-field')];
- return {mathJaxVersion:MathJax.version,browserUserAgent:navigator.userAgent,errors:document.querySelectorAll('[data-mml-node="merror"]').length,exposed:/\$|\\begin|\\end|\{\{field-/.test(clone.textContent),controlCount:controls.length,controlTypes:controls.map(n=>n.tagName),controlVisibility:controls.every(n=>{const r=n.getBoundingClientRect();const c=getComputedStyle(n);return r.width>0&&r.height>0&&c.display!=='none'&&c.visibility!=='hidden'}),blankValue:document.querySelector('math-field')?.value,matricesPrompt,matricesSolution,alignedRows,overflow:[...document.querySelectorAll('mjx-container[display="true"]')].some(n=>n.scrollWidth>n.clientWidth+2),solutionPresent:Boolean(q[':question/worked-solution']),documentHeight:document.documentElement.scrollHeight};
+ return {mathJaxVersion:MathJax.version,browserUserAgent:navigator.userAgent,errors:document.querySelectorAll('[data-mml-node="merror"]').length,exposed:/\$|\\begin|\\end|\{\{field-/.test(clone.textContent),controlCount:controls.length,controlTypes:controls.map(n=>n.tagName),controlVisibility:controls.every(n=>{const r=n.getBoundingClientRect();const c=getComputedStyle(n);return r.width>0&&r.height>0&&c.display!=='none'&&c.visibility!=='hidden'}),blankValue:document.querySelector('math-field')?.value,matricesPrompt,matricesSolution,alignedRows,firstStageSubscripts,overflow:[...document.querySelectorAll('mjx-container[display="true"]')].some(n=>n.scrollWidth>n.clientWidth+2),solutionPresent:Boolean(q[':question/worked-solution']),documentHeight:document.documentElement.scrollHeight};
 };
 '''
 (D/'render-harness.js').write_text(js)

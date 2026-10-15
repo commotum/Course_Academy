@@ -49,7 +49,7 @@ Worked solution:
 Multiplying the $2$nd row in $A$ by the $3$rd column in $B$, we get
 
 $$
-\begin{aligned}{c}_{23} & =\begin{bmatrix}3 & -6 \\ -5 & 6 \\ 3 & -6\end{bmatrix}\begin{bmatrix}0 & -2 & 5 \\ -3 & -5 & 5\end{bmatrix} \\  & =\begin{bmatrix}-5 & 6\end{bmatrix}\begin{bmatrix}5 \\ 5\end{bmatrix} \\  & =(-5)\cdot 5+6\cdot 5 \\  & =-25+30 \\  & =5.\end{aligned}
+\begin{aligned}{c}_{23} & =\left(\begin{bmatrix}3 & -6 \\ -5 & 6 \\ 3 & -6\end{bmatrix}\begin{bmatrix}0 & -2 & 5 \\ -3 & -5 & 5\end{bmatrix}\right)_{23} \\  & =\begin{bmatrix}-5 & 6\end{bmatrix}\begin{bmatrix}5 \\ 5\end{bmatrix} \\  & =(-5)\cdot 5+6\cdot 5 \\  & =-25+30 \\  & =5.\end{aligned}
 $$
 
 ### Authored easy variant 92
@@ -75,7 +75,7 @@ Worked solution:
 Multiplying the $3$rd row in $A$ by the $1$st column in $B$, we get
 
 $$
-\begin{aligned}{c}_{31} & =\begin{bmatrix}2 & 1 \\ -4 & -5 \\ 3 & 4\end{bmatrix}\begin{bmatrix}4 & -1 & -6 \\ -6 & -6 & 4\end{bmatrix} \\  & =\begin{bmatrix}3 & 4\end{bmatrix}\begin{bmatrix}4 \\ -6\end{bmatrix} \\  & =3\cdot 4+4\cdot (-6) \\  & =12-24 \\  & =-12.\end{aligned}
+\begin{aligned}{c}_{31} & =\left(\begin{bmatrix}2 & 1 \\ -4 & -5 \\ 3 & 4\end{bmatrix}\begin{bmatrix}4 & -1 & -6 \\ -6 & -6 & 4\end{bmatrix}\right)_{31} \\  & =\begin{bmatrix}3 & 4\end{bmatrix}\begin{bmatrix}4 \\ -6\end{bmatrix} \\  & =3\cdot 4+4\cdot (-6) \\  & =12-24 \\  & =-12.\end{aligned}
 $$
 
 ## Original q-70792
@@ -125,7 +125,7 @@ Worked solution:
 Multiplying the $2$nd row in $X$ by the $3$rd column in $Y$, we get
 
 $$
-\begin{aligned}{z}_{23} & =\begin{bmatrix}0 & -1 & -3 \\ -4 & 0 & 3 \\ 5 & -2 & 2 \\ -2 & 0 & 5\end{bmatrix}\begin{bmatrix}6 & 3 & -6 \\ 6 & -3 & 4 \\ -6 & 1 & -4\end{bmatrix} \\  & =\begin{bmatrix}-4 & 0 & 3\end{bmatrix}\begin{bmatrix}-6 \\ 4 \\ -4\end{bmatrix} \\  & =(-4)\cdot (-6)+0\cdot 4+3\cdot (-4) \\  & =24+0-12 \\  & =12.\end{aligned}
+\begin{aligned}{z}_{23} & =\left(\begin{bmatrix}0 & -1 & -3 \\ -4 & 0 & 3 \\ 5 & -2 & 2 \\ -2 & 0 & 5\end{bmatrix}\begin{bmatrix}6 & 3 & -6 \\ 6 & -3 & 4 \\ -6 & 1 & -4\end{bmatrix}\right)_{23} \\  & =\begin{bmatrix}-4 & 0 & 3\end{bmatrix}\begin{bmatrix}-6 \\ 4 \\ -4\end{bmatrix} \\  & =(-4)\cdot (-6)+0\cdot 4+3\cdot (-4) \\  & =24+0-12 \\  & =12.\end{aligned}
 $$
 
 ### Authored easy variant 92
@@ -151,7 +151,7 @@ Worked solution:
 Multiplying the $1$st row in $X$ by the $1$st column in $Y$, we get
 
 $$
-\begin{aligned}{z}_{11} & =\begin{bmatrix}-1 & -4 & 6 \\ -1 & -3 & 2 \\ 2 & 1 & -3 \\ -4 & -1 & -6\end{bmatrix}\begin{bmatrix}-6 & -5 & -4 \\ 4 & 2 & 3 \\ -1 & 1 & 4\end{bmatrix} \\  & =\begin{bmatrix}-1 & -4 & 6\end{bmatrix}\begin{bmatrix}-6 \\ 4 \\ -1\end{bmatrix} \\  & =(-1)\cdot (-6)+(-4)\cdot 4+6\cdot (-1) \\  & =6-16-6 \\  & =-16.\end{aligned}
+\begin{aligned}{z}_{11} & =\left(\begin{bmatrix}-1 & -4 & 6 \\ -1 & -3 & 2 \\ 2 & 1 & -3 \\ -4 & -1 & -6\end{bmatrix}\begin{bmatrix}-6 & -5 & -4 \\ 4 & 2 & 3 \\ -1 & 1 & 4\end{bmatrix}\right)_{11} \\  & =\begin{bmatrix}-1 & -4 & 6\end{bmatrix}\begin{bmatrix}-6 \\ 4 \\ -1\end{bmatrix} \\  & =(-1)\cdot (-6)+(-4)\cdot 4+6\cdot (-1) \\  & =6-16-6 \\  & =-16.\end{aligned}
 $$
 
 ### Authored moderate variant 41
@@ -177,7 +177,7 @@ Worked solution:
 Multiplying the $4$th row in $X$ by the $1$st column in $Y$, we get
 
 $$
-\begin{aligned}{z}_{41} & =\begin{bmatrix}0 & 2 & -6 \\ -5 & 4 & 4 \\ -2 & -5 & 4 \\ -4 & -5 & -2\end{bmatrix}\begin{bmatrix}-3 & 4 & 4 \\ -3 & -3 & 0 \\ 4 & 5 & 1\end{bmatrix} \\  & =\begin{bmatrix}-4 & -5 & -2\end{bmatrix}\begin{bmatrix}-3 \\ -3 \\ 4\end{bmatrix} \\  & =(-4)\cdot (-3)+(-5)\cdot (-3)+(-2)\cdot 4 \\  & =12+15-8 \\  & =19.\end{aligned}
+\begin{aligned}{z}_{41} & =\left(\begin{bmatrix}0 & 2 & -6 \\ -5 & 4 & 4 \\ -2 & -5 & 4 \\ -4 & -5 & -2\end{bmatrix}\begin{bmatrix}-3 & 4 & 4 \\ -3 & -3 & 0 \\ 4 & 5 & 1\end{bmatrix}\right)_{41} \\  & =\begin{bmatrix}-4 & -5 & -2\end{bmatrix}\begin{bmatrix}-3 \\ -3 \\ 4\end{bmatrix} \\  & =(-4)\cdot (-3)+(-5)\cdot (-3)+(-2)\cdot 4 \\  & =12+15-8 \\  & =19.\end{aligned}
 $$
 
 ### Authored moderate variant 92
@@ -203,7 +203,7 @@ Worked solution:
 Multiplying the $4$th row in $X$ by the $3$rd column in $Y$, we get
 
 $$
-\begin{aligned}{z}_{43} & =\begin{bmatrix}-1 & 3 & 1 \\ 1 & 2 & -1 \\ -4 & 4 & 0 \\ 4 & 5 & -3\end{bmatrix}\begin{bmatrix}-1 & 5 & 3 \\ -5 & -6 & -3 \\ -4 & 4 & -2\end{bmatrix} \\  & =\begin{bmatrix}4 & 5 & -3\end{bmatrix}\begin{bmatrix}3 \\ -3 \\ -2\end{bmatrix} \\  & =4\cdot 3+5\cdot (-3)+(-3)\cdot (-2) \\  & =12-15+6 \\  & =3.\end{aligned}
+\begin{aligned}{z}_{43} & =\left(\begin{bmatrix}-1 & 3 & 1 \\ 1 & 2 & -1 \\ -4 & 4 & 0 \\ 4 & 5 & -3\end{bmatrix}\begin{bmatrix}-1 & 5 & 3 \\ -5 & -6 & -3 \\ -4 & 4 & -2\end{bmatrix}\right)_{43} \\  & =\begin{bmatrix}4 & 5 & -3\end{bmatrix}\begin{bmatrix}3 \\ -3 \\ -2\end{bmatrix} \\  & =4\cdot 3+5\cdot (-3)+(-3)\cdot (-2) \\  & =12-15+6 \\  & =3.\end{aligned}
 $$
 
 ### Authored hard variant 41
@@ -229,7 +229,7 @@ Worked solution:
 Multiplying the $2$nd row in $X$ by the $1$st column in $Y$, we get
 
 $$
-\begin{aligned}{z}_{21} & =\begin{bmatrix}5 & 3 & 5 \\ 4 & 2 & -4 \\ 1 & 4 & 0 \\ -6 & 2 & 4\end{bmatrix}\begin{bmatrix}-5 & -5 & 4 \\ -4 & 1 & 4 \\ -3 & 3 & -3\end{bmatrix} \\  & =\begin{bmatrix}4 & 2 & -4\end{bmatrix}\begin{bmatrix}-5 \\ -4 \\ -3\end{bmatrix} \\  & =4\cdot (-5)+2\cdot (-4)+(-4)\cdot (-3) \\  & =-20-8+12 \\  & =-16.\end{aligned}
+\begin{aligned}{z}_{21} & =\left(\begin{bmatrix}5 & 3 & 5 \\ 4 & 2 & -4 \\ 1 & 4 & 0 \\ -6 & 2 & 4\end{bmatrix}\begin{bmatrix}-5 & -5 & 4 \\ -4 & 1 & 4 \\ -3 & 3 & -3\end{bmatrix}\right)_{21} \\  & =\begin{bmatrix}4 & 2 & -4\end{bmatrix}\begin{bmatrix}-5 \\ -4 \\ -3\end{bmatrix} \\  & =4\cdot (-5)+2\cdot (-4)+(-4)\cdot (-3) \\  & =-20-8+12 \\  & =-16.\end{aligned}
 $$
 
 ### Authored hard variant 92
@@ -255,7 +255,7 @@ Worked solution:
 Multiplying the $3$rd row in $X$ by the $1$st column in $Y$, we get
 
 $$
-\begin{aligned}{z}_{31} & =\begin{bmatrix}0 & 2 & 3 \\ 2 & 2 & 6 \\ 3 & -2 & 6 \\ 6 & 4 & 6\end{bmatrix}\begin{bmatrix}6 & -5 & 3 \\ 2 & 1 & -4 \\ -5 & 3 & 4\end{bmatrix} \\  & =\begin{bmatrix}3 & -2 & 6\end{bmatrix}\begin{bmatrix}6 \\ 2 \\ -5\end{bmatrix} \\  & =3\cdot 6+(-2)\cdot 2+6\cdot (-5) \\  & =18-4-30 \\  & =-16.\end{aligned}
+\begin{aligned}{z}_{31} & =\left(\begin{bmatrix}0 & 2 & 3 \\ 2 & 2 & 6 \\ 3 & -2 & 6 \\ 6 & 4 & 6\end{bmatrix}\begin{bmatrix}6 & -5 & 3 \\ 2 & 1 & -4 \\ -5 & 3 & 4\end{bmatrix}\right)_{31} \\  & =\begin{bmatrix}3 & -2 & 6\end{bmatrix}\begin{bmatrix}6 \\ 2 \\ -5\end{bmatrix} \\  & =3\cdot 6+(-2)\cdot 2+6\cdot (-5) \\  & =18-4-30 \\  & =-16.\end{aligned}
 $$
 
 ## Original q-130111
@@ -313,7 +313,7 @@ Worked solution:
 Multiplying the $1$st row in $U$ by the $3$rd column in $V$, we get
 
 $$
-\begin{aligned}{s}_{13} & =\begin{bmatrix}0 & -1 & -3 \\ -4 & 0 & 3\end{bmatrix}\begin{bmatrix}5 & -2 & 2 \\ -2 & 0 & 5 \\ 6 & 3 & -6\end{bmatrix} \\  & =\begin{bmatrix}0 & -1 & -3\end{bmatrix}\begin{bmatrix}2 \\ 5 \\ -6\end{bmatrix} \\  & =0\cdot 2+(-1)\cdot 5+(-3)\cdot (-6) \\  & =0-5+18 \\  & =13.\end{aligned}
+\begin{aligned}{s}_{13} & =\left(\begin{bmatrix}0 & -1 & -3 \\ -4 & 0 & 3\end{bmatrix}\begin{bmatrix}5 & -2 & 2 \\ -2 & 0 & 5 \\ 6 & 3 & -6\end{bmatrix}\right)_{13} \\  & =\begin{bmatrix}0 & -1 & -3\end{bmatrix}\begin{bmatrix}2 \\ 5 \\ -6\end{bmatrix} \\  & =0\cdot 2+(-1)\cdot 5+(-3)\cdot (-6) \\  & =0-5+18 \\  & =13.\end{aligned}
 $$
 
 ### Authored easy variant 92
@@ -342,7 +342,7 @@ Worked solution:
 Multiplying the $2$nd row in $U$ by the $2$nd column in $V$, we get
 
 $$
-\begin{aligned}{s}_{22} & =\begin{bmatrix}-2 & -4 & 5 \\ -4 & -3 & 3\end{bmatrix}\begin{bmatrix}-4 & -3 & 3 \\ -4 & 1 & 6 \\ -6 & 0 & 4\end{bmatrix} \\  & =\begin{bmatrix}-4 & -3 & 3\end{bmatrix}\begin{bmatrix}-3 \\ 1 \\ 0\end{bmatrix} \\  & =(-4)\cdot (-3)+(-3)\cdot 1+3\cdot 0 \\  & =12-3+0 \\  & =9.\end{aligned}
+\begin{aligned}{s}_{22} & =\left(\begin{bmatrix}-2 & -4 & 5 \\ -4 & -3 & 3\end{bmatrix}\begin{bmatrix}-4 & -3 & 3 \\ -4 & 1 & 6 \\ -6 & 0 & 4\end{bmatrix}\right)_{22} \\  & =\begin{bmatrix}-4 & -3 & 3\end{bmatrix}\begin{bmatrix}-3 \\ 1 \\ 0\end{bmatrix} \\  & =(-4)\cdot (-3)+(-3)\cdot 1+3\cdot 0 \\  & =12-3+0 \\  & =9.\end{aligned}
 $$
 
 ### Authored moderate variant 41
@@ -371,7 +371,7 @@ Worked solution:
 Multiplying the $1$st row in $U$ by the $1$st column in $V$, we get
 
 $$
-\begin{aligned}{s}_{11} & =\begin{bmatrix}-2 & 5 & -3 \\ -5 & 5 & -1\end{bmatrix}\begin{bmatrix}5 & 1 & -4 \\ 2 & 4 & -6 \\ -5 & -5 & -4\end{bmatrix} \\  & =\begin{bmatrix}-2 & 5 & -3\end{bmatrix}\begin{bmatrix}5 \\ 2 \\ -5\end{bmatrix} \\  & =(-2)\cdot 5+5\cdot 2+(-3)\cdot (-5) \\  & =-10+10+15 \\  & =15.\end{aligned}
+\begin{aligned}{s}_{11} & =\left(\begin{bmatrix}-2 & 5 & -3 \\ -5 & 5 & -1\end{bmatrix}\begin{bmatrix}5 & 1 & -4 \\ 2 & 4 & -6 \\ -5 & -5 & -4\end{bmatrix}\right)_{11} \\  & =\begin{bmatrix}-2 & 5 & -3\end{bmatrix}\begin{bmatrix}5 \\ 2 \\ -5\end{bmatrix} \\  & =(-2)\cdot 5+5\cdot 2+(-3)\cdot (-5) \\  & =-10+10+15 \\  & =15.\end{aligned}
 $$
 
 ### Authored moderate variant 92
@@ -400,7 +400,7 @@ Worked solution:
 Multiplying the $2$nd row in $U$ by the $1$st column in $V$, we get
 
 $$
-\begin{aligned}{s}_{21} & =\begin{bmatrix}-1 & -4 & 1 \\ 2 & -5 & 5\end{bmatrix}\begin{bmatrix}5 & -6 & 5 \\ -2 & -3 & -5 \\ -3 & 4 & -2\end{bmatrix} \\  & =\begin{bmatrix}2 & -5 & 5\end{bmatrix}\begin{bmatrix}5 \\ -2 \\ -3\end{bmatrix} \\  & =2\cdot 5+(-5)\cdot (-2)+5\cdot (-3) \\  & =10+10-15 \\  & =5.\end{aligned}
+\begin{aligned}{s}_{21} & =\left(\begin{bmatrix}-1 & -4 & 1 \\ 2 & -5 & 5\end{bmatrix}\begin{bmatrix}5 & -6 & 5 \\ -2 & -3 & -5 \\ -3 & 4 & -2\end{bmatrix}\right)_{21} \\  & =\begin{bmatrix}2 & -5 & 5\end{bmatrix}\begin{bmatrix}5 \\ -2 \\ -3\end{bmatrix} \\  & =2\cdot 5+(-5)\cdot (-2)+5\cdot (-3) \\  & =10+10-15 \\  & =5.\end{aligned}
 $$
 
 ### Authored hard variant 41
@@ -429,7 +429,7 @@ Worked solution:
 Multiplying the $1$st row in $U$ by the $2$nd column in $V$, we get
 
 $$
-\begin{aligned}{s}_{12} & =\begin{bmatrix}5 & -5 & -3 \\ 2 & -4 & -3\end{bmatrix}\begin{bmatrix}-6 & -3 & -4 \\ 1 & 4 & -3 \\ -5 & -3 & 2\end{bmatrix} \\  & =\begin{bmatrix}5 & -5 & -3\end{bmatrix}\begin{bmatrix}-3 \\ 4 \\ -3\end{bmatrix} \\  & =5\cdot (-3)+(-5)\cdot 4+(-3)\cdot (-3) \\  & =-15-20+9 \\  & =-26.\end{aligned}
+\begin{aligned}{s}_{12} & =\left(\begin{bmatrix}5 & -5 & -3 \\ 2 & -4 & -3\end{bmatrix}\begin{bmatrix}-6 & -3 & -4 \\ 1 & 4 & -3 \\ -5 & -3 & 2\end{bmatrix}\right)_{12} \\  & =\begin{bmatrix}5 & -5 & -3\end{bmatrix}\begin{bmatrix}-3 \\ 4 \\ -3\end{bmatrix} \\  & =5\cdot (-3)+(-5)\cdot 4+(-3)\cdot (-3) \\  & =-15-20+9 \\  & =-26.\end{aligned}
 $$
 
 ### Authored hard variant 92
@@ -458,7 +458,7 @@ Worked solution:
 Multiplying the $1$st row in $U$ by the $2$nd column in $V$, we get
 
 $$
-\begin{aligned}{s}_{12} & =\begin{bmatrix}-3 & -4 & 5 \\ 4 & -2 & 6\end{bmatrix}\begin{bmatrix}-1 & -5 & 4 \\ -4 & -3 & 2 \\ 4 & -2 & -3\end{bmatrix} \\  & =\begin{bmatrix}-3 & -4 & 5\end{bmatrix}\begin{bmatrix}-5 \\ -3 \\ -2\end{bmatrix} \\  & =(-3)\cdot (-5)+(-4)\cdot (-3)+5\cdot (-2) \\  & =15+12-10 \\  & =17.\end{aligned}
+\begin{aligned}{s}_{12} & =\left(\begin{bmatrix}-3 & -4 & 5 \\ 4 & -2 & 6\end{bmatrix}\begin{bmatrix}-1 & -5 & 4 \\ -4 & -3 & 2 \\ 4 & -2 & -3\end{bmatrix}\right)_{12} \\  & =\begin{bmatrix}-3 & -4 & 5\end{bmatrix}\begin{bmatrix}-5 \\ -3 \\ -2\end{bmatrix} \\  & =(-3)\cdot (-5)+(-4)\cdot (-3)+5\cdot (-2) \\  & =15+12-10 \\  & =17.\end{aligned}
 $$
 
 ## Original q-130120
@@ -516,7 +516,7 @@ Worked solution:
 Multiplying the $2$nd row in $A$ by the $2$nd column in $B$, we get
 
 $$
-\begin{aligned}{d}_{22} & =\begin{bmatrix}4 & 5 & 3 \\ 3 & -6 & -5 \\ 6 & 3 & -6 \\ 0 & -2 & 5\end{bmatrix}\begin{bmatrix}-3 & -5 & 5 & -1 \\ 5 & 1 & -4 & 2 \\ 4 & -6 & -5 & -5\end{bmatrix} \\  & =\begin{bmatrix}3 & -6 & -5\end{bmatrix}\begin{bmatrix}-5 \\ 1 \\ -6\end{bmatrix} \\  & =3\cdot (-5)+(-6)\cdot 1+(-5)\cdot (-6) \\  & =-15-6+30 \\  & =9.\end{aligned}
+\begin{aligned}{d}_{22} & =\left(\begin{bmatrix}4 & 5 & 3 \\ 3 & -6 & -5 \\ 6 & 3 & -6 \\ 0 & -2 & 5\end{bmatrix}\begin{bmatrix}-3 & -5 & 5 & -1 \\ 5 & 1 & -4 & 2 \\ 4 & -6 & -5 & -5\end{bmatrix}\right)_{22} \\  & =\begin{bmatrix}3 & -6 & -5\end{bmatrix}\begin{bmatrix}-5 \\ 1 \\ -6\end{bmatrix} \\  & =3\cdot (-5)+(-6)\cdot 1+(-5)\cdot (-6) \\  & =-15-6+30 \\  & =9.\end{aligned}
 $$
 
 ### Authored easy variant 92
@@ -545,7 +545,7 @@ Worked solution:
 Multiplying the $2$nd row in $A$ by the $3$rd column in $B$, we get
 
 $$
-\begin{aligned}{d}_{23} & =\begin{bmatrix}0 & -4 & 3 \\ 3 & -2 & -1 \\ 5 & -5 & -5 \\ 6 & 5 & 1\end{bmatrix}\begin{bmatrix}1 & -4 & -2 & -1 \\ -4 & 6 & -1 & -3 \\ 2 & 2 & 1 & -3\end{bmatrix} \\  & =\begin{bmatrix}3 & -2 & -1\end{bmatrix}\begin{bmatrix}-2 \\ -1 \\ 1\end{bmatrix} \\  & =3\cdot (-2)+(-2)\cdot (-1)+(-1)\cdot 1 \\  & =-6+2-1 \\  & =-5.\end{aligned}
+\begin{aligned}{d}_{23} & =\left(\begin{bmatrix}0 & -4 & 3 \\ 3 & -2 & -1 \\ 5 & -5 & -5 \\ 6 & 5 & 1\end{bmatrix}\begin{bmatrix}1 & -4 & -2 & -1 \\ -4 & 6 & -1 & -3 \\ 2 & 2 & 1 & -3\end{bmatrix}\right)_{23} \\  & =\begin{bmatrix}3 & -2 & -1\end{bmatrix}\begin{bmatrix}-2 \\ -1 \\ 1\end{bmatrix} \\  & =3\cdot (-2)+(-2)\cdot (-1)+(-1)\cdot 1 \\  & =-6+2-1 \\  & =-5.\end{aligned}
 $$
 
 ### Authored moderate variant 41
@@ -574,7 +574,7 @@ Worked solution:
 Multiplying the $1$st row in $A$ by the $3$rd column in $B$, we get
 
 $$
-\begin{aligned}{d}_{13} & =\begin{bmatrix}2 & 2 & 4 \\ -4 & 0 & 5 \\ 6 & -5 & -6 \\ 2 & 4 & 3\end{bmatrix}\begin{bmatrix}5 & -1 & -3 & 4 \\ 0 & -2 & -2 & -4 \\ -2 & 0 & 3 & -3\end{bmatrix} \\  & =\begin{bmatrix}2 & 2 & 4\end{bmatrix}\begin{bmatrix}-3 \\ -2 \\ 3\end{bmatrix} \\  & =2\cdot (-3)+2\cdot (-2)+4\cdot 3 \\  & =-6-4+12 \\  & =2.\end{aligned}
+\begin{aligned}{d}_{13} & =\left(\begin{bmatrix}2 & 2 & 4 \\ -4 & 0 & 5 \\ 6 & -5 & -6 \\ 2 & 4 & 3\end{bmatrix}\begin{bmatrix}5 & -1 & -3 & 4 \\ 0 & -2 & -2 & -4 \\ -2 & 0 & 3 & -3\end{bmatrix}\right)_{13} \\  & =\begin{bmatrix}2 & 2 & 4\end{bmatrix}\begin{bmatrix}-3 \\ -2 \\ 3\end{bmatrix} \\  & =2\cdot (-3)+2\cdot (-2)+4\cdot 3 \\  & =-6-4+12 \\  & =2.\end{aligned}
 $$
 
 ### Authored moderate variant 92
@@ -603,7 +603,7 @@ Worked solution:
 Multiplying the $2$nd row in $A$ by the $3$rd column in $B$, we get
 
 $$
-\begin{aligned}{d}_{23} & =\begin{bmatrix}4 & -1 & 1 \\ 4 & 6 & 2 \\ 4 & -2 & -5 \\ -6 & -3 & -5\end{bmatrix}\begin{bmatrix}-1 & 0 & 4 & -6 \\ -5 & -1 & -2 & 2 \\ 4 & -4 & -2 & 1\end{bmatrix} \\  & =\begin{bmatrix}4 & 6 & 2\end{bmatrix}\begin{bmatrix}4 \\ -2 \\ -2\end{bmatrix} \\  & =4\cdot 4+6\cdot (-2)+2\cdot (-2) \\  & =16-12-4 \\  & =0.\end{aligned}
+\begin{aligned}{d}_{23} & =\left(\begin{bmatrix}4 & -1 & 1 \\ 4 & 6 & 2 \\ 4 & -2 & -5 \\ -6 & -3 & -5\end{bmatrix}\begin{bmatrix}-1 & 0 & 4 & -6 \\ -5 & -1 & -2 & 2 \\ 4 & -4 & -2 & 1\end{bmatrix}\right)_{23} \\  & =\begin{bmatrix}4 & 6 & 2\end{bmatrix}\begin{bmatrix}4 \\ -2 \\ -2\end{bmatrix} \\  & =4\cdot 4+6\cdot (-2)+2\cdot (-2) \\  & =16-12-4 \\  & =0.\end{aligned}
 $$
 
 ### Authored hard variant 41
@@ -632,7 +632,7 @@ Worked solution:
 Multiplying the $2$nd row in $A$ by the $1$st column in $B$, we get
 
 $$
-\begin{aligned}{d}_{21} & =\begin{bmatrix}-6 & -2 & -1 \\ -3 & 3 & -6 \\ 3 & 3 & -4 \\ 0 & 6 & -6\end{bmatrix}\begin{bmatrix}-2 & 0 & -4 & -5 \\ 4 & -5 & 0 & -6 \\ 4 & 4 & 1 & 0\end{bmatrix} \\  & =\begin{bmatrix}-3 & 3 & -6\end{bmatrix}\begin{bmatrix}-2 \\ 4 \\ 4\end{bmatrix} \\  & =(-3)\cdot (-2)+3\cdot 4+(-6)\cdot 4 \\  & =6+12-24 \\  & =-6.\end{aligned}
+\begin{aligned}{d}_{21} & =\left(\begin{bmatrix}-6 & -2 & -1 \\ -3 & 3 & -6 \\ 3 & 3 & -4 \\ 0 & 6 & -6\end{bmatrix}\begin{bmatrix}-2 & 0 & -4 & -5 \\ 4 & -5 & 0 & -6 \\ 4 & 4 & 1 & 0\end{bmatrix}\right)_{21} \\  & =\begin{bmatrix}-3 & 3 & -6\end{bmatrix}\begin{bmatrix}-2 \\ 4 \\ 4\end{bmatrix} \\  & =(-3)\cdot (-2)+3\cdot 4+(-6)\cdot 4 \\  & =6+12-24 \\  & =-6.\end{aligned}
 $$
 
 ### Authored hard variant 92
@@ -661,7 +661,7 @@ Worked solution:
 Multiplying the $2$nd row in $A$ by the $1$st column in $B$, we get
 
 $$
-\begin{aligned}{d}_{21} & =\begin{bmatrix}-3 & -1 & -4 \\ -6 & 4 & -2 \\ -6 & -5 & -6 \\ -3 & -5 & -5\end{bmatrix}\begin{bmatrix}-4 & -6 & -2 & -4 \\ -5 & -3 & 0 & 2 \\ -5 & -4 & 1 & 3\end{bmatrix} \\  & =\begin{bmatrix}-6 & 4 & -2\end{bmatrix}\begin{bmatrix}-4 \\ -5 \\ -5\end{bmatrix} \\  & =(-6)\cdot (-4)+4\cdot (-5)+(-2)\cdot (-5) \\  & =24-20+10 \\  & =14.\end{aligned}
+\begin{aligned}{d}_{21} & =\left(\begin{bmatrix}-3 & -1 & -4 \\ -6 & 4 & -2 \\ -6 & -5 & -6 \\ -3 & -5 & -5\end{bmatrix}\begin{bmatrix}-4 & -6 & -2 & -4 \\ -5 & -3 & 0 & 2 \\ -5 & -4 & 1 & 3\end{bmatrix}\right)_{21} \\  & =\begin{bmatrix}-6 & 4 & -2\end{bmatrix}\begin{bmatrix}-4 \\ -5 \\ -5\end{bmatrix} \\  & =(-6)\cdot (-4)+4\cdot (-5)+(-2)\cdot (-5) \\  & =24-20+10 \\  & =14.\end{aligned}
 $$
 
 ## Original q-275547
@@ -709,7 +709,7 @@ Worked solution:
 Multiplying the $2$nd row in $M$ by the $3$rd column in $N$, we get
 
 $$
-\begin{aligned}{l}_{23} & =\begin{bmatrix}0 & -1 \\ -3 & -4\end{bmatrix}\begin{bmatrix}0 & 3 & 5 \\ -2 & 2 & -2\end{bmatrix} \\  & =\begin{bmatrix}-3 & -4\end{bmatrix}\begin{bmatrix}5 \\ -2\end{bmatrix} \\  & =(-3)\cdot 5+(-4)\cdot (-2) \\  & =-15+8 \\  & =-7.\end{aligned}
+\begin{aligned}{l}_{23} & =\left(\begin{bmatrix}0 & -1 \\ -3 & -4\end{bmatrix}\begin{bmatrix}0 & 3 & 5 \\ -2 & 2 & -2\end{bmatrix}\right)_{23} \\  & =\begin{bmatrix}-3 & -4\end{bmatrix}\begin{bmatrix}5 \\ -2\end{bmatrix} \\  & =(-3)\cdot 5+(-4)\cdot (-2) \\  & =-15+8 \\  & =-7.\end{aligned}
 $$
 
 ### Authored easy variant 92
@@ -733,7 +733,7 @@ Worked solution:
 Multiplying the $1$st row in $M$ by the $3$rd column in $N$, we get
 
 $$
-\begin{aligned}{l}_{13} & =\begin{bmatrix}2 & 1 \\ -4 & -5\end{bmatrix}\begin{bmatrix}3 & 4 & 4 \\ -1 & -6 & -6\end{bmatrix} \\  & =\begin{bmatrix}2 & 1\end{bmatrix}\begin{bmatrix}4 \\ -6\end{bmatrix} \\  & =2\cdot 4+1\cdot (-6) \\  & =8-6 \\  & =2.\end{aligned}
+\begin{aligned}{l}_{13} & =\left(\begin{bmatrix}2 & 1 \\ -4 & -5\end{bmatrix}\begin{bmatrix}3 & 4 & 4 \\ -1 & -6 & -6\end{bmatrix}\right)_{13} \\  & =\begin{bmatrix}2 & 1\end{bmatrix}\begin{bmatrix}4 \\ -6\end{bmatrix} \\  & =2\cdot 4+1\cdot (-6) \\  & =8-6 \\  & =2.\end{aligned}
 $$
 
 ## Original q-318462
@@ -781,7 +781,7 @@ Worked solution:
 Multiplying the $1$st row in $Q$ by the $1$st column in $R$, we get
 
 $$
-\begin{aligned}{p}_{11} & =\begin{bmatrix}0 & -1 & -3 \\ -4 & 0 & 3 \\ 5 & -2 & 2\end{bmatrix}\begin{bmatrix}-2 & 0 \\ 5 & 6 \\ 3 & -6\end{bmatrix} \\  & =\begin{bmatrix}0 & -1 & -3\end{bmatrix}\begin{bmatrix}-2 \\ 5 \\ 3\end{bmatrix} \\  & =0(-2)+(-1)(5)+(-3)(3) \\  & =0-5-9 \\  & =-14.\end{aligned}
+\begin{aligned}{p}_{11} & =\left(\begin{bmatrix}0 & -1 & -3 \\ -4 & 0 & 3 \\ 5 & -2 & 2\end{bmatrix}\begin{bmatrix}-2 & 0 \\ 5 & 6 \\ 3 & -6\end{bmatrix}\right)_{11} \\  & =\begin{bmatrix}0 & -1 & -3\end{bmatrix}\begin{bmatrix}-2 \\ 5 \\ 3\end{bmatrix} \\  & =0(-2)+(-1)(5)+(-3)(3) \\  & =0-5-9 \\  & =-14.\end{aligned}
 $$
 
 ### Authored easy variant 92
@@ -805,7 +805,7 @@ Worked solution:
 Multiplying the $2$nd row in $Q$ by the $2$nd column in $R$, we get
 
 $$
-\begin{aligned}{p}_{22} & =\begin{bmatrix}5 & 0 & 1 \\ 5 & 4 & 6 \\ -4 & 5 & -5\end{bmatrix}\begin{bmatrix}4 & -4 \\ 6 & 1 \\ -5 & 0\end{bmatrix} \\  & =\begin{bmatrix}5 & 4 & 6\end{bmatrix}\begin{bmatrix}-4 \\ 1 \\ 0\end{bmatrix} \\  & =5(-4)+4(1)+6(0) \\  & =-20+4+0 \\  & =-16.\end{aligned}
+\begin{aligned}{p}_{22} & =\left(\begin{bmatrix}5 & 0 & 1 \\ 5 & 4 & 6 \\ -4 & 5 & -5\end{bmatrix}\begin{bmatrix}4 & -4 \\ 6 & 1 \\ -5 & 0\end{bmatrix}\right)_{22} \\  & =\begin{bmatrix}5 & 4 & 6\end{bmatrix}\begin{bmatrix}-4 \\ 1 \\ 0\end{bmatrix} \\  & =5(-4)+4(1)+6(0) \\  & =-20+4+0 \\  & =-16.\end{aligned}
 $$
 
 ### Authored moderate variant 41
@@ -829,7 +829,7 @@ Worked solution:
 Multiplying the $2$nd row in $Q$ by the $1$st column in $R$, we get
 
 $$
-\begin{aligned}{p}_{21} & =\begin{bmatrix}-3 & 4 & -1 \\ -2 & -2 & -2 \\ -2 & -2 & -2\end{bmatrix}\begin{bmatrix}-5 & -5 \\ -2 & 3 \\ -2 & -4\end{bmatrix} \\  & =\begin{bmatrix}-2 & -2 & -2\end{bmatrix}\begin{bmatrix}-5 \\ -2 \\ -2\end{bmatrix} \\  & =(-2)(-5)+(-2)(-2)+(-2)(-2) \\  & =10+4+4 \\  & =18.\end{aligned}
+\begin{aligned}{p}_{21} & =\left(\begin{bmatrix}-3 & 4 & -1 \\ -2 & -2 & -2 \\ -2 & -2 & -2\end{bmatrix}\begin{bmatrix}-5 & -5 \\ -2 & 3 \\ -2 & -4\end{bmatrix}\right)_{21} \\  & =\begin{bmatrix}-2 & -2 & -2\end{bmatrix}\begin{bmatrix}-5 \\ -2 \\ -2\end{bmatrix} \\  & =(-2)(-5)+(-2)(-2)+(-2)(-2) \\  & =10+4+4 \\  & =18.\end{aligned}
 $$
 
 ### Authored moderate variant 92
@@ -853,7 +853,7 @@ Worked solution:
 Multiplying the $2$nd row in $Q$ by the $2$nd column in $R$, we get
 
 $$
-\begin{aligned}{p}_{22} & =\begin{bmatrix}-5 & -6 & 4 \\ -2 & -5 & -5 \\ -3 & 1 & 4\end{bmatrix}\begin{bmatrix}-1 & 5 \\ 1 & -2 \\ 4 & -3\end{bmatrix} \\  & =\begin{bmatrix}-2 & -5 & -5\end{bmatrix}\begin{bmatrix}5 \\ -2 \\ -3\end{bmatrix} \\  & =(-2)(5)+(-5)(-2)+(-5)(-3) \\  & =-10+10+15 \\  & =15.\end{aligned}
+\begin{aligned}{p}_{22} & =\left(\begin{bmatrix}-5 & -6 & 4 \\ -2 & -5 & -5 \\ -3 & 1 & 4\end{bmatrix}\begin{bmatrix}-1 & 5 \\ 1 & -2 \\ 4 & -3\end{bmatrix}\right)_{22} \\  & =\begin{bmatrix}-2 & -5 & -5\end{bmatrix}\begin{bmatrix}5 \\ -2 \\ -3\end{bmatrix} \\  & =(-2)(5)+(-5)(-2)+(-5)(-3) \\  & =-10+10+15 \\  & =15.\end{aligned}
 $$
 
 ### Authored hard variant 41
@@ -877,7 +877,7 @@ Worked solution:
 Multiplying the $2$nd row in $Q$ by the $1$st column in $R$, we get
 
 $$
-\begin{aligned}{p}_{21} & =\begin{bmatrix}1 & 4 & -2 \\ 4 & 4 & 3 \\ 2 & 5 & -2\end{bmatrix}\begin{bmatrix}3 & 5 \\ -4 & -3 \\ 6 & -6\end{bmatrix} \\  & =\begin{bmatrix}4 & 4 & 3\end{bmatrix}\begin{bmatrix}3 \\ -4 \\ 6\end{bmatrix} \\  & =4(3)+4(-4)+3(6) \\  & =12-16+18 \\  & =14.\end{aligned}
+\begin{aligned}{p}_{21} & =\left(\begin{bmatrix}1 & 4 & -2 \\ 4 & 4 & 3 \\ 2 & 5 & -2\end{bmatrix}\begin{bmatrix}3 & 5 \\ -4 & -3 \\ 6 & -6\end{bmatrix}\right)_{21} \\  & =\begin{bmatrix}4 & 4 & 3\end{bmatrix}\begin{bmatrix}3 \\ -4 \\ 6\end{bmatrix} \\  & =4(3)+4(-4)+3(6) \\  & =12-16+18 \\  & =14.\end{aligned}
 $$
 
 ### Authored hard variant 92
@@ -901,7 +901,7 @@ Worked solution:
 Multiplying the $3$rd row in $Q$ by the $2$nd column in $R$, we get
 
 $$
-\begin{aligned}{p}_{32} & =\begin{bmatrix}0 & 2 & 3 \\ 2 & 2 & 6 \\ 3 & -2 & 6\end{bmatrix}\begin{bmatrix}6 & 4 \\ 6 & 6 \\ -5 & 3\end{bmatrix} \\  & =\begin{bmatrix}3 & -2 & 6\end{bmatrix}\begin{bmatrix}4 \\ 6 \\ 3\end{bmatrix} \\  & =3(4)+(-2)(6)+6(3) \\  & =12-12+18 \\  & =18.\end{aligned}
+\begin{aligned}{p}_{32} & =\left(\begin{bmatrix}0 & 2 & 3 \\ 2 & 2 & 6 \\ 3 & -2 & 6\end{bmatrix}\begin{bmatrix}6 & 4 \\ 6 & 6 \\ -5 & 3\end{bmatrix}\right)_{32} \\  & =\begin{bmatrix}3 & -2 & 6\end{bmatrix}\begin{bmatrix}4 \\ 6 \\ 3\end{bmatrix} \\  & =3(4)+(-2)(6)+6(3) \\  & =12-12+18 \\  & =18.\end{aligned}
 $$
 
 ## Original q-318463
@@ -949,7 +949,7 @@ Worked solution:
 Multiplying the $1$st row in $Y$ by the $3$rd column in $Z$, we get
 
 $$
-\begin{aligned}{x}_{13} & =\begin{bmatrix}0 & -1 & -3 \\ -4 & 0 & 3\end{bmatrix}\begin{bmatrix}5 & -2 & 2 \\ -2 & 0 & 5 \\ 6 & 3 & -6\end{bmatrix} \\  & =\begin{bmatrix}0 & -1 & -3\end{bmatrix}\begin{bmatrix}2 \\ 5 \\ -6\end{bmatrix} \\  & =0(2)+(-1)(5)+(-3)(-6) \\  & =0-5+18 \\  & =13.\end{aligned}
+\begin{aligned}{x}_{13} & =\left(\begin{bmatrix}0 & -1 & -3 \\ -4 & 0 & 3\end{bmatrix}\begin{bmatrix}5 & -2 & 2 \\ -2 & 0 & 5 \\ 6 & 3 & -6\end{bmatrix}\right)_{13} \\  & =\begin{bmatrix}0 & -1 & -3\end{bmatrix}\begin{bmatrix}2 \\ 5 \\ -6\end{bmatrix} \\  & =0(2)+(-1)(5)+(-3)(-6) \\  & =0-5+18 \\  & =13.\end{aligned}
 $$
 
 ### Authored easy variant 92
@@ -973,7 +973,7 @@ Worked solution:
 Multiplying the $2$nd row in $Y$ by the $2$nd column in $Z$, we get
 
 $$
-\begin{aligned}{x}_{22} & =\begin{bmatrix}-2 & -4 & 5 \\ -4 & -3 & 3\end{bmatrix}\begin{bmatrix}-4 & -3 & 3 \\ -4 & 1 & 6 \\ -6 & 0 & 4\end{bmatrix} \\  & =\begin{bmatrix}-4 & -3 & 3\end{bmatrix}\begin{bmatrix}-3 \\ 1 \\ 0\end{bmatrix} \\  & =(-4)(-3)+(-3)(1)+3(0) \\  & =12-3+0 \\  & =9.\end{aligned}
+\begin{aligned}{x}_{22} & =\left(\begin{bmatrix}-2 & -4 & 5 \\ -4 & -3 & 3\end{bmatrix}\begin{bmatrix}-4 & -3 & 3 \\ -4 & 1 & 6 \\ -6 & 0 & 4\end{bmatrix}\right)_{22} \\  & =\begin{bmatrix}-4 & -3 & 3\end{bmatrix}\begin{bmatrix}-3 \\ 1 \\ 0\end{bmatrix} \\  & =(-4)(-3)+(-3)(1)+3(0) \\  & =12-3+0 \\  & =9.\end{aligned}
 $$
 
 ### Authored moderate variant 41
@@ -997,7 +997,7 @@ Worked solution:
 Multiplying the $1$st row in $Y$ by the $1$st column in $Z$, we get
 
 $$
-\begin{aligned}{x}_{11} & =\begin{bmatrix}-2 & 5 & -3 \\ -5 & 5 & -1\end{bmatrix}\begin{bmatrix}5 & 1 & -4 \\ 2 & 4 & -6 \\ -5 & -5 & -4\end{bmatrix} \\  & =\begin{bmatrix}-2 & 5 & -3\end{bmatrix}\begin{bmatrix}5 \\ 2 \\ -5\end{bmatrix} \\  & =(-2)(5)+5(2)+(-3)(-5) \\  & =-10+10+15 \\  & =15.\end{aligned}
+\begin{aligned}{x}_{11} & =\left(\begin{bmatrix}-2 & 5 & -3 \\ -5 & 5 & -1\end{bmatrix}\begin{bmatrix}5 & 1 & -4 \\ 2 & 4 & -6 \\ -5 & -5 & -4\end{bmatrix}\right)_{11} \\  & =\begin{bmatrix}-2 & 5 & -3\end{bmatrix}\begin{bmatrix}5 \\ 2 \\ -5\end{bmatrix} \\  & =(-2)(5)+5(2)+(-3)(-5) \\  & =-10+10+15 \\  & =15.\end{aligned}
 $$
 
 ### Authored moderate variant 92
@@ -1021,7 +1021,7 @@ Worked solution:
 Multiplying the $1$st row in $Y$ by the $1$st column in $Z$, we get
 
 $$
-\begin{aligned}{x}_{11} & =\begin{bmatrix}-2 & -2 & -2 \\ -6 & -3 & 0\end{bmatrix}\begin{bmatrix}6 & -2 & -1 \\ 4 & 1 & -3 \\ -4 & -1 & -3\end{bmatrix} \\  & =\begin{bmatrix}-2 & -2 & -2\end{bmatrix}\begin{bmatrix}6 \\ 4 \\ -4\end{bmatrix} \\  & =(-2)(6)+(-2)(4)+(-2)(-4) \\  & =-12-8+8 \\  & =-12.\end{aligned}
+\begin{aligned}{x}_{11} & =\left(\begin{bmatrix}-2 & -2 & -2 \\ -6 & -3 & 0\end{bmatrix}\begin{bmatrix}6 & -2 & -1 \\ 4 & 1 & -3 \\ -4 & -1 & -3\end{bmatrix}\right)_{11} \\  & =\begin{bmatrix}-2 & -2 & -2\end{bmatrix}\begin{bmatrix}6 \\ 4 \\ -4\end{bmatrix} \\  & =(-2)(6)+(-2)(4)+(-2)(-4) \\  & =-12-8+8 \\  & =-12.\end{aligned}
 $$
 
 ### Authored hard variant 41
@@ -1045,7 +1045,7 @@ Worked solution:
 Multiplying the $1$st row in $Y$ by the $2$nd column in $Z$, we get
 
 $$
-\begin{aligned}{x}_{12} & =\begin{bmatrix}5 & -5 & -3 \\ 2 & -4 & -3\end{bmatrix}\begin{bmatrix}-6 & -3 & -4 \\ 1 & 4 & -3 \\ -5 & -3 & 2\end{bmatrix} \\  & =\begin{bmatrix}5 & -5 & -3\end{bmatrix}\begin{bmatrix}-3 \\ 4 \\ -3\end{bmatrix} \\  & =5(-3)+(-5)(4)+(-3)(-3) \\  & =-15-20+9 \\  & =-26.\end{aligned}
+\begin{aligned}{x}_{12} & =\left(\begin{bmatrix}5 & -5 & -3 \\ 2 & -4 & -3\end{bmatrix}\begin{bmatrix}-6 & -3 & -4 \\ 1 & 4 & -3 \\ -5 & -3 & 2\end{bmatrix}\right)_{12} \\  & =\begin{bmatrix}5 & -5 & -3\end{bmatrix}\begin{bmatrix}-3 \\ 4 \\ -3\end{bmatrix} \\  & =5(-3)+(-5)(4)+(-3)(-3) \\  & =-15-20+9 \\  & =-26.\end{aligned}
 $$
 
 ### Authored hard variant 92
@@ -1069,7 +1069,7 @@ Worked solution:
 Multiplying the $1$st row in $Y$ by the $3$rd column in $Z$, we get
 
 $$
-\begin{aligned}{x}_{13} & =\begin{bmatrix}-5 & 3 & 4 \\ 4 & -1 & -6\end{bmatrix}\begin{bmatrix}-6 & -6 & 4 \\ 4 & 6 & -4 \\ 3 & -4 & 3\end{bmatrix} \\  & =\begin{bmatrix}-5 & 3 & 4\end{bmatrix}\begin{bmatrix}4 \\ -4 \\ 3\end{bmatrix} \\  & =(-5)(4)+3(-4)+4(3) \\  & =-20-12+12 \\  & =-20.\end{aligned}
+\begin{aligned}{x}_{13} & =\left(\begin{bmatrix}-5 & 3 & 4 \\ 4 & -1 & -6\end{bmatrix}\begin{bmatrix}-6 & -6 & 4 \\ 4 & 6 & -4 \\ 3 & -4 & 3\end{bmatrix}\right)_{13} \\  & =\begin{bmatrix}-5 & 3 & 4\end{bmatrix}\begin{bmatrix}4 \\ -4 \\ 3\end{bmatrix} \\  & =(-5)(4)+3(-4)+4(3) \\  & =-20-12+12 \\  & =-20.\end{aligned}
 $$
 
 ## Original q-318470
@@ -1117,7 +1117,7 @@ Worked solution:
 Multiplying the $1$st row in $X$ by the $1$st column in $Y,$ we get
 
 $$
-\begin{aligned}{z}_{11} & =\begin{bmatrix}4 & -6 \\ 1 & -4\end{bmatrix}\begin{bmatrix}-4 & 5 & -1 & -4 \\ -2 & 4 & 5 & 3\end{bmatrix} \\  & =\begin{bmatrix}4 & -6\end{bmatrix}\begin{bmatrix}-4 \\ -2\end{bmatrix} \\  & =4(-4)+(-6)(-2) \\  & =-16+12 \\  & =-4.\end{aligned}
+\begin{aligned}{z}_{11} & =\left(\begin{bmatrix}4 & -6 \\ 1 & -4\end{bmatrix}\begin{bmatrix}-4 & 5 & -1 & -4 \\ -2 & 4 & 5 & 3\end{bmatrix}\right)_{11} \\  & =\begin{bmatrix}4 & -6\end{bmatrix}\begin{bmatrix}-4 \\ -2\end{bmatrix} \\  & =4(-4)+(-6)(-2) \\  & =-16+12 \\  & =-4.\end{aligned}
 $$
 
 ### Authored easy variant 92
@@ -1141,7 +1141,7 @@ Worked solution:
 Multiplying the $1$st row in $X$ by the $2$nd column in $Y,$ we get
 
 $$
-\begin{aligned}{z}_{12} & =\begin{bmatrix}-4 & -5 \\ 3 & 4\end{bmatrix}\begin{bmatrix}4 & -1 & -6 & -6 \\ -6 & 4 & 4 & 6\end{bmatrix} \\  & =\begin{bmatrix}-4 & -5\end{bmatrix}\begin{bmatrix}-1 \\ 4\end{bmatrix} \\  & =(-4)(-1)+(-5)(4) \\  & =4-20 \\  & =-16.\end{aligned}
+\begin{aligned}{z}_{12} & =\left(\begin{bmatrix}-4 & -5 \\ 3 & 4\end{bmatrix}\begin{bmatrix}4 & -1 & -6 & -6 \\ -6 & 4 & 4 & 6\end{bmatrix}\right)_{12} \\  & =\begin{bmatrix}-4 & -5\end{bmatrix}\begin{bmatrix}-1 \\ 4\end{bmatrix} \\  & =(-4)(-1)+(-5)(4) \\  & =4-20 \\  & =-16.\end{aligned}
 $$
 
 ## Original q-70946
@@ -1199,7 +1199,7 @@ Worked solution:
 Multiplying the $2$nd row in $E$ by the $4$th column in $F$, we get
 
 $$
-\begin{aligned}{d}_{24} & =\begin{bmatrix}5 & -4 \\ -6 & -2 \\ -1 & -3\end{bmatrix}\begin{bmatrix}3 & -6 & 3 & 3 \\ -4 & 0 & 6 & -6\end{bmatrix} \\  & =\begin{bmatrix}-6 & -2\end{bmatrix}\begin{bmatrix}3 \\ -6\end{bmatrix} \\  & =(-6)\cdot 3+(-2)\cdot (-6) \\  & =-18+12 \\  & =-6.\end{aligned}
+\begin{aligned}{d}_{24} & =\left(\begin{bmatrix}5 & -4 \\ -6 & -2 \\ -1 & -3\end{bmatrix}\begin{bmatrix}3 & -6 & 3 & 3 \\ -4 & 0 & 6 & -6\end{bmatrix}\right)_{24} \\  & =\begin{bmatrix}-6 & -2\end{bmatrix}\begin{bmatrix}3 \\ -6\end{bmatrix} \\  & =(-6)\cdot 3+(-2)\cdot (-6) \\  & =-18+12 \\  & =-6.\end{aligned}
 $$
 
 ### Authored easy variant 92
@@ -1228,7 +1228,7 @@ Worked solution:
 Multiplying the $3$rd row in $E$ by the $4$th column in $F$, we get
 
 $$
-\begin{aligned}{d}_{34} & =\begin{bmatrix}0 & 2 \\ 3 & 2 \\ 2 & 6\end{bmatrix}\begin{bmatrix}3 & -2 & 6 & 6 \\ 4 & 6 & 6 & -5\end{bmatrix} \\  & =\begin{bmatrix}2 & 6\end{bmatrix}\begin{bmatrix}6 \\ -5\end{bmatrix} \\  & =2\cdot 6+6\cdot (-5) \\  & =12-30 \\  & =-18.\end{aligned}
+\begin{aligned}{d}_{34} & =\left(\begin{bmatrix}0 & 2 \\ 3 & 2 \\ 2 & 6\end{bmatrix}\begin{bmatrix}3 & -2 & 6 & 6 \\ 4 & 6 & 6 & -5\end{bmatrix}\right)_{34} \\  & =\begin{bmatrix}2 & 6\end{bmatrix}\begin{bmatrix}6 \\ -5\end{bmatrix} \\  & =2\cdot 6+6\cdot (-5) \\  & =12-30 \\  & =-18.\end{aligned}
 $$
 
 ## Original q-70949
@@ -1286,7 +1286,7 @@ Worked solution:
 Multiplying the $2$nd row in $M$ by the $3$rd column in $N$, we get
 
 $$
-\begin{aligned}{k}_{23} & =\begin{bmatrix}0 & -1 \\ -3 & -4\end{bmatrix}\begin{bmatrix}0 & 3 & 5 \\ -2 & 2 & -2\end{bmatrix} \\  & =\begin{bmatrix}-3 & -4\end{bmatrix}\begin{bmatrix}5 \\ -2\end{bmatrix} \\  & =(-3)\cdot 5+(-4)\cdot (-2) \\  & =-15+8 \\  & =-7.\end{aligned}
+\begin{aligned}{k}_{23} & =\left(\begin{bmatrix}0 & -1 \\ -3 & -4\end{bmatrix}\begin{bmatrix}0 & 3 & 5 \\ -2 & 2 & -2\end{bmatrix}\right)_{23} \\  & =\begin{bmatrix}-3 & -4\end{bmatrix}\begin{bmatrix}5 \\ -2\end{bmatrix} \\  & =(-3)\cdot 5+(-4)\cdot (-2) \\  & =-15+8 \\  & =-7.\end{aligned}
 $$
 
 ### Authored easy variant 92
@@ -1315,7 +1315,7 @@ Worked solution:
 Multiplying the $1$st row in $M$ by the $3$rd column in $N$, we get
 
 $$
-\begin{aligned}{k}_{13} & =\begin{bmatrix}2 & 1 \\ -4 & -5\end{bmatrix}\begin{bmatrix}3 & 4 & 4 \\ -1 & -6 & -6\end{bmatrix} \\  & =\begin{bmatrix}2 & 1\end{bmatrix}\begin{bmatrix}4 \\ -6\end{bmatrix} \\  & =2\cdot 4+1\cdot (-6) \\  & =8-6 \\  & =2.\end{aligned}
+\begin{aligned}{k}_{13} & =\left(\begin{bmatrix}2 & 1 \\ -4 & -5\end{bmatrix}\begin{bmatrix}3 & 4 & 4 \\ -1 & -6 & -6\end{bmatrix}\right)_{13} \\  & =\begin{bmatrix}2 & 1\end{bmatrix}\begin{bmatrix}4 \\ -6\end{bmatrix} \\  & =2\cdot 4+1\cdot (-6) \\  & =8-6 \\  & =2.\end{aligned}
 $$
 
 ## Original q-70956
@@ -1373,7 +1373,7 @@ Worked solution:
 Multiplying the $2$nd row of $U$ by the $3$rd column in $V$, we get
 
 $$
-\begin{aligned}{t}_{23} & =\begin{bmatrix}0 & -1 & -3 \\ -4 & 0 & 3 \\ 5 & -2 & 2 \\ -2 & 0 & 5\end{bmatrix}\begin{bmatrix}6 & 3 & -6 \\ 6 & -3 & 4 \\ -6 & 1 & -4\end{bmatrix} \\  & =\begin{bmatrix}-4 & 0 & 3\end{bmatrix}\begin{bmatrix}-6 \\ 4 \\ -4\end{bmatrix} \\  & =(-4)\cdot (-6)+0\cdot 4+3\cdot (-4) \\  & =24+0-12 \\  & =12.\end{aligned}
+\begin{aligned}{t}_{23} & =\left(\begin{bmatrix}0 & -1 & -3 \\ -4 & 0 & 3 \\ 5 & -2 & 2 \\ -2 & 0 & 5\end{bmatrix}\begin{bmatrix}6 & 3 & -6 \\ 6 & -3 & 4 \\ -6 & 1 & -4\end{bmatrix}\right)_{23} \\  & =\begin{bmatrix}-4 & 0 & 3\end{bmatrix}\begin{bmatrix}-6 \\ 4 \\ -4\end{bmatrix} \\  & =(-4)\cdot (-6)+0\cdot 4+3\cdot (-4) \\  & =24+0-12 \\  & =12.\end{aligned}
 $$
 
 ### Authored easy variant 92
@@ -1402,7 +1402,7 @@ Worked solution:
 Multiplying the $1$st row of $U$ by the $1$st column in $V$, we get
 
 $$
-\begin{aligned}{t}_{11} & =\begin{bmatrix}-1 & -4 & 6 \\ -1 & -3 & 2 \\ 2 & 1 & -3 \\ -4 & -1 & -6\end{bmatrix}\begin{bmatrix}-6 & -5 & -4 \\ 4 & 2 & 3 \\ -1 & 1 & 4\end{bmatrix} \\  & =\begin{bmatrix}-1 & -4 & 6\end{bmatrix}\begin{bmatrix}-6 \\ 4 \\ -1\end{bmatrix} \\  & =(-1)\cdot (-6)+(-4)\cdot 4+6\cdot (-1) \\  & =6-16-6 \\  & =-16.\end{aligned}
+\begin{aligned}{t}_{11} & =\left(\begin{bmatrix}-1 & -4 & 6 \\ -1 & -3 & 2 \\ 2 & 1 & -3 \\ -4 & -1 & -6\end{bmatrix}\begin{bmatrix}-6 & -5 & -4 \\ 4 & 2 & 3 \\ -1 & 1 & 4\end{bmatrix}\right)_{11} \\  & =\begin{bmatrix}-1 & -4 & 6\end{bmatrix}\begin{bmatrix}-6 \\ 4 \\ -1\end{bmatrix} \\  & =(-1)\cdot (-6)+(-4)\cdot 4+6\cdot (-1) \\  & =6-16-6 \\  & =-16.\end{aligned}
 $$
 
 ### Authored moderate variant 41
@@ -1431,7 +1431,7 @@ Worked solution:
 Multiplying the $4$th row of $U$ by the $1$st column in $V$, we get
 
 $$
-\begin{aligned}{t}_{41} & =\begin{bmatrix}0 & 2 & -6 \\ -5 & 4 & 4 \\ -2 & -5 & 4 \\ -4 & -5 & -2\end{bmatrix}\begin{bmatrix}-3 & 4 & 4 \\ -3 & -3 & 0 \\ 4 & 5 & 1\end{bmatrix} \\  & =\begin{bmatrix}-4 & -5 & -2\end{bmatrix}\begin{bmatrix}-3 \\ -3 \\ 4\end{bmatrix} \\  & =(-4)\cdot (-3)+(-5)\cdot (-3)+(-2)\cdot 4 \\  & =12+15-8 \\  & =19.\end{aligned}
+\begin{aligned}{t}_{41} & =\left(\begin{bmatrix}0 & 2 & -6 \\ -5 & 4 & 4 \\ -2 & -5 & 4 \\ -4 & -5 & -2\end{bmatrix}\begin{bmatrix}-3 & 4 & 4 \\ -3 & -3 & 0 \\ 4 & 5 & 1\end{bmatrix}\right)_{41} \\  & =\begin{bmatrix}-4 & -5 & -2\end{bmatrix}\begin{bmatrix}-3 \\ -3 \\ 4\end{bmatrix} \\  & =(-4)\cdot (-3)+(-5)\cdot (-3)+(-2)\cdot 4 \\  & =12+15-8 \\  & =19.\end{aligned}
 $$
 
 ### Authored moderate variant 92
@@ -1460,7 +1460,7 @@ Worked solution:
 Multiplying the $4$th row of $U$ by the $3$rd column in $V$, we get
 
 $$
-\begin{aligned}{t}_{43} & =\begin{bmatrix}-1 & 3 & 1 \\ 1 & 2 & -1 \\ -4 & 4 & 0 \\ 4 & 5 & -3\end{bmatrix}\begin{bmatrix}-1 & 5 & 3 \\ -5 & -6 & -3 \\ -4 & 4 & -2\end{bmatrix} \\  & =\begin{bmatrix}4 & 5 & -3\end{bmatrix}\begin{bmatrix}3 \\ -3 \\ -2\end{bmatrix} \\  & =4\cdot 3+5\cdot (-3)+(-3)\cdot (-2) \\  & =12-15+6 \\  & =3.\end{aligned}
+\begin{aligned}{t}_{43} & =\left(\begin{bmatrix}-1 & 3 & 1 \\ 1 & 2 & -1 \\ -4 & 4 & 0 \\ 4 & 5 & -3\end{bmatrix}\begin{bmatrix}-1 & 5 & 3 \\ -5 & -6 & -3 \\ -4 & 4 & -2\end{bmatrix}\right)_{43} \\  & =\begin{bmatrix}4 & 5 & -3\end{bmatrix}\begin{bmatrix}3 \\ -3 \\ -2\end{bmatrix} \\  & =4\cdot 3+5\cdot (-3)+(-3)\cdot (-2) \\  & =12-15+6 \\  & =3.\end{aligned}
 $$
 
 ### Authored hard variant 41
@@ -1489,7 +1489,7 @@ Worked solution:
 Multiplying the $2$nd row of $U$ by the $1$st column in $V$, we get
 
 $$
-\begin{aligned}{t}_{21} & =\begin{bmatrix}5 & 3 & 5 \\ 4 & 2 & -4 \\ 1 & 4 & 0 \\ -6 & 2 & 4\end{bmatrix}\begin{bmatrix}-5 & -5 & 4 \\ -4 & 1 & 4 \\ -3 & 3 & -3\end{bmatrix} \\  & =\begin{bmatrix}4 & 2 & -4\end{bmatrix}\begin{bmatrix}-5 \\ -4 \\ -3\end{bmatrix} \\  & =4\cdot (-5)+2\cdot (-4)+(-4)\cdot (-3) \\  & =-20-8+12 \\  & =-16.\end{aligned}
+\begin{aligned}{t}_{21} & =\left(\begin{bmatrix}5 & 3 & 5 \\ 4 & 2 & -4 \\ 1 & 4 & 0 \\ -6 & 2 & 4\end{bmatrix}\begin{bmatrix}-5 & -5 & 4 \\ -4 & 1 & 4 \\ -3 & 3 & -3\end{bmatrix}\right)_{21} \\  & =\begin{bmatrix}4 & 2 & -4\end{bmatrix}\begin{bmatrix}-5 \\ -4 \\ -3\end{bmatrix} \\  & =4\cdot (-5)+2\cdot (-4)+(-4)\cdot (-3) \\  & =-20-8+12 \\  & =-16.\end{aligned}
 $$
 
 ### Authored hard variant 92
@@ -1518,7 +1518,7 @@ Worked solution:
 Multiplying the $3$rd row of $U$ by the $1$st column in $V$, we get
 
 $$
-\begin{aligned}{t}_{31} & =\begin{bmatrix}0 & 2 & 3 \\ 2 & 2 & 6 \\ 3 & -2 & 6 \\ 6 & 4 & 6\end{bmatrix}\begin{bmatrix}6 & -5 & 3 \\ 2 & 1 & -4 \\ -5 & 3 & 4\end{bmatrix} \\  & =\begin{bmatrix}3 & -2 & 6\end{bmatrix}\begin{bmatrix}6 \\ 2 \\ -5\end{bmatrix} \\  & =3\cdot 6+(-2)\cdot 2+6\cdot (-5) \\  & =18-4-30 \\  & =-16.\end{aligned}
+\begin{aligned}{t}_{31} & =\left(\begin{bmatrix}0 & 2 & 3 \\ 2 & 2 & 6 \\ 3 & -2 & 6 \\ 6 & 4 & 6\end{bmatrix}\begin{bmatrix}6 & -5 & 3 \\ 2 & 1 & -4 \\ -5 & 3 & 4\end{bmatrix}\right)_{31} \\  & =\begin{bmatrix}3 & -2 & 6\end{bmatrix}\begin{bmatrix}6 \\ 2 \\ -5\end{bmatrix} \\  & =3\cdot 6+(-2)\cdot 2+6\cdot (-5) \\  & =18-4-30 \\  & =-16.\end{aligned}
 $$
 
 ## Original q-70958
@@ -1576,7 +1576,7 @@ Worked solution:
 Multiplying the $2$nd row of $P$ by the $2$nd column of $Q$, we get
 
 $$
-\begin{aligned}{r}_{22} & =\begin{bmatrix}0 & -1 \\ -3 & -4 \\ 0 & 3 \\ 5 & -2 \\ 2 & -2\end{bmatrix}\begin{bmatrix}0 & 5 & 6 & 3 & -6 \\ 6 & -3 & 4 & -6 & 1\end{bmatrix} \\  & =\begin{bmatrix}-3 & -4\end{bmatrix}\begin{bmatrix}5 \\ -3\end{bmatrix} \\  & =(-3)\cdot 5+(-4)\cdot (-3) \\  & =-15+12 \\  & =-3.\end{aligned}
+\begin{aligned}{r}_{22} & =\left(\begin{bmatrix}0 & -1 \\ -3 & -4 \\ 0 & 3 \\ 5 & -2 \\ 2 & -2\end{bmatrix}\begin{bmatrix}0 & 5 & 6 & 3 & -6 \\ 6 & -3 & 4 & -6 & 1\end{bmatrix}\right)_{22} \\  & =\begin{bmatrix}-3 & -4\end{bmatrix}\begin{bmatrix}5 \\ -3\end{bmatrix} \\  & =(-3)\cdot 5+(-4)\cdot (-3) \\  & =-15+12 \\  & =-3.\end{aligned}
 $$
 
 ### Authored easy variant 92
@@ -1605,5 +1605,5 @@ Worked solution:
 Multiplying the $3$rd row of $P$ by the $1$st column of $Q$, we get
 
 $$
-\begin{aligned}{r}_{31} & =\begin{bmatrix}0 & 2 \\ 3 & 2 \\ 2 & 6 \\ 3 & -2 \\ 6 & 6\end{bmatrix}\begin{bmatrix}4 & 6 & 6 & -5 & 3 \\ 2 & 1 & -4 & -5 & 3\end{bmatrix} \\  & =\begin{bmatrix}2 & 6\end{bmatrix}\begin{bmatrix}4 \\ 2\end{bmatrix} \\  & =2\cdot 4+6\cdot 2 \\  & =8+12 \\  & =20.\end{aligned}
+\begin{aligned}{r}_{31} & =\left(\begin{bmatrix}0 & 2 \\ 3 & 2 \\ 2 & 6 \\ 3 & -2 \\ 6 & 6\end{bmatrix}\begin{bmatrix}4 & 6 & 6 & -5 & 3 \\ 2 & 1 & -4 & -5 & 3\end{bmatrix}\right)_{31} \\  & =\begin{bmatrix}2 & 6\end{bmatrix}\begin{bmatrix}4 \\ 2\end{bmatrix} \\  & =2\cdot 4+6\cdot 2 \\  & =8+12 \\  & =20.\end{aligned}
 $$

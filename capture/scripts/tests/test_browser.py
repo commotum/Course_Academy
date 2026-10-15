@@ -242,6 +242,14 @@ class OfflineBrowserTests(unittest.TestCase):
         self.context.close()
         self.temporary.cleanup()
 
+    def test_mathml_currency_glyphs_are_escaped_without_changing_math_delimiters(self):
+        for token in ('mi','mo','mn','mtext'):
+            with self.subTest(token=token):
+                self.page.set_content('<div id="q"><div class="questionText"><math><'+token+'>$</'+token+'><mn>25</mn></math></div></div>')
+                value=self.page.locator('#q').evaluate(EXTRACT)['problem']
+                self.assertIn(r'\$',value)
+                self.assertFalse(value.startswith('$$'))
+
     def test_tex_spacing_in_mixed_number_is_removed_before_mathquill_entry(self):
         self.page.set_content('<div id="wrapper"><span class="mq-editable-field"></span></div>')
         self.page.evaluate(r'''() => {

@@ -113,10 +113,19 @@ for q,c in zip(orig,cases):
  fidelity['source_rows'].append({'source_id':c['source_id'],'question_id':nq[':question/id'],'content_sha256':r['generation']['content_sha256'],'full_bank':True,'present_solution_exact':True if ':question/worked-solution'in q else None,'correct_designation':'missing preserved'if any(':answer-field/correct'not in f for f in q[':question/answer-fields'])else 'matched'})
 counts={};samples={};coverage={};all_records=[]
 for level in ['easy','moderate','hard']:
- seen=set();roles=collections.defaultdict(set);families=set();forms=set();representatives=[]
+ seen=set();roles=collections.defaultdict(set);families=set();forms=set();representatives=[];workloads=collections.Counter();workloads_by_template=collections.defaultdict(collections.Counter);workloads_by_field=collections.defaultdict(collections.Counter);nonunit_positions=collections.defaultdict(set);workload_representatives={}
  for seed in range(500):
   rec=g.generate(level,seed);check_printed(rec);validate_generated_record(rec);seen.add(rec['generation']['mathematical_fingerprint']);families.add(rec['generation']['family']);forms.add(rec['question'][':question/answer-fields'][0][':answer-field/type']);all_records.append(rec)
   a,b,p=read_prompt(rec)
+  a_positions=tuple(i for i,row in enumerate(a)if abs(row[0])>1);b_positions=tuple(j for j,value in enumerate(b[0])if abs(value)>1);workload=len(a_positions)*len(b_positions)
+  workloads[workload]+=1;workloads_by_template[rec['generation']['template']][workload]+=1;workloads_by_field[rec['question'][':question/answer-fields'][0][':answer-field/type']][workload]+=1;nonunit_positions[rec['generation']['template']].add((a_positions,b_positions))
+  if level=='easy':
+   assert max(abs(x[0])for x in a)<=10 and max(map(abs,b[0]))<=10 and max(abs(v)for row in p for v in row)<=50 and sum(abs(v)for row in p for v in row)<=150 and workload<=4
+   for field in rec['question'][':question/answer-fields']:
+    numbers=[v for choice in field[':answer-field/choices']for matrix_row in matrices(choice[':answer/value'])for row in matrix_row for v in [number(cell)for cell in row]]
+    if numbers:assert max(map(abs,numbers))<=50 and sum(map(abs,numbers))<=600
+   workload_key=(rec['generation']['template'],workload,rec['question'][':question/answer-fields'][0][':answer-field/type'])
+   if workload_key not in workload_representatives:workload_representatives[workload_key]=rec;native_checks(rec,'easy-workload-'+str(seed))
   for i,row in enumerate(a):roles['a'+str(i)].add(row[0])
   for j,x in enumerate(b[0]):roles['b'+str(j)].add(x)
   if len(representatives)<2 or rec['generation']['family']not in {x['generation']['family']for x in representatives}:representatives.append(rec)
@@ -125,6 +134,19 @@ for level in ['easy','moderate','hard']:
   assert set(rec['knowledge_point'])=={'db_id','id','title'}
   if seed<8:native_checks(rec,level+'-'+str(seed))
  counts[level]=len(seen);assert len(seen)>=450,(level,len(seen));coverage[level]={'families':sorted(families),'field_types':sorted(forms),'slot_values':{k:sorted(v)for k,v in roles.items()}}
+ if level=='easy':
+  assert set(workloads)==set(range(5)),workloads
+  expected_keys=set()
+  for template in g.SOURCES:
+   n,k=map(int,template.removeprefix('outer-').split('x'))
+   for count in {ca*cb for ca in range(n+1)for cb in range(k+1)if ca*cb<=4}:
+    for field_type in [':answer-field.type/blank',':answer-field.type/radio']:expected_keys.add((template,count,field_type))
+  assert set(workload_representatives)==expected_keys,(set(workload_representatives),expected_keys)
+  for template,counter in workloads_by_template.items():
+   n,k=map(int,template.removeprefix('outer-').split('x'));expected={ca*cb for ca in range(n+1)for cb in range(k+1)if ca*cb<=4};assert set(counter)==expected,(template,counter,expected)
+  for field_type,counter in workloads_by_field.items():assert set(counter)==set(range(5)),(field_type,counter)
+  (D/'easy-workload-representatives.json').write_text(json.dumps(list(workload_representatives.values()),indent=2)+'\n')
+ coverage[level]['nonunit_products']={str(k):v for k,v in sorted(workloads.items())};coverage[level]['nonunit_products_by_template']={t:{str(k):v for k,v in sorted(c.items())}for t,c in sorted(workloads_by_template.items())};coverage[level]['nonunit_products_by_field_type']={t:{str(k):v for k,v in sorted(c.items())}for t,c in sorted(workloads_by_field.items())};coverage[level]['sampled_position_profiles']={t:[{'a_nonunit_positions':list(a),'b_nonunit_positions':list(b)}for a,b in sorted(profiles)]for t,profiles in nonunit_positions.items()}
  samples[level]=representatives;reviews.extend(representatives)
 # Every mask and field contract changed-parameter validation.
 for family in sum(g.SOURCES.values(),[]):
@@ -147,6 +169,13 @@ m=copy.deepcopy(ref);m['question'][':question/problem']=PAT.sub(lambda z:z[0].re
 m=copy.deepcopy(ref);m['question'][':question/worked-solution']=m['question'][':question/worked-solution'].replace(r'\cdot',r'+',2);must_fail(lambda:check_printed(m),'ordered product operation removed')
 m=copy.deepcopy(ref);m['question'][':question/worked-solution']=m['question'][':question/worked-solution'].replace(r'\cdot', '\x0c'+'rac',1);must_fail(lambda:check_printed(m),'control character product mutation')
 ref2=g.generate('easy',profile='authored-method/q-318484',field_type='blank');m=copy.deepcopy(ref2);sol=m['question'][':question/worked-solution'];mm=list(PAT.finditer(sol));last=mm[-1];m['question'][':question/worked-solution']=sol[:last.start()]+g.matrix([[99,99],[99,99]])+sol[last.end():];must_fail(lambda:check_printed(m),'stale conclusion unchanged key')
+# Exercise the newly served nonunit easy stages at unchanged answer keys.
+for shape in ['outer-2x2','outer-3x2','outer-4x3']:
+ easy_ref=next(r for r in json.load(open(D/'easy-workload-representatives.json'))if r['generation']['template']==shape and sum(abs(x)>1 and abs(y)>1 for x in r['generation']['parameters']['a']for y in r['generation']['parameters']['b'])==4)
+ changed=copy.deepcopy(easy_ref);solution=changed['question'][':question/worked-solution'];product=re.search(r'\\cdot\s*\(?(-?\d+)\)?',solution[solution.index(r'\begin{aligned}'):]);assert product
+ # Change the actual first multiplication operand, retaining final values/IDs.
+ start=solution.index(r'\begin{aligned}')+product.start(1);end=solution.index(r'\begin{aligned}')+product.end(1);changed['question'][':question/worked-solution']=solution[:start]+str(int(product[1])+1)+solution[end:]
+ must_fail(lambda:check_printed(changed),'easy '+shape+' nonunit operand changed unchanged key')
 extras=json.load(open(D/'render-extra-records.json'))
 for i,r in enumerate(extras):check_printed(r);validate_generated_record(r);native_checks(r,'supplementary-'+str(i))
 # Finite bounded coverage claim:500 sampled tasks/level, not unlimited or exhaustive.
@@ -164,4 +193,10 @@ for p in (ROOT/'generate/scratch').rglob('*'):
 assert protected==json.load(open(D/'reference/registered-baseline.json'))['path_sha256']
 (D/'reference/registered-after.json').write_text(json.dumps({'path_sha256':protected,'unchanged':True},indent=2)+'\n')
 report={'status':'passed','script_sha256':hashlib.sha256(P.read_bytes()).hexdigest(),'source_basis':2275,'fidelity':fidelity,'sampled_meaningful_tasks':counts,'coverage':coverage,'mutant_regressions':mutants,'normal_records_checked':len(all_records),'independent_inventory_records':0,'native':json.load(open(D/'engine-results.json')),'native_current_files_rechecked':42,'protected_numeric_unchanged':True,'runtime':{'python':platform.python_version(),'sympy':sp.__version__},'plots':'none','limits':['Opaque historical bank intention unresolved; evidence-only public replay.','Two source questions lack keys and solutions; omissions preserved, not counted as matched designations.','Moderate column-by-column and unrated row-by-column undefined sources retained as out-of-scope evidence; normal defaults outer products only.','500 tasks per level checked; bounded sampler coverage rather than exhaustive full numerical domain.']}
+report['root_approval']='pending';report['stopped_after_step']=7
+report['browser']={}
+for label,path in [('prior_source_moderate_hard_and_original_easy',D/'render-report.json'),('revised_easy_workloads',D/'easy-refresh/render-report.json')]:
+ if path.exists():
+  browser=json.load(open(path));report['browser'][label]={'report':str(path.relative_to(D)),'records':browser['records'],'full_height_screenshots':len(browser['screenshots']),'errors':browser['errors'],'overflow':browser['overflow']}
+report['easy_sampler_correction']={'prior_failure':'Every default easy instance had0nonunit products despite an eligible guard allowing0…4.','complete_workload_profiles_before_parameters':True,'default_nonunit_product_counts':coverage['easy']['nonunit_products'],'all28_shape_workload_field_contracts_verified':True}
 (D/'validation.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps({k:v for k,v in report.items()if k not in ['native','coverage']},indent=2))

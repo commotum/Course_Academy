@@ -1,0 +1,20 @@
+# Current inventory classification, basis 2748
+
+Database math, lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. The complete current scoped Pull is retained at reference/replenishment/preflight/kp.edn. It supersedes the old source's inventory counts without replacing historical evidence. There are twelve source practice questions: six moderate and six hard, each with one selection radio field and five scalar math choices. No easy source exists; the validated supplied-polar-bounds easy family remains an explicit authored capability. All generated levels require moderate plot work, as previously extracted.
+
+The ten historical masks and their observed banks remain documented in classification.md, template-extraction.md and bank-map.json. Current answer identity changes do not alter their mathematical banks. q125717 now has a hard label, correct designation and worked solution; its usual Green theorem regularity assertion still fails for sqrt(x) at x=0. The normal generator's sqrt(x+1) repair is retained. q126736's sign error and q126758's omitted coefficient and equivalent wrong options remain present. These three are excluded from independently validated inventory without any source mutation.
+
+Two additional hard source masks are read in full:
+
+| Source | Supplied field and geometry | Curl and result | Bank, in observed order | Generation capability |
+|---|---|---|---|---|
+| q126735 / 17592186459223 | P=e^x−8x²y, Q=y⁷+8xy²; radius2 fourth-quadrant sector, counterclockwise | 8(x²+y²), integral16π | 4π,8π,16π,32π,2π | Same radial sector method as q126756. Count the validated source; fourth-quadrant sampling is outside the frozen generator's narrower domain. |
+| q126737 / 17592186459266 | P=x²−xy², Q=√(y⁷+3)+x²y; radius2 three-quarter disk, θ=0..3π/2 | formal curl4xy and formal integral8 | 10,4π,4,π,8 | Excluded: at (0,−2), y⁷+3=−125, so the real line integral is undefined. Its worked first integral also replaces x² with √x. No sampling of this source is supported. |
+
+Every complete current bank is preserved and independently read; the supplemental replay fixtures retain the complete original prompt, solution, field layout and bank in source-native-input.json. This is evidence replay, not a distractor-generalization claim. Historical wrong-operation intentions remain opaque; the frozen generator's normal authored complete method banks are the only learner output. The invalid new cross-product template is an explicit capability exclusion, not an unsupported difficulty band and not additional inventory.
+
+For q126735, the same ordered stages apply: theorem, components, cross partials, radial curl, fourth-quadrant bounds, Jacobian, sum-of-squares identity, radial fourth-power primitive and angular endpoints. The observed coefficient8 is outside the sampler's conservative c≤6 policy. q126737 introduces a product curl and sin(2θ) primitive; it is distinct from the existing difference-of-squares cos(2θ) family and is not silently merged.
+
+Plot inspection: q126735's orange radius2 fourth-quadrant arc runs from (0,−2) to (2,0); the x-axis segment runs left to the origin and the y-axis segment runs down, giving positive orientation. q126737's radius2 arc runs counterclockwise through the first three quadrants; the boundary returns up the negative y-axis and right along the positive x-axis. Both have black coordinate axes and signed radius labels. Their solution assets shade the same sectors blue. All four source PNGs are retained in the content-addressed store and must remain unchanged. Their exact references occur in the frozen Pull. New output uses only the existing validated plot families.
+
+The bounded generator domain remains 20 easy,108 moderate,204 hard distinct assessed tasks. Cosmetic nuisance changes, equivalent coefficient masks, seed changes, difficulty labels and choice permutations are excluded from deduplication. Current source questions, excluded sources and the canonical example all block identical assessed tasks during replenishment.

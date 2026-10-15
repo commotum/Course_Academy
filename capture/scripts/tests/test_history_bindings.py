@@ -100,6 +100,43 @@ class HistoryBindingTests(unittest.TestCase):
         self.assertEqual(capture._question_presentations(history), [])
         self.assertEqual(capture._question_presentations(live), [record])
 
+    def verified_revision(self):
+        live=question('Old source version?', 'q-1',dom_id='step-q1',
+            html='<div id="step-q1"><div class="questionWidget-text">Old source version?</div></div>')
+        history=question('Current source version?', 'q-1',dom_id='question-1',
+            html='<div id="question-1"><div class="questionText">Current source version?</div></div>',
+            worked_solution='The current answer is 4.',answer_fields_complete=True,
+            sequence_position=1,grade='Correct')
+        return live,history
+
+    def test_verified_dom_identity_keeps_versions_without_transferring_old_grade(self):
+        live,history=self.verified_revision();record=presentation(live,value='2')
+        record['feedback']={'grade':'Correct',**live};original=deepcopy(record)
+        capture=self.capture([record]);content=capture._merge_history({'questions':[history]})
+        self.assertEqual(len(content['questions']),1)
+        current=content['questions'][0]
+        self.assertEqual((current['math_academy_id'],current['problem']),('q-1','Current source version?'))
+        self.assertEqual(content['source_variants'][0]['question'],live)
+        self.assertEqual(record,original)
+        self.assertEqual(capture._question_presentations(current),[])
+        result=finalize_answers(current,[],{'answers':[]})
+        self.assertNotIn('correct_value',result['answer_fields'][0])
+        self.assertEqual(content['source_limitations'],[])
+
+    def test_revision_requires_proven_roots_and_complete_history(self):
+        live,history=self.verified_revision()
+        for change in ({'html':history['html'].replace('question-1','question-2')},
+                       {'answer_fields_complete':False}, {'worked_solution':''}, {'fields':[]},
+                       {'errors':['Source rendering incomplete']}):
+            with self.subTest(change=change):
+                self.assertFalse(ActivityCapture._verified_history_revision(live,{**history,**change}))
+        self.assertFalse(ActivityCapture._verified_history_revision({**live,'html':''},history))
+
+    def test_diagnostic_numbered_container_is_not_a_permanent_identity_proof(self):
+        live,history=self.verified_revision()
+        live.update(dom_id='question-1',html='<div id="question-1">Diagnostic position 1</div>')
+        self.assertFalse(ActivityCapture._verified_history_revision(live,history,diagnostic=True))
+
     def test_explicit_fieldless_history_merges_text_but_cannot_confirm_submission(self):
         record = presentation(question(identity='q-1'))
         capture = self.capture([record])

@@ -7,9 +7,10 @@ def write(name,obj):(D/name).write_text(json.dumps(obj,indent=2)+'\n')
 components=[]
 for sid,q in g.SOURCES.items():
  p=g.params(q);a,b=p['A'],p['B'];row=a[p['row']-1];col=[r[p['column']-1] for r in b];answer=sum(x*y for x,y in zip(row,col));f=q[':question/answer-fields'][0];key=f.get(':answer-field/correct',{}).get(':answer/id')
- components.append({'source_id':sid,'record':q,'parameters':p,'field_type':g.typename(f),'row':row,'column':col,'ordered_products':[x*y for x,y in zip(row,col)],'independently_inferred_correct':answer,'correct_ref_present':key is not None,'profile':'observed:'+sid,'choices':[{'source_answer_id':x[':answer/id'],'source_field_id':f[':answer-field/id'],'exact_value':x[':answer/value'],'correct_designation':x[':answer/id']==key if key else 'MISSING','recipe':'selected row dot selected column' if x[':answer/id']==key else 'opaque captured integer constant; evidence only; no inferred error intent','feedback_present':':answer/feedback' in x} for x in f[':answer-field/choices']]})
+ components.append({'source_id':sid,'record':q,'parameters':p,'field_type':g.typename(f),'row':row,'column':col,'ordered_products':[x*y for x,y in zip(row,col)],'independently_inferred_correct':answer,'correct_ref_present':key is not None,'source_mathematical_issue':'historical first-stage scalar equals full matrix product; mathematically imprecise and ineligible' if ':question/worked-solution' in q else None,'profile':'observed:'+sid,'choices':[{'source_answer_id':x[':answer/id'],'source_field_id':f[':answer-field/id'],'exact_value':x[':answer/value'],'correct_designation':x[':answer/id']==key if key else 'MISSING','recipe':'selected row dot selected column' if x[':answer/id']==key else 'opaque captured integer constant; evidence only; no inferred error intent','feedback_present':':answer/feedback' in x} for x in f[':answer-field/choices']]})
 write('source-components.json',components)
-write('canonical-evidence.json',{'basis':g.CAPTURE['basis'],'lineage':g.CAPTURE['lineage'],'role':'canonical example, not practice','record':g.SOURCE[':knowledge-point/canonical-example'],'image_inspected':'/home/jake/Developer/MA/DATA/Lessons/1196/Source/Sections/05-step-16189.png','selected_row':[1,2],'selected_column':[4,-2],'ordered_products':[4,-4],'answer':0})
+write('canonical-evidence.json',{'basis':g.CAPTURE['basis'],'lineage':g.CAPTURE['lineage'],'role':'canonical example, not practice','record':g.SOURCE[':knowledge-point/canonical-example'],'image_inspected':'/home/jake/Developer/MA/DATA/Lessons/1196/Source/Sections/05-step-16189.png','selected_row':[1,2],'selected_column':[4,-2],'ordered_products':[4,-4],'answer':0,'source_mathematical_issue':'Historical first equation equates scalar entry c32 to full3x3 matrix product; imprecise, retained as source evidence only'})
+write('source-mathematical-issues.json',{'practice_source_ids':[sid for sid,q in g.SOURCES.items() if ':question/worked-solution' in q],'canonical_source_id':'e-4407','issue':'Historical scalar entry equated to entire matrix product; mathematically imprecise and ineligible learner content','raw_policy':'All12 practice replays and canonical record preserved exactly, including two absent solutions','normal_repair':r'First RHS becomes \left([A][B]\right)_{ij}; remaining four stages unchanged','validation':'Actual printed operands, both dimensions, index admissibility and prompt target independently checked; wrong/missing/index-out-of-range/dimension mutations leave keys unchanged and are rejected'})
 write('independent-inventory.json',{'basis':g.CAPTURE['basis'],'lineage':g.CAPTURE['lineage'],'questions':[]})
 (D/'classification.md').write_text('''# Classification at math basis 2275
 
@@ -32,6 +33,11 @@ are tracked separately. Twelve named masks preserve source prose/layout and eigh
 complete opaque radio-bank profiles; they are not twelve different skills.
 Every source is mapped with all fields, choices and raw attribute presence in
 source-components.json and source-cases.json. No feedback exists in these sources.
+
+The ten stored practice solutions and canonical example contain a historical
+scalar-equals-full-matrix-product error. Raw replays are explicitly ineligible;
+normal solutions index that product at the requested cell before the same
+row-column calculation. See source-mathematical-issues.json.
 
 Plot rating: none. The canonical raster contains only typeset coefficient
 matrices. It was inspected at full size and transcribed correctly in its captured
@@ -76,8 +82,13 @@ multiply; display both full matrices; extract the selected row and column;
 expand the ordered scalar products; evaluate each signed product; collect to
 one integer. Preserve all five aligned rows and source shared prose. One fixed
 worked solution is generated independently of the learner's selected error.
-The full first row is retained despite representing a selected entry; this
-matches the source pedagogical shorthand, and does not ask for the full product.
+The raw source first row equates a scalar to the full matrix product. This is
+mathematically imprecise, not a valid scalar equality. Ten practice solutions
+and the canonical example contain it; raw replay retains it as historical,
+ineligible evidence. Normal output wraps the complete matrix product in
+\\left(...\\right)_{ij}, explicitly selecting its scalar entry before extracting
+the row and column. All five operative stages and shared prose remain. The
+indices are derived from the actual requested cell in every normal record.
 
 ## 3. Components and banks
 
@@ -160,10 +171,12 @@ and actual player routines/assets. Native private grader is copied from the
 current59716 draft and42 actual source/dependency hashes are verified before/after.
 Old shared grader is not used to establish results. Native scalar equivalents
 and all displayed radio choices are tested separately from mathematical QA.
-Wrong matrix-shaped blank submissions trigger36 documented unsupported-notation
+Wrong matrix-shaped blank submissions trigger48 documented unsupported-notation
 errors; they are not accepted or counted as ordinary wrong-answer rejections.
 Raw two missing-key sources cannot be graded and remain ineligible evidence;
-normal inferred variants are complete and grade normally. No valid scalar-answer
+normal inferred variants are complete and grade normally. Normal first-stage
+matrix products explicitly carry the selected-entry index; raw scalar/matrix
+equality errors remain flagged ineligible historical evidence. No valid scalar-answer
 native failures are hidden. Moderate/Hard bounds are authored scope claims.
 ''')
 review=['# Originals and generated variants','Raw originals retain absent keys, solutions and ratings. Historical opaque banks are evidence-only; normal banks are labeled authored method profiles.']

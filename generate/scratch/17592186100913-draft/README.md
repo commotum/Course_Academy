@@ -7,7 +7,7 @@ Run from the repository root:
 ```
 PYTHONDONTWRITEBYTECODE=1 .venv/bin/python generate/scratch/17592186100913-draft/validate.py
 PYTHONDONTWRITEBYTECODE=1 .venv/bin/python generate/scratch/17592186100913-draft.py --difficulty all --count 2 --format json
-PYTHONDONTWRITEBYTECODE=1 .venv/bin/python generate/scratch/17592186100913-draft/render.py
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python generate/scratch/17592186100913-draft/render.py --easy-refresh
 ```
 
 The last command uses a loopback server/native Chromium and may need sandbox escalation. It renders exact player helpers, actual question-fields controls, MathLive and MathJax with navigation theme tokens. `render-report.json` maps every full screenshot to exact record bytes, record SHA and content SHA.
@@ -17,3 +17,5 @@ Normal output computes column×row outer products only. Easy uses observed shape
 API: `generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None)`, plus named level functions. Templates: `outer-2x2`, `outer-3x2`, `outer-4x3`; `undefined-evidence` is source-only. `profile=q-…` replays a parameterized historical bank; `authored-method/q-…` selects a supported source mask with a complete method-derived bank. Explicit parameters contain exactly integer arrays `a` and `b`. Parameterized historical profiles are evidence-only and ineligible for learning; some wrong-operation interpretations remain unresolved. JSON CLI output is a bare list. No literal question-payload return branch exists.
 
 Evidence: `source.json` is the unchanged basis 2275 wrapper; `templates.json` contains structural masks/operation recipes, `source-cases.json` supplies all11 MA anchors, and `independent-inventory.json` records an empty independent inventory. `reference/registered-baseline.json` captured complete absence of numeric script/tree and matching recursive bytecode before any generator import; the current manifest also reports no registered generator. The protected numeric path set remains empty. `reference/grader-build.json` pins the current native grader and42 actual files, reverified before and after QA.
+
+The easy sampler now selects a complete count-of-nonunit-positions profile before its entries. Default coverage checks require each attainable0…4 product count, separately by shape and radio/blank contract. `easy-workload-representatives.json` and `easy-refresh/render-report.json` capture the affected easy output; unchanged source/moderate/hard screenshots remain in the original render report.

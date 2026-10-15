@@ -973,6 +973,29 @@ class ActivityCapture:
         # not demand controls that this history view explicitly did not expose.
         return cls._source_binding_matches({**before, 'fields': [], 'answer_fields': []}, after)
 
+    @staticmethod
+    def _verified_history_revision(before, after, *, diagnostic=False):
+        """A permanent DOM identity survives a content/rendering revision.
+
+        This proves identity only. It never transfers a grade or answer between
+        different versions; the complete history version is judged on its own.
+        """
+        identity = str(before.get('math_academy_id') or '')
+        if (not re.fullmatch(r'q-\d+',identity) or identity != str(after.get('math_academy_id'))
+                or after.get('answer_fields_complete') is not True
+                or not answer_fields(after) or not after.get('problem') or not after.get('worked_solution')
+                or any(not str(error).startswith('Screenshot unavailable:') for error in after.get('errors',[]))):
+            return False
+        from bs4 import BeautifulSoup
+        for index,question in enumerate((before,after)):
+            root = BeautifulSoup(question.get('html') or '', 'html.parser').find()
+            dom_id = root.get('id') if root else None
+            allowed = ('step-q'+identity[2:],) if diagnostic and index == 0 else (
+                'step-q'+identity[2:], 'question-'+identity[2:])
+            if not dom_id or dom_id != question.get('dom_id') or dom_id not in allowed:
+                return False
+        return True
+
     def _question_presentations(self, question):
         identity = question.get('math_academy_id')
         position = question.get('sequence_position')
@@ -991,7 +1014,7 @@ class ActivityCapture:
                    'observed_steps': deepcopy(self.state['steps'])}
         sources = history.get('questions', [])
         records = list(self.state['presentations'].values())
-        limitations, questions = [], []
+        limitations, questions, source_variants = [], [], []
         # A missed/repeated diagnostic presentation shifts history positions.
         # Never grant an ID or grade from the position without source agreement.
         for record in records:
@@ -1019,7 +1042,20 @@ class ActivityCapture:
                     'reason': 'History grade cannot be assigned unambiguously across repeated presentations'})
 
             live_question = deepcopy(question)
+            feedback = record.get('feedback') or {}
+            if feedback.get('problem') and not self._source_binding_matches(question, feedback):
+                record['unmatched_history_feedback'] = feedback
+                record['feedback'] = {}
             content_matches = matching or [q for q in same_id if self._history_content_matches(question, q)]
+            if (not content_matches and len(same_id) == 1
+                    and self._verified_history_revision(question,same_id[0],
+                        diagnostic=self.activity['kind']=='diagnostic')):
+                # Preserve the earlier source version and its actual learner
+                # observations, rather than inventing an ID-less extra question.
+                source_variants.append({'math_academy_id':identity,'presentation_key':record.get('key'),
+                    'question':live_question,'history_source':same_id[0].get('html_path'),
+                    'reason':'Same verified permanent DOM ID; complete history has different content or rendering. No grade transferred.'})
+                continue
             if (same_id and not content_matches) or not identity:
                 if same_id or sources:
                     limitations.append({'question': str(identity) if identity is not None else question_key(question),
@@ -1031,10 +1067,6 @@ class ActivityCapture:
                     live_question['observed_math_academy_id'] = live_question.pop('math_academy_id')
                 live_question['source_id'] = 'unreconciled:' + str(record.get('key'))
                 live_question['live_presentation_key'] = record.get('key')
-            feedback = record.get('feedback') or {}
-            if feedback.get('problem') and not self._source_binding_matches(question, feedback):
-                record['unmatched_history_feedback'] = feedback
-                record['feedback'] = {}
             questions.append(live_question)
 
         live = {'questions': questions,
@@ -1044,6 +1076,8 @@ class ActivityCapture:
         content = self._merge_content(content, live)
         self._save()
         content = self._merge_content(content, history)
+        if source_variants:
+            content['source_variants'] = source_variants
         content['source_limitations'] = content.get('source_limitations', []) + limitations
         if self.exposures:
             self.exposures.reconcile(self.state)

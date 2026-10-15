@@ -19,6 +19,7 @@ const endpoint=new Promise((resolve,reject)=>{browser.stderr.on('data',b=>{const
   if(!got.controlVisibility||got.controlCount!==(ft.endsWith('/radio')?5:1))throw Error('control mismatch '+label+' '+JSON.stringify(got));
   if(ft.endsWith('/blank')&&got.blankValue!=='7')throw Error('MathLive input mismatch');
   if(got.matricesPrompt!==2||got.matricesSolution!==(got.solutionPresent?5:0)||got.alignedRows!==(got.solutionPresent?5:0))throw Error('matrix/stage mismatch '+label+' '+JSON.stringify(got));
+  if(got.firstStageSubscripts!==(got.solutionPresent?(record.generation.evidence_only?1:2):0))throw Error('first-stage selected-entry index missing '+label+' '+JSON.stringify(got));
   const template=label;
   if(!seen.has(template)){
    const metrics=await call('Page.getLayoutMetrics');const size=metrics.cssContentSize;

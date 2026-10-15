@@ -13,7 +13,7 @@ sys.path.insert(0,str(ROOT/'scripts/question_capture'))
 from math_format import matrix_tex,normalize_prose,normalize_tex,validate_prose,validate_tex,checked_math_content
 import sympy as sp
 CAPTURE=json.loads((HERE/'source.json').read_text()); SOURCE=CAPTURE['record']
-KP_ID=17592186100873; VERSION='selected-entry-v2'; LEVELS=('easy','moderate','hard')
+KP_ID=17592186100873; VERSION='selected-entry-v3'; LEVELS=('easy','moderate','hard')
 SOURCES={q[':question/math-academy-id']:q for q in SOURCE[':knowledge-point/questions']}
 MAT=re.compile(r'\\begin\{bmatrix\}(.*?)\\end\{bmatrix\}',re.S)
 TARGET=re.compile(r'\{?([a-z])\}?_\{([1-5])([1-5])\}')
@@ -64,7 +64,7 @@ def render_problem(src,p):
  for match,value in reversed(list(zip(ms,(p['A'],p['B'])))):text=text[:match.start()]+matrix_tex(value,augmented=False)+text[match.end():]
  return TARGET.sub(lambda m: ('{'+m[1]+'}' if m[0].startswith('{') else m[1])+'_{'+str(p['row'])+str(p['column'])+'}',text)
 
-def render_solution(src,p):
+def render_solution(src,p,*,raw_evidence=False):
  a,b,i,j=p['A'],p['B'],p['row'],p['column'];row=a[i-1];col=[r[j-1] for r in b];terms=[x*y for x,y in zip(row,col)];letter=TARGET.search(src[':question/problem'])[1]
  old=src.get(':question/worked-solution')
  if old:
@@ -77,7 +77,9 @@ def render_solution(src,p):
  implicit=bool(old and r'\cdot' not in old)
  expansion='+'.join(factor(x)+'('+str(y)+')' if implicit else factor(x)+r'\cdot '+factor(y) for x,y in zip(row,col))
  signed=''.join(('+' if k and x>=0 else '')+str(x) for k,x in enumerate(terms))
- stages=[matrix_tex(a,augmented=False)+matrix_tex(b,augmented=False),matrix_tex([row],augmented=False)+matrix_tex([[x] for x in col],augmented=False),expansion,signed,str(sum(terms))+'.']
+ product=matrix_tex(a,augmented=False)+matrix_tex(b,augmented=False)
+ first=product if raw_evidence else r'\left('+product+r'\right)_{'+str(i)+str(j)+'}'
+ stages=[first,matrix_tex([row],augmented=False)+matrix_tex([[x] for x in col],augmented=False),expansion,signed,str(sum(terms))+'.']
  return intro+'\n\n$$\n'+r'\begin{aligned}{'+letter+'}_{'+str(i)+str(j)+r'} & ='+(r' \\  & ='.join(stages))+r'\end{aligned}'+'\n$$'
 
 @checked_math_content
@@ -121,7 +123,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   except ValueError:
    if explicit or evidence:raise
  else:raise ValueError('No eligible whole instance')
- problem=normalize_prose(render_problem(src,p));solution=normalize_prose(render_solution(src,p));sf=src[':question/answer-fields'][0]
+ problem=normalize_prose(render_problem(src,p));solution=normalize_prose(render_solution(src,p,raw_evidence=evidence));sf=src[':question/answer-fields'][0]
  q={':question/problem':problem}
  if not evidence or ':question/worked-solution' in src:q[':question/worked-solution']=solution
  if not evidence or ':question/difficulty' in src:q[':question/difficulty']=':question.difficulty/'+level
@@ -140,8 +142,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  q[':question/answer-fields']=[f]
  omissions=[k for k in (':question/difficulty',':question/worked-solution') if k not in src]+([':answer-field/correct'] if ':answer-field/correct' not in sf else [])
  corrections=[] if evidence else (['Authored Easy rating, common row-column solution and independently computed key fill raw omissions'] if omissions else [])
+ if not evidence:corrections.append('First full-matrix product explicitly indexed at the requested cell; scalar equality repaired without changing five solution stages')
  if not evidence and ft=='radio':corrections.append('Opaque historical bank replaced with labeled authored method-derived complete bank')
- r={'knowledge_point':{'db_id':KP_ID,'id':SOURCE[':knowledge-point/id'],'title':SOURCE[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'seed':seed,'template':template,'parameters':p,'bank_profile':profile,'mathematical_fingerprint':fp,'source_db_id':src[':db/id'],'source_question_id':src[':question/id'],'source_inventory_kind':'Math Academy original','source_attribute_omissions':omissions,'normal_corrections':corrections,'source_basis':CAPTURE['basis'],'source_lineage':CAPTURE['lineage'],'evidence_only':evidence,'eligible_for_learning':not evidence,'difficulty_evidence':(('raw unrated omission preserved' if evidence else 'authored Easy assignment for unrated original mask') if ':question/difficulty' not in src else 'observed Easy') if level=='easy' else 'authored missing-level extension','python_version':sys.version.split()[0],'sympy_version':sp.__version__,'bank_recipes':('opaque historical constants; computed designated key' if evidence else profile)}}
+ r={'knowledge_point':{'db_id':KP_ID,'id':SOURCE[':knowledge-point/id'],'title':SOURCE[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'seed':seed,'template':template,'parameters':p,'bank_profile':profile,'mathematical_fingerprint':fp,'source_db_id':src[':db/id'],'source_question_id':src[':question/id'],'source_inventory_kind':'Math Academy original','source_attribute_omissions':omissions,'source_mathematical_issues':(['Historical first equation equates a scalar entry to the full matrix product; mathematically imprecise and ineligible as learner content'] if ':question/worked-solution' in src else []),'first_stage_policy':('historical mathematically imprecise equality retained as ineligible evidence' if ':question/worked-solution' in src else 'source worked solution absent') if evidence else 'selected scalar entry of the full product explicitly indexed','normal_corrections':corrections,'source_basis':CAPTURE['basis'],'source_lineage':CAPTURE['lineage'],'evidence_only':evidence,'eligible_for_learning':not evidence,'difficulty_evidence':(('raw unrated omission preserved' if evidence else 'authored Easy assignment for unrated original mask') if ':question/difficulty' not in src else 'observed Easy') if level=='easy' else 'authored missing-level extension','python_version':sys.version.split()[0],'sympy_version':sp.__version__,'bank_recipes':('opaque historical constants; computed designated key' if evidence else profile)}}
  if evidence:
   validate_prose(problem)
   if ':question/worked-solution' in q:validate_prose(solution)

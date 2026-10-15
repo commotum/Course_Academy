@@ -153,7 +153,8 @@ def reextract_record(record, page, repair, *, history=False, prior=None):
     return merge_question(record,parsed)
 
 
-def repair_saved_capture(config, directory, page, *, apply=True, task_answers_source=None):
+def repair_saved_capture(config, directory, page, *, apply=True, task_answers_source=None,
+                         reextract_presentations=False, reextract_history=False):
     """Repair saved source structure; retain judgments and use the normal batch queue."""
     directory = Path(directory).resolve()
     if directory.parent != config.output_root or not (directory/'capture-complete.json').exists():
@@ -175,13 +176,19 @@ def repair_saved_capture(config, directory, page, *, apply=True, task_answers_so
     if not checkpoint or not original:
         raise ValueError('Completed source repair requires its original checkpoint and content')
     history = deepcopy(checkpoint['history'])
+    if reextract_presentations:
+        for record in checkpoint['presentations'].values():
+            record['question'] = reextract_record(record['question'],page,repair)
     if task_answers_source:
         from .browser.history import HistoryChoices, task_answers
         answers = task_answers(read_json(Path(task_answers_source)),checkpoint['activity']['task_id'])
         renderer = HistoryChoices(page.context,config.repo_root)
         try:
-            history['questions'] = [renderer.recover(q,answers[q['math_academy_id']],task_answers_source,repair)
-                if not q.get('fields') and not q.get('answer_fields') and q.get('math_academy_id') in answers else q
+            history['questions'] = [renderer.recover(q,answers[q['math_academy_id']],task_answers_source,repair,
+                    refresh=q.get('field_recovery',{}).get('kind')=='owned_task_answers')
+                if q.get('math_academy_id') in answers and
+                    (not q.get('fields') and not q.get('answer_fields') or
+                     q.get('field_recovery',{}).get('kind')=='owned_task_answers') else q
                 for q in history.get('questions',[])]
         finally:
             renderer.close()
@@ -189,6 +196,8 @@ def repair_saved_capture(config, directory, page, *, apply=True, task_answers_so
     for bucket in ('questions','canonical_examples','tutorials'):
         for index, question in enumerate(history.get(bucket,[])):
             if not question.get('errors'):
+                if reextract_history and bucket == 'questions':
+                    history[bucket][index] = reextract_record(question,page,repair,history=True)
                 continue
             if bucket == 'questions':
                 identity = question.get('math_academy_id')

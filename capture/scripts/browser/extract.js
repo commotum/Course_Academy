@@ -94,6 +94,8 @@
   const ops = {'∫':'\\int ','∑':'\\sum ','∏':'\\prod ','⋅':'\\cdot ','×':'\\times ','−':'-', '±':'\\pm ','≤':'\\le ','≥':'\\ge ','≠':'\\ne ','→':'\\to ','∈':'\\in ','∉':'\\notin ','∪':'\\cup ','∩':'\\cap '};
   // Literal MathML brace glyphs are delimiters, not TeX grouping syntax.
   const literalFence = value => value === '{' ? '\\{' : value === '}' ? '\\}' : value;
+  // A currency glyph inside MathML is content, not a TeX math delimiter.
+  const literalDollar = value => value.replace(/\$/g, '\\$');
   let formulaFields = new Map();
   const mathColor = value => /^(?:[a-z]+|#[0-9a-f]{3}|#[0-9a-f]{6})$/i.test(value || '') &&
     !/^(?:inherit|initial|unset|revert|revertlayer|currentcolor)$/i.test(value) && CSS.supports('color', value);
@@ -135,7 +137,7 @@
     return '\\bbox[' + options.join(',') + ']{' + [...padded.childNodes].map(child => m(child, true)).join('') + '}';
   }
   function m(n, preservePhantom = false) {
-    if (n.nodeType === 3) return greek[n.textContent] || n.textContent;
+    if (n.nodeType === 3) return greek[n.textContent] || literalDollar(n.textContent);
     if (n.nodeType !== 1) return '';
     const t = n.localName.toLowerCase();
     // The site's rendered math embeds select controls in place of local S-index
@@ -198,8 +200,8 @@
       case 'msqrt': return '\\sqrt{' + cs.join('') + '}';
       case 'mroot': return '\\sqrt[' + cs[1] + ']{' + cs[0] + '}';
       case 'mspace': return '\\,';
-      case 'mtext': return '\\text{' + n.textContent + '}';
-      case 'mo': return ops[n.textContent] || greek[n.textContent] || literalFence(n.textContent);
+      case 'mtext': return '\\text{' + literalDollar(n.textContent) + '}';
+      case 'mo': return ops[n.textContent] || greek[n.textContent] || literalFence(literalDollar(n.textContent));
       case 'mi':
         // The local MathML application marker identifies this whole node as
         // a function name. Keep its boundary when adjacent factors share no space.
@@ -207,7 +209,7 @@
             n.nextElementSibling?.localName === 'mo' && n.nextElementSibling.textContent === '\u2061') {
           return '\\operatorname{' + n.textContent + '}';
         }
-        return greek[n.textContent] || n.textContent;
+        return greek[n.textContent] || literalDollar(n.textContent);
       case 'mtable': return '\\begin{aligned}' + cs.join(' \\\\ ') + '\\end{aligned}';
       case 'mtr': case 'mlabeledtr': return cs.join(' & ');
       case 'menclose':

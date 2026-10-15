@@ -12523,10 +12523,10 @@
         "unrated": 2,
         ":question.difficulty/easy": 9
       },
-      "status": "working",
-      "script": "generate/scratch/17592186100872.py",
+      "status": "qa_passed",
+      "script": "generate/scratch/17592186100872-draft.py",
       "agent": "/root/kp_17592186100872",
-      "qa": null,
+      "qa": "generate/runs/current/qa/17592186100872.json",
       "source_field_anomalies": [
         {
           "source_id": "q-1029",
@@ -12557,7 +12557,13 @@
         "has_generator": false
       },
       "source_snapshot_root": "generate/runs/current/refresh-2026-10-14",
-      "worker_phase": "draft_creation"
+      "worker_phase": "parent_approved",
+      "original_source_counts": {
+        "unrated": 2,
+        ":question.difficulty/easy": 9
+      },
+      "independent_inventory_count": 0,
+      "generator_sha256": "f3c3f0e060c645a40f17c9d4e7559913ed535539f31d3145bb27cae1b3ee74a6"
     },
     {
       "kp_id": 17592186100913,
@@ -12603,7 +12609,8 @@
         "has_generator": false
       },
       "source_snapshot_root": "generate/runs/current/refresh-2026-10-14",
-      "worker_phase": "draft_creation"
+      "worker_phase": "root_changes_required",
+      "root_finding": "Default easy sampler only exercises0nonunitproducts despite declared<=4domain; cover supported nonunit slots withoutraisingarithmeticcaps"
     },
     {
       "kp_id": 17592186100873,
@@ -12648,7 +12655,8 @@
         "has_generator": false
       },
       "source_snapshot_root": "generate/runs/current/refresh-2026-10-14",
-      "worker_phase": "draft_creation"
+      "worker_phase": "root_changes_required",
+      "root_finding": "Normal firstsolutionequality equatesselectedscalarwithfullmatrixproduct; preserve rawsource and index fullproduct atrequestedentry normally"
     },
     {
       "kp_id": 17592186064246,
@@ -26376,5 +26384,15 @@
   "explicit_user_priority_date": "2026-10-14",
   "dispatch_policy": "Explicit user list supersedes coverage priority: assign the 13 specified KPs in exact order; preserve completed work and already-started drafts, hold other parent QA until the13 pass; then unfinished coverage-report KPs; then remaining latest candidate ranks.",
   "explicit_priority_supersedes_coverage_report": true,
-  "explicit_priority_qa_completed": true
+  "explicit_priority_qa_completed": true,
+  "execution_control": {
+    "instruction": "Finish the four KPs already in progress, then stop; do not start any more KPs.",
+    "finish_only_kps": [
+      17592186100872,
+      17592186100913,
+      17592186100873,
+      17592186064246
+    ],
+    "start_new_kps": false
+  }
 }

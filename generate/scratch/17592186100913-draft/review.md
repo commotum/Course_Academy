@@ -445,9 +445,9 @@ Authored generated variant
 
 ### easy / outer-3x2 / authored-method/q-13635
 
-Find $AB,$ if $A=\begin{bmatrix}0 \\ 1 \\ -1\end{bmatrix}$
+Find $AB,$ if $A=\begin{bmatrix}0 \\ -4 \\ 9\end{bmatrix}$
 and 
-$B=\begin{bmatrix}3 & -3\end{bmatrix}.$
+$B=\begin{bmatrix}-1 & 2\end{bmatrix}.$
 
 |  |  | {{field-1}} | {{field-2}} |  |
 | --- | --- | --- | --- | --- |
@@ -464,19 +464,19 @@ Field field-2: :answer-field.type/blank
 
 Field field-3: :answer-field.type/blank
 
-* correct: 3
+* correct: 4
 
 Field field-4: :answer-field.type/blank
 
-* correct: -3
+* correct: -8
 
 Field field-5: :answer-field.type/blank
 
-* correct: -3
+* correct: -9
 
 Field field-6: :answer-field.type/blank
 
-* correct: 3
+* correct: 18
 
 Worked solution:
 
@@ -491,7 +491,7 @@ $$
 Computing the product, we have
 
 $$
-\begin{aligned}AB & =\begin{bmatrix}0 \\ 1 \\ -1\end{bmatrix}\begin{bmatrix}3 & -3\end{bmatrix} \\  & =\begin{bmatrix}0\cdot 3 & 0\cdot (-3) \\ 1\cdot 3 & 1\cdot (-3) \\ (-1)\cdot 3 & (-1)\cdot (-3)\end{bmatrix} \\  & =\begin{bmatrix}0 & 0 \\ 3 & -3 \\ -3 & 3\end{bmatrix}.\end{aligned}
+\begin{aligned}AB & =\begin{bmatrix}0 \\ -4 \\ 9\end{bmatrix}\begin{bmatrix}-1 & 2\end{bmatrix} \\  & =\begin{bmatrix}0\cdot (-1) & 0\cdot 2 \\ (-4)\cdot (-1) & (-4)\cdot 2 \\ 9\cdot (-1) & 9\cdot 2\end{bmatrix} \\  & =\begin{bmatrix}0 & 0 \\ 4 & -8 \\ -9 & 18\end{bmatrix}.\end{aligned}
 $$
 
 Authored generated variant
@@ -499,22 +499,22 @@ Authored generated variant
 ### easy / outer-2x2 / authored-method/q-275545
 
 If
-$A=\begin{bmatrix}-1 \\ -1\end{bmatrix}$
+$A=\begin{bmatrix}0 \\ 5\end{bmatrix}$
 and
-$B=\begin{bmatrix}2 & -5\end{bmatrix},$
+$B=\begin{bmatrix}-1 & -1\end{bmatrix},$
 find $AB.$
 
 Field selection: :answer-field.type/radio
 
-* \begin{bmatrix}-2 & -2 \\ 5 & 5\end{bmatrix}
-
-* correct: \begin{bmatrix}-2 & 5 \\ -2 & 5\end{bmatrix}
-
-* \begin{bmatrix}1 & -6 \\ 1 & -6\end{bmatrix}
-
 * Undefined
 
-* \begin{bmatrix}2 & -5 \\ 2 & -5\end{bmatrix}
+* \begin{bmatrix}-1 & -1 \\ 4 & 4\end{bmatrix}
+
+* \begin{bmatrix}0 & -5 \\ 0 & -5\end{bmatrix}
+
+* correct: \begin{bmatrix}0 & 0 \\ -5 & -5\end{bmatrix}
+
+* \begin{bmatrix}0 & 0 \\ 5 & 5\end{bmatrix}
 
 Worked solution:
 
@@ -529,33 +529,33 @@ $$
 Let's compute $AB,$ one element at a time:
 
 $$
-\begin{aligned} & \begin{bmatrix}-1 \\ -1\end{bmatrix}\begin{bmatrix}2 & -5\end{bmatrix}=\begin{bmatrix}-2 & ∗ \\ ∗ & ∗\end{bmatrix}, &  & \,-2=(-1)\cdot 2 \\  & \begin{bmatrix}-1 \\ -1\end{bmatrix}\begin{bmatrix}2 & -5\end{bmatrix}=\begin{bmatrix}-2 & 5 \\ ∗ & ∗\end{bmatrix}, &  & \,5=(-1)\cdot (-5) \\  & \begin{bmatrix}-1 \\ -1\end{bmatrix}\begin{bmatrix}2 & -5\end{bmatrix}=\begin{bmatrix}-2 & 5 \\ -2 & ∗\end{bmatrix}, &  & \,-2=(-1)\cdot 2 \\  & \begin{bmatrix}-1 \\ -1\end{bmatrix}\begin{bmatrix}2 & -5\end{bmatrix}=\begin{bmatrix}-2 & 5 \\ -2 & 5\end{bmatrix}, &  & \,5=(-1)\cdot (-5)\end{aligned}
+\begin{aligned} & \begin{bmatrix}0 \\ 5\end{bmatrix}\begin{bmatrix}-1 & -1\end{bmatrix}=\begin{bmatrix}0 & ∗ \\ ∗ & ∗\end{bmatrix}, &  & \,0=0\cdot (-1) \\  & \begin{bmatrix}0 \\ 5\end{bmatrix}\begin{bmatrix}-1 & -1\end{bmatrix}=\begin{bmatrix}0 & 0 \\ ∗ & ∗\end{bmatrix}, &  & \,0=0\cdot (-1) \\  & \begin{bmatrix}0 \\ 5\end{bmatrix}\begin{bmatrix}-1 & -1\end{bmatrix}=\begin{bmatrix}0 & 0 \\ -5 & ∗\end{bmatrix}, &  & \,-5=5\cdot (-1) \\  & \begin{bmatrix}0 \\ 5\end{bmatrix}\begin{bmatrix}-1 & -1\end{bmatrix}=\begin{bmatrix}0 & 0 \\ -5 & -5\end{bmatrix}, &  & \,-5=5\cdot (-1)\end{aligned}
 $$
 
 Therefore, 
-$AB=\begin{bmatrix}-2 & 5 \\ -2 & 5\end{bmatrix}.$
+$AB=\begin{bmatrix}0 & 0 \\ -5 & -5\end{bmatrix}.$
 
 Authored generated variant
 
 ### easy / outer-2x2 / authored-method/q-129961
 
 If
-$A=\begin{bmatrix}0 \\ 1\end{bmatrix}$
+$A=\begin{bmatrix}1 \\ -2\end{bmatrix}$
 and
-$B=\begin{bmatrix}-2 & 4\end{bmatrix}$
+$B=\begin{bmatrix}-9 & -10\end{bmatrix}$
 then $AB=$
 
 Field selection: :answer-field.type/radio
 
+* correct: \begin{bmatrix}-9 & -10 \\ 18 & 20\end{bmatrix}
+
 * Undefined
 
-* \begin{bmatrix}-2 & 4 \\ -1 & 5\end{bmatrix}
+* \begin{bmatrix}-9 & 18 \\ -10 & 20\end{bmatrix}
 
-* \begin{bmatrix}0 & 0 \\ 2 & -4\end{bmatrix}
+* \begin{bmatrix}9 & 10 \\ -18 & -20\end{bmatrix}
 
-* \begin{bmatrix}0 & -2 \\ 0 & 4\end{bmatrix}
-
-* correct: \begin{bmatrix}0 & 0 \\ -2 & 4\end{bmatrix}
+* \begin{bmatrix}-8 & -9 \\ -11 & -12\end{bmatrix}
 
 Worked solution:
 
@@ -570,17 +570,17 @@ $$
 Let's compute $AB,$ one element at a time:
 
 $$
-\begin{aligned} & \begin{bmatrix}0 \\ 1\end{bmatrix}\begin{bmatrix}-2 & 4\end{bmatrix}=\begin{bmatrix}0 & ∗ \\ ∗ & ∗\end{bmatrix}, &  & \,0=0\cdot (-2) \\  & \begin{bmatrix}0 \\ 1\end{bmatrix}\begin{bmatrix}-2 & 4\end{bmatrix}=\begin{bmatrix}0 & 0 \\ ∗ & ∗\end{bmatrix}, &  & \,0=0\cdot 4 \\  & \begin{bmatrix}0 \\ 1\end{bmatrix}\begin{bmatrix}-2 & 4\end{bmatrix}=\begin{bmatrix}0 & 0 \\ -2 & ∗\end{bmatrix}, &  & \,-2=1\cdot (-2) \\  & \begin{bmatrix}0 \\ 1\end{bmatrix}\begin{bmatrix}-2 & 4\end{bmatrix}=\begin{bmatrix}0 & 0 \\ -2 & 4\end{bmatrix}, &  & \,4=1\cdot 4\end{aligned}
+\begin{aligned} & \begin{bmatrix}1 \\ -2\end{bmatrix}\begin{bmatrix}-9 & -10\end{bmatrix}=\begin{bmatrix}-9 & ∗ \\ ∗ & ∗\end{bmatrix}, &  & \,-9=1\cdot (-9) \\  & \begin{bmatrix}1 \\ -2\end{bmatrix}\begin{bmatrix}-9 & -10\end{bmatrix}=\begin{bmatrix}-9 & -10 \\ ∗ & ∗\end{bmatrix}, &  & \,-10=1\cdot (-10) \\  & \begin{bmatrix}1 \\ -2\end{bmatrix}\begin{bmatrix}-9 & -10\end{bmatrix}=\begin{bmatrix}-9 & -10 \\ 18 & ∗\end{bmatrix}, &  & \,18=(-2)\cdot (-9) \\  & \begin{bmatrix}1 \\ -2\end{bmatrix}\begin{bmatrix}-9 & -10\end{bmatrix}=\begin{bmatrix}-9 & -10 \\ 18 & 20\end{bmatrix}, &  & \,20=(-2)\cdot (-10)\end{aligned}
 $$
 
 Therefore, 
-$AB=\begin{bmatrix}0 & 0 \\ -2 & 4\end{bmatrix}.$
+$AB=\begin{bmatrix}-9 & -10 \\ 18 & 20\end{bmatrix}.$
 
 Authored generated variant
 
 ### easy / outer-4x3 / authored-method/q-130136
 
-$\begin{bmatrix}10 \\ 6 \\ -10 \\ 4\end{bmatrix}\begin{bmatrix}-1 & 1 & -1\end{bmatrix}=$
+$\begin{bmatrix}-4 \\ 0 \\ -2 \\ -1\end{bmatrix}\begin{bmatrix}5 & -1 & -8\end{bmatrix}=$
 
 | {{field-1}} | {{field-2}} | {{field-3}} |
 | --- | --- | --- |
@@ -590,51 +590,51 @@ $\begin{bmatrix}10 \\ 6 \\ -10 \\ 4\end{bmatrix}\begin{bmatrix}-1 & 1 & -1\end{b
 
 Field field-1: :answer-field.type/blank
 
-* correct: -10
+* correct: -20
 
 Field field-2: :answer-field.type/blank
 
-* correct: 10
+* correct: 4
 
 Field field-3: :answer-field.type/blank
 
-* correct: -10
+* correct: 32
 
 Field field-4: :answer-field.type/blank
 
-* correct: -6
+* correct: 0
 
 Field field-5: :answer-field.type/blank
 
-* correct: 6
+* correct: 0
 
 Field field-6: :answer-field.type/blank
 
-* correct: -6
+* correct: 0
 
 Field field-7: :answer-field.type/blank
 
-* correct: 10
+* correct: -10
 
 Field field-8: :answer-field.type/blank
 
-* correct: -10
+* correct: 2
 
 Field field-9: :answer-field.type/blank
 
-* correct: 10
+* correct: 16
 
 Field field-10: :answer-field.type/blank
 
-* correct: -4
+* correct: -5
 
 Field field-11: :answer-field.type/blank
 
-* correct: 4
+* correct: 1
 
 Field field-12: :answer-field.type/blank
 
-* correct: -4
+* correct: 8
 
 Worked solution:
 
@@ -649,28 +649,28 @@ $$
 Computing the product, we have
 
 $$
-\begin{aligned}\begin{bmatrix}10 \\ 6 \\ -10 \\ 4\end{bmatrix}\begin{bmatrix}-1 & 1 & -1\end{bmatrix} & =\begin{bmatrix}10\cdot (-1) & 10\cdot 1 & 10\cdot (-1) \\ 6\cdot (-1) & 6\cdot 1 & 6\cdot (-1) \\ (-10)\cdot (-1) & (-10)\cdot 1 & (-10)\cdot (-1) \\ 4\cdot (-1) & 4\cdot 1 & 4\cdot (-1)\end{bmatrix} \\  & =\begin{bmatrix}-10 & 10 & -10 \\ -6 & 6 & -6 \\ 10 & -10 & 10 \\ -4 & 4 & -4\end{bmatrix}\end{aligned}
+\begin{aligned}\begin{bmatrix}-4 \\ 0 \\ -2 \\ -1\end{bmatrix}\begin{bmatrix}5 & -1 & -8\end{bmatrix} & =\begin{bmatrix}(-4)\cdot 5 & (-4)\cdot (-1) & (-4)\cdot (-8) \\ 0\cdot 5 & 0\cdot (-1) & 0\cdot (-8) \\ (-2)\cdot 5 & (-2)\cdot (-1) & (-2)\cdot (-8) \\ (-1)\cdot 5 & (-1)\cdot (-1) & (-1)\cdot (-8)\end{bmatrix} \\  & =\begin{bmatrix}-20 & 4 & 32 \\ 0 & 0 & 0 \\ -10 & 2 & 16 \\ -5 & 1 & 8\end{bmatrix}\end{aligned}
 $$
 
 Authored generated variant
 
 ### easy / outer-3x2 / authored-method/q-275548
 
-Find $AB,$ if $A=\begin{bmatrix}1 \\ -1 \\ 1\end{bmatrix}$
+Find $AB,$ if $A=\begin{bmatrix}1 \\ -1 \\ 0\end{bmatrix}$
 and 
-$B=\begin{bmatrix}-2 & -5\end{bmatrix}.$
+$B=\begin{bmatrix}1 & -1\end{bmatrix}.$
 
 Field selection: :answer-field.type/radio
 
-* \begin{bmatrix}-1 & -4 \\ -3 & -6 \\ -1 & -4\end{bmatrix}
+* \begin{bmatrix}-1 & 1 \\ 1 & -1 \\ 0 & 0\end{bmatrix}
+
+* \begin{bmatrix}2 & 0 \\ 0 & -2 \\ 1 & -1\end{bmatrix}
+
+* correct: \begin{bmatrix}1 & -1 \\ -1 & 1 \\ 0 & 0\end{bmatrix}
+
+* \begin{bmatrix}1 & -1 & 0 \\ -1 & 1 & 0\end{bmatrix}
 
 * Undefined
-
-* \begin{bmatrix}-2 & 2 & -2 \\ -5 & 5 & -5\end{bmatrix}
-
-* \begin{bmatrix}2 & 5 \\ -2 & -5 \\ 2 & 5\end{bmatrix}
-
-* correct: \begin{bmatrix}-2 & -5 \\ 2 & 5 \\ -2 & -5\end{bmatrix}
 
 Worked solution:
 
@@ -685,16 +685,16 @@ $$
 Computing the product, we have
 
 $$
-\begin{aligned}AB & =\begin{bmatrix}1 \\ -1 \\ 1\end{bmatrix}\begin{bmatrix}-2 & -5\end{bmatrix} \\  & =\begin{bmatrix}1\cdot (-2) & 1\cdot (-5) \\ (-1)\cdot (-2) & (-1)\cdot (-5) \\ 1\cdot (-2) & 1\cdot (-5)\end{bmatrix} \\  & =\begin{bmatrix}-2 & -5 \\ 2 & 5 \\ -2 & -5\end{bmatrix}.\end{aligned}
+\begin{aligned}AB & =\begin{bmatrix}1 \\ -1 \\ 0\end{bmatrix}\begin{bmatrix}1 & -1\end{bmatrix} \\  & =\begin{bmatrix}1\cdot 1 & 1\cdot (-1) \\ (-1)\cdot 1 & (-1)\cdot (-1) \\ 0\cdot 1 & 0\cdot (-1)\end{bmatrix} \\  & =\begin{bmatrix}1 & -1 \\ -1 & 1 \\ 0 & 0\end{bmatrix}.\end{aligned}
 $$
 
 Authored generated variant
 
 ### easy / outer-3x2 / authored-method/q-318588
 
-Find $AB,$ if $A=\begin{bmatrix}0 \\ 0 \\ 1\end{bmatrix}$
+Find $AB,$ if $A=\begin{bmatrix}4 \\ -1 \\ 3\end{bmatrix}$
 and 
-$B=\begin{bmatrix}2 & 4\end{bmatrix}.$
+$B=\begin{bmatrix}-4 & -9\end{bmatrix}.$
 
 |  |  | {{field-1}} | {{field-2}} |  |
 | --- | --- | --- | --- | --- |
@@ -703,27 +703,27 @@ $B=\begin{bmatrix}2 & 4\end{bmatrix}.$
 
 Field field-1: :answer-field.type/blank
 
-* correct: 0
+* correct: -16
 
 Field field-2: :answer-field.type/blank
 
-* correct: 0
+* correct: -36
 
 Field field-3: :answer-field.type/blank
 
-* correct: 0
+* correct: 4
 
 Field field-4: :answer-field.type/blank
 
-* correct: 0
+* correct: 9
 
 Field field-5: :answer-field.type/blank
 
-* correct: 2
+* correct: -12
 
 Field field-6: :answer-field.type/blank
 
-* correct: 4
+* correct: -27
 
 Worked solution:
 
@@ -738,7 +738,7 @@ $$
 Computing the product, we have
 
 $$
-\begin{aligned}AB & =\begin{bmatrix}0 \\ 0 \\ 1\end{bmatrix}\begin{bmatrix}2 & 4\end{bmatrix} \\  & =\begin{bmatrix}0\cdot 2 & 0\cdot 4 \\ 0\cdot 2 & 0\cdot 4 \\ 1\cdot 2 & 1\cdot 4\end{bmatrix} \\  & =\begin{bmatrix}0 & 0 \\ 0 & 0 \\ 2 & 4\end{bmatrix}.\end{aligned}
+\begin{aligned}AB & =\begin{bmatrix}4 \\ -1 \\ 3\end{bmatrix}\begin{bmatrix}-4 & -9\end{bmatrix} \\  & =\begin{bmatrix}4\cdot (-4) & 4\cdot (-9) \\ (-1)\cdot (-4) & (-1)\cdot (-9) \\ 3\cdot (-4) & 3\cdot (-9)\end{bmatrix} \\  & =\begin{bmatrix}-16 & -36 \\ 4 & 9 \\ -12 & -27\end{bmatrix}.\end{aligned}
 $$
 
 Authored generated variant
@@ -746,22 +746,22 @@ Authored generated variant
 ### easy / outer-2x2 / authored-method/q-318484
 
 If
-$A=\begin{bmatrix}-9 \\ -5\end{bmatrix}$
+$A=\begin{bmatrix}-1 \\ -1\end{bmatrix}$
 and
-$B=\begin{bmatrix}-1 & -1\end{bmatrix},$
+$B=\begin{bmatrix}-6 & 1\end{bmatrix},$
 find $AB.$
 
 Field selection: :answer-field.type/radio
 
 * Undefined
 
-* \begin{bmatrix}-9 & -9 \\ -5 & -5\end{bmatrix}
+* \begin{bmatrix}-6 & 1 \\ -6 & 1\end{bmatrix}
 
-* correct: \begin{bmatrix}9 & 9 \\ 5 & 5\end{bmatrix}
+* correct: \begin{bmatrix}6 & -1 \\ 6 & -1\end{bmatrix}
 
-* \begin{bmatrix}-10 & -10 \\ -6 & -6\end{bmatrix}
+* \begin{bmatrix}6 & 6 \\ -1 & -1\end{bmatrix}
 
-* \begin{bmatrix}9 & 5 \\ 9 & 5\end{bmatrix}
+* \begin{bmatrix}-7 & 0 \\ -7 & 0\end{bmatrix}
 
 Worked solution:
 
@@ -776,29 +776,29 @@ $$
 Let's compute $AB,$ one element at a time:
 
 $$
-\begin{aligned} & \begin{bmatrix}-9 \\ -5\end{bmatrix}\begin{bmatrix}-1 & -1\end{bmatrix}=\begin{bmatrix}9 & ∗ \\ ∗ & ∗\end{bmatrix}, &  & \,9=(-9)\cdot (-1) \\  & \begin{bmatrix}-9 \\ -5\end{bmatrix}\begin{bmatrix}-1 & -1\end{bmatrix}=\begin{bmatrix}9 & 9 \\ ∗ & ∗\end{bmatrix}, &  & \,9=(-9)\cdot (-1) \\  & \begin{bmatrix}-9 \\ -5\end{bmatrix}\begin{bmatrix}-1 & -1\end{bmatrix}=\begin{bmatrix}9 & 9 \\ 5 & ∗\end{bmatrix}, &  & \,5=(-5)\cdot (-1) \\  & \begin{bmatrix}-9 \\ -5\end{bmatrix}\begin{bmatrix}-1 & -1\end{bmatrix}=\begin{bmatrix}9 & 9 \\ 5 & 5\end{bmatrix}, &  & \,5=(-5)\cdot (-1)\end{aligned}
+\begin{aligned} & \begin{bmatrix}-1 \\ -1\end{bmatrix}\begin{bmatrix}-6 & 1\end{bmatrix}=\begin{bmatrix}6 & ∗ \\ ∗ & ∗\end{bmatrix}, &  & \,6=(-1)\cdot (-6) \\  & \begin{bmatrix}-1 \\ -1\end{bmatrix}\begin{bmatrix}-6 & 1\end{bmatrix}=\begin{bmatrix}6 & -1 \\ ∗ & ∗\end{bmatrix}, &  & \,-1=(-1)\cdot 1 \\  & \begin{bmatrix}-1 \\ -1\end{bmatrix}\begin{bmatrix}-6 & 1\end{bmatrix}=\begin{bmatrix}6 & -1 \\ 6 & ∗\end{bmatrix}, &  & \,6=(-1)\cdot (-6) \\  & \begin{bmatrix}-1 \\ -1\end{bmatrix}\begin{bmatrix}-6 & 1\end{bmatrix}=\begin{bmatrix}6 & -1 \\ 6 & -1\end{bmatrix}, &  & \,-1=(-1)\cdot 1\end{aligned}
 $$
 
 Therefore, 
-$AB=\begin{bmatrix}9 & 9 \\ 5 & 5\end{bmatrix}.$
+$AB=\begin{bmatrix}6 & -1 \\ 6 & -1\end{bmatrix}.$
 
 Authored generated variant
 
 ### easy / outer-4x3 / authored-method/q-1038
 
-$\begin{bmatrix}6 \\ -4 \\ 2 \\ 1\end{bmatrix}\begin{bmatrix}1 & 0 & 1\end{bmatrix}=$
+$\begin{bmatrix}1 \\ -6 \\ 1 \\ -2\end{bmatrix}\begin{bmatrix}-1 & -2 & 6\end{bmatrix}=$
 
 Field selection: :answer-field.type/radio
 
-* \begin{bmatrix}-6 & 0 & -6 \\ 4 & 0 & 4 \\ -2 & 0 & -2 \\ -1 & 0 & -1\end{bmatrix}
+* \begin{bmatrix}1 & 2 & -6 \\ -6 & -12 & 36 \\ 1 & 2 & -6 \\ -2 & -4 & 12\end{bmatrix}
 
-* \begin{bmatrix}6 & -4 & 2 & 1 \\ 0 & 0 & 0 & 0 \\ 6 & -4 & 2 & 1\end{bmatrix}
+* \begin{bmatrix}-1 & 6 & -1 & 2 \\ -2 & 12 & -2 & 4 \\ 6 & -36 & 6 & -12\end{bmatrix}
 
-* correct: \begin{bmatrix}6 & 0 & 6 \\ -4 & 0 & -4 \\ 2 & 0 & 2 \\ 1 & 0 & 1\end{bmatrix}
-
-* \begin{bmatrix}7 & 6 & 7 \\ -3 & -4 & -3 \\ 3 & 2 & 3 \\ 2 & 1 & 2\end{bmatrix}
+* correct: \begin{bmatrix}-1 & -2 & 6 \\ 6 & 12 & -36 \\ -1 & -2 & 6 \\ 2 & 4 & -12\end{bmatrix}
 
 * Undefined
+
+* \begin{bmatrix}0 & -1 & 7 \\ -7 & -8 & 0 \\ 0 & -1 & 7 \\ -3 & -4 & 4\end{bmatrix}
 
 Worked solution:
 
@@ -813,7 +813,7 @@ $$
 Computing the product, we have:
 
 $$
-\begin{aligned}\begin{bmatrix}6 \\ -4 \\ 2 \\ 1\end{bmatrix}\begin{bmatrix}1 & 0 & 1\end{bmatrix} & =\begin{bmatrix}6\cdot 1 & 6\cdot 0 & 6\cdot 1 \\ (-4)\cdot 1 & (-4)\cdot 0 & (-4)\cdot 1 \\ 2\cdot 1 & 2\cdot 0 & 2\cdot 1 \\ 1\cdot 1 & 1\cdot 0 & 1\cdot 1\end{bmatrix} \\  & =\begin{bmatrix}6 & 0 & 6 \\ -4 & 0 & -4 \\ 2 & 0 & 2 \\ 1 & 0 & 1\end{bmatrix}\end{aligned}
+\begin{aligned}\begin{bmatrix}1 \\ -6 \\ 1 \\ -2\end{bmatrix}\begin{bmatrix}-1 & -2 & 6\end{bmatrix} & =\begin{bmatrix}1\cdot (-1) & 1\cdot (-2) & 1\cdot 6 \\ (-6)\cdot (-1) & (-6)\cdot (-2) & (-6)\cdot 6 \\ 1\cdot (-1) & 1\cdot (-2) & 1\cdot 6 \\ (-2)\cdot (-1) & (-2)\cdot (-2) & (-2)\cdot 6\end{bmatrix} \\  & =\begin{bmatrix}-1 & -2 & 6 \\ 6 & 12 & -36 \\ -1 & -2 & 6 \\ 2 & 4 & -12\end{bmatrix}\end{aligned}
 $$
 
 Authored generated variant

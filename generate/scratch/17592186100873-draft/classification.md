@@ -38,3 +38,10 @@ three nonzero nonunit products each at most16 and L1 at most36. Hard requires th
 same three products with mixed signs, product magnitudes at most30 and L1 37–58.
 These increase signed arithmetic/collection workload within the observed ceiling
 (two-term Easy30−28 already has L1=58). They do not claim observed MA labels.
+
+Source mathematical issue: all ten stored practice solutions and canonical e-4407
+write a scalar entry equal to a complete matrix product. This historical
+scalar/matrix equality is mathematically imprecise and ineligible learner content.
+Raw evidence remains exact. Normal solutions explicitly select the requested
+entry of that complete product before the unchanged row-column calculation.
+See source-mathematical-issues.json and the first-stage mutation regressions.

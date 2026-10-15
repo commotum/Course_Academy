@@ -40,10 +40,18 @@ def validate_parameters(level,template,params,evidence=False):
  elif(len(a),len(b))!=(4,3)or nonunit<8 or sum(ap)>240:raise ValueError('hard workload')
 def sample(level,template,rng):
  n,k=map(int,template.removeprefix('outer-').split('x'))
+ if level=='easy':
+  # Choose a whole workload profile before entries. Every eligible nonunit
+  # product count is reachable; dimensions determine which count pairs exist.
+  pairs=[(ca,cb)for ca in range(n+1)for cb in range(k+1)if ca*cb<=4]
+  workload=rng.choice(sorted({ca*cb for ca,cb in pairs}))
+  ca,cb=rng.choice([(ca,cb)for ca,cb in pairs if ca*cb==workload])
+  nonunit_domain=list(range(-10,-1))+list(range(2,11))
  for _ in range(10000):
   if level=='easy':
-   a=[rng.randint(-10,10)for _ in range(n)];b=[rng.choice([-1,0,1])for _ in range(k)]
-   if rng.randrange(2):a=[rng.choice([-1,0,1])for _ in range(n)];b=[rng.randint(-5,5)for _ in range(k)]
+   a_positions=set(rng.sample(range(n),ca));b_positions=set(rng.sample(range(k),cb))
+   a=[rng.choice(nonunit_domain if i in a_positions else [-1,0,1])for i in range(n)]
+   b=[rng.choice(nonunit_domain if j in b_positions else [-1,0,1])for j in range(k)]
   else:
    domain=[-5,-4,-3,-2,2,3,4,5]if level=='moderate'else [-10,-8,-6,-5,-4,-3,-2,2,3,4,5,6,8,10]
    a=[rng.choice(domain)for _ in range(n)];b=[rng.choice(domain)for _ in range(k)]

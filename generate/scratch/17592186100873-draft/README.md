@@ -17,8 +17,10 @@ and actual player routines/assets. Native private grader is copied from the
 current59716 draft and42 actual source/dependency hashes are verified before/after.
 Old shared grader is not used to establish results. Native scalar equivalents
 and all displayed radio choices are tested separately from mathematical QA.
-Wrong matrix-shaped blank submissions trigger36 documented unsupported-notation
+Wrong matrix-shaped blank submissions trigger48 documented unsupported-notation
 errors; they are not accepted or counted as ordinary wrong-answer rejections.
 Raw two missing-key sources cannot be graded and remain ineligible evidence;
-normal inferred variants are complete and grade normally. No valid scalar-answer
+normal inferred variants are complete and grade normally. Normal first-stage
+matrix products explicitly carry the selected-entry index; raw scalar/matrix
+equality errors remain flagged ineligible historical evidence. No valid scalar-answer
 native failures are hidden. Moderate/Hard bounds are authored scope claims.

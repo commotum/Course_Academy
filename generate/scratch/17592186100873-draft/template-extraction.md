@@ -22,8 +22,13 @@ multiply; display both full matrices; extract the selected row and column;
 expand the ordered scalar products; evaluate each signed product; collect to
 one integer. Preserve all five aligned rows and source shared prose. One fixed
 worked solution is generated independently of the learner's selected error.
-The full first row is retained despite representing a selected entry; this
-matches the source pedagogical shorthand, and does not ask for the full product.
+The raw source first row equates a scalar to the full matrix product. This is
+mathematically imprecise, not a valid scalar equality. Ten practice solutions
+and the canonical example contain it; raw replay retains it as historical,
+ineligible evidence. Normal output wraps the complete matrix product in
+\left(...\right)_{ij}, explicitly selecting its scalar entry before extracting
+the row and column. All five operative stages and shared prose remain. The
+indices are derived from the actual requested cell in every normal record.
 
 ## 3. Components and banks
 

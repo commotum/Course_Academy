@@ -122,11 +122,11 @@ def counts(kp,b,p):
     pool=json.loads((p/'native-pool.json').read_text());ids={e for xs in pool['available_ids_by_level'].values() for e in xs}
     known={r['question'][':question/id']:r for f in OUT.glob('basis-*/generated.json') for r in json.loads(f.read_text())}
     levels={l:[] for l in LEVELS};excluded=[];records=[];fps={l:set() for l in LEVELS}
-    unsafe=set()
+    unsafe={'q-113372','q-113369'}
     for q in kp[':knowledge-point/questions']:
         mid=q.get(':question/math-academy-id')
         if q[':db/id'] not in ids or mid in unsafe:
-            excluded.append({'id':str(q[':question/id']),'source_id':mid,'reason':'documented original domain or answer-bank defect; retained unchanged' if mid in unsafe else 'native pool excludes unrated, ungradable, canonical, shown or reserved'});continue
+            excluded.append({'id':str(q[':question/id']),'source_id':mid,'reason':'documented stale opening formula in source worked solution; preserved unchanged' if mid in unsafe else 'native pool excludes unrated, ungradable, canonical, shown or reserved'});continue
         l=str(q[':question/difficulty'][':db/ident']).split('/')[-1];assert l in LEVELS
         if mid:
             case=next(c for c in g.CASES if c['source_math_academy_id']==mid)
@@ -162,6 +162,11 @@ def finish(p,gid,verified,inv):
     after=verified['available_counts_after'];remaining={l:max(0,5-after['levels'][l]['distinct_available_tasks']) for l in LEVELS}
     prep=json.loads((p/'preparation.json').read_text())
     result={'outcome':'finite-limit' if any(remaining.values()) else 'generated','knowledgePoint':KP,'generator_path':SCRIPT,'generator_id':gid,'lineage':LINEAGE,'verified_commit_basis':verified['basis_after'],'new_questions':verified['new_questions'],'new_by_level':prep['new_by_level'],'supported_levels':list(LEVELS),'observed_levels':['moderate','hard'],'authored_levels':['easy'],'unsupported_levels':[],'unsupported_levels_filled':False,'shortage_remaining':remaining,'available_counts_before':prep['available_counts'],'available_counts_after':after,'capability_exceptions':json.loads((HERE/'capabilities.json').read_text()),'inventory_recheck_basis':inv['basis'],'remaining_jobs':[j for j in inv['jobs'] if j['knowledgePoint']==KP],'evidence':[str(f.relative_to(ROOT)) for f in [p/'verification.json',p/'commit-intent.json',p/'transaction.edn',p/'commit.edn',p/'preview.edn',p/'preparation.json',p/'generated.json',p/'generated.md',p/'inventory-after.json',HERE/'classification.md',HERE/'template-extraction.md',HERE/'validation.json',HERE/'freeze.json',HERE/'reference/native-build.json'] if f.exists()],'note':'Preserves all source and learner facts. Unrated source records remain excluded. Easy uses validated unit-reciprocal translation variants. Requests/receipts and exact-basis readback retained under application api.lock.'}
+    batches=[(folder,json.loads((folder/'verification.json').read_text())) for folder in sorted(OUT.glob('basis-*')) if (folder/'verification.json').exists() and (folder/'commit.edn').exists()]
+    result['verified_commits']=[{'basis_before':v['basis_before'],'basis_after':v['basis_after'],'new_questions':v['new_questions'],'receipt':str((folder/'commit.edn').relative_to(ROOT))} for folder,v in batches]
+    result['new_questions']=sum(v['new_questions'] for _,v in batches)
+    result['new_by_level']={l:sum(json.loads((folder/'preparation.json').read_text())['new_by_level'][l] for folder,_ in batches) for l in LEVELS}
+    result['excluded_source_questions']=['q-113372','q-113369']
     save(p/'outcome.json',result);save(JOB.with_suffix('.result'),result);print(json.dumps({k:result[k] for k in ('outcome','new_questions','verified_commit_basis','shortage_remaining')}),flush=True)
 
 
@@ -180,10 +185,14 @@ def main():
             assert intent['database']=='math' and intent['lineage']==LINEAGE and intent['endpoint']==DB.args.endpoint and intent['source']==SOURCE and intent['sha256']==sha(p/'transaction.edn') and intent['exact_edn']==(p/'transaction.edn').read_text()
             assert intent['connection_sha256']==hashlib.sha256(DB.env['EDB_POSTGRES_URL'].encode()).hexdigest()
             assert inventory(p/'recovery-inventory.json')['lineage']==intent['lineage']
+            if (p/'verification.json').exists() and (p/'commit.edn').exists():
+                verified=json.loads((p/'verification.json').read_text());receipt=loads((p/'commit.edn').read_text())
+                assert verified['passed'] and receipt[':edb/committed'] and receipt[':edb/db-after-t']==verified['basis_after']
+                continue
             verified=verify(p,intent,DB._commit(intent,p/'transaction.edn',p));finish(p,intent['generator_id'],verified,inventory(p/'inventory-after.json'));return
         inv=inventory(OUT/'inventory-before.json');b=inv['basis'];assert DB.basis()==b;p=OUT/('basis-'+str(b));p.mkdir(exist_ok=True);kp=read(p,b)
         captured=loads((OUT/'initial/kp.edn').read_text())[0][0]
-        assert kp==captured,'Source or generator changed; reclassify before writing'
+        assert all(q in kp[':knowledge-point/questions'] for q in captured[':knowledge-point/questions']), 'Source changed; reclassify before writing'
         assert str(kp[':knowledge-point/id'])==g.KP_UUID
         # Compare every frozen source question and answer subtree to the live capture.
         def subset(old,now):

@@ -142,125 +142,129 @@ def normal_check(record):
  rr=g.generate(level,seed=944,template=name,parameters=gen['parameters']);assert rr['question'][':question/id']==q[':question/id'];assert rr['generation']['mathematical_fingerprint']==gen['mathematical_fingerprint']
  return dict(template=name,level=level,displayed_stage_count=len(rows)+len(parts),whole_bank_valid=True)
 
-raw_report=[];cases=[];records=[]
-for name,q in g.Q.items():
- level=g.FAMILIES[name]['level'];case={'source_id':name,'source_db_id':q[':db/id'],'template':name,'level':level,'level_authored':':question/difficulty'not in q,'parameters':{'noise':1},'bank_profile':'observed:'+name};cases.append(case)
- rec=g.generate(level,template=name,parameters=case['parameters'],profile=case['bank_profile']);out=rec['question'];field=out[':question/answer-fields'][0];src=q[':question/answer-fields'][0]
- assert out[':question/problem']==q[':question/problem'];assert out.get(':question/worked-solution')==q.get(':question/worked-solution')
- for k in [':question/difficulty',':question/worked-solution',':question/answer-fields']:assert (k in out)==(k in q)
- assert(':answer-field/correct'in field)==(':answer-field/correct'in src)
- assert sorted(a[':answer/value']for a in field[':answer-field/choices'])==sorted(a[':answer/value']for a in src[':answer-field/choices'])
- # Decoded source values have no adjacent backslash pairs; JSON escaping
- # is not an additional source byte. Public raw values preserve exact bytes.
- assert all(chr(92)*2 not in a[':answer/value'] for a in src[':answer-field/choices'])
- originals=[scalar(a[':answer/value'].replace('\\\\','\\'))for a in src[':answer-field/choices']]
- vals=list(map(s.sympify,g.HISTORICAL[name]));assert all(s.simplify(a-b)==0 for a,b in zip(originals,vals))
- if ':answer-field/correct'in src:
-  chosen=next(a for a in field[':answer-field/choices']if a[':answer/id']==field[':answer-field/correct'][1]);eq(scalar(chosen[':answer/value'].replace('\\\\','\\')),scalar(src[':answer-field/correct'][':answer/value'].replace('\\\\','\\')))
- changed=g.generate(level,template=name,profile=case['bank_profile'],parameters={'noise':2});component=g.FAMILIES[name]['noise'];assert changed['question'][':question/problem']!=q[':question/problem']
- if ':question/worked-solution'in q:
-  assert changed['question'][':question/worked-solution']!=q[':question/worked-solution'];assert changed['question'][':question/worked-solution'].count(('3-{x}^{2}y' if name=='q-126733'else r'2\cdot('+component+')'))==q[':question/worked-solution'].count(component)
- assert changed['generation']['mathematical_fingerprint']==rec['generation']['mathematical_fingerprint']
- P0,Q0=raw_prompt_components(out);P1,Q1=raw_prompt_components(changed['question']);eq(s.diff(Q0,x)-s.diff(P0,y),s.diff(Q1,x)-s.diff(P1,y))
- assert s.simplify(P0-P1)!=0
- pp=g.exact(g.anchor(name));ind=s.simplify((s.diff(Q1,x)-s.diff(P1,y)).subs({x:r*s.cos(th),y:r*s.sin(th)})*r);raw_ans=s.integrate(s.integrate(ind,(r,pp['inner'],s.sqrt(pp['s']))),(th,pp['lo']*s.pi,pp['hi']*s.pi));eq(raw_ans,s.sympify(changed['generation']['answer']))
- raw_report.append({'source_id':name,'prompt_raw_exact':True,'solution_raw_exact_or_absent':True,'bank_values_raw_exact':5,'designation_matched':':answer-field/correct'in src,'key_presence_parity':True,'mathematical_bank_valid':name!='q-126758','source_solution_mathematically_valid':name not in ['q-126736','q-126758'],'noise_readback_all_occurrences':True})
- (HERE/('raw-'+name+'.json')).write_text(json.dumps(rec,ensure_ascii=False,indent=2)+'\n')
-(HERE/'source-cases.json').write_text(json.dumps(cases,indent=2)+'\n')
-checks=[];normal_reports=[]
-for name,f in g.FAMILIES.items():
- # Source family anchors use NORMAL authored bank/repair recipe too.
- rr=g.generate(f['level'],template=name,parameters=g.anchor(name));normal_reports.append(normal_check(rr));records.append(rr)
- for seed in [17,34,81]:
-  rr=g.generate(f['level'],seed,template=name);normal_reports.append(normal_check(rr));records.append(rr)
-for seed in range(30):
+def main():
+ raw_report=[];cases=[];records=[]
+ for name,q in g.Q.items():
+  level=g.FAMILIES[name]['level'];case={'source_id':name,'source_db_id':q[':db/id'],'template':name,'level':level,'level_authored':':question/difficulty'not in q,'parameters':{'noise':1},'bank_profile':'observed:'+name};cases.append(case)
+  rec=g.generate(level,template=name,parameters=case['parameters'],profile=case['bank_profile']);out=rec['question'];field=out[':question/answer-fields'][0];src=q[':question/answer-fields'][0]
+  assert out[':question/problem']==q[':question/problem'];assert out.get(':question/worked-solution')==q.get(':question/worked-solution')
+  for k in [':question/difficulty',':question/worked-solution',':question/answer-fields']:assert (k in out)==(k in q)
+  assert(':answer-field/correct'in field)==(':answer-field/correct'in src)
+  assert sorted(a[':answer/value']for a in field[':answer-field/choices'])==sorted(a[':answer/value']for a in src[':answer-field/choices'])
+  # Decoded source values have no adjacent backslash pairs; JSON escaping
+  # is not an additional source byte. Public raw values preserve exact bytes.
+  assert all(chr(92)*2 not in a[':answer/value'] for a in src[':answer-field/choices'])
+  originals=[scalar(a[':answer/value'].replace('\\\\','\\'))for a in src[':answer-field/choices']]
+  vals=list(map(s.sympify,g.HISTORICAL[name]));assert all(s.simplify(a-b)==0 for a,b in zip(originals,vals))
+  if ':answer-field/correct'in src:
+   chosen=next(a for a in field[':answer-field/choices']if a[':answer/id']==field[':answer-field/correct'][1]);eq(scalar(chosen[':answer/value'].replace('\\\\','\\')),scalar(src[':answer-field/correct'][':answer/value'].replace('\\\\','\\')))
+  changed=g.generate(level,template=name,profile=case['bank_profile'],parameters={'noise':2});component=g.FAMILIES[name]['noise'];assert changed['question'][':question/problem']!=q[':question/problem']
+  if ':question/worked-solution'in q:
+   assert changed['question'][':question/worked-solution']!=q[':question/worked-solution'];assert changed['question'][':question/worked-solution'].count(('3-{x}^{2}y' if name=='q-126733'else r'2\cdot('+component+')'))==q[':question/worked-solution'].count(component)
+  assert changed['generation']['mathematical_fingerprint']==rec['generation']['mathematical_fingerprint']
+  P0,Q0=raw_prompt_components(out);P1,Q1=raw_prompt_components(changed['question']);eq(s.diff(Q0,x)-s.diff(P0,y),s.diff(Q1,x)-s.diff(P1,y))
+  assert s.simplify(P0-P1)!=0
+  pp=g.exact(g.anchor(name));ind=s.simplify((s.diff(Q1,x)-s.diff(P1,y)).subs({x:r*s.cos(th),y:r*s.sin(th)})*r);raw_ans=s.integrate(s.integrate(ind,(r,pp['inner'],s.sqrt(pp['s']))),(th,pp['lo']*s.pi,pp['hi']*s.pi));eq(raw_ans,s.sympify(changed['generation']['answer']))
+  raw_report.append({'source_id':name,'prompt_raw_exact':True,'solution_raw_exact_or_absent':True,'bank_values_raw_exact':5,'designation_matched':':answer-field/correct'in src,'key_presence_parity':True,'mathematical_bank_valid':name!='q-126758','source_solution_mathematically_valid':name not in ['q-126736','q-126758'],'noise_readback_all_occurrences':True})
+  (HERE/('raw-'+name+'.json')).write_text(json.dumps(rec,ensure_ascii=False,indent=2)+'\n')
+ (HERE/'source-cases.json').write_text(json.dumps(cases,indent=2)+'\n')
+ checks=[];normal_reports=[]
+ for name,f in g.FAMILIES.items():
+  # Source family anchors use NORMAL authored bank/repair recipe too.
+  rr=g.generate(f['level'],template=name,parameters=g.anchor(name));normal_reports.append(normal_check(rr));records.append(rr)
+  for seed in [17,34,81]:
+   rr=g.generate(f['level'],seed,template=name);normal_reports.append(normal_check(rr));records.append(rr)
+ for seed in range(30):
+  for level in ['easy','moderate','hard']:
+   rr=g.generate(level,seed);normal_reports.append(normal_check(rr));records.append(rr)
+ # Every normal family is eligible for default sampling.
+ coverage={l:sorted({rr['generation']['template']for rr in records if rr['question'][':question/difficulty'].endswith('/'+l)})for l in ['easy','moderate','hard']}
+ assert all(coverage[l]==sorted(n for n,f in g.FAMILIES.items()if f['level']==l)for l in coverage)
+ # Independent mathematical task variety excludes stationary nuisance scaling.
+ variety={}
  for level in ['easy','moderate','hard']:
-  rr=g.generate(level,seed);normal_reports.append(normal_check(rr));records.append(rr)
-# Every normal family is eligible for default sampling.
-coverage={l:sorted({rr['generation']['template']for rr in records if rr['question'][':question/difficulty'].endswith('/'+l)})for l in ['easy','moderate','hard']}
-assert all(coverage[l]==sorted(n for n,f in g.FAMILIES.items()if f['level']==l)for l in coverage)
-# Independent mathematical task variety excludes stationary nuisance scaling.
-variety={}
-for level in ['easy','moderate','hard']:
- seen=set()
- for name,f in g.FAMILIES.items():
-  if f['level']!=level:continue
-  rng=__import__('random').Random(202)
-  for _ in range(180):
-   p=g.sample(level,name,rng)
-   try:g.bank(f,p,g.answer_value(f,p))
-   except ValueError:continue
-   P,Q,_,_=g.components(name,p);seen.add((s.srepr(s.expand(P-P.subs(y,0))),s.srepr(s.expand(Q-Q.subs(x,0))),*(str(p[k])for k in ['s','inner','lo','hi'])))
- variety[level]=len(seen);assert len(seen)>=(10 if level=='easy'else 35),(level,len(seen))
-# Enumerate the complete bounded mathematical domain, excluding nuisances,
-# equivalent cubic coefficient masks and bank/presentation aliases.
-finite={}
-for level in ['easy','moderate','hard']:
- seen=set();instances=0
- for name,f in g.FAMILIES.items():
-  if f['level']!=level:continue
-  ss=[1,4,9,16,25]if level=='easy'else [1,2,4,9,16,25]if level=='moderate'else[4,9,16,25]
-  angular=[(0,'1/6'),(0,'1/3'),(0,'2/3')]if name=='q-126747'else[(0,'1/2'),('1/2',1),(0,1)]if name=='q-126756'else[(g.anchor(name)['lo'],g.anchor(name)['hi'])]
-  for cc in range(1,5 if level=='easy'else 7):
-   for ss0 in ss:
-    aa=range(1,int(s.sqrt(ss0)))if name=='q-126758'else[0]
-    for aa0 in aa:
-     for ll,hh in angular:
-      p=g.exact(dict(c=cc,s=ss0,inner=aa0,lo=ll,hi=hh))
-      try:g.check_scope(level,name,p);g.bank(f,p,g.answer_value(f,p))
-      except ValueError:continue
-      P,Q,_,_=g.components(name,p);key=(s.srepr(s.expand(P-P.subs(y,0))),s.srepr(s.expand(Q-Q.subs(x,0))),*(str(p[k])for k in ['s','inner','lo','hi']))
-      seen.add(key);instances+=1
- finite[level]={'distinct_assessed_tasks':len(seen),'eligible_template_instances':instances}
-assert {l:v['distinct_assessed_tasks']for l,v in finite.items()}=={'easy':20,'moderate':108,'hard':204}
-# Explicit scope violations are rejected, never resampled into a different task.
-for level,name,p in [('easy','supported_disk',dict(c=5,s=4,inner=0,lo=0,hi=2)),('moderate','q-126733',dict(c=1,s=4,inner=0,lo=0,hi=1)),('hard','q-126758',dict(c=3,s=4,inner=0,lo=0,hi='1/2')),('hard','q-126747',dict(c=1,s=16,inner=0,lo=0,hi='1/5')),('moderate','q-126736',dict(c=2,s=9,inner=0,lo=0,hi=2))]:
- try:g.generate(level,template=name,parameters=p)
- except ValueError:pass
- else:raise AssertionError(('scope was accepted',p))
-# Corrupt a real displayed intermediate while keeping its final answer constant;
-# independent QA must detect it, including structure removed but same value.
-probe=copy.deepcopy(records[0]);probe['question'][':question/problem']+='\f'
-try:normal_check(probe)
-except AssertionError:pass
-else:raise AssertionError('control byte undetected')
-probe=copy.deepcopy(records[0]);probe['question'][':question/worked-solution']=probe['question'][':question/worked-solution'].replace(r'\cos^2\theta+\sin^2\theta',r'\cos^2\theta-\sin^2\theta',1)
-try:normal_check(probe)
-except AssertionError:pass
-else:raise AssertionError('distributed trig corruption undetected')
-probe=copy.deepcopy(records[0]);probe['question'][':question/worked-solution']=probe['question'][':question/worked-solution'].replace(r'r^3(\cos^2\theta+\sin^2\theta)','r^3')
-try:normal_check(probe)
-except AssertionError:pass
-else:raise AssertionError('missing identity stage undetected')
-# Concurrent fresh renders, identical and different instances, retain sidecars.
-ps=[g.exact(dict(c=2,s=16,inner=1,lo=0,hi='1/2')),g.exact(dict(c=2,s=16,inner=1,lo=0,hi='1/2')),g.exact(dict(c=2,s=25,inner=2,lo=0,hi='1/2'))]
-for p in ps:
- data={k:str(p[k])for k in ['s','inner','lo','hi']};data['shaded']=True;data['renderer_revision']=3;key=g.digest(data)
- for suffix in ['.png','.json']:(HERE/'plots'/(key+suffix)).unlink(missing_ok=True)
-with concurrent.futures.ThreadPoolExecutor(max_workers=3)as pool:paths=list(pool.map(lambda p:g.render_plots(p,True),ps))
-assert paths[0]==paths[1]and paths[0]!=paths[2];assert all(Path(z).exists()and Path(z).with_suffix('.json').exists()for z in paths)
-assert not list((HERE/'plots').glob('tmp*'))
-# Real radio grading, every displayed option including rejected wrong entries.
-for i,rec in enumerate(records):
- field=rec['question'][':question/answer-fields'][0];correct=field[':answer-field/correct'][1]
- checks.append({'label':'normal-'+str(i),'record':rec,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted'if a[':answer/id']==correct else'rejected','purpose':'native owned radio option'}for a in field[':answer-field/choices']]})
-for name in g.Q:
- raw=json.loads((HERE/('raw-'+name+'.json')).read_text());field=raw['question'][':question/answer-fields'][0]
- if ':answer-field/correct'not in field:continue
- correct=field[':answer-field/correct'][1]
- checks.append({'label':'historical-evidence-'+name,'record':raw,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted'if a[':answer/id']==correct else'rejected','purpose':'native ID designation only; no mathematical bank validity claim'}for a in field[':answer-field/choices']]})
-input_path=HERE/'engine-input.json';output_path=HERE/'engine-report.json';input_path.write_text(json.dumps(checks,ensure_ascii=False,indent=2)+'\n')
-engine=Path('generate/runs/current/check-engine');proc=subprocess.run([str(engine),str(input_path),str(output_path)],text=True,capture_output=True);assert proc.returncode==0,(proc.stdout,proc.stderr)
-engine_report=json.loads(output_path.read_text())
-# Clearly labeled source evidence and two+ normal changed examples per family.
-review=records[:44]
-(HERE/'review.json').write_text(json.dumps(review,ensure_ascii=False,indent=2)+'\n')
-md=['# Source evidence and generated review','All observed banks are opaque historical evidence; normal examples use authored method banks. Raw anomalous originals remain explicitly ineligible.']
-for name,q in g.Q.items():
- md+=['## Original '+name,q[':question/problem'],'Source bank: '+', '.join('$'+a[':answer/value']+'$'for a in q[':question/answer-fields'][0][':answer-field/choices']),q.get(':question/worked-solution','Original worked solution absent; no original difficulty or correct designation.')]
- for rr in review:
-  if rr['generation']['template']==name:md+=['### Generated '+rr['question'][':question/difficulty']+'; authored method bank',g.markdown(rr)]
-md+=['## Authored missing easy level']+[g.markdown(rr)for rr in review if rr['generation']['template']=='supported_disk']
-(HERE/'review.md').write_text('\n\n'.join(md)+'\n')
-report={'status':'passed_with_explicit_source_defects','source':{k:g.SOURCE[k]for k in ['database','basis','lineage']},'runtime':{'python':sys.version.split()[0],'sympy':s.__version__,'matplotlib':g.matplotlib.__version__},'raw_fidelity':{'questions':10,'prompts_exact':'10/10','all_option_strings_exact':'50/50','complete_banks_exact':'10/10','correct_designations_exact':'9/9 present;1 absent','solutions_exact':'9/9 present;1 absent','attribute_presence_parity':'10/10'},'source_mathematical_validity':{'original_correct_answers':'9/9 designated','inferred_correct_answers':'1/1 missing designation (8pi)','unambiguous_banks':'9/10','duplicate_wrong_pair':'q-126758:90pi/4=45pi/2','correct_original_solutions':'7/9 present','normal_repaired_solutions':'2/2 (q126736 sign; q126758 omitted3)','canonical_solution_repair':'3(x²+y²) replaces3x²+y²'},'normal':{'records_verified':len(records),'source_shaped_templates':10,'authored_easy_templates':1,'coverage':coverage,'sampled_mathematical_tasks':variety,'complete_bounded_domain':finite,'displayed_stage_checks':normal_reports,'native_engine_report':str(output_path),'native_engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'checks_requested':5*len(records)+45,'concurrent_render':True,'formatting_identity_scope':True},'raw_evidence_limitations':['Opaque historical banks preserve expressions but wrong-operation intent is unresolved.','q125717 missing original solution,difficulty andcorrectref; normal designation andhardrouting explicitly authored.','q125717 sqrt{x} has no C1 open neighborhood at x=0; normal sqrt{x+1} repair.','Observed source profiles vary only irrelevant-to-curl univariate noise; no noise counted as new mathematical task.','Raw answer TeX bytes are preserved; decoded source values contain zero adjacent backslash pairs.']}
-(HERE/'validation.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print(json.dumps({k:report[k]for k in ['status','raw_fidelity']},indent=2));print('normal',len(records),'records;',5*len(records),'native checks; tasks',variety)
+  seen=set()
+  for name,f in g.FAMILIES.items():
+   if f['level']!=level:continue
+   rng=__import__('random').Random(202)
+   for _ in range(180):
+    p=g.sample(level,name,rng)
+    try:g.bank(f,p,g.answer_value(f,p))
+    except ValueError:continue
+    P,Q,_,_=g.components(name,p);seen.add((s.srepr(s.expand(P-P.subs(y,0))),s.srepr(s.expand(Q-Q.subs(x,0))),*(str(p[k])for k in ['s','inner','lo','hi'])))
+  variety[level]=len(seen);assert len(seen)>=(10 if level=='easy'else 35),(level,len(seen))
+ # Enumerate the complete bounded mathematical domain, excluding nuisances,
+ # equivalent cubic coefficient masks and bank/presentation aliases.
+ finite={}
+ for level in ['easy','moderate','hard']:
+  seen=set();instances=0
+  for name,f in g.FAMILIES.items():
+   if f['level']!=level:continue
+   ss=[1,4,9,16,25]if level=='easy'else [1,2,4,9,16,25]if level=='moderate'else[4,9,16,25]
+   angular=[(0,'1/6'),(0,'1/3'),(0,'2/3')]if name=='q-126747'else[(0,'1/2'),('1/2',1),(0,1)]if name=='q-126756'else[(g.anchor(name)['lo'],g.anchor(name)['hi'])]
+   for cc in range(1,5 if level=='easy'else 7):
+    for ss0 in ss:
+     aa=range(1,int(s.sqrt(ss0)))if name=='q-126758'else[0]
+     for aa0 in aa:
+      for ll,hh in angular:
+       p=g.exact(dict(c=cc,s=ss0,inner=aa0,lo=ll,hi=hh))
+       try:g.check_scope(level,name,p);g.bank(f,p,g.answer_value(f,p))
+       except ValueError:continue
+       P,Q,_,_=g.components(name,p);key=(s.srepr(s.expand(P-P.subs(y,0))),s.srepr(s.expand(Q-Q.subs(x,0))),*(str(p[k])for k in ['s','inner','lo','hi']))
+       seen.add(key);instances+=1
+  finite[level]={'distinct_assessed_tasks':len(seen),'eligible_template_instances':instances}
+ assert {l:v['distinct_assessed_tasks']for l,v in finite.items()}=={'easy':20,'moderate':108,'hard':204}
+ # Explicit scope violations are rejected, never resampled into a different task.
+ for level,name,p in [('easy','supported_disk',dict(c=5,s=4,inner=0,lo=0,hi=2)),('moderate','q-126733',dict(c=1,s=4,inner=0,lo=0,hi=1)),('hard','q-126758',dict(c=3,s=4,inner=0,lo=0,hi='1/2')),('hard','q-126747',dict(c=1,s=16,inner=0,lo=0,hi='1/5')),('moderate','q-126736',dict(c=2,s=9,inner=0,lo=0,hi=2))]:
+  try:g.generate(level,template=name,parameters=p)
+  except ValueError:pass
+  else:raise AssertionError(('scope was accepted',p))
+ # Corrupt a real displayed intermediate while keeping its final answer constant;
+ # independent QA must detect it, including structure removed but same value.
+ probe=copy.deepcopy(records[0]);probe['question'][':question/problem']+='\f'
+ try:normal_check(probe)
+ except AssertionError:pass
+ else:raise AssertionError('control byte undetected')
+ probe=copy.deepcopy(records[0]);probe['question'][':question/worked-solution']=probe['question'][':question/worked-solution'].replace(r'\cos^2\theta+\sin^2\theta',r'\cos^2\theta-\sin^2\theta',1)
+ try:normal_check(probe)
+ except AssertionError:pass
+ else:raise AssertionError('distributed trig corruption undetected')
+ probe=copy.deepcopy(records[0]);probe['question'][':question/worked-solution']=probe['question'][':question/worked-solution'].replace(r'r^3(\cos^2\theta+\sin^2\theta)','r^3')
+ try:normal_check(probe)
+ except AssertionError:pass
+ else:raise AssertionError('missing identity stage undetected')
+ # Concurrent fresh renders, identical and different instances, retain sidecars.
+ ps=[g.exact(dict(c=2,s=16,inner=1,lo=0,hi='1/2')),g.exact(dict(c=2,s=16,inner=1,lo=0,hi='1/2')),g.exact(dict(c=2,s=25,inner=2,lo=0,hi='1/2'))]
+ for p in ps:
+  data={k:str(p[k])for k in ['s','inner','lo','hi']};data['shaded']=True;data['renderer_revision']=3;key=g.digest(data)
+  for suffix in ['.png','.json']:(HERE/'plots'/(key+suffix)).unlink(missing_ok=True)
+ with concurrent.futures.ThreadPoolExecutor(max_workers=3)as pool:paths=list(pool.map(lambda p:g.render_plots(p,True),ps))
+ assert paths[0]==paths[1]and paths[0]!=paths[2];assert all(Path(z).exists()and Path(z).with_suffix('.json').exists()for z in paths)
+ assert not list((HERE/'plots').glob('tmp*'))
+ # Real radio grading, every displayed option including rejected wrong entries.
+ for i,rec in enumerate(records):
+  field=rec['question'][':question/answer-fields'][0];correct=field[':answer-field/correct'][1]
+  checks.append({'label':'normal-'+str(i),'record':rec,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted'if a[':answer/id']==correct else'rejected','purpose':'native owned radio option'}for a in field[':answer-field/choices']]})
+ for name in g.Q:
+  raw=json.loads((HERE/('raw-'+name+'.json')).read_text());field=raw['question'][':question/answer-fields'][0]
+  if ':answer-field/correct'not in field:continue
+  correct=field[':answer-field/correct'][1]
+  checks.append({'label':'historical-evidence-'+name,'record':raw,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted'if a[':answer/id']==correct else'rejected','purpose':'native ID designation only; no mathematical bank validity claim'}for a in field[':answer-field/choices']]})
+ input_path=HERE/'engine-input.json';output_path=HERE/'engine-report.json';input_path.write_text(json.dumps(checks,ensure_ascii=False,indent=2)+'\n')
+ engine=Path('generate/runs/current/check-engine');proc=subprocess.run([str(engine),str(input_path),str(output_path)],text=True,capture_output=True);assert proc.returncode==0,(proc.stdout,proc.stderr)
+ engine_report=json.loads(output_path.read_text())
+ # Clearly labeled source evidence and two+ normal changed examples per family.
+ review=records[:44]
+ (HERE/'review.json').write_text(json.dumps(review,ensure_ascii=False,indent=2)+'\n')
+ md=['# Source evidence and generated review','All observed banks are opaque historical evidence; normal examples use authored method banks. Raw anomalous originals remain explicitly ineligible.']
+ for name,q in g.Q.items():
+  md+=['## Original '+name,q[':question/problem'],'Source bank: '+', '.join('$'+a[':answer/value']+'$'for a in q[':question/answer-fields'][0][':answer-field/choices']),q.get(':question/worked-solution','Original worked solution absent; no original difficulty or correct designation.')]
+  for rr in review:
+   if rr['generation']['template']==name:md+=['### Generated '+rr['question'][':question/difficulty']+'; authored method bank',g.markdown(rr)]
+ md+=['## Authored missing easy level']+[g.markdown(rr)for rr in review if rr['generation']['template']=='supported_disk']
+ (HERE/'review.md').write_text('\n\n'.join(md)+'\n')
+ report={'status':'passed_with_explicit_source_defects','source':{k:g.SOURCE[k]for k in ['database','basis','lineage']},'runtime':{'python':sys.version.split()[0],'sympy':s.__version__,'matplotlib':g.matplotlib.__version__},'raw_fidelity':{'questions':10,'prompts_exact':'10/10','all_option_strings_exact':'50/50','complete_banks_exact':'10/10','correct_designations_exact':'9/9 present;1 absent','solutions_exact':'9/9 present;1 absent','attribute_presence_parity':'10/10'},'source_mathematical_validity':{'original_correct_answers':'9/9 designated','inferred_correct_answers':'1/1 missing designation (8pi)','unambiguous_banks':'9/10','duplicate_wrong_pair':'q-126758:90pi/4=45pi/2','correct_original_solutions':'7/9 present','normal_repaired_solutions':'2/2 (q126736 sign; q126758 omitted3)','canonical_solution_repair':'3(x²+y²) replaces3x²+y²'},'normal':{'records_verified':len(records),'source_shaped_templates':10,'authored_easy_templates':1,'coverage':coverage,'sampled_mathematical_tasks':variety,'complete_bounded_domain':finite,'displayed_stage_checks':normal_reports,'native_engine_report':str(output_path),'native_engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'checks_requested':5*len(records)+45,'concurrent_render':True,'formatting_identity_scope':True},'raw_evidence_limitations':['Opaque historical banks preserve expressions but wrong-operation intent is unresolved.','q125717 missing original solution,difficulty andcorrectref; normal designation andhardrouting explicitly authored.','q125717 sqrt{x} has no C1 open neighborhood at x=0; normal sqrt{x+1} repair.','Observed source profiles vary only irrelevant-to-curl univariate noise; no noise counted as new mathematical task.','Raw answer TeX bytes are preserved; decoded source values contain zero adjacent backslash pairs.']}
+ (HERE/'validation.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print(json.dumps({k:report[k]for k in ['status','raw_fidelity']},indent=2));print('normal',len(records),'records;',5*len(records),'native checks; tasks',variety)
+
+if __name__ == "__main__":
+ main()
