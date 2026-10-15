@@ -197,7 +197,8 @@ def read_record(record):
   if not equal(scalar(factors[1],loc),s.diff(inner,X)):raise ValueError('Stale printed chain factor')
  if src!='nonMA-17592186490400':
   numerator,denominator=quotient(mainparts[3])
-  if not equal(numerator,c*s.diff(inner,X)) or not equal(denominator,inner):raise ValueError('Changed actual combined numerator or inner-function denominator')
+  expected_num,expected_den=(s.Integer(1),-inner) if family=='tangent-shift' else (c*s.diff(inner,X),inner)
+  if not equal(numerator,expected_num) or not equal(denominator,expected_den):raise ValueError('Changed actual combined numerator or inner-function denominator')
  if main==6:
   canceled=re.findall(r'\\cancel\{([^{}]*(?:\{[^{}]*\}[^{}]*)*)\}',mainparts[4])
   if len(canceled)!=2:raise ValueError('Cancellation operation erased')
@@ -213,6 +214,12 @@ def read_record(record):
  if kind=='tangent':
   for val in re.findall(r'(?<!\$)\$m=(.*?)\$',solution):
    if not equal(scalar(val),target):raise ValueError('Stale slope in shared prose')
+ for v in re.findall(r'(?<!\$)\$\((.*?)\)\$',solution):
+  if point is not None:
+   px,py=v.split(',',1)
+   if not equal(scalar(px),point) or not equal(scalar(py),yp):raise ValueError('Stale supplied point in shared prose')
+ for var,rawfun in re.findall(r'(?<!\$)\$([fg])\(x\)=(.*?)\$',solution):
+  if var!=name or not equal(scalar(rawfun),fun):raise ValueError('Stale actual function in shared prose')
  # Every field is read as a complete mathematical object in the full prompt.
  fields=q[':question/answer-fields'];banks=[]
  for f in fields:
@@ -236,5 +243,17 @@ def read_record(record):
    if any(equal(val,v) for v in vals):raise ValueError('Equivalent complete-bank options')
    vals.append(val)
   if hits!=1:raise ValueError('Not exactly one true answer')
+  if f[':answer-field/type'].endswith('/radio'):
+   scale=s.diff(inner,X);poly=s.Poly(inner,X);degree=poly.degree()
+   if family=='scale-radio':expected_values=[scale/X,scale*s.log(inner),1/s.log(inner),1/X,1/(scale*X)]
+   elif family=='scale-legacy-radio':expected_values=[1/(scale*X),scale/X+1,1/X,1/X+scale,scale/X]
+   elif family=='power-radio':expected_values=[degree*X**(degree-1)*s.log(inner),1/X,degree/X**degree,degree/X,1/X**degree]
+   elif family=='shift-power-radio':expected_values=[degree*X**(degree-1)/inner,degree*(degree-1)/inner,(degree-1)*X*s.log(inner),X/inner,X**(degree-1)/inner]
+   elif family=='tangent-origin':expected_values=[scale*(X-point)+1,scale*(X-point),X-point,X-point+scale,scale*(X-point)+s.log(scale)]
+   elif family in ('tangent-shift','tangent-affine'):expected_values=[-target*X+target*point+yp,-target*X-target*point+yp,target*X-target*point+yp,target*X+yp,-2*target*X+yp]
+   elif family=='tangent-scaled':expected_values=[2*target*X-c/2-s.log(inner.subs(X,point)),2*target*X-2*c+yp,target*X-c,target*X-c+yp,target*X+c]
+   else:raise ValueError('Unknown complete-bank contract')
+   if kind=='tangent':expected_values=[Y-z for z in expected_values]
+   if len(vals)!=len(expected_values) or any(sum(equal(v,z) for z in expected_values)!=1 for v in vals):raise ValueError('Changed complete profile bank')
   banks.append(vals)
  return {'function':fun,'inner':inner,'domain':domain,'point':point,'kind':kind,'target':target,'stages':signatures,'bank':banks[0]}

@@ -58,3 +58,5 @@ Run `.venv/bin/python generate/scratch/17592186092265.py --difficulty all --coun
 `private_readback.py`, `private_scalar.py` and `private_math_format.py` are private frozen dependencies loaded by explicit path. All file SHA-256 hashes are sealed in `frozen-manifest.json` after validation. Any native equivalence gaps are reported in `engine-validation.json` without excluding valid mathematics.
 ''')
 print('Wrote docs3–7 extraction and review artifacts')
+for name in ('README.md','review.md'):
+ with (H/name).open('a') as f:f.write('\n\nNative-equivalence limitation: the frozen engine accepts canonical keys, but broader valid equivalents can return “answer comparison has unresolved domain differences.” This includes the original unreduced radical chain 7/(2 sqrt(7x) sqrt(7x) ln4) on x>0 and logarithm-power rewrites ln4=2ln2, ln8=3ln2, ln9=2ln3. `equivalent-probe-validation.json` records the mathematical expectation separately from the actual grader result. All valid parameters and outputs remain available.\n')

@@ -6,6 +6,7 @@ attributed completions/corrections and same-method bounded variations.
 import sys
 sys.dont_write_bytecode=True
 import argparse,copy,hashlib,importlib.util,itertools,json,random,re,uuid
+from functools import lru_cache
 from pathlib import Path
 try: import sympy as s
 except ImportError:
@@ -53,7 +54,9 @@ def allowed(f):
  'tangent-shift':dict(t=(-5,-3,-2,-1,0,1,2,3,4,5,7,12,20)),
  'tangent-affine':dict(a=(1,2,3,4,5,6),b=(1,2,3,4,5,7),t=t),
  'tangent-scaled':dict(c=(1,2,3,4,5,6,8,12),a=(1,2,3,4,5),t=(1,2,3,4,5,6,8,12))}[f]
-def data(f,p):
+@lru_cache(maxsize=4096)
+def _data(f,items):
+ p=dict(items)
  if set(p)!=set(allowed(f)):raise ValueError('Wrong parameter slots')
  if any(type(v)!=int or v not in allowed(f)[k] for k,v in p.items()):raise ValueError('Outside bounded parameter slots')
  a=p.get('a',1);b=p.get('b',0);n=p.get('n',1);t=p.get('t');c=p.get('c',1)
@@ -77,6 +80,7 @@ def data(f,p):
  target=s.expand(m*(X-point)+yp) if f.startswith('tangent-') else m if f.startswith('slope-') else der
  domain=s.solve_univariate_inequality(inner>0,X,relational=False)
  return dict(inner=s.expand(inner),function=fun,du=du,derivative=der,point=point,yp=yp,m=m,target=target,c=c,domain=domain)
+def data(f,p):return _data(f,tuple(sorted(p.items())))
 def complete_bank(f,p,d):
  # Profiles are chosen BEFORE parameters. Never select a subset of recipes.
  a=p.get('a');n=p.get('n');b=p.get('b');t=p.get('t');u=d['inner'];z=d['target'];m=d['m'];yp=d['yp'];c=d['c']
@@ -94,6 +98,10 @@ def bank_indices(vals,target):
  hits=[i for i,v in enumerate(vals) if equivalent(v,target)]
  if len(hits)!=1:raise ValueError('Whole profile rejected: unique correct answer required')
  return hits[0]
+@lru_cache(maxsize=4096)
+def instance(f,items):
+ d=_data(f,items);values=complete_bank(f,dict(items),d)
+ return d,values,bank_indices(values,d['target'])
 def dfrac(name,variable):return r'\frac{\text{d}'+name+r'}{\text{d}'+variable+'}'
 def fraction(num,den):return r'\frac{'+str(num)+'}{'+str(den)+'}'
 def display(v):return '$$\n'+v+'\n$$'
@@ -111,7 +119,7 @@ def solution_blocks(f,p,d,name):
   elif f=='tangent-scaled':cancel=fraction(r'\cancel{'+str(p['a'])+r'}\cdot '+str(c),r'\cancel{'+str(p['a'])+r'}\cdot x')
   else:cancel=fraction(r'\cancel{'+str(p['a'])+'}',r'\cancel{'+str(p['a'])+'}x')
   rhs.extend([cancel,L(d['derivative'])+'.'])
- else:rhs.append(raw+'.')
+ else:rhs.append((L(d['derivative']) if f=='tangent-shift' else raw)+'.')
  blocks=[first,second,aligned_equal(dx,rhs)]
  if d['point'] is not None:
   pt=L(d['point']);der=L(d['derivative']);ev=lambda e:r'\left.('+e+r')\right|_{x='+pt+'}'
@@ -186,7 +194,7 @@ def generate(level=None,seed=0,template=None,parameters=None,bank_profile=None,s
  rng=random.Random(seed)
  for attempt in range(2000):
   p=copy.deepcopy(parameters) if parameters is not None else {k:rng.choice(v) for k,v in allowed(f).items()}
-  try:d=data(f,p);values=complete_bank(f,p,d);correct=bank_indices(values,d['target'])
+  try:d,values,correct=instance(f,tuple(sorted(p.items())))
   except ValueError:
    if parameters is not None:raise
    continue

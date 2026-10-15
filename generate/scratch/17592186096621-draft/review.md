@@ -4,11 +4,11 @@
 
 If $f(x) = \frac{\cos x}{\ln x}$, find $f^{\prime}(x)$.
 
-$\frac{\ln{\left(x \right)} \sin{\left(x \right)} - \cos{\left(x \right)}}{x \ln{\left(x \right)}^{2}}$
-$\frac{x \ln{\left(x \right)} \sin{\left(x \right)} - \cos{\left(x \right)}}{x \sin^{2}{\left(x \right)}}$
-$\frac{x \ln{\left(x \right)} \cos{\left(x \right)} - \cos{\left(x \right)}}{x \ln{\left(x \right)}^{2}}$
-$\frac{- \ln{\left(x \right)} \sin{\left(x \right)} - \sin{\left(x \right)}}{x \ln{\left(x \right)}^{2}}$
-$\frac{- x \ln{\left(x \right)} \sin{\left(x \right)} - \cos{\left(x \right)}}{x \ln{\left(x \right)}^{2}}$
+$\frac{\sin x\ln x - \cos x}{x\ln^{2} x}$
+$\frac{x\sin x\ln x - \cos x}{x\sin^{2} x}$
+$\frac{x\cos x\ln x - \cos x}{x\ln^{2} x}$
+$\frac{-\sin x\ln x - \sin x}{x\ln^{2} x}$
+$\frac{-x\sin x\ln x - \cos x}{x\ln^{2} x}$
 
 In this case, the expression for $f(x)$ is a quotient $\frac{u(x)}{v(x)}$ with $u(x)=\cos{\left(x \right)}$ and $v(x)=\ln{\left(x \right)}.$
 
@@ -60,11 +60,11 @@ $$
 
 If $f(x) = \frac{x^{2}}{\sin x}$, find $f^{\prime}(x)$.
 
-$\frac{x \left(- x \sin{\left(x \right)} + 2 \cos{\left(x \right)}\right)}{\sin^{2}{\left(x \right)}}$
-$\frac{x \left(\sin{\left(x \right)} - 2 \cos{\left(x \right)}\right)}{\sin{\left(x \right)}}$
-$\frac{- x \cos{\left(x \right)} + 2 \sin{\left(x \right)}}{\sin^{2}{\left(x \right)}}$
-$\frac{x \left(x \cos{\left(x \right)} + 2 \sin{\left(x \right)}\right)}{\sin^{2}{\left(x \right)}}$
-$\frac{x \left(- x \cos{\left(x \right)} + 2 \sin{\left(x \right)}\right)}{\sin^{2}{\left(x \right)}}$
+$(x(2\cos x - x\sin x))/(\sin^{2} x)$
+$(x(\sin x - 2\cos x))/(\sin x)$
+$\frac{2\sin x - x\cos x}{\sin^{2} x}$
+$(x(2\sin x + x\cos x))/(\sin^{2} x)$
+$(x(2\sin x - x\cos x))/(\sin^{2} x)$
 
 In this case, the expression for $f(x)$ is a quotient $\frac{u(x)}{v(x)}$ with $u(x)=x^{2}$ and $v(x)=\sin{\left(x \right)}.$
 
@@ -119,7 +119,7 @@ If a curve $C$ is given by $y=\frac{x}{{e}^{3x}},$ calculate the slope of the ta
 The slope at $x=1$ is
 {{field-1}}.
 
-$- \frac{2}{e^{3}}$
+$-\frac{2}{{e}^{3}}$
 
 In this case, the expression for $y$ is a quotient $\frac{u(x)}{v(x)}$ with $u(x)=x$ and $v(x)={e}^{3x}.$ 
 
@@ -189,30 +189,30 @@ Therefore, the slope of the tangent line at $x=1$ is $\frac{6}{e^{3}}.$
 
 ### {"scale": 1, "target": "\\frac{\\pi}{2}"}
 
-If a curve $C$ is given by $y=\frac{\cosx}{1+\sinx},$ calculate the slope of the tangent line to the curve at the point where $x=\frac{\pi }{2}.$
+If a curve $C$ is given by $y=\frac{\cos x}{1+\sin x},$ calculate the slope of the tangent line to the curve at the point where $x=\frac{\pi }{2}.$
 
 The slope is {{field-1}}.
 
 $- \frac{1}{2}$
 
-In this case, the expression for $y$ is a quotient $\frac{u(x)}{v(x)}$ with $u(x)=\cosx$ and $v(x)=1+\sinx.$ 
+In this case, the expression for $y$ is a quotient $\frac{u(x)}{v(x)}$ with $u(x)=\cos x$ and $v(x)=1+\sin x.$ 
 
 Therefore, we apply the quotient rule as follows:
 
 $$
-\begin{aligned}{f}^{'}(x)&=\frac{u^{\prime}(x)\cdot v(x)-u(x)\cdot v^{\prime}(x)}{[v(x)]^{2}}\\ &=\frac{(\cos{\left(x \right)})^{\prime}\cdot (\sin{\left(x \right)} + 1)-(\cos{\left(x \right)})\cdot (\sin{\left(x \right)} + 1)^{\prime}}{(\sin{\left(x \right)} + 1)^{2}}\\ &=\frac{(-\sinx)(1+\sinx)-(\cosx)\cosx}{(1+\sinx)^{2}}\\ &=\frac{(-\sinx-\sin^{2}x-\cos^{2}x)}{(1+\sinx)^{2}}\\ &=\frac{(-\sinx-(\sin^{2}x+\cos^{2}x))}{(1+\sinx)^{2}}\end{aligned}
+\begin{aligned}{f}^{'}(x)&=\frac{u^{\prime}(x)\cdot v(x)-u(x)\cdot v^{\prime}(x)}{[v(x)]^{2}}\\ &=\frac{(\cos{\left(x \right)})^{\prime}\cdot (\sin{\left(x \right)} + 1)-(\cos{\left(x \right)})\cdot (\sin{\left(x \right)} + 1)^{\prime}}{(\sin{\left(x \right)} + 1)^{2}}\\ &=\frac{(-\sin x)(1+\sin x)-(\cos x)\cos x}{(1+\sin x)^{2}}\\ &=\frac{(-\sin x-\sin ^{2}x-\cos ^{2}x)}{(1+\sin x)^{2}}\\ &=\frac{(-\sin x-(\sin ^{2}x+\cos ^{2}x))}{(1+\sin x)^{2}}\end{aligned}
 $$
 
- Since $\sin^{2}x+\cos^{2}x=1$, we have
+ Since $\sin ^{2}x+\cos ^{2}x=1$, we have
 
 $$
-\begin{aligned}{f}^{'}(x)&=\frac{(-\sinx-1)}{(1+\sinx)^{2}}\\ &=\frac{-(1+\sinx)}{(1+\sinx)^{2}}\\ &=-\frac{1}{1+\sinx}.\end{aligned}
+\begin{aligned}{f}^{'}(x)&=\frac{(-\sin x-1)}{(1+\sin x)^{2}}\\ &=\frac{-(1+\sin x)}{(1+\sin x)^{2}}\\ &=-\frac{1}{1+\sin x}.\end{aligned}
 $$
 
 To find the slope of the tangent line, we now substitute $x=\frac{\pi }{2}$ into the formula and get
 
 $$
-\begin{aligned}{f}^{'}(\frac{\pi }{2})&=-\frac{1}{1+\sin(\frac{\pi }{2})}\\ &=-\frac{1}{1+1}\\ &=-\frac{1}{2}.\end{aligned}
+\begin{aligned}{f}^{'}(\frac{\pi }{2})&=-\frac{1}{1+\sin (\frac{\pi }{2})}\\ &=-\frac{1}{1+1}\\ &=-\frac{1}{2}.\end{aligned}
 $$
 
 Therefore, the slope of the tangent line is $-\frac{1}{2}.$
@@ -290,21 +290,26 @@ $\frac{\text{d}}{\text{d}x}(\frac{f}{h})\,=$
                             
                                         {{field-1}}
 
-$\frac{\left(- \sin{\left(x \right)} + \cos{\left(x \right)}\right) e^{x}}{8 \sin^{2}{\left(x \right)}}$
+$\frac{{e}^{x}(\cos x-\sin x)}{8\sin ^{2}x}$
 
-Recall that $f(x)=\frac{1}{2}{e}^{x}$ and $h(x)=-4\sinx.$
+Recall that $f(x)=\frac{1}{2}{e}^{x}$ and $h(x)=-4\sin x.$
 
 We apply the quotient rule, as follows:
 
 $$
-\begin{aligned}\frac{\text{d}}{\text{d}x}(\frac{f}{h})&=\frac{u^{\prime}(x)\cdot v(x)-u(x)\cdot v^{\prime}(x)}{[v(x)]^{2}}\\ &=\frac{(\frac{e^{x}}{2})^{\prime}\cdot (- 4 \sin{\left(x \right)})-(\frac{e^{x}}{2})\cdot (- 4 \sin{\left(x \right)})^{\prime}}{(- 4 \sin{\left(x \right)})^{2}}\\ &=\frac{(\frac{1}{2}{e}^{x})\cdot (-4\sinx)-(\frac{1}{2}{e}^{x})\cdot (-4\cosx)}{16\sin^{2}x}\\ &=\frac{2{e}^{x}(\cosx-\sinx)}{16\sin^{2}x}\\ &=\frac{{e}^{x}(\cosx-\sinx)}{8\sin^{2}x}\end{aligned}
+\begin{aligned}\frac{\text{d}}{\text{d}x}(\frac{f}{h})&=\frac{u^{\prime}(x)\cdot v(x)-u(x)\cdot v^{\prime}(x)}{[v(x)]^{2}}\\ &=\frac{(\frac{e^{x}}{2})^{\prime}\cdot (- 4 \sin{\left(x \right)})-(\frac{e^{x}}{2})\cdot (- 4 \sin{\left(x \right)})^{\prime}}{(- 4 \sin{\left(x \right)})^{2}}\\ &=\frac{(\frac{1}{2}{e}^{x})\cdot (-4\sin x)-(\frac{1}{2}{e}^{x})\cdot (-4\cos x)}{16\sin ^{2}x}\\ &=\frac{2{e}^{x}(\cos x-\sin x)}{16\sin ^{2}x}\\ &=\frac{{e}^{x}(\cos x-\sin x)}{8\sin ^{2}x}\end{aligned}
 $$
 
 ### {"scale": 2}
 
-If $f(x)=\frac{e^{x}}{- 4 \sin{\left(x \right)}}$, find $f^{\prime}(x)$ wherever the original quotient is defined.
+Given $f(x)=e^{x}$ and $h(x)=- 4 \sin{\left(x \right)}.$
 
-$f^{\prime}(x)=$ {{field-1}}.
+$\frac{\text{d}}{\text{d}x}(\frac{f}{h})\,=$
+
+                            
+                                    
+                            
+                                        {{field-1}}
 
 $\frac{\left(- \sin{\left(x \right)} + \cos{\left(x \right)}\right) e^{x}}{4 \sin^{2}{\left(x \right)}}$
 
@@ -318,9 +323,14 @@ $$
 
 ### {"scale": -3}
 
-If $f(x)=\frac{- \frac{3 e^{x}}{2}}{- 4 \sin{\left(x \right)}}$, find $f^{\prime}(x)$ wherever the original quotient is defined.
+Given $f(x)=- \frac{3 e^{x}}{2}$ and $h(x)=- 4 \sin{\left(x \right)}.$
 
-$f^{\prime}(x)=$ {{field-1}}.
+$\frac{\text{d}}{\text{d}x}(\frac{f}{h})\,=$
+
+                            
+                                    
+                            
+                                        {{field-1}}
 
 $- \frac{3 \left(- \sin{\left(x \right)} + \cos{\left(x \right)}\right) e^{x}}{8 \sin^{2}{\left(x \right)}}$
 
@@ -338,27 +348,27 @@ $$
 
 Given $f(x)=\frac{e^{x}}{2}$ and $h(x)=- 4 \sin{\left(x \right)}$, calculate $\frac{\mathrm{d}}{\mathrm{d}x}(\frac{f}{h})$.
 
-| $\frac{\mathrm{d}}{\mathrm{d}x}(\frac{f}{h})=$ | $\frac{e^{x}}{8}($ {{field-1}} $)$ |
+| $\frac{\mathrm{d}}{\mathrm{d}x}(\frac{f}{h})=$ | $e^{x}($ {{field-1}} $)$ |
 | --- | --- |
-|  | $\sin^2 x$ |
+|  | $8\sin^2 x$ |
 
-$- \sin{\left(x \right)} + \cos{\left(x \right)}$
+$\cos (x)-\sin (x)$
 
-Recall that $f(x)=\frac{1}{2}{e}^{x}$ and $h(x)=-4\sin(x).$
+Recall that $f(x)=\frac{1}{2}{e}^{x}$ and $h(x)=-4\sin (x).$
 
 We apply the quotient rule, as follows:
 
 $$
-\begin{aligned}\frac{\text{d}}{\text{d}x}(\frac{f}{h})&=\frac{u^{\prime}(x)\cdot v(x)-u(x)\cdot v^{\prime}(x)}{[v(x)]^{2}}\\ &=\frac{(\frac{e^{x}}{2})^{\prime}\cdot (- 4 \sin{\left(x \right)})-(\frac{e^{x}}{2})\cdot (- 4 \sin{\left(x \right)})^{\prime}}{(- 4 \sin{\left(x \right)})^{2}}\\ &=\frac{(\frac{1}{2}{e}^{x})\cdot (-4\sin(x))-(\frac{1}{2}{e}^{x})\cdot (-4\cos(x))}{16\sin^{2}(x)}\\ &=\frac{2{e}^{x}(\cos(x)-\sin(x))}{16\sin^{2}(x)}\\ &=\frac{{e}^{x}(\cos(x)-\sin(x))}{8\sin^{2}(x)}\end{aligned}
+\begin{aligned}\frac{\text{d}}{\text{d}x}(\frac{f}{h})&=\frac{u^{\prime}(x)\cdot v(x)-u(x)\cdot v^{\prime}(x)}{[v(x)]^{2}}\\ &=\frac{(\frac{e^{x}}{2})^{\prime}\cdot (- 4 \sin{\left(x \right)})-(\frac{e^{x}}{2})\cdot (- 4 \sin{\left(x \right)})^{\prime}}{(- 4 \sin{\left(x \right)})^{2}}\\ &=\frac{(\frac{1}{2}{e}^{x})\cdot (-4\sin (x))-(\frac{1}{2}{e}^{x})\cdot (-4\cos (x))}{16\sin ^{2}(x)}\\ &=\frac{2{e}^{x}(\cos (x)-\sin (x))}{16\sin ^{2}(x)}\\ &=\frac{{e}^{x}(\cos (x)-\sin (x))}{8\sin ^{2}(x)}\end{aligned}
 $$
 
 ### {"scale": 2}
 
 Given $f(x)=e^{x}$ and $h(x)=- 4 \sin{\left(x \right)}$, calculate $\frac{\mathrm{d}}{\mathrm{d}x}(\frac{f}{h})$.
 
-| $\frac{\mathrm{d}}{\mathrm{d}x}(\frac{f}{h})=$ | $\frac{e^{x}}{4}($ {{field-1}} $)$ |
+| $\frac{\mathrm{d}}{\mathrm{d}x}(\frac{f}{h})=$ | $2 e^{x}($ {{field-1}} $)$ |
 | --- | --- |
-|  | $\sin^2 x$ |
+|  | $8\sin^2 x$ |
 
 $- \sin{\left(x \right)} + \cos{\left(x \right)}$
 
@@ -374,9 +384,9 @@ $$
 
 Given $f(x)=- \frac{3 e^{x}}{2}$ and $h(x)=- 4 \sin{\left(x \right)}$, calculate $\frac{\mathrm{d}}{\mathrm{d}x}(\frac{f}{h})$.
 
-| $\frac{\mathrm{d}}{\mathrm{d}x}(\frac{f}{h})=$ | $- \frac{3 e^{x}}{8}($ {{field-1}} $)$ |
+| $\frac{\mathrm{d}}{\mathrm{d}x}(\frac{f}{h})=$ | $- 3 e^{x}($ {{field-1}} $)$ |
 | --- | --- |
-|  | $\sin^2 x$ |
+|  | $8\sin^2 x$ |
 
 $- \sin{\left(x \right)} + \cos{\left(x \right)}$
 
@@ -394,11 +404,11 @@ $$
 
 If $f(x)=\frac{\cos x}{10{x}^{2}},$ find ${f}^{\prime}(x).$
 
-$\frac{\sin{\left(x \right)} - \cos{\left(x \right)}}{10 x^{3}}$
-$\frac{x \sin{\left(x \right)} - 2 \cos{\left(x \right)}}{10 x^{4}}$
-$\frac{x^{2} \sin{\left(x \right)} - 2 \cos{\left(x \right)}}{10 x^{3}}$
-$\frac{\sin{\left(x \right)} - 2 \cos{\left(x \right)}}{10 x^{3}}$
-$\frac{- x \sin{\left(x \right)} - 2 \cos{\left(x \right)}}{10 x^{3}}$
+$\frac{\sin x-\cos x}{10{x}^{3}}$
+$\frac{xsinx-2\cos x}{10{x}^{4}}$
+$\frac{{x}^{2}\sin x-2\cos x}{10{x}^{3}}$
+$\frac{\sin x-2\cos x}{10{x}^{3}}$
+$\frac{-xsinx-2\cos x}{10{x}^{3}}$
 
 In this case, the expression for $f(x)$ is a quotient $\frac{u(x)}{v(x)}$ with $u(x)=\cos x$ and $v(x)=10{x}^{2}.$ 
 
@@ -453,14 +463,14 @@ If $f(x)=\frac{\tan x}{x}$,  find ${f}^{\prime}(x).$
 ${f}^{\prime}(x)=$
 {{field-1}}
 
-$\frac{x \tan^{2}{\left(x \right)} + x - \tan{\left(x \right)}}{x^{2}}$
+$\frac{x\sec ^{2}x-\tan x}{{x}^{2}}$
 
 In this case, the expression for $f(x)$ is a quotient $\frac{u(x)}{v(x)}$ with $u(x)=\tan x$ and $v(x)=x.$ 
 
 Therefore, we apply the quotient rule as follows:
 
 $$
-\begin{aligned}{f}^{\prime}(x)&=\frac{u^{\prime}(x)\cdot v(x)-u(x)\cdot v^{\prime}(x)}{[v(x)]^{2}}\\ &=\frac{(\tan{\left(x \right)})^{\prime}\cdot (x)-(\tan{\left(x \right)})\cdot (x)^{\prime}}{(x)^{2}}\\ &=\frac{\sec^{2}x\cdot x-\tan x\cdot 1}{{x}^{2}}\\ &=\frac{x\sec^{2}x-\tan x}{{x}^{2}}\end{aligned}
+\begin{aligned}{f}^{\prime}(x)&=\frac{u^{\prime}(x)\cdot v(x)-u(x)\cdot v^{\prime}(x)}{[v(x)]^{2}}\\ &=\frac{(\tan{\left(x \right)})^{\prime}\cdot (x)-(\tan{\left(x \right)})\cdot (x)^{\prime}}{(x)^{2}}\\ &=\frac{\sec ^{2}x\cdot x-\tan x\cdot 1}{{x}^{2}}\\ &=\frac{x\sec ^{2}x-\tan x}{{x}^{2}}\end{aligned}
 $$
 
 ### {"scale": 2}
@@ -469,7 +479,7 @@ If $f(x)=\frac{2 \tan{\left(x \right)}}{x}$, find $f^{\prime}(x)$ wherever the o
 
 $f^{\prime}(x)=$ {{field-1}}.
 
-$\frac{2 \left(x \tan^{2}{\left(x \right)} + x - \tan{\left(x \right)}\right)}{x^{2}}$
+$\frac{2 \left(x \sec^{2}{\left(x \right)} - \tan{\left(x \right)}\right)}{x^{2}}$
 
 In this case, the expression for $f(x)$ is a quotient $\frac{u(x)}{v(x)}$ with $u(x)=2 \tan{\left(x \right)}$ and $v(x)=x.$
 
@@ -485,7 +495,7 @@ If $f(x)=\frac{- 3 \tan{\left(x \right)}}{x}$, find $f^{\prime}(x)$ wherever the
 
 $f^{\prime}(x)=$ {{field-1}}.
 
-$- \frac{3 \left(x \tan^{2}{\left(x \right)} + x - \tan{\left(x \right)}\right)}{x^{2}}$
+$- \frac{3 \left(x \sec^{2}{\left(x \right)} - \tan{\left(x \right)}\right)}{x^{2}}$
 
 In this case, the expression for $f(x)$ is a quotient $\frac{u(x)}{v(x)}$ with $u(x)=- 3 \tan{\left(x \right)}$ and $v(x)=x.$
 
@@ -504,14 +514,14 @@ If $f(x)=\frac{x}{\sin x},$ find ${f}^{\prime}(x).$
 ${f}^{\prime}(x)=$
 {{field-1}}
 
-$- \frac{x \cos{\left(x \right)} - \sin{\left(x \right)}}{\sin^{2}{\left(x \right)}}$
+$\frac{\sin x-x\cos x}{\sin ^{2}x}$
 
 In this case, the expression for $f(x)$ is a quotient $\frac{u(x)}{v(x)}$ with $u(x)=x$ and $v(x)=\sin x.$ 
 
 Therefore, we apply the quotient rule as follows:
 
 $$
-\begin{aligned}{f}^{\prime}(x)&=\frac{u^{\prime}(x)\cdot v(x)-u(x)\cdot v^{\prime}(x)}{[v(x)]^{2}}\\ &=\frac{(x)^{\prime}\cdot (\sin{\left(x \right)})-(x)\cdot (\sin{\left(x \right)})^{\prime}}{(\sin{\left(x \right)})^{2}}\\ &=\frac{1\cdot \sin x-x\cdot \cos x}{\sin^{2}x}\\ &=\frac{\sin x-xcosx}{\sin^{2}x}\end{aligned}
+\begin{aligned}{f}^{\prime}(x)&=\frac{u^{\prime}(x)\cdot v(x)-u(x)\cdot v^{\prime}(x)}{[v(x)]^{2}}\\ &=\frac{(x)^{\prime}\cdot (\sin{\left(x \right)})-(x)\cdot (\sin{\left(x \right)})^{\prime}}{(\sin{\left(x \right)})^{2}}\\ &=\frac{1\cdot \sin x-x\cdot \cos x}{\sin ^{2}x}\\ &=\frac{\sin x-xcosx}{\sin ^{2}x}\end{aligned}
 $$
 
 ### {"scale": 2}
@@ -520,7 +530,7 @@ If $f(x)=\frac{2 x}{\sin{\left(x \right)}}$, find $f^{\prime}(x)$ wherever the o
 
 $f^{\prime}(x)=$ {{field-1}}.
 
-$- \frac{2 \left(x \cos{\left(x \right)} - \sin{\left(x \right)}\right)}{\sin^{2}{\left(x \right)}}$
+$\frac{2 \left(- x \cos{\left(x \right)} + \sin{\left(x \right)}\right)}{\sin^{2}{\left(x \right)}}$
 
 In this case, the expression for $f(x)$ is a quotient $\frac{u(x)}{v(x)}$ with $u(x)=2 x$ and $v(x)=\sin{\left(x \right)}.$
 
@@ -536,7 +546,7 @@ If $f(x)=\frac{- 3 x}{\sin{\left(x \right)}}$, find $f^{\prime}(x)$ wherever the
 
 $f^{\prime}(x)=$ {{field-1}}.
 
-$\frac{3 \left(x \cos{\left(x \right)} - \sin{\left(x \right)}\right)}{\sin^{2}{\left(x \right)}}$
+$- \frac{3 \left(- x \cos{\left(x \right)} + \sin{\left(x \right)}\right)}{\sin^{2}{\left(x \right)}}$
 
 In this case, the expression for $f(x)$ is a quotient $\frac{u(x)}{v(x)}$ with $u(x)=- 3 x$ and $v(x)=\sin{\left(x \right)}.$
 
@@ -555,23 +565,23 @@ If a curve $C$ is given by $y=\frac{{2}^{x}}{{x}^{2}-1},$ calculate the slope of
 The slope at $x=0$ is
 {{field-1}}.
 
-$- \ln{\left(2 \right)}$
+$-\ln 2$
 
 In this case, the expression for $y$ is a quotient $\frac{u(x)}{v(x)}$ with $u(x)={2}^{x}$ and $v(x)={x}^{2}-1.$ 
 
 Therefore, we apply the quotient rule as follows:
 
 $$
-\begin{aligned}{f}^{\prime}(x)&=\frac{u^{\prime}(x)\cdot v(x)-u(x)\cdot v^{\prime}(x)}{[v(x)]^{2}}\\ &=\frac{(2^{x})^{\prime}\cdot (x^{2} - 1)-(2^{x})\cdot (x^{2} - 1)^{\prime}}{(x^{2} - 1)^{2}}\\ &=\frac{{2}^{x}\ln2\cdot ({x}^{2}-1)-{2}^{x}\cdot 2x}{{({x}^{2}-1)}^{2}}\\ &=\frac{{2}^{x}[({x}^{2}-1)\ln2-2x]}{{({x}^{2}-1)}^{2}}\end{aligned}
+\begin{aligned}{f}^{\prime}(x)&=\frac{u^{\prime}(x)\cdot v(x)-u(x)\cdot v^{\prime}(x)}{[v(x)]^{2}}\\ &=\frac{(2^{x})^{\prime}\cdot (x^{2} - 1)-(2^{x})\cdot (x^{2} - 1)^{\prime}}{(x^{2} - 1)^{2}}\\ &=\frac{{2}^{x}\ln 2\cdot ({x}^{2}-1)-{2}^{x}\cdot 2x}{{({x}^{2}-1)}^{2}}\\ &=\frac{{2}^{x}[({x}^{2}-1)\ln 2-2x]}{{({x}^{2}-1)}^{2}}\end{aligned}
 $$
 
 To find the slope of the tangent line, we now substitute $x=0$ into the formula and get
 
 $$
-\begin{aligned}{f}^{\prime}\,(0)&=\frac{{2}^{0}[({0}^{2}-1)\ln2-2(0)]}{{({0}^{2}-1)}^{2}}\\ &=\frac{-\ln2}{1}\\ &=-\ln2.\end{aligned}
+\begin{aligned}{f}^{\prime}\,(0)&=\frac{{2}^{0}[({0}^{2}-1)\ln 2-2(0)]}{{({0}^{2}-1)}^{2}}\\ &=\frac{-\ln 2}{1}\\ &=-\ln 2.\end{aligned}
 $$
 
-Therefore, the slope of the tangent line at $x=0$ is $-\ln2.$
+Therefore, the slope of the tangent line at $x=0$ is $-\ln 2.$
 
 ### {"scale": 2, "target": "0"}
 
@@ -627,18 +637,18 @@ Therefore, the slope of the tangent line at $x=0$ is $\ln{\left(8 \right)}.$
 
 If $f(x)=\frac{{e}^{x}}{\cos x},$ find ${f}^{\prime}(x).$
 
-$\frac{e^{x} \sin{\left(x \right)} - \cos{\left(x \right)}}{\cos^{2}{\left(x \right)}}$
-$\frac{\left(\sin{\left(x \right)} + \cos{\left(x \right)}\right) e^{x}}{\cos^{2}{\left(x \right)}}$
-$\frac{e^{x} \sin{\left(x \right)} - \cos{\left(x \right)}}{\sin^{2}{\left(x \right)}}$
-$\frac{\left(\sin{\left(x \right)} - \cos{\left(x \right)}\right) e^{x}}{\cos^{2}{\left(x \right)}}$
-$\frac{\left(\sin{\left(x \right)} - \cos{\left(x \right)}\right) e^{x}}{\cos{\left(x \right)}}$
+$\frac{{e}^{x}\sin x-\cos x}{\cos ^{2}x}$
+$\frac{{e}^{x}(\cos x+\sin x)}{\cos ^{2}x}$
+$\frac{{e}^{x}\sin x-\cos x}{\sin ^{2}x}$
+$\frac{{e}^{x}(\sin x-\cos x)}{\cos ^{2}x}$
+$\frac{{e}^{x}(\sin x-\cos x)}{\cos x}$
 
 In this case, the expression for $f(x)$ is a quotient $\frac{u(x)}{v(x)}$ with $u(x)={e}^{x}$ and $v(x)=\cos x.$ 
 
 Therefore, we apply the quotient rule as follows:
 
 $$
-\begin{aligned}{f}^{\prime}(x)&=\frac{u^{\prime}(x)\cdot v(x)-u(x)\cdot v^{\prime}(x)}{[v(x)]^{2}}\\ &=\frac{(e^{x})^{\prime}\cdot (\cos{\left(x \right)})-(e^{x})\cdot (\cos{\left(x \right)})^{\prime}}{(\cos{\left(x \right)})^{2}}\\ &=\frac{{e}^{x}\cos x+{e}^{x}\sin x}{(\cos x)^{2}}\\ &=\frac{{e}^{x}(\cos x+\sin x)}{\cos^{2}x}\end{aligned}
+\begin{aligned}{f}^{\prime}(x)&=\frac{u^{\prime}(x)\cdot v(x)-u(x)\cdot v^{\prime}(x)}{[v(x)]^{2}}\\ &=\frac{(e^{x})^{\prime}\cdot (\cos{\left(x \right)})-(e^{x})\cdot (\cos{\left(x \right)})^{\prime}}{(\cos{\left(x \right)})^{2}}\\ &=\frac{{e}^{x}\cos x+{e}^{x}\sin x}{(\cos x)^{2}}\\ &=\frac{{e}^{x}(\cos x+\sin x)}{\cos ^{2}x}\end{aligned}
 $$
 
 ### {"scale": 2}
@@ -683,11 +693,11 @@ $$
 
 If $f(x)=\frac{\sin x}{{x}^{2}},$ find ${f}^{\prime}(x).$
 
-$\frac{x \cos{\left(x \right)} - 2 \sin{\left(x \right)}}{x^{3}}$
-$\frac{- 2 x \sin{\left(x \right)} + \cos{\left(x \right)}}{x^{4}}$
-$\frac{x \cos{\left(x \right)} + 2 \sin{\left(x \right)}}{x^{3}}$
-$\frac{x \sin{\left(x \right)} - 2 \cos{\left(x \right)}}{x^{4}}$
-$\frac{- x \sin{\left(x \right)} + 2 x \cos{\left(x \right)}}{x^{3}}$
+$\frac{xcosx-2\sin x}{{x}^{3}}$
+$\frac{\cos x-2xsinx}{{x}^{4}}$
+$\frac{xcosx+2\sin x}{{x}^{3}}$
+$\frac{xsinx-2\cos x}{{x}^{4}}$
+$\frac{2xcosx-xsinx}{{x}^{3}}$
 
 In this case, the expression for $f(x)$ is a quotient $\frac{u(x)}{v(x)}$ with $u(x)=\sin x$ and $v(x)={x}^{2}.$ 
 
@@ -737,7 +747,7 @@ $$
 
 ### {"scale": 1, "target": "e"}
 
-If a curve $C$ is given by $y=\frac{{x}^{2}}{\ln(x)},$ calculate the slope of the tangent line to the curve at the point where $x=e.$
+If a curve $C$ is given by $y=\frac{{x}^{2}}{\ln (x)},$ calculate the slope of the tangent line to the curve at the point where $x=e.$
 
 $\frac{2}{3}$
 $\frac{1}{4}$
@@ -750,13 +760,13 @@ In this case, the expression for $y$ is a quotient $\frac{u(x)}{v(x)}$ with $u(x
 Therefore, we apply the quotient rule as follows:
 
 $$
-\begin{aligned}{f}^{\prime}(x)&=\frac{u^{\prime}(x)\cdot v(x)-u(x)\cdot v^{\prime}(x)}{[v(x)]^{2}}\\ &=\frac{(x^{2})^{\prime}\cdot (\ln{\left(x \right)})-(x^{2})\cdot (\ln{\left(x \right)})^{\prime}}{(\ln{\left(x \right)})^{2}}\\ &=\frac{2x\cdot \ln(x)-{x}^{2}\cdot (\frac{1}{x})}{{(\ln(x))}^{2}}\\ &=\frac{2x\cdot \ln(x)-x}{\ln^{2}(x)}\\ &=\frac{x(2\ln(x)-1)}{\ln^{2}(x)}\end{aligned}
+\begin{aligned}{f}^{\prime}(x)&=\frac{u^{\prime}(x)\cdot v(x)-u(x)\cdot v^{\prime}(x)}{[v(x)]^{2}}\\ &=\frac{(x^{2})^{\prime}\cdot (\ln{\left(x \right)})-(x^{2})\cdot (\ln{\left(x \right)})^{\prime}}{(\ln{\left(x \right)})^{2}}\\ &=\frac{2x\cdot \ln (x)-{x}^{2}\cdot (\frac{1}{x})}{{(\ln (x))}^{2}}\\ &=\frac{2x\cdot \ln (x)-x}{\ln ^{2}(x)}\\ &=\frac{x(2\ln (x)-1)}{\ln ^{2}(x)}\end{aligned}
 $$
 
 To find the slope of the tangent line, we now substitute $x=e$ into the formula and get
 
 $$
-\begin{aligned}{f}^{\prime}(e)&=\frac{e(2\ln(e)-1)}{\ln^{2}(e)}\\ &=\frac{e(2-1)}{{1}^{2}}\\ &=e.\end{aligned}
+\begin{aligned}{f}^{\prime}(e)&=\frac{e(2\ln (e)-1)}{\ln ^{2}(e)}\\ &=\frac{e(2-1)}{{1}^{2}}\\ &=e.\end{aligned}
 $$
 
 Therefore, the slope of the tangent line is $e.$
@@ -819,11 +829,11 @@ Therefore, the slope of the tangent line is $- 3 e.$
 
 If a curve $C$ is given by $y=\frac{\sin x}{2x},$ calculate the slope of the tangent line to the curve at the point where $x=\pi .$
 
-$2 \pi$
-$- \pi$
-$\frac{1}{4 \pi}$
-$- \frac{1}{2 \pi}$
-$- \frac{1}{2}$
+$2\pi$
+$-\pi$
+$\frac{1}{4\pi }$
+$-\frac{1}{2\pi }$
+$-\frac{1}{2}$
 
 In this case, the expression for $y$ is a quotient $\frac{u(x)}{v(x)}$ with $u(x)=\sin x$ and $v(x)=2x.$ 
 
@@ -836,7 +846,7 @@ $$
 To find the slope of the tangent line, we now substitute $x=\pi$ into the formula and get
 
 $$
-\begin{aligned}{f}^{\prime}(\pi )&=\frac{\pi \cos(\pi )-\sin(\pi )}{2(\pi )^{2}}\\ &=\frac{\pi (-1)-(0)}{2{\pi }^{2}}\\ &=-\frac{\pi }{2{\pi }^{2}}\\ &=-\frac{1}{2\pi }.\end{aligned}
+\begin{aligned}{f}^{\prime}(\pi )&=\frac{\pi \cos (\pi )-\sin (\pi )}{2(\pi )^{2}}\\ &=\frac{\pi (-1)-(0)}{2{\pi }^{2}}\\ &=-\frac{\pi }{2{\pi }^{2}}\\ &=-\frac{1}{2\pi }.\end{aligned}
 $$
 
 Therefore, the slope of the tangent line is $-\frac{1}{2\pi }.$
@@ -901,21 +911,21 @@ Given $f(x)=\frac{e^{x}}{2}$ and $h(x)=- 4 \sin{\left(x \right)}.$
 
 $\frac{\text{d}}{\text{d}x}(\frac{f}{h})\,=${{field-1}}
 
-$\frac{\left(- \sin{\left(x \right)} + \cos{\left(x \right)}\right) e^{x}}{8 \sin^{2}{\left(x \right)}}$
+$\frac{e^x(\cos x-\sin x)}{8\sin^2 x}$
 
-Recall that $f(x)=\frac{1}{2}{e}^{x}$ and $h(x)=-4\sinx.$
+Recall that $f(x)=\frac{1}{2}{e}^{x}$ and $h(x)=-4\sin x.$
 
 We apply the quotient rule, as follows:
 
 $$
-\begin{aligned}\frac{\text{d}}{\text{d}x}(\frac{f}{h})&=\frac{u^{\prime}(x)\cdot v(x)-u(x)\cdot v^{\prime}(x)}{[v(x)]^{2}}\\ &=\frac{(\frac{e^{x}}{2})^{\prime}\cdot (- 4 \sin{\left(x \right)})-(\frac{e^{x}}{2})\cdot (- 4 \sin{\left(x \right)})^{\prime}}{(- 4 \sin{\left(x \right)})^{2}}\\ &=\frac{(\frac{1}{2}{e}^{x})\cdot (-4\sinx)-(\frac{1}{2}{e}^{x})\cdot (-4\cosx)}{16\sin^{2}x}\\ &=\frac{2{e}^{x}(\cosx-\sinx)}{16\sin^{2}x}\\ &=\frac{{e}^{x}(\cosx-\sinx)}{8\sin^{2}x}\end{aligned}
+\begin{aligned}\frac{\text{d}}{\text{d}x}(\frac{f}{h})&=\frac{u^{\prime}(x)\cdot v(x)-u(x)\cdot v^{\prime}(x)}{[v(x)]^{2}}\\ &=\frac{(\frac{e^{x}}{2})^{\prime}\cdot (- 4 \sin{\left(x \right)})-(\frac{e^{x}}{2})\cdot (- 4 \sin{\left(x \right)})^{\prime}}{(- 4 \sin{\left(x \right)})^{2}}\\ &=\frac{(\frac{1}{2}{e}^{x})\cdot (-4\sin x)-(\frac{1}{2}{e}^{x})\cdot (-4\cos x)}{16\sin ^{2}x}\\ &=\frac{2{e}^{x}(\cos x-\sin x)}{16\sin ^{2}x}\\ &=\frac{{e}^{x}(\cos x-\sin x)}{8\sin ^{2}x}\end{aligned}
 $$
 
 ### {"scale": 2}
 
-If $f(x)=\frac{e^{x}}{- 4 \sin{\left(x \right)}}$, find $f^{\prime}(x)$ wherever the original quotient is defined.
+Given $f(x)=e^{x}$ and $h(x)=- 4 \sin{\left(x \right)}.$
 
-$f^{\prime}(x)=$ {{field-1}}.
+$\frac{\text{d}}{\text{d}x}(\frac{f}{h})\,=${{field-1}}
 
 $\frac{\left(- \sin{\left(x \right)} + \cos{\left(x \right)}\right) e^{x}}{4 \sin^{2}{\left(x \right)}}$
 
@@ -929,9 +939,9 @@ $$
 
 ### {"scale": -3}
 
-If $f(x)=\frac{- \frac{3 e^{x}}{2}}{- 4 \sin{\left(x \right)}}$, find $f^{\prime}(x)$ wherever the original quotient is defined.
+Given $f(x)=- \frac{3 e^{x}}{2}$ and $h(x)=- 4 \sin{\left(x \right)}.$
 
-$f^{\prime}(x)=$ {{field-1}}.
+$\frac{\text{d}}{\text{d}x}(\frac{f}{h})\,=${{field-1}}
 
 $- \frac{3 \left(- \sin{\left(x \right)} + \cos{\left(x \right)}\right) e^{x}}{8 \sin^{2}{\left(x \right)}}$
 

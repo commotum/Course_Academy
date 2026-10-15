@@ -71,7 +71,10 @@ def rows(sol):
 
 def read(record):
  q=record['question'];prompt=q[':question/problem'];sol=q[':question/worked-solution']
- g.FMT.validate_generated_record(copy.deepcopy(record));u,v=displayed_parts(prompt);der=s.diff(u/v,X)
+ g.FMT.validate_generated_record(copy.deepcopy(record))
+ for text in [prompt,sol,*[a[':answer/value'] for f in q[':question/answer-fields'] for a in f[':answer-field/choices']]]:
+  assert not re.search(r'\\(?:sin|cos|tan|sec|ln)[A-Za-z]',text),'invalid concatenated TeX command'
+ u,v=displayed_parts(prompt);der=s.diff(u/v,X)
  # Independently check declarations in all source solutions, including recall f,h.
  if '$u(x)=' in sol:
   assert eq(parse(re.search(r'\$u\(x\)=(.*?)\$',sol)[1]),u)
@@ -102,6 +105,10 @@ def read(record):
   target_lhs=re.findall(r'f[^&\n]*?\((.*?)\)\s*&=',re.findall(r'\\begin\{aligned\}(.*?)\\end\{aligned\}',sol,re.S)[-1])
   assert target_lhs and eq(parse(target_lhs[0].replace(r'\,','')),target),('stale evaluated target',target_lhs)
   for row in rs[-1]:assert eq(parse(row),answer),('unequal evaluated stage',row)
+  if record['generation']['template']=='q-340316':
+   expected_target=str(target)
+   compact=re.sub(r'\s+','',rs[-1][0])
+   assert '-2('+expected_target+')' in compact,'zero/nonzero evaluation product erased'
   for text_target in re.findall(r'substitute \$x=(.*?)\$',sol):assert eq(parse(text_target),target)
   ending=re.search(r'Therefore, the slope of the tangent line(?: at \$x=.*?\$)? is \$(.*?)\$',sol);assert ending and eq(parse(ending[1]),answer)
  else:answer=der

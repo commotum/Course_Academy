@@ -12,7 +12,7 @@ def frozen(name):
  sp=importlib.util.spec_from_file_location('otherquotient_'+name,HERE/(name+'.py'));m=importlib.util.module_from_spec(sp);sp.loader.exec_module(m);return m
 FMT=frozen('math_format');PARSER=frozen('math_parser');CHAINS=frozen('family_chains');X=PARSER.x
 RAW=json.loads((HERE/'source.json').read_text());KP=RAW['record'];KP_ID=17592186096621
-VERSION='other-functions-private-2026-10-14-v1';SUPPORTED_LEVELS=('easy','moderate','hard')
+VERSION='other-functions-private-2026-10-14-v1';SUPPORTED_LEVELS=('easy','moderate','hard');CAPACITY={'easy':192,'moderate':480,'hard':64}
 SOURCES={q.get(':question/math-academy-id',q[':question/id']):q for q in KP[':knowledge-point/questions']}
 # Original function operands and target, preserving the original domain.
 SPEC={
@@ -54,9 +54,9 @@ def equivalent(a,b):
 
 def clean(text):
  text=text.replace('⁡','').replace('′',r'\prime').replace(r'\dfrac',r'\frac')
- text=re.sub(r'\\operatorname\{(sin|cos|tan|sec|ln|cos|log)\}',lambda m:'\\'+m[1],text)
- text=re.sub(r'\{(sin|cos|tan|sec|ln)\}',lambda m:'\\'+m[1],text)
- text=re.sub(r'(?<![A-Za-z\\])(sin|cos|tan|sec|ln)(?![A-Za-z])',lambda m:'\\'+m[1],text)
+ text=re.sub(r'\\operatorname\{(sin|cos|tan|sec|ln|cos|log)\}',lambda m:'\\'+m[1]+' ',text)
+ text=re.sub(r'\{(sin|cos|tan|sec|ln)\}',lambda m:'\\'+m[1]+' ',text)
+ text=re.sub(r'(?<![A-Za-z\\])(sin|cos|tan|sec|ln)(?![A-Za-z])',lambda m:'\\'+m[1]+' ',text)
  # Bare captured sinx/cosx have no word boundary after the name.
  text=re.sub(r'(?<![A-Za-z\\])(sin|cos|tan|sec|ln)(?=x)',lambda m:'\\'+m[1]+' ',text)
  while r'\begin{aligned}\begin{aligned}' in text:text=text.replace(r'\begin{aligned}\begin{aligned}',r'\begin{aligned}').replace(r'\end{aligned}\end{aligned}',r'\end{aligned}')
@@ -151,7 +151,8 @@ def generate(difficulty,seed=0,template=None,parameters=None,bank_profile=None,p
    elif t=='q-48504':values=[answer,s.Rational(p['scale'],4),s.Rational(2*p['scale'],3),s.Integer(p['scale']),answer/2]
    elif t=='q-48507':values=[s.Rational(p['scale'],4)/target,-p['scale']*target,2*p['scale']*target,-s.Rational(p['scale'],2),answer]
    else:values=[p['scale']*PARSER.scalar(clean(a[':answer/value'])) for a in q[':question/answer-fields'][0][':answer-field/choices']]
-  else:values=[answer]
+  else:
+   values=([p['scale']*PARSER.scalar(clean(q[':question/answer-fields'][0][':answer-field/choices'][0][':answer/value']))] if target is None and not fragment and t!=HARD and q.get(':question/answer-fields') else [answer])
   if sum(equivalent(z,answer) for z in values)!=1 or any(equivalent(z,y) for i,z in enumerate(values) for y in values[:i]) or any(z.has(s.zoo,s.nan) for z in values):
    if supplied:raise ValueError('complete bank rejected for collision/undefined option')
    continue
@@ -173,13 +174,15 @@ def generate(difficulty,seed=0,template=None,parameters=None,bank_profile=None,p
   if fragment:
    # Preserve the partial response contract, moving its scale to the supplied context.
    prompt='' # Supplied below as a complete equation table with an embedded field.
+  elif t in ['q-167328','q-166075']:
+   prompt='Given $f(x)='+tex(u)+'$ and $h(x)='+tex(v)+'.$\n\n'+clean(q[':question/problem'])
   elif target is None:prompt='If $f(x)='+frac(tex(u),tex(v))+r'$, find $f^{\prime}(x)$ wherever the original quotient is defined.'
   else:prompt='If a curve $C$ is given by $y='+frac(tex(u),tex(v))+'$, calculate the slope of the tangent line to the curve at the point where $x='+tex(target)+'.$'
-  if field_type=='blank' and not fragment:prompt+='\n\n'+('$f^{\\prime}(x)=$' if target is None else 'The slope is')+' {{'+key+'}}.'
+  if field_type=='blank' and not fragment and '{{'+key+'}}' not in prompt:prompt+='\n\n'+('$f^{\\prime}(x)=$' if target is None else 'The slope is')+' {{'+key+'}}.'
   worked=(generic_solution(u,v,target) if t==HARD else CHAINS.family_solution(sys.modules[__name__] if __name__ in sys.modules else _namespace(),t,u,v,target,p['scale']))
  if fragment:
-  coefficient=s.Rational(p['scale'],8)
-  prompt='Given $f(x)='+tex(u)+'$ and $h(x)='+tex(v)+r'$, calculate $\frac{\mathrm{d}}{\mathrm{d}x}(\frac{f}{h})$.'+'\n\n'+r'| $\frac{\mathrm{d}}{\mathrm{d}x}(\frac{f}{h})=$ | $'+tex(coefficient*s.exp(X))+'($ {{field-1}} $)$ |\n| --- | --- |\n|  | $\\sin^2 x$ |'
+  coefficient=s.Integer(p['scale'])
+  prompt='Given $f(x)='+tex(u)+'$ and $h(x)='+tex(v)+r'$, calculate $\frac{\mathrm{d}}{\mathrm{d}x}(\frac{f}{h})$.'+'\n\n'+r'| $\frac{\mathrm{d}}{\mathrm{d}x}(\frac{f}{h})=$ | $'+tex(coefficient*s.exp(X))+'($ {{field-1}} $)$ |\n| --- | --- |\n|  | $8\\sin^2 x$ |'
  # Fragment answer alone is insufficient context: retain final whole derivative.
  task=task_identity(u,v,target)
  rendered_values=([FMT.normalize_tex(clean(a[':answer/value'])) for a in q[':question/answer-fields'][0][':answer-field/choices']] if original and q.get(':question/answer-fields') else [FMT.normalize_tex(tex(z)) for z in values])
@@ -189,8 +192,8 @@ def generate(difficulty,seed=0,template=None,parameters=None,bank_profile=None,p
  for z,value in zip(values,rendered_values):
   choices.append({':answer/id':uid('answer:'+fid+':'+s.srepr(z)),':answer/type':':answer.type/math',':answer/value':value})
  correct=next(a[':answer/id'] for a,z in zip(choices,values) if equivalent(z,answer));r.shuffle(choices)
- rec={'knowledge_point':{'db_id':KP_ID,'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+difficulty,':question/problem':FMT.normalize_prose(prompt),':question/worked-solution':FMT.normalize_prose(worked),':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/'+field_type,':answer-field/choices':choices,':answer-field/correct':[':answer/id',correct]}]},'generation':{'version':VERSION,'seed':seed,'template':t,'parameters':p,'bank_profile':selected,'source_ids':[t] if t!=HARD else ['e-3638','q-47943','q-47998'],'source_basis':2275,'source_lineage':RAW['lineage'],'mathematical_fingerprint':task,'domain':domain(u,v),'authored_extension':not original,'evidence_only':False,'eligible':True,'raw_exact_eligible':False,'source_repairs':repairs,'plot_rating':'none','sympy_version':s.__version__}}
- rec['generation']['content_fingerprint']=digest(rec['question']);return rec
+ rec={'knowledge_point':{'db_id':KP_ID,'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':{':question/id':qid,':question/difficulty':':question.difficulty/'+difficulty,':question/problem':FMT.normalize_prose(prompt),':question/worked-solution':FMT.normalize_prose(worked),':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/'+field_type,':answer-field/choices':choices,':answer-field/correct':[':answer/id',correct]}]},'generation':{'version':VERSION,'seed':seed,'template':t,'parameters':p,'bank_profile':selected,'source_ids':[t] if t!=HARD else ['e-3638','q-47943','q-47998'],'source_basis':2275,'source_lineage':RAW['lineage'],'mathematical_fingerprint':task,'domain':domain(u,v),'authored_extension':not original,'evidence_only':False,'eligible':True,'raw_exact_eligible':False,'source_repairs':repairs,'authored_repair':bool(repairs),'supported_normalization':['canonical TeX function names and prime notation','redundant nested aligned wrappers flattened with operative rows retained'] if original else [],'plot_rating':'none','sympy_version':s.__version__}}
+ rec['generation']['content_fingerprint']=content;return rec
 
 def replay_raw(source_id):
  q=copy.deepcopy(SOURCES[source_id])
@@ -203,6 +206,7 @@ if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['all',*SUPPORTED_LEVELS],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--template');ap.add_argument('--format',choices=['json','markdown'],default='json');a=ap.parse_args();out=[];seen=set()
  if type(a.count)is not int or a.count<1:ap.error('positive builtin integer count required')
  for level in SUPPORTED_LEVELS if a.difficulty=='all' else [a.difficulty]:
+  if a.count>CAPACITY[level]:ap.error('requested count exceeds finite '+level+' task capacity')
   count=0
   for i in range(a.count*1000):
    rec=generate(level,a.seed+i,a.template);fp=rec['generation']['mathematical_fingerprint']

@@ -21,7 +21,7 @@ def inventory():
  for t,q in g.SOURCES.items():
   item={'source_id':t,'raw_attribute_presence':sorted(q),'raw_question':q,'ma':':question/math-academy-id' in q}
   if t in g.SPEC:
-   d=g.SPEC[t][3];pa=g.original_parameters(t);r=g.generate(d,0,t,pa);v.read(r);item.update(difficulty=d,template=t,parameters=pa,bank_profile=g.source_profile(t),repairs=r['generation']['source_repairs'],raw_exact_eligible=not r['generation']['source_repairs'])
+   d=g.SPEC[t][3];pa=g.original_parameters(t);r=g.generate(d,0,t,pa);v.read(r);item.update(difficulty=d,template=t,parameters=pa,bank_profile=g.source_profile(t),repairs=r['generation']['source_repairs'],raw_exact_eligible=False)
    fs=q.get(':question/answer-fields',[]);mapped=[]
    for field in fs:
     for a in field[':answer-field/choices']:
@@ -65,6 +65,8 @@ def probes():
  mutate('stale numerator coefficient',lambda r:r['question'].__setitem__(':question/problem',r['question'][':question/problem'].replace('2 x','3 x',1)))
  target=g.generate('moderate',0,'q-340318',{'scale':2,'target':'1'})
  mutate('stale target solution',lambda r:r['question'].__setitem__(':question/problem',r['question'][':question/problem'].replace('$x=1','$x=2')),target)
+ zero=g.generate('moderate',0,'q-340316',{'scale':1,'target':'0'});v.read(zero)
+ mutate('erased zero target product',lambda r:r['question'].__setitem__(':question/worked-solution',r['question'][':question/worked-solution'].replace('-2(0)','',1)),zero)
  # Real poles: target inputs rejected only when original function is undefined.
  poles=[]
  for t,target in [('q-9908',r'3\pi/2'),('q-340316','1'),('q-48504','1'),('q-48507','0')]:
@@ -86,6 +88,7 @@ def native():
  for t in g.SPEC:
   for pa in [g.original_parameters(t),dict(g.original_parameters(t),scale=2)]:
    fixtures.append(g.generate(g.SPEC[t][3],0,t,pa))
+ fixtures.extend(g.generate('moderate',0,'q-340318',{'scale':1,'target':target}) for target in ['0',r'\frac{1}{3}'])
  fixtures.extend(g.generate('hard',0,g.HARD,pa) for pa in [{'a':1,'b':1},{'a':-1,'b':1},{'a':2,'b':3}])
  results=[];gaps=[];count=0
  out=HERE/'native';out.mkdir(exist_ok=True)
@@ -120,11 +123,11 @@ def native():
    assert found,(err,pending)
    if failed:
     prefix=dict(item,checks=pending[:failed]);pp=out/f'{ri:02d}-{part:02d}-prefix.json';pr=out/f'{ri:02d}-{part:02d}-prefix-report.json';pp.write_text(json.dumps([prefix],indent=2)+'\n');# Do not rerun passed prefix; report observed prefix from native processing.
-    results.append({'observed_passing_prefix_checks':failed,'evidence':str(inp.relative_to(HERE))});count+=failed
+    results.append({'observed_passing_prefix_checks':failed,'checks':pending[:failed],'evidence':str(inp.relative_to(HERE))});count+=failed
    bad=pending[failed];gap={'fixture':ri,'template':r['generation']['template'],'check':bad,'actual':m[2],'native_error':err.strip()};gaps.append(gap)
    revised=dict(bad,expected=m[2]);one=dict(item,checks=[revised]);op=out/f'{ri:02d}-{part:02d}-gap.json';orr=out/f'{ri:02d}-{part:02d}-gap-report.json';op.write_text(json.dumps([one],indent=2)+'\n');rr=subprocess.run([str(engine),str(op),str(orr)],capture_output=True,text=True);assert rr.returncode==0,rr.stderr;results.append(json.loads(orr.read_text()));count+=1
    pending=pending[failed+1:];part+=1
- save('native-report.json',{'engine_path':str(engine),'engine_sha256':sha(engine),'fixtures':len(fixtures),'actual_checks':count,'documented_engine_gaps':gaps,'batches':results,'database_writes':0})
+ save('native-report.json',{'generator_sha256':sha(HERE.with_suffix('.py')),'engine_path':str(engine),'engine_sha256':sha(engine),'fixtures':len(fixtures),'actual_checks':count,'documented_engine_gaps':gaps,'batches':results,'database_writes':0})
  print('native',len(fixtures),count,'gaps',len(gaps),flush=True)
 
 if __name__=='__main__':
