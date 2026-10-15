@@ -1,0 +1,11 @@
+# Current source reconciliation
+
+The initial inventory read on 2026-10-15 returned math basis 2628 and no registered generator. Its native counts were easy 2, moderate 4; unclassified source material remains separate from usable inventory. The commit worker captures a fresh basis again under api.lock and retains the exact current source records in reference/replenishment/basis-*/before.edn.
+
+The nine source mathematical tasks and canonical-example task remain the same as the frozen basis-1356 package. q-11817 now has an easy rating, a correct reference, and the full chain-rule solution; its prompt uses the capture's current TeX notation. q-340496's correct value is now written as 8-3e^(-3x+5), algebraically equal to the frozen value. Existing records are read as evidence and never rewritten. q-11816 remains unrated with no correct reference or solution; q-107420 and q-48003 remain fieldless. These records do not count as gradable inventory.
+
+Easy retains four direct chain-rule families. Moderate retains the power sum, linear sum, two log-point slope layouts, and reciprocal-point tangent layout. Hard retains the existing explicitly authored shifted/translated tangent family, with nonunit signed inner and outer factors and a nonzero evaluation point. It adds arithmetic bookkeeping while preserving the same differentiation and point-slope stages. This is authored difficulty evidence, not an observed hard source rating. Every family has plot rating none.
+
+Every selected output is independently parsed from its printed function and evaluation point. The validator differentiates that function, checks the full answer bank and every worked-solution row, and tests the actual current learner grader. Duplicate detection uses mathematical tasks, excluding seed, UUID, option order, rendering notation and derivative-only additive constants. The canonical example is also excluded from generated tasks.
+
+There are no known unsupported levels or finite shortages at the requested five-per-level target. The bounded sampler is not an assertion of an unlimited question supply; derivative aliases and alternative field layouts never increase the distinct-task count. If a bounded sampling pass cannot supply its target, the outcome must retain that shortage.
