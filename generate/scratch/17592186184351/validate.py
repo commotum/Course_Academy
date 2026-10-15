@@ -199,5 +199,6 @@ def main():
  for row in review:
   lines+=['## '+row['source_id'],'','### Original source','',''+row['original'][':question/problem'],'',row['original'].get(':question/worked-solution','(Source has no worked solution.)'),'','### Served anchor','',g.markdown(row['normal_anchor']),'','### Changed parameters','',g.markdown(row['changed_parameters']),'']
  (HERE/'review.md').write_text('\n'.join(lines))
+ subprocess.run([sys.executable,str(HERE/'api-check.py')],check=True)
  print('Passed',len(bounded),'bounded cases;',nr['accepted_checks'],'accepted and',nr['rejected_checks'],'rejected native checks')
 if __name__=='__main__':main()

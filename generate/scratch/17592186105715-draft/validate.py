@@ -8,11 +8,13 @@ import re
 import subprocess
 import sys
 import uuid
+from functools import cache
 from pathlib import Path
 import sympy as sp
 from math_parser import expression,prompt_integrand,integral_body,branches,derivative_residual,X,C
 D=Path(__file__).resolve().parent;R=D.parents[2]
 spec=importlib.util.spec_from_file_location('reciprocal_draft',D.with_suffix('.py'));g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
+expression=cache(expression);prompt_integrand=cache(prompt_integrand);derivative_residual=cache(derivative_residual)
 ENGINE=R/'generate/runs/current/check-engine';ENGINE_SHA='71d435e31aa0cdea66d992aa4d4bd1043cdd871aaffc7a3af9f54e9b0f846dea'
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def save(name,value):(D/name).write_text(json.dumps(value,indent=2,default=str)+'\n')
@@ -67,6 +69,7 @@ def math_check(r):
  for id_ in ids:uuid.UUID(id_)
  assert '@@' not in json.dumps(r)
  level=q[':question/difficulty'].split('/')[-1]
+ assert r==g.generate(level,m['seed'],m['template'],parameters=m['parameters'],profile=m['bank_profile']), 'Recorded instance must replay exactly, including order'
  other=g.generate(level,seed=m['seed']+177,template=m['template'],parameters=m['parameters'],profile=m['bank_profile'])
  assert q[':question/id']==other['question'][':question/id']
  assert sorted(a[':answer/value'] for a in f[':answer-field/choices'])==sorted(a[':answer/value'] for a in other['question'][':question/answer-fields'][0][':answer-field/choices'])
@@ -74,7 +77,7 @@ def math_check(r):
 
 def native_checks(r):
  f=r['question'][':question/answer-fields'][0]
- return [{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'Canonical owned choice '+a[':answer/value']} for a in f[':answer-field/choices']]+[{'submitted':s,'expected':'rejected','purpose':'Ordinary nonchoice integer wrong answer '+s} for s in ('0','1','+1')]
+ return [{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'Canonical owned choice '+a[':answer/value']} for a in f[':answer-field/choices']]
 
 def main():
  assert sha(ENGINE)==ENGINE_SHA
@@ -133,12 +136,16 @@ def main():
  command=[sys.executable,str(D.with_suffix('.py')),'--difficulty','all','--count','1','--seed','17','--format','json'];cli=json.loads(subprocess.check_output(command));assert len(cli)==3 and all(isinstance(r,dict) for r in cli)
  for value in ('1.5','true','-1'):
   result=subprocess.run([sys.executable,str(D.with_suffix('.py')),'--difficulty','all','--count',value],capture_output=True);assert result.returncode!=0
- # All public bounded records and ordinary wrong numeric inputs use frozen native grader.
- native=[{'label':str(i),'record':r,'checks':native_checks(r)} for i,r in enumerate(rows)]
+ # All public bounded records use the frozen native grader. Radio numeric text
+ # 0,1,+1 refers to foreign fixture IDs and is a separate ownership diagnostic.
+ native=[{'label':str(i),'record':r,'checks':native_checks(r)} for i,r in enumerate(rows+review)]
  save('engine-input.json',native);subprocess.run([str(ENGINE),str(D/'engine-input.json'),str(D/'engine-report.json')],check=True)
+ ownership=[{'label':str(i),'record':r,'checks':[{'submitted':value,'expected':'unresolved','purpose':'Foreign radio ID ownership diagnostic; not a mathematical answer: '+value} for value in ('0','1','+1')]} for i,r in enumerate(rows)]
+ save('engine-ownership-input.json',ownership);subprocess.run([str(ENGINE),str(D/'engine-ownership-input.json'),str(D/'engine-ownership-report.json')],check=True)
+ ownership_report=json.load(open(D/'engine-ownership-report.json'));assert all(c['reason']=='selected answer does not belong to this field' for item in ownership_report['records'] for c in item['checks'])
  report=json.load(open(D/'engine-report.json'));assert report['documented_unresolved_checks']==0;assert sha(ENGINE)==ENGINE_SHA
  save('source-cases.json',{'basis':2275,'lineage':source['lineage'],'questions':cases});save('source-fidelity.json',fidelity);save('review.json',review);(D/'review.md').write_text('\n\n'.join(review_text)+'\n')
  save('capacity.json',{'meaningful_task_count':capacities,'deduplication':'Exact coefficient of c/x, independent of bank/layout/seed/constant representation. Squarefree radicands prevent radical aliases.','slot_coverage':slot_coverage})
- save('validation.json',{'status':'pass','basis':2275,'source_original_count':len(originals),'independent_inventory_count':len(source['record'][':knowledge-point/questions'])-len(originals),'raw_complete_source_banks':len(fidelity),'raw_source_options_matched':sum(x['raw_matched_values'] for x in fidelity),'raw_source_distractors_matched':sum(x['raw_matched_values']-1 for x in fidelity),'raw_source_designations_matched':sum(x['raw_correct_designation'] for x in fidelity),'raw_source_solutions_matched':sum(x['raw_solution'] for x in fidelity),'unaltered_served_complete_banks':sum(x['served_matched_original_values']==5 for x in fidelity),'narrowly_repaired_served_banks':sum(x['served_matched_original_values']!=5 for x in fidelity),'served_values_exact_original':sum(x['served_matched_original_values'] for x in fidelity),'served_values_total':40,'all_public_profile_parameter_cases':len(rows)-len(originals),'solution_operands_and_inline_equalities_checked':steps,'negative_controls':negative,'cli_all_count1_flat_records':len(cli),'meaningful_capacity':capacities,'native_grading':{'engine_sha256':ENGINE_SHA,'entry_point':report['entry_point'],'accepted':report['accepted_checks'],'rejected':report['rejected_checks'],'unresolved':report['documented_unresolved_checks'],'coverage':'Every owned canonical correct and wrong option plus ordinary wrong 0,1,+1 for every bounded public profile/parameter. Equivalent mathematical text is not a radio submission; field-owned same-choice IDs are the answer contract. Foreign/malformed ownership diagnostics are excluded from compatibility totals.'},'valid_math_grading_limitations':[],'source_errors':['q29934 missing key/solution/difficulty and duplicate wrong primitive family','q103369/q103590 duplicate wrong primitive families','q29831 duplicate wrong primitive family on x>0; ln x distractor has only positive real domain'],'registered_baseline_files_unchanged':len(baseline),'dependencies':{'python':platform.python_version(),'sympy':sp.__version__},'engine_sha256':sha(ENGINE)})
+ save('validation.json',{'status':'pass','basis':2275,'source_original_count':len(originals),'independent_inventory_count':len(source['record'][':knowledge-point/questions'])-len(originals),'raw_complete_source_banks':len(fidelity),'raw_source_options_matched':sum(x['raw_matched_values'] for x in fidelity),'raw_source_distractors_matched':sum(x['raw_matched_values']-1 for x in fidelity),'raw_source_designations_matched':sum(x['raw_correct_designation'] for x in fidelity),'raw_source_solutions_matched':sum(x['raw_solution'] for x in fidelity),'unaltered_served_complete_banks':sum(x['served_matched_original_values']==5 for x in fidelity),'narrowly_repaired_served_banks':sum(x['served_matched_original_values']!=5 for x in fidelity),'served_values_exact_original':sum(x['served_matched_original_values'] for x in fidelity),'served_values_total':40,'all_public_profile_parameter_cases':len(rows)-len(originals),'solution_operands_and_inline_equalities_checked':steps,'negative_controls':negative,'cli_all_count1_flat_records':len(cli),'meaningful_capacity':capacities,'native_grading':{'engine_sha256':ENGINE_SHA,'entry_point':report['entry_point'],'accepted':report['accepted_checks'],'rejected':report['rejected_checks'],'unresolved':report['documented_unresolved_checks'],'review_records_included':len(review),'coverage':'Every owned canonical correct and all four ordinary wrong options for every bounded public profile/parameter. Equivalent mathematical text is not a radio submission; field-owned same-choice IDs are the answer contract. Text 0,1,+1 selects foreign fixture IDs and is separately documented in engine-ownership-report.json, excluded from mathematical compatibility totals.'},'ownership_diagnostics':{'radio_foreign_0_1_plus1':ownership_report['documented_unresolved_checks'],'reason':'selected answer does not belong to this field','separate_from_native_compatibility':True},'valid_math_grading_limitations':[],'source_errors':['q29934 missing key/solution/difficulty and duplicate wrong primitive family','q103369/q103590 duplicate wrong primitive families','q29831 duplicate wrong primitive family on x>0; ln x distractor has only positive real domain'],'registered_baseline_files_unchanged':len(baseline),'dependencies':{'python':platform.python_version(),'sympy':sp.__version__},'engine_sha256':sha(ENGINE)})
  print(json.dumps(json.load(open(D/'validation.json')),indent=2))
 if __name__=='__main__':main()

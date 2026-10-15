@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse, hashlib, importlib.util, itertools, json, random, sys, uuid
 from pathlib import Path
 import sympy as s
+from functools import lru_cache
 HERE=Path(__file__).with_suffix('')
 spec=importlib.util.spec_from_file_location('definite_integrals_math_format',HERE/'reference/math_format.py')
 mf=importlib.util.module_from_spec(spec);spec.loader.exec_module(mf)
@@ -123,14 +124,36 @@ def task_fingerprint(name,p):
   else:F=(2 if name=='quadratic_base_blank' else 1)*x*s.exp(s.expand(k*x*x*lb))
   L=0;H=1
  return digest([s.srepr(s.cancel(F)),s.srepr(s.sympify(L)),s.srepr(s.sympify(H))])
+def strict_int(value,label):
+ if type(value) is not int:raise TypeError(label+' must be a built-in int; bool is not accepted')
+def eligible_templates(level,template=None,field_type=None,profile=None):
+ if type(level) is not str or level not in LEVELS:raise ValueError('Unknown difficulty')
+ for value,label in ((template,'template'),(field_type,'field_type'),(profile,'profile')):
+  if value is not None and type(value) is not str:raise TypeError(label+' must be a string or None')
+ if field_type not in (None,'radio','blank'):raise ValueError('Unknown field type')
+ if profile not in (None,'authored_method_bank','source_bank','source_blank','source_presentation'):raise ValueError('Unknown profile')
+ eligible=[n for n in TEMPLATES if DIFFICULTY[n]==level and (field_type is None or ('radio' if n.endswith('radio') else 'blank')==field_type)]
+ if profile is not None:eligible=[n for n in eligible if n.endswith('radio')==(profile in ('authored_method_bank','source_bank'))]
+ if template is not None:
+  if template not in eligible:raise ValueError('Family outside difficulty/field/profile contract')
+  eligible=[template]
+ if not eligible:raise ValueError('No family for difficulty/field/profile contract')
+ return eligible
+def validate_parameters(template,parameters):
+ if parameters is None:return
+ if type(parameters) is not dict:raise TypeError('parameters must be a dict or None')
+ if set(parameters)!=set(ANCHORS[template]):raise ValueError('Parameters must have exactly the declared slot keys')
+ for key,value in parameters.items():strict_int(value,'parameter '+key)
+ if parameters not in parameters_for(template):raise ValueError('Parameters outside bounded family domain')
 @mf.checked_math_content
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
- if level not in LEVELS:raise ValueError('Unknown difficulty')
- rng=random.Random(seed);eligible=[n for n in TEMPLATES if DIFFICULTY[n]==level and (field_type is None or ('radio' if n.endswith('radio') else 'blank')==field_type)]
+ strict_int(seed,'seed');eligible=eligible_templates(level,template,field_type,profile)
+ rng=random.Random(seed)
  if template is None:
   if not eligible:raise ValueError('No family for field type')
   template=rng.choice(eligible)
  if template not in eligible:raise ValueError('Family outside difficulty/field contract')
+ validate_parameters(template,parameters)
  profile=profile or ('authored_method_bank' if template.endswith('radio') else 'source_blank')
  if not template.endswith('radio') and profile not in ('source_blank','source_presentation'):raise ValueError('Blank profile')
  candidates=parameters_for(template)
@@ -157,12 +180,46 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
 def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
 def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)
 def generate_hard(seed=0,**kw):return generate('hard',seed,**kw)
+@lru_cache(maxsize=None)
+def _semantic_catalog(level,template,field_type,profile):
+ """One deterministic descriptor per integrand, interval, evaluation target.
+
+ Bank, source wording, field presentation, and substitution aliases never
+ increase capacity. A representative retains its entire valid family/bank.
+ """
+ entries={}
+ for name in eligible_templates(level,template,field_type,profile):
+  chosen=profile or ('authored_method_bank' if name.endswith('radio') else 'source_blank')
+  domain=[ANCHORS[name]] if chosen=='source_presentation' else parameters_for(name)
+  for params in domain:
+   _,_,answer,_=layout(name,params)
+   if not valid_bank(bank(name,params,answer,chosen),answer):continue
+   fingerprint=task_fingerprint(name,params)
+   entries.setdefault(fingerprint,(fingerprint,name,tuple(params.items()),chosen))
+ return tuple(entries.values())
+def semantic_catalog(level,template=None,field_type=None,profile=None):
+ eligible_templates(level,template,field_type,profile)
+ return [{'task_fingerprint':fp,'template':name,'parameters':dict(params),'bank_profile':bank_profile} for fp,name,params,bank_profile in _semantic_catalog(level,template,field_type,profile)]
+def capacity(level,template=None,field_type=None,profile=None):
+ eligible_templates(level,template,field_type,profile)
+ return len(_semantic_catalog(level,template,field_type,profile))
+def generate_batch(level,count=1,seed=0,template=None,field_type=None,profile=None):
+ strict_int(seed,'seed');strict_int(count,'count')
+ if count<1:raise ValueError('count must be positive')
+ eligible_templates(level,template,field_type,profile)
+ catalog=_semantic_catalog(level,template,field_type,profile)
+ if count>len(catalog):raise ValueError('count '+str(count)+' exceeds semantic capacity '+str(len(catalog))+' for '+level)
+ rng=random.Random(seed);selected=rng.sample(catalog,count)
+ return [generate(level,seed=rng.getrandbits(64),template=name,parameters=dict(params),profile=chosen) for _,name,params,chosen in selected]
+batch=generate_batch
+catalog=semantic_catalog
 def markdown(r):
  q=r['question'];f=q[':question/answer-fields'][0]
  return q[':question/problem']+'\n\n'+'\n'.join('- $'+a[':answer/value']+'$' for a in f[':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=(*LEVELS,'all'),default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=('json','markdown'),default='markdown');ap.add_argument('--template');ap.add_argument('--profile');a=ap.parse_args()
  if a.count<1:ap.error('count must be positive')
- records=[generate(l,a.seed+i,template=a.template,profile=a.profile) for l in (LEVELS if a.difficulty=='all' else (a.difficulty,)) for i in range(a.count)]
+ try:records=[r for l in (LEVELS if a.difficulty=='all' else (a.difficulty,)) for r in generate_batch(l,count=a.count,seed=a.seed,template=a.template,profile=a.profile)]
+ except (TypeError,ValueError) as exc:ap.error(str(exc))
  print(json.dumps(records,ensure_ascii=False,indent=2) if a.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in records))
 if __name__=='__main__':main()

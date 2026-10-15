@@ -16,7 +16,7 @@ for c in json.load(open(D/'source-cases.json')):
  if ':question/worked-solution'in o:
   assert q[':question/worked-solution']==G.fmt.normalize_prose(G.clean(o[':question/worked-solution']));fidelity['solutions']+=1
  for f,of in zip(q[':question/answer-fields'],o[':question/answer-fields']):
-  nv=[P.scalar(a[':answer/value'])for a in f[':answer-field/choices']];ov=[P.scalar(a[':answer/value'])for a in of[':answer-field/choices']];assert len(ov)==len(nv)and all(sum(eq(v,w)for w in nv)==1for v in ov),('sourcebankgap',c['source_id'],ov,nv)
+  nv=[P.scalar(a[':answer/value'])for a in f[':answer-field/choices']];ov=[P.scalar(a[':answer/value'])for a in of[':answer-field/choices']];assert len(ov)==len(nv)and all(sum(eq(v,w)for w in nv)==1 for v in ov),('sourcebankgap',c['source_id'],ov,nv)
   if ':answer-field/correct'in of:
    v=P.scalar(of[':answer-field/correct'][':answer/value']);assert eq(v,next(w for a,w in zip(f[':answer-field/choices'],nv)if a[':answer/id']==f[':answer-field/correct'][1]));fidelity['existing_keys']+=1
   fidelity['banks']+=1;fidelity['values']+=len(ov)
@@ -34,8 +34,8 @@ for name,spec in G.TEMPLATES.items():
 for level in seen:
  assert len(seen[level])=={'easy':157,'moderate':24,'hard':24}[level]
  for seed in range(18):check(G.generate(level,seed))
- batch=G.generate_batch(level,len(seen[level]),seed=39);assert len({r['generation']['mathematical_task_fingerprint']for r in batch})==len(seen[level])
- try:G.generate_batch(level,len(seen[level])+1)
+ batch=G.generate_batch(level,count=len(seen[level]),seed=39);assert len({r['generation']['mathematical_task_fingerprint']for r in batch})==len(seen[level])
+ try:G.generate_batch(level,count=len(seen[level])+1)
  except ValueError:pass
  else:raise AssertionError('finite capacity bypass')
 result=dict(status='passed',source=fidelity,readback=N,capacity={l:len(v)for l,v in seen.items()},script_sha256=hashlib.sha256(D.with_suffix('.py').read_bytes()).hexdigest(),database_writes=0);(R/f'qa/{K}-root-readback.json').write_text(json.dumps(result,indent=2)+'\n');print(result)

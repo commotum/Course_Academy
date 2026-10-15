@@ -3,7 +3,8 @@
 
 Source-backed E/M/H; exact finite rational slots, complete source bank profiles,
 served parameterized solutions with source row omissions preserved. No EDB writes.
-The observed nonlinear-sec exception is limited to its source polynomial backbone.
+The nonlinear sec source is ineligible reference-only at original parameters: the
+lesson route places derivative-proportional nonlinear substitution after this KP.
 """
 from __future__ import annotations
 import argparse, hashlib, importlib.util, itertools, json, random, sys, uuid
@@ -50,6 +51,7 @@ def atom(t):return '('+t+')'
 def fn(name,arg,power=None):return '\\'+name+(f'^{{{power}}}' if power else '')+'('+arg+')'
 def product(c,t):
  c=s.sympify(c)
+ if t.startswith('-'):return product(-c,t[1:])
  return t if c==1 else '-'+t if c==-1 else tex(c)+t
 
 def integrand(kind,arg,p):
@@ -74,7 +76,7 @@ def guard(sid,p):
  if type(p['c'])is not int or not 1<=p['c']<=6:raise ValueError('c must be an integer1..6')
  a,b=rat(p['a']),rat(p['b'])
  if kind=='poly_sec':
-  if a!=1 or b!=0 or type(p['d'])is not int or not 1<=p['d']<=5 or p['c']>5:raise ValueError('nonlinear source exception only (c sec^2 x+d)sec x tan x, c,d1..5')
+  if p!=orig:raise ValueError('nonlinear source is reference-only at original parameters; outside linear-argument curriculum')
  elif level=='easy':
   if a not in range(2,11) or b!=0 or p['c']>5:raise ValueError('easy positive integer scale2..10, zero shift, coefficient1..5')
  elif level=='moderate':
@@ -93,7 +95,7 @@ def guard(sid,p):
 def instances(sid):
  level,_,kind,orig=CONFIG[sid]
  if kind=='poly_sec':
-  for c,d in itertools.product(range(1,6),repeat=2):yield {'a':'1','b':'0','c':c,'d':d}
+  yield dict(orig)
  elif level=='easy':
   for a,c in itertools.product(range(2,11),range(1,6)):yield {'a':str(a),'b':'0','c':c}
  else:
@@ -128,14 +130,17 @@ def core(sid,p,profile):
   elif sid=='q-10578':
    L,H=s.sec(lo),s.sec(hi)
    if profile=='observed':values=[correct,r*(-H-L/2),r*(s.cot(hi)-L/2),r*(-L*s.cot(hi)+L/2),r*(s.tan(hi)+L)]
-   else:values=[correct,-correct,c*(ph-pl),r*(ph+pl),r*(s.tan(hi)-s.tan(lo))]
+   else:values=[correct,-correct,r*(ph+pl),r*ph,r*(s.tan(hi)-s.tan(lo))]
   else:values=[correct]
  values=list(map(s.simplify,values));mathvals=[s.diff(v,x) if not definite else v for v in values]
  # Primitive banks compare derivatives, permitting arbitrary constant shifts.
- if len(set(s.srepr(s.trigsimp(v)) for v in mathvals))!=len(mathvals):raise ValueError('complete bank collision modulo integration constant')
  for i in range(len(mathvals)):
   for j in range(i):
-   if s.trigsimp(mathvals[i]-mathvals[j])==0:raise ValueError('equivalent complete bank members')
+   diff=mathvals[i]-mathvals[j]
+   if diff.has(x):
+    numeric=s.N(diff.subs(x,s.Rational(2,7)),24)
+    if numeric.is_real and numeric.is_finite and abs(numeric)>s.Float('1e-18'):continue
+   if s.trigsimp(diff)==0:raise ValueError('equivalent complete bank members')
  # Prompt source wording; rendered mathematical slots replace entire components.
  if sid in ('q-10143','q-10157','q-113983'):prompt='Calculate the integral $'+I+'.$'
  elif sid in ('q-2203','q-10578'):prompt='$'+I+'=$'
@@ -183,8 +188,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  if level not in ('easy','moderate','hard'):raise ValueError('unknown difficulty')
  if field_type not in (None,'radio','blank'):raise ValueError('unknown field type')
  if profile not in (None,'observed','method'):raise ValueError('profile must be observed or method')
- eligible=[k for k,v in CONFIG.items() if v[0]==level and (not field_type or v[1]==field_type)]
+ eligible=[k for k,v in CONFIG.items() if v[0]==level and (not field_type or v[1]==field_type) and (k!='q-113983' or template==k and profile=='observed')]
  if template is not None and template not in eligible:raise ValueError('template/field/difficulty mismatch')
+ if parameters is not None and type(parameters)is not dict:raise ValueError('parameters must be a dictionary')
  rng=random.Random(seed);sid=template or rng.choice(eligible);p=dict(parameters) if parameters is not None else None
  if p is None:
   candidates=list(instances(sid));rng.shuffle(candidates)
@@ -200,13 +206,14 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  choices=[{':answer/id':uid(ident+key+v),':answer/type':':answer.type/math',':answer/value':v} for v in vals];rng.shuffle(choices)
  field={':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/'+kind,':answer-field/choices':choices,':answer-field/correct':[':answer/id',uid(ident+key+cv)]}
  domain=('x real on any connected interval with cos(argument)!=0' if CONFIG[sid][2].startswith(('sec','poly')) else 'x real on any connected interval with sin(argument)!=0') if level=='easy' else 'closed x interval; transformed endpoints ordered in one pole-free component; all operands finite real'
- return {'knowledge_point':{'db_id':KP,'id':REC[':knowledge-point/id'],'title':REC[':knowledge-point/title']},'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+level,':question/answer-fields':[field]},'generation':{'version':VERSION,'seed':seed,'template':sid,'parameters':p,'bank_profile':profile or 'method','source_id':sid,'source_basis':2275,'source_lineage':SOURCE['lineage'],'source_repairs':['authored easy rating, derivative-verified key and source-style solution'] if sid=='q-10157' else [],'domain':domain,'model':model,'mathematical_fingerprint':digest([model['integrand'],model['bounds']]),'content_fingerprint':ident,'dependencies':{'python':sys.version.split()[0],'sympy':s.__version__,'math_format':'frozen local copy'}}}
+ return {'knowledge_point':{'db_id':KP,'id':REC[':knowledge-point/id'],'title':REC[':knowledge-point/title']},'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+level,':question/answer-fields':[field]},'generation':{'version':VERSION,'seed':seed,'template':sid,'parameters':p,'bank_profile':profile or 'method','source_id':sid,'source_basis':2275,'source_lineage':SOURCE['lineage'],'eligible_for_learning':sid!='q-113983','evidence_only':sid=='q-113983','scope_role':'reference-only nonlinear source; plausible source misassignment' if sid=='q-113983' else 'linear-argument curriculum practice','source_repairs':['authored easy rating, derivative-verified key and source-style solution'] if sid=='q-10157' else [],'domain':domain,'model':model,'mathematical_fingerprint':digest([model['integrand'],model['bounds']]),'content_fingerprint':ident,'dependencies':{'python':sys.version.split()[0],'sympy':s.__version__,'math_format':'frozen local copy'}}}
 def generate_easy(seed=0,**kw):return generate('easy',seed,**kw)
 def generate_moderate(seed=0,**kw):return generate('moderate',seed,**kw)
 def generate_hard(seed=0,**kw):return generate('hard',seed,**kw)
 def capacity(level,template=None,field_type=None,profile=None):
  seen=set()
  for sid,conf in CONFIG.items():
+  if sid=='q-113983':continue
   if conf[0]!=level or (template and sid!=template) or (field_type and conf[1]!=field_type):continue
   for p in instances(sid):
    try:_,_,_,_,model=core(sid,p,profile or 'method')
@@ -214,11 +221,15 @@ def capacity(level,template=None,field_type=None,profile=None):
    seen.add(digest([model['integrand'],model['bounds']]))
  return len(seen)
 def batch(level,seed=0,count=1,**kw):
+ if set(kw)-{'template','field_type','profile'}:raise ValueError('unsupported batch selector')
+ if level not in ('all','easy','moderate','hard'):raise ValueError('unknown batch difficulty')
  if type(seed)is not int or type(count)is not int or count<1:raise ValueError('seed/count must be strict integers; count positive')
  if level=='all':return [r for lev in ('easy','moderate','hard') for r in batch(lev,seed,count,**kw)]
  if count==1:return [generate(level,seed,**kw)]
- eligible=[k for k,v in CONFIG.items() if v[0]==level and (not kw.get('template') or k==kw['template']) and (not kw.get('field_type') or v[1]==kw['field_type'])]
- pool=[(sid,p) for sid in eligible for p in instances(sid)];random.Random(seed).shuffle(pool);out=[];seen=set()
+ eligible=[k for k,v in CONFIG.items() if v[0]==level and (k!='q-113983' or kw.get('template')==k and kw.get('profile')=='observed') and (not kw.get('template') or k==kw['template']) and (not kw.get('field_type') or v[1]==kw['field_type'])]
+ pool=[(sid,p) for sid in eligible for p in instances(sid)]
+ if count>len(pool):raise ValueError(f'count exceeds finite parameter capacity upper bound {len(pool)}')
+ random.Random(seed).shuffle(pool);out=[];seen=set()
  for sid,p in pool:
   try:r=generate(level,seed+len(out),template=sid,parameters=p,profile=kw.get('profile'),field_type=kw.get('field_type'))
   except ValueError:continue

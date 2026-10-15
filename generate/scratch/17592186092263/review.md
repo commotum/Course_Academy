@@ -1854,6 +1854,320 @@ $$
 $$
 
 
+## Original q-340954
+
+Find the slope $m$ of the tangent to the curve $y={e}^{-2{x}^{7}}$ at the point where $x=1.$
+
+$m=$
+{{field-1}}
+
+$- \frac{14}{e^{2}}$
+
+First, we express $y$ as the composite function
+
+$$
+y={e}^{u},\,u=-2{x}^{7}.
+$$
+
+Differentiating gives
+
+$$
+\frac{\text{d}y}{\text{d}u}={e}^{u},\,\frac{\text{d}u}{\text{d}x}=-14{x}^{6}.
+$$
+
+We now apply the chain rule and get
+
+$$
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\  & ={e}^{u}\cdot (-14{x}^{6}) \\  & =-14{x}^{6}{e}^{u} \\  & =-14{x}^{6}{e}^{-2{x}^{7}}.\end{aligned}
+$$
+
+Finally, to find the slope $m$ of the tangent to the curve at $x=1$, we have to evaluate $\frac{\text{d}y}{\text{d}x}$ at that point as follows:
+
+$$
+\begin{aligned}m={\frac{\text{d}y}{\text{d}x}|}_{x=1} & ={(-14{x}^{6}{e}^{-2{x}^{7}})|}_{x=1} \\  & =-14(1)^{6}{e}^{-2(1)^{7}} \\  & =-14{e}^{-2}\end{aligned}
+$$
+
+
+### Generated normal variant
+
+Find the slope $m$ of the tangent to the curve $y={e}^{3{x}^{6}}$ at the point where $x=-1.$
+
+$m=$
+{{field-1}}
+
+$- 18 e^{3}$
+
+First, we express $y$ as the composite function
+
+$$
+y={e}^{u},\,u=3{x}^{6}.
+$$
+
+Differentiating gives
+
+$$
+\frac{\text{d}y}{\text{d}u}={e}^{u},\,\frac{\text{d}u}{\text{d}x}=18{x}^{5}.
+$$
+
+We now apply the chain rule and get
+
+$$
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\  & ={e}^{u}\cdot (18{x}^{5}) \\  & =18{x}^{5}{e}^{u} \\  & =18{x}^{5}{e}^{3{x}^{6}}.\end{aligned}
+$$
+
+Finally, to find the slope $m$ of the tangent to the curve at $x=-1$, we have to evaluate $\frac{\text{d}y}{\text{d}x}$ at that point as follows:
+
+$$
+\begin{aligned}m={\frac{\text{d}y}{\text{d}x}|}_{x=-1} & ={(18{x}^{5}{e}^{3{x}^{6}})|}_{x=-1} \\  & =18(-1)^{5}{e}^{3(-1)^{6}} \\  & =-18{e}^{3}\end{aligned}
+$$
+
+
+### Generated normal variant
+
+Find the slope $m$ of the tangent to the curve $y={e}^{3{x}^{2}}$ at the point where $x=2.$
+
+$m=$
+{{field-1}}
+
+$12 e^{12}$
+
+First, we express $y$ as the composite function
+
+$$
+y={e}^{u},\,u=3{x}^{2}.
+$$
+
+Differentiating gives
+
+$$
+\frac{\text{d}y}{\text{d}u}={e}^{u},\,\frac{\text{d}u}{\text{d}x}=6x.
+$$
+
+We now apply the chain rule and get
+
+$$
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\  & ={e}^{u}\cdot (6x) \\  & =6x{e}^{u} \\  & =6x{e}^{3{x}^{2}}.\end{aligned}
+$$
+
+Finally, to find the slope $m$ of the tangent to the curve at $x=2$, we have to evaluate $\frac{\text{d}y}{\text{d}x}$ at that point as follows:
+
+$$
+\begin{aligned}m={\frac{\text{d}y}{\text{d}x}|}_{x=2} & ={(6x{e}^{3{x}^{2}})|}_{x=2} \\  & =6(2){e}^{3(2)^{2}} \\  & =12{e}^{12}\end{aligned}
+$$
+
+
+### Evidence-only observed-bank variant
+
+Find the slope $m$ of the tangent to the curve $y={e}^{-3{x}^{7}}$ at the point where $x=1.$
+
+$m=$
+{{field-1}}
+
+$- \frac{21}{e^{3}}$
+
+First, we express $y$ as the composite function
+
+$$
+y={e}^{u},\,u=-3{x}^{7}.
+$$
+
+Differentiating gives
+
+$$
+\frac{\text{d}y}{\text{d}u}={e}^{u},\,\frac{\text{d}u}{\text{d}x}=-21{x}^{6}.
+$$
+
+We now apply the chain rule and get
+
+$$
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\  & ={e}^{u}\cdot (-21{x}^{6}) \\  & =-21{x}^{6}{e}^{u} \\  & =-21{x}^{6}{e}^{-3{x}^{7}}.\end{aligned}
+$$
+
+Finally, to find the slope $m$ of the tangent to the curve at $x=1$, we have to evaluate $\frac{\text{d}y}{\text{d}x}$ at that point as follows:
+
+$$
+\begin{aligned}m={\frac{\text{d}y}{\text{d}x}|}_{x=1} & ={(-21{x}^{6}{e}^{-3{x}^{7}})|}_{x=1} \\  & =-21(1)^{6}{e}^{-3(1)^{7}} \\  & =-21{e}^{-3}\end{aligned}
+$$
+
+
+### Evidence-only observed-bank variant
+
+Find the slope $m$ of the tangent to the curve $y={e}^{-4{x}^{7}}$ at the point where $x=1.$
+
+$m=$
+{{field-1}}
+
+$- \frac{28}{e^{4}}$
+
+First, we express $y$ as the composite function
+
+$$
+y={e}^{u},\,u=-4{x}^{7}.
+$$
+
+Differentiating gives
+
+$$
+\frac{\text{d}y}{\text{d}u}={e}^{u},\,\frac{\text{d}u}{\text{d}x}=-28{x}^{6}.
+$$
+
+We now apply the chain rule and get
+
+$$
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\  & ={e}^{u}\cdot (-28{x}^{6}) \\  & =-28{x}^{6}{e}^{u} \\  & =-28{x}^{6}{e}^{-4{x}^{7}}.\end{aligned}
+$$
+
+Finally, to find the slope $m$ of the tangent to the curve at $x=1$, we have to evaluate $\frac{\text{d}y}{\text{d}x}$ at that point as follows:
+
+$$
+\begin{aligned}m={\frac{\text{d}y}{\text{d}x}|}_{x=1} & ={(-28{x}^{6}{e}^{-4{x}^{7}})|}_{x=1} \\  & =-28(1)^{6}{e}^{-4(1)^{7}} \\  & =-28{e}^{-4}\end{aligned}
+$$
+
+
+## Original q-166076
+
+Given that $y=f(h(x)),$ calculate $\frac{\text{d}y}{\text{d}x}.$
+
+$\frac{\text{d}y}{\text{d}x}\,=$
+{{field-1}}
+
+$- 2 e^{- 4 \sin{\left(x \right)}} \cos{\left(x \right)}$
+
+First, notice that $y$ is a composite function:
+
+$$
+y=\frac{1}{2}{e}^{h},\,h=-4\operatorname{sin}⁡x.
+$$
+
+Differentiating gives
+
+$$
+\frac{\text{d}y}{\text{d}h}=\frac{1}{2}{e}^{h},\,\frac{\text{d}h}{\text{d}x}=-4\operatorname{cos}⁡x.
+$$
+
+We now apply the chain rule, and get
+
+$$
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}h}\cdot \frac{\text{d}h}{\text{d}x} \\  & =\frac{1}{2}{e}^{h}\cdot (-4\operatorname{cos}⁡x) \\  & =-2{e}^{-4\operatorname{sin}⁡x}\operatorname{cos}⁡x \\  & =-\frac{2\operatorname{cos}⁡x}{{e}^{4\operatorname{sin}⁡x}}.\end{aligned}
+$$
+
+
+### Generated normal variant
+
+Given that $y=f(h(x)),$ calculate $\frac{\text{d}y}{\text{d}x}.$
+
+Here $f(h)=\frac{2}{3}e^h$ and $h(x)=-5\sin x$.
+
+$\frac{dy}{dx}=$
+{{field-1}}
+
+$- \frac{10 e^{- 5 \sin{\left(x \right)}} \cos{\left(x \right)}}{3}$
+
+First, notice that $y$ is a composite function:
+
+$$
+y=\frac{2}{3}{e}^{h},\,h=-5\operatorname{sin}⁡x.
+$$
+
+Differentiating gives
+
+$$
+\frac{\text{d}y}{\text{d}h}=\frac{2}{3}{e}^{h},\,\frac{\text{d}h}{\text{d}x}=-5\operatorname{cos}⁡x.
+$$
+
+We now apply the chain rule, and get
+
+$$
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}h}\cdot \frac{\text{d}h}{\text{d}x} \\  & =\frac{2}{3}{e}^{h}\cdot (-5\operatorname{cos}⁡x) \\  & =- \frac{10}{3}{e}^{-5\operatorname{sin}⁡x}\operatorname{cos}⁡x \\  & =-\frac{\frac{10}{3}\operatorname{cos}⁡x}{{e}^{5\operatorname{sin}⁡x}}.\end{aligned}
+$$
+
+
+### Generated normal variant
+
+Given that $y=f(h(x)),$ calculate $\frac{\text{d}y}{\text{d}x}.$
+
+Here $f(h)=\frac{1}{2}e^h$ and $h(x)=-5\sin x$.
+
+$\frac{dy}{dx}=$
+{{field-1}}
+
+$- \frac{5 e^{- 5 \sin{\left(x \right)}} \cos{\left(x \right)}}{2}$
+
+First, notice that $y$ is a composite function:
+
+$$
+y=\frac{1}{2}{e}^{h},\,h=-5\operatorname{sin}⁡x.
+$$
+
+Differentiating gives
+
+$$
+\frac{\text{d}y}{\text{d}h}=\frac{1}{2}{e}^{h},\,\frac{\text{d}h}{\text{d}x}=-5\operatorname{cos}⁡x.
+$$
+
+We now apply the chain rule, and get
+
+$$
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}h}\cdot \frac{\text{d}h}{\text{d}x} \\  & =\frac{1}{2}{e}^{h}\cdot (-5\operatorname{cos}⁡x) \\  & =- \frac{5}{2}{e}^{-5\operatorname{sin}⁡x}\operatorname{cos}⁡x \\  & =-\frac{\frac{5}{2}\operatorname{cos}⁡x}{{e}^{5\operatorname{sin}⁡x}}.\end{aligned}
+$$
+
+
+### Evidence-only observed-bank variant
+
+Given that $y=f(h(x)),$ calculate $\frac{\text{d}y}{\text{d}x}.$
+
+$\frac{\text{d}y}{\text{d}x}\,=$
+{{field-1}}
+
+$- \frac{5 e^{- 5 \sin{\left(x \right)}} \cos{\left(x \right)}}{3}$
+
+First, notice that $y$ is a composite function:
+
+$$
+y=\frac{1}{3}{e}^{h},\,h=-5\operatorname{sin}⁡x.
+$$
+
+Differentiating gives
+
+$$
+\frac{\text{d}y}{\text{d}h}=\frac{1}{3}{e}^{h},\,\frac{\text{d}h}{\text{d}x}=-5\operatorname{cos}⁡x.
+$$
+
+We now apply the chain rule, and get
+
+$$
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}h}\cdot \frac{\text{d}h}{\text{d}x} \\  & =\frac{1}{3}{e}^{h}\cdot (-5\operatorname{cos}⁡x) \\  & =- \frac{5}{3}{e}^{-5\operatorname{sin}⁡x}\operatorname{cos}⁡x \\  & =-\frac{\frac{5}{3}\operatorname{cos}⁡x}{{e}^{5\operatorname{sin}⁡x}}.\end{aligned}
+$$
+
+
+### Evidence-only observed-bank variant
+
+Given that $y=f(h(x)),$ calculate $\frac{\text{d}y}{\text{d}x}.$
+
+$\frac{\text{d}y}{\text{d}x}\,=$
+{{field-1}}
+
+$- 2 e^{- 6 \sin{\left(x \right)}} \cos{\left(x \right)}$
+
+First, notice that $y$ is a composite function:
+
+$$
+y=\frac{1}{3}{e}^{h},\,h=-6\operatorname{sin}⁡x.
+$$
+
+Differentiating gives
+
+$$
+\frac{\text{d}y}{\text{d}h}=\frac{1}{3}{e}^{h},\,\frac{\text{d}h}{\text{d}x}=-6\operatorname{cos}⁡x.
+$$
+
+We now apply the chain rule, and get
+
+$$
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}h}\cdot \frac{\text{d}h}{\text{d}x} \\  & =\frac{1}{3}{e}^{h}\cdot (-6\operatorname{cos}⁡x) \\  & =-2{e}^{-6\operatorname{sin}⁡x}\operatorname{cos}⁡x \\  & =-\frac{2\operatorname{cos}⁡x}{{e}^{6\operatorname{sin}⁡x}}.\end{aligned}
+$$
+
+
 ## Original q-48629
 
 Find ${f}^{′}(x)$ for $f(x)={e}^{8-2{x}^{3}}.$
@@ -2146,39 +2460,35 @@ $$
 
 ## Authored hard variants
 
-Find the slope $m$ of the tangent to the curve $y=e^{{x}^{3}+{x}^{2}+4}$ at the point where $x=2.$
+Find the slope $m$ of the tangent to the curve $y=e^{{x}^{3}+2{x}^{2}+3}$ at the point where $x=-2.$
 
 $m=$
 {{field-1}}
 
-$16 e^{16}$
-$e^{16}$
-$16$
-$\frac{16}{e^{16}}$
-$- 16 e^{16}$
+$4 e^{3}$
 
 First, we express $y$ as the composite function
 
 $$
-y=e^{u},\,u={x}^{3}+{x}^{2}+4.
+y=e^{u},\,u={x}^{3}+2{x}^{2}+3.
 $$
 
 Differentiating gives
 
 $$
-\frac{\text{d}y}{\text{d}u}=e^{u},\,\frac{\text{d}u}{\text{d}x}=3{x}^{2}+2x.
+\frac{\text{d}y}{\text{d}u}=e^{u},\,\frac{\text{d}u}{\text{d}x}=3{x}^{2}+4x.
 $$
 
 We now apply the chain rule and get
 
 $$
-\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\ & =e^{u}\cdot (3{x}^{2}+2x) \\ & =(3{x}^{2}+2x)e^{u} \\ & =\left(3 x^{2} + 2 x\right) e^{x^{3} + x^{2} + 4}.\end{aligned}
+\begin{aligned}\frac{\text{d}y}{\text{d}x} & =\frac{\text{d}y}{\text{d}u}\cdot \frac{\text{d}u}{\text{d}x} \\ & =e^{u}\cdot (3{x}^{2}+4x) \\ & =(3{x}^{2}+4x)e^{u} \\ & =\left(3 x^{2} + 4 x\right) e^{x^{3} + 2 x^{2} + 3}.\end{aligned}
 $$
 
-Finally, to find the slope $m$ of the tangent to the curve at $x=2$, we have to evaluate $\frac{\text{d}y}{\text{d}x}$ at that point as follows:
+Finally, to find the slope $m$ of the tangent to the curve at $x=-2$, we have to evaluate $\frac{\text{d}y}{\text{d}x}$ at that point as follows:
 
 $$
-\begin{aligned}m=\frac{\text{d}y}{\text{d}x}|_{x=2} & =(3{x}^{2}+2x)e^{{x}^{3}+{x}^{2}+4}|_{x=2} \\ & =(3(2)^{2}+2(2))e^{(2)^{3}+(2)^{2}+4} \\ & =16\cdot e^{16} \\ & =16 e^{16}.\end{aligned}
+\begin{aligned}m=\frac{\text{d}y}{\text{d}x}|_{x=-2} & =(3{x}^{2}+4x)e^{{x}^{3}+2{x}^{2}+3}|_{x=-2} \\ & =(3(-2)^{2}+4(-2))e^{(-2)^{3}+2(-2)^{2}+3} \\ & =4\cdot e^{3} \\ & =4 e^{3}.\end{aligned}
 $$
 
 Find the slope $m$ of the tangent to the curve $y=e^{3{x}^{3}+3{x}^{2}+1}$ at the point where $x=-2.$
@@ -2187,10 +2497,6 @@ $m=$
 {{field-1}}
 
 $\frac{24}{e^{11}}$
-$e^{-11}$
-$24$
-$24 e^{11}$
-$- \frac{24}{e^{11}}$
 
 First, we express $y$ as the composite function
 

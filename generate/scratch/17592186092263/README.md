@@ -9,3 +9,6 @@ Validation independently parses displayed exponent, composite definitions, outer
 Known evidence limits: q-48628 lacks its key, solution and level; q-167329/q-167783 omit definitions; q-340955 is a linear-exponent exception; four historical banks have underdetermined error intent. See extraction and validation.json for separate denominators.
 
 Normal trig blanks use explicit product/negative reciprocal fragments around the widget; deep source indentation and the ambiguous table are retained only in raw evidence. validation.json records current generator/validator SHA-256 hashes and separately describes these presentation repairs.
+
+
+Current replenishment: `replenish.py` captures inventory/source evidence, checks exact mathematical and native grading results, previews the additive transaction with writer validation, saves its exact request and basis guard, submits through the existing Database integration, and verifies at db-after while holding the application api.lock. The current-source refresh includes 16 practice records. Only this KP package, registration and generated questions are in scope. See reference/replenishment for requests, receipts, complete readbacks and remaining shortages.

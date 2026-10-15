@@ -7,6 +7,7 @@ moderate/hard are authored coefficient calibrations of the same c/x method.
 """
 import argparse
 import hashlib
+import importlib.util
 import json
 import random
 import re
@@ -15,8 +16,14 @@ import uuid
 from pathlib import Path
 import sympy as sp
 ROOT=Path(__file__).resolve().parents[2]
-sys.path.insert(0,str(ROOT/'scripts/question_capture'))
-from math_format import normalize_prose, normalize_tex, checked_math_content, validate_generated_record
+# Freeze formatter semantics with this private draft; never import the live helper.
+_formatter_path=Path(__file__).with_suffix('')/'math_format.py'
+_formatter_spec=importlib.util.spec_from_file_location('reciprocal_private_math_format',_formatter_path)
+_formatter=importlib.util.module_from_spec(_formatter_spec)
+_formatter_spec.loader.exec_module(_formatter)
+normalize_prose=_formatter.normalize_prose
+normalize_tex=_formatter.normalize_tex
+validate_generated_record=_formatter.validate_generated_record
 KP_ID=17592186105715
 KP_UUID='cf98ee24-7774-5674-8a1e-63f4f6d225c0'
 TITLE='Integrating a Reciprocal Function'
@@ -112,7 +119,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  key=json.dumps([VERSION,level,problem,solution,sorted(values),profile],separators=(',',':'))
  qid=uid('question:'+key);fid=uid('field:'+qid+':selection')
  answers=[{':answer/id':uid('answer:'+fid+':'+v),':answer/type':':answer.type/math',':answer/value':v} for v in values]
- correct=answers[t['correct_index']][':answer/id'];rng.shuffle(answers)
+ correct=answers[t['correct_index']][':answer/id']
+ # Option ordering depends only on recorded seed, never on optional sampler calls.
+ random.Random(seed).shuffle(answers)
  field={':answer-field/id':fid,':answer-field/key':t['field_key'],':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}
  q={':question/id':qid,':question/problem':problem,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+level,':question/answer-fields':[field]}
  if profile=='raw' and template=='q-29934':

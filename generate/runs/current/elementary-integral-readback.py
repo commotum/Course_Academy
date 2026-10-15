@@ -7,6 +7,7 @@ independent choices. Formal integral inputs remain explicit parsed operands.
 import importlib.util,re
 from pathlib import Path
 import sympy as s
+from functools import lru_cache
 z=importlib.util.spec_from_file_location('root_elem_scalar',Path(__file__).with_name('ode-scalar-parser.py'));P=importlib.util.module_from_spec(z);z.loader.exec_module(P)
 x,u,C=P.x,P.u,P.v
 class RealLogAbs(s.Function):
@@ -15,8 +16,9 @@ class RealLogAbs(s.Function):
   return 1/self.args[0]
 DIFF=r'(?:\\(?:text|mathrm|textrm)\{d\}|d)\s*([xyzut])'
 def clean(t):
- t=t.strip().rstrip('.,?').replace(r'\u2061','').replace('⁡','').replace(r'\left','').replace(r'\right','').replace(r'\,','').replace(r'\!','').replace(r'\;','').replace(r'\dfrac',r'\frac').replace(r'\mid','|').replace(r'\lvert','|').replace(r'\rvert','|')
- t=re.sub(r'\|([^|]+)\|',r'Abs(\1)',t);return re.sub(r'(?<![A-Za-z\\])C(?![A-Za-z])','v',t)
+ t=t.strip().replace(r'\u2061','').replace('⁡','').replace(r'\left','').replace(r'\right','').replace(r'\,','').replace(r'\!','').replace(r'\;','').replace(r'\dfrac',r'\frac').replace(r'\mid','|').replace(r'\lvert','|').replace(r'\rvert','|')
+ t=re.sub(r'\|([^|]+)\|',r'Abs(\1)',t);return re.sub(r'(?<![A-Za-z\\])C(?![A-Za-z])','v',t).strip().rstrip('.,?')
+@lru_cache(maxsize=30000)
 def scalar(t):
  t=clean(t)
  while (m:=re.search(r'\\sqrt\[(\d+)\]',t)):
@@ -30,7 +32,10 @@ def eq(a,b,positive=False):
  if d==0:return True
  if positive:d=s.powdenest(d,force=True)
  return s.simplify(d)==0
+def fraction_measure(t):
+ return re.sub(r'\\frac\{((?:\\(?:text|mathrm|textrm)\{d\}|d)\s*[xyzut])\}\{([^{}]+)\}',lambda m:r'\frac{1}{'+m[2]+'}'+m[1],t)
 def integrand(t):
+ t=fraction_measure(t)
  m=re.search(r'\\int\s*(.*?)'+DIFF,t,re.S);assert m,('missing actual integral',t);body=m[1].strip();body=body[:-len(r'\cdot')]if body.endswith(r'\cdot')else body
  return scalar(body)if body else s.Integer(1),P.locals_[m[2]],m
 def prompt(t):
@@ -46,7 +51,7 @@ def derivative(value,var,inner=None):
  result=s.diff(value,var)
  return result.replace(lambda f:f.func==RealLogAbs,lambda f:s.log(s.Abs(f.args[0])))
 def side(t,var=x,inner=None,positive=False):
- text=re.sub(r'\\(?:begin|end)\{aligned\}','',t).replace('&','').strip().rstrip('.,');formal=[]
+ text=fraction_measure(re.sub(r'\\(?:begin|end)\{aligned\}','',t).replace('&','').strip().rstrip('.,'));formal=[]
  while r'\int'in text:
   start=text.index(r'\int');body,v,m=integrand(text[start:]);assert len(formal)<3
   token=['i','j','k'][len(formal)];symbol=P.locals_[token];formal.append((symbol,body,v));text=text[:start]+'('+token+')'+text[start+m.end():]
@@ -56,6 +61,7 @@ def side(t,var=x,inner=None,positive=False):
   if v==u:assert inner is not None;effective=body.subs(u,inner)*s.diff(inner,var)
   else:assert v==var,('stale differential variable',v,var);effective=body
   actual+=coeff*effective;inputs.append((body,v,coeff))
+ if formal:rest=s.simplify(rest)
  assert not rest.has(*[z[0]for z in formal]),('unsupported formal integral tree',t,rest)
  actual+=derivative(rest,var,inner)
  if positive:actual=s.powdenest(actual,force=True)

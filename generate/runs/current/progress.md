@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 36**, **qa_passed: 357**, **queued: 184**, **working: 3**.
+**needs_revalidation: 36**, **qa_passed: 359**, **queued: 182**, **working: 3**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -143,11 +143,11 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186059677](../../scratch/17592186059677.py) | Second and Higher-Order Derivatives | Computing Second Order Derivatives | 8 / 1 / 2 / 2 | qa_passed | [Report](qa/17592186059677.json) |
 | [17592186059679](../../scratch/17592186059679.py) | Second and Higher-Order Derivatives | Computing Higher Order Derivatives | 4 / 4 / 2 / 1 | qa_passed | [Report](qa/17592186059679.json) |
 | [17592186059678](../../scratch/17592186059678-draft.py) | Second and Higher-Order Derivatives | Computing Second Order Derivatives Using Leibnitz Notation | 7 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186059678.json) |
-| [17592186105716](../../scratch/17592186105716.py) | Integrating the Reciprocal Function | Integrating the Sum of a Reciprocal Function and a Power Function | 5 / 1 / 1 / 2 | working | — |
+| [17592186105716](../../scratch/17592186105716.py) | Integrating the Reciprocal Function | Integrating the Sum of a Reciprocal Function and a Power Function | 5 / 1 / 1 / 2 | qa_passed | [Report](qa/17592186105716.json) |
 | [17592186184351](../../scratch/17592186184351.py) | Integrating Exponential Functions Using Substitution | More Complex Cases | 1 / 3 / 3 / 1 | working | — |
-| [17592186184352](../../scratch/17592186184352.py) | Integrating Exponential Functions Using Substitution | Evaluating Definite Integrals | 3 / 3 / 1 / 1 | working | — |
-| [17592186105715](../../scratch/17592186105715.py) | Integrating the Reciprocal Function | Integrating a Reciprocal Function | 8 / 0 / 0 / 1 | queued | — |
-| 17592186068916 | Integrating Trigonometric Functions Using Substitution | Integrating Reciprocal Trigonometric Functions With Linear Arguments | 3 / 2 / 4 / 1 | queued | — |
+| [17592186184352](../../scratch/17592186184352.py) | Integrating Exponential Functions Using Substitution | Evaluating Definite Integrals | 3 / 3 / 1 / 1 | qa_passed | [Report](qa/17592186184352.json) |
+| [17592186105715](../../scratch/17592186105715.py) | Integrating the Reciprocal Function | Integrating a Reciprocal Function | 8 / 0 / 0 / 1 | working | — |
+| [17592186068916](../../scratch/17592186068916.py) | Integrating Trigonometric Functions Using Substitution | Integrating Reciprocal Trigonometric Functions With Linear Arguments | 3 / 2 / 4 / 1 | working | — |
 | [17592186064203](../../scratch/17592186064203.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Positive Integer Exponent | 5 / 5 / 0 / 2 | queued | — |
 | [17592186064204](../../scratch/17592186064204.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Negative Integer Exponent | 5 / 5 / 0 / 1 | queued | — |
 | [17592186064205](../../scratch/17592186064205.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Fractional Exponent | 0 / 5 / 5 / 1 | queued | — |

@@ -85,7 +85,9 @@ def validate_record(r):
  if ':answer-field/correct' in f:
   a=next(a for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1]);assert equal(read(a[':answer/value']),expected),(template,'answer',a[':answer/value'],expected)
  else:assert meta['evidence_only'] and template=='q-48628'
- if f[':answer-field/type'].endswith('/blank'):assert '{{'+f[':answer-field/key']+'}}' in prompt
+ if f[':answer-field/type'].endswith('/blank'):
+  assert '{{'+f[':answer-field/key']+'}}' in prompt
+  assert len(values)==1,'Blank must contain only its canonical answer fragment'
  if kind.startswith('trig') and not meta['evidence_only']:
   assert not any(line.startswith('    ') for line in prompt.splitlines())
   assert '| --- |' not in prompt
@@ -241,7 +243,7 @@ def main():
     n=p['n'];a=p['a'];b=p['b'];c=p['c'];power=p.get('m',1)
     if kind=='slope':
      t=p['t'];w=a*t**n+b*t**power+c;v=a*n*t**(n-1)+b*power*t**(power-1)
-     if abs(w)>40 or abs(v)>100 or v==0:continue
+     if abs(w)>12 or abs(v)>100 or v==0:continue
      if m.default_field(template)=='radio' and (w==0 or v in (-1,1)):continue
     else:t=None
     tasks.add((kind,tuple(sorted([(n,a)]+([(power,b)] if b else [])+([(0,c)] if c else []))),t))

@@ -50,3 +50,17 @@ The two trig fragment layouts require distinct correct fragments but assess the 
 ## Minimal normal presentation repair (revision 2)
 
 Raw public replay remains byte-exact for all 14 prompts and 13 captured solutions. In normal q-167329, incidental deep indentation is removed and the coefficient widget is followed by an explicit multiplication sign and e^g. In normal q-167783, the ambiguous legacy 2×2 table is replaced by dy/dx=−(numerator widget)/e^(−g). Ordinary parentheses span the math fragments around the widget. The supplied leading minus and reciprocal positive exponent are preserved. There is no new helper variable, bank, mathematical branch or worked-solution change. Validation reinserts the actual printed correct fragment into each complete displayed relation and independently checks equality with the derivative of the printed f,h, including changed parameters and sign/factor mutation regressions.
+
+
+## Current-source additions
+
+q-166076 supplies a full derivative blank, with correct value -2e^(-4 sin x) cos x; its four derivative rows also present the equivalent reciprocal-exponential form. Its reusable mathematical slots are a negative integer sine multiplier and a rational outer coefficient, with exactly the trig bounds already declared. The whole derivative, not either partial fragment, is the answer. All fixed prose and operative solution stages are retained. The prompt's missing definitions are completed in normal presentation; raw replay keeps the omission. There is no distractor bank.
+
+q-340954 supplies y=e^(-2x^7), evaluates at x=1 and expects -14/e^2. Replay admits the observed seventh power and retains every derivative and evaluation row. Normal samples conservatively use the existing 2..6 exponent bound, integer coefficients and familiar nonzero integer evaluation points; this narrower sampling policy retains the same method and workload. Seventh-power replay is supported evidence, not a newly claimed difficulty level. There is no distractor bank.
+
+Meaningful-task deduplication merges all three trigonometric layouts at identical f,h and merges derivative syntax aliases. All candidates are also compared against every current practice and canonical task, including seen and incomplete records; those records never become newly generated variants through identity or profile changes. The fixed sine input x is retained because general inner functions could add derivative operations absent from these source chains.
+
+
+## Native-grader bound established during replenishment
+
+Hard blanks now have exactly one field-owned canonical answer; no hidden distractor bank. All normal tangent samplers restrict the evaluated exponent to |g(t)| <= 12 while retaining |g'(t)| <= 100, nonzero slope and the previously declared structural bounds. This conservative policy follows a native grader failure for -72e^39 submitted as 0: the engine returned unresolved rather than rejected. Source replay remains unchanged and permits its observed parameters. This is a sampling capability bound, not evidence of a new difficulty or permission to alter the grader. The revised finite catalogs and current selected-instance native checks are recorded in validation.json and reference/replenishment.

@@ -336,6 +336,28 @@ pub fn unavailable_questions(s: &EntitySnapshot, learner: u64) -> Result<BTreeSe
     Ok(unavailable)
 }
 
+/// Opening the first presentation does not establish lesson progress. Keep
+/// its timing/exposure record when returning the task to an unstarted state.
+pub fn lesson_has_no_progress(s: &EntitySnapshot, task: u64) -> Result<bool> {
+    let activity = s.reference(task, "learner-task/activity")?;
+    if ident(s, activity, "activity/type")? != "activity.type/lesson" {
+        return Ok(false);
+    }
+    let chain = ordered_presentations(s, task)?;
+    if chain.len() > 1 {
+        return Ok(false);
+    }
+    for item in chain {
+        if !matches!(ident(s, item, "task-item/status")?.as_str(),
+            "task-item.status/started" | "task-item.status/paused")
+            || !s.refs(item, "task-item/responses")?.is_empty()
+        {
+            return Ok(false);
+        }
+    }
+    Ok(true)
+}
+
 fn task_learner(s: &EntitySnapshot, items: &[u64]) -> Result<Option<u64>> {
     let Some(item) = items.first() else {
         return Ok(None);
@@ -1369,6 +1391,7 @@ fn plan_candidates_in_scope(
     practiced.retain(|topic| !relearn.contains(topic));
     let mut finished = BTreeSet::new();
     let mut active = BTreeMap::new();
+    let mut unstarted = BTreeMap::new();
     for task in s.refs(learner, "learner/activity")? {
         let status = ident(s, task, "learner-task/status")?;
         if status == "learner-task.status/completed" {
@@ -1383,6 +1406,12 @@ fn plan_candidates_in_scope(
             "learner-task.status/started" | "learner-task.status/paused"
         ) {
             active.insert(s.reference(task, "learner-task/activity")?, task);
+        } else if matches!(status.as_str(), "learner-task.status/locked" | "learner-task.status/unlocked")
+            && lesson_has_no_progress(s, task)?
+        {
+            if let Some(item) = ordered_presentations(s, task)?.last() {
+                unstarted.insert(s.reference(task, "learner-task/activity")?, s.reference(*item, "task-item/content")?);
+            }
         }
     }
     let lifecycle = crate::scheduling::lifecycle(s, learner)?;
@@ -1452,7 +1481,8 @@ fn plan_candidates_in_scope(
                     < minimum_fresh
             }
             "question" => {
-                seen.contains(&step.content) || validate_question(s, step.content).is_err()
+                let saved = unstarted.get(&activity) == Some(&step.content);
+                (seen.contains(&step.content) && !saved) || validate_question(s, step.content).is_err()
             }
             _ => false,
         }) {

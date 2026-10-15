@@ -113,7 +113,7 @@ def prepare(template,parameters,observed):
    if template=='two_power_slope':
     if p['n'] not in (3,4) or p['m']!=2 or not 1<=abs(p['a'])<=3 or not 1<=abs(p['b'])<=3 or p['t'] not in (-2,2) or abs(p['c'])>4:raise ValueError('Hard requires two nonlinear powers and nonunit evaluation')
    g,d,_,ans=mathdata(p,kind)
-   if kind=='slope' and (abs(g.subs(X,p['t']))>40 or abs(d.subs(X,p['t']))>100 or d.subs(X,p['t'])==0):raise ValueError('Evaluation arithmetic bounds or degenerate slope')
+   if kind=='slope' and (abs(g.subs(X,p['t']))>12 or abs(d.subs(X,p['t']))>100 or d.subs(X,p['t'])==0):raise ValueError('Evaluation arithmetic bounds or degenerate slope')
  return p,kind,level
 
 def rendered_components(p,kind):
@@ -189,7 +189,7 @@ def authored_solution(p,kind,name='y'):
 
 def bank(template,p,kind,observed):
  g,d,f,ans,_,_=rendered_components(p,kind);a=p['a'];n=p.get('n');b=p.get('b',0);c=p.get('c',0);E=s.exp(g)
- if kind.startswith('trig') or (template in SRC and SRC[template][':question/answer-fields'][0][':answer-field/type'][':db/ident'].endswith('/blank')):return [ans]
+ if template=='two_power_slope' or kind.startswith('trig') or (template in SRC and SRC[template][':question/answer-fields'][0][':answer-field/type'][':db/ident'].endswith('/blank')):return [ans]
  if not observed:
   if kind=='slope':
    t=p['t'];v=d.subs(X,t);w=g.subs(X,t)
