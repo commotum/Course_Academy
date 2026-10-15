@@ -1,204 +1,25 @@
-# Four-stage template extraction
+# Current template extraction
 
-Source: `math`, basis **1356**, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. Immutable source capture retained in `source.json`.
+Source basis 2710. This supersedes the archived basis-1356 extraction. All parameters, source choice recipes and component masks are in templates.json and source-cases.json.
 
+## Backbone and slots
 
-## 1. Specific source descriptions
+Easy has one supplied ambient S and direct proportionality. Moderate has supplied initial I and ambient S, preserves the stated positive constant k, and identifies S rather than I in -k(T-S). Fixed: one complete-equation selection field, five options, generic Newton equation then numerical substitution. Changing operations, adding observed readings, fitting k or solving the ODE is outside the backbone.
 
-### q-105917
+S is an integer ambient: 10–40 Celsius or 50–85 Fahrenheit. These are conservative sampling bounds; all observed parameters remain replayable. I varies within context-specific bounds (thermometer 90–110 F, turkey 120–180 F, soup 140–212 F, water 40–99 C, straightener 200–450 F), with I>=S+10. I affects prompt and complete-bank recipes but is excluded from task identity because I alone does not change the assessed model. Scale/context remain tied to their source masks.
 
-Original parameters: `{"S": 25}`; temperature scale C; t>0 minutes; k>0. One five-option radio field, answer is the complete differential equation (not a fragment). No initial reading supplied; cooling entails T above ambient. Explicit difference proportionality determines model.
+Distinct task key: ambient, scale and number of supplied temperatures. Context, initial reading alone, seed, choice order and distractor profile do not establish another task. Finite policy domains: easy 31, moderate 67 before excluding existing/seen/reserved content. Canonical ambient/role keys also exclude duplicates. No plots are present; steps 5 and 7 require no new assets.
 
-The rate at which a liquid cools is proportional to the difference between its temperature and the temperature of its surroundings. Let $T(t)$ be the temperature of the liquid in degrees Celsius, and let $t > 0$ be the time in minutes. If the temperature of the surroundings is $25^{∘}C$, which differential equation could be used to model the temperature of the liquid? Assume that $k > 0$ is a constant of proportionality.
+## q-105917
 
-Original fixed worked solution:
+Observed parameters: {"S": 25}. Unit C. All slots occur in the exact source prompt, shared worked solution and observed whole bank below.
 
-**Missing in capture.** The generator supplies the shared observed two-stage solution with surrounding temperature 25°C. This is authored, not recovered.
+### Prompt mask
 
-### q-37365
+The rate at which a liquid cools is proportional to the difference between its temperature and the temperature of its surroundings. Let $T(t)$ be the temperature of the liquid in degrees Celsius, and let $t>0$ be the time in minutes. If the temperature of the surroundings is ${@@S@@}^{∘}\text{C},$ which differential equation could be used to model the temperature of the liquid? Assume that $k>0$ is a constant of proportionality.
 
-Original parameters: `{"S": 64, "I": 100}`; temperature scale F; t>0 minutes; k>0. One five-option radio field, answer is the complete differential equation (not a fragment). Initial reading is above the ambient and is context only; choose ambient, preserve stated k and negative difference.
+### Solution mask
 
-A medical doctor records the temperature of ${100}^{∘}\text{F}$ using a thermometer. After the measurement is taken, the temperature reading $T(t)$ of the thermometer decreases at a rate that obeys Newton's law of cooling. Here, $T$ is measured in degrees Fahrenheit, and $t>0$ is the time in minutes. If the room temperature is ${64}^{∘}\text{F},$ which differential equation could be used to model the thermometer reading? Assume that $k>0$ is a constant of proportionality.
-
-Original fixed worked solution:
-
-Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the differential equation
-
-$$
-\frac{\text{d}T}{\text{d}t}=-k(T-{T}_{S}),
-$$
-
-where ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.
-
-In our case, ${T}_{S}={64}^{∘}\text{F},$ and we have
-
-$$
-\frac{\text{d}T}{\text{d}t}=-k(T-64).
-$$
-
-### q-106883
-
-Original parameters: `{"S": 67, "I": 145}`; temperature scale F; t>0 minutes; k>0. One five-option radio field, answer is the complete differential equation (not a fragment). Initial reading is above the ambient and is context only; choose ambient, preserve stated k and negative difference.
-
-A turkey reaches ${145}^{∘}\text{F}$ in the oven. After removing the turkey from the oven, the turkey's temperature $T(t)$ decreases at a rate that obeys Newton's law of cooling. Here, $T$ is measured in degrees Fahrenheit, and $t>0$ is the time in minutes. If the room temperature is ${67}^{∘}\text{F},$ which differential equation could be used to model the temperature of the turkey? Assume that $k>0$ is a constant of proportionality.
-
-Original fixed worked solution:
-
-Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the differential equation
-
-$$
-\frac{\text{d}T}{\text{d}t}=-k(T-{T}_{S}),
-$$
-
-where ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.
-
-In our case, ${T}_{S}={67}^{∘}\text{F},$ and we have
-
-$$
-\frac{\text{d}T}{\text{d}t}=-k(T-67).
-$$
-
-### q-106934
-
-Original parameters: `{"S": 76, "I": 200}`; temperature scale F; t>0 minutes; k>0. One five-option radio field, answer is the complete differential equation (not a fragment). Initial reading is above the ambient and is context only; choose ambient, preserve stated k and negative difference.
-
-In a restaurant kitchen, a pot of soup reaches a temperature of ${200}^{∘}\text{F}.$ After turning off the stove, the temperature $T(t)$ of the soup decreases at a rate that obeys Newton's law of cooling. Here, $T$ is measured in degrees Fahrenheit, and $t>0$ is the time in minutes. If the kitchen temperature is ${76}^{∘}\text{F},$ which differential equation could be used to model the pot temperature? Assume that $k>0$ is a constant of proportionality.
-
-Original fixed worked solution:
-
-Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the differential equation
-
-$$
-\frac{\text{d}T}{\text{d}t}=-k(T-{T}_{S}),
-$$
-
-where ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.
-
-In our case, ${T}_{S}={76}^{∘}\text{F},$ and we have
-
-$$
-\frac{\text{d}T}{\text{d}t}=-k(T-76).
-$$
-
-### q-106935
-
-Original parameters: `{"S": 19, "I": 90}`; temperature scale C; t>0 minutes; k>0. One five-option radio field, answer is the complete differential equation (not a fragment). Initial reading is above the ambient and is context only; choose ambient, preserve stated k and negative difference.
-
-A container of water at a temperature of ${90}^{∘}\text{C}$ is placed in a room. The temperature $T(t)$ of the water decreases at a rate that obeys Newton's law of cooling. Here, $T$ is measured in degrees Celsius, and $t>0$ is the time in minutes. If the room temperature is ${19}^{∘}\text{C},$ which differential equation could be used to model the water temperature? Assume that $k>0$ is a constant of proportionality.
-
-Original fixed worked solution:
-
-Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the differential equation
-
-$$
-\frac{\text{d}T}{\text{d}t}=-k(T-{T}_{S}),
-$$
-
-where ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.
-
-In our case, ${T}_{S}={19}^{∘}\text{C},$ and we have
-
-$$
-\frac{\text{d}T}{\text{d}t}=-k(T-19).
-$$
-
-### q-106936
-
-Original parameters: `{"S": 30}`; temperature scale C; t>0 minutes; k>0. One five-option radio field, answer is the complete differential equation (not a fragment). No initial reading supplied; cooling entails T above ambient. Explicit difference proportionality determines model.
-
-The rate at which a pot of hot oil cools is proportional to the difference between its temperature and the temperature of its surroundings. Let $T(t)$ be the temperature of the liquid in degrees Celsius, and let $t>0$ be the time in minutes. If the temperature of the surroundings is ${30}^{∘}\text{C},$ which differential equation could be used to model the temperature of the oil? Assume that $k>0$ is a constant of proportionality.
-
-Original fixed worked solution:
-
-Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the differential equation
-
-$$
-\frac{\text{d}T}{\text{d}t}=-k(T-{T}_{S}),
-$$
-
-where ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.
-
-In our case, ${T}_{S}={30}^{∘}\text{C},$ and we have
-
-$$
-\frac{\text{d}T}{\text{d}t}=-k(T-30).
-$$
-
-### q-106937
-
-Original parameters: `{"S": 75, "I": 450}`; temperature scale F; t>0 minutes; k>0. One five-option radio field, answer is the complete differential equation (not a fragment). Initial reading is above the ambient and is context only; choose ambient, preserve stated k and negative difference.
-
-A hair straightener reaches a temperature of ${450}^{∘}\text{F}.$ After turning it off, the temperature $T(t)$ of the straightener decreases at a rate that obeys Newton's law of cooling. Here, $T$ is measured in degrees Fahrenheit, and $t>0$ is the time in minutes. If the room temperature is ${75}^{∘}\text{F},$ which differential equation could be used to model the straightener temperature? Assume that $k>0$ is a constant of proportionality.
-
-Original fixed worked solution:
-
-Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the differential equation
-
-$$
-\frac{\text{d}T}{\text{d}t}=-k(T-{T}_{S}),
-$$
-
-where ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.
-
-In our case, ${T}_{S}={75}^{∘}\text{F},$ and we have
-
-$$
-\frac{\text{d}T}{\text{d}t}=-k(T-75).
-$$
-
-### q-106878
-
-Original parameters: `{"S": 21}`; temperature scale C; t>0 minutes; k>0. One five-option radio field, answer is the complete differential equation (not a fragment). No initial reading supplied; cooling entails T above ambient. Explicit difference proportionality determines model.
-
-The rate at which a body cools is proportional to the difference between its temperature and the temperature of its surroundings. Let $T(t)$ be the temperature of the body in degrees Celsius, and let $t>0$ be the time in minutes. If the temperature of the surroundings is ${21}^{∘}\text{C},$ which differential equation could be used to model the temperature of the liquid? Assume that $k>0$ is a constant of proportionality.
-
-Original fixed worked solution:
-
-Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the differential equation
-
-$$
-\frac{\text{d}T}{\text{d}t}=-k(T-{T}_{S}),
-$$
-
-where ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.
-
-In our case, ${T}_{S}={21}^{∘}\text{C},$ and we have
-
-$$
-\frac{\text{d}T}{\text{d}t}=-k(T-21).
-$$
-
-## 2. General mathematical pattern
-
-Temperature T(t) decreases toward fixed surrounding temperature S. The rate is proportional to the **difference** T-S, with the stated proportionality constant k>0, so dT/dt=-k(T-S). At T=S the derivative vanishes; above S it is negative. Intermediate or initial readings do not replace S or multiply k. Answer eligibility preserves the given named k; it is equality for arbitrary fixed k>0, not free reparameterization of a family. Otherwise replacing k by a positive numerical coefficient can be interpreted as a special model. Normal output adds “Write the equation in terms of the given constant k.” Raw source wording remains unchanged.
-
-## 3. Complete component and bank map
-
-Every source choice is mapped below, in captured field order. These are observed structural parameterizations, not a claim to recover author intent. All values are symbolic whole equations, so no arbitrary fitted scalar recipes are necessary. S=ambient; I=initial; SUM=I+S. k is the given fixed constant. The complete bank is always selected together.
-
-### Bank q-105917
-
-| Field/choice | Exact original equation | Complete parameterized expression | Designation |
-|---|---|---|---|
-
-| selection/1 | `T^{′}(t) =-kT(T - 25)` | `T^{′}(t) =-kT(T - @@S@@)` | wrong |
-
-| selection/2 | `T^{′}(t) = k(T - 25)` | `T^{′}(t) = k(T - @@S@@)` | wrong |
-
-| selection/3 | `T^{′}(t) = kT(T - 25)` | `T^{′}(t) = kT(T - @@S@@)` | wrong |
-
-| selection/4 | `T^{′}(t) =-k(T - 25)` | `T^{′}(t) =-k(T - @@S@@)` | missing key; independently inferred correct |
-
-| selection/5 | `T^{′}(t) = kT(T + 25)` | `T^{′}(t) = kT(T + @@S@@)` | wrong |
-
-Prompt component mask:
-```text
-The rate at which a liquid cools is proportional to the difference between its temperature and the temperature of its surroundings. Let $T(t)$ be the temperature of the liquid in degrees Celsius, and let $t > 0$ be the time in minutes. If the temperature of the surroundings is $@@S@@^{∘}C$, which differential equation could be used to model the temperature of the liquid? Assume that $k > 0$ is a constant of proportionality.
-```
-
-Solution component mask (authored from shared observed solution):
-```text
 Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the differential equation
 
 $$
@@ -212,30 +33,31 @@ In our case, ${T}_{S}={@@S@@}^{∘}\text{C},$ and we have
 $$
 \frac{\text{d}T}{\text{d}t}=-k(T-@@S@@).
 $$
-```
 
-### Bank q-37365
+### Complete bank recipes
 
-| Field/choice | Exact original equation | Complete parameterized expression | Designation |
-|---|---|---|---|
+1. `{T}^{′}(t)=-k(T-@@S@@)`
 
-| selection/1 | `\frac{\text{d}T}{\text{d}t}=-64(T-100)` | `\frac{\text{d}T}{\text{d}t}=-@@S@@(T-@@I@@)` | wrong |
+2. `{T}^{′}(t)=-kT(T-@@S@@)`
 
-| selection/2 | `\frac{\text{d}T}{\text{d}t}=-100(T-64)` | `\frac{\text{d}T}{\text{d}t}=-@@I@@(T-@@S@@)` | wrong |
+3. `{T}^{′}(t)=k(T-@@S@@)`
 
-| selection/3 | `\frac{\text{d}T}{\text{d}t}=-k(T-100)` | `\frac{\text{d}T}{\text{d}t}=-k(T-@@I@@)` | wrong |
+4. `{T}^{′}(t)=kT(T+@@S@@)`
 
-| selection/4 | `\frac{\text{d}T}{\text{d}t}=-k(T-164)` | `\frac{\text{d}T}{\text{d}t}=-k(T-@@SUM@@)` | wrong |
+5. `{T}^{′}(t)=kT(T-@@S@@)`
 
-| selection/5 | `\frac{\text{d}T}{\text{d}t}=-k(T-64)` | `\frac{\text{d}T}{\text{d}t}=-k(T-@@S@@)` | observed correct |
+Correct recipe: -k(T-S). The remaining recipes are retained as complete displayed expressions; source replay verifies their full mathematical values, not inferred labels. Raw doubled escapes are retained for replay and normalized for normal output.
 
-Prompt component mask:
-```text
+## q-37365
+
+Observed parameters: {"S": 64, "I": 100}. Unit F. All slots occur in the exact source prompt, shared worked solution and observed whole bank below.
+
+### Prompt mask
+
 A medical doctor records the temperature of ${@@I@@}^{∘}\text{F}$ using a thermometer. After the measurement is taken, the temperature reading $T(t)$ of the thermometer decreases at a rate that obeys Newton's law of cooling. Here, $T$ is measured in degrees Fahrenheit, and $t>0$ is the time in minutes. If the room temperature is ${@@S@@}^{∘}\text{F},$ which differential equation could be used to model the thermometer reading? Assume that $k>0$ is a constant of proportionality.
-```
 
-Solution component mask (observed):
-```text
+### Solution mask
+
 Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the differential equation
 
 $$
@@ -249,30 +71,31 @@ In our case, ${T}_{S}={@@S@@}^{∘}\text{F},$ and we have
 $$
 \frac{\text{d}T}{\text{d}t}=-k(T-@@S@@).
 $$
-```
 
-### Bank q-106883
+### Complete bank recipes
 
-| Field/choice | Exact original equation | Complete parameterized expression | Designation |
-|---|---|---|---|
+1. `\frac{\text{d}T}{\text{d}t}=-@@S@@(T-@@I@@)`
 
-| selection/1 | `\frac{\text{d}T}{\text{d}t}=-67(T-145)` | `\frac{\text{d}T}{\text{d}t}=-@@S@@(T-@@I@@)` | wrong |
+2. `\frac{\text{d}T}{\text{d}t}=-@@I@@(T-@@S@@)`
 
-| selection/2 | `\frac{\text{d}T}{\text{d}t}=-145(T-67)` | `\frac{\text{d}T}{\text{d}t}=-@@I@@(T-@@S@@)` | wrong |
+3. `\frac{\text{d}T}{\text{d}t}=-k(T-@@I@@)`
 
-| selection/3 | `\frac{\text{d}T}{\text{d}t}=-kT(T-67)` | `\frac{\text{d}T}{\text{d}t}=-kT(T-@@S@@)` | wrong |
+4. `\frac{\text{d}T}{\text{d}t}=-k(T-@@SUM@@)`
 
-| selection/4 | `\frac{\text{d}T}{\text{d}t}=-k(T-67)` | `\frac{\text{d}T}{\text{d}t}=-k(T-@@S@@)` | observed correct |
+5. `\frac{\text{d}T}{\text{d}t}=-k(T-@@S@@)`
 
-| selection/5 | `\frac{\text{d}T}{\text{d}t}=-k(T-145)` | `\frac{\text{d}T}{\text{d}t}=-k(T-@@I@@)` | wrong |
+Correct recipe: -k(T-S). The remaining recipes are retained as complete displayed expressions; source replay verifies their full mathematical values, not inferred labels. Raw doubled escapes are retained for replay and normalized for normal output.
 
-Prompt component mask:
-```text
+## q-106883
+
+Observed parameters: {"S": 67, "I": 145}. Unit F. All slots occur in the exact source prompt, shared worked solution and observed whole bank below.
+
+### Prompt mask
+
 A turkey reaches ${@@I@@}^{∘}\text{F}$ in the oven. After removing the turkey from the oven, the turkey's temperature $T(t)$ decreases at a rate that obeys Newton's law of cooling. Here, $T$ is measured in degrees Fahrenheit, and $t>0$ is the time in minutes. If the room temperature is ${@@S@@}^{∘}\text{F},$ which differential equation could be used to model the temperature of the turkey? Assume that $k>0$ is a constant of proportionality.
-```
 
-Solution component mask (observed):
-```text
+### Solution mask
+
 Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the differential equation
 
 $$
@@ -286,30 +109,31 @@ In our case, ${T}_{S}={@@S@@}^{∘}\text{F},$ and we have
 $$
 \frac{\text{d}T}{\text{d}t}=-k(T-@@S@@).
 $$
-```
 
-### Bank q-106934
+### Complete bank recipes
 
-| Field/choice | Exact original equation | Complete parameterized expression | Designation |
-|---|---|---|---|
+1. `\frac{\text{d}T}{\text{d}t}=-@@S@@(T-@@I@@)`
 
-| selection/1 | `\frac{\text{d}T}{\text{d}t}=-76k(T-200)` | `\frac{\text{d}T}{\text{d}t}=-@@S@@k(T-@@I@@)` | wrong |
+2. `\frac{\text{d}T}{\text{d}t}=-@@I@@(T-@@S@@)`
 
-| selection/2 | `\frac{\text{d}T}{\text{d}t}=-k(T-200)` | `\frac{\text{d}T}{\text{d}t}=-k(T-@@I@@)` | wrong |
+3. `\frac{\text{d}T}{\text{d}t}=-kT(T-@@S@@)`
 
-| selection/3 | `\frac{\text{d}T}{\text{d}t}=-k(T-76)` | `\frac{\text{d}T}{\text{d}t}=-k(T-@@S@@)` | observed correct |
+4. `\frac{\text{d}T}{\text{d}t}=-k(T-@@S@@)`
 
-| selection/4 | `\frac{\text{d}T}{\text{d}t}=-200(T-76)` | `\frac{\text{d}T}{\text{d}t}=-@@I@@(T-@@S@@)` | wrong |
+5. `\frac{\text{d}T}{\text{d}t}=-k(T-@@I@@)`
 
-| selection/5 | `\frac{\text{d}T}{\text{d}t}=200k(T-76)` | `\frac{\text{d}T}{\text{d}t}=@@I@@k(T-@@S@@)` | wrong |
+Correct recipe: -k(T-S). The remaining recipes are retained as complete displayed expressions; source replay verifies their full mathematical values, not inferred labels. Raw doubled escapes are retained for replay and normalized for normal output.
 
-Prompt component mask:
-```text
+## q-106934
+
+Observed parameters: {"S": 76, "I": 200}. Unit F. All slots occur in the exact source prompt, shared worked solution and observed whole bank below.
+
+### Prompt mask
+
 In a restaurant kitchen, a pot of soup reaches a temperature of ${@@I@@}^{∘}\text{F}.$ After turning off the stove, the temperature $T(t)$ of the soup decreases at a rate that obeys Newton's law of cooling. Here, $T$ is measured in degrees Fahrenheit, and $t>0$ is the time in minutes. If the kitchen temperature is ${@@S@@}^{∘}\text{F},$ which differential equation could be used to model the pot temperature? Assume that $k>0$ is a constant of proportionality.
-```
 
-Solution component mask (observed):
-```text
+### Solution mask
+
 Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the differential equation
 
 $$
@@ -323,30 +147,31 @@ In our case, ${T}_{S}={@@S@@}^{∘}\text{F},$ and we have
 $$
 \frac{\text{d}T}{\text{d}t}=-k(T-@@S@@).
 $$
-```
 
-### Bank q-106935
+### Complete bank recipes
 
-| Field/choice | Exact original equation | Complete parameterized expression | Designation |
-|---|---|---|---|
+1. `\frac{\text{d}T}{\text{d}t}=-@@S@@k(T-@@I@@)`
 
-| selection/1 | `\frac{\text{d}T}{\text{d}t}=-k(T-19)` | `\frac{\text{d}T}{\text{d}t}=-k(T-@@S@@)` | observed correct |
+2. `\frac{\text{d}T}{\text{d}t}=-k(T-@@I@@)`
 
-| selection/2 | `\frac{\text{d}T}{\text{d}t}=-90(T-19)` | `\frac{\text{d}T}{\text{d}t}=-@@I@@(T-@@S@@)` | wrong |
+3. `\frac{\text{d}T}{\text{d}t}=-k(T-@@S@@)`
 
-| selection/3 | `\frac{\text{d}T}{\text{d}t}=-90k(T-19)` | `\frac{\text{d}T}{\text{d}t}=-@@I@@k(T-@@S@@)` | wrong |
+4. `\frac{\text{d}T}{\text{d}t}=-@@I@@(T-@@S@@)`
 
-| selection/4 | `\frac{\text{d}T}{\text{d}t}=-19k(T-90)` | `\frac{\text{d}T}{\text{d}t}=-@@S@@k(T-@@I@@)` | wrong |
+5. `\frac{\text{d}T}{\text{d}t}=@@I@@k(T-@@S@@)`
 
-| selection/5 | `\frac{\text{d}T}{\text{d}t}=-k(T-90)` | `\frac{\text{d}T}{\text{d}t}=-k(T-@@I@@)` | wrong |
+Correct recipe: -k(T-S). The remaining recipes are retained as complete displayed expressions; source replay verifies their full mathematical values, not inferred labels. Raw doubled escapes are retained for replay and normalized for normal output.
 
-Prompt component mask:
-```text
+## q-106935
+
+Observed parameters: {"S": 19, "I": 90}. Unit C. All slots occur in the exact source prompt, shared worked solution and observed whole bank below.
+
+### Prompt mask
+
 A container of water at a temperature of ${@@I@@}^{∘}\text{C}$ is placed in a room. The temperature $T(t)$ of the water decreases at a rate that obeys Newton's law of cooling. Here, $T$ is measured in degrees Celsius, and $t>0$ is the time in minutes. If the room temperature is ${@@S@@}^{∘}\text{C},$ which differential equation could be used to model the water temperature? Assume that $k>0$ is a constant of proportionality.
-```
 
-Solution component mask (observed):
-```text
+### Solution mask
+
 Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the differential equation
 
 $$
@@ -360,30 +185,31 @@ In our case, ${T}_{S}={@@S@@}^{∘}\text{C},$ and we have
 $$
 \frac{\text{d}T}{\text{d}t}=-k(T-@@S@@).
 $$
-```
 
-### Bank q-106936
+### Complete bank recipes
 
-| Field/choice | Exact original equation | Complete parameterized expression | Designation |
-|---|---|---|---|
+1. `\frac{\text{d}T}{\text{d}t}=-k(T-@@S@@)`
 
-| selection/1 | `\frac{\text{d}T}{\text{d}t}=k(T-30)` | `\frac{\text{d}T}{\text{d}t}=k(T-@@S@@)` | wrong |
+2. `\frac{\text{d}T}{\text{d}t}=-@@I@@(T-@@S@@)`
 
-| selection/2 | `\frac{\text{d}T}{\text{d}t}=-kT(T-30)` | `\frac{\text{d}T}{\text{d}t}=-kT(T-@@S@@)` | wrong |
+3. `\frac{\text{d}T}{\text{d}t}=-@@I@@k(T-@@S@@)`
 
-| selection/3 | `\frac{\text{d}T}{\text{d}t}=-k(30-T)` | `\frac{\text{d}T}{\text{d}t}=-k(@@S@@-T)` | wrong |
+4. `\frac{\text{d}T}{\text{d}t}=-@@S@@k(T-@@I@@)`
 
-| selection/4 | `\frac{\text{d}T}{\text{d}t}=-k(T+30)` | `\frac{\text{d}T}{\text{d}t}=-k(T+@@S@@)` | wrong |
+5. `\frac{\text{d}T}{\text{d}t}=-k(T-@@I@@)`
 
-| selection/5 | `\frac{\text{d}T}{\text{d}t}=-k(T-30)` | `\frac{\text{d}T}{\text{d}t}=-k(T-@@S@@)` | observed correct |
+Correct recipe: -k(T-S). The remaining recipes are retained as complete displayed expressions; source replay verifies their full mathematical values, not inferred labels. Raw doubled escapes are retained for replay and normalized for normal output.
 
-Prompt component mask:
-```text
+## q-106936
+
+Observed parameters: {"S": 30}. Unit C. All slots occur in the exact source prompt, shared worked solution and observed whole bank below.
+
+### Prompt mask
+
 The rate at which a pot of hot oil cools is proportional to the difference between its temperature and the temperature of its surroundings. Let $T(t)$ be the temperature of the liquid in degrees Celsius, and let $t>0$ be the time in minutes. If the temperature of the surroundings is ${@@S@@}^{∘}\text{C},$ which differential equation could be used to model the temperature of the oil? Assume that $k>0$ is a constant of proportionality.
-```
 
-Solution component mask (observed):
-```text
+### Solution mask
+
 Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the differential equation
 
 $$
@@ -397,30 +223,31 @@ In our case, ${T}_{S}={@@S@@}^{∘}\text{C},$ and we have
 $$
 \frac{\text{d}T}{\text{d}t}=-k(T-@@S@@).
 $$
-```
 
-### Bank q-106937
+### Complete bank recipes
 
-| Field/choice | Exact original equation | Complete parameterized expression | Designation |
-|---|---|---|---|
+1. `\frac{\text{d}T}{\text{d}t}=k(T-@@S@@)`
 
-| selection/1 | `\frac{\text{d}T}{\text{d}t}=-75k(T-450)` | `\frac{\text{d}T}{\text{d}t}=-@@S@@k(T-@@I@@)` | wrong |
+2. `\frac{\text{d}T}{\text{d}t}=-kT(T-@@S@@)`
 
-| selection/2 | `\frac{\text{d}T}{\text{d}t}=-450k(T-75)` | `\frac{\text{d}T}{\text{d}t}=-@@I@@k(T-@@S@@)` | wrong |
+3. `\frac{\text{d}T}{\text{d}t}=-k(@@S@@-T)`
 
-| selection/3 | `\frac{\text{d}T}{\text{d}t}=-k(T-450)` | `\frac{\text{d}T}{\text{d}t}=-k(T-@@I@@)` | wrong |
+4. `\frac{\text{d}T}{\text{d}t}=-k(T+@@S@@)`
 
-| selection/4 | `\frac{\text{d}T}{\text{d}t}=-k(T-75)` | `\frac{\text{d}T}{\text{d}t}=-k(T-@@S@@)` | observed correct |
+5. `\frac{\text{d}T}{\text{d}t}=-k(T-@@S@@)`
 
-| selection/5 | `\frac{\text{d}T}{\text{d}t}=-k(T+75)` | `\frac{\text{d}T}{\text{d}t}=-k(T+@@S@@)` | wrong |
+Correct recipe: -k(T-S). The remaining recipes are retained as complete displayed expressions; source replay verifies their full mathematical values, not inferred labels. Raw doubled escapes are retained for replay and normalized for normal output.
 
-Prompt component mask:
-```text
+## q-106937
+
+Observed parameters: {"S": 75, "I": 450}. Unit F. All slots occur in the exact source prompt, shared worked solution and observed whole bank below.
+
+### Prompt mask
+
 A hair straightener reaches a temperature of ${@@I@@}^{∘}\text{F}.$ After turning it off, the temperature $T(t)$ of the straightener decreases at a rate that obeys Newton's law of cooling. Here, $T$ is measured in degrees Fahrenheit, and $t>0$ is the time in minutes. If the room temperature is ${@@S@@}^{∘}\text{F},$ which differential equation could be used to model the straightener temperature? Assume that $k>0$ is a constant of proportionality.
-```
 
-Solution component mask (observed):
-```text
+### Solution mask
+
 Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the differential equation
 
 $$
@@ -434,30 +261,31 @@ In our case, ${T}_{S}={@@S@@}^{∘}\text{F},$ and we have
 $$
 \frac{\text{d}T}{\text{d}t}=-k(T-@@S@@).
 $$
-```
 
-### Bank q-106878
+### Complete bank recipes
 
-| Field/choice | Exact original equation | Complete parameterized expression | Designation |
-|---|---|---|---|
+1. `\frac{\text{d}T}{\text{d}t}=-@@S@@k(T-@@I@@)`
 
-| selection/1 | `{T}^{′}(t)=kT(T-21)` | `{T}^{′}(t)=kT(T-@@S@@)` | wrong |
+2. `\frac{\text{d}T}{\text{d}t}=-@@I@@k(T-@@S@@)`
 
-| selection/2 | `{T}^{′}(t)=-kT(T-21)` | `{T}^{′}(t)=-kT(T-@@S@@)` | wrong |
+3. `\frac{\text{d}T}{\text{d}t}=-k(T-@@I@@)`
 
-| selection/3 | `{T}^{′}(t)=-k(T-21)` | `{T}^{′}(t)=-k(T-@@S@@)` | observed correct |
+4. `\frac{\text{d}T}{\text{d}t}=-k(T-@@S@@)`
 
-| selection/4 | `{T}^{′}(t)=k(T+21)` | `{T}^{′}(t)=k(T+@@S@@)` | wrong |
+5. `\frac{\text{d}T}{\text{d}t}=-k(T+@@S@@)`
 
-| selection/5 | `{T}^{′}(t)=-k(T+21)` | `{T}^{′}(t)=-k(T+@@S@@)` | wrong |
+Correct recipe: -k(T-S). The remaining recipes are retained as complete displayed expressions; source replay verifies their full mathematical values, not inferred labels. Raw doubled escapes are retained for replay and normalized for normal output.
 
-Prompt component mask:
-```text
+## q-106878
+
+Observed parameters: {"S": 21}. Unit C. All slots occur in the exact source prompt, shared worked solution and observed whole bank below.
+
+### Prompt mask
+
 The rate at which a body cools is proportional to the difference between its temperature and the temperature of its surroundings. Let $T(t)$ be the temperature of the body in degrees Celsius, and let $t>0$ be the time in minutes. If the temperature of the surroundings is ${@@S@@}^{∘}\text{C},$ which differential equation could be used to model the temperature of the liquid? Assume that $k>0$ is a constant of proportionality.
-```
 
-Solution component mask (observed):
-```text
+### Solution mask
+
 Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the differential equation
 
 $$
@@ -471,44 +299,63 @@ In our case, ${T}_{S}={@@S@@}^{∘}\text{C},$ and we have
 $$
 \frac{\text{d}T}{\text{d}t}=-k(T-@@S@@).
 $$
-```
 
-## 4. Reusable templates and constraints
+### Complete bank recipes
 
-All masks replace complete numerical temperature tokens only. SUM is independently computed I+S in q37365, rather than retaining the source scalar 164. Time and initial/later observation prose are complete generated hard slots, so all references change consistently. Generic and substituted solution equations remain distinct and unevaluated until rendered. No source answer lookup table or literal-payload replay branch exists.
+1. `{T}^{′}(t)=kT(T-@@S@@)`
 
-### Source anomalies and supported normal repairs
+2. `{T}^{′}(t)=-kT(T-@@S@@)`
 
-q105917 is missing key, difficulty and solution. Actual owning widget q105917-widget.json has all five options and no available key/solution. The unique equation retaining the stipulated k, vanishing at S=25 and negative for T>25 is -k(T-25). That inferred key, easy assignment and shared solution are separate from the 7/7 available observed matches.
+3. `{T}^{′}(t)=-k(T-@@S@@)`
 
-q106936 has +k(T-30) and -k(30-T), which are identical wrong equations. Its raw profile remains accessible through generate(level="easy",template="q-106936",profile="q-106936",parameters={"S":30}). Exact bank fidelity is 5/5, but bank uniqueness fails; no claim that mathematical correctness validates the raw bank. Normal oil_repaired replaces the reverse-difference duplicate with -kT (ordinary exponential decay). Other normal output uses easy_default, with five distinct equations. No options are pooled or replaced after sampling.
+4. `{T}^{′}(t)=k(T+@@S@@)`
 
-Source body/liquid, soup/pot and oil/liquid noun slips are preserved in raw replay and normalized in normal prompts. No equations or observed solutions are altered by these prose repairs.
+5. `{T}^{′}(t)=-k(T+@@S@@)`
 
-### Authored complete default profiles
+Correct recipe: -k(T-S). The remaining recipes are retained as complete displayed expressions; source replay verifies their full mathematical values, not inferred labels. Raw doubled escapes are retained for replay and normalized for normal output.
 
-Easy: -k(T-S), +k(T-S), -k(T+S), -kT(T-S), -kT.
+## q-106932
 
-Moderate: -k(T-S), -k(T-I), -Ik(T-S), -k(T-(I+S)), +k(T-S).
+Observed parameters: {"S": 16}. Unit C. All slots occur in the exact source prompt, shared worked solution and observed whole bank below.
 
-Hard: -k(T-S), -k(T-I), -k(T-M), -k(T-(I-S)), +k(T-S). I-S is computed from displayed givens. If it equals S, I or M and creates duplicate/equivalent bank members, reject the whole bank.
+### Prompt mask
 
-Oil repaired: the observed oil bank with only its duplicate reverse-difference option replaced by -kT. All recipes are explicit operations on the actual givens; inferred error meanings remain author metadata. Normal banks contain complete model equations, not candidate physical counts/times. Their positive equilibria arise from physical temperature givens; heating or wrong sign is intentionally an incorrect model.
+The rate at which a cup of chocolate cools is proportional to the difference between its temperature and the temperature of its surroundings. Let $T(t)$ be the temperature of the chocolate in degrees Celsius, and let $t>0$ be the time in minutes. If the temperature of the surroundings is ${@@S@@}^{∘}\text{C},$ which differential equation could be used to model the temperature of the liquid? Assume that $k>0$ is a constant of proportionality.
 
-### Level scope and sampling bounds
+### Solution mask
 
-Easy: Celsius ambient integer 10..40, direct proportionality prose, no initial reading.
+Newton's law of cooling states that the rate at which the temperature $T(t)$ of a body changes is proportional to the difference between its temperature and its surroundings. Therefore, we have the differential equation
 
-Moderate: Celsius ambient 10..40 or Fahrenheit ambient 50..85; initial integer at least ambient+10, with object-specific physical bounds: thermometer90..110°F, turkey120..180°F, soup140..212°F, ordinary water40..99°C, straightener200..450°F. All observed initial temperatures remain eligible. These guards are applied identically to random sampling and explicit parameters; soup/water remain below boiling, and a cooked turkey is not sampled at an oven temperature.
+$$
+\frac{\text{d}T}{\text{d}t}=-k(T-{T}_{S}),
+$$
 
-Hard: Celsius ambient 10..40; initial40..99°C and at least ambient+10; later integer M strictly between ambient+5 and initial-5; observed positive integer h from1..20 minutes, with singular minute when h=1. There exists positive k=ln((I-S)/(M-S))/h for every generated story. These constraints apply to explicit inputs too. Collision checks reject the entire fixed profile; random sampling resamples the entire instance.
+where ${T}_{S}$ is the temperature of the surroundings, and $k>0$ is a constant of proportionality.
 
-### Actual curriculum grounding
+In our case, ${T}_{S}={@@S@@}^{∘}\text{C},$ and we have
 
-The canonical bread example e6676 gives 180°C initial and 25°C surroundings, then asks only to choose the cooling equation. The preceding sibling KP78582 identifies -k(P-a) and the requirement P>a. The following sibling KP78584 **solves** an inhibited-decay model; that skill is deliberately not added.
+$$
+\frac{\text{d}T}{\text{d}t}=-k(T-@@S@@).
+$$
 
-The owning lesson route, recovered via activity/first-step and step/next (not collection order), is 79538 introduction →79539 identification →79540 Newton cooling →79555 Newton cooling continued →79541 this modeling KP →79542 solving KP. The Newton tutorial gives 100°C initially,20°C room and60°C at7 minutes. Hard uses that observed context shape but asks only the same setup question, with the same two formal substitution stages. Extra-reading discrimination, not solving, is its constant same-level demand. No ordering/progression occurs within any level. The local649.md lists prerequisite1924 Inhibited Growth Models With First-Order ODEs, supporting rate proportional to distance from equilibrium. Topic/_next metadata also references1924, but dependency evidence is the explicit local prerequisite section; it is not inferred from next.
+### Complete bank recipes
 
-### Variety and identities
+1. `{T}^{′}(t)=kT(T+@@S@@)`
 
-Easy ambient domain contains31 Celsius values per context. Moderate Fahrenheit domain36 values and many admissible initial readings; changed initial context alone is not counted as a new underlying differential equation. Hard has31 ambient values plus comparable reading-discrimination contexts. Conservative mathematical task fingerprints exclude incidental h and I/M numerals once the number of candidate readings is fixed; they contain ambient, declared scale and one/two/three-reading setup demand. Different complete banks/prose/time references change presentation identity. Equivalent integer spellings canonicalize. Seeds and choice order do not change identities. Source-specific wording diversity is never claimed as a new recovered skill.
+2. `{T}^{′}(t)=-k(T-@@S@@)`
+
+3. `{T}^{′}(t)=-k(T+@@S@@)`
+
+4. `{T}^{′}(t)=k(T-@@S@@)`
+
+5. `{T}^{′}(t)=kT(T-@@S@@)`
+
+Correct recipe: -k(T-S). The remaining recipes are retained as complete displayed expressions; source replay verifies their full mathematical values, not inferred labels. Raw doubled escapes are retained for replay and normalized for normal output.
+
+## Supported corrections
+
+For q-106936 normal output preserves the other four recipes and replaces the equivalent wrong -k(S-T) with -kT, retaining five unequal choices. This is an explicit bank correction. Other normal banks retain every observed complete recipe. Body/liquid, oil/liquid, soup/pot and chocolate/liquid slips are corrected with consistent object names.
+
+## Source fidelity and variation
+
+validate.py exactly replays all nine prompts, all nine complete banks (45/45 options), all keys and all worked solutions. Independent symbolic checks verify the displayed givens, complete equations, unique correct selection and the two rendered solution equations. All ambient values and initial boundary values are swept per template. Changed-ambient controls hold context and initial fixed; initial-only controls keep the same task key. review.md places every raw original alongside its normal counterpart and changed variants.

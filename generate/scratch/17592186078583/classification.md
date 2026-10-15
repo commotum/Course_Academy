@@ -1,20 +1,19 @@
-# Classification
+# Current classification
 
-Source: `math`, basis **1356**, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. Immutable source capture retained in `source.json`.
+math basis **2710**, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. Full current capture is `reference/current/source.json`; the immutable basis-1356 source remains `source.json`, with the prior package archived in `reference/historical-basis-1356/`.
 
-Eight practice originals: **2 easy, 5 moderate, 1 unrated**. All have a single `selection` radio field with five complete-equation math answers. There are no blank fields, plotted choices or prompt/solution plots. Plot rating **none** for every family; no renderer is required by steps 5/7.
+Nine practice questions: four easy and five moderate. Every question uses one `selection` radio field and five complete differential-equation math choices. All current originals now have a key and worked solution. q-106932 is newly captured chocolate context. There are nine prose masks with one complete bank profile each; no plots or assets (rating **none**). Easy asks for a rate proportional to the difference with the surroundings, with only ambient supplied. Moderate supplies initial and ambient readings and asks for Newton cooling model setup. Both use the generic/substituted two-equation solution.
 
-The mathematical template is always Newton cooling model setup. Preserve eight distinct prose/context masks and their eight complete observed bank profiles rather than collapsing initial-reading, direct-proportionality and object-specific wording. All seven available worked solutions use the exact same shared wording and generic/substituted equation sequence. The unrated original q105917 is a direct proportionality prompt and receives an explicitly authored easy assignment, independently derived key and shared two-stage solution. Its captured widget confirms all five choices but contains no designation or worked solution.
+Hard is unsupported in this bounded package: no current hard source, and the historical authored later-reading extension changes the supplied-information backbone. Absence alone is not the evidence: the implemented historical proposal was checked and rejected under current template rules. New source evidence can reopen classification.
 
-| Source | Captured level | Template/context | Bank | Anomaly |
-|---|---|---|---|---|
-| q-105917 | unrated | liquid, direct proportionality | q-105917 | missing difficulty/key/solution |
-| q-37365 | moderate | thermometer initial reading | q-37365 | none |
-| q-106883 | moderate | turkey initial reading | q-106883 | none |
-| q-106934 | moderate | soup initial reading | q-106934 | soup/pot wording |
-| q-106935 | moderate | water initial reading | q-106935 | none |
-| q-106936 | easy | oil, direct proportionality | q-106936 | equivalent wrong pair; liquid/oil wording |
-| q-106937 | moderate | straightener initial reading | q-106937 | none |
-| q-106878 | easy | body, direct proportionality | q-106878 | body/liquid wording |
+Source q-106936 has two algebraically equal wrong options, k(T-S) and -k(S-T). The five moderate source banks store doubled TeX command backslashes. Raw source replay preserves these defects; normal generated output repairs them. Source body/oil/soup/chocolate naming slips are corrected only in new variants. The strict reserve count excludes the duplicate bank and doubled-escape banks while retaining their identities and history.
 
-No original hard examples exist. The authored hard template keeps the same Newton-law modeling operation and two worked equation stages. It introduces a later observed temperature as an additional contextual reading to distinguish from the fixed surroundings. It never determines k or solves/evaluates an ODE. This is a supported design choice, not a claim about recovered Math Academy hard difficulty.
+- q-105917: easy; template and full bank `q-105917`; plot rating none.
+- q-37365: moderate; template and full bank `q-37365`; plot rating none.
+- q-106883: moderate; template and full bank `q-106883`; plot rating none.
+- q-106934: moderate; template and full bank `q-106934`; plot rating none.
+- q-106935: moderate; template and full bank `q-106935`; plot rating none.
+- q-106936: easy; template and full bank `q-106936`; plot rating none.
+- q-106937: moderate; template and full bank `q-106937`; plot rating none.
+- q-106878: easy; template and full bank `q-106878`; plot rating none.
+- q-106932: easy; template and full bank `q-106932`; plot rating none.

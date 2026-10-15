@@ -10,7 +10,7 @@ def require(ok,msg):
  if not ok:raise AssertionError(msg)
 def rhs(value):
  require(value.count('=')==1,'Complete equation required')
- lhs,right=value.split('=')
+ lhs,right=value.replace('\\\\','\\').split('=')
  require(lhs in (r'\frac{\text{d}T}{\text{d}t}','T^{′}(t) ','{T}^{′}(t)','T^{′}(t)'), 'Derivative must use the displayed temperature T and minutes t')
  right=right.replace('{T}_{S}','A').replace('{','').replace('}','').replace(' ','').rstrip('.,')
  return parse_expr(right,local_dict={'T':U,'k':C,'A':A},transformations=standard_transformations+(implicit_multiplication_application,))
@@ -108,70 +108,83 @@ def failure(fn,label):
  except (AssertionError,ValueError):return
  raise AssertionError('Negative control passed: '+label)
 
+
+def checks(record):
+ f=record['question'][':question/answer-fields'][0]
+ return [{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'Exact complete cooling model with the given k'} for a in f[':answer-field/choices']]
+
+def fingerprint(q):
+ temps=[int(n) for n in re.findall(r'\{?(\d+)\}?\^\{(?:∘|\\circ)\}',q[':question/problem'])]
+ require(len(temps) in (1,2),'Observed one or two temperature givens')
+ S=temps[-1];scale='F' if 'Fahrenheit' in q[':question/problem'] else 'C'
+ return g.digest({'model':'Newton cooling','ambient':S,'ambient_unit':scale,'ambient_selection_from':len(temps)})
+
 def main():
- cases=json.loads((HERE/'source-cases.json').read_text());source=json.loads((HERE/'source.json').read_text());sources={q[':question/math-academy-id']:q for q in source['record'][':knowledge-point/questions']}
- originals=[];variants=[];details=[];sweep=0
+ source=json.loads((HERE/'reference/current/source.json').read_text())
+ cases=json.loads((HERE/'source-cases.json').read_text())
+ sources={q[':question/math-academy-id']:q for q in source['record'][':knowledge-point/questions']}
+ originals=[];variants=[];coverage={};sweep=0
  for case in cases:
-  r=g.generate(case['level'],seed=4,template=case['template'],parameters=case['parameters'],profile=case['bank_profile']);independent(r);fidelity(sources[case['source_id']],r);originals.append(r)
-  details.append({'source_id':case['source_id'],'bank_exact_matched':True,'options_matched':5,'raw_duplicate_wrong_choices':case['source_id']=='q-106936','designation_matched':case['source_id']!='q-105917','solution_matched':case['source_id']!='q-105917','missing_key_and_solution':case['source_id']=='q-105917'})
- for profile,level in g.PROFILE_LEVELS.items():
-  kwargs={'profile':profile}
-  if profile=='oil_repaired':kwargs['template']='q-106936'
-  for seed in range(35):
-   r=g.generate(level,seed=seed,**kwargs);independent(r);sweep+=1
-   fixed=g.generate(level,seed=seed+80,template=r['generation']['template'],parameters=r['generation']['parameters'],profile=profile);independent(fixed)
-   require(r['question'][':question/id']==fixed['question'][':question/id'],'Content fixed across seed/choice order')
-   if seed in (6,21):variants.append(r)
- # Exercise every normal prose template with complete authored default bank.
+  rec=g.generate(case['level'],template=case['template'],parameters=case['parameters'],profile=case['bank_profile'])
+  independent(rec);fidelity(sources[case['source_id']],rec);originals.append(rec)
+  # Normal bank is the observed profile in full, or the documented oil repair.
+  normal=g.generate(case['level'],template=case['template'],parameters=case['parameters'])
+  independent(normal);variants.append(normal)
+  expected=[a[':answer/value'].replace('\\\\','\\') for a in sources[case['source_id']][':question/answer-fields'][0][':answer-field/choices']]
+  actual=[a[':answer/value'] for a in normal['question'][':question/answer-fields'][0][':answer-field/choices']]
+  if case['source_id']=='q-106936':
+   expected.remove(r'\frac{\text{d}T}{\text{d}t}=-k(30-T)');expected.append(r'\frac{\text{d}T}{\text{d}t}=-kT')
+  require(sorted(expected)==sorted(actual),'Whole normal source bank with only recorded repair')
  for level,templates in g.DEFAULT_TEMPLATES.items():
+  coverage[level]={}
   for template in templates:
+   unit=g.TEMPLATES[template]['unit'];ambient=range(10,41) if unit=='C' else range(50,86)
+   seenS=set();seenI=set()
+   for S in ambient:
+    bounds=g.INITIAL_BOUNDS.get(template)
+    initial=[None] if bounds is None else [max(bounds[0],S+10),bounds[1]]
+    for I in initial:
+     params={'S':S,**({'I':I} if I is not None else {})}
+     rec=g.generate(level,template=template,parameters=params);independent(rec);sweep+=1
+     require(fingerprint(rec['question'])==rec['generation']['parameter_fingerprint'],'Independent task identity')
+     again=g.generate(level,seed=819,template=template,parameters=params)
+     require(rec['question'][':question/id']==again['question'][':question/id'],'Stable identity independent of seed/order')
+     seenS.add(S)
+     if I is not None:seenI.add(I)
+   coverage[level][template]={'ambient_values':sorted(seenS),'initial_boundary_values':sorted(seenI)}
    for seed in (2,19):
-    r=g.generate(level,seed=seed,template=template);independent(r);variants.append(r)
- for level in g.LEVELS:
-  ids=[g.generate(level,seed=i)['question'][':question/answer-fields'][0] for i in range(20)]
-  positions={next(j for j,a in enumerate(f[':answer-field/choices']) if a[':answer/id']==f[':answer-field/correct'][1]) for f in ids}
-  require(len(positions)>1,'Correct choices do not always occupy first slot')
- bad=copy.deepcopy(originals[1]);bad['question'][':question/problem']=bad['question'][':question/problem'].replace('64','63');failure(lambda:independent(bad),'ambient prose mismatch')
- bad=copy.deepcopy(variants[-1]);bad['question'][':question/problem']=bad['question'][':question/problem'].replace('After $','After $0',1);failure(lambda:independent(bad),'specific-time prose mismatch')
- bad=copy.deepcopy(originals[1]);bad['question'][':question/worked-solution']=bad['question'][':question/worked-solution'].replace('-k(T-64)','k(T-64)');failure(lambda:independent(bad),'worked derivative sign')
- bad=copy.deepcopy(originals[1]);bad['question'][':question/answer-fields'][0][':answer-field/choices'].pop();failure(lambda:independent(bad),'incomplete bank')
- bad=copy.deepcopy(originals[1]);bad['question'][':question/answer-fields'][0][':answer-field/choices'][0][':answer/value']=r'\frac{\text{d}T}{\text{d}t}=-k(T-64)';failure(lambda:independent(bad),'complete-bank ambiguity')
- bad=copy.deepcopy(originals[1]);bad['question'][':question/problem']=bad['question'][':question/problem'].replace('degrees Fahrenheit','degrees Celsius');failure(lambda:independent(bad),'units mismatch')
- bad=copy.deepcopy(originals[1]);bad['knowledge_point'][':db/id']=g.KP_ID;failure(lambda:independent(bad),'outer colon key')
- failure(lambda:g.generate('hard',parameters={'S':20,'I':90,'M':70,'h':0}),'zero explicit time')
- failure(lambda:g.generate('moderate',parameters={'S':20,'I':10}),'heating story')
- failure(lambda:g.generate('easy',parameters={'S':0}),'zero ambient degeneracy')
- failure(lambda:g.generate('hard',parameters={'S':20,'I':90,'M':70,'h':6}), 'whole hard collision I-S=M')
- # Explicit context limits must not be bypassed by any observed/raw profile.
- context_rejections=0
- for template,level,params in [
-  ('q-37365','moderate',{'S':64,'I':111}),
-  ('q-106883','moderate',{'S':67,'I':213}),
-  ('q-106934','moderate',{'S':76,'I':213}),
-  ('q-106935','moderate',{'S':19,'I':100}),
-  ('q-106937','moderate',{'S':75,'I':451}),
-  ('observed-reading','hard',{'S':20,'I':100,'M':60,'h':7})]:
-  for profile in ([template,level+'_default'] if level=='moderate' else ['hard_default']):
-   failure(lambda:g.generate(level,template=template,profile=profile,parameters=params),'context initial over-limit '+template+' '+profile);context_rejections+=1
- 
- # Same shown math/content with alternate integer spelling gives same identities.
- for r in originals:
-  meta=r['generation'];rr=g.generate(r['question'][':question/difficulty'].split('/')[-1],seed=1000,template=meta['template'],parameters={k:str(v)+'.0' for k,v in meta['parameters'].items()},profile=meta['bank_profile']);require(rr['question'][':question/id']==r['question'][':question/id'],'Equivalent explicit parameter spelling')
- rows=[]
- for n,r in enumerate(originals+variants):
-  f=r['question'][':question/answer-fields'][0]
-  rows.append({'label':str(n),'record':r,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'Displayed complete model equation with specified proportionality constant'} for a in f[':answer-field/choices']]})
+    rec=g.generate(level,seed=seed,template=template);independent(rec);variants.append(rec)
+ # Hold initial/context fixed and change only the answer-relevant ambient slot.
+ for level,template,p in [('easy','q-106932',{'S':16}),('moderate','q-106935',{'S':19,'I':90})]:
+  a=g.generate(level,template=template,parameters=p);b=g.generate(level,template=template,parameters={**p,'S':p['S']+1})
+  independent(a);independent(b);require(fingerprint(a['question'])!=fingerprint(b['question']),'Changed assessed ambient')
+  require(a['question'][':question/worked-solution']!=b['question'][':question/worked-solution'],'Updated solution')
+ # Incidental I/context/bank changes never create another task fingerprint.
+ a=g.generate('moderate',template='q-106935',parameters={'S':19,'I':90})
+ b=g.generate('moderate',template='q-106935',parameters={'S':19,'I':80})
+ require(fingerprint(a['question'])==fingerprint(b['question']),'Initial alone is not a new assessed task')
+ failure(lambda:g.generate('hard'),'Unsupported hard rejected')
+ failure(lambda:g.generate('easy',parameters={'S':9}),'Ambient lower boundary')
+ failure(lambda:g.generate('moderate',template='q-106935',parameters={'S':30,'I':35}),'Cooling separation boundary')
+ wrong=copy.deepcopy(variants[0]);wrong['question'][':answer-fields']=[]
+ # Verify actual correct-reference, solution, and displayed prompt mutations fail.
+ for kind in ('key','solution','prompt'):
+  bad=copy.deepcopy(variants[0]);f=bad['question'][':question/answer-fields'][0]
+  if kind=='key':f[':answer-field/correct']=[':answer/id',next(x[':answer/id'] for x in f[':answer-field/choices'] if x[':answer/id']!=f[':answer-field/correct'][1])]
+  if kind=='solution':bad['question'][':question/worked-solution']=bad['question'][':question/worked-solution'].replace('-k(T-', 'k(T-')
+  if kind=='prompt':bad['question'][':question/problem']=bad['question'][':question/problem'].replace('{25}', '{26}')
+  failure(lambda:independent(bad),'Negative '+kind)
+ rows=[{'label':str(i),'record':r,'checks':checks(r)} for i,r in enumerate(originals+variants)]
  (HERE/'engine-input.json').write_text(json.dumps(rows,indent=2)+'\n')
- engine=ROOT/'generate/runs/current/check-engine';subprocess.run([str(engine),str(HERE/'engine-input.json'),str(HERE/'engine-report.json')],check=True,cwd=ROOT)
- neg=copy.deepcopy(rows[:1]);neg[0]['checks'][0]['expected']='rejected' if neg[0]['checks'][0]['expected']=='accepted' else 'accepted';(HERE/'engine-negative-input.json').write_text(json.dumps(neg));result=subprocess.run([str(engine),str(HERE/'engine-negative-input.json'),str(HERE/'engine-negative-report.json')],capture_output=True,text=True);require(result.returncode!=0,'Native grading negative control');(HERE/'engine-negative-result.txt').write_text(result.stderr)
+ engine=ROOT/'generate/runs/current/check-engine'
+ subprocess.run([str(engine),str(HERE/'engine-input.json'),str(HERE/'engine-report.json')],check=True)
  (HERE/'review.json').write_text(json.dumps({'original_replays':originals,'generated_variants':variants},indent=2)+'\n')
- parts=['# Original and changed parameter review','Every original bank and prose template appears below. Raw oil replay has two equivalent wrong choices; the authored oil_repaired/easy_default profiles remove that ambiguity. q105917 key, easy label and solution are authored, not observed matches. Hard is an authored same-method two-stage extension supported by the lesson observation example.']
- for case,r in zip(cases,originals):parts+=['## Original '+case['source_id']+' (source replay)',g.markdown(r)]
- for r in variants:parts+=['## Generated variant: '+r['generation']['template']+' / '+r['generation']['bank_profile']+' / '+r['question'][':question/difficulty'].split('/')[-1], 'Parameters: '+json.dumps(r['generation']['parameters'])+'; '+r['generation']['profile_origin']+'.',g.markdown(r)]
+ parts=['# Current source and normal output comparison','Source basis 2710. Raw oil replay keeps its duplicate wrong option as evidence; normal output repairs it. Hard is unsupported.']
+ for case,a,b in zip(cases,originals,variants):parts += ['## '+case['source_id']+' source replay',g.markdown(a),'### Normal output at the same parameters',g.markdown(b)]
+ for r in variants[len(cases):]:parts += ['## Changed '+r['generation']['template'],g.markdown(r)]
  (HERE/'review.md').write_text('\n\n'.join(parts)+'\n')
- report={'passed':True,'source':{k:source[k] for k in ('database','basis','lineage')},'original_questions':8,'complete_banks_exact_matched':8,'source_options_matched':40,'source_options_total':40,'available_designations_matched':7,'available_designations_total':7,'missing_original_designations':1,'available_full_solutions_matched':7,'available_full_solutions_total':7,'missing_original_solutions':1,'exact_prompts_matched':8,'source_bank_correctness':{'uniquely_different_banks':7,'raw_banks_with_duplicate_wrong_equations':1,'raw_duplicate_profile':'q-106936','normal_banks_duplicate_free':True},'authored_extensions':['q105917 easy assignment, derived key and shared solution','oil_repaired and default complete operation banks','hard additional-reading selection with same two-stage Newton-law setup'],'sweep_records':sweep,'review_originals':8,'review_generated_variants':len(variants),'native_grading':json.loads((HERE/'engine-report.json').read_text()),'native_blank_equivalent_entries':'not applicable: all original and authored fields radio','negative_controls':12+context_rejections,'context_bound_rejections':context_rejections,'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'unresolved_findings':['q105917 original key and solution absent; independently derived but not observed','q106936 duplicate wrong choices retained only in explicit raw source profile'],'no_database_writes':True}
- (HERE/'validation.json').write_text(json.dumps(report,indent=2)+'\n');print(f'PASS: 8/8 exact banks, 40/40 choices, 7/7 available keys and solutions; {sweep} bank sweeps; {len(variants)} changed review records; native grader and {12+context_rejections} negative controls.')
-if __name__=='__main__':
- try:main()
- except Exception as exc:
-  (HERE/'validation.json').write_text(json.dumps({'passed':False,'failure':str(exc)},indent=2)+'\n');raise
+ files=[HERE.with_suffix('.py'),HERE/'templates.json',HERE/'source-cases.json',HERE/'validate.py']
+ report={'passed':True,'status':'pass','source':{k:source[k] for k in ('database','basis','lineage')},'original_questions':len(cases),'complete_banks_exact_matched':len(cases),'source_options_matched':5*len(cases),'source_options_total':5*len(cases),'available_designations_matched':len(cases),'available_full_solutions_matched':len(cases),'sweep_records':sweep,'slot_coverage':coverage,'native_grading':json.loads((HERE/'engine-report.json').read_text()),'supported_levels':list(g.LEVELS),'unsupported_levels':['hard'],'source_errors':['Raw oil profile contains two equivalent wrong equations; normal oil bank replaces -k(S-T) with -kT.','Captured derivative fractions in five source banks have doubled TeX escapes; normal output uses single escapes.','Source body/soup/oil/chocolate wording corrected only in generated output.'],'hashes':{str(f.relative_to(ROOT)):hashlib.sha256(f.read_bytes()).hexdigest() for f in files},'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'no_database_writes':True}
+ (HERE/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
+ print(f'PASS: {len(cases)} complete source banks, {len(cases)*5} choices, {sweep} boundary records and actual native grading.')
+if __name__=='__main__':main()

@@ -86,6 +86,6 @@ def markdown(rec):
  q=rec['question'];return q[':question/problem']+'\n\n'+'\n'.join(a[':answer/value'] for a in q[':question/answer-fields'][0][':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--difficulty',default='easy');p.add_argument('--seed',type=int,default=0);p.add_argument('--count',type=int,default=1);p.add_argument('--output',type=Path);p.add_argument('--format',choices=['json','markdown'],default='json');a=p.parse_args()
- records=batch(a.difficulty,a.count,a.seed);value=json.dumps({'instances':records,'generator_id':GENERATOR_UUID,'generator_version':VERSION},indent=2) if a.format=='json' else '\n\n'.join(markdown(r) for r in records)
+ records=batch(a.difficulty,a.count,a.seed);value=json.dumps(records,indent=2) if a.format=='json' else '\n\n'.join(markdown(r) for r in records)
  if a.output:a.output.write_text(value+'\n')
  else:print(value)
