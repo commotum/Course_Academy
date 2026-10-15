@@ -1,0 +1,5 @@
+# Open-curve flux generator
+
+Script: ../17592186179746.py. Validate with `.venv/bin/python generate/scratch/17592186179746/validate.py`; preview with `--difficulty moderate --seed 0 --count 5 --format json` (or markdown). Moderate and hard each support 48 bounded positive-field variants, separately from six source replays. Easy and the context-dependent blank are explicitly unsupported. No source content is changed.
+
+The package records full source classification, field/choice extraction, diagram inspection, finite capability, source-bank replay, independent exact mathematics, stale-value mutation checks and actual learner grading. review.md displays originals beside scales 2 and 5. Replenishment rechecks native inventory, current/historical usage and source stability under api.lock. It reuses the existing registered generator UUID when present, preserves exact guarded requests and receipts under reference/replenishment, and verifies exact-basis attribution, scope and source preservation before writing the requested job result. Only this KP’s generator registration and additive generated content are permitted.

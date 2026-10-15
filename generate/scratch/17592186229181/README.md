@@ -13,3 +13,30 @@ API: `generate(level, seed=0, template=None, field_type=None, parameters=None, p
 `source.json` and `source-cases.json` preserve provenance and replay routes. `masks.json` is the extraction product. `extract.py` rebuilds only those masks/cases from the private frozen source. `classification.md` and `template-extraction.md` document scope, bank limitations and omissions. `review.md`/`review.json` label originals and variants. `validate.py` checks original bytes/presence/banks/designations, printed numerical stages, exact model/distractor mathematics, identities, parameter guards, public JSON serialization, CLI labeling and the real native grader. Native reports are `engine-input.json`/`engine.json`; `validation.json` keeps denominators separate.
 
 The missing hard level is authored feed-unit conversion followed by the same constant-volume IVP and rounded amount. Numerical source banks and two easy banks have opaque wrong-answer coefficients; defaults use a separately authored complete operation bank. This script has no plots, database client, writes, registrations, or engine changes. Frozen at step 7 for parent QA.
+
+## Published replenishment, 2026-10-15
+
+The generator script remains unchanged from its validated step-7 version.
+`replenish.py` completes stages 8–9 using the existing native database integration:
+application `api.lock`, fresh inventory and basis reads, configured application
+source, typed ensures, native preview, durable exact request, guarded commit,
+readback at the receipt basis, scoped additive datom checks, and final inventory.
+It recovers saved submission intent before preparing another transaction.
+
+Publication basis 2704 → 2705 registered generator
+`90943b8b-a658-5a9b-a2fd-363b88498657` (the authoritative UUID is retained in
+`reference/replenishment/basis-2704/commit-intent.json`) and added two moderate
+and five hard questions. Easy inventory already met its reserve. All three reserves
+have at least five available questions after publication; no KP jobs remain.
+All ten existing source questions, canonical example, and learner history were
+preserved. One incomplete unrated original remains excluded.
+
+`validate_inventory.py` checks each committed instance from its rendered prompt,
+all options, exact differential model, printed worked stages, final rounding,
+formatting and deterministic regeneration. Current captured source checks and
+complete excluded banks are in `reference/current-source-validation.json`;
+classification and extraction document the evidence refresh. The seven original
+source bank replays and the separately authored normal method bank remain intact.
+`reference/publication-validation.json` freezes implementation/evidence hashes.
+The publication folder retains generated JSON/Markdown, validation, inventory,
+preview, exact durable intent, transaction, committed receipt and verification.

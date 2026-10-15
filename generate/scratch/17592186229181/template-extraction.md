@@ -51,3 +51,31 @@ Decoded source strings contain no adjacent backslash bytes. The kilogram suffixe
 There are no graphical components; step 5 and step 7 require no renderer. All work stops before database preparation.
 
 Normal source-context adaptation also inflects “supplements enter/leave/exit” to the chosen substance with enters/leaves/exits; raw source prose remains exact.
+
+## Additional captured banks, basis 2704
+
+The current snapshot supplements the frozen basis-1356 source rather than replacing
+it. The existing seven raw profiles still replay their original captured versions.
+The current additional profiles below are retained as evidence with explicit
+exclusion from normal learner generation; no opaque distractor operation is inferred.
+`validate_inventory.py::source_check` independently solves their displayed IVPs,
+compares all five complete values, verifies the unique designation and final worked
+function, and the replenishment runs all five choices through the native grader.
+
+- q-336752: `25−15 exp(−t/40)`, `−20+30 exp(t/40)`,
+  `30−20 exp(−t/40)`, `−2+12 exp(−t/40)`, and correct
+  `24−14 exp(−t/40)`. The erroneous particular constants 25, −20, 30,
+  and −2 have unresolved operational interpretations; complete expressions are
+  retained, with no extrapolation into the supported bank.
+- q-336736: correct `11.75 kg`, `12.63 kg`, `11.32 kg`, `12.18 kg`,
+  `10.94 kg`. Correct value is the rounded value of
+  `32−26 exp(−5/20)`. The four other scalars have unresolved error operations
+  and remain evidence-only.
+- q-339383: `12−11 exp(−t/15)` (alternate time constant, operation unresolved),
+  correct `12−11 exp(−t/20)`, `12+11 exp(−t/20)` (reverse initial
+  subtraction), `1−12 exp(−t/20)` (initial as particular and equilibrium as
+  negative amplitude), `12−11 exp(t/20)` (reverse decay sign).
+
+Prompt, answer-fragment, units, and ordered solution stages remain those of the two
+existing families. No added source demands new plots or changes the normal bank.
+All source UUIDs and original answer ownership remain outside new generated content.

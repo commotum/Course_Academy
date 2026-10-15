@@ -18,3 +18,36 @@ Hard is an explicitly authored design claim: convert the printed 10–60 g/L fee
 Default bounds preserve source arithmetic forms: integer V = r·tau in 300–1000 L, integer r in 10–50 L/min, integer tau in 10–80 min, c in {0.01,…,0.06} kg/L, integer initial mass 1–25 kg, and integer finite evaluation time 2–12 min. Initial and equilibrium amounts are unequal, and Q(0) < 2cV keeps every reflected-initial-condition option positive. Parameters do not create a progression within a level. The source masks are a separate dimensional-similarity domain (integer mass scale 1–4 and flow/volume scale 1–3); they remain evidence only.
 
 Authoritative original asset `/home/jake/Developer/MA/DATA/Lessons/6700/Source/6700.json` confirms the two unrated captured questions are five-choice widgets with empty bodies and no captured answer key. This supports the omission findings, not an invented observed designation. Mathematical inference uniquely identifies their correct values. No mathematical plots occur, so no rendering is needed.
+
+## Live-source refresh at basis 2704 (2026-10-15)
+
+The retained `reference/replenishment/initial.json` captures all ten current practice
+questions and the canonical example at one basis on the same lineage. There are
+now six rated easy expression questions, three rated moderate finite-time questions,
+and one incomplete unrated amount question. The formerly incomplete q-339385 has
+been completed by an earlier application transaction; this replenishment preserves
+its current fields and history. No hard source question has appeared. The existing
+validated hard unit-conversion capability remains an authored extension, supported
+by the introduction's gram units, rather than an observed hard label.
+
+The three additional sources retain the existing `selection` radio field, five
+mathematical choices, constant-volume model, complementary/particular solution,
+initial condition, and (for moderate) final substitution/rounding. All have plot
+rating **none**. Their complete banks and independent answer checks are retained
+in `reference/current-source-validation.json`:
+
+| Source | Parameters (V, r, c, Q0, T) | Family | Bank profile |
+|---|---|---|---|
+| q-336752 / 17592186502082 | 600, 15, .04, 10, function | expression | opaque particular-constant bank |
+| q-336736 / 17592186502104 | 400, 20, .08, 6, 5 | amount | opaque rounded-scalar bank |
+| q-339383 / 17592186502108 | 300, 15, .04, 1, function | expression | sign/initial-condition and alternate decay bank |
+
+These are new complete source profiles, not new mathematical templates. Their
+opaque alternatives are explicitly excluded from normal sampling; the supported
+normal profile remains the separately authored complete `method_bank` already
+validated. The observed .08 concentration is preserved in evidence; the normal
+sampler's .01–.06 concentration range is a narrower sampling policy, not a claim
+about all source parameters. Every current complete source bank has a unique
+independently computed correct value; the remaining incomplete original is
+excluded from learning inventory. Existing questions are never relabeled or repaired
+by the generator publication.
