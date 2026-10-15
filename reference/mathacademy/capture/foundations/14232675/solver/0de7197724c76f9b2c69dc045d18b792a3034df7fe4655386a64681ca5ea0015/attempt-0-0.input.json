@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-342788",
+      "sequence_position": 8,
+      "problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}+y={u}_{\\pi /2}(t)\\cdot sin\\,(2t-\\pi )\\,,\\,y(0)=0,\n$$\n\nwhere ${u}_{\\pi /2}(t)=u\\,(t-\\frac{\\pi }{2})$ is the unit step function.\n\nYou're given that the Laplace transform $Y(s)=L\\{y(t)\\}$ is\n\n$$\nY(s)=\\frac{2{e}^{-\\pi s/2}}{({s}^{2}+4)(s+1)}\n$$\n\nand that the solution to the initial value problem can be expressed as \n\n$$\ny(t)=\\frac{1}{5}\\,u\\,(t-\\frac{\\pi }{2})\\cdot g(t).\n$$\n\nFind the function $g(t).$ \n\nHint: You may make use of the following results:\n\n$$\nL\\{\\operatorname{sin}⁡\\omega t\\}=\\frac{\\omega }{{s}^{2}+{\\omega }^{2}},\\,L\\{\\operatorname{cos}⁡\\omega t\\}=\\frac{s}{{s}^{2}+{\\omega }^{2}},\\,s>0.\n$$",
+      "worked_solution": "To solve the initial value problem, we need to compute the inverse Laplace transform of $Y(s).$\n\nTo find the inverse transform, we first ignore the exponential term ${e}^{-\\pi s/2}$ (which corresponds to a time shift) and focus on the rational function part:\n\n$$\nF(s)=\\frac{2}{({s}^{2}+4)(s+1)}.\n$$\n\nWe'll solve this in three steps.\n\n**Step 1.** Partial fraction decomposition\n\nSince the denominator contains a linear factor $(s+1)$ and an irreducible quadratic factor $({s}^{2}+4),$ the decomposition takes the form\n\n$$\n\\frac{2}{({s}^{2}+4)(s+1)}=\\frac{A}{s+1}+\\frac{Bs+C}{{s}^{2}+4}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\n2=A({s}^{2}+4)+(Bs+C)(s+1).\n$$\n\nNow, we find the constants $A,B,$ and $C.$\n\n- Setting $s=-1,$ we have\n\n$$\n2=A((-1)^{2}+4)+0\\,⟹\\,5A=2\\,⟹\\,A=\\frac{2}{5}.\n$$\n\n- Comparing the coefficients of ${s}^{2},$ we have\n\n$$\n0=A+B\\,⟹\\,B=-A=-\\frac{2}{5}.\n$$\n\n- Comparing the constant terms, we have\n\n$$\n2=4A+C\\,⟹\\,C=2-\\frac{8}{5}=\\frac{2}{5}.\n$$\n\nThus, we can rewrite $F(s)$ as\n\n$$\nF(s)=\\frac{2}{5}(\\frac{1}{s+1}+\\frac{-s+1}{{s}^{2}+4})=\\frac{2}{5}(\\frac{1}{s+1}-\\frac{s}{{s}^{2}+4}+\\frac{1}{{s}^{2}+4}).\n$$\n\n**Step 2.** Finding the Inverse of the base function\n\nWe find the inverse transform $f(t)={L}^{-1}\\{F(s)\\}$ using standard transforms:\n\n$$\n\\begin{aligned}f(t) & =\\frac{2}{5}({L}^{-1}\\{\\frac{1}{s+1}\\}-{L}^{-1}\\{\\frac{s}{{s}^{2}+4}\\}+{L}^{-1}\\{\\frac{1}{{s}^{2}+4}\\}) \\\\  & =\\frac{2}{5}({e}^{-t}-\\operatorname{cos}⁡(2t)+\\frac{1}{2}\\operatorname{sin}⁡(2t)).\\end{aligned}\n$$\n\n**Step 3.** Applying the time-shifting property\n\nFinally, we address the ${e}^{-\\pi s/2}$ term in $Y(s).$ By the second shifting theorem, we have\n\n$$\n{e}^{-as}\\cdot F(s)=L\\{u(t-a)\\cdot f(t-a)\\}.\n$$\n\nTaking the inverse Laplace transform gives\n\n$$\n{L}^{-1}\\{{e}^{-as}F(s)\\}=u(t-a)\\cdot f(t-a).\n$$\n\nIn our case, $a=\\frac{\\pi }{2}.$ Therefore, we shift $f(t)$ by replacing every instance of $t$ with $(t-\\frac{\\pi }{2}):$\n\n$$\n\\begin{aligned}y(t) & =u\\,(t-\\frac{\\pi }{2})f\\,(t-\\frac{\\pi }{2}) \\\\  & =u\\,(t-\\frac{\\pi }{2})\\cdot \\frac{2}{5}[{e}^{-(t-\\pi /2)}-cos\\,(2\\,(t-\\frac{\\pi }{2}))+\\frac{1}{2}sin\\,(2\\,(t-\\frac{\\pi }{2}))].\\end{aligned}\n$$\n\nUsing the trigonometric identities $\\operatorname{cos}⁡(2(t-\\pi /2))=-\\operatorname{cos}⁡(2t)$ and $\\operatorname{sin}⁡(2(t-\\pi /2))=-\\operatorname{sin}⁡(2t),$ we simplify:\n\n$$\n\\begin{aligned}y(t) & =u\\,(t-\\frac{\\pi }{2})\\cdot \\frac{2}{5}[{e}^{-(t-\\pi /2)}+\\operatorname{cos}⁡(2t)-\\frac{1}{2}\\operatorname{sin}⁡(2t)] \\\\  & =\\frac{1}{5}\\,u\\,(t-\\frac{\\pi }{2})(2{e}^{-(t-\\pi /2)}+2\\operatorname{cos}⁡(2t)-\\operatorname{sin}⁡(2t)).\\end{aligned}\n$$\n\nComparing this to the form given in the problem statement $y(t)=\\frac{1}{5}u\\,(t-\\frac{\\pi }{2})\\cdot g(t),$ we identify $g(t)$ as\n\n$$\ng(t)=2{e}^{-(t-\\pi /2)}+2\\operatorname{cos}⁡(2t)-\\operatorname{sin}⁡(2t).\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14232675/observations/history-q-342788-248d083f0a236fdf58af.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14232675",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14232675/observations/history-solution-q-342788-0892e7b16661388753b6.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "2{e}^{-(t-\\pi /2)}+2\\operatorname{cos}⁡(2t)+\\operatorname{sin}⁡(2t)"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "2{e}^{-(t-\\pi /2)}-2\\operatorname{cos}⁡(2t)-\\operatorname{sin}⁡(2t)"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "2{e}^{-(t-\\pi /2)}+2\\operatorname{cos}⁡(2t)-\\operatorname{sin}⁡(2t)"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "2{e}^{-(t-\\pi /2)}+2\\operatorname{cos}⁡(2t)-2\\operatorname{sin}⁡(2t)"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "{e}^{-(t-\\pi /2)}+2\\operatorname{cos}⁡(2t)-\\operatorname{sin}⁡(2t)"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q342788",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "2{e}^{-(t-\\pi /2)}+2\\operatorname{cos}⁡(2t)+\\operatorname{sin}⁡(2t)",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "To solve the initial value problem, we need to compute the inverse Laplace transform of $Y(s).$\n\nTo find the inverse transform, we first ignore the exponential term ${e}^{-\\pi s/2}$ (which corresponds to a time shift) and focus on the rational function part:\n\n$$\nF(s)=\\frac{2}{({s}^{2}+4)(s+1)}.\n$$\n\nWe'll solve this in three steps.\n\n**Step 1.** Partial fraction decomposition\n\nSince the denominator contains a linear factor $(s+1)$ and an irreducible quadratic factor $({s}^{2}+4),$ the decomposition takes the form\n\n$$\n\\frac{2}{({s}^{2}+4)(s+1)}=\\frac{A}{s+1}+\\frac{Bs+C}{{s}^{2}+4}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\n2=A({s}^{2}+4)+(Bs+C)(s+1).\n$$\n\nNow, we find the constants $A,B,$ and $C.$\n\n- Setting $s=-1,$ we have\n\n$$\n2=A((-1)^{2}+4)+0\\,⟹\\,5A=2\\,⟹\\,A=\\frac{2}{5}.\n$$\n\n- Comparing the coefficients of ${s}^{2},$ we have\n\n$$\n0=A+B\\,⟹\\,B=-A=-\\frac{2}{5}.\n$$\n\n- Comparing the constant terms, we have\n\n$$\n2=4A+C\\,⟹\\,C=2-\\frac{8}{5}=\\frac{2}{5}.\n$$\n\nThus, we can rewrite $F(s)$ as\n\n$$\nF(s)=\\frac{2}{5}(\\frac{1}{s+1}+\\frac{-s+1}{{s}^{2}+4})=\\frac{2}{5}(\\frac{1}{s+1}-\\frac{s}{{s}^{2}+4}+\\frac{1}{{s}^{2}+4}).\n$$\n\n**Step 2.** Finding the Inverse of the base function\n\nWe find the inverse transform $f(t)={L}^{-1}\\{F(s)\\}$ using standard transforms:\n\n$$\n\\begin{aligned}f(t) & =\\frac{2}{5}({L}^{-1}\\{\\frac{1}{s+1}\\}-{L}^{-1}\\{\\frac{s}{{s}^{2}+4}\\}+{L}^{-1}\\{\\frac{1}{{s}^{2}+4}\\}) \\\\  & =\\frac{2}{5}({e}^{-t}-\\operatorname{cos}⁡(2t)+\\frac{1}{2}\\operatorname{sin}⁡(2t)).\\end{aligned}\n$$\n\n**Step 3.** Applying the time-shifting property\n\nFinally, we address the ${e}^{-\\pi s/2}$ term in $Y(s).$ By the second shifting theorem, we have\n\n$$\n{e}^{-as}\\cdot F(s)=L\\{u(t-a)\\cdot f(t-a)\\}.\n$$\n\nTaking the inverse Laplace transform gives\n\n$$\n{L}^{-1}\\{{e}^{-as}F(s)\\}=u(t-a)\\cdot f(t-a).\n$$\n\nIn our case, $a=\\frac{\\pi }{2}.$ Therefore, we shift $f(t)$ by replacing every instance of $t$ with $(t-\\frac{\\pi }{2}):$\n\n$$\n\\begin{aligned}y(t) & =u\\,(t-\\frac{\\pi }{2})f\\,(t-\\frac{\\pi }{2}) \\\\  & =u\\,(t-\\frac{\\pi }{2})\\cdot \\frac{2}{5}[{e}^{-(t-\\pi /2)}-cos\\,(2\\,(t-\\frac{\\pi }{2}))+\\frac{1}{2}sin\\,(2\\,(t-\\frac{\\pi }{2}))].\\end{aligned}\n$$\n\nUsing the trigonometric identities $\\operatorname{cos}⁡(2(t-\\pi /2))=-\\operatorname{cos}⁡(2t)$ and $\\operatorname{sin}⁡(2(t-\\pi /2))=-\\operatorname{sin}⁡(2t),$ we simplify:\n\n$$\n\\begin{aligned}y(t) & =u\\,(t-\\frac{\\pi }{2})\\cdot \\frac{2}{5}[{e}^{-(t-\\pi /2)}+\\operatorname{cos}⁡(2t)-\\frac{1}{2}\\operatorname{sin}⁡(2t)] \\\\  & =\\frac{1}{5}\\,u\\,(t-\\frac{\\pi }{2})(2{e}^{-(t-\\pi /2)}+2\\operatorname{cos}⁡(2t)-\\operatorname{sin}⁡(2t)).\\end{aligned}\n$$\n\nComparing this to the form given in the problem statement $y(t)=\\frac{1}{5}u\\,(t-\\frac{\\pi }{2})\\cdot g(t),$ we identify $g(t)$ as\n\n$$\ng(t)=2{e}^{-(t-\\pi /2)}+2\\operatorname{cos}⁡(2t)-\\operatorname{sin}⁡(2t).\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14232675/observations/step-q342788-de0f33ff961ff6be4809.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a14015-0b87-7540-9b67-fd53ee470c9e",
+  "previous_failures": []
+}

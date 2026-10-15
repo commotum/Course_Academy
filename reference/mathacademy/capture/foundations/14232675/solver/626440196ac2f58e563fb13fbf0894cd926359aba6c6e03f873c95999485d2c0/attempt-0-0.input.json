@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-342810",
+      "sequence_position": 7,
+      "problem": "Consider the following initial value problem:\n\n$$\n\\frac{\\text{d}y}{\\text{d}t}+3y={u}_{2}(t)\\cdot {e}^{-4(t-2)}\\,,\\,y(0)=-2,\n$$\n\nwhere ${u}_{2}(t)=u(t-2)$ is the unit step function.\n\nYou're given that the Laplace transform $Y(s)=L\\{y(t)\\}$ is\n\n$$\nY(s)=-\\frac{2}{s+3}+\\frac{{e}^{-2s}}{(s+3)(s+4)}\n$$\n\nand that the solution to the initial value problem can be expressed as \n\n$$\ny(t)=-2{e}^{-3t}+u(t-2)\\cdot g(t).\n$$\n\nFind the function $g(t).$",
+      "worked_solution": "To find the function $g(t),$ we need to compute the inverse Laplace transform of the term containing the time delay in $Y(s).$\n\nWe focus on the term with the exponential ${e}^{-2s}$ (which corresponds to the step function in the time domain) and identify the rational function part:\n\n$$\nF(s)=\\frac{1}{(s+3)(s+4)}.\n$$\n\nWe'll solve this in three steps.\n\n**Step 1.** Partial fraction decomposition\n\nSince the denominator contains distinct linear factors, the decomposition takes the form\n\n$$\n\\frac{1}{(s+3)(s+4)}=\\frac{A}{s+3}+\\frac{B}{s+4}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\n1=A(s+4)+B(s+3).\n$$\n\nNow, we find the constants $A$ and $B.$\n\n- Setting $s=-3,$ we have\n\n$$\n1=A(1)+B(0)\\,⟹\\,A=1.\n$$\n\n- Setting $s=-4,$ we have\n\n$$\n1=A(0)+B(-1)\\,⟹\\,B=-1.\n$$\n\nThus, we can rewrite $F(s)$ as\n\n$$\nF(s)=\\frac{1}{s+3}-\\frac{1}{s+4}.\n$$\n\n**Step 2.** Finding the Inverse of the base function\n\nWe find the inverse transform $f(t)={L}^{-1}\\{F(s)\\}$ using standard transforms:\n\n$$\n\\begin{aligned}f(t) & ={L}^{-1}\\{\\frac{1}{s+3}-\\frac{1}{s+4}\\} \\\\  & ={e}^{-3t}-{e}^{-4t}.\\end{aligned}\n$$\n\n**Step 3.** Applying the time-shifting property\n\nFinally, we address the ${e}^{-2s}$ term. By the second shifting theorem, we have\n\n$$\n{e}^{-as}\\cdot F(s)=L\\{u(t-a)\\cdot f(t-a)\\}.\n$$\n\nTaking the inverse Laplace transform gives\n\n$$\n{L}^{-1}\\{{e}^{-as}F(s)\\}=u(t-a)\\cdot f(t-a).\n$$\n\nIn our case, $a=2.$ Therefore, we shift $f(t)$ by replacing every instance of $t$ with $(t-2):$\n\n$$\n\\begin{aligned}u(t-2)f(t-2) & =u(t-2)[{e}^{-3(t-2)}-{e}^{-4(t-2)}].\\end{aligned}\n$$\n\nComparing this to the second term of the form given in the problem statement $y(t)=-2{e}^{-3t}+u(t-2)\\cdot g(t),$ we identify $g(t)$ as\n\n$$\ng(t)={e}^{-3(t-2)}-{e}^{-4(t-2)}.\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14232675/observations/history-q-342810-9117b35b1b964c6abcee.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14232675",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14232675/observations/history-solution-q-342810-2bd3f43cae93dd41bdc6.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "{e}^{-3t}-{e}^{-4t}"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "-{e}^{-3(t-2)}+{e}^{-4(t-2)}"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "{e}^{-3(t-2)}-{e}^{-4(t-2)}"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "{e}^{-3(t-2)}-{e}^{-3(t-1)}"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "2{e}^{-3(t-2)}-{e}^{-4(t-2)}"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q342810",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "{e}^{-3(t-2)}-{e}^{-4(t-2)}",
+                "option": "c",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "To find the function $g(t),$ we need to compute the inverse Laplace transform of the term containing the time delay in $Y(s).$\n\nWe focus on the term with the exponential ${e}^{-2s}$ (which corresponds to the step function in the time domain) and identify the rational function part:\n\n$$\nF(s)=\\frac{1}{(s+3)(s+4)}.\n$$\n\nWe'll solve this in three steps.\n\n**Step 1.** Partial fraction decomposition\n\nSince the denominator contains distinct linear factors, the decomposition takes the form\n\n$$\n\\frac{1}{(s+3)(s+4)}=\\frac{A}{s+3}+\\frac{B}{s+4}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\n1=A(s+4)+B(s+3).\n$$\n\nNow, we find the constants $A$ and $B.$\n\n- Setting $s=-3,$ we have\n\n$$\n1=A(1)+B(0)\\,⟹\\,A=1.\n$$\n\n- Setting $s=-4,$ we have\n\n$$\n1=A(0)+B(-1)\\,⟹\\,B=-1.\n$$\n\nThus, we can rewrite $F(s)$ as\n\n$$\nF(s)=\\frac{1}{s+3}-\\frac{1}{s+4}.\n$$\n\n**Step 2.** Finding the Inverse of the base function\n\nWe find the inverse transform $f(t)={L}^{-1}\\{F(s)\\}$ using standard transforms:\n\n$$\n\\begin{aligned}f(t) & ={L}^{-1}\\{\\frac{1}{s+3}-\\frac{1}{s+4}\\} \\\\  & ={e}^{-3t}-{e}^{-4t}.\\end{aligned}\n$$\n\n**Step 3.** Applying the time-shifting property\n\nFinally, we address the ${e}^{-2s}$ term. By the second shifting theorem, we have\n\n$$\n{e}^{-as}\\cdot F(s)=L\\{u(t-a)\\cdot f(t-a)\\}.\n$$\n\nTaking the inverse Laplace transform gives\n\n$$\n{L}^{-1}\\{{e}^{-as}F(s)\\}=u(t-a)\\cdot f(t-a).\n$$\n\nIn our case, $a=2.$ Therefore, we shift $f(t)$ by replacing every instance of $t$ with $(t-2):$\n\n$$\n\\begin{aligned}u(t-2)f(t-2) & =u(t-2)[{e}^{-3(t-2)}-{e}^{-4(t-2)}].\\end{aligned}\n$$\n\nComparing this to the second term of the form given in the problem statement $y(t)=-2{e}^{-3t}+u(t-2)\\cdot g(t),$ we identify $g(t)$ as\n\n$$\ng(t)={e}^{-3(t-2)}-{e}^{-4(t-2)}.\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14232675/observations/step-q342810-1632aac3c4ed9358df7e.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a14015-0b87-7540-9b67-fd53ee470c9e",
+  "previous_failures": []
+}

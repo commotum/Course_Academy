@@ -1,0 +1,17 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "e-21860",
+      "problem": "Find the Laplace transform $Y(s) = \\mathcal L\\{y(t)\\}$ if \n\n$$\ny' - 3y = 2u_{\\pi/2}(t)\\cdot \\sin\\!\\left(2t-\\pi\\right)\\,, \\qquad y(0)=-2,\n$$\n\nwhere $u_{\\pi/2}(t)=u\\!\\left(t-\\dfrac{\\pi}{2}\\right)$ is the unit step function.\n\nYou may make use of the following result:\n\n$$\n\\mathcal L\\{\\sin\\omega t\\} = \\dfrac{\\omega}{s^2+\\omega^2}, \\qquad s > 0\n$$",
+      "worked_solution": "First, we take the Laplace transform of both sides and use the addition and scalar multiplication properties of the Laplace transform:\n\n$$\n\\begin{aligned}L\\{{y}^{′}-3y\\} & =L\\{2{u}_{\\pi /2}(t)\\cdot sin\\,(2t-\\pi )\\} \\\\ L\\{{y}^{′}\\}-3L\\{y\\} & =L\\{2{u}_{\\pi /2}(t)\\cdot sin\\,(2t-\\pi )\\}\\end{aligned}\n$$\n\nTo calculate $\\mathcal L\\left\\{y' \\right\\},$ we use the formula for the Laplace transform of a derivative and the initial condition $y(0)=-2\\mathbin{:}$\n\n$$\n\\mathcal{L}\\left\\{y' \\right\\}  = sY(s) - y(0)   = sY(s) + 2\n$$\n\nTo find the transform of the right-hand side, we note that the term \n\n$$\n2u_{\\pi/2}(t)\\cdot \\sin\\!\\left(2t-\\pi\\right)\n$$\n\nis in the form $u(t-a)\\cdot f(t)$ where $a=\\dfrac{\\pi}{2}$ and $f(t)=2\\sin(2t-\\pi).$ This can be interpreted as time-delayed sinusoidal forcing. \n\nNow, recall that the second shifting theorem (time-shifting property) states\n\n$$\n\\mathcal L\\{u(t-a)\\cdot f(t)\\} = e^{-as} \\cdot \\mathcal L\\{f(t+a)\\}.\n$$\n\n  \n\nSo, by the second shifting theorem, we have\n\n$$\n\\begin{aligned}L\\{u\\,(t-\\frac{\\pi }{2})\\cdot 2\\operatorname{sin}⁡(2t-\\pi )\\} & ={e}^{-(\\pi /2)s}\\cdot L\\{2sin\\,(2\\,(t+\\frac{\\pi }{2})-\\pi )\\} \\\\  & ={e}^{-(\\pi /2)s}\\cdot L\\{2\\operatorname{sin}⁡(2t)\\} \\\\  & ={e}^{-(\\pi /2)s}\\cdot 2\\cdot \\frac{2}{{s}^{2}+4} \\\\  & =\\frac{4{e}^{-\\pi s/2}}{{s}^{2}+4}.\\end{aligned}\n$$\n\nFinally, we substitute these back into our transformed differential equation:\n\n$$\n\\begin{aligned}L\\{{y}^{′}\\}-3L\\{y\\} & =L\\{2{u}_{\\pi /2}(t)\\operatorname{sin}⁡(2t-\\pi )\\} \\\\ (sY(s)+2)-3Y(s) & =\\frac{4{e}^{-\\pi s/2}}{{s}^{2}+4} \\\\ (s-3)Y(s)+2 & =\\frac{4{e}^{-\\pi s/2}}{{s}^{2}+4} \\\\ (s-3)Y(s) & =-2+\\frac{4{e}^{-\\pi s/2}}{{s}^{2}+4} \\\\ Y(s) & =-\\frac{2}{s-3}+\\frac{4{e}^{-\\pi s/2}}{({s}^{2}+4)(s-3)}\\end{aligned}\n$$",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14232675/observations/lesson-step-600521-44487b3cdc216a10669b.html",
+      "source_url": "https://mathacademy.com/topics/6718"
+    }
+  },
+  "session_id": "01a14015-0b87-7540-9b67-fd53ee470c9e",
+  "previous_failures": [
+    "Agent answer fields do not match the current question"
+  ]
+}

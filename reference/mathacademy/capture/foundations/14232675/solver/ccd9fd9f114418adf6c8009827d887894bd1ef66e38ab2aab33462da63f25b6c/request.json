@@ -1,0 +1,54 @@
+{
+  "task": "solve_question",
+  "payload": {
+    "evidence_contract": "solve_question:1",
+    "question": {
+      "math_academy_id": "q-342786",
+      "problem": "Consider the following initial value problem:\n\n$$\n\\frac{\\text{d}y}{\\text{d}t}-3y={u}_{2}(t)\\cdot (t-2)\\,,\\,y(0)=5,\n$$\n\nwhere ${u}_{2}(t)=u(t-2)$ is the unit step function.\n\nYou're given that the Laplace transform $Y(s)=L\\{y(t)\\}$ is\n\n$$\nY(s)=\\frac{5}{s-3}+\\frac{{e}^{-2s}}{{s}^{2}(s-3)}\n$$\n\nand that the solution to the initial value problem can be expressed as \n\n$$\ny(t)=5{e}^{3t}+u(t-2)\\cdot g(t).\n$$\n\nFind the function $g(t).$",
+      "answer_fields_complete": true,
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14232675/observations/step-q342786-c2a419f39f1610728fde.html",
+      "source_url": "https://mathacademy.com/tasks/14232675/topics/6718/lesson",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "-\\frac{1}{9}{e}^{3(t-2)}+\\frac{5-3t}{9}"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "\\frac{1}{9}{e}^{3(t-2)}+\\frac{7-3t}{9}"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "-\\frac{1}{9}{e}^{3(t-2)}-\\frac{7-3t}{9}"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "\\frac{1}{9}{e}^{3(t-2)}+\\frac{3t-5}{9}"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "\\frac{1}{9}{e}^{3(t-2)}-\\frac{3t-5}{9}"
+            }
+          ]
+        }
+      ]
+    },
+    "current_example": {
+      "math_academy_id": "e-21861",
+      "problem": "Consider the following initial value problem:\n\n$$\ny' + 4y = u_3(t)\\cdot (t-3)\\,, \\qquad y(0)=-2,\n$$\n\nwhere $u_3(t)=u(t-3)$ is the unit step function.\n\nYou're given that the Laplace transform $Y(s) = \\mathcal L\\{y(t)\\}$ is\n\n$$\nY(s) = -\\dfrac{2}{s+4} + \\dfrac{e^{-3s}}{s^2(s+4)}\n$$\n\nand that the solution to the initial value problem can be expressed as \n\n$$\ny(t) = -2e^{-4t} + u(t-3)\\cdot g(t).\n$$\n\nFind the function $g(t).$",
+      "worked_solution": "To find the function $g(t),$ we need to compute the inverse Laplace transform of the term containing the time delay in $Y(s).$\n\nWe focus on the term with the exponential $e^{-3s}$ (which corresponds to the step function in the time domain) and identify the rational function part:\n\n$$\nF(s) = \\dfrac{1}{s^2(s+4)}.\n$$\n\nWe'll solve this in three steps.\n\n**Step 1.** Partial fraction decomposition\n\nSince the denominator contains a linear factor $(s+4)$ and a repeated linear factor $s^2,$ the decomposition takes the form\n\n$$\n\\dfrac{1}{s^2(s+4)} = \\dfrac{A}{s} + \\dfrac{B}{s^2} + \\dfrac{C}{s+4}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\n1 = As(s+4) + B(s+4) + Cs^2.\n$$\n\nNow, we find the constants $A, B,$ and $C.$\n\n- Setting $s=0,$ we have\n\n$$\n1 = A(0) + B(4) + C(0) \\implies B = \\dfrac{1}{4}.\n$$\n\n- Setting $s=-4,$ we have\n\n$$\n1 = A(0) + B(0) + C(16) \\implies C = \\dfrac{1}{16}.\n$$\n\n- Comparing the coefficients of $s^2,$ we have\n\n$$\n0 = A + C \\implies A = -C = -\\dfrac{1}{16}.\n$$\n\nThus, we can rewrite $F(s)$ as\n\n$$\nF(s) = -\\dfrac{1}{16s} + \\dfrac{1}{4s^2} + \\dfrac{1}{16(s+4)}.\n$$\n\n**Step 2.** Finding the Inverse of the base function\n\nWe find the inverse transform $f(t) = \\mathcal L^{-1}\\{F(s)\\}$ using standard transforms:\n\n$$\n\\begin{aligned}f(t) & ={L}^{-1}\\{-\\frac{1}{16s}+\\frac{1}{4{s}^{2}}+\\frac{1}{16(s+4)}\\} \\\\  & =-\\frac{1}{16}+\\frac{t}{4}+\\frac{1}{16}{e}^{-4t}.\\end{aligned}\n$$\n\n**Step 3.** Applying the time-shifting property\n\nFinally, we address the $e^{-3s}$ term. By the second shifting theorem, we have\n\n$$\ne^{-as}\\cdot F(s)  = \\mathcal L\\{u(t-a)\\cdot f(t-a)\\}.\n$$\n\nTaking the inverse Laplace transform gives\n\n$$\n\\mathcal L^{-1} \\{ e^{-as}F(s) \\} = u(t-a) \\cdot f(t-a).\n$$\n\nIn our case, $a=3.$ Therefore, we shift $f(t)$ by replacing every instance of $t$ with $(t-3){:}$\n\n$$\n\\begin{aligned}u(t-3)f(t-3) & =u(t-3)[-\\frac{1}{16}+\\frac{t-3}{4}+\\frac{1}{16}{e}^{-4(t-3)}] \\\\  & =u(t-3)(\\frac{1}{16}{e}^{-4(t-3)}+\\frac{4t-13}{16}).\\end{aligned}\n$$\n\nComparing this to the second term of the form given in the problem statement $y(t) = -2e^{-4t} + u(t-3)\\cdot g(t),$ we identify $g(t)$ as\n\n$$\ng(t) = \\dfrac{1}{16}e^{-4(t-3)} + \\dfrac{4t-13}{16}.\n$$",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14232675/observations/step-e21861-1f2c4f3982756567d223.html",
+      "source_url": "https://mathacademy.com/tasks/14232675/topics/6718/lesson"
+    }
+  }
+}
