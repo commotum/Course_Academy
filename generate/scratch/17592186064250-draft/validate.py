@@ -20,7 +20,7 @@ def normalized(q):
   for a in f[':answer-field/choices']:a[':answer/type']=a[':answer/type'][':db/ident']
  return q
 
-def record(q):return {'knowledge_point':{'id':g.KP_UUID,'title':g.SOURCE['record'][':knowledge-point/title']},'question':normalized(q),'generation':{'template':'MA-original','source_basis':g.SOURCE['basis']}}
+def record(q):return {'knowledge_point':{'db_id':g.KP,'id':g.KP_UUID,'title':g.SOURCE['record'][':knowledge-point/title']},'question':normalized(q),'generation':{'template':'MA-original','source_basis':g.SOURCE['basis']}}
 
 def check_question(q):
  fields=q[':question/answer-fields'];assert len(fields)==1
@@ -91,7 +91,7 @@ def main():
    j=matches[i][0];oc=a[':answer/id']==oldf[':answer-field/correct'][1];nc=newf[':answer-field/choices'][j][':answer/id']==newf[':answer-field/correct'][1];assert oc==nc
    choices.append({'source_answer_id':a[':answer/id'],'source_value':a[':answer/value'],'correct':oc,'parameterized_recipe':{'amplitude':str(symbolic[j][0]),'function':symbolic[j][1],'argument_slope':str(symbolic[j][2])},'original_recipe_value':r['generation']['answer_recipes'][j],'generated_value':newf[':answer-field/choices'][j][':answer/value'],'one_to_one_match':j})
   ledger.append({'source_id':original[':db/id'],'MA_id':p,'difficulty':v[0],'template':v[1],'profile':p,'original_parameters':slots,'prompt':original[':question/problem'],'worked_solution':original[':question/worked-solution'],'choices':choices,'original_rendered_stages':oldstage,'normalized_replay_stages':newstage})
-  source.append(engine_item(p,old));eligible=[];rejected=[];local=[]
+  source_item=engine_item(p,old);source_item['source_id']=p;source.append(source_item);eligible=[];rejected=[];local=[]
   for instance in g.all_parameters(p):
    if g.eligible(p,instance):
     row=g.generate(v[0],371,profile=p,parameters=instance);st=check(row);terms+=st['operative_terms_checked'];rows.append(row);local.append(row);eligible.append(instance)

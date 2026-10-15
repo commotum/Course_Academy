@@ -6,6 +6,7 @@ import sympy as sp
 sys.dont_write_bytecode=True
 H=Path(__file__).with_suffix('');KP=17592186064250
 SOURCE=json.loads((H/'source.json').read_text());KP_UUID=SOURCE['record'][':knowledge-point/id']
+CAPACITIES={'easy':22,'moderate':99,'hard':356}
 VERSION='3.0.0-draft';GENERATOR_ID=str(uuid.uuid5(uuid.UUID(KP_UUID),'question-generator'))
 spec=importlib.util.spec_from_file_location('arcsec_draft_format',H/'math_format.py');fmt=importlib.util.module_from_spec(spec);spec.loader.exec_module(fmt)
 EASY_RATIONALS=tuple((p,q) for p in range(1,7) for q in range(1,7) if math.gcd(p,q)==1 and p!=q)
@@ -150,14 +151,17 @@ def generate(level,seed=0,*,profile=None,parameters=None):
  problem,solution=render(p,slots)
  q={':question/id':qid,':question/problem':problem+'\n\n{{selection}}',':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+level,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices,':answer-field/correct':[':answer/id',choices[correct_index(p)][':answer/id']]}]}
  meta={'generator_id':GENERATOR_ID,'version':VERSION,'seed':seed,'template':kind(p),'profile':p,'parameters':slots,'derived':{'slope':str(n),'numerator':str(a),'denominator_scale':str(d),'normalized_amplitude':str(c)},'mathematical_key':key,'source_question_ids':[] if level=='easy' else [ORIGINALS[p][':db/id']],'source_basis':SOURCE['basis'],'lineage':SOURCE['lineage'],'authored_extension':level=='easy','domain':'Real x with |slope*x|>1; principal real arcsec. Each connected component has an independent arbitrary constant C.','dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__},'plots':[],'answer_recipes':[[str(z),f,str(k)] for z,f,k in bank]}
- return fmt.validate_generated_record({'knowledge_point':{'id':KP_UUID,'title':SOURCE['record'][':knowledge-point/title']},'question':q,'generation':meta})
+ return fmt.validate_generated_record({'knowledge_point':{'db_id':KP,'id':KP_UUID,'title':SOURCE['record'][':knowledge-point/title']},'question':q,'generation':meta})
 
 def batch(level,count,seed):
  strict_int(count,'count');strict_int(seed,'seed')
  if count<=0:raise ValueError('count must be positive')
  if level not in ['easy','moderate','hard','all']:raise ValueError('Invalid difficulty')
+ levels=['easy','moderate','hard'] if level=='all' else [level]
+ for lev in levels:
+  if count>CAPACITIES[lev]:raise ValueError(f'Requested {count} {lev} tasks exceeds validated finite capacity {CAPACITIES[lev]}')
  result=[]
- for lev in ['easy','moderate','hard'] if level=='all' else [level]:
+ for lev in levels:
   rng=random.Random(seed);profiles=['authored-e-direct'] if lev=='easy' else [p for p,v in PROFILES.items() if v[0]==lev];used=set();rows=[]
   for attempt in range(100000):
    p=rng.choice(profiles);slots=rng.choice(all_parameters(p))

@@ -70,8 +70,14 @@ def side(raw,var=x,inner=None):
   actual+=coeff*effective;ops.append((body,iv,coeff))
  rest=s.expand(rest);assert not rest.has(*[t for t,_,_ in formal]);rest=rest.subs(u,inner)if inner is not None else rest;return actual+s.diff(rest,var),ops
 
-def check(q):
+def check(q,arcsec=False):
  F,var=P.prompt(measure_text(q[':question/problem']));assert var==x;sol=q[':question/worked-solution'];sub=re.search(r'\$u=(.*?)\$',sol);assert sub;U=scalar(sub[1]);k=s.diff(U,x);assert k.is_positive is True and not k.has(x)and eq(U,k*x)
+ def compare(a,b,var=x):
+  if not arcsec:return eq(a,b)
+  delta=a-b
+  if delta==0:return True
+  w=s.Symbol('root_arcsec_positive',positive=True);scale=k if var==x else s.Integer(1)
+  return all(s.simplify(delta.subs(var,sign*s.sqrt(1+w*w)/scale))==0 for sign in(-1,1))
  blocks=re.findall(r'\$\$(.*?)\$\$',sol,re.S);N=dict(differentials=0,formal_inputs=0,primitive_stages=0,basic_formulas=0,values=0,pairs=0)
  for block in blocks:
   block=measure_text(block)
@@ -87,13 +93,13 @@ def check(q):
    for part in row.replace('&','').split('='):
     if not part.strip():continue
     if basic:
-     value,ops=side(part,u);target=1/(1+u*u)if'arctan'in block else 1/s.sqrt(1-u*u)
+     value,ops=side(part,u);target=1/(s.Abs(u)*s.sqrt(u*u-1))if arcsec else 1/(1+u*u)if'arctan'in block else 1/s.sqrt(1-u*u)
     else:value,ops=side(part,x,U);target=F
-    assert eq(value,target),('actual inverse integral/primitive stage',part,value,target)
+    assert compare(value,target,u if basic else x),('actual inverse integral/primitive stage',part,value,target)
     N['formal_inputs']+=len(ops);N['primitive_stages']+=not bool(ops);N['basic_formulas']+=bool(basic)
  f=q[':question/answer-fields'][0];values=[scalar(a[':answer/value'])for a in f[':answer-field/choices']];signatures=[signature(v)for v in values];assert len(values)==5 and len(set(signatures))==5
  # Source tasks have a real primitive at x=0; arcsec alternatives fail that
  # domain contract. asin/atan derivatives are compared as complete functions.
- flags=[sig[0]!='arcsec'and sig[1]==1 and eq(s.diff(v,x),F)for v,sig in zip(values,signatures)];assert[a[':answer/id']for a,ok in zip(f[':answer-field/choices'],flags)if ok]==[f[':answer-field/correct'][1]];N['values']+=5;N['pairs']+=10
+ flags=[(sig[0]=='arcsec'if arcsec else sig[0]!='arcsec')and sig[1]==1 and compare(s.diff(v,x),F)for v,sig in zip(values,signatures)];assert[a[':answer/id']for a,ok in zip(f[':answer-field/choices'],flags)if ok]==[f[':answer-field/correct'][1]];N['values']+=5;N['pairs']+=10
  assert N['differentials']==2 and N['formal_inputs']>=3 and N['primitive_stages']>=2
  return F,N,signatures

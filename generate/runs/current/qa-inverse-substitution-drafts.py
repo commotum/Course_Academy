@@ -18,6 +18,8 @@ for sid,o in olds.items():
   assert G.source_record(sid,raw=True)==o;level=G.PROFILES[sid][0];params={'t':G.PROFILES[sid][2]};r=G.generate(level,profile=sid,parameters=params)
  else:
   c=next(c for c in json.load(open(D/'source-cases.json'))if c['source_id']==sid);level=G.PROFILES[sid]['difficulty'];params=G.PROFILES[sid]['parameters'];r=G.generate(level,template=sid,parameters=params)
+ if K==17592186064219:
+  assert r['question'][':question/problem']==G.normalize_prose(o[':question/problem'])and r['question'][':question/worked-solution']==G.normalize_prose(o[':question/worked-solution'])
  N['raw']+=1;check(r,sid)
 if K==17592186064218:
  for sid in olds:

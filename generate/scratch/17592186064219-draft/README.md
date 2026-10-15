@@ -11,4 +11,4 @@ Run from repository root:
 
 Registered numeric script and entire numeric tree are immutable and never imported. registered-baseline.json records their complete original path set and SHA values including caches; final-preservation.json compares them after validation. check-engine is a private frozen copy of the actual current native runner; no engine/registration/DB writes occur. H is an authored canonical extension, not observed H practice. Native blank probes preserve any valid-equivalent grading gaps separately from wrong-math probes.
 
-Normal generator output is radio only. Independent blank inventory entries exist exclusively for diagnostic parser probes; all 15 unresolved outcomes are outside the supported response shape and do not qualify the verified radio grading result.
+Normal generator output is radio only. Independent authored blank fixtures in diagnostic-blank-cases.json exist exclusively for diagnostic parser probes; independent-inventory.json is empty because the captured snapshot has no nonMA records; all 15 unresolved outcomes are outside the supported response shape and do not qualify the verified radio grading result.
