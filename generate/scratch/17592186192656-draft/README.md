@@ -1,0 +1,11 @@
+# Local draft: solve by eliminating the first variable
+
+Review-only draft for KP 17592186192656 at frozen basis 2275. No registration, database writes, candidate fetching, replenishment, or commits. Registered numeric generator, full sibling evidence tree, and matching bytecode were hashed before imports and remain immutable.
+
+Run `.venv/bin/python generate/scratch/17592186192656-draft.py --difficulty all --count 1 --format json` for a three-record preview. `validate.py` independently reads supplied equations and solution stages, validates whole banks and fields, runs native engine tests and strict CLI checks. `capacity.py` enumerates finite meaningful lower bounds. `render.py` runs the actual player Markdown/MathJax routines, actual MathLive blanks and native radio controls in local Chromium. `renders/` contains a screenshot per level/template and supported source. Full source captures and raw inventory remain separate from repaired served examples.
+
+Native grading uses the current source runner with SHA 33510bf3… after verifying all 28 engine-source and 11 dependency hashes plus runner source/library/binary. Supported served fields pass native grading. Full-tuple free-math probes are diagnostic only: the current parser returns `unclosed group` for all exact/equivalent/wrong tuples; these are retained as unresolved, not hidden or converted to successes. Actual tuple radio options and coordinate blanks are the served response contracts.
+
+Source fidelity, mathematical correctness, actual grading, and visual checks are separate reports. Hard and sampling bounds are conservative authored variations; no source calibration or within-level progression is claimed. Existing inventory IDs and records are preserved verbatim; normalized served drafts receive content identities reflecting their repaired presentation. Root independent review remains pending.
+
+The root review replaced literal available-source solution replay with fully parameterized `observed_backbone` prompt/solution templates for q-18787 and q-238082. `source-backbone-variants.json` records changed-parameter tests of both backbones at every level; exact raw text matches are checked independently of presentation normalization.
