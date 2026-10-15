@@ -1,0 +1,7 @@
+# Inventory execution
+
+Reuses the unchanged regular-tangents-1 generator and its stable content identities. Validation was rerun before registration. Run `.venv/bin/python generate/scratch/17592186083278/replenish.py` to recover the exact retained submission or prepare current shortages. This script uses the existing Database integration and native preview predicates, configured application contributor, application api.lock, guarded basis submission and exact-basis readback.
+
+Current classification is in current-classification.md; historical fidelity remains in ../classification.md and ../validation.json. Inventory source checks do not relabel or repair source questions. The counts conservatively exclude the incomplete unrated cubic and standalone contextual flight subpart. There are no unsupported difficulty bands in the validated generator; hard is explicitly authored.
+
+Only new generated question/field/answer entities, the requested KP membership additions and generator registration are allowed by receipt verification. All existing question records and KP metadata are compared at the exact commit basis. Repeat transaction preparation after registration emits no changes. Saved request EDN, database lineage, endpoint, contributor, expected basis, UUIDs, content hashes, previews, receipts and readback remain in replenishment/basis-*/. Source question identities and learner facts are never rewritten.
