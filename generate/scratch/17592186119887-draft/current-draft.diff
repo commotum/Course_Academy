@@ -1,0 +1,45 @@
+--- registered-immutable
++++ private-draft
+@@ -23,12 +23,12 @@
+ SNAPSHOT=json.loads((HERE/'source.json').read_text()); REC=SNAPSHOT['record']
+ KP_ID=17592186119887; VERSION='fundamental-vector-product-draft-2'
+ GENERATOR_ID=str(uuid.uuid5(uuid.UUID(REC[':knowledge-point/id']), 'question-generator'))
+-sys.path.insert(0,str(ROOT/'scripts/question_capture'))
++sys.path.insert(0,str(HERE))
+ from math_format import normalize_prose, normalize_tex, validate_generated_record
+ SOURCES={q[':question/math-academy-id']:q for q in REC[':knowledge-point/questions']}
+ TEMPLATES={q:'easy' for q in SOURCES}; CROSS=tuple(q for q in SOURCES if q!='q-167648')
+ TEMPLATES.update({'moderate:'+q:'moderate' for q in CROSS});TEMPLATES.update({'hard:'+q:'hard' for q in CROSS})
+-spec=importlib.util.spec_from_file_location('surface_display_parser',ROOT/'generate/runs/current/vector-math-parser.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
++spec=importlib.util.spec_from_file_location('surface_display_parser',HERE/'reference/vector-math-parser.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
+ u,v,x=parser.u,parser.v,parser.x;theta=sp.Symbol('theta',real=True)
+ def scalar(t):return parser.scalar(t.replace(r'\theta','t')).subs(parser.t,theta)
+ def vector(t):return sp.Matrix([scalar(s) for s in t.strip()[1:-1].replace(r'\,','').split(',')])
+@@ -220,6 +220,13 @@
+  surface=sp.diag(*scales)*BASE[base];s,t=(x,theta) if base=='q-167648' else (u,v)
+  du=surface.diff(s);dv=surface.diff(t);cross=du.cross(dv).applyfunc(sp.expand);cross=cross.applyfunc(sp.trigsimp) if base=='q-167648' else cross;norm=sp.simplify(sp.sqrt(sp.trigsimp(cross.dot(cross)))) if base=='q-167648' else None
+  prompt=transform_prompt(base,scales);solution=transform_solution(base,scales)
++ if base=='q-109911' and not observed:
++  # The capture drops the constant in this derivative-zero input. Preserve it
++  # in raw evidence, but show the full printed coordinate in learner solutions.
++  old=r'\frac{∂}{∂v}('+multiply(r'{u}^{2}',p['a'])+')'
++  new=r'\frac{∂}{∂v}('+multiply(r'{u}^{2}+1',p['a'])+')'
++  assert solution.count(old)==1
++  solution=solution.replace(old,new,1)
+  if base=='q-105607' and not observed:solution=authored_solution(surface,du,dv,cross,base)
+  if base=='q-167648' and not observed:
+   prompt='The fundamental vector product computed in the preceding step is\n\n$$\n{r}_{x}^{′}'+r'\times {r}_{\theta }^{′}='+vec(cross)+r',\quad x\in[0,1],\quad\theta\in[0,2\pi).'+ '\n$$\n\nFind its norm.\n\n'+r'$‖{r}_{x}^{′}\times {r}_{\theta }^{′}‖=$ {{field-1}}'
+@@ -261,7 +268,12 @@
+ _generate=generate
+ def generate(*args,**kwargs):
+  record=_generate(*args,**kwargs)
+- if record['generation']['eligible_for_learning']:validate_generated_record(record)
++ if record['generation']['eligible_for_learning']:
++  q=record['question']
++  texts=[q[':question/problem'],q.get(':question/worked-solution','')]
++  texts.extend(a[':answer/value'] for f in q[':question/answer-fields'] for a in f[':answer-field/choices'])
++  if any(ord(c)<32 and c not in '\n\t' for text in texts for c in text):raise ValueError('Unintended control character in learner content')
++  validate_generated_record(record)
+  return record
+ def generate_easy(seed=0,**kwargs):return generate('easy',seed=seed,**kwargs)
+ # MODERATE: exactly two nonunit coordinate scales in 2..4; same fixed six partials.
