@@ -1,0 +1,57 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-335068",
+      "sequence_position": 2,
+      "problem": "$$\n\\{\\begin{aligned}{x}^{′}(t)=7y(t)+7 \\\\ {y}^{′}(t)=-7x(t),\\end{aligned}\\,[\\begin{aligned}x(0) \\\\ y(0)\\end{aligned}]=[\\begin{aligned}0 \\\\ 1\\end{aligned}]\n$$\n\nFind the solution to the initial value problem above.\n\n*Hint: ${e}^{At}=[\\begin{aligned}\\operatorname{cos}⁡(7t) & \\operatorname{sin}⁡(7t) \\\\ -\\operatorname{sin}⁡(7t) & \\operatorname{cos}⁡(7t)\\end{aligned}],$ where $A=[\\begin{aligned}0 & 7 \\\\ -7 & 0\\end{aligned}].$*\n\n<table align=\"l\" cellpadding=\"0\" rules=\"all\">\n<tbody><tr>\n<td rowspan=\"2\" height=\"30px\" align=\"center\">$[\\begin{aligned}x(t) \\\\ y(t)\\end{aligned}]=\\,\\,$</td>\n<td width=\"5px\" height=\"40px\" align=\"center\"></td>\n<td width=\"120px\" align=\"center\">$2\\operatorname{sin}⁡(7t)$</td>\n<td width=\"5px\" align=\"center\"></td>\n</tr>\n\n<tr>\n<td align=\"center\"></td>\n<td align=\"center\">{{field-1}}</td>\n<td align=\"center\"></td>\n</tr>\n</tbody></table>",
+      "worked_solution": "Writing our system in matrix form, we get\n\n$$\n{x}^{′}(t)=[\\begin{aligned}0 & 7 \\\\ -7 & 0\\end{aligned}]x(t)+g(t),\n$$\n\nwhere $x(t)=[\\begin{aligned}x(t) \\\\ y(t)\\end{aligned}]$ and $g(t)=[\\begin{aligned}7 \\\\ 0\\end{aligned}].$ So, the matrix of the system is $A=[\\begin{aligned}0 & 7 \\\\ -7 & 0\\end{aligned}].$\n\nGiven the system ${x}^{′}(t)=Ax(t)+g(t),$ where $A$ is a constant square matrix, the solution of the initial value problem can be written as the sum of the homogeneous part and a particular solution:\n\n$$\nx(t)={{{e}^{A(t-{t}_{0})}\\,x({t}_{0})}_{⏟}}_{\\text{homogeneous part}}+{{{\\int }_{{t}_{0}}^{t}{e}^{A(t-s)}g(s)\\,\\text{d}s}_{⏟}}_{\\text{particular solution}},\n$$\n\nwhere $x({t}_{0})$ is the initial condition vector. \n\nLet's evaluate each part separately:\n\n- First, we find the homogeneous part. We are given that \n\n$$\n{e}^{At}=[\\begin{aligned}\\operatorname{cos}⁡(7t) & \\operatorname{sin}⁡(7t) \\\\ -\\operatorname{sin}⁡(7t) & \\operatorname{cos}⁡(7t)\\end{aligned}].\n$$\n\nSince the initial conditions are given at $t={t}_{0}=0,$ we have\n\n$$\n\\begin{aligned}{e}^{A(t-{t}_{0})} & ={e}^{At}\\,x(0) \\\\  & =[\\begin{aligned}\\operatorname{cos}⁡(7t) & \\operatorname{sin}⁡(7t) \\\\ -\\operatorname{sin}⁡(7t) & \\operatorname{cos}⁡(7t)\\end{aligned}][\\begin{aligned}0 \\\\ 1\\end{aligned}] \\\\  & =[\\begin{aligned}\\operatorname{sin}⁡(7t) \\\\ \\operatorname{cos}⁡(7t)\\end{aligned}].\\end{aligned}\n$$\n\n- Next, we find the particular solution. Notice that \n\n$$\n{e}^{A(t-s)}=[\\begin{aligned}\\operatorname{cos}⁡(7(t-s)) & \\operatorname{sin}⁡(7(t-s)) \\\\ -\\operatorname{sin}⁡(7(t-s)) & \\operatorname{cos}⁡(7(t-s))\\end{aligned}].\n$$\n\nSo, we have\n\n$$\n\\begin{aligned}{e}^{A(t-s)}g(s) & =[\\begin{aligned}\\operatorname{cos}⁡(7(t-s)) & \\operatorname{sin}⁡(7(t-s)) \\\\ -\\operatorname{sin}⁡(7(t-s)) & \\operatorname{cos}⁡(7(t-s))\\end{aligned}][\\begin{aligned}7 \\\\ 0\\end{aligned}] \\\\  & =[\\begin{aligned}7\\operatorname{cos}⁡(7(t-s)) \\\\ -7\\operatorname{sin}⁡(7(t-s))\\end{aligned}].\\end{aligned}\n$$\n\nThus, we obtain\n\n$$\n\\begin{aligned}{\\int }_{0}^{t}{e}^{A(t-s)}g(s)\\,\\text{d}s & ={\\int }_{0}^{t}[\\begin{aligned}7\\operatorname{cos}⁡(7(t-s)) \\\\ -7\\operatorname{sin}⁡(7(t-s))\\end{aligned}]\\text{d}s \\\\  & ={[\\begin{aligned}-\\operatorname{sin}⁡(7(t-s)) \\\\ -\\operatorname{cos}⁡(7(t-s))\\end{aligned}]}_{s=0}^{s=t} \\\\  & =[\\begin{aligned}\\operatorname{sin}⁡(7t) \\\\ \\operatorname{cos}⁡(7t)-1\\end{aligned}].\\end{aligned}\n$$\n\nFinally, we get\n\n$$\n\\begin{aligned}x(t) & =[\\begin{aligned}\\operatorname{sin}⁡(7t) \\\\ \\operatorname{cos}⁡(7t)\\end{aligned}]+[\\begin{aligned}\\operatorname{sin}⁡(7t) \\\\ \\operatorname{cos}⁡(7t)-1\\end{aligned}] \\\\  & =[\\begin{aligned}2\\operatorname{sin}⁡(7t) \\\\ 2\\operatorname{cos}⁡(7t)-1\\end{aligned}].\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "problem_field_keys": [
+        "field-1"
+      ],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14178391/observations/history-q-335068-bfcae192b66de1e98560.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14178391",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14178391/observations/history-solution-q-335068-5d0866161422344d636e.html",
+      "fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q335068",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "2\\cos(7t)+1",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "source_grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "Writing our system in matrix form, we get\n\n$$\n{x}^{′}(t)=[\\begin{aligned}0 & 7 \\\\ -7 & 0\\end{aligned}]x(t)+g(t),\n$$\n\nwhere $x(t)=[\\begin{aligned}x(t) \\\\ y(t)\\end{aligned}]$ and $g(t)=[\\begin{aligned}7 \\\\ 0\\end{aligned}].$ So, the matrix of the system is $A=[\\begin{aligned}0 & 7 \\\\ -7 & 0\\end{aligned}].$\n\nGiven the system ${x}^{′}(t)=Ax(t)+g(t),$ where $A$ is a constant square matrix, the solution of the initial value problem can be written as the sum of the homogeneous part and a particular solution:\n\n$$\nx(t)={{{e}^{A(t-{t}_{0})}\\,x({t}_{0})}_{⏟}}_{\\text{homogeneous part}}+{{{\\int }_{{t}_{0}}^{t}{e}^{A(t-s)}g(s)\\,\\text{d}s}_{⏟}}_{\\text{particular solution}},\n$$\n\nwhere $x({t}_{0})$ is the initial condition vector. \n\nLet's evaluate each part separately:\n\n- First, we find the homogeneous part. We are given that \n\n$$\n{e}^{At}=[\\begin{aligned}\\operatorname{cos}⁡(7t) & \\operatorname{sin}⁡(7t) \\\\ -\\operatorname{sin}⁡(7t) & \\operatorname{cos}⁡(7t)\\end{aligned}].\n$$\n\nSince the initial conditions are given at $t={t}_{0}=0,$ we have\n\n$$\n\\begin{aligned}{e}^{A(t-{t}_{0})} & ={e}^{At}\\,x(0) \\\\  & =[\\begin{aligned}\\operatorname{cos}⁡(7t) & \\operatorname{sin}⁡(7t) \\\\ -\\operatorname{sin}⁡(7t) & \\operatorname{cos}⁡(7t)\\end{aligned}][\\begin{aligned}0 \\\\ 1\\end{aligned}] \\\\  & =[\\begin{aligned}\\operatorname{sin}⁡(7t) \\\\ \\operatorname{cos}⁡(7t)\\end{aligned}].\\end{aligned}\n$$\n\n- Next, we find the particular solution. Notice that \n\n$$\n{e}^{A(t-s)}=[\\begin{aligned}\\operatorname{cos}⁡(7(t-s)) & \\operatorname{sin}⁡(7(t-s)) \\\\ -\\operatorname{sin}⁡(7(t-s)) & \\operatorname{cos}⁡(7(t-s))\\end{aligned}].\n$$\n\nSo, we have\n\n$$\n\\begin{aligned}{e}^{A(t-s)}g(s) & =[\\begin{aligned}\\operatorname{cos}⁡(7(t-s)) & \\operatorname{sin}⁡(7(t-s)) \\\\ -\\operatorname{sin}⁡(7(t-s)) & \\operatorname{cos}⁡(7(t-s))\\end{aligned}][\\begin{aligned}7 \\\\ 0\\end{aligned}] \\\\  & =[\\begin{aligned}7\\operatorname{cos}⁡(7(t-s)) \\\\ -7\\operatorname{sin}⁡(7(t-s))\\end{aligned}].\\end{aligned}\n$$\n\nThus, we obtain\n\n$$\n\\begin{aligned}{\\int }_{0}^{t}{e}^{A(t-s)}g(s)\\,\\text{d}s & ={\\int }_{0}^{t}[\\begin{aligned}7\\operatorname{cos}⁡(7(t-s)) \\\\ -7\\operatorname{sin}⁡(7(t-s))\\end{aligned}]\\text{d}s \\\\  & ={[\\begin{aligned}-\\operatorname{sin}⁡(7(t-s)) \\\\ -\\operatorname{cos}⁡(7(t-s))\\end{aligned}]}_{s=0}^{s=t} \\\\  & =[\\begin{aligned}\\operatorname{sin}⁡(7t) \\\\ \\operatorname{cos}⁡(7t)-1\\end{aligned}].\\end{aligned}\n$$\n\nFinally, we get\n\n$$\n\\begin{aligned}x(t) & =[\\begin{aligned}\\operatorname{sin}⁡(7t) \\\\ \\operatorname{cos}⁡(7t)\\end{aligned}]+[\\begin{aligned}\\operatorname{sin}⁡(7t) \\\\ \\operatorname{cos}⁡(7t)-1\\end{aligned}] \\\\  & =[\\begin{aligned}2\\operatorname{sin}⁡(7t) \\\\ 2\\operatorname{cos}⁡(7t)-1\\end{aligned}].\\end{aligned}\n$$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14178391/observations/history-solution-q-335068-5d0866161422344d636e.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14178391/observations/history-q-335068-bfcae192b66de1e98560.html"
+        }
+      }
+    ]
+  }
+}
