@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-275576",
+      "sequence_position": 17,
+      "problem": "In a puzzle game, a room's difficulty level $n$ is selected randomly from $1$ to $120,$ with each value equally likely. Inside each room are $n$ puzzle pieces numbered from $1$ to $n,$ and one of them is selected uniformly at random. What is the expected value of the number on the selected puzzle piece?",
+      "worked_solution": "This is a two-step random process: first, a room of difficulty level $n$ is chosen randomly and uniformly from $1$ to $120,$ and then a puzzle piece with a number is chosen uniformly from $1$ to $n.$ We are asked to find the expected value of the puzzle piece selected in the second step.\n\n- Let $Y$ be the room difficulty level, an integer selected uniformly from $1$ to $120.$\n\n- Let $X$ be the puzzle piece number, an integer selected uniformly from $1$ to $Y.$\n\nWe are asked to compute $\\text{E}[X].$ Since the distribution of $X$ depends on $Y,$ we apply the tower property:\n\n$$\n\\text{E}[X]=\\text{E}[\\text{E}[X∣Y]]\n$$\n\nGiven $Y=n,$ the number $X$ is chosen uniformly from $1$ to $n.$ So, we have that\n\n$$\n\\text{E}[X∣Y=n]=\\frac{n+1}{2}.\n$$\n\nTherefore, we have that\n\n$$\n\\text{E}[X]=\\text{E}[\\frac{Y+1}{2}].\n$$\n\nNow, we apply the linearity of expectation:\n\n$$\n\\begin{aligned}\\text{E}[X] & =\\frac{1}{2}\\cdot \\text{E}[Y+1] \\\\  & =\\frac{1}{2}\\cdot (\\text{E}[Y]+1)\\end{aligned}\n$$\n\nSince $Y$ is uniformly distributed on $\\{1,2,…,120\\},$ we use the formula for the mean of the first $n$ integers:\n\n$$\n\\text{E}[Y]=\\frac{120+1}{2}=60.5\n$$\n\nSubstituting, we finally get\n\n$$\n\\begin{aligned}\\text{E}[X] & =\\frac{1}{2}\\cdot (\\text{E}[Y]+1) \\\\  & =\\frac{1}{2}\\cdot (60.5+1) \\\\  & =\\frac{1}{2}\\cdot 61.5 \\\\  & =30.75.\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14219720/observations/history-q-275576-51243d6c488384bc49ad.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14219720",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14219720/observations/history-solution-q-275576-5107e7ef291549fa3e9d.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "29.00"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "30.50"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "31.50"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "31.25"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "30.75"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q275576",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "29.00",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "This is a two-step random process: first, a room of difficulty level $n$ is chosen randomly and uniformly from $1$ to $120,$ and then a puzzle piece with a number is chosen uniformly from $1$ to $n.$ We are asked to find the expected value of the puzzle piece selected in the second step.\n\n- Let $Y$ be the room difficulty level, an integer selected uniformly from $1$ to $120.$\n\n- Let $X$ be the puzzle piece number, an integer selected uniformly from $1$ to $Y.$\n\nWe are asked to compute $\\text{E}[X].$ Since the distribution of $X$ depends on $Y,$ we apply the tower property:\n\n$$\n\\text{E}[X]=\\text{E}[\\text{E}[X∣Y]]\n$$\n\nGiven $Y=n,$ the number $X$ is chosen uniformly from $1$ to $n.$ So, we have that\n\n$$\n\\text{E}[X∣Y=n]=\\frac{n+1}{2}.\n$$\n\nTherefore, we have that\n\n$$\n\\text{E}[X]=\\text{E}[\\frac{Y+1}{2}].\n$$\n\nNow, we apply the linearity of expectation:\n\n$$\n\\begin{aligned}\\text{E}[X] & =\\frac{1}{2}\\cdot \\text{E}[Y+1] \\\\  & =\\frac{1}{2}\\cdot (\\text{E}[Y]+1)\\end{aligned}\n$$\n\nSince $Y$ is uniformly distributed on $\\{1,2,…,120\\},$ we use the formula for the mean of the first $n$ integers:\n\n$$\n\\text{E}[Y]=\\frac{120+1}{2}=60.5\n$$\n\nSubstituting, we finally get\n\n$$\n\\begin{aligned}\\text{E}[X] & =\\frac{1}{2}\\cdot (\\text{E}[Y]+1) \\\\  & =\\frac{1}{2}\\cdot (60.5+1) \\\\  & =\\frac{1}{2}\\cdot 61.5 \\\\  & =30.75.\\end{aligned}\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14219720/observations/step-q275576-5133771cc1879c89ba0d.html"
+        }
+      }
+    ]
+  }
+}
