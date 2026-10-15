@@ -7,3 +7,20 @@ API: generate(level, seed=0, template=None, field_type=None, parameters=None, pr
 Frozen provenance is math basis 1356. source.json is unchanged capture evidence; source-cases.json drives raw replay, masks.json contains extracted parameterized components. Review labels originals and generated variants separately. No database reads/writes, registration, engine changes or plots occur.
 
 Historical opaque banks are retained as evidence and replaced by explicitly authored method banks in normal output. Hard is an authored design claim using only linear exponents and source-grounded tangent arithmetic. Two unrated levels and four missing assessment attributes remain visible in fidelity denominators.
+
+Inventory replenishment on 2026-10-15 registered generator UUID
+`3215cc89-d684-55a6-9e02-7322856a1556` at the existing repository-relative
+script path. `replenish.py` uses the application contributor and integration,
+serializes under `api.lock`, and retains exact basis-guarded requests, native
+previews, receipts, and readback in `reference/replenishment/`.
+
+The verified additive transaction advanced basis 2629 to 2630 and added ten
+mathematically distinct questions: three easy, two moderate, five hard. Current
+validated availability is 5/6/5, with no remaining inventory jobs. One extra
+moderate question was prepared because the first source scan rejected a blank
+bank containing two equivalent canonical values; the corrected readback checks
+both aliases and includes that unchanged source. No source question, canonical
+example, learner record, or other KP was edited. Recovery used the saved committed
+receipt and made no second transaction. See `classification-current.md` for the
+source refresh and `reference/replenishment/basis-2629/verification.json` for the
+exact-basis verification. The supplied job had no `.generated` file.
