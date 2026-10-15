@@ -1,0 +1,170 @@
+import { isDeveloperMode, developerModeReady } from './developer-mode.js';
+import { readCurrentLearner } from './requests.js';
+
+export function createTargetControls(options) {
+  return createTopicSelectionControls({ ...options, collection: 'targets' });
+}
+
+export function createQueueControls(options) {
+  return createTopicSelectionControls({ ...options, collection: 'queue' });
+}
+
+// Confirmed membership comes from the server. A pending selection updates
+// the local presentation immediately; storage only invalidates other pages.
+function createTopicSelectionControls({ readLearner = readCurrentLearner, onChange = () => {}, collection }) {
+  const queued = collection === 'queue';
+  const changeKey = `course-academy-${collection}-changed`;
+  const changeEvent = `course-academy:${collection}-changed`;
+  const endpoint = queued ? '/api/queue-topic' : '/api/target';
+  const noun = queued ? 'queue selection' : 'target';
+  let learner = null;
+  let selections = new Set();
+  let pending = null;
+  let revision = 0;
+  let refreshNeeded = false;
+  let refreshing = null;
+  let profileChanging = false;
+  const controls = new Set();
+  const operations = new Map();
+  const errors = new Map();
+
+  function render(control) {
+    const { host, button, status, topicId, title, menuItem, switchControl, label } = control;
+    const selected = selections.has(topicId);
+    const operation = operations.get(topicId);
+    const saving = pending === topicId;
+    const collectionLabel = switchControl ? (queued ? 'Queue' : 'Targets') : collection;
+    const action = (operation ? operation.selected : !selected) ? `Add to ${collectionLabel}` : `Remove from ${collectionLabel}`;
+    host.hidden = !learner || (!queued && learner.selfDirected !== true);
+    button.disabled = profileChanging || pending !== null || host.hidden || isDeveloperMode();
+    if (switchControl) {
+      const checked = saving && operation ? operation.selected : selected;
+      label.textContent = checked ? `Remove from ${collectionLabel}` : `Add to ${collectionLabel}`;
+      button.setAttribute('aria-checked', String(checked));
+    } else {
+      button.textContent = saving ? 'Saving…' : errors.has(topicId) ? 'Retry' : selected ? (menuItem ? `Remove from ${collection}` : queued ? 'Queued' : 'Targeted') : `Add to ${collection}`;
+      if (!menuItem) button.setAttribute('aria-pressed', String(selected));
+    }
+    button.setAttribute('aria-busy', String(saving));
+    button.setAttribute('aria-label', `${errors.has(topicId) ? 'Retry: ' : ''}${action}: ${title}`);
+    button.title = isDeveloperMode() ? `${queued ? 'Queue' : 'Target'} changes are disabled in developer mode.` : action;
+    status.textContent = errors.get(topicId) || '';
+    if (status.textContent) button.setAttribute('aria-describedby', status.id);
+    else button.removeAttribute('aria-describedby');
+  }
+  function renderAll() { for (const control of controls) render(control); }
+
+  function setLearner(value) {
+    revision++;
+    if (learner && value?.id !== learner.id) { operations.clear(); errors.clear(); }
+    learner = value || null;
+    selections = new Set((learner?.[collection] || []).filter(id => Number.isSafeInteger(id) && id > 0));
+    renderAll();
+    onChange(learner);
+  }
+
+  async function refresh() {
+    if (document.hidden || pending !== null || refreshing || !refreshNeeded) return;
+    refreshNeeded = false;
+    const version = revision;
+    let succeeded = false;
+    refreshing = (async () => {
+      try {
+        const value = await readLearner();
+        succeeded = true;
+        if (version === revision && pending === null) setLearner(value);
+        else refreshNeeded = true;
+      } catch { refreshNeeded = true; }
+    })();
+    await refreshing;
+    refreshing = null;
+    if (succeeded && refreshNeeded) void refresh();
+  }
+
+  async function toggle(topicId) {
+    if (profileChanging || pending !== null || !learner || (!queued && learner.selfDirected !== true) || isDeveloperMode()) return;
+    const operation = operations.get(topicId) || {
+      action: queued ? 'queue-topic' : 'target', topicId, selected: !selections.has(topicId), requestId: crypto.randomUUID(),
+    };
+    operations.set(topicId, operation);
+    pending = topicId; revision++; errors.delete(topicId); renderAll();
+    try {
+      {
+        const visibleSelections = new Set(selections);
+        if (operation.selected) visibleSelections.add(topicId); else visibleSelections.delete(topicId);
+        // Keep the confirmed learner intact for rollback and exact retries.
+        // Consumers repaint this local preview using their normal change path.
+        onChange({ ...learner, [collection]: [...visibleSelections] });
+      }
+      const response = await fetch(endpoint, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin', cache: 'no-store', body: JSON.stringify(operation),
+      });
+      let result;
+      try { result = await response.json(); }
+      catch { throw new Error('The server response was unavailable. Retry to confirm this change.'); }
+      if (!response.ok || result.error) {
+        const error = new Error(result.error || `Unable to save this ${noun} (${response.status}).`);
+        error.code = result.code;
+        throw error;
+      }
+      if (!result.learner || !Array.isArray(result.learner[collection])) throw new Error('Updated membership was unavailable. Retry to confirm this change.');
+      operations.delete(topicId);
+      setLearner(result.learner);
+      try { localStorage.setItem(changeKey, crypto.randomUUID()); } catch { /* Refresh on return also works without storage. */ }
+      window.dispatchEvent(new CustomEvent(changeEvent));
+    } catch (error) {
+      // Replaying an uncertain response must retain the original request ID.
+      if (error.code === 'basis-conflict') operation.requestId = crypto.randomUUID();
+      errors.set(topicId, error.message || `Unable to save this ${noun}. Try again.`);
+    } finally {
+      pending = null; renderAll();
+      onChange(learner);
+      void refresh();
+    }
+  }
+
+  function createToggle(topic, { menuItem = false, switchControl = false } = {}) {
+    const topicId = Number(topic.id);
+    if (!Number.isSafeInteger(topicId) || topicId <= 0) return null;
+    switchControl = switchControl && !menuItem;
+    const host = document.createElement('span'); host.className = 'target-control' + (switchControl ? ' target-switch-control' : '');
+    const button = document.createElement('button'); button.type = 'button'; button.className = switchControl ? 'profile-switch target-switch' : 'target-toggle';
+    if (menuItem) button.setAttribute('role', 'menuitem');
+    if (switchControl) button.setAttribute('role', 'switch');
+    const label = switchControl ? document.createElement('span') : null;
+    const status = document.createElement('span'); status.className = 'target-status'; status.setAttribute('role', 'status');
+    status.id = 'target-status-' + crypto.randomUUID();
+    const control = { host, button, status, topicId, title: topic.title || topic.name || 'Topic', menuItem, switchControl, label };
+    button.addEventListener('click', () => {
+      if (switchControl) button.dataset.animate = 'true';
+      void toggle(topicId);
+    });
+    if (switchControl) {
+      const row = document.createElement('span'); row.className = 'target-switch-row';
+      row.append(label, button); host.append(row, status);
+    } else host.append(button, status);
+    controls.add(control); render(control);
+    return host;
+  }
+
+  function invalidate() { refreshNeeded = true; void refresh(); }
+  void developerModeReady.then(renderAll);
+  window.addEventListener('course-academy:developer-mode-changing', renderAll);
+  window.addEventListener('course-academy:developer-mode-changed', renderAll);
+  window.addEventListener('course-academy:profile-changing', () => { profileChanging = true; renderAll(); });
+  window.addEventListener('course-academy:profile-changed', event => {
+    profileChanging = false;
+    setLearner({ ...event.detail.learner, courseId: event.detail.course.id });
+  });
+  window.addEventListener('storage', event => { if (event.key === changeKey) invalidate(); });
+  window.addEventListener('focus', invalidate);
+  window.addEventListener('pageshow', event => { if (event.persisted) invalidate(); });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) invalidate(); });
+
+  function remove(host) {
+    for (const control of controls) if (control.host === host) controls.delete(control);
+  }
+
+  return { setLearner, createToggle, remove, clear: () => controls.clear() };
+}

@@ -1,0 +1,29 @@
+#courseCatalog {
+  position: fixed; inset: 0; margin: auto; width: min(900px, calc(100vw - 40px));
+  max-height: min(720px, calc(100dvh - 64px)); padding: 24px 48px 24px 24px;
+  box-sizing: border-box; overflow: auto; overscroll-behavior: contain;
+  border: 1px solid var(--tone-66); border-radius: 0; background: var(--tone-08); color: var(--tone-f2);
+  box-shadow: 0 28px 90px #000c; scrollbar-color: var(--tone-55) var(--tone-08);
+  font: 14px/1.6 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  -webkit-font-smoothing: antialiased;
+}
+#courseCatalog::backdrop { background: #000a; backdrop-filter: blur(3px); }
+#courseCatalog .catalog-close { position: absolute; top: 12px; right: 12px; padding: 0 4px; border: 0; background: none; color: var(--tone-bb); font: 27px/1 monospace; cursor: pointer; }
+#courseCatalog .catalog-close:hover { color: var(--tone-ff); }
+#courseCatalog .catalog-content { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 40px; }
+#courseCatalog .catalog-column { min-width: 0; }
+:is(#courseCatalog, .profile-course-options) .catalog-group { margin: 0 0 24px; }
+:is(#courseCatalog, .profile-course-options) .catalog-group:last-child { margin-bottom: 0; }
+/* Match the lesson sidebar's typography, with an 8px heading-to-link gap (5px + 3px padding). */
+:is(#courseCatalog, .profile-course-options) .catalog-group-title { margin: 0 0 5px; color: var(--tone-cc); font-size: 12px; font-weight: 500; line-height: 1.6; text-transform: uppercase; letter-spacing: .1em; }
+:is(#courseCatalog, .profile-course-options) .catalog-courses { list-style: none; padding: 0; margin: 0; }
+:is(#courseCatalog, .profile-course-options) .catalog-course { display: block; width: 100%; border: 0; border-radius: 0; background: none; text-align: left; font-family: inherit; cursor: pointer; padding: 3px 0; color: var(--tone-aa); font-size: 11px; line-height: 1.5; text-decoration: none; overflow-wrap: anywhere; }
+:is(#courseCatalog, .profile-course-options) .catalog-course:hover { color: var(--tone-ff); text-decoration: underline; text-underline-offset: 4px; }
+:is(#courseCatalog, .profile-course-options) .catalog-course[aria-current="page"] { color: var(--tone-ff); }
+#courseCatalog :focus-visible { outline: 2px solid var(--tone-ff); outline-offset: 4px; }
+:is(#courseCatalog, .profile-course-options) .catalog-error { margin: 0 0 16px; color: var(--error-text); font-size: 11px; }
+#courseCatalog [hidden] { display: none !important; }
+@media (max-width: 580px) {
+  #courseCatalog { width: calc(100vw - 24px); max-height: calc(100dvh - 32px); padding: 24px 40px 20px 20px; }
+  #courseCatalog .catalog-content { grid-template-columns: minmax(0, 1fr); }
+}

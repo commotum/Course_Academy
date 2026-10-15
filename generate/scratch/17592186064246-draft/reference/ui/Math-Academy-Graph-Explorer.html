@@ -1,0 +1,2349 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <script>
+    try {
+      document.documentElement.dataset.theme = localStorage.getItem('course-academy.theme') === 'light' ? 'light' : 'dark';
+    } catch { document.documentElement.dataset.theme = 'dark'; }
+  </script>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Explore · Course Academy</title>
+<link rel="icon" href="/ui/favicon.svg?v=2" type="image/svg+xml"/>
+<style>
+@font-face {
+  font-family: "New Science Mono";
+  src: url("new-science-mono/New-Science-Mono.otf") format("opentype");
+  font-style: normal; font-weight: 400; font-display: swap;
+}
+@font-face {
+  font-family: "New Science Mono";
+  src: url("new-science-mono/New-Science-Mono-Medium.otf") format("opentype");
+  font-style: normal; font-weight: 500; font-display: swap;
+}
+* { box-sizing: border-box; }
+:root {
+  --bg:var(--tone-03);
+  --panel:var(--tone-09-ee);
+  --panel-2:var(--tone-0e);
+  --line:var(--tone-19);
+  --line-2:var(--tone-26);
+  --ink:var(--tone-fa);
+  --muted:var(--tone-8b);
+  --soft:var(--tone-cf);
+  --edge:var(--ink-alpha-18);
+  --edge-active:var(--ink-alpha-74);
+  --node:var(--tone-00);
+  --node-text:var(--tone-ff);
+  --node-border:var(--tone-ff);
+  --node-hover:var(--tone-00);
+  --focus:var(--ink-alpha-1);
+  --shadow:0 18px 48px rgba(0,0,0,.4);
+  --font:"New Science Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+html,body { margin:0; width:100%; height:100%; overflow:hidden; background:var(--bg); color:var(--ink); font-family:var(--font); letter-spacing:.01em; }
+body::before { content:""; position:fixed; inset:0; background-image:
+  linear-gradient(var(--ink-alpha-035) 1px, transparent 1px),
+  linear-gradient(90deg, var(--ink-alpha-03) 1px, transparent 1px);
+  background-size: 24px 24px, 24px 24px; opacity:.24; pointer-events:none; }
+button,input,select { font:inherit; }
+.app { position:relative; width:100%; height:100%; display:grid; grid-template-rows:68px 1fr; }
+
+
+
+
+.toolbar-group { display:flex; align-items:center; gap:8px; min-width:0; }
+
+
+
+
+
+
+
+
+.segmented,.compact-row { display:flex; align-items:center; gap:6px; }
+.segmented button,.pill,select.compact,input.compact { height:36px; padding:0 12px; border:1px solid var(--line-2); background:var(--tone-0a); color:var(--soft); cursor:pointer; border-radius:0; white-space:nowrap; }
+.segmented button.active,.pill.active { background:var(--tone-ff); color:var(--tone-00); border-color:var(--tone-ff); }
+.segmented button:hover,.pill:hover,select.compact:hover { border-color:var(--tone-5f); color:var(--ink); }
+.selectors { margin-left:auto; display:flex; align-items:center; gap:8px; }
+.main { position:relative; min-height:0; }
+.viewport { position:absolute; inset:0; overflow:hidden; cursor:grab; }
+.viewport.dragging { cursor:grabbing; }
+.canvas { position:absolute; inset:0; width:100%; height:100%; }
+#svg { width:100%; height:100%; display:block; }
+#edges, #edges path { pointer-events:none; }
+.edge-stub{cursor:help;outline:none}
+.edge-stub-line{fill:none;stroke:var(--ink-alpha-78);stroke-width:1.2;pointer-events:none}
+.edge-stub-dot{fill:var(--ink-alpha-78);pointer-events:none}
+.edge-stub-hit{fill:none;stroke:transparent;stroke-width:12;vector-effect:non-scaling-stroke;pointer-events:stroke;stroke-linecap:round}
+.edge-stub:hover .edge-stub-line,.edge-stub:focus-visible .edge-stub-line,.edge-stub.is-open .edge-stub-line{stroke:var(--tone-ff);stroke-width:1.8}
+.edge-stub:hover .edge-stub-dot,.edge-stub:focus-visible .edge-stub-dot,.edge-stub.is-open .edge-stub-dot{fill:var(--tone-ff)}
+#nodes .node.edge-peer .title-shape{stroke:var(--tone-ff);stroke-width:2;vector-effect:non-scaling-stroke}
+#edgeConnectionPopover{position:fixed;z-index:90;width:320px;max-width:calc(100vw - 24px);padding:10px;background:var(--panel-2);color:var(--ink);border:1px solid var(--line-2);box-shadow:var(--shadow);font:11px var(--font)}
+#edgeConnectionPopover[hidden]{display:none}
+#edgeConnectionHeading{font-size:10px;color:var(--muted);line-height:1.5;margin-bottom:8px;overflow-wrap:anywhere}
+#edgeConnectionTopics{display:grid;gap:5px;max-height:min(240px,calc(100vh - 100px));overflow-y:auto;overscroll-behavior:contain}
+.edge-topic-badge{display:flex;align-items:flex-start;gap:8px;width:100%;padding:8px;border:1px solid var(--line-2);background:var(--panel);color:var(--ink);text-align:left;cursor:pointer;font:11px var(--font);border-radius:0}
+.edge-topic-badge:hover,.edge-topic-badge:focus-visible{border-color:var(--tone-ff);outline:none}
+.edge-topic-layer{flex-shrink:0;font-size:9px;line-height:1.5;color:var(--muted)}
+.edge-topic-name{line-height:1.5;overflow-wrap:anywhere;min-width:0}
+.edge-base { fill:none; stroke:var(--edge); stroke-width:1.2; stroke-linecap:round; pointer-events:none; }
+.edge-fade { fill:none; stroke:var(--ink-alpha-06); stroke-width:1.2; stroke-linecap:round; pointer-events:none; }
+.edge-active { fill:none; stroke:var(--edge-active); stroke-width:1.45; stroke-linecap:round; pointer-events:none; }
+.layer-guide { display:none; }
+.node .node-shape { fill:var(--node); stroke:var(--node-border); stroke-width:1; rx:0; ry:0; }
+.node text { fill:var(--node-text); font-size:11px; dominant-baseline:middle; text-rendering:geometricPrecision; }
+.node:hover .node-shape { fill:var(--node-hover); }
+.node.related .node-shape { fill:var(--node); stroke:var(--node-border); }
+.node.dim .node-shape { fill:var(--node); stroke:var(--node-border); }
+.node.dim text { fill:var(--node-text); }
+.node.related text { fill:var(--node-text); }
+/* A hit target is interactive, but never paints over the title. */
+.node > rect.node-hit { fill:none; stroke:none; stroke-width:0; pointer-events:all; cursor:pointer; }
+.node > text { pointer-events:none; user-select:none; }
+.node:focus-visible .node-shape { stroke:var(--tone-ff); stroke-width:1; }
+.hud { position:absolute; top:18px; left:18px; display:flex; flex-direction:column; gap:12px; z-index:5; max-width:min(420px, calc(100vw - 36px)); }
+.info-panel,.mini-panel,.footer-panel { background:var(--panel); border:1px solid var(--line); box-shadow:var(--shadow); backdrop-filter: blur(10px); }
+.info-panel { padding:14px 14px 12px; }
+.info-kicker { color:var(--muted); font-size:10px; letter-spacing:.16em; text-transform:uppercase; margin-bottom:8px; }
+.info-title { font-size:18px; line-height:1.25; font-weight:500; margin-bottom:8px; max-width:100%; word-break:break-word; }
+.info-copy { color:var(--muted); font-size:11px; line-height:1.55; max-width:62ch; }
+.info-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.info-actions .pill { padding:0 10px; }
+.meta-line { margin-top:12px; font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.14em; }
+.footer-panel { position:absolute; right:18px; bottom:18px; padding:10px 12px; z-index:5; font-size:10px; color:var(--muted); display:flex; align-items:center; gap:12px; }
+.mini-panel { position:absolute; right:18px; top:18px; padding:10px; width:220px; z-index:5; }
+.minimap-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.14em; }
+.minimap { width:100%; aspect-ratio: 220 / 140; border:1px solid var(--line); background:var(--tone-05); display:block; cursor:pointer; }
+.legend-line { display:flex; gap:8px; align-items:center; color:var(--muted); font-size:10px; margin-top:8px; }
+.legend-swatch { width:18px; height:1px; background:var(--ink-alpha-32); }
+.breadcrumbs { display:flex; align-items:center; gap:6px; margin-top:8px; min-width:0; flex-wrap:wrap; }
+.crumb { height:24px; display:inline-flex; align-items:center; padding:0 8px; border:1px solid var(--line-2); color:var(--muted); background:var(--tone-0b); font-size:10px; text-transform:uppercase; letter-spacing:.12em; }
+.crumb.current { color:var(--tone-00); background:var(--tone-ff); border-color:var(--tone-ff); }
+.empty-note { color:var(--muted); font-size:11px; line-height:1.5; }
+.hidden { display:none !important; }
+@media (max-width: 1200px) { .selectors { display:none; } .mini-panel { width:180px; } }
+@media (max-width: 900px) {
+ .app { grid-template-rows:auto 1fr; }
+
+ .hud { top:14px; left:14px; right:14px; max-width:none; } .mini-panel { display:none; } .footer-panel { left:14px; right:14px; justify-content:space-between; gap:8px; } }
+
+/* Keep long UI titles inside their panel; full names stay accessible without tooltips. */
+.app { min-width:0; grid-template-columns:minmax(0,1fr); }
+.main{ min-width:0; }
+.hud { width:min(420px,calc(100% - 36px)); min-width:0; }
+.info-panel { width:100%; min-width:0; }
+.info-actions { min-width:0; max-width:100%; }
+.info-actions > .pill {
+  display:block; flex:0 1 auto; min-width:0; max-width:100%;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:left;
+}
+.info-title { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; word-break:normal; }
+.crumb { display:block; flex:0 1 auto; min-width:0; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; line-height:22px; cursor:pointer; }
+
+
+.meta-line { overflow-wrap:anywhere; }
+@media (max-width:900px) {
+  .hud { width:calc(100% - 28px); }
+  #modeBar { min-width:0; max-width:100%; overflow-x:auto; }
+  #modeBar button { flex-shrink:0; }
+}
+
+/* Scoped columns collapse ordered global layers; Lxx keeps the global rank. */
+/* The layer badge and title share the parent node's selection state. */
+.node.has-badge .node-shape{stroke-width:1}
+.node .badge-text{font-family:inherit;font-size:11px;font-weight:400;letter-spacing:inherit}
+.node .title-static,.node .title-marquee-text{font-family:inherit;font-size:11px;font-weight:400;letter-spacing:inherit;dominant-baseline:middle}
+.node.is-marquee-hover .title-static{display:none}
+.node .title-marquee-wrap{display:none;pointer-events:none}
+.node.is-marquee-hover .title-marquee-wrap{display:block}
+.node .title-marquee-track{will-change:transform}
+.edge-base{stroke:var(--ink-alpha-78)}
+.edge-base.edge-direct{stroke:var(--ink-alpha-78);stroke-width:1.2}
+#badgeNote[hidden]{display:none}
+.hud{width:min(330px,calc(100% - 36px));max-width:min(330px,calc(100% - 36px))}
+.info-actions#selectedActions{flex-wrap:nowrap;gap:5px}.info-actions#selectedActions .pill{font-size:10px;height:28px;padding:0 8px}.breadcrumbs{flex-wrap:nowrap;overflow:hidden}.breadcrumbs .crumb{font-size:8px;flex-shrink:1}.info-title{font-size:16px}.info-copy{font-size:10px;line-height:1.6}.meta-line{font-size:9px;letter-spacing:.06em;line-height:1.5}
+#jumpTopics{margin-top:11px;border-top:1px solid var(--tone-20);padding-top:8px;font-size:10px;color:var(--tone-a0)}#jumpTopics summary{cursor:pointer;list-style-position:inside}
+#badgeNote{margin-top:8px;color:var(--tone-a0);font-size:9px;line-height:1.55;letter-spacing:0;text-transform:none}
+.selectors{display:flex}.viewport{touch-action:none}
+@media(max-width:1300px){
+
+
+
+
+.selectors{display:flex}.segmented button,.pill,select.compact{padding:0 8px;font-size:11px}}
+@media(max-width:1000px){.app{grid-template-rows:auto 1fr}
+
+
+#modeBar{order:3}.selectors{order:4;margin-left:auto}.mini-panel{display:none}.hud{width:min(310px,calc(100% - 28px));max-width:min(310px,calc(100% - 28px))}.footer-panel{font-size:8px;left:14px;right:14px;padding:8px;gap:8px}}
+@media(max-width:570px){
+
+
+#modeBar{max-width:100%;overflow:auto;flex:1 1 100%;gap:4px}#modeBar button{font-size:10px;height:30px;padding:0 9px}.selectors{width:100%;margin:0;justify-content:flex-end}.selectors .pill,select.compact{height:28px}.hud{top:12px;left:12px;max-width:calc(100% - 24px);width:calc(100% - 24px)}.info-panel{padding:9px 11px}.info-copy,#jumpTopics,.meta-line,.breadcrumbs{display:none}.info-kicker{font-size:8px;margin-bottom:5px}.info-title{font-size:13px;margin-bottom:5px}.info-actions{margin-top:7px;gap:5px}.info-actions .pill{height:26px;font-size:9px}#badgeNote{margin-top:6px;font-size:8px}.footer-panel>span:last-child{display:none}}
+/* Topic titles keep their existing dimensions, type and ellipsis at rest.
+   Only a hovered/focused overflowing label scrolls; copies stay clipped. */
+.ui-title-window {
+  display:block; position:relative; min-width:0; max-width:100%;
+  overflow:hidden; white-space:nowrap; text-overflow:clip;
+  font:inherit; color:inherit; letter-spacing:inherit;
+  line-height:inherit; text-transform:inherit;
+}
+.ui-title-static {
+  display:block; min-width:0; max-width:100%; overflow:hidden;
+  white-space:nowrap; text-overflow:ellipsis;
+}
+.ui-title-track {
+  position:absolute; inset:0 auto auto 0; display:flex; align-items:baseline;
+  width:max-content; max-width:none; white-space:nowrap; visibility:hidden;
+  pointer-events:none; user-select:none; font:inherit; color:inherit;
+  letter-spacing:inherit; line-height:inherit; text-transform:inherit;
+}
+.ui-title-copy { display:block; flex:0 0 auto; width:max-content; white-space:nowrap; }
+.ui-title-window.is-running .ui-title-static { visibility:hidden; }
+.ui-title-window.is-running .ui-title-track { visibility:visible; will-change:transform; }
+
+</style>
+<style id="workbench-controls">
+.app{grid-template-rows:auto minmax(0,1fr)}
+.minimap-stats{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;font-size:10px;color:var(--muted);letter-spacing:.14em;line-height:1.4;white-space:nowrap}
+.minimap-stats #zoomReadout{margin-left:auto;text-align:right}
+.info-actions#viewActions{gap:5px;margin-top:6px}
+.info-actions#viewActions .pill{height:28px;padding:0 8px;font-size:10px}
+.graph-target-color{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;font-size:11px;color:var(--tone-bb)}
+.graph-target-color .profile-switch:focus-visible{outline:2px solid var(--tone-ee);outline-offset:3px}
+.target-course-filters{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.target-course-filters[hidden]{display:none}
+.target-course-filters .info-kicker{margin-bottom:10px}
+.target-course-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px;font-size:11px;color:var(--soft)}
+.target-course-row .profile-switch:focus-visible{outline:2px solid var(--tone-ee);outline-offset:3px}
+.target-split-row{margin-bottom:14px}
+.course-band-backdrop{fill:var(--ink-alpha-03);stroke:var(--line-2);stroke-width:1}
+.course-band-label{fill:var(--soft);font-family:var(--font);font-size:14px;font-weight:500;letter-spacing:.1em}
+#guides{pointer-events:none}
+@media(max-width:1000px){.mini-panel{display:block;width:170px}}
+@media(max-width:570px){.mini-panel{display:block;top:auto;bottom:55px;right:12px;width:142px;padding:8px}.minimap-stats{font-size:9px;letter-spacing:.07em}.info-actions#viewActions .pill{height:26px;font-size:9px}}
+
+.app.targets-page{grid-template-rows:auto minmax(0,1fr) auto}
+.app.targets-page .hud{max-height:calc(100% - 36px);overflow-y:auto;overscroll-behavior:contain}
+.target-week-strip{padding:10px 18px 12px;border-top:1px solid var(--line-2);background:var(--panel);z-index:6;min-width:0}
+.target-week-strip[hidden]{display:none}
+.target-week-heading{display:flex;align-items:center;justify-content:center;gap:20px;min-height:18px;font-size:11px;color:var(--soft)}
+.target-week-hint{font-size:10px;color:var(--muted)}
+.target-week-controls{display:flex;align-items:center;justify-content:center;gap:16px;min-width:0;margin-top:4px}
+.target-week-presets{display:flex;gap:6px;flex-shrink:0}
+.target-week-presets button{height:30px;padding:0 10px;border:1px solid var(--line-2);background:transparent;color:var(--muted);font-size:10px;border-radius:0;cursor:pointer}
+.target-week-presets button[aria-pressed="true"]{background:var(--tone-ff);color:var(--tone-00);border-color:var(--tone-ff)}
+.target-week-buttons{display:flex;align-items:center;gap:4px;min-width:0;max-width:800px;overflow-x:auto;scrollbar-width:thin;padding:3px}
+.target-week-button{position:relative;display:flex;align-items:center;justify-content:center;flex:0 0 36px;height:32px;padding:0;border:0;background:transparent;color:var(--soft);cursor:pointer;border-radius:0}
+.target-week-bar{display:block;width:24px;height:6px;border:1px solid var(--tone-55);background:transparent}
+.target-week-button.has-targets .target-week-bar{background:var(--tone-55)}
+.target-week-button[aria-pressed="true"] .target-week-bar{border-color:var(--tone-ff);background:var(--tone-ff)}
+.target-week-button[aria-current="date"]::after{content:"";position:absolute;bottom:3px;width:12px;height:2px;background:var(--tone-bb)}
+.target-week-button:hover .target-week-bar{border-color:var(--tone-ff)}
+.target-week-strip button:focus-visible{outline:2px solid var(--tone-ff);outline-offset:1px}
+.target-week-strip button:disabled{cursor:wait;opacity:.5}
+@media(max-width:570px){.target-week-strip{padding:8px 12px}.target-week-heading{justify-content:flex-start;flex-wrap:wrap;gap:4px 12px;font-size:10px}.target-week-hint{font-size:9px}.target-week-controls{gap:8px;justify-content:flex-start}.target-week-presets button{padding:0 7px}.target-week-button{flex-basis:32px}.target-week-bar{width:20px}}
+</style>
+<style id="node-context-style">/* Node-only context actions. Connections remain completely non-interactive. */
+#nodeContextMenu{position:fixed;z-index:100;min-width:224px;max-width:calc(100vw - 16px);padding:4px;background:var(--tone-0b);border:1px solid var(--tone-66);box-shadow:0 8px 25px #000b;color:var(--tone-ff);font-family:var(--font)}
+#nodeContextMenu[hidden],#copyNodeNotice[hidden]{display:none}
+#nodeContextMenu [role="menuitem"]{display:block;width:100%;border:0;background:transparent;color:inherit;text-align:left;padding:11px 12px;font:inherit;font-size:12px;letter-spacing:0;cursor:pointer;white-space:nowrap;text-decoration:none;box-sizing:border-box}
+#nodeContextMenu [role="menuitem"]:hover,#nodeContextMenu [role="menuitem"]:focus-visible{background:var(--tone-ff);color:var(--tone-00);outline:none}
+#nodeContextMenu [role="menuitem"]:disabled{opacity:.55;cursor:wait}
+#nodeContextMenu .menu-new-tab-indicator{float:right;margin-left:16px}
+#nodeContextMenu .target-control{display:flex;width:100%;gap:0}
+#nodeContextMenu .target-status:not(:empty){padding:0 12px 10px}
+#copyNodeNotice{position:fixed;z-index:101;bottom:60px;left:50%;transform:translateX(-50%);max-width:calc(100vw - 32px);padding:10px 14px;background:var(--tone-11);border:1px solid var(--tone-77);color:var(--tone-ff);font:11px var(--font);box-shadow:0 6px 20px #0008;pointer-events:none}
+#manualNodeCopy{background:var(--tone-0b);color:var(--tone-ff);border:1px solid var(--tone-77);padding:20px;width:min(540px,calc(100vw - 32px));font:12px var(--font)}
+#manualNodeCopy::backdrop{background:#000a}
+#manualNodeCopy h2{font:500 15px var(--font);margin:0 0 12px}
+#manualNodeCopy p{color:var(--tone-bb);line-height:1.6;margin:0 0 12px}
+#manualNodeText{display:block;width:100%;min-height:110px;resize:vertical;padding:10px;background:var(--tone-05);color:var(--tone-ff);border:1px solid var(--tone-55);font:12px var(--font);line-height:1.6}
+#manualNodeDone{margin-top:12px;float:right}
+
+</style><style id="competency-styles">
+/* Fill shows repetitions or topic status. Selection uses separate corner marks. */
+#nodes .node .title-shape{fill:var(--node);stroke:var(--node-border);stroke-dasharray:var(--competency-dash,none)}
+#nodes .node .title-text{fill:var(--node-text)}
+#nodes .node .layer-badge{fill:var(--tone-00);stroke:var(--tone-ff);stroke-dasharray:none}
+#nodes .node .badge-text{fill:var(--tone-ff)}
+#nodes .node:focus-visible .title-shape{stroke-width:2}
+#selectionMarks,#selectionMarks *{pointer-events:none}
+.selection-underlay{fill:none;stroke:var(--tone-00);stroke-width:4;stroke-linecap:square;stroke-linejoin:miter;vector-effect:non-scaling-stroke}
+.selection-brackets{fill:none;stroke:var(--tone-ff);stroke-width:1.4;stroke-linecap:square;stroke-linejoin:miter;vector-effect:non-scaling-stroke}
+#statusColorLegend[hidden]{display:none}
+.status-color-legend{margin-top:10px;display:grid;gap:7px}
+.status-color-row{display:grid;grid-template-columns:112px minmax(0,1fr);align-items:center;gap:8px;font-size:9px;color:var(--soft)}
+.status-color-row .competency-ramp{margin:0}
+#competencyLegend{margin-top:12px;padding-top:10px;border-top:1px solid var(--line-2);font-size:10px;color:var(--tone-cc);line-height:1.5}
+.competency-heading{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:7px}
+.competency-heading>span:first-child{letter-spacing:.05em;color:var(--tone-bb)}
+#competencyReadout{font-size:10px;color:var(--tone-ff);font-variant-numeric:tabular-nums}
+.competency-ramp{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.competency-cell{display:block;background:var(--swatch-fill);color:var(--swatch-text);border:1px solid var(--swatch-border,var(--tone-aa));height:20px;text-align:center;line-height:18px;font-size:9px;font-variant-numeric:tabular-nums}
+.competency-endpoints{display:flex;justify-content:space-between;margin-top:4px;font-size:9px;color:var(--tone-b5)}
+.competency-keys{display:flex;gap:18px;align-items:center;margin-top:9px;font-size:9px;color:var(--tone-dd)}
+.competency-keys>span{display:inline-flex;gap:7px;align-items:center;white-space:nowrap}
+.competency-active-example{display:block;width:28px;height:18px;flex:0 0 28px}
+.competency-unknown-example{display:inline-block;width:24px;height:12px;background:var(--tone-00);border:1px dashed var(--tone-8c)}
+#competencyDetails{margin-top:8px;font-size:9px;line-height:1.6;color:var(--tone-bb)}
+#competencyDetails>summary{cursor:pointer;list-style-position:inside;color:var(--tone-aa)}
+#competencyDetails p{margin:8px 0 0;overflow-wrap:anywhere}
+#competencyDetails .competency-source-heading{color:var(--tone-ee)}
+#competencySelectionDetail{color:var(--tone-dd)}
+@media(max-width:570px){#competencyLegend{margin-top:9px;padding-top:8px;font-size:9px}.competency-heading{margin-bottom:5px}.competency-cell{height:17px;line-height:15px;font-size:8px}.competency-keys{margin-top:6px;gap:14px}#competencyDetails{margin-top:6px}}
+</style>
+
+<style id="load-state-styles">
+#refreshData{border:0;border-left:1px solid var(--tone-44);padding:0 0 0 12px;background:none;color:var(--tone-aa);font:9px var(--font);cursor:pointer;text-transform:uppercase;letter-spacing:.07em}#refreshData:hover{color:var(--tone-ff)}
+.load-state{position:absolute;z-index:7;left:50%;top:50%;transform:translate(-50%,-50%);max-width:min(480px,calc(100% - 36px));padding:24px;border:1px solid var(--tone-44);background:var(--tone-08);font-size:12px;line-height:1.7;text-align:center}.load-state[hidden]{display:none}.load-state .pill,.load-state a{display:block;margin:16px auto 0;color:var(--tone-ff);font-size:10px}.load-state .pill[hidden],.load-state a[hidden]{display:none}
+@media(max-width:680px){.load-state{top:65%}}
+</style>
+<link rel="stylesheet" href="/ui/navigation.css">
+<link rel="stylesheet" href="/ui/targets.css">
+</head>
+<body>
+<div class="app">
+<header class="topbar site-header">
+<a class="brand" href="/home" aria-label="Study home"><img class="brand-logo" src="/ui/MA-Logo.svg" alt="" width="28" height="28"></a>
+<nav aria-label="Main navigation"><a href="/home" id="homeLink">Study</a><a href="/activity" id="activityLink">Activity</a><a href="/assignments" id="assignmentsLink">Assignments</a><a href="/progress" id="courseLink">Progress</a><a href="/?view=targets" id="targetsLink">Targets</a><button id="courseBrowse" class="explore-trigger" type="button" aria-haspopup="dialog">Explore</button></nav>
+<button id="learnerName" class="learner-name" type="button" aria-haspopup="dialog" aria-controls="userProfile" aria-expanded="false">Profile</button>
+</header>
+<div class="main">
+<div id="loadState" class="load-state" role="status"><span id="loadMessage">Connecting to your knowledge graph…</span><button id="retryLoad" class="pill" hidden>Retry</button><a id="localServerLink" href="http://127.0.0.1:8765/" hidden>Open local explorer ↗</a></div>
+<div class="viewport" id="viewport">
+<svg aria-label="Math topic network" id="svg" preserveAspectRatio="xMidYMid meet" viewBox="0 0 100 100">
+<g id="camera">
+<g id="guides"></g>
+<g id="edges"></g>
+<g id="edgeStubs"></g>
+<g id="nodes"></g>
+<g id="selectionMarks" aria-hidden="true"></g>
+</g>
+</svg>
+</div>
+<div class="hud">
+<div class="info-panel" id="infoPanel">
+<div class="info-kicker">Navigation</div>
+<div aria-level="2" class="info-title" id="infoTitle" role="heading">Select a topic</div>
+<div class="info-copy" id="infoCopy">Search or click a topic to enter a cleaner focused view. Nodes display only their title. Links route as cubic Bézier curves, leaving and entering each rectangle orthogonally.</div>
+<div class="info-actions hidden" id="selectedActions">
+<button class="pill" id="backBtn">Back</button>
+<button class="pill" id="forwardBtn">Forward</button>
+<button class="pill" id="overviewBtn">Course overview</button>
+</div><div class="info-actions hidden" id="targetActions"></div><div class="info-actions" id="viewActions"><button class="pill" id="fitBtn">Fit</button><button class="pill" id="resetBtn">Reset</button></div>
+<div class="graph-target-color"><label id="targetColorLabel" for="targetColorToggle">Color Code</label><button id="targetColorToggle" class="profile-switch" type="button" role="switch" aria-labelledby="targetColorLabel" aria-checked="false"></button></div>
+<section id="targetCourseFilters" class="target-course-filters" aria-label="Filter targets by course" hidden>
+<div class="info-kicker">Courses</div>
+<div class="target-course-row target-split-row"><label id="targetSplitLabel" for="targetSplitToggle">Split by course</label><button id="targetSplitToggle" class="profile-switch" type="button" role="switch" aria-labelledby="targetSplitLabel" aria-checked="false"></button></div>
+<div class="target-course-row"><label id="targetCourseLabel256" for="targetCourseToggle256">MTH 256</label><button id="targetCourseToggle256" class="profile-switch" type="button" role="switch" aria-labelledby="targetCourseLabel256" aria-checked="true"></button></div>
+<div class="target-course-row"><label id="targetCourseLabel255" for="targetCourseToggle255">MTH 255</label><button id="targetCourseToggle255" class="profile-switch" type="button" role="switch" aria-labelledby="targetCourseLabel255" aria-checked="true"></button></div>
+<div class="target-course-row"><label id="targetCourseLabel341" for="targetCourseToggle341">MTH 341</label><button id="targetCourseToggle341" class="profile-switch" type="button" role="switch" aria-labelledby="targetCourseLabel341" aria-checked="true"></button></div>
+</section>
+
+<div class="meta-line" id="metaLine"></div><div id="badgeNote">Global layer badges · prerequisite order</div>
+<section id="competencyLegend" aria-label="Progress and selection legend">
+<div class="competency-heading"><span>Repetitions</span><span id="competencyReadout" aria-live="polite"></span></div>
+<div class="competency-ramp" aria-label="Repetition bands zero through six, from lower to higher"><span class="competency-cell" style="--swatch-fill:var(--mastery-0);--swatch-text:var(--mastery-text-0)" aria-label="Repetition band 0 of 6">0</span><span class="competency-cell" style="--swatch-fill:var(--mastery-1);--swatch-text:var(--mastery-text-1)" aria-label="Repetition band 1 of 6">1</span><span class="competency-cell" style="--swatch-fill:var(--mastery-2);--swatch-text:var(--mastery-text-2)" aria-label="Repetition band 2 of 6">2</span><span class="competency-cell" style="--swatch-fill:var(--mastery-3);--swatch-text:var(--mastery-text-3)" aria-label="Repetition band 3 of 6">3</span><span class="competency-cell" style="--swatch-fill:var(--mastery-4);--swatch-text:var(--mastery-text-4)" aria-label="Repetition band 4 of 6">4</span><span class="competency-cell" style="--swatch-fill:var(--mastery-5);--swatch-text:var(--mastery-text-5)" aria-label="Repetition band 5 of 6">5</span><span class="competency-cell" style="--swatch-fill:var(--mastery-6);--swatch-text:var(--mastery-text-6)" aria-label="Repetition band 6 of 6">6</span></div>
+<div class="competency-endpoints"><span>Lower</span><span>Higher</span></div>
+<div id="statusColorLegend" class="status-color-legend" aria-label="Status colors and repetition bands" hidden>
+<div class="status-color-row"><span>Targets</span><div id="targetMasteryRamp" class="competency-ramp" aria-label="Red target repetition bands zero through six"></div></div>
+<div class="status-color-row"><span>Completed targets</span><div id="completedTargetMasteryRamp" class="competency-ramp" aria-label="Green completed-target repetition bands zero through six"></div></div>
+<div class="status-color-row"><span>In queue</span><div id="queueMasteryRamp" class="competency-ramp" aria-label="Blue queue repetition bands zero through six"></div></div>
+</div>
+<div class="competency-keys"><span><svg class="competency-active-example" viewBox="0 0 28 18" aria-hidden="true"><rect x="5" y="5" width="18" height="8" fill="var(--mastery-3)"/><path d="M7 2H2V7 M21 2H26V7 M2 11V16H7 M21 16H26V11" fill="none" stroke="var(--tone-ff)" stroke-width="1"/></svg>Active selection</span><span><i class="competency-unknown-example" aria-hidden="true"></i>No data</span></div>
+<details id="competencyDetails"><summary id="profileSummary">Knowledge profile</summary>
+<p id="competencySelectionDetail"></p>
+<p id="competencyFillDescription">Fill shows accumulated repetitions. Bands use the whole-number part of the value, capped at 6. A dashed outline means no progress record.</p>
+<p>Corner brackets mark your selection. Brightness shows progress; it does not indicate whether a review is due.</p>
+</details></section>
+<div class="breadcrumbs" id="breadcrumbs"></div>
+<details id="jumpTopics"><summary>Jump to another topic</summary><div class="info-actions" id="starterButtons"></div></details></div>
+</div>
+<div aria-label="Graph navigator" class="mini-panel" id="miniPanel">
+
+<canvas aria-label="Graph minimap. Click to pan; hold Shift and scroll to change depth." class="minimap" height="280" id="minimap" width="440"></canvas>
+
+<div class="minimap-stats"><span aria-atomic="true" aria-live="polite" id="depthReadout">Depth: 1</span><span id="zoomReadout">100%</span></div></div>
+<div class="footer-panel"><span id="scopeReadout">Loading topics…</span><a href="/home" style="color:inherit;text-decoration:underline;text-underline-offset:3px">Study ↗</a><button id="refreshData" type="button" disabled>Refresh</button><span>Wheel / pinch to zoom · drag to pan</span></div>
+</div>
+<section id="targetWeekStrip" class="target-week-strip" aria-label="Filter targets by assignment week" hidden>
+<div class="target-week-heading"><span id="targetWeekReadout" role="status" aria-live="polite" aria-atomic="true">All weeks</span><span class="target-week-hint">Shift-click for a range</span></div>
+<div class="target-week-controls"><div class="target-week-presets"><button id="targetWeeksAll" type="button" aria-pressed="true">All</button><button id="targetWeeksUnscheduled" type="button" aria-pressed="false">Unscheduled</button></div><div id="targetWeekButtons" class="target-week-buttons" role="group" aria-label="Calendar weeks"></div></div>
+</section>
+</div>
+<div id="edgeConnectionPopover" role="dialog" aria-modal="false" aria-labelledby="edgeConnectionHeading" hidden>
+<div id="edgeConnectionHeading"></div><div id="edgeConnectionTopics"></div>
+</div>
+<div id="nodeContextMenu" role="menu" aria-label="Topic actions" hidden>
+<div id="nodeQueueAction" role="none"></div>
+<div id="nodeTargetAction" role="none"></div>
+<a id="studyTopicLink" role="menuitem" href="/learn">Study now<span class="menu-new-tab-indicator" aria-hidden="true" hidden>↗</span></a>
+<a id="goToTopicLink" role="menuitem" href="/topic">Go to topic<span class="menu-new-tab-indicator" aria-hidden="true" hidden>↗</span></a>
+<button id="copyNodeDbId" type="button" role="menuitem">Copy topic :db/id</button>
+<button id="copyNodeMaId" type="button" role="menuitem" hidden>Copy topic :ma/id</button>
+<button id="copyNodeButton" type="button" role="menuitem">Copy node to clipboard</button>
+</div>
+<div id="copyNodeNotice" role="status" aria-live="polite" hidden></div>
+<dialog id="manualNodeCopy" aria-labelledby="manualNodeTitle">
+<h2 id="manualNodeTitle">Copy node</h2>
+<p>Clipboard access was blocked. Copy the selected text with Ctrl+C (or ⌘C).</p>
+<textarea id="manualNodeText" readonly aria-label="Topic ID and full name"></textarea>
+<button id="manualNodeDone" class="pill" type="button">Done</button>
+</dialog>
+<script type="module">
+import { createCoursePicker, topicReferenceURL } from "/ui/navigation.js";
+import { createTargetControls, createQueueControls } from "/ui/targets.js";
+import { isLightTheme, themeColor } from "/ui/profile.js";
+import { copyEntityId, academyEntityId } from "/ui/step-menu.js";
+import { readRequest } from "/ui/requests.js";
+import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabel, normalizeTargetWeekSelection,
+  selectTargetWeek, filterScheduledTargets, targetWeekSelectionLabel } from "/ui/target-weeks.js";
+
+(() => {
+  const NODES = [], LINKS = [];
+  const META = {nodeCount:0,edgeCount:0,layerCount:1,maxLayerSize:0};
+  const STARTER_TOPIC_IDS = [735,487,1422,433,1745,1491];
+  const PALETTE = ['#000000','#303030','#5A5A5A','#858585','#AEAEAE','#D6D6D6','#FFFFFF'];
+  const STATUS_PALETTES = {
+    target:['#4b1118','#681821','#8c202b','#b52b34','#cf626b','#e5a0a6','#f8dadd'],
+    'completed-target':['#093c22','#0c5130','#10633b','#14783e','#56a978','#9edbb4','#def4e5'],
+    queue:['#102653','#173775','#1b459c','#1d4ed8','#628fec','#a6c5f5','#e1ecfc'],
+  };
+  let snapshot = null, courseId = null, courseTopics = new Set(), repetitions = {};
+  let targetsView = false;
+  const targetColorKey = 'course-academy.graph-color-code';
+  function readColorCodePreference() {
+    try { return (localStorage.getItem(targetColorKey) ?? localStorage.getItem('course-academy.graph-targets-red')) === 'true'; }
+    catch { return false; }
+  }
+  let colorCodeEnabled = false;
+  colorCodeEnabled = readColorCodePreference();
+  let targetTopicId = null;
+  const targetControls = createTargetControls({
+    onChange: learner => {
+      const previous = new Set(snapshot?.learner.targets || []);
+      const next = new Set(learner?.targets || []);
+      const changed = previous.size !== next.size || [...next].some(id => !previous.has(id));
+      // Each controller owns its collection. A target response or rollback
+      // must not overwrite a queue preview that is still being saved.
+      if (snapshot) snapshot.learner = { ...snapshot.learner, ...learner, queue:snapshot.learner.queue };
+      if (targetsView && changed && !loading) refreshTargetScope();
+      else if (changed && !loading) refreshTargetColors();
+      document.getElementById('targetActions').classList.toggle('hidden', targetTopicId === null || learner?.selfDirected !== true);
+    },
+  });
+  const queueControls = createQueueControls({
+    onChange: learner => {
+      const previous = new Set((snapshot?.learner.queue || []).map(String));
+      const next = new Set((learner?.queue || []).map(String));
+      const changed = previous.size !== next.size || [...next].some(id => !previous.has(id));
+      if (snapshot) snapshot.learner.queue = learner?.queue || [];
+      if (changed && !loading) {
+        refreshTargetColors();
+      }
+    },
+  });
+  let dependencyOrder = [];
+  const $ = (id) => document.getElementById(id);
+  const svg = $('svg');
+  const viewport = $('viewport');
+  const camera = $('camera');
+  const guidesG = $('guides');
+  const edgesG = $('edges');
+  const edgeStubsG = $('edgeStubs');
+  const nodesG = $('nodes');
+  const minimap = $('minimap');
+  const mctx = minimap.getContext('2d');
+  const minimapBase = document.createElement('canvas');
+  let minimapLayout = null, viewFrame = 0;
+
+  const nodeById = new Map(), outMap = new Map(), inMap = new Map();
+
+  // One prerequisite graph supplies stable global ranks across every course view.
+  function installSnapshot(data) {
+    const nodes = data.nodes.map(n=>({...n,layer:0,order:0}));
+    const byId = new Map(nodes.map(n=>[n.id,n]));
+    const outgoing = new Map(nodes.map(n=>[n.id,[]]));
+    const incoming = new Map(nodes.map(n=>[n.id,[]]));
+    for (const edge of data.links) {
+      if (!byId.has(edge.source) || !byId.has(edge.target)) throw new Error('A prerequisite refers to a missing topic.');
+      outgoing.get(edge.source).push(edge.target); incoming.get(edge.target).push(edge.source);
+    }
+    const remaining = new Map(nodes.map(n=>[n.id,incoming.get(n.id).length]));
+    const order = nodes.filter(n=>remaining.get(n.id)===0).sort((a,b)=>a.name.localeCompare(b.name)).map(n=>n.id);
+    for (let i=0;i<order.length;i++) {
+      const node=byId.get(order[i]);
+      for (const id of outgoing.get(node.id)) {
+        byId.get(id).layer=Math.max(byId.get(id).layer,node.layer+1);
+        remaining.set(id,remaining.get(id)-1);
+        if (remaining.get(id)===0) order.push(id);
+      }
+    }
+    if (order.length!==nodes.length) throw new Error('The prerequisite graph contains a cycle.');
+    const layers=new Map();
+    for (const n of nodes) { if(!layers.has(n.layer))layers.set(n.layer,[]); layers.get(n.layer).push(n); }
+    for (const group of layers.values()) group.sort((a,b)=>a.name.localeCompare(b.name)||a.id-b.id).forEach((n,i)=>n.order=i);
+    NODES.splice(0,NODES.length,...nodes); LINKS.splice(0,LINKS.length,...data.links);
+    nodeById.clear(); inMap.clear(); outMap.clear();
+    for (const n of nodes) {nodeById.set(n.id,n);inMap.set(n.id,incoming.get(n.id));outMap.set(n.id,outgoing.get(n.id));}
+    dependencyOrder=order; snapshot=data; repetitions=data.repetitions;
+    installTargetCalendar(data.targetSchedule || []);
+    targetControls.setLearner(data.learner);
+    queueControls.setLearner(data.learner);
+    META.nodeCount=nodes.length;META.edgeCount=data.links.length;
+    META.layerCount=Math.max(1,...nodes.map(n=>n.layer+1));META.maxLayerSize=Math.max(0,...[...layers.values()].map(a=>a.length));
+    MAX_DEPTH=Math.max(1,META.layerCount-1);
+    stackOrderCache.clear();sizeNodeTitles();
+  }
+
+  const measureCanvas = document.createElement('canvas');
+  const measureCtx = measureCanvas.getContext('2d');
+  const FONT = '11px ' + getComputedStyle(document.documentElement).getPropertyValue('--font');
+  measureCtx.font = FONT;
+
+  const state = {
+    mode:'overview',
+    selected:null,
+    activeIds:new Set(),
+    followTargets:false,
+    depth:'1',
+    view:{x:36,y:80,k:1},
+    dragging:false,
+    hover:null,
+    history:[],
+    historyIndex:-1,
+    width:100,
+    height:100,
+    layout:null,
+    lastPointer: null,
+  };
+
+  const constants = {
+    maxNodeWidth:320,
+    minNodeWidth:78,
+    textPadX:11,
+    textPadY:7,
+    lineHeight:14,
+    layerGap:160,
+    rowGap:12,
+    topPad:24,
+    leftPad:28,
+  };
+
+  let nodeLetterSpacing = 0;
+  const nodeGeometryCache = new Map(), layoutCache = new Map();
+  let marqueeEntries = [];
+  let marqueeRAF = 0;
+
+  function measuredTitleWidth(text) {
+    // Canvas and SVG use the same family, size, weight, and letter spacing.
+    return measureCtx.measureText(text).width + Array.from(text).length * nodeLetterSpacing;
+  }
+
+  function sizeNodeTitles() {
+    nodeGeometryCache.clear();layoutCache.clear();
+    const probeGroup = document.createElementNS('http://www.w3.org/2000/svg','g');
+    probeGroup.setAttribute('class','node');
+    probeGroup.setAttribute('visibility','hidden');
+    const probe = document.createElementNS('http://www.w3.org/2000/svg','text');
+    probe.textContent = 'Measure'; probeGroup.appendChild(probe); svg.appendChild(probeGroup);
+    const cs = getComputedStyle(probe);
+    measureCtx.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+    nodeLetterSpacing = parseFloat(cs.letterSpacing) || 0;
+    probeGroup.remove();
+    for (const node of NODES) Object.assign(node, titleWrap(node.name));
+  }
+  sizeNodeTitles();
+
+  // The input stores zero-based ranks. Display badges are human-facing L01…L93.
+  // Depth selects topics by shortest-path distance. Scoped columns instead obey
+  // global layer order, collapsing independent layers; badges keep global ranks.
+  function layerLabel(node) { return 'L' + String(node.layer + 1).padStart(2, '0'); }
+  function isScoped() { return state.activeIds.size>0 && state.mode !== 'overview'; }
+  function selectionMode() { return state.activeIds.size ? (targetsView ? 'upstream' : 'both') : 'overview'; }
+  function resetSelection() {
+    state.followTargets=targetsView;
+    state.activeIds = targetsView ? new Set(courseTopics) : new Set();
+    state.selected = [...state.activeIds][0] ?? null;
+    state.mode = selectionMode();
+  }
+  function titleWrap(text, maximum = constants.maxNodeWidth) {
+    const clean = String(text || '').replace(/\s+/g, ' ').trim() || 'Untitled';
+    const inner = maximum - constants.textPadX * 2;
+    const fullWidth = measuredTitleWidth(clean);
+    let label = clean;
+    if (fullWidth > inner) {
+      const chars = Array.from(clean); let low = 0, high = chars.length;
+      while (low < high) {
+        const mid = Math.ceil((low + high) / 2);
+        if (measuredTitleWidth(chars.slice(0, mid).join('').trimEnd() + '…') <= inner) low = mid;
+        else high = mid - 1;
+      }
+      label = chars.slice(0, low).join('').trimEnd() + '…';
+    }
+    return {lines:[label], fullText:clean, fullWidth, width:Math.min(maximum, Math.max(constants.minNodeWidth, Math.ceil(fullWidth) + constants.textPadX * 2)), height:26, truncated:label !== clean};
+  }
+  function nodeGeometry(n, scoped) {
+    const key=n.id+':'+scoped;
+    if(nodeGeometryCache.has(key))return nodeGeometryCache.get(key);
+    if (!scoped) {
+      const geometry={...titleWrap(n.name), badgeWidth:0, titleX:0, badge:''};
+      nodeGeometryCache.set(key,geometry);return geometry;
+    }
+    const badge = layerLabel(n), badgeWidth = Math.ceil(measuredTitleWidth(badge)) + 16;
+    const titleX = badgeWidth + 4;
+    const title = titleWrap(n.name, constants.maxNodeWidth - titleX);
+    const geometry={...title, titleWidth:title.width, width:titleX + title.width, badgeWidth, titleX, badge};
+    nodeGeometryCache.set(key,geometry);return geometry;
+  }
+  // An active set can contain ancestors, descendants, or unrelated topics.
+  // Compute distances in each direction separately: never expand into siblings
+  // just because a traversal can turn around at a shared prerequisite.
+  function assignScopedColumns(nodeIds, upstream, downstream, selected) {
+    // Keep global layers in order, but collapse consecutive visible layers
+    // into one stack until a prerequisite edge requires a new stack. Layers
+    // are placed as a group so unrelated later topics cannot jump left.
+    const layers = new Map();
+    for (const id of nodeIds) {
+      const layer = nodeById.get(id).layer;
+      if (!layers.has(layer)) layers.set(layer, []);
+      layers.get(layer).push(id);
+    }
+    const ranks = new Map();
+    let column = 0;
+    const stack = new Set();
+    for (const layer of [...layers.keys()].sort((a,b) => a-b)) {
+      const group = layers.get(layer);
+      const needsColumn = group.some(id => inMap.get(id).some(previous => stack.has(previous)));
+      if (needsColumn) { column++; stack.clear(); }
+      for (const id of group) { ranks.set(id, column); stack.add(id); }
+    }
+    // Preserve the coordinate origin used by navigation and routing. This
+    // offset does not change which topics share a stack or the stack spacing.
+    const origin = targetsView ? Math.max(0, ...ranks.values()) : ranks.get(selected) ?? 0;
+    const columns = new Map([...ranks].map(([id,rank]) => [id,rank-origin]));
+    for (const id of nodeIds) {
+      if (!Number.isInteger(columns.get(id))) throw new Error('No column for topic ' + id);
+      for (const next of outMap.get(id)) {
+        if (nodeIds.has(next) && columns.get(id) >= columns.get(next)) {
+          throw new Error('Dependency order conflict: ' + id + ' -> ' + next);
+        }
+      }
+    }
+    return columns;
+  }
+
+  function buildActiveSet() {
+    const upstream = new Map(), downstream = new Map(); let columns = new Map();
+    if (!isScoped()) {
+      for (const n of NODES) if(courseTopics.has(n.id)) columns.set(n.id, n.layer);
+      const edgeSet=new Set();LINKS.forEach((e,i)=>{if(courseTopics.has(e.source)&&courseTopics.has(e.target))edgeSet.add(i);});
+      return {nodeIds:new Set(courseTopics), edgeSet, upstream, downstream, columns};
+    }
+    const limit = state.mode === 'neighbors' ? 1 : state.depth === 'all' ? Infinity : Number(state.depth);
+    const bfs = (adj, result) => {
+      const queue = [...state.activeIds];
+      for (const id of queue) result.set(id,0);
+      for (let i=0; i<queue.length; i++) {
+        const id=queue[i], d=result.get(id); if (d>=limit) continue;
+        for (const next of adj.get(id)) if (!result.has(next)) {result.set(next,d+1);queue.push(next);}
+      }
+    };
+    if (targetsView || ['neighbors','upstream','both'].includes(state.mode)) bfs(inMap,upstream);
+    if (!targetsView && ['neighbors','downstream','both'].includes(state.mode)) bfs(outMap,downstream);
+    const nodeIds=new Set([...state.activeIds,...upstream.keys(),...downstream.keys()]);
+    columns = assignScopedColumns(nodeIds, upstream, downstream, state.selected);
+    // Source-defined edges between the visible topics are retained exactly once.
+    const edgeSet=new Set();LINKS.forEach((e,i)=>{if(nodeIds.has(e.source)&&nodeIds.has(e.target))edgeSet.add(i);});
+    return {nodeIds,edgeSet,upstream,downstream,columns};
+  }
+
+  // Keep dependency columns fixed. Only permute each column's topic stack.
+  // The order is chosen from the current visible links, not global Lxx values.
+  // Stable ties + an LRU cache keep repeated scopes from needlessly reshuffling.
+  const stackOrderCache = new Map();
+  function orderColumnStacks(grouped, links, geometry, rowGap) {
+    const keys = [...grouped.keys()].sort((a,b)=>a-b);
+    const original = keys.map(k=>grouped.get(k).map(n=>n.id));
+    const cacheKey = rowGap+'|'+original.map(a=>a.join(',')).join(';');
+    const hit = stackOrderCache.get(cacheKey);
+    function apply(order) {
+      keys.forEach((key,c)=>{
+        const nodes = new Map(grouped.get(key).map(n=>[n.id,n]));
+        grouped.set(key, order[c].map(id=>nodes.get(id)));
+      });
+    }
+    if (hit) {
+      stackOrderCache.delete(cacheKey); stackOrderCache.set(cacheKey,hit);
+      apply(hit.order); return {...hit.stats, cached:true};
+    }
+    const ids = original.flat(), index = new Map(ids.map((id,i)=>[id,i]));
+    const columns = original.map(a=>a.map(id=>index.get(id)));
+    const columnOf = new Int32Array(ids.length), initialRow = new Int32Array(ids.length);
+    columns.forEach((a,c)=>a.forEach((v,r)=>{columnOf[v]=c;initialRow[v]=r;}));
+    const heights = ids.map(id=>geometry.get(id).height), ys = new Float64Array(ids.length);
+    const incoming = ids.map(()=>[]), outgoing = ids.map(()=>[]);
+    const edges = links.map(e=>{
+      const s=index.get(e.source),t=index.get(e.target),a=columnOf[s],b=columnOf[t];
+      if (b<=a) throw new Error('Row ordering requires forward dependency columns.');
+      outgoing[s].push({v:t,w:1/(b-a)}); incoming[t].push({v:s,w:1/(b-a)});
+      return {s,t,a,b,span:b-a};
+    });
+    // Long links also participate: virtual segments are for scoring only, never
+    // topic nodes and never a change to the source graph or routing corridors.
+    const strips = Array.from({length:Math.max(0,keys.length-1)},()=>[]);
+    for (const e of edges) for(let c=e.a;c<e.b;c++) {
+      strips[c].push({s:e.s,t:e.t,f:(c-e.a)/e.span,g:(c+1-e.a)/e.span,left:0,right:0,rank:0});
+    }
+    function updateY() {
+      for(const col of columns) {
+        let y=-(col.reduce((sum,v)=>sum+heights[v],0)+Math.max(0,col.length-1)*rowGap)/2;
+        for(const v of col){ys[v]=y+heights[v]/2;y+=heights[v]+rowGap;}
+      }
+    }
+    function score() {
+      updateY(); let crossings=0, travel=0, movement=0;
+      for(const strip of strips) {
+        if(strip.length<2)continue;
+        for(const p of strip){const dy=ys[p.t]-ys[p.s];p.left=ys[p.s]+dy*p.f;p.right=ys[p.s]+dy*p.g;}
+        const byRight=strip.slice().sort((a,b)=>a.right-b.right);
+        let ranks=0,previous=-Infinity;
+        for(const p of byRight){if(p.right-previous>1e-7){ranks++;previous=p.right;}p.rank=ranks;}
+        const byLeft=strip.slice().sort((a,b)=>a.left-b.left || a.right-b.right);
+        const bit=new Int32Array(ranks+1);let seen=0;
+        // Process tied left endpoints together, so fan-out at one node is NOT
+        // counted as a crossing. Equal right endpoints (fan-in) are also free.
+        for(let i=0;i<byLeft.length;){
+          let j=i+1;while(j<byLeft.length&&Math.abs(byLeft[j].left-byLeft[i].left)<1e-7)j++;
+          for(let z=i;z<j;z++){let at=byLeft[z].rank,below=0;for(;at>0;at-=at&-at)below+=bit[at];crossings+=seen-below;}
+          for(let z=i;z<j;z++){for(let at=byLeft[z].rank;at<=ranks;at+=at&-at)bit[at]++;seen++;}
+          i=j;
+        }
+      }
+      for(const e of edges)travel+=Math.abs(ys[e.s]-ys[e.t])/e.span;
+      for(const col of columns)col.forEach((v,i)=>{movement+=Math.abs(i-initialRow[v]);});
+      return {crossings,travel,movement};
+    }
+    function better(a,b) {
+      return a.crossings<b.crossings || (a.crossings===b.crossings &&
+        (a.travel<b.travel-1e-6 || (Math.abs(a.travel-b.travel)<1e-6 && a.movement<b.movement)));
+    }
+    const initial=score();let best={...initial},bestOrder=columns.map(a=>a.slice());
+    function retain() {const value=score();if(better(value,best)){best=value;bestOrder=columns.map(a=>a.slice());}return value;}
+    function sweep(forward,bothSides=false) {
+      const order=keys.map((_,i)=>i);if(!forward)order.reverse();
+      for(const c of order){
+        updateY();const col=columns[c];if(col.length<2)continue;
+        const ranked=col.map((v,i)=>{
+          let neighbors=forward?incoming[v]:outgoing[v];
+          if(bothSides)neighbors=incoming[v].concat(outgoing[v]);
+          let total=0,weight=0;for(const edge of neighbors){total+=ys[edge.v]*edge.w;weight+=edge.w;}
+          return {v,old:i,ideal:weight?total/weight:ys[v]};
+        });
+        ranked.sort((a,b)=>a.ideal-b.ideal || a.old-b.old);
+        columns[c]=ranked.map(x=>x.v);
+      }
+      retain();
+    }
+    const rounds=ids.length<160?8:ids.length<700?5:3;
+    if(initial.crossings>0){
+      // Start at the destinations to group upstream branches by what they feed.
+      for(let i=0;i<rounds;i++){sweep(false);sweep(true);}
+      // Two-sided passes balance a column's incoming AND outgoing connections.
+      for(let i=0;i<Math.min(3,rounds);i++){sweep(false,true);sweep(true,true);}
+      columns.splice(0,columns.length,...bestOrder.map(a=>a.slice()));
+      // Fine-tune small neighborhoods with measured adjacent transpositions.
+      // Always keep the best candidate; there is no random ordering or layout drift.
+      if(ids.length<=100 && edges.length<=240){
+        for(let pass=0;pass<5;pass++){
+          let improved=false;
+          for(let c=0;c<columns.length;c++)for(let i=0;i<columns[c].length-1;i++){
+            const col=columns[c];[col[i],col[i+1]]=[col[i+1],col[i]];
+            const value=score();
+            if(better(value,best)){best=value;bestOrder=columns.map(a=>a.slice());improved=true;}
+            else [col[i],col[i+1]]=[col[i+1],col[i]];
+          }
+          if(!improved)break;
+        }
+      }
+    }
+    const order=bestOrder.map(a=>a.map(v=>ids[v]));
+    const stats={method:'connection-aware',initialCrossings:initial.crossings,estimatedCrossings:best.crossings,
+      initialVerticalTravel:initial.travel,verticalTravel:best.travel,changed:best.movement>0};
+    stackOrderCache.set(cacheKey,{order,stats});
+    if(stackOrderCache.size>24)stackOrderCache.delete(stackOrderCache.keys().next().value);
+    apply(order);return {...stats,cached:false};
+  }
+
+  function targetCourseBands(nodeIds) {
+    const direct=new Map(), inherited=new Map(), courses=[];
+    for(const code of targetCourseCodes){
+      if(!enabledTargetCourses.has(code))continue;
+      const label='MTH '+code, members=new Set();
+      for(const course of snapshot?.courses || []){
+        if(course.code!==label)continue;
+        for(const id of [...(course.topicIds || []),...(course.targetTopicIds || [])])members.add(id);
+      }
+      if(!members.size)continue;
+      courses.push({key:code,label,nodeIds:new Set()});
+      for(const id of members){
+        if(!direct.has(id))direct.set(id,new Set());
+        direct.get(id).add(code);
+      }
+      // Inherit course membership from target roots, even when a prerequisite
+      // is explored on its own. Depth still exclusively controls visibility.
+      const pending=[...new Set([...courseTopics,...state.activeIds])].filter(id=>members.has(id));
+      const visited=new Set(pending);
+      for(let i=0;i<pending.length;i++){
+        const id=pending[i];
+        if(nodeIds.has(id)){
+          if(!inherited.has(id))inherited.set(id,new Set());
+          inherited.get(id).add(code);
+        }
+        for(const previous of inMap.get(id) || []){
+          if(!visited.has(previous)){visited.add(previous);pending.push(previous);}
+        }
+      }
+    }
+    const shared={key:'shared',label:'Shared',nodeIds:new Set()};
+    const other={key:'other',label:'Other topics',nodeIds:new Set()};
+    const byCode=new Map(courses.map(course=>[course.key,course]));
+    for(const id of nodeIds){
+      // An explicitly assigned target retains its course; unmapped
+      // prerequisites inherit whichever courses depend on them.
+      const membership=direct.get(id) || inherited.get(id) || new Set();
+      const band=membership.size>1?shared:membership.size===1?byCode.get([...membership][0]):other;
+      band.nodeIds.add(id);
+    }
+    return [...courses,shared,other].filter(band=>band.nodeIds.size);
+  }
+
+  function layoutCurrent() {
+    const active=buildActiveSet(),scoped=isScoped();
+    const activeNodes=NODES.filter(n=>active.nodeIds.has(n.id));
+    const activeLinks=LINKS.map((e,i)=>({...e,index:i})).filter(e=>active.edgeSet.has(e.index));
+    const courseBands=targetsView && splitTargetsByCourse?targetCourseBands(active.nodeIds):[];
+    const layoutKey=targetsView+'|'+scoped+'|'+activeNodes.map(n=>n.id+':'+active.columns.get(n.id)).join(',')+'|'+courseBands.map(band=>band.key+':'+[...band.nodeIds].join(',')).join(';');
+    const cached=layoutCache.get(layoutKey);
+    if(cached){
+      layoutCache.delete(layoutKey);layoutCache.set(layoutKey,cached);
+      state.layout={...cached,upstream:active.upstream,downstream:active.downstream,rowOrdering:{...cached.rowOrdering,layoutCached:true}};
+      return state.layout;
+    }
+    const grouped=new Map(),geom=new Map();
+    for (const n of activeNodes) {
+      const col=active.columns.get(n.id); if (!grouped.has(col)) grouped.set(col,[]);
+      grouped.get(col).push(n);geom.set(n.id,nodeGeometry(n,scoped));
+    }
+    for (const arr of grouped.values()) arr.sort((a,b)=>scoped?(a.layer-b.layer||a.order-b.order||a.id-b.id):(a.order-b.order||a.id-b.id));
+    const rowGap=scoped?18:constants.rowGap;
+    let rowOrdering;
+    if(courseBands.length){
+      for(const band of courseBands){
+        band.grouped=new Map([...grouped].map(([col,nodes])=>[col,nodes.filter(n=>band.nodeIds.has(n.id))]).filter(([,nodes])=>nodes.length));
+        const links=activeLinks.filter(e=>band.nodeIds.has(e.source)&&band.nodeIds.has(e.target));
+        band.rowOrdering=orderColumnStacks(band.grouped,links,geom,rowGap);
+      }
+      for(const col of grouped.keys())grouped.set(col,courseBands.flatMap(band=>band.grouped.get(col) || []));
+      rowOrdering={method:'course-split',bands:courseBands.length};
+    }else rowOrdering=orderColumnStacks(grouped,activeLinks,geom,rowGap);
+    const layerMetrics=[];let x=constants.leftPad;
+    for (const col of [...grouped.keys()].sort((a,b)=>a-b)) {
+      const arr=grouped.get(col),maxW=Math.max(...arr.map(n=>geom.get(n.id).width));
+      layerMetrics.push({layer:col,index:layerMetrics.length,x,width:maxW,nodes:arr});x+=maxW+constants.layerGap;
+    }
+    const pos=new Map();
+    for (const col of layerMetrics) {
+      col.height=col.nodes.reduce((total,n)=>total+geom.get(n.id).height,0)
+        +Math.max(0,col.nodes.length-1)*rowGap;
+    }
+    const placeStack=(col,nodes,y)=>{
+      // Center the stack as a whole, not its middle node or a rounded row slot.
+      // The two boxes in a two-topic column sit equally above/below this center.
+      for (const n of nodes) {
+        const g=geom.get(n.id);
+        // Preserve existing horizontal alignment and 160px routing corridors.
+        const nx=scoped&&col.layer<0?col.x+col.width-g.width:col.x;
+        pos.set(n.id,{x:nx,y,w:g.width,h:g.height,layerX:col.x,layerWidth:col.width,col:col.layer,colIndex:col.index,geometry:g});
+        y+=g.height+rowGap;
+      }
+    };
+    if(courseBands.length){
+      let y=constants.topPad;
+      const width=x-constants.layerGap-constants.leftPad;
+      for(const band of courseBands){
+        const heights=new Map([...band.grouped].map(([col,nodes])=>[col,nodes.reduce((sum,n)=>sum+geom.get(n.id).height,0)+Math.max(0,nodes.length-1)*rowGap]));
+        const height=Math.max(...heights.values());
+        Object.assign(band,{x:constants.leftPad-16,y,width:Math.max(240,width)+32,height:height+56});
+        for(const col of layerMetrics){
+          const nodes=band.grouped.get(col.layer) || [];
+          placeStack(col,nodes,y+32+(height-(heights.get(col.layer) || 0))/2);
+        }
+        y+=band.height+56;
+      }
+    }else{
+      const center=constants.topPad+Math.max(0,...layerMetrics.map(col=>col.height))/2;
+      for(const col of layerMetrics)placeStack(col,col.nodes,center-col.height/2);
+    }
+    const routing=routeConnections(activeLinks,pos,layerMetrics,scoped);
+    const edgeStubs=bundleLongConnections(routing.edges);
+    const allBoxes=[...pos.values()].map(p=>({x1:p.x,x2:p.x+p.w,y1:p.y,y2:p.y+p.h}));
+    allBoxes.push(...courseBands.map(band=>({x1:band.x,x2:band.x+band.width,y1:band.y,y2:band.y+band.height})));
+    allBoxes.push(...routing.edges.map(e=>e.bounds));
+    const bounds=allBoxes.length ? {x1:Math.min(...allBoxes.map(b=>b.x1))-28,x2:Math.max(...allBoxes.map(b=>b.x2))+28,y1:Math.min(...allBoxes.map(b=>b.y1))-42,y2:Math.max(...allBoxes.map(b=>b.y2))+28} : {x1:0,x2:640,y1:0,y2:360};
+    state.layout={activeNodes,activeLinks:routing.edges,edgeStubs,pos,grouped,layers:layerMetrics,bounds,fullHeight:bounds.y2-bounds.y1,scoped,localColumns:active.columns,upstream:active.upstream,downstream:active.downstream,routeSummary:routing.summary,rowOrdering,courseBands};
+    layoutCache.set(layoutKey,state.layout);
+    if(layoutCache.size>12)layoutCache.delete(layoutCache.keys().next().value);
+    return state.layout;
+  }
+  function routeConnections(rawEdges,pos,cols,scoped) {
+    const edges=rawEdges.map(e=>({...e,sourceSide:'right',targetSide:'left'}));
+    const incident=new Map();
+    const fmt=v=>Number(v.toFixed(3));
+    const portInset=5, portGap=4.5, corridorPad=12;
+    const centerY=p=>p.y+p.h/2;
+    const colDistance=(a,b)=>Math.abs(pos.get(a).colIndex-pos.get(b).colIndex);
+    const continuationSides=new Set(),protectedLeft=new Set(),protectedRight=new Set();
+    for(const edge of edges)if(colDistance(edge.source,edge.target)>2){
+      continuationSides.add(edge.source+':right');continuationSides.add(edge.target+':left');
+      protectedRight.add(pos.get(edge.source).colIndex);protectedLeft.add(pos.get(edge.target).colIndex);
+    }
+    // Keep all bends outside the continuation marks, including links from
+    // neighboring nodes and tracks passing through an intermediate column.
+    const leftPads=cols.map(col=>protectedLeft.has(col.index)?62:corridorPad);
+    const rightPads=cols.map(col=>protectedRight.has(col.index)?62:corridorPad);
+    for(let i=0;i<cols.length-1;i++){
+      const gap=cols[i+1].x-cols[i].x-cols[i].width;
+      const available=Math.max(1,gap-36),wanted=rightPads[i]+leftPads[i+1];
+      if(wanted>available){const scale=available/wanted;rightPads[i]*=scale;leftPads[i+1]*=scale;}
+    }
+    function addPort(id,side,e,end){
+      const key=id+':'+side;
+      if(!incident.has(key)) incident.set(key,[]);
+      incident.get(key).push({e,end,other:end==='s'?e.target:e.source});
+    }
+    for(const e of edges){ addPort(e.source,e.sourceSide,e,'s'); addPort(e.target,e.targetSide,e,'t'); }
+
+    // Assign attachment ports with one central "anchor" edge when possible.
+    // This keeps the main left-to-right chain perfectly straight and pushes
+    // secondary / skipping branches above or below it rather than kinking everything.
+    for(const [key,list] of incident){
+      const id=Number(key.split(':')[0]), p=pos.get(id), cy=centerY(p);
+      const hasContinuation=continuationSides.has(key);
+      const ordered=hasContinuation?list.filter(entry=>colDistance(id,entry.other)<=2):[...list];
+      if(hasContinuation)for(const entry of list)if(colDistance(id,entry.other)>2){
+        entry.e[entry.end+'Y']=ordered.length?p.y+3:cy;
+      }
+      if(!ordered.length)continue;
+      const score=entry=>{
+        const other=pos.get(entry.other), dy=Math.abs(centerY(other)-cy), span=colDistance(id, entry.other);
+        const adjacentPenalty = span===1 ? 0 : 1000 + span*40;
+        return adjacentPenalty + dy;
+      };
+      const anchor = ordered.slice().sort((a,b)=>score(a)-score(b) || centerY(pos.get(a.other))-centerY(pos.get(b.other)) || a.other-b.other || a.e.index-b.e.index)[0];
+      const remainder = ordered.filter(entry=>entry!==anchor);
+      const above=[], below=[];
+      for(const entry of remainder){
+        const otherCy=centerY(pos.get(entry.other));
+        if(otherCy < cy - 0.5) above.push(entry);
+        else if(otherCy > cy + 0.5) below.push(entry);
+        else {
+          // If multiple edges want the centerline, keep the most local one centered
+          // and alternate the rest around it.
+          ((below.length<=above.length)?below:above).push(entry);
+        }
+      }
+      above.sort((a,b)=>centerY(pos.get(b.other))-centerY(pos.get(a.other)) || colDistance(id,a.other)-colDistance(id,b.other) || a.other-b.other || a.e.index-b.e.index);
+      below.sort((a,b)=>centerY(pos.get(a.other))-centerY(pos.get(b.other)) || colDistance(id,a.other)-colDistance(id,b.other) || a.other-b.other || a.e.index-b.e.index);
+      const clamp=v=>Math.max(p.y+(hasContinuation?9:portInset), Math.min(p.y+p.h-portInset, v));
+      anchor.e[anchor.end+'Y']=clamp(cy);
+      above.forEach((entry,i)=>{ entry.e[entry.end+'Y']=clamp(cy-(i+1)*portGap); });
+      below.forEach((entry,i)=>{ entry.e[entry.end+'Y']=clamp(cy+(i+1)*portGap); });
+    }
+
+    const trackSpaces=new Map();
+    const summary={adjacent:0,skipping:0,sameColumn:0,backward:0,shortened:0};
+    function addCubic(e,p0,c1,c2,p1){ e.segments.push({p0,c1,c2,p1}); }
+    function flat(e,x0,y,x1){ if(Math.abs(x1-x0)<1e-6) return; addCubic(e,[x0,y],[x0+(x1-x0)/3,y],[x0+2*(x1-x0)/3,y],[x1,y]); }
+    function bridge(e,x0,y0,x1,y1){
+      const dx=x1-x0;
+      const c=Math.min(Math.abs(dx)/2,Math.max(18, Math.min(Math.abs(dx)*0.38, 64)));
+      addCubic(e,[x0,y0],[x0+Math.sign(dx||1)*c,y0],[x1-Math.sign(dx||1)*c,y1],[x1,y1]);
+    }
+    function direct(e,x0,y0,x1,y1){
+      if(Math.abs(y1-y0)<0.2) flat(e,x0,(y0+y1)/2,x1);
+      else bridge(e,x0,y0,x1,y1);
+    }
+    function freeTrack(col,preferred){
+      let space=trackSpaces.get(col.index);
+      if(!space){
+        const ns=col.nodes.map(n=>pos.get(n.id)).sort((a,b)=>a.y-b.y),candidates=[];
+        for(let i=0;i<ns.length-1;i++){
+          const lo=ns[i].y+ns[i].h+5, hi=ns[i+1].y-5;
+          if(hi>=lo){
+            candidates.push((lo+hi)/2);
+            if(hi-lo>=8)candidates.push(lo+1,hi-1);
+          }
+        }
+        space={candidates,lo:ns[0].y,hi:ns.at(-1).y+ns.at(-1).h,taken:[]};
+        trackSpaces.set(col.index,space);
+      }
+      const taken=space.taken;
+      const insertion=v=>{
+        let lo=0,hi=taken.length;
+        while(lo<hi){const mid=(lo+hi)>>>1;if(taken[mid]<v)lo=mid+1;else hi=mid;}
+        return lo;
+      };
+      let best,nearest,bestDistance=Infinity,nearestDistance=Infinity;
+      const consider=v=>{
+        const distance=Math.abs(v-preferred);
+        if(distance<nearestDistance){nearest=v;nearestDistance=distance;}
+        if(distance>=bestDistance)return;
+        const index=insertion(v);
+        if((index===0||Math.abs(taken[index-1]-v)>=3.7)&&(index===taken.length||Math.abs(taken[index]-v)>=3.7)){
+          best=v;bestDistance=distance;
+        }
+      };
+      // Keep the same nearest-track and stable tie choices without sorting
+      // candidates or comparing each one with every occupied track.
+      for(const v of space.candidates)consider(v);
+      for(let i=1;i<=Math.max(24,taken.length+1);i++){consider(space.lo-6-i*5);consider(space.hi+6+i*5);}
+      const y=best??nearest;
+      taken.splice(insertion(y),0,y);return y;
+    }
+
+    // Main inter-column links first; skipping links get separate clear tracks.
+    edges.sort((a,b)=>Math.abs(pos.get(a.target).colIndex-pos.get(a.source).colIndex)-Math.abs(pos.get(b.target).colIndex-pos.get(b.source).colIndex) || a.index-b.index);
+    for (const e of edges) {
+      const s=pos.get(e.source), t=pos.get(e.target), sc=cols[s.colIndex], tc=cols[t.colIndex];
+      if (t.colIndex <= s.colIndex) throw new Error('A prerequisite must be in an earlier column: ' + e.source + ' -> ' + e.target);
+      const sx=s.x+s.w, tx=t.x, sy=e.sY, ty=e.tY;
+      e.segments=[];
+      e.span=t.colIndex-s.colIndex;
+      e.kind=e.span===1 ? 'adjacent' : 'skipping';
+      e.shortened=e.span>2;
+      e.stubs=[];
+      if(e.shortened){
+        const sourceLength=Math.max(1,Math.min(54,rightPads[s.colIndex]-8));
+        const targetLength=Math.max(1,Math.min(54,leftPads[t.colIndex]-8));
+        e.stubs=[
+          {nodeId:e.source,peerId:e.target,side:'right',direction:1,x:sx,y:sy,span:e.span,length:sourceLength},
+          {nodeId:e.target,peerId:e.source,side:'left',direction:-1,x:tx,y:ty,span:e.span,length:targetLength},
+        ];
+        flat(e,sx,sy,sx+sourceLength);flat(e,tx-targetLength,ty,tx);
+        summary.shortened++;
+      }else if(!scoped&&!cols.slice(s.colIndex,t.colIndex+1).some(col=>protectedLeft.has(col.index)||protectedRight.has(col.index))){
+        direct(e,sx,sy,tx,ty);
+      } else if(e.kind==='adjacent') {
+        if(Math.abs(ty-sy)<0.2) direct(e,sx,sy,tx,ty);
+        else {
+          // A shorter title can finish before its column does. Leave that
+          // column horizontally before bending, so no sibling gets crossed.
+          const exit=sc.x+sc.width+(protectedRight.has(sc.index)?rightPads[sc.index]:0),entry=tc.x-(protectedLeft.has(tc.index)?leftPads[tc.index]:0);
+          flat(e,sx,sy,exit);direct(e,exit,sy,entry,ty);flat(e,entry,ty,tx);
+        }
+      } else {
+        let px=sc.x+sc.width+rightPads[sc.index], py=sy;
+        flat(e,sx,sy,px);
+        for(let j=s.colIndex+1;j<t.colIndex;j++){
+          const mid=cols[j], fraction=(j-s.colIndex)/(t.colIndex-s.colIndex), y=freeTrack(mid, sy+(ty-sy)*fraction);
+          bridge(e,px,py,mid.x-leftPads[mid.index],y);
+          flat(e,mid.x-leftPads[mid.index],y,mid.x+mid.width+rightPads[mid.index]);
+          px=mid.x+mid.width+rightPads[mid.index]; py=y;
+        }
+        bridge(e,px,py,tc.x-leftPads[tc.index],ty);
+        flat(e,tc.x-leftPads[tc.index],ty,tx);
+      }
+      summary[e.kind]++;
+      e.d=e.segments.map((q,i)=>{
+        const previous=e.segments[i-1];
+        const disconnected=!previous||previous.p1[0]!==q.p0[0]||previous.p1[1]!==q.p0[1];
+        return (disconnected?`M${fmt(q.p0[0])},${fmt(q.p0[1])} `:'')+`C${fmt(q.c1[0])},${fmt(q.c1[1])} ${fmt(q.c2[0])},${fmt(q.c2[1])} ${fmt(q.p1[0])},${fmt(q.p1[1])}`;
+      }).join(' ');
+      const ps=e.segments.flatMap(q=>[q.p0,q.c1,q.c2,q.p1]);
+      e.bounds={x1:Math.min(...ps.map(p=>p[0])),x2:Math.max(...ps.map(p=>p[0])),y1:Math.min(...ps.map(p=>p[1])),y2:Math.max(...ps.map(p=>p[1]))};
+    }
+    return {edges:edges.sort((a,b)=>a.index-b.index),summary};
+  }
+
+  function bundleLongConnections(edges) {
+    const groups=new Map();
+    for(const edge of edges)if(edge.shortened)for(const stub of edge.stubs){
+      const key=stub.nodeId+':'+stub.side;
+      // Routing already reserves one isolated port for every continuation on
+      // this side. Bundle its peers without moving the mark back into a wire.
+      if(!groups.has(key))groups.set(key,{...stub,peerIds:new Set()});
+      groups.get(key).peerIds.add(stub.peerId);
+    }
+    return [...groups.values()].map(group=>({...group,peerIds:[...group.peerIds].sort((a,b)=>a-b)}));
+  }
+
+  function relatedNodeIds() {
+    const set=new Set(state.activeIds);
+    for(const id of state.activeIds){for(const n of inMap.get(id))set.add(n);for(const n of outMap.get(id))set.add(n);}
+    return set;
+  }
+
+  // Readerboards for HTML topic labels. SVG node readerboards are unchanged.
+  // Full titles remain in the accessible name; the repeated copy is decorative.
+  const titleReaderboards = (() => {
+    const entries = new Map();
+    const SPEED = 34, GAP = 26, START_DELAY = 180;
+    let refreshFrame = 0, keyboardEntry = null;
+
+    function stop(entry) {
+      if (entry.animation) entry.animation.cancel();
+      entry.animation = null;
+      entry.window.classList.remove('is-running');
+      entry.track.style.transform = 'translateX(0px)';
+    }
+
+    function wantsMotion(entry) {
+      return entry.pointerInside || entry.focusInside || entry.keyboardActive;
+    }
+
+    function refreshEntry(entry) {
+      if (!entry.host.isConnected) { dispose(entry); return; }
+      // The track is absolutely positioned: measuring it never changes layout.
+      const available = entry.window.clientWidth;
+      const natural = entry.first.getBoundingClientRect().width;
+      const visible = entry.window.getClientRects().length > 0 && available > 0
+        && !entry.host.closest('details:not([open])');
+      const overflowing = visible && natural > available + 0.5;
+      const distance = natural + GAP;
+      entry.window.classList.toggle('is-overflowing', overflowing);
+      entry.window.dataset.overflow = overflowing ? 'true' : 'false';
+      if (!overflowing || !wantsMotion(entry) || document.hidden) { stop(entry); return; }
+      // Do not restart a readerboard on routine UI refreshes or hover movement.
+      if (entry.animation && Math.abs(entry.distance - distance) < 0.1) return;
+      stop(entry);
+      entry.distance = distance;
+      entry.window.classList.add('is-running');
+      entry.animation = entry.track.animate(
+        [{ transform: 'translateX(0px)' }, { transform: `translateX(${-distance}px)` }],
+        { duration: distance / SPEED * 1000, delay: START_DELAY, iterations: Infinity, easing: 'linear', fill: 'both' }
+      );
+    }
+
+    function refresh() {
+      if (refreshFrame) return;
+      refreshFrame = requestAnimationFrame(() => {
+        refreshFrame = 0;
+        for (const entry of [...entries.values()]) refreshEntry(entry);
+      });
+    }
+
+    const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(refresh) : null;
+
+    function dispose(entry) {
+      stop(entry);
+      observer?.unobserve(entry.window);
+      for (const [event, handler] of entry.listeners) entry.trigger.removeEventListener(event, handler);
+      if (keyboardEntry === entry) keyboardEntry = null;
+      entries.delete(entry.host);
+    }
+
+    function set(host, text, options = {}) {
+      const value = String(text ?? ''), trigger = options.trigger || host;
+      host.removeAttribute('title');
+      trigger.removeAttribute('title');
+      trigger.setAttribute('aria-label', value);
+      if (options.focusable) host.tabIndex = 0;
+      const old = entries.get(host);
+      if (old && old.text === value && old.trigger === trigger) { refresh(); return host; }
+      if (old) dispose(old);
+
+      const windowEl = document.createElement('span');
+      windowEl.className = 'ui-title-window';
+      const staticText = document.createElement('span');
+      staticText.className = 'ui-title-static';
+      staticText.textContent = value;
+      const track = document.createElement('span');
+      track.className = 'ui-title-track';
+      track.setAttribute('aria-hidden', 'true');
+      track.style.gap = GAP + 'px';
+      const first = document.createElement('span');
+      first.className = 'ui-title-copy';
+      first.textContent = value;
+      const repeat = first.cloneNode(true);
+      track.append(first, repeat);
+      windowEl.append(staticText, track);
+      host.replaceChildren(windowEl);
+      host.dataset.topicReaderboard = 'true';
+
+      const entry = { host, trigger, text:value, window:windowEl, track, first,
+        pointerInside:false, focusInside:false, keyboardActive:false,
+        animation:null, distance:0, listeners:[] };
+      function listen(event, handler) {
+        trigger.addEventListener(event, handler);
+        entry.listeners.push([event, handler]);
+      }
+      listen('pointerenter', event => {
+        if (event.pointerType === 'touch') return;
+        entry.pointerInside = true; refreshEntry(entry);
+      });
+      listen('pointerleave', () => { entry.pointerInside = false; refreshEntry(entry); });
+      listen('pointercancel', () => { entry.pointerInside = false; refreshEntry(entry); });
+      listen('focusin', () => { entry.focusInside = true; refreshEntry(entry); });
+      listen('focusout', event => {
+        if (event.relatedTarget && trigger.contains(event.relatedTarget)) return;
+        entry.focusInside = false; refreshEntry(entry);
+      });
+      entries.set(host, entry);
+      observer?.observe(windowEl);
+      refresh();
+      return host;
+    }
+
+    function clear(root) {
+      for (const entry of [...entries.values()]) {
+        if (root === entry.host || root.contains(entry.host)) dispose(entry);
+      }
+    }
+
+    function pauseWithin(root) {
+      for (const entry of entries.values()) {
+        if (root === entry.host || root.contains(entry.host)) {
+          entry.pointerInside = entry.focusInside = entry.keyboardActive = false;
+          if (keyboardEntry === entry) keyboardEntry = null;
+          stop(entry);
+        }
+      }
+    }
+
+    function keyboard(trigger) {
+      if (keyboardEntry) { keyboardEntry.keyboardActive = false; refreshEntry(keyboardEntry); }
+      keyboardEntry = trigger ? [...entries.values()].find(entry => entry.trigger === trigger) || null : null;
+      if (keyboardEntry) { keyboardEntry.keyboardActive = true; refreshEntry(keyboardEntry); }
+    }
+
+    window.addEventListener('resize', refresh, { passive:true });
+    // Titles inside the initially closed jump menu are measured when it opens.
+    document.addEventListener('toggle', refresh, true);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) for (const entry of entries.values()) stop(entry);
+      else refresh();
+    });
+    if (document.fonts) {
+      document.fonts.ready.then(refresh);
+      document.fonts.addEventListener('loadingdone', refresh);
+    }
+    return { set, clear, pauseWithin, keyboard, refresh };
+  })();
+
+  function selectedTitle() {
+    const n = state.selected && nodeById.get(state.selected);
+    return n ? n.name : (targetsView ? (courseTopics.size ? 'Your targets' : snapshot?.learner.targets?.length ? 'No matching targets' : 'No targets yet') : (courseTopics.size ? 'Select a topic' : 'No topics yet'));
+  }
+
+  function competencyFor(nodeOrId) {
+    const id=typeof nodeOrId==='object'?nodeOrId.id:Number(nodeOrId);
+    const value=repetitions[id];
+    if(!Number.isFinite(value)||value<0)return {known:false,level:null,repetitions:null,fill:themeColor('#000000'),text:themeColor('#FFFFFF'),border:themeColor('#8C8C8C'),dash:'4 3',label:'No progress data'};
+    const level=Math.min(6,Math.floor(value));
+    const light=isLightTheme();
+    return {known:true,level,repetitions:value,fill:PALETTE[light?6-level:level],text:(light?level<=3:level>=3)?'#000000':'#FFFFFF',border:themeColor('#FFFFFF'),dash:'none',label:value.toLocaleString(undefined,{maximumFractionDigits:3})+(value===1?' repetition':' repetitions')};
+  }
+  function statusMasteryAppearance(status,competence) {
+    const level=competence.known?competence.level:0;
+    const palette=STATUS_PALETTES[status],light=isLightTheme();
+    // Spread seven bands over the former 0–4 range in each theme. Keep the
+    // former band 5 for outlines, beyond the strongest fill's shade.
+    const shade=light?6-level*4/6:level*4/6;
+    const lower=Math.floor(shade),upper=Math.ceil(shade),fraction=shade-lower;
+    const fill='#'+[1,3,5].map(start=>{
+      const a=parseInt(palette[lower].slice(start,start+2),16),b=parseInt(palette[upper].slice(start,start+2),16);
+      return Math.round(a+(b-a)*fraction).toString(16).padStart(2,'0');
+    }).join('');
+    const border=palette[light?1:5];
+    // Choose text from actual fill luminance rather than a band-number cutoff.
+    const channels=[1,3,5].map(start=>parseInt(fill.slice(start,start+2),16)/255)
+      .map(value=>value<=.04045?value/12.92:((value+.055)/1.055)**2.4);
+    const luminance=channels[0]*.2126+channels[1]*.7152+channels[2]*.0722;
+    const text=(luminance+.05)/.05 >= 1.05/(luminance+.05)?'#000000':'#FFFFFF';
+    return {fill,text,border};
+  }
+  function nodeAppearance(nodeOrId) {
+    const id=typeof nodeOrId==='object'?nodeOrId.id:nodeOrId;
+    const target=(snapshot?.learner.targets || []).some(value=>String(value)===String(id));
+    const queued=(snapshot?.learner.queue || []).some(value=>String(value)===String(id));
+    const appearance={...competencyFor(nodeOrId),target,queued};
+    const learned=snapshot?.learned?.[id];
+    // Honor an explicit completion flag. Historical imports without one still
+    // use their existing repetition evidence; missing progress stays unknown.
+    appearance.studied=learned===true || (typeof learned!=='boolean' && appearance.known && appearance.repetitions>=1);
+    appearance.status=queued?'queue':target?(appearance.studied?'completed-target':'target'):null;
+    if(colorCodeEnabled && appearance.status)Object.assign(appearance,statusMasteryAppearance(appearance.status,appearance));
+    return appearance;
+  }
+  function paintNode(element,node) {
+    const appearance=nodeAppearance(node);
+    element.dataset.competency=appearance.known?String(appearance.level):'unknown';
+    element.style.setProperty('--node',appearance.fill);element.style.setProperty('--node-hover',appearance.fill);
+    element.style.setProperty('--node-text',appearance.text);element.style.setProperty('--node-border',appearance.border);element.style.setProperty('--competency-dash',appearance.dash);
+    element.setAttribute('aria-label',`${layerLabel(node)} · ${node.name} · ${appearance.label}${appearance.target&&appearance.studied?' · Completed target':appearance.studied?' · Already studied':''}${appearance.target?' · Study target':''}${appearance.queued?' · In queue':''}${state.activeIds.has(node.id)?' · Active selection':''}`);
+  }
+  function renderStatusColorLegend() {
+    $('statusColorLegend').hidden=!colorCodeEnabled;
+    for(const [status,id,label] of [['target','targetMasteryRamp','Targets'],['completed-target','completedTargetMasteryRamp','Completed targets'],['queue','queueMasteryRamp','In queue']]){
+      const host=$(id);
+      if(!colorCodeEnabled)continue;
+      if(!host.children.length)for(let level=0;level<=6;level++){
+        const cell=document.createElement('span');cell.className='competency-cell';cell.textContent=level;
+        cell.setAttribute('aria-label',label+' · repetition band '+level);host.appendChild(cell);
+      }
+      for(let level=0;level<=6;level++){
+        const appearance=statusMasteryAppearance(status,{known:true,level}),cell=host.children[level];
+        cell.style.setProperty('--swatch-fill',appearance.fill);cell.style.setProperty('--swatch-text',appearance.text);cell.style.setProperty('--swatch-border',appearance.border);
+      }
+    }
+    $('competencyFillDescription').textContent=(colorCodeEnabled?
+      'Red marks incomplete targets, green marks completed targets, and blue marks topics in your queue. Queue color takes precedence. Other topics use grayscale. ':
+      'Color coding is off. Every topic uses grayscale repetition bands. ')+
+      'Bands use the whole-number part of repetitions, capped at 6. Higher bands become lighter in dark mode and darker in light mode. A dashed outline means no progress record; a solid outline means progress is recorded.';
+  }
+  function refreshTargetColors() {
+    $('targetColorToggle').setAttribute('aria-checked',String(colorCodeEnabled));
+    renderStatusColorLegend();
+    if(!state.layout)return;
+    for(const node of state.layout.activeNodes){
+      const element=$('topic-'+node.id);
+      if(element)paintNode(element,node);
+    }
+    minimapLayout=null;drawMinimap();
+  }
+  function setColorCode(enabled,persist=true) {
+    colorCodeEnabled=enabled;
+    if(persist){try{localStorage.setItem(targetColorKey,String(enabled));}catch{ /* Keep the local view usable. */ }}
+    refreshTargetColors();
+  }
+  function updateCompetencyReadout() {
+    renderStatusColorLegend();
+    const current=state.selected!==null?competencyFor(state.selected):null;
+    $('competencyReadout').textContent=current?(current.known?current.label:'No data'):(snapshot?.learner.name||'Knowledge profile');
+    $('competencySelectionDetail').textContent=current
+      ? (current.known?current.label+' · display band '+current.level+(current.level===6?'+':'')+'.':'This topic has no repetition value in your knowledge profile.')
+      : 'The same topic has the same progress in every course.';
+    const known=[...courseTopics].filter(id=>competencyFor(id).known).length;
+    $('profileSummary').textContent='Progress recorded · '+known.toLocaleString()+' / '+courseTopics.size.toLocaleString()+' topics';
+  }
+  function renderSelectionMarks() {
+    const root=$('selectionMarks');root.replaceChildren();if(!state.layout)return;
+    const ns='http://www.w3.org/2000/svg',k=Math.max(.004,state.view.k);
+    for(const id of state.activeIds){
+      const p=state.layout.pos.get(id);if(!p)continue;
+      // The node itself retains world-space size. Only this UI frame retains
+      // a minimum readable offset and stroke when the overview is zoomed out.
+      const pad=Math.max(4,3/k),length=Math.min(Math.max(9,5/k),(p.w+2*pad)/3,(p.h+2*pad)/3);
+      const x=p.x-pad,y=p.y-pad,r=p.x+p.w+pad,b=p.y+p.h+pad;
+      const d=`M${x+length},${y}H${x}V${y+length} M${r-length},${y}H${r}V${y+length} M${x},${b-length}V${b}H${x+length} M${r-length},${b}H${r}V${b-length}`;
+      const group=document.createElementNS(ns,'g');group.dataset.topicId=id;
+      for(const cls of ['selection-underlay','selection-brackets']){const path=document.createElementNS(ns,'path');path.setAttribute('class',cls);path.setAttribute('d',d);group.appendChild(path);}
+      root.appendChild(group);
+    }
+  }
+
+  function updateUI() {
+    $('depthReadout').textContent='Depth: '+state.depth;
+    updateCompetencyReadout();
+    titleReaderboards.set($('infoTitle'), selectedTitle(), { focusable:true });
+    const selectedNode = state.selected ? nodeById.get(state.selected) : null;
+    $('selectedActions').classList.toggle('hidden', !selectedNode);
+    $('targetActions').classList.toggle('hidden', !selectedNode || snapshot?.learner.selfDirected !== true);
+    if (targetTopicId !== (selectedNode?.id ?? null)) {
+      targetTopicId = selectedNode?.id ?? null;
+      for (const host of $('targetActions').children) targetControls.remove(host);
+      $('targetActions').replaceChildren();
+      if (selectedNode) {
+        const target = targetControls.createToggle(selectedNode,{switchControl:true});
+        if (target) $('targetActions').append(target);
+      }
+    }
+    $('metaLine').textContent = selectedNode
+      ? `Topic ${selectedNode.mathAcademyId ?? selectedNode.id} · global layer ${selectedNode.layer + 1} · ${inMap.get(selectedNode.id).length} incoming · ${outMap.get(selectedNode.id).length} outgoing`
+      : `${courseTopics.size} topics in this view · ${META.nodeCount} in the knowledge graph`;
+    if(state.activeIds.size>1)$('metaLine').textContent+=' · '+state.activeIds.size+' active';
+    const copy = selectedNode
+      ? (state.mode === 'overview'
+          ? 'Click a topic to explore its prerequisites and dependents.'
+          : targetsView
+            ? 'Hold Shift and scroll to change prerequisite depth. Expansion follows prerequisites only.'
+            : 'Explore prerequisites and dependents across the knowledge graph, including topics outside this course. Shift + scroll changes depth.')
+      : (courseTopics.size ? 'Select a topic to explore its prerequisites and dependents. Shift + click adds another topic to the selection.' : targetsView ? (snapshot?.learner.targets?.length ? (targetWeekSelection.kind==='range'?'No targets are due in the selected weeks for the enabled courses. Choose another week or All.':targetWeekSelection.kind==='unscheduled'?'No unscheduled targets match the enabled courses. Choose All to see dated targets.':'No targets match the enabled courses. Turn on another course to show its targets.') : 'Add topics to your targets from a lesson or the graph to see them here.') : 'This course does not have topics assigned yet. Browse another course or open all topics.');
+    $('infoCopy').textContent = copy;
+    const crumbs = $('breadcrumbs');
+    titleReaderboards.clear(crumbs);
+    crumbs.innerHTML = '';
+    if (state.history.length) {
+      const start = Math.max(0, state.historyIndex - 3);
+      for (let i = start; i <= state.historyIndex; i++) {
+        const nid = state.history[i].selected;
+        const el = document.createElement('div');
+        el.className = 'crumb' + (i === state.historyIndex ? ' current' : '');
+        titleReaderboards.set(el, nodeById.get(nid)?.name || (targetsView ? 'Your targets' : 'Full map'), { focusable:true });
+        el.setAttribute('role', 'button');
+        el.onclick = () => jumpHistory(i);
+        el.addEventListener('keydown', event => {
+          if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); jumpHistory(i); }
+        });
+        crumbs.appendChild(el);
+      }
+    }
+    $('backBtn').disabled = state.historyIndex <= 0;
+    $('forwardBtn').disabled = state.historyIndex >= state.history.length - 1;
+    $('scopeReadout').textContent = `${state.layout.activeNodes.length} topics · ${state.layout.activeLinks.length} links · ${state.layout.scoped ? 'local columns / global badges' : 'global layers'}`;
+    $('badgeNote').hidden=!state.layout.scoped;
+    $('badgeNote').textContent='L01–L'+String(META.layerCount).padStart(2,'0')+' · global prerequisite layers';
+    document.body.classList.toggle('scoped-view',state.layout.scoped);
+    $('zoomReadout').textContent = Math.round(state.view.k * 100) + '%';
+  }
+
+  function selectionSnapshot() {
+    return { selected:state.selected, activeIds:[...state.activeIds], followTargets:state.followTargets };
+  }
+
+  function remember() {
+    const snapshot=selectionSnapshot(), previous=state.history[state.historyIndex];
+    if (previous && previous.selected===snapshot.selected && previous.followTargets===snapshot.followTargets && previous.activeIds.join(',')===snapshot.activeIds.join(',')) return;
+    state.history=state.history.slice(0,state.historyIndex+1);
+    state.history.push(snapshot);
+    if (state.history.length>32) state.history.shift();
+    state.historyIndex=state.history.length-1;
+  }
+
+  function jumpHistory(idx) {
+    if (idx<0 || idx>=state.history.length) return;
+    state.historyIndex=idx;
+    const snapshot=state.history[idx];
+    state.selected=snapshot.selected;
+    state.activeIds=new Set(snapshot.activeIds);
+    state.followTargets=targetsView && snapshot.followTargets===true;
+    if(state.followTargets)resetSelection();
+    state.mode=selectionMode();
+    redraw(true);
+  }
+
+  function setSelected(id, center=true, additive=false) {
+    id=Number(id);if(!nodeById.has(id))return;
+    state.followTargets=false;
+    if (!additive) {
+      state.activeIds=new Set([id]);state.selected=id;
+    } else if (state.activeIds.has(id)) {
+      state.activeIds.delete(id);
+      if(state.selected===id)state.selected=[...state.activeIds].at(-1)??null;
+    } else {
+      state.activeIds.add(id);state.selected=id;
+    }
+    if(targetsView && !state.activeIds.size)resetSelection();
+    state.mode=selectionMode();
+    resetDepthWheel();
+    remember();
+    redraw(center);
+  }
+
+  let MAX_DEPTH=Math.max(1,META.layerCount-1);
+  let depthWheelAmount=0, depthWheelLast=0, pendingDepthFrame=0;
+  function resetDepthWheel(){depthWheelAmount=0;depthWheelLast=0;}
+
+  function scheduleDepthLayout() {
+    if(pendingDepthFrame)return;
+    pendingDepthFrame=requestAnimationFrame(()=>{
+      pendingDepthFrame=0;
+      if(!state.activeIds.size){updateUI();return;}
+      // Depth changes the scope, not the zoom. Keep the most recently active
+      // topic at the same on-screen position as its surroundings expand.
+      const before=state.layout?.pos.get(state.selected);
+      const anchor=before?{x:(before.x+before.w/2)*state.view.k+state.view.x,y:(before.y+before.h/2)*state.view.k+state.view.y}:null;
+      state.mode=selectionMode();
+      redraw(false);
+      const after=state.layout.pos.get(state.selected);
+      if(anchor&&after){state.view.x=anchor.x-(after.x+after.w/2)*state.view.k;state.view.y=anchor.y-(after.y+after.h/2)*state.view.k;applyView();drawMinimap();}
+    });
+  }
+
+  function setDepth(value, fit=false) {
+    const n=value==='all'?MAX_DEPTH:Number(value);
+    if(!Number.isFinite(n))return;
+    const next=String(Math.max(targetsView?0:1,Math.min(MAX_DEPTH,Math.round(n))));
+    if(next===state.depth)return;
+    state.depth=next;
+    $('depthReadout').textContent='Depth: '+next;
+    if(fit){if(pendingDepthFrame)cancelAnimationFrame(pendingDepthFrame);pendingDepthFrame=0;if(state.activeIds.size)state.mode=selectionMode();redraw(true);}
+    else scheduleDepthLayout();
+  }
+
+  function handleDepthWheel(event) {
+    const now=performance.now();
+    const raw=event.deltaY || event.deltaX;
+    if(!raw)return;
+    const delta=raw*(event.deltaMode===1?16:event.deltaMode===2?state.height:1);
+    if(now-depthWheelLast>220 || Math.sign(delta)!==Math.sign(depthWheelAmount))depthWheelAmount=0;
+    depthWheelLast=now;depthWheelAmount+=delta;
+    if(Math.abs(depthWheelAmount)<50)return;
+    const step=depthWheelAmount>0?1:-1;depthWheelAmount=0;
+    setDepth(Number(state.depth)+step);
+  }
+
+  function fitCurrentView() {
+    if(pendingDepthFrame){cancelAnimationFrame(pendingDepthFrame);pendingDepthFrame=0;state.mode=selectionMode();redraw(false);}
+    fitToBounds(state.layout.bounds);applyView();drawMinimap();updateUI();
+  }
+
+  function resetView() {
+    if(pendingDepthFrame)cancelAnimationFrame(pendingDepthFrame);pendingDepthFrame=0;
+    resetDepthWheel();resetSelection();
+    if(targetsView)state.depth='0';
+    // Targets return to all saved topics at depth zero; course views clear
+    // the selection while retaining their current depth setting.
+    redraw(true);
+  }
+
+  function fitToBounds(bounds, pad = 28) {
+    const origin=viewport.getBoundingClientRect(),w=state.width,h=state.height;
+    const bw=Math.max(30,bounds.x2-bounds.x1),bh=Math.max(40,bounds.y2-bounds.y1);
+    const footer=document.querySelector('.footer-panel').getBoundingClientRect();
+    const bottom=Math.max(30,h-(footer.top-origin.top)+12);
+    const obstacles=[$('infoPanel'),$('miniPanel')].map(el=>el.getBoundingClientRect()).filter(r=>r.width>0).map(r=>({x:r.left-origin.left-8,y:r.top-origin.top-8,w:r.width+16,h:r.height+16}));
+    const maxK=Math.max(.004,Math.min(isScoped()?1.4:2.2,(w-2*pad)/bw,(h-pad-bottom)/bh));
+    const boxes=isScoped()?[...state.layout.pos.values()].map(p=>({x:p.x,y:p.y,w:p.w,h:p.h})):[];
+    // Fit actual occupied rectangles rather than unnecessarily reserving the
+    // whole height of a floating UI panel across the full width of the graph.
+    for(let i=0;i<28;i++){
+      const k=maxK*Math.pow(.94,i),freeX=Math.max(0,w-pad*2-bw*k),freeY=Math.max(0,h-pad-bottom-bh*k);
+      for(const fy of [.5,.75,1,.25,0])for(const fx of [.5,.75,1,.25,0]){
+        const x=pad+freeX*fx-bounds.x1*k,y=pad+freeY*fy-bounds.y1*k;
+        const clashes=boxes.some(p=>obstacles.some(o=>p.x*k+x<o.x+o.w&&(p.x+p.w)*k+x>o.x&&p.y*k+y<o.y+o.h&&(p.y+p.h)*k+y>o.y));
+        if(!clashes){state.view={k,x,y};return;}
+      }
+    }
+    const k=maxK*.3;state.view={k,x:w/2-(bounds.x1+bw/2)*k,y:h*.65-(bounds.y1+bh/2)*k};
+  }
+
+  function focusSelected() {
+    if(!state.layout)return;
+    // The requested scope, including bypass routes, should fit—not only a
+    // subset of immediate neighbors when the user asks for multiple steps.
+    fitToBounds(state.layout.bounds);
+  }
+
+  function renderGuides() {
+    guidesG.replaceChildren();
+    const ns='http://www.w3.org/2000/svg';
+    for(const band of state.layout.courseBands || []){
+      const group=document.createElementNS(ns,'g');
+      const label=band.label+' · '+band.nodeIds.size+' topics';
+      group.setAttribute('role','group');group.setAttribute('aria-label',label);
+      const background=document.createElementNS(ns,'rect');
+      background.setAttribute('class','course-band-backdrop');
+      for(const attr of ['x','y','width','height'])background.setAttribute(attr,band[attr]);
+      const title=document.createElementNS(ns,'text');title.setAttribute('class','course-band-label');
+      title.setAttribute('x',band.x+16);title.setAttribute('y',band.y+20);title.textContent=label;
+      group.appendChild(background);group.appendChild(title);guidesG.appendChild(group);
+    }
+  }
+
+
+  function stopMarqueeLoop() {
+    if (!marqueeEntries.length && marqueeRAF) {
+      cancelAnimationFrame(marqueeRAF);
+      marqueeRAF = 0;
+    }
+  }
+
+  function tickMarquees(now) {
+    marqueeRAF = 0;
+    marqueeEntries = marqueeEntries.filter(entry => entry && entry.track && entry.track.isConnected);
+    for (const entry of marqueeEntries) {
+      const elapsed = Math.max(0, now - entry.startAt);
+      const distance = entry.fullWidth + entry.gap;
+      const offset = (elapsed * entry.speed / 1000) % distance;
+      entry.track.setAttribute('transform', `translate(${entry.baseX - offset} ${entry.baseY})`);
+    }
+    if (marqueeEntries.length) marqueeRAF = requestAnimationFrame(tickMarquees);
+  }
+
+  function beginMarquee(entry) {
+    if (!entry || marqueeEntries.includes(entry)) return;
+    entry.startAt = performance.now() + 180;
+    entry.node.classList.add('is-marquee-hover');
+    entry.track.setAttribute('transform', `translate(${entry.baseX} ${entry.baseY})`);
+    marqueeEntries.push(entry);
+    if (!marqueeRAF) marqueeRAF = requestAnimationFrame(tickMarquees);
+  }
+
+  function endMarquee(entry) {
+    if (!entry) return;
+    marqueeEntries = marqueeEntries.filter(item => item !== entry);
+    entry.node.classList.remove('is-marquee-hover');
+    entry.track.setAttribute('transform', `translate(${entry.baseX} ${entry.baseY})`);
+    stopMarqueeLoop();
+  }
+
+  const edgeConnectionPopover = (()=>{
+    const popup=$('edgeConnectionPopover'),heading=$('edgeConnectionHeading'),topics=$('edgeConnectionTopics');
+    let opener=null,current=null,closeTimer=0;
+    function cancelClose(){clearTimeout(closeTimer);}
+    function close(restoreFocus=false){
+      cancelClose();
+      if(restoreFocus&&opener?.isConnected)opener.focus({preventScroll:true});
+      opener?.setAttribute('aria-expanded','false');opener?.classList.remove('is-open');
+      for(const id of current?.peerIds||[])$('topic-'+id)?.classList.remove('edge-peer');
+      popup.hidden=true;opener=null;current=null;
+    }
+    function scheduleClose(){
+      cancelClose();closeTimer=setTimeout(()=>{
+        if(popup.contains(document.activeElement)||opener?.contains(document.activeElement)||popup.matches(':hover')||opener?.matches(':hover'))return;
+        close();
+      },160);
+    }
+    function open(stub,element){
+      cancelClose();if(opener===element&&!popup.hidden)return;
+      close();opener=element;current=stub;
+      const owner=nodeById.get(stub.nodeId),dependents=stub.side==='right';
+      heading.textContent=(dependents?'Long connections to dependents of ':'Long connections from prerequisites of ')+(owner?.name||'this topic');
+      topics.replaceChildren();
+      const peers=stub.peerIds.map(id=>nodeById.get(id)).filter(Boolean).sort((a,b)=>a.name.localeCompare(b.name)||a.id-b.id);
+      for(const peer of peers){
+        const badge=document.createElement('button');badge.type='button';badge.className='edge-topic-badge';badge.dataset.topicId=peer.id;
+        badge.setAttribute('aria-label','Show '+peer.name+' in the graph');
+        const layer=document.createElement('span');layer.className='edge-topic-layer';layer.textContent=layerLabel(peer);
+        const name=document.createElement('span');name.className='edge-topic-name';name.textContent=peer.name;
+        badge.append(layer,name);badge.addEventListener('click',()=>{close();setSelected(peer.id,true);});topics.appendChild(badge);
+        $('topic-'+peer.id)?.classList.add('edge-peer');
+      }
+      element.setAttribute('aria-expanded','true');element.classList.add('is-open');popup.hidden=false;
+      const anchor=element.getBoundingClientRect(),box=popup.getBoundingClientRect();
+      let x=dependents?anchor.right+8:anchor.left-box.width-8;
+      if(x+box.width>window.innerWidth-12)x=anchor.left-box.width-8;
+      popup.style.left=Math.max(12,Math.min(window.innerWidth-box.width-12,x))+'px';
+      popup.style.top=Math.max(12,Math.min(window.innerHeight-box.height-12,anchor.top-8))+'px';
+    }
+    function focusFirst(){topics.querySelector('button')?.focus();}
+    popup.addEventListener('pointerenter',cancelClose);popup.addEventListener('pointerleave',scheduleClose);
+    popup.addEventListener('focusin',cancelClose);popup.addEventListener('focusout',scheduleClose);
+    popup.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close(true);}
+      else if(event.key==='Tab'&&event.shiftKey&&document.activeElement===topics.querySelector('button')){
+        event.preventDefault();opener?.focus();
+      }
+    });
+    document.addEventListener('pointerdown',event=>{if(!popup.hidden&&!popup.contains(event.target)&&!opener?.contains(event.target))close();},true);
+    document.addEventListener('wheel',event=>{if(!popup.contains(event.target))close();},{capture:true,passive:true});
+    window.addEventListener('blur',()=>close());
+    return {open,close,scheduleClose,cancelClose,focusFirst};
+  })();
+
+  function renderEdges() {
+    edgeConnectionPopover.close();
+    // Ordinary edges remain visual only; continuation marks have local hit areas.
+    edgesG.replaceChildren();edgeStubsG.replaceChildren();const ns='http://www.w3.org/2000/svg';
+    for(const e of state.layout.activeLinks){
+      if(e.shortened)continue;
+      const direct=state.activeIds.has(e.source)||state.activeIds.has(e.target);
+      const path=document.createElementNS(ns,'path');path.setAttribute('class',direct?'edge-base edge-direct':'edge-base');
+      path.setAttribute('id','edge-'+e.source+'-'+e.target);path.dataset.source=e.source;path.dataset.target=e.target;path.dataset.kind=e.kind;path.setAttribute('d',e.d);edgesG.appendChild(path);
+    }
+    for(const stub of state.layout.edgeStubs || []){
+      const group=document.createElementNS(ns,'g');group.setAttribute('class','edge-stub');group.id='edge-stub-'+stub.nodeId+'-'+stub.side;
+      group.dataset.nodeId=stub.nodeId;group.dataset.side=stub.side;group.dataset.peerIds=stub.peerIds.join(',');
+      group.setAttribute('role','button');group.setAttribute('tabindex','0');group.setAttribute('aria-controls','edgeConnectionPopover');group.setAttribute('aria-haspopup','dialog');group.setAttribute('aria-expanded','false');
+      group.setAttribute('aria-label',stub.peerIds.length+' long '+(stub.side==='right'?'dependent':'prerequisite')+' connection'+(stub.peerIds.length===1?'':'s')+' for '+nodeById.get(stub.nodeId).name);
+      const line=document.createElementNS(ns,'path');line.setAttribute('class','edge-stub-line');line.setAttribute('d',`M${stub.x},${stub.y} h${stub.direction*stub.length*24/54}`);group.appendChild(line);
+      for(const [i,offset] of [32,41,50].entries()){
+        const dot=document.createElementNS(ns,'circle');dot.setAttribute('class','edge-stub-dot');dot.setAttribute('cx',stub.x+stub.direction*offset*stub.length/54);dot.setAttribute('cy',stub.y);dot.setAttribute('r',Math.min(1.6,stub.length*.06));dot.setAttribute('opacity',[.85,.55,.3][i]);group.appendChild(dot);
+      }
+      const hit=document.createElementNS(ns,'path');hit.setAttribute('class','edge-stub-hit');hit.setAttribute('d',`M${stub.x},${stub.y} h${stub.direction*stub.length}`);group.appendChild(hit);
+      const show=()=>edgeConnectionPopover.open(stub,group);
+      group.addEventListener('pointerenter',show);group.addEventListener('pointerleave',edgeConnectionPopover.scheduleClose);
+      group.addEventListener('focus',show);group.addEventListener('blur',edgeConnectionPopover.scheduleClose);
+      group.addEventListener('pointerdown',event=>event.stopPropagation());
+      group.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();show();});
+      group.addEventListener('keydown',event=>{
+        if(event.key==='Escape'){event.preventDefault();event.stopPropagation();edgeConnectionPopover.close(true);}
+        else if(event.key==='Enter'||event.key===' '||(event.key==='Tab'&&!event.shiftKey)){
+          event.preventDefault();event.stopPropagation();show();edgeConnectionPopover.focusFirst();
+        }
+      });
+      edgeStubsG.appendChild(group);
+    }
+  }
+
+  // Right-clicking opens actions for one node without changing the active set.
+  const nodeContextMenu = (() => {
+    const menu=$('nodeContextMenu'),button=$('copyNodeButton'),notice=$('copyNodeNotice');
+    const targetAction=$('nodeTargetAction'),queueAction=$('nodeQueueAction'),topicLink=$('goToTopicLink'),studyLink=$('studyTopicLink');
+    const fallback=$('manualNodeCopy'),fallbackText=$('manualNodeText');
+    const navigation=[{link:studyLink,label:'Study now'},{link:topicLink,label:'Go to topic'}];
+    let topic=null,opener=null,noticeTimer=0,shiftHeld=false;
+    function shiftMode(held) {
+      shiftHeld=Boolean(held);
+      for(const {link,label} of navigation) {
+        link.querySelector('.menu-new-tab-indicator').hidden=!shiftHeld;
+        link.setAttribute('aria-label',label+(shiftHeld?' · Opens in a new tab':''));
+      }
+    }
+    function close(restoreFocus=false) {
+      menu.hidden=true;shiftMode(false);
+      for(const host of targetAction.children)targetControls.remove(host);
+      targetAction.replaceChildren();
+      for(const host of queueAction.children)queueControls.remove(host);
+      queueAction.replaceChildren();
+      if(opener?.isConnected){
+        opener.setAttribute('aria-expanded','false');
+        if(restoreFocus)opener.focus({preventScroll:true});
+      }
+      topic=null;opener=null;
+    }
+    function menuItems() {
+      return [...menu.querySelectorAll('[role="menuitem"]')].filter(item=>!item.disabled&&!item.closest('[hidden]'));
+    }
+    function open(node,event,element) {
+      event.preventDefault();event.stopPropagation();close();
+      topic=node;opener=element;button.disabled=false;
+      $('copyNodeMaId').hidden=!academyEntityId(node.mathAcademyId);
+      const queue=queueControls.createToggle(node,{menuItem:true});
+      if(queue)queueAction.append(queue);
+      const target=targetControls.createToggle(node,{menuItem:true});
+      if(target)targetAction.append(target);
+      topicLink.href=topicReferenceURL(snapshot,node,courseId);
+      studyLink.href='/learn?topicId='+encodeURIComponent(node.id);
+      menu.setAttribute('aria-label','Actions for '+node.name);
+      element.setAttribute('aria-expanded','true');
+      menu.hidden=false;shiftMode(event.shiftKey);
+      const box=(element.querySelector('.node-hit') || element).getBoundingClientRect();
+      const keyboard=event.type==='keydown'||(!event.clientX&&!event.clientY);
+      const x=keyboard?box.left+Math.min(box.width/2,100):event.clientX;
+      const y=keyboard?box.bottom+5:event.clientY;
+      menu.style.left=Math.max(8,Math.min(window.innerWidth-menu.offsetWidth-8,x))+'px';
+      menu.style.top=Math.max(8,Math.min(window.innerHeight-menu.offsetHeight-8,y))+'px';
+      menuItems()[0]?.focus({preventScroll:true});
+    }
+    function legacyCopy(value) {
+      const prior=document.activeElement,area=document.createElement('textarea');
+      area.value=value;area.setAttribute('readonly','');area.setAttribute('aria-label','Copy node text');
+      area.style.cssText='position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0';
+      document.body.appendChild(area);area.focus({preventScroll:true});area.select();
+      area.setSelectionRange(0,value.length);
+      let copied=false;
+      try{copied=typeof document.execCommand==='function'&&document.execCommand('copy');}catch(_){}
+      area.remove();if(prior?.isConnected)prior.focus({preventScroll:true});
+      return copied;
+    }
+    async function writeText(value) {
+      if(navigator.clipboard?.writeText){
+        try{await navigator.clipboard.writeText(value);return true;}catch(_){}
+      }
+      // Some browsers do not expose the async Clipboard API for local HTML.
+      // The fallback still runs from the user's explicit menu-button action.
+      return legacyCopy(value);
+    }
+    function notify(message) {
+      clearTimeout(noticeTimer);notice.textContent=message;notice.hidden=false;
+      noticeTimer=setTimeout(()=>{notice.hidden=true;},2400);
+    }
+    function offerManualCopy(value) {
+      fallbackText.value=value;
+      if(typeof fallback.showModal==='function')fallback.showModal();
+      else fallback.setAttribute('open','');
+      fallbackText.focus({preventScroll:true});fallbackText.select();
+    }
+    for (const [id, key, label] of [['copyNodeDbId', 'id', ':db/id'], ['copyNodeMaId', 'mathAcademyId', ':ma/id']]) {
+      $(id).addEventListener('click', event => {
+        event.preventDefault(); event.stopPropagation();
+        if (!topic) return;
+        const value = topic[key];
+        close(true);
+        void copyEntityId(value, label, 'topic');
+      });
+    }
+    button.addEventListener('click',async event=>{
+      event.preventDefault();event.stopPropagation();if(!topic||button.disabled)return;
+      const node=topic;
+      const value='topic-id: '+node.uuid+(node.mathAcademyId!=null?'\nmath-academy-id: '+node.mathAcademyId:'')+'\ntopic-name: '+node.name;
+      button.disabled=true;
+      const copied=await writeText(value);
+      if(topic===node)close(true);
+      button.disabled=false;
+      if(copied)notify('Copied topic '+node.id+' to clipboard.');
+      else offerManualCopy(value);
+    });
+    for(const {link} of navigation)link.addEventListener('click',event=>{
+      if(menu.hidden)return;
+      // Programmatic keyboard activation has no modifiers on its click event.
+      const newTab=event.shiftKey || (event.detail===0 && shiftHeld);
+      if(newTab) {
+        event.preventDefault();event.stopPropagation();
+        const href=link.href;
+        // A synchronous synthetic click still inherits the original input's
+        // Shift navigation policy. Leave that event before activating _blank.
+        setTimeout(()=>{
+          const tabLink=document.createElement('a');
+          tabLink.href=href;tabLink.target='_blank';tabLink.rel='noopener noreferrer';
+          document.body.append(tabLink);tabLink.click();tabLink.remove();
+        },0);
+      }
+      close(newTab);
+    });
+    $('manualNodeDone').addEventListener('click',()=>{
+      if(typeof fallback.close==='function')fallback.close();else fallback.removeAttribute('open');
+    });
+    menu.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close(true);}
+      else if(event.key==='Tab'){close(false);}
+      else if(['ArrowUp','ArrowDown','Home','End'].includes(event.key)){
+        event.preventDefault();event.stopPropagation();
+        const items=menuItems(),current=items.indexOf(document.activeElement);
+        const index=event.key==='Home'?0:event.key==='End'?items.length-1:
+          (current+(event.key==='ArrowDown'?1:-1)+items.length)%items.length;
+        items[index]?.focus({preventScroll:true});
+      }
+      else if(event.key===' '&&(event.target===topicLink||event.target===studyLink)){event.preventDefault();event.target.click();}
+    });
+    document.addEventListener('pointerdown',event=>{if(!menu.hidden&&!menu.contains(event.target))close(false);},true);
+    document.addEventListener('wheel',()=>close(false),{capture:true,passive:true});
+    document.addEventListener('keydown',event=>{
+      if(menu.hidden)return;
+      if(event.key==='Escape')close(true);
+      else shiftMode(event.shiftKey || event.key==='Shift');
+    });
+    document.addEventListener('keyup',event=>{if(!menu.hidden)shiftMode(event.shiftKey);});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden)close(false);});
+    window.addEventListener('blur',()=>close(false));
+    window.addEventListener('resize',()=>close(false));
+    window.addEventListener('course-academy:targets-changed',()=>{if(!menu.hidden)close(true);});
+    window.addEventListener('course-academy:queue-changed',()=>{if(!menu.hidden)close(true);});
+    return {open,close};
+  })();
+
+  for (const type of ['contextmenu', 'keydown']) $('infoTitle').addEventListener(type, event => {
+    if (type === 'keydown' && !(event.key === 'ContextMenu' || event.shiftKey && event.key === 'F10')) return;
+    const node = state.selected && nodeById.get(state.selected);
+    if (node) nodeContextMenu.open(node, event, $('infoTitle'));
+  });
+
+  function renderNodes() {
+    edgeConnectionPopover.close();
+    const ns='http://www.w3.org/2000/svg';nodesG.replaceChildren();
+    marqueeEntries = [];
+    stopMarqueeLoop();
+    for(const node of state.layout.activeNodes){
+      const p=state.layout.pos.get(node.id),geom=p.geometry,g=document.createElementNS(ns,'g');
+      g.setAttribute('class','node'+(state.activeIds.has(node.id)?' selected':'')+(geom.badge?' has-badge':''));
+      paintNode(g,node);
+      g.id='topic-'+node.id;g.dataset.topicId=node.id;g.setAttribute('aria-pressed',String(state.activeIds.has(node.id)));g.dataset.layer=node.layer+1;g.dataset.sourceLayer=node.layer;g.dataset.localColumn=p.col;
+      g.setAttribute('transform',`translate(${p.x},${p.y})`);g.setAttribute('role','button');g.setAttribute('tabindex','0');
+      g.setAttribute('aria-haspopup','menu');g.setAttribute('aria-expanded','false');
+      g.addEventListener('contextmenu',event=>nodeContextMenu.open(node,event,g));
+      g.addEventListener('keydown',event=>{
+        if(event.key==='ContextMenu'||(event.shiftKey&&event.key==='F10'))nodeContextMenu.open(node,event,g);
+      });
+      function rect(cls,x,w){
+        const r=document.createElementNS(ns,'rect'),inset=cls.includes('node-shape')?.5:0;
+        r.setAttribute('class',cls);r.setAttribute('x',x+inset);r.setAttribute('y',inset);
+        r.setAttribute('width',w-inset*2);r.setAttribute('height',p.h-inset*2);
+        r.setAttribute('rx','0');r.setAttribute('ry','0');g.appendChild(r);return r;
+      }
+      if(geom.badge)rect('node-shape layer-badge',0,geom.badgeWidth);
+      rect('node-shape title-shape',geom.titleX,p.w-geom.titleX);
+      const hit=rect('node-hit',0,p.w);hit.setAttribute('fill','none');hit.setAttribute('stroke','none');hit.setAttribute('pointer-events','all');hit.setAttribute('aria-hidden','true');
+      hit.addEventListener('click',ev=>{ev.stopPropagation();setSelected(node.id,true,ev.shiftKey);});hit.addEventListener('pointerdown',ev=>ev.stopPropagation());
+      function text(cls,x,anchor,content,parent=g){const t=document.createElementNS(ns,'text');t.setAttribute('class',cls);t.setAttribute('x',x);t.setAttribute('y',p.h/2);t.setAttribute('text-anchor',anchor);t.textContent=content;parent.appendChild(t);return t;}
+      if(geom.badge)text('badge-text',geom.badgeWidth/2,'middle',geom.badge);
+      const staticTitle=text('title-text title-static',geom.titleX+constants.textPadX,'start',geom.lines[0]);
+      if(geom.truncated){
+        const defs=document.createElementNS(ns,'defs');
+        const clip=document.createElementNS(ns,'clipPath');
+        const clipId='title-clip-'+node.id;
+        clip.setAttribute('id',clipId);
+        const clipRect=document.createElementNS(ns,'rect');
+        clipRect.setAttribute('x',geom.titleX+constants.textPadX);
+        clipRect.setAttribute('y','0');
+        clipRect.setAttribute('width',Math.max(1,p.w-geom.titleX-constants.textPadX*2));
+        clipRect.setAttribute('height',p.h);
+        clip.appendChild(clipRect);defs.appendChild(clip);g.appendChild(defs);
+
+        const wrap=document.createElementNS(ns,'g');
+        wrap.setAttribute('class','title-marquee-wrap');
+        wrap.setAttribute('clip-path',`url(#${clipId})`);
+        const track=document.createElementNS(ns,'g');
+        track.setAttribute('class','title-marquee-track');
+        const baseX=geom.titleX+constants.textPadX, baseY=p.h/2, gap=26;
+        const t1=document.createElementNS(ns,'text');
+        t1.setAttribute('class','title-text title-marquee-text');t1.setAttribute('x','0');t1.setAttribute('y','0');t1.setAttribute('text-anchor','start');t1.textContent=geom.fullText||node.name;
+        const t2=document.createElementNS(ns,'text');
+        t2.setAttribute('class','title-text title-marquee-text');t2.setAttribute('x',String((geom.fullWidth||measuredTitleWidth(node.name))+gap));t2.setAttribute('y','0');t2.setAttribute('text-anchor','start');t2.textContent=geom.fullText||node.name;
+        track.appendChild(t1);track.appendChild(t2);track.setAttribute('transform',`translate(${baseX} ${baseY})`);
+        wrap.appendChild(track);g.appendChild(wrap);
+        const marqueeEntry={node:g,track,baseX,baseY,fullWidth:(geom.fullWidth||measuredTitleWidth(node.name)),gap,speed:34};
+        g.addEventListener('pointerenter',()=>beginMarquee(marqueeEntry));
+        g.addEventListener('pointerleave',()=>endMarquee(marqueeEntry));
+        g.addEventListener('focus',()=>beginMarquee(marqueeEntry));
+        g.addEventListener('blur',()=>endMarquee(marqueeEntry));
+      }
+      g.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();setSelected(node.id,true,ev.shiftKey);}});nodesG.appendChild(g);
+    }
+  }
+
+  function redraw(focus = false) {
+    nodeContextMenu.close(false);
+    layoutCurrent();
+    renderGuides();
+    renderEdges();
+    renderNodes();
+    updateUI();
+    if (focus) {
+      if (state.selected && state.mode !== 'overview') focusSelected();
+      else fitToBounds(state.layout.bounds);
+    }
+    applyView();
+    drawMinimap();
+    updateUI();
+  }
+
+  function applyView() {
+    edgeConnectionPopover.close();
+    nodeContextMenu.close(false);
+    camera.setAttribute('transform', `translate(${state.view.x} ${state.view.y}) scale(${state.view.k})`);
+    renderSelectionMarks();
+    $('zoomReadout').textContent = Math.round(state.view.k * 100) + '%';
+  }
+
+  function scheduleView() {
+    if (viewFrame) return;
+    viewFrame = requestAnimationFrame(() => {
+      viewFrame = 0;
+      applyView();
+      drawMinimap();
+    });
+  }
+
+  function resize() {
+    const r = viewport.getBoundingClientRect();
+    state.width = r.width;
+    state.height = r.height;
+    svg.setAttribute('viewBox', `0 0 ${r.width} ${r.height}`);
+    applyView();
+    drawMinimap();
+  }
+
+  function worldPoint(clientX, clientY) {
+    const rect = viewport.getBoundingClientRect();
+    return {
+      x:(clientX - rect.left - state.view.x) / state.view.k,
+      y:(clientY - rect.top - state.view.y) / state.view.k,
+    };
+  }
+
+  viewport.addEventListener('pointerdown', (e) => {
+    if(e.button!==0)return;
+    state.dragging = true;
+    state.lastPointer = { x:e.clientX, y:e.clientY };
+    viewport.classList.add('dragging');
+    viewport.setPointerCapture(e.pointerId);
+  });
+  viewport.addEventListener('pointermove', (e) => {
+    if (!state.dragging || !state.lastPointer) return;
+    const dx = e.clientX - state.lastPointer.x;
+    const dy = e.clientY - state.lastPointer.y;
+    state.lastPointer = { x:e.clientX, y:e.clientY };
+    state.view.x += dx;
+    state.view.y += dy;
+    scheduleView();
+  });
+  function endDrag() { state.dragging = false; state.lastPointer = null; viewport.classList.remove('dragging'); }
+  viewport.addEventListener('pointerup', endDrag);
+  viewport.addEventListener('pointercancel', endDrag);
+  viewport.addEventListener('click', (e) => { if (e.target === svg || e.target === viewport || e.target.closest('#camera') === null) return; });
+  document.addEventListener('wheel', event => {
+    if(!event.shiftKey||event.ctrlKey||event.metaKey)return;
+    if(event.target.closest('input,textarea,select,[contenteditable="true"],#coursePicker,#edgeConnectionPopover'))return;
+    event.preventDefault();event.stopPropagation();handleDepthWheel(event);
+  },{capture:true,passive:false});
+  document.addEventListener('keyup',event=>{if(event.key==='Shift')resetDepthWheel();});
+  window.addEventListener('blur',resetDepthWheel);
+
+  viewport.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const rect = viewport.getBoundingClientRect();
+    const px = e.clientX - rect.left;
+    const py = e.clientY - rect.top;
+    const wx = (px - state.view.x) / state.view.k;
+    const wy = (py - state.view.y) / state.view.k;
+    const scale = Math.exp(-Math.max(-180, Math.min(180, e.deltaY)) * 0.0016);
+    const nextK = Math.max(0.004, Math.min(3.2, state.view.k * scale));
+    state.view.x = px - wx * nextK;
+    state.view.y = py - wy * nextK;
+    state.view.k = nextK;
+    scheduleView();
+  }, { passive:false });
+
+  function drawMinimap() {
+    if (!state.layout) return;
+    const W = minimap.width, H = minimap.height;
+    const b = state.layout.bounds;
+    const k = Math.min((W - 20) / Math.max(1, b.x2 - b.x1), (H - 20) / Math.max(1, b.y2 - b.y1));
+    const ox = (W - (b.x2 - b.x1) * k) / 2 - b.x1 * k;
+    const oy = (H - (b.y2 - b.y1) * k) / 2 - b.y1 * k;
+    // The graph image changes with the layout; panning only moves its viewport box.
+    if (minimapLayout !== state.layout || minimapBase.width !== W || minimapBase.height !== H) {
+    minimapBase.width = W; minimapBase.height = H;
+    const ctx = minimapBase.getContext('2d');
+    ctx.fillStyle = themeColor('#050505'); ctx.fillRect(0,0,W,H);
+    ctx.save();ctx.translate(ox,oy);ctx.scale(k,k);ctx.strokeStyle=themeColor('rgba(255,255,255,.18)');ctx.lineWidth=.7/k;
+    for(const e of state.layout.activeLinks){ctx.beginPath();for(const [i,q] of e.segments.entries()){const previous=e.segments[i-1];if(!previous||previous.p1[0]!==q.p0[0]||previous.p1[1]!==q.p0[1])ctx.moveTo(...q.p0);ctx.bezierCurveTo(...q.c1,...q.c2,...q.p1);}ctx.stroke();}ctx.restore();
+    for (const n of state.layout.activeNodes) {
+      const p = state.layout.pos.get(n.id);
+      const x=p.x*k+ox,y=p.y*k+oy,w=Math.max(2,p.w*k),h=Math.max(2,p.h*k);
+      const competence=nodeAppearance(n);
+      ctx.fillStyle=competence.fill;ctx.fillRect(x,y,w,h);
+      ctx.save();ctx.strokeStyle=competence.border;ctx.lineWidth=.6;
+      if(!competence.known)ctx.setLineDash([2,2]);
+      ctx.strokeRect(x+.3,y+.3,Math.max(.6,w-.6),Math.max(.6,h-.6));ctx.restore();
+    }
+    for(const id of state.activeIds){
+      const p=state.layout.pos.get(id);if(!p)continue;
+      const x=p.x*k+ox-2,y=p.y*k+oy-2,w=Math.max(2,p.w*k)+4,h=Math.max(2,p.h*k)+4;
+      ctx.save();ctx.strokeStyle=themeColor('#000');ctx.lineWidth=3;ctx.strokeRect(x,y,w,h);
+      ctx.strokeStyle=themeColor('#fff');ctx.lineWidth=1;ctx.strokeRect(x,y,w,h);ctx.restore();
+    }
+    minimapLayout = state.layout;
+    }
+    const ctx = mctx;
+    ctx.clearRect(0,0,W,H);
+    ctx.drawImage(minimapBase,0,0);
+    const vx1 = (-state.view.x) / state.view.k;
+    const vy1 = (-state.view.y) / state.view.k;
+    const vx2 = vx1 + state.width / state.view.k;
+    const vy2 = vy1 + state.height / state.view.k;
+    ctx.strokeStyle = themeColor('#ffffff');
+    ctx.lineWidth = 1.2;
+    ctx.strokeRect(vx1*k + ox, vy1*k + oy, (vx2-vx1)*k, (vy2-vy1)*k);
+    minimap._proj = { k, ox, oy };
+  }
+
+  minimap.addEventListener('click', (e) => {
+    if (!minimap._proj || !state.layout) return;
+    const r = minimap.getBoundingClientRect();
+    const px = (e.clientX - r.left) * (minimap.width / r.width);
+    const py = (e.clientY - r.top) * (minimap.height / r.height);
+    const wx = (px - minimap._proj.ox) / minimap._proj.k;
+    const wy = (py - minimap._proj.oy) / minimap._proj.k;
+    state.view.x = state.width / 2 - wx * state.view.k;
+    state.view.y = state.height / 2 - wy * state.view.k;
+    applyView();
+    drawMinimap();
+  });
+
+  $('fitBtn').addEventListener('click',fitCurrentView);
+  $('resetBtn').addEventListener('click',resetView);
+  $('overviewBtn').addEventListener('click',resetView);
+  $('backBtn').addEventListener('click', () => jumpHistory(state.historyIndex - 1));
+  $('forwardBtn').addEventListener('click', () => jumpHistory(state.historyIndex + 1));
+
+  function selectedCourse() {return snapshot?.courses.find(c=>c.id===courseId)||null;}
+  const targetCourseCodes=['256','255','341'];
+  const targetCourseFilterKey='course-academy.graph-target-courses';
+  const targetSplitKey='course-academy.graph-targets-split';
+  let splitTargetsByCourse=false;
+  try{splitTargetsByCourse=localStorage.getItem(targetSplitKey)==='true';}catch{ /* Split also works without browser storage. */ }
+  let enabledTargetCourses=new Set(targetCourseCodes);
+  try{
+    const saved=JSON.parse(localStorage.getItem(targetCourseFilterKey));
+    if(Array.isArray(saved))enabledTargetCourses=new Set(saved.filter(code=>targetCourseCodes.includes(code)));
+  }catch{ /* Filters also work without browser storage. */ }
+  const targetWeekFilterKey='course-academy.graph-target-weeks';
+  let targetCalendar=buildTargetCalendar(snapshot?.targetSchedule || []), targetWeekSelection={kind:'all'};
+  let targetWeekButtonsCalendar=null, targetWeekFocusDay=null;
+  const targetWeekButtons=new Map();
+  try{targetWeekSelection=JSON.parse(localStorage.getItem(targetWeekFilterKey)) || targetWeekSelection;}catch{ /* Keep All if storage is unavailable. */ }
+  function installTargetCalendar(schedule) {
+    targetCalendar=buildTargetCalendar(schedule);
+    targetWeekSelection=normalizeTargetWeekSelection(targetCalendar,targetWeekSelection);
+    targetWeekButtonsCalendar=null;
+  }
+  function courseFilteredTargetIds() {
+    const targets=(snapshot?.learner.targets || []).filter(id=>nodeById.has(id));
+    // All switches on retains manual targets without curriculum membership.
+    if(enabledTargetCourses.size===targetCourseCodes.length)return targets;
+    const members=new Set();
+    for(const course of snapshot?.courses || []){
+      if(!targetCourseCodes.some(code=>course.code==='MTH '+code && enabledTargetCourses.has(code)))continue;
+      for(const id of course.topicIds || [])members.add(id);
+      for(const id of course.targetTopicIds || [])members.add(id);
+    }
+    return targets.filter(id=>members.has(id));
+  }
+  function targetWeekCourseIds() {
+    if(enabledTargetCourses.size===targetCourseCodes.length)return null;
+    return new Set((snapshot?.courses || []).filter(course=>
+      targetCourseCodes.some(code=>course.code==='MTH '+code && enabledTargetCourses.has(code))).map(course=>course.id));
+  }
+  function filteredTargetIds() {
+    return filterScheduledTargets(courseFilteredTargetIds(),targetCalendar,targetWeekSelection,targetWeekCourseIds());
+  }
+  function setTargetWeekSelection(selection) {
+    if(!targetsView || !snapshot || loading)return;
+    targetWeekSelection=normalizeTargetWeekSelection(targetCalendar,selection);
+    try{localStorage.setItem(targetWeekFilterKey,JSON.stringify(targetWeekSelection));}catch{ /* Keep the in-page filter. */ }
+    // Changing weeks starts from the newly filtered roots; old focus/history
+    // must not leave an excluded target visible. Keep depth and Split settings.
+    changeCourse(null,true,'targets',state.depth);
+  }
+  function chooseTargetWeek(startDay,extend=false) {
+    setTargetWeekSelection(selectTargetWeek(targetCalendar,targetWeekSelection,startDay,extend));
+  }
+  function renderTargetWeekStrip() {
+    $('targetWeekStrip').hidden=!targetsView;
+    document.querySelector('.app').classList.toggle('targets-page',targetsView);
+    if(!targetsView)return;
+    const targets=courseFilteredTargetIds(), courses=targetWeekCourseIds();
+    const count=filteredTargetIds().length;
+    $('targetWeekReadout').textContent=targetWeekSelectionLabel(targetCalendar,targetWeekSelection)+' · '+count+' target'+(count===1?'':'s');
+    for(const [id,kind] of [['targetWeeksAll','all'],['targetWeeksUnscheduled','unscheduled']]){
+      $(id).setAttribute('aria-pressed',String(targetWeekSelection.kind===kind));
+      $(id).disabled=loading || !snapshot;
+    }
+    if(targetWeekButtonsCalendar!==targetCalendar){
+      const host=$('targetWeekButtons');host.replaceChildren();targetWeekButtons.clear();
+      for(const week of targetCalendar.weeks){
+        const button=document.createElement('button');button.type='button';button.className='target-week-button';
+        const bar=document.createElement('span');bar.className='target-week-bar';bar.setAttribute('aria-hidden','true');button.appendChild(bar);
+        button.addEventListener('click',event=>{targetWeekFocusDay=week.startDay;chooseTargetWeek(week.startDay,event.shiftKey);});
+        button.addEventListener('keydown',event=>{
+          // Do not pass week arrows to the graph's history shortcuts.
+          if(['ArrowLeft','ArrowRight','Home','End'].includes(event.key)){
+            event.preventDefault();event.stopPropagation();
+            const index=targetCalendar.weeks.findIndex(w=>w.startDay===week.startDay);
+            const next=event.key==='Home'?0:event.key==='End'?targetCalendar.weeks.length-1:
+              Math.max(0,Math.min(targetCalendar.weeks.length-1,index+(event.key==='ArrowRight'?1:-1)));
+            targetWeekFocusDay=targetCalendar.weeks[next].startDay;
+            renderTargetWeekStrip();const focused=targetWeekButtons.get(targetWeekFocusDay);
+            focused.focus();focused.scrollIntoView({block:'nearest',inline:'nearest'});
+          }else if(event.shiftKey && ['Enter',' '].includes(event.key)){
+            event.preventDefault();event.stopPropagation();chooseTargetWeek(week.startDay,true);
+          }
+        });
+        targetWeekButtons.set(week.startDay,button);host.appendChild(button);
+      }
+      targetWeekButtonsCalendar=targetCalendar;
+    }
+    if(!targetWeekButtons.has(targetWeekFocusDay))targetWeekFocusDay=targetWeekSelection.kind==='range'?targetWeekSelection.anchor:
+      (targetCalendar.weeks.find(week=>week.current) || targetCalendar.weeks[0])?.startDay ?? null;
+    for(const week of targetCalendar.weeks){
+      const button=targetWeekButtons.get(week.startDay);
+      const weekCount=filterScheduledTargets(targets,targetCalendar,{kind:'range',start:week.startDay,end:week.startDay},courses).length;
+      const label=targetWeekLabel(week)+' · '+weekCount+' target'+(weekCount===1?'':'s')+(week.current?' · This week':'');
+      button.title=label;button.setAttribute('aria-label',label);
+      button.setAttribute('aria-pressed',String(targetWeekSelection.kind==='range' && week.startDay>=targetWeekSelection.start && week.startDay<=targetWeekSelection.end));
+      if(week.current)button.setAttribute('aria-current','date');else button.removeAttribute('aria-current');
+      button.classList.toggle('has-targets',weekCount>0);button.disabled=loading || !snapshot;
+      button.tabIndex=week.startDay===targetWeekFocusDay?0:-1;
+    }
+  }
+  $('targetWeeksAll').addEventListener('click',()=>setTargetWeekSelection({kind:'all'}));
+  $('targetWeeksUnscheduled').addEventListener('click',()=>setTargetWeekSelection({kind:'unscheduled'}));
+  function renderTargetCourseFilters() {
+    $('targetCourseFilters').hidden=!targetsView;
+    $('targetSplitToggle').setAttribute('aria-checked',String(splitTargetsByCourse));
+    $('targetSplitToggle').disabled=loading || !snapshot;
+    for(const code of targetCourseCodes){
+      const button=$('targetCourseToggle'+code);
+      button.setAttribute('aria-checked',String(enabledTargetCourses.has(code)));
+      button.disabled=loading || !snapshot?.courses.some(course=>course.code==='MTH '+code);
+    }
+  }
+  function setTargetSplit(enabled) {
+    if(!targetsView || !snapshot || loading || splitTargetsByCourse===enabled)return;
+    splitTargetsByCourse=enabled;
+    try{localStorage.setItem(targetSplitKey,String(enabled));}catch{ /* Keep the in-page layout. */ }
+    if(pendingDepthFrame)cancelAnimationFrame(pendingDepthFrame);pendingDepthFrame=0;
+    renderTargetCourseFilters();
+    redraw(true);
+  }
+  $('targetSplitToggle').addEventListener('click',()=>{
+    $('targetSplitToggle').dataset.animate='true';setTargetSplit(!splitTargetsByCourse);
+  });
+  function setTargetCourseEnabled(code, enabled) {
+    if(!targetsView || !snapshot || loading || !targetCourseCodes.includes(code))return;
+    if(enabledTargetCourses.has(code)===enabled)return;
+    if(enabled)enabledTargetCourses.add(code);else enabledTargetCourses.delete(code);
+    try{localStorage.setItem(targetCourseFilterKey,JSON.stringify([...enabledTargetCourses]));}catch{ /* Keep the in-page filter. */ }
+    // Start from the filtered group so a focused topic or old history entry
+    // cannot keep an excluded course visible. Retain prerequisite depth.
+    changeCourse(null,true,'targets',state.depth);
+  }
+  for(const code of targetCourseCodes){
+    $('targetCourseToggle'+code).addEventListener('click',()=>{
+      $('targetCourseToggle'+code).dataset.animate='true';
+      setTargetCourseEnabled(code,!enabledTargetCourses.has(code));
+    });
+  }
+  function refreshTargetScope() {
+    // An overview follows the saved target group. A focused exploration keeps
+    // its own roots, even if the topic being inspected is added or removed.
+    const followingTargets=state.followTargets;
+    courseTopics=new Set(filteredTargetIds());
+    renderTargetWeekStrip();
+    if(followingTargets){
+      state.activeIds=new Set(courseTopics);
+      if(!state.activeIds.has(state.selected))state.selected=[...state.activeIds][0]??null;
+      state.mode=selectionMode();
+      // Preserve depth, camera, history, URL, and cached row ordering.
+      redraw(false);
+    }else{
+      refreshTargetColors();updateUI();
+    }
+  }
+  function changeCourse(id, updateURL=true, view='course', depth=null) {
+    if(!snapshot)return;
+    targetsView=view==='targets';
+    courseId=!targetsView&&snapshot.courses.some(c=>c.id===id)?id:null;
+    const course=selectedCourse();
+    courseTopics=new Set(targetsView
+      ? filteredTargetIds()
+      : course?course.topicIds:NODES.map(n=>n.id));
+    if(pendingDepthFrame)cancelAnimationFrame(pendingDepthFrame);pendingDepthFrame=0;
+    resetDepthWheel();state.depth=targetsView?(depth??'0'):'1';resetSelection();state.history=[];state.historyIndex=-1;
+    renderTargetCourseFilters();renderTargetWeekStrip();
+    stackOrderCache.clear();
+    $('courseLink').href=course?'/progress?course='+encodeURIComponent(course.id):'/progress';
+    document.title=targetsView?'Targets · Course Academy':'Explore · '+(course?.title||'All topics')+' · Course Academy';
+    if(targetsView)$('targetsLink').setAttribute('aria-current','page');
+    else $('targetsLink').removeAttribute('aria-current');
+    $('overviewBtn').textContent=targetsView?(targetWeekSelection.kind==='all'?(enabledTargetCourses.size===targetCourseCodes.length?'All targets':'Filtered targets'):targetWeekSelectionLabel(targetCalendar,targetWeekSelection).split(' - ')[0]+' targets'):course?'Course overview':'Full graph';
+    const startersHost=$('starterButtons');titleReaderboards.clear(startersHost);startersHost.replaceChildren();
+    const members=NODES.filter(n=>courseTopics.has(n.id));
+    const preferred=STARTER_TOPIC_IDS.map(id=>members.find(n=>n.mathAcademyId===id)).filter(Boolean);
+    const starters=preferred.length?preferred:members.sort((a,b)=>a.layer-b.layer||a.order-b.order).slice(0,6);
+    starters.forEach(n=>{
+      const btn=document.createElement('button');btn.className='pill';titleReaderboards.set(btn,n.name);
+      btn.addEventListener('contextmenu', event => nodeContextMenu.open(n, event, btn));
+      btn.addEventListener('keydown', event => {
+        if (event.key === 'ContextMenu' || event.shiftKey && event.key === 'F10') nodeContextMenu.open(n, event, btn);
+      });
+      btn.setAttribute('aria-label',n.name);btn.onclick=event=>setSelected(n.id,true,event.shiftKey);startersHost.appendChild(btn);
+    });
+    remember();
+    if(updateURL){
+      const url=new URL(location.href);
+      if(targetsView){url.searchParams.set('view','targets');url.searchParams.delete('course');}
+      else {url.searchParams.delete('view');url.searchParams.set('course',courseId||'all');}
+      url.searchParams.delete('topic');history.replaceState(null,'',url);
+    }
+    resize();redraw(true);
+  }
+  function exploreTopic(topic) {
+    if (!nodeById.has(Number(topic.id))) return;
+    if (targetsView && !courseTopics.has(Number(topic.id))) return;
+    if (!courseTopics.has(Number(topic.id))) changeCourse(null);
+    setSelected(Number(topic.id), true);
+    const url = new URL(location.href);
+    if (!targetsView) url.searchParams.set('course', courseId || 'all');
+    url.searchParams.set('topic', topic.id);
+    history.replaceState(null, '', url);
+  }
+  const coursePicker = createCoursePicker({
+    getSnapshot: async () => {
+      if (!snapshot) throw new Error('The knowledge graph is still loading. Try again in a moment.');
+      return snapshot;
+    },
+    getCourseId: () => courseId,
+    onSelectCourse: course => location.assign('/progress?course=' + encodeURIComponent(course.id)),
+    onSelectTopic: topic => location.assign(topicReferenceURL(snapshot, topic, courseId)),
+  });
+
+  let loading=false;
+  async function loadData() {
+    if(loading)return;loading=true;
+    $('refreshData').disabled=true;$('courseBrowse').disabled=true;$('retryLoad').hidden=true;$('loadState').hidden=false;
+    $('loadMessage').textContent='Loading your knowledge graph…';
+    try {
+      if(location.protocol==='file:')throw new Error('Open the explorer through its local server to load your database.');
+      const response=await readRequest('/api/graph-explorer');
+      if(!response.ok)throw new Error('The database could not be loaded. Check the local explorer server and retry.');
+      const data=await response.json();installSnapshot(data);
+      const params=new URL(location.href).searchParams;
+      const requested=params.get('course');
+      // Browsing is URL state only. Never assign or change learner/course here.
+      const initial=requested==='all'?null:requested||data.learner.courseId||null;
+      changeCourse(initial,false,params.get('view')==='targets'?'targets':'course');
+      $('learnerName').textContent=data.learner.name||'Profile';
+      const requestedTopic=Number(new URL(location.href).searchParams.get('topic'));
+      if(nodeById.has(requestedTopic))exploreTopic(nodeById.get(requestedTopic));
+      $('loadState').hidden=true;$('courseBrowse').disabled=false;
+    } catch(error) {
+      $('loadMessage').textContent=error.message;
+      $('retryLoad').hidden=location.protocol==='file:';
+      $('localServerLink').hidden=location.protocol!=='file:';
+      if(snapshot)$('courseBrowse').disabled=false;
+    } finally {loading=false;$('refreshData').disabled=false;renderTargetCourseFilters();renderTargetWeekStrip();}
+  }
+  $('retryLoad').onclick=loadData;$('refreshData').onclick=loadData;
+  $('targetColorToggle').setAttribute('aria-checked',String(colorCodeEnabled));
+  $('targetColorToggle').addEventListener('click',()=>{
+    $('targetColorToggle').dataset.animate='true';setColorCode(!colorCodeEnabled);
+  });
+  window.addEventListener('storage',event=>{
+    if(event.key===targetColorKey || event.key==='course-academy.graph-targets-red' || event.key===null){
+      const enabled=readColorCodePreference();
+      setColorCode(enabled,false);
+    }
+  });
+
+  window.addEventListener('resize', () => { resize(); redraw(false); });
+  window.addEventListener('course-academy:theme-changed', () => {
+    minimapLayout=null;
+    renderNodes();applyView();drawMinimap();updateUI();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (document.querySelector('dialog[open]') || e.defaultPrevented) return;
+    const typing = ['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName) || document.activeElement?.isContentEditable;
+    if (e.key === '/' && !typing) { e.preventDefault(); coursePicker.open(); }
+    else if (e.key.toLowerCase() === 'f' && !typing && !e.ctrlKey && !e.metaKey) { e.preventDefault(); fitCurrentView(); }
+    else if (e.altKey && e.key === 'ArrowLeft') { e.preventDefault(); jumpHistory(state.historyIndex - 1); }
+    else if (e.altKey && e.key === 'ArrowRight') { e.preventDefault(); jumpHistory(state.historyIndex + 1); }
+  });
+
+
+  resize();
+  redraw(true);
+  loadData();
+
+  if (document.fonts) {
+    document.fonts.ready.then(() => { sizeNodeTitles(); redraw(false); });
+    document.fonts.addEventListener('loadingdone', () => { sizeNodeTitles(); redraw(false); });
+  }
+
+  setInterval(()=>{
+    const currentWeek=targetWeekStart(targetCalendarDay(Date.now()));
+    for(const week of targetCalendar.weeks)week.current=week.startDay===currentWeek;
+    if(targetsView)renderTargetWeekStrip();
+  },60000);
+
+  // Test/export hooks contain source identifiers and never synthesize edges.
+  window.FlowAtlas = {
+    getCompetency:id=>({...competencyFor(Number(id))}),
+    competencySummary:()=>({basis:snapshot?.basis,learner:snapshot?.learner,recordedTopics:Object.keys(repetitions).length}),
+    getCourses:()=>snapshot?.courses.map(c=>({...c}))||[],
+    changeCourse,
+    setTargetCourseEnabled,
+    setTargetSplit, setColorCode,
+    chooseTargetWeek, setTargetWeekSelection,
+    getTargetWeeks:()=>targetCalendar.weeks.map(week=>({...week,label:targetWeekLabel(week)})),
+    refresh:loadData,
+    getState:()=>({courseId,targetsView,colorCodeEnabled,targetWeekSelection:{...targetWeekSelection},splitTargetsByCourse,courseBands:(state.layout.courseBands || []).map(band=>({course:band.label,ids:[...band.nodeIds],y:band.y,height:band.height})),basis:snapshot?.basis,mode:state.mode,selected:state.selected,activeIds:[...state.activeIds],history:state.history.map(s=>({selected:s.selected,activeIds:[...s.activeIds]})),historyIndex:state.historyIndex,maxDepth:MAX_DEPTH,depth:state.depth,view:{...state.view},visibleNodes:state.layout.activeNodes.length,visibleLinks:state.layout.activeLinks.length,bounds:{...state.layout.bounds},scoped:state.layout.scoped,columnRule:'dependency-order',rowOrdering:{...state.layout.rowOrdering},columns:state.layout.layers.map(l=>({localColumn:l.layer,x:l.x,width:l.width,ids:l.nodes.map(n=>n.id)})),routes:{...state.layout.routeSummary},globalLayerRange:[1,META.layerCount]}),
+    getNodes:()=>state.layout.activeNodes.map(n=>{const p=state.layout.pos.get(n.id);return {id:n.id,name:n.name,active:state.activeIds.has(n.id),globalLayer:n.layer+1,badge:p.geometry.badge,x:p.x,y:p.y,w:p.w,h:p.h,badgeWidth:p.geometry.badgeWidth,titleX:p.geometry.titleX,label:p.geometry.lines[0],localColumn:p.col};}),
+    getEdges:()=>state.layout.activeLinks.map(e=>({source:e.source,target:e.target,d:e.d,kind:e.kind,segments:e.segments,sourceSide:e.sourceSide,targetSide:e.targetSide,span:e.span,shortened:e.shortened,stubs:e.stubs})),
+    select:(id,additive=false)=>setSelected(Number(id),true,additive),
+    reset:resetView,
+    mode:m=>{if(['overview','neighbors','upstream','downstream','both'].includes(m)){state.mode=m;if(m==='neighbors')state.depth='1';redraw(true);}},
+    depth:d=>setDepth(d,true),
+    fit:fitCurrentView,
+    validate:()=>({nodes:NODES.length,edges:LINKS.length,validActiveSet:[...state.activeIds].every(id=>nodeById.has(id))&&(state.activeIds.size?state.activeIds.has(state.selected):state.selected===null),visibleActiveTopics:[...state.activeIds].every(id=>state.layout.pos.has(id)),forwardColumns:state.layout.activeLinks.every(e=>state.layout.localColumns.get(e.source)<state.layout.localColumns.get(e.target)),forwardRoutes:state.layout.activeLinks.every(e=>e.segments.every(q=>q.p0[0]<=q.c1[0]&&q.c1[0]<=q.c2[0]&&q.c2[0]<=q.p1[0])),globalLayersUnchanged:NODES.every(n=>Number.isInteger(n.layer)&&n.layer>=0&&n.layer<META.layerCount),widthLimit:[...state.layout.pos.values()].every(p=>p.w<=320),badgeGap:[...state.layout.pos.values()].every(p=>!p.geometry.badge||p.geometry.titleX-p.geometry.badgeWidth===4),finite:[...state.layout.pos.values()].every(p=>[p.x,p.y,p.w,p.h].every(Number.isFinite)),uniquePaths:new Set(state.layout.activeLinks.map(e=>e.d)).size===state.layout.activeLinks.length,orthogonalEndpoints:state.layout.activeLinks.every(e=>{const a=e.segments[0],b=e.segments.at(-1);return a.p0[1]===a.c1[1]&&a.p0[0]!==a.c1[0]&&b.p1[1]===b.c2[1]&&b.p1[0]!==b.c2[0];})})
+  };
+})();
+</script>
+</body>
+</html>
