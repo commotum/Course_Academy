@@ -7,7 +7,7 @@ import sympy as S
 t,u=S.symbols('t u',real=True)
 
 def scalar(s):
- s=s.strip().replace('⁡','').replace(r'\,','').replace(r'\left','').replace(r'\right','').replace(r'\cdot','*')
+ s=s.strip().rstrip('.,').replace('⁡','').replace(r'\,','').replace(r'\left','').replace(r'\right','').replace(r'\cdot','*')
  s=re.sub(r'\\operatorname\{(\w+)\}',r'\1',s)
  s=re.sub(r'\{(sin|cos|tan|sec|ln)\}',r'\1',s)
  s=s.replace(r'\sin','sin').replace(r'\cos','cos').replace(r'\tan','tan').replace(r'\sec','sec').replace(r'\ln','ln').replace(r'\log','ln').replace(r'\exp','exp')
@@ -51,6 +51,7 @@ def scalar(s):
  return result
 
 def vector(s):
+ s=s.replace(r'\begin{bmatrix}',r'[\begin{aligned}').replace(r'\end{bmatrix}',r'\end{aligned}]')
  s=s.strip().replace(r'\,','')
  if s.startswith('['):
   prefix=r'[\begin{aligned}';suffix=r'\end{aligned}]'
@@ -69,6 +70,7 @@ def vector(s):
 
 def split_rows(s):
  """Split only outer aligned rows; preserve complete nested column vectors."""
+ s=s.replace(r'\begin{bmatrix}',r'[\begin{aligned}').replace(r'\end{bmatrix}',r'\end{aligned}]')
  start=r'\begin{aligned}';end=r'\end{aligned}'
  if s.startswith(start):s=s[len(start):-len(end)]
  out=[];depth=0;i=0;last=0
@@ -101,6 +103,7 @@ def derivatives(s):
  return s
 
 def scaled_vector(s,h,hp):
+ s=s.replace(r'\begin{bmatrix}',r'[\begin{aligned}').replace(r'\end{bmatrix}',r'\end{aligned}]')
  s=derivatives(s).replace(r'u^{′}(t)', '('+S.latex(hp)+')').replace('u(t)','('+S.latex(h)+')')
  # u(t)' is printed by SymPy as a derivative for symbolic composition rows.
  s=s.replace(r'\frac{d}{d t} u{\left(t \right)}','('+S.latex(hp)+')')

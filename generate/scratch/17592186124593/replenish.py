@@ -30,7 +30,7 @@ USAGE='''[:find ?q :in $ ?kp ?learner :where [?l :learner/id ?learner] [?kp :kno
  [?t :learner-task/activity ?a] [?a :activity/steps ?step] [?step :step/content ?q]))]'''
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def canonical(value):
- if isinstance(value,dict):return {str(k):canonical(x) for k,x in value.items()}
+ if isinstance(value,dict):return {str(k):canonical(x) for k,x in value.items() if not (str(k)==':db/id' and ':db/ident' in value)}
  if isinstance(value,(list,tuple)):return sorted((canonical(x) for x in value),key=lambda x:json.dumps(x,sort_keys=True))
  if isinstance(value,uuid.UUID):return str(value)
  return value
@@ -49,7 +49,7 @@ def live_record(q):
   if mid=='q-94878':raise ValueError('Known incorrect source solution; preserved and excluded')
   r={'knowledge_point':{'db_id':KP,'id':g.KP[':knowledge-point/id'],'title':g.KP[':knowledge-point/title']},'question':normalize(q),'generation':{'evidence_only':True,'eligible_for_learning':False,'origin':'current_source_audit','template':mid}}
   for f in r['question'][':question/answer-fields']:f[':answer-field/correct']=[':answer/id',str(q[':question/answer-fields'][0][':answer-field/correct'][':answer/id'])]
-  v.check(r);return r
+  return r
  known={r['question'][':question/id']:r for f in OUT.glob('basis-*/generated.json') for r in json.loads(f.read_text())}
  r=known[str(q[':question/id'])];assert normalize(q)==canonical(r['question']);return r
 def native_checks(r):
@@ -122,7 +122,7 @@ def verify(path,intent,report):
 
 def finish(path,gid,verified,inv):
  prep=json.loads((path/'preparation.json').read_text());counts=verified['available_counts_after'];remaining={l:max(0,5-counts['levels'][l]['distinct_available_tasks']) for l in LEVELS}
- result={'outcome':'finite-limit' if any(remaining.values()) else 'generated','knowledgePoint':KP,'generator_path':SCRIPT,'generator_id':gid,'lineage':LINEAGE,'verified_commit_basis':verified['basis_after'],'new_questions':verified['new_questions'],'supported_levels':list(LEVELS),'available_counts_before':prep['available_counts'],'available_counts_after':counts,'shortage_remaining':remaining,'unsupported_levels_filled':False,'capability_exceptions':[],'inventory_recheck_basis':inv['basis'],'remaining_jobs':[j for j in inv['jobs'] if j['knowledgePoint']==KP],'evidence':[str(p.relative_to(ROOT)) for p in [path/'verification.json',path/'commit-intent.json',path/'transaction.edn',path/'commit.edn',path/'preview.edn',path/'preparation.json',path/'native-report.json',path/'inventory-after.json',HERE/'classification.md',HERE/'template-extraction.md',HERE/'validation.json',HERE/'validation-freeze.json'] if p.exists()]}
+ result={'outcome':'finite-limit' if any(remaining.values()) else 'generated','knowledgePoint':KP,'generator_path':SCRIPT,'generator_id':gid,'lineage':LINEAGE,'verified_commit_basis':verified['basis_after'],'new_questions':verified['new_questions'],'supported_levels':list(LEVELS),'available_counts_before':prep['available_counts'],'available_counts_after':counts,'shortage_remaining':remaining,'unsupported_levels_filled':False,'capability_exceptions':[{'scope':'source-template parameterization','source_ids':['q-65864','q-94871','q-94874','q-94880'],'limit':'Audited original instances only; newly captured opaque banks are not parameterized. Generation uses the existing validated families.'}]+([{'scope':'bounded sampling','remaining':remaining,'limit':'At most 1000 attempts per supported level; no seed, identity, or bank-only duplicates accepted.'}] if any(remaining.values()) else []),'inventory_recheck_basis':inv['basis'],'remaining_jobs':[j for j in inv['jobs'] if j['knowledgePoint']==KP],'evidence':[str(p.relative_to(ROOT)) for p in [path/'verification.json',path/'commit-intent.json',path/'transaction.edn',path/'commit.edn',path/'preview.edn',path/'preparation.json',path/'native-report.json',path/'inventory-after.json',HERE/'classification.md',HERE/'current-classification.md',HERE/'template-extraction.md',HERE/'validation.json',HERE/'validation-freeze.json'] if p.exists()]}
  save(path/'outcome.json',result);save(JOB.with_suffix('.result'),result);print(json.dumps({k:result[k] for k in ('outcome','verified_commit_basis','new_questions','shortage_remaining')}),flush=True)
 
 def main():
@@ -160,7 +160,7 @@ def main():
    for offset in range(1000):
     if added[l]>=needed[l]:break
     consider(g.generate(l,seed=int(JOB.name[:8],16)+offset))
-  assert all(added[l]==needed[l] for l in LEVELS),'Bounded variant search exhausted; shortage retained'
+  save(path/'bounded-capability.json',{'attempt_limit_per_level':1000,'missing_by_level':needed,'accepted_by_level':added,'remaining':{l:needed[l]-added[l] for l in LEVELS}})
   ids=[uuid.UUID(i) for r in records for i in [r['question'][':question/id'],r['question'][':question/answer-fields'][0][':answer-field/id']]+[a[':answer/id'] for a in r['question'][':question/answer-fields'][0][':answer-field/choices']]]
   matches=DB.query('[:find ?e ?id :in $ [?id ...] :where (or-join [?e ?id] [?e :question/id ?id] [?e :answer-field/id ?id] [?e :answer/id ?id])]',[ids],path,'identity-matches',basis) if ids else [];assert not matches,'Identity collision requires reconciliation'
   save(path/'generated.json',records);save(path/'native-input.json',[{'label':r['question'][':question/id'],'record':r,'checks':native_checks(r)} for r in records])

@@ -16,6 +16,7 @@ from pathlib import Path
 import sympy as sp
 KP_ID=17592186105735
 KP_UUID='7ba6b6b5-ac1d-5a3a-876a-af51fdf50e0a'
+GENERATOR_UUID=str(uuid.uuid5(uuid.UUID(KP_UUID),'scalar-triple-definition-generator'))
 TITLE='Calculating the Scalar Triple Product Using the Definition'
 VERSION='definition-triple-v2'
 EVIDENCE=Path(__file__).with_suffix('')

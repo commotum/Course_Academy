@@ -98,7 +98,7 @@ def main():
   f=r['question'][':question/answer-fields'][0]
   inputs.append({'label':str(i)+'-'+r['generation']['template'],'record':r,'checks':[{'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==f[':answer-field/correct'][1] else 'rejected','purpose':'Owned radio choice '+a[':answer/value']} for a in f[':answer-field/choices']]})
  (ROOT/'engine-input.json').write_text(json.dumps(inputs,indent=2,ensure_ascii=False)+'\n')
- engine=ROOT.parents[1]/'runs/current/check-engine';subprocess.run([str(engine),str(ROOT/'engine-input.json'),str(ROOT/'engine-report.json')],check=True)
+ engine=ROOT/'reference/replenishment/check-engine';subprocess.run([str(engine),str(ROOT/'engine-input.json'),str(ROOT/'engine-report.json')],check=True)
  report=json.loads((ROOT/'engine-report.json').read_text())
  review=replays+records
  (ROOT/'review.json').write_text(json.dumps(review,indent=2,ensure_ascii=False)+'\n')

@@ -5,14 +5,22 @@ Default banks are authored method errors; observed compound banks are opt-in.
 No EDB clients, transactions, registration, plots, or answer lookup branches.
 """
 from __future__ import annotations
-import argparse, hashlib, json, random, re, uuid
+import argparse, hashlib, json, os, random, re, sys, uuid
 from pathlib import Path
-import sympy as S
+try:
+ import sympy as S
+except ModuleNotFoundError:
+ # Inventory workers may use the system interpreter; reuse project dependencies.
+ interpreter=Path(__file__).resolve().parents[2]/'.venv/bin/python'
+ if __name__=='__main__' and interpreter.is_file() and Path(sys.prefix)!=interpreter.parent.parent:
+  os.execv(str(interpreter),[str(interpreter),__file__,*sys.argv[1:]])
+ raise
 
 KP_ID=17592186115392
 KP_UUID='a146d5d3-2562-5b8b-886e-4cf6519d3282'
 TITLE='Using the Chain Rule for Differentiation'
-VERSION='vector-chain-v1'
+VERSION='vector-chain-v2'
+GENERATOR_ID=str(uuid.uuid5(uuid.UUID(KP_UUID),'question-generator'))
 ROOT=Path(__file__).with_suffix('')
 SOURCE=json.loads((ROOT/'source.json').read_text())
 QUESTIONS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
@@ -106,7 +114,7 @@ def tex(x):
  x=x.xreplace({S.diff(U,t):S.Symbol('innerslope'),U:S.Symbol('innerinput')})
  return S.latex(x,fold_short_frac=False,inv_trig_style='full').replace('innerinput','u(t)').replace('innerslope',r'u^{′}(t)')
 def vector(v,style,force_zero=False):
- if style=='matrix':return r'[\begin{aligned}'+r' \\ '.join(tex(x) for x in v)+r'\end{aligned}]'
+ if style=='matrix':return r'\begin{bmatrix}'+r' \\ '.join(tex(x) for x in v)+r'\end{bmatrix}'
  if style=='angle':return '⟨'+r',\,'.join(tex(x) for x in v)+'⟩'
  parts=[]
  for x,label in zip(v,'ijk'):
@@ -126,7 +134,7 @@ def times(v,hp,style):
  return (r'\left('+z+r'\right)' if style=='basis' else z)+r'\cdot '+r'\left('+tex(hp)+r'\right)'
 def derivative_vector(f,style):
  parts=[r'\frac{\text{d}}{\text{d}u}\left('+tex(x)+r'\right)' for x in f]
- if style=='matrix':return r'[\begin{aligned}'+r' \\ '.join(parts)+r'\end{aligned}]'
+ if style=='matrix':return r'\begin{bmatrix}'+r' \\ '.join(parts)+r'\end{bmatrix}'
  if style=='angle':return '⟨'+r',\,'.join(parts)+'⟩'
  return '+'.join(x+r'\,'+label for x,label in zip(parts,'ijk'))
 

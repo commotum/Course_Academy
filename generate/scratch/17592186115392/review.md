@@ -38,13 +38,13 @@ $$
 
 ## linear_quadratic_affine — easy (observed)
 
-If $f(u)=[\begin{aligned}2 u \\ u^{2} \\ 3\end{aligned}]$ and $u(t)=2 t + 2$, then $(f∘u)^{′}(t)=$
+If $f(u)=\begin{bmatrix}2 u \\ u^{2} \\ 3\end{bmatrix}$ and $u(t)=2 t + 2$, then $(f∘u)^{′}(t)=$
 
-- $[\begin{aligned}2 \\ 2 t \\ 0\end{aligned}]$
-- $[\begin{aligned}4 \\ 8 t \\ 0\end{aligned}]$
-- $[\begin{aligned}2 \\ 4 t + 4 \\ 0\end{aligned}]$
-- $[\begin{aligned}4 \\ 8 t + 8 \\ 0\end{aligned}]$ **correct**
-- $[\begin{aligned}4 \\ 4 t + 4 \\ 0\end{aligned}]$
+- $\begin{bmatrix}2 \\ 2 t \\ 0\end{bmatrix}$
+- $\begin{bmatrix}4 \\ 8 t \\ 0\end{bmatrix}$
+- $\begin{bmatrix}2 \\ 4 t + 4 \\ 0\end{bmatrix}$
+- $\begin{bmatrix}4 \\ 8 t + 8 \\ 0\end{bmatrix}$ **correct**
+- $\begin{bmatrix}4 \\ 4 t + 4 \\ 0\end{bmatrix}$
 
 Using the chain rule, we can write
 
@@ -55,13 +55,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}f^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(2 u\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right) \\ \frac{\text{d}}{\text{d}u}\left(3\right)\end{aligned}]=[\begin{aligned}2 \\ 2 u \\ 0\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(2 t + 2\right)=2\end{aligned}
+\begin{aligned}f^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(2 u\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right) \\ \frac{\text{d}}{\text{d}u}\left(3\right)\end{bmatrix}=\begin{bmatrix}2 \\ 2 u \\ 0\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(2 t + 2\right)=2\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =[\begin{aligned}2 \\ 2 u(t) \\ 0\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}2 \\ 4 t + 4 \\ 0\end{aligned}]\cdot \left(2\right) \\  & =[\begin{aligned}4 \\ 8 t + 8 \\ 0\end{aligned}]\end{aligned}
+\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =\begin{bmatrix}2 \\ 2 u(t) \\ 0\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}2 \\ 4 t + 4 \\ 0\end{bmatrix}\cdot \left(2\right) \\  & =\begin{bmatrix}4 \\ 8 t + 8 \\ 0\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -224,13 +224,13 @@ $$
 
 ## linear_quadratic_exp — easy (observed)
 
-If $f(u)=[\begin{aligned}u \\ u^{2} \\ 6\end{aligned}]$ and $u(t)=e^{t}$, then $(f∘u)^{′}(t)=$
+If $f(u)=\begin{bmatrix}u \\ u^{2} \\ 6\end{bmatrix}$ and $u(t)=e^{t}$, then $(f∘u)^{′}(t)=$
 
-- $[\begin{aligned}t \\ 2 e^{t} \\ 0\end{aligned}]$
-- $[\begin{aligned}e^{t} \\ 2 e^{t} \\ 0\end{aligned}]$
-- $[\begin{aligned}e^{t} \\ 2 e^{2 t} \\ 0\end{aligned}]$ **correct**
-- $[\begin{aligned}1 \\ 2 e^{t} \\ 0\end{aligned}]$
-- $[\begin{aligned}1 \\ 3 e^{t} \\ 0\end{aligned}]$
+- $\begin{bmatrix}t \\ 2 e^{t} \\ 0\end{bmatrix}$
+- $\begin{bmatrix}e^{t} \\ 2 e^{t} \\ 0\end{bmatrix}$
+- $\begin{bmatrix}e^{t} \\ 2 e^{2 t} \\ 0\end{bmatrix}$ **correct**
+- $\begin{bmatrix}1 \\ 2 e^{t} \\ 0\end{bmatrix}$
+- $\begin{bmatrix}1 \\ 3 e^{t} \\ 0\end{bmatrix}$
 
 Using the chain rule, we can write
 
@@ -241,13 +241,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}f^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(u\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right) \\ \frac{\text{d}}{\text{d}u}\left(6\right)\end{aligned}]=[\begin{aligned}1 \\ 2 u \\ 0\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(e^{t}\right)=e^{t}\end{aligned}
+\begin{aligned}f^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(u\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right) \\ \frac{\text{d}}{\text{d}u}\left(6\right)\end{bmatrix}=\begin{bmatrix}1 \\ 2 u \\ 0\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(e^{t}\right)=e^{t}\end{aligned}
 $$
 
 Therefore, we obtain
 
 $$
-\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =[\begin{aligned}1 \\ 2 u(t) \\ 0\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}1 \\ 2 e^{t} \\ 0\end{aligned}]\cdot \left(e^{t}\right) \\  & =[\begin{aligned}e^{t} \\ 2 e^{2 t} \\ 0\end{aligned}]\end{aligned}
+\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =\begin{bmatrix}1 \\ 2 u(t) \\ 0\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}1 \\ 2 e^{t} \\ 0\end{bmatrix}\cdot \left(e^{t}\right) \\  & =\begin{bmatrix}e^{t} \\ 2 e^{2 t} \\ 0\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -348,13 +348,13 @@ $$
 
 ## log_quadratic_log — easy (observed)
 
-If $g(u)=[\begin{aligned}\log{\left(u \right)} \\ 5 \\ u^{2}\end{aligned}]$ and $u(t)=\log{\left(t \right)}$, then  $(g∘u)^{′}(t)=$
+If $g(u)=\begin{bmatrix}\log{\left(u \right)} \\ 5 \\ u^{2}\end{bmatrix}$ and $u(t)=\log{\left(t \right)}$, then  $(g∘u)^{′}(t)=$
 
-- $[\begin{aligned}\frac{1}{t \log{\left(t \right)}} \\ 0 \\ \frac{2 \log{\left(t \right)}}{t}\end{aligned}]$ **correct**
-- $[\begin{aligned}\frac{1}{\log{\left(t \right)}} \\ 0 \\ \frac{2 \log{\left(t \right)}}{t}\end{aligned}]$
-- $[\begin{aligned}\frac{1}{u} \\ 0 \\ 2 u\end{aligned}]$
-- $[\begin{aligned}\frac{1}{\log{\left(t \right)}} \\ 0 \\ 2 \log{\left(t \right)}\end{aligned}]$
-- $[\begin{aligned}u \\ 5 \\ 2 u\end{aligned}]$
+- $\begin{bmatrix}\frac{1}{t \log{\left(t \right)}} \\ 0 \\ \frac{2 \log{\left(t \right)}}{t}\end{bmatrix}$ **correct**
+- $\begin{bmatrix}\frac{1}{\log{\left(t \right)}} \\ 0 \\ \frac{2 \log{\left(t \right)}}{t}\end{bmatrix}$
+- $\begin{bmatrix}\frac{1}{u} \\ 0 \\ 2 u\end{bmatrix}$
+- $\begin{bmatrix}\frac{1}{\log{\left(t \right)}} \\ 0 \\ 2 \log{\left(t \right)}\end{bmatrix}$
+- $\begin{bmatrix}u \\ 5 \\ 2 u\end{bmatrix}$
 
 By the chain rule, we have 
 
@@ -365,13 +365,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}g^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(\log{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(5\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right)\end{aligned}]=[\begin{aligned}\frac{1}{u} \\ 0 \\ 2 u\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(\log{\left(t \right)}\right)=\frac{1}{t}\end{aligned}
+\begin{aligned}g^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(\log{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(5\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right)\end{bmatrix}=\begin{bmatrix}\frac{1}{u} \\ 0 \\ 2 u\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(\log{\left(t \right)}\right)=\frac{1}{t}\end{aligned}
 $$
 
 Therefore, we obtain
 
 $$
-\begin{aligned}(g∘u)^{′}(t) & =g′(u(t))u′(t) \\  & =[\begin{aligned}\frac{1}{u(t)} \\ 0 \\ 2 u(t)\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}\frac{1}{\log{\left(t \right)}} \\ 0 \\ 2 \log{\left(t \right)}\end{aligned}]\cdot \left(\frac{1}{t}\right) \\  & =[\begin{aligned}\frac{1}{t \log{\left(t \right)}} \\ 0 \\ \frac{2 \log{\left(t \right)}}{t}\end{aligned}]\end{aligned}
+\begin{aligned}(g∘u)^{′}(t) & =g′(u(t))u′(t) \\  & =\begin{bmatrix}\frac{1}{u(t)} \\ 0 \\ 2 u(t)\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}\frac{1}{\log{\left(t \right)}} \\ 0 \\ 2 \log{\left(t \right)}\end{bmatrix}\cdot \left(\frac{1}{t}\right) \\  & =\begin{bmatrix}\frac{1}{t \log{\left(t \right)}} \\ 0 \\ \frac{2 \log{\left(t \right)}}{t}\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -536,13 +536,13 @@ $$
 
 ## sin_cos_exp_affine — easy (observed)
 
-If $f(u)=[\begin{aligned}\sin{\left(u \right)} \\ \cos{\left(u \right)} \\ e^{u}\end{aligned}]$ and $u(t)=4 t - 3$ then $(f∘u)^{′}(t)=$
+If $f(u)=\begin{bmatrix}\sin{\left(u \right)} \\ \cos{\left(u \right)} \\ e^{u}\end{bmatrix}$ and $u(t)=4 t - 3$ then $(f∘u)^{′}(t)=$
 
-- $[\begin{aligned}- 8 \sin{\left(4 t - 3 \right)} \\ 8 \cos{\left(4 t - 3 \right)} \\ \left(4 t - 3\right) e^{t}\end{aligned}]$
-- $[\begin{aligned}4 \cos{\left(4 t - 3 \right)} \\ - 4 \sin{\left(4 t - 3 \right)} \\ 4 e^{4 t - 3}\end{aligned}]$ **correct**
-- $[\begin{aligned}- \sin{\left(4 t - 3 \right)} \\ \cos{\left(4 t - 3 \right)} \\ \left(4 t - 3\right) e^{t}\end{aligned}]$
-- $[\begin{aligned}4 \sin{\left(4 t - 3 \right)} \\ - 4 \cos{\left(4 t - 3 \right)} \\ 4 e^{4 t - 3}\end{aligned}]$
-- $[\begin{aligned}\cos{\left(4 t - 3 \right)} \\ - \sin{\left(4 t - 3 \right)} \\ e^{4 t - 3}\end{aligned}]$
+- $\begin{bmatrix}- 8 \sin{\left(4 t - 3 \right)} \\ 8 \cos{\left(4 t - 3 \right)} \\ \left(4 t - 3\right) e^{t}\end{bmatrix}$
+- $\begin{bmatrix}4 \cos{\left(4 t - 3 \right)} \\ - 4 \sin{\left(4 t - 3 \right)} \\ 4 e^{4 t - 3}\end{bmatrix}$ **correct**
+- $\begin{bmatrix}- \sin{\left(4 t - 3 \right)} \\ \cos{\left(4 t - 3 \right)} \\ \left(4 t - 3\right) e^{t}\end{bmatrix}$
+- $\begin{bmatrix}4 \sin{\left(4 t - 3 \right)} \\ - 4 \cos{\left(4 t - 3 \right)} \\ 4 e^{4 t - 3}\end{bmatrix}$
+- $\begin{bmatrix}\cos{\left(4 t - 3 \right)} \\ - \sin{\left(4 t - 3 \right)} \\ e^{4 t - 3}\end{bmatrix}$
 
 Using the chain rule, we can write
 
@@ -553,13 +553,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}f^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(\sin{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(\cos{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(e^{u}\right)\end{aligned}]=[\begin{aligned}\cos{\left(u \right)} \\ - \sin{\left(u \right)} \\ e^{u}\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(4 t - 3\right)=4\end{aligned}
+\begin{aligned}f^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(\sin{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(\cos{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(e^{u}\right)\end{bmatrix}=\begin{bmatrix}\cos{\left(u \right)} \\ - \sin{\left(u \right)} \\ e^{u}\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(4 t - 3\right)=4\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =[\begin{aligned}\cos{\left(u(t) \right)} \\ - \sin{\left(u(t) \right)} \\ e^{u(t)}\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}\cos{\left(4 t - 3 \right)} \\ - \sin{\left(4 t - 3 \right)} \\ e^{4 t - 3}\end{aligned}]\cdot \left(4\right) \\  & =[\begin{aligned}4 \cos{\left(4 t - 3 \right)} \\ - 4 \sin{\left(4 t - 3 \right)} \\ 4 e^{4 t - 3}\end{aligned}]\end{aligned}
+\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =\begin{bmatrix}\cos{\left(u(t) \right)} \\ - \sin{\left(u(t) \right)} \\ e^{u(t)}\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}\cos{\left(4 t - 3 \right)} \\ - \sin{\left(4 t - 3 \right)} \\ e^{4 t - 3}\end{bmatrix}\cdot \left(4\right) \\  & =\begin{bmatrix}4 \cos{\left(4 t - 3 \right)} \\ - 4 \sin{\left(4 t - 3 \right)} \\ 4 e^{4 t - 3}\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -722,13 +722,13 @@ $$
 
 ## cos_cube_log_exp — easy (observed)
 
-If $f(u)=[\begin{aligned}\cos{\left(u \right)} \\ u^{3} \\ \log{\left(u \right)}\end{aligned}]$ and $u(t)=e^{t}$, then $(f∘u)^{′}(t)=$
+If $f(u)=\begin{bmatrix}\cos{\left(u \right)} \\ u^{3} \\ \log{\left(u \right)}\end{bmatrix}$ and $u(t)=e^{t}$, then $(f∘u)^{′}(t)=$
 
-- $[\begin{aligned}\sin{\left(e^{2 t} \right)} \\ e^{3 t} \\ e^{- 2 t}\end{aligned}]$
-- $[\begin{aligned}e^{t} \cos{\left(e^{t} \right)} \\ 3 e^{3 t} \\ e^{2 t}\end{aligned}]$
-- $[\begin{aligned}- \sin{\left(e^{2 t} \right)} \\ 3 e^{2 t} \\ 1\end{aligned}]$
-- $[\begin{aligned}- e^{t} \cos{\left(e^{t} \right)} \\ 3 e^{t} \\ 1\end{aligned}]$
-- $[\begin{aligned}- e^{t} \sin{\left(e^{t} \right)} \\ 3 e^{3 t} \\ 1\end{aligned}]$ **correct**
+- $\begin{bmatrix}\sin{\left(e^{2 t} \right)} \\ e^{3 t} \\ e^{- 2 t}\end{bmatrix}$
+- $\begin{bmatrix}e^{t} \cos{\left(e^{t} \right)} \\ 3 e^{3 t} \\ e^{2 t}\end{bmatrix}$
+- $\begin{bmatrix}- \sin{\left(e^{2 t} \right)} \\ 3 e^{2 t} \\ 1\end{bmatrix}$
+- $\begin{bmatrix}- e^{t} \cos{\left(e^{t} \right)} \\ 3 e^{t} \\ 1\end{bmatrix}$
+- $\begin{bmatrix}- e^{t} \sin{\left(e^{t} \right)} \\ 3 e^{3 t} \\ 1\end{bmatrix}$ **correct**
 
 Using the chain rule, we can write
 
@@ -739,13 +739,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}f^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(\cos{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{3}\right) \\ \frac{\text{d}}{\text{d}u}\left(\log{\left(u \right)}\right)\end{aligned}]=[\begin{aligned}- \sin{\left(u \right)} \\ 3 u^{2} \\ \frac{1}{u}\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(e^{t}\right)=e^{t}\end{aligned}
+\begin{aligned}f^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(\cos{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{3}\right) \\ \frac{\text{d}}{\text{d}u}\left(\log{\left(u \right)}\right)\end{bmatrix}=\begin{bmatrix}- \sin{\left(u \right)} \\ 3 u^{2} \\ \frac{1}{u}\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(e^{t}\right)=e^{t}\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =[\begin{aligned}- \sin{\left(u(t) \right)} \\ 3 u(t)^{2} \\ \frac{1}{u(t)}\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}- \sin{\left(e^{t} \right)} \\ 3 e^{2 t} \\ e^{- t}\end{aligned}]\cdot \left(e^{t}\right) \\  & =[\begin{aligned}- \sin{\left(e^{t} \right)} \\ 3 e^{2 t} \\ e^{- t}\end{aligned}]\cdot \left(e^{t}\right) \\  & =[\begin{aligned}- e^{t} \sin{\left(e^{t} \right)} \\ 3 e^{3 t} \\ 1\end{aligned}]\end{aligned}
+\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =\begin{bmatrix}- \sin{\left(u(t) \right)} \\ 3 u(t)^{2} \\ \frac{1}{u(t)}\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}- \sin{\left(e^{t} \right)} \\ 3 e^{2 t} \\ e^{- t}\end{bmatrix}\cdot \left(e^{t}\right) \\  & =\begin{bmatrix}- \sin{\left(e^{t} \right)} \\ 3 e^{2 t} \\ e^{- t}\end{bmatrix}\cdot \left(e^{t}\right) \\  & =\begin{bmatrix}- e^{t} \sin{\left(e^{t} \right)} \\ 3 e^{3 t} \\ 1\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -754,13 +754,13 @@ $$
 
 ## linear_quadratic_affine — easy (authored)
 
-If $f(u)=[\begin{aligned}3 u \\ u^{2} \\ 2\end{aligned}]$ and $u(t)=4 t + 2$, then $(f∘u)^{′}(t)=$
+If $f(u)=\begin{bmatrix}3 u \\ u^{2} \\ 2\end{bmatrix}$ and $u(t)=4 t + 2$, then $(f∘u)^{′}(t)=$
 
-- $[\begin{aligned}12 \\ 32 t + 16 \\ 0\end{aligned}]$ **correct**
-- $[\begin{aligned}3 \\ 2 u \\ 0\end{aligned}]$
-- $[\begin{aligned}3 \\ 8 t + 4 \\ 0\end{aligned}]$
-- $[\begin{aligned}48 \\ 128 t + 64 \\ 0\end{aligned}]$
-- $[\begin{aligned}12 \\ 8 t + 4 \\ 0\end{aligned}]$
+- $\begin{bmatrix}12 \\ 32 t + 16 \\ 0\end{bmatrix}$ **correct**
+- $\begin{bmatrix}3 \\ 2 u \\ 0\end{bmatrix}$
+- $\begin{bmatrix}3 \\ 8 t + 4 \\ 0\end{bmatrix}$
+- $\begin{bmatrix}48 \\ 128 t + 64 \\ 0\end{bmatrix}$
+- $\begin{bmatrix}12 \\ 8 t + 4 \\ 0\end{bmatrix}$
 
 Using the chain rule, we can write
 
@@ -771,13 +771,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}f^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(3 u\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right) \\ \frac{\text{d}}{\text{d}u}\left(2\right)\end{aligned}]=[\begin{aligned}3 \\ 2 u \\ 0\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(4 t + 2\right)=4\end{aligned}
+\begin{aligned}f^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(3 u\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right) \\ \frac{\text{d}}{\text{d}u}\left(2\right)\end{bmatrix}=\begin{bmatrix}3 \\ 2 u \\ 0\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(4 t + 2\right)=4\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =[\begin{aligned}3 \\ 2 u(t) \\ 0\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}3 \\ 8 t + 4 \\ 0\end{aligned}]\cdot \left(4\right) \\  & =[\begin{aligned}12 \\ 32 t + 16 \\ 0\end{aligned}]\end{aligned}
+\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =\begin{bmatrix}3 \\ 2 u(t) \\ 0\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}3 \\ 8 t + 4 \\ 0\end{bmatrix}\cdot \left(4\right) \\  & =\begin{bmatrix}12 \\ 32 t + 16 \\ 0\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -786,13 +786,13 @@ $$
 
 ## linear_quadratic_affine — easy (authored)
 
-If $f(u)=[\begin{aligned}u \\ u^{2} \\ 1\end{aligned}]$ and $u(t)=4 t - 4$, then $(f∘u)^{′}(t)=$
+If $f(u)=\begin{bmatrix}u \\ u^{2} \\ 1\end{bmatrix}$ and $u(t)=4 t - 4$, then $(f∘u)^{′}(t)=$
 
-- $[\begin{aligned}16 \\ 128 t - 128 \\ 0\end{aligned}]$
-- $[\begin{aligned}1 \\ 2 u \\ 0\end{aligned}]$
-- $[\begin{aligned}1 \\ 8 t - 8 \\ 0\end{aligned}]$
-- $[\begin{aligned}4 \\ 32 t - 32 \\ 0\end{aligned}]$ **correct**
-- $[\begin{aligned}4 \\ 8 t - 8 \\ 0\end{aligned}]$
+- $\begin{bmatrix}16 \\ 128 t - 128 \\ 0\end{bmatrix}$
+- $\begin{bmatrix}1 \\ 2 u \\ 0\end{bmatrix}$
+- $\begin{bmatrix}1 \\ 8 t - 8 \\ 0\end{bmatrix}$
+- $\begin{bmatrix}4 \\ 32 t - 32 \\ 0\end{bmatrix}$ **correct**
+- $\begin{bmatrix}4 \\ 8 t - 8 \\ 0\end{bmatrix}$
 
 Using the chain rule, we can write
 
@@ -803,13 +803,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}f^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(u\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right) \\ \frac{\text{d}}{\text{d}u}\left(1\right)\end{aligned}]=[\begin{aligned}1 \\ 2 u \\ 0\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(4 t - 4\right)=4\end{aligned}
+\begin{aligned}f^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(u\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right) \\ \frac{\text{d}}{\text{d}u}\left(1\right)\end{bmatrix}=\begin{bmatrix}1 \\ 2 u \\ 0\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(4 t - 4\right)=4\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =[\begin{aligned}1 \\ 2 u(t) \\ 0\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}1 \\ 8 t - 8 \\ 0\end{aligned}]\cdot \left(4\right) \\  & =[\begin{aligned}4 \\ 32 t - 32 \\ 0\end{aligned}]\end{aligned}
+\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =\begin{bmatrix}1 \\ 2 u(t) \\ 0\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}1 \\ 8 t - 8 \\ 0\end{bmatrix}\cdot \left(4\right) \\  & =\begin{bmatrix}4 \\ 32 t - 32 \\ 0\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -818,13 +818,13 @@ $$
 
 ## linear_quadratic_affine — easy (observed)
 
-If $f(u)=[\begin{aligned}u \\ u^{2} \\ 2\end{aligned}]$ and $u(t)=2 t + 4$, then $(f∘u)^{′}(t)=$
+If $f(u)=\begin{bmatrix}u \\ u^{2} \\ 2\end{bmatrix}$ and $u(t)=2 t + 4$, then $(f∘u)^{′}(t)=$
 
-- $[\begin{aligned}2 \\ 8 t + 16 \\ 0\end{aligned}]$ **correct**
-- $[\begin{aligned}1 \\ 2 t \\ 0\end{aligned}]$
-- $[\begin{aligned}2 \\ 8 t \\ 0\end{aligned}]$
-- $[\begin{aligned}1 \\ 4 t + 8 \\ 0\end{aligned}]$
-- $[\begin{aligned}2 \\ 4 t + 8 \\ 0\end{aligned}]$
+- $\begin{bmatrix}2 \\ 8 t + 16 \\ 0\end{bmatrix}$ **correct**
+- $\begin{bmatrix}1 \\ 2 t \\ 0\end{bmatrix}$
+- $\begin{bmatrix}2 \\ 8 t \\ 0\end{bmatrix}$
+- $\begin{bmatrix}1 \\ 4 t + 8 \\ 0\end{bmatrix}$
+- $\begin{bmatrix}2 \\ 4 t + 8 \\ 0\end{bmatrix}$
 
 Using the chain rule, we can write
 
@@ -835,13 +835,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}f^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(u\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right) \\ \frac{\text{d}}{\text{d}u}\left(2\right)\end{aligned}]=[\begin{aligned}1 \\ 2 u \\ 0\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(2 t + 4\right)=2\end{aligned}
+\begin{aligned}f^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(u\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right) \\ \frac{\text{d}}{\text{d}u}\left(2\right)\end{bmatrix}=\begin{bmatrix}1 \\ 2 u \\ 0\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(2 t + 4\right)=2\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =[\begin{aligned}1 \\ 2 u(t) \\ 0\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}1 \\ 4 t + 8 \\ 0\end{aligned}]\cdot \left(2\right) \\  & =[\begin{aligned}2 \\ 8 t + 16 \\ 0\end{aligned}]\end{aligned}
+\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =\begin{bmatrix}1 \\ 2 u(t) \\ 0\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}1 \\ 4 t + 8 \\ 0\end{bmatrix}\cdot \left(2\right) \\  & =\begin{bmatrix}2 \\ 8 t + 16 \\ 0\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -1042,13 +1042,13 @@ $$
 
 ## linear_quadratic_exp — easy (authored)
 
-If $f(u)=[\begin{aligned}3 u \\ u^{2} \\ 3\end{aligned}]$ and $u(t)=e^{4 t}$, then $(f∘u)^{′}(t)=$
+If $f(u)=\begin{bmatrix}3 u \\ u^{2} \\ 3\end{bmatrix}$ and $u(t)=e^{4 t}$, then $(f∘u)^{′}(t)=$
 
-- $[\begin{aligned}12 e^{4 t} \\ 8 e^{8 t} \\ 0\end{aligned}]$ **correct**
-- $[\begin{aligned}3 \\ 2 u \\ 0\end{aligned}]$
-- $[\begin{aligned}3 \\ 2 e^{4 t} \\ 0\end{aligned}]$
-- $[\begin{aligned}48 e^{8 t} \\ 32 e^{12 t} \\ 0\end{aligned}]$
-- $[\begin{aligned}12 e^{4 t} \\ 2 e^{4 t} \\ 0\end{aligned}]$
+- $\begin{bmatrix}12 e^{4 t} \\ 8 e^{8 t} \\ 0\end{bmatrix}$ **correct**
+- $\begin{bmatrix}3 \\ 2 u \\ 0\end{bmatrix}$
+- $\begin{bmatrix}3 \\ 2 e^{4 t} \\ 0\end{bmatrix}$
+- $\begin{bmatrix}48 e^{8 t} \\ 32 e^{12 t} \\ 0\end{bmatrix}$
+- $\begin{bmatrix}12 e^{4 t} \\ 2 e^{4 t} \\ 0\end{bmatrix}$
 
 Using the chain rule, we can write
 
@@ -1059,13 +1059,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}f^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(3 u\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right) \\ \frac{\text{d}}{\text{d}u}\left(3\right)\end{aligned}]=[\begin{aligned}3 \\ 2 u \\ 0\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(e^{4 t}\right)=4 e^{4 t}\end{aligned}
+\begin{aligned}f^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(3 u\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right) \\ \frac{\text{d}}{\text{d}u}\left(3\right)\end{bmatrix}=\begin{bmatrix}3 \\ 2 u \\ 0\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(e^{4 t}\right)=4 e^{4 t}\end{aligned}
 $$
 
 Therefore, we obtain
 
 $$
-\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =[\begin{aligned}3 \\ 2 u(t) \\ 0\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}3 \\ 2 e^{4 t} \\ 0\end{aligned}]\cdot \left(4 e^{4 t}\right) \\  & =[\begin{aligned}12 e^{4 t} \\ 8 e^{8 t} \\ 0\end{aligned}]\end{aligned}
+\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =\begin{bmatrix}3 \\ 2 u(t) \\ 0\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}3 \\ 2 e^{4 t} \\ 0\end{bmatrix}\cdot \left(4 e^{4 t}\right) \\  & =\begin{bmatrix}12 e^{4 t} \\ 8 e^{8 t} \\ 0\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -1074,13 +1074,13 @@ $$
 
 ## linear_quadratic_exp — easy (authored)
 
-If $f(u)=[\begin{aligned}3 u \\ u^{2} \\ 1\end{aligned}]$ and $u(t)=e^{t}$, then $(f∘u)^{′}(t)=$
+If $f(u)=\begin{bmatrix}3 u \\ u^{2} \\ 1\end{bmatrix}$ and $u(t)=e^{t}$, then $(f∘u)^{′}(t)=$
 
-- $[\begin{aligned}3 e^{2 t} \\ 2 e^{3 t} \\ 0\end{aligned}]$
-- $[\begin{aligned}3 \\ 2 u \\ 0\end{aligned}]$
-- $[\begin{aligned}3 \\ 2 e^{t} \\ 0\end{aligned}]$
-- $[\begin{aligned}3 e^{t} \\ 2 e^{2 t} \\ 0\end{aligned}]$ **correct**
-- $[\begin{aligned}3 e^{t} \\ 2 e^{t} \\ 0\end{aligned}]$
+- $\begin{bmatrix}3 e^{2 t} \\ 2 e^{3 t} \\ 0\end{bmatrix}$
+- $\begin{bmatrix}3 \\ 2 u \\ 0\end{bmatrix}$
+- $\begin{bmatrix}3 \\ 2 e^{t} \\ 0\end{bmatrix}$
+- $\begin{bmatrix}3 e^{t} \\ 2 e^{2 t} \\ 0\end{bmatrix}$ **correct**
+- $\begin{bmatrix}3 e^{t} \\ 2 e^{t} \\ 0\end{bmatrix}$
 
 Using the chain rule, we can write
 
@@ -1091,13 +1091,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}f^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(3 u\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right) \\ \frac{\text{d}}{\text{d}u}\left(1\right)\end{aligned}]=[\begin{aligned}3 \\ 2 u \\ 0\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(e^{t}\right)=e^{t}\end{aligned}
+\begin{aligned}f^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(3 u\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right) \\ \frac{\text{d}}{\text{d}u}\left(1\right)\end{bmatrix}=\begin{bmatrix}3 \\ 2 u \\ 0\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(e^{t}\right)=e^{t}\end{aligned}
 $$
 
 Therefore, we obtain
 
 $$
-\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =[\begin{aligned}3 \\ 2 u(t) \\ 0\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}3 \\ 2 e^{t} \\ 0\end{aligned}]\cdot \left(e^{t}\right) \\  & =[\begin{aligned}3 e^{t} \\ 2 e^{2 t} \\ 0\end{aligned}]\end{aligned}
+\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =\begin{bmatrix}3 \\ 2 u(t) \\ 0\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}3 \\ 2 e^{t} \\ 0\end{bmatrix}\cdot \left(e^{t}\right) \\  & =\begin{bmatrix}3 e^{t} \\ 2 e^{2 t} \\ 0\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -1106,13 +1106,13 @@ $$
 
 ## linear_quadratic_exp — easy (observed)
 
-If $f(u)=[\begin{aligned}4 u \\ u^{2} \\ 1\end{aligned}]$ and $u(t)=e^{2 t}$, then $(f∘u)^{′}(t)=$
+If $f(u)=\begin{bmatrix}4 u \\ u^{2} \\ 1\end{bmatrix}$ and $u(t)=e^{2 t}$, then $(f∘u)^{′}(t)=$
 
-- $[\begin{aligned}4 \\ 2 e^{2 t} \\ 0\end{aligned}]$
-- $[\begin{aligned}4 t \\ 2 e^{2 t} \\ 0\end{aligned}]$
-- $[\begin{aligned}8 e^{2 t} \\ 2 e^{2 t} \\ 0\end{aligned}]$
-- $[\begin{aligned}8 e^{2 t} \\ 4 e^{4 t} \\ 0\end{aligned}]$ **correct**
-- $[\begin{aligned}4 \\ 3 e^{2 t} \\ 0\end{aligned}]$
+- $\begin{bmatrix}4 \\ 2 e^{2 t} \\ 0\end{bmatrix}$
+- $\begin{bmatrix}4 t \\ 2 e^{2 t} \\ 0\end{bmatrix}$
+- $\begin{bmatrix}8 e^{2 t} \\ 2 e^{2 t} \\ 0\end{bmatrix}$
+- $\begin{bmatrix}8 e^{2 t} \\ 4 e^{4 t} \\ 0\end{bmatrix}$ **correct**
+- $\begin{bmatrix}4 \\ 3 e^{2 t} \\ 0\end{bmatrix}$
 
 Using the chain rule, we can write
 
@@ -1123,13 +1123,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}f^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(4 u\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right) \\ \frac{\text{d}}{\text{d}u}\left(1\right)\end{aligned}]=[\begin{aligned}4 \\ 2 u \\ 0\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(e^{2 t}\right)=2 e^{2 t}\end{aligned}
+\begin{aligned}f^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(4 u\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right) \\ \frac{\text{d}}{\text{d}u}\left(1\right)\end{bmatrix}=\begin{bmatrix}4 \\ 2 u \\ 0\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(e^{2 t}\right)=2 e^{2 t}\end{aligned}
 $$
 
 Therefore, we obtain
 
 $$
-\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =[\begin{aligned}4 \\ 2 u(t) \\ 0\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}4 \\ 2 e^{2 t} \\ 0\end{aligned}]\cdot \left(2 e^{2 t}\right) \\  & =[\begin{aligned}8 e^{2 t} \\ 4 e^{4 t} \\ 0\end{aligned}]\end{aligned}
+\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =\begin{bmatrix}4 \\ 2 u(t) \\ 0\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}4 \\ 2 e^{2 t} \\ 0\end{bmatrix}\cdot \left(2 e^{2 t}\right) \\  & =\begin{bmatrix}8 e^{2 t} \\ 4 e^{4 t} \\ 0\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -1234,13 +1234,13 @@ $$
 
 ## log_quadratic_log — easy (authored)
 
-If $g(u)=[\begin{aligned}\log{\left(u \right)} \\ 3 \\ u^{2}\end{aligned}]$ and $u(t)=4 \log{\left(t \right)}$, then  $(g∘u)^{′}(t)=$
+If $g(u)=\begin{bmatrix}\log{\left(u \right)} \\ 3 \\ u^{2}\end{bmatrix}$ and $u(t)=4 \log{\left(t \right)}$, then  $(g∘u)^{′}(t)=$
 
-- $[\begin{aligned}\frac{1}{t \log{\left(t \right)}} \\ 0 \\ \frac{32 \log{\left(t \right)}}{t}\end{aligned}]$ **correct**
-- $[\begin{aligned}\frac{1}{u} \\ 0 \\ 2 u\end{aligned}]$
-- $[\begin{aligned}\frac{1}{4 \log{\left(t \right)}} \\ 0 \\ 8 \log{\left(t \right)}\end{aligned}]$
-- $[\begin{aligned}\frac{4}{t^{2} \log{\left(t \right)}} \\ 0 \\ \frac{128 \log{\left(t \right)}}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}\frac{1}{t \log{\left(t \right)}} \\ 0 \\ 8 \log{\left(t \right)}\end{aligned}]$
+- $\begin{bmatrix}\frac{1}{t \log{\left(t \right)}} \\ 0 \\ \frac{32 \log{\left(t \right)}}{t}\end{bmatrix}$ **correct**
+- $\begin{bmatrix}\frac{1}{u} \\ 0 \\ 2 u\end{bmatrix}$
+- $\begin{bmatrix}\frac{1}{4 \log{\left(t \right)}} \\ 0 \\ 8 \log{\left(t \right)}\end{bmatrix}$
+- $\begin{bmatrix}\frac{4}{t^{2} \log{\left(t \right)}} \\ 0 \\ \frac{128 \log{\left(t \right)}}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}\frac{1}{t \log{\left(t \right)}} \\ 0 \\ 8 \log{\left(t \right)}\end{bmatrix}$
 
 By the chain rule, we have 
 
@@ -1251,13 +1251,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}g^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(\log{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(3\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right)\end{aligned}]=[\begin{aligned}\frac{1}{u} \\ 0 \\ 2 u\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(4 \log{\left(t \right)}\right)=\frac{4}{t}\end{aligned}
+\begin{aligned}g^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(\log{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(3\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right)\end{bmatrix}=\begin{bmatrix}\frac{1}{u} \\ 0 \\ 2 u\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(4 \log{\left(t \right)}\right)=\frac{4}{t}\end{aligned}
 $$
 
 Therefore, we obtain
 
 $$
-\begin{aligned}(g∘u)^{′}(t) & =g′(u(t))u′(t) \\  & =[\begin{aligned}\frac{1}{u(t)} \\ 0 \\ 2 u(t)\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}\frac{1}{4 \log{\left(t \right)}} \\ 0 \\ 8 \log{\left(t \right)}\end{aligned}]\cdot \left(\frac{4}{t}\right) \\  & =[\begin{aligned}\frac{1}{t \log{\left(t \right)}} \\ 0 \\ \frac{32 \log{\left(t \right)}}{t}\end{aligned}]\end{aligned}
+\begin{aligned}(g∘u)^{′}(t) & =g′(u(t))u′(t) \\  & =\begin{bmatrix}\frac{1}{u(t)} \\ 0 \\ 2 u(t)\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}\frac{1}{4 \log{\left(t \right)}} \\ 0 \\ 8 \log{\left(t \right)}\end{bmatrix}\cdot \left(\frac{4}{t}\right) \\  & =\begin{bmatrix}\frac{1}{t \log{\left(t \right)}} \\ 0 \\ \frac{32 \log{\left(t \right)}}{t}\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -1266,13 +1266,13 @@ $$
 
 ## log_quadratic_log — easy (authored)
 
-If $g(u)=[\begin{aligned}\log{\left(u \right)} \\ 3 \\ u^{2}\end{aligned}]$ and $u(t)=\log{\left(t \right)}$, then  $(g∘u)^{′}(t)=$
+If $g(u)=\begin{bmatrix}\log{\left(u \right)} \\ 3 \\ u^{2}\end{bmatrix}$ and $u(t)=\log{\left(t \right)}$, then  $(g∘u)^{′}(t)=$
 
-- $[\begin{aligned}\frac{1}{t^{2} \log{\left(t \right)}} \\ 0 \\ \frac{2 \log{\left(t \right)}}{t^{2}}\end{aligned}]$
-- $[\begin{aligned}\frac{1}{u} \\ 0 \\ 2 u\end{aligned}]$
-- $[\begin{aligned}\frac{1}{\log{\left(t \right)}} \\ 0 \\ 2 \log{\left(t \right)}\end{aligned}]$
-- $[\begin{aligned}\frac{1}{t \log{\left(t \right)}} \\ 0 \\ \frac{2 \log{\left(t \right)}}{t}\end{aligned}]$ **correct**
-- $[\begin{aligned}\frac{1}{t \log{\left(t \right)}} \\ 0 \\ 2 \log{\left(t \right)}\end{aligned}]$
+- $\begin{bmatrix}\frac{1}{t^{2} \log{\left(t \right)}} \\ 0 \\ \frac{2 \log{\left(t \right)}}{t^{2}}\end{bmatrix}$
+- $\begin{bmatrix}\frac{1}{u} \\ 0 \\ 2 u\end{bmatrix}$
+- $\begin{bmatrix}\frac{1}{\log{\left(t \right)}} \\ 0 \\ 2 \log{\left(t \right)}\end{bmatrix}$
+- $\begin{bmatrix}\frac{1}{t \log{\left(t \right)}} \\ 0 \\ \frac{2 \log{\left(t \right)}}{t}\end{bmatrix}$ **correct**
+- $\begin{bmatrix}\frac{1}{t \log{\left(t \right)}} \\ 0 \\ 2 \log{\left(t \right)}\end{bmatrix}$
 
 By the chain rule, we have 
 
@@ -1283,13 +1283,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}g^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(\log{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(3\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right)\end{aligned}]=[\begin{aligned}\frac{1}{u} \\ 0 \\ 2 u\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(\log{\left(t \right)}\right)=\frac{1}{t}\end{aligned}
+\begin{aligned}g^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(\log{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(3\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right)\end{bmatrix}=\begin{bmatrix}\frac{1}{u} \\ 0 \\ 2 u\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(\log{\left(t \right)}\right)=\frac{1}{t}\end{aligned}
 $$
 
 Therefore, we obtain
 
 $$
-\begin{aligned}(g∘u)^{′}(t) & =g′(u(t))u′(t) \\  & =[\begin{aligned}\frac{1}{u(t)} \\ 0 \\ 2 u(t)\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}\frac{1}{\log{\left(t \right)}} \\ 0 \\ 2 \log{\left(t \right)}\end{aligned}]\cdot \left(\frac{1}{t}\right) \\  & =[\begin{aligned}\frac{1}{t \log{\left(t \right)}} \\ 0 \\ \frac{2 \log{\left(t \right)}}{t}\end{aligned}]\end{aligned}
+\begin{aligned}(g∘u)^{′}(t) & =g′(u(t))u′(t) \\  & =\begin{bmatrix}\frac{1}{u(t)} \\ 0 \\ 2 u(t)\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}\frac{1}{\log{\left(t \right)}} \\ 0 \\ 2 \log{\left(t \right)}\end{bmatrix}\cdot \left(\frac{1}{t}\right) \\  & =\begin{bmatrix}\frac{1}{t \log{\left(t \right)}} \\ 0 \\ \frac{2 \log{\left(t \right)}}{t}\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -1298,13 +1298,13 @@ $$
 
 ## log_quadratic_log — easy (observed)
 
-If $g(u)=[\begin{aligned}\log{\left(u \right)} \\ 3 \\ u^{2}\end{aligned}]$ and $u(t)=2 \log{\left(t \right)}$, then  $(g∘u)^{′}(t)=$
+If $g(u)=\begin{bmatrix}\log{\left(u \right)} \\ 3 \\ u^{2}\end{bmatrix}$ and $u(t)=2 \log{\left(t \right)}$, then  $(g∘u)^{′}(t)=$
 
-- $[\begin{aligned}\frac{1}{2 \log{\left(t \right)}} \\ 0 \\ 4 \log{\left(t \right)}\end{aligned}]$
-- $[\begin{aligned}\frac{1}{t \log{\left(t \right)}} \\ 0 \\ \frac{8 \log{\left(t \right)}}{t}\end{aligned}]$ **correct**
-- $[\begin{aligned}\frac{1}{2 \log{\left(t \right)}} \\ 0 \\ \frac{8 \log{\left(t \right)}}{t}\end{aligned}]$
-- $[\begin{aligned}\frac{1}{u} \\ 0 \\ 2 u\end{aligned}]$
-- $[\begin{aligned}u \\ 3 \\ 2 u\end{aligned}]$
+- $\begin{bmatrix}\frac{1}{2 \log{\left(t \right)}} \\ 0 \\ 4 \log{\left(t \right)}\end{bmatrix}$
+- $\begin{bmatrix}\frac{1}{t \log{\left(t \right)}} \\ 0 \\ \frac{8 \log{\left(t \right)}}{t}\end{bmatrix}$ **correct**
+- $\begin{bmatrix}\frac{1}{2 \log{\left(t \right)}} \\ 0 \\ \frac{8 \log{\left(t \right)}}{t}\end{bmatrix}$
+- $\begin{bmatrix}\frac{1}{u} \\ 0 \\ 2 u\end{bmatrix}$
+- $\begin{bmatrix}u \\ 3 \\ 2 u\end{bmatrix}$
 
 By the chain rule, we have 
 
@@ -1315,13 +1315,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}g^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(\log{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(3\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right)\end{aligned}]=[\begin{aligned}\frac{1}{u} \\ 0 \\ 2 u\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(2 \log{\left(t \right)}\right)=\frac{2}{t}\end{aligned}
+\begin{aligned}g^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(\log{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(3\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right)\end{bmatrix}=\begin{bmatrix}\frac{1}{u} \\ 0 \\ 2 u\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(2 \log{\left(t \right)}\right)=\frac{2}{t}\end{aligned}
 $$
 
 Therefore, we obtain
 
 $$
-\begin{aligned}(g∘u)^{′}(t) & =g′(u(t))u′(t) \\  & =[\begin{aligned}\frac{1}{u(t)} \\ 0 \\ 2 u(t)\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}\frac{1}{2 \log{\left(t \right)}} \\ 0 \\ 4 \log{\left(t \right)}\end{aligned}]\cdot \left(\frac{2}{t}\right) \\  & =[\begin{aligned}\frac{1}{t \log{\left(t \right)}} \\ 0 \\ \frac{8 \log{\left(t \right)}}{t}\end{aligned}]\end{aligned}
+\begin{aligned}(g∘u)^{′}(t) & =g′(u(t))u′(t) \\  & =\begin{bmatrix}\frac{1}{u(t)} \\ 0 \\ 2 u(t)\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}\frac{1}{2 \log{\left(t \right)}} \\ 0 \\ 4 \log{\left(t \right)}\end{bmatrix}\cdot \left(\frac{2}{t}\right) \\  & =\begin{bmatrix}\frac{1}{t \log{\left(t \right)}} \\ 0 \\ \frac{8 \log{\left(t \right)}}{t}\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -1525,13 +1525,13 @@ $$
 
 ## sin_cos_exp_affine — easy (authored)
 
-If $f(u)=[\begin{aligned}\sin{\left(u \right)} \\ \cos{\left(u \right)} \\ e^{u}\end{aligned}]$ and $u(t)=4 t + 2$ then $(f∘u)^{′}(t)=$
+If $f(u)=\begin{bmatrix}\sin{\left(u \right)} \\ \cos{\left(u \right)} \\ e^{u}\end{bmatrix}$ and $u(t)=4 t + 2$ then $(f∘u)^{′}(t)=$
 
-- $[\begin{aligned}4 \cos{\left(4 t + 2 \right)} \\ - 4 \sin{\left(4 t + 2 \right)} \\ 4 e^{4 t + 2}\end{aligned}]$ **correct**
-- $[\begin{aligned}\cos{\left(u \right)} \\ - \sin{\left(u \right)} \\ e^{u}\end{aligned}]$
-- $[\begin{aligned}\cos{\left(4 t + 2 \right)} \\ - \sin{\left(4 t + 2 \right)} \\ e^{4 t + 2}\end{aligned}]$
-- $[\begin{aligned}16 \cos{\left(4 t + 2 \right)} \\ - 16 \sin{\left(4 t + 2 \right)} \\ 16 e^{4 t + 2}\end{aligned}]$
-- $[\begin{aligned}4 \cos{\left(4 t + 2 \right)} \\ - \sin{\left(4 t + 2 \right)} \\ e^{4 t + 2}\end{aligned}]$
+- $\begin{bmatrix}4 \cos{\left(4 t + 2 \right)} \\ - 4 \sin{\left(4 t + 2 \right)} \\ 4 e^{4 t + 2}\end{bmatrix}$ **correct**
+- $\begin{bmatrix}\cos{\left(u \right)} \\ - \sin{\left(u \right)} \\ e^{u}\end{bmatrix}$
+- $\begin{bmatrix}\cos{\left(4 t + 2 \right)} \\ - \sin{\left(4 t + 2 \right)} \\ e^{4 t + 2}\end{bmatrix}$
+- $\begin{bmatrix}16 \cos{\left(4 t + 2 \right)} \\ - 16 \sin{\left(4 t + 2 \right)} \\ 16 e^{4 t + 2}\end{bmatrix}$
+- $\begin{bmatrix}4 \cos{\left(4 t + 2 \right)} \\ - \sin{\left(4 t + 2 \right)} \\ e^{4 t + 2}\end{bmatrix}$
 
 Using the chain rule, we can write
 
@@ -1542,13 +1542,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}f^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(\sin{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(\cos{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(e^{u}\right)\end{aligned}]=[\begin{aligned}\cos{\left(u \right)} \\ - \sin{\left(u \right)} \\ e^{u}\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(4 t + 2\right)=4\end{aligned}
+\begin{aligned}f^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(\sin{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(\cos{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(e^{u}\right)\end{bmatrix}=\begin{bmatrix}\cos{\left(u \right)} \\ - \sin{\left(u \right)} \\ e^{u}\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(4 t + 2\right)=4\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =[\begin{aligned}\cos{\left(u(t) \right)} \\ - \sin{\left(u(t) \right)} \\ e^{u(t)}\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}\cos{\left(4 t + 2 \right)} \\ - \sin{\left(4 t + 2 \right)} \\ e^{4 t + 2}\end{aligned}]\cdot \left(4\right) \\  & =[\begin{aligned}4 \cos{\left(4 t + 2 \right)} \\ - 4 \sin{\left(4 t + 2 \right)} \\ 4 e^{4 t + 2}\end{aligned}]\end{aligned}
+\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =\begin{bmatrix}\cos{\left(u(t) \right)} \\ - \sin{\left(u(t) \right)} \\ e^{u(t)}\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}\cos{\left(4 t + 2 \right)} \\ - \sin{\left(4 t + 2 \right)} \\ e^{4 t + 2}\end{bmatrix}\cdot \left(4\right) \\  & =\begin{bmatrix}4 \cos{\left(4 t + 2 \right)} \\ - 4 \sin{\left(4 t + 2 \right)} \\ 4 e^{4 t + 2}\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -1557,13 +1557,13 @@ $$
 
 ## sin_cos_exp_affine — easy (authored)
 
-If $f(u)=[\begin{aligned}\sin{\left(u \right)} \\ \cos{\left(u \right)} \\ e^{u}\end{aligned}]$ and $u(t)=- 4 t - 4$ then $(f∘u)^{′}(t)=$
+If $f(u)=\begin{bmatrix}\sin{\left(u \right)} \\ \cos{\left(u \right)} \\ e^{u}\end{bmatrix}$ and $u(t)=- 4 t - 4$ then $(f∘u)^{′}(t)=$
 
-- $[\begin{aligned}16 \cos{\left(4 t + 4 \right)} \\ 16 \sin{\left(4 t + 4 \right)} \\ 16 e^{- 4 t - 4}\end{aligned}]$
-- $[\begin{aligned}\cos{\left(u \right)} \\ - \sin{\left(u \right)} \\ e^{u}\end{aligned}]$
-- $[\begin{aligned}\cos{\left(4 t + 4 \right)} \\ \sin{\left(4 t + 4 \right)} \\ e^{- 4 t - 4}\end{aligned}]$
-- $[\begin{aligned}- 4 \cos{\left(4 t + 4 \right)} \\ - 4 \sin{\left(4 t + 4 \right)} \\ - 4 e^{- 4 t - 4}\end{aligned}]$ **correct**
-- $[\begin{aligned}- 4 \cos{\left(4 t + 4 \right)} \\ \sin{\left(4 t + 4 \right)} \\ e^{- 4 t - 4}\end{aligned}]$
+- $\begin{bmatrix}16 \cos{\left(4 t + 4 \right)} \\ 16 \sin{\left(4 t + 4 \right)} \\ 16 e^{- 4 t - 4}\end{bmatrix}$
+- $\begin{bmatrix}\cos{\left(u \right)} \\ - \sin{\left(u \right)} \\ e^{u}\end{bmatrix}$
+- $\begin{bmatrix}\cos{\left(4 t + 4 \right)} \\ \sin{\left(4 t + 4 \right)} \\ e^{- 4 t - 4}\end{bmatrix}$
+- $\begin{bmatrix}- 4 \cos{\left(4 t + 4 \right)} \\ - 4 \sin{\left(4 t + 4 \right)} \\ - 4 e^{- 4 t - 4}\end{bmatrix}$ **correct**
+- $\begin{bmatrix}- 4 \cos{\left(4 t + 4 \right)} \\ \sin{\left(4 t + 4 \right)} \\ e^{- 4 t - 4}\end{bmatrix}$
 
 Using the chain rule, we can write
 
@@ -1574,13 +1574,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}f^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(\sin{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(\cos{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(e^{u}\right)\end{aligned}]=[\begin{aligned}\cos{\left(u \right)} \\ - \sin{\left(u \right)} \\ e^{u}\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(- 4 t - 4\right)=-4\end{aligned}
+\begin{aligned}f^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(\sin{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(\cos{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(e^{u}\right)\end{bmatrix}=\begin{bmatrix}\cos{\left(u \right)} \\ - \sin{\left(u \right)} \\ e^{u}\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(- 4 t - 4\right)=-4\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =[\begin{aligned}\cos{\left(u(t) \right)} \\ - \sin{\left(u(t) \right)} \\ e^{u(t)}\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}\cos{\left(4 t + 4 \right)} \\ \sin{\left(4 t + 4 \right)} \\ e^{- 4 t - 4}\end{aligned}]\cdot \left(-4\right) \\  & =[\begin{aligned}- 4 \cos{\left(4 t + 4 \right)} \\ - 4 \sin{\left(4 t + 4 \right)} \\ - 4 e^{- 4 t - 4}\end{aligned}]\end{aligned}
+\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =\begin{bmatrix}\cos{\left(u(t) \right)} \\ - \sin{\left(u(t) \right)} \\ e^{u(t)}\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}\cos{\left(4 t + 4 \right)} \\ \sin{\left(4 t + 4 \right)} \\ e^{- 4 t - 4}\end{bmatrix}\cdot \left(-4\right) \\  & =\begin{bmatrix}- 4 \cos{\left(4 t + 4 \right)} \\ - 4 \sin{\left(4 t + 4 \right)} \\ - 4 e^{- 4 t - 4}\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -1589,13 +1589,13 @@ $$
 
 ## sin_cos_exp_affine — easy (observed)
 
-If $f(u)=[\begin{aligned}\sin{\left(u \right)} \\ \cos{\left(u \right)} \\ e^{u}\end{aligned}]$ and $u(t)=2 t + 4$ then $(f∘u)^{′}(t)=$
+If $f(u)=\begin{bmatrix}\sin{\left(u \right)} \\ \cos{\left(u \right)} \\ e^{u}\end{bmatrix}$ and $u(t)=2 t + 4$ then $(f∘u)^{′}(t)=$
 
-- $[\begin{aligned}2 \sin{\left(2 t + 4 \right)} \\ - 2 \cos{\left(2 t + 4 \right)} \\ 2 e^{2 t + 4}\end{aligned}]$
-- $[\begin{aligned}- 4 \sin{\left(2 t + 4 \right)} \\ 4 \cos{\left(2 t + 4 \right)} \\ \left(2 t + 4\right) e^{t}\end{aligned}]$
-- $[\begin{aligned}2 \cos{\left(2 t + 4 \right)} \\ - 2 \sin{\left(2 t + 4 \right)} \\ 2 e^{2 t + 4}\end{aligned}]$ **correct**
-- $[\begin{aligned}- \sin{\left(2 t + 4 \right)} \\ \cos{\left(2 t + 4 \right)} \\ \left(2 t + 4\right) e^{t}\end{aligned}]$
-- $[\begin{aligned}\cos{\left(2 t + 4 \right)} \\ - \sin{\left(2 t + 4 \right)} \\ e^{2 t + 4}\end{aligned}]$
+- $\begin{bmatrix}2 \sin{\left(2 t + 4 \right)} \\ - 2 \cos{\left(2 t + 4 \right)} \\ 2 e^{2 t + 4}\end{bmatrix}$
+- $\begin{bmatrix}- 4 \sin{\left(2 t + 4 \right)} \\ 4 \cos{\left(2 t + 4 \right)} \\ \left(2 t + 4\right) e^{t}\end{bmatrix}$
+- $\begin{bmatrix}2 \cos{\left(2 t + 4 \right)} \\ - 2 \sin{\left(2 t + 4 \right)} \\ 2 e^{2 t + 4}\end{bmatrix}$ **correct**
+- $\begin{bmatrix}- \sin{\left(2 t + 4 \right)} \\ \cos{\left(2 t + 4 \right)} \\ \left(2 t + 4\right) e^{t}\end{bmatrix}$
+- $\begin{bmatrix}\cos{\left(2 t + 4 \right)} \\ - \sin{\left(2 t + 4 \right)} \\ e^{2 t + 4}\end{bmatrix}$
 
 Using the chain rule, we can write
 
@@ -1606,13 +1606,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}f^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(\sin{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(\cos{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(e^{u}\right)\end{aligned}]=[\begin{aligned}\cos{\left(u \right)} \\ - \sin{\left(u \right)} \\ e^{u}\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(2 t + 4\right)=2\end{aligned}
+\begin{aligned}f^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(\sin{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(\cos{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(e^{u}\right)\end{bmatrix}=\begin{bmatrix}\cos{\left(u \right)} \\ - \sin{\left(u \right)} \\ e^{u}\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(2 t + 4\right)=2\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =[\begin{aligned}\cos{\left(u(t) \right)} \\ - \sin{\left(u(t) \right)} \\ e^{u(t)}\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}\cos{\left(2 t + 4 \right)} \\ - \sin{\left(2 t + 4 \right)} \\ e^{2 t + 4}\end{aligned}]\cdot \left(2\right) \\  & =[\begin{aligned}2 \cos{\left(2 t + 4 \right)} \\ - 2 \sin{\left(2 t + 4 \right)} \\ 2 e^{2 t + 4}\end{aligned}]\end{aligned}
+\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =\begin{bmatrix}\cos{\left(u(t) \right)} \\ - \sin{\left(u(t) \right)} \\ e^{u(t)}\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}\cos{\left(2 t + 4 \right)} \\ - \sin{\left(2 t + 4 \right)} \\ e^{2 t + 4}\end{bmatrix}\cdot \left(2\right) \\  & =\begin{bmatrix}2 \cos{\left(2 t + 4 \right)} \\ - 2 \sin{\left(2 t + 4 \right)} \\ 2 e^{2 t + 4}\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -1813,13 +1813,13 @@ $$
 
 ## cos_cube_log_exp — easy (authored)
 
-If $f(u)=[\begin{aligned}\cos{\left(u \right)} \\ u^{3} \\ \log{\left(u \right)}\end{aligned}]$ and $u(t)=e^{4 t}$, then $(f∘u)^{′}(t)=$
+If $f(u)=\begin{bmatrix}\cos{\left(u \right)} \\ u^{3} \\ \log{\left(u \right)}\end{bmatrix}$ and $u(t)=e^{4 t}$, then $(f∘u)^{′}(t)=$
 
-- $[\begin{aligned}- 4 e^{4 t} \sin{\left(e^{4 t} \right)} \\ 12 e^{12 t} \\ 4\end{aligned}]$ **correct**
-- $[\begin{aligned}- \sin{\left(u \right)} \\ 3 u^{2} \\ \frac{1}{u}\end{aligned}]$
-- $[\begin{aligned}- \sin{\left(e^{4 t} \right)} \\ 3 e^{8 t} \\ e^{- 4 t}\end{aligned}]$
-- $[\begin{aligned}- 16 e^{8 t} \sin{\left(e^{4 t} \right)} \\ 48 e^{16 t} \\ 16 e^{4 t}\end{aligned}]$
-- $[\begin{aligned}- 4 e^{4 t} \sin{\left(e^{4 t} \right)} \\ 3 e^{8 t} \\ e^{- 4 t}\end{aligned}]$
+- $\begin{bmatrix}- 4 e^{4 t} \sin{\left(e^{4 t} \right)} \\ 12 e^{12 t} \\ 4\end{bmatrix}$ **correct**
+- $\begin{bmatrix}- \sin{\left(u \right)} \\ 3 u^{2} \\ \frac{1}{u}\end{bmatrix}$
+- $\begin{bmatrix}- \sin{\left(e^{4 t} \right)} \\ 3 e^{8 t} \\ e^{- 4 t}\end{bmatrix}$
+- $\begin{bmatrix}- 16 e^{8 t} \sin{\left(e^{4 t} \right)} \\ 48 e^{16 t} \\ 16 e^{4 t}\end{bmatrix}$
+- $\begin{bmatrix}- 4 e^{4 t} \sin{\left(e^{4 t} \right)} \\ 3 e^{8 t} \\ e^{- 4 t}\end{bmatrix}$
 
 Using the chain rule, we can write
 
@@ -1830,13 +1830,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}f^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(\cos{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{3}\right) \\ \frac{\text{d}}{\text{d}u}\left(\log{\left(u \right)}\right)\end{aligned}]=[\begin{aligned}- \sin{\left(u \right)} \\ 3 u^{2} \\ \frac{1}{u}\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(e^{4 t}\right)=4 e^{4 t}\end{aligned}
+\begin{aligned}f^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(\cos{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{3}\right) \\ \frac{\text{d}}{\text{d}u}\left(\log{\left(u \right)}\right)\end{bmatrix}=\begin{bmatrix}- \sin{\left(u \right)} \\ 3 u^{2} \\ \frac{1}{u}\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(e^{4 t}\right)=4 e^{4 t}\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =[\begin{aligned}- \sin{\left(u(t) \right)} \\ 3 u(t)^{2} \\ \frac{1}{u(t)}\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}- \sin{\left(e^{4 t} \right)} \\ 3 e^{8 t} \\ e^{- 4 t}\end{aligned}]\cdot \left(4 e^{4 t}\right) \\  & =[\begin{aligned}- \sin{\left(e^{4 t} \right)} \\ 3 e^{8 t} \\ e^{- 4 t}\end{aligned}]\cdot \left(4 e^{4 t}\right) \\  & =[\begin{aligned}- 4 e^{4 t} \sin{\left(e^{4 t} \right)} \\ 12 e^{12 t} \\ 4\end{aligned}]\end{aligned}
+\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =\begin{bmatrix}- \sin{\left(u(t) \right)} \\ 3 u(t)^{2} \\ \frac{1}{u(t)}\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}- \sin{\left(e^{4 t} \right)} \\ 3 e^{8 t} \\ e^{- 4 t}\end{bmatrix}\cdot \left(4 e^{4 t}\right) \\  & =\begin{bmatrix}- \sin{\left(e^{4 t} \right)} \\ 3 e^{8 t} \\ e^{- 4 t}\end{bmatrix}\cdot \left(4 e^{4 t}\right) \\  & =\begin{bmatrix}- 4 e^{4 t} \sin{\left(e^{4 t} \right)} \\ 12 e^{12 t} \\ 4\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -1845,13 +1845,13 @@ $$
 
 ## cos_cube_log_exp — easy (authored)
 
-If $f(u)=[\begin{aligned}\cos{\left(u \right)} \\ u^{3} \\ \log{\left(u \right)}\end{aligned}]$ and $u(t)=e^{t}$, then $(f∘u)^{′}(t)=$
+If $f(u)=\begin{bmatrix}\cos{\left(u \right)} \\ u^{3} \\ \log{\left(u \right)}\end{bmatrix}$ and $u(t)=e^{t}$, then $(f∘u)^{′}(t)=$
 
-- $[\begin{aligned}- e^{2 t} \sin{\left(e^{t} \right)} \\ 3 e^{4 t} \\ e^{t}\end{aligned}]$
-- $[\begin{aligned}- \sin{\left(u \right)} \\ 3 u^{2} \\ \frac{1}{u}\end{aligned}]$
-- $[\begin{aligned}- \sin{\left(e^{t} \right)} \\ 3 e^{2 t} \\ e^{- t}\end{aligned}]$
-- $[\begin{aligned}- e^{t} \sin{\left(e^{t} \right)} \\ 3 e^{3 t} \\ 1\end{aligned}]$ **correct**
-- $[\begin{aligned}- e^{t} \sin{\left(e^{t} \right)} \\ 3 e^{2 t} \\ e^{- t}\end{aligned}]$
+- $\begin{bmatrix}- e^{2 t} \sin{\left(e^{t} \right)} \\ 3 e^{4 t} \\ e^{t}\end{bmatrix}$
+- $\begin{bmatrix}- \sin{\left(u \right)} \\ 3 u^{2} \\ \frac{1}{u}\end{bmatrix}$
+- $\begin{bmatrix}- \sin{\left(e^{t} \right)} \\ 3 e^{2 t} \\ e^{- t}\end{bmatrix}$
+- $\begin{bmatrix}- e^{t} \sin{\left(e^{t} \right)} \\ 3 e^{3 t} \\ 1\end{bmatrix}$ **correct**
+- $\begin{bmatrix}- e^{t} \sin{\left(e^{t} \right)} \\ 3 e^{2 t} \\ e^{- t}\end{bmatrix}$
 
 Using the chain rule, we can write
 
@@ -1862,13 +1862,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}f^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(\cos{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{3}\right) \\ \frac{\text{d}}{\text{d}u}\left(\log{\left(u \right)}\right)\end{aligned}]=[\begin{aligned}- \sin{\left(u \right)} \\ 3 u^{2} \\ \frac{1}{u}\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(e^{t}\right)=e^{t}\end{aligned}
+\begin{aligned}f^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(\cos{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{3}\right) \\ \frac{\text{d}}{\text{d}u}\left(\log{\left(u \right)}\right)\end{bmatrix}=\begin{bmatrix}- \sin{\left(u \right)} \\ 3 u^{2} \\ \frac{1}{u}\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(e^{t}\right)=e^{t}\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =[\begin{aligned}- \sin{\left(u(t) \right)} \\ 3 u(t)^{2} \\ \frac{1}{u(t)}\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}- \sin{\left(e^{t} \right)} \\ 3 e^{2 t} \\ e^{- t}\end{aligned}]\cdot \left(e^{t}\right) \\  & =[\begin{aligned}- \sin{\left(e^{t} \right)} \\ 3 e^{2 t} \\ e^{- t}\end{aligned}]\cdot \left(e^{t}\right) \\  & =[\begin{aligned}- e^{t} \sin{\left(e^{t} \right)} \\ 3 e^{3 t} \\ 1\end{aligned}]\end{aligned}
+\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =\begin{bmatrix}- \sin{\left(u(t) \right)} \\ 3 u(t)^{2} \\ \frac{1}{u(t)}\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}- \sin{\left(e^{t} \right)} \\ 3 e^{2 t} \\ e^{- t}\end{bmatrix}\cdot \left(e^{t}\right) \\  & =\begin{bmatrix}- \sin{\left(e^{t} \right)} \\ 3 e^{2 t} \\ e^{- t}\end{bmatrix}\cdot \left(e^{t}\right) \\  & =\begin{bmatrix}- e^{t} \sin{\left(e^{t} \right)} \\ 3 e^{3 t} \\ 1\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -1877,13 +1877,13 @@ $$
 
 ## cos_cube_log_exp — easy (observed)
 
-If $f(u)=[\begin{aligned}\cos{\left(u \right)} \\ u^{3} \\ \log{\left(u \right)}\end{aligned}]$ and $u(t)=e^{2 t}$, then $(f∘u)^{′}(t)=$
+If $f(u)=\begin{bmatrix}\cos{\left(u \right)} \\ u^{3} \\ \log{\left(u \right)}\end{bmatrix}$ and $u(t)=e^{2 t}$, then $(f∘u)^{′}(t)=$
 
-- $[\begin{aligned}- 2 e^{2 t} \cos{\left(e^{2 t} \right)} \\ 3 e^{2 t} \\ 1\end{aligned}]$
-- $[\begin{aligned}\sin{\left(e^{4 t} \right)} \\ e^{6 t} \\ e^{- 4 t}\end{aligned}]$
-- $[\begin{aligned}2 e^{2 t} \cos{\left(e^{2 t} \right)} \\ 6 e^{6 t} \\ e^{4 t}\end{aligned}]$
-- $[\begin{aligned}- \sin{\left(e^{4 t} \right)} \\ 3 e^{4 t} \\ 1\end{aligned}]$
-- $[\begin{aligned}- 2 e^{2 t} \sin{\left(e^{2 t} \right)} \\ 6 e^{6 t} \\ 2\end{aligned}]$ **correct**
+- $\begin{bmatrix}- 2 e^{2 t} \cos{\left(e^{2 t} \right)} \\ 3 e^{2 t} \\ 1\end{bmatrix}$
+- $\begin{bmatrix}\sin{\left(e^{4 t} \right)} \\ e^{6 t} \\ e^{- 4 t}\end{bmatrix}$
+- $\begin{bmatrix}2 e^{2 t} \cos{\left(e^{2 t} \right)} \\ 6 e^{6 t} \\ e^{4 t}\end{bmatrix}$
+- $\begin{bmatrix}- \sin{\left(e^{4 t} \right)} \\ 3 e^{4 t} \\ 1\end{bmatrix}$
+- $\begin{bmatrix}- 2 e^{2 t} \sin{\left(e^{2 t} \right)} \\ 6 e^{6 t} \\ 2\end{bmatrix}$ **correct**
 
 Using the chain rule, we can write
 
@@ -1894,13 +1894,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}f^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(\cos{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{3}\right) \\ \frac{\text{d}}{\text{d}u}\left(\log{\left(u \right)}\right)\end{aligned}]=[\begin{aligned}- \sin{\left(u \right)} \\ 3 u^{2} \\ \frac{1}{u}\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(e^{2 t}\right)=2 e^{2 t}\end{aligned}
+\begin{aligned}f^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(\cos{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{3}\right) \\ \frac{\text{d}}{\text{d}u}\left(\log{\left(u \right)}\right)\end{bmatrix}=\begin{bmatrix}- \sin{\left(u \right)} \\ 3 u^{2} \\ \frac{1}{u}\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(e^{2 t}\right)=2 e^{2 t}\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =[\begin{aligned}- \sin{\left(u(t) \right)} \\ 3 u(t)^{2} \\ \frac{1}{u(t)}\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}- \sin{\left(e^{2 t} \right)} \\ 3 e^{4 t} \\ e^{- 2 t}\end{aligned}]\cdot \left(2 e^{2 t}\right) \\  & =[\begin{aligned}- \sin{\left(e^{2 t} \right)} \\ 3 e^{4 t} \\ e^{- 2 t}\end{aligned}]\cdot \left(2 e^{2 t}\right) \\  & =[\begin{aligned}- 2 e^{2 t} \sin{\left(e^{2 t} \right)} \\ 6 e^{6 t} \\ 2\end{aligned}]\end{aligned}
+\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =\begin{bmatrix}- \sin{\left(u(t) \right)} \\ 3 u(t)^{2} \\ \frac{1}{u(t)}\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}- \sin{\left(e^{2 t} \right)} \\ 3 e^{4 t} \\ e^{- 2 t}\end{bmatrix}\cdot \left(2 e^{2 t}\right) \\  & =\begin{bmatrix}- \sin{\left(e^{2 t} \right)} \\ 3 e^{4 t} \\ e^{- 2 t}\end{bmatrix}\cdot \left(2 e^{2 t}\right) \\  & =\begin{bmatrix}- 2 e^{2 t} \sin{\left(e^{2 t} \right)} \\ 6 e^{6 t} \\ 2\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -1909,13 +1909,13 @@ $$
 
 ## mixed_quadratic_inner — moderate (authored)
 
-If $f(u)=[\begin{aligned}\sin{\left(u \right)} \\ - e^{u} \\ u^{2}\end{aligned}]$ and $u(t)=2 t^{2} + t$, then $(f∘u)^{′}(t)=$
+If $f(u)=\begin{bmatrix}\sin{\left(u \right)} \\ - e^{u} \\ u^{2}\end{bmatrix}$ and $u(t)=2 t^{2} + t$, then $(f∘u)^{′}(t)=$
 
-- $[\begin{aligned}\left(4 t + 1\right) \cos{\left(t \left(2 t + 1\right) \right)} \\ \left(- 4 t - 1\right) e^{t \left(2 t + 1\right)} \\ 2 t \left(2 t + 1\right) \left(4 t + 1\right)\end{aligned}]$ **correct**
-- $[\begin{aligned}\cos{\left(u \right)} \\ - e^{u} \\ 2 u\end{aligned}]$
-- $[\begin{aligned}\cos{\left(2 t^{2} + t \right)} \\ - e^{2 t^{2} + t} \\ 4 t^{2} + 2 t\end{aligned}]$
-- $[\begin{aligned}\left(4 t + 1\right)^{2} \cos{\left(2 t^{2} + t \right)} \\ - \left(4 t + 1\right)^{2} e^{2 t^{2} + t} \\ \left(4 t + 1\right)^{2} \left(4 t^{2} + 2 t\right)\end{aligned}]$
-- $[\begin{aligned}\left(4 t + 1\right) \cos{\left(t \left(2 t + 1\right) \right)} \\ - e^{2 t^{2} + t} \\ 4 t^{2} + 2 t\end{aligned}]$
+- $\begin{bmatrix}\left(4 t + 1\right) \cos{\left(t \left(2 t + 1\right) \right)} \\ \left(- 4 t - 1\right) e^{t \left(2 t + 1\right)} \\ 2 t \left(2 t + 1\right) \left(4 t + 1\right)\end{bmatrix}$ **correct**
+- $\begin{bmatrix}\cos{\left(u \right)} \\ - e^{u} \\ 2 u\end{bmatrix}$
+- $\begin{bmatrix}\cos{\left(2 t^{2} + t \right)} \\ - e^{2 t^{2} + t} \\ 4 t^{2} + 2 t\end{bmatrix}$
+- $\begin{bmatrix}\left(4 t + 1\right)^{2} \cos{\left(2 t^{2} + t \right)} \\ - \left(4 t + 1\right)^{2} e^{2 t^{2} + t} \\ \left(4 t + 1\right)^{2} \left(4 t^{2} + 2 t\right)\end{bmatrix}$
+- $\begin{bmatrix}\left(4 t + 1\right) \cos{\left(t \left(2 t + 1\right) \right)} \\ - e^{2 t^{2} + t} \\ 4 t^{2} + 2 t\end{bmatrix}$
 
 Using the chain rule, we can write
 
@@ -1926,13 +1926,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}f^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(\sin{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(- e^{u}\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right)\end{aligned}]=[\begin{aligned}\cos{\left(u \right)} \\ - e^{u} \\ 2 u\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(2 t^{2} + t\right)=4 t + 1\end{aligned}
+\begin{aligned}f^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(\sin{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(- e^{u}\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right)\end{bmatrix}=\begin{bmatrix}\cos{\left(u \right)} \\ - e^{u} \\ 2 u\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(2 t^{2} + t\right)=4 t + 1\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =[\begin{aligned}\cos{\left(u(t) \right)} \\ - e^{u(t)} \\ 2 u(t)\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}\cos{\left(2 t^{2} + t \right)} \\ - e^{2 t^{2} + t} \\ 4 t^{2} + 2 t\end{aligned}]\cdot \left(4 t + 1\right) \\  & =[\begin{aligned}\left(4 t + 1\right) \cos{\left(t \left(2 t + 1\right) \right)} \\ \left(- 4 t - 1\right) e^{t \left(2 t + 1\right)} \\ 2 t \left(2 t + 1\right) \left(4 t + 1\right)\end{aligned}]\end{aligned}
+\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =\begin{bmatrix}\cos{\left(u(t) \right)} \\ - e^{u(t)} \\ 2 u(t)\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}\cos{\left(2 t^{2} + t \right)} \\ - e^{2 t^{2} + t} \\ 4 t^{2} + 2 t\end{bmatrix}\cdot \left(4 t + 1\right) \\  & =\begin{bmatrix}\left(4 t + 1\right) \cos{\left(t \left(2 t + 1\right) \right)} \\ \left(- 4 t - 1\right) e^{t \left(2 t + 1\right)} \\ 2 t \left(2 t + 1\right) \left(4 t + 1\right)\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -1941,13 +1941,13 @@ $$
 
 ## mixed_quadratic_inner — moderate (authored)
 
-If $f(u)=[\begin{aligned}\sin{\left(u \right)} \\ - 2 e^{u} \\ u^{2}\end{aligned}]$ and $u(t)=- 2 t^{2} + t + 2$, then $(f∘u)^{′}(t)=$
+If $f(u)=\begin{bmatrix}\sin{\left(u \right)} \\ - 2 e^{u} \\ u^{2}\end{bmatrix}$ and $u(t)=- 2 t^{2} + t + 2$, then $(f∘u)^{′}(t)=$
 
-- $[\begin{aligned}\left(1 - 4 t\right)^{2} \cos{\left(- 2 t^{2} + t + 2 \right)} \\ - 2 \left(1 - 4 t\right)^{2} e^{- 2 t^{2} + t + 2} \\ \left(1 - 4 t\right)^{2} \left(- 4 t^{2} + 2 t + 4\right)\end{aligned}]$
-- $[\begin{aligned}\cos{\left(u \right)} \\ - 2 e^{u} \\ 2 u\end{aligned}]$
-- $[\begin{aligned}\cos{\left(- 2 t^{2} + t + 2 \right)} \\ - 2 e^{- 2 t^{2} + t + 2} \\ - 4 t^{2} + 2 t + 4\end{aligned}]$
-- $[\begin{aligned}\left(1 - 4 t\right) \cos{\left(- 2 t^{2} + t + 2 \right)} \\ \left(8 t - 2\right) e^{- 2 t^{2} + t + 2} \\ 16 t^{3} - 12 t^{2} - 14 t + 4\end{aligned}]$ **correct**
-- $[\begin{aligned}\left(1 - 4 t\right) \cos{\left(- 2 t^{2} + t + 2 \right)} \\ - 2 e^{- 2 t^{2} + t + 2} \\ - 4 t^{2} + 2 t + 4\end{aligned}]$
+- $\begin{bmatrix}\left(1 - 4 t\right)^{2} \cos{\left(- 2 t^{2} + t + 2 \right)} \\ - 2 \left(1 - 4 t\right)^{2} e^{- 2 t^{2} + t + 2} \\ \left(1 - 4 t\right)^{2} \left(- 4 t^{2} + 2 t + 4\right)\end{bmatrix}$
+- $\begin{bmatrix}\cos{\left(u \right)} \\ - 2 e^{u} \\ 2 u\end{bmatrix}$
+- $\begin{bmatrix}\cos{\left(- 2 t^{2} + t + 2 \right)} \\ - 2 e^{- 2 t^{2} + t + 2} \\ - 4 t^{2} + 2 t + 4\end{bmatrix}$
+- $\begin{bmatrix}\left(1 - 4 t\right) \cos{\left(- 2 t^{2} + t + 2 \right)} \\ \left(8 t - 2\right) e^{- 2 t^{2} + t + 2} \\ 16 t^{3} - 12 t^{2} - 14 t + 4\end{bmatrix}$ **correct**
+- $\begin{bmatrix}\left(1 - 4 t\right) \cos{\left(- 2 t^{2} + t + 2 \right)} \\ - 2 e^{- 2 t^{2} + t + 2} \\ - 4 t^{2} + 2 t + 4\end{bmatrix}$
 
 Using the chain rule, we can write
 
@@ -1958,13 +1958,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}f^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(\sin{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(- 2 e^{u}\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right)\end{aligned}]=[\begin{aligned}\cos{\left(u \right)} \\ - 2 e^{u} \\ 2 u\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(- 2 t^{2} + t + 2\right)=1 - 4 t\end{aligned}
+\begin{aligned}f^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(\sin{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(- 2 e^{u}\right) \\ \frac{\text{d}}{\text{d}u}\left(u^{2}\right)\end{bmatrix}=\begin{bmatrix}\cos{\left(u \right)} \\ - 2 e^{u} \\ 2 u\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(- 2 t^{2} + t + 2\right)=1 - 4 t\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =[\begin{aligned}\cos{\left(u(t) \right)} \\ - 2 e^{u(t)} \\ 2 u(t)\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}\cos{\left(- 2 t^{2} + t + 2 \right)} \\ - 2 e^{- 2 t^{2} + t + 2} \\ - 4 t^{2} + 2 t + 4\end{aligned}]\cdot \left(1 - 4 t\right) \\  & =[\begin{aligned}\left(1 - 4 t\right) \cos{\left(- 2 t^{2} + t + 2 \right)} \\ \left(8 t - 2\right) e^{- 2 t^{2} + t + 2} \\ 16 t^{3} - 12 t^{2} - 14 t + 4\end{aligned}]\end{aligned}
+\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =\begin{bmatrix}\cos{\left(u(t) \right)} \\ - 2 e^{u(t)} \\ 2 u(t)\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}\cos{\left(- 2 t^{2} + t + 2 \right)} \\ - 2 e^{- 2 t^{2} + t + 2} \\ - 4 t^{2} + 2 t + 4\end{bmatrix}\cdot \left(1 - 4 t\right) \\  & =\begin{bmatrix}\left(1 - 4 t\right) \cos{\left(- 2 t^{2} + t + 2 \right)} \\ \left(8 t - 2\right) e^{- 2 t^{2} + t + 2} \\ 16 t^{3} - 12 t^{2} - 14 t + 4\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -1973,13 +1973,13 @@ $$
 
 ## mixed_cubic_inner — hard (authored)
 
-If $f(u)=[\begin{aligned}- \sin{\left(u \right)} \\ - e^{u} \\ - 2 u^{2}\end{aligned}]$ and $u(t)=2 t^{3} + t + 1$, then $(f∘u)^{′}(t)=$ Write the polynomial component in expanded form.
+If $f(u)=\begin{bmatrix}- \sin{\left(u \right)} \\ - e^{u} \\ - 2 u^{2}\end{bmatrix}$ and $u(t)=2 t^{3} + t + 1$, then $(f∘u)^{′}(t)=$ Write the polynomial component in expanded form.
 
-- $[\begin{aligned}\left(- 6 t^{2} - 1\right) \cos{\left(2 t^{3} + t + 1 \right)} \\ \left(- 6 t^{2} - 1\right) e^{2 t^{3} + t + 1} \\ - 48 t^{5} - 32 t^{3} - 24 t^{2} - 4 t - 4\end{aligned}]$ **correct**
-- $[\begin{aligned}- \cos{\left(u \right)} \\ - e^{u} \\ - 4 u\end{aligned}]$
-- $[\begin{aligned}- \cos{\left(2 t^{3} + t + 1 \right)} \\ - e^{2 t^{3} + t + 1} \\ - 8 t^{3} - 4 t - 4\end{aligned}]$
-- $[\begin{aligned}- \left(6 t^{2} + 1\right)^{2} \cos{\left(2 t^{3} + t + 1 \right)} \\ - \left(6 t^{2} + 1\right)^{2} e^{2 t^{3} + t + 1} \\ - 288 t^{7} - 240 t^{5} - 144 t^{4} - 56 t^{3} - 48 t^{2} - 4 t - 4\end{aligned}]$
-- $[\begin{aligned}\left(- 6 t^{2} - 1\right) \cos{\left(2 t^{3} + t + 1 \right)} \\ - e^{2 t^{3} + t + 1} \\ - 8 t^{3} - 4 t - 4\end{aligned}]$
+- $\begin{bmatrix}\left(- 6 t^{2} - 1\right) \cos{\left(2 t^{3} + t + 1 \right)} \\ \left(- 6 t^{2} - 1\right) e^{2 t^{3} + t + 1} \\ - 48 t^{5} - 32 t^{3} - 24 t^{2} - 4 t - 4\end{bmatrix}$ **correct**
+- $\begin{bmatrix}- \cos{\left(u \right)} \\ - e^{u} \\ - 4 u\end{bmatrix}$
+- $\begin{bmatrix}- \cos{\left(2 t^{3} + t + 1 \right)} \\ - e^{2 t^{3} + t + 1} \\ - 8 t^{3} - 4 t - 4\end{bmatrix}$
+- $\begin{bmatrix}- \left(6 t^{2} + 1\right)^{2} \cos{\left(2 t^{3} + t + 1 \right)} \\ - \left(6 t^{2} + 1\right)^{2} e^{2 t^{3} + t + 1} \\ - 288 t^{7} - 240 t^{5} - 144 t^{4} - 56 t^{3} - 48 t^{2} - 4 t - 4\end{bmatrix}$
+- $\begin{bmatrix}\left(- 6 t^{2} - 1\right) \cos{\left(2 t^{3} + t + 1 \right)} \\ - e^{2 t^{3} + t + 1} \\ - 8 t^{3} - 4 t - 4\end{bmatrix}$
 
 Using the chain rule, we can write
 
@@ -1990,13 +1990,13 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}f^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(- \sin{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(- e^{u}\right) \\ \frac{\text{d}}{\text{d}u}\left(- 2 u^{2}\right)\end{aligned}]=[\begin{aligned}- \cos{\left(u \right)} \\ - e^{u} \\ - 4 u\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(2 t^{3} + t + 1\right)=6 t^{2} + 1\end{aligned}
+\begin{aligned}f^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(- \sin{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(- e^{u}\right) \\ \frac{\text{d}}{\text{d}u}\left(- 2 u^{2}\right)\end{bmatrix}=\begin{bmatrix}- \cos{\left(u \right)} \\ - e^{u} \\ - 4 u\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(2 t^{3} + t + 1\right)=6 t^{2} + 1\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =[\begin{aligned}- \cos{\left(u(t) \right)} \\ - e^{u(t)} \\ - 4 u(t)\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}- \cos{\left(2 t^{3} + t + 1 \right)} \\ - e^{2 t^{3} + t + 1} \\ - 8 t^{3} - 4 t - 4\end{aligned}]\cdot \left(6 t^{2} + 1\right) \\  & =[\begin{aligned}\left(- 6 t^{2} - 1\right) \cos{\left(2 t^{3} + t + 1 \right)} \\ \left(- 6 t^{2} - 1\right) e^{2 t^{3} + t + 1} \\ - 48 t^{5} - 32 t^{3} - 24 t^{2} - 4 t - 4\end{aligned}]\end{aligned}
+\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =\begin{bmatrix}- \cos{\left(u(t) \right)} \\ - e^{u(t)} \\ - 4 u(t)\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}- \cos{\left(2 t^{3} + t + 1 \right)} \\ - e^{2 t^{3} + t + 1} \\ - 8 t^{3} - 4 t - 4\end{bmatrix}\cdot \left(6 t^{2} + 1\right) \\  & =\begin{bmatrix}\left(- 6 t^{2} - 1\right) \cos{\left(2 t^{3} + t + 1 \right)} \\ \left(- 6 t^{2} - 1\right) e^{2 t^{3} + t + 1} \\ - 48 t^{5} - 32 t^{3} - 24 t^{2} - 4 t - 4\end{bmatrix}\end{aligned}
 $$
 
 ---
@@ -2005,13 +2005,13 @@ $$
 
 ## mixed_cubic_inner — hard (authored)
 
-If $f(u)=[\begin{aligned}2 \sin{\left(u \right)} \\ 2 e^{u} \\ - u^{2}\end{aligned}]$ and $u(t)=2 t^{3} - 3 t + 1$, then $(f∘u)^{′}(t)=$ Write the polynomial component in expanded form.
+If $f(u)=\begin{bmatrix}2 \sin{\left(u \right)} \\ 2 e^{u} \\ - u^{2}\end{bmatrix}$ and $u(t)=2 t^{3} - 3 t + 1$, then $(f∘u)^{′}(t)=$ Write the polynomial component in expanded form.
 
-- $[\begin{aligned}2 \left(6 t^{2} - 3\right)^{2} \cos{\left(2 t^{3} - 3 t + 1 \right)} \\ 2 \left(6 t^{2} - 3\right)^{2} e^{2 t^{3} - 3 t + 1} \\ - 144 t^{7} + 360 t^{5} - 72 t^{4} - 252 t^{3} + 72 t^{2} + 54 t - 18\end{aligned}]$
-- $[\begin{aligned}2 \cos{\left(u \right)} \\ 2 e^{u} \\ - 2 u\end{aligned}]$
-- $[\begin{aligned}2 \cos{\left(2 t^{3} - 3 t + 1 \right)} \\ 2 e^{2 t^{3} - 3 t + 1} \\ - 4 t^{3} + 6 t - 2\end{aligned}]$
-- $[\begin{aligned}\left(12 t^{2} - 6\right) \cos{\left(2 t^{3} - 3 t + 1 \right)} \\ \left(12 t^{2} - 6\right) e^{2 t^{3} - 3 t + 1} \\ - 24 t^{5} + 48 t^{3} - 12 t^{2} - 18 t + 6\end{aligned}]$ **correct**
-- $[\begin{aligned}\left(12 t^{2} - 6\right) \cos{\left(2 t^{3} - 3 t + 1 \right)} \\ 2 e^{2 t^{3} - 3 t + 1} \\ - 4 t^{3} + 6 t - 2\end{aligned}]$
+- $\begin{bmatrix}2 \left(6 t^{2} - 3\right)^{2} \cos{\left(2 t^{3} - 3 t + 1 \right)} \\ 2 \left(6 t^{2} - 3\right)^{2} e^{2 t^{3} - 3 t + 1} \\ - 144 t^{7} + 360 t^{5} - 72 t^{4} - 252 t^{3} + 72 t^{2} + 54 t - 18\end{bmatrix}$
+- $\begin{bmatrix}2 \cos{\left(u \right)} \\ 2 e^{u} \\ - 2 u\end{bmatrix}$
+- $\begin{bmatrix}2 \cos{\left(2 t^{3} - 3 t + 1 \right)} \\ 2 e^{2 t^{3} - 3 t + 1} \\ - 4 t^{3} + 6 t - 2\end{bmatrix}$
+- $\begin{bmatrix}\left(12 t^{2} - 6\right) \cos{\left(2 t^{3} - 3 t + 1 \right)} \\ \left(12 t^{2} - 6\right) e^{2 t^{3} - 3 t + 1} \\ - 24 t^{5} + 48 t^{3} - 12 t^{2} - 18 t + 6\end{bmatrix}$ **correct**
+- $\begin{bmatrix}\left(12 t^{2} - 6\right) \cos{\left(2 t^{3} - 3 t + 1 \right)} \\ 2 e^{2 t^{3} - 3 t + 1} \\ - 4 t^{3} + 6 t - 2\end{bmatrix}$
 
 Using the chain rule, we can write
 
@@ -2022,11 +2022,11 @@ $$
 Let's now find the derivatives of each function.
 
 $$
-\begin{aligned}f^{′}(u) & =[\begin{aligned}\frac{\text{d}}{\text{d}u}\left(2 \sin{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(2 e^{u}\right) \\ \frac{\text{d}}{\text{d}u}\left(- u^{2}\right)\end{aligned}]=[\begin{aligned}2 \cos{\left(u \right)} \\ 2 e^{u} \\ - 2 u\end{aligned}] \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(2 t^{3} - 3 t + 1\right)=6 t^{2} - 3\end{aligned}
+\begin{aligned}f^{′}(u) & =\begin{bmatrix}\frac{\text{d}}{\text{d}u}\left(2 \sin{\left(u \right)}\right) \\ \frac{\text{d}}{\text{d}u}\left(2 e^{u}\right) \\ \frac{\text{d}}{\text{d}u}\left(- u^{2}\right)\end{bmatrix}=\begin{bmatrix}2 \cos{\left(u \right)} \\ 2 e^{u} \\ - 2 u\end{bmatrix} \\ u^{′}(t) & =\frac{\text{d}}{\text{d}t}\left(2 t^{3} - 3 t + 1\right)=6 t^{2} - 3\end{aligned}
 $$
 
 Therefore, we obtain:
 
 $$
-\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =[\begin{aligned}2 \cos{\left(u(t) \right)} \\ 2 e^{u(t)} \\ - 2 u(t)\end{aligned}]\cdot \left(u^{′}(t)\right) \\  & =[\begin{aligned}2 \cos{\left(2 t^{3} - 3 t + 1 \right)} \\ 2 e^{2 t^{3} - 3 t + 1} \\ - 4 t^{3} + 6 t - 2\end{aligned}]\cdot \left(6 t^{2} - 3\right) \\  & =[\begin{aligned}\left(12 t^{2} - 6\right) \cos{\left(2 t^{3} - 3 t + 1 \right)} \\ \left(12 t^{2} - 6\right) e^{2 t^{3} - 3 t + 1} \\ - 24 t^{5} + 48 t^{3} - 12 t^{2} - 18 t + 6\end{aligned}]\end{aligned}
+\begin{aligned}(f∘u)^{′}(t) & =f′(u(t))u′(t) \\  & =\begin{bmatrix}2 \cos{\left(u(t) \right)} \\ 2 e^{u(t)} \\ - 2 u(t)\end{bmatrix}\cdot \left(u^{′}(t)\right) \\  & =\begin{bmatrix}2 \cos{\left(2 t^{3} - 3 t + 1 \right)} \\ 2 e^{2 t^{3} - 3 t + 1} \\ - 4 t^{3} + 6 t - 2\end{bmatrix}\cdot \left(6 t^{2} - 3\right) \\  & =\begin{bmatrix}\left(12 t^{2} - 6\right) \cos{\left(2 t^{3} - 3 t + 1 \right)} \\ \left(12 t^{2} - 6\right) e^{2 t^{3} - 3 t + 1} \\ - 24 t^{5} + 48 t^{3} - 12 t^{2} - 18 t + 6\end{bmatrix}\end{aligned}
 $$
