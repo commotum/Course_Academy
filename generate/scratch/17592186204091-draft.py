@@ -8,6 +8,7 @@ import json
 import os
 from pathlib import Path
 import random
+import re
 import sys
 import uuid
 try:
@@ -41,10 +42,34 @@ def digest(value):
 def uid(value):
     return str(uuid.uuid5(uuid.UUID(KP_UUID), value))
 
+CONSTANT_PAIRS = ((-9,10),(9,-10),(-3,5),(2,7),(8,1),(-8,1),(8,-10),(9,0))
+SCALES = {'easy': (1,), 'moderate': (-7,-2,2,3), 'hard': (-9,-7,-2)}
+
+def source_parameters(q):
+    match = re.search(r'(-?\d*)\(([pkmqr])([+-]\d+)\)([xuvzw])([+-]\d+)=(-?\d+)', re.sub(r'\s+', '', q[':question/problem']))
+    if not match: raise ValueError('Unreadable original equation')
+    scale,k,h,x,b,c = match.groups()
+    return dict(variable=x,parameter=k,scale=int(scale or 1),shift=int(h),left=int(b),right=int(c))
+
+def numeric_tuple(p): return tuple(p[k] for k in ('scale','shift','left','right'))
+
 def fingerprint(p):
-    # Constants, variable names and nonzero outer scale do not create a new task.
-    # The scaled family separately requires division before isolating the parameter.
-    return digest(['direct' if p['scale'] == 1 else 'scaled', -p['shift']])
+    # Normalize the full supplied equation up to uniform nonzero scaling.
+    # Names, seeds, rating and IDs are not new mathematical tasks.
+    return digest(['direct' if p['scale']==1 else 'scaled', p['shift'],
+                   str(sp.Rational(p['left'],p['scale'])), str(sp.Rational(p['right'],p['scale']))])
+
+CATALOG = {level: sorted({(scale,shift,left,right) for scale in SCALES[level]
+    for shift in list(range(-9,0))+list(range(1,10)) for left,right in CONSTANT_PAIRS}) for level in SUPPORTED_LEVELS}
+for q in ORIGINALS.values():
+    level=q.get(':question/difficulty',{}).get(':db/ident','unrated').split('/')[-1]
+    if level in CATALOG and ':question/worked-solution' in q:
+        t=numeric_tuple(source_parameters(q))
+        if t not in CATALOG[level]: CATALOG[level].append(t)
+CAPACITY = {level: len({fingerprint(dict(zip(('scale','shift','left','right'),t))) for t in tuples}) for level,tuples in CATALOG.items()}
+DOMAIN.update(constant_pairs=[list(pair) for pair in CONSTANT_PAIRS],normal_scales={level:list(scales) for level,scales in SCALES.items()},
+              numeric_policy='Finite cross product: 18 shifts × eight listed constant pairs × listed level scales, plus complete original MA tuples; arbitrary tuples outside this set fail closed.',
+              capacity=CAPACITY)
 
 def parameters(level, p):
     if not isinstance(p, dict): raise ValueError('Parameters must be a dictionary')
@@ -58,6 +83,7 @@ def parameters(level, p):
         raise ValueError('Parameter boundary or no-solution constraint violated')
     if (level == 'easy') != (p['scale'] == 1) or (level == 'hard' and p['scale'] >= 0):
         raise ValueError('Scale does not match difficulty')
+    if numeric_tuple(p) not in CATALOG[level]: raise ValueError('Parameters outside finite eligible catalog')
     return dict(p)
 
 def signed(n):
@@ -82,11 +108,9 @@ def render(p):
     return prompt, solution
 
 def sample(rng, level):
-    b = rng.choice([n for n in range(-9, 10) if n])
-    return {'variable': rng.choice(DOMAIN['variables']), 'parameter': rng.choice(DOMAIN['parameters']),
-            'scale': 1 if level == 'easy' else rng.choice(([n for n in range(-9, -1)] if level == 'hard' else [n for n in range(-9, 10) if abs(n) >= 2])),
-            'shift': rng.choice([n for n in range(-9, 10) if n]), 'left': b,
-            'right': rng.choice([n for n in range(-10, 11) if n != b])}
+    scale,shift,left,right = rng.choice(CATALOG[level])
+    return dict(variable=rng.choice(DOMAIN['variables']),parameter=rng.choice(DOMAIN['parameters']),
+                scale=scale,shift=shift,left=left,right=right)
 
 @math_format.checked_math_content
 def generate(level, seed=0, template=None, parameters=None, profile=None):
@@ -133,17 +157,20 @@ def generate_moderate(seed=0, **kwargs): return generate('moderate', seed, **kwa
 def generate_hard(seed=0, **kwargs): return generate('hard', seed, **kwargs)
 
 def batch(level, count=5, seed=0):
+    if type(level) is not str or level not in SUPPORTED_LEVELS: raise ValueError('Unsupported difficulty')
     if type(seed) is not int: raise ValueError('Seed must be an integer')
-    if level not in SUPPORTED_LEVELS: raise ValueError('Unsupported difficulty: '+str(level))
-    if type(count) is not int or not 0 <= count <= 18:
-        raise ValueError('Finite capability: at most 18 distinct parameter roots per supported level; no duplicate padding')
-    if count == 0: return []
-    rows = []; seen = set()
-    for i in range(2000):
-        if len(rows) == count: return rows
-        r = generate(level, seed+i); key = r['generation']['parameter_fingerprint']
-        if key not in seen: rows.append(r); seen.add(key)
-    raise ValueError('Finite variant limit reached')
+    if type(count) is not int or not 0 <= count <= CAPACITY[level]: raise ValueError('Count exceeds finite mathematical capacity')
+    rng=random.Random(seed); tuples=list(CATALOG[level]); rng.shuffle(tuples)
+    rows=[];seen=set()
+    for t in tuples:
+        if len(rows)==count:return rows
+        slots=dict(zip(('scale','shift','left','right'),t))
+        key=fingerprint(slots)
+        if key in seen:continue
+        slots.update(variable=rng.choice(DOMAIN['variables']),parameter=rng.choice(DOMAIN['parameters']))
+        rows.append(generate(level,seed,parameters=slots));seen.add(key)
+    if len(rows)!=count:raise ValueError('Finite variant limit reached')
+    return rows
 
 def markdown(rec): return rec['question'][':question/problem']+'\n\n'+rec['question'][':question/worked-solution']
 

@@ -127,7 +127,7 @@ def main():
  for lev in (*g.LEVELS,'all'):
   for form in ('json','markdown'):
    cli=subprocess.run([sys.executable,str(HERE.with_suffix('.py')),'--difficulty',lev,'--count','2','--format',form],check=True,capture_output=True,text=True)
-   if form=='json':assert len(json.loads(cli.stdout)['instances'])==2
+   if form=='json':assert len(json.loads(cli.stdout))==(6 if lev=='all' else 2)
    else:assert 'Given that this equation has no solution' in cli.stdout
  write('native-input.json',native_inputs)
  subprocess.run([str(engine),str(HERE/'native-input.json'),str(HERE/'native-grading.json')],check=True)

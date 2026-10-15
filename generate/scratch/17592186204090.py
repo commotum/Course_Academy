@@ -163,7 +163,9 @@ def markdown(r):
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=(*LEVELS,'all'),default='all');ap.add_argument('--count',type=int,default=9);ap.add_argument('--seed',type=int,default=204090);ap.add_argument('--format',choices=('json','markdown'),default='json');ap.add_argument('--capacity',action='store_true');args=ap.parse_args()
  if args.capacity:print(json.dumps(capacity(args.difficulty),indent=2));return
- try:records=batch(args.difficulty,args.count,args.seed)
+ try:
+  levels=LEVELS if args.difficulty=='all' else (args.difficulty,)
+  records=[record for level in levels for record in batch(level,args.count,args.seed)]
  except ValueError as e:ap.error(str(e))
- print(json.dumps({'instances':records},indent=2) if args.format=='json' else '\n\n---\n\n'.join(map(markdown,records)))
+ print(json.dumps(records,indent=2) if args.format=='json' else '\n\n---\n\n'.join(map(markdown,records)))
 if __name__=='__main__':main()
