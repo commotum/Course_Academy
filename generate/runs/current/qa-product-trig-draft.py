@@ -1,7 +1,7 @@
 import sys
 sys.dont_write_bytecode=True
 """Parent product-rule readback including supplied answer fragments."""
-import importlib.util,json,re,hashlib
+import importlib.util,json,re,hashlib,copy
 from pathlib import Path
 R=Path(__file__).resolve().parent;K=17592186096617;D=R.parents[2]/f'generate/scratch/{K}-draft'
 def module(name,path):
@@ -63,7 +63,29 @@ def check(record):
   counts['authored_distributed_term_counts']=counts.get('authored_distributed_term_counts',0)+1
 
  counts['instances']+=1;counts['complete_values']+=len(vals);return q
-F=module('root_product_source',R/'root-source-fidelity.py');sources,source_fidelity=F.check(g,K,D)
+sources={q[':question/math-academy-id']:q for q in json.loads((R/'sources'/f'{K}.json').read_text())['record'][':knowledge-point/questions']}
+assert json.loads((D/'source.json').read_text())==json.loads((R/'sources'/f'{K}.json').read_text())
+source_fidelity=dict(prompts=0,prompt_bytes=0,solutions=0,solution_bytes=0,fields=0,values=0,refs=0,missing_refs=0,fieldless=0)
+for c in json.loads((D/'source-cases.json').read_text()):
+ old=sources[c['source_id']];raw=g.generate(c['level'],template=c['template'],parameters=c['parameters'],profile='observed_raw')['question']
+ for key in (':question/difficulty',':question/worked-solution',':question/answer-fields'):assert (key in raw)==(key in old),(c['source_id'],key)
+ assert prose(raw[':question/problem'])==prose(old[':question/problem']) and p.same(p.question_function(raw[':question/problem']),p.question_function(old[':question/problem']))
+ source_fidelity['prompts']+=1;source_fidelity['prompt_bytes']+=raw[':question/problem']==old[':question/problem']
+ if ':question/worked-solution' in old:
+  assert prose(raw[':question/worked-solution'])==prose(old[':question/worked-solution']) and signatures(raw[':question/worked-solution'])==signatures(old[':question/worked-solution'])
+  p.stages(raw[':question/worked-solution'],p.question_function(raw[':question/problem']),c['source_id']=='q-319350');source_fidelity['solutions']+=1;source_fidelity['solution_bytes']+=raw[':question/worked-solution']==old[':question/worked-solution']
+ else:assert ':question/worked-solution' not in raw
+ assert len(raw.get(':question/answer-fields',[]))==len(old.get(':question/answer-fields',[]));source_fidelity['fieldless']+=not old.get(':question/answer-fields',[])
+ for oldf,newf in zip(old.get(':question/answer-fields',[]),raw.get(':question/answer-fields',[])):
+  assert oldf[':answer-field/key']==newf[':answer-field/key'] and oldf[':answer-field/type'][':db/ident']==newf[':answer-field/type']
+  assert (':answer-field/correct' in oldf)==(':answer-field/correct' in newf)
+  remaining=[p.scalar(z[':answer/value']) for z in newf[':answer-field/choices']];assert len(remaining)==len(oldf[':answer-field/choices'])
+  for z in oldf[':answer-field/choices']:
+   found=[i for i,v in enumerate(remaining) if p.same(v,p.scalar(z[':answer/value']))];assert len(found)==1;remaining.pop(found[0]);source_fidelity['values']+=1
+  assert not remaining;source_fidelity['fields']+=1
+  if ':answer-field/correct' in oldf:
+   keyed=next(z[':answer/value'] for z in newf[':answer-field/choices'] if z[':answer/id']==newf[':answer-field/correct'][1]);assert p.same(p.scalar(keyed),p.scalar(oldf[':answer-field/correct'][':answer/value']));source_fidelity['refs']+=1
+  else:source_fidelity['missing_refs']+=1
 for c in json.loads((D/'source-cases.json').read_text()):
  old=sources[c['source_id']];q=check(g.generate(c['level'],template=c['template'],parameters=c['parameters'],profile='repaired'))
  if old.get(':question/worked-solution'):
@@ -73,6 +95,16 @@ for c in json.loads((D/'source-cases.json').read_text()):
  else:counts['source_derived_solutions']+=1
 counts['raw_source_fidelity']=source_fidelity
 review=json.loads((D/'review.json').read_text())
-for record in review['generated_variants']:check(record.get('record',record))
+for record in review['generated_variants']:
+ if not record.get('record',record)['generation'].get('evidence_only'):check(record.get('record',record))
 for record in json.loads((R/'qa'/f'{K}-sampled.json').read_text()):check(record)
+probe=copy.deepcopy(next(r for r in json.loads((R/'qa'/f'{K}-sampled.json').read_text()) if r['generation']['template']=='affine_trig'))
+original=probe['question'][':question/worked-solution'];block=re.search(r'\$\$(.*?)\$\$',original,re.S);lines=block[1].split(chr(92)*2);terms=top_additions(lines[2].split('=',1)[1]);assert len(terms)==2
+lines[2]=lines[2].split('=',1)[0]+'=('+terms[0]+'+1)+('+terms[1]+'-1)'
+probe['question'][':question/worked-solution']=original[:block.start(1)]+(chr(92)*2).join(lines)+original[block.end(1):]
+saved=copy.deepcopy(counts)
+try:check(probe)
+except AssertionError:pass
+else:raise AssertionError('Compensating wrong product terms survived independent readback')
+counts=saved;counts['unchanged_key_equal_total_wrong_terms_rejected']=True
 counts['database_writes']=0;counts['status']='passed';counts['script_sha256']=hashlib.sha256(D.with_suffix('.py').read_bytes()).hexdigest();(R/'qa'/f'{K}-root-readback.json').write_text(json.dumps(counts,indent=2)+'\n');print(counts)

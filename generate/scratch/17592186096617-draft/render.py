@@ -27,14 +27,15 @@ window.renderRecord=async record=>{
 };
 '''
 (D/'render-harness.js').write_text(js)
-(D/'render-harness.html').write_text('<html><head><meta charset="utf-8"><link rel="stylesheet" href="reference/ui/learning.css"><style>body{max-width:1000px;margin:32px auto;background:white;color:#222;padding:20px}.prose{margin-bottom:14px}</style><script src="reference/ui/vendor/dompurify/purify.min.js"></script><script src="reference/ui/mathjax-config.js"></script><script src="reference/ui/vendor/mathjax/tex-svg.js"></script><script type="module" src="render-harness.js"></script></head><body></body></html>')
+(D/'render-harness.html').write_text('<html data-theme="light"><head><meta charset="utf-8"><link rel="stylesheet" href="reference/ui/learning.css"><link rel="stylesheet" href="reference/ui/navigation.css"><style>body{max-width:1000px;margin:32px auto;background:white;color:#222;padding:20px}.prose{margin-bottom:14px}</style><script src="reference/ui/vendor/dompurify/purify.min.js"></script><script src="reference/ui/mathjax-config.js"></script><script src="reference/ui/vendor/mathjax/tex-svg.js"></script><script type="module" src="render-harness.js"></script></head><body class="lesson-main"></body></html>')
 review=json.loads((D/'review.json').read_text());records=[]
-for r in review['generated_variants']:
- r['generation']['render_label']=r['question'][':question/difficulty'].split('/')[-1]+'-'+r['generation']['template']+'-'+r['generation']['parameters'].get('trig','source')+'-'+r['question'][':question/answer-fields'][0][':answer-field/type'].split('/')[-1];records.append(r)
+boundary=[x['record'] for x in json.loads((D/'boundary-engine-input.json').read_text())]
+for index,r in enumerate(review['generated_variants']+boundary):
+ r['generation']['render_label']=r['question'][':question/difficulty'].split('/')[-1]+'-'+r['generation']['template']+'-'+r['generation']['parameters'].get('trig','source')+'-'+r['question'][':question/answer-fields'][0][':answer-field/type'].split('/')[-1]+('-boundary' if index>=len(review['generated_variants']) else '');records.append(r)
 (D/'render-records.json').write_text(json.dumps(records)+'\n')
 class Quiet(http.server.SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
 server=http.server.ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Quiet,directory=str(ROOT)));threading.Thread(target=server.serve_forever,daemon=True).start();origin=f'http://127.0.0.1:{server.server_port}'
 try:subprocess.run(['node',str(D/'render-cdp.js'),origin,str(D.relative_to(ROOT))],cwd=ROOT,check=True)
 finally:server.shutdown();server.server_close()
-report=json.loads((D/'render-report.json').read_text());report['ui_source_hashes']={str(x.relative_to(ROOT)):hashlib.sha256(x.read_bytes()).hexdigest() for x in sorted(UI.rglob('*')) if x.is_file()};report['normal_content_only']=True;(D/'render-report.json').write_text(json.dumps(report,indent=2)+'\n')
+report=json.loads((D/'render-report.json').read_text());report['ui_source_hashes']={str(x.relative_to(ROOT)):hashlib.sha256(x.read_bytes()).hexdigest() for x in sorted(UI.rglob('*')) if x.is_file()};report['normal_content_only']=True;report['generator_sha256']=hashlib.sha256(D.with_suffix('.py').read_bytes()).hexdigest();report['render_records_sha256']=hashlib.sha256((D/'render-records.json').read_bytes()).hexdigest();report['rendered_math']=sum(x['rendered_math'] for x in report['checks']);report['full_solution_math']=sum(x['solution_math'] for x in report['checks']);report['browser_version']=subprocess.check_output(['/home/jake/.cache/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-linux64/chrome-headless-shell','--version'],text=True).strip();(D/'render-report.json').write_text(json.dumps(report,indent=2)+'\n')

@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 46**, **qa_passed: 395**, **queued: 137**, **working: 2**.
+**needs_revalidation: 45**, **qa_passed: 399**, **queued: 134**, **working: 2**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -233,9 +233,9 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186087699](../../scratch/17592186087699-draft.py) | Introduction to the Inverse of a Matrix | Determining the Inverse of a 2x2 Matrix | 10 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186087699.json) |
 | [17592186087700](../../scratch/17592186087700-draft.py) | Introduction to the Inverse of a Matrix | Determining the Inverse of a Larger Matrix | 0 / 10 / 3 / 0 | qa_passed | [Report](qa/17592186087700.json) |
 | [17592186092261](../../scratch/17592186092261.py) | The Chain Rule With Exponential Functions | Differentiating a General Exponential Function Using the Chain Rule | 7 / 2 / 0 / 1 | qa_passed | [Report](qa/17592186092261.json) |
-| [17592186092263](../../scratch/17592186092263.py) | The Chain Rule With Exponential Functions | Differentiating an Exponential Function with a Nonlinear Exponent | 5 / 8 / 0 / 1 | working | [Report](qa/17592186092263.json) |
+| [17592186092263](../../scratch/17592186092263-draft.py) | The Chain Rule With Exponential Functions | Differentiating an Exponential Function with a Nonlinear Exponent | 5 / 8 / 0 / 1 | qa_passed | [Report](qa/17592186092263.json) |
 | [17592186059741](../../scratch/17592186059741-draft.py) | Scalar Multiplication of Matrices | Calculating the Value of a Scalar | 6 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186059741.json) |
-| [17592186096617](../../scratch/17592186096617.py) | The Product Rule for Differentiation | Differentiating a Product Containing a Trigonometric Function | 8 / 0 / 0 / 2 | working | [Report](qa/17592186096617.json) |
+| [17592186096617](../../scratch/17592186096617-draft.py) | The Product Rule for Differentiation | Differentiating a Product Containing a Trigonometric Function | 8 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096617.json) |
 | [17592186096618](../../scratch/17592186096618.py) | The Product Rule for Differentiation | Differentiating a Product Containing an Exponential or Logarithmic Function | 11 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096618.json) |
 | [17592186096619](../../scratch/17592186096619.py) | The Product Rule for Differentiation | Finding the Slope of the Tangent Line to a Product  at a Given Point | 0 / 11 / 0 / 2 | qa_passed | [Report](qa/17592186096619.json) |
 | [17592186087717](../../scratch/17592186087717.py) | Graphing Curves Defined Parametrically | Filling a Table of Values for a Parametric Curve | 17 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186087717.json) |
@@ -243,11 +243,11 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186087721](../../scratch/17592186087721.py) | Graphing Curves Defined Parametrically | Graphing a Curve Defined Parametrically | 16 / 0 / 0 / 0 | qa_passed | [Report](qa/17592186087721.json) |
 | [17592186087722](../../scratch/17592186087722.py) | Graphing Curves Defined Parametrically | Determining the Range of a Parametric Equation | 0 / 21 / 0 / 2 | qa_passed | [Report](qa/17592186087722.json) |
 | [17592186059847](../../scratch/17592186059847.py) | The Determinant of a 3x3 Matrix | Calculating the Determinant of a 3x3 Matrix | 13 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186059847.json) |
-| [17592186059848](../../scratch/17592186059848.py) | The Determinant of a 3x3 Matrix | Identifying Singular Matrices | 9 / 8 / 0 / 0 | needs_revalidation | [Report](qa/17592186059848.json) |
+| [17592186059848](../../scratch/17592186059848-draft.py) | The Determinant of a 3x3 Matrix | Identifying Singular Matrices | 9 / 8 / 0 / 0 | qa_passed | [Report](qa/17592186059848.json) |
 | [17592186059849](../../scratch/17592186059849.py) | The Determinant of a 3x3 Matrix | Solving for an Unknown Given the Determinant | 11 / 10 / 1 / 2 | qa_passed | [Report](qa/17592186059849.json) |
-| [17592186100866](../../scratch/17592186100866.py) | Multiplying a Matrix by a Column Vector | Multiplying a 2x2 Matrix by a Column Vector | 10 / 0 / 0 / 1 | queued | — |
-| [17592186100867](../../scratch/17592186100867.py) | Multiplying a Matrix by a Column Vector | Multiplying a 3x3 Matrix by a Column Vector | 0 / 9 / 0 / 2 | queued | — |
-| 17592186100868 | Multiplying a Matrix by a Column Vector | Multiplying a Matrix With Variable Entries by a Column Vector | 0 / 4 / 5 / 1 | queued | — |
+| [17592186100866](../../scratch/17592186100866-draft.py) | Multiplying a Matrix by a Column Vector | Multiplying a 2x2 Matrix by a Column Vector | 10 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186100866.json) |
+| [17592186100867](../../scratch/17592186100867.py) | Multiplying a Matrix by a Column Vector | Multiplying a 3x3 Matrix by a Column Vector | 0 / 9 / 0 / 2 | working | — |
+| 17592186100868 | Multiplying a Matrix by a Column Vector | Multiplying a Matrix With Variable Entries by a Column Vector | 0 / 4 / 5 / 1 | working | — |
 | [17592186059737](../../scratch/17592186059737.py) | Calculating the Cross Product Using Determinants | Solving for an Unknown in an Equation Involving the Cross Product | 0 / 9 / 11 / 1 | qa_passed | [Report](qa/17592186059737.json) |
 | [17592186059736](../../scratch/17592186059736.py) | Calculating the Cross Product Using Determinants | Calculating the Cross Product Using Determinants | 26 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186059736.json) |
 | 17592186124644 | Introduction to Partial Derivatives | Evaluating a Partial Derivative at a Point | 0 / 6 / 4 / 2 | queued | — |

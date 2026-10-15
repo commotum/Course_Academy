@@ -15,7 +15,7 @@ from __future__ import annotations
 import sys
 sys.dont_write_bytecode = True
 import argparse, hashlib, json, random, re, uuid
-from functools import lru_cache
+from functools import lru_cache, wraps
 from pathlib import Path
 import sympy as s
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts'))
@@ -120,6 +120,7 @@ def solution(u,v):
 
 def checked_content(function):
     """Run shared formatting checks while preserving absent raw-source keys."""
+    @wraps(function)
     def checked(*args,**kwargs):
         record=function(*args,**kwargs)
         temporary={**record,'question':dict(record['question'])}
@@ -205,7 +206,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
                 if key not in raw:question.pop(key,None)
             for field,original in zip(question.get(':question/answer-fields',[]),original_fields):
                 if ':answer-field/correct' not in original:field.pop(':answer-field/correct',None)
-        fingerprint=hashlib.sha256(json.dumps([s.srepr(s.expand(u*v)),s.srepr(s.expand(correct))]).encode()).hexdigest()
+        fingerprint=hashlib.sha256(json.dumps([s.srepr(s.expand(u*v)),s.srepr(s.expand(correct.subs(s.sec(X)**2,1+s.tan(X)**2)))]).encode()).hexdigest()
         return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,'generation':{'version':VERSION,'python_version':sys.version.split()[0],'sympy_version':s.__version__,'evidence_only':profile=='observed_raw','eligible_for_learning':profile!='observed_raw','bank_origin':'authored method-derived replacement for opaque observed bank' if t=='q-47965' and profile!='observed_raw' else ('observed' if t in SOURCES else 'authored'),'seed':seed,'template':t,'profile':profile,'parameters':p,'source':{k:CAPTURE[k] for k in ('database','basis','lineage')},'mathematical_fingerprint':fingerprint,'content_hash':identity,'domain':'x>0 and cos(x) != 0' if t=='q-319385' else 'real x where displayed factors are differentiable'}}
     raise ValueError('No valid complete bank')
 

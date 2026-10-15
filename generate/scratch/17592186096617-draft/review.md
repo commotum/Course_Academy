@@ -55,7 +55,7 @@ Differentiate $x^{2}\tan x$.
 Here, we have the product of the two functions $u(x)=x^{2}$ and $v(x)=\tan{\left(x \right)}.$ So, we apply the product rule:
 
 $$
-\begin{aligned}((x^{2})(\tan{\left(x \right)}))^{'} & =u'(x)\cdot v(x)+u(x)\cdot v'(x) \\ & =(x^{2})'\cdot (\tan{\left(x \right)})+(x^{2})\cdot (\tan{\left(x \right)})' \\ & =(2 x)(\tan{\left(x \right)})+(x^{2})(\tan^{2}{\left(x \right)} + 1) \\ & =x^{2} \tan^{2}{\left(x \right)} + x^{2} + 2 x \tan{\left(x \right)}\end{aligned}
+\begin{aligned}((x^{2})(\tan{\left(x \right)}))^{'} & =u'(x)\cdot v(x)+u(x)\cdot v'(x) \\ & =(x^{2})'\cdot (\tan{\left(x \right)})+(x^{2})\cdot (\tan{\left(x \right)})' \\ & =(2 x)(\tan{\left(x \right)})+(x^{2})(\sec^{2}{\left(x \right)}) \\ & =x^{2} \sec^{2}{\left(x \right)} + 2 x \tan{\left(x \right)}\end{aligned}
 $$
 
 ## Original q-310188
@@ -323,18 +323,18 @@ Differentiate $x^{2}\tan x$.
 Here, we have the product of the two functions $u(x)=x^{2}$ and $v(x)=\tan{\left(x \right)}.$ So, we apply the product rule:
 
 $$
-\begin{aligned}((x^{2})(\tan{\left(x \right)}))^{'} & =u'(x)\cdot v(x)+u(x)\cdot v'(x) \\ & =(x^{2})'\cdot (\tan{\left(x \right)})+(x^{2})\cdot (\tan{\left(x \right)})' \\ & =(2 x)(\tan{\left(x \right)})+(x^{2})(\tan^{2}{\left(x \right)} + 1) \\ & =x^{2} \tan^{2}{\left(x \right)} + x^{2} + 2 x \tan{\left(x \right)}\end{aligned}
+\begin{aligned}((x^{2})(\tan{\left(x \right)}))^{'} & =u'(x)\cdot v(x)+u(x)\cdot v'(x) \\ & =(x^{2})'\cdot (\tan{\left(x \right)})+(x^{2})\cdot (\tan{\left(x \right)})' \\ & =(2 x)(\tan{\left(x \right)})+(x^{2})(\sec^{2}{\left(x \right)}) \\ & =x^{2} \sec^{2}{\left(x \right)} + 2 x \tan{\left(x \right)}\end{aligned}
 $$
 
-x^{2} \left(\tan^{2}{\left(x \right)} + 1\right) + 2 x \tan{\left(x \right)}
+x^{2} \sec^{2}{\left(x \right)} + 2 x \tan{\left(x \right)}
 
 2 x \tan{\left(x \right)}
 
-x^{2} \left(\tan^{2}{\left(x \right)} + 1\right)
+x^{2} \sec^{2}{\left(x \right)}
 
-- x^{2} \left(\tan^{2}{\left(x \right)} + 1\right) + 2 x \tan{\left(x \right)}
+- x^{2} \sec^{2}{\left(x \right)} + 2 x \tan{\left(x \right)}
 
-2 x \left(\tan^{2}{\left(x \right)} + 1\right)
+2 x \sec^{2}{\left(x \right)}
 
 ## Generated q-310188 :question.difficulty/easy
 
@@ -512,18 +512,18 @@ Differentiate $4 x^{3}\tan x$.
 Here, we have the product of the two functions $u(x)=4 x^{3}$ and $v(x)=\tan{\left(x \right)}.$ So, we apply the product rule:
 
 $$
-\begin{aligned}((4 x^{3})(\tan{\left(x \right)}))^{'} & =u'(x)\cdot v(x)+u(x)\cdot v'(x) \\ & =(4 x^{3})'\cdot (\tan{\left(x \right)})+(4 x^{3})\cdot (\tan{\left(x \right)})' \\ & =(12 x^{2})(\tan{\left(x \right)})+(4 x^{3})(\tan^{2}{\left(x \right)} + 1) \\ & =4 x^{3} \tan^{2}{\left(x \right)} + 4 x^{3} + 12 x^{2} \tan{\left(x \right)}\end{aligned}
+\begin{aligned}((4 x^{3})(\tan{\left(x \right)}))^{'} & =u'(x)\cdot v(x)+u(x)\cdot v'(x) \\ & =(4 x^{3})'\cdot (\tan{\left(x \right)})+(4 x^{3})\cdot (\tan{\left(x \right)})' \\ & =(12 x^{2})(\tan{\left(x \right)})+(4 x^{3})(\sec^{2}{\left(x \right)}) \\ & =4 x^{3} \sec^{2}{\left(x \right)} + 12 x^{2} \tan{\left(x \right)}\end{aligned}
 $$
 
-- 4 x^{3} \left(\tan^{2}{\left(x \right)} + 1\right) + 12 x^{2} \tan{\left(x \right)}
+- 4 x^{3} \sec^{2}{\left(x \right)} + 12 x^{2} \tan{\left(x \right)}
 
-12 x^{2} \left(\tan^{2}{\left(x \right)} + 1\right)
+12 x^{2} \sec^{2}{\left(x \right)}
 
-4 x^{3} \left(\tan^{2}{\left(x \right)} + 1\right)
+4 x^{3} \sec^{2}{\left(x \right)}
 
 12 x^{2} \tan{\left(x \right)}
 
-4 x^{3} \left(\tan^{2}{\left(x \right)} + 1\right) + 12 x^{2} \tan{\left(x \right)}
+4 x^{3} \sec^{2}{\left(x \right)} + 12 x^{2} \tan{\left(x \right)}
 
 ## Generated q-47965 :question.difficulty/easy
 
@@ -532,18 +532,18 @@ Differentiate $2 x^{4}\tan x$.
 Here, we have the product of the two functions $u(x)=2 x^{4}$ and $v(x)=\tan{\left(x \right)}.$ So, we apply the product rule:
 
 $$
-\begin{aligned}((2 x^{4})(\tan{\left(x \right)}))^{'} & =u'(x)\cdot v(x)+u(x)\cdot v'(x) \\ & =(2 x^{4})'\cdot (\tan{\left(x \right)})+(2 x^{4})\cdot (\tan{\left(x \right)})' \\ & =(8 x^{3})(\tan{\left(x \right)})+(2 x^{4})(\tan^{2}{\left(x \right)} + 1) \\ & =2 x^{4} \tan^{2}{\left(x \right)} + 2 x^{4} + 8 x^{3} \tan{\left(x \right)}\end{aligned}
+\begin{aligned}((2 x^{4})(\tan{\left(x \right)}))^{'} & =u'(x)\cdot v(x)+u(x)\cdot v'(x) \\ & =(2 x^{4})'\cdot (\tan{\left(x \right)})+(2 x^{4})\cdot (\tan{\left(x \right)})' \\ & =(8 x^{3})(\tan{\left(x \right)})+(2 x^{4})(\sec^{2}{\left(x \right)}) \\ & =2 x^{4} \sec^{2}{\left(x \right)} + 8 x^{3} \tan{\left(x \right)}\end{aligned}
 $$
 
-2 x^{4} \left(\tan^{2}{\left(x \right)} + 1\right)
+2 x^{4} \sec^{2}{\left(x \right)}
 
-8 x^{3} \left(\tan^{2}{\left(x \right)} + 1\right)
+8 x^{3} \sec^{2}{\left(x \right)}
 
-- 2 x^{4} \left(\tan^{2}{\left(x \right)} + 1\right) + 8 x^{3} \tan{\left(x \right)}
+- 2 x^{4} \sec^{2}{\left(x \right)} + 8 x^{3} \tan{\left(x \right)}
 
 8 x^{3} \tan{\left(x \right)}
 
-2 x^{4} \left(\tan^{2}{\left(x \right)} + 1\right) + 8 x^{3} \tan{\left(x \right)}
+2 x^{4} \sec^{2}{\left(x \right)} + 8 x^{3} \tan{\left(x \right)}
 
 ## Generated q-310188 :question.difficulty/easy
 
@@ -918,18 +918,18 @@ Differentiate $(2 x^{3} - 3)(\tan{\left(x \right)}).$
 Here, we have the product of the two functions $u(x)=2 x^{3} - 3$ and $v(x)=\tan{\left(x \right)}.$ So, we apply the product rule:
 
 $$
-\begin{aligned}((2 x^{3} - 3)(\tan{\left(x \right)}))^{'} & =u'(x)\cdot v(x)+u(x)\cdot v'(x) \\ & =(2 x^{3} - 3)'\cdot (\tan{\left(x \right)})+(2 x^{3} - 3)\cdot (\tan{\left(x \right)})' \\ & =(6 x^{2})(\tan{\left(x \right)})+(2 x^{3} - 3)(\tan^{2}{\left(x \right)} + 1) \\ & =2 x^{3} \tan^{2}{\left(x \right)} + 2 x^{3} + 6 x^{2} \tan{\left(x \right)} - 3 \tan^{2}{\left(x \right)} - 3\end{aligned}
+\begin{aligned}((2 x^{3} - 3)(\tan{\left(x \right)}))^{'} & =u'(x)\cdot v(x)+u(x)\cdot v'(x) \\ & =(2 x^{3} - 3)'\cdot (\tan{\left(x \right)})+(2 x^{3} - 3)\cdot (\tan{\left(x \right)})' \\ & =(6 x^{2})(\tan{\left(x \right)})+(2 x^{3} - 3)(\sec^{2}{\left(x \right)}) \\ & =2 x^{3} \sec^{2}{\left(x \right)} + 6 x^{2} \tan{\left(x \right)} - 3 \sec^{2}{\left(x \right)}\end{aligned}
 $$
 
 6 x^{2} \tan{\left(x \right)}
 
-6 x^{2} \left(\tan^{2}{\left(x \right)} + 1\right)
+6 x^{2} \sec^{2}{\left(x \right)}
 
-\left(2 x^{3} - 3\right) \left(\tan^{2}{\left(x \right)} + 1\right)
+\left(2 x^{3} - 3\right) \sec^{2}{\left(x \right)}
 
-6 x^{2} \tan{\left(x \right)} + \left(2 x^{3} - 3\right) \left(\tan^{2}{\left(x \right)} + 1\right)
+6 x^{2} \tan{\left(x \right)} + \left(2 x^{3} - 3\right) \sec^{2}{\left(x \right)}
 
-6 x^{2} \tan{\left(x \right)} - \left(2 x^{3} - 3\right) \left(\tan^{2}{\left(x \right)} + 1\right)
+6 x^{2} \tan{\left(x \right)} - \left(2 x^{3} - 3\right) \sec^{2}{\left(x \right)}
 
 ## Generated binomial :question.difficulty/moderate
 
@@ -940,10 +940,10 @@ $f'(x)=$ {{field-1}}
 Here, we have the product of the two functions $u(x)=2 - 4 x^{4}$ and $v(x)=\tan{\left(x \right)}.$ So, we apply the product rule:
 
 $$
-\begin{aligned}((2 - 4 x^{4})(\tan{\left(x \right)}))^{'} & =u'(x)\cdot v(x)+u(x)\cdot v'(x) \\ & =(2 - 4 x^{4})'\cdot (\tan{\left(x \right)})+(2 - 4 x^{4})\cdot (\tan{\left(x \right)})' \\ & =(- 16 x^{3})(\tan{\left(x \right)})+(2 - 4 x^{4})(\tan^{2}{\left(x \right)} + 1) \\ & =- 4 x^{4} \tan^{2}{\left(x \right)} - 4 x^{4} - 16 x^{3} \tan{\left(x \right)} + 2 \tan^{2}{\left(x \right)} + 2\end{aligned}
+\begin{aligned}((2 - 4 x^{4})(\tan{\left(x \right)}))^{'} & =u'(x)\cdot v(x)+u(x)\cdot v'(x) \\ & =(2 - 4 x^{4})'\cdot (\tan{\left(x \right)})+(2 - 4 x^{4})\cdot (\tan{\left(x \right)})' \\ & =(- 16 x^{3})(\tan{\left(x \right)})+(2 - 4 x^{4})(\sec^{2}{\left(x \right)}) \\ & =- 4 x^{4} \sec^{2}{\left(x \right)} - 16 x^{3} \tan{\left(x \right)} + 2 \sec^{2}{\left(x \right)}\end{aligned}
 $$
 
-- 16 x^{3} \tan{\left(x \right)} + \left(2 - 4 x^{4}\right) \left(\tan^{2}{\left(x \right)} + 1\right)
+- 16 x^{3} \tan{\left(x \right)} + \left(2 - 4 x^{4}\right) \sec^{2}{\left(x \right)}
 
 ## Generated affine_trig :question.difficulty/hard
 
@@ -1060,18 +1060,18 @@ Differentiate $(2 x^{3} - 3 x)(\tan{\left(x \right)} - 2).$
 Here, we have the product of the two functions $u(x)=2 x^{3} - 3 x$ and $v(x)=\tan{\left(x \right)} - 2.$ So, we apply the product rule:
 
 $$
-\begin{aligned}((2 x^{3} - 3 x)(\tan{\left(x \right)} - 2))^{'} & =u'(x)\cdot v(x)+u(x)\cdot v'(x) \\ & =(2 x^{3} - 3 x)'\cdot (\tan{\left(x \right)} - 2)+(2 x^{3} - 3 x)\cdot (\tan{\left(x \right)} - 2)' \\ & =(6 x^{2} - 3)(\tan{\left(x \right)} - 2)+(2 x^{3} - 3 x)(\tan^{2}{\left(x \right)} + 1) \\ & =2 x^{3} \tan^{2}{\left(x \right)} + 2 x^{3} + 6 x^{2} \tan{\left(x \right)} - 12 x^{2} - 3 x \tan^{2}{\left(x \right)} - 3 x - 3 \tan{\left(x \right)} + 6\end{aligned}
+\begin{aligned}((2 x^{3} - 3 x)(\tan{\left(x \right)} - 2))^{'} & =u'(x)\cdot v(x)+u(x)\cdot v'(x) \\ & =(2 x^{3} - 3 x)'\cdot (\tan{\left(x \right)} - 2)+(2 x^{3} - 3 x)\cdot (\tan{\left(x \right)} - 2)' \\ & =(6 x^{2} - 3)(\tan{\left(x \right)} - 2)+(2 x^{3} - 3 x)(\sec^{2}{\left(x \right)}) \\ & =2 x^{3} \sec^{2}{\left(x \right)} + 6 x^{2} \tan{\left(x \right)} - 12 x^{2} - 3 x \sec^{2}{\left(x \right)} - 3 \tan{\left(x \right)} + 6\end{aligned}
 $$
 
 \left(6 x^{2} - 3\right) \left(\tan{\left(x \right)} - 2\right)
 
-\left(6 x^{2} - 3\right) \left(\tan^{2}{\left(x \right)} + 1\right)
+\left(6 x^{2} - 3\right) \sec^{2}{\left(x \right)}
 
-\left(2 x^{3} - 3 x\right) \left(\tan^{2}{\left(x \right)} + 1\right)
+\left(2 x^{3} - 3 x\right) \sec^{2}{\left(x \right)}
 
-\left(6 x^{2} - 3\right) \left(\tan{\left(x \right)} - 2\right) + \left(2 x^{3} - 3 x\right) \left(\tan^{2}{\left(x \right)} + 1\right)
+\left(6 x^{2} - 3\right) \left(\tan{\left(x \right)} - 2\right) + \left(2 x^{3} - 3 x\right) \sec^{2}{\left(x \right)}
 
-\left(6 x^{2} - 3\right) \left(\tan{\left(x \right)} - 2\right) - \left(2 x^{3} - 3 x\right) \left(\tan^{2}{\left(x \right)} + 1\right)
+\left(6 x^{2} - 3\right) \left(\tan{\left(x \right)} - 2\right) - \left(2 x^{3} - 3 x\right) \sec^{2}{\left(x \right)}
 
 ## Generated affine_trig :question.difficulty/hard
 
@@ -1082,7 +1082,7 @@ $f'(x)=$ {{field-1}}
 Here, we have the product of the two functions $u(x)=- 4 x^{4} + 2 x$ and $v(x)=\tan{\left(x \right)} + 3.$ So, we apply the product rule:
 
 $$
-\begin{aligned}((- 4 x^{4} + 2 x)(\tan{\left(x \right)} + 3))^{'} & =u'(x)\cdot v(x)+u(x)\cdot v'(x) \\ & =(- 4 x^{4} + 2 x)'\cdot (\tan{\left(x \right)} + 3)+(- 4 x^{4} + 2 x)\cdot (\tan{\left(x \right)} + 3)' \\ & =(2 - 16 x^{3})(\tan{\left(x \right)} + 3)+(- 4 x^{4} + 2 x)(\tan^{2}{\left(x \right)} + 1) \\ & =- 4 x^{4} \tan^{2}{\left(x \right)} - 4 x^{4} - 16 x^{3} \tan{\left(x \right)} - 48 x^{3} + 2 x \tan^{2}{\left(x \right)} + 2 x + 2 \tan{\left(x \right)} + 6\end{aligned}
+\begin{aligned}((- 4 x^{4} + 2 x)(\tan{\left(x \right)} + 3))^{'} & =u'(x)\cdot v(x)+u(x)\cdot v'(x) \\ & =(- 4 x^{4} + 2 x)'\cdot (\tan{\left(x \right)} + 3)+(- 4 x^{4} + 2 x)\cdot (\tan{\left(x \right)} + 3)' \\ & =(2 - 16 x^{3})(\tan{\left(x \right)} + 3)+(- 4 x^{4} + 2 x)(\sec^{2}{\left(x \right)}) \\ & =- 4 x^{4} \sec^{2}{\left(x \right)} - 16 x^{3} \tan{\left(x \right)} - 48 x^{3} + 2 x \sec^{2}{\left(x \right)} + 2 \tan{\left(x \right)} + 6\end{aligned}
 $$
 
-\left(2 - 16 x^{3}\right) \left(\tan{\left(x \right)} + 3\right) + \left(- 4 x^{4} + 2 x\right) \left(\tan^{2}{\left(x \right)} + 1\right)
+\left(2 - 16 x^{3}\right) \left(\tan{\left(x \right)} + 3\right) + \left(- 4 x^{4} + 2 x\right) \sec^{2}{\left(x \right)}

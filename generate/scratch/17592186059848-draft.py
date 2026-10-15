@@ -136,6 +136,8 @@ def validate_parameters(p,spec):
         workload=arithmetic_workload(m)
         if any(workload[k]>limit for k,limit in ARITHMETIC_LIMITS[spec['level']].items()):
             raise ValueError('Explicit arithmetic exceeds source workload')
+    if spec['level']=='moderate' and sum(v.is_Rational is False for v in m)>3:
+        raise ValueError('Moderate supports at most three radical entries, matching observed families')
     if spec['level']=='moderate' and all(v.is_Integer for v in m):
         raise ValueError('Moderate requires fractions or radicals')
     if spec['level']=='hard':

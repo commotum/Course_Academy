@@ -193,6 +193,7 @@ def run():
         t=case['template'];print('source',t,flush=True);raw=g.QUESTIONS[t]
         replay=g.generate('easy',seed=3,template=t,parameters=case['parameters'],profile='observed_raw');raw_check(replay,raw,case);raw_bank_values+=raw_bank_readback(replay)
         normal=g.generate('easy',seed=3,template=t,parameters=case['parameters']);readback(normal);readbacks+=1
+        assert normal['generation']['mathematical_fingerprint']==replay['generation']['mathematical_fingerprint']
         if ':question/worked-solution' in raw:
             expected=g.normalize_prose(g.masked(raw[':question/worked-solution'],g.source_data(t,case['parameters'])[2]))
             if t=='q-319350':expected=expected.replace('({e}^{x}sec⁡(x))','({e}^{x}(2+sin⁡(x)))',1)
@@ -222,6 +223,7 @@ def run():
                     # Changed raw profiles preserve key omissions, prose and source
                     # operative masks; normal readback validates every displayed row.
                     raw=g.QUESTIONS[t];rp=g.generate(level,seed=seed,template=t,parameters=p,profile='observed_raw');raw_bank_values+=raw_bank_readback(rp)
+                    assert rp['generation']['mathematical_fingerprint']==record['generation']['mathematical_fingerprint']
                     for key in (':question/difficulty',':question/worked-solution',':question/answer-fields'):assert (key in rp['question'])==(key in raw)
                     if ':question/worked-solution' in raw:assert rp['question'][':question/worked-solution']==g.normalize_prose(g.masked(raw[':question/worked-solution'],g.source_data(t,p)[2]))
             slots[level+' '+t]={k:sorted(v) for k,v in seen.items()}
@@ -253,7 +255,7 @@ def run():
         except (AssertionError,ValueError):mutations.append(label)
         else:raise AssertionError('Mutation passed '+label)
 
-    record=copy.deepcopy(base);sol=record['question'][':question/worked-solution'];aligned=re.search(r'\begin\{aligned\}(.*?)\\end\{aligned\}',sol,re.S).group(1);parts=re.split(r'\\\\',aligned);parts[-1]=parts[-2]
+    record=copy.deepcopy(base);sol=record['question'][':question/worked-solution'];aligned=re.search(r'\\begin\{aligned\}(.*?)\\end\{aligned\}',sol,re.S).group(1);parts=re.split(r'\\\\',aligned);parts[-1]=parts[-2]
     record['question'][':question/worked-solution']=sol.replace(aligned,r' \\ '.join(parts))
     try:readback(record,check_identity=False)
     except (AssertionError,ValueError):mutations.append('equal-but-undistributed-final-row')
