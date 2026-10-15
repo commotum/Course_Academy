@@ -91,6 +91,21 @@ def check(record):
         else:
             r=parsed.coeff(symbols['a'])
             expected=[c,(a[0]+k*b[0],a[1]+k*b[1]),(r*a[0]+b[0],r*a[1]+b[1]),(r*a[0]-k*b[0],r*a[1]-k*b[1]),(r*a[0]+k*b[1],r*a[1]+k*b[0])]
+    if ':question/worked-solution' in q:
+        if family in ('linear','fractional_linear'):
+            ev=[vector(x) for x in re.findall(r'⟨[^⟩]+⟩',rows[1])]
+            assert ev==[pv[0],abs(k)*pv[1]],('scaled operands',ev)
+        if family in ('subtract','linear','fractional_linear'):
+            factor=-1 if family=='subtract' else k
+            for index,part in enumerate(component_parts):
+                bits=re.split(r'\s([+-])\s',part.strip(),maxsplit=1);assert len(bits)==3,bits
+                assert scalar(bits[0])==a[index] and scalar(bits[2])==abs(factor)*b[index]
+                assert bits[1]==('+' if factor>0 else '-')
+        if family=='scalar':
+            parts=re.findall(r'⟨([^⟩]+)⟩',rows[1])[0].split(',')
+            for index,part in enumerate(parts):
+                bits=part.split(r'\cdot');assert len(bits)==2
+                assert scalar(bits[0])==k and scalar(bits[1])==a[index]
     for f in q.get(':question/answer-fields',[]):
         assert f[':answer-field/type']==':answer-field.type/radio'
         choices=f[':answer-field/choices'];assert len(choices)==5
@@ -120,17 +135,48 @@ def main():
             assert old[':answer-field/type'][':db/ident']==new[':answer-field/type']
         fidelity.append({'source_id':case['source_id'],'exact_prompt':True,'presence_parity':True,'complete_bank_matched':':question/answer-fields' in orig,'exact_solution_matched':':question/worked-solution' in orig,'original_correct_ref_present':False})
         completed.append(g.generate(case['level'],profile=case['normal_profile'],parameters=case['parameters']))
-    records=[];counts={};families={};positions=set()
+    save('source-replays.json',raw);save('source-completions.json',completed)
+    inventory=json.loads((HERE/'independent-inventory.json').read_text())
+    assert {k:inventory[k] for k in ('database','basis','lineage')}==g.SOURCE
+    nonma=[q for q in source['record'][':knowledge-point/questions'] if ':question/math-academy-id' not in q]
+    assert [r['record'] for r in inventory['questions']]==nonma
+    for captured in nonma:
+        q=copy.deepcopy(captured);prompt=q[':question/problem']
+        family='sum' if prompt.startswith('What') else 'subtract' if prompt.startswith('If $u') else 'scalar' if prompt.startswith('If') else 'linear'
+        for f in q[':question/answer-fields']:
+            f[':answer-field/type']=f[':answer-field/type'][':db/ident']
+            f[':answer-field/correct']=[':answer/id',f[':answer-field/correct'][':answer/id']]
+            for a in f[':answer-field/choices']:a[':answer/type']=a[':answer/type'][':db/ident']
+        check({'knowledge_point':{'db_id':g.KP_ID,'id':g.KP_UUID,'title':g.TITLE},'question':q,'generation':{'template':family}})
+    assert all(r['role']=='independently authored inventory' and r['relationship_to_source_templates'] for r in inventory['questions'])
+    originalwrappers=json.loads((HERE/'source-cases.json').read_text());assert originalwrappers==[{'source_id':q[':question/math-academy-id'],'record':q} for q in source['record'][':knowledge-point/questions'] if ':question/math-academy-id' in q]
+    # Canonical proof chain, apart from its bold/whitespace presentation, uses the same four stages.
+    canonical=source['record'][':knowledge-point/canonical-example'];canonical_normal=g.generate_moderate(parameters={'a':[-7,15],'b':[14,-11],'k':-3});check(canonical_normal);save('canonical-normal.json',canonical_normal)
+    body=canonical[':question/worked-solution'].split(r'\begin{aligned}')[1].split(r'\end{aligned}')[0]
+    assert len(body.split('\\\\'))==4
+    for row in body.split('\\\\'):assert expression(row.split('=')[1])==sp.ImmutableMatrix([-49,48])
+    records=[];counts={};families={};positions=set();slotcoverage={};hard_positions=set()
     for level in g.SUPPORTED_LEVELS:
         fps=set();family=set()
         for seed in range(400):
             record=g.generate(level,seed);check(record);fps.add(record['generation']['mathematical_fingerprint']);family.add(record['generation']['template'])
+            m=record['generation']
+            if level=='hard':
+                hard_positions.update((name,index) for name in ('a','b') for index,value in enumerate(m['parameters'][name]) if sp.Rational(value).q==2)
+                assert abs(sp.Rational(m['parameters']['k'])) in (3,5)
+            slots=slotcoverage.setdefault(m['template'],{})
+            for slot,val in m['parameters'].items():
+                for i,item in enumerate(val if isinstance(val,list) else [val]):slots.setdefault(slot+str(i),set()).add(item)
             q=record['question'];f=q[':question/answer-fields'][0];positions.add(next(i for i,a in enumerate(f[':answer-field/choices']) if a[':answer/id']==f[':answer-field/correct'][1]))
             if seed<75:records.append(record)
         assert len(fps)>370,(level,len(fps))
         assert family=={t for t,l in g.TEMPLATES.items() if l==level}
         counts[level]=len(fps);families[level]=sorted(family)
-    assert positions==set(range(5))
+    assert positions==set(range(5));assert hard_positions=={('a',0),('a',1),('b',0),('b',1)}
+    # Move the half to every eligible slot with all remaining mathematical data fixed.
+    for name,index in sorted(hard_positions):
+        params={'a':[4,7],'b':[-6,2],'k':3};params[name][index]='5/2'
+        check(g.generate_hard(parameters=params))
     for record in completed+records:
         check(record)
         m=record['generation'];params=m['parameters']
@@ -179,7 +225,20 @@ def main():
         lines+=['',orig.get(':question/worked-solution','Worked solution absent.'),'','### Parameterized raw public replay','',g.markdown(record),'','### Inferred completed original parameters','',g.markdown(normal),'']
     for record in review:lines+=['## Clearly labeled generated variant','',g.markdown(record),'']
     (HERE/'review.md').write_text('\n'.join(lines))
-    result={'status':'checks passed; pending independent root QA','database_writes':0,'source':g.SOURCE,'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':importlib.metadata.version('matplotlib'),'renderer_used':None},'fidelity':{'practice_sources':4,'exact_prompts':'4/4','attribute_presence_parity':'4/4','complete_banks':'2/2','displayed_choices':'10/10','observed_distractors_with_independently_inferred_correct':'8/8','original_correct_designations':'0/0 (all absent; none claimed matched)','worked_solutions':'2/2','mathematical_repairs':0,'source_format_completions':4,'sources':fidelity},'independent_displayed_math_checks':1200+len(completed)+len(records)+3,'meaningful_unique_tasks_in_400_seeds':counts,'default_family_coverage':families,'native':json.loads((HERE/'engine-report.json').read_text()),'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'negative_controls':negative_controls,'limitations':['Unrated source levels are authored assignments, not recovered labels.','Missing original correct refs prevent original designation fidelity/native grading; completed fixtures are tested separately.','Original widget has no q1301/q1389; their frozen EDB prompts/solutions remain primary evidence.','Source distractor operations faithfully replay all values but their pedagogical intent is inferred.','Moderate is authored assignment of observed one-scaled-vector integer work. Hard is authored half-integer same-method workload, with no observed MA hard labels.']}
+    result={'status':'checks passed; pending independent root QA','database_writes':0,'source':g.SOURCE,'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__,'matplotlib':importlib.metadata.version('matplotlib'),'renderer_used':None},'fidelity':{'practice_sources':4,'exact_prompts':'4/4','attribute_presence_parity':'4/4','complete_banks':'2/2','displayed_choices':'10/10','observed_distractors_with_independently_inferred_correct':'8/8','original_correct_designations':'0/0 (all absent; none claimed matched)','worked_solutions':'2/2','mathematical_repairs':0,'source_format_completions':4,'sources':fidelity},'independent_displayed_math_checks':1200+len(raw)+len(completed)+len(records)+3+1+len(hard_positions)+len(nonma),'meaningful_unique_tasks_in_400_seeds':counts,'default_family_coverage':families,'native':json.loads((HERE/'engine-report.json').read_text()),'engine_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'independent_inventory_exact_records':len(nonma),'canonical_equalities':4,'slot_coverage':{f:{k:sorted(v) for k,v in slots.items()} for f,slots in slotcoverage.items()},'hard_half_position_coverage':[list(x) for x in sorted(hard_positions)],'target_roles':'All requested results are complete vectors; ordered supplied coordinate pairs are eligible numerical slots. There is no selectable cell/point/subtarget in this KP.','negative_controls':negative_controls,'limitations':['Unrated source levels are authored assignments, not recovered labels.','Missing original correct refs prevent original designation fidelity/native grading; completed fixtures are tested separately.','Original widget has no q1301/q1389; their frozen EDB prompts/solutions remain primary evidence.','Source distractor operations faithfully replay all values but their pedagogical intent is inferred.','Moderate is authored assignment of observed one-scaled-vector integer work. Hard is authored half-integer same-method workload, with no observed MA hard labels.']}
+    manifest=json.loads((HERE/'reference/grader-build.json').read_text());artifacts={manifest['source']:manifest['source_sha256'],manifest['library']:manifest['library_sha256'],manifest['binary']:manifest['binary_sha256']}|manifest['engine_sources']|manifest['dependencies']
+    assert len(artifacts)==42
+    for path,sha in artifacts.items():assert hashlib.sha256((ROOT/path).read_bytes()).hexdigest()==sha,path
+    assert hashlib.sha256((HERE/'check-engine').read_bytes()).hexdigest()==manifest['binary_sha256']
+    result['current_native_artifact_hashes_verified']=42
+    baseline=json.loads((HERE/'registered-baseline.json').read_text());base=HERE.parent;kp=str(g.KP_ID)
+    paths=[base/(kp+'.py')]+list((base/kp).rglob('*'))+list((base/'__pycache__').glob(kp+'.*.pyc'))
+    current={str(x.relative_to(ROOT)):hashlib.sha256(x.read_bytes()).hexdigest() for x in paths if x.is_file()}
+    assert current==baseline,'Registered pathset or hashes changed'
+    result['registered_baseline_unchanged']=True;result['registered_baseline_file_count']=len(baseline)
+    cli=subprocess.run([str(ROOT/'.venv/bin/python'),'-B',str(HERE.with_suffix('.py')),'--difficulty','all','--count','1','--format','json'],check=True,capture_output=True,text=True)
+    assert isinstance(json.loads(cli.stdout),list) and len(json.loads(cli.stdout))==3
+    (HERE/'cli-all.json').write_text(cli.stdout);result['cli_all_count1_records']=3
     save('validation.json',result)
     print(json.dumps({k:v for k,v in result.items() if k not in ('native',)},indent=2))
 

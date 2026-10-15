@@ -919,6 +919,13 @@ class ActivityCapture:
         def binding(question):
             def text(value, *, boundaries=False):
                 value = str(value) if value is not None else ''
+                # A history page can lose MathJax's boldsymbol extension and
+                # render the formatting command itself as a red error token.
+                # Ignore only that DOM-proven artifact for source comparison;
+                # retain both original prompts and all mathematical operands.
+                if re.search(r'<mtext\b[^>]*\bmathcolor=[\"\']red[\"\'][^>]*>\\boldsymbol</mtext>',
+                             question.get('html', ''), re.I):
+                    value = value.replace(r'\text{\boldsymbol}', '')
                 for asset in question.get('assets', []):
                     if asset.get('sha256'):
                         for name in ('path', 'source_url'):

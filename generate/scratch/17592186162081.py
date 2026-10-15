@@ -22,6 +22,8 @@ _RENDER_LOCK=threading.RLock()
 KP_ID=17592186162081
 KP_UUID='b4ac9e7d-ea92-5cd3-af26-4c902196e80b'
 TITLE='Calculating Line Integrals of Unity'
+SUPPORTED_LEVELS=('easy','moderate','hard')
+GENERATOR_UUID=str(uuid.uuid5(uuid.UUID(KP_UUID),'question-generator'))
 VERSION='unity-geometric-1'
 ROOT=Path(__file__).resolve().parent/str(KP_ID)
 SOURCE=json.loads((ROOT/'source.json').read_text())
@@ -249,7 +251,19 @@ def markdown(r):
  q=r['question'];out=q[':question/problem']+'\n\n'
  for a in q[':question/answer-fields'][0][':answer-field/choices']:out+='- $'+a[':answer/value']+'$\n'
  return out+'\n'+q.get(':question/worked-solution','[Original worked solution absent]')
+def batch(level,count,seed=0,template=None,profile=None):
+ """Distinct arithmetic tasks; translation, orientation and bank aliases collapse."""
+ if count<0:raise ValueError('count must be nonnegative')
+ rows=[];seen=set()
+ for offset in range(max(1000,count*300)):
+  if len(rows)==count:break
+  r=generate(level,seed+offset,template=template,profile=profile)
+  fp=r['generation']['mathematical_fingerprint']
+  if fp not in seen:rows.append(r);seen.add(fp)
+ if len(rows)!=count:raise ValueError(f'finite variant limit: requested {count}, found {len(rows)} distinct tasks')
+ return rows
+
 if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['markdown','json'],default='markdown');ap.add_argument('--template');ap.add_argument('--profile');args=ap.parse_args()
- rows=[generate(level,args.seed+i,template=args.template,profile=args.profile) for level in (['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]) for i in range(args.count)]
+ rows=[r for level in (SUPPORTED_LEVELS if args.difficulty=='all' else [args.difficulty]) for r in batch(level,args.count,args.seed,template=args.template,profile=args.profile)]
  print(json.dumps(rows,indent=2) if args.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in rows))

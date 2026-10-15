@@ -511,6 +511,24 @@ class PipelineTests(unittest.TestCase):
             prep.question(plan,q,old,False)
         self.assertEqual(plan.finish()['forms'],[])
 
+    def test_function_application_escape_revision_reuses_response_owned_answer(self):
+        incoming = '6^x ln\u20616-10x+6'
+        legacy = r'6^x ln\u20616-10x+6'
+        choice={':db/id':20,':answer/id':source_uuid('answer',20),
+            ':answer/type':{':db/ident':kw('answer.type/math')},':answer/value':legacy,
+            ':task-item/_responses':[{':db/id':30}]}
+        field={':db/id':10,':answer-field/id':source_uuid('field',10),':answer-field/key':'x',
+            ':answer-field/type':{':db/ident':kw('answer-field.type/radio')},
+            ':answer-field/choices':[choice],':answer-field/correct':choice}
+        old={':db/id':5,':question/id':source_uuid('question',5),':question/answer-fields':[field]}
+        q=question();q['answer_fields'][0].update(type='radio',correct_type='math',correct_value=incoming,
+            choices=[{'type':'math','value':incoming}])
+        prep=Preparation(source_snapshot());plan=Plan(prep.snapshot);prep.question(plan,q,old,False)
+        forms=plan.finish()['forms']
+        self.assertIn({kw(':db/id'):20,kw(':answer/value'):incoming},forms)
+        self.assertNotIn([kw(':db/retract'),10,kw(':answer-field/choices'),20],forms)
+        self.assertFalse(any(isinstance(f,dict) and kw(':answer/id') in f for f in forms))
+
     def duplicate_typed_choices(self, field_type, *, owned=False, owned_first=False):
         first={':db/id':20,':answer/id':source_uuid('answer',20),
                ':answer/type':{':db/ident':kw('answer.type/math')},':answer/value':'2'}

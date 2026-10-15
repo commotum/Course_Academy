@@ -123,6 +123,18 @@ class HistoryBindingTests(unittest.TestCase):
                            'worked_solution': 'The answer is 2.', 'extraction_parts': ['problem', 'solution'], **change}
                 self.assertFalse(ActivityCapture._history_content_matches(question(identity='q-1'), history))
 
+    def test_history_mathjax_formatting_failure_does_not_split_verified_question(self):
+        live = question(r"The Hessian is $f''(x,y)=[2,1;1,0]$.", identity='q-1')
+        history = {'math_academy_id': 'q-1',
+            'problem': r"The Hessian is $\text{\boldsymbol}f''(x,y)=[2,1;1,0]$.",
+            'html': r'<math><mtext mathcolor="red">\boldsymbol</mtext><mi>f</mi></math>',
+            'fields': [], 'extraction_parts': ['problem', 'solution']}
+        self.assertTrue(ActivityCapture._history_content_matches(live, history))
+        self.assertIn(r'\text{\boldsymbol}', history['problem'])
+        self.assertFalse(ActivityCapture._history_content_matches(live, {**history, 'html': ''}))
+        self.assertFalse(ActivityCapture._history_content_matches(live,
+            {**history, 'problem': history['problem'].replace('[2,1;1,0]', '[2,1;1,1]')}))
+
     def test_deduplicated_history_grade_is_not_assigned_to_first_repeat(self):
         for known in (None, 'q-1'):
             first = presentation(question(identity=known), value='9')

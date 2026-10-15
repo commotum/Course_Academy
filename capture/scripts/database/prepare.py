@@ -13,6 +13,15 @@ from ..activity.evidence import question_key
 from ..activity.task_payload import semantic_identity, task_payload
 
 MA_SOURCE = ':org/Math-Academy'
+
+
+def choice_signature(kind, value):
+    # Older source imports retained JSON's literal spelling of MathML's
+    # invisible function-application character. Match its decoded form while
+    # retaining field/answer identities and every historical response link.
+    if kind == 'math' and isinstance(value, str):
+        value = value.replace(r'\u2061', '\u2061')
+    return kind, value
 KINDS = ('topic', 'knowledge-point', 'question', 'answer-field', 'answer', 'tutorial',
          'activity', 'step', 'multistep', 'assigned-problem')
 ALLOWED = {f'{kind}/{name}' for kind, names in {
@@ -630,7 +639,7 @@ class Preparation:
             if continuing:
                 by_choice = {}
                 for answer in candidate.get(':answer-field/choices', []):
-                    signature = (answer[':answer/type'][':db/ident'].rsplit('/',1)[-1], answer[':answer/value'])
+                    signature = choice_signature(answer[':answer/type'][':db/ident'].rsplit('/',1)[-1], answer[':answer/value'])
                     by_choice.setdefault(signature, []).append(answer)
                 if any(len(answers) > 1 and any(answer.get(':task-item/_responses') for answer in answers)
                        for answers in by_choice.values()):
@@ -638,9 +647,9 @@ class Preparation:
                     # value. A typed match cannot establish which duplicate
                     # owns history, so refuse before any Plan mutation.
                     raise UnsupportedContent('Source field revision has ambiguous historical response ownership among duplicate choices in field ' + str(key))
-            wanted = {(c['type'], c['value']) for c in field['choices']} if continuing else set()
+            wanted = {choice_signature(c['type'], c['value']) for c in field['choices']} if continuing else set()
             for answer in candidate.get(':answer-field/choices', []):
-                signature = (answer[':answer/type'][':db/ident'].rsplit('/',1)[-1], answer[':answer/value'])
+                signature = choice_signature(answer[':answer/type'][':db/ident'].rsplit('/',1)[-1], answer[':answer/value'])
                 if signature not in wanted and answer.get(':task-item/_responses'):
                     raise UnsupportedContent('Source field revision would orphan a historical response in field ' + str(key))
 
@@ -683,7 +692,9 @@ class Preparation:
             ft = plan.entity('answer-field', fid, previous)
             choices, correct = [], None
             for ctype, value in signature[2]:
-                previous_answer = next((a for a in (previous or {}).get(':answer-field/choices', []) if a[':answer/value'] == value and a[':answer/type'][':db/ident'] == ':answer.type/' + ctype), None)
+                previous_answer = next((a for a in (previous or {}).get(':answer-field/choices', [])
+                    if choice_signature(a[':answer/type'][':db/ident'].rsplit('/',1)[-1], a[':answer/value'])
+                       == choice_signature(ctype, value)), None)
                 aid = previous_answer[':answer/id'] if previous_answer else source_uuid('answer', str(fid) + ':' + digest([ctype,value]))
                 at = plan.entity('answer', aid, previous_answer)
                 plan.set(at, previous_answer, 'answer/type', kw('answer.type/' + ctype))

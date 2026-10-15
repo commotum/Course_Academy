@@ -23,7 +23,7 @@ except ModuleNotFoundError:
 KP_ID=17592186192656
 KP_UUID='2dbf4e1a-2c87-562d-8c4d-41fd32e79b86'
 TITLE='Solving a System of Equations by Eliminating the First Variable'
-VERSION='solve-first-one-transform-v4-revalidated'
+VERSION='solve-first-one-transform-v5-parameterized-source'
 HERE=Path(__file__).with_suffix('')
 SOURCE=json.loads((HERE/'source.json').read_text())
 ORIGINALS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions'] if ':question/math-academy-id' in q}
@@ -160,7 +160,7 @@ def worked_solution(p):
     return (f'Notice that the coefficient of ${x}$ in the first equation is ${a[0]}$, while in the second equation it is ${a[1]}$.\n\n'
        f'If we multiply the {names[row]} equation by ${tex(m)}$, then the ${x}$-coefficient will become ${tex(aa[row])}$, which will cancel with the coefficient of ${a[1-row]}$ in the {names[1-row]} equation.\n\n'
        '$$\n\\{'+'; '.join(eqs)+'\n$$\n\n'+f'Now, when we add the two equations, the variable ${x}$ will be eliminated:\n\n'+aligned(stages)+'\n\n'
-       f'So, the solution must have ${y} = {tex(Y)}$. However, we still need to find ${x}$. To do this, we substitute ${y} = {tex(Y)}$ back into one of the equations. Let\'s choose the {names[row]} equation:\n\n'+aligned(back)+'\n\n'
+       f'So, the solution must have ${y} = {tex(Y)}$. However, we still need to find ${x}.$ To do this, we substitute ${y} = {tex(Y)}$ back into one of the equations. Let\'s choose the {names[row]} equation:\n\n'+aligned(back)+'\n\n'
        f'Therefore, the solution to the system of equations is ${x}={tex(X)}, \\,{y}={tex(Y)}$, which can be expressed as $({tex(X)},{tex(Y)})$.')
 
 def sample(level,rng):
@@ -313,12 +313,67 @@ def canonical_task(p):
     # variable aliases, layout and bank shuffles cannot inflate task capacity.
     return digest(sorted(primitive_rows(p)))
 
+
+def observed_backbone(p,source_id):
+    """Both captured prompt/solution backbones rendered from exact instance slots.
+
+    Original raw spacing, nested alignment and bank omissions are evidence;
+    normal served output normalizes presentation before identity construction.
+    """
+    if source_id not in ('q-18787','q-238082'):raise ValueError('No observed solution for this source')
+    x,y=p['variables'];X,Y=values(p);row,m=operation(p);other=1-row
+    a=[p['a1'],p['a2']];b=[p['b1'],p['b2']];c=[p['c1'],p['c2']]
+    aa=a.copy();bb=b.copy();cc=c.copy();aa[row]*=m;bb[row]*=m;cc[row]*=m
+    compact=lambda z:z.replace(' ','')
+    equations=[compact(equation(a[i],b[i],c[i],x,y)) for i in (0,1)]
+    scaled=[compact(equation(aa[i],bb[i],cc[i],x,y)) for i in (0,1)]
+    # Exact old system wrapper remains raw evidence; served projection uses shared formatter.
+    system=lambda rs:r'\{\begin{aligned}'+r' \\ '.join(rs)+r'\end{aligned}'
+    display=lambda z:'$$\n'+z+'\n$$'
+    if source_id=='q-18787':
+        pr=f'Find the solution $({x},{y})$ to the following system of equations using the elimination method:\n\n'+display(system(equations))+f'\n\n*Hint: Eliminate the variable ${x}.$*'
+        intro=f'Notice that the ${x}$-coefficient in the first equation is ${a[0]},$ while in the second equation it is ${a[1]}.$ '
+    else:
+        pr='Consider the following system of equations:\n\n'+display(system(equations))+f'\n\nThe solution $({x},{y})$ to this system is '+ '$($\n{{field-1}}$\\,,$\n{{field-2}}\n$).$'
+        intro=f'Notice that the coefficient of ${x}$ in the  first  equation is ${a[0]},$ while in the second equation it is ${a[1]}.$ '
+    names=('first','second');before=equations.copy();before[row]=r'(\,'+before[row]+r'\,)\,\times ('+tex(m)+')'
+    operation_block=system(before)+r'\,⟹\,'+system(scaled)
+    def cancelled(i):
+        first=('-' if aa[i]<0 else '')+r'\cancel{'+term(abs(aa[i]),x)+'}'
+        return first+('+' if bb[i]>0 else '-')+term(abs(bb[i]),y)+' & ='+tex(cc[i])
+    summed=term(bb[0],y)+('+' if bb[1]>0 else '-')+term(abs(bb[1]),y)
+    rhs=tex(cc[0])+('+' if cc[1]>=0 else '-')+tex(abs(cc[1]))
+    stages=[cancelled(0),cancelled(1),'('+summed+') & =('+rhs+')']
+    if bb[0]+bb[1]!=1:stages.append(term(bb[0]+bb[1],y)+' & ='+tex(cc[0]+cc[1]))
+    stages.append(y+' & ='+tex(Y))
+    a0,b0,c0=a[0],b[0],c[0]
+    grouped=term(a0,x)+('+' if b0>0 else '-')+('' if abs(b0)==1 else tex(abs(b0)))+'('+tex(Y)+')'
+    evaluated=term(a0,x)+('+' if b0*Y>=0 else '-')+tex(abs(b0*Y))
+    back=[compact(lhs(a0,b0,x,y))+' & ='+tex(c0),grouped+' & ='+tex(c0),evaluated+' & ='+tex(c0)]
+    if a0!=1:back.append(term(a0,x)+' & ='+tex(c0-b0*Y))
+    back.append(x+' & ='+tex(X))
+    aligned=lambda rs:r'\begin{aligned}'+r' \\ '.join(rs)+r'\end{aligned}'
+    nest=lambda rs:aligned([aligned(rs)]) if source_id=='q-18787' else aligned(rs)
+    worked=(intro+'\n\n'+f'If we multiply the {names[row]} equation by ${tex(m)},$ then the ${x}$-coefficient will become ${tex(aa[row])},$ which will cancel with the coefficient of ${a[other]}$ in the {names[other]} equation.\n\n'+display(operation_block)+'\n\n'+f'Now, when we add the two equations, the variable ${x}$ will be eliminated:\n\n'+display(nest(stages))+'\n\n'+f'So, the solution must have ${y}={tex(Y)}.$ However, we still need to find ${x}.$ To do this, we substitute ${y}={tex(Y)}$ back into one of the equations. Let\'s choose the first equation:\n\n'+display(nest(back))+'\n\n'+f'Therefore, the solution to the system of equations is ${x}={tex(X)},\\,{y}={tex(Y)},$ which can be expressed as $({tex(X)},{tex(Y)}).$')
+    return pr,worked
+
 def replay_source(source_id,complete=False):
     """Raw capture is separate from supported, reviewable served repairs."""
     if source_id not in ORIGINALS:raise ValueError('Unknown original')
     raw=copy.deepcopy(ORIGINALS[source_id]);q=enum_projection(raw)
     level={'q-18787':'easy','q-238082':'moderate','q-208816':'easy'}[source_id]
     p=ANCHORS[source_id];template=SOURCE_TEMPLATE[source_id]
+    if source_id in ('q-18787','q-238082'):
+        q[':question/problem'],q[':question/worked-solution']=observed_backbone(p,source_id)
+        X,Y=values(p)
+        if source_id=='q-18787':
+            pairs=[(X,Y),(X,-Y-1),(-Y,-X),(X,-Y-2),(X,-Y-3)]
+            for answer,pair in zip(q[':question/answer-fields'][0][':answer-field/choices'],pairs):answer[':answer/value']='('+tex(pair[0])+','+tex(pair[1])+')'
+        else:
+            for field in q[':question/answer-fields']:
+                value=X if field[':answer-field/key']=='field-1' else Y
+                for answer in field[':answer-field/choices']:answer[':answer/value']=tex(value)
+                field[':answer-field/correct'][':answer/value']=tex(value)
     if complete:
         if source_id=='q-208816':q[':question/problem']=prompt(p,template)
         else:q[':question/problem']=normalize_prose(q[':question/problem'])
@@ -344,7 +399,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     if profile and profile.startswith('supported-source-'):return replay_source(profile[len('supported-source-'):],True)
     r=OLD_GENERATE(level,seed,template,field_type,parameters,profile)
     q=r['question'];p=r['generation']['parameters']
-    if r['generation']['template'] in ('radio_solution','moderate_blank_solution'):q[':question/worked-solution']=worked_solution(p,True)
+    if r['generation']['template'] in ('radio_solution','moderate_blank_solution'):
+        sid='q-18787' if r['generation']['template']=='radio_solution' else 'q-238082'
+        q[':question/problem'],q[':question/worked-solution']=observed_backbone(p,sid)
     q[':question/problem']=normalize_prose(q[':question/problem']);q[':question/worked-solution']=normalize_prose(q[':question/worked-solution'])
     # Refresh normalized identities only when display content changed. Prior normal
     # records remain captured independently, with their original IDs intact.

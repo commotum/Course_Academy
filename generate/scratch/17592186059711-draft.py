@@ -91,7 +91,9 @@ def normalize_parameters(template,p,raw=False):
         if key not in out:continue
         upper=4 if template=='double_scaled' else 5
         if out[key].q!=1 or not 2<=abs(out[key])<=upper: raise ValueError(f'{key} requires signed integer magnitude 2..{upper}')
-    if template=='fractional_linear' and not any(x.q==2 for v in (out['a'],out['b']) for x in v):raise ValueError('Hard requires a noninteger half component')
+    if template=='fractional_linear':
+        if sum(x.q==2 for v in (out['a'],out['b']) for x in v)!=1:raise ValueError('Hard requires exactly one noninteger half component')
+        if abs(out['k']) not in (3,5):raise ValueError('Hard requires odd signed scalar magnitude3 or5')
     return out
 
 def sample(template,rng):
@@ -106,8 +108,9 @@ def sample(template,rng):
         if template in ('linear','double_scaled'):p['k']=rng.choice([-4,-3,-2,2,3,4] if template=='double_scaled' else [-5,-4,-3,-2,2,3,4,5])
         if template=='double_scaled':p['r']=rng.choice([-4,-3,-2,2,3,4])
     if template=='fractional_linear':
-        p['a'][1]=str(sp.Rational(rng.choice(list(range(-29,30,2))),2))
-        p['k']=rng.choice([-5,-4,-3,-2,2,3,4,5])
+        name=rng.choice(['a','b']);coordinate=rng.randrange(2)
+        p[name][coordinate]=str(sp.Rational(rng.choice(list(range(-29,30,2))),2))
+        p['k']=rng.choice([-5,-3,3,5])
     return normalize_parameters(template,p)
 
 def build(template,p):
@@ -183,6 +186,7 @@ def mathematical_fingerprint(template,p):
     return digest(task)
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+    if type(seed) is not int:raise TypeError('seed must be a built-in integer')
     if level not in SUPPORTED_LEVELS:raise ValueError('Unsupported difficulty')
     if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('Only the observed/supported radio response is provided')
     rng=random.Random(seed)

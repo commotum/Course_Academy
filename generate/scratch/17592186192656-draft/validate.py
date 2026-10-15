@@ -93,6 +93,17 @@ def main():
   repairs.append({'source_id':sid,'raw_record_preserved':True,'changes':[{'attribute':k,'raw':before.get(k),'supported':after[k],'reason':'Mathematical formatting repair only' if k in before else 'Explicitly authored completion; absent in capture'} for k in (':question/problem',':question/worked-solution',':question/difficulty') if before.get(k)!=after.get(k)],'missing_raw_field_values':sid=='q-208816','supported_solution':list(map(str,g.values(g.ANCHORS[sid])))})
   source.append({'source_id':sid,'raw_content_and_omissions_exact':True,'source_options_matched':sum(len(f.get(':answer-field/choices',[])) for f in before[':question/answer-fields']),'source_complete_banks_matched':1 if sid=='q-18787' else 0,'source_distractors_matched':4 if sid=='q-18787' else 0,'source_distractors_total':4 if sid=='q-18787' else 0,'source_designations_matched':sum(':answer-field/correct' in f for f in before[':question/answer-fields']),'prose_and_operative_stages_preserved':sid!='q-208816','omitted_solution_authored':sid=='q-208816'})
  write('source-repairs.json',repairs);write('source-fidelity.json',source);write('source-replays.json',replays)
+ # Root-required regression: source backbones must compute changed values, not replay literal payloads.
+ backbone_cases=[]
+ for sid in ('q-18787','q-238082'):
+  pr,worked=g.observed_backbone(g.ANCHORS[sid],sid)
+  assert pr==g.ORIGINALS[sid][':question/problem'] and worked==g.ORIGINALS[sid][':question/worked-solution']
+  template=g.SOURCE_TEMPLATE[sid]
+  for lev in ('easy','moderate','hard'):
+   for seed in (901,902):
+    r=g.generate(lev,seed=seed,template=template);check(r,count=False);backbone_cases.append(r)
+ assert len({r['generation']['mathematical_fingerprint'] for r in backbone_cases})>=6
+ write('source-backbone-variants.json',backbone_cases)
  samples=[];variety={};slot={}
  for level in ('easy','moderate','hard'):
   tasks=set();orient=set();signs=set();labels=set();templates=set()

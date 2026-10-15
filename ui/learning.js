@@ -573,10 +573,6 @@ async function loadHome(signal, preserve) {
     }
     page.append(queue);
     if (!isDeveloperMode() && data.assessmentStatus?.unavailableReason) page.append(el('p', 'notice', data.assessmentStatus.unavailableReason + '. You can continue studying.'));
-    if (!isDeveloperMode() && data.supplyShortages?.length) page.append(el('p', 'notice', 'Fresh questions are being prepared for upcoming activities. Available activities remain below.'));
-    const foot = el('div', 'queue-foot');
-    foot.append(el('span', '', `${activities.length} ${activities.length === 1 ? 'activity' : 'activities'} ready`), el('span', '', isDeveloperMode() ? 'Developer mode · Nothing recorded' : 'Your progress is saved as you work.'));
-    page.append(foot);
     if (data.waitingActivities?.length) {
       const waiting = el('section', 'waiting-lessons');
       waiting.append(el('h2', 'step-title', 'Unfinished practice'));
@@ -587,7 +583,7 @@ async function loadHome(signal, preserve) {
       }
       page.append(waiting);
     }
-    if (data.practiceNotice || data.notice) page.append(el('p', 'notice', data.practiceNotice || data.notice));
+    if (data.notice) page.append(el('p', 'notice', data.notice));
     homeRendered = revision === targetRevision;
   } catch (error) {
     if (error.code === 'basis-conflict') queueRequest = null;

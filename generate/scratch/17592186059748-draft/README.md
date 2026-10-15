@@ -1,0 +1,15 @@
+# Integer determinant draft
+
+Private unregistered draft for KP17592186059748, rank195, refreshed math basis2275. Root approval is pending. The registered numeric generator and its complete88-file baseline are immutable and separately hashed.
+
+Run `.venv/bin/python generate/scratch/17592186059748-draft/validate.py` for original-bank fidelity, independent printed cell/operand/product/arithmetic checks, deterministic identity and native grading. Preview `.venv/bin/python generate/scratch/17592186059748-draft.py --difficulty all --count 1 --seed 42 --format json`; the result is a list of three distinct mathematical tasks. Run `render.py` for actual player Markdown/MathJax QA (requires localhost/Chromium permission).
+
+All9 MA practice originals replay through the public parameterized API;33 complete choices,24 distractors,8 captured keys and8 complete worked solutions are verified. Shared canonical normalization converts determinant bars around aligned matrices into vmatrix. Raw q-11648 preserves its missing difficulty, worked solution and correct designation; it remains ineligible evidence. Six historical scalar radio banks have unresolved error intent and are available only as explicit common-integral-scaling covariance evidence profiles. Normal default banks derive complete determinant-operation mistakes and reject entire collisions. No polynomial fitting or answer lookup is used.
+
+Seven independently authored captured inventory records remain exact in independent-inventory.json; the canonical example is separate. These do not establish observed difficulty. Easy/moderate templates preserve original scope; hard is an authored increase in signed integer multiplication/subtraction workload with exactly ad-bc. The lesson route through first-step/next places noninteger entries and unknown-entry algebra in separate KPs, which this generator excludes. No plots are required.
+
+Current native helper is a private immutable copy of59716-draft/check-engine. reference/grader-build.json and native-provenance-check.json verify all42 current source/library/dependency/binary hashes; validation rechecks them. All radio options and blank canonical/unreduced equivalent/incorrect entries are graded. There are no unresolved native outcomes in the checked fields. The raw missing-key record is excluded from native grading rather than supplied a fictional observed key.
+
+Actual player renderer checked40 records and12 presentation/difficulty screenshots. Each screenshot was visually inspected; source stages, negative-factor grouping,2x2 matrix geometry and complete solutions are legible, with no merror, red undefined commands, exposed delimiters or overflow. visual-qa.json records the review. The renderer intentionally displays answer values for review; it is not a learner submission screen.
+
+Final checks and full owned-file SHA256 list are in freeze.json; registered-unchanged.json proves exact registered path-set/hash preservation. No database, registration, engine or shared source writes were performed.
