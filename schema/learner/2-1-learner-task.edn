@@ -60,6 +60,11 @@
   :db/cardinality :db.cardinality/one
   :db/doc "Accumulated working seconds, calculated by summing task-item/elapsed-seconds across this task's items. The application updates this total with the item durations; it is not an independently edited value or the timed-exam deadline. Omit when durations are unknown."}
 
+ {:db/ident :learner-task/finished-at
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional original completion or failure instant recovered from migrated task history. Used for lifecycle ordering, assessment learning age, and dated XP/history instead of the import transaction time. Requires a completed or failed task and must not be later than its recorded terminal status. Omit when the original date is unknown; ordinary task completion uses status transaction history. This does not assert a start or replay learning credit."}
+
  {:db/ident :learner-task/xp-earned
   :db/valueType :db.type/long
   :db/cardinality :db.cardinality/one

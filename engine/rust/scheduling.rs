@@ -53,22 +53,18 @@ fn failed_kp(s: &EntitySnapshot, task: u64) -> Result<Option<u64>> {
 }
 pub fn lifecycle(s: &EntitySnapshot, learner: u64) -> Result<Lifecycle> {
     let tasks: BTreeSet<_> = s.refs(learner, "learner/activity")?.into_iter().collect();
-    let mut starts = BTreeSet::new();
     let mut ends = BTreeMap::new();
     for e in &s.status_history {
         if e.attribute != "learner-task/status" || !tasks.contains(&e.entity) {
             continue;
         }
         let st = s.ident(&e.value)?;
-        if st == "learner-task.status/started" {
-            starts.insert(e.entity);
-        }
         ends.insert(e.entity, (crate::schema::parse_instant(&e.at)?, st));
     }
     let mut finished = vec![];
     for &task in &tasks {
         let st = state(s, task)?;
-        if !starts.contains(&task) || !matches!(st.as_str(), "completed" | "failed") {
+        if !matches!(st.as_str(), "completed" | "failed") {
             continue;
         }
         let Some((at, recorded)) = ends.get(&task) else {
@@ -84,7 +80,7 @@ pub fn lifecycle(s: &EntitySnapshot, learner: u64) -> Result<Lifecycle> {
             topic: s.optional_ref(activity, "activity/scope")?,
             kind: retrieval::kind(s, activity)?,
             passed: st == "completed",
-            at: *at,
+            at: crate::timing::task_finished_at(s, task, *at)?,
         });
     }
     finished.sort_by_key(|f| (f.at, f.task));
@@ -157,7 +153,8 @@ pub fn lifecycle(s: &EntitySnapshot, learner: u64) -> Result<Lifecycle> {
             }
         }
     }
-    // Missing recorded starts deliberately excludes partially imported attempts.
+    // A recorded terminal outcome is valid history even when migration retained
+    // only the final snapshot. No fabricated start or repeated credit is needed.
     h.finished = finished;
     h.retakes.retain(|original| {
         !tasks.iter().any(|t| {

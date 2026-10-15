@@ -1,0 +1,11 @@
+# Classification — immutable math basis 2275
+
+The captured lineage is `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. `source.json` is the complete snapshot wrapper, with canonical e-447 and all eleven practice records. Eight complete MA originals use one radio selection field and five math choices: easy q-113511, q-113512, q-12018, q-72429, q-113509; moderate q-12019, q-72431, q-113517. Each original bank and its complete source-specific Markdown/solution structure is retained as a profile. Changes in coefficient, power, omitted stages and simplification pathways are preserved, rather than forcing the source into one generic solution.
+
+The incomplete MA original q-12499 has no difficulty, correct designation or solution. Its five primitive expressions contain two pairs equivalent modulo constants. The raw public replay profile retains all five mathematical values for evidence; a separate normal profile derives the correct expression, authors the missing solution/easy assignment, and minimally replaces the two duplicate choices. It cannot count as observed correct-designation or solution fidelity.
+
+Two current records have no MA original ID: 17592186483548 and 17592186483549. They are independent generated captures from the registered generator, not extra MA templates. `independent-inventory.json` retains each entire pulled record, database/basis/lineage, role and owning KP relationship. Their moderate profiles preserve their banks and full solutions separately from original-MA fidelity totals.
+
+Every template has plot rating **none**. No source asset is present and no figure is needed to assess this skill. Hard has no observed practice source. The normal authored hard policy is a conservative signed-coefficient variation of the same linear substitution and negative-integer power rule, supported by canonical e-447 and the general formula in the lesson; its difficulty label is a design claim.
+
+The numeric generator is registered (`latest_inventory.has_generator` in the basis2275 manifest). Its retained verification reports registration committed at basis1921 with two added moderate records. The baseline file includes every original file, including caches, before any imports. Only `17592186064204-draft.py` and its private directory are edited. No registration or EDB mutation is performed.

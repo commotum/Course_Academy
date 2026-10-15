@@ -1,0 +1,449 @@
+{
+  "basis": 1920,
+  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "profiles": {
+    "q-12019": {
+      "source_question_db_id": 17592186064480,
+      "level": "moderate",
+      "parameters": [
+        3,
+        -3,
+        1,
+        3
+      ],
+      "affine": "1-3x",
+      "prompt": "$\\int \\frac{3}{(@@L@@)^{3}}\\,\\text{d}x=$",
+      "solution": "First, we rewrite the integral as\n\n$$\n\\int 3(@@L@@)^{-3}\\,\\text{d}x.\n$$\n\nLet $u=@@L@@.$ Then differentiating with respect to $x$ gives\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=-3\\,\u27f9\\,\\text{d}x=-\\frac{1}{3}\\text{d}u.\n$$\n\nWe now write our integral in terms of $u,$ calculate the integral as normal, and write the final answer in terms of $x$ at the very end:\n\n$$\n\\begin{aligned}\\int 3(@@L@@)^{-3}\\,\\text{d}x & =3\\int {u}^{-3}\\cdot (-\\frac{1}{3})\\,\\text{d}u \\\\  & =3\\cdot (-\\frac{1}{3})\\int {u}^{-3}\\,\\text{d}u \\\\  & =-\\int {u}^{-3}\\,\\text{d}u \\\\  & =-\\frac{1}{(-2)}{u}^{-2}+C \\\\  & =\\frac{1}{2}(@@L@@)^{-2}+C \\\\  & =\\frac{1}{2(@@L@@)^{2}}+C\\end{aligned}\n$$\n\nLet's double-check that our result is correct. If we differentiate the result, then it should come out to the original integrand:\n\n$$\n\\begin{aligned}\\frac{\\text{d}}{\\text{d}x}[\\frac{1}{2(@@L@@)^{2}}+C] & =\\frac{1}{2}\\frac{\\text{d}}{\\text{d}x}[\\frac{1}{(@@L@@)^{2}}]+\\frac{\\text{d}}{\\text{d}x}(C) \\\\  & =\\frac{1}{2}\\frac{\\text{d}}{\\text{d}x}[(@@L@@)^{-2}]+\\frac{\\text{d}}{\\text{d}x}(C) \\\\  & =\\frac{1}{2}\\cdot (-2)(@@L@@)^{-3}\\cdot \\frac{\\text{d}}{\\text{d}x}(@@L@@)+0 \\\\  & =-(@@L@@)^{-3}\\cdot (-3) \\\\  & =3(@@L@@)^{-3} \\\\  & =\\frac{3}{(@@L@@)^{3}}\\,\u2713\\end{aligned}\n$$",
+      "bank": [
+        {
+          "source_answer_id": 17592186250848,
+          "source_value": "\\frac{1}{2(1-3x)^{2}}+C",
+          "mask": "\\frac{1}{2(@@L@@)^{2}}+C",
+          "correct": true
+        },
+        {
+          "source_answer_id": 17592186250939,
+          "source_value": "\\frac{2}{3(1-3x)^{2}}+C",
+          "mask": "\\frac{2}{3(@@L@@)^{2}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186251527,
+          "source_value": "\\frac{1}{(1-3x)^{2}}+C",
+          "mask": "\\frac{1}{(@@L@@)^{2}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186252072,
+          "source_value": "\\frac{3}{2(1-3x)^{2}}+C",
+          "mask": "\\frac{3}{2(@@L@@)^{2}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186252538,
+          "source_value": "-\\frac{1}{2(1-3x)^{2}}+C",
+          "mask": "-\\frac{1}{2(@@L@@)^{2}}+C",
+          "correct": false
+        }
+      ],
+      "source_correction": {
+        "reason": "Source first aligned integral omits dx; add the differential without changing any value or instructional wording.",
+        "old": "\\begin{aligned}\\int 3(@@L@@)^{-3} &",
+        "new": "\\begin{aligned}\\int 3(@@L@@)^{-3}\\,\\text{d}x &"
+      },
+      "plot_rating": "none",
+      "field_type": "radio",
+      "field_key": "selection",
+      "sampling_policy": "Only vary the nonzero affine intercept, preserving its sign. n, a, m, complete bank, prompt layout and solution sequence remain fixed.",
+      "bounds": [
+        1,
+        12
+      ]
+    },
+    "q-113511": {
+      "source_question_db_id": 17592186247360,
+      "level": "easy",
+      "parameters": [
+        1,
+        5,
+        -1,
+        6
+      ],
+      "affine": "5x-1",
+      "prompt": "Calculate the integral $\\int \\frac{1}{(@@L@@)^{6}}\\,\\text{d}x.$",
+      "solution": "First, we rewrite the integral as\n\n$$\n\\int (@@L@@)^{-6}\\,\\text{d}x.\n$$\n\nLet $u=@@L@@.$ Then differentiating with respect to $x$ gives\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=5\\,\u27f9\\,\\text{d}x=\\frac{1}{5}\\text{d}u.\n$$\n\nWe now write our integral in terms of $u,$ calculate the integral as normal, and write the final answer in terms of $x$ at the very end:\n\n$$\n\\begin{aligned}\\int (@@L@@)^{-6}\\,\\text{d}x & =\\int {u}^{-6}\\cdot \\frac{1}{5}\\text{d}u \\\\  & =\\frac{1}{5}\\int {u}^{-6}\\text{d}u \\\\  & =\\frac{1}{5}\\cdot (-\\frac{1}{5}){u}^{-5}+C \\\\  & =-\\frac{1}{25{u}^{5}}+C \\\\  & =-\\frac{1}{25(@@L@@)^{5}}+C\\end{aligned}\n$$\n\nLet's double-check that our result is correct. If we differentiate the result, then it should come out to the original integrand:\n\n$$\n\\begin{aligned}\\frac{\\text{d}}{\\text{d}x}[-\\frac{1}{25(@@L@@)^{5}}+C] & =\\frac{\\text{d}}{\\text{d}x}[-\\frac{1}{25(@@L@@)^{5}}]+\\frac{\\text{d}}{\\text{d}x}(C) \\\\  & =-\\frac{1}{25}\\frac{\\text{d}}{\\text{d}x}[(@@L@@)^{-5}]+\\frac{\\text{d}}{\\text{d}x}(C) \\\\  & =-\\frac{1}{25}\\cdot (-5)\\cdot (@@L@@)^{-6}\\cdot \\frac{\\text{d}}{\\text{d}x}(@@L@@)+0 \\\\  & =\\frac{1}{5(@@L@@)^{6}}\\cdot 5 \\\\  & =\\frac{1}{(@@L@@)^{6}}\\,\u2713\\end{aligned}\n$$",
+      "bank": [
+        {
+          "source_answer_id": 17592186244989,
+          "source_value": "\\frac{1}{5(5x-1)^{7}}+C",
+          "mask": "\\frac{1}{5(@@L@@)^{7}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186245185,
+          "source_value": "-\\frac{1}{35(5x-1)^{7}}+C",
+          "mask": "-\\frac{1}{35(@@L@@)^{7}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186245784,
+          "source_value": "-\\frac{1}{5(5x-1)^{5}}+C",
+          "mask": "-\\frac{1}{5(@@L@@)^{5}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186245826,
+          "source_value": "-\\frac{1}{25(5x-1)^{5}}+C",
+          "mask": "-\\frac{1}{25(@@L@@)^{5}}+C",
+          "correct": true
+        },
+        {
+          "source_answer_id": 17592186245917,
+          "source_value": "\\frac{1}{25(5x-1)^{5}}+C",
+          "mask": "\\frac{1}{25(@@L@@)^{5}}+C",
+          "correct": false
+        }
+      ],
+      "source_correction": null,
+      "plot_rating": "none",
+      "field_type": "radio",
+      "field_key": "selection",
+      "sampling_policy": "Only vary the nonzero affine intercept, preserving its sign. n, a, m, complete bank, prompt layout and solution sequence remain fixed.",
+      "bounds": [
+        -12,
+        -1
+      ]
+    },
+    "q-113512": {
+      "source_question_db_id": 17592186247361,
+      "level": "easy",
+      "parameters": [
+        1,
+        2,
+        3,
+        7
+      ],
+      "affine": "2x+3",
+      "prompt": "Calculate the integral $\\int \\frac{1}{(@@L@@)^{7}}\\,\\text{d}x.$",
+      "solution": "First, we rewrite the integral as\n\n$$\n\\int (@@L@@)^{-7}\\,\\text{d}x.\n$$\n\nLet $u=@@L@@.$ Then differentiating with respect to $x$ gives\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=2\\,\u27f9\\,\\text{d}x=\\frac{1}{2}\\text{d}u.\n$$\n\nWe now write our integral in terms of $u,$ calculate the integral as normal, and write the final answer in terms of $x$ at the very end:\n\n$$\n\\begin{aligned}\\int (@@L@@)^{-7}\\,\\text{d}x & =\\int {u}^{-7}\\cdot \\frac{1}{2}\\text{d}u \\\\  & =\\frac{1}{2}\\int {u}^{-7}\\text{d}u \\\\  & =\\frac{1}{2}\\cdot (-\\frac{1}{6}){u}^{-6}+C \\\\  & =-\\frac{1}{12{u}^{6}}+C \\\\  & =-\\frac{1}{12(@@L@@)^{6}}+C\\end{aligned}\n$$\n\nLet's double-check that our result is correct. If we differentiate the result, then it should come out to the original integrand:\n\n$$\n\\begin{aligned}\\frac{\\text{d}}{\\text{d}x}[-\\frac{1}{12(@@L@@)^{6}}+C] & =\\frac{\\text{d}}{\\text{d}x}[-\\frac{1}{12(@@L@@)^{6}}]+\\frac{\\text{d}}{\\text{d}x}(C) \\\\  & =-\\frac{1}{12}\\frac{\\text{d}}{\\text{d}x}[(@@L@@)^{-6}]+\\frac{\\text{d}}{\\text{d}x}(C) \\\\  & =-\\frac{1}{12}\\cdot (-6)\\cdot (@@L@@)^{-7}\\cdot \\frac{\\text{d}}{\\text{d}x}(@@L@@)+0 \\\\  & =\\frac{1}{2(@@L@@)^{7}}\\cdot 2 \\\\  & =\\frac{1}{(@@L@@)^{7}}\\,\u2713\\end{aligned}\n$$",
+      "bank": [
+        {
+          "source_answer_id": 17592186244646,
+          "source_value": "-\\frac{1}{6(2x+3)^{6}}+C",
+          "mask": "-\\frac{1}{6(@@L@@)^{6}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186245108,
+          "source_value": "\\frac{1}{12(2x+3)^{6}}+C",
+          "mask": "\\frac{1}{12(@@L@@)^{6}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186245500,
+          "source_value": "-\\frac{1}{12(2x+3)^{6}}+C",
+          "mask": "-\\frac{1}{12(@@L@@)^{6}}+C",
+          "correct": true
+        },
+        {
+          "source_answer_id": 17592186245977,
+          "source_value": "-\\frac{1}{16(2x+3)^{8}}+C",
+          "mask": "-\\frac{1}{16(@@L@@)^{8}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186246473,
+          "source_value": "\\frac{1}{2(2x+3)^{8}}+C",
+          "mask": "\\frac{1}{2(@@L@@)^{8}}+C",
+          "correct": false
+        }
+      ],
+      "source_correction": null,
+      "plot_rating": "none",
+      "field_type": "radio",
+      "field_key": "selection",
+      "sampling_policy": "Only vary the nonzero affine intercept, preserving its sign. n, a, m, complete bank, prompt layout and solution sequence remain fixed.",
+      "bounds": [
+        1,
+        12
+      ]
+    },
+    "q-12018": {
+      "source_question_db_id": 17592186253660,
+      "level": "easy",
+      "parameters": [
+        6,
+        2,
+        -3,
+        4
+      ],
+      "affine": "2x-3",
+      "prompt": "$\\int \\frac{6}{(@@L@@)^{4}}\\,\\text{d}x=$",
+      "solution": "First, we rewrite the integral as\n\n$$\n\\int 6(@@L@@)^{-4}\\,\\text{d}x.\n$$\n\nLet $u=@@L@@.$Then differentiating with respect to $x$ gives\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=2\\,\u27f9\\,\\text{d}x=\\frac{1}{2}\\text{d}u.\n$$\n\nWe now write our integral in terms of $u,$ calculate the integral as normal, and write the final answer in terms of $x$ at the very end:\n\n$$\n\\begin{aligned}\\int 6(@@L@@)^{-4}\\,\\text{d}x & =\\int 6{u}^{-4}\\cdot \\frac{1}{2}\\,\\text{d}u \\\\  & =3\\int {u}^{-4}\\,\\text{d}u \\\\  & =3\\cdot (-\\frac{1}{3}){u}^{-3}+C \\\\  & =-{u}^{-3}+C \\\\  & =-\\frac{1}{{u}^{3}}+C \\\\  & =-\\frac{1}{(@@L@@)^{3}}+C\\end{aligned}\n$$\n\nLet's double-check that our result is correct. If we differentiate the result, then it should come out to the original integrand:\n\n$$\n\\begin{aligned}\\frac{\\text{d}}{\\text{d}x}[-\\frac{1}{(@@L@@)^{3}}+C] & =\\frac{\\text{d}}{\\text{d}x}[-\\frac{1}{(@@L@@)^{3}}]+\\frac{\\text{d}}{\\text{d}x}(C) \\\\  & =-\\frac{\\text{d}}{\\text{d}x}[(@@L@@)^{-3}]+\\frac{\\text{d}}{\\text{d}x}(C) \\\\  & =-(-3)\\cdot (@@L@@)^{-4}\\cdot \\frac{\\text{d}}{\\text{d}x}(@@L@@)+0 \\\\  & =3\\cdot (@@L@@)^{-4}\\cdot 2 \\\\  & =\\frac{6}{(@@L@@)^{4}}\\,\u2713\\end{aligned}\n$$",
+      "bank": [
+        {
+          "source_answer_id": 17592186250686,
+          "source_value": "\\frac{1}{3(2x-3)^{3}}+C",
+          "mask": "\\frac{1}{3(@@L@@)^{3}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186250766,
+          "source_value": "-\\frac{6}{(2x-3)^{3}}+C",
+          "mask": "-\\frac{6}{(@@L@@)^{3}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186250813,
+          "source_value": "-\\frac{3}{(2x-3)^{3}}+C",
+          "mask": "-\\frac{3}{(@@L@@)^{3}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186251088,
+          "source_value": "\\frac{2}{3(2x-3)^{3}}+C",
+          "mask": "\\frac{2}{3(@@L@@)^{3}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186251863,
+          "source_value": "-\\frac{1}{(2x-3)^{3}}+C",
+          "mask": "-\\frac{1}{(@@L@@)^{3}}+C",
+          "correct": true
+        }
+      ],
+      "source_correction": null,
+      "plot_rating": "none",
+      "field_type": "radio",
+      "field_key": "selection",
+      "sampling_policy": "Only vary the nonzero affine intercept, preserving its sign. n, a, m, complete bank, prompt layout and solution sequence remain fixed.",
+      "bounds": [
+        -12,
+        -1
+      ]
+    },
+    "q-72429": {
+      "source_question_db_id": 17592186339111,
+      "level": "easy",
+      "parameters": [
+        -15,
+        5,
+        -7,
+        4
+      ],
+      "affine": "5x-7",
+      "prompt": "$\\int -\\frac{15}{(@@L@@)^{4}}\\,\\text{d}x=$",
+      "solution": "First, we rewrite the integral as\n\n$$\n\\int -15(@@L@@)^{-4}\\,\\text{d}x.\n$$\n\nLet $u=@@L@@.$Then differentiating with respect to $x$ gives\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=5\\,\u27f9\\,\\text{d}x=\\frac{1}{5}\\text{d}u.\n$$\n\nWe now write our integral in terms of $u,$ calculate the integral as normal, and write the final answer in terms of $x$ at the very end:\n\n$$\n\\begin{aligned}\\int -15(@@L@@)^{-4}\\,\\text{d}x & =\\int -15{u}^{-4}\\cdot \\frac{1}{5}\\,\\text{d}u \\\\  & =-3\\int {u}^{-4}\\,\\text{d}u \\\\  & =-3\\cdot (-\\frac{1}{3}){u}^{-3}+C \\\\  & ={u}^{-3}+C \\\\  & =\\frac{1}{{u}^{3}}+C \\\\  & =\\frac{1}{(@@L@@)^{3}}+C\\end{aligned}\n$$\n\nLet's double-check that our result is correct. If we differentiate the result, then it should come out to the original integrand:\n\n$$\n\\begin{aligned}\\frac{\\text{d}}{\\text{d}x}[\\frac{1}{(@@L@@)^{3}}+C] & =\\frac{\\text{d}}{\\text{d}x}[\\frac{1}{(@@L@@)^{3}}]+\\frac{\\text{d}}{\\text{d}x}(C) \\\\  & =\\frac{\\text{d}}{\\text{d}x}[(@@L@@)^{-3}]+\\frac{\\text{d}}{\\text{d}x}(C) \\\\  & =-3\\cdot (@@L@@)^{-4}\\cdot \\frac{\\text{d}}{\\text{d}x}(@@L@@)+0 \\\\  & =-3\\cdot (@@L@@)^{-4}\\cdot 5 \\\\  & =-\\frac{15}{(@@L@@)^{4}}\\,\u2713\\end{aligned}\n$$",
+      "bank": [
+        {
+          "source_answer_id": 17592186336578,
+          "source_value": "\\frac{1}{(5x-7)^{3}}+C",
+          "mask": "\\frac{1}{(@@L@@)^{3}}+C",
+          "correct": true
+        },
+        {
+          "source_answer_id": 17592186337093,
+          "source_value": "-\\frac{5}{(5x-7)^{3}}+C",
+          "mask": "-\\frac{5}{(@@L@@)^{3}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186337295,
+          "source_value": "\\frac{3}{(5x-7)^{3}}+C",
+          "mask": "\\frac{3}{(@@L@@)^{3}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186337573,
+          "source_value": "-\\frac{3}{(5x-7)^{3}}+C",
+          "mask": "-\\frac{3}{(@@L@@)^{3}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186337926,
+          "source_value": "\\frac{15}{(5x-7)^{3}}+C",
+          "mask": "\\frac{15}{(@@L@@)^{3}}+C",
+          "correct": false
+        }
+      ],
+      "source_correction": null,
+      "plot_rating": "none",
+      "field_type": "radio",
+      "field_key": "selection",
+      "sampling_policy": "Only vary the nonzero affine intercept, preserving its sign. n, a, m, complete bank, prompt layout and solution sequence remain fixed.",
+      "bounds": [
+        -12,
+        -1
+      ]
+    },
+    "q-72431": {
+      "source_question_db_id": 17592186339113,
+      "level": "moderate",
+      "parameters": [
+        4,
+        -1,
+        8,
+        5
+      ],
+      "affine": "8-x",
+      "prompt": "$\\int \\frac{4}{(@@L@@)^{5}}\\,\\text{d}x=$",
+      "solution": "First, we rewrite the integral as\n\n$$\n\\int 4(@@L@@)^{-5}\\,\\text{d}x.\n$$\n\nLet $u=@@L@@.$ Then differentiating with respect to $x$ gives\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=-1\\,\u27f9\\,\\text{d}x=-\\text{d}u.\n$$\n\nWe now write our integral in terms of $u,$ calculate the integral as normal, and write the final answer in terms of $x$ at the very end:\n\n$$\n\\begin{aligned}\\int 4(@@L@@)^{-5}\\,\\text{d}x & =4\\int {u}^{-5}\\cdot (-1)\\,\\text{d}u \\\\  & =4\\cdot (-1)\\int {u}^{-5}\\,\\text{d}u \\\\  & =-4\\int {u}^{-5}\\,\\text{d}u \\\\  & =-4\\cdot \\frac{1}{(-4)}{u}^{-4}+C \\\\  & =(@@L@@)^{-4}+C \\\\  & =\\frac{1}{(@@L@@)^{4}}+C\\end{aligned}\n$$\n\nLet's double-check that our result is correct. If we differentiate the result, then it should come out to the original integrand:\n\n$$\n\\begin{aligned}\\frac{\\text{d}}{\\text{d}x}[\\frac{1}{(@@L@@)^{4}}+C] & =\\frac{\\text{d}}{\\text{d}x}[\\frac{1}{(@@L@@)^{4}}]+\\frac{\\text{d}}{\\text{d}x}(C) \\\\  & =\\frac{\\text{d}}{\\text{d}x}[(@@L@@)^{-4}]+\\frac{\\text{d}}{\\text{d}x}(C) \\\\  & =(-4)(@@L@@)^{-5}\\cdot \\frac{\\text{d}}{\\text{d}x}(@@L@@)+0 \\\\  & =(-4)(@@L@@)^{-5}\\cdot (-1) \\\\  & =4(@@L@@)^{-5} \\\\  & =\\frac{4}{(@@L@@)^{5}}\\,\u2713\\end{aligned}\n$$",
+      "bank": [
+        {
+          "source_answer_id": 17592186336119,
+          "source_value": "\\frac{1}{(8-x)^{4}}+C",
+          "mask": "\\frac{1}{(@@L@@)^{4}}+C",
+          "correct": true
+        },
+        {
+          "source_answer_id": 17592186336160,
+          "source_value": "-\\frac{4}{(8-x)^{4}}+C",
+          "mask": "-\\frac{4}{(@@L@@)^{4}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186336414,
+          "source_value": "\\frac{2}{(8-x)^{4}}+C",
+          "mask": "\\frac{2}{(@@L@@)^{4}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186337104,
+          "source_value": "\\frac{4}{(8-x)^{4}}+C",
+          "mask": "\\frac{4}{(@@L@@)^{4}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186338106,
+          "source_value": "-\\frac{1}{(8-x)^{4}}+C",
+          "mask": "-\\frac{1}{(@@L@@)^{4}}+C",
+          "correct": false
+        }
+      ],
+      "source_correction": null,
+      "plot_rating": "none",
+      "field_type": "radio",
+      "field_key": "selection",
+      "sampling_policy": "Only vary the nonzero affine intercept, preserving its sign. n, a, m, complete bank, prompt layout and solution sequence remain fixed.",
+      "bounds": [
+        1,
+        12
+      ]
+    },
+    "q-113509": {
+      "source_question_db_id": 17592186398109,
+      "level": "easy",
+      "parameters": [
+        1,
+        1,
+        -2,
+        3
+      ],
+      "affine": "x-2",
+      "prompt": "Calculate the integral $\\int \\frac{1}{(@@L@@)^{3}}\\,\\text{d}x.$",
+      "solution": "First, we rewrite the integral as\n\n$$\n\\int (@@L@@)^{-3}\\,\\text{d}x.\n$$\n\nLet $u=@@L@@.$ Then differentiating with respect to $x$ gives\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=1\\,\u27f9\\,\\text{d}x=\\text{d}u.\n$$\n\nWe now write our integral in terms of $u,$ calculate the integral as normal, and write the final answer in terms of $x$ at the very end:\n\n$$\n\\begin{aligned}\\int (@@L@@)^{-3}\\,\\text{d}x & =\\int {u}^{-3}\\cdot \\text{d}u \\\\  & =-\\frac{1}{2}\\cdot {u}^{-2}+C \\\\  & =-\\frac{1}{2{u}^{2}}+C \\\\  & =-\\frac{1}{2(@@L@@)^{2}}+C\\end{aligned}\n$$\n\nLet's double-check that our result is correct. If we differentiate the result, then it should come out to the original integrand:\n\n$$\n\\begin{aligned}\\frac{\\text{d}}{\\text{d}x}[-\\frac{1}{2(@@L@@)^{2}}+C] & =\\frac{\\text{d}}{\\text{d}x}[-\\frac{1}{2(@@L@@)^{2}}]+\\frac{\\text{d}}{\\text{d}x}(C) \\\\  & =-\\frac{1}{2}\\frac{\\text{d}}{\\text{d}x}[(@@L@@)^{-2}]+\\frac{\\text{d}}{\\text{d}x}(C) \\\\  & =-\\frac{1}{2}\\cdot (-2)\\cdot (@@L@@)^{-3}\\cdot \\frac{\\text{d}}{\\text{d}x}(@@L@@)+0 \\\\  & =1\\cdot \\frac{1}{(@@L@@)^{3}}\\cdot 1 \\\\  & =\\frac{1}{(@@L@@)^{3}}\\,\u2713\\end{aligned}\n$$",
+      "bank": [
+        {
+          "source_answer_id": 17592186398111,
+          "source_value": "-\\frac{1}{2(x-2)^{4}}+C",
+          "mask": "-\\frac{1}{2(@@L@@)^{4}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186398112,
+          "source_value": "\\frac{1}{2(x-2)^{2}}+C",
+          "mask": "\\frac{1}{2(@@L@@)^{2}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186398113,
+          "source_value": "-\\frac{2}{(x-2)^{2}}+C",
+          "mask": "-\\frac{2}{(@@L@@)^{2}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186398114,
+          "source_value": "-\\frac{1}{(x-2)^{2}}+C",
+          "mask": "-\\frac{1}{(@@L@@)^{2}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186398115,
+          "source_value": "-\\frac{1}{2(x-2)^{2}}+C",
+          "mask": "-\\frac{1}{2(@@L@@)^{2}}+C",
+          "correct": true
+        }
+      ],
+      "source_correction": null,
+      "plot_rating": "none",
+      "field_type": "radio",
+      "field_key": "selection",
+      "sampling_policy": "Only vary the nonzero affine intercept, preserving its sign. n, a, m, complete bank, prompt layout and solution sequence remain fixed.",
+      "bounds": [
+        -12,
+        -1
+      ]
+    },
+    "q-113517": {
+      "source_question_db_id": 17592186398116,
+      "level": "moderate",
+      "parameters": [
+        1,
+        -5,
+        9,
+        3
+      ],
+      "affine": "9-5x",
+      "prompt": "$\\int \\frac{1}{(@@L@@)^{3}}\\,\\text{d}x=$",
+      "solution": "First, we rewrite the integral as\n\n$$\n\\int (@@L@@)^{-3}\\,\\text{d}x.\n$$\n\nLet $u=@@L@@.$ Then differentiating with respect to $x$ gives\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=-5\\,\u27f9\\,\\text{d}x=-\\frac{1}{5}\\text{d}u.\n$$\n\nWe now write our integral in terms of $u,$ calculate the integral as normal, and write the final answer in terms of $x$ at the very end:\n\n$$\n\\begin{aligned}\\int (@@L@@)^{-3}\\text{d}x & =\\int {u}^{-3}\\cdot (-\\frac{1}{5})\\,\\text{d}u \\\\  & =-\\frac{1}{5}\\int {u}^{-3}\\,\\text{d}u \\\\  & =-\\frac{1}{5}\\cdot (-\\frac{1}{2}){u}^{-2}+C \\\\  & =\\frac{1}{10{u}^{2}}+C \\\\  & =\\frac{1}{10(@@L@@)^{2}}+C\\end{aligned}\n$$\n\nLet's double-check that our result is correct. If we differentiate the result, then it should come out to the original integrand:\n\n$$\n\\begin{aligned}\\frac{\\text{d}}{\\text{d}x}[\\frac{1}{10(@@L@@)^{2}}+C] & =\\frac{\\text{d}}{\\text{d}x}[\\frac{1}{10(@@L@@)^{2}}]+\\frac{\\text{d}}{\\text{d}x}(C) \\\\  & =\\frac{1}{10}\\frac{\\text{d}}{\\text{d}x}[(@@L@@)^{-2}]+\\frac{\\text{d}}{\\text{d}x}(C) \\\\  & =\\frac{1}{10}\\cdot (-2)(@@L@@)^{-3}\\cdot \\frac{\\text{d}}{\\text{d}x}(@@L@@)+0 \\\\  & =-\\frac{1}{5}(@@L@@)^{-3}\\cdot (-5) \\\\  & =(@@L@@)^{-3} \\\\  & =\\frac{1}{{(@@L@@)}^{3}}\\,\u2713\\end{aligned}\n$$",
+      "bank": [
+        {
+          "source_answer_id": 17592186398118,
+          "source_value": "\\frac{1}{20(9-5x)^{4}}+C",
+          "mask": "\\frac{1}{20(@@L@@)^{4}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186398119,
+          "source_value": "-\\frac{1}{5(9-5x)^{2}}+C",
+          "mask": "-\\frac{1}{5(@@L@@)^{2}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186398120,
+          "source_value": "-\\frac{1}{10(9-5x)^{2}}+C",
+          "mask": "-\\frac{1}{10(@@L@@)^{2}}+C",
+          "correct": false
+        },
+        {
+          "source_answer_id": 17592186398121,
+          "source_value": "\\frac{1}{10(9-5x)^{2}}+C",
+          "mask": "\\frac{1}{10(@@L@@)^{2}}+C",
+          "correct": true
+        },
+        {
+          "source_answer_id": 17592186398122,
+          "source_value": "-\\frac{1}{2(9-5x)^{2}}+C",
+          "mask": "-\\frac{1}{2(@@L@@)^{2}}+C",
+          "correct": false
+        }
+      ],
+      "source_correction": null,
+      "plot_rating": "none",
+      "field_type": "radio",
+      "field_key": "selection",
+      "sampling_policy": "Only vary the nonzero affine intercept, preserving its sign. n, a, m, complete bank, prompt layout and solution sequence remain fixed.",
+      "bounds": [
+        1,
+        12
+      ]
+    }
+  },
+  "excluded": [
+    {
+      "source": "q-12499",
+      "db_id": 17592186064483,
+      "reason": "Unrated; missing correct designation and worked solution. Never generated or counted."
+    }
+  ]
+}

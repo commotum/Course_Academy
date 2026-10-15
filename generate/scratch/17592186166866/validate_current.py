@@ -11,7 +11,8 @@ def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def fingerprint(q):
     # Read the actual displayed standard equation, excluding common axis scaling.
     block=re.findall(r'\$\$\n(.*?)\n\$\$',q[':question/worked-solution'],re.S)[0]
-    setup=block.split('⟹')[1].replace(r'\,','').rstrip('.')
+    block=block.replace(r'\Longrightarrow','⟹').replace(r'\dfrac',r'\frac').replace(r'\qquad','')
+    setup=block.split('⟹')[1].replace(r'\,','').strip().rstrip('.')
     left,right=setup.split('=');F=qa.expr(left)-qa.expr(right)
     import sympy as sp
     h=sp.solve(sp.diff(F,qa.x),qa.x)[0];k=sp.solve(sp.diff(F,qa.y),qa.y)[0]

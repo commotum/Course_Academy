@@ -20,8 +20,9 @@ modes. Self-directed mode schedules new lessons from the selected topic set;
 activity-history assessments and reviews for assessment misses remain available.
 Ordinary spaced reviews retain their existing course and engine-mode scope.
 
-Assessments become available after 150 positive finalized practice XP since the
-last assessment completion or expiry. They require at least five distinct
+Assessments become available after 120 finalized practice XP since the
+last ordinary assessment completion or expiry and become required at 150 XP.
+They require enough distinct
 learned topics with recorded successful learning at least 48 hours ago, without
 a mandatory prior retrieval event. This provisional topic-age floor applies
 only to ordinary assessments; reviews do not restart the learning-age clock,
@@ -29,8 +30,11 @@ and assessment-miss reviews have no age delay. Assessment selection considers
 the learner's whole learned activity history without a course restriction or
 course preference, in either study mode. Newly prepared assessments omit a
 course association, and existing pending assessments survive course switches.
-Imported terminal tasks without a recorded start do not establish
-cadence, mastery dates, or remediation. Assessments select one fresh question
+Migrated terminal outcomes count toward cadence, mastery, and remediation even
+without a local start event. `learner-task/finished-at` preserves an original
+completion/failure date from migration evidence; otherwise the terminal status
+transaction supplies the latest known completion bound. Saved progress and XP
+are read rather than applied again. Assessments select one fresh question
 per topic, favor previously unassessed topics, and freeze the route at start.
 The 15-minute wall-clock limit continues while paused. Answers are graded and
 recorded immediately, but correctness, feedback, and solutions are hidden by

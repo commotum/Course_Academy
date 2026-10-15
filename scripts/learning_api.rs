@@ -567,7 +567,7 @@ fn completed_task_for(s: &EntitySnapshot, learner: u64, activity: u64) -> Result
         if s.optional_ref(task, "learner-task/activity")? == Some(activity)
             && status(s, task, "learner-task/status")? == "completed"
         {
-            let finished_at = timing::status_at(s, task, "learner-task/status")?;
+            let finished_at = timing::task_finished_at(s,task,timing::status_at(s, task, "learner-task/status")?)?;
             let entry = (finished_at, task);
             if latest.as_ref().is_none_or(|previous| entry > *previous) {
                 latest = Some(entry);

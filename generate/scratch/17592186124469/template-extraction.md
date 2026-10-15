@@ -1,5 +1,7 @@
 # Template extraction
 
+Current inventory classification and durable preparation/commit are documented in [reference/current-classification.md](reference/current-classification.md). The basis-1356 analysis below remains historical source evidence.
+
 ## 1. Specific source descriptions
 
 The raw descriptions, prompts, every original choice, and complete available worked solutions are preserved in `source.json`, and shown beside parameterized replays in `review.md`. The classification table names all six sources without merging their field layouts or mathematical stage sequences. Every bank has five delimiter-free scalar expressions in t. Source exponent typography (`{e}^{t}`, `{sin}^{2}⁡t`), Unicode gradient/prime/function-application characters, spacing and original shared prose are retained in observed profiles.

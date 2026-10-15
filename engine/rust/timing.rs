@@ -110,6 +110,21 @@ pub fn status_at(snapshot: &EntitySnapshot, entity: u64, attribute: &str) -> Res
     Ok(history(snapshot, entity, attribute)?.last().unwrap().0)
 }
 
+/// A migration's recording instant is later than the original completion.
+/// Preserve the source date without changing transaction or working clocks.
+pub fn task_finished_at(snapshot: &EntitySnapshot, task: u64, recorded_at: DateTime<Utc>) -> Result<DateTime<Utc>> {
+    let Some(value) = snapshot.entity(task)?.get("learner-task/finished-at") else {
+        return Ok(recorded_at);
+    };
+    let finished = parse_instant(value)?;
+    if !matches!(status(snapshot, task, "learner-task/status")?.as_str(),
+        "learner-task.status/completed" | "learner-task.status/failed") || finished > recorded_at
+    {
+        return Err("original task finish requires a terminal task and cannot follow its recorded finish".into());
+    }
+    Ok(finished)
+}
+
 pub fn task_started(snapshot: &EntitySnapshot, task: u64) -> Result<DateTime<Utc>> {
     let events = history(snapshot, task, "learner-task/status")?;
     if matches!(
@@ -262,6 +277,22 @@ mod tests {
 
     fn at(seconds: i64) -> DateTime<Utc> {
         DateTime::from_timestamp(seconds, 0).unwrap()
+    }
+
+    #[test]
+    fn migrated_finish_uses_original_date_without_rewriting_timing_history() {
+        let mut s = captured("learner-task/status", &[("completed", 100)], Some(20.));
+        let before = s.status_history.clone();
+        assert_eq!(task_finished_at(&s,1,at(100)).unwrap(),at(100));
+        s.entities.get_mut(&1).unwrap().insert("learner-task/finished-at".into(),instant_value(at(10)));
+        assert_eq!(task_finished_at(&s,1,at(100)).unwrap(),at(10));
+        assert_eq!(s.status_history.len(),before.len());
+        assert_eq!(s.status_history[0].at,before[0].at);
+        s.entities.get_mut(&1).unwrap().insert("learner-task/finished-at".into(),instant_value(at(101)));
+        assert!(task_finished_at(&s,1,at(100)).is_err());
+        let mut paused = captured("learner-task/status", &[("paused",100)],Some(20.));
+        paused.entities.get_mut(&1).unwrap().insert("learner-task/finished-at".into(),instant_value(at(10)));
+        assert!(task_finished_at(&paused,1,at(100)).is_err());
     }
 
     fn captured(

@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 36**, **qa_passed: 359**, **queued: 182**, **working: 3**.
+**needs_revalidation: 36**, **qa_passed: 361**, **queued: 179**, **working: 4**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -144,13 +144,13 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186059679](../../scratch/17592186059679.py) | Second and Higher-Order Derivatives | Computing Higher Order Derivatives | 4 / 4 / 2 / 1 | qa_passed | [Report](qa/17592186059679.json) |
 | [17592186059678](../../scratch/17592186059678-draft.py) | Second and Higher-Order Derivatives | Computing Second Order Derivatives Using Leibnitz Notation | 7 / 5 / 0 / 1 | qa_passed | [Report](qa/17592186059678.json) |
 | [17592186105716](../../scratch/17592186105716.py) | Integrating the Reciprocal Function | Integrating the Sum of a Reciprocal Function and a Power Function | 5 / 1 / 1 / 2 | qa_passed | [Report](qa/17592186105716.json) |
-| [17592186184351](../../scratch/17592186184351.py) | Integrating Exponential Functions Using Substitution | More Complex Cases | 1 / 3 / 3 / 1 | working | — |
+| [17592186184351](../../scratch/17592186184351.py) | Integrating Exponential Functions Using Substitution | More Complex Cases | 1 / 3 / 3 / 1 | qa_passed | [Report](qa/17592186184351.json) |
 | [17592186184352](../../scratch/17592186184352.py) | Integrating Exponential Functions Using Substitution | Evaluating Definite Integrals | 3 / 3 / 1 / 1 | qa_passed | [Report](qa/17592186184352.json) |
-| [17592186105715](../../scratch/17592186105715.py) | Integrating the Reciprocal Function | Integrating a Reciprocal Function | 8 / 0 / 0 / 1 | working | — |
+| [17592186105715](../../scratch/17592186105715-draft.py) | Integrating the Reciprocal Function | Integrating a Reciprocal Function | 8 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186105715.json) |
 | [17592186068916](../../scratch/17592186068916.py) | Integrating Trigonometric Functions Using Substitution | Integrating Reciprocal Trigonometric Functions With Linear Arguments | 3 / 2 / 4 / 1 | working | — |
-| [17592186064203](../../scratch/17592186064203.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Positive Integer Exponent | 5 / 5 / 0 / 2 | queued | — |
-| [17592186064204](../../scratch/17592186064204.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Negative Integer Exponent | 5 / 5 / 0 / 1 | queued | — |
-| [17592186064205](../../scratch/17592186064205.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Fractional Exponent | 0 / 5 / 5 / 1 | queued | — |
+| [17592186064203](../../scratch/17592186064203.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Positive Integer Exponent | 5 / 5 / 0 / 2 | working | — |
+| [17592186064204](../../scratch/17592186064204.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Negative Integer Exponent | 5 / 5 / 0 / 1 | working | — |
+| [17592186064205](../../scratch/17592186064205.py) | Integrating Algebraic Functions Using Substitution | Integrating an Algebraic Function With Fractional Exponent | 0 / 5 / 5 / 1 | working | — |
 | [17592186068724](../../scratch/17592186068724.py) | Integration Using Substitution | Integrating a Rational Function Using Natural Logarithms | 5 / 5 / 0 / 1 | queued | — |
 | [17592186068786](../../scratch/17592186068786.py) | Integration Using Substitution | Integrating Other Fractional Expressions | 0 / 5 / 5 / 1 | queued | — |
 | [17592186068915](../../scratch/17592186068915.py) | Integrating Trigonometric Functions Using Substitution | Integrating Trigonometric Functions With Linear Arguments | 5 / 5 / 0 / 1 | queued | — |
@@ -441,7 +441,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186172088](../../scratch/17592186172088.py) | Visualizing Vector Fields | Identifying a Three-Dimensional Vector Field | 0 / 7 / 3 / 0 | qa_passed | [Report](qa/17592186172088.json) |
 | [17592186172083](../../scratch/17592186172083.py) | Visualizing Vector Fields | Sketching a Two-Dimensional Vector Field | 9 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186172083.json) |
 | 17592186119805 | Linear Combinations of Vectors in N-Dimensional Euclidean Space | Solving for One Coefficient in a Linear Combination | 6 / 3 / 0 / 1 | queued | — |
-| 17592186119807 | Linear Combinations of Vectors in N-Dimensional Euclidean Space | Solving for Two Coefficients in a Linear Combination | 0 / 10 / 0 / 0 | queued | — |
+| [17592186119807](../../scratch/17592186119807.py) | Linear Combinations of Vectors in N-Dimensional Euclidean Space | Solving for Two Coefficients in a Linear Combination | 0 / 10 / 0 / 0 | queued | — |
 | 17592186119854 | Linear Combinations of Vectors in N-Dimensional Euclidean Space | Solving for Three Coefficients in a Linear Combination | 0 / 6 / 6 / 1 | queued | — |
 | [17592186119806](../../scratch/17592186119806.py) | Linear Combinations of Vectors in N-Dimensional Euclidean Space | Solving for a Vector in a Linear Combination | 13 / 0 / 0 / 1 | queued | — |
 | 17592186119847 | The Rank of a Matrix | Determining the Rank of a Matrix Given the Number of Pivot Columns | 4 / 4 / 0 / 1 | queued | — |
@@ -457,8 +457,8 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | 17592186100876 | Multiplying a Matrix by the Identity Matrix | Multiplying a Matrix by a Column or Row of the Identity Matrix | 5 / 5 / 0 / 1 | queued | — |
 | 17592186115227 | Properties of Matrix Multiplication | Calculating a Matrix Product Using the Associative Law | 2 / 12 / 0 / 1 | queued | — |
 | 17592186115228 | Properties of Matrix Multiplication | Identifying True Statements Regarding Matrix Multiplication | 0 / 9 / 4 / 0 | queued | — |
-| 17592186115226 | Properties of Matrix Multiplication | Calculating a Matrix Product Using the Distributive Law | 4 / 10 / 0 / 1 | queued | — |
-| 17592186115229 | Powers of Matrices | Finding a Power of a Matrix | 7 / 12 / 0 / 1 | queued | — |
+| [17592186115226](../../scratch/17592186115226.py) | Properties of Matrix Multiplication | Calculating a Matrix Product Using the Distributive Law | 4 / 10 / 0 / 1 | queued | — |
+| [17592186115229](../../scratch/17592186115229.py) | Powers of Matrices | Finding a Power of a Matrix | 7 / 12 / 0 / 1 | queued | — |
 | 17592186115230 | Powers of Matrices | Evaluating a Matrix Polynomial | 0 / 19 / 0 / 1 | queued | — |
 | 17592186162024 | Symmetric Matrices | Identifying True Statements Regarding Properties of Symmetric Matrices | 0 / 6 / 6 / 0 | queued | — |
 | 17592186161979 | Symmetric Matrices | Identifying Symmetric Matrices | 14 / 0 / 0 / 0 | queued | — |
@@ -477,7 +477,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186152158](../../scratch/17592186152158.py) | Line Integrals of Scalar Functions Over Paths Expressed as Functions of X | Computing a Line Integral of a Scalar Function Along a Curve Given in Explicit Cartesian Form | 0 / 3 / 4 / 1 | qa_passed | [Report](qa/17592186152158.json) |
 | [17592186152159](../../scratch/17592186152159.py) | Line Integrals of Scalar Functions Over Paths Expressed as Functions of X | Reducing the Line Integral of a Scalar Function Along a Curve to a Definite Integral | 8 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186152159.json) |
 | [17592186179718](../../scratch/17592186179718.py) | Line Integrals of Scalar Functions Over Paths Expressed as Functions of Y | Evaluating the Line Integral of a Function Over Curve Expressed as a Function of Y | 0 / 3 / 2 / 1 | qa_passed | [Report](qa/17592186179718.json) |
-| 17592186133877 | The Curl of a Vector Field | Calculating the Curl of a Vector Field | 4 / 5 / 0 / 2 | queued | — |
+| [17592186133877](../../scratch/17592186133877.py) | The Curl of a Vector Field | Calculating the Curl of a Vector Field | 4 / 5 / 0 / 2 | queued | — |
 | [17592186133881](../../scratch/17592186133881.py) | The Curl of a Vector Field | Interpreting the Curl of a Vector Field | 0 / 6 / 7 / 1 | queued | — |
 | [17592186133898](../../scratch/17592186133898.py) | The Curl of a Vector Field | Calculating the Scalar Curl of a Vector Field | 7 / 8 / 0 / 1 | queued | — |
 | [17592186133894](../../scratch/17592186133894.py) | Line Integrals of Vector-Valued Functions Over Parametric Curves | Evaluating Line Integrals of Vector-Valued Functions Over Space Curves | 0 / 0 / 7 / 1 | qa_passed | [Report](qa/17592186133894.json) |

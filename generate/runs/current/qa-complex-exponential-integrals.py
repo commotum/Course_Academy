@@ -59,12 +59,20 @@ def check(r):
  if m['template']=='derivative_ratio'and U.subs(var,1)<0:
   canonical=next(v for a,v in zip(f[':answer-field/choices'],values)if a[':answer/id']==f[':answer-field/correct'][1]);assert s.simplify((canonical-F).subs(var,1))==0;N['negative_branches']+=1
  N['records']+=1;N['values']+=len(values);N['banks']+=1
-for name,sid in G.TEMPLATES.items():
- check(G.generate(G.DIFFICULTY[sid],template=name,parameters=G.ANCHORS[sid]))
- print('Root preflight passed',name,flush=True)
-for i,r in enumerate(json.load(open(D/'bounded-records.json'))):
- check(r)
- if i%100==0:print('Root complex records read',i,flush=True)
-for level in G.LEVELS:
- for seed in range(18):check(G.generate(level,seed))
+if '--supplement-empirical' in sys.argv:
+ prior=json.load(open(R/f'qa/{K}-root-readback.json'));assert prior['status']=='passed'and prior['script_sha256']==hashlib.sha256(D.with_suffix('.py').read_bytes()).hexdigest();N.update(prior['readback'])
+ seen={r['question'][':question/id']for r in json.load(open(D/'bounded-records.json'))}
+ extras=[e['record']for e in json.load(open(D/'native-input.json'))if e['record']['question'][':question/id']not in seen]
+ assert len(extras)==134
+ for i,r in enumerate(extras):
+  check(r)
+  if i%30==0:print('Root empirical variants read',i,flush=True)
+else:
+ for name,sid in G.TEMPLATES.items():
+  check(G.generate(G.DIFFICULTY[sid],template=name,parameters=G.ANCHORS[sid]));print('Root preflight passed',name,flush=True)
+ for i,r in enumerate(json.load(open(D/'bounded-records.json'))):
+  check(r)
+  if i%100==0:print('Root complex records read',i,flush=True)
+ for level in G.LEVELS:
+  for seed in range(18):check(G.generate(level,seed))
 result=dict(status='passed',source=fidelity,readback=N,script_sha256=hashlib.sha256(D.with_suffix('.py').read_bytes()).hexdigest(),database_writes=0);(R/f'qa/{K}-root-readback.json').write_text(json.dumps(result,indent=2)+'\n');print(result)

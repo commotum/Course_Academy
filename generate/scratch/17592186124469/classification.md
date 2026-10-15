@@ -1,5 +1,7 @@
 # Classification
 
+Current inventory classification and durable preparation/commit are documented in [reference/current-classification.md](reference/current-classification.md). The basis-1356 analysis below remains historical source evidence.
+
 Provenance: captured `math` basis **1356**, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`. `source.json` is the unchanged capture wrapper. The knowledge point has six practice questions, all single `selection` radio fields with five mathematical choices. No images, diagrams, or parameter-dependent plots occur (rating **none**).
 
 | Template | Source | Captured level | Function and coordinates | Bank |

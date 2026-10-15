@@ -14,3 +14,9 @@ Six source banks and five full source solutions are preserved. q-95056 lacks sou
 `raw_observed` is public parameterized evidence for q-95056: it preserves absent difficulty, solution and correct designation and marks the record evidence-only/ineligible for practice. A separate `observed` completion preserves its bank while adding the independently derived designation and authored solution/easy level. The raw evidence cannot grade as a practice fixture because its original designation is absent.
 
 Observed expression-pattern replay and raw omission profiles carry `evidence_only: true` and `eligible_for_learning: false`; authored method banks are eligible for practice.
+
+## Inventory replenishment
+
+The frozen generator is now used through this KP's `replenish.py`, which prepares only current shortages and commits through the configured EDB integration. Run `.venv/bin/python generate/scratch/17592186124469/replenish.py`, then the same command with `--commit`. The commit phase obtains the application's `api.lock`, rechecks current inventory and basis, previews native specs, saves the exact request, submits under a basis guard, and retains its receipt and readback. Existing registration identity is reused; `capabilities.json` records the UUID and repository-relative script path. No source questions or learner facts are changed.
+
+See [the refreshed classification](reference/current-classification.md) for twelve current source questions, the distinction between classified sources and supported generator families, and the conservatively excluded radical-product source solution. The old basis-1356 snapshot and its exact source-replay evidence remain intact. `reference/replenishment/` retains current reads, distinct generated instances, all native grading checks, preparation, exact EDN, request, preview, receipt, and verification.

@@ -8,6 +8,7 @@ import re
 import sys
 import uuid
 import copy
+import importlib.util
 from pathlib import Path
 try:
     import sympy as sp
@@ -30,8 +31,12 @@ SUPPORTED_LEVELS = ('easy', 'moderate', 'hard')
 DOMAIN = range(1, 81)
 TEMPLATES = json.loads((HERE / 'templates.json').read_text())
 X, U, C = sp.symbols('x u C', real=True)
-sys.path.insert(0, str(HERE.parents[2] / 'scripts/question_capture'))
-from math_format import normalize_prose, normalize_tex, checked_math_content
+_formatter_spec = importlib.util.spec_from_file_location('positive_power_private_math_format', HERE / 'math_format.py')
+_formatter = importlib.util.module_from_spec(_formatter_spec)
+_formatter_spec.loader.exec_module(_formatter)
+normalize_prose = _formatter.normalize_prose
+normalize_tex = _formatter.normalize_tex
+checked_math_content = _formatter.checked_math_content
 
 def builtin_int(value, name):
     if type(value) is not int:
