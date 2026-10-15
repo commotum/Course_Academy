@@ -1,0 +1,9 @@
+# Classification at frozen basis 2275
+
+19 owned Math Academy practice questions: 6 easy radio; 7 moderate radio and 6 moderate blank; no observed hard. All use one answer field and have no plots. The immutable full source wrapper source.json preserves every original question, field, option, correct designation, worked prose and display block. independent-inventory.json contains only captured non-MA questions; that inventory is empty.
+
+Each original question retains its own prompt/solution renderer and complete bank profile. These are 19 presentation profiles, not 19 different mathematical skills. Easy structures are cubic cosine plus cotangent-square divided by cosine-square; tangent-square divided by scaled sine-square; sine-minus-cosecant divided by tangent; cosine of a linear argument divided by sine-square; one-minus-cotangent-square divided by cosine-square minus sine-square; and tangent-square minus sine-cube divided by sine-square.
+
+Moderate structures reduce sine/cosine-square to secant-tangent; cosine/sine-square to cosecant-cotangent; (one-minus-tangent-square)/(cosine-square minus sine-square) to secant-square; (one-plus-tangent)/secant to cosine-plus-sine; cotangent/cosecant of a linear argument to cosine; and tangent/secant to sine. Radio and blank renderers and their ordered reduction/substitution/evaluation sequences are retained separately. The cotangent/cosecant sources with different linear arguments are variants of the same mathematical backbone, with distinct captured wording retained.
+
+Hard is authored: definite forms of the two observed two-term cubic/quotient reductions, with independent signed coefficients and exact safe endpoints. It combines identity rewriting and the already observed endpoint evaluation workload. It introduces neither logarithmic integration nor nonlinear substitution. The next lesson step is KP64227, whose u=cos(2x) and logarithmic primitive are outside this draft.

@@ -1,0 +1,7 @@
+# Generator contract
+
+Public generate(difficulty, seed=0, template=None, parameters=None) and batch(difficulty, count=1, seed=0) return normal records with numeric knowledge_point.db_id, source basis/lineage/eligibility, deterministic field-owned UUIDs and normalized math. All accepts count per level and yields a three-record JSON list for count 1. Built-in integer checks reject booleans and floats for counts, seeds and numerical slots; a capacity check precedes sampling. Repeated seeds/option identity are not counted as new tasks.
+
+All original profiles and scale 1 are publicly eligible. Hard is explicitly authored, has no claimed observed practice source, and remains within the quotient identity reduction and standard trigonometric primitive workload. Full normal examples are review-cases.json; original-ID fixtures alone are source-cases.json. Source and normal cases are sent through the frozen application learner grader.
+
+The rendered-only readback parses every displayed formal integral, primitive, numeric equality operand, original full bank and all source linear differential/bounds tables. It proves the derivative of each rendered primitive equals the original rendered integrand, checks bounds and transformations, and checks both signed endpoint contributions. It never treats a correct final answer as proof that earlier stages are valid. Negative mutations corrupt intermediate algebra, a differential, a transformed endpoint, and signed endpoint arithmetic while retaining the final answer.

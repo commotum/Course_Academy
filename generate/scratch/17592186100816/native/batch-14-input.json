@@ -1,0 +1,329 @@
+[
+  {
+    "label": "variant 27 q-210748",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100816,
+        "id": "41b7d83f-3b9b-556c-9e49-13df9c3b597e",
+        "title": "Integrating Functions Containing the Natural Logarithm"
+      },
+      "question": {
+        ":question/id": "43f7905c-ad50-56e4-ae3f-a0a742c9a237",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "Calculate the integral $\\int \\frac{\\sqrt{3}}{x\\log{\\left(x^{4} \\right)}}\\,\\text{d}x.$",
+        ":question/worked-solution": "Let's set $u=\\log{\\left(x^{4} \\right)}.$ Then, we have\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{x^{4}}\\cdot 4 x^{3}=\\frac{4}{x}\\quad\\Longrightarrow\\quad \\frac{1}{4}\\text{d}u=\\frac{\\text{d}x}{x}.\n$$\n\nUsing the above, we can write the integral in terms of $u$ and evaluate:\n\n$$\n\\begin{aligned}\\int \\frac{\\sqrt{3}}{x\\log{\\left(x^{4} \\right)}}\\,\\text{d}x & =\\sqrt{3}\\int \\frac{1}{\\log{\\left(x^{4} \\right)}}\\cdot \\frac{1}{x}\\,\\text{d}x \\\\  & =\\sqrt{3}\\int \\frac{1}{u}\\cdot \\frac{1}{4}\\,\\text{d}u \\\\  & =\\frac{\\sqrt{3}}{4}\\int \\frac{1}{u}\\,\\text{d}u \\\\  & =\\frac{\\sqrt{3}}{4}\\ln|u|+C \\\\  & =\\frac{\\sqrt{3}}{4}\\ln|\\log{\\left(x^{4} \\right)}|+C\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "e1897a6c-6621-524f-bb0e-3ed2bb7990bf",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "c7f4c9ed-8362-51c1-99d2-ddaf56b39cc8",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "C + \\frac{\\sqrt{3} \\log{\\left(\\left|{\\log{\\left(x^{4} \\right)}}\\right| \\right)}}{4}"
+              },
+              {
+                ":answer/id": "aa2af1fe-73c5-5acc-91fb-d09150bc152c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "C + 4 \\log{\\left(\\sqrt{3} \\left|{\\log{\\left(x \\right)}}\\right| \\right)}"
+              },
+              {
+                ":answer/id": "ec2186a2-d16f-53f3-9ef7-20f5f18980b0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "C + \\sqrt{3} \\log{\\left(\\left|{\\log{\\left(x \\right)}}\\right| \\right)}"
+              },
+              {
+                ":answer/id": "cce70f8a-3570-5e20-ab1b-6b03f0d8a4ed",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "C + \\frac{\\log{\\left(\\left|{\\log{\\left(x^{4} \\right)}}\\right| \\right)}}{4}"
+              },
+              {
+                ":answer/id": "bff91ebc-e761-5be6-96a6-028f6429b57c",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "C + \\frac{3 \\log{\\left(\\left|{\\log{\\left(x^{4} \\right)}}\\right| \\right)}}{4}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "c7f4c9ed-8362-51c1-99d2-ddaf56b39cc8"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "natural-log-substitution-b2275-v1",
+        "seed": 1,
+        "source_basis": 2275,
+        "template": "q-210748",
+        "bank_profile": "q-210748",
+        "source_ids": [
+          "q-210748"
+        ],
+        "parameters": {
+          "k": 3,
+          "a": 1,
+          "n": 4,
+          "p_num": -1,
+          "p_den": 1
+        },
+        "domain": "a*x^n>0; log(a*x^n)!=0",
+        "eligible": true,
+        "evidence_only": false,
+        "origin": "observed_source_pattern",
+        "source_repairs": [],
+        "math_fingerprint": "aaa64f7377f81531099bca7bd6cf237990a542e1a156f4a1a71180237d59fd00",
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "c7f4c9ed-8362-51c1-99d2-ddaf56b39cc8",
+        "expected": "accepted",
+        "purpose": "correct key"
+      },
+      {
+        "submitted_answer_id": "aa2af1fe-73c5-5acc-91fb-d09150bc152c",
+        "expected": "rejected",
+        "purpose": "wrong choice"
+      },
+      {
+        "submitted_answer_id": "ec2186a2-d16f-53f3-9ef7-20f5f18980b0",
+        "expected": "rejected",
+        "purpose": "wrong choice"
+      },
+      {
+        "submitted_answer_id": "cce70f8a-3570-5e20-ab1b-6b03f0d8a4ed",
+        "expected": "rejected",
+        "purpose": "wrong choice"
+      },
+      {
+        "submitted_answer_id": "bff91ebc-e761-5be6-96a6-028f6429b57c",
+        "expected": "rejected",
+        "purpose": "wrong choice"
+      }
+    ]
+  },
+  {
+    "label": "variant 28 q-13822",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100816,
+        "id": "41b7d83f-3b9b-556c-9e49-13df9c3b597e",
+        "title": "Integrating Functions Containing the Natural Logarithm"
+      },
+      "question": {
+        ":question/id": "e1f205d5-62fb-5b24-83ac-7787c5e705c8",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "Calculate the integral $\\int \\frac{1}{7 x\\log{\\left(5 x \\right)}}\\,\\text{d}x.$",
+        ":question/worked-solution": "Let's set $u=\\log{\\left(5 x \\right)}.$ Then, we have\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{5 x}\\cdot 5=\\frac{1}{x}\\quad\\Longrightarrow\\quad \\text{d}u=\\frac{\\text{d}x}{x}.\n$$\n\nUsing the above, we can write the integral in terms of $u$ and evaluate:\n\n$$\n\\begin{aligned}\\int \\frac{1}{7 x\\log{\\left(5 x \\right)}}\\,\\text{d}x & =\\frac{1}{7}\\int \\frac{1}{\\log{\\left(5 x \\right)}}\\cdot \\frac{1}{x}\\,\\text{d}x \\\\  & =\\frac{1}{7}\\int \\frac{1}{u}\\,\\text{d}u \\\\  & =\\frac{1}{7}\\int \\frac{1}{u}\\,\\text{d}u \\\\  & =\\frac{1}{7}\\ln|u|+C \\\\  & =\\frac{1}{7}\\ln|\\log{\\left(5 x \\right)}|+C\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "66c4f413-bc74-5873-ad8c-701e9195277f",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "2d54643d-855f-59ec-87bb-3257d2ebd982",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "C + \\log{\\left(\\left|{\\log{\\left(5 x \\right)}}\\right| \\right)}"
+              },
+              {
+                ":answer/id": "f3f4e24e-ec3c-53e9-a94f-4b89dccf4d8a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "C + \\frac{5 \\log{\\left(\\left|{\\log{\\left(5 x \\right)}}\\right| \\right)}}{2}"
+              },
+              {
+                ":answer/id": "9d8f9270-aa73-5747-9d26-4da1a1a25403",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "C + \\frac{\\log{\\left(\\left|{\\log{\\left(5 x \\right)}}\\right| \\right)}}{7}"
+              },
+              {
+                ":answer/id": "9343d16d-dc8d-58e6-9c4c-039ee2c03b8d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "C + \\log{\\left(5 x \\right)}"
+              },
+              {
+                ":answer/id": "95db741a-18ce-5a3f-9a0e-89eba27a1239",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "C + \\frac{\\log{\\left(\\left|{\\log{\\left(x \\right)}}\\right| \\right)}}{7}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "9d8f9270-aa73-5747-9d26-4da1a1a25403"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "natural-log-substitution-b2275-v1",
+        "seed": 0,
+        "source_basis": 2275,
+        "template": "q-13822",
+        "bank_profile": "q-13822",
+        "source_ids": [
+          "q-13822"
+        ],
+        "parameters": {
+          "k": 7,
+          "a": 5,
+          "n": 1,
+          "p_num": -1,
+          "p_den": 1
+        },
+        "domain": "a*x^n>0; log(a*x^n)!=0",
+        "eligible": true,
+        "evidence_only": false,
+        "origin": "observed_source_pattern",
+        "source_repairs": [],
+        "math_fingerprint": "b0f58afb950abadd77f46cab3537e5493159d40551e2e9c5a1be787bbe4d2ce5",
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "2d54643d-855f-59ec-87bb-3257d2ebd982",
+        "expected": "rejected",
+        "purpose": "wrong choice"
+      },
+      {
+        "submitted_answer_id": "f3f4e24e-ec3c-53e9-a94f-4b89dccf4d8a",
+        "expected": "rejected",
+        "purpose": "wrong choice"
+      },
+      {
+        "submitted_answer_id": "9d8f9270-aa73-5747-9d26-4da1a1a25403",
+        "expected": "accepted",
+        "purpose": "correct key"
+      },
+      {
+        "submitted_answer_id": "9343d16d-dc8d-58e6-9c4c-039ee2c03b8d",
+        "expected": "rejected",
+        "purpose": "wrong choice"
+      },
+      {
+        "submitted_answer_id": "95db741a-18ce-5a3f-9a0e-89eba27a1239",
+        "expected": "rejected",
+        "purpose": "wrong choice"
+      }
+    ]
+  },
+  {
+    "label": "variant 29 q-13822",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186100816,
+        "id": "41b7d83f-3b9b-556c-9e49-13df9c3b597e",
+        "title": "Integrating Functions Containing the Natural Logarithm"
+      },
+      "question": {
+        ":question/id": "cc549bb3-7060-5144-8f51-08de1c21a2ed",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "Calculate the integral $\\int \\frac{1}{3 x\\log{\\left(6 x \\right)}}\\,\\text{d}x.$",
+        ":question/worked-solution": "Let's set $u=\\log{\\left(6 x \\right)}.$ Then, we have\n\n$$\n\\frac{\\text{d}u}{\\text{d}x}=\\frac{1}{6 x}\\cdot 6=\\frac{1}{x}\\quad\\Longrightarrow\\quad \\text{d}u=\\frac{\\text{d}x}{x}.\n$$\n\nUsing the above, we can write the integral in terms of $u$ and evaluate:\n\n$$\n\\begin{aligned}\\int \\frac{1}{3 x\\log{\\left(6 x \\right)}}\\,\\text{d}x & =\\frac{1}{3}\\int \\frac{1}{\\log{\\left(6 x \\right)}}\\cdot \\frac{1}{x}\\,\\text{d}x \\\\  & =\\frac{1}{3}\\int \\frac{1}{u}\\,\\text{d}u \\\\  & =\\frac{1}{3}\\int \\frac{1}{u}\\,\\text{d}u \\\\  & =\\frac{1}{3}\\ln|u|+C \\\\  & =\\frac{1}{3}\\ln|\\log{\\left(6 x \\right)}|+C\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "84a97dc8-7413-5fe1-9c21-cc1cc3f49a32",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "a03011fd-7de6-5e00-9731-6491c11c28c5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "C + \\frac{\\log{\\left(\\left|{\\log{\\left(6 x \\right)}}\\right| \\right)}}{3}"
+              },
+              {
+                ":answer/id": "6ff5ab33-57ba-5b59-a1e1-596c239937b1",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "C + 3 \\log{\\left(\\left|{\\log{\\left(6 x \\right)}}\\right| \\right)}"
+              },
+              {
+                ":answer/id": "8d7f9c03-125b-5054-a409-a026297a0b98",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "C + \\log{\\left(\\left|{\\log{\\left(6 x \\right)}}\\right| \\right)}"
+              },
+              {
+                ":answer/id": "e7b80324-f3ce-5f8d-971c-7b501b281307",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "C + \\log{\\left(6 x \\right)}"
+              },
+              {
+                ":answer/id": "92741951-f0b4-501d-9717-423a82a9e088",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "C + \\frac{\\log{\\left(\\left|{\\log{\\left(x \\right)}}\\right| \\right)}}{3}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "a03011fd-7de6-5e00-9731-6491c11c28c5"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "natural-log-substitution-b2275-v1",
+        "seed": 1,
+        "source_basis": 2275,
+        "template": "q-13822",
+        "bank_profile": "q-13822",
+        "source_ids": [
+          "q-13822"
+        ],
+        "parameters": {
+          "k": 3,
+          "a": 6,
+          "n": 1,
+          "p_num": -1,
+          "p_den": 1
+        },
+        "domain": "a*x^n>0; log(a*x^n)!=0",
+        "eligible": true,
+        "evidence_only": false,
+        "origin": "observed_source_pattern",
+        "source_repairs": [],
+        "math_fingerprint": "4e076f53a2010c4b80a383330dda47c6adba525aa7c18f02fdc5187fdbf9fe1f",
+        "runtime": {
+          "python": "3.13.5",
+          "sympy": "1.14.0"
+        },
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "a03011fd-7de6-5e00-9731-6491c11c28c5",
+        "expected": "accepted",
+        "purpose": "correct key"
+      },
+      {
+        "submitted_answer_id": "6ff5ab33-57ba-5b59-a1e1-596c239937b1",
+        "expected": "rejected",
+        "purpose": "wrong choice"
+      },
+      {
+        "submitted_answer_id": "8d7f9c03-125b-5054-a409-a026297a0b98",
+        "expected": "rejected",
+        "purpose": "wrong choice"
+      },
+      {
+        "submitted_answer_id": "e7b80324-f3ce-5f8d-971c-7b501b281307",
+        "expected": "rejected",
+        "purpose": "wrong choice"
+      },
+      {
+        "submitted_answer_id": "92741951-f0b4-501d-9717-423a82a9e088",
+        "expected": "rejected",
+        "purpose": "wrong choice"
+      }
+    ]
+  }
+]
