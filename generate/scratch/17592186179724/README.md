@@ -1,6 +1,6 @@
-# Segment integral construction draft
+# Segment integral construction generator
 
-Script: `../17592186179724.py`. Immutable source wrappers: `source.json`, `topic.json`, `lesson.json`, math basis2275. No registration, database writes, engine edits or commits. Parent independent QA remains required.
+Script: `../17592186179724.py`. Immutable source wrappers: `source.json`, `topic.json`, `lesson.json`, math basis2275. Independent review, validation freeze, and inventory transaction evidence are retained under `reference/`.
 
 Run from the repository:
 
@@ -16,3 +16,23 @@ All five observed easy sources replay exact prompts, full worked solutions, comp
 Validation reads actual displayed function, coordinates, parametrization, vector stages, derivative inputs/vector, speed, full function pullback, both weighted integral rows and every displayed answer. It verifies log branches over the entire interval, formatting, public explicit guards, deterministic identity, complete source replay and engine outcomes. `validation.json` reports exact counts, hashes and a conservative enumerated meaningful-capacity lower bound that excludes reversed traversal, translations, option order and bank aliases. Review originals and variants are in `review.md` and `review.json`.
 
 Historical distractor intent remains underidentified, especially √27 and √20 speed choices; the empirical operations are explicit evidence recipes rather than claims to reconstruct MA's code. Exact replay is separated from method-bank defaults. Source math has no identified error or presentation repair. All learner solutions end at the constructed integral; exact/numerical integration occurs only in generator rejection and author validation.
+
+## Inventory registration and replenishment
+
+This exact generator version passed the independent review retained in
+`reference/prior-independent-review.json` and `reference/prior-independent-readback.json`.
+The complete validator was rerun for this inventory job; `reference/freeze.json`
+records the validated hashes and supersedes the worker report's historical pending-review status.
+
+`replenish.py` rechecks the native inventory and current/retained learner usage,
+validates each selected mathematical task and all learner grading selections,
+then prepares an additive transaction. It preserves the existing generator UUID
+when registered, and otherwise uses the deterministic KP-derived identity.
+Durable requests acquire the application's `api.lock`, protect the preparation
+basis, and retain the exact request, receipt and exact-basis readback under
+`reference/replenishment/basis-*/`. Reruns recover saved requests before new work.
+Original source questions, canonical examples and learner history are preserved.
+
+```sh
+.venv/bin/python generate/scratch/17592186179724/replenish.py
+```

@@ -87,7 +87,7 @@ def rendered(sid,t,k):
  raw=source_integral(sid);newI=scaled_side(raw,t,k);prompt=prompt.replace(raw,newI)
  # Reconstruct the source's prose and ordered stages, changing every reference
  # to the same inner variable and interval coherently.
- Uraw=re.search(r'\$u\s*=([^$]+)\$',source)[1].rstrip('.');U=R.scalar(Uraw);Unew=U.subs(x,x/k);du=s.diff(Unew,x);Unew_tex=Uraw.replace('x',r'\left(\frac{x}{'+str(k)+r'}\right)')
+ Uraw=re.search(r'\$u\s*=([^$]+)\$',source)[1].rstrip('.');U=R.scalar(Uraw);Unew=U.subs(x,x/k);du=s.diff(Unew,x);variable_log=next(L for L in U.atoms(s.log)if L.args[0].has(x));base_log=s.cancel(variable_log/U);macro=r'\ln'if base_log==1 else r'\log_{'+tex(s.exp(base_log))+'}';arg_tex=tex(variable_log.args[0]).replace('x',r'\left(\frac{x}{'+str(k)+r'}\right)');Unew_tex=macro+r'\left('+arg_tex+r'\right)'
  first=source.index('$$');pre=source[:first];pre=re.sub(r'\$u\s*=[^$]+\$',lambda m:'$u='+Unew_tex+'.$',pre)
  derivative='$$\n'+r'\frac{\text{d}u}{\text{d}x}='+tex(du)+r'\,⟹\,'+tex(1/(x*du))+r'\,\text{d}u=\frac{1}{x}\,\text{d}x.'+'\n$$'
  end=source.index('$$',first+2)+2;tail=source[end:]

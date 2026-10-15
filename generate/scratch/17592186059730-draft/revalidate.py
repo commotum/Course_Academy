@@ -25,8 +25,8 @@ write('source-cases.json',cases);write('source-repairs.json',repairs)
 # Existing generated inventory is an independent dedup/readback target, never MA evidence.
 inventory=v.read(H/'independent-inventory.json');assert type(inventory['relationship'])is str
 inventory_records=[]
-for raw in inventory['questions']:
- q=copy.deepcopy(raw); level=q[':question/difficulty'][':db/ident'].split('/')[-1]
+for entry in inventory['questions']:
+ raw=entry.get('record',entry);q=copy.deepcopy(raw); level=q[':question/difficulty'][':db/ident'].split('/')[-1]
  for f in q[':question/answer-fields']:
   f[':answer-field/type']=f[':answer-field/type'][':db/ident'];f[':answer-field/correct']=[':answer/id',f[':answer-field/correct'][':answer/id']]
   for a in f[':answer-field/choices']:a[':answer/type']=a[':answer/type'][':db/ident']

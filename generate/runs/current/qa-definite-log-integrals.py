@@ -23,13 +23,20 @@ def signed_pair(raw):
  for i,c in enumerate(text):
   if c in '+-'and i>0 and depth==0 and text[i-1]not in '+-*/^':return scalar(text[:i]),(1 if c=='+'else-1)*scalar(text[i+1:])
   depth+=(c in '({')-(c in ')}')
- depth=0
+ depth=0;start=None
  for i,c in enumerate(text):
-  if c=='('and depth==0 and text.endswith(')'):
-   pair=signed_pair(text[i+1:-1])
-   if pair is not None:
-    prefix=text[:i].strip();prefix=prefix[:-len(r'\cdot')]if prefix.endswith(r'\cdot')else prefix;coef=scalar(prefix)if prefix not in('','-')else s.Integer(-1 if prefix=='-'else 1);return tuple(coef*z for z in pair)
-  depth+=(c in '({')-(c in ')}')
+  if c=='(':
+   if depth==0:start=i
+   depth+=1
+  elif c==')':
+   depth-=1
+   if depth==0:
+    pair=signed_pair(text[start+1:i])
+    if pair is not None:
+     prefix=text[:start].strip();prefix=prefix[:-len(r'\cdot')]if prefix.endswith(r'\cdot')else prefix;suffix=text[i+1:].strip();suffix=suffix[len(r'\cdot'):]if suffix.startswith(r'\cdot')else suffix
+     try:coef=(scalar(prefix)if prefix not in('','-')else s.Integer(-1 if prefix=='-'else 1))*(scalar(suffix)if suffix else 1)
+     except(AssertionError,ValueError):continue
+     return tuple(coef*z for z in pair)
  return None
 def terms(sol):
  for block in B.blocks(sol):
@@ -61,13 +68,16 @@ def check(rec,sid=None):
   if r'\int'in term:
    body,var,lo,hi=integral(term);assert var in(x,u);assert equal(lo,L if var==x else ul)and equal(hi,U if var==x else uh);effective=body if var==x else body.subs(u,V)*der;assert eqreal(effective,F),('actual definite log operand',term,effective,F);N['formal_inputs']+=1;N['bounds']+=2
   elif '|_'in clean(term):
-   actual,lo,hi=bar(term);assert equal(lo,ul)and equal(hi,uh)and equal(actual,prim);assert eqreal(E.derivative(actual,x,V),F);N['primitive_stages']+=1;N['bounds']+=2;seen=True
+   actual,lo,hi=bar(term);assert equal(lo,ul)and equal(hi,uh)and equal(actual.subs(u,w),prim.subs(u,w)),(term,actual,prim,lo,hi,ul,uh);assert eqreal(E.derivative(actual,x,V),F);N['primitive_stages']+=1;N['bounds']+=2;seen=True
   else:
    assert seen and equal(scalar(term),expected),('actual endpoint/collected stage',term,expected)
    pair=signed_pair(term)
    if pair is not None and not signed:
     target=(prim.subs(u,uh),-prim.subs(u,ul));assert(equal(pair[0],target[0])and equal(pair[1],target[1]))or(equal(pair[0],target[1])and equal(pair[1],target[0])),('independent endpoint components',term,pair,target);N['signed_endpoint_components']+=2;signed=True
- assert seen and signed
+ assert seen
+ if not signed:
+  assert equal(prim.subs(u,ul),0),'omitted nonzero lower contribution'
+  N['signed_endpoint_components']+=2;N['certified_zero_lower_omissions']=N.get('certified_zero_lower_omissions',0)+1
  fs=q[':question/answer-fields'];assert len(fs)==1;f=fs[0];vals=[scalar(a[':answer/value'])for a in f[':answer-field/choices']];key=f[':answer-field/correct'][1];correct=next(a[':answer/value']for a in f[':answer-field/choices']if a[':answer/id']==key)
  if f[':answer-field/type'].endswith('/blank'):
   def response(value):return scalar(q[':question/problem'].split('=',1)[1].replace('$','').replace('{{'+f[':answer-field/key']+'}}','('+value+')'))

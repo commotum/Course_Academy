@@ -172,7 +172,8 @@ def main():
    rr=g.generate(spec['level'],seed=seed,template=spec['template'],profile=spec.get('bank_profile'));check(rr);checks.append(engine_item(rr,c['source_id']+'/profile-variation/'+str(seed)));review.append({'label':'profile-variation/'+c['source_id']+'/'+str(seed),'record':rr})
  # Independent non-MA captured inventory: no generator calls or template inference from its identity.
  inventory_count=0
- for q in inventory['questions']:
+ for entry in inventory['questions']:
+  q=entry.get('record',entry)
   kind=q[':question/answer-fields'][0][':answer-field/type'][':db/ident'];level=q[':question/difficulty'][':db/ident'].split('/')[-1]
   if level=='hard':template='hard_square3_blank' if kind.endswith('/blank') else 'hard_square3'
   elif '⟨' in q[':question/problem']:template='square2_blank'

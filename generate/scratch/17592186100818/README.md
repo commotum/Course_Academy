@@ -1,6 +1,6 @@
 # Evaluating Definite Integrals — review draft
 
-Unregistered local generator17592186100818.py, frozen source basis2275. No database writes, registrations, shared engine changes or commits were performed by this task. User approval follows root independent QA.
+Unregistered local generator17592186100818.py, frozen source basis2275. No database writes, registrations, shared engine changes or commits were performed by this task. Root independently reviews the generator before approving its local QA.
 
 Use `.venv/bin/python generate/scratch/17592186100818.py --difficulty all --count 1 --format json` for the public three-record JSON list. `--format markdown` previews the same records. Per-level functions and complete source-profile replay accept builtin integer seeds and parameters; batch count is1..100 with a mathematical-task capacity guard and canonical task dedup.
 
