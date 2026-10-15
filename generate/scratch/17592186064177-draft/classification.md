@@ -1,0 +1,15 @@
+# Integrating a Sum of Exponential Functions — basis 2275
+
+The refreshed manifest contains 16 records: 12 Math Academy originals and four independently authored inventory records. Across the entire manifest there are two unrated, five easy, and nine moderate records. Independent records do not increase MA source coverage. `source.json` is the untouched frozen source snapshot; `source-cases.json` and `raw-replay.json` contain MA originals only. `independent-inventory.json` preserves all four non-MA records and tests their relationship to observed banks separately.
+
+MA easy: q-2277 and q-2281, one radio field, five choices. Both integrate a two-term sum of a coefficient times e^x and a general-base exponential; the term order and entire distinct five-option banks are retained.
+
+MA moderate radio: q-31252, q-31254, q-31256, q-31260. Each has one radio field and five choices. The three-term families use, respectively, a quadratic term, a constant, a reciprocal, and a cubic term, alongside the two exponential terms. Their worked solutions retain the sum-rule separation and concrete primitive stage. Each original bank is a separate complete profile; no pool is used.
+
+MA moderate blank: q-167332, q-167786, q-166079 have a single `field-1` blank, with C supplied after the blank. Their complete substitution, simplification, integral separation, unevaluated primitive arithmetic, collected primitive, and arbitrary-constant explanation are retained. The prompt omits definitions of f and g, although the worked solution implies f(x)=e^x/2 and g(x)=8x-2x^3/3. Raw replay keeps that defect; normal completion supplies those definitions explicitly. These are not new source evidence.
+
+Unrated q-31311 and q-51102 contain full five-choice radio banks but no correct designation, solution or difficulty. Raw replay is ineligible for generation. Normal completion assigns easy and moderate, respectively, identifies the key by differentiation and authors same-method solutions. q-31261 is moderate, has a complete prompt/solution but no fields; its normal completion is explicitly an authored whole-primitive blank including C. These three incomplete raw records remain visible in the reports. The three additional raw f/g questions are also ineligible until their undefined operands receive the separately documented normal definitions; six raw records in total require repair.
+
+No source requires a plot, diagram or generated asset. All template and authored extension plot ratings are **none**. Standalone TeX is not a plot.
+
+Lesson order is read by traversing `activity/first-step` and `step/next`, rather than array order: Introduction → Integrating the Exponential Function → Integrating an Exponential Function With a General Base (tutorial) → corresponding general-base KP → this sum KP. Canonical e-381 integrates 5·9^x+3e^x by splitting the sum. The explicit key prerequisite is The Sum Rule for Indefinite Integrals (topic 17592186050321). Linear substitution and fundamental-theorem applications are downstream topic links and are excluded here.
