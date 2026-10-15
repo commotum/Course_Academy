@@ -1,0 +1,9 @@
+# Qualitative diagram extraction
+
+Every referenced source asset was opened locally and inspected in contact sheets. All 12 radio prompt plots show coordinate axes, a blue curve with traversal arrows/endpoints, a gray qualitative vector field and an orange right normal n. Their solution plots add a pink tangent T and a 90° clockwise relationship. No axes ticks, reference vector magnitude or color magnitude scale are supplied. The parabolic, reciprocal, logarithmic, straight, cubic and exponential paths match their stated domains. Normal directions match (y′,-x′) for the stated traversal, including the left/down normal on descending paths and upper/right normal on x=-ln(y).
+
+Fixed components: background, unlabeled coordinate scale, path topology and endpoints, curve direction, normal placement, tangent and clockwise angle illustration. Variable field slot: one common positive scale. Since arrows are qualitative and use no magnitude calibration, common positive scaling leaves their directions and relative magnitudes unchanged; the same normalized visualization represents every variant. Thus this bounded package requires no new plots. Geometry and normal are never independently resampled. Zero or negative scale is rejected: it would invalidate the source field-direction cues. New geometry or independent component changes would require synchronized Matplotlib/TikZ plots and fresh visual validation.
+
+The hard blank diagram contains L, its endpoint (√2,-√2), a right normal and a dashed circle; no field expression or field arrows supply F. It is an explicit missing-context exception.
+
+reference/assets.json retains all 25 references, their prompt/solution roles and verified SHA-256 bytes in the existing content-addressed database store. No assets were modified or republished. Exact source-image order is retained by the generator. Source diagrams carry orientation information, so the supported sampling policy is intentionally narrow.
