@@ -24,6 +24,16 @@ for index,(sid,(level,orig))in enumerate(G.CONFIG.items()):
  rawcopy=copy.deepcopy(r);rawcopy['question'][':question/problem']=raw[':question/problem'];rawcopy['question'][':question/worked-solution']=raw[':question/worked-solution']
  _,_,rawstages=P.check(rawcopy,allow_source_error=sid in G.ERRORS)
  assert (n['integral_sides'],n['primitive_sides'])==(rawstages['integral_sides'],rawstages['primitive_sides'])
+ def signature(sol):
+  z=[]
+  for block in re.findall(r'\$\$(.*?)\$\$',P.preprocess(sol),re.S):
+   if r'\int'not in block:continue
+   for row in re.sub(r'\\(?:begin|end)\{aligned\}','',block).replace('&','').split(r'\\'):
+    for part in row.split('='):
+     if not part.strip():continue
+     v,formal=P.E.side(part,x,U);z.append(('integral',str(formal[0][1]))if formal else('primitive','u'if re.search(r'(?<![A-Za-z])u(?![A-Za-z])',part)else'x'))
+  return z
+ assert signature(r['question'][':question/worked-solution'])==signature(raw[':question/worked-solution']),('source stage order',sid)
  vals,key=G.bank(sid,p);choices=[]
  for i,(a,recipe)in enumerate(zip(sf[':answer-field/choices'],vals)):
   actual=P.scalar(a[':answer/value']);rendered=G.tex(recipe)+'+C';pred=P.scalar(rendered)
@@ -38,7 +48,7 @@ for index,(sid,(level,orig))in enumerate(G.CONFIG.items()):
   source_errors.append({'source_id':sid,'problem':G.ERRORS[sid],'raw_record':r,'raw_validation':n,'repair':repaired,'repair_reason':'replace complete5-choice bank with explicitly authored distinct primitive patterns; keep captured source and errors unchanged'})
  for j in range(2):
   r=G.generate(level,1000+index*37+j,template=sid);P.check(r);variants.append(r);totals['variant_records']+=1
-write('source-cases.json',[{'source_id':r['generation']['template'],'template':r['generation']['template'],'parameters':r['generation']['parameters'],'bank_profile':r['generation']['bank_profile'],'record':r}for r in sources]);write('review-cases.json',variants);write('choice-ledger.json',ledger);write('source-errors-and-repairs.json',source_errors)
+write('source-cases.json',[{'source_id':r['generation']['template'],'template':r['generation']['template'],'parameters':r['generation']['parameters'],'bank_profile':r['generation']['bank_profile'],'profile':'observed','level':r['question'][':question/difficulty'].split('/')[-1],'record':r}for r in sources]);write('review-cases.json',variants);write('choice-ledger.json',ledger);write('source-errors-and-repairs.json',source_errors)
 
 # Correct final key is held unchanged for every mutation; stages must stand on their own.
 mutants=[]
@@ -86,6 +96,7 @@ for i,r in enumerate(sources+variants):
 blanks=[]
 for level in('easy','moderate','hard'):
  r=copy.deepcopy(next(z for z in variants if z['question'][':question/difficulty'].endswith('/'+level)));f=r['question'][':question/answer-fields'][0];correct=next(a for a in f[':answer-field/choices']if a[':answer/id']==f[':answer-field/correct'][1]);f[':answer-field/type']=':answer-field.type/blank';f[':answer-field/key']='field-1';f[':answer-field/choices']=[correct];r['question'][':question/problem']+='\n{{field-1}}';r['generation']['synthetic_probe']=True;r['generation']['eligible']=False;r['generation']['evidence_only']=True
+ probeid=G.uid('synthetic-blank:'+r['question'][':question/id']);r['question'][':question/id']=probeid;f[':answer-field/id']=G.uid(probeid+'field-1');correct[':answer/id']=G.uid(f[':answer-field/id']+correct[':answer/value']);f[':answer-field/correct']=[':answer/id',correct[':answer/id']];r['generation']['content_fingerprint']=G.digest(r['question'])
  canonical=correct[':answer/value'];equivalent='('+canonical.removesuffix('+C')+')+C+7';wrong='('+canonical.removesuffix('+C')+')+x+C'
  algebraic=s.latex(s.expand_log(P.scalar(canonical)).subs(P.C,s.Symbol('C'))).replace(r'\log',r'\ln')
  assert fullsame(P.scalar(canonical),P.scalar(algebraic))
@@ -94,16 +105,16 @@ for level in('easy','moderate','hard'):
 write('diagnostic-blank-cases.json',blanks);write('native-input.json',inputs)
 engine_dir=H/'engine';engine_dir.mkdir(exist_ok=True);reports=[];failures=[]
 for i in range(0,len(inputs),3):
- records=inputs[i:i+3];inp=engine_dir/('batch-'+str(i//3)+'-input.json');out=engine_dir/('batch-'+str(i//3)+'-report.json');inp.write_text(json.dumps(records,indent=2)+'\n');p=subprocess.run([str(engine),str(inp),str(out)],text=True,capture_output=True);process={'returncode':p.returncode,'stdout':p.stdout,'stderr':p.stderr};write('engine/batch-'+str(i//3)+'-process.json',process)
+ records=inputs[i:i+3];inp=engine_dir/('batch-'+str(i//3)+'-input.json');out=engine_dir/('batch-'+str(i//3)+'-report.json');inp.write_text(json.dumps(records,indent=2)+'\n');out.unlink(missing_ok=True);p=subprocess.run([str(engine),str(inp),str(out)],text=True,capture_output=True);process={'returncode':p.returncode,'stdout':p.stdout,'stderr':p.stderr};write('engine/batch-'+str(i//3)+'-process.json',process)
  if p.returncode==0:reports.append(json.loads(out.read_text()))
  else:
   failures.append({'input':str(inp.relative_to(H)),'requested_records':records,**process})
   # Isolate requests unchanged. No expected-result rewriting or pruning.
   for j,row in enumerate(records):
    for k,check in enumerate(row['checks']):
-    one=copy.deepcopy(row);one['checks']=[check];name='probe-'+str(i+j)+'-'+str(k);inp=engine_dir/(name+'-input.json');out=engine_dir/(name+'-report.json');inp.write_text(json.dumps([one],indent=2)+'\n');p=subprocess.run([str(engine),str(inp),str(out)],text=True,capture_output=True);pr={'returncode':p.returncode,'stdout':p.stdout,'stderr':p.stderr};write('engine/'+name+'-process.json',pr)
+    one=copy.deepcopy(row);one['checks']=[check];name='probe-'+str(i+j)+'-'+str(k);inp=engine_dir/(name+'-input.json');out=engine_dir/(name+'-report.json');inp.write_text(json.dumps([one],indent=2)+'\n');out.unlink(missing_ok=True);p=subprocess.run([str(engine),str(inp),str(out)],text=True,capture_output=True);pr={'returncode':p.returncode,'stdout':p.stdout,'stderr':p.stderr};write('engine/'+name+'-process.json',pr)
     if p.returncode==0:reports.append(json.loads(out.read_text()))
     else:failures.append({'isolated':True,'label':one['label'],'check':check,**pr})
 write('native-grading.json',{'engine_sha256':expected,'database_writes':0,'batch_max_records':3,'reports':reports,'failures':failures,'requested_checks':sum(len(i['checks'])for i in inputs),'passed_checks':sum(r['accepted_checks']+r['rejected_checks']+r['documented_unresolved_checks']for r in reports),'qualification':'Radio identity grading checked with actual native runner. All genuine blank requests and failures retained unchanged; no diagnostic outcome relabeling.'})
-write('validation.json',{'status':'mathematics passed; native qualified'if failures else'passed','totals':totals,'source_error_banks':len(source_errors),'eligible_original_banks':len(sources)-len(source_errors),'mutants_caught':len(mutants),'native_requested_checks':sum(len(i['checks'])for i in inputs),'native_failures_including_batch_and_isolation':len(failures),'engine_sha256':expected,'actual_distinct_batch_tasks':len({r['generation']['math_fingerprint']for r in batch}),'database_writes':0,'no_plots':True})
+write('validation.json',{'status':'mathematics passed; native qualified'if failures else'passed','totals':totals,'source_error_banks':len(source_errors),'eligible_original_banks':len(sources)-len(source_errors),'mutants_caught':len(mutants),'native_requested_checks':sum(len(i['checks'])for i in inputs),'native_failures_including_batch_and_isolation':len(failures),'engine_sha256':expected,'actual_distinct_batch_tasks':len({P.mathematical_task(r)for r in batch}),'actual_distinct_source_tasks':len({P.mathematical_task(r)for r in sources}),'actual_distinct_review_tasks':len({P.mathematical_task(r)for r in variants}),'database_writes':0,'no_plots':True})
 print(json.dumps(json.loads((H/'validation.json').read_text()),indent=2))

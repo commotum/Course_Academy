@@ -22,7 +22,7 @@ fig,ax=plt.subplots(figsize=(6.4,4.9));fig.subplots_adjust(left=.14,bottom=.16,r
 ax.set_xlim(0,float(p['xmax']));ax.set_ylim(0,float(p['ymax']))
 xs=list(range(0,int(p['xmax'])+1,int(p['dx'])));ys=list(range(0,int(p['ymax'])+1,int(p['dy'])))
 ax.set_xticks(xs);ax.set_xticklabels([str(x) if x and x%p['xlabel_step']==0 else '' for x in xs]);ax.set_yticks(ys);ax.set_yticklabels([str(x) if x and x%p['ylabel_step']==0 else '' for x in ys]);ax.grid(color='#cccccc',linewidth=.8);ax.set_axisbelow(True)
-for key,color,label in zip(('a','b'),('#eda600','#2474b4'),cfg['labels']):
+for key,color,label in zip(('a','b'),(('#0000ff','#ff0000') if spec['template']=='walkers' else ('#eda600','#2474b4')),cfg['labels']):
     end=min(p['xmax'],-p[key+'0']/p[key+'1']) if spec['template']=='walkers' and p[key+'1']<0 else p['xmax']
     x=[0,float(end)];yy=[float(p[key+'0']),float(p[key+'0']+p[key+'1']*end)]
     ax.plot(x,yy,color=color,lw=2)
@@ -41,6 +41,6 @@ if spec['annotated']:
     ax.annotate('('+str(t)+', '+str(y)+')',(float(t),float(y)),xytext=(10,13),textcoords='offset points',fontsize=12,bbox=dict(facecolor='white',edgecolor='none',alpha=.9))
 with tempfile.NamedTemporaryFile(suffix='.png',dir=target.parent,delete=False) as f:temp=Path(f.name)
 fig.savefig(temp,dpi=130,facecolor='white');plt.close(fig);os.replace(temp,target)
-side={**spec,'renderer_revision':'wordgraphs5' if spec['template'] in ('planes','tanks') else 'wordgraphs4','grid_x_ticks':xs,'numbered_x_ticks':[x for x in xs if x and x%p['xlabel_step']==0],'plotted_line_endpoints':{key:[[0,str(p[key+'0'])],[str(min(p['xmax'],-p[key+'0']/p[key+'1']) if spec['template']=='walkers' and p[key+'1']<0 else p['xmax']),str(max(0,p[key+'0']+p[key+'1']*p['xmax']) if spec['template']=='walkers' else p[key+'0']+p[key+'1']*p['xmax'])]] for key in ('a','b')},'annotation_point':[str(t),str(y)] if spec['annotated'] else None,'renderer':{'python':sys.version,'matplotlib':matplotlib.__version__,'dependency_paths':provenance}}
+side={**spec,'renderer_revision':'wordgraphs6' if spec['template']=='walkers' else 'wordgraphs5' if spec['template'] in ('planes','tanks') else 'wordgraphs4','grid_x_ticks':xs,'numbered_x_ticks':[x for x in xs if x and x%p['xlabel_step']==0],'plotted_line_endpoints':{key:[[0,str(p[key+'0'])],[str(min(p['xmax'],-p[key+'0']/p[key+'1']) if spec['template']=='walkers' and p[key+'1']<0 else p['xmax']),str(max(0,p[key+'0']+p[key+'1']*p['xmax']) if spec['template']=='walkers' else p[key+'0']+p[key+'1']*p['xmax'])]] for key in ('a','b')},'annotation_point':[str(t),str(y)] if spec['annotated'] else None,'renderer':{'python':sys.version,'matplotlib':matplotlib.__version__,'dependency_paths':provenance}}
 with tempfile.NamedTemporaryFile(mode='w',suffix='.json',dir=target.parent,delete=False) as f:json.dump(side,f,indent=2);temp=Path(f.name)
 os.replace(temp,target.with_suffix('.json'))

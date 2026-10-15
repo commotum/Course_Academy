@@ -104,6 +104,7 @@ for count in(True,1.0,0,-1,101):
  except ValueError:pass
  else:raise AssertionError('count guard')
 cli=subprocess.run([sys.executable,'-B',str(H.with_suffix('.py')),'--count','1'],capture_output=True,text=True,check=True);assert len(json.loads(cli.stdout))==3
+write('independent-inventory.json',{'basis':G.SOURCE['basis'],'lineage':G.SOURCE['lineage'],'questions':[],'description':'Captured non-MA inventory from frozen source wrapper only; no records.'})
 write('source-cases.json',source);write('source-replay.json',replays);write('choice-ledger.json',ledger);write('review-cases.json',reviews)
 engine=[]
 for group,label in[(source,'source'),(reviews,'variant')]:

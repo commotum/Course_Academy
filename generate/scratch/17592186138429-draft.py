@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Word Problems — graph-intersection contextual reading, math basis 1356.
 
-Two unrated practice sources have full five-choice banks but no correct refs or
-worked solutions. Correct refs are independently derived; solutions are authored
+Fresh basis2275 has five MA sources, including two unrated questions whose
+correct refs and worked solutions require authored completions. Correct refs are independently derived; solutions are authored
 from e-13130's intersection → annotated graph → point → contextual x sequence.
 All level assignments are authored, not recovered labels. See adjacent evidence.
 Observed scalar bank interpretations remain unknown; explicit ratio profiles are
@@ -10,6 +10,8 @@ replay expressions only. Normal banks are complete authored adjacent-grid-line
 misreadings, never a first-valid distractor pool. Stop at generator/plot step 7.
 """
 from __future__ import annotations
+import sys
+sys.dont_write_bytecode=True
 import argparse, hashlib, json, math, random, subprocess, tempfile, uuid
 from pathlib import Path
 import sympy as sp
@@ -18,7 +20,7 @@ KP_ID=17592186138429
 KP_UUID='4154d81b-c94a-57f7-80fa-0daa341505e6'
 VERSION='word-graphs-5'
 HERE=Path(__file__).with_suffix('')
-SOURCE={'database':'math','basis':1356,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
+SOURCE={'database':'math','basis':2275,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
 TEMPLATES={'trucks':'easy','pools':'moderate','cars':'hard'}
 PROMPTS={
  'cars':'The graph above shows the speed of cars $A$ and $B$ as a function of the distance that they traveled during a brake test. At which distance, in meters, did both cars reach the same speed?',
@@ -108,7 +110,7 @@ def render_plots(name,p):
             continue
         data={**spec,'annotated':role=='solution'}
         filename='images/generated/'+digest(data)+'.png'; path=HERE/filename; side=path.with_suffix('.json')
-        revision='wordgraphs5' if name in ('planes','tanks') else 'wordgraphs4'
+        revision='wordgraphs6' if name=='walkers' else 'wordgraphs5' if name in ('planes','tanks') else 'wordgraphs4'
         if not path.exists() or not side.exists() or json.loads(side.read_text()).get('renderer_revision')!=revision:
             path.parent.mkdir(parents=True,exist_ok=True)
             with tempfile.NamedTemporaryFile(mode='w',suffix='.json',dir=HERE,delete=False) as f:
@@ -125,6 +127,9 @@ def solution(name,p,assets):
     return 'The trucks are the same distance from the center when the two graphs intersect.\n\n'+graph+f'\n\nIn this case, we have the point $({t},{y})$. So, both trucks are the same distance (${y}\\,\\textrm{{miles}}$) from the center at $t={t}$ hours.'
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+    if type(seed)is not int:raise ValueError('seed must be a builtin integer')
+    if level not in('easy','moderate','hard'):raise ValueError('Unknown level')
+    if template is None:template=random.Random(seed).choice(('trucks','planes','tanks','walkers'))if level=='easy'else'pools'if level=='moderate'else'cars'
     if template in ('planes','tanks','walkers'):
         from importlib.util import spec_from_file_location, module_from_spec
         spec=spec_from_file_location('wordgraphs_extra',HERE/'extensions.py'); extra=module_from_spec(spec);spec.loader.exec_module(extra)
@@ -179,8 +184,26 @@ def markdown(r):
     q=r['question']; f=q[':question/answer-fields'][0]
     return q[':question/problem']+'\n\n'+('\n'.join(f'- ${a[":answer/value"]}$' for a in f[':answer-field/choices']) if f[':answer-field/type']==':answer-field.type/radio' else '')+'\n\n**Worked solution**\n\n'+q[':question/worked-solution']
 
+def batch(level='all',count=1,seed=0,template=None,profile=None):
+    if type(seed)is not int or type(count)is not int or count<1:raise ValueError('builtin integer seed and positive count required')
+    levels=('easy','moderate','hard')if level=='all'else(level,)
+    if any(l not in('easy','moderate','hard')for l in levels):raise ValueError('Unknown level')
+    if count>100 or any(count>{'easy':100,'moderate':22,'hard':24}[l]for l in levels):raise ValueError('Requested batch exceeds bounded inventory')
+    records=[]
+    for lev in levels:
+        seen=set();made=[]
+        for i in range(max(500,count*300)):
+            r=generate(lev,seed+i,template,profile=profile);key=r['generation']['parameter_fingerprint']
+            if key in seen:continue
+            seen.add(key);made.append(r)
+            if len(made)==count:break
+        if len(made)!=count:raise ValueError('Selected template bounded inventory exhausted')
+        records.extend(made)
+    return records
+
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1);ap.add_argument('--format',choices=['markdown','json'],default='markdown');ap.add_argument('--template');ap.add_argument('--profile'); args=ap.parse_args()
-    records=[generate(level,args.seed+i,args.template,profile=args.profile) for level in (['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]) for i in range(args.count)]
-    print(json.dumps(records,indent=2) if args.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in records))
-if __name__=='__main__': main()
+    try:records=batch(args.difficulty,args.count,args.seed,args.template,args.profile)
+    except ValueError as e:ap.error(str(e))
+    print(json.dumps(records,indent=2)if args.format=='json'else'\n\n---\n\n'.join(markdown(r)for r in records))
+if __name__=='__main__':main()

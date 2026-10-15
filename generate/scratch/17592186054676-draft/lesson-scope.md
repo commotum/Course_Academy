@@ -1,0 +1,5 @@
+# Lesson route and scope
+
+Frozen topic.json and lesson.json are read at basis 2275. The Graphing Linear Equations activity starts at step 17592186055668 (Introduction). The next chain visits table plotting, a tutorial about two points determining a line, sketching a line using two points, and identifying a line from a graph; its last step is this point-membership KP (17592186055637). The topic follows Two-Variable Linear Equations and Their Solutions; subsequent topics include systems, reflections and horizontal/vertical lines. The canonical point-membership example substitutes A(0,5), B(2,1), C(3,0) into y=5-2x and tests each equality.
+
+The assessed operation here is coordinate reading plus direct substitution into an already supplied equation. Neighboring plotting/sketching lessons do not authorize moving those tasks into these questions. The authored H variants keep point selection and substitution intact while adding only fraction arithmetic; H is a qualified authored difficulty extension because the captured practice bank has no hard examples. Source unrated checkbox questions remain unrated originals.

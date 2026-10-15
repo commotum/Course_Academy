@@ -95,13 +95,15 @@ def stages(q):
  assert equal(co(l[1])*du,co(r[1])),('false reciprocal differential',a,b)
  table=re.findall(r'^\| \$([xu])\$ \| \$(.*?)\$ \| \$(.*?)\$ \|',sol,re.M);assert [z[0]for z in table]==['x','u'],table
  xl,xh=map(scalar,table[0][1:]);tl,th=map(scalar,table[1][1:]);assert equal(xl,lo)and equal(xh,hi)and equal(tl,ul)and equal(th,uh),('false table',table)
- prim=primitive(c*F,x)
+ prim=primitive(c*F,x);improper_limits=0
  def at(z):
+  nonlocal improper_limits
   val=prim.subs(x,z)
-  if val.has(s.nan,s.zoo,s.oo,-s.oo):val=s.limit(prim,x,z,dir='+')
+  if val.has(s.nan,s.zoo,s.oo,-s.oo)or(c*F).subs(x,z).has(s.nan,s.zoo,s.oo,-s.oo):
+   improper_limits+=1;val=s.limit(prim,x,z,dir='+'if z==min(lo,hi)else'-')
   assert not val.has(s.nan,s.zoo,s.oo,-s.oo),('divergent endpoint',z,prim)
   return val
- expected=s.simplify(at(hi)-at(lo));N=dict(rows=0,integral_inputs=0,primitive_bars=0,individual_endpoints=0,bound_references=4,differentials=2);last_primitive=None
+ expected=s.simplify(at(hi)-at(lo));N=dict(rows=0,integral_inputs=0,primitive_bars=0,individual_endpoints=0,bound_references=4,differentials=2,improper_endpoint_limits=improper_limits);last_primitive=None
  aligned=next(b for b in blocks(sol)if r'\begin{aligned}'in b);aligned=re.sub(r'\\(?:begin|end)\{aligned\}','',aligned).replace('&','')
  for row in aligned.split(r'\\'):
   for part in row.split('='):

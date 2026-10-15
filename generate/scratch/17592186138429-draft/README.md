@@ -1,3 +1,5 @@
+> Historical registered-package README. For the owned revalidation candidate, start with [README-revalidation.md](README-revalidation.md).
+
 # Word Problems generator
 
 Generator: `../17592186138429.py`. Scope: read the horizontal coordinate of a unique intersection of two supplied contextual linear graphs; no learner algebraic solving. Two unrated sources replay with exact prompt/PNG and full five-choice banks. Missing original correct refs, solutions and labels receive explicitly authored repairs. Original distractor intent remains unknown; expression replay profiles never serve as defaults.

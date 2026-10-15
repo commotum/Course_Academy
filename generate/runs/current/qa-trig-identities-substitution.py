@@ -30,7 +30,7 @@ def integral(raw):
  text=clean(raw);at=text.index(r'\int');i=at+4
  while text[i].isspace():i+=1
  assert text[i]=='_';lo,i=B.group(text,i+1);assert text[i]=='^';hi,i=B.group(text,i+1)
- m=re.search(E.DIFF,text[i:]);assert m;body=scalar(text[i:i+m.start()]);outside=text[:at]+'(i)'+text[i+m.end():];value=scalar(outside);symbol=E.P.locals_['i'];coef=s.expand(value).coeff(symbol);assert equal(value,coef*symbol)and not coef.has(x,u)
+ m=re.search(E.DIFF,text[i:]);assert m;body_text=text[i:i+m.start()].strip();body_text=body_text[:-len(r'\cdot')]if body_text.endswith(r'\cdot')else body_text;body=scalar(body_text);outside=text[:at]+'(i)'+text[i+m.end():];value=scalar(outside);symbol=E.P.locals_['i'];coef=s.expand(value).coeff(symbol);assert equal(value,coef*symbol)and not coef.has(x,u)
  return s.Integer(1),coef*body,E.P.locals_[m[1]],scalar(lo),scalar(hi),''
 def parts(sol):
  for block in B.blocks(sol):

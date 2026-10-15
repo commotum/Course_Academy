@@ -15,6 +15,7 @@ z=importlib.util.spec_from_file_location('kp00818_generator',H.with_suffix('.py'
 def write(n,z):(H/n).write_text(json.dumps(z,indent=2,ensure_ascii=False)+'\n')
 def check(r):
  G.fmt.validate_generated_record(r);q=r['question'];expect,counts=R.stages(q);f=q[':question/answer-fields'][0];answers=f[':answer-field/choices'];blank=f[':answer-field/type'].endswith('/blank')
+ c,F,_,lo,hi,end=R.integral(next(b for b in R.blocks(q[':question/problem'])if r'\int'in b).rstrip('= .?('));assert not end;canon=s.cancel(s.expand_log((c*F).subs(x,s.Symbol('positive_x',positive=True)),force=False));actualfp=G.digest({'integrand':s.srepr(canon),'bounds':list(map(s.srepr,[s.simplify(lo),s.simplify(hi)])),'domain':'positive x; real logarithm; original continuous u-interval, convergent endpoint allowed'});assert r['generation']['math_fingerprint']==actualfp,('stale mathematical fingerprint',r['generation'])
  # Read supplied notation, so a coefficient blank is graded against precisely
  # its fragment rather than the full definite integral value.
  last=R.blocks(q[':question/problem'])[-1];mult=R.scalar(last.lstrip(')').strip())if last.startswith(')')else s.Integer(1)
@@ -38,15 +39,17 @@ for sid in G.QS:
  if sid!='q-49607':assert all(a['source_correct']==a['generated_correct']for a in mappings)
  ledger.append({'source_id':sid,'profile':sid,'matched':len(mappings),'total':len(mappings),'choices':mappings,'prompt_equal_normalized':r['question'][':question/problem']==G.fmt.normalize_prose(G.QS[sid][':question/problem']),'solution_equal_normalized':sid not in G.REPAIRS and r['question'][':question/worked-solution']==G.fmt.normalize_prose(G.QS[sid].get(':question/worked-solution',''))})
  if sid in G.REPAIRS:sourceerrors.append({'source_id':sid,'raw_eligible':False,'supported_repair':G.REPAIRS[sid],'raw_question':G.QS[sid],'corrected_record':r})
- rows=[r];tasks=set();slots={k:set()for k in G.original(sid)}
+ rows=[r];reviewseen={r['generation']['math_fingerprint']};tasks=set();slots={k:set()for k in G.original(sid)}
  for seed in range(12):
   v=G.generate(G.CONFIG[sid],seed=seed,template=sid);counts,key=check(v);rows.append(v);tasks.add(v['generation']['math_fingerprint']);alltasks.add(v['generation']['math_fingerprint'])
   for k,z in counts.items():stats[k]=stats.get(k,0)+z
   for k,z in v['generation']['parameters'].items():slots[k].add(z)
-  if seed in(0,1,2):reviews.append({'source_id':sid,'seed':seed,'record':v})
+  if len(reviewseen)<4 and v['generation']['math_fingerprint']not in reviewseen:
+   reviews.append({'source_id':sid,'seed':seed,'record':v});reviewseen.add(v['generation']['math_fingerprint'])
  coverage[sid]={'actual_distinct_math_tasks_in_12':len(tasks),'slots':{k:sorted(z)for k,z in slots.items()}}
  # Freeze native full-bank grading on originals and 3 normal variants/profile.
- for j,v in enumerate([rows[0],rows[1],rows[2],rows[3]]):
+ selected=[r]+[z['record']for z in reviews if z['source_id']==sid];assert len(selected)==4
+ for j,v in enumerate(selected):
   f=v['question'][':question/answer-fields'][0];correct=f[':answer-field/correct'][1];checks=[]
   if f[':answer-field/type'].endswith('/radio'):
    checks=[{'submitted_answer_id':a[':answer/id'],'expected':'accepted'if a[':answer/id']==correct else'rejected','purpose':'full observed bank ID selection'}for a in f[':answer-field/choices']]

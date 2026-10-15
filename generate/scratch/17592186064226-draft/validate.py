@@ -92,7 +92,7 @@ def main():
   else:raise AssertionError('invalid hard slot shape accepted')
  # Exact real intervals: authored endpoints are strictly between 0 and pi/2; both original denominators stay nonzero.
  assert all(0<sp.Rational(e[0],e[1])<sp.Rational(e[2],e[3])<sp.Rational(1,2)for e in g.ENDPOINTS)
- dump('source-cases.json',[{'source_id':r['generation']['template'],'record':r,'eligible_for_serving':False,'role':'raw original evidence; normal formatting/repair differs'}for r in originals]);dump('review-cases.json',rows);dump('source-replay.json',replay);dump('rendered-math-readback.json',audits);dump('negative-mutations.json',mutations);dump('previews.json',preview)
+ dump('source-cases.json',[{'source_id':r['generation']['template'],'record':r,'eligible_for_serving':r['generation']['template']not in ['q-114308', 'q-114318', 'q-352711', 'q-352848', 'q-49273', 'q-49275', 'q-49284', 'q-73361', 'q-73365', 'q-74279', 'q-74281'],'evidence_only':True,'role':'raw original source evidence'}for r in originals]);dump('review-cases.json',rows);dump('source-replay.json',replay);dump('rendered-math-readback.json',audits);dump('negative-mutations.json',mutations);dump('previews.json',preview)
  dump('native-input.json',native);runner=ROOT/'generate/runs/current/check-engine';shutil.copy2(runner,H/'check-engine');dump('engine-build.json',{'frozen_runner':str(runner.relative_to(ROOT)),'runner_sha256':sha(runner),'owned_copy_sha256':sha(H/'check-engine'),'harness_sha256':sha(H/'check-engine.rs')});qualify_native(native)
  subprocess.run([str(H/'check-engine'),str(H/'native-input.json'),str(H/'native-report.json')],check=True)
  report=json.loads((H/'native-report.json').read_text());dump('final-preservation.json',preserve())

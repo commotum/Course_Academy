@@ -72,11 +72,11 @@ def generate_walkers(namespace,level,seed,field_type,parameters,profile):
  if parameters is not None:p=g.normalize(parameters)
  else:
   t=rng.choice([5,7,9,11,13]);y=rng.choice([200,300,400,500]);end=rng.choice([t+4,t+5,t+6]);rate=sp.Rational(y,end-t)
-  p=g.normalize(dict(a0=0,a1=sp.Rational(y,t),b0=rate*end,b1=-rate,xmax=end+4,dx=1,ymax=100*(int(rate*end/100)+2),dy=50,ylabel_step=200,xlabel_step=2))
+  p=g.normalize(dict(a0=0,a1=sp.Rational(y,t),b0=rate*end,b1=-rate,xmax=end+4,dx=1,ymax=100*(int(max(rate*end,sp.Rational(y,t)*(end+4))/100)+2),dy=50,ylabel_step=200,xlabel_step=2))
  r={k:sp.Rational(v) for k,v in p.items()};t,y=g.derive(p)
  if not (r['a0']==0 and r['a1']>0 and r['b0']>y and r['b1']<0 and t.q==y.q==1 and 0<t<r['xmax'] and 0<y<r['ymax']):raise ValueError('Visible positive meeting point and opposite travel directions required')
  if r['dx']!=1 or r['dy']!=50 or r['xlabel_step']!=2 or r['ylabel_step']!=200 or t%2!=1 or y%100:raise ValueError('Preserve unit-minute minor ticks and hundred-meter reading workload')
- if any(r[k]<=0 or r[k].q!=1 for k in ('xmax','ymax')) or r['ymax']%r['dy'] or r['b0']>=r['ymax']:raise ValueError('Visible integer graph window required')
+ if any(r[k]<=0 or r[k].q!=1 for k in ('xmax','ymax')) or r['ymax']%r['dy'] or max(r['b0'],r['a1']*r['xmax'])>=r['ymax']:raise ValueError('Visible integer graph window required')
  sq=next(q for q in json.loads((g.HERE/'source.json').read_text())['record'][':knowledge-point/questions'] if q.get(':question/math-academy-id')=='q-166758')
  import types
  local=dict(namespace);local['CONFIG']={**g.CONFIG,'walkers':dict(x_label='Time (minutes)',y_label='Distance (meters)',labels=['Sam','Mary'])};local['SOURCE_PARAMETERS']={**g.SOURCE_PARAMETERS,'walkers':WALKER_PARAMS};local['ORIGINAL_ASSETS']={**g.ORIGINAL_ASSETS,'walkers':sq[':question/problem'].split('![](')[1].split(')')[0]}

@@ -15,3 +15,11 @@ Seven captured practice families at math basis 1356, lineage `01a12a15-3e0a-75a1
 `raw-recipes.json` contains extracted prompt/solution masks, complete scalar atoms and actual ordered arithmetic nodes. `extract.py` creates this recipe evidence from the frozen source; `source-cases.json` replays every practice source through the public API. Normal worked solutions preserve the shared four-step prose and expand all successive primitive endpoint components. They are explicitly authored expansions; raw replay preserves the exact original mathematical sequence. Opaque banks have no claimed recovered author intention. `validation.json` separates original fidelity, mathematical correctness and native radio grading. Missing raw correct refs prevent grading two original records; their normal authored family records are graded.
 
 `domain-counts.json` gives the exact finite default sampler capacity: 21,699 tasks after complete-bank collisions, excluding unused parameters/raw bank scales. The 360-instance validation sweep measures sampled task uniqueness separately, rather than treating each seed as a new task.
+
+`classification-current.md` records the 12-source recheck at basis 2603 and the
+five additional families excluded from this generator's sampling coverage.
+`replenish.py` uses the existing application EDB integration to fill only this
+KP's shortages, register the stable generator identity, and preserve exact
+requests and verified receipts under `reference/replenishment/`. It holds the
+application `api.lock` from the fresh inventory read through commit readback.
+`validation-freeze.json` pins the validated generator and current-source evidence.
