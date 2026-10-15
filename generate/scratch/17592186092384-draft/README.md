@@ -1,0 +1,7 @@
+# Private normal-slope draft
+
+`../17592186092384-draft.py` exposes generate, generate_easy/moderate/hard, generate_profile and batch. CLI supports JSON/Markdown. This is an unregistered local draft; numeric.py and all numeric evidence are preserved. No database writes or engine edits.
+
+Run `.venv/bin/python generate/scratch/17592186092384-draft/validate.py`. The standalone validator reads rendered math using its frozen private fail-closed parser; checks every printed equality, actual derivative operand, derivative target, evaluation point, point ordinate, negative reciprocal, full selected bank recipes, field contract and all finite public domains; replays raw sources and complete source profiles; exercises deterministic APIs, wrong parameter/field/profile combinations and mutation controls; submits all canonical/equivalent and ordinary0/1/correct+1 blank probes plus every radio ID to frozen check-engine's actual learning::grade_field. A value1 probe is accepted exactly when1 is mathematically correct; none of the probes is changed or filtered. Radio grading consumes choice IDs, so equivalence is checked mathematically at bank replay and all IDs are checked natively.
+
+classification/source-components/template-extraction provide docs3/4 evidence; plot-extraction records docs5/7 none; source-fidelity/capacity/review/native-input/native-report/validation/freeze provide docs6 evidence. Raw omissions/errors are preserved in source.json and review. No optional imports of mutable shared QA are used at runtime. Shared root independent QA decides approval.

@@ -1,0 +1,7 @@
+# Basis-2275 normal-intercept classification
+
+The source is math at basis 2275, lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. The frozen source, topic and lesson are source.json, topic.json and lesson.json. Ten MA originals comprise five easy and five moderate questions. Three later generated questions are kept separately in independent-inventory.json; they do not count as original MA source coverage. Every original has a distinct prompt/value or operative-layout profile, tracked by its source ID in classification.json and extraction.json.
+
+Easy has one complete five-option coordinate radio and two complete pairs of coordinate blanks. q-10878 and q-71542 have no fields. Moderate has three complete five-option coordinate radios, one complete pair of blanks, and q-342222 with two blank stubs lacking answer/correct records. No hard practice is observed. The canonical e-149 uses a square root plus a linear term and the same normal-intercept method; it supports a conservative authored hard API, with no claim of recovered hard practice or validated difficulty calibration.
+
+No source practice contains graphs, diagrams, or plot links. The lesson's introductory diagram explains perpendicular lines but is not needed to create these questions. All template plot ratings are none. The registered numeric generator and its entire 71-file evidence pathset are preserved under registered-baseline.json. This reconciliation is an unregistered draft.

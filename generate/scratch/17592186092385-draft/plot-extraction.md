@@ -1,0 +1,1 @@
+All source practice prompts, banks and solutions were inspected. Plot rating: none for all templates. The lesson introductory diagram is context only and is not used in generated tasks. No plot construction or asset reuse is required.

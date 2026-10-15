@@ -1,0 +1,23 @@
+# Template extraction
+
+## 1. Original-specific description
+
+`source.json` contains the complete exact original prompts, solutions, fields, IDs, full banks and correct refs. `templates.json` maps each original to its expression, point, ordinate, fixed x coefficient, response, full prompt/solution interpolation template, original mathematical-slot spellings and complete bank. `source-cases.json` supplies original replay parameters. The six blank profiles are q-340942 (quadratic plus constant), q-342163 (linear minus cubic), q-340945 (reciprocal square), q-342162 (three-term quadratic at zero), q-342168 (sextic/cubic rational coefficients) and q-342190 (cube root with fixed 8x normalization). Radio profiles q-47408, q-103546, q-47409, q-47410 and unrated q-47406 have distinct complete banks. q-47405 is fieldless in the capture, despite asking q-p. Three product fragments differ in prose/whitespace, prior-part number and equivalent expected normal-line expression; all are retained separately.
+
+## 2. Generalized backbone
+
+Determine f', evaluate at the supplied curve point, take the negative reciprocal, insert the point into point-slope form and rearrange into the requested normalization. The answer is either its two missing scalar components, its entire y expression, or the requested sum/difference of its coefficients. Nonzero finite tangent slope is required. The curve point, coefficient roles, field fragments and normalization remain coherent throughout.
+
+## 3. Components and complete banks
+
+All field/choice ownership and original correct designations are in templates.json. Blank bank values are |Lm| and L(x1+m y1), with L=1 except the observed cube root's L=8. Radio q-47408 retains the complete values from y1 plus 1/(2m), the correct a+b, y1+2/m, y1+4/m and y1+1/m; the error interpretation is underdetermined and is not claimed recovered. q-103546 retains [-m*y1, q-p, -x1, -y1, y1-x1]. q-47409 retains [p+q, p-q, -p-q, x1, -2p+y1]. q-47410 retains [q,q-p,-p-q,p+q,-q]. These expressions reproduce every complete source bank, including the unexplained 21 in q-47409. The error intent of -2p+y1 is unresolved; this explicit evidence profile is not the authored default.
+
+q-47406's complete [77,74,66,56,58] bank is fixed to its observed original. The missing correct ref is independently inferred as 74 because p=8 and q=66; its authoritative MA987 snapshot confirms the five choices but lacks a solution/correct marker. No missing designation counts as a source match. q-47405 receives an authored blank 362 because q=386 and p=24. There were zero captured fields to match. Source fragments' equivalent y expressions remain as captured, with f=e^x/2, h=-4sin x at pi identified from their concrete substitution rows.
+
+## 4. Slots, constraints and dependent rendering
+
+Source interpolation varies an integer vertical translation -2..2, holding expression structure, point abscissa, tangent/normal slopes, field layout and exact source algebra-row sequence fixed. Complete mathematical slots change the displayed curve, point ordinate, left side, multiplied/grouped algebra rows, final right side and coefficient sum/difference together. At translation zero, the original slot spelling is retained. q-103546 excludes translations -2 and -1 because the whole bank collides. q-47406 and the three context fragments have fixed original parameters; their limited evidence does not justify additional inferred banks/context.
+
+Authored easy: a in {-3,-2,-1,1,2,3}, c=-3..3, point in {1,2}, f=a*x^2+c (84). Moderate: a,b in {-2,-1,1,2}, c=-2..2, point in {-1,1,2}, f=a*x^3+b*x+c (240). Hard: a=1..4,b=1..8,c=-2..2, point in {1,2}, f=a*x^6/8-b*x^3/4+c, rejecting zero derivative (295). Public explicit parameters must be members of these complete finite domains. No arbitrary extra keys, scales, operators or point targets are accepted. Constant changes are meaningful because they change the curve point and normal's right side. Independent readback confirms all slots from printed mathematics. All authored defaults are two-blank fields without distractors or invented feedback.
+
+Source errors are narrowly repaired: q-47406 missing correct/solution; q-47405 missing field/placeholder; three product prompts missing prior-part bindings. Raw captures remain untouched, and raw context replay remains available only to the private validation path. Served context questions add explicit bindings, value and already known tangent slope; this preserves the intended equation workload.
