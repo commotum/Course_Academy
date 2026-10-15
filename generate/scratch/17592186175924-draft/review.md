@@ -1,6 +1,8 @@
 ## q-214033 / 0
 
-What is the equation of the line that passes through the point $(1,-5)$ and is perpendicular to $x + 3 y=12?$?$y =$
+What is the equation of the line that passes through the point $(1,-5)$ and is perpendicular to $x + 3 y=12?$
+
+$y=$
 {{field-1}}
 
 3 x - 8
@@ -21,7 +23,9 @@ $$
 
 ## q-214033 / 1
 
-What is the equation of the line that passes through the point $(9,-9)$ and is perpendicular to $- 2 x + 6 y=-11?$?$y =$
+What is the equation of the line that passes through the point $(9,-9)$ and is perpendicular to $- 2 x + 6 y=-11?$
+
+$y=$
 {{field-1}}
 
 18 - 3 x
@@ -42,7 +46,9 @@ $$
 
 ## q-214033 / 2
 
-What is the equation of the line that passes through the point $(-9,7)$ and is perpendicular to $- 2 x + 6 y=8?$?$y =$
+What is the equation of the line that passes through the point $(-9,7)$ and is perpendicular to $- 2 x + 6 y=8?$
+
+$y=$
 {{field-1}}
 
 - 3 x - 20

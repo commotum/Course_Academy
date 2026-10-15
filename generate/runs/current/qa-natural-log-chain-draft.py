@@ -24,11 +24,11 @@ def check(r,source_id=None):
  else:
   p=re.search(r'where \$x=(.*?)\$',prompt)
   if p:point=H.scalar(p[1])
- if point is not None:assert F.subs(x,point).is_finite;N['points']+=1
+ if point is not None:assert F.subs(x,point).is_finite and F.subs(x,point).is_real;N['points']+=1
  bb=re.findall(r'\$\$(.*?)\$\$',q[':question/worked-solution'],re.S);assert len(bb)==(5 if line_target else 4 if point is not None else 3)
  composite=clean(bb[0]);first,inner=re.split(r',\s*u=',composite);left,outer=first.split('=',1);assert left==name;U=H.scalar(inner);O=H.scalar(outer);assert H.eq(O.subs(u,U),F);N['bindings']+=1
  if U.is_Pow and U.base==x and U.exp.is_even:
-  assert H.eq(F.subs(x,-s.Integer(2)),O.subs(u,U.subs(x,-s.Integer(2))));N['negative_branch_power_instances']+=1
+  assert 'Union' in m['domain'] and '-oo' in m['domain'];assert H.eq(F.subs(x,-s.Integer(2)),O.subs(u,U.subs(x,-s.Integer(2))));N['negative_branch_power_instances']+=1
  DER=r'\\frac\{\\text\{d\}([fgyu])\}\{\\text\{d\}([xu])\}';expected_map={(name,'u'):s.diff(O,u),('u','x'):s.diff(U,x),(name,'x'):df}
  parts=clean(bb[1]).split(',');assert len(parts)==2
  for part in parts:

@@ -75,7 +75,10 @@ def source_fidelity():
  for j,params in enumerate([g.SPECS['authored-easy'][2],*CHANGED['authored-easy']]):
   r=g.generate(source_id='authored-easy',parameters=params,seed=j);p.read_record(r)
   cases.append({'source_id':'authored-easy','difficulty':'easy','template':'affine-blank','parameters':params,'bank_profile':None,'case':'authored-reference' if j==0 else 'changed-'+str(j),'record':r})
- write('raw-source-replays.json',raws);write('source-cases.json',cases)
+ write('raw-source-replays.json',raws);write('review-cases.json',cases)
+ write('source-cases.json',[c for c in cases if c['case']=='original' and c['source_id'] in g.ROWS and not c['source_id'].startswith('nonMA-')])
+ inventory=[q for q in g.SOURCE['record'][':knowledge-point/questions'] if ':question/math-academy-id' not in q]
+ write('independent-inventory.json',{'database':g.SOURCE['database'],'basis':g.SOURCE['basis'],'lineage':g.SOURCE['lineage'],'questions':[{'record':q,'role':'independently authored inventory','relationship_to_source_templates':'Existing authored tangent variant, retained as inventory; not an MA observation or source difficulty calibration.'} for q in inventory]})
  groups={}
  for label,is_nonma in [('MA_practice_observations',False),('existing_non_MA_inventory',True)]:
   group=[r for r in fidelity if r['source_id'].startswith('nonMA')==is_nonma]
@@ -212,5 +215,5 @@ def baseline():
  return len(b)
 def run():
  start=time.monotonic();print('source fidelity',flush=True);cases=source_fidelity();print('coverage',flush=True);cov,rows=coverage();print('mutations',flush=True);nm=mutations(cases);print('native',flush=True);engine=native(cases)
- report={'basis':2275,'source_cases':len(cases),'original_parameters':sum(c['case']=='original' for c in cases),'changed_review_cases':sum(c['case'].startswith('changed') for c in cases),'authored_easy_reference':1,'coverage':cov,'mutation_rejections':nm,'native':engine['checks'],'engine_equivalence_gaps':engine['genuine_equivalence_gaps'],'immutable_baseline_files':baseline(),'seconds':round(time.monotonic()-start,2)};write('validation.json',report);print(json.dumps(report,indent=2))
+ report={'basis':2275,'review_cases':len(cases),'source_cases':sum(c['case']=='original' and not c['source_id'].startswith('nonMA-') and c['source_id'] in g.ROWS for c in cases),'original_parameters':sum(c['case']=='original' for c in cases),'changed_review_cases':sum(c['case'].startswith('changed') for c in cases),'authored_easy_reference':1,'coverage':cov,'mutation_rejections':nm,'native':engine['checks'],'engine_equivalence_gaps':engine['genuine_equivalence_gaps'],'immutable_baseline_files':baseline(),'seconds':round(time.monotonic()-start,2)};write('validation.json',report);print(json.dumps(report,indent=2))
 if __name__=='__main__':run()

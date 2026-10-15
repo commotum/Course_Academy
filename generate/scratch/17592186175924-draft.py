@@ -90,6 +90,7 @@ def solution(s,p):
  return result
 
 def render_prompt(s,p):
+ if s=='q-214033':return fmt.normalize_prose(f"What is the equation of the line that passes through the point $({p['px']},{p['py']})$ and is perpendicular to ${eq(p['A'],p['B'],p['C'])}?$\n\n$y=$\n{{{{field-1}}}}")
  q=SOURCES[s][':question/problem'];old=original(s);pairs=re.findall(r'\((-?\d+),\s*(-?\d+)\)',q)
  if 'points' in p:
   coords=[(p['px'],p['py']),*p['points']];i=iter(coords);q=re.sub(r'\((-?\d+),\s*(-?\d+)\)',lambda _: '('+','.join(map(str,next(i)))+')',q)

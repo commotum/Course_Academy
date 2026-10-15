@@ -177,6 +177,7 @@ def task_identity(d,f):
 def profile_for(f):return None if f.endswith('blank') or f.startswith('slope-') else f+'-complete'
 @fmt.checked_math_content
 def generate(level=None,seed=0,template=None,parameters=None,bank_profile=None,source_id=None,difficulty=None):
+ if type(seed) is not int:raise ValueError('Seed requires a builtin integer')
  if level is not None:
   if difficulty is not None and difficulty!=level:raise ValueError("Conflicting difficulty")
   difficulty=level
@@ -220,7 +221,7 @@ def generate_moderate(seed=0,template=None,parameters=None,**kw):return generate
 def generate_hard(seed=0,template=None,parameters=None,**kw):return generate('hard',seed,template,parameters,**kw)
 def source_case(source_id):return generate(source_id=source_id,parameters=SPECS[source_id][2])
 def batch(difficulty,count=5,seed=0):
- if difficulty not in SUPPORTED_LEVELS or type(count)!=int or count<0:raise ValueError('Invalid batch')
+ if difficulty not in SUPPORTED_LEVELS or type(count)!=int or count<0 or type(seed) is not int:raise ValueError('Invalid batch')
  out=[];seen=set();rng=random.Random(seed)
  sources=[k for k,(f,l,p) in SPECS.items() if l==difficulty and not k.startswith('nonMA-')]
  for i in range(max(200,count*50)):
@@ -232,6 +233,6 @@ def markdown(record):
  q=record['question'];f=q[':question/answer-fields'][0]
  return q[':question/problem']+'\n\n'+'\n'.join('- $'+a[':answer/value']+'$' for a in f[':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
 if __name__=='__main__':
- ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=SUPPORTED_LEVELS,default='moderate');ap.add_argument('--count',type=int,default=5);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--format',choices=('json','markdown'),default='json');ap.add_argument('--source-id');ap.add_argument('--raw',action='store_true');a=ap.parse_args()
- rows=[raw_replay(a.source_id)] if a.raw else [source_case(a.source_id)] if a.source_id else batch(a.difficulty,a.count,a.seed)
+ ap=argparse.ArgumentParser();ap.add_argument('--difficulty',choices=(*SUPPORTED_LEVELS,'all'),default='moderate');ap.add_argument('--count',type=int,default=5);ap.add_argument('--seed',type=int,default=0);ap.add_argument('--format',choices=('json','markdown'),default='json');ap.add_argument('--source-id');ap.add_argument('--raw',action='store_true');a=ap.parse_args()
+ rows=[raw_replay(a.source_id)] if a.raw else [source_case(a.source_id)] if a.source_id else [r for level in (SUPPORTED_LEVELS if a.difficulty=='all' else (a.difficulty,)) for r in batch(level,a.count,a.seed)]
  print(json.dumps(rows,ensure_ascii=False,indent=2) if a.format=='json' else '\n\n---\n\n'.join(map(markdown,rows)))

@@ -22,3 +22,22 @@ Source-format findings: q38377's authoritative MA4132 captured widget is one fiv
 Bounded variety: authored easy uses u∈[0,b],v∈[0,d] with b≤8,d≤6 and a single linear primitive. Familiar squares are at most36, followed by one width product; the complete method-bank eligibility leaves30 mathematical tasks. Hard radical uses u lower endpoints1 or2, upper endpoints through5, and asymmetric v intervals [1,2], [1,3], [2,3], with R∈{9,16,25} and R>d²; this supplies49 eligible tasks, all with the same quartic expansion and cubic/quintic primitive operations. Moderate sampling includes observed R=4, u upper1, Gaussian x upper5 and signed exponential bounds. These bounds are authored same-method policies, not recovered source-generator code.
 
 The captured topic predecessor (`:topic/_next`) is MA1998, “Computing Areas Using a Change of Variables” (db17592186050705), providing the transformation/Jacobian prerequisite anchor; the lesson introduction explicitly extends its area formula by inserting the transformed integrand.
+
+## Current inventory audit, basis 2589
+
+`reference/replenishment/initial/kp.edn` captures all 12 current practice questions at one basis. The original six have since received format/field/completion repairs in the database; this package preserves both its original basis-1356 evidence and the new capture. `initial/source-audit.json` retains every current prompt, full worked solution, complete five-value bank, designation, independently computed integral, and mathematical task identity. All 12 current fields are moderate, single-key five-option math radios; none requires plots. Eleven mathematical keys are correct; nine questions pass the conservative source-solution eligibility audit. Actual native grading is checked again during preparation. No source repair is part of this job.
+
+Six additional moderate templates are now visible:
+
+| Source / database ID | Backbone | Plot rating | Generator capability |
+|---|---|---|---|
+| q-83653 / 17592186481389 | Infer u=y−2x,v=y; separate ln(u)/u, square-log primitive and v width | none | Evidence only; not sampled |
+| q-38309 / 17592186481418 | Infer u=y−x,v=y; v cos²(u), half-angle identity then two primitives | none | Evidence only; Step 1 sign typo excludes source from usable count |
+| q-160918 / 17592186481432 | Infer u=x+y,v=x−y; factor square then u² exp(v), determinant −2 | none | Evidence only; not sampled |
+| q-160916 / 17592186481434 | Infer u=y−x,v=x+y; cos(u) sin(v), determinant −2, two trig primitives | none | Evidence only; not sampled |
+| q-160917 / 17592186495059 | Infer u=y−2x,v=y+2x; u/v, determinant −4, positive-denominator logarithm | none | Evidence only; not sampled |
+| q-160915 / 17592186495100 | Infer u=xy,v=y/x; two region branches, v sin(πu)/2 per branch | none | Unsupported source key: actual full-domain integral −24/π; source gives −12/π |
+
+These remain separate Markdown/value templates and separate observed bank profiles. Their 30 current choice occurrences are recorded exactly and normalized mathematically in the source audit; no inferred wrong-answer recipes are claimed. This job reuses the already validated normal generator's six families plus authored easy reduction and authored hard bookkeeping policies. It does not declare coverage of the six newly observed families. This bounded template scope leaves all three difficulty bands supported, and sufficient distinct validated variants exist for the current shortage. A future request for these extra families requires extraction and full bank replay before sampling them.
+
+The current q-160911 source still has two stale outer differentials; it is conservatively excluded from the count. q-38309 has a wrong lower endpoint in Step 1; q-160915 is noninjective on its full stated domain and omits a branch. All three remain unchanged in EDB. The original generator's corrected, one-to-one normal families are unaffected by these source defects.
