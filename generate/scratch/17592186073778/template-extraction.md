@@ -41,3 +41,7 @@ Solution fixed prose and ordered nodes: system; elimination multiplier/cancellin
 All source omissions stay raw API omissions. Normal completion/level tags are author metadata, never inferred source ratings. Canonical unmatched literal system braces become visible escaped braces; \\dfrac versus \\frac and whitespace are notation-normalized for canonical sequence comparison, with exact full prose checked after only the documented correction. Full mathematical families and fragment grading are separately checked by the native engine and independent SymPy parser of actual displayed strings.
 
 No plots occur. No raster reuse, renderer or direct SVG is involved. All work stops at step7; no transactions/registration.
+
+## Publication format update
+
+Version 2 renders both system displays through system_tex, with scalable braces, two aligned rows and the elimination annotation in a separate alignment pair. Prose and bare answers are normalized before UUID calculation. This changes presentation only; frozen source payloads stay immutable and replay comparisons separate source typography from mathematical content. Native grading and independent displayed-equation checks were rerun.

@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 30**, **qa_passed: 405**, **queued: 141**, **working: 4**.
+**needs_revalidation: 28**, **qa_passed: 408**, **queued: 141**, **working: 3**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -195,14 +195,14 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186059731](../../scratch/17592186059731-draft.py) | Calculating the Dot Product Using Components | Solving for an Unknown Given Two Perpendicular Vectors | 5 / 5 / 5 / 2 | qa_passed | [Report](qa/17592186059731.json) |
 | [17592186059730](../../scratch/17592186059730-draft.py) | Calculating the Dot Product Using Components | Calculating the Dot Product Using the General Formula | 6 / 5 / 5 / 1 | qa_passed | [Report](qa/17592186059730.json) |
 | [17592186054676](../../scratch/17592186054676-draft.py) | Graphing Linear Equations | Identifying Points That Lie on a Line | 5 / 5 / 0 / 2 | qa_passed | [Report](qa/17592186054676.json) |
-| [17592186059716](../../scratch/17592186059716-draft.py) | Calculating the Magnitude of Cartesian Vectors in 2D | Calculating a Unit Vector Parallel to a Given Vector | 0 / 2 / 6 / 2 | working | — |
-| [17592186096813](../../scratch/17592186096813-draft.py) | Unit Vectors | Finding a Unit Vector Parallel to a Given Vector | 0 / 0 / 0 / 2 | working | [Report](qa/17592186096813.json) |
+| [17592186059716](../../scratch/17592186059716-draft.py) | Calculating the Magnitude of Cartesian Vectors in 2D | Calculating a Unit Vector Parallel to a Given Vector | 0 / 2 / 6 / 2 | qa_passed | [Report](qa/17592186059716.json) |
+| [17592186096813](../../scratch/17592186096813-draft.py) | Unit Vectors | Finding a Unit Vector Parallel to a Given Vector | 5 / 5 / 5 / 2 | qa_passed | [Report](qa/17592186096813.json) |
 | [17592186096815](../../scratch/17592186096815.py) | Unit Vectors | Finding a Unit Vector Parallel to a Vector Sum | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096815.json) |
 | [17592186096814](../../scratch/17592186096814.py) | Unit Vectors | Finding a Unit Vector Parallel to a Given Vector in a Diagram | 0 / 0 / 1 / 2 | qa_passed | [Report](qa/17592186096814.json) |
-| [17592186059827](../../scratch/17592186059827-draft.py) | Interval Notation | Translating Between Half-Open Intervals and Inequalities | 0 / 0 / 0 / 2 | working | [Report](qa/17592186059827.json) |
+| [17592186059827](../../scratch/17592186059827-draft.py) | Interval Notation | Translating Between Half-Open Intervals and Inequalities | 5 / 5 / 5 / 2 | qa_passed | [Report](qa/17592186059827.json) |
 | [17592186059829](../../scratch/17592186059829.py) | Interval Notation | Converting Between Intervals and Inequalities: Closed Intervals | 0 / 0 / 0 / 2 | working | [Report](qa/17592186059829.json) |
-| [17592186059828](../../scratch/17592186059828.py) | Interval Notation | Translating Between Half-Open Intervals and Number Lines | 0 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186059828.json) |
-| [17592186064167](../../scratch/17592186064167.py) | The Antiderivative | Finding the Antiderivative of a Monomial | 4 / 0 / 0 / 2 | needs_revalidation | [Report](qa/17592186064167.json) |
+| [17592186059828](../../scratch/17592186059828.py) | Interval Notation | Translating Between Half-Open Intervals and Number Lines | 0 / 0 / 0 / 2 | working | [Report](qa/17592186059828.json) |
+| [17592186064167](../../scratch/17592186064167.py) | The Antiderivative | Finding the Antiderivative of a Monomial | 4 / 0 / 0 / 2 | working | [Report](qa/17592186064167.json) |
 | [17592186064168](../../scratch/17592186064168.py) | The Antiderivative | Finding the Antiderivative of a Radical Function | 4 / 0 / 2 / 2 | qa_passed | [Report](qa/17592186064168.json) |
 | [17592186064169](../../scratch/17592186064169.py) | The Antiderivative | Finding the Antiderivative of a Reciprocal Function | 1 / 3 / 0 / 2 | qa_passed | [Report](qa/17592186064169.json) |
 | [17592186096648](../../scratch/17592186096648.py) | Parallel Vectors | Determining Whether Two Vectors are Parallel | 0 / 0 / 0 / 2 | qa_passed | [Report](qa/17592186096648.json) |

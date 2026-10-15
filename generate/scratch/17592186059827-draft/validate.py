@@ -88,7 +88,7 @@ def fixture_from_source(q):
 def main():
     source=json.loads((HERE/'source.json').read_text());assert source['basis']==2275
     questions=source['record'][':knowledge-point/questions'];assert len(questions)==17
-    fixtures=[fixture_from_source(q) for q in questions];save('source-cases.json',fixtures)
+    fixtures=[fixture_from_source(q) for q in questions];save('source-cases.json',[f for f in fixtures if str(f['source_id']).startswith('q-')])
     fidelity=[];stages=0
     for q,fixture in zip(questions,fixtures):
         r=fixture['record'];stages+=inspect(r);out=r['question'];sf=q[':question/answer-fields'][0];f=out[':question/answer-fields'][0]

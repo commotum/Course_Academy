@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse,copy,hashlib,json,math,random,sys,uuid
 from pathlib import Path
 import sympy as sp
+sys.dont_write_bytecode=True
 HERE=Path(__file__).with_suffix('')
 sys.path.insert(0,str(HERE))
 from math_format import checked_math_content,matrix_tex,normalize_prose,normalize_tex
@@ -72,12 +73,13 @@ def task_fingerprint(p):
  return hashlib.sha256(json.dumps(key,separators=(',',':')).encode()).hexdigest()
 
 @checked_math_content
-def generate(level,p,profile=None,seed=0):
+def _generate_instance(level,p,profile=None,seed=0):
  if level not in SUPPORTED_LEVELS:raise ValueError('Unknown difficulty')
  strict_int(seed,'seed')
  profile=profile or ('q-17709' if level=='hard' else 'q-125135')
  prompt,solution,values,correct=render(level,p,profile,seed);fp=task_fingerprint(p)
- qid=str(uuid.uuid5(uuid.UUID(KP_UUID),VERSION+':'+fp+':'+profile));fid=str(uuid.uuid5(uuid.UUID(qid),'field:selection'))
+ identity_suffix=(':easy' if level=='easy' else '')+(':label:'+p['label'] if p.get('label','b')!='b' else '')
+ qid=str(uuid.uuid5(uuid.UUID(KP_UUID),VERSION+':'+fp+':'+profile+identity_suffix));fid=str(uuid.uuid5(uuid.UUID(qid),'field:selection'))
  choices=[{':answer/id':str(uuid.uuid5(uuid.UUID(fid),'recipe:'+str(i))),':answer/type':':answer.type/math',':answer/value':normalize_tex(vector(v))} for i,v in enumerate(values)]
  return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+level,':question/requires-calculator':False,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices,':answer-field/correct':[':answer/id',choices[correct][':answer/id']]}]},'generation':{'version':VERSION,'template':p['mode'],'parameters':copy.deepcopy(p),'bank_profile':profile,'seed':seed,'parameter_fingerprint':fp,'source':SOURCE,'source_ids':['q-17709','q-125138'] if level=='hard' else [profile,'q-70409'],'authored_extension':level=='easy' or p not in original_parameters(),'assets':[],'dependencies':{'sympy':sp.__version__}}}
 
@@ -106,16 +108,42 @@ def catalog(level):
   if fp not in seen:seen.add(fp);result.append((p,profile))
  return result
 
+def generate(level,p=None,profile=None,seed=0,template=None,parameters=None):
+ """Seeded public API; explicit legacy positional instances remain supported."""
+ strict_int(seed,'seed')
+ if level not in SUPPORTED_LEVELS:raise ValueError('Unknown difficulty')
+ if p is not None and parameters is not None:raise ValueError('Use p or parameters, not both')
+ p=parameters if parameters is not None else p
+ rows=catalog(level)
+ if template is not None:
+  if template not in ('direct','combination'):raise ValueError('Unknown template')
+  rows=[row for row in rows if row[0]['mode']==template]
+ if not rows:raise ValueError('Template not supported at requested difficulty')
+ if p is None:
+  if profile is not None:rows=[row for row in rows if row[1]==profile]
+  if not rows:raise ValueError('Profile not supported at requested difficulty')
+  p,profile=random.Random(seed).choice(rows)
+ else:
+  if template is not None and p.get('mode')!=template:raise ValueError('Template/parameters mismatch')
+  if (p.get('mode')=='combination')!=(level=='hard'):raise ValueError('Direct and combination workloads must retain their difficulty')
+  if level=='easy' and task_fingerprint(p) not in {task_fingerprint(row[0]) for row in rows}:raise ValueError('Easy small integer-length domain required')
+ return _generate_instance(level,p,profile,seed)
+
 def batch(difficulty,count=1,seed=0):
  strict_int(count,'count');strict_int(seed,'seed')
+ if difficulty not in (*SUPPORTED_LEVELS,'all'):raise ValueError('Unknown difficulty')
  if count<1:raise ValueError('count must be positive')
- rows=catalog(difficulty)
- if count>len(rows):raise ValueError(f'count exceeds capacity {len(rows)}')
- random.Random(seed).shuffle(rows)
- return [generate(difficulty,p,profile,seed) for p,profile in rows[:count]]
+ levels=SUPPORTED_LEVELS if difficulty=='all' else (difficulty,)
+ result=[];seen=set()
+ for level in levels:
+  rows=catalog(level);random.Random(seed).shuffle(rows);rows=[row for row in rows if task_fingerprint(row[0]) not in seen]
+  if count>len(rows):raise ValueError(f'count exceeds distinct remaining capacity {len(rows)}')
+  for p,profile in rows[:count]:
+   seen.add(task_fingerprint(p));result.append(generate(level,p,profile,seed))
+ return result
 
 def main():
- parser=argparse.ArgumentParser();parser.add_argument('--difficulty',choices=SUPPORTED_LEVELS,default='moderate');parser.add_argument('--count',type=int,default=1);parser.add_argument('--seed',type=int,default=0);parser.add_argument('--format',choices=['json','markdown'],default='json');args=parser.parse_args()
+ parser=argparse.ArgumentParser();parser.add_argument('--difficulty',choices=(*SUPPORTED_LEVELS,'all'),default='all');parser.add_argument('--count',type=int,default=1);parser.add_argument('--seed',type=int,default=0);parser.add_argument('--format',choices=['json','markdown'],default='json');args=parser.parse_args()
  try:records=batch(args.difficulty,args.count,args.seed)
  except (ValueError,TypeError) as e:parser.error(str(e))
  print(json.dumps(records,indent=2) if args.format=='json' else '\n\n---\n\n'.join(r['question'][':question/problem']+'\n\nChoices: '+', '.join('$'+a[':answer/value']+'$' for a in r['question'][':question/answer-fields'][0][':answer-field/choices'])+'\n\n'+r['question'][':question/worked-solution'] for r in records))

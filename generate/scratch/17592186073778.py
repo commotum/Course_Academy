@@ -14,10 +14,14 @@ No counts-only assessment, nonlinear equations, third variable or later KP.
 from __future__ import annotations
 import argparse, hashlib, json, random, sys, uuid
 import sympy as sp
+from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"scripts/question_capture"))
+from math_format import system_tex, normalize_prose, normalize_tex, checked_math_content
 KP_ID=17592186073778
 KP_UUID='50351666-c691-510f-863c-168c61f9980b'
 TITLE='Finding the General Solution to a System With Infinitely Many Intersection Points'
-VERSION='dependent-general-family-1'
+VERSION='dependent-general-family-2'
+GENERATOR_UUID='d5afc560-f76b-53cb-8503-781e13a207d4'
 LEVELS=('easy','moderate','hard')
 TEMPLATES=('radio_family','blank_coordinate')
 PROFILES=('method','raw_25524','raw_208832')
@@ -74,9 +78,9 @@ def prompt(p,template,raw=False):
 def solution(p):
     (a,b,c),(d,e,f)=rows(p);r=d/a;var=p['variable'];m,k=-a/b,c/b
     eq=[lhs(a,b)+' = '+tex(c),lhs(d,e)+' = '+tex(f)]
-    out='The points of intersection of the lines correspond to the solutions of the following system:\n\n$$\n'+r'\{'+ '; '.join(eq)+'\n$$\n\n'
+    out='The points of intersection of the lines correspond to the solutions of the following system:\n\n$$\n'+system_tex(eq)+'\n$$\n\n'
     out+=f'We will solve the system using elimination. Notice that if we multiply the first equation by ${tex(-r)}$, then we will get a ${poly(((-d,"x"),))}$ term that can cancel with the ${poly(((d,"x"),))}$ term in the second equation:\n\n'
-    out+='$$\n'+r'\{'+eq[0]+r' \mid \mid \cdot ('+tex(-r)+'); '+eq[1]+'\n$$\n\n'
+    out+='$$\n'+system_tex([eq[0]+r' & \mid \mid \cdot ('+tex(-r)+')',eq[1]])+'\n$$\n\n'
     out+='When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n'
     sumtex=tex(-r*c)+(' + ' if f>=0 else ' - ')+tex(abs(f))
     out+=aligned([lhs(-d,-e)+' &= '+tex(-f),lhs(d,e)+' &= '+tex(f),'0 &= ('+sumtex+')','0 &= 0'])
@@ -133,6 +137,9 @@ def eligible_bank(p,profile):
     if signatures.count(target)!=1:raise ValueError('Whole bank ambiguous')
     return vals,recipes
 
+@checked_math_content
+def checked_record(rec):return rec
+
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
     if level not in LEVELS:raise ValueError('Unknown difficulty')
     profile=profile or 'method'
@@ -147,8 +154,10 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     p=globals()['parameters'](parameters) if parameters is not None else sample(level,rng,profile)
     m,k=guard(level,p,raw)
     vals,recipes=eligible_bank(p,profile)
-    problem=prompt(p,template,raw);worked=None if raw else solution(p)
+    problem=prompt(p,template,raw);worked=None if raw else normalize_prose(solution(p))
+    if not raw:problem=normalize_prose(problem)
     values=vals if kind=='radio' else ([] if raw else [aff(m,k,p['variable'])])
+    if not raw:values=[normalize_tex(v) for v in values]
     content=digest({'version':VERSION,'prompt':problem,'solution':worked,'values':sorted(values),'kind':kind,'difficulty':None if raw else level,'correct_present':not raw})
     qid=ident(content);fid=ident(qid+':'+kind);key='selection' if kind=='radio' else 'field-1'
     answers=[{':answer/id':ident(fid+':'+value),':answer/type':':answer.type/math',':answer/value':value} for value in values]
@@ -159,7 +168,8 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         f[':answer-field/correct']=[':answer/id',answers[0][':answer/id']]
         q[':question/difficulty']=':question.difficulty/'+level;q[':question/worked-solution']=worked
         if kind=='radio':rng.shuffle(answers)
-    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'seed':seed,'template':template,'bank_profile':profile,'parameters':p,'parameter_fingerprint':fingerprint(p),'content_fingerprint':content,'python_version':sys.version.split()[0],'sympy_version':sp.__version__,'source':SOURCE,'source_ids':['q-25524' if template=='radio_family' else 'q-208832'],'method_reference':'e-14014; tutorial17592186075062','raw_evidence':raw,'eligible_for_learning':not raw,'authored_extension':not raw,'authored_level':level,'inferred_correct_value':f'({p["variable"]}, '+aff(m,k,p['variable'])+')' if kind=='radio' else aff(m,k,p['variable']),'recipes':recipes if kind=='radio' else [],'domain':'All real free-coordinate values; two nonzero dependent linear equations only','plot_rating':'none','plot_assets':{}}}
+    rec={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'seed':seed,'template':template,'bank_profile':profile,'parameters':p,'parameter_fingerprint':fingerprint(p),'content_fingerprint':content,'python_version':sys.version.split()[0],'sympy_version':sp.__version__,'source':SOURCE,'source_ids':['q-25524' if template=='radio_family' else 'q-208832'],'method_reference':'e-14014; tutorial17592186075062','raw_evidence':raw,'eligible_for_learning':not raw,'authored_extension':not raw,'authored_level':level,'inferred_correct_value':f'({p["variable"]}, '+aff(m,k,p['variable'])+')' if kind=='radio' else aff(m,k,p['variable']),'recipes':recipes if kind=='radio' else [],'domain':'All real free-coordinate values; two nonzero dependent linear equations only','plot_rating':'none','plot_assets':{}}}
+    return rec if raw else checked_record(rec)
 
 # EASY: integral affine family; exactly the same isolation sequence in every task.
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('easy',seed,template,field_type,parameters,profile)

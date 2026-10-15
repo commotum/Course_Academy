@@ -23,13 +23,13 @@ $)$, where $x$ is any number.
 The points of intersection of the lines correspond to the solutions of the following system:
 
 $$
-\{x - 4y = -3; 2x - 8y = -6
+\left\{\begin{aligned}x - 4y &=-3 \\ 2x - 8y &=-6\end{aligned}\right.
 $$
 
 We will solve the system using elimination. Notice that if we multiply the first equation by $-2$, then we will get a $-2x$ term that can cancel with the $2x$ term in the second equation:
 
 $$
-\{x - 4y = -3 \mid \mid \cdot (-2); 2x - 8y = -6
+\left\{\begin{aligned}x - 4y &=-3 && \mid \mid \cdot (-2) \\ 2x - 8y &=-6\end{aligned}\right.
 $$
 
 When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:
@@ -95,13 +95,13 @@ Find all points of intersection of the lines $9x - 3y =-6$ and $3x - y =-2$.
 The points of intersection of the lines correspond to the solutions of the following system:
 
 $$
-\{9x - 3y = -6; 3x - y = -2
+\left\{\begin{aligned}9x - 3y &=-6 \\ 3x - y &=-2\end{aligned}\right.
 $$
 
 We will solve the system using elimination. Notice that if we multiply the first equation by $- \frac{1}{3}$, then we will get a $-3x$ term that can cancel with the $3x$ term in the second equation:
 
 $$
-\{9x - 3y = -6 \mid \mid \cdot (- \frac{1}{3}); 3x - y = -2
+\left\{\begin{aligned}9x - 3y &=-6 && \mid \mid \cdot (- \frac{1}{3}) \\ 3x - y &=-2\end{aligned}\right.
 $$
 
 When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:
@@ -159,13 +159,13 @@ $)$, where $t$ is any number.
 The points of intersection of the lines correspond to the solutions of the following system:
 
 $$
-\{-6x + y = 1; -18x + 3y = 3
+\left\{\begin{aligned}-6x + y &=1 \\ -18x + 3y &=3\end{aligned}\right.
 $$
 
 We will solve the system using elimination. Notice that if we multiply the first equation by $-3$, then we will get a $18x$ term that can cancel with the $-18x$ term in the second equation:
 
 $$
-\{-6x + y = 1 \mid \mid \cdot (-3); -18x + 3y = 3
+\left\{\begin{aligned}-6x + y &=1 && \mid \mid \cdot (-3) \\ -18x + 3y &=3\end{aligned}\right.
 $$
 
 When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:
@@ -215,13 +215,13 @@ Find all points of intersection of the lines $-2x - y =-5$ and $-4x - 2y =-10$.
 The points of intersection of the lines correspond to the solutions of the following system:
 
 $$
-\{-2x - y = -5; -4x - 2y = -10
+\left\{\begin{aligned}-2x - y &=-5 \\ -4x - 2y &=-10\end{aligned}\right.
 $$
 
 We will solve the system using elimination. Notice that if we multiply the first equation by $-2$, then we will get a $4x$ term that can cancel with the $-4x$ term in the second equation:
 
 $$
-\{-2x - y = -5 \mid \mid \cdot (-2); -4x - 2y = -10
+\left\{\begin{aligned}-2x - y &=-5 && \mid \mid \cdot (-2) \\ -4x - 2y &=-10\end{aligned}\right.
 $$
 
 When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:
@@ -271,13 +271,13 @@ Find all points of intersection of the lines $4x - y =-5$ and $8x - 2y =-10$.
 The points of intersection of the lines correspond to the solutions of the following system:
 
 $$
-\{4x - y = -5; 8x - 2y = -10
+\left\{\begin{aligned}4x - y &=-5 \\ 8x - 2y &=-10\end{aligned}\right.
 $$
 
 We will solve the system using elimination. Notice that if we multiply the first equation by $-2$, then we will get a $-8x$ term that can cancel with the $8x$ term in the second equation:
 
 $$
-\{4x - y = -5 \mid \mid \cdot (-2); 8x - 2y = -10
+\left\{\begin{aligned}4x - y &=-5 && \mid \mid \cdot (-2) \\ 8x - 2y &=-10\end{aligned}\right.
 $$
 
 When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:
@@ -325,13 +325,13 @@ Find all points of intersection of the lines $5x + y =-8$ and $-10x - 2y = 16$.
 The points of intersection of the lines correspond to the solutions of the following system:
 
 $$
-\{5x + y = -8; -10x - 2y = 16
+\left\{\begin{aligned}5x + y &=-8 \\ -10x - 2y &=16\end{aligned}\right.
 $$
 
 We will solve the system using elimination. Notice that if we multiply the first equation by $2$, then we will get a $10x$ term that can cancel with the $-10x$ term in the second equation:
 
 $$
-\{5x + y = -8 \mid \mid \cdot (2); -10x - 2y = 16
+\left\{\begin{aligned}5x + y &=-8 && \mid \mid \cdot (2) \\ -10x - 2y &=16\end{aligned}\right.
 $$
 
 When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:
@@ -379,13 +379,13 @@ $)$, where $x$ is any number.
 The points of intersection of the lines correspond to the solutions of the following system:
 
 $$
-\{4x - y = -5; 8x - 2y = -10
+\left\{\begin{aligned}4x - y &=-5 \\ 8x - 2y &=-10\end{aligned}\right.
 $$
 
 We will solve the system using elimination. Notice that if we multiply the first equation by $-2$, then we will get a $-8x$ term that can cancel with the $8x$ term in the second equation:
 
 $$
-\{4x - y = -5 \mid \mid \cdot (-2); 8x - 2y = -10
+\left\{\begin{aligned}4x - y &=-5 && \mid \mid \cdot (-2) \\ 8x - 2y &=-10\end{aligned}\right.
 $$
 
 When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:
@@ -433,13 +433,13 @@ $)$, where $x$ is any number.
 The points of intersection of the lines correspond to the solutions of the following system:
 
 $$
-\{5x + y = -8; -10x - 2y = 16
+\left\{\begin{aligned}5x + y &=-8 \\ -10x - 2y &=16\end{aligned}\right.
 $$
 
 We will solve the system using elimination. Notice that if we multiply the first equation by $2$, then we will get a $10x$ term that can cancel with the $-10x$ term in the second equation:
 
 $$
-\{5x + y = -8 \mid \mid \cdot (2); -10x - 2y = 16
+\left\{\begin{aligned}5x + y &=-8 && \mid \mid \cdot (2) \\ -10x - 2y &=16\end{aligned}\right.
 $$
 
 When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:
@@ -487,13 +487,13 @@ $)$, where $t$ is any number.
 The points of intersection of the lines correspond to the solutions of the following system:
 
 $$
-\{-4x + 2y = 5; -8x + 4y = 10
+\left\{\begin{aligned}-4x + 2y &=5 \\ -8x + 4y &=10\end{aligned}\right.
 $$
 
 We will solve the system using elimination. Notice that if we multiply the first equation by $-2$, then we will get a $8x$ term that can cancel with the $-8x$ term in the second equation:
 
 $$
-\{-4x + 2y = 5 \mid \mid \cdot (-2); -8x + 4y = 10
+\left\{\begin{aligned}-4x + 2y &=5 && \mid \mid \cdot (-2) \\ -8x + 4y &=10\end{aligned}\right.
 $$
 
 When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:
@@ -543,13 +543,13 @@ Find all points of intersection of the lines $-9x - 3y = 4$ and $-18x - 6y = 8$.
 The points of intersection of the lines correspond to the solutions of the following system:
 
 $$
-\{-9x - 3y = 4; -18x - 6y = 8
+\left\{\begin{aligned}-9x - 3y &=4 \\ -18x - 6y &=8\end{aligned}\right.
 $$
 
 We will solve the system using elimination. Notice that if we multiply the first equation by $-2$, then we will get a $18x$ term that can cancel with the $-18x$ term in the second equation:
 
 $$
-\{-9x - 3y = 4 \mid \mid \cdot (-2); -18x - 6y = 8
+\left\{\begin{aligned}-9x - 3y &=4 && \mid \mid \cdot (-2) \\ -18x - 6y &=8\end{aligned}\right.
 $$
 
 When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:
@@ -599,13 +599,13 @@ Find all points of intersection of the lines $-8x - 3y =-6$ and $24x + 9y = 18$.
 The points of intersection of the lines correspond to the solutions of the following system:
 
 $$
-\{-8x - 3y = -6; 24x + 9y = 18
+\left\{\begin{aligned}-8x - 3y &=-6 \\ 24x + 9y &=18\end{aligned}\right.
 $$
 
 We will solve the system using elimination. Notice that if we multiply the first equation by $3$, then we will get a $-24x$ term that can cancel with the $24x$ term in the second equation:
 
 $$
-\{-8x - 3y = -6 \mid \mid \cdot (3); 24x + 9y = 18
+\left\{\begin{aligned}-8x - 3y &=-6 && \mid \mid \cdot (3) \\ 24x + 9y &=18\end{aligned}\right.
 $$
 
 When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:
@@ -655,13 +655,13 @@ Find all points of intersection of the lines $7x + 3y =-12$ and $-14x - 6y = 24$
 The points of intersection of the lines correspond to the solutions of the following system:
 
 $$
-\{7x + 3y = -12; -14x - 6y = 24
+\left\{\begin{aligned}7x + 3y &=-12 \\ -14x - 6y &=24\end{aligned}\right.
 $$
 
 We will solve the system using elimination. Notice that if we multiply the first equation by $2$, then we will get a $14x$ term that can cancel with the $-14x$ term in the second equation:
 
 $$
-\{7x + 3y = -12 \mid \mid \cdot (2); -14x - 6y = 24
+\left\{\begin{aligned}7x + 3y &=-12 && \mid \mid \cdot (2) \\ -14x - 6y &=24\end{aligned}\right.
 $$
 
 When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:
@@ -711,13 +711,13 @@ $)$, where $t$ is any number.
 The points of intersection of the lines correspond to the solutions of the following system:
 
 $$
-\{-8x - 3y = -6; 24x + 9y = 18
+\left\{\begin{aligned}-8x - 3y &=-6 \\ 24x + 9y &=18\end{aligned}\right.
 $$
 
 We will solve the system using elimination. Notice that if we multiply the first equation by $3$, then we will get a $-24x$ term that can cancel with the $24x$ term in the second equation:
 
 $$
-\{-8x - 3y = -6 \mid \mid \cdot (3); 24x + 9y = 18
+\left\{\begin{aligned}-8x - 3y &=-6 && \mid \mid \cdot (3) \\ 24x + 9y &=18\end{aligned}\right.
 $$
 
 When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:
@@ -767,13 +767,13 @@ $)$, where $t$ is any number.
 The points of intersection of the lines correspond to the solutions of the following system:
 
 $$
-\{7x + 3y = -12; -14x - 6y = 24
+\left\{\begin{aligned}7x + 3y &=-12 \\ -14x - 6y &=24\end{aligned}\right.
 $$
 
 We will solve the system using elimination. Notice that if we multiply the first equation by $2$, then we will get a $14x$ term that can cancel with the $-14x$ term in the second equation:
 
 $$
-\{7x + 3y = -12 \mid \mid \cdot (2); -14x - 6y = 24
+\left\{\begin{aligned}7x + 3y &=-12 && \mid \mid \cdot (2) \\ -14x - 6y &=24\end{aligned}\right.
 $$
 
 When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:
@@ -823,13 +823,13 @@ $)$, where $u$ is any number.
 The points of intersection of the lines correspond to the solutions of the following system:
 
 $$
-\{-x + 5y = 7; 3x - 15y = -21
+\left\{\begin{aligned}-x + 5y &=7 \\ 3x - 15y &=-21\end{aligned}\right.
 $$
 
 We will solve the system using elimination. Notice that if we multiply the first equation by $3$, then we will get a $-3x$ term that can cancel with the $3x$ term in the second equation:
 
 $$
-\{-x + 5y = 7 \mid \mid \cdot (3); 3x - 15y = -21
+\left\{\begin{aligned}-x + 5y &=7 && \mid \mid \cdot (3) \\ 3x - 15y &=-21\end{aligned}\right.
 $$
 
 When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:
@@ -879,13 +879,13 @@ Find all points of intersection of the lines $x + 6y = 7$ and $-4x - 24y =-28$.
 The points of intersection of the lines correspond to the solutions of the following system:
 
 $$
-\{x + 6y = 7; -4x - 24y = -28
+\left\{\begin{aligned}x + 6y &=7 \\ -4x - 24y &=-28\end{aligned}\right.
 $$
 
 We will solve the system using elimination. Notice that if we multiply the first equation by $4$, then we will get a $4x$ term that can cancel with the $-4x$ term in the second equation:
 
 $$
-\{x + 6y = 7 \mid \mid \cdot (4); -4x - 24y = -28
+\left\{\begin{aligned}x + 6y &=7 && \mid \mid \cdot (4) \\ -4x - 24y &=-28\end{aligned}\right.
 $$
 
 When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:
@@ -935,13 +935,13 @@ Find all points of intersection of the lines $4x + 3y =-11$ and $-8x - 6y = 22$.
 The points of intersection of the lines correspond to the solutions of the following system:
 
 $$
-\{4x + 3y = -11; -8x - 6y = 22
+\left\{\begin{aligned}4x + 3y &=-11 \\ -8x - 6y &=22\end{aligned}\right.
 $$
 
 We will solve the system using elimination. Notice that if we multiply the first equation by $2$, then we will get a $8x$ term that can cancel with the $-8x$ term in the second equation:
 
 $$
-\{4x + 3y = -11 \mid \mid \cdot (2); -8x - 6y = 22
+\left\{\begin{aligned}4x + 3y &=-11 && \mid \mid \cdot (2) \\ -8x - 6y &=22\end{aligned}\right.
 $$
 
 When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:
@@ -991,13 +991,13 @@ Find all points of intersection of the lines $-2x - 3y = 2$ and $-4x - 6y = 4$.
 The points of intersection of the lines correspond to the solutions of the following system:
 
 $$
-\{-2x - 3y = 2; -4x - 6y = 4
+\left\{\begin{aligned}-2x - 3y &=2 \\ -4x - 6y &=4\end{aligned}\right.
 $$
 
 We will solve the system using elimination. Notice that if we multiply the first equation by $-2$, then we will get a $4x$ term that can cancel with the $-4x$ term in the second equation:
 
 $$
-\{-2x - 3y = 2 \mid \mid \cdot (-2); -4x - 6y = 4
+\left\{\begin{aligned}-2x - 3y &=2 && \mid \mid \cdot (-2) \\ -4x - 6y &=4\end{aligned}\right.
 $$
 
 When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:
@@ -1045,13 +1045,13 @@ $)$, where $t$ is any number.
 The points of intersection of the lines correspond to the solutions of the following system:
 
 $$
-\{4x + 3y = -11; -8x - 6y = 22
+\left\{\begin{aligned}4x + 3y &=-11 \\ -8x - 6y &=22\end{aligned}\right.
 $$
 
 We will solve the system using elimination. Notice that if we multiply the first equation by $2$, then we will get a $8x$ term that can cancel with the $-8x$ term in the second equation:
 
 $$
-\{4x + 3y = -11 \mid \mid \cdot (2); -8x - 6y = 22
+\left\{\begin{aligned}4x + 3y &=-11 && \mid \mid \cdot (2) \\ -8x - 6y &=22\end{aligned}\right.
 $$
 
 When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:
@@ -1101,13 +1101,13 @@ $)$, where $x$ is any number.
 The points of intersection of the lines correspond to the solutions of the following system:
 
 $$
-\{-2x - 3y = 2; -4x - 6y = 4
+\left\{\begin{aligned}-2x - 3y &=2 \\ -4x - 6y &=4\end{aligned}\right.
 $$
 
 We will solve the system using elimination. Notice that if we multiply the first equation by $-2$, then we will get a $4x$ term that can cancel with the $-4x$ term in the second equation:
 
 $$
-\{-2x - 3y = 2 \mid \mid \cdot (-2); -4x - 6y = 4
+\left\{\begin{aligned}-2x - 3y &=2 && \mid \mid \cdot (-2) \\ -4x - 6y &=4\end{aligned}\right.
 $$
 
 When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:

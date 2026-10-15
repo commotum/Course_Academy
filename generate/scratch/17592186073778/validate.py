@@ -75,8 +75,8 @@ def check(rec):
     sol=q[':question/worked-solution'];assert sol.startswith('The points of intersection of the lines correspond to the solutions of the following system:')
     multiplier=expr(re.search(r'multiply the first equation by \$([^$]+)\$',sol).group(1));assert multiplier==-d/a
     cancellation=expr(re.search(r'get a \$([^$]+)\$ term',sol).group(1));assert cancellation==multiplier*a*X
-    systems=re.findall(r'\$\$\n\\\{([^\n]+)\n\$\$',sol);assert len(systems)==2
-    for block in systems:assert [coeff(eq(s.split(r'\mid')[0])) for s in block.split(';')]==rows
+    systems=re.findall(r'\\left\\\{\\begin\{aligned\}(.*?)\\end\{aligned\}\\right\.',sol,re.S);assert len(systems)==2
+    for block in systems:assert [coeff(eq(s.split('&&')[0])) for s in block.split(r'\\')]==rows
     assert r'\cdot ('+g.tex(multiplier)+')' in systems[1]
     blocks=re.findall(r'\\begin\{aligned\}\n(.*?)\n\\end\{aligned\}',sol,re.S);assert len(blocks)==2
     raw0=blocks[0].split('\\\\\n');raw1=blocks[1].split('\\\\\n');assert len(raw0)==4 and len(raw1)==4
@@ -125,7 +125,11 @@ def main():
     # Full canonical worked chain: minimal escaped-brace/prose/notation repairs only.
     canonical=capture['record'][':knowledge-point/canonical-example'][':question/worked-solution']
     authored=g.solution(g.parameters(dict(a=3,b=2,c=2,r=2)))
-    def normalize(t):return re.sub(r'\s+','',t.replace(r'\{','{').replace(r'\dfrac',r'\frac').replace('can be chosen','is a solution'))
+    def normalize(t):
+        def legacy(m):
+            return r'\{'+'; '.join(z.replace('&=', '=').replace('&&','') for z in m[1].split(r'\\'))
+        t=re.sub(r'\\left\\\{\\begin\{aligned\}(.*?)\\end\{aligned\}\\right\.',legacy,t,flags=re.S)
+        return re.sub(r'\s+','',t.replace(r'\{','{').replace(r'\dfrac',r'\frac').replace('can be chosen','is a solution'))
     assert normalize(canonical)==normalize(authored)
     tested=0;diversity={};coverage={}
     for level in g.LEVELS:
@@ -182,10 +186,10 @@ def main():
         else:raise AssertionError('Accepted altered actual display/math/stage')
     notes+=['','## Native wrong-shape limitation','','A complete coordinate tuple submitted to the scalar-fragment blank produces native parser error unclosed group, rather than a Boolean rejection. This is tested separately as one documented unresolved wrong-shape probe. Canonical, grouped-equivalent and incorrect scalar fragments are all supported and checked normally. Raw incomplete questions remain ineligible; normal fields are scalar-fragment assessments.']
     write('review.json',review);(HERE/'review.md').write_text('\n'.join(notes)+'\n');write('engine-input.json',engine)
-    harness=REPO/'generate/runs/current/check-engine';subprocess.run([str(harness),str(HERE/'engine-input.json'),str(HERE/'engine-report.json')],check=True,capture_output=True,text=True)
+    harness=HERE/'check-engine';subprocess.run([str(harness),str(HERE/'engine-input.json'),str(HERE/'engine-report.json')],check=True,capture_output=True,text=True)
     result=json.loads((HERE/'engine-report.json').read_text());assert result['documented_unresolved_checks']==0
     probe=copy.deepcopy(engine[0]);probe['label']='Known wrong-shape tuple parser limitation';val=probe['record']['question'][':question/answer-fields'][0][':answer-field/choices'][0][':answer/value'];probe['checks']=[{'submitted':'(x, '+val+')','expected':'unresolved','purpose':'Complete tuple is outside required scalar-fragment response; native parser returns unclosed group'}];write('engine-wrong-shape-input.json',[probe]);subprocess.run([str(harness),str(HERE/'engine-wrong-shape-input.json'),str(HERE/'engine-wrong-shape-report.json')],check=True,capture_output=True,text=True);shape=json.loads((HERE/'engine-wrong-shape-report.json').read_text());assert shape['documented_unresolved_checks']==1
-    report={'passed':True,'source_questions':2,'raw_exact_prompts':2,'complete_source_banks':{'matched':1,'total':1,'options_matched':5,'options_total':5},'blank_layout_presence_matches':1,'raw_omissions':{'difficulty':2,'worked_solution':2,'correct_refs':2,'blank_choices':1},'original_correct_designations':{'present':0,'matched':0,'inferred_normal':2},'source_worked_solutions':{'present':0,'matched':0,'authored_completions':2},'canonical_full_solution_normalized_match':True,'canonical_repairs':['escape 2 unmatched literal system braces','Any value of x can be chosen (rather than itself a solution)','dfrac/whitespace normalization'],'changed_public_raw_replays':changed,'normal_math_records':tested+14,'default_coverage':coverage,'variety_sample':diversity,'finite_base_domain_distinct_lines':catalog,'native':{'accepted':result['accepted_checks'],'rejected':result['rejected_checks'],'unresolved':0},'native_wrong_shape_probe':{'documented_unresolved':1,'reason':'Complete tuple in scalar-fragment blank gives unclosed group parser error'},'mutation_failures_caught':len(mut),'invalid_explicit_calls_rejected':len(bad),'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'engine_sha256':hashlib.sha256(harness.read_bytes()).hexdigest(),'engine_source_sha256':hashlib.sha256(harness.with_suffix('.rs').read_bytes()).hexdigest(),'provenance':g.SOURCE,'unresolved_findings':['Historical wrong-option intention opaque: replay-only profile ineligible for learning','Out-of-shape complete tuple submission to scalar blank returns native parser error, rather than Boolean rejection'],'no_database_writes':True}
+    report={'passed':True,'source_questions':2,'raw_exact_prompts':2,'complete_source_banks':{'matched':1,'total':1,'options_matched':5,'options_total':5},'blank_layout_presence_matches':1,'raw_omissions':{'difficulty':2,'worked_solution':2,'correct_refs':2,'blank_choices':1},'original_correct_designations':{'present':0,'matched':0,'inferred_normal':2},'source_worked_solutions':{'present':0,'matched':0,'authored_completions':2},'canonical_full_solution_normalized_match':True,'canonical_repairs':['escape 2 unmatched literal system braces','Any value of x can be chosen (rather than itself a solution)','dfrac/whitespace normalization'],'changed_public_raw_replays':changed,'normal_math_records':tested+14,'default_coverage':coverage,'variety_sample':diversity,'finite_base_domain_distinct_lines':catalog,'native':{'accepted':result['accepted_checks'],'rejected':result['rejected_checks'],'unresolved':0},'native_wrong_shape_probe':{'documented_unresolved':1,'reason':'Complete tuple in scalar-fragment blank gives unclosed group parser error'},'mutation_failures_caught':len(mut),'invalid_explicit_calls_rejected':len(bad),'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'engine_sha256':hashlib.sha256(harness.read_bytes()).hexdigest(),'engine_source_sha256':hashlib.sha256((REPO/'generate/runs/current/check-engine.rs').read_bytes()).hexdigest(),'provenance':g.SOURCE,'unresolved_findings':['Historical wrong-option intention opaque: replay-only profile ineligible for learning','Out-of-shape complete tuple submission to scalar blank returns native parser error, rather than Boolean rejection'],'no_database_writes':True}
     write('validation.json',report);print(json.dumps(report,indent=2))
 if __name__=='__main__':
     try:main()

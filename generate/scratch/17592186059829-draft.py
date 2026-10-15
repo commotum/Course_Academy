@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""Finite closed intervals, both directions. Basis 1356; no database operations.
+"""Finite closed-interval conversion in both directions, frozen basis 2275.
 
-All three difficulty definitions are authored: source radios are unrated.
-Easy reads ordered integer endpoints; moderate reads reduced rational endpoints;
-hard reads signed exact surd endpoints. No solving, endpoint simplification,
-ordering question, or open/half-open/unbounded correct-set branch is introduced.
-Source raw profiles preserve missing rating, solution and correct designation.
-Normal profiles add independently computed keys and canonical-example solutions.
-Each profile selects its complete five-choice bank before building an instance.
+Easy forward and moderate reverse source templates retain their complete banks,
+common prose and ordered worked-solution stages. The unrated reverse source has
+no key or solution and remains evidence only, with a separately labeled repair.
+Inherited rational moderate and signed-surd hard endpoints are authored bounded
+reading extensions. Variable and chained-relation orientation slots preserve the
+same conversion method; they never inflate mathematical task capacity.
+No database operations, endpoint solving, open targets or unbounded targets.
 """
 from __future__ import annotations
-import argparse, hashlib, itertools, json, random, uuid
+import argparse, hashlib, itertools, json, random, uuid, re, sys, copy, importlib.util
 from pathlib import Path
 from functools import lru_cache
 import sympy as sp
@@ -122,24 +122,26 @@ def number(s):
     return sp.sympify(s)
 
 def displayed_set(s):
-    s=s.replace('$','').strip()
-    if 'or' in s:
+    s=s.replace('$','').replace('∈',r'\in').strip().rstrip('.?')
+    if r'\in ' in s: s=s.split(r'\in ',1)[1]
+    if ' or ' in s:
         l,r=s.split(' or ')
         inclusive=r'\le' in l
-        a=number(l.split(r'\le' if inclusive else '<')[1]);b=number(r.split(r'\ge' if inclusive else '>')[1])
+        a=number(re.split(r'\\le|<',l)[1]); b=number(re.split(r'\\ge|>',r)[1])
         return sp.Union(sp.Interval(-sp.oo,a,right_open=not inclusive),sp.Interval(b,sp.oo,left_open=not inclusive))
     if s.startswith(('(','[')):
         l,r=s[1:-1].split(',')
         return sp.Interval(number(l),number(r),left_open=s[0]=='(',right_open=s[-1]==')')
-    import re
-    parts=re.split(r'(\\le|<)',s)
-    if len(parts)!=5 or parts[2].strip()!='x': raise ValueError('not a complete inequality: '+s)
+    parts=re.split(r'(\\le|\\ge|<|>)',s)
+    if len(parts)!=5 or parts[2].strip() not in VARIABLES: raise ValueError('not a complete inequality: '+s)
+    if parts[1] in (r'\ge','>'):
+        return sp.Interval(number(parts[4]),number(parts[0]),left_open=parts[3]=='>',right_open=parts[1]=='>')
     return sp.Interval(number(parts[0]),number(parts[4]),left_open=parts[1]=='<',right_open=parts[3]=='<')
 
 def uid(s): return str(uuid.uuid5(uuid.NAMESPACE_URL,s))
 def digest(obj):return hashlib.sha256(json.dumps(obj,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
 
-def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
+def legacy_generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
     if level not in ('easy','moderate','hard'): raise ValueError('unknown level')
     if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('only radio supported')
     rng=random.Random(seed)
@@ -197,36 +199,150 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
        'source_id':source_id,'raw_evidence':raw,'database':SOURCE['database'],'basis':SOURCE['basis'],'lineage':SOURCE['lineage'],
        'correct_set':str(correct),'domain':'a < b, finite real closed endpoints; both directions, no solving','plot_rating':'none'}}
 
-# EASY: integer endpoint reading; both directions are equal-level variants.
-def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):
-    return generate('easy',seed,template,field_type,parameters,profile)
-# MODERATE: at least one reduced noninteger rational; no arithmetic is requested.
-def generate_moderate(seed=0,template=None,field_type=None,parameters=None,profile=None):
-    return generate('moderate',seed,template,field_type,parameters,profile)
-# HARD: signed, noninteger endpoint forms, including an exact surd; same conversion.
-def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=None):
-    return generate('hard',seed,template,field_type,parameters,profile)
+
+VARIABLES=('x','y','t')
+ORIENTATIONS=('ascending','descending')
+_fmt_spec=importlib.util.spec_from_file_location('closed_interval_math_format',HERE/'math_format.py')
+_fmt=importlib.util.module_from_spec(_fmt_spec);_fmt_spec.loader.exec_module(_fmt)
+
+def strict_int(value,name,minimum=None):
+    if type(value) is not int or (minimum is not None and value<minimum):
+        raise ValueError(name+' must be an integer'+(' >= '+str(minimum) if minimum is not None else ''))
+    return value
+
+def transform_math(text,variable,orientation):
+    # Reverse each complete chained inequality only, preserving colored relation
+    # wrappers and concrete solution stage order. Outside-union profiles retain
+    # their observed left/right ray presentation.
+    text=re.sub(r'(?<![A-Za-z])x(?![A-Za-z])',variable,text)
+    if orientation=='descending':
+        # Split at math delimiters to prevent consuming prose around equations.
+        pieces=re.split(r'(\$\$.*?\$\$|\$[^$]*\$)',text,flags=re.S)
+        for i,p in enumerate(pieces):
+            if not p.startswith('$'):continue
+            delim='$$' if p.startswith('$$') else '$';body=p[len(delim):-len(delim)]
+            body=reverse_chain(body,variable)
+            pieces[i]=delim+body+delim
+        text=''.join(pieces)
+    return text
+
+def reverse_chain(body,variable):
+    # Locate full relation tokens including their source color group and spacing.
+    rel=r'(?:\s|\\,)*(?:\{\\color\{(?:blue|red)\}\{)?(?:\\le|<)(?:\}\})?(?:\s|\\,)*'
+    m=re.fullmatch(r'(.*?)('+rel+r')'+variable+r'('+rel+r')(.*?)',body,re.S)
+    if not m:return body
+    flip=lambda s:s.replace(r'\le',r'\ge').replace('<','>')
+    return m.group(4)+flip(m.group(3))+variable+flip(m.group(2))+m.group(1)
+
+@_fmt.checked_math_content
+def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None,variable=None,orientation=None):
+    strict_int(seed,'seed')
+    if profile is not None and profile.startswith('raw_'): raise ValueError('raw incomplete sources are evidence only; use replay_source')
+    rng=random.Random(seed)
+    # A whole bank is selected before the endpoint instance. Distinct original
+    # reverse banks remain whole profiles (strict versus inclusive outside rays).
+    if profile is None:
+        if template is not None and template not in TEMPLATES:raise ValueError('unknown template')
+        eligible_profiles=['observed_interval','observed_inequality']
+        if level=='easy':eligible_profiles.append('captured_interval')
+        if level=='moderate':eligible_profiles.append('captured_inequality')
+        if template:eligible_profiles=[p for p in eligible_profiles if PROFILES[p][0]==template]
+        profile=rng.choice(eligible_profiles)
+    variable=variable if variable is not None else rng.choice(VARIABLES)
+    orientation=orientation if orientation is not None else rng.choice(ORIENTATIONS)
+    if variable not in VARIABLES or orientation not in ORIENTATIONS:raise ValueError('unknown variable/orientation')
+    r=legacy_generate(level,seed,template,field_type,parameters,profile)
+    q=r['question']; f=q[':question/answer-fields'][0]
+    old_correct=f[':answer-field/correct'][1]
+    q[':question/problem']=_fmt.normalize_prose(transform_math(q[':question/problem'],variable,orientation))
+    q[':question/worked-solution']=_fmt.normalize_prose(transform_math(q[':question/worked-solution'],variable,orientation))
+    for a in f[':answer-field/choices']:
+        if a[':answer/type']==':answer.type/math':
+            a[':answer/value']=_fmt.normalize_tex(reverse_chain(re.sub(r'(?<![A-Za-z])x(?![A-Za-z])',variable,a[':answer/value']),variable) if orientation=='descending' else re.sub(r'(?<![A-Za-z])x(?![A-Za-z])',variable,a[':answer/value']))
+        else:a[':answer/value']=_fmt.normalize_prose(transform_math(a[':answer/value'],variable,orientation))
+    # Preserve existing v2 normal identities whenever the display is unchanged.
+    if variable!='x' or orientation!='ascending':
+        content=digest({'version':VERSION,'prompt':q[':question/problem'],'solution':q[':question/worked-solution'],'difficulty':q[':question/difficulty'],'bank':sorted((a[':answer/type'],a[':answer/value']) for a in f[':answer-field/choices'])})
+        qid=uid(content);fid=uid(qid+':selection');q[':question/id']=qid;f[':answer-field/id']=fid
+        for a in f[':answer-field/choices']:
+            is_correct=a[':answer/id']==old_correct
+            a[':answer/id']=uid(fid+a[':answer/type']+a[':answer/value'])
+            if is_correct:f[':answer-field/correct']=[':answer/id',a[':answer/id']]
+        r['generation']['content_fingerprint']=content
+    r['generation'].update({'variable':variable,'orientation':orientation,'draft_revision':'closed-intervals-v3-draft','basis':SOURCE['basis'],'source_basis':SOURCE['basis'],'lineage':SOURCE['lineage'],
+        'level_origin':('observed source rating; generalized variable/orientation/endpoints' if profile.startswith('captured_') else 'authored endpoint-reading extension; historical original unrated'),
+        'source_error_policy':'q-59295 raw record ineligible: no rating, key or solution; separately supported keyed repair; q-154728 punctuation normalized'})
+    assert len(set(displayed_set(a[':answer/value']) for a in f[':answer-field/choices']))==5
+    return r
+
+def normalize_raw(q):
+    # Preserve all original UUIDs and values. Strip only database projection
+    # metadata and resolve enum/lookup representations for the learner fixture.
+    q=copy.deepcopy(q)
+    q.pop(':db/id',None)
+    for k in [':question/difficulty']:
+        if isinstance(q.get(k),dict):q[k]=q[k][':db/ident']
+    for f in q.get(':question/answer-fields',[]):
+        f.pop(':db/id',None);f[':answer-field/type']=f[':answer-field/type'][':db/ident']
+        if ':answer-field/correct' in f:f[':answer-field/correct']=[':answer/id',f[':answer-field/correct'][':answer/id']]
+        for a in f[':answer-field/choices']:
+            a.pop(':db/id',None);a[':answer/type']=a[':answer/type'][':db/ident']
+    return q
+
+def replay_source(source_id):
+    raw=next(z['record'] for z in json.loads((HERE/'source-cases.json').read_text()) if z['source_id']==source_id)
+    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':normalize_raw(raw),'generation':{'template':'inequality_to_interval' if source_id=='q-102200' else 'interval_to_inequality','source_id':source_id,'basis':SOURCE['basis'],'raw_evidence':True,'eligible':source_id!='q-59295'}}
+
+def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None,**kwargs):return generate('easy',seed,template,field_type,parameters,profile,**kwargs)
+def generate_moderate(seed=0,template=None,field_type=None,parameters=None,profile=None,**kwargs):return generate('moderate',seed,template,field_type,parameters,profile,**kwargs)
+def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=None,**kwargs):return generate('hard',seed,template,field_type,parameters,profile,**kwargs)
+
+def capacity(level,template=None,profile=None):
+    if level not in ('easy','moderate','hard'):raise ValueError('unknown difficulty')
+    if profile is not None:
+        if profile not in PROFILES or profile.startswith('raw_'):raise ValueError('unsupported profile')
+        t=PROFILES[profile][0]
+        if template is not None and template!=t:raise ValueError('profile/template mismatch')
+        if profile.startswith('captured_') and level!=('easy' if profile=='captured_interval' else 'moderate'):raise ValueError('incompatible profile/level')
+        return len(parameter_catalog('easy' if profile.startswith('captured_') else level))
+    if template is not None and template not in TEMPLATES:raise ValueError('unknown template')
+    # Both directions; aliases and choice-bank alternatives are not capacity.
+    n=len(parameter_catalog(level))*(1 if template else 2)
+    if level=='moderate' and template!='inequality_to_interval':n+=len(parameter_catalog('easy'))
+    return n
+
+def generate_batch(level,seed=0,count=1,template=None,profile=None,variable=None,orientation=None,_excluded=None):
+    strict_int(seed,'seed');strict_int(count,'count',1)
+    cap=capacity(level,template,profile)
+    if count>cap:raise ValueError('count exceeds finite mathematical capacity '+str(cap))
+    result=[];seen=set(_excluded or ());attempt=0
+    while len(result)<count:
+        r=generate(level,seed+attempt,template,parameters=None,profile=profile,variable=variable,orientation=orientation);attempt+=1
+        fp=r['generation']['mathematical_fingerprint']
+        if fp not in seen:seen.add(fp);result.append(r)
+        if attempt>max(1000,count*100):raise ValueError('batch sampling exhausted; request a smaller batch')
+    return result
 
 def markdown(r):
-    q=r['question'];f=q[':question/answer-fields'][0]
-    lines=[q[':question/problem'],'']
+    q=r['question'];f=q[':question/answer-fields'][0];lines=[q[':question/problem'],'']
     for a in f[':answer-field/choices']:
-        v=a[':answer/value']; lines.append('- '+(v if a[':answer/type'].endswith('/text') else '$'+v+'$'))
-    if ':answer-field/correct' in f:
-        v=next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])
-        lines+=['','Correct: $'+v+'$','',q[':question/worked-solution']]
-    else:lines+=['','Raw evidence: source correct designation, rating and solution absent.']
-    return '\n'.join(lines)
+        v=a[':answer/value'];lines.append('- '+(v if a[':answer/type'].endswith('/text') else '$'+v+'$'))
+    answer=next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])
+    return '\n'.join(lines+['','Correct: $'+answer+'$','',q[':question/worked-solution']])
 
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--difficulty',choices=('all','easy','moderate','hard'),default='all')
     ap.add_argument('--seed',type=int,default=0);ap.add_argument('--count',type=int,default=1)
-    ap.add_argument('--template',choices=TEMPLATES);ap.add_argument('--profile',choices=tuple(PROFILES))
-    ap.add_argument('--format',choices=('markdown','json'),default='markdown')
-    args=ap.parse_args()
-    if args.count<1:ap.error('count must be positive')
+    ap.add_argument('--template',choices=TEMPLATES);ap.add_argument('--profile',choices=tuple(p for p in PROFILES if not p.startswith('raw_')))
+    ap.add_argument('--variable',choices=VARIABLES);ap.add_argument('--orientation',choices=ORIENTATIONS)
+    ap.add_argument('--format',choices=('markdown','json'),default='markdown');args=ap.parse_args()
     levels=('easy','moderate','hard') if args.difficulty=='all' else (args.difficulty,)
-    rs=[generate(l,args.seed+i,args.template,profile=args.profile) for l in levels for i in range(args.count)]
+    try:
+        rs=[];seen=set()
+        for level in levels:
+            batch=generate_batch(level,args.seed,args.count,args.template,args.profile,args.variable,args.orientation,seen)
+            rs.extend(batch);seen.update(r['generation']['mathematical_fingerprint'] for r in batch)
+    except ValueError as ex:ap.error(str(ex))
     print(json.dumps(rs,indent=2,ensure_ascii=False) if args.format=='json' else '\n\n---\n\n'.join(markdown(r) for r in rs))
 if __name__=='__main__':main()
