@@ -1,0 +1,5 @@
+# KP17592186204092 draft
+
+Run `.venv/bin/python generate/scratch/17592186204092-draft/validate.py` from the repository root. Public APIs are generate, generate_easy, generate_moderate, generate_hard, batch, observed_raw and markdown. CLI supports all three difficulty levels, --difficulty all with an exact count per level, and JSON/Markdown. Runtime reads only its private frozen source, catalog, parser and formatter. No live EDB or root QA helpers are imported.
+
+This is a local draft pending parent independent QA, not a registration. The registered numeric script and entire numeric directory remain unchanged. See baseline.json, raw-fidelity.json, classification.json, template-extraction.md, review.md, capacity.json, validation.json and freeze-manifest.json. Two incomplete MA records are available only as raw evidence. Hard is an authored same-method extension with no observed hard practice. The easy complete source bank has fully preserved numerical patterns whose misconception interpretation remains unresolved.
