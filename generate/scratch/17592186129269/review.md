@@ -227,7 +227,7 @@ $$
 Consider the transformation $T:(u,v,w)\to (x(u,v,w),y(u,v,w),z(u,v,w)).$ The inverse transformation ${T}^{-1}(x,y,z)\to (u(x,y,z),v(x,y,z),w(x,y,z))$ is given by
 
 $$
-{T}^{-1}:[\begin{aligned}x \\ y \\ z\end{aligned}]⟶[\begin{aligned}2\left(\frac{1}{x}\right) \\ \sqrt{y}+z \\ {y}^{2}\end{aligned}].
+{T}^{-1}:\begin{bmatrix}x \\ y \\ z\end{bmatrix}⟶\begin{bmatrix}2\left(\frac{1}{x}\right) \\ \sqrt{y}+z \\ {y}^{2}\end{bmatrix}.
 $$
 
 Find the Jacobian determinant of $T.$
@@ -243,13 +243,13 @@ Find the Jacobian determinant of $T.$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -279,7 +279,7 @@ Scaling the three derivative rows by $2, 1, 1$ multiplies the determinant by $2$
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}2\left(-\frac{1}{{x}^{2}}\right) & 0 & 0 \\ 0 & \frac{1}{2\sqrt{y}} & 1 \\ 0 & 2y & 0\end{aligned}| \\  & =2\left(-\frac{1}{{x}^{2}}|\begin{aligned}\frac{1}{2\sqrt{y}} & 1 \\ 2y & 0\end{aligned}|\right)\\  & =\frac{4 y}{x^{2}}.\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}2\left(-\frac{1}{{x}^{2}}\right) & 0 & 0 \\ 0 & \frac{1}{2\sqrt{y}} & 1 \\ 0 & 2y & 0\end{vmatrix} \\  & =2\left(-\frac{1}{{x}^{2}}\begin{vmatrix}\frac{1}{2\sqrt{y}} & 1 \\ 2y & 0\end{vmatrix}\right)\\  & =\frac{4 y}{x^{2}}.\end{aligned}
 $$
 
 Writing down $\frac{∂(u,v,w)}{∂(x,y,z)}$ in terms of $u,$ $v,$ and $w,$ we obtain
@@ -301,7 +301,7 @@ $$
 Consider the transformation $T:(u,v,w)\to (x(u,v,w),y(u,v,w),z(u,v,w)).$ The inverse transformation ${T}^{-1}(x,y,z)\to (u(x,y,z),v(x,y,z),w(x,y,z))$ is given by
 
 $$
-{T}^{-1}:[\begin{aligned}x \\ y \\ z\end{aligned}]⟶[\begin{aligned}4\left(\frac{1}{x}\right) \\ 4\left(\sqrt{y}+z\right) \\ 2\left({y}^{2}\right)\end{aligned}].
+{T}^{-1}:\begin{bmatrix}x \\ y \\ z\end{bmatrix}⟶\begin{bmatrix}4\left(\frac{1}{x}\right) \\ 4\left(\sqrt{y}+z\right) \\ 2\left({y}^{2}\right)\end{bmatrix}.
 $$
 
 Find the Jacobian determinant of $T.$
@@ -317,13 +317,13 @@ Find the Jacobian determinant of $T.$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -353,7 +353,7 @@ Scaling the three derivative rows by $4, 4, 2$ multiplies the determinant by $32
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}4\left(-\frac{1}{{x}^{2}}\right) & 0 & 0 \\ 0 & 4\left(\frac{1}{2\sqrt{y}}\right) & 4\left(1\right) \\ 0 & 2\left(2y\right) & 0\end{aligned}| \\  & =32\left(-\frac{1}{{x}^{2}}|\begin{aligned}\frac{1}{2\sqrt{y}} & 1 \\ 2y & 0\end{aligned}|\right)\\  & =\frac{64 y}{x^{2}}.\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}4\left(-\frac{1}{{x}^{2}}\right) & 0 & 0 \\ 0 & 4\left(\frac{1}{2\sqrt{y}}\right) & 4\left(1\right) \\ 0 & 2\left(2y\right) & 0\end{vmatrix} \\  & =32\left(-\frac{1}{{x}^{2}}\begin{vmatrix}\frac{1}{2\sqrt{y}} & 1 \\ 2y & 0\end{vmatrix}\right)\\  & =\frac{64 y}{x^{2}}.\end{aligned}
 $$
 
 Writing down $\frac{∂(u,v,w)}{∂(x,y,z)}$ in terms of $u,$ $v,$ and $w,$ we obtain
@@ -631,13 +631,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -661,7 +661,7 @@ Scaling the three derivative rows by $2, 1, 1$ multiplies the determinant by $2$
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}2\left(2\right) & 2\left(1\right) & 0 \\ -1 & 3 & -2 \\ 0 & 3 & 4\end{aligned}| \\  & =2\left(2|\begin{aligned}3 & -2 \\ 3 & 4\end{aligned}|-1|\begin{aligned}-1 & -2 \\ 0 & 4\end{aligned}|\right)\\  & =2\left(2(12+6)-1(-4-0)\right)\\  & =80.\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}2\left(2\right) & 2\left(1\right) & 0 \\ -1 & 3 & -2 \\ 0 & 3 & 4\end{vmatrix} \\  & =2\left(2\begin{vmatrix}3 & -2 \\ 3 & 4\end{vmatrix}-1\begin{vmatrix}-1 & -2 \\ 0 & 4\end{vmatrix}\right)\\  & =2\left(2(12+6)-1(-4-0)\right)\\  & =80.\end{aligned}
 $$
 
 Finally, we take the reciprocal:
@@ -689,13 +689,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -719,7 +719,7 @@ Scaling the three derivative rows by $3, 1, 1$ multiplies the determinant by $3$
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}3\left(2\right) & 3\left(1\right) & 0 \\ -1 & 3 & -2 \\ 0 & 3 & 4\end{aligned}| \\  & =3\left(2|\begin{aligned}3 & -2 \\ 3 & 4\end{aligned}|-1|\begin{aligned}-1 & -2 \\ 0 & 4\end{aligned}|\right)\\  & =3\left(2(12+6)-1(-4-0)\right)\\  & =120.\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}3\left(2\right) & 3\left(1\right) & 0 \\ -1 & 3 & -2 \\ 0 & 3 & 4\end{vmatrix} \\  & =3\left(2\begin{vmatrix}3 & -2 \\ 3 & 4\end{vmatrix}-1\begin{vmatrix}-1 & -2 \\ 0 & 4\end{vmatrix}\right)\\  & =3\left(2(12+6)-1(-4-0)\right)\\  & =120.\end{aligned}
 $$
 
 Finally, we take the reciprocal:
@@ -975,13 +975,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -1005,7 +1005,7 @@ Scaling the three derivative rows by $2, 1, 1$ multiplies the determinant by $2$
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}2\left(1\right) & 2\left(1\right) & 0 \\ 0 & 0 & 1 \\ 0 & 4 & -4z\end{aligned}| \\  & =2\left(1|\begin{aligned}0 & 1 \\ 4 & -4z\end{aligned}|\right)\\  & =2\left(1(0-4)\right)\\  & =-8.\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}2\left(1\right) & 2\left(1\right) & 0 \\ 0 & 0 & 1 \\ 0 & 4 & -4z\end{vmatrix} \\  & =2\left(1\begin{vmatrix}0 & 1 \\ 4 & -4z\end{vmatrix}\right)\\  & =2\left(1(0-4)\right)\\  & =-8.\end{aligned}
 $$
 
 Finally, we take the reciprocal:
@@ -1033,13 +1033,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -1063,7 +1063,7 @@ Scaling the three derivative rows by $4, 4, 1$ multiplies the determinant by $16
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}4\left(1\right) & 4\left(1\right) & 0 \\ 0 & 0 & 4\left(1\right) \\ 0 & 4 & -4z\end{aligned}| \\  & =16\left(1|\begin{aligned}0 & 1 \\ 4 & -4z\end{aligned}|\right)\\  & =16\left(1(0-4)\right)\\  & =-64.\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}4\left(1\right) & 4\left(1\right) & 0 \\ 0 & 0 & 4\left(1\right) \\ 0 & 4 & -4z\end{vmatrix} \\  & =16\left(1\begin{vmatrix}0 & 1 \\ 4 & -4z\end{vmatrix}\right)\\  & =16\left(1(0-4)\right)\\  & =-64.\end{aligned}
 $$
 
 Finally, we take the reciprocal:
@@ -1319,13 +1319,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -1349,7 +1349,7 @@ Scaling the three derivative rows by $2, 1, 1$ multiplies the determinant by $2$
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}0 & 2\left(-1\right) & 2\left(1\right) \\ 1 & 0 & 1 \\ -3 & 0 & 0\end{aligned}| \\  & =2\left(-(-1)|\begin{aligned}1 & 1 \\ -3 & 0\end{aligned}|+1|\begin{aligned}1 & 0 \\ -3 & 0\end{aligned}|\right)\\  & =2\left(1(0+3)+1(0-0)\right)\\  & =6\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}0 & 2\left(-1\right) & 2\left(1\right) \\ 1 & 0 & 1 \\ -3 & 0 & 0\end{vmatrix} \\  & =2\left(-(-1)\begin{vmatrix}1 & 1 \\ -3 & 0\end{vmatrix}+1\begin{vmatrix}1 & 0 \\ -3 & 0\end{vmatrix}\right)\\  & =2\left(1(0+3)+1(0-0)\right)\\  & =6\end{aligned}
 $$
 
 Finally, we take the reciprocal:
@@ -1377,13 +1377,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -1407,7 +1407,7 @@ Scaling the three derivative rows by $4, 4, 2$ multiplies the determinant by $32
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}0 & 4\left(-1\right) & 4\left(1\right) \\ 4\left(1\right) & 0 & 4\left(1\right) \\ 2\left(-3\right) & 0 & 0\end{aligned}| \\  & =32\left(-(-1)|\begin{aligned}1 & 1 \\ -3 & 0\end{aligned}|+1|\begin{aligned}1 & 0 \\ -3 & 0\end{aligned}|\right)\\  & =32\left(1(0+3)+1(0-0)\right)\\  & =96\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}0 & 4\left(-1\right) & 4\left(1\right) \\ 4\left(1\right) & 0 & 4\left(1\right) \\ 2\left(-3\right) & 0 & 0\end{vmatrix} \\  & =32\left(-(-1)\begin{vmatrix}1 & 1 \\ -3 & 0\end{vmatrix}+1\begin{vmatrix}1 & 0 \\ -3 & 0\end{vmatrix}\right)\\  & =32\left(1(0+3)+1(0-0)\right)\\  & =96\end{aligned}
 $$
 
 Finally, we take the reciprocal:
@@ -1663,13 +1663,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -1693,7 +1693,7 @@ Scaling the three derivative rows by $2, 1, 1$ multiplies the determinant by $2$
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}0 & 2\left(1\right) & 2\left(-3\right) \\ 1 & 0 & 2 \\ 3 & -1 & 0\end{aligned}| \\  & =2\left(-1|\begin{aligned}1 & 2 \\ 3 & 0\end{aligned}|-3|\begin{aligned}1 & 0 \\ 3 & -1\end{aligned}|\right)\\  & =2\left(-1(0-6)-3(-1-0)\right)\\  & =2\left(6+3\right)\\  & =18\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}0 & 2\left(1\right) & 2\left(-3\right) \\ 1 & 0 & 2 \\ 3 & -1 & 0\end{vmatrix} \\  & =2\left(-1\begin{vmatrix}1 & 2 \\ 3 & 0\end{vmatrix}-3\begin{vmatrix}1 & 0 \\ 3 & -1\end{vmatrix}\right)\\  & =2\left(-1(0-6)-3(-1-0)\right)\\  & =2\left(6+3\right)\\  & =18\end{aligned}
 $$
 
 Finally, we take the reciprocal:
@@ -1721,13 +1721,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -1751,7 +1751,7 @@ Scaling the three derivative rows by $4, 3, 1$ multiplies the determinant by $12
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}0 & 4\left(1\right) & 4\left(-3\right) \\ 3\left(1\right) & 0 & 3\left(2\right) \\ 3 & -1 & 0\end{aligned}| \\  & =12\left(-1|\begin{aligned}1 & 2 \\ 3 & 0\end{aligned}|-3|\begin{aligned}1 & 0 \\ 3 & -1\end{aligned}|\right)\\  & =12\left(-1(0-6)-3(-1-0)\right)\\  & =12\left(6+3\right)\\  & =108\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}0 & 4\left(1\right) & 4\left(-3\right) \\ 3\left(1\right) & 0 & 3\left(2\right) \\ 3 & -1 & 0\end{vmatrix} \\  & =12\left(-1\begin{vmatrix}1 & 2 \\ 3 & 0\end{vmatrix}-3\begin{vmatrix}1 & 0 \\ 3 & -1\end{vmatrix}\right)\\  & =12\left(-1(0-6)-3(-1-0)\right)\\  & =12\left(6+3\right)\\  & =108\end{aligned}
 $$
 
 Finally, we take the reciprocal:
@@ -2007,13 +2007,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -2037,7 +2037,7 @@ Scaling the three derivative rows by $2, 1, 1$ multiplies the determinant by $2$
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}2\left(3\right) & 2\left(z\right) & 2\left(y\right) \\ 0 & 0 & 1 \\ 0 & -1 & 0\end{aligned}| \\  & =2\left(3|\begin{aligned}0 & 1 \\ -1 & 0\end{aligned}|\right)\\  & =2\left(3(0+1)\right)\\  & =6\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}2\left(3\right) & 2\left(z\right) & 2\left(y\right) \\ 0 & 0 & 1 \\ 0 & -1 & 0\end{vmatrix} \\  & =2\left(3\begin{vmatrix}0 & 1 \\ -1 & 0\end{vmatrix}\right)\\  & =2\left(3(0+1)\right)\\  & =6\end{aligned}
 $$
 
 Finally, we take the reciprocal:
@@ -2065,13 +2065,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -2095,7 +2095,7 @@ Scaling the three derivative rows by $4, 4, 2$ multiplies the determinant by $32
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}4\left(3\right) & 4\left(z\right) & 4\left(y\right) \\ 0 & 0 & 4\left(1\right) \\ 0 & 2\left(-1\right) & 0\end{aligned}| \\  & =32\left(3|\begin{aligned}0 & 1 \\ -1 & 0\end{aligned}|\right)\\  & =32\left(3(0+1)\right)\\  & =96\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}4\left(3\right) & 4\left(z\right) & 4\left(y\right) \\ 0 & 0 & 4\left(1\right) \\ 0 & 2\left(-1\right) & 0\end{vmatrix} \\  & =32\left(3\begin{vmatrix}0 & 1 \\ -1 & 0\end{vmatrix}\right)\\  & =32\left(3(0+1)\right)\\  & =96\end{aligned}
 $$
 
 Finally, we take the reciprocal:
@@ -2381,7 +2381,7 @@ $$
 Consider the transformation $T:(u,v,w)\to (x(u,v,w),y(u,v,w),z(u,v,w)).$ The inverse transformation ${T}^{-1}(x,y,z)\to (u(x,y,z),v(x,y,z),w(x,y,z))$ is given by
 
 $$
-{T}^{-1}:[\begin{aligned}x \\ y \\ z\end{aligned}]⟶[\begin{aligned}2\left({e}^{x}\right) \\ {e}^{x+y} \\ {e}^{x+y+z}\end{aligned}].
+{T}^{-1}:\begin{bmatrix}x \\ y \\ z\end{bmatrix}⟶\begin{bmatrix}2\left({e}^{x}\right) \\ {e}^{x+y} \\ {e}^{x+y+z}\end{bmatrix}.
 $$
 
 Find the Jacobian determinant of $T.$
@@ -2395,13 +2395,13 @@ Find the Jacobian determinant of $T.$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -2431,7 +2431,7 @@ Scaling the three derivative rows by $2, 1, 1$ multiplies the determinant by $2$
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}2\left({e}^{x}\right) & 0 & 0 \\ {e}^{x+y} & {e}^{x+y} & 0 \\ {e}^{x+y+z} & {e}^{x+y+z} & {e}^{x+y+z}\end{aligned}| \\  & =2\left({e}^{x}|\begin{aligned}{e}^{x+y} & 0 \\ {e}^{x+y+z} & {e}^{x+y+z}\end{aligned}|\right)\\  & =2\left({e}^{x}({e}^{2x+2y+z}-0)\right)\\  & =2 e^{x} e^{x + y} e^{x + y + z}.\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}2\left({e}^{x}\right) & 0 & 0 \\ {e}^{x+y} & {e}^{x+y} & 0 \\ {e}^{x+y+z} & {e}^{x+y+z} & {e}^{x+y+z}\end{vmatrix} \\  & =2\left({e}^{x}\begin{vmatrix}{e}^{x+y} & 0 \\ {e}^{x+y+z} & {e}^{x+y+z}\end{vmatrix}\right)\\  & =2\left({e}^{x}({e}^{2x+2y+z}-0)\right)\\  & =2 e^{x} e^{x + y} e^{x + y + z}.\end{aligned}
 $$
 
 Writing down $\frac{∂(u,v,w)}{∂(x,y,z)}$ in terms of $u,$ $v,$ and $w,$ we obtain
@@ -2453,7 +2453,7 @@ $$
 Consider the transformation $T:(u,v,w)\to (x(u,v,w),y(u,v,w),z(u,v,w)).$ The inverse transformation ${T}^{-1}(x,y,z)\to (u(x,y,z),v(x,y,z),w(x,y,z))$ is given by
 
 $$
-{T}^{-1}:[\begin{aligned}x \\ y \\ z\end{aligned}]⟶[\begin{aligned}4\left({e}^{x}\right) \\ 4\left({e}^{x+y}\right) \\ 2\left({e}^{x+y+z}\right)\end{aligned}].
+{T}^{-1}:\begin{bmatrix}x \\ y \\ z\end{bmatrix}⟶\begin{bmatrix}4\left({e}^{x}\right) \\ 4\left({e}^{x+y}\right) \\ 2\left({e}^{x+y+z}\right)\end{bmatrix}.
 $$
 
 Find the Jacobian determinant of $T.$
@@ -2467,13 +2467,13 @@ Find the Jacobian determinant of $T.$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -2503,7 +2503,7 @@ Scaling the three derivative rows by $4, 4, 2$ multiplies the determinant by $32
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}4\left({e}^{x}\right) & 0 & 0 \\ 4\left({e}^{x+y}\right) & 4\left({e}^{x+y}\right) & 0 \\ 2\left({e}^{x+y+z}\right) & 2\left({e}^{x+y+z}\right) & 2\left({e}^{x+y+z}\right)\end{aligned}| \\  & =32\left({e}^{x}|\begin{aligned}{e}^{x+y} & 0 \\ {e}^{x+y+z} & {e}^{x+y+z}\end{aligned}|\right)\\  & =32\left({e}^{x}({e}^{2x+2y+z}-0)\right)\\  & =32 e^{x} e^{x + y} e^{x + y + z}.\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}4\left({e}^{x}\right) & 0 & 0 \\ 4\left({e}^{x+y}\right) & 4\left({e}^{x+y}\right) & 0 \\ 2\left({e}^{x+y+z}\right) & 2\left({e}^{x+y+z}\right) & 2\left({e}^{x+y+z}\right)\end{vmatrix} \\  & =32\left({e}^{x}\begin{vmatrix}{e}^{x+y} & 0 \\ {e}^{x+y+z} & {e}^{x+y+z}\end{vmatrix}\right)\\  & =32\left({e}^{x}({e}^{2x+2y+z}-0)\right)\\  & =32 e^{x} e^{x + y} e^{x + y + z}.\end{aligned}
 $$
 
 Writing down $\frac{∂(u,v,w)}{∂(x,y,z)}$ in terms of $u,$ $v,$ and $w,$ we obtain
@@ -2815,7 +2815,7 @@ $$
 Consider the transformation $T:(u,v,w)\to (x(u,v,w),y(u,v,w),z(u,v,w)).$ The inverse transformation ${T}^{-1}(x,y,z)\to (u(x,y,z),v(x,y,z),w(x,y,z))$ is given by
 
 $$
-{T}^{-1}:[\begin{aligned}x \\ y \\ z\end{aligned}]⟶[\begin{aligned}2\left(x\right) \\ z-y \\ xy\end{aligned}].
+{T}^{-1}:\begin{bmatrix}x \\ y \\ z\end{bmatrix}⟶\begin{bmatrix}2\left(x\right) \\ z-y \\ xy\end{bmatrix}.
 $$
 
 Find the Jacobian determinant of $T.$
@@ -2831,13 +2831,13 @@ Find the Jacobian determinant of $T.$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -2867,7 +2867,7 @@ Scaling the three derivative rows by $2, 1, 1$ multiplies the determinant by $2$
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}2\left(1\right) & 0 & 0 \\ 0 & -1 & 1 \\ y & x & 0\end{aligned}| \\  & =2\left(1|\begin{aligned}-1 & 1 \\ x & 0\end{aligned}|\right)\\  & =2\left(1(0-x)\right)\\  & =- 2 x.\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}2\left(1\right) & 0 & 0 \\ 0 & -1 & 1 \\ y & x & 0\end{vmatrix} \\  & =2\left(1\begin{vmatrix}-1 & 1 \\ x & 0\end{vmatrix}\right)\\  & =2\left(1(0-x)\right)\\  & =- 2 x.\end{aligned}
 $$
 
 Writing down $\frac{∂(u,v,w)}{∂(x,y,z)}$ in terms of $u,$ $v,$ and $w,$ we obtain
@@ -2889,7 +2889,7 @@ $$
 Consider the transformation $T:(u,v,w)\to (x(u,v,w),y(u,v,w),z(u,v,w)).$ The inverse transformation ${T}^{-1}(x,y,z)\to (u(x,y,z),v(x,y,z),w(x,y,z))$ is given by
 
 $$
-{T}^{-1}:[\begin{aligned}x \\ y \\ z\end{aligned}]⟶[\begin{aligned}4\left(x\right) \\ 4\left(z-y\right) \\ 2\left(xy\right)\end{aligned}].
+{T}^{-1}:\begin{bmatrix}x \\ y \\ z\end{bmatrix}⟶\begin{bmatrix}4\left(x\right) \\ 4\left(z-y\right) \\ 2\left(xy\right)\end{bmatrix}.
 $$
 
 Find the Jacobian determinant of $T.$
@@ -2905,13 +2905,13 @@ Find the Jacobian determinant of $T.$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -2941,7 +2941,7 @@ Scaling the three derivative rows by $4, 4, 2$ multiplies the determinant by $32
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}4\left(1\right) & 0 & 0 \\ 0 & 4\left(-1\right) & 4\left(1\right) \\ 2\left(y\right) & 2\left(x\right) & 0\end{aligned}| \\  & =32\left(1|\begin{aligned}-1 & 1 \\ x & 0\end{aligned}|\right)\\  & =32\left(1(0-x)\right)\\  & =- 32 x.\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}4\left(1\right) & 0 & 0 \\ 0 & 4\left(-1\right) & 4\left(1\right) \\ 2\left(y\right) & 2\left(x\right) & 0\end{vmatrix} \\  & =32\left(1\begin{vmatrix}-1 & 1 \\ x & 0\end{vmatrix}\right)\\  & =32\left(1(0-x)\right)\\  & =- 32 x.\end{aligned}
 $$
 
 Writing down $\frac{∂(u,v,w)}{∂(x,y,z)}$ in terms of $u,$ $v,$ and $w,$ we obtain
@@ -3255,7 +3255,7 @@ $$
 Consider the transformation $T:(u,v,w)\to (x(u,v,w),y(u,v,w),z(u,v,w)).$ The inverse transformation ${T}^{-1}(x,y,z)\to (u(x,y,z),v(x,y,z),w(x,y,z))$ is given by
 
 $$
-{T}^{-1}:[\begin{aligned}x \\ y \\ z\end{aligned}]⟶[\begin{aligned}2\left(xy\right) \\ yz \\ xz\end{aligned}].
+{T}^{-1}:\begin{bmatrix}x \\ y \\ z\end{bmatrix}⟶\begin{bmatrix}2\left(xy\right) \\ yz \\ xz\end{bmatrix}.
 $$
 
 Find the Jacobian determinant of $T.$
@@ -3271,13 +3271,13 @@ Find the Jacobian determinant of $T.$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -3307,7 +3307,7 @@ Scaling the three derivative rows by $2, 1, 1$ multiplies the determinant by $2$
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}2\left(y\right) & 2\left(x\right) & 0 \\ 0 & z & y \\ z & 0 & x\end{aligned}| \\  & =2\left(y|\begin{aligned}z & y \\ 0 & x\end{aligned}|-x|\begin{aligned}0 & y \\ z & x\end{aligned}|\right)\\  & =2\left(y(xz-0)-x(0-yz)\right)\\  & =2\left(xyz+xyz\right)\\  & =4 x y z.\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}2\left(y\right) & 2\left(x\right) & 0 \\ 0 & z & y \\ z & 0 & x\end{vmatrix} \\  & =2\left(y\begin{vmatrix}z & y \\ 0 & x\end{vmatrix}-x\begin{vmatrix}0 & y \\ z & x\end{vmatrix}\right)\\  & =2\left(y(xz-0)-x(0-yz)\right)\\  & =2\left(xyz+xyz\right)\\  & =4 x y z.\end{aligned}
 $$
 
 Writing down $\frac{∂(u,v,w)}{∂(x,y,z)}$ in terms of $u,$ $v,$ and $w,$ we obtain
@@ -3329,7 +3329,7 @@ $$
 Consider the transformation $T:(u,v,w)\to (x(u,v,w),y(u,v,w),z(u,v,w)).$ The inverse transformation ${T}^{-1}(x,y,z)\to (u(x,y,z),v(x,y,z),w(x,y,z))$ is given by
 
 $$
-{T}^{-1}:[\begin{aligned}x \\ y \\ z\end{aligned}]⟶[\begin{aligned}4\left(xy\right) \\ 4\left(yz\right) \\ 2\left(xz\right)\end{aligned}].
+{T}^{-1}:\begin{bmatrix}x \\ y \\ z\end{bmatrix}⟶\begin{bmatrix}4\left(xy\right) \\ 4\left(yz\right) \\ 2\left(xz\right)\end{bmatrix}.
 $$
 
 Find the Jacobian determinant of $T.$
@@ -3345,13 +3345,13 @@ Find the Jacobian determinant of $T.$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -3381,7 +3381,7 @@ Scaling the three derivative rows by $4, 4, 2$ multiplies the determinant by $32
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}4\left(y\right) & 4\left(x\right) & 0 \\ 0 & 4\left(z\right) & 4\left(y\right) \\ 2\left(z\right) & 0 & 2\left(x\right)\end{aligned}| \\  & =32\left(y|\begin{aligned}z & y \\ 0 & x\end{aligned}|-x|\begin{aligned}0 & y \\ z & x\end{aligned}|\right)\\  & =32\left(y(xz-0)-x(0-yz)\right)\\  & =32\left(xyz+xyz\right)\\  & =64 x y z.\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}4\left(y\right) & 4\left(x\right) & 0 \\ 0 & 4\left(z\right) & 4\left(y\right) \\ 2\left(z\right) & 0 & 2\left(x\right)\end{vmatrix} \\  & =32\left(y\begin{vmatrix}z & y \\ 0 & x\end{vmatrix}-x\begin{vmatrix}0 & y \\ z & x\end{vmatrix}\right)\\  & =32\left(y(xz-0)-x(0-yz)\right)\\  & =32\left(xyz+xyz\right)\\  & =64 x y z.\end{aligned}
 $$
 
 Writing down $\frac{∂(u,v,w)}{∂(x,y,z)}$ in terms of $u,$ $v,$ and $w,$ we obtain
@@ -3695,7 +3695,7 @@ $$
 Consider the transformation $T:(u,v,w)\to (x(u,v,w),y(u,v,w),z(u,v,w)).$ The inverse transformation ${T}^{-1}(x,y,z)\to (u(x,y,z),v(x,y,z),w(x,y,z))$ is given by
 
 $$
-{T}^{-1}:[\begin{aligned}x \\ y \\ z\end{aligned}]⟶[\begin{aligned}2\left(y{z}^{2}\right) \\ z{x}^{2} \\ x{y}^{2}\end{aligned}].
+{T}^{-1}:\begin{bmatrix}x \\ y \\ z\end{bmatrix}⟶\begin{bmatrix}2\left(y{z}^{2}\right) \\ z{x}^{2} \\ x{y}^{2}\end{bmatrix}.
 $$
 
 Find the Jacobian determinant of $T.$
@@ -3711,13 +3711,13 @@ Find the Jacobian determinant of $T.$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -3747,7 +3747,7 @@ Scaling the three derivative rows by $2, 1, 1$ multiplies the determinant by $2$
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}0 & 2\left({z}^{2}\right) & 2\left(2yz\right) \\ 2xz & 0 & {x}^{2} \\ {y}^{2} & 2xy & 0\end{aligned}| \\  & =2\left(-{z}^{2}|\begin{aligned}2xz & {x}^{2} \\ {y}^{2} & 0\end{aligned}|+2yz|\begin{aligned}2xz & 0 \\ {y}^{2} & 2xy\end{aligned}|\right)\\  & =2\left(-{z}^{2}(0-{x}^{2}{y}^{2})+2yz(4{x}^{2}yz-0)\right)\\  & =2\left({x}^{2}{y}^{2}{z}^{2}+8{x}^{2}{y}^{2}{z}^{2}\right)\\  & =18 x^{2} y^{2} z^{2}.\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}0 & 2\left({z}^{2}\right) & 2\left(2yz\right) \\ 2xz & 0 & {x}^{2} \\ {y}^{2} & 2xy & 0\end{vmatrix} \\  & =2\left(-{z}^{2}\begin{vmatrix}2xz & {x}^{2} \\ {y}^{2} & 0\end{vmatrix}+2yz\begin{vmatrix}2xz & 0 \\ {y}^{2} & 2xy\end{vmatrix}\right)\\  & =2\left(-{z}^{2}(0-{x}^{2}{y}^{2})+2yz(4{x}^{2}yz-0)\right)\\  & =2\left({x}^{2}{y}^{2}{z}^{2}+8{x}^{2}{y}^{2}{z}^{2}\right)\\  & =18 x^{2} y^{2} z^{2}.\end{aligned}
 $$
 
 Writing down $\frac{∂(u,v,w)}{∂(x,y,z)}$ in terms of $u,$ $v,$ and $w,$ we obtain
@@ -3769,7 +3769,7 @@ $$
 Consider the transformation $T:(u,v,w)\to (x(u,v,w),y(u,v,w),z(u,v,w)).$ The inverse transformation ${T}^{-1}(x,y,z)\to (u(x,y,z),v(x,y,z),w(x,y,z))$ is given by
 
 $$
-{T}^{-1}:[\begin{aligned}x \\ y \\ z\end{aligned}]⟶[\begin{aligned}4\left(y{z}^{2}\right) \\ 4\left(z{x}^{2}\right) \\ 2\left(x{y}^{2}\right)\end{aligned}].
+{T}^{-1}:\begin{bmatrix}x \\ y \\ z\end{bmatrix}⟶\begin{bmatrix}4\left(y{z}^{2}\right) \\ 4\left(z{x}^{2}\right) \\ 2\left(x{y}^{2}\right)\end{bmatrix}.
 $$
 
 Find the Jacobian determinant of $T.$
@@ -3785,13 +3785,13 @@ Find the Jacobian determinant of $T.$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -3821,7 +3821,7 @@ Scaling the three derivative rows by $4, 4, 2$ multiplies the determinant by $32
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}0 & 4\left({z}^{2}\right) & 4\left(2yz\right) \\ 4\left(2xz\right) & 0 & 4\left({x}^{2}\right) \\ 2\left({y}^{2}\right) & 2\left(2xy\right) & 0\end{aligned}| \\  & =32\left(-{z}^{2}|\begin{aligned}2xz & {x}^{2} \\ {y}^{2} & 0\end{aligned}|+2yz|\begin{aligned}2xz & 0 \\ {y}^{2} & 2xy\end{aligned}|\right)\\  & =32\left(-{z}^{2}(0-{x}^{2}{y}^{2})+2yz(4{x}^{2}yz-0)\right)\\  & =32\left({x}^{2}{y}^{2}{z}^{2}+8{x}^{2}{y}^{2}{z}^{2}\right)\\  & =288 x^{2} y^{2} z^{2}.\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}0 & 4\left({z}^{2}\right) & 4\left(2yz\right) \\ 4\left(2xz\right) & 0 & 4\left({x}^{2}\right) \\ 2\left({y}^{2}\right) & 2\left(2xy\right) & 0\end{vmatrix} \\  & =32\left(-{z}^{2}\begin{vmatrix}2xz & {x}^{2} \\ {y}^{2} & 0\end{vmatrix}+2yz\begin{vmatrix}2xz & 0 \\ {y}^{2} & 2xy\end{vmatrix}\right)\\  & =32\left(-{z}^{2}(0-{x}^{2}{y}^{2})+2yz(4{x}^{2}yz-0)\right)\\  & =32\left({x}^{2}{y}^{2}{z}^{2}+8{x}^{2}{y}^{2}{z}^{2}\right)\\  & =288 x^{2} y^{2} z^{2}.\end{aligned}
 $$
 
 Writing down $\frac{∂(u,v,w)}{∂(x,y,z)}$ in terms of $u,$ $v,$ and $w,$ we obtain
@@ -4135,7 +4135,7 @@ $$
 Consider the transformation $T:(u,v,w)\to (x(u,v,w),y(u,v,w),z(u,v,w)).$ The inverse transformation ${T}^{-1}(x,y,z)\to (u(x,y,z),v(x,y,z),w(x,y,z))$ is given by
 
 $$
-{T}^{-1}:[\begin{aligned}x \\ y \\ z\end{aligned}]⟶[\begin{aligned}2\left(\frac{z}{y}\right) \\ y \\ xz\end{aligned}].
+{T}^{-1}:\begin{bmatrix}x \\ y \\ z\end{bmatrix}⟶\begin{bmatrix}2\left(\frac{z}{y}\right) \\ y \\ xz\end{bmatrix}.
 $$
 
 Find the Jacobian determinant of $T.$
@@ -4151,13 +4151,13 @@ Find the Jacobian determinant of $T.$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -4187,7 +4187,7 @@ Scaling the three derivative rows by $2, 1, 1$ multiplies the determinant by $2$
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}0 & 2\left(-\frac{z}{{y}^{2}}\right) & 2\left(\frac{1}{y}\right) \\ 0 & 1 & 0 \\ z & 0 & x\end{aligned}| \\  & =2\left(z|\begin{aligned}-\frac{z}{{y}^{2}} & \frac{1}{y} \\ 1 & 0\end{aligned}|\right)\\  & =2\left(z(0-\frac{1}{y})\right)\\  & =- \frac{2 z}{y}.\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}0 & 2\left(-\frac{z}{{y}^{2}}\right) & 2\left(\frac{1}{y}\right) \\ 0 & 1 & 0 \\ z & 0 & x\end{vmatrix} \\  & =2\left(z\begin{vmatrix}-\frac{z}{{y}^{2}} & \frac{1}{y} \\ 1 & 0\end{vmatrix}\right)\\  & =2\left(z(0-\frac{1}{y})\right)\\  & =- \frac{2 z}{y}.\end{aligned}
 $$
 
 Writing down $\frac{∂(u,v,w)}{∂(x,y,z)}$ in terms of $u,$ $v,$ and $w,$ we obtain
@@ -4209,7 +4209,7 @@ $$
 Consider the transformation $T:(u,v,w)\to (x(u,v,w),y(u,v,w),z(u,v,w)).$ The inverse transformation ${T}^{-1}(x,y,z)\to (u(x,y,z),v(x,y,z),w(x,y,z))$ is given by
 
 $$
-{T}^{-1}:[\begin{aligned}x \\ y \\ z\end{aligned}]⟶[\begin{aligned}4\left(\frac{z}{y}\right) \\ 4\left(y\right) \\ 2\left(xz\right)\end{aligned}].
+{T}^{-1}:\begin{bmatrix}x \\ y \\ z\end{bmatrix}⟶\begin{bmatrix}4\left(\frac{z}{y}\right) \\ 4\left(y\right) \\ 2\left(xz\right)\end{bmatrix}.
 $$
 
 Find the Jacobian determinant of $T.$
@@ -4225,13 +4225,13 @@ Find the Jacobian determinant of $T.$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -4261,7 +4261,7 @@ Scaling the three derivative rows by $4, 4, 2$ multiplies the determinant by $32
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}0 & 4\left(-\frac{z}{{y}^{2}}\right) & 4\left(\frac{1}{y}\right) \\ 0 & 4\left(1\right) & 0 \\ 2\left(z\right) & 0 & 2\left(x\right)\end{aligned}| \\  & =32\left(z|\begin{aligned}-\frac{z}{{y}^{2}} & \frac{1}{y} \\ 1 & 0\end{aligned}|\right)\\  & =32\left(z(0-\frac{1}{y})\right)\\  & =- \frac{32 z}{y}.\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}0 & 4\left(-\frac{z}{{y}^{2}}\right) & 4\left(\frac{1}{y}\right) \\ 0 & 4\left(1\right) & 0 \\ 2\left(z\right) & 0 & 2\left(x\right)\end{vmatrix} \\  & =32\left(z\begin{vmatrix}-\frac{z}{{y}^{2}} & \frac{1}{y} \\ 1 & 0\end{vmatrix}\right)\\  & =32\left(z(0-\frac{1}{y})\right)\\  & =- \frac{32 z}{y}.\end{aligned}
 $$
 
 Writing down $\frac{∂(u,v,w)}{∂(x,y,z)}$ in terms of $u,$ $v,$ and $w,$ we obtain
@@ -4539,13 +4539,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -4569,7 +4569,7 @@ Scaling the three derivative rows by $2, 1, 1$ multiplies the determinant by $2$
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}2\left(1\right) & 0 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & 3\end{aligned}| \\  & =2\left(1|\begin{aligned}2 & 0 \\ 0 & 3\end{aligned}|\right)\\  & =2\left(1(6-0)\right)\\  & =12.\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}2\left(1\right) & 0 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & 3\end{vmatrix} \\  & =2\left(1\begin{vmatrix}2 & 0 \\ 0 & 3\end{vmatrix}\right)\\  & =2\left(1(6-0)\right)\\  & =12.\end{aligned}
 $$
 
 Finally, we take the reciprocal:
@@ -4597,13 +4597,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -4627,7 +4627,7 @@ Scaling the three derivative rows by $4, 4, 1$ multiplies the determinant by $16
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}4\left(1\right) & 0 & 0 \\ 0 & 4\left(2\right) & 0 \\ 0 & 0 & 3\end{aligned}| \\  & =16\left(1|\begin{aligned}2 & 0 \\ 0 & 3\end{aligned}|\right)\\  & =16\left(1(6-0)\right)\\  & =96.\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}4\left(1\right) & 0 & 0 \\ 0 & 4\left(2\right) & 0 \\ 0 & 0 & 3\end{vmatrix} \\  & =16\left(1\begin{vmatrix}2 & 0 \\ 0 & 3\end{vmatrix}\right)\\  & =16\left(1(6-0)\right)\\  & =96.\end{aligned}
 $$
 
 Finally, we take the reciprocal:
@@ -4698,7 +4698,9 @@ $$
 
 Find the Jacobian determinant of the transformation $T:(u,v,w)\to(x(u,v,w),y(u,v,w),z(u,v,w))$, given that
 
-$$u=- 12 x\qquad v=y\qquad w=z.$$
+$$
+u=- 12 x\qquad v=y\qquad w=z.
+$$
 
 - $\frac{1}{12}$
 - $-12$
@@ -4708,7 +4710,9 @@ $$u=- 12 x\qquad v=y\qquad w=z.$$
 
 For a transformation
 
-$$T:(u,v,w)\to(x(u,v,w),y(u,v,w),z(u,v,w)),$$
+$$
+T:(u,v,w)\to(x(u,v,w),y(u,v,w),z(u,v,w)),
+$$
 
 the Jacobian determinant of $T$ is $\frac{\partial(x,y,z)}{\partial(u,v,w)}$.
 
@@ -4718,19 +4722,27 @@ In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determina
 
 - Then, we will compute the Jacobian determinant of $T$ using the relation
 
-$$\frac{\partial(x,y,z)}{\partial(u,v,w)}=\left(\frac{\partial(u,v,w)}{\partial(x,y,z)}\right)^{-1}.$$
+$$
+\frac{\partial(x,y,z)}{\partial(u,v,w)}=\left(\frac{\partial(u,v,w)}{\partial(x,y,z)}\right)^{-1}.
+$$
 
 First, we find the partial derivatives:
 
-$$\begin{aligned}\frac{\partial u}{\partial x}=-12 & \frac{\partial u}{\partial y}=0 & \frac{\partial u}{\partial z}=0 \\ \frac{\partial v}{\partial x}=0 & \frac{\partial v}{\partial y}=1 & \frac{\partial v}{\partial z}=0 \\ \frac{\partial w}{\partial x}=0 & \frac{\partial w}{\partial y}=0 & \frac{\partial w}{\partial z}=1\end{aligned}$$
+$$
+\begin{aligned}\frac{\partial u}{\partial x}=-12 & \frac{\partial u}{\partial y}=0 & \frac{\partial u}{\partial z}=0 \\ \frac{\partial v}{\partial x}=0 & \frac{\partial v}{\partial y}=1 & \frac{\partial v}{\partial z}=0 \\ \frac{\partial w}{\partial x}=0 & \frac{\partial w}{\partial y}=0 & \frac{\partial w}{\partial z}=1\end{aligned}
+$$
 
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
-$$\begin{aligned}\frac{\partial(u,v,w)}{\partial(x,y,z)}&=|\begin{aligned}\frac{\partial u}{\partial x} & \frac{\partial u}{\partial y} & \frac{\partial u}{\partial z} \\ \frac{\partial v}{\partial x} & \frac{\partial v}{\partial y} & \frac{\partial v}{\partial z} \\ \frac{\partial w}{\partial x} & \frac{\partial w}{\partial y} & \frac{\partial w}{\partial z}\end{aligned}| \\ &=|\begin{aligned}-12 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{aligned}| \\ &=-12|\begin{aligned}1 & 0 \\ 0 & 1\end{aligned}| \\ &=-12\left(1\cdot 1-0\right) \\ &=-12\end{aligned}$$
+$$
+\begin{aligned}\frac{\partial(u,v,w)}{\partial(x,y,z)}&=\begin{vmatrix}\frac{\partial u}{\partial x} & \frac{\partial u}{\partial y} & \frac{\partial u}{\partial z} \\ \frac{\partial v}{\partial x} & \frac{\partial v}{\partial y} & \frac{\partial v}{\partial z} \\ \frac{\partial w}{\partial x} & \frac{\partial w}{\partial y} & \frac{\partial w}{\partial z}\end{vmatrix} \\ &=\begin{vmatrix}-12 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{vmatrix} \\ &=-12\begin{vmatrix}1 & 0 \\ 0 & 1\end{vmatrix} \\ &=-12\left(1\cdot 1-0\right) \\ &=-12\end{aligned}
+$$
 
 Finally, we take the reciprocal:
 
-$$\begin{aligned}\frac{\partial(x,y,z)}{\partial(u,v,w)}&=\left(\frac{\partial(u,v,w)}{\partial(x,y,z)}\right)^{-1} \\ &=- \frac{1}{12}\end{aligned}$$
+$$
+\begin{aligned}\frac{\partial(x,y,z)}{\partial(u,v,w)}&=\left(\frac{\partial(u,v,w)}{\partial(x,y,z)}\right)^{-1} \\ &=- \frac{1}{12}\end{aligned}
+$$
 
 ---
 
@@ -4738,7 +4750,9 @@ $$\begin{aligned}\frac{\partial(x,y,z)}{\partial(u,v,w)}&=\left(\frac{\partial(u
 
 Find the Jacobian determinant of the transformation $T:(u,v,w)\to(x(u,v,w),y(u,v,w),z(u,v,w))$, given that
 
-$$u=- 11 x\qquad v=y\qquad w=z.$$
+$$
+u=- 11 x\qquad v=y\qquad w=z.
+$$
 
 - $\frac{1}{11}$
 - $1$
@@ -4748,7 +4762,9 @@ $$u=- 11 x\qquad v=y\qquad w=z.$$
 
 For a transformation
 
-$$T:(u,v,w)\to(x(u,v,w),y(u,v,w),z(u,v,w)),$$
+$$
+T:(u,v,w)\to(x(u,v,w),y(u,v,w),z(u,v,w)),
+$$
 
 the Jacobian determinant of $T$ is $\frac{\partial(x,y,z)}{\partial(u,v,w)}$.
 
@@ -4758,19 +4774,27 @@ In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determina
 
 - Then, we will compute the Jacobian determinant of $T$ using the relation
 
-$$\frac{\partial(x,y,z)}{\partial(u,v,w)}=\left(\frac{\partial(u,v,w)}{\partial(x,y,z)}\right)^{-1}.$$
+$$
+\frac{\partial(x,y,z)}{\partial(u,v,w)}=\left(\frac{\partial(u,v,w)}{\partial(x,y,z)}\right)^{-1}.
+$$
 
 First, we find the partial derivatives:
 
-$$\begin{aligned}\frac{\partial u}{\partial x}=-11 & \frac{\partial u}{\partial y}=0 & \frac{\partial u}{\partial z}=0 \\ \frac{\partial v}{\partial x}=0 & \frac{\partial v}{\partial y}=1 & \frac{\partial v}{\partial z}=0 \\ \frac{\partial w}{\partial x}=0 & \frac{\partial w}{\partial y}=0 & \frac{\partial w}{\partial z}=1\end{aligned}$$
+$$
+\begin{aligned}\frac{\partial u}{\partial x}=-11 & \frac{\partial u}{\partial y}=0 & \frac{\partial u}{\partial z}=0 \\ \frac{\partial v}{\partial x}=0 & \frac{\partial v}{\partial y}=1 & \frac{\partial v}{\partial z}=0 \\ \frac{\partial w}{\partial x}=0 & \frac{\partial w}{\partial y}=0 & \frac{\partial w}{\partial z}=1\end{aligned}
+$$
 
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
-$$\begin{aligned}\frac{\partial(u,v,w)}{\partial(x,y,z)}&=|\begin{aligned}\frac{\partial u}{\partial x} & \frac{\partial u}{\partial y} & \frac{\partial u}{\partial z} \\ \frac{\partial v}{\partial x} & \frac{\partial v}{\partial y} & \frac{\partial v}{\partial z} \\ \frac{\partial w}{\partial x} & \frac{\partial w}{\partial y} & \frac{\partial w}{\partial z}\end{aligned}| \\ &=|\begin{aligned}-11 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{aligned}| \\ &=-11|\begin{aligned}1 & 0 \\ 0 & 1\end{aligned}| \\ &=-11\left(1\cdot 1-0\right) \\ &=-11\end{aligned}$$
+$$
+\begin{aligned}\frac{\partial(u,v,w)}{\partial(x,y,z)}&=\begin{vmatrix}\frac{\partial u}{\partial x} & \frac{\partial u}{\partial y} & \frac{\partial u}{\partial z} \\ \frac{\partial v}{\partial x} & \frac{\partial v}{\partial y} & \frac{\partial v}{\partial z} \\ \frac{\partial w}{\partial x} & \frac{\partial w}{\partial y} & \frac{\partial w}{\partial z}\end{vmatrix} \\ &=\begin{vmatrix}-11 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{vmatrix} \\ &=-11\begin{vmatrix}1 & 0 \\ 0 & 1\end{vmatrix} \\ &=-11\left(1\cdot 1-0\right) \\ &=-11\end{aligned}
+$$
 
 Finally, we take the reciprocal:
 
-$$\begin{aligned}\frac{\partial(x,y,z)}{\partial(u,v,w)}&=\left(\frac{\partial(u,v,w)}{\partial(x,y,z)}\right)^{-1} \\ &=- \frac{1}{11}\end{aligned}$$
+$$
+\begin{aligned}\frac{\partial(x,y,z)}{\partial(u,v,w)}&=\left(\frac{\partial(u,v,w)}{\partial(x,y,z)}\right)^{-1} \\ &=- \frac{1}{11}\end{aligned}
+$$
 
 ---
 
@@ -4778,7 +4802,9 @@ $$\begin{aligned}\frac{\partial(x,y,z)}{\partial(u,v,w)}&=\left(\frac{\partial(u
 
 Find the Jacobian determinant of the transformation $T:(u,v,w)\to(x(u,v,w),y(u,v,w),z(u,v,w))$, given that
 
-$$u=- 8 x\qquad v=- 5 y\qquad w=z.$$
+$$
+u=- 8 x\qquad v=- 5 y\qquad w=z.
+$$
 
 - $- \frac{1}{40}$
 - $40$
@@ -4788,7 +4814,9 @@ $$u=- 8 x\qquad v=- 5 y\qquad w=z.$$
 
 For a transformation
 
-$$T:(u,v,w)\to(x(u,v,w),y(u,v,w),z(u,v,w)),$$
+$$
+T:(u,v,w)\to(x(u,v,w),y(u,v,w),z(u,v,w)),
+$$
 
 the Jacobian determinant of $T$ is $\frac{\partial(x,y,z)}{\partial(u,v,w)}$.
 
@@ -4798,19 +4826,27 @@ In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determina
 
 - Then, we will compute the Jacobian determinant of $T$ using the relation
 
-$$\frac{\partial(x,y,z)}{\partial(u,v,w)}=\left(\frac{\partial(u,v,w)}{\partial(x,y,z)}\right)^{-1}.$$
+$$
+\frac{\partial(x,y,z)}{\partial(u,v,w)}=\left(\frac{\partial(u,v,w)}{\partial(x,y,z)}\right)^{-1}.
+$$
 
 First, we find the partial derivatives:
 
-$$\begin{aligned}\frac{\partial u}{\partial x}=-8 & \frac{\partial u}{\partial y}=0 & \frac{\partial u}{\partial z}=0 \\ \frac{\partial v}{\partial x}=0 & \frac{\partial v}{\partial y}=-5 & \frac{\partial v}{\partial z}=0 \\ \frac{\partial w}{\partial x}=0 & \frac{\partial w}{\partial y}=0 & \frac{\partial w}{\partial z}=1\end{aligned}$$
+$$
+\begin{aligned}\frac{\partial u}{\partial x}=-8 & \frac{\partial u}{\partial y}=0 & \frac{\partial u}{\partial z}=0 \\ \frac{\partial v}{\partial x}=0 & \frac{\partial v}{\partial y}=-5 & \frac{\partial v}{\partial z}=0 \\ \frac{\partial w}{\partial x}=0 & \frac{\partial w}{\partial y}=0 & \frac{\partial w}{\partial z}=1\end{aligned}
+$$
 
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
-$$\begin{aligned}\frac{\partial(u,v,w)}{\partial(x,y,z)}&=|\begin{aligned}\frac{\partial u}{\partial x} & \frac{\partial u}{\partial y} & \frac{\partial u}{\partial z} \\ \frac{\partial v}{\partial x} & \frac{\partial v}{\partial y} & \frac{\partial v}{\partial z} \\ \frac{\partial w}{\partial x} & \frac{\partial w}{\partial y} & \frac{\partial w}{\partial z}\end{aligned}| \\ &=|\begin{aligned}-8 & 0 & 0 \\ 0 & -5 & 0 \\ 0 & 0 & 1\end{aligned}| \\ &=-8|\begin{aligned}-5 & 0 \\ 0 & 1\end{aligned}| \\ &=-8\left(-5\cdot 1-0\right) \\ &=40\end{aligned}$$
+$$
+\begin{aligned}\frac{\partial(u,v,w)}{\partial(x,y,z)}&=\begin{vmatrix}\frac{\partial u}{\partial x} & \frac{\partial u}{\partial y} & \frac{\partial u}{\partial z} \\ \frac{\partial v}{\partial x} & \frac{\partial v}{\partial y} & \frac{\partial v}{\partial z} \\ \frac{\partial w}{\partial x} & \frac{\partial w}{\partial y} & \frac{\partial w}{\partial z}\end{vmatrix} \\ &=\begin{vmatrix}-8 & 0 & 0 \\ 0 & -5 & 0 \\ 0 & 0 & 1\end{vmatrix} \\ &=-8\begin{vmatrix}-5 & 0 \\ 0 & 1\end{vmatrix} \\ &=-8\left(-5\cdot 1-0\right) \\ &=40\end{aligned}
+$$
 
 Finally, we take the reciprocal:
 
-$$\begin{aligned}\frac{\partial(x,y,z)}{\partial(u,v,w)}&=\left(\frac{\partial(u,v,w)}{\partial(x,y,z)}\right)^{-1} \\ &=\frac{1}{40}\end{aligned}$$
+$$
+\begin{aligned}\frac{\partial(x,y,z)}{\partial(u,v,w)}&=\left(\frac{\partial(u,v,w)}{\partial(x,y,z)}\right)^{-1} \\ &=\frac{1}{40}\end{aligned}
+$$
 
 ---
 
@@ -4818,7 +4854,9 @@ $$\begin{aligned}\frac{\partial(x,y,z)}{\partial(u,v,w)}&=\left(\frac{\partial(u
 
 Find the Jacobian determinant of the transformation $T:(u,v,w)\to(x(u,v,w),y(u,v,w),z(u,v,w))$, given that
 
-$$u=- 7 x\qquad v=3 y\qquad w=z.$$
+$$
+u=- 7 x\qquad v=3 y\qquad w=z.
+$$
 
 - $\frac{1}{21}$
 - $\frac{1}{3}$
@@ -4828,7 +4866,9 @@ $$u=- 7 x\qquad v=3 y\qquad w=z.$$
 
 For a transformation
 
-$$T:(u,v,w)\to(x(u,v,w),y(u,v,w),z(u,v,w)),$$
+$$
+T:(u,v,w)\to(x(u,v,w),y(u,v,w),z(u,v,w)),
+$$
 
 the Jacobian determinant of $T$ is $\frac{\partial(x,y,z)}{\partial(u,v,w)}$.
 
@@ -4838,19 +4878,27 @@ In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determina
 
 - Then, we will compute the Jacobian determinant of $T$ using the relation
 
-$$\frac{\partial(x,y,z)}{\partial(u,v,w)}=\left(\frac{\partial(u,v,w)}{\partial(x,y,z)}\right)^{-1}.$$
+$$
+\frac{\partial(x,y,z)}{\partial(u,v,w)}=\left(\frac{\partial(u,v,w)}{\partial(x,y,z)}\right)^{-1}.
+$$
 
 First, we find the partial derivatives:
 
-$$\begin{aligned}\frac{\partial u}{\partial x}=-7 & \frac{\partial u}{\partial y}=0 & \frac{\partial u}{\partial z}=0 \\ \frac{\partial v}{\partial x}=0 & \frac{\partial v}{\partial y}=3 & \frac{\partial v}{\partial z}=0 \\ \frac{\partial w}{\partial x}=0 & \frac{\partial w}{\partial y}=0 & \frac{\partial w}{\partial z}=1\end{aligned}$$
+$$
+\begin{aligned}\frac{\partial u}{\partial x}=-7 & \frac{\partial u}{\partial y}=0 & \frac{\partial u}{\partial z}=0 \\ \frac{\partial v}{\partial x}=0 & \frac{\partial v}{\partial y}=3 & \frac{\partial v}{\partial z}=0 \\ \frac{\partial w}{\partial x}=0 & \frac{\partial w}{\partial y}=0 & \frac{\partial w}{\partial z}=1\end{aligned}
+$$
 
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
-$$\begin{aligned}\frac{\partial(u,v,w)}{\partial(x,y,z)}&=|\begin{aligned}\frac{\partial u}{\partial x} & \frac{\partial u}{\partial y} & \frac{\partial u}{\partial z} \\ \frac{\partial v}{\partial x} & \frac{\partial v}{\partial y} & \frac{\partial v}{\partial z} \\ \frac{\partial w}{\partial x} & \frac{\partial w}{\partial y} & \frac{\partial w}{\partial z}\end{aligned}| \\ &=|\begin{aligned}-7 & 0 & 0 \\ 0 & 3 & 0 \\ 0 & 0 & 1\end{aligned}| \\ &=-7|\begin{aligned}3 & 0 \\ 0 & 1\end{aligned}| \\ &=-7\left(3\cdot 1-0\right) \\ &=-21\end{aligned}$$
+$$
+\begin{aligned}\frac{\partial(u,v,w)}{\partial(x,y,z)}&=\begin{vmatrix}\frac{\partial u}{\partial x} & \frac{\partial u}{\partial y} & \frac{\partial u}{\partial z} \\ \frac{\partial v}{\partial x} & \frac{\partial v}{\partial y} & \frac{\partial v}{\partial z} \\ \frac{\partial w}{\partial x} & \frac{\partial w}{\partial y} & \frac{\partial w}{\partial z}\end{vmatrix} \\ &=\begin{vmatrix}-7 & 0 & 0 \\ 0 & 3 & 0 \\ 0 & 0 & 1\end{vmatrix} \\ &=-7\begin{vmatrix}3 & 0 \\ 0 & 1\end{vmatrix} \\ &=-7\left(3\cdot 1-0\right) \\ &=-21\end{aligned}
+$$
 
 Finally, we take the reciprocal:
 
-$$\begin{aligned}\frac{\partial(x,y,z)}{\partial(u,v,w)}&=\left(\frac{\partial(u,v,w)}{\partial(x,y,z)}\right)^{-1} \\ &=- \frac{1}{21}\end{aligned}$$
+$$
+\begin{aligned}\frac{\partial(x,y,z)}{\partial(u,v,w)}&=\left(\frac{\partial(u,v,w)}{\partial(x,y,z)}\right)^{-1} \\ &=- \frac{1}{21}\end{aligned}
+$$
 
 ---
 
@@ -4871,13 +4919,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -4901,7 +4949,7 @@ Scaling the three derivative rows by $3, 1, 4$ multiplies the determinant by $12
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}0 & 3\left(1\right) & 3\left(-3\right) \\ 1 & 0 & 2 \\ 4\left(3\right) & 4\left(-1\right) & 0\end{aligned}| \\  & =12\left(-1|\begin{aligned}1 & 2 \\ 3 & 0\end{aligned}|-3|\begin{aligned}1 & 0 \\ 3 & -1\end{aligned}|\right)\\  & =12\left(-1(0-6)-3(-1-0)\right)\\  & =12\left(6+3\right)\\  & =108\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}0 & 3\left(1\right) & 3\left(-3\right) \\ 1 & 0 & 2 \\ 4\left(3\right) & 4\left(-1\right) & 0\end{vmatrix} \\  & =12\left(-1\begin{vmatrix}1 & 2 \\ 3 & 0\end{vmatrix}-3\begin{vmatrix}1 & 0 \\ 3 & -1\end{vmatrix}\right)\\  & =12\left(-1(0-6)-3(-1-0)\right)\\  & =12\left(6+3\right)\\  & =108\end{aligned}
 $$
 
 Finally, we take the reciprocal:
@@ -4929,13 +4977,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -4959,7 +5007,7 @@ Scaling the three derivative rows by $2, 2, 2$ multiplies the determinant by $8$
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}2\left(1\right) & 2\left(1\right) & 0 \\ 0 & 0 & 2\left(1\right) \\ 0 & 2\left(4\right) & 2\left(-4z\right)\end{aligned}| \\  & =8\left(1|\begin{aligned}0 & 1 \\ 4 & -4z\end{aligned}|\right)\\  & =8\left(1(0-4)\right)\\  & =-32.\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}2\left(1\right) & 2\left(1\right) & 0 \\ 0 & 0 & 2\left(1\right) \\ 0 & 2\left(4\right) & 2\left(-4z\right)\end{vmatrix} \\  & =8\left(1\begin{vmatrix}0 & 1 \\ 4 & -4z\end{vmatrix}\right)\\  & =8\left(1(0-4)\right)\\  & =-32.\end{aligned}
 $$
 
 Finally, we take the reciprocal:
@@ -4987,13 +5035,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -5017,7 +5065,7 @@ Scaling the three derivative rows by $2, 1, 1$ multiplies the determinant by $2$
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}2\left(2\right) & 2\left(1\right) & 0 \\ -1 & 3 & -2 \\ 0 & 3 & 4\end{aligned}| \\  & =2\left(2|\begin{aligned}3 & -2 \\ 3 & 4\end{aligned}|-1|\begin{aligned}-1 & -2 \\ 0 & 4\end{aligned}|\right)\\  & =2\left(2(12+6)-1(-4-0)\right)\\  & =80.\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}2\left(2\right) & 2\left(1\right) & 0 \\ -1 & 3 & -2 \\ 0 & 3 & 4\end{vmatrix} \\  & =2\left(2\begin{vmatrix}3 & -2 \\ 3 & 4\end{vmatrix}-1\begin{vmatrix}-1 & -2 \\ 0 & 4\end{vmatrix}\right)\\  & =2\left(2(12+6)-1(-4-0)\right)\\  & =80.\end{aligned}
 $$
 
 Finally, we take the reciprocal:
@@ -5045,13 +5093,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -5075,7 +5123,7 @@ Scaling the three derivative rows by $3, 1, 1$ multiplies the determinant by $3$
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}3\left(3\right) & 3\left(z\right) & 3\left(y\right) \\ 0 & 0 & 1 \\ 0 & -1 & 0\end{aligned}| \\  & =3\left(3|\begin{aligned}0 & 1 \\ -1 & 0\end{aligned}|\right)\\  & =3\left(3(0+1)\right)\\  & =9\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}3\left(3\right) & 3\left(z\right) & 3\left(y\right) \\ 0 & 0 & 1 \\ 0 & -1 & 0\end{vmatrix} \\  & =3\left(3\begin{vmatrix}0 & 1 \\ -1 & 0\end{vmatrix}\right)\\  & =3\left(3(0+1)\right)\\  & =9\end{aligned}
 $$
 
 Finally, we take the reciprocal:
@@ -5103,13 +5151,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -5133,7 +5181,7 @@ Scaling the three derivative rows by $2, 3, 2$ multiplies the determinant by $12
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}0 & 2\left(-1\right) & 2\left(1\right) \\ 3\left(1\right) & 0 & 3\left(1\right) \\ 2\left(-3\right) & 0 & 0\end{aligned}| \\  & =12\left(-(-1)|\begin{aligned}1 & 1 \\ -3 & 0\end{aligned}|+1|\begin{aligned}1 & 0 \\ -3 & 0\end{aligned}|\right)\\  & =12\left(1(0+3)+1(0-0)\right)\\  & =36\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}0 & 2\left(-1\right) & 2\left(1\right) \\ 3\left(1\right) & 0 & 3\left(1\right) \\ 2\left(-3\right) & 0 & 0\end{vmatrix} \\  & =12\left(-(-1)\begin{vmatrix}1 & 1 \\ -3 & 0\end{vmatrix}+1\begin{vmatrix}1 & 0 \\ -3 & 0\end{vmatrix}\right)\\  & =12\left(1(0+3)+1(0-0)\right)\\  & =36\end{aligned}
 $$
 
 Finally, we take the reciprocal:
@@ -5161,13 +5209,13 @@ $$
 For a transformation 
 
 $$
-T:[\begin{aligned}u \\ v \\ w\end{aligned}]\to [\begin{aligned}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{aligned}],
+T:\begin{bmatrix}u \\ v \\ w\end{bmatrix}\to \begin{bmatrix}x(u,v,w) \\ y(u,v,w) \\ z(u,v,w)\end{bmatrix},
 $$
 
 the Jacobian determinant of $T,$ denoted $\frac{∂(x,y,z)}{∂(u,v,w)},$ is given by
 
 $$
-\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =|\begin{aligned}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{aligned}|.\end{aligned}
+\begin{aligned}\frac{∂(x,y,z)}{∂(u,v,w)} & =\begin{vmatrix}\frac{∂x}{∂u} & \frac{∂x}{∂v} & \frac{∂x}{∂w} \\ \frac{∂y}{∂u} & \frac{∂y}{∂v} & \frac{∂y}{∂w} \\ \frac{∂z}{∂u} & \frac{∂z}{∂v} & \frac{∂z}{∂w}\end{vmatrix}.\end{aligned}
 $$
 
 In this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:
@@ -5191,7 +5239,7 @@ Scaling the three derivative rows by $2, 1, 2$ multiplies the determinant by $4$
 Therefore, the corresponding Jacobian determinant of ${T}^{-1}$ is
 
 $$
-\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =|\begin{aligned}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{aligned}| \\  & =|\begin{aligned}2\left(1\right) & 0 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & 2\left(3\right)\end{aligned}| \\  & =4\left(1|\begin{aligned}2 & 0 \\ 0 & 3\end{aligned}|\right)\\  & =4\left(1(6-0)\right)\\  & =24.\end{aligned}
+\begin{aligned}\frac{∂(u,v,w)}{∂(x,y,z)} & =\begin{vmatrix}\frac{∂u}{∂x} & \frac{∂u}{∂y} & \frac{∂u}{∂z} \\ \frac{∂v}{∂x} & \frac{∂v}{∂y} & \frac{∂v}{∂z} \\ \frac{∂w}{∂x} & \frac{∂w}{∂y} & \frac{∂w}{∂z}\end{vmatrix} \\  & =\begin{vmatrix}2\left(1\right) & 0 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & 2\left(3\right)\end{vmatrix} \\  & =4\left(1\begin{vmatrix}2 & 0 \\ 0 & 3\end{vmatrix}\right)\\  & =4\left(1(6-0)\right)\\  & =24.\end{aligned}
 $$
 
 Finally, we take the reciprocal:

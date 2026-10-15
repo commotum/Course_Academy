@@ -1,0 +1,811 @@
+[
+  {
+    "label": "ceca63e6-2d57-5912-bbab-1955792822f8",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129269,
+        "id": "e290e8b2-7766-55ff-95da-99a3430b18e3",
+        "title": "Finding the Jacobian of an Inverse Transformation"
+      },
+      "question": {
+        ":question/id": "ceca63e6-2d57-5912-bbab-1955792822f8",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Find the Jacobian determinant of the transformation $T:(u,v,w)\\to(x(u,v,w),y(u,v,w),z(u,v,w))$, given that\n\n$$\nu=- 5 x\\qquad v=y\\qquad w=z.\n$$",
+        ":question/worked-solution": "For a transformation\n\n$$\nT:(u,v,w)\\to(x(u,v,w),y(u,v,w),z(u,v,w)),\n$$\n\nthe Jacobian determinant of $T$ is $\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}$.\n\nIn this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:\n\n- First, we compute $\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}$, the Jacobian determinant of ${T}^{-1}$.\n\n- Then, we will compute the Jacobian determinant of $T$ using the relation\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}.\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\\partial u}{\\partial x}=-5 & \\frac{\\partial u}{\\partial y}=0 & \\frac{\\partial u}{\\partial z}=0 \\\\ \\frac{\\partial v}{\\partial x}=0 & \\frac{\\partial v}{\\partial y}=1 & \\frac{\\partial v}{\\partial z}=0 \\\\ \\frac{\\partial w}{\\partial x}=0 & \\frac{\\partial w}{\\partial y}=0 & \\frac{\\partial w}{\\partial z}=1\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant of ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}&=\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\ &=\\begin{vmatrix}-5 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{vmatrix} \\\\ &=-5\\begin{vmatrix}1 & 0 \\\\ 0 & 1\\end{vmatrix} \\\\ &=-5\\left(1\\cdot 1-0\\right) \\\\ &=-5\\end{aligned}\n$$\n\nFinally, we take the reciprocal:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}&=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1} \\\\ &=- \\frac{1}{5}\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "2eb6301b-47d8-5a7f-8598-fe21b9f7e95c",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "492caa10-5fcf-5397-b994-6b200973c910",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{25}"
+              },
+              {
+                ":answer/id": "c48c888d-7743-558d-9d46-8fdf3b8894c4",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{1}{5}"
+              },
+              {
+                ":answer/id": "0c259f24-71e7-5c81-8c15-fdc786279f50",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{5}"
+              },
+              {
+                ":answer/id": "e4b64f2c-68d2-58ae-a2c1-0d38b84e4e4f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-5"
+              },
+              {
+                ":answer/id": "d6308f6d-4622-5816-aab9-b671c0c55be9",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "1"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "c48c888d-7743-558d-9d46-8fdf3b8894c4"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "inverse-jacobian-v3",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 1930,
+        "template": "easy_diagonal",
+        "profile": "method",
+        "parameters": {
+          "a": -5
+        },
+        "domain": "x,y,z real; nonzero constant inverse determinant",
+        "mathematical_fingerprint": "7cb2d7a715aee31e7ee34242053e9b9d7ed9b8b9fe0bfb8ee389340e7ecd4e69",
+        "content_hash": "aea9fe199883a4296c0a4170d466209b7dd96f71a465b67dc02027ae12cfe3f3",
+        "recipes": [
+          "correct",
+          "no_reciprocal",
+          "reverse_sign",
+          "omit_nonunit_derivative",
+          "apply_coefficient_twice"
+        ],
+        "source_id": null,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "solution_repairs": [],
+        "dependencies": {
+          "python": "3.13.5 (main, Jul 11 2025, 22:43:46) [Clang 20.1.4 ]",
+          "sympy": "1.14.0"
+        },
+        "plot_rating": "none",
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "492caa10-5fcf-5397-b994-6b200973c910",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "c48c888d-7743-558d-9d46-8fdf3b8894c4",
+        "expected": "accepted",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "0c259f24-71e7-5c81-8c15-fdc786279f50",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "e4b64f2c-68d2-58ae-a2c1-0d38b84e4e4f",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "d6308f6d-4622-5816-aab9-b671c0c55be9",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      }
+    ]
+  },
+  {
+    "label": "911ff483-5437-5b63-bdea-c53a9f75354d",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129269,
+        "id": "e290e8b2-7766-55ff-95da-99a3430b18e3",
+        "title": "Finding the Jacobian of an Inverse Transformation"
+      },
+      "question": {
+        ":question/id": "911ff483-5437-5b63-bdea-c53a9f75354d",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Find the Jacobian determinant of the transformation $T:(u,v,w)\\to(x(u,v,w),y(u,v,w),z(u,v,w))$, given that\n\n$$\nu=6 x\\qquad v=y\\qquad w=z.\n$$",
+        ":question/worked-solution": "For a transformation\n\n$$\nT:(u,v,w)\\to(x(u,v,w),y(u,v,w),z(u,v,w)),\n$$\n\nthe Jacobian determinant of $T$ is $\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}$.\n\nIn this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:\n\n- First, we compute $\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}$, the Jacobian determinant of ${T}^{-1}$.\n\n- Then, we will compute the Jacobian determinant of $T$ using the relation\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}.\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\\partial u}{\\partial x}=6 & \\frac{\\partial u}{\\partial y}=0 & \\frac{\\partial u}{\\partial z}=0 \\\\ \\frac{\\partial v}{\\partial x}=0 & \\frac{\\partial v}{\\partial y}=1 & \\frac{\\partial v}{\\partial z}=0 \\\\ \\frac{\\partial w}{\\partial x}=0 & \\frac{\\partial w}{\\partial y}=0 & \\frac{\\partial w}{\\partial z}=1\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant of ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}&=\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\ &=\\begin{vmatrix}6 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{vmatrix} \\\\ &=6\\begin{vmatrix}1 & 0 \\\\ 0 & 1\\end{vmatrix} \\\\ &=6\\left(1\\cdot 1-0\\right) \\\\ &=6\\end{aligned}\n$$\n\nFinally, we take the reciprocal:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}&=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1} \\\\ &=\\frac{1}{6}\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "dabd80d4-e1e0-5326-9f3e-7bad3d5ea123",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "1b9d74b8-e21a-5070-b867-4bb5e1c969bb",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "1"
+              },
+              {
+                ":answer/id": "044ebbb0-49a4-5e07-aa5f-52071f46d7bb",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{1}{6}"
+              },
+              {
+                ":answer/id": "fa3f7b1e-e9e6-5da0-a816-27f38a49b857",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{36}"
+              },
+              {
+                ":answer/id": "2d993ae9-8ed2-5193-82c6-1154b2659b11",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "6"
+              },
+              {
+                ":answer/id": "7fcacf0f-5374-5915-8bc2-3f0e72e2b38a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{6}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "7fcacf0f-5374-5915-8bc2-3f0e72e2b38a"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "inverse-jacobian-v3",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 1931,
+        "template": "easy_diagonal",
+        "profile": "method",
+        "parameters": {
+          "a": 6
+        },
+        "domain": "x,y,z real; nonzero constant inverse determinant",
+        "mathematical_fingerprint": "5091bf99d7287db99d3d808fab71b7fadfdb2171da8cdbe4ac869244f3552b8b",
+        "content_hash": "1f95758ea8c948ab88d29b49b7339386e9f449580a5d881ff6e5ec6c3b7bba43",
+        "recipes": [
+          "correct",
+          "no_reciprocal",
+          "reverse_sign",
+          "omit_nonunit_derivative",
+          "apply_coefficient_twice"
+        ],
+        "source_id": null,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "solution_repairs": [],
+        "dependencies": {
+          "python": "3.13.5 (main, Jul 11 2025, 22:43:46) [Clang 20.1.4 ]",
+          "sympy": "1.14.0"
+        },
+        "plot_rating": "none",
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "1b9d74b8-e21a-5070-b867-4bb5e1c969bb",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "044ebbb0-49a4-5e07-aa5f-52071f46d7bb",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "fa3f7b1e-e9e6-5da0-a816-27f38a49b857",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "2d993ae9-8ed2-5193-82c6-1154b2659b11",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "7fcacf0f-5374-5915-8bc2-3f0e72e2b38a",
+        "expected": "accepted",
+        "purpose": "Every field-owned radio option"
+      }
+    ]
+  },
+  {
+    "label": "3fd142b6-9fe1-551e-8de2-205d9c2a38c6",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129269,
+        "id": "e290e8b2-7766-55ff-95da-99a3430b18e3",
+        "title": "Finding the Jacobian of an Inverse Transformation"
+      },
+      "question": {
+        ":question/id": "3fd142b6-9fe1-551e-8de2-205d9c2a38c6",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Find the Jacobian determinant of the transformation $T:(u,v,w)\\to(x(u,v,w),y(u,v,w),z(u,v,w))$, given that\n\n$$\nu=- 2 x\\qquad v=y\\qquad w=z.\n$$",
+        ":question/worked-solution": "For a transformation\n\n$$\nT:(u,v,w)\\to(x(u,v,w),y(u,v,w),z(u,v,w)),\n$$\n\nthe Jacobian determinant of $T$ is $\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}$.\n\nIn this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:\n\n- First, we compute $\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}$, the Jacobian determinant of ${T}^{-1}$.\n\n- Then, we will compute the Jacobian determinant of $T$ using the relation\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}.\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\\partial u}{\\partial x}=-2 & \\frac{\\partial u}{\\partial y}=0 & \\frac{\\partial u}{\\partial z}=0 \\\\ \\frac{\\partial v}{\\partial x}=0 & \\frac{\\partial v}{\\partial y}=1 & \\frac{\\partial v}{\\partial z}=0 \\\\ \\frac{\\partial w}{\\partial x}=0 & \\frac{\\partial w}{\\partial y}=0 & \\frac{\\partial w}{\\partial z}=1\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant of ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}&=\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\ &=\\begin{vmatrix}-2 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{vmatrix} \\\\ &=-2\\begin{vmatrix}1 & 0 \\\\ 0 & 1\\end{vmatrix} \\\\ &=-2\\left(1\\cdot 1-0\\right) \\\\ &=-2\\end{aligned}\n$$\n\nFinally, we take the reciprocal:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}&=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1} \\\\ &=- \\frac{1}{2}\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "2c746ba5-b294-58eb-b858-b452b710eccc",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "be40c444-ea57-54fc-9a2f-fc878b0ca2b3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-2"
+              },
+              {
+                ":answer/id": "b0e0a6e3-94eb-5f33-b1b0-6e5fad482c0b",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{4}"
+              },
+              {
+                ":answer/id": "062576af-9242-58c0-acd7-1495f4c576a3",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{2}"
+              },
+              {
+                ":answer/id": "90358761-bee7-511c-98b3-d801c0ad1333",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "1"
+              },
+              {
+                ":answer/id": "5081b46a-4548-5033-9007-286761c7841f",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{1}{2}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "5081b46a-4548-5033-9007-286761c7841f"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "inverse-jacobian-v3",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 1932,
+        "template": "easy_diagonal",
+        "profile": "method",
+        "parameters": {
+          "a": -2
+        },
+        "domain": "x,y,z real; nonzero constant inverse determinant",
+        "mathematical_fingerprint": "839b05a7b490dcb44633ef9f352f64894eb9e4b38297205af40a0f073c631c1e",
+        "content_hash": "fb1e251377ce66cd67aebf63ef04f5602a55652ff45558b906bab3c41012b545",
+        "recipes": [
+          "correct",
+          "no_reciprocal",
+          "reverse_sign",
+          "omit_nonunit_derivative",
+          "apply_coefficient_twice"
+        ],
+        "source_id": null,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "solution_repairs": [],
+        "dependencies": {
+          "python": "3.13.5 (main, Jul 11 2025, 22:43:46) [Clang 20.1.4 ]",
+          "sympy": "1.14.0"
+        },
+        "plot_rating": "none",
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "be40c444-ea57-54fc-9a2f-fc878b0ca2b3",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "b0e0a6e3-94eb-5f33-b1b0-6e5fad482c0b",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "062576af-9242-58c0-acd7-1495f4c576a3",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "90358761-bee7-511c-98b3-d801c0ad1333",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "5081b46a-4548-5033-9007-286761c7841f",
+        "expected": "accepted",
+        "purpose": "Every field-owned radio option"
+      }
+    ]
+  },
+  {
+    "label": "b767531b-eb1e-5afa-bf86-ac2bd324f05f",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129269,
+        "id": "e290e8b2-7766-55ff-95da-99a3430b18e3",
+        "title": "Finding the Jacobian of an Inverse Transformation"
+      },
+      "question": {
+        ":question/id": "b767531b-eb1e-5afa-bf86-ac2bd324f05f",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Find the Jacobian determinant of the transformation $T:(u,v,w)\\to(x(u,v,w),y(u,v,w),z(u,v,w))$, given that\n\n$$\nu=- 4 x\\qquad v=y\\qquad w=z.\n$$",
+        ":question/worked-solution": "For a transformation\n\n$$\nT:(u,v,w)\\to(x(u,v,w),y(u,v,w),z(u,v,w)),\n$$\n\nthe Jacobian determinant of $T$ is $\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}$.\n\nIn this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:\n\n- First, we compute $\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}$, the Jacobian determinant of ${T}^{-1}$.\n\n- Then, we will compute the Jacobian determinant of $T$ using the relation\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}.\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\\partial u}{\\partial x}=-4 & \\frac{\\partial u}{\\partial y}=0 & \\frac{\\partial u}{\\partial z}=0 \\\\ \\frac{\\partial v}{\\partial x}=0 & \\frac{\\partial v}{\\partial y}=1 & \\frac{\\partial v}{\\partial z}=0 \\\\ \\frac{\\partial w}{\\partial x}=0 & \\frac{\\partial w}{\\partial y}=0 & \\frac{\\partial w}{\\partial z}=1\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant of ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}&=\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\ &=\\begin{vmatrix}-4 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{vmatrix} \\\\ &=-4\\begin{vmatrix}1 & 0 \\\\ 0 & 1\\end{vmatrix} \\\\ &=-4\\left(1\\cdot 1-0\\right) \\\\ &=-4\\end{aligned}\n$$\n\nFinally, we take the reciprocal:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}&=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1} \\\\ &=- \\frac{1}{4}\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "1ae9d39c-099c-5bd8-a0ca-bc8e7b7b3159",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "bdf36b41-43d1-55d2-8d9b-9b8cd572e3a2",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{4}"
+              },
+              {
+                ":answer/id": "2117d2fe-e22b-580e-b937-660440cfb351",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{16}"
+              },
+              {
+                ":answer/id": "8ff7a6e2-6145-5517-8fe6-a62e7e2c4bb5",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{1}{4}"
+              },
+              {
+                ":answer/id": "54e5e4b1-e24e-5724-84de-b57e55cf0379",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "1"
+              },
+              {
+                ":answer/id": "09578f3c-e56b-5d41-8c71-363f402b8a98",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-4"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "8ff7a6e2-6145-5517-8fe6-a62e7e2c4bb5"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "inverse-jacobian-v3",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 1934,
+        "template": "easy_diagonal",
+        "profile": "method",
+        "parameters": {
+          "a": -4
+        },
+        "domain": "x,y,z real; nonzero constant inverse determinant",
+        "mathematical_fingerprint": "7129468c76bbfed97b5e37be4c9ea584aa77f2ba8de067b897468729296730bd",
+        "content_hash": "54ee351aca5b190987114f7690c5d642a43b5f6ae0c38f782ea3ab5d81d0e98c",
+        "recipes": [
+          "correct",
+          "no_reciprocal",
+          "reverse_sign",
+          "omit_nonunit_derivative",
+          "apply_coefficient_twice"
+        ],
+        "source_id": null,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "solution_repairs": [],
+        "dependencies": {
+          "python": "3.13.5 (main, Jul 11 2025, 22:43:46) [Clang 20.1.4 ]",
+          "sympy": "1.14.0"
+        },
+        "plot_rating": "none",
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "bdf36b41-43d1-55d2-8d9b-9b8cd572e3a2",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "2117d2fe-e22b-580e-b937-660440cfb351",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "8ff7a6e2-6145-5517-8fe6-a62e7e2c4bb5",
+        "expected": "accepted",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "54e5e4b1-e24e-5724-84de-b57e55cf0379",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "09578f3c-e56b-5d41-8c71-363f402b8a98",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      }
+    ]
+  },
+  {
+    "label": "13892e3f-d765-51b3-b960-59a3b31629f7",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129269,
+        "id": "e290e8b2-7766-55ff-95da-99a3430b18e3",
+        "title": "Finding the Jacobian of an Inverse Transformation"
+      },
+      "question": {
+        ":question/id": "13892e3f-d765-51b3-b960-59a3b31629f7",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Find the Jacobian determinant of the transformation $T:(u,v,w)\\to(x(u,v,w),y(u,v,w),z(u,v,w))$, given that\n\n$$\nu=- 8 x\\qquad v=y\\qquad w=z.\n$$",
+        ":question/worked-solution": "For a transformation\n\n$$\nT:(u,v,w)\\to(x(u,v,w),y(u,v,w),z(u,v,w)),\n$$\n\nthe Jacobian determinant of $T$ is $\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}$.\n\nIn this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:\n\n- First, we compute $\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}$, the Jacobian determinant of ${T}^{-1}$.\n\n- Then, we will compute the Jacobian determinant of $T$ using the relation\n\n$$\n\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1}.\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\\partial u}{\\partial x}=-8 & \\frac{\\partial u}{\\partial y}=0 & \\frac{\\partial u}{\\partial z}=0 \\\\ \\frac{\\partial v}{\\partial x}=0 & \\frac{\\partial v}{\\partial y}=1 & \\frac{\\partial v}{\\partial z}=0 \\\\ \\frac{\\partial w}{\\partial x}=0 & \\frac{\\partial w}{\\partial y}=0 & \\frac{\\partial w}{\\partial z}=1\\end{aligned}\n$$\n\nTherefore, the corresponding Jacobian determinant of ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}&=\\begin{vmatrix}\\frac{\\partial u}{\\partial x} & \\frac{\\partial u}{\\partial y} & \\frac{\\partial u}{\\partial z} \\\\ \\frac{\\partial v}{\\partial x} & \\frac{\\partial v}{\\partial y} & \\frac{\\partial v}{\\partial z} \\\\ \\frac{\\partial w}{\\partial x} & \\frac{\\partial w}{\\partial y} & \\frac{\\partial w}{\\partial z}\\end{vmatrix} \\\\ &=\\begin{vmatrix}-8 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{vmatrix} \\\\ &=-8\\begin{vmatrix}1 & 0 \\\\ 0 & 1\\end{vmatrix} \\\\ &=-8\\left(1\\cdot 1-0\\right) \\\\ &=-8\\end{aligned}\n$$\n\nFinally, we take the reciprocal:\n\n$$\n\\begin{aligned}\\frac{\\partial(x,y,z)}{\\partial(u,v,w)}&=\\left(\\frac{\\partial(u,v,w)}{\\partial(x,y,z)}\\right)^{-1} \\\\ &=- \\frac{1}{8}\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "bf60312b-a12d-5e96-b6e5-ac8aa867616f",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "d5db3bbf-4025-5d56-b788-262363990733",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "1"
+              },
+              {
+                ":answer/id": "683912d5-dc99-556c-8497-b75eb1cc6fa0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{8}"
+              },
+              {
+                ":answer/id": "36c08049-201c-5042-a365-7c340c66df2d",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-8"
+              },
+              {
+                ":answer/id": "a0ca081f-4cd9-5b7f-aa44-2df4fd0e0372",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{1}{8}"
+              },
+              {
+                ":answer/id": "a50b2500-22cc-56bc-96fb-e31907f23529",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{64}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "a0ca081f-4cd9-5b7f-aa44-2df4fd0e0372"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "inverse-jacobian-v3",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 1935,
+        "template": "easy_diagonal",
+        "profile": "method",
+        "parameters": {
+          "a": -8
+        },
+        "domain": "x,y,z real; nonzero constant inverse determinant",
+        "mathematical_fingerprint": "a16f870f08d08875a71d6a867c0828ebee8ec08853199d736f40b867f90dc7e4",
+        "content_hash": "35b050520b698ad65925aff415162ad741b0602f4c25a10284061908bd149c6f",
+        "recipes": [
+          "correct",
+          "no_reciprocal",
+          "reverse_sign",
+          "omit_nonunit_derivative",
+          "apply_coefficient_twice"
+        ],
+        "source_id": null,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "solution_repairs": [],
+        "dependencies": {
+          "python": "3.13.5 (main, Jul 11 2025, 22:43:46) [Clang 20.1.4 ]",
+          "sympy": "1.14.0"
+        },
+        "plot_rating": "none",
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "d5db3bbf-4025-5d56-b788-262363990733",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "683912d5-dc99-556c-8497-b75eb1cc6fa0",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "36c08049-201c-5042-a365-7c340c66df2d",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "a0ca081f-4cd9-5b7f-aa44-2df4fd0e0372",
+        "expected": "accepted",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "a50b2500-22cc-56bc-96fb-e31907f23529",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      }
+    ]
+  },
+  {
+    "label": "a4d85b42-ead4-58c7-a443-af6077a7bc6a",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129269,
+        "id": "e290e8b2-7766-55ff-95da-99a3430b18e3",
+        "title": "Finding the Jacobian of an Inverse Transformation"
+      },
+      "question": {
+        ":question/id": "a4d85b42-ead4-58c7-a443-af6077a7bc6a",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "Consider the transformation $T:(u,v,w)\\to (x(u,v,w),y(u,v,w),z(u,v,w)).$ The inverse transformation ${T}^{-1}(x,y,z)\\to (u(x,y,z),v(x,y,z),w(x,y,z))$ is given by\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}\u27f6\\begin{bmatrix}3\\left({e}^{x}\\right) \\\\ 3\\left({e}^{x+y}\\right) \\\\ 2\\left({e}^{x+y+z}\\right)\\end{bmatrix}.\n$$\n\nFind the Jacobian determinant of $T.$",
+        ":question/worked-solution": "For a transformation \n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\\to \\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix},\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)},$ is given by\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & =\\begin{vmatrix}\\frac{\u2202x}{\u2202u} & \\frac{\u2202x}{\u2202v} & \\frac{\u2202x}{\u2202w} \\\\ \\frac{\u2202y}{\u2202u} & \\frac{\u2202y}{\u2202v} & \\frac{\u2202y}{\u2202w} \\\\ \\frac{\u2202z}{\u2202u} & \\frac{\u2202z}{\u2202v} & \\frac{\u2202z}{\u2202w}\\end{vmatrix}.\\end{aligned}\n$$\n\nIn this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:\n\n- First, we compute $\\frac{\u2202(u,v,w)}{\u2202(x,y,z)},$ the Jacobian determinant of ${T}^{-1}.$\n\n- Then, we will compute the Jacobian determinant of $T$ using the relation\n\n$$\n\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1}.\n$$\n\nHere, we have \n\n$$\nu(x,y,z)=3\\left({e}^{x}\\right),\\,v(x,y,z)=3\\left({e}^{x+y}\\right),\\,w(x,y,z)=2\\left({e}^{x+y+z}\\right).\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\u2202u}{\u2202x} & =3\\left({e}^{x}\\right) & \\,\\frac{\u2202u}{\u2202y} & =0 & \\,\\frac{\u2202u}{\u2202z} & =0 \\\\ \\frac{\u2202v}{\u2202x} & =3\\left({e}^{x+y}\\right) & \\,\\frac{\u2202v}{\u2202y} & =3\\left({e}^{x+y}\\right) & \\,\\frac{\u2202v}{\u2202z} & =0 \\\\ \\frac{\u2202w}{\u2202x} & =2\\left({e}^{x+y+z}\\right) & \\,\\frac{\u2202w}{\u2202y} & =2\\left({e}^{x+y+z}\\right) & \\,\\frac{\u2202w}{\u2202z} & =2\\left({e}^{x+y+z}\\right)\\end{aligned}\n$$\n\nScaling the three derivative rows by $3, 3, 2$ multiplies the determinant by $18$.\n\nTherefore, the corresponding Jacobian determinant of ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v,w)}{\u2202(x,y,z)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} & \\frac{\u2202u}{\u2202z} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y} & \\frac{\u2202v}{\u2202z} \\\\ \\frac{\u2202w}{\u2202x} & \\frac{\u2202w}{\u2202y} & \\frac{\u2202w}{\u2202z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}3\\left({e}^{x}\\right) & 0 & 0 \\\\ 3\\left({e}^{x+y}\\right) & 3\\left({e}^{x+y}\\right) & 0 \\\\ 2\\left({e}^{x+y+z}\\right) & 2\\left({e}^{x+y+z}\\right) & 2\\left({e}^{x+y+z}\\right)\\end{vmatrix} \\\\  & =18\\left({e}^{x}\\begin{vmatrix}{e}^{x+y} & 0 \\\\ {e}^{x+y+z} & {e}^{x+y+z}\\end{vmatrix}\\right)\\\\  & =18\\left({e}^{x}({e}^{2x+2y+z}-0)\\right)\\\\  & =18 e^{x} e^{x + y} e^{x + y + z}.\\end{aligned}\n$$\n\nWriting down $\\frac{\u2202(u,v,w)}{\u2202(x,y,z)}$ in terms of $u,$ $v,$ and $w,$ we obtain\n\n$$\n\\begin{aligned}18\\left({e}^{3x+2y+z}\\right) & =18\\left({e}^{x+(x+y)+(x+y+z)}\\right) \\\\  & =18\\left({e}^{x}\\cdot {e}^{x+y}\\cdot {e}^{x+y+z}\\right) \\\\  & =18\\left(\\left(\\frac{u}{3}\\right)\\left(\\frac{v}{3}\\right)\\left(\\frac{w}{2}\\right)\\right)\\end{aligned}\n$$\n\nFinally, we take the reciprocal:\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & ={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1} \\\\  & =\\frac{1}{u v w}\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "c16b4cca-18ce-58fd-8bd2-69c764b59ccc",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "1a667fa8-98a7-5e3a-8f33-7e8c395fff89",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{3}{u v w}"
+              },
+              {
+                ":answer/id": "b638164a-9ad0-5829-ae5a-23171cfb7180",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{3 u v w}"
+              },
+              {
+                ":answer/id": "d6974a06-9662-5b61-acf6-ca24df7c0d16",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{1}{u v w}"
+              },
+              {
+                ":answer/id": "f609c86c-9d04-561b-a7d4-2ad7fad72584",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{u v w}"
+              },
+              {
+                ":answer/id": "a786dab9-5919-5759-956b-993feb670569",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "u v w"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "f609c86c-9d04-561b-a7d4-2ad7fad72584"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "inverse-jacobian-v3",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 1930,
+        "template": "source_161804",
+        "profile": "method",
+        "parameters": {
+          "u": 3,
+          "v": 3,
+          "w": 2
+        },
+        "domain": "x,y,z real; u,v,w > 0",
+        "mathematical_fingerprint": "bddc91ac18d317aea4b14a990b1a68546be32f0f39fe7877e15b87575406ec2e",
+        "content_hash": "7dfdccc501c027487b9dc6dffa8516d4ca6cee20ae0ef6998b392b6fe6dcd746",
+        "recipes": [
+          "correct",
+          "no_reciprocal",
+          "reverse_cofactor_sign",
+          "omit_first_row_scale",
+          "apply_first_row_scale_twice"
+        ],
+        "source_id": "q-161804",
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "solution_repairs": [],
+        "dependencies": {
+          "python": "3.13.5 (main, Jul 11 2025, 22:43:46) [Clang 20.1.4 ]",
+          "sympy": "1.14.0"
+        },
+        "plot_rating": "none",
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "1a667fa8-98a7-5e3a-8f33-7e8c395fff89",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "b638164a-9ad0-5829-ae5a-23171cfb7180",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "d6974a06-9662-5b61-acf6-ca24df7c0d16",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "f609c86c-9d04-561b-a7d4-2ad7fad72584",
+        "expected": "accepted",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "a786dab9-5919-5759-956b-993feb670569",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      }
+    ]
+  },
+  {
+    "label": "28f499ce-a5b7-5f3f-90af-72bf76f6b98e",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186129269,
+        "id": "e290e8b2-7766-55ff-95da-99a3430b18e3",
+        "title": "Finding the Jacobian of an Inverse Transformation"
+      },
+      "question": {
+        ":question/id": "28f499ce-a5b7-5f3f-90af-72bf76f6b98e",
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/problem": "Consider the transformation $T:(u,v,w)\\to (x(u,v,w),y(u,v,w),z(u,v,w)).$ The inverse transformation ${T}^{-1}(x,y,z)\\to (u(x,y,z),v(x,y,z),w(x,y,z))$ is given by\n\n$$\n{T}^{-1}:\\begin{bmatrix}x \\\\ y \\\\ z\\end{bmatrix}\u27f6\\begin{bmatrix}2\\left(xy\\right) \\\\ yz \\\\ xz\\end{bmatrix}.\n$$\n\nFind the Jacobian determinant of $T.$\n\n*Hint: You can assume that $x,y,z>0.$*",
+        ":question/worked-solution": "For a transformation \n\n$$\nT:\\begin{bmatrix}u \\\\ v \\\\ w\\end{bmatrix}\\to \\begin{bmatrix}x(u,v,w) \\\\ y(u,v,w) \\\\ z(u,v,w)\\end{bmatrix},\n$$\n\nthe Jacobian determinant of $T,$ denoted $\\frac{\u2202(x,y,z)}{\u2202(u,v,w)},$ is given by\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & =\\begin{vmatrix}\\frac{\u2202x}{\u2202u} & \\frac{\u2202x}{\u2202v} & \\frac{\u2202x}{\u2202w} \\\\ \\frac{\u2202y}{\u2202u} & \\frac{\u2202y}{\u2202v} & \\frac{\u2202y}{\u2202w} \\\\ \\frac{\u2202z}{\u2202u} & \\frac{\u2202z}{\u2202v} & \\frac{\u2202z}{\u2202w}\\end{vmatrix}.\\end{aligned}\n$$\n\nIn this case, we're only given ${T}^{-1}.$ So, we compute the Jacobian determinant of $T$ as follows:\n\n- First, we compute $\\frac{\u2202(u,v,w)}{\u2202(x,y,z)},$ the Jacobian determinant of ${T}^{-1}.$\n\n- Then, we will compute the Jacobian determinant of $T$ using the relation\n\n$$\n\\frac{\u2202(x,y,z)}{\u2202(u,v,w)}={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1}.\n$$\n\nHere, we have \n\n$$\nu(x,y,z)=2\\left(xy\\right),\\,v(x,y,z)=yz,\\,w(x,y,z)=xz.\n$$\n\nFirst, we find the partial derivatives:\n\n$$\n\\begin{aligned}\\frac{\u2202u}{\u2202x} & =2\\left(y\\right) & \\,\\frac{\u2202u}{\u2202y} & =2\\left(x\\right) & \\,\\frac{\u2202u}{\u2202z} & =0 \\\\ \\frac{\u2202v}{\u2202x} & =0 & \\,\\frac{\u2202v}{\u2202y} & =z & \\,\\frac{\u2202v}{\u2202z} & =y \\\\ \\frac{\u2202w}{\u2202x} & =z & \\,\\frac{\u2202w}{\u2202y} & =0 & \\,\\frac{\u2202w}{\u2202z} & =x\\end{aligned}\n$$\n\nScaling the three derivative rows by $2, 1, 1$ multiplies the determinant by $2$.\n\nTherefore, the corresponding Jacobian determinant of ${T}^{-1}$ is\n\n$$\n\\begin{aligned}\\frac{\u2202(u,v,w)}{\u2202(x,y,z)} & =\\begin{vmatrix}\\frac{\u2202u}{\u2202x} & \\frac{\u2202u}{\u2202y} & \\frac{\u2202u}{\u2202z} \\\\ \\frac{\u2202v}{\u2202x} & \\frac{\u2202v}{\u2202y} & \\frac{\u2202v}{\u2202z} \\\\ \\frac{\u2202w}{\u2202x} & \\frac{\u2202w}{\u2202y} & \\frac{\u2202w}{\u2202z}\\end{vmatrix} \\\\  & =\\begin{vmatrix}2\\left(y\\right) & 2\\left(x\\right) & 0 \\\\ 0 & z & y \\\\ z & 0 & x\\end{vmatrix} \\\\  & =2\\left(y\\begin{vmatrix}z & y \\\\ 0 & x\\end{vmatrix}-x\\begin{vmatrix}0 & y \\\\ z & x\\end{vmatrix}\\right)\\\\  & =2\\left(y(xz-0)-x(0-yz)\\right)\\\\  & =2\\left(xyz+xyz\\right)\\\\  & =4 x y z.\\end{aligned}\n$$\n\nWriting down $\\frac{\u2202(u,v,w)}{\u2202(x,y,z)}$ in terms of $u,$ $v,$ and $w,$ we obtain\n\n$$\n\\begin{aligned}2\\left(2xyz\\right) & =2\\left(2\\sqrt{(xyz)^{2}}\\right) \\\\  & =2\\left(2\\sqrt{{x}^{2}{y}^{2}{z}^{2}}\\right) \\\\  & =2\\left(2\\sqrt{xy(yz)(xz)}\\right) \\\\  & =2\\left(2\\sqrt{\\left(\\frac{u}{2}\\right)vw}\\right)\\end{aligned}\n$$\n\nFinally, we take the reciprocal:\n\n$$\n\\begin{aligned}\\frac{\u2202(x,y,z)}{\u2202(u,v,w)} & ={(\\frac{\u2202(u,v,w)}{\u2202(x,y,z)})}^{-1} \\\\  & =\\frac{\\sqrt{2}}{4 \\sqrt{u v w}}\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "744b238d-934b-5bda-a379-baac5d22b3f7",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "cec7cae4-a5b4-56d3-abbb-799c79365d3a",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{\\sqrt{2}}{8 \\sqrt{u v w}}"
+              },
+              {
+                ":answer/id": "5a6c4b9e-e984-59b1-a0f4-ec0de03ed2a6",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{\\sqrt{2}}{4 \\sqrt{u v w}}"
+              },
+              {
+                ":answer/id": "98b94f67-6fda-5dd5-838b-c871de8b8565",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{\\sqrt{2}}{2 \\sqrt{u v w}}"
+              },
+              {
+                ":answer/id": "598862ab-da77-5c3e-950f-424d0dbeafd0",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{\\sqrt{2}}{4 \\sqrt{u v w}}"
+              },
+              {
+                ":answer/id": "d995e84d-143b-5deb-8ce1-9f47274df5b7",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "2 \\sqrt{2} \\sqrt{u v w}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "598862ab-da77-5c3e-950f-424d0dbeafd0"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "inverse-jacobian-v3",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "seed": 1931,
+        "template": "source_161806",
+        "profile": "method",
+        "parameters": {
+          "u": 2,
+          "v": 1,
+          "w": 1
+        },
+        "domain": "x,y,z > 0; u,v,w > 0",
+        "mathematical_fingerprint": "e86890b9cf92ad65cf1c7eb35b6ae5b254eadee1c9faa2d8d75a904b3fbfc9fc",
+        "content_hash": "080f2c97f93b51d45ed0dbde2186291479614eed3f3946e25eca1703308fe5cb",
+        "recipes": [
+          "correct",
+          "no_reciprocal",
+          "reverse_cofactor_sign",
+          "omit_first_row_scale",
+          "apply_first_row_scale_twice"
+        ],
+        "source_id": "q-161806",
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "solution_repairs": [],
+        "dependencies": {
+          "python": "3.13.5 (main, Jul 11 2025, 22:43:46) [Clang 20.1.4 ]",
+          "sympy": "1.14.0"
+        },
+        "plot_rating": "none",
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "cec7cae4-a5b4-56d3-abbb-799c79365d3a",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "5a6c4b9e-e984-59b1-a0f4-ec0de03ed2a6",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "98b94f67-6fda-5dd5-838b-c871de8b8565",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "598862ab-da77-5c3e-950f-424d0dbeafd0",
+        "expected": "accepted",
+        "purpose": "Every field-owned radio option"
+      },
+      {
+        "submitted_answer_id": "d995e84d-143b-5deb-8ce1-9f47274df5b7",
+        "expected": "rejected",
+        "purpose": "Every field-owned radio option"
+      }
+    ]
+  }
+]

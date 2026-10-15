@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
 """Independent displayed-math/source/native-grading validation; fails closed."""
-import hashlib, importlib.util, itertools, json, re, subprocess, sys
+import copy, hashlib, importlib.util, itertools, json, re, subprocess, sys
 from pathlib import Path
 import sympy as sp
 D=Path(__file__).resolve().parent
 spec=importlib.util.spec_from_file_location('generator',D.with_suffix('.py'));g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
 x,y,z,u,v,w=g.x,g.y,g.z,g.u,g.v,g.w
+
+def legacy_layout(text):
+    # A parser view only: bmatrix/vmatrix carry the same cells as the capture.
+    for env,left,right in [('bmatrix','[',']'),('vmatrix','|','|')]:
+        text=text.replace('\\begin{'+env+'}',left+r'\begin{aligned}').replace('\\end{'+env+'}',r'\end{aligned}'+right)
+    return text
 
 def eq(a,b):
     delta=sp.simplify(sp.powdenest(a-b,force=True))
@@ -37,7 +43,7 @@ def rows(block):
     return [r.strip().rstrip('.') for r in block.split(r'\\')]
 
 def prompt_components(record):
-    prompt=record['question'][':question/problem'];block=g.displays(prompt)[0].strip()
+    prompt=legacy_layout(record['question'][':question/problem']);block=g.displays(prompt)[0].strip()
     if '⟶' in block:
         cells=block.split('⟶',1)[1]
         cells=cells[len(r'[\begin{aligned}'):cells.index(r'\end{aligned}')]
@@ -67,6 +73,9 @@ def format_check(text):
     assert '\x08' not in text and '--' not in text and '+-' not in text
 
 def check(record):
+    record=copy.deepcopy(record)
+    for name in (':question/problem',':question/worked-solution'):
+        record['question'][name]=legacy_layout(record['question'][name])
     q=record['question'];meta=record['generation'];key=meta['source_id'];raw=meta['profile']=='observed'
     assert set(record['knowledge_point'])=={'db_id','id','title'}
     assert record['knowledge_point']['db_id']==g.KP_ID
@@ -227,7 +236,7 @@ def run():
     (D/'source-cases.json').write_text(json.dumps(cases,indent=2)+'\n')
     (D/'review.json').write_text(json.dumps(review,indent=2)+'\n')
     (D/'native-input.json').write_text(json.dumps(native,indent=2)+'\n')
-    engine=D.parents[1]/'runs/current/check-engine'
+    engine=D/'check-engine'
     subprocess.run([str(engine),str(D/'native-input.json'),str(D/'native-report.json')],check=True)
     native_report=json.loads((D/'native-report.json').read_text())
     output={'status':'pass','source':g.SOURCE,'source_questions':12,'source_banks_matched':12,'source_options_matched':60,'source_distractors_matched':48,'source_correct_designations_matched':12,'exact_prompt_and_solution_replays':12,'raw_solution_structural_errors':2,'raw_solution_values_correct':12,'raw_component_label_fidelity_correct':11,'raw_cofactor_structure_correct':11,'repaired_component_labels_correct':12,'repaired_cofactor_structure_correct':12,'branch_validation':branch,'normal_repairs_pass':True,'fidelity':fidelity,'source_errors':errors,'finite_task_catalogs':counts,'default_moderate_coverage':{'seeds':48,'family_counts':default_counts,'first_seed_per_family':first_default,'authored_diagonal_requires_explicit_template':True},'native_grading':{k:native_report[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'native_engine_provenance':{'binary_sha256':hashlib.sha256(engine.read_bytes()).hexdigest(),'harness_source_sha256':hashlib.sha256(engine.with_suffix('.rs').read_bytes()).hexdigest(),'entry_point':native_report['entry_point']},'checks':['actual printed inverse maps','all nine displayed partials','numeric Jacobian','cofactor minor structure','every ordered arithmetic/rewrite/reciprocal stage','complete displayed choice bank and wrong derivative-row operations','full source prose and key-presence parity','signed and explicit bounds','seed/order identity','no-template default moderate covers all six observed method families','native grade_field'],'frozen':{str(p.relative_to(D.parent)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [D.with_suffix('.py'),D/'source.json',D/'readback.py',D/'validate.py',D/'review.json']}}

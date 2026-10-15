@@ -29,7 +29,9 @@ rb=importlib.util.module_from_spec(_spec); _spec.loader.exec_module(rb)
 x,y,z,u,v,w=(getattr(rb,k) for k in ('x','y','z','u','v','w'))
 WRAPPER=json.loads((DIR/'source.json').read_text()); RAW=WRAPPER['record']
 KP_ID=17592186129269; KP_UUID=RAW[':knowledge-point/id']; TITLE=RAW[':knowledge-point/title']
-VERSION='inverse-jacobian-v2'
+VERSION='inverse-jacobian-v3'
+_format_spec=importlib.util.spec_from_file_location('inverse_jacobian_math_format',DIR.parents[2]/'scripts/question_capture/math_format.py')
+math_format=importlib.util.module_from_spec(_format_spec);_format_spec.loader.exec_module(math_format)
 SOURCE={k:WRAPPER[k] for k in ('database','basis','lineage')}
 Q={q[':question/math-academy-id']:q for q in RAW[':knowledge-point/questions']}
 TEMPLATES={key.replace('q-','source_'):key for key in Q}
@@ -277,6 +279,10 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         for other in expressions[:i]:
             if sp.simplify(e-other)==0:raise ValueError('whole bank collision')
     if sp.simplify(expressions[correct_index]-C)!=0:raise ValueError('source correct answer mismatch')
+    if not raw:
+        prompt=math_format.normalize_prose(prompt)
+        solution=math_format.normalize_prose(solution)
+        strings=[math_format.normalize_tex(s) for s in strings]
     effective_domain=domain(level,template,key)
     if key=='q-161807':effective_domain='x,y,z != 0; real cube-root interpretation' if profile=='observed' else 'x,y,z > 0; u,v,w > 0'
     fingerprint=hashlib.sha256(json.dumps({'level':level,'inverse_components':[sp.srepr(e) for e in F],'domain':effective_domain},sort_keys=True).encode()).hexdigest()
@@ -286,7 +292,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     choices=[{':answer/id':str(uuid.uuid5(uuid.UUID(fid),s)),':answer/type':':answer.type/math',':answer/value':s} for s in strings]
     correct=choices[correct_index][':answer/id'];rng.shuffle(choices)
     question={':question/id':qid,':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices,':answer-field/correct':[':answer/id',correct]}]}
-    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,'generation':{'version':VERSION,'source':SOURCE,'seed':seed,'template':template,'profile':profile,'parameters':p,'domain':effective_domain,'mathematical_fingerprint':fingerprint,'content_hash':content_hash,'recipes':recipes,'source_id':key,'evidence_only':raw,'eligible_for_learning':not raw,'solution_repairs':(['incorrect_component_labels'] if key=='q-39300' else ['incorrect_cofactor_minor','positive_branch_clarification'] if key=='q-161807' else []) if profile!='observed' else [],'dependencies':{'python':sys.version,'sympy':sp.__version__},'plot_rating':'none'}}
+    record={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,'generation':{'version':VERSION,'source':SOURCE,'seed':seed,'template':template,'profile':profile,'parameters':p,'domain':effective_domain,'mathematical_fingerprint':fingerprint,'content_hash':content_hash,'recipes':recipes,'source_id':key,'evidence_only':raw,'eligible_for_learning':not raw,'solution_repairs':(['incorrect_component_labels'] if key=='q-39300' else ['incorrect_cofactor_minor','positive_branch_clarification'] if key=='q-161807' else []) if profile!='observed' else [],'dependencies':{'python':sys.version,'sympy':sp.__version__},'plot_rating':'none'}}
+    if not raw:math_format.validate_generated_record(record)
+    return record
 
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
 def generate_moderate(seed=0,**kwargs):return generate('moderate',seed,**kwargs)
