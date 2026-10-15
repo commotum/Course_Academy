@@ -1,0 +1,88 @@
+[
+  {
+    "label": "11:q-167782",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186096621,
+        "id": "3c547746-49c8-5a4a-85fe-c6b75493a354",
+        "title": "Differentiating a Quotient Containing Other Functions"
+      },
+      "question": {
+        ":question/id": "c9d6d67f-5ac0-5598-a49a-6c0988547dec",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Given $f(x)=e^{x}$ and $h(x)=- 4 \\sin{\\left(x \\right)}$, calculate $\\frac{\\mathrm{d}}{\\mathrm{d}x}(\\frac{f}{h})$.\n\n| $\\frac{\\mathrm{d}}{\\mathrm{d}x}(\\frac{f}{h})=$ | $\\frac{e^{x}}{4}($ {{field-1}} $)$ |\n| --- | --- |\n|  | $\\sin^2 x$ |",
+        ":question/worked-solution": "Recall that $f(x)=e^{x}$ and $h(x)=- 4 \\sin{\\left(x \\right)}.$\n\nWe apply the quotient rule, as follows:\n\n$$\n\\begin{aligned}f^{\\prime}(x)&=\\frac{u^{\\prime}(x)\\cdot v(x)-u(x)\\cdot v^{\\prime}(x)}{[v(x)]^{2}}\\\\ &=\\frac{(e^{x})^{\\prime}\\cdot (- 4 \\sin{\\left(x \\right)})-(e^{x})\\cdot (- 4 \\sin{\\left(x \\right)})^{\\prime}}{(- 4 \\sin{\\left(x \\right)})^{2}}\\\\ &=\\frac{(e^{x})\\cdot (- 4 \\sin{\\left(x \\right)})-(e^{x})\\cdot (- 4 \\cos{\\left(x \\right)})}{16\\sin^2 x}\\\\ &=\\frac{4e^x(\\cos x-\\sin x)}{16\\sin^2 x}\\\\ &=\\frac{2e^x(\\cos x-\\sin x)}{8\\sin^2 x}\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "0f1860b2-7f9e-535d-aebf-0ad95d38727e",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "6c85ec8e-f84b-5444-b214-b957ce29ac44",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\sin{\\left(x \\right)} + \\cos{\\left(x \\right)}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "6c85ec8e-f84b-5444-b214-b957ce29ac44"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "other-functions-private-2026-10-14-v1",
+        "seed": 0,
+        "template": "q-167782",
+        "parameters": {
+          "scale": 2
+        },
+        "bank_profile": "blank",
+        "source_ids": [
+          "q-167782"
+        ],
+        "source_basis": 2275,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "766d6083965079c1ceb99788f77b285e649abb1041a30f0864b3b3329d7d69d5",
+        "domain": [
+          [
+            "nonzero",
+            "sin(Symbol('x', real=True))"
+          ]
+        ],
+        "authored_extension": true,
+        "evidence_only": false,
+        "eligible": true,
+        "raw_exact_eligible": false,
+        "source_repairs": [],
+        "plot_rating": "none",
+        "sympy_version": "1.14.0",
+        "content_fingerprint": "d035a3f5e9d3b1ee1bdbf45413537a24dc6d8c87a8683e293506a3d52c38aa8e",
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\sin{\\left(x \\right)} + \\cos{\\left(x \\right)}",
+        "expected": "accepted",
+        "purpose": "canonical blank"
+      },
+      {
+        "submitted": "\\frac{2(- \\sin{\\left(x \\right)} + \\cos{\\left(x \\right)})}{2}",
+        "expected": "accepted",
+        "purpose": "genuine unreduced equivalent blank"
+      },
+      {
+        "submitted": "- \\sin{\\left(x \\right)} + \\cos{\\left(x \\right)}",
+        "expected": "accepted",
+        "purpose": "noncanonical expanded equivalent blank"
+      },
+      {
+        "submitted": "- \\sin{\\left(x \\right)} + \\cos{\\left(x \\right)} + 1",
+        "expected": "rejected",
+        "purpose": "wrong plus one"
+      }
+    ]
+  }
+]

@@ -15,7 +15,11 @@ def parse(t):
 def eq(a,b):
  delta=s.expand(a-b)
  if delta==0:return True
- return s.cancel(delta)==0 or s.trigsimp(delta,method='fu')==0 or s.simplify(delta)==0
+ # Independent exact circle parametrization proves/rejects these same-angle
+ # rational identities without heuristic trig simplification on every wrong.
+ w=s.Symbol('root_circle_w',real=True);circle={s.sin(x):2*w/(1+w*w),s.cos(x):(1-w*w)/(1+w*w),s.tan(x):2*w/(1-w*w),s.sec(x):(1+w*w)/(1-w*w),s.csc(x):(1+w*w)/(2*w),s.cot(x):(1-w*w)/(2*w)}
+ assert all(f.args[0]==x for f in delta.atoms(s.sin,s.cos,s.tan,s.sec,s.csc,s.cot))
+ return s.cancel(s.expand_log(delta.xreplace(circle)))==0
 source=json.load(open(D/'source.json'));manifest=json.load(open(R/'manifest.json'));assert source==json.load(open(R/manifest['source_snapshot_roots'][str(source['basis'])]/f'sources/{K}.json'));olds={q[':question/math-academy-id']:q for q in source['record'][':knowledge-point/questions']if ':question/math-academy-id'in q};fid=dict(records=0,banks=0,values=0,keys=0,solutions=0)
 for sid,o in olds.items():
  q=G.generate(G.TEMPLATES[sid]['level'],template=sid,profile='raw')['question'];assert q==o;fid['records']+=1;fid['solutions']+=':question/worked-solution'in o
@@ -53,7 +57,8 @@ def check(r):
  tasks[q[':question/difficulty'].split('/')[-1]].add(s.srepr(F))
 # Native inputs contain normal source/profile anchors and changed parameters.
 inputs=json.load(open(D/'engine-input.json'))
-for e in inputs:
+for index,e in enumerate(inputs):
+ if index%100==0:print('Root Leibniz actual stages read',index,flush=True)
  if e['record']['generation'].get('profile')!='raw':check(e['record'])
 for level in G.SUPPORTED_LEVELS:
  for seed in range(18):check(G.generate(level,seed))

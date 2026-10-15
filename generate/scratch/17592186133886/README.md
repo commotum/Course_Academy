@@ -1,6 +1,10 @@
 # Applying Green's Theorem to Regions With Holes
 
-Local draft only, steps 3–7. No database or registry writes.
+Validated generator, steps 3–9. Replenishment committed and verified at math basis 2584 (before: 2583), under the application `api.lock`. Added four moderate and five hard questions; validated fresh reserves are six easy, five moderate and five hard. All twelve source questions, the canonical example and learner history were preserved.
+
+Generator UUID: `e4c2e450-4ea3-5474-8dcb-399f4aa636fe`, registered at `generate/scratch/17592186133886.py`. Attribution: `:application/ca-engine`. [Current source classification](reference/replenishment/current-classification.md) supplements the frozen eight-source evidence with all twelve current questions. New diamond-hole and affine source backbones are classified but are outside this frozen sampler.
+
+Exact preparation, preview, guarded request, receipt, readback, grading and inventory evidence are in [reference/replenishment/basis-2583](reference/replenishment/basis-2583/verification.json). Run `replenish.py` to recover the retained request and verify its original receipt; it does not resubmit that successful transaction with new intent.
 
 ```sh
 .venv/bin/python generate/scratch/17592186133886/validate.py

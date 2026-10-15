@@ -209,31 +209,33 @@ def main():
  (H/'review.md').write_text('\n\n---\n\n'.join('## '+r['label']+'\n\n'+r['record']['question'][':question/problem']+'\n\n'+r['record']['question'].get(':question/worked-solution','[Worked solution absent in capture.]') for r in review)+'\n')
  engine=[{'label':str(i)+' '+r['generation']['template'],'record':r,'checks':native_checks(r)} for i,r in enumerate(records)]
  save('engine-input.json',engine)
- valid_limitations=[]
- for native_attempt in range(len(engine)*4+1):
-  save('engine-input.json',engine)
-  result=subprocess.run([str(H/'check-engine'),str(H/'engine-input.json'),str(H/'engine-report.json')],capture_output=True,text=True)
-  if result.returncode==0:
-   print(result.stdout.strip(),flush=True);break
-  # The frozen binary stops at its first expected/outcome mismatch. Preserve
-  # mathematically valid entries, identify each exact input, and report native
-  # limitations separately rather than dropping true equivalents from tests.
-  try:
-   message=json.loads(result.stderr.strip().removeprefix('Error: '))
-   index=int(re.match(r'"(\d+) q-',message).group(1))
-   match=re.search(r'field 0: ("(?:\\.|[^"\\])*") expected (\w+), got (\w+)',message)
-   submitted=json.loads(match.group(1));actual=match.group(3)
-   check=next(c for c in engine[index]['checks'] if c.get('submitted')==submitted)
-  except Exception:raise AssertionError(result.stderr)
-  assert check['expected']=='accepted' and actual in ['unresolved','rejected'],message
-  field=engine[index]['record']['question'][':question/answer-fields'][0]
-  assert field[':answer-field/type'].endswith('/blank')
-  assert eq(p.scalar(submitted),p.scalar(field[':answer-field/choices'][0][':answer/value'])),message
-  check.update(mathematical_expected='accepted',expected=actual,engine_limitation=message)
-  valid_limitations.append({'label':engine[index]['label'],'template':engine[index]['record']['generation']['template'],'purpose':check['purpose'],'submitted':submitted,'outcome':actual,'reason':message})
- else:raise AssertionError('native limitation reconciliation did not converge')
- save('native-valid-limitations.json',valid_limitations)
- native=json.loads((H/'engine-report.json').read_text())
+ valid_limitations=[];case_reports=[]
+ # Each failure reconciles only its own record; no passing prefix is rerun.
+ for case_index,item in enumerate(engine):
+  for native_attempt in range(len(item['checks'])+1):
+   save('engine-case-input.json',[item])
+   result=subprocess.run([str(H/'check-engine'),str(H/'engine-case-input.json'),str(H/'engine-case-report.json')],capture_output=True,text=True)
+   if result.returncode==0:
+    case_reports.append(json.loads((H/'engine-case-report.json').read_text()));break
+   try:
+    message=json.loads(result.stderr.strip().removeprefix('Error: '))
+    index=int(re.match(r'"(\d+) q-',message).group(1));assert index==case_index
+    match=re.search(r'field 0: ("(?:\\.|[^"\\])*") expected (\w+), got (\w+)',message)
+    submitted=json.loads(match.group(1));actual=match.group(3)
+    check=next(c for c in item['checks'] if c.get('submitted')==submitted)
+   except Exception:raise AssertionError(result.stderr)
+   assert check['expected']=='accepted' and actual in ['unresolved','rejected'],message
+   field=item['record']['question'][':question/answer-fields'][0]
+   assert field[':answer-field/type'].endswith('/blank')
+   assert eq(p.scalar(submitted),p.scalar(field[':answer-field/choices'][0][':answer/value'])),message
+   check.update(mathematical_expected='accepted',expected=actual,engine_limitation=message)
+   valid_limitations.append({'label':item['label'],'template':item['record']['generation']['template'],'purpose':check['purpose'],'submitted':submitted,'outcome':actual,'reason':message})
+  else:raise AssertionError('native limitation reconciliation did not converge')
+  if (case_index+1)%50==0:print('Native records checked '+str(case_index+1)+'/'+str(len(engine)),flush=True)
+ save('engine-input.json',engine);save('native-valid-limitations.json',valid_limitations)
+ save('native-batch-reports.json',case_reports)
+ native={'database_writes':0,'all_response_questions_validated':True,'entry_point':case_reports[0]['entry_point'],'aggregation':'Unchanged single-record frozen-checker reports in native-batch-reports.json','records':[r for report in case_reports for r in report['records']],**{k:sum(report[k] for report in case_reports) for k in ['accepted_checks','rejected_checks','documented_unresolved_checks']}}
+ save('engine-report.json',native)
  report={'passed':True,'basis':2275,'source_records':11,'raw_exact_records':11,'source_banks':{'matched':11,'total':11,'matched_values':source_values,'total_values':source_values},'source_solutions':{'captured':9,'authored_missing':2,'compared_ordered_operative_stages':stage_count},'independent_parsing':{'records':len(records),'operands_and_stages':operations,'mutation_tests_rejected':mutations},'distinct_batch_tasks':coverage,'parameter_boundaries':{'records':boundaries,'slot_values':slot_coverage,'whole_bank_collisions_rejected':boundary_rejections},'scale_alias_dedup':True,'invalid_inputs_rejected':invalid,'native':{**{k:native[k] for k in ['accepted_checks','rejected_checks','documented_unresolved_checks']},'valid_mathematics_limitations':len(valid_limitations),'fully_compatible':not bool(valid_limitations)},'limitations':['q-11944/q-9909 missing captured keys, ratings and solutions: normal keys, levels and chains are independently authored.','q-340335 capture mixes f(x) and dy/dx; normal uses y consistently.','Foreign/malformed radio submissions are tested separately from owned responses.']}
  save('validation.json',report)
  print(json.dumps(report,indent=2))

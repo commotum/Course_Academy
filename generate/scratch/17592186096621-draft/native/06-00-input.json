@@ -1,0 +1,91 @@
+[
+  {
+    "label": "6:q-9908",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186096621,
+        "id": "3c547746-49c8-5a4a-85fe-c6b75493a354",
+        "title": "Differentiating a Quotient Containing Other Functions"
+      },
+      "question": {
+        ":question/id": "4b085cf6-84f4-5355-b2f8-0846316335d3",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "If a curve $C$ is given by $y=\\frac{\\cosx}{1+\\sinx},$ calculate the slope of the tangent line to the curve at the point where $x=\\frac{\\pi }{2}.$\n\nThe slope is {{field-1}}.",
+        ":question/worked-solution": "In this case, the expression for $y$ is a quotient $\\frac{u(x)}{v(x)}$ with $u(x)=\\cosx$ and $v(x)=1+\\sinx.$ \n\nTherefore, we apply the quotient rule as follows:\n\n$$\n\\begin{aligned}{f}^{'}(x)&=\\frac{u^{\\prime}(x)\\cdot v(x)-u(x)\\cdot v^{\\prime}(x)}{[v(x)]^{2}}\\\\ &=\\frac{(\\cos{\\left(x \\right)})^{\\prime}\\cdot (\\sin{\\left(x \\right)} + 1)-(\\cos{\\left(x \\right)})\\cdot (\\sin{\\left(x \\right)} + 1)^{\\prime}}{(\\sin{\\left(x \\right)} + 1)^{2}}\\\\ &=\\frac{(-\\sinx)(1+\\sinx)-(\\cosx)\\cosx}{(1+\\sinx)^{2}}\\\\ &=\\frac{(-\\sinx-\\sin^{2}x-\\cos^{2}x)}{(1+\\sinx)^{2}}\\\\ &=\\frac{(-\\sinx-(\\sin^{2}x+\\cos^{2}x))}{(1+\\sinx)^{2}}\\end{aligned}\n$$\n\n Since $\\sin^{2}x+\\cos^{2}x=1$, we have\n\n$$\n\\begin{aligned}{f}^{'}(x)&=\\frac{(-\\sinx-1)}{(1+\\sinx)^{2}}\\\\ &=\\frac{-(1+\\sinx)}{(1+\\sinx)^{2}}\\\\ &=-\\frac{1}{1+\\sinx}.\\end{aligned}\n$$\n\nTo find the slope of the tangent line, we now substitute $x=\\frac{\\pi }{2}$ into the formula and get\n\n$$\n\\begin{aligned}{f}^{'}(\\frac{\\pi }{2})&=-\\frac{1}{1+\\sin(\\frac{\\pi }{2})}\\\\ &=-\\frac{1}{1+1}\\\\ &=-\\frac{1}{2}.\\end{aligned}\n$$\n\nTherefore, the slope of the tangent line is $-\\frac{1}{2}.$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "e67a24a3-a128-5d38-9b25-549aae0ffb2f",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "e19449f2-8f62-5a9c-bb02-e2236ee70afd",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- \\frac{1}{2}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "e19449f2-8f62-5a9c-bb02-e2236ee70afd"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "other-functions-private-2026-10-14-v1",
+        "seed": 0,
+        "template": "q-9908",
+        "parameters": {
+          "scale": 1,
+          "target": "\\frac{\\pi}{2}"
+        },
+        "bank_profile": "blank",
+        "source_ids": [
+          "q-9908"
+        ],
+        "source_basis": 2275,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "ffae3b11612c58ca73ece934f8e44c67af0fab4656d32b6a0061172e38691f7e",
+        "domain": [
+          [
+            "nonzero",
+            "Add(sin(Symbol('x', real=True)), Integer(1))"
+          ]
+        ],
+        "authored_extension": false,
+        "evidence_only": false,
+        "eligible": true,
+        "raw_exact_eligible": false,
+        "source_repairs": [
+          "missing answer fields completed as blank"
+        ],
+        "plot_rating": "none",
+        "sympy_version": "1.14.0",
+        "content_fingerprint": "8010067e1f4cfa14813a10249707b91dc5a0c4a40fb54de4341aa240bfb564f4",
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "- \\frac{1}{2}",
+        "expected": "accepted",
+        "purpose": "canonical blank"
+      },
+      {
+        "submitted": "\\frac{2(- \\frac{1}{2})}{2}",
+        "expected": "accepted",
+        "purpose": "genuine unreduced equivalent blank"
+      },
+      {
+        "submitted": "- \\frac{1}{2}",
+        "expected": "accepted",
+        "purpose": "noncanonical expanded equivalent blank"
+      },
+      {
+        "submitted": "\\frac{1}{2}",
+        "expected": "rejected",
+        "purpose": "wrong plus one"
+      }
+    ]
+  }
+]

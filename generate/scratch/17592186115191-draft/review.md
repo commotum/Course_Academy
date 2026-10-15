@@ -32,6 +32,22 @@ $$
 \begin{aligned}f^{\prime}(x) & =\frac{\text{d}}{\text{d}x}(23\tan x-5x^{5}-\cot x) \\ & =23\sec^{2}x-5\cdot5x^{4}-(-\csc^{2}x) \\ & =23\sec^{2}x-25x^{4}+\csc^{2}x\end{aligned}
 $$
 
+### Authored key/solution completion of opaque historical bank, evidence-only
+
+Find $f^{′}(x)$ if $f(x) = 23\tan x - 5x^{5} - \cot x$.
+
+- $\sec^{2} x - 25x^{4} + \sec^{2} x$
+- $25\sec^{2} x - 23x^{4} + \csc^{2} x$
+- $\sec^{2} x - 25x^{4} + 23\csc^{2} x$
+- $\sec^{2} x - 23x^{4} + \csc^{2} x$
+- $23\sec^{2} x - 25x^{4} + \csc^{2} x$
+
+We take the derivative of each term and then add them, as follows:
+
+$$
+\begin{aligned}f^{\prime}(x) & =\frac{\text{d}}{\text{d}x}(23\tan x-5x^{5}-\cot x) \\ & =23\sec^{2}x-5\cdot5x^{4}-(-\csc^{2}x) \\ & =23\sec^{2}x-25x^{4}+\csc^{2}x\end{aligned}
+$$
+
 ### Generated observed-profile evidence variant 1 {"a": 2}
 
 Find $f^{′}(x)$ if $f(x) = 2\tan x - 5x^{5} - \cot x$.
@@ -81,6 +97,38 @@ Find $f^{′}(x)$ if $f(x) = 3\tan x - 5x^{5} - \cot x$.
 - $- 25 x^{4} + \csc^{2}{\left(x \right)} + 3 \sec^{2}{\left(x \right)}$
 - $- 25 x^{4} + 3 \sec^{2}{\left(x \right)}$
 - $- 5 x^{5} + \csc^{2}{\left(x \right)} + 3 \sec^{2}{\left(x \right)}$
+
+We take the derivative of each term and then add them, as follows:
+
+$$
+\begin{aligned}f^{\prime}(x) & =\frac{\text{d}}{\text{d}x}(3\tan x-5x^{5}-\cot x) \\ & =3\sec^{2}x-5\cdot5x^{4}-(-\csc^{2}x) \\ & =3\sec^{2}x-25x^{4}+\csc^{2}x\end{aligned}
+$$
+
+### Generated completed-historical evidence variant 1 {"a": 2}
+
+Find $f^{′}(x)$ if $f(x) = 2\tan x - 5x^{5} - \cot x$.
+
+- $\sec^{2} x - 25x^{4} + \sec^{2} x$
+- $25\sec^{2} x - 2x^{4} + \csc^{2} x$
+- $\sec^{2} x - 25x^{4} + 2\csc^{2} x$
+- $\sec^{2} x - 2x^{4} + \csc^{2} x$
+- $2\sec^{2} x - 25x^{4} + \csc^{2} x$
+
+We take the derivative of each term and then add them, as follows:
+
+$$
+\begin{aligned}f^{\prime}(x) & =\frac{\text{d}}{\text{d}x}(2\tan x-5x^{5}-\cot x) \\ & =2\sec^{2}x-5\cdot5x^{4}-(-\csc^{2}x) \\ & =2\sec^{2}x-25x^{4}+\csc^{2}x\end{aligned}
+$$
+
+### Generated completed-historical evidence variant 2 {"a": 3}
+
+Find $f^{′}(x)$ if $f(x) = 3\tan x - 5x^{5} - \cot x$.
+
+- $\sec^{2} x - 25x^{4} + \sec^{2} x$
+- $25\sec^{2} x - 3x^{4} + \csc^{2} x$
+- $\sec^{2} x - 25x^{4} + 3\csc^{2} x$
+- $\sec^{2} x - 3x^{4} + \csc^{2} x$
+- $3\sec^{2} x - 25x^{4} + \csc^{2} x$
 
 We take the derivative of each term and then add them, as follows:
 

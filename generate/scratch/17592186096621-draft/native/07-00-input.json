@@ -1,0 +1,89 @@
+[
+  {
+    "label": "7:q-9908",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186096621,
+        "id": "3c547746-49c8-5a4a-85fe-c6b75493a354",
+        "title": "Differentiating a Quotient Containing Other Functions"
+      },
+      "question": {
+        ":question/id": "db7fe82f-fc34-53c9-b4ef-9ee7240d2925",
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/problem": "If a curve $C$ is given by $y=\\frac{2 \\cos{\\left(x \\right)}}{\\sin{\\left(x \\right)} + 1}$, calculate the slope of the tangent line to the curve at the point where $x=\\frac{\\pi}{2}.$\n\nThe slope is {{field-1}}.",
+        ":question/worked-solution": "In this case, the expression for $y$ is a quotient $\\frac{u(x)}{v(x)}$ with $u(x)=2 \\cos{\\left(x \\right)}$ and $v(x)=\\sin{\\left(x \\right)} + 1.$\n\nTherefore, we apply the quotient rule as follows:\n\n$$\n\\begin{aligned}f^{\\prime}(x)&=\\frac{u^{\\prime}(x)\\cdot v(x)-u(x)\\cdot v^{\\prime}(x)}{[v(x)]^{2}}\\\\ &=\\frac{(2 \\cos{\\left(x \\right)})^{\\prime}\\cdot (\\sin{\\left(x \\right)} + 1)-(2 \\cos{\\left(x \\right)})\\cdot (\\sin{\\left(x \\right)} + 1)^{\\prime}}{(\\sin{\\left(x \\right)} + 1)^{2}}\\\\ &=\\frac{(- 2 \\sin{\\left(x \\right)})\\cdot (\\sin{\\left(x \\right)} + 1)-(2 \\cos{\\left(x \\right)})\\cdot (\\cos{\\left(x \\right)})}{(\\sin{\\left(x \\right)} + 1)^{2}}\\\\ &=\\frac{- 2 \\sin^{2}{\\left(x \\right)} - 2 \\sin{\\left(x \\right)} - 2 \\cos^{2}{\\left(x \\right)}}{\\left(\\sin{\\left(x \\right)} + 1\\right)^{2}}\\\\ &=\\frac{-2\\sin x-2(\\sin^2 x+\\cos^2 x)}{\\left(\\sin{\\left(x \\right)} + 1\\right)^{2}}\\end{aligned}\n$$\n\nSince $\\sin^2 x+\\cos^2 x=1$, we have\n\n$$\n\\begin{aligned}f^{\\prime}(x)&=\\frac{- 2 \\sin{\\left(x \\right)} - 2}{\\left(\\sin{\\left(x \\right)} + 1\\right)^{2}}\\\\ &=\\frac{-2(1+\\sin x)}{\\left(\\sin{\\left(x \\right)} + 1\\right)^{2}}\\\\ &=\\frac{-2}{1+\\sin x}\\end{aligned}\n$$\n\nTo find the slope of the tangent line, we now substitute $x=\\frac{\\pi}{2}$ into the formula and get\n\n$$\n\\begin{aligned}f^{\\prime}(\\frac{\\pi}{2})&=\\frac{-2}{1+\\sin (\\frac{\\pi}{2})}\\\\ &=\\frac{-2}{2}\\\\ &=-1\\end{aligned}\n$$\n\nTherefore, the slope of the tangent line is $-1.$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "12094b83-5209-538e-a11d-cde2b949feee",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "f7f68dd4-1f87-57d4-bb6a-d28d7813dbca",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "-1"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "f7f68dd4-1f87-57d4-bb6a-d28d7813dbca"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "other-functions-private-2026-10-14-v1",
+        "seed": 0,
+        "template": "q-9908",
+        "parameters": {
+          "scale": 2,
+          "target": "\\frac{\\pi}{2}"
+        },
+        "bank_profile": "blank",
+        "source_ids": [
+          "q-9908"
+        ],
+        "source_basis": 2275,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "e616fe95c64d7473175d812a43f18b97abcf0d29046fb1b5f2121ee83bcf353b",
+        "domain": [
+          [
+            "nonzero",
+            "Add(sin(Symbol('x', real=True)), Integer(1))"
+          ]
+        ],
+        "authored_extension": true,
+        "evidence_only": false,
+        "eligible": true,
+        "raw_exact_eligible": false,
+        "source_repairs": [],
+        "plot_rating": "none",
+        "sympy_version": "1.14.0",
+        "content_fingerprint": "2a9d9dbe567fc3087309ba3051bb777d34ac1514f819fbe6feae6244cd425e05",
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "-1",
+        "expected": "accepted",
+        "purpose": "canonical blank"
+      },
+      {
+        "submitted": "\\frac{2(-1)}{2}",
+        "expected": "accepted",
+        "purpose": "genuine unreduced equivalent blank"
+      },
+      {
+        "submitted": "-1",
+        "expected": "accepted",
+        "purpose": "noncanonical expanded equivalent blank"
+      },
+      {
+        "submitted": "0",
+        "expected": "rejected",
+        "purpose": "wrong plus one"
+      }
+    ]
+  }
+]

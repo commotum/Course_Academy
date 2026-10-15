@@ -1,0 +1,92 @@
+[
+  {
+    "label": "16:q-340308",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186096621,
+        "id": "3c547746-49c8-5a4a-85fe-c6b75493a354",
+        "title": "Differentiating a Quotient Containing Other Functions"
+      },
+      "question": {
+        ":question/id": "0ccc7087-f756-5d26-8bb6-8f7ad6f2e5bb",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "If $f(x)=\\frac{\\tan x}{x}$,  find ${f}^{\\prime}(x).$\n\n${f}^{\\prime}(x)=$\n{{field-1}}",
+        ":question/worked-solution": "In this case, the expression for $f(x)$ is a quotient $\\frac{u(x)}{v(x)}$ with $u(x)=\\tan x$ and $v(x)=x.$ \n\nTherefore, we apply the quotient rule as follows:\n\n$$\n\\begin{aligned}{f}^{\\prime}(x)&=\\frac{u^{\\prime}(x)\\cdot v(x)-u(x)\\cdot v^{\\prime}(x)}{[v(x)]^{2}}\\\\ &=\\frac{(\\tan{\\left(x \\right)})^{\\prime}\\cdot (x)-(\\tan{\\left(x \\right)})\\cdot (x)^{\\prime}}{(x)^{2}}\\\\ &=\\frac{\\sec^{2}x\\cdot x-\\tan x\\cdot 1}{{x}^{2}}\\\\ &=\\frac{x\\sec^{2}x-\\tan x}{{x}^{2}}\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "635b27ed-e6d3-587d-9289-4a69ec41aaad",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "89189f30-bdb4-5f22-9584-be308fa760ab",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{x \\tan^{2}{\\left(x \\right)} + x - \\tan{\\left(x \\right)}}{x^{2}}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "89189f30-bdb4-5f22-9584-be308fa760ab"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "other-functions-private-2026-10-14-v1",
+        "seed": 0,
+        "template": "q-340308",
+        "parameters": {
+          "scale": 1
+        },
+        "bank_profile": "blank",
+        "source_ids": [
+          "q-340308"
+        ],
+        "source_basis": 2275,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "e33e09d8a290205923760d867067bb7da9249cb4b350f1130b3349eb2e53d4ae",
+        "domain": [
+          [
+            "nonzero",
+            "Symbol('x', real=True)"
+          ],
+          [
+            "nonzero",
+            "cos(Symbol('x', real=True))"
+          ]
+        ],
+        "authored_extension": false,
+        "evidence_only": false,
+        "eligible": true,
+        "raw_exact_eligible": false,
+        "source_repairs": [],
+        "plot_rating": "none",
+        "sympy_version": "1.14.0",
+        "content_fingerprint": "07d10e77272fc67668a403f4488074786f5f6fe2a2b9086a6ff5b4bc9bb4cc75",
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{x \\tan^{2}{\\left(x \\right)} + x - \\tan{\\left(x \\right)}}{x^{2}}",
+        "expected": "accepted",
+        "purpose": "canonical blank"
+      },
+      {
+        "submitted": "\\frac{2(\\frac{x \\tan^{2}{\\left(x \\right)} + x - \\tan{\\left(x \\right)}}{x^{2}})}{2}",
+        "expected": "accepted",
+        "purpose": "genuine unreduced equivalent blank"
+      },
+      {
+        "submitted": "\\frac{\\tan^{2}{\\left(x \\right)}}{x} + \\frac{1}{x} - \\frac{\\tan{\\left(x \\right)}}{x^{2}}",
+        "expected": "accepted",
+        "purpose": "noncanonical expanded equivalent blank"
+      },
+      {
+        "submitted": "1 + \\frac{\\tan^{2}{\\left(x \\right)} + 1}{x} - \\frac{\\tan{\\left(x \\right)}}{x^{2}}",
+        "expected": "rejected",
+        "purpose": "wrong plus one"
+      }
+    ]
+  }
+]

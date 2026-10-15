@@ -116,17 +116,20 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
  for name,value in [('template',template),('field_type',field_type),('profile',profile)]:
   if value is not None and type(value) is not str:raise ValueError(name+' requires a string')
  rng=random.Random(seed)
- if profile and profile.startswith('observed-'):
-  selected=profile[len('observed-'):]
-  if template is not None and template!=selected:raise ValueError('Profile/template mismatch')
-  template=selected
+ for prefix in ('observed-','completed-observed-'):
+  if profile and profile.startswith(prefix):
+   selected=profile[len(prefix):]
+   if template is not None and template!=selected:raise ValueError('Profile/template mismatch')
+   template=selected
  if template is None:
   candidates=[sid for sid in QS if LEVELS[sid]==level and (field_type is None or normal_kind(sid)==field_type.replace(':answer-field.type/',''))]
   if not candidates:raise ValueError('Unsupported field type')
   template=rng.choice(candidates)
  if template not in QS or LEVELS[template]!=level:raise ValueError('Template/level mismatch')
  sid=template
- if profile not in (None,'normal','observed-'+sid):raise ValueError('Unsupported complete profile')
+ if profile not in (None,'normal','observed-'+sid,'completed-observed-q-17639'):raise ValueError('Unsupported complete profile')
+ completed=profile=='completed-observed-q-17639'
+ if completed and sid!='q-17639':raise ValueError('Completed historical profile belongs to q-17639')
  raw=profile=='observed-'+sid
  p=checked(sid,parameters if parameters is not None else rng.choice(domain(sid)));a=p['a'];q=strip_db(render_source(sid,p));f,d,target=expressions(sid,p)
  q.pop(':question/math-academy-id',None)
@@ -138,7 +141,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
    correct_tex=str(4*a) if sid=='q-31288' else math_transform(r'\frac{-x{csc}^{2}x-2\operatorname{cot}x}{{x}^{3}}',sid,a)
    q[':question/answer-fields']=[{':answer-field/key':'field-1',':answer-field/type':':answer-field.type/blank',':answer-field/choices':[{':answer/type':':answer.type/math',':answer/value':correct_tex}]}]
   for fld in q[':question/answer-fields']:
-   if sid in OPAQUE:
+   if sid in OPAQUE and not completed:
     cs=sp.csc(X)**2;ss=sp.sec(X)**2;cot=sp.cot(X)
     if sid=='q-17639':
      right=a*ss-25*X**4+cs;bank=[right,ss-25*X**4+cs,a*ss-25*X**4-cs,a*ss-5*X**5+cs,a*ss-25*X**4]
@@ -162,7 +165,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
   if correct is not None:fld[':answer-field/correct']=[':answer/id',next(ans[':answer/id'] for ans in fld[':answer-field/choices'] if ans[':answer/value']==correct)]
   if fld[':answer-field/type']==':answer-field.type/radio':rng.shuffle(fld[':answer-field/choices'])
  if field_type and normal_kind(sid)!=field_type.replace(':answer-field.type/',''):raise ValueError('Field contract mismatch')
- record={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'template':sid,'profile':profile or 'normal','parameters':p,'seed':seed,'source_id':sid,'source':{k:SOURCE[k] for k in ('database','basis','lineage')},'evidence_only':raw,'eligible_for_learning':not raw,'bank_origin':'historical bounded evidence' if raw else 'authored method bank' if sid in OPAQUE else 'parameterized source bank or authored minimal blank completion','content_sha256':content,'mathematical_fingerprint':digest([sp.srepr(f),sp.srepr(sp.pi/6) if sid=='q-31288' else None]),'domain':'Real connected intervals excluding sin(x)=0; quotient-by-cot also excludes cos(x)=0; logarithms require x>0; power quotient excludes x=0. Hard point pi/6 lies in (0,pi).','dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__}}}
+ record={'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':q,'generation':{'version':VERSION,'template':sid,'profile':profile or 'normal','parameters':p,'seed':seed,'source_id':sid,'source':{k:SOURCE[k] for k in ('database','basis','lineage')},'evidence_only':raw or completed,'eligible_for_learning':not (raw or completed),'bank_origin':'historical bank with authored key/solution completion; opaque intent unresolved' if completed else 'historical bounded evidence' if raw else 'authored method bank' if sid in OPAQUE else 'parameterized source bank or authored minimal blank completion','content_sha256':content,'mathematical_fingerprint':digest([sp.srepr(f),sp.srepr(sp.pi/6) if sid=='q-31288' else None]),'domain':'Real connected intervals excluding sin(x)=0; quotient-by-cot also excludes cos(x)=0; logarithms require x>0; power quotient excludes x=0. Hard point pi/6 lies in (0,pi).','dependencies':{'python':sys.version.split()[0],'sympy':sp.__version__}}}
  if not raw:FMT.validate_generated_record(record)
  return record
 

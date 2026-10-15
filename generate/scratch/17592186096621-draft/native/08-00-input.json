@@ -1,0 +1,90 @@
+[
+  {
+    "label": "8:q-167328",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186096621,
+        "id": "3c547746-49c8-5a4a-85fe-c6b75493a354",
+        "title": "Differentiating a Quotient Containing Other Functions"
+      },
+      "question": {
+        ":question/id": "93c18ea6-97e8-5398-8c5a-d115930d1557",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "Given $f(x)=\\frac{e^{x}}{2}$ and $h(x)=- 4 \\sin{\\left(x \\right)}.$\n\n$\\frac{\\text{d}}{\\text{d}x}(\\frac{f}{h})\\,=$\n\n                            \n                                    \n                            \n                                        {{field-1}}",
+        ":question/worked-solution": "Recall that $f(x)=\\frac{1}{2}{e}^{x}$ and $h(x)=-4\\sinx.$\n\nWe apply the quotient rule, as follows:\n\n$$\n\\begin{aligned}\\frac{\\text{d}}{\\text{d}x}(\\frac{f}{h})&=\\frac{u^{\\prime}(x)\\cdot v(x)-u(x)\\cdot v^{\\prime}(x)}{[v(x)]^{2}}\\\\ &=\\frac{(\\frac{e^{x}}{2})^{\\prime}\\cdot (- 4 \\sin{\\left(x \\right)})-(\\frac{e^{x}}{2})\\cdot (- 4 \\sin{\\left(x \\right)})^{\\prime}}{(- 4 \\sin{\\left(x \\right)})^{2}}\\\\ &=\\frac{(\\frac{1}{2}{e}^{x})\\cdot (-4\\sinx)-(\\frac{1}{2}{e}^{x})\\cdot (-4\\cosx)}{16\\sin^{2}x}\\\\ &=\\frac{2{e}^{x}(\\cosx-\\sinx)}{16\\sin^{2}x}\\\\ &=\\frac{{e}^{x}(\\cosx-\\sinx)}{8\\sin^{2}x}\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "3fe9e331-8ba0-5646-9387-65ecbc89fb14",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "4bddbbd0-bd94-52cd-8882-746b7294e375",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{\\left(- \\sin{\\left(x \\right)} + \\cos{\\left(x \\right)}\\right) e^{x}}{8 \\sin^{2}{\\left(x \\right)}}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "4bddbbd0-bd94-52cd-8882-746b7294e375"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "other-functions-private-2026-10-14-v1",
+        "seed": 0,
+        "template": "q-167328",
+        "parameters": {
+          "scale": 1
+        },
+        "bank_profile": "blank",
+        "source_ids": [
+          "q-167328"
+        ],
+        "source_basis": 2275,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "d361942c9c3368f7095ac85f3160038fab9f4610b39657245ab41d4d5aead10d",
+        "domain": [
+          [
+            "nonzero",
+            "sin(Symbol('x', real=True))"
+          ]
+        ],
+        "authored_extension": false,
+        "evidence_only": false,
+        "eligible": true,
+        "raw_exact_eligible": false,
+        "source_repairs": [
+          "missing shared function definitions supplied from worked solution"
+        ],
+        "plot_rating": "none",
+        "sympy_version": "1.14.0",
+        "content_fingerprint": "83b9fa6a4cb86a1fd839ef0fbbf0ba6027a9b8f9eee5448b50592e29b4c9ad5a",
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{\\left(- \\sin{\\left(x \\right)} + \\cos{\\left(x \\right)}\\right) e^{x}}{8 \\sin^{2}{\\left(x \\right)}}",
+        "expected": "accepted",
+        "purpose": "canonical blank"
+      },
+      {
+        "submitted": "\\frac{2(\\frac{\\left(- \\sin{\\left(x \\right)} + \\cos{\\left(x \\right)}\\right) e^{x}}{8 \\sin^{2}{\\left(x \\right)}})}{2}",
+        "expected": "accepted",
+        "purpose": "genuine unreduced equivalent blank"
+      },
+      {
+        "submitted": "- \\frac{e^{x}}{8 \\sin{\\left(x \\right)}} + \\frac{e^{x} \\cos{\\left(x \\right)}}{8 \\sin^{2}{\\left(x \\right)}}",
+        "expected": "accepted",
+        "purpose": "noncanonical expanded equivalent blank"
+      },
+      {
+        "submitted": "- \\frac{e^{x}}{8 \\sin{\\left(x \\right)}} + \\frac{e^{x} \\cos{\\left(x \\right)}}{8 \\sin^{2}{\\left(x \\right)}} + 1",
+        "expected": "rejected",
+        "purpose": "wrong plus one"
+      }
+    ]
+  }
+]

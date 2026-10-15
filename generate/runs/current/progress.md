@@ -4,7 +4,7 @@ Cumulative scope: **184 topics, 580 knowledge points**. Each saved source wrappe
 
 Per-KP workers use **gpt-6.1-sol / high**; parent QA checks fidelity, sufficient variation, and scope. All work remains local through step7; database writes: **0**.
 
-**needs_revalidation: 36**, **qa_passed: 378**, **queued: 163**, **working: 3**.
+**needs_revalidation: 36**, **qa_passed: 381**, **queued: 160**, **working: 3**.
 
 Latest query: **182 topics, 573 KPs**; script ranking is retained in [updated candidates](candidates-2026-10-14.json). The [13 explicit user priorities](user-priorities-2026-10-14.md) supersede that dispatch order and the earlier coverage priority. Dispatch order is the explicit13, unfinished coverage-report KPs, then remaining script-ranked candidates; completed approved work is preserved.
 
@@ -167,12 +167,12 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186115190](../../scratch/17592186115190.py) | Differentiating Reciprocal Trigonometric Functions | Differentiating Expressions Involving the Cosecant Function | 1 / 4 / 2 / 1 | qa_passed | [Report](qa/17592186115190.json) |
 | [17592186115192](../../scratch/17592186115192.py) | Differentiating Reciprocal Trigonometric Functions | Differentiating Expressions Involving the Secant Function | 3 / 5 / 1 / 2 | qa_passed | [Report](qa/17592186115192.json) |
 | [17592186096620](../../scratch/17592186096620-draft.py) | The Quotient Rule for Differentiation | Differentiating a Quotient of Two Polynomials | 10 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186096620.json) |
-| [17592186096622](../../scratch/17592186096622.py) | The Quotient Rule for Differentiation | Differentiating a Quotient Using Leibniz Notation | 4 / 4 / 1 / 2 | working | — |
-| [17592186115193](../../scratch/17592186115193.py) | Differentiating Reciprocal Trigonometric Functions | Finding the Slope of the Tangent at a Point of a Function Involving Reciprocal Trigonometric Functions | 5 / 6 / 0 / 0 | working | — |
-| [17592186115191](../../scratch/17592186115191.py) | Differentiating Reciprocal Trigonometric Functions | Differentiating Expressions Involving the Cotangent Function | 2 / 6 / 6 / 2 | working | — |
-| [17592186096621](../../scratch/17592186096621.py) | The Quotient Rule for Differentiation | Differentiating a Quotient Containing Other Functions | 8 / 6 / 5 / 2 | queued | — |
-| 17592186092265 | The Chain Rule With Logarithmic Functions | Differentiating a General Logarithm Function Using the Chain Rule | 7 / 5 / 2 / 2 | queued | — |
-| [17592186092264](../../scratch/17592186092264.py) | The Chain Rule With Logarithmic Functions | Differentiating a Natural Logarithm Function Using the Chain Rule | 0 / 6 / 6 / 2 | queued | — |
+| [17592186096622](../../scratch/17592186096622.py) | The Quotient Rule for Differentiation | Differentiating a Quotient Using Leibniz Notation | 4 / 4 / 1 / 2 | qa_passed | [Report](qa/17592186096622.json) |
+| [17592186115193](../../scratch/17592186115193-draft.py) | Differentiating Reciprocal Trigonometric Functions | Finding the Slope of the Tangent at a Point of a Function Involving Reciprocal Trigonometric Functions | 5 / 6 / 0 / 0 | qa_passed | [Report](qa/17592186115193.json) |
+| [17592186115191](../../scratch/17592186115191-draft.py) | Differentiating Reciprocal Trigonometric Functions | Differentiating Expressions Involving the Cotangent Function | 2 / 6 / 6 / 2 | qa_passed | [Report](qa/17592186115191.json) |
+| [17592186096621](../../scratch/17592186096621.py) | The Quotient Rule for Differentiation | Differentiating a Quotient Containing Other Functions | 8 / 6 / 5 / 2 | working | — |
+| [17592186092265](../../scratch/17592186092265.py) | The Chain Rule With Logarithmic Functions | Differentiating a General Logarithm Function Using the Chain Rule | 7 / 5 / 2 / 2 | working | — |
+| [17592186092264](../../scratch/17592186092264.py) | The Chain Rule With Logarithmic Functions | Differentiating a Natural Logarithm Function Using the Chain Rule | 0 / 6 / 6 / 2 | working | — |
 | [17592186175924](../../scratch/17592186175924.py) | Finding Equations of Perpendicular Lines | Finding the Equation of a Line Perpendicular to a Line in Standard Form | 5 / 5 / 0 / 2 | queued | — |
 | [17592186175923](../../scratch/17592186175923.py) | Finding Equations of Perpendicular Lines | Finding the Equation of a Line Perpendicular to a Line Through Two Points | 6 / 5 / 0 / 2 | queued | — |
 | [17592186064208](../../scratch/17592186064208.py) | Integrating Linear Rational Functions Using Substitution | Integrating a Combination of Linear Rational Functions Using the General Formula | 0 / 0 / 9 / 1 | queued | — |
@@ -442,7 +442,7 @@ Cumulative counts retain seven earlier KPs outside the latest list. Only qa_pass
 | [17592186172083](../../scratch/17592186172083.py) | Visualizing Vector Fields | Sketching a Two-Dimensional Vector Field | 9 / 0 / 0 / 1 | qa_passed | [Report](qa/17592186172083.json) |
 | 17592186119805 | Linear Combinations of Vectors in N-Dimensional Euclidean Space | Solving for One Coefficient in a Linear Combination | 6 / 3 / 0 / 1 | queued | — |
 | [17592186119807](../../scratch/17592186119807.py) | Linear Combinations of Vectors in N-Dimensional Euclidean Space | Solving for Two Coefficients in a Linear Combination | 0 / 10 / 0 / 0 | queued | — |
-| 17592186119854 | Linear Combinations of Vectors in N-Dimensional Euclidean Space | Solving for Three Coefficients in a Linear Combination | 0 / 6 / 6 / 1 | queued | — |
+| [17592186119854](../../scratch/17592186119854.py) | Linear Combinations of Vectors in N-Dimensional Euclidean Space | Solving for Three Coefficients in a Linear Combination | 0 / 6 / 6 / 1 | queued | — |
 | [17592186119806](../../scratch/17592186119806.py) | Linear Combinations of Vectors in N-Dimensional Euclidean Space | Solving for a Vector in a Linear Combination | 13 / 0 / 0 / 1 | queued | — |
 | 17592186119847 | The Rank of a Matrix | Determining the Rank of a Matrix Given the Number of Pivot Columns | 4 / 4 / 0 / 1 | queued | — |
 | [17592186119848](../../scratch/17592186119848.py) | The Rank of a Matrix | Identifying the Matrix With a Given Rank by Inspection | 10 / 0 / 0 / 2 | queued | — |

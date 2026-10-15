@@ -1,0 +1,88 @@
+[
+  {
+    "label": "9:q-167328",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186096621,
+        "id": "3c547746-49c8-5a4a-85fe-c6b75493a354",
+        "title": "Differentiating a Quotient Containing Other Functions"
+      },
+      "question": {
+        ":question/id": "29eca48a-559e-542b-95fe-818f3b0a1309",
+        ":question/difficulty": ":question.difficulty/easy",
+        ":question/problem": "If $f(x)=\\frac{e^{x}}{- 4 \\sin{\\left(x \\right)}}$, find $f^{\\prime}(x)$ wherever the original quotient is defined.\n\n$f^{\\prime}(x)=$ {{field-1}}.",
+        ":question/worked-solution": "Recall that $f(x)=e^{x}$ and $h(x)=- 4 \\sin{\\left(x \\right)}.$\n\nWe apply the quotient rule, as follows:\n\n$$\n\\begin{aligned}f^{\\prime}(x)&=\\frac{u^{\\prime}(x)\\cdot v(x)-u(x)\\cdot v^{\\prime}(x)}{[v(x)]^{2}}\\\\ &=\\frac{(e^{x})^{\\prime}\\cdot (- 4 \\sin{\\left(x \\right)})-(e^{x})\\cdot (- 4 \\sin{\\left(x \\right)})^{\\prime}}{(- 4 \\sin{\\left(x \\right)})^{2}}\\\\ &=\\frac{(e^{x})\\cdot (- 4 \\sin{\\left(x \\right)})-(e^{x})\\cdot (- 4 \\cos{\\left(x \\right)})}{16\\sin^2 x}\\\\ &=\\frac{4e^x(\\cos x-\\sin x)}{16\\sin^2 x}\\\\ &=\\frac{2e^x(\\cos x-\\sin x)}{8\\sin^2 x}\\end{aligned}\n$$",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "d79eca79-a492-5342-a5c1-e2bcf2832767",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "a4f80a69-e5a8-5eb5-b298-492a33777b54",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{\\left(- \\sin{\\left(x \\right)} + \\cos{\\left(x \\right)}\\right) e^{x}}{4 \\sin^{2}{\\left(x \\right)}}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "a4f80a69-e5a8-5eb5-b298-492a33777b54"
+            ]
+          }
+        ]
+      },
+      "generation": {
+        "version": "other-functions-private-2026-10-14-v1",
+        "seed": 0,
+        "template": "q-167328",
+        "parameters": {
+          "scale": 2
+        },
+        "bank_profile": "blank",
+        "source_ids": [
+          "q-167328"
+        ],
+        "source_basis": 2275,
+        "source_lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+        "mathematical_fingerprint": "766d6083965079c1ceb99788f77b285e649abb1041a30f0864b3b3329d7d69d5",
+        "domain": [
+          [
+            "nonzero",
+            "sin(Symbol('x', real=True))"
+          ]
+        ],
+        "authored_extension": true,
+        "evidence_only": false,
+        "eligible": true,
+        "raw_exact_eligible": false,
+        "source_repairs": [],
+        "plot_rating": "none",
+        "sympy_version": "1.14.0",
+        "content_fingerprint": "df45460324230211ad3ad5aaa5bddd1a14e02f5e93f2da71492887baf10a432a",
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "\\frac{\\left(- \\sin{\\left(x \\right)} + \\cos{\\left(x \\right)}\\right) e^{x}}{4 \\sin^{2}{\\left(x \\right)}}",
+        "expected": "accepted",
+        "purpose": "canonical blank"
+      },
+      {
+        "submitted": "\\frac{2(\\frac{\\left(- \\sin{\\left(x \\right)} + \\cos{\\left(x \\right)}\\right) e^{x}}{4 \\sin^{2}{\\left(x \\right)}})}{2}",
+        "expected": "accepted",
+        "purpose": "genuine unreduced equivalent blank"
+      },
+      {
+        "submitted": "- \\frac{e^{x}}{4 \\sin{\\left(x \\right)}} + \\frac{e^{x} \\cos{\\left(x \\right)}}{4 \\sin^{2}{\\left(x \\right)}}",
+        "expected": "accepted",
+        "purpose": "noncanonical expanded equivalent blank"
+      },
+      {
+        "submitted": "- \\frac{e^{x}}{4 \\sin{\\left(x \\right)}} + \\frac{e^{x} \\cos{\\left(x \\right)}}{4 \\sin^{2}{\\left(x \\right)}} + 1",
+        "expected": "rejected",
+        "purpose": "wrong plus one"
+      }
+    ]
+  }
+]
