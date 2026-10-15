@@ -376,3 +376,18 @@ Easy/hard add the documented same-method scopes in classification. Hard addition
 No source-format attributes were absent and no source prose/TeX mathematical repairs are needed. Decoded source fraction values begin with character codes 92,102,114,97 (one slash then fra); JSON escaping is not a doubled-slash defect. q-20062’s vector distractor is a preserved scalar-response-shape anomaly; default generation replaces the entire historical bank with the separately labeled authored five-scalar operation bank.
 
 No plots are present; steps 5/7 require no plot specification, renderer, image assets or cache.
+
+## Basis 2557 additional source masks
+
+The complete source components, exact parameters, field keys, banks, target roles, and formatting are in `source.json` and `source-cases.json`; `review.md` shows each original beside its generated counterpart.
+
+| Source | Family / field | Supplied data | Requested order | Original complete bank |
+|---|---|---|---|---|
+| q-20067 | vector / radio | w=(2,-5,7), v=(8,-2,-4) | bca | Captured five values; h-scaled evidence bank with h=T/(-2); source correct −2 |
+| q-317344 | vector / blank | w=(7,-2,3), v=(1,4,2) | cab | Correct scalar 5 |
+| q-317348 | vector / blank | w=(-2,5,4), v=(-1,3,2) | cba | Correct scalar −25 |
+| q-317333 | scalar / blank | factors (5,-4,-3), RHS −120 | bac | Correct scalar 2 |
+
+q-20067 uses the same complete authored dot-term omission profile as other vector radio masks; its complete historical bank remains a separate evidence-only profile with every value replayed. The three new blanks retain their supplied fragment and placeholder. q-317333 retains its collected-factor row and unaligned final display; shared math normalization aligns equation typography in served output. No source content is changed. Supplied-vector coordinates and scalar factor/RHS slots follow the previously documented bounds. Every new mask undergoes source-bank replay, sampled mathematics and complete worked-stage validation, deterministic identity checks, and actual learner grading.
+
+q-20067 complete historical values: `-4` → `h·(-4)`, `-26` → `h·(-26)`, `4` → `h·(4)`, `-2` → `h·(-2)`, `⟨2,1,0⟩` → `h·(⟨2,1,0⟩)`. This maps every choice in its selection field; h=1 at the source. The correct designation is −2.

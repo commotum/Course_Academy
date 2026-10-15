@@ -73,7 +73,7 @@ def structure(record):
         original=g.QUESTIONS[c['source_id']][':question/worked-solution']
         def skeleton(s):
             return re.sub(r'\$\$.*?\$\$','<MATH>',s,flags=re.S)
-        assert skeleton(solution)==skeleton(original),'Common worked prose changed'
+        assert skeleton(solution)==skeleton(g.normalize_prose(original)),'Common worked prose changed'
         originalblocks=re.findall(r'\$\$(.*?)\$\$',original,re.S);blocks=re.findall(r'\$\$(.*?)\$\$',solution,re.S)
         assert len(blocks)==len(originalblocks)
         assert [x.count(r'\\') for x in blocks]==[x.count(r'\\') for x in originalblocks],'Operative stage count changed'
@@ -135,7 +135,7 @@ def fidelity(c,r):
     source=g.QUESTIONS[c['source_id']];q=r['question'];f=q[':question/answer-fields'][0];sf=source[':question/answer-fields'][0]
     for k in (':question/difficulty',':question/problem',':question/worked-solution',':question/answer-fields'):
         assert (k in source)==(k in q)
-    for k in (':question/problem',':question/worked-solution'):assert q[k]==source[k],(c['template'],k)
+    for k in (':question/problem',':question/worked-solution'):assert q[k]==g.normalize_prose(source[k]),(c['template'],k)
     assert q[':question/difficulty']==source[':question/difficulty'][':db/ident']
     assert f[':answer-field/type']==sf[':answer-field/type'][':db/ident'] and f[':answer-field/key']==sf[':answer-field/key']
     assert collections.Counter(a[':answer/value'] for a in f[':answer-field/choices'])==collections.Counter(c['bank'])
@@ -169,6 +169,20 @@ def main():
         for r in records:check(r)
         seen_by_level[level]=sorted(set(r['generation']['template'] for r in records))
         assert seen_by_level[level]==sorted(n for n,s in g.TEMPLATES.items() if s['level']==level)
+    # Hold all supplied mathematics fixed and change only the requested permutation.
+    # Independent parsing checks both final key and every printed swap/solution stage.
+    target_coverage={}
+    for level in ('easy','hard'):
+        sample=g.generate(level,51);params=sample['generation']['parameters'].copy()
+        seen=set()
+        for target in ('bac','bca','cab','cba','acb'):
+            params['target']=target
+            r=g.generate(level,template=sample['generation']['template'],parameters=params)
+            check(r);seen.add(r['generation']['parameters']['target'])
+            assert g.triple(target,params.get('requested',(1,1,1))) in r['question'][':question/problem']
+        target_coverage[level]=sorted(seen)
+    # Source masks enumerate all five nonidentity permutations for moderate.
+    target_coverage['moderate']=sorted({c['target'] for c in g.CASES})
     # Authored level workload guards; explicit out-of-scope inputs must fail.
     guards=[('easy','single_scale',{'factor':1,'base':2,'target':'bac'}),('hard','double_scaling',{'factors':[1,2,3],'requested':[1,2,3],'base':2,'target':'bca'}),('hard','double_scaling',{'factors':[2,3,4],'requested':[1,1,3],'base':2,'target':'bca'}),('moderate','q-20058',{'factors':['1','1','2'],'rhs':'4'}),('moderate','q-20058',{'factors':['2','3','4'],'rhs':'501'}),('moderate','q-20062',{'v':[10,1,2],'w':[1,2,3]}),('moderate','q-128352',{'factors':['1','-1','-1'],'rhs':'2'}),('moderate','q-20059',{'factors':['2','3','4'],'rhs':'48'})]
     for l,n,p in guards:
@@ -205,16 +219,16 @@ def main():
         preview.extend(g.generate(level,i+51) for i in range(2))
     native_records=source_records+preview
     engine_input=HERE/'native-input.json';engine_report=HERE/'native-results.json';engine_input.write_text(json.dumps(fixtures(native_records),indent=2,ensure_ascii=False))
-    engine=HERE.parents[1]/'runs/current/check-engine'
+    engine=HERE/'check-engine'
     subprocess.run([str(engine),str(engine_input),str(engine_report)],check=True)
     native=json.loads(engine_report.read_text())
     # Finite meaningful authored domains; easy exact enumeration, hard structural factors bounded count.
     easy=sum(len(set([c,-c,s*f*t,-s*f*t,s*f*f*t]))==5 for f in (-7,-6,-5,-4,-3,-2,2,3,4,5,6,7) for t in range(-9,10) if t for o in ('bac','bca','cab','cba','acb') for s in [permutation(o)] for c in [s*t])
     hard_requested=sum(len(set([r*s*t,-r*s*t,s*t,a*s*t,b*s*t]))==5 for a in (-4,-3,-2,2,3,4) for b in (-4,-3,-2,2,3,4) for r in [a*b] for t in range(-9,10) if t for o in ('bac','bca','cab','cba','acb') for s in [permutation(o)])
     hard=hard_requested*8**3
-    summary={'pass':True,'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'source_questions':15,'source_prompt_exact':15,'source_worked_solution_exact':15,'source_attribute_presence':15,'source_fields':15,'source_correct_designations':15,'source_complete_banks':15,'source_choices':sum(len(c['bank']) for c in g.CASES),'source_distractors':sum(len(c['bank'])-1 for c in g.CASES),'source_repairs':0,'public_evidence_profiles':15,'opaque_radio_bank_profiles':12,'source_answer_shape_anomalies':1,'normal_scalar_banks_verified':True,'normal_sample_checks':len(normal)+600,'unique_tasks_in_60_per_template':samplecounts,'default_template_coverage':seen_by_level,'meaningful_authored_domain_counts':{'easy':easy,'hard':hard,'moderate':'bounded vector/factor families; per-template sampled counts provided, no unsupported exact enumeration claim'},'mutation_regressions':mutations,'explicit_invalid_guard_checks':len(guards),'native':{k:native[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'plots':'none','database_writes':0,'native_limitations':[]}
+    summary={'pass':True,'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'source_questions':len(g.CASES),'source_prompt_normalized_match':len(g.CASES),'source_worked_solution_normalized_match':len(g.CASES),'source_attribute_presence':len(g.CASES),'source_fields':len(g.CASES),'source_correct_designations':len(g.CASES),'source_complete_banks':len(g.CASES),'source_choices':sum(len(c['bank']) for c in g.CASES),'source_distractors':sum(len(c['bank'])-1 for c in g.CASES),'source_repairs':0,'public_evidence_profiles':len(g.CASES),'opaque_radio_bank_profiles':sum(c['field_type']=='radio' for c in g.CASES),'source_answer_shape_anomalies':1,'normal_scalar_banks_verified':True,'normal_sample_checks':len(normal)+600,'unique_tasks_in_60_per_template':samplecounts,'default_template_coverage':seen_by_level,'meaningful_authored_domain_counts':{'easy':easy,'hard':hard,'moderate':'bounded vector/factor families; per-template sampled counts provided, no unsupported exact enumeration claim'},'mutation_regressions':mutations,'explicit_invalid_guard_checks':len(guards),'native':{k:native[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'target_slot_coverage':target_coverage,'changed_target_same_data_checks':10,'source_typography_normalized_before_identity':True,'plots':'none','database_writes':0,'native_limitations':[]}
     (HERE/'validation.json').write_text(json.dumps(summary,indent=2)+'\n');(HERE/'review.json').write_text(json.dumps(preview,ensure_ascii=False,indent=2)+'\n')
-    sections=['# Scalar triple product property review','Local author evidence; observed banks are evidence-only. All15 original masks are represented.']
+    sections=['# Scalar triple product property review','Local author evidence; observed banks are evidence-only. All current source masks are represented.']
     for c,original,variant in zip(g.CASES,source_records,preview):
         sections+=['## '+c['source_id'],'### Original, complete historical bank',g.markdown(original),'### Generated variant, authored method bank',g.markdown(variant)]
     for r in preview[len(g.CASES):]:sections+=['## Authored/default '+r['question'][':question/difficulty'].split('/')[-1]+' variant',g.markdown(r)]

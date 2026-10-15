@@ -1,6 +1,6 @@
 # Scalar triple product property review
 
-Local author evidence; observed banks are evidence-only. All15 original masks are represented.
+Local author evidence; observed banks are evidence-only. All current source masks are represented.
 
 ## q-20058
 
@@ -81,7 +81,7 @@ $$
 Then, we swap $a$ and $c$ to get
 
 $$
-\begin{aligned}c\cdot (b\times a)=4.\end{aligned}
+\begin{aligned}c\cdot (b\times a) &=4.\end{aligned}
 $$
 
 ### Generated variant, authored method bank
@@ -103,7 +103,7 @@ $$
 Then, we swap $a$ and $c$ to get
 
 $$
-\begin{aligned}c\cdot (b\times a)=6.\end{aligned}
+\begin{aligned}c\cdot (b\times a) &=6.\end{aligned}
 $$
 
 ## q-128352
@@ -185,7 +185,7 @@ $$
 Then, we swap $a$ and $b$ to get
 
 $$
-\begin{aligned}b\cdot (a\times c)=-8.\end{aligned}
+\begin{aligned}b\cdot (a\times c) &=-8.\end{aligned}
 $$
 
 ### Generated variant, authored method bank
@@ -207,7 +207,7 @@ $$
 Then, we swap $a$ and $b$ to get
 
 $$
-\begin{aligned}b\cdot (a\times c)=6.\end{aligned}
+\begin{aligned}b\cdot (a\times c) &=6.\end{aligned}
 $$
 
 ## q-128356
@@ -231,7 +231,7 @@ $$
 Then, we swap $a$ and $c$ to get
 
 $$
-\begin{aligned}c\cdot (b\times a)=-1.\end{aligned}
+\begin{aligned}c\cdot (b\times a) &=-1.\end{aligned}
 $$
 
 ### Generated variant, authored method bank
@@ -253,7 +253,7 @@ $$
 Then, we swap $a$ and $c$ to get
 
 $$
-\begin{aligned}c\cdot (b\times a)=6.\end{aligned}
+\begin{aligned}c\cdot (b\times a) &=6.\end{aligned}
 $$
 
 ## q-18658
@@ -472,13 +472,13 @@ $$
 Then, we swap $a$ and $b$ to get
 
 $$
-\begin{aligned}b\cdot (a\times c)=1\end{aligned}
+\begin{aligned}b\cdot (a\times c) &=1\end{aligned}
 $$
 
 and again we swap $a$ and $c$ to get
 
 $$
-\begin{aligned}b\cdot (c\times a)=-1.\end{aligned}
+\begin{aligned}b\cdot (c\times a) &=-1.\end{aligned}
 $$
 
 ### Generated variant, authored method bank
@@ -499,13 +499,13 @@ $$
 Then, we swap $a$ and $b$ to get
 
 $$
-\begin{aligned}b\cdot (a\times c)=1\end{aligned}
+\begin{aligned}b\cdot (a\times c) &=1\end{aligned}
 $$
 
 and again we swap $a$ and $c$ to get
 
 $$
-\begin{aligned}b\cdot (c\times a)=-1.\end{aligned}
+\begin{aligned}b\cdot (c\times a) &=-1.\end{aligned}
 $$
 
 ## q-73470
@@ -529,7 +529,7 @@ $$
 Then, we swap $a$ and $c$ to get
 
 $$
-\begin{aligned}c\cdot (b\times a)=-26.\end{aligned}
+\begin{aligned}c\cdot (b\times a) &=-26.\end{aligned}
 $$
 
 ### Generated variant, authored method bank
@@ -551,7 +551,7 @@ $$
 Then, we swap $a$ and $c$ to get
 
 $$
-\begin{aligned}c\cdot (b\times a)=6.\end{aligned}
+\begin{aligned}c\cdot (b\times a) &=6.\end{aligned}
 $$
 
 ## q-128349
@@ -665,13 +665,13 @@ $$
 Then, we swap $a$ and $c$ to get
 
 $$
-\begin{aligned}c\cdot (b\times a)=-6\end{aligned}
+\begin{aligned}c\cdot (b\times a) &=-6\end{aligned}
 $$
 
 and again we swap $a$ and $b$ to get
 
 $$
-\begin{aligned}c\cdot (a\times b)=6.\end{aligned}
+\begin{aligned}c\cdot (a\times b) &=6.\end{aligned}
 $$
 
 ### Generated variant, authored method bank
@@ -693,13 +693,13 @@ $$
 Then, we swap $a$ and $c$ to get
 
 $$
-\begin{aligned}c\cdot (b\times a)=6\end{aligned}
+\begin{aligned}c\cdot (b\times a) &=6\end{aligned}
 $$
 
 and again we swap $a$ and $b$ to get
 
 $$
-\begin{aligned}c\cdot (a\times b)=-6.\end{aligned}
+\begin{aligned}c\cdot (a\times b) &=-6.\end{aligned}
 $$
 
 ## q-317329
@@ -758,6 +758,208 @@ $$
 \begin{aligned}b\cdot (c\times a) & =\frac{1}{3}.\end{aligned}
 $$
 
+## q-20067
+
+### Original, complete historical bank
+
+Find $b\cdot (c\times a)$, if $b\times c=⟨2,-5,7⟩$ and $a=⟨8,-2,-4⟩.$
+
+- $4$
+- $-26$
+- $-4$
+- $⟨2,1,0⟩$
+- $-2$
+
+First, we compute the triple scalar product 
+
+$$
+\begin{aligned}a\cdot (b\times c) & =⟨8,-2,-4⟩\cdot ⟨2,-5,7⟩ \\  & =8\cdot 2+(-2)\cdot (-5)+(-4)\cdot 7 \\  & =16+10-28 \\  & =-2.\end{aligned}
+$$
+
+Then, we swap $a$ and $b$ to get
+
+$$
+\begin{aligned}b\cdot (a\times c) &=2,\end{aligned}
+$$
+
+and again we swap $a$ and $c$ to get
+
+$$
+\begin{aligned}b\cdot (c\times a) & =-2.\end{aligned}
+$$
+
+### Generated variant, authored method bank
+
+Find $b\cdot (c\times a)$, if $b\times c=⟨1,2,-1⟩$ and $a=⟨-6,-1,-2⟩.$
+
+- $-8$
+- $-4$
+- $-6$
+- $6$
+- $0$
+
+First, we compute the triple scalar product 
+
+$$
+\begin{aligned}a\cdot (b\times c) & =⟨-6,-1,-2⟩\cdot ⟨1,2,-1⟩ \\  & =(-6)\cdot 1+(-1)\cdot 2+(-2)\cdot (-1) \\  & =-6-2+2 \\  & =-6.\end{aligned}
+$$
+
+Then, we swap $a$ and $b$ to get
+
+$$
+\begin{aligned}b\cdot (a\times c) &=6,\end{aligned}
+$$
+
+and again we swap $a$ and $c$ to get
+
+$$
+\begin{aligned}b\cdot (c\times a) & =-6.\end{aligned}
+$$
+
+## q-317344
+
+### Original, complete historical bank
+
+Find $c\cdot (a\times b),$ if $b\times c=⟨7,-2,3⟩$ and $a=⟨1,4,2⟩.$
+
+$c\cdot (a\times b)=$
+{{field-1}}
+
+- $5$
+
+First, we compute the triple scalar product 
+
+$$
+\begin{aligned}a\cdot (b\times c) & =⟨1,4,2⟩\cdot ⟨7,-2,3⟩ \\  & =1\cdot 7+4\cdot (-2)+2\cdot 3 \\  & =7-8+6 \\  & =5.\end{aligned}
+$$
+
+Then, we swap $a$ and $c$ to get
+
+$$
+\begin{aligned}c\cdot (b\times a) &=-5\end{aligned}
+$$
+
+and again we swap $a$ and $b$ to get
+
+$$
+\begin{aligned}c\cdot (a\times b) &=5.\end{aligned}
+$$
+
+### Generated variant, authored method bank
+
+Find $c\cdot (a\times b),$ if $b\times c=⟨-1,-1,0⟩$ and $a=⟨-6,7,-2⟩.$
+
+$c\cdot (a\times b)=$
+{{field-1}}
+
+- $-1$
+
+First, we compute the triple scalar product 
+
+$$
+\begin{aligned}a\cdot (b\times c) & =⟨-6,7,-2⟩\cdot ⟨-1,-1,0⟩ \\  & =(-6)\cdot (-1)+7\cdot (-1)+(-2)\cdot 0 \\  & =6-7+0 \\  & =-1.\end{aligned}
+$$
+
+Then, we swap $a$ and $c$ to get
+
+$$
+\begin{aligned}c\cdot (b\times a) &=1\end{aligned}
+$$
+
+and again we swap $a$ and $b$ to get
+
+$$
+\begin{aligned}c\cdot (a\times b) &=-1.\end{aligned}
+$$
+
+## q-317348
+
+### Original, complete historical bank
+
+Find $c\cdot (b\times a)$, if $b\times c=⟨-2,5,4⟩$ and $a=⟨-1,3,2⟩.$
+
+$c\cdot (b\times a)=$
+{{field-1}}
+
+- $-25$
+
+First, we compute the triple scalar product 
+
+$$
+\begin{aligned}a\cdot (b\times c) & =⟨-1,3,2⟩\cdot ⟨-2,5,4⟩ \\  & =(-1)\cdot (-2)+3\cdot 5+2\cdot 4 \\  & =2+15+8 \\  & =25.\end{aligned}
+$$
+
+Then, we swap $a$ and $c$ to get
+
+$$
+\begin{aligned}c\cdot (b\times a) &=-25.\end{aligned}
+$$
+
+### Generated variant, authored method bank
+
+Find $c\cdot (b\times a)$, if $b\times c=⟨-1,-1,0⟩$ and $a=⟨-6,7,-2⟩.$
+
+$c\cdot (b\times a)=$
+{{field-1}}
+
+- $1$
+
+First, we compute the triple scalar product 
+
+$$
+\begin{aligned}a\cdot (b\times c) & =⟨-6,7,-2⟩\cdot ⟨-1,-1,0⟩ \\  & =(-6)\cdot (-1)+7\cdot (-1)+(-2)\cdot 0 \\  & =6-7+0 \\  & =-1.\end{aligned}
+$$
+
+Then, we swap $a$ and $c$ to get
+
+$$
+\begin{aligned}c\cdot (b\times a) &=1.\end{aligned}
+$$
+
+## q-317333
+
+### Original, complete historical bank
+
+Find $b\cdot (a\times c)$, if $5a\cdot ((-4b)\times (-3c))=-120.$
+
+$b\cdot (a\times c)=$
+{{field-1}}
+
+- $2$
+
+First, we factor out the constants and get
+
+$$
+\begin{aligned}5a\cdot ((-4b)\times (-3c)) & =-120 \\ 5\cdot (-4)\cdot (-3)\cdot [a\cdot (b\times c)] & =-120 \\ 60[a\cdot (b\times c)] & =-120 \\ a\cdot (b\times c) & =-2.\end{aligned}
+$$
+
+Then, we swap $a$ and $b$ to get
+
+$$
+b\cdot (a\times c)=2.
+$$
+
+### Generated variant, authored method bank
+
+Find $b\cdot (a\times c)$, if $-3a\cdot (7b\times (-3c))=21.$
+
+$b\cdot (a\times c)=$
+{{field-1}}
+
+- $-\frac{1}{3}$
+
+First, we factor out the constants and get
+
+$$
+\begin{aligned}-3a\cdot (7b\times (-3c)) & =21 \\ (-3)\cdot 7\cdot (-3)\cdot [a\cdot (b\times c)] & =21 \\ 63[a\cdot (b\times c)] & =21 \\ a\cdot (b\times c) & =\frac{1}{3}.\end{aligned}
+$$
+
+Then, we swap $a$ and $b$ to get
+
+$$
+b\cdot (a\times c)=-\frac{1}{3}.
+$$
+
 ## Authored/default easy variant
 
 Find $b\cdot (c\times a)$, if $4a\cdot (b\times c)=36.$
@@ -810,46 +1012,52 @@ $$
 
 ## Authored/default moderate variant
 
-Find $b\cdot (a\times c),$ if $b\times c=⟨-2,-2,8⟩$ and $a=⟨7,8,-4⟩.$
+Find $c\cdot (a\times b)$, if $4a\cdot (\sqrt{2}b\times -5c)=\frac{40\sqrt{2}}{3}.$
 
-- $62$
-- $-62$
-- $30$
-- $46$
-- $48$
+- $-\frac{2}{3}$
+- $\frac{2}{3}$
+- $\frac{10}{3}$
+- $-\frac{8}{3}$
+- $\frac{40\sqrt{2}}{3}$
 
-First, we compute the triple scalar product 
-
-$$
-\begin{aligned}a\cdot (b\times c) & =⟨7,8,-4⟩\cdot ⟨-2,-2,8⟩ \\  & =7\cdot (-2)+8\cdot (-2)+(-4)\cdot 8 \\  & =-14-16-32 \\  & =-62.\end{aligned}
-$$
-
-Then, we swap $a$ and $b$ to get
+First, we factor out the constants and get
 
 $$
-\begin{aligned}b\cdot (a\times c)=62.\end{aligned}
+\begin{aligned}4a\cdot (\sqrt{2}b\times -5c) & =\frac{40\sqrt{2}}{3} \\ 4\cdot \sqrt{2}\cdot (-5)\cdot [a\cdot (b\times c)] & =\frac{40\sqrt{2}}{3} \\ a\cdot (b\times c) & =-\frac{2}{3}.\end{aligned}
+$$
+
+Then, we swap $c$ and $b$ to get
+
+$$
+\begin{aligned}a\cdot (c\times b) & =\frac{2}{3},\end{aligned}
+$$
+
+and again we swap $c$ and $a$ to get
+
+$$
+\begin{aligned}c\cdot (a\times b) & =-\frac{2}{3}.\end{aligned}
 $$
 
 ## Authored/default moderate variant
 
-Find $c\cdot (b\times a),$ if $b\times c=⟨2,4,-8⟩$ and $a=⟨-8,7,6⟩.$
+Find $c\cdot (b\times a)$, if $-7a\cdot (7b\times c)=-196.$
 
-- $20$
-- $36$
-- $64$
-- $-12$
-- $-36$
+- $4$
+- $-28$
+- $-4$
+- $28$
+- $196$
 
-First, we compute the triple scalar product 
+First, we factor out the constants and get
 
 $$
-\begin{aligned}a\cdot (b\times c) & =⟨-8,7,6⟩\cdot ⟨2,4,-8⟩ \\  & =(-8)\cdot 2+7\cdot 4+6\cdot (-8) \\  & =-16+28-48 \\  & =-36.\end{aligned}
+\begin{aligned}-7a\cdot (7b\times c) & =-196 \\ (-7)\cdot 7\cdot [a\cdot (b\times c)] & =-196 \\ a\cdot (b\times c) & =4.\end{aligned}
 $$
 
 Then, we swap $a$ and $c$ to get
 
 $$
-\begin{aligned}c\cdot (b\times a)=36.\end{aligned}
+\begin{aligned}c\cdot (b\times a) & =-4.\end{aligned}
 $$
 
 ## Authored/default hard variant

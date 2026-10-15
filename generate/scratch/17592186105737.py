@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Scalar triple product property practice; frozen math basis1356.
+"""Scalar triple product property practice; current source math basis2557.
 
-All15 sources are replayed by parameterized component masks. Raw banks are
+All19 sources are replayed by parameterized component masks. Raw banks are
 explicit evidence-only profiles: homothetic extensions preserve complete banks
 without claiming to recover historical distractor intent. Normal banks derive
 actual swaps, omitted scalar factors, or omitted supplied-dot components.
@@ -12,10 +12,12 @@ from __future__ import annotations
 import argparse, hashlib, itertools, json, random, re, sys, uuid
 from pathlib import Path
 import sympy as sp
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'scripts/question_capture'))
+from math_format import normalize_prose, normalize_tex, checked_math_content
 KP_ID=17592186105737
 KP_UUID='3e0b4d33-7699-5068-90f1-663534cd662d'
 TITLE='Calculating Scalar Triple Products Using Its Properties'
-VERSION='scalar-properties-1'
+VERSION='scalar-properties-2'
 ROOT=Path(__file__).with_suffix('')
 SOURCE=json.loads((ROOT/'source.json').read_text())
 RECORD=SOURCE['record']
@@ -207,6 +209,7 @@ def bank(name,p,correct,profile):
 def digest(obj): return hashlib.sha256(json.dumps(obj,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
 def identity(s): return str(uuid.uuid5(uuid.NAMESPACE_URL,s))
 
+@checked_math_content
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
     if level not in ('easy','moderate','hard'): raise ValueError('Unsupported level')
     if profile and profile.startswith('observed:'):
@@ -243,6 +246,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     else: raise SampleRejected('Bounded sampling exhausted')
     style=TEMPLATES[name]['field_type']; key='field-1' if style=='blank' else 'selection'
     if style=='blank' and '{{'+key+'}}' not in prompt: prompt+='\n\n$'+(triple(p['target'],p.get('requested',(1,1,1))) if not c else triple(c['target']))+'=$\n{{'+key+'}}'
+    prompt=normalize_prose(prompt); solution=normalize_prose(solution); values=[normalize_tex(x) for x in values]
     content={'version':VERSION,'level':level,'prompt':prompt,'solution':solution,'bank':sorted(values),'type':style}
     contenthash=digest(content); qid=identity(contenthash); fid=identity(qid+':'+key)
     answers=[{':answer/id':identity(fid+':'+v),':answer/type':':answer.type/math',':answer/value':v} for v in values]
@@ -260,7 +264,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
 
 # EASY — one supplied factor and one/two swaps. Authored reduced canonical workload.
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None): return generate('easy',seed,template,field_type,parameters,profile)
-# MODERATE — all15 observed masks: factor extraction or supplied dot, then swaps.
+# MODERATE — all19 observed masks: factor extraction or supplied dot, then swaps.
 def generate_moderate(seed=0,template=None,field_type=None,parameters=None,profile=None): return generate('moderate',seed,template,field_type,parameters,profile)
 # HARD — three supplied factors and two requested factors; same taught properties.
 def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=None): return generate('hard',seed,template,field_type,parameters,profile)

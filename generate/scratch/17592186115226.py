@@ -4,7 +4,12 @@ canonical SVG is mathematical notation, and practice matrices are native LaTeX.
 """
 import argparse, hashlib, json, random, re, uuid
 from pathlib import Path
-import sympy as s
+try:
+ import sympy as s
+except ModuleNotFoundError:
+ import os,sys
+ interpreter=Path(__file__).resolve().parents[2]/'.venv/bin/python'
+ os.execv(str(interpreter),[str(interpreter),str(Path(__file__).resolve()),*sys.argv[1:]])
 from sympy.parsing.sympy_parser import parse_expr, standard_transformations, implicit_multiplication_application
 KP_ID=17592186115226
 KP_UUID='a7ad52ce-d408-5390-b91f-c855274f39ea'
@@ -39,8 +44,9 @@ def bank(profile,M):
   V=C.copy();V[1,1]=4
   return [-2*C,2*C,Z,V,4*C]
  if profile=='q-130259':
-  U=Z.copy();U[1,:]=C.row(1);V=Z.copy();V[0,1]=C[0,1];V[1,1]=C[1,1];W=Z.copy();W[1,:]=C.row(0)
-  return [U,Z,V,W,(A+B).multiply_elementwise(C)]
+  U=Z.copy();U[1,0]=C[0,1];U[1,1]=C[1,1];V=Z.copy();V[0,1]=C[0,1];V[1,1]=C[1,1];W=Z.copy();W[1,:]=C.row(0)
+  L=Z.copy();L[1,:]=C.row(1)
+  return [U,Z,V,W,L]
  if profile=='q-130275':
   U=B.copy()
   for i in range(3):U[i,i]*=5
