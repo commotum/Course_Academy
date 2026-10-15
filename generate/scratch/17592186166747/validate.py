@@ -156,7 +156,7 @@ def main():
     assert set(r1['knowledge_point'])=={'db_id','id','title'}
     families={g.generate_easy(seed=i)['generation']['template'] for i in range(100)};assert families==set(g.NAMES),families
     (HERE/'source-cases.json').write_text(json.dumps(cases,indent=2));(HERE/'review.json').write_text(json.dumps(review,indent=2,ensure_ascii=False))
-    (HERE/'engine-input.json').write_text(json.dumps(engine));binary=Path('generate/runs/current/check-engine')
+    (HERE/'engine-input.json').write_text(json.dumps(engine));binary=HERE/'reference/check-engine-current'
     subprocess.run([str(binary),str(HERE/'engine-input.json'),str(HERE/'engine-report.json')],check=True)
     import os
     os.environ.setdefault('MPLCONFIGDIR',str(HERE/'matplotlib-cache'))

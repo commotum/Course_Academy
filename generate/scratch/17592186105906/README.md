@@ -1,6 +1,6 @@
 # Triangle area from quadrilateral generator
 
-Draft review only; no registration, database writes, or shared changes. Basis1356 source capture is preserved in source.json. The script supplies easy, moderate, hard entrypoints and JSON/Markdown CLI.
+Validated generator with easy, moderate and hard entrypoints and JSON/Markdown CLI. Current source capture is basis2738; the original basis1356 capture is preserved under reference/. Publication evidence and exact receipts are under reference/replenishment/.
 
 ```sh
 .venv/bin/python generate/scratch/17592186105906/validate.py
@@ -12,3 +12,8 @@ Use `generate('hard', template='q-18192', parameters=..., profile='raw_q-18192')
 Unresolved: intended historical radio error operations cannot be recovered from lone scalar banks. q18192 has no observed key/solution/difficulty; these exist only as explicitly inferred/authored repairs. Raw q285754 has an intermediate unit typo, and three raw substitution rows transpose the side labels. No repair is counted as raw fidelity. All raw/opaque records carry eligible_for_learning=false and evidence_only=true.
 
 Native nearest-integer checking accepts canonical integer entries and surrounding whitespace; mathematically equivalent unevaluated expressions and leading-zero numerals are rejected by its form-sensitive rounding check. This is tested and retained because genuine rounding is requested.
+
+
+## Inventory publication
+
+Version1.1.0 extends the frozen source capture to eleven records at basis2738 while retaining the original basis1356 capture under reference/. Native validation now uses reference/check-engine-current compiled against the application's current release engine. Run `replenish.py --prepare-only` to inspect fresh inventory and candidates; `replenish.py` previews, saves the exact request, commits with a basis guard under api.lock, and verifies additive datoms and source preservation at db-after. Durable requests, receipts, inventory rechecks and verification are under reference/replenishment/. The registered UUID is deterministic under the KP UUID and reused on subsequent runs. No source question or learner record is modified.

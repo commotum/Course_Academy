@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Triangle area from a concave quadrilateral; draft only, math basis 1356.
+"""Triangle area from a concave quadrilateral; math source capture at basis 2738.
 
 Observed hard recipes preserve source prose and arithmetic stages. Raw profiles
 are public evidence only: historical scalar distractors are opaque offsets,
@@ -20,8 +20,10 @@ from threading import Lock
 D=Path(__file__).with_suffix(''); KP=17592186105906
 SRC=json.loads((D/'source.json').read_text()); REC=SRC['record']
 QS={q[':question/math-academy-id']:q for q in REC[':knowledge-point/questions']}
-CFG=json.loads((D/'source-config.json').read_text()); VERSION='1.0.1'
+CFG=json.loads((D/'source-config.json').read_text()); VERSION='1.1.0'
 NS=uuid.UUID(REC[':knowledge-point/id']); LOCK=Lock()
+GENERATOR_UUID=str(uuid.uuid5(NS,'question-generator'))
+LEVELS=('easy','moderate','hard')
 TEMPLATES={**{k:{'level':'hard','kind':v['field_type']} for k,v in CFG.items()},'easy_area':{'level':'easy','kind':'radio'},'moderate_right':{'level':'moderate','kind':'radio'}}
 BANK_PROFILES={**{'raw_'+s:{'template':s,'origin':'observed opaque evidence','eligible_for_learning':False} for s in QS},**{'repaired_'+s:{'template':s,'origin':'supported presentation/math repairs, opaque bank','eligible_for_learning':False} for s in QS},'method':{'origin':'authored complete method bank','eligible_for_learning':True}}
 def canon(x):return json.dumps(x,sort_keys=True,separators=(',',':'),ensure_ascii=False)
@@ -62,7 +64,7 @@ def source_solution(s,p,raw=False):
  text=text.replace(dec0,dec)
  text=text.replace('≈'+str(R0),'≈'+str(R))
  text=text.replace(f'={R0}-{a["quadrilateral"]}',f'={R}-{p["quadrilateral"]}')
- text=text.replace('='+str(c0)+r'{\text','='+str(c)+r'{\text')
+ text=re.sub(r'='+str(c0)+r'(?=(?:\\,)?\{\\text)', '='+str(c),text)
  # All source units are whole math text components, never variable substrings.
  text=replace_unit(text,a['unit'],p['unit'])
  if not raw and s=='q-285754':text=text.replace(r'{\text{ m}}^{2}',r'{\text{ '+p['unit']+r'}}^{2}')

@@ -1,0 +1,9 @@
+# Inventory replenishment for KP 17592186087655
+
+This job reuses the approved `generate/scratch/17592186087655.py` generator unchanged. The original frozen package documents stages 3–7; this directory records the subsequent preparation and database commit. `../../replenish.py` is the scoped job helper, using the application's existing EDB integration, contributor, native grader, image library, and writer transport.
+
+Run `.venv/bin/python generate/scratch/17592186087655/replenish.py` to prepare against fresh inventory. Add `--commit` to preview and submit under the application `api.lock`, with an expected-basis guard and exact-basis readback. Existing saved submissions are recovered under their original key before any new intent. This helper belongs to this specific inventory job; the registered generator remains the repository-relative top-level KP script.
+
+`basis-*/` retains the captured source pool, present and historical availability reads, independent mathematics and raster validation, native grading inputs/results, raw generator output, database-relative output, published asset hashes, visual review, typed transaction, exact durable request, preview, receipt, and verification. Only fresh gradable mathematical tasks count. A complete circle equation modulo nonzero scalar defines a task; seeds, identities, option order, profile, and diagram orientation do not add variants.
+
+The five valid existing easy radios remain available. Two unrated sources without correct references and the stripped-diagram full-equation blank remain unchanged and excluded. Moderate and hard are authored number-form extensions established in the approved classification: rational radius at moderate, and opposite-sign rational center coordinates with rational radius at hard. Full-equation blanks remain unsupported learning output; supported radios satisfy all three difficulty targets.

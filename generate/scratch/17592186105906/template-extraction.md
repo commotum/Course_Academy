@@ -46,3 +46,14 @@ Normal side-length ratio is at most 2.5, supported by the observed 6:2.5 geometr
 q-285754 displays mm lengths and mm² prompt/final area but an m² rounded intermediate; raw preserved, normal fixes to mm². q-285754, q-285769 and q-285786 reverse the displayed AB/AD factors relative to raster side labels; products/final answers remain correct by commutativity. Raw diagrams and rows retained, normal changed geometry follows each displayed substitution order so no label misstatement remains. Canonical prose lists the difference in opposite verbal order but its explicit outer-minus-quadrilateral equation is correct; canonical remains context evidence only. No source options are silently removed. Historical error intent remains unresolved and is never a learner-default bank.
 
 Native rounding form: all integer blanks require a canonical rounded integer. Actual engine checks accept surrounding whitespace but reject equivalent unevaluated `2+0` and leading-zero `02`; these are recorded expected form rejections, not algebra mistakes or unresolved errors.
+
+
+## Additional sources at basis 2738
+
+| Source | AB, AD, included A; Q | Raw complete bank | Offset recipes | Sequence |
+|---|---|---|---|---|
+| q-67795 |24,16,55°;112 cm²|45,44,66,75,65|c,c−1,c+21,c+30,c+20|192 sin55°=157.277…≈157;157−112=45|
+| q-67793 |27,30,35°;175 in²|57,64,73,53,69|c,c+7,c+16,c−4,c+12|405 sin35°=232.298…≈232;232−175=57|
+| q-161105 |9,16,66°;52 in²|16,15,14,10,12|c+2,c+1,c,c−4,c−2|72 sin66°=65.775…≈66;66−52=14|
+
+All are five-choice hard radios. Side factors match inspected raster labels. Unit spacing includes a thin-space command in the new final answers; the parameterized final substitution preserves it. The eleven complete raw banks contain 39 values, including 28 distractors, all replayed one-to-one with ten observed correct designations and one absent designation. Offset interpretations remain unresolved; these profiles remain evidence only. The learner-default method bank is explicitly authored and mathematically checked.

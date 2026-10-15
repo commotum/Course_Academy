@@ -380,6 +380,166 @@ $$
 \begin{aligned}{A}_{△BCD} & ={A}_{△ABD}-{A}_{ABCD} \\  & =53-34 \\  & =19{\text{ cm}}^{2}.\end{aligned}
 $$
 
+## Original q-67795
+
+![](images/16/160b47689a56ef98c0a0d6b2df6dcf838857ba840ce017ac0707366304f68f83.png)
+
+The area of $ABCD$ is $112\,{\text{cm}}^{2}.$ Rounded to the nearest integer, the area of $△BCD=$
+
+- $66\,{\text{ cm}}^{2}$
+- $44\,{\text{ cm}}^{2}$
+- $45\,{\text{ cm}}^{2}$ (correct)
+- $65\,{\text{ cm}}^{2}$
+- $75\,{\text{ cm}}^{2}$
+
+Let's start by finding the area of $△ABD.$ We get 
+
+$$
+\begin{aligned}{A}_{△ABD} & =\frac{1}{2}\cdot AB\cdot AD\cdot \operatorname{sin}⁡A \\  & =\frac{1}{2}\cdot 24\cdot 16\cdot \operatorname{sin}⁡{55}^{∘} \\  & =192\cdot \operatorname{sin}⁡{55}^{∘} \\  & =157.277… \\  & ≈157\,{\text{ cm}}^{2}\end{aligned}
+$$
+
+rounded to the nearest integer.
+
+The difference of the areas of $△ABD$ and the quadrilateral $ABCD$ gives the area of $△BCD.$ Therefore, 
+
+$$
+\begin{aligned}{A}_{△BCD} & ={A}_{△ABD}-{A}_{ABCD} \\  & =157-112 \\  & =45\,{\text{ cm}}^{2}.\end{aligned}
+$$
+
+### Supported repair (opaque bank; evidence only)
+
+![](images/16/160b47689a56ef98c0a0d6b2df6dcf838857ba840ce017ac0707366304f68f83.png)
+
+The area of $ABCD$ is $112\,{\text{cm}}^{2}.$ Rounded to the nearest integer, the area of $△BCD=$
+
+- $66\,{\text{ cm}}^{2}$
+- $44\,{\text{ cm}}^{2}$
+- $45\,{\text{ cm}}^{2}$ (correct)
+- $65\,{\text{ cm}}^{2}$
+- $75\,{\text{ cm}}^{2}$
+
+Let's start by finding the area of $△ABD.$ We get 
+
+$$
+\begin{aligned}{A}_{△ABD} & =\frac{1}{2}\cdot AB\cdot AD\cdot \operatorname{sin}⁡A \\  & =\frac{1}{2}\cdot 24\cdot 16\cdot \operatorname{sin}⁡{55}^{∘} \\  & =192\cdot \operatorname{sin}⁡{55}^{∘} \\  & =157.277… \\  & ≈157\,{\text{ cm}}^{2}\end{aligned}
+$$
+
+rounded to the nearest integer.
+
+The difference of the areas of $△ABD$ and the quadrilateral $ABCD$ gives the area of $△BCD.$ Therefore, 
+
+$$
+\begin{aligned}{A}_{△BCD} & ={A}_{△ABD}-{A}_{ABCD} \\  & =157-112 \\  & =45\,{\text{ cm}}^{2}.\end{aligned}
+$$
+
+## Original q-67793
+
+![](images/ca/ca15b4523cd12bdfb4661624eba58387e15ebef6e228c1740b4582ba6af556a9.png)
+
+The area of $ABCD$ is $175{\text{ in}}^{2}.$   What is the area of $△BCD$ rounded to the nearest integer?
+
+- $73\,{\text{ in}}^{2}$
+- $64\,{\text{ in}}^{2}$
+- $57\,{\text{ in}}^{2}$ (correct)
+- $69\,{\text{ in}}^{2}$
+- $53\,{\text{ in}}^{2}$
+
+Let's start by finding the area of $△ABD.$ We get 
+
+$$
+\begin{aligned}{A}_{△ABD} & =\frac{1}{2}\cdot AB\cdot AD\cdot \operatorname{sin}⁡A \\  & =\frac{1}{2}\cdot 27\cdot 30\cdot \operatorname{sin}⁡{35}^{∘} \\  & =405\cdot \operatorname{sin}⁡{35}^{∘} \\  & =232.298… \\  & ≈232{\text{ in}}^{2},\end{aligned}
+$$
+
+rounded to the nearest integer.
+
+The difference of the areas of  $△ABD$ and the quadrilateral $ABCD$ gives the area of $△BCD.$ Therefore, 
+ 
+
+$$
+\begin{aligned}{A}_{△BCD} & ={A}_{△ABD}-{A}_{ABCD} \\  & =232-175 \\  & =57\,{\text{ in}}^{2}.\end{aligned}
+$$
+
+### Supported repair (opaque bank; evidence only)
+
+![](images/ca/ca15b4523cd12bdfb4661624eba58387e15ebef6e228c1740b4582ba6af556a9.png)
+
+The area of $ABCD$ is $175{\text{ in}}^{2}.$   What is the area of $△BCD$ rounded to the nearest integer?
+
+- $73\,{\text{ in}}^{2}$
+- $64\,{\text{ in}}^{2}$
+- $57\,{\text{ in}}^{2}$ (correct)
+- $69\,{\text{ in}}^{2}$
+- $53\,{\text{ in}}^{2}$
+
+Let's start by finding the area of $△ABD.$ We get 
+
+$$
+\begin{aligned}{A}_{△ABD} & =\frac{1}{2}\cdot AB\cdot AD\cdot \operatorname{sin}⁡A \\  & =\frac{1}{2}\cdot 27\cdot 30\cdot \operatorname{sin}⁡{35}^{∘} \\  & =405\cdot \operatorname{sin}⁡{35}^{∘} \\  & =232.298… \\  & ≈232{\text{ in}}^{2},\end{aligned}
+$$
+
+rounded to the nearest integer.
+
+The difference of the areas of  $△ABD$ and the quadrilateral $ABCD$ gives the area of $△BCD.$ Therefore, 
+ 
+
+$$
+\begin{aligned}{A}_{△BCD} & ={A}_{△ABD}-{A}_{ABCD} \\  & =232-175 \\  & =57\,{\text{ in}}^{2}.\end{aligned}
+$$
+
+## Original q-161105
+
+![](images/0b/0b460a07026e489fb7c63dad99c04c7e44540138632626dcd3ebcafb5c0a93d3.png)
+
+The area of $ABCD$ is $52{\text{ in}}^{2}.$   What is the area of $△BCD$ rounded to the nearest integer?
+
+- $14\,{\text{ in}}^{2}$ (correct)
+- $15\,{\text{ in}}^{2}$
+- $16\,{\text{ in}}^{2}$
+- $12\,{\text{ in}}^{2}$
+- $10\,{\text{ in}}^{2}$
+
+Let's start by finding the area of $△ABD.$ We get 
+
+$$
+\begin{aligned}{A}_{△ABD} & =\frac{1}{2}\cdot AB\cdot AD\cdot \operatorname{sin}⁡A \\  & =\frac{1}{2}\cdot 9\cdot 16\cdot \operatorname{sin}⁡{66}^{∘} \\  & =72\cdot \operatorname{sin}⁡{66}^{∘} \\  & =65.775… \\  & ≈66{\text{ in}}^{2},\end{aligned}
+$$
+
+rounded to the nearest integer.
+
+The difference of the areas of  $△ABD$ and the quadrilateral $ABCD$ gives the area of $△BCD.$ Therefore, 
+ 
+
+$$
+\begin{aligned}{A}_{△BCD} & ={A}_{△ABD}-{A}_{ABCD} \\  & =66-52 \\  & =14\,{\text{ in}}^{2}.\end{aligned}
+$$
+
+### Supported repair (opaque bank; evidence only)
+
+![](images/0b/0b460a07026e489fb7c63dad99c04c7e44540138632626dcd3ebcafb5c0a93d3.png)
+
+The area of $ABCD$ is $52{\text{ in}}^{2}.$   What is the area of $△BCD$ rounded to the nearest integer?
+
+- $14\,{\text{ in}}^{2}$ (correct)
+- $15\,{\text{ in}}^{2}$
+- $16\,{\text{ in}}^{2}$
+- $12\,{\text{ in}}^{2}$
+- $10\,{\text{ in}}^{2}$
+
+Let's start by finding the area of $△ABD.$ We get 
+
+$$
+\begin{aligned}{A}_{△ABD} & =\frac{1}{2}\cdot AB\cdot AD\cdot \operatorname{sin}⁡A \\  & =\frac{1}{2}\cdot 9\cdot 16\cdot \operatorname{sin}⁡{66}^{∘} \\  & =72\cdot \operatorname{sin}⁡{66}^{∘} \\  & =65.775… \\  & ≈66{\text{ in}}^{2},\end{aligned}
+$$
+
+rounded to the nearest integer.
+
+The difference of the areas of  $△ABD$ and the quadrilateral $ABCD$ gives the area of $△BCD.$ Therefore, 
+ 
+
+$$
+\begin{aligned}{A}_{△BCD} & ={A}_{△ABD}-{A}_{ABCD} \\  & =66-52 \\  & =14\,{\text{ in}}^{2}.\end{aligned}
+$$
+
 ## Generated hard / q-18188
 
 ![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105906/plots/triangle-1bc38687ff37561c785cc627.png)
@@ -764,6 +924,166 @@ The difference of the areas of $△ABD$ and the quadrilateral $ABCD$ gives the a
 
 $$
 \begin{aligned}{A}_{△BCD} & ={A}_{△ABD}-{A}_{ABCD} \\  & =472-347 \\  & =125{\text{ cm}}^{2}.\end{aligned}
+$$
+
+## Generated hard / q-67795
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105906/plots/triangle-6ed0ced14e11a7f15179ba40.png)
+
+The area of $ABCD$ is $82{\text{ km}}^{2}.$ What is the area of $△BCD$ rounded to the nearest integer?
+
+- $123{\text{ km}}^{2}$
+- $184{\text{ km}}^{2}$
+- $42{\text{ km}}^{2}$
+- $20{\text{ km}}^{2}$ (correct)
+- $102{\text{ km}}^{2}$
+
+Let's start by finding the area of $△ABD.$ We get 
+
+$$
+\begin{aligned}{A}_{△ABD} & =\frac{1}{2}\cdot AB\cdot AD\cdot \operatorname{sin}⁡A \\  & =\frac{1}{2}\cdot 19\cdot 13\cdot \operatorname{sin}⁡{124}^{∘} \\  & =123.5\cdot \operatorname{sin}⁡{124}^{∘} \\  & =102.386… \\  & ≈102\,{\text{ km}}^{2}\end{aligned}
+$$
+
+rounded to the nearest integer.
+
+The difference of the areas of $△ABD$ and the quadrilateral $ABCD$ gives the area of $△BCD.$ Therefore, 
+
+$$
+\begin{aligned}{A}_{△BCD} & ={A}_{△ABD}-{A}_{ABCD} \\  & =102-82 \\  & =20\,{\text{ km}}^{2}.\end{aligned}
+$$
+
+## Generated hard / q-67795
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105906/plots/triangle-6791dfa7cdf6b0b11cf05bff.png)
+
+The area of $ABCD$ is $352{\text{ km}}^{2}.$ What is the area of $△BCD$ rounded to the nearest integer?
+
+- $72{\text{ km}}^{2}$ (correct)
+- $424{\text{ km}}^{2}$
+- $776{\text{ km}}^{2}$
+- $76{\text{ km}}^{2}$
+- $495{\text{ km}}^{2}$
+
+Let's start by finding the area of $△ABD.$ We get 
+
+$$
+\begin{aligned}{A}_{△ABD} & =\frac{1}{2}\cdot AB\cdot AD\cdot \operatorname{sin}⁡A \\  & =\frac{1}{2}\cdot 29\cdot 29.5\cdot \operatorname{sin}⁡{98}^{∘} \\  & =427.75\cdot \operatorname{sin}⁡{98}^{∘} \\  & =423.587… \\  & ≈424\,{\text{ km}}^{2}\end{aligned}
+$$
+
+rounded to the nearest integer.
+
+The difference of the areas of $△ABD$ and the quadrilateral $ABCD$ gives the area of $△BCD.$ Therefore, 
+
+$$
+\begin{aligned}{A}_{△BCD} & ={A}_{△ABD}-{A}_{ABCD} \\  & =424-352 \\  & =72\,{\text{ km}}^{2}.\end{aligned}
+$$
+
+## Generated hard / q-67793
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105906/plots/triangle-2e4cd1ea1df0b3d70b4ac61d.png)
+
+The area of $ABCD$ is $123{\text{ cm}}^{2}.$ What is the area of $△BCD$ rounded to the nearest integer?
+
+- $347{\text{ cm}}^{2}$
+- $129{\text{ cm}}^{2}$
+- $101{\text{ cm}}^{2}$ (correct)
+- $326{\text{ cm}}^{2}$
+- $224{\text{ cm}}^{2}$
+
+Let's start by finding the area of $△ABD.$ We get 
+
+$$
+\begin{aligned}{A}_{△ABD} & =\frac{1}{2}\cdot AB\cdot AD\cdot \operatorname{sin}⁡A \\  & =\frac{1}{2}\cdot 26.5\cdot 19\cdot \operatorname{sin}⁡{117}^{∘} \\  & =251.75\cdot \operatorname{sin}⁡{117}^{∘} \\  & =224.310… \\  & ≈224{\text{ cm}}^{2},\end{aligned}
+$$
+
+rounded to the nearest integer.
+
+The difference of the areas of  $△ABD$ and the quadrilateral $ABCD$ gives the area of $△BCD.$ Therefore, 
+ 
+
+$$
+\begin{aligned}{A}_{△BCD} & ={A}_{△ABD}-{A}_{ABCD} \\  & =224-123 \\  & =101\,{\text{ cm}}^{2}.\end{aligned}
+$$
+
+## Generated hard / q-67793
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105906/plots/triangle-400a1bf484ea6616393ba733.png)
+
+The area of $ABCD$ is $9{\text{ cm}}^{2}.$ What is the area of $△BCD$ rounded to the nearest integer?
+
+- $7{\text{ cm}}^{2}$ (correct)
+- $25{\text{ cm}}^{2}$
+- $12{\text{ cm}}^{2}$
+- $16{\text{ cm}}^{2}$
+- $24{\text{ cm}}^{2}$
+
+Let's start by finding the area of $△ABD.$ We get 
+
+$$
+\begin{aligned}{A}_{△ABD} & =\frac{1}{2}\cdot AB\cdot AD\cdot \operatorname{sin}⁡A \\  & =\frac{1}{2}\cdot 8.5\cdot 5\cdot \operatorname{sin}⁡{130}^{∘} \\  & =21.25\cdot \operatorname{sin}⁡{130}^{∘} \\  & =16.278… \\  & ≈16{\text{ cm}}^{2},\end{aligned}
+$$
+
+rounded to the nearest integer.
+
+The difference of the areas of  $△ABD$ and the quadrilateral $ABCD$ gives the area of $△BCD.$ Therefore, 
+ 
+
+$$
+\begin{aligned}{A}_{△BCD} & ={A}_{△ABD}-{A}_{ABCD} \\  & =16-9 \\  & =7\,{\text{ cm}}^{2}.\end{aligned}
+$$
+
+## Generated hard / q-161105
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105906/plots/triangle-a61b99fdd1c6372966618d4f.png)
+
+The area of $ABCD$ is $172{\text{ cm}}^{2}.$ What is the area of $△BCD$ rounded to the nearest integer?
+
+- $260{\text{ cm}}^{2}$
+- $47{\text{ cm}}^{2}$
+- $44{\text{ cm}}^{2}$ (correct)
+- $388{\text{ cm}}^{2}$
+- $216{\text{ cm}}^{2}$
+
+Let's start by finding the area of $△ABD.$ We get 
+
+$$
+\begin{aligned}{A}_{△ABD} & =\frac{1}{2}\cdot AB\cdot AD\cdot \operatorname{sin}⁡A \\  & =\frac{1}{2}\cdot 16.5\cdot 26.5\cdot \operatorname{sin}⁡{81}^{∘} \\  & =218.625\cdot \operatorname{sin}⁡{81}^{∘} \\  & =215.933… \\  & ≈216{\text{ cm}}^{2},\end{aligned}
+$$
+
+rounded to the nearest integer.
+
+The difference of the areas of  $△ABD$ and the quadrilateral $ABCD$ gives the area of $△BCD.$ Therefore, 
+ 
+
+$$
+\begin{aligned}{A}_{△BCD} & ={A}_{△ABD}-{A}_{ABCD} \\  & =216-172 \\  & =44\,{\text{ cm}}^{2}.\end{aligned}
+$$
+
+## Generated hard / q-161105
+
+![](/home/jake/Developer/Course_Academy/generate/scratch/17592186105906/plots/triangle-eb611ee4fecf208bd692d96f.png)
+
+The area of $ABCD$ is $64{\text{ in}}^{2}.$ What is the area of $△BCD$ rounded to the nearest integer?
+
+- $20{\text{ in}}^{2}$ (correct)
+- $84{\text{ in}}^{2}$
+- $148{\text{ in}}^{2}$
+- $104{\text{ in}}^{2}$
+- $31{\text{ in}}^{2}$
+
+Let's start by finding the area of $△ABD.$ We get 
+
+$$
+\begin{aligned}{A}_{△ABD} & =\frac{1}{2}\cdot AB\cdot AD\cdot \operatorname{sin}⁡A \\  & =\frac{1}{2}\cdot 20\cdot 9.5\cdot \operatorname{sin}⁡{62}^{∘} \\  & =95\cdot \operatorname{sin}⁡{62}^{∘} \\  & =83.880… \\  & ≈84{\text{ in}}^{2},\end{aligned}
+$$
+
+rounded to the nearest integer.
+
+The difference of the areas of  $△ABD$ and the quadrilateral $ABCD$ gives the area of $△BCD.$ Therefore, 
+ 
+
+$$
+\begin{aligned}{A}_{△BCD} & ={A}_{△ABD}-{A}_{ABCD} \\  & =84-64 \\  & =20\,{\text{ in}}^{2}.\end{aligned}
 $$
 
 ## Generated easy / easy_area

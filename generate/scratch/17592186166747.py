@@ -245,7 +245,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         f[':answer-field/id']=uid([qid,'field',i]);ci=f.pop('_correct_index',None)
         for a in f[':answer-field/choices']:a[':answer/id']=uid([f[':answer-field/id'],a[':answer/value']])
         if ci is not None:f[':answer-field/correct']=[':answer/id',f[':answer-field/choices'][ci][':answer/id']]
-        if profile!='observed_raw':r.shuffle(f[':answer-field/choices'])
+        if profile!='observed_raw':random.Random(seed).shuffle(f[':answer-field/choices'])
     # Canonical mathematical object: complete composite F(X(v),Y(v)) up to
     # nonzero output scaling, independent-symbol alias. No bank/seed/order.
     if stage:

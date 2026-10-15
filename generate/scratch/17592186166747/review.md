@@ -7,11 +7,11 @@ Raw evidence is ineligible; all normal examples use complete method-derived bank
 
 If $f(x,y)=x e^{x y},$ $x=5 t^{3}$ and $y=4 t,$ compute $\frac{\text{d}f}{\text{d}t}$.
 
-- $- 100 t^{6} e^{20 t^{4}} + 15 t^{2} (20 t^{4} e^{20 t^{4}} + e^{20 t^{4}})$
-- $15 t^{2} (20 t^{4} e^{20 t^{4}} + e^{20 t^{4}})$
 - $5 t^{2} (80 t^{4} + 3) e^{20 t^{4}}$
-- $- 5 t^{2} (80 t^{4} + 3) e^{20 t^{4}}$
 - $100 t^{6} e^{20 t^{4}}$
+- $15 t^{2} (20 t^{4} e^{20 t^{4}} + e^{20 t^{4}})$
+- $- 100 t^{6} e^{20 t^{4}} + 15 t^{2} (20 t^{4} e^{20 t^{4}} + e^{20 t^{4}})$
+- $- 5 t^{2} (80 t^{4} + 3) e^{20 t^{4}}$
 
 ![](images/f0/f01b253f560405a8c0f4be8f8797c652fb0ddf774f4db110b8822313b8ac50f3.png)
 
@@ -49,11 +49,11 @@ $$
 
 If $f(x,y)=x e^{x y},$ $x=2 t^{4}$ and $y=t,$ compute $\frac{\text{d}f}{\text{d}t}$.
 
-- $8 t^{3} (2 t^{5} e^{2 t^{5}} + e^{2 t^{5}})$
-- $- 4 t^{3} (5 t^{5} + 2) e^{2 t^{5}}$
-- $4 t^{3} (5 t^{5} + 2) e^{2 t^{5}}$
-- $4 t^{8} e^{2 t^{5}}$
 - $- 4 t^{8} e^{2 t^{5}} + 8 t^{3} (2 t^{5} e^{2 t^{5}} + e^{2 t^{5}})$
+- $- 4 t^{3} (5 t^{5} + 2) e^{2 t^{5}}$
+- $4 t^{8} e^{2 t^{5}}$
+- $4 t^{3} (5 t^{5} + 2) e^{2 t^{5}}$
+- $8 t^{3} (2 t^{5} e^{2 t^{5}} + e^{2 t^{5}})$
 
 ![](images/f0/f01b253f560405a8c0f4be8f8797c652fb0ddf774f4db110b8822313b8ac50f3.png)
 
@@ -229,11 +229,11 @@ $$
 
 If $f(x,y)=\ln{(x y^{3} )},$ $x=\cos{(5 t )}$ and $y=\sin{(5 t )},$ compute $\frac{\text{d}f}{\text{d}t}$ for $0<5 t<\frac{\pi}{2}$.
 
-- $- \frac{5 \sin{(5 t )}}{\cos{(5 t )}} - \frac{15 \cos{(5 t )}}{\sin{(5 t )}}$
-- $- \frac{5 \sin{(5 t )}}{\cos{(5 t )}}$
 - $- 5 \tan{(5 t )} + 15 \cot{(5 t )}$
-- $5 \tan{(5 t )} - 15 \cot{(5 t )}$
 - $\frac{15 \cos{(5 t )}}{\sin{(5 t )}}$
+- $- \frac{5 \sin{(5 t )}}{\cos{(5 t )}}$
+- $- \frac{5 \sin{(5 t )}}{\cos{(5 t )}} - \frac{15 \cos{(5 t )}}{\sin{(5 t )}}$
+- $5 \tan{(5 t )} - 15 \cot{(5 t )}$
 
 ![](images/f0/f01b253f560405a8c0f4be8f8797c652fb0ddf774f4db110b8822313b8ac50f3.png)
 
@@ -271,11 +271,11 @@ $$
 
 If $f(x,y)=\ln{(x y^{4} )},$ $x=\cos{(2 t )}$ and $y=\sin{(2 t )},$ compute $\frac{\text{d}f}{\text{d}t}$ for $0<2 t<\frac{\pi}{2}$.
 
-- $- \frac{2 \sin{(2 t )}}{\cos{(2 t )}}$
-- $2 \tan{(2 t )} - 8 \cot{(2 t )}$
-- $- 2 \tan{(2 t )} + 8 \cot{(2 t )}$
-- $\frac{8 \cos{(2 t )}}{\sin{(2 t )}}$
 - $- \frac{2 \sin{(2 t )}}{\cos{(2 t )}} - \frac{8 \cos{(2 t )}}{\sin{(2 t )}}$
+- $2 \tan{(2 t )} - 8 \cot{(2 t )}$
+- $\frac{8 \cos{(2 t )}}{\sin{(2 t )}}$
+- $- 2 \tan{(2 t )} + 8 \cot{(2 t )}$
+- $- \frac{2 \sin{(2 t )}}{\cos{(2 t )}}$
 
 ![](images/f0/f01b253f560405a8c0f4be8f8797c652fb0ddf774f4db110b8822313b8ac50f3.png)
 
@@ -481,11 +481,11 @@ $$
 
 If $f(x,y)=\sin{(x )} \cos{(y )},$ $x=5 t^{3}$ and $y=4 t,$ compute $\frac{\text{d}f}{\text{d}t}$.
 
-- $15 t^{2} \cos{(4 t )} \cos{(5 t^{3} )} + 4 \sin{(4 t )} \sin{(5 t^{3} )}$
-- $15 t^{2} \cos{(4 t )} \cos{(5 t^{3} )}$
 - $15 t^{2} \cos{(4 t )} \cos{(5 t^{3} )} - 4 \sin{(4 t )} \sin{(5 t^{3} )}$
-- $- 15 t^{2} \cos{(4 t )} \cos{(5 t^{3} )} + 4 \sin{(4 t )} \sin{(5 t^{3} )}$
 - $- 4 \sin{(4 t )} \sin{(5 t^{3} )}$
+- $15 t^{2} \cos{(4 t )} \cos{(5 t^{3} )}$
+- $15 t^{2} \cos{(4 t )} \cos{(5 t^{3} )} + 4 \sin{(4 t )} \sin{(5 t^{3} )}$
+- $- 15 t^{2} \cos{(4 t )} \cos{(5 t^{3} )} + 4 \sin{(4 t )} \sin{(5 t^{3} )}$
 
 ![](images/f0/f01b253f560405a8c0f4be8f8797c652fb0ddf774f4db110b8822313b8ac50f3.png)
 
@@ -523,11 +523,11 @@ $$
 
 If $f(x,y)=\sin{(x )} \cos{(y )},$ $x=2 t^{4}$ and $y=t,$ compute $\frac{\text{d}f}{\text{d}t}$.
 
-- $8 t^{3} \cos{(t )} \cos{(2 t^{4} )}$
-- $- 8 t^{3} \cos{(t )} \cos{(2 t^{4} )} + \sin{(t )} \sin{(2 t^{4} )}$
-- $8 t^{3} \cos{(t )} \cos{(2 t^{4} )} - \sin{(t )} \sin{(2 t^{4} )}$
-- $- \sin{(t )} \sin{(2 t^{4} )}$
 - $8 t^{3} \cos{(t )} \cos{(2 t^{4} )} + \sin{(t )} \sin{(2 t^{4} )}$
+- $- 8 t^{3} \cos{(t )} \cos{(2 t^{4} )} + \sin{(t )} \sin{(2 t^{4} )}$
+- $- \sin{(t )} \sin{(2 t^{4} )}$
+- $8 t^{3} \cos{(t )} \cos{(2 t^{4} )} - \sin{(t )} \sin{(2 t^{4} )}$
+- $8 t^{3} \cos{(t )} \cos{(2 t^{4} )}$
 
 ![](images/f0/f01b253f560405a8c0f4be8f8797c652fb0ddf774f4db110b8822313b8ac50f3.png)
 
@@ -733,11 +733,11 @@ $$
 
 If $f(x,y)=x^{2} e^{y},$ $x=5 t$ and $y=4 t^{3},$ compute $\frac{\text{d}f}{\text{d}t}$.
 
-- $- 300 t^{4} e^{4 t^{3}} + 50 t e^{4 t^{3}}$
-- $50 t e^{4 t^{3}}$
 - $50 t (6 t^{3} + 1) e^{4 t^{3}}$
-- $- 50 t (6 t^{3} + 1) e^{4 t^{3}}$
 - $300 t^{4} e^{4 t^{3}}$
+- $50 t e^{4 t^{3}}$
+- $- 300 t^{4} e^{4 t^{3}} + 50 t e^{4 t^{3}}$
+- $- 50 t (6 t^{3} + 1) e^{4 t^{3}}$
 
 ![](images/f0/f01b253f560405a8c0f4be8f8797c652fb0ddf774f4db110b8822313b8ac50f3.png)
 
@@ -775,11 +775,11 @@ $$
 
 If $f(x,y)=x^{2} e^{y},$ $x=2 t$ and $y=t^{4},$ compute $\frac{\text{d}f}{\text{d}t}$.
 
-- $8 t e^{t^{4}}$
-- $- 8 t (2 t^{4} + 1) e^{t^{4}}$
-- $8 t (2 t^{4} + 1) e^{t^{4}}$
-- $16 t^{5} e^{t^{4}}$
 - $- 16 t^{5} e^{t^{4}} + 8 t e^{t^{4}}$
+- $- 8 t (2 t^{4} + 1) e^{t^{4}}$
+- $16 t^{5} e^{t^{4}}$
+- $8 t (2 t^{4} + 1) e^{t^{4}}$
+- $8 t e^{t^{4}}$
 
 ![](images/f0/f01b253f560405a8c0f4be8f8797c652fb0ddf774f4db110b8822313b8ac50f3.png)
 
@@ -985,11 +985,11 @@ $$
 
 If $f(x,y)=\sqrt{2xy},$ $x=5 t^{3}$ and $y=\ln{(4 t )},$ compute $\frac{\text{d}f}{\text{d}t}$ for $t>0$ and $4 t>1$.
 
-- $\frac{3 \sqrt{10} \sqrt{t} \sqrt{\ln{(4 t )}}}{2} - \frac{\sqrt{10} \sqrt{t}}{2 \sqrt{\ln{(4 t )}}}$
-- $\frac{3 \sqrt{10} \sqrt{t} \sqrt{\ln{(4 t )}}}{2}$
 - $\frac{\sqrt{10} \sqrt{t} (3 \ln{(t )} + 1 + 6 \ln{(2 )})}{2 \sqrt{\ln{(t )} + 2 \ln{(2 )}}}$
-- $- \frac{\sqrt{10} \sqrt{t} (3 \ln{(t )} + 1 + 6 \ln{(2 )})}{2 \sqrt{\ln{(t )} + 2 \ln{(2 )}}}$
 - $\frac{\sqrt{10} \sqrt{t}}{2 \sqrt{\ln{(4 t )}}}$
+- $\frac{3 \sqrt{10} \sqrt{t} \sqrt{\ln{(4 t )}}}{2}$
+- $\frac{3 \sqrt{10} \sqrt{t} \sqrt{\ln{(4 t )}}}{2} - \frac{\sqrt{10} \sqrt{t}}{2 \sqrt{\ln{(4 t )}}}$
+- $- \frac{\sqrt{10} \sqrt{t} (3 \ln{(t )} + 1 + 6 \ln{(2 )})}{2 \sqrt{\ln{(t )} + 2 \ln{(2 )}}}$
 
 ![](images/f0/f01b253f560405a8c0f4be8f8797c652fb0ddf774f4db110b8822313b8ac50f3.png)
 
@@ -1027,11 +1027,11 @@ $$
 
 If $f(x,y)=\sqrt{2xy},$ $x=2 t^{4}$ and $y=\ln{(t )},$ compute $\frac{\text{d}f}{\text{d}t}$ for $t>0$ and $t>1$.
 
-- $4 t \sqrt{\ln{(t )}}$
-- $- \frac{t (4 \ln{(t )} + 1)}{\sqrt{\ln{(t )}}}$
-- $\frac{t (4 \ln{(t )} + 1)}{\sqrt{\ln{(t )}}}$
-- $\frac{t}{\sqrt{\ln{(t )}}}$
 - $4 t \sqrt{\ln{(t )}} - \frac{t}{\sqrt{\ln{(t )}}}$
+- $- \frac{t (4 \ln{(t )} + 1)}{\sqrt{\ln{(t )}}}$
+- $\frac{t}{\sqrt{\ln{(t )}}}$
+- $\frac{t (4 \ln{(t )} + 1)}{\sqrt{\ln{(t )}}}$
+- $4 t \sqrt{\ln{(t )}}$
 
 ![](images/f0/f01b253f560405a8c0f4be8f8797c652fb0ddf774f4db110b8822313b8ac50f3.png)
 
@@ -1237,11 +1237,11 @@ $$
 
 If $f(x,y)=x \cos{(y )},$ $x=5 t$ and $y=4 t,$ compute $\frac{\text{d}f}{\text{d}t}$.
 
-- $20 t \sin{(4 t )} + 5 \cos{(4 t )}$
 - $5 (- 4 t \sin{(4 t )} + \cos{(4 t )})$
-- $5 \cos{(4 t )}$
-- $- 5 (- 4 t \sin{(4 t )} + \cos{(4 t )})$
 - $- 20 t \sin{(4 t )}$
+- $5 \cos{(4 t )}$
+- $20 t \sin{(4 t )} + 5 \cos{(4 t )}$
+- $- 5 (- 4 t \sin{(4 t )} + \cos{(4 t )})$
 
 ![](images/f0/f01b253f560405a8c0f4be8f8797c652fb0ddf774f4db110b8822313b8ac50f3.png)
 
@@ -1279,11 +1279,11 @@ $$
 
 If $f(x,y)=x \cos{(y )},$ $x=2 t$ and $y=t,$ compute $\frac{\text{d}f}{\text{d}t}$.
 
-- $2 \cos{(t )}$
-- $- 2 (- t \sin{(t )} + \cos{(t )})$
-- $2 (- t \sin{(t )} + \cos{(t )})$
-- $- 2 t \sin{(t )}$
 - $2 t \sin{(t )} + 2 \cos{(t )}$
+- $- 2 (- t \sin{(t )} + \cos{(t )})$
+- $- 2 t \sin{(t )}$
+- $2 (- t \sin{(t )} + \cos{(t )})$
+- $2 \cos{(t )}$
 
 ![](images/f0/f01b253f560405a8c0f4be8f8797c652fb0ddf774f4db110b8822313b8ac50f3.png)
 
@@ -1489,11 +1489,11 @@ $$
 
 If $f(x,y)=e^{x + 4 y},$ $x=5 s^{3}$ and $y=s,$ compute $\frac{\text{d}f}{\text{d}s}$.
 
-- $15 s^{2} e^{5 s^{3} + 4 s} - 4 e^{5 s^{3} + 4 s}$
-- $15 s^{2} e^{5 s^{3} + 4 s}$
 - $(15 s^{2} + 4) e^{5 s^{3} + 4 s}$
-- $- (15 s^{2} + 4) e^{5 s^{3} + 4 s}$
 - $4 e^{5 s^{3} + 4 s}$
+- $15 s^{2} e^{5 s^{3} + 4 s}$
+- $15 s^{2} e^{5 s^{3} + 4 s} - 4 e^{5 s^{3} + 4 s}$
+- $- (15 s^{2} + 4) e^{5 s^{3} + 4 s}$
 
 ![](images/7e/7e5b5001794ecdf2c9b9e9102f334a63d2c59bc6f7511c2eb7fa358fc94cb0c5.png)
 
@@ -1531,11 +1531,11 @@ $$
 
 If $f(x,y)=e^{x + y},$ $x=2 s^{4}$ and $y=s,$ compute $\frac{\text{d}f}{\text{d}s}$.
 
-- $8 s^{3} e^{2 s^{4} + s}$
-- $- (8 s^{3} + 1) e^{2 s^{4} + s}$
-- $(8 s^{3} + 1) e^{2 s^{4} + s}$
-- $e^{2 s^{4} + s}$
 - $8 s^{3} e^{2 s^{4} + s} - e^{2 s^{4} + s}$
+- $- (8 s^{3} + 1) e^{2 s^{4} + s}$
+- $e^{2 s^{4} + s}$
+- $(8 s^{3} + 1) e^{2 s^{4} + s}$
+- $8 s^{3} e^{2 s^{4} + s}$
 
 ![](images/7e/7e5b5001794ecdf2c9b9e9102f334a63d2c59bc6f7511c2eb7fa358fc94cb0c5.png)
 
@@ -1741,11 +1741,11 @@ $$
 
 If $f(x,y)=x \ln{(y )} + y,$ $x=5 s$ and $y=4 s,$ compute $\frac{\text{d}f}{\text{d}s}$ for $s>0$.
 
-- $5 \ln{(4 s )} - 9$
 - $5 \ln{(4 s )} + 9$
-- $5 \ln{(4 s )}$
-- $- 5 \ln{(4 s )} - 9$
 - $9$
+- $5 \ln{(4 s )}$
+- $5 \ln{(4 s )} - 9$
+- $- 5 \ln{(4 s )} - 9$
 
 ![](images/7e/7e5b5001794ecdf2c9b9e9102f334a63d2c59bc6f7511c2eb7fa358fc94cb0c5.png)
 
@@ -1783,11 +1783,11 @@ $$
 
 If $f(x,y)=x \ln{(y )} + y,$ $x=2 s$ and $y=s,$ compute $\frac{\text{d}f}{\text{d}s}$ for $s>0$.
 
-- $2 \ln{(s )}$
-- $- 2 \ln{(s )} - 3$
-- $2 \ln{(s )} + 3$
-- $3$
 - $2 \ln{(s )} - 3$
+- $- 2 \ln{(s )} - 3$
+- $3$
+- $2 \ln{(s )} + 3$
+- $2 \ln{(s )}$
 
 ![](images/7e/7e5b5001794ecdf2c9b9e9102f334a63d2c59bc6f7511c2eb7fa358fc94cb0c5.png)
 
@@ -1993,11 +1993,11 @@ $$
 
 If $f(x,y)=\frac{x}{y},$ $x=\cos{(5 s )}$ and $y=\sin{(5 s )},$ compute $\frac{\text{d}f}{\text{d}s}$ where $\sin(5 s)\ne0$.
 
-- $-5 + \frac{5 \cos^{2}{(5 s )}}{\sin^{2}{(5 s )}}$
 - $- 5 \csc^{2}{(5 s )}$
-- $-5$
-- $5 \csc^{2}{(5 s )}$
 - $- \frac{5 \cos^{2}{(5 s )}}{\sin^{2}{(5 s )}}$
+- $-5$
+- $-5 + \frac{5 \cos^{2}{(5 s )}}{\sin^{2}{(5 s )}}$
+- $5 \csc^{2}{(5 s )}$
 
 ![](images/7e/7e5b5001794ecdf2c9b9e9102f334a63d2c59bc6f7511c2eb7fa358fc94cb0c5.png)
 
@@ -2035,11 +2035,11 @@ $$
 
 If $f(x,y)=\frac{x}{y},$ $x=\cos{(2 s )}$ and $y=\sin{(2 s )},$ compute $\frac{\text{d}f}{\text{d}s}$ where $\sin(2 s)\ne0$.
 
-- $-2$
-- $2 \csc^{2}{(2 s )}$
-- $- 2 \csc^{2}{(2 s )}$
-- $- \frac{2 \cos^{2}{(2 s )}}{\sin^{2}{(2 s )}}$
 - $-2 + \frac{2 \cos^{2}{(2 s )}}{\sin^{2}{(2 s )}}$
+- $2 \csc^{2}{(2 s )}$
+- $- \frac{2 \cos^{2}{(2 s )}}{\sin^{2}{(2 s )}}$
+- $- 2 \csc^{2}{(2 s )}$
+- $-2$
 
 ![](images/7e/7e5b5001794ecdf2c9b9e9102f334a63d2c59bc6f7511c2eb7fa358fc94cb0c5.png)
 
@@ -2245,11 +2245,11 @@ $$
 
 If $f(x,y)=\frac{x}{y + 4},$ $x=5 s^{3}$ and $y=s,$ compute $\frac{\text{d}f}{\text{d}s}$ where $s + 4\ne0$.
 
-- $\frac{5 s^{3}}{(s + 4)^{2}} + \frac{15 s^{2}}{s + 4}$
-- $\frac{15 s^{2}}{s + 4}$
 - $\frac{10 s^{2} (s + 6)}{(s + 4)^{2}}$
-- $- \frac{10 s^{2} (s + 6)}{(s + 4)^{2}}$
 - $- \frac{5 s^{3}}{(s + 4)^{2}}$
+- $\frac{15 s^{2}}{s + 4}$
+- $\frac{5 s^{3}}{(s + 4)^{2}} + \frac{15 s^{2}}{s + 4}$
+- $- \frac{10 s^{2} (s + 6)}{(s + 4)^{2}}$
 
 ![](images/7e/7e5b5001794ecdf2c9b9e9102f334a63d2c59bc6f7511c2eb7fa358fc94cb0c5.png)
 
@@ -2287,11 +2287,11 @@ $$
 
 If $f(x,y)=\frac{x}{y + 1},$ $x=2 s^{4}$ and $y=s,$ compute $\frac{\text{d}f}{\text{d}s}$ where $s + 1\ne0$.
 
-- $\frac{8 s^{3}}{s + 1}$
-- $- \frac{2 s^{3} (3 s + 4)}{(s + 1)^{2}}$
-- $\frac{2 s^{3} (3 s + 4)}{(s + 1)^{2}}$
-- $- \frac{2 s^{4}}{(s + 1)^{2}}$
 - $\frac{2 s^{4}}{(s + 1)^{2}} + \frac{8 s^{3}}{s + 1}$
+- $- \frac{2 s^{3} (3 s + 4)}{(s + 1)^{2}}$
+- $- \frac{2 s^{4}}{(s + 1)^{2}}$
+- $\frac{2 s^{3} (3 s + 4)}{(s + 1)^{2}}$
+- $\frac{8 s^{3}}{s + 1}$
 
 ![](images/7e/7e5b5001794ecdf2c9b9e9102f334a63d2c59bc6f7511c2eb7fa358fc94cb0c5.png)
 
@@ -2497,11 +2497,11 @@ $$
 
 If $f(x,y)=e^{- x + 4 y},$ $x=\cos{(5 t )}$ and $y=\sin{(5 t )},$ compute $\frac{\text{d}f}{\text{d}t}$.
 
-- $5 e^{4 \sin{(5 t )} - \cos{(5 t )}} \sin{(5 t )} - 20 e^{4 \sin{(5 t )} - \cos{(5 t )}} \cos{(5 t )}$
 - $5 (\sin{(5 t )} + 4 \cos{(5 t )}) e^{4 \sin{(5 t )} - \cos{(5 t )}}$
-- $5 e^{4 \sin{(5 t )} - \cos{(5 t )}} \sin{(5 t )}$
-- $- 5 (\sin{(5 t )} + 4 \cos{(5 t )}) e^{4 \sin{(5 t )} - \cos{(5 t )}}$
 - $20 e^{4 \sin{(5 t )} - \cos{(5 t )}} \cos{(5 t )}$
+- $5 e^{4 \sin{(5 t )} - \cos{(5 t )}} \sin{(5 t )}$
+- $5 e^{4 \sin{(5 t )} - \cos{(5 t )}} \sin{(5 t )} - 20 e^{4 \sin{(5 t )} - \cos{(5 t )}} \cos{(5 t )}$
+- $- 5 (\sin{(5 t )} + 4 \cos{(5 t )}) e^{4 \sin{(5 t )} - \cos{(5 t )}}$
 
 ![](images/f0/f01b253f560405a8c0f4be8f8797c652fb0ddf774f4db110b8822313b8ac50f3.png)
 
@@ -2539,11 +2539,11 @@ $$
 
 If $f(x,y)=e^{- x + y},$ $x=\cos{(2 t )}$ and $y=\sin{(2 t )},$ compute $\frac{\text{d}f}{\text{d}t}$.
 
-- $2 e^{\sin{(2 t )} - \cos{(2 t )}} \sin{(2 t )}$
-- $- 2 (\sin{(2 t )} + \cos{(2 t )}) e^{\sin{(2 t )} - \cos{(2 t )}}$
-- $2 (\sin{(2 t )} + \cos{(2 t )}) e^{\sin{(2 t )} - \cos{(2 t )}}$
-- $2 e^{\sin{(2 t )} - \cos{(2 t )}} \cos{(2 t )}$
 - $2 e^{\sin{(2 t )} - \cos{(2 t )}} \sin{(2 t )} - 2 e^{\sin{(2 t )} - \cos{(2 t )}} \cos{(2 t )}$
+- $- 2 (\sin{(2 t )} + \cos{(2 t )}) e^{\sin{(2 t )} - \cos{(2 t )}}$
+- $2 e^{\sin{(2 t )} - \cos{(2 t )}} \cos{(2 t )}$
+- $2 (\sin{(2 t )} + \cos{(2 t )}) e^{\sin{(2 t )} - \cos{(2 t )}}$
+- $2 e^{\sin{(2 t )} - \cos{(2 t )}} \sin{(2 t )}$
 
 ![](images/f0/f01b253f560405a8c0f4be8f8797c652fb0ddf774f4db110b8822313b8ac50f3.png)
 
@@ -2749,11 +2749,11 @@ $$
 
 If $f(x,y)=y e^{x},$ $x=5 \sqrt{s}$ and $y=4 s^{3},$ compute $\frac{\text{d}f}{\text{d}s}$ for $s>0$ and $s>0$.
 
-- $10 s^{\frac{5}{2}} e^{5 \sqrt{s}} - 12 s^{2} e^{5 \sqrt{s}}$
-- $10 s^{\frac{5}{2}} e^{5 \sqrt{s}}$
 - $2 (5 s^{\frac{5}{2}} + 6 s^{2}) e^{5 \sqrt{s}}$
-- $- 2 (5 s^{\frac{5}{2}} + 6 s^{2}) e^{5 \sqrt{s}}$
 - $12 s^{2} e^{5 \sqrt{s}}$
+- $10 s^{\frac{5}{2}} e^{5 \sqrt{s}}$
+- $10 s^{\frac{5}{2}} e^{5 \sqrt{s}} - 12 s^{2} e^{5 \sqrt{s}}$
+- $- 2 (5 s^{\frac{5}{2}} + 6 s^{2}) e^{5 \sqrt{s}}$
 
 ![](images/7e/7e5b5001794ecdf2c9b9e9102f334a63d2c59bc6f7511c2eb7fa358fc94cb0c5.png)
 
@@ -2791,11 +2791,11 @@ $$
 
 If $f(x,y)=y e^{x},$ $x=2 \sqrt{s}$ and $y=s^{4},$ compute $\frac{\text{d}f}{\text{d}s}$ for $s>0$ and $s>0$.
 
-- $s^{\frac{7}{2}} e^{2 \sqrt{s}}$
-- $- (s^{\frac{7}{2}} + 4 s^{3}) e^{2 \sqrt{s}}$
-- $(s^{\frac{7}{2}} + 4 s^{3}) e^{2 \sqrt{s}}$
-- $4 s^{3} e^{2 \sqrt{s}}$
 - $s^{\frac{7}{2}} e^{2 \sqrt{s}} - 4 s^{3} e^{2 \sqrt{s}}$
+- $- (s^{\frac{7}{2}} + 4 s^{3}) e^{2 \sqrt{s}}$
+- $4 s^{3} e^{2 \sqrt{s}}$
+- $(s^{\frac{7}{2}} + 4 s^{3}) e^{2 \sqrt{s}}$
+- $s^{\frac{7}{2}} e^{2 \sqrt{s}}$
 
 ![](images/7e/7e5b5001794ecdf2c9b9e9102f334a63d2c59bc6f7511c2eb7fa358fc94cb0c5.png)
 
@@ -3001,11 +3001,11 @@ $$
 
 If $f(x,y)=x e^{x y},$ $x=3 t^{5}$ and $y=t^{2},$ compute $\frac{\text{d}f}{\text{d}t}$.
 
-- $3 t^{4} (21 t^{7} + 5) e^{3 t^{7}}$
 - $18 t^{11} e^{3 t^{7}}$
 - $15 t^{4} (3 t^{7} e^{3 t^{7}} + e^{3 t^{7}})$
-- $- 18 t^{11} e^{3 t^{7}} + 15 t^{4} (3 t^{7} e^{3 t^{7}} + e^{3 t^{7}})$
+- $3 t^{4} (21 t^{7} + 5) e^{3 t^{7}}$
 - $- 3 t^{4} (21 t^{7} + 5) e^{3 t^{7}}$
+- $- 18 t^{11} e^{3 t^{7}} + 15 t^{4} (3 t^{7} e^{3 t^{7}} + e^{3 t^{7}})$
 
 ![](images/f0/f01b253f560405a8c0f4be8f8797c652fb0ddf774f4db110b8822313b8ac50f3.png)
 
@@ -3043,11 +3043,11 @@ $$
 
 If $f(x,y)=x e^{x y},$ $x=t^{2}$ and $y=t^{4},$ compute $\frac{\text{d}f}{\text{d}t}$.
 
-- $2 t (3 t^{6} + 1) e^{t^{6}}$
 - $4 t^{7} e^{t^{6}}$
-- $2 t (t^{6} e^{t^{6}} + e^{t^{6}})$
-- $- 2 t (3 t^{6} + 1) e^{t^{6}}$
 - $- 4 t^{7} e^{t^{6}} + 2 t (t^{6} e^{t^{6}} + e^{t^{6}})$
+- $- 2 t (3 t^{6} + 1) e^{t^{6}}$
+- $2 t (3 t^{6} + 1) e^{t^{6}}$
+- $2 t (t^{6} e^{t^{6}} + e^{t^{6}})$
 
 ![](images/f0/f01b253f560405a8c0f4be8f8797c652fb0ddf774f4db110b8822313b8ac50f3.png)
 
@@ -3085,10 +3085,10 @@ $$
 
 If $f(x,y)=x e^{x y},$ $x=(t + 2)^{3}$ and $y=(2 t + 1)^{2},$ compute $\frac{\text{d}f}{\text{d}t}$.
 
+- $(t + 2)^{6} (8 t + 4) e^{(t + 2)^{3} (2 t + 1)^{2}}$
+- $3 (t + 2)^{2} ((t + 2)^{3} (2 t + 1)^{2} e^{(t + 2)^{3} (2 t + 1)^{2}} + e^{(t + 2)^{3} (2 t + 1)^{2}})$
 - $(t + 2)^{2} (4 (t + 2)^{4} (2 t + 1) + 3 (t + 2)^{3} (2 t + 1)^{2} + 3) e^{(t + 2)^{3} (2 t + 1)^{2}}$
 - $- (t + 2)^{2} (4 (t + 2)^{4} (2 t + 1) + 3 (t + 2)^{3} (2 t + 1)^{2} + 3) e^{(t + 2)^{3} (2 t + 1)^{2}}$
-- $3 (t + 2)^{2} ((t + 2)^{3} (2 t + 1)^{2} e^{(t + 2)^{3} (2 t + 1)^{2}} + e^{(t + 2)^{3} (2 t + 1)^{2}})$
-- $(t + 2)^{6} (8 t + 4) e^{(t + 2)^{3} (2 t + 1)^{2}}$
 - $- (t + 2)^{6} (8 t + 4) e^{(t + 2)^{3} (2 t + 1)^{2}} + 3 (t + 2)^{2} ((t + 2)^{3} (2 t + 1)^{2} e^{(t + 2)^{3} (2 t + 1)^{2}} + e^{(t + 2)^{3} (2 t + 1)^{2}})$
 
 ![](images/f0/f01b253f560405a8c0f4be8f8797c652fb0ddf774f4db110b8822313b8ac50f3.png)
@@ -3127,11 +3127,11 @@ $$
 
 If $f(x,y)=x e^{x y},$ $x=(2 t + 1)^{2}$ and $y=(t + 1)^{2},$ compute $\frac{\text{d}f}{\text{d}t}$.
 
-- $(8 t + 4) ((t + 1)^{2} (2 t + 1)^{2} e^{(t + 1)^{2} (2 t + 1)^{2}} + e^{(t + 1)^{2} (2 t + 1)^{2}})$
 - $(2 t + 1)^{4} (2 t + 2) e^{(t + 1)^{2} (2 t + 1)^{2}}$
-- $2 (2 t + 1) (2 (t + 1)^{2} (2 t + 1)^{2} + (t + 1) (2 t + 1)^{3} + 2) e^{(t + 1)^{2} (2 t + 1)^{2}}$
-- $- 2 (2 t + 1) (2 (t + 1)^{2} (2 t + 1)^{2} + (t + 1) (2 t + 1)^{3} + 2) e^{(t + 1)^{2} (2 t + 1)^{2}}$
 - $- (2 t + 1)^{4} (2 t + 2) e^{(t + 1)^{2} (2 t + 1)^{2}} + (8 t + 4) ((t + 1)^{2} (2 t + 1)^{2} e^{(t + 1)^{2} (2 t + 1)^{2}} + e^{(t + 1)^{2} (2 t + 1)^{2}})$
+- $- 2 (2 t + 1) (2 (t + 1)^{2} (2 t + 1)^{2} + (t + 1) (2 t + 1)^{3} + 2) e^{(t + 1)^{2} (2 t + 1)^{2}}$
+- $2 (2 t + 1) (2 (t + 1)^{2} (2 t + 1)^{2} + (t + 1) (2 t + 1)^{3} + 2) e^{(t + 1)^{2} (2 t + 1)^{2}}$
+- $(8 t + 4) ((t + 1)^{2} (2 t + 1)^{2} e^{(t + 1)^{2} (2 t + 1)^{2}} + e^{(t + 1)^{2} (2 t + 1)^{2}})$
 
 ![](images/f0/f01b253f560405a8c0f4be8f8797c652fb0ddf774f4db110b8822313b8ac50f3.png)
 
