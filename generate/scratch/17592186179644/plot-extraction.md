@@ -1,0 +1,11 @@
+# Unchanged plot sets
+
+The plot rating for this package is **none**, because every returned record reuses its unchanged source assets. The original problems are visually dependent. No newly sampled parameters require rendering, and step 7 therefore requires no Matplotlib/TikZ implementation.
+
+The prompt has one image: white background, black x/y axes with arrowheads, an unnumbered grid of gray field vectors, and a blue directed closed curve. Easy images show outward radial flow (circle or horizontal/vertical ellipse) or inward radial flow (circle). Moderate shows circulation tangent to the circle/ellipse, or a saddle field with horizontal outflow and vertical inflow balanced over the symmetric curve. The field vectors, actual curve geometry and tangency/balance relationship carry mathematical meaning. The absolute pixel scale, gray shade and text antialiasing do not.
+
+The solution first repeats two shared composites illustrating positive, negative and zero flux on circular curves. The first contains several blue flow sketches with orange circular boundaries; the second illustrates normal and tangential field cases. Each instance then has a field diagram with a yellow outward normal and a final corresponding diagram showing reversed traversal. Their order and exact placement are retained. The outward normal does not reverse with traversal. No answer choices contain plots; the answer fields are Boolean.
+
+`specs.json` lists every prompt and ordered solution asset for every source. `reference/assets.json` records every referenced image's SHA-256 and dimensions, including the canonical example. All are resolved below the configured math database folder, verified by stored bytes and readable PNG decoding, and remain in the existing content-addressed store. No image is republished or rewritten. `reference/source-plots-0.png` and `reference/source-plots-1.png` retain inspection sheets; the full q-127032 prompt was read separately to check tangency to the narrow ellipse.
+
+The immutable complete plot set is part of each finite catalog entry. Rotating or reflecting an asset independently from the prompt, assertions or solution is outside this package. Altering pixel dimensions or arrow density supplies no additional inventory capacity.

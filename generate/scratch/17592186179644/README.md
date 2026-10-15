@@ -1,0 +1,9 @@
+# Determining a flux's sign from a diagram
+
+Run `.venv/bin/python generate/scratch/17592186179644/validate.py` to verify all ten source situations, all 30 field banks, every key, diagram-based sign proofs and actual checkbox grading. The package reuses unchanged source diagrams and existing question, field and answer identities.
+
+Run `.venv/bin/python generate/scratch/17592186179644.py --difficulty all --count 1000 --seed 20261015 --format json` to enumerate the bounded catalog: five easy and five moderate tasks. Hard fails explicitly. A count above capacity returns only the finite available catalog, never repeated identities or shuffled copies. Markdown previews use `--format markdown`; individual source profiles use `--template q-127028`.
+
+All catalog tasks already exist in the source database. This version supplies no fresh mathematical variants. `capabilities.json` records this limit and the unsupported hard reserve; neither is claimed mathematically impossible to extend. A new diagram family needs extraction and validation before expanding the domain. Current supported reserves are rechecked through the application's native pool and learner grader before registration.
+
+`replenish.py` uses the configured EDB integration and application contributor. It holds the application `api.lock` across current-basis recheck, source/inventory validation, generator registration, exact durable request submission and exact-basis readback. It reuses a registered generator identity when present and retains request, preview, receipt and source-preservation evidence under `reference/replenishment/`. It never modifies source questions or learner facts. Registration-only transactions request the existing question, field, answer and KP specs; no duplicates are imported to manufacture a reserve.
