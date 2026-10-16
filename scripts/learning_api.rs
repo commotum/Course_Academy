@@ -1793,13 +1793,6 @@ fn mutate_with_selection(
         action,
         "start" | "resume" | "study-topic" | "assignment-focus" | "assignment-answer"
     ) {
-        let course = course(s, l)?;
-        let plan = if let Some(topic) = selected_topic {
-            learning::selected_topic_candidates(s, l, course, topic, at)?
-        } else {
-            learning::study_candidates(s, l, course, at)?
-        };
-        let gated = plan.iter().any(|p| p.priority >= 11000.0);
         let requested = body["activityId"]
             .as_u64()
             .or_else(|| {
@@ -1812,8 +1805,20 @@ fn mutate_with_selection(
                     .as_u64()
                     .and_then(|t| topic_lesson(s, t).ok())
             });
-        if gated && requested.is_none_or(|a| !plan.iter().any(|p| p.activity == a)) {
-            return Err("Complete the required activity before starting unrelated study".into());
+        // Study now chooses a lesson independently of queue priority. A later
+        // resume must keep that lesson usable after pausing or leaving the page.
+        let explicit_lesson = selected_topic.is_some()
+            || action == "study-topic"
+            || (action == "resume"
+                && requested.is_some_and(|activity| {
+                    retrieval::kind(s, activity).ok().as_deref() == Some("lesson")
+                }));
+        if !explicit_lesson {
+            let plan = learning::study_candidates(s, l, course(s, l)?, at)?;
+            let gated = plan.iter().any(|p| p.priority >= 11000.0);
+            if gated && requested.is_none_or(|a| !plan.iter().any(|p| p.activity == a)) {
+                return Err("Complete the required activity before starting unrelated study".into());
+            }
         }
         if let Some(a) = requested {
             if retrieval::kind(s, a)? == "lesson" {

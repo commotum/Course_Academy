@@ -733,6 +733,10 @@ test('assessment navigation and actions sit outside the question card and lock w
   assert.equal(card.contains(f.h.view.track), false);
   assert.equal(card.querySelector('form').querySelector('button'), null);
   assert.equal(nav.children.length, 8);
+  assert.deepEqual(nav.children.map(button => button.textContent), ['1', '2', '3', '4', '5', '6', '7', '8']);
+  assert.equal(nav.children[0].dataset.answered, 'true');
+  assert.equal(nav.children[0].getAttribute('aria-label'), 'Question 1, answered');
+  assert.equal(nav.children[6].dataset.answered, 'false');
   assert.equal(nav.children[6].getAttribute('aria-current'), 'step');
   assert.deepEqual(actions.children.map(button => button.textContent), ['Previous question', 'Next question', 'Submit assessment']);
   f.h.setBusy(true);

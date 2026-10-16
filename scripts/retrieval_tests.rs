@@ -750,6 +750,123 @@ fn paused_assessment_expires_at_original_deadline_without_fabricating_unanswered
 }
 
 #[test]
+fn study_now_and_lesson_resume_bypass_required_queue_work_without_changing_it() -> Result<()> {
+    for remediation in [false, true] {
+        for self_directed in [false, true] {
+            let mut f = Fixture::new(false)?;
+            let mut at = f.now + 300;
+            if remediation {
+                let (assessment, _) = f.start("assessment")?;
+                let s = f.act("submit", json!({"taskId":assessment}), f.now + 200)?;
+                let (forms, _) = queue_preparation(
+                    &s,
+                    f.learner,
+                    DateTime::from_timestamp_millis(at).unwrap(),
+                )?;
+                f.tx(forms, at)?;
+            }
+
+            let s = f.snapshot()?;
+            let queued_topic = s.entities.with_attribute("topic/id")[0];
+            let kp = s.refs(queued_topic, "topic/knowledge-points")?[0];
+            let question = s.refs(kp, "knowledge-point/questions")?[0];
+            let fields = s.refs(question, "question/answer-fields")?;
+            let mut forms = vec![
+                json!({"db/id":"manual-topic","topic/id":{"$uuid":uuid(90000)},"topic/title":"Explicit study outside the course","topic/knowledge-points":["manual-kp"]}),
+                json!({"db/id":"manual-kp","knowledge-point/id":{"$uuid":uuid(90001)},"knowledge-point/canonical-example":"manual-example","knowledge-point/questions":(0..6).map(|n|format!("manual-question-{n}")).collect::<Vec<_>>()}),
+                json!({"db/id":"manual-example","question/id":{"$uuid":uuid(90002)},"question/problem":"One plus one?","question/worked-solution":"Two."}),
+                json!({"db/id":"manual-step","step/id":{"$uuid":uuid(90003)},"step/content":"manual-kp"}),
+                json!({"db/id":"manual-lesson","activity/id":{"$uuid":uuid(90004)},"activity/title":"Explicit study","activity/type":kw("activity.type/lesson"),"activity/scope":"manual-topic","activity/steps":["manual-step"],"activity/first-step":"manual-step"}),
+                add(json!(f.learner), "learner/self-directed", json!(self_directed)),
+                add(json!(f.learner), "learner/queue", json!(queued_topic)),
+            ];
+            for n in 0..6 {
+                forms.push(json!({"db/id":format!("manual-question-{n}"),"question/id":{"$uuid":uuid(90100+n)},"question/problem":"Enter two.","question/worked-solution":"Two.","question/difficulty":kw("question.difficulty/easy"),"question/answer-fields":fields}));
+            }
+            // Exercise both a prepared locked attempt and a new lesson attempt.
+            if self_directed {
+                forms.push(json!({"db/id":"manual-task","learner-task/id":{"$uuid":uuid(90005)},"learner-task/activity":"manual-lesson","learner-task/status":kw("learner-task.status/locked"),"learner-task/priority":1.0}));
+                forms.push(add(json!(f.learner), "learner/activity", json!("manual-task")));
+            }
+            at += 100;
+            f.tx(forms, at)?;
+            let before = f.snapshot()?;
+            let topic = before.entities.with_attribute("topic/id").into_iter()
+                .find(|t| text(&before, *t, "topic/title") == "Explicit study outside the course")
+                .unwrap();
+            let activity = topic_lesson(&before, topic)?;
+            let required = learning::study_candidates(
+                &before, f.learner, course(&before, f.learner)?,
+                DateTime::from_timestamp_millis(at).unwrap(),
+            )?;
+            assert!(!required.is_empty());
+            assert!(required.iter().all(|p| p.priority >= 11000.0));
+            assert!(required.iter().all(|p| retrieval::kind(&before, p.activity).unwrap()
+                == if remediation { "review" } else { "assessment" }));
+            assert!(mutate(
+                &before, f.learner, "start", &json!({"activityId":activity}),
+                DateTime::from_timestamp_millis(at + 1).unwrap(),
+            ).unwrap_err().to_string().contains("required activity"));
+
+            at += 100;
+            let mut s = f.act("study-topic", json!({"topicId":topic}), at)?;
+            let task = task_for(&s, f.learner, activity)?.unwrap();
+            if self_directed {
+                assert_eq!(Some(task), task_for(&before, f.learner, activity)?);
+            } else {
+                assert!(task_for(&before, f.learner, activity)?.is_none());
+            }
+            assert_eq!(status(&s, task, "learner-task/status")?, "started");
+            let first_items = items(&s, task)?;
+
+            // Pausing before doing work returns the attempt to an unstarted
+            // state. Resume must still honor the learner's explicit selection.
+            at += 100;
+            s = f.act("pause", json!({"taskId":task}), at)?;
+            assert_eq!(status(&s, task, "learner-task/status")?, "locked");
+            at += 100;
+            s = f.act("resume", json!({"taskId":task}), at)?;
+            assert_eq!(status(&s, task, "learner-task/status")?, "started");
+            assert_eq!(items(&s, task)?, first_items);
+
+            at += 100;
+            s = f.act("continue", json!({"taskId":task,"itemId":first_items[0]}), at)?;
+            let item = *items(&s, task)?.last().unwrap();
+            let question = s.reference(item, "task-item/content")?;
+            let field = s.refs(question, "question/answer-fields")?[0];
+            at += 100;
+            s = f.act("answer", json!({"taskId":task,"itemId":item,"responses":[{"fieldId":field,"value":"2"}]}), at)?;
+            let saved_items = items(&s, task)?;
+            let saved_answer = s.entity(item)?.clone();
+            at += 100;
+            s = f.act("pause", json!({"taskId":task}), at)?;
+            assert_eq!(status(&s, task, "learner-task/status")?, "paused");
+            at += 100;
+            s = f.act("resume", json!({"taskId":task}), at)?;
+            assert_eq!(status(&s, task, "learner-task/status")?, "started");
+            assert_eq!(items(&s, task)?, saved_items);
+            assert_eq!(s.entity(item)?, &saved_answer);
+
+            let after = learning::study_candidates(
+                &s, f.learner, course(&s, f.learner)?,
+                DateTime::from_timestamp_millis(at).unwrap(),
+            )?;
+            assert_eq!(serde_json::to_value(after)?, serde_json::to_value(required)?);
+            for attr in ["learner/queue", "learner/course", "learner/self-directed"] {
+                assert_eq!(s.entity(f.learner)?.get(attr), before.entity(f.learner)?.get(attr));
+            }
+            let required_tasks: Vec<_> = before.refs(f.learner, "learner/activity")?.into_iter()
+                .filter(|t| before.reference(*t, "learner-task/activity").unwrap() != activity)
+                .collect();
+            for task in required_tasks {
+                assert_eq!(s.entity(task)?, before.entity(task)?);
+            }
+        }
+    }
+    Ok(())
+}
+
+#[test]
 fn required_review_failure_becomes_lesson_and_optional_retake_uses_original_kps() -> Result<()> {
     let mut f = Fixture::new(false)?;
     let (original, mut s) = f.start("assessment")?;
@@ -786,18 +903,29 @@ fn required_review_failure_becomes_lesson_and_optional_retake_uses_original_kps(
             .iter()
             .all(|v| v["type"] == "review")
     );
-    // Reject unrelated starts through the same gate, including manual study.
+    // Queue starts still honor required work. Explicit study can reopen a saved
+    // completed lesson without changing its outcome or awarding more credit.
     let correct_topic = s.topic_for_question(q)?;
+    let correct_lesson = topic_lesson(&s, correct_topic)?;
     assert!(
         mutate(
             &s,
             f.learner,
-            "study-topic",
-            &json!({"topicId":correct_topic}),
+            "start",
+            &json!({"activityId":correct_lesson}),
             DateTime::from_timestamp_millis(at + 1).unwrap()
         )
         .is_err()
     );
+    let (forms, result) = mutate(
+        &s,
+        f.learner,
+        "study-topic",
+        &json!({"topicId":correct_topic}),
+        DateTime::from_timestamp_millis(at + 1).unwrap(),
+    )?;
+    assert!(forms.is_empty());
+    assert_eq!(result["taskId"], completed_task_for(&s, f.learner, correct_lesson)?.unwrap());
     let review = home_view["activities"][0]["activityId"].as_u64().unwrap();
     at += 100;
     s = f.act("start", json!({"activityId":review}), at)?;

@@ -900,7 +900,9 @@ function taskContent(data, step, number, total, archived = false) {
         const index = questions.findIndex(q => q.questionId === step.contentId);
         const nav = el('nav', 'assessment-navigation'); nav.setAttribute('aria-label', 'Assessment questions');
         for (const question of questions) {
-          const control = actionButton(String(question.number) + (question.answered ? ' ✓' : ''), question.active ? 'primary' : 'secondary', () => move(question.questionId));
+          const control = actionButton(String(question.number), question.active ? 'primary' : 'secondary', () => move(question.questionId));
+          control.dataset.answered = String(Boolean(question.answered));
+          control.setAttribute('aria-label', `Question ${question.number}, ${question.answered ? 'answered' : 'unanswered'}`);
           if (question.active) control.setAttribute('aria-current', 'step');
           nav.append(control);
         }
@@ -908,12 +910,16 @@ function taskContent(data, step, number, total, archived = false) {
         actions.setAttribute('role', 'group');
         actions.setAttribute('aria-label', 'Assessment actions');
         assessmentControls.append(nav, actions);
-        if (index > 0) actions.append(actionButton('Previous question', 'secondary', () => move(questions[index - 1].questionId)));
-        if (index + 1 < questions.length) actions.append(actionButton('Next question', 'secondary', () => move(questions[index + 1].questionId)));
-        actions.append(actionButton('Submit assessment', 'primary', async () => {
+        if (index > 0) actions.append(actionButton('Previous question', 'secondary assessment-previous', () => move(questions[index - 1].questionId)));
+        if (index + 1 < questions.length) actions.append(actionButton('Next question', 'secondary assessment-next', () => move(questions[index + 1].questionId)));
+        actions.append(actionButton('Submit assessment', 'primary assessment-submit', async () => {
           clearTimeout(assessmentSaveTimer); ++assessmentDraftVersion; await assessmentSave;
           return mutation('/api/submit', { taskId: data.taskId, itemId: step.itemId, responses: collectResponses(form, fields) });
         }));
+        for (const control of actions.children) {
+          control.setAttribute('aria-label', control.textContent);
+          control.title = control.textContent;
+        }
       } else {
         const submit = el('button', 'primary', 'Check answer'); submit.type = 'submit'; submit.dataset.action = 'true';
         const refresh = () => {

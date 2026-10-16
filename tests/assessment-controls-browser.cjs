@@ -18,9 +18,9 @@ window.renderCase=(index,type='assessment')=>{
  task=data;lessonView=null;
  const view=lessonShell(data,{number:index+1,total:8});
  const content=taskContent(data,step,index+1,8);view.feed.append(content);
- const card=content.querySelector('.content-card'),controls=content.querySelector('.assessment-controls');
+ const card=content.querySelector('.content-card'),controls=content.querySelector('.assessment-controls'),nav=controls?.querySelector('.assessment-navigation');
  const box=n=>{const r=n.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height}};
- return {overflow:document.documentElement.scrollWidth>innerWidth,card:box(card),controls:controls?box(controls):null,toolbar:box(document.querySelector('.lesson-toolbar')),inside:!!card.querySelector('.assessment-controls'),buttons:controls?[...controls.querySelectorAll('button')].map(n=>({text:n.textContent,...box(n),whiteSpace:getComputedStyle(n).whiteSpace})):[],reference:{hidden:view.reference.hidden,href:view.reviewLink.getAttribute('href'),inside:card.contains(view.reference)}};
+ return {overflow:document.documentElement.scrollWidth>innerWidth,card:box(card),controls:controls?box(controls):null,nav:nav?{...box(nav),scrollWidth:nav.scrollWidth,clientWidth:nav.clientWidth}:null,toolbar:box(document.querySelector('.lesson-toolbar')),inside:!!card.querySelector('.assessment-controls'),buttons:controls?[...controls.querySelectorAll('button')].map(n=>({text:n.textContent,...box(n),navigation:nav.contains(n),answered:n.dataset.answered,current:n.getAttribute('aria-current'),background:getComputedStyle(n).backgroundColor,whiteSpace:getComputedStyle(n).whiteSpace})):[],reference:{hidden:view.reference.hidden,href:view.reviewLink.getAttribute('href'),inside:card.contains(view.reference)}};
 };
 window.testActions=async()=>{
  renderCase(6);const input=main.querySelector('input[value="42"]');input.checked=true;
@@ -63,11 +63,19 @@ const evaluate=async expression=>{const r=await send('Runtime.evaluate',{express
    const r=await evaluate('renderCase('+index+')');
    assert.equal(r.inside,false);assert.equal(r.overflow,false);
    assert.ok(r.controls.top>=r.card.bottom+16);assert.ok(r.toolbar.bottom<r.card.top,JSON.stringify({width,index,...r}));
-   for(const b of r.buttons){assert.ok(b.left>=r.controls.left&&b.right<=r.controls.right);assert.ok(b.height>=40);}
+   assert.ok(r.nav.left>=r.controls.left&&r.nav.right<=r.controls.right);
+   if(width===893)assert.ok(r.nav.scrollWidth<=r.nav.clientWidth,'eight question numbers and full actions must fit one desktop row');
+   for(const b of r.buttons){if(!b.navigation)assert.ok(b.left>=r.controls.left&&b.right<=r.controls.right);assert.ok(b.height>=40);}
+   assert.ok(r.buttons.every(b=>Math.abs(b.top-r.buttons[0].top)<1),'all controls must share one row');
+   assert.ok(r.buttons.filter(b=>b.navigation).every(b=>/^\d+$/.test(b.text)),'numbers must not include checkmarks');
+   const answered=r.buttons.find(b=>b.navigation&&b.answered==='true'&&!b.current);
+   const unanswered=r.buttons.find(b=>b.navigation&&b.answered==='false'&&!b.current);
+   if(answered&&unanswered)assert.notEqual(answered.background,unanswered.background);
+   assert.ok(r.controls.height<80,'controls must remain a single compact row');
    const actionButtons=r.buttons.filter(b=>b.text.includes('question')||b.text.includes('assessment'));
    assert.ok(actionButtons.every(b=>b.whiteSpace==='nowrap'&&b.height<50),'action labels should not wrap');
    for(let i=0;i<r.buttons.length;i++)for(let j=i+1;j<r.buttons.length;j++){
-    const a=r.buttons[i],b=r.buttons[j];assert.ok(a.right<=b.left+0.1||b.right<=a.left+0.1||a.bottom<=b.top+0.1||b.bottom<=a.top+0.1,'buttons must not overlap');
+    const a=r.buttons[i],b=r.buttons[j];if(a.navigation!==b.navigation)continue;assert.ok(a.right<=b.left+0.1||b.right<=a.left+0.1||a.bottom<=b.top+0.1||b.bottom<=a.top+0.1,'buttons must not overlap');
    }
    checks++;
   }
