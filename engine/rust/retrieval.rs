@@ -260,18 +260,126 @@ pub struct Definition {
     pub existing_activity: Option<u64>,
 }
 fn bank(s: &EntitySnapshot, topic: u64, seen: &BTreeSet<u64>) -> Result<Vec<u64>> {
-    let mut questions = BTreeSet::new();
-    for kp in s.refs(topic, "topic/knowledge-points")? {
-        questions.extend(s.refs(kp, "knowledge-point/questions")?);
-    }
-    Ok(questions
-        .into_iter()
-        .filter(|q| !seen.contains(q) && learning::validate_question(s, *q).is_ok())
-        .collect())
+    crate::inventory::practice_pool(s, &s.refs(topic, "topic/knowledge-points")?, seen)
 }
 
 fn history(s: &EntitySnapshot, learner: u64) -> Result<crate::scheduling::Lifecycle> {
     crate::scheduling::lifecycle(s, learner)
+}
+
+/// Currently learned topics whose first successful lesson is at least 48 hours
+/// old. Reviews do not reset this clock and no prior review is required.
+pub fn assessment_topics(
+    s: &EntitySnapshot,
+    learner: u64,
+    at: DateTime<Utc>,
+) -> Result<BTreeSet<u64>> {
+    let h = history(s, learner)?;
+    let mut topics = BTreeSet::new();
+    for progress in s.refs(learner, "learner/knowledge-profile")? {
+        let topic = s.reference(progress, "progress/topic")?;
+        if s.entity(progress)?.get("progress/learned") == Some(&json!(true))
+            && h.mastered.get(&topic).is_some_and(|learned| {
+                at - *learned >= chrono::Duration::hours(ASSESSMENT_TOPIC_AGE_HOURS)
+            })
+        {
+            topics.insert(topic);
+        }
+    }
+    Ok(topics)
+}
+
+/// Admission depends on one available rated question across a topic. The
+/// rolling per-band inventory targets must not exclude otherwise usable topics.
+pub fn assessment_pools(
+    s: &EntitySnapshot,
+    learner: u64,
+    at: DateTime<Utc>,
+) -> Result<BTreeMap<u64, Vec<u64>>> {
+    let seen = learning::unavailable_questions(s, learner)?;
+    let mut pools = BTreeMap::new();
+    for topic in assessment_topics(s, learner, at)? {
+        let pool =
+            crate::assessment_sampling::pool(s, &s.refs(topic, "topic/knowledge-points")?, &seen)?;
+        if !pool.is_empty() {
+            pools.insert(topic, pool);
+        }
+    }
+    Ok(pools)
+}
+
+/// Build an ordinary assessment from current eligible supply. Callers enforce
+/// cadence and whether an existing unstarted definition may be replaced.
+pub fn assessment_definition(
+    s: &EntitySnapshot,
+    learner: u64,
+    at: DateTime<Utc>,
+) -> Result<Option<Definition>> {
+    let h = history(s, learner)?;
+    let pools = assessment_pools(s, learner, at)?;
+    if pools.is_empty() {
+        return Ok(None);
+    }
+    let policy = crate::question_selection::active_policy(s)?;
+    let weights = crate::question_selection::weights_for_phase(
+        s,
+        policy,
+        "assessment",
+        crate::question_selection::Phase::Initial,
+    )?
+    .ok_or("assessment question weights are not configured")?;
+    let loaded = learning::learning_runtime(s, learner, at)?;
+    let mut topic_weights = BTreeMap::new();
+    for &topic in pools.keys() {
+        let mut coverage: f64 = 0.0;
+        for &other in pools.keys().filter(|other| **other != topic) {
+            coverage = coverage.max(
+                loaded
+                    .engine
+                    .graph
+                    .coverage(&loaded.topic_eid_to_id[&other])
+                    .get(&loaded.topic_eid_to_id[&topic])
+                    .copied()
+                    .unwrap_or(0.0),
+            );
+        }
+        topic_weights.insert(
+            topic,
+            (if h.assessed.contains(&topic) {
+                1.0
+            } else {
+                4.0
+            }) * (0.05 + 0.95 * (1.0 - coverage).powi(2)),
+        );
+    }
+    let questions = crate::assessment_sampling::assemble(
+        s,
+        learner,
+        pools,
+        weights,
+        topic_weights,
+        false,
+        &format!("assessment-{learner}-{}", s.basis_t),
+    )?;
+    if questions.is_empty() {
+        return Ok(None);
+    }
+    Ok(Some(Definition {
+        kind: "assessment".into(),
+        topic: None,
+        title: "Practice assessment".into(),
+        priority: 7000.0,
+        expected_seconds: questions
+            .iter()
+            .map(|q| crate::assessment_sampling::seconds(s, *q))
+            .collect::<Result<Vec<_>>>()?
+            .iter()
+            .sum(),
+        questions,
+        remediation_for: vec![],
+        retake_of: None,
+        existing_activity: None,
+    }))
 }
 pub fn relearn_topics(s: &EntitySnapshot, learner: u64) -> Result<BTreeSet<u64>> {
     Ok(history(s, learner)?
@@ -518,9 +626,6 @@ pub fn schedule(
         {
             continue;
         }
-        if !crate::inventory::ready(s, &s.refs(topic, "topic/knowledge-points")?, &seen, false)? {
-            continue;
-        }
         let mut pool = bank(s, topic, &seen)?;
         // Preserve one fresh same-KP/same-band alternative for an eventual retake.
         for &original in &h.retakes {
@@ -625,72 +730,8 @@ pub fn schedule(
     });
     let seed = format!("assessment-{learner}-{}", s.basis_t);
     if h.xp >= ASSESSMENT_XP && !has_ordinary {
-        let weights = crate::question_selection::weights_for_phase(
-            s,
-            policy,
-            "assessment",
-            crate::question_selection::Phase::Initial,
-        )?
-        .ok_or("assessment question weights are not configured")?;
-        let mut pools = BTreeMap::new();
-        for progress in s.refs(learner, "learner/knowledge-profile")? {
-            let topic = s.reference(progress, "progress/topic")?;
-            if s.entity(progress)?.get("progress/learned") != Some(&json!(true))
-                || h.mastered
-                    .get(&topic)
-                    .is_none_or(|t| at - *t < chrono::Duration::hours(ASSESSMENT_TOPIC_AGE_HOURS))
-            {
-                continue;
-            }
-            let kps = s.refs(topic, "topic/knowledge-points")?;
-            if crate::inventory::ready(s, &kps, &seen, false)? {
-                pools.insert(topic, crate::assessment_sampling::pool(s, &kps, &seen)?);
-            }
-        }
-        let loaded = learning::learning_runtime(s, learner, at)?;
-        let mut tw = BTreeMap::new();
-        for &topic in pools.keys() {
-            let mut c: f64 = 0.0;
-            for &other in pools
-                .keys()
-                .filter(|other| **other != topic && !pools[other].is_empty())
-            {
-                c = c.max(
-                    loaded
-                        .engine
-                        .graph
-                        .coverage(&loaded.topic_eid_to_id[&other])
-                        .get(&loaded.topic_eid_to_id[&topic])
-                        .copied()
-                        .unwrap_or(0.0),
-                );
-            }
-            tw.insert(
-                topic,
-                (if h.assessed.contains(&topic) {
-                    1.0
-                } else {
-                    4.0
-                }) * (0.05 + 0.95 * (1.0 - c).powi(2)),
-            );
-        }
-        let questions =
-            crate::assessment_sampling::assemble(s, learner, pools, weights, tw, false, &seed)?;
-        if !questions.is_empty() {
-            definitions.push(Definition {
-                kind: "assessment".into(),
-                topic: None,
-                title: "Practice assessment".into(),
-                priority: 7000.0,
-                expected_seconds: questions
-                    .iter()
-                    .map(|q| crate::assessment_sampling::seconds(s, *q).unwrap())
-                    .sum(),
-                questions,
-                remediation_for: vec![],
-                retake_of: None,
-                existing_activity: None,
-            });
+        if let Some(definition) = assessment_definition(s, learner, at)? {
+            definitions.push(definition);
         }
     }
     let weights = crate::question_selection::weights_for_phase(
@@ -908,6 +949,58 @@ mod tests {
         );
         assert!(schedule(&s, 1, 5, at).unwrap().is_empty());
     }
+
+    #[test]
+    fn reviews_admit_five_total_questions_and_use_unrated_fallback() {
+        let mut s = fixture();
+        let at = Utc::now();
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/activity".into(), json!([]));
+        progress(&mut s, 21, 3, at, 0.1);
+        let mut extra = s.entities[&104].clone();
+        extra.insert("question/id".into(), json!("extra-unrated"));
+        s.entities.insert(105, extra);
+        // The canonical example is also in membership, but must not count.
+        s.entities
+            .get_mut(&41)
+            .unwrap()
+            .insert("knowledge-point/canonical-example".into(), json!(100));
+        s.entities.get_mut(&41).unwrap().insert(
+            "knowledge-point/questions".into(),
+            json!([100, 101, 102, 103, 104, 105, 105]),
+        );
+        for (q, band) in [(101, "easy"), (102, "moderate"), (103, "hard")] {
+            s.entities.get_mut(&q).unwrap().insert(
+                "question/difficulty".into(),
+                json!(format!("question.difficulty/{band}")),
+            );
+        }
+        put(
+            &mut s,
+            2900,
+            json!({"question-weights/activity-type":"activity.type/review",
+            "question-weights/initial-easy":50.0,"question-weights/initial-moderate":40.0,"question-weights/initial-hard":10.0,
+            "question-weights/remedial-easy":45.0,"question-weights/remedial-moderate":40.0,"question-weights/remedial-hard":15.0}),
+        );
+        s.entities
+            .get_mut(&2)
+            .unwrap()
+            .insert("policy/question-selection-weights".into(), json!([2900]));
+        let plan = schedule(&s, 1, 5, at).unwrap();
+        assert_eq!(plan.len(), 1);
+        assert_eq!(plan[0].kind, "review");
+        assert_eq!(
+            plan[0].questions.iter().copied().collect::<BTreeSet<_>>(),
+            BTreeSet::from([101, 102, 103, 104, 105])
+        );
+        s.entities
+            .get_mut(&105)
+            .unwrap()
+            .remove("question/answer-fields");
+        assert!(schedule(&s, 1, 5, at).unwrap().is_empty());
+    }
     fn assessment_fixture() -> (EntitySnapshot, DateTime<Utc>) {
         let mut s = fixture();
         put(
@@ -1023,6 +1116,70 @@ mod tests {
             .unwrap()
             .insert("module/topics".into(), json!(topics));
         (s, at)
+    }
+
+    #[test]
+    fn assessment_admission_and_status_share_one_fresh_rated_question_rule() {
+        let (mut s, at) = assessment_fixture();
+        for slot in 0..5u64 {
+            s.entities.get_mut(&(2100 + slot)).unwrap().insert(
+                "knowledge-point/questions".into(),
+                json!([2701 + slot * 10]),
+            );
+        }
+        // Topic 2002 has only an unrated question, 2003 is no longer learned,
+        // and 2004 has not reached its first-successful-lesson age threshold.
+        s.entities
+            .get_mut(&2721)
+            .unwrap()
+            .remove("question/difficulty");
+        s.entities
+            .get_mut(&2803)
+            .unwrap()
+            .insert("progress/learned".into(), json!(false));
+        for event in &mut s.status_history {
+            if event.entity == 2404 && event.value == json!("learner-task.status/completed") {
+                event.at = json!({"$instant":(at-chrono::Duration::hours(48)+chrono::Duration::milliseconds(1)).timestamp_millis()});
+            }
+        }
+        let pools = assessment_pools(&s, 1, at).unwrap();
+        assert_eq!(
+            pools.keys().copied().collect::<BTreeSet<_>>(),
+            BTreeSet::from([2000, 2001])
+        );
+        assert!(pools.values().all(|pool| pool.len() == 1));
+        assert!(
+            !crate::inventory::ready(
+                &s,
+                &[2100],
+                &learning::unavailable_questions(&s, 1).unwrap(),
+                false
+            )
+            .unwrap()
+        );
+        let status = crate::inventory::assessment_status(&s, 1, at).unwrap();
+        assert_eq!(status["eligibleTopics"], 2);
+        assert_eq!(status["agedLearnedTopics"], 3);
+        assert_eq!(status["availableQuestions"], 2);
+        assert_eq!(
+            status["unavailableReason"],
+            "Preparing an assessment from eligible questions"
+        );
+        s.entities
+            .get_mut(&2100)
+            .unwrap()
+            .insert("knowledge-point/questions".into(), json!([2700])); // Seen in review.
+        s.entities
+            .get_mut(&2711)
+            .unwrap()
+            .remove("question/answer-fields");
+        assert!(assessment_pools(&s, 1, at).unwrap().is_empty());
+        let status = crate::inventory::assessment_status(&s, 1, at).unwrap();
+        assert_eq!(status["eligibleTopics"], 0);
+        assert_eq!(
+            status["unavailableReason"],
+            "Waiting for fresh rated questions for eligible topics"
+        );
     }
     #[test]
     fn assessments_use_updated_initial_weights_and_require_configuration() {

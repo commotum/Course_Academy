@@ -218,14 +218,30 @@ pub fn requests(s: &EntitySnapshot, l: u64, at: DateTime<Utc>) -> Result<Vec<Val
 /// Lesson admission is separate from the per-band replenishment target.
 /// The five-question adaptive allowance needs five usable questions per skill
 /// in total. Lessons can also use the selector's existing unrated fallback.
-pub fn lesson_shortages(s: &EntitySnapshot, kps: &[u64], seen: &BTreeSet<u64>) -> Result<Vec<(u64, usize)>> {
+pub fn practice_pool(s: &EntitySnapshot, kps: &[u64], seen: &BTreeSet<u64>) -> Result<Vec<u64>> {
+    let mut questions = BTreeSet::new();
+    for &kp in kps {
+        questions.extend(s.refs(kp, "knowledge-point/questions")?);
+    }
+    Ok(questions
+        .into_iter()
+        .filter(|q| {
+            !seen.contains(q) && !s.is_example(*q) && learning::validate_question(s, *q).is_ok()
+        })
+        .collect())
+}
+
+pub fn lesson_shortages(
+    s: &EntitySnapshot,
+    kps: &[u64],
+    seen: &BTreeSet<u64>,
+) -> Result<Vec<(u64, usize)>> {
     let mut shortages = vec![];
     for &kp in kps {
-        let questions: BTreeSet<_> = s.refs(kp, "knowledge-point/questions")?.into_iter().collect();
-        let count = questions.into_iter().filter(|q| {
-            !seen.contains(q) && !s.is_example(*q) && learning::validate_question(s, *q).is_ok()
-        }).count();
-        if count < 5 { shortages.push((kp, count)); }
+        let count = practice_pool(s, &[kp], seen)?.len();
+        if count < 5 {
+            shortages.push((kp, count));
+        }
     }
     Ok(shortages)
 }
@@ -234,8 +250,10 @@ pub fn lesson_ready(s: &EntitySnapshot, kps: &[u64], seen: &BTreeSet<u64>) -> Re
     Ok(lesson_shortages(s, kps, seen)?.is_empty())
 }
 
-/// Rolling quota for observed supported bands. Unobserved bands are classified
-/// separately; their absence is not proof that a template can produce them.
+/// Background replenishment quota, never an activity admission requirement.
+/// Unobserved bands are classified separately; their absence is not proof that
+/// a template can produce them. Reviews need five usable total questions and
+/// assessments need one fresh rated question per eligible topic instead.
 pub fn ready(s: &EntitySnapshot, kps: &[u64], seen: &BTreeSet<u64>, per_kp: bool) -> Result<bool> {
     let groups = if per_kp {
         kps.iter().map(|kp| vec![*kp]).collect::<Vec<_>>()
@@ -265,11 +283,9 @@ pub fn ready(s: &EntitySnapshot, kps: &[u64], seen: &BTreeSet<u64>, per_kp: bool
 /// Inspectable cadence/fallback state, captured alongside durable inventory jobs.
 pub fn assessment_status(s: &EntitySnapshot, l: u64, at: DateTime<Utc>) -> Result<Value> {
     let h = scheduling::lifecycle(s, l)?;
-    let eligible = h
-        .mastered
-        .values()
-        .filter(|learned| at - **learned >= chrono::Duration::hours(48))
-        .count();
+    let aged = crate::retrieval::assessment_topics(s, l, at)?.len();
+    let pools = crate::retrieval::assessment_pools(s, l, at)?;
+    let eligible = pools.len();
     let ready = s.refs(l, "learner/activity")?.into_iter().any(|task| {
         s.optional_ref(task, "learner-task/retake-of")
             .ok()
@@ -291,7 +307,14 @@ pub fn assessment_status(s: &EntitySnapshot, l: u64, at: DateTime<Utc>) -> Resul
                 })
     });
     Ok(
-        json!({"practiceXp":h.xp,"eligibleTopics":eligible,"ready":ready,"required":ready&&h.xp>=150.0,"unavailableReason":if h.xp>=120.0&&!ready {Some(if eligible<3 {"Waiting for at least three topics learned 48 hours ago"}else{"Waiting for fresh questions at the required difficulties"})}else{None}}),
+        json!({"practiceXp":h.xp,"eligibleTopics":eligible,"agedLearnedTopics":aged,
+            "availableQuestions":pools.values().map(Vec::len).sum::<usize>(),
+            "ready":ready,"required":ready&&h.xp>=150.0,
+            "unavailableReason":if h.xp>=120.0&&!ready {Some(if aged==0 {
+                "Waiting for learned topics at least 48 hours old"
+            }else if eligible==0 {
+                "Waiting for fresh rated questions for eligible topics"
+            }else {"Preparing an assessment from eligible questions"})}else{None}}),
     )
 }
 
@@ -302,44 +325,67 @@ mod tests {
 
     #[test]
     fn lesson_admission_uses_total_supply_while_replenishment_still_checks_bands() -> Result<()> {
-        let mut s=crate::learning::tests::fixture();
-        for (id,band) in [(1100,"easy"),(1101,"moderate"),(1102,"hard")] {
-            s.entities.insert(id,json!({"db/ident":format!("question.difficulty/{band}")}).as_object().unwrap().clone());
+        let mut s = crate::learning::tests::fixture();
+        for (id, band) in [(1100, "easy"), (1101, "moderate"), (1102, "hard")] {
+            s.entities.insert(
+                id,
+                json!({"db/ident":format!("question.difficulty/{band}")})
+                    .as_object()
+                    .unwrap()
+                    .clone(),
+            );
         }
-        let mut kps=vec![];
-        let mut banks=vec![];
-        for (i,counts) in [[5,3,2],[5,2,0],[2,5,2],[4,2,2]].iter().enumerate() {
-            let kp=5000+i as u64; kps.push(kp);
-            let mut bank=vec![];
-            for (band,count) in counts.iter().enumerate() {
+        let mut kps = vec![];
+        let mut banks = vec![];
+        for (i, counts) in [[5, 3, 2], [5, 2, 0], [2, 5, 2], [4, 2, 2]]
+            .iter()
+            .enumerate()
+        {
+            let kp = 5000 + i as u64;
+            kps.push(kp);
+            let mut bank = vec![];
+            for (band, count) in counts.iter().enumerate() {
                 for n in 0..*count {
-                    let q=10000+i as u64*100+band as u64*20+n;
-                    let mut row=s.entities[&100].clone();
-                    row.insert("question/id".into(),json!(format!("practice-{q}")));
-                    row.insert("question/difficulty".into(),json!(1100+band as u64));
-                    s.entities.insert(q,row); bank.push(q);
+                    let q = 10000 + i as u64 * 100 + band as u64 * 20 + n;
+                    let mut row = s.entities[&100].clone();
+                    row.insert("question/id".into(), json!(format!("practice-{q}")));
+                    row.insert("question/difficulty".into(), json!(1100 + band as u64));
+                    s.entities.insert(q, row);
+                    bank.push(q);
                 }
             }
             s.entities.insert(kp,json!({"knowledge-point/id":format!("skill-{kp}"),"knowledge-point/questions":bank}).as_object().unwrap().clone());
             banks.push(bank);
         }
-        s=EntitySnapshot::new(s.entities.into(),s.basis_t)?;
-        assert!(lesson_ready(&s,&kps,&BTreeSet::new())?);
-        assert!(!ready(&s,&kps,&BTreeSet::new(),true)?);
-        let seen=banks[1][..3].iter().copied().collect();
-        assert_eq!(lesson_shortages(&s,&kps,&seen)?,vec![(kps[1],4)]);
+        s = EntitySnapshot::new(s.entities.into(), s.basis_t)?;
+        assert!(lesson_ready(&s, &kps, &BTreeSet::new())?);
+        assert!(!ready(&s, &kps, &BTreeSet::new(), true)?);
+        let seen = banks[1][..3].iter().copied().collect();
+        assert_eq!(lesson_shortages(&s, &kps, &seen)?, vec![(kps[1], 4)]);
         Ok(())
     }
 
     #[test]
     fn lesson_admission_excludes_seen_examples_duplicates_and_ungradable_questions() -> Result<()> {
-        let mut s=crate::learning::tests::fixture();
-        s.entities.get_mut(&41).unwrap().insert("knowledge-point/questions".into(),json!([100,101,102,103,104,104,42]));
-        s=EntitySnapshot::new(s.entities.into(),s.basis_t)?;
-        assert!(lesson_ready(&s,&[41],&BTreeSet::new())?);
-        assert_eq!(lesson_shortages(&s,&[41],&BTreeSet::from([100]))?,vec![(41,4)]);
-        s.entities.get_mut(&104).unwrap().remove("question/answer-fields");
-        assert_eq!(lesson_shortages(&s,&[41],&BTreeSet::new())?,vec![(41,4)]);
+        let mut s = crate::learning::tests::fixture();
+        s.entities.get_mut(&41).unwrap().insert(
+            "knowledge-point/questions".into(),
+            json!([100, 101, 102, 103, 104, 104, 42]),
+        );
+        s = EntitySnapshot::new(s.entities.into(), s.basis_t)?;
+        assert!(lesson_ready(&s, &[41], &BTreeSet::new())?);
+        assert_eq!(
+            lesson_shortages(&s, &[41], &BTreeSet::from([100]))?,
+            vec![(41, 4)]
+        );
+        s.entities
+            .get_mut(&104)
+            .unwrap()
+            .remove("question/answer-fields");
+        assert_eq!(
+            lesson_shortages(&s, &[41], &BTreeSet::new())?,
+            vec![(41, 4)]
+        );
         Ok(())
     }
 }
