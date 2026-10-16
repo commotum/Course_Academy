@@ -7,7 +7,8 @@ Run or resume one knowledge point:
 ```
 
 Repeat `--kp` to process a small queue. The same command resumes its saved job;
-completed jobs stay complete. Use `--directory .local/generation/another-run`
+completed jobs retain their published batch. A review-policy upgrade may require
+a new independent review before a resumed job receives current approval. Use `--directory .local/generation/another-run`
 when intentionally requesting another batch. An existing approved draft is
 adopted from `generate/runs/current/manifest.json`; the command does not start
 the whole campaign.
@@ -32,7 +33,7 @@ and does not hold their API lock. The existing `COURSE_ACADEMY_DISABLE_GENERATIO
 and developer-mode switches control both generation workers.
 
 Approval is specific to the package, original instructional source, database lineage,
-KP and reviewed difficulty. Missing or stale approval queues an independent review
+KP, reviewed difficulty, and review-policy version. Missing or stale approval queues an independent review
 in the build worker. An unsupported band is recorded and other work continues.
 An unchanged rejected request is not repeatedly retried. Inventory is rechecked
 after publication; existing jobs and pending commit requests survive restarts.
@@ -46,6 +47,20 @@ the existing build priorities; no question from that band is published merely
 because another band passed. Existing usable questions remain available to the
 learner while this work waits.
 
+Review policy 2 separately requires **decision-relevant variation**. Reviewers must
+challenge unjustified fixed roles, test relevant and irrelevant counterfactuals,
+and probe shortcuts within recognizable templates, not merely count unique outputs.
+Their `pedagogical-variation.json` records decision coverage, shortcut results and
+filtering effects with reproducible sample evidence. Source replay, mathematics,
+grading and this distribution-level judgment remain separate acceptance checks.
+Legitimate mathematical simplifications and justified finite families are allowed.
+
+Old certificates do not satisfy policy 2. Fast refill sends them through the existing
+review queue; published questions are retained. Saved reviews are tied to the policy
+and exact package/source/batch/inventory inputs. A pending durable publication is
+recovered exactly before any new review, and its receipt is retained; re-review does
+not republish that batch. This change does not increase review scheduling priority.
+
 ## The four stages
 
 1. **Generate:** Capture original lesson, source questions, complete answer
@@ -55,8 +70,10 @@ learner while this work waits.
    saved seed, and compares the records and image bytes.
 2. **Validate:** A fresh Codex session independently reconstructs the assessed
    skill from the sources before inspecting the author's work. It tests source
-   replay, mathematics, variation, scope, actual grading, rendering and package
-   relocation. Acceptance requires evidence files for the named checks.
+   replay, mathematics, variety, decision-relevant variation, scope, actual grading,
+   rendering and package relocation. All eight checks require evidence. A read-only
+   `source/inventory.json` provides the captured question bank and the publisher’s
+   deduplication fingerprints for delivered-distribution checks.
    Rejections return to the author, up to three authoring attempts by default.
 3. **Prepare:** Verify the approved code, records, source and images. Publish
    the immutable generator package and hash image bytes through the shared image
