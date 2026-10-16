@@ -135,6 +135,12 @@ export function inlinePrompt(value, fields) {
     if (![...body.matchAll(fieldMarker)].some(marker => keys.has(marker[1]))) return match;
     const fragments = body.split(fieldMarker);
     const balanced = fragment => {
+      const environments = [];
+      for (const token of fragment.matchAll(/\\(begin|end)\{([^{}]+)\}/g)) {
+        if (token[1] === 'begin') environments.push(token[2]);
+        else if (environments.pop() !== token[2]) return false;
+      }
+      if (environments.length || /^\s*[_^]|[_^]\s*$/.test(fragment)) return false;
       let depth = 0;
       for (const char of fragment.replace(/\\[{}]/g, '')) {
         if (char === '{') depth++; else if (char === '}') depth--;
@@ -142,8 +148,8 @@ export function inlinePrompt(value, fields) {
       }
       return depth === 0 && (fragment.match(/\\left\b/g)?.length || 0) === (fragment.match(/\\right\b/g)?.length || 0);
     };
-    // A field inside a fraction/root argument cannot split into independent TeX
-    // runs. Preserve that formula and keep its answer controls beside it.
+    // Groups, scripts and equation environments must remain complete TeX runs.
+    // Keep their formula intact and place its answer controls beside it.
     if (fragments.some((part, index) => index % 2 === 0 && !balanced(part))) {
       return match.replace(fieldMarker, (whole, key) => keys.has(key) ? '\\underline{\\phantom{xxxx}}' : whole)
         + [...body.matchAll(fieldMarker)].filter(marker => keys.has(marker[1])).map(marker => slot(marker[1])).join('');

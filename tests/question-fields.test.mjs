@@ -70,6 +70,10 @@ test('markers follow prose and equation positions while unrelated math and code 
   assert.match(h.inlinePrompt('$y={{blank-1}}+1$', [field]), /\\\(y=\\\)<span.*<\/span>\\\(\+1\\\)/);
   assert.match(h.inlinePrompt('$$y={{blank-1}}$$', [field]), /class="question-equation"/);
   assert.match(h.inlinePrompt('$\\frac{ {{blank-1}} }{2}$', [field]), /^\$\\frac\{ \\underline\{\\phantom\{xxxx\}\} \}\{2\}\$<span/);
+  const aligned = String.raw`$$\begin{aligned}A &= {{blank-1}} \\ B &= 2\end{aligned}$$`;
+  assert.match(h.inlinePrompt(aligned, [field]), /^\$\$\\begin\{aligned\}[\s\S]*\\end\{aligned\}\$\$<span/);
+  assert.match(h.inlinePrompt('$x^{{blank-1}}$', [field]), /^\$x\^\\underline\{\\phantom\{xxxx\}\}\$<span/);
+  assert.match(h.inlinePrompt('${{blank-1}}_2$', [field]), /^\$\\underline\{\\phantom\{xxxx\}\}_2\$<span/);
   assert.equal(h.inlinePrompt('`$y={{blank-1}}$`\n```text\n{{blank-1}}\n```', [field]), '`$y={{blank-1}}$`\n```text\n{{blank-1}}\n```');
   assert.equal(h.inlinePrompt('{{missing}} {{choice}}', [{ key: 'choice', type: 'radio' }]), '{{missing}} {{choice}}');
   assert.ok(!h.inlinePrompt('{{bad"key}}', [{ ...field, key: 'bad"key' }]).includes('data-field-key="bad"key"'));
