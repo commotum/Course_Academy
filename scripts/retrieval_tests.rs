@@ -1,0 +1,1637 @@
+//! Full generic retrieval transactions against an isolated in-memory EDB.
+use super::*;
+use edb_core::{DB_SOURCE_SYSTEM, Database, TxFunctions};
+
+struct Fixture {
+    db: Database,
+    learner: u64,
+    now: i64,
+}
+impl Fixture {
+    fn tx(&mut self, forms: Vec<Json>, at: i64) -> Result<()> {
+        let mut functions = TxFunctions::new();
+        preview_answer_fields::register_answer_field_predicates(&mut functions);
+        preview_progress::register_progress_predicates(&mut functions);
+        preview_configuration::register_configuration_predicates(&mut functions);
+        self.db = self
+            .db
+            .with_forms(
+                &edb_core::edn_transaction::read_edn_transaction(&schema::edn(&json!(forms))?)?,
+                &functions,
+                at,
+                engine_source(),
+            )?
+            .db_after;
+        Ok(())
+    }
+    fn snapshot(&self) -> Result<EntitySnapshot> {
+        snapshot(&self.db.database_value())
+    }
+    fn act(&mut self, action: &str, body: Json, at: i64) -> Result<EntitySnapshot> {
+        let (forms, _) = mutate(
+            &self.snapshot()?,
+            self.learner,
+            action,
+            &body,
+            DateTime::from_timestamp_millis(at).unwrap(),
+        )?;
+        if !forms.is_empty() {
+            self.tx(forms, at)?;
+        }
+        self.snapshot()
+    }
+    fn new(due: bool) -> Result<Self> {
+        Self::with_admission(due, 3 * 86400000, true)
+    }
+    fn with_admission(due: bool, lesson_age_ms: i64, prior_review: bool) -> Result<Self> {
+        Self::with_history(due, lesson_age_ms, prior_review, false)
+    }
+    fn with_history(due: bool, lesson_age_ms: i64, prior_review: bool, migrated: bool) -> Result<Self> {
+        let mut db = Database::bootstrap()?;
+        for (index, schema) in [
+            include_str!("../schema/data/2-course.edn"),
+            include_str!("../schema/data/3-unit.edn"),
+            include_str!("../schema/data/4-module.edn"),
+            include_str!("../schema/data/5-1-topic.edn"),
+            include_str!("../schema/data/5-2-encompassing.edn"),
+            include_str!("../schema/data/6-knowledge-point.edn"),
+            include_str!("../schema/content/0-activity.edn"),
+            include_str!("../schema/content/1-step.edn"),
+            include_str!("../schema/content/4-question.edn"),
+            include_str!("../schema/content/5-answer-field.edn"),
+            include_str!("../schema/content/6-answer.edn"),
+            include_str!("../schema/learner/1-1-learner.edn"),
+            include_str!("../schema/learner/1-2-learner-performance.edn"),
+            include_str!("../schema/learner/1-3-learner-progress.edn"),
+            include_str!("../schema/learner/2-1-learner-task.edn"),
+            include_str!("../schema/learner/2-2-learner-task-item.edn"),
+            include_str!("../schema/engine/1-fire-policy.edn"),
+            include_str!("../schema/engine/2-question-weights.edn"),
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            db = db
+                .with_edn(schema, index as i64 + 1, EntityRef::Id(DB_SOURCE_SYSTEM))?
+                .db_after;
+        }
+        db = db
+            .with_edn(
+                "[{:db/ident :application/ca-engine}]",
+                100,
+                EntityRef::Id(DB_SOURCE_SYSTEM),
+            )?
+            .db_after;
+        let now = Utc::now().timestamp_millis() - 60_000;
+        let mut f = Self {
+            db,
+            learner: 0,
+            now,
+        };
+        let id = |n: u128| json!({"$uuid":uuid(n)});
+        let defaults = serde_json::to_value(course_academy_engine::core::Policy::default())?;
+        let mut policy = json!({"db/id":"policy","policy/id":id(1),"policy/retention-update-order":kw("policy.retention-update/decay-before-add"),"db/ensure":kw("policy/validate")});
+        for (attr, field) in [
+            ("base-half-life-days", "base_interval_days"),
+            ("interval-growth", "interval_growth"),
+            ("maximum-half-life-days", "maximum_interval_days"),
+            ("review-threshold", "due_threshold"),
+            ("initial-retention", "restored_memory"),
+            ("early-practice-discount-power", "discount_power"),
+            ("initial-accuracy", "prior_accuracy"),
+            ("accuracy-update-rate", "accuracy_alpha"),
+            ("speed-exponent", "speed_exponent"),
+            ("minimum-speed", "minimum_speed"),
+            ("maximum-speed", "maximum_speed"),
+            ("overdue-failure-slope", "failure_overdue_slope"),
+            ("maximum-failure-multiplier", "maximum_failure_multiplier"),
+            ("gate-slow-implicit", "gate_slow_implicit"),
+            ("future-horizon-days", "future_horizon_days"),
+        ] {
+            policy[format!("policy/{attr}")] = defaults[field].clone();
+        }
+        let mut forms = vec![
+            policy,
+            json!({"db/id":"course","course/id":id(2),"course/title":"Retrieval fixture","course/units":["unit"]}),
+            json!({"db/id":"unit","unit/id":id(3),"unit/modules":["module"]}),
+            json!({"db/id":"module","module/id":id(4),"module/topics":(0..5).map(|i| format!("topic-{i}")).collect::<Vec<_>>()}),
+            json!({"db/id":"learner","learner/id":"retrieval-test","learner/course":"course","learner/knowledge-profile":(0..5).map(|i|format!("progress-{i}")).collect::<Vec<_>>(),"learner/activity":(0..5).map(|i|format!("mastered-{i}")).collect::<Vec<_>>()}),
+        ];
+        forms.push(json!({"db/id":"policy","policy/question-selection-weights":[{
+            "question-weights/activity-type":kw("activity.type/assessment"),
+            "question-weights/initial-easy":50.0,"question-weights/initial-moderate":40.0,"question-weights/initial-hard":10.0,
+            "question-weights/remedial-easy":45.0,"question-weights/remedial-moderate":40.0,"question-weights/remedial-hard":15.0,
+            "db/ensure":kw("question-weights/validate")
+        }]}));
+        for topic in 0..5 {
+            forms.push(json!({"db/id":format!("topic-{topic}"),"topic/id":id(10+topic),"topic/title":format!("Topic {topic}"),"topic/knowledge-points":[format!("kp-{topic}")]}));
+            forms.push(json!({"db/id":format!("kp-{topic}"),"knowledge-point/id":id(20+topic),"knowledge-point/canonical-example":format!("example-{topic}"),"knowledge-point/questions":(0..30).map(|q|format!("q-{topic}-{q}")).collect::<Vec<_>>()}));
+            forms.push(json!({"db/id":format!("progress-{topic}"),"progress/id":format!("p-{topic}"),"progress/topic":format!("topic-{topic}"),"progress/policy":"policy","progress/learned":true,"progress/repetitions":2.0,"progress/memory":if due {0.1}else{1.0},"progress/memory-at":{"$instant":now},"progress/interval-days":1.0,"progress/assessment-accuracy":0.5,"progress/practice-accuracy":0.5,"progress/assessment-mass":0.0,"progress/practice-mass":0.0}));
+            forms.push(json!({"db/id":format!("lesson-{topic}"),"activity/id":id(30+topic),"activity/title":"Previously learned","activity/type":kw("activity.type/lesson"),"activity/scope":format!("topic-{topic}"),"activity/steps":[format!("lesson-step-{topic}")],"activity/first-step":format!("lesson-step-{topic}")}));
+            forms.push(json!({"db/id":format!("example-{topic}"),"question/id":id(800+topic),"question/problem":"One plus one?","question/worked-solution":"Two."}));
+            forms.push(json!({"db/id":format!("lesson-step-{topic}"),"step/id":id(810+topic),"step/content":format!("kp-{topic}")}));
+            let mut task = json!({"db/id":format!("mastered-{topic}"),"learner-task/id":id(40+topic),"learner-task/activity":format!("lesson-{topic}"),"learner-task/status":kw(if migrated {"learner-task.status/completed"} else {"learner-task.status/started"}),"learner-task/xp-earned":if due {18}else{25}});
+            if migrated {
+                task["learner-task/finished-at"] = json!({"$instant":now-lesson_age_ms+1000});
+            }
+            forms.push(task);
+            for q in 0..30 {
+                let n = 100 + topic * 100 + q * 3;
+                forms.push(json!({"db/id":format!("q-{topic}-{q}"),"question/id":id(n),"question/difficulty":kw(["question.difficulty/easy","question.difficulty/moderate","question.difficulty/hard"][q as usize%3]),"question/problem":"Enter two.","question/worked-solution":"One plus one is two.","question/answer-fields":[format!("field-{topic}-{q}")]}));
+                forms.push(json!({"db/id":format!("field-{topic}-{q}"),"answer-field/id":id(n+1),"answer-field/type":kw("answer-field.type/blank"),"answer-field/key":"value","answer-field/choices":[format!("answer-{topic}-{q}")],"answer-field/correct":format!("answer-{topic}-{q}")}));
+                forms.push(json!({"db/id":format!("answer-{topic}-{q}"),"answer/id":id(n+2),"answer/type":kw("answer.type/math"),"answer/value":"2","answer/feedback":"That is the correct value."}));
+            }
+        }
+        f.tx(forms, if migrated { now - 2000 } else { now - lesson_age_ms })?;
+        f.learner = f.snapshot()?.entities.with_attribute("learner/id")[0];
+        let mastered = f.snapshot()?.refs(f.learner, "learner/activity")?;
+        let completion = mastered
+            .iter()
+            .map(|t| {
+                add(
+                    json!(t),
+                    "learner-task/status",
+                    kw("learner-task.status/completed"),
+                )
+            })
+            .collect();
+        if !migrated {
+            f.tx(completion, now - lesson_age_ms + 1000)?;
+        }
+        if prior_review {
+            let s = f.snapshot()?;
+            let mut forms = vec![];
+            for topic in 0..5 {
+                let scope = s
+                    .entities
+                    .with_attribute("topic/id")
+                    .into_iter()
+                    .find(|t| text(&s, *t, "topic/title") == format!("Topic {topic}"))
+                    .unwrap();
+                let q = s.refs(
+                    s.refs(scope, "topic/knowledge-points")?[0],
+                    "knowledge-point/questions",
+                )?[0];
+                forms.push(json!({"db/id":format!("review-{topic}"),"activity/id":id(700+topic),"activity/type":kw("activity.type/review"),"activity/title":"Prior retrieval","activity/scope":scope}));
+                forms.push(json!({"db/id":format!("reviewed-{topic}"),"learner-task/id":id(710+topic),"learner-task/activity":format!("review-{topic}"),"learner-task/status":kw("learner-task.status/started"),"learner-task/xp-earned":5,"learner-task/items":[format!("observed-{topic}")]}));
+                forms.push(json!({"db/id":format!("observed-{topic}"),"task-item/id":id(720+topic),"task-item/content":q,"task-item/status":kw("task-item.status/correct"),"task-item/elapsed-seconds":1.0}));
+                forms.push(add(
+                    json!(f.learner),
+                    "learner/activity",
+                    json!(format!("reviewed-{topic}")),
+                ));
+            }
+            f.tx(forms, now - 86400000)?;
+            let s = f.snapshot()?;
+            let completed = s
+                .refs(f.learner, "learner/activity")?
+                .into_iter()
+                .filter(|t| {
+                    matches!(
+                        status(&s, *t, "learner-task/status").as_deref(),
+                        Ok("started")
+                    )
+                })
+                .map(|t| {
+                    add(
+                        json!(t),
+                        "learner-task/status",
+                        kw("learner-task.status/completed"),
+                    )
+                })
+                .collect();
+            f.tx(completed, now - 86400000 + 1000)?;
+        }
+        let (forms, _) = queue_preparation(
+            &f.snapshot()?,
+            f.learner,
+            DateTime::from_timestamp_millis(now).unwrap(),
+        )?;
+        f.tx(forms, now)?;
+        Ok(f)
+    }
+    fn available(&self, kind: &str) -> Result<u64> {
+        let s = self.snapshot()?;
+        Ok(home(&s, self.learner)?["activities"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|a| a["type"] == kind)
+            .ok_or("Missing scheduled activity")?["activityId"]
+            .as_u64()
+            .unwrap())
+    }
+    fn start(&mut self, kind: &str) -> Result<(u64, EntitySnapshot)> {
+        let activity = self.available(kind)?;
+        let s = self.act("start", json!({"activityId":activity}), self.now + 100)?;
+        Ok((task_for(&s, self.learner, activity)?.unwrap(), s))
+    }
+}
+#[test]
+fn migrated_terminal_lessons_count_xp_and_original_learning_age_without_replaying_credit() -> Result<()> {
+    let mut f = Fixture::with_history(false, 3 * 86400000, false, true)?;
+    let s = f.snapshot()?;
+    let before = s.entities.clone();
+    let h = course_academy_engine::scheduling::lifecycle(&s, f.learner)?;
+    assert_eq!(h.xp, 125.0);
+    assert_eq!(h.mastered.len(), 5);
+    assert!(h.mastered.values().all(|date| date.timestamp_millis() == f.now - 3*86400000 + 1000));
+    assert!(!s.status_history.iter().any(|event| s.ident(&event.value).ok().as_deref() == Some("learner-task.status/started")));
+    let eligibility = course_academy_engine::inventory::assessment_status(&s,f.learner,DateTime::from_timestamp_millis(f.now).unwrap())?;
+    assert_eq!(eligibility["practiceXp"],125.0);
+    assert_eq!(eligibility["eligibleTopics"],5);
+    assert_eq!(eligibility["ready"],true);
+    assert_eq!(eligibility["required"],false);
+    let activity = f.available("assessment")?;
+    assert_eq!(s.entities, before, "lifecycle reads must not replay progress or XP writes");
+    let task = task_for(&s, f.learner, activity)?.unwrap();
+    let s = f.act("start",json!({"activityId":activity}),f.now+100)?;
+    assert_eq!(status(&s, task, "learner-task/status")?,"started");
+    let again = course_academy_engine::scheduling::lifecycle(&s,f.learner)?;
+    assert_eq!(again.xp,125.0);
+    Ok(())
+}
+
+#[test]
+fn zero_progress_lesson_pause_preserves_time_without_pinning_the_queue() -> Result<()> {
+    let mut f = Fixture::new(false)?;
+    let s = f.snapshot()?;
+    let old = s.refs(f.learner, "learner/activity")?.into_iter().find(|task| {
+        status(&s, *task, "learner-task/status").ok().as_deref() == Some("completed")
+            && retrieval::kind(&s, s.reference(*task, "learner-task/activity").unwrap()).ok().as_deref() == Some("lesson")
+    }).unwrap();
+    let activity = s.reference(old, "learner-task/activity")?;
+    let topic = s.reference(activity, "activity/scope")?;
+    f.tx(vec![json!([kw("db/retract"), f.learner, kw("learner/activity"), old])], f.now + 100)?;
+    let s = f.act("study-topic", json!({"topicId":topic}), f.now + 200)?;
+    let task = task_for(&s, f.learner, activity)?.unwrap();
+    let item = items(&s, task)?[0];
+    let s = f.act("pause", json!({"taskId":task}), f.now + 5200)?;
+    assert_eq!(status(&s, task, "learner-task/status")?, "locked");
+    assert_eq!(status(&s, item, "task-item/status")?, "paused");
+    assert_eq!(number(&s, task, "learner-task/elapsed-seconds"), 5.0);
+    assert_eq!(number(&s, item, "task-item/elapsed-seconds"), 5.0);
+    assert!(mutate(&s, f.learner, "pause", &json!({"taskId":task}), DateTime::from_timestamp_millis(f.now + 6000).unwrap())?.0.is_empty());
+    assert!(!learning::study_candidates(&s, f.learner, course(&s,f.learner)?, DateTime::from_timestamp_millis(f.now+6000).unwrap())?.iter().any(|p| p.activity == activity), "an accidental open must not bypass ordinary selection");
+
+    // Existing zero-progress paused tasks are normalized by queue preparation.
+    f.tx(vec![add(json!(task), "learner-task/status", kw("learner-task.status/paused"))], f.now + 7000)?;
+    let s = f.snapshot()?;
+    let (forms, _) = queue_preparation(&s, f.learner, DateTime::from_timestamp_millis(f.now+8000).unwrap())?;
+    f.tx(forms, f.now+8000)?;
+    let s = f.snapshot()?;
+    assert_eq!(status(&s, task, "learner-task/status")?, "locked");
+    assert_eq!(number(&s, task, "learner-task/elapsed-seconds"), 5.0);
+    assert!(reset_unstarted_lessons(&s, f.learner)?.is_empty());
+
+    let s = f.act("study-topic", json!({"topicId":topic}), f.now + 12000)?;
+    assert_eq!(task_for(&s, f.learner, activity)?, Some(task));
+    assert_eq!(items(&s, task)?, vec![item]);
+    assert_eq!(number(&s, item, "task-item/elapsed-seconds"), 5.0);
+    let s = f.act("pause", json!({"taskId":task}), f.now + 15000)?;
+    assert_eq!(number(&s, task, "learner-task/elapsed-seconds"), 8.0);
+    let s = f.act("resume", json!({"taskId":task}), f.now + 20000)?;
+    assert_eq!(status(&s, task, "learner-task/status")?, "started");
+    assert_eq!(items(&s, task)?, vec![item]);
+    let s = f.act("continue", json!({"taskId":task,"itemId":item}), f.now + 21000)?;
+    assert!(!learning::lesson_has_no_progress(&s, task)?);
+    let s = f.act("pause", json!({"taskId":task}), f.now + 22000)?;
+    assert_eq!(status(&s, task, "learner-task/status")?, "paused", "advancing a lesson must retain resumable progress");
+    Ok(())
+}
+
+#[test]
+fn successful_lesson_completion_atomically_clears_its_queue_membership() -> Result<()> {
+    let mut f = Fixture::new(false)?;
+    let s = f.snapshot()?;
+    let old = s.refs(f.learner, "learner/activity")?[0];
+    let activity = s.reference(old, "learner-task/activity")?;
+    let topic = s.reference(activity, "activity/scope")?;
+    let other = s.refs(f.learner, "learner/knowledge-profile")?.into_iter()
+        .map(|p| s.reference(p, "progress/topic").unwrap()).find(|p| *p != topic).unwrap();
+    f.tx(vec![
+        json!([kw("db/retract"), f.learner, kw("learner/activity"), old]),
+        add(json!(f.learner), "learner/queue", json!(topic)),
+        add(json!(f.learner), "learner/queue", json!(other)),
+        add(json!(f.learner), "learner/targets", json!(topic)),
+    ], f.now + 100)?;
+    let mut s = f.act("study-topic", json!({"topicId":topic}), f.now + 200)?;
+    let task = task_for(&s, f.learner, activity)?.unwrap();
+    for turn in 0..12 {
+        if status(&s, task, "learner-task/status")? == "completed" { break; }
+        assert!(s.refs(f.learner, "learner/queue")?.contains(&topic));
+        let step = task_json(&s, f.learner, task)?["step"].clone();
+        let item = step["itemId"].as_u64().unwrap();
+        let at = f.now + 1000 + turn * 1000;
+        if step["kind"] == "question" && step["status"] == "started" {
+            let field = step["fields"][0]["id"].as_u64().unwrap();
+            s = f.act("answer", json!({"taskId":task,"itemId":item,"responses":[{"fieldId":field,"value":"2"}]}), at)?;
+        } else {
+            s = f.act("continue", json!({"taskId":task,"itemId":item}), at)?;
+        }
+    }
+    assert_eq!(status(&s, task, "learner-task/status")?, "completed");
+    assert_eq!(s.refs(f.learner, "learner/queue")?, vec![other]);
+    assert_eq!(s.refs(f.learner, "learner/targets")?, vec![topic]);
+    assert_eq!(task_json(&s, f.learner, task)?["learner"]["queue"], json!([other]));
+    let item = *items(&s, task)?.last().unwrap();
+    assert!(mutate(&s, f.learner, "continue", &json!({"taskId":task,"itemId":item}), DateTime::from_timestamp_millis(f.now + 20000).unwrap())?.0.is_empty());
+    Ok(())
+}
+
+#[test]
+fn unstarted_lesson_can_reopen_its_already_presented_first_question() -> Result<()> {
+    let mut f = Fixture::new(false)?;
+    let s = f.snapshot()?;
+    let old = s.refs(f.learner, "learner/activity")?[0];
+    let activity = s.reference(old, "learner-task/activity")?;
+    let topic = s.reference(activity, "activity/scope")?;
+    let step = s.reference(activity, "activity/first-step")?;
+    let kp = s.refs(topic, "topic/knowledge-points")?[0];
+    let unavailable = learning::unavailable_questions(&s, f.learner)?;
+    let question = s.refs(s.refs(topic, "topic/knowledge-points")?[0], "knowledge-point/questions")?
+        .into_iter().find(|q| !unavailable.contains(q)).unwrap();
+    f.tx(vec![
+        json!([kw("db/retract"), f.learner, kw("learner/activity"), old]),
+        add(json!(step), "step/content", json!(question)),
+        add(json!(step), "step/next", json!("practice-step")),
+        json!({"db/id":"practice-step","step/id":{"$uuid":uuid(99001)},"step/content":kp}),
+        add(json!(activity), "activity/steps", json!("practice-step")),
+        json!({"db/id":"fixed-lesson-task","learner-task/id":{"$uuid":uuid(99002)},
+            "learner-task/activity":activity,"learner-task/status":kw("learner-task.status/locked"),
+            "learner-task/xp-base":10,"learner-task/elapsed-seconds":0.0}),
+        add(json!(f.learner), "learner/activity", json!("fixed-lesson-task")),
+    ], f.now + 100)?;
+    let s = f.act("study-topic", json!({"topicId":topic}), f.now + 200)
+        .map_err(|error| format!("initial question start: {error}"))?;
+    let task = task_for(&s, f.learner, activity)?.unwrap();
+    let item = items(&s, task)?[0];
+    let s = f.act("pause", json!({"taskId":task}), f.now + 1200)?;
+    assert_eq!(status(&s, task, "learner-task/status")?, "locked");
+    assert!(learning::unavailable_questions(&s, f.learner)?.contains(&question));
+    let s = f.act("study-topic", json!({"topicId":topic}), f.now + 5000)
+        .map_err(|error| format!("saved question restart: {error}"))?;
+    assert_eq!(items(&s, task)?, vec![item]);
+    assert_eq!(s.reference(item, "task-item/content")?, question);
+    assert_eq!(number(&s, item, "task-item/elapsed-seconds"), 1.0);
+    let field = s.refs(question, "question/answer-fields")?[0];
+    let s = f.act("answer", json!({"taskId":task,"itemId":item,"responses":[{"fieldId":field,"value":"2"}]}), f.now + 6000)?;
+    assert!(!learning::lesson_has_no_progress(&s, task)?);
+    let s = f.act("pause", json!({"taskId":task}), f.now + 7000)?;
+    assert_eq!(status(&s, task, "learner-task/status")?, "paused");
+    Ok(())
+}
+
+#[test]
+fn assessment_weights_validate_all_six_fields_and_update_from_database_snapshots() -> Result<()> {
+    use course_academy_engine::question_selection::{Phase, active_policy, weights_for_phase};
+    let mut f = Fixture::new(false)?;
+    let before = f.snapshot()?;
+    let policy = active_policy(&before)?;
+    let child = before.refs(policy, "policy/question-selection-weights")?[0];
+    assert_eq!(
+        weights_for_phase(&before, policy, "assessment", Phase::Initial)?,
+        Some([50.0, 40.0, 10.0])
+    );
+    assert_eq!(
+        weights_for_phase(&before, policy, "assessment", Phase::Remedial)?,
+        Some([45.0, 40.0, 15.0])
+    );
+    let activity = f.available("assessment")?;
+    let reserved_steps = before.refs(activity, "activity/steps")?;
+    assert!(
+        f.tx(
+            vec![
+                json!([
+                    kw("db/retract"),
+                    child,
+                    kw("question-weights/remedial-hard")
+                ]),
+                json!([kw("db/ensure"), child, kw("question-weights/validate")]),
+            ],
+            f.now + 1
+        )
+        .is_err()
+    );
+    f.tx(vec![json!({"db/id":child,
+        "question-weights/initial-easy":0.0,"question-weights/initial-moderate":0.0,"question-weights/initial-hard":100.0,
+        "question-weights/remedial-easy":100.0,"question-weights/remedial-moderate":0.0,"question-weights/remedial-hard":0.0,
+        "db/ensure":kw("question-weights/validate")
+    })], f.now + 2)?;
+    let after = f.snapshot()?;
+    assert_eq!(
+        weights_for_phase(&after, policy, "assessment", Phase::Initial)?,
+        Some([0.0, 0.0, 100.0])
+    );
+    assert_eq!(
+        weights_for_phase(&after, policy, "assessment", Phase::Remedial)?,
+        Some([100.0, 0.0, 0.0])
+    );
+    assert_eq!(
+        weights_for_phase(&before, policy, "assessment", Phase::Initial)?,
+        Some([50.0, 40.0, 10.0])
+    );
+    assert_eq!(after.refs(activity, "activity/steps")?, reserved_steps);
+    let original = task_for(&after, f.learner, activity)?.unwrap();
+    let original_questions: BTreeSet<_> = learning::lesson_steps(&after, activity)?
+        .iter()
+        .map(|step| step.content)
+        .collect();
+    let questions = course_academy_engine::assessment_sampling::retake(
+        &after,
+        f.learner,
+        original,
+        &learning::unavailable_questions(&after, f.learner)?,
+        [100.0, 0.0, 0.0],
+        "zero-weight-minimums",
+    )?;
+    assert_eq!(questions.len(), original_questions.len());
+    assert!(questions.iter().all(|q| !original_questions.contains(q)));
+    assert_eq!(
+        questions
+            .iter()
+            .map(
+                |q| course_academy_engine::assessment_sampling::band(&after, *q)
+                    .unwrap()
+                    .unwrap()
+            )
+            .collect::<BTreeSet<_>>(),
+        BTreeSet::from([0, 1, 2])
+    );
+    Ok(())
+}
+
+#[test]
+fn submitted_answer_clock_ends_before_grading_and_database_admission_finish() -> Result<()> {
+    let mut f=Fixture::new(true)?;
+    let (task,s)=f.start("review")?;
+    let item=*items(&s,task)?.last().unwrap();
+    let started=timing::status_at(&s,item,"task-item/status")?.timestamp_millis();
+    let question=s.reference(item,"task-item/content")?;
+    let field=s.refs(question,"question/answer-fields")?[0];
+    let submitted=started+1000;
+    let processed=started+30000;
+    let after=f.act("answer",json!({"taskId":task,"itemId":item,"submittedAt":submitted,"responses":[{"fieldId":field,"value":"2"}]}),processed)?;
+    assert_eq!(number(&after,item,"task-item/elapsed-seconds"),1.);
+    assert_eq!(timing::elapsed(&after,item,DateTime::from_timestamp_millis(processed+1000).unwrap())?,1.);
+    assert_eq!(timing::task_elapsed(&after,task,DateTime::from_timestamp_millis(processed+1000).unwrap())?,1.);
+    assert_eq!(timing::status_at(&after,item,"task-item/status")?.timestamp_millis(),processed);
+    assert_eq!(after.entity(item)?["task-item/working-ended-at"],json!({"$instant":submitted}));
+    assert_eq!(status(&after,item,"task-item/status")?,"correct");
+    Ok(())
+}
+
+#[test]
+fn automatic_generic_reviews_commit_reservations_grade_streak_award_xp_and_update_fire_once()
+-> Result<()> {
+    let mut f = Fixture::new(true)?;
+    let (task, mut s) = f.start("review")?;
+    for slot in 0..3 {
+        let item = *items(&s, task)?.last().unwrap();
+        let q = s.reference(item, "task-item/content")?;
+        let field = s.refs(q, "question/answer-fields")?[0];
+        s = f.act(
+            "answer",
+            json!({"taskId":task,"itemId":item,"responses":[{"fieldId":field,"value":"2"}]}),
+            f.now + 200 + slot * 200,
+        )?;
+        assert_eq!(task_json(&s, f.learner, task)?["step"]["status"], "correct");
+        let (duplicate, _) = mutate(
+            &s,
+            f.learner,
+            "answer",
+            &json!({"taskId":task,"itemId":item,"responses":[{"fieldId":field,"value":"2"}]}),
+            DateTime::from_timestamp_millis(f.now + 200 + slot * 200).unwrap(),
+        )?;
+        assert!(duplicate.is_empty());
+        s = f.act(
+            "continue",
+            json!({"taskId":task,"itemId":item}),
+            f.now + 300 + slot * 200,
+        )?;
+    }
+    assert_eq!(status(&s, task, "learner-task/status")?, "completed");
+    assert_eq!(items(&s, task)?.len(), 3);
+    assert_eq!(number(&s, task, "learner-task/xp-earned"), 7.0);
+    let scope = s.reference(
+        s.reference(task, "learner-task/activity")?,
+        "activity/scope",
+    )?;
+    let p = s
+        .refs(f.learner, "learner/knowledge-profile")?
+        .into_iter()
+        .find(|p| s.reference(*p, "progress/topic").ok() == Some(scope))
+        .unwrap();
+    assert!(number(&s, p, "progress/repetitions") > 2.0);
+    assert_eq!(number(&s, p, "progress/practice-mass"), 3.0);
+    assert_eq!(number(&s, p, "progress/assessment-mass"), 0.0);
+    Ok(())
+}
+#[test]
+fn assessments_remain_available_and_startable_after_course_and_study_mode_switches() -> Result<()> {
+    let mut f = Fixture::new(false)?;
+    let activity = f.available("assessment")?;
+    let before = f.snapshot()?;
+    assert!(before.optional_ref(activity, "activity/course")?.is_none());
+    let original_steps = learning::lesson_steps(&before, activity)?;
+    f.tx(vec![
+        // Legacy prepared assessments can still carry an old course link.
+        add(json!(activity), "activity/course", json!(course(&before, f.learner)?)),
+        json!({"db/id":"unrelated-course","course/id":{"$uuid":uuid(9000)},"course/title":"Unrelated course","course/units":[]}),
+        add(json!(f.learner), "learner/course", json!("unrelated-course")),
+        add(json!(f.learner), "learner/self-directed", json!(true)),
+    ], f.now + 100)?;
+    let switched = f.snapshot()?;
+    let (forms, _) = queue_preparation(
+        &switched,
+        f.learner,
+        DateTime::from_timestamp_millis(f.now + 200).unwrap(),
+    )?;
+    assert!(
+        !forms
+            .iter()
+            .any(|form| form.get("activity/type") == Some(&kw("activity.type/assessment")))
+    );
+    f.tx(forms, f.now + 200)?;
+    assert_eq!(f.available("assessment")?, activity);
+    f.now += 300;
+    let (task, s) = f.start("assessment")?;
+    assert_eq!(status(&s, task, "learner-task/status")?, "started");
+    assert_eq!(
+        learning::lesson_steps(&s, activity)?
+            .iter()
+            .map(|step| step.content)
+            .collect::<Vec<_>>(),
+        original_steps
+            .iter()
+            .map(|step| step.content)
+            .collect::<Vec<_>>()
+    );
+    Ok(())
+}
+
+#[test]
+fn assessment_drafts_navigation_batch_submission_and_remediation_are_atomic() -> Result<()> {
+    let mut f = Fixture::new(false)?;
+    let (task, mut s) = f.start("assessment")?;
+    let activity = s.reference(task, "learner-task/activity")?;
+    let questions: Vec<_> = learning::lesson_steps(&s, activity)?
+        .iter()
+        .map(|st| st.content)
+        .collect();
+    let first_item = items(&s, task)?[0];
+    let field = s.refs(questions[0], "question/answer-fields")?[0];
+    s = f.act(
+        "draft",
+        json!({"taskId":task,"responses":[{"fieldId":field,"value":"3"}]}),
+        f.now + 200,
+    )?;
+    assert!(retrieval::outcomes(&s, &[first_item])?.is_empty());
+    let view = task_json(&s, f.learner, task)?;
+    assert!(view["step"]["fields"][0].get("correctAnswer").is_none());
+    assert_eq!(view["step"]["fields"][0]["response"]["value"], "3");
+    assert_eq!(
+        s.refs(f.learner, "learner/knowledge-profile")?
+            .iter()
+            .map(|p| number(&s, *p, "progress/assessment-mass"))
+            .sum::<f64>(),
+        0.0
+    );
+    // Visit out of order, preserve and revise a previously drafted answer.
+    s = f.act(
+        "navigate",
+        json!({"taskId":task,"questionId":questions[2]}),
+        f.now + 300,
+    )?;
+    assert_eq!(
+        s.reference(
+            s.reference(task, "learner-task/active-item")?,
+            "task-item/content"
+        )?,
+        questions[2]
+    );
+    s = f.act(
+        "navigate",
+        json!({"taskId":task,"questionId":questions[0]}),
+        f.now + 400,
+    )?;
+    s = f.act(
+        "draft",
+        json!({"taskId":task,"responses":[{"fieldId":field,"value":"2"}]}),
+        f.now + 500,
+    )?;
+    for (slot, &q) in questions.iter().enumerate().skip(1) {
+        s = f.act(
+            "navigate",
+            json!({"taskId":task,"questionId":q}),
+            f.now + 600 + slot as i64 * 200,
+        )?;
+        let field = s.refs(q, "question/answer-fields")?[0];
+        s=f.act("draft",json!({"taskId":task,"responses":[{"fieldId":field,"value":if slot==1 {"3"}else{"2"}}]}),f.now+700+slot as i64*200)?;
+    }
+    assert!(
+        mutate(
+            &s,
+            f.learner,
+            "skip",
+            &json!({"taskId":task}),
+            DateTime::from_timestamp_millis(f.now + 1900).unwrap()
+        )
+        .is_err()
+    );
+    s = f.act("submit", json!({"taskId":task}), f.now + 2000)?;
+    assert_eq!(status(&s, task, "learner-task/status")?, "completed");
+    assert_eq!(status(&s, first_item, "task-item/status")?, "correct");
+    assert_eq!(
+        s.refs(f.learner, "learner/knowledge-profile")?
+            .iter()
+            .map(|p| number(&s, *p, "progress/assessment-mass"))
+            .sum::<f64>(),
+        5.0
+    );
+    assert!(
+        mutate(
+            &s,
+            f.learner,
+            "submit",
+            &json!({"taskId":task}),
+            DateTime::from_timestamp_millis(f.now + 2001).unwrap()
+        )?
+        .0
+        .is_empty()
+    );
+    let repairs = course_academy_engine::scheduling::lifecycle(&s, f.learner)?.repairs;
+    assert_eq!(repairs.len(), 1);
+    let (forms, _) = queue_preparation(
+        &s,
+        f.learner,
+        DateTime::from_timestamp_millis(f.now + 2100).unwrap(),
+    )?;
+    f.tx(forms, f.now + 2100)?;
+    let home = home(&f.snapshot()?, f.learner)?;
+    assert!(
+        home["activities"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .all(|a| a["type"] == "review")
+    );
+    Ok(())
+}
+#[test]
+fn paused_assessment_expires_at_original_deadline_without_fabricating_unanswered_evidence()
+-> Result<()> {
+    let mut f = Fixture::new(false)?;
+    let (task, s) = f.start("assessment")?;
+    let item = *items(&s, task)?.last().unwrap();
+    let s = f.act("pause", json!({"taskId":task}), f.now + 1000)?;
+    assert!(
+        retrieval::remaining(
+            &s,
+            task,
+            DateTime::from_timestamp_millis(f.now + 899000).unwrap()
+        )?
+        .unwrap()
+            > 0.0
+    );
+    assert!(
+        mutate(
+            &s,
+            f.learner,
+            "expire",
+            &json!({"taskId":task}),
+            DateTime::from_timestamp_millis(f.now + 899000).unwrap()
+        )
+        .is_err()
+    );
+    let deadline = f.now + 900100;
+    assert_eq!(
+        envelope(
+            mutate(
+                &s,
+                f.learner,
+                "resume",
+                &json!({"taskId":task}),
+                DateTime::from_timestamp_millis(deadline).unwrap()
+            )
+            .map(|_| json!({}))
+        )["code"],
+        "assessment-expired"
+    );
+    let before = s
+        .refs(f.learner, "learner/knowledge-profile")?
+        .iter()
+        .map(|p| s.entities[p].clone())
+        .collect::<Vec<_>>();
+    let s = f.act("expire", json!({"taskId":task}), deadline)?;
+    assert_eq!(status(&s, task, "learner-task/status")?, "completed");
+    assert_eq!(status(&s, item, "task-item/status")?, "paused");
+    assert_eq!(items(&s, task)?.len(), 1);
+    assert_eq!(number(&s, task, "learner-task/xp-earned"), -1.0);
+    assert_eq!(
+        before,
+        s.refs(f.learner, "learner/knowledge-profile")?
+            .iter()
+            .map(|p| s.entities[p].clone())
+            .collect::<Vec<_>>()
+    );
+    assert!(
+        mutate(
+            &s,
+            f.learner,
+            "expire",
+            &json!({"taskId":task}),
+            DateTime::from_timestamp_millis(deadline + 1).unwrap()
+        )?
+        .0
+        .is_empty()
+    );
+    Ok(())
+}
+
+#[test]
+fn required_review_failure_becomes_lesson_and_optional_retake_uses_original_kps() -> Result<()> {
+    let mut f = Fixture::new(false)?;
+    let (original, mut s) = f.start("assessment")?;
+    let a = s.reference(original, "learner-task/activity")?;
+    let original_questions: Vec<_> = learning::lesson_steps(&s, a)?
+        .iter()
+        .map(|st| st.content)
+        .collect();
+    // One correct and four unanswered: both visited and unvisited misses require repair.
+    let q = s.reference(items(&s, original)?[0], "task-item/content")?;
+    let field = s.refs(q, "question/answer-fields")?[0];
+    s = f.act(
+        "submit",
+        json!({"taskId":original,"responses":[{"fieldId":field,"value":"2"}]}),
+        f.now + 200,
+    )?;
+    assert_eq!(
+        course_academy_engine::scheduling::lifecycle(&s, f.learner)?
+            .repairs
+            .len(),
+        4
+    );
+    let mut at = f.now + 300;
+    let (forms, _) =
+        queue_preparation(&s, f.learner, DateTime::from_timestamp_millis(at).unwrap())?;
+    f.tx(forms, at)?;
+    s = f.snapshot()?;
+    let home_view = home(&s, f.learner)?;
+    assert_eq!(home_view["activities"].as_array().unwrap().len(), 4);
+    assert!(
+        home_view["activities"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .all(|v| v["type"] == "review")
+    );
+    // Reject unrelated starts through the same gate, including manual study.
+    let correct_topic = s.topic_for_question(q)?;
+    assert!(
+        mutate(
+            &s,
+            f.learner,
+            "study-topic",
+            &json!({"topicId":correct_topic}),
+            DateTime::from_timestamp_millis(at + 1).unwrap()
+        )
+        .is_err()
+    );
+    let review = home_view["activities"][0]["activityId"].as_u64().unwrap();
+    at += 100;
+    s = f.act("start", json!({"activityId":review}), at)?;
+    let task = task_for(&s, f.learner, review)?.unwrap();
+    let repair_topic = s.reference(review, "activity/scope")?;
+    for _ in 0..5 {
+        let item = *items(&s, task)?.last().unwrap();
+        let q = s.reference(item, "task-item/content")?;
+        let field = s.refs(q, "question/answer-fields")?[0];
+        at += 100;
+        s = f.act(
+            "answer",
+            json!({"taskId":task,"itemId":item,"responses":[{"fieldId":field,"value":"3"}]}),
+            at,
+        )?;
+        at += 100;
+        s = f.act("continue", json!({"taskId":task,"itemId":item}), at)?;
+    }
+    assert_eq!(status(&s, task, "learner-task/status")?, "failed");
+    at += 100;
+    let (forms, _) =
+        queue_preparation(&s, f.learner, DateTime::from_timestamp_millis(at).unwrap())?;
+    f.tx(forms, at)?;
+    s = f.snapshot()?;
+    let lesson_task = s
+        .refs(f.learner, "learner/activity")?
+        .into_iter()
+        .find(|t| {
+            s.refs(*t, "learner-task/remediation-for")
+                .unwrap_or_default()
+                .contains(&original)
+                && s.reference(*t, "learner-task/activity")
+                    .ok()
+                    .is_some_and(|a| retrieval::kind(&s, a).ok().as_deref() == Some("lesson"))
+        })
+        .ok_or("Required replacement lesson was not created")?;
+    assert_eq!(
+        s.optional_ref(
+            s.reference(lesson_task, "learner-task/activity")?,
+            "activity/scope"
+        )?,
+        Some(repair_topic)
+    );
+    // Replenish the affected KP before the replacement lesson.
+    let kp = s.refs(repair_topic, "topic/knowledge-points")?[0];
+    let source = s.refs(kp, "knowledge-point/questions")?[0];
+    let fields = s.refs(source, "question/answer-fields")?;
+    let mut fresh = vec![];
+    for n in 0..6 {
+        let key = format!("repair-fresh-{n}");
+        fresh.push(json!({"db/id":key,"question/id":{"$uuid":uuid(90000+n)},"question/problem":"Enter two.","question/worked-solution":"Two.","question/difficulty":kw(["question.difficulty/easy","question.difficulty/moderate","question.difficulty/hard"][n as usize%3]),"question/answer-fields":fields}));
+        fresh.push(add(json!(kp), "knowledge-point/questions", json!(key)));
+    }
+    at += 100;
+    f.tx(fresh, at)?;
+    s = f.snapshot()?;
+    at += 100;
+    s = f.act(
+        "start",
+        json!({"activityId":s.reference(lesson_task,"learner-task/activity")?}),
+        at,
+    )?;
+    let example = *items(&s, lesson_task)?.last().unwrap();
+    at += 100;
+    s = f.act(
+        "continue",
+        json!({"taskId":lesson_task,"itemId":example}),
+        at,
+    )?;
+    for _ in 0..2 {
+        let item = *items(&s, lesson_task)?.last().unwrap();
+        let q = s.reference(item, "task-item/content")?;
+        let field = s.refs(q, "question/answer-fields")?[0];
+        at += 100;
+        s = f.act(
+            "answer",
+            json!({"taskId":lesson_task,"itemId":item,"responses":[{"fieldId":field,"value":"2"}]}),
+            at,
+        )?;
+        at += 100;
+        s = f.act("continue", json!({"taskId":lesson_task,"itemId":item}), at)?;
+    }
+    assert_eq!(status(&s, lesson_task, "learner-task/status")?, "completed");
+    assert!(
+        !course_academy_engine::scheduling::lifecycle(&s, f.learner)?
+            .repairs
+            .contains_key(&(original, repair_topic))
+    );
+    // Pass every remaining required review.
+    loop {
+        at += 100;
+        let (forms, _) =
+            queue_preparation(&s, f.learner, DateTime::from_timestamp_millis(at).unwrap())?;
+        f.tx(forms, at)?;
+        s = f.snapshot()?;
+        let h = course_academy_engine::scheduling::lifecycle(&s, f.learner)?;
+        if h.repairs.is_empty() {
+            break;
+        }
+        let review = home(&s, f.learner)?["activities"][0]["activityId"]
+            .as_u64()
+            .ok_or("Missing required review")?;
+        at += 100;
+        s = f.act("start", json!({"activityId":review}), at)?;
+        let task = task_for(&s, f.learner, review)?.unwrap();
+        for _ in 0..3 {
+            let item = *items(&s, task)?.last().unwrap();
+            let q = s.reference(item, "task-item/content")?;
+            let field = s.refs(q, "question/answer-fields")?[0];
+            at += 100;
+            s = f.act(
+                "answer",
+                json!({"taskId":task,"itemId":item,"responses":[{"fieldId":field,"value":"2"}]}),
+                at,
+            )?;
+            at += 100;
+            s = f.act("continue", json!({"taskId":task,"itemId":item}), at)?;
+        }
+    }
+    let retake = s
+        .refs(f.learner, "learner/activity")?
+        .into_iter()
+        .find(|t| s.optional_ref(*t, "learner-task/retake-of").ok().flatten() == Some(original))
+        .ok_or("Optional retake not created")?;
+    let retake_activity = s.reference(retake, "learner-task/activity")?;
+    let retake_questions: Vec<_> = learning::lesson_steps(&s, retake_activity)?
+        .iter()
+        .map(|st| st.content)
+        .collect();
+    assert_eq!(retake_questions.len(), original_questions.len());
+    assert_eq!(
+        original_questions
+            .iter()
+            .map(|q| course_academy_engine::scheduling::original_kp(&s, *q).unwrap())
+            .collect::<BTreeSet<_>>(),
+        retake_questions
+            .iter()
+            .map(|q| course_academy_engine::scheduling::original_kp(&s, *q).unwrap())
+            .collect()
+    );
+    assert!(retake_questions.iter().all(|q| {
+        !s.refs(f.learner, "learner/activity")
+            .unwrap()
+            .iter()
+            .any(|t| {
+                s.refs(*t, "learner-task/items")
+                    .unwrap()
+                    .iter()
+                    .any(|i| s.optional_ref(*i, "task-item/content").ok().flatten() == Some(*q))
+            })
+    }));
+    assert!(
+        retake_questions
+            .iter()
+            .map(|q| course_academy_engine::assessment_sampling::seconds(&s, *q).unwrap())
+            .sum::<f64>()
+            <= 900.0
+    );
+    assert!(
+        learning::study_candidates(
+            &s,
+            f.learner,
+            course(&s, f.learner)?,
+            DateTime::from_timestamp_millis(at).unwrap()
+        )?
+        .iter()
+        .any(|p| p.activity == retake_activity && p.priority < 11000.0)
+    );
+    Ok(())
+}
+
+fn finish(
+    f: &mut Fixture,
+    activity: u64,
+    question: Option<u64>,
+    passed: bool,
+    xp: i64,
+    at: i64,
+) -> Result<u64> {
+    finish_origin(f, activity, question, passed, xp, at, None)
+}
+
+fn finish_origin(
+    f: &mut Fixture,
+    activity: u64,
+    question: Option<u64>,
+    passed: bool,
+    xp: i64,
+    at: i64,
+    origin: Option<u64>,
+) -> Result<u64> {
+    let key = uid()?;
+    let task = format!("record-{key}");
+    let mut forms = vec![
+        json!({"db/id":task,"learner-task/id":{"$uuid":key},"learner-task/activity":activity,"learner-task/status":kw("learner-task.status/started")}),
+        add(json!(f.learner), "learner/activity", json!(task)),
+    ];
+    if let Some(origin) = origin {
+        forms.push(add(
+            json!(task),
+            "learner-task/remediation-for",
+            json!(origin),
+        ));
+    }
+    if let Some(q) = question {
+        forms.push(json!({"db/id":"record-item","task-item/id":{"$uuid":uid()?},"task-item/content":q,"task-item/status":kw("task-item.status/started")}));
+        forms.push(add(json!(task), "learner-task/items", json!("record-item")));
+    }
+    f.tx(forms, at)?;
+    let s = f.snapshot()?;
+    let t = s
+        .entities
+        .with_attribute("learner-task/id")
+        .into_iter()
+        .find(|t| s.entities[t]["learner-task/id"] == json!({"$uuid":key}))
+        .unwrap();
+    let mut forms = vec![
+        cas(
+            &s,
+            t,
+            "learner-task/status",
+            if passed {
+                "learner-task.status/completed"
+            } else {
+                "learner-task.status/failed"
+            },
+        )?,
+        add(json!(t), "learner-task/xp-earned", json!(xp)),
+    ];
+    for i in items(&s, t)? {
+        forms.push(cas(
+            &s,
+            i,
+            "task-item/status",
+            if passed {
+                "task-item.status/correct"
+            } else {
+                "task-item.status/incorrect"
+            },
+        )?);
+    }
+    f.tx(forms, at + 1)?;
+    Ok(t)
+}
+
+#[test]
+fn signed_cadence_lesson_break_and_key_prerequisite_path_are_history_derived() -> Result<()> {
+    let mut f = Fixture::new(true)?;
+    let s = f.snapshot()?;
+    let topic = s.refs(course(&s, f.learner)?, "course/units")?[0];
+    let module = s.refs(topic, "unit/modules")?[0];
+    let topics = s.refs(module, "module/topics")?;
+    let topic = topics[0];
+    let prerequisite = topics[1];
+    let kp = s.refs(topic, "topic/knowledge-points")?[0];
+    let question = s.refs(kp, "knowledge-point/questions")?[10];
+    let lesson = s
+        .entities
+        .with_attribute("activity/id")
+        .into_iter()
+        .find(|a| {
+            retrieval::kind(&s, *a).ok().as_deref() == Some("lesson")
+                && s.optional_ref(*a, "activity/scope").ok().flatten() == Some(topic)
+        })
+        .unwrap();
+    let mut at = f.now + 100;
+    f.tx(
+        vec![add(
+            json!(kp),
+            "knowledge-point/key-prerequisites",
+            json!(prerequisite),
+        )],
+        at,
+    )?;
+    at += 10;
+    finish(&mut f, lesson, Some(question), false, -1, at)?;
+    let h = course_academy_engine::scheduling::lifecycle(&f.snapshot()?, f.learner)?;
+    assert_eq!(h.xp, 114.0);
+    assert!(!h.retry_ready(topic));
+    let s = f.snapshot()?;
+    let other = s
+        .entities
+        .with_attribute("activity/id")
+        .into_iter()
+        .find(|a| {
+            retrieval::kind(&s, *a).ok().as_deref() == Some("lesson")
+                && s.optional_ref(*a, "activity/scope").ok().flatten() == Some(prerequisite)
+        })
+        .unwrap();
+    for count in 1..=5 {
+        at += 10;
+        finish(&mut f, other, None, true, 0, at)?;
+        assert_eq!(
+            course_academy_engine::scheduling::lifecycle(&f.snapshot()?, f.learner)?
+                .retry_ready(topic),
+            count == 5
+        );
+    }
+    at += 10;
+    let second = finish(
+        &mut f,
+        lesson,
+        Some(s.refs(kp, "knowledge-point/questions")?[11]),
+        false,
+        -1,
+        at,
+    )?;
+    let s = f.snapshot()?;
+    let h = course_academy_engine::scheduling::lifecycle(&s, f.learner)?;
+    assert_eq!(
+        h.repairs.get(&(second, prerequisite)).map(String::as_str),
+        Some("review")
+    );
+    assert!(h.lesson_blocked(&s, topic)?);
+    assert!(!h.lesson_blocked(&s, topics[2])?);
+    assert!(!h.assessment_origin(&s, second)?);
+    // Adopt a fresh already-prepared ordinary review instead of creating a
+    // second simultaneous review for the same topic.
+    at += 10;
+    let (forms, _) =
+        queue_preparation(&s, f.learner, DateTime::from_timestamp_millis(at).unwrap())?;
+    f.tx(forms, at)?;
+    let s = f.snapshot()?;
+    assert_eq!(
+        s.refs(f.learner, "learner/activity")?
+            .into_iter()
+            .filter(|t| s
+                .refs(*t, "learner-task/remediation-for")
+                .unwrap_or_default()
+                .contains(&second))
+            .count(),
+        1
+    );
+    assert!(
+        mutate(
+            &s,
+            f.learner,
+            "study-topic",
+            &json!({"topicId":topic}),
+            DateTime::from_timestamp_millis(at).unwrap()
+        )
+        .is_err()
+    );
+    Ok(())
+}
+
+/// Durable checks own their course and sufficiently stocked banks, so their
+/// outcome never depends on gaps in the real learner's captured questions.
+pub(super) fn durable_fixture(
+    conn: &Connection,
+    endpoint: &str,
+    assessment: bool,
+) -> Result<(EntitySnapshot, u64, String)> {
+    let s = snapshot(&conn.sync()?)?;
+    let policy = course_academy_engine::question_selection::active_policy(&s)?;
+    let nonce = uid()?;
+    let prefix = u128::from_str_radix(&nonce.replace('-', ""), 16)? & (!0u128 << 32);
+    let id = |n| json!({"$uuid":uuid(prefix|n)});
+    let learner = format!("scheduler-fixture-{nonce}");
+    let mut forms = vec![
+        json!({"db/id":"fixture-course","course/id":id(1),"course/title":"Isolated scheduler verification","course/units":["fixture-unit"]}),
+        json!({"db/id":"fixture-unit","unit/id":id(2),"unit/modules":["fixture-module"]}),
+        json!({"db/id":"fixture-module","module/id":id(3),"module/topics":(0..5).map(|i|format!("fixture-topic-{i}")).collect::<Vec<_>>()}),
+        json!({"db/id":"fixture-learner","learner/id":learner,"learner/name":"Temporary scheduler verification","learner/course":"fixture-course","learner/self-directed":false,"learner/knowledge-profile":(0..5).map(|i|format!("fixture-progress-{i}")).collect::<Vec<_>>(),"learner/activity":if assessment {(0..5).map(|i|format!("fixture-mastered-{i}")).collect::<Vec<_>>()}else{vec![]},"db/ensure":kw("learner/validate")}),
+    ];
+    for topic in 0..5u128 {
+        forms.push(json!({"db/id":format!("fixture-topic-{topic}"),"topic/id":id(10+topic),"topic/title":format!("Verification topic {topic}"),"topic/knowledge-points":[format!("fixture-kp-{topic}")]}));
+        forms.push(json!({"db/id":format!("fixture-kp-{topic}"),"knowledge-point/id":id(20+topic),"knowledge-point/title":format!("Verification skill {topic}"),"knowledge-point/canonical-example":format!("fixture-example-{topic}"),"knowledge-point/questions":(0..30).map(|i|format!("fixture-question-{topic}-{i}")).collect::<Vec<_>>(),"db/ensure":kw("knowledge-point/validate")}));
+        forms.push(json!({"db/id":format!("fixture-example-{topic}"),"question/id":id(30+topic),"question/problem":"One plus one?","question/worked-solution":"Two.","db/ensure":kw("question/validate")}));
+        forms.push(json!({"db/id":format!("fixture-lesson-{topic}"),"activity/id":id(40+topic),"activity/title":format!("Verification lesson {topic}"),"activity/type":kw("activity.type/lesson"),"activity/course":"fixture-course","activity/scope":format!("fixture-topic-{topic}"),"activity/steps":[format!("fixture-step-{topic}")],"activity/first-step":format!("fixture-step-{topic}"),"db/ensure":kw("activity/validate")}));
+        forms.push(json!({"db/id":format!("fixture-step-{topic}"),"step/id":id(50+topic),"step/content":format!("fixture-kp-{topic}"),"step/expected-seconds":300.0,"db/ensure":kw("step/validate")}));
+        forms.push(json!({"db/id":format!("fixture-progress-{topic}"),"progress/id":format!("fixture-{nonce}-{topic}"),"progress/topic":format!("fixture-topic-{topic}"),"progress/policy":policy,"progress/learned":assessment,"progress/repetitions":if assessment {2.0}else{0.0},"progress/memory":if assessment {1.0}else{0.0},"progress/memory-at":{"$instant":Utc::now().timestamp_millis()},"progress/interval-days":4.0,"progress/assessment-accuracy":0.8,"progress/practice-accuracy":0.8,"progress/assessment-mass":0.0,"progress/practice-mass":0.0,"db/ensure":kw("progress/validate")}));
+        if assessment {
+            forms.push(json!({"db/id":format!("fixture-mastered-{topic}"),"learner-task/id":id(60+topic),"learner-task/activity":format!("fixture-lesson-{topic}"),"learner-task/status":kw("learner-task.status/started"),"learner-task/xp-earned":30,"db/ensure":kw("learner-task/validate")}));
+        }
+        for offset in 0..30u128 {
+            let n = 1000 + topic * 100 + offset * 3;
+            forms.push(json!({"db/id":format!("fixture-question-{topic}-{offset}"),"question/id":id(n),"question/problem":"Enter two.","question/worked-solution":"One plus one is two.","question/difficulty":kw(["question.difficulty/easy","question.difficulty/moderate","question.difficulty/hard"][offset as usize%3]),"question/answer-fields":[format!("fixture-field-{topic}-{offset}")],"db/ensure":kw("question/validate")}));
+            forms.push(json!({"db/id":format!("fixture-field-{topic}-{offset}"),"answer-field/id":id(n+1),"answer-field/type":kw("answer-field.type/blank"),"answer-field/key":"value","answer-field/choices":[format!("fixture-answer-{topic}-{offset}")],"answer-field/correct":format!("fixture-answer-{topic}-{offset}"),"db/ensure":kw("answer-field/validate")}));
+            forms.push(json!({"db/id":format!("fixture-answer-{topic}-{offset}"),"answer/id":id(n+2),"answer/type":kw("answer.type/math"),"answer/value":"2","db/ensure":kw("answer/validate")}));
+        }
+    }
+    let start = Utc::now();
+    let mut s = super::integration::commit(
+        conn,
+        endpoint,
+        &s,
+        forms,
+        &format!("{learner}-setup"),
+        start,
+    )?;
+    let l = s
+        .entities
+        .with_attribute("learner/id")
+        .into_iter()
+        .find(|l| s.entities[l]["learner/id"] == json!(learner))
+        .unwrap();
+    if assessment {
+        let forms = s
+            .refs(l, "learner/activity")?
+            .iter()
+            .map(|t| {
+                cas(
+                    &s,
+                    *t,
+                    "learner-task/status",
+                    "learner-task.status/completed",
+                )
+            })
+            .collect::<Result<Vec<_>>>()?;
+        s = super::integration::commit(
+            conn,
+            endpoint,
+            &s,
+            forms,
+            &format!("{learner}-mastered"),
+            start + chrono::Duration::seconds(1),
+        )?;
+    }
+    if assessment {
+        // Live writers require monotonic transaction instants. Author this
+        // admitted route explicitly; the 48-hour admission boundary is tested
+        // against isolated historical fixtures, without backdating live writes.
+        let qs = (0..5)
+            .map(|topic| {
+                let t = s
+                    .entities
+                    .with_attribute("topic/id")
+                    .into_iter()
+                    .find(|t| text(&s, *t, "topic/title") == format!("Verification topic {topic}"))
+                    .unwrap();
+                let kp = s.refs(t, "topic/knowledge-points").unwrap()[0];
+                s.refs(kp, "knowledge-point/questions").unwrap()[topic % 3]
+            })
+            .collect::<Vec<_>>();
+        let mut forms = vec![
+            json!({"db/id":"fixture-assessment","activity/id":id(70),"activity/title":"Admitted verification assessment","activity/type":kw("activity.type/assessment"),"activity/steps":(0..5).map(|i|format!("fixture-assessment-step-{i}")).collect::<Vec<_>>(),"activity/first-step":"fixture-assessment-step-0","activity/time-limit-seconds":900.0,"activity/expected-seconds":540.0,"db/ensure":kw("activity/validate")}),
+            json!({"db/id":"fixture-assessment-task","learner-task/id":id(71),"learner-task/activity":"fixture-assessment","learner-task/status":kw("learner-task.status/unlocked"),"learner-task/priority":11000.0,"db/ensure":kw("learner-task/validate")}),
+            add(
+                json!(l),
+                "learner/activity",
+                json!("fixture-assessment-task"),
+            ),
+        ];
+        for (i, q) in qs.iter().enumerate() {
+            let mut record = json!({"db/id":format!("fixture-assessment-step-{i}"),"step/id":id(80+i as u128),"step/content":q,"db/ensure":kw("step/validate")});
+            if i < 4 {
+                record["step/next"] = json!(format!("fixture-assessment-step-{}", i + 1));
+            }
+            forms.push(record);
+        }
+        s = super::integration::commit(
+            conn,
+            endpoint,
+            &s,
+            forms,
+            &format!("{learner}-admitted"),
+            Utc::now(),
+        )?;
+    }
+    Ok((s, l, nonce))
+}
+
+pub(super) fn durable_cleanup(
+    conn: &Connection,
+    endpoint: &str,
+    l: u64,
+    nonce: &str,
+) -> Result<()> {
+    let s = snapshot(&conn.sync()?)?;
+    let prefix = &nonce[..24];
+    let mut entities: BTreeSet<_> = s
+        .entities
+        .iter()
+        .filter_map(|(e, r)| {
+            r.values()
+                .any(|v| {
+                    v.get("$uuid")
+                        .and_then(Json::as_str)
+                        .is_some_and(|v| v.starts_with(prefix))
+                })
+                .then_some(*e)
+        })
+        .collect();
+    entities.insert(l);
+    for task in s.refs(l, "learner/activity")? {
+        entities.insert(task);
+        let a = s.reference(task, "learner-task/activity")?;
+        entities.insert(a);
+        entities.extend(s.refs(a, "activity/steps")?);
+    }
+    let fields: Vec<_> = entities
+        .iter()
+        .copied()
+        .filter(|e| s.entities[e].contains_key("answer-field/id"))
+        .collect();
+    for f in fields {
+        entities.extend(s.refs(f, "answer-field/choices")?);
+    }
+    let forms = entities
+        .into_iter()
+        .map(|e| json!([kw("db/retractEntity"), e]))
+        .collect();
+    let after = super::integration::commit(
+        conn,
+        endpoint,
+        &s,
+        forms,
+        &format!("fixture-{nonce}-cleanup"),
+        Utc::now(),
+    )?;
+    assert!(!after.entities.contains_key(&l));
+    assert!(!after.entities.values().any(|r| r.values().any(|v| {
+        v.get("$uuid")
+            .and_then(Json::as_str)
+            .is_some_and(|v| v.starts_with(prefix))
+    })));
+    Ok(())
+}
+
+#[test]
+#[ignore = "requires local writer; creates and removes isolated scheduler content"]
+fn durable_scheduler_lifecycle() -> Result<()> {
+    let database = std::env::var("EDB_DATABASE").unwrap_or("math".into());
+    let endpoint = std::env::var("EDB_ENDPOINT").unwrap_or("/tmp/edb-math/writer.sock".into());
+    let conn = Connection::connect_configured(postgres_config_from_env()?, database.clone(), 256)?;
+    let (s, l, nonce) = durable_fixture(&conn, &endpoint, true)?;
+    let learner = s.entities[&l]["learner/id"].as_str().unwrap().to_string();
+    let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| -> Result<()> {
+        let mut app = Application::connect(database.clone(), learner.clone(), endpoint.clone())?;
+        fn request(app: &mut Application, action: &str, mut body: Json) -> Result<Json> {
+            body["action"] = json!(action);
+            body["requestId"] = json!(uid()?);
+            app.process(&body)
+        }
+        let queue = request(&mut app, "queue", json!({}))?;
+        let a = queue["activities"][0]["activityId"].as_u64().unwrap();
+        assert_eq!(queue["activities"][0]["type"], "assessment");
+        let mut view = request(&mut app, "start", json!({"activityId":a}))?;
+        let task = view["taskId"].as_u64().unwrap();
+        let original: Vec<_> = view["questions"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|q| q["questionId"].as_u64().unwrap())
+            .collect();
+        let field = view["step"]["fields"][0]["id"].as_u64().unwrap();
+        let body = json!({"taskId":task,"itemId":view["step"]["itemId"],"responses":[{"fieldId":field,"value":"2"}]});
+        request(&mut app, "draft", body.clone())?;
+        request(&mut app, "draft", body)?;
+        // Reconnect before final submission: saved drafts and reservations survive.
+        drop(app);
+        let mut app = Application::connect(database.clone(), learner.clone(), endpoint.clone())?;
+        view = request(&mut app, "task", json!({"taskId":task}))?;
+        assert_eq!(view["step"]["fields"][0]["response"]["value"], "2");
+        assert!(view["step"]["fields"][0].get("grade").is_none());
+        view = request(&mut app, "submit", json!({"taskId":task}))?;
+        assert_eq!(view["assessmentScore"]["correct"], 1);
+        loop {
+            let queue = request(&mut app, "queue", json!({}))?;
+            let h = course_academy_engine::scheduling::lifecycle(&app.snapshot, l)?;
+            if h.repairs.is_empty() {
+                break;
+            }
+            assert!(
+                queue["activities"]
+                    .as_array()
+                    .unwrap()
+                    .iter()
+                    .all(|v| v["type"] == "review")
+            );
+            let a = queue["activities"][0]["activityId"].as_u64().unwrap();
+            let mut view = request(&mut app, "start", json!({"activityId":a}))?;
+            let t = view["taskId"].as_u64().unwrap();
+            for _ in 0..3 {
+                let i = view["step"]["itemId"].as_u64().unwrap();
+                let f = view["step"]["fields"][0]["id"].as_u64().unwrap();
+                request(
+                    &mut app,
+                    "answer",
+                    json!({"taskId":t,"itemId":i,"responses":[{"fieldId":f,"value":"2"}]}),
+                )?;
+                view = request(&mut app, "continue", json!({"taskId":t,"itemId":i}))?;
+            }
+            assert_eq!(view["status"], "completed");
+        }
+        let s = &app.snapshot;
+        let retake = s
+            .refs(l, "learner/activity")?
+            .into_iter()
+            .find(|t| s.optional_ref(*t, "learner-task/retake-of").ok().flatten() == Some(task))
+            .ok_or("durable retake missing")?;
+        let a = s.reference(retake, "learner-task/activity")?;
+        let next: Vec<_> = learning::lesson_steps(s, a)?
+            .iter()
+            .map(|st| st.content)
+            .collect();
+        assert_eq!(next.len(), original.len());
+        assert!(next.iter().all(|q| !original.contains(q)));
+        assert_eq!(
+            next.iter()
+                .map(|q| course_academy_engine::scheduling::original_kp(s, *q).unwrap())
+                .collect::<BTreeSet<_>>(),
+            original
+                .iter()
+                .map(|q| course_academy_engine::scheduling::original_kp(s, *q).unwrap())
+                .collect()
+        );
+        let before = course_academy_engine::scheduling::lifecycle(s, l)?.xp;
+        request(&mut app, "start", json!({"activityId":a}))?;
+        for q in next {
+            let view = request(
+                &mut app,
+                "navigate",
+                json!({"taskId":retake,"questionId":q}),
+            )?;
+            let field = view["step"]["fields"][0]["id"].as_u64().unwrap();
+            request(
+                &mut app,
+                "draft",
+                json!({"taskId":retake,"itemId":view["step"]["itemId"],"responses":[{"fieldId":field,"value":"2"}]}),
+            )?;
+        }
+        let view = request(&mut app, "submit", json!({"taskId":retake}))?;
+        assert_eq!(
+            view["assessmentScore"]["correct"],
+            view["assessmentScore"]["total"]
+        );
+        assert_eq!(
+            course_academy_engine::scheduling::lifecycle(&app.snapshot, l)?.xp,
+            before
+        );
+        assert!(
+            course_academy_engine::scheduling::lifecycle(&app.snapshot, l)?
+                .retakes
+                .is_empty()
+        );
+        Ok(())
+    }));
+    durable_cleanup(&conn, &endpoint, l, &nonce)?;
+    match result {
+        Ok(r) => r,
+        Err(e) => std::panic::resume_unwind(e),
+    }
+}
+
+#[test]
+fn assessment_admission_opens_at_48_hours_without_any_prior_retrieval() -> Result<()> {
+    let f = Fixture::with_admission(false, 48 * 3_600_000, false)?;
+    let s = f.snapshot()?;
+    assert!(s.refs(f.learner, "learner/activity")?.iter().all(|t| {
+        retrieval::kind(&s, s.reference(*t, "learner-task/activity").unwrap()).unwrap() == "lesson"
+    }));
+    assert_eq!(
+        course_academy_engine::scheduling::lifecycle(&s, f.learner)?.xp,
+        125.0
+    );
+    let before = DateTime::from_timestamp_millis(f.now + 999).unwrap();
+    assert!(
+        retrieval::schedule(&s, f.learner, course(&s, f.learner)?, before)?
+            .iter()
+            .all(|d| d.kind != "assessment")
+    );
+    let admitted = DateTime::from_timestamp_millis(f.now + 1000).unwrap();
+    assert!(
+        retrieval::schedule(&s, f.learner, course(&s, f.learner)?, admitted)?
+            .iter()
+            .any(|d| d.kind == "assessment")
+    );
+    Ok(())
+}
+
+#[test]
+fn three_ordinary_reviews_offer_a_lesson_and_only_an_actual_offer_resets_the_streak() -> Result<()>
+{
+    use course_academy_engine::{learning::PlannedActivity, scheduling::filter_candidates};
+    let mut f = Fixture::new(true)?;
+    let s = f.snapshot()?;
+    let lesson = s
+        .refs(f.learner, "learner/activity")?
+        .into_iter()
+        .find(|t| {
+            retrieval::kind(&s, s.reference(*t, "learner-task/activity").unwrap()).unwrap()
+                == "lesson"
+        })
+        .unwrap();
+    let lesson_activity = s.reference(lesson, "learner-task/activity")?;
+    let mut plan = Vec::new();
+    for activity in s.entities.with_attribute("activity/type") {
+        let kind = retrieval::kind(&s, activity)?;
+        if kind == "review"
+            && s.owners(activity, "learner-task/activity")?
+                .iter()
+                .any(|task| {
+                    matches!(
+                        status(&s, *task, "learner-task/status").as_deref(),
+                        Ok("unlocked")
+                    )
+                })
+            || activity == lesson_activity
+        {
+            plan.push(PlannedActivity {
+                activity,
+                topic: s.reference(activity, "activity/scope")?,
+                priority: if kind == "review" { 6000.0 } else { 100.0 },
+                target_count: 0,
+                target_topics: vec![],
+                remaining_topics: 0,
+                nearest_target_steps: None,
+                due: None,
+                reason: "Eligible fixture candidate".into(),
+            });
+        }
+    }
+    plan.sort_by(|a, b| b.priority.total_cmp(&a.priority));
+    assert!(plan.len() >= 6);
+    // Preparation without an actual offer leaves the existing review streak due.
+    assert_eq!(
+        filter_candidates(&s, f.learner, plan.clone())?[0].activity,
+        lesson_activity
+    );
+    f.tx(
+        vec![add(
+            json!(lesson),
+            "learner-task/offered-at",
+            json!({"$instant":f.now+10}),
+        )],
+        f.now + 10,
+    )?;
+    assert_ne!(
+        filter_candidates(&f.snapshot()?, f.learner, plan.clone())?[0].activity,
+        lesson_activity
+    );
+    let review = plan
+        .iter()
+        .find(|p| p.activity != lesson_activity)
+        .unwrap()
+        .activity;
+    for (i, passed) in [true, false, true].into_iter().enumerate() {
+        let at = f.now + 20 + i as i64 * 2;
+        finish(&mut f, review, None, passed, 0, at)?;
+    }
+    assert_eq!(
+        filter_candidates(&f.snapshot()?, f.learner, plan.clone())?[0].activity,
+        lesson_activity
+    );
+    let at = f.now + 1000;
+    f.tx(
+        vec![add(
+            json!(lesson),
+            "learner-task/offered-at",
+            json!({"$instant":at}),
+        )],
+        at,
+    )?;
+    assert_ne!(
+        filter_candidates(&f.snapshot()?, f.learner, plan)?[0].activity,
+        lesson_activity
+    );
+    Ok(())
+}
+
+#[test]
+fn failed_required_lesson_releases_global_gate_until_five_other_successes() -> Result<()> {
+    let mut f = Fixture::new(false)?;
+    let (original, mut s) = f.start("assessment")?;
+    s = f.act("submit", json!({"taskId":original}), f.now + 200)?;
+    let mut at = f.now + 300;
+    let (forms, _) =
+        queue_preparation(&s, f.learner, DateTime::from_timestamp_millis(at).unwrap())?;
+    f.tx(forms, at)?;
+    s = f.snapshot()?;
+    let reviews: Vec<_> = s
+        .refs(f.learner, "learner/activity")?
+        .into_iter()
+        .filter_map(|t| {
+            s.refs(t, "learner-task/remediation-for")
+                .ok()?
+                .contains(&original)
+                .then(|| s.reference(t, "learner-task/activity").unwrap())
+        })
+        .collect();
+    let topic = s.reference(reviews[0], "activity/scope")?;
+    at += 10;
+    finish_origin(&mut f, reviews[0], None, false, -1, at, Some(original))?;
+    s = f.snapshot()?;
+    let lesson = topic_lesson(&s, topic)?;
+    let kp = s.refs(topic, "topic/knowledge-points")?[0];
+    let q = s.refs(kp, "knowledge-point/questions")?[10];
+    at += 10;
+    finish_origin(&mut f, lesson, Some(q), false, -1, at, Some(original))?;
+    let h = course_academy_engine::scheduling::lifecycle(&f.snapshot()?, f.learner)?;
+    assert!(!h.retry_ready(topic));
+    assert_eq!(
+        h.repairs.get(&(original, topic)).map(String::as_str),
+        Some("lesson")
+    );
+    for review in reviews.iter().skip(1) {
+        at += 10;
+        finish_origin(&mut f, *review, None, true, 0, at, Some(original))?;
+    }
+    s = f.snapshot()?;
+    let h = course_academy_engine::scheduling::lifecycle(&s, f.learner)?;
+    assert_eq!(h.repairs.len(), 1);
+    assert!(!h.retry_ready(topic));
+    assert!(!h.retake_ready(&s, original)?);
+    let plan = learning::study_candidates(
+        &s,
+        f.learner,
+        course(&s, f.learner)?,
+        DateTime::from_timestamp_millis(at).unwrap(),
+    )?;
+    assert!(!plan.iter().any(|p| p.priority >= 11000.0));
+    // Four successful repairs on other topics advance the break; one further
+    // ordinary success reaches five. Failures never count as that fifth.
+    let other = s.reference(reviews[1], "activity/scope")?;
+    let other_lesson = topic_lesson(&s, other)?;
+    at += 10;
+    finish(&mut f, other_lesson, None, false, 0, at)?;
+    assert!(
+        !course_academy_engine::scheduling::lifecycle(&f.snapshot()?, f.learner)?
+            .retry_ready(topic)
+    );
+    at += 10;
+    finish(&mut f, other_lesson, None, true, 0, at)?;
+    s = f.snapshot()?;
+    assert!(course_academy_engine::scheduling::lifecycle(&s, f.learner)?.retry_ready(topic));
+    at += 10;
+    let (forms, _) =
+        queue_preparation(&s, f.learner, DateTime::from_timestamp_millis(at).unwrap())?;
+    f.tx(forms, at)?;
+    s = f.snapshot()?;
+    let view = home(&s, f.learner)?;
+    assert!(view["activities"].as_array().unwrap().iter().all(|v|v["activityId"]==json!(lesson)&&v["priority"].as_f64().unwrap()>=12000.0));
+    assert!(!view["activities"].as_array().unwrap().is_empty());
+    Ok(())
+}

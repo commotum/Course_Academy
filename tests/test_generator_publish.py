@@ -1,0 +1,407 @@
+import copy
+import hashlib
+import importlib.util
+import json
+from pathlib import Path
+import tempfile
+from types import SimpleNamespace
+import sys
+import unittest
+import uuid
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'scripts'))
+from generator_publish import (Publisher, StaleBasis, VerificationError, content_fingerprint,
+    digest, dumps, enum, jsonable, kw, loads, normalized_question, stable_identities,
+    validate_question, validate_report)
+from generator_packages import publish_package
+
+KP = 101
+KP_UUID = uuid.UUID('11111111-1111-4111-8111-111111111111')
+LINEAGE = '22222222-2222-4222-8222-222222222222'
+PACKAGE = 'c' * 64
+SCRIPT = f'generators/cc/{PACKAGE}/generate.py'
+
+
+def record(number=2):
+    aid = str(uuid.uuid5(KP_UUID, 'answer' + str(number)))
+    return {'knowledge_point': KP, 'generation': {'parameters': {'number': number}}, 'question': {
+        ':question/id': str(uuid.uuid4()), ':question/problem': f'Compute {number}+1.',
+        ':question/worked-solution': f'Adding one gives {number+1}.',
+        ':question/difficulty': ':question.difficulty/easy', ':question/answer-fields': [{
+            ':answer-field/id': str(uuid.uuid4()), ':answer-field/key': 'answer',
+            ':answer-field/type': ':answer-field.type/blank', ':answer-field/correct': [':answer/id', aid],
+            ':answer-field/choices': [{':answer/id': aid, ':answer/type': ':answer.type/math', ':answer/value': str(number+1)}]}]}}
+
+
+class FakeClient:
+    """Tiny source-aware transaction model; real native predicates are tested separately."""
+    def __init__(self):
+        self.basis = 12
+        self.next_id = 2000
+        self.receipts = {}
+        self.calls = []
+        self.lose_reply = False
+        self.reject_stale = False
+        self.fail_readback = False
+        self.lessons = []
+        self.entities = {}
+        from generator_publish import ALLOWED
+        refs = {'question/difficulty', 'question/answer-fields', 'answer-field/type', 'answer-field/choices',
+                'answer-field/correct', 'answer/type', 'knowledge-point/questions', 'knowledge-point/question-generator'}
+        names = sorted(ALLOWED | {'db/txInstant'})
+        self.attributes = [[i + 1, kw(n), kw('db.type/ref' if n in refs else 'db.type/string')] for i, n in enumerate(names)]
+        enums = [':application/ca-engine', ':question.difficulty/easy', ':question.difficulty/moderate',
+                 ':question.difficulty/hard', ':answer-field.type/blank', ':answer.type/math', ':answer.type/image',
+                 ':answer.type/text', ':answer-field.type/radio']
+        self.idents = [[100 + i, kw(n)] for i, n in enumerate(enums)]
+        self.kp = {':db/id': KP, ':knowledge-point/id': KP_UUID, ':knowledge-point/title': 'Add one',
+                   ':knowledge-point/canonical-example': {':db/id': 99, ':question/id': uuid.uuid4(), ':question/problem': 'Compute 1+1.', ':question/worked-solution': 'Two.'},
+                   ':knowledge-point/questions': []}
+        self.initial_kp = copy.deepcopy(self.kp)
+
+    def status(self):
+        return {'database': 'math', 'lineage': LINEAGE, 'basis': self.basis}
+
+    def query(self, query, inputs, directory, name, basis=None):
+        Path(directory).mkdir(parents=True, exist_ok=True)
+        if name == 'kp':
+            if self.fail_readback and self.basis > 12 and basis == self.basis:
+                self.fail_readback = False
+                raise ConnectionError('readback unavailable')
+            return [[copy.deepcopy(self.kp if basis == self.basis else self.initial_kp)]]
+        if name == 'attributes':
+            return self.attributes
+        if name == 'idents':
+            return self.idents
+        if name == 'generator-identity':
+            return [[copy.deepcopy(e)] for e in self.entities.values() if e.get(':question-generator/id') == inputs[0]]
+        if name == 'identity-collisions':
+            return [[eid, value] for eid, entity in self.entities.items() for k, value in entity.items() if k in (':question/id', ':answer-field/id', ':answer/id') and value in inputs[0]]
+        if name == 'lessons':
+            return [[copy.deepcopy(l)] for l in self.lessons]
+        if name == 'topics':
+            return [[{':db/id': 600, ':topic/id': KP_UUID}]] if self.lessons else []
+        if name == 'prerequisites':
+            return []
+        raise AssertionError(name)
+
+    def command(self, command, *options, **kwargs):
+        options = list(map(str, options))
+        flags = dict(zip(options[::2], options[1::2]))
+        tx = Path(flags['--file']).read_text()
+        self.calls.append((command, tx, flags))
+        key = flags.get('--request-key')
+        if command == 'transact' and key in self.receipts:
+            return dumps(self.receipts[key])
+        if command == 'transact' and (self.reject_stale or int(flags['--basis']) != self.basis):
+            raise StaleBasis('confirmed stale basis')
+        forms = loads(tx)
+        tempids = {}
+        for form in forms:
+            if form[0] == ':db/add' and isinstance(form[1], str) and form[1] not in tempids:
+                tempids[form[1]] = self.next_id + len(tempids)
+        idents = {str(i): e for e, i in self.idents}
+        attrs = {str(n): (a, t) for a, n, t in self.attributes}
+        def resolve(value):
+            return tempids.get(value, idents.get(str(value), value)) if isinstance(value, str) else value
+        data = []
+        entities = copy.deepcopy(self.entities)
+        kp = copy.deepcopy(self.kp)
+        for form in forms:
+            if form[0] != ':db/add':
+                continue
+            _, entity, attr, value = form
+            eid = resolve(entity)
+            aid, atype = attrs[str(attr)]
+            value = resolve(value) if atype == ':db.type/ref' else value
+            if str(attr) == ':knowledge-point/question-generator' and kp.get(str(attr)):
+                data.append([eid, aid, kp[str(attr)][':db/id'], self.basis + 1, idents[':application/ca-engine'], False])
+            data.append([eid, aid, value, self.basis + 1, idents[':application/ca-engine'], True])
+            target = entities.setdefault(eid, {':db/id': eid})
+            if str(attr) in (':answer-field/choices', ':question/answer-fields', ':knowledge-point/questions'):
+                target.setdefault(str(attr), []).append(value)
+            else:
+                target[str(attr)] = value
+        report = {':edb/committed': command == 'transact', ':edb/db-before-t': self.basis,
+                  ':edb/db-after-t': self.basis + 1, ':edb/tempids': tempids, ':edb/tx-data': data}
+        if command == 'transact':
+            self.entities = entities
+            self.basis += 1
+            self.next_id += len(tempids)
+            def pull(eid):
+                result = copy.deepcopy(entities[eid])
+                for attr, value in list(result.items()):
+                    if attr in (':answer-field/choices', ':question/answer-fields'):
+                        result[attr] = [pull(v) for v in value]
+                    elif attr == ':answer-field/correct':
+                        result[attr] = pull(value)
+                    elif attr in (':answer/type', ':answer-field/type', ':question/difficulty'):
+                        result[attr] = {':db/ident': next(i for e, i in self.idents if e == value)}
+                return result
+            delta = entities[KP]
+            self.kp[':knowledge-point/questions'] += [pull(e) for e in delta.get(':knowledge-point/questions', [])]
+            delta[':knowledge-point/questions'] = []
+            if ':knowledge-point/question-generator' in delta:
+                self.kp[':knowledge-point/question-generator'] = pull(delta[':knowledge-point/question-generator'])
+            self.receipts[key] = report
+            if self.lose_reply:
+                self.lose_reply = False
+                raise TimeoutError('reply lost after commit')
+        return dumps(report)
+
+
+class PublicationTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.root = Path(self.temp.name)
+        self.client = FakeClient()
+        config = SimpleNamespace(database='math', source=':application/ca-engine', endpoint='/tmp/fake.sock',
+                                 math_root=self.root / 'math', repo_root=self.root, postgres_url='fixture')
+        self.publisher = Publisher(config, self.client)
+        self.directory = self.root / 'publication'
+        self.package = self.make_package('first')
+        self.script = f'generators/{self.package[:2]}/{self.package}/generate.py'
+
+    def tearDown(self):
+        self.temp.cleanup()
+
+    def make_package(self, text):
+        source = self.root / ('source-' + text)
+        source.mkdir()
+        (source / 'generate.py').write_text('# ' + text + '\n')
+        return publish_package(source, 'generate.py', ['generate.py'], self.root / 'math').digest
+
+    def prepare(self, records=None, package=None):
+        package = package or self.package
+        return self.publisher.prepare(KP, records if records is not None else [record()],
+                                      f'generators/{package[:2]}/{package}/generate.py', package, self.directory)
+
+    def test_normalized_duplicates_reuse_existing_without_content_writes(self):
+        prepared = self.prepare([record(), record()])
+        self.assertEqual(prepared['new_questions'], 1)
+        self.assertEqual(prepared['duplicates'], 1)
+        result = self.publisher.publish(self.directory)
+        self.assertEqual(result['status'], 'verified')
+        self.assertEqual(len(self.client.kp[':knowledge-point/questions']), 1)
+        prepared = self.prepare([record()])
+        self.assertEqual(prepared['new_questions'], 0)
+        self.assertEqual(loads(prepared['batch_edn'])['forms'], [])
+        result = self.publisher.publish(self.directory)
+        self.assertEqual(result['status'], 'no_changes')
+
+    def test_entered_blank_responses_do_not_defeat_content_deduplication(self):
+        self.prepare()
+        self.publisher.publish(self.directory)
+        field = self.client.kp[':knowledge-point/questions'][0][':question/answer-fields'][0]
+        field[':answer-field/choices'].append({':db/id': 909, ':answer/id': uuid.uuid4(),
+            ':answer/type': {':db/ident': ':answer.type/math'}, ':answer/value': 'wrong entered response'})
+        prepared = self.prepare([record()])
+        self.assertEqual(prepared['new_questions'], 0)
+        self.assertEqual(prepared['duplicates'], 1)
+
+    def test_lost_reply_retries_exact_request_after_database_advances(self):
+        self.prepare()
+        self.client.lose_reply = True
+        with self.assertRaises(TimeoutError):
+            self.publisher.publish(self.directory)
+        original = json.loads((self.directory / 'request.json').read_text())
+        with self.assertRaisesRegex(ValueError, 'Recover pending'):
+            self.prepare()
+        result = self.publisher.publish(self.directory)
+        submissions = [call for call in self.client.calls if call[0] == 'transact']
+        self.assertEqual(len(submissions), 2)
+        self.assertEqual(submissions[0], submissions[1])
+        self.assertEqual(result['request_key'], original['request_key'])
+        self.assertEqual(len(self.client.kp[':knowledge-point/questions']), 1)
+        count = len(self.client.calls)
+        self.publisher.publish(self.directory)
+        self.assertEqual(count, len(self.client.calls))
+
+    def test_confirmed_commit_with_failed_readback_recovers_receipt(self):
+        self.prepare()
+        self.client.fail_readback = True
+        with self.assertRaises(ConnectionError):
+            self.publisher.publish(self.directory)
+        self.assertTrue((self.directory / 'request.json').exists())
+        self.publisher.publish(self.directory)
+        self.assertEqual(sum(c[0] == 'transact' for c in self.client.calls), 1)
+
+    def test_confirmed_stale_rejection_retires_request(self):
+        self.prepare()
+        self.client.reject_stale = True
+        with self.assertRaises(StaleBasis):
+            self.publisher.publish(self.directory)
+        self.assertFalse((self.directory / 'request.json').exists())
+        self.assertEqual(len(list((self.directory / 'requests').glob('*/result.json'))), 1)
+
+    def test_package_replacement_retains_old_generator(self):
+        self.prepare()
+        self.publisher.publish(self.directory)
+        old_id = self.client.kp[':knowledge-point/question-generator'][':db/id']
+        self.prepare([], self.make_package('second'))
+        self.publisher.publish(self.directory)
+        self.assertIn(old_id, self.client.entities)
+        self.assertEqual(self.client.entities[old_id][':question-generator/script'], self.script)
+        self.assertNotEqual(self.client.kp[':knowledge-point/question-generator'][':db/id'], old_id)
+
+    def test_edited_preparation_cannot_replace_pending_request(self):
+        self.prepare()
+        self.client.lose_reply = True
+        with self.assertRaises(TimeoutError):
+            self.publisher.publish(self.directory)
+        path = self.directory / 'preparation.json'
+        value = json.loads(path.read_text())
+        value['package_sha256'] = 'e' * 64
+        path.write_text(json.dumps(value))
+        with self.assertRaisesRegex(VerificationError, 'preparation changed'):
+            self.publisher.publish(self.directory)
+
+    def test_source_change_requires_review_again(self):
+        source = self.publisher.extract_source(KP, self.root / 'source')
+        self.client.kp[':knowledge-point/title'] = 'Different method'
+        with self.assertRaisesRegex(ValueError, 'source changed'):
+            self.publisher.prepare(KP, [record()], self.script, self.package, self.directory, source_snapshot=source)
+
+    def test_images_are_localized_and_verified_after_commit(self):
+        from PIL import Image
+        image = self.root / 'figure.png'
+        Image.new('RGB', (2, 2), 'red').save(image)
+        rec = record()
+        rec['question'][':question/problem'] += f' ![]({image})'
+        field = rec['question'][':question/answer-fields'][0]
+        field[':answer-field/type'] = ':answer-field.type/radio'
+        field[':answer-field/choices'].append({':answer/id': str(uuid.uuid4()), ':answer/type': ':answer.type/text', ':answer/value': 'None of these'})
+        answer = field[':answer-field/choices'][0]
+        answer[':answer/type'] = ':answer.type/image'
+        answer[':answer/value'] = str(image)
+        prepared = self.prepare([rec])
+        localized = prepared['records'][0]['question']
+        value = localized[':question/answer-fields'][0][':answer-field/choices'][0][':answer/value']
+        self.assertEqual(value, f'images/{hashlib.sha256(image.read_bytes()).hexdigest()[:2]}/{hashlib.sha256(image.read_bytes()).hexdigest()}.png')
+        self.assertIn(value, localized[':question/problem'])
+        self.publisher.publish(self.directory)
+
+    def test_corrupted_published_asset_is_rejected_before_commit(self):
+        from PIL import Image
+        image = self.root / 'figure.png'
+        Image.new('RGB', (2, 2), 'blue').save(image)
+        rec = record()
+        rec['question'][':question/problem'] += f' ![]({image})'
+        prep = self.prepare([rec])
+        asset = next(iter(prep['records'][0]['assets'].values()))
+        (self.root / 'math' / asset['path']).write_bytes(b'corrupt')
+        with self.assertRaises(VerificationError):
+            self.publisher.publish(self.directory)
+        self.assertFalse((self.directory / 'request.json').exists())
+        self.assertFalse(any(c[0] == 'transact' for c in self.client.calls))
+
+    def test_incomplete_committed_receipt_is_recovered_with_original_request(self):
+        self.prepare()
+        self.client.fail_readback = True
+        with self.assertRaises(ConnectionError):
+            self.publisher.publish(self.directory)
+        path = self.directory / 'receipt-request.json'
+        envelope = json.loads(path.read_text())
+        envelope['receipt_edn'] = dumps({kw('edb/committed'): True, kw('edb/report-error'): 'storage/read-failed'})
+        path.write_text(json.dumps(envelope))
+        self.publisher.publish(self.directory)
+        submissions = [c for c in self.client.calls if c[0] == 'transact']
+        self.assertEqual(len(submissions), 2)
+        self.assertEqual(submissions[0], submissions[1])
+        self.assertTrue((self.directory / 'receipt-incomplete.json').exists())
+
+    def test_source_hash_ignores_operational_lesson_pool_and_registration_refs(self):
+        self.client.lessons = [{':db/id': 700, ':activity/steps': [{':db/id': 701, ':step/content': {
+            ':knowledge-point/id': KP_UUID, ':knowledge-point/title': 'Add one',
+            ':knowledge-point/questions': [{':db/id': 800}], ':knowledge-point/question-generator': {':db/id': 900}}}]}]
+        source = self.publisher.extract_source(KP, self.root / 'source-first')
+        content = self.client.lessons[0][':activity/steps'][0][':step/content']
+        content[':knowledge-point/questions'].append({':db/id': 801})
+        content[':knowledge-point/question-generator'] = {':db/id': 901}
+        fresh = self.publisher.extract_source(KP, self.root / 'source-again')
+        self.assertEqual(source['source_sha256'], fresh['source_sha256'])
+        # Previously captured evidence may include operational refs. Its own
+        # hash must still verify before applying the instructional projection.
+        older = copy.deepcopy(source)
+        old_content = older['material']['lessons'][0][':activity/steps'][0][':step/content']
+        old_content[':knowledge-point/questions'] = [{':db/id': 800}]
+        old_content[':knowledge-point/question-generator'] = {':db/id': 900}
+        older['source_sha256'] = digest(older['material'])
+        self.publisher.prepare(KP, [record()], self.script, self.package, self.directory, source_snapshot=older)
+        old_content[':knowledge-point/title'] = 'Unreviewed change'
+        with self.assertRaisesRegex(ValueError, 'integrity check'):
+            self.publisher.prepare(KP, [record()], self.script, self.package, self.directory, source_snapshot=older)
+
+    def test_no_change_preparation_rechecks_current_database_basis(self):
+        self.prepare()
+        self.publisher.publish(self.directory)
+        self.prepare([])
+        self.client.basis += 1
+        with self.assertRaises(StaleBasis):
+            self.publisher.publish(self.directory)
+
+    def test_changed_generator_package_is_rejected_before_commit(self):
+        self.prepare()
+        entrypoint = self.root / 'math' / self.script
+        entrypoint.chmod(0o644)
+        entrypoint.write_text('# changed after review\n')
+        with self.assertRaisesRegex(ValueError, 'file changed'):
+            self.publisher.publish(self.directory)
+        self.assertFalse(any(c[0] == 'transact' for c in self.client.calls))
+
+    def test_existing_question_identity_cannot_be_overwritten(self):
+        rec = record()
+        normalized = stable_identities(rec['question'], KP_UUID)
+        self.client.entities[902] = {':question/id': uuid.UUID(normalized[':question/id'])}
+        with self.assertRaisesRegex(ValueError, 'Existing identities'):
+            self.prepare([rec])
+
+    def test_configured_request_directory_is_used(self):
+        self.publisher.config.request_directory = self.root / 'different-lock'
+        self.prepare()
+        self.publisher.publish(self.directory)
+        self.assertTrue((self.root / 'different-lock/api.lock').exists())
+
+    def test_unexpected_receipt_datoms_fail_exact_verification(self):
+        prepared = self.prepare()
+        batch = loads(prepared['batch_edn'])
+        snapshot = loads(prepared['snapshot_edn'])
+        self.publisher.publish(self.directory)
+        receipt = copy.deepcopy(next(iter(self.client.receipts.values())))
+        receipt[':edb/tx-data'].append([KP, 999999, 'unexpected', 13, 100, True])
+        with self.assertRaisesRegex(VerificationError, 'protected or unknown'):
+            validate_report(receipt, batch, snapshot, committed=True)
+
+    def test_generator_knowledge_point_metadata_envelope_is_supported(self):
+        for metadata in ({'db_id': KP, 'id': str(KP_UUID), 'title': 'Add one'},
+                         {'db_id': str(KP)}, {'id': str(KP_UUID)}):
+            with self.subTest(metadata=metadata):
+                rec = record()
+                rec['knowledge_point'] = metadata
+                self.assertEqual(self.prepare([rec])['new_questions'], 1)
+
+    def test_conflicting_or_unidentified_knowledge_point_metadata_is_rejected(self):
+        for metadata in ({'db_id': KP + 1, 'id': str(KP_UUID)},
+                         {'db_id': KP, 'id': str(uuid.uuid4())},
+                         {'title': 'Add one'}, {}, {'db_id': None},
+                         {'db_id': float(KP)}, {'id': 'not-a-uuid'}):
+            with self.subTest(metadata=metadata):
+                rec = record()
+                rec['knowledge_point'] = metadata
+                with self.assertRaises(ValueError):
+                    self.prepare([rec])
+
+    def test_missing_correct_answer_and_source_id_are_rejected(self):
+        rec = record()
+        rec['question'][':question/answer-fields'][0][':answer-field/correct'][1] = str(uuid.uuid4())
+        with self.assertRaisesRegex(ValueError, 'Canonical answer'):
+            self.prepare([rec])
+        rec = record()
+        rec['question'][':question/math-academy-id'] = 'q-10'
+        with self.assertRaisesRegex(ValueError, 'source identity'):
+            self.prepare([rec])
+
+
+if __name__ == '__main__':
+    unittest.main()

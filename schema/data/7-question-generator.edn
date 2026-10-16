@@ -1,0 +1,12 @@
+;; Optional durable registration for a validated KP generator.
+[
+ {:db/ident :question-generator/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Stable identity of a validated question generator registered through knowledge-point/question-generator."}
+ {:db/ident :question-generator/script
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Reference to the validated Python generator: generators/<prefix>/<sha256>/<entrypoint> resolves below EDB_MATH_ROOT to an immutable content-addressed package; legacy repository-relative paths remain supported. Its package records supported templates, difficulty capabilities, finite limits, dependencies and reproducible CLI usage. Registration does not certify arbitrary generated output; generation must pass the content validation and durable commit workflow."}
+]
