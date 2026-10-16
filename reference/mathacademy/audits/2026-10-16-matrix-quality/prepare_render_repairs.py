@@ -16,7 +16,8 @@ for e,q in records.items():
    if new!=raw:reasons.append('Represent a hat accent with \\hat, rather than a superscript containing a bare ^')
    before=new;new=re.sub(r'(?<!\\)%',r'\\%',new)
    if new!=before:reasons.append('Escape literal percent signs inside math so TeX does not comment out the closing environment')
-   before=new;new=re.sub(r'(?<![\\A-Za-z])_{3,}',r'\\underline{\\phantom{xxxxxxxxxx}}',new)
+   before=new;new=re.sub(r'\\(?:text|textrm|mathrm)\{\s*_{3,}\s*\}',r'\\underline{\\phantom{xxxxxx}}',new)
+   new=re.sub(r'(?<![\\A-Za-z])_{3,}',r'\\underline{\\phantom{xxxxxx}}',new)
    if new!=before:reasons.append('Represent a printed answer line as an underline, rather than consecutive subscript operators')
    # The surrounding question explicitly calls these objects line segments.
    if e in [17592186087994,17592186087997]:
