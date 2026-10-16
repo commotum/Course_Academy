@@ -70,6 +70,8 @@ for topic in [862,146,232]:
      if len(ms)==1:
       # Existing explanation supplies the omitted prior-part matrix; flag context before using it.
       original=matrices(q.get(':question/worked-solution',''))[0]['matrix'];given=ms[0]['matrix'];issues.append(dict(entity=e,kind='missing-prior-part-context',detail='P is referenced but its definition is absent from the prompt'))
+     elif 'original payoff matrix' in prompt:
+      assert len(ms)==2;original,given=[m['matrix'] for m in ms]
      else:assert len(ms)==2;given,original=[m['matrix'] for m in ms]
      ratios={s.simplify(a/b) for a,b in zip(given,original) if b!=0};assert len(ratios)==1;target=ratios.pop();assert given==target*original
      solution='Multiplying by $k$ scales every entry. Equating corresponding nonzero entries gives\n\n$$\nk='+s.latex(target)+'.\n$$'
