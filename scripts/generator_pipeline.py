@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from inventory_jobs import save
 from generator_packages import package_digest, publish_package, resolve_registered_script, check_dependencies, verify_package
-from generator_review import validate_review
+from generator_review import REVIEW_POLICY_VERSION, validate_review
 
 
 def read(path):
@@ -173,14 +173,53 @@ class Pipeline:
     def approval_path(self):
         return self.math_root / 'generators/approvals' / self.state['package_hash'] / (str(self.state['request']['kp']) + '.json')
 
+    def review_binding(self):
+        """Separate cached reviews by policy and the exact reviewed inputs."""
+        return {'policy_version': REVIEW_POLICY_VERSION,
+                **{key: self.state.get(key) for key in
+                   ('package_hash', 'batch_hash', 'source_hash', 'inventory_hash', 'assets', 'effective_difficulty')}}
+
+    def ensure_inventory(self):
+        """Backfill delivery evidence for saved jobs without changing their source."""
+        path = self.directory / 'source/inventory.json'
+        if not path.exists():
+            self.publisher.extract_inventory(self.state['request']['kp'], path.parent)
+        inventory = read(path)
+        source = read(self.directory / 'source/source.json')
+        if any(inventory.get(key) != source.get(key) for key in ('database', 'lineage', 'kp_id')):
+            raise ValueError('Delivery inventory does not match the instructional source identity')
+        fingerprint = digest(inventory)
+        if self.state.get('inventory_hash') not in (None, fingerprint):
+            raise ValueError('Reviewed delivery inventory changed')
+        if self.state.get('inventory_hash') is None:
+            self.persist(inventory_hash=fingerprint)
+
+    def review_directory(self):
+        binding = digest(self.review_binding())[:16]
+        return self.directory / f'review-{self.state["attempt"]}-policy-{REVIEW_POLICY_VERSION}-{binding}'
+
+    def has_current_review(self):
+        return (self.state.get('review_policy_version') == REVIEW_POLICY_VERSION
+                and self.state.get('review_binding') == digest(self.review_binding())
+                and bool(self.state.get('review')))
+
+    def validate_approved_review(self):
+        if not self.has_current_review():
+            raise ValueError('Generator requires a review under the current policy')
+        path = Path(self.state['review'])
+        review = read(path)
+        validate_review(review, path.parent)
+        if review['verdict'] != 'accepted':
+            raise ValueError('Generator publication requires an accepted review')
+        return review
+
     def record_approval(self):
         """Persist reviewed scope only after publication has been acknowledged."""
         if self.is_refill:
             return
         self.verify_approval_inputs()
         review_path = Path(self.state['review'])
-        review = read(review_path)
-        validate_review(review, review_path.parent)
+        review = self.validate_approved_review()
         if review['verdict'] != 'accepted' or not self.state.get('publication', {}).get('passed'):
             raise ValueError('Generator approval requires accepted review and verified publication')
         reference = self.state['registration']
@@ -194,6 +233,7 @@ class Pipeline:
             old = read(path) if path.exists() else {}
             bands = old.get('bands', {}) if old.get('identity') == identity else {}
             bands[self.state['effective_difficulty']] = {
+                'review_policy_version': REVIEW_POLICY_VERSION,
                 'review_sha256': digest(review), 'batch_sha256': self.state['batch_hash'],
                 'evidence': str(review_path), 'publication': self.state['publication']}
             save(path, {'format': 1, 'identity': identity, 'bands': bands})
@@ -217,6 +257,9 @@ class Pipeline:
         if band not in value.get('bands', {}):
             raise RefillNeedsReview('approval_band_missing', 'Registered package has not been reviewed for ' + band)
         approval = value['bands'][band]
+        if not isinstance(approval, dict) or approval.get('review_policy_version') != REVIEW_POLICY_VERSION:
+            raise RefillNeedsReview('approval_policy_stale',
+                                    'Registered package needs an independent review under the current policy')
         if (not isinstance(approval, dict) or not approval.get('publication', {}).get('passed')
                 or any(not re.fullmatch(r'[0-9a-f]{64}', str(approval.get(key, '')))
                        for key in ('review_sha256', 'batch_sha256'))):
@@ -253,15 +296,21 @@ class Pipeline:
         return package_digest(root, manifest['entrypoint'], manifest['files'], dependencies=manifest.get('dependencies'))
 
     def context(self, evidence):
+        self.ensure_inventory()
         request = self.state['request']
         return {'repo_root': str(self.root), 'workspace': str(self.directory / 'workspace'),
                 'source_root': str(self.directory / 'source'), 'source_file': str(self.directory / 'source/source.json'),
+                'inventory_file': str(self.directory / 'source/inventory.json'),
+                'publisher_file': str(self.root / 'scripts/generator_publish.py'),
+                'question_selection_file': str(self.root / 'engine/rust/question_selection.rs'),
+                'publication_file': str(self.directory / 'publication/preparation.json'),
                 'existing_entrypoint': request.get('existing_entrypoint'),
                 'feedback_file': str(self.directory / 'feedback.json'), 'evidence_root': str(evidence),
                 'package_root': str((self.directory / 'workspace' / self.state.get('manifest', 'package.json')).parent),
                 'manifest_file': str(self.directory / 'workspace' / self.state.get('manifest', 'package.json')),
                 'requested_difficulty': self.state.get('effective_difficulty', request['difficulty']), 'count': request['count'],
                 'knowledge_point': request['kp'], 'python': python_executable(self.root, self.environment),
+                'review_policy_version': REVIEW_POLICY_VERSION, 'review_binding': self.review_binding(),
                 'math_root': self.environment.get('EDB_MATH_ROOT', '/media/jake/SSD/EDB/math'),
                 'batch_file': str(self.directory / 'samples.json')}
 
@@ -328,6 +377,9 @@ class Pipeline:
             raise ValueError('Reviewed package or publication batch changed')
         if digest(read(self.directory / 'source/source.json')) != self.state['source_hash']:
             raise ValueError('Reviewed source snapshot changed')
+        if (self.state.get('inventory_hash') is not None
+                and digest(read(self.directory / 'source/inventory.json')) != self.state['inventory_hash']):
+            raise ValueError('Reviewed delivery inventory changed')
         if any(hashlib.sha256(Path(path).read_bytes()).hexdigest() != sha for path, sha in self.state['assets'].items()):
             raise ValueError('Reviewed image bytes changed')
         _, manifest = self.manifest()
@@ -341,10 +393,26 @@ class Pipeline:
 
     def repair(self, reason):
         save(self.directory / 'feedback.json', reason)
-        if self.is_refill:
+        if self.is_refill or self.state.get('review_after_publication'):
             self.persist(stage='unsupported', needs_repair=True, error=reason)
         else:
             self.persist(stage='failed' if self.state['attempt'] >= self.max_attempts else 'generate', error=reason)
+
+    def admit_publication(self):
+        """Recheck saved approvals before making any new publication intent."""
+        try:
+            self.verify_approval_inputs()
+            if not self.is_refill:
+                if not self.has_current_review():
+                    self.persist(stage='validate')
+                    return False
+                self.validate_approved_review()
+        except (ValueError, FileNotFoundError) as error:
+            if not self.is_refill:
+                raise
+            self.repair({'code': getattr(error, 'code', 'generator_failed'), 'error': str(error)})
+            return False
+        return True
 
     def run(self, stop_after='push'):
         with (self.directory / 'worker.lock').open('a') as lock:
@@ -357,10 +425,23 @@ class Pipeline:
         stale_retries = 0
         while True:
             stage = self.state['stage']
+            publication = self.directory / 'publication'
+            if (stage in {'source', 'generate', 'validate', 'prepare'}
+                    and not self.state.get('review_after_publication')
+                    and (publication / 'request.json').exists()):
+                # A durable intent can already have committed. Resolve its exact
+                # bytes before policy upgrades, review, or authoring touch inputs.
+                self.persist(stage='push')
+                continue
             if stage in {'verified', 'failed', 'unsupported'}:
-                if stage == 'verified' and not self.is_refill and not self.state.get('approval_recorded'):
-                    self.record_approval()
-                    self.persist(approval_recorded=True)
+                if stage == 'verified' and not self.is_refill:
+                    if not self.has_current_review():
+                        self.verify_approval_inputs()
+                        self.persist(stage='validate', review_after_publication=True)
+                        continue
+                    if not self.state.get('approval_recorded'):
+                        self.record_approval()
+                        self.persist(approval_recorded=True)
                 return self.state
             if stage == 'source':
                 source = self.directory / 'source/source.json'
@@ -423,10 +504,9 @@ class Pipeline:
             elif stage == 'validate':
                 if stop_after == 'generate':
                     return self.state
-                evidence = self.directory / f'review-{self.state["attempt"]}'
-                if self.candidate_hash() != self.state['package_hash']:
-                    self.repair({'error': 'Package changed after generation'})
-                    continue
+                self.ensure_inventory()
+                evidence = self.review_directory()
+                self.verify_approval_inputs()
                 result = self.session('review', self.context(evidence), evidence)
                 save(evidence / 'result.json', result)
                 try:
@@ -436,7 +516,11 @@ class Pipeline:
                     self.repair({'error': str(error), 'review': result})
                     continue
                 if result['verdict'] == 'accepted':
-                    self.persist(stage='prepare', review=str(evidence / 'result.json'))
+                    self.persist(stage='verified' if self.state.get('review_after_publication') else 'prepare',
+                                 review=str(evidence / 'result.json'), review_policy_version=REVIEW_POLICY_VERSION,
+                                 review_binding=digest(self.review_binding()), approval_recorded=False)
+                elif self.state.get('review_after_publication'):
+                    self.repair(result)
                 elif result['verdict'] == 'unsupported':
                     self.persist(stage='unsupported', error=result)
                 else:
@@ -444,12 +528,7 @@ class Pipeline:
             elif stage == 'prepare':
                 if stop_after in {'generate', 'validate'}:
                     return self.state
-                try:
-                    self.verify_approval_inputs()
-                except (ValueError, FileNotFoundError) as error:
-                    if not self.is_refill:
-                        raise
-                    self.repair({'code': getattr(error, 'code', 'generator_failed'), 'error': str(error)})
+                if not self.admit_publication():
                     continue
                 source, manifest = self.manifest()
                 package = publish_package(source, manifest['entrypoint'], manifest['files'],
@@ -465,7 +544,7 @@ class Pipeline:
                 except SourceChanged as error:
                     if not self.is_refill:
                         self.publisher.extract_source(self.state['request']['kp'], self.directory / 'source')
-                        self.persist(source_hash=digest(read(self.directory / 'source/source.json')))
+                        self.persist(source_hash=digest(read(self.directory / 'source/source.json')), inventory_hash=None)
                     self.repair({'code': 'source_changed', 'error': str(error)})
                     continue
                 except ValueError as error:
@@ -480,6 +559,9 @@ class Pipeline:
             elif stage == 'push':
                 if stop_after != 'push':
                     return self.state
+                if not ((publication / 'request.json').exists() or (publication / 'verification.json').exists()):
+                    if not self.admit_publication():
+                        continue
                 from generator_publish import StaleBasis
                 try:
                     result = self.publisher.publish(self.directory / 'publication')

@@ -10,6 +10,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 from generator_review import CHECKS, validate_review
+from generator_review_fixtures import write_decision_evidence
 
 
 def load(path, name):
@@ -35,6 +36,9 @@ class ReviewEvidenceTests(unittest.TestCase):
                               "evidence_paths": ["measurements.json"]} for name in CHECKS},
             "findings": [],
         }
+
+        evidence = write_decision_evidence(self.directory)
+        self.review["checks"]["decision_variation"]["evidence_paths"] = [evidence]
 
     def tearDown(self):
         self.temp.cleanup()
@@ -86,6 +90,46 @@ class ReviewEvidenceTests(unittest.TestCase):
         self.review["verdict"] = "accepted"
         with self.assertRaises(ValueError):
             validate_review(self.review, self.directory)
+
+    def test_old_or_cosmetic_only_reviews_cannot_pass_new_gate(self):
+        legacy = copy.deepcopy(self.review)
+        del legacy["checks"]["decision_variation"]
+        with self.assertRaisesRegex(ValueError, "eight named checks"):
+            validate_review(legacy, self.directory)
+        self.review["checks"]["decision_variation"]["evidence_paths"] = ["measurements.json"]
+        with self.assertRaisesRegex(ValueError, "pedagogical-variation.json"):
+            validate_review(self.review, self.directory)
+
+    def test_distribution_evidence_rejects_missing_pairs_aggregate_only_and_known_shortcuts(self):
+        path = self.directory / "pedagogical-variation.json"
+        original = json.loads(path.read_text())
+        for change in (
+            lambda r: r.update(counterfactuals=r["counterfactuals"][:1]),
+            lambda r: r["counterfactuals"][0].update(status="failed"),
+            lambda r: r["shortcut_probes"][0].update(scope="overall"),
+            lambda r: r["shortcut_probes"][0].update(disposition="defect"),
+            lambda r: r["shortcut_probes"][0].update(correct=3),
+            lambda r: r["delivery"].update(sample_refs=[]),
+            lambda r: r["coverage"][0].update(sample_refs=["not-created.json"]),
+            lambda r: r["fixed_features"][0].update(justification=""),
+        ):
+            report = copy.deepcopy(original)
+            change(report)
+            path.write_text(json.dumps(report))
+            with self.assertRaises(ValueError):
+                validate_review(self.review, self.directory)
+        path.write_text(json.dumps(original))
+        validate_review(self.review, self.directory)
+
+    def test_legitimate_invariant_needs_reasoning_not_random_answers(self):
+        path = self.directory / "pedagogical-variation.json"
+        report = json.loads(path.read_text())
+        report["shortcut_probes"][0].update(correct=2, disposition="intended_skill",
+            strategy="Recognize the source lesson's intended identity.",
+            conclusion="In this narrowly scoped instructional family, recognizing the identity is the objective; no broader mastery claim.")
+        path.write_text(json.dumps(report))
+        validate_review(self.review, self.directory)
+
 
 
 class PedagogicalControlTests(unittest.TestCase):

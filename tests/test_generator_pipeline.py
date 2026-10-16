@@ -14,7 +14,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from generator_packages import publish_package, resolve_registered_script
 from generator_pipeline import Pipeline, main
 from generator_publish import SourceChanged, digest as source_digest
-from generator_review import CHECKS
+from generator_review import CHECKS, REVIEW_POLICY_VERSION
+from generator_review_fixtures import write_decision_evidence
 
 
 GENERATOR = textwrap.dedent('''\
@@ -101,6 +102,7 @@ class FakeSession:
         (directory / "checks.json").write_text(json.dumps({"fixture": True, "checks": list(CHECKS)}))
         checks = {name: {"status": "passed", "details": "Structured boundary fixture.",
                          "evidence_paths": ["checks.json"]} for name in CHECKS}
+        checks["decision_variation"]["evidence_paths"] = [write_decision_evidence(directory)]
         findings = []
         if self.reject:
             kind = "restriction" if len([r for r, _ in self.calls if r == "review"]) % 2 else "drift"
@@ -123,6 +125,17 @@ class FakePublisher:
         self.registered_generator = None
         self.material = {"question": "Square 7."}
         self.prepare_options = None
+        self.inventory_extractions = 0
+
+    def extract_inventory(self, kp, directory):
+        self.inventory_extractions += 1
+        value = {"database": "fixture", "lineage": "fixture-lineage", "basis": 1,
+                 "kp_id": kp, "questions": [], "canonical_example": None,
+                 "fingerprints": [source_digest(self.material)]}
+        directory = Path(directory)
+        directory.mkdir(parents=True, exist_ok=True)
+        (directory / "inventory.json").write_text(json.dumps(value))
+        return value
 
     def extract_source(self, kp, directory):
         value = {"database": "fixture", "lineage": "fixture-lineage", "basis": 1, "kp_id": kp,
@@ -132,6 +145,7 @@ class FakePublisher:
         directory = Path(directory)
         directory.mkdir(parents=True, exist_ok=True)
         (directory / "source.json").write_text(json.dumps(value))
+        self.extract_inventory(kp, directory)
         return value
 
     def prepare(self, kp, records, reference, package_hash, directory, **kwargs):
@@ -210,7 +224,8 @@ class GeneratorPipelineTests(unittest.TestCase):
         result = self.pipeline(session).run()
         self.assertEqual(result["stage"], "failed")
         self.assertEqual([r for r, _ in session.calls], ["author", "review", "author", "review"])
-        kinds = [json.loads((self.job / f"review-{n}/result.json").read_text())["findings"][0]["kind"] for n in (1, 2)]
+        kinds = [json.loads((Path(directory) / "result.json").read_text())["findings"][0]["kind"]
+                 for role, directory in session.calls if role == "review"]
         self.assertEqual(kinds, ["restriction", "drift"])
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (0, 0))
         self.assertFalse((self.math / "generators").exists())
@@ -320,6 +335,160 @@ class GeneratorPipelineTests(unittest.TestCase):
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
         approval = json.loads((self.math / "generators/approvals" / approved["package_hash"] / "123.json").read_text())
         self.assertEqual(set(approval["bands"]), {"easy"})
+        self.assertEqual(approval["bands"]["easy"]["review_policy_version"], REVIEW_POLICY_VERSION)
+
+    def downgrade_saved_review(self):
+        """Emulate a job stopped under the previous review contract."""
+        state = json.loads((self.job / "job.json").read_text())
+        path = Path(state["review"])
+        legacy = self.job / ("review-" + str(state["attempt"]))
+        path.parent.rename(legacy)
+        path = legacy / "result.json"
+        review = json.loads(path.read_text())
+        review["checks"].pop("decision_variation")
+        path.write_text(json.dumps(review))
+        state["review"] = str(path)
+        state.pop("review_policy_version", None)
+        state.pop("review_binding", None)
+        (self.job / "job.json").write_text(json.dumps(state))
+        return path, path.read_bytes()
+
+    def test_legacy_band_approval_requests_review_without_running_generator(self):
+        request, approved = self.approve_for_refill()
+        path = self.math / "generators/approvals" / approved["package_hash"] / "123.json"
+        approval = json.loads(path.read_text())
+        approval["bands"]["easy"].pop("review_policy_version")
+        path.write_text(json.dumps(approval))
+        session = FakeSession()
+        result = self.pipeline(session, request=request).run()
+        self.assertEqual(result["stage"], "unsupported")
+        self.assertTrue(result["needs_repair"])
+        self.assertEqual(result["error"]["code"], "approval_policy_stale")
+        self.assertEqual(session.calls, [])
+        self.assertFalse((self.job / "samples.json").exists())
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (0, 0))
+
+    def test_saved_legacy_prepare_gets_fresh_review_without_authoring_or_resampling(self):
+        self.pipeline(FakeSession()).run("validate")
+        legacy, old_review = self.downgrade_saved_review()
+        files = [self.job / name for name in ("samples.json", "source/source.json", "workspace/generator.py")]
+        original = [path.read_bytes() for path in files]
+        session = FakeSession()
+        result = self.pipeline(session).run()
+        self.assertEqual(result["stage"], "verified")
+        self.assertEqual([role for role, _ in session.calls], ["review"])
+        self.assertIn(f"-policy-{REVIEW_POLICY_VERSION}-", result["review"])
+        self.assertEqual(legacy.read_bytes(), old_review)
+        self.assertEqual([path.read_bytes() for path in files], original)
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
+
+    def test_current_saved_review_is_revalidated_before_preparation(self):
+        state = self.pipeline(FakeSession()).run("validate")
+        path = Path(state["review"])
+        review = json.loads(path.read_text())
+        review["checks"]["decision_variation"]["status"] = "failed"
+        path.write_text(json.dumps(review))
+        with self.assertRaisesRegex(ValueError, "accepted review requires passing decision_variation"):
+            self.pipeline(FakeSession()).run()
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (0, 0))
+
+    def test_legacy_source_gets_delivery_inventory_without_replacing_instructional_snapshot(self):
+        self.pipeline(FakeSession()).run("validate")
+        self.downgrade_saved_review()
+        source = (self.job / "source/source.json").read_bytes()
+        inventory = self.job / "source/inventory.json"
+        inventory.unlink()
+        state = json.loads((self.job / "job.json").read_text())
+        state.pop("inventory_hash")
+        (self.job / "job.json").write_text(json.dumps(state))
+        session = FakeSession()
+        result = self.pipeline(session).run()
+        self.assertEqual(result["stage"], "verified")
+        self.assertEqual([role for role, _ in session.calls], ["review"])
+        self.assertEqual(self.publisher.inventory_extractions, 2)
+        self.assertTrue(inventory.is_file())
+        self.assertEqual((self.job / "source/source.json").read_bytes(), source)
+
+    def test_source_refresh_replaces_delivery_binding_and_allows_repair(self):
+        original_prepare = self.publisher.prepare
+        attempts = []
+        def prepare(*args, **kwargs):
+            attempts.append(True)
+            if len(attempts) == 1:
+                self.publisher.material = {"question": "Square 9."}
+                raise SourceChanged("Source changed before publication")
+            return original_prepare(*args, **kwargs)
+        session = FakeSession()
+        with patch.object(self.publisher, "prepare", side_effect=prepare):
+            result = self.pipeline(session).run()
+        self.assertEqual(result["stage"], "verified")
+        self.assertEqual([role for role, _ in session.calls], ["author", "review", "author", "review"])
+        self.assertEqual(self.publisher.inventory_extractions, 2)
+        inventory = json.loads((self.job / "source/inventory.json").read_text())
+        self.assertEqual(inventory["fingerprints"], [source_digest(self.publisher.material)])
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
+
+    def test_policy_upgrade_recovers_unknown_commit_before_review_without_republication(self):
+        first = FakePublisher(self.root, lose_ack=True)
+        with self.assertRaises(ConnectionError):
+            self.pipeline(FakeSession(), publisher=first).run()
+        request_path = self.job / "publication/request.json"
+        saved = request_path.read_bytes()
+        legacy, old_review = self.downgrade_saved_review()
+        restarted = FakePublisher(self.root)
+        class RecoveryOrderedSession(FakeSession):
+            def __call__(inner, role, context, directory):
+                self.assertEqual(restarted.publishes, 1)
+                self.assertEqual(request_path.read_bytes(), saved)
+                return super().__call__(role, context, directory)
+        session = RecoveryOrderedSession()
+        result = self.pipeline(session, publisher=restarted).run()
+        self.assertEqual(result["stage"], "verified")
+        self.assertEqual([role for role, _ in session.calls], ["review"])
+        self.assertEqual((restarted.prepares, restarted.publishes), (0, 1))
+        self.assertEqual(result["publication"]["writes"], 1)
+        self.assertEqual(request_path.read_bytes(), saved)
+        self.assertEqual(legacy.read_bytes(), old_review)
+        approval = json.loads((self.math / "generators/approvals" / result["package_hash"] / "123.json").read_text())
+        self.assertEqual(approval["bands"]["easy"]["review_policy_version"], REVIEW_POLICY_VERSION)
+
+    def test_postcommit_policy_review_failure_keeps_receipt_and_requests_repair(self):
+        first = FakePublisher(self.root, lose_ack=True)
+        with self.assertRaises(ConnectionError):
+            self.pipeline(FakeSession(), publisher=first).run()
+        saved = (self.job / "publication/request.json").read_bytes()
+        self.downgrade_saved_review()
+        restarted = FakePublisher(self.root)
+        session = FakeSession(reject=True)
+        result = self.pipeline(session, publisher=restarted).run()
+        self.assertEqual(result["stage"], "unsupported")
+        self.assertTrue(result["needs_repair"])
+        self.assertTrue(result["publication"]["passed"])
+        self.assertEqual(result["publication"]["writes"], 1)
+        self.assertEqual([role for role, _ in session.calls], ["review"])
+        self.assertEqual((restarted.prepares, restarted.publishes), (0, 1))
+        self.assertEqual((self.job / "publication/request.json").read_bytes(), saved)
+        self.assertFalse((self.math / "generators/approvals" / result["package_hash"] / "123.json").exists())
+        repeated = self.pipeline(session, publisher=restarted).run()
+        self.assertEqual(repeated, result)
+        self.assertEqual((restarted.prepares, restarted.publishes), (0, 1))
+
+    def test_refill_unknown_commit_is_recovered_even_when_approval_policy_is_now_stale(self):
+        request, approved = self.approve_for_refill()
+        self.publisher.lose_ack = True
+        session = FakeSession()
+        with self.assertRaises(ConnectionError):
+            self.pipeline(session, request=request).run()
+        saved = (self.job / "publication/request.json").read_bytes()
+        path = self.math / "generators/approvals" / approved["package_hash"] / "123.json"
+        approval = json.loads(path.read_text())
+        approval["bands"]["easy"]["review_policy_version"] = REVIEW_POLICY_VERSION - 1
+        path.write_text(json.dumps(approval))
+        result = self.pipeline(session, request=request).run()
+        self.assertEqual(result["stage"], "verified")
+        self.assertEqual(session.calls, [])
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 2))
+        self.assertEqual((self.job / "publication/request.json").read_bytes(), saved)
 
     def test_refill_requires_matching_current_registration_source_and_reviewed_band(self):
         request, approved = self.approve_for_refill()

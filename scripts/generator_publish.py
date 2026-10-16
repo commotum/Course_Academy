@@ -338,11 +338,30 @@ class Publisher:
             raise ValueError('Expected one knowledge point')
         return rows[0][0]
 
+    def save_inventory(self, kp_id, kp, status, basis, directory):
+        """Read-only delivery evidence, separate from instructional identity."""
+        questions = kp.get(':knowledge-point/questions', [])
+        canonical = kp.get(':knowledge-point/canonical-example')
+        fingerprints = {content_fingerprint(q) for q in questions}
+        if canonical:
+            fingerprints.add(content_fingerprint(canonical))
+        inventory = {'database': status['database'], 'lineage': status['lineage'],
+                     'basis': basis, 'kp_id': int(kp_id), 'questions': jsonable(questions),
+                     'canonical_example': jsonable(canonical), 'fingerprints': sorted(fingerprints)}
+        atomic_json(Path(directory) / 'inventory.json', inventory)
+        return inventory
+
+    def extract_inventory(self, kp_id, directory):
+        status = self.client.status()
+        kp = self.read_kp(kp_id, Path(directory), status['basis'])
+        return self.save_inventory(kp_id, kp, status, status['basis'], directory)
+
     def extract_source(self, kp_id, directory, *, basis=None):
         directory = Path(directory)
         status = self.client.status()
         basis = status['basis'] if basis is None else basis
         kp = self.read_kp(kp_id, directory, basis)
+        self.save_inventory(kp_id, kp, status, basis, directory)
         topic_pattern = '[* {:topic/knowledge-points [:db/id :knowledge-point/id :knowledge-point/title {:knowledge-point/canonical-example ' + QUESTION_PULL + '}]}]'
         topics = self.client.query('[:find (pull ?t ' + topic_pattern + ') :in $ ?kp :where [?t :topic/knowledge-points ?kp]]', [int(kp_id)], directory, 'topics', basis)
         content = '[* {:knowledge-point/canonical-example ' + QUESTION_PULL + '}]'

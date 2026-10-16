@@ -163,6 +163,20 @@ class PublicationTests(unittest.TestCase):
         self.package = self.make_package('first')
         self.script = f'generators/{self.package[:2]}/{self.package}/generate.py'
 
+    def test_delivery_inventory_includes_generated_stock_without_changing_instructional_identity(self):
+        source = self.publisher.extract_source(KP, self.root / 'source-inventory')
+        generated = record(12)['question']
+        self.client.kp[':knowledge-point/questions'].append(generated)
+        updated = self.publisher.extract_source(KP, self.root / 'source-inventory')
+        self.assertEqual(source['source_sha256'], updated['source_sha256'])
+        inventory = json.loads((self.root / 'source-inventory/inventory.json').read_text())
+        self.assertEqual(inventory['basis'], self.client.basis)
+        self.assertEqual(inventory['questions'], jsonable([generated]))
+        self.assertIn(content_fingerprint(generated), inventory['fingerprints'])
+        refreshed = self.publisher.extract_inventory(KP, self.root / 'inventory-refresh')
+        self.assertEqual(refreshed, inventory)
+        self.assertEqual(self.client.calls, [], 'delivery inventory extraction must not transact')
+
     def tearDown(self):
         self.temp.cleanup()
 
