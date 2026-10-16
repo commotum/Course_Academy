@@ -208,6 +208,11 @@ pub fn credit(
     }
     let mut forms = writeback(&loaded, &engine, vec![], "learning", event_id, at)?.forms;
     forms.retain(|v| v.get("db/id") != Some(&json!("edb.tx")));
+    if kind == "review" && completed && correct && s.refs(learner, "learner/queue")?.contains(&target) {
+        // Completing a queued topic through review satisfies the same explicit
+        // study selection as a lesson, in the completion transaction itself.
+        forms.push(json!([crate::schema::keyword("db/retract"), learner, crate::schema::keyword("learner/queue"), target]));
+    }
     Ok(forms)
 }
 
@@ -861,6 +866,35 @@ mod tests {
             at: json!({"$instant":at.timestamp_millis()}),
         });
     }
+    #[test]
+    fn successful_review_credit_removes_only_its_queued_topic() {
+        let mut s = fixture();
+        put(&mut s, 99, json!({"topic/id":"00000000-0000-0000-0000-000000000099","topic/title":"Other topic"}));
+        s.entities.get_mut(&1).unwrap().insert("learner/queue".into(), json!([3,99]));
+        s.entities.get_mut(&1).unwrap().insert("learner/targets".into(), json!([3]));
+        let before = s.entities.clone();
+        let at = DateTime::from_timestamp_millis(1_790_760_000_000).unwrap();
+        let removal = json!([crate::schema::keyword("db/retract"),1,crate::schema::keyword("learner/queue"),3]);
+        for (question, correct, completed, removed) in [
+            (Some(100),true,false,false),
+            (None,false,true,false),
+            (None,true,false,false),
+            (None,true,true,true),
+            (Some(100),true,true,true),
+        ] {
+            let forms = learning::credit(&s,1,60,question,correct,completed,"review-queue-completion",at).unwrap();
+            assert_eq!(forms.contains(&removal),removed);
+            assert!(!forms.iter().any(|f|f.get(2)==Some(&crate::schema::keyword("learner/targets"))));
+            assert!(!forms.contains(&json!([crate::schema::keyword("db/retract"),1,crate::schema::keyword("learner/queue"),99])));
+        }
+        assert_eq!(s.entities,before,"planning must not mutate the snapshot");
+        s.entities.get_mut(&1).unwrap().insert("learner/queue".into(),json!([99]));
+        assert!(!learning::credit(&s,1,60,None,true,true,"not-queued",at).unwrap().contains(&removal));
+        s.entities.get_mut(&60).unwrap().insert("activity/type".into(),json!("activity.type/assessment"));
+        s.entities.get_mut(&1).unwrap().insert("learner/queue".into(),json!([3,99]));
+        assert!(!learning::credit(&s,1,60,Some(100),true,true,"assessment",at).unwrap().contains(&removal));
+    }
+
     #[test]
     fn review_route_stops_at_three_correct_and_scores_only_presented_questions() {
         let mut s = fixture();
