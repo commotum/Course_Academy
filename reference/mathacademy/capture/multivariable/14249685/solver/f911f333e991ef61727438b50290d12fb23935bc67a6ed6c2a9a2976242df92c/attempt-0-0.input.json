@@ -1,0 +1,71 @@
+{
+  "task": "solve_question",
+  "payload": {
+    "evidence_contract": "solve_question:1",
+    "question": {
+      "math_academy_id": "q-257201",
+      "problem": "Suppose we wish to find a critical point of the function $f(x,y)$ in the region $[0,1]\\times [1,2]⊆{R}^{2},$ where\n\n$$\nf(x,y)=4x{y}^{2}+3{x}^{2}-6xy-x.\n$$\n\nFill in the blanks in the matrix equation below that defines the first iteration of the Newton-Raphson process starting at the point $[1,\\,2]^{T}.$\n\n<table align=\"center\" cellpadding=\"1\" rules=\"all\">\n\n<tbody><tr>\n<td rowspan=\"2\" align=\"center\">$[$</td>\n<td width=\"25\" height=\"25\" align=\"center\">\n{{field-1}}\n</td>\n<td width=\"25\" height=\"25\" align=\"center\">$10$</td>\n<td rowspan=\"2\" align=\"center\">$]({x}_{1}-{x}_{0})\\,=[$</td>\n<td width=\"25\" height=\"25\" align=\"center\">$-9$</td>\n<td rowspan=\"2\" align=\"left\">$]$</td>\n</tr>\n\n<tr>\n<td width=\"25\" height=\"25\" align=\"center\">$10$</td>\n<td width=\"25\" height=\"25\" align=\"center\">\n{{field-2}}\n</td>\n<td width=\"25\" height=\"25\" align=\"center\">\n{{field-3}}\n</td>\n</tr>\n\n</tbody></table>",
+      "answer_fields_complete": true,
+      "problem_field_keys": [
+        "field-1",
+        "field-2",
+        "field-3"
+      ],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14249685/observations/step-q257201-84b586cef7762a936b68.html",
+      "source_url": "https://mathacademy.com/tasks/14249685/topics/5377/lesson",
+      "fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "disabled": false,
+          "choices_complete": false
+        },
+        {
+          "key": "field-2",
+          "type": "blank",
+          "disabled": false,
+          "choices_complete": false
+        },
+        {
+          "key": "field-3",
+          "type": "blank",
+          "disabled": false,
+          "choices_complete": false
+        }
+      ]
+    },
+    "current_example": {
+      "math_academy_id": "e-16708",
+      "problem": "Suppose we wish to find a critical point of the function $f(x,y)$ in the region $[0,1]\\times[0,1] \\subseteq \\mathbb{R}^2,$ where\n\n$$\nf(x,y) = xy^2+3x^2-xy-x.\n$$\n\nFind the matrix equation that defines the first iteration of the Newton-Raphson process starting at the point $\\big[ 1, \\: 1 \\big]^T,$ and compute the components of the first iteration",
+      "worked_solution": "The Newton-Raphson method of optimizing a multivariable function $f : \\mathbb{R}^n \\to \\mathbb{R}$ is\n\n$$\n\\mathbf{x}_{n+1} = \\mathbf{x}_n - [H_f(\\mathbf{x}_n)]^{-1} \\nabla{f}(\\mathbf{x}_n),\n$$\n\nwhere $H(\\mathbf{x}_n)$ and $\\nabla{f}(\\mathbf{x}_n)$ are the Hessian and gradient of $f$, respectively, evaluated at $\\mathbf{x}_n.$\n\nEquivalently, at each iteration, the above equation can be rewritten as\n\n$$\nH_f(\\mathbf{x}_n)(\\mathbf{x}_{n+1} - \\mathbf{x}_n) = -\\nabla{f}(\\mathbf{x}_n).\n$$\n\nIn our case, the gradient is\n\n$$\n\\begin{aligned}∇f(x) & =[\\begin{aligned}\\frac{∂}{∂x}(x{y}^{2}+3{x}^{2}-xy-x) \\\\ \\frac{∂}{∂y}(x{y}^{2}+3{x}^{2}-xy-x)\\end{aligned}] \\\\  & =[\\begin{aligned}{y}^{2}+6x-y-1 \\\\ 2xy-x\\end{aligned}],\\end{aligned}\n$$\n\nand the Hessian is\n\n$$\n\\begin{aligned}{H}_{f}(x) & =[\\begin{aligned}\\frac{∂}{∂x}({y}^{2}+6x-y-1) & \\frac{∂}{∂x}(2xy-x) \\\\ \\frac{∂}{∂y}({y}^{2}+6x-y-1) & \\frac{∂}{∂y}(2xy-x)\\end{aligned}] \\\\  & =[\\begin{aligned}6 & 2y-1 \\\\ 2y-1 & 2x\\end{aligned}].\\end{aligned}\n$$\n\nTherefore, our Newton-Raphson system of equations is\n\n![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14249685/assets/2517ccbabe3cba87944714d34b599ec823a1b6e910ca1038f520db108c208fed.svg)\n\nStarting with ![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14249685/assets/5856b8a9329610bcf029b81d0fe27e03c3f1ee43db9d3eba42c8580d5d13ff3e.svg) we have\n\n$$\n\\begin{aligned}{[\\begin{aligned}6 & 2y-1 \\\\ 2y-1 & 2x\\end{aligned}]}_{{x}_{0}}({x}_{1}-{x}_{0}) & =-{[\\begin{aligned}{y}^{2}+6x-y-1 \\\\ 2xy-x\\end{aligned}]}_{{x}_{0}} \\\\ [\\begin{aligned}6 & 2(1)-1 \\\\ 2(1)-1 & 2(1)\\end{aligned}]({x}_{1}-{x}_{0}) & =-[\\begin{aligned}(1)^{2}+6(1)-(1)-1 \\\\ 2(1)(1)-1\\end{aligned}] \\\\ [\\begin{aligned}6 & 1 \\\\ 1 & 2\\end{aligned}]({x}_{1}-{x}_{0}) & =[\\begin{aligned}-5 \\\\ -1\\end{aligned}].\\end{aligned}\n$$\n\nSolving this system of equations, we get ![](/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14249685/assets/9a26e040d5f327139a8e62455f1d12459b0a4f69ef38558e9fc785537eb61ed0.svg) Hence,\n\n$$\n\\begin{aligned}{x}_{1} & ={x}_{0}+[\\begin{aligned}-9/11 \\\\ -1/11\\end{aligned}] \\\\  & =[\\begin{aligned}1 \\\\ 1\\end{aligned}]+[\\begin{aligned}-9/11 \\\\ -1/11\\end{aligned}] \\\\  & ≈[\\begin{aligned}0.182 \\\\ 0.909\\end{aligned}].\\end{aligned}\n$$",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14249685/observations/step-e16708-d168037afba89a60f52e.html",
+      "source_url": "https://mathacademy.com/tasks/14249685/topics/5377/lesson",
+      "screenshot": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14249685/observations/step-e16708-d168037afba89a60f52e.png",
+      "assets": [
+        {
+          "index": 0,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14249685/assets/2517ccbabe3cba87944714d34b599ec823a1b6e910ca1038f520db108c208fed.svg",
+          "sha256": "2517ccbabe3cba87944714d34b599ec823a1b6e910ca1038f520db108c208fed",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 1,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14249685/assets/5856b8a9329610bcf029b81d0fe27e03c3f1ee43db9d3eba42c8580d5d13ff3e.svg",
+          "sha256": "5856b8a9329610bcf029b81d0fe27e03c3f1ee43db9d3eba42c8580d5d13ff3e",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        },
+        {
+          "index": 2,
+          "path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14249685/assets/9a26e040d5f327139a8e62455f1d12459b0a4f69ef38558e9fc785537eb61ed0.svg",
+          "sha256": "9a26e040d5f327139a8e62455f1d12459b0a4f69ef38558e9fc785537eb61ed0",
+          "content_type": "image/svg+xml",
+          "representation": "original"
+        }
+      ]
+    }
+  },
+  "session_id": "01a142ac-517d-7760-9697-863e489fa486",
+  "previous_failures": []
+}

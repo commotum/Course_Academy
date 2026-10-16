@@ -1,0 +1,93 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-257215",
+      "sequence_position": 14,
+      "problem": "Suppose we wish to find a critical point of the function $f(x,y)$ in the region $[-1,0]\\times [0,1]⊆{R}^{2},$ where\n\n$$\nf(x,y)={x}^{3}-2x{y}^{2}-xy+x-y.\n$$\n\nFill in the blanks in the matrix equation below that defines the first iteration of the Newton-Raphson process starting at the point $[-1,\\,1]^{T},$ and compute the components of the first iteration. Round the answer for ${x}_{1}$ to **three decimal places**.\n\n<table align=\"center\" cellpadding=\"1\" rules=\"all\">\n\n<tbody><tr>\n<td rowspan=\"2\" align=\"center\">$[$</td>\n<td width=\"25\" height=\"25\" align=\"center\">{{field-1}}</td>\n<td width=\"25\" height=\"25\" align=\"center\">\n$-5$\n</td>\n<td rowspan=\"2\" align=\"center\">$]({x}_{1}-{x}_{0})\\,=[$</td>\n<td width=\"25\" height=\"25\" align=\"center\">\n$-1$\n</td>\n<td rowspan=\"2\" align=\"left\">$]$</td>\n</tr>\n\n<tr>\n<td width=\"25\" height=\"25\" align=\"center\">\n$-5$\n</td>\n<td width=\"25\" height=\"25\" align=\"center\">{{field-2}}</td>\n<td width=\"25\" height=\"25\" align=\"center\">{{field-3}}</td>\n</tr>\n\n</tbody></table>\n\n<table align=\"center\" cellpadding=\"1\" rules=\"all\">\n\n<tbody><tr>\n<td rowspan=\"2\" align=\"center\">${x}_{1}≈[$</td>\n<td width=\"25\" height=\"25\" align=\"center\">$-0.510$</td>\n<td rowspan=\"2\" align=\"center\">$]$</td>\n</tr>\n\n<tr>\n<td width=\"25\" height=\"25\" align=\"center\">\n{{field-4}}\n</td>\n</tr>\n\n</tbody></table>",
+      "worked_solution": "The Newton-Raphson method of optimizing a multivariable function $f:{R}^{n}\\to R$ is\n\n$$\n{x}_{n+1}={x}_{n}-[{H}_{f}({x}_{n})]^{-1}∇f({x}_{n}),\n$$\n\nwhere $H({x}_{n})$ and $∇f({x}_{n})$ are the Hessian and gradient of $f$, respectively, evaluated at ${x}_{n}.$\n\nEquivalently, at each iteration, the above equation can be rewritten as\n\n$$\n{H}_{f}({x}_{n})({x}_{n+1}-{x}_{n})=-∇f({x}_{n}).\n$$\n\nIn our case, the gradient is\n\n$$\n\\begin{aligned}∇f(x) & =[\\begin{aligned}\\frac{∂}{∂x}({x}^{3}-2x{y}^{2}-xy+x-y) \\\\ \\frac{∂}{∂y}({x}^{3}-2x{y}^{2}-xy+x-y)\\end{aligned}] \\\\  & =[\\begin{aligned}3{x}^{2}-2{y}^{2}-y+1 \\\\ -4xy-x-1\\end{aligned}],\\end{aligned}\n$$\n\nand the Hessian is\n\n$$\n\\begin{aligned}{H}_{f}(x) & =[\\begin{aligned}\\frac{∂}{∂x}(3{x}^{2}-2{y}^{2}-y+1) & \\frac{∂}{∂x}(-4xy-x-1) \\\\ \\frac{∂}{∂y}(3{x}^{2}-2{y}^{2}-y+1) & \\frac{∂}{∂y}(-4xy-x-1)\\end{aligned}] \\\\  & =[\\begin{aligned}6x & -4y-1 \\\\ -4y-1 & -4x\\end{aligned}].\\end{aligned}\n$$\n\nTherefore, our Newton-Raphson system of equations is\n\n$$\n{[\\begin{aligned}6x & -4y-1 \\\\ -4y-1 & -4x\\end{aligned}]}_{{x}_{n}}({x}_{n+1}-{x}_{n})=-{[\\begin{aligned}3{x}^{2}-2{y}^{2}-y+1 \\\\ -4xy-x-1\\end{aligned}]}_{{x}_{n}}.\n$$\n\nStarting with ${x}_{0}=[\\begin{aligned}-1 \\\\ 1\\end{aligned}],$ we have\n\n$$\n\\begin{aligned}{[\\begin{aligned}6x & -4y-1 \\\\ -4y-1 & -4x\\end{aligned}]}_{{x}_{0}}({x}_{1}-{x}_{0}) & =-{[\\begin{aligned}3{x}^{2}-2{y}^{2}-y+1 \\\\ -4xy-x-1\\end{aligned}]}_{{x}_{0}} \\\\ [\\begin{aligned}6(-1) & -4(1)-1 \\\\ -4(1)-1 & -4(-1)\\end{aligned}]({x}_{1}-{x}_{0}) & =-[\\begin{aligned}3(-1)^{2}-2(1)^{2}-1+1 \\\\ -4(-1)(1)-(-1)-1\\end{aligned}] \\\\ [\\begin{aligned}-6 & -5 \\\\ -5 & 4\\end{aligned}]({x}_{1}-{x}_{0}) & =[\\begin{aligned}-1 \\\\ -4\\end{aligned}].\\end{aligned}\n$$\n\nSolving this system of equations, we get $({x}_{1}-{x}_{0})=[\\begin{aligned}24/49 \\\\ -19/49\\end{aligned}].$ Hence,\n\n$$\n\\begin{aligned}{x}_{1} & ={x}_{0}+[\\begin{aligned}\\frac{24}{49} \\\\ -\\frac{19}{49}\\end{aligned}] \\\\  & =[\\begin{aligned}-1 \\\\ 1\\end{aligned}]+[\\begin{aligned}\\frac{24}{49} \\\\ -\\frac{19}{49}\\end{aligned}] \\\\  & ≈[\\begin{aligned}-0.510 \\\\ 0.612\\end{aligned}].\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "problem_field_keys": [
+        "field-1",
+        "field-2",
+        "field-3",
+        "field-4"
+      ],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14249685/observations/history-q-257215-1e7c2e024288d3abea95.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14249685",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14249685/observations/history-solution-q-257215-08430a2e98d8b1c4ef05.html",
+      "fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        },
+        {
+          "key": "field-2",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        },
+        {
+          "key": "field-3",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        },
+        {
+          "key": "field-4",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q257215",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "-6",
+                "value_type": "math"
+              },
+              {
+                "key": "field-2",
+                "value": "4",
+                "value_type": "math"
+              },
+              {
+                "key": "field-3",
+                "value": "-4",
+                "value_type": "math"
+              },
+              {
+                "key": "field-4",
+                "value": "0.612",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "source_grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "The Newton-Raphson method of optimizing a multivariable function $f:{R}^{n}\\to R$ is\n\n$$\n{x}_{n+1}={x}_{n}-[{H}_{f}({x}_{n})]^{-1}∇f({x}_{n}),\n$$\n\nwhere $H({x}_{n})$ and $∇f({x}_{n})$ are the Hessian and gradient of $f$, respectively, evaluated at ${x}_{n}.$\n\nEquivalently, at each iteration, the above equation can be rewritten as\n\n$$\n{H}_{f}({x}_{n})({x}_{n+1}-{x}_{n})=-∇f({x}_{n}).\n$$\n\nIn our case, the gradient is\n\n$$\n\\begin{aligned}∇f(x) & =[\\begin{aligned}\\frac{∂}{∂x}({x}^{3}-2x{y}^{2}-xy+x-y) \\\\ \\frac{∂}{∂y}({x}^{3}-2x{y}^{2}-xy+x-y)\\end{aligned}] \\\\  & =[\\begin{aligned}3{x}^{2}-2{y}^{2}-y+1 \\\\ -4xy-x-1\\end{aligned}],\\end{aligned}\n$$\n\nand the Hessian is\n\n$$\n\\begin{aligned}{H}_{f}(x) & =[\\begin{aligned}\\frac{∂}{∂x}(3{x}^{2}-2{y}^{2}-y+1) & \\frac{∂}{∂x}(-4xy-x-1) \\\\ \\frac{∂}{∂y}(3{x}^{2}-2{y}^{2}-y+1) & \\frac{∂}{∂y}(-4xy-x-1)\\end{aligned}] \\\\  & =[\\begin{aligned}6x & -4y-1 \\\\ -4y-1 & -4x\\end{aligned}].\\end{aligned}\n$$\n\nTherefore, our Newton-Raphson system of equations is\n\n$$\n{[\\begin{aligned}6x & -4y-1 \\\\ -4y-1 & -4x\\end{aligned}]}_{{x}_{n}}({x}_{n+1}-{x}_{n})=-{[\\begin{aligned}3{x}^{2}-2{y}^{2}-y+1 \\\\ -4xy-x-1\\end{aligned}]}_{{x}_{n}}.\n$$\n\nStarting with ${x}_{0}=[\\begin{aligned}-1 \\\\ 1\\end{aligned}],$ we have\n\n$$\n\\begin{aligned}{[\\begin{aligned}6x & -4y-1 \\\\ -4y-1 & -4x\\end{aligned}]}_{{x}_{0}}({x}_{1}-{x}_{0}) & =-{[\\begin{aligned}3{x}^{2}-2{y}^{2}-y+1 \\\\ -4xy-x-1\\end{aligned}]}_{{x}_{0}} \\\\ [\\begin{aligned}6(-1) & -4(1)-1 \\\\ -4(1)-1 & -4(-1)\\end{aligned}]({x}_{1}-{x}_{0}) & =-[\\begin{aligned}3(-1)^{2}-2(1)^{2}-1+1 \\\\ -4(-1)(1)-(-1)-1\\end{aligned}] \\\\ [\\begin{aligned}-6 & -5 \\\\ -5 & 4\\end{aligned}]({x}_{1}-{x}_{0}) & =[\\begin{aligned}-1 \\\\ -4\\end{aligned}].\\end{aligned}\n$$\n\nSolving this system of equations, we get $({x}_{1}-{x}_{0})=[\\begin{aligned}24/49 \\\\ -19/49\\end{aligned}].$ Hence,\n\n$$\n\\begin{aligned}{x}_{1} & ={x}_{0}+[\\begin{aligned}\\frac{24}{49} \\\\ -\\frac{19}{49}\\end{aligned}] \\\\  & =[\\begin{aligned}-1 \\\\ 1\\end{aligned}]+[\\begin{aligned}\\frac{24}{49} \\\\ -\\frac{19}{49}\\end{aligned}] \\\\  & ≈[\\begin{aligned}-0.510 \\\\ 0.612\\end{aligned}].\\end{aligned}\n$$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14249685/observations/history-solution-q-257215-08430a2e98d8b1c4ef05.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14249685/observations/history-q-257215-1e7c2e024288d3abea95.html"
+        }
+      }
+    ]
+  }
+}
