@@ -6,6 +6,7 @@ mod answer_fields;
 mod configuration;
 mod edb_activity_checks;
 mod edb_configuration_checks;
+mod edb_progress_checks;
 #[path = "../engine/edb/progress.rs"]
 mod progress;
 fn transact(db: &Database, text: &str, at: i64) -> Result<TxReport, SemanticError> {
@@ -256,6 +257,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     })?;
     assert_eq!(owners.len(), 1);
     assert_eq!(owners[0].entity, learner);
+    edb_progress_checks::check(&db, learner, state, topic)?;
     let removed = transact(&db, &format!("[[:db.fn/retractEntity {learner}]]"), 3100)?.db_after;
     assert!(removed.values(state, idattr).is_empty());
     for name in [
