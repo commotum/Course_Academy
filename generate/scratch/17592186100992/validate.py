@@ -23,7 +23,7 @@ def parse_matrix(text):
     return sp.Matrix(rows)
 
 def parameters(problem):
-    assert problem.startswith('Find $(A+B)-C-(B-C)$, if\n\n$$\n')
+    assert problem.startswith('Find $(A+B)-C-(B-C)$, if\n\n')
     matches=re.findall(r'([ABC])=(\\begin\{bmatrix\}.*?\\end\{bmatrix\})',problem,re.S)
     assert [name for name,_ in matches]==list('ABC')
     return {n:[[int(x) for x in row] for row in parse_matrix(m).tolist()] for n,m in matches}
@@ -38,6 +38,7 @@ def format_check(text):
 def check(r):
     assert r['knowledge_point']=={'db_id':g.KP_ID,'id':g.KP_UUID,'title':g.TITLE}
     q=r['question'];meta=r['generation'];p=parameters(q[':question/problem'])
+    assert 'class="matrix-operands"' in q[':question/problem']
     assert q[':question/difficulty']==':question.difficulty/moderate'
     assert p==meta['parameters'] and all(0<=x<=9 for name in 'ABC' for row in p[name] for x in row)
     a,b,c=[sp.Matrix(p[n]) for n in 'ABC']
@@ -80,7 +81,9 @@ def main():
     source=json.loads((H/'reference/source.json').read_text())
     src=next(q for q in source['record'][':knowledge-point/questions'] if q[':question/math-academy-id']=='q-13536')
     r=g.generate(parameters=g.ORIGINAL);check(r)
-    assert all(r['question'][k]==src[k] for k in (':question/problem',':question/worked-solution'))
+    assert r['question'][':question/problem'].splitlines()[0]==src[':question/problem'].splitlines()[0]
+    assert parameters(r['question'][':question/problem'])==parameters(src[':question/problem'])
+    assert r['question'][':question/worked-solution']==src[':question/worked-solution']
     replay=[]
     for f in src[':question/answer-fields']:
         expected=sorted(a[':answer/value'] for a in f[':answer-field/choices'])
@@ -88,7 +91,7 @@ def main():
         assert expected==got
         if ':answer-field/correct' in f:assert parse_matrix(f[':answer-field/correct'][':answer/value'])==sp.Matrix(g.ORIGINAL['A'])
         replay.append({'field_id':f[':answer-field/id'],'choices_matched':5,'choices_total':5,'distractors_matched':4,'distractors_total':4,'missing_options':[],'extra_options':[],'complete_bank':True,'source_correct_ref_present':':answer-field/correct' in f,'normal_route': 'complete field' if ':answer-field/correct' in f else 'excluded duplicate incomplete field; mathematical answer independently A'})
-    (H/'source-replay.json').write_text(json.dumps({'passed':True,'prompt_exact':True,'solution_exact':True,'banks_matched':2,'banks_total':2,'distractors_matched':8,'distractors_total':8,'fields':replay},indent=2))
+    (H/'source-replay.json').write_text(json.dumps({'passed':True,'prompt_exact':False,'prompt_mathematics_preserved':True,'matrix_layout_standardized':True,'solution_exact':True,'banks_matched':2,'banks_total':2,'distractors_matched':8,'distractors_total':8,'fields':replay},indent=2))
     records=[g.generate(seed=i) for i in range(300)]
     for item in records:check(item)
     coverage={n:[[sorted({r['generation']['parameters'][n][i][j] for r in records}) for j in range(2)] for i in range(2)] for n in 'ABC'}
@@ -140,7 +143,7 @@ def main():
     (H/'review.json').write_text(json.dumps(review,indent=2));(H/'review.md').write_text('\n\n---\n\n'.join('## '+x['label']+'\n\n'+g.markdown(x['record']) for x in review))
     native=json.loads((H/'native-report.json').read_text())
     files=[H.with_suffix('.py'),Path(__file__),H/'db_support.py',H/'replenish.py',H/'classification.md',H/'template-extraction.md',H/'plot-extraction.md',H/'source-components.json',H/'capability.json',H/'source-replay.json',H/'native-report.json',H/'reference/source.edn',H/'reference/source.json',H/'review.json',H/'review.md']
-    result={'passed':True,'source_basis':source['status'],'supported_levels':['moderate'],'source_fidelity':{'exact_prompt':True,'exact_solution':True,'banks':2,'distractors':8,'field_layout_correction':'one complete selection field; excluded duplicate key without correct ref'},'normal_records':len(records),'distinct_tasks':len({x['generation']['mathematical_key'] for x in records}),'slot_coverage':coverage,'mathematical_validation':'independent actual-display exact matrix expression and full choice-bank comparison','actual_grading':{k:native[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'native_harness':{'path':str(ENGINE.relative_to(ROOT)),'sha256':sha(ENGINE),'source_sha256':sha(ENGINE.with_suffix('.rs'))},'runtime':{'sympy':sp.__version__},'checks':['source complete banks and correct designation','all 12 scalar slots exercise 0..9','each slot 0 and 9 boundary cases','changed surviving matrix updates prompt solution and answer','canceled matrices excluded from task identity','seed and order stable identity','whole-profile collision rejection','four intentional corruptions rejected'],'files':{str(p.relative_to(ROOT)):sha(p) for p in files}}
+    result={'passed':True,'source_basis':source['status'],'supported_levels':['moderate'],'source_fidelity':{'exact_prompt':False,'prompt_mathematics_preserved':True,'matrix_layout_standardized':True,'exact_solution':True,'banks':2,'distractors':8,'field_layout_correction':'one complete selection field; excluded duplicate key without correct ref'},'normal_records':len(records),'distinct_tasks':len({x['generation']['mathematical_key'] for x in records}),'slot_coverage':coverage,'mathematical_validation':'independent actual-display exact matrix expression and full choice-bank comparison','actual_grading':{k:native[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'native_harness':{'path':str(ENGINE.relative_to(ROOT)),'sha256':sha(ENGINE),'source_sha256':sha(ENGINE.with_suffix('.rs'))},'runtime':{'sympy':sp.__version__},'checks':['source complete banks and correct designation','all 12 scalar slots exercise 0..9','each slot 0 and 9 boundary cases','changed surviving matrix updates prompt solution and answer','canceled matrices excluded from task identity','seed and order stable identity','whole-profile collision rejection','four intentional corruptions rejected'],'files':{str(p.relative_to(ROOT)):sha(p) for p in files}}
     (H/'validation.json').write_text(json.dumps(result,indent=2));print(json.dumps({'passed':True,'normal_records':len(records),'native_grading':result['actual_grading']}))
 
 if __name__=='__main__':main()

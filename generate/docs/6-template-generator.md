@@ -2,6 +2,8 @@
 
 Use the templates from [Template Extraction](4-template-extraction.md), including any attached plot specifications. Start with one Python script in `generate/scratch/<knowledge-point-db-id>.py`, with documented sections for each difficulty and shared helpers.
 
+For matrix-entry questions, use `matrix_operands()` and `matrix_answer()` from [math_format.py](../../scripts/question_capture/math_format.py). Put separately wrapping, centered given matrices below the prose. Render the answer as a borderless rectangular matrix with external brackets and the expression outside it. Pass bare TeX for supplied entries and the existing `{{field-key}}` placeholders for editable entries, preserving row and column order. Do not use padded Markdown tables, blank label columns, or spreadsheet grid lines. Radio choices remain their existing matrix answers.
+
 1. Use SymPy for exact symbolic work, seeded randomness for reproducible sampling, and Matplotlib for plots, with TikZ when needed.
 2. Implement seeded samplers for the variable slots defined by extraction, including eligible targets or positions as well as values. Preserve the backbone, slot roles, constraints, and field types; explicitly label supported generalizations or narrower sampling policies.
 3. Compute the correct answer first, then derive the intermediate solution values and any mathematical data needed by plots.

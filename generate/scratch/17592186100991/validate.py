@@ -75,7 +75,10 @@ def check(rec):
             name='M'+str(len(values));values[name]=parse_matrix(m[0]);return name
         rendered=re.sub(r'\\begin\{bmatrix\}.*?\\end\{bmatrix\}',replace,stage,flags=re.S).rstrip('.')
         assert expression_value(rendered,values)==expected,'Incorrect displayed solution stage'
-    assert text.count('$$')==2 and sol.count('$$')==2
+    assert text.count('$$')==0 and 'class="matrix-operands"' in text and sol.count('$$')==2
+    assert ('class="matrix-answer"' in text) == template.endswith('blank')
+    if template.endswith('blank'):
+        assert re.findall(r'<td>(.*?)</td>',text)==['{{field-1}}','{{field-2}}','{{field-3}}','{{field-4}}']
     assert not re.search(r'\+\-|\-\-',sol)
     return expected
 
@@ -111,7 +114,8 @@ def source_cases():
             report.append({'source_id':sid,'supported':False,'reason':data['exclusion'],'true_matrix':correct.tolist(),'original_bank_preserved':True})
         else:
             r=g.generate(level,0,template,{'matrices':mats,'names':names});check(r)
-            assert r['question'][':question/problem']==text
+            assert re.search(r'Calculate \$(.*?)\$',r['question'][':question/problem'])[1].replace(' ','')==expr
+            assert matrices(r['question'][':question/problem'])==matrices(text)
             assert r['question'][':question/worked-solution']==q[':question/worked-solution']
             generated={f[':answer-field/key']:f for f in r['question'][':question/answer-fields']}
             distractors=0
@@ -122,7 +126,7 @@ def source_cases():
                 keyval=next(a[':answer/value'] for a in gf[':answer-field/choices'] if a[':answer/id']==gf[':answer-field/correct'][1])
                 assert keyval==f[':answer-field/correct'][':answer/value']
                 distractors+=len(f[':answer-field/choices'])-1
-            report.append({'source_id':sid,'supported':True,'prompt_exact':True,'solution_exact':True,'field_layout_exact':True,'complete_bank_matched':True,'distractors_matched':distractors,'distractors_total':distractors,'missing_options':[],'extra_options':[]})
+            report.append({'source_id':sid,'supported':True,'prompt_exact':False,'prompt_mathematics_preserved':True,'matrix_layout_standardized':True,'solution_exact':True,'field_keys_and_positions_preserved':True,'complete_bank_matched':True,'distractors_matched':distractors,'distractors_total':distractors,'missing_options':[],'extra_options':[]})
             cases.append({'source_id':sid,'level':level,'template':template,'parameters':{'matrices':mats,'names':names}});raw.append(r)
         components.append(data)
     save(HERE/'source-components.json',components);save(HERE/'source-cases.json',cases);save(HERE/'source-replay.json',report)

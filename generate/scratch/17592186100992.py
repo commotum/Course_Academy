@@ -12,6 +12,8 @@ import random
 import sys
 import uuid
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from scripts.question_capture.math_format import matrix_operands
 try:
     import sympy as sp
 except ModuleNotFoundError:
@@ -23,7 +25,7 @@ except ModuleNotFoundError:
 KP_ID = 17592186100992
 KP_UUID = '16e62b0e-adda-5d35-aeb9-961057dce8f0'
 TITLE = 'Calculating the Sum or Difference of Three or More Matrices Using Distributivity'
-VERSION = 'distributivity-moderate-1'
+VERSION = 'distributivity-moderate-2'
 GENERATOR_ID = str(uuid.uuid5(uuid.UUID(KP_UUID), 'question-generator'))
 SOURCE = {'database':'math','basis':2277,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1','question':'q-13536'}
 PROFILE = 'q-13536-complete'
@@ -75,7 +77,7 @@ def generate(level='moderate',seed=0,parameters=None,profile=PROFILE):
     answers=[{':answer/id':str(uuid.uuid5(uuid.UUID(fid),value)),':answer/type':':answer.type/math',':answer/value':value} for value in values]
     correct=answers[1][':answer/id']
     random.Random(seed ^ 0xCA00992).shuffle(answers)
-    problem='Find $(A+B)-C-(B-C)$, if\n\n$$\n'+',\\,'.join(n+'='+matrix(p[n]) for n in 'ABC')+'.\n$$'
+    problem='Find $(A+B)-C-(B-C)$, if\n\n'+matrix_operands(n+'='+matrix(p[n]) for n in 'ABC')
     solution='First, we simplify the expression by distributing the subtraction over the matrices in the parentheses:\n\n$$\n'+r'\begin{aligned}(A+B)-C-(B-C) & =A+B-C-B+C \\  & =A+\cancel{B}-\cancel{C}-\cancel{B}+\cancel{C} \\  & =A\end{aligned}'+'\n$$\n\nWe are left with a single matrix. So, the result is \n\n$$\n'+r'\begin{aligned}A & ='+matrix(p['A'])+r'\end{aligned}'+'\n$$'
     return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/problem':problem,':question/worked-solution':solution,':question/difficulty':':question.difficulty/moderate',':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]},'generation':{'version':VERSION,'template':'double-cancellation-single-matrix','bank_profile':profile,'recipes':list(RECIPES),'source':SOURCE,'seed':seed,'parameters':p,'parameter_fingerprint':fingerprint,'mathematical_key':mathematical_key(p),'domain':'three 2x2 matrices; integer entries 0..9; five distinct complete-bank matrices','runtime':{'sympy':sp.__version__},'source_field_exclusion':'legacy duplicate key selection without correct ref; source unchanged'}}
 

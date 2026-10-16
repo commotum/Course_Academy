@@ -8,6 +8,8 @@ See the sibling package for source profiles, replay and capability evidence.
 from __future__ import annotations
 import argparse, hashlib, json, os, random, re, sys, uuid
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from scripts.question_capture.math_format import matrix_operands, matrix_answer
 try:
     import sympy as sp
 except ModuleNotFoundError as error:
@@ -21,7 +23,7 @@ except ModuleNotFoundError as error:
 KP_ID = 17592186100991
 KP_UUID = '667ac53c-36b8-56a0-9699-fe27c8373c6b'
 TITLE = 'Calculating the Sum or Difference of Three or More Matrices'
-VERSION = 'three-matrix-1'
+VERSION = 'three-matrix-2'
 GENERATOR_UUID = str(uuid.uuid5(uuid.UUID(KP_UUID), 'question-generator'))
 HERE = Path(__file__).with_suffix('')
 TEMPLATES = {'easy': ('flat_sum_blank', 'flat_difference_blank', 'flat_sum_radio'),
@@ -81,10 +83,10 @@ def radio_bank(matrices):
 
 def prompt(template,p):
     names=p['names']; expr=expression(template,names)
-    text='Calculate $'+expr+'$, where\n\n$$\n'
-    text+=r',\,'.join(n+'='+matrix(m) for n,m in zip(names,p['matrices']))+'.\n$$'
+    text='Calculate $'+expr+'$, where\n\n'
+    text+=matrix_operands(n+'='+matrix(m) for n,m in zip(names,p['matrices']))
     if template.endswith('blank'):
-        text+='\n\n| $'+expr+r'=\,\,$ |  | {{field-1}} | {{field-2}} |  |'+'\n| --- | --- | --- | --- | --- |\n|  | {{field-3}} | {{field-4}} |  |  |'
+        text+='\n\n'+matrix_answer(expr,[['{{field-1}}','{{field-2}}'],['{{field-3}}','{{field-4}}']])
     return text
 
 def solution(template,p):
