@@ -150,7 +150,7 @@ def baseline():
  return report
 
 def native(records):
- ref=REPO/'generate/scratch/17592186059716-draft/reference/grader-build.json';info=json.loads(ref.read_text());hashes={info['source']:info['source_sha256'],info['library']:info['library_sha256'],info['binary']:info['binary_sha256'],**info['engine_sources'],**info['dependencies']}
+ ref=D/'reference/grader-build-current.json';info=json.loads(ref.read_text());hashes={info['source']:info['source_sha256'],info['library']:info['library_sha256'],info['binary']:info['binary_sha256'],**info['engine_sources'],**info['dependencies']}
  for path,expected in hashes.items():assert hashlib.sha256((REPO/path).read_bytes()).hexdigest()==expected,path
  dump('native-provenance.json',{'verified_hashes':len(hashes),'binary_sha256':info['binary_sha256'],'reference':str(ref.relative_to(REPO)),'files':hashes})
  input=[]

@@ -1,3 +1,5 @@
+> Current production decision (v1.1.0, live source recheck at basis 2755): easy/moderate supported; hard unsupported because outer multiplication adds an operation/stage. The negative production bank now exactly follows q-117574. The v1 analysis below is historical; see README.md, capabilities.json and validation.json for current scope.
+
 # Classification — amplitude extraction
 
 Frozen `math` basis 1356, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`; 9 practice sources. `source.json` is the untouched capture wrapper. No database operation was used.

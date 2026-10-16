@@ -1,0 +1,107 @@
+[
+  {
+    "label": "02fd691d-ae6a-5f3c-bb90-c16fde492236",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186176024,
+        "id": "695a4336-df48-56c9-8472-c2f51a496819",
+        "title": "Expressing a Line Integral Along a Circular Path as a Double Integral Using Green's Theorem"
+      },
+      "question": {
+        ":question/id": "02fd691d-ae6a-5f3c-bb90-c16fde492236",
+        ":question/problem": "Given that\n$\u222e_(C)F \\cdot dr = \\displaystyle \\int_{0}^{2\u03c0}\\displaystyle \\int_{0}^{3}\\boxed{}drd\u03b8$,\nwhere $F(x, y) = \u27e85xy^{2}, 5x + e^{\\cos y}\u27e9$ and $C$ is the circle $x^{2} + y^{2} = 9$ oriented counterclockwise, what is the missing part of the equation? Use $x=r\\cos\\theta$, $y=r\\sin\\theta$, and simplify the integrand pointwise before integration.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "46c59553-15cf-5320-87d6-38643dd06fe9",
+            ":answer-field/key": "selection",
+            ":answer-field/type": ":answer-field.type/radio",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "7b0b2dd8-7329-5565-a82f-fbdf918e0d75",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "r (- 5 r^{2} \\sin{(2 \\theta )} + 5)"
+              },
+              {
+                ":answer/id": "46c53d44-953b-562a-b3b2-38f6c6051bfb",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "5 r"
+              },
+              {
+                ":answer/id": "c1a670e0-35ba-52fa-b476-0a05dc1679bf",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- 5 r^{3} \\sin{(2 \\theta )}"
+              },
+              {
+                ":answer/id": "fa596e02-58e8-5f26-9fc1-448d9b654999",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "- 5 r^{2} \\sin{(2 \\theta )} + 5"
+              },
+              {
+                ":answer/id": "ece15ad0-2be9-57bd-af7c-a5fd555eba51",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "r (5 r^{2} \\sin{(2 \\theta )} + 5)"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "7b0b2dd8-7329-5565-a82f-fbdf918e0d75"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/moderate",
+        ":question/worked-solution": "First, notice that we can rewrite our integral as $\\oint_C F\\cdot dr=\\oint_C(5 x y^{2})\\,dx+(5 x + e^{\\cos{(y )}})\\,dy$.\n\nGreen's theorem states that $\\oint_C P\\,dx+Q\\,dy=\\iint_D(\\frac{\\partial Q}{\\partial x}-\\frac{\\partial P}{\\partial y})\\,dA$.\n\nIn our case, the region $D$ and its boundary $C$ satisfy the conditions of Green's theorem:\n\n![](images/3b/3b1a8cf50ccf8ab3a73f31753def3c2fee2143a7372309cccf2ff7a5e68aedd9.png)\n\nSince $P(x,y)=5 x y^{2}$ and $Q(x,y)=5 x + e^{\\cos{(y )}}$, we obtain $\\frac{\\partial P}{\\partial y}=10 x y$, $\\frac{\\partial Q}{\\partial x}=5$.\n\nApplying Green's theorem, we get $\\oint_C F\\cdot dr=\\iint_D(5-(10 x y))\\,dA=\\iint_D(- 10 x y + 5)\\,dA$.\n\nNow, notice that the region $D$ can be represented in polar coordinates as $\\Delta=\\{(r,\\theta):0\\le r\\le 3,0\\le\\theta\\le2\\pi\\}$.\n\nThe change of variables formula for plane polar coordinates states that $\\iint_D f(x,y)\\,dA=\\iint_\\Delta f(r\\cos\\theta,r\\sin\\theta)r\\,dr\\,d\\theta$.\n\nTherefore, we can write our double integral as $\\iint_D(- 10 x y + 5)\\,dA=\\iint_\\Delta(- 10 r^{2} \\sin{(\\theta )} \\cos{(\\theta )} + 5)r\\,dr\\,d\\theta=\\int_0^{2\\pi}\\int_0^{3}r (- 5 r^{2} \\sin{(2 \\theta )} + 5)\\,dr\\,d\\theta$."
+      },
+      "generation": {
+        "version": "green-circular-v2",
+        "template": "unrated_cross",
+        "profile": "authored",
+        "seed": 3391650904,
+        "parameters": {
+          "a": 5,
+          "b": 5,
+          "radius": 3
+        },
+        "source_id": "q-125716",
+        "source_provenance": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "authored_difficulty": true,
+        "evidence_only": false,
+        "eligible_for_learning": true,
+        "mathematical_fingerprint": "09271585bed14e539c73779737b9a5a56c9ac235ff9c84f731e47409646193d6",
+        "content_fingerprint": "c7a1fbb21808e2a36adbd543270a4c836e2ca6956d2e4b4fdb9481737e07cff0",
+        "python": "3.13.5",
+        "sympy": "1.14.0"
+      }
+    },
+    "checks": [
+      {
+        "submitted_answer_id": "7b0b2dd8-7329-5565-a82f-fbdf918e0d75",
+        "expected": "accepted",
+        "purpose": "Owned radio ID: independently verified pointwise math"
+      },
+      {
+        "submitted_answer_id": "46c53d44-953b-562a-b3b2-38f6c6051bfb",
+        "expected": "rejected",
+        "purpose": "Owned radio ID: independently verified pointwise math"
+      },
+      {
+        "submitted_answer_id": "c1a670e0-35ba-52fa-b476-0a05dc1679bf",
+        "expected": "rejected",
+        "purpose": "Owned radio ID: independently verified pointwise math"
+      },
+      {
+        "submitted_answer_id": "fa596e02-58e8-5f26-9fc1-448d9b654999",
+        "expected": "rejected",
+        "purpose": "Owned radio ID: independently verified pointwise math"
+      },
+      {
+        "submitted_answer_id": "ece15ad0-2be9-57bd-af7c-a5fd555eba51",
+        "expected": "rejected",
+        "purpose": "Owned radio ID: independently verified pointwise math"
+      }
+    ]
+  }
+]

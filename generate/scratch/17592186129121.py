@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Amplitude extraction only. Frozen basis 1356; local drafts; no EDB writes.
+"""Amplitude extraction only. Source basis 1356; generator has no EDB writes.
 
 Raw profiles are public parameterized evidence recipes, never default learning.
 Normal families are chosen before sampling a complete method-derived bank.
 Easy: positive external coefficient or implicit one. Moderate: negative external
-coefficient or a single quotient. Hard: authored whole-numerator external scale,
-with two coefficient operations and no reduction to an integer or unit scale.
+coefficient or a single quotient. Hard is unsupported: the legacy candidate adds
+operations absent from source templates. Version 1.0 evidence remains archived.
 """
 from __future__ import annotations
 import argparse, hashlib, json, math, random, sys, uuid
@@ -15,7 +15,9 @@ import sympy as sp
 KP_ID=17592186129121
 KP_UUID='7f8fa2b3-ccaa-5390-89fa-03e338cf8690'
 TITLE='Determining the Amplitude of a Transformed Sinusoidal Function'
-VERSION='1.0.0'
+VERSION='1.1.0'
+SUPPORTED_LEVELS=('easy','moderate')
+GENERATOR_UUID=str(uuid.uuid5(uuid.UUID(KP_UUID),'question-generator'))
 PRIVATE=Path(__file__).with_suffix('')
 SOURCE=json.loads((PRIVATE/'source.json').read_text())
 QUESTIONS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
@@ -67,14 +69,14 @@ TEMPLATES={'positive':'easy','unit':'easy','negative':'moderate','quotient':'mod
 NORMAL_BANKS={
  'positive':{'coefficient_parameters':['abs(A)','1/abs(A)','B','1/B','abs(A)*B']},
  'unit':{'implicit_parameters':['abs(A)','B','1/B','abs(C)','1/abs(C)']},
- 'negative':{'absolute_coefficient':['abs(A)','A','B','1/B','abs(C)']},
+ 'negative':{'absolute_coefficient':['1/abs(A)','B','1/B','abs(A)','C']},
  'quotient':{'numerator_division':['abs(N/Q)','abs(N)','abs(D/Q)','abs(D)','1/Q'],
              'signed_division':['abs(N/Q)','abs(N)','D','Q','N/Q']},
  'factored':{'whole_numerator_scale':['abs(P*N/Q)','abs(N/Q)','abs(P*N)','abs(P*D/Q)','abs(P/Q)']},
 }
 BANK_PROFILES={f'raw:{s}':{'template':s,'level':v['level'],'eligible_for_learning':False,'origin':'observed-evidence','recipes':v['bank']} for s,v in SPECS.items()}
 for name,banks in NORMAL_BANKS.items():
-    for bank,recipes in banks.items(): BANK_PROFILES[bank]={'template':name,'level':TEMPLATES[name],'eligible_for_learning':True,'origin':'authored-method-derived','recipes':recipes}
+    for bank,recipes in banks.items(): BANK_PROFILES[bank]={'template':name,'level':TEMPLATES[name],'eligible_for_learning':TEMPLATES[name] in SUPPORTED_LEVELS,'origin':'parameterized-source-bank' if name!='factored' else 'unsupported-legacy-extension','recipes':recipes}
 
 
 def amplitude(p): return abs(p['A']) if 'A' in p else abs(p.get('P',1)*p['N']/p['Q'])
@@ -216,6 +218,8 @@ def assemble(level,seed,name,p,profile,raw=False):
 
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
     if level not in ('easy','moderate','hard'): raise ValueError('Unknown difficulty')
+    if level not in SUPPORTED_LEVELS:
+        raise ValueError('Unsupported hard band: no source hard template; outer multiplication adds an operation and solution stage')
     if field_type not in (None,'radio'): raise ValueError('Only observed radio shape is supported for normal questions')
     if profile and profile not in BANK_PROFILES: raise ValueError('Unknown profile')
     if profile and profile.startswith('raw:'):
@@ -254,8 +258,25 @@ def generate_moderate(seed=0,template=None,field_type=None,parameters=None,profi
 
 # HARD — authored multiply-and-divide coefficient extraction, no extra topic.
 def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=None):
-    """P(D+N trig(Bx+C))/Q+E; all defining operations remain nonunit."""
+    """Unsupported; retained entry point raises a bounded capability error."""
     return generate('hard',seed,template,field_type,parameters,profile)
+
+def batch(level,count,seed=0):
+    """Return distinct assessed coefficient tasks, excluding incidental aliases."""
+    levels=SUPPORTED_LEVELS if level=='all' else (level,)
+    records=[]
+    for band in levels:
+        seen=set(); selected=[]
+        for offset in range(max(2000,count*100)):
+            rec=generate(band,seed+offset)
+            key=rec['generation']['parameter_fingerprint']
+            if key not in seen:
+                selected.append(rec);seen.add(key)
+            if len(selected)==count:break
+        if len(selected)!=count:
+            raise ValueError(f'Bounded sampling found {len(selected)} distinct {band} tasks; requested {count}; shortage remains explicit')
+        records.extend(selected)
+    return records
 
 
 def markdown(record):
@@ -276,7 +297,11 @@ def main():
     parser.add_argument('--template');parser.add_argument('--profile');parser.add_argument('--format',choices=['markdown','json'],default='markdown')
     args=parser.parse_args()
     if args.count<1 or args.difficulty=='all' and (args.template or args.profile): parser.error('Positive count and specific difficulty for template/profile')
-    levels=['easy','moderate','hard'] if args.difficulty=='all' else [args.difficulty]
-    records=[generate(l,args.seed+i,args.template,profile=args.profile) for l in levels for i in range(args.count)]
+    if args.template or args.profile:
+        records=[generate(args.difficulty,args.seed+i,args.template,profile=args.profile) for i in range(args.count)]
+        if len({r['generation']['parameter_fingerprint'] for r in records})!=len(records):
+            parser.error('Requested explicit profile produced duplicate mathematical tasks')
+    else:
+        records=batch(args.difficulty,args.count,args.seed)
     print(json.dumps(records,indent=2,ensure_ascii=False) if args.format=='json' else '\n\n---\n\n'.join(map(markdown,records)))
 if __name__=='__main__': main()

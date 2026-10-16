@@ -1,3 +1,5 @@
+> Current production decision (v1.1.0, live source recheck at basis 2755): easy/moderate supported; hard unsupported because outer multiplication adds an operation/stage. The negative production bank now exactly follows q-117574. The v1 analysis below is historical; see README.md, capabilities.json and validation.json for current scope.
+
 # Template extraction
 
 ## Stage 1 — Specific source descriptions
