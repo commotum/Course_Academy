@@ -79,8 +79,7 @@ def ranked_candidates(result):
     for topic in result["topics"]:
         groups = [group for group in topic.get("urgency_groups", []) if group in URGENCY]
         topic["urgency_value"] = max((URGENCY[group] for group in groups), default=0)
-        if (topic["urgency_value"] and topic.get("studied") and topic.get("reviewed")
-                and topic["next_activity"] == "assessment"):
+        if topic["urgency_value"] and topic.get("studied") and topic.get("reviewed"):
             topic_bands[topic["db/id"]] = {band for band, count in topic["topic_inventory"]["available"].items() if count > 0}
     before = coverage(topic_bands)
     usable = {kp["db/id"] for topic in result["topics"] for kp in topic["knowledge_points"]
@@ -89,6 +88,8 @@ def ranked_candidates(result):
     for topic in result["topics"]:
         topic_id, u = topic["db/id"], topic["urgency_value"]
         for kp in topic["knowledge_points"]:
+            for field in ("generated_band", "improved_coverage_band", "coverage_after"):
+                kp.pop(field, None)
             stage = topic["next_activity"]
             if stage not in {"lesson", "review", "assessment"}:
                 raise ValueError("Unknown next activity: " + str(stage))

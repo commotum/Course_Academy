@@ -1,17 +1,6 @@
-;; Study admission includes initialized knowledge and completed lessons.
-[:find ?topic
- :in $ ?learner
- :where (or-join [?learner ?topic]
-          (and [?learner :learner/knowledge-profile ?progress]
-               [?progress :progress/topic ?topic]
-               (or-join [?progress]
-                 [?progress :progress/learned true]
-                 (and (not [?progress :progress/learned _])
-                      [?progress :progress/repetitions ?repetitions]
-                      [(> ?repetitions 0)])))
-          (and [?learner :learner/activity ?task]
-               [?task :learner-task/status :learner-task.status/completed]
-               [?task :learner-task/activity ?activity]
-               [?activity :activity/type :activity.type/lesson]
-               [?activity :activity/scope ?topic]))
+;; Profile IDs are captured from this learner before joining topic facts.
+;; Rust handles the optional learned/repetitions legacy fallback.
+[:find ?topic (pull ?progress [:progress/learned :progress/repetitions])
+ :in $ [?progress ...]
+ :where [?progress :progress/topic ?topic]
         [?topic :topic/id _]]

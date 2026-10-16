@@ -135,6 +135,14 @@ class VarietyTests(unittest.TestCase):
         self.assertEqual(result["knowledge_points"][0]["purpose"], "advance-build")
         self.assertEqual(len(result["knowledge_points"]), 1)
 
+    def test_reviewed_topic_still_supplies_variety_while_awaiting_another_review(self):
+        stocked = topic(1, inventory(hard=5, supported=["hard"]), stage="review", groups=("studied",), registered=True)
+        stocked["reviewed"] = True
+        candidate = topic(2, inventory(easy=1, supported=["easy", "hard"]), stage="assessment", groups=("studied",))
+        result = rank(stocked, candidate)
+        self.assertEqual(result["assessment_coverage"]["available"]["hard"], 1)
+        self.assertEqual(result["knowledge_points"][0]["purpose"], "advance-build")
+
     def test_only_a_useful_observed_band_receives_variety_points(self):
         hard = topic(1, inventory(hard=1), stage="assessment", groups=("studied",), registered=True)
         useful = topic(2, inventory(easy=1, supported=["easy", "moderate"]), stage="assessment", groups=("studied",))

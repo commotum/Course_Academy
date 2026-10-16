@@ -1,9 +1,0 @@
-;; Union of the topic graph and topic-level key prerequisites of the target's KPs.
-;; knowledge-point/key-prerequisites references topics, not knowledge points.
-[:find ?prerequisite
- :in $ [?topic ...]
- :where (or-join [?topic ?prerequisite]
-          [?prerequisite :topic/next ?topic]
-          (and [?topic :topic/knowledge-points ?kp]
-               [?kp :knowledge-point/key-prerequisites ?prerequisite]))
-        [?prerequisite :topic/id _]]

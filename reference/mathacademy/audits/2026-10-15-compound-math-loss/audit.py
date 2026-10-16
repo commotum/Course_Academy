@@ -28,7 +28,6 @@ def tex(node):
 
 def norm(value):
     value=html_lib.unescape(value).replace('−','-')
-    value=re.sub(r'\\(?:left|right|displaystyle|textstyle|,|!|;|:|quad|qquad)\b?','',value) if False else value
     value=re.sub(r'\\(?:left|right|displaystyle|textstyle)\b|\\[,!;:]|\\(?:quad|qquad)\b','',value)
     value=re.sub(r'\\(?:dfrac|tfrac)\b',r'\\frac',value)
     value=re.sub(r'\\(?:mathrm|mathbf|boldsymbol)\{([^{}]*)\}',r'\1',value)

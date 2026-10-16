@@ -29,8 +29,7 @@ const CHANGED: &str = include_str!("queries/changed-activities.edn");
 const TOPICS: &str = include_str!("queries/topics.edn");
 const KPS: &str = include_str!("queries/knowledge-points.edn");
 const STUDIED: &str = include_str!("queries/studied-topics.edn");
-const PREREQUISITES: &str = include_str!("queries/direct-prerequisites.edn");
-const DESCENDANTS: &str = include_str!("queries/direct-descendants.edn");
+const COMPLETED_LESSONS: &str = include_str!("queries/completed-lesson-topics.edn");
 
 mod find_candidates_ranking;
 #[cfg(test)]
@@ -168,6 +167,67 @@ fn review_due(memory: f64, anchor: i64, interval: f64, threshold: f64, now: i64)
     Ok(elapsed >= 0.0 && memory * 2.0_f64.powf(-elapsed / interval) <= threshold + 1e-12)
 }
 
+fn direct_neighbors(
+    db: &DatabaseValue,
+    seeds: &BTreeSet<u64>,
+    prerequisites: bool,
+) -> Result<BTreeSet<u64>> {
+    let attribute = |name: &str| -> Result<u32> {
+        let (ns, attr) = name.split_once('/').unwrap();
+        db.schema()
+            .resolve_ident(&Keyword::new(ns, attr))
+            .ok_or_else(|| format!("missing {name}").into())
+    };
+    let next = attribute("topic/next")?;
+    let kps = attribute("topic/knowledge-points")?;
+    let keys = attribute("knowledge-point/key-prerequisites")?;
+    let identity = attribute("topic/id")?;
+    let forward = |entity, attr| -> Result<BTreeSet<u64>> {
+        db.values(entity, attr)?
+            .into_iter()
+            .map(|v| match v {
+                Value::Ref(id) => Ok(id),
+                _ => Err("curriculum edge must be a reference".into()),
+            })
+            .collect()
+    };
+    // These refs are not AVET-indexed. Explicit VAET prefixes avoid an attribute
+    // scan for every seed when the query planner chooses a reverse graph join.
+    let reverse = |entity, attr| -> Result<BTreeSet<u64>> {
+        Ok(db
+            .collect_datoms_with_prefix(&edb_core::IndexPrefix::Vaet {
+                value: Value::Ref(entity),
+                attribute: Some(attr),
+                entity: None,
+            })?
+            .into_iter()
+            .map(|d| d.entity)
+            .collect())
+    };
+    let mut neighbors = BTreeSet::new();
+    for &topic in seeds {
+        if prerequisites {
+            neighbors.extend(reverse(topic, next)?);
+            for kp in forward(topic, kps)? {
+                neighbors.extend(forward(kp, keys)?);
+            }
+        } else {
+            neighbors.extend(forward(topic, next)?);
+            for kp in reverse(topic, keys)? {
+                neighbors.extend(reverse(kp, kps)?);
+            }
+        }
+    }
+    neighbors
+        .into_iter()
+        .filter_map(|topic| match db.values(topic, identity) {
+            Ok(values) if values.is_empty() => None,
+            Ok(_) => Some(Ok(topic)),
+            Err(error) => Some(Err(error.into())),
+        })
+        .collect()
+}
+
 fn urgency_groups(
     db: &DatabaseValue,
     learner: u64,
@@ -193,27 +253,57 @@ fn urgency_groups(
             .or_default()
             .insert((value, name.into()));
     }
-    for row in query(db, STUDIED, vec![input_eid(learner)?])? {
-        let topic = eid(&row[0])?;
+    // Materialize the learner's small owned sets before joins. An or-join over
+    // profiles plus lesson history otherwise expands catalog-wide on real data.
+    let owned = |name: &str| -> Result<BTreeSet<u64>> {
+        let (ns, attr) = name.split_once('/').unwrap();
+        let attr = db
+            .schema()
+            .resolve_ident(&Keyword::new(ns, attr))
+            .ok_or("learner membership attribute missing")?;
+        db.values(learner, attr)?
+            .into_iter()
+            .map(|v| match v {
+                Value::Ref(id) => Ok(id),
+                _ => Err("learner membership must be a reference".into()),
+            })
+            .collect()
+    };
+    let mut studied = BTreeSet::new();
+    let profiles = owned("learner/knowledge-profile")?;
+    if !profiles.is_empty() {
+        for row in query(db, STUDIED, vec![ids(&profiles)?])? {
+            let learned = row[1].get("progress/learned").and_then(Json::as_bool);
+            let repetitions = row[1]
+                .get("progress/repetitions")
+                .and_then(Json::as_f64)
+                .unwrap_or(0.0);
+            if learned == Some(true) || learned.is_none() && repetitions > 0.0 {
+                studied.insert(eid(&row[0])?);
+            }
+        }
+    }
+    let tasks = owned("learner/activity")?;
+    if !tasks.is_empty() {
+        for row in query(db, COMPLETED_LESSONS, vec![ids(&tasks)?])? {
+            studied.insert(eid(&row[0])?);
+        }
+    }
+    for topic in studied {
         descendants_of.insert(topic);
         groups
             .entry(topic)
             .or_default()
             .insert((5, "studied".into()));
     }
-    for (seeds, query_text, value, name) in [
-        (targets, PREREQUISITES, 2, "target-prerequisite"),
-        (
-            descendants_of,
-            DESCENDANTS,
-            1,
-            "studied-or-queued-descendant",
-        ),
+    for (seeds, prerequisites, value, name) in [
+        (targets, true, 2, "target-prerequisite"),
+        (descendants_of, false, 1, "studied-or-queued-descendant"),
     ] {
         if !seeds.is_empty() {
-            for row in query(db, query_text, vec![ids(&seeds)?])? {
+            for topic in direct_neighbors(db, &seeds, prerequisites)? {
                 groups
-                    .entry(eid(&row[0])?)
+                    .entry(topic)
                     .or_default()
                     .insert((value, name.into()));
             }
