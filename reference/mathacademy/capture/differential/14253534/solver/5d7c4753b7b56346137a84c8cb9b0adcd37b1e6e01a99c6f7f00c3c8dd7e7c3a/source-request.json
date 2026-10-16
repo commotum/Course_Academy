@@ -1,0 +1,79 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-95747",
+      "sequence_position": 10,
+      "problem": "In a city, $55%$ of the people have blood type O+. Using the normal approximation to the binomial distribution, approximate the probability that if $300$ people are picked at random, then $180$ of them will have blood type O+. Give your answer to three decimal places.\n\n*Hint: The data below is taken from the table of values of the cumulative distribution function $Φ(z)$ for the standard normal distribution. *\n\n<table align=\"center\">\n\n<tbody><tr>\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.00\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.01\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.02\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.6\\,$</th><td align=\"center\"> $\\,0.9452\\,$ </td><td align=\"center\"> $\\,0.9463\\,$ </td><td align=\"center\"> $\\,0.9474\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.7\\,$</th><td align=\"center\"> $\\,0.9554\\,$ </td><td align=\"center\"> $\\,0.9564\\,$ </td><td align=\"center\"> $\\,0.9573\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.8\\,$</th><td align=\"center\"> $\\,0.9641\\,$ </td><td align=\"center\"> $\\,0.9649\\,$ </td><td align=\"center\"> $\\,0.9656\\,$ </td></tr>\n</tbody></table>\n</th>\n\n<th width=\"5%\"></th>\n\n<th>\n<table align=\"center\" cellpadding=\"5\" rules=\"all\">\n<tbody><tr> <th width=\"25%\" bgcolor=\"#D6EAF8\" align=\"center\">$z$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.07\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.08\\,$</th><th bgcolor=\"#D6EAF8\" align=\"center\">$\\,0.09\\,$</th>\n</tr><tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.6\\,$</th><td align=\"center\"> $\\,0.9525\\,$ </td><td align=\"center\"> $\\,0.9535\\,$ </td><td align=\"center\"> $\\,0.9545\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.7\\,$</th><td align=\"center\"> $\\,0.9616\\,$ </td><td align=\"center\"> $\\,0.9625\\,$ </td><td align=\"center\"> $\\,0.9633\\,$ </td></tr>\n<tr> <th bgcolor=\"#D6EAF8\" align=\"center\">$\\,1.8\\,$</th><td align=\"center\"> $\\,0.9693\\,$ </td><td align=\"center\"> $\\,0.9699\\,$ </td><td align=\"center\"> $\\,0.9706\\,$ </td></tr>\n</tbody></table>\n</th>\n</tr>\n\n</tbody></table>",
+      "worked_solution": "Given a binomial random variable $X∼B(n,p),$ if \n\n- $np>5,$ and\n\n- $n(1-p)>5,$\n\nwe can approximate $X$ as a normal random variable $Y$ with mean $\\mu =np$ and variance ${\\sigma }^{2}=np(1-p),$ that is, \n\n$$\nY∼N(np,np(1-p)).\n$$\n\nHere, we have $n=300$ and $p=0.55.$ Therefore, \n\n$$\n\\begin{aligned}np & =300\\cdot 0.55 \\\\  & =165 \\\\  & >5\\,✓ \\\\ n(1-p) & =300\\cdot (1-0.55) \\\\  & =135 \\\\  & >5.\\,✓\\end{aligned}\n$$\n\nSo, we can approximate our binomial random variable $X$ with a normal random variable $Y$ with mean\n\n$$\n\\mu =np=(300)(0.55)=165\n$$\n\nand variance\n\n$$\n{\\sigma }^{2}=np(1-p)=(300)(0.55)(1-0.55)=74.25.\n$$\n\nThat is, we can approximate $X$ by $Y∼N(165,74.25).$\n\nNow, we can approximate the desired probability $P(X=180).$ Using a continuity correction, we have\n\n$$\nP(X=180)≈P(179.5\\le Y\\le 180.5).\n$$\n\nTo compute this probability, we transform to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(179.5\\le Y\\le 180.5) & =P(\\frac{179.5-165}{\\sqrt{74.25}}\\le Z\\le \\frac{180.5-165}{\\sqrt{74.25}}) \\\\  & ≈P(1.68\\le Z\\le 1.80) \\\\  & =P(Z\\le 1.80)-P(Z<1.68) \\\\  & =P(Z\\le 1.80)-P(Z\\le 1.68) \\\\  & =Φ(1.80)-Φ(1.68) \\\\  & =0.9641-0.9535 \\\\  & =0.0106\\end{aligned}\n$$\n\nTherefore,\n\n$$\nP(X=180)≈0.011.\n$$\n\nNote: Using a software package for the approximation gives a probability of $0.0102.$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14253534/observations/history-q-95747-51345b0f0b126833fe56.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14253534",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14253534/observations/history-solution-q-95747-1301a7b26023cd557671.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "0.021"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "0.019"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "0.011"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "0.211"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "0.121"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q95747",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "0.011",
+                "option": "c",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Given a binomial random variable $X∼B(n,p),$ if \n\n- $np>5,$ and\n\n- $n(1-p)>5,$\n\nwe can approximate $X$ as a normal random variable $Y$ with mean $\\mu =np$ and variance ${\\sigma }^{2}=np(1-p),$ that is, \n\n$$\nY∼N(np,np(1-p)).\n$$\n\nHere, we have $n=300$ and $p=0.55.$ Therefore, \n\n$$\n\\begin{aligned}np & =300\\cdot 0.55 \\\\  & =165 \\\\  & >5\\,✓ \\\\ n(1-p) & =300\\cdot (1-0.55) \\\\  & =135 \\\\  & >5.\\,✓\\end{aligned}\n$$\n\nSo, we can approximate our binomial random variable $X$ with a normal random variable $Y$ with mean\n\n$$\n\\mu =np=(300)(0.55)=165\n$$\n\nand variance\n\n$$\n{\\sigma }^{2}=np(1-p)=(300)(0.55)(1-0.55)=74.25.\n$$\n\nThat is, we can approximate $X$ by $Y∼N(165,74.25).$\n\nNow, we can approximate the desired probability $P(X=180).$ Using a continuity correction, we have\n\n$$\nP(X=180)≈P(179.5\\le Y\\le 180.5).\n$$\n\nTo compute this probability, we transform to a standard normal random variable by $z$-scoring:\n\n$$\n\\begin{aligned}P(179.5\\le Y\\le 180.5) & =P(\\frac{179.5-165}{\\sqrt{74.25}}\\le Z\\le \\frac{180.5-165}{\\sqrt{74.25}}) \\\\  & ≈P(1.68\\le Z\\le 1.80) \\\\  & =P(Z\\le 1.80)-P(Z<1.68) \\\\  & =P(Z\\le 1.80)-P(Z\\le 1.68) \\\\  & =Φ(1.80)-Φ(1.68) \\\\  & =0.9641-0.9535 \\\\  & =0.0106\\end{aligned}\n$$\n\nTherefore,\n\n$$\nP(X=180)≈0.011.\n$$\n\nNote: Using a software package for the approximation gives a probability of $0.0102.$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/differential/14253534/observations/step-q95747-b0e95de22a57b9976c36.html"
+        }
+      }
+    ]
+  }
+}
