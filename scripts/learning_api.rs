@@ -1324,6 +1324,13 @@ fn task_json_view(s: &EntitySnapshot, l: u64, t: u64, include_history: bool) -> 
         vec![]
     };
     let mut view = json!({"basis":s.basis_t,"taskId":t,"activityId":a,"type":retrieval::kind(s,a)?,"learner":learner_json(s,l),"course":course_json(s,l)?,"title":text(s,a,"activity/title"),"status":task_state,"xp":number(s,t,"learner-task/xp-earned"),"xpBase":number(s,t,"learner-task/xp-base"),"elapsedSeconds":if matches!(task_state.as_str(),"unlocked"|"locked"){number(s,t,"learner-task/elapsed-seconds")}else{timing::task_elapsed(s,t,at)?},"step":step,"progress":progress});
+    if retrieval::kind(s, a)? == "review" {
+        if let Some(topic) = s.optional_ref(a, "activity/scope")? {
+            if let Some(id) = s.entity(topic)?.get("topic/id").and_then(|v| v.get("$uuid")) {
+                view["reviewTopic"] = json!({"id":topic,"uuid":id,"title":text(s,topic,"topic/title")});
+            }
+        }
+    }
     if assessment {
         let remaining = retrieval::remaining(s, t, at)?;
         view["remainingSeconds"] = json!(remaining);
@@ -3067,6 +3074,7 @@ mod study_queue_tests {
             "task-item.status/started",
             "learner-task.status/paused",
             "task-item.status/correct",
+            "activity.type/review",
         ]
         .iter()
         .enumerate()
@@ -3077,6 +3085,21 @@ mod study_queue_tests {
             );
         }
         EntitySnapshot::new(records, 42).unwrap()
+    }
+
+    #[test]
+    fn review_task_exposes_its_topic_reference_without_a_live_lesson() {
+        let mut s = fixture();
+        assert!(task_json(&s, 1, 81).unwrap().get("reviewTopic").is_none());
+        s.entities.get_mut(&51).unwrap().insert("activity/type".into(), json!("activity.type/review"));
+        s.entities.get_mut(&6).unwrap().insert("topic/id".into(), json!({"$uuid":"00000000-0000-0000-0000-000000000006"}));
+        s.entities.get_mut(&6).unwrap().insert("topic/knowledge-points".into(), json!([72]));
+        s.entities.insert(72, json!({"knowledge-point/id":"review-bank","knowledge-point/questions":[71]}).as_object().unwrap().clone());
+        let s = EntitySnapshot::new(s.entities.into(), 42).unwrap();
+        let view = task_json(&s, 1, 81).unwrap();
+        assert_eq!(view["reviewTopic"]["id"], 6);
+        assert_eq!(view["reviewTopic"]["uuid"], "00000000-0000-0000-0000-000000000006");
+        assert_eq!(view["activityId"], 51);
     }
 
     #[test]

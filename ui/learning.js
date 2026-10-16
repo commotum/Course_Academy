@@ -421,9 +421,18 @@ function lessonShell(data, { preview = false, number, total, complete = false } 
     const pause = actionButton('Pause', 'lesson-pause text-button', toggleLessonPause);
     const timing = el('div', 'lesson-timing'); timing.append(timer, pause);
     toolbar.append(exit, track, position, timing);
+    const reference = el('div', 'lesson-reference');
+    const reviewLink = el('a', '', 'Review topic');
+    reviewLink.target = '_blank'; reviewLink.rel = 'noopener';
+    reviewLink.title = 'Open the topic lesson in a new tab';
+    reference.append(reviewLink);
     const feed = el('div', 'lesson-feed');
-    $('main').append(heading, toolbar, feed);
-    lessonView = { key, feed, track, fill, position, timer, pause, current: null, currentId: null, history: new Map() };
+    $('main').append(heading, toolbar, reference, feed);
+    lessonView = { key, feed, track, fill, position, timer, pause, reference, reviewLink, current: null, currentId: null, history: new Map() };
+  }
+  lessonView.reference.hidden = preview || complete || data.type !== 'review' || !data.reviewTopic?.uuid;
+  if (!lessonView.reference.hidden) {
+    lessonView.reviewLink.href = '/topic?topic=' + encodeURIComponent(data.reviewTopic.uuid) + (data.course?.id ? '&course=' + encodeURIComponent(data.course.id) : '');
   }
   const maximum = Number(total) || 1;
   const completed = lessonCompletedSteps(number, total, complete);

@@ -130,6 +130,27 @@ test('lesson frame has a compact progress bar and timer, and hides the topic hea
   assert.equal(f.scrolls.length, 1);
 });
 
+test('reviews link to the topic reference outside the question card without starting an activity', async () => {
+  const f = fixture();
+  const data = activity(1, 1, { type: 'review', step: question(1), reviewTopic: { uuid: 'topic-uuid', title: 'Power rule' } });
+  await f.h.render(data);
+  const view = f.h.view;
+  assert.equal(view.reference.hidden, false);
+  assert.equal(view.reviewLink.textContent, 'Review topic');
+  assert.equal(view.reviewLink.href, '/topic?topic=topic-uuid&course=course');
+  assert.equal(view.reviewLink.target, '_blank');
+  assert.equal(view.reviewLink.rel, 'noopener');
+  assert.equal(view.current.contains(view.reference), false);
+  assert.equal(f.document.getElementById('main').contains(view.reference), true);
+  assert.equal(f.calls.length, 0);
+  await f.h.render({ ...data, status: 'completed' });
+  assert.equal(view.reference.hidden, true);
+  await f.h.render({ ...data, type: 'lesson' });
+  assert.equal(view.reference.hidden, true);
+  await f.h.render({ ...data, reviewTopic: null });
+  assert.equal(view.reference.hidden, true);
+});
+
 test('pause controls are hidden for previews, completed lessons, and fixed-deadline assessments', async () => {
   const f = fixture();
   await f.h.render(activity(1, 1, { status: 'completed' }));
