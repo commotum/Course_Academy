@@ -3,11 +3,13 @@
 Use the question families identified by [Classify](3-classify.md), analyzing each difficulty and answer-field combination separately.
 
 1. Describe each source question specifically: number forms and properties, expression structures, functions and operators, relations, variable roles, constraints, notation, Markdown layout, answer fields, choices, and solution sequence; do not generalize yet.
-2. Write one brief generalized description of the family's shared mathematical pattern, required response, and instructional purpose.
+2. Write one brief generalized description of the family's shared mathematical pattern, required response, and instructional purpose. State the learner's required operation before choosing random parameters.
 3. List each question's components, mapping every original choice to its source field, parameters, exact value, recipe, and choice-bank profile alongside the prompt and solution components.
 4. Extract one reusable prompt/solution template with a stable backbone and explicitly defined variable slots, identifying fixed, variable, optional, and conditional components, parameter constraints, and the calculations needed to keep every component consistent.
 
 Define the backbone before choosing variation: the assessed method, expression structure, supplied information, roles of the requested objects, answer-field contract, and ordered solution stages. For each variable slot, record its role, allowed values or targets, constraints, and dependent prompt, answer, solution, and plot components. Slots can select eligible cells, edges, points, or terms as well as numerical values. Give a mathematical or instructional reason for structural components kept fixed; repetition in sparse examples alone does not establish a constraint.
+
+Separately identify answer-bearing roles: which object qualifies, which term survives, where decisive evidence appears, which rule case applies, and what response is correct. Distinguish the rule governing a role from its assignment in the source example. Record which assignments can change within scope, which must remain fixed and why, and the decision cases that normal sampling must exercise. Do not freeze a correct-label set, answer position, or recognizable template-to-answer mapping merely because source replay requires that assignment at the original parameters. The independent reviewer must be able to challenge these declared constraints.
 
 Keep variation inside that definition. A changed target must preserve its role and comparable workload, and every reference to it must change together. Do not introduce new operations, question forms, or solution stages to make examples look different. Preserve a specific target when changing it would alter the method. Document conservative same-method generalizations separately from observed source parameters, retaining the original parameters for replay.
 
