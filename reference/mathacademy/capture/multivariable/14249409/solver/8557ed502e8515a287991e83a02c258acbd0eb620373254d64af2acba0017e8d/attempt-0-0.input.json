@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-123855",
+      "sequence_position": 15,
+      "problem": "Let $R=[1,3]\\times [-1,1]$ be a region in the $xy$-plane, and let $f(x,y)$ be a function defined over $R.$\nThe lower and upper Riemann sums corresponding to an arbitrary partition $P$ of $R$ are given by\n\n$$\n\\begin{aligned}L(f,P) & ={\\sum }_{i=1}^{m}{\\sum }_{j=1}^{n}(4{x}_{i-1}-2{y}_{j}-2)Δ{x}_{i}Δ{y}_{j}, \\\\ U(f,P) & ={\\sum }_{i=1}^{m}{\\sum }_{j=1}^{n}(4{x}_{i}-2{y}_{j-1}-2)Δ{x}_{i}Δ{y}_{j}.\\end{aligned}\n$$\n\nUsing the definition of the double integral in terms of $L(f,P)$ and $U(f,P),$ compute ${∬}_{R}f(x,y)\\,\\text{d}A.$\n\n*Hint: You may wish to make use of the following results:*\n\n$$\n\\begin{aligned}{\\sum }_{i=1}^{m}{\\sum }_{j=1}^{n}({x}_{i-1}+{x}_{i})Δ{x}_{i}Δ{y}_{j}=({x}_{m}^{2}-{x}_{0}^{2})({y}_{n}-{y}_{0}) \\\\ {\\sum }_{i=1}^{m}{\\sum }_{j=1}^{n}Δ{x}_{i}Δ{y}_{j}=({x}_{m}-{x}_{0})({y}_{n}-{y}_{0})\\end{aligned}\n$$",
+      "worked_solution": "For a function $f(x,y),$ the double integral of $f$ over a rectangular region $R$ is the unique number $I$ (if it exists) such that\n\n$$\nL(f,P)\\le I\\le U(f,P)\n$$\n\nover all partitions $P$ of $R.$\n\nFirst, notice that ${\\overset{¯}{x}}_{i}=\\frac{1}{2}({x}_{i-1}+{x}_{i})$ will always lie between ${x}_{i-1}$ and ${x}_{i}$, and similarly ${\\overset{¯}{y}}_{j}=\\frac{1}{2}({y}_{j-1}+{y}_{j})$ will always lie between ${y}_{j-1}$ and ${y}_{j}.$ Therefore,\n\n$$\n4{x}_{i-1}-2{y}_{j}-2\\le 4\\cdot \\frac{1}{2}({x}_{i-1}+{x}_{i})-2\\cdot \\frac{1}{2}({y}_{j-1}+{y}_{j})-2\\le 4{x}_{i}-2{y}_{j-1}-2\n$$\n\nwhich simplifies to\n\n$$\n4{x}_{i-1}-2{y}_{j}-2\\le 2({x}_{i-1}+{x}_{i})-({y}_{j-1}+{y}_{j})-2\\le 4{x}_{i}-2{y}_{j-1}-2.\n$$\n\nMultiplying this by $Δ{x}_{i}Δ{y}_{j}$ and applying the double summation gives:\n\n$$\nL(f,P)\\le {\\sum }_{i=1}^{m}{\\sum }_{j=1}^{n}[2({x}_{i-1}+{x}_{i})-({y}_{j-1}+{y}_{j})-2]Δ{x}_{i}Δ{y}_{j}\\le U(f,P)\n$$\n\nSeparating the sums using the addition and constant multiple rules, we get\n\n$$\n\\begin{aligned}L(f,P) & \\le 2{\\sum }_{i=1}^{m}{\\sum }_{j=1}^{n}({x}_{i-1}+{x}_{i})Δ{x}_{i}Δ{y}_{j} \\\\  & \\,-{\\sum }_{i=1}^{m}{\\sum }_{j=1}^{n}({y}_{j-1}+{y}_{j})Δ{x}_{i}Δ{y}_{j} \\\\  & \\,-2{\\sum }_{i=1}^{m}{\\sum }_{j=1}^{n}Δ{x}_{i}Δ{y}_{j} \\\\  & \\le U(f,P).\\end{aligned}\n$$\n\nUsing the hint, we get the following:\n\n$$\n\\begin{aligned}2{\\sum }_{i=1}^{m}{\\sum }_{j=1}^{n}({x}_{i-1}+{x}_{i})Δ{x}_{i}Δ{y}_{j} & =2({3}^{2}-{1}^{2})(1-(-1))=32 \\\\ {\\sum }_{i=1}^{m}{\\sum }_{j=1}^{n}({y}_{j-1}+{y}_{j})Δ{x}_{i}Δ{y}_{j} & =({1}^{2}-(-1)^{2})(3-1)=0 \\\\ 2{\\sum }_{i=1}^{m}{\\sum }_{j=1}^{n}Δ{x}_{i}Δ{y}_{j} & =2(3-1)(1-(-1))=8\\end{aligned}\n$$\n\nFinally then:\n\n$$\n\\begin{aligned}L(f,P)\\le 32-0-8\\le U(f,P)\\,⟹\\,L(f,P)\\le 24\\le U(f,P)\\end{aligned}\n$$\n\nTherefore, we conclude that \n\n$$\n{∬}_{R}f(x,y)\\,\\text{d}A=24.\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14249409/observations/history-q-123855-23ca6c41a612396cef03.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14249409",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14249409/observations/history-solution-q-123855-6104e459d2bd4197a597.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "20"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "12"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "24"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "16"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "28"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q123855",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "24",
+                "option": "c",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "For a function $f(x,y),$ the double integral of $f$ over a rectangular region $R$ is the unique number $I$ (if it exists) such that\n\n$$\nL(f,P)\\le I\\le U(f,P)\n$$\n\nover all partitions $P$ of $R.$\n\nFirst, notice that ${\\overset{¯}{x}}_{i}=\\frac{1}{2}({x}_{i-1}+{x}_{i})$ will always lie between ${x}_{i-1}$ and ${x}_{i}$, and similarly ${\\overset{¯}{y}}_{j}=\\frac{1}{2}({y}_{j-1}+{y}_{j})$ will always lie between ${y}_{j-1}$ and ${y}_{j}.$ Therefore,\n\n$$\n4{x}_{i-1}-2{y}_{j}-2\\le 4\\cdot \\frac{1}{2}({x}_{i-1}+{x}_{i})-2\\cdot \\frac{1}{2}({y}_{j-1}+{y}_{j})-2\\le 4{x}_{i}-2{y}_{j-1}-2\n$$\n\nwhich simplifies to\n\n$$\n4{x}_{i-1}-2{y}_{j}-2\\le 2({x}_{i-1}+{x}_{i})-({y}_{j-1}+{y}_{j})-2\\le 4{x}_{i}-2{y}_{j-1}-2.\n$$\n\nMultiplying this by $Δ{x}_{i}Δ{y}_{j}$ and applying the double summation gives:\n\n$$\nL(f,P)\\le {\\sum }_{i=1}^{m}{\\sum }_{j=1}^{n}[2({x}_{i-1}+{x}_{i})-({y}_{j-1}+{y}_{j})-2]Δ{x}_{i}Δ{y}_{j}\\le U(f,P)\n$$\n\nSeparating the sums using the addition and constant multiple rules, we get\n\n$$\n\\begin{aligned}L(f,P) & \\le 2{\\sum }_{i=1}^{m}{\\sum }_{j=1}^{n}({x}_{i-1}+{x}_{i})Δ{x}_{i}Δ{y}_{j} \\\\  & \\,-{\\sum }_{i=1}^{m}{\\sum }_{j=1}^{n}({y}_{j-1}+{y}_{j})Δ{x}_{i}Δ{y}_{j} \\\\  & \\,-2{\\sum }_{i=1}^{m}{\\sum }_{j=1}^{n}Δ{x}_{i}Δ{y}_{j} \\\\  & \\le U(f,P).\\end{aligned}\n$$\n\nUsing the hint, we get the following:\n\n$$\n\\begin{aligned}2{\\sum }_{i=1}^{m}{\\sum }_{j=1}^{n}({x}_{i-1}+{x}_{i})Δ{x}_{i}Δ{y}_{j} & =2({3}^{2}-{1}^{2})(1-(-1))=32 \\\\ {\\sum }_{i=1}^{m}{\\sum }_{j=1}^{n}({y}_{j-1}+{y}_{j})Δ{x}_{i}Δ{y}_{j} & =({1}^{2}-(-1)^{2})(3-1)=0 \\\\ 2{\\sum }_{i=1}^{m}{\\sum }_{j=1}^{n}Δ{x}_{i}Δ{y}_{j} & =2(3-1)(1-(-1))=8\\end{aligned}\n$$\n\nFinally then:\n\n$$\n\\begin{aligned}L(f,P)\\le 32-0-8\\le U(f,P)\\,⟹\\,L(f,P)\\le 24\\le U(f,P)\\end{aligned}\n$$\n\nTherefore, we conclude that \n\n$$\n{∬}_{R}f(x,y)\\,\\text{d}A=24.\n$$",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14249409/observations/step-q123855-e626dd6a8d45936f029d.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a14297-638f-7921-a412-6500ba131a3f",
+  "previous_failures": []
+}
