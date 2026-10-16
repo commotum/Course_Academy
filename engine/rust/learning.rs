@@ -900,6 +900,7 @@ pub fn queue_candidates(
 
 /// Apply manual selection rules to one topic without copying the captured
 /// database or changing the learner's queue and Study-mode preference.
+/// Required queue activities do not block an explicit choice of lesson.
 pub fn selected_topic_candidates(
     s: &EntitySnapshot,
     learner: u64,
@@ -907,7 +908,18 @@ pub fn selected_topic_candidates(
     topic: u64,
     at: DateTime<Utc>,
 ) -> Result<Vec<PlannedActivity>> {
-    queue_candidates_in_scope(s, learner, course, at, StudyScope::Topic(topic))
+    let mut plan = plan_candidates_in_scope(
+        s, learner, course, at, 2, false, StudyScope::Topic(topic),
+    )?;
+    // Do not add unrelated ongoing work or retrieval activities to this
+    // selection: their queue priority must not displace the requested lesson.
+    plan.retain(|candidate| candidate.topic == topic);
+    for candidate in &mut plan {
+        if candidate.priority < 10000.0 {
+            candidate.reason = "Selected for your queue".into();
+        }
+    }
+    crate::scheduling::filter_candidates(s, learner, plan)
 }
 
 fn queue_candidates_in_scope(
