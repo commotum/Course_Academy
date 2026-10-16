@@ -170,7 +170,7 @@
       "score_reason": "downstream_target_support"
     }
   },
-  "stage": "history",
+  "stage": "complete",
   "policy": {
     "patterns": {
       "4725": {
@@ -23758,6 +23758,94 @@
       "evidence_hash": "4a265190a3ce356d41b0438a1dc4342fa7e9b4ca970d6e2fe188cb7b0a2f738b",
       "final": true,
       "judged_at": 1792139314.2634122
+    },
+    "questions:q-31945": {
+      "status": "confirmed",
+      "reasoning": "The missing operations are R₂ := R₂ + 2R₁, producing [0,1/3 | −2/3,1], and R₁ := R₁ + (4/3)R₂ after the stated scaling, producing [1,0 | −3,4]. Thus option e confirms my earlier answer. The worked solution lists all four operations; its second and fourth fill the blanks. The actual submission was option a, correctly graded Incorrect.",
+      "confidence": 1,
+      "answers": [
+        {
+          "key": "selection",
+          "correct_value": "{R}_{2}:={R}_{2}+2{R}_{1},\\,{R}_{1}:={R}_{1}+\\frac{4}{3}{R}_{2}",
+          "correct_option": "e",
+          "value_type": "math",
+          "wrong_value": "{R}_{2}:={R}_{2}+(-2){R}_{1},\\,{R}_{1}:={R}_{1}+\\frac{3}{4}{R}_{2}",
+          "correct_keys": [],
+          "wrong_keys": [],
+          "ma_value": "{R}_{2}:={R}_{2}+2{R}_{1},\\,{R}_{1}:={R}_{1}+\\frac{4}{3}{R}_{2}",
+          "ma_basis": "worked_solution",
+          "ma_evidence": "{R}_{2}:={R}_{2}+2{R}_{1},\\,{R}_{2}:=3{R}_{2},\\,{R}_{1}:={R}_{1}+\\frac{4}{3}{R}_{2}.",
+          "disagrees": false
+        }
+      ],
+      "question_id": "q-31945",
+      "capture_key": "q-31945",
+      "record_kind": "questions",
+      "evidence_hash": "e50d6f98d8806494a9314aecd8828db8d51178a040f8d99536e4f0fe1a576bb8",
+      "final": true,
+      "judged_at": 1792139328.767289
+    },
+    "questions:q-31873": {
+      "status": "source_error",
+      "reasoning": "The required operations are R₂ := −(1/3)R₂ and R₁ := R₁ + 2R₂, giving rows [0,1 | 0,−1/3] and [1,0 | 1,−2/3]. Option d matches my earlier answer, the completed source calculation, and the actual submission graded Correct. However, the source's concluding list says \"{R}_{2}:=\\frac{1}{3}{R}_{2},\\,{R}_{1}:={R}_{1}+2{R}_{2}.\", incorrectly omitting the minus sign. This is an error in the explanation, not the observed grading.",
+      "confidence": 1,
+      "answers": [
+        {
+          "key": "selection",
+          "correct_value": "{R}_{2}:=-\\frac{1}{3}{R}_{2},\\,{R}_{1}:={R}_{1}+2{R}_{2}",
+          "correct_option": "d",
+          "value_type": "math",
+          "wrong_value": "{R}_{2}:=-\\frac{1}{3}{R}_{2},\\,{R}_{1}:={R}_{1}+(-2){R}_{2}",
+          "correct_keys": [],
+          "wrong_keys": [],
+          "ma_value": "{R}_{2}:=-\\frac{1}{3}{R}_{2},\\,{R}_{1}:={R}_{1}+2{R}_{2}",
+          "ma_basis": "worked_solution",
+          "ma_evidence": "\\begin{aligned}[B\\,|\\,I] & =[\\begin{aligned}1 & -2 & 1 & 0 \\\\ 0 & -3 & 0 & 1\\end{aligned}] & {R}_{2} & :=-\\frac{1}{3}{R}_{2} \\\\  & ∼[\\begin{aligned}1 & -2 & 1 & 0 \\\\ 0 & 1 & 0 & -\\frac{1}{3}\\end{aligned}] & {R}_{1} & :={R}_{1}+2{R}_{2} \\\\  & ∼[\\begin{aligned}1 & 0 & 1 & -\\frac{2}{3} \\\\ 0 & 1 & 0 & -\\frac{1}{3}\\end{aligned}]\\end{aligned}",
+          "disagrees": false
+        }
+      ],
+      "question_id": "q-31873",
+      "capture_key": "q-31873",
+      "record_kind": "questions",
+      "evidence_hash": "73e37c87c2834c6121281f676c7323dd2605bd521e245a45e85fa06e48a778c1",
+      "final": true,
+      "judged_at": 1792139349.6465623
+    },
+    "canonical_examples:e-4725": {
+      "status": "confirmed",
+      "reasoning": "Swapping rows and then subtracting the new first row from the second transforms A into [[1,0],[−3,−1]] and B into the identity. Thus B only is correct, matching the captured conclusion: Therefore, the correct answer is \"$B$ only\". This confirms the earlier mathematical judgment. No answer fields or choice tokens are supplied for this worked example, so answers is empty.",
+      "confidence": 1,
+      "answers": [],
+      "question_id": "e-4725",
+      "capture_key": "e-4725",
+      "record_kind": "canonical_examples",
+      "evidence_hash": "4b136fabbce5e3fdc748a509c525290b77da7251d29ee7936330aa3e47230962",
+      "final": true,
+      "judged_at": 1792139371.546349
+    },
+    "canonical_examples:e-4724": {
+      "status": "confirmed",
+      "reasoning": "The missing operation is R₁ := R₁ − R₂, giving [1,0 | 2,−1] while the second row remains [0,1 | −1,1]. Therefore A⁻¹ = [[2,−1],[−1,1]], agreeing with both the captured calculation and the screenshot's concluding answer. No learner grade or answer fields are supplied for this example.",
+      "confidence": 1,
+      "answers": [],
+      "question_id": "e-4724",
+      "capture_key": "e-4724",
+      "record_kind": "canonical_examples",
+      "evidence_hash": "cab902ebb53ff996addbce4eaedc26c77b15bb4701511165ad88789d89dfca85",
+      "final": true,
+      "judged_at": 1792139383.263183
+    },
+    "canonical_examples:e-4723": {
+      "status": "confirmed",
+      "reasoning": "First apply R₁ := (1/2)R₁ to obtain [1,3 | 1/2,0]. Then apply R₁ := R₁ − 3R₂ to obtain [1,0 | 1/2,−3]. These operations and the resulting inverse [[1/2,−3],[0,1]] agree with the captured worked solution and screenshot. No learner grade or answer fields are supplied for this example.",
+      "confidence": 1,
+      "answers": [],
+      "question_id": "e-4723",
+      "capture_key": "e-4723",
+      "record_kind": "canonical_examples",
+      "evidence_hash": "9d35a1b01ba16a4e0573f3707897daf31b0249953125d177e457e738191402b9",
+      "final": true,
+      "judged_at": 1792139393.5903816
     }
   },
   "started_at": 1792138674.0333335,
