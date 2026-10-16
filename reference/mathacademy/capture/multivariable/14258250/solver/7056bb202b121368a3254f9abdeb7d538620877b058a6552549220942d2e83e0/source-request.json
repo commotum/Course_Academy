@@ -1,0 +1,57 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-335054",
+      "sequence_position": 4,
+      "problem": "$$\n\\{\\begin{aligned}{x}^{′}(t)=2y(t) \\\\ {y}^{′}(t)=-2x(t)+3,\\end{aligned}\\,[\\begin{aligned}x(0) \\\\ y(0)\\end{aligned}]=[\\begin{aligned}1 \\\\ 1\\end{aligned}]\n$$\n\nFind the solution to the initial value problem above.\n\n*Hint: ${e}^{At}=[\\begin{aligned}\\operatorname{cos}⁡(2t) & \\operatorname{sin}⁡(2t) \\\\ -\\operatorname{sin}⁡(2t) & \\operatorname{cos}⁡(2t)\\end{aligned}],$ where $A=[\\begin{aligned}0 & 2 \\\\ -2 & 0\\end{aligned}].$*\n\n<table align=\"l\" cellpadding=\"0\" rules=\"all\">\n<tbody><tr>\n<td rowspan=\"2\" height=\"30px\" align=\"center\">$[\\begin{aligned}x(t) \\\\ y(t)\\end{aligned}]=\\frac{1}{2}\\,\\,$</td>\n<td width=\"5px\" height=\"40px\" align=\"center\"></td>\n<td width=\"180px\" align=\"center\">{{field-1}}</td>\n<td width=\"5px\" align=\"center\"></td>\n</tr>\n\n<tr>\n<td align=\"center\"></td>\n<td align=\"center\">$\\operatorname{sin}⁡(2t)+2\\operatorname{cos}⁡(2t)$</td>\n<td align=\"center\"></td>\n</tr>\n</tbody></table>",
+      "worked_solution": "Writing our system in matrix form, we get\n\n$$\n{x}^{′}(t)=[\\begin{aligned}0 & 2 \\\\ -2 & 0\\end{aligned}]x(t)+g(t),\n$$\n\nwhere $x(t)=[\\begin{aligned}x(t) \\\\ y(t)\\end{aligned}]$ and $g(t)=[\\begin{aligned}0 \\\\ 3\\end{aligned}].$ So, the matrix of the system is $A=[\\begin{aligned}0 & 2 \\\\ -2 & 0\\end{aligned}].$\n\nGiven the system ${x}^{′}(t)=Ax(t)+g(t),$ where $A$ is a constant square matrix, the solution of the initial value problem can be written as the sum of the homogeneous part and a particular solution:\n\n$$\nx(t)={{{e}^{A(t-{t}_{0})}\\,x({t}_{0})}_{⏟}}_{\\text{homogeneous part}}+{{{\\int }_{{t}_{0}}^{t}{e}^{A(t-s)}g(s)\\,\\text{d}s}_{⏟}}_{\\text{particular solution}},\n$$\n\nwhere $x({t}_{0})$ is the initial condition vector. \n\nLet's evaluate each part separately:\n\n- First, we find the homogeneous part. We are given that \n\n$$\n{e}^{At}=[\\begin{aligned}\\operatorname{cos}⁡(2t) & \\operatorname{sin}⁡(2t) \\\\ -\\operatorname{sin}⁡(2t) & \\operatorname{cos}⁡(2t)\\end{aligned}].\n$$\n\nSince the initial conditions are given at $t={t}_{0}=0,$ we have\n\n$$\n\\begin{aligned}{e}^{A(t-{t}_{0})} & ={e}^{At}\\,x(0) \\\\  & =[\\begin{aligned}\\operatorname{cos}⁡(2t) & \\operatorname{sin}⁡(2t) \\\\ -\\operatorname{sin}⁡(2t) & \\operatorname{cos}⁡(2t)\\end{aligned}][\\begin{aligned}1 \\\\ 1\\end{aligned}] \\\\  & =[\\begin{aligned}\\operatorname{cos}⁡(2t)+\\operatorname{sin}⁡(2t) \\\\ -\\operatorname{sin}⁡(2t)+\\operatorname{cos}⁡(2t)\\end{aligned}].\\end{aligned}\n$$\n\n- Next, we find the particular solution. Notice that \n\n$$\n{e}^{A(t-s)}=[\\begin{aligned}\\operatorname{cos}⁡(2(t-s)) & \\operatorname{sin}⁡(2(t-s)) \\\\ -\\operatorname{sin}⁡(2(t-s)) & \\operatorname{cos}⁡(2(t-s))\\end{aligned}].\n$$\n\nSo, we have\n\n$$\n\\begin{aligned}{e}^{A(t-s)}g(s) & =[\\begin{aligned}\\operatorname{cos}⁡(2(t-s)) & \\operatorname{sin}⁡(2(t-s)) \\\\ -\\operatorname{sin}⁡(2(t-s)) & \\operatorname{cos}⁡(2(t-s))\\end{aligned}][\\begin{aligned}0 \\\\ 3\\end{aligned}] \\\\  & =[\\begin{aligned}3\\operatorname{sin}⁡(2(t-s)) \\\\ 3\\operatorname{cos}⁡(2(t-s))\\end{aligned}].\\end{aligned}\n$$\n\nThus, we obtain\n\n$$\n\\begin{aligned}{\\int }_{0}^{t}{e}^{A(t-s)}g(s)\\,\\text{d}s & ={\\int }_{0}^{t}[\\begin{aligned}3\\operatorname{sin}⁡(2(t-s)) \\\\ 3\\operatorname{cos}⁡(2(t-s))\\end{aligned}]\\text{d}s \\\\  & ={[\\begin{aligned}\\frac{3}{2}\\operatorname{cos}⁡(2(t-s)) \\\\ -\\frac{3}{2}\\operatorname{sin}⁡(2(t-s))\\end{aligned}]}_{s=0}^{s=t} \\\\  & =\\frac{1}{2}[\\begin{aligned}3-3\\operatorname{cos}⁡(2t) \\\\ 3\\operatorname{sin}⁡(2t)\\end{aligned}].\\end{aligned}\n$$\n\nFinally, we get\n\n$$\n\\begin{aligned}x(t) & =[\\begin{aligned}\\operatorname{cos}⁡(2t)+\\operatorname{sin}⁡(2t) \\\\ -\\operatorname{sin}⁡(2t)+\\operatorname{cos}⁡(2t)\\end{aligned}]+\\frac{1}{2}[\\begin{aligned}3-3\\operatorname{cos}⁡(2t) \\\\ 3\\operatorname{sin}⁡(2t)\\end{aligned}] \\\\  & =\\frac{1}{2}[\\begin{aligned}2\\operatorname{sin}⁡(2t)-\\operatorname{cos}⁡(2t)+3 \\\\ \\operatorname{sin}⁡(2t)+2\\operatorname{cos}⁡(2t)\\end{aligned}] \\\\  & =\\frac{1}{2}[\\begin{aligned}2\\operatorname{sin}⁡(2t)-\\operatorname{cos}⁡(2t)+3 \\\\ \\operatorname{sin}⁡(2t)+2\\operatorname{cos}⁡(2t)\\end{aligned}].\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "problem_field_keys": [
+        "field-1"
+      ],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14258250/observations/history-q-335054-180343ffffa629ba0e76.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14258250",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14258250/observations/history-solution-q-335054-3143341035d52c2c267d.html",
+      "fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q335054",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "3+\\cos(2t)+2\\sin(2t)",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "source_grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "Writing our system in matrix form, we get\n\n$$\n{x}^{′}(t)=[\\begin{aligned}0 & 2 \\\\ -2 & 0\\end{aligned}]x(t)+g(t),\n$$\n\nwhere $x(t)=[\\begin{aligned}x(t) \\\\ y(t)\\end{aligned}]$ and $g(t)=[\\begin{aligned}0 \\\\ 3\\end{aligned}].$ So, the matrix of the system is $A=[\\begin{aligned}0 & 2 \\\\ -2 & 0\\end{aligned}].$\n\nGiven the system ${x}^{′}(t)=Ax(t)+g(t),$ where $A$ is a constant square matrix, the solution of the initial value problem can be written as the sum of the homogeneous part and a particular solution:\n\n$$\nx(t)={{{e}^{A(t-{t}_{0})}\\,x({t}_{0})}_{⏟}}_{\\text{homogeneous part}}+{{{\\int }_{{t}_{0}}^{t}{e}^{A(t-s)}g(s)\\,\\text{d}s}_{⏟}}_{\\text{particular solution}},\n$$\n\nwhere $x({t}_{0})$ is the initial condition vector. \n\nLet's evaluate each part separately:\n\n- First, we find the homogeneous part. We are given that \n\n$$\n{e}^{At}=[\\begin{aligned}\\operatorname{cos}⁡(2t) & \\operatorname{sin}⁡(2t) \\\\ -\\operatorname{sin}⁡(2t) & \\operatorname{cos}⁡(2t)\\end{aligned}].\n$$\n\nSince the initial conditions are given at $t={t}_{0}=0,$ we have\n\n$$\n\\begin{aligned}{e}^{A(t-{t}_{0})} & ={e}^{At}\\,x(0) \\\\  & =[\\begin{aligned}\\operatorname{cos}⁡(2t) & \\operatorname{sin}⁡(2t) \\\\ -\\operatorname{sin}⁡(2t) & \\operatorname{cos}⁡(2t)\\end{aligned}][\\begin{aligned}1 \\\\ 1\\end{aligned}] \\\\  & =[\\begin{aligned}\\operatorname{cos}⁡(2t)+\\operatorname{sin}⁡(2t) \\\\ -\\operatorname{sin}⁡(2t)+\\operatorname{cos}⁡(2t)\\end{aligned}].\\end{aligned}\n$$\n\n- Next, we find the particular solution. Notice that \n\n$$\n{e}^{A(t-s)}=[\\begin{aligned}\\operatorname{cos}⁡(2(t-s)) & \\operatorname{sin}⁡(2(t-s)) \\\\ -\\operatorname{sin}⁡(2(t-s)) & \\operatorname{cos}⁡(2(t-s))\\end{aligned}].\n$$\n\nSo, we have\n\n$$\n\\begin{aligned}{e}^{A(t-s)}g(s) & =[\\begin{aligned}\\operatorname{cos}⁡(2(t-s)) & \\operatorname{sin}⁡(2(t-s)) \\\\ -\\operatorname{sin}⁡(2(t-s)) & \\operatorname{cos}⁡(2(t-s))\\end{aligned}][\\begin{aligned}0 \\\\ 3\\end{aligned}] \\\\  & =[\\begin{aligned}3\\operatorname{sin}⁡(2(t-s)) \\\\ 3\\operatorname{cos}⁡(2(t-s))\\end{aligned}].\\end{aligned}\n$$\n\nThus, we obtain\n\n$$\n\\begin{aligned}{\\int }_{0}^{t}{e}^{A(t-s)}g(s)\\,\\text{d}s & ={\\int }_{0}^{t}[\\begin{aligned}3\\operatorname{sin}⁡(2(t-s)) \\\\ 3\\operatorname{cos}⁡(2(t-s))\\end{aligned}]\\text{d}s \\\\  & ={[\\begin{aligned}\\frac{3}{2}\\operatorname{cos}⁡(2(t-s)) \\\\ -\\frac{3}{2}\\operatorname{sin}⁡(2(t-s))\\end{aligned}]}_{s=0}^{s=t} \\\\  & =\\frac{1}{2}[\\begin{aligned}3-3\\operatorname{cos}⁡(2t) \\\\ 3\\operatorname{sin}⁡(2t)\\end{aligned}].\\end{aligned}\n$$\n\nFinally, we get\n\n$$\n\\begin{aligned}x(t) & =[\\begin{aligned}\\operatorname{cos}⁡(2t)+\\operatorname{sin}⁡(2t) \\\\ -\\operatorname{sin}⁡(2t)+\\operatorname{cos}⁡(2t)\\end{aligned}]+\\frac{1}{2}[\\begin{aligned}3-3\\operatorname{cos}⁡(2t) \\\\ 3\\operatorname{sin}⁡(2t)\\end{aligned}] \\\\  & =\\frac{1}{2}[\\begin{aligned}2\\operatorname{sin}⁡(2t)-\\operatorname{cos}⁡(2t)+3 \\\\ \\operatorname{sin}⁡(2t)+2\\operatorname{cos}⁡(2t)\\end{aligned}] \\\\  & =\\frac{1}{2}[\\begin{aligned}2\\operatorname{sin}⁡(2t)-\\operatorname{cos}⁡(2t)+3 \\\\ \\operatorname{sin}⁡(2t)+2\\operatorname{cos}⁡(2t)\\end{aligned}].\\end{aligned}\n$$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14258250/observations/history-solution-q-335054-3143341035d52c2c267d.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14258250/observations/history-q-335054-180343ffffa629ba0e76.html"
+        }
+      }
+    ]
+  }
+}
