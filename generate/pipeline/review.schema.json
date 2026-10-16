@@ -1,0 +1,181 @@
+{
+  "type": "object",
+  "properties": {
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "accepted",
+        "revise",
+        "unsupported"
+      ]
+    },
+    "summary": {
+      "type": "string"
+    },
+    "source_analysis": {
+      "type": "object",
+      "properties": {
+        "skill": {
+          "type": "string"
+        },
+        "reasoning_steps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "invariants": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "permitted_variations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "skill",
+        "reasoning_steps",
+        "invariants",
+        "permitted_variations",
+        "source_refs",
+        "evidence_paths"
+      ],
+      "additionalProperties": false
+    },
+    "checks": {
+      "type": "object",
+      "properties": {
+        "source_replay": {
+          "$ref": "#/$defs/check"
+        },
+        "math": {
+          "$ref": "#/$defs/check"
+        },
+        "variety": {
+          "$ref": "#/$defs/check"
+        },
+        "scope": {
+          "$ref": "#/$defs/check"
+        },
+        "grading": {
+          "$ref": "#/$defs/check"
+        },
+        "rendering": {
+          "$ref": "#/$defs/check"
+        },
+        "packaging": {
+          "$ref": "#/$defs/check"
+        }
+      },
+      "required": [
+        "source_replay",
+        "math",
+        "variety",
+        "scope",
+        "grading",
+        "rendering",
+        "packaging"
+      ],
+      "additionalProperties": false
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "restriction",
+              "drift",
+              "math",
+              "grading",
+              "rendering",
+              "source_fidelity",
+              "packaging",
+              "evidence"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reproduction": {
+            "type": "string"
+          },
+          "requested_change": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "description",
+          "source_refs",
+          "reproduction",
+          "requested_change"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "verdict",
+    "summary",
+    "source_analysis",
+    "checks",
+    "findings"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "check": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed",
+            "not_applicable"
+          ]
+        },
+        "evidence_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "details": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "evidence_paths",
+        "details"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

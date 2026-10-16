@@ -15,3 +15,5 @@ Previews are speculative: submit the original logical forms, never preview entit
 Process durable pending batches through one database worker. Retry temporary failures with backoff, preserve saved requests across restarts, and retain requests with different or unknown lineage for reconciliation instead of silently retargeting them. After each committed batch, prepare dependent work at the appropriate current basis.
 
 Report pending, rejected, no-change, and verified outcomes separately. Inventory counts only accepted, verified questions and remains pending while a shortage exists; database persistence does not itself mark a question as presented, reserved, or answered.
+
+[The automated runner](../README.md) delegates these steps to [generator_publish.py](../../scripts/generator_publish.py), which reuses the capture pipeline's native preview and durable submission transport. It verifies the archived generator package and published image bytes before submission, then verifies the exact receipt and readback. A no-change result also checks the current preparation basis and generator registration.

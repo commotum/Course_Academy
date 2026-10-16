@@ -1,3 +1,19 @@
+# Current source update, basis 2771
+
+All eight practice sources now have three checkbox fields, keyed I, II, III, each with the complete text bank `false`, `true`. Their 24 correct designations are independently verified from the printed monomial and open-quadrant claims. This supersedes the historical radio-field descriptions below; the original v2 documents and validation are retained under `reference/legacy-v2/`.
+
+The prompt adds “Select all that apply” and labels each statement. The same variable slots and finite meaningful task counts apply. Current banks have no categorical subset distractors: each field’s two boolean choices are the full source bank. Legacy categorical profiles remain historical replay inputs only; they do not alter the current checkbox bank.
+
+q97483 now has a correct designation and a compact worked solution. Its `parity_numbered` template retains cx·y², the observation that y² is positive in open quadrants, and the resulting signs grouped over the queried quadrants. The other seven solution sequences are unchanged. q97483 remains unrated in live data, so it does not count as available weighted inventory. Generated hard counterparts are explicitly classified; the source is preserved.
+
+Easy is the previously justified cx reduction, moderate cxy, and hard parity monomials. This is a bounded domain: 64 easy, 64 moderate, 192 hard tasks. Coefficient magnitude, statement order, choice order, identity and seed do not create new mathematical tasks. Publication excludes every existing task, including canonical and unrated sources, using that stricter fingerprint.
+
+`reference/current-validation/side-by-side.json` compares every current source, exact replay, and changed variant. `validation.json` records current fidelity separately from independent printed-expression checks and native grading. `reference/initial/kp.json` preserves the current complete source snapshot.
+
+---
+
+## Historical v2 extraction (superseded field contract)
+
 # Four-stage template extraction
 
 ## 1. Describe the individual sources

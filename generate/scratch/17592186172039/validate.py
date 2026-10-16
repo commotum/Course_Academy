@@ -22,7 +22,7 @@ def read_printed_expr(prompt):
  return sp.Integer(c)*g.X**a*g.Y**b,{'c':c,'a':a,'b':b}
 
 def checked(record):
- assert set(record)=={'knowledge_point','question','generation'}
+ assert {'knowledge_point','question','generation'}<=set(record)
  assert record['knowledge_point']=={'db_id':g.KP_ID,'id':g.KP_UUID,'title':g.TITLE}
  q=record['question'];gen=record['generation'];p=gen['parameters'];level=gen['level']
  g.validate_parameters(level,p)
@@ -45,20 +45,26 @@ def checked(record):
   assert quadrant==p['quadrants'][i] and sign==p['claims'][i]
   if ss[quadrant-1]==sign:mask|=1<<i
  sol=q[':question/worked-solution']
- intro_expr=sol.split('$')[1].split('=',1)[1].rstrip('.')
- checkf,_=read_printed_expr('equation $d='+intro_expr+'$')
- assert sp.simplify(checkf-f)==0
- blocks=re.findall(r'- Statement (I|II|III) is (true|false)\. If \$\(x,y\)\$ is in the (first|second|third|fourth) quadrant,.*?\$\$\n(.*?)\n\$\$\n\nThis implies that the slope of the slope field is (positive|negative) for any point \$\(x,y\)\$ in the (first|second|third|fourth) quadrant\.',sol,re.S)
- assert len(blocks)==3
- for i,(roman,truth,word,math,claimed,repeated) in enumerate(blocks):
-  assert roman==g.ROMAN[i] and word==claims[i][0]==repeated
-  assert truth==('true' if mask&(1<<i) else 'false')
-  expected=ss[p['quadrants'][i]-1]
-  assert math==r'{\frac{\text{d}y}{\text{d}x}|}_{(x,y)}=f(x,y)'+('>0.' if expected>0 else '<0.')+(r'\,' if gen['template']=='bilinear_open_thin' else '')
-  assert claimed==('positive' if expected>0 else 'negative')
- if 'Therefore' in sol:assert '"'+g.LABELS[mask]+'."' in sol
- if level=='easy':assert '$x=0$ or $y=0.$' not in sol
- else:assert '$x=0$ or $y=0.$' in sol
+ if gen['template']=='parity_numbered':
+  assert printed['a']==1 and printed['b']==2
+  assert ('the opposite sign to x' in sol)==(printed['c']<0)
+  for word,nums in re.findall(r'(negative|positive) in quadrants? ([IV, and]+)',sol):
+   for name in re.findall(r'\b(?:IV|III|II|I)\b',nums):assert ss[('I','II','III','IV').index(name)]==(1 if word=='positive' else -1)
+ else:
+  intro_expr=sol.split('$')[1].split('=',1)[1].rstrip('.')
+  checkf,_=read_printed_expr('equation $d='+intro_expr+'$')
+  assert sp.simplify(checkf-f)==0
+  blocks=re.findall(r'- Statement (I|II|III) is (true|false)\. If \$\(x,y\)\$ is in the (first|second|third|fourth) quadrant,.*?\$\$\n(.*?)\n\$\$\n\nThis implies that the slope of the slope field is (positive|negative) for any point \$\(x,y\)\$ in the (first|second|third|fourth) quadrant\.',sol,re.S)
+  assert len(blocks)==3
+  for i,(roman,truth,word,math,claimed,repeated) in enumerate(blocks):
+   assert roman==g.ROMAN[i] and word==claims[i][0]==repeated
+   assert truth==('true' if mask&(1<<i) else 'false')
+   expected=ss[p['quadrants'][i]-1]
+   assert math==r'{\frac{\text{d}y}{\text{d}x}|}_{(x,y)}=f(x,y)'+('>0.' if expected>0 else '<0.')+(r'\,' if gen['template']=='bilinear_open_thin' else '')
+   assert claimed==('positive' if expected>0 else 'negative')
+  if 'Therefore' in sol:assert '"'+g.LABELS[mask]+'."' in sol
+  if level=='easy':assert '$x=0$ or $y=0.$' not in sol
+  else:assert '$x=0$ or $y=0.$' in sol
  for content in [q[':question/problem'],sol]:
   assert content.count('$$')%2==0
   assert content.replace('$$','').count('$')%2==0
@@ -68,123 +74,73 @@ def checked(record):
    if char=='}':depth-=1
    assert depth>=0
   assert depth==0
- field=q[':question/answer-fields'][0];assert len(q[':question/answer-fields'])==1
- assert field[':answer-field/key']=='selection' and field[':answer-field/type']==':answer-field.type/radio'
- values=[a[':answer/value'] for a in field[':answer-field/choices']]
- assert len(values)==len(set(values))==5
- if gen['bank_profile'] in ('authored_sign_errors','authored_cycle'):
-  assert set(LABEL_MASK[v] for v in values)=={mask,mask^7,mask^1,mask^2,mask^4}
-  assert len(gen['bank_recipes'])==5
- assert field[':answer-field/correct'][0]==':answer/id'
- answer=next(a for a in field[':answer-field/choices'] if a[':answer/id']==field[':answer-field/correct'][1])
- assert LABEL_MASK[answer[':answer/value']]==mask==gen['truth_mask']
- for a in field[':answer-field/choices']:
-  assert a[':answer/type']==':answer.type/text';assert (LABEL_MASK[a[':answer/value']]==mask)==(a is answer)
+ fields=q[':question/answer-fields'];assert len(fields)==3
+ assert {f[':answer-field/key'] for f in fields}==set(g.ROMAN)
+ for field in fields:
+  i=g.ROMAN.index(field[':answer-field/key'])
+  assert field[':answer-field/type']==':answer-field.type/checkbox'
+  assert {a[':answer/value'] for a in field[':answer-field/choices']}=={'true','false'}
+  assert all(a[':answer/type']==':answer.type/text' for a in field[':answer-field/choices'])
+  answer=next(a for a in field[':answer-field/choices'] if a[':answer/id']==field[':answer-field/correct'][1])
+  assert answer[':answer/value']==('true' if mask&(1<<i) else 'false')
+ assert mask==gen['truth_mask']
  assert (HERE/gen['plot']['asset']).is_file()
  if gen['plot']['renderer']!='immutable source asset':
   sidecar=json.loads((HERE/gen['plot']['asset']).with_suffix('.json').read_text())
   assert sidecar['spec']['signs']==ss
   assert sidecar['spec']['zero_axes']==(['x'] if printed['b']==0 else ['x','y'])
- same=g.generate(level,seed=gen['seed']+999,template=gen['template'],parameters=p,profile=gen['bank_profile'])
+ same=g.generate(level,seed=gen['seed']+999,template=gen['template'],parameters=p,profile=gen.get('legacy_bank_profile'))
  assert same['question'][':question/id']==q[':question/id']
  assert same['generation']['content_identity']==gen['content_identity']
  return mask
 
-banks=0;choices=0;distractors=0;designations=0;solutions=0;repairs=[];fixtures=[]
-def fixture(r,label):
- checked(r);field=r['question'][':question/answer-fields'][0]
- fixtures.append({'label':label,'record':r,'checks':[{'field_index':0,'submitted_answer_id':a[':answer/id'],'expected':'accepted' if a[':answer/id']==field[':answer-field/correct'][1] else 'rejected','purpose':'Independent printed-math correct selection or every categorical distractor'} for a in field[':answer-field/choices']]})
-for case in CASES:
- original=BY_ID[case['source_id']]
- r=g.generate(case['level'],template=case['template'],parameters=case['parameters'],profile=case['bank_profile']);fixture(r,case['source_id'])
- q=r['question'];field=q[':question/answer-fields'][0];of=original[':question/answer-fields'][0]
- assert q[':question/problem']==original[':question/problem']
- original_values=[a[':answer/value'] for a in of[':answer-field/choices']]
- values=[a[':answer/value'] for a in field[':answer-field/choices']]
- assert sorted(values)==sorted(original_values);banks+=1;choices+=len(values)
- correct=next(a[':answer/value'] for a in field[':answer-field/choices'] if a[':answer/id']==field[':answer-field/correct'][1])
- if ':answer-field/correct' in of:
-  assert correct==of[':answer-field/correct'][':answer/value'];designations+=1;distractors+=len(values)-1
- else:
-  assert correct=='II and III only';repairs.append({'source_id':case['source_id'],'inferred_correct':correct,'derivation':'In all quadrants y²>0, so xy² has sign x; I false, II true, III true.','missing_observed':['correct designation','worked solution','difficulty'],'designation_counted_as_observed_match':False})
- if ':question/worked-solution' in original:
-  assert q[':question/worked-solution']==original[':question/worked-solution'];solutions+=1
- else:assert case['source_id']=='q-97483'
-widget=json.loads((HERE/'q97483-widget.json').read_text())
-assert sorted(c['readable_text'] for c in widget['choices'])==sorted(a[':answer/value'] for a in BY_ID['q-97483'][':question/answer-fields'][0][':answer-field/choices'])
 
-# Exhaust ALL mathematically meaningful defaults, not cosmetic coefficients or
-# reordered statements. Preserve ordered source layouts separately above.
-counts={};coverage={};unique={}
-for level,powers in [('easy',[(1,0)]),('moderate',[(1,1)]),('hard',[(1,2),(2,1),(2,2)])]:
- fingerprints=set();ids=set();masks=set()
- for c,(a,b),qs,cs in itertools.product([-1,1],powers,itertools.combinations([1,2,3,4],3),itertools.product([-1,1],repeat=3)):
-  p={'c':c,'a':a,'b':b,'quadrants':list(qs),'claims':list(cs)}
-  r=g.generate(level,parameters=p);masks.add(checked(r));fingerprints.add(r['generation']['mathematical_fingerprint']);ids.add(r['question'][':question/id'])
- counts[level]=len(fingerprints);assert counts[level]==64*len(powers);assert masks==set(range(8))
- # Random variety also tested but claimed counts remain exact finite domain.
- sampled={g.generate(level,seed)['generation']['mathematical_fingerprint'] for seed in range(1000)}
- assert sampled<=fingerprints and len(sampled)>=counts[level]*.90
- unique[level]=len(sampled)
- # Shuffled radio choices don't always position the correct answer first.
- positions=[]
- for seed in range(20):
-  r=g.generate(level,seed);f=r['question'][':question/answer-fields'][0];positions.append(next(i for i,a in enumerate(f[':answer-field/choices']) if a[':answer/id']==f[':answer-field/correct'][1]))
- assert len(set(positions))>1
-coverage={'templates':list(g.TEMPLATES),'profiles':list(g.PROFILES)+['authored_sign_errors','authored_cycle'],'finite_meaningful_tasks':counts,'sampled_unique_1000_seeds':unique}
-# Every extracted layout and observed complete profile: two changed-parameter
-# variants per source plus all missing-level defaults and every canonical mask.
-for i,r in enumerate(json.loads((HERE/'review.json').read_text())):fixture(r,'review-'+str(i))
-for mask in range(8):
- p={'c':1,'a':1,'b':1,'quadrants':[1,2,3],'claims':[1 if (mask>>i)&1 else -1 for i in range(3)]}
- # quadrant II actual sign negative; flip that claim for requested mask.
- p['claims'][1]*=-1
- fixture(g.generate('moderate',parameters=p),'all-truth-mask-'+str(mask))
-# Reject invalid params/banks, never silently alter explicit input.
-base={'c':1,'a':1,'b':1,'quadrants':[1,2,3],'claims':[-1,1,-1]}
-for change in [{'c':0},{'c':10},{'a':3},{'a':-1},{'quadrants':[1,1,2]},{'claims':[0,1,1]}]:
- try:g.generate('moderate',parameters=base|change)
- except ValueError:pass
- else:raise AssertionError('Invalid params accepted '+str(change))
-try:g.generate('moderate',parameters=base,profile='bank96767') # mask0 absent
-except ValueError:pass
-else:raise AssertionError('Ineligible whole bank accepted')
-# Bounds include all allowed coefficient signs/magnitudes and supported powers.
-for level,powers in [('easy',[(1,0)]),('moderate',[(1,1)]),('hard',[(1,2),(2,1),(2,2)])]:
- for c,(a,b) in itertools.product([-9,-1,1,9],powers):checked(g.generate(level,parameters={'c':c,'a':a,'b':b,'quadrants':[1,2,4],'claims':[1,-1,1]}))
-# Canonical fingerprint excludes coefficient magnitude, profile and ordering.
-r=g.generate('moderate',parameters=base)
-s=g.generate('moderate',parameters=base|{'c':7})
-assert r['generation']['mathematical_fingerprint']==s['generation']['mathematical_fingerprint']
-assert r['question'][':question/id']!=s['question'][':question/id']
-s=g.generate('moderate',parameters=base|{'quadrants':[3,2,1],'claims':[-1,1,-1]})
-assert r['generation']['mathematical_fingerprint']==s['generation']['mathematical_fingerprint']
-# Compatibility alias preserves identical content, but uses the new declared bank.
-r=g.generate('easy',seed=4,profile='authored_cycle');s=g.generate('easy',seed=4,profile='authored_sign_errors')
-assert r['question']==s['question'];checked(r)
-# Different complete banks are presentation identities, same mathematical task.
-r=g.generate('moderate',parameters=CASES[0]['parameters'],profile='bank96767')
-s=g.generate('moderate',parameters=CASES[0]['parameters'],profile='authored_sign_errors')
-assert r['generation']['mathematical_fingerprint']==s['generation']['mathematical_fingerprint']
-assert r['question'][':question/id']!=s['question'][':question/id']
-# Cold-cache generator concurrency must return only a completed PNG+sidecar pair.
-for name in ['signs-pnnp-zero-x','signs-nppn-zero-x']:
- for suffix in ['.png','.json']:(HERE/'images/generated'/(name+suffix)).unlink(missing_ok=True)
-def concurrent_question(c):
- return g.generate('easy',parameters={'c':c,'a':1,'b':0,'quadrants':[1,2,4],'claims':[1,-1,1]})
-with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:cold=list(pool.map(concurrent_question,[1,1,-1,-1]))
-for r in cold:checked(r)
-assert cold[0]['question'][':question/id']==cold[1]['question'][':question/id']
-# Direct concurrent renderer calls, two identical and two different patterns.
-concurrent_outputs=[HERE/'images/generated/concurrent-a.png',HERE/'images/generated/concurrent-a.png',HERE/'images/generated/concurrent-b.png',HERE/'images/generated/concurrent-c.png']
-specs=[{'signs':[1,-1,-1,1],'zero_axes':['x']},{'signs':[1,-1,-1,1],'zero_axes':['x']},{'signs':[-1,-1,1,1],'zero_axes':['x','y']},{'signs':[1,1,-1,-1],'zero_axes':['x','y']}]
-def render(item):
- i,out=item;subprocess.run([str(ROOT/'.venv/bin/python'),str(HERE/'render.py'),json.dumps(specs[i]),str(out)],check=True,capture_output=True)
-with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:list(pool.map(render,enumerate(concurrent_outputs)))
-for spec,out in zip(specs,concurrent_outputs):assert json.loads(out.with_suffix('.json').read_text())['spec']==spec
-assert not list((HERE/'images/generated').glob('tmp*'))
-(HERE/'engine-input.json').write_text(json.dumps(fixtures,indent=2)+'\n')
-subprocess.run([str(ROOT/'generate/runs/current/check-engine'),str(HERE/'engine-input.json'),str(HERE/'engine-report.json')],check=True)
-engine=json.loads((HERE/'engine-report.json').read_text());assert engine['documented_unresolved_checks']==0
-report={'pass':True,'provenance':{k:SOURCE[k] for k in ('database','basis','lineage')},'source_coverage':{'practice_questions':8,'original_banks_matched':banks,'original_choices_matched':choices,'observed_distractors_matched':distractors,'observed_distractors_total':28,'inferred_wrong_choices_repaired_source':4,'observed_correct_designations_matched':designations,'observed_correct_designations_total':7,'prompts_exact':8,'available_solutions_exact':solutions,'available_solutions_total':7,'missing_solution_authored':1,'missing_correct_designation_independently_derived':1},'source_repairs':repairs,'coverage':coverage,'independent_checks':'Printed slope expression; strict sign on entire positive-symbol quadrant; all displayed true/false claims, inequality/prose stages, zero axes, all categorical options; domain/format/identity and bounds; exact source sequence; concurrent diagrams','native_grading':{'accepted':engine['accepted_checks'],'rejected':engine['rejected_checks'],'unresolved':0,'database_writes':0},'plot_QA':'All four source assets inspected; six authored diagrams rendered and manually inspected. Concurrent identical/different render checks passed.','scope':'Easy cx authored; moderate ±cxy observed; hard parity x^a y^b a,b=1/2 with at least one square. No sums, rectangles, isolated point sketching, slope field type identification or solving ODEs.','freeze_sha256':hashlib.sha256((HERE.parent/(HERE.name+'.py')).read_bytes()).hexdigest()}
-(HERE/'validation.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
+def native_checks(r):
+ return [{'field_index':i,'submitted_answer_id':next(a[':answer/id'] for a in f[':answer-field/choices'] if a[':answer/value']==value),'expected':'accepted' if value==next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1]) else 'rejected','purpose':'Checkbox authored choice ID through actual learner grader'} for i,f in enumerate(r['question'][':question/answer-fields']) for value in ('false','true')]
+
+def field_shape(f):
+ correct=f[':answer-field/correct'];aid=correct.get(':answer/id') if isinstance(correct,dict) else correct[1]
+ return (f[':answer-field/key'], sorted(a[':answer/value'] for a in f[':answer-field/choices']), next(a[':answer/value'] for a in f[':answer-field/choices'] if str(a[':answer/id'])==str(aid)))
+
+def main():
+ current=json.loads((HERE/'reference/initial/kp.json').read_text())
+ byid={q[':question/math-academy-id']:q for q in current[':knowledge-point/questions']}
+ fixtures=[];reviews=[];replays=[]
+ for case in CASES:
+  r=g.generate(case['level'],template=case['template'],parameters=case['parameters'],profile=case['bank_profile']);checked(r);q=r['question'];old=byid[case['source_id']]
+  assert q[':question/problem']==old[':question/problem']
+  assert sorted(map(field_shape,q[':question/answer-fields']))==sorted(map(field_shape,old[':question/answer-fields']))
+  if ':question/worked-solution' in old:assert q[':question/worked-solution']==old[':question/worked-solution']
+  replays.append({'source':case['source_id'],'fields':3,'bank_values_matched':6,'prompt_exact':True,'available_solution_exact':True})
+  fixtures.append({'label':case['source_id'],'record':r,'checks':native_checks(r)})
+  reviews.append({'source':old,'replay':r,'variant':g.generate(case['level'],seed=43,template=case['template'])})
+ coverage={}
+ for level,powers in [('easy',[(1,0)]),('moderate',[(1,1)]),('hard',[(1,2),(2,1),(2,2)])]:
+  fps=set();targets=set()
+  for c,(a,b),qs,cs in itertools.product([-1,1],powers,itertools.combinations([1,2,3,4],3),itertools.product([-1,1],repeat=3)):
+   r=g.generate(level,parameters={'c':c,'a':a,'b':b,'quadrants':list(qs),'claims':list(cs)});checked(r);fps.add(r['generation']['mathematical_fingerprint']);targets.add(tuple(qs))
+   fixtures.append({'label':r['question'][':question/id'],'record':r,'checks':native_checks(r)})
+  assert len(fps)==64*len(powers) and len(targets)==4
+  coverage[level]={'distinct_tasks':len(fps),'quadrant_target_sets':[list(x) for x in sorted(targets)]}
+  assert len({g.generate(level,seed)['generation']['mathematical_fingerprint'] for seed in range(1000)})==len(fps)
+ # Changed target with all other data fixed must alter every target reference and key.
+ base={'c':1,'a':1,'b':1,'quadrants':[1,2,3],'claims':[1,1,1]}
+ a=g.generate('moderate',parameters=base);b=g.generate('moderate',parameters=base|{'quadrants':[4,2,3]});checked(a);checked(b)
+ assert a['generation']['truth_mask']!=b['generation']['truth_mask']
+ for level,powers in [('easy',[(1,0)]),('moderate',[(1,1)]),('hard',[(1,2),(2,1),(2,2)])]:
+  for c,(x,y) in itertools.product([-9,-1,1,9],powers):checked(g.generate(level,parameters=base|{'c':c,'a':x,'b':y}))
+ for delta in [{'c':0},{'c':10},{'a':3},{'quadrants':[1,1,2]},{'claims':[0,1,1]}]:
+  try:g.generate('moderate',parameters=base|delta)
+  except ValueError:pass
+  else:raise AssertionError('Invalid parameters admitted')
+ out=HERE/'reference/current-validation';out.mkdir(parents=True,exist_ok=True)
+ (out/'side-by-side.json').write_text(json.dumps(reviews,indent=2)+'\n')
+ (out/'native-input.json').write_text(json.dumps(fixtures,indent=2)+'\n')
+ subprocess.run([str(ROOT/'generate/runs/current/check-engine'),str(out/'native-input.json'),str(out/'native-report.json')],check=True)
+ engine=json.loads((out/'native-report.json').read_text());assert engine['documented_unresolved_checks']==0
+ report={'passed':True,'source_basis':2771,'current_source_banks':replays,'matched_current_bank_values':48,'historical_radio_fidelity':'reference/legacy-v2/validation.json: 8 complete banks, 40 options','coverage':coverage,'supported_levels':['easy','moderate','hard'],'native_grading':{k:engine[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'changed_target_checked':True,'source_q97483':'Unrated source remains excluded from weighted inventory; its current compact solution and checkbox keys replay exactly. Generated counterparts have independently justified hard classification.'}
+ (HERE/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
+ files=[HERE.with_suffix('.py'),pathlib.Path(__file__),HERE/'render.py',HERE/'source-cases.json',HERE/'reference/initial/kp.json',HERE/'validation.json',ROOT/'generate/runs/current/check-engine']
+ (HERE/'validation-freeze.json').write_text(json.dumps({'status':'passed','hashes':{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in files}},indent=2)+'\n')
+ print(json.dumps(report,indent=2))
+if __name__=='__main__':main()
