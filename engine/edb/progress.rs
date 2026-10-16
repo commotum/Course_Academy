@@ -52,8 +52,30 @@ pub fn valid_progress(db: &DatabaseValue, progress: u64) -> Result<bool, Semanti
     let [learner] = parents.as_slice() else {
         return Ok(false);
     };
-    if !valid_profile(db, *learner)? {
+    if db.values(*learner, attr(db, "learner", "id")?)?.is_empty()
+        || db.values(progress, attr(db, "progress", "id")?)?.is_empty()
+    {
         return Ok(false);
+    }
+    let topic_attr = attr(db, "progress", "topic")?;
+    let topics = db.values(progress, topic_attr)?;
+    let [Value::Ref(topic)] = topics.as_slice() else {
+        return Ok(false);
+    };
+    if db.values(*topic, attr(db, "topic", "id")?)?.is_empty() {
+        return Ok(false);
+    }
+    // Check this learner/topic pair without walking the learner's entire
+    // profile for every ensured progress record in an assessment submission.
+    // Whole-profile integrity remains the learner/validate predicate's job.
+    for candidate in db.datoms_with_prefix(&IndexPrefix::Vaet {
+        value: Value::Ref(*topic),
+        attribute: Some(topic_attr),
+        entity: None,
+    })? {
+        if candidate.entity != progress && owners(db, candidate.entity)?.contains(learner) {
+            return Ok(false);
+        }
     }
     for name in [
         "repetitions",
