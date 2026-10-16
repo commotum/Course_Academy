@@ -29,6 +29,18 @@ window.testActions=async()=>{
  actions.find(n=>n.textContent==='Submit assessment').click();await Promise.resolve();await Promise.resolve();
  return requests;
 };
+window.testReviewScroll=async()=>{
+ renderCase(0,'review');
+ main.querySelector('.content-card').style.minHeight='1800px';
+ window.scrollTo(0,600);
+ await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+ const toolbar=main.querySelector('.lesson-toolbar'),link=main.querySelector('.lesson-reference a');
+ const t=toolbar.getBoundingClientRect(),r=link.getBoundingClientRect();
+ const hit=document.elementFromPoint((r.left+r.right)/2,(r.top+r.bottom)/2);
+ const result={scrollY,sticky:getComputedStyle(toolbar).position,inside:toolbar.contains(link),visible:r.top>=t.top&&r.bottom<=t.bottom&&r.top>=0&&r.bottom<=innerHeight,clickable:hit===link||link.contains(hit),overflow:document.documentElement.scrollWidth>innerWidth};
+ window.scrollTo(0,0);
+ return result;
+};
 window.ready=true;
 </script>`;
 const profile=fs.mkdtempSync(path.join(os.tmpdir(),'assessment-layout-'));const child=spawn('/usr/bin/google-chrome',['--headless=new','--no-sandbox','--disable-gpu','--no-first-run','--remote-debugging-pipe','--user-data-dir='+profile,'about:blank'],{stdio:['ignore','ignore','ignore','pipe','pipe']});
@@ -62,6 +74,10 @@ const evaluate=async expression=>{const r=await send('Runtime.evaluate',{express
   const review=await evaluate("renderCase(0,'review')");
   assert.equal(review.reference.hidden,false);assert.equal(review.reference.inside,false);
   assert.equal(review.reference.href,'/topic?topic=reference-topic&course=test-course');
+  const scrolled=await evaluate('testReviewScroll()');
+  assert.ok(scrolled.scrollY>=500);
+  assert.equal(scrolled.sticky,'sticky');assert.equal(scrolled.inside,true);
+  assert.equal(scrolled.visible,true);assert.equal(scrolled.clickable,true);assert.equal(scrolled.overflow,false);
  }
  const requests=await evaluate('testActions()');
  assert.deepEqual(requests.map(r=>r.path),['/api/navigate','/api/submit']);

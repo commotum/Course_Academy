@@ -141,6 +141,7 @@ test('reviews link to the topic reference outside the question card without star
   assert.equal(view.reviewLink.target, '_blank');
   assert.equal(view.reviewLink.rel, 'noopener');
   assert.equal(view.current.contains(view.reference), false);
+  assert.equal(f.document.getElementById('main').querySelector('.lesson-toolbar').contains(view.reference), true);
   assert.equal(f.document.getElementById('main').contains(view.reference), true);
   assert.equal(f.calls.length, 0);
   await f.h.render({ ...data, status: 'completed' });
