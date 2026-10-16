@@ -46,7 +46,20 @@ python3 generate/scripts/find_candidates.py --topic TOPIC_EID --activity-type as
 
 Repeat `--topic` to annotate several selections. These override the inferred next activity only within the five eligibility groups; they do not restrict the global inventory read or admit unrelated topics. The coverage calculation guides build ranking and does not construct an assessment or change assessment admission. `--at RFC3339_TIME` makes review checks reproducible.
 
-This remains a read-only discovery command. It does not launch builds or refill questions. The learner server has a separate scheduling policy in `engine/rust/inventory.rs` and `scripts/inventory_jobs.py`; updating this finder does not change that live worker's ranking. `/api/inventory` exposes the live scheduler inventory.
+This command is read-only. The learner server calls the same discovery and ranking
+code in its background inventory refresh, then admits durable jobs through
+`scripts/inventory_jobs.py`. Its build worker uses this ranking; valid legacy
+registrations additionally enter the queue for packaging and independent review.
+Its separate refill worker maintains approved packages toward five questions per
+difficulty. `--include-registered` adds registered hashed-package topics outside
+the urgency groups to the nested inventory for maintenance; those topics cannot
+create new generators and use routine replenishment priority.
+
+The accepted live cursor and job files are under
+`.local/learning/inventory/<database>/<learner>/`; the cursor marks this policy as
+`scored-v1`. `/api/inventory` remains the native activity-readiness diagnostic from
+`engine/rust/inventory.rs`, not the ranked generator job queue. Generator ranking
+does not change the engine's lesson/review/assessment admission rules.
 
 To calculate evidence-of-absence scores for every surfaced KP, save discovery output and join it to a frozen KP difficulty inventory:
 
