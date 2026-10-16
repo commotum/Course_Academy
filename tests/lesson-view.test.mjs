@@ -166,14 +166,15 @@ test('pause controls are hidden for previews, completed lessons, and fixed-deadl
   assert.match(f.h.view.timer.title, /Nothing recorded/);
 });
 
-test('only successful lesson completion invalidates queue state in other tabs', async () => {
-  for (const status of ['started', 'paused', 'failed', 'completed']) {
+test('successful lessons and reviews invalidate queue state in other tabs', async () => {
+  for (const type of ['lesson', 'review', 'assessment']) for (const status of ['started', 'paused', 'failed', 'completed']) {
     const f = fixture();
-    await f.h.render(activity(1, 1, { type: 'lesson' }));
-    f.server = activity(1, 1, { type: 'lesson', status });
+    await f.h.render(activity(1, 1, { type }));
+    f.server = activity(1, 1, { type, status });
     await f.h.mutation('/api/continue', { taskId: 123, itemId: 1 });
-    assert.equal(f.notifications.length, status === 'completed' ? 1 : 0);
-    if (status === 'completed') {
+    const changed = type !== 'assessment' && status === 'completed';
+    assert.equal(f.notifications.length, changed ? 1 : 0);
+    if (changed) {
       assert.equal(f.notifications[0].key, 'course-academy-queue-changed');
       await f.h.mutation('/api/continue', { taskId: 123, itemId: 1 });
       assert.equal(f.notifications.length, 1, 'replaying a completion does not notify twice');
