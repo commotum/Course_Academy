@@ -441,7 +441,7 @@ function lessonShell(data, { preview = false, number, total, complete = false } 
 
 function archiveLessonContent(content) {
   content.dataset.history = 'true';
-  for (const control of content.querySelectorAll('.lesson-controls, .answer-actions')) control.remove();
+  for (const control of content.querySelectorAll('.lesson-controls, .answer-actions, .assessment-controls')) control.remove();
   for (const input of content.querySelectorAll('[data-answer-input]')) {
     input.disabled = true; input.dataset.readOnly = 'true';
   }
@@ -854,6 +854,7 @@ function taskContent(data, step, number, total, archived = false) {
   const isAnswered = answered(short(step.status));
   const readOnly = archived || (data.type !== 'assessment' && isAnswered) || ['paused', 'locked', 'unlocked'].includes(short(data.status));
   const fields = step.fields || [];
+  let assessmentControls = null;
   if (kind === 'question' && fields.length) {
     const form = el('form'); form.noValidate = false;
     const fieldList = el('div', 'answer-fields');
@@ -864,7 +865,7 @@ function taskContent(data, step, number, total, archived = false) {
     });
     form.append(prompt, fieldList);
     if (!readOnly) {
-      const actions = el('div', 'answer-actions');
+      const actions = el('div', data.type === 'assessment' ? 'assessment-actions' : 'answer-actions');
       if (data.type === 'assessment') {
         assessmentResponses = () => collectResponses(form, fields);
         const save = () => {
@@ -893,7 +894,10 @@ function taskContent(data, step, number, total, archived = false) {
           if (question.active) control.setAttribute('aria-current', 'step');
           nav.append(control);
         }
-        actions.append(nav);
+        assessmentControls = el('footer', 'assessment-controls');
+        actions.setAttribute('role', 'group');
+        actions.setAttribute('aria-label', 'Assessment actions');
+        assessmentControls.append(nav, actions);
         if (index > 0) actions.append(actionButton('Previous question', 'secondary', () => move(questions[index - 1].questionId)));
         if (index + 1 < questions.length) actions.append(actionButton('Next question', 'secondary', () => move(questions[index + 1].questionId)));
         actions.append(actionButton('Submit assessment', 'primary', async () => {
@@ -914,7 +918,7 @@ function taskContent(data, step, number, total, archived = false) {
         });
         actions.append(submit); refresh();
       }
-      form.append(actions);
+      if (data.type !== 'assessment') form.append(actions);
     }
     card.append(form);
   }
@@ -935,6 +939,7 @@ function taskContent(data, step, number, total, archived = false) {
     solution.append(el('h3', 'solution-heading', 'Solution:'), markdown(step.solution)); card.append(solution);
   }
   content.append(card);
+  if (assessmentControls) content.append(assessmentControls);
   if (!archived) {
     const controls = el('div', 'lesson-controls');
     if (['paused', 'locked', 'unlocked'].includes(short(data.status))) {

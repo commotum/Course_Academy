@@ -695,6 +695,30 @@ test('paused answer recovery keeps the selected answer and does not recover unre
 });
 
 
+test('assessment navigation and actions sit outside the question card and lock while saving', async () => {
+  const f = fixture();
+  const step = question(7);
+  const data = activity(7, 7, { type: 'assessment', remainingSeconds: 900, step,
+    questions: Array.from({ length: 8 }, (_, i) => ({ questionId: 9001 + i, number: i + 1, answered: i < 6, active: i === 6 })) });
+  await f.h.render(data);
+  const current = f.h.view.current, card = current.querySelector('.content-card');
+  const controls = current.querySelector('.assessment-controls');
+  const nav = controls.querySelector('.assessment-navigation'), actions = controls.querySelector('.assessment-actions');
+  assert.equal(current.children[0], card);
+  assert.equal(current.children[1], controls);
+  assert.equal(card.contains(nav), false);
+  assert.equal(card.contains(actions), false);
+  assert.equal(card.contains(f.h.view.track), false);
+  assert.equal(card.querySelector('form').querySelector('button'), null);
+  assert.equal(nav.children.length, 8);
+  assert.equal(nav.children[6].getAttribute('aria-current'), 'step');
+  assert.deepEqual(actions.children.map(button => button.textContent), ['Previous question', 'Next question', 'Submit assessment']);
+  f.h.setBusy(true);
+  assert.ok(controls.querySelectorAll('button').every(button => button.disabled));
+  f.h.setBusy(false);
+  assert.ok(controls.querySelectorAll('button').every(button => !button.disabled));
+});
+
 test('assessment submits without correctness feedback and keeps its countdown running while paused', async () => {
   const f = fixture();
   const data = activity(1, 1, { type: 'assessment', remainingSeconds: 900,
