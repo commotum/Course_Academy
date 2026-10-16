@@ -426,8 +426,9 @@ function lessonShell(data, { preview = false, number, total, complete = false } 
     reviewLink.target = '_blank'; reviewLink.rel = 'noopener';
     reviewLink.title = 'Open the topic lesson in a new tab';
     reference.append(reviewLink);
+    toolbar.append(reference);
     const feed = el('div', 'lesson-feed');
-    $('main').append(heading, toolbar, reference, feed);
+    $('main').append(heading, toolbar, feed);
     lessonView = { key, feed, track, fill, position, timer, pause, reference, reviewLink, current: null, currentId: null, history: new Map() };
   }
   lessonView.reference.hidden = preview || complete || data.type !== 'review' || !data.reviewTopic?.uuid;
