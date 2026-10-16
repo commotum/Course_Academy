@@ -7,6 +7,7 @@ fn fixture() -> Result<DatabaseValue> {
     for schema in [
         include_str!("../../schema/data/5-1-topic.edn"),
         include_str!("../../schema/data/6-knowledge-point.edn"),
+        include_str!("../../schema/data/7-question-generator.edn"),
         include_str!("../../schema/content/0-activity.edn"),
         include_str!("../../schema/content/1-step.edn"),
         include_str!("../../schema/content/4-question.edn"),
@@ -94,7 +95,7 @@ fn at(s: &str) -> i64 {
 }
 
 #[test]
-fn finds_all_triggers_and_empty_banks_without_course_or_supply_filter() -> Result<()> {
+fn eligibility_includes_studied_topics_and_empty_banks_but_not_unrelated_tasks() -> Result<()> {
     let db = fixture()?;
     let learner = identity(&db, "learner/id", "test")?;
     let result = candidates(
@@ -107,18 +108,10 @@ fn finds_all_triggers_and_empty_banks_without_course_or_supply_filter() -> Resul
     )?;
     assert_eq!(
         titles(&result),
-        [
-            "Queue",
-            "Target",
-            "Unlocked",
-            "Due",
-            "Assigned review",
-            "Assessment",
-            "Retake"
-        ]
-        .into_iter()
-        .map(String::from)
-        .collect()
+        ["Queue", "Target", "Due", "Refreshed",]
+            .into_iter()
+            .map(String::from)
+            .collect()
     );
     let target = result
         .as_array()
@@ -126,7 +119,10 @@ fn finds_all_triggers_and_empty_banks_without_course_or_supply_filter() -> Resul
         .iter()
         .find(|v| v["topic/title"] == "Target")
         .unwrap();
-    assert_eq!(target["knowledge_points"][0]["has_generator"], true);
+    // A placeholder generator ref is not a registered script.
+    assert_eq!(target["knowledge_points"][0]["has_generator"], false);
+    assert!(!target["knowledge_points"][0]["generator_entity"].is_null());
+    assert_eq!(target["urgency_value"], 4);
     let queue = result
         .as_array()
         .unwrap()
@@ -139,7 +135,7 @@ fn finds_all_triggers_and_empty_banks_without_course_or_supply_filter() -> Resul
 }
 
 #[test]
-fn unchanged_database_still_finds_new_time_due_reviews_and_scheduler_selection() -> Result<()> {
+fn cursor_keeps_full_population_and_scheduler_selection_cannot_bypass_eligibility() -> Result<()> {
     let db = fixture()?;
     let learner = identity(&db, "learner/id", "test")?;
     let topic = identity(&db, "topic/title", "Locked lesson")?;
@@ -153,7 +149,7 @@ fn unchanged_database_still_finds_new_time_due_reviews_and_scheduler_selection()
     )?;
     assert_eq!(
         titles(&result),
-        ["Due", "Refreshed", "Locked lesson"]
+        ["Due", "Refreshed", "Queue", "Target"]
             .into_iter()
             .map(String::from)
             .collect()
@@ -165,40 +161,105 @@ fn unchanged_database_still_finds_new_time_due_reviews_and_scheduler_selection()
 fn log_filter_ignores_withdrawals_and_unrelated_learners() {
     let mut changes = Changes::default();
     let pending_states = [2, 3, 4, 5];
-    changes.observe(1, 1, "learner/queue", &Value::Ref(5), false, &pending_states);
-    changes.observe(1, 9, "learner/targets", &Value::Ref(6), true, &pending_states);
-    changes.observe(1, 7, "learner-task/status", &Value::Ref(8), true, &pending_states);
+    changes.observe(
+        1,
+        1,
+        "learner/queue",
+        &Value::Ref(5),
+        false,
+        &pending_states,
+    );
+    changes.observe(
+        1,
+        9,
+        "learner/targets",
+        &Value::Ref(6),
+        true,
+        &pending_states,
+    );
+    changes.observe(
+        1,
+        7,
+        "learner-task/status",
+        &Value::Ref(8),
+        true,
+        &pending_states,
+    );
     assert!(changes.selections.is_empty());
     assert!(changes.tasks.is_empty());
     changes.observe(1, 1, "learner/queue", &Value::Ref(5), true, &pending_states);
-    changes.observe(1, 7, "learner-task/status", &Value::Ref(2), true, &pending_states);
+    changes.observe(
+        1,
+        7,
+        "learner-task/status",
+        &Value::Ref(2),
+        true,
+        &pending_states,
+    );
     assert!(changes.selections.contains(&(5, "learner/queue".into())));
     assert!(changes.tasks.contains(&7));
 }
 
 #[test]
-fn ongoing_lessons_are_discovered_and_prioritized_without_queue_or_target_membership() -> Result<()> {
+fn ongoing_lesson_overrides_next_activity_only_for_an_eligible_topic() -> Result<()> {
     for state in ["started", "paused"] {
         let db = fixture()?;
         let learner = identity(&db, "learner/id", "test")?;
-        let task = eid(&query(&db,
+        let task = eid(&query(
+            &db,
             "[:find ?task :where [?a :activity/scope ?t] [?t :topic/title \"Locked lesson\"] [?task :learner-task/activity ?a]]",
-            vec![])?[0][0])?;
-        let state_id = db.entid(&Keyword::new("learner-task.status", state)).unwrap();
-        let db = db.with_edn(
-            &format!("[[:db/add {task} :learner-task/status :learner-task.status/{state}]]"),
-            0, EntityRef::Ident(Keyword::new("db.source", "system")))?.db_after;
+            vec![],
+        )?[0][0])?;
+        let state_id = db
+            .entid(&Keyword::new("learner-task.status", state))
+            .unwrap();
+        let db = db
+            .with_edn(
+                &format!("[[:db/add {task} :learner-task/status :learner-task.status/{state}]]"),
+                0,
+                EntityRef::Ident(Keyword::new("db.source", "system")),
+            )?
+            .db_after;
         let now = at("2026-10-11T00:00:00Z");
+        let result = candidates(&db, learner, now, None, &BTreeSet::new(), "assessment")?;
+        assert!(!titles(&result).contains("Locked lesson"));
+        let topic = identity(&db, "topic/title", "Locked lesson")?;
+        let db = db
+            .with_edn(
+                &format!("[[:db/add {learner} :learner/targets {topic}]]"),
+                0,
+                EntityRef::Ident(Keyword::new("db.source", "system")),
+            )?
+            .db_after;
         let mut changes = Changes::default();
-        changes.observe(learner, task, "learner-task/status", &Value::Ref(state_id), true, &[state_id]);
+        changes.observe(
+            learner,
+            task,
+            "learner-task/status",
+            &Value::Ref(state_id),
+            true,
+            &[state_id],
+        );
         for changed in [None, Some(&changes)] {
-            let mut result = candidates(&db, learner, now, changed, &BTreeSet::new(), "assessment")?;
+            let mut result =
+                candidates(&db, learner, now, changed, &BTreeSet::new(), "assessment")?;
             find_candidates_ranking::annotate(&db, learner, now, &mut result)?;
-            let row = result.as_array().unwrap().iter()
-                .find(|r| r["topic/title"] == "Locked lesson").unwrap();
+            let row = result
+                .as_array()
+                .unwrap()
+                .iter()
+                .find(|r| r["topic/title"] == "Locked lesson")
+                .unwrap();
             assert_eq!(row["activity_state"], "needed-now");
+            assert_eq!(row["next_activity"], "lesson");
             assert!(row["engine_priority"].as_f64().unwrap() >= 10000.0);
-            assert!(row["triggers"].as_array().unwrap().iter().any(|t| t["reason"] == state));
+            assert!(
+                row["triggers"]
+                    .as_array()
+                    .unwrap()
+                    .iter()
+                    .any(|t| t["reason"] == state)
+            );
             assert!(!titles(&result).contains("Completed review"));
         }
     }
@@ -217,12 +278,13 @@ fn refreshed_memory_postpones_review_and_invalid_state_fails() -> Result<()> {
 
 #[test]
 fn ranking_propagates_assignment_deadline_to_prerequisites_without_bank_filtering() -> Result<()> {
-    let db=fixture()?;
-    let source=EntityRef::Ident(Keyword::new("db.source","system"));
-    let learner=identity(&db,"learner/id","test")?;
-    let queued=identity(&db,"topic/title","Queue")?;
-    let target=identity(&db,"topic/title","Target")?;
-    let text=format!(r#"[
+    let db = fixture()?;
+    let source = EntityRef::Ident(Keyword::new("db.source", "system"));
+    let learner = identity(&db, "learner/id", "test")?;
+    let queued = identity(&db, "topic/title", "Queue")?;
+    let target = identity(&db, "topic/title", "Target")?;
+    let text = format!(
+        r#"[
       [:db/add {learner} :learner/self-directed true]
       [:db/add {queued} :topic/next {target}]
       {{:db/id "school" :activity/type :activity.type/assignment
@@ -230,31 +292,51 @@ fn ranking_propagates_assignment_deadline_to_prerequisites_without_bank_filterin
       {{:db/id "school-step" :step/content "assigned"}}
       {{:db/id "assigned" :assigned-problem/id #uuid "00000000-0000-4000-8004-000000000001" :assigned-problem/topic-coverage [{target}] :assigned-problem/content [:question/id #uuid "00000000-0000-4000-8002-000000000001"]}}
       [:db/add {learner} :learner/assignments "school"]
-    ]"#);
-    let db=db.with_edn(&text,0,source)?.db_after;
-    let now=at("2026-10-11T00:00:00Z");
-    let mut result=candidates(&db,learner,now,None,&BTreeSet::new(),"assessment")?;
-    find_candidates_ranking::annotate(&db,learner,now,&mut result)?;
-    let rows=result.as_array().unwrap();
-    for title in ["Queue","Target"] {
-        let row=rows.iter().find(|r|r["topic/title"]==title).unwrap();
-        assert_eq!(row["assignment_due"],"2026-10-15T00:00:00+00:00");
-        assert!(row["engine_priority"].as_f64().unwrap()>500.0);
-        assert_eq!(row["knowledge_points"][0]["inventory"]["available"]["hard"],0);
+    ]"#
+    );
+    let db = db.with_edn(&text, 0, source)?.db_after;
+    let now = at("2026-10-11T00:00:00Z");
+    let mut result = candidates(&db, learner, now, None, &BTreeSet::new(), "assessment")?;
+    find_candidates_ranking::annotate(&db, learner, now, &mut result)?;
+    let rows = result.as_array().unwrap();
+    for title in ["Queue", "Target"] {
+        let row = rows.iter().find(|r| r["topic/title"] == title).unwrap();
+        assert_eq!(row["assignment_due"], "2026-10-15T00:00:00+00:00");
+        assert!(row["engine_priority"].as_f64().unwrap() > 500.0);
+        assert_eq!(
+            row["knowledge_points"][0]["inventory"]["available"]["hard"],
+            0
+        );
     }
-    assert_eq!(rows.iter().find(|r|r["topic/title"]=="Queue").unwrap()["activity_state"],"queued");
+    assert_eq!(
+        rows.iter().find(|r| r["topic/title"] == "Queue").unwrap()["activity_state"],
+        "queued"
+    );
     Ok(())
 }
 
 #[test]
 fn ranking_inventory_excludes_seen_reserved_and_canonical_questions() -> Result<()> {
-    let db=fixture()?;
-    let learner=identity(&db,"learner/id","test")?;
-    let kp=query(&db,"[:find ?k :where [?t :topic/title \"Queue\"] [?t :topic/knowledge-points ?k]]",vec![])?[0][0].clone();
+    let db = fixture()?;
+    let learner = identity(&db, "learner/id", "test")?;
+    let kp = query(
+        &db,
+        "[:find ?k :where [?t :topic/title \"Queue\"] [?t :topic/knowledge-points ?k]]",
+        vec![],
+    )?[0][0]
+        .clone();
     let task=query(&db,"[:find ?task :where [?a :activity/scope ?t] [?t :topic/title \"Unlocked\"] [?task :learner-task/activity ?a]]",vec![])?[0][0].clone();
-    let lesson=query(&db,"[:find ?a :where [?a :activity/scope ?t] [?t :topic/title \"Unlocked\"]]",vec![])?[0][0].clone();
-    let mut forms=vec![];
-    for (n,band) in ["easy","moderate","hard","easy"].iter().enumerate() {
+    let lesson = query(
+        &db,
+        "[:find ?a :where [?a :activity/scope ?t] [?t :topic/title \"Unlocked\"]]",
+        vec![],
+    )?[0][0]
+        .clone();
+    let mut forms = vec![];
+    for (n, band) in ["easy", "moderate", "hard", "easy", "easy"]
+        .iter()
+        .enumerate()
+    {
         forms.push(format!(r#"{{:db/id "rq{n}" :question/id #uuid "00000000-0000-4000-8010-{n:012}"
           :question/problem "Choose yes." :question/difficulty :question.difficulty/{band} :question/answer-fields ["rf{n}"]}}
           {{:db/id "rf{n}" :answer-field/id #uuid "00000000-0000-4000-8011-{n:012}"
@@ -262,17 +344,173 @@ fn ranking_inventory_excludes_seen_reserved_and_canonical_questions() -> Result<
           {{:db/id "ra{n}" :answer/id #uuid "00000000-0000-4000-8012-{n:012}" :answer/type :answer.type/text :answer/value "yes"}}
           {{:db/id "rb{n}" :answer/id #uuid "00000000-0000-4000-8013-{n:012}" :answer/type :answer.type/text :answer/value "no"}}"#));
     }
-    forms.push(format!(r#"{{:db/id {kp} :knowledge-point/questions ["rq0" "rq1" "rq2" "rq3"] :knowledge-point/canonical-example "rq3"}}
+    forms.push(format!(r#"{{:db/id {kp} :knowledge-point/questions ["rq0" "rq1" "rq2" "rq3" "rq4"] :knowledge-point/canonical-example "rq3"}}
       [:db/add {task} :learner-task/status :learner-task.status/paused]
       [:db/add {task} :learner-task/items "seen-item"]
       {{:db/id "seen-item" :task-item/content "rq2"}}
       {{:db/id {lesson} :activity/steps ["reserved-step"]}}
       {{:db/id "reserved-step" :step/content "rq1"}}"#));
-    let db=db.with_edn(&format!("[{}]",forms.join("\n")),0,EntityRef::Ident(Keyword::new("db.source","system")))?.db_after;
-    let now=at("2026-10-11T00:00:00Z");
-    let mut result=candidates(&db,learner,now,None,&BTreeSet::new(),"assessment")?;
-    find_candidates_ranking::annotate(&db,learner,now,&mut result)?;
-    let queue=result.as_array().unwrap().iter().find(|r|r["topic/title"]=="Queue").unwrap();
-    assert_eq!(queue["knowledge_points"][0]["inventory"]["available"],json!({"easy":1,"moderate":0,"hard":0}));
+    let db = db
+        .with_edn(
+            &format!("[{}]", forms.join("\n")),
+            0,
+            EntityRef::Ident(Keyword::new("db.source", "system")),
+        )?
+        .db_after;
+    let unrated = eid(&query(
+        &db,
+        "[:find ?q :where [?q :question/id #uuid \"00000000-0000-4000-8010-000000000004\"]]",
+        vec![],
+    )?[0][0])?;
+    let db = db
+        .with_edn(
+            &format!("[[:db/retract {unrated} :question/difficulty :question.difficulty/easy]]"),
+            0,
+            EntityRef::Ident(Keyword::new("db.source", "system")),
+        )?
+        .db_after;
+    let now = at("2026-10-11T00:00:00Z");
+    let mut result = candidates(&db, learner, now, None, &BTreeSet::new(), "assessment")?;
+    find_candidates_ranking::annotate(&db, learner, now, &mut result)?;
+    let queue = result
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|r| r["topic/title"] == "Queue")
+        .unwrap();
+    assert_eq!(
+        queue["knowledge_points"][0]["inventory"]["available"],
+        json!({"easy":1,"moderate":0,"hard":0})
+    );
+    assert_eq!(
+        queue["knowledge_points"][0]["inventory"]["available_total"],
+        2
+    );
+    assert_eq!(queue["topic_inventory"]["rated_total"], 1);
+    assert_eq!(queue["topic_inventory"]["unrated_total"], 1);
+    Ok(())
+}
+
+#[test]
+fn urgency_uses_both_one_hop_graphs_and_highest_membership_without_expansion() -> Result<()> {
+    let db = fixture()?;
+    let topic = |title| identity(&db, "topic/title", title);
+    let target = topic("Target")?;
+    let queue = topic("Queue")?;
+    let prerequisite = topic("Unlocked")?;
+    let ancestor = topic("Locked lesson")?;
+    let descendant = topic("Assessment")?;
+    let grandson = topic("Retake")?;
+    let key_prerequisite = topic("Assigned review")?;
+    let kp_target = identity(&db, "knowledge-point/title", "KP Target")?;
+    let kp_descendant = identity(&db, "knowledge-point/title", "KP Completed review")?;
+    let db = db
+        .with_edn(
+            &format!(
+                r#"[
+        [:db/add {prerequisite} :topic/next {target}]
+        [:db/add {ancestor} :topic/next {prerequisite}]
+        [:db/add {queue} :topic/next {descendant}]
+        [:db/add {descendant} :topic/next {grandson}]
+        [:db/add {kp_target} :knowledge-point/key-prerequisites {key_prerequisite}]
+        [:db/add {kp_descendant} :knowledge-point/key-prerequisites {queue}]
+        [:db/add {queue} :topic/next {target}]
+    ]"#
+            ),
+            0,
+            EntityRef::Ident(Keyword::new("db.source", "system")),
+        )?
+        .db_after;
+    let learner = identity(&db, "learner/id", "test")?;
+    let result = candidates(
+        &db,
+        learner,
+        at("2026-10-11T00:00:00Z"),
+        None,
+        &BTreeSet::new(),
+        "assessment",
+    )?;
+    assert_eq!(
+        titles(&result),
+        [
+            "Queue",
+            "Target",
+            "Due",
+            "Refreshed",
+            "Unlocked",
+            "Assigned review",
+            "Assessment",
+            "Completed review"
+        ]
+        .into_iter()
+        .map(String::from)
+        .collect()
+    );
+    let rows = result.as_array().unwrap();
+    let queue = rows.iter().find(|r| r["topic/title"] == "Queue").unwrap();
+    assert_eq!(
+        queue["urgency_groups"],
+        json!(["queued", "target-prerequisite"])
+    );
+    assert_eq!(queue["urgency_value"], 3);
+    let target = rows.iter().find(|r| r["topic/title"] == "Target").unwrap();
+    assert_eq!(target["urgency_value"], 4);
+    assert_eq!(
+        target["urgency_groups"],
+        json!(["target", "studied-or-queued-descendant"])
+    );
+    Ok(())
+}
+
+#[test]
+fn lifecycle_uses_completed_history_legacy_progress_and_original_first_study_time() -> Result<()> {
+    let db = fixture()?;
+    let learner = identity(&db, "learner/id", "test")?;
+    let refreshed = identity(&db, "topic/title", "Refreshed")?;
+    let imported = identity(&db, "topic/title", "Unlocked")?;
+    let unstudied = identity(&db, "topic/title", "Locked lesson")?;
+    let generator = db.entid(&Keyword::new("fixture", "generator")).unwrap();
+    let db = db.with_edn(&format!(r#"[
+      [:db/add {learner} :learner/activity "old-lesson"]
+      [:db/add {learner} :learner/activity "new-lesson"]
+      [:db/add {learner} :learner/activity "finished-review"]
+      {{:db/id "old-lesson" :learner-task/activity "study" :learner-task/status :learner-task.status/completed :learner-task/finished-at #inst "2020-01-01T00:00:00Z"}}
+      {{:db/id "new-lesson" :learner-task/activity "study" :learner-task/status :learner-task.status/completed :learner-task/finished-at #inst "2022-01-01T00:00:00Z"}}
+      {{:db/id "study" :activity/type :activity.type/lesson :activity/scope {refreshed}}}
+      {{:db/id "finished-review" :learner-task/activity "reviewed" :learner-task/status :learner-task.status/completed}}
+      {{:db/id "reviewed" :activity/type :activity.type/review :activity/scope {refreshed}}}
+      [:db/add {learner} :learner/knowledge-profile "legacy-progress"]
+      {{:db/id "legacy-progress" :progress/topic {imported} :progress/repetitions 2.0}}
+      [:db/add {learner} :learner/knowledge-profile "not-learned"]
+      {{:db/id "not-learned" :progress/topic {unstudied} :progress/repetitions 2.0 :progress/learned false}}
+      [:db/add {generator} :question-generator/script "generators/aa/hash/generator.py"]
+    ]"#), 0, EntityRef::Ident(Keyword::new("db.source", "system")))?.db_after;
+    let now = at("2026-10-10T12:00:00Z");
+    let mut result = candidates(&db, learner, now, None, &BTreeSet::new(), "assessment")?;
+    find_candidates_ranking::annotate(&db, learner, now, &mut result)?;
+    let rows = result.as_array().unwrap();
+    let refreshed = rows
+        .iter()
+        .find(|r| r["topic/title"] == "Refreshed")
+        .unwrap();
+    assert_eq!(refreshed["next_activity"], "assessment");
+    assert_eq!(refreshed["studied"], true);
+    assert_eq!(refreshed["reviewed"], true);
+    assert_eq!(refreshed["first_studied_at"], "2020-01-01T00:00:00+00:00");
+    let imported = rows
+        .iter()
+        .find(|r| r["topic/title"] == "Unlocked")
+        .unwrap();
+    assert_eq!(imported["studied"], true);
+    // Its explicitly unlocked lesson wins over the lifecycle review fallback.
+    assert_eq!(imported["next_activity"], "lesson");
+    assert_eq!(imported["first_studied_at"], Json::Null);
+    assert!(!titles(&result).contains("Locked lesson"));
+    let target = rows.iter().find(|r| r["topic/title"] == "Target").unwrap();
+    assert_eq!(target["knowledge_points"][0]["has_generator"], true);
+    assert_eq!(
+        target["knowledge_points"][0]["generator_script"],
+        "generators/aa/hash/generator.py"
+    );
     Ok(())
 }

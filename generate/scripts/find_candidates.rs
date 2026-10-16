@@ -28,10 +28,13 @@ const REVIEWS: &str = include_str!("queries/review-state.edn");
 const CHANGED: &str = include_str!("queries/changed-activities.edn");
 const TOPICS: &str = include_str!("queries/topics.edn");
 const KPS: &str = include_str!("queries/knowledge-points.edn");
+const STUDIED: &str = include_str!("queries/studied-topics.edn");
+const PREREQUISITES: &str = include_str!("queries/direct-prerequisites.edn");
+const DESCENDANTS: &str = include_str!("queries/direct-descendants.edn");
 
+mod find_candidates_ranking;
 #[cfg(test)]
 mod find_candidates_tests;
-mod find_candidates_ranking;
 
 fn json_value(v: &EdnValue) -> Result<Json> {
     Ok(match v {
@@ -134,9 +137,7 @@ impl Changes {
             ("learner/activity", Value::Ref(task)) if entity == learner => {
                 self.tasks.insert(*task);
             }
-            ("learner-task/status", Value::Ref(state))
-                if pending_states.contains(state) =>
-            {
+            ("learner-task/status", Value::Ref(state)) if pending_states.contains(state) => {
                 self.tasks.insert(entity);
             }
             ("learner-task/activity" | "learner-task/retake-of", _) => {
@@ -167,14 +168,71 @@ fn review_due(memory: f64, anchor: i64, interval: f64, threshold: f64, now: i64)
     Ok(elapsed >= 0.0 && memory * 2.0_f64.powf(-elapsed / interval) <= threshold + 1e-12)
 }
 
+fn urgency_groups(
+    db: &DatabaseValue,
+    learner: u64,
+) -> Result<BTreeMap<u64, BTreeSet<(u8, String)>>> {
+    let mut groups = BTreeMap::<u64, BTreeSet<(u8, String)>>::new();
+    let mut targets = BTreeSet::new();
+    let mut descendants_of = BTreeSet::new();
+    let selections = EdnValue::Vector(vec![
+        EdnValue::Keyword(Keyword::new("learner", "queue")),
+        EdnValue::Keyword(Keyword::new("learner", "targets")),
+    ]);
+    for row in query(db, SELECTED, vec![input_eid(learner)?, selections])? {
+        let topic = eid(&row[0])?;
+        let (value, name) = if row[1] == "learner/targets" {
+            targets.insert(topic);
+            (4, "target")
+        } else {
+            descendants_of.insert(topic);
+            (3, "queued")
+        };
+        groups
+            .entry(topic)
+            .or_default()
+            .insert((value, name.into()));
+    }
+    for row in query(db, STUDIED, vec![input_eid(learner)?])? {
+        let topic = eid(&row[0])?;
+        descendants_of.insert(topic);
+        groups
+            .entry(topic)
+            .or_default()
+            .insert((5, "studied".into()));
+    }
+    for (seeds, query_text, value, name) in [
+        (targets, PREREQUISITES, 2, "target-prerequisite"),
+        (
+            descendants_of,
+            DESCENDANTS,
+            1,
+            "studied-or-queued-descendant",
+        ),
+    ] {
+        if !seeds.is_empty() {
+            for row in query(db, query_text, vec![ids(&seeds)?])? {
+                groups
+                    .entry(eid(&row[0])?)
+                    .or_default()
+                    .insert((value, name.into()));
+            }
+        }
+    }
+    Ok(groups)
+}
+
 fn candidates(
     db: &DatabaseValue,
     learner: u64,
     now: i64,
-    changes: Option<&Changes>,
+    _changes: Option<&Changes>,
     scheduler_topics: &BTreeSet<u64>,
     scheduler_kind: &str,
 ) -> Result<Json> {
+    // A ranking needs the complete eligible population. A cursor validates the
+    // captured lineage/log but must never hide unchanged queue or study facts.
+    let groups = urgency_groups(db, learner)?;
     let mut triggers: BTreeMap<u64, BTreeSet<(String, String, Option<u64>)>> = BTreeMap::new();
     let mut add = |topic, reason: &str, kind: &str, task| {
         triggers
@@ -189,22 +247,18 @@ fn candidates(
     for row in query(db, SELECTED, vec![input_eid(learner)?, selections])? {
         let topic = eid(&row[0])?;
         let reason = row[1].as_str().ok_or("selection ident missing")?;
-        if changes.is_none_or(|c| c.selections.contains(&(topic, reason.into()))) {
-            add(topic, reason, "lesson", None);
-        }
+        add(topic, reason, "lesson", None);
     }
     let mut pending = vec![];
     for row in query(db, PENDING, vec![input_eid(learner)?])? {
         let task = eid(&row[0])?;
         let activity = eid(&row[1])?;
-        if changes.is_none_or(|c| c.tasks.contains(&task) || c.activities.contains(&activity)) {
-            pending.push(EdnValue::Vector(vec![
-                input_eid(task)?,
-                input_eid(activity)?,
-                EdnValue::String(row[2].as_str().ok_or("activity kind missing")?.into()),
-                EdnValue::String(row[3].as_str().ok_or("activity state missing")?.into()),
-            ]));
-        }
+        pending.push(EdnValue::Vector(vec![
+            input_eid(task)?,
+            input_eid(activity)?,
+            EdnValue::String(row[2].as_str().ok_or("activity kind missing")?.into()),
+            EdnValue::String(row[3].as_str().ok_or("activity state missing")?.into()),
+        ]));
     }
     let mut pending_topics = if pending.is_empty() {
         vec![]
@@ -245,28 +299,25 @@ fn candidates(
     for row in pending_topics {
         let topic = eid(&row[0])?;
         let task = eid(&row[2])?;
-        let activity = eid(&row[3])?;
         let kind = row[1]
             .as_str()
             .ok_or("activity kind missing")?
             .strip_prefix("activity.type/")
             .ok_or("unexpected activity kind")?;
-        if changes.is_none_or(|c| c.tasks.contains(&task) || c.activities.contains(&activity)) {
-            add(
-                topic,
-                if kind == "lesson" {
-                    row[4]
-                        .as_str()
-                        .ok_or("activity state missing")?
-                        .strip_prefix("learner-task.status/")
-                        .ok_or("unexpected activity state")?
-                } else {
-                    "assigned"
-                },
-                kind,
-                Some(task),
-            );
-        }
+        add(
+            topic,
+            if kind == "lesson" {
+                row[4]
+                    .as_str()
+                    .ok_or("activity state missing")?
+                    .strip_prefix("learner-task.status/")
+                    .ok_or("unexpected activity state")?
+            } else {
+                "assigned"
+            },
+            kind,
+            Some(task),
+        );
     }
     for row in query(db, REVIEWS, vec![input_eid(learner)?])? {
         let anchor = DateTime::parse_from_rfc3339(row[2].as_str().ok_or("memory anchor missing")?)?
@@ -284,22 +335,31 @@ fn candidates(
     for topic in scheduler_topics {
         add(*topic, "scheduler-selected", scheduler_kind, None);
     }
-    let selected: BTreeSet<_> = triggers.keys().copied().collect();
+    let selected: BTreeSet<_> = groups.keys().copied().collect();
     let mut records = BTreeMap::new();
+    if !scheduler_topics.is_empty()
+        && query(db, TOPICS, vec![ids(scheduler_topics)?])?.len() != scheduler_topics.len()
+    {
+        return Err("selected entity is not an existing topic".into());
+    }
     if !selected.is_empty() {
         for row in query(db, TOPICS, vec![ids(&selected)?])? {
             let topic = eid(&row[0])?;
             let mut record = row[1].clone();
-            record["triggers"] = json!(triggers[&topic].iter().map(|(reason, kind, task)|
+            record["triggers"] =
+                json!(triggers.get(&topic).into_iter().flatten().map(|(reason, kind, task)|
                 json!({"reason":reason,"activity_type":kind,"task":task})).collect::<Vec<_>>());
+            record["urgency_groups"] = json!(
+                groups[&topic]
+                    .iter()
+                    .rev()
+                    .map(|(_, name)| name)
+                    .collect::<Vec<_>>()
+            );
+            record["urgency_value"] = json!(groups[&topic].last().unwrap().0);
+            record["studied"] = json!(groups[&topic].iter().any(|(_, name)| name == "studied"));
             record["knowledge_points"] = json!([]);
             records.insert(topic, record);
-        }
-        if !scheduler_topics
-            .iter()
-            .all(|topic| records.contains_key(topic))
-        {
-            return Err("selected entity is not an existing topic".into());
         }
         for row in query(db, KPS, vec![ids(&selected)?])? {
             let mut kp = row[1].clone();
@@ -307,7 +367,14 @@ fn candidates(
                 .get("knowledge-point/question-generator")
                 .and_then(|g| g.get("db/id"))
                 .cloned();
-            kp["has_generator"] = json!(generator.is_some());
+            let script = kp
+                .get("knowledge-point/question-generator")
+                .and_then(|g| g.get("question-generator/script"))
+                .and_then(Json::as_str)
+                .filter(|s| !s.trim().is_empty())
+                .map(str::to_owned);
+            kp["has_generator"] = json!(script.is_some());
+            kp["generator_script"] = json!(script);
             kp["generator_entity"] = generator.unwrap_or(Json::Null);
             records.get_mut(&eid(&row[0])?).ok_or("KP topic missing")?["knowledge_points"]
                 .as_array_mut()
@@ -382,7 +449,12 @@ fn main() -> Result<()> {
             for d in tx.data {
                 let attribute = db.schema().attribute(d.attribute)?.ident.qualified_name();
                 found.observe(
-                    learner, d.entity, &attribute, &d.value, d.added, &pending_states,
+                    learner,
+                    d.entity,
+                    &attribute,
+                    &d.value,
+                    d.added,
+                    &pending_states,
                 );
             }
         }
