@@ -1635,3 +1635,84 @@ fn failed_required_lesson_releases_global_gate_until_five_other_successes() -> R
     assert!(!view["activities"].as_array().unwrap().is_empty());
     Ok(())
 }
+
+#[test]
+fn explicit_regeneration_replaces_only_never_started_route_and_reprices_estimate() -> Result<()> {
+    let mut f = Fixture::with_admission(false, 3 * 86400000, false)?;
+    let old = f.available("assessment")?;
+    let before = f.snapshot()?;
+    let task = task_for(&before, f.learner, old)?.unwrap();
+    // Simulate the stale fixed allocation on a prepared short assessment.
+    f.tx(vec![add(json!(task), "learner-task/xp-base", json!(15))], f.now + 1)?;
+    let before = f.snapshot()?;
+    let at = DateTime::from_timestamp_millis(f.now + 100).unwrap();
+    let expected_pools = retrieval::assessment_pools(&before, f.learner, at)?;
+    assert_eq!(expected_pools.len(), 5);
+    let (forms, result) = mutate(&before, f.learner, "regenerate-assessment", &json!({"activityId":old}), at)?;
+    assert_eq!(result["regeneration"]["eligibleTopicCount"], 5);
+    assert_eq!(result["regeneration"]["previousActivityId"], old);
+    f.tx(forms, f.now + 100)?;
+    let after = f.snapshot()?;
+    let new = after.reference(task, "learner-task/activity")?;
+    assert_ne!(old, new);
+    assert_eq!(after.entity(old)?, before.entity(old)?, "old definition remains intact");
+    assert_eq!(serde_json::to_value(&after.status_history)?, serde_json::to_value(&before.status_history)?, "regeneration must not start work");
+    assert!(items(&after, task)?.is_empty());
+    assert_eq!(status(&after, task, "learner-task/status")?, "unlocked");
+    assert_eq!(after.refs(f.learner, "learner/activity")?, before.refs(f.learner, "learner/activity")?);
+    for progress in before.refs(f.learner, "learner/knowledge-profile")? {
+        assert_eq!(after.entity(progress)?, before.entity(progress)?);
+    }
+    let route = learning::lesson_steps(&after, new)?;
+    let seconds: f64 = route.iter().map(|step| course_academy_engine::assessment_sampling::seconds(&after,step.content).unwrap()).sum();
+    assert_eq!(seconds, 720.0, "five distinct topics with all three bands can reach twelve minutes");
+    assert_eq!(number(&after,new,"activity/expected-seconds"), seconds);
+    assert_eq!(number(&after,new,"activity/time-limit-seconds"), 900.0);
+    assert_eq!(number(&after,task,"learner-task/xp-base"), 12.0);
+    let bands: BTreeSet<_> = route.iter().map(|step|course_academy_engine::assessment_sampling::band(&after,step.content).unwrap().unwrap()).collect();
+    assert_eq!(bands.len(),3);
+    let card = home(&after,f.learner)?["activities"].as_array().unwrap().iter().find(|a|a["activityId"]==new).unwrap().clone();
+    assert_eq!(card["xpBase"],12);
+    let mut legacy = after.clone();
+    legacy.entities.get_mut(&new).unwrap().remove("activity/expected-seconds");
+    legacy.entities.get_mut(&task).unwrap().remove("learner-task/xp-base");
+    let legacy_home = home(&legacy,f.learner)?;
+    assert_eq!(legacy_home["activities"].as_array().unwrap().iter().find(|a|a["activityId"]==new).unwrap()["xpBase"],12);
+
+    // Ordinary queue refresh continues to preserve the selected route.
+    let unchanged = f.act("queue",json!({}),f.now+200)?;
+    assert_eq!(unchanged.reference(task,"learner-task/activity")?,new);
+    assert!(mutate(&unchanged,f.learner,"regenerate-assessment",&json!({"activityId":old}),at).is_err());
+    Ok(())
+}
+
+#[test]
+fn regeneration_rejects_started_history_retake_and_foreign_task() -> Result<()> {
+    let mut f = Fixture::new(false)?;
+    let activity = f.available("assessment")?;
+    let initial = f.snapshot()?;
+    let task = task_for(&initial,f.learner,activity)?.unwrap();
+    let at = DateTime::from_timestamp_millis(f.now+500).unwrap();
+    let attempt = |s:&EntitySnapshot,l| mutate(s,l,"regenerate-assessment",&json!({"activityId":activity}),at);
+    let mut retake = initial.clone();
+    retake.entities.get_mut(&task).unwrap().insert("learner-task/retake-of".into(),json!(task));
+    assert!(attempt(&retake,f.learner).unwrap_err().to_string().contains("ordinary assessment"));
+    let mut foreign = initial.clone();
+    foreign.entities.get_mut(&f.learner).unwrap().insert("learner/activity".into(),json!([]));
+    assert!(attempt(&foreign,f.learner).is_err());
+    f.tx(vec![json!({"db/id":"other-learner","learner/id":"regeneration-other","learner/activity":[task]})],f.now+1)?;
+    assert!(attempt(&f.snapshot()?,f.learner).unwrap_err().to_string().contains("does not belong"));
+    let shared = f.snapshot()?;
+    let other = shared.owners(task,"learner/activity")?.into_iter().find(|l|*l!=f.learner).unwrap();
+    f.tx(vec![json!([kw("db/retract"),other,kw("learner/activity"),task])],f.now+2)?;
+    let (_,started) = f.start("assessment")?;
+    assert!(attempt(&started,f.learner).unwrap_err().to_string().contains("never-started"));
+    let paused = f.act("pause",json!({"taskId":task}),f.now+200)?;
+    assert!(attempt(&paused,f.learner).is_err());
+    // Even an accidentally reset status cannot erase the evidence of a start.
+    f.tx(vec![add(json!(task),"learner-task/status",kw("learner-task.status/unlocked"))],f.now+300)?;
+    assert!(attempt(&f.snapshot()?,f.learner).is_err());
+    assert_eq!(base_xp::duration_base(360.0)?,6);
+    assert_eq!(base_xp::duration_base(900.0)?,15);
+    Ok(())
+}

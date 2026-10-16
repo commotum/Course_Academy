@@ -37,6 +37,15 @@ in the build worker. An unsupported band is recorded and other work continues.
 An unchanged rejected request is not repeatedly retried. Inventory is rechecked
 after publication; existing jobs and pending commit requests survive restarts.
 
+Approval is the independent Codex reviewer's recorded acceptance, followed by
+verified publication; it does not require human permission. The initial build
+normally samples one requested or source-justified difficulty and certifies that
+band only. Approval for easy questions does not certify moderate or hard output
+from the same script. A missing band certificate waits for automatic review under
+the existing build priorities; no question from that band is published merely
+because another band passed. Existing usable questions remain available to the
+learner while this work waits.
+
 ## The four stages
 
 1. **Generate:** Capture original lesson, source questions, complete answer

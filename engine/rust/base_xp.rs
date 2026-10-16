@@ -331,17 +331,21 @@ pub fn activity_estimate_with_weights(
 /// authoritative/cache value; calculate content only when no estimate exists.
 pub fn activity_base(s: &EntitySnapshot, activity: u64) -> Result<i64> {
     if let Some(value) = s.entity(activity)?.get("activity/expected-seconds") {
-        let seconds = value
-            .as_f64()
-            .filter(|v| v.is_finite() && *v > 0.0)
-            .ok_or("invalid activity expected seconds")?;
-        let base = (seconds / 60.0 + 0.5).floor().max(1.0);
-        if base >= i64::MAX as f64 {
-            return Err("activity base XP overflow".into());
-        }
-        return Ok(base as i64);
+        return duration_base(value.as_f64().ok_or("invalid activity expected seconds")?);
     }
     Ok(activity_estimate(s, activity)?.base_xp)
+}
+
+/// One base XP per estimated minute, using the same rounding for prepared tasks.
+pub fn duration_base(seconds: f64) -> Result<i64> {
+    if !seconds.is_finite() || seconds <= 0.0 {
+        return Err("invalid activity expected seconds".into());
+    }
+    let base = (seconds / 60.0 + 0.5).floor().max(1.0);
+    if base >= i64::MAX as f64 {
+        return Err("activity base XP overflow".into());
+    }
+    Ok(base as i64)
 }
 
 #[cfg(test)]

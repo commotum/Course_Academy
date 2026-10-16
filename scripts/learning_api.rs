@@ -708,7 +708,9 @@ fn home_with_candidates(
             };
         activities.push(json!({"activityId":a,"title":text(s,a,"activity/title"),"type":status(s,a,"activity/type")?,"taskId":task,"status":state,
             "priority":candidate.priority,"reason":candidate.reason,"targetCount":candidate.target_count,
-            "targetTopics":candidate.target_topics,"progress":progress,"expectedSeconds":if expected>0.0{Some(expected)}else{None}}));
+            "targetTopics":candidate.target_topics,"progress":progress,
+            "xpBase":if retrieval::kind(s,a)? == "assessment" { Some(match task.and_then(|t|s.entities[&t].get("learner-task/xp-base")).and_then(Json::as_i64) {Some(base)=>base,None=>base_xp::duration_base(expected)?}) } else { None },
+            "expectedSeconds":if expected>0.0{Some(expected)}else{None}}));
         if activities.len() == 5 {
             break;
         }
@@ -749,6 +751,42 @@ fn home_with_candidates(
 /// The caller journals this transaction and submits it with an exact basis guard.
 fn queue_forms(s: &EntitySnapshot, l: u64, at: DateTime<Utc>) -> Result<Vec<Json>> {
     Ok(queue_preparation(s, l, at)?.0)
+}
+
+fn definition_forms(
+    s: &EntitySnapshot,
+    definition: &retrieval::Definition,
+    activity: &str,
+    course: Option<u64>,
+) -> Result<Vec<Json>> {
+    if definition.questions.is_empty() {
+        return Err("Cannot prepare an empty retrieval activity".into());
+    }
+    let mut forms = vec![];
+    let step_ids: Vec<_> = (0..definition.questions.len())
+        .map(|slot| format!("{activity}-step-{slot}"))
+        .collect();
+    let mut record = json!({"db/id":activity,"activity/id":{"$uuid":uid()?},"activity/title":definition.title,
+        "activity/type":kw(&format!("activity.type/{}",definition.kind)),
+        "activity/steps":step_ids,"activity/first-step":step_ids[0],"activity/expected-seconds":definition.expected_seconds,
+        "db/ensure":kw("activity/validate")});
+    if let Some(topic) = definition.topic {
+        record["activity/scope"] = json!(topic);
+    }
+    if definition.kind == "assessment" {
+        record["activity/time-limit-seconds"] = json!(retrieval::ASSESSMENT_SECONDS);
+    } else {
+        record["activity/course"] = json!(course.ok_or("A review requires a course")?);
+    }
+    forms.push(record);
+    for (slot, question) in definition.questions.iter().enumerate() {
+        let mut record = json!({"db/id":step_ids[slot],"step/id":{"$uuid":uid()?},"step/content":question,"step/expected-seconds":if definition.kind=="assessment" {course_academy_engine::assessment_sampling::seconds(s,*question)?}else{90.0},"db/ensure":kw("step/validate")});
+        if let Some(next) = step_ids.get(slot + 1) {
+            record["step/next"] = json!(next);
+        }
+        forms.push(record);
+    }
+    Ok(forms)
 }
 
 fn queue_preparation(
@@ -836,29 +874,7 @@ fn queue_preparation(
             continue;
         }
         let activity = format!("retrieval-activity-{index}");
-        let step_ids: Vec<_> = (0..definition.questions.len())
-            .map(|slot| format!("retrieval-step-{index}-{slot}"))
-            .collect();
-        let mut record = json!({"db/id":activity,"activity/id":{"$uuid":uid()?},"activity/title":definition.title,
-            "activity/type":kw(&format!("activity.type/{}",definition.kind)),
-            "activity/steps":step_ids,"activity/first-step":step_ids[0],"activity/expected-seconds":definition.expected_seconds,
-            "db/ensure":kw("activity/validate")});
-        if let Some(topic) = definition.topic {
-            record["activity/scope"] = json!(topic);
-        }
-        if definition.kind == "assessment" {
-            record["activity/time-limit-seconds"] = json!(retrieval::ASSESSMENT_SECONDS);
-        } else {
-            record["activity/course"] = json!(c);
-        }
-        forms.push(record);
-        for (slot, question) in definition.questions.iter().enumerate() {
-            let mut record = json!({"db/id":step_ids[slot],"step/id":{"$uuid":uid()?},"step/content":question,"step/expected-seconds":if definition.kind=="assessment" {course_academy_engine::assessment_sampling::seconds(s,*question)?}else{90.0},"db/ensure":kw("step/validate")});
-            if let Some(next) = step_ids.get(slot + 1) {
-                record["step/next"] = json!(next);
-            }
-            forms.push(record);
-        }
+        forms.extend(definition_forms(s, &definition, &activity, Some(c))?);
         if let Some(original) = definition.retake_of {
             if let Some(existing) = s.refs(l, "learner/activity")?.into_iter().find(|t| {
                 s.optional_ref(*t, "learner-task/retake-of").ok().flatten() == Some(original)
@@ -1871,6 +1887,45 @@ fn mutate_with_selection(
         }
         return Ok((forms, json!({"profile":true})));
     }
+    if action == "regenerate-assessment" {
+        let activity = required(body, "activityId")?;
+        let task = task_for(s, l, activity)?.ok_or("No unfinished assessment belongs to this learner")?;
+        owned(s, l, task)?;
+        if retrieval::kind(s, activity)? != "assessment"
+            || s.optional_ref(task, "learner-task/retake-of")?.is_some()
+        {
+            return Err("Only an ordinary assessment can be regenerated".into());
+        }
+        let task_state = status(s, task, "learner-task/status")?;
+        let previously_started = s.status_history.iter().any(|event| {
+            event.entity == task && event.attribute == "learner-task/status"
+                && s.ident(&event.value).ok().is_some_and(|state|
+                    !matches!(state.as_str(), "learner-task.status/locked" | "learner-task.status/unlocked"))
+        });
+        if !matches!(task_state.as_str(), "locked" | "unlocked")
+            || previously_started || !items(s, task)?.is_empty()
+            || s.optional_ref(task, "learner-task/active-item")?.is_some()
+            || number(s, task, "learner-task/elapsed-seconds") != 0.0
+            || s.entity(task)?.contains_key("learner-task/xp-earned")
+            || s.entity(task)?.contains_key("learner-task/finished-at")
+        {
+            return Err("Only a never-started assessment can be regenerated".into());
+        }
+        let pools = retrieval::assessment_pools(s, l, at)?;
+        let definition = retrieval::assessment_definition(s, l, at)?
+            .ok_or("No eligible questions are available for this assessment")?;
+        let replacement = "regenerated-assessment";
+        forms.extend(definition_forms(s, &definition, replacement, None)?);
+        // Preserve the previous immutable route and atomically move this unstarted task.
+        forms.push(json!([kw("db/cas"),task,kw("learner-task/activity"),activity,replacement]));
+        forms.push(add(json!(task), "learner-task/xp-base", json!(base_xp::duration_base(definition.expected_seconds)?)));
+        forms.push(json!([kw("db/ensure"),task,kw("learner-task/validate")]));
+        return Ok((forms, json!({"taskId":task,"regeneration":{
+            "previousActivityId":activity,"eligibleTopicIds":pools.keys().collect::<Vec<_>>(),
+            "eligibleTopicCount":pools.len(),"questionCount":definition.questions.len(),
+            "expectedSeconds":definition.expected_seconds
+        }})));
+    }
     if action == "queue" {
         return Ok((queue_forms(s, l, at)?, json!({"queue":true})));
     }
@@ -2646,6 +2701,9 @@ impl Application {
                         "completed" | "failed"
                     ),
         )?;
+        if action == "regenerate-assessment" {
+            view["regeneration"] = saved["result"]["regeneration"].clone();
+        }
         if let Some(error) = queue_error {
             eprintln!("Queue refresh postponed after saved task: {error}");
             view["queueNotice"] =

@@ -728,7 +728,6 @@ pub fn schedule(
                         .is_none()
                 })
     });
-    let seed = format!("assessment-{learner}-{}", s.basis_t);
     if h.xp >= ASSESSMENT_XP && !has_ordinary {
         if let Some(definition) = assessment_definition(s, learner, at)? {
             definitions.push(definition);
@@ -971,11 +970,20 @@ mod tests {
             "knowledge-point/questions".into(),
             json!([100, 101, 102, 103, 104, 105, 105]),
         );
-        for (q, band) in [(101, "easy"), (102, "moderate"), (103, "hard")] {
-            s.entities.get_mut(&q).unwrap().insert(
-                "question/difficulty".into(),
-                json!(format!("question.difficulty/{band}")),
+        for (index, (q, band)) in [(101, "easy"), (102, "moderate"), (103, "hard")]
+            .into_iter()
+            .enumerate()
+        {
+            let difficulty = 2910 + index as u64;
+            put(
+                &mut s,
+                difficulty,
+                json!({"db/ident":format!("question.difficulty/{band}")}),
             );
+            s.entities
+                .get_mut(&q)
+                .unwrap()
+                .insert("question/difficulty".into(), json!(difficulty));
         }
         put(
             &mut s,
@@ -988,6 +996,7 @@ mod tests {
             .get_mut(&2)
             .unwrap()
             .insert("policy/question-selection-weights".into(), json!([2900]));
+        s = EntitySnapshot::new(s.entities.into(), s.basis_t).unwrap();
         let plan = schedule(&s, 1, 5, at).unwrap();
         assert_eq!(plan.len(), 1);
         assert_eq!(plan[0].kind, "review");
@@ -1220,13 +1229,16 @@ mod tests {
                 .iter()
                 .any(|q| s.reference(*q, "question/difficulty").unwrap() == *b)
         }));
+        // Five distinct topics can fill at most twelve minutes while retaining
+        // all three available bands; duration takes precedence over the draw weights.
+        assert_eq!(first[0].expected_seconds, 720.0);
         assert_eq!(
             first[0]
                 .questions
                 .iter()
                 .filter(|q| s.reference(**q, "question/difficulty").unwrap() == 2910)
                 .count(),
-            3
+            1
         );
         s.entities
             .get_mut(&2900)
