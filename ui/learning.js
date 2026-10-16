@@ -238,7 +238,7 @@ async function mutation(path, values) {
       }
       if (revision !== settingsRevision || modeChanging || isDeveloperMode()) return;
       const nextTask = result.task || result;
-      if (nextTask.type === 'lesson' && short(nextTask.status) === 'completed'
+      if (['lesson', 'review'].includes(nextTask.type) && short(nextTask.status) === 'completed'
           && (task?.taskId !== nextTask.taskId || short(task?.status) !== 'completed')) {
         // Invalidate other tabs only after the completion transaction succeeds.
         try { localStorage.setItem('course-academy-queue-changed', crypto.randomUUID()); } catch { /* Other pages also refresh on return. */ }
