@@ -1,0 +1,101 @@
+Encompassing weights from observed course bands: method and engine implications
+
+Latest requested estimate: crossing frequency and activity number
+
+The new account-frequency-estimates.txt/.json reports provide numerical starting weights directly from activity cadence, including flat activities. For N eligible completed source activities and K upward target transitions, the first-pass frequency weight is K/N. Proposed starting values are rounded to 0.05. The pilot values are foundations 1.00 (3/3, activities 1/2/3), linear 0.75 (3/4, activities 2/3/4), multivariable 0.40 (2/5, activities 3/5), and differential 0.75 (3/4, activities 2/3/4). These are frequency-derived proposals distinct from the earlier content-only priors below.
+
+The implicit scale assumption is that one full-credit activity produces one comparable visible upward transition. That makes crossing frequency a practical stand-in for effective encompassing strength. It does not recover intrinsic coverage independently of timing, performance, initial state or display thresholds. This estimate is useful as a first-pass coverage prior when its scale assumption is accepted. A flat result counts toward the waiting time, rather than becoming a zero-credit event. A jump across two or five ordinal bands is counted as one rising activity; jump sizes are saved separately and are not measured repetitions. No raw-accuracy division is applied.
+
+Each result saves the complete chronological eligible exposure sequence, source-activity ordinal among all captured source tasks, successive waiting counts, unfinished trailing waits, visible upward/downward band steps, accuracy and kind, intervening direct target tasks, and intervening visible target changes. The pilots' successive waits are foundations [1,1,1], linear [2,1,1], multivariable [3,2], differential [2,1,1]. Waiting counts are source-activity counts, not guarantees of isolated accumulation between those activities. Other work can move the target in between. The first three multivariable exposures form a visibly continuous 1->1, 1->1, 1->3 run; its later exposure has intervening direct target work and shifts. All four pilots have at least some intervening target changes across the full sequence.
+
+There is no minimum repeat-count cutoff. Single-activity and two-activity estimates are included, with their observation counts beside the weight. The earlier three-activity exclusion has been removed from the estimator and the reports regenerated.
+
+The JSON reports also give a background-adjusted frequency diagnostic and a descriptive interval for observed crossing frequency. Neither is labeled an intrinsic coverage confidence interval. The 936 foundations, 274 linear, 372 multivariable and 207 differential positive prerequisite-pair proposals are independent by account. Together they cover 533 distinct source-topic identities out of the 2,977-topic catalog (17.9%); this identity count does not combine the account estimates. Discovery selected pairs with a visible rise; no-crossing relationships are unestimated rather than assigned zero. Bands 0 and 6 are excluded from the positive estimator, while flat bands 1..5 remain in its denominator. Shared course displays count once. No operational topic, encompassing, policy or learner-state data were changed.
+
+All four account reports are independent. Their observations and fitted proxies are never pooled. Course/topic matching occurs first; agreeing duplicates of a shared topic are then counted once within that account. Curriculum structure can be shared; learner state and calibration evidence cannot.
+
+What the colors establish
+
+Math Academy describes darker shading as more accumulated spaced practice and more stable knowledge, but its public explanation does not specify the numeric cutoffs of these captured circles:
+https://www.mathacademy.com/how-our-ai-works
+https://mathacademy.com/how-it-works
+
+The seven locally numbered colors are ordinal observations. A change 1 -> 3 is not established to mean two repetitions. An unchanged intermediate band can also hide positive fractional repetition credit: flat is not zero, even below the top band. Band 0 is analyzed separately from already admitted retention state. Starting at band 6 is right-censored for positive visible gain: 6 -> 6 cannot establish zero credit. Drops from 6 remain in the change audit. Topics absent from either snapshot are not inferred to have lost knowledge.
+
+The analyses read complete saved before/after topic sets, including unchanged topics, rather than only the changes list. Each course keeps its actual capture timestamp. Timing-compatible intervals must be positive, at most 30 minutes long, contain exactly one known same-account activity boundary, and include the associated activity. Current-pipeline baselines must precede its first captured answer. Recovered/late reads and assessments/diagnostics/multisteps do not identify single-source practice edges here. Legacy timing uses the start of post-task snapshot collection as a completion proxy; it is less precise than the current pipeline. Unknown external work and asynchronous server/display changes remain possible. Timing compatibility is not proof of causation.
+
+The full change audit includes observations excluded from weight estimation. A flagged interval is a limitation of attribution, not evidence that the capture is invalid. Unknown colors and missing topics are gaps. Every known logged course/topic change was checked against its saved snapshots; unmatched pairs are counted explicitly. The analysis does not mutate capture baselines or EDB.
+
+Estimating a useful coverage weight
+
+1. For each account, use repeated timing-compatible rises to nominate advanced -> component relationships. Include pedagogically plausible non-ancestor pairs, but treat distant unrelated co-movement as a nuisance signal until explained. A prerequisite alone does not establish encompassing.
+2. Inspect the advanced questions and solutions: identify which source KPs actually exercise the component routine. Estimate expected coverage from KP/question mix and component breadth. Count distinct questions rather than repeated appearances of the same question. Do not use adaptive remedial counts as the intended curriculum distribution. The proposed 0.10, 0.50, and 1/3 values in the separate account recommendations are explicit content priors, not fitted proprietary weights.
+3. Compare the same account's target-band crossing rate against that target's background crossing rate, matched to starting band and outcome class. Normalize relative to direct reviews from the same account/band/outcome class. All-correct observations and mixed passed observations are kept distinct. The saved response proxy is clamped to [0,1] and shrunk with four no-excess-effect pseudo-observations. It measures visible response strength, not coverage. Its sensitivity to 0/2/4/8 pseudo-observations is saved. Wilson intervals describe crossing probabilities only; they are not encompassing-weight confidence intervals, and candidate selection makes them unsuitable as formal discovery guarantees.
+4. Fit a sparse encompassing graph rather than one edge per observed pair. The current Rust engine infers max-product path coverage; an explicit pair overrides inferred coverage. Evidence of A -> C may already be explained by A -> B -> C. Validate component ownership, unique targets, finite [0,1] weights, no self-links, and no cycles. An explicit zero can override inferred coverage and should never be inferred from an unchanged color.
+5. For a later model-based fit, hold policy values fixed initially and replay observed task outcomes against latent account/topic state. For a successful established target j, the current engine uses approximately:
+   delta_repetitions_j = speed_j * quality * effective_coverage(A,j) * discount(memory_j(t))
+   subject to learned-state eligibility and the slow-implicit gate.
+   Failed retention events reverse propagation direction and use a failure multiplier. Accuracy updates and retention updates have different event semantics; replay the actual delivery implementation rather than subtracting question counts indiscriminately. XP is not quality.
+   Fit monotone display thresholds as an observation model, using interval-censored latent repetitions and a right-censored top band. Anchor a repetition scale; unknown thresholds, speed, coverage, and initial state otherwise admit multiple equivalent fits. Include nuisance/background changes so unexplained display shifts do not force fake edges. Compare candidate weights across plausible initial states and policy settings. An estimate can still be useful when approximate: label its assumptions and report when the proposed number depends mainly on its content prior.
+
+Direct comparison of correctness, KPs, and history
+
+The follow-up analysis in kp-effects/*-effects.txt and .json compares rising and non-rising exposures within each account. Source, target, starting band, activity kind, overall accuracy, and exact per-KP outcome counts are matched. Actual source grades are used, never the bot's intended answers. Current attempts are joined to captured questions for KP and difficulty identity. KP definitions are read without transactions at EDB basis 1178, lineage 01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1. This shared curriculum read does not pool account outcomes or learner state.
+
+The leading practical explanation is state-dependent credit becoming visible only when a display threshold is crossed. Current-task poor performance is not the leading explanation of the inspected differences. Many activities have identical 60% accuracy by capture design. The evidence does not establish that every flat activity received positive credit; eligibility, accuracy history, timing discounts and display changes can also suppress or obscure it.
+
+Specific account-local comparisons:
+  - Linear: source 1961 -> target 2211 stayed 1 -> 1 on lesson 14066994 despite 3/5 correct on the explicitly linked KP; review 14070151 rose 1 -> 3 with only 1/2 correct on that KP. Both activities were 60% overall. They occurred about 3.38 and 8.23 hours after direct target practice. Later review 14094022 rose 3 -> 4 despite 0/1 correct on the explicitly linked KP. The review mix and task kind differ from the lesson, but better correctness does not explain the rises.
+  - Multivariable: reviews 14065132 and 14068004 of source 2110 both had 3/5 overall and 0/2 on the potential-not-given KP, whose explicit key prerequisite is target 1951. Starting from band 1, the first stayed 1 and the second reached 3. Direct-target practice gaps were about 10.49 and 13.23 hours. The wrong questions were moderate in the first and hard in the second, and answer order differed; difficulty and history remain plausible modifiers, but neither higher raw accuracy nor a different KP mix caused this difference.
+  - Foundations: reviews 13991694 and 14033015 of source 864 -> target 863 both started at band 2, had the same KP outcome counts and CWCWC answer pattern at 60%. The first stayed 2; the second reached 3. They occurred about 6.07 and 34.98 hours after direct target practice.
+  - Differential: reviews 14063765 and 14071481 of source 3674 -> target 1163 both started at 1 and had the same KP counts and WCWCC answer pattern at 60%. The first stayed 1; the second reached 3. Their direct-target gaps were about 12.16 and 22.46 hours.
+
+KP key prerequisites are useful positive annotations of which topics a KP directly exercises. They are not numeric encompassing weights, and missing annotations are common for later KP variants. Differential source 3245's one-step KP explicitly lists multiple-step Euler topic 3668, whereas its multiple-step KP has no imported key-prerequisite annotation. In foundations, the cardinality pilot rises on two reviews that omit the finite-product-sketch KP used to derive the earlier 0.10 content prior. That prior should therefore remain a rough content hypothesis, not an explanation of which particular questions earned credit.
+
+Working model choice: retain topic-level encompassing as the default. Estimate coverage separately from target timing/eligibility/history and the band observation model. KP-conditioned coverage can refine the estimate when activities sample different subskills; these captures do not make it the leading explanation of varying visible effects. Do not multiply coverage by the fraction of correct explicitly linked KP questions as a hard credit rule: observed target rises occur even when that fraction is zero. Historical accuracy and slow-implicit gating remain plausible and distinct from raw current-task accuracy.
+
+These are descriptive comparisons of previously nominated prerequisite pairs with mixed effects (plus each pilot), not independent randomized observations or estimates of the unconditional frequency of encompassing edges. Several matched comparisons reuse an activity for different targets; do not pool or count them as independent trials. Full answer order, difficulty, timing, and evidence paths are preserved per account.
+
+What to adjust in the engine
+
+The band evidence does not yet identify numerical changes to base-half-life-days, interval-growth, maximum-half-life-days, review-threshold, initial-retention, early-practice-discount-power, accuracy-update-rate, speed-exponent, minimum/maximum-speed, failure-overdue-slope, maximum-failure-multiplier, or retention-update-order. Keep these settings unchanged for now. A repetition-like color is not an observation of memory, due time, recall probability, or half-life.
+
+The slow-implicit gate is a sensible retained hypothesis and is already represented by policy/gate-slow-implicit. Testing its cutoff and speed model requires target-specific accuracy/state before each event, not just source-task accuracy. Band falls after all-correct work should first be explained as a display/state observation problem rather than used to tune a failure penalty. The cause of the fluctuations has not been established; possibilities include hidden updates, stale/asynchronous state, or a display model with broader dependencies. No one of these explanations is asserted as fact.
+
+Review queue availability and due times across longer gaps would help identify memory/interval parameters. Queue omission is not proof that a review is not due: selection can hide an otherwise due topic. Prefer an explicit due-time observation. The 30-minute filter here protects event attribution; a separate longitudinal fit should retain longer intervals with all intervening activity evidence.
+
+The current speed formula uses (effective accuracy / policy initial accuracy)^speed-exponent with clamps. It does not contain an independently measured per-topic retention difficulty. If that distinction becomes useful, add a separate topic/retention-baseline-accuracy in (0,1), with a default preserving existing behavior and calibration provenance. Do not repurpose topic/difficulty: that attribute is the workload multiplier. The existing expected-assessment/practice-accuracy fields are learner-specific initial forecasts and should not silently become an independent curriculum difficulty estimate.
+
+What the XP docs add
+
+Read reference/xp-docs/earned-xp-formula-report.md, base-xp-formula-report.md, expected-distribution-base-xp.md, history-band-time-comparison.md, and quiz-question-time-fit.json.
+
+Base XP measures expected workload. Earned XP is a separate task-specific reward. The selected earned-XP rules use ordinary, unweighted answer accuracy and task-ending behavior. Do not weight FIRe credit by earned/base XP, apply the workload 1/2/4 multipliers to accuracy, or treat bot wait/solver time as learner speed. The selected lesson formula uses expected question distributions and a calibrated topic workload multiplier, not the actual number of remedial questions. The current selected expected-distribution report supersedes contradictory wording in the older historical base-XP report.
+
+The quiz timing study supports a useful optional engine change independent of the colored bands: provisional E/M/H expected durations of 60/120/180 seconds, instead of 90 seconds for every assessment question. The 18-quiz fit gives rounded-XP MAE 1.61 for 60/120/180 versus 2.06 for its fitted equal-band baseline. These are expected-work allowances inferred from base XP, not measured response-time targets. Keep the total assessment wall-clock limit separate. The current review estimate of 4.5 minutes is not contradicted by the old review average near 4.3 base XP; the band evidence provides no reason to replace it.
+
+The 2026-10-11 engine-weights import records updated question-selection distributions separately from the older default-policy file. This analysis does not revert or refit them. If probabilities change, explicitly regenerate affected expected workload/duration calibrations as described in the selected XP report; preserve frozen learner-task bases.
+
+Attributes worth considering
+
+The existing progress attributes already cover fractional repetitions, anchored memory, interval, learned eligibility, separated assessment/practice accuracy and masses, initial forecasts, last direct practice, and policy. Keep speed and effective accuracy derived rather than adding independently mutable duplicates. Implicit credit must not overwrite last-direct-at.
+
+Minimal additions, if/when this evidence is imported or automated:
+  - A separate observation entity for account/learner, course, topic, task, observed-at, raw color/display band, snapshot evidence, baseline reference, and late/isolation status. These values must not be asserted directly as operational progress. The current JSON already provides most of this evidence, so schema expansion is optional for file-based analysis.
+  - A separate calibration record with proposed weight, plausible range, method/version, account scope, evidence references, sample/support counts, content assumptions, and approval status. Store confidence on the estimate, not as a learner property. Existing encompassing/rationale and EDB transaction source/history can carry a minimal human-reviewed explanation; a new stable encompassing/id is optional for external calibration references, not required to update an owned edge.
+  - Optional question/expected-seconds for authored/calibrated question workload, distinct from observed task-item/elapsed-seconds and activity/expected-seconds.
+  - Optional topic/retention-baseline-accuracy as described above, only after a separately supported calibration.
+
+Do not add an observed band as another copy of progress/repetitions, persist a made-up memory inferred from color, or mark a topic learned solely because an implicit band changed. Initial placement/admission and course mastery floors need separate evidence.
+
+The proposed weights remain account-specific candidates. Installing an encompassing record would affect shared curriculum behavior across learners; that is a separate reconciliation decision. No policy, schema, progress, or encompassing data were written during this analysis.
+
+Reproduction
+
+PYTHONPATH=capture python3 -m scripts.analyze_encompassing --output reference/mathacademy/encompassing-analysis-2026-10-11
+PYTHONPATH=capture python3 -m scripts.encompassing_report reference/mathacademy/encompassing-analysis-2026-10-11
+PYTHONPATH=capture python3 -m scripts.analyze_kp_effects reference/mathacademy/encompassing-analysis-2026-10-11
+PYTHONPATH=capture python3 -m scripts.estimate_encompassing_frequency reference/mathacademy/encompassing-analysis-2026-10-11
+PYTHONPATH=capture python3 -m unittest scripts.tests.test_encompassing_analysis
+
+For a single account, pass --account foundations (or linear/multivariable/differential) to the analyzer. Inputs may grow while runners remain active; each result contains its account-specific input manifest, observation audit, and creation time. The manifest hash identifies the selected paths, not source-file content. The recommendation files additionally hash their content samples. All analysis tests passed before delivery.
