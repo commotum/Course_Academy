@@ -3,6 +3,7 @@ from pathlib import Path
 import json
 P=Path(__file__).resolve().parent
 rows=json.loads((P/'content.json').read_text());repaired={r[':db/id']:r for r in json.loads((P/'repaired-records.json').read_text())}
+if (P/'render-repaired-records.json').exists():repaired.update({r[':db/id']:r for r in json.loads((P/'render-repaired-records.json').read_text())})
 def apply(v):
  if isinstance(v,dict):
   if v.get(':db/id') in repaired and (':question/id' in v or ':tutorial/id' in v):return repaired[v[':db/id']]
@@ -10,7 +11,7 @@ def apply(v):
  if isinstance(v,list):return [apply(x) for x in v]
  return v
 rows=apply(rows)
-s=(P/'structural.py').read_text();s=s[:s.index('priority=[]')];s=s.replace("rows=json.loads((P/'content.json').read_text());",'rows=post_rows;');s=s.replace("(P/(name+'.json')).write_text(json.dumps(obj,indent=2))","(P/('after-'+name+'.json')).write_text(json.dumps(obj,indent=2)) if name in ['structure-summary','structure-findings'] else None")
+s=(P/'structural.py').read_text();s=s[:s.index('priority=[]')];s=s.replace("'basis':2855","'basis':2859");s=s.replace("rows=json.loads((P/'content.json').read_text());",'rows=post_rows;');s=s.replace("(P/(name+'.json')).write_text(json.dumps(obj,indent=2))","(P/('after-'+name+'.json')).write_text(json.dumps(obj,indent=2)) if name in ['structure-summary','structure-findings'] else None")
 exec(compile(s,str(P/'structural.py'),'exec'),{'__file__':str(P/'structural.py'),'post_rows':rows})
 for t in rows:
  if t[':topic/math-academy-id'] in [862,146,232]:(P/(str(t[':topic/math-academy-id'])+'-priority-after.json')).write_text(json.dumps(t,indent=2))
