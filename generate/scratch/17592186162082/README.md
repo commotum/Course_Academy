@@ -1,8 +1,13 @@
-# KP 17592186162082 local draft
+# Piecewise line-integral generator
 
-Verify with `.venv/bin/python generate/scratch/17592186162082/validate.py`.
-Generate with `.venv/bin/python generate/scratch/17592186162082.py --difficulty all --seed 42 --count 2 --format json`.
+Generator: `generate/scratch/17592186162082.py`, version `piecewise-unity-3`.
 
-Public functions: generate, generate_easy, generate_moderate, generate_hard. Explicit parameters/profile use the same pipeline as normal generation. Sources at immutable math basis 2275. All files stay within this KP's script and evidence directory; no registration, EDB writes, commits or shared edits.
+Run `.venv/bin/python generate/scratch/17592186162082.py --difficulty all --seed 42 --count 2 --format json` for local previews. The public API also accepts an explicit template, parameters, and bank profile. Run `validate.py` for source replay, exact mathematics, plot geometry, deterministic sampling, boundary checks, and native grading.
 
-Six observed empirical banks, two authored complete default banks; all three levels. Raw replay via `generate("moderate", profile="raw-q-122484")` preserves absent key, solution and rating. The moderate routing argument adds no difficulty attribute to that raw question; other raw profiles route through their observed levels. Missing q122484 fields/level in the separate normal moderate completion are inferred/authored and missing hard label is an authored rational-bookkeeping policy. See extraction.json for full original evidence and option mappings; validation.json separates value fidelity, observed/inferred designations, worked-solution normalization and native grading. review.md/review.json show side-by-side originals and variants. Worker validation is not parent approval.
+`approval.json` records the primary agent's review, including diagram inspection and the authored hard policy. `freeze.json` hashes the accepted package. Easy and moderate follow observed source levels. Hard is an authored bounded rational-dimension policy within the same arc-length and distance-sum method. The raw `q-122484` source retains its missing rating, key, and solution and is excluded from inventory. Raw and normalized empirical profiles are evidence only; normal generation uses the documented complete authored banks.
+
+`replenish.py` prepares this KP's missing inventory using the application's EDB integration and content-addressed image store. `--commit` additionally previews and submits a basis-guarded request under the application `api.lock`, holding it through exact-basis readback. It recovers saved requests before creating new intent. The registered generator identity is recorded in `registration.json`.
+
+`reference/replenishment/` retains inventory reads, selected instances, native grading reports, asset hashes, original typed EDN, exact durable requests, receipts, and verification. Mathematical deduplication uses the unordered multiset of exact primitive lengths, ignoring identity, seed, bank, choice order, translation, and direction. Canonical examples, previously shown questions, reserved questions, and incomplete or unrated sources do not count as available practice.
+
+The finite normal sampler has 24 easy, 48 moderate, and 48 hard distinct tasks before source/history exclusions. These are bounded capabilities, not an unlimited inventory claim. See `capacity.json` and the job's result for current shortages.

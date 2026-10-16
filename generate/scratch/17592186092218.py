@@ -10,7 +10,15 @@ See the adjacent classification, extraction, validation and review evidence.
 """
 from __future__ import annotations
 import argparse,hashlib,json,pathlib,random,re,sys,uuid
-import sympy as sp
+try:
+ import sympy as sp
+except ModuleNotFoundError:
+ # The inventory worker uses system Python; reuse the project's dependencies.
+ import os
+ interpreter=pathlib.Path(__file__).resolve().parents[2]/'.venv/bin/python'
+ if __name__=='__main__' and interpreter.exists():
+  os.execv(str(interpreter),[str(interpreter),str(pathlib.Path(__file__).resolve()),*sys.argv[1:]])
+ raise
 KP_ID=17592186092218
 TITLE='Finding the Cartesian Coordinates of a Point Given a Description of the Radius and Angle'
 KP_UUID='87f80908-037b-56ae-a2b5-59bdc49f0acb'
