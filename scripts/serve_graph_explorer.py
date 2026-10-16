@@ -336,13 +336,25 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
     inventory_jobs = InventoryJobs(ROOT, ROOT / '.local/learning/inventory' / database / learner, learner, environment)
     scheduler_stop = threading.Event()
     inventory_refresh = threading.Event()
+    inventory_ready = threading.Event()
+    inventory_refresh.set()
+    candidate_reader = None
 
     def inventory_hook():
-        response = learning_worker.request({'action': 'inventory'})
-        if response.get('ok'):
-            inventory_jobs.accept(response['data'])
-        else:
-            raise ValueError(response.get('error', 'Inventory unavailable'))
+        nonlocal candidate_reader
+        # The finder owns its read connection. Never put its catalog scan under
+        # api.lock or on the learning worker used to answer learner requests.
+        if str(ROOT / 'generate/scripts') not in sys.path:
+            sys.path.insert(0, str(ROOT / 'generate/scripts'))
+        from find_candidates import build, discover
+        if candidate_reader is None:
+            candidate_reader = build(Path(environment.get('EDB_ROOT', ROOT.parent / 'EDB')).resolve())
+        ranked = discover(database, learner, environment, binary=candidate_reader, include_registered=True)
+        inventory_jobs.accept(ranked)
+        if not inventory_ready.is_set():
+            print(f"Ranked generator inventory ready: basis {ranked['basis']}, "
+                  f"{len(ranked['knowledge_points'])} build candidates", flush=True)
+        inventory_ready.set()
 
     def scheduler_loop():
         # NativeWorker incrementally consumes the EDB log into one held projection;
@@ -356,40 +368,42 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
                         response = learning_worker.request({'action': 'queue', 'background': True, 'requestId': 'scheduler-' + os.urandom(12).hex()})
                         if not response.get('ok'):
                             raise ValueError(response.get('error', 'Queue preparation unavailable'))
-                        inventory_hook()
+                        inventory_refresh.set()
             except (OSError, ValueError) as error:
                 print(f'Scheduler refresh deferred: {error}', file=sys.stderr)
             scheduler_stop.wait(30)
 
-    def generator_loop():
+    def run_generator_lane(lane):
         while not scheduler_stop.is_set():
             try:
-                if not developer_mode(mode_path):
-                    inventory_jobs.run_one()
+                if (inventory_ready.is_set() and not developer_mode(mode_path)
+                        and environment.get('COURSE_ACADEMY_DISABLE_GENERATION') != '1'):
+                    if inventory_jobs.run_one(lane=lane):
+                        inventory_refresh.set()
             except (OSError, ValueError) as error:
-                print(f'Inventory worker deferred: {error}', file=sys.stderr)
+                print(f'Inventory {lane} worker deferred: {error}', file=sys.stderr)
             scheduler_stop.wait(5)
+
+    def generator_build_loop():
+        run_generator_lane('build')
+
+    def generator_refill_loop():
+        run_generator_lane('refill')
 
     def inventory_refresh_loop():
         # Inventory admission is read-only background work, not part of the
-        # response to a saved lesson. Coalesce requests and yield to API writes.
+        # response to a saved lesson. Coalesce requests while a scan is running.
         while not scheduler_stop.is_set():
             if not inventory_refresh.wait(1):
                 continue
             try:
-                request_directory.mkdir(parents=True, exist_ok=True)
-                with (request_directory / 'api.lock').open('a') as lock:
-                    try:
-                        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-                    except BlockingIOError:
-                        scheduler_stop.wait(.1)
-                        continue
-                    inventory_refresh.clear()
-                    if not developer_mode(mode_path):
-                        inventory_hook()
-            except (OSError, ValueError) as error:
+                inventory_refresh.clear()
+                if not developer_mode(mode_path):
+                    inventory_hook()
+            except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as error:
                 print(f'Inventory handoff deferred: {error}', file=sys.stderr)
-                scheduler_stop.wait(1)
+                inventory_refresh.set()
+                scheduler_stop.wait(5)
 
     class Handler(BaseHTTPRequestHandler):
         def send_bytes(self, status: int, body: bytes, content_type: str, *, cache: bool = False) -> None:
@@ -694,7 +708,8 @@ def handler(reader: Path, database: str, learner: str, environment: dict[str, st
     Handler.workers = (graph_worker, learning_worker, page_worker)
     Handler.scheduler_stop = scheduler_stop
     Handler.inventory_refresh = inventory_refresh
-    Handler.background = (scheduler_loop, generator_loop, inventory_refresh_loop) if learning_worker else ()
+    Handler.inventory_ready = inventory_ready
+    Handler.background = (scheduler_loop, generator_build_loop, generator_refill_loop, inventory_refresh_loop) if learning_worker else ()
     return Handler
 
 
@@ -722,7 +737,7 @@ def main() -> None:
         if worker:
             threading.Thread(target=warm, args=(worker, body), daemon=True).start()
     for background in server.RequestHandlerClass.background:
-        if background.__name__ == 'generator_loop' and os.environ.get('COURSE_ACADEMY_DISABLE_GENERATION') == '1':
+        if background.__name__ in {'generator_build_loop', 'generator_refill_loop'} and environment.get('COURSE_ACADEMY_DISABLE_GENERATION') == '1':
             continue
         threading.Thread(target=background, daemon=True).start()
     def stop(_signum, _frame):

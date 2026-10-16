@@ -58,8 +58,8 @@ def ranked_requests(inventory: dict) -> list[dict]:
             missing = kp.get('refill_deficits', {}).get(band, max(0, 5 - kp['inventory']['available'].get(band, 0)))
             if missing <= 0:
                 continue
-            reasons = [reason for reason in kp.get('priority_reasons', [])
-                       if reason['purpose'] != 'advance-build' and reason.get('generated_band', band) == band]
+            reasons = [reason for reason in kp.get('priority_reasons', []) if eligible
+                       and reason['purpose'] != 'advance-build' and reason.get('generated_band', band) == band]
             reasons.append({'purpose': 'routine-replenishment', 'shortage': missing,
                             'score': 1000 * missing + 100 * kp.get('urgency_value', 0)})
             reason = min(reasons, key=lambda r: -r['score'])
@@ -120,17 +120,20 @@ class InventoryJobs:
             existing = {path: json.loads(path.read_text()) for path in self.directory.glob('*.json')
                         if path.name != 'cursor.json'}
             existing = {path: job for path, job in existing.items() if 'request' in job}
+            build_records, refill_records = {}, {}
+            for path, job in existing.items():
+                request = job['request']
+                if request.get('jobKind', 'build') == 'build':
+                    build_records.setdefault(request['knowledgePoint'], []).append((path, job))
+                else:
+                    refill_records[(request['knowledgePoint'], request['difficulty'])] = job
             build_requests = [request for request in requests if request['jobKind'] == 'build']
             refill_requests = [request for request in requests if request['jobKind'] == 'refill']
             reopened_refills = set()
             for request in refill_requests:
-                previous = [job for job in existing.values()
-                            if job['request'].get('jobKind') == 'refill'
-                            and job['request']['knowledgePoint'] == request['knowledgePoint']
-                            and job['request']['difficulty'] == request['difficulty']]
-                if not previous:
+                old = refill_records.get((request['knowledgePoint'], request['difficulty']))
+                if old is None:
                     continue
-                old = previous[0]
                 if old.get('state') != 'repair-needed' or old['request'].get('script') != request['script']:
                     continue
                 successful_review = any(
@@ -140,7 +143,7 @@ class InventoryJobs:
                     and job['request'].get('script') == request['script']
                     and job.get('outcome', {}).get('outcome') == 'generated'
                     and job.get('completedAt', 0) > old.get('completedAt', 0)
-                    for job in existing.values())
+                    for _, job in build_records.get(request['knowledgePoint'], []))
                 if successful_review:
                     reopened_refills.add((request['knowledgePoint'], request['difficulty']))
                 else:
@@ -168,10 +171,7 @@ class InventoryJobs:
                 if kind == 'build':
                     # Preserve old workspace paths and exact publication request
                     # identities while collapsing old per-band build requests.
-                    candidates = [(p, job) for p, job in existing.items()
-                                  if job['request']['knowledgePoint'] == kp
-                                  and job['request'].get('jobKind', 'build') == 'build'
-                                  and p not in current]
+                    candidates = [(p, job) for p, job in build_records.get(kp, []) if p not in current]
                     if candidates:
                         path, _ = min(candidates, key=lambda pair: (
                             not self.recoverable(pair[0], pair[1]),
@@ -181,29 +181,39 @@ class InventoryJobs:
                 current.add(path)
                 old = existing.get(path, {})
                 recovering = self.recoverable(path, old)
-                if recovering:
+                if recovering or old.get('state') == 'running':
                     request = {**request, **{field: old['request'].get(field) for field in
                         ('stage', 'missing', 'script', 'difficulty')},
                         'jobKind': old['request'].get('jobKind', 'build')}
                 state, cycle = old.get('state', 'pending'), old.get('cycle', 1)
+                previous_cycle = cycle
                 changed = any(old.get('request', {}).get(k) != request.get(k)
                               for k in ('stage', 'missing', 'script', 'difficulty'))
-                if state == 'awaiting-verification' and old.get('retryAt', 0) <= time.time():
+                if state == 'awaiting-verification' and changed:
+                    state, cycle = 'pending', cycle + 1
+                    old = {**old, 'attempts': 0, 'replenishments': 0, 'retryAt': 0}
+                elif state == 'awaiting-verification' and old.get('retryAt', 0) <= time.time():
                     state = 'pending' if old.get('replenishments', 0) < 3 else 'rejected'
                     if state == 'pending':
                         cycle += 1
-                if (state in {'verified', 'withdrawn'} or state in {'rejected', 'repair-needed'} and changed
+                if (state in {'verified', 'withdrawn'} or state in {'rejected', 'repair-needed', 'awaiting-verification'} and changed
                         or kind == 'refill' and (kp, request['difficulty']) in reopened_refills):
                     state, cycle = 'pending', cycle + 1
                     old = {**old, 'attempts': 0, 'replenishments': 0, 'retryAt': 0}
+                if cycle != previous_cycle:
+                    old = {**old, 'outcome': {}, 'completedAt': 0}
                 if recovering:
                     # A disappearing/changing trigger cannot discard a commit
                     # that may already have reached the database.
                     state = 'running'
                 value = {**old, 'key': key, 'learner': self.learner, 'lineage': lineage,
                          'request': request, 'state': state, 'cycle': cycle, 'recoveryOnly': False}
-                if value != existing.get(path):
+                previous = existing.get(path)
+                comparable = {**value, 'request': {**request, 'basis': previous['request'].get('basis')}} if previous else value
+                if comparable != previous:
                     save(path, value)
+            present_kps = {kp['db/id'] for topic in inventory['topics'] for kp in topic['knowledge_points']}
+            present_kps.update(kp['db/id'] for kp in inventory.get('maintained_knowledge_points', []))
             for path, old in existing.items():
                 if path in current:
                     continue
@@ -214,7 +224,7 @@ class InventoryJobs:
                     # Being absent from this full ranked projection is the
                     # evidence that stock is satisfied, or eligibility ended.
                     kp = old['request']['knowledgePoint']
-                    present = any(k['db/id'] == kp for t in inventory['topics'] for k in t['knowledge_points'])
+                    present = kp in present_kps
                     state = 'rejected' if old.get('state') == 'rejected' else 'verified' if present else 'withdrawn'
                     if old.get('state') != state:
                         save(path, {**old, 'state': state, 'verifiedBasis': inventory['basis']})

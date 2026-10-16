@@ -403,7 +403,8 @@ class Publisher:
         atomic_json(directory / 'source.json', result)
         return result
 
-    def prepare(self, kp_id, records, generator_path, package_hash, directory, *, source_snapshot=None, assets_directory=None):
+    def prepare(self, kp_id, records, generator_path, package_hash, directory, *, source_snapshot=None, assets_directory=None,
+                expected_registered_generator=None):
         directory = Path(directory)
         directory.mkdir(parents=True, exist_ok=True)
         if (directory / 'request.json').exists():
@@ -411,6 +412,10 @@ class Publisher:
         status = self.client.status()
         basis = status['basis']
         kp = self.read_kp(kp_id, directory / 'before', basis)
+        if expected_registered_generator is not None:
+            registered = (kp.get(':knowledge-point/question-generator') or {}).get(':question-generator/script')
+            if registered != expected_registered_generator:
+                raise SourceChanged('Registered generator changed; refresh the refill job')
         if source_snapshot is not None:
             fresh = self.extract_source(kp_id, directory / 'source-check', basis=basis)
             if source_snapshot.get('source_sha256') != digest(source_snapshot.get('material')):

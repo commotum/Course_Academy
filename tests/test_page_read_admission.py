@@ -5,14 +5,84 @@ import json
 from pathlib import Path
 import sys
 import tempfile
+import threading
 import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "generate/scripts"))
 from serve_graph_explorer import handler, admit_answer
 
 
 class PageReadAdmission(unittest.TestCase):
+    def test_both_generation_lanes_wait_for_ranked_inventory_and_refresh_after_work(self):
+        with tempfile.TemporaryDirectory() as directory:
+            environment = {"LEARNING_REQUEST_DIR": directory, "EDB_ENDPOINT": "/unused"}
+            with patch("serve_graph_explorer.InventoryJobs") as jobs, patch("serve_graph_explorer.NativeWorker"):
+                cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
+                loops = {fn.__name__: fn for fn in cls.background}
+                for lane in ('build', 'refill'):
+                    cls.scheduler_stop.clear()
+                    with patch.object(cls.scheduler_stop, 'wait', side_effect=lambda _: cls.scheduler_stop.set()):
+                        loops['generator_' + lane + '_loop']()
+                jobs.return_value.run_one.assert_not_called()
+                cls.inventory_ready.set()
+                for lane in ('build', 'refill'):
+                    cls.scheduler_stop.clear()
+                    cls.inventory_refresh.clear()
+                    jobs.return_value.run_one.reset_mock()
+                    with patch.object(cls.scheduler_stop, 'wait', side_effect=lambda _: cls.scheduler_stop.set()):
+                        loops['generator_' + lane + '_loop']()
+                    jobs.return_value.run_one.assert_called_once_with(lane=lane)
+                    self.assertTrue(cls.inventory_refresh.is_set())
+
+    def test_both_lanes_honor_developer_mode_and_generation_disable(self):
+        with tempfile.TemporaryDirectory() as directory:
+            for disabled, developer in ((True, False), (False, True)):
+                environment = {"LEARNING_REQUEST_DIR": directory, "EDB_ENDPOINT": "/unused",
+                               "COURSE_ACADEMY_DISABLE_GENERATION": '1' if disabled else '0'}
+                with patch("serve_graph_explorer.InventoryJobs") as jobs, patch("serve_graph_explorer.NativeWorker"), \
+                     patch("serve_graph_explorer.developer_mode", return_value=developer):
+                    cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
+                    cls.inventory_ready.set()
+                    for fn in cls.background:
+                        if fn.__name__ not in {'generator_build_loop', 'generator_refill_loop'}:
+                            continue
+                        cls.scheduler_stop.clear()
+                        with patch.object(cls.scheduler_stop, 'wait', side_effect=lambda _: cls.scheduler_stop.set()):
+                            fn()
+                    jobs.return_value.run_one.assert_not_called()
+
+    def test_ranked_scan_does_not_take_api_lock_or_learning_worker(self):
+        with tempfile.TemporaryDirectory() as directory:
+            environment = {"LEARNING_REQUEST_DIR": directory, "EDB_ENDPOINT": "/unused"}
+            with patch("serve_graph_explorer.InventoryJobs") as jobs, patch("serve_graph_explorer.NativeWorker") as workers, \
+                 patch('find_candidates.build', return_value=Path('/unused')), patch('find_candidates.discover') as discover:
+                cls = handler(Path('/unused'), 'test', 'learner', environment, Path('/unused'))
+                entered, release = threading.Event(), threading.Event()
+                snapshot = {'basis': 123, 'knowledge_points': []}
+                def scan(*args, **kwargs):
+                    self.assertTrue(kwargs['include_registered'])
+                    entered.set()
+                    release.wait(2)
+                    return snapshot
+                discover.side_effect = scan
+                refresh = next(fn for fn in cls.background if fn.__name__ == 'inventory_refresh_loop')
+                with (Path(directory) / 'api.lock').open('a') as lock:
+                    fcntl.flock(lock, fcntl.LOCK_EX)
+                    thread = threading.Thread(target=refresh, daemon=True)
+                    thread.start()
+                    try:
+                        self.assertTrue(entered.wait(1), 'Finder blocked behind the API lock')
+                        self.assertFalse(cls.inventory_ready.is_set())
+                        workers.return_value.request.assert_not_called()
+                    finally:
+                        cls.scheduler_stop.set()
+                        release.set()
+                        thread.join(3)
+                jobs.return_value.accept.assert_called_once_with(snapshot)
+                self.assertTrue(cls.inventory_ready.is_set())
+
     def test_submission_time_is_server_observed_and_survives_retries_and_new_transaction_keys(self):
         with tempfile.TemporaryDirectory() as directory:
             body = {'action': 'answer', 'requestId': 'request-one', 'submissionId': 'submission-one', 'itemId': 1, 'responses': [{'fieldId': 2, 'value': '3'}], 'submittedAt': -1}

@@ -1,4 +1,5 @@
 import json
+import copy
 import subprocess
 from pathlib import Path
 import sys
@@ -6,7 +7,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
-from inventory_jobs import InventoryJobs
+from inventory_jobs import InventoryJobs, priority_key, ranked_requests, save
 
 class InventoryJobTests(unittest.TestCase):
     def setUp(self):
@@ -124,5 +125,197 @@ class InventoryJobTests(unittest.TestCase):
         self.assertEqual(recovered['attempts'], 3)
         self.assertEqual(recovered['state'], 'awaiting-verification')
         self.assertEqual(len([j for j in self.records() if j['state'] == 'pending']), 1)
+
+class RankedInventoryJobTests(unittest.TestCase):
+    setUp = InventoryJobTests.setUp
+    tearDown = InventoryJobTests.tearDown
+    accept = InventoryJobTests.accept
+    records = InventoryJobTests.records
+    def kp(self, entity=1, topic=2, *, script=None, score=64200, urgency=4, purpose='lesson-shortage'):
+        return {'db/id': entity, 'topic_entity': topic, 'generator_script': script,
+                'generator_usable': bool(script), 'urgency_value': urgency,
+                'score': score, 'purpose': purpose, 'shortage': 4, 'next_activity': 'lesson',
+                'first_studied_at': None, 'waiting_since': None,
+                'inventory': {'available': {'easy': 1, 'moderate': 0, 'hard': 0}},
+                'refill_deficits': {'easy': 4, 'moderate': 5, 'hard': 5},
+                'priority_reasons': [{'score': score, 'purpose': purpose, 'shortage': 4}]}
+
+    def ranked(self, *kps, basis=10):
+        return {'basis': basis, 'cursor': {'basis': basis, 'lineage': 'same'},
+                'topics': [{'db/id': kp['topic_entity'], 'knowledge_points': [copy.deepcopy(kp)]} for kp in kps],
+                'knowledge_points': [copy.deepcopy(kp) for kp in kps if not kp['generator_usable'] and kp['urgency_value']]}
+
+    def path_for(self, kp, kind=None, difficulty=None):
+        for path in self.jobs.directory.glob('*.json'):
+            job = json.loads(path.read_text())
+            request = job.get('request', {})
+            if (request.get('knowledgePoint') == kp and (kind is None or request.get('jobKind') == kind)
+                    and (difficulty is None or request.get('difficulty') == difficulty)):
+                return path
+        self.fail('Job not found')
+
+    def test_ranking_matches_finder_and_deduplicates_legacy_builds(self):
+        self.accept(jobs=[self.request, {**self.request, 'difficulty': 'easy'}])
+        self.jobs.accept(self.ranked(self.kp(), self.kp(topic=3, score=65100)))
+        pending = [job for job in self.records() if job['state'] == 'pending']
+        self.assertEqual(len(pending), 1)
+        self.assertEqual(pending[0]['request']['score'], 65100)
+        self.assertEqual(pending[0]['request']['topic'], 3)
+        self.assertEqual(pending[0]['request']['difficulty'], 'unclassified')
+        self.assertEqual(pending[0]['request']['jobKind'], 'build')
+
+    def test_basis_only_refresh_advances_cursor_without_rewriting_every_job(self):
+        self.jobs.accept(self.ranked(self.kp()))
+        with patch('inventory_jobs.save', wraps=save) as write:
+            self.jobs.accept(self.ranked(self.kp(), basis=11))
+        self.assertEqual(write.call_count, 1)
+        self.assertEqual(write.call_args.args[0].name, 'cursor.json')
+
+    def test_assessment_age_and_waiting_tiebreakers_match_finder(self):
+        common = dict(score=41500, purpose='assessment-shortage', topic=2, knowledgePoint=1)
+        first = {**common, 'first_studied_at': '2025-01-01T00:00:00Z'}
+        second = {**common, 'first_studied_at': '2025-02-01T00:00:00Z', 'waiting_since': '2024-01-01T00:00:00Z'}
+        self.assertLess(priority_key(first), priority_key(second))
+        first['purpose'] = second['purpose'] = 'lesson-shortage'
+        self.assertGreater(priority_key(first), priority_key(second))
+
+    def test_usable_legacy_registration_requires_one_migration_build(self):
+        requests = ranked_requests(self.ranked(self.kp(script='generate/legacy.py')))
+        self.assertEqual(len(requests), 1)
+        self.assertEqual(requests[0]['jobKind'], 'build')
+        self.assertEqual(requests[0]['stage'], 'migrate-generator')
+
+    def test_hashed_packages_outside_urgency_groups_are_replenished(self):
+        requests = ranked_requests(self.ranked(self.kp(script='generators/aa/hash/main.py', urgency=0, score=65000)))
+        self.assertEqual({request['difficulty'] for request in requests}, {'easy', 'moderate', 'hard'})
+        self.assertEqual({request['jobKind'] for request in requests}, {'refill'})
+        self.assertEqual({request['purpose'] for request in requests}, {'routine-replenishment'})
+        self.assertEqual(max(request['score'] for request in requests), 5000)
+        self.assertEqual(ranked_requests(self.ranked(self.kp(urgency=0, score=0))), [])
+
+    def test_refill_variety_reason_only_applies_to_useful_band(self):
+        kp = self.kp(script='generators/aa/hash/main.py', score=31500, purpose='hard-variety')
+        kp['priority_reasons'] = [{'purpose': 'hard-variety', 'score': 31500, 'shortage': 1, 'generated_band': 'hard'}]
+        by_band = {r['difficulty']: r for r in ranked_requests(self.ranked(kp))}
+        self.assertEqual(by_band['hard']['score'], 31500)
+        self.assertEqual(by_band['moderate']['purpose'], 'routine-replenishment')
+
+    def test_arbitrary_running_flag_does_not_override_current_scoring(self):
+        self.jobs.accept(self.ranked(self.kp(), self.kp(3, score=65000)))
+        low_path = self.path_for(1)
+        self.jobs.finish(low_path, {'state': 'running', 'attempts': 3})
+        with patch('inventory_jobs.subprocess.run') as run:
+            run.return_value.returncode = 1
+            self.assertTrue(self.jobs.run_one())
+        self.assertEqual(Path(run.call_args.args[0][3]), self.path_for(3))
+        self.assertEqual(json.loads(low_path.read_text())['attempts'], 3)
+
+    def test_migration_preserves_active_workspace_inputs_and_recovers_before_new_build(self):
+        self.accept()
+        path = self.path_for(1)
+        save(path.with_suffix('.pipeline') / '1/job.json', {'stage': 'push'})
+        self.jobs.finish(path, {'state': 'running', 'attempts': 2})
+        self.jobs.accept(self.ranked(self.kp(), self.kp(3, score=65000)))
+        migrated = json.loads(path.read_text())
+        self.assertEqual(migrated['request']['difficulty'], 'hard')
+        self.assertEqual(migrated['cycle'], 1)
+        with patch('inventory_jobs.subprocess.run') as run:
+            run.return_value.returncode = 1
+            self.jobs.run_one()
+        self.assertEqual(Path(run.call_args.args[0][3]), path)
+        self.assertEqual(json.loads(path.read_text())['attempts'], 2)
+
+    def test_disappearing_trigger_keeps_pending_publication_recoverable(self):
+        self.jobs.accept(self.ranked(self.kp()))
+        path = self.path_for(1)
+        save(path.with_suffix('.pipeline') / '1/job.json', {'stage': 'push'})
+        self.jobs.accept(self.ranked())
+        job = json.loads(path.read_text())
+        self.assertEqual(job['state'], 'running')
+        self.assertTrue(job['recoveryOnly'])
+
+    def test_lanes_run_independently_and_child_inherits_both_locks(self):
+        self.jobs.accept(self.ranked(self.kp(), self.kp(3, script='generators/aa/hash/main.py')))
+        lanes = []
+        def execute(command, **kwargs):
+            job = json.loads(Path(command[3]).read_text())
+            lanes.append(job['request']['jobKind'])
+            self.assertEqual(len(kwargs['pass_fds']), 2)
+            if len(lanes) == 1:
+                self.assertTrue(self.jobs.run_one(lane='refill'))
+            return subprocess.CompletedProcess(command, 1)
+        with patch('inventory_jobs.subprocess.run', side_effect=execute):
+            self.assertTrue(self.jobs.run_one(lane='build'))
+        self.assertEqual(lanes, ['build', 'refill'])
+
+    def test_shared_kp_lock_prevents_cross_lane_publication(self):
+        self.jobs.accept(self.ranked(self.kp(script='generators/aa/hash/main.py')))
+        path = self.path_for(1, 'refill', 'hard')
+        self.jobs.finish(path, {'state': 'repair-needed', 'completedAt': 10})
+        self.jobs.accept(self.ranked(self.kp(script='generators/aa/hash/main.py')))
+        with patch('inventory_jobs.subprocess.run') as run:
+            def execute(command, **kwargs):
+                self.assertFalse(self.jobs.run_one(lane='refill'))
+                return subprocess.CompletedProcess(command, 1)
+            run.side_effect = execute
+            self.assertTrue(self.jobs.run_one(lane='build'))
+        self.assertEqual(run.call_count, 1)
+
+    def test_refill_missing_approval_becomes_explicit_band_review_and_resumes_after_review(self):
+        ranked = self.ranked(self.kp(script='generators/aa/hash/main.py'))
+        self.jobs.accept(ranked)
+        path = self.path_for(1, 'refill', 'hard')
+        self.jobs.finish(path, {'state': 'repair-needed', 'completedAt': 10})
+        self.jobs.accept(ranked)
+        build = self.path_for(1, 'build')
+        self.assertEqual(json.loads(build.read_text())['request']['difficulty'], 'hard')
+        self.jobs.finish(build, {'state': 'awaiting-verification', 'completedAt': 20,
+                                 'outcome': {'outcome': 'generated'}})
+        self.jobs.accept(ranked)
+        repaired = json.loads(path.read_text())
+        self.assertEqual(repaired['state'], 'pending')
+        self.assertEqual(repaired['cycle'], 2)
+        self.assertEqual(json.loads(build.read_text())['state'], 'verified')
+
+    def test_rejected_band_does_not_retry_unchanged_or_block_another_band(self):
+        ranked = self.ranked(self.kp(script='generators/aa/hash/main.py'))
+        self.jobs.accept(ranked)
+        for band in ('hard', 'moderate'):
+            self.jobs.finish(self.path_for(1, 'refill', band), {'state': 'repair-needed', 'completedAt': 10})
+        self.jobs.accept(ranked)
+        build = self.path_for(1, 'build')
+        first_band = json.loads(build.read_text())['request']['difficulty']
+        def fail(command, **kwargs):
+            build.with_suffix('.result').write_text(json.dumps({'outcome': 'unsupported'}))
+            return subprocess.CompletedProcess(command, 1)
+        with patch('inventory_jobs.subprocess.run', side_effect=fail):
+            self.jobs.run_one()
+        self.jobs.accept(ranked)
+        self.assertNotEqual(json.loads(build.read_text())['request']['difficulty'], first_band)
+        with patch('inventory_jobs.subprocess.run', side_effect=fail):
+            self.jobs.run_one()
+        self.jobs.accept(ranked)
+        self.assertFalse(self.jobs.run_one())
+        self.assertEqual(len(json.loads(build.read_text())['rejectedVariants']), 2)
+
+    def test_successful_band_review_cannot_be_mistaken_for_next_bands_approval(self):
+        ranked = self.ranked(self.kp(script='generators/aa/hash/main.py'))
+        self.jobs.accept(ranked)
+        for band in ('hard', 'moderate'):
+            self.jobs.finish(self.path_for(1, 'refill', band), {'state': 'repair-needed', 'completedAt': 10})
+        self.jobs.accept(ranked)
+        build = self.path_for(1, 'build')
+        first_band = json.loads(build.read_text())['request']['difficulty']
+        self.jobs.finish(build, {'state': 'awaiting-verification', 'completedAt': 20,
+                                 'retryAt': 999999999999, 'outcome': {'outcome': 'generated'}})
+        self.jobs.accept(ranked)
+        next_review = json.loads(build.read_text())
+        self.assertNotEqual(next_review['request']['difficulty'], first_band)
+        self.assertEqual(next_review['state'], 'pending')
+        self.assertEqual(next_review['outcome'], {})
+        self.jobs.accept(ranked)
+        waiting = self.path_for(1, 'refill', next_review['request']['difficulty'])
+        self.assertEqual(json.loads(waiting.read_text())['state'], 'repair-needed')
+
 
 if __name__ == '__main__': unittest.main()

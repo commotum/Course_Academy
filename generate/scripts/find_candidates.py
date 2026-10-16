@@ -12,7 +12,6 @@ from datetime import datetime
 ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "scripts"))
-from serve_graph_explorer import DEFAULT_DATABASE, DEFAULT_LEARNER, database_environment
 from generator_packages import resolve_registered_script
 
 
@@ -207,7 +206,21 @@ def build(edb_root, test=False):
     return output
 
 
+def discover(database, learner, environment, *, binary, after_basis=None, lineage=None,
+             at=None, topics=(), activity_type="assessment", include_registered=False):
+    """Read and rank one captured snapshot, without holding the learner API lock."""
+    request = {"database": database, "learner": learner, "after_basis": after_basis,
+               "lineage": lineage, "at": at, "topics": list(topics),
+               "activity_type": activity_type, "include_registered": include_registered}
+    response = subprocess.run([str(binary)], input=json.dumps(request), text=True,
+                              env=environment, stdout=subprocess.PIPE, check=True, timeout=180)
+    result = json.loads(response.stdout)
+    check_generator_files(result, environment["EDB_MATH_ROOT"])
+    return ranked_candidates(result)
+
+
 def main():
+    from serve_graph_explorer import DEFAULT_DATABASE, DEFAULT_LEARNER, database_environment
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--database", default=os.environ.get("EDB_DATABASE", DEFAULT_DATABASE))
     parser.add_argument("--learner", default=DEFAULT_LEARNER)
@@ -217,6 +230,8 @@ def main():
     parser.add_argument("--at", help="RFC3339 time for review eligibility; defaults to now")
     parser.add_argument("--topic", type=int, action="append", default=[], help="Scheduler-selected topic entity ID; repeatable")
     parser.add_argument("--activity-type", choices=["lesson", "review", "assessment"], default="assessment")
+    parser.add_argument("--include-registered", action="store_true",
+                        help="Also inspect registered packages outside urgency groups for ongoing replenishment")
     parser.add_argument("--test", action="store_true", help="Run isolated native query fixtures without connecting to EDB")
     args = parser.parse_args()
     if (args.after_basis is None) != (args.lineage is None):
@@ -229,14 +244,12 @@ def main():
         subprocess.run([sys.executable, "-m", "unittest", "discover", "-s", str(HERE),
                         "-p", "test_find_candidates.py"], cwd=ROOT, check=True)
     else:
-        request = {"database":args.database,"learner":args.learner,"after_basis":args.after_basis,
-            "lineage":args.lineage,"at":args.at,"topics":args.topic,"activity_type":args.activity_type}
         environment = database_environment(args.database)
-        response = subprocess.run([str(binary)], input=json.dumps(request), text=True,
-            env=environment, stdout=subprocess.PIPE, check=True)
-        result = json.loads(response.stdout)
-        check_generator_files(result, environment["EDB_MATH_ROOT"])
-        print(json.dumps(ranked_candidates(result), indent=2))
+        result = discover(args.database, args.learner, environment, binary=binary,
+                          after_basis=args.after_basis, lineage=args.lineage, at=args.at,
+                          topics=args.topic, activity_type=args.activity_type,
+                          include_registered=args.include_registered)
+        print(json.dumps(result, indent=2))
 
 
 if __name__ == "__main__":

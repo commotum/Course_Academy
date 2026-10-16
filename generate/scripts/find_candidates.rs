@@ -312,6 +312,44 @@ fn urgency_groups(
     Ok(groups)
 }
 
+fn registered_topics(db: &DatabaseValue) -> Result<BTreeSet<u64>> {
+    let attribute = |name: &str| -> Result<u32> {
+        let (ns, attr) = name.split_once('/').unwrap();
+        db.schema()
+            .resolve_ident(&Keyword::new(ns, attr))
+            .ok_or_else(|| format!("missing {name}").into())
+    };
+    let script = attribute("question-generator/script")?;
+    let generator = attribute("knowledge-point/question-generator")?;
+    let kps = attribute("topic/knowledge-points")?;
+    // Only scan the small registered-script attribute. Explicit reverse ref
+    // prefixes avoid catalog-wide topic/KP joins and never read question pools.
+    let mut topics = BTreeSet::new();
+    for registration in db.collect_datoms_with_prefix(&edb_core::IndexPrefix::Aevt {
+        attribute: script,
+        entity: None,
+        value: None,
+    })? {
+        if !matches!(&registration.value, Value::String(path) if path.starts_with("generators/")) {
+            continue;
+        }
+        for kp in db.collect_datoms_with_prefix(&edb_core::IndexPrefix::Vaet {
+            value: Value::Ref(registration.entity),
+            attribute: Some(generator),
+            entity: None,
+        })? {
+            for topic in db.collect_datoms_with_prefix(&edb_core::IndexPrefix::Vaet {
+                value: Value::Ref(kp.entity),
+                attribute: Some(kps),
+                entity: None,
+            })? {
+                topics.insert(topic.entity);
+            }
+        }
+    }
+    Ok(topics)
+}
+
 fn candidates(
     db: &DatabaseValue,
     learner: u64,
@@ -319,6 +357,7 @@ fn candidates(
     _changes: Option<&Changes>,
     scheduler_topics: &BTreeSet<u64>,
     scheduler_kind: &str,
+    include_registered: bool,
 ) -> Result<Json> {
     // A ranking needs the complete eligible population. A cursor validates the
     // captured lineage/log but must never hide unchanged queue or study facts.
@@ -425,7 +464,10 @@ fn candidates(
     for topic in scheduler_topics {
         add(*topic, "scheduler-selected", scheduler_kind, None);
     }
-    let selected: BTreeSet<_> = groups.keys().copied().collect();
+    let mut selected: BTreeSet<_> = groups.keys().copied().collect();
+    if include_registered {
+        selected.extend(registered_topics(db)?);
+    }
     let mut records = BTreeMap::new();
     if !scheduler_topics.is_empty()
         && query(db, TOPICS, vec![ids(scheduler_topics)?])?.len() != scheduler_topics.len()
@@ -439,15 +481,16 @@ fn candidates(
             record["triggers"] =
                 json!(triggers.get(&topic).into_iter().flatten().map(|(reason, kind, task)|
                 json!({"reason":reason,"activity_type":kind,"task":task})).collect::<Vec<_>>());
+            let memberships = groups.get(&topic).cloned().unwrap_or_default();
             record["urgency_groups"] = json!(
-                groups[&topic]
+                memberships
                     .iter()
                     .rev()
                     .map(|(_, name)| name)
                     .collect::<Vec<_>>()
             );
-            record["urgency_value"] = json!(groups[&topic].last().unwrap().0);
-            record["studied"] = json!(groups[&topic].iter().any(|(_, name)| name == "studied"));
+            record["urgency_value"] = json!(memberships.last().map_or(0, |(value, _)| *value));
+            record["studied"] = json!(memberships.iter().any(|(_, name)| name == "studied"));
             record["knowledge_points"] = json!([]);
             records.insert(topic, record);
         }
@@ -568,7 +611,21 @@ fn main() -> Result<()> {
     if !matches!(kind, "lesson" | "review" | "assessment") {
         return Err("unsupported activity type".into());
     }
-    let mut candidates = candidates(&db, learner, now, changes.as_ref(), &topics, kind)?;
+    let include_registered = match request.get("include_registered") {
+        Some(value) => value
+            .as_bool()
+            .ok_or("include_registered must be a boolean")?,
+        None => false,
+    };
+    let mut candidates = candidates(
+        &db,
+        learner,
+        now,
+        changes.as_ref(),
+        &topics,
+        kind,
+        include_registered,
+    )?;
     find_candidates_ranking::annotate(&db, learner, now, &mut candidates)?;
     println!(
         "{}",

@@ -17,11 +17,25 @@ band. An explicit band is never silently replaced. Inventory classification
 requests likewise produce a reviewed initial batch; existing source questions
 are preserved.
 
-The learner application's inventory worker invokes this pipeline automatically.
-It retains its existing trigger and inventory verification rules. A registered
-hashed package is reused directly; legacy scripts and approved drafts are
-packaged by the author. The existing `COURSE_ACADEMY_DISABLE_GENERATION=1` and
-developer-mode switches still control background generation.
+The learner application runs two independent background workers. The build worker
+uses the [finder's scoring rules](scripts/README.md), taking one KP at a time through
+authoring and independent review. The refill worker runs approved hashed packages
+without Codex sessions, aiming for five easy, five moderate and five hard questions
+per KP. It maintains existing packages even after their topics leave the urgency
+groups. Legacy scripts and approved drafts enter the build worker for packaging and
+review. A shared KP lock prevents the two workers from publishing competing versions.
+
+The application refreshes the ranking at startup, after learner actions and completed
+generation jobs, and through the scheduler's 30-second refresh. Both workers wait for
+the first ranked inventory. The read-only scan runs separately from learner requests
+and does not hold their API lock. The existing `COURSE_ACADEMY_DISABLE_GENERATION=1`
+and developer-mode switches control both generation workers.
+
+Approval is specific to the package, original instructional source, database lineage,
+KP and reviewed difficulty. Missing or stale approval queues an independent review
+in the build worker. An unsupported band is recorded and other work continues.
+An unchanged rejected request is not repeatedly retried. Inventory is rechecked
+after publication; existing jobs and pending commit requests survive restarts.
 
 ## The four stages
 
@@ -64,6 +78,7 @@ $EDB_MATH_ROOT/
   generators/<first-two-hash-characters>/<sha256>/
     generator-package.json
     <entrypoint and declared runtime files>
+  generators/approvals/<sha256>/<kp>.json
   images/<first-two-hash-characters>/<sha256>.<extension>
 ```
 

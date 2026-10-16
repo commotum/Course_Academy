@@ -369,6 +369,56 @@ class GeneratorPipelineTests(unittest.TestCase):
         self.assertEqual(session.calls, [])
         self.assertEqual(self.publisher.publishes, 0)
 
+    def test_refill_deterministic_preparation_failure_requests_repair_once(self):
+        request, _ = self.approve_for_refill()
+        session = FakeSession()
+        with patch.object(self.publisher, "prepare", side_effect=ValueError("Canonical answer must belong to its field bank")) as prepare:
+            result = self.pipeline(session, request=request).run()
+            repeated = self.pipeline(session, request=request).run()
+        self.assertEqual(result["stage"], "unsupported")
+        self.assertTrue(result["needs_repair"])
+        self.assertEqual(result["error"]["code"], "preparation_invalid")
+        self.assertEqual(repeated, result)
+        self.assertEqual(prepare.call_count, 1)
+        self.assertEqual(session.calls, [])
+        self.assertEqual(self.publisher.publishes, 0)
+
+    def test_refill_preparation_transport_failure_remains_resumable(self):
+        request, _ = self.approve_for_refill()
+        session = FakeSession()
+        with patch.object(self.publisher, "prepare", side_effect=ConnectionError("Database disconnected")):
+            with self.assertRaises(ConnectionError):
+                self.pipeline(session, request=request).run()
+        self.assertEqual(json.loads((self.job / "job.json").read_text())["stage"], "prepare")
+        samples = (self.job / "samples.json").read_bytes()
+        result = self.pipeline(session, request=request).run()
+        self.assertEqual(result["stage"], "verified")
+        self.assertEqual((self.job / "samples.json").read_bytes(), samples)
+        self.assertEqual(session.calls, [])
+
+    def test_refill_prepublication_rejection_is_terminal_only_without_saved_intent(self):
+        request, _ = self.approve_for_refill()
+        session = FakeSession()
+        result = self.pipeline(session, request=request).run("prepare")
+        self.assertEqual(result["stage"], "push")
+        intent = self.job / "publication/request.json"
+        saved_intent = intent.read_bytes()
+        with patch.object(self.publisher, "publish", side_effect=ValueError("Receipt differs from prepared assertions")):
+            with self.assertRaisesRegex(ValueError, "Receipt differs"):
+                self.pipeline(session, request=request).run()
+        self.assertEqual(intent.read_bytes(), saved_intent)
+        self.assertEqual(json.loads((self.job / "job.json").read_text())["stage"], "push")
+        self.assertEqual(self.publisher.prepares, 1)
+        # Real Publisher creates the intent only after native preview succeeds.
+        # Simulate its pre-intent boundary separately from the saved-intent case.
+        intent.unlink()
+        with patch.object(self.publisher, "publish", side_effect=ValueError("Preview contains an invalid answer field")):
+            result = self.pipeline(session, request=request).run()
+        self.assertEqual(result["stage"], "unsupported")
+        self.assertTrue(result["needs_repair"])
+        self.assertEqual(result["error"]["code"], "prepublication_invalid")
+        self.assertEqual(session.calls, [])
+
     def test_refill_rechecks_package_and_batch_before_publication(self):
         request, _ = self.approve_for_refill()
         session = FakeSession()
@@ -380,6 +430,32 @@ class GeneratorPipelineTests(unittest.TestCase):
         self.assertTrue(result["needs_repair"])
         self.assertEqual(session.calls, [])
         self.assertEqual((self.publisher.prepares, self.publisher.publishes), (0, 0))
+
+    def test_refill_rejects_corrupted_archive_without_agents(self):
+        request, approved = self.approve_for_refill()
+        script = resolve_registered_script(approved["registration"], self.root, self.math)
+        script.chmod(0o755)
+        script.write_text(script.read_text() + "\n# corrupt immutable archive\n")
+        session = FakeSession()
+        result = self.pipeline(session, request=request).run()
+        self.assertEqual(result["stage"], "unsupported")
+        self.assertTrue(result["needs_repair"])
+        self.assertEqual(session.calls, [])
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (0, 0))
+
+    def test_prior_verified_job_can_backfill_approval_without_republication(self):
+        session = FakeSession()
+        result = self.pipeline(session).run()
+        path = self.math / "generators/approvals" / result["package_hash"] / "123.json"
+        path.unlink()
+        result.pop("approval_recorded")
+        (self.job / "job.json").write_text(json.dumps(result))
+        calls_before = list(session.calls)
+        result = self.pipeline(session).run()
+        self.assertTrue(path.exists())
+        self.assertTrue(result["approval_recorded"])
+        self.assertEqual(session.calls, calls_before)
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
 
     def test_inventory_refill_kind_is_forwarded_but_saved_build_request_wins(self):
         inventory = self.root / "inventory.json"

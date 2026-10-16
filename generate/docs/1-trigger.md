@@ -11,7 +11,12 @@ Automatically call [Inventory](2-inventory.md) for a topic when:
 
 Retakes use the same activity triggers and inventory requirements. Topic selection and eligibility must happen before filtering by question supply; an empty bank must still trigger inventory.
 
-Use **event hooks** from the scheduler and committed database changes. Follow the most efficient [$edb](../../skills/edb/SKILL.md) practices: read relevant changes from the transaction log, retain the processing position across restarts, and batch checks for affected topics. Time-based review triggers come from the scheduler.
+The running application coalesces refresh events after learner actions, scheduler
+passes and generator completion. It also refreshes at startup and on the scheduler's
+30-second cadence. The finder captures a consistent database snapshot and inspects
+the full eligible pool, because distinct-topic assessment coverage is a global
+calculation. The durable cursor records the accepted lineage and basis. This scan
+runs outside the learner API lock; starting a lesson does not await generator work.
 
 1. Pass the affected topics and activity types to Inventory.
 2. If inventory is sufficient, no generation is needed. Otherwise, queue background generation for the shortages, reusing existing jobs for overlapping pools.
@@ -19,7 +24,7 @@ Use **event hooks** from the scheduler and committed database changes. Follow th
 
 Recheck availability before starting an unstarted activity. Preserve already started or paused work; existing required-work rules still apply while generation runs.
 
-The read-only `generate/scripts/find_candidates.py` now provides a separate
+The live worker uses the read-only `generate/scripts/find_candidates.py`
 generator-build ranking. Eligibility is studied, target, queued, direct prerequisite
 of a target, or direct descendant of studied/queued topics. It scores the strongest
 reason as `purpose_points + 1000 × shortage + 100 × urgency_value`: lesson shortages
@@ -32,5 +37,9 @@ The flat `knowledge_points` list deduplicates build candidates and excludes usab
 registered generators. Full nested topic inventories remain available for coverage
 and diagnostics, including per-KP refill deficits toward five of every difficulty.
 The [finder guide](../scripts/README.md) defines the score components, exclusive
-next-activity rules, distinct-topic coverage and cursor behavior. This finder does
-not change the separate live inventory worker's trigger or ranking policy above.
+next-activity rules, distinct-topic coverage and cursor behavior. The service calls
+it with `include_registered=true` so the independent refill worker also maintains
+existing hashed generators outside the urgency groups. Those extra topics remain
+ineligible for new generator creation. Refills run approved packages directly;
+missing or stale approval sends the affected difficulty to the build worker for
+review. See the [pipeline guide](../README.md) for recovery and storage details.

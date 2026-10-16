@@ -263,6 +263,22 @@ class PublicationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'source changed'):
             self.publisher.prepare(KP, [record()], self.script, self.package, self.directory, source_snapshot=source)
 
+    def test_refill_cannot_replace_a_changed_registration(self):
+        self.client.kp[':knowledge-point/question-generator'] = {
+            ':db/id': 77, ':question-generator/script': 'generators/newer/generate.py'}
+        with self.assertRaisesRegex(ValueError, 'Registered generator changed'):
+            self.publisher.prepare(KP, [record()], self.script, self.package, self.directory,
+                                   expected_registered_generator=self.script)
+        self.assertEqual(self.client.calls, [])
+        self.assertFalse((self.directory / 'request.json').exists())
+
+    def test_refill_accepts_unchanged_registration(self):
+        self.client.kp[':knowledge-point/question-generator'] = {
+            ':db/id': 77, ':question-generator/script': self.script}
+        result = self.publisher.prepare(KP, [record()], self.script, self.package, self.directory,
+                                        expected_registered_generator=self.script)
+        self.assertEqual(result['new_questions'], 1)
+
     def test_images_are_localized_and_verified_after_commit(self):
         from PIL import Image
         image = self.root / 'figure.png'

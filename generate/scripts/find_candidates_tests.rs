@@ -105,6 +105,7 @@ fn eligibility_includes_studied_topics_and_empty_banks_but_not_unrelated_tasks()
         None,
         &BTreeSet::new(),
         "assessment",
+        false,
     )?;
     assert_eq!(
         titles(&result),
@@ -146,6 +147,7 @@ fn cursor_keeps_full_population_and_scheduler_selection_cannot_bypass_eligibilit
         Some(&Changes::default()),
         &BTreeSet::from([topic]),
         "assessment",
+        false,
     )?;
     assert_eq!(
         titles(&result),
@@ -154,6 +156,87 @@ fn cursor_keeps_full_population_and_scheduler_selection_cannot_bypass_eligibilit
             .map(String::from)
             .collect()
     );
+    Ok(())
+}
+
+#[test]
+fn registered_packages_can_be_replenished_outside_build_eligibility() -> Result<()> {
+    let db = fixture()?;
+    let learner = identity(&db, "learner/id", "test")?;
+    let reviewed_kp = identity(&db, "knowledge-point/title", "KP Completed review")?;
+    let due_kp = identity(&db, "knowledge-point/title", "KP Due")?;
+    let legacy_kp = identity(&db, "knowledge-point/title", "KP Locked lesson")?;
+    let db = db
+        .with_edn(
+            &format!(
+                r#"[
+      {{:db/id "package" :question-generator/script "generators/aa/{}/generator.py"}}
+      {{:db/id "legacy" :question-generator/script "generate/scratch/legacy.py"}}
+      {{:db/id "orphan" :question-generator/script "generators/bb/{}/generator.py"}}
+      [:db/add {reviewed_kp} :knowledge-point/question-generator "package"]
+      [:db/add {due_kp} :knowledge-point/question-generator "package"]
+      [:db/add {legacy_kp} :knowledge-point/question-generator "legacy"]
+    ]"#,
+                "a".repeat(64),
+                "b".repeat(64)
+            ),
+            0,
+            EntityRef::Ident(Keyword::new("db.source", "system")),
+        )?
+        .db_after;
+    let now = at("2026-10-11T00:00:00Z");
+    let ordinary = candidates(
+        &db,
+        learner,
+        now,
+        None,
+        &BTreeSet::new(),
+        "assessment",
+        false,
+    )?;
+    assert_eq!(
+        titles(&ordinary),
+        ["Queue", "Target", "Due", "Refreshed"]
+            .into_iter()
+            .map(String::from)
+            .collect()
+    );
+    let mut extended = candidates(
+        &db,
+        learner,
+        now,
+        None,
+        &BTreeSet::new(),
+        "assessment",
+        true,
+    )?;
+    find_candidates_ranking::annotate(&db, learner, now, &mut extended)?;
+    assert_eq!(
+        titles(&extended),
+        ["Queue", "Target", "Due", "Refreshed", "Completed review"]
+            .into_iter()
+            .map(String::from)
+            .collect()
+    );
+    let rows = extended.as_array().unwrap();
+    let outside = rows
+        .iter()
+        .find(|r| r["topic/title"] == "Completed review")
+        .unwrap();
+    assert_eq!(outside["urgency_groups"], json!([]));
+    assert_eq!(outside["urgency_value"], 0);
+    assert_eq!(outside["studied"], false);
+    // Review history is retained independently of selection/eligibility.
+    assert_eq!(outside["reviewed"], true);
+    assert_eq!(outside["knowledge_points"][0]["has_generator"], true);
+    assert_eq!(
+        outside["knowledge_points"][0]["inventory"]["available"],
+        json!({"easy":0,"moderate":0,"hard":0})
+    );
+    let due = rows.iter().find(|r| r["topic/title"] == "Due").unwrap();
+    assert_eq!(due["urgency_groups"], json!(["studied"]));
+    assert_eq!(due["urgency_value"], 5);
+    assert_eq!(due["studied"], true);
     Ok(())
 }
 
@@ -221,7 +304,15 @@ fn ongoing_lesson_overrides_next_activity_only_for_an_eligible_topic() -> Result
             )?
             .db_after;
         let now = at("2026-10-11T00:00:00Z");
-        let result = candidates(&db, learner, now, None, &BTreeSet::new(), "assessment")?;
+        let result = candidates(
+            &db,
+            learner,
+            now,
+            None,
+            &BTreeSet::new(),
+            "assessment",
+            false,
+        )?;
         assert!(!titles(&result).contains("Locked lesson"));
         let topic = identity(&db, "topic/title", "Locked lesson")?;
         let db = db
@@ -241,8 +332,15 @@ fn ongoing_lesson_overrides_next_activity_only_for_an_eligible_topic() -> Result
             &[state_id],
         );
         for changed in [None, Some(&changes)] {
-            let mut result =
-                candidates(&db, learner, now, changed, &BTreeSet::new(), "assessment")?;
+            let mut result = candidates(
+                &db,
+                learner,
+                now,
+                changed,
+                &BTreeSet::new(),
+                "assessment",
+                false,
+            )?;
             find_candidates_ranking::annotate(&db, learner, now, &mut result)?;
             let row = result
                 .as_array()
@@ -296,7 +394,15 @@ fn ranking_propagates_assignment_deadline_to_prerequisites_without_bank_filterin
     );
     let db = db.with_edn(&text, 0, source)?.db_after;
     let now = at("2026-10-11T00:00:00Z");
-    let mut result = candidates(&db, learner, now, None, &BTreeSet::new(), "assessment")?;
+    let mut result = candidates(
+        &db,
+        learner,
+        now,
+        None,
+        &BTreeSet::new(),
+        "assessment",
+        false,
+    )?;
     find_candidates_ranking::annotate(&db, learner, now, &mut result)?;
     let rows = result.as_array().unwrap();
     for title in ["Queue", "Target"] {
@@ -370,7 +476,15 @@ fn ranking_inventory_excludes_seen_reserved_and_canonical_questions() -> Result<
         )?
         .db_after;
     let now = at("2026-10-11T00:00:00Z");
-    let mut result = candidates(&db, learner, now, None, &BTreeSet::new(), "assessment")?;
+    let mut result = candidates(
+        &db,
+        learner,
+        now,
+        None,
+        &BTreeSet::new(),
+        "assessment",
+        false,
+    )?;
     find_candidates_ranking::annotate(&db, learner, now, &mut result)?;
     let queue = result
         .as_array()
@@ -429,6 +543,7 @@ fn urgency_uses_both_one_hop_graphs_and_highest_membership_without_expansion() -
         None,
         &BTreeSet::new(),
         "assessment",
+        false,
     )?;
     assert_eq!(
         titles(&result),
@@ -492,7 +607,15 @@ fn lifecycle_uses_completed_history_legacy_progress_and_original_first_study_tim
       [:db/add {refreshed_progress} :progress/learned false]
     ]"#), 0, EntityRef::Ident(Keyword::new("db.source", "system")))?.db_after;
     let now = at("2026-10-10T12:00:00Z");
-    let mut result = candidates(&db, learner, now, None, &BTreeSet::new(), "assessment")?;
+    let mut result = candidates(
+        &db,
+        learner,
+        now,
+        None,
+        &BTreeSet::new(),
+        "assessment",
+        false,
+    )?;
     find_candidates_ranking::annotate(&db, learner, now, &mut result)?;
     let rows = result.as_array().unwrap();
     let refreshed = rows

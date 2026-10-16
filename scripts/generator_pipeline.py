@@ -216,7 +216,12 @@ class Pipeline:
         band = self.state['request']['difficulty']
         if band not in value.get('bands', {}):
             raise RefillNeedsReview('approval_band_missing', 'Registered package has not been reviewed for ' + band)
-        return {'identity': identity, 'difficulty': band, 'approval': value['bands'][band]}
+        approval = value['bands'][band]
+        if (not isinstance(approval, dict) or not approval.get('publication', {}).get('passed')
+                or any(not re.fullmatch(r'[0-9a-f]{64}', str(approval.get(key, '')))
+                       for key in ('review_sha256', 'batch_sha256'))):
+            raise RefillNeedsReview('approval_invalid', 'Registered generator approval is incomplete')
+        return {'identity': identity, 'difficulty': band, 'approval': approval}
 
     def load_registered_package(self, reference):
         resolve_registered_script(reference, self.root, self.math_root)
@@ -388,7 +393,7 @@ class Pipeline:
                     self.persist(approval_hash=digest(approval))
                     self.sample()
                     self.persist(stage='prepare', registration=package.reference)
-                except (ValueError, subprocess.SubprocessError) as error:
+                except (ValueError, FileNotFoundError, subprocess.SubprocessError) as error:
                     self.repair({'code': getattr(error, 'code', 'generator_failed'), 'error': str(error)})
             elif stage == 'generate':
                 attempt = self.state['attempt'] if self.state.get('author_running') else self.state['attempt'] + 1
@@ -441,7 +446,7 @@ class Pipeline:
                     return self.state
                 try:
                     self.verify_approval_inputs()
-                except ValueError as error:
+                except (ValueError, FileNotFoundError) as error:
                     if not self.is_refill:
                         raise
                     self.repair({'code': getattr(error, 'code', 'generator_failed'), 'error': str(error)})
@@ -463,6 +468,14 @@ class Pipeline:
                         self.persist(source_hash=digest(read(self.directory / 'source/source.json')))
                     self.repair({'code': 'source_changed', 'error': str(error)})
                     continue
+                except ValueError as error:
+                    # Preparation performs no submission. Invalid generated
+                    # content is a repair request, not an infrastructure retry.
+                    # Never retire or replace an already saved exact intent.
+                    if not self.is_refill or (self.directory / 'publication/request.json').exists():
+                        raise
+                    self.repair({'code': 'preparation_invalid', 'error': str(error)})
+                    continue
                 self.persist(stage='push', registration=package.reference)
             elif stage == 'push':
                 if stop_after != 'push':
@@ -476,6 +489,16 @@ class Pipeline:
                     stale_retries += 1
                     if stale_retries >= 3:
                         raise
+                    continue
+                except ValueError as error:
+                    publication = self.directory / 'publication'
+                    # A speculative preview can reject content before an intent
+                    # exists. Any saved intent or completed verification retains
+                    # exact publication recovery, including post-submit failures.
+                    if (not self.is_refill or (publication / 'request.json').exists()
+                            or (publication / 'verification.json').exists()):
+                        raise
+                    self.repair({'code': 'prepublication_invalid', 'error': str(error)})
                     continue
                 self.persist(stage='verified', publication=result, error=None, completed=time.time())
             else:
