@@ -1,0 +1,83 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-109419",
+      "sequence_position": 2,
+      "problem": "$$\nA=[\\begin{aligned}3 & 1 & 0 \\\\ -1 & 4 & 1 \\\\ -1 & 0 & 5\\end{aligned}],\\,J=[\\begin{aligned}4 & 1 & 0 \\\\ 0 & 4 & 1 \\\\ 0 & 0 & 4\\end{aligned}],\\,P=[\\begin{aligned}∗ & -1 & a \\\\ ∗ & 0 & b \\\\ ∗ & 0 & c\\end{aligned}]\n$$\n\nConsider the matrices above. Given that $A=PJ{P}^{-1}$ is a Jordan canonical decomposition of $A,$ find the value of $a-b.$",
+      "worked_solution": "Since the Jordan block $J$ has a single $3\\times 3$ Jordan block corresponding to $\\lambda =4,$ the columns of $P$ form the following chain: \n\n$$\n\\begin{aligned}{v}_{3}\\overset{A-4I\\,}{\\to }{v}_{2}\\overset{A-4I\\,}{\\to }{v}_{1}\\overset{A-4I\\,}{\\to }0\\end{aligned}\n$$\n\nAs a result, we obtain that \n\n- the first column of $P$ corresponds to the eigenvector ${v}_{1}$ of the eigenvalue $\\lambda =1,$\n\n- the second column of $P$ corresponds to the vector ${v}_{2}=[\\begin{aligned}-1 \\\\ 0 \\\\ 0\\end{aligned}]$ such that $(A-4I){v}_{2}={v}_{1},$\n\n- the third column of $P$ corresponds to the vector ${v}_{3}$ such that $(A-4I){v}_{3}={v}_{2}.$\n\nNow, computing $A-4I,$ we get\n\n$$\n\\begin{aligned}A-4I & =[\\begin{aligned}3 & 1 & 0 \\\\ -1 & 4 & 1 \\\\ -1 & 0 & 5\\end{aligned}]-4[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}-1 & 1 & 0 \\\\ -1 & 0 & 1 \\\\ -1 & 0 & 1\\end{aligned}].\\end{aligned}\n$$\n\nSo, the matrix equation $(A-4I){v}_{3}={v}_{2}$ is equivalent to the system of linear equations with the augmented matrix $M$ which we reduce to row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-1 & 1 & 0 & -1 \\\\ -1 & 0 & 1 & 0 \\\\ -1 & 0 & 1 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+(-1){R}_{1} \\\\ {R}_{3}:={R}_{3}+(-1){R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}-1 & 1 & 0 & -1 \\\\ 0 & -1 & 1 & 1 \\\\ 0 & -1 & 1 & 1\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+(-1){R}_{2}\\end{aligned} \\\\  & ∼[\\begin{aligned}-1 & 1 & 0 & -1 \\\\ 0 & -1 & 1 & 1 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has two pivot columns (the $1$st and $2$nd). Thus, ${x}_{3}$ is a free variable. From the second equation, we have ${x}_{2}=-1+{x}_{3}.$ Substituting this into the first equation, we obtain\n\n$$\n-{x}_{1}+(-1+{x}_{3})=-1\\,⟹\\,{x}_{1}={x}_{3}.\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}{x}_{3} \\\\ -1+{x}_{3} \\\\ {x}_{3}\\end{aligned}],\\,{x}_{3}\\in R.\n$$\n\nTherefore, setting ${x}_{3}=0,$ we get  \n\n$$\n{v}_{3}=[\\begin{aligned}a \\\\ b \\\\ c\\end{aligned}]=[\\begin{aligned}0 \\\\ -1 \\\\ 0\\end{aligned}].\n$$\n\nFinally, $a-b=0-(-1)=1.$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14251620/observations/history-q-109419-4609f02d06443157a64d.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14251620",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14251620/observations/history-solution-q-109419-a76779528f2082888eec.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "1"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "3"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "-2"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "2"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "-3"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q109419",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "3",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "source_grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "Since the Jordan block $J$ has a single $3\\times 3$ Jordan block corresponding to $\\lambda =4,$ the columns of $P$ form the following chain: \n\n$$\n\\begin{aligned}{v}_{3}\\overset{A-4I\\,}{\\to }{v}_{2}\\overset{A-4I\\,}{\\to }{v}_{1}\\overset{A-4I\\,}{\\to }0\\end{aligned}\n$$\n\nAs a result, we obtain that \n\n- the first column of $P$ corresponds to the eigenvector ${v}_{1}$ of the eigenvalue $\\lambda =1,$\n\n- the second column of $P$ corresponds to the vector ${v}_{2}=[\\begin{aligned}-1 \\\\ 0 \\\\ 0\\end{aligned}]$ such that $(A-4I){v}_{2}={v}_{1},$\n\n- the third column of $P$ corresponds to the vector ${v}_{3}$ such that $(A-4I){v}_{3}={v}_{2}.$\n\nNow, computing $A-4I,$ we get\n\n$$\n\\begin{aligned}A-4I & =[\\begin{aligned}3 & 1 & 0 \\\\ -1 & 4 & 1 \\\\ -1 & 0 & 5\\end{aligned}]-4[\\begin{aligned}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{aligned}]=[\\begin{aligned}-1 & 1 & 0 \\\\ -1 & 0 & 1 \\\\ -1 & 0 & 1\\end{aligned}].\\end{aligned}\n$$\n\nSo, the matrix equation $(A-4I){v}_{3}={v}_{2}$ is equivalent to the system of linear equations with the augmented matrix $M$ which we reduce to row echelon form using Gaussian elimination, as follows:\n\n$$\n\\begin{aligned}M & =[\\begin{aligned}-1 & 1 & 0 & -1 \\\\ -1 & 0 & 1 & 0 \\\\ -1 & 0 & 1 & 0\\end{aligned}] &  & \\begin{aligned}{R}_{2}:={R}_{2}+(-1){R}_{1} \\\\ {R}_{3}:={R}_{3}+(-1){R}_{1}\\end{aligned} \\\\  & ∼[\\begin{aligned}-1 & 1 & 0 & -1 \\\\ 0 & -1 & 1 & 1 \\\\ 0 & -1 & 1 & 1\\end{aligned}] &  & \\begin{aligned}{R}_{3}:={R}_{3}+(-1){R}_{2}\\end{aligned} \\\\  & ∼[\\begin{aligned}-1 & 1 & 0 & -1 \\\\ 0 & -1 & 1 & 1 \\\\ 0 & 0 & 0 & 0\\end{aligned}]\\end{aligned}\n$$\n\nThe reduced matrix above has two pivot columns (the $1$st and $2$nd). Thus, ${x}_{3}$ is a free variable. From the second equation, we have ${x}_{2}=-1+{x}_{3}.$ Substituting this into the first equation, we obtain\n\n$$\n-{x}_{1}+(-1+{x}_{3})=-1\\,⟹\\,{x}_{1}={x}_{3}.\n$$\n\nHence, the general solution is\n\n$$\n[\\begin{aligned}{x}_{3} \\\\ -1+{x}_{3} \\\\ {x}_{3}\\end{aligned}],\\,{x}_{3}\\in R.\n$$\n\nTherefore, setting ${x}_{3}=0,$ we get  \n\n$$\n{v}_{3}=[\\begin{aligned}a \\\\ b \\\\ c\\end{aligned}]=[\\begin{aligned}0 \\\\ -1 \\\\ 0\\end{aligned}].\n$$\n\nFinally, $a-b=0-(-1)=1.$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14251620/observations/history-solution-q-109419-a76779528f2082888eec.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14251620/observations/history-q-109419-4609f02d06443157a64d.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a1437d-4582-79a1-87ba-878a61ee14dd",
+  "previous_failures": []
+}
