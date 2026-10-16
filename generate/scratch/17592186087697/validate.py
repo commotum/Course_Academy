@@ -38,7 +38,7 @@ def solution_check(q):
  for name,bullet in bullets:
   M=matrices[name];assert ('*not*' not in bullet)==truth[name]
   if 'not a square matrix' in bullet:assert len(M)!=len(M[0])
-  elif 'do not lie on the main diagonal are not zeros' in bullet:
+  elif 'do not lie on the main diagonal are not zeros' in bullet or 'off the main diagonal is nonzero' in bullet:
    assert len(M)==len(M[0]);m=re.search(r'\$\{([a-z])\}_\{(\d)(\d)\}=(-?\d+)\\ne 0\$',bullet);assert m,bullet
    i,j=int(m[2]),int(m[3]);assert m[1]==name.lower() and i!=j and M[i-1][j-1]==Fraction(m[4])!=0
   elif kind=='identity' and '*not*' in bullet:assert diagonals[name] and not identities[name] and 'diagonal entries are not all ones' in bullet
@@ -66,41 +66,70 @@ def build_engine():
  save('engine-build.json',{'harness_sha256':sha(harness),'libraries':{str(p):sha(p) for p in libs.values()},'binary_sha256':sha(HERE/'check-engine')})
 
 def main():
- source=json.loads((HERE/'source.json').read_text());qs={q[':question/math-academy-id']:q for q in source['record'][':knowledge-point/questions']};rs=[];replays=[];coverage={};review=[]
+ evidence=HERE/'structural-fix';evidence.mkdir(exist_ok=True)
+ records=[];coverage={}
  for mid,t in g.TEMPLATES.items():
-  r=g.generate('easy',template=mid,parameters=t['parameters']);independent(r);q=qs[mid];fresh=r['question']
-  assert fresh[':question/problem']==q[':question/problem'] and fresh[':question/worked-solution']==q[':question/worked-solution'];solution_check(q)
-  old={f[':answer-field/key']:f for f in q[':question/answer-fields']}
+  replay=g.generate(template=mid,parameters=t['parameters']);independent(replay);records.append(replay)
+  assert replay['question'][':question/problem']==t['problem'] and replay['question'][':question/worked-solution']==t['worked_solution']
+  for mask in range(8):
+   r=g.generate(seed=720+mask,template=mid,selection=mask);independent(r);assert r['generation']['selection']==mask;records.append(r)
+  sampled=[g.generate(seed=i,template=mid) for i in range(200)]
+  for r in sampled:independent(r)
+  masks={r['generation']['selection'] for r in sampled};assert masks==set(range(8))
+  roles=[sorted({r['generation']['roles'][i] for r in sampled}) for i in range(3)]
+  assert all(set(slot)=={'identity','diagonal','rectangular','offdiagonal'} for slot in roles)
+  coverage[mid]={'samples':len(sampled),'selections':sorted(masks),'roles_per_label':dict(zip(t['labels'],roles))}
+  records.extend(sampled)
+ # Hold dimensions, labels and other matrices constant; change only F's
+ # off-diagonal entry. The answer must change from H,M to F,H,M.
+ p={'matrices':[[['2','1'],['0','3']],[['0','0'],['0','1']],[['2','0'],['0','3']]],'witnesses':[[1,2],None,None]}
+ before=g.generate(template='q-68744',parameters=p);independent(before)
+ changed=copy.deepcopy(p);changed['matrices'][0][0][1]='0';changed['witnesses'][0]=None
+ after=g.generate(template='q-68744',parameters=changed);independent(after)
+ assert before['generation']['selection']==6 and after['generation']['selection']==7
+ for mutation in ('solution','key','prompt'):
+  bad=copy.deepcopy(after['question'])
+  if mutation=='solution':bad[':question/worked-solution']=before['question'][':question/worked-solution']
+  elif mutation=='prompt':bad[':question/problem']=before['question'][':question/problem']
+  else:
+   f=bad[':question/answer-fields'][0];f[':answer-field/correct'][1]=next(a[':answer/id'] for a in f[':answer-field/choices'] if a[':answer/value']=='false')
+  try:solution_check(bad)
+  except AssertionError:pass
+  else:raise AssertionError('Stale '+mutation+' escaped')
+ records.extend([before,after])
+ # Identity is a subset of diagonal; the all-zero matrix is diagonal but not identity.
+ boundary={'matrices':[[['0','0'],['0','0']],[['1','0'],['0','1']],[['1','0'],['0','0']]],'witnesses':[None,None,None]}
+ for template,expected in [('q-68744',7),('q-68741',2)]:
+  r=g.generate(template=template,parameters=boundary);independent(r);assert r['generation']['selection']==expected;records.append(r)
+ for key in ('negative','oversized','bad_witness','selection'):
+  bad=copy.deepcopy(p);kw={}
+  if key=='negative':bad['matrices'][0][0][0]='-4'
+  elif key=='oversized':bad['matrices'][0]=[['1']*5 for _ in range(2)]
+  elif key=='bad_witness':bad['witnesses'][0]=[2,1]
+  else:kw['selection']=7
+  try:g.generate(template='q-68744',parameters=bad,**kw)
+  except ValueError:pass
+  else:raise AssertionError('Invalid parameters accepted: '+key)
+ batch=[g.generate(seed=20261016+mask,template=mid,selection=mask) for mid in ('q-68744','q-68741') for mask in range(8)]
+ for r in batch:independent(r)
+ assert len({r['generation']['parameter_fingerprint'] for r in batch})==16
+ records.extend(batch)
+ # Replay all original boolean banks and correct designations from saved source.
+ source=json.loads((HERE/'source.json').read_text());qs={q[':question/math-academy-id']:q for q in source['record'][':knowledge-point/questions']}
+ for mid,t in g.TEMPLATES.items():
+  q=qs[mid];fresh=g.generate(template=mid,parameters=t['parameters'])['question'];solution_check(q)
   for f in fresh[':question/answer-fields']:
-   original=old[f[':answer-field/key']];assert sorted(a[':answer/value'] for a in f[':answer-field/choices'])==sorted(a[':answer/value'] for a in original[':answer-field/choices']);assert next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])==original[':answer-field/correct'][':answer/value']
-  replays.append({'source':mid,'matched_fields':3,'total_fields':3,'matched_values':6,'total_values':6,'matched_correct_designations':3,'missing_options':[],'extra_options':[],'exact_prompt':True,'exact_solution':True});rs.append(r)
-  seen=[{'shapes':set(),'witnesses':set(),'values':set()} for _ in range(3)];valid=[]
-  for seed in range(400):
-   try:variant=g.generate('easy',seed,mid)
-   except ValueError:continue
-   independent(variant);rs.append(variant);valid.append(variant)
-   for slot,(M,w) in enumerate(zip(variant['generation']['parameters']['matrices'],variant['generation']['parameters']['witnesses'])):
-    seen[slot]['shapes'].add((len(M),len(M[0])));seen[slot]['witnesses'].add(tuple(w) if w else None);seen[slot]['values'].update(v for row in M for v in row)
-  assert len(valid)>150
-  slots=[]
-  for i,(item,role) in enumerate(zip(seen,t['roles'])):
-   expected={(a,b) for a in range(2,5) for b in range(2,5) if (a!=b if role=='rectangular' else a==b)};assert item['shapes']==expected
-   if role=='offdiagonal':assert item['witnesses']=={(a,b) for a in range(1,5) for b in range(1,5) if a!=b}
-   slots.append({'slot':i,'role':role,'shapes':sorted(item['shapes']),'witnesses':sorted(x for x in item['witnesses'] if x),'values':sorted(item['values']),'uncovered_eligible_shapes':[],'uncovered_eligible_witnesses':[]})
-  coverage[mid]={'valid_seeded_samples':len(valid),'slots':slots}
-  review.append('## '+mid+' original\n\n'+g.markdown(r)+'\n\nVariant\n\n'+g.markdown(valid[0]))
- # Move the mathematical witness from upper-right to lower-left while retaining size, values and other matrices.
- t=g.TEMPLATES['q-11562'];p=copy.deepcopy(t['parameters']);a=g.generate(template='q-11562',parameters=p);p['matrices'][0]=[['0','0'],['1','0']];p['witnesses'][0]=[2,1];b=g.generate(template='q-11562',parameters=p)
- independent(a);independent(b);assert '${h}_{12}=1\\ne 0$' in a['question'][':question/worked-solution'] and '${h}_{21}=1\\ne 0$' in b['question'][':question/worked-solution'];assert parse(a['question'][':question/problem'])!=parse(b['question'][':question/problem']);rs.extend([a,b])
- coverage['controlled_changed_target']={'upper_to_lower_offdiagonal':True,'same_dimensions_values_other_matrices':True,'rendered_prompt_witness_and_key_independently_checked':True}
- # Reject stale witness reference explicitly.
- stale=copy.deepcopy(b['question']);stale[':question/worked-solution']=a['question'][':question/worked-solution']
- try:solution_check(stale)
- except AssertionError:pass
- else:raise AssertionError('Stale witness escaped validation')
- save('source-bank-replay.json',replays);save('slot-coverage.json',coverage);(HERE/'review.md').write_text('\n\n'.join(review)+'\n\n## Controlled changed position\n\n'+g.markdown(b))
- build_engine();native=[{'label':str(i),'record':r,'checks':checks(r)} for i,r in enumerate(rs)];save('engine-input.json',native);subprocess.run([str(HERE/'check-engine'),str(HERE/'engine-input.json'),str(HERE/'engine-report.json')],check=True);engine=json.loads((HERE/'engine-report.json').read_text());assert engine['documented_unresolved_checks']==0
- caps=json.loads((HERE/'capabilities.json').read_text());caps['validated_sample_count']=len(rs);save('capabilities.json',caps)
- tracked=[HERE.with_suffix('.py'),HERE/'templates.json',HERE/'validate.py',HERE/'check-engine'];save('validation.json',{'status':'pass','basis':source['basis'],'correctness':{'independent_fraction_matrix_checks':len(rs)},'fidelity':{'complete_banks_matched':5,'complete_banks_total':5,'values_matched':30,'values_total':30,'prompt_and_solution_exact':True},'grading':{'accepted':engine['accepted_checks'],'rejected':engine['rejected_checks'],'unresolved':0},'hashes':{str(p.relative_to(ROOT)):sha(p) for p in tracked}})
- print('Validated',len(rs),'instances, all 5 complete source banks and all eligible structural slots')
+   old=next(x for x in q[':question/answer-fields'] if x[':answer-field/key']==f[':answer-field/key'])
+   assert sorted(a[':answer/value'] for a in f[':answer-field/choices'])==sorted(a[':answer/value'] for a in old[':answer-field/choices'])
+   assert next(a[':answer/value'] for a in f[':answer-field/choices'] if a[':answer/id']==f[':answer-field/correct'][1])==old[':answer-field/correct'][':answer/value']
+ build_engine()
+ (evidence/'native-input.json').write_text(json.dumps([{'label':str(i),'record':r,'checks':checks(r)} for i,r in enumerate(records)]))
+ subprocess.run([str(HERE/'check-engine'),str(evidence/'native-input.json'),str(evidence/'native-report.json')],check=True)
+ native=json.loads((evidence/'native-report.json').read_text());assert native['documented_unresolved_checks']==0
+ (evidence/'batch.json').write_text(json.dumps(batch,indent=2))
+ (evidence/'review.md').write_text('\n\n---\n\n'.join(g.markdown(r) for r in batch))
+ result={'passed':True,'version':g.VERSION,'records_checked':len(records),'coverage':coverage,'source_banks_replayed':5,'source_boolean_choices_replayed':30,'controlled_single_entry_classification_change':True,'native_grading':{k:native[k] for k in ('accepted_checks','rejected_checks','documented_unresolved_checks')},'sha256':{str(p.relative_to(ROOT)):sha(p) for p in [HERE.with_suffix('.py'),Path(__file__),HERE/'templates.json',HERE/'check-engine']}}
+ (evidence/'validation.json').write_text(json.dumps(result,indent=2))
+ print(json.dumps({'passed':True,'records':len(records),'source_replays':5,'selection_masks_per_template':8,'native_grading':result['native_grading']}))
+
 if __name__=='__main__':main()
