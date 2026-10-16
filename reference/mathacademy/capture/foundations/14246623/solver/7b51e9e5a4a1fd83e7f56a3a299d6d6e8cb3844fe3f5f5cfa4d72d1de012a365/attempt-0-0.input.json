@@ -1,0 +1,83 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-342816",
+      "sequence_position": 5,
+      "problem": "Consider the following initial value problem:\n\n$$\n\\frac{\\text{d}y}{\\text{d}t}-3y={u}_{\\pi /4}(t)\\cdot cos\\,(4t-\\pi )\\,,\\,y(0)=1,\n$$\n\nwhere ${u}_{\\pi /4}(t)=u\\,(t-\\frac{\\pi }{4})$ is the unit step function.\n\nYou're given that the Laplace transform $Y(s)=L\\{y(t)\\}$ is\n\n$$\nY(s)=\\frac{1}{s-3}+\\frac{s\\,{e}^{-\\pi s/4}}{({s}^{2}+16)(s-3)}\n$$\n\nand that the solution to the initial value problem can be expressed as \n\n$$\ny(t)={e}^{3t}+\\frac{1}{25}u\\,(t-\\frac{\\pi }{4})\\cdot g(t).\n$$\n\nFind the function $g(t).$ \n\nHint: You may make use of the following results:\n\n$$\nL\\{\\operatorname{sin}⁡\\omega t\\}=\\frac{\\omega }{{s}^{2}+{\\omega }^{2}},\\,L\\{\\operatorname{cos}⁡\\omega t\\}=\\frac{s}{{s}^{2}+{\\omega }^{2}},\\,s>0.\n$$",
+      "worked_solution": "To solve the initial value problem, we need to compute the inverse Laplace transform of $Y(s).$\n\nTo find the inverse transform, we first ignore the exponential term ${e}^{-\\pi s/4}$ (which corresponds to a time shift) and focus on the rational function part:\n\n$$\nF(s)=\\frac{s}{({s}^{2}+16)(s-3)}.\n$$\n\nWe'll solve this in three steps.\n\n**Step 1.** Partial fraction decomposition\n\nSince the denominator contains a linear factor $(s-3)$ and an irreducible quadratic factor $({s}^{2}+16),$ the decomposition takes the form\n\n$$\n\\frac{s}{({s}^{2}+16)(s-3)}=\\frac{A}{s-3}+\\frac{Bs+C}{{s}^{2}+16}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\ns=A({s}^{2}+16)+(Bs+C)(s-3).\n$$\n\nNow, we find the constants $A,B,$ and $C.$\n\n- Setting $s=3,$ we have\n\n$$\n3=A({3}^{2}+16)+0\\,⟹\\,25A=3\\,⟹\\,A=\\frac{3}{25}.\n$$\n\n- Comparing the coefficients of ${s}^{2},$ we have\n\n$$\n0=A+B\\,⟹\\,B=-A=-\\frac{3}{25}.\n$$\n\n- Comparing the constant terms, we have\n\n$$\n0=16A-3C\\,⟹\\,0=16\\,(\\frac{3}{25})-3C\\,⟹\\,C=\\frac{16}{25}.\n$$\n\nThus, we can rewrite $F(s)$ as\n\n$$\nF(s)=\\frac{1}{25}(\\frac{3}{s-3}-3\\cdot \\frac{s}{{s}^{2}+16}+4\\cdot \\frac{4}{{s}^{2}+16}).\n$$\n\n**Step 2.** Finding the Inverse of the base function\n\nWe find the inverse transform $f(t)={L}^{-1}\\{F(s)\\}$ using standard transforms:\n\n$$\n\\begin{aligned}f(t) & =\\frac{1}{25}(3\\cdot {L}^{-1}\\{\\frac{1}{s-3}\\}-3\\cdot {L}^{-1}\\{\\frac{s}{{s}^{2}+16}\\}+4\\cdot {L}^{-1}\\{\\frac{4}{{s}^{2}+16}\\}) \\\\  & =\\frac{1}{25}(3{e}^{3t}-3\\operatorname{cos}⁡(4t)+4\\operatorname{sin}⁡(4t))\\end{aligned}\n$$\n\n**Step 3.** Applying the time-shifting property\n\nFinally, we address the ${e}^{-\\pi s/4}$ term. By the second shifting theorem, we have\n\n$$\n{e}^{-as}\\cdot F(s)=L\\{u(t-a)\\cdot f(t-a)\\}.\n$$\n\nTaking the inverse Laplace transform gives\n\n$$\n{L}^{-1}\\{{e}^{-as}F(s)\\}=u(t-a)\\cdot f(t-a).\n$$\n\nIn our case, $a=\\frac{\\pi }{4}.$ Therefore, we shift $f(t)$ by replacing every instance of $t$ with $(t-\\frac{\\pi }{4}):$\n\n$$\n\\begin{aligned}y(t) & =u\\,(t-\\frac{\\pi }{4})f\\,(t-\\frac{\\pi }{4}) \\\\  & =u\\,(t-\\frac{\\pi }{4})\\cdot \\frac{1}{25}[3{e}^{3(t-\\pi /4)}-3\\operatorname{cos}⁡(4\\,(t-\\frac{\\pi }{4}))+4\\operatorname{sin}⁡(4\\,(t-\\frac{\\pi }{4}))].\\end{aligned}\n$$\n\nUsing the trigonometric identities $cos\\,(4\\,(t-\\frac{\\pi }{4}))=-\\operatorname{cos}⁡(4t)$ and $sin\\,(4\\,(t-\\frac{\\pi }{4}))=-\\operatorname{sin}⁡(4t),$ we simplify:\n\n$$\n\\begin{aligned}y(t) & =u\\,(t-\\frac{\\pi }{4})\\cdot \\frac{1}{25}(3{e}^{3(t-\\pi /4)}+3\\operatorname{cos}⁡(4t)-4\\operatorname{sin}⁡(4t)) \\\\  & =\\frac{1}{25}\\,u\\,(t-\\frac{\\pi }{4})(3{e}^{3(t-\\pi /4)}+3\\operatorname{cos}⁡(4t)-4\\operatorname{sin}⁡(4t)).\\end{aligned}\n$$\n\nComparing this to the second term of the form given in the problem statement $y(t)={e}^{3t}+\\frac{1}{25}u\\,(t-\\frac{\\pi }{4})\\cdot g(t),$ we identify $g(t)$ as\n\n$$\ng(t)=3{e}^{3(t-\\pi /4)}+3\\operatorname{cos}⁡(4t)-4\\operatorname{sin}⁡(4t).\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14246623/observations/history-q-342816-4b8e6af3e3dffd60571c.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14246623",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14246623/observations/history-solution-q-342816-63ab3e858ddab8732c36.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "3{e}^{3(t-\\pi /4)}+3\\operatorname{cos}⁡(4t)-4\\operatorname{sin}⁡(4t)"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "-3{e}^{3(t-\\pi /4)}+3\\operatorname{cos}⁡(4t)+4\\operatorname{sin}⁡(4t)"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "-3{e}^{3(t-\\pi /4)}+3\\operatorname{cos}⁡(4t)-4\\operatorname{sin}⁡(4t)"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "3{e}^{3(t-\\pi /4)}-3\\operatorname{cos}⁡(4t)+4\\operatorname{sin}⁡(4t)"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "3{e}^{3(t-\\pi /4)}+3\\operatorname{cos}⁡(4t)+4\\operatorname{sin}⁡(4t)"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q342816",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "3{e}^{3(t-\\pi /4)}+3\\operatorname{cos}⁡(4t)-4\\operatorname{sin}⁡(4t)",
+                "option": "c",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "source_grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "To solve the initial value problem, we need to compute the inverse Laplace transform of $Y(s).$\n\nTo find the inverse transform, we first ignore the exponential term ${e}^{-\\pi s/4}$ (which corresponds to a time shift) and focus on the rational function part:\n\n$$\nF(s)=\\frac{s}{({s}^{2}+16)(s-3)}.\n$$\n\nWe'll solve this in three steps.\n\n**Step 1.** Partial fraction decomposition\n\nSince the denominator contains a linear factor $(s-3)$ and an irreducible quadratic factor $({s}^{2}+16),$ the decomposition takes the form\n\n$$\n\\frac{s}{({s}^{2}+16)(s-3)}=\\frac{A}{s-3}+\\frac{Bs+C}{{s}^{2}+16}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\ns=A({s}^{2}+16)+(Bs+C)(s-3).\n$$\n\nNow, we find the constants $A,B,$ and $C.$\n\n- Setting $s=3,$ we have\n\n$$\n3=A({3}^{2}+16)+0\\,⟹\\,25A=3\\,⟹\\,A=\\frac{3}{25}.\n$$\n\n- Comparing the coefficients of ${s}^{2},$ we have\n\n$$\n0=A+B\\,⟹\\,B=-A=-\\frac{3}{25}.\n$$\n\n- Comparing the constant terms, we have\n\n$$\n0=16A-3C\\,⟹\\,0=16\\,(\\frac{3}{25})-3C\\,⟹\\,C=\\frac{16}{25}.\n$$\n\nThus, we can rewrite $F(s)$ as\n\n$$\nF(s)=\\frac{1}{25}(\\frac{3}{s-3}-3\\cdot \\frac{s}{{s}^{2}+16}+4\\cdot \\frac{4}{{s}^{2}+16}).\n$$\n\n**Step 2.** Finding the Inverse of the base function\n\nWe find the inverse transform $f(t)={L}^{-1}\\{F(s)\\}$ using standard transforms:\n\n$$\n\\begin{aligned}f(t) & =\\frac{1}{25}(3\\cdot {L}^{-1}\\{\\frac{1}{s-3}\\}-3\\cdot {L}^{-1}\\{\\frac{s}{{s}^{2}+16}\\}+4\\cdot {L}^{-1}\\{\\frac{4}{{s}^{2}+16}\\}) \\\\  & =\\frac{1}{25}(3{e}^{3t}-3\\operatorname{cos}⁡(4t)+4\\operatorname{sin}⁡(4t))\\end{aligned}\n$$\n\n**Step 3.** Applying the time-shifting property\n\nFinally, we address the ${e}^{-\\pi s/4}$ term. By the second shifting theorem, we have\n\n$$\n{e}^{-as}\\cdot F(s)=L\\{u(t-a)\\cdot f(t-a)\\}.\n$$\n\nTaking the inverse Laplace transform gives\n\n$$\n{L}^{-1}\\{{e}^{-as}F(s)\\}=u(t-a)\\cdot f(t-a).\n$$\n\nIn our case, $a=\\frac{\\pi }{4}.$ Therefore, we shift $f(t)$ by replacing every instance of $t$ with $(t-\\frac{\\pi }{4}):$\n\n$$\n\\begin{aligned}y(t) & =u\\,(t-\\frac{\\pi }{4})f\\,(t-\\frac{\\pi }{4}) \\\\  & =u\\,(t-\\frac{\\pi }{4})\\cdot \\frac{1}{25}[3{e}^{3(t-\\pi /4)}-3\\operatorname{cos}⁡(4\\,(t-\\frac{\\pi }{4}))+4\\operatorname{sin}⁡(4\\,(t-\\frac{\\pi }{4}))].\\end{aligned}\n$$\n\nUsing the trigonometric identities $cos\\,(4\\,(t-\\frac{\\pi }{4}))=-\\operatorname{cos}⁡(4t)$ and $sin\\,(4\\,(t-\\frac{\\pi }{4}))=-\\operatorname{sin}⁡(4t),$ we simplify:\n\n$$\n\\begin{aligned}y(t) & =u\\,(t-\\frac{\\pi }{4})\\cdot \\frac{1}{25}(3{e}^{3(t-\\pi /4)}+3\\operatorname{cos}⁡(4t)-4\\operatorname{sin}⁡(4t)) \\\\  & =\\frac{1}{25}\\,u\\,(t-\\frac{\\pi }{4})(3{e}^{3(t-\\pi /4)}+3\\operatorname{cos}⁡(4t)-4\\operatorname{sin}⁡(4t)).\\end{aligned}\n$$\n\nComparing this to the second term of the form given in the problem statement $y(t)={e}^{3t}+\\frac{1}{25}u\\,(t-\\frac{\\pi }{4})\\cdot g(t),$ we identify $g(t)$ as\n\n$$\ng(t)=3{e}^{3(t-\\pi /4)}+3\\operatorname{cos}⁡(4t)-4\\operatorname{sin}⁡(4t).\n$$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14246623/observations/history-solution-q-342816-63ab3e858ddab8732c36.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14246623/observations/history-q-342816-4b8e6af3e3dffd60571c.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a14219-2e83-7183-a127-17afc33f535b",
+  "previous_failures": []
+}

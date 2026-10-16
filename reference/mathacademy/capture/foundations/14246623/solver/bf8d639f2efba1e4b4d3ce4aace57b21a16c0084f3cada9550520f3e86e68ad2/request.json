@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-342800",
+      "sequence_position": 4,
+      "problem": "Consider the following initial value problem:\n\n$$\n\\frac{\\text{d}y}{\\text{d}t}+2y={u}_{\\pi /3}(t)\\cdot cos\\,(3t-\\pi )\\,,\\,y(0)=-1,\n$$\n\nwhere ${u}_{\\pi /3}(t)=u\\,(t-\\frac{\\pi }{3})$ is the unit step function.\n\nYou're given that the Laplace transform $Y(s)=L\\{y(t)\\}$ is\n\n$$\nY(s)=-\\frac{1}{s+2}+\\frac{s\\,{e}^{-\\pi s/3}}{({s}^{2}+9)(s+2)}\n$$\n\nand that the solution to the initial value problem can be expressed as \n\n$$\ny(t)=-{e}^{-2t}-\\frac{1}{13}u\\,(t-\\frac{\\pi }{3})\\cdot g(t).\n$$\n\nFind the function $g(t).$ \n\nHint: You may make use of the following results:\n\n$$\nL\\{\\operatorname{sin}⁡\\omega t\\}=\\frac{\\omega }{{s}^{2}+{\\omega }^{2}},\\,L\\{\\operatorname{cos}⁡\\omega t\\}=\\frac{s}{{s}^{2}+{\\omega }^{2}},\\,s>0.\n$$",
+      "worked_solution": "To find the function $g(t),$ we need to compute the inverse Laplace transform of the term containing the time delay in $Y(s).$\n\nWe focus on the term with the exponential ${e}^{-\\pi s/3}$ (which corresponds to the step function in the time domain) and identify the rational function part:\n\n$$\nF(s)=\\frac{s}{({s}^{2}+9)(s+2)}.\n$$\n\nWe'll solve this in three steps.\n\n**Step 1.** Partial fraction decomposition\n\nSince the denominator contains a linear factor $(s+2)$ and an irreducible quadratic factor $({s}^{2}+9),$ the decomposition takes the form\n\n$$\n\\frac{s}{({s}^{2}+9)(s+2)}=\\frac{A}{s+2}+\\frac{Bs+C}{{s}^{2}+9}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\ns=A({s}^{2}+9)+(Bs+C)(s+2).\n$$\n\nNow, we find the constants $A,B,$ and $C.$\n\n- Setting $s=-2,$ we have\n\n$$\n-2=A((-2)^{2}+9)+0\\,⟹\\,13A=-2\\,⟹\\,A=-\\frac{2}{13}.\n$$\n\n- Comparing the coefficients of ${s}^{2},$ we have\n\n$$\n0=A+B\\,⟹\\,B=-A=\\frac{2}{13}.\n$$\n\n- Comparing the constant terms, we have\n\n$$\n0=9A+2C\\,⟹\\,0=9\\,(-\\frac{2}{13})+2C\\,⟹\\,C=\\frac{9}{13}.\n$$\n\nThus, we can rewrite $F(s)$ as\n\n$$\nF(s)=\\frac{1}{13}(-\\frac{2}{s+2}+\\frac{2s+9}{{s}^{2}+9})=\\frac{1}{13}(-2\\cdot \\frac{1}{s+2}+2\\cdot \\frac{s}{{s}^{2}+9}+3\\cdot \\frac{3}{{s}^{2}+9}).\n$$\n\n**Step 2.** Finding the Inverse of the base function\n\nWe find the inverse transform $f(t)={L}^{-1}\\{F(s)\\}$ using standard transforms:\n\n$$\n\\begin{aligned}f(t) & =\\frac{1}{13}(-2\\cdot {L}^{-1}\\{\\frac{1}{s+2}\\}+2\\cdot {L}^{-1}\\{\\frac{s}{{s}^{2}+9}\\}+3\\cdot {L}^{-1}\\{\\frac{3}{{s}^{2}+9}\\}) \\\\  & =\\frac{1}{13}(-2{e}^{-2t}+2\\operatorname{cos}⁡(3t)+3\\operatorname{sin}⁡(3t))\\end{aligned}\n$$\n\n**Step 3.** Applying the time-shifting property\n\nFinally, we address the ${e}^{-\\pi s/3}$ term. By the second shifting theorem, we have\n\n$$\n{e}^{-as}\\cdot F(s)=L\\{u(t-a)\\cdot f(t-a)\\}.\n$$\n\nTaking the inverse Laplace transform gives\n\n$$\n{L}^{-1}\\{{e}^{-as}F(s)\\}=u(t-a)\\cdot f(t-a).\n$$\n\nIn our case, $a=\\frac{\\pi }{3}.$ Therefore, we shift $f(t)$ by replacing every instance of $t$ with $(t-\\frac{\\pi }{3}):$\n\n$$\n\\begin{aligned}y(t) & =u\\,(t-\\frac{\\pi }{3})f\\,(t-\\frac{\\pi }{3}) \\\\  & =u\\,(t-\\frac{\\pi }{3})\\cdot \\frac{1}{13}[-2{e}^{-2(t-\\pi /3)}+2\\operatorname{cos}⁡(3\\,(t-\\frac{\\pi }{3}))+3\\operatorname{sin}⁡(3\\,(t-\\frac{\\pi }{3}))].\\end{aligned}\n$$\n\nUsing the trigonometric identities $\\operatorname{cos}⁡(3(t-\\pi /3))=-\\operatorname{cos}⁡(3t)$ and $\\operatorname{sin}⁡(3(t-\\pi /3))=-\\operatorname{sin}⁡(3t),$ we simplify:\n\n$$\n\\begin{aligned}y(t) & =u\\,(t-\\frac{\\pi }{3})\\cdot \\frac{1}{13}(-2{e}^{-2(t-\\pi /3)}-2\\operatorname{cos}⁡(3t)-3\\operatorname{sin}⁡(3t)) \\\\  & =-\\frac{1}{13}\\,u\\,(t-\\frac{\\pi }{3})(2{e}^{-(t-\\pi /2)}+2\\operatorname{cos}⁡(3t)+3\\operatorname{sin}⁡(3t)).\\end{aligned}\n$$\n\nComparing this to the second term of the form given in the problem statement $y(t)=-{e}^{-2t}-\\frac{1}{13}u\\,(t-\\frac{\\pi }{3})\\cdot g(t),$ we identify $g(t)$ as\n\n$$\ng(t)=2{e}^{-2(t-\\pi /3)}+2\\operatorname{cos}⁡(3t)+3\\operatorname{sin}⁡(3t).\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14246623/observations/history-q-342800-d62cbfeb7cd181ef9cb0.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14246623",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14246623/observations/history-solution-q-342800-4aa101945bd8add0e228.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "2{e}^{-2(t-\\pi /3)}+2\\operatorname{cos}⁡(3t)+3\\operatorname{sin}⁡(3t)"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "3{e}^{-2(t-\\pi /3)}+2\\operatorname{cos}⁡(3t)+3\\operatorname{sin}⁡(3t)"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "2{e}^{-2(t-\\pi /3)}-2\\operatorname{cos}⁡(3t)-3\\operatorname{sin}⁡(3t)"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "-2{e}^{-2(t-\\pi /3)}-2\\operatorname{cos}⁡(3t)+3\\operatorname{sin}⁡(3t)"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "-2{e}^{-2(t-\\pi /3)}-2\\operatorname{cos}⁡(3t)-3\\operatorname{sin}⁡(3t)"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q342800",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "2{e}^{-2(t-\\pi /3)}+2\\operatorname{cos}⁡(3t)+3\\operatorname{sin}⁡(3t)",
+                "option": "e",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "source_grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "To find the function $g(t),$ we need to compute the inverse Laplace transform of the term containing the time delay in $Y(s).$\n\nWe focus on the term with the exponential ${e}^{-\\pi s/3}$ (which corresponds to the step function in the time domain) and identify the rational function part:\n\n$$\nF(s)=\\frac{s}{({s}^{2}+9)(s+2)}.\n$$\n\nWe'll solve this in three steps.\n\n**Step 1.** Partial fraction decomposition\n\nSince the denominator contains a linear factor $(s+2)$ and an irreducible quadratic factor $({s}^{2}+9),$ the decomposition takes the form\n\n$$\n\\frac{s}{({s}^{2}+9)(s+2)}=\\frac{A}{s+2}+\\frac{Bs+C}{{s}^{2}+9}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\ns=A({s}^{2}+9)+(Bs+C)(s+2).\n$$\n\nNow, we find the constants $A,B,$ and $C.$\n\n- Setting $s=-2,$ we have\n\n$$\n-2=A((-2)^{2}+9)+0\\,⟹\\,13A=-2\\,⟹\\,A=-\\frac{2}{13}.\n$$\n\n- Comparing the coefficients of ${s}^{2},$ we have\n\n$$\n0=A+B\\,⟹\\,B=-A=\\frac{2}{13}.\n$$\n\n- Comparing the constant terms, we have\n\n$$\n0=9A+2C\\,⟹\\,0=9\\,(-\\frac{2}{13})+2C\\,⟹\\,C=\\frac{9}{13}.\n$$\n\nThus, we can rewrite $F(s)$ as\n\n$$\nF(s)=\\frac{1}{13}(-\\frac{2}{s+2}+\\frac{2s+9}{{s}^{2}+9})=\\frac{1}{13}(-2\\cdot \\frac{1}{s+2}+2\\cdot \\frac{s}{{s}^{2}+9}+3\\cdot \\frac{3}{{s}^{2}+9}).\n$$\n\n**Step 2.** Finding the Inverse of the base function\n\nWe find the inverse transform $f(t)={L}^{-1}\\{F(s)\\}$ using standard transforms:\n\n$$\n\\begin{aligned}f(t) & =\\frac{1}{13}(-2\\cdot {L}^{-1}\\{\\frac{1}{s+2}\\}+2\\cdot {L}^{-1}\\{\\frac{s}{{s}^{2}+9}\\}+3\\cdot {L}^{-1}\\{\\frac{3}{{s}^{2}+9}\\}) \\\\  & =\\frac{1}{13}(-2{e}^{-2t}+2\\operatorname{cos}⁡(3t)+3\\operatorname{sin}⁡(3t))\\end{aligned}\n$$\n\n**Step 3.** Applying the time-shifting property\n\nFinally, we address the ${e}^{-\\pi s/3}$ term. By the second shifting theorem, we have\n\n$$\n{e}^{-as}\\cdot F(s)=L\\{u(t-a)\\cdot f(t-a)\\}.\n$$\n\nTaking the inverse Laplace transform gives\n\n$$\n{L}^{-1}\\{{e}^{-as}F(s)\\}=u(t-a)\\cdot f(t-a).\n$$\n\nIn our case, $a=\\frac{\\pi }{3}.$ Therefore, we shift $f(t)$ by replacing every instance of $t$ with $(t-\\frac{\\pi }{3}):$\n\n$$\n\\begin{aligned}y(t) & =u\\,(t-\\frac{\\pi }{3})f\\,(t-\\frac{\\pi }{3}) \\\\  & =u\\,(t-\\frac{\\pi }{3})\\cdot \\frac{1}{13}[-2{e}^{-2(t-\\pi /3)}+2\\operatorname{cos}⁡(3\\,(t-\\frac{\\pi }{3}))+3\\operatorname{sin}⁡(3\\,(t-\\frac{\\pi }{3}))].\\end{aligned}\n$$\n\nUsing the trigonometric identities $\\operatorname{cos}⁡(3(t-\\pi /3))=-\\operatorname{cos}⁡(3t)$ and $\\operatorname{sin}⁡(3(t-\\pi /3))=-\\operatorname{sin}⁡(3t),$ we simplify:\n\n$$\n\\begin{aligned}y(t) & =u\\,(t-\\frac{\\pi }{3})\\cdot \\frac{1}{13}(-2{e}^{-2(t-\\pi /3)}-2\\operatorname{cos}⁡(3t)-3\\operatorname{sin}⁡(3t)) \\\\  & =-\\frac{1}{13}\\,u\\,(t-\\frac{\\pi }{3})(2{e}^{-(t-\\pi /2)}+2\\operatorname{cos}⁡(3t)+3\\operatorname{sin}⁡(3t)).\\end{aligned}\n$$\n\nComparing this to the second term of the form given in the problem statement $y(t)=-{e}^{-2t}-\\frac{1}{13}u\\,(t-\\frac{\\pi }{3})\\cdot g(t),$ we identify $g(t)$ as\n\n$$\ng(t)=2{e}^{-2(t-\\pi /3)}+2\\operatorname{cos}⁡(3t)+3\\operatorname{sin}⁡(3t).\n$$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14246623/observations/history-solution-q-342800-4aa101945bd8add0e228.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14246623/observations/history-q-342800-d62cbfeb7cd181ef9cb0.html"
+        }
+      }
+    ]
+  }
+}
