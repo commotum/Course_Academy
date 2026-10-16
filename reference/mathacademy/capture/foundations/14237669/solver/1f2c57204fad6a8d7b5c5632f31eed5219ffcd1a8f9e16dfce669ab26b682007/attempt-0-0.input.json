@@ -1,0 +1,83 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-333014",
+      "sequence_position": 3,
+      "problem": "Consider the following inhomogeneous system of linear differential equations:\n\n$$\n{x}^{′}(t)=[\\begin{aligned}\\frac{5}{3} & -\\frac{8}{3} \\\\ -\\frac{4}{3} & \\frac{1}{3}\\end{aligned}]x(t)+[\\begin{aligned}-6{t}^{2}+\\frac{41}{3}t-8 \\\\ 3{t}^{2}-\\frac{13}{3}t+5\\end{aligned}]\n$$\n\nThe complementary solution to this system is given by\n\n$$\n{x}_{c}(t)={c}_{1}[\\begin{aligned}1 \\\\ 1\\end{aligned}]{e}^{-t}+{c}_{2}[\\begin{aligned}2 \\\\ -1\\end{aligned}]{e}^{3t},\\,{c}_{1},{c}_{2}\\in R.\n$$\n\nThen, the general solution of the system is\n\n<table align=\"l\" cellpadding=\"0\" rules=\"all\">\n<tbody><tr>\n  <td rowspan=\"2\" height=\"40px\" align=\"center\">\n    $x(t)={x}_{c}(t)+\\,\\,$\n  </td>\n\n  \n  <td width=\"5px\" height=\"30px\"></td>\n  \n  <td align=\"center\">{{field-1}}</td>\n  <td width=\"5px\" align=\"center\"></td>\n\n  \n  <td rowspan=\"2\" height=\"40px\" align=\"center\">\n    $\\,\\,{t}^{2}+\\,\\,$\n  </td>\n\n  \n  <td width=\"5px\" height=\"30px\"></td>\n  \n  <td align=\"center\">$-1$</td>\n  <td width=\"5px\" align=\"center\"></td>\n\n  \n  <td rowspan=\"2\" height=\"40px\" align=\"center\">\n    $\\,\\,t+\\,\\,$\n  </td>\n\n  \n  <td width=\"5px\" height=\"30px\"></td>\n  \n  <td align=\"center\">\n    {{field-2}}\n  </td>\n  <td width=\"5px\" align=\"center\"></td>\n\n  \n  <td rowspan=\"2\" height=\"40px\" align=\"center\">\n    .\n  </td>\n</tr>\n\n<tr>\n  \n  <td width=\"5px\" height=\"30px\"></td>\n  \n  <td align=\"center\">$-1$</td>\n  <td align=\"center\"></td>\n\n  \n  <td width=\"5px\" height=\"30px\"></td>\n  \n  <td align=\"center\">{{field-3}}</td>\n  <td align=\"center\"></td>\n\n  \n  <td width=\"5px\" height=\"30px\"></td>\n  \n  <td align=\"center\">\n    $-2$\n  </td>\n  <td align=\"center\"></td>\n</tr>\n</tbody></table>",
+      "worked_solution": "Recall that the general solution of an inhomogeneous system can be written as \n\n$$\nx(t)={x}_{c}(t)+{x}_{p}(t)\n$$\n\nwhere ${x}_{c}(t)$ is the complementary solution (solution of the corresponding homogeneous system) and ${x}_{p}(t)$ is a particular solution.\n\nThe forcing term\n\n$$\n[\\begin{aligned}-6{t}^{2}+\\frac{41}{3}t-8 \\\\ 3{t}^{2}-\\frac{13}{3}t+5\\end{aligned}]\n$$\n\nof the inhomogeneous system of ODEs is polynomial of degree $2.$ Therefore, we assume that the particular solution is also polynomial of degree $2,$ i.e.\n\n$$\n{x}_{p}(t)=[\\begin{aligned}{a}_{1}{t}^{2}+{b}_{1}t+{c}_{1} \\\\ {a}_{2}{t}^{2}+{b}_{2}t+{c}_{2}\\end{aligned}]=[\\begin{aligned}{a}_{1} \\\\ {a}_{2}\\end{aligned}]{t}^{2}+[\\begin{aligned}{b}_{1} \\\\ {b}_{2}\\end{aligned}]t+[\\begin{aligned}{c}_{1} \\\\ {c}_{2}\\end{aligned}],\n$$\n\nwhere ${a}_{1},{a}_{2},{b}_{1},{b}_{2},{c}_{1},{c}_{2}$ are constants that are to be determined. \n\nCalculating the derivative of ${x}_{p}$ with respect to $t$ gives\n\n$$\n{x}_{p}^{′}(t)=[\\begin{aligned}2{a}_{1}t+{b}_{1} \\\\ 2{a}_{2}t+{b}_{2}\\end{aligned}].\n$$\n\nTo find the unknown constants, we substitute ${x}_{p}$ and ${x}_{p}^{′}$ into our system:\n\n$$\n\\begin{aligned}[\\begin{aligned}2{a}_{1}t+{b}_{1} \\\\ 2{a}_{2}t+{b}_{2}\\end{aligned}] & =[\\begin{aligned}\\frac{5}{3} & -\\frac{8}{3} \\\\ -\\frac{4}{3} & \\frac{1}{3}\\end{aligned}][\\begin{aligned}{a}_{1}{t}^{2}+{b}_{1}t+{c}_{1} \\\\ {a}_{2}{t}^{2}+{b}_{2}t+{c}_{2}\\end{aligned}]+[\\begin{aligned}-6{t}^{2}+\\frac{41}{3}t-8 \\\\ 3{t}^{2}-\\frac{13}{3}t+5\\end{aligned}] \\\\ [\\begin{aligned}2{a}_{1}t+{b}_{1} \\\\ 2{a}_{2}t+{b}_{2}\\end{aligned}] & =[\\begin{aligned}(\\frac{5{a}_{1}-8{a}_{2}}{3}){t}^{2}+(\\frac{5{b}_{1}-8{b}_{2}}{3})t+(\\frac{5{c}_{1}-8{c}_{2}}{3}) \\\\ (\\frac{-4{a}_{1}+{a}_{2}}{3}){t}^{2}+(\\frac{-4{b}_{1}+{b}_{2}}{3})t+(\\frac{-4{c}_{1}+{c}_{2}}{3})\\end{aligned}]+[\\begin{aligned}-6{t}^{2}+\\frac{41}{3}t-8 \\\\ 3{t}^{2}-\\frac{13}{3}t+5\\end{aligned}] \\\\ [\\begin{aligned}0{t}^{2}+2{a}_{1}t+{b}_{1} \\\\ 0{t}^{2}+2{a}_{2}t+{b}_{2}\\end{aligned}] & =[\\begin{aligned}(\\frac{5{a}_{1}-8{a}_{2}-18}{3}){t}^{2}+(\\frac{5{b}_{1}-8{b}_{2}+41}{3})t+(\\frac{5{c}_{1}-8{c}_{2}-24}{3}) \\\\ (\\frac{-4{a}_{1}+{a}_{2}+9}{3}){t}^{2}+(\\frac{-4{b}_{1}+{b}_{2}-13}{3})t+(\\frac{-4{c}_{1}+{c}_{2}+15}{3})\\end{aligned}]\\end{aligned}\n$$\n\nEquating the corresponding coefficients of like powers of $t,$ we get the following system:\n\n$$\n\\{\\begin{aligned}\\frac{5{a}_{1}-8{a}_{2}-18}{3}=0 \\\\ \\frac{-4{a}_{1}+{a}_{2}+9}{3}=0 \\\\ \\frac{5{b}_{1}-8{b}_{2}+41}{3}=2{a}_{1} \\\\ \\frac{-4{b}_{1}+{b}_{2}-13}{3}=2{a}_{2} \\\\ \\frac{5{c}_{1}-8{c}_{2}-24}{3}={b}_{1} \\\\ \\frac{-4{c}_{1}+{c}_{2}+15}{3}={b}_{2}\\end{aligned}\n$$\n\nSolving the first and second equations, we get\n\n$$\n{a}_{1}=2,\\,{a}_{2}=-1.\n$$\n\nSubstituting these into the second and third equations, and solving for ${b}_{1}$ and ${b}_{2},$ we get\n\n$$\n{b}_{1}=-1,\\,{b}_{2}=3.\n$$\n\nFinally, substituting these last two values into the fourth and sixth equations, and solving for ${c}_{1}$ and ${c}_{2},$ we have\n\n$$\n{c}_{1}=1,\\,{c}_{2}=-2.\n$$\n\nTherefore, the particular solution is\n\n$$\n{x}_{p}(t)=[\\begin{aligned}2{t}^{2}-t+1 \\\\ -{t}^{2}+3t-2\\end{aligned}]=[\\begin{aligned}2 \\\\ -1\\end{aligned}]{t}^{2}+[\\begin{aligned}-1 \\\\ 3\\end{aligned}]t+[\\begin{aligned}1 \\\\ -2\\end{aligned}].\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "problem_field_keys": [
+        "field-1",
+        "field-2",
+        "field-3"
+      ],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14237669/observations/history-q-333014-c046b2386c60ecc574b6.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14237669",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14237669/observations/history-solution-q-333014-39c01b9009061011e17b.html",
+      "fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        },
+        {
+          "key": "field-2",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        },
+        {
+          "key": "field-3",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q333014",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "2",
+                "value_type": "math"
+              },
+              {
+                "key": "field-2",
+                "value": "1",
+                "value_type": "math"
+              },
+              {
+                "key": "field-3",
+                "value": "3",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "source_grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Recall that the general solution of an inhomogeneous system can be written as \n\n$$\nx(t)={x}_{c}(t)+{x}_{p}(t)\n$$\n\nwhere ${x}_{c}(t)$ is the complementary solution (solution of the corresponding homogeneous system) and ${x}_{p}(t)$ is a particular solution.\n\nThe forcing term\n\n$$\n[\\begin{aligned}-6{t}^{2}+\\frac{41}{3}t-8 \\\\ 3{t}^{2}-\\frac{13}{3}t+5\\end{aligned}]\n$$\n\nof the inhomogeneous system of ODEs is polynomial of degree $2.$ Therefore, we assume that the particular solution is also polynomial of degree $2,$ i.e.\n\n$$\n{x}_{p}(t)=[\\begin{aligned}{a}_{1}{t}^{2}+{b}_{1}t+{c}_{1} \\\\ {a}_{2}{t}^{2}+{b}_{2}t+{c}_{2}\\end{aligned}]=[\\begin{aligned}{a}_{1} \\\\ {a}_{2}\\end{aligned}]{t}^{2}+[\\begin{aligned}{b}_{1} \\\\ {b}_{2}\\end{aligned}]t+[\\begin{aligned}{c}_{1} \\\\ {c}_{2}\\end{aligned}],\n$$\n\nwhere ${a}_{1},{a}_{2},{b}_{1},{b}_{2},{c}_{1},{c}_{2}$ are constants that are to be determined. \n\nCalculating the derivative of ${x}_{p}$ with respect to $t$ gives\n\n$$\n{x}_{p}^{′}(t)=[\\begin{aligned}2{a}_{1}t+{b}_{1} \\\\ 2{a}_{2}t+{b}_{2}\\end{aligned}].\n$$\n\nTo find the unknown constants, we substitute ${x}_{p}$ and ${x}_{p}^{′}$ into our system:\n\n$$\n\\begin{aligned}[\\begin{aligned}2{a}_{1}t+{b}_{1} \\\\ 2{a}_{2}t+{b}_{2}\\end{aligned}] & =[\\begin{aligned}\\frac{5}{3} & -\\frac{8}{3} \\\\ -\\frac{4}{3} & \\frac{1}{3}\\end{aligned}][\\begin{aligned}{a}_{1}{t}^{2}+{b}_{1}t+{c}_{1} \\\\ {a}_{2}{t}^{2}+{b}_{2}t+{c}_{2}\\end{aligned}]+[\\begin{aligned}-6{t}^{2}+\\frac{41}{3}t-8 \\\\ 3{t}^{2}-\\frac{13}{3}t+5\\end{aligned}] \\\\ [\\begin{aligned}2{a}_{1}t+{b}_{1} \\\\ 2{a}_{2}t+{b}_{2}\\end{aligned}] & =[\\begin{aligned}(\\frac{5{a}_{1}-8{a}_{2}}{3}){t}^{2}+(\\frac{5{b}_{1}-8{b}_{2}}{3})t+(\\frac{5{c}_{1}-8{c}_{2}}{3}) \\\\ (\\frac{-4{a}_{1}+{a}_{2}}{3}){t}^{2}+(\\frac{-4{b}_{1}+{b}_{2}}{3})t+(\\frac{-4{c}_{1}+{c}_{2}}{3})\\end{aligned}]+[\\begin{aligned}-6{t}^{2}+\\frac{41}{3}t-8 \\\\ 3{t}^{2}-\\frac{13}{3}t+5\\end{aligned}] \\\\ [\\begin{aligned}0{t}^{2}+2{a}_{1}t+{b}_{1} \\\\ 0{t}^{2}+2{a}_{2}t+{b}_{2}\\end{aligned}] & =[\\begin{aligned}(\\frac{5{a}_{1}-8{a}_{2}-18}{3}){t}^{2}+(\\frac{5{b}_{1}-8{b}_{2}+41}{3})t+(\\frac{5{c}_{1}-8{c}_{2}-24}{3}) \\\\ (\\frac{-4{a}_{1}+{a}_{2}+9}{3}){t}^{2}+(\\frac{-4{b}_{1}+{b}_{2}-13}{3})t+(\\frac{-4{c}_{1}+{c}_{2}+15}{3})\\end{aligned}]\\end{aligned}\n$$\n\nEquating the corresponding coefficients of like powers of $t,$ we get the following system:\n\n$$\n\\{\\begin{aligned}\\frac{5{a}_{1}-8{a}_{2}-18}{3}=0 \\\\ \\frac{-4{a}_{1}+{a}_{2}+9}{3}=0 \\\\ \\frac{5{b}_{1}-8{b}_{2}+41}{3}=2{a}_{1} \\\\ \\frac{-4{b}_{1}+{b}_{2}-13}{3}=2{a}_{2} \\\\ \\frac{5{c}_{1}-8{c}_{2}-24}{3}={b}_{1} \\\\ \\frac{-4{c}_{1}+{c}_{2}+15}{3}={b}_{2}\\end{aligned}\n$$\n\nSolving the first and second equations, we get\n\n$$\n{a}_{1}=2,\\,{a}_{2}=-1.\n$$\n\nSubstituting these into the second and third equations, and solving for ${b}_{1}$ and ${b}_{2},$ we get\n\n$$\n{b}_{1}=-1,\\,{b}_{2}=3.\n$$\n\nFinally, substituting these last two values into the fourth and sixth equations, and solving for ${c}_{1}$ and ${c}_{2},$ we have\n\n$$\n{c}_{1}=1,\\,{c}_{2}=-2.\n$$\n\nTherefore, the particular solution is\n\n$$\n{x}_{p}(t)=[\\begin{aligned}2{t}^{2}-t+1 \\\\ -{t}^{2}+3t-2\\end{aligned}]=[\\begin{aligned}2 \\\\ -1\\end{aligned}]{t}^{2}+[\\begin{aligned}-1 \\\\ 3\\end{aligned}]t+[\\begin{aligned}1 \\\\ -2\\end{aligned}].\n$$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14237669/observations/history-solution-q-333014-39c01b9009061011e17b.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14237669/observations/history-q-333014-c046b2386c60ecc574b6.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a14203-de01-7531-bbce-92e0d25cc5c8",
+  "previous_failures": []
+}
