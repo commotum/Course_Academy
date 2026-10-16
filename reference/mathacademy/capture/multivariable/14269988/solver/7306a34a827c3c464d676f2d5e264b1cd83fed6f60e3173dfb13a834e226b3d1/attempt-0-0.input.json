@@ -1,0 +1,71 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-214160",
+      "sequence_position": 20,
+      "problem": "Find the solutions of $122x≡20\\,(\\text{mod}\\,514).$ Express your answers as nonnegative integers smaller than $514,$ and in ascending order. \n\n*Hint: You may use the fact that $\\text{gcd}(122,514)=2.$*\n\n${x}_{1}≡$\n{{field-1}}\n$,\\,{x}_{2}≡$\n{{field-2}}\n$\\,(\\text{mod}\\,514)$",
+      "worked_solution": "In the given congruence, we have $a=122$ and $n=514$, and we're given that\n\n$$\n\\text{gcd}(a,n)=\\text{gcd}(122,514)=2.\n$$\n\nSince $b=20$ is divisible by $2,$ our congruence has $2$ solutions.\n\nNext, we use the division property of congruences:\n\n$$\n\\begin{aligned}122x & ≡20 &  & (\\text{mod}\\,514) \\\\ 2\\cdot 61x & ≡2\\cdot 10 &  & (\\text{mod}\\,2\\cdot 257) \\\\ \\cancel{2}\\cdot 61x & ≡\\cancel{2}\\cdot 10 &  & (\\text{mod}\\,\\cancel{2}\\cdot 257) \\\\ 61x & ≡10 &  & (\\text{mod}\\,257)\\end{aligned}\n$$\n\nNotice that in this new congruence, we have ${a}_{1}=61$ and ${n}_{1}=257$, where\n\n$$\n\\text{gcd}({a}_{1},{n}_{1})=\\text{gcd}(61,257)=1.\n$$\n\nSo, our congruence has a unique solution modulo $257.$\n\nTo find the solution, we must multiply both sides of the equation by the multiplicative inverse of $61\\,(\\text{mod}\\,257).$ To find the inverse of $61\\,(\\text{mod}\\,257),$ we apply the extended Euclidean algorithm.\n\nFirst, we apply the forward reduction:\n\n$$\n\\begin{aligned}\\begin{aligned}257 & = & 61\\cdot 4 & + & 13\\, & ⇔ & \\,13 & = & 257-61\\cdot 4 \\\\  & ↙ &  & ↙ &  &  &  \\\\ 61 & = & 13\\cdot 4 & + & 9\\, & ⇔ & \\,9 & = & 61-13\\cdot 4 \\\\  & ↙ &  & ↙ &  &  &  \\\\ 13 & = & 9\\cdot 1 & + & 4\\, & ⇔ & \\,4 & = & 13-9\\cdot 1 \\\\  & ↙ &  & ↙ &  &  &  \\\\ 9 & = & 4\\cdot 2 & + & 1\\, & ⇔ & \\,1 & = & 9-4\\cdot 2 \\\\  & ↙ &  & ↙ &  &  &  \\\\ 4 & = & 4\\cdot 1 & + & 0\\, &  & \\, &  & \\end{aligned}\\end{aligned}\n$$\n\nNext, back-substituting in the usual way gives the following:\n\n$$\n1=59\\cdot 61-257\\cdot 14\n$$\n\nWe can write this result in modulo $257,$ as follows:  \n\n$$\n\\begin{aligned}59\\cdot 61-257\\cdot 14 & ≡1 &  & (\\text{mod}\\,257) \\\\ 59\\cdot 61 & ≡1 &  & (\\text{mod}\\,257)\\end{aligned}\n$$\n\nTherefore, the inverse of $61$ modulo $257$ is $59.$\n\nNow, multiplying both sides of our original congruence by $59,$ we get the following:\n\n$$\n\\begin{aligned}61x & ≡10 &  & (\\text{mod}\\,257) \\\\ 59\\cdot 61x & ≡59\\cdot 10 &  & (\\text{mod}\\,257) \\\\ x & ≡590 &  & (\\text{mod}\\,257) \\\\ x & ≡257\\cdot 2+76 &  & (\\text{mod}\\,257) \\\\ x & ≡76 &  & (\\text{mod}\\,257)\\end{aligned}\n$$\n\nSo, we get the solution $x≡76\\,(\\text{mod}\\,257).$\n\nBut our original congruence was modulo $514$ (not modulo $257$). To find all the solutions modulo $514,$ we repeatedly add $257$ to $76$ modulo $514$ until we reach the number $76$ again:\n\n$$\n\\begin{aligned}{x}_{1} & ≡76 &  & (\\text{mod}\\,514) \\\\ {x}_{2} & ≡76+257≡333 &  & (\\text{mod}\\,514) \\\\ {x}_{3} & ≡333+257≡590≡514+76≡{x}_{1} &  & (\\text{mod}\\,514)\\end{aligned}\n$$\n\nTherefore, the solutions are \n\n$$\n{x}_{1,2}≡76,\\,333\\,(\\text{mod}\\,514).\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "problem_field_keys": [
+        "field-1",
+        "field-2"
+      ],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14269988/observations/history-q-214160-9d396903a5c51a7d1838.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14269988",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14269988/observations/history-solution-q-214160-39cb1f9537d71114c67d.html",
+      "fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        },
+        {
+          "key": "field-2",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q214160",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "76",
+                "value_type": "math"
+              },
+              {
+                "key": "field-2",
+                "value": "333",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "source_grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "In the given congruence, we have $a=122$ and $n=514$, and we're given that\n\n$$\n\\text{gcd}(a,n)=\\text{gcd}(122,514)=2.\n$$\n\nSince $b=20$ is divisible by $2,$ our congruence has $2$ solutions.\n\nNext, we use the division property of congruences:\n\n$$\n\\begin{aligned}122x & ≡20 &  & (\\text{mod}\\,514) \\\\ 2\\cdot 61x & ≡2\\cdot 10 &  & (\\text{mod}\\,2\\cdot 257) \\\\ \\cancel{2}\\cdot 61x & ≡\\cancel{2}\\cdot 10 &  & (\\text{mod}\\,\\cancel{2}\\cdot 257) \\\\ 61x & ≡10 &  & (\\text{mod}\\,257)\\end{aligned}\n$$\n\nNotice that in this new congruence, we have ${a}_{1}=61$ and ${n}_{1}=257$, where\n\n$$\n\\text{gcd}({a}_{1},{n}_{1})=\\text{gcd}(61,257)=1.\n$$\n\nSo, our congruence has a unique solution modulo $257.$\n\nTo find the solution, we must multiply both sides of the equation by the multiplicative inverse of $61\\,(\\text{mod}\\,257).$ To find the inverse of $61\\,(\\text{mod}\\,257),$ we apply the extended Euclidean algorithm.\n\nFirst, we apply the forward reduction:\n\n$$\n\\begin{aligned}\\begin{aligned}257 & = & 61\\cdot 4 & + & 13\\, & ⇔ & \\,13 & = & 257-61\\cdot 4 \\\\  & ↙ &  & ↙ &  &  &  \\\\ 61 & = & 13\\cdot 4 & + & 9\\, & ⇔ & \\,9 & = & 61-13\\cdot 4 \\\\  & ↙ &  & ↙ &  &  &  \\\\ 13 & = & 9\\cdot 1 & + & 4\\, & ⇔ & \\,4 & = & 13-9\\cdot 1 \\\\  & ↙ &  & ↙ &  &  &  \\\\ 9 & = & 4\\cdot 2 & + & 1\\, & ⇔ & \\,1 & = & 9-4\\cdot 2 \\\\  & ↙ &  & ↙ &  &  &  \\\\ 4 & = & 4\\cdot 1 & + & 0\\, &  & \\, &  & \\end{aligned}\\end{aligned}\n$$\n\nNext, back-substituting in the usual way gives the following:\n\n$$\n1=59\\cdot 61-257\\cdot 14\n$$\n\nWe can write this result in modulo $257,$ as follows:  \n\n$$\n\\begin{aligned}59\\cdot 61-257\\cdot 14 & ≡1 &  & (\\text{mod}\\,257) \\\\ 59\\cdot 61 & ≡1 &  & (\\text{mod}\\,257)\\end{aligned}\n$$\n\nTherefore, the inverse of $61$ modulo $257$ is $59.$\n\nNow, multiplying both sides of our original congruence by $59,$ we get the following:\n\n$$\n\\begin{aligned}61x & ≡10 &  & (\\text{mod}\\,257) \\\\ 59\\cdot 61x & ≡59\\cdot 10 &  & (\\text{mod}\\,257) \\\\ x & ≡590 &  & (\\text{mod}\\,257) \\\\ x & ≡257\\cdot 2+76 &  & (\\text{mod}\\,257) \\\\ x & ≡76 &  & (\\text{mod}\\,257)\\end{aligned}\n$$\n\nSo, we get the solution $x≡76\\,(\\text{mod}\\,257).$\n\nBut our original congruence was modulo $514$ (not modulo $257$). To find all the solutions modulo $514,$ we repeatedly add $257$ to $76$ modulo $514$ until we reach the number $76$ again:\n\n$$\n\\begin{aligned}{x}_{1} & ≡76 &  & (\\text{mod}\\,514) \\\\ {x}_{2} & ≡76+257≡333 &  & (\\text{mod}\\,514) \\\\ {x}_{3} & ≡333+257≡590≡514+76≡{x}_{1} &  & (\\text{mod}\\,514)\\end{aligned}\n$$\n\nTherefore, the solutions are \n\n$$\n{x}_{1,2}≡76,\\,333\\,(\\text{mod}\\,514).\n$$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14269988/observations/history-solution-q-214160-39cb1f9537d71114c67d.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14269988/observations/history-q-214160-9d396903a5c51a7d1838.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a146fe-56f5-7d93-88b2-8d2063f4343a",
+  "previous_failures": []
+}

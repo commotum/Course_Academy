@@ -1,0 +1,83 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-213326",
+      "sequence_position": 19,
+      "problem": "Find the solutions of $132x≡12\\,(\\text{mod}\\,441).$ Express your answers as nonnegative integers smaller than $441,$ and in ascending order. \n\n*Hint: You may use the fact that $\\text{gcd}(132,441)=3.$*\n\n${x}_{1}≡$\n{{field-1}}\n$,\\,{x}_{2}≡$\n{{field-2}}\n$,\\,{x}_{3}≡$\n{{field-3}}\n$\\,(\\text{mod}\\,441)$",
+      "worked_solution": "In the given congruence, we have $a=132$ and $n=441$, and we're given that\n\n$$\n\\text{gcd}(a,n)=\\text{gcd}(132,144)=3.\n$$\n\nSince $b=12$ is divisible by $3,$ our congruence has $3$ solutions.\n\nNext, we use the division property of congruences:\n\n$$\n\\begin{aligned}132x & ≡12 &  & (\\text{mod}\\,441) \\\\ 3\\cdot 44x & ≡3\\cdot 4 &  & (\\text{mod}\\,3\\cdot 147) \\\\ \\cancel{3}\\cdot 44x & ≡\\cancel{3}\\cdot 4 &  & (\\text{mod}\\,\\cancel{3}\\cdot 147) \\\\ 44x & ≡4 &  & (\\text{mod}\\,147)\\end{aligned}\n$$\n\nNotice that in this new congruence, we have ${a}_{1}=4$ and ${n}_{1}=147$, where\n\n$$\n\\text{gcd}({a}_{1},{n}_{1})=\\text{gcd}(4,147)=1.\n$$\n\nSo, our congruence has a unique solution modulo $147.$\n\nTo find the solution, we must multiply both sides of the equation by the multiplicative inverse of $44\\,(\\text{mod}\\,147).$ To find the inverse of $44\\,(\\text{mod}\\,147),$ we apply the extended Euclidean algorithm.\n\nFirst, we apply the forward reduction:\n\n$$\n\\begin{aligned}\\begin{aligned}147 & = & 3\\cdot 44 & + & 15\\, & ⇔ & \\,15 & = & 147-3\\cdot 44 \\\\  & ↙ &  & ↙ &  &  &  \\\\ 44 & = & 15\\cdot 2 & + & 14\\, & ⇔ & \\,14 & = & 44-15\\cdot 2 \\\\  & ↙ &  & ↙ &  &  &  \\\\ 15 & = & 14\\cdot 1 & + & 1\\, & ⇔ & \\,1 & = & 15-14\\cdot 1 \\\\  & ↙ &  & ↙ &  &  &  \\\\ 14 & = & 14\\cdot 1 & + & 0\\, &  & \\, &  & \\end{aligned}\\end{aligned}\n$$\n\nNext, back-substituting in the usual way gives the following:\n\n$$\n1=3\\cdot 147-10\\cdot 44\n$$\n\nWe can write this result in modulo $147,$ as follows:  \n\n$$\n\\begin{aligned}3\\cdot 147-10\\cdot 44 & ≡1 &  & (\\text{mod}\\,147) \\\\ -10\\cdot 44 & ≡1 &  & (\\text{mod}\\,147) \\\\ (147-10)\\cdot 44 & ≡1 &  & (\\text{mod}\\,147) \\\\ 137\\cdot 44 & ≡1 &  & (\\text{mod}\\,147)\\end{aligned}\n$$\n\nTherefore, the inverse of $44$ modulo $147$ is $137.$\n\nNow, multiplying both sides of our original congruence by $137,$ we get the following:\n\n$$\n\\begin{aligned}44x & ≡4 &  & (\\text{mod}\\,147) \\\\ 137\\cdot 44x & ≡137\\cdot 4 &  & (\\text{mod}\\,147) \\\\ x & ≡548 &  & (\\text{mod}\\,147) \\\\ x & ≡3\\cdot 147+107 &  & (\\text{mod}\\,147) \\\\ x & ≡107 &  & (\\text{mod}\\,147)\\end{aligned}\n$$\n\nSo, we get the solution $x≡107\\,(\\text{mod}\\,147).$\n\nBut our original congruence was modulo $441$ (not modulo $147$). To find all the solutions modulo $441,$ we repeatedly add $147$ to $107$ modulo $441$ until we reach the number $107$ again:\n\n$$\n\\begin{aligned}{x}_{1} & ≡107 &  & (\\text{mod}\\,441) \\\\ {x}_{2} & ≡107+147≡254 &  & (\\text{mod}\\,441) \\\\ {x}_{3} & ≡254+147≡401 &  & (\\text{mod}\\,441) \\\\ {x}_{4} & ≡401+147≡548≡441+107≡{x}_{1} &  & (\\text{mod}\\,441)\\end{aligned}\n$$\n\nTherefore, the solutions are \n\n$$\n{x}_{1,2,3}≡107,\\,254,\\,401\\,(\\text{mod}\\,441).\n$$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "problem_field_keys": [
+        "field-1",
+        "field-2",
+        "field-3"
+      ],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14269988/observations/history-q-213326-94b9f47376a56bdc0b8a.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14269988",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14269988/observations/history-solution-q-213326-c6bb879c46b098bf250c.html",
+      "fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        },
+        {
+          "key": "field-2",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        },
+        {
+          "key": "field-3",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q213326",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "0",
+                "value_type": "math"
+              },
+              {
+                "key": "field-2",
+                "value": "254",
+                "value_type": "math"
+              },
+              {
+                "key": "field-3",
+                "value": "401",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "source_grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "In the given congruence, we have $a=132$ and $n=441$, and we're given that\n\n$$\n\\text{gcd}(a,n)=\\text{gcd}(132,144)=3.\n$$\n\nSince $b=12$ is divisible by $3,$ our congruence has $3$ solutions.\n\nNext, we use the division property of congruences:\n\n$$\n\\begin{aligned}132x & ≡12 &  & (\\text{mod}\\,441) \\\\ 3\\cdot 44x & ≡3\\cdot 4 &  & (\\text{mod}\\,3\\cdot 147) \\\\ \\cancel{3}\\cdot 44x & ≡\\cancel{3}\\cdot 4 &  & (\\text{mod}\\,\\cancel{3}\\cdot 147) \\\\ 44x & ≡4 &  & (\\text{mod}\\,147)\\end{aligned}\n$$\n\nNotice that in this new congruence, we have ${a}_{1}=4$ and ${n}_{1}=147$, where\n\n$$\n\\text{gcd}({a}_{1},{n}_{1})=\\text{gcd}(4,147)=1.\n$$\n\nSo, our congruence has a unique solution modulo $147.$\n\nTo find the solution, we must multiply both sides of the equation by the multiplicative inverse of $44\\,(\\text{mod}\\,147).$ To find the inverse of $44\\,(\\text{mod}\\,147),$ we apply the extended Euclidean algorithm.\n\nFirst, we apply the forward reduction:\n\n$$\n\\begin{aligned}\\begin{aligned}147 & = & 3\\cdot 44 & + & 15\\, & ⇔ & \\,15 & = & 147-3\\cdot 44 \\\\  & ↙ &  & ↙ &  &  &  \\\\ 44 & = & 15\\cdot 2 & + & 14\\, & ⇔ & \\,14 & = & 44-15\\cdot 2 \\\\  & ↙ &  & ↙ &  &  &  \\\\ 15 & = & 14\\cdot 1 & + & 1\\, & ⇔ & \\,1 & = & 15-14\\cdot 1 \\\\  & ↙ &  & ↙ &  &  &  \\\\ 14 & = & 14\\cdot 1 & + & 0\\, &  & \\, &  & \\end{aligned}\\end{aligned}\n$$\n\nNext, back-substituting in the usual way gives the following:\n\n$$\n1=3\\cdot 147-10\\cdot 44\n$$\n\nWe can write this result in modulo $147,$ as follows:  \n\n$$\n\\begin{aligned}3\\cdot 147-10\\cdot 44 & ≡1 &  & (\\text{mod}\\,147) \\\\ -10\\cdot 44 & ≡1 &  & (\\text{mod}\\,147) \\\\ (147-10)\\cdot 44 & ≡1 &  & (\\text{mod}\\,147) \\\\ 137\\cdot 44 & ≡1 &  & (\\text{mod}\\,147)\\end{aligned}\n$$\n\nTherefore, the inverse of $44$ modulo $147$ is $137.$\n\nNow, multiplying both sides of our original congruence by $137,$ we get the following:\n\n$$\n\\begin{aligned}44x & ≡4 &  & (\\text{mod}\\,147) \\\\ 137\\cdot 44x & ≡137\\cdot 4 &  & (\\text{mod}\\,147) \\\\ x & ≡548 &  & (\\text{mod}\\,147) \\\\ x & ≡3\\cdot 147+107 &  & (\\text{mod}\\,147) \\\\ x & ≡107 &  & (\\text{mod}\\,147)\\end{aligned}\n$$\n\nSo, we get the solution $x≡107\\,(\\text{mod}\\,147).$\n\nBut our original congruence was modulo $441$ (not modulo $147$). To find all the solutions modulo $441,$ we repeatedly add $147$ to $107$ modulo $441$ until we reach the number $107$ again:\n\n$$\n\\begin{aligned}{x}_{1} & ≡107 &  & (\\text{mod}\\,441) \\\\ {x}_{2} & ≡107+147≡254 &  & (\\text{mod}\\,441) \\\\ {x}_{3} & ≡254+147≡401 &  & (\\text{mod}\\,441) \\\\ {x}_{4} & ≡401+147≡548≡441+107≡{x}_{1} &  & (\\text{mod}\\,441)\\end{aligned}\n$$\n\nTherefore, the solutions are \n\n$$\n{x}_{1,2,3}≡107,\\,254,\\,401\\,(\\text{mod}\\,441).\n$$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14269988/observations/history-solution-q-213326-c6bb879c46b098bf250c.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14269988/observations/history-q-213326-94b9f47376a56bdc0b8a.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a146fe-56f5-7d93-88b2-8d2063f4343a",
+  "previous_failures": []
+}
