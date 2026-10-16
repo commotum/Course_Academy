@@ -19,23 +19,18 @@ Use **event hooks** from the scheduler and committed database changes. Follow th
 
 Recheck availability before starting an unstarted activity. Preserve already started or paused work; existing required-work rules still apply while generation runs.
 
-`generate/scripts/find_candidates.py` returns a flat, ranked `knowledge_points`
-list alongside the topic groups. **KPs with five or fewer fresh available questions
-come first**, counting easy, moderate, and hard questions in that KP's own bank,
-even for review or assessment candidates (`kp_available_total`, `low_inventory`).
-Within each of the two inventory groups, sort by earliest linked assignment deadline
-(overdue first; undated last), then activity state (needed now, queued,
-target-related, other unlocked), descending engine priority, and lowest total
-available question count (`available_total`). Sum easy, moderate, and hard counts
-at the applicable activity scope; a zero in one band does not get separate priority.
-Targets and their supporting prerequisites inherit the earliest relevant deadline.
-Current started or paused work counts as needed now and receives the engine's
-ongoing-activity priority; no historical started-since-import flag is needed.
-Remaining ties use the oldest known queue/target assertion or activity offer,
-then stable entity IDs. Each KP reports its rank, deadline, priority, and counts.
+The read-only `generate/scripts/find_candidates.py` now provides a separate
+generator-build ranking. Eligibility is studied, target, queued, direct prerequisite
+of a target, or direct descendant of studied/queued topics. It scores the strongest
+reason as `purpose_points + 1000 × shortage + 100 × urgency_value`: lesson shortages
+precede review shortages, assessment shortages, then hard/moderate/easy distinct-topic
+assessment coverage, then advance preparation. Lessons need five total questions per
+KP, reviews five across the topic, assessments one rated question across the topic.
+Exactly five satisfies the lesson/review threshold.
 
-Informational urgency labels remain P0 for an exhausted pool, P1 for an exhausted supported band, P2 below
-the 3-easy/2-moderate/1-hard buffer, P3 below five per supported band, and P4 when
-stocked; these labels do not determine ranking. Unclassified pools need classification. Lessons count per KP; reviews
-and assessments count the topic pool. The five-question preparation minimums
-remain in [Inventory](2-inventory.md). The script only reads and ranks candidates.
+The flat `knowledge_points` list deduplicates build candidates and excludes usable
+registered generators. Full nested topic inventories remain available for coverage
+and diagnostics, including per-KP refill deficits toward five of every difficulty.
+The [finder guide](../scripts/README.md) defines the score components, exclusive
+next-activity rules, distinct-topic coverage and cursor behavior. This finder does
+not change the separate live inventory worker's trigger or ranking policy above.

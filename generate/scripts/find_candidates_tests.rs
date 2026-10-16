@@ -470,6 +470,11 @@ fn lifecycle_uses_completed_history_legacy_progress_and_original_first_study_tim
     let imported = identity(&db, "topic/title", "Unlocked")?;
     let unstudied = identity(&db, "topic/title", "Locked lesson")?;
     let generator = db.entid(&Keyword::new("fixture", "generator")).unwrap();
+    let refreshed_progress = eid(&query(
+        &db,
+        "[:find ?progress :in $ ?topic :where [?progress :progress/topic ?topic]]",
+        vec![input_eid(refreshed)?],
+    )?[0][0])?;
     let db = db.with_edn(&format!(r#"[
       [:db/add {learner} :learner/activity "old-lesson"]
       [:db/add {learner} :learner/activity "new-lesson"]
@@ -484,6 +489,7 @@ fn lifecycle_uses_completed_history_legacy_progress_and_original_first_study_tim
       [:db/add {learner} :learner/knowledge-profile "not-learned"]
       {{:db/id "not-learned" :progress/topic {unstudied} :progress/repetitions 2.0 :progress/learned false}}
       [:db/add {generator} :question-generator/script "generators/aa/hash/generator.py"]
+      [:db/add {refreshed_progress} :progress/learned false]
     ]"#), 0, EntityRef::Ident(Keyword::new("db.source", "system")))?.db_after;
     let now = at("2026-10-10T12:00:00Z");
     let mut result = candidates(&db, learner, now, None, &BTreeSet::new(), "assessment")?;

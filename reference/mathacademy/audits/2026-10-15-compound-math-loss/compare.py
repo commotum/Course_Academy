@@ -102,8 +102,8 @@ for finding in findings:
  for lesson in {o['lessonId'] for o in finding['sourceOccurrences']}:
   by_lesson[lesson].append(finding)
 lesson_titles={r['lessonId']:r['lessonTitle'] for r in rows}
-summary={'databaseBasis':2832,'sourceFilesScanned':2964,'sourceCandidates':len(rows),'candidateLessons':len({r['lessonId'] for r in rows}),'currentRecordsRead':len(records),'confirmedAffectedAttributes':len(findings),'confirmedAffectedEntities':len({f['entity'] for f in findings}),'confirmedAffectedLessons':len(by_lesson),'reasons':dict(collections.Counter(f['reason'] for f in findings)),'candidateOccurrencesAlreadyComplete':len(complete),'candidateOccurrencesNotImported':len(unimported),'candidateOccurrencesNeedingReview':len(review)}
-(HERE/'confirmed.json').write_text(json.dumps(findings,indent=2))
+summary={'databaseBasis':2832,'sourceFilesScanned':2964,'sourceCandidates':len(rows),'candidateLessons':len({r['lessonId'] for r in rows}),'currentRecordsRead':len(records),'patternMatchedAttributes':len(findings),'patternMatchedEntities':len({f['entity'] for f in findings}),'patternMatchedLessons':len(by_lesson),'reasons':dict(collections.Counter(f['reason'] for f in findings)),'candidateOccurrencesAlreadyComplete':len(complete),'candidateOccurrencesNotImported':len(unimported),'candidateOccurrencesNeedingReview':len(review)}
+(HERE/'matches.json').write_text(json.dumps(findings,indent=2))
 (HERE/'needs-review.json').write_text(json.dumps(review,indent=2))
 (HERE/'already-complete.json').write_text(json.dumps(complete,indent=2))
 (HERE/'comparison-summary.json').write_text(json.dumps(summary,indent=2))

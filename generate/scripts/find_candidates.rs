@@ -1,4 +1,4 @@
-//! Read-only trigger discovery. All queries and the captured log share one DB value.
+//! Read-only generator eligibility. All facts and cursor validation share one DB value.
 use chrono::{DateTime, Utc};
 use edb_core::edn::{EdnValue, write_edn};
 use edb_core::edn_query::{EdnQueryArgument, parse_query_edn};
