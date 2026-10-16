@@ -1,0 +1,17 @@
+<!doctype html><link rel="stylesheet" href="/ui/learning.css">
+<style>html{color-scheme:light}body{background:white;color:#171717}.content-card{background:white}</style>
+<script src="/ui/mathjax-config.js"></script><script src="/ui/vendor/mathjax/tex-svg.js"></script>
+<script src="/ui/vendor/dompurify/purify.min.js"></script><main class="lesson-main"><div id="content" class="lesson-feed"></div></main>
+<script type="module">
+import {marked} from '/ui/vendor/marked/marked.esm.js';
+import {romanLists} from '/ui/prose-lists.js';
+import {inlinePrompt} from '/ui/question-fields.js';
+function el(tag, className, text) {const e=document.createElement(tag);if(className)e.className=className;if(text)e.textContent=text;return e;}
+const source = await (await fetch('/ui/learning.js')).text();
+// Exercise the actual Markdown protection and sanitization used by the player.
+const renderer = source.slice(source.indexOf('function escapeHTML('), source.indexOf('function answerValue('));
+const labels = source.slice(source.indexOf('function fieldLabel('), source.indexOf('\n}', source.indexOf('function fieldLabel(')) + 2);
+const make = new Function('el','marked','romanLists','inlinePrompt', labels+';'+renderer+'; return markdown;');
+window.render = make(el,marked,romanLists,inlinePrompt);
+await MathJax.startup.promise; window.ready=true;
+</script>
