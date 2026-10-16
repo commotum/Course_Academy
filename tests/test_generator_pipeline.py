@@ -13,6 +13,7 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from generator_packages import publish_package, resolve_registered_script
 from generator_pipeline import Pipeline, main
+from generator_publish import SourceChanged, digest as source_digest
 from generator_review import CHECKS
 
 
@@ -116,12 +117,17 @@ class FakePublisher:
     """Durable fake commit acknowledgement separates pipeline recovery from EDB tests."""
     def __init__(self, root, *, lose_ack=False, available_difficulties=None):
         self.root, self.lose_ack = Path(root), lose_ack
+        self.root.mkdir(parents=True, exist_ok=True)
         self.prepares, self.publishes = 0, 0
         self.available_difficulties = ["moderate"] if available_difficulties is None else available_difficulties
+        self.registered_generator = None
+        self.material = {"question": "Square 7."}
+        self.prepare_options = None
 
     def extract_source(self, kp, directory):
         value = {"database": "fixture", "lineage": "fixture-lineage", "basis": 1, "kp_id": kp,
-                 "source_sha256": "source-v1", "material": {"question": "Square 7."},
+                 "source_sha256": source_digest(self.material), "material": self.material,
+                 "registered_generator": self.registered_generator,
                  "available_difficulties": self.available_difficulties}
         directory = Path(directory)
         directory.mkdir(parents=True, exist_ok=True)
@@ -130,6 +136,7 @@ class FakePublisher:
 
     def prepare(self, kp, records, reference, package_hash, directory, **kwargs):
         self.prepares += 1
+        self.prepare_options = kwargs
         directory = Path(directory)
         directory.mkdir(parents=True, exist_ok=True)
         value = {"request_key": "fixture-request", "records": records, "generator": reference,
@@ -175,6 +182,13 @@ class GeneratorPipelineTests(unittest.TestCase):
     def pipeline(self, session, *, publisher=None, attempts=2, request=None):
         return Pipeline(self.job, request or self.request, publisher or self.publisher,
                         root=self.root, environment=self.environment, session=session, max_attempts=attempts)
+
+    def approve_for_refill(self, **options):
+        result = self.pipeline(FakeSession(**options)).run()
+        self.publisher = FakePublisher(self.root / "refill-store")
+        self.publisher.registered_generator = {":question-generator/script": result["registration"]}
+        self.job = self.root / "refill-job"
+        return {**self.request, "job_kind": "refill", "registered_package": result["registration"]}, result
 
     def test_interrupted_author_resumes_same_attempt_and_uses_declared_files_only(self):
         session = FakeSession(interrupt_author=True)
@@ -292,6 +306,102 @@ class GeneratorPipelineTests(unittest.TestCase):
         admitted = pipeline.call_args.args[1]
         self.assertEqual(admitted["difficulty"], "unclassified")
         self.assertEqual(admitted["count"], 5)
+
+    def test_approved_refill_runs_without_agents_and_binds_registration_at_preparation(self):
+        request, approved = self.approve_for_refill(image=True)
+        session = FakeSession()
+        result = self.pipeline(session, request=request).run()
+        self.assertEqual(result["stage"], "verified")
+        self.assertEqual(session.calls, [])
+        self.assertEqual(result["package_hash"], approved["package_hash"])
+        self.assertEqual(result["registration"], approved["registration"])
+        self.assertEqual(self.publisher.prepare_options["expected_registered_generator"], approved["registration"])
+        self.assertTrue(result["assets"])
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 1))
+        approval = json.loads((self.math / "generators/approvals" / approved["package_hash"] / "123.json").read_text())
+        self.assertEqual(set(approval["bands"]), {"easy"})
+
+    def test_refill_requires_matching_current_registration_source_and_reviewed_band(self):
+        request, approved = self.approve_for_refill()
+        for failure, code in (("registration", "registration_changed"), ("source", "source_changed"),
+                              ("band", "approval_band_missing"), ("missing", "approval_missing")):
+            with self.subTest(failure=failure):
+                self.job = self.root / ("refill-" + failure)
+                self.publisher.registered_generator = {":question-generator/script": request["registered_package"]}
+                self.publisher.material = {"question": "Square 7."}
+                current = dict(request)
+                if failure == "registration":
+                    self.publisher.registered_generator = None
+                elif failure == "source":
+                    self.publisher.material = {"question": "Cube 7."}
+                elif failure == "band":
+                    current["difficulty"] = "hard"
+                else:
+                    (self.math / "generators/approvals" / approved["package_hash"] / "123.json").unlink()
+                session = FakeSession()
+                result = self.pipeline(session, request=current).run()
+                self.assertEqual(result["stage"], "unsupported")
+                self.assertTrue(result["needs_repair"])
+                self.assertEqual(result["error"]["code"], code)
+                self.assertEqual(session.calls, [])
+                self.assertEqual((self.publisher.prepares, self.publisher.publishes), (0, 0))
+
+    def test_refill_recovers_unknown_publication_without_agents_or_repreparation(self):
+        request, _ = self.approve_for_refill()
+        self.publisher.lose_ack = True
+        session = FakeSession()
+        with self.assertRaises(ConnectionError):
+            self.pipeline(session, request=request).run()
+        saved_request = (self.job / "publication/request.json").read_bytes()
+        result = self.pipeline(session, request=request).run()
+        self.assertEqual(result["stage"], "verified")
+        self.assertEqual(session.calls, [])
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (1, 2))
+        self.assertEqual((self.job / "publication/request.json").read_bytes(), saved_request)
+
+    def test_refill_source_changed_during_preparation_never_starts_an_agent(self):
+        request, _ = self.approve_for_refill()
+        session = FakeSession()
+        with patch.object(self.publisher, "prepare", side_effect=SourceChanged("Source or registration changed")):
+            result = self.pipeline(session, request=request).run()
+        self.assertEqual(result["stage"], "unsupported")
+        self.assertEqual(result["error"]["code"], "source_changed")
+        self.assertEqual(session.calls, [])
+        self.assertEqual(self.publisher.publishes, 0)
+
+    def test_refill_rechecks_package_and_batch_before_publication(self):
+        request, _ = self.approve_for_refill()
+        session = FakeSession()
+        result = self.pipeline(session, request=request).run("validate")
+        self.assertEqual(result["stage"], "prepare")
+        (self.job / "workspace/helper.py").write_text("def square(n): return n + n\n")
+        result = self.pipeline(session, request=request).run()
+        self.assertEqual(result["stage"], "unsupported")
+        self.assertTrue(result["needs_repair"])
+        self.assertEqual(session.calls, [])
+        self.assertEqual((self.publisher.prepares, self.publisher.publishes), (0, 0))
+
+    def test_inventory_refill_kind_is_forwarded_but_saved_build_request_wins(self):
+        inventory = self.root / "inventory.json"
+        inventory.write_text(json.dumps({"cycle": 1, "request": {
+            "knowledgePoint": 123, "difficulty": "easy", "missing": 2,
+            "stage": "replenish", "jobKind": "refill", "script": "generators/ab/" + "ab" * 32 + "/generator.py"}}))
+        for saved in (False, True):
+            if saved:
+                directory = inventory.with_suffix(".pipeline") / "1"
+                directory.mkdir(parents=True)
+                (directory / "job.json").write_text(json.dumps({"request": self.request}))
+            with patch("generator_publish.Publisher.from_environment", return_value=self.publisher), \
+                    patch("serve_graph_explorer.database_environment", return_value=self.environment), \
+                    patch("generator_pipeline.Pipeline") as pipeline, patch("builtins.print"):
+                pipeline.return_value.run.return_value = {"stage": "verified"}
+                self.assertEqual(main(["--inventory-job", str(inventory)]), 0)
+            admitted = pipeline.call_args.args[1]
+            if saved:
+                self.assertEqual(admitted, self.request)
+            else:
+                self.assertEqual(admitted["job_kind"], "refill")
+                self.assertEqual(admitted["count"], 2)
 
 
 if __name__ == "__main__":

@@ -30,6 +30,21 @@ def digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
 
 
+class RefillNeedsReview(ValueError):
+    def __init__(self, code, message):
+        super().__init__(message)
+        self.code = code
+
+
+def source_identity(snapshot):
+    """Bind approval to instructional evidence, excluding changing pool links."""
+    from generator_publish import digest as source_digest, instructional_material
+    if snapshot.get('source_sha256') != source_digest(snapshot.get('material')):
+        raise ValueError('Instructional source evidence failed its integrity check')
+    return {**{key: snapshot[key] for key in ('database', 'lineage', 'kp_id')},
+            'source_sha256': source_digest(instructional_material(snapshot['material']))}
+
+
 def inside(root, name):
     path = (Path(root) / name).resolve()
     if not path.is_relative_to(Path(root).resolve()):
@@ -147,6 +162,79 @@ class Pipeline:
         self.state.update(updates)
         save(self.path, self.state)
 
+    @property
+    def is_refill(self):
+        return self.state['request'].get('job_kind') == 'refill'
+
+    @property
+    def math_root(self):
+        return Path(self.environment.get('EDB_MATH_ROOT', '/media/jake/SSD/EDB/math'))
+
+    def approval_path(self):
+        return self.math_root / 'generators/approvals' / self.state['package_hash'] / (str(self.state['request']['kp']) + '.json')
+
+    def record_approval(self):
+        """Persist reviewed scope only after publication has been acknowledged."""
+        if self.is_refill:
+            return
+        self.verify_approval_inputs()
+        review_path = Path(self.state['review'])
+        review = read(review_path)
+        validate_review(review, review_path.parent)
+        if review['verdict'] != 'accepted' or not self.state.get('publication', {}).get('passed'):
+            raise ValueError('Generator approval requires accepted review and verified publication')
+        reference = self.state['registration']
+        resolve_registered_script(reference, self.root, self.math_root)
+        identity = {**source_identity(read(self.directory / 'source/source.json')),
+                    'package_sha256': self.state['package_hash'], 'registration': reference}
+        path = self.approval_path()
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.with_suffix('.lock').open('a') as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            old = read(path) if path.exists() else {}
+            bands = old.get('bands', {}) if old.get('identity') == identity else {}
+            bands[self.state['effective_difficulty']] = {
+                'review_sha256': digest(review), 'batch_sha256': self.state['batch_hash'],
+                'evidence': str(review_path), 'publication': self.state['publication']}
+            save(path, {'format': 1, 'identity': identity, 'bands': bands})
+
+    def refill_approval(self):
+        """A hash alone is not approval: require current registration and scope."""
+        snapshot = read(self.directory / 'source/source.json')
+        reference = self.state['request'].get('registered_package')
+        if not reference or not reference.startswith('generators/'):
+            raise RefillNeedsReview('package_invalid', 'Fast refill requires an immutable registered generator package')
+        if (snapshot.get('registered_generator') or {}).get(':question-generator/script') != reference:
+            raise RefillNeedsReview('registration_changed', 'Requested package is no longer the registered generator')
+        path = self.approval_path()
+        if not path.exists():
+            raise RefillNeedsReview('approval_missing', 'Registered package needs an independent review before fast refill')
+        value = read(path)
+        identity = {**source_identity(snapshot), 'package_sha256': self.state['package_hash'], 'registration': reference}
+        if value.get('format') != 1 or value.get('identity') != identity:
+            raise RefillNeedsReview('source_changed', 'Registered package approval does not match current instructional source')
+        band = self.state['request']['difficulty']
+        if band not in value.get('bands', {}):
+            raise RefillNeedsReview('approval_band_missing', 'Registered package has not been reviewed for ' + band)
+        return {'identity': identity, 'difficulty': band, 'approval': value['bands'][band]}
+
+    def load_registered_package(self, reference):
+        resolve_registered_script(reference, self.root, self.math_root)
+        parts = Path(reference).parts
+        package = verify_package(self.math_root.joinpath(*parts[:3]), parts[2])
+        workspace = self.directory / 'workspace'
+        workspace.mkdir(exist_ok=True)
+        for name in package.manifest['files']:
+            target = inside(workspace, name)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(package.directory / name, target)
+            target.chmod(target.stat().st_mode | 0o200)
+        save(workspace / 'package.json', {'entrypoint': package.entrypoint,
+             'files': list(package.manifest['files']), 'dependencies': package.manifest['dependencies'],
+             'default_difficulty': next(iter(read(self.directory / 'source/source.json').get('available_difficulties', [])), None)})
+        self.persist(manifest='package.json', package_hash=package.digest)
+        return package
+
     def manifest(self):
         workspace = self.directory / 'workspace'
         path = inside(workspace, self.state['manifest'])
@@ -241,10 +329,17 @@ class Pipeline:
         observed = check_dependencies(manifest['dependencies'], python_executable(self.root, self.environment), environment=self.environment)
         if observed != read(self.directory / 'runtime-dependencies.json'):
             raise ValueError('Runtime dependencies changed after generation')
+        if self.is_refill:
+            resolve_registered_script(self.state['request']['registered_package'], self.root, self.math_root)
+            if digest(self.refill_approval()) != self.state['approval_hash']:
+                raise ValueError('Registered generator approval changed during refill')
 
     def repair(self, reason):
         save(self.directory / 'feedback.json', reason)
-        self.persist(stage='failed' if self.state['attempt'] >= self.max_attempts else 'generate', error=reason)
+        if self.is_refill:
+            self.persist(stage='unsupported', needs_repair=True, error=reason)
+        else:
+            self.persist(stage='failed' if self.state['attempt'] >= self.max_attempts else 'generate', error=reason)
 
     def run(self, stop_after='push'):
         with (self.directory / 'worker.lock').open('a') as lock:
@@ -258,6 +353,9 @@ class Pipeline:
         while True:
             stage = self.state['stage']
             if stage in {'verified', 'failed', 'unsupported'}:
+                if stage == 'verified' and not self.is_refill and not self.state.get('approval_recorded'):
+                    self.record_approval()
+                    self.persist(approval_recorded=True)
                 return self.state
             if stage == 'source':
                 source = self.directory / 'source/source.json'
@@ -266,31 +364,32 @@ class Pipeline:
                     snapshot = self.publisher.extract_source(self.state['request']['kp'], source.parent)
                     save(source, snapshot)
                 (self.directory / 'workspace').mkdir(exist_ok=True)
-                self.persist(stage='generate', source_hash=digest(read(source)))
+                self.persist(stage='refill' if self.is_refill else 'generate', source_hash=digest(read(source)))
+                if self.is_refill:
+                    continue
                 reference = self.state['request'].get('registered_package')
                 current = read(source).get('registered_generator') or {}
                 if not reference and current.get(':question-generator/script', '').startswith('generators/'):
                     reference = current[':question-generator/script']
                 if reference:
-                    math_root = Path(self.environment.get('EDB_MATH_ROOT', '/media/jake/SSD/EDB/math'))
-                    resolve_registered_script(reference, self.root, math_root)
-                    parts = Path(reference).parts
-                    package = verify_package(math_root.joinpath(*parts[:3]), parts[2])
-                    workspace = self.directory / 'workspace'
-                    for name in package.manifest['files']:
-                        target = inside(workspace, name)
-                        target.parent.mkdir(parents=True, exist_ok=True)
-                        shutil.copy2(package.directory / name, target)
-                        target.chmod(target.stat().st_mode | 0o200)
-                    save(workspace / 'package.json', {'entrypoint': package.entrypoint,
-                         'files': list(package.manifest['files']), 'dependencies': package.manifest['dependencies'],
-                         'default_difficulty': next(iter(read(source).get('available_difficulties', [])), None)})
-                    self.persist(manifest='package.json')
+                    package = self.load_registered_package(reference)
                     try:
                         self.sample()
                         self.persist(stage='validate', package_hash=package.digest)
                     except (OSError, ValueError, subprocess.SubprocessError) as error:
                         self.repair({'error': str(error)})
+            elif stage == 'refill':
+                try:
+                    reference = self.state['request'].get('registered_package')
+                    if not reference or not reference.startswith('generators/'):
+                        raise RefillNeedsReview('package_invalid', 'Fast refill requires an immutable registered package')
+                    package = self.load_registered_package(reference)
+                    approval = self.refill_approval()
+                    self.persist(approval_hash=digest(approval))
+                    self.sample()
+                    self.persist(stage='prepare', registration=package.reference)
+                except (ValueError, subprocess.SubprocessError) as error:
+                    self.repair({'code': getattr(error, 'code', 'generator_failed'), 'error': str(error)})
             elif stage == 'generate':
                 attempt = self.state['attempt'] if self.state.get('author_running') else self.state['attempt'] + 1
                 if attempt > self.max_attempts:
@@ -340,7 +439,13 @@ class Pipeline:
             elif stage == 'prepare':
                 if stop_after in {'generate', 'validate'}:
                     return self.state
-                self.verify_approval_inputs()
+                try:
+                    self.verify_approval_inputs()
+                except ValueError as error:
+                    if not self.is_refill:
+                        raise
+                    self.repair({'code': getattr(error, 'code', 'generator_failed'), 'error': str(error)})
+                    continue
                 source, manifest = self.manifest()
                 package = publish_package(source, manifest['entrypoint'], manifest['files'],
                                           Path(self.environment.get('EDB_MATH_ROOT', '/media/jake/SSD/EDB/math')),
@@ -350,11 +455,13 @@ class Pipeline:
                     self.publisher.prepare(self.state['request']['kp'], read(self.directory / 'samples.json'),
                                            package.reference, package.digest, self.directory / 'publication',
                                            source_snapshot=read(self.directory / 'source/source.json'),
-                                           assets_directory=self.state['runtime'])
+                                           assets_directory=self.state['runtime'],
+                                           **({'expected_registered_generator': package.reference} if self.is_refill else {}))
                 except SourceChanged as error:
-                    self.publisher.extract_source(self.state['request']['kp'], self.directory / 'source')
-                    self.persist(source_hash=digest(read(self.directory / 'source/source.json')))
-                    self.repair({'error': str(error)})
+                    if not self.is_refill:
+                        self.publisher.extract_source(self.state['request']['kp'], self.directory / 'source')
+                        self.persist(source_hash=digest(read(self.directory / 'source/source.json')))
+                    self.repair({'code': 'source_changed', 'error': str(error)})
                     continue
                 self.persist(stage='push', registration=package.reference)
             elif stage == 'push':
@@ -400,21 +507,23 @@ def main(argv=None):
             return 0
         request = job['request']
         directory = args.inventory_job.with_suffix('.pipeline') / str(job.get('cycle', 1))
-        jobs.append((request['knowledgePoint'], request['difficulty'], request['missing'] or 5, directory, request.get('script')))
+        jobs.append((request['knowledgePoint'], request['difficulty'], request['missing'] or 5, directory, request.get('script'), request.get('jobKind')))
     else:
         if not args.kp:
             parser.error('Specify --kp (repeatable) or --inventory-job')
         for kp in args.kp:
             jobs.append((kp, 'unclassified' if args.difficulty == 'auto' else args.difficulty, args.count,
-                         args.directory / args.database / f'{kp}-{args.difficulty}', None))
+                         args.directory / args.database / f'{kp}-{args.difficulty}', None, None))
     failed = False
-    for kp, difficulty, count, directory, registered in jobs:
+    for kp, difficulty, count, directory, registered, job_kind in jobs:
         try:
-            existing = None if registered and registered.startswith('generators/') else existing_generator(kp)
-            if not existing and registered:
+            existing = None if job_kind == 'refill' or registered and registered.startswith('generators/') else existing_generator(kp)
+            if not existing and registered and not registered.startswith('generators/') and job_kind != 'refill':
                 existing = str(resolve_registered_script(registered, ROOT, Path(env['EDB_MATH_ROOT'])))
             request = {'kp': kp, 'difficulty': difficulty, 'count': count, 'existing_entrypoint': existing}
-            if registered and registered.startswith('generators/'):
+            if job_kind:
+                request['job_kind'] = job_kind
+            if registered and (registered.startswith('generators/') or job_kind == 'refill'):
                 request['registered_package'] = registered
             # Once admitted, keep the original inputs across inventory refreshes.
             if (directory / 'job.json').exists():
@@ -425,7 +534,9 @@ def main(argv=None):
                 save(args.inventory_job.with_suffix('.result'), {
                     'outcome': 'generated' if result['stage'] == 'verified' else 'unsupported' if result['stage'] == 'unsupported' else 'failed',
                     'evidence': str(directory / 'job.json'), 'generator': result.get('registration'),
-                    'publication': result.get('publication')})
+                    'publication': result.get('publication'), 'needs_repair': result.get('needs_repair', False),
+                    'difficulty': result.get('effective_difficulty', request['difficulty']),
+                    'package': request.get('registered_package'), 'reason': result.get('error')})
             failed |= result['stage'] in {'failed', 'unsupported'}
         except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as error:
             failed = True

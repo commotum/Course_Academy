@@ -14,6 +14,68 @@ import shutil
 import subprocess
 import sys
 import time
+from datetime import datetime
+
+
+def priority_key(request: dict) -> tuple:
+    """Keep the finder's ordering, including its assessment-age tiebreaker."""
+    def timestamp(value):
+        return datetime.fromisoformat(value.replace('Z', '+00:00')).timestamp() if value else float('inf')
+    return (-request.get('score', 0),
+            timestamp(request.get('first_studied_at')) if request.get('purpose') == 'assessment-shortage' else float('inf'),
+            timestamp(request.get('waiting_since')), request['topic'], request['knowledgePoint'])
+
+
+def ranked_requests(inventory: dict) -> list[dict]:
+    """One build per KP; approved packages replenish independently per band."""
+    builds, refills = {}, {}
+    contexts = [kp for topic in inventory['topics'] for kp in topic['knowledge_points']]
+    contexts += inventory.get('maintained_knowledge_points', [])
+    for kp in [*inventory['knowledge_points'], *contexts]:
+        script = kp.get('generator_script')
+        usable = kp.get('generator_usable', False)
+        packaged = usable and bool(script) and script.startswith('generators/')
+        eligible = bool(kp.get('urgency_value'))
+        if not packaged and not eligible:
+            continue
+        common = {'knowledgePoint': kp['db/id'], 'topic': kp['topic_entity'],
+                  'script': script, 'basis': inventory['basis'],
+                  'score': kp['score'], 'purpose': kp['purpose'],
+                  'shortage': kp.get('shortage', 0), 'urgency_value': kp.get('urgency_value', 0),
+                  'first_studied_at': kp.get('first_studied_at'), 'waiting_since': kp.get('waiting_since'),
+                  'next_activity': kp.get('next_activity'), 'priority_reasons': kp.get('priority_reasons', [])}
+        if not packaged:
+            # Existing repository scripts must pass the independent review once
+            # before the inexpensive refill lane may execute their package.
+            request = {**common, 'jobKind': 'build',
+                       'difficulty': kp.get('generated_band', 'unclassified'), 'missing': 5,
+                       'stage': 'migrate-generator' if usable else kp.get('build_action') or 'create-generator'}
+            old = builds.get(kp['db/id'])
+            if old is None or priority_key(request) < priority_key(old):
+                builds[kp['db/id']] = request
+            continue
+        for band in ('easy', 'moderate', 'hard'):
+            missing = kp.get('refill_deficits', {}).get(band, max(0, 5 - kp['inventory']['available'].get(band, 0)))
+            if missing <= 0:
+                continue
+            reasons = [reason for reason in kp.get('priority_reasons', [])
+                       if reason['purpose'] != 'advance-build' and reason.get('generated_band', band) == band]
+            reasons.append({'purpose': 'routine-replenishment', 'shortage': missing,
+                            'score': 1000 * missing + 100 * kp.get('urgency_value', 0)})
+            reason = min(reasons, key=lambda r: -r['score'])
+            request = {**common, **{field: reason[field] for field in ('score', 'purpose', 'shortage')},
+                       'jobKind': 'refill', 'difficulty': band, 'missing': missing,
+                       'available': 5 - missing, 'stage': 'generate'}
+            key = kp['db/id'], band
+            if key not in refills or priority_key(request) < priority_key(refills[key]):
+                refills[key] = request
+    return sorted([*builds.values(), *refills.values()], key=priority_key)
+
+
+def request_variant(request: dict) -> str:
+    """Content failures reopen only after a material request change."""
+    return hashlib.sha256(json.dumps([request.get(k) for k in
+        ('knowledgePoint', 'stage', 'script', 'difficulty', 'missing')]).encode()).hexdigest()
 
 
 def save(path: Path, value: dict) -> None:
@@ -43,6 +105,122 @@ class InventoryJobs:
                 or str(Path.home() / '.local/bin/codex'))
 
     def accept(self, inventory: dict) -> None:
+        if 'knowledge_points' not in inventory:
+            return self._accept_legacy(inventory)
+        requests = ranked_requests(inventory)
+        lineage = inventory['cursor']['lineage']
+        with (self.directory / 'jobs.lock').open('a') as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            cursor_path = self.directory / 'cursor.json'
+            cursor = json.loads(cursor_path.read_text()) if cursor_path.exists() else {}
+            if cursor.get('lineage', lineage) != lineage:
+                raise ValueError('Inventory database lineage changed; reconcile existing jobs before retargeting')
+            if inventory['basis'] < cursor.get('basis', 0):
+                raise ValueError('Inventory basis regressed')
+            existing = {path: json.loads(path.read_text()) for path in self.directory.glob('*.json')
+                        if path.name != 'cursor.json'}
+            existing = {path: job for path, job in existing.items() if 'request' in job}
+            build_requests = [request for request in requests if request['jobKind'] == 'build']
+            refill_requests = [request for request in requests if request['jobKind'] == 'refill']
+            reopened_refills = set()
+            for request in refill_requests:
+                previous = [job for job in existing.values()
+                            if job['request'].get('jobKind') == 'refill'
+                            and job['request']['knowledgePoint'] == request['knowledgePoint']
+                            and job['request']['difficulty'] == request['difficulty']]
+                if not previous:
+                    continue
+                old = previous[0]
+                if old.get('state') != 'repair-needed' or old['request'].get('script') != request['script']:
+                    continue
+                successful_review = any(
+                    job['request'].get('jobKind') == 'build'
+                    and job['request']['knowledgePoint'] == request['knowledgePoint']
+                    and job['request']['difficulty'] == request['difficulty']
+                    and job['request'].get('script') == request['script']
+                    and job.get('outcome', {}).get('outcome') == 'generated'
+                    and job.get('completedAt', 0) > old.get('completedAt', 0)
+                    for job in existing.values())
+                if successful_review:
+                    reopened_refills.add((request['knowledgePoint'], request['difficulty']))
+                else:
+                    build_requests.append({**request, 'jobKind': 'build', 'stage': 'review-generator'})
+            # Each package/band is allowed its own independent review, but a
+            # rejected unchanged band must not prevent other bands from running.
+            blocked = {}
+            for job in existing.values():
+                if job['request'].get('jobKind', 'build') == 'build':
+                    blocked.setdefault(job['request']['knowledgePoint'], set()).update(job.get('rejectedVariants', []))
+                    if job.get('state') == 'rejected':
+                        blocked[job['request']['knowledgePoint']].add(request_variant(job['request']))
+            selected_builds = {}
+            for request in sorted(build_requests, key=priority_key):
+                kp = request['knowledgePoint']
+                if request_variant(request) not in blocked.get(kp, set()):
+                    selected_builds.setdefault(kp, request)
+            requests = [*selected_builds.values(), *refill_requests]
+            current = set()
+            for request in requests:
+                kind, kp = request['jobKind'], request['knowledgePoint']
+                key = hashlib.sha256(json.dumps([self.learner, kp, kind,
+                    request['difficulty'] if kind == 'refill' else None]).encode()).hexdigest()
+                path = self.directory / f'{key}.json'
+                if kind == 'build':
+                    # Preserve old workspace paths and exact publication request
+                    # identities while collapsing old per-band build requests.
+                    candidates = [(p, job) for p, job in existing.items()
+                                  if job['request']['knowledgePoint'] == kp
+                                  and job['request'].get('jobKind', 'build') == 'build'
+                                  and p not in current]
+                    if candidates:
+                        path, _ = min(candidates, key=lambda pair: (
+                            not self.recoverable(pair[0], pair[1]),
+                            pair[1]['request'].get('jobKind') != 'build',
+                            pair[1].get('state') in {'verified', 'withdrawn'}, pair[0].name))
+                        key = path.stem
+                current.add(path)
+                old = existing.get(path, {})
+                recovering = self.recoverable(path, old)
+                if recovering:
+                    request = {**request, **{field: old['request'].get(field) for field in
+                        ('stage', 'missing', 'script', 'difficulty')},
+                        'jobKind': old['request'].get('jobKind', 'build')}
+                state, cycle = old.get('state', 'pending'), old.get('cycle', 1)
+                changed = any(old.get('request', {}).get(k) != request.get(k)
+                              for k in ('stage', 'missing', 'script', 'difficulty'))
+                if state == 'awaiting-verification' and old.get('retryAt', 0) <= time.time():
+                    state = 'pending' if old.get('replenishments', 0) < 3 else 'rejected'
+                    if state == 'pending':
+                        cycle += 1
+                if (state in {'verified', 'withdrawn'} or state in {'rejected', 'repair-needed'} and changed
+                        or kind == 'refill' and (kp, request['difficulty']) in reopened_refills):
+                    state, cycle = 'pending', cycle + 1
+                    old = {**old, 'attempts': 0, 'replenishments': 0, 'retryAt': 0}
+                if recovering:
+                    # A disappearing/changing trigger cannot discard a commit
+                    # that may already have reached the database.
+                    state = 'running'
+                value = {**old, 'key': key, 'learner': self.learner, 'lineage': lineage,
+                         'request': request, 'state': state, 'cycle': cycle, 'recoveryOnly': False}
+                if value != existing.get(path):
+                    save(path, value)
+            for path, old in existing.items():
+                if path in current:
+                    continue
+                if self.recoverable(path, old):
+                    save(path, {**old, 'request': {**old['request'], 'jobKind': old['request'].get('jobKind', 'build')},
+                                'state': 'running', 'recoveryOnly': True})
+                else:
+                    # Being absent from this full ranked projection is the
+                    # evidence that stock is satisfied, or eligibility ended.
+                    kp = old['request']['knowledgePoint']
+                    present = any(k['db/id'] == kp for t in inventory['topics'] for k in t['knowledge_points'])
+                    state = 'rejected' if old.get('state') == 'rejected' else 'verified' if present else 'withdrawn'
+                    if old.get('state') != state:
+                        save(path, {**old, 'state': state, 'verifiedBasis': inventory['basis']})
+            save(cursor_path, {'basis': inventory['basis'], 'lineage': lineage, 'ranking': 'scored-v1'})
+
+    def _accept_legacy(self, inventory: dict) -> None:
         """Cursor advances only after durable jobs are accepted at this basis."""
         with (self.directory / 'jobs.lock').open('a') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX)
@@ -90,6 +268,17 @@ class InventoryJobs:
                         save(path, {**old, 'state': state, 'verifiedBasis': inventory['basis']})
             save(self.directory / 'cursor.json', {'basis': inventory['basis'], 'lineage': lineage, 'assessmentStatus': inventory.get('assessmentStatus')})
 
+    @staticmethod
+    def recoverable(path: Path, job: dict) -> bool:
+        """Only saved unfinished work overrides ranking, not stale running flags."""
+        if not job or job.get('state') in {'verified', 'withdrawn', 'rejected'}:
+            return False
+        directory = path.with_suffix('.pipeline') / str(job.get('cycle', 1))
+        state_path = directory / 'job.json'
+        if state_path.exists():
+            return json.loads(state_path.read_text()).get('stage') not in {'verified', 'failed', 'unsupported'}
+        return False
+
     def finish(self, path: Path, updates: dict, *, cycle=None) -> None:
         with (self.directory / 'jobs.lock').open('a') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX)
@@ -97,26 +286,48 @@ class InventoryJobs:
             if current['state'] not in {'verified', 'withdrawn'} and (cycle is None or current.get('cycle', 1) == cycle):
                 save(path, {**current, **updates})
 
-    def run_one(self) -> bool:
-        """One worker; bounded content repairs and resumable transport failures."""
-        with (self.directory / 'worker.lock').open('a') as lock:
+    def run_one(self, lane: str = 'build') -> bool:
+        """Independent bounded lanes, with one publisher per KP across lanes."""
+        if lane not in {'build', 'refill'}:
+            raise ValueError('Unknown inventory worker lane: ' + lane)
+        lock_path = self.directory / ('worker.lock' if lane == 'build' else 'worker-refill.lock')
+        with lock_path.open('a') as lock:
             try:
                 fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             except BlockingIOError:
                 return False
-            jobs = []
-            for path in self.directory.glob('*.json'):
-                job = json.loads(path.read_text())
-                if job.get('state') in {'pending', 'running'} and job.get('retryAt', 0) <= time.time():
-                    jobs.append((path, job))
-            if not jobs:
-                return False
-            path, job = min(jobs, key=lambda pair: (pair[1]['state'] != 'running', pair[1]['request']['urgency'], pair[1]['request']['proximity'], -pair[1]['request'].get('priority', 0), pair[1]['key']))
-            # An interrupted process has an unknown outcome; recover the same
-            # attempt and scratch package rather than spend another failure retry.
-            attempts = max(1, job.get('attempts', 0) + (job['state'] != 'running'))
-            cycle = job.get('cycle', 1)
-            self.finish(path, {'state': 'running', 'attempts': attempts, 'error': None}, cycle=cycle)
+            kp_lock = None
+            with (self.directory / 'jobs.lock').open('a') as jobs_lock:
+                fcntl.flock(jobs_lock, fcntl.LOCK_EX)
+                jobs = []
+                for path in self.directory.glob('*.json'):
+                    job = json.loads(path.read_text())
+                    if (job.get('state') in {'pending', 'running'} and job.get('retryAt', 0) <= time.time()
+                            and job['request'].get('jobKind', 'build') == lane):
+                        jobs.append((path, job))
+                def ordering(pair):
+                    path, job = pair
+                    request = job['request']
+                    if 'score' in request:
+                        return (not self.recoverable(path, job), *priority_key(request), job['key'])
+                    return (job['state'] != 'running', request.get('urgency', 0), request.get('proximity', 0),
+                            -request.get('priority', 0), job['key'])
+                for path, job in sorted(jobs, key=ordering):
+                    candidate_lock = (self.directory / f'kp-{job["request"]["knowledgePoint"]}.lock').open('a')
+                    try:
+                        fcntl.flock(candidate_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                    except BlockingIOError:
+                        candidate_lock.close()
+                        continue
+                    kp_lock = candidate_lock
+                    break
+                if kp_lock is None:
+                    return False
+                # Claim under the same lock as admission, using the latest job
+                # cycle. The child inherits lane/KP locks across parent restarts.
+                attempts = max(1, job.get('attempts', 0) + (job['state'] != 'running'))
+                cycle = job.get('cycle', 1)
+                save(path, {**job, 'state': 'running', 'attempts': attempts, 'error': None})
             result_path = path.with_suffix('.result')
             if result_path.exists():
                 result_path.replace(path.with_suffix(f'.result.previous-{attempts}'))
@@ -130,13 +341,21 @@ class InventoryJobs:
                 command = json.loads(override) + [str(path)]
             try:
                 with path.with_suffix('.log').open('a') as log:
-                    completed = subprocess.run(command, cwd=self.root, stdout=log, stderr=subprocess.STDOUT, timeout=21600, check=False, env=self.environment, pass_fds=(lock.fileno(),))
+                    completed = subprocess.run(command, cwd=self.root, stdout=log, stderr=subprocess.STDOUT, timeout=21600, check=False, env=self.environment, pass_fds=(lock.fileno(), kp_lock.fileno()))
                 outcome = json.loads(result_path.read_text()) if result_path.exists() else {}
-                state = 'rejected' if outcome.get('outcome') in {'unsupported', 'finite-limit', 'failed'} else 'awaiting-verification' if completed.returncode == 0 else 'pending'
-                self.finish(path, {'state': state, 'attempts': attempts,
+                state = ('repair-needed' if lane == 'refill' and outcome.get('needs_repair') else
+                         'rejected' if outcome.get('outcome') in {'unsupported', 'finite-limit', 'failed'} else
+                         'awaiting-verification' if completed.returncode == 0 else 'pending')
+                rejections = job.get('rejectedVariants', [])
+                if state == 'rejected' and lane == 'build':
+                    rejections = sorted(set([*rejections, request_variant(job['request'])]))
+                self.finish(path, {'state': state, 'attempts': attempts, 'completedAt': time.time(),
+                                  'rejectedVariants': rejections,
                                   'replenishments': job.get('replenishments', 0) + (state == 'awaiting-verification'),
                                   'retryAt': time.time() + min(300, 10 * 2 ** min(attempts, 5)),
                                   'exitCode': completed.returncode, 'outcome': outcome}, cycle=cycle)
             except (OSError, subprocess.SubprocessError, ValueError) as error:
                 self.finish(path, {'state': 'pending', 'attempts': attempts, 'retryAt': time.time() + min(300, 10 * 2 ** min(attempts, 5)), 'error': str(error)}, cycle=cycle)
+            finally:
+                kp_lock.close()
             return True
