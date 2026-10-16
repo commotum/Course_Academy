@@ -1,0 +1,680 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Math Academy</title>
+        <meta charset="utf-8"/>
+
+        <link rel="shortcut icon" href="/img/favicon.ico"/>
+        <link rel="stylesheet" href="/css/app.css?v=2" />
+        <link rel="stylesheet" href="/css/mathquill.css" />
+        <link rel="stylesheet" href="/css/math-editor.css" />
+
+        <link rel="stylesheet" href="/css/prism.css">
+        <script type="text/javascript" src="/js/prism.js"></script>
+
+        <script type="text/javascript" src="/js/jquery.1.11.0.min.js"></script>
+
+        <script>
+            $.noConflict();
+            // Code that uses other library's $ can follow here.
+        </script>
+
+        <script type="text/javascript" src="/js/mathquill.v2.1.min.js"></script>
+        <script type="text/javascript" src="/js/math-editor.js"></script> 
+        <script type="text/javascript" src="/js/mathjax-config.js?v=2"></script>
+        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="loadMathJaxFallback()"></script>
+        <!--
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>        
+        <script type="text/javascript" src="/js/katex-config.js"></script>
+        -->
+
+        <script>
+            function showSupportDialog() {
+                const dlg = new SupportDialog();
+                dlg.show();
+            }            
+        </script>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+        <script type="text/javascript" src='/js/commonFunctions.js'></script>
+        <script type="text/javascript" src="/js/core.js"></script>
+        <script type="text/javascript" src="/js/core-ui.js"></script>
+        <script type="text/javascript" src="/js/api.js"></script>
+        <script type="text/javascript" src="/js/api-new.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+        <script type="text/javascript" src="/js/jdom.js"></script>
+        <script type="text/javascript" src="/js/header.js"></script>
+
+        <script>
+            var userTimeZone = 'America/Los_Angeles';
+            checkTimeZone(userTimeZone);
+        </script>
+
+        <style>
+            div#courseNameHeader {
+                margin-top: 50px;
+            }            
+        </style>        
+    </head>
+
+    <body>
+        
+        <div id="topRibbon"></div>
+        
+
+        <div id="wrap">
+
+            
+            <div id="topBarContainer">
+
+                <table style="width: 1080px;">
+                    <tr>
+                        <td style="width: 100px;">
+                            <a href="/"><img class="logo" src="/img/math-academy-350-logo.png" /></a>
+                        </td>
+                        <td>
+                            <div id="headerLinks">
+                                
+                                    
+                                        <a id="learnHeaderLink" class="headerLink" href="/learn">LEARN</a>
+                                        
+                                     
+
+                                         
+
+                                                                     
+                                                                                        
+                                                                                                   
+                                                    
+                                             
+                                    
+                                             
+
+                                                                          
+                                        <a id="coursesHeaderLink" class="headerLink" onmouseover="showCoursesMenu(this, 'coursesMenu');">COURSES</a>  
+                                      
+                                  
+                            </div>
+
+                            
+
+                            <div id="coursesMenu">
+                                <table id="coursesMenu-coursesTable" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td class="coursesMenu-categoryList" style="padding-right: 15px;">
+                                        <div class="coursesMenu-categoryHeader">Elementary School</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/4th-grade-math">4th Grade Math</a></div>                                             
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/5th-grade-math">5th Grade Math</a></div>         
+                                        
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">Middle School</div>                                        
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/6th-grade-math">6th Grade Math</a></div>         
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/7th-grade-math">7th Grade Math</a></div>         
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/8th-grade-math">8th Grade Math</a></div>         
+
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/prealgebra">Prealgebra</a></div>
+                                
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">High School</div>
+
+                                        <div class="coursesMenu-courseSequence" style="margin-top: 20px;">Traditional</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/algebra-i">Algebra I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/geometry">Geometry</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/algebra-ii">Algebra II</a></div>       
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/precalculus">Precalculus</a></div> 
+
+                                        <div class="coursesMenu-courseSequence">Integrated Math</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-i">Integrated Math I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-ii">Integrated Math II</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-iii">Integrated Math III</a></div>   
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/precalculus">Precalculus</a></div> 
+                                
+
+                                        <div class="coursesMenu-courseSequence">Integrated Math (Honors)</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-i-honors">Integrated Math I (Honors)</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-ii-honors">Integrated Math II (Honors)</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-iii-honors">Integrated Math III (Honors)</a></div>                                     
+
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">Test Prep</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/sat-math-fundamentals">SAT Math Fundamentals</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/sat-math-prep">SAT Math Prep</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/act-math">ACT Math</a> *</div>
+                                    </td>
+                                    <td class="coursesMenu-categoryList">
+
+                                        <div class="coursesMenu-categoryHeader">AP Courses</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/ap-calculus-ab">AP Calculus AB</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/ap-calculus-bc">AP Calculus BC</a></div>
+
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">Foundations Series</div>
+
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-foundations-i">Mathematical Foundations I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-foundations-ii">Mathematical Foundations II</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-foundations-iii">Mathematical Foundations III</a></div>                                        
+
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">University</div>            
+
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/calculus-i">Calculus I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/calculus-ii">Calculus II</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/linear-algebra">Linear Algebra</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/multivariable-calculus">Multivariable Calculus</a></div>                                     
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/methods-of-proof">Methods of Proof</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/differential-equations">Differential Equations</a></div>                                           
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/discrete-mathematics">Discrete Mathematics</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/probability-and-statistics">Probability & Statistics</a></div>                                        
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematics-for-machine-learning">Mathematics For Machine Learning</a></div>      
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-methods-for-the-physical-sciences-i">Mathematical Methods for the Physical Sciences I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-methods-for-the-physical-sciences-ii">Mathematical Methods for the Physical Sciences II</a></div>                                                                             
+                                                            
+                                        <div class="coursesMenu-course">
+                                            <a class="coursesMenu-courseLink" href="/courses/abstract-algebra">Abstract Algebra</a> *
+                                        </div>        
+                                    </td>
+                                </tr>
+                                </table>
+
+                                <div style="margin-top: 20px;">
+                                    * <span id="coursesMenu-underDevelopment">Currently under development</span> 
+                                </div>                            
+                            </div>                        
+                        </td>
+                        <td style="width: 250px;">
+                            <div id="topMenu">
+                                
+                                    
+
+                                        
+
+                                        
+                                            <div id="userHeader" onmouseover="showMenu(this, 'userMenu');">WP</div>
+                                        
+
+                                        <div id="userMenu">
+                                            <div id="userMenu-info">
+                                                <div id="userMenu-name">William Parker</div>
+                                                
+                                                    <div id="userMenu-username">multiwilliam</div>
+                                                
+                                            </div>
+
+                                            <div class="headerMenuItem" onmousedown="Core.navigate('/settings/profile');">Settings</div>
+
+                                            
+
+                                            <div class="headerMenuItem" onmousedown="Core.navigate('/help');">Help</div>
+
+                                            <div class="headerMenuItem" onmousedown="showSupportDialog();">Support</div>
+
+                                            <div class="headerMenuItem" onmousedown="Core.navigate('/logout');">Logout</div>                                        
+                                        </div>
+                                    
+                                                            
+                            </div> 
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+
+            <div id="mathjaxCommands" style="display: none;">
+                $
+                \newcommand{\sech}{\mathop{\rm sech}\nolimits}
+                \newcommand{\csch}{\mathop{\rm csch}\nolimits}
+                \newcommand{\coth}{\mathop{\rm coth}\nolimits}
+                \newcommand{\arsinh}{\mathop{\rm arsinh}\nolimits}
+                \newcommand{\arcosh}{\mathop{\rm arcosh}\nolimits}
+                \newcommand{\artanh}{\mathop{\rm artanh}\nolimits}
+                \newcommand{\arsech}{\mathop{\rm arsech}\nolimits}
+                \newcommand{\arcsch}{\mathop{\rm arcsch}\nolimits}
+                \newcommand{\arcoth}{\mathop{\rm arcoth}\nolimits}
+                $
+            </div>
+
+            <div id="content">
+                <link rel="stylesheet" href="/css/student-test.css">
+
+<script type="text/javascript" src="/js/disable-back-button.js"></script>
+<script type="text/javascript" src="/js/mathdown.js?v=3"></script>
+<script type="text/javascript" src="/js/free-response-parser.js"></script>
+<script type="text/javascript" src="/js/task-event-storage.js"></script>
+<script type="text/javascript" src="/js/task-event.js"></script>
+<script type="text/javascript" src="/js/student-test.js"></script>
+
+<link href="/css/mathquill.css" rel="stylesheet">
+<link href="/css/math-editor.css" rel="stylesheet">
+
+<script type="text/javascript" src="/js/jquery.1.11.0.min.js"></script>
+
+<script>
+    $.noConflict();
+    // Code that uses other library's $ can follow here.
+</script>
+
+<script type="text/javascript" src="/js/mathquill.v2.1.min.js"></script>
+<script type="text/javascript" src="/js/math-editor.js"></script> 
+
+
+<div id="questionAnswerContainer">
+    <table style="display: inline;">
+        <tr>
+            <td style="text-align: center;">
+                <div id="questionNavigator"></div>
+
+
+                <div id="questions">
+                        
+                    
+                    <div id="question-9536" class="question">
+                        <div class="questionNumber">Question 1</div>
+
+                        
+                               
+                         
+        
+
+                        
+                            <div class="questionGraphicFrame"><img id="questionGraphic" src="/graphics/q-9536" /></div>
+                        
+
+                        <div id="questionText-9536" class="questionText">
+                            <p>Find the arc length of the polar curve $r=e^{\theta}$ for $0 \leq \theta \leq \dfrac{\pi}{2}$ (shown in blue in the diagram above).</p>
+<p></p>
+                                     
+                        </div>
+
+                        
+                            <table class="choicesTable">
+                                <tr>
+                                    <td id="choiceALetter" class="choiceLetter">
+                                          
+                                        <div id="question-9536-choiceA" class="choiceLetterCircle " letter="a">a</div>
+                                    </td>
+                                    <td class="choiceText">$\sqrt{2}$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceBLetter" class="choiceLetter">
+                                          
+                                        <div id="question-9536-choiceB" class="choiceLetterCircle " letter="b">b</div>
+                                    </td>
+                                    <td id="choiceBText" class="choiceText">$\sqrt{2} e^{\pi/2}$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceCLetter" class="choiceLetter">
+                                          
+                                        <div id="question-9536-choiceC" class="choiceLetterCircle " letter="c">c</div>
+                                    </td>
+                                    <td id="choiceCText" class="choiceText">$\sqrt{2} \left( e^{\pi/2} - 1 \right)$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceDLetter" class="choiceLetter">
+                                          
+                                        <div  id="question-9536-choiceD" class="choiceLetterCircle " letter="d">d</div>
+                                    </td>
+                                    <td id="choiceDText" class="choiceText">$2\sqrt{2} \left( e^{\pi/2} - 1 \right)$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceELetter" class="choiceLetter">
+                                        
+                                        <div  id="question-9536-choiceE" class="choiceLetterCircle " letter="e">e</div>
+                                    </td>
+                                    <td id="choiceEText" class="choiceText">$2\sqrt{2} \left( e^{\pi/2} - e^{-\pi/2} \right)$</td>
+                                </tr>
+                            </table> 
+                              
+                    </div>
+                    
+                    <div id="question-119283" class="question">
+                        <div class="questionNumber">Question 2</div>
+
+                        
+                               
+                         
+        
+
+                        
+
+                        <div id="questionText-119283" class="questionText">
+                            <p>The growth rate of a watermelon production $P(t)$ in a certain land is jointly proportional to the watermelon production at time $t,$ measured in months, and the difference between the land&#39;s carrying capacity and the watermelon production. If the constant of proportionality is $0.2$ and the maximum possible watermelon production is $1\,800,$ which differential equation could be used to model $P(t)?$</p>
+                                     
+                        </div>
+
+                        
+                            <table class="choicesTable">
+                                <tr>
+                                    <td id="choiceALetter" class="choiceLetter">
+                                          
+                                        <div id="question-119283-choiceA" class="choiceLetterCircle " letter="a">a</div>
+                                    </td>
+                                    <td class="choiceText">$\dfrac{\mathrm{d} P}{\mathrm{d} t} = 1\,800P(0.2+P)$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceBLetter" class="choiceLetter">
+                                          
+                                        <div id="question-119283-choiceB" class="choiceLetterCircle " letter="b">b</div>
+                                    </td>
+                                    <td id="choiceBText" class="choiceText">$\dfrac{\mathrm{d} P}{\mathrm{d} t} = 0.2P(1\,800-P)$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceCLetter" class="choiceLetter">
+                                          
+                                        <div id="question-119283-choiceC" class="choiceLetterCircle " letter="c">c</div>
+                                    </td>
+                                    <td id="choiceCText" class="choiceText">$\dfrac{\mathrm{d} P}{\mathrm{d} t} = 0.2P(1\,800+P)$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceDLetter" class="choiceLetter">
+                                          
+                                        <div  id="question-119283-choiceD" class="choiceLetterCircle " letter="d">d</div>
+                                    </td>
+                                    <td id="choiceDText" class="choiceText">$\dfrac{\mathrm{d} P}{\mathrm{d} t} = -0.2P(1\,800-P)$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceELetter" class="choiceLetter">
+                                        
+                                        <div  id="question-119283-choiceE" class="choiceLetterCircle " letter="e">e</div>
+                                    </td>
+                                    <td id="choiceEText" class="choiceText">$\dfrac{\mathrm{d} P}{\mathrm{d} t} = 1\,800P(0.2-P)$</td>
+                                </tr>
+                            </table> 
+                              
+                    </div>
+                    
+                    <div id="question-114552" class="question">
+                        <div class="questionNumber">Question 3</div>
+
+                        
+                               
+                         
+        
+
+                        
+
+                        <div id="questionText-114552" class="questionText">
+                            <p>Calculate $\displaystyle \int 2x\log_5(x) \, \textrm{d}x.$</p>
+                                     
+                        </div>
+
+                        
+                            <table class="choicesTable">
+                                <tr>
+                                    <td id="choiceALetter" class="choiceLetter">
+                                          
+                                        <div id="question-114552-choiceA" class="choiceLetterCircle " letter="a">a</div>
+                                    </td>
+                                    <td class="choiceText">  $\dfrac{x^2}{2\ln 5}(3\ln x + 2) + C$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceBLetter" class="choiceLetter">
+                                          
+                                        <div id="question-114552-choiceB" class="choiceLetterCircle " letter="b">b</div>
+                                    </td>
+                                    <td id="choiceBText" class="choiceText">  $\dfrac{x^2}{\ln 5}(4\ln x -1) + C$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceCLetter" class="choiceLetter">
+                                          
+                                        <div id="question-114552-choiceC" class="choiceLetterCircle " letter="c">c</div>
+                                    </td>
+                                    <td id="choiceCText" class="choiceText">  $\dfrac{x^2}{2\ln 5}(4\ln x +1) + C$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceDLetter" class="choiceLetter">
+                                          
+                                        <div  id="question-114552-choiceD" class="choiceLetterCircle " letter="d">d</div>
+                                    </td>
+                                    <td id="choiceDText" class="choiceText"> $\dfrac{x^2}{2\ln 5}(2\ln x -1) + C$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceELetter" class="choiceLetter">
+                                        
+                                        <div  id="question-114552-choiceE" class="choiceLetterCircle " letter="e">e</div>
+                                    </td>
+                                    <td id="choiceEText" class="choiceText">  $\dfrac{x^2}{\ln 5}(\ln x -1) + C$</td>
+                                </tr>
+                            </table> 
+                              
+                    </div>
+                    
+                    <div id="question-138980" class="question">
+                        <div class="questionNumber">Question 4</div>
+
+                        
+                               
+                         
+        
+
+                        
+
+                        <div id="questionText-138980" class="questionText">
+                            <p>Consider the curve defined parametrically as 
+\[
+x = \cos^3 t, \quad y = \sin^3 t, \quad t\in \left[0,\dfrac{\pi}{2}\right].
+\]
+What integral gives the surface area generated when this curve is rotated $2\pi$ radians about the $x$-axis?</p>
+                                     
+                        </div>
+
+                        
+                            <table class="choicesTable">
+                                <tr>
+                                    <td id="choiceALetter" class="choiceLetter">
+                                          
+                                        <div id="question-138980-choiceA" class="choiceLetterCircle " letter="a">a</div>
+                                    </td>
+                                    <td class="choiceText">$\displaystyle 6\pi \int_{0}^{\pi/2} \sin^4 t\cos t\,\textrm d t$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceBLetter" class="choiceLetter">
+                                          
+                                        <div id="question-138980-choiceB" class="choiceLetterCircle " letter="b">b</div>
+                                    </td>
+                                    <td id="choiceBText" class="choiceText">$\displaystyle 6\pi \int_{0}^{\pi/2} \sin^3 t\,\textrm d t$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceCLetter" class="choiceLetter">
+                                          
+                                        <div id="question-138980-choiceC" class="choiceLetterCircle " letter="c">c</div>
+                                    </td>
+                                    <td id="choiceCText" class="choiceText">$\displaystyle 3\pi \int_{0}^{\pi/2} \cos^3 t\,\textrm d t$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceDLetter" class="choiceLetter">
+                                          
+                                        <div  id="question-138980-choiceD" class="choiceLetterCircle " letter="d">d</div>
+                                    </td>
+                                    <td id="choiceDText" class="choiceText">$\displaystyle 2\pi \int_{0}^{\pi/2} \cos^4 t\sin t\,\textrm d t$</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceELetter" class="choiceLetter">
+                                        
+                                        <div  id="question-138980-choiceE" class="choiceLetterCircle " letter="e">e</div>
+                                    </td>
+                                    <td id="choiceEText" class="choiceText">$\displaystyle 2\pi \int_{0}^{\pi/2} \sin^4 t\cos^4 t\,\textrm d t$</td>
+                                </tr>
+                            </table> 
+                              
+                    </div>
+                    
+                    <div id="question-344426" class="question">
+                        <div class="questionNumber">Question 5</div>
+
+                        
+                               
+                         
+        
+
+                        
+
+                        <div id="questionText-344426" class="questionText">
+                            <p>The exact global minimum value of the function $f(x) = x^2-4x+5$ on the closed interval $0 \le x \le 5$ is</p>
+                                     
+                        </div>
+
+                              
+                    </div>
+                    
+                    <div id="question-8415" class="question">
+                        <div class="questionNumber">Question 6</div>
+
+                        
+                               
+                         
+        
+
+                        
+
+                        <div id="questionText-8415" class="questionText">
+                            <p><p>A triangle $S$ has vertices at $(0,0), (2,0), (2,2).$ Which of the following are coordinates of the vertices of $S',$ the image of $S$ under the counterclockwise rotation $\mathbf{R}_{270^{\circ}}$ by an angle of $270^{\circ}$ about the origin?</p></p>
+<ol class="questionStatements"><li>  $(0,0)$ </li><li>  $(2,-2)$ </li><li>  $(-2,0)$ </li></ol>                                     
+                        </div>
+
+                        
+                            <table class="choicesTable">
+                                <tr>
+                                    <td id="choiceALetter" class="choiceLetter">
+                                          
+                                        <div id="question-8415-choiceA" class="choiceLetterCircle " letter="a">a</div>
+                                    </td>
+                                    <td class="choiceText">II only</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceBLetter" class="choiceLetter">
+                                          
+                                        <div id="question-8415-choiceB" class="choiceLetterCircle " letter="b">b</div>
+                                    </td>
+                                    <td id="choiceBText" class="choiceText">I and III only</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceCLetter" class="choiceLetter">
+                                          
+                                        <div id="question-8415-choiceC" class="choiceLetterCircle " letter="c">c</div>
+                                    </td>
+                                    <td id="choiceCText" class="choiceText">II and III only</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceDLetter" class="choiceLetter">
+                                          
+                                        <div  id="question-8415-choiceD" class="choiceLetterCircle " letter="d">d</div>
+                                    </td>
+                                    <td id="choiceDText" class="choiceText">I and II only</td>
+                                </tr>
+                                <tr>
+                                    <td id="choiceELetter" class="choiceLetter">
+                                        
+                                        <div  id="question-8415-choiceE" class="choiceLetterCircle " letter="e">e</div>
+                                    </td>
+                                    <td id="choiceEText" class="choiceText">III only</td>
+                                </tr>
+                            </table> 
+                              
+                    </div>
+                    
+                </div>
+
+                <table id="buttonBar">
+                    <tr>
+                        <td id="questionsAnswered"></td>                       
+                        <td id="timeRemaining"></td>      
+
+                        <td id="buttons">
+
+                            <div id="prevButton">Prev</div>    
+                            <div id="nextButton">Next</div>   
+ 
+        
+                            <div id="submitTestButton" class="disabledButton">Submit Test</div>   
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+            
+            </div> 
+        </div>
+
+        <link rel="stylesheet" href="/css/support-dialog.css">
+
+<script type="text/javascript" src="/js/support-dialog.js"></script>
+
+<div id="supportDialog">
+    <div id="supportDialog-title">Support</div>
+
+    <div id="supportDialog-message">
+        If you need support, please email <b>support@mathacademy.com</b>.
+    </div>
+
+    <div id="supportDialog-buttons">
+        <div id="supportDialog-closeButton">Close</div>
+    </div>
+</div>
+        <link rel="stylesheet" href="/css/xp-goals-dialog.css">
+
+<script type="text/javascript" src="/js/xp-goals-dialog.js"></script>
+
+<div id="xpGoalsDialog">
+    <div id="xpGoalsDialog-title">XP Goals</div>
+
+    <table id="xpGoalsDialog-goals" cellpadding="0" cellspacing="0">
+        <tr>
+            <td class="xpGoalsDialog-dayOfWeek">Sun</td>
+            <td class="xpGoalsDialog-dayOfWeek">Mon</td>
+            <td class="xpGoalsDialog-dayOfWeek">Tue</td>
+            <td class="xpGoalsDialog-dayOfWeek">Wed</td>
+            <td class="xpGoalsDialog-dayOfWeek">Thu</td>
+            <td class="xpGoalsDialog-dayOfWeek">Fri</td>
+            <td class="xpGoalsDialog-dayOfWeek">Sat</td>
+        </tr>
+        <tr>
+            <td><input id="xpGoalsDialog-sunGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-monGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-tueGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-wedGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-thuGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-friGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-satGoal" class="xpGoalsDialog-goal" type="text"> </td>
+        </tr> 
+    </table>
+
+
+    <div id="xpGoalsDialog-courseCompletionText"></div>
+
+    <div id="xpGoalsDialog-pausedFrame">
+        <input id="xpGoalsDialog-paused" name="xpGoalsDialog-paused" type="checkbox" /> 
+        <label id="xpGoalsDialog-pausedLabel" for="xpGoalsDialog-paused">Paused</label>
+    </div>
+
+    <div id="xpGoalsDialog-buttonBar">
+        <div id="xpGoalsDialog-submitButton">SUBMIT</div>
+        <div id="xpGoalsDialog-cancelButton">CANCEL</div>
+    </div>
+</div>
+        <link rel="stylesheet" href="/css/course-dialog.css">
+
+<script type="text/javascript" src="/js/course-dialog.js"></script>
+
+<div id="courseDialog">
+    <div id="courseDialog-title">Change Course</div>
+
+    <div id="courseDialog-course">
+        <label id="courseDialog-courseLabel">Course</label>
+
+        <select id="courseDialog-courseSelect">
+            <option selected>-</option>
+        </select>
+    </div>
+
+    <div id="courseDialog-buttonBar">
+        <div id="courseDialog-submitButton">SUBMIT</div>
+        <div id="courseDialog-cancelButton">CANCEL</div>
+    </div>
+</div>
+
+                
+
+                                    
+    </body>
+    </html>          
+    
