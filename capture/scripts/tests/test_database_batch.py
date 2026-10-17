@@ -10,13 +10,88 @@ from unittest.mock import patch
 
 from scripts.config import Config
 from scripts.database.client import StaleBasis
-from scripts.database.batch import size
+from scripts.database.batch import combine, size, union
+from scripts.database.commit import VerificationError
+from scripts.database.edn import kw
 from scripts.database.pipeline import DatabasePipeline
 from scripts.database.prepare import digest
 from scripts.monitor_data import _import_ids
 from scripts.outbox import DatabaseWorker, enqueue
 from scripts.storage import atomic_json, read_json
 from scripts.tests.test_database import QueryBackedFakeClient, question, source_snapshot
+
+
+class SnapshotMergeTests(unittest.TestCase):
+    def test_internal_aliases_do_not_merge_unrelated_sibling_paths(self):
+        shared = ['original']
+        left = {':first': shared, ':second': shared}
+        self.assertEqual(union(left, {':first': ['new']}),
+                         {':first': ['original', 'new'], ':second': ['original']})
+        nested = {':db/id': 2, ':labels': shared}
+        left = [{':db/id': 1, ':child': nested}, nested]
+        merged = union(left, [{':db/id': 1, ':child': {':db/id': 2, ':labels': ['new']}}])
+        self.assertEqual(merged[0][':child'][':labels'], ['original', 'new'])
+        self.assertEqual(merged[1][':labels'], ['original'])
+        self.assertEqual(shared, ['original'])
+
+    def test_nested_union_is_independent_of_both_inputs(self):
+        left = {':db/id': 1, ':ref': {':db/id': 2, ':name': 'retained'},
+                ':items': [{':db/id': 3, ':labels': ['first']}], ':rows': [[1, 'x']]}
+        right = {':db/id': 1, ':ref': 2,
+                 ':items': [{':db/id': 3, ':labels': ['second']}, {':db/id': 4, ':labels': ['new']}],
+                 ':rows': [[1, 'x'], [2, 'y']]}
+        originals = deepcopy((left, right))
+        merged = union(left, right)
+        self.assertEqual(merged[':ref'], left[':ref'])
+        self.assertEqual(merged[':items'][0][':labels'], ['first', 'second'])
+        self.assertEqual(merged[':rows'], [[1, 'x'], [2, 'y']])
+        merged[':ref'][':name'] = 'changed'
+        merged[':items'][1][':labels'].append('changed')
+        merged[':rows'][1].append('changed')
+        self.assertEqual((left, right), originals)
+        self.assertEqual(union(2, {':db/id': 2, ':name': 'full'}), {':db/id': 2, ':name': 'full'})
+
+    def test_conflicting_nested_scalar_leaves_inputs_untouched(self):
+        left = [{':db/id': 1, ':items': [{':db/id': 2, ':title': 'first'}]}]
+        right = [{':db/id': 1, ':items': [{':db/id': 2, ':title': 'different'}]}]
+        originals = deepcopy((left, right))
+        with self.assertRaisesRegex(VerificationError, 'snapshots disagree'):
+            union(left, right)
+        self.assertEqual((left, right), originals)
+
+    def test_combining_owned_aggregate_preserves_snapshots_and_prepared_forms(self):
+        members = []
+        for label in ['first', 'second']:
+            snapshot = {'basis': 1, 'lineage': 'same', 'entities': [
+                {':db/id': 1, ':items': [{':db/id': 2, ':labels': [label]}]}],
+                'facts': [[1, ':labels', label, 5]], 'attributes': [], 'idents': []}
+            prepared = {'batches': [{'source': ':source',
+                'forms': [{kw('db/id'): 'same', kw('items'): [{':db/id': 2, ':labels': [label]}]}],
+                'assertions': [['same', ':labels', label]], 'retractions': []}]}
+            members.append(({}, prepared, snapshot))
+        originals = deepcopy(members)
+        batches, snapshot = combine(members)
+        self.assertEqual(snapshot['entities'][0][':items'][0][':labels'], ['first', 'second'])
+        self.assertEqual(batches[0]['forms'][0][kw('items')][0][':labels'], ['first', 'second'])
+        snapshot['entities'][0][':items'][0][':labels'].append('changed')
+        batches[0]['forms'][0][kw('items')][0][':labels'].append('changed')
+        self.assertEqual(members, originals)
+
+    def test_combine_detaches_aliases_in_initial_and_added_snapshots(self):
+        shared = ['original']
+        entity = {':db/id': 1, ':first': shared, ':second': shared}
+        additions = [[], [entity]]
+        for initial in additions:
+            with self.subTest(initial=bool(initial)):
+                snapshots = [{'basis': 1, 'lineage': 'same', 'entities': initial},
+                             {'basis': 1, 'lineage': 'same', 'entities': [entity]},
+                             {'basis': 1, 'lineage': 'same', 'entities': [{':db/id': 1, ':first': ['new']}]}]
+                members = [({}, {'batches': []}, snapshot) for snapshot in snapshots]
+                originals = deepcopy(members)
+                _, snapshot = combine(members)
+                self.assertEqual(snapshot['entities'], [
+                    {':db/id': 1, ':first': ['original', 'new'], ':second': ['original']}])
+                self.assertEqual(members, originals)
 
 
 class BatchTests(unittest.TestCase):

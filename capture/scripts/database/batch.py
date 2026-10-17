@@ -53,50 +53,72 @@ def compatible(members, prepared, snapshot):
 
 def union(left, right):
     """Union overlapping partial Pulls from exactly the same database value."""
+    return _union_owned(_copy_tree(left), right)
+
+
+def _copy_tree(value):
+    # Snapshot collection can share a nested Pull with its top-level entity.
+    # Each aggregate path needs independent ownership: deepcopy's shared memo
+    # would retain those aliases and let one path's merge change its sibling.
+    if isinstance(value, dict):
+        return {key: _copy_tree(child) for key, child in value.items()}
+    if isinstance(value, list):
+        return [_copy_tree(child) for child in value]
+    if isinstance(value, tuple):
+        return tuple(_copy_tree(child) for child in value)
+    if value is None or isinstance(value, (str, int, float, bool)):
+        return value  # Includes immutable EDN keyword/symbol strings.
+    return copy.deepcopy(value)
+
+
+def _union_owned(left, right):
+    """Merge into our private aggregate, copying only incoming additions.
+
+    Callers must own the entire left tree. Inputs from member snapshots or
+    prepared transactions are never used as mutable aggregates.
+    """
     if isinstance(left, dict) and isinstance(right, dict):
-        result = copy.deepcopy(left)
         for key, value in right.items():
-            result[key] = union(result[key], value) if key in result else copy.deepcopy(value)
-        return result
+            left[key] = _union_owned(left[key], value) if key in left else _copy_tree(value)
+        return left
     if isinstance(left, list) and isinstance(right, list):
-        result = copy.deepcopy(left)
         def key(value):
             return ('entity', value[':db/id']) if isinstance(value, dict) and ':db/id' in value else ('value', dumps(value))
-        positions = {key(value): i for i, value in enumerate(result)}
+        positions = {key(value): i for i, value in enumerate(left)}
         for value in right:
             index = positions.get(key(value))
             if isinstance(value, dict) and ':db/id' in value:
                 if index is not None:
-                    result[index] = union(result[index], value)
+                    left[index] = _union_owned(left[index], value)
                     continue
             if index is None:
-                positions[key(value)] = len(result)
-                result.append(copy.deepcopy(value))
-        return result
+                positions[key(value)] = len(left)
+                left.append(_copy_tree(value))
+        return left
     if isinstance(left, dict) and right == left.get(':db/id'):
-        return copy.deepcopy(left)
+        return left
     if isinstance(right, dict) and left == right.get(':db/id'):
-        return copy.deepcopy(right)
+        return _copy_tree(right)
     if left != right:
         raise VerificationError('Overlapping batch snapshots disagree at the same basis')
-    return copy.deepcopy(left)
+    return left
 
 
 def combine(members):
     snapshot, groups = None, {}
     for _, prepared, current in members:
         if snapshot is None:
-            snapshot = copy.deepcopy(current)
+            snapshot = _copy_tree(current)
         else:
             if (current['basis'], current.get('lineage')) != (snapshot['basis'], snapshot.get('lineage')):
                 raise VerificationError('Batch preparation spans database values or lineages')
             for key in ('entities', 'facts', 'attributes', 'idents'):
-                snapshot[key] = union(snapshot.get(key, []), current.get(key, []))
+                snapshot[key] = _union_owned(snapshot.get(key, []), current.get(key, []))
         for batch in prepared['batches']:
             group = groups.setdefault(batch['source'], {'source': batch['source'], 'forms': [],
                                                        'assertions': [], 'retractions': []})
             for key in ('forms', 'assertions', 'retractions'):
-                group[key].extend(copy.deepcopy(batch[key]))
+                group[key].extend(_copy_tree(batch[key]))
     for batch in groups.values():
         updates, forms, other_forms = {}, [], set()
         for form in batch['forms']:
@@ -107,7 +129,7 @@ def combine(members):
                     forms.append(form)
                 else:
                     index = updates[target]
-                    forms[index] = union(forms[index], form)
+                    forms[index] = _union_owned(forms[index], form)
             elif dumps(form) not in other_forms:
                 other_forms.add(dumps(form))
                 forms.append(form)

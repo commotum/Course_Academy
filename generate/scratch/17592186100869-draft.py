@@ -4,7 +4,8 @@
 Backbone: read three displayed arrays; identify their dimensions; for each
 ordered pair compare left columns with right rows; box equal inner dimensions;
 conclude the complete true-statement subset. No matrix entries are multiplied.
-Source layout profiles preserve all three independent false/true banks.
+Learner-facing statements are checkbox labels, with at least one true statement.
+Raw source layout profiles remain evidence-only replays.
 """
 import sys
 sys.dont_write_bytecode = True
@@ -15,7 +16,8 @@ sys.path.insert(0,str(ROOT/'scripts/question_capture'))
 from math_format import checked_math_content, matrix_operands, matrix_tex, normalize_prose
 D=Path(__file__).with_suffix('')
 SNAPSHOT=json.loads((D/'source.json').read_text())
-KP=SNAPSHOT['record']; VERSION='conformability-checkbox-1'
+KP=SNAPSHOT['record']; VERSION='conformability-checkbox-2-statement-labels'
+RAW_VERSION='conformability-checkbox-1'
 SOURCES={q[':question/math-academy-id']:q for q in KP[':knowledge-point/questions']}
 LEVELS=('easy','moderate','hard'); KEYS=('I','II','III')
 MAT=re.compile(r'([A-Z])=\\begin\{bmatrix\}(.*?)\\end\{bmatrix\}',re.S)
@@ -56,9 +58,18 @@ def validate_parameters(level,t,p,raw=False):
         row=next(i for i,(r,c) in enumerate(dims) if r==1);col=next(i for i,(r,c) in enumerate(dims) if c==1)
         if dims[row][1]==dims[col][0]:raise ValueError('Hard vector lengths distinct to require order discrimination')
         if [row,col] not in pairs or [col,row] not in pairs:raise ValueError('Hard must assess both vector orders')
+    if not any(dims[i][1]==dims[j][0] for i,j in pairs):
+        raise ValueError('Learner-facing checkbox questions require at least one well-defined product; all-false parameters are evidence-only')
     return p
 
-def conclusion(truth):
+def conclusion(truth,products=None):
+    if products is not None:
+        yes=[p for p,b in zip(products,truth) if b]
+        no=[p for p,b in zip(products,truth) if not b]
+        def sentence(names,defined):
+            subject=('The product ' if len(names)==1 else 'The products ')+' and '.join('$'+p+'$' for p in names)
+            return subject+(' is ' if len(names)==1 else ' are ')+('well defined.' if defined else 'undefined.')
+        return ' '.join(sentence(names,defined) for names,defined in [(yes,True),(no,False)] if names)
     yes=[k for k,b in zip(KEYS,truth) if b]; no=[k for k,b in zip(KEYS,truth) if not b]
     if len(yes)==3:return 'We conclude that all three statements are true.'
     if not yes:return 'We conclude that all three statements are false.'
@@ -89,7 +100,7 @@ def solution(t,labels,arrays,pairs,raw):
         if ok: eq=f'{{{a}}}_{{{r}\\times '+r'\boxed{\text{'+str(c)+r'}}}{\times }_{✓}'+f'{{{b}}}_{{'+r'\boxed{\text{'+str(s)+r'}}\times '+str(u)+r'}=\text{well defined}'
         else:eq=f'{{{a}}}_{{{r}\\times {c}}}'+r'{\times }_{\ne }'+f'{{{b}}}_{{{s}\\times {u}}}'+r'=\text{undefined}'
         stages.extend([text,'$$\n'+eq+'\n$$'])
-    stages.append(conclusion(truth))
+    stages.append(conclusion(truth,None if raw else [labels[i]+labels[j] for i,j in pairs]))
     return '\n\n'.join(stages),truth
 
 @checked_math_content
@@ -110,21 +121,25 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     t='q-42381' if template=='mixed-orientations' else template
     labels=[m[1] for m in MAT.finditer(SOURCES[t][':question/problem'])]
     if parameters is None:
-        # Whole Boolean bank is fixed before parameters. No option fallback.
+        # Keep each Boolean bank complete. Resample the task, not its truth key,
+        # so every learner-facing question has a meaningful selection to make.
         if raw:raise ValueError('Raw replay requires explicit parameters')
-        if level=='easy':
-            dims=[(rng.randint(2,4),rng.randint(2,4)) for _ in range(3)]
-            if t=='q-22063':dims[2]=(rng.randint(2,4),1)
-        elif level=='moderate':
-            roles=[r==1 for r,c in map(shape,source_parameters(t)['arrays'])]
-            ordinary=[x for x in itertools.product(range(2,6),repeat=2) if x[0]*x[1]<=20]
-            dims=[(1,rng.randint(2,5)) if roles[i] else rng.choice(ordinary) for i in range(3)]
-        else:
-            n,m=rng.sample(range(2,6),2); third=rng.choice([x for x in itertools.permutations(range(2,6),2)]);dims=[(1,n),(m,1),third];rng.shuffle(dims)
-        pairs=rng.sample(list(itertools.permutations(range(3),2)),3)
-        if level=='hard':
-            a=next(i for i,x in enumerate(dims) if x[0]==1);b=next(i for i,x in enumerate(dims) if x[1]==1)
-            pairs=[(a,b),(b,a),rng.choice([x for x in itertools.permutations(range(3),2) if x not in [(a,b),(b,a)]])];rng.shuffle(pairs)
+        for _ in range(1000):
+            if level=='easy':
+                dims=[(rng.randint(2,4),rng.randint(2,4)) for _ in range(3)]
+                if t=='q-22063':dims[2]=(rng.randint(2,4),1)
+            elif level=='moderate':
+                roles=[r==1 for r,c in map(shape,source_parameters(t)['arrays'])]
+                ordinary=[x for x in itertools.product(range(2,6),repeat=2) if x[0]*x[1]<=20]
+                dims=[(1,rng.randint(2,5)) if roles[i] else rng.choice(ordinary) for i in range(3)]
+            else:
+                n,m=rng.sample(range(2,6),2); third=rng.choice([x for x in itertools.permutations(range(2,6),2)]);dims=[(1,n),(m,1),third];rng.shuffle(dims)
+            pairs=rng.sample(list(itertools.permutations(range(3),2)),3)
+            if level=='hard':
+                a=next(i for i,x in enumerate(dims) if x[0]==1);b=next(i for i,x in enumerate(dims) if x[1]==1)
+                pairs=[(a,b),(b,a),rng.choice([x for x in itertools.permutations(range(3),2) if x not in [(a,b),(b,a)]])];rng.shuffle(pairs)
+            if any(dims[i][1]==dims[j][0] for i,j in pairs):break
+        else:raise RuntimeError('Could not sample a conformability question with a nonempty correct selection')
         parameters={'arrays':[[[rng.randint(-9,9) for _ in range(c)] for _ in range(r)] for r,c in dims],'products':list(map(list,pairs))}
     p=validate_parameters(level,t,copy.deepcopy(parameters),raw)
     arrays,pairs=p['arrays'],p['products']
@@ -137,19 +152,24 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         prompt=re.sub(r'(?m)^(I{1,3})\. (The product .*?)$',lambda m:'- **'+m[1]+'.** '+m[2],prompt)
     worked,truth=solution(t,labels,arrays,pairs,raw)
     prompt=normalize_prose(prompt);worked=normalize_prose(worked)
+    keys=KEYS
+    version=RAW_VERSION if raw else VERSION
+    if not raw:
+        # Put each selectable statement on its control, not in a separate list
+        # that the learner must match to a shuffled Roman-numeral field.
+        prompt,count=re.subn(r'(?m)^(?:- \*\*)?I{1,3}\.(?:\*\*)? The product \$[A-Z]{2}\$ is well defined\.?$', '', prompt)
+        if count!=3:raise ValueError('Expected exactly three source statements to move into checkbox labels')
+        end=prompt.index('$$',2)+2
+        prompt=matrix_operands([m[0] for m in MAT.finditer(prompt[:end])])+'\n\n'+re.sub(r'\n{3,}','\n\n',prompt[end:]).strip()
+        keys=['The product $'+labels[i]+labels[j]+'$ is well defined.' for i,j in pairs]
     # Identity ignores shuffle/seed but includes every rendered component and bank.
-    signature=digest([VERSION,level,prompt,worked,[(k,truth[i],['false','true']) for i,k in enumerate(KEYS)]])
+    signature=digest([version,level,prompt,worked,[(k,truth[i],['false','true']) for i,k in enumerate(keys)]])
     q={':question/id':uid(signature),':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':worked,':question/answer-fields':[]}
-    for k,ok in zip(KEYS,truth):
+    for k,ok in zip(keys,truth):
         fid=uid(signature,k); choices=[{':answer/id':uid(fid,v),':answer/type':':answer.type/text',':answer/value':v} for v in ['false','true']]
         q[':question/answer-fields'].append({':answer-field/id':fid,':answer-field/key':k,':answer-field/type':':answer-field.type/checkbox',':answer-field/choices':choices,':answer-field/correct':[':answer/id',uid(fid,str(ok).lower())]})
-    # Keep replay and identity inputs stable; let learner-facing operands wrap
-    # independently instead of requiring one wide three-matrix display.
-    if not raw:
-        end=prompt.index('$$',2)+2
-        q[':question/problem']=matrix_operands([m[0] for m in MAT.finditer(prompt[:end])])+prompt[end:]
     dims=list(map(shape,arrays))
-    return {'knowledge_point':{'db_id':KP[':db/id'],'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'level':level,'seed':seed,'template':template,'profile':profile,'parameters':p,'task_fingerprint':digest(mathematical_task(dims,pairs)),'content_fingerprint':signature,'source_basis':SNAPSHOT['basis'],'source_lineage':SNAPSHOT['lineage'],'source_ids':[t] if template!='mixed-orientations' else [],'authored_extension':template=='mixed-orientations','eligible_for_learning':not raw,'evidence_only':raw}}
+    return {'knowledge_point':{'db_id':KP[':db/id'],'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':q,'generation':{'version':version,'level':level,'seed':seed,'template':template,'profile':profile,'parameters':p,'task_fingerprint':digest(mathematical_task(dims,pairs)),'content_fingerprint':signature,'source_basis':SNAPSHOT['basis'],'source_lineage':SNAPSHOT['lineage'],'source_ids':[t] if template!='mixed-orientations' else [],'authored_extension':template=='mixed-orientations','eligible_for_learning':not raw,'evidence_only':raw}}
 
 def next_matrix(iterator):
     label,array=next(iterator);return label+'='+matrix_tex(array)
