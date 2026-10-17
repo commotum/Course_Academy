@@ -46,30 +46,91 @@ def cells(body):
     row.append(''.join(cell).strip()); rows.append(row)
     return rows
 
-def equation(row):
-    while len(row) > 1 and not row[0]: row = row[1:]
-    if len(row) == 2 and row[1].startswith('='): return row[0] + ' &' + row[1]
-    if len(row) == 2 and row[0].endswith('='): return row[0][:-1].strip() + ' &=' + row[1]
-    if len(row) == 3 and row[1] == '=': return row[0] + ' &=' + row[2]
-    if len(row) == 2:
-        first = equation([row[0]])
-        if first: return first + ' && ' + row[1]
-    if len(row) != 1 or r'\begin{' in row[0]: return None
-    text, depth, i = row[0], 0, 0
+def _equality_position(text):
+    """Find an equality outside groups and visible parentheses/brackets."""
+    braces, delimiters, i = 0, [], 0
     while i < len(text):
         if text[i] == '\\': i += 2; continue
-        if text[i] == '{': depth += 1
-        elif text[i] == '}': depth -= 1
-        elif text[i] == '=' and not depth:
-            return text[:i].strip() + ' &=' + text[i + 1:].strip()
+        if text[i] == '{': braces += 1
+        elif text[i] == '}': braces -= 1
+        elif not braces:
+            if text[i] in '([': delimiters.append(text[i])
+            elif text[i] in ')]':
+                if not delimiters or delimiters.pop() != {')': '(', ']': '['}[text[i]]: return None
+            elif text[i] == '=' and not delimiters: return i
         i += 1
     return None
+
+
+def _whole_equation_expression(text):
+    """An equation in parentheses, optionally multiplied as a whole.
+
+    Splitting its equality into alignment cells would leave a scalable fence
+    unpaired or make a multiplier appear to apply to just the right-hand side.
+    """
+    opening = re.match(r'(?:\\left\s*)?\(', text)
+    if not opening: return False
+    braces, parentheses, i = 0, 1, opening.end()
+    while i < len(text):
+        if text[i] == '\\': i += 2; continue
+        if text[i] == '{': braces += 1
+        elif text[i] == '}': braces -= 1
+        elif not braces:
+            if text[i] == '(': parentheses += 1
+            elif text[i] == ')':
+                parentheses -= 1
+                if not parentheses:
+                    inner = re.sub(r'\\right\s*$', '', text[opening.end():i]).strip()
+                    suffix = text[i + 1:].strip()
+                    position = _equality_position(inner)
+                    return (position is not None and bool(inner[:position].strip())
+                            and bool(inner[position + 1:].strip())
+                            and (not suffix or bool(re.fullmatch(r'\\(?:cdot|times)\s*\S[\s\S]*', suffix))))
+        if braces < 0: return False
+        i += 1
+    return False
+
+
+def _system_row(row):
+    """Recover an equation and optional annotation from alignment cells."""
+    while len(row) > 1 and not row[0]: row = row[1:]
+    annotation, aligned = None, None
+    if len(row) == 4 and not row[2]: row, annotation = row[:2], row[3]
+    elif len(row) == 3 and not row[1]: row, annotation = row[:1], row[2]
+    if len(row) == 2 and row[1].startswith('='):
+        text = ''.join(row)
+        aligned = row[0] + ' &' + row[1]
+    elif len(row) == 2 and row[0].endswith('='):
+        text = ''.join(row)
+        aligned = row[0][:-1].strip() + ' &=' + row[1]
+    elif len(row) == 3 and row[1] == '=':
+        text = ''.join(row)
+        aligned = row[0] + ' &=' + row[2]
+    elif len(row) == 2 and annotation is None: text, annotation = row
+    elif len(row) == 1: text = row[0]
+    else: return None
+    if r'\begin{' in text: return None
+    position = _equality_position(text)
+    if position is not None and text[:position].strip() and text[position + 1:].strip():
+        if aligned is None: aligned = text[:position].strip() + ' &=' + text[position + 1:].strip()
+    elif _whole_equation_expression(text): aligned = None
+    else: return None
+    return text, annotation, aligned
+
+
+def equation(row):
+    parsed = _system_row(row)
+    if not parsed or parsed[2] is None: return None
+    return parsed[2] + (' && ' + parsed[1] if parsed[1] is not None else '')
 
 def system(body):
     rows = cells(body)
     if not rows: return None
-    equations = [equation(row) for row in rows]
-    if not all(equations): return None
+    parsed = [_system_row(row) for row in rows]
+    if not all(parsed): return None
+    intact = any(row[2] is None for row in parsed)
+    equations = [(('&' + text) if intact else aligned) + (' && ' + annotation if annotation is not None else '')
+                 for text, annotation, aligned in parsed]
     return r'\left\{\begin{aligned}' + r' \\ '.join(equations) + r'\end{aligned}\right.'
 
 def repair(text, include_cases=False):
@@ -111,21 +172,42 @@ def repair(text, include_cases=False):
         for start, end, value in sorted(changes, reverse=True): text = text[:start] + value + text[end:]
     return text
 
-def legacy_choice(text):
-    """The seed import also flattened system rows to semicolons in math choices."""
-    if not text.startswith('{') or ';' not in text: return text
-    body, rows, start, depth, i = text[1:], [], 0, 0, 0
+def legacy_system_rows(text):
+    """Recognize a flattened, unclosed system without reinterpreting a set.
+
+    Keep row text verbatim: a suffix such as ``0(1)`` can be multiplication or
+    a captured equation label, and only source evidence can distinguish them.
+    """
+    text = str(text).strip()
+    opening = re.match(r'(?:\\\{|\{)', text)
+    if not opening or ';' not in text: return None
+    body, rows, start, depth, delimiters, i = text[opening.end():], [], 0, 0, [], 0
     while i < len(body):
-        if body[i] == '\\': i += 2; continue
+        if body[i] == '\\':
+            # An escaped closing brace makes this a closed set, not the
+            # historical missing-right-fence system representation.
+            if body[i:i + 2] == r'\}' and not depth and not delimiters: return None
+            i += 2; continue
         if body[i] == '{': depth += 1
         elif body[i] == '}': depth -= 1
-        elif body[i] == ';' and not depth:
-            rows.append(body[start:i].strip()); start = i + 1
-        if depth < 0: return text
+        elif not depth:
+            if body[i] in '([': delimiters.append(body[i])
+            elif body[i] in ')]':
+                if not delimiters or delimiters.pop() != {')': '(', ']': '['}[body[i]]: return None
+            elif body[i] == ';' and not delimiters:
+                rows.append(body[start:i].strip()); start = i + 1
+        if depth < 0: return None
         i += 1
-    if depth: return text
+    if depth or delimiters: return None
     rows.append(body[start:].strip())
-    return system(r' \\ '.join(rows)) or text
+    if len(rows) < 2 or not all(_system_row([row]) for row in rows): return None
+    return rows
+
+
+def legacy_choice(text):
+    """The old extractor flattened system rows in prompts, solutions and choices."""
+    rows = legacy_system_rows(text)
+    return system(r' \\ '.join(rows)) if rows else text
 
 
 MATH = re.compile(r'\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\$\$[\s\S]*?\$\$|(?<!\\)\$(?!\$)(?:\\.|[^$\\])*?(?<!\\)\$')
@@ -175,7 +257,22 @@ def matrix_answer(expression, rows):
             ) + '\n</tbody></table>\n</div>\n</div>')
 
 
-def system_tex(equations):
+def system_tex(equations, *, annotations=None):
+    r"""Canonical system rows, with optional equation labels or row operations.
+
+    Annotations occupy their own column. Whole-equation expressions such as
+    ``(x+y=1)\cdot(-1)`` stay intact, with all rows left aligned in that system.
+    """
+    equations = [str(row).strip() for row in equations]
+    if not equations or any(not row or '$' in row or r'\\' in row for row in equations):
+        raise ValueError('A system needs nonempty, delimiter-free equation rows')
+    if annotations is not None:
+        annotations = ['' if annotation is None else str(annotation).strip() for annotation in annotations]
+        if len(annotations) != len(equations): raise ValueError('A system needs one annotation per equation')
+        if any('$' in annotation or r'\\' in annotation or '&' in annotation for annotation in annotations):
+            raise ValueError('System annotations require delimiter-free TeX')
+        equations = [row + (' & ' + annotation if annotation else '')
+                     for row, annotation in zip(equations, annotations)]
     value = system(r' \\ '.join(equations))
     if value is None: raise ValueError('A system needs explicit equations')
     return value
@@ -217,7 +314,7 @@ def _matrix_layouts(text):
             right = re.match(r'\s*(?:\\right\s*)?([\]|)])', text[closing.end():])
             if not left or not right or (left[1], right[1]) not in [('[', ']'), ('(', ')'), ('|', '|')]: continue
             body = text[opening.end():closing.start()]; rows = cells(body)
-            if not rows or any(equation([cell]) for row in rows for cell in row): continue
+            if not rows or any(_system_row([cell]) for row in rows for cell in row): continue
             width = min(map(len, rows))
             if any(len(row) != width for row in rows):
                 if not all(not cell for row in rows for cell in row[width:]): continue
@@ -253,7 +350,11 @@ def normalize_tex(value):
         closing = re.match(r'\s*\\right\s*\.', text[span[2]:])
         if not closing: continue
         normalized = system(text[span[0]:span[1]])
-        if normalized: changes.append((match.start(), span[2] + closing.end(), normalized))
+        end = span[2] + closing.end()
+        # Canonical alignment needs no incidental whitespace rewrite. In
+        # particular, preserve existing empty annotation cells in other lessons.
+        if normalized and re.sub(r'\s+', '', normalized) != re.sub(r'\s+', '', text[match.start():end]):
+            changes.append((match.start(), end, normalized))
     for start, end, new in sorted(changes, reverse=True): text = text[:start] + new + text[end:]
     changes = []
     for match in re.finditer(r'\\begin\{aligned\}', text):
@@ -291,6 +392,8 @@ def normalize_prose(value):
 def validate_tex(value):
     """Validate structural invariants; the UI's MathJax checks rendering."""
     text = str(value); depth = 0; stack = []
+    if legacy_system_rows(text):
+        raise ValueError('Flattened equation system; use explicit system rows')
     for token in re.findall(r'\\(?:begin|end)\{[^{}]+\}|\\[A-Za-z]+|\\.|.', text, re.S):
         env = ENV.fullmatch(token)
         if env:

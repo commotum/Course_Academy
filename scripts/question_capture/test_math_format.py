@@ -1,7 +1,7 @@
 """Storage-contract regressions for the reported matrix/system failures."""
 import copy
 import unittest
-from math_format import (cells, matrix_tex, matrix_operands, matrix_answer, normalize_tex, normalize_prose,
+from math_format import (cells, legacy_system_rows, matrix_tex, matrix_operands, matrix_answer, normalize_tex, normalize_prose,
                           normalize_capture_question, system_tex, validate_tex,
                           validate_prose, validate_generated_record)
 
@@ -58,6 +58,87 @@ class MathContentTests(unittest.TestCase):
         self.assertIn('y &=2 && R_2', annotated)
         self.assertEqual(normalize_tex(r'{x=1;y=\frac{1}{2}'), system_tex(['x=1', r'y=\frac{1}{2}']))
         self.assertEqual(normalize_tex(r'{x=1;y=2}'), r'{x=1;y=2}')
+
+    def test_reported_escaped_brace_system_has_two_rows_at_capture_boundary(self):
+        # q 17592186529306: syntactically valid TeX used to render one flat line.
+        broken = r'\{-3x - y = 8; 3x + y = -6'
+        expected = r'\left\{\begin{aligned}-3x - y &=8 \\ 3x + y &=-6\end{aligned}\right.'
+        self.assertEqual(legacy_system_rows(broken), ['-3x - y = 8', '3x + y = -6'])
+        question = {'problem': 'Consider the following system:\n\n$' + broken + '$',
+                    'answer_fields': [{'correct_value': 'No solutions', 'choices': [
+                        {'type': 'text', 'value': 'No solutions'},
+                        {'type': 'text', 'value': 'Infinitely many solutions'}]}]}
+        original = copy.deepcopy(question)
+        saved = normalize_capture_question(question)
+        self.assertEqual(saved['problem'], 'Consider the following system:\n\n$' + expected + '$')
+        self.assertEqual(saved['answer_fields'], original['answer_fields'])
+        self.assertEqual(question, original)
+        self.assertEqual(normalize_capture_question(saved), saved)
+        # Structural TeX checks alone cannot detect this former failure.
+        with self.assertRaisesRegex(ValueError, 'Flattened equation system'):
+            validate_tex(broken)
+        with self.assertRaisesRegex(ValueError, 'Flattened equation system'):
+            validate_prose(question['problem'])
+        validate_tex(expected)
+
+    def test_flat_system_parser_preserves_groups_and_does_not_convert_sets(self):
+        rows = [r'x=\frac{1}{2+\frac{3}{4}}', r'y=(a;b)', r'z=\text{a;b}']
+        for opening in ('{', r'\{'):
+            broken = opening + '; '.join(rows)
+            self.assertEqual(legacy_system_rows(broken), rows)
+            normalized = normalize_tex(broken)
+            self.assertEqual(normalized, system_tex(rows))
+            self.assertEqual(normalize_tex(normalized), normalized)
+        untouched = [r'\{x=1;y=2\}', r'{x=1;y=2}',
+                     r'\left\{x=1;y=2\right\}', r'\{x\in\mathbb{R};x>0',
+                     r'\{x & x>0; 0 & x\leq0', r'\{x=1;',
+                     r'\{x=(1; y=2', r'f(x)=\begin{cases}x & x>0 \\ 0 & x\leq0\end{cases}']
+        for source in untouched:
+            with self.subTest(source=source):
+                self.assertIsNone(legacy_system_rows(source))
+                self.assertEqual(normalize_tex(source), source)
+
+    def test_equation_labels_require_explicit_evidence_and_keep_a_separate_column(self):
+        # A formatter cannot infer whether 0(1) denotes multiplication or a label.
+        broken = r'\{3x+y=0(1); x-2y=0(2)'
+        self.assertEqual(legacy_system_rows(broken), ['3x+y=0(1)', 'x-2y=0(2)'])
+        self.assertIn('0(1)', normalize_tex(broken))
+        self.assertNotIn('&&', normalize_tex(broken))
+        labeled = system_tex(['3x+y=0', 'x-2y=0'], annotations=['(1)', '(2)'])
+        self.assertEqual(labeled, r'\left\{\begin{aligned}3x+y &=0 && (1) \\ x-2y &=0 && (2)\end{aligned}\right.')
+        self.assertEqual(normalize_tex(labeled), labeled)
+        operated = system_tex(['x+y=3', '2x-y=6'], annotations=[r'\mid\cdot(-2)', None])
+        self.assertIn(r'x+y &=3 && \mid\cdot(-2)', operated)
+        self.assertEqual(operated.count(r'\mid'), 1)
+        self.assertEqual(normalize_tex(operated), operated)
+        # Existing aligned systems need no incidental whitespace or empty-cell
+        # rewrite when the formatter learns to recognize annotation columns.
+        existing = r'\left\{\begin{aligned}x &= 1 && \\ y &= 2 && \mid\cdot(3)\end{aligned}\right.'
+        self.assertEqual(normalize_tex(existing), existing)
+        for annotations in (['(1)'], ['(1)', '(2)', '(3)'], ['$1$', ''], ['a & b', '']):
+            with self.subTest(annotations=annotations), self.assertRaises(ValueError):
+                system_tex(['x=1', 'y=2'], annotations=annotations)
+
+    def test_whole_equation_multiplication_stays_inside_one_alignment_cell(self):
+        # These source rows multiply a whole equality, not only its RHS.
+        for first in (r'(-8a + 4b = 5)\cdot (3)', r'\left(-8a + 4b = 5\right)\cdot (3)'):
+            rows = [first, '-2a - 12b = 5']
+            expected = r'\left\{\begin{aligned}&' + first + r' \\ &-2a - 12b = 5\end{aligned}\right.'
+            with self.subTest(first=first):
+                self.assertEqual(system_tex(rows), expected)
+                self.assertEqual(normalize_tex(r'\{' + '; '.join(rows)), expected)
+                self.assertEqual(normalize_tex(expected), expected)
+                self.assertIn(first, expected)
+                self.assertNotIn('&=', expected)
+                validate_tex(expected)
+
+    def test_generator_rejects_flat_system_even_when_tex_groups_are_balanced(self):
+        record = {'question': {':question/problem': r'$\{x+y=3; 2x-y=6$',
+                               ':question/worked-solution': '$x=3$'}}
+        with self.assertRaisesRegex(ValueError, 'Flattened equation system'):
+            validate_generated_record(record)
+        record['question'][':question/problem'] = normalize_prose(record['question'][':question/problem'])
+        validate_generated_record(record)
 
     def test_legacy_matrix_keeps_two_rows_and_fraction(self):
         old = '[\\matrix{1 & 3\\\n2 & \\frac{1}{2}}]'
