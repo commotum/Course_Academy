@@ -15,6 +15,8 @@ except ModuleNotFoundError:
 sys.dont_write_bytecode=True
 HERE=Path(__file__).with_suffix('');sys.path.insert(0,str(HERE))
 from math_reader import matrices,target,fingerprint
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'scripts/question_capture'))
+from math_format import matrix_operands
 KP_ID=17592186100873
 CAPTURE=json.loads((HERE/'source.json').read_text());SOURCE=CAPTURE['record'];VERSION='matrix-entry-targets-v1';SUPPORTED=('easy',)
 SOURCE_BY_ID={q[':question/math-academy-id']:q for q in SOURCE[':knowledge-point/questions']}
@@ -48,6 +50,21 @@ def generate(level,seed=0,template=None,parameters=None,profile=None,replay=Fals
     solution=head+r'\\  & ='+(r' \\  & ='.join(stages))+r'\end{aligned}'+'\n$$'
     if replay:
         assert (i,j)==(oi+1,oj+1);problem=src[':question/problem'];solution=src[':question/worked-solution']
+    else:
+        # Keep the complete product separate from the scalar entry calculation.
+        # The historical source incorrectly equated the selected entry to AB.
+        product=re.search(r'Let\s+\$([A-Z])\s*=',problem)[1]
+        prose,first=head.split('$$',1)
+        full_product=first.split('& =',1)[1].strip()
+        solution=('The full matrix product is\n\n$$\n'+product+'='+full_product+'\n$$\n\n'
+                  +prose+'$$\n'+r'\begin{aligned}'+new+' & ='
+                  +(r' \\  & ='.join(stages))+r'\end{aligned}'+'\n$$')
+        given=re.search(r'\$\$([\s\S]*?)\$\$',problem)
+        definitions=re.findall(r'[A-Z]\s*=\s*\\begin\{bmatrix\}[\s\S]*?\\end\{bmatrix\}',given[1])
+        assert len(definitions)==2
+        punctuation=re.search(r'([.?,])\s*$',given[1])
+        if punctuation:definitions[-1]+=punctuation[1]
+        problem=problem[:given.start()]+matrix_operands(definitions,stacked=True)+problem[given.end():]
     identity=json.dumps([VERSION,mid,i,j],separators=(',',':'));qid=str(uuid.uuid5(uuid.UUID(SOURCE[':knowledge-point/id']),identity));sf=src[':question/answer-fields'][0];fid=str(uuid.uuid5(uuid.UUID(qid),'field:'+sf[':answer-field/key']));choices=[];correct=None
     for a in sf[':answer-field/choices']:
         is_key=a[':answer/id']==sf[':answer-field/correct'][':answer/id'];aid=str(uuid.uuid5(uuid.UUID(fid),'source-recipe:'+a[':answer/id']));val=str(answer) if is_key else a[':answer/value']

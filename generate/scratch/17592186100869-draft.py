@@ -12,7 +12,7 @@ import argparse, copy, hashlib, itertools, json, random, re, uuid
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'scripts/question_capture'))
-from math_format import checked_math_content, matrix_tex, normalize_prose
+from math_format import checked_math_content, matrix_operands, matrix_tex, normalize_prose
 D=Path(__file__).with_suffix('')
 SNAPSHOT=json.loads((D/'source.json').read_text())
 KP=SNAPSHOT['record']; VERSION='conformability-checkbox-1'
@@ -143,6 +143,11 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     for k,ok in zip(KEYS,truth):
         fid=uid(signature,k); choices=[{':answer/id':uid(fid,v),':answer/type':':answer.type/text',':answer/value':v} for v in ['false','true']]
         q[':question/answer-fields'].append({':answer-field/id':fid,':answer-field/key':k,':answer-field/type':':answer-field.type/checkbox',':answer-field/choices':choices,':answer-field/correct':[':answer/id',uid(fid,str(ok).lower())]})
+    # Keep replay and identity inputs stable; let learner-facing operands wrap
+    # independently instead of requiring one wide three-matrix display.
+    if not raw:
+        end=prompt.index('$$',2)+2
+        q[':question/problem']=matrix_operands([m[0] for m in MAT.finditer(prompt[:end])])+prompt[end:]
     dims=list(map(shape,arrays))
     return {'knowledge_point':{'db_id':KP[':db/id'],'id':KP[':knowledge-point/id'],'title':KP[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'level':level,'seed':seed,'template':template,'profile':profile,'parameters':p,'task_fingerprint':digest(mathematical_task(dims,pairs)),'content_fingerprint':signature,'source_basis':SNAPSHOT['basis'],'source_lineage':SNAPSHOT['lineage'],'source_ids':[t] if template!='mixed-orientations' else [],'authored_extension':template=='mixed-orientations','eligible_for_learning':not raw,'evidence_only':raw}}
 

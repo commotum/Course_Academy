@@ -111,6 +111,10 @@ def generate(difficulty, seed=0, template=None, parameters=None, bank_profile=No
         fields.append({':answer-field/id':fid,':answer-field/key':old[':answer-field/key'],
                        ':answer-field/type':old[':answer-field/type'][':db/ident'],
                        ':answer-field/choices':choices,':answer-field/correct':[':answer/id',correct]})
+    # Preserve seed/answer identities while separating the dimension pair from
+    # its sentence and keeping both controls with their multiplication sign.
+    problem=problem.replace('are{{field-1}}$\\times $\n{{field-2}}',
+        'are <span style="display: inline-flex; align-items: center; gap: .35em; white-space: nowrap;">{{field-1}} $\\times$ {{field-2}}</span>')
     return {'question':{':question/id':qid,':question/problem':problem,':question/worked-solution':solution,
                         ':question/difficulty':':question.difficulty/'+difficulty,':question/answer-fields':fields},
             'knowledge_point':{'id':KP_UUID,'db_id':KP_ID,'title':SNAPSHOT['record'][':knowledge-point/title']},

@@ -21,13 +21,24 @@ def audit(rec):
     blocks=re.findall(r'\\begin\{bmatrix\}(.*?)\\end\{bmatrix\}',s,re.S)
     parsed=[[[int(x.strip()) for x in r.split('&')] for r in b.split(r'\\')] for b in blocks]
     assert parsed==[A,B,[A[i]],[[r[j]] for r in B]],parsed
-    stages=s.split(r'\\  & =');assert len(stages)==5
+    stages=s.split(r'\\  & =')
+    if rec['generation']['evidence_only']:
+        assert len(stages)==5  # Immutable source replay retains the original notation.
+    else:
+        assert len(stages)==4
+        product=re.search(r'Let\s+\$([A-Z])\s*=',q[':question/problem'])[1]
+        displays=re.findall(r'\$\$([\s\S]*?)\$\$',s)
+        assert len(displays)==2
+        compact=lambda text:re.sub(r'\s+','',text)
+        full=product+'='+r'\begin{bmatrix}'+blocks[0]+r'\end{bmatrix}'+r'\begin{bmatrix}'+blocks[1]+r'\end{bmatrix}'
+        assert compact(displays[0])==compact(full)
+        assert compact(displays[1]).startswith(r'\begin{aligned}{'+name+'}_{'+str(i+1)+str(j+1)+'}&='+r'\begin{bmatrix}'+compact(blocks[2]))
     # Check expansion and intermediate arithmetic independently from metadata.
-    expr=stages[2].strip().replace(r'\cdot','*').replace(')(',')*(')
+    expr=stages[-3].strip().replace(r'\cdot','*').replace(')(',')*(')
     expr=re.sub(r'(\d)\(',r'\1*(',expr)
     assert sp.sympify(expr)==ans,(expr,ans)
-    nums=[int(x) for x in re.findall(r'[+-]?\d+',stages[3].replace(' ',''))];assert nums==[a*r[j] for a,r in zip(A[i],B)]
-    assert re.match(r'\s*'+re.escape(str(ans))+r'\.\\end\{aligned\}',stages[4])
+    nums=[int(x) for x in re.findall(r'[+-]?\d+',stages[-2].replace(' ',''))];assert nums==[a*r[j] for a,r in zip(A[i],B)]
+    assert re.match(r'\s*'+re.escape(str(ans))+r'\.\\end\{aligned\}',stages[-1])
     for text in (q[':question/problem'],s):assert text.count('$')%2==0 and text.count('{')==text.count('}')
     return {'fingerprint':fingerprint(q),'answer':ans}
 def engine_checks(rec,label):

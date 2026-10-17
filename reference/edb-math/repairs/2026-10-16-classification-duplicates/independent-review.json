@@ -1,0 +1,35 @@
+{
+  "review_type": "independent static review",
+  "passed": true,
+  "database_writes": 0,
+  "tests_run_in_this_review": 0,
+  "scope": {
+    "questions_changed": [
+      17592186567796,
+      17592186567832
+    ],
+    "question_retained": 17592186567774,
+    "reviewed_questions": 16,
+    "new_generator_versions": 2
+  },
+  "findings": [],
+  "checks": [
+    "New package hash determines a new UUID5 generator identity; previous generator entities and scripts remain unchanged.",
+    "Each KP generator reference uses CAS from the reviewed old entity to the resolved new or reused matching generator entity.",
+    "Package files and dependencies are verified before publication, and the reviewed digest binds the published bytes.",
+    "Question text CAS changes are limited to three attributes on the two reviewed questions; fields, answer IDs, keys, difficulty, memberships, and learner items are untouched.",
+    "Exact expected datoms resolve both new-entity tempids and CAS reference values; source provenance is checked.",
+    "Native speculative pulls compare all questions, items, KP scope, and old generators with the exact expected values.",
+    "Independent question checker validates equivalent solution lines, each changed substitution step, duplicate-free practice display, and native grading including saved answers.",
+    "Commit uses a retained intent and stable request key with a basis guard; receipt readback and historical pulls are compared with speculative before/after evidence."
+  ],
+  "runtime_status": "This review ran no tests or database commands. Root must finish package validation, real preview, native grading, commit, and exact receipt readback.",
+  "reviewed_sha256": {
+    "repair.py": "cfc30225daee3b2b3ccb0994cc2b3a7ca5fa0a17ce0c6df6a7dcd960ea0cbbcb",
+    "packages.py": "43f4bd879a1bf8b3464ffcfd7a40e601423e13c72ef90db74c95b8063d144711",
+    "check_questions.py": "3f51a67ec36a2db2a64f1d84500ae4d393b35430d84478dc796294840060e91d",
+    "generators/17592186198347/generator.py": "dabef14b01943d731c0982f05b4fdeb864f5d36e5fc5f1690be2e0b88e01a2f0",
+    "generators/17592186198348/generator.py": "06cbe6e66e21b5a337d32196d2e32759c58feee51a03a84f50fca5b5f1a83cc5"
+  },
+  "nonblocking_note": "Resolved: an existing commit intent returns without submission when --commit is omitted; explicit commit is required to resume."
+}

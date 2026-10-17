@@ -7,6 +7,8 @@ Easy has no supported source template. See capabilities and extraction in packag
 """
 import argparse,hashlib,json,os,random,sys,uuid
 from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'scripts/question_capture'))
+from math_format import matrix_operands
 try:
     import sympy as sp
 except ModuleNotFoundError:
@@ -77,6 +79,12 @@ def generate(level,seed=0,template=None,parameters=None,profile=None,replay=Fals
             choices.append({':answer/id':aid,':answer/type':':answer.type/text' if value is None else ':answer.type/math',':answer/value':val})
             if recipe=='correct':correct=aid
         fields.append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/'+kind,':answer-field/correct':[':answer/id',correct],':answer-field/choices':choices})
+    # Preserve raw replay and every stable identity while improving only the
+    # learner-facing operand layout and dimension-control spacing.
+    if not replay:
+        problem='Let\n\n'+matrix_operands([first+'='+matrix(*shapes[first]),second+'='+matrix(*shapes[second])])+'\n\n'+tail
+        problem=problem.replace('are{{field-1}}$\\times $\n{{field-2}}',
+            'are <span style="display: inline-flex; align-items: center; gap: .35em; white-space: nowrap;">{{field-1}} $\\times$ {{field-2}}</span>')
     q={':question/id':qid,':question/problem':problem,':question/worked-solution':solution,':question/difficulty':':question.difficulty/'+level,':question/answer-fields':fields}
     return {'question':q,'knowledge_point':{'db_id':KP_ID,'id':SOURCE[':knowledge-point/id'],'title':SOURCE[':knowledge-point/title']},'generation':{'version':VERSION,'seed':seed,'template':mid,'parameters':p,'bank_profile':TEMPLATES[mid]['profile'],'source_question':src[':question/id'],'source_db_id':src[':db/id'],'source_basis':CAPTURE['basis'],'source_lineage':CAPTURE['lineage'],'eligible_for_learning':not replay,'evidence_only':replay,'sympy_version':sp.__version__,'python_version':sys.version.split()[0],'domains':'positive integer dimensions, shared inner dimension; profile conditions enforced','entry_policy':'deterministic incidental integers; entries never create distinct tasks'}}
 
