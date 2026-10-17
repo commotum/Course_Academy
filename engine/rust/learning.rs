@@ -1816,7 +1816,55 @@ fn normalize_answer_form(value: &str) -> String {
         let sign = if text.starts_with('-') { "-" } else { "" };
         return format!("{sign}{whole}.{fraction}");
     }
-    text
+    normalize_fraction_form(&text).unwrap_or(text)
+}
+
+fn normalize_fraction_form(value: &str) -> Option<String> {
+    fn integer(value: &str) -> Option<num_bigint::BigInt> {
+        let digits = value
+            .strip_prefix('-')
+            .or_else(|| value.strip_prefix('+'))
+            .unwrap_or(value);
+        if digits.is_empty() || !digits.bytes().all(|digit| digit.is_ascii_digit()) {
+            return None;
+        }
+        value.parse().ok()
+    }
+    fn tex_argument(value: &str) -> Option<(&str, &str)> {
+        if let Some(group) = value.strip_prefix('{') {
+            group.split_once('}')
+        } else if value.as_bytes().first()?.is_ascii_digit() {
+            // An unbraced TeX argument is one token, never a whole digit run.
+            Some((&value[..1], &value[1..]))
+        } else {
+            None
+        }
+    }
+    let unsigned = value
+        .strip_prefix('-')
+        .or_else(|| value.strip_prefix('+'))
+        .unwrap_or(value);
+    let (numerator, denominator) = if let Some(args) = unsigned.strip_prefix(r"\frac") {
+        let (numerator, args) = tex_argument(args)?;
+        let (denominator, rest) = tex_argument(args)?;
+        if !rest.is_empty() {
+            return None;
+        }
+        (numerator, denominator)
+    } else {
+        unsigned.split_once('/')?
+    };
+    let mut numerator = integer(numerator)?;
+    let denominator = integer(denominator)?;
+    if denominator.is_zero() {
+        return None;
+    }
+    if value.starts_with('-') {
+        numerator = -numerator;
+    }
+    // Compare the authored integer pair, not its reduced rational value.
+    // Thus TeX/slash spellings agree while 2/8 still differs from 1/4.
+    Some(format!(r"\frac{{{numerator}}}{{{denominator}}}"))
 }
 
 /// Compatibility predicate for callers that need only proved equivalence.
@@ -3759,6 +3807,72 @@ pub(crate) mod tests {
                 grade(&s, 100, &BTreeMap::from([(200, rejected.into())])),
                 Ok(false),
                 "{rejected} must not satisfy the authored three-decimal answer"
+            );
+        }
+    }
+
+    #[test]
+    fn simplest_fraction_blanks_accept_ui_tex_notation_without_reducing_answers() {
+        let mut s = fixture();
+        s.entities.get_mut(&100).unwrap().insert(
+            "question/problem".into(),
+            json!("Express your answer as a fraction in its simplest form."),
+        );
+        for (canonical, accepted) in [
+            (r"\frac{1}{4}", r"\frac14"),
+            (r"\frac{1}{4}", r"\frac{1}4"),
+            (r"\frac{1}{4}", r"\frac1{4}"),
+            (r"\frac{1}{4}", r"\dfrac14"),
+            (r"\frac{1}{4}", r"\tfrac14"),
+            (r"\frac{1}{4}", "1/4"),
+            ("1/4", r"\frac14"),
+            (r"\frac{3}{4}", r"\frac34"),
+            (r"\frac{2}{3}", r"\frac{2}3"),
+            (r"\frac{12}{5}", r"\frac{12}5"),
+            (r"\frac{-1}{4}", r"-\frac14"),
+        ] {
+            s.entities
+                .get_mut(&300)
+                .unwrap()
+                .insert("answer/value".into(), json!(canonical));
+            assert_eq!(
+                grade(&s, 100, &BTreeMap::from([(200, accepted.into())])),
+                Ok(true),
+                "{accepted} has the same numerator and denominator as {canonical}"
+            );
+        }
+        s.entities
+            .get_mut(&300)
+            .unwrap()
+            .insert("answer/value".into(), json!(r"\frac{12}{5}"));
+        // TeX takes one token per unbraced argument: this is (1/2) followed by 5.
+        assert_eq!(
+            grade(&s, 100, &BTreeMap::from([(200, r"\frac125".into())])),
+            Ok(false)
+        );
+        s.entities
+            .get_mut(&300)
+            .unwrap()
+            .insert("answer/value".into(), json!(r"\frac{1}{4}"));
+        for rejected in [
+            "2/8",
+            r"\frac28",
+            r"\frac{2}{8}",
+            "0.25",
+            "1/(2+2)",
+            r"\frac{1}{2+2}",
+            r"\frac{1}{4}+0",
+            "4/1",
+            r"-\frac14",
+            r"\frac1",
+            r"\frac{}4",
+            r"\frac14x",
+            r"\frac{1}{0}",
+        ] {
+            assert_eq!(
+                grade(&s, 100, &BTreeMap::from([(200, rejected.into())])),
+                Ok(false),
+                "{rejected} must not satisfy the simplest fraction answer"
             );
         }
     }
