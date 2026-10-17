@@ -1,0 +1,371 @@
+[
+  {
+    "entity": 17592186101956,
+    "attribute": ":tutorial/content",
+    "before": "To multiply a matrix by a column vector, we multiply each row in the matrix by the column vector using the dot product.\n\nFor example, suppose we would like to multiply \n$\\begin{bmatrix}1 & 3 \\\\ 6 & 7\\end{bmatrix}$\nand \n$\\begin{bmatrix}-3 \\\\ 4\\end{bmatrix}$\n\nFirst, we write the multiplication as follows:\n\n$$\n\\begin{bmatrix}1 & 3 \\\\ 6 & 7\\end{bmatrix}\n$$\n\nThe result of the multiplication is another column vector $\\mathbf{y}$ with the same dimensions as $\\mathbf{x}$.\nNow, we calculate the entries of the product (shown as $\\ast$'s in the equation above).\n\nTo find $y_1,$ the $1$st component of $\\mathbf{y}$, we calculate the dot product of the $1$st row of $A$ and the vector $\\mathbf{x}\\mathbin{:}$\n\n$$\n\\begin{bmatrix}1 & 3 \\\\ 6 & 7\\end{bmatrix}\n$$\n\nTo find $y_2,$ the $2$nd component of $\\mathbf{y},$ we calculate the dot product of the $2$nd row of $A$ and the vector $\\mathbf{x}\\mathbin{:}$\n\n$$\n\\begin{bmatrix}1 & 3 \\\\ 6 & 7\\end{bmatrix}\n$$\n\nTherefore,\n\n$$\n\\begin{bmatrix}9 \\\\ 10\\end{bmatrix}\n$$",
+    "after": "To multiply a matrix by a column vector, we multiply each row in the matrix by the column vector using the dot product.\n\nFor example, suppose we would like to multiply the matrix $A$ by the vector $\\mathbf{x}$:\n\n$$\n\\begin{aligned}\nA&=\n\t\\begin{bmatrix}1 & 3 \\\\ 6 & 7\\end{bmatrix} \\\\\n\\mathbf{x}&=\n\t\\begin{bmatrix}-3 \\\\ 4\\end{bmatrix}\n\\end{aligned}\n$$\n\nFirst, we write the multiplication as follows:\n\n$$\n\\underbrace{\n\t\\begin{bmatrix}1 & 3 \\\\ 6 & 7\\end{bmatrix}}_{A}\n\t\\underbrace{\n\t\\begin{bmatrix}-3 \\\\ 4\\end{bmatrix}}_{\\mathbf{x}}\n\t=\n\t\\underbrace{\n\t\\begin{bmatrix}\\ast \\\\ \\ast\\end{bmatrix}}_{\\mathbf{y}}\n$$\n\nThe result of this multiplication is another column vector $\\mathbf{y}$ with the same dimensions as $\\mathbf{x}.$\n\nNow, we calculate the entries of the product (shown as $\\ast$'s in the equation above).\n\nTo find $y_1$, the first component of $\\mathbf{y}$, we calculate the dot product of the first row of $A$ and the vector $\\mathbf{x}$:\n\n$$\n\\begin{aligned}\nA\\mathbf{x} &=\\begin{bmatrix}{\\color{#4169E1}1} & {\\color{#4169E1}3} \\\\ 6 & 7\\end{bmatrix}\n\\begin{bmatrix}\\bbox[lightgray, 2pt]{{\\color{black}-3}} \\\\ \\bbox[lightgray, 2pt]{{\\color{black}4}}\\end{bmatrix} \\\\\n&=\\begin{bmatrix}{\\color{#4169E1}1}\\cdot (\\bbox[lightgray, 2pt]{{\\color{black}-3}})+{\\color{#4169E1}3}\\cdot \\bbox[lightgray, 2pt]{{\\color{black}4}} \\\\ \\ast\\end{bmatrix} \\\\\n&=\\begin{bmatrix}9 \\\\ \\ast\\end{bmatrix}\n\\end{aligned}\n$$\n\nTo find $y_2$, the second component of $\\mathbf{y}$, we calculate the dot product of the second row of $A$ and the vector $\\mathbf{x}$:\n\n$$\n\\begin{aligned}\nA\\mathbf{x} &=\\begin{bmatrix}1 & 3 \\\\ {\\color{#4169E1}6} & {\\color{#4169E1}7}\\end{bmatrix}\n\\begin{bmatrix}\\bbox[lightgray, 2pt]{{\\color{black}-3}} \\\\ \\bbox[lightgray, 2pt]{{\\color{black}4}}\\end{bmatrix} \\\\\n&=\\begin{bmatrix}9 \\\\ {\\color{#4169E1}6}\\cdot (\\bbox[lightgray, 2pt]{{\\color{black}-3}})+{\\color{#4169E1}7}\\cdot \\bbox[lightgray, 2pt]{{\\color{black}4}}\\end{bmatrix} \\\\\n&=\\begin{bmatrix}9 \\\\ 10\\end{bmatrix}\n\\end{aligned}\n$$\n\nTherefore,\n\n$$\nA\\mathbf{x}=\\begin{bmatrix}9 \\\\ 10\\end{bmatrix}.\n$$",
+    "reason": "Restore matrix/vector labels, all factors and results in the multiplication setup and both dot-product steps, final A x equality and source underbraces; stack definitions and long derivations onto aligned display rows. Adapt source blue emphasis to RoyalBlue (#4169E1) and use black text in the source lightgray boxes for light/dark theme legibility.",
+    "source": "reference/mathacademy/question-capture/13977620/tutorial-2987.html",
+    "math_academy_id": 2987
+  },
+  {
+    "entity": 17592186101957,
+    "attribute": ":tutorial/content",
+    "before": "An alternative, yet equivalent, procedure for multiplying a matrix by a column vector involves adding scaled columns of the matrix $A$ as follows:\n\n$$\n\\begin{aligned}Ax & =\\begin{bmatrix}a & c \\\\ b & d\\end{bmatrix}\\begin{bmatrix}3 \\\\ 2\\end{bmatrix} \\\\  & =3\\begin{bmatrix}a \\\\ b\\end{bmatrix}+2\\begin{bmatrix}c \\\\ d\\end{bmatrix} \\\\  & =\\begin{bmatrix}3a \\\\ 3b\\end{bmatrix}+\\begin{bmatrix}2c \\\\ 2d\\end{bmatrix} \\\\  & =\\begin{bmatrix}3a+2c \\\\ 3b+2d\\end{bmatrix}\\end{aligned}\n$$\n\nIf we denote \n$\\begin{bmatrix}a \\\\ b\\end{bmatrix}$\nand \n$\\begin{bmatrix}c \\\\ d\\end{bmatrix}$ \nthen we can also write the multiplication as follows:\n\n$$\nA\\mathbf{x}={\\color{blue}3}\\mathbf{u}_1 + {\\color{blue}2} \\mathbf{u}_2\n$$\n\nThe expression above is a **linear combination** of the vectors $\\mathbf{u}_1$ and $\\mathbf{u}_2,$ where the corresponding coefficients are given by the entries of the vector $\\mathbf{x}.$",
+    "after": "An alternative, yet equivalent, procedure for multiplying a matrix by a column vector involves adding scaled columns of the matrix $A$ as follows:\n\n$$\n\\begin{aligned}Ax & =\\begin{bmatrix}a & c \\\\ b & d\\end{bmatrix}\\begin{bmatrix}{\\color{#4169E1}3} \\\\ {\\color{#4169E1}2}\\end{bmatrix} \\\\  & ={\\color{#4169E1}3}\\begin{bmatrix}a \\\\ b\\end{bmatrix}+{\\color{#4169E1}2}\\begin{bmatrix}c \\\\ d\\end{bmatrix} \\\\  & =\\begin{bmatrix}3a \\\\ 3b\\end{bmatrix}+\\begin{bmatrix}2c \\\\ 2d\\end{bmatrix} \\\\  & =\\begin{bmatrix}3a+2c \\\\ 3b+2d\\end{bmatrix}\\end{aligned}\n$$\n\nIf we denote\n\n$$\n\\mathbf{u}_1=\n\t\\begin{bmatrix}a \\\\ b\\end{bmatrix},\\qquad \\mathbf{u}_2=\n\t\\begin{bmatrix}c \\\\ d\\end{bmatrix}\n$$\n\nthen we can also write the multiplication as follows:\n\n$$\nA\\mathbf{x}={\\color{#4169E1}3}\\mathbf{u}_1 + {\\color{#4169E1}2} \\mathbf{u}_2\n$$\n\nThe expression above is a **linear combination** of the vectors $\\mathbf{u}_1$ and $\\mathbf{u}_2$, where the corresponding coefficients are given by the entries of the vector $\\mathbf{x}$.",
+    "reason": "Restore the missing u_1 and u_2 vector definitions and source coefficient highlighting; separate definitions and final linear combination into display paragraphs. Adapt source blue to RoyalBlue (#4169E1) for light/dark theme legibility.",
+    "source": "reference/mathacademy/question-capture/13977620/tutorial-2988.html",
+    "math_academy_id": 2988
+  },
+  {
+    "entity": 17592186292869,
+    "attribute": ":question/problem",
+    "before": "Find $Ha$ if\n$H=\\begin{bmatrix}4 & 2 \\\\ -3 & 6\\end{bmatrix}$\nand\n$a=\\begin{bmatrix}7 \\\\ 3\\end{bmatrix}.$\n\n| $Ha=\\,\\,$ |  | {{field-1}} |  |\n| --- | --- | --- | --- |\n|  | {{field-2}} |  |  |",
+    "after": "Find $Ha$ if\n$H=\\begin{bmatrix}4 & 2 \\\\ -3 & 6\\end{bmatrix}$\nand\n$a=\\begin{bmatrix}7 \\\\ 3\\end{bmatrix}.$\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">$Ha=$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td></tr>\n<tr><td>{{field-2}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+    "reason": "Restore the source column-vector answer layout, exterior brackets, and vertical row alignment using the existing matrix_answer component; preserve all field identities and values.",
+    "source": "reference/mathacademy/question-capture/13977620/q-275589-before.json",
+    "source_sha256": "8729bde929b484bfa36046949f5547e0db8dba7ac55a5745b5d8cecfcda776e0",
+    "source_answer_table_html": "<table align=\"l\" cellpadding=\"0\" rules=\"all\" style=\"border:2px solid black; margin: auto; margin-bottom: 4mm; margin-top: 4mm\">\n<tbody><tr>\n<td height=\"40px\" rowspan=\"2\" style=\"text-align:center; border:2px solid black; border-left:hidden; border-top:hidden; border-bottom:hidden;\"><mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"64\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"-1\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mi class=\"mjx-i\"><mjx-c class=\"mjx-c1D43B TEX-I\"></mjx-c></mjx-mi><mjx-texatom texclass=\"ORD\"><mjx-mi class=\"mjx-b\"><mjx-c class=\"mjx-c1D41A TEX-B\"></mjx-c></mjx-mi></mjx-texatom><mjx-mo class=\"mjx-n\" space=\"4\"><mjx-c class=\"mjx-c3D\"></mjx-c></mjx-mo><mjx-mstyle><mjx-mspace style=\"width: 0.222em;\"></mjx-mspace></mjx-mstyle><mjx-mstyle><mjx-mspace style=\"width: 0.222em;\"></mjx-mspace></mjx-mstyle></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>H</mi><mrow data-mjx-texclass=\"ORD\"><mi mathvariant=\"bold\">a</mi></mrow><mo>=</mo><mstyle scriptlevel=\"0\"><mspace width=\"0.222em\"></mspace></mstyle><mstyle scriptlevel=\"0\"><mspace width=\"0.222em\"></mspace></mstyle></math></mjx-assistive-mml></mjx-container></td>\n<td height=\"30px\" style=\"text-align:top; border:2px solid black;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-1\" style=\"min-width:35px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"1\"></span></div></div></td>\n<td style=\"text-align:center; border: 2px solid black;\" width=\"5px\"></td>\n</tr>\n<tr>\n<td height=\"30px\" style=\"text-align:top; border: 2px solid black; border-top:hidden;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-2\" style=\"min-width:35px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"3\"></span></div></div></td>\n<td style=\"text-align:center; border: 2px solid black; border-top:hidden;\"></td>\n</tr>\n</tbody></table>",
+    "source_row_mapping": [
+      {
+        "source_row": 1,
+        "source_input_dom_id": "freeResponseTextbox-1",
+        "source_dom_index": 0,
+        "field_key": "field-1",
+        "answer_field_entity": 17592186291913,
+        "new_row": 1,
+        "new_column": 1
+      },
+      {
+        "source_row": 2,
+        "source_input_dom_id": "freeResponseTextbox-2",
+        "source_dom_index": 1,
+        "field_key": "field-2",
+        "answer_field_entity": 17592186292504,
+        "new_row": 2,
+        "new_column": 1
+      }
+    ],
+    "supplied_cells": [],
+    "answer_label_preserved": "Ha",
+    "all_placeholder_keys_and_order_preserved": true,
+    "all_matrix_operands_preserved": true
+  },
+  {
+    "entity": 17592186299698,
+    "attribute": ":question/problem",
+    "before": "Compute the following:\n\n| $\\begin{bmatrix}0 & 11 \\\\ -3 & 2\\end{bmatrix}\\begin{bmatrix}5 \\\\ -1\\end{bmatrix}=\\,\\,$ |  | {{field-1}} |  |\n| --- | --- | --- | --- |\n|  | {{field-2}} |  |  |",
+    "after": "Compute the following:\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">$\\begin{bmatrix}0 & 11 \\\\ -3 & 2\\end{bmatrix}\\begin{bmatrix}5 \\\\ -1\\end{bmatrix}=$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td></tr>\n<tr><td>{{field-2}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+    "reason": "Restore the source column-vector answer layout, exterior brackets, and vertical row alignment using the existing matrix_answer component; preserve all field identities and values.",
+    "source": "reference/mathacademy/question-capture-workers/linear/14043216/q-318640-before.json",
+    "source_sha256": "510430da4921b9ab028d051ceb8558b394f569a33d9e4b2713f6dc38674e3ab2",
+    "source_answer_table_html": "<table align=\"l\" cellpadding=\"0\" rules=\"all\" style=\"border:2px solid black; margin: auto; margin-bottom: 4mm; margin-top: 4mm\">\n<tbody><tr>\n<td height=\"40px\" rowspan=\"2\" style=\"text-align:center; border:2px solid black; border-left:hidden; border-top:hidden; border-bottom:hidden;\">\n<mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"41\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"-1\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mrow><mjx-mo class=\"mjx-s3\"><mjx-c class=\"mjx-c5B TEX-S3\"></mjx-c></mjx-mo><mjx-mtable style=\"min-width: 3.278em;\"><mjx-table><mjx-itable><mjx-mtr><mjx-mtd style=\"padding-right: 0.5em; padding-bottom: 0.2em;\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c30\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style=\"padding-left: 0.5em; padding-bottom: 0.2em;\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c><mjx-c class=\"mjx-c31\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr><mjx-mtr><mjx-mtd style=\"padding-right: 0.5em; padding-top: 0.2em;\"><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2212\"></mjx-c></mjx-mo><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c33\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style=\"padding-left: 0.5em; padding-top: 0.2em;\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c32\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr></mjx-itable></mjx-table></mjx-mtable><mjx-mo class=\"mjx-s3\"><mjx-c class=\"mjx-c5D TEX-S3\"></mjx-c></mjx-mo></mjx-mrow><mjx-mrow space=\"2\"><mjx-mo class=\"mjx-s3\"><mjx-c class=\"mjx-c5B TEX-S3\"></mjx-c></mjx-mo><mjx-mtable style=\"min-width: 1.278em;\"><mjx-table><mjx-itable><mjx-mtr><mjx-mtd style=\"padding-bottom: 0.2em;\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c35\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr><mjx-mtr><mjx-mtd style=\"padding-top: 0.2em;\"><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2212\"></mjx-c></mjx-mo><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr></mjx-itable></mjx-table></mjx-mtable><mjx-mo class=\"mjx-s3\"><mjx-c class=\"mjx-c5D TEX-S3\"></mjx-c></mjx-mo></mjx-mrow><mjx-mo class=\"mjx-n\" space=\"4\"><mjx-c class=\"mjx-c3D\"></mjx-c></mjx-mo><mjx-mstyle><mjx-mspace style=\"width: 0.222em;\"></mjx-mspace></mjx-mstyle><mjx-mstyle><mjx-mspace style=\"width: 0.222em;\"></mjx-mspace></mjx-mstyle></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow data-mjx-texclass=\"INNER\"><mo data-mjx-texclass=\"OPEN\">[</mo><mtable columnspacing=\"1em\" rowspacing=\"4pt\"><mtr><mtd><mn>0</mn></mtd><mtd><mn>11</mn></mtd></mtr><mtr><mtd><mo>\u2212</mo><mn>3</mn></mtd><mtd><mn>2</mn></mtd></mtr></mtable><mo data-mjx-texclass=\"CLOSE\">]</mo></mrow><mrow data-mjx-texclass=\"INNER\"><mo data-mjx-texclass=\"OPEN\">[</mo><mtable columnspacing=\"1em\" rowspacing=\"4pt\"><mtr><mtd><mn>5</mn></mtd></mtr><mtr><mtd><mo>\u2212</mo><mn>1</mn></mtd></mtr></mtable><mo data-mjx-texclass=\"CLOSE\">]</mo></mrow><mo>=</mo><mstyle scriptlevel=\"0\"><mspace width=\"0.222em\"></mspace></mstyle><mstyle scriptlevel=\"0\"><mspace width=\"0.222em\"></mspace></mstyle></math></mjx-assistive-mml></mjx-container>\n</td>\n<td height=\"30px\" style=\"text-align:top; border:2px solid black;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-1\" style=\"min-width:35px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"8\"></span></div></div></td>\n<td style=\"text-align:center; border: 2px solid black;\" width=\"5px\"></td>\n</tr>\n<tr>\n<td height=\"30px\" style=\"text-align:top; border: 2px solid black; border-top:hidden;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-2\" style=\"min-width:35px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"10\"></span></div></div></td>\n<td style=\"text-align:center; border: 2px solid black; border-top:hidden;\"></td>\n</tr>\n</tbody></table>",
+    "source_row_mapping": [
+      {
+        "source_row": 1,
+        "source_input_dom_id": "freeResponseTextbox-1",
+        "source_dom_index": 0,
+        "field_key": "field-1",
+        "answer_field_entity": 17592186299255,
+        "new_row": 1,
+        "new_column": 1
+      },
+      {
+        "source_row": 2,
+        "source_input_dom_id": "freeResponseTextbox-2",
+        "source_dom_index": 1,
+        "field_key": "field-2",
+        "answer_field_entity": 17592186298894,
+        "new_row": 2,
+        "new_column": 1
+      }
+    ],
+    "supplied_cells": [],
+    "answer_label_preserved": "\\begin{bmatrix}0 & 11 \\\\ -3 & 2\\end{bmatrix}\\begin{bmatrix}5 \\\\ -1\\end{bmatrix}",
+    "all_placeholder_keys_and_order_preserved": true,
+    "all_matrix_operands_preserved": true
+  },
+  {
+    "entity": 17592186299699,
+    "attribute": ":question/problem",
+    "before": "Compute the following:\n\n| $\\begin{bmatrix}-7 & 3 \\\\ 5 & 8\\end{bmatrix}\\begin{bmatrix}4 \\\\ -2\\end{bmatrix}=\\,\\,$ |  | {{field-1}} |  |\n| --- | --- | --- | --- |\n|  | {{field-2}} |  |  |",
+    "after": "Compute the following:\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">$\\begin{bmatrix}-7 & 3 \\\\ 5 & 8\\end{bmatrix}\\begin{bmatrix}4 \\\\ -2\\end{bmatrix}=$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td></tr>\n<tr><td>{{field-2}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+    "reason": "Restore the source column-vector answer layout, exterior brackets, and vertical row alignment using the existing matrix_answer component; preserve all field identities and values.",
+    "source": "reference/mathacademy/question-capture-workers/linear/14043216/q-318644-before.json",
+    "source_sha256": "159c341118e7cb749b5f4c55971f7a7ee767ed41b4720d910603b8e5e5507161",
+    "source_answer_table_html": "<table align=\"l\" cellpadding=\"0\" rules=\"all\" style=\"border:2px solid black; margin: auto; margin-bottom: 4mm; margin-top: 4mm\">\n<tbody><tr>\n<td height=\"40px\" rowspan=\"2\" style=\"text-align:center; border:2px solid black; border-left:hidden; border-top:hidden; border-bottom:hidden;\">\n<mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"37\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"-1\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mrow><mjx-mo class=\"mjx-s3\"><mjx-c class=\"mjx-c5B TEX-S3\"></mjx-c></mjx-mo><mjx-mtable style=\"min-width: 2.778em;\"><mjx-table><mjx-itable><mjx-mtr><mjx-mtd style=\"padding-right: 0.5em; padding-bottom: 0.2em;\"><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2212\"></mjx-c></mjx-mo><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c37\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style=\"padding-left: 0.5em; padding-bottom: 0.2em;\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c33\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr><mjx-mtr><mjx-mtd style=\"padding-right: 0.5em; padding-top: 0.2em;\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c35\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style=\"padding-left: 0.5em; padding-top: 0.2em;\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c38\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr></mjx-itable></mjx-table></mjx-mtable><mjx-mo class=\"mjx-s3\"><mjx-c class=\"mjx-c5D TEX-S3\"></mjx-c></mjx-mo></mjx-mrow><mjx-mrow space=\"2\"><mjx-mo class=\"mjx-s3\"><mjx-c class=\"mjx-c5B TEX-S3\"></mjx-c></mjx-mo><mjx-mtable style=\"min-width: 1.278em;\"><mjx-table><mjx-itable><mjx-mtr><mjx-mtd style=\"padding-bottom: 0.2em;\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c34\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr><mjx-mtr><mjx-mtd style=\"padding-top: 0.2em;\"><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2212\"></mjx-c></mjx-mo><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c32\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr></mjx-itable></mjx-table></mjx-mtable><mjx-mo class=\"mjx-s3\"><mjx-c class=\"mjx-c5D TEX-S3\"></mjx-c></mjx-mo></mjx-mrow><mjx-mo class=\"mjx-n\" space=\"4\"><mjx-c class=\"mjx-c3D\"></mjx-c></mjx-mo><mjx-mstyle><mjx-mspace style=\"width: 0.222em;\"></mjx-mspace></mjx-mstyle><mjx-mstyle><mjx-mspace style=\"width: 0.222em;\"></mjx-mspace></mjx-mstyle></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow data-mjx-texclass=\"INNER\"><mo data-mjx-texclass=\"OPEN\">[</mo><mtable columnspacing=\"1em\" rowspacing=\"4pt\"><mtr><mtd><mo>\u2212</mo><mn>7</mn></mtd><mtd><mn>3</mn></mtd></mtr><mtr><mtd><mn>5</mn></mtd><mtd><mn>8</mn></mtd></mtr></mtable><mo data-mjx-texclass=\"CLOSE\">]</mo></mrow><mrow data-mjx-texclass=\"INNER\"><mo data-mjx-texclass=\"OPEN\">[</mo><mtable columnspacing=\"1em\" rowspacing=\"4pt\"><mtr><mtd><mn>4</mn></mtd></mtr><mtr><mtd><mo>\u2212</mo><mn>2</mn></mtd></mtr></mtable><mo data-mjx-texclass=\"CLOSE\">]</mo></mrow><mo>=</mo><mstyle scriptlevel=\"0\"><mspace width=\"0.222em\"></mspace></mstyle><mstyle scriptlevel=\"0\"><mspace width=\"0.222em\"></mspace></mstyle></math></mjx-assistive-mml></mjx-container>\n</td>\n<td height=\"30px\" style=\"text-align:top; border:2px solid black;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-1\" style=\"min-width:35px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"1\"></span></div></div></td>\n<td style=\"text-align:center; border: 2px solid black;\" width=\"5px\"></td>\n</tr>\n<tr>\n<td height=\"30px\" style=\"text-align:top; border: 2px solid black; border-top:hidden;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-2\" style=\"min-width:35px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"3\"></span></div></div></td>\n<td style=\"text-align:center; border: 2px solid black; border-top:hidden;\"></td>\n</tr>\n</tbody></table>",
+    "source_row_mapping": [
+      {
+        "source_row": 1,
+        "source_input_dom_id": "freeResponseTextbox-1",
+        "source_dom_index": 0,
+        "field_key": "field-1",
+        "answer_field_entity": 17592186299003,
+        "new_row": 1,
+        "new_column": 1
+      },
+      {
+        "source_row": 2,
+        "source_input_dom_id": "freeResponseTextbox-2",
+        "source_dom_index": 1,
+        "field_key": "field-2",
+        "answer_field_entity": 17592186298810,
+        "new_row": 2,
+        "new_column": 1
+      }
+    ],
+    "supplied_cells": [],
+    "answer_label_preserved": "\\begin{bmatrix}-7 & 3 \\\\ 5 & 8\\end{bmatrix}\\begin{bmatrix}4 \\\\ -2\\end{bmatrix}",
+    "all_placeholder_keys_and_order_preserved": true,
+    "all_matrix_operands_preserved": true
+  },
+  {
+    "entity": 17592186299694,
+    "attribute": ":question/problem",
+    "before": "Find $Nz$ if\n$N=\\begin{bmatrix}-8 & 1 & 2 \\\\ 3 & -6 & 5 \\\\ 4 & 2 & 7\\end{bmatrix}$\nand\n$z=\\begin{bmatrix}3 \\\\ -4 \\\\ 2\\end{bmatrix}.$\n\n|  |  | {{field-1}} |  |\n| --- | --- | --- | --- |\n| $Nz=\\,\\,$ |  | {{field-2}} |  |\n|  |  | {{field-3}} |  |",
+    "after": "Find $Nz$ if\n$N=\\begin{bmatrix}-8 & 1 & 2 \\\\ 3 & -6 & 5 \\\\ 4 & 2 & 7\\end{bmatrix}$\nand\n$z=\\begin{bmatrix}3 \\\\ -4 \\\\ 2\\end{bmatrix}.$\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">$Nz=$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td></tr>\n<tr><td>{{field-2}}</td></tr>\n<tr><td>{{field-3}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+    "reason": "Restore the source column-vector answer layout, exterior brackets, and vertical row alignment using the existing matrix_answer component; preserve all field identities and values.",
+    "source": "reference/mathacademy/question-capture/13977620/q-318606-before.json",
+    "source_sha256": "fabc202e45c635cccc0358e07a6aa22f250bc659b9cb6d6e41e13eb94035a396",
+    "source_answer_table_html": "<table align=\"l\" cellpadding=\"0\" rules=\"all\" style=\"border:2px solid black; margin: auto; margin-bottom: 4mm; margin-top: 4mm\">\n<tbody><tr>\n<td height=\"30px\" style=\"text-align:center; border:2px solid black; border-left:hidden; border-top:hidden; border-bottom:hidden;\" width=\"30px\"></td>\n<td height=\"30px\" style=\"text-align:top; border:2px solid black;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\" width=\"30px\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-1\" style=\"min-width:35px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"22\"></span></div></div></td>\n<td style=\"text-align:center; border:2px solid black;\" width=\"5px\"></td>\n</tr>\n<tr>\n<td height=\"30px\" style=\"text-align:right; border:2px solid black; border-left:hidden; border-top:hidden; border-bottom:hidden;\"><mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"98\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"-1\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mi class=\"mjx-i\"><mjx-c class=\"mjx-c1D441 TEX-I\"></mjx-c></mjx-mi><mjx-texatom texclass=\"ORD\"><mjx-mi class=\"mjx-b\"><mjx-c class=\"mjx-c1D433 TEX-B\"></mjx-c></mjx-mi></mjx-texatom><mjx-mo class=\"mjx-n\" space=\"4\"><mjx-c class=\"mjx-c3D\"></mjx-c></mjx-mo><mjx-mstyle><mjx-mspace style=\"width: 0.222em;\"></mjx-mspace></mjx-mstyle><mjx-mstyle><mjx-mspace style=\"width: 0.222em;\"></mjx-mspace></mjx-mstyle></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>N</mi><mrow data-mjx-texclass=\"ORD\"><mi mathvariant=\"bold\">z</mi></mrow><mo>=</mo><mstyle scriptlevel=\"0\"><mspace width=\"0.222em\"></mspace></mstyle><mstyle scriptlevel=\"0\"><mspace width=\"0.222em\"></mspace></mstyle></math></mjx-assistive-mml></mjx-container></td>\n<td height=\"30px\" style=\"text-align:center; border:2px solid black; border-top:hidden; border-bottom:hidden;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\" width=\"30px\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-2\" style=\"min-width:35px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"24\"></span></div></div></td>\n<td style=\"text-align:center; border:2px solid black; border-top:hidden; border-bottom:hidden;\"></td>\n</tr>\n<tr>\n<td height=\"30px\" style=\"text-align:center; border:2px solid black; border-left:hidden; border-top:hidden; border-bottom:hidden;\"></td>\n<td height=\"30px\" style=\"text-align:center; border:2px solid black;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\" width=\"30px\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-3\" style=\"min-width:35px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"26\"></span></div></div></td>\n<td style=\"text-align:center; border:2px solid black;\"></td>\n</tr>\n</tbody></table>",
+    "source_row_mapping": [
+      {
+        "source_row": 1,
+        "source_input_dom_id": "freeResponseTextbox-1",
+        "source_dom_index": 0,
+        "field_key": "field-1",
+        "answer_field_entity": 17592186299149,
+        "new_row": 1,
+        "new_column": 1
+      },
+      {
+        "source_row": 2,
+        "source_input_dom_id": "freeResponseTextbox-2",
+        "source_dom_index": 1,
+        "field_key": "field-2",
+        "answer_field_entity": 17592186299456,
+        "new_row": 2,
+        "new_column": 1
+      },
+      {
+        "source_row": 3,
+        "source_input_dom_id": "freeResponseTextbox-3",
+        "source_dom_index": 2,
+        "field_key": "field-3",
+        "answer_field_entity": 17592186299483,
+        "new_row": 3,
+        "new_column": 1
+      }
+    ],
+    "supplied_cells": [],
+    "answer_label_preserved": "Nz",
+    "all_placeholder_keys_and_order_preserved": true,
+    "all_matrix_operands_preserved": true
+  },
+  {
+    "entity": 17592186299695,
+    "attribute": ":question/problem",
+    "before": "Compute the following:\n\n| $\\begin{bmatrix}-4 & 6 & 2 \\\\ 5 & -3 & 7 \\\\ 1 & 8 & -2\\end{bmatrix}\\begin{bmatrix}3 \\\\ -1 \\\\ 4\\end{bmatrix}=\\,\\,$ |  | {{field-1}} |  |\n| --- | --- | --- | --- |\n|  | {{field-2}} |  |  |\n|  | {{field-3}} |  |  |",
+    "after": "Compute the following:\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">$\\begin{bmatrix}-4 & 6 & 2 \\\\ 5 & -3 & 7 \\\\ 1 & 8 & -2\\end{bmatrix}\\begin{bmatrix}3 \\\\ -1 \\\\ 4\\end{bmatrix}=$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td></tr>\n<tr><td>{{field-2}}</td></tr>\n<tr><td>{{field-3}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+    "reason": "Restore the source column-vector answer layout, exterior brackets, and vertical row alignment using the existing matrix_answer component; preserve all field identities and values.",
+    "source": "reference/mathacademy/question-capture/13977620/q-318622-before.json",
+    "source_sha256": "790b4d0f9e30eae0824b5b628ccee53080693957b26fe7d390615bfffc431da7",
+    "source_answer_table_html": "<table align=\"l\" cellpadding=\"0\" rules=\"all\" style=\"border:2px solid black; margin: auto; margin-bottom: 4mm; margin-top: 4mm\">\n<tbody><tr>\n<td height=\"40px\" rowspan=\"3\" style=\"text-align:center; border:2px solid black; border-left:hidden; border-top:hidden; border-bottom:hidden;\" width=\"220px\">\n<mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"93\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"-1\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mrow><mjx-mo class=\"mjx-n\"><mjx-stretchy-v class=\"mjx-c5B\" style=\"height: 3.8em; vertical-align: -1.65em;\"><mjx-beg><mjx-c></mjx-c></mjx-beg><mjx-ext><mjx-c></mjx-c></mjx-ext><mjx-end><mjx-c></mjx-c></mjx-end><mjx-mark></mjx-mark></mjx-stretchy-v></mjx-mo><mjx-mtable style=\"min-width: 5.834em;\"><mjx-table><mjx-itable><mjx-mtr><mjx-mtd style=\"padding-right: 0.5em; padding-bottom: 0.2em;\"><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2212\"></mjx-c></mjx-mo><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c34\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style=\"padding-left: 0.5em; padding-right: 0.5em; padding-bottom: 0.2em;\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c36\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style=\"padding-left: 0.5em; padding-bottom: 0.2em;\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c32\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr><mjx-mtr><mjx-mtd style=\"padding-right: 0.5em; padding-top: 0.2em; padding-bottom: 0.2em;\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c35\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style=\"padding: 0.2em 0.5em;\"><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2212\"></mjx-c></mjx-mo><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c33\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style=\"padding-left: 0.5em; padding-top: 0.2em; padding-bottom: 0.2em;\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c37\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr><mjx-mtr><mjx-mtd style=\"padding-right: 0.5em; padding-top: 0.2em;\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style=\"padding-left: 0.5em; padding-right: 0.5em; padding-top: 0.2em;\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c38\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd><mjx-mtd style=\"padding-left: 0.5em; padding-top: 0.2em;\"><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2212\"></mjx-c></mjx-mo><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c32\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr></mjx-itable></mjx-table></mjx-mtable><mjx-mo class=\"mjx-n\"><mjx-stretchy-v class=\"mjx-c5D\" style=\"height: 3.8em; vertical-align: -1.65em;\"><mjx-beg><mjx-c></mjx-c></mjx-beg><mjx-ext><mjx-c></mjx-c></mjx-ext><mjx-end><mjx-c></mjx-c></mjx-end><mjx-mark></mjx-mark></mjx-stretchy-v></mjx-mo></mjx-mrow><mjx-mrow space=\"2\"><mjx-mo class=\"mjx-n\"><mjx-stretchy-v class=\"mjx-c5B\" style=\"height: 3.8em; vertical-align: -1.65em;\"><mjx-beg><mjx-c></mjx-c></mjx-beg><mjx-ext><mjx-c></mjx-c></mjx-ext><mjx-end><mjx-c></mjx-c></mjx-end><mjx-mark></mjx-mark></mjx-stretchy-v></mjx-mo><mjx-mtable style=\"min-width: 1.278em;\"><mjx-table><mjx-itable><mjx-mtr><mjx-mtd style=\"padding-bottom: 0.2em;\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c33\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr><mjx-mtr><mjx-mtd style=\"padding-top: 0.2em; padding-bottom: 0.2em;\"><mjx-mo class=\"mjx-n\"><mjx-c class=\"mjx-c2212\"></mjx-c></mjx-mo><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr><mjx-mtr><mjx-mtd style=\"padding-top: 0.2em;\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c34\"></mjx-c></mjx-mn><mjx-tstrut></mjx-tstrut></mjx-mtd></mjx-mtr></mjx-itable></mjx-table></mjx-mtable><mjx-mo class=\"mjx-n\"><mjx-stretchy-v class=\"mjx-c5D\" style=\"height: 3.8em; vertical-align: -1.65em;\"><mjx-beg><mjx-c></mjx-c></mjx-beg><mjx-ext><mjx-c></mjx-c></mjx-ext><mjx-end><mjx-c></mjx-c></mjx-end><mjx-mark></mjx-mark></mjx-stretchy-v></mjx-mo></mjx-mrow><mjx-mo class=\"mjx-n\" space=\"4\"><mjx-c class=\"mjx-c3D\"></mjx-c></mjx-mo><mjx-mstyle><mjx-mspace style=\"width: 0.222em;\"></mjx-mspace></mjx-mstyle><mjx-mstyle><mjx-mspace style=\"width: 0.222em;\"></mjx-mspace></mjx-mstyle></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow data-mjx-texclass=\"INNER\"><mo data-mjx-texclass=\"OPEN\">[</mo><mtable columnspacing=\"1em\" rowspacing=\"4pt\"><mtr><mtd><mo>\u2212</mo><mn>4</mn></mtd><mtd><mn>6</mn></mtd><mtd><mn>2</mn></mtd></mtr><mtr><mtd><mn>5</mn></mtd><mtd><mo>\u2212</mo><mn>3</mn></mtd><mtd><mn>7</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><mn>8</mn></mtd><mtd><mo>\u2212</mo><mn>2</mn></mtd></mtr></mtable><mo data-mjx-texclass=\"CLOSE\">]</mo></mrow><mrow data-mjx-texclass=\"INNER\"><mo data-mjx-texclass=\"OPEN\">[</mo><mtable columnspacing=\"1em\" rowspacing=\"4pt\"><mtr><mtd><mn>3</mn></mtd></mtr><mtr><mtd><mo>\u2212</mo><mn>1</mn></mtd></mtr><mtr><mtd><mn>4</mn></mtd></mtr></mtable><mo data-mjx-texclass=\"CLOSE\">]</mo></mrow><mo>=</mo><mstyle scriptlevel=\"0\"><mspace width=\"0.222em\"></mspace></mstyle><mstyle scriptlevel=\"0\"><mspace width=\"0.222em\"></mspace></mstyle></math></mjx-assistive-mml></mjx-container>\n</td>\n<td height=\"30px\" style=\"text-align:top; border:2px solid black;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\" width=\"30px\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-1\" style=\"min-width:35px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"9\"></span></div></div></td>\n<td style=\"text-align:center; border:2px solid black;\" width=\"5px\"></td>\n</tr>\n<tr>\n<td height=\"30px\" style=\"text-align:center; border:2px solid black; border-top:hidden; border-bottom:hidden;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\" width=\"30px\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-2\" style=\"min-width:35px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"11\"></span></div></div></td>\n<td style=\"text-align:center; border:2px solid black; border-top:hidden; border-bottom:hidden;\"></td>\n</tr>\n<tr>\n<td height=\"30px\" style=\"text-align:center; border:2px solid black;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\" width=\"30px\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-3\" style=\"min-width:35px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"13\"></span></div></div></td>\n<td style=\"text-align:center; border:2px solid black;\"></td>\n</tr>\n</tbody></table>",
+    "source_row_mapping": [
+      {
+        "source_row": 1,
+        "source_input_dom_id": "freeResponseTextbox-1",
+        "source_dom_index": 0,
+        "field_key": "field-1",
+        "answer_field_entity": 17592186299331,
+        "new_row": 1,
+        "new_column": 1
+      },
+      {
+        "source_row": 2,
+        "source_input_dom_id": "freeResponseTextbox-2",
+        "source_dom_index": 1,
+        "field_key": "field-2",
+        "answer_field_entity": 17592186299132,
+        "new_row": 2,
+        "new_column": 1
+      },
+      {
+        "source_row": 3,
+        "source_input_dom_id": "freeResponseTextbox-3",
+        "source_dom_index": 2,
+        "field_key": "field-3",
+        "answer_field_entity": 17592186299404,
+        "new_row": 3,
+        "new_column": 1
+      }
+    ],
+    "supplied_cells": [],
+    "answer_label_preserved": "\\begin{bmatrix}-4 & 6 & 2 \\\\ 5 & -3 & 7 \\\\ 1 & 8 & -2\\end{bmatrix}\\begin{bmatrix}3 \\\\ -1 \\\\ 4\\end{bmatrix}",
+    "all_placeholder_keys_and_order_preserved": true,
+    "all_matrix_operands_preserved": true
+  },
+  {
+    "entity": 17592186292871,
+    "attribute": ":question/problem",
+    "before": "If \n$Q=\\begin{bmatrix}a & b & a \\\\ a & -b & a \\\\ 0 & 0 & a\\end{bmatrix}$\nand\n$r=\\begin{bmatrix}a \\\\ 0 \\\\ -a\\end{bmatrix},$\nfind $Qr.$\n\n|  |  | {{field-1}} |  |\n| --- | --- | --- | --- |\n| $Qr=\\,\\,$ |  | {{field-2}} |  |\n|  |  | {{field-3}} |  |",
+    "after": "If \n$Q=\\begin{bmatrix}a & b & a \\\\ a & -b & a \\\\ 0 & 0 & a\\end{bmatrix}$\nand\n$r=\\begin{bmatrix}a \\\\ 0 \\\\ -a\\end{bmatrix},$\nfind $Qr.$\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">$Qr=$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td></tr>\n<tr><td>{{field-2}}</td></tr>\n<tr><td>{{field-3}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+    "reason": "Restore the source column-vector answer layout, exterior brackets, and vertical row alignment using the existing matrix_answer component; preserve all field identities and values.",
+    "source": "reference/mathacademy/question-capture-workers/linear/14043216/q-275597-before.json",
+    "source_sha256": "cf54340fd2ca95310b69df6dc2e935f9aec92e2c968cf7fbd874404f51efce7b",
+    "source_answer_table_html": "<table align=\"l\" cellpadding=\"0\" rules=\"all\" style=\"border:2px solid black; margin: auto; margin-bottom: 4mm; margin-top: 4mm\">\n<tbody><tr>\n<td height=\"30px\" style=\"text-align:center; border:2px solid black; border-left:hidden; border-top:hidden; border-bottom:hidden;\" width=\"30px\"></td>\n<td height=\"30px\" style=\"text-align:top; border:2px solid black;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\" width=\"30px\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-1\" style=\"min-width:40px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"60\"></span></div></div></td>\n<td style=\"text-align:center; border:2px solid black;\" width=\"5px\"></td>\n</tr>\n<tr>\n<td height=\"30px\" style=\"text-align:right; border:2px solid black; border-left:hidden; border-top:hidden; border-bottom:hidden;\"><mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"126\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"-1\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mi class=\"mjx-i\"><mjx-c class=\"mjx-c1D444 TEX-I\"></mjx-c></mjx-mi><mjx-texatom texclass=\"ORD\"><mjx-mi class=\"mjx-b\"><mjx-c class=\"mjx-c1D42B TEX-B\"></mjx-c></mjx-mi></mjx-texatom><mjx-mo class=\"mjx-n\" space=\"4\"><mjx-c class=\"mjx-c3D\"></mjx-c></mjx-mo><mjx-mstyle><mjx-mspace style=\"width: 0.222em;\"></mjx-mspace></mjx-mstyle><mjx-mstyle><mjx-mspace style=\"width: 0.222em;\"></mjx-mspace></mjx-mstyle></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>Q</mi><mrow data-mjx-texclass=\"ORD\"><mi mathvariant=\"bold\">r</mi></mrow><mo>=</mo><mstyle scriptlevel=\"0\"><mspace width=\"0.222em\"></mspace></mstyle><mstyle scriptlevel=\"0\"><mspace width=\"0.222em\"></mspace></mstyle></math></mjx-assistive-mml></mjx-container></td>\n<td height=\"30px\" style=\"text-align:center; border:2px solid black; border-top:hidden; border-bottom:hidden;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\" width=\"30px\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-2\" style=\"min-width:40px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"62\"></span></div></div></td>\n<td style=\"text-align:center; border:2px solid black; border-top:hidden; border-bottom:hidden;\"></td>\n</tr>\n<tr>\n<td height=\"30px\" style=\"text-align:center; border:2px solid black; border-left:hidden; border-top:hidden; border-bottom:hidden;\"></td>\n<td height=\"30px\" style=\"text-align:center; border:2px solid black;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\" width=\"30px\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-3\" style=\"min-width:40px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"64\"></span></div></div></td>\n<td style=\"text-align:center; border:2px solid black;\"></td>\n</tr>\n</tbody></table>",
+    "source_row_mapping": [
+      {
+        "source_row": 1,
+        "source_input_dom_id": "freeResponseTextbox-1",
+        "source_dom_index": 0,
+        "field_key": "field-1",
+        "answer_field_entity": 17592186292493,
+        "new_row": 1,
+        "new_column": 1
+      },
+      {
+        "source_row": 2,
+        "source_input_dom_id": "freeResponseTextbox-2",
+        "source_dom_index": 1,
+        "field_key": "field-2",
+        "answer_field_entity": 17592186292132,
+        "new_row": 2,
+        "new_column": 1
+      },
+      {
+        "source_row": 3,
+        "source_input_dom_id": "freeResponseTextbox-3",
+        "source_dom_index": 2,
+        "field_key": "field-3",
+        "answer_field_entity": 17592186291893,
+        "new_row": 3,
+        "new_column": 1
+      }
+    ],
+    "supplied_cells": [],
+    "answer_label_preserved": "Qr",
+    "all_placeholder_keys_and_order_preserved": true,
+    "all_matrix_operands_preserved": true
+  },
+  {
+    "entity": 17592186299690,
+    "attribute": ":question/problem",
+    "before": "If \n$A=\\begin{bmatrix}b & a & -b \\\\ -b & a & b \\\\ -b & 0 & -b\\end{bmatrix}$\nand\n$x=\\begin{bmatrix}-b \\\\ 0 \\\\ b\\end{bmatrix},$\nfind $Ax.$\n\n|  |  | {{field-1}} |  |\n| --- | --- | --- | --- |\n| $Ax=\\,\\,$ |  | {{field-2}} |  |\n|  |  | {{field-3}} |  |",
+    "after": "If \n$A=\\begin{bmatrix}b & a & -b \\\\ -b & a & b \\\\ -b & 0 & -b\\end{bmatrix}$\nand\n$x=\\begin{bmatrix}-b \\\\ 0 \\\\ b\\end{bmatrix},$\nfind $Ax.$\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">$Ax=$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td></tr>\n<tr><td>{{field-2}}</td></tr>\n<tr><td>{{field-3}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+    "reason": "Restore the source column-vector answer layout, exterior brackets, and vertical row alignment using the existing matrix_answer component; preserve all field identities and values.",
+    "source": "reference/mathacademy/question-capture/13977620/q-318589-before.json",
+    "source_sha256": "79e1f38b83805484b26d79e9a3b5dc1466f708701a659a72b86d9fa3a169b820",
+    "source_answer_table_html": "<table align=\"l\" cellpadding=\"0\" rules=\"all\" style=\"border:2px solid black; margin: auto; margin-bottom: 4mm; margin-top: 4mm\">\n<tbody><tr>\n<td height=\"30px\" style=\"text-align:center; border:2px solid black; border-left:hidden; border-top:hidden; border-bottom:hidden;\" width=\"30px\"></td>\n<td height=\"30px\" style=\"text-align:top; border:2px solid black;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\" width=\"30px\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-1\" style=\"min-width:40px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"62\"></span></div></div></td>\n<td style=\"text-align:center; border:2px solid black;\" width=\"5px\"></td>\n</tr>\n<tr>\n<td height=\"30px\" style=\"text-align:right; border:2px solid black; border-left:hidden; border-top:hidden; border-bottom:hidden;\"><mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"133\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"-1\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mi class=\"mjx-i\"><mjx-c class=\"mjx-c1D434 TEX-I\"></mjx-c></mjx-mi><mjx-texatom texclass=\"ORD\"><mjx-mi class=\"mjx-b\"><mjx-c class=\"mjx-c1D431 TEX-B\"></mjx-c></mjx-mi></mjx-texatom><mjx-mo class=\"mjx-n\" space=\"4\"><mjx-c class=\"mjx-c3D\"></mjx-c></mjx-mo><mjx-mstyle><mjx-mspace style=\"width: 0.222em;\"></mjx-mspace></mjx-mstyle><mjx-mstyle><mjx-mspace style=\"width: 0.222em;\"></mjx-mspace></mjx-mstyle></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>A</mi><mrow data-mjx-texclass=\"ORD\"><mi mathvariant=\"bold\">x</mi></mrow><mo>=</mo><mstyle scriptlevel=\"0\"><mspace width=\"0.222em\"></mspace></mstyle><mstyle scriptlevel=\"0\"><mspace width=\"0.222em\"></mspace></mstyle></math></mjx-assistive-mml></mjx-container></td>\n<td height=\"30px\" style=\"text-align:center; border:2px solid black; border-top:hidden; border-bottom:hidden;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\" width=\"30px\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-2\" style=\"min-width:40px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"64\"></span></div></div></td>\n<td style=\"text-align:center; border:2px solid black; border-top:hidden; border-bottom:hidden;\"></td>\n</tr>\n<tr>\n<td height=\"30px\" style=\"text-align:center; border:2px solid black; border-left:hidden; border-top:hidden; border-bottom:hidden;\"></td>\n<td height=\"30px\" style=\"text-align:center; border:2px solid black;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\" width=\"30px\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-3\" style=\"min-width:40px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"66\"></span></div></div></td>\n<td style=\"text-align:center; border:2px solid black;\"></td>\n</tr>\n</tbody></table>",
+    "source_row_mapping": [
+      {
+        "source_row": 1,
+        "source_input_dom_id": "freeResponseTextbox-1",
+        "source_dom_index": 0,
+        "field_key": "field-1",
+        "answer_field_entity": 17592186298927,
+        "new_row": 1,
+        "new_column": 1
+      },
+      {
+        "source_row": 2,
+        "source_input_dom_id": "freeResponseTextbox-2",
+        "source_dom_index": 1,
+        "field_key": "field-2",
+        "answer_field_entity": 17592186299437,
+        "new_row": 2,
+        "new_column": 1
+      },
+      {
+        "source_row": 3,
+        "source_input_dom_id": "freeResponseTextbox-3",
+        "source_dom_index": 2,
+        "field_key": "field-3",
+        "answer_field_entity": 17592186298851,
+        "new_row": 3,
+        "new_column": 1
+      }
+    ],
+    "supplied_cells": [],
+    "answer_label_preserved": "Ax",
+    "all_placeholder_keys_and_order_preserved": true,
+    "all_matrix_operands_preserved": true
+  },
+  {
+    "entity": 17592186299691,
+    "attribute": ":question/problem",
+    "before": "If \n$P=\\begin{bmatrix}m & n & -m \\\\ m & -n & -m \\\\ 0 & 2 & 0\\end{bmatrix}$\nand\n$u=\\begin{bmatrix}1 \\\\ p \\\\ 1\\end{bmatrix},$\nfind $Pu.$\n\n|  |  | {{field-1}} |  |\n| --- | --- | --- | --- |\n| $Pu=\\,\\,$ |  | {{field-2}} |  |\n|  |  | {{field-3}} |  |",
+    "after": "If \n$P=\\begin{bmatrix}m & n & -m \\\\ m & -n & -m \\\\ 0 & 2 & 0\\end{bmatrix}$\nand\n$u=\\begin{bmatrix}1 \\\\ p \\\\ 1\\end{bmatrix},$\nfind $Pu.$\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">$Pu=$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td></tr>\n<tr><td>{{field-2}}</td></tr>\n<tr><td>{{field-3}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+    "reason": "Restore the source column-vector answer layout, exterior brackets, and vertical row alignment using the existing matrix_answer component; preserve all field identities and values.",
+    "source": "reference/mathacademy/question-capture-workers/linear/14043216/q-318591-before.json",
+    "source_sha256": "71dae65f18feb473788b1475559663a747b8c1c86fa8657dcb2826956476986d",
+    "source_answer_table_html": "<table align=\"l\" cellpadding=\"0\" rules=\"all\" style=\"border:2px solid black; margin: auto; margin-bottom: 4mm; margin-top: 4mm\">\n<tbody><tr>\n<td height=\"30px\" style=\"text-align:center; border:2px solid black; border-left:hidden; border-top:hidden; border-bottom:hidden;\" width=\"30px\"></td>\n<td height=\"30px\" style=\"text-align:top; border:2px solid black;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\" width=\"30px\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-1\" style=\"min-width:40px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"45\"></span></div></div></td>\n<td style=\"text-align:center; border:2px solid black;\" width=\"5px\"></td>\n</tr>\n<tr>\n<td height=\"30px\" style=\"text-align:right; border:2px solid black; border-left:hidden; border-top:hidden; border-bottom:hidden;\"><mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"112\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"-1\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mi class=\"mjx-i\"><mjx-c class=\"mjx-c1D443 TEX-I\"></mjx-c></mjx-mi><mjx-texatom texclass=\"ORD\"><mjx-mi class=\"mjx-b\"><mjx-c class=\"mjx-c1D42E TEX-B\"></mjx-c></mjx-mi></mjx-texatom><mjx-mo class=\"mjx-n\" space=\"4\"><mjx-c class=\"mjx-c3D\"></mjx-c></mjx-mo><mjx-mstyle><mjx-mspace style=\"width: 0.222em;\"></mjx-mspace></mjx-mstyle><mjx-mstyle><mjx-mspace style=\"width: 0.222em;\"></mjx-mspace></mjx-mstyle></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>P</mi><mrow data-mjx-texclass=\"ORD\"><mi mathvariant=\"bold\">u</mi></mrow><mo>=</mo><mstyle scriptlevel=\"0\"><mspace width=\"0.222em\"></mspace></mstyle><mstyle scriptlevel=\"0\"><mspace width=\"0.222em\"></mspace></mstyle></math></mjx-assistive-mml></mjx-container></td>\n<td height=\"30px\" style=\"text-align:center; border:2px solid black; border-top:hidden; border-bottom:hidden;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\" width=\"30px\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-2\" style=\"min-width:40px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"47\"></span></div></div></td>\n<td style=\"text-align:center; border:2px solid black; border-top:hidden; border-bottom:hidden;\"></td>\n</tr>\n<tr>\n<td height=\"30px\" style=\"text-align:center; border:2px solid black; border-left:hidden; border-top:hidden; border-bottom:hidden;\"></td>\n<td height=\"30px\" style=\"text-align:center; border:2px solid black;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\" width=\"30px\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-3\" style=\"min-width:40px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"49\"></span></div></div></td>\n<td style=\"text-align:center; border:2px solid black;\"></td>\n</tr>\n</tbody></table>",
+    "source_row_mapping": [
+      {
+        "source_row": 1,
+        "source_input_dom_id": "freeResponseTextbox-1",
+        "source_dom_index": 0,
+        "field_key": "field-1",
+        "answer_field_entity": 17592186298960,
+        "new_row": 1,
+        "new_column": 1
+      },
+      {
+        "source_row": 2,
+        "source_input_dom_id": "freeResponseTextbox-2",
+        "source_dom_index": 1,
+        "field_key": "field-2",
+        "answer_field_entity": 17592186299285,
+        "new_row": 2,
+        "new_column": 1
+      },
+      {
+        "source_row": 3,
+        "source_input_dom_id": "freeResponseTextbox-3",
+        "source_dom_index": 2,
+        "field_key": "field-3",
+        "answer_field_entity": 17592186298862,
+        "new_row": 3,
+        "new_column": 1
+      }
+    ],
+    "supplied_cells": [],
+    "answer_label_preserved": "Pu",
+    "all_placeholder_keys_and_order_preserved": true,
+    "all_matrix_operands_preserved": true
+  },
+  {
+    "entity": 17592186299692,
+    "attribute": ":question/problem",
+    "before": "Find $By$  if \n$B=\\begin{bmatrix}6p & -4q \\\\ -5p & 2q\\end{bmatrix}$\nand\n$y=\\begin{bmatrix}p \\\\ q\\end{bmatrix}.$\n\n| $By=\\,\\,$ |  | {{field-1}} |  |\n| --- | --- | --- | --- |\n|  | {{field-2}} |  |  |",
+    "after": "Find $By$  if \n$B=\\begin{bmatrix}6p & -4q \\\\ -5p & 2q\\end{bmatrix}$\nand\n$y=\\begin{bmatrix}p \\\\ q\\end{bmatrix}.$\n\n<div class=\"matrix-answer\">\n<span class=\"matrix-answer-label\">$By=$</span>\n<div class=\"matrix-answer-brackets\">\n<table aria-label=\"Answer matrix\"><tbody>\n<tr><td>{{field-1}}</td></tr>\n<tr><td>{{field-2}}</td></tr>\n</tbody></table>\n</div>\n</div>",
+    "reason": "Restore the source column-vector answer layout, exterior brackets, and vertical row alignment using the existing matrix_answer component; preserve all field identities and values.",
+    "source": "reference/mathacademy/question-capture/13977620/q-318595-before.json",
+    "source_sha256": "c8fff40b3b9d42866911b72676b630b14e4e21d62028f826368cd45f1c95042b",
+    "source_answer_table_html": "<table align=\"l\" cellpadding=\"0\" rules=\"all\" style=\"border:2px solid black; margin: auto; margin-bottom: 4mm; margin-top: 4mm\">\n<tbody><tr>\n<td height=\"40px\" rowspan=\"2\" style=\"text-align:center; border:2px solid black; border-left:hidden; border-top:hidden; border-bottom:hidden;\"><mjx-container class=\"MathJax CtxtMenu_Attached_0\" ctxtmenu_counter=\"128\" jax=\"CHTML\" style=\"font-size: 119.4%; position: relative;\" tabindex=\"-1\"><mjx-math aria-hidden=\"true\" class=\"MJX-TEX\"><mjx-mi class=\"mjx-i\"><mjx-c class=\"mjx-c1D435 TEX-I\"></mjx-c></mjx-mi><mjx-texatom texclass=\"ORD\"><mjx-mi class=\"mjx-b\"><mjx-c class=\"mjx-c1D432 TEX-B\"></mjx-c></mjx-mi></mjx-texatom><mjx-mo class=\"mjx-n\" space=\"4\"><mjx-c class=\"mjx-c3D\"></mjx-c></mjx-mo><mjx-mstyle><mjx-mspace style=\"width: 0.222em;\"></mjx-mspace></mjx-mstyle><mjx-mstyle><mjx-mspace style=\"width: 0.222em;\"></mjx-mspace></mjx-mstyle></mjx-math><mjx-assistive-mml display=\"inline\" unselectable=\"on\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>B</mi><mrow data-mjx-texclass=\"ORD\"><mi mathvariant=\"bold\">y</mi></mrow><mo>=</mo><mstyle scriptlevel=\"0\"><mspace width=\"0.222em\"></mspace></mstyle><mstyle scriptlevel=\"0\"><mspace width=\"0.222em\"></mspace></mstyle></math></mjx-assistive-mml></mjx-container></td>\n<td height=\"30px\" style=\"text-align:top; border:2px solid black;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-1\" style=\"min-width:90px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"35\"></span></div></div></td>\n<td style=\"text-align:center; border: 2px solid black;\" width=\"5px\"></td>\n</tr>\n<tr>\n<td height=\"30px\" style=\"text-align:top; border: 2px solid black; border-top:hidden;\" width=\"5px\"></td>\n<td style=\"text-align:center; border:hidden;\"><div ;=\"\" class=\"matheditor-wrapper-answer\" id=\"freeResponseTextbox-2\" style=\"min-width:90px;\n                                        margin-left:2px;\n                                        margin-right:2px;\n                                        background:;\"><div class=\"mq-editable-field mq-math-mode\" style=\"border: none; outline: none;\"><span class=\"mq-textarea\"><textarea autocapitalize=\"off\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" style=\"\" x-palm-disable-ste-all=\"true\"></textarea></span><span class=\"mq-root-block mq-empty\" mathquill-block-id=\"37\"></span></div></div></td>\n<td style=\"text-align:center; border: 2px solid black; border-top:hidden;\"></td>\n</tr>\n</tbody></table>",
+    "source_row_mapping": [
+      {
+        "source_row": 1,
+        "source_input_dom_id": "freeResponseTextbox-1",
+        "source_dom_index": 0,
+        "field_key": "field-1",
+        "answer_field_entity": 17592186298925,
+        "new_row": 1,
+        "new_column": 1
+      },
+      {
+        "source_row": 2,
+        "source_input_dom_id": "freeResponseTextbox-2",
+        "source_dom_index": 1,
+        "field_key": "field-2",
+        "answer_field_entity": 17592186298707,
+        "new_row": 2,
+        "new_column": 1
+      }
+    ],
+    "supplied_cells": [],
+    "answer_label_preserved": "By",
+    "all_placeholder_keys_and_order_preserved": true,
+    "all_matrix_operands_preserved": true
+  }
+]
