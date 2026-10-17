@@ -1,0 +1,1659 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Math Academy</title>
+        <meta charset="utf-8"/>
+
+        <link rel="shortcut icon" href="/img/favicon.ico"/>
+        <link rel="stylesheet" href="/css/app.css?v=2" />
+        <link rel="stylesheet" href="/css/mathquill.css" />
+        <link rel="stylesheet" href="/css/math-editor.css" />
+
+        <link rel="stylesheet" href="/css/prism.css">
+        <script type="text/javascript" src="/js/prism.js"></script>
+
+        <script type="text/javascript" src="/js/jquery.1.11.0.min.js"></script>
+
+        <script>
+            $.noConflict();
+            // Code that uses other library's $ can follow here.
+        </script>
+
+        <script type="text/javascript" src="/js/mathquill.v2.1.min.js"></script>
+        <script type="text/javascript" src="/js/math-editor.js"></script> 
+        <script type="text/javascript" src="/js/mathjax-config.js?v=2"></script>
+        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="loadMathJaxFallback()"></script>
+        <!--
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>        
+        <script type="text/javascript" src="/js/katex-config.js"></script>
+        -->
+
+        <script>
+            function showSupportDialog() {
+                const dlg = new SupportDialog();
+                dlg.show();
+            }            
+        </script>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+        <script type="text/javascript" src='/js/commonFunctions.js'></script>
+        <script type="text/javascript" src="/js/core.js"></script>
+        <script type="text/javascript" src="/js/core-ui.js"></script>
+        <script type="text/javascript" src="/js/api.js"></script>
+        <script type="text/javascript" src="/js/api-new.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+        <script type="text/javascript" src="/js/jdom.js"></script>
+        <script type="text/javascript" src="/js/header.js"></script>
+
+        <script>
+            var userTimeZone = 'America/Los_Angeles';
+            checkTimeZone(userTimeZone);
+        </script>
+
+        <style>
+            div#courseNameHeader {
+                margin-top: 50px;
+            }            
+        </style>        
+    </head>
+
+    <body>
+        
+        <div id="topRibbon"></div>
+        
+
+        <div id="wrap">
+
+            
+            <div id="topBarContainer">
+
+                <table style="width: 1080px;">
+                    <tr>
+                        <td style="width: 100px;">
+                            <a href="/"><img class="logo" src="/img/math-academy-350-logo.png" /></a>
+                        </td>
+                        <td>
+                            <div id="headerLinks">
+                                
+                                    
+                                        <a id="learnHeaderLink" class="headerLink" href="/learn">LEARN</a>
+                                        
+                                     
+
+                                         
+
+                                                                     
+                                                                                        
+                                                                                                   
+                                                    
+                                             
+                                    
+                                             
+
+                                                                          
+                                        <a id="coursesHeaderLink" class="headerLink" onmouseover="showCoursesMenu(this, 'coursesMenu');">COURSES</a>  
+                                      
+                                  
+                            </div>
+
+                            
+
+                            <div id="coursesMenu">
+                                <table id="coursesMenu-coursesTable" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td class="coursesMenu-categoryList" style="padding-right: 15px;">
+                                        <div class="coursesMenu-categoryHeader">Elementary School</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/4th-grade-math">4th Grade Math</a></div>                                             
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/5th-grade-math">5th Grade Math</a></div>         
+                                        
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">Middle School</div>                                        
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/6th-grade-math">6th Grade Math</a></div>         
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/7th-grade-math">7th Grade Math</a></div>         
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/8th-grade-math">8th Grade Math</a></div>         
+
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/prealgebra">Prealgebra</a></div>
+                                
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">High School</div>
+
+                                        <div class="coursesMenu-courseSequence" style="margin-top: 20px;">Traditional</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/algebra-i">Algebra I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/geometry">Geometry</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/algebra-ii">Algebra II</a></div>       
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/precalculus">Precalculus</a></div> 
+
+                                        <div class="coursesMenu-courseSequence">Integrated Math</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-i">Integrated Math I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-ii">Integrated Math II</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-iii">Integrated Math III</a></div>   
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/precalculus">Precalculus</a></div> 
+                                
+
+                                        <div class="coursesMenu-courseSequence">Integrated Math (Honors)</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-i-honors">Integrated Math I (Honors)</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-ii-honors">Integrated Math II (Honors)</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/integrated-math-iii-honors">Integrated Math III (Honors)</a></div>                                     
+
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">Test Prep</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/sat-math-fundamentals">SAT Math Fundamentals</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/sat-math-prep">SAT Math Prep</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/act-math">ACT Math</a> *</div>
+                                    </td>
+                                    <td class="coursesMenu-categoryList">
+
+                                        <div class="coursesMenu-categoryHeader">AP Courses</div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/ap-calculus-ab">AP Calculus AB</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/ap-calculus-bc">AP Calculus BC</a></div>
+
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">Foundations Series</div>
+
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-foundations-i">Mathematical Foundations I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-foundations-ii">Mathematical Foundations II</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-foundations-iii">Mathematical Foundations III</a></div>                                        
+
+                                        <div class="coursesMenu-categoryHeader" style="margin-top: 20px;">University</div>            
+
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/calculus-i">Calculus I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/calculus-ii">Calculus II</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/linear-algebra">Linear Algebra</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/multivariable-calculus">Multivariable Calculus</a></div>                                     
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/methods-of-proof">Methods of Proof</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/differential-equations">Differential Equations</a></div>                                           
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/discrete-mathematics">Discrete Mathematics</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/probability-and-statistics">Probability & Statistics</a></div>                                        
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematics-for-machine-learning">Mathematics For Machine Learning</a></div>      
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-methods-for-the-physical-sciences-i">Mathematical Methods for the Physical Sciences I</a></div>
+                                        <div class="coursesMenu-course"><a class="coursesMenu-courseLink" href="/courses/mathematical-methods-for-the-physical-sciences-ii">Mathematical Methods for the Physical Sciences II</a></div>                                                                             
+                                                            
+                                        <div class="coursesMenu-course">
+                                            <a class="coursesMenu-courseLink" href="/courses/abstract-algebra">Abstract Algebra</a> *
+                                        </div>        
+                                    </td>
+                                </tr>
+                                </table>
+
+                                <div style="margin-top: 20px;">
+                                    * <span id="coursesMenu-underDevelopment">Currently under development</span> 
+                                </div>                            
+                            </div>                        
+                        </td>
+                        <td style="width: 250px;">
+                            <div id="topMenu">
+                                
+                                    
+
+                                        
+
+                                        
+                                            <div id="userHeader" onmouseover="showMenu(this, 'userMenu');">WP</div>
+                                        
+
+                                        <div id="userMenu">
+                                            <div id="userMenu-info">
+                                                <div id="userMenu-name">William Parker</div>
+                                                
+                                                    <div id="userMenu-username">multiwilliam</div>
+                                                
+                                            </div>
+
+                                            <div class="headerMenuItem" onmousedown="Core.navigate('/settings/profile');">Settings</div>
+
+                                            
+
+                                            <div class="headerMenuItem" onmousedown="Core.navigate('/help');">Help</div>
+
+                                            <div class="headerMenuItem" onmousedown="showSupportDialog();">Support</div>
+
+                                            <div class="headerMenuItem" onmousedown="Core.navigate('/logout');">Logout</div>                                        
+                                        </div>
+                                    
+                                                            
+                            </div> 
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+
+            <div id="mathjaxCommands" style="display: none;">
+                $
+                \newcommand{\sech}{\mathop{\rm sech}\nolimits}
+                \newcommand{\csch}{\mathop{\rm csch}\nolimits}
+                \newcommand{\coth}{\mathop{\rm coth}\nolimits}
+                \newcommand{\arsinh}{\mathop{\rm arsinh}\nolimits}
+                \newcommand{\arcosh}{\mathop{\rm arcosh}\nolimits}
+                \newcommand{\artanh}{\mathop{\rm artanh}\nolimits}
+                \newcommand{\arsech}{\mathop{\rm arsech}\nolimits}
+                \newcommand{\arcsch}{\mathop{\rm arcsch}\nolimits}
+                \newcommand{\arcoth}{\mathop{\rm arcoth}\nolimits}
+                $
+            </div>
+
+            <div id="content">
+                <link rel="stylesheet" href="/css/student-progress.css">
+<link rel="stylesheet" href="/css/course-progress.css">
+
+<script type="text/javascript" src="/js/course-progress.js"></script>
+
+<div id="sidebar">
+    <div class="sidebarFrame">
+        <div id="sidebarTitle">
+            
+                Course Sequence
+             
+        </div>
+
+         
+            
+                <div class="course">
+                    
+                        <a href="/courses/75/progress">4th Grade Math</a>
+                     
+                </div>
+                            
+         
+            
+                <div class="course">
+                    
+                        <a href="/courses/30/progress">5th Grade Math</a>
+                     
+                </div>
+                            
+         
+            
+                <div class="course">
+                    
+                        <a href="/courses/99/progress">Prealgebra</a>
+                     
+                </div>
+                            
+         
+            
+                <div class="course">
+                    
+                        <a href="/courses/44/progress">Algebra I</a>
+                     
+                </div>
+                            
+         
+            
+                <div class="course">
+                    
+                        <a href="/courses/126/progress">Geometry</a>
+                     
+                </div>
+                            
+         
+            
+                <div class="course">
+                    
+                        <a href="/courses/51/progress">Algebra II</a>
+                     
+                </div>
+                            
+         
+            
+                <div class="course">
+                    
+                        <a href="/courses/43/progress">Precalculus</a>
+                     
+                </div>
+                            
+         
+            
+                <div class="course">
+                    
+                        <a href="/courses/105/progress">Calculus I</a>
+                     
+                </div>
+                            
+         
+            
+                <div class="course">
+                    
+                        <a href="/courses/106/progress">Calculus II</a>
+                     
+                </div>
+                            
+         
+            
+                <div class="course">
+                    
+                        <a href="/courses/55/progress">Linear Algebra</a>
+                     
+                </div>
+                            
+         
+            
+                <div class="course">
+                    
+                        <a href="/courses/54/progress">Multivariable Calculus</a>
+                     
+                </div>
+                            
+         
+            
+                <div class="selectedCourse">Methods of Proof</div>
+                            
+         
+            
+                <div class="course">
+                    
+                        <a href="/courses/61/progress">Differential Equations</a>
+                     
+                </div>
+                            
+         
+            
+                <div class="course">
+                    
+                        <a href="/courses/109/progress">Discrete Mathematics</a>
+                     
+                </div>
+                            
+         
+            
+                <div class="course">
+                    
+                        <a href="/courses/73/progress">Probability &amp; Statistics</a>
+                     
+                </div>
+                            
+                     
+    </div>
+</div>
+
+<div id="progressContent">
+
+    <div id="units">
+         
+            <div class="unit">
+                <div class="unitHeader" onclick="toggleUnit(418);">
+                    <div class="unitNumber">1.</div> 
+                    <span class="unitName">Logic</span>
+                    <div id="unitArrow-418" class="unitArrow"></div>
+                    <div class="unitNumTopics">31 topics</div>
+                </div>
+
+                <div class="unitProgressBarFrame" onclick="toggleUnit(418);">
+                    <table class="unitProgressBar" cellspacing="0" cellpadding="0" style="width: 480px;">
+                        <tr>
+                            <td style="height: 4px; width: 6%; background-color: rgb(23, 107, 181);"></td>                           
+                            <td style="height: 4px; width: 0%; background-color: rgb(29, 134, 226);"></td>                    
+                            <td style="height: 4px; width: 0%; background-color: rgb(74, 158, 232);"></td>   
+                            <td style="height: 4px; width: 0%; background-color: rgb(120, 182, 237);"></td>   
+                            <td style="height: 4px; width: 29%; background-color: rgb(165, 207, 243);"></td>   
+                            <td style="height: 4px; width: 42%; background-color: rgb(210, 231, 249);"></td>   
+                            <td style="height: 4px; width: 23%; background-color: white;"></td>   
+                        </tr>
+                    </table>
+                </div>
+                
+                <div id="unitModules-418" class="unitModules">
+                     
+                        <div class="module">
+                            <div>1.1. Statements</div>
+    
+                            <div id="moduleTopics-96036" class="moduleTopics">
+                                <table>
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(23, 107, 181); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.1.1.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/58?courseId=76">Statements and Predicates</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(23, 107, 181); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.1.2.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/60?courseId=76">The &#34;And&#34; and &#34;Or&#34; Connectives</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.1.3.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4252?courseId=76">Truth Tables</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.1.4.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2790?courseId=76">The &#34;Not&#34; Connective</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.1.5.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2821?courseId=76">Logical Equivalence</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(165, 207, 243); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.1.6.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2830?courseId=76">Logical Associative and Commutative Laws</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(165, 207, 243); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.1.7.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2822?courseId=76">The Distributive Laws</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.1.8.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2823?courseId=76">The Absorption Laws</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(165, 207, 243); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.1.9.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/230?courseId=76">De Morgan&#39;s Laws for Logic</a></td>
+                                    </tr>                                                                        
+                                 
+                                </table>                                 
+                            </div>
+                        </div>
+                     
+                        <div class="module">
+                            <div>1.2. Implications and Biconditionals</div>
+    
+                            <div id="moduleTopics-96037" class="moduleTopics">
+                                <table>
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.2.1.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/250?courseId=76">Conditional Statements</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.2.2.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/247?courseId=76">Logical Equivalence with Conditional Statements</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(165, 207, 243); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.2.3.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/248?courseId=76">Biconditional Statements</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.2.4.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/249?courseId=76">Tautologies and Contradictions</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.2.5.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/252?courseId=76">Converse, Inverse, and Contrapositive</a></td>
+                                    </tr>                                                                        
+                                 
+                                </table>                                 
+                            </div>
+                        </div>
+                     
+                        <div class="module">
+                            <div>1.3. Predicates</div>
+    
+                            <div id="moduleTopics-96038" class="moduleTopics">
+                                <table>
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(165, 207, 243); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.3.1.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4254?courseId=76">Truth Sets of Predicates</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.3.2.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4255?courseId=76">The &#34;And&#34; and &#34;Or&#34; Connectives With Predicates</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(165, 207, 243); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.3.3.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4256?courseId=76">The &#34;Not&#34; Connective With Predicates</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">1.3.4.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4302?courseId=76">Simplifying Predicate Expressions Using De Morgan&#39;s Laws</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.3.5.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4257?courseId=76">Conditional Statements With Predicates</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.3.6.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2793?courseId=76">Necessary and Sufficient Conditions</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.3.7.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4422?courseId=76">Grammatical Constructions for Conditional Statements</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">1.3.8.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/251?courseId=76">Translating Between Logical and Set Operations</a></td>
+                                    </tr>                                                                        
+                                 
+                                </table>                                 
+                            </div>
+                        </div>
+                     
+                        <div class="module">
+                            <div>1.4. Quantifiers</div>
+    
+                            <div id="moduleTopics-122572" class="moduleTopics">
+                                <table>
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(165, 207, 243); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.4.1.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2787?courseId=76">Universal and Existential Quantifiers</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(165, 207, 243); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.4.2.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2791?courseId=76">Negating Quantified Statements</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.4.3.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2792?courseId=76">Nested Quantifiers</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(165, 207, 243); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">1.4.4.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2798?courseId=76">Formal and Informal Language</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">1.4.5.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4258?courseId=76">Negating Statements With Nested Quantifiers</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">1.4.6.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4423?courseId=76">Prenex Normal Form</a></td>
+                                    </tr>                                                                        
+                                 
+                                </table>                                 
+                            </div>
+                        </div>
+                     
+                        <div class="module">
+                            <div>1.5. Logical Inference</div>
+    
+                            <div id="moduleTopics-122558" class="moduleTopics">
+                                <table>
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">1.5.1.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4303?courseId=76">Implication Elimination and Denying the Consequent</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">1.5.2.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4305?courseId=76">Disjunctive Syllogism and Transitivity of Implication</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">1.5.3.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4306?courseId=76">Additional Rules of Logical Inference</a></td>
+                                    </tr>                                                                        
+                                 
+                                </table>                                 
+                            </div>
+                        </div>
+                     
+                </div>
+            </div>
+         
+            <div class="unit">
+                <div class="unitHeader" onclick="toggleUnit(779);">
+                    <div class="unitNumber">2.</div> 
+                    <span class="unitName">Set Theory</span>
+                    <div id="unitArrow-779" class="unitArrow"></div>
+                    <div class="unitNumTopics">27 topics</div>
+                </div>
+
+                <div class="unitProgressBarFrame" onclick="toggleUnit(779);">
+                    <table class="unitProgressBar" cellspacing="0" cellpadding="0" style="width: 418px;">
+                        <tr>
+                            <td style="height: 4px; width: 52%; background-color: rgb(23, 107, 181);"></td>                           
+                            <td style="height: 4px; width: 4%; background-color: rgb(29, 134, 226);"></td>                    
+                            <td style="height: 4px; width: 4%; background-color: rgb(74, 158, 232);"></td>   
+                            <td style="height: 4px; width: 4%; background-color: rgb(120, 182, 237);"></td>   
+                            <td style="height: 4px; width: 11%; background-color: rgb(165, 207, 243);"></td>   
+                            <td style="height: 4px; width: 0%; background-color: rgb(210, 231, 249);"></td>   
+                            <td style="height: 4px; width: 26%; background-color: white;"></td>   
+                        </tr>
+                    </table>
+                </div>
+                
+                <div id="unitModules-779" class="unitModules">
+                     
+                        <div class="module">
+                            <div>2.1. Introduction to Set Theory</div>
+    
+                            <div id="moduleTopics-96031" class="moduleTopics">
+                                <table>
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(23, 107, 181); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">2.1.1.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/47?courseId=76">Special Sets</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(23, 107, 181); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">2.1.2.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/1976?courseId=76">Equivalent Sets</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(23, 107, 181); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">2.1.3.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/46?courseId=76">The Constructive Definition of a Set</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(23, 107, 181); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">2.1.4.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4425?courseId=76">The Conditional Definition of a Set</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(23, 107, 181); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">2.1.5.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4393?courseId=76">Describing Sets Using Set-Builder Notation</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(23, 107, 181); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">2.1.6.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4392?courseId=76">Describing Planar Regions Using Set-Builder Notation</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(23, 107, 181); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">2.1.7.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/48?courseId=76">Cardinality of Finite Sets</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(23, 107, 181); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">2.1.8.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4386?courseId=76">Infinite Sets</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(74, 158, 232); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">2.1.9.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4396?courseId=76">The Maximum and Minimum of a Set</a></td>
+                                    </tr>                                                                        
+                                 
+                                </table>                                 
+                            </div>
+                        </div>
+                     
+                        <div class="module">
+                            <div>2.2. Subsets</div>
+    
+                            <div id="moduleTopics-122589" class="moduleTopics">
+                                <table>
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(23, 107, 181); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">2.2.1.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/50?courseId=76">Subsets</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(120, 182, 237); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">2.2.2.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/51?courseId=76">Power Sets</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(29, 134, 226); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">2.2.3.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/240?courseId=76">Partitions of Sets</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(165, 207, 243); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">2.2.4.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/948?courseId=76">Indicator Functions</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">2.2.5.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4924?courseId=76">Proving Subset Relations</a></td>
+                                    </tr>                                                                        
+                                 
+                                </table>                                 
+                            </div>
+                        </div>
+                     
+                        <div class="module">
+                            <div>2.3. Set Operations</div>
+    
+                            <div id="moduleTopics-96032" class="moduleTopics">
+                                <table>
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(23, 107, 181); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">2.3.1.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2828?courseId=76">The Difference of Sets</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(23, 107, 181); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">2.3.2.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2829?courseId=76">Set Complements</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(23, 107, 181); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">2.3.3.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/49?courseId=76">The Cartesian Product</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(23, 107, 181); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">2.3.4.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4387?courseId=76">Visualizing Cartesian Products</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(23, 107, 181); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">2.3.5.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/55?courseId=76">Indexed Sets</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(165, 207, 243); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">2.3.6.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2789?courseId=76">Disjoint Sets</a></td>
+                                    </tr>                                                                        
+                                 
+                                </table>                                 
+                            </div>
+                        </div>
+                     
+                        <div class="module">
+                            <div>2.4. Properties of Set Operations</div>
+    
+                            <div id="moduleTopics-122597" class="moduleTopics">
+                                <table>
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">2.4.1.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4327?courseId=76">Elementary Properties of Set Operations</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">2.4.2.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2806?courseId=76">Proving Elementary Properties of Set Operations</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(165, 207, 243); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">2.4.3.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2788?courseId=76">De Morgan&#39;s Laws for Sets</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">2.4.4.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4427?courseId=76">Proving De Morgan&#39;s Laws for Sets</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">2.4.5.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4430?courseId=76">Distributive Properties of Set Operations</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">2.4.6.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4426?courseId=76">Proving Distributive Properties of Union and Intersection</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">2.4.7.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/254?courseId=76">Proving Distributive Properties of the Cartesian Product</a></td>
+                                    </tr>                                                                        
+                                 
+                                </table>                                 
+                            </div>
+                        </div>
+                     
+                </div>
+            </div>
+         
+            <div class="unit">
+                <div class="unitHeader" onclick="toggleUnit(419);">
+                    <div class="unitNumber">3.</div> 
+                    <span class="unitName">Mathematical Proof</span>
+                    <div id="unitArrow-419" class="unitArrow"></div>
+                    <div class="unitNumTopics">15 topics</div>
+                </div>
+
+                <div class="unitProgressBarFrame" onclick="toggleUnit(419);">
+                    <table class="unitProgressBar" cellspacing="0" cellpadding="0" style="width: 232px;">
+                        <tr>
+                            <td style="height: 4px; width: 0%; background-color: rgb(23, 107, 181);"></td>                           
+                            <td style="height: 4px; width: 0%; background-color: rgb(29, 134, 226);"></td>                    
+                            <td style="height: 4px; width: 0%; background-color: rgb(74, 158, 232);"></td>   
+                            <td style="height: 4px; width: 0%; background-color: rgb(120, 182, 237);"></td>   
+                            <td style="height: 4px; width: 7%; background-color: rgb(165, 207, 243);"></td>   
+                            <td style="height: 4px; width: 27%; background-color: rgb(210, 231, 249);"></td>   
+                            <td style="height: 4px; width: 67%; background-color: white;"></td>   
+                        </tr>
+                    </table>
+                </div>
+                
+                <div id="unitModules-419" class="unitModules">
+                     
+                        <div class="module">
+                            <div>3.1. Introduction to Mathematical Proof</div>
+    
+                            <div id="moduleTopics-96039" class="moduleTopics">
+                                <table>
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">3.1.1.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2801?courseId=76">Direct Proof</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">3.1.2.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4429?courseId=76">Proving Parity</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">3.1.3.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2795?courseId=76">Proving Divisibility</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">3.1.4.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4432?courseId=76">Proof by Cases</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(165, 207, 243); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">3.1.5.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/3412?courseId=76">Disproving Universal Statements</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">3.1.6.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4927?courseId=76">Disproving Implications</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">3.1.7.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2815?courseId=76">Trivial and Vacuous Proofs</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">3.1.8.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4925?courseId=76">Proving Biconditional Statements</a></td>
+                                    </tr>                                                                        
+                                 
+                                </table>                                 
+                            </div>
+                        </div>
+                     
+                        <div class="module">
+                            <div>3.2. Proof by Contrapositive and Contradiction</div>
+    
+                            <div id="moduleTopics-96043" class="moduleTopics">
+                                <table>
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">3.2.1.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2807?courseId=76">Proof by Contrapositive</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">3.2.2.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4437?courseId=76">Proving Parity by Contrapositive</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">3.2.3.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2808?courseId=76">Proving Divisibility by Contrapositive</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">3.2.4.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/3414?courseId=76">Proof by Contradiction</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">3.2.5.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4922?courseId=76">Proving Irrationality by Contradiction</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">3.2.6.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4923?courseId=76">Proving Properties of Irrationals by Contradiction</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">3.2.7.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/3526?courseId=76">Proving Divisibility by Contradiction</a></td>
+                                    </tr>                                                                        
+                                 
+                                </table>                                 
+                            </div>
+                        </div>
+                     
+                </div>
+            </div>
+         
+            <div class="unit">
+                <div class="unitHeader" onclick="toggleUnit(686);">
+                    <div class="unitNumber">4.</div> 
+                    <span class="unitName">Discrete Mathematics &amp; Number Theory</span>
+                    <div id="unitArrow-686" class="unitArrow"></div>
+                    <div class="unitNumTopics">13 topics</div>
+                </div>
+
+                <div class="unitProgressBarFrame" onclick="toggleUnit(686);">
+                    <table class="unitProgressBar" cellspacing="0" cellpadding="0" style="width: 201px;">
+                        <tr>
+                            <td style="height: 4px; width: 0%; background-color: rgb(23, 107, 181);"></td>                           
+                            <td style="height: 4px; width: 0%; background-color: rgb(29, 134, 226);"></td>                    
+                            <td style="height: 4px; width: 0%; background-color: rgb(74, 158, 232);"></td>   
+                            <td style="height: 4px; width: 0%; background-color: rgb(120, 182, 237);"></td>   
+                            <td style="height: 4px; width: 15%; background-color: rgb(165, 207, 243);"></td>   
+                            <td style="height: 4px; width: 54%; background-color: rgb(210, 231, 249);"></td>   
+                            <td style="height: 4px; width: 31%; background-color: white;"></td>   
+                        </tr>
+                    </table>
+                </div>
+                
+                <div id="unitModules-686" class="unitModules">
+                     
+                        <div class="module">
+                            <div>4.1. Divisibility</div>
+    
+                            <div id="moduleTopics-96030" class="moduleTopics">
+                                <table>
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">4.1.1.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/3411?courseId=76">Parity</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(165, 207, 243); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">4.1.2.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/3080?courseId=76">Integer Divisibility</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">4.1.3.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2689?courseId=76">The Division Algorithm</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">4.1.4.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2676?courseId=76">The Euclidean Algorithm</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">4.1.5.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2677?courseId=76">The Extended Euclidean Algorithm</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">4.1.6.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/3082?courseId=76">Linear Diophantine Equations</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">4.1.7.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4433?courseId=76">Properties of Integer Divisibility</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">4.1.8.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4928?courseId=76">Properties of Prime Divisibility</a></td>
+                                    </tr>                                                                        
+                                 
+                                </table>                                 
+                            </div>
+                        </div>
+                     
+                        <div class="module">
+                            <div>4.2. Proof by Induction</div>
+    
+                            <div id="moduleTopics-96041" class="moduleTopics">
+                                <table>
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">4.2.1.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/642?courseId=76">Mathematical Induction</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">4.2.2.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/927?courseId=76">Proving Inequalities Using Induction</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(165, 207, 243); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">4.2.3.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/646?courseId=76">Proving Divisibility Using Induction</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">4.2.4.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/781?courseId=76">Proving Matrix Identities Using Induction</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">4.2.5.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/712?courseId=76">Strong Induction and Recurrence Relations</a></td>
+                                    </tr>                                                                        
+                                 
+                                </table>                                 
+                            </div>
+                        </div>
+                     
+                </div>
+            </div>
+         
+            <div class="unit">
+                <div class="unitHeader" onclick="toggleUnit(781);">
+                    <div class="unitNumber">5.</div> 
+                    <span class="unitName">Sequences &amp; Functions</span>
+                    <div id="unitArrow-781" class="unitArrow"></div>
+                    <div class="unitNumTopics">20 topics</div>
+                </div>
+
+                <div class="unitProgressBarFrame" onclick="toggleUnit(781);">
+                    <table class="unitProgressBar" cellspacing="0" cellpadding="0" style="width: 310px;">
+                        <tr>
+                            <td style="height: 4px; width: 5%; background-color: rgb(23, 107, 181);"></td>                           
+                            <td style="height: 4px; width: 5%; background-color: rgb(29, 134, 226);"></td>                    
+                            <td style="height: 4px; width: 0%; background-color: rgb(74, 158, 232);"></td>   
+                            <td style="height: 4px; width: 0%; background-color: rgb(120, 182, 237);"></td>   
+                            <td style="height: 4px; width: 5%; background-color: rgb(165, 207, 243);"></td>   
+                            <td style="height: 4px; width: 15%; background-color: rgb(210, 231, 249);"></td>   
+                            <td style="height: 4px; width: 70%; background-color: white;"></td>   
+                        </tr>
+                    </table>
+                </div>
+                
+                <div id="unitModules-781" class="unitModules">
+                     
+                        <div class="module">
+                            <div>5.1. Sequences</div>
+    
+                            <div id="moduleTopics-122559" class="moduleTopics">
+                                <table>
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">5.1.1.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4342?courseId=76">The Limit of a Null Sequence</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">5.1.2.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4376?courseId=76">Proving the Limit of a Null Sequence</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">5.1.3.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4343?courseId=76">Proving the Finite Limit of a Sequence</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">5.1.4.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4344?courseId=76">Infinite Limits of Sequences</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">5.1.5.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4399?courseId=76">Proving a Sequence Has an Infinite Limit</a></td>
+                                    </tr>                                                                        
+                                 
+                                </table>                                 
+                            </div>
+                        </div>
+                     
+                        <div class="module">
+                            <div>5.2. Functions</div>
+    
+                            <div id="moduleTopics-96033" class="moduleTopics">
+                                <table>
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(23, 107, 181); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">5.2.1.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/3334?courseId=76">Sets and Functions</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">5.2.2.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2678?courseId=76">Injections</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">5.2.3.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/3421?courseId=76">Proving Injectivity</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">5.2.4.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2627?courseId=76">Surjections</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">5.2.5.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/3027?courseId=76">Into Functions</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">5.2.6.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/3422?courseId=76">Proving Surjectivity</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(165, 207, 243); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">5.2.7.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2679?courseId=76">Bijections</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(29, 134, 226); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">5.2.8.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/290?courseId=76">The Floor and Ceiling Functions</a></td>
+                                    </tr>                                                                        
+                                 
+                                </table>                                 
+                            </div>
+                        </div>
+                     
+                        <div class="module">
+                            <div>5.3. Cardinality</div>
+    
+                            <div id="moduleTopics-96046" class="moduleTopics">
+                                <table>
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">5.3.1.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/3424?courseId=76">Discrete Infinite Sets With Equal Cardinality</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">5.3.2.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4860?courseId=76">Continuous Infinite Sets With Equal Cardinality</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">5.3.3.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4394?courseId=76">Cardinality of the Natural Numbers, Integers, and Rationals</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">5.3.4.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/3425?courseId=76">Cantor&#39;s Diagonal Argument</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">5.3.5.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/3426?courseId=76">The Cantor-Bernstein-Schröder Theorem</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">5.3.6.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4424?courseId=76">The Cardinality of the Power Set of Natural Numbers</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">5.3.7.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/3428?courseId=76">Cantor&#39;s Theorem</a></td>
+                                    </tr>                                                                        
+                                 
+                                </table>                                 
+                            </div>
+                        </div>
+                     
+                </div>
+            </div>
+         
+            <div class="unit">
+                <div class="unitHeader" onclick="toggleUnit(423);">
+                    <div class="unitNumber">6.</div> 
+                    <span class="unitName">Congruence of Integers</span>
+                    <div id="unitArrow-423" class="unitArrow"></div>
+                    <div class="unitNumTopics">14 topics</div>
+                </div>
+
+                <div class="unitProgressBarFrame" onclick="toggleUnit(423);">
+                    <table class="unitProgressBar" cellspacing="0" cellpadding="0" style="width: 217px;">
+                        <tr>
+                            <td style="height: 4px; width: 0%; background-color: rgb(23, 107, 181);"></td>                           
+                            <td style="height: 4px; width: 0%; background-color: rgb(29, 134, 226);"></td>                    
+                            <td style="height: 4px; width: 0%; background-color: rgb(74, 158, 232);"></td>   
+                            <td style="height: 4px; width: 0%; background-color: rgb(120, 182, 237);"></td>   
+                            <td style="height: 4px; width: 7%; background-color: rgb(165, 207, 243);"></td>   
+                            <td style="height: 4px; width: 64%; background-color: rgb(210, 231, 249);"></td>   
+                            <td style="height: 4px; width: 29%; background-color: white;"></td>   
+                        </tr>
+                    </table>
+                </div>
+                
+                <div id="unitModules-423" class="unitModules">
+                     
+                        <div class="module">
+                            <div>6.1. Modular Congruence</div>
+    
+                            <div id="moduleTopics-96034" class="moduleTopics">
+                                <table>
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(165, 207, 243); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">6.1.1.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2641?courseId=76">Modular Congruence</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">6.1.2.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2673?courseId=76">The Addition Property of Modular Arithmetic</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">6.1.3.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2786?courseId=76">Modular Residues</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">6.1.4.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2674?courseId=76">The Multiplication Properties of Modular Arithmetic</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">6.1.5.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2675?courseId=76">The Division Properties of Modular Arithmetic</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">6.1.6.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/253?courseId=76">Proving Properties of Modular Congruence</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">6.1.7.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4435?courseId=76">Proving Divisibility Using Congruence</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">6.1.8.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2799?courseId=76">Proving Congruence by Contrapositive</a></td>
+                                    </tr>                                                                        
+                                 
+                                </table>                                 
+                            </div>
+                        </div>
+                     
+                        <div class="module">
+                            <div>6.2. Linear Congruences</div>
+    
+                            <div id="moduleTopics-122590" class="moduleTopics">
+                                <table>
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">6.2.1.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2735?courseId=76">Additive Inverses Modulo N</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">6.2.2.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4818?courseId=76">Multiplicative Inverses Modulo N</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">6.2.3.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4839?courseId=76">Solving Linear Congruences</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">6.2.4.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2737?courseId=76">Solving Advanced Linear Congruences</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">6.2.5.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2809?courseId=76">The Chinese Remainder Theorem</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">6.2.6.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4941?courseId=76">Proving Properties of Linear Congruences</a></td>
+                                    </tr>                                                                        
+                                 
+                                </table>                                 
+                            </div>
+                        </div>
+                     
+                </div>
+            </div>
+         
+            <div class="unit">
+                <div class="unitHeader" onclick="toggleUnit(823);">
+                    <div class="unitNumber">7.</div> 
+                    <span class="unitName">Equivalence Relations</span>
+                    <div id="unitArrow-823" class="unitArrow"></div>
+                    <div class="unitNumTopics">15 topics</div>
+                </div>
+
+                <div class="unitProgressBarFrame" onclick="toggleUnit(823);">
+                    <table class="unitProgressBar" cellspacing="0" cellpadding="0" style="width: 232px;">
+                        <tr>
+                            <td style="height: 4px; width: 0%; background-color: rgb(23, 107, 181);"></td>                           
+                            <td style="height: 4px; width: 0%; background-color: rgb(29, 134, 226);"></td>                    
+                            <td style="height: 4px; width: 0%; background-color: rgb(74, 158, 232);"></td>   
+                            <td style="height: 4px; width: 7%; background-color: rgb(120, 182, 237);"></td>   
+                            <td style="height: 4px; width: 0%; background-color: rgb(165, 207, 243);"></td>   
+                            <td style="height: 4px; width: 60%; background-color: rgb(210, 231, 249);"></td>   
+                            <td style="height: 4px; width: 33%; background-color: white;"></td>   
+                        </tr>
+                    </table>
+                </div>
+                
+                <div id="unitModules-823" class="unitModules">
+                     
+                        <div class="module">
+                            <div>7.1. Relations</div>
+    
+                            <div id="moduleTopics-96035" class="moduleTopics">
+                                <table>
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">7.1.1.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2817?courseId=76">Relations on Finite Sets</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">7.1.2.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4826?courseId=76">Relations on Infinite Sets</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(120, 182, 237); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">7.1.3.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4819?courseId=76">The Domain and Range of a Relation</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">7.1.4.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4837?courseId=76">Graphical Representations of Relations</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">7.1.5.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4832?courseId=76">Operations on Relations</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">7.1.6.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4824?courseId=76">N-ary Relations</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">7.1.7.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4825?courseId=76">Functional Relations</a></td>
+                                    </tr>                                                                        
+                                 
+                                </table>                                 
+                            </div>
+                        </div>
+                     
+                        <div class="module">
+                            <div>7.2. Equivalence Relations</div>
+    
+                            <div id="moduleTopics-122582" class="moduleTopics">
+                                <table>
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">7.2.1.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4820?courseId=76">Reflexive and Irreflexive Relations</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">7.2.2.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4821?courseId=76">Symmetric and Antisymmetric Relations</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">7.2.3.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4822?courseId=76">Transitive Relations</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">7.2.4.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2622?courseId=76">Equivalence Relations</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">7.2.5.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4942?courseId=76">Proving a Relation Is an Equivalence Relation</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">7.2.6.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2655?courseId=76">Residue Classes</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: rgb(210, 231, 249); width: 12px; height: 12px; border-radius: 6px;"></div></td>
+                                        <td class="topicNumber">7.2.7.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/2642?courseId=76">Equivalence Classes</a></td>
+                                    </tr>                                                                        
+                                                   
+                                    <tr>
+                                        <td><div class="topicCircle" style="background: white; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(204, 204, 204);"></div></td>
+                                        <td class="topicNumber">7.2.8.</td>
+                                        <td class="topicName"><a class="topicLink" href="/topics/4823?courseId=76">The Integers Modulo N</a></td>
+                                    </tr>                                                                        
+                                 
+                                </table>                                 
+                            </div>
+                        </div>
+                     
+                </div>
+            </div>
+          
+    </div>
+
+</div>            
+            </div> 
+        </div>
+
+        <link rel="stylesheet" href="/css/support-dialog.css">
+
+<script type="text/javascript" src="/js/support-dialog.js"></script>
+
+<div id="supportDialog">
+    <div id="supportDialog-title">Support</div>
+
+    <div id="supportDialog-message">
+        If you need support, please email <b>support@mathacademy.com</b>.
+    </div>
+
+    <div id="supportDialog-buttons">
+        <div id="supportDialog-closeButton">Close</div>
+    </div>
+</div>
+        <link rel="stylesheet" href="/css/xp-goals-dialog.css">
+
+<script type="text/javascript" src="/js/xp-goals-dialog.js"></script>
+
+<div id="xpGoalsDialog">
+    <div id="xpGoalsDialog-title">XP Goals</div>
+
+    <table id="xpGoalsDialog-goals" cellpadding="0" cellspacing="0">
+        <tr>
+            <td class="xpGoalsDialog-dayOfWeek">Sun</td>
+            <td class="xpGoalsDialog-dayOfWeek">Mon</td>
+            <td class="xpGoalsDialog-dayOfWeek">Tue</td>
+            <td class="xpGoalsDialog-dayOfWeek">Wed</td>
+            <td class="xpGoalsDialog-dayOfWeek">Thu</td>
+            <td class="xpGoalsDialog-dayOfWeek">Fri</td>
+            <td class="xpGoalsDialog-dayOfWeek">Sat</td>
+        </tr>
+        <tr>
+            <td><input id="xpGoalsDialog-sunGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-monGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-tueGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-wedGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-thuGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-friGoal" class="xpGoalsDialog-goal" type="text"> </td>
+            <td><input id="xpGoalsDialog-satGoal" class="xpGoalsDialog-goal" type="text"> </td>
+        </tr> 
+    </table>
+
+
+    <div id="xpGoalsDialog-courseCompletionText"></div>
+
+    <div id="xpGoalsDialog-pausedFrame">
+        <input id="xpGoalsDialog-paused" name="xpGoalsDialog-paused" type="checkbox" /> 
+        <label id="xpGoalsDialog-pausedLabel" for="xpGoalsDialog-paused">Paused</label>
+    </div>
+
+    <div id="xpGoalsDialog-buttonBar">
+        <div id="xpGoalsDialog-submitButton">SUBMIT</div>
+        <div id="xpGoalsDialog-cancelButton">CANCEL</div>
+    </div>
+</div>
+        <link rel="stylesheet" href="/css/course-dialog.css">
+
+<script type="text/javascript" src="/js/course-dialog.js"></script>
+
+<div id="courseDialog">
+    <div id="courseDialog-title">Change Course</div>
+
+    <div id="courseDialog-course">
+        <label id="courseDialog-courseLabel">Course</label>
+
+        <select id="courseDialog-courseSelect">
+            <option selected>-</option>
+        </select>
+    </div>
+
+    <div id="courseDialog-buttonBar">
+        <div id="courseDialog-submitButton">SUBMIT</div>
+        <div id="courseDialog-cancelButton">CANCEL</div>
+    </div>
+</div>
+
+                
+
+                                    
+    </body>
+    </html>          
+    
