@@ -67,12 +67,9 @@ pub fn position(s: &EntitySnapshot, activity: u64, items: &[u64]) -> Result<lear
             }
         }
         let next = steps
-                .iter()
-                .find(|st| !visited.contains(&st.content))
-                .map(|st| st.content);
-        if let Some(question) = next {
-            learning::validate_practice_question(s, question)?;
-        }
+            .iter()
+            .find(|st| !visited.contains(&st.content))
+            .map(|st| st.content);
         return Ok(learning::Position {
             next,
             passed: visited.len() == steps.len(),
@@ -117,9 +114,6 @@ pub fn position(s: &EntitySnapshot, activity: u64, items: &[u64]) -> Result<lear
         }
     }
     let next = steps.get(items.len()).map(|step| step.content);
-    if let Some(question) = next {
-        learning::validate_practice_question(s, question)?;
-    }
     Ok(learning::Position {
         next,
         passed: next.is_none(),
@@ -147,10 +141,10 @@ pub fn xp(s: &EntitySnapshot, activity: u64, items: &[u64], base: i64) -> Result
 }
 pub fn fresh(s: &EntitySnapshot, learner: u64, activity: u64) -> Result<bool> {
     let seen = learning::unavailable_questions(s, learner)?;
-    Ok(learning::lesson_steps(s, activity)?
-        .iter()
-        .all(|step| !seen.contains(&step.content)
-            && learning::validate_practice_question(s, step.content).is_ok()))
+    Ok(learning::lesson_steps(s, activity)?.iter().all(|step| {
+        !seen.contains(&step.content)
+            && learning::validate_practice_question(s, step.content).is_ok()
+    }))
 }
 pub fn remaining(s: &EntitySnapshot, task: u64, at: DateTime<Utc>) -> Result<Option<f64>> {
     let activity = s.reference(task, "learner-task/activity")?;
@@ -989,6 +983,49 @@ mod tests {
             json!([100, 101, 102, 103]),
         );
         assert!(schedule(&s, 1, 5, at).unwrap().is_empty());
+    }
+
+    #[test]
+    fn multipart_parts_do_not_supply_reviews_or_fresh_reserved_routes() {
+        let mut s = fixture();
+        let at = Utc::now();
+        s.entities
+            .get_mut(&1)
+            .unwrap()
+            .insert("learner/activity".into(), json!([]));
+        progress(&mut s, 21, 3, at, 0.1);
+        put(
+            &mut s,
+            850,
+            json!({"multistep/id":"multipart","multistep/steps":[851]}),
+        );
+        put(&mut s, 851, json!({"step/id":"part","step/content":100}));
+        assert!(!fresh(&s, 1, 60).unwrap());
+        assert!(learning::first_content(&s, 60, 1).is_err());
+        assert!(schedule(&s, 1, 5, at).unwrap().is_empty());
+        let mut extra = s.entities[&104].clone();
+        extra.insert("question/id".into(), json!("extra-standalone"));
+        s.entities.insert(105, extra);
+        s.entities.get_mut(&41).unwrap().insert(
+            "knowledge-point/questions".into(),
+            json!([100, 101, 102, 103, 104, 105]),
+        );
+        let plan = schedule(&s, 1, 5, at).unwrap();
+        assert_eq!(plan.len(), 1);
+        assert_eq!(
+            plan[0].questions.iter().copied().collect::<BTreeSet<_>>(),
+            BTreeSet::from([101, 102, 103, 104, 105])
+        );
+        // An old active presentation remains readable and gradeable; once it
+        // finishes the next standalone route entry is served normally.
+        let saved = present(&mut s, 100, "started");
+        assert_eq!(position(&s, 60, &[saved]).unwrap().next, Some(100));
+        assert!(learning::grade(&s, 100, &BTreeMap::from([(200, "1/2".into())])).unwrap());
+        s.entities
+            .get_mut(&saved)
+            .unwrap()
+            .insert("task-item/status".into(), json!("task-item.status/correct"));
+        assert_eq!(position(&s, 60, &[saved]).unwrap().next, Some(101));
     }
 
     #[test]

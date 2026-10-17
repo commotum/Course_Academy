@@ -149,7 +149,9 @@ pub(crate) fn validate_question(s: &EntitySnapshot, question: u64) -> Result<()>
 pub fn validate_practice_question(s: &EntitySnapshot, question: u64) -> Result<()> {
     validate_question(s, question)?;
     if s.is_multistep_question(question)? {
-        return Err("multistep questions belong to their full activity, not standalone practice".into());
+        return Err(
+            "multistep questions belong to their full activity, not standalone practice".into(),
+        );
     }
     Ok(())
 }
@@ -503,7 +505,6 @@ fn position_with_deferral(
                 }
                 "question" => {
                     let Some(item) = items.get(cursor) else {
-                        validate_practice_question(s, step.content)?;
                         if actual_seen.contains(&step.content) {
                             return Err("This authored question was already presented. Fresh content is needed; the lesson is not failed.".into());
                         }
@@ -579,7 +580,9 @@ fn position_with_deferral(
                                 .questions
                                 .iter()
                                 .copied()
-                                .filter(|q| !seen.contains(q) && validate_practice_question(s, *q).is_ok())
+                                .filter(|q| {
+                                    !seen.contains(q) && validate_practice_question(s, *q).is_ok()
+                                })
                                 .collect::<Vec<_>>();
                             if candidates.is_empty() {
                                 return Ok(current(None, Some(step.step), false, &deferred));
@@ -733,6 +736,11 @@ pub fn first_content(s: &EntitySnapshot, activity: u64, learner: u64) -> Result<
         );
     }
     let next = next_content(s, activity, &[])?;
+    if let Some(q) = next
+        && s.is_ordinary_question(q)?
+    {
+        validate_practice_question(s, q)?;
+    }
     if let Some(q) = next
         && s.is_ordinary_question(q)?
         && unavailable_questions(s, learner)?.contains(&q)
@@ -2447,26 +2455,50 @@ pub(crate) mod tests {
         let mut steps = vec![];
         for (index, question) in questions.iter().enumerate() {
             let step = 800 + index as u64;
-            put(&mut s.entities, step, json!({"step/id":id(step),"step/content":question}));
+            put(
+                &mut s.entities,
+                step,
+                json!({"step/id":id(step),"step/content":question}),
+            );
             steps.push(step);
         }
-        put(&mut s.entities, 850, json!({"multistep/id":id(850),"multistep/steps":steps}));
+        put(
+            &mut s.entities,
+            850,
+            json!({"multistep/id":id(850),"multistep/steps":steps}),
+        );
     }
 
     #[test]
     fn adaptive_practice_and_inventory_exclude_multistep_parts_but_grade_saved_answers() {
         let mut s = fixture();
-        put(&mut s.entities, 1100, json!({"db/ident":"question.difficulty/easy"}));
+        put(
+            &mut s.entities,
+            1100,
+            json!({"db/ident":"question.difficulty/easy"}),
+        );
         for q in 100..105 {
-            s.entities.get_mut(&q).unwrap().insert("question/difficulty".into(), json!(1100));
+            s.entities
+                .get_mut(&q)
+                .unwrap()
+                .insert("question/difficulty".into(), json!(1100));
         }
         multistep_parts(&mut s, &[100, 101, 102, 103]);
         assert!(validate_response_question(&s, 100).is_ok());
         assert!(grade(&s, 100, &BTreeMap::from([(200, "1/2".into())])).unwrap());
         assert!(validate_practice_question(&s, 100).is_err());
-        assert_eq!(crate::inventory::practice_pool(&s, &[41], &BTreeSet::new()).unwrap(), [104]);
-        assert_eq!(crate::assessment_sampling::pool(&s, &[41], &BTreeSet::new()).unwrap(), [104]);
-        assert_eq!(crate::inventory::lesson_shortages(&s, &[41], &BTreeSet::new()).unwrap(), [(41, 1)]);
+        assert_eq!(
+            crate::inventory::practice_pool(&s, &[41], &BTreeSet::new()).unwrap(),
+            [104]
+        );
+        assert_eq!(
+            crate::assessment_sampling::pool(&s, &[41], &BTreeSet::new()).unwrap(),
+            [104]
+        );
+        assert_eq!(
+            crate::inventory::lesson_shortages(&s, &[41], &BTreeSet::new()).unwrap(),
+            [(41, 1)]
+        );
         present(&mut s, 40, "completed");
         present(&mut s, 42, "completed");
         assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), Some(104));
@@ -2474,7 +2506,10 @@ pub(crate) mod tests {
         // after it completes the next draw still chooses standalone content.
         let saved = present(&mut s, 100, "started");
         assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), Some(100));
-        s.entities.get_mut(&saved).unwrap().insert("task-item/status".into(), json!("task-item.status/correct"));
+        s.entities
+            .get_mut(&saved)
+            .unwrap()
+            .insert("task-item/status".into(), json!("task-item.status/correct"));
         assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), Some(104));
     }
 
@@ -2482,7 +2517,10 @@ pub(crate) mod tests {
     fn an_all_multistep_practice_pool_is_a_shortage_not_a_draw_or_failure() {
         let mut s = fixture();
         multistep_parts(&mut s, &[100, 101, 102, 103, 104]);
-        assert_eq!(crate::inventory::lesson_shortages(&s, &[41], &BTreeSet::new()).unwrap(), [(41, 0)]);
+        assert_eq!(
+            crate::inventory::lesson_shortages(&s, &[41], &BTreeSet::new()).unwrap(),
+            [(41, 0)]
+        );
         present(&mut s, 40, "completed");
         present(&mut s, 42, "completed");
         let p = continuation_state(&s, 20, &items(&s), false, false).unwrap();
@@ -2496,13 +2534,25 @@ pub(crate) mod tests {
     fn explicit_multistep_leaf_routes_cannot_start_but_saved_presentations_can_finish() {
         let mut s = fixture();
         multistep_parts(&mut s, &[100]);
-        s.entities.get_mut(&20).unwrap().insert("activity/steps".into(), json!([31]));
-        s.entities.get_mut(&20).unwrap().insert("activity/first-step".into(), json!(31));
-        s.entities.get_mut(&31).unwrap().insert("step/content".into(), json!(100));
+        s.entities
+            .get_mut(&20)
+            .unwrap()
+            .insert("activity/steps".into(), json!([31]));
+        s.entities
+            .get_mut(&20)
+            .unwrap()
+            .insert("activity/first-step".into(), json!(31));
+        s.entities
+            .get_mut(&31)
+            .unwrap()
+            .insert("step/content".into(), json!(100));
         assert!(first_content(&s, 20, 1).unwrap_err().contains("multistep"));
         let saved = present(&mut s, 100, "started");
         assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), Some(100));
-        s.entities.get_mut(&saved).unwrap().insert("task-item/status".into(), json!("task-item.status/correct"));
+        s.entities
+            .get_mut(&saved)
+            .unwrap()
+            .insert("task-item/status".into(), json!("task-item.status/correct"));
         assert!(lesson_passed(&s, 20, &items(&s)).unwrap());
     }
 

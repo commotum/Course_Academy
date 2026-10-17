@@ -1651,22 +1651,41 @@ mod tests {
                 "40": {"step/id": "lesson-step", "step/content": 3},
                 "41": {"activity/id": "lesson", "activity/steps": [40]}
             }
-        })).unwrap();
+        }))
+        .unwrap();
         for q in [1, 2, 4] {
             assert!(snapshot.is_multistep_question(q).unwrap());
             assert!(snapshot.is_ordinary_question(q).unwrap());
         }
         assert!(!snapshot.is_multistep_question(3).unwrap());
-        snapshot.replace_records(BTreeMap::from([(
-            30, json!({"multistep/id": "inner", "multistep/steps": []}).as_object().unwrap().clone()
-        )]), 11).unwrap();
+        snapshot
+            .replace_records(
+                BTreeMap::from([(
+                    30,
+                    json!({"multistep/id": "inner", "multistep/steps": []})
+                        .as_object()
+                        .unwrap()
+                        .clone(),
+                )]),
+                11,
+            )
+            .unwrap();
         assert!(!snapshot.is_multistep_question(1).unwrap());
         assert!(!snapshot.is_multistep_question(2).unwrap());
         assert!(!snapshot.is_multistep_question(4).unwrap());
         // Malformed wrapper cycles terminate and do not invent membership.
-        snapshot.replace_records(BTreeMap::from([(
-            2, json!({"question/id": "wrapped", "assigned-problem/content": 20}).as_object().unwrap().clone()
-        )]), 12).unwrap();
+        snapshot
+            .replace_records(
+                BTreeMap::from([(
+                    2,
+                    json!({"question/id": "wrapped", "assigned-problem/content": 20})
+                        .as_object()
+                        .unwrap()
+                        .clone(),
+                )]),
+                12,
+            )
+            .unwrap();
         assert!(!snapshot.is_multistep_question(2).unwrap());
     }
     #[test]

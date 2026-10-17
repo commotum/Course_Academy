@@ -631,6 +631,49 @@ mod tests {
     }
 
     #[test]
+    fn retakes_keep_old_multipart_history_but_require_standalone_alternatives() {
+        let (mut s, _) = fixture(&[1]);
+        for (eid, record) in [
+            (
+                50,
+                json!({"activity/id":"assessment","activity/type":6,"activity/steps":[60],"activity/first-step":60}),
+            ),
+            (
+                51,
+                json!({"learner-task/id":"original-task","learner-task/activity":50}),
+            ),
+            (
+                60,
+                json!({"step/id":"assessment-step","step/content":10000}),
+            ),
+            (70, json!({"step/id":"original-part","step/content":10000})),
+            (
+                71,
+                json!({"step/id":"alternative-part","step/content":10001}),
+            ),
+            (
+                80,
+                json!({"multistep/id":"multipart","multistep/steps":[70]}),
+            ),
+        ] {
+            s.entities.insert(eid, record.as_object().unwrap().clone());
+        }
+        assert_eq!(
+            retake(&s, 1, 51, &BTreeSet::new(), [45.0, 40.0, 15.0], "retake").unwrap(),
+            vec![10001]
+        );
+        s.entities
+            .get_mut(&80)
+            .unwrap()
+            .insert("multistep/steps".into(), json!([70, 71]));
+        assert!(
+            retake(&s, 1, 51, &BTreeSet::new(), [45.0, 40.0, 15.0], "retake")
+                .unwrap()
+                .is_empty()
+        );
+    }
+
+    #[test]
     fn fixed_topics_with_missing_bands_are_allowed_but_over_budget_is_not() {
         let (s, pools) = fixture(&[1, 3]);
         let qs = assemble(

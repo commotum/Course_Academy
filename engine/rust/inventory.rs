@@ -225,9 +225,7 @@ pub fn practice_pool(s: &EntitySnapshot, kps: &[u64], seen: &BTreeSet<u64>) -> R
     }
     Ok(questions
         .into_iter()
-        .filter(|q| {
-            !seen.contains(q) && learning::validate_practice_question(s, *q).is_ok()
-        })
+        .filter(|q| !seen.contains(q) && learning::validate_practice_question(s, *q).is_ok())
         .collect())
 }
 

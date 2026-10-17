@@ -683,13 +683,16 @@ fn delivery(
             ..Default::default()
         });
     }
+    let complete = remaining.is_empty();
     let remaining = remaining
         .into_iter()
-        .filter(|q| context.reserved_multistep == Some(*q)
-            || snapshot.is_multistep_question(*q).ok() == Some(false))
+        .filter(|q| {
+            context.reserved_multistep == Some(*q)
+                || snapshot.is_multistep_question(*q).ok() == Some(false)
+        })
         .collect::<Vec<_>>();
     Ok(Delivery {
-        complete: remaining.is_empty(),
+        complete,
         next_content: remaining,
         ..Default::default()
     })
@@ -1664,6 +1667,30 @@ mod tests {
         assert_eq!(done.delivery.needs_questions_for, Some(40));
         assert_eq!(f.state(20).evidence_mass(), 1.0);
     }
+    #[test]
+    fn fresh_legacy_practice_excludes_multistep_parts_without_invalidating_reserved_answers() {
+        let mut f = Fixture::new("lesson");
+        f.put(
+            9600,
+            json!({"multistep/id":uuid(9600),"multistep/steps":[9601]}),
+        );
+        f.put(
+            9601,
+            json!({"multistep-step/id":uuid(9601),"multistep-step/question":100}),
+        );
+        f.answer(210, None);
+        assert_eq!(
+            f.answer(200, None).delivery.next_content,
+            vec![101, 102, 103, 104]
+        );
+        // A pre-existing reserved question is accepted on completion, but it
+        // does not reopen multipart content as a source of future draws.
+        let done = f.answer(100, Some(true));
+        assert_eq!(done.delivery.next_content, vec![101, 102, 103, 104]);
+        assert_eq!(f.state(20).evidence_mass(), 1.0);
+        assert!(f.answer(101, Some(true)).delivery.complete);
+    }
+
     #[test]
     fn assessment_and_multistep_distribute_topic_retention_and_channels() {
         for kind in ["assessment", "multistep"] {
