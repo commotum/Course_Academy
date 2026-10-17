@@ -82,6 +82,22 @@ class MathPreparationTests(unittest.TestCase):
         self.assertEqual(prepared['content']['shared_context'], '$' + MATRIX + '$')
         self.assertEqual(prepared['omissions'], [])
 
+    def test_saved_legacy_tutorial_spacing_prepares_without_rewriting_source(self):
+        source = ('$$\n' + r'\eqalign{\nabla f(x,y,z) &= \langle x,y,z\rangle\[10pt]'
+                  r'\nabla f(0,0,1) &= \langle 0,0,1\rangle.}' + '\n$$')
+        content = {'questions': [question()], 'title': 'Gradient', 'lesson_definition': {
+            'topic_id': 1, 'title': 'Gradient', 'complete': True, 'steps': [
+                {'math_academy_id': 50, 'content_id': 2524, 'type': 'tutorial', 'title': 'Normal vector'}]},
+            'tutorials': [{'math_academy_id': 2524, 'title': 'Normal vector', 'content': source}]}
+        original = copy.deepcopy(content)
+        result = Preparation(source_snapshot()).prepare(content)
+        self.assertEqual(result['omissions'], [])
+        tutorials = [row[2] for b in result['batches'] for row in b['assertions']
+                     if row[1] == ':tutorial/content']
+        self.assertEqual(len(tutorials), 1)
+        self.assertIn(r'\langle x,y,z\rangle\\[10pt]\nabla f(0,0,1)', tutorials[0])
+        self.assertEqual(content, original)
+
     def test_authored_matrix_answer_and_operand_layouts_survive_html_conversion(self):
         layout = formatter().matrix_answer('A^T', [['{{field-0}}', '2'], ['3', '{{field-1}}']])
         operands = formatter().matrix_operands(['A=' + MATRIX])

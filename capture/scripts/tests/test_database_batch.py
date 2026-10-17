@@ -224,6 +224,35 @@ class BatchTests(unittest.TestCase):
         self.assertEqual(self.worker.process_one(force=True)['status'], 'verified')
         self.assertEqual(len(self.client.receipts), 2)
 
+    def test_later_preparation_failure_is_visible_and_retried_with_backoff(self):
+        self.config.database_batch_questions = 2
+        first, second = self.capture(20, ['q-11']), self.capture(21, ['q-12'])
+        first_spool, second_spool = enqueue(self.config, first), enqueue(self.config, second)
+        content = read_json(second / 'content.json')
+        content['questions'][0]['problem'] = r'$x+\(y\)$'
+        atomic_json(second / 'content.json', content)
+        result = self.worker.process_one()
+        self.assertEqual(result['status'], 'pending', result)
+        self.assertIn(str(second), result['reason'])
+        self.assertIn('Nested math delimiter', result['reason'])
+        self.assertEqual(set(result['activities']), {str(second)})
+        self.assertEqual(read_json(first_spool)['attempts'], 0)
+        self.assertEqual(read_json(second_spool)['attempts'], 1)
+        active_path = self.worker.batch_root / 'active.json'
+        active = read_json(active_path)
+        self.assertGreater(active['next_attempt_at'], active['last_attempt_at'])
+        self.assertFalse(self.client.receipts)
+        self.assertTrue((Path(active['directory']) / 'pending.json').exists())
+        # A fixed capture can enter a fresh plan without replacing saved intent.
+        content['questions'][0]['problem'] = question('q-12')['problem']
+        atomic_json(second / 'content.json', content)
+        active['next_attempt_at'] = 0
+        atomic_json(active_path, active)
+        self.assertEqual(self.worker.process_one()['status'], 'verified')
+        self.assertFalse(active_path.exists())
+        self.assertEqual(read_json(first_spool)['status'], 'verified')
+        self.assertEqual(read_json(second_spool)['status'], 'verified')
+
     def test_unresolved_batch_blocks_new_work_and_recovers_after_restart(self):
         self.config.database_batch_questions = 2
         directories = [self.capture(20, ['q-11']), self.capture(21, ['q-12'])]

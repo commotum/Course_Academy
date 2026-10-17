@@ -21,6 +21,12 @@ from ..storage import atomic_json, atomic_text, read_json
 APPEND_ONLY = {':knowledge-point/questions', ':topic/knowledge-points'}
 
 
+class ActivityPreparationError(ValueError):
+    def __init__(self, directory, error):
+        self.directory = directory
+        super().__init__('Preparation failed for capture ' + directory + ': ' + str(error))
+
+
 def footprint(prepared, snapshot):
     reads = set()
     for entity in snapshot.get('entities', []):
@@ -189,11 +195,11 @@ class ActivityBatch:
                 candidate = next(preparations)
             except StopRequested:
                 raise
-            except Exception:
-                if not members:
-                    raise
-                boundary = 'next_activity_preparation_failed'
-                break
+            except Exception as error:
+                # A failed preparation is not an underfilled queue. Retain the
+                # blocker and its exact capture so the outbox exposes it and
+                # backs off instead of repeating a silent successful prefix.
+                raise ActivityPreparationError(member['directory'], error) from error
             if (not compatible(members, candidate[1], candidate[2]) or
                     not compatible(deferred, candidate[1], candidate[2])):
                 # Defer this revision and anything depending on it, but keep
@@ -340,11 +346,14 @@ class ActivityBatch:
             raise
         except Exception as error:
             request = self.committer.pending()
+            affected = [member['directory'] for member in (manifest or {}).get('members', [])]
+            if isinstance(error, ActivityPreparationError):
+                affected = [error.directory]
             result = {'status': 'pending', 'reason': str(error), 'error_type': type(error).__name__,
                       'unknown_or_unverified_commit': bool(request),
                       'request_key': request.get('request_key') if request else None,
                       'batch_directory': str(self.directory),
-                      'activities': {member['directory']: {'status': 'pending', 'reason': str(error)}
-                                     for member in (manifest or {}).get('members', [])}}
+                      'activities': {directory: {'status': 'pending', 'reason': str(error)}
+                                     for directory in affected}}
             atomic_json(self.directory / 'pending.json', {**result, 'traceback': traceback.format_exc()})
             return result
