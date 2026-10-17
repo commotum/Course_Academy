@@ -20,7 +20,7 @@ from math_format import system_tex, normalize_prose, normalize_tex, checked_math
 KP_ID=17592186073778
 KP_UUID='50351666-c691-510f-863c-168c61f9980b'
 TITLE='Finding the General Solution to a System With Infinitely Many Intersection Points'
-VERSION='dependent-general-family-3-system-layout'
+VERSION='dependent-general-family-4-x-coordinate'
 GENERATOR_UUID='d5afc560-f76b-53cb-8503-781e13a207d4'
 LEVELS=('easy','moderate','hard')
 TEMPLATES=('radio_family','blank_coordinate')
@@ -46,10 +46,10 @@ def rows(p):
     a,b,c,r=(sp.Rational(p[k]) for k in ('a','b','c','r'))
     return [(a,b,c),(r*a,r*b,r*c)]
 def parameters(p):
-    if set(p)-{'a','b','c','r','variable'} or not all(k in p for k in ('a','b','c','r')):raise ValueError('Require a,b,c,r; optional variable x/t/u')
+    if set(p)-{'a','b','c','r','variable'} or not all(k in p for k in ('a','b','c','r')):raise ValueError('Require a,b,c,r; optional variable must be x')
     out={k:str(sp.Rational(p[k])) for k in ('a','b','c','r')}
     out['variable']=p.get('variable','x')
-    if out['variable'] not in ('x','t','u'):raise ValueError('Unknown parameter alias')
+    if out['variable']!='x':raise ValueError('This knowledge point uses x as the first coordinate; variable must be x')
     return out
 
 def guard(level,p,raw=False):
@@ -98,7 +98,6 @@ def solution(p):
     out+='We want to find an expression that represents every solution to the system. Any value of $x$ can be chosen, and we can find the corresponding $y$-coordinate for each $x$-coordinate by solving one of the lines for $y$, as follows:\n\n'
     numerator=poly(((c,''),(-a,'x')))
     out+=aligned([lhs(a,b)+' &= '+tex(c),poly(((b,'y'),))+' &= '+numerator,'y &= '+r'\frac{'+numerator+'}{'+tex(b)+'}','y &= '+aff(m,k,constant_first=True)])
-    if var!='x':out+=f'\n\nLet ${var}=x$ be the free coordinate.'
     out+='\n\nTherefore, the points of intersection are\n\n$$\n'+r'\left('+var+','+aff(m,k,var,True)+r' \right)'+'\n$$\n\n'+f'where ${var}$ is any number.'
     return out
 
@@ -130,7 +129,10 @@ def sample(level,rng,profile):
         else:
             b=rng.choice([-1,1])*rng.randint(2,4 if level=='moderate' else 6)
             a=rng.choice([i for i in range(-12,13) if i]);c=rng.choice([i for i in range(-12,13) if i])
-        r=rng.choice([-4,-3,-2,2,3,4]);p=parameters(dict(a=a,b=b,c=c,r=r,variable=rng.choice(['x','t','u'])))
+        r=rng.choice([-4,-3,-2,2,3,4])
+        # Consume the former alias draw to preserve seed coefficients and bank order.
+        rng.randrange(3)
+        p=parameters(dict(a=a,b=b,c=c,r=r))
         try:guard(level,p);eligible_bank(p,profile)
         except ValueError:continue
         return p

@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Independent displayed equations/family/stages and actual native grading."""
-import copy,hashlib,importlib.util,json,re,subprocess,sys
+import argparse,copy,hashlib,importlib.util,json,re,subprocess,sys
 from pathlib import Path
 import sympy as sp
 from sympy.parsing.sympy_parser import parse_expr,standard_transformations,implicit_multiplication_application
 sys.dont_write_bytecode=True
 HERE=Path(__file__).resolve().parent;REPO=HERE.parents[2]
+OUT=HERE
 spec=importlib.util.spec_from_file_location('general_family',HERE.with_suffix('.py'));g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
 X,Y,T,U=sp.symbols('x y t u');D={'x':X,'y':Y,'t':T,'u':U}
 TRANS=standard_transformations+(implicit_multiplication_application,)
@@ -49,8 +50,14 @@ def check(rec):
     assert len(equations)==2
     rows=[coeff(eq(e)) for e in equations];a,b,c=rows[0];d,e,ff=rows[1]
     assert all((a,b,c,d,e,ff));assert a*e-b*d==0 and a*ff-c*d==0
-    m,k=-a/b,c/b;v=D[meta['parameters']['variable']];target=signature((v,m*v+k))
+    assert meta['parameters']['variable']=='x','This KP keeps the original x coordinate'
+    m,k=-a/b,c/b;v=X;target=signature((v,m*v+k))
     assert f[':answer-field/type'] in [':answer-field.type/radio',':answer-field.type/blank']
+    if f[':answer-field/type'].endswith('radio'):
+        assert all(pair(z[':answer/value'])[0]==X and pair(z[':answer/value'])[1].free_symbols<={X} for z in f[':answer-field/choices'])
+    else:
+        assert 'Express your answer in terms of $x$ only.' in q[':question/problem']
+        assert 'where $x$ is any number.' in q[':question/problem']
     assert meta['inferred_correct_value']==g.aff(m,k,str(v)) if f[':answer-field/type'].endswith('blank') else signature(pair(meta['inferred_correct_value']))==target
     if meta['raw_evidence']:
         assert not meta['eligible_for_learning']
@@ -94,10 +101,12 @@ def check(rec):
     assert r'\frac{' in raw1[2] and r'}{'+g.tex(b)+'}' in raw1[2]
     assert isolation[2]==(Y,m*X+k) and isolation[3]==(Y,m*X+k)
     final=re.search(r'\$\$\n(\\left\([^\n]+)\n\$\$',sol).group(1)
-    assert signature(pair(final.replace(r' \right', '')))==target
+    final_pair=pair(final.replace(r' \right', ''))
+    assert final_pair[0]==X and final_pair[1].free_symbols<={X}
+    assert signature(final_pair)==target
     assert 'where $'+str(v)+'$ is any number.' in sol
     assert 'Any value of $x$ can be chosen' in sol
-    if v!=X:assert 'Let $'+str(v)+'=x$ be the free coordinate.' in sol
+    assert 'be the free coordinate' not in sol
 
 def native(rec,label):
     f=rec['question'][':question/answer-fields'][0];checks=[]
@@ -108,7 +117,7 @@ def native(rec,label):
         equivalent=f'({g.tex(m)}({v}-1))+({g.tex(m+k)})'
         checks=[{'submitted':val,'expected':'accepted','purpose':'Canonical coordinate fragment'}, {'submitted':equivalent,'expected':'accepted','purpose':'Shifted grouped equivalent fragment'}, {'submitted':g.aff(-m,k,v),'expected':'rejected','purpose':'Sign error fragment'}, {'submitted':g.aff(m,k+m,v),'expected':'rejected','purpose':'Shifted parameter fragment violates the supplied first-coordinate convention'}]
     return {'label':label,'record':rec,'checks':checks}
-def write(name,obj):(HERE/name).write_text(json.dumps(obj,indent=2)+'\n')
+def write(name,obj):(OUT/name).write_text(json.dumps(obj,indent=2)+'\n')
 def main():
     write('validation.json',{'passed':False,'status':'running'})
     capture=json.loads((HERE/'source.json').read_text());cases=json.loads((HERE/'source-cases.json').read_text());sources=capture['record'][':knowledge-point/questions'];review=[];notes=['# General family review','','All source level assignments/keys/solutions are explicitly authored completions. Raw records retain omissions.'];engine=[];changed=0
@@ -134,7 +143,7 @@ def main():
         def legacy(m):
             return r'\{'+'; '.join(z.replace('&=', '=').replace('&&','') for z in m[1].split(r'\\'))
         t=re.sub(r'\\left\\\{\\begin\{aligned\}(.*?)\\end\{aligned\}\\right\.',legacy,t,flags=re.S)
-        return re.sub(r'\s+','',t.replace(r'\{','{').replace(r'\dfrac',r'\frac').replace('can be chosen','is a solution'))
+        return re.sub(r'\s+','',t.replace(r'\{','{').replace(r'\dfrac',r'\frac').replace('can be chosen','is a solution')).replace(r'\mid\mid',r'\mid')
     assert normalize(canonical)==normalize(authored)
     tested=0;diversity={};coverage={}
     for level in g.LEVELS:
@@ -165,9 +174,8 @@ def main():
                     except ValueError:continue
                     fps.add(g.fingerprint(p))
         assert len(fps)>=160;catalog[level]=len(fps)
-    # Parameter aliases, independent whole-line scaling/signs, second-row order/scaling ignored.
+    # Whole-line scaling/signs and second-row scaling do not change the task.
     p=g.parameters(dict(a=3,b=2,c=2,r=2));fp=g.fingerprint(p)
-    assert g.fingerprint({**p,'variable':'t'})==fp
     assert g.fingerprint(g.parameters(dict(a=-6,b=-4,c=-4,r='1/2')))==fp
     assert g.fingerprint(g.parameters(dict(a=6,b=4,c=4,r='1/2')))==fp
     assert g.fingerprint({**p,'r':'3'})==fp
@@ -190,13 +198,14 @@ def main():
         except (AssertionError,ValueError):pass
         else:raise AssertionError('Accepted altered actual display/math/stage')
     notes+=['','## Native wrong-shape limitation','','A complete coordinate tuple submitted to the scalar-fragment blank produces native parser error unclosed group, rather than a Boolean rejection. This is tested separately as one documented unresolved wrong-shape probe. Canonical, grouped-equivalent and incorrect scalar fragments are all supported and checked normally. Raw incomplete questions remain ineligible; normal fields are scalar-fragment assessments.']
-    write('review.json',review);(HERE/'review.md').write_text('\n'.join(notes)+'\n');write('engine-input.json',engine)
-    harness=HERE/'check-engine';subprocess.run([str(harness),str(HERE/'engine-input.json'),str(HERE/'engine-report.json')],check=True,capture_output=True,text=True)
-    result=json.loads((HERE/'engine-report.json').read_text());assert result['documented_unresolved_checks']==0
-    probe=copy.deepcopy(engine[0]);probe['label']='Known wrong-shape tuple parser limitation';val=probe['record']['question'][':question/answer-fields'][0][':answer-field/choices'][0][':answer/value'];probe['checks']=[{'submitted':'(x, '+val+')','expected':'unresolved','purpose':'Complete tuple is outside required scalar-fragment response; native parser returns unclosed group'}];write('engine-wrong-shape-input.json',[probe]);subprocess.run([str(harness),str(HERE/'engine-wrong-shape-input.json'),str(HERE/'engine-wrong-shape-report.json')],check=True,capture_output=True,text=True);shape=json.loads((HERE/'engine-wrong-shape-report.json').read_text());assert shape['documented_unresolved_checks']==1
+    write('review.json',review);(OUT/'review.md').write_text('\n'.join(notes)+'\n');write('engine-input.json',engine)
+    harness=HERE/'check-engine';subprocess.run([str(harness),str(OUT/'engine-input.json'),str(OUT/'engine-report.json')],check=True,capture_output=True,text=True)
+    result=json.loads((OUT/'engine-report.json').read_text());assert result['documented_unresolved_checks']==0
+    probe=copy.deepcopy(engine[0]);probe['label']='Known wrong-shape tuple parser limitation';val=probe['record']['question'][':question/answer-fields'][0][':answer-field/choices'][0][':answer/value'];probe['checks']=[{'submitted':'(x, '+val+')','expected':'unresolved','purpose':'Complete tuple is outside required scalar-fragment response; native parser returns unclosed group'}];write('engine-wrong-shape-input.json',[probe]);subprocess.run([str(harness),str(OUT/'engine-wrong-shape-input.json'),str(OUT/'engine-wrong-shape-report.json')],check=True,capture_output=True,text=True);shape=json.loads((OUT/'engine-wrong-shape-report.json').read_text());assert shape['documented_unresolved_checks']==1
     report={'passed':True,'source_questions':2,'raw_exact_prompts':2,'complete_source_banks':{'matched':1,'total':1,'options_matched':5,'options_total':5},'blank_layout_presence_matches':1,'raw_omissions':{'difficulty':2,'worked_solution':2,'correct_refs':2,'blank_choices':1},'original_correct_designations':{'present':0,'matched':0,'inferred_normal':2},'source_worked_solutions':{'present':0,'matched':0,'authored_completions':2},'canonical_full_solution_normalized_match':True,'canonical_repairs':['escape 2 unmatched literal system braces','Any value of x can be chosen (rather than itself a solution)','dfrac/whitespace normalization'],'changed_public_raw_replays':changed,'normal_math_records':tested+14,'default_coverage':coverage,'variety_sample':diversity,'finite_base_domain_distinct_lines':catalog,'native':{'accepted':result['accepted_checks'],'rejected':result['rejected_checks'],'unresolved':0},'native_wrong_shape_probe':{'documented_unresolved':1,'reason':'Complete tuple in scalar-fragment blank gives unclosed group parser error'},'mutation_failures_caught':len(mut),'invalid_explicit_calls_rejected':len(bad),'runtime':{'python':sys.version.split()[0],'sympy':sp.__version__},'engine_sha256':hashlib.sha256(harness.read_bytes()).hexdigest(),'engine_source_sha256':hashlib.sha256((REPO/'generate/runs/current/check-engine.rs').read_bytes()).hexdigest(),'provenance':g.SOURCE,'unresolved_findings':['Historical wrong-option intention opaque: replay-only profile ineligible for learning','Out-of-shape complete tuple submission to scalar blank returns native parser error, rather than Boolean rejection'],'no_database_writes':True}
     write('validation.json',report);print(json.dumps(report,indent=2))
 if __name__=='__main__':
+    ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--output-dir',type=Path,default=HERE);args=ap.parse_args();OUT=args.output_dir.resolve();OUT.mkdir(parents=True,exist_ok=True)
     try:main()
     except Exception as exc:
         write('validation.json',{'passed':False,'failure_type':type(exc).__name__,'failure':str(exc)});raise
