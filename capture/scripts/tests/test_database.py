@@ -466,24 +466,22 @@ class PipelineTests(unittest.TestCase):
             self.assertEqual(client.t,2)
             self.assertEqual(pipeline.process(capture)['status'],'no_changes')
             self.assertEqual(client.t,2)
-    def test_changed_answer_reuses_field_preserving_old_answer_values(self):
+    def test_changed_answer_preserves_complete_question_without_a_transaction(self):
         with tempfile.TemporaryDirectory() as d:
             capture,cfg=self.setup(d);client=FakeClient();pipeline=DatabasePipeline(cfg,threading.Event(),client=client)
             self.assertEqual(pipeline.process(capture)['status'],'verified')
-            before={e:values for (e,a),values in client.facts.items() if a=='answer/value'}
-            field_ids={e:values for (e,a),values in client.facts.items() if a=='answer-field/id'}
+            before=copy.deepcopy(client.facts)
+            basis=client.t
             content=json.loads((capture/'content.json').read_text())
             field=content['questions'][0]['answer_fields'][0]
             field.update(correct_value='3',choices=[{'type':'math','value':'3'}],evidence={'kind':'ma_answer','value':'3','source_file':'history.html'})
             atomic_json(capture/'content.json',content)
-            result=pipeline.process(capture);self.assertEqual(result['status'],'verified',result)
-            self.assertTrue(all(client.facts[(e,'answer/value')]==values for e,values in before.items()))
-            self.assertEqual({e:values for (e,a),values in client.facts.items() if a=='answer-field/id'},field_ids)
-            active_choices={value for (e,a),values in client.facts.items() if a=='answer-field/choices' for value,_ in values}
-            self.assertTrue(all(e in active_choices for e in before))
+            result=pipeline.process(capture);self.assertEqual(result['status'],'no_changes',result)
+            self.assertEqual(client.facts,before)
+            self.assertEqual(client.t,basis)
             self.assertEqual(pipeline.process(capture)['status'],'no_changes')
 
-    def test_correct_choice_change_reuses_field_and_unchanged_answers(self):
+    def test_correct_choice_change_preserves_complete_question_and_original_key(self):
         with tempfile.TemporaryDirectory() as d:
             capture,cfg=self.setup(d);client=FakeClient();pipeline=DatabasePipeline(cfg,threading.Event(),client=client)
             client.idents[':answer-field.type/radio']=909
@@ -492,11 +490,11 @@ class PipelineTests(unittest.TestCase):
             field.update(type='radio',choices=[{'type':'math','value':v} for v in ('2','3')])
             atomic_json(capture/'content.json',content)
             self.assertEqual(pipeline.process(capture)['status'],'verified')
-            ids={key:value for key,value in client.facts.items() if key[1] in ('answer-field/id','answer/id','answer-field/choices')}
+            before=copy.deepcopy(client.facts)
             field.update(correct_value='3',evidence={'kind':'ma_answer','value':'3','source_file':'history.html'})
             atomic_json(capture/'content.json',content)
-            result=pipeline.process(capture);self.assertEqual(result['status'],'verified',result)
-            self.assertEqual({key:value for key,value in client.facts.items() if key[1] in ('answer-field/id','answer/id','answer-field/choices')},ids)
+            result=pipeline.process(capture);self.assertEqual(result['status'],'no_changes',result)
+            self.assertEqual(client.facts,before)
             self.assertEqual(pipeline.process(capture)['status'],'no_changes')
 
     def test_radio_choice_removal_cannot_orphan_historical_response(self):
@@ -507,9 +505,14 @@ class PipelineTests(unittest.TestCase):
         old={':db/id':5,':question/id':source_uuid('question',5),':question/answer-fields':[field]}
         q=question();q['answer_fields'][0].update(type='radio',correct_type='math',choices=[{'type':'math','value':v} for v in ('1','2')])
         prep=Preparation(snapshot);plan=Plan(prep.snapshot)
-        with self.assertRaisesRegex(UnsupportedContent,'historical response'):
-            prep.question(plan,q,old,False)
-        self.assertEqual(plan.finish()['forms'],[])
+        before=copy.deepcopy(old)
+        prep.question(plan,q,old,False)
+        batch=plan.finish()
+        self.assertFalse(batch['retractions'])
+        self.assertFalse(any(row[1].startswith((':answer/',':answer-field/')) or row[1]==':question/answer-fields'
+                             for row in batch['assertions']))
+        self.assertEqual(old,before)
+        self.assertNotIn(':answer-field/correct',field)
 
     def test_function_application_escape_revision_preserves_response_owned_answer(self):
         incoming = '6^x \\operatorname{ln}\u20616-10x+6'
@@ -524,9 +527,13 @@ class PipelineTests(unittest.TestCase):
         q=question();q['answer_fields'][0].update(type='radio',correct_type='math',correct_value=incoming,
             choices=[{'type':'math','value':incoming}])
         prep=Preparation(source_snapshot());plan=Plan(prep.snapshot)
-        with self.assertRaisesRegex(UnsupportedContent,'immutable historical response value'):
-            prep.question(plan,q,old,False)
-        self.assertEqual(plan.finish()['forms'],[])
+        before=copy.deepcopy(old)
+        prep.question(plan,q,old,False)
+        batch=plan.finish()
+        self.assertFalse(batch['retractions'])
+        self.assertFalse(any(row[1].startswith((':answer/',':answer-field/')) or row[1]==':question/answer-fields'
+                             for row in batch['assertions']))
+        self.assertEqual(old,before)
         self.assertEqual(choice[':answer/value'],legacy)
 
     def test_function_application_compatibility_requires_a_math_operator_marker(self):
@@ -548,25 +555,31 @@ class PipelineTests(unittest.TestCase):
         q=question();q['answer_fields'][0].update(type=field_type,correct_type='math',choices=[{'type':'math','value':'2'}])
         return q,old
 
-    def test_response_owned_duplicate_typed_choice_refuses_before_plan_mutation(self):
+    def test_response_owned_duplicate_typed_choices_are_retained_without_reconciliation(self):
         for field_type in ('radio','select'):
             for owned_first in (False,True):
                 with self.subTest(field_type=field_type,owned_first=owned_first):
                     q,old=self.duplicate_typed_choices(field_type,owned=True,owned_first=owned_first)
                     prep=Preparation(source_snapshot());plan=Plan(prep.snapshot)
-                    with self.assertRaisesRegex(UnsupportedContent,'ambiguous historical response ownership among duplicate choices'):
-                        prep.question(plan,q,old,False)
-                    self.assertEqual(plan.finish()['forms'],[])
+                    before=copy.deepcopy(old)
+                    prep.question(plan,q,old,False)
+                    batch=plan.finish()
+                    self.assertFalse(batch['retractions'])
+                    self.assertFalse(any(row[1].startswith((':answer/',':answer-field/')) or row[1]==':question/answer-fields'
+                                         for row in batch['assertions']))
+                    self.assertEqual(old,before)
 
-    def test_unowned_duplicate_typed_choice_reuses_original_field_and_answer(self):
+    def test_unowned_duplicate_typed_choices_are_not_deduplicated_by_recapture(self):
         for field_type in ('radio','select'):
             with self.subTest(field_type=field_type):
                 q,old=self.duplicate_typed_choices(field_type)
                 prep=Preparation(source_snapshot());plan=Plan(prep.snapshot)
-                prep.question(plan,q,old,False);forms=plan.finish()['forms']
-                self.assertIn([kw(':db/retract'),10,kw(':answer-field/choices'),21],forms)
-                self.assertFalse(any(isinstance(f,dict) and any(str(k) in (':answer/id',':answer-field/id') for k in f) for f in forms))
-                self.assertFalse(any(isinstance(f,list) and str(f[2]) in (':answer/id',':answer/value',':answer/type') for f in forms))
+                before=copy.deepcopy(old)
+                prep.question(plan,q,old,False);batch=plan.finish()
+                self.assertFalse(batch['retractions'])
+                self.assertFalse(any(row[1].startswith((':answer/',':answer-field/')) or row[1]==':question/answer-fields'
+                                     for row in batch['assertions']))
+                self.assertEqual(old,before)
 
     def test_blank_duplicate_typed_response_values_keep_all_ownership(self):
         q,old=self.duplicate_typed_choices('blank',owned=True)
@@ -574,7 +587,7 @@ class PipelineTests(unittest.TestCase):
         prep.question(plan,q,old,False);forms=plan.finish()['forms']
         self.assertFalse(any(isinstance(f,list) and str(f[2])==':answer-field/choices' for f in forms))
 
-    def test_owned_duplicate_choice_omits_revision_but_imports_supported_sibling(self):
+    def test_owned_duplicate_choice_is_preserved_while_supported_sibling_imports(self):
         class OwnedDuplicateClient(FakeClient):
             def snapshot(self,*args):
                 result=super().snapshot(*args)
@@ -595,12 +608,14 @@ class PipelineTests(unittest.TestCase):
             client.facts[(10000,'answer/id')]=[(source_uuid('answer','owned-duplicate'),900)]
             client.facts[(10000,'answer/type')]=[(902,900)];client.facts[(10000,'answer/value')]=[('2',900)]
             client.facts[(fid,'answer-field/choices')].append((10000,900))
+            before={key:copy.deepcopy(values) for key,values in client.facts.items()
+                    if key[1].startswith(('question/','answer-field/','answer/'))}
             q['problem']='A revision with ambiguous duplicate response ownership.'
             sibling=question('q-12');sibling['knowledge_point_id']=q['knowledge_point_id'];content['questions'].append(sibling)
             atomic_json(capture/'content.json',content);result=pipeline.process(capture)
             self.assertEqual(result['status'],'verified',result)
-            self.assertEqual(result['omissions'][0]['constraint'],'historical_response_ownership')
-            self.assertIn('among duplicate choices',result['omissions'][0]['reason'])
+            self.assertEqual(result['omissions'],[])
+            self.assertTrue(all(client.facts[key]==values for key,values in before.items()))
             self.assertIn((10000,900),client.facts[(fid,'answer-field/choices')])
             self.assertFalse(any(value==q['problem'] for (e,a),values in client.facts.items() if a=='question/problem' for value,_ in values))
             self.assertTrue(any(value=='q-12' for (e,a),values in client.facts.items() if a=='question/math-academy-id' for value,_ in values))
@@ -614,7 +629,7 @@ class PipelineTests(unittest.TestCase):
             with self.subTest(incoming=incoming),self.assertRaisesRegex(UnsupportedContent,'historical response'):
                 Preparation(source_snapshot()).check_response_ownership(q,old)
 
-    def test_history_constraint_is_terminal_omission_and_siblings_import(self):
+    def test_existing_response_choices_are_preserved_while_siblings_import(self):
         class ReferencedClient(FakeClient):
             def snapshot(self,*args):
                 result=super().snapshot(*args)
@@ -633,13 +648,16 @@ class PipelineTests(unittest.TestCase):
             q['answer_fields'][0].update(type='radio',choices=[{'type':'math','value':v} for v in ('2','3')])
             atomic_json(capture/'content.json',content)
             self.assertEqual(pipeline.process(capture)['status'],'verified')
+            before={key:copy.deepcopy(values) for key,values in client.facts.items()
+                    if key[1].startswith(('question/','answer-field/','answer/'))}
             q['problem']='A revision that removes a used option.'
             q['answer_fields'][0]['choices']=[{'type':'math','value':v} for v in ('2','4')]
             sibling=question('q-12');sibling['knowledge_point_id']=q['knowledge_point_id'];content['questions'].append(sibling)
             atomic_json(capture/'content.json',content)
             result=pipeline.process(capture)
             self.assertEqual(result['status'],'verified',result)
-            self.assertEqual(result['omissions'][0]['constraint'],'historical_response_ownership')
+            self.assertEqual(result['omissions'],[])
+            self.assertTrue(all(client.facts[key]==values for key,values in before.items()))
             self.assertEqual(pipeline.process(capture)['status'],'no_changes')
             stored={value for (e,a),values in client.facts.items() if a=='question/math-academy-id' for value,_ in values}
             self.assertIn('q-12',stored)

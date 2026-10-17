@@ -117,16 +117,20 @@ class SourceProtectedRevisionTests(unittest.TestCase):
                               [5, 'question/problem', 'A former correction, absent from current content', 950]])
         Preparation(data).check_source_attribution(old)
 
-    def test_ordinary_ma_only_answer_repair_reuses_field_identity_and_owned_values(self):
+    def test_ma_only_recapture_fills_absent_difficulty_without_changing_existing_answer(self):
         data, old = attributed_snapshot()
         prep = Preparation(data)
         plan = Plan(prep.snapshot)
         q = question(answer='3')
         q['answer_fields'][0]['correct_type'] = 'math'
+        q['problem'] = old[':question/problem']
+        before = copy.deepcopy(old)
         prep.question(plan, q, old, False)
-        self.assertEqual(plan.local[('answer-field', str(old[':question/answer-fields'][0][':answer-field/id']))], 10)
-        self.assertIn([10, kw('answer-field/correct'), 21], plan.assertions)
-        self.assertFalse(any(row[1] == kw('answer-field/choices') for row in plan.retractions))
+        batch = plan.finish()
+        self.assertEqual(batch['assertions'], [[5, ':question/difficulty', ':question.difficulty/E']])
+        self.assertEqual(batch['retractions'], [])
+        self.assertEqual(old, before)
+        self.assertEqual(old[':question/answer-fields'][0][':answer-field/correct'][':db/id'], 20)
 
     def test_legacy_snapshot_without_fact_provenance_keeps_existing_behavior(self):
         data, old = attributed_snapshot()
@@ -158,9 +162,7 @@ class SourceProtectedRevisionTests(unittest.TestCase):
             atomic_json(capture / 'content.json', content)
             result = pipeline.process(capture)
             self.assertEqual(result['status'], 'verified', result)
-            self.assertEqual(len(result['omissions']), 1)
-            self.assertEqual(result['omissions'][0]['constraint'], 'separately_attributed_correction')
-            self.assertTrue(result['omissions'][0]['final'])
+            self.assertEqual(result['omissions'], [])
             self.assertTrue(all(client.facts[key] == values for key, values in protected.items()))
             self.assertEqual(json.loads((capture / 'content.json').read_text())['questions'][0], content['questions'][0])
             self.assertIn('q-12', {value for (eid, attr), values in client.facts.items()

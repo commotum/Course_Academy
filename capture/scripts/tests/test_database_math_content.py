@@ -30,11 +30,17 @@ def matrix_question(mid='q-11'):
 class MathPreparationTests(unittest.TestCase):
     def test_question_example_choices_and_feedback_are_normalized_after_evidence(self):
         q, example = matrix_question(), matrix_question('e-10')
+        snapshot = source_snapshot()
+        point = snapshot['entities'][1]
+        point.pop(':knowledge-point/canonical-example')
+        snapshot['entities'] = snapshot['entities'][:2]
+        for record in (q, example):
+            record['knowledge_point_id'] = str(point[':knowledge-point/id'])
         q['local_problem'] = q['problem']
         q['answer_fields'][0]['evidence'] = {'kind': 'worked_solution', 'value': LEGACY,
             'solution_quote': LEGACY, 'source_file': 'history.html', 'matches_worked_solution': True}
         original = copy.deepcopy(q)
-        result = Preparation(source_snapshot()).prepare({'questions': [q], 'canonical_examples': [example]})
+        result = Preparation(snapshot).prepare({'questions': [q], 'canonical_examples': [example]})
         self.assertEqual(result['omissions'], [])
         self.assertEqual(q, original)
         for record in result['content']['questions'] + result['content']['canonical_examples']:
@@ -88,7 +94,7 @@ class MathPreparationTests(unittest.TestCase):
         self.assertIn('{{field-0}}', converted)
         self.assertNotIn('<p>', converted)
 
-    def test_format_revision_reuses_authored_choice_and_preserves_entered_values(self):
+    def test_recapture_formatting_preserves_all_existing_choices_and_entered_values(self):
         for kind in ('radio', 'blank'):
             with self.subTest(kind=kind):
                 chosen = {':db/id': 20, ':answer/id': source_uuid('answer', 20),
@@ -113,19 +119,15 @@ class MathPreparationTests(unittest.TestCase):
                 plan = Plan(prep.snapshot)
                 prep.question(plan, q, old, False)
                 batch = plan.finish()
-                if kind == 'radio':
-                    self.assertIn([20, ':answer/value', MATRIX], batch['assertions'])
-                    self.assertFalse(any(row[1] == ':answer/id' for row in batch['assertions']))
-                else:
-                    self.assertFalse(any(row[0] == 20 for row in batch['assertions'] + batch['retractions']))
-                    self.assertTrue(any(row[1] == ':answer/value' and row[2] == MATRIX for row in batch['assertions']))
-                self.assertFalse(any(row[0] == 21 for row in batch['assertions'] + batch['retractions']))
-                self.assertFalse(any(row[1] == ':answer-field/choices' for row in batch['retractions']))
-                self.assertFalse(any(row[1] == ':answer-field/id' for row in batch['assertions']))
+                self.assertFalse(batch['retractions'])
+                self.assertFalse(any(row[1].startswith((':answer/', ':answer-field/'))
+                                     or row[1] == ':question/answer-fields' for row in batch['assertions']))
+                self.assertIn([5, ':question/problem', 'Use $B=' + MATRIX + '$.'], batch['assertions'])
                 self.assertEqual(old, before)
+                self.assertEqual(chosen[':answer/value'], LEGACY)
         self.assertEqual(choice_signature('math', r'\matrix{'), ('math', r'\matrix{'))
 
-    def test_referenced_radio_and_select_values_are_immutable_before_any_plan_change(self):
+    def test_referenced_radio_and_select_values_remain_immutable_during_gap_fill(self):
         for kind in ('radio', 'select'):
             with self.subTest(kind=kind):
                 answer = {':db/id': 20, ':answer/id': source_uuid('answer', 20),
@@ -140,9 +142,12 @@ class MathPreparationTests(unittest.TestCase):
                 q['answer_fields'][0].update(type=kind, correct_type='math')
                 prep = Preparation(source_snapshot())
                 plan = Plan(prep.snapshot)
-                with self.assertRaisesRegex(UnsupportedContent, 'separate display migration is required'):
-                    prep.question(plan, format_question(q), old, False)
-                self.assertEqual(plan.finish()['forms'], [])
+                prep.question(plan, format_question(q), old, False)
+                batch = plan.finish()
+                self.assertFalse(batch['retractions'])
+                self.assertFalse(any(row[1].startswith((':answer/', ':answer-field/'))
+                                     or row[1] == ':question/answer-fields' for row in batch['assertions']))
+                self.assertIn([5, ':question/difficulty', ':question.difficulty/E'], batch['assertions'])
                 self.assertEqual(old, before)
 
 
@@ -161,7 +166,7 @@ class MathRequestTests(unittest.TestCase):
                 self.assertFalse((capture / 'database/request.json').exists())
                 self.assertFalse(any(cmd == 'transact' for cmd, _ in client.calls))
 
-    def test_legacy_pending_request_replays_exact_bytes_before_a_new_formatted_request(self):
+    def test_legacy_pending_request_replays_exact_bytes_and_complete_capture_is_preserved(self):
         class RecordingClient(FakeClient):
             def __init__(self):
                 super().__init__()
@@ -193,9 +198,11 @@ class MathRequestTests(unittest.TestCase):
             self.assertEqual(result['status'], 'verified', result)
             self.assertEqual(client.submissions[0], client.submissions[1])
             self.assertEqual(client.submissions[0][1], saved['transaction'].encode())
-            self.assertNotEqual(client.submissions[-1][0], saved['request_key'])
+            self.assertEqual(len(client.submissions), 2)
+            self.assertEqual(client.submissions[-1][0], saved['request_key'])
             problems = [v for (e, attr), values in client.facts.items() if attr == 'question/problem' for v, _ in values]
-            self.assertIn('Use $B=' + MATRIX + '$.', problems)
+            self.assertIn('Use $B=' + LEGACY + '$.', problems)
+            self.assertNotIn('Use $B=' + MATRIX + '$.', problems)
             self.assertEqual((capture / 'content.json').read_bytes(), original)
             self.assertEqual(pipeline.process(capture)['status'], 'no_changes')
 

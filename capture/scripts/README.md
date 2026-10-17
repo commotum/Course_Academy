@@ -51,7 +51,7 @@ New environments need Python 3.10+, [requirements.txt](requirements.txt), Playwr
 | Database Commit | `database/batch.py`, `commit.py`, `client.py`, `pipeline.py` | Batch complete activities, preview, recover exact requests, and verify receipts and content. |
 | Continuous operation | `runner.py`, `outbox.py`, `fleet.py`, `terminal.py`, `monitor.py`, `storage.py` | Pin the current activity, save checkpoints, recover failures, and serialize imports across accounts. |
 
-The implementation has no runtime dependency on `scripts/question_capture`.
+Database preparation loads the shared math formatter from `scripts/question_capture/math_format.py` for new or missing content. It preserves populated components of existing questions, even when a recapture uses different wording, formatting, choices, or answers. Complete questions remain unchanged; deliberate revisions use a separate repair workflow.
 
 ## State and evidence
 

@@ -1,4 +1,4 @@
-"""A field identity revision must preserve historical response ownership."""
+"""Recapture must retain stored fields and historical response ownership."""
 import copy
 import json
 import tempfile
@@ -29,7 +29,7 @@ def duplicate_fields(kind, *, referenced=True):
 
 
 class ResponseOwnershipTests(unittest.TestCase):
-    def test_referenced_duplicate_exact_fields_are_refused_before_plan_mutation(self):
+    def test_referenced_duplicate_exact_fields_are_retained_during_gap_fill(self):
         for kind in ('blank', 'radio', 'select'):
             with self.subTest(kind=kind):
                 old = {':db/id': 5, ':question/id': source_uuid('question', 5),
@@ -39,12 +39,15 @@ class ResponseOwnershipTests(unittest.TestCase):
                     choices=[{'type': 'math', 'value': v} for v in ('2', '3')])
                 prep = Preparation(source_snapshot())
                 plan = Plan(prep.snapshot)
-                with self.assertRaisesRegex(UnsupportedContent, 'ambiguous historical response ownership'):
-                    prep.question(plan, q, old, False)
-                self.assertEqual(plan.finish(), {'source': ':org/Math-Academy', 'forms': [],
-                                                 'assertions': [], 'retractions': []})
+                before = copy.deepcopy(old)
+                prep.question(plan, q, old, False)
+                batch = plan.finish()
+                self.assertFalse(batch['retractions'])
+                self.assertFalse(any(row[1].startswith((':answer/', ':answer-field/'))
+                                     or row[1] == ':question/answer-fields' for row in batch['assertions']))
+                self.assertEqual(old, before)
 
-    def test_duplicate_fields_without_responses_keep_conditional_identity_resolution(self):
+    def test_duplicate_fields_without_responses_are_retained_without_identity_resolution(self):
         old = {':db/id': 5, ':question/id': source_uuid('question', 5),
                ':question/answer-fields': duplicate_fields('radio', referenced=False)}
         q = question(answer='3')
@@ -56,12 +59,14 @@ class ResponseOwnershipTests(unittest.TestCase):
             return {'decision': 'existing', 'entity_id': 10, 'evidence': 'Continuing source field x.'}
         prep = Preparation(source_snapshot(), resolve=resolve)
         plan = Plan(prep.snapshot)
+        before = copy.deepcopy(old)
         prep.question(plan, q, old, False)
-        self.assertEqual(len(calls), 1)
-        self.assertEqual(calls[0][0], 'resolve_identity')
-        self.assertEqual(calls[0][1]['kind'], 'answer-field')
-        self.assertEqual({c[':db/id'] for c in calls[0][1]['candidates']}, {10, 11})
-        self.assertTrue(plan.finish()['forms'])
+        self.assertEqual(calls, [])
+        batch = plan.finish()
+        self.assertFalse(batch['retractions'])
+        self.assertFalse(any(row[1].startswith((':answer/', ':answer-field/'))
+                             or row[1] == ':question/answer-fields' for row in batch['assertions']))
+        self.assertEqual(old, before)
 
     def test_unobserved_duplicate_fields_in_partial_update_are_retained(self):
         old = {':question/answer-fields': duplicate_fields('blank')}
@@ -69,7 +74,7 @@ class ResponseOwnershipTests(unittest.TestCase):
         q['answer_fields'][0]['key'] = 'y'
         Preparation(source_snapshot()).check_response_ownership(q, old)
 
-    def test_ambiguous_owned_field_revision_is_terminal_and_sibling_import_settles(self):
+    def test_duplicate_owned_fields_are_preserved_while_sibling_import_settles(self):
         class DuplicateClient(FakeClient):
             inject_duplicates = False
             def snapshot(self, *args):
@@ -89,6 +94,8 @@ class ResponseOwnershipTests(unittest.TestCase):
             client = DuplicateClient()
             pipeline = DatabasePipeline(config, threading.Event(), client=client)
             self.assertEqual(pipeline.process(capture)['status'], 'verified')
+            before = {key: copy.deepcopy(values) for key, values in client.facts.items()
+                      if key[1].startswith(('question/', 'answer-field/', 'answer/'))}
             client.inject_duplicates = True
             content = json.loads((capture / 'content.json').read_text())
             original = content['questions'][0]
@@ -99,10 +106,8 @@ class ResponseOwnershipTests(unittest.TestCase):
             atomic_json(capture / 'content.json', content)
             result = pipeline.process(capture)
             self.assertEqual(result['status'], 'verified', result)
-            self.assertEqual(len(result['omissions']), 1)
-            self.assertEqual(result['omissions'][0]['constraint'], 'historical_response_ownership')
-            self.assertIn('ambiguous historical response ownership', result['omissions'][0]['reason'])
-            self.assertTrue(result['omissions'][0]['final'])
+            self.assertEqual(result['omissions'], [])
+            self.assertTrue(all(client.facts[key] == values for key, values in before.items()))
             self.assertEqual(pipeline.process(capture)['status'], 'no_changes')
             self.assertIn('q-12', {value for (eid, attr), values in client.facts.items()
                                   if attr == 'question/math-academy-id' for value, source in values})

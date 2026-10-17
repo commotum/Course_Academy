@@ -178,6 +178,62 @@ class Preparation:
         self.decisions, self.omissions = [], []
         self.gap_judgments = {}
 
+    def stored(self, reference):
+        return self.snapshot.entities.get(scalar(reference), reference if isinstance(reference, dict) else {})
+
+    def captured(self, old, *, example=False):
+        """A missing solution is not permission to recapture an authored question."""
+        if not old or not old.get(':question/problem'):
+            return False
+        fields = [self.stored(f) for f in old.get(':question/answer-fields', [])]
+        if not example and (not old.get(':question/difficulty') or not fields):
+            return False
+        for field in fields:
+            correct = self.stored(field.get(':answer-field/correct'))
+            choices = [self.stored(a) for a in field.get(':answer-field/choices', [])]
+            if (not field.get(':answer-field/key') or not field.get(':answer-field/type')
+                    or not choices or not correct.get(':answer/type')
+                    or ':answer/value' not in correct
+                    or any(not a.get(':answer/type') or ':answer/value' not in a for a in choices)):
+                return False
+        return True
+
+    def question_owners(self, old, *, example=False):
+        attr = ':knowledge-point/canonical-example' if example else ':knowledge-point/questions'
+        return [p for p in self.snapshot.entities.values() if
+                (scalar(p.get(attr)) == old[':db/id'] if example else
+                 old[':db/id'] in {scalar(q) for q in p.get(attr, [])})]
+
+    def stored_question(self, original, old, *, example=False):
+        """Keep supported inventory/calibration based on retained database data."""
+        record = copy.deepcopy(original)
+        record['problem'] = old[':question/problem']
+        if 'local_problem' in record:
+            record['local_problem'] = record['problem']
+        for key, attr in (('worked_solution', 'worked-solution'), ('requires_calculator', 'requires-calculator')):
+            record.pop(key, None)
+            if ':question/' + attr in old:
+                record[key] = old[':question/' + attr]
+        record.pop('difficulty', None)
+        if old.get(':question/difficulty') is not None:
+            record['difficulty'] = self.answer_kind(old[':question/difficulty'])
+        record['answer_fields'] = []
+        for reference in old.get(':question/answer-fields', []):
+            field = self.stored(reference)
+            correct = self.stored(field.get(':answer-field/correct'))
+            record['answer_fields'].append({'key': field[':answer-field/key'],
+                'type': self.answer_kind(field[':answer-field/type']),
+                'choices': [{'type': self.answer_kind(a[':answer/type']), 'value': a[':answer/value']}
+                            for a in map(self.stored, field[':answer-field/choices'])],
+                'correct_type': self.answer_kind(correct[':answer/type']),
+                'correct_value': correct[':answer/value']})
+        owners = self.question_owners(old, example=example)
+        if len(owners) == 1:
+            record['source_knowledge_point_id'] = original.get('knowledge_point_id') or original.get('kp_id')
+            record['knowledge_point_id'] = str(owners[0][':knowledge-point/id'])
+            record['knowledge_point'] = owners[0].get(':knowledge-point/title', '')
+        return record
+
     def identity_candidate(self, entity):
         """Relevant authored content without entire topic practice pools."""
         reference_keys = {'step/next', 'activity/first-step', 'multistep/first-step',
@@ -317,7 +373,7 @@ class Preparation:
                     ids.append(identity)
             content['lesson_workload_sample'] = {'questions_by_knowledge_point': groups,
                 'selection': 'first-two-distinct-practice-questions-in-captured-order', 'base_xp': content.get('base_xp')}
-        records, source_repairs = [], []
+        records, source_repairs, preserved = [], [], []
         for bucket, example in (('questions', False), ('canonical_examples', True)):
             seen = set()
             kept = []
@@ -326,6 +382,18 @@ class Preparation:
                 if capture_key in seen:
                     continue
                 seen.add(capture_key)
+                mid = original.get('math_academy_id')
+                existing = self.exact('question/math-academy-id', mid) if mid else None
+                if self.captured(existing, example=example):
+                    if not example and (self.question_owners(existing, example=True)
+                                        or existing.get(':knowledge-point/_canonical-example')):
+                        self.omissions.append({'kind': 'question', 'id': mid,
+                            'reason': 'Canonical example cannot enter a practice pool', 'final': True})
+                        continue
+                    # A recapture may be stale, malformed, or incomplete. It
+                    # cannot reopen a complete stored question for revision.
+                    preserved.append((self.stored_question(original, existing, example=example), example, existing))
+                    continue
                 try:
                     q = authoritative_question(original, example=example)
                     if library:
@@ -375,6 +443,19 @@ class Preparation:
         # A missing dependency removes the affected structure, never imports a partial question.
         plan = Plan(self.snapshot)
         topic_map, point_map, question_targets = {}, {}, {}
+        example_targets = {}
+        for original, example, existing in preserved:
+            mid = original['math_academy_id']
+            tid = original.get('topic_id') or content.get('topic_id')
+            topic = self.exact('topic/math-academy-id', int(tid)) if tid else None
+            if topic:
+                topic_map[int(tid)] = topic
+            if example:
+                owners = self.question_owners(existing, example=True)
+                if len(owners) == 1:
+                    example_targets[mid] = (owners[0][':db/id'], owners[0])
+            else:
+                question_targets[mid] = existing[':db/id']
         for q, _ in records:
             tid = q.get('topic_id') or content.get('topic_id')
             if tid is None:
@@ -397,7 +478,9 @@ class Preparation:
             topic_map[tid] = topic
         # Resolve KPs and example revisions before emitting dependent question facts.
         resolved = []
-        examples = {str(q.get('knowledge_point_id') or q.get('kp_id')): q for q, ex in records if ex}
+        observed_records = records + [(q, ex) for q, ex, _ in preserved]
+        examples = {str(kid): q for q, ex in observed_records if ex for kid in
+                    (q.get('knowledge_point_id') or q.get('kp_id'), q.get('source_knowledge_point_id')) if kid}
         for q, example in sorted(records, key=lambda row: not row[1]):
             tid = int(q.get('topic_id') or content.get('topic_id') or 0)
             topic = topic_map.get(tid)
@@ -415,7 +498,7 @@ class Preparation:
                 # A captured canonical example is stronger identity evidence
                 # than a possibly stale practice-pool membership.
                 title = q.get('knowledge_point') or q.get('kp_title')
-                matching_examples = [r for r, ex in records if ex and title
+                matching_examples = [r for r, ex in observed_records if ex and title
                     and int(r.get('topic_id') or content.get('topic_id') or 0) == tid
                     and (r.get('knowledge_point') or r.get('kp_title')) == title]
                 if len(matching_examples) == 1:
@@ -463,7 +546,7 @@ class Preparation:
             except UnsupportedContent as error:
                 self.omissions.append({'kind': 'question', 'id': q['math_academy_id'], 'reason': str(error), 'final': True})
         canonical_ids = {scalar(p.get(':knowledge-point/canonical-example')) for p in self.snapshot.entities.values() if p.get(':knowledge-point/canonical-example')}
-        accepted, example_targets = [], {}
+        accepted = [(q, ex) for q, ex, _ in preserved]
         for q, example, topic, point, existing in resolved:
             if not example and existing and (existing[':db/id'] in canonical_ids or existing.get(':knowledge-point/_canonical-example')):
                 self.omissions.append({'kind': 'question', 'id': q['math_academy_id'], 'reason': 'Canonical example cannot enter a practice pool', 'final': True})
@@ -482,18 +565,21 @@ class Preparation:
                         and scalar(point.get(':knowledge-point/canonical-example')) == existing[':db/id']):
                     example_targets[q['math_academy_id']] = (point[':db/id'],point)
                 continue
-            try:
-                self.check_response_ownership(q, existing)
-            except UnsupportedContent as error:
-                # This is a proven database-history constraint, not a missing
-                # mathematical judgment or a transient writer failure. Do not
-                # mutate the question/KP plan or keep retrying this package.
-                self.omissions.append({'kind': 'question', 'id': q['math_academy_id'],
-                    'reason': str(error), 'constraint': 'historical_response_ownership', 'final': True})
+            if self.captured(existing, example=example):
+                # Identity resolution can reuse an existing example even when
+                # the source supplied a new ID. Preserve its current owner too.
+                if example and scalar(point.get(':knowledge-point/canonical-example')) == existing[':db/id']:
+                    example_targets[q['math_academy_id']] = (point[':db/id'], point)
+                elif not example:
+                    question_targets[q['math_academy_id']] = existing[':db/id']
+                retained = self.stored_question(q, existing, example=example)
+                preserved.append((retained, example, existing))
+                accepted.append((retained, example))
                 continue
             old_point = point if ':db/id' in point else None
             pt = plan.entity('knowledge-point', point[':knowledge-point/id'], old_point)
-            plan.set(pt, old_point, 'knowledge-point/title', q.get('knowledge_point') or q.get('kp_title') or point.get(':knowledge-point/title'))
+            if not (old_point or {}).get(':knowledge-point/title'):
+                plan.set(pt, old_point, 'knowledge-point/title', q.get('knowledge_point') or q.get('kp_title') or point.get(':knowledge-point/title'))
             plan.set(topic[':db/id'], topic, 'topic/knowledge-points', [pt], many=True)
             qt = self.question(plan, q, existing, example)
             plan.set(pt, old_point, 'knowledge-point/canonical-example' if example else 'knowledge-point/questions', qt if example else [qt], many=not example)
@@ -544,7 +630,8 @@ class Preparation:
         return {'basis': self.snapshot.basis, 'batches': [b for b in batches if b['forms']],
                 'content': content, 'omissions': self.omissions, 'identity_decisions': self.decisions,
                 'calibration': calibration, 'images': library.saved if library else {},
-                'source_repairs': source_repairs}
+                'source_repairs': source_repairs,
+                'preserved_captures': [q['math_academy_id'] for q, _, _ in preserved]}
 
     def final_judgment(self, content, question, error, record_kind=None):
         judgments = content.get('judgments', [])
@@ -672,76 +759,116 @@ class Preparation:
                     raise UnsupportedContent('Source formatting revision would rewrite an immutable historical response value in field '
                         + str(key) + '; a separate display migration is required')
 
+    def answer_kind(self, reference):
+        value = self.snapshot.enum(reference)
+        ident = next((k for k, v in self.snapshot.idents.items() if v == value), value)
+        return str(ident).rsplit('/', 1)[-1]
+
+    def answer_signature(self, reference):
+        answer = self.stored(reference)
+        return choice_signature(self.answer_kind(answer.get(':answer/type')), answer.get(':answer/value'))
+
+    def fill_field(self, plan, question_identity, field, previous=None):
+        """Fill absent components without changing a retained field or bank."""
+        previous = self.stored(previous) if previous else None
+        if previous and self.answer_kind(previous.get(':answer-field/type')) not in ('None', field['type']):
+            return None
+        wanted = choice_signature(field['correct_type'], field['correct_value'])
+        bank = [self.stored(a) for a in (previous or {}).get(':answer-field/choices', [])]
+        current_correct = self.stored((previous or {}).get(':answer-field/correct'))
+        if bank:
+            # Populated banks are indivisible captured components. A later
+            # source variant cannot replace, extend, normalize, or deduplicate
+            # them, including values referenced by learner responses.
+            captured_choices = {choice_signature(c['type'], c['value']) for c in field['choices']}
+            retained_choices = {self.answer_signature(a) for a in bank}
+            if field['type'] != 'blank' and captured_choices != retained_choices:
+                return previous[':db/id']
+            if current_correct and self.answer_signature(current_correct) != wanted:
+                return previous[':db/id']
+            matches = [a for a in bank if self.answer_signature(a) == wanted]
+            if len(matches) != 1:
+                return previous[':db/id']
+            if current_correct and previous.get(':answer-field/type') is not None:
+                return previous[':db/id']
+            ft = plan.entity('answer-field', previous[':answer-field/id'], previous)
+            if previous.get(':answer-field/type') is None:
+                plan.set(ft, previous, 'answer-field/type', kw('answer-field.type/' + field['type']))
+            if not current_correct:
+                plan.set(ft, previous, 'answer-field/correct', matches[0][':db/id'])
+            return ft
+        if current_correct and self.answer_signature(current_correct) != wanted:
+            return previous[':db/id']
+        fid = previous[':answer-field/id'] if previous else source_uuid(
+            'answer-field', str(question_identity) + ':' + digest([field['key'], field['type']]))
+        ft = plan.entity('answer-field', fid, previous)
+        choices, correct = [], None
+        for ctype, value in sorted({(c['type'], c['value']) for c in field['choices']}):
+            if current_correct and choice_signature(ctype, value) == wanted:
+                at = current_correct[':db/id']
+            else:
+                aid = source_uuid('answer', str(fid) + ':' + digest([ctype, value]))
+                at = plan.entity('answer', aid)
+                plan.set(at, None, 'answer/type', kw('answer.type/' + ctype))
+                plan.set(at, None, 'answer/value', value)
+                captured = next(c for c in field['choices'] if (c['type'], c['value']) == (ctype, value))
+                if captured.get('feedback') is not None:
+                    plan.set(at, None, 'answer/feedback', captured['feedback'])
+            choices.append(at)
+            if ctype == field['correct_type'] and value == field['correct_value']:
+                correct = at
+        for attr, value in (('answer-field/key', field['key']),
+                            ('answer-field/type', kw('answer-field.type/' + field['type'])),
+                            ('answer-field/correct', correct)):
+            if (previous or {}).get(':' + attr) is None:
+                plan.set(ft, previous, attr, value)
+        plan.set(ft, previous, 'answer-field/choices', choices, many=True)
+        return ft
+
     def question(self, plan, question, old, example):
         self.check_source_attribution(old)
-        self.check_response_ownership(question, old)
+        if self.captured(old, example=example):
+            return old[':db/id']
         mid = question['math_academy_id']
         identity = old[':question/id'] if old else source_uuid('question', mid)
         target = plan.entity('question', identity, old)
         values = {'question/math-academy-id': mid, 'question/problem': question['problem']}
-        if question.get('worked_solution'):
+        # Missing worked solutions are deferred. Fresh questions still retain
+        # their captured solution, but recapture never opens that gap alone.
+        if not old and question.get('worked_solution'):
             values['question/worked-solution'] = question['worked_solution']
         if question.get('difficulty'):
             values['question/difficulty'] = kw('question.difficulty/' + question['difficulty'])
         if question.get('requires_calculator') is not None:
             values['question/requires-calculator'] = bool(question['requires_calculator'])
         for attr, value in values.items():
-            plan.set(target, old, attr, value)
-        fields = []
-        for field in question.get('answer_fields', []):
-            signature = [field['key'], field['type'], sorted({(c['type'], c['value']) for c in field['choices']}), field['correct_type'], field['correct_value']]
-            previous = None
-            compatible = []
-            for candidate in (old or {}).get(':question/answer-fields', []):
-                ctype = candidate.get(':answer-field/type', {})
-                ctype = ctype.get(':db/ident') if isinstance(ctype, dict) else next((k for k,v in self.snapshot.idents.items() if v == ctype), '')
-                correct = candidate.get(':answer-field/correct', {})
-                choices = [(c[':answer/type'][':db/ident'].rsplit('/',1)[-1], c[':answer/value']) for c in candidate.get(':answer-field/choices', [])]
-                correct_type = correct.get(':answer/type', {}).get(':db/ident', '').rsplit('/',1)[-1]
-                stored = [candidate.get(':answer-field/key'), str(ctype).rsplit('/',1)[-1], sorted(set(choices)), correct_type, correct.get(':answer/value')]
-                if stored[:2] == signature[:2]:
-                    compatible.append(candidate)
-                if stored == signature:
-                    previous = candidate
-                    break
-            if previous is None and compatible:
-                previous = compatible[0] if len(compatible) == 1 else self.choose(
-                    'answer-field', {'question_id': mid, **field}, compatible)
-            fid = previous[':answer-field/id'] if previous else source_uuid('answer-field', str(identity) + ':' + digest(signature[:2]))
-            ft = plan.entity('answer-field', fid, previous)
-            choices, correct = [], None
-            for ctype, value in signature[2]:
-                previous_answer = next((a for a in (previous or {}).get(':answer-field/choices', [])
-                    if choice_signature(a[':answer/type'][':db/ident'].rsplit('/',1)[-1], a[':answer/value'])
-                       == choice_signature(ctype, value)
-                       # Blank answers may be verbatim learner entries. Keep
-                       # their exact value and ownership, adding a formatted
-                       # canonical answer instead of rewriting an entered one.
-                       and not (field['type'] == 'blank' and a.get(':task-item/_responses')
-                                and a[':answer/value'] != value)), None)
-                aid = previous_answer[':answer/id'] if previous_answer else source_uuid('answer', str(fid) + ':' + digest([ctype,value]))
-                at = plan.entity('answer', aid, previous_answer)
-                plan.set(at, previous_answer, 'answer/type', kw('answer.type/' + ctype))
-                plan.set(at, previous_answer, 'answer/value', value)
-                captured = next(c for c in field['choices'] if (c['type'], c['value']) == (ctype, value))
-                if captured.get('feedback') is not None:
-                    plan.set(at, previous_answer, 'answer/feedback', captured['feedback'])
-                choices.append(at)
-                if ctype == field['correct_type'] and value == field['correct_value']:
-                    correct = at
-            for attr, value in (('answer-field/key',field['key']), ('answer-field/type',kw('answer-field.type/' + field['type'])), ('answer-field/correct',correct)):
-                plan.set(ft, previous, attr, value)
-            # Blank choices include distinct entered values, not display
-            # options. Keep their ownership when the canonical answer changes.
-            plan.set(ft, previous, 'answer-field/choices', choices, many=True, replace=field['type'] != 'blank')
-            fields.append(ft)
-        if fields or not example:
-            if not question.get('answer_fields_complete', question.get('fields_complete', False)):
-                # Missing captured fields do not establish that MA removed them.
-                incoming_keys = {f['key'] for f in question.get('answer_fields', [])}
-                fields.extend(f[':db/id'] for f in (old or {}).get(':question/answer-fields', [])
-                              if f.get(':answer-field/key') not in incoming_keys)
-            plan.set(target, old, 'question/answer-fields', fields, many=True, replace=True)
+            if (old or {}).get(':' + attr) is None:
+                plan.set(target, old, attr, value)
+        # Answer components must belong to the retained problem. Formatting
+        # equivalence is sufficient; a changed source problem is not.
+        previous_problem = (old or {}).get(':question/problem')
+        if previous_problem:
+            try:
+                same_problem = formatted_prose(previous_problem) == formatted_prose(question['problem'])
+            except ValueError:
+                same_problem = previous_problem == question['problem']
+            if not same_problem:
+                return target
+        previous_fields = [self.stored(f) for f in (old or {}).get(':question/answer-fields', [])]
+        if previous_fields:
+            by_key = {}
+            for previous in previous_fields:
+                by_key.setdefault(previous.get(':answer-field/key'), []).append(previous)
+            for field in question.get('answer_fields', []):
+                candidates = by_key.get(field['key'], [])
+                # Never replace a populated collection or guess which of its
+                # duplicate keys owns the captured component.
+                if len(candidates) == 1:
+                    self.fill_field(plan, identity, field, candidates[0])
+        else:
+            fields = [self.fill_field(plan, identity, field) for field in question.get('answer_fields', [])]
+            if fields:
+                plan.set(target, old, 'question/answer-fields', fields, many=True)
         return target
 
     def ordered(self, owner, kind):
