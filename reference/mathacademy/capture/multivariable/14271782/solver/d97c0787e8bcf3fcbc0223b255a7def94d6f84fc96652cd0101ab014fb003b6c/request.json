@@ -1,0 +1,57 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-337285",
+      "sequence_position": 4,
+      "problem": "$$\n{x}^{′}(t)=[\\begin{aligned}7 & -6 \\\\ 9 & -8\\end{aligned}]x(t)+[\\begin{aligned}5t \\\\ 0\\end{aligned}]\n$$\n\nConsider the system of differential equations. Using the method of variation of parameters, the general solution of the equation can be written in the form\n\n<table align=\"l\" cellpadding=\"0\" rules=\"all\">\n<tbody><tr>\n<td rowspan=\"2\" height=\"40px\" align=\"center\">$x(t)={c}_{1}[\\begin{aligned}2 \\\\ 3\\end{aligned}]{e}^{-2t}+{c}_{2}[\\begin{aligned}1 \\\\ 1\\end{aligned}]{e}^{t}-\\,\\,\\frac{1}{4}$</td>\n<td width=\"5px\" height=\"30px\"></td>\n<td align=\"center\">{{field-1}}</td>\n<td width=\"5px\" align=\"center\"></td>\n<td rowspan=\"2\" height=\"40px\" align=\"center\">.</td>\n</tr>\n\n<tr>\n<td width=\"5px\" height=\"30px\"></td>\n<td align=\"center\">$90t+45$</td>\n<td align=\"center\"></td>\n</tr>\n</tbody></table>",
+      "worked_solution": "Recall that the general solution of an inhomogeneous system can be written as \n\n$$\nx(t)={x}_{c}(t)+{x}_{p}(t)\n$$\n\nwhere ${x}_{c}(t)$ is the complementary solution (solution of the corresponding homogeneous system) and ${x}_{p}(t)$ is a particular solution.\n\nNotice that we are given that\n\n$$\n{x}_{c}(t)={c}_{1}[\\begin{aligned}2 \\\\ 3\\end{aligned}]{e}^{-2t}+{c}_{2}[\\begin{aligned}1 \\\\ 1\\end{aligned}]{e}^{t}.\n$$\n\nWe'll look for a particular solution in the form\n\n$$\n{x}_{p}(t)=Φ\\,u(t)\n$$\n\nwhere $Φ$ is a fundamental matrix for the corresponding homogeneous system, $f(t)$ is the forcing column vector and\n\n$$\nu(t)=\\int {Φ}^{-1}\\,f(t)\\,\\text{d}t.\n$$\n\nIn our case,\n\n$$\nΦ=[\\begin{aligned}2{e}^{-2t} & {e}^{t} \\\\ 3{e}^{-2t} & {e}^{t}\\end{aligned}],\\,f(t)=[\\begin{aligned}5t \\\\ 0\\end{aligned}].\n$$\n\nSince $Φ$ is a fundamental matrix, it must be invertible. Using the formula for the inverse of a $2\\times 2$ matrix, we get the following:\n\n$$\n\\begin{aligned}{Φ}^{-1} & =\\frac{1}{2{e}^{-2t}\\cdot {e}^{t}-{e}^{t}\\cdot 3{e}^{-2t}}[\\begin{aligned}{e}^{t} & -{e}^{t} \\\\ -3{e}^{-2t} & 2{e}^{-2t}\\end{aligned}] \\\\  & =-{e}^{t}[\\begin{aligned}{e}^{t} & -{e}^{t} \\\\ -3{e}^{-2t} & 2{e}^{-2t}\\end{aligned}] \\\\  & =-[\\begin{aligned}{e}^{2t} & -{e}^{2t} \\\\ -3{e}^{-t} & 2{e}^{-t}\\end{aligned}].\\end{aligned}\n$$\n\n$$\n\\begin{aligned}{Φ}^{-1}\\,f(t) & =-[\\begin{aligned}{e}^{2t} & -{e}^{2t} \\\\ -3{e}^{-t} & 2{e}^{-t}\\end{aligned}][\\begin{aligned}5t \\\\ 0\\end{aligned}] \\\\  & =[\\begin{aligned}-5t{e}^{2t} \\\\ 15t{e}^{-t}\\end{aligned}].\\end{aligned}\n$$\n\nNow, using our formula for $u(t),$ we obtain\n\n$$\n\\begin{aligned}u(t) & =\\int {Φ}^{-1}\\,f(t)\\,\\text{d}t \\\\  & =\\int [\\begin{aligned}-5t{e}^{2t} \\\\ 15t{e}^{-t}\\end{aligned}]\\,\\text{d}t \\\\  & =[\\begin{aligned}\\int -5t{e}^{2t}\\,\\text{d}t \\\\ \\int 15t{e}^{-t}\\,\\text{d}t\\end{aligned}].\\end{aligned}\n$$\n\nIntegrating the components by parts, we get the following:\n\n- For the first component, let $u=-5t$ and $\\text{d}v={e}^{2t}\\,\\text{d}t.$ Then, $\\text{d}u=-5\\,\\text{d}t$ and $v=\\frac{1}{2}{e}^{2t}.$ So,\n\n$$\n\\begin{aligned}\\int -5t{e}^{2t}\\,\\text{d}t & =(-5t)\\cdot \\frac{1}{2}{e}^{2t}-\\int \\frac{1}{2}{e}^{2t}\\cdot (-5\\,\\text{d}t) \\\\  & =-\\frac{5}{2}t{e}^{2t}+\\frac{5}{2}\\int {e}^{2t}\\,\\text{d}t \\\\  & =-\\frac{5}{2}t{e}^{2t}+\\frac{5}{4}{e}^{2t} \\\\  & =\\frac{5}{4}{e}^{2t}(1-2t).\\end{aligned}\n$$\n\n- For the second component, let $u=15t$ and $\\text{d}v={e}^{-t}\\,\\text{d}t.$ Then, $\\text{d}u=15\\,\\text{d}t$ and $v=-{e}^{-t}.$ So,\n\n$$\n\\begin{aligned}\\int 15t{e}^{-t}\\,\\text{d}t & =15t\\cdot (-{e}^{-t})-\\int -{e}^{-t}\\cdot 15\\,\\text{d}t \\\\  & =-15t{e}^{-t}+\\int 15{e}^{-t}\\,\\text{d}t \\\\  & =-15t{e}^{-t}-15{e}^{-t} \\\\  & =-15{e}^{-t}(t+1).\\end{aligned}\n$$\n\nTherefore, our particular solution is\n\n$$\n\\begin{aligned}{x}_{p}(t) & =Φ\\,u(t) \\\\  & =[\\begin{aligned}2{e}^{-2t} & {e}^{t} \\\\ 3{e}^{-2t} & {e}^{t}\\end{aligned}][\\begin{aligned}\\frac{5}{4}{e}^{2t}(1-2t) \\\\ -15{e}^{-t}(t+1)\\end{aligned}] \\\\  & =\\frac{1}{4}[\\begin{aligned}10(1-2t)-60(t+1) \\\\ 15(1-2t)-60(t+1)\\end{aligned}] \\\\  & =-\\frac{1}{4}[\\begin{aligned}80t+50 \\\\ 90t+45\\end{aligned}].\\end{aligned}\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "problem_field_keys": [
+        "field-1"
+      ],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14271782/observations/history-q-337285-98d489c2b2d3cb9fe384.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14271782",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14271782/observations/history-solution-q-337285-391dc35f2d96baf959e0.html",
+      "fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q337285",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "80t+50",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "source_grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "Recall that the general solution of an inhomogeneous system can be written as \n\n$$\nx(t)={x}_{c}(t)+{x}_{p}(t)\n$$\n\nwhere ${x}_{c}(t)$ is the complementary solution (solution of the corresponding homogeneous system) and ${x}_{p}(t)$ is a particular solution.\n\nNotice that we are given that\n\n$$\n{x}_{c}(t)={c}_{1}[\\begin{aligned}2 \\\\ 3\\end{aligned}]{e}^{-2t}+{c}_{2}[\\begin{aligned}1 \\\\ 1\\end{aligned}]{e}^{t}.\n$$\n\nWe'll look for a particular solution in the form\n\n$$\n{x}_{p}(t)=Φ\\,u(t)\n$$\n\nwhere $Φ$ is a fundamental matrix for the corresponding homogeneous system, $f(t)$ is the forcing column vector and\n\n$$\nu(t)=\\int {Φ}^{-1}\\,f(t)\\,\\text{d}t.\n$$\n\nIn our case,\n\n$$\nΦ=[\\begin{aligned}2{e}^{-2t} & {e}^{t} \\\\ 3{e}^{-2t} & {e}^{t}\\end{aligned}],\\,f(t)=[\\begin{aligned}5t \\\\ 0\\end{aligned}].\n$$\n\nSince $Φ$ is a fundamental matrix, it must be invertible. Using the formula for the inverse of a $2\\times 2$ matrix, we get the following:\n\n$$\n\\begin{aligned}{Φ}^{-1} & =\\frac{1}{2{e}^{-2t}\\cdot {e}^{t}-{e}^{t}\\cdot 3{e}^{-2t}}[\\begin{aligned}{e}^{t} & -{e}^{t} \\\\ -3{e}^{-2t} & 2{e}^{-2t}\\end{aligned}] \\\\  & =-{e}^{t}[\\begin{aligned}{e}^{t} & -{e}^{t} \\\\ -3{e}^{-2t} & 2{e}^{-2t}\\end{aligned}] \\\\  & =-[\\begin{aligned}{e}^{2t} & -{e}^{2t} \\\\ -3{e}^{-t} & 2{e}^{-t}\\end{aligned}].\\end{aligned}\n$$\n\n$$\n\\begin{aligned}{Φ}^{-1}\\,f(t) & =-[\\begin{aligned}{e}^{2t} & -{e}^{2t} \\\\ -3{e}^{-t} & 2{e}^{-t}\\end{aligned}][\\begin{aligned}5t \\\\ 0\\end{aligned}] \\\\  & =[\\begin{aligned}-5t{e}^{2t} \\\\ 15t{e}^{-t}\\end{aligned}].\\end{aligned}\n$$\n\nNow, using our formula for $u(t),$ we obtain\n\n$$\n\\begin{aligned}u(t) & =\\int {Φ}^{-1}\\,f(t)\\,\\text{d}t \\\\  & =\\int [\\begin{aligned}-5t{e}^{2t} \\\\ 15t{e}^{-t}\\end{aligned}]\\,\\text{d}t \\\\  & =[\\begin{aligned}\\int -5t{e}^{2t}\\,\\text{d}t \\\\ \\int 15t{e}^{-t}\\,\\text{d}t\\end{aligned}].\\end{aligned}\n$$\n\nIntegrating the components by parts, we get the following:\n\n- For the first component, let $u=-5t$ and $\\text{d}v={e}^{2t}\\,\\text{d}t.$ Then, $\\text{d}u=-5\\,\\text{d}t$ and $v=\\frac{1}{2}{e}^{2t}.$ So,\n\n$$\n\\begin{aligned}\\int -5t{e}^{2t}\\,\\text{d}t & =(-5t)\\cdot \\frac{1}{2}{e}^{2t}-\\int \\frac{1}{2}{e}^{2t}\\cdot (-5\\,\\text{d}t) \\\\  & =-\\frac{5}{2}t{e}^{2t}+\\frac{5}{2}\\int {e}^{2t}\\,\\text{d}t \\\\  & =-\\frac{5}{2}t{e}^{2t}+\\frac{5}{4}{e}^{2t} \\\\  & =\\frac{5}{4}{e}^{2t}(1-2t).\\end{aligned}\n$$\n\n- For the second component, let $u=15t$ and $\\text{d}v={e}^{-t}\\,\\text{d}t.$ Then, $\\text{d}u=15\\,\\text{d}t$ and $v=-{e}^{-t}.$ So,\n\n$$\n\\begin{aligned}\\int 15t{e}^{-t}\\,\\text{d}t & =15t\\cdot (-{e}^{-t})-\\int -{e}^{-t}\\cdot 15\\,\\text{d}t \\\\  & =-15t{e}^{-t}+\\int 15{e}^{-t}\\,\\text{d}t \\\\  & =-15t{e}^{-t}-15{e}^{-t} \\\\  & =-15{e}^{-t}(t+1).\\end{aligned}\n$$\n\nTherefore, our particular solution is\n\n$$\n\\begin{aligned}{x}_{p}(t) & =Φ\\,u(t) \\\\  & =[\\begin{aligned}2{e}^{-2t} & {e}^{t} \\\\ 3{e}^{-2t} & {e}^{t}\\end{aligned}][\\begin{aligned}\\frac{5}{4}{e}^{2t}(1-2t) \\\\ -15{e}^{-t}(t+1)\\end{aligned}] \\\\  & =\\frac{1}{4}[\\begin{aligned}10(1-2t)-60(t+1) \\\\ 15(1-2t)-60(t+1)\\end{aligned}] \\\\  & =-\\frac{1}{4}[\\begin{aligned}80t+50 \\\\ 90t+45\\end{aligned}].\\end{aligned}\n$$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14271782/observations/history-solution-q-337285-391dc35f2d96baf959e0.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/multivariable/14271782/observations/history-q-337285-98d489c2b2d3cb9fe384.html"
+        }
+      }
+    ]
+  }
+}
