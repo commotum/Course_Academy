@@ -154,7 +154,7 @@ class SourceGapPreparationTests(unittest.TestCase):
             self.assertIn('q-11', stored)
             self.assertNotIn('q-12', stored)
 
-    def test_unflagged_partial_update_preserves_existing_fields_and_uuid(self):
+    def test_unflagged_partial_recapture_preserves_complete_stored_question(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             config = Config(repo_root=root, math_root=root / 'math')
@@ -166,13 +166,14 @@ class SourceGapPreparationTests(unittest.TestCase):
             client = FakeClient()
             pipeline = DatabasePipeline(config, threading.Event(), client=client)
             self.assertEqual(pipeline.process(capture)['status'], 'verified')
-            previous = {key: deepcopy(value) for key, value in client.facts.items()
-                        if key[1] in ('question/id', 'question/answer-fields')}
+            previous = deepcopy(client.facts)
+            basis = client.t
             q['answer_fields'].pop()
             q['problem'] += ' Updated original wording.'
             atomic_json(capture / 'content.json', {'questions': [q]})
-            self.assertEqual(pipeline.process(capture)['status'], 'verified')
-            self.assertTrue(all(client.facts[key] == value for key, value in previous.items()))
+            self.assertEqual(pipeline.process(capture)['status'], 'no_changes')
+            self.assertEqual(client.facts, previous)
+            self.assertEqual(client.t, basis)
 
 
 if __name__ == '__main__':

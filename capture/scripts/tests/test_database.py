@@ -221,7 +221,7 @@ class PrepareTests(unittest.TestCase):
         self.assertFalse(any(row[1] == ':knowledge-point/title'
                              for batch in result['batches'] for row in batch['assertions']))
 
-    def test_missing_kp_id_uses_captured_example_over_stale_pool_owner(self):
+    def test_missing_kp_id_preserves_existing_owner_despite_captured_example(self):
         snapshot = source_snapshot()
         second = copy.deepcopy(snapshot['entities'][1])
         second.update({':db/id': 4, ':knowledge-point/id': source_uuid('kp', 2),
@@ -241,9 +241,14 @@ class PrepareTests(unittest.TestCase):
             q['knowledge_point'] = 'Subtraction'
         practice.pop('knowledge_point_id')
         result = Preparation(snapshot).prepare({'canonical_examples': [example], 'questions': [practice]})
-        self.assertEqual(result['content']['questions'][0]['knowledge_point_id'], str(second[':knowledge-point/id']))
+        self.assertEqual(result['content']['questions'][0]['knowledge_point_id'],
+                         str(snapshot['entities'][1][':knowledge-point/id']))
         self.assertFalse(any(row[0] == 2 and row[1] == ':knowledge-point/title'
                              for batch in result['batches'] for row in batch['assertions']))
+        self.assertFalse(any(row[1] == ':knowledge-point/questions' and row[2] == 6
+                             for batch in result['batches'] for row in batch['assertions']))
+        self.assertFalse(any(row[1] == ':knowledge-point/questions'
+                             for batch in result['batches'] for row in batch['retractions']))
 
     def test_full_answer_fields_and_kp_membership(self):
         snap=source_snapshot(); q=question(); q['knowledge_point_id']=str(snap['entities'][1][':knowledge-point/id'])

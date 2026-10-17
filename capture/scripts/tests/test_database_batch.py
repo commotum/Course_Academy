@@ -1,4 +1,5 @@
 from contextlib import redirect_stdout
+from copy import deepcopy
 import io
 import tempfile
 import threading
@@ -97,7 +98,7 @@ class BatchTests(unittest.TestCase):
         archive = batch / 'requests' / saved['request_key'] / 'request.json'
         self.assertEqual(read_json(archive)['transaction'], saved['transaction'])
 
-    def test_shared_question_revisions_stop_at_activity_boundary(self):
+    def test_new_shared_question_revisions_stop_at_boundary_and_first_capture_is_retained(self):
         self.config.database_batch_questions = 200
         first, second = self.capture(20, ['q-11']), self.capture(21, ['q-11'])
         content = read_json(second / 'content.json')
@@ -107,22 +108,32 @@ class BatchTests(unittest.TestCase):
         self.assertEqual(result['status'], 'verified', result)
         self.assertEqual(list(result['activities']), [str(first)])
         self.assertEqual(result['boundary'], 'shared_content_revision')
+        retained = {key: deepcopy(values) for key, values in self.client.facts.items()
+                    if key[1].startswith(('question/', 'answer-field/', 'answer/'))}
         self.assertEqual(self.pipeline.process_batch([second], self.root / 'batch2', allow_underfilled=True)['status'], 'verified')
+        self.assertTrue(all(self.client.facts[key] == values for key, values in retained.items()))
         values = [v for (e, a), vals in self.client.facts.items() if a == 'question/problem' for v, _ in vals]
-        self.assertIn('A later source revision', values)
+        self.assertIn(question()['problem'], values)
+        self.assertNotIn('A later source revision', values)
+        self.assertEqual(len({e for e, attr in self.client.facts if attr == 'multistep/id'}), 2)
 
-    def test_noop_later_observation_cannot_be_overwritten_by_earlier_revision(self):
+    def test_complete_question_recaptures_share_a_batch_without_overwriting_stored_content(self):
         self.config.database_batch_questions = 200
         original = self.capture(19, ['q-11'])
         self.assertEqual(self.pipeline.process(original)['status'], 'verified')
+        retained = {key: deepcopy(values) for key, values in self.client.facts.items()
+                    if key[1].startswith(('question/', 'answer-field/', 'answer/'))}
         first, second = self.capture(20, ['q-11']), self.capture(21, ['q-11'])
         content = read_json(first / 'content.json')
         content['questions'][0]['problem'] = 'Earlier revision'
         atomic_json(first / 'content.json', content)
         result = self.pipeline.process_batch([first, second], self.root / 'batch1', allow_underfilled=True)
-        self.assertEqual(result['boundary'], 'shared_content_revision', result)
-        self.assertEqual(len(result['activities']), 1)
-        self.assertEqual(self.pipeline.process_batch([second], self.root / 'batch2', allow_underfilled=True)['status'], 'verified')
+        self.assertEqual(result['status'], 'verified', result)
+        self.assertEqual(result['boundary'], 'queue_end', result)
+        self.assertEqual(set(result['activities']), {str(first), str(second)})
+        self.assertTrue(all(self.client.facts[key] == values for key, values in retained.items()))
+        self.assertEqual(len({e for e, attr in self.client.facts if attr == 'multistep/id'}), 3)
+        self.assertEqual(self.pipeline.process_batch([second], self.root / 'batch2', allow_underfilled=True)['status'], 'no_changes')
 
     def test_size_target_never_splits_a_large_complete_activity(self):
         self.config.database_batch_questions = 2
@@ -262,11 +273,14 @@ class BatchTests(unittest.TestCase):
         self.assertEqual(read_json(batch / 'request.json'), saved)
         self.assertEqual(len(self.client.receipts), 1)
 
-    def test_source_changed_during_unknown_outcome_remains_queued_for_new_import(self):
+    def test_source_changed_during_unknown_outcome_is_rechecked_without_rewriting_completed_capture(self):
         capture = self.capture(20, ['q-11'])
         spool = enqueue(self.config, capture)
         self.client.timeout_once = True
-        self.worker.process_one(force=True)
+        self.assertEqual(self.worker.process_one(force=True)['status'], 'pending')
+        retained = deepcopy(self.client.facts)
+        submitted = [opts for cmd, opts in self.client.calls if cmd == 'transact']
+        self.assertEqual(len(submitted), 1)
         content = read_json(capture / 'content.json')
         content['questions'][0]['problem'] = 'Updated while outcome unknown'
         atomic_json(capture / 'content.json', content)
@@ -276,12 +290,17 @@ class BatchTests(unittest.TestCase):
         atomic_json(active_path, active)
         self.assertEqual(self.worker.process_one(force=True)['status'], 'verified')
         self.assertEqual(read_json(spool)['status'], 'pending')
+        submitted = [opts for cmd, opts in self.client.calls if cmd == 'transact']
+        self.assertEqual(len(submitted), 2)
+        self.assertEqual(submitted[0]['--request-key'], submitted[1]['--request-key'])
         item = read_json(spool)
         item['next_attempt_at'] = 0
         atomic_json(spool, item)
-        self.assertEqual(self.worker.process_one(force=True)['status'], 'verified')
-        self.assertEqual(read_json(spool)['status'], 'verified')
-        self.assertEqual(len(self.client.receipts), 2)
+        self.assertEqual(self.worker.process_one(force=True)['status'], 'no_changes')
+        self.assertEqual(read_json(spool)['status'], 'no_changes')
+        self.assertEqual(len(self.client.receipts), 1)
+        self.assertEqual(self.client.facts, retained)
+        self.assertFalse(self.worker.pending())
 
     def test_default_200_floor_waits_then_commits_whole_activities_above_floor(self):
         self.config.database_batch_questions = 200

@@ -181,6 +181,14 @@ class Preparation:
     def stored(self, reference):
         return self.snapshot.entities.get(scalar(reference), reference if isinstance(reference, dict) else {})
 
+    def separately_attributed(self, old, attr):
+        if not old or not self.snapshot.has_facts or ':' + attr not in old:
+            return False
+        current = dumps(self.snapshot.enum(old[':' + attr]))
+        ma_source = self.snapshot.idents.get(MA_SOURCE)
+        return any(eid == old[':db/id'] and name == attr and value == current and source != ma_source
+                   for eid, name, value, source in self.snapshot.facts)
+
     def captured(self, old, *, example=False):
         """A missing solution is not permission to recapture an authored question."""
         if not old or not old.get(':question/problem'):
@@ -200,9 +208,12 @@ class Preparation:
 
     def question_owners(self, old, *, example=False):
         attr = ':knowledge-point/canonical-example' if example else ':knowledge-point/questions'
-        return [p for p in self.snapshot.entities.values() if
-                (scalar(p.get(attr)) == old[':db/id'] if example else
-                 old[':db/id'] in {scalar(q) for q in p.get(attr, [])})]
+        reverse = ':knowledge-point/_canonical-example' if example else ':knowledge-point/_questions'
+        owners = {p[':db/id']: p for p in self.snapshot.entities.values() if
+                  (scalar(p.get(attr)) == old[':db/id'] if example else
+                   old[':db/id'] in {scalar(q) for q in p.get(attr, [])})}
+        owners.update({scalar(p): self.stored(p) for p in old.get(reverse, [])})
+        return list(owners.values())
 
     def stored_question(self, original, old, *, example=False):
         """Keep supported inventory/calibration based on retained database data."""
@@ -228,7 +239,7 @@ class Preparation:
                 'correct_type': self.answer_kind(correct[':answer/type']),
                 'correct_value': correct[':answer/value']})
         owners = self.question_owners(old, example=example)
-        if len(owners) == 1:
+        if len(owners) == 1 and ':knowledge-point/id' in owners[0]:
             record['source_knowledge_point_id'] = original.get('knowledge_point_id') or original.get('kp_id')
             record['knowledge_point_id'] = str(owners[0][':knowledge-point/id'])
             record['knowledge_point'] = owners[0].get(':knowledge-point/title', '')
@@ -575,6 +586,20 @@ class Preparation:
                 retained = self.stored_question(q, existing, example=example)
                 preserved.append((retained, example, existing))
                 accepted.append((retained, example))
+                continue
+            existing_owners = self.question_owners(existing, example=example) if existing else []
+            if existing_owners:
+                # A missing question component does not reopen its already
+                # captured KP ownership or surrounding topic metadata.
+                qt = self.question(plan, q, existing, example)
+                question_targets[q['math_academy_id']] = qt
+                if len(existing_owners) == 1:
+                    owner = existing_owners[0]
+                    if ':knowledge-point/id' in owner:
+                        q['knowledge_point_id'] = str(owner[':knowledge-point/id'])
+                    if example:
+                        example_targets[q['math_academy_id']] = (owner[':db/id'], owner)
+                accepted.append((q, example))
                 continue
             old_point = point if ':db/id' in point else None
             pt = plan.entity('knowledge-point', point[':knowledge-point/id'], old_point)
@@ -945,13 +970,17 @@ class Preparation:
                         existing = self.choose('tutorial revision', tutorial, candidates)
                 if existing and not previous:
                     previous = next((s for s in previous_steps if scalar(s.get(':step/content')) == existing[':db/id']), None)
-                text = formatted_prose(library.text(tutorial['content']) if library else tutorial['content'])
+                if self.separately_attributed(existing, 'tutorial/content'):
+                    text = existing[':tutorial/content']
+                else:
+                    text = formatted_prose(library.text(tutorial['content']) if library else tutorial['content'])
                 identity = existing[':tutorial/id'] if existing else source_uuid('tutorial', cid)
                 target = plan.entity('tutorial', identity, existing)
                 for attr, value in (('tutorial/math-academy-id',cid),('tutorial/title',tutorial.get('title') or step.get('title')),('tutorial/content',text)):
                     if not value:
                         raise UnsupportedContent('Tutorial title or content unavailable')
-                    plan.set(target, existing, attr, value)
+                    if not self.separately_attributed(existing, attr):
+                        plan.set(target, existing, attr, value)
                 tutorial['content'] = text
             elif kind in ('example', 'knowledge-point'):
                 example = examples.get('e-' + str(cid))
