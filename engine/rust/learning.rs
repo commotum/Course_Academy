@@ -1769,6 +1769,24 @@ fn normalize_math(value: &str) -> String {
     text
 }
 
+fn normalize_answer_form(value: &str) -> String {
+    let mut text = normalize_math(value);
+    let unsigned = text
+        .strip_prefix('-')
+        .or_else(|| text.strip_prefix('+'))
+        .unwrap_or(&text);
+    // A leading zero is optional for a decimal numeral. Preserve every
+    // fractional digit so rounding and significant-figure requirements remain
+    // strict, and leave fractions or compound expressions unchanged.
+    if unsigned.strip_prefix('.').is_some_and(|digits| {
+        !digits.is_empty() && digits.bytes().all(|digit| digit.is_ascii_digit())
+    }) {
+        let sign_len = text.len() - unsigned.len();
+        text.insert(sign_len, '0');
+    }
+    text
+}
+
 /// Compatibility predicate for callers that need only proved equivalence.
 /// The learner-facing grader uses compare_math so unsupported comparisons
 /// remain errors, rather than being recorded as incorrect learner answers.
@@ -1797,7 +1815,7 @@ pub fn compare_math_in_context(
     context: symbolic::Context,
 ) -> Result<bool> {
     if requires_answer_form(prompt) {
-        Ok(normalize_math(a) == normalize_math(b))
+        Ok(normalize_answer_form(a) == normalize_answer_form(b))
     } else {
         compare_math(a, b, context)
     }
@@ -3542,6 +3560,55 @@ pub(crate) mod tests {
         );
         assert!(grade(&s, 100, &BTreeMap::from([(200, "0.50".into())])).unwrap());
         assert!(!grade(&s, 100, &BTreeMap::from([(200, "1/2".into())])).unwrap());
+    }
+
+    #[test]
+    fn rounded_decimal_blanks_accept_omitted_leading_zero_without_changing_precision() {
+        let mut s = fixture();
+        s.entities.get_mut(&100).unwrap().insert(
+            "question/problem".into(),
+            json!("Round your answer to three decimal places."),
+        );
+        for (canonical, accepted) in [
+            ("0.850", ".850"),
+            (".850", "0.850"),
+            ("-0.850", "-.850"),
+            ("+0.850", "+.850"),
+            ("0.000", ".000"),
+        ] {
+            s.entities
+                .get_mut(&300)
+                .unwrap()
+                .insert("answer/value".into(), json!(canonical));
+            assert_eq!(
+                grade(&s, 100, &BTreeMap::from([(200, accepted.into())])),
+                Ok(true),
+                "{accepted} must preserve the decimal form of {canonical}"
+            );
+        }
+        s.entities
+            .get_mut(&300)
+            .unwrap()
+            .insert("answer/value".into(), json!("0.850"));
+        for rejected in [
+            ".85",
+            "0.85",
+            ".8500",
+            "0.8500",
+            ".851",
+            "-.850",
+            "17/20",
+            "8.50e-1",
+            ".425+.425",
+            ".",
+            "..850",
+        ] {
+            assert_eq!(
+                grade(&s, 100, &BTreeMap::from([(200, rejected.into())])),
+                Ok(false),
+                "{rejected} must not satisfy the authored three-decimal answer"
+            );
+        }
     }
 
     #[test]
