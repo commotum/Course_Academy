@@ -1,0 +1,5 @@
+[:find (pull ?t [:db/id :learner-task/id {:learner-task/status [:db/ident]}
+ {[:learner/_activity :limit nil] [:db/id]}
+ {:learner-task/activity [:db/id :activity/title {:activity/type [:db/ident]}
+ :activity/first-step {[:activity/steps :limit nil] [:db/id :step/next {:step/content [:db/id :knowledge-point/id :question/id :multistep/id]}]}]}
+ {[:learner-task/items :limit nil] [:db/id :task-item/content :task-item/next {:task-item/status [:db/ident]}]}]) :in $ [?state ...] [?kind ...] :where [?t :learner-task/status ?status] [?status :db/ident ?state] [?t :learner-task/activity ?a] [?a :activity/type ?type] [?type :db/ident ?kind]]
