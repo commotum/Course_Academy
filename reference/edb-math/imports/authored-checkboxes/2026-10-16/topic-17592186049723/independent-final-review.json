@@ -1,0 +1,80 @@
+{
+  "status": "passed",
+  "review_type": "Independent code review and output checks; no source edits or database writes",
+  "reviewed_files": {
+    "reference/edb-math/imports/authored-checkboxes/2026-10-16/topic-17592186049723/migrate.py": "1b231c3c3858b9b43e16173a02576c3d59691d9f64277bfbc80b9bfdcf147e30",
+    "reference/edb-math/imports/authored-checkboxes/2026-10-12/finder-easy/prepare.py": "e9ee5286c72b3ea415584d0df3ba1c37ce194ebfbc6034b77dc9af13427abedd",
+    "generate/scratch/17592186124477.py": "9e9a0e66eb88a4f1cb27c08344c3dfc7843aac12922e5a5d1e67ab043ff41d1f",
+    "generate/scratch/17592186124478.py": "7c37c0b8ecfd4d7f7cf27f279d5a7ebd8c22882cd83b6acd97a4cf40d9bd83b0",
+    "ui/question-fields.js": "527ae5d8b3769ae9d2b6e3d31dfb7e0455197621f93d645bcbf0025674697386"
+  },
+  "migration_review": {
+    "material_issues_found": [],
+    "questions_in_preservation_scope": 68,
+    "checkbox_conversions": 47,
+    "retained_original_field_and_answer_entities": 282,
+    "mapped_saved_responses": 6,
+    "reviewed_guards": [
+      "Full basis guard",
+      "Exact prompt CAS",
+      "Current question equality against audit",
+      "Current topic inventory equality",
+      "Incoming reference ownership",
+      "New UUID collision checks"
+    ],
+    "reviewed_verification": [
+      "Exact allowed datom scope and expected retractions",
+      "Owned Boolean banks and correct references",
+      "Actual saved-response subset mapping",
+      "All 68 question and learner metadata preserved outside authorized changes",
+      "Retained entity and topic scope equality",
+      "Exact committed readback with speculative IDs remapped",
+      "Historical readback at original basis"
+    ],
+    "commit_evidence_note": "Parent independently verified checkbox commit 3227->3228 and solution correction commit 3231->3232; this reviewer did not perform database reads or writes."
+  },
+  "generators": [
+    {
+      "kp_id": 17592186124477,
+      "source_profiles": 13,
+      "independently_generated_outputs_checked": 130,
+      "version": "pivot-columns-ref-checkbox-2",
+      "evidence": "generate/scratch/17592186124477/checkbox-update-2026-10-16/verification.json"
+    },
+    {
+      "kp_id": 17592186124478,
+      "source_profiles": 16,
+      "independently_generated_outputs_checked": 160,
+      "version": "1.1.0",
+      "source_replay_solution_checks": 16,
+      "wording_repairs_verified": [
+        "q-73618 plural columns",
+        "q-73621 singular column"
+      ],
+      "evidence": "generate/scratch/17592186124478/checkbox-update-2026-10-16/verification.json"
+    }
+  ],
+  "generator_checks": {
+    "total_independent_generated_outputs": 290,
+    "all_passed": true,
+    "material_issues_found": [],
+    "checks": [
+      "Fraction exact elimination and rendered solution conclusions",
+      "One field per displayed Column 1 through n",
+      "Each field owns exactly one text false and one text true answer",
+      "Correct references resolve within owned banks",
+      "Selected subsets match exact pivot/nonpivot columns",
+      "No answer ID reused across distinct fields",
+      "Checkbox question IDs differ from previous radio outputs",
+      "Question IDs remain unchanged when replaying exact parameters under another seed",
+      "Same seeded matrices and parameters as previous version",
+      "Exactly one Select all that apply instruction",
+      "Easy-only difficulty and source rank/shape support preserved",
+      "Final validation hashes match inspected scripts"
+    ],
+    "empty_full_selection_behavior": "All supported profiles have 0 < selected < column_count; empty and full selections are representable and mathematically incorrect. No unsupported zero/full correct-subset profiles were added.",
+    "ui_evidence": "ui/question-fields.js checkboxControl selects the owned false answer before first interaction; tests/question-fields.test.mjs has an existing untouched-unchecked-fields test. Code inspected; UI test was not rerun.",
+    "source_sampler_comparison": "Loaded generator source from git HEAD in memory and compared matching seeds against updated generators without editing repository files."
+  },
+  "persistence_note": "Persisted completed review results only; no additional tests performed for this summary."
+}

@@ -1,0 +1,5251 @@
+{
+  "status": "prepared-and-validated",
+  "database": "math",
+  "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+  "captured_basis": 3212,
+  "source_snapshot": "reference/edb-math/audits/radio2checkbox/2026-10-16/entity-17592186124704/snapshot.json",
+  "source_sha256": "bc7e4299ec5220a4cd317a765f9af2f45df4232602b40e528daa951e2d94b876",
+  "independent_checker": "reference/edb-math/audits/radio2checkbox/2026-10-16/entity-17592186124704/independent-review.py",
+  "checker_sha256": "4d8827f365e41c08b6a41125497391846d72c7c6d438ab141b5d35a8a987396e",
+  "method": "Apply only exact listed solution replacements in memory; Fraction Gaussian elimination and displayed-operation execution reused as pure functions from the immutable independent audit.",
+  "correction_count": 7,
+  "corrections": [
+    {
+      "question_eid": 17592186124884,
+      "question_id": "f1ae8763-ab2d-5aee-9b53-3f6da8520aee",
+      "math_academy_id": "q-35457",
+      "kp_id": 17592186124479,
+      "attribute": ":question/worked-solution",
+      "before": "First, we need to convert $B$ to row echelon form:\n\n$$\n\\begin{aligned}B & =\\begin{bmatrix}3 & 0 & 0 & 0 & 0 \\\\ 0 & 0 & 2 & 0 & -3 \\\\ 0 & 0 & 10 & 3 & -9 \\\\ 0 & 0 & 0 & 1 & 2\\end{bmatrix} & {R}_{3} & :={R}_{3}+(-5){R}_{2} \\\\  & \u223c\\begin{bmatrix}3 & 0 & 0 & 0 & 0 \\\\ 0 & 0 & 2 & 0 & -3 \\\\ 0 & 0 & 0 & 3 & 6 \\\\ 0 & 0 & 0 & 1 & 2\\end{bmatrix} & {R}_{4} & :={R}_{4}+(-\\frac{1}{3}){R}_{3} \\\\  & \u223c\\begin{bmatrix}3 & 0 & 0 & 0 & 0 \\\\ 0 & 0 & 2 & 0 & -3 \\\\ 0 & 0 & 0 & 3 & 6 \\\\ 0 & 0 & 0 & 0 & 0\\end{bmatrix}\\end{aligned}\n$$\n\nLooking at the row echelon form, we see that $A$ has $3$ pivots, and therefore the number of pivot columns is $3.$",
+      "after": "First, we need to convert $B$ to row echelon form:\n\n$$\n\\begin{aligned}B & =\\begin{bmatrix}3 & 0 & 0 & 0 & 0 \\\\ 0 & 0 & 2 & 0 & -3 \\\\ 0 & 0 & 10 & 3 & -9 \\\\ 0 & 0 & 0 & 1 & 2\\end{bmatrix} & {R}_{3} & :={R}_{3}+(-5){R}_{2} \\\\  & \u223c\\begin{bmatrix}3 & 0 & 0 & 0 & 0 \\\\ 0 & 0 & 2 & 0 & -3 \\\\ 0 & 0 & 0 & 3 & 6 \\\\ 0 & 0 & 0 & 1 & 2\\end{bmatrix} & {R}_{4} & :={R}_{4}+(-\\frac{1}{3}){R}_{3} \\\\  & \u223c\\begin{bmatrix}3 & 0 & 0 & 0 & 0 \\\\ 0 & 0 & 2 & 0 & -3 \\\\ 0 & 0 & 0 & 3 & 6 \\\\ 0 & 0 & 0 & 0 & 0\\end{bmatrix}\\end{aligned}\n$$\n\nLooking at the row echelon form, we see that $B$ has $3$ pivots, and therefore the number of pivot columns is $3.$",
+      "before_sha256": "131668107a514a56b90e5eda0cd1bd121d2fd2233210455a7accf7b220adad32",
+      "after_sha256": "204b7a9dc517cd9728934bca4cb29d0bc5705387d511e61fa471ad35ecc59b13",
+      "edits": [
+        {
+          "before": "we see that $A$ has",
+          "after": "we see that $B$ has"
+        }
+      ],
+      "reason": "Use the prompt matrix name in the conclusion; arithmetic and selected columns/count are unchanged.",
+      "before_validation": {
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "A"
+        ],
+        "matrix_names_match": false,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            "-3/2"
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          2,
+          5
+        ],
+        "rank": 3,
+        "mathematical_answer": 3,
+        "solution_answer": 3,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+(-5){R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+-5R2",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+(-\\frac{1}{3}){R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+-1/3R3",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      "after_validation": {
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            "-3/2"
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          2,
+          5
+        ],
+        "rank": 3,
+        "mathematical_answer": 3,
+        "solution_answer": 3,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+(-5){R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+-5R2",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+(-\\frac{1}{3}){R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+-1/3R3",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      "correct_answer_unchanged": true,
+      "database_status": "prepared-only; root must recheck current solution and CAS exact before value"
+    },
+    {
+      "question_eid": 17592186124885,
+      "question_id": "8a6c1395-93b3-574c-b784-2d33009b00c0",
+      "math_academy_id": "q-35459",
+      "kp_id": 17592186124479,
+      "attribute": ":question/worked-solution",
+      "before": "First, we need to convert $D$ to row echelon form:\n\n$$\n\\begin{aligned}D & =\\begin{bmatrix}1 & 0 & 0 & 0 & 0 \\\\ 0 & -3 & 0 & 0 & 0 \\\\ 0 & 0 & 4 & 2 & 0 \\\\ 0 & 0 & -2 & -8 & 7 \\\\ 0 & 0 & 0 & 2 & -1\\end{bmatrix} & {R}_{4} & :={R}_{4}+(\\frac{1}{2}){R}_{3} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 0 & 0 & 0 \\\\ 0 & -3 & 0 & 0 & 0 \\\\ 0 & 0 & 4 & 2 & 0 \\\\ 0 & 0 & 0 & -7 & 7 \\\\ 0 & 0 & 0 & 2 & -1\\end{bmatrix} & {R}_{4} & :={R}_{4}+(\\frac{2}{7}){R}_{3} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 0 & 0 & 0 \\\\ 0 & -3 & 0 & 0 & 0 \\\\ 0 & 0 & 4 & 2 & 0 \\\\ 0 & 0 & 0 & -7 & 7 \\\\ 0 & 0 & 0 & 0 & -1\\end{bmatrix}\\end{aligned}\n$$\n\nLooking at the row echelon form, we see that $D$ has $5$ pivots, and therefore the number of pivot columns is $5.$",
+      "after": "First, we need to convert $D$ to row echelon form:\n\n$$\n\\begin{aligned}D & =\\begin{bmatrix}1 & 0 & 0 & 0 & 0 \\\\ 0 & -3 & 0 & 0 & 0 \\\\ 0 & 0 & 4 & 2 & 0 \\\\ 0 & 0 & -2 & -8 & 7 \\\\ 0 & 0 & 0 & 2 & -1\\end{bmatrix} & {R}_{4} & :={R}_{4}+(\\frac{1}{2}){R}_{3} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 0 & 0 & 0 \\\\ 0 & -3 & 0 & 0 & 0 \\\\ 0 & 0 & 4 & 2 & 0 \\\\ 0 & 0 & 0 & -7 & 7 \\\\ 0 & 0 & 0 & 2 & -1\\end{bmatrix} & {R}_{5} & :={R}_{5}+(\\frac{2}{7}){R}_{4} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 0 & 0 & 0 \\\\ 0 & -3 & 0 & 0 & 0 \\\\ 0 & 0 & 4 & 2 & 0 \\\\ 0 & 0 & 0 & -7 & 7 \\\\ 0 & 0 & 0 & 0 & 1\\end{bmatrix}\\end{aligned}\n$$\n\nLooking at the row echelon form, we see that $D$ has $5$ pivots, and therefore the number of pivot columns is $5.$",
+      "before_sha256": "b25f2ff43878ade1dc7b4fc3a2dd69bb3d8cc3b3de274e39aaba65c779702550",
+      "after_sha256": "5fb94cbb7d5639e009493780cae87436c34e5e4ac0536abbb629338f11f3f66c",
+      "edits": [
+        {
+          "before": "& {R}_{4} & :={R}_{4}+(\\frac{2}{7}){R}_{3}",
+          "after": "& {R}_{5} & :={R}_{5}+(\\frac{2}{7}){R}_{4}"
+        },
+        {
+          "before": "0 & 0 & 0 & 0 & -1\\end{bmatrix}",
+          "after": "0 & 0 & 0 & 0 & 1\\end{bmatrix}"
+        }
+      ],
+      "reason": "The second elimination targets row 5 using row 4: [0,0,0,2,-1] + (2/7)[0,0,0,-7,7] = [0,0,0,0,1]. The previously displayed row target and source were wrong, and the last entry should be positive. Rank and key stay 5.",
+      "before_validation": {
+        "matrix_name": "D",
+        "conclusion_matrix_names": [
+          "D"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "nonpivot_columns": [],
+        "rank": 5,
+        "mathematical_answer": 5,
+        "solution_answer": 5,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+(\\frac{1}{2}){R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+1/2R3",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+(\\frac{2}{7}){R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+2/7R3",
+            "matches_displayed_next_matrix": false,
+            "expected_next_matrix": [
+              [
+                1,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                -3,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                4,
+                2,
+                0
+              ],
+              [
+                0,
+                0,
+                "8/7",
+                "-45/7",
+                7
+              ],
+              [
+                0,
+                0,
+                0,
+                2,
+                -1
+              ]
+            ],
+            "displayed_next_matrix": [
+              [
+                1,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                -3,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                4,
+                2,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                -7,
+                7
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                -1
+              ]
+            ]
+          }
+        ],
+        "all_operations_match": false
+      },
+      "after_validation": {
+        "matrix_name": "D",
+        "conclusion_matrix_names": [
+          "D"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "nonpivot_columns": [],
+        "rank": 5,
+        "mathematical_answer": 5,
+        "solution_answer": 5,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+(\\frac{1}{2}){R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+1/2R3",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{5} & :={R}_{5}+(\\frac{2}{7}){R}_{4} \\\\  & \u223c",
+            "normalized_operation": "R5:=R5+2/7R4",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      "correct_answer_unchanged": true,
+      "database_status": "prepared-only; root must recheck current solution and CAS exact before value"
+    },
+    {
+      "question_eid": 17592186124906,
+      "question_id": "bdb5ab47-cea8-5da9-89b4-45a9046d7661",
+      "math_academy_id": "q-35734",
+      "kp_id": 17592186124480,
+      "attribute": ":question/worked-solution",
+      "before": "First, we need to convert $P$ to row echelon form:\n\n$$\n\\begin{aligned}P & =\\begin{bmatrix}1 & 4 & 0 & 2 \\\\ 0 & -2 & -4 & 2 \\\\ 0 & 4 & 9 & -6 \\\\ 0 & 0 & 2 & -4\\end{bmatrix} & {R}_{3} & :={R}_{3}+2{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 4 & 0 & 2 \\\\ 0 & -2 & -4 & 2 \\\\ 0 & 0 & 1 & -2 \\\\ 0 & 0 & 2 & -4\\end{bmatrix} & {R}_{4} & :={R}_{4}+(-2){R}_{3} \\\\  & \u223c\\begin{bmatrix}1 & 4 & 0 & 2 \\\\ 0 & -2 & -4 & 2 \\\\ 0 & 0 & 1 & -2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}\\end{aligned}\n$$\n\nLooking at the row echelon form, we see that $B$ has $3$ pivots. In particular, the pivot columns are the $1$st, $2$nd, and $3$rd columns.",
+      "after": "First, we need to convert $P$ to row echelon form:\n\n$$\n\\begin{aligned}P & =\\begin{bmatrix}1 & 4 & 0 & 2 \\\\ 0 & -2 & -4 & 2 \\\\ 0 & 4 & 9 & -6 \\\\ 0 & 0 & 2 & -4\\end{bmatrix} & {R}_{3} & :={R}_{3}+2{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 4 & 0 & 2 \\\\ 0 & -2 & -4 & 2 \\\\ 0 & 0 & 1 & -2 \\\\ 0 & 0 & 2 & -4\\end{bmatrix} & {R}_{4} & :={R}_{4}+(-2){R}_{3} \\\\  & \u223c\\begin{bmatrix}1 & 4 & 0 & 2 \\\\ 0 & -2 & -4 & 2 \\\\ 0 & 0 & 1 & -2 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}\\end{aligned}\n$$\n\nLooking at the row echelon form, we see that $P$ has $3$ pivots. In particular, the pivot columns are the $1$st, $2$nd, and $3$rd columns.",
+      "before_sha256": "ba1cb2e2fd0ba12c8aa6a580e5c93ab79f02ff15f181cac72007f5acc8861e14",
+      "after_sha256": "ff26045a0be1ad54632dc0cfe18ccd62e5ed918a4b309cfc5ffb8cfd4132756c",
+      "edits": [
+        {
+          "before": "we see that $B$ has",
+          "after": "we see that $P$ has"
+        }
+      ],
+      "reason": "Use the prompt matrix name in the conclusion; arithmetic and selected columns/count are unchanged.",
+      "before_validation": {
+        "matrix_name": "P",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": false,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            -10
+          ],
+          [
+            0,
+            1,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            1,
+            -2
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          3
+        ],
+        "nonpivot_columns": [
+          4
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          2,
+          3
+        ],
+        "solution_answer": [
+          1,
+          2,
+          3
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+2{R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+2R2",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+(-2){R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+-2R3",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      "after_validation": {
+        "matrix_name": "P",
+        "conclusion_matrix_names": [
+          "P"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            -10
+          ],
+          [
+            0,
+            1,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            1,
+            -2
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          3
+        ],
+        "nonpivot_columns": [
+          4
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          2,
+          3
+        ],
+        "solution_answer": [
+          1,
+          2,
+          3
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+2{R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+2R2",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+(-2){R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+-2R3",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      "correct_answer_unchanged": true,
+      "database_status": "prepared-only; root must recheck current solution and CAS exact before value"
+    },
+    {
+      "question_eid": 17592186266022,
+      "question_id": "02683bf4-c015-5b9c-845b-c5f836ec3faf",
+      "math_academy_id": "q-130957",
+      "kp_id": 17592186124479,
+      "attribute": ":question/worked-solution",
+      "before": "First, we need to convert $B$ to row echelon form:\n\n$$\n\\begin{aligned}B & =\\begin{bmatrix}1 & 0 & 0 & -1 & 0 \\\\ 3 & 0 & 2 & -1 & 1 \\\\ 0 & 0 & -4 & 0 & 0\\end{bmatrix} & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 0 & -1 & 0 \\\\ 0 & 0 & 2 & 2 & 1 \\\\ 0 & 0 & -4 & 0 & 0\\end{bmatrix} & {R}_{3} & :={R}_{3}+2{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 0 & -1 & 0 \\\\ 0 & 0 & 2 & 2 & 1 \\\\ 0 & 0 & 0 & 4 & 2\\end{bmatrix}\\end{aligned}\n$$\n\nLooking at the row echelon form, we see that $A$ has $3$ pivots, and therefore the number of pivot columns is $3.$",
+      "after": "First, we need to convert $B$ to row echelon form:\n\n$$\n\\begin{aligned}B & =\\begin{bmatrix}1 & 0 & 0 & -1 & 0 \\\\ 3 & 0 & 2 & -1 & 1 \\\\ 0 & 0 & -4 & 0 & 0\\end{bmatrix} & {R}_{2} & :={R}_{2}+(-3){R}_{1} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 0 & -1 & 0 \\\\ 0 & 0 & 2 & 2 & 1 \\\\ 0 & 0 & -4 & 0 & 0\\end{bmatrix} & {R}_{3} & :={R}_{3}+2{R}_{2} \\\\  & \u223c\\begin{bmatrix}1 & 0 & 0 & -1 & 0 \\\\ 0 & 0 & 2 & 2 & 1 \\\\ 0 & 0 & 0 & 4 & 2\\end{bmatrix}\\end{aligned}\n$$\n\nLooking at the row echelon form, we see that $B$ has $3$ pivots, and therefore the number of pivot columns is $3.$",
+      "before_sha256": "c059ea38ba968d6e197dbbeb8d1032668df0d198198d3b573841c7a59e5f3c16",
+      "after_sha256": "46f30cb6d7856a06607ff6c3c57f28b2ce64c7167cbe3d2625d084a59756ed47",
+      "edits": [
+        {
+          "before": "we see that $A$ has",
+          "after": "we see that $B$ has"
+        }
+      ],
+      "reason": "Use the prompt matrix name in the conclusion; arithmetic and selected columns/count are unchanged.",
+      "before_validation": {
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "A"
+        ],
+        "matrix_names_match": false,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            0,
+            "1/2"
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            "1/2"
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          2,
+          5
+        ],
+        "rank": 3,
+        "mathematical_answer": 3,
+        "solution_answer": 3,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{2} & :={R}_{2}+(-3){R}_{1} \\\\  & \u223c",
+            "normalized_operation": "R2:=R2+-3R1",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+2{R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+2R2",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      "after_validation": {
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            0,
+            "1/2"
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            "1/2"
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          2,
+          5
+        ],
+        "rank": 3,
+        "mathematical_answer": 3,
+        "solution_answer": 3,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{2} & :={R}_{2}+(-3){R}_{1} \\\\  & \u223c",
+            "normalized_operation": "R2:=R2+-3R1",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+2{R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+2R2",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      "correct_answer_unchanged": true,
+      "database_status": "prepared-only; root must recheck current solution and CAS exact before value"
+    },
+    {
+      "question_eid": 17592186266026,
+      "question_id": "f1da223e-cf33-5119-871d-5d62bfe3b1a0",
+      "math_academy_id": "q-130963",
+      "kp_id": 17592186124479,
+      "attribute": ":question/worked-solution",
+      "before": "First, we need to convert $B$ to row echelon form:\n\n$$\n\\begin{aligned}B & =\\begin{bmatrix}3 & -1 & 5 & 0 & 7 & 1 \\\\ 0 & 1 & 0 & -1 & 1 & 0 \\\\ 0 & -4 & 0 & 0 & -1 & 2 \\\\ 0 & 0 & 0 & 4 & 0 & 7\\end{bmatrix} & {R}_{3} & :={R}_{3}+4{R}_{2} \\\\  & \u223c\\begin{bmatrix}3 & -1 & 5 & 0 & 7 & 1 \\\\ 0 & 1 & 0 & -1 & 1 & 0 \\\\ 0 & 0 & 0 & -4 & 3 & 2 \\\\ 0 & 0 & 0 & 4 & 0 & 7\\end{bmatrix} & {R}_{4} & :={R}_{4}+{R}_{3} \\\\  & \u223c\\begin{bmatrix}3 & -1 & 5 & 0 & 7 & 1 \\\\ 0 & 1 & 0 & -1 & 1 & 0 \\\\ 0 & 0 & 0 & -4 & 3 & 2 \\\\ 0 & 0 & 0 & 0 & 3 & 9\\end{bmatrix}\\end{aligned}\n$$\n\nLooking at the row echelon form, we see that $A$ has $4$ pivots, and therefore the number of pivot columns is $4.$",
+      "after": "First, we need to convert $B$ to row echelon form:\n\n$$\n\\begin{aligned}B & =\\begin{bmatrix}3 & -1 & 5 & 0 & 7 & 1 \\\\ 0 & 1 & 0 & -1 & 1 & 0 \\\\ 0 & -4 & 0 & 0 & -1 & 2 \\\\ 0 & 0 & 0 & 4 & 0 & 7\\end{bmatrix} & {R}_{3} & :={R}_{3}+4{R}_{2} \\\\  & \u223c\\begin{bmatrix}3 & -1 & 5 & 0 & 7 & 1 \\\\ 0 & 1 & 0 & -1 & 1 & 0 \\\\ 0 & 0 & 0 & -4 & 3 & 2 \\\\ 0 & 0 & 0 & 4 & 0 & 7\\end{bmatrix} & {R}_{4} & :={R}_{4}+{R}_{3} \\\\  & \u223c\\begin{bmatrix}3 & -1 & 5 & 0 & 7 & 1 \\\\ 0 & 1 & 0 & -1 & 1 & 0 \\\\ 0 & 0 & 0 & -4 & 3 & 2 \\\\ 0 & 0 & 0 & 0 & 3 & 9\\end{bmatrix}\\end{aligned}\n$$\n\nLooking at the row echelon form, we see that $B$ has $4$ pivots, and therefore the number of pivot columns is $4.$",
+      "before_sha256": "eb1971c15a1f1a0b5ca90d9d4e49da3408d312ed4d02f5f7fa313fb2a1a4cd83",
+      "after_sha256": "7e470126de73247d52c31bf71c1cd157d5f7f8900b841b43bbefb9ffbf436e4f",
+      "edits": [
+        {
+          "before": "we see that $A$ has",
+          "after": "we see that $B$ has"
+        }
+      ],
+      "reason": "Use the prompt matrix name in the conclusion; arithmetic and selected columns/count are unchanged.",
+      "before_validation": {
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "A"
+        ],
+        "matrix_names_match": false,
+        "exact_rref": [
+          [
+            1,
+            0,
+            "5/3",
+            0,
+            0,
+            "-85/12"
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            "-5/4"
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0,
+            "7/4"
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1,
+            3
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          4,
+          5
+        ],
+        "nonpivot_columns": [
+          3,
+          6
+        ],
+        "rank": 4,
+        "mathematical_answer": 4,
+        "solution_answer": 4,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+4{R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+4R2",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+{R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+R3",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      "after_validation": {
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            "5/3",
+            0,
+            0,
+            "-85/12"
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            "-5/4"
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0,
+            "7/4"
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1,
+            3
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          4,
+          5
+        ],
+        "nonpivot_columns": [
+          3,
+          6
+        ],
+        "rank": 4,
+        "mathematical_answer": 4,
+        "solution_answer": 4,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+4{R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+4R2",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+{R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+R3",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      "correct_answer_unchanged": true,
+      "database_status": "prepared-only; root must recheck current solution and CAS exact before value"
+    },
+    {
+      "question_eid": 17592186364337,
+      "question_id": "5149a8bf-4216-5b0c-825e-8103ee48f823",
+      "math_academy_id": "q-73621",
+      "kp_id": 17592186124478,
+      "attribute": ":question/worked-solution",
+      "before": "Remember that the pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.\n\nWe can see that $R$ has $3$ pivots in the $1$st, $2$nd and $4$th columns:\n\n$$\nR=\\begin{bmatrix}1 & -1 & 2 & 0 \\\\ 0 & -4 & 3 & 1 \\\\ 0 & 0 & 0 & 7 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nTherefore, the only non-pivot column is the $3$rd columns.",
+      "after": "Remember that the pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.\n\nWe can see that $R$ has $3$ pivots in the $1$st, $2$nd and $4$th columns:\n\n$$\nR=\\begin{bmatrix}1 & -1 & 2 & 0 \\\\ 0 & -4 & 3 & 1 \\\\ 0 & 0 & 0 & 7 \\\\ 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nTherefore, the only non-pivot column is the $3$rd column.",
+      "before_sha256": "91d027e597efeb9dea3c679dbf3b0e5d855aa3f8d6c2b8ddea728981d89f48ac",
+      "after_sha256": "d71d469e96703bf6960b0be28f5b8c60278b6e99a20d2e83f02c0c2a7426e9af",
+      "edits": [
+        {
+          "before": "the only non-pivot column is the $3$rd columns.",
+          "after": "the only non-pivot column is the $3$rd column."
+        }
+      ],
+      "reason": "Match column/columns to the number of non-pivot columns in the conclusion.",
+      "before_validation": {
+        "matrix_name": "R",
+        "conclusion_matrix_names": [
+          "R"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            "5/4",
+            0
+          ],
+          [
+            0,
+            1,
+            "-3/4",
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          4
+        ],
+        "nonpivot_columns": [
+          3
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          3
+        ],
+        "solution_answer": [
+          3
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      "after_validation": {
+        "matrix_name": "R",
+        "conclusion_matrix_names": [
+          "R"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            "5/4",
+            0
+          ],
+          [
+            0,
+            1,
+            "-3/4",
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          4
+        ],
+        "nonpivot_columns": [
+          3
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          3
+        ],
+        "solution_answer": [
+          3
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      "correct_answer_unchanged": true,
+      "database_status": "prepared-only; root must recheck current solution and CAS exact before value"
+    },
+    {
+      "question_eid": 17592186342033,
+      "question_id": "2e4d037d-222f-5741-a696-abfc442768e9",
+      "math_academy_id": "q-73618",
+      "kp_id": 17592186124478,
+      "attribute": ":question/worked-solution",
+      "before": "Remember that the pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.\n\nWe can see that $P$ has $3$ pivots in the $2$nd, $4$th and $5$th columns:\n\n$$\nP=\\begin{bmatrix}0 & 6 & -1 & 1 & 8 \\\\ 0 & 0 & 0 & 2 & 4 \\\\ 0 & 0 & 0 & 0 & -3 \\\\ 0 & 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nTherefore, the only non-pivot columns are the $1$st and $3$rd column.",
+      "after": "Remember that the pivots of a matrix in row echelon form are the first non-zero entries in each row of the matrix.\n\nWe can see that $P$ has $3$ pivots in the $2$nd, $4$th and $5$th columns:\n\n$$\nP=\\begin{bmatrix}0 & 6 & -1 & 1 & 8 \\\\ 0 & 0 & 0 & 2 & 4 \\\\ 0 & 0 & 0 & 0 & -3 \\\\ 0 & 0 & 0 & 0 & 0\\end{bmatrix}\n$$\n\nTherefore, the only non-pivot columns are the $1$st and $3$rd columns.",
+      "before_sha256": "8966ee0b0d83c462d0803a3af382968c9d821ddec7226971fce540b6eb5bec6c",
+      "after_sha256": "451b7eb360979c3c7827f9c1a4a83454ded3a9240efb46749a1f3f7f0bf337b1",
+      "edits": [
+        {
+          "before": "the only non-pivot columns are the $1$st and $3$rd column.",
+          "after": "the only non-pivot columns are the $1$st and $3$rd columns."
+        }
+      ],
+      "reason": "Match column/columns to the number of non-pivot columns in the conclusion.",
+      "before_validation": {
+        "matrix_name": "P",
+        "conclusion_matrix_names": [
+          "P"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            0,
+            1,
+            "-1/6",
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          2,
+          4,
+          5
+        ],
+        "nonpivot_columns": [
+          1,
+          3
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          3
+        ],
+        "solution_answer": [
+          1,
+          3
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      "after_validation": {
+        "matrix_name": "P",
+        "conclusion_matrix_names": [
+          "P"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            0,
+            1,
+            "-1/6",
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          2,
+          4,
+          5
+        ],
+        "nonpivot_columns": [
+          1,
+          3
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          3
+        ],
+        "solution_answer": [
+          1,
+          3
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      "correct_answer_unchanged": true,
+      "database_status": "prepared-only; root must recheck current solution and CAS exact before value"
+    }
+  ],
+  "validation": {
+    "questions_checked": 68,
+    "operations_checked": 52,
+    "all_solutions_valid_after_repairs": true,
+    "historical_audit_files_unchanged": true,
+    "checks": [
+      {
+        "question_eid": 17592186124290,
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          2,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          1
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          2,
+          3,
+          4
+        ],
+        "solution_answer": [
+          2,
+          3,
+          4
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186124291,
+        "matrix_name": "C",
+        "conclusion_matrix_names": [
+          "C"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          2
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          2
+        ],
+        "solution_answer": [
+          2
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186124292,
+        "matrix_name": "A",
+        "conclusion_matrix_names": [
+          "A"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            "-2/3"
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          3
+        ],
+        "nonpivot_columns": [
+          4
+        ],
+        "rank": 3,
+        "mathematical_answer": 3,
+        "solution_answer": 3,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{3}:={R}_{3}+2{R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+2R2",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186124293,
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            -5,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          2
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          3,
+          4
+        ],
+        "solution_answer": [
+          1,
+          3,
+          4
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+2{R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+2R2",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+(-\\frac{2}{7}){R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+-2/7R3",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186124880,
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          4,
+          5
+        ],
+        "nonpivot_columns": [
+          3
+        ],
+        "rank": 4,
+        "mathematical_answer": [
+          3
+        ],
+        "solution_answer": [
+          3
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186124884,
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            "-3/2"
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          2,
+          5
+        ],
+        "rank": 3,
+        "mathematical_answer": 3,
+        "solution_answer": 3,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+(-5){R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+-5R2",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+(-\\frac{1}{3}){R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+-1/3R3",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186124885,
+        "matrix_name": "D",
+        "conclusion_matrix_names": [
+          "D"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "nonpivot_columns": [],
+        "rank": 5,
+        "mathematical_answer": 5,
+        "solution_answer": 5,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+(\\frac{1}{2}){R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+1/2R3",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{5} & :={R}_{5}+(\\frac{2}{7}){R}_{4} \\\\  & \u223c",
+            "normalized_operation": "R5:=R5+2/7R4",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186124903,
+        "matrix_name": "A",
+        "conclusion_matrix_names": [
+          "A"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            "17/6",
+            0
+          ],
+          [
+            0,
+            1,
+            "1/6",
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          4
+        ],
+        "nonpivot_columns": [
+          3
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          2,
+          4
+        ],
+        "solution_answer": [
+          1,
+          2,
+          4
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186124904,
+        "matrix_name": "P",
+        "conclusion_matrix_names": [
+          "P"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3
+        ],
+        "nonpivot_columns": [
+          2
+        ],
+        "rank": 2,
+        "mathematical_answer": [
+          2
+        ],
+        "solution_answer": [
+          2
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186124905,
+        "matrix_name": "A",
+        "conclusion_matrix_names": [
+          "A"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            -8,
+            0
+          ],
+          [
+            0,
+            1,
+            2,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          4
+        ],
+        "nonpivot_columns": [
+          3
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          2,
+          4
+        ],
+        "solution_answer": [
+          1,
+          2,
+          4
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{1} & \u2194{R}_{4} \\\\  & \u223c",
+            "normalized_operation": "R1\u2194R4",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+\\frac{1}{2}{R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+1/2R2",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186124906,
+        "matrix_name": "P",
+        "conclusion_matrix_names": [
+          "P"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            -10
+          ],
+          [
+            0,
+            1,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            1,
+            -2
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          3
+        ],
+        "nonpivot_columns": [
+          4
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          2,
+          3
+        ],
+        "solution_answer": [
+          1,
+          2,
+          3
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+2{R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+2R2",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+(-2){R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+-2R3",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186124909,
+        "matrix_name": "M",
+        "conclusion_matrix_names": [
+          "M"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          2,
+          3
+        ],
+        "nonpivot_columns": [
+          1
+        ],
+        "rank": 2,
+        "mathematical_answer": [
+          2,
+          3
+        ],
+        "solution_answer": [
+          2,
+          3
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186266016,
+        "matrix_name": "M",
+        "conclusion_matrix_names": [
+          "M"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          2,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          1
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          2,
+          3,
+          4
+        ],
+        "solution_answer": [
+          2,
+          3,
+          4
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186266017,
+        "matrix_name": "A",
+        "conclusion_matrix_names": [
+          "A"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            -7,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          2
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          3,
+          4
+        ],
+        "solution_answer": [
+          1,
+          3,
+          4
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186266018,
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          2,
+          3
+        ],
+        "nonpivot_columns": [
+          1
+        ],
+        "rank": 2,
+        "mathematical_answer": [
+          1
+        ],
+        "solution_answer": [
+          1
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186266019,
+        "matrix_name": "P",
+        "conclusion_matrix_names": [
+          "P"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            "-7/5",
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          2
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          2
+        ],
+        "solution_answer": [
+          2
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186266020,
+        "matrix_name": "R",
+        "conclusion_matrix_names": [
+          "R"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            -15
+          ],
+          [
+            0,
+            1,
+            0,
+            "-8/3"
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          3
+        ],
+        "nonpivot_columns": [
+          4
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          4
+        ],
+        "solution_answer": [
+          4
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186266021,
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            "-8/3",
+            0,
+            0,
+            "-46/21"
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            "32/7"
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            "8/7"
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          2,
+          5
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          2,
+          5
+        ],
+        "solution_answer": [
+          2,
+          5
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186266022,
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            0,
+            "1/2"
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            "1/2"
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          2,
+          5
+        ],
+        "rank": 3,
+        "mathematical_answer": 3,
+        "solution_answer": 3,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{2} & :={R}_{2}+(-3){R}_{1} \\\\  & \u223c",
+            "normalized_operation": "R2:=R2+-3R1",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+2{R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+2R2",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186266023,
+        "matrix_name": "D",
+        "conclusion_matrix_names": [
+          "D"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            "-7/3",
+            0,
+            "-1/3"
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          2,
+          3,
+          5
+        ],
+        "nonpivot_columns": [
+          1,
+          4,
+          6
+        ],
+        "rank": 3,
+        "mathematical_answer": 3,
+        "solution_answer": 3,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+(-2){R}_{1} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+-2R1",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186266024,
+        "matrix_name": "C",
+        "conclusion_matrix_names": [
+          "C"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            "-3/2",
+            0,
+            "-1/2"
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            "-4/3"
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            "1/3"
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          4
+        ],
+        "nonpivot_columns": [
+          3,
+          5
+        ],
+        "rank": 3,
+        "mathematical_answer": 3,
+        "solution_answer": 3,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & \u223c",
+            "normalized_operation": "R2:=R2+R1",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{3} & :={R}_{3}-{R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3-R2",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186266025,
+        "matrix_name": "Q",
+        "conclusion_matrix_names": [
+          "Q"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          2,
+          3,
+          5,
+          6
+        ],
+        "nonpivot_columns": [
+          1,
+          4
+        ],
+        "rank": 4,
+        "mathematical_answer": 4,
+        "solution_answer": 4,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{2} & :={R}_{2}-{R}_{1} \\\\  & \u223c",
+            "normalized_operation": "R2:=R2-R1",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+2{R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+2R3",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186266026,
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            "5/3",
+            0,
+            0,
+            "-85/12"
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            "-5/4"
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0,
+            "7/4"
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1,
+            3
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          4,
+          5
+        ],
+        "nonpivot_columns": [
+          3,
+          6
+        ],
+        "rank": 4,
+        "mathematical_answer": 4,
+        "solution_answer": 4,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+4{R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+4R2",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+{R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+R3",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186266069,
+        "matrix_name": "A",
+        "conclusion_matrix_names": [
+          "A"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          2,
+          3
+        ],
+        "nonpivot_columns": [
+          1
+        ],
+        "rank": 2,
+        "mathematical_answer": [
+          2,
+          3
+        ],
+        "solution_answer": [
+          2,
+          3
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{1} & \u2194{R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R1\u2194R3",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186266070,
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          2
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          3,
+          4
+        ],
+        "solution_answer": [
+          1,
+          3,
+          4
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{1} & \u2194{R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R1\u2194R2",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186266071,
+        "matrix_name": "P",
+        "conclusion_matrix_names": [
+          "P"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            "1/4",
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            "1/2",
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          5
+        ],
+        "nonpivot_columns": [
+          2,
+          4
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          3,
+          5
+        ],
+        "solution_answer": [
+          1,
+          3,
+          5
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & \u223c",
+            "normalized_operation": "R2:=R2+R1",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+2{R}_{1} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+2R1",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186266072,
+        "matrix_name": "P",
+        "conclusion_matrix_names": [
+          "P"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            "-7/6",
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            "-1/3",
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            "1/3",
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          3,
+          5
+        ],
+        "nonpivot_columns": [
+          4
+        ],
+        "rank": 4,
+        "mathematical_answer": [
+          1,
+          2,
+          3,
+          5
+        ],
+        "solution_answer": [
+          1,
+          2,
+          3,
+          5
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{2} & \u2194{R}_{5} \\\\  & \u223c",
+            "normalized_operation": "R2\u2194R5",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{4} & \u2194{R}_{5} \\\\  & \u223c",
+            "normalized_operation": "R4\u2194R5",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186323676,
+        "matrix_name": "D",
+        "conclusion_matrix_names": [
+          "D"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            4,
+            -7,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            "3/2",
+            "1/2",
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          6
+        ],
+        "nonpivot_columns": [
+          2,
+          4,
+          5
+        ],
+        "rank": 3,
+        "mathematical_answer": 3,
+        "solution_answer": 3,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+(-5){R}_{1} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+-5R1",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186323677,
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            "-2/3",
+            "-4/3"
+          ],
+          [
+            0,
+            0,
+            1,
+            "-1/3",
+            "1/3"
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          3
+        ],
+        "nonpivot_columns": [
+          4,
+          5
+        ],
+        "rank": 3,
+        "mathematical_answer": 3,
+        "solution_answer": 3,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+3{R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+3R2",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+\\frac{1}{2}{R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+1/2R3",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186323715,
+        "matrix_name": "A",
+        "conclusion_matrix_names": [
+          "A"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            "7/2"
+          ],
+          [
+            0,
+            1,
+            "3/4"
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2
+        ],
+        "nonpivot_columns": [
+          3
+        ],
+        "rank": 2,
+        "mathematical_answer": [
+          1,
+          2
+        ],
+        "solution_answer": [
+          1,
+          2
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{2} & \u2194{R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R2\u2194R3",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186342028,
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            2,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3
+        ],
+        "nonpivot_columns": [
+          2
+        ],
+        "rank": 2,
+        "mathematical_answer": [
+          1,
+          3
+        ],
+        "solution_answer": [
+          1,
+          3
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186342030,
+        "matrix_name": "M",
+        "conclusion_matrix_names": [
+          "M"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            "11/14"
+          ],
+          [
+            0,
+            1,
+            0,
+            "3/28"
+          ],
+          [
+            0,
+            0,
+            1,
+            "3/7"
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          3
+        ],
+        "nonpivot_columns": [
+          4
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          2,
+          3
+        ],
+        "solution_answer": [
+          1,
+          2,
+          3
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186342031,
+        "matrix_name": "A",
+        "conclusion_matrix_names": [
+          "A"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            "-1/3",
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          2
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          3,
+          4
+        ],
+        "solution_answer": [
+          1,
+          3,
+          4
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186342032,
+        "matrix_name": "A",
+        "conclusion_matrix_names": [
+          "A"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          2,
+          3
+        ],
+        "nonpivot_columns": [
+          1
+        ],
+        "rank": 2,
+        "mathematical_answer": [
+          1
+        ],
+        "solution_answer": [
+          1
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186342033,
+        "matrix_name": "P",
+        "conclusion_matrix_names": [
+          "P"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            0,
+            1,
+            "-1/6",
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          2,
+          4,
+          5
+        ],
+        "nonpivot_columns": [
+          1,
+          3
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          3
+        ],
+        "solution_answer": [
+          1,
+          3
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186342035,
+        "matrix_name": "A",
+        "conclusion_matrix_names": [
+          "A"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            3,
+            0,
+            5
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            "8/3"
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            8
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          4
+        ],
+        "nonpivot_columns": [
+          3,
+          5
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          3,
+          5
+        ],
+        "solution_answer": [
+          3,
+          5
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186342037,
+        "matrix_name": "D",
+        "conclusion_matrix_names": [
+          "D"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            0,
+            1,
+            0,
+            0,
+            "17/32"
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            "17/16"
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            "1/8"
+          ]
+        ],
+        "pivot_columns": [
+          2,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          1,
+          5
+        ],
+        "rank": 3,
+        "mathematical_answer": 3,
+        "solution_answer": 3,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{2} & :={R}_{2}+{R}_{1} \\\\  & \u223c",
+            "normalized_operation": "R2:=R2+R1",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+(-2){R}_{1} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+-2R1",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186342040,
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            0,
+            "7/10"
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            "-22/5"
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            "-3/5"
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          5
+        ],
+        "rank": 4,
+        "mathematical_answer": 4,
+        "solution_answer": 4,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+2{R}_{1} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+2R1",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186342041,
+        "matrix_name": "C",
+        "conclusion_matrix_names": [
+          "C"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            2,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          4,
+          5
+        ],
+        "nonpivot_columns": [
+          2
+        ],
+        "rank": 4,
+        "mathematical_answer": 4,
+        "solution_answer": 4,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+\\frac{1}{2}{R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+1/2R2",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186342043,
+        "matrix_name": "P",
+        "conclusion_matrix_names": [
+          "P"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            0,
+            1,
+            0,
+            0,
+            "-17/63"
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            "10/21"
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            "1/7"
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          2,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          1,
+          5
+        ],
+        "rank": 3,
+        "mathematical_answer": 3,
+        "solution_answer": 3,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+2{R}_{1} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+2R1",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186342044,
+        "matrix_name": "Q",
+        "conclusion_matrix_names": [
+          "Q"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            "-3/4",
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            "-1/2",
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          4,
+          5
+        ],
+        "nonpivot_columns": [
+          3
+        ],
+        "rank": 4,
+        "mathematical_answer": 4,
+        "solution_answer": 4,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+\\frac{1}{4}{R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+1/4R3",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186342045,
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            -1
+          ],
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          3
+        ],
+        "nonpivot_columns": [
+          4
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          2,
+          3
+        ],
+        "solution_answer": [
+          1,
+          2,
+          3
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{2} & \u2194{R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R2\u2194R3",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186342046,
+        "matrix_name": "P",
+        "conclusion_matrix_names": [
+          "P"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            0,
+            1,
+            0,
+            2,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          2,
+          3,
+          5,
+          6
+        ],
+        "nonpivot_columns": [
+          1,
+          4
+        ],
+        "rank": 4,
+        "mathematical_answer": [
+          2,
+          3,
+          5,
+          6
+        ],
+        "solution_answer": [
+          2,
+          3,
+          5,
+          6
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+2{R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+2R2",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+{R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+R3",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186364337,
+        "matrix_name": "R",
+        "conclusion_matrix_names": [
+          "R"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            "5/4",
+            0
+          ],
+          [
+            0,
+            1,
+            "-3/4",
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          4
+        ],
+        "nonpivot_columns": [
+          3
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          3
+        ],
+        "solution_answer": [
+          3
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186367331,
+        "matrix_name": "D",
+        "conclusion_matrix_names": [
+          "D"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            "2/3",
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            -3,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          5
+        ],
+        "nonpivot_columns": [
+          2,
+          4
+        ],
+        "rank": 3,
+        "mathematical_answer": 3,
+        "solution_answer": 3,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+{R}_{1} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+R1",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{5} & :={R}_{5}+2{R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R5:=R5+2R2",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186367373,
+        "matrix_name": "P",
+        "conclusion_matrix_names": [
+          "P"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          2,
+          3,
+          5,
+          6
+        ],
+        "nonpivot_columns": [
+          1,
+          4
+        ],
+        "rank": 4,
+        "mathematical_answer": [
+          2,
+          3,
+          5,
+          6
+        ],
+        "solution_answer": [
+          2,
+          3,
+          5,
+          6
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+3{R}_{1} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+3R1",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+2{R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+2R3",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186368482,
+        "matrix_name": "C",
+        "conclusion_matrix_names": [
+          "C"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            -1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          4,
+          5
+        ],
+        "nonpivot_columns": [
+          3
+        ],
+        "rank": 4,
+        "mathematical_answer": 4,
+        "solution_answer": 4,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+(-\\frac{1}{3}){R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+-1/3R2",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186393327,
+        "matrix_name": "P",
+        "conclusion_matrix_names": [
+          "P"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            "7/3"
+          ],
+          [
+            0,
+            1,
+            6
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2
+        ],
+        "nonpivot_columns": [
+          3
+        ],
+        "rank": 2,
+        "mathematical_answer": [
+          3
+        ],
+        "solution_answer": [
+          3
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186400520,
+        "matrix_name": "A",
+        "conclusion_matrix_names": [
+          "A"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            "-3/2",
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3
+        ],
+        "nonpivot_columns": [
+          2
+        ],
+        "rank": 2,
+        "mathematical_answer": [
+          1,
+          3
+        ],
+        "solution_answer": [
+          1,
+          3
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186400527,
+        "matrix_name": "M",
+        "conclusion_matrix_names": [
+          "M"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            "-6/5",
+            0,
+            0,
+            12
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            -6
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            -2
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          2,
+          5
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          3,
+          4
+        ],
+        "solution_answer": [
+          1,
+          3,
+          4
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186400534,
+        "matrix_name": "A",
+        "conclusion_matrix_names": [
+          "A"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          2,
+          3,
+          4,
+          5
+        ],
+        "nonpivot_columns": [
+          1
+        ],
+        "rank": 4,
+        "mathematical_answer": [
+          2,
+          3,
+          4,
+          5
+        ],
+        "solution_answer": [
+          2,
+          3,
+          4,
+          5
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186400541,
+        "matrix_name": "P",
+        "conclusion_matrix_names": [
+          "P"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          2,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          1
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1
+        ],
+        "solution_answer": [
+          1
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186400548,
+        "matrix_name": "A",
+        "conclusion_matrix_names": [
+          "A"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            "-5/2",
+            0
+          ],
+          [
+            0,
+            1,
+            "-5/6",
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          4
+        ],
+        "nonpivot_columns": [
+          3
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          3
+        ],
+        "solution_answer": [
+          3
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186400590,
+        "matrix_name": "P",
+        "conclusion_matrix_names": [
+          "P"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            "4/7",
+            0
+          ],
+          [
+            0,
+            1,
+            "1/2",
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          4
+        ],
+        "nonpivot_columns": [
+          3
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          2,
+          4
+        ],
+        "solution_answer": [
+          1,
+          2,
+          4
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{3} & \u2194{R}_{4} \\\\  & \u223c",
+            "normalized_operation": "R3\u2194R4",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186402448,
+        "matrix_name": "A",
+        "conclusion_matrix_names": [
+          "A"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            "-8/3"
+          ],
+          [
+            0,
+            1,
+            "2/3"
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2
+        ],
+        "nonpivot_columns": [
+          3
+        ],
+        "rank": 2,
+        "mathematical_answer": [
+          1,
+          2
+        ],
+        "solution_answer": [
+          1,
+          2
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{1} & \u2194{R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R1\u2194R2",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186402461,
+        "matrix_name": "A",
+        "conclusion_matrix_names": [
+          "A"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            2,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          4
+        ],
+        "nonpivot_columns": [
+          3
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          2,
+          4
+        ],
+        "solution_answer": [
+          1,
+          2,
+          4
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{2} & \u2194{R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R2\u2194R3",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186403661,
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          2,
+          3
+        ],
+        "nonpivot_columns": [
+          1
+        ],
+        "rank": 2,
+        "mathematical_answer": [
+          2,
+          3
+        ],
+        "solution_answer": [
+          2,
+          3
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186403668,
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            "-1/3",
+            0,
+            "-1/24",
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            "-1/4",
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          5
+        ],
+        "nonpivot_columns": [
+          2,
+          4
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          2,
+          4
+        ],
+        "solution_answer": [
+          2,
+          4
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186403682,
+        "matrix_name": "P",
+        "conclusion_matrix_names": [
+          "P"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            0,
+            "-3/4"
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            "5/8"
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            "1/2"
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          5
+        ],
+        "rank": 4,
+        "mathematical_answer": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "solution_answer": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{2} & \u2194{R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R2\u2194R3",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{3} & \u2194{R}_{4} \\\\  & \u223c",
+            "normalized_operation": "R3\u2194R4",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186410771,
+        "matrix_name": "A",
+        "conclusion_matrix_names": [
+          "A"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            0,
+            1,
+            "-3/4",
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          2,
+          4,
+          5
+        ],
+        "nonpivot_columns": [
+          1,
+          3
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          3
+        ],
+        "solution_answer": [
+          1,
+          3
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186414494,
+        "matrix_name": "P",
+        "conclusion_matrix_names": [
+          "P"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            -2,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          4,
+          5
+        ],
+        "nonpivot_columns": [
+          3
+        ],
+        "rank": 4,
+        "mathematical_answer": 4,
+        "solution_answer": 4,
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{3} & :={R}_{3}+2{R}_{2} \\\\  & \u223c",
+            "normalized_operation": "R3:=R3+2R2",
+            "matches_displayed_next_matrix": true
+          },
+          {
+            "operation": "& {R}_{4} & :={R}_{4}+{R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R4:=R4+R3",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186414495,
+        "matrix_name": "A",
+        "conclusion_matrix_names": [
+          "A"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            "-5/2",
+            0,
+            "-1/2",
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            5,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          5
+        ],
+        "nonpivot_columns": [
+          2,
+          4
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          3,
+          5
+        ],
+        "solution_answer": [
+          1,
+          3,
+          5
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186414496,
+        "matrix_name": "M",
+        "conclusion_matrix_names": [
+          "M"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            0,
+            1,
+            0,
+            "-1/3",
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            "-1/3",
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          2,
+          3,
+          5
+        ],
+        "nonpivot_columns": [
+          1,
+          4
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          2,
+          3,
+          5
+        ],
+        "solution_answer": [
+          2,
+          3,
+          5
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186414497,
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            -1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          2
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          2
+        ],
+        "solution_answer": [
+          2
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186566216,
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            -1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          2
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          3,
+          4
+        ],
+        "solution_answer": [
+          1,
+          3,
+          4
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186566219,
+        "matrix_name": "B",
+        "conclusion_matrix_names": [
+          "B"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            -7,
+            0,
+            8,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          5
+        ],
+        "nonpivot_columns": [
+          2,
+          4
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          3,
+          5
+        ],
+        "solution_answer": [
+          1,
+          3,
+          5
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186566245,
+        "matrix_name": "A",
+        "conclusion_matrix_names": [
+          "A"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            "7/2",
+            0
+          ],
+          [
+            0,
+            1,
+            "1/2",
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          2,
+          4
+        ],
+        "nonpivot_columns": [
+          3
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          3
+        ],
+        "solution_answer": [
+          3
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [],
+        "all_operations_match": true
+      },
+      {
+        "question_eid": 17592186573261,
+        "matrix_name": "P",
+        "conclusion_matrix_names": [
+          "P"
+        ],
+        "matrix_names_match": true,
+        "exact_rref": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        "pivot_columns": [
+          1,
+          3,
+          4
+        ],
+        "nonpivot_columns": [
+          2
+        ],
+        "rank": 3,
+        "mathematical_answer": [
+          1,
+          3,
+          4
+        ],
+        "solution_answer": [
+          1,
+          3,
+          4
+        ],
+        "solution_answer_matches_exact_math": true,
+        "first_matrix_matches_problem": true,
+        "all_matrices_row_equivalent": true,
+        "last_matrix_is_echelon": true,
+        "operations": [
+          {
+            "operation": "& {R}_{2} & \u2194{R}_{3} \\\\  & \u223c",
+            "normalized_operation": "R2\u2194R3",
+            "matches_displayed_next_matrix": true
+          }
+        ],
+        "all_operations_match": true
+      }
+    ]
+  }
+}
