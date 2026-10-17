@@ -643,3 +643,43 @@ fn lifecycle_uses_completed_history_legacy_progress_and_original_first_study_tim
     );
     Ok(())
 }
+
+#[test]
+fn completed_lesson_lookup_does_not_cross_owned_tasks_with_unrelated_lessons() -> Result<()> {
+    let db = fixture()?;
+    let topic = identity(&db, "topic/title", "Locked lesson")?;
+    let mut forms = vec![format!(
+        "{{:db/id \"owned-lesson\" :activity/type :activity.type/lesson :activity/scope {topic}}}"
+    )];
+    // Each input task refers to one lesson. The unrelated catalog must never
+    // become a Cartesian product with the bound task collection: 200 x 600
+    // would exceed the production query's unchanged 100,000-row allowance.
+    for n in 0..200 {
+        forms.push(format!(
+            "{{:db/ident :completed-lookup/task-{n} :learner-task/status :learner-task.status/completed :learner-task/activity \"owned-lesson\"}}"
+        ));
+    }
+    for n in 0..600 {
+        forms.push(format!(
+            "{{:db/id \"unrelated-lesson-{n}\" :activity/type :activity.type/lesson :activity/scope {topic}}}"
+        ));
+    }
+    let db = db
+        .with_edn(
+            &format!("[{}]", forms.join("\n")),
+            0,
+            EntityRef::Ident(Keyword::new("db.source", "system")),
+        )?
+        .db_after;
+    let tasks: BTreeSet<_> = (0..200)
+        .map(|n| {
+            db.entid(&Keyword::new("completed-lookup", format!("task-{n}")))
+                .unwrap()
+        })
+        .collect();
+    assert_eq!(
+        query(&db, COMPLETED_LESSONS, vec![ids(&tasks)?])?,
+        vec![vec![json!(topic)]]
+    );
+    Ok(())
+}

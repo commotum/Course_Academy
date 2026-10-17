@@ -1,8 +1,10 @@
 ;; Task IDs are captured from this learner first; no catalog-wide history join.
+;; Later clauses win equal-boundness ties. Bind each task's activity before
+;; filtering its type, rather than expanding all lessons for every input task.
 [:find ?topic
  :in $ [?task ...]
  :where [?task :learner-task/status :learner-task.status/completed]
-        [?task :learner-task/activity ?activity]
         [?activity :activity/type :activity.type/lesson]
+        [?task :learner-task/activity ?activity]
         [?activity :activity/scope ?topic]
         [?topic :topic/id _]]
