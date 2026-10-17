@@ -1,0 +1,146 @@
+{
+  "scope": "Read-only source/code probes; counts are archive/import coverage, not current affected EDB entities.",
+  "baseline_manifest": "reference/edb-math/imports/math-academy/lessons/manifest.json",
+  "baseline_totals": {
+    "answer_values": 94586,
+    "questions": 19646,
+    "fields": 22840,
+    "tutorials": 6016,
+    "key_prerequisites": 9167,
+    "examples": 9636,
+    "knowledge_points": 9636,
+    "steps": 15652,
+    "lessons": 2964
+  },
+  "baseline_batches": 41,
+  "source_inventory": {
+    "html_files": 2964,
+    "json_files": 2964
+  },
+  "legacy_topic_page_list_probes": [
+    {
+      "case": "default_decimal_control",
+      "source_html": "<ol><li>First</li><li>Second</li></ol>",
+      "expected_visible_labels": "1. First\n2. Second",
+      "output": "1. First\n2. Second",
+      "matches": true
+    },
+    {
+      "case": "roman_start_reset",
+      "source_html": "<ol type=\"I\" start=\"3\"><li>First</li><li value=\"7\">Reset</li></ol>",
+      "expected_visible_labels": "III. First\nVII. Reset",
+      "output": "1. First\n2. Reset",
+      "matches": false
+    },
+    {
+      "case": "reversed",
+      "source_html": "<ol reversed><li>Second</li><li>First</li></ol>",
+      "expected_visible_labels": "2. Second\n1. First",
+      "output": "1. Second\n2. First",
+      "matches": false
+    },
+    {
+      "case": "nested",
+      "source_html": "<ol><li>Outer<ol type=\"a\"><li>Inner</li></ol></li><li>Second</li></ol>",
+      "expected_visible_labels": "1. Outer\n  a. Inner\n2. Second",
+      "output": "1. Outer\n\n1. Inner\n2. Second",
+      "matches": false
+    },
+    {
+      "case": "source_css_class",
+      "source_html": "<ol class=\"questionStatements\"><li>First</li><li>Second</li></ol>",
+      "expected_visible_labels": "I. First\nII. Second",
+      "output": "1. First\n2. Second",
+      "matches": false
+    }
+  ],
+  "historical_fraction_probes": [
+    {
+      "case": "ordinary_control",
+      "source_html": "<math><mfrac><mn>7</mn><mn>2</mn></mfrac></math>",
+      "output": "\\frac{7}{2}",
+      "errors": [],
+      "validator_accepts": true
+    },
+    {
+      "case": "zero_rule",
+      "source_html": "<math><mfrac linethickness=\"0\"><mn>7</mn><mn>2</mn></mfrac></math>",
+      "output": "\\frac{7}{2}",
+      "errors": [],
+      "validator_accepts": true
+    }
+  ],
+  "source_fraction_fixture_checks": [
+    {
+      "question_id": "q-122498",
+      "source_file": "reference/mathacademy/question-capture/13931854/state.json",
+      "html_sha256": "1d4554058ab5795f4d34da7fcd00cb1f528e48a5427897543904e485d5ad0ea3",
+      "visible_zero_rule_fractions": 1,
+      "historical_outputs": [
+        "\\frac{7}{6}"
+      ],
+      "historical_errors": []
+    },
+    {
+      "question_id": "q-122496",
+      "source_file": "reference/mathacademy/question-capture/13941631/state.json",
+      "html_sha256": "a13157a584116970e151984bc411e87a8369ce3c9cb4f3103db4453d12c89095",
+      "visible_zero_rule_fractions": 1,
+      "historical_outputs": [
+        "\\frac{12}{2}"
+      ],
+      "historical_errors": []
+    },
+    {
+      "question_id": "q-70313",
+      "source_file": "reference/mathacademy/question-capture/13995308/state.json",
+      "html_sha256": "bd9fe45008c8c4b73f7db74033e6567fd30c3147eb419134e4ccbcfeccff7535",
+      "visible_zero_rule_fractions": 1,
+      "historical_outputs": [
+        "\\frac{7}{4}"
+      ],
+      "historical_errors": []
+    },
+    {
+      "question_id": "q-113611",
+      "source_file": "reference/mathacademy/question-capture/13995308/state.json",
+      "html_sha256": "3bfdcbe9f87136ce5ee102de83f037108e68e5053a550fec40e3d8304daa507e",
+      "visible_zero_rule_fractions": 7,
+      "historical_outputs": [
+        "\\frac{6}{4}",
+        "\\frac{5}{4}",
+        "\\frac{5}{3}",
+        "\\frac{4}{3}",
+        "\\frac{4}{4}",
+        "\\frac{6}{5}",
+        "\\frac{5}{5}"
+      ],
+      "historical_errors": []
+    }
+  ],
+  "validator_limits": [
+    {
+      "input": "$n$",
+      "accepted": true,
+      "note": "Syntactically valid without source correspondence; not inherently erroneous."
+    },
+    {
+      "input": "$\\begin{bmatrix}1&2\\\\3&4\\end{bmatrix}$",
+      "accepted": true,
+      "note": "Syntactically valid without source correspondence; not inherently erroneous."
+    },
+    {
+      "input": "$\\frac{7}{2}$",
+      "accepted": true,
+      "note": "Syntactically valid without source correspondence; not inherently erroneous."
+    }
+  ],
+  "files": {
+    "reference/edb-math/bin/generate-ma-lessons-json.py": "73e664c6c682896c9862147b11577a0e79ad56ead5b604e108f24c8f2b1e7cbc",
+    "scripts/question_capture/activities.py": "61590c25394c1f36a49f8f846771474d43ddaa6796cd0ad976ca6d3dede87543",
+    "scripts/import_historical_question_content.py": "607d86873e4da2893b7104a72725e661b34919994b4e5aa68c5806ec0a06acef",
+    "capture/scripts/browser/extract.js": "b39cbb04a4761968a0f81316d7b4138b148be3189ad2c0a866bd899ee4d8b843",
+    "scripts/question_capture/math_format.py": "f9381a23942f3173fc2108f029055a04ab5707b95071db99a45730cf1c19fd69",
+    "capture/scripts/tests/fixtures/zero-bar-fractions.json": "82ffdec36a1d740af6aaf5d3dcaa571684695550f47acb117a5d36dd92d44ddd"
+  }
+}
