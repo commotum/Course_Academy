@@ -18,6 +18,7 @@ parser.add_argument('--changes', type=Path, default=HERE.parent / 'changes.json'
 parser.add_argument('--output', type=Path, default=HERE)
 parser.add_argument('--reuse', type=Path, help='Prior rendering.json; reuse only identical entity content')
 parser.add_argument('--previous-changes', type=Path, help='Exact changes used in prior rendering')
+parser.add_argument('--generators', type=Path, help='Fresh generator output records for independent layout checks')
 args = parser.parse_args()
 OUT = args.output.resolve()
 OUT.mkdir(parents=True, exist_ok=True)
@@ -40,6 +41,12 @@ for step in lesson['activity'][':activity/steps']:
         entities[item[':db/id']] = item
 for change in changes:
     assert entities[change['entity']][change['attribute']] == change['before']
+snapshot_entities=copy.deepcopy(entities)
+seed_repair=HERE.parent.parent/'2026-10-16-line-definitions-17592186561226'
+seed_verification=json.loads((seed_repair/'verification.json').read_text())
+assert seed_verification['committed'] and seed_verification['exact_readback']
+seed_change=json.loads((seed_repair/'change.json').read_text())
+entities[seed_change['entity']][seed_change['attribute']]=seed_change['after']
 
 
 def enum(value):
@@ -60,6 +67,8 @@ def make_activity(entity, index):
                     'type': enum(field[':answer-field/type']), 'choices': choices}
             correct = field.get(':answer-field/correct')
             if correct:
+                if isinstance(correct,list):
+                    correct=next(c for c in field[':answer-field/choices'] if c[':answer/id']==correct[1])
                 item['correctAnswer'] = {'id': correct[':answer/id'], 'type': enum(correct[':answer/type']),
                                          'value': correct[':answer/value']}
                 item['answerType'] = enum(correct[':answer/type'])
@@ -81,6 +90,13 @@ for eid, original in sorted(entities.items()):
                         'kind': 'tutorial' if ':tutorial/content' in entity else 'question',
                         'changed': eid in by_entity,
                         'activity': make_activity(entity, len(records))})
+generated=[]
+if args.generators:
+    generated=json.loads(args.generators.read_text())
+    for index,record in enumerate(generated):
+        entity=copy.deepcopy(record['question']);entity[':db/id']=f'generated-{index+1}'
+        records.append({'entity':entity[':db/id'],'version':'after','kind':'generated','changed':False,
+                        'activity':make_activity(entity,len(records))})
 
 reuse = {}
 previous = {}
@@ -93,7 +109,7 @@ if args.reuse:
 
 def can_reuse(record, viewport):
     if (record['entity'],record['version'],viewport) not in reuse:return False
-    before=copy.deepcopy(entities[record['entity']])
+    before=copy.deepcopy(snapshot_entities[record['entity']])
     for change in previous.get(record['entity'],[]):before[change['attribute']]=change[record['version']]
     return make_activity(before,0)['steps']==record['activity']['steps']
 
@@ -179,6 +195,7 @@ try:
                 errors.clear()
                 page.goto(origin + f'/learn?activityId={index}', wait_until='domcontentloaded')
                 page.locator('.lesson-content').wait_for()
+                page.wait_for_function("typeof window.MathJax?.typesetPromise === 'function'")
                 page.evaluate('''async () => {
                     for (const d of document.querySelectorAll('details.worked-solution')) d.open=true;
                     for (const image of document.images) image.loading='eager';
@@ -191,7 +208,7 @@ try:
                 result = page.locator('.lesson-content').evaluate(STATE)
                 result.update({key: record[key] for key in ['entity', 'version', 'kind', 'changed']})
                 result.update({'viewport': viewport, 'javascriptErrors': errors[:], 'source_sha256':source_sha256,'reused_equivalent_source':False})
-                if record['kind'] == 'tutorial' or record['entity'] in [17592186073480, 17592186074060, 17592186073481, 17592186074057, 17592186542465, 17592186542491]:
+                if record['kind'] in ['tutorial','generated'] or record['entity'] in [17592186073480, 17592186074060, 17592186073481, 17592186074057, 17592186542465, 17592186542491]:
                     stem = OUT / f'{record["entity"]}-{record["version"]}-{viewport}'
                     page.screenshot(path=str(stem) + '.png', full_page=True, animations='disabled')
                     Path(str(stem) + '.html').write_text(page.content())
@@ -231,6 +248,7 @@ summary={
     'changes_sha256':changes_sha256,
     'database_writes':0,'question_count':sum(':question/problem' in e for e in entities.values()),
     'tutorial_count':sum(':tutorial/content' in e for e in entities.values()),'changed_fields':len(changes),
+    'generated_examples':len(generated),'snapshot_overlays':[{'entity':seed_change['entity'],'attribute':seed_change['attribute'],'basis_after':seed_verification['basis_after'],'source':str(seed_repair/'verification.json')}],
     'rendered_entity_viewports':len(results),'reused_equivalent_source_cases':sum(r.get('reused_equivalent_source',False) for r in results),'renderer':'Unmodified current Learning.html, learning.js, question-fields.js and MathJax',
     'control_comparisons':comparisons,'failures':[{k:r[k] for k in ['entity','version','viewport','errors','residualTex','bodyOverflow','contentOverflow','javascriptErrors']} for r in results if not r['passed']],
     'scrollable_display_equations':[{'entity':r['entity'],'version':r['version'],'viewport':r['viewport'],'count':sum(d['scrollWidth']>d['clientWidth']+2 for d in r['display'])} for r in results if r['version']=='after' and any(d['scrollWidth']>d['clientWidth']+2 for d in r['display'])],

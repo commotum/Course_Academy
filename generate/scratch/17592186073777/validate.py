@@ -66,9 +66,17 @@ def equivalent(left,right):
 def parse_prompt(record):
     text=record["question"][":question/problem"]
     vx,vy=record["generation"]["parameters"]["var_x"],record["generation"]["parameters"]["var_y"]
-    match=re.search(r"\$l_\{1\}: (.*), l_\{2\}: (.*)\$",text)
-    assert match,"Missing complete line equations"
-    polynomials=[residual(row,vx,vy) for row in match.groups()]
+    if record["generation"]["evidence_only"]:
+        match=re.search(r"\$l_\{1\}: (.*), l_\{2\}: (.*)\$",text)
+        assert match,"Missing complete source line equations"
+        rows=match.groups()
+    else:
+        block=re.search(r"\$\$\n\\begin\{alignedat\}\{2\}\n(.*?)\n\\end\{alignedat\}\n\$\$",text,re.S)
+        assert block,"Missing displayed line definitions"
+        rows=block[1].split(r"\\[6pt]")
+        assert len(rows)==2,"Each line requires its own row"
+        rows=[re.sub(r"^l_\{"+str(i)+r"\}:\\quad & ","",row.strip()).replace(r"&{}={}&","=") for i,row in enumerate(rows,1)]
+    polynomials=[residual(row,vx,vy) for row in rows]
     lines=[(poly.coeff(X),poly.coeff(Y),-poly.subs({X:0,Y:0})) for poly in polynomials]
     return lines,polynomials
 

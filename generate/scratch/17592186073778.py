@@ -71,9 +71,19 @@ def guard(level,p,raw=False):
 def prompt(p,template,raw=False):
     eq=[lhs(a,b)+' ='+('' if c<0 else ' ')+tex(c) for a,b,c in rows(p)]
     var=p['variable']
-    if template=='radio_family':return f'Find all points of intersection of the lines ${eq[0]}$ and ${eq[1]}$.'
-    start=f'Describe the points that lie on the intersection of the lines ${eq[0]}$ and ${eq[1]}$. Express your answer in terms of ${var}$ only.'
-    return start+('' if raw else '\n\n')+f'The intersection points are $({var}$,\n'+'{{field-1}}'+f'\n$)$, where ${var}$ is any number.'
+    if raw:
+        if template=='radio_family':return f'Find all points of intersection of the lines ${eq[0]}$ and ${eq[1]}$.'
+        start=f'Describe the points that lie on the intersection of the lines ${eq[0]}$ and ${eq[1]}$. Express your answer in terms of ${var}$ only.'
+        return start+f'The intersection points are $({var}$,\n'+'{{field-1}}'+f'\n$)$, where ${var}$ is any number.'
+    displayed=[]
+    for equation in eq:
+        left,right=equation.split('=')
+        displayed.append(left.strip()+' &= '+right.strip())
+    block='$$\n'+r'\begin{aligned}'+'\n'+(r' \\[6pt]'+'\n').join(displayed)+'\n'+r'\end{aligned}'+'\n$$'
+    if template=='radio_family':return 'Find all points of intersection of the following lines:\n\n'+block
+    return ('Describe the points that lie on the intersection of the following lines:\n\n'+block+
+            f'\n\nExpress your answer in terms of ${var}$ only.\n\nThe intersection points are\n\n$({var},$ '+
+            '{{field-1}}'+f' $),$\n\nwhere ${var}$ is any number.')
 
 def solution(p):
     (a,b,c),(d,e,f)=rows(p);r=d/a;var=p['variable'];m,k=-a/b,c/b

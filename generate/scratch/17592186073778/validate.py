@@ -40,7 +40,12 @@ def formatting(text):
 def check(rec):
     q=rec['question'];meta=rec['generation'];f=q[':question/answer-fields'][0]
     assert rec['knowledge_point']=={'db_id':g.KP_ID,'id':g.KP_UUID,'title':g.TITLE}
-    equations=re.findall(r'\$([^$]*=[^$]*)\$',q[':question/problem'])[:2]
+    if meta['raw_evidence']:
+        equations=re.findall(r'\$([^$]*=[^$]*)\$',q[':question/problem'])[:2]
+    else:
+        block=re.search(r'\$\$\n\\begin\{aligned\}\n(.*?)\n\\end\{aligned\}\n\$\$',q[':question/problem'],re.S)
+        assert block,'Missing displayed line equations'
+        equations=block[1].split(r'\\[6pt]')
     assert len(equations)==2
     rows=[coeff(eq(e)) for e in equations];a,b,c=rows[0];d,e,ff=rows[1]
     assert all((a,b,c,d,e,ff));assert a*e-b*d==0 and a*ff-c*d==0
@@ -174,7 +179,7 @@ def main():
         except ValueError:bad.append(p0)
         else:raise AssertionError('Explicit workload bound bypassed')
     sample=g.generate('moderate',seed=8,template='radio_family');mut=[]
-    r=copy.deepcopy(sample);r['question'][':question/problem']=r['question'][':question/problem'].replace(' =',' = 1 +',1);mut.append(r)
+    r=copy.deepcopy(sample);r['question'][':question/problem']=r['question'][':question/problem'].replace(' &=',' &= 1 +',1);mut.append(r)
     r=copy.deepcopy(sample);r['question'][':question/worked-solution']=r['question'][':question/worked-solution'].replace('y &=','y &= 1 +',1);mut.append(r)
     r=copy.deepcopy(sample);r['question'][':question/worked-solution']=re.sub(r'0 &= \([^\n]*\)','0 &= 0',r['question'][':question/worked-solution'],count=1);mut.append(r)
     r=copy.deepcopy(sample);r['question'][':question/worked-solution']=r['question'][':question/worked-solution'].replace('where $','where $2',1);mut.append(r)

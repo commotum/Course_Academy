@@ -190,6 +190,15 @@ def aligned(rows):
     return r"\begin{aligned}" + "\n" + (" " + r"\\" + "\n").join(row.replace(" =", " &=", 1) for row in rows) + "\n" + r"\end{aligned}"
 
 
+def line_definitions(first, second):
+    """Give each named line its own row; align labels and equality signs."""
+    rows = []
+    for i, equation in enumerate((first, second), 1):
+        left, right = equation.split("=")
+        rows.append(f"l_{{{i}}}:\\quad & " + left.strip() + r" &{}={}& " + right.strip())
+    return "$$\n" + r"\begin{alignedat}{2}" + "\n" + (r" \\[6pt]" + "\n").join(rows) + "\n" + r"\end{alignedat}" + "\n$$"
+
+
 def generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None):
     if level not in LEVELS:
         raise ValueError("Difficulty must be easy, moderate or hard")
@@ -209,6 +218,8 @@ def generate(level, seed=0, template=None, field_type=None, parameters=None, pro
     first = iso(m,h,vx,vy) if template == "isolated_standard" else eq(a,b,c,vx,vy)
     second = eq(d,e,f,vx,vy)
     prompt = "Consider the lines $l_{1}$ and $l_{2}$, defined as\n$l_{1}: " + first + ", l_{2}: " + second + "$.\n\nAt how many points do these lines intersect?\n\nThe lines $l_{1}$ and $l_{2}$ {{field-1}}."
+    if not raw:
+        prompt = "Consider the lines $l_{1}$ and $l_{2}$, defined by\n\n" + line_definitions(first, second) + "\n\nAt how many points do these lines intersect?\n\nThe lines $l_{1}$ and $l_{2}$ {{field-1}}."
     solution = None if raw else worked_solution(p,template)
     identity = digest([VERSION, None if raw else level, prompt, solution, sorted(VALUES.values()), "select", "text"])
     field_id = uid(identity+"/field-1")
