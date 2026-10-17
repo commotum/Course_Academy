@@ -18,7 +18,8 @@ def main():
  assert identity['database']==before['database'] and identity['lineage']==before['lineage'],'Database lineage changed'
  payload={**identity,'learner':before['learner'],'topic':before['topic']}
  source=HERE/'readiness.rs';command=json.loads((HERE/'readiness-build-command.json').read_text());binary=ROOT/command[-1]
- if not binary.exists() or binary.stat().st_mtime_ns<source.stat().st_mtime_ns:subprocess.run(command,cwd=ROOT,check=True)
+ linked=[Path(arg.split('=',1)[1]) for arg in command if '=' in arg and Path(arg.split('=',1)[1]).is_file()]
+ if not binary.exists() or binary.stat().st_mtime_ns<max(p.stat().st_mtime_ns for p in [source,*linked]):subprocess.run(command,cwd=ROOT,check=True)
  input_path=HERE/(args.label+'-input-'+str(identity['basis'])+'.json');output=HERE/(args.label+'-readiness-'+str(identity['basis'])+'.json')
  input_path.write_text(json.dumps(payload,indent=2)+'\n')
  subprocess.run([str(binary),str(input_path),str(output)],cwd=ROOT,env=db.environment,check=True)

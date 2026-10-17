@@ -66,11 +66,15 @@ pub fn position(s: &EntitySnapshot, activity: u64, items: &[u64]) -> Result<lear
                 return Err("Assessment presentation is outside its route or duplicated".into());
             }
         }
-        return Ok(learning::Position {
-            next: steps
+        let next = steps
                 .iter()
                 .find(|st| !visited.contains(&st.content))
-                .map(|st| st.content),
+                .map(|st| st.content);
+        if let Some(question) = next {
+            learning::validate_practice_question(s, question)?;
+        }
+        return Ok(learning::Position {
+            next,
             passed: visited.len() == steps.len(),
             failed: false,
             shortage: None,
@@ -113,6 +117,9 @@ pub fn position(s: &EntitySnapshot, activity: u64, items: &[u64]) -> Result<lear
         }
     }
     let next = steps.get(items.len()).map(|step| step.content);
+    if let Some(question) = next {
+        learning::validate_practice_question(s, question)?;
+    }
     Ok(learning::Position {
         next,
         passed: next.is_none(),
@@ -142,7 +149,8 @@ pub fn fresh(s: &EntitySnapshot, learner: u64, activity: u64) -> Result<bool> {
     let seen = learning::unavailable_questions(s, learner)?;
     Ok(learning::lesson_steps(s, activity)?
         .iter()
-        .all(|step| !seen.contains(&step.content)))
+        .all(|step| !seen.contains(&step.content)
+            && learning::validate_practice_question(s, step.content).is_ok()))
 }
 pub fn remaining(s: &EntitySnapshot, task: u64, at: DateTime<Utc>) -> Result<Option<f64>> {
     let activity = s.reference(task, "learner-task/activity")?;

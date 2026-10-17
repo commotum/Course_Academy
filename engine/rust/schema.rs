@@ -380,6 +380,28 @@ impl EntitySnapshot {
     pub fn is_ordinary_question(&self, content: u64) -> Result<bool> {
         Ok(self.entity(content)?.contains_key("question/id") && !self.is_example(content))
     }
+    /// Multistep membership is structural, even when the parent has no context
+    /// text. Keep this separate from ordinary-question identity: saved answers
+    /// and full assignment/multistep submissions still need normal grading.
+    /// The projection must include step and assigned-problem containment.
+    pub fn is_multistep_question(&self, question: u64) -> Result<bool> {
+        let mut pending = vec![question];
+        let mut visited = BTreeSet::new();
+        while let Some(content) = pending.pop() {
+            if !visited.insert(content) {
+                continue;
+            }
+            for attr in ["step/content", "multistep-step/question"] {
+                for step in self.owners(content, attr)? {
+                    if !self.owners(step, "multistep/steps")?.is_empty() {
+                        return Ok(true);
+                    }
+                }
+            }
+            pending.extend(self.owners(content, "assigned-problem/content")?);
+        }
+        Ok(false)
+    }
     pub fn eid(&self, v: &Value) -> Result<u64> {
         let v = v.get("$keyword").unwrap_or(v);
         let id = if let Some(s) = v.as_str() {
@@ -1608,6 +1630,44 @@ mod tests {
             .replace_records(BTreeMap::from([(1, Record::new())]), 12)
             .unwrap();
         assert!(!snapshot.is_example(3));
+    }
+
+    #[test]
+    fn multistep_membership_uses_containment_without_requiring_context_and_refreshes() {
+        let mut snapshot = EntitySnapshot::from_json(&json!({
+            "basis_t": 10, "entities": {
+                "1": {"question/id": "direct"},
+                "2": {"question/id": "wrapped"},
+                "3": {"question/id": "standalone"},
+                "4": {"question/id": "legacy"},
+                "10": {"step/id": "direct-step", "step/content": 1},
+                "11": {"step/id": "wrapped-step", "step/content": 20},
+                "12": {"multistep-step/id": "legacy-step", "multistep-step/question": 4},
+                "20": {"assigned-problem/id": "outer-wrapper", "assigned-problem/content": 21},
+                "21": {"assigned-problem/id": "inner-wrapper", "assigned-problem/content": 2},
+                "30": {"multistep/id": "inner", "multistep/steps": [10,11,12]},
+                "31": {"step/id": "outer-step", "step/content": 30},
+                "32": {"multistep/id": "outer", "multistep/steps": [31]},
+                "40": {"step/id": "lesson-step", "step/content": 3},
+                "41": {"activity/id": "lesson", "activity/steps": [40]}
+            }
+        })).unwrap();
+        for q in [1, 2, 4] {
+            assert!(snapshot.is_multistep_question(q).unwrap());
+            assert!(snapshot.is_ordinary_question(q).unwrap());
+        }
+        assert!(!snapshot.is_multistep_question(3).unwrap());
+        snapshot.replace_records(BTreeMap::from([(
+            30, json!({"multistep/id": "inner", "multistep/steps": []}).as_object().unwrap().clone()
+        )]), 11).unwrap();
+        assert!(!snapshot.is_multistep_question(1).unwrap());
+        assert!(!snapshot.is_multistep_question(2).unwrap());
+        assert!(!snapshot.is_multistep_question(4).unwrap());
+        // Malformed wrapper cycles terminate and do not invent membership.
+        snapshot.replace_records(BTreeMap::from([(
+            2, json!({"question/id": "wrapped", "assigned-problem/content": 20}).as_object().unwrap().clone()
+        )]), 12).unwrap();
+        assert!(!snapshot.is_multistep_question(2).unwrap());
     }
     #[test]
     fn replacing_projection_records_removes_retracted_attributes_and_deleted_entities() {

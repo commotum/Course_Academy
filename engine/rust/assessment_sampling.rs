@@ -41,8 +41,7 @@ pub fn pool(s: &EntitySnapshot, kps: &[u64], seen: &BTreeSet<u64>) -> Result<Vec
         .into_iter()
         .filter(|q| {
             !seen.contains(q)
-                && !s.is_example(*q)
-                && learning::validate_question(s, *q).is_ok()
+                && learning::validate_practice_question(s, *q).is_ok()
                 && band(s, *q).ok().flatten().is_some()
         })
         .collect())

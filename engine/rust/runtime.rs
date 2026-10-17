@@ -271,6 +271,9 @@ struct SelectionContext {
     policy: u64,
     learner: u64,
     task: u64,
+    // Validate an already-reserved historical presentation without admitting
+    // another multistep leaf into fresh practice.
+    reserved_multistep: Option<u64>,
 }
 fn selected_questions(
     snapshot: &EntitySnapshot,
@@ -284,8 +287,15 @@ fn selected_questions(
         crate::question_selection::seen_before_task(snapshot, context.learner, context.task)?;
     let remaining: Vec<_> = remaining
         .into_iter()
-        .filter(|q| !seen.contains(q))
+        .filter(|q| {
+            !seen.contains(q)
+                && (context.reserved_multistep == Some(*q)
+                    || snapshot.is_multistep_question(*q).ok() == Some(false))
+        })
         .collect();
+    if let Some(question) = context.reserved_multistep.filter(|q| remaining.contains(q)) {
+        return Ok(vec![question]);
+    }
     let weights =
         crate::question_selection::weights(snapshot, context.policy, activity_type, answered)?;
     if weights.is_none() {
@@ -673,6 +683,11 @@ fn delivery(
             ..Default::default()
         });
     }
+    let remaining = remaining
+        .into_iter()
+        .filter(|q| context.reserved_multistep == Some(*q)
+            || snapshot.is_multistep_question(*q).ok() == Some(false))
+        .collect::<Vec<_>>();
     Ok(Delivery {
         complete: remaining.is_empty(),
         next_content: remaining,
@@ -934,10 +949,11 @@ pub fn complete_item(
             item_change.insert("task-item/responses".into(), json!(response_refs));
         }
     }
-    let selection = SelectionContext {
+    let mut selection = SelectionContext {
         policy: loaded.policy_eid,
         learner: loaded.learner_eid,
         task: task_eid,
+        reserved_multistep: snapshot.is_multistep_question(content)?.then_some(content),
     };
     let before = delivery(snapshot, activity, &kind, &prefix, Some(false), &selection)?;
     if (before.complete || !before.next_content.contains(&content))
@@ -947,6 +963,7 @@ pub fn complete_item(
     }
     let mut items = prefix;
     items.push(item.clone());
+    selection.reserved_multistep = None;
     let mut delivered = delivery(snapshot, activity, &kind, &items, take_retry, &selection)?;
     if let Some(limit) = snapshot
         .entity(activity)?
@@ -1191,6 +1208,7 @@ pub fn expire_task(
         policy: loaded.policy_eid,
         learner: loaded.learner_eid,
         task: task_eid,
+        reserved_multistep: None,
     };
     delivery(snapshot, activity, &kind, &items, Some(false), &selection)?;
     let mut engine = loaded.engine.clone();
@@ -1556,6 +1574,7 @@ mod tests {
             policy: 2,
             learner: 1,
             task: 3,
+            reserved_multistep: None,
         };
         let mut prefix = vec![];
         for slot in 0..4 {

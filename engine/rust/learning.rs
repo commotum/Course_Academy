@@ -144,6 +144,16 @@ pub(crate) fn validate_question(s: &EntitySnapshot, question: u64) -> Result<()>
     Ok(())
 }
 
+/// Fresh lesson, review and assessment practice must be self-contained.
+/// Do not use this for grading or replaying previously presented questions.
+pub fn validate_practice_question(s: &EntitySnapshot, question: u64) -> Result<()> {
+    validate_question(s, question)?;
+    if s.is_multistep_question(question)? {
+        return Err("multistep questions belong to their full activity, not standalone practice".into());
+    }
+    Ok(())
+}
+
 pub fn has_free_fields(s: &EntitySnapshot, question: u64) -> Result<bool> {
     for field in s.refs(question, "question/answer-fields")? {
         if ident(s, field, "answer-field/type")? == "answer-field.type/free" {
@@ -493,6 +503,7 @@ fn position_with_deferral(
                 }
                 "question" => {
                     let Some(item) = items.get(cursor) else {
+                        validate_practice_question(s, step.content)?;
                         if actual_seen.contains(&step.content) {
                             return Err("This authored question was already presented. Fresh content is needed; the lesson is not failed.".into());
                         }
@@ -568,7 +579,7 @@ fn position_with_deferral(
                                 .questions
                                 .iter()
                                 .copied()
-                                .filter(|q| !seen.contains(q) && validate_question(s, *q).is_ok())
+                                .filter(|q| !seen.contains(q) && validate_practice_question(s, *q).is_ok())
                                 .collect::<Vec<_>>();
                             if candidates.is_empty() {
                                 return Ok(current(None, Some(step.step), false, &deferred));
@@ -696,7 +707,7 @@ pub fn deferred_resume_step(
                 && st
                     .questions
                     .iter()
-                    .any(|q| !seen.contains(q) && validate_question(s, *q).is_ok())
+                    .any(|q| !seen.contains(q) && validate_practice_question(s, *q).is_ok())
         })
         .map(|st| st.step))
 }
@@ -1488,13 +1499,18 @@ fn plan_candidates_in_scope(
             "knowledge-point" => {
                 step.questions
                     .iter()
-                    .filter(|q| !seen.contains(q) && validate_question(s, **q).is_ok())
+                    .filter(|q| !seen.contains(q) && validate_practice_question(s, **q).is_ok())
                     .count()
                     < minimum_fresh
             }
             "question" => {
                 let saved = unstarted.get(&activity) == Some(&step.content);
-                (seen.contains(&step.content) && !saved) || validate_question(s, step.content).is_err()
+                (seen.contains(&step.content) && !saved)
+                    || if saved {
+                        validate_question(s, step.content).is_err()
+                    } else {
+                        validate_practice_question(s, step.content).is_err()
+                    }
             }
             _ => false,
         }) {
@@ -1577,7 +1593,7 @@ pub fn candidate_diagnostics(s: &EntitySnapshot, learner: u64, course: u64) -> R
                 let valid = step
                     .questions
                     .iter()
-                    .filter(|q| !seen.contains(q) && validate_question(s, **q).is_ok())
+                    .filter(|q| !seen.contains(q) && validate_practice_question(s, **q).is_ok())
                     .count();
                 kps.push(
                     json!({"kp":step.content,"captured":step.questions.len(),"valid_fresh":valid}),
@@ -2425,6 +2441,69 @@ pub(crate) mod tests {
     }
     fn items(s: &EntitySnapshot) -> Vec<u64> {
         s.refs(9, "learner-task/items").unwrap()
+    }
+
+    fn multistep_parts(s: &mut EntitySnapshot, questions: &[u64]) {
+        let mut steps = vec![];
+        for (index, question) in questions.iter().enumerate() {
+            let step = 800 + index as u64;
+            put(&mut s.entities, step, json!({"step/id":id(step),"step/content":question}));
+            steps.push(step);
+        }
+        put(&mut s.entities, 850, json!({"multistep/id":id(850),"multistep/steps":steps}));
+    }
+
+    #[test]
+    fn adaptive_practice_and_inventory_exclude_multistep_parts_but_grade_saved_answers() {
+        let mut s = fixture();
+        put(&mut s.entities, 1100, json!({"db/ident":"question.difficulty/easy"}));
+        for q in 100..105 {
+            s.entities.get_mut(&q).unwrap().insert("question/difficulty".into(), json!(1100));
+        }
+        multistep_parts(&mut s, &[100, 101, 102, 103]);
+        assert!(validate_response_question(&s, 100).is_ok());
+        assert!(grade(&s, 100, &BTreeMap::from([(200, "1/2".into())])).unwrap());
+        assert!(validate_practice_question(&s, 100).is_err());
+        assert_eq!(crate::inventory::practice_pool(&s, &[41], &BTreeSet::new()).unwrap(), [104]);
+        assert_eq!(crate::assessment_sampling::pool(&s, &[41], &BTreeSet::new()).unwrap(), [104]);
+        assert_eq!(crate::inventory::lesson_shortages(&s, &[41], &BTreeSet::new()).unwrap(), [(41, 1)]);
+        present(&mut s, 40, "completed");
+        present(&mut s, 42, "completed");
+        assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), Some(104));
+        // A presentation saved before the policy change remains answerable;
+        // after it completes the next draw still chooses standalone content.
+        let saved = present(&mut s, 100, "started");
+        assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), Some(100));
+        s.entities.get_mut(&saved).unwrap().insert("task-item/status".into(), json!("task-item.status/correct"));
+        assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), Some(104));
+    }
+
+    #[test]
+    fn an_all_multistep_practice_pool_is_a_shortage_not_a_draw_or_failure() {
+        let mut s = fixture();
+        multistep_parts(&mut s, &[100, 101, 102, 103, 104]);
+        assert_eq!(crate::inventory::lesson_shortages(&s, &[41], &BTreeSet::new()).unwrap(), [(41, 0)]);
+        present(&mut s, 40, "completed");
+        present(&mut s, 42, "completed");
+        let p = continuation_state(&s, 20, &items(&s), false, false).unwrap();
+        assert_eq!(p.next, None);
+        assert_eq!(p.shortage, Some(31));
+        assert!(!p.failed);
+        assert!(!p.passed);
+    }
+
+    #[test]
+    fn explicit_multistep_leaf_routes_cannot_start_but_saved_presentations_can_finish() {
+        let mut s = fixture();
+        multistep_parts(&mut s, &[100]);
+        s.entities.get_mut(&20).unwrap().insert("activity/steps".into(), json!([31]));
+        s.entities.get_mut(&20).unwrap().insert("activity/first-step".into(), json!(31));
+        s.entities.get_mut(&31).unwrap().insert("step/content".into(), json!(100));
+        assert!(first_content(&s, 20, 1).unwrap_err().contains("multistep"));
+        let saved = present(&mut s, 100, "started");
+        assert_eq!(next_content(&s, 20, &items(&s)).unwrap(), Some(100));
+        s.entities.get_mut(&saved).unwrap().insert("task-item/status".into(), json!("task-item.status/correct"));
+        assert!(lesson_passed(&s, 20, &items(&s)).unwrap());
     }
 
     #[test]
