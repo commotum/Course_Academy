@@ -1109,9 +1109,9 @@ fn knowledge_point_identity(s: &EntitySnapshot, content: u64) -> Result<Option<J
     }))
 }
 
-// A practice pool can reuse a part of an imported multipart problem without
-// presenting its enclosing step. Recover the explicitly stored setup through
-// reverse containment, using this same captured snapshot and its cached indexes.
+// Saved multipart presentations retain their original shared context even
+// though fresh standalone practice excludes those parts. Recover the stored
+// setup through reverse containment in this snapshot and its cached indexes.
 fn question_markdown(s: &EntitySnapshot, question: u64) -> Result<String> {
     fn contexts(
         s: &EntitySnapshot,
@@ -1761,6 +1761,10 @@ fn assessment_mutate(
                     }
                     forms.push(add(json!(t), "learner-task/active-item", json!(item)));
                 } else {
+                    // Reserved legacy routes may predate practice eligibility
+                    // rules. Saved presentations remain usable; new ones must
+                    // still be standalone questions.
+                    learning::validate_practice_question(s, q)?;
                     append_item(json!(t), chain.last().copied(), q, &mut forms)?;
                     forms.push(add(json!(t), "learner-task/active-item", json!("new-item")));
                 }
@@ -2371,6 +2375,9 @@ fn mutate_with_selection(
                 0
             };
             if let Some(next) = next {
+                if s.entity(next)?.contains_key("question/id") && !s.is_example(next) {
+                    learning::validate_practice_question(s, next)?;
+                }
                 append_item(json!(t), Some(i), next, &mut forms)?;
             } else {
                 forms.push(cas(
@@ -2976,7 +2983,7 @@ mod study_queue_tests {
     }
 
     #[test]
-    fn standalone_questions_and_saved_items_include_their_shared_function() -> Result<()> {
+    fn saved_questions_and_items_include_their_shared_function() -> Result<()> {
         let s = EntitySnapshot::new(BTreeMap::from([
             (1, json!({"question/id":"part","question/problem":"Calculate $f'(x)$.\n\n$f'(x)={{field-1}}$"}).as_object().unwrap().clone()),
             (2, json!({"step/content":1}).as_object().unwrap().clone()),

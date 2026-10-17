@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import vm from 'node:vm';
 import { readFile } from 'node:fs/promises';
+import { marked } from '../ui/vendor/marked/marked.esm.js';
 
 const shared = (await readFile(new URL('../ui/question-fields.js', import.meta.url), 'utf8')).replace(/^[\s\S]*?(?=\/\/ Shared presentation)/, '').replaceAll('export ', '');
 const assignmentSource = await readFile(new URL('../ui/assignments.js', import.meta.url), 'utf8');
@@ -40,13 +41,13 @@ function fixture() {
   document.createElement = tag => new Element(tag);
   document.createTextNode = text => { const node = new Element('#text'); node.textContent = text; return node; };
   document.getElementById = () => null;
-  const context = vm.createContext({ document, Event, crypto, URL, attachStepMenu: (node, id) => { node.dataset.stepDbId = id; }, location: { href: 'http://127.0.0.1:8765/assignments' }, isDeveloperMode: () => false });
+  const context = vm.createContext({ document, Event, crypto, URL, marked, attachStepMenu: (node, id) => { node.dataset.stepDbId = id; }, location: { href: 'http://127.0.0.1:8765/assignments' }, isDeveloperMode: () => false });
   const h = vm.runInContext(`(() => {
     ${shared}
     ${assignments}
     markdown = (value, fields = []) => {
       const prompt = el('div', 'prose', value || '');
-      for (const marker of inlinePrompt(value, fields).matchAll(/data-field-key="([^"]+)"/g)) {
+      for (const marker of marked.parse(inlinePrompt(value, fields)).matchAll(/<span[^>]+data-field-key="([^"]+)"/g)) {
         const slot = el('span', 'field-location'); slot.dataset.fieldKey = marker[1]; prompt.append(slot);
       }
       return prompt;
@@ -77,6 +78,34 @@ test('markers follow prose and equation positions while unrelated math and code 
   assert.equal(h.inlinePrompt('`$y={{blank-1}}$`\n```text\n{{blank-1}}\n```', [field]), '`$y={{blank-1}}$`\n```text\n{{blank-1}}\n```');
   assert.equal(h.inlinePrompt('{{missing}} {{choice}}', [{ key: 'choice', type: 'radio' }]), '{{missing}} {{choice}}');
   assert.ok(!h.inlinePrompt('{{bad"key}}', [{ ...field, key: 'bad"key' }]).includes('data-field-key="bad"key"'));
+});
+
+test('indented standalone answer markers render controls rather than escaped HTML', () => {
+  const f = fixture();
+  const question = { id: 'indented', kind: 'question', stepId: 'step', gradable: true, status: 'paused',
+    problem: '$\\frac{\\text{d}h}{\\text{d}x}\\,=$\n\n' + ' '.repeat(28) + '\n' + ' '.repeat(40) + '{{blank-1}}\n\n\t{{answer-field:term}}',
+    fields: [field, { id: 'term', entityId: 12, key: 'term', type: 'select', choices: [{ id: 'a', entityId: 31, type: 'text', value: 'derivative' }] }],
+  };
+  const html = marked.parse(f.h.inlinePrompt(question.problem, question.fields));
+  assert.ok(!html.includes('<pre>') && !html.includes('&lt;span'), html);
+  const view = f.h.render(question);
+  assert.equal(view.prompt.querySelectorAll('.answer-inline').length, 2);
+  assert.equal(view.prompt.querySelectorAll('input').length, 1);
+  assert.equal(view.prompt.querySelectorAll('select').length, 1);
+  assert.equal(view.fieldList.childElementCount, 0);
+  assert.equal(view.fieldList.hidden, true);
+  view.prompt.querySelector('input').value = '-4cos(x)';
+  view.prompt.querySelector('select').value = '31';
+  assert.deepEqual(JSON.parse(JSON.stringify(f.h.responses(view))), [{ fieldId: 11, value: '-4cos(x)' }, { fieldId: 12, choiceId: 31 }]);
+});
+
+test('answer indentation repair leaves prose, code examples, and non-inline markers unchanged', () => {
+  const { h } = fixture(), indent = ' '.repeat(40);
+  const unchanged = '    Ordinary indented code.\n\n- A list item\n  with its continuation.\n\n'
+    + '`{{blank-1}}`\n\n```text\n' + indent + '{{blank-1}}\n```\n\n'
+    + indent + '{{unknown}}\n\n' + indent + '{{choice}}\n\n' + indent + '{{explanation}}\n\n' + indent + '{{check}}';
+  assert.equal(h.inlinePrompt(unchanged, [field, { key: 'choice', type: 'radio' }, { key: 'explanation', type: 'free' }, { key: 'check', type: 'checkbox' }]), unchanged);
+  assert.match(marked.parse(h.inlinePrompt(unchanged, [field])), /<pre><code>Ordinary indented code\./);
 });
 
 test('rich selects keep choice IDs, show authored content, support keyboard navigation, and respect read-only state', () => {

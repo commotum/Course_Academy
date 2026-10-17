@@ -60,6 +60,7 @@ impl Fixture {
             include_str!("../schema/content/4-question.edn"),
             include_str!("../schema/content/5-answer-field.edn"),
             include_str!("../schema/content/6-answer.edn"),
+            include_str!("../schema/content/7-multistep.edn"),
             include_str!("../schema/learner/1-1-learner.edn"),
             include_str!("../schema/learner/1-2-learner-performance.edn"),
             include_str!("../schema/learner/1-3-learner-progress.edn"),
@@ -226,6 +227,97 @@ impl Fixture {
         let s = self.act("start", json!({"activityId":activity}), self.now + 100)?;
         Ok((task_for(&s, self.learner, activity)?.unwrap(), s))
     }
+
+    fn mark_multistep(&mut self, question: u64, at: i64) -> Result<()> {
+        self.tx(vec![
+            json!({"db/id":"multipart-step","step/id":{"$uuid":uid()?},"step/content":question}),
+            json!({"db/id":"multipart","multistep/id":{"$uuid":uid()?},"multistep/context":"Shared assignment setup.","multistep/steps":["multipart-step"],"multistep/first-step":"multipart-step"}),
+        ], at)
+    }
+}
+
+#[test]
+fn stale_unstarted_multipart_routes_are_replaced_without_presenting_or_grading_them() -> Result<()> {
+    for kind in ["review", "assessment"] {
+        let mut f = Fixture::new(kind == "review")?;
+        let old = f.available(kind)?;
+        let before = f.snapshot()?;
+        let task = task_for(&before, f.learner, old)?.unwrap();
+        let scope = before.optional_ref(old, "activity/scope")?;
+        let route = learning::lesson_steps(&before, old)?;
+        let part = route.last().unwrap().content;
+        f.mark_multistep(part, f.now + 1)?;
+        let marked = f.snapshot()?;
+        assert!(!retrieval::fresh(&marked, f.learner, old)?);
+        assert!(mutate(&marked, f.learner, "start", &json!({"activityId":old}), DateTime::from_timestamp_millis(f.now+2).unwrap()).is_err());
+        let after = f.act("queue", json!({}), f.now + 3)?;
+        assert_eq!(status(&after, task, "learner-task/status")?, "locked");
+        assert!(items(&after, task)?.is_empty());
+        assert_eq!(after.entity(old)?, before.entity(old)?, "the original route is immutable");
+        let candidates = home(&after, f.learner)?;
+        assert!(!candidates["activities"].as_array().unwrap().iter().any(|a| a["activityId"] == old));
+        let replacement = candidates["activities"].as_array().unwrap().iter().filter_map(|a| a["activityId"].as_u64())
+            .find(|a| retrieval::kind(&after, *a).ok().as_deref() == Some(kind)
+                && after.optional_ref(*a, "activity/scope").ok() == Some(scope))
+            .ok_or("No clean replacement scheduled")?;
+        assert!(learning::lesson_steps(&after, replacement)?.iter().all(|st| learning::validate_practice_question(&after, st.content).is_ok()));
+        for progress in before.refs(f.learner, "learner/knowledge-profile")? {
+            assert_eq!(after.entity(progress)?, before.entity(progress)?);
+        }
+    }
+    Ok(())
+}
+
+#[test]
+fn assessment_rejects_new_multipart_navigation_but_preserves_saved_work_and_submission() -> Result<()> {
+    let mut f = Fixture::new(false)?;
+    let (task, initial) = f.start("assessment")?;
+    let activity = initial.reference(task, "learner-task/activity")?;
+    let route = learning::lesson_steps(&initial, activity)?;
+    let first = route[0].content;
+    let forbidden = route.last().unwrap().content;
+    let first_item = items(&initial, task)?[0];
+    f.mark_multistep(first, f.now + 110)?;
+    f.mark_multistep(forbidden, f.now + 120)?;
+    let before = f.snapshot()?;
+    let error = mutate(&before, f.learner, "navigate", &json!({"taskId":task,"questionId":forbidden}), DateTime::from_timestamp_millis(f.now+130).unwrap()).unwrap_err();
+    assert!(error.to_string().contains("multistep questions"));
+    assert_eq!(items(&f.snapshot()?, task)?, vec![first_item]);
+    let field = before.refs(first, "question/answer-fields")?[0];
+    let drafted = f.act("draft", json!({"taskId":task,"responses":[{"fieldId":field,"value":"2"}]}), f.now+140)?;
+    assert_eq!(task_json(&drafted, f.learner, task)?["step"]["fields"][0]["response"]["value"], "2");
+    f.act("navigate", json!({"taskId":task,"questionId":route[1].content}), f.now+150)?;
+    let revisited = f.act("navigate", json!({"taskId":task,"questionId":first}), f.now+160)?;
+    assert_eq!(revisited.reference(task, "learner-task/active-item")?, first_item);
+    f.act("pause", json!({"taskId":task}), f.now+170)?;
+    f.act("resume", json!({"taskId":task}), f.now+180)?;
+    let submitted = f.act("submit", json!({"taskId":task}), f.now+190)?;
+    assert_eq!(status(&submitted, task, "learner-task/status")?, "completed");
+    assert_eq!(status(&submitted, first_item, "task-item/status")?, "correct");
+    assert!(!items(&submitted, task)?.iter().any(|i| submitted.optional_ref(*i, "task-item/content").ok().flatten() == Some(forbidden)));
+    assert!(task_json(&submitted, f.learner, task).is_ok());
+    Ok(())
+}
+
+#[test]
+fn review_keeps_saved_multipart_answer_but_cannot_present_a_new_part() -> Result<()> {
+    let mut f = Fixture::new(true)?;
+    let (task, initial) = f.start("review")?;
+    let route = learning::lesson_steps(&initial, initial.reference(task, "learner-task/activity")?)?;
+    let item = items(&initial, task)?[0];
+    f.mark_multistep(route[0].content, f.now+110)?;
+    f.mark_multistep(route[1].content, f.now+120)?;
+    let field = initial.refs(route[0].content, "question/answer-fields")?[0];
+    let answered = f.act("answer", json!({"taskId":task,"itemId":item,"responses":[{"fieldId":field,"value":"2"}]}), f.now+130)?;
+    assert_eq!(status(&answered, item, "task-item/status")?, "correct");
+    assert!(task_json(&answered, f.learner, task).is_ok());
+    let error = mutate(&answered, f.learner, "continue", &json!({"taskId":task,"itemId":item}), DateTime::from_timestamp_millis(f.now+140).unwrap()).unwrap_err();
+    assert!(error.to_string().contains("multistep questions"));
+    f.act("pause", json!({"taskId":task}), f.now+150)?;
+    let resumed = f.act("resume", json!({"taskId":task}), f.now+160)?;
+    assert_eq!(items(&resumed, task)?, vec![item]);
+    assert_eq!(status(&resumed, item, "task-item/status")?, "correct");
+    Ok(())
 }
 #[test]
 fn migrated_terminal_lessons_count_xp_and_original_learning_age_without_replaying_credit() -> Result<()> {

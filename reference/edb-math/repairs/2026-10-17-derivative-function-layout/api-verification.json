@@ -1,0 +1,34 @@
+{
+  "changedFiles": [
+    "scripts/learning_api.rs",
+    "scripts/retrieval_tests.rs"
+  ],
+  "behavior": [
+    "Assessment navigation validates standalone-practice eligibility before creating a new presentation, including out-of-order navigation to a previously reserved question.",
+    "Ordinary lesson/review continuation validates a new practice-question presentation without applying the new policy to saved answers or instructional examples.",
+    "Existing queue preparation replaces stale never-started multipart review and assessment routes; the stale route is retained and its task is locked."
+  ],
+  "nativeTestHelper": ".local/graph-explorer/learning-3741718d1d3fceee",
+  "targetedTests": {
+    "filter": "multipart",
+    "passed": 3,
+    "failed": 0
+  },
+  "fullNativeTests": {
+    "passed": 71,
+    "failed": 0,
+    "ignored": 7
+  },
+  "coverage": [
+    "Unstarted stale review and assessment routes cannot start and are replaced without learner progress changes.",
+    "Unvisited multipart assessment questions cannot be presented by navigating out of order.",
+    "Already-presented multipart answers remain draftable, gradable, revisitable, pausable, resumable, and readable in completed history.",
+    "A future multipart review slot cannot be presented; the saved current answer is preserved.",
+    "Full assignment playback and shared context tests pass."
+  ],
+  "diffCheck": "passed",
+  "databaseWrites": false,
+  "migrationRequirement": "Any already-started review containing a future unpresented multipart slot needs a one-time route repair before continuing beyond that slot. The immutable route is not silently resampled, and completed answers and assessment scoring are not rewritten. Root owns the live fixed-basis route audit and any data migration.",
+  "nativeProductionHelper": ".local/graph-explorer/learning-9dc459850c717b2f",
+  "testLog": "api-tests.log"
+}

@@ -128,6 +128,11 @@ export function inlinePrompt(value, fields) {
   let source = String(value || '').replace(/```[\s\S]*?```|`[^`\n]*`/g, match => {
     code.push(match); return codePrefix + (code.length - 1) + 'END';
   });
+  // Captured standalone answer markers can retain HTML source indentation.
+  // Keep those controls out of Markdown code blocks without dedenting prose
+  // or changing the code examples protected above.
+  source = source.replace(/^([ \t]+)(\{\{(?:answer-field:)?([^}]+)\}\})[ \t]*$/gm,
+    (whole, indent, marker, key) => keys.has(key) && (indent.length >= 4 || indent.includes('\t')) ? marker : whole);
   source = source.replace(mathBlock, match => {
     const display = match.startsWith('$$') || match.startsWith('\\[');
     const edge = match.startsWith('$') && !display ? 1 : 2;
