@@ -313,7 +313,7 @@ button,input,select { font:inherit; }
 <div class="main">
 <div id="loadState" class="load-state" role="status"><span id="loadMessage">Connecting to your knowledge graph…</span><button id="retryLoad" class="pill" hidden>Retry</button><a id="localServerLink" href="http://127.0.0.1:8765/" hidden>Open local explorer ↗</a></div>
 <div class="viewport" id="viewport">
-<svg aria-label="Math topic network" id="svg" preserveAspectRatio="xMidYMid meet" viewBox="0 0 100 100">
+<svg aria-label="Math topic network" id="svg" tabindex="0" aria-haspopup="menu" aria-expanded="false" preserveAspectRatio="xMidYMid meet" viewBox="0 0 100 100">
 <g id="camera">
 <g id="guides"></g>
 <g id="edges"></g>
@@ -340,7 +340,7 @@ button,input,select { font:inherit; }
 <div class="target-course-row"><label id="targetCourseLabel256" for="targetCourseToggle256">MTH 256</label><button id="targetCourseToggle256" class="profile-switch" type="button" role="switch" aria-labelledby="targetCourseLabel256" aria-checked="true"></button></div>
 <div class="target-course-row"><label id="targetCourseLabel255" for="targetCourseToggle255">MTH 255</label><button id="targetCourseToggle255" class="profile-switch" type="button" role="switch" aria-labelledby="targetCourseLabel255" aria-checked="true"></button></div>
 <div class="target-course-row"><label id="targetCourseLabel341" for="targetCourseToggle341">MTH 341</label><button id="targetCourseToggle341" class="profile-switch" type="button" role="switch" aria-labelledby="targetCourseLabel341" aria-checked="true"></button></div>
-<div class="target-course-row"><label id="targetQueueLabel" for="targetQueueToggle">Queue</label><button id="targetQueueToggle" class="profile-switch" type="button" role="switch" aria-labelledby="targetQueueLabel" aria-checked="true"></button></div>
+<div class="target-course-row"><label id="targetQueueLabel" for="targetQueueToggle">Queue</label><button id="targetQueueToggle" class="profile-switch" type="button" role="switch" aria-labelledby="targetQueueLabel" aria-checked="true" title="Show queued topics in every week, regardless of due dates."></button></div>
 </section>
 
 <div class="meta-line" id="metaLine"></div><div id="badgeNote">Global layer badges · prerequisite order</div>
@@ -385,6 +385,7 @@ button,input,select { font:inherit; }
 <button id="copyNodeDbId" type="button" role="menuitem">Copy topic :db/id</button>
 <button id="copyNodeMaId" type="button" role="menuitem" hidden>Copy topic :ma/id</button>
 <button id="copyNodeButton" type="button" role="menuitem">Copy node to clipboard</button>
+<button id="copyCanvasDbIds" type="button" role="menuitem" hidden>Copy all topic DB IDs</button>
 </div>
 <div id="copyNodeNotice" role="status" aria-live="polite" hidden></div>
 <dialog id="manualNodeCopy" aria-labelledby="manualNodeTitle">
@@ -1672,13 +1673,14 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     }
   }
 
-  // Right-clicking opens actions for one node without changing the active set.
+  // Right-clicking opens topic or canvas actions without changing the active set.
   const nodeContextMenu = (() => {
     const menu=$('nodeContextMenu'),button=$('copyNodeButton'),notice=$('copyNodeNotice');
+    const canvasButton=$('copyCanvasDbIds');
     const targetAction=$('nodeTargetAction'),queueAction=$('nodeQueueAction'),topicLink=$('goToTopicLink'),studyLink=$('studyTopicLink');
     const fallback=$('manualNodeCopy'),fallbackText=$('manualNodeText');
     const navigation=[{link:studyLink,label:'Study now'},{link:topicLink,label:'Go to topic'}];
-    let topic=null,opener=null,noticeTimer=0,shiftHeld=false;
+    let topic=null,canvasIds=null,opener=null,noticeTimer=0,shiftHeld=false;
     function shiftMode(held) {
       shiftHeld=Boolean(held);
       for(const {link,label} of navigation) {
@@ -1696,14 +1698,19 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
         opener.setAttribute('aria-expanded','false');
         if(restoreFocus)opener.focus({preventScroll:true});
       }
-      topic=null;opener=null;
+      topic=null;canvasIds=null;opener=null;
     }
     function menuItems() {
       return [...menu.querySelectorAll('[role="menuitem"]')].filter(item=>!item.disabled&&!item.closest('[hidden]'));
     }
+    function canvasMode(enabled) {
+      for(const element of [targetAction,queueAction,topicLink,studyLink,button,$('copyNodeDbId'),$('copyNodeMaId')])element.hidden=enabled;
+      canvasButton.hidden=!enabled;
+    }
     function open(node,event,element) {
       event.preventDefault();event.stopPropagation();close();
       topic=node;opener=element;button.disabled=false;
+      canvasMode(false);
       $('copyNodeMaId').hidden=!academyEntityId(node.mathAcademyId);
       const queue=queueControls.createToggle(node,{menuItem:true});
       if(queue)queueAction.append(queue);
@@ -1712,6 +1719,20 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       topicLink.href=topicReferenceURL(snapshot,node,courseId);
       studyLink.href='/learn?topicId='+encodeURIComponent(node.id);
       menu.setAttribute('aria-label','Actions for '+node.name);
+      show(event,element);
+    }
+    function openCanvas(event) {
+      event.preventDefault();event.stopPropagation();close();
+      // Use all rendered topics, including expanded prerequisites and topics
+      // outside the current pan/zoom window. No database reads are needed.
+      canvasIds=[...new Set((state.layout?.activeNodes || []).map(node=>String(node.id)))];
+      opener=$('svg');canvasMode(true);
+      canvasButton.disabled=!canvasIds.length;
+      canvasButton.textContent='Copy all topic DB IDs ('+canvasIds.length+')';
+      menu.setAttribute('aria-label','Canvas actions');
+      show(event,opener);
+    }
+    function show(event,element) {
       element.setAttribute('aria-expanded','true');
       menu.hidden=false;shiftMode(event.shiftKey);
       const box=(element.querySelector('.node-hit') || element).getBoundingClientRect();
@@ -1745,7 +1766,9 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       clearTimeout(noticeTimer);notice.textContent=message;notice.hidden=false;
       noticeTimer=setTimeout(()=>{notice.hidden=true;},2400);
     }
-    function offerManualCopy(value) {
+    function offerManualCopy(value, title='Copy node', label='Topic ID and full name') {
+      $('manualNodeTitle').textContent=title;
+      fallbackText.setAttribute('aria-label',label);
       fallbackText.value=value;
       if(typeof fallback.showModal==='function')fallback.showModal();
       else fallback.setAttribute('open','');
@@ -1770,6 +1793,17 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       button.disabled=false;
       if(copied)notify('Copied topic '+node.id+' to clipboard.');
       else offerManualCopy(value);
+    });
+    canvasButton.addEventListener('click',async event=>{
+      event.preventDefault();event.stopPropagation();
+      if(!canvasIds?.length || canvasButton.disabled)return;
+      const ids=canvasIds,value=ids.join('\n');
+      canvasButton.disabled=true;
+      const copied=await writeText(value);
+      if(canvasIds===ids)close(true);
+      canvasButton.disabled=false;
+      if(copied)notify('Copied '+ids.length+' topic DB IDs to clipboard.');
+      else offerManualCopy(value,'Copy topic DB IDs','Topic database IDs, one per line');
     });
     for(const {link} of navigation)link.addEventListener('click',event=>{
       if(menu.hidden)return;
@@ -1816,6 +1850,11 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     window.addEventListener('resize',()=>close(false));
     window.addEventListener('course-academy:targets-changed',()=>{if(!menu.hidden)close(true);});
     window.addEventListener('course-academy:queue-changed',()=>{if(!menu.hidden)close(true);});
+    for(const type of ['contextmenu','keydown'])$('svg').addEventListener(type,event=>{
+      if(event.target.closest?.('.node, .edge-stub'))return;
+      if(type==='keydown' && (event.target!==$('svg') || !(event.key==='ContextMenu' || event.shiftKey && event.key==='F10')))return;
+      openCanvas(event);
+    });
     return {open,close};
   })();
 
@@ -2084,7 +2123,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     return includeQueue?[...new Set([...selected,...queuedGraphTopicIds()])]:selected;
   }
   function queuedGraphTopicIds() {
-    return (snapshot?.learner.queue || []).filter(id=>nodeById.has(id));
+    return [...new Set(snapshot?.learner.queue || [])].filter(id=>nodeById.has(id));
   }
   function targetWeekCourseIds() {
     if(enabledTargetCourses.size===targetCourseCodes.length)return null;
@@ -2094,11 +2133,14 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   function targetWeekScope() {
     return {targets:courseFilteredTargetIds(false),queue:targetQueueEnabled?queuedGraphTopicIds():[],courses:targetWeekCourseIds()};
   }
+  function weekFilteredTargetIds(selection, scope) {
+    return filterScheduledTargets(scope.targets,targetCalendar,selection,scope.courses);
+  }
   function targetIdsForWeek(selection, scope=targetWeekScope()) {
-    const targets=filterScheduledTargets(scope.targets,targetCalendar,selection,scope.courses);
+    const targets=weekFilteredTargetIds(selection,scope);
     if(!scope.queue.length)return targets;
-    const queue=filterScheduledTargets(scope.queue,targetCalendar,selection);
-    return [...new Set([...targets,...queue])];
+    // Queue is a standing study list, independent of assignment due dates.
+    return [...new Set([...targets,...scope.queue])];
   }
   function filteredTargetIds() {
     return targetIdsForWeek(targetWeekSelection);
@@ -2119,8 +2161,9 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     document.querySelector('.app').classList.toggle('targets-page',targetsView);
     if(!targetsView)return;
     // Reuse the local membership projection for all week counts.
-    const scope=targetWeekScope(), count=targetIdsForWeek(targetWeekSelection,scope).length;
-    $('targetWeekReadout').textContent=targetWeekSelectionLabel(targetCalendar,targetWeekSelection)+' · '+count+' target'+(count===1?'':'s');
+    const scope=targetWeekScope(), count=weekFilteredTargetIds(targetWeekSelection,scope).length;
+    const countLabel=targetWeekSelection.kind==='range'?'due':'target'+(count===1?'':'s');
+    $('targetWeekReadout').textContent=targetWeekSelectionLabel(targetCalendar,targetWeekSelection)+' · '+count+' '+countLabel+(targetQueueEnabled?' · '+scope.queue.length+' queued':'');
     for(const [id,kind] of [['targetWeeksAll','all'],['targetWeeksUnscheduled','unscheduled']]){
       $(id).setAttribute('aria-pressed',String(targetWeekSelection.kind===kind));
       $(id).disabled=loading || !snapshot;
@@ -2153,8 +2196,8 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       (targetCalendar.weeks.find(week=>week.current) || targetCalendar.weeks[0])?.startDay ?? null;
     for(const week of targetCalendar.weeks){
       const button=targetWeekButtons.get(week.startDay);
-      const weekCount=targetIdsForWeek({kind:'range',start:week.startDay,end:week.startDay},scope).length;
-      const label=targetWeekLabel(week)+' · '+weekCount+' target'+(weekCount===1?'':'s')+(week.current?' · This week':'');
+      const weekCount=weekFilteredTargetIds({kind:'range',start:week.startDay,end:week.startDay},scope).length;
+      const label=targetWeekLabel(week)+' · '+weekCount+' due'+(week.current?' · This week':'');
       button.title=label;button.setAttribute('aria-label',label);
       button.setAttribute('aria-pressed',String(targetWeekSelection.kind==='range' && week.startDay>=targetWeekSelection.start && week.startDay<=targetWeekSelection.end));
       if(week.current)button.setAttribute('aria-current','date');else button.removeAttribute('aria-current');

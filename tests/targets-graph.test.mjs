@@ -253,7 +253,7 @@ test('week clicks and Shift-click ranges change target roots while retaining dep
   const learner=JSON.stringify(c.snapshot.learner);
   const buttons=c.$('targetWeekButtons').children;
   assert.equal(buttons.length, 3);
-  assert.match(buttons[0].attributes['aria-label'], /Week 1 - 9\/27-10\/03 · 2 targets/);
+  assert.match(buttons[0].attributes['aria-label'], /Week 1 - 9\/27-10\/03 · 2 due/);
   buttons[0].listeners.click({ shiftKey:false });
   assert.deepEqual([...c.courseFilteredTargetIds()], [1, 2, 3, 5]);
   assert.deepEqual([...c.filteredTargetIds()], [1, 3]);
@@ -263,7 +263,7 @@ test('week clicks and Shift-click ranges change target roots while retaining dep
   buttons[2].listeners.click({ shiftKey:true });
   assert.deepEqual([...c.filteredTargetIds()], [1, 2, 3]);
   assert.equal(buttons[1].attributes['aria-pressed'], 'true'); // Empty intervening week is selected too.
-  assert.match(c.$('targetWeekReadout').textContent, /Weeks 1–3 - 9\/27-10\/17 · 3 targets/);
+  assert.match(c.$('targetWeekReadout').textContent, /Weeks 1–3 - 9\/27-10\/17 · 3 due · 0 queued/);
   assert.equal(JSON.stringify(c.snapshot.learner), learner);
   const saved=JSON.parse(c.storage.get('course-academy.graph-target-weeks'));
   assert.equal(saved.kind, 'range'); assert.equal(saved.end-saved.start, 14);
@@ -286,9 +286,9 @@ test('calendar navigation is keyboard accessible and week counts react to course
   assert.deepEqual([...c.filteredTargetIds()], [1,2,3]);
   c.setTargetCourseEnabled('256',false);
   assert.deepEqual([...c.filteredTargetIds()], [2,3]);
-  assert.match(buttons[0].title,/0 targets/); // Shared topic 3's Week 1 assignment is in disabled MTH 256.
+  assert.match(buttons[0].title,/0 due/); // Shared topic 3's Week 1 assignment is in disabled MTH 256.
   c.learnerChanged({...c.snapshot.learner,targets:[1,2,5]});
-  assert.match(c.$('targetWeekReadout').textContent,/1 target$/);
+  assert.match(c.$('targetWeekReadout').textContent,/1 due · 0 queued$/);
   c.changeCourse('course-a');assert.equal(c.$('targetWeekStrip').hidden,true);
 });
 
@@ -450,23 +450,59 @@ test('Queue switch independently adds queued roots, deduplicates overlaps and pe
   assert.deepEqual([...restored.courseTopics], [1, 2]);
 });
 
-test('queue-only views follow week filters and refresh roots on queue edits and rollbacks', () => {
+test('queue-only views remain visible across every week and refresh roots on queue edits and rollbacks', () => {
   const c = fixture([]); addSchoolCourses(c); addWeekSchedule(c);
   c.snapshot.learner.queue = [2, 6]; c.changeCourse(null, true, 'targets');
   for (const code of ['256', '255', '341']) c.setTargetCourseEnabled(code, false);
   assert.deepEqual([...c.courseTopics], [2, 6]);
-  assert.equal(c.$('targetWeekReadout').textContent, 'All weeks · 2 targets');
+  assert.equal(c.$('targetWeekReadout').textContent, 'All weeks · 0 targets · 2 queued');
   const buttons = c.$('targetWeekButtons').children;
-  assert.match(buttons[2].attributes['aria-label'], /1 target/);
-  buttons[2].listeners.click({ shiftKey: false });
-  assert.deepEqual([...c.courseTopics], [2]);
+  for (const button of buttons) {
+    assert.match(button.attributes['aria-label'], /0 due/);
+    button.listeners.click({ shiftKey: false });
+    assert.deepEqual([...c.courseTopics], [2, 6]);
+    assert.match(c.$('targetWeekReadout').textContent, /0 due · 2 queued$/);
+  }
   c.$('targetWeeksUnscheduled').listeners.click();
-  assert.deepEqual([...c.courseTopics], [6]);
+  assert.deepEqual([...c.courseTopics], [2, 6]);
+  assert.equal(c.$('targetWeekReadout').textContent, 'Unscheduled · 0 targets · 2 queued');
   c.queueChanged({ queue: [2] });
-  assert.deepEqual([...c.state.activeIds], []);
+  assert.deepEqual([...c.state.activeIds], [2]);
+  assert.match(c.$('targetWeekReadout').textContent, /1 queued$/);
   c.queueChanged({ queue: [2, 6] });
-  assert.deepEqual([...c.state.activeIds], [6]);
+  assert.deepEqual([...c.state.activeIds], [2, 6]);
   assert.deepEqual([...c.snapshot.learner.targets], []);
+});
+
+test('week filters apply to course targets while Queue stays visible, counts separately and deduplicates overlaps', () => {
+  const c = fixture([1, 2, 3, 5]); addSchoolCourses(c); addWeekSchedule(c);
+  c.snapshot.learner.queue = [3, 6, 6, 999];
+  c.changeCourse(null, true, 'targets');
+  const saved = JSON.stringify(c.snapshot.learner);
+  const buttons = c.$('targetWeekButtons').children;
+  buttons[0].listeners.click({ shiftKey: false });
+  assert.deepEqual([...c.courseTopics], [1, 3, 6]);
+  assert.match(c.$('targetWeekReadout').textContent, /2 due · 2 queued$/);
+  assert.match(buttons[0].title, /2 due/);
+  assert.match(buttons[1].title, /0 due/);
+  buttons[1].listeners.click({ shiftKey: false });
+  assert.deepEqual([...c.courseTopics], [3, 6]);
+  assert.match(c.$('targetWeekReadout').textContent, /0 due · 2 queued$/);
+  buttons[2].listeners.click({ shiftKey: true });
+  assert.deepEqual([...c.courseTopics], [2, 3, 6]);
+  assert.match(c.$('targetWeekReadout').textContent, /2 due · 2 queued$/);
+  c.$('targetWeeksUnscheduled').listeners.click();
+  assert.deepEqual([...c.courseTopics], [5, 3, 6]);
+  assert.match(c.$('targetWeekReadout').textContent, /1 target · 2 queued$/);
+  c.setTargetQueueEnabled(false);
+  assert.deepEqual([...c.courseTopics], [5]);
+  assert.equal(c.$('targetWeekReadout').textContent, 'Unscheduled · 1 target');
+  buttons[0].listeners.click({ shiftKey: false });
+  assert.deepEqual([...c.courseTopics], [1, 3]);
+  assert.match(c.$('targetWeekReadout').textContent, /2 due$/);
+  c.setTargetQueueEnabled(true);
+  assert.deepEqual([...c.courseTopics], [1, 3, 6]);
+  assert.equal(JSON.stringify(c.snapshot.learner), saved);
 });
 
 test('removing a queued topic keeps focused exploration while updating overview membership', () => {
