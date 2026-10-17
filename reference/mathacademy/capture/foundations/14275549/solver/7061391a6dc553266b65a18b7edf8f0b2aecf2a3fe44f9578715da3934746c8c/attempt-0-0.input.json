@@ -1,0 +1,83 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-342782",
+      "sequence_position": 5,
+      "problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}-2y={u}_{4}(t)\\cdot (t-4)\\,,\\,y(0)=-1,\n$$\n\nwhere ${u}_{4}(t)=u(t-4)$ is the unit step function.\n\nYou're given that the Laplace transform $Y(s)=L\\{y(t)\\}$ is\n\n$$\nY(s)=-\\frac{1}{s-2}+\\frac{{e}^{-4s}}{{s}^{2}(s-2)}\n$$\n\nand that the solution to the initial value problem can be expressed as \n\n$$\ny(t)=-{e}^{2t}+u(t-4)\\cdot g(t).\n$$\n\nFind the function $g(t).$",
+      "worked_solution": "To find the function $g(t),$ we need to compute the inverse Laplace transform of the term containing the time delay in $Y(s).$\n\nWe focus on the term with the exponential ${e}^{-4s}$ (which corresponds to the step function in the time domain) and identify the rational function part:\n\n$$\nF(s)=\\frac{1}{{s}^{2}(s-2)}.\n$$\n\nWe'll solve this in three steps.\n\n**Step 1.** Partial fraction decomposition\n\nSince the denominator contains a linear factor $(s-2)$ and a repeated linear factor ${s}^{2},$ the decomposition takes the form\n\n$$\n\\frac{1}{{s}^{2}(s-2)}=\\frac{A}{s}+\\frac{B}{{s}^{2}}+\\frac{C}{s-2}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\n1=As(s-2)+B(s-2)+C{s}^{2}.\n$$\n\nNow, we find the constants $A,B,$ and $C.$\n\n- Setting $s=0,$ we have\n\n$$\n1=A(0)+B(-2)+C(0)\\,⟹\\,B=-\\frac{1}{2}.\n$$\n\n- Setting $s=2,$ we have\n\n$$\n1=A(0)+B(0)+C(4)\\,⟹\\,C=\\frac{1}{4}.\n$$\n\n- Comparing the coefficients of ${s}^{2},$ we have\n\n$$\n0=A+C\\,⟹\\,A=-C=-\\frac{1}{4}.\n$$\n\nThus, we can rewrite $F(s)$ as\n\n$$\nF(s)=-\\frac{1}{4s}-\\frac{1}{2{s}^{2}}+\\frac{1}{4(s-2)}.\n$$\n\n**Step 2.** Finding the Inverse of the base function\n\nWe find the inverse transform $f(t)={L}^{-1}\\{F(s)\\}$ using standard transforms:\n\n$$\n\\begin{aligned}f(t) & ={L}^{-1}\\{-\\frac{1}{4s}-\\frac{1}{2{s}^{2}}+\\frac{1}{4(s-2)}\\} \\\\  & =-\\frac{1}{4}-\\frac{t}{2}+\\frac{1}{4}{e}^{2t}.\\end{aligned}\n$$\n\n**Step 3.** Applying the time-shifting property\n\nFinally, we address the ${e}^{-4s}$ term. By the second shifting theorem, we have\n\n$$\n{e}^{-as}\\cdot F(s)=L\\{u(t-a)\\cdot f(t-a)\\}.\n$$\n\nTaking the inverse Laplace transform gives\n\n$$\n{L}^{-1}\\{{e}^{-as}F(s)\\}=u(t-a)\\cdot f(t-a).\n$$\n\nIn our case, $a=4.$ Therefore, we shift $f(t)$ by replacing every instance of $t$ with $(t-4):$\n\n$$\n\\begin{aligned}u(t-4)f(t-4) & =u(t-4)(-\\frac{1}{4}-\\frac{t-4}{2}+\\frac{1}{4}{e}^{2(t-4)}) \\\\  & =u(t-4)(\\frac{7-2t}{4}+\\frac{1}{4}{e}^{2(t-4)}).\\end{aligned}\n$$\n\nComparing this to the second term of the form given in the problem statement $y(t)=-{e}^{2t}+u(t-4)\\cdot g(t),$ we identify $g(t)$ as\n\n$$\ng(t)=\\frac{1}{4}{e}^{2(t-4)}+\\frac{7-2t}{4}.\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14275549/observations/history-q-342782-6e1c513e3480c3b1a478.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14275549",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14275549/observations/history-solution-q-342782-7c749b1ff20d975f76c9.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "\\frac{1}{4}{e}^{2(t-4)}+\\frac{7-2t}{4}"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "\\frac{1}{4}{e}^{2(t-4)}-\\frac{7-2t}{4}"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "-\\frac{1}{4}{e}^{2(t-4)}+\\frac{2t-7}{4}"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "\\frac{1}{4}{e}^{2(t-4)}+\\frac{9-2t}{4}"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "-\\frac{1}{4}{e}^{2(t-4)}-\\frac{9-2t}{4}"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q342782",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "\\frac{1}{4}{e}^{2(t-4)}+\\frac{7-2t}{4}",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "source_grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "To find the function $g(t),$ we need to compute the inverse Laplace transform of the term containing the time delay in $Y(s).$\n\nWe focus on the term with the exponential ${e}^{-4s}$ (which corresponds to the step function in the time domain) and identify the rational function part:\n\n$$\nF(s)=\\frac{1}{{s}^{2}(s-2)}.\n$$\n\nWe'll solve this in three steps.\n\n**Step 1.** Partial fraction decomposition\n\nSince the denominator contains a linear factor $(s-2)$ and a repeated linear factor ${s}^{2},$ the decomposition takes the form\n\n$$\n\\frac{1}{{s}^{2}(s-2)}=\\frac{A}{s}+\\frac{B}{{s}^{2}}+\\frac{C}{s-2}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\n1=As(s-2)+B(s-2)+C{s}^{2}.\n$$\n\nNow, we find the constants $A,B,$ and $C.$\n\n- Setting $s=0,$ we have\n\n$$\n1=A(0)+B(-2)+C(0)\\,⟹\\,B=-\\frac{1}{2}.\n$$\n\n- Setting $s=2,$ we have\n\n$$\n1=A(0)+B(0)+C(4)\\,⟹\\,C=\\frac{1}{4}.\n$$\n\n- Comparing the coefficients of ${s}^{2},$ we have\n\n$$\n0=A+C\\,⟹\\,A=-C=-\\frac{1}{4}.\n$$\n\nThus, we can rewrite $F(s)$ as\n\n$$\nF(s)=-\\frac{1}{4s}-\\frac{1}{2{s}^{2}}+\\frac{1}{4(s-2)}.\n$$\n\n**Step 2.** Finding the Inverse of the base function\n\nWe find the inverse transform $f(t)={L}^{-1}\\{F(s)\\}$ using standard transforms:\n\n$$\n\\begin{aligned}f(t) & ={L}^{-1}\\{-\\frac{1}{4s}-\\frac{1}{2{s}^{2}}+\\frac{1}{4(s-2)}\\} \\\\  & =-\\frac{1}{4}-\\frac{t}{2}+\\frac{1}{4}{e}^{2t}.\\end{aligned}\n$$\n\n**Step 3.** Applying the time-shifting property\n\nFinally, we address the ${e}^{-4s}$ term. By the second shifting theorem, we have\n\n$$\n{e}^{-as}\\cdot F(s)=L\\{u(t-a)\\cdot f(t-a)\\}.\n$$\n\nTaking the inverse Laplace transform gives\n\n$$\n{L}^{-1}\\{{e}^{-as}F(s)\\}=u(t-a)\\cdot f(t-a).\n$$\n\nIn our case, $a=4.$ Therefore, we shift $f(t)$ by replacing every instance of $t$ with $(t-4):$\n\n$$\n\\begin{aligned}u(t-4)f(t-4) & =u(t-4)(-\\frac{1}{4}-\\frac{t-4}{2}+\\frac{1}{4}{e}^{2(t-4)}) \\\\  & =u(t-4)(\\frac{7-2t}{4}+\\frac{1}{4}{e}^{2(t-4)}).\\end{aligned}\n$$\n\nComparing this to the second term of the form given in the problem statement $y(t)=-{e}^{2t}+u(t-4)\\cdot g(t),$ we identify $g(t)$ as\n\n$$\ng(t)=\\frac{1}{4}{e}^{2(t-4)}+\\frac{7-2t}{4}.\n$$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14275549/observations/history-solution-q-342782-7c749b1ff20d975f76c9.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14275549/observations/history-q-342782-6e1c513e3480c3b1a478.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a14ba2-d10a-7330-9f4b-dfb9ba20d192",
+  "previous_failures": []
+}

@@ -1,0 +1,81 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-342269",
+      "sequence_position": 1,
+      "problem": "Consider the following initial value problem:\n\n$$\n{y}^{′}+y={u}_{\\pi }(t)\\cdot \\operatorname{sin}⁡(t-\\pi )\\,,\\,y(0)=0,\n$$\n\nwhere ${u}_{\\pi }(t)=u(t-\\pi )$ is the unit step function.\n\nYou're given that the Laplace transform $Y(s)=L\\{y(t)\\}$ is\n\n$$\nY(s)=\\frac{{e}^{-\\pi s}}{({s}^{2}+1)(s+1)}\n$$\n\nand that the solution to the initial value problem can be expressed as \n\n$$\ny(t)=\\frac{1}{2}u(t-\\pi )\\cdot g(t).\n$$\n\nFind the function $g(t).$ \n\nHint: You may make use of the following results:\n\n$$\nL\\{\\operatorname{sin}⁡\\omega t\\}=\\frac{\\omega }{{s}^{2}+{\\omega }^{2}},\\,L\\{\\operatorname{cos}⁡\\omega t\\}=\\frac{s}{{s}^{2}+{\\omega }^{2}},\\,s>0.\n$$",
+      "worked_solution": "To solve the initial value problem, we need to compute the inverse Laplace transform of $Y(s).$\n\nTo find the inverse transform, we first ignore the exponential term ${e}^{-\\pi s}$ (which corresponds to a time shift) and focus on the rational function part:\n\n$$\nF(s)=\\frac{1}{({s}^{2}+1)(s+1)}\n$$\n\nWe'll solve this in three steps.\n\n**Step 1.** Partial fraction decomposition\n\nSince the denominator contains a linear factor $(s+1)$ and an irreducible quadratic factor $({s}^{2}+1),$ the decomposition takes the form\n\n$$\n\\frac{1}{({s}^{2}+1)(s+1)}=\\frac{A}{s+1}+\\frac{Bs+C}{{s}^{2}+1}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\n1=A({s}^{2}+1)+(Bs+C)(s+1)\n$$\n\nNow, we find the constants $A,B,$ and $C.$\n\n- Setting $s=-1,$ we have\n\n$$\n1=A((-1)^{2}+1)+0\\,⟹\\,2A=1\\,⟹\\,A=\\frac{1}{2}.\n$$\n\n- Comparing the coefficients of ${s}^{2},$ we have\n\n$$\n0=A+B\\,⟹\\,B=-A=-\\frac{1}{2}.\n$$\n\n- Comparing the constant terms, we have\n\n$$\n1=A+C\\,⟹\\,C=1-\\frac{1}{2}=\\frac{1}{2}.\n$$\n\nThus, we can rewrite $F(s)$ as\n\n$$\nF(s)=\\frac{1}{2}(\\frac{1}{s+1}+\\frac{-s+1}{{s}^{2}+1})=\\frac{1}{2}(\\frac{1}{s+1}-\\frac{s}{{s}^{2}+1}+\\frac{1}{{s}^{2}+1}).\n$$\n\n**Step 2.** Finding the Inverse of the base function\n\nWe find the inverse transform $f(t)={L}^{-1}\\{F(s)\\}$ using standard transforms:\n\n$$\n\\begin{aligned}f(t) & =\\frac{1}{2}({L}^{-1}\\{\\frac{1}{s+1}\\}-{L}^{-1}\\{\\frac{s}{{s}^{2}+1}\\}+{L}^{-1}\\{\\frac{1}{{s}^{2}+1}\\}) \\\\  & =\\frac{1}{2}({e}^{-t}-\\operatorname{cos}⁡t+\\operatorname{sin}⁡t)\\end{aligned}\n$$\n\n**Step 3.** Applying the time-shifting property\n\nFinally, we address the ${e}^{-\\pi s}$ term in $Y(s).$ By the  second shifting theorem, we have\n\n$$\n{e}^{-as}\\cdot F(s)=L\\{u(t-a)\\cdot f(t-a)\\}.\n$$\n\nTaking the inverse Laplace transform gives\n\n$$\n{L}^{-1}\\{{e}^{-as}F(s)\\}=u(t-a)\\cdot f(t-a).\n$$\n\nIn our case, $a=\\pi .$ Therefore, we shift $f(t)$ by replacing every instance of $t$ with $(t-\\pi ):$\n\n$$\n\\begin{aligned}y(t) & =u(t-\\pi )f(t-\\pi ) \\\\  & =u(t-\\pi )\\cdot \\frac{1}{2}[{e}^{-(t-\\pi )}-\\operatorname{cos}⁡(t-\\pi )+\\operatorname{sin}⁡(t-\\pi )]\\end{aligned}\n$$\n\nUsing the trigonometric identities $\\operatorname{cos}⁡(t-\\pi )=-\\operatorname{cos}⁡t$ and $\\operatorname{sin}⁡(t-\\pi )=-\\operatorname{sin}⁡t,$ we simplify the expression inside the brackets:\n\n$$\n\\begin{aligned}y(t) & =\\frac{1}{2}u(t-\\pi )[{e}^{-(t-\\pi )}-(-\\operatorname{cos}⁡t)+(-\\operatorname{sin}⁡t)] \\\\  & =\\frac{1}{2}u(t-\\pi )({e}^{-(t-\\pi )}+\\operatorname{cos}⁡t-\\operatorname{sin}⁡t)\\end{aligned}\n$$\n\nComparing this to the form given in the problem statement $y(t)=\\frac{1}{2}u(t-\\pi )\\cdot g(t),$ we identify $g(t)$ as\n\n$$\ng(t)={e}^{-(t-\\pi )}+\\operatorname{cos}⁡t-\\operatorname{sin}⁡t.\n$$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14275549/observations/history-q-342269-72957dff11f3156e07cd.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14275549",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14275549/observations/history-solution-q-342269-b388aa80f19b80d7764a.html",
+      "fields": [
+        {
+          "key": "selection",
+          "type": "radio",
+          "choices_complete": true,
+          "choices": [
+            {
+              "option": "a",
+              "type": "math",
+              "value": "{e}^{-(t-\\pi )}+\\operatorname{cos}⁡t-\\operatorname{sin}⁡t"
+            },
+            {
+              "option": "b",
+              "type": "math",
+              "value": "{e}^{-(t-\\pi )}+\\operatorname{cos}⁡t+2\\operatorname{sin}⁡t"
+            },
+            {
+              "option": "c",
+              "type": "math",
+              "value": "{e}^{-(t-\\pi )}+2\\operatorname{cos}⁡t-2\\operatorname{sin}⁡t"
+            },
+            {
+              "option": "d",
+              "type": "math",
+              "value": "{e}^{-(t-\\pi )}-\\operatorname{cos}⁡t+\\operatorname{sin}⁡t"
+            },
+            {
+              "option": "e",
+              "type": "math",
+              "value": "2{e}^{-(t-\\pi )}+2\\operatorname{cos}⁡t-2\\operatorname{sin}⁡t"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q342269",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "selection",
+                "value": "{e}^{-(t-\\pi )}+\\operatorname{cos}⁡t-\\operatorname{sin}⁡t",
+                "option": "a",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "source_grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "To solve the initial value problem, we need to compute the inverse Laplace transform of $Y(s).$\n\nTo find the inverse transform, we first ignore the exponential term ${e}^{-\\pi s}$ (which corresponds to a time shift) and focus on the rational function part:\n\n$$\nF(s)=\\frac{1}{({s}^{2}+1)(s+1)}\n$$\n\nWe'll solve this in three steps.\n\n**Step 1.** Partial fraction decomposition\n\nSince the denominator contains a linear factor $(s+1)$ and an irreducible quadratic factor $({s}^{2}+1),$ the decomposition takes the form\n\n$$\n\\frac{1}{({s}^{2}+1)(s+1)}=\\frac{A}{s+1}+\\frac{Bs+C}{{s}^{2}+1}.\n$$\n\nTo find the constants, we clear the denominators:\n\n$$\n1=A({s}^{2}+1)+(Bs+C)(s+1)\n$$\n\nNow, we find the constants $A,B,$ and $C.$\n\n- Setting $s=-1,$ we have\n\n$$\n1=A((-1)^{2}+1)+0\\,⟹\\,2A=1\\,⟹\\,A=\\frac{1}{2}.\n$$\n\n- Comparing the coefficients of ${s}^{2},$ we have\n\n$$\n0=A+B\\,⟹\\,B=-A=-\\frac{1}{2}.\n$$\n\n- Comparing the constant terms, we have\n\n$$\n1=A+C\\,⟹\\,C=1-\\frac{1}{2}=\\frac{1}{2}.\n$$\n\nThus, we can rewrite $F(s)$ as\n\n$$\nF(s)=\\frac{1}{2}(\\frac{1}{s+1}+\\frac{-s+1}{{s}^{2}+1})=\\frac{1}{2}(\\frac{1}{s+1}-\\frac{s}{{s}^{2}+1}+\\frac{1}{{s}^{2}+1}).\n$$\n\n**Step 2.** Finding the Inverse of the base function\n\nWe find the inverse transform $f(t)={L}^{-1}\\{F(s)\\}$ using standard transforms:\n\n$$\n\\begin{aligned}f(t) & =\\frac{1}{2}({L}^{-1}\\{\\frac{1}{s+1}\\}-{L}^{-1}\\{\\frac{s}{{s}^{2}+1}\\}+{L}^{-1}\\{\\frac{1}{{s}^{2}+1}\\}) \\\\  & =\\frac{1}{2}({e}^{-t}-\\operatorname{cos}⁡t+\\operatorname{sin}⁡t)\\end{aligned}\n$$\n\n**Step 3.** Applying the time-shifting property\n\nFinally, we address the ${e}^{-\\pi s}$ term in $Y(s).$ By the  second shifting theorem, we have\n\n$$\n{e}^{-as}\\cdot F(s)=L\\{u(t-a)\\cdot f(t-a)\\}.\n$$\n\nTaking the inverse Laplace transform gives\n\n$$\n{L}^{-1}\\{{e}^{-as}F(s)\\}=u(t-a)\\cdot f(t-a).\n$$\n\nIn our case, $a=\\pi .$ Therefore, we shift $f(t)$ by replacing every instance of $t$ with $(t-\\pi ):$\n\n$$\n\\begin{aligned}y(t) & =u(t-\\pi )f(t-\\pi ) \\\\  & =u(t-\\pi )\\cdot \\frac{1}{2}[{e}^{-(t-\\pi )}-\\operatorname{cos}⁡(t-\\pi )+\\operatorname{sin}⁡(t-\\pi )]\\end{aligned}\n$$\n\nUsing the trigonometric identities $\\operatorname{cos}⁡(t-\\pi )=-\\operatorname{cos}⁡t$ and $\\operatorname{sin}⁡(t-\\pi )=-\\operatorname{sin}⁡t,$ we simplify the expression inside the brackets:\n\n$$\n\\begin{aligned}y(t) & =\\frac{1}{2}u(t-\\pi )[{e}^{-(t-\\pi )}-(-\\operatorname{cos}⁡t)+(-\\operatorname{sin}⁡t)] \\\\  & =\\frac{1}{2}u(t-\\pi )({e}^{-(t-\\pi )}+\\operatorname{cos}⁡t-\\operatorname{sin}⁡t)\\end{aligned}\n$$\n\nComparing this to the form given in the problem statement $y(t)=\\frac{1}{2}u(t-\\pi )\\cdot g(t),$ we identify $g(t)$ as\n\n$$\ng(t)={e}^{-(t-\\pi )}+\\operatorname{cos}⁡t-\\operatorname{sin}⁡t.\n$$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14275549/observations/history-solution-q-342269-b388aa80f19b80d7764a.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14275549/observations/history-q-342269-72957dff11f3156e07cd.html"
+        }
+      }
+    ]
+  }
+}
