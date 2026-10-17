@@ -16,11 +16,13 @@ import uuid
 from fractions import Fraction
 from pathlib import Path
 import sympy as sp
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"scripts/question_capture"))
+from math_format import system_tex
 
 KP_ID = 17592186073776
 KP_UUID = 'a24fb4f3-6e3c-5c45-b31e-85b7ce290eda'
 TITLE = 'Finding the Number of Solutions to a System'
-VERSION = 'solution-count-v1'
+VERSION = 'solution-count-v2-system-layout'
 GENERATOR_UUID = '6a33e997-8493-5804-97b4-8e2f4474cbad'
 SUPPORTED_LEVELS = ('easy', 'moderate', 'hard')
 LEVELS = ('easy', 'moderate', 'hard')
@@ -80,9 +82,9 @@ def equations(p, template, style='normal'):
 
 
 def prompt(p, template, raw=False, style='normal'):
-    system = '; '.join(equations(p,template,style))
-    brace = '{' if raw else r'\{'
-    return 'Consider the following system of equations:\n\n$'+brace+system+'$\n\nThis system of equations has {{field-1}}.'
+    rows = equations(p,template,style)
+    system = '${'+'; '.join(rows)+'$' if raw else '$$\n'+system_tex(rows)+'\n$$'
+    return 'Consider the following system of equations:\n\n'+system+'\n\nThis system of equations has {{field-1}}.'
 
 
 def result(p):
@@ -141,9 +143,9 @@ def solution(p,template):
     out += (f'\n\nNotice that if we multiply the {"first" if row == 1 else "second"} equation by ${tex(m)}$, '
             f'then we will get a ${polynomial(((-cancelled,"x"),))}$ term that can cancel with '
             f'the ${polynomial(((cancelled,"x"),))}$ term in the {"second" if row == 1 else "first"} equation:\n\n')
-    annotation = list(equations(p,'standard'))
-    annotation[row-1] += r' \mid \mid \cdot ('+tex(m)+')'
-    out += '$$\n'+r'\{'+'; '.join(annotation)+'\n$$\n\n'
+    annotations = ['', '']
+    annotations[row-1] = r'\mid \cdot ('+tex(m)+')'
+    out += '$$\n'+system_tex(equations(p,'standard'),annotations=annotations)+'\n$$\n\n'
     transformed = (a*m,b*m,c*m) if row == 1 else (d*m,e*m,f*m)
     u,v,w = transformed
     other = (d,e,f) if row == 1 else (a,b,c)
@@ -260,7 +262,7 @@ def generate(level, seed=0, template=None, field_type=None, parameters=None, pro
               'domain':'Two real variables; both equations linear with nonzero x/y coefficients.',
               'authored_extension':not raw,'authored_level':level,
               'inferred_correct_value':result(p),'raw_evidence':raw,'eligible_for_learning':not raw,
-              'plot_rating':'none','plot_assets':{},'normalization':'escaped literal system brace' if not raw else None}}
+              'plot_rating':'none','plot_assets':{},'normalization':'canonical multirow system with separate operation annotation' if not raw else None}}
 
 
 # EASY: direct cancellation; same x magnitude, signed coefficients <=5/constants <=12.

@@ -40,11 +40,13 @@ import random
 import sys
 import uuid
 import sympy as sp
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"scripts/question_capture"))
+from math_format import system_tex
 
 KP_ID = 17592186192655
 KP_UUID = '3e7bfcbe-4913-53e0-98c7-171965adfe62'
 TITLE = 'Eliminating the Second Variable'
-VERSION = 'second-variable-one-transformation-v1'
+VERSION = 'second-variable-one-transformation-v2-system-layout'
 HERE = Path(__file__).with_suffix('')
 PROVENANCE = {'database':'math','basis':1356,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
 TEMPLATES = ('compact','spaced')
@@ -169,7 +171,7 @@ def raw_system(p,template):
 
 def prompt(p,template,raw=False):
     u,v=p['variables']
-    system=raw_system(p,template) if raw else (r'$\{'+equation((p['a1'],p['b1'],p['c1']),u,v)+'; '+equation((p['a2'],p['b2'],p['c2']),u,v)+'$')
+    system=raw_system(p,template) if raw else ('$$\n'+system_tex([equation((p['a1'],p['b1'],p['c1']),u,v),equation((p['a2'],p['b2'],p['c2']),u,v)])+'\n$$')
     return ('Consider the following system of equations.\n'+ ('\n' if template=='spaced' else '') +system+'\nDescribe the steps needed to eliminate the variable $'+v+'$ from the system:'+
             ('' if raw else '\nUse an integer multiplier and leave the other equation unchanged.')+
             '\n\nTo eliminate $'+v+'$, multiply the\n{{field-1}}\nequation by\n{{field-2}},\nand add the equations.')
@@ -193,7 +195,7 @@ def solution(p):
     rows=[equation(a,u,v,True),equation(b,u,v,True),grouped,final]
     return ('Notice that the coefficient of $'+v+'$ in the first equation is $'+tex(p['b1'])+'$, while in the second equation it is $'+tex(p['b2'])+'$.\n\n'
       'If we multiply the '+name+' equation by ${\\color{blue}'+tex(m)+'}$, then the coefficient of $'+v+'$ will turn into $'+tex(m*bs)+'$, which will cancel with the coefficient of $'+tex(bo)+'$ in the '+other+' equation.\n\n'
-      '$$\n\\{'+ '; '.join(marked)+'\n$$\n\n'
+      '$$\n'+system_tex(marked)+'\n$$\n\n'
       'Now, when we add the two equations, the variable $'+v+'$ will be eliminated:\n\n'
       '$$\n\\begin{aligned}\n'+' \\\\\n'.join(rows)+'\n\\end{aligned}\n$$\n\n'
       'Therefore, the correct answer is the following:\n\n> *To eliminate $'+v+'$, multiply the $\\bbox[3pt,Gainsboro]{\\color{blue}\\text{'+name+'}}$ equation by $\\bbox[3pt,Gainsboro]{\\color{blue}'+tex(m)+'}$, and add the equations*.')

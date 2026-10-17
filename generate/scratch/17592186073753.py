@@ -8,13 +8,15 @@ Normal whole five-choice banks derive errors from the substitution operation and
 reject the entire instance on collisions. No database/renderer dependencies.
 """
 from __future__ import annotations
-import argparse, hashlib, json, random, uuid
+import argparse, hashlib, json, random, sys, uuid
 from pathlib import Path
 import sympy as s
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"scripts/question_capture"))
+from math_format import system_tex
 KP_ID=17592186073753
 KP_UUID='b4352698-7af7-5d74-9c3a-0f951c3e6078'
 TITLE='Solving a Challenging System of Linear Equations Using Substitution'
-VERSION='challenging-substitution-1'
+VERSION='challenging-substitution-2-system-layout'
 HERE=Path(__file__).with_suffix('')
 SOURCE=json.loads((HERE/'source.json').read_text())
 PROVENANCE={k:SOURCE[k] for k in ('database','basis','lineage')}
@@ -82,7 +84,7 @@ def solution(p,t):
  sr=[(add((ob,v),(oa,w),(-oc,'')),'0'),(add((ob,'('+add((h,''),(m,w))+')'),(oa,w),(-oc,'')),'0'),(add((ob*h,''),(ob*m,w),(oa,w),(-oc,'')),'0'),(add((ob*h-oc,''),(ob*m+oa,w)),'0'),(term(ob*m+oa,w),tex(oc-ob*h)),(w,tex(W))]
  br=[(add((ob,v),(oa,w),(-oc,'')),'0'),(add((ob,v),(oa,par(tex(W))),(-oc,'')),'0'),(add((ob,v),(oa*W,''),(-oc,'')),'0'),(add((ob,v),(oa*W-oc,'')),'0'),(term(ob,v),tex(oc-oa*W)),(v,tex(V))]
  # Canonical keeps distinct evaluated and collected rows.
- pre="Sometimes, it's handy to assign a number to each equation in a system, so that we can refer to them more easily:\n\n$$\n\\{"+eqs[0]+'(1); '+eqs[1]+'(2)\n$$\n\n'
+ pre="Sometimes, it's handy to assign a number to each equation in a system, so that we can refer to them more easily:\n\n$$\n"+system_tex(eqs,annotations=['(1)','(2)'])+'\n$$\n\n'
  return (pre+'We will isolate a variable in one of the equations and then substitute it into the other equation. Using equation $\\color{blue}('+str(num)+')$, we can solve for $'+v+'$ as follows:\n\n'+aligned(ir)+'\n\nThen, we substitute $'+v+'='+add((h,''),(m,w)).replace(' ','')+'$ into equation $\\color{red}('+str(3-num)+')$ and solve for $'+w+'$:\n\n'+aligned(sr)+'\n\nIf we now substitute\n\n$$\n'+w+'='+tex(W)+'\n$$\n\ninto equation $\\color{red}('+str(3-num)+')$, then we can find the value of $'+v+'$:\n\n'+aligned(br)+'\n\nTherefore, the solution to the system of equations is $'+v+'='+tex(V)+'$ and\n\n$$\n'+w+'='+tex(W)+'\n$$\n\n, which can be written as\n\n$$\n\\left('+tex(X)+','+tex(Y)+'\\right)\n$$')
 
 def bank(p,t,profile):
@@ -203,10 +205,10 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
    if parameters is not None:raise
  else:raise ValueError('No whole-bank instance in requested domain')
  eqs=equations(p,t in ('difference','canonical_second'))
- if t=='pair_first':prompt='Using the method of substitution, find the solution of\n$\\{'+ '; '.join(eqs)+'$.'
- elif t=='pair_second':prompt='Using the method of substitution, find the solution of\n\n$\\{'+ '; '.join(eqs)+'$'
- elif t=='difference':prompt='Given the system of equations below, what is the value of $'+p['x']+' - '+p['y']+'$?\n\n$\\{'+ '; '.join(eqs)+'$'
- else:prompt='Solve the following system of equations:\n\n$\\{'+ '; '.join(eqs)+'$'
+ if t=='pair_first':prompt='Using the method of substitution, find the solution of\n\n$$\n'+system_tex(eqs)+'\n$$'
+ elif t=='pair_second':prompt='Using the method of substitution, find the solution of\n\n'+('$\\{'+ '; '.join(eqs)+'$' if raw else '$$\n'+system_tex(eqs)+'\n$$')
+ elif t=='difference':prompt='Given the system of equations below, what is the value of $'+p['x']+' - '+p['y']+'$?\n\n$$\n'+system_tex(eqs,annotations=['(1)','(2)'])+'\n$$'
+ else:prompt='Solve the following system of equations:\n\n$$\n'+system_tex(eqs)+'\n$$'
  sol=solution(p,t)
  displays=[p['x']+' = '+tex(v[0])+', '+p['y']+' = '+tex(v[1]) if isinstance(v,tuple) else tex(v) for v in vals]
  identity=digest({'version':VERSION,'problem':prompt,'solution':sol,'bank':sorted(displays),'field':'radio','difficulty':level})

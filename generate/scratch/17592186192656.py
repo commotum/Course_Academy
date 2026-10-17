@@ -25,10 +25,12 @@ except ModuleNotFoundError:
     if __name__=='__main__' and runtime.is_file():
         os.execv(str(runtime),[str(runtime),str(Path(__file__).resolve()),*sys.argv[1:]])
     raise
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"scripts/question_capture"))
+from math_format import system_tex
 KP_ID=17592186192656
 KP_UUID='2dbf4e1a-2c87-562d-8c4d-41fd32e79b86'
 TITLE='Solving a System of Equations by Eliminating the First Variable'
-VERSION='solve-first-one-transform-v3'
+VERSION='solve-first-one-transform-v4-system-layout'
 HERE=Path(__file__).with_suffix('')
 SOURCE=json.loads((HERE/'source.json').read_text())
 ORIGINALS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
@@ -106,7 +108,7 @@ def parameters_check(p,level,evidence=False):
 
 def prompt(p,template,raw=False):
     x,y=p['variables'];eqs=[equation(p[f'a{i}'],p[f'b{i}'],p[f'c{i}'],x,y,raw) for i in (1,2)]
-    system='$'+('{' if raw else '\\{')+'; '.join(eqs)+'$'
+    system='${'+'; '.join(eqs)+'$' if raw else '$$\n'+system_tex(eqs)+'\n$$'
     if template=='radio_solution':return f'Find the solution $({x}, {y})$ to the following system of equations using the elimination method:\n\n'+system+f'\n\n*Hint: Eliminate the variable ${x}$.*'
     ending='The solution is $($\n{{field-1}} $$,\n{{field-2}}\n$)$.' if raw else 'The solution is $($\n{{field-1}}\n$,$\n{{field-2}}\n$)$.'
     return 'Consider the following system of equations:\n'+system+f'\n\nFind the solution $({x}, {y})$ to this system by eliminating the variable ${x}$.\n\n'+ending
@@ -163,7 +165,7 @@ def worked_solution(p):
     aligned=lambda rs:'$$\n\\begin{aligned}\n'+' \\\\\n'.join(rs)+'\n\\end{aligned}\n$$'
     return (f'Notice that the coefficient of ${x}$ in the first equation is ${a[0]}$, while in the second equation it is ${a[1]}$.\n\n'
        f'If we multiply the {names[row]} equation by ${tex(m)}$, then the ${x}$-coefficient will become ${tex(aa[row])}$, which will cancel with the coefficient of ${a[1-row]}$ in the {names[1-row]} equation.\n\n'
-       '$$\n\\{'+'; '.join(eqs)+'\n$$\n\n'+f'Now, when we add the two equations, the variable ${x}$ will be eliminated:\n\n'+aligned(stages)+'\n\n'
+       '$$\n'+system_tex(eqs)+'\n$$\n\n'+f'Now, when we add the two equations, the variable ${x}$ will be eliminated:\n\n'+aligned(stages)+'\n\n'
        f'So, the solution must have ${y} = {tex(Y)}$. However, we still need to find ${x}$. To do this, we substitute ${y} = {tex(Y)}$ back into one of the equations. Let\'s choose the {names[row]} equation:\n\n'+aligned(back)+'\n\n'
        f'Therefore, the solution to the system of equations is ${x}={tex(X)}, \\,{y}={tex(Y)}$, which can be expressed as $({tex(X)},{tex(Y)})$.')
 

@@ -13,10 +13,12 @@ from __future__ import annotations
 import argparse, hashlib, json, random, sys, uuid
 from pathlib import Path
 import sympy as sp
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"scripts/question_capture"))
+from math_format import system_tex
 KP_ID=17592186192657
 KP_UUID='238f847f-5009-5183-b9bd-b8e136f0ba4d'
 TITLE='Solving a System of Equations by Eliminating the Second Variable'
-VERSION='second-variable-one-transform-v1'
+VERSION='second-variable-one-transform-v2-system-layout'
 HERE=Path(__file__).with_suffix('')
 SOURCE=json.loads((HERE/'source.json').read_text())
 NS=uuid.UUID(KP_UUID)
@@ -38,7 +40,7 @@ def add(parts):
 def linear(a,b,x='x',y='y'):return add([term(a,x),term(b,y)])
 def relation(a,b,c,x='x',y='y'):return linear(a,b,x,y)+'='+tex(c)
 def system(p):
-    return r'\left\{\begin{aligned}'+relation(p['a'],p['b'],p['C']).replace('=','&=')+r'\\'+relation(p['c'],p['d'],p['D']).replace('=','&=')+r'\end{aligned}\right.'
+    return system_tex([relation(p['a'],p['b'],p['C']),relation(p['c'],p['d'],p['D'])])
 def raw_row(a,b,c,style):
     # Full signed terms, preserving original spaces at the observed anchor.
     first=term(a,'x')
@@ -112,14 +114,16 @@ def worked(p,z):
     row=p['row'];name='first' if row==1 else 'second';other='second' if row==1 else 'first'
     b,d=p['b'],p['d'];before=b if row==1 else d;opposite=d if row==1 else b
     k=z['k'];x=z['x'];y=z['y']
-    annotation=(r'\left('+relation(p['a'],b,p['C'])+r'\right)\cdot ('+tex(k)+')' if row==1 else relation(p['a'],b,p['C']))+'; '+(r'\left('+relation(p['c'],d,p['D'])+r'\right)\cdot ('+tex(k)+')' if row==2 else relation(p['c'],d,p['D']))
+    marked=[relation(p['a'],b,p['C']),relation(p['c'],d,p['D'])]
+    marked[row-1]=r'\left('+marked[row-1]+r'\right)\cdot ('+tex(k)+')'
+    annotation=system_tex(marked)
     rows=[relation(z['aa'],z['bb'],z['CC']),relation(z['cc'],z['dd'],z['DD']), '('+add([term(z['aa'],'x'),term(z['cc'],'x')])+')=('+add([tex(z['CC']),tex(z['DD'])])+')',term(z['h'],'x')+'='+tex(z['n']),'x='+tex(x)]
     A,B,R=(p['a'],b,p['C']) if row==1 else (p['c'],d,p['D'])
     subs=[relation(A,B,R),add([tex(A)+'('+tex(x)+')',term(B,'y')])+'='+tex(R),add([tex(A*x),term(B,'y')])+'='+tex(R)]
     if B==1:subs+=['y='+tex(y)]
     else:subs+=[term(B,'y')+'='+tex(R-A*x),'y='+tex(y)]
     def block(rs):return '$$\n'+r'\begin{aligned}'+'\n'+(' '+r'\\'+'\n').join(r.replace('=','&=') for r in rs)+'\n'+r'\end{aligned}'+'\n$$'
-    return f'Notice that the $y$-coefficient in the first equation is ${tex(b)}$, while in the second equation it is ${tex(d)}$.\n\nIf we multiply the {name} equation by ${tex(k)}$, then the $y$-coefficient will become ${tex(k*before)}$, which will cancel with the coefficient of ${tex(opposite)}$ in the {other} equation.\n\n$$\n\\{{ '+annotation+'\n$$\n\nNow, when we add the two equations, the variable $y$ will be eliminated:\n\n'+block(rows)+f"\n\nSo, the solution must have $x = {tex(x)}$. However, we still need to find $y$. To do this, we substitute $x = {tex(x)}$ back into one of the equations. Let's choose the {name} equation:\n\n"+block(subs)+'\n\nTherefore, the solution to the system of equations is\n\n$$\nx = '+tex(x)+r', \,y = '+tex(y)+'\n$$\n\nwhich can be expressed as $'+tuple_tex((x,y))+'$.'
+    return f'Notice that the $y$-coefficient in the first equation is ${tex(b)}$, while in the second equation it is ${tex(d)}$.\n\nIf we multiply the {name} equation by ${tex(k)}$, then the $y$-coefficient will become ${tex(k*before)}$, which will cancel with the coefficient of ${tex(opposite)}$ in the {other} equation.\n\n$$\n'+annotation+'\n$$\n\nNow, when we add the two equations, the variable $y$ will be eliminated:\n\n'+block(rows)+f"\n\nSo, the solution must have $x = {tex(x)}$. However, we still need to find $y$. To do this, we substitute $x = {tex(x)}$ back into one of the equations. Let's choose the {name} equation:\n\n"+block(subs)+'\n\nTherefore, the solution to the system of equations is\n\n$$\nx = '+tex(x)+r', \,y = '+tex(y)+'\n$$\n\nwhich can be expressed as $'+tuple_tex((x,y))+'$.'
 
 def sample(level,rng,profile):
     for _ in range(10000):

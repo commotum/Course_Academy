@@ -20,7 +20,7 @@ from math_format import system_tex, normalize_prose, normalize_tex, checked_math
 KP_ID=17592186073778
 KP_UUID='50351666-c691-510f-863c-168c61f9980b'
 TITLE='Finding the General Solution to a System With Infinitely Many Intersection Points'
-VERSION='dependent-general-family-2'
+VERSION='dependent-general-family-3-system-layout'
 GENERATOR_UUID='d5afc560-f76b-53cb-8503-781e13a207d4'
 LEVELS=('easy','moderate','hard')
 TEMPLATES=('radio_family','blank_coordinate')
@@ -80,7 +80,7 @@ def solution(p):
     eq=[lhs(a,b)+' = '+tex(c),lhs(d,e)+' = '+tex(f)]
     out='The points of intersection of the lines correspond to the solutions of the following system:\n\n$$\n'+system_tex(eq)+'\n$$\n\n'
     out+=f'We will solve the system using elimination. Notice that if we multiply the first equation by ${tex(-r)}$, then we will get a ${poly(((-d,"x"),))}$ term that can cancel with the ${poly(((d,"x"),))}$ term in the second equation:\n\n'
-    out+='$$\n'+system_tex([eq[0]+r' & \mid \mid \cdot ('+tex(-r)+')',eq[1]])+'\n$$\n\n'
+    out+='$$\n'+system_tex(eq,annotations=[r'\mid \cdot ('+tex(-r)+')',''])+'\n$$\n\n'
     out+='When we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n'
     sumtex=tex(-r*c)+(' + ' if f>=0 else ' - ')+tex(abs(f))
     out+=aligned([lhs(-d,-e)+' &= '+tex(-f),lhs(d,e)+' &= '+tex(f),'0 &= ('+sumtex+')','0 &= 0'])

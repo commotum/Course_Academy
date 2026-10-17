@@ -9,10 +9,12 @@ from __future__ import annotations
 import argparse, copy, hashlib, json, random, sys, uuid
 from pathlib import Path
 import sympy as sp
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"scripts/question_capture"))
+from math_format import system_tex
 KP_ID=17592186192654
 KP_UUID='93dcc73c-ce2d-5fa3-b32b-9fc600fb269e'
 TITLE='Eliminating the First Variable'
-VERSION='one-transformation-first-v1'
+VERSION='one-transformation-first-v2-system-layout'
 HERE=Path(__file__).with_suffix('')
 SOURCE=json.loads((HERE/'source.json').read_text())
 ORIGINALS={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
@@ -64,7 +66,7 @@ def sample(level,rng):
 
 def prompt(p,raw=False):
     x,y=p['variables']; equations=[eq(p[f'a{i}'],p[f'b{i}'],p[f'c{i}'],x,y,raw) for i in (1,2)]
-    system=('$'+'{'+ '; '.join(equations)+'$') if raw else ('$\\{'+ '; '.join(equations)+'$')
+    system=('$'+'{'+ '; '.join(equations)+'$') if raw else ('$$\n'+system_tex(equations)+'\n$$')
     return 'Consider the following system of equations.\n'+system+'\nDescribe the steps needed to eliminate the variable $'+x+'$ from the system:\n\nTo eliminate $'+x+'$, multiply the\n{{field-1}}\nequation by\n{{field-2}},\nand add the equations.'
 
 def solution(p,row,m):
@@ -79,7 +81,7 @@ def solution(p,row,m):
     rows += [grouped+' &= '+rhs,term(bb[0]+bb[1],y)+' &= '+str(cc[0]+cc[1])]
     return (f'Notice that the coefficient of ${x}$ in the first equation is ${a[0]}$, while in the second equation it is ${a[1]}$.\n\n'
         f'If we multiply the {names[row]} equation by ${{\\color{{blue}}{m}}}$, then the coefficient of ${x}$ will turn into ${ab[row]}$, which will cancel with the coefficient of ${a[1-row]}$ in the {names[1-row]} equation.\n\n'
-        '$$\n\\{'+ '; '.join(equations)+'\n$$\n\n'+f'Now, when we add the two equations, the variable ${x}$ will be eliminated:\n\n'
+        '$$\n'+system_tex(equations)+'\n$$\n\n'+f'Now, when we add the two equations, the variable ${x}$ will be eliminated:\n\n'
         '$$\n\\begin{aligned}\n'+ ' \\\\\n'.join(rows)+'\n\\end{aligned}\n$$\n\nTherefore, the correct answer is the following:\n\n'
         f'> *To eliminate ${x}$, multiply the $\\bbox[3pt,Gainsboro]{{\\color{{blue}}\\text{{{names[row]}}}}}$ equation by $\\bbox[3pt,Gainsboro]{{\\color{{blue}}{m}}}$, and add the equations*.')
 

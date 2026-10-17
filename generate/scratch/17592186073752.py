@@ -22,11 +22,13 @@ except ModuleNotFoundError:
   raise
  os.execv(str(python), [str(python), str(Path(__file__).resolve()), *sys.argv[1:]])
 from fractions import Fraction
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"scripts/question_capture"))
+from math_format import system_tex
 
 KP_ID=17592186073752
 KP_UUID='5e79a91b-c479-53da-9f06-59c082fa4187'
 TITLE='Solving a System of Linear Equations Using Substitution'
-VERSION='substitution-1356-v1'
+VERSION='substitution-1356-v2-system-layout'
 TEMPLATES={
  'coefficient_b_first':('easy','blank'),
  'coefficient_a_first':('easy','blank'),
@@ -93,7 +95,7 @@ def coefficient(name,p,profile):
  prompt='The coefficients $a$ and $b$ also satisfy the equation $'+second+'='+f(R)+'.$ Find the values of $a$ and $b.$\n\n$a\\,=$\n{{field-1}}\n\n$b\\,=$\n{{field-2}}'
  if profile not in ('source_context_b','source_context_a'):
   prompt='The coefficients $a$ and $b$ satisfy $b='+first+'.$\n\n'+prompt
- system=r'\{\begin{aligned}b='+first+r' \\ '+second+'='+f(R)+r'\end{aligned}'
+ system=system_tex(['b='+first,second+'='+f(R)])
  substitute=add(str(m)+'('+first+')',term(n,'a')) if name=='coefficient_b_first' else add(term(n,'a'),str(m)+'('+first+')')
  expanded=add(f(m*C),term(-m*k,'a'),term(n,'a')) if name=='coefficient_b_first' else add(term(n,'a'),f(m*C),term(-m*k,'a'))
  collected=add(f(m*C),term(n-m*k,'a')) if name=='coefficient_b_first' else add(term(n-m*k,'a'),f(m*C))
@@ -106,7 +108,7 @@ def unit(name,p):
   k,C,h=(p[z] for z in ('k','C','h'));u,v='x','y';x=(C-k*h)/(1+k);y=x+h
   first=add(u,term(k,v))+'='+number(C);second=v+'='+add(u,number(h));isolate=add(u,number(h))
   rows=[(add(u,term(k,v)),number(C)),(add(u,str(k)+'('+isolate+')'),number(C)),(add(u,term(k,u),number(k*h)),number(C)),(add(term(1+k,u),number(k*h)),number(C)),(term(1+k,u),number(C-k*h)),(u,number(x))]
-  prompt='Consider the following system of equations:\n$\\{'+first+'; '+second+'$\nFind the solution $(x, y)$ to this system using the method of substitution.The solution is\n$($\n{{field-1}}\n$, $\n{{field-2}}\n$)$'
+  prompt='Consider the following system of equations:\n\n'+display(system_tex([first,second]))+'\n\nFind the solution $(x, y)$ to this system using the method of substitution. The solution is\n$($\n{{field-1}}\n$, $\n{{field-2}}\n$)$'
   solution=OPEN+'\n\nNotice that the second equation is already solved for $y:$\n\n'+display(second)+'\n\nSo, we replace $y$ in the first equation and solve for $x:$\n\n'+aligned(rows)+'\n\nIf we now substitute $x='+number(x)+'$ into $'+second+',$ we can then find the value of $y:$\n\n'+aligned([(v,add('('+number(x)+')',number(h))),(v,number(y))])+'\n\nTherefore, the solution to the system of equations is $x='+number(x)+r',\,y='+number(y)+'.$'
   return prompt,solution,[x,y],[u,v],None
  if name=='direct_pq':
@@ -124,8 +126,8 @@ def unit(name,p):
   solution=OPEN+'\n\nUsing the second equation, we can isolate $'+v+'$:\n\n'+aligned([(add(term(S,u),v),number(T)),(v,isolated)])+'\n\nThen, we substitute $'+v+'='+isolated+'$ into the first equation and solve for $'+u+':$\n\n'+aligned(rows)+'\n\nIf we now substitute $'+u+'='+number(x)+'$ into $'+v+'='+isolated+',$ we can then find the value of $'+v+':$\n\n'+aligned([(v,add(number(T),term(-S,'('+number(x)+')'))),(v,number(y))])
   result=x-y
   solution+='\n\nTherefore, '+('$a-b='+number(x)+'-('+number(y)+')='+number(result)+'.$' if name=='difference_ab' else 'the solution to the system of equations is $x='+number(x)+r',\,y='+number(y)+'.$')
- if name=='unit_pair':prompt='Find the solution $(x,y)$ to this system using the method of substitution.\n\n$\\{'+first+'; '+second+'$\n\nThe solution is $($ {{field-1}} $, $ {{field-2}} $)$'
- else:prompt='Given the system of equations below, what is the value of $'+u+' - '+v+'$?\n\n$\\{'+first+'; '+second+'$'
+ if name=='unit_pair':prompt='Find the solution $(x,y)$ to this system using the method of substitution.\n\n'+display(system_tex([first,second]))+'\n\nThe solution is $($ {{field-1}} $, $ {{field-2}} $)$'
+ else:prompt='Given the system of equations below, what is the value of $'+u+' - '+v+'$?\n\n'+display(system_tex([first,second]))
  return prompt,solution,[x,y],[u,v],result
 
 def sample(name,rng):
