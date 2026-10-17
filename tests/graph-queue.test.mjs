@@ -14,11 +14,12 @@ const appearanceSource = html.slice(html.indexOf('  function competencyFor('), h
 const queueStart = html.indexOf('    onChange: learner => {', html.indexOf('  const queueControls ='));
 const queueChanged = html.slice(queueStart + '    onChange: learner => {'.length, html.indexOf('\n    },\n  });', queueStart));
 
-function fixture({ selfDirected = false, queue = [], targetsView = false } = {}) {
+function fixture({ selfDirected = false, queue = [], targetsView = false, nodes = [] } = {}) {
   const f = { calls: [], storage: new Map(), events: [], dev: false, fail: false, learner: { id: 'test', selfDirected, queue, targets: [30] } };
   class Element extends EventTarget {
     constructor(tag) { super(); this.tagName = tag; this.children = []; this.attrs = {}; this.dataset = {}; this.offsetWidth = 224; this.offsetHeight = 180; this.style = {}; }
     append(...nodes) { for (const node of nodes) { node.parent = this; this.children.push(node); } }
+    appendChild(node) { this.append(node); }
     replaceChildren(...nodes) { for (const node of this.children) node.parent = null; this.children = []; this.append(...nodes); }
     setAttribute(key, value) { this.attrs[key] = String(value); }
     getAttribute(key) { return this.attrs[key] ?? null; }
@@ -28,8 +29,10 @@ function fixture({ selfDirected = false, queue = [], targetsView = false } = {})
     matches(selector) { return (selector === '.node-hit' || selector === '.menu-new-tab-indicator') ? this.className === selector.slice(1) : selector === '[role="menuitem"]' && this.attrs.role === 'menuitem'; }
     querySelectorAll(selector) { return this.children.flatMap(node => [...(node.matches(selector) ? [node] : []), ...node.querySelectorAll(selector)]); }
     querySelector(selector) { return this.querySelectorAll(selector)[0] || null; }
-    closest(selector) { for (let node = this; node; node = node.parent) if (selector === '[hidden]' && node.hidden) return node; return null; }
+    closest(selector) { for (let node = this; node; node = node.parent) if (selector === '[hidden]' && node.hidden || selector === '.node, .edge-stub' && /\b(node|edge-stub)\b/.test(node.className || '')) return node; return null; }
     focus() { document.activeElement = this; }
+    select() { this.selected = true; }
+    setSelectionRange(start, end) { this.selection = [start, end]; }
     getBoundingClientRect() { return { left: 20, bottom: 100, width: 240 }; }
     remove() { if(this.parent) this.parent.children=this.parent.children.filter(child=>child!==this); this.parent=null; }
     click() { if(this.tagName==='a' && this.target==='_blank') f.opened.push([this.href,this.target,this.rel]); if (!this.disabled && !this.closest('[hidden]')) { const event = new Event('click', { cancelable: true }); Object.defineProperty(event, 'detail', { value: 0 }); this.dispatchEvent(event); } }
@@ -38,21 +41,26 @@ function fixture({ selfDirected = false, queue = [], targetsView = false } = {})
   document.createElement = tag => new Element(tag);
   document.getElementById = id => { const walk = node => node.id === id ? node : node.children.map(walk).find(Boolean); return walk(document.body); };
   const menu = new Element('div'); menu.id = 'nodeContextMenu'; menu.hidden = true;
-  for (const id of ['nodeQueueAction', 'nodeTargetAction', 'studyTopicLink', 'goToTopicLink', 'copyNodeButton', 'copyNodeDbId', 'copyNodeMaId']) {
+  for (const id of ['nodeQueueAction', 'nodeTargetAction', 'studyTopicLink', 'goToTopicLink', 'copyNodeButton', 'copyNodeDbId', 'copyNodeMaId', 'copyCanvasDbIds']) {
     const node = new Element(id.endsWith('Link') ? 'a' : 'div'); node.id = id;
-    if (id.endsWith('Link') || id.startsWith('copyNode')) node.setAttribute('role', 'menuitem');
+    if (id.endsWith('Link') || id.startsWith('copy')) node.setAttribute('role', 'menuitem');
+    if (id === 'copyCanvasDbIds') node.hidden = true;
     if (id.endsWith('Link')) {
       const arrow = new Element('span'); arrow.className = 'menu-new-tab-indicator'; arrow.hidden = true; node.append(arrow);
     }
     menu.append(node);
   }
   document.body.append(menu);
-  for (const id of ['copyNodeNotice', 'manualNodeCopy', 'manualNodeText', 'manualNodeDone']) { const node = new Element('div'); node.id = id; document.body.append(node); }
-  const opener = new Element('g'), hit = new Element('rect'); hit.className = 'node-hit'; opener.append(hit); document.body.append(opener);
-  f.opened = []; f.copied = [];
+  for (const id of ['copyNodeNotice', 'manualNodeCopy', 'manualNodeTitle', 'manualNodeText', 'manualNodeDone']) { const node = new Element('div'); node.id = id; document.body.append(node); }
+  const svg = new Element('svg'); svg.id = 'svg'; document.body.append(svg);
+  const opener = new Element('g'), hit = new Element('rect'); opener.className = 'node'; hit.className = 'node-hit'; opener.append(hit); svg.append(opener);
+  f.opened = []; f.copied = []; f.clipboard = [];
+  f.state = { layout: { activeNodes: nodes }, activeIds: new Set([20]), view: { x: 0, y: 0, k: 1 } };
   const window = new EventTarget(); window.open = () => { throw new Error('Navigation must use a normal link, not a new-window request'); }; window.innerWidth = 1000; window.innerHeight = 900;
   for (const name of ['queue', 'targets']) window.addEventListener(`course-academy:${name}-changed`, () => f.events.push(name));
-  const context = vm.createContext({ document, window, Event, CustomEvent, crypto, setTimeout, clearTimeout, navigator: {},
+  const context = vm.createContext({ document, window, Event, CustomEvent, crypto, setTimeout, clearTimeout,
+    navigator: { clipboard: { async writeText(value) { if (f.clipboardBlocked) throw new Error('Clipboard blocked'); f.clipboard.push(value); } } },
+    state: f.state,
     copyEntityId: (id, label) => f.copied.push([id, label]),
     academyEntityId: value => value == null ? null : String(value),
     snapshot: { learner: structuredClone(f.learner) }, courseId: 'course',
@@ -88,7 +96,7 @@ function fixture({ selfDirected = false, queue = [], targetsView = false } = {})
     ${menuSource}
     return { queueControls, targetControls, menu: nodeContextMenu, nodeAppearance };
   })()`, context);
-  f.document = document; f.window = window; f.opener = opener;
+  f.document = document; f.window = window; f.opener = opener; f.svg = svg;
   f.open = (shiftKey = false) => f.h.menu.open({ id: 20, uuid: 'topic-uuid', name: 'Topic twenty' }, { type: 'contextmenu', shiftKey, clientX: 50, clientY: 70, preventDefault() {}, stopPropagation() {} }, opener);
   f.queueButton = () => document.getElementById('nodeQueueAction').querySelector('[role="menuitem"]');
   return f;
@@ -373,4 +381,79 @@ test('both graph modes copy the clicked database ID independently of UUID and so
     open({id:30,uuid:'local-topic',name:'Local topic'});
     assert.equal(f.document.getElementById('copyNodeMaId').hidden, true);
   }
+});
+
+test('canvas context menu copies every displayed topic DB ID once, one per line, in both graph modes', async () => {
+  for (const targetsView of [false, true]) {
+    const nodes = [
+      { id: 20, uuid: 'target-uuid', mathAcademyId: 42 },
+      { id: 17592186044417, uuid: 'prerequisite-uuid', mathAcademyId: 43 },
+      { id: 20, uuid: 'target-uuid', mathAcademyId: 42 },
+      { id: 30, uuid: 'queued-uuid' },
+    ];
+    const f = fixture({ targetsView, nodes });
+    const state = structuredClone(f.state), learner = structuredClone(f.learner);
+    const event = dispatch(f.svg, 'contextmenu', { clientX: 50, clientY: 70 });
+    assert.equal(event.defaultPrevented, true);
+    const button = f.document.getElementById('copyCanvasDbIds');
+    assert.equal(button.hidden, false);
+    assert.equal(button.textContent, 'Copy all topic DB IDs (3)');
+    assert.equal(f.document.activeElement, button);
+    for (const id of ['nodeQueueAction', 'nodeTargetAction', 'studyTopicLink', 'goToTopicLink', 'copyNodeDbId', 'copyNodeMaId', 'copyNodeButton']) {
+      assert.equal(f.document.getElementById(id).hidden, true);
+    }
+    button.click(); await settle();
+    assert.deepEqual(f.clipboard, ['20\n17592186044417\n30']);
+    assert.equal(f.document.getElementById('nodeContextMenu').hidden, true);
+    assert.equal(f.document.activeElement, f.svg);
+    assert.deepEqual(f.state, state);
+    assert.deepEqual(f.learner, learner);
+    assert.equal(f.calls.length, 0);
+    assert.deepEqual(f.copied, []);
+    // Reopening reads the latest filtered/expanded layout rather than saved IDs.
+    f.state.layout.activeNodes = [{ id: 25, uuid: 'new-topic-uuid', mathAcademyId: 99 }];
+    dispatch(f.svg, 'contextmenu', { clientX: 50, clientY: 70 });
+    button.click(); await settle();
+    assert.deepEqual(f.clipboard, ['20\n17592186044417\n30', '25']);
+    f.open();
+    assert.equal(button.hidden, true);
+    assert.equal(f.document.getElementById('copyNodeDbId').hidden, false);
+    f.document.getElementById('copyNodeDbId').click();
+    assert.deepEqual(f.copied, [[20, ':db/id']]);
+  }
+});
+
+test('canvas copy supports keyboard opening and Escape, and ignores topic context events', () => {
+  const f = fixture({ nodes: [{ id: 20 }] });
+  dispatch(f.svg, 'contextmenu', { target: f.opener.children[0] });
+  assert.equal(f.document.getElementById('nodeContextMenu').hidden, true);
+  const event = dispatch(f.svg, 'keydown', { key: 'F10', shiftKey: true });
+  assert.equal(event.defaultPrevented, true);
+  assert.equal(f.document.activeElement, f.document.getElementById('copyCanvasDbIds'));
+  dispatch(f.document.getElementById('nodeContextMenu'), 'keydown', { key: 'Escape' });
+  assert.equal(f.document.getElementById('nodeContextMenu').hidden, true);
+  assert.equal(f.document.activeElement, f.svg);
+  assert.equal(f.svg.getAttribute('aria-expanded'), 'false');
+});
+
+test('empty canvas disables copying and blocked clipboard offers the same newline-separated IDs for manual copy', async () => {
+  const empty = fixture();
+  dispatch(empty.svg, 'contextmenu', { clientX: 50, clientY: 70 });
+  const emptyButton = empty.document.getElementById('copyCanvasDbIds');
+  assert.equal(emptyButton.disabled, true);
+  emptyButton.click(); await settle();
+  assert.deepEqual(empty.clipboard, []);
+
+  const f = fixture({ nodes: [{ id: 20 }, { id: 30 }] });
+  f.clipboardBlocked = true;
+  dispatch(f.svg, 'contextmenu', { clientX: 50, clientY: 70 });
+  f.document.getElementById('copyCanvasDbIds').click(); await settle();
+  const text = f.document.getElementById('manualNodeText');
+  assert.equal(text.value, '20\n30');
+  assert.equal(text.selected, true);
+  assert.equal(text.getAttribute('aria-label'), 'Topic database IDs, one per line');
+  assert.equal(f.document.getElementById('manualNodeTitle').textContent, 'Copy topic DB IDs');
+  assert.equal(f.document.getElementById('manualNodeCopy').getAttribute('open'), '');
+  assert.deepEqual(f.clipboard, []);
+  assert.equal(f.calls.length, 0);
 });

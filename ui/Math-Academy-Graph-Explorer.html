@@ -251,6 +251,7 @@ button,input,select { font:inherit; }
 #nodeContextMenu [role="menuitem"]{display:block;width:100%;border:0;background:transparent;color:inherit;text-align:left;padding:11px 12px;font:inherit;font-size:12px;letter-spacing:0;cursor:pointer;white-space:nowrap;text-decoration:none;box-sizing:border-box}
 #nodeContextMenu [role="menuitem"]:hover,#nodeContextMenu [role="menuitem"]:focus-visible{background:var(--tone-ff);color:var(--tone-00);outline:none}
 #nodeContextMenu [role="menuitem"]:disabled{opacity:.55;cursor:wait}
+#nodeContextMenu [hidden]{display:none}
 #nodeContextMenu .menu-new-tab-indicator{float:right;margin-left:16px}
 #nodeContextMenu .target-control{display:flex;width:100%;gap:0}
 #nodeContextMenu .target-status:not(:empty){padding:0 12px 10px}
@@ -1735,7 +1736,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     function show(event,element) {
       element.setAttribute('aria-expanded','true');
       menu.hidden=false;shiftMode(event.shiftKey);
-      const box=(element.querySelector('.node-hit') || element).getBoundingClientRect();
+      const box=(topic?(element.querySelector('.node-hit') || element):element).getBoundingClientRect();
       const keyboard=event.type==='keydown'||(!event.clientX&&!event.clientY);
       const x=keyboard?box.left+Math.min(box.width/2,100):event.clientX;
       const y=keyboard?box.bottom+5:event.clientY;
