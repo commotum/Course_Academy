@@ -25,7 +25,8 @@ def main():
         path = ROOT / original['path']
         kp = original['request']['knowledgePoint']
         row = rows[kp]
-        pipeline_path = ROOT / f'.local/generation/math/{kp}-auto/job.json'
+        base = '.local/generation/decimal-grader-repair' if kp == 17592186054745 else '.local/generation'
+        pipeline_path = ROOT / f'{base}/math/{kp}-auto/job.json'
         pipeline = json.loads(pipeline_path.read_text())
         assert pipeline['stage'] == 'verified' and pipeline['approval_recorded']
         assert row['available_total'] >= 5

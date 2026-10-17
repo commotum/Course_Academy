@@ -1770,19 +1770,27 @@ fn normalize_math(value: &str) -> String {
 }
 
 fn normalize_answer_form(value: &str) -> String {
-    let mut text = normalize_math(value);
+    let text = normalize_math(value);
     let unsigned = text
         .strip_prefix('-')
         .or_else(|| text.strip_prefix('+'))
         .unwrap_or(&text);
-    // A leading zero is optional for a decimal numeral. Preserve every
-    // fractional digit so rounding and significant-figure requirements remain
-    // strict, and leave fractions or compound expressions unchanged.
-    if unsigned.strip_prefix('.').is_some_and(|digits| {
-        !digits.is_empty() && digits.bytes().all(|digit| digit.is_ascii_digit())
-    }) {
-        let sign_len = text.len() - unsigned.len();
-        text.insert(sign_len, '0');
+    // Normalize only a complete decimal numeral's optional positive sign and
+    // integer leading zeroes. Preserve every fractional digit and the minus
+    // sign so precision requirements remain strict; leave expressions unchanged.
+    if let Some((whole, fraction)) = unsigned.split_once('.')
+        && whole.bytes().all(|digit| digit.is_ascii_digit())
+        && !fraction.is_empty()
+        && fraction.bytes().all(|digit| digit.is_ascii_digit())
+    {
+        let significant_whole = whole.trim_start_matches('0');
+        let whole = if significant_whole.is_empty() {
+            "0"
+        } else {
+            significant_whole
+        };
+        let sign = if text.starts_with('-') { "-" } else { "" };
+        return format!("{sign}{whole}.{fraction}");
     }
     text
 }
@@ -3563,7 +3571,7 @@ pub(crate) mod tests {
     }
 
     #[test]
-    fn rounded_decimal_blanks_accept_omitted_leading_zero_without_changing_precision() {
+    fn rounded_decimal_blanks_normalize_sign_and_integer_zeroes_without_changing_precision() {
         let mut s = fixture();
         s.entities.get_mut(&100).unwrap().insert(
             "question/problem".into(),
@@ -3571,9 +3579,18 @@ pub(crate) mod tests {
         );
         for (canonical, accepted) in [
             ("0.850", ".850"),
+            ("0.850", "+0.850"),
+            ("0.850", "+.850"),
+            ("0.850", "00.850"),
+            ("0.850", "+00.850"),
             (".850", "0.850"),
             ("-0.850", "-.850"),
+            ("-0.850", "-00.850"),
             ("+0.850", "+.850"),
+            ("+0.850", "0.850"),
+            ("00.850", ".850"),
+            ("0002.050", "2.050"),
+            ("2.050", "+0002.050"),
             ("0.000", ".000"),
         ] {
             s.entities
@@ -3594,6 +3611,12 @@ pub(crate) mod tests {
             ".85",
             "0.85",
             ".8500",
+            "+.85",
+            "+.8500",
+            "00.85",
+            "00.8500",
+            "00.851",
+            "0002.050",
             "0.8500",
             ".851",
             "-.850",
