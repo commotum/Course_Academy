@@ -1,0 +1,82 @@
+{
+  "passed": true,
+  "scope": "Pure source TeX at two HTML-to-Markdown boundaries, before HTML whitespace collapse",
+  "cause": "Real percent comments lose their line boundary when HTML text whitespace collapses; the first comment can hide the remainder of a formula. Legacy matrix row delimiters also require source line boundaries.",
+  "repair": "normalize_source_tex removes real comments while preserving line endings and escaped percent signs, then canonicalizes legacy TeX before either HTML renderer collapses whitespace. Mixed TeX/MathML titles stay whole graphics, including titles with nested fragment annotations.",
+  "active_main_path": "capture/scripts/browser/adapter.py loads extract.js and evaluates it in _read for _lesson. extract.js preserves pure SVG-title newlines. database/prepare.py uses formatted_prose; database/math_content.py prose calls database/text.py markdown, which passes ordinary Markdown through. This main browser path is unchanged and retains line-scoped comments correctly.",
+  "active_fallback": "capture/scripts/database/text.py markdown accepts raw HTML; pure-title conversion now calls the cached formatter.normalize_source_tex before NavigableString whitespace collapsing. Supported raw HTML calls through database/math_content.py prose are covered.",
+  "legacy_path": "scripts/question_capture/browser.py capture_lesson imports activities.capture_lesson. activities._formula_html now normalizes pure titles before html_to_markdown collapses whitespace. New capture workers do not import this legacy activities module.",
+  "reload": "Active workers import database.text and cache the shared formatter module, so previously running workers were checkpoint-stopped and restarted by the parent with the same commands, accounts and answer profiles. No browser extractor change was needed.",
+  "policy": "Complete captures, saved requests, answer fields, correct answers, entered answers and missing solutions are untouched; existing fill-only regression suite passes.",
+  "source_proof": "active-path-after.json",
+  "source_checks": {
+    "active_browser_output_unchanged": true,
+    "active_markdown_output_unchanged": true,
+    "raw_html_all_source_math_preserved": true,
+    "legacy_html_all_source_math_preserved": true,
+    "raw_html_comments_removed_before_collapse": true,
+    "legacy_html_comments_removed_before_collapse": true
+  },
+  "mixed_title_asset_check": "verification.json",
+  "files": {
+    "scripts/question_capture/math_format.py": {
+      "before": "0a6c4c4c41f4c47a96e680cc88918b1ba2802a650bb5605ab48ac0ca6215643b",
+      "after": "f9381a23942f3173fc2108f029055a04ab5707b95071db99a45730cf1c19fd69"
+    },
+    "scripts/question_capture/activities.py": {
+      "before": "e90d64153d7e207747bd66c1d5db6e205e75b5127e990f42b20eece3775203b7",
+      "after": "61590c25394c1f36a49f8f846771474d43ddaa6796cd0ad976ca6d3dede87543"
+    },
+    "capture/scripts/database/text.py": {
+      "before": "a9fdc8e0b3cd597d9a8dfea14454f1b4be61031d4996189a770acb6c2159e37b",
+      "after": "a1363590a62aeb9d09a8684b4625296923a6d63ae460fbff8654f47aa2c39530"
+    },
+    "scripts/question_capture/test_activities.py": {
+      "before": "ec88c530dfb6de3e75ebe414a28dc3d1745be6d61bf9c2d60c09edad2fc328d4",
+      "after": "c94fb4aca1b182368d00ae921f899a7766bfcbc4fbb8d85ec61becd84ef0c090"
+    },
+    "capture/scripts/tests/test_database_math_content.py": {
+      "before": "da5f07144b2a4266dfc4d80f88a20b1b92005a11424a36aef298599e52625663",
+      "after": "54239b07fa32cff0d117bd18563d6aa8525cb0e1b053e10cb978ccb3ee636cdc"
+    }
+  },
+  "tests": [
+    {
+      "name": "legacy-html-and-math-format",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "unittest",
+        "scripts/question_capture/test_activities.py",
+        "scripts/question_capture/test_math_format.py"
+      ],
+      "PYTHONPATH": "scripts/question_capture",
+      "test_count": 32,
+      "exit_code": 0,
+      "log": "legacy-html-and-math-format.log",
+      "passed": true
+    },
+    {
+      "name": "active-html-and-fill-only",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "unittest",
+        "scripts.tests.test_database_math_content",
+        "scripts.tests.test_capture_fill_only"
+      ],
+      "PYTHONPATH": "capture",
+      "test_count": 28,
+      "exit_code": 0,
+      "log": "active-html-and-fill-only.log",
+      "passed": true
+    }
+  ],
+  "total_tests": 60,
+  "worker_reload_hash_matches": {
+    "scripts/question_capture/math_format.py": true,
+    "scripts/question_capture/activities.py": true,
+    "capture/scripts/database/text.py": true
+  },
+  "worker_reload_evidence": "workers/after.json"
+}
