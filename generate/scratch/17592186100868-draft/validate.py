@@ -100,7 +100,11 @@ sources=source_wrapper['record'][':knowledge-point/questions'];byid={q[':questio
 replays=[];fidelity={'originals':len(sources),'complete_banks_matched':0,'choices_matched':0,'distractors_matched':0,'original_correct_designations_matched':0,'original_correct_designations_present':0,'field_shapes_matched':0,'solution_prose_sequence_matched':0,'solution_prose_sequence_present':0,'prompt_masks_matched':0,'raw_exact_solution_strings':0,'source_correct_repairs':1,'source_solution_repairs':1}
 for c in cases:
  r=G.generate(c['level'],template=c['template'],parameters=c['parameters'],profile=c['profile']);check(r);replays.append(r);src=byid[c['source_id']]
- assert mask(r['question'][':question/problem'])==mask(src[':question/problem']);fidelity['prompt_masks_matched']+=1
+ # Compare source structure after the authorized answer-vector display repair;
+ # retained source masks remain unmodified evidence of the original capture.
+ expected_prompt=src[':question/problem']
+ if G.TEMPLATES[c['template']]['fields'][0]['type']=='blank':expected_prompt=G.answer_layout(expected_prompt)
+ assert mask(r['question'][':question/problem'])==mask(expected_prompt);fidelity['prompt_masks_matched']+=1
  for sf,f in zip(src[':question/answer-fields'],r['question'][':question/answer-fields']):
   expected=[value(G.mf.normalize_tex(a[':answer/value'])) for a in sf[':answer-field/choices']];actual=[value(a[':answer/value']) for a in f[':answer-field/choices']]
   assert len(expected)==len(actual) and all(sum(vequal(e,a) for a in actual)==1 for e in expected), (c["source_id"],expected,actual)

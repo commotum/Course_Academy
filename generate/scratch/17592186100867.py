@@ -2,8 +2,10 @@
 """Source-backed 3x3 matrix-column multiplication; pure seeded generator.
 Moderate only. No durable writes. See adjacent package for scope and validation.
 """
-import argparse, hashlib, json, random, re, uuid
+import argparse, hashlib, json, random, re, sys, uuid
 from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'scripts/question_capture'))
+from math_format import matrix_answer
 try:
  import sympy as s
 except ModuleNotFoundError:
@@ -55,6 +57,13 @@ def bank(mid,p):
  return []
 def par(n):return '('+str(n)+')' if n<0 else str(n)
 def signed_sum(nums):return str(nums[0])+''.join(('+' if n>=0 else '')+str(n) for n in nums[1:])
+def answer_layout(prompt):
+ # Source tables use border cells for vector brackets and rowspans for labels.
+ # Preserve source row/key order while displaying the canonical answer vector.
+ prefix,table=prompt.split('\n\n|',1)
+ label=re.search(r'\$([^$]+)=',table)[1]
+ keys=re.findall(r'\{\{([^{}]+)\}\}',table)
+ return prefix+'\n\n'+matrix_answer(label,[['{{'+key+'}}'] for key in keys])
 def render(template,p,profile):
  A=texmat(p['A']);V=vector(p['v']);target=p['matrix_name']+p['vector_name'];AV=A+V
  # Keep the exact observed prompt/table structure and replace its declared slots.
@@ -105,6 +114,8 @@ def generate(level,seed=0,template=None,parameters=None,profile=None):
    if recipe=='correct':correct=aid
   rng.shuffle(choices)
   fields.append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':typ,':answer-field/choices':choices,':answer-field/correct':[':answer/id',correct]})
+ # Display normalization leaves sampling, source replay and answer identities intact.
+ if template.endswith('-blank'):prompt=answer_layout(prompt)
  return {'knowledge_point':{'db_id':KP,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/moderate',':question/answer-fields':fields},'generation':{'generator_version':VERSION,'template':template,'bank_profile':profile,'recipes':[recipe for recipe,_ in entries],'parameters':p,'seed':seed,'source_basis':CAP['basis'],'lineage':CAP['lineage'],'source_references':[profile],'mathematical_fingerprint':fingerprint(p),'eligible_for_learning':True,'evidence_only':False,'sympy_version':s.__version__}}
 if __name__=='__main__':
  parser=argparse.ArgumentParser();parser.add_argument('--difficulty',default='moderate');parser.add_argument('--seed',type=int,default=0);parser.add_argument('--template');parser.add_argument('--count',type=int,default=1);parser.add_argument('--format',choices=['json','markdown'],default='json');args=parser.parse_args()

@@ -4,9 +4,11 @@ Only easy is source-backed. See adjacent package for replay and capability evide
 No database writes. Matrices are LaTeX, not plots. Seeds and labels do not define
 mathematical distinctness; ordered row dot-product operands do.
 """
-import argparse, hashlib, json, random, re, uuid
+import argparse, hashlib, json, random, re, sys, uuid
 from pathlib import Path
 import sympy as s
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'scripts/question_capture'))
+from math_format import matrix_answer
 KP=17592186100866
 HERE=Path(__file__).with_suffix('')
 CAP=json.loads((HERE/'reference/source.json').read_text())
@@ -56,6 +58,13 @@ def bank(mid,p):
   return vals
  return []
 def group(n):return '('+str(n)+')' if n<0 else str(n)
+def answer_layout(prompt):
+ # Source tables use border cells for vector brackets and rowspans for labels.
+ # Preserve source row/key order while displaying the canonical answer vector.
+ prefix,table=prompt.split('\n\n|',1)
+ label=re.search(r'\$([^$]+)=',table)[1]
+ keys=re.findall(r'\{\{([^{}]+)\}\}',table)
+ return prefix+'\n\n'+matrix_answer(label,[['{{'+key+'}}'] for key in keys])
 def render(template,p):
  a,b,c,d,u,v=(p[k] for k in ('a','b','c','d','u','v'));r,t=dot(p)
  A=texmat([[a,b],[c,d]]);V=vector(u,v);target=p['matrix_name']+p['vector_name'];AV=A+V
@@ -102,6 +111,9 @@ def generate(level,seed=0,template=None,parameters=None,profile=None):
    if recipe=='correct':correct=aid
   rng.shuffle(choices)
   fields.append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':typ,':answer-field/choices':choices,':answer-field/correct':[':answer/id',correct]})
+ # Apply display normalization after identities are derived so existing seeds,
+ # answer fields and correct-answer references retain their exact identities.
+ if template.endswith('-blank'):prompt=answer_layout(prompt)
  return {'knowledge_point':{'db_id':KP,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':solution,':question/difficulty':':question.difficulty/easy',':question/answer-fields':fields},'generation':{'generator_version':VERSION,'template':template,'bank_profile':profile,'parameters':p,'seed':seed,'source_basis':CAP['basis'],'lineage':CAP['lineage'],'source_references':[profile],'mathematical_fingerprint':fingerprint(p),'eligible_for_learning':True,'evidence_only':False,'sympy_version':s.__version__}}
 if __name__=='__main__':
  parser=argparse.ArgumentParser();parser.add_argument('--difficulty',default='easy');parser.add_argument('--seed',type=int,default=0);parser.add_argument('--template');parser.add_argument('--count',type=int,default=1);args=parser.parse_args()

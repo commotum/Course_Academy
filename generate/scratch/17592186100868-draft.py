@@ -12,6 +12,8 @@ import argparse, hashlib, importlib.util, itertools, json, random, re, uuid
 from pathlib import Path
 import sympy as S
 from sympy.parsing.sympy_parser import parse_expr, standard_transformations, implicit_multiplication_application
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'scripts/question_capture'))
+from math_format import matrix_answer
 ROOT=Path(__file__).with_suffix(''); ASSETS=ROOT/'assets'
 _spec=importlib.util.spec_from_file_location('kp100868_math_format',ROOT/'math_format.py')
 mf=importlib.util.module_from_spec(_spec);_spec.loader.exec_module(mf)
@@ -37,6 +39,13 @@ def guarded(obj):
 def digest(obj):return hashlib.sha256(json.dumps(obj,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 def uid(tag,obj):return str(uuid.uuid5(NS,tag+digest(obj)))
 def matrix(rows):return mf.matrix_tex(rows,augmented=False)
+def answer_layout(prompt):
+    # Retain the source-derived row/key order, replacing decorative table cells
+    # with the app's bracketed column-vector answer component.
+    prefix,table=prompt.split('\n\n|',1)
+    label=re.search(r'\$([^$]+)=',table)[1]
+    keys=re.findall(r'\{\{([^{}]+)\}\}',table)
+    return prefix+'\n\n'+matrix_answer(label,[['{{'+key+'}}'] for key in keys])
 def group(expr):
     t=tex(expr);return '('+t+')' if expr.could_extract_minus_sign() or isinstance(expr,S.Add) else t
 def summed(terms):
@@ -217,6 +226,9 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     # Mathematical fingerprint excludes labels, bank, seed and variable spelling.
     canon={S.Symbol(p['names'][v]):S.Symbol('v'+str(i)) for i,v in enumerate(t['variables'])}
     mathkey={'matrix':[[S.srepr(S.expand((x if V[j]!=0 else S.Integer(0)).xreplace(canon))) for j,x in enumerate(row)] for row in M],'vector':[S.srepr(S.expand(x.xreplace(canon))) for x in V]}
+    # Normalize display after the legacy identity payload, preserving all seed,
+    # field, choice and correct-answer identities and immutable source masks.
+    if expected_type=='blank':prompt=answer_layout(prompt)
     question={':question/id':uid('question',content),':question/difficulty':':question.difficulty/'+level,':question/problem':prompt,':question/worked-solution':solution,':question/answer-fields':fields}
     result={'knowledge_point':dict(KP),'question':question,'generation':{'version':VERSION,'seed':seed,'template':template,'profile':profile,'parameters':p,'mathematical_fingerprint':digest(mathkey),'source_ids':[template],'source_basis':2275,'authored_level':t['source_level'] is None,'repairs':(['missing correct designation inferred by matrix multiplication','missing worked solution authored from canonical example'] if t['missing_correct'] else []),'workload_caps':WORKLOAD[level],'scope':'same row-dot-product method; fixed matrix/vector roles and stage workload','bank_interpretation':('observed expression patterns; learner intent unverified' if profile=='observed' else 'authored complete row-operation bank')}}
     guarded(result)
