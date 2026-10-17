@@ -222,6 +222,8 @@ main:has(> .study-layout) { padding-top: 24px; }
 .matrix-answer-brackets {
   position: relative;
   padding-inline: .35em;
+  max-width: 100%;
+  overflow-x: auto;
 }
 .matrix-answer-brackets::before,
 .matrix-answer-brackets::after {
@@ -254,14 +256,16 @@ main:has(> .study-layout) { padding-top: 24px; }
 }
 .matrix-answer .answer-inline { display: inline-flex; vertical-align: middle; }
 .matrix-answer .answer-inline .answer-math {
-  width: 4.5ch;
-  min-width: 0;
+  /* Keep empty cells compact; let rendered expressions widen their column. */
+  width: max-content;
+  min-width: 4.5ch;
+  max-width: none;
   min-height: 2.1em;
   padding: 5px 6px;
 }
 @media (max-width: 400px) {
   .matrix-answer table:has(tr > :nth-child(4)) .answer-inline .answer-math {
-    width: 3ch;
+    min-width: 3ch;
     padding-inline: 3px;
   }
 }

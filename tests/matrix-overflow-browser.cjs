@@ -56,5 +56,51 @@ for(const batch of report){
 }
 assert.equal(errors.length,0,'browser errors');
 
-console.log(JSON.stringify({passed:true,cases:cases.length,checks:report.flatMap(x=>x.items).length,errors:report.flatMap(x=>x.items).filter(x=>x.mathErrors.length).length,overflow:report.flatMap(x=>x.items).filter(x=>x.overflow).length,exceptions:report.flatMap(x=>x.exceptions).length}));
+// Question 17592186299692: a narrow column vector must grow while entering
+// polynomial expressions, including after restoring a saved response.
+const vector = {
+ entity:17592186299692,
+ fields:[1,2].map(id=>({id,key:'field-'+id,type:'blank',answerType:'math',choices:[]})),
+ problem:'<div class="matrix-answer"><span class="matrix-answer-label">$By=$</span><div class="matrix-answer-brackets"><table aria-label="Answer matrix"><tbody><tr><td>{{field-1}}</td></tr><tr><td>{{field-2}}</td></tr></tbody></table></div></div>',
+};
+const measureVector = () => evaluate(`(() => {
+ const field=main.querySelector('math-field'), brackets=main.querySelector('.matrix-answer-brackets');
+ const content=field.shadowRoot.querySelector('.ML__content');
+ return {value:field.value, width:field.getBoundingClientRect().width, matrix:brackets.getBoundingClientRect().width,
+   clipped:content.scrollWidth>content.clientWidth+1, overflow:main.scrollWidth>main.clientWidth+1};
+})()`);
+for (const width of widths) {
+ await send('Emulation.setDeviceMetricsOverride',{width,height:900,deviceScaleFactor:1,mobile:false});
+ await evaluate('renderBatch('+JSON.stringify([vector])+',"edit")');
+ const empty=await measureVector();
+ await evaluate("main.querySelector('math-field').focus()");
+ await evaluate('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
+ // Use the editor's insertion API so this geometry check does not depend on
+ // a headless browser's OS keyboard mapping.
+ for (const key of ['6','p','+','2','q','-','4','p']) {
+  await evaluate("main.querySelector('math-field').insert("+JSON.stringify(key)+")");
+ }
+ await evaluate('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
+ const typed=await measureVector();
+ assert.equal(typed.value,'6p+2q-4p','input must reach the matrix editor');
+ assert.ok(typed.width>empty.width+20,'matrix entry must grow during typing: '+JSON.stringify({empty,typed}));
+ assert.ok(typed.matrix>empty.matrix+20,'vector brackets must expand with the entry');
+ assert.equal(typed.clipped,false,'typed expression must remain fully visible');
+ assert.equal(typed.overflow,false,'expanded vector must fit the page');
+ await evaluate("main.querySelector('math-field').value=''");
+ await evaluate('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
+ assert.ok((await measureVector()).width<typed.width-20,'clearing an entry must restore its compact width');
+ const restored=structuredClone(vector);
+ restored.fields[0].response={value:String.raw`6p^2-4q^2`};
+ restored.fields[1].response={value:String.raw`-5p^2+2q^2`};
+ await evaluate('renderBatch('+JSON.stringify([restored])+',"edit")');
+ await evaluate('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
+ const saved=await measureVector();
+ assert.ok(saved.width>empty.width+20,'restored polynomial must size to its rendered content');
+ assert.equal(saved.clipped,false,'restored polynomial must remain fully visible');
+ assert.equal(saved.overflow,false,'restored vector must fit the page');
+}
+assert.equal(errors.length,0,'browser errors after editing');
+
+console.log(JSON.stringify({passed:true,cases:cases.length,checks:report.flatMap(x=>x.items).length,vectorEditWidths:widths,errors:report.flatMap(x=>x.items).filter(x=>x.mathErrors.length).length,overflow:report.flatMap(x=>x.items).filter(x=>x.overflow).length,exceptions:report.flatMap(x=>x.exceptions).length}));
 }finally{child.kill();await new Promise(r=>setTimeout(r,250));fs.rmSync(profile,{recursive:true,force:true,maxRetries:5,retryDelay:100});}})().catch(e=>{console.error(e);process.exitCode=1;});

@@ -25,6 +25,9 @@ def normalized_math(value):
     value = re.sub(r"\\(leq|geq|neq)(?![A-Za-z])", lambda match: {
         'leq': r'\le', 'geq': r'\ge', 'neq': r'\ne'}[match[1]], value)
     value = re.sub(r"\^([A-Za-z0-9])", r"^{\1}", value)
+    # MathQuill also omits braces around a single subscript token (log_4).
+    # Keep subsequent tokens outside the group: x_12 is x_{1}2, not x_{12}.
+    value = re.sub(r"(?<!\\)_([A-Za-z0-9])", r"_{\1}", value)
     def group(start):
         if start >= len(value) or value[start] != "{":
             return None

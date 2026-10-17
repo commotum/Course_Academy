@@ -59,6 +59,14 @@ class SourceUnavailable(BrowserUnavailable):
     """The source explicitly says a completed activity's content no longer exists."""
 
 
+class SourceHTTPError(BrowserUnavailable):
+    """A source read failed without establishing that its content is absent."""
+
+    def __init__(self, status, url):
+        self.http_status, self.request_url = status, url
+        super().__init__(f"Source page HTTP {status}: {url}")
+
+
 class SubmissionHTTPError(BrowserUnavailable):
     """An answer request failed; its learner outcome still needs reconciliation."""
 
@@ -205,7 +213,7 @@ class MathAcademyBrowser:
         if response and response.status in (404, 410):
             raise SourceUnavailable(f"Source page HTTP {response.status}: {url}")
         if response and response.status >= 400:
-            raise BrowserUnavailable(f"Source page HTTP {response.status}: {url}")
+            raise SourceHTTPError(response.status, url)
         self._check(page)
         self.safety.reconcile_required = False
 
@@ -968,13 +976,37 @@ class MathAcademyBrowser:
     def _lesson(self, activity, directory):
         page = self.context.new_page()
         previous = self.page
+        url = f"{BASE}/topics/{activity['topic_id']}"
         try:
             try:
-                self._goto(f"{BASE}/topics/{activity['topic_id']}", page)
+                self._goto(url, page)
+            except SourceHTTPError as error:
+                # This supplementary read follows the completed task's history.
+                # A persistently broken topic page must not replay that history
+                # forever. Keep account/authentication/rate-limit failures on the
+                # normal recovery path, and retain the missing source explicitly.
+                if not 500 <= error.http_status < 600:
+                    raise
+                failures = self.state.setdefault('lesson_source_failures', {})
+                previous_failure = failures.get(url, {})
+                evidence = self._evidence(page, directory, 'lesson-topic-unavailable')
+                failure = {'reason': str(error), 'source_url': url,
+                           'source_file': evidence['html_path'], 'http_status': error.http_status,
+                           'attempts': previous_failure.get('attempts', 0) + 1,
+                           'first_failed_at': previous_failure.get('first_failed_at', time.time()),
+                           'last_failed_at': time.time()}
+                failures[url] = failure
+                self._save()
+                if failure['attempts'] < 3:
+                    raise
+                return {'lesson_definition': {'topic_id': activity['topic_id'], 'complete': False,
+                                               'steps': [], 'issues': [deepcopy(failure)]}}
             except SourceUnavailable as error:
                 evidence = self._evidence(page, directory, "lesson-topic-unavailable")
                 return {"lesson_definition": {"topic_id": activity["topic_id"], "complete": False, "steps": [],
                                                "issues": [{"reason": str(error), "source_file": evidence["html_path"]}]}}
+            if self.state.get('lesson_source_failures', {}).pop(url, None):
+                self._save()
             try:
                 page.locator("div.step[stepid][steptype][contentid]").first.wait_for(state="attached")
             except Exception:

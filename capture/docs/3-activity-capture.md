@@ -127,6 +127,8 @@ Bind a recovered record to its checked stable source DOM root before retiring ma
 
 Repeated browser failures start with a 30-second recovery wait, increase by 30 seconds per failure to a 180-second cap, and add up to 5 seconds of jitter. Save failure counts across re-observation and restart; seeing the same accepted question does not prove that a failed Continue succeeded. Repeated entry or continuation failures receive focused reconsideration or a reload, followed by a fresh observation before another action.
 
+After completion, three HTTP 5xx failures of the supplemental lesson topic page preserve an incomplete lesson definition with the failed source evidence and allow question review to finish. Save the failure count across restarts. The final source-recovery pass can reread that page, but does not restart the retry budget. Authentication failures, rate limits, and uncertain learner submissions retain their normal recovery rules.
+
 HTTP 429 responses, including asynchronous requests, save an account-wide cooldown using `Retry-After` seconds or its HTTP date. Resume that cooldown after a restart and reconcile uncertain submissions with the server before retrying. Temporary solver capacity failures allow up to two retries with 30–60 second waits within the request budget, preserving the session where possible. These waits do not abandon the pinned activity or turn a timed-out action into permission to submit twice.
 
 ## 3.2. Lesson
