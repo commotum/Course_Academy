@@ -1,21 +1,18 @@
 #!/usr/bin/env python3
-"""Best description of a square triangular matrix, math snapshot basis 1356.
+"""Recognize triangular structure with substantial nonzero regions.
 
-Easy: observed strict upper/lower 2x2 and 3x3. Moderate: observed nonidentity
-3x3 diagonal. Hard: authored 4x4 versions of these same three families; the
-extra entries enlarge the same zero-region scan, without matrix operations.
-All normal profiles use the complete five-label radio bank and state the
-most-specific-description criterion. Raw source profiles retain both legacy
-fields and missing attributes; they are evidence-only and publicly replayable.
+Normal difficulty follows size: 2x2 easy, 3x3 moderate, 4x4 hard. Every
+diagonal entry is nonzero; non-diagonal triangular matrices have at least
+half their permitted off-diagonal region nonzero. Diagonal contrasts remain
+a minority independently of difficulty. Raw source replay preserves original
+ratings, fields and prose, is exact-parameter-only, and is evidence-only.
 
-Meaningful catalog: strict triangular entries use only off-diagonal support;
-diagonal tasks retain unit/nonunit diagonal positions for the identity check. Magnitudes, signs, names, layouts,
-profiles and choice order do not inflate task counts. Normal sampling chooses
-an unordered eligible structural pattern, then harmless bounded integer values.
-No EDB clients, transactions, renderer, installs, or registration.
+The finite catalog counts dimension and off-diagonal support. Changing
+diagonal values, signs, labels or layout never creates another task. Easy has
+only three structural cases; do not inflate that limit with cosmetic changes.
 """
 from __future__ import annotations
-import argparse, copy, hashlib, itertools, json, random, re, sys, uuid
+import argparse, copy, hashlib, json, random, re, sys, uuid
 from functools import lru_cache
 from pathlib import Path
 import sympy as sp
@@ -23,7 +20,7 @@ import sympy as sp
 KP_ID=17592186119771
 KP_UUID='1cca9b7c-358a-5f62-9a53-a696df0dd0ff'
 TITLE='Describing a Triangular Matrix'
-VERSION='triangular-description-2.0'
+VERSION='triangular-description-3.0-dense-balanced'
 HERE=Path(__file__).resolve().with_suffix('')
 SOURCE=json.loads((HERE/'source.json').read_text())
 SOURCES={q[':question/math-academy-id']:q for q in SOURCE['record'][':knowledge-point/questions']}
@@ -31,11 +28,15 @@ SUPPORTED_LEVELS=('easy','moderate','hard')
 LABELS=('Identity matrix','Diagonal matrix','Upper triangular matrix','Lower triangular matrix','Other')
 FAMILIES={'lower':'Lower triangular matrix','upper':'Upper triangular matrix','diagonal':'Diagonal matrix'}
 CRITERION='Choose the most specific listed description: identity before diagonal, and diagonal before upper or lower triangular. Choose Other only if none of these descriptions applies.'
-DOMAIN={'entries':'integers -9..9 (bool excluded)', 'easy':'strict upper/lower, square size 2 or 3',
- 'moderate':'nonidentity diagonal, square size 3, including zero diagonal entries and the zero matrix',
- 'hard':'authored strict upper/lower or nonidentity diagonal, square size 4',
- 'fingerprint':'dimension and off-diagonal support for strict triangular; unit/nonunit diagonal mask for diagonal; fixed region-scan demand. Strict diagonal entries and all magnitudes/signs/labels/layouts/profiles/orders are incidental',
- 'criterion':'Identity > Diagonal > the unique strict Upper/Lower > Other; zero square matrix is Diagonal in the available bank'}
+SIZES={'easy':2,'moderate':3,'hard':4}
+FAMILY_WEIGHTS={'lower':2,'upper':2,'diagonal':1}
+DOMAIN={'entries':'integers -9..9 (bool excluded); every diagonal entry nonzero',
+ 'easy':'2x2 upper, lower, or nonidentity diagonal; three finite structural cases',
+ 'moderate':'3x3; upper/lower have at least two nonzero off-diagonal entries',
+ 'hard':'4x4; upper/lower have at least three nonzero off-diagonal entries',
+ 'families':'Independent draws: 40% lower, 40% upper, 20% diagonal. Finite batches balance upper/lower with at most one diagonal contrast; deduplication changes those proportions.',
+ 'fingerprint':'dimension, family and off-diagonal support only; diagonal unit positions, values, signs, labels, layouts and choice order are incidental',
+ 'criterion':'Identity > Diagonal > non-diagonal Upper/Lower > Other; normal generation excludes identity and Other'}
 
 
 def digest(obj): return hashlib.sha256(json.dumps(obj,sort_keys=True,separators=(',',':')).encode()).hexdigest()
@@ -74,14 +75,16 @@ def validate_parameters(parameters):
 def level_guard(level,p,template):
     n=len(p['matrix']); actual=family(p['matrix'])
     if template!=actual: raise ValueError('Requested family differs from the actual matrix')
-    if level=='easy' and not (n in (2,3) and actual in ('lower','upper')): raise ValueError('Easy workload bounds')
-    if level=='moderate' and not (n==3 and actual=='diagonal'): raise ValueError('Moderate workload bounds')
-    if level=='hard' and not n==4: raise ValueError('Hard workload bounds: 4x4 only')
+    if n!=SIZES[level]: raise ValueError(f'{level} requires a {SIZES[level]}x{SIZES[level]} matrix')
+    if any(p['matrix'][i][i]==0 for i in range(n)): raise ValueError('Normal practice requires every diagonal entry nonzero')
+    off_diagonal=sum(v!=0 for i,row in enumerate(p['matrix']) for j,v in enumerate(row) if i!=j)
+    if actual!='diagonal' and off_diagonal < (n*(n-1)+3)//4:
+        raise ValueError('Normal triangular practice needs a substantial nonzero off-diagonal region')
 
 def semantic_object(matrix):
     n=len(matrix)
     kind=family(matrix)
-    states=[['D' if i==j and kind!='diagonal' else '1' if i==j and v==1 else 'N' if i==j else '0' if v==0 else 'N' for j,v in enumerate(row)] for i,row in enumerate(matrix)]
+    states=[['D' if i==j else '0' if v==0 else 'N' for j,v in enumerate(row)] for i,row in enumerate(matrix)]
     return {'n':n,'family':kind,'states':states,'scanned_region_entries':n*(n-1) if kind=='diagonal' else n*(n-1)//2}
 
 def task_key(matrix): return digest(semantic_object(matrix))
@@ -90,45 +93,50 @@ def task_key(matrix): return digest(semantic_object(matrix))
 def catalog(level,template=None):
     """Enumerate finite meaningful patterns; do not count arbitrary integers."""
     if level not in SUPPORTED_LEVELS: raise ValueError('Unknown level')
-    families=('lower','upper') if level=='easy' else ('diagonal',) if level=='moderate' else tuple(FAMILIES)
+    families=tuple(FAMILIES)
     if template is not None:
         if template not in families: raise ValueError('Template outside level')
         families=(template,)
-    dimensions=(2,3) if level=='easy' else (3,) if level=='moderate' else (4,)
+    dimensions=(SIZES[level],)
     result=[]
     for n in dimensions:
         for kind in families:
             cells=[(i,j) for i in range(n) for j in range(n) if (i>j if kind=='lower' else i<j)] if kind!='diagonal' else []
-            for diag in itertools.product((0,1),repeat=n) if kind=='diagonal' else [(0,)*n]:
-                for mask in range(1,1<<len(cells)) if cells else (0,):
-                    if kind=='diagonal' and all(x==1 for x in diag): continue
-                    matrix=[[0]*n for _ in range(n)]
-                    for i,x in enumerate(diag): matrix[i][i]=x
-                    for k,(i,j) in enumerate(cells): matrix[i][j]=2 if mask & (1<<k) else 0
-                    result.append((kind,tuple(tuple(r) for r in matrix)))
+            for mask in range(1,1<<len(cells)) if cells else (0,):
+                if cells and mask.bit_count() < (n*(n-1)+3)//4: continue
+                matrix=[[0]*n for _ in range(n)]
+                for i in range(n): matrix[i][i]=2
+                for k,(i,j) in enumerate(cells): matrix[i][j]=2 if mask & (1<<k) else 0
+                result.append((kind,tuple(tuple(r) for r in matrix)))
     return tuple(result)
 
 def sample_parameters(level,template,rng):
+    if template is None:
+        template=rng.choices(tuple(FAMILY_WEIGHTS),tuple(FAMILY_WEIGHTS.values()))[0]
     kind,pattern=rng.choice(catalog(level,template))
-    nonunit=tuple(v for v in range(-9,10) if v!=1)
-    nonzero=tuple(v for v in range(-9,10) if v!=0)
-    matrix=[[rng.randint(-9,9) if i==j and kind!='diagonal' else rng.choice(nonunit) if i==j and v==0 else rng.choice(nonzero) if v==2 else v for j,v in enumerate(row)] for i,row in enumerate(pattern)]
-    layout='bmatrix' if level=='easy' and kind=='lower' and len(pattern)==3 and rng.choice((False,True)) else 'aligned'
-    return kind,{'matrix':matrix,'letter':rng.choice(('A','C')),'layout':layout}
+    return kind,fill_pattern(kind,pattern,rng)
 
-def render(p):
+def fill_pattern(kind,pattern,rng):
+    nonzero=tuple(v for v in range(-9,10) if v!=0)
+    matrix=[[rng.choice(nonzero) if v else 0 for v in row] for row in pattern]
+    while kind=='diagonal' and all(matrix[i][i]==1 for i in range(len(matrix))):
+        matrix=[[rng.choice(nonzero) if v else 0 for v in row] for row in pattern]
+    return {'matrix':matrix,'letter':rng.choice(('A','C')),'layout':'bmatrix'}
+
+def render(p,display=False):
     body=r' \\ '.join(' & '.join(map(str,row)) for row in p['matrix'])
+    if display: return '$$\n'+p['letter']+r' = \begin{bmatrix}'+body+r'\end{bmatrix}'+'\n$$'
     if p['layout']=='bmatrix': return '$'+p['letter']+r' = \begin{bmatrix}'+body+r'\end{bmatrix}$'
     return '$$\n'+p['letter']+r'=[\begin{aligned}'+body+r'\end{aligned}]'+'\n$$'
 
 def prompt(p,normal=True):
     prefix='How can we best describe the following matrix?'+(' \n\n' if p['layout']=='aligned' else '\n\n')
-    return prefix+render(p)+('\n\n'+CRITERION if normal else '')
+    return prefix+render(p,display=normal)+('\n\n'+CRITERION if normal else '')
 
-def solution(p,template):
+def solution(p,template,normal=True):
     """The source region/prose, repeated matrix, then a concrete derived witness."""
     letter=p['letter']; region={'lower':'above','upper':'below','diagonal':'above and below'}[template]
-    result=f"Notice that ${letter}$ is a matrix for which all entries {region} the diagonal are $0$'s:\n\n"+render(p)
+    result=f"Notice that ${letter}$ is a matrix for which all entries {region} the diagonal are $0$'s:\n\n"+render(p,display=normal)
     result+=f'\n\nTherefore, it is {"an" if template=="upper" else "a"} {FAMILIES[template].lower()}.'
     if template!='diagonal':
         cells=[(i,j) for i,row in enumerate(p['matrix']) for j,v in enumerate(row) if v and (i>j if template=='lower' else i<j)]
@@ -150,7 +158,7 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     profile='five-labels' if profile is None else profile
     raw=profile.startswith('raw:'); source_id=profile.split(':',1)[1] if raw or profile.startswith('source:') else None
     if profile!='five-labels' and source_id not in SOURCES: raise ValueError('Unknown complete bank profile')
-    if source_id and source_levels(source_id)!=level: raise ValueError('Source profile/level mismatch')
+    if raw and source_levels(source_id)!=level: raise ValueError('Raw source profile/level mismatch')
     rng=random.Random(seed)
     if parameters is None:
         if source_id: raise ValueError('Source evidence profiles require explicit matrix parameters')
@@ -158,12 +166,16 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     else:
         p=validate_parameters(parameters)
         template=template or family(p['matrix'])
-    p=validate_parameters(p);level_guard(level,p,template)
+    p=validate_parameters(p)
     if source_id:
         anchor=parse_matrix(SOURCES[source_id][':question/problem'])
-        if (len(p['matrix']),p['layout'])!=(len(anchor['matrix']),anchor['layout']): raise ValueError('Source recipe dimension/layout mismatch')
+        if raw and p!=anchor: raise ValueError('Raw evidence replay requires the exact source parameters')
+        if len(p['matrix'])!=len(anchor['matrix']): raise ValueError('Source recipe dimension mismatch')
         if template!=family(anchor['matrix']): raise ValueError('Source family mismatch')
-    answer=FAMILIES[template]; problem=prompt(p,not raw); worked=solution(p,template)
+    if not raw:
+        level_guard(level,p,template)
+        p['layout']='bmatrix'
+    answer=FAMILIES[template]; problem=prompt(p,not raw); worked=solution(p,template,not raw)
     q={':question/problem':problem}
     if raw:
         original=SOURCES[source_id]
@@ -198,27 +210,64 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
         'version':VERSION,'python_version':sys.version.split()[0],'sympy_version':sp.__version__,'seed':seed,'template':template,'parameters':p,
         'bank_profile':profile,'recipes':list(LABELS),'parameter_fingerprint':task_key(p['matrix']),'content_fingerprint':content,
         'domain':DOMAIN,'source_database':SOURCE['database'],'source_basis':SOURCE['basis'],'source_lineage':SOURCE['lineage'],
-        'source_id':source_id,'difficulty_origin':'authored 4x4 scan extension' if level=='hard' else 'authored easy inference for unrated q-13769' if source_id=='q-13769' else 'observed family rating; bounded structural extension',
+        'source_id':source_id,'difficulty_origin':'original captured rating' if raw else 'authored dimension-based scan workload: 2x2 easy, 3x3 moderate, 4x4 hard',
         'evidence_only':raw,'eligible_for_learning':not raw,'plot_rating':'none',
         'repairs':[] if raw else ['explicit most-specific criterion']+(['single radio field confirmed by authoritative MA widget'] if source_id=='q-13759' else ['inferred correct ref and authored solution/rating'] if source_id=='q-13769' else []),
         'catalog_count':len(catalog(level))}}
 
-# EASY: source-shaped 2x2/3x3 strict triangular, including sparse active regions.
+# EASY: 2x2, all three classification families, three structural cases.
 def generate_easy(seed=0,**kwargs): return generate('easy',seed,**kwargs)
-# MODERATE: source-shaped 3x3 diagonal; zero diagonal entries explicitly permitted.
+# MODERATE: 3x3, all three families, with a substantial triangular region.
 def generate_moderate(seed=0,**kwargs): return generate('moderate',seed,**kwargs)
 # HARD: authored 4x4 same recognition method, bounded longer region scan.
 def generate_hard(seed=0,**kwargs): return generate('hard',seed,**kwargs)
 
-def batch(level,count,seed=0,**kwargs):
-    if type(count)!=int or not 1<=count<=len(catalog(level,kwargs.get('template'))): raise ValueError('Count exceeds finite meaningful catalog')
-    if kwargs.get('parameters') is not None and count!=1: raise ValueError('One explicit task cannot supply a distinct batch')
-    result=[];seen=set()
-    for offset in range(max(1000,30*count)):
-        rec=generate(level,seed+offset,**kwargs);fp=rec['generation']['parameter_fingerprint']
-        if fp not in seen: result.append(rec);seen.add(fp)
-        if len(result)==count:return result
-    raise ValueError('Finite sampler exhausted; '+str(len(result))+' distinct tasks found')
+def batch(level,count,seed=0,exclude_fingerprints=(),**kwargs):
+    """Choose unique structures before incidental numbers and answer order.
+
+    Family proportions cannot stay 40/40/20 in a finite catalog with only one
+    diagonal structure. Prefer one diagonal in batches of 3+, balance upper
+    and lower as supply permits, and report exhaustion instead of duplicates.
+    Callers may supply existing structural fingerprints before quota selection.
+    """
+    if type(count)!=int or count<1: raise ValueError('Positive integer count required')
+    if type(seed)!=int: raise ValueError('Seed must be an integer')
+    excluded=set(exclude_fingerprints)
+    if kwargs.get('parameters') is not None or kwargs.get('profile','five-labels') not in (None,'five-labels'):
+        if count!=1: raise ValueError('One explicit/source task cannot supply a distinct batch')
+        rec=generate(level,seed,**kwargs)
+        if rec['generation']['parameter_fingerprint'] in excluded: raise ValueError('Explicit structural task was excluded')
+        return [rec]
+    available={kind:[] for kind in FAMILIES}
+    for kind,pattern in catalog(level,kwargs.get('template')):
+        if task_key(pattern) not in excluded: available[kind].append(pattern)
+    total=sum(map(len,available.values()))
+    if count>total:
+        raise ValueError(f'{level} has only {total} available structural tasks ({len(catalog(level))} total); requested {count}. Numeric changes do not create fresh tasks.')
+    rng=random.Random(seed)
+    if count==1:
+        kinds=[kind for kind in available if available[kind]]
+        chosen=[rng.choices(kinds,[FAMILY_WEIGHTS[k] for k in kinds])[0]]
+    elif kwargs.get('template'):
+        chosen=[kwargs['template']]*count
+    else:
+        plans=[(lower,count-lower-diagonal,diagonal)
+               for diagonal in range(min(len(available['diagonal']),count)+1)
+               for lower in range(min(count,len(available['lower']))+1)
+               if 0<=count-lower-diagonal<=len(available['upper'])]
+        if not plans: raise ValueError('Remaining structural supply cannot provide the requested batch')
+        desired_diagonal=int(count>=3 and bool(available['diagonal']))
+        score=lambda p:(abs(p[2]-desired_diagonal),abs(p[0]-p[1]))
+        best=min(map(score,plans));plan=rng.choice([p for p in plans if score(p)==best])
+        chosen=[kind for kind,n in zip(FAMILIES,plan) for _ in range(n)]
+        rng.shuffle(chosen)
+    for pool in available.values(): rng.shuffle(pool)
+    result=[]
+    for offset,kind in enumerate(chosen):
+        p=fill_pattern(kind,available[kind].pop(),rng)
+        args={**kwargs,'template':kind,'parameters':p}
+        result.append(generate(level,seed+offset,**args))
+    return result
 
 def markdown(record):
     q=record['question'];pieces=[q[':question/problem']]

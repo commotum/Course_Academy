@@ -1,5 +1,10 @@
 Recommended generator ordering for the supplied topics
 
+Historical design note: the later discussion moved relevance ahead of purpose.
+The implemented policy and live queue verification are in
+[the relevance-v2 deployment report](../generator-priority-update-2026-10-17/summary.md).
+The bounded graph evidence below is retained unchanged.
+
 Replace the additive score with an ordered priority key: purpose category, relevance group, global prerequisite layer ascending, distinct queued/target topics supported descending, engine priority descending, waiting time ascending, stable topic ID, KP shortage descending, stable KP ID. Order topics before their KP deficits so earlier lessons are completed before later lessons scatter into the work queue.
 
 Relevance group 0 contains explicitly queued/target lessons and their unmet necessary prerequisites; speculative downstream lessons rank afterward. Explicit lesson demand is assessed independently of inferred review/assessment demand and imported mastery. Preserve completed local lesson history; explicit relearning still establishes lesson demand. Keep the existing purpose-category precedence. Use the same key in discovery and the live worker; reconcile pending or uncertain publication first, while unfinished author/review drafts keep their current rank.
