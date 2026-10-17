@@ -124,9 +124,12 @@ before = tutorials[entity][':tutorial/content']
 old_annotation = r'\text{multiply by } -2'
 new_annotation = r'\mid\cdot(-2)'
 assert before.count(old_annotation) == 1
-add(entity, before.replace(old_annotation, new_annotation),
+old_block = r'\left\{\begin{aligned}3x-y &=-2 && \text{multiply by } -2 \\ 6x-2y &=-4\end{aligned}\right.'
+new_block = r'\left\{\begin{alignedat}{2}3x-y &=-2 &\quad& \mid\cdot(-2) \\ 6x-2y &=-4\end{alignedat}\right.'
+assert before.count(old_block) == 1
+add(entity, before.replace(old_block, new_block),
     'Keep the first-equation multiplier visible on mobile using the lesson\'s compact operation notation; the immediately preceding prose explains multiplying by -2.')
-assert changes[-1]['after'].replace(new_annotation, old_annotation) == before
+assert changes[-1]['after'].replace(new_block, old_block) == before
 
 (HERE / 'changes.json').write_text(json.dumps(changes, indent=2) + '\n')
 review = {

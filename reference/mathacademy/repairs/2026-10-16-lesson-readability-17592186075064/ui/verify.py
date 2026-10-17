@@ -109,6 +109,9 @@ if args.reuse:
 
 def can_reuse(record, viewport):
     if (record['entity'],record['version'],viewport) not in reuse:return False
+    prior=reuse[record['entity'],record['version'],viewport]
+    if 'source_sha256' in prior:
+        return prior['source_sha256']==hashlib.sha256(json.dumps(record['activity']['steps'],sort_keys=True).encode()).hexdigest()
     before=copy.deepcopy(snapshot_entities[record['entity']])
     for change in previous.get(record['entity'],[]):before[change['attribute']]=change[record['version']]
     return make_activity(before,0)['steps']==record['activity']['steps']
