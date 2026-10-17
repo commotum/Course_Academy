@@ -1,0 +1,59 @@
+{
+  "verified_at": 1792204673.3569992,
+  "files": {
+    "scripts/question_capture/math_format.py": "0a6c4c4c41f4c47a96e680cc88918b1ba2802a650bb5605ab48ac0ca6215643b",
+    "scripts/question_capture/test_math_format.py": "fb865e80192c4ee4f932a0afa962a0233f9548c9f8dc05257681b051193bea8d"
+  },
+  "test_groups": [
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/question_capture",
+        "-p",
+        "test_math*.py",
+        "-v"
+      ],
+      "environment": {},
+      "exit_code": 0,
+      "log": "reference/mathacademy/repairs/2026-10-16-system-equations-display/normalizer/tests-1.log"
+    },
+    {
+      "command": [
+        "/home/jake/Developer/MA/.venv/bin/python",
+        "-m",
+        "unittest",
+        "scripts.tests.test_database_math_content",
+        "scripts.tests.test_capture_fill_only",
+        "scripts.tests.test_literal_set_braces",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "capture"
+      },
+      "exit_code": 0,
+      "log": "reference/mathacademy/repairs/2026-10-16-system-equations-display/normalizer/tests-2.log"
+    }
+  ],
+  "tests_passed": 59,
+  "inventory": {
+    "fields": 3604,
+    "changed_flat_system_fields": 160,
+    "other_differences_only_whitespace_preservation": 13,
+    "other_substantive_changes": 0,
+    "idempotence_failures": [],
+    "exceptions": []
+  },
+  "behavior": {
+    "unclosed_escaped_and_unescaped_systems": "normalize and reject at validation if unrepaired",
+    "closed_sets_membership_piecewise": "preserved",
+    "whole_equation_multiplication": "preserved as a complete left-aligned row",
+    "equation_labels": "require explicit annotations; no guessing from 0(1)",
+    "operation_annotations": "separate alignment column via explicit annotations; no global duplicate-bar rewrite"
+  },
+  "database_mutations": false,
+  "worker_restart_evidence": "reference/mathacademy/repairs/2026-10-16-system-equations-display/normalizer/workers"
+}

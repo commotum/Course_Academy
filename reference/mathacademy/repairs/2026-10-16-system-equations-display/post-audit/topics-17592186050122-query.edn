@@ -1,0 +1,3 @@
+[:find (pull ?topic [:db/id :topic/title {[:topic/knowledge-points :limit nil]
+ [:db/id {[:knowledge-point/questions :limit nil] [:db/id :question/problem :question/worked-solution]}
+ {:knowledge-point/canonical-example [:db/id :question/problem :question/worked-solution]}]}]) :in $ [?topic ...] :where [?topic :topic/id _]]
