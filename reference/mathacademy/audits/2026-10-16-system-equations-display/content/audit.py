@@ -39,6 +39,10 @@ def collect_entities(node, entities):
 
 
 fields, scope, findings, reviewed_questions = [], [], [], []
+tutorial_evidence = {
+    item['entity']: item
+    for item in json.loads((ROOT / 'source' / 'tutorial-findings.json').read_text())
+}
 for path in sorted(ROOT.glob('175*.edn')):
     topic = loads(path.read_text())
     topic_id = topic[':db/id']
@@ -75,9 +79,11 @@ for path in sorted(ROOT.glob('175*.edn')):
             field = {
                 'topic': topic_id, 'entity': eid, 'attribute': attr,
                 'value': value,
-                'source': 'captured' if entity.get(':question/math-academy-id')
-                          else 'generated_or_authored',
-                'ma_id': entity.get(':question/math-academy-id'),
+                'source': ('captured_question' if entity.get(':question/math-academy-id')
+                           else 'generated_or_authored_question' if ':question/problem' in entity
+                           else 'captured_tutorial' if entity.get(':tutorial/math-academy-id')
+                           else 'non_question_content'),
+                'ma_id': entity.get(':question/math-academy-id', entity.get(':tutorial/math-academy-id')),
             }
             topic_fields.append(field)
             issues = []
@@ -101,6 +107,18 @@ for path in sorted(ROOT.glob('175*.edn')):
                               'the multiplier; canonical repaired lessons use '
                               'a readable multiply-by row annotation.',
                     'start': match.start(), 'end': match.end(),
+                })
+            if attr == ':tutorial/content' and eid in tutorial_evidence:
+                evidence = tutorial_evidence[eid]
+                issues.append({
+                    'category': ('lost_numbered_list_hierarchy' if eid == 17592186097842
+                                 else 'lost_display_math_blocks'),
+                    'severity': 'display_error',
+                    'reason': evidence['finding'],
+                    'source_boundary': evidence['boundary'],
+                    'original_source_html': evidence['original_html'],
+                    'original_source_screenshot': evidence['source_screenshot'],
+                    'normalized_source_json': evidence['normalized_json'],
                 })
             if issues:
                 findings.append({
@@ -148,7 +166,15 @@ summary = {
     'tutorials': sum(t['tutorials'] for t in scope),
     'display_fields': len(fields),
     'affected_fields': len(findings),
-    'affected_questions': len({f['entity'] for f in findings}),
+    'affected_entities': len({f['entity'] for f in findings}),
+    'affected_questions': len({f['entity'] for f in findings if f['attribute'].startswith(':question/')}),
+    'affected_tutorials': len({f['entity'] for f in findings if f['attribute'] == ':tutorial/content'}),
+    'findings_by_topic': [{
+        'topic': item['topic'], 'title': item['title'],
+        'affected_fields': sum(f['topic'] == item['topic'] for f in findings),
+        'issues_by_category': dict(collections.Counter(
+            issue['category'] for f in findings if f['topic'] == item['topic'] for issue in f['issues'])),
+    } for item in scope],
     'issues_by_category': dict(collections.Counter(i['category'] for f in findings for i in f['issues'])),
     'flat_system_questions': sorted({f['entity'] for f in findings if any(i['category'] == 'flattened_equation_system' for i in f['issues'])}),
     'double_mid_questions': sorted({f['entity'] for f in findings if any(i['category'] == 'duplicated_elimination_annotation' for i in f['issues'])}),

@@ -1,0 +1,100 @@
+[
+  {
+    "knowledge_point": 17592186073752,
+    "path": "generate/scratch/17592186073752.py",
+    "sha256": "d4ba6ff5fb3a0399eb4b414c9ee7e3ac88229b6c699fae7be83bf02b64a41110",
+    "matching_lines": [
+      {
+        "line": 109,
+        "text": "  prompt='Consider the following system of equations:\\n$\\\\{'+first+'; '+second+'$\\nFind the solution $(x, y)$ to this system using the method of substitution.The solution is\\n$($\\n{{field-1}}\\n$, $\\n{{field-2}}\\n$)$'"
+      },
+      {
+        "line": 127,
+        "text": " if name=='unit_pair':prompt='Find the solution $(x,y)$ to this system using the method of substitution.\\n\\n$\\\\{'+first+'; '+second+'$\\n\\nThe solution is $($ {{field-1}} $, $ {{field-2}} $)$'"
+      },
+      {
+        "line": 128,
+        "text": " else:prompt='Given the system of equations below, what is the value of $'+u+' - '+v+'$?\\n\\n$\\\\{'+first+'; '+second+'$'"
+      }
+    ]
+  },
+  {
+    "knowledge_point": 17592186073753,
+    "path": "generate/scratch/17592186073753.py",
+    "sha256": "322ab49e3b88785a6abd6dd557c0ef2614b33f0c03464150473af9eb2a977322",
+    "matching_lines": [
+      {
+        "line": 85,
+        "text": " pre=\"Sometimes, it's handy to assign a number to each equation in a system, so that we can refer to them more easily:\\n\\n$$\\n\\\\{\"+eqs[0]+'(1); '+eqs[1]+'(2)\\n$$\\n\\n'"
+      },
+      {
+        "line": 206,
+        "text": " if t=='pair_first':prompt='Using the method of substitution, find the solution of\\n$\\\\{'+ '; '.join(eqs)+'$.'"
+      },
+      {
+        "line": 207,
+        "text": " elif t=='pair_second':prompt='Using the method of substitution, find the solution of\\n\\n$\\\\{'+ '; '.join(eqs)+'$'"
+      },
+      {
+        "line": 208,
+        "text": " elif t=='difference':prompt='Given the system of equations below, what is the value of $'+p['x']+' - '+p['y']+'$?\\n\\n$\\\\{'+ '; '.join(eqs)+'$'"
+      },
+      {
+        "line": 209,
+        "text": " else:prompt='Solve the following system of equations:\\n\\n$\\\\{'+ '; '.join(eqs)+'$'"
+      }
+    ]
+  },
+  {
+    "knowledge_point": 17592186192654,
+    "path": "generate/scratch/17592186192654.py",
+    "sha256": "a09111c3ad08afaddd623c72a297d99bd2acd71f28a2dddd08367de1f1cf2ff0",
+    "matching_lines": [
+      {
+        "line": 67,
+        "text": "    system=('$'+'{'+ '; '.join(equations)+'$') if raw else ('$\\\\{'+ '; '.join(equations)+'$')"
+      },
+      {
+        "line": 82,
+        "text": "        '$$\\n\\\\{'+ '; '.join(equations)+'\\n$$\\n\\n'+f'Now, when we add the two equations, the variable ${x}$ will be eliminated:\\n\\n'"
+      }
+    ]
+  },
+  {
+    "knowledge_point": 17592186192655,
+    "path": "generate/scratch/17592186192655.py",
+    "sha256": "460b6e45fd00301526518d4783ca737ba06d8795153bcc4761f5cac4909d324a",
+    "matching_lines": [
+      {
+        "line": 196,
+        "text": "      '$$\\n\\\\{'+ '; '.join(marked)+'\\n$$\\n\\n'"
+      }
+    ]
+  },
+  {
+    "knowledge_point": 17592186192656,
+    "path": "generate/scratch/17592186192656.py",
+    "sha256": "5c91ed07e7ff061b149893873af492a0bcff806afdc9fec269f5772221849110",
+    "matching_lines": [
+      {
+        "line": 109,
+        "text": "    system='$'+('{' if raw else '\\\\{')+'; '.join(eqs)+'$'"
+      },
+      {
+        "line": 166,
+        "text": "       '$$\\n\\\\{'+'; '.join(eqs)+'\\n$$\\n\\n'+f'Now, when we add the two equations, the variable ${x}$ will be eliminated:\\n\\n'+aligned(stages)+'\\n\\n'"
+      }
+    ]
+  },
+  {
+    "knowledge_point": 17592186192657,
+    "path": "generate/scratch/17592186192657.py",
+    "sha256": "0993939884e22f2a644d0ea786564a5673b7b176150a18459e47bd742f5d7dd2",
+    "matching_lines": [
+      {
+        "line": 122,
+        "text": "    return f'Notice that the $y$-coefficient in the first equation is ${tex(b)}$, while in the second equation it is ${tex(d)}$.\\n\\nIf we multiply the {name} equation by ${tex(k)}$, then the $y$-coefficient will become ${tex(k*before)}$, which will cancel with the coefficient of ${tex(opposite)}$ in the {other} equation.\\n\\n$$\\n\\\\{{ '+annotation+'\\n$$\\n\\nNow, when we add the two equations, the variable $y$ will be eliminated:\\n\\n'+block(rows)+f\"\\n\\nSo, the solution must have $x = {tex(x)}$. However, we still need to find $y$. To do this, we substitute $x = {tex(x)}$ back into one of the equations. Let's choose the {name} equation:\\n\\n\"+block(subs)+'\\n\\nTherefore, the solution to the system of equations is\\n\\n$$\\nx = '+tex(x)+r', \\,y = '+tex(y)+'\\n$$\\n\\nwhich can be expressed as $'+tuple_tex((x,y))+'$.'"
+      }
+    ]
+  }
+]

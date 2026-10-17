@@ -1,10 +1,50 @@
 [
   {
+    "topic": 17592186048343,
+    "entity": 17592186199637,
+    "attribute": ":tutorial/content",
+    "value": "Remember that a system is *consistent* if it has a solution. So, the idea that a system of equations with no solution is *inconsistent* probably makes sense to you.\n\nBut what about the difference between consistent *dependent* and consistent *independent?* What is the reasoning behind these naming conventions?\n\nTo help understand consistent dependent vs. consistent independent, we'll look at some concrete examples:\n\n- First, consider the following system.\n$\\left\\{\\begin{aligned}3x - y &=-2 \\\\ 6x - 2y &=-4\\end{aligned}\\right.$\nThis system has *infinitely many* solutions corresponding to the fact that the two lines coincide.![](images/e9/e9e98008aa5972889efdd3af0689da310c69bca06dd410a391a37e22aa8b0098.png)\nIn a previous lesson, we saw that the set of all solutions $({\\color{blue}{x}},{\\color{red}{y}})$ can be expressed as\n$({\\color{blue}{x}},{\\color{red}{3x+2}})$\nwhere ${\\color{blue}{x}}$ is any number. Consequently, any ${\\color{red}{y}}$-value in our solution is *dependent* on a corresponding ${\\color{blue}{x}}$-value. Thus, the system of equations is consistent-*dependent*.\n- Next, we consider the following system:\n$\\left\\{\\begin{aligned}y &=2x + 1 \\\\ y &=1 - x\\end{aligned}\\right.$\nThis system has a single solution corresponding to the unique intersection point of the two lines.![](images/bd/bd7edb530e16b853318a3e38785c7b6353c1b54f10ee3c4e2de7da915450f6d9.png)\nThe unique solution $({\\color{blue}{x}},{\\color{red}{y}})$ is given by the single point $({\\color{blue}{0}},{\\color{red}{1}})$. In this case, the components of the solution do not depend on $x$ or $y$. Thus, the system of equations is consistent-*independent*.",
+    "source": "captured_tutorial",
+    "ma_id": 9689,
+    "knowledge_points": [],
+    "issues": [
+      {
+        "category": "lost_display_math_blocks",
+        "severity": "display_error",
+        "reason": "Two source equation systems and the general solution tuple are display blocks, with separate graphic divs between paragraphs. Current database Markdown puts systems inline with single soft newlines.",
+        "source_boundary": "Old lesson-json.py render_math (line560) replaces every formula with spanclass=math, discarding mjpage__block class. Downstream Markdown cannot recover source display intent inside list paragraphs.",
+        "original_source_html": "reference/mathacademy/audits/2026-10-16-system-equations-display/source/tutorial-17592186199637-original.html",
+        "original_source_screenshot": "reference/mathacademy/audits/2026-10-16-system-equations-display/source/tutorial-17592186199637-original.png",
+        "normalized_source_json": "reference/mathacademy/audits/2026-10-16-system-equations-display/source/tutorial-17592186199637-extracted.json"
+      }
+    ]
+  },
+  {
+    "topic": 17592186049058,
+    "entity": 17592186097842,
+    "attribute": ":tutorial/content",
+    "value": "The **standard Gaussian elimination** for a $3 \\times 3$ system can be described as follows:\n\n- If $a_{11} \\neq 0$ and $a_{11} \\neq 1,$ then we use the row operation $R_1:=R_1/a_{11}.$\n\n- We use first row and the necessary row operations to make the remaining entries of the first column below $a_{11}$ equal to $0.$ Namely, \n\n- if $a_{21} \\neq 0,$ then we use the row operation $R_2:=R_2 + (-a_{21})R_1;$\n\n- if $a_{31} \\neq 0,$ then we use the row operation $R_3:=R_3 + (-a_{31})R_1.$\n\n- If $a_{22} \\neq 1,$ then we use the row operation $R_2:=R_2/a_{22}.$\n\n- We use the second row and the necessary row operation to make the entry below $a_{22}$ equal to $0.$ Namely, \n\n- if $a_{32} \\neq 0,$ then we use the row operation $R_3:=R_3 + (-a_{32})R_2.$\n\n- If $a_{33} \\neq 1,$ then we use the row operation $R_3:=R_3/a_{33}.$\n\n- In some exceptional cases, such as when the element on the diagonal is equal to $0,$ we first need to exchange rows. Then proceed using the same steps as above.\n\nCarrying out the above algorithm will convert the matrix to row echelon form.",
+    "source": "captured_tutorial",
+    "ma_id": 3156,
+    "knowledge_points": [],
+    "issues": [
+      {
+        "category": "lost_numbered_list_hierarchy",
+        "severity": "display_error",
+        "reason": "Six numbered source steps with nested bullets under steps2 and4 became nine flat unordered bullets in current database content.",
+        "source_boundary": "Original HTML and normalized JSON preserve ol/ul nesting, but JSONdrops olstart=5. Markdown conversion/import flattened or lost hierarchy downstream. Exact DBimport converter not traced here; independent MA Markdown has collapsed nested text and reset numbering too.",
+        "original_source_html": "reference/mathacademy/audits/2026-10-16-system-equations-display/source/tutorial-17592186097842-original.html",
+        "original_source_screenshot": "reference/mathacademy/audits/2026-10-16-system-equations-display/source/tutorial-17592186097842-original.png",
+        "normalized_source_json": "reference/mathacademy/audits/2026-10-16-system-equations-display/source/tutorial-17592186097842-extracted.json"
+      }
+    ]
+  },
+  {
     "topic": 17592186050240,
     "entity": 17592186529261,
     "attribute": ":question/problem",
     "value": "Consider the following system of equations:\n\n$\\{-2x + y = 6; x - 2y = 6$\n\nThis system of equations has {{field-1}}.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -25,7 +65,7 @@
     "entity": 17592186529261,
     "attribute": ":question/worked-solution",
     "value": "Let's start by solving the system using elimination.\n\nNotice that if we multiply the second equation by $2$, then we will get a $2x$ term that can cancel with the $-2x$ term in the first equation:\n\n$$\n\\{-2x + y = 6; x - 2y = 6 \\mid \\mid \\cdot (2)\n$$\n\nWhen we add the two equations, the $x$ terms cancel, and we can solve for $y$:\n\n$$\n\\begin{aligned}\n-2x + y &= 6 \\\\\n2x - 4y &= 12 \\\\\n-3y &= (6 + 12) \\\\\n-3y &= 18 \\\\\ny &= -6\n\\end{aligned}\n$$\n\nSubstituting into the first equation gives:\n\n$$\n\\begin{aligned}\n-2x + (1)(-6) &= 6 \\\\\n-2x &= 12 \\\\\nx &= -6\n\\end{aligned}\n$$\n\nThe system has *a single solution*, $(-6,-6)$.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -54,7 +94,7 @@
     "entity": 17592186529263,
     "attribute": ":question/problem",
     "value": "Consider the following system of equations:\n\n$\\{y + 2x + 4 = 0; 4y - 4x + 9 = 0$\n\nThis system of equations has {{field-1}}.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -75,7 +115,7 @@
     "entity": 17592186529263,
     "attribute": ":question/worked-solution",
     "value": "Let's start by solving the system using elimination.\n\nFirst, rearrange each equation to put the variable terms on the left and the constant on the right:\n\n$$\n\\begin{aligned}\n2x + y &= -4 \\\\\n-4x + 4y &= -9\n\\end{aligned}\n$$\n\nNotice that if we multiply the first equation by $2$, then we will get a $4x$ term that can cancel with the $-4x$ term in the second equation:\n\n$$\n\\{2x + y = -4 \\mid \\mid \\cdot (2); -4x + 4y = -9\n$$\n\nWhen we add the two equations, the $x$ terms cancel, and we can solve for $y$:\n\n$$\n\\begin{aligned}\n4x + 2y &= -8 \\\\\n-4x + 4y &= -9 \\\\\n6y &= (-8 - 9) \\\\\n6y &= -17 \\\\\ny &= - \\frac{17}{6}\n\\end{aligned}\n$$\n\nSubstituting into the first equation gives:\n\n$$\n\\begin{aligned}\n2x + (1)(- \\frac{17}{6}) &= -4 \\\\\n2x &= - \\frac{7}{6} \\\\\nx &= - \\frac{7}{12}\n\\end{aligned}\n$$\n\nThe system has *a single solution*, $(- \\frac{7}{12},- \\frac{17}{6})$.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -104,7 +144,7 @@
     "entity": 17592186529265,
     "attribute": ":question/problem",
     "value": "Consider the following system of equations:\n\n$\\{-4x + 4y = -9; 2x - y = -4$\n\nThis system of equations has {{field-1}}.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -125,7 +165,7 @@
     "entity": 17592186529265,
     "attribute": ":question/worked-solution",
     "value": "Let's start by solving the system using elimination.\n\nNotice that if we multiply the second equation by $2$, then we will get a $4x$ term that can cancel with the $-4x$ term in the first equation:\n\n$$\n\\{-4x + 4y = -9; 2x - y = -4 \\mid \\mid \\cdot (2)\n$$\n\nWhen we add the two equations, the $x$ terms cancel, and we can solve for $y$:\n\n$$\n\\begin{aligned}\n-4x + 4y &= -9 \\\\\n4x - 2y &= -8 \\\\\n2y &= (-9 - 8) \\\\\n2y &= -17 \\\\\ny &= - \\frac{17}{2}\n\\end{aligned}\n$$\n\nSubstituting into the first equation gives:\n\n$$\n\\begin{aligned}\n-4x + (4)(- \\frac{17}{2}) &= -9 \\\\\n-4x &= 25 \\\\\nx &= - \\frac{25}{4}\n\\end{aligned}\n$$\n\nThe system has *a single solution*, $(- \\frac{25}{4},- \\frac{17}{2})$.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -154,7 +194,7 @@
     "entity": 17592186529266,
     "attribute": ":question/problem",
     "value": "Consider the following system of equations:\n\n$\\{y + 2x + 2 = 0; 4y + 8x + 8 = 0$\n\nThis system of equations has {{field-1}}.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -175,7 +215,7 @@
     "entity": 17592186529266,
     "attribute": ":question/worked-solution",
     "value": "Let's start by solving the system using elimination.\n\nFirst, rearrange each equation to put the variable terms on the left and the constant on the right:\n\n$$\n\\begin{aligned}\n2x + y &= -2 \\\\\n8x + 4y &= -8\n\\end{aligned}\n$$\n\nNotice that if we multiply the first equation by $-4$, then we will get a $-8x$ term that can cancel with the $8x$ term in the second equation:\n\n$$\n\\{2x + y = -2 \\mid \\mid \\cdot (-4); 8x + 4y = -8\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n$$\n\\begin{aligned}\n-8x - 4y &= 8 \\\\\n8x + 4y &= -8 \\\\\n0 &= (8 - 8) \\\\\n0 &= 0\n\\end{aligned}\n$$\n\nThe statement $0=0$ is *always true*. Therefore, we conclude that the system has *infinitely many solutions*.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -204,7 +244,7 @@
     "entity": 17592186529271,
     "attribute": ":question/problem",
     "value": "Consider the following system of equations:\n\n$\\{2x + y = 2; 4x + 2y = 5$\n\nThis system of equations has {{field-1}}.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -225,7 +265,7 @@
     "entity": 17592186529271,
     "attribute": ":question/worked-solution",
     "value": "Let's start by solving the system using elimination.\n\nNotice that if we multiply the first equation by $-2$, then we will get a $-4x$ term that can cancel with the $4x$ term in the second equation:\n\n$$\n\\{2x + y = 2 \\mid \\mid \\cdot (-2); 4x + 2y = 5\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a false statement:\n\n$$\n\\begin{aligned}\n-4x - 2y &= -4 \\\\\n4x + 2y &= 5 \\\\\n0 &= (-4 + 5) \\\\\n0 &= 1\n\\end{aligned}\n$$\n\nThe statement $0=1$ is *always false*. Therefore, we conclude that the system has *no solutions*.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -254,7 +294,7 @@
     "entity": 17592186529284,
     "attribute": ":question/problem",
     "value": "Consider the following system of equations:\n\n$\\{y - 3x + 1 = 0; -3y - 6x - 8 = 0$\n\nThis system of equations has {{field-1}}.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -275,7 +315,7 @@
     "entity": 17592186529284,
     "attribute": ":question/worked-solution",
     "value": "Let's start by solving the system using elimination.\n\nFirst, rearrange each equation to put the variable terms on the left and the constant on the right:\n\n$$\n\\begin{aligned}\n-3x + y &= -1 \\\\\n-6x - 3y &= 8\n\\end{aligned}\n$$\n\nNotice that if we multiply the first equation by $-2$, then we will get a $6x$ term that can cancel with the $-6x$ term in the second equation:\n\n$$\n\\{-3x + y = -1 \\mid \\mid \\cdot (-2); -6x - 3y = 8\n$$\n\nWhen we add the two equations, the $x$ terms cancel, and we can solve for $y$:\n\n$$\n\\begin{aligned}\n6x - 2y &= 2 \\\\\n-6x - 3y &= 8 \\\\\n-5y &= (2 + 8) \\\\\n-5y &= 10 \\\\\ny &= -2\n\\end{aligned}\n$$\n\nSubstituting into the first equation gives:\n\n$$\n\\begin{aligned}\n-3x + (1)(-2) &= -1 \\\\\n-3x &= 1 \\\\\nx &= - \\frac{1}{3}\n\\end{aligned}\n$$\n\nThe system has *a single solution*, $(- \\frac{1}{3},-2)$.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -304,7 +344,7 @@
     "entity": 17592186529290,
     "attribute": ":question/problem",
     "value": "Consider the following system of equations:\n\n$\\{2x - 3y = 10; 2x - y = 6$\n\nThis system of equations has {{field-1}}.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -325,7 +365,7 @@
     "entity": 17592186529290,
     "attribute": ":question/worked-solution",
     "value": "Let's start by solving the system using elimination.\n\nNotice that if we multiply the first equation by $-1$, then we will get a $-2x$ term that can cancel with the $2x$ term in the second equation:\n\n$$\n\\{2x - 3y = 10 \\mid \\mid \\cdot (-1); 2x - y = 6\n$$\n\nWhen we add the two equations, the $x$ terms cancel, and we can solve for $y$:\n\n$$\n\\begin{aligned}\n-2x + 3y &= -10 \\\\\n2x - y &= 6 \\\\\n2y &= (-10 + 6) \\\\\n2y &= -4 \\\\\ny &= -2\n\\end{aligned}\n$$\n\nSubstituting into the first equation gives:\n\n$$\n\\begin{aligned}\n2x + (-3)(-2) &= 10 \\\\\n2x &= 4 \\\\\nx &= 2\n\\end{aligned}\n$$\n\nThe system has *a single solution*, $(2,-2)$.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -354,7 +394,7 @@
     "entity": 17592186529293,
     "attribute": ":question/problem",
     "value": "Consider the following system of equations:\n\n$\\{2x - y = -2; 8x - 4y = -8$\n\nThis system of equations has {{field-1}}.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -375,7 +415,7 @@
     "entity": 17592186529293,
     "attribute": ":question/worked-solution",
     "value": "Let's start by solving the system using elimination.\n\nNotice that if we multiply the first equation by $-4$, then we will get a $-8x$ term that can cancel with the $8x$ term in the second equation:\n\n$$\n\\{2x - y = -2 \\mid \\mid \\cdot (-4); 8x - 4y = -8\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n$$\n\\begin{aligned}\n-8x + 4y &= 8 \\\\\n8x - 4y &= -8 \\\\\n0 &= (8 - 8) \\\\\n0 &= 0\n\\end{aligned}\n$$\n\nThe statement $0=0$ is *always true*. Therefore, we conclude that the system has *infinitely many solutions*.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -404,7 +444,7 @@
     "entity": 17592186529294,
     "attribute": ":question/problem",
     "value": "Consider the following system of equations:\n\n$\\{3x + y = 0; -3x + 5y = -2$\n\nThis system of equations has {{field-1}}.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -425,7 +465,7 @@
     "entity": 17592186529294,
     "attribute": ":question/worked-solution",
     "value": "Let's start by solving the system using elimination.\n\nNotice that if we multiply the first equation by $1$, then we will get a $3x$ term that can cancel with the $-3x$ term in the second equation:\n\n$$\n\\{3x + y = 0 \\mid \\mid \\cdot (1); -3x + 5y = -2\n$$\n\nWhen we add the two equations, the $x$ terms cancel, and we can solve for $y$:\n\n$$\n\\begin{aligned}\n3x + y &= 0 \\\\\n-3x + 5y &= -2 \\\\\n6y &= (0 - 2) \\\\\n6y &= -2 \\\\\ny &= - \\frac{1}{3}\n\\end{aligned}\n$$\n\nSubstituting into the first equation gives:\n\n$$\n\\begin{aligned}\n3x + (1)(- \\frac{1}{3}) &= 0 \\\\\n3x &= \\frac{1}{3} \\\\\nx &= \\frac{1}{9}\n\\end{aligned}\n$$\n\nThe system has *a single solution*, $(\\frac{1}{9},- \\frac{1}{3})$.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -454,7 +494,7 @@
     "entity": 17592186529306,
     "attribute": ":question/problem",
     "value": "Consider the following system of equations:\n\n$\\{-3x - y = 8; 3x + y = -6$\n\nThis system of equations has {{field-1}}.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -475,7 +515,7 @@
     "entity": 17592186529306,
     "attribute": ":question/worked-solution",
     "value": "Let's start by solving the system using elimination.\n\nNotice that if we multiply the first equation by $1$, then we will get a $-3x$ term that can cancel with the $3x$ term in the second equation:\n\n$$\n\\{-3x - y = 8 \\mid \\mid \\cdot (1); 3x + y = -6\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a false statement:\n\n$$\n\\begin{aligned}\n-3x - y &= 8 \\\\\n3x + y &= -6 \\\\\n0 &= (8 - 6) \\\\\n0 &= 2\n\\end{aligned}\n$$\n\nThe statement $0=2$ is *always false*. Therefore, we conclude that the system has *no solutions*.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -504,7 +544,7 @@
     "entity": 17592186529307,
     "attribute": ":question/problem",
     "value": "Consider the following system of equations:\n\n$\\{y - 3x - 4 = 0; -2y + 12x + 10 = 0$\n\nThis system of equations has {{field-1}}.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -525,7 +565,7 @@
     "entity": 17592186529307,
     "attribute": ":question/worked-solution",
     "value": "Let's start by solving the system using elimination.\n\nFirst, rearrange each equation to put the variable terms on the left and the constant on the right:\n\n$$\n\\begin{aligned}\n-3x + y &= 4 \\\\\n12x - 2y &= -10\n\\end{aligned}\n$$\n\nNotice that if we multiply the first equation by $4$, then we will get a $-12x$ term that can cancel with the $12x$ term in the second equation:\n\n$$\n\\{-3x + y = 4 \\mid \\mid \\cdot (4); 12x - 2y = -10\n$$\n\nWhen we add the two equations, the $x$ terms cancel, and we can solve for $y$:\n\n$$\n\\begin{aligned}\n-12x + 4y &= 16 \\\\\n12x - 2y &= -10 \\\\\n2y &= (16 - 10) \\\\\n2y &= 6 \\\\\ny &= 3\n\\end{aligned}\n$$\n\nSubstituting into the first equation gives:\n\n$$\n\\begin{aligned}\n-3x + (1)(3) &= 4 \\\\\n-3x &= 1 \\\\\nx &= - \\frac{1}{3}\n\\end{aligned}\n$$\n\nThe system has *a single solution*, $(- \\frac{1}{3},3)$.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -554,7 +594,7 @@
     "entity": 17592186529309,
     "attribute": ":question/problem",
     "value": "Consider the following system of equations:\n\n$\\{y + 3x + 6 = 0; -4y - 12x - 26 = 0$\n\nThis system of equations has {{field-1}}.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -575,7 +615,7 @@
     "entity": 17592186529309,
     "attribute": ":question/worked-solution",
     "value": "Let's start by solving the system using elimination.\n\nFirst, rearrange each equation to put the variable terms on the left and the constant on the right:\n\n$$\n\\begin{aligned}\n3x + y &= -6 \\\\\n-12x - 4y &= 26\n\\end{aligned}\n$$\n\nNotice that if we multiply the first equation by $4$, then we will get a $12x$ term that can cancel with the $-12x$ term in the second equation:\n\n$$\n\\{3x + y = -6 \\mid \\mid \\cdot (4); -12x - 4y = 26\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a false statement:\n\n$$\n\\begin{aligned}\n12x + 4y &= -24 \\\\\n-12x - 4y &= 26 \\\\\n0 &= (-24 + 26) \\\\\n0 &= 2\n\\end{aligned}\n$$\n\nThe statement $0=2$ is *always false*. Therefore, we conclude that the system has *no solutions*.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -604,7 +644,7 @@
     "entity": 17592186529316,
     "attribute": ":question/problem",
     "value": "Consider the following system of equations:\n\n$\\{-x - 5y = -12; x - 3y = -2$\n\nThis system of equations has {{field-1}}.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -625,7 +665,7 @@
     "entity": 17592186529316,
     "attribute": ":question/worked-solution",
     "value": "Let's start by solving the system using elimination.\n\nNotice that if we multiply the first equation by $1$, then we will get a $-x$ term that can cancel with the $x$ term in the second equation:\n\n$$\n\\{-x - 5y = -12 \\mid \\mid \\cdot (1); x - 3y = -2\n$$\n\nWhen we add the two equations, the $x$ terms cancel, and we can solve for $y$:\n\n$$\n\\begin{aligned}\n-x - 5y &= -12 \\\\\nx - 3y &= -2 \\\\\n-8y &= (-12 - 2) \\\\\n-8y &= -14 \\\\\ny &= \\frac{7}{4}\n\\end{aligned}\n$$\n\nSubstituting into the first equation gives:\n\n$$\n\\begin{aligned}\n-x + (-5)(\\frac{7}{4}) &= -12 \\\\\n-x &= - \\frac{13}{4} \\\\\nx &= \\frac{13}{4}\n\\end{aligned}\n$$\n\nThe system has *a single solution*, $(\\frac{13}{4},\\frac{7}{4})$.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -654,7 +694,7 @@
     "entity": 17592186529318,
     "attribute": ":question/problem",
     "value": "Consider the following system of equations:\n\n$\\{x - 3y = -6; 4x - y = -12$\n\nThis system of equations has {{field-1}}.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -675,7 +715,7 @@
     "entity": 17592186529318,
     "attribute": ":question/worked-solution",
     "value": "Let's start by solving the system using elimination.\n\nNotice that if we multiply the first equation by $-4$, then we will get a $-4x$ term that can cancel with the $4x$ term in the second equation:\n\n$$\n\\{x - 3y = -6 \\mid \\mid \\cdot (-4); 4x - y = -12\n$$\n\nWhen we add the two equations, the $x$ terms cancel, and we can solve for $y$:\n\n$$\n\\begin{aligned}\n-4x + 12y &= 24 \\\\\n4x - y &= -12 \\\\\n11y &= (24 - 12) \\\\\n11y &= 12 \\\\\ny &= \\frac{12}{11}\n\\end{aligned}\n$$\n\nSubstituting into the first equation gives:\n\n$$\n\\begin{aligned}\nx + (-3)(\\frac{12}{11}) &= -6 \\\\\nx &= - \\frac{30}{11} \\\\\nx &= - \\frac{30}{11}\n\\end{aligned}\n$$\n\nThe system has *a single solution*, $(- \\frac{30}{11},\\frac{12}{11})$.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -704,7 +744,7 @@
     "entity": 17592186529320,
     "attribute": ":question/problem",
     "value": "Consider the following system of equations:\n\n$\\{2x - y = 4; 2x - y = 4$\n\nThis system of equations has {{field-1}}.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -725,7 +765,7 @@
     "entity": 17592186529320,
     "attribute": ":question/worked-solution",
     "value": "Let's start by solving the system using elimination.\n\nNotice that if we multiply the first equation by $-1$, then we will get a $-2x$ term that can cancel with the $2x$ term in the second equation:\n\n$$\n\\{2x - y = 4 \\mid \\mid \\cdot (-1); 2x - y = 4\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n$$\n\\begin{aligned}\n-2x + y &= -4 \\\\\n2x - y &= 4 \\\\\n0 &= (-4 + 4) \\\\\n0 &= 0\n\\end{aligned}\n$$\n\nThe statement $0=0$ is *always true*. Therefore, we conclude that the system has *infinitely many solutions*.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073776
@@ -754,7 +794,7 @@
     "entity": 17592186542434,
     "attribute": ":question/worked-solution",
     "value": "The points of intersection of the lines correspond to the solutions of the following system:\n\n$$\n\\left\\{\\begin{aligned}4x + y &=8 \\\\ -8x - 2y &=-16\\end{aligned}\\right.\n$$\n\nWe will solve the system using elimination. Notice that if we multiply the first equation by $2$, then we will get a $8x$ term that can cancel with the $-8x$ term in the second equation:\n\n$$\n\\left\\{\\begin{aligned}4x + y &=8 && \\mid \\mid \\cdot (2) \\\\ -8x - 2y &=-16\\end{aligned}\\right.\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n$$\n\\begin{aligned}\n8x + 2y &= 16 \\\\\n-8x - 2y &= -16 \\\\\n0 &= (16 - 16) \\\\\n0 &= 0\n\\end{aligned}\n$$\n\nBecause we obtained a true statement, we conclude that there are infinitely many solutions to the system. Therefore, the lines have infinitely many intersection points.\n\nWe want to find an expression that represents every solution to the system. Any value of $x$ can be chosen, and we can find the corresponding $y$-coordinate for each $x$-coordinate by solving one of the lines for $y$, as follows:\n\n$$\n\\begin{aligned}\n4x + y &= 8 \\\\\ny &= 8 - 4x \\\\\ny &= \\frac{8 - 4x}{1} \\\\\ny &= 8 - 4x\n\\end{aligned}\n$$\n\nLet $u=x$ be the free coordinate.\n\nTherefore, the points of intersection are\n\n$$\n\\left(u,8 - 4u \\right)\n$$\n\nwhere $u$ is any number.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073778
@@ -775,7 +815,7 @@
     "entity": 17592186542435,
     "attribute": ":question/worked-solution",
     "value": "The points of intersection of the lines correspond to the solutions of the following system:\n\n$$\n\\left\\{\\begin{aligned}x - 4y &=3 \\\\ -4x + 16y &=-12\\end{aligned}\\right.\n$$\n\nWe will solve the system using elimination. Notice that if we multiply the first equation by $4$, then we will get a $4x$ term that can cancel with the $-4x$ term in the second equation:\n\n$$\n\\left\\{\\begin{aligned}x - 4y &=3 && \\mid \\mid \\cdot (4) \\\\ -4x + 16y &=-12\\end{aligned}\\right.\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n$$\n\\begin{aligned}\n4x - 16y &= 12 \\\\\n-4x + 16y &= -12 \\\\\n0 &= (12 - 12) \\\\\n0 &= 0\n\\end{aligned}\n$$\n\nBecause we obtained a true statement, we conclude that there are infinitely many solutions to the system. Therefore, the lines have infinitely many intersection points.\n\nWe want to find an expression that represents every solution to the system. Any value of $x$ can be chosen, and we can find the corresponding $y$-coordinate for each $x$-coordinate by solving one of the lines for $y$, as follows:\n\n$$\n\\begin{aligned}\nx - 4y &= 3 \\\\\n-4y &= 3 - x \\\\\ny &= \\frac{3 - x}{-4} \\\\\ny &= -\\frac{3}{4} + \\frac{1}{4}x\n\\end{aligned}\n$$\n\nLet $u=x$ be the free coordinate.\n\nTherefore, the points of intersection are\n\n$$\n\\left(u,-\\frac{3}{4} + \\frac{1}{4}u \\right)\n$$\n\nwhere $u$ is any number.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073778
@@ -796,7 +836,7 @@
     "entity": 17592186542442,
     "attribute": ":question/worked-solution",
     "value": "The points of intersection of the lines correspond to the solutions of the following system:\n\n$$\n\\left\\{\\begin{aligned}x - 2y &=10 \\\\ 3x - 6y &=30\\end{aligned}\\right.\n$$\n\nWe will solve the system using elimination. Notice that if we multiply the first equation by $-3$, then we will get a $-3x$ term that can cancel with the $3x$ term in the second equation:\n\n$$\n\\left\\{\\begin{aligned}x - 2y &=10 && \\mid \\mid \\cdot (-3) \\\\ 3x - 6y &=30\\end{aligned}\\right.\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n$$\n\\begin{aligned}\n-3x + 6y &= -30 \\\\\n3x - 6y &= 30 \\\\\n0 &= (-30 + 30) \\\\\n0 &= 0\n\\end{aligned}\n$$\n\nBecause we obtained a true statement, we conclude that there are infinitely many solutions to the system. Therefore, the lines have infinitely many intersection points.\n\nWe want to find an expression that represents every solution to the system. Any value of $x$ can be chosen, and we can find the corresponding $y$-coordinate for each $x$-coordinate by solving one of the lines for $y$, as follows:\n\n$$\n\\begin{aligned}\nx - 2y &= 10 \\\\\n-2y &= 10 - x \\\\\ny &= \\frac{10 - x}{-2} \\\\\ny &= -5 + \\frac{1}{2}x\n\\end{aligned}\n$$\n\nLet $t=x$ be the free coordinate.\n\nTherefore, the points of intersection are\n\n$$\n\\left(t,-5 + \\frac{1}{2}t \\right)\n$$\n\nwhere $t$ is any number.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073778
@@ -817,7 +857,7 @@
     "entity": 17592186542448,
     "attribute": ":question/worked-solution",
     "value": "The points of intersection of the lines correspond to the solutions of the following system:\n\n$$\n\\left\\{\\begin{aligned}2x - y &=1 \\\\ -4x + 2y &=-2\\end{aligned}\\right.\n$$\n\nWe will solve the system using elimination. Notice that if we multiply the first equation by $2$, then we will get a $4x$ term that can cancel with the $-4x$ term in the second equation:\n\n$$\n\\left\\{\\begin{aligned}2x - y &=1 && \\mid \\mid \\cdot (2) \\\\ -4x + 2y &=-2\\end{aligned}\\right.\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n$$\n\\begin{aligned}\n4x - 2y &= 2 \\\\\n-4x + 2y &= -2 \\\\\n0 &= (2 - 2) \\\\\n0 &= 0\n\\end{aligned}\n$$\n\nBecause we obtained a true statement, we conclude that there are infinitely many solutions to the system. Therefore, the lines have infinitely many intersection points.\n\nWe want to find an expression that represents every solution to the system. Any value of $x$ can be chosen, and we can find the corresponding $y$-coordinate for each $x$-coordinate by solving one of the lines for $y$, as follows:\n\n$$\n\\begin{aligned}\n2x - y &= 1 \\\\\n-y &= 1 - 2x \\\\\ny &= \\frac{1 - 2x}{-1} \\\\\ny &= -1 + 2x\n\\end{aligned}\n$$\n\nLet $u=x$ be the free coordinate.\n\nTherefore, the points of intersection are\n\n$$\n\\left(u,-1 + 2u \\right)\n$$\n\nwhere $u$ is any number.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073778
@@ -838,7 +878,7 @@
     "entity": 17592186542452,
     "attribute": ":question/worked-solution",
     "value": "The points of intersection of the lines correspond to the solutions of the following system:\n\n$$\n\\left\\{\\begin{aligned}2x - y &=-6 \\\\ 6x - 3y &=-18\\end{aligned}\\right.\n$$\n\nWe will solve the system using elimination. Notice that if we multiply the first equation by $-3$, then we will get a $-6x$ term that can cancel with the $6x$ term in the second equation:\n\n$$\n\\left\\{\\begin{aligned}2x - y &=-6 && \\mid \\mid \\cdot (-3) \\\\ 6x - 3y &=-18\\end{aligned}\\right.\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n$$\n\\begin{aligned}\n-6x + 3y &= 18 \\\\\n6x - 3y &= -18 \\\\\n0 &= (18 - 18) \\\\\n0 &= 0\n\\end{aligned}\n$$\n\nBecause we obtained a true statement, we conclude that there are infinitely many solutions to the system. Therefore, the lines have infinitely many intersection points.\n\nWe want to find an expression that represents every solution to the system. Any value of $x$ can be chosen, and we can find the corresponding $y$-coordinate for each $x$-coordinate by solving one of the lines for $y$, as follows:\n\n$$\n\\begin{aligned}\n2x - y &= -6 \\\\\n-y &= -6 - 2x \\\\\ny &= \\frac{-6 - 2x}{-1} \\\\\ny &= 6 + 2x\n\\end{aligned}\n$$\n\nLet $t=x$ be the free coordinate.\n\nTherefore, the points of intersection are\n\n$$\n\\left(t,6 + 2t \\right)\n$$\n\nwhere $t$ is any number.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073778
@@ -859,7 +899,7 @@
     "entity": 17592186542462,
     "attribute": ":question/worked-solution",
     "value": "The points of intersection of the lines correspond to the solutions of the following system:\n\n$$\n\\left\\{\\begin{aligned}4x - 2y &=-11 \\\\ 8x - 4y &=-22\\end{aligned}\\right.\n$$\n\nWe will solve the system using elimination. Notice that if we multiply the first equation by $-2$, then we will get a $-8x$ term that can cancel with the $8x$ term in the second equation:\n\n$$\n\\left\\{\\begin{aligned}4x - 2y &=-11 && \\mid \\mid \\cdot (-2) \\\\ 8x - 4y &=-22\\end{aligned}\\right.\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n$$\n\\begin{aligned}\n-8x + 4y &= 22 \\\\\n8x - 4y &= -22 \\\\\n0 &= (22 - 22) \\\\\n0 &= 0\n\\end{aligned}\n$$\n\nBecause we obtained a true statement, we conclude that there are infinitely many solutions to the system. Therefore, the lines have infinitely many intersection points.\n\nWe want to find an expression that represents every solution to the system. Any value of $x$ can be chosen, and we can find the corresponding $y$-coordinate for each $x$-coordinate by solving one of the lines for $y$, as follows:\n\n$$\n\\begin{aligned}\n4x - 2y &= -11 \\\\\n-2y &= -11 - 4x \\\\\ny &= \\frac{-11 - 4x}{-2} \\\\\ny &= \\frac{11}{2} + 2x\n\\end{aligned}\n$$\n\nTherefore, the points of intersection are\n\n$$\n\\left(x,\\frac{11}{2} + 2x \\right)\n$$\n\nwhere $x$ is any number.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073778
@@ -880,7 +920,7 @@
     "entity": 17592186542465,
     "attribute": ":question/worked-solution",
     "value": "The points of intersection of the lines correspond to the solutions of the following system:\n\n$$\n\\left\\{\\begin{aligned}-12x + 5y &=-6 \\\\ 24x - 10y &=12\\end{aligned}\\right.\n$$\n\nWe will solve the system using elimination. Notice that if we multiply the first equation by $2$, then we will get a $-24x$ term that can cancel with the $24x$ term in the second equation:\n\n$$\n\\left\\{\\begin{aligned}-12x + 5y &=-6 && \\mid \\mid \\cdot (2) \\\\ 24x - 10y &=12\\end{aligned}\\right.\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n$$\n\\begin{aligned}\n-24x + 10y &= -12 \\\\\n24x - 10y &= 12 \\\\\n0 &= (-12 + 12) \\\\\n0 &= 0\n\\end{aligned}\n$$\n\nBecause we obtained a true statement, we conclude that there are infinitely many solutions to the system. Therefore, the lines have infinitely many intersection points.\n\nWe want to find an expression that represents every solution to the system. Any value of $x$ can be chosen, and we can find the corresponding $y$-coordinate for each $x$-coordinate by solving one of the lines for $y$, as follows:\n\n$$\n\\begin{aligned}\n-12x + 5y &= -6 \\\\\n5y &= -6 + 12x \\\\\ny &= \\frac{-6 + 12x}{5} \\\\\ny &= -\\frac{6}{5} + \\frac{12}{5}x\n\\end{aligned}\n$$\n\nTherefore, the points of intersection are\n\n$$\n\\left(x,-\\frac{6}{5} + \\frac{12}{5}x \\right)\n$$\n\nwhere $x$ is any number.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073778
@@ -901,7 +941,7 @@
     "entity": 17592186542470,
     "attribute": ":question/worked-solution",
     "value": "The points of intersection of the lines correspond to the solutions of the following system:\n\n$$\n\\left\\{\\begin{aligned}-x - 4y &=-4 \\\\ 2x + 8y &=8\\end{aligned}\\right.\n$$\n\nWe will solve the system using elimination. Notice that if we multiply the first equation by $2$, then we will get a $-2x$ term that can cancel with the $2x$ term in the second equation:\n\n$$\n\\left\\{\\begin{aligned}-x - 4y &=-4 && \\mid \\mid \\cdot (2) \\\\ 2x + 8y &=8\\end{aligned}\\right.\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n$$\n\\begin{aligned}\n-2x - 8y &= -8 \\\\\n2x + 8y &= 8 \\\\\n0 &= (-8 + 8) \\\\\n0 &= 0\n\\end{aligned}\n$$\n\nBecause we obtained a true statement, we conclude that there are infinitely many solutions to the system. Therefore, the lines have infinitely many intersection points.\n\nWe want to find an expression that represents every solution to the system. Any value of $x$ can be chosen, and we can find the corresponding $y$-coordinate for each $x$-coordinate by solving one of the lines for $y$, as follows:\n\n$$\n\\begin{aligned}\n-x - 4y &= -4 \\\\\n-4y &= -4 + x \\\\\ny &= \\frac{-4 + x}{-4} \\\\\ny &= 1 - \\frac{1}{4}x\n\\end{aligned}\n$$\n\nLet $u=x$ be the free coordinate.\n\nTherefore, the points of intersection are\n\n$$\n\\left(u,1 - \\frac{1}{4}u \\right)\n$$\n\nwhere $u$ is any number.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073778
@@ -922,7 +962,7 @@
     "entity": 17592186542476,
     "attribute": ":question/worked-solution",
     "value": "The points of intersection of the lines correspond to the solutions of the following system:\n\n$$\n\\left\\{\\begin{aligned}-7x + 2y &=6 \\\\ -21x + 6y &=18\\end{aligned}\\right.\n$$\n\nWe will solve the system using elimination. Notice that if we multiply the first equation by $-3$, then we will get a $21x$ term that can cancel with the $-21x$ term in the second equation:\n\n$$\n\\left\\{\\begin{aligned}-7x + 2y &=6 && \\mid \\mid \\cdot (-3) \\\\ -21x + 6y &=18\\end{aligned}\\right.\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n$$\n\\begin{aligned}\n21x - 6y &= -18 \\\\\n-21x + 6y &= 18 \\\\\n0 &= (-18 + 18) \\\\\n0 &= 0\n\\end{aligned}\n$$\n\nBecause we obtained a true statement, we conclude that there are infinitely many solutions to the system. Therefore, the lines have infinitely many intersection points.\n\nWe want to find an expression that represents every solution to the system. Any value of $x$ can be chosen, and we can find the corresponding $y$-coordinate for each $x$-coordinate by solving one of the lines for $y$, as follows:\n\n$$\n\\begin{aligned}\n-7x + 2y &= 6 \\\\\n2y &= 6 + 7x \\\\\ny &= \\frac{6 + 7x}{2} \\\\\ny &= 3 + \\frac{7}{2}x\n\\end{aligned}\n$$\n\nTherefore, the points of intersection are\n\n$$\n\\left(x,3 + \\frac{7}{2}x \\right)\n$$\n\nwhere $x$ is any number.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073778
@@ -943,7 +983,7 @@
     "entity": 17592186542477,
     "attribute": ":question/worked-solution",
     "value": "The points of intersection of the lines correspond to the solutions of the following system:\n\n$$\n\\left\\{\\begin{aligned}7x + 3y &=10 \\\\ 21x + 9y &=30\\end{aligned}\\right.\n$$\n\nWe will solve the system using elimination. Notice that if we multiply the first equation by $-3$, then we will get a $-21x$ term that can cancel with the $21x$ term in the second equation:\n\n$$\n\\left\\{\\begin{aligned}7x + 3y &=10 && \\mid \\mid \\cdot (-3) \\\\ 21x + 9y &=30\\end{aligned}\\right.\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n$$\n\\begin{aligned}\n-21x - 9y &= -30 \\\\\n21x + 9y &= 30 \\\\\n0 &= (-30 + 30) \\\\\n0 &= 0\n\\end{aligned}\n$$\n\nBecause we obtained a true statement, we conclude that there are infinitely many solutions to the system. Therefore, the lines have infinitely many intersection points.\n\nWe want to find an expression that represents every solution to the system. Any value of $x$ can be chosen, and we can find the corresponding $y$-coordinate for each $x$-coordinate by solving one of the lines for $y$, as follows:\n\n$$\n\\begin{aligned}\n7x + 3y &= 10 \\\\\n3y &= 10 - 7x \\\\\ny &= \\frac{10 - 7x}{3} \\\\\ny &= \\frac{10}{3} - \\frac{7}{3}x\n\\end{aligned}\n$$\n\nLet $t=x$ be the free coordinate.\n\nTherefore, the points of intersection are\n\n$$\n\\left(t,\\frac{10}{3} - \\frac{7}{3}t \\right)\n$$\n\nwhere $t$ is any number.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073778
@@ -964,7 +1004,7 @@
     "entity": 17592186542491,
     "attribute": ":question/worked-solution",
     "value": "The points of intersection of the lines correspond to the solutions of the following system:\n\n$$\n\\left\\{\\begin{aligned}-8x + 5y &=-9 \\\\ 16x - 10y &=18\\end{aligned}\\right.\n$$\n\nWe will solve the system using elimination. Notice that if we multiply the first equation by $2$, then we will get a $-16x$ term that can cancel with the $16x$ term in the second equation:\n\n$$\n\\left\\{\\begin{aligned}-8x + 5y &=-9 && \\mid \\mid \\cdot (2) \\\\ 16x - 10y &=18\\end{aligned}\\right.\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n$$\n\\begin{aligned}\n-16x + 10y &= -18 \\\\\n16x - 10y &= 18 \\\\\n0 &= (-18 + 18) \\\\\n0 &= 0\n\\end{aligned}\n$$\n\nBecause we obtained a true statement, we conclude that there are infinitely many solutions to the system. Therefore, the lines have infinitely many intersection points.\n\nWe want to find an expression that represents every solution to the system. Any value of $x$ can be chosen, and we can find the corresponding $y$-coordinate for each $x$-coordinate by solving one of the lines for $y$, as follows:\n\n$$\n\\begin{aligned}\n-8x + 5y &= -9 \\\\\n5y &= -9 + 8x \\\\\ny &= \\frac{-9 + 8x}{5} \\\\\ny &= -\\frac{9}{5} + \\frac{8}{5}x\n\\end{aligned}\n$$\n\nLet $u=x$ be the free coordinate.\n\nTherefore, the points of intersection are\n\n$$\n\\left(u,-\\frac{9}{5} + \\frac{8}{5}u \\right)\n$$\n\nwhere $u$ is any number.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073778
@@ -985,7 +1025,7 @@
     "entity": 17592186542505,
     "attribute": ":question/worked-solution",
     "value": "The points of intersection of the lines correspond to the solutions of the following system:\n\n$$\n\\left\\{\\begin{aligned}6x - y &=4 \\\\ -24x + 4y &=-16\\end{aligned}\\right.\n$$\n\nWe will solve the system using elimination. Notice that if we multiply the first equation by $4$, then we will get a $24x$ term that can cancel with the $-24x$ term in the second equation:\n\n$$\n\\left\\{\\begin{aligned}6x - y &=4 && \\mid \\mid \\cdot (4) \\\\ -24x + 4y &=-16\\end{aligned}\\right.\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n$$\n\\begin{aligned}\n24x - 4y &= 16 \\\\\n-24x + 4y &= -16 \\\\\n0 &= (16 - 16) \\\\\n0 &= 0\n\\end{aligned}\n$$\n\nBecause we obtained a true statement, we conclude that there are infinitely many solutions to the system. Therefore, the lines have infinitely many intersection points.\n\nWe want to find an expression that represents every solution to the system. Any value of $x$ can be chosen, and we can find the corresponding $y$-coordinate for each $x$-coordinate by solving one of the lines for $y$, as follows:\n\n$$\n\\begin{aligned}\n6x - y &= 4 \\\\\n-y &= 4 - 6x \\\\\ny &= \\frac{4 - 6x}{-1} \\\\\ny &= -4 + 6x\n\\end{aligned}\n$$\n\nTherefore, the points of intersection are\n\n$$\n\\left(x,-4 + 6x \\right)\n$$\n\nwhere $x$ is any number.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073778
@@ -1006,7 +1046,7 @@
     "entity": 17592186542507,
     "attribute": ":question/worked-solution",
     "value": "The points of intersection of the lines correspond to the solutions of the following system:\n\n$$\n\\left\\{\\begin{aligned}7x + 2y &=10 \\\\ 21x + 6y &=30\\end{aligned}\\right.\n$$\n\nWe will solve the system using elimination. Notice that if we multiply the first equation by $-3$, then we will get a $-21x$ term that can cancel with the $21x$ term in the second equation:\n\n$$\n\\left\\{\\begin{aligned}7x + 2y &=10 && \\mid \\mid \\cdot (-3) \\\\ 21x + 6y &=30\\end{aligned}\\right.\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n$$\n\\begin{aligned}\n-21x - 6y &= -30 \\\\\n21x + 6y &= 30 \\\\\n0 &= (-30 + 30) \\\\\n0 &= 0\n\\end{aligned}\n$$\n\nBecause we obtained a true statement, we conclude that there are infinitely many solutions to the system. Therefore, the lines have infinitely many intersection points.\n\nWe want to find an expression that represents every solution to the system. Any value of $x$ can be chosen, and we can find the corresponding $y$-coordinate for each $x$-coordinate by solving one of the lines for $y$, as follows:\n\n$$\n\\begin{aligned}\n7x + 2y &= 10 \\\\\n2y &= 10 - 7x \\\\\ny &= \\frac{10 - 7x}{2} \\\\\ny &= 5 - \\frac{7}{2}x\n\\end{aligned}\n$$\n\nLet $t=x$ be the free coordinate.\n\nTherefore, the points of intersection are\n\n$$\n\\left(t,5 - \\frac{7}{2}t \\right)\n$$\n\nwhere $t$ is any number.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073778
@@ -1027,7 +1067,7 @@
     "entity": 17592186542509,
     "attribute": ":question/worked-solution",
     "value": "The points of intersection of the lines correspond to the solutions of the following system:\n\n$$\n\\left\\{\\begin{aligned}-3x - y &=-4 \\\\ 12x + 4y &=16\\end{aligned}\\right.\n$$\n\nWe will solve the system using elimination. Notice that if we multiply the first equation by $4$, then we will get a $-12x$ term that can cancel with the $12x$ term in the second equation:\n\n$$\n\\left\\{\\begin{aligned}-3x - y &=-4 && \\mid \\mid \\cdot (4) \\\\ 12x + 4y &=16\\end{aligned}\\right.\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n$$\n\\begin{aligned}\n-12x - 4y &= -16 \\\\\n12x + 4y &= 16 \\\\\n0 &= (-16 + 16) \\\\\n0 &= 0\n\\end{aligned}\n$$\n\nBecause we obtained a true statement, we conclude that there are infinitely many solutions to the system. Therefore, the lines have infinitely many intersection points.\n\nWe want to find an expression that represents every solution to the system. Any value of $x$ can be chosen, and we can find the corresponding $y$-coordinate for each $x$-coordinate by solving one of the lines for $y$, as follows:\n\n$$\n\\begin{aligned}\n-3x - y &= -4 \\\\\n-y &= -4 + 3x \\\\\ny &= \\frac{-4 + 3x}{-1} \\\\\ny &= 4 - 3x\n\\end{aligned}\n$$\n\nLet $t=x$ be the free coordinate.\n\nTherefore, the points of intersection are\n\n$$\n\\left(t,4 - 3t \\right)\n$$\n\nwhere $t$ is any number.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073778
@@ -1048,7 +1088,7 @@
     "entity": 17592186542510,
     "attribute": ":question/worked-solution",
     "value": "The points of intersection of the lines correspond to the solutions of the following system:\n\n$$\n\\left\\{\\begin{aligned}7x + 5y &=4 \\\\ -14x - 10y &=-8\\end{aligned}\\right.\n$$\n\nWe will solve the system using elimination. Notice that if we multiply the first equation by $2$, then we will get a $14x$ term that can cancel with the $-14x$ term in the second equation:\n\n$$\n\\left\\{\\begin{aligned}7x + 5y &=4 && \\mid \\mid \\cdot (2) \\\\ -14x - 10y &=-8\\end{aligned}\\right.\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n$$\n\\begin{aligned}\n14x + 10y &= 8 \\\\\n-14x - 10y &= -8 \\\\\n0 &= (8 - 8) \\\\\n0 &= 0\n\\end{aligned}\n$$\n\nBecause we obtained a true statement, we conclude that there are infinitely many solutions to the system. Therefore, the lines have infinitely many intersection points.\n\nWe want to find an expression that represents every solution to the system. Any value of $x$ can be chosen, and we can find the corresponding $y$-coordinate for each $x$-coordinate by solving one of the lines for $y$, as follows:\n\n$$\n\\begin{aligned}\n7x + 5y &= 4 \\\\\n5y &= 4 - 7x \\\\\ny &= \\frac{4 - 7x}{5} \\\\\ny &= \\frac{4}{5} - \\frac{7}{5}x\n\\end{aligned}\n$$\n\nLet $u=x$ be the free coordinate.\n\nTherefore, the points of intersection are\n\n$$\n\\left(u,\\frac{4}{5} - \\frac{7}{5}u \\right)\n$$\n\nwhere $u$ is any number.",
-    "source": "generated_or_authored",
+    "source": "generated_or_authored_question",
     "ma_id": null,
     "knowledge_points": [
       17592186073778
