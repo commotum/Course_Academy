@@ -1,0 +1,5 @@
+[:find (pull ?t [:db/id :topic/id :topic/math-academy-id :topic/title
+ {[:topic/knowledge-points :limit nil] [:db/id :knowledge-point/id :knowledge-point/title
+ {:knowledge-point/canonical-example [:db/id :question/id :question/math-academy-id]}
+ {[:knowledge-point/questions :limit nil] [:db/id :question/math-academy-id]}]}])
+        :in $ [?id ...] :where [?t :topic/math-academy-id ?id]]
