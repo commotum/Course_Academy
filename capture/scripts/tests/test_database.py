@@ -511,7 +511,7 @@ class PipelineTests(unittest.TestCase):
             prep.question(plan,q,old,False)
         self.assertEqual(plan.finish()['forms'],[])
 
-    def test_function_application_escape_revision_reuses_response_owned_answer(self):
+    def test_function_application_escape_revision_preserves_response_owned_answer(self):
         incoming = '6^x \\operatorname{ln}\u20616-10x+6'
         legacy = r'6^x ln\u20616-10x+6'
         choice={':db/id':20,':answer/id':source_uuid('answer',20),
@@ -523,11 +523,11 @@ class PipelineTests(unittest.TestCase):
         old={':db/id':5,':question/id':source_uuid('question',5),':question/answer-fields':[field]}
         q=question();q['answer_fields'][0].update(type='radio',correct_type='math',correct_value=incoming,
             choices=[{'type':'math','value':incoming}])
-        prep=Preparation(source_snapshot());plan=Plan(prep.snapshot);prep.question(plan,q,old,False)
-        forms=plan.finish()['forms']
-        self.assertIn({kw(':db/id'):20,kw(':answer/value'):incoming},forms)
-        self.assertNotIn([kw(':db/retract'),10,kw(':answer-field/choices'),20],forms)
-        self.assertFalse(any(isinstance(f,dict) and kw(':answer/id') in f for f in forms))
+        prep=Preparation(source_snapshot());plan=Plan(prep.snapshot)
+        with self.assertRaisesRegex(UnsupportedContent,'immutable historical response value'):
+            prep.question(plan,q,old,False)
+        self.assertEqual(plan.finish()['forms'],[])
+        self.assertEqual(choice[':answer/value'],legacy)
 
     def test_function_application_compatibility_requires_a_math_operator_marker(self):
         self.assertEqual(choice_signature('math',r'ln\u20616'),choice_signature('math','\\operatorname{ln}\u20616'))

@@ -9,6 +9,7 @@ from .edn import kw, dumps
 from .evidence import UnsupportedContent, authoritative_question
 from .images import ImageLibrary, MissingImage
 from .text import markdown
+from .math_content import prose as formatted_prose, question as formatted_question, value as formatted_value
 from .difficulty import calibrate
 from ..activity.evidence import question_key
 from ..activity.task_payload import semantic_identity, task_payload
@@ -26,6 +27,14 @@ def choice_signature(kind, value):
         # explicit MathML function-application marker. Only that marked form
         # establishes equivalence to today's operator spelling.
         value = re.sub(r'\\operatorname\{ln\}(?=\u2061)', 'ln', value)
+    if isinstance(value, str):
+        try:
+            value = formatted_value(kind, value)
+        except ValueError:
+            # Existing banks can include malformed verbatim learner entries.
+            # Matching must not reinterpret or reject their retained history;
+            # fresh source values are validated separately before planning.
+            pass
     return kind, value
 KINDS = ('topic', 'knowledge-point', 'question', 'answer-field', 'answer', 'tutorial',
          'activity', 'step', 'multistep', 'assigned-problem')
@@ -321,9 +330,7 @@ class Preparation:
                     q = authoritative_question(original, example=example)
                     if library:
                         q = library.question(q)
-                    for key in ('problem', 'worked_solution', 'local_problem'):
-                        if isinstance(q.get(key), str):
-                            q[key] = markdown(q[key])
+                    q = formatted_question(q)
                     kept.append(q)
                     records.append((q, example))
                 except (UnsupportedContent, MissingImage) as error:
@@ -350,9 +357,7 @@ class Preparation:
                         source_q = copy.deepcopy(q)
                         if library:
                             q = library.question(q)
-                        for key in ('problem', 'worked_solution', 'local_problem'):
-                            if isinstance(q.get(key), str):
-                                q[key] = markdown(q[key])
+                        q = formatted_question(q)
                         kept.append(q)
                         records.append((q, example))
                         source_repairs.append({'record_kind': bucket, 'capture_key': capture_key,
@@ -657,10 +662,15 @@ class Preparation:
                     # owns history, so refuse before any Plan mutation.
                     raise UnsupportedContent('Source field revision has ambiguous historical response ownership among duplicate choices in field ' + str(key))
             wanted = {choice_signature(c['type'], c['value']) for c in field['choices']} if continuing else set()
+            exact = {(c['type'], c['value']) for c in field['choices']} if continuing else set()
             for answer in candidate.get(':answer-field/choices', []):
-                signature = choice_signature(answer[':answer/type'][':db/ident'].rsplit('/',1)[-1], answer[':answer/value'])
+                raw = (answer[':answer/type'][':db/ident'].rsplit('/',1)[-1], answer[':answer/value'])
+                signature = choice_signature(*raw)
                 if signature not in wanted and answer.get(':task-item/_responses'):
                     raise UnsupportedContent('Source field revision would orphan a historical response in field ' + str(key))
+                if raw not in exact and answer.get(':task-item/_responses'):
+                    raise UnsupportedContent('Source formatting revision would rewrite an immutable historical response value in field '
+                        + str(key) + '; a separate display migration is required')
 
     def question(self, plan, question, old, example):
         self.check_source_attribution(old)
@@ -703,11 +713,19 @@ class Preparation:
             for ctype, value in signature[2]:
                 previous_answer = next((a for a in (previous or {}).get(':answer-field/choices', [])
                     if choice_signature(a[':answer/type'][':db/ident'].rsplit('/',1)[-1], a[':answer/value'])
-                       == choice_signature(ctype, value)), None)
+                       == choice_signature(ctype, value)
+                       # Blank answers may be verbatim learner entries. Keep
+                       # their exact value and ownership, adding a formatted
+                       # canonical answer instead of rewriting an entered one.
+                       and not (field['type'] == 'blank' and a.get(':task-item/_responses')
+                                and a[':answer/value'] != value)), None)
                 aid = previous_answer[':answer/id'] if previous_answer else source_uuid('answer', str(fid) + ':' + digest([ctype,value]))
                 at = plan.entity('answer', aid, previous_answer)
                 plan.set(at, previous_answer, 'answer/type', kw('answer.type/' + ctype))
                 plan.set(at, previous_answer, 'answer/value', value)
+                captured = next(c for c in field['choices'] if (c['type'], c['value']) == (ctype, value))
+                if captured.get('feedback') is not None:
+                    plan.set(at, previous_answer, 'answer/feedback', captured['feedback'])
                 choices.append(at)
                 if ctype == field['correct_type'] and value == field['correct_value']:
                     correct = at
@@ -800,7 +818,7 @@ class Preparation:
                         existing = self.choose('tutorial revision', tutorial, candidates)
                 if existing and not previous:
                     previous = next((s for s in previous_steps if scalar(s.get(':step/content')) == existing[':db/id']), None)
-                text = markdown(library.text(tutorial['content']) if library else tutorial['content'])
+                text = formatted_prose(library.text(tutorial['content']) if library else tutorial['content'])
                 identity = existing[':tutorial/id'] if existing else source_uuid('tutorial', cid)
                 target = plan.entity('tutorial', identity, existing)
                 for attr, value in (('tutorial/math-academy-id',cid),('tutorial/title',tutorial.get('title') or step.get('title')),('tutorial/content',text)):
@@ -848,7 +866,7 @@ class Preparation:
             children.append((f'{index}:{mid}', target, previous, None))
         contexts = content.get('shared_contexts', [])
         context = content.get('shared_context') or '\n\n'.join(c.get('problem', c.get('content', '')) for c in contexts)
-        context = markdown(library.text(context) if library else context)
+        context = formatted_prose(library.text(context) if library else context)
         content['shared_context'] = context
         multi, _ = self.sequence(plan, 'multistep', uid, old, {'multistep/context': context or None}, children)
         pid = source_uuid('multistep-assigned-problem', source)

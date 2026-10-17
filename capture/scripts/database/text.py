@@ -6,6 +6,27 @@ from urllib.parse import urljoin
 def markdown(source: str) -> str:
     if not re.search(r'<(?:p|div|span|table|img|h[1-6]|ul|ol|br|mjx-container|math)\b', source, re.I):
         return source.strip()
+    # These are authored UI layouts, not source tables to flatten into Markdown.
+    # Keep complete nested wrappers verbatim, including their answer controls.
+    layouts, layout_prefix = [], 'CAMATRIXLAYOUTTOKEN'
+    while layout_prefix in source:
+        layout_prefix += 'X'
+    pattern = re.compile(r'<div\b[^>]*\bclass=["\'](?:[^"\']*\s)?matrix-(?:answer|operands)(?=[\s"\'])[^"\']*["\'][^>]*>', re.I)
+    offset = 0
+    while match := pattern.search(source, offset):
+        depth, end = 0, None
+        for tag in re.finditer(r'</?div\b[^>]*>', source[match.start():], re.I):
+            depth += -1 if tag[0].startswith('</') else 1
+            if depth == 0:
+                end = match.start() + tag.end()
+                break
+        if end is None:
+            offset = match.end()
+            continue
+        layouts.append(source[match.start():end])
+        token = layout_prefix + str(len(layouts) - 1) + 'END'
+        source = source[:match.start()] + token + source[end:]
+        offset = match.start() + len(token)
     table_math, table_math_prefix = [], 'CATABLEMATHTOKEN'
     complex_table = (re.search(r'<(?:td|th)\b[^>]*\b(?:rowspan|colspan)\s*=', source, re.I)
                      or re.search(r'<table\b(?:(?!</table\b)[\s\S])*<table\b', source, re.I))
@@ -75,4 +96,6 @@ def markdown(source: str) -> str:
     result = re.sub(r'\n[ \t]*\n(?:[ \t]*\n)+', '\n\n', render(soup)).strip()
     if table_math:
         result = re.sub(table_math_prefix + r'(\d+)END', lambda match: table_math[int(match[1])], result)
+    if layouts:
+        result = re.sub(layout_prefix + r'(\d+)END', lambda match: layouts[int(match[1])], result)
     return result

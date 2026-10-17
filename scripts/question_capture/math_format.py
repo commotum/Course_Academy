@@ -300,6 +300,10 @@ def validate_tex(value):
         elif token == '}': depth -= 1
         if depth < 0: raise ValueError('Unmatched closing TeX brace')
         if token in [r'\matrix', r'\eqalign']: raise ValueError('Legacy TeX layout command')
+        if token in [r'\[', r'\]', r'\(', r'\)']:
+            raise ValueError('Nested math delimiter in a TeX expression')
+        if token == r'\=':
+            raise ValueError('Unsupported TeX equality command; use =')
         if token == '$': raise ValueError('Math fields must not contain nested dollar delimiters')
     if depth or stack: raise ValueError('Unclosed TeX group or environment')
     for match in re.finditer(r'\\begin\{(bmatrix|pmatrix|vmatrix|Bmatrix|Vmatrix|matrix)\}', text):

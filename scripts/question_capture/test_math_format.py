@@ -88,6 +88,20 @@ class MathContentTests(unittest.TestCase):
         self.assertIn(r'\begin{bmatrix}', saved['problem'])
         self.assertEqual(normalize_capture_question(saved), saved)
 
+    def test_reported_display_commands_are_rejected_before_capture(self):
+        # These rendered as red literal commands without MathJax merror nodes.
+        for bad in (r'C^T=\=', r'\begin{aligned}a&=1\[5pt]b&=2\end{aligned}',
+                    r'x+\(y\)'):
+            with self.subTest(source=bad), self.assertRaises(ValueError):
+                validate_tex(bad)
+        with self.assertRaises(ValueError):
+            normalize_capture_question({'problem': r'$C^T=\=$'})
+        # A proper row separator with an optional gap remains valid, as do
+        # scalable brackets and prose-level math delimiters.
+        validate_tex(r'\begin{bmatrix}1 & 2 \\[3pt]3 & 4\end{bmatrix}')
+        validate_tex(r'\left[x\right]')
+        validate_prose(r'Value \(x\), display \[x=1\].')
+
     def test_generator_contract_rejects_noncanonical_output(self):
         record = {'question': {':question/problem': '$x$', ':question/worked-solution': '$x$',
                                ':question/answer-fields': [{':answer-field/choices': [{':answer/type': ':answer.type/math', ':answer/value': '$x$'}]}]}}
