@@ -7,16 +7,17 @@ import os
 from pathlib import Path
 import subprocess
 import sys
-from datetime import datetime
 
 ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "scripts"))
 from generator_packages import resolve_registered_script
+from generator_priority import PRIORITY_FIELDS, PRIORITY_POLICY, PURPOSE_ORDER, priority_key
 
 
 URGENCY = {"studied": 5, "target": 4, "queued": 3, "target-prerequisite": 2,
-           "studied-or-queued-descendant": 1}
+           "selected-prerequisite": 2, "studied-or-queued-descendant": 1,
+           "immediate": 7, "current-need": 6}
 PURPOSE = {"lesson-shortage": 60000, "review-shortage": 50000,
            "assessment-shortage": 40000, "hard-variety": 30000,
            "moderate-variety": 20000, "easy-variety": 10000, "advance-build": 0}
@@ -62,14 +63,35 @@ def check_generator_files(result, math_root, repo_root=ROOT):
             kp["generator_usable"], kp["generator_error"] = checked[script]
 
 
-def timestamp(value):
-    return datetime.fromisoformat(value.replace("Z", "+00:00")).timestamp() if value else float("inf")
+ranking_key = priority_key
 
 
-def ranking_key(kp):
-    return (-kp["score"],
-            timestamp(kp.get("first_studied_at")) if kp["purpose"] == "assessment-shortage" else float("inf"),
-            timestamp(kp.get("waiting_since")), kp["topic_entity"], kp["db/id"])
+def baseline_relevance(topic):
+    if topic.get("relevance_tier") is not None:
+        return topic["relevance_tier"]
+    groups = set(topic.get("urgency_groups", []))
+    if groups & {"queued", "target", "target-prerequisite", "selected-prerequisite"}:
+        return 1
+    if groups & {"studied", "current-need", "immediate"}:
+        return 2
+    return 3
+
+
+def activity_demands(topic, relevance):
+    """Native demand is explicit; old snapshots retain their next-stage demand."""
+    demands = topic.get("activity_demands")
+    if demands is None:
+        demands = [{"activity_type": topic["next_activity"], "relevance_tier": relevance}]
+        if (topic.get("completed_local_lesson") is False and relevance == 1
+                and topic["next_activity"] != "lesson"):
+            demands.append({"activity_type": "lesson", "relevance_tier": relevance})
+    stages = {}
+    for demand in demands:
+        stage = demand["activity_type"]
+        if stage not in {"lesson", "review", "assessment"}:
+            raise ValueError("Unknown activity demand: " + str(stage))
+        stages[stage] = min(stages.get(stage, 3), demand.get("relevance_tier", relevance))
+    return stages
 
 
 def ranked_candidates(result):
@@ -86,6 +108,8 @@ def ranked_candidates(result):
     candidates = {}
     for topic in result["topics"]:
         topic_id, u = topic["db/id"], topic["urgency_value"]
+        relevance = baseline_relevance(topic)
+        demands = activity_demands(topic, relevance)
         for kp in topic["knowledge_points"]:
             for field in ("generated_band", "improved_coverage_band", "coverage_after"):
                 kp.pop(field, None)
@@ -94,28 +118,43 @@ def ranked_candidates(result):
                 raise ValueError("Unknown next activity: " + str(stage))
             scope = "knowledge-point" if stage == "lesson" else "topic"
             pool = kp["inventory"] if stage == "lesson" else topic["topic_inventory"]
-            available = available_total(pool, rated=stage == "assessment")
-            required = 1 if stage == "assessment" else 5
+            def stock(activity):
+                inventory_scope = "knowledge-point" if activity == "lesson" else "topic"
+                inventory = kp["inventory"] if activity == "lesson" else topic["topic_inventory"]
+                return {"next_activity": activity, "inventory_scope": inventory_scope,
+                        "available_total": available_total(inventory, rated=activity == "assessment"),
+                        "required_total": 1 if activity == "assessment" else 5}
+
+            context = {field: topic.get(field) for field in PRIORITY_FIELDS
+                       if field not in {"priority_policy", "relevance_tier", "baseline_relevance_tier"}}
+            context.update({"priority_policy": PRIORITY_POLICY,
+                            "relevance_tier": relevance, "baseline_relevance_tier": relevance,
+                            "topic_entity": topic_id, "topic_title": topic["topic/title"],
+                            "db/id": kp["db/id"]})
             kp.update({"topic_entity": topic_id, "topic_title": topic["topic/title"],
                        "next_activity": stage, "urgency_groups": topic.get("urgency_groups", []),
-                       "urgency_value": u, "available_total": available,
+                       "urgency_value": u,
                        "kp_available_total": available_total(kp["inventory"]),
-                       "required_total": required, "inventory_scope": scope,
-                       "first_studied_at": topic.get("first_studied_at"),
-                       "waiting_since": topic.get("waiting_since"),
-                       "inventory_scopes": {scope: pool},
+                       "inventory_scopes": {**{scope: pool},
+                                            **({"knowledge-point": kp["inventory"]} if "lesson" in demands else {}),
+                                            **({"topic": topic["topic_inventory"]} if demands.keys() & {"review", "assessment"} else {})},
                        "refill_deficits": {band: max(0, 5 - count) for band, count in kp["inventory"]["available"].items()},
-                       "rank": None})
+                       "rank": None, **context, **stock(stage)})
             reasons = []
             def reason(purpose, shortage, **extra):
-                reasons.append({"purpose": purpose, "purpose_points": PURPOSE[purpose],
+                reasons.append({**context, **stock(stage),
+                                "purpose": purpose, "purpose_points": PURPOSE[purpose],
                                 "shortage": shortage, "shortage_points": 1000 * shortage,
                                 "urgency_points": 100 * u,
                                 "score": PURPOSE[purpose] + 1000 * shortage + 100 * u,
-                                "topic_entity": topic_id, **extra})
+                                **extra})
             reason("advance-build", 0)
-            if available < required:
-                reason(stage + "-shortage", required - available)
+            for activity, demand_relevance in demands.items():
+                supply = stock(activity)
+                shortage = supply["required_total"] - supply["available_total"]
+                if shortage > 0:
+                    reason(activity + "-shortage", shortage,
+                           **supply, relevance_tier=demand_relevance)
             if topic_id in topic_bands:
                 for band in kp["inventory"]["supported_difficulties"]:
                     if band in topic_bands[topic_id]:
@@ -130,7 +169,7 @@ def ranked_candidates(result):
                     reason(improved_band + "-variety", COVERAGE_TARGET[index] - before[index],
                            generated_band=band, improved_coverage_band=improved_band,
                            coverage_after=dict(zip(COVERAGE_BANDS, after)))
-            reasons.sort(key=lambda r: (-r["score"], r.get("generated_band", "")))
+            reasons.sort(key=priority_key)
             kp.update(reasons[0])
             kp["priority_reasons"] = reasons
             kp["build_required"] = bool(u) and kp["db/id"] not in usable
@@ -143,7 +182,8 @@ def ranked_candidates(result):
     for contexts in candidates.values():
         winner = dict(min(contexts, key=ranking_key))
         winner["candidate_topics"] = sorted({kp["topic_entity"] for kp in contexts})
-        winner["priority_reasons"] = [reason for kp in contexts for reason in kp["priority_reasons"]]
+        winner["priority_reasons"] = sorted(
+            (reason for kp in contexts for reason in kp["priority_reasons"]), key=priority_key)
         ranked.append(winner)
     ranked.sort(key=ranking_key)
     for rank, kp in enumerate(ranked, 1):
@@ -160,11 +200,22 @@ def ranked_candidates(result):
                                      "available": dict(zip(COVERAGE_BANDS, before)),
                                      "missing": dict(zip(COVERAGE_BANDS, (n - c for n, c in zip(COVERAGE_TARGET, before)))),
                                      "topic_count": len(topic_bands)}
+    result["priority_policy"] = PRIORITY_POLICY
     result["scoring"] = {"formula": "purpose_points + 1000 * shortage + 100 * urgency_value",
+                          "use": "diagnostic only; priority_policy determines ordering",
                           "purpose_points": PURPOSE, "urgency_values": URGENCY,
                           "counting": "usable, unseen and unreserved; assessments require rated questions",
                           "queue": "generator-build", "refill_target_per_kp": {"easy": 5, "moderate": 5, "hard": 5}}
-    result["sort_order"] = ["score_desc", "assessment_first_studied_at", "waiting_since", "topic_entity", "knowledge_point_entity"]
+    result["sort_order"] = ["relevance_tier", "purpose", "purpose_specific_topic_order",
+                            "waiting_since", "topic_entity", "shortage_desc", "knowledge_point_entity"]
+    result["priority_order"] = {
+        "relevance": ["immediate obligation", "selected study and unmet prerequisites",
+                      "other current study", "speculative preparation"],
+        "purpose": list(PURPOSE_ORDER),
+        "lesson_topic": ["topic_layer", "selected_support_count_desc", "engine_priority_desc"],
+        "review_topic": ["review_due_at", "engine_priority_desc"],
+        "assessment_topic": ["first_studied_at", "engine_priority_desc"],
+    }
     return result
 
 

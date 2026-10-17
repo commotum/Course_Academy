@@ -1,4 +1,4 @@
-;; Unlocked or ongoing lessons and pending/ongoing reviews/assessments.
+;; Unlocked/ongoing or required remediation lessons, and pending reviews/assessments.
 ;; Select tasks first so content joins receive bound activity IDs.
 [:find ?task ?activity ?kind ?state
  :in $ ?learner
@@ -12,10 +12,11 @@
         [?task :learner-task/activity ?activity]
         [?activity :activity/type ?type]
         [?type :db/ident ?kind]
-        (or-join [?kind ?state]
+        (or-join [?kind ?state ?task]
           (and [(= ?kind :activity.type/lesson)]
-               (or [(= ?state :learner-task.status/unlocked)]
+               (or-join [?state ?task] [(= ?state :learner-task.status/unlocked)]
                    [(= ?state :learner-task.status/started)]
-                   [(= ?state :learner-task.status/paused)]))
+                   [(= ?state :learner-task.status/paused)]
+                   [?task :learner-task/remediation-for _]))
           [(= ?kind :activity.type/review)]
           [(= ?kind :activity.type/assessment)])]

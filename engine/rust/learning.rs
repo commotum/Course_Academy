@@ -844,7 +844,7 @@ impl StudyScope {
 
 /// Zero-based global prerequisite layers, matching the graph's L01… badges.
 /// A topic's layer is the longest path from any root, using topic/next only.
-fn topic_layers(s: &EntitySnapshot) -> Result<BTreeMap<u64, usize>> {
+pub fn topic_layers(s: &EntitySnapshot) -> Result<BTreeMap<u64, usize>> {
     let mut layers: BTreeMap<_, _> = s
         .entities
         .with_attribute("topic/id")

@@ -4,6 +4,7 @@ import tempfile
 import unittest
 
 from find_candidates import check_generator_files, coverage, ranked_candidates
+from generator_priority import PRIORITY_POLICY, priority_key
 
 
 def inventory(easy=0, moderate=0, hard=0, *, supported=None, unrated=0):
@@ -29,7 +30,7 @@ def rank(*topics):
 
 
 class RankingTests(unittest.TestCase):
-    def test_proposed_scores_and_order(self):
+    def test_diagnostic_scores_remain_available(self):
         result = rank(topic(1, inventory(1)),
                       topic(2, inventory(4), groups=("target",)),
                       topic(3, stage="review", groups=("studied",)),
@@ -45,15 +46,16 @@ class RankingTests(unittest.TestCase):
                          [(2, "lesson-shortage", 61400), (1, "advance-build", 400)])
         self.assertEqual(rows[1]["refill_deficits"], {"easy": 0, "moderate": 5, "hard": 5})
 
-    def test_legacy_priorities_and_deadlines_do_not_override_new_score(self):
+    def test_engine_topic_priority_precedes_kp_shortage_within_same_layer(self):
         a, b = topic(1, inventory(4)), topic(2, inventory(1))
         a.update(assignment_due="2000-01-01T00:00:00Z", engine_priority=1e12, activity_state="needed-now")
-        self.assertEqual([r["topic_entity"] for r in rank(a, b)["knowledge_points"]], [2, 1])
+        self.assertEqual([r["topic_entity"] for r in rank(a, b)["knowledge_points"]], [1, 2])
 
-    def test_urgency_is_highest_membership_and_target_precedes_queue(self):
+    def test_membership_score_is_diagnostic_and_queue_and_target_share_relevance(self):
         a = topic(1, inventory(5), groups=("studied", "target", "queued", "target-prerequisite"))
-        result = rank(a, topic(2, inventory(5), groups=("target",)), topic(3, inventory(5)))
-        self.assertEqual([r["score"] for r in result["knowledge_points"]], [500, 400, 300])
+        result = rank(a, topic(2, inventory(5)), topic(3, inventory(5), groups=("target",)))
+        self.assertEqual([r["score"] for r in result["knowledge_points"]], [500, 300, 400])
+        self.assertEqual([r["relevance_tier"] for r in result["knowledge_points"]], [1, 1, 1])
 
     def test_review_uses_topic_stock_while_lesson_uses_own_kp(self):
         review = topic(1, inventory(5), stage="review", groups=("studied",))
@@ -65,7 +67,7 @@ class RankingTests(unittest.TestCase):
         self.assertEqual(rows[1]["inventory_scope"], "topic")
         self.assertEqual(rows[1]["kp_available_total"], 0)
 
-    def test_assessment_stage_is_exclusive_and_oldest_first_study_breaks_ties(self):
+    def test_assessment_demands_use_oldest_first_study(self):
         a, b, c = [topic(n, stage="assessment", groups=("studied",)) for n in (1, 2, 3)]
         a["first_studied_at"] = "2026-10-10T00:00:00Z"
         b["first_studied_at"] = "2026-10-01T00:00:00Z"
@@ -119,6 +121,105 @@ class RankingTests(unittest.TestCase):
         self.assertEqual([r["db/id"] for r in rank(a, b)["knowledge_points"]], [20, 10])
         a["waiting_since"] = b["waiting_since"]
         self.assertEqual([r["db/id"] for r in rank(b, a)["knowledge_points"]], [10, 20])
+
+    def test_selected_review_precedes_speculative_lesson_even_with_smaller_score(self):
+        selected = topic(1, inventory(4), stage="review", groups=("queued",))
+        future = topic(2, groups=("studied-or-queued-descendant",))
+        rows = rank(future, selected)["knowledge_points"]
+        self.assertEqual([r["topic_entity"] for r in rows], [1, 2])
+        self.assertLess(rows[0]["score"], rows[1]["score"])
+
+    def test_immediate_demand_does_not_promote_other_purposes_on_the_topic(self):
+        selected = topic(1, stage="review")
+        selected.update(relevance_tier=1, activity_demands=[
+            {"activity_type": "lesson", "relevance_tier": 1},
+            {"activity_type": "review", "relevance_tier": 0}])
+        row, = rank(selected)["knowledge_points"]
+        self.assertEqual((row["purpose"], row["relevance_tier"], row["baseline_relevance_tier"]),
+                         ("review-shortage", 0, 1))
+        reasons = {r["purpose"]: r for r in row["priority_reasons"]}
+        self.assertEqual(reasons["lesson-shortage"]["relevance_tier"], 1)
+        self.assertEqual(reasons["advance-build"]["relevance_tier"], 1)
+
+    def test_ready_active_bank_has_no_immediate_shortage_priority(self):
+        ready = topic(1, inventory(5), stage="review", groups=("immediate",))
+        ready.update(relevance_tier=2, activity_demands=[
+            {"activity_type": "review", "relevance_tier": 0}])
+        row, = rank(ready)["knowledge_points"]
+        self.assertEqual((row["purpose"], row["relevance_tier"]), ("advance-build", 2))
+
+    def test_earlier_lesson_finishes_all_kps_before_larger_later_shortages(self):
+        early = topic(1, inventory(4))
+        early.update(topic_layer=10, selected_support_count=1)
+        early["knowledge_points"].append({"db/id": 11, "inventory": inventory(2), "has_generator": False})
+        late = topic(2)
+        late.update(topic_layer=11, selected_support_count=100, engine_priority=1e12)
+        rows = rank(late, early)["knowledge_points"]
+        self.assertEqual([r["db/id"] for r in rows], [11, 10, 20])
+        self.assertEqual([r["shortage"] for r in rows], [3, 1, 5])
+
+    def test_more_distinct_selected_support_breaks_layer_tie(self):
+        a, b = topic(1), topic(2, inventory(4))
+        a.update(topic_layer=10, selected_support_count=2)
+        b.update(topic_layer=10, selected_support_count=3)
+        self.assertEqual([r["topic_entity"] for r in rank(a, b)["knowledge_points"]], [2, 1])
+
+    def test_review_urgency_uses_due_date_not_prerequisite_layer(self):
+        a, b = topic(1, stage="review"), topic(2, stage="review")
+        a.update(topic_layer=1, selected_support_count=100, review_due_at="2026-10-15T00:00:00Z")
+        b.update(topic_layer=100, selected_support_count=1, review_due_at="2026-10-01T00:00:00Z")
+        self.assertEqual([r["topic_entity"] for r in rank(a, b)["knowledge_points"]], [2, 1])
+
+    def test_multiple_demands_keep_per_kp_lesson_and_pooled_review_stock_separate(self):
+        t = topic(1, inventory(5), stage="review")
+        t.update(completed_local_lesson=False, relevance_tier=1, activity_demands=[
+            {"activity_type": "lesson", "relevance_tier": 1},
+            {"activity_type": "review", "relevance_tier": 0}])
+        t["knowledge_points"][0]["inventory"] = inventory(2)
+        row, = rank(t)["knowledge_points"]
+        self.assertEqual((row["purpose"], row["shortage"], row["available_total"], row["inventory_scope"]),
+                         ("lesson-shortage", 3, 2, "knowledge-point"))
+        self.assertEqual(set(row["inventory_scopes"]), {"topic", "knowledge-point"})
+        self.assertNotIn("review-shortage", [r["purpose"] for r in row["priority_reasons"]])
+
+    def test_selected_imported_mastery_without_local_lesson_retains_lesson_demand(self):
+        t = topic(1, inventory(5), stage="review")
+        t["completed_local_lesson"] = False
+        t["knowledge_points"][0]["inventory"] = inventory(2)
+        row, = rank(t)["knowledge_points"]
+        self.assertEqual((row["purpose"], row["shortage"]), ("lesson-shortage", 3))
+
+    def test_explicit_re_study_can_demand_a_lesson_after_local_completion(self):
+        t = topic(1, stage="review")
+        t.update(completed_local_lesson=True, activity_demands=[
+            {"activity_type": "lesson", "relevance_tier": 0}])
+        row, = rank(t)["knowledge_points"]
+        self.assertEqual((row["purpose"], row["relevance_tier"]), ("lesson-shortage", 0))
+
+    def test_shared_kp_reasons_preserve_each_topic_ranking_context(self):
+        a, b = topic(1, inventory(4)), topic(2, stage="review")
+        a.update(topic_layer=10, selected_support_count=3)
+        b.update(topic_layer=20, selected_support_count=1, activity_demands=[
+            {"activity_type": "review", "relevance_tier": 0}])
+        b["knowledge_points"][0]["db/id"] = 10
+        row, = rank(a, b)["knowledge_points"]
+        self.assertEqual((row["topic_entity"], row["purpose"]), (2, "review-shortage"))
+        reasons = {r["purpose"]: r for r in row["priority_reasons"] if r["purpose"] != "advance-build"}
+        self.assertEqual((reasons["lesson-shortage"]["topic_entity"], reasons["lesson-shortage"]["topic_layer"]), (1, 10))
+        self.assertEqual((reasons["review-shortage"]["topic_entity"], reasons["review-shortage"]["topic_layer"]), (2, 20))
+
+    def test_finder_and_worker_aliases_have_identical_keys(self):
+        row, = rank(topic(1))["knowledge_points"]
+        request = {**row, "topic": row["topic_entity"], "knowledgePoint": row["db/id"]}
+        del request["topic_entity"], request["db/id"]
+        self.assertEqual(priority_key(row), priority_key(request))
+        self.assertEqual(row["priority_policy"], PRIORITY_POLICY)
+
+    def test_legacy_jobs_keep_relative_order_until_refreshed(self):
+        old = [{"topic": 1, "knowledgePoint": 10, "score": 65000},
+               {"topic": 2, "knowledgePoint": 20, "score": 40000}]
+        current, = rank(topic(3))["knowledge_points"]
+        self.assertEqual(sorted([old[1], current, old[0]], key=priority_key), [current, *old])
 
 
 class VarietyTests(unittest.TestCase):

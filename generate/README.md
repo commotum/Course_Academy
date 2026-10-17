@@ -19,7 +19,7 @@ requests likewise produce a reviewed initial batch; existing source questions
 are preserved.
 
 The learner application runs two independent background workers. The build worker
-uses the [finder's scoring rules](scripts/README.md), taking one KP at a time through
+uses the [finder's relevance-first ordering](scripts/README.md), taking one KP at a time through
 authoring and independent review. The refill worker runs approved hashed packages
 without Codex sessions, aiming for five easy, five moderate and five hard questions
 per KP. It maintains existing packages even after their topics leave the urgency
@@ -96,6 +96,10 @@ Each has `job.json`, the source snapshot, author/reviewer JSONL logs and evidenc
 the sampled batch, and a publication directory containing preparation, request,
 receipt and verification records. Read `job.json` for the current stage and last
 content failure. A process or transport failure leaves its current stage resumable.
+Unfinished authoring and review drafts resume according to the current generator
+priority, preserving their saved inputs and cycle. Only pending or uncertain
+publication recovery overrides that ordering. If a draft's demand disappears,
+the workspace remains available for a later return of that demand.
 
 Packages are stored at:
 

@@ -56,6 +56,78 @@ fn refs(records: &BTreeMap<u64, Record>, entity: u64, attr: &str) -> Vec<u64> {
     }
 }
 
+/// Distinct selected goals supported by a topic, including a selected topic
+/// itself. Topic edges and KP key prerequisites both carry support; repeated
+/// selection memberships and multiple graph paths never increase the count.
+fn selected_support(s: &EntitySnapshot, selected: &BTreeSet<u64>) -> Result<BTreeMap<u64, usize>> {
+    let mut prerequisites = BTreeMap::<u64, BTreeSet<u64>>::new();
+    for topic in s.entities.with_attribute("topic/id") {
+        for next in s.refs(topic, "topic/next")? {
+            prerequisites.entry(next).or_default().insert(topic);
+        }
+        for kp in s.refs(topic, "topic/knowledge-points")? {
+            prerequisites
+                .entry(topic)
+                .or_default()
+                .extend(s.refs(kp, "knowledge-point/key-prerequisites")?);
+        }
+    }
+    let mut support = BTreeMap::new();
+    for &goal in selected {
+        let mut visited = BTreeSet::new();
+        let mut pending = vec![goal];
+        while let Some(topic) = pending.pop() {
+            if !visited.insert(topic) {
+                continue;
+            }
+            *support.entry(topic).or_insert(0) += 1;
+            pending.extend(prerequisites.get(&topic).into_iter().flatten());
+        }
+    }
+    Ok(support)
+}
+
+fn review_dates(s: &EntitySnapshot, learner: u64) -> Result<BTreeMap<u64, i64>> {
+    let mut dates = BTreeMap::<u64, i64>::new();
+    for progress in s.refs(learner, "learner/knowledge-profile")? {
+        let row = s.entity(progress)?;
+        if row.get("progress/learned") != Some(&json!(true)) {
+            continue;
+        }
+        let (Some(memory), Some(interval), Some(anchor), Some(policy)) = (
+            row.get("progress/memory").and_then(Json::as_f64),
+            row.get("progress/interval-days").and_then(Json::as_f64),
+            row.get("progress/memory-at"),
+            s.optional_ref(progress, "progress/policy")?,
+        ) else {
+            continue;
+        };
+        let Some(threshold) = s
+            .entity(policy)?
+            .get("policy/review-threshold")
+            .and_then(Json::as_f64)
+        else {
+            continue;
+        };
+        // Match the review-due exponential decay; memory already below the
+        // threshold is due at its observation, never before that observation.
+        let anchor = course_academy_engine::schema::parse_instant(anchor)?.timestamp_millis();
+        review_due(memory, anchor, interval, threshold, anchor)?;
+        let days = if memory <= threshold {
+            0.0
+        } else {
+            interval * (memory / threshold).log2()
+        };
+        let due = anchor.saturating_add((days * 86_400_000.0).round() as i64);
+        let topic = s.reference(progress, "progress/topic")?;
+        dates
+            .entry(topic)
+            .and_modify(|old| *old = (*old).min(due))
+            .or_insert(due);
+    }
+    Ok(dates)
+}
+
 pub(super) fn annotate(
     db: &DatabaseValue,
     learner: u64,
@@ -161,7 +233,12 @@ pub(super) fn annotate(
     let unavailable = learning::unavailable_questions(&s, learner)?;
     let queued: BTreeSet<_> = s.refs(learner, "learner/queue")?.into_iter().collect();
     let targeted: BTreeSet<_> = s.refs(learner, "learner/targets")?.into_iter().collect();
+    let selected = queued.union(&targeted).copied().collect();
+    let support = selected_support(&s, &selected)?;
+    let layers = learning::topic_layers(&s)?;
+    let review_dates = review_dates(&s, learner)?;
     let mut reviewed = BTreeSet::new();
+    let mut completed_lessons = BTreeSet::new();
     let mut first_studied = BTreeMap::<u64, i64>::new();
     for task in s.refs(learner, "learner/activity")? {
         if s.entity(task)?
@@ -186,6 +263,7 @@ pub(super) fn annotate(
             reviewed.insert(topic);
         }
         if kind.as_deref() == Some("activity.type/lesson") {
+            completed_lessons.insert(topic);
             let finished = s
                 .entity(task)?
                 .get("learner-task/finished-at")
@@ -246,6 +324,35 @@ pub(super) fn annotate(
     for t in topics.as_array_mut().unwrap() {
         let topic = eid(&t["db/id"])?;
         let priority = &priorities[&topic];
+        let selected_prerequisite = t["urgency_groups"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|g| g == "selected-prerequisite");
+        let current_need = t["triggers"].as_array().unwrap().iter().any(|tr| {
+            !matches!(
+                tr["reason"].as_str(),
+                Some("learner/queue" | "learner/targets")
+            )
+        });
+        let relevance =
+            if queued.contains(&topic) || targeted.contains(&topic) || selected_prerequisite {
+                1u8
+            } else if current_need {
+                2
+            } else {
+                3
+            };
+        t["relevance_tier"] = json!(relevance);
+        t["topic_layer"] = json!(layers[&topic]);
+        t["selected_support_count"] = json!(support.get(&topic).copied().unwrap_or(0));
+        t["completed_local_lesson"] = json!(completed_lessons.contains(&topic));
+        t["review_due_at"] = json!(
+            review_dates
+                .get(&topic)
+                .and_then(|ms| DateTime::<Utc>::from_timestamp_millis(*ms))
+                .map(|at| at.to_rfc3339())
+        );
         t["reviewed"] = json!(reviewed.contains(&topic));
         t["first_studied_at"] = json!(
             first_studied
@@ -300,7 +407,54 @@ pub(super) fn annotate(
                     "lesson"
                 })
         );
+        let mut demands = BTreeMap::<String, u8>::new();
+        let mut demand = |kind: &str, tier: u8| {
+            demands
+                .entry(kind.to_owned())
+                .and_modify(|old| *old = (*old).min(tier))
+                .or_insert(tier);
+        };
+        demand(t["next_activity"].as_str().unwrap(), relevance);
+        if queued.contains(&topic)
+            || (targeted.contains(&topic) && !completed_lessons.contains(&topic))
+            || selected_prerequisite
+        {
+            demand("lesson", 1);
+        }
+        for trigger in t["triggers"].as_array().unwrap() {
+            let reason = trigger["reason"].as_str().unwrap();
+            if matches!(reason, "learner/queue" | "learner/targets") {
+                continue;
+            }
+            let mut immediate = reason == "scheduler-selected";
+            if let Some(task) = trigger["task"].as_u64() {
+                let row = s.entity(task)?;
+                let status = row
+                    .get("learner-task/status")
+                    .map(|v| s.ident(v))
+                    .transpose()?;
+                immediate |= matches!(
+                    status.as_deref(),
+                    Some("learner-task.status/started" | "learner-task.status/paused")
+                ) || row.contains_key("learner-task/remediation-for")
+                    || row
+                        .get("learner-task/priority")
+                        .and_then(Json::as_f64)
+                        .is_some_and(|n| n >= 12000.0);
+            }
+            demand(
+                trigger["activity_type"].as_str().unwrap(),
+                if immediate { 0 } else { relevance.min(2) },
+            );
+        }
+        t["activity_demands"] = json!(demands.into_iter().map(|(activity_type, relevance_tier)|
+            json!({"activity_type":activity_type, "relevance_tier":relevance_tier})).collect::<Vec<_>>());
         let needed = priority.ongoing
+            || t["activity_demands"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|d| d["relevance_tier"] == 0)
             || t["triggers"].as_array().unwrap().iter().any(|tr| {
                 matches!(
                     tr["reason"].as_str(),

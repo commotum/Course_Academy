@@ -95,7 +95,7 @@ fn at(s: &str) -> i64 {
 }
 
 #[test]
-fn eligibility_includes_studied_topics_and_empty_banks_but_not_unrelated_tasks() -> Result<()> {
+fn eligibility_includes_selected_studied_and_actual_pending_work() -> Result<()> {
     let db = fixture()?;
     let learner = identity(&db, "learner/id", "test")?;
     let result = candidates(
@@ -109,10 +109,19 @@ fn eligibility_includes_studied_topics_and_empty_banks_but_not_unrelated_tasks()
     )?;
     assert_eq!(
         titles(&result),
-        ["Queue", "Target", "Due", "Refreshed",]
-            .into_iter()
-            .map(String::from)
-            .collect()
+        [
+            "Queue",
+            "Target",
+            "Due",
+            "Refreshed",
+            "Unlocked",
+            "Assigned review",
+            "Assessment",
+            "Retake"
+        ]
+        .into_iter()
+        .map(String::from)
+        .collect()
     );
     let target = result
         .as_array()
@@ -136,7 +145,7 @@ fn eligibility_includes_studied_topics_and_empty_banks_but_not_unrelated_tasks()
 }
 
 #[test]
-fn cursor_keeps_full_population_and_scheduler_selection_cannot_bypass_eligibility() -> Result<()> {
+fn cursor_keeps_full_population_and_scheduler_selection_establishes_demand() -> Result<()> {
     let db = fixture()?;
     let learner = identity(&db, "learner/id", "test")?;
     let topic = identity(&db, "topic/title", "Locked lesson")?;
@@ -151,10 +160,20 @@ fn cursor_keeps_full_population_and_scheduler_selection_cannot_bypass_eligibilit
     )?;
     assert_eq!(
         titles(&result),
-        ["Due", "Refreshed", "Queue", "Target"]
-            .into_iter()
-            .map(String::from)
-            .collect()
+        [
+            "Due",
+            "Refreshed",
+            "Queue",
+            "Target",
+            "Unlocked",
+            "Assigned review",
+            "Assessment",
+            "Retake",
+            "Locked lesson"
+        ]
+        .into_iter()
+        .map(String::from)
+        .collect()
     );
     Ok(())
 }
@@ -196,10 +215,19 @@ fn registered_packages_can_be_replenished_outside_build_eligibility() -> Result<
     )?;
     assert_eq!(
         titles(&ordinary),
-        ["Queue", "Target", "Due", "Refreshed"]
-            .into_iter()
-            .map(String::from)
-            .collect()
+        [
+            "Queue",
+            "Target",
+            "Due",
+            "Refreshed",
+            "Unlocked",
+            "Assigned review",
+            "Assessment",
+            "Retake"
+        ]
+        .into_iter()
+        .map(String::from)
+        .collect()
     );
     let mut extended = candidates(
         &db,
@@ -213,10 +241,20 @@ fn registered_packages_can_be_replenished_outside_build_eligibility() -> Result<
     find_candidates_ranking::annotate(&db, learner, now, &mut extended)?;
     assert_eq!(
         titles(&extended),
-        ["Queue", "Target", "Due", "Refreshed", "Completed review"]
-            .into_iter()
-            .map(String::from)
-            .collect()
+        [
+            "Queue",
+            "Target",
+            "Due",
+            "Refreshed",
+            "Unlocked",
+            "Assigned review",
+            "Assessment",
+            "Retake",
+            "Completed review"
+        ]
+        .into_iter()
+        .map(String::from)
+        .collect()
     );
     let rows = extended.as_array().unwrap();
     let outside = rows
@@ -234,8 +272,8 @@ fn registered_packages_can_be_replenished_outside_build_eligibility() -> Result<
         json!({"easy":0,"moderate":0,"hard":0})
     );
     let due = rows.iter().find(|r| r["topic/title"] == "Due").unwrap();
-    assert_eq!(due["urgency_groups"], json!(["studied"]));
-    assert_eq!(due["urgency_value"], 5);
+    assert_eq!(due["urgency_groups"], json!(["current-need", "studied"]));
+    assert_eq!(due["urgency_value"], 6);
     assert_eq!(due["studied"], true);
     Ok(())
 }
@@ -284,7 +322,7 @@ fn log_filter_ignores_withdrawals_and_unrelated_learners() {
 }
 
 #[test]
-fn ongoing_lesson_overrides_next_activity_only_for_an_eligible_topic() -> Result<()> {
+fn ongoing_lesson_establishes_immediate_demand_outside_selections() -> Result<()> {
     for state in ["started", "paused"] {
         let db = fixture()?;
         let learner = identity(&db, "learner/id", "test")?;
@@ -313,7 +351,7 @@ fn ongoing_lesson_overrides_next_activity_only_for_an_eligible_topic() -> Result
             "assessment",
             false,
         )?;
-        assert!(!titles(&result).contains("Locked lesson"));
+        assert!(titles(&result).contains("Locked lesson"));
         let topic = identity(&db, "topic/title", "Locked lesson")?;
         let db = db
             .with_edn(
@@ -506,7 +544,7 @@ fn ranking_inventory_excludes_seen_reserved_and_canonical_questions() -> Result<
 }
 
 #[test]
-fn urgency_uses_both_one_hop_graphs_and_highest_membership_without_expansion() -> Result<()> {
+fn eligibility_uses_transitive_selected_prerequisites_and_one_hop_speculation() -> Result<()> {
     let db = fixture()?;
     let topic = |title| identity(&db, "topic/title", title);
     let target = topic("Target")?;
@@ -555,6 +593,8 @@ fn urgency_uses_both_one_hop_graphs_and_highest_membership_without_expansion() -
             "Unlocked",
             "Assigned review",
             "Assessment",
+            "Retake",
+            "Locked lesson",
             "Completed review"
         ]
         .into_iter()
@@ -563,10 +603,7 @@ fn urgency_uses_both_one_hop_graphs_and_highest_membership_without_expansion() -
     );
     let rows = result.as_array().unwrap();
     let queue = rows.iter().find(|r| r["topic/title"] == "Queue").unwrap();
-    assert_eq!(
-        queue["urgency_groups"],
-        json!(["queued", "target-prerequisite"])
-    );
+    assert_eq!(queue["urgency_groups"], json!(["queued"]));
     assert_eq!(queue["urgency_value"], 3);
     let target = rows.iter().find(|r| r["topic/title"] == "Target").unwrap();
     assert_eq!(target["urgency_value"], 4);
@@ -680,6 +717,206 @@ fn completed_lesson_lookup_does_not_cross_owned_tasks_with_unrelated_lessons() -
     assert_eq!(
         query(&db, COMPLETED_LESSONS, vec![ids(&tasks)?])?,
         vec![vec![json!(topic)]]
+    );
+    Ok(())
+}
+
+fn ranked_fixture(db: &DatabaseValue, learner: u64) -> Result<Json> {
+    let now = at("2026-10-11T00:00:00Z");
+    let mut result = candidates(
+        db,
+        learner,
+        now,
+        None,
+        &BTreeSet::new(),
+        "assessment",
+        false,
+    )?;
+    find_candidates_ranking::annotate(db, learner, now, &mut result)?;
+    Ok(result)
+}
+
+#[test]
+fn imported_mastery_does_not_hide_selected_fresh_lesson_but_local_completion_does() -> Result<()> {
+    let db = fixture()?;
+    let learner = identity(&db, "learner/id", "test")?;
+    let target = identity(&db, "topic/title", "Target")?;
+    let source = EntityRef::Ident(Keyword::new("db.source", "system"));
+    let db = db.with_edn(&format!(r#"[
+      [:db/add {learner} :learner/knowledge-profile "imported-target"]
+      {{:db/id "imported-target" :progress/topic {target} :progress/learned true :progress/repetitions 2.0}}
+    ]"#), 0, source.clone())?.db_after;
+    let result = ranked_fixture(&db, learner)?;
+    let row = result
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|t| t["db/id"] == target)
+        .unwrap();
+    assert_eq!(row["studied"], true);
+    assert_eq!(row["completed_local_lesson"], false);
+    assert_eq!(row["next_activity"], "review");
+    assert_eq!(
+        row["activity_demands"],
+        json!([
+            {"activity_type":"lesson","relevance_tier":1},
+            {"activity_type":"review","relevance_tier":1}
+        ])
+    );
+    let rows = result.as_array().unwrap();
+    let refreshed = rows
+        .iter()
+        .find(|t| t["topic/title"] == "Refreshed")
+        .unwrap();
+    assert_eq!(refreshed["relevance_tier"], 3);
+    assert_eq!(refreshed["review_due_at"], "2026-10-11T12:00:00+00:00");
+    let due = rows.iter().find(|t| t["topic/title"] == "Due").unwrap();
+    assert_eq!(due["relevance_tier"], 2);
+    assert_eq!(due["review_due_at"], "2026-10-11T00:00:00+00:00");
+
+    let db = db.with_edn(&format!(r#"[
+      [:db/add {learner} :learner/activity "finished-target"]
+      {{:db/id "finished-target" :learner-task/activity "target-lesson" :learner-task/status :learner-task.status/completed}}
+      {{:db/id "target-lesson" :activity/type :activity.type/lesson :activity/scope {target}}}
+    ]"#), 0, source.clone())?.db_after;
+    let result = ranked_fixture(&db, learner)?;
+    let row = result
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|t| t["db/id"] == target)
+        .unwrap();
+    assert_eq!(row["completed_local_lesson"], true);
+    assert_eq!(
+        row["activity_demands"],
+        json!([{"activity_type":"review","relevance_tier":1}])
+    );
+    let db = db
+        .with_edn(
+            &format!("[[:db/add {learner} :learner/queue {target}]]"),
+            0,
+            source,
+        )?
+        .db_after;
+    let result = ranked_fixture(&db, learner)?;
+    let row = result
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|t| t["db/id"] == target)
+        .unwrap();
+    assert!(
+        row["activity_demands"]
+            .as_array()
+            .unwrap()
+            .contains(&json!({"activity_type":"lesson","relevance_tier":1}))
+    );
+    Ok(())
+}
+
+#[test]
+fn selected_support_deduplicates_membership_and_diamond_paths_and_uses_global_layers() -> Result<()>
+{
+    let db = fixture()?;
+    let learner = identity(&db, "learner/id", "test")?;
+    let root = identity(&db, "topic/title", "Locked lesson")?;
+    let left = identity(&db, "topic/title", "Unlocked")?;
+    let right = identity(&db, "topic/title", "Assigned review")?;
+    let queue = identity(&db, "topic/title", "Queue")?;
+    let target = identity(&db, "topic/title", "Target")?;
+    let db = db
+        .with_edn(
+            &format!(
+                r#"[
+      [:db/add {learner} :learner/queue {target}]
+      [:db/add {root} :topic/next {left}]
+      [:db/add {root} :topic/next {right}]
+      [:db/add {root} :topic/next {queue}]
+      [:db/add {left} :topic/next {target}]
+      [:db/add {right} :topic/next {target}]
+    ]"#
+            ),
+            0,
+            EntityRef::Ident(Keyword::new("db.source", "system")),
+        )?
+        .db_after;
+    let result = ranked_fixture(&db, learner)?;
+    let rows = result.as_array().unwrap();
+    for (id, layer, support) in [
+        (root, 0, 2),
+        (left, 1, 1),
+        (right, 1, 1),
+        (queue, 1, 1),
+        (target, 2, 1),
+    ] {
+        let row = rows.iter().find(|t| t["db/id"] == id).unwrap();
+        assert_eq!(row["relevance_tier"], 1);
+        assert_eq!(row["topic_layer"], layer);
+        assert_eq!(row["selected_support_count"], support);
+    }
+    let root = rows.iter().find(|t| t["db/id"] == root).unwrap();
+    assert!(
+        root["urgency_groups"]
+            .as_array()
+            .unwrap()
+            .contains(&json!("selected-prerequisite"))
+    );
+    Ok(())
+}
+
+#[test]
+fn required_review_upgrades_only_review_and_locked_remediation_lessons_are_eligible() -> Result<()>
+{
+    let db = fixture()?;
+    let learner = identity(&db, "learner/id", "test")?;
+    let queue = identity(&db, "topic/title", "Queue")?;
+    let locked = identity(&db, "topic/title", "Locked lesson")?;
+    let locked_task = eid(&query(
+        &db,
+        "[:find ?task :in $ ?topic :where [?a :activity/scope ?topic] [?task :learner-task/activity ?a]]",
+        vec![input_eid(locked)?],
+    )?[0][0])?;
+    assert!(!titles(&ranked_fixture(&db, learner)?).contains("Locked lesson"));
+    let db = db
+        .with_edn(
+            &format!(
+                r#"[
+      [:db/add {learner} :learner/activity "required-review"]
+      {{:db/id "required-review" :learner-task/status :learner-task.status/locked
+        :learner-task/activity "repair-review" :learner-task/remediation-for {locked_task}}}
+      {{:db/id "repair-review" :activity/type :activity.type/review :activity/scope {queue}}}
+      [:db/add {locked_task} :learner-task/remediation-for "required-review"]
+    ]"#
+            ),
+            0,
+            EntityRef::Ident(Keyword::new("db.source", "system")),
+        )?
+        .db_after;
+    let result = ranked_fixture(&db, learner)?;
+    let row = result
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|t| t["db/id"] == queue)
+        .unwrap();
+    assert_eq!(row["relevance_tier"], 1);
+    assert_eq!(
+        row["activity_demands"],
+        json!([
+            {"activity_type":"lesson","relevance_tier":1},
+            {"activity_type":"review","relevance_tier":0}
+        ])
+    );
+    let row = result
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|t| t["db/id"] == locked)
+        .unwrap();
+    assert_eq!(row["relevance_tier"], 2);
+    assert_eq!(
+        row["activity_demands"],
+        json!([{"activity_type":"lesson","relevance_tier":0}])
     );
     Ok(())
 }

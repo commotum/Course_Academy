@@ -24,22 +24,34 @@ runs outside the learner API lock; starting a lesson does not await generator wo
 
 Recheck availability before starting an unstarted activity. Preserve already started or paused work; existing required-work rules still apply while generation runs.
 
-The live worker uses the read-only `generate/scripts/find_candidates.py`
-generator-build ranking. Eligibility is studied, target, queued, direct prerequisite
-of a target, or direct descendant of studied/queued topics. It scores the strongest
-reason as `purpose_points + 1000 × shortage + 100 × urgency_value`: lesson shortages
-precede review shortages, assessment shortages, then hard/moderate/easy distinct-topic
-assessment coverage, then advance preparation. Lessons need five total questions per
-KP, reviews five across the topic, assessments one rated question across the topic.
-Exactly five satisfies the lesson/review threshold.
+The live worker and read-only `generate/scripts/find_candidates.py` share the
+`relevance-v2` comparator in `scripts/generator_priority.py`. They order work by
+relevance first: required or active activity needs, selected study (queue, targets,
+and their unmet necessary prerequisites), other current review/assessment needs,
+then speculative preparation. Within each group, lesson shortages precede review
+shortages, assessment shortages, hard/moderate/easy distinct-topic assessment
+coverage, and advance preparation or routine replenishment. A selected review
+shortage therefore precedes a speculative lesson shortage regardless of size.
+
+Lesson work orders topics by global prerequisite layer, distinct selected goals
+supported, engine priority, and age before comparing individual KP deficits.
+Review work uses due dates instead of prerequisite layers. Selected lesson demand
+is independent of imported mastery: targets without a completed local lesson and
+explicitly queued lessons are checked even when the inferred next activity is a
+review. Lessons need five usable fresh questions per KP, reviews five across the
+topic, and assessments one rated question across the topic. Exactly five satisfies
+the lesson/review threshold; a complete bank receives no shortage priority.
 
 The flat `knowledge_points` list deduplicates build candidates and excludes usable
 registered generators. Full nested topic inventories remain available for coverage
 and diagnostics, including per-KP refill deficits toward five of every difficulty.
-The [finder guide](../scripts/README.md) defines the score components, exclusive
-next-activity rules, distinct-topic coverage and cursor behavior. The service calls
+The [finder guide](../scripts/README.md) defines the ordering, simultaneous activity
+demands, distinct-topic coverage and cursor behavior. The service calls
 it with `include_registered=true` so the independent refill worker also maintains
 existing hashed generators outside the urgency groups. Those extra topics remain
 ineligible for new generator creation. Refills run approved packages directly;
 missing or stale approval sends the affected difficulty to the build worker for
 review. See the [pipeline guide](../README.md) for recovery and storage details.
+Uncertain publication recovery precedes ordinary work to reconcile its exact saved
+request. Unfinished authoring and review drafts retain their workspace and resume
+at their current priority.

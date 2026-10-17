@@ -233,7 +233,7 @@ fn urgency_groups(
     learner: u64,
 ) -> Result<BTreeMap<u64, BTreeSet<(u8, String)>>> {
     let mut groups = BTreeMap::<u64, BTreeSet<(u8, String)>>::new();
-    let mut targets = BTreeSet::new();
+    let mut selected = BTreeSet::new();
     let mut descendants_of = BTreeSet::new();
     let selections = EdnValue::Vector(vec![
         EdnValue::Keyword(Keyword::new("learner", "queue")),
@@ -241,8 +241,8 @@ fn urgency_groups(
     ]);
     for row in query(db, SELECTED, vec![input_eid(learner)?, selections])? {
         let topic = eid(&row[0])?;
+        selected.insert(topic);
         let (value, name) = if row[1] == "learner/targets" {
-            targets.insert(topic);
             (4, "target")
         } else {
             descendants_of.insert(topic);
@@ -289,24 +289,38 @@ fn urgency_groups(
             studied.insert(eid(&row[0])?);
         }
     }
-    for topic in studied {
+    for &topic in &studied {
         descendants_of.insert(topic);
         groups
             .entry(topic)
             .or_default()
             .insert((5, "studied".into()));
     }
-    for (seeds, prerequisites, value, name) in [
-        (targets, true, 2, "target-prerequisite"),
-        (descendants_of, false, 1, "studied-or-queued-descendant"),
-    ] {
-        if !seeds.is_empty() {
-            for topic in direct_neighbors(db, &seeds, prerequisites)? {
-                groups
-                    .entry(topic)
-                    .or_default()
-                    .insert((value, name.into()));
-            }
+    // Reach unlearned prerequisites of both queue entries and targets. A
+    // mastered prerequisite closes its branch; imported mastery never removes
+    // the selected topic itself from explicit fresh-lesson demand.
+    let mut visited = selected.clone();
+    let mut frontier = selected;
+    while !frontier.is_empty() {
+        let next: BTreeSet<_> = direct_neighbors(db, &frontier, true)?
+            .into_iter()
+            .filter(|t| !studied.contains(t) && !visited.contains(t))
+            .collect();
+        for &topic in &next {
+            groups
+                .entry(topic)
+                .or_default()
+                .insert((2, "selected-prerequisite".into()));
+        }
+        visited.extend(next.iter().copied());
+        frontier = next;
+    }
+    if !descendants_of.is_empty() {
+        for topic in direct_neighbors(db, &descendants_of, false)? {
+            groups
+                .entry(topic)
+                .or_default()
+                .insert((1, "studied-or-queued-descendant".into()));
         }
     }
     Ok(groups)
@@ -361,7 +375,7 @@ fn candidates(
 ) -> Result<Json> {
     // A ranking needs the complete eligible population. A cursor validates the
     // captured lineage/log but must never hide unchanged queue or study facts.
-    let groups = urgency_groups(db, learner)?;
+    let mut groups = urgency_groups(db, learner)?;
     let mut triggers: BTreeMap<u64, BTreeSet<(String, String, Option<u64>)>> = BTreeMap::new();
     let mut add = |topic, reason: &str, kind: &str, task| {
         triggers
@@ -463,6 +477,50 @@ fn candidates(
     }
     for topic in scheduler_topics {
         add(*topic, "scheduler-selected", scheduler_kind, None);
+    }
+    // Actual pending and due work is eligible even outside selected curriculum.
+    // Selection membership is not itself an immediate obligation.
+    for (&topic, reasons) in &triggers {
+        for (reason, _, task) in reasons {
+            if matches!(reason.as_str(), "learner/queue" | "learner/targets") {
+                continue;
+            }
+            let mut immediate = reason == "scheduler-selected";
+            if let Some(task) = task {
+                let status = db
+                    .schema()
+                    .resolve_ident(&Keyword::new("learner-task", "status"))
+                    .unwrap();
+                let active: BTreeSet<_> = ["started", "paused"]
+                    .iter()
+                    .filter_map(|state| db.entid(&Keyword::new("learner-task.status", *state)))
+                    .collect();
+                immediate |= db
+                    .values(*task, status)?
+                    .iter()
+                    .any(|v| matches!(v, Value::Ref(id) if active.contains(id)));
+                if let Some(attr) = db
+                    .schema()
+                    .resolve_ident(&Keyword::new("learner-task", "remediation-for"))
+                {
+                    immediate |= !db.values(*task, attr)?.is_empty();
+                }
+                if let Some(attr) = db
+                    .schema()
+                    .resolve_ident(&Keyword::new("learner-task", "priority"))
+                {
+                    immediate |= db
+                        .values(*task, attr)?
+                        .iter()
+                        .any(|v| matches!(v, Value::Double(n) if *n >= 12000.0));
+                }
+            }
+            groups.entry(topic).or_default().insert(if immediate {
+                (7, "immediate".into())
+            } else {
+                (6, "current-need".into())
+            });
+        }
     }
     let mut selected: BTreeSet<_> = groups.keys().copied().collect();
     if include_registered {
