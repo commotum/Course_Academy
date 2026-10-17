@@ -377,6 +377,28 @@ def normalize_tex(value):
     return text
 
 
+def normalize_source_tex(value):
+    """Prepare a complete source TeX title before HTML whitespace collapsing.
+
+    Comments depend on physical line endings. Remove them while those endings
+    are present, retaining escaped percent signs, then canonicalize legacy
+    matrix row breaks. Existing authored Markdown does not pass this boundary.
+    """
+    value = str(value)
+    parts, index = [], 0
+    while index < len(value):
+        if value[index] == '\\' and index + 1 < len(value):
+            parts.append(value[index:index + 2])
+            index += 2
+        elif value[index] == '%':
+            while index < len(value) and value[index] not in '\r\n':
+                index += 1
+        else:
+            parts.append(value[index])
+            index += 1
+    return normalize_tex(''.join(parts))
+
+
 def normalize_prose(value):
     def replace(match):
         whole = match[0]; display = whole.startswith(('$$', r'\['))

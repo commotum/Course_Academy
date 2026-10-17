@@ -61,9 +61,14 @@ def _value(value):
 
 def _formula_html(html):
     from bs4 import BeautifulSoup, NavigableString
+    from math_format import normalize_source_tex
     soup = BeautifulSoup(html, 'html.parser')
     for node in soup.select('.mjpage, mjx-container, .MathJax'):
         if node.parent is None:
+            continue
+        if node.select_one('svg > title math') is not None:
+            # An annotation inside a mixed title describes only its nested
+            # fragment. The complete SVG must remain available as an asset.
             continue
         tex = node.select_one('annotation[encoding="application/x-tex"]')
         if tex is None:
@@ -72,7 +77,12 @@ def _formula_html(html):
             display = ('mjpage__block' in node.get('class', []) or
                        node.get('display') == 'true' or node.get('display') == 'block')
             marker = '$$' if display else '$'
-            node.replace_with(NavigableString(marker + tex.get_text().strip() + marker))
+            # Comments must be removed while their source line endings exist.
+            # Ordinary HTML whitespace collapsing would otherwise make the
+            # first percent comment consume the rest of the formula. Likewise,
+            # normalize legacy matrix row breaks before collapsing newlines.
+            value = normalize_source_tex(tex.get_text())
+            node.replace_with(NavigableString(marker + value + marker))
     return str(soup)
 
 

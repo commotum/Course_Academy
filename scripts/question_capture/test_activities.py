@@ -221,6 +221,53 @@ class ActivityTests(unittest.TestCase):
         self.assertEqual(examples[0]['math_academy_id'], 'e-10')
         self.assertEqual(examples[0]['worked_solution'], 'Here it is.')
 
+    def test_source_formula_comments_do_not_hide_later_matrix_steps(self):
+        # Real legacy titles use a backslash plus a physical newline for some
+        # matrix rows. Both those rows and the formula after a comment survive.
+        import html
+        source = ('\\eqalign{A &= \\left[\\matrix{1 & 2 \\\n3 & 4}\\right] '
+                  '\n% source-only alternative: \\matrix{99 & 99}\n'
+                  '\\\\ &= \\left[\\matrix{5 & 6 \\\n7 & 8}\\right]}')
+        rendered = html_to_markdown('<span class="mjpage mjpage__block"><svg><title>' +
+                                    html.escape(source) + '</title></svg></span>')
+        self.assertTrue(rendered.startswith('$$'))
+        self.assertIn(r'\begin{bmatrix}1 & 2 \\', rendered)
+        self.assertIn(r'3 & 4\end{bmatrix}', rendered)
+        self.assertIn(r'\begin{bmatrix}5 & 6 \\', rendered)
+        self.assertIn(r'7 & 8\end{bmatrix}', rendered)
+        self.assertNotIn('source-only', rendered)
+        self.assertNotIn('99', rendered)
+        self.assertNotIn('%', rendered)
+        from math_format import validate_prose
+        validate_prose(rendered)
+
+    def test_source_formula_keeps_literal_percent_and_even_backslash_comments(self):
+        import html
+        source = (r'\begin{aligned}p&=50\%+25\%\\% comment after a row break' +
+                  '\n' + r'q&=75\%\end{aligned}')
+        rendered = html_to_markdown('<span class="mjpage mjpage__block"><svg><title>' +
+                                    html.escape(source) + '</title></svg></span>')
+        self.assertIn(r'50\%+25\%', rendered)
+        self.assertIn(r'75\%', rendered)
+        self.assertNotIn('comment', rendered)
+        self.assertIn(r'\\', rendered)
+
+    def test_mixed_title_still_requires_whole_formula_preservation(self):
+        from activities import _formula_html
+        source = ('<span class="mjpage"><svg><title>A=' +
+                  '<mjx-container><math><mn>1</mn></math></mjx-container>' +
+                  '+B</title></svg></span>')
+        protected = _formula_html(source)
+        self.assertIn('<svg>', protected)
+        self.assertIn('A=', protected)
+        self.assertIn('+B', protected)
+        with self.assertRaisesRegex(ValueError, 'unresolved graphic or formula'):
+            html_to_markdown(source)
+        annotated = source.replace('<mn>1</mn>',
+            '<mn>1</mn><annotation encoding="application/x-tex">1</annotation>')
+        with self.assertRaisesRegex(ValueError, 'unresolved graphic or formula'):
+            html_to_markdown(annotated)
+
     def test_capture_definition_downloads_tutorial_images_and_saves_source_examples(self):
         html = '''<h1 id="topicName">A Lesson</h1>
         <div class="step" stepId="333" stepType="tutorial" contentId="9">
