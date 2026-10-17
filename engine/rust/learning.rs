@@ -1195,6 +1195,30 @@ fn inventory_priority_score(repetitions: f64, target_count: usize, remaining_top
     priority
 }
 
+/// Operational prerequisite readiness, shared by planning and generator demand.
+/// Historical lesson completion is deliberately separate from current retention.
+pub fn progress_ready(r: &crate::schema::Record, threshold: Option<f64>, at: DateTime<Utc>) -> Result<bool> {
+    let reps = r.get("progress/repetitions").and_then(Value::as_f64).unwrap_or(0.0);
+    if !reps.is_finite() || reps < 0.0 {
+        return Err("invalid imported repetition position".into());
+    }
+    if !COMPLETE_PROGRESS.iter().all(|key| r.contains_key(*key)) {
+        return Ok(reps > 0.0);
+    }
+    if r.get("progress/learned") != Some(&json!(true)) {
+        return Ok(false);
+    }
+    let threshold = threshold.ok_or("operational readiness needs one configured FIRe policy")?;
+    let memory = r["progress/memory"].as_f64().ok_or("invalid retention")?;
+    let interval = r["progress/interval-days"].as_f64().ok_or("invalid interval")?;
+    let observed = crate::schema::instant_days(&r["progress/memory-at"])?;
+    if !memory.is_finite() || memory < 0.0 || !interval.is_finite() || interval <= 0.0 {
+        return Err("invalid operational retention state".into());
+    }
+    let now = timestamp_days(at);
+    Ok(now >= observed && memory * 2.0_f64.powf(-(now - observed) / interval) > threshold)
+}
+
 #[derive(Clone, Debug)]
 pub struct InventoryPriority {
     pub priority: f64,
@@ -1224,7 +1248,6 @@ pub fn inventory_priorities(s: &EntitySnapshot, learner: u64, at: DateTime<Utc>)
     } else {
         None
     };
-    let now = timestamp_days(at);
     for progress in s.refs(learner, "learner/knowledge-profile")? {
         let topic = s.reference(progress, "progress/topic")?;
         let r = s.entity(progress)?;
@@ -1236,25 +1259,7 @@ pub fn inventory_priorities(s: &EntitySnapshot, learner: u64, at: DateTime<Utc>)
             return Err("invalid imported repetition position".into());
         }
         repetitions.insert(topic, reps);
-        if COMPLETE_PROGRESS.iter().all(|key| r.contains_key(*key)) {
-            if r.get("progress/learned") == Some(&json!(true)) {
-                let threshold =
-                    threshold.ok_or("operational readiness needs one configured FIRe policy")?;
-                let memory = r["progress/memory"].as_f64().ok_or("invalid retention")?;
-                let interval = r["progress/interval-days"]
-                    .as_f64()
-                    .ok_or("invalid interval")?;
-                let observed = crate::schema::instant_days(&r["progress/memory-at"])?;
-                if !memory.is_finite() || memory < 0.0 || !interval.is_finite() || interval <= 0.0 {
-                    return Err("invalid operational retention state".into());
-                }
-                if now >= observed
-                    && memory * 2.0_f64.powf(-(now - observed) / interval) > threshold
-                {
-                    ready.insert(topic);
-                }
-            }
-        } else if reps > 0.0 {
+        if progress_ready(r, threshold, at)? {
             ready.insert(topic);
         }
     }
@@ -1353,7 +1358,6 @@ fn plan_candidates_in_scope(
     } else {
         None
     };
-    let now = timestamp_days(at);
     for progress in s.refs(learner, "learner/knowledge-profile")? {
         let topic = s.reference(progress, "progress/topic")?;
         let r = s.entity(progress)?;
@@ -1377,25 +1381,7 @@ fn plan_candidates_in_scope(
         {
             practiced.insert(topic);
         }
-        if COMPLETE_PROGRESS.iter().all(|key| r.contains_key(*key)) {
-            if r.get("progress/learned") == Some(&json!(true)) {
-                let threshold =
-                    threshold.ok_or("operational readiness needs one configured FIRe policy")?;
-                let memory = r["progress/memory"].as_f64().ok_or("invalid retention")?;
-                let interval = r["progress/interval-days"]
-                    .as_f64()
-                    .ok_or("invalid interval")?;
-                let observed = crate::schema::instant_days(&r["progress/memory-at"])?;
-                if !memory.is_finite() || memory < 0.0 || !interval.is_finite() || interval <= 0.0 {
-                    return Err("invalid operational retention state".into());
-                }
-                if now >= observed
-                    && memory * 2.0_f64.powf(-(now - observed) / interval) > threshold
-                {
-                    ready.insert(topic);
-                }
-            }
-        } else if reps > 0.0 {
+        if progress_ready(r, threshold, at)? {
             ready.insert(topic);
         }
     }

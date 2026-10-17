@@ -1,4 +1,4 @@
-//! Captured facts for build ranking; engine priority is retained as a diagnostic.
+//! Captured demand, graph order and engine priority for generator ranking.
 use super::*;
 use course_academy_engine::{
     assessment_sampling, learning,
@@ -237,6 +237,20 @@ pub(super) fn annotate(
     let support = selected_support(&s, &selected)?;
     let layers = learning::topic_layers(&s)?;
     let review_dates = review_dates(&s, learner)?;
+    let mut learned_now = BTreeMap::new();
+    for progress in s.refs(learner, "learner/knowledge-profile")? {
+        let row = s.entity(progress)?;
+        let learned = row
+            .get("progress/learned")
+            .and_then(Json::as_bool)
+            .unwrap_or_else(|| {
+                row.get("progress/repetitions")
+                    .and_then(Json::as_f64)
+                    .unwrap_or(0.0)
+                    > 0.0
+            });
+        learned_now.insert(s.reference(progress, "progress/topic")?, learned);
+    }
     let mut reviewed = BTreeSet::new();
     let mut completed_lessons = BTreeSet::new();
     let mut first_studied = BTreeMap::<u64, i64>::new();
@@ -324,6 +338,10 @@ pub(super) fn annotate(
     for t in topics.as_array_mut().unwrap() {
         let topic = eid(&t["db/id"])?;
         let priority = &priorities[&topic];
+        let currently_learned = learned_now
+            .get(&topic)
+            .copied()
+            .unwrap_or(t["studied"] == true);
         let selected_prerequisite = t["urgency_groups"]
             .as_array()
             .unwrap()
@@ -397,7 +415,7 @@ pub(super) fn annotate(
             upcoming
                 .first()
                 .map(|(_, _, kind)| kind.as_str())
-                .unwrap_or(if t["studied"] == true {
+                .unwrap_or(if currently_learned {
                     if reviewed.contains(&topic) {
                         "assessment"
                     } else {
@@ -414,10 +432,20 @@ pub(super) fn annotate(
                 .and_modify(|old| *old = (*old).min(tier))
                 .or_insert(tier);
         };
-        demand(t["next_activity"].as_str().unwrap(), relevance);
+        let next_activity = t["next_activity"].as_str().unwrap();
+        // Historical study/review alone does not establish an upcoming
+        // assessment. Actual assessment triggers below supply their own tier.
+        demand(
+            next_activity,
+            if next_activity == "assessment" {
+                3
+            } else {
+                relevance
+            },
+        );
         if queued.contains(&topic)
             || (targeted.contains(&topic) && !completed_lessons.contains(&topic))
-            || selected_prerequisite
+            || (selected_prerequisite && !currently_learned)
         {
             demand("lesson", 1);
         }

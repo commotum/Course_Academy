@@ -1,6 +1,10 @@
 ;; Profile IDs are captured from this learner before joining topic facts.
-;; Rust handles the optional learned/repetitions legacy fallback.
-[:find ?topic (pull ?progress [:progress/learned :progress/repetitions])
+;; The engine readiness helper distinguishes current retention from history.
+[:find ?topic (pull ?progress [:progress/learned :progress/repetitions
+                              :progress/memory :progress/memory-at :progress/interval-days
+                              :progress/assessment-accuracy :progress/practice-accuracy
+                              :progress/assessment-mass :progress/practice-mass
+                              {:progress/policy [:policy/review-threshold]}])
  :in $ [?progress ...]
  :where [?progress :progress/topic ?topic]
         [?topic :topic/id _]]

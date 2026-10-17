@@ -231,6 +231,7 @@ fn direct_neighbors(
 fn urgency_groups(
     db: &DatabaseValue,
     learner: u64,
+    now: i64,
 ) -> Result<BTreeMap<u64, BTreeSet<(u8, String)>>> {
     let mut groups = BTreeMap::<u64, BTreeSet<(u8, String)>>::new();
     let mut selected = BTreeSet::new();
@@ -270,9 +271,16 @@ fn urgency_groups(
             .collect()
     };
     let mut studied = BTreeSet::new();
+    let mut ready = BTreeSet::new();
+    let at = DateTime::<Utc>::from_timestamp_millis(now).ok_or("invalid ranking time")?;
     let profiles = owned("learner/knowledge-profile")?;
     if !profiles.is_empty() {
         for row in query(db, STUDIED, vec![ids(&profiles)?])? {
+            let record = row[1].as_object().ok_or("progress record missing")?.clone();
+            let threshold = row[1]["progress/policy"]["policy/review-threshold"].as_f64();
+            if course_academy_engine::learning::progress_ready(&record, threshold, at)? {
+                ready.insert(eid(&row[0])?);
+            }
             let learned = row[1].get("progress/learned").and_then(Json::as_bool);
             let repetitions = row[1]
                 .get("progress/repetitions")
@@ -296,15 +304,15 @@ fn urgency_groups(
             .or_default()
             .insert((5, "studied".into()));
     }
-    // Reach unlearned prerequisites of both queue entries and targets. A
-    // mastered prerequisite closes its branch; imported mastery never removes
-    // the selected topic itself from explicit fresh-lesson demand.
+    // Reach unmet prerequisites of both queue entries and targets. An
+    // operationally ready prerequisite closes its branch; imported mastery
+    // never removes the selected topic itself from fresh-lesson demand.
     let mut visited = selected.clone();
     let mut frontier = selected;
     while !frontier.is_empty() {
         let next: BTreeSet<_> = direct_neighbors(db, &frontier, true)?
             .into_iter()
-            .filter(|t| !studied.contains(t) && !visited.contains(t))
+            .filter(|t| !ready.contains(t) && !visited.contains(t))
             .collect();
         for &topic in &next {
             groups
@@ -375,7 +383,7 @@ fn candidates(
 ) -> Result<Json> {
     // A ranking needs the complete eligible population. A cursor validates the
     // captured lineage/log but must never hide unchanged queue or study facts.
-    let mut groups = urgency_groups(db, learner)?;
+    let mut groups = urgency_groups(db, learner, now)?;
     let mut triggers: BTreeMap<u64, BTreeSet<(String, String, Option<u64>)>> = BTreeMap::new();
     let mut add = |topic, reason: &str, kind: &str, task| {
         triggers

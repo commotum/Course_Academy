@@ -659,7 +659,8 @@ fn lifecycle_uses_completed_history_legacy_progress_and_original_first_study_tim
         .iter()
         .find(|r| r["topic/title"] == "Refreshed")
         .unwrap();
-    assert_eq!(refreshed["next_activity"], "assessment");
+    // Current unlearned state reopens lesson demand without erasing history.
+    assert_eq!(refreshed["next_activity"], "lesson");
     assert_eq!(refreshed["studied"], true);
     assert_eq!(refreshed["reviewed"], true);
     assert_eq!(refreshed["first_studied_at"], "2020-01-01T00:00:00+00:00");
@@ -718,6 +719,75 @@ fn completed_lesson_lookup_does_not_cross_owned_tasks_with_unrelated_lessons() -
         query(&db, COMPLETED_LESSONS, vec![ids(&tasks)?])?,
         vec![vec![json!(topic)]]
     );
+    Ok(())
+}
+
+#[test]
+fn selected_prerequisites_use_current_retention_and_preserve_review_vs_lesson_demand() -> Result<()>
+{
+    let db = fixture()?;
+    let learner = identity(&db, "learner/id", "test")?;
+    let target = identity(&db, "topic/title", "Target")?;
+    let due = identity(&db, "topic/title", "Due")?;
+    let ready = identity(&db, "topic/title", "Refreshed")?;
+    let forgotten = identity(&db, "topic/title", "Locked lesson")?;
+    let behind_ready = identity(&db, "topic/title", "Completed review")?;
+    let policy = eid(&query(
+        &db,
+        "[:find ?p :where [?p :policy/review-threshold _]]",
+        vec![],
+    )?[0][0])?;
+    let mut forms = vec![format!(
+        r#"
+      [:db/add {due} :topic/next {target}]
+      [:db/add {ready} :topic/next {target}]
+      [:db/add {forgotten} :topic/next {target}]
+      [:db/add {behind_ready} :topic/next {ready}]
+      [:db/add {learner} :learner/activity "past-forgotten"]
+      {{:db/id "past-forgotten" :learner-task/activity "old-forgotten-lesson" :learner-task/status :learner-task.status/completed}}
+      {{:db/id "old-forgotten-lesson" :activity/type :activity.type/lesson :activity/scope {forgotten}}}
+      [:db/add {learner} :learner/knowledge-profile "forgotten-state"]
+      {{:db/id "forgotten-state" :progress/topic {forgotten} :progress/learned false
+        :progress/memory 0.0 :progress/interval-days 1.0 :progress/memory-at #inst "2026-10-10T00:00:00Z"
+        :progress/policy {policy} :progress/repetitions 2.0 :progress/assessment-accuracy 1.0
+        :progress/practice-accuracy 1.0 :progress/assessment-mass 1.0 :progress/practice-mass 1.0}}
+    "#
+    )];
+    for topic in [due, ready] {
+        let progress = eid(&query(
+            &db,
+            "[:find ?p :in $ ?t :where [?p :progress/topic ?t]]",
+            vec![input_eid(topic)?],
+        )?[0][0])?;
+        forms.push(format!(r#"{{:db/id {progress} :progress/repetitions 2.0 :progress/assessment-accuracy 1.0
+          :progress/practice-accuracy 1.0 :progress/assessment-mass 1.0 :progress/practice-mass 1.0}}"#));
+    }
+    let db = db
+        .with_edn(
+            &format!("[{}]", forms.join("\n")),
+            0,
+            EntityRef::Ident(Keyword::new("db.source", "system")),
+        )?
+        .db_after;
+    let result = ranked_fixture(&db, learner)?;
+    let rows = result.as_array().unwrap();
+    let row = rows.iter().find(|t| t["db/id"] == due).unwrap();
+    assert_eq!(row["relevance_tier"], 1);
+    assert_eq!(
+        row["activity_demands"],
+        json!([{"activity_type":"review","relevance_tier":1}])
+    );
+    let row = rows.iter().find(|t| t["db/id"] == forgotten).unwrap();
+    assert_eq!(row["studied"], true);
+    assert_eq!(row["completed_local_lesson"], true);
+    assert_eq!(row["relevance_tier"], 1);
+    assert_eq!(
+        row["activity_demands"],
+        json!([{"activity_type":"lesson","relevance_tier":1}])
+    );
+    let row = rows.iter().find(|t| t["db/id"] == ready).unwrap();
+    assert_eq!(row["relevance_tier"], 3);
+    assert!(!rows.iter().any(|t| t["db/id"] == behind_ready));
     Ok(())
 }
 
@@ -790,6 +860,23 @@ fn imported_mastery_does_not_hide_selected_fresh_lesson_but_local_completion_doe
     assert_eq!(
         row["activity_demands"],
         json!([{"activity_type":"review","relevance_tier":1}])
+    );
+    let db = db.with_edn(&format!(r#"[
+      [:db/add {learner} :learner/activity "finished-target-review"]
+      {{:db/id "finished-target-review" :learner-task/activity "target-review" :learner-task/status :learner-task.status/completed}}
+      {{:db/id "target-review" :activity/type :activity.type/review :activity/scope {target}}}
+    ]"#), 0, source.clone())?.db_after;
+    let result = ranked_fixture(&db, learner)?;
+    let row = result
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|t| t["db/id"] == target)
+        .unwrap();
+    assert_eq!(row["next_activity"], "assessment");
+    assert_eq!(
+        row["activity_demands"],
+        json!([{"activity_type":"assessment","relevance_tier":3}])
     );
     let db = db
         .with_edn(
