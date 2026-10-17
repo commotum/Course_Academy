@@ -14,16 +14,15 @@ import shutil
 import subprocess
 import sys
 import time
-from datetime import datetime
+from generator_priority import PRIORITY_FIELDS, PRIORITY_POLICY, priority_key
 
 
-def priority_key(request: dict) -> tuple:
-    """Keep the finder's ordering, including its assessment-age tiebreaker."""
-    def timestamp(value):
-        return datetime.fromisoformat(value.replace('Z', '+00:00')).timestamp() if value else float('inf')
-    return (-request.get('score', 0),
-            timestamp(request.get('first_studied_at')) if request.get('purpose') == 'assessment-shortage' else float('inf'),
-            timestamp(request.get('waiting_since')), request['topic'], request['knowledgePoint'])
+def ranked_reason(common: dict, reason: dict) -> dict:
+    """A shared KP's demand may belong to a different topic than its winner."""
+    result = {**common, **{field: reason[field] for field in
+              (*PRIORITY_FIELDS, 'score', 'purpose', 'shortage', 'next_activity') if field in reason}}
+    result['topic'] = reason.get('topic_entity', reason.get('topic', common['topic']))
+    return result
 
 
 def ranked_requests(inventory: dict) -> list[dict]:
@@ -35,7 +34,7 @@ def ranked_requests(inventory: dict) -> list[dict]:
         script = kp.get('generator_script')
         usable = kp.get('generator_usable', False)
         packaged = usable and bool(script) and script.startswith('generators/')
-        eligible = bool(kp.get('urgency_value'))
+        eligible = bool(kp.get('build_required') or kp.get('urgency_value'))
         if not packaged and not eligible:
             continue
         common = {'knowledgePoint': kp['db/id'], 'topic': kp['topic_entity'],
@@ -43,7 +42,8 @@ def ranked_requests(inventory: dict) -> list[dict]:
                   'score': kp['score'], 'purpose': kp['purpose'],
                   'shortage': kp.get('shortage', 0), 'urgency_value': kp.get('urgency_value', 0),
                   'first_studied_at': kp.get('first_studied_at'), 'waiting_since': kp.get('waiting_since'),
-                  'next_activity': kp.get('next_activity'), 'priority_reasons': kp.get('priority_reasons', [])}
+                  'next_activity': kp.get('next_activity'), 'priority_reasons': kp.get('priority_reasons', []),
+                  **{field: kp[field] for field in PRIORITY_FIELDS if field in kp}}
         if not packaged:
             # Existing repository scripts must pass the independent review once
             # before the inexpensive refill lane may execute their package.
@@ -58,12 +58,14 @@ def ranked_requests(inventory: dict) -> list[dict]:
             missing = kp.get('refill_deficits', {}).get(band, max(0, 5 - kp['inventory']['available'].get(band, 0)))
             if missing <= 0:
                 continue
-            reasons = [reason for reason in kp.get('priority_reasons', []) if eligible
+            reasons = [ranked_reason(common, reason) for reason in kp.get('priority_reasons', []) if eligible
                        and reason['purpose'] != 'advance-build' and reason.get('generated_band', band) == band]
-            reasons.append({'purpose': 'routine-replenishment', 'shortage': missing,
-                            'score': 1000 * missing + 100 * kp.get('urgency_value', 0)})
-            reason = min(reasons, key=lambda r: -r['score'])
-            request = {**common, **{field: reason[field] for field in ('score', 'purpose', 'shortage')},
+            routine = {'purpose': 'routine-replenishment', 'shortage': missing,
+                       'score': 1000 * missing + 100 * kp.get('urgency_value', 0)}
+            if 'baseline_relevance_tier' in kp:
+                routine['relevance_tier'] = kp['baseline_relevance_tier']
+            reasons.append(ranked_reason(common, routine))
+            request = {**min(reasons, key=priority_key),
                        'jobKind': 'refill', 'difficulty': band, 'missing': missing,
                        'available': 5 - missing, 'stage': 'generate'}
             key = kp['db/id'], band
@@ -174,6 +176,7 @@ class InventoryJobs:
                     candidates = [(p, job) for p, job in build_records.get(kp, []) if p not in current]
                     if candidates:
                         path, _ = min(candidates, key=lambda pair: (
+                            not self.publication_recovery(pair[0], pair[1]),
                             not self.recoverable(pair[0], pair[1]),
                             pair[1]['request'].get('jobKind') != 'build',
                             pair[1].get('state') in {'verified', 'withdrawn'}, pair[0].name))
@@ -196,15 +199,15 @@ class InventoryJobs:
                     state = 'pending' if old.get('replenishments', 0) < 3 else 'rejected'
                     if state == 'pending':
                         cycle += 1
-                if (state in {'verified', 'withdrawn'} or state in {'rejected', 'repair-needed', 'awaiting-verification'} and changed
+                if (state in {'verified', 'withdrawn'} and not recovering or state in {'rejected', 'repair-needed', 'awaiting-verification'} and changed
                         or kind == 'refill' and (kp, request['difficulty']) in reopened_refills):
                     state, cycle = 'pending', cycle + 1
                     old = {**old, 'attempts': 0, 'replenishments': 0, 'retryAt': 0}
                 if cycle != previous_cycle:
                     old = {**old, 'outcome': {}, 'completedAt': 0}
                 if recovering:
-                    # A disappearing/changing trigger cannot discard a commit
-                    # that may already have reached the database.
+                    # Resume the saved inputs and cycle without promoting an
+                    # unfinished draft above currently higher-priority work.
                     state = 'running'
                 value = {**old, 'key': key, 'learner': self.learner, 'lineage': lineage,
                          'request': request, 'state': state, 'cycle': cycle, 'recoveryOnly': False}
@@ -217,9 +220,14 @@ class InventoryJobs:
             for path, old in existing.items():
                 if path in current:
                     continue
-                if self.recoverable(path, old):
+                if self.publication_recovery(path, old):
                     save(path, {**old, 'request': {**old['request'], 'jobKind': old['request'].get('jobKind', 'build')},
                                 'state': 'running', 'recoveryOnly': True})
+                elif self.recoverable(path, old):
+                    # Keep the unfinished workspace and cycle, but resume it
+                    # only when the inventory supplies a current demand again.
+                    if old.get('state') != 'withdrawn':
+                        save(path, {**old, 'state': 'withdrawn', 'recoveryOnly': False})
                 else:
                     # Being absent from this full ranked projection is the
                     # evidence that stock is satisfied, or eligibility ended.
@@ -228,7 +236,7 @@ class InventoryJobs:
                     state = 'rejected' if old.get('state') == 'rejected' else 'verified' if present else 'withdrawn'
                     if old.get('state') != state:
                         save(path, {**old, 'state': state, 'verifiedBasis': inventory['basis']})
-            save(cursor_path, {'basis': inventory['basis'], 'lineage': lineage, 'ranking': 'scored-v1'})
+            save(cursor_path, {'basis': inventory['basis'], 'lineage': lineage, 'ranking': PRIORITY_POLICY})
 
     def _accept_legacy(self, inventory: dict) -> None:
         """Cursor advances only after durable jobs are accepted at this basis."""
@@ -280,14 +288,26 @@ class InventoryJobs:
 
     @staticmethod
     def recoverable(path: Path, job: dict) -> bool:
-        """Only saved unfinished work overrides ranking, not stale running flags."""
-        if not job or job.get('state') in {'verified', 'withdrawn', 'rejected'}:
+        """Saved unfinished drafts retain their inputs even after withdrawal."""
+        if not job or job.get('state') in {'verified', 'rejected'}:
             return False
         directory = path.with_suffix('.pipeline') / str(job.get('cycle', 1))
         state_path = directory / 'job.json'
         if state_path.exists():
             return json.loads(state_path.read_text()).get('stage') not in {'verified', 'failed', 'unsupported'}
         return False
+
+    @staticmethod
+    def publication_recovery(path: Path, job: dict) -> bool:
+        """Resolve a possible submission before authoring any newly ranked work."""
+        if not InventoryJobs.recoverable(path, job):
+            return False
+        directory = path.with_suffix('.pipeline') / str(job.get('cycle', 1))
+        state = json.loads((directory / 'job.json').read_text())
+        if state.get('review_after_publication'):
+            return False
+        return (state.get('stage') == 'push'
+                or (directory / 'publication/request.json').exists())
 
     def finish(self, path: Path, updates: dict, *, cycle=None) -> None:
         with (self.directory / 'jobs.lock').open('a') as lock:
@@ -318,10 +338,15 @@ class InventoryJobs:
                 def ordering(pair):
                     path, job = pair
                     request = job['request']
-                    if 'score' in request:
-                        return (not self.recoverable(path, job), *priority_key(request), job['key'])
-                    return (job['state'] != 'running', request.get('urgency', 0), request.get('proximity', 0),
-                            -request.get('priority', 0), job['key'])
+                    if 'score' in request or 'priority_policy' in request or 'relevance_tier' in request:
+                        rank = priority_key(request)
+                    else:
+                        # Unrefreshed, pre-score jobs wait behind the current
+                        # policy while retaining their old relative ordering.
+                        rank = (4, 1, job['state'] != 'running', request.get('urgency', 0),
+                                request.get('proximity', 0), -request.get('priority', 0),
+                                request['topic'], 0, request['knowledgePoint'], '')
+                    return (not self.publication_recovery(path, job), *rank, job['key'])
                 for path, job in sorted(jobs, key=ordering):
                     candidate_lock = (self.directory / f'kp-{job["request"]["knowledgePoint"]}.lock').open('a')
                     try:

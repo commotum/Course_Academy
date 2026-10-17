@@ -8,6 +8,7 @@ import unittest
 from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 from inventory_jobs import InventoryJobs, priority_key, ranked_requests, save
+from generator_priority import PRIORITY_POLICY
 
 class InventoryJobTests(unittest.TestCase):
     def setUp(self):
@@ -145,6 +146,14 @@ class RankedInventoryJobTests(unittest.TestCase):
                 'topics': [{'db/id': kp['topic_entity'], 'knowledge_points': [copy.deepcopy(kp)]} for kp in kps],
                 'knowledge_points': [copy.deepcopy(kp) for kp in kps if not kp['generator_usable'] and kp['urgency_value']]}
 
+    def relevant(self, kp, tier, **context):
+        metadata = {'priority_policy': PRIORITY_POLICY, 'relevance_tier': tier,
+                    'baseline_relevance_tier': tier, 'topic_layer': 10,
+                    'selected_support_count': 1, 'engine_priority': 0, **context}
+        kp.update(metadata)
+        kp['priority_reasons'] = [{**reason, **metadata} for reason in kp['priority_reasons']]
+        return kp
+
     def path_for(self, kp, kind=None, difficulty=None):
         for path in self.jobs.directory.glob('*.json'):
             job = json.loads(path.read_text())
@@ -170,6 +179,59 @@ class RankedInventoryJobTests(unittest.TestCase):
             self.jobs.accept(self.ranked(self.kp(), basis=11))
         self.assertEqual(write.call_count, 1)
         self.assertEqual(write.call_args.args[0].name, 'cursor.json')
+        self.assertEqual(json.loads((self.jobs.directory / 'cursor.json').read_text())['ranking'], PRIORITY_POLICY)
+
+    def test_selected_review_precedes_speculative_lesson_regardless_of_score(self):
+        review = self.relevant(self.kp(purpose='review-shortage', score=100), 1)
+        speculative = self.relevant(self.kp(3, topic=4, score=999999), 3)
+        requests = ranked_requests(self.ranked(speculative, review))
+        self.assertEqual([r['knowledgePoint'] for r in requests], [1, 3])
+        self.jobs.accept(self.ranked(speculative, review))
+        with patch('inventory_jobs.subprocess.run') as run:
+            run.return_value.returncode = 1
+            self.jobs.run_one()
+        self.assertEqual(Path(run.call_args.args[0][3]), self.path_for(1))
+
+    def test_mixed_pre_score_running_job_waits_behind_refreshed_priority(self):
+        self.accept()
+        legacy = self.path_for(1)
+        self.jobs.finish(legacy, {'state': 'running', 'attempts': 2})
+        kp = self.relevant(self.kp(3, purpose='review-shortage'), 1)
+        request = ranked_requests(self.ranked(kp))[0]
+        current = self.jobs.directory / 'refreshed.json'
+        save(current, {'key': 'refreshed', 'request': request, 'state': 'pending', 'cycle': 1})
+        with patch('inventory_jobs.subprocess.run') as run:
+            run.return_value.returncode = 1
+            self.jobs.run_one()
+        self.assertEqual(Path(run.call_args.args[0][3]), current)
+        self.assertEqual(json.loads(legacy.read_text())['attempts'], 2)
+
+    def test_refills_use_reason_context_and_baseline_for_routine_work(self):
+        kp = self.relevant(self.kp(script='generators/aa/hash/main.py'), 0,
+                           baseline_relevance_tier=1, topic_layer=50)
+        kp['priority_reasons'] = [
+            {**kp['priority_reasons'][0], 'purpose': 'lesson-shortage', 'relevance_tier': 3,
+             'generated_band': 'hard', 'score': 999999},
+            {**kp['priority_reasons'][0], 'purpose': 'review-shortage', 'relevance_tier': 1,
+             'generated_band': 'hard', 'topic_entity': 7, 'topic_layer': 3, 'score': 1},
+        ]
+        by_band = {r['difficulty']: r for r in ranked_requests(self.ranked(kp))}
+        self.assertEqual(by_band['hard']['purpose'], 'review-shortage')
+        self.assertEqual(by_band['hard']['topic'], 7)
+        self.assertEqual(by_band['hard']['topic_layer'], 3)
+        self.assertEqual(by_band['hard']['relevance_tier'], 1)
+        self.assertEqual(by_band['easy']['purpose'], 'routine-replenishment')
+        self.assertEqual(by_band['easy']['relevance_tier'], 1)
+
+    def test_finder_and_worker_share_the_comparator(self):
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'generate/scripts'))
+        from find_candidates import ranking_key
+        kps = [self.relevant(self.kp(1, topic=2), 1, topic_layer=8),
+               self.relevant(self.kp(3, topic=4, score=99999), 1, topic_layer=9),
+               self.relevant(self.kp(5, topic=6, purpose='review-shortage'), 1),
+               self.relevant(self.kp(7, topic=8), 3)]
+        expected = [kp['db/id'] for kp in sorted(kps, key=ranking_key)]
+        self.assertEqual([r['knowledgePoint'] for r in ranked_requests(self.ranked(*kps))], expected)
 
     def test_assessment_age_and_waiting_tiebreakers_match_finder(self):
         common = dict(score=41500, purpose='assessment-shortage', topic=2, knowledgePoint=1)
@@ -210,6 +272,59 @@ class RankedInventoryJobTests(unittest.TestCase):
         self.assertEqual(Path(run.call_args.args[0][3]), self.path_for(3))
         self.assertEqual(json.loads(low_path.read_text())['attempts'], 3)
 
+    def test_unfinished_draft_preserves_inputs_without_overriding_priority(self):
+        self.jobs.accept(self.ranked(self.kp()))
+        draft = self.path_for(1)
+        before = json.loads(draft.read_text())
+        save(draft.with_suffix('.pipeline') / '1/job.json', {'stage': 'validate'})
+        self.jobs.finish(draft, {'state': 'running', 'attempts': 2})
+        current = self.kp(script='generate/new-registration.py')
+        self.jobs.accept(self.ranked(current, self.kp(3, score=99999)))
+        preserved = json.loads(draft.read_text())
+        self.assertEqual(preserved['cycle'], 1)
+        for field in ('stage', 'missing', 'script', 'difficulty'):
+            self.assertEqual(preserved['request'][field], before['request'][field])
+        with patch('inventory_jobs.subprocess.run') as run:
+            run.return_value.returncode = 1
+            self.jobs.run_one()
+        self.assertEqual(Path(run.call_args.args[0][3]), self.path_for(3))
+
+    def test_disappearing_draft_withdraws_and_resumes_same_cycle_on_new_demand(self):
+        self.jobs.accept(self.ranked(self.kp()))
+        draft = self.path_for(1)
+        state_file = draft.with_suffix('.pipeline') / '1/job.json'
+        save(state_file, {'stage': 'validate'})
+        before = json.loads(draft.read_text())
+        self.jobs.accept(self.ranked())
+        self.assertEqual(json.loads(draft.read_text())['state'], 'withdrawn')
+        self.assertFalse(self.jobs.run_one())
+        self.jobs.accept(self.ranked(self.kp(script='generate/new-registration.py')))
+        resumed = json.loads(draft.read_text())
+        self.assertEqual(resumed['state'], 'running')
+        self.assertEqual(resumed['cycle'], before['cycle'])
+        self.assertTrue(state_file.exists())
+        for field in ('stage', 'missing', 'script', 'difficulty'):
+            self.assertEqual(resumed['request'][field], before['request'][field])
+
+    def test_saved_publication_intent_recovers_before_priority_but_finished_review_does_not(self):
+        self.jobs.accept(self.ranked(self.kp(), self.kp(3, score=99999)))
+        pending = self.path_for(1)
+        directory = pending.with_suffix('.pipeline') / '1'
+        save(directory / 'job.json', {'stage': 'validate'})
+        save(directory / 'publication/request.json', {'request_id': 'exact-intent'})
+        with patch('inventory_jobs.subprocess.run') as run:
+            run.return_value.returncode = 1
+            self.jobs.run_one()
+        self.assertEqual(Path(run.call_args.args[0][3]), pending)
+        self.assertEqual(json.loads((directory / 'publication/request.json').read_text()),
+                         {'request_id': 'exact-intent'})
+        save(directory / 'job.json', {'stage': 'validate', 'review_after_publication': True})
+        self.jobs.finish(pending, {'retryAt': 0})
+        with patch('inventory_jobs.subprocess.run') as run:
+            run.return_value.returncode = 1
+            self.jobs.run_one()
+        self.assertEqual(Path(run.call_args.args[0][3]), self.path_for(3))
+
     def test_migration_preserves_active_workspace_inputs_and_recovers_before_new_build(self):
         self.accept()
         path = self.path_for(1)
@@ -224,6 +339,20 @@ class RankedInventoryJobTests(unittest.TestCase):
             self.jobs.run_one()
         self.assertEqual(Path(run.call_args.args[0][3]), path)
         self.assertEqual(json.loads(path.read_text())['attempts'], 2)
+
+    def test_migration_prefers_publication_identity_over_a_second_unfinished_draft(self):
+        self.accept(jobs=[self.request, {**self.request, 'difficulty': 'easy'}])
+        paths = sorted(p for p in self.jobs.directory.glob('*.json') if p.name != 'cursor.json')
+        draft, publication = paths
+        save(draft.with_suffix('.pipeline') / '1/job.json', {'stage': 'validate'})
+        save(publication.with_suffix('.pipeline') / '1/job.json', {'stage': 'push'})
+        before = json.loads(publication.read_text())['request']
+        self.jobs.accept(self.ranked(self.kp()))
+        kept = json.loads(publication.read_text())
+        self.assertEqual(kept['state'], 'running')
+        self.assertFalse(kept['recoveryOnly'])
+        self.assertEqual(kept['request']['difficulty'], before['difficulty'])
+        self.assertEqual(json.loads(draft.read_text())['state'], 'withdrawn')
 
     def test_disappearing_trigger_keeps_pending_publication_recoverable(self):
         self.jobs.accept(self.ranked(self.kp()))
