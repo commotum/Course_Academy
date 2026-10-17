@@ -334,12 +334,13 @@ button,input,select { font:inherit; }
 <button class="pill" id="overviewBtn">Course overview</button>
 </div><div class="info-actions hidden" id="targetActions"></div><div class="info-actions" id="viewActions"><button class="pill" id="fitBtn">Fit</button><button class="pill" id="resetBtn">Reset</button></div>
 <div class="graph-target-color"><label id="targetColorLabel" for="targetColorToggle">Color Code</label><button id="targetColorToggle" class="profile-switch" type="button" role="switch" aria-labelledby="targetColorLabel" aria-checked="false"></button></div>
-<section id="targetCourseFilters" class="target-course-filters" aria-label="Filter targets by course" hidden>
+<section id="targetCourseFilters" class="target-course-filters" aria-label="Filter targets by course and queue" hidden>
 <div class="info-kicker">Courses</div>
 <div class="target-course-row target-split-row"><label id="targetSplitLabel" for="targetSplitToggle">Split by course</label><button id="targetSplitToggle" class="profile-switch" type="button" role="switch" aria-labelledby="targetSplitLabel" aria-checked="false"></button></div>
 <div class="target-course-row"><label id="targetCourseLabel256" for="targetCourseToggle256">MTH 256</label><button id="targetCourseToggle256" class="profile-switch" type="button" role="switch" aria-labelledby="targetCourseLabel256" aria-checked="true"></button></div>
 <div class="target-course-row"><label id="targetCourseLabel255" for="targetCourseToggle255">MTH 255</label><button id="targetCourseToggle255" class="profile-switch" type="button" role="switch" aria-labelledby="targetCourseLabel255" aria-checked="true"></button></div>
 <div class="target-course-row"><label id="targetCourseLabel341" for="targetCourseToggle341">MTH 341</label><button id="targetCourseToggle341" class="profile-switch" type="button" role="switch" aria-labelledby="targetCourseLabel341" aria-checked="true"></button></div>
+<div class="target-course-row"><label id="targetQueueLabel" for="targetQueueToggle">Queue</label><button id="targetQueueToggle" class="profile-switch" type="button" role="switch" aria-labelledby="targetQueueLabel" aria-checked="true"></button></div>
 </section>
 
 <div class="meta-line" id="metaLine"></div><div id="badgeNote">Global layer badges · prerequisite order</div>
@@ -441,7 +442,8 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       const changed = previous.size !== next.size || [...next].some(id => !previous.has(id));
       if (snapshot) snapshot.learner.queue = learner?.queue || [];
       if (changed && !loading) {
-        refreshTargetColors();
+        if (targetsView) refreshTargetScope();
+        else refreshTargetColors();
       }
     },
   });
@@ -1235,7 +1237,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
 
   function selectedTitle() {
     const n = state.selected && nodeById.get(state.selected);
-    return n ? n.name : (targetsView ? (courseTopics.size ? 'Your targets' : snapshot?.learner.targets?.length ? 'No matching targets' : 'No targets yet') : (courseTopics.size ? 'Select a topic' : 'No topics yet'));
+    return n ? n.name : (targetsView ? (courseTopics.size ? 'Your targets' : (snapshot?.learner.targets?.length || snapshot?.learner.queue?.length) ? 'No matching targets' : 'No targets yet') : (courseTopics.size ? 'Select a topic' : 'No topics yet'));
   }
 
   function competencyFor(nodeOrId) {
@@ -1371,7 +1373,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
           : targetsView
             ? 'Hold Shift and scroll to change prerequisite depth. Expansion follows prerequisites only.'
             : 'Explore prerequisites and dependents across the knowledge graph, including topics outside this course. Shift + scroll changes depth.')
-      : (courseTopics.size ? 'Select a topic to explore its prerequisites and dependents. Shift + click adds another topic to the selection.' : targetsView ? (snapshot?.learner.targets?.length ? (targetWeekSelection.kind==='range'?'No targets are due in the selected weeks for the enabled courses. Choose another week or All.':targetWeekSelection.kind==='unscheduled'?'No unscheduled targets match the enabled courses. Choose All to see dated targets.':'No targets match the enabled courses. Turn on another course to show its targets.') : 'Add topics to your targets from a lesson or the graph to see them here.') : 'This course does not have topics assigned yet. Browse another course or open all topics.');
+      : (courseTopics.size ? 'Select a topic to explore its prerequisites and dependents. Shift + click adds another topic to the selection.' : targetsView ? ((snapshot?.learner.targets?.length || snapshot?.learner.queue?.length) ? (targetWeekSelection.kind==='range'?'No targets are due in the selected weeks for the enabled courses and queue. Choose another week or All.':targetWeekSelection.kind==='unscheduled'?'No unscheduled targets match the enabled courses and queue. Choose All to see dated targets.':'No topics match the enabled courses and queue. Turn on another course or Queue to show its topics.') : 'Add topics to your targets or queue from a lesson or the graph to see them here.') : 'This course does not have topics assigned yet. Browse another course or open all topics.');
     $('infoCopy').textContent = copy;
     const crumbs = $('breadcrumbs');
     titleReaderboards.clear(crumbs);
@@ -2045,6 +2047,9 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
   function selectedCourse() {return snapshot?.courses.find(c=>c.id===courseId)||null;}
   const targetCourseCodes=['256','255','341'];
   const targetCourseFilterKey='course-academy.graph-target-courses';
+  const targetQueueFilterKey='course-academy.graph-target-queue';
+  let targetQueueEnabled=true;
+  try{targetQueueEnabled=localStorage.getItem(targetQueueFilterKey)!=='false';}catch{ /* Keep Queue enabled without browser storage. */ }
   const targetSplitKey='course-academy.graph-targets-split';
   let splitTargetsByCourse=false;
   try{splitTargetsByCourse=localStorage.getItem(targetSplitKey)==='true';}catch{ /* Split also works without browser storage. */ }
@@ -2063,25 +2068,40 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     targetWeekSelection=normalizeTargetWeekSelection(targetCalendar,targetWeekSelection);
     targetWeekButtonsCalendar=null;
   }
-  function courseFilteredTargetIds() {
+  function courseFilteredTargetIds(includeQueue=targetQueueEnabled) {
     const targets=(snapshot?.learner.targets || []).filter(id=>nodeById.has(id));
-    // All switches on retains manual targets without curriculum membership.
-    if(enabledTargetCourses.size===targetCourseCodes.length)return targets;
+    // All course switches on retains manual targets without curriculum membership.
     const members=new Set();
-    for(const course of snapshot?.courses || []){
-      if(!targetCourseCodes.some(code=>course.code==='MTH '+code && enabledTargetCourses.has(code)))continue;
-      for(const id of course.topicIds || [])members.add(id);
-      for(const id of course.targetTopicIds || [])members.add(id);
+    if(enabledTargetCourses.size!==targetCourseCodes.length){
+      for(const course of snapshot?.courses || []){
+        if(!targetCourseCodes.some(code=>course.code==='MTH '+code && enabledTargetCourses.has(code)))continue;
+        for(const id of course.topicIds || [])members.add(id);
+        for(const id of course.targetTopicIds || [])members.add(id);
+      }
     }
-    return targets.filter(id=>members.has(id));
+    const selected=enabledTargetCourses.size===targetCourseCodes.length?targets:targets.filter(id=>members.has(id));
+    // Queue is an independent source, including topics outside enabled courses.
+    return includeQueue?[...new Set([...selected,...queuedGraphTopicIds()])]:selected;
+  }
+  function queuedGraphTopicIds() {
+    return (snapshot?.learner.queue || []).filter(id=>nodeById.has(id));
   }
   function targetWeekCourseIds() {
     if(enabledTargetCourses.size===targetCourseCodes.length)return null;
     return new Set((snapshot?.courses || []).filter(course=>
       targetCourseCodes.some(code=>course.code==='MTH '+code && enabledTargetCourses.has(code))).map(course=>course.id));
   }
+  function targetWeekScope() {
+    return {targets:courseFilteredTargetIds(false),queue:targetQueueEnabled?queuedGraphTopicIds():[],courses:targetWeekCourseIds()};
+  }
+  function targetIdsForWeek(selection, scope=targetWeekScope()) {
+    const targets=filterScheduledTargets(scope.targets,targetCalendar,selection,scope.courses);
+    if(!scope.queue.length)return targets;
+    const queue=filterScheduledTargets(scope.queue,targetCalendar,selection);
+    return [...new Set([...targets,...queue])];
+  }
   function filteredTargetIds() {
-    return filterScheduledTargets(courseFilteredTargetIds(),targetCalendar,targetWeekSelection,targetWeekCourseIds());
+    return targetIdsForWeek(targetWeekSelection);
   }
   function setTargetWeekSelection(selection) {
     if(!targetsView || !snapshot || loading)return;
@@ -2098,8 +2118,8 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     $('targetWeekStrip').hidden=!targetsView;
     document.querySelector('.app').classList.toggle('targets-page',targetsView);
     if(!targetsView)return;
-    const targets=courseFilteredTargetIds(), courses=targetWeekCourseIds();
-    const count=filteredTargetIds().length;
+    // Reuse the local membership projection for all week counts.
+    const scope=targetWeekScope(), count=targetIdsForWeek(targetWeekSelection,scope).length;
     $('targetWeekReadout').textContent=targetWeekSelectionLabel(targetCalendar,targetWeekSelection)+' · '+count+' target'+(count===1?'':'s');
     for(const [id,kind] of [['targetWeeksAll','all'],['targetWeeksUnscheduled','unscheduled']]){
       $(id).setAttribute('aria-pressed',String(targetWeekSelection.kind===kind));
@@ -2133,7 +2153,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       (targetCalendar.weeks.find(week=>week.current) || targetCalendar.weeks[0])?.startDay ?? null;
     for(const week of targetCalendar.weeks){
       const button=targetWeekButtons.get(week.startDay);
-      const weekCount=filterScheduledTargets(targets,targetCalendar,{kind:'range',start:week.startDay,end:week.startDay},courses).length;
+      const weekCount=targetIdsForWeek({kind:'range',start:week.startDay,end:week.startDay},scope).length;
       const label=targetWeekLabel(week)+' · '+weekCount+' target'+(weekCount===1?'':'s')+(week.current?' · This week':'');
       button.title=label;button.setAttribute('aria-label',label);
       button.setAttribute('aria-pressed',String(targetWeekSelection.kind==='range' && week.startDay>=targetWeekSelection.start && week.startDay<=targetWeekSelection.end));
@@ -2148,6 +2168,8 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     $('targetCourseFilters').hidden=!targetsView;
     $('targetSplitToggle').setAttribute('aria-checked',String(splitTargetsByCourse));
     $('targetSplitToggle').disabled=loading || !snapshot;
+    $('targetQueueToggle').setAttribute('aria-checked',String(targetQueueEnabled));
+    $('targetQueueToggle').disabled=loading || !snapshot;
     for(const code of targetCourseCodes){
       const button=$('targetCourseToggle'+code);
       button.setAttribute('aria-checked',String(enabledTargetCourses.has(code)));
@@ -2174,6 +2196,15 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     // cannot keep an excluded course visible. Retain prerequisite depth.
     changeCourse(null,true,'targets',state.depth);
   }
+  function setTargetQueueEnabled(enabled) {
+    if(!targetsView || !snapshot || loading || targetQueueEnabled===enabled)return;
+    targetQueueEnabled=enabled;
+    try{localStorage.setItem(targetQueueFilterKey,String(enabled));}catch{ /* Keep the in-page filter. */ }
+    changeCourse(null,true,'targets',state.depth);
+  }
+  $('targetQueueToggle').addEventListener('click',()=>{
+    $('targetQueueToggle').dataset.animate='true';setTargetQueueEnabled(!targetQueueEnabled);
+  });
   for(const code of targetCourseCodes){
     $('targetCourseToggle'+code).addEventListener('click',()=>{
       $('targetCourseToggle'+code).dataset.animate='true';
@@ -2212,7 +2243,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     document.title=targetsView?'Targets · Course Academy':'Explore · '+(course?.title||'All topics')+' · Course Academy';
     if(targetsView)$('targetsLink').setAttribute('aria-current','page');
     else $('targetsLink').removeAttribute('aria-current');
-    $('overviewBtn').textContent=targetsView?(targetWeekSelection.kind==='all'?(enabledTargetCourses.size===targetCourseCodes.length?'All targets':'Filtered targets'):targetWeekSelectionLabel(targetCalendar,targetWeekSelection).split(' - ')[0]+' targets'):course?'Course overview':'Full graph';
+    $('overviewBtn').textContent=targetsView?(targetWeekSelection.kind==='all'?(enabledTargetCourses.size===targetCourseCodes.length && targetQueueEnabled?'All targets':'Filtered targets'):targetWeekSelectionLabel(targetCalendar,targetWeekSelection).split(' - ')[0]+' targets'):course?'Course overview':'Full graph';
     const startersHost=$('starterButtons');titleReaderboards.clear(startersHost);startersHost.replaceChildren();
     const members=NODES.filter(n=>courseTopics.has(n.id));
     const preferred=STARTER_TOPIC_IDS.map(id=>members.find(n=>n.mathAcademyId===id)).filter(Boolean);
@@ -2352,6 +2383,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     getCourses:()=>snapshot?.courses.map(c=>({...c}))||[],
     changeCourse,
     setTargetCourseEnabled,
+    setTargetQueueEnabled,
     setTargetSplit, setColorCode,
     chooseTargetWeek, setTargetWeekSelection,
     getTargetWeeks:()=>targetCalendar.weeks.map(week=>({...week,label:targetWeekLabel(week)})),

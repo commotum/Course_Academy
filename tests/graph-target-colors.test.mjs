@@ -43,6 +43,9 @@ function fixture() {
     mctx: { clearRect() {}, drawImage() {}, strokeRect() {} },
     localStorage: { setItem: (key, value) => storage.set(key, value) },
     targetsView: false, loading: false, targetTopicId: null,
+    // This fixture models focused exploration; full root changes are covered
+    // by targets-graph.test.mjs.
+    refreshTargetScope() { c.refreshTargetColors(); },
     targetControls: { setLearner: learner => c.learnerChanged(learner) },
   });
   vm.runInContext(statusPaletteSource + colors + minimapSource + `\nfunction learnerChanged(learner) { ${changed} }\nfunction queueChanged(learner) { ${queueChanged} }`, c);
@@ -210,7 +213,7 @@ test('color legend mirrors the node shades and hides when coloring is off', () =
   assert.match(elements.get('competencyFillDescription').textContent, /Every topic uses grayscale/);
 });
 
-test('queue updates repaint immediately; removal restores target status or default prerequisite coloring without changing scope', () => {
+test('queue updates repaint focused exploration; removal restores target status or default prerequisite coloring', () => {
   const { c, elements, fills } = fixture(); c.targetsView = true; c.setColorCode(true);
   const layout = c.state.layout, view = c.state.view;
   c.queueChanged({ queue: [1, 2, '3', 99] });

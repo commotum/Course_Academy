@@ -17,8 +17,10 @@ const geometrySource = html.slice(html.indexOf('  function titleWrap('), html.in
 const layoutSource = html.slice(html.indexOf('  function orderColumnStacks('), html.indexOf('  function relatedNodeIds('));
 const guidesSource = html.slice(html.indexOf('  function renderGuides('), html.indexOf('  function stopMarqueeLoop('));
 const changeSource = html.slice(html.indexOf('    onChange: learner => {') + '    onChange: learner => {'.length, html.indexOf('\n    },\n  });'));
+const queueChangeStart = html.indexOf('    onChange: learner => {', html.indexOf('  const queueControls ='));
+const queueChangeSource = html.slice(queueChangeStart + '    onChange: learner => {'.length, html.indexOf('\n    },\n  });', queueChangeStart));
 
-function fixture(targets = [1, 3], { splitSaved = null } = {}) {
+function fixture(targets = [1, 3], { splitSaved = null, queueSaved = null } = {}) {
   const element = () => ({
     listeners: {}, dataset: {},
     addEventListener(name, listener) { this.listeners[name] = listener; },
@@ -38,7 +40,7 @@ function fixture(targets = [1, 3], { splitSaved = null } = {}) {
     location: { href: 'http://example.test/?view=targets&course=course-a&topic=2' },
     snapshot: { learner: { targets, courseId: 'course-a' }, courses: [{ id: 'course-a', title: 'Course A', topicIds: [1, 2] }] },
     storage: new Map(),
-    localStorage: { getItem(key) { return key === 'course-academy.graph-targets-split' ? splitSaved : null; }, setItem(key, value) { context.storage.set(key, value); } },
+    localStorage: { getItem(key) { return key === 'course-academy.graph-targets-split' ? splitSaved : key === 'course-academy.graph-target-queue' ? queueSaved : null; }, setItem(key, value) { context.storage.set(key, value); } },
     NODES: nodes, LINKS: links,
     dependencyOrder: [4, 1, 2, 3, 5, 6],
     inMap: new Map(nodes.map(n => [n.id, links.filter(e => e.target === n.id).map(e => e.source)])),
@@ -58,6 +60,7 @@ function fixture(targets = [1, 3], { splitSaved = null } = {}) {
   });
   context.history = { replaceState(_state, _title, url) { context.location.href = String(url); } };
   vm.runInContext(`${weekSource}\n${helperSource}\n${geometrySource}\n${columnSource}\n${selectionSource}\n${depthSource}\n${resetSource}\n${scopeSource}\n${activeSource}\n${layoutSource}\n${guidesSource}\nfunction learnerChanged(learner) { ${changeSource} }`, context);
+  vm.runInContext(`function queueChanged(learner) { ${queueChangeSource} }`, context);
   return context;
 }
 
@@ -346,6 +349,7 @@ test('expanded prerequisites inherit their courses without adding hidden topics 
   c.snapshot.courses.find(course => course.code === 'MTH 255').targetTopicIds = [2];
   c.snapshot.courses.find(course => course.code === 'MTH 341').targetTopicIds = [];
   c.snapshot.learner.queue = [4, 6]; c.changeCourse(null, true, 'targets'); c.setTargetSplit(true);
+  c.setTargetQueueEnabled(false);
   assert.deepEqual(Array.from(c.layoutCurrent().activeNodes, node => node.id), [2, 3]);
   c.setDepth(2, true); let layout = c.layoutCurrent();
   assert.deepEqual([...layout.courseBands.find(band => band.key === 'shared').nodeIds].sort(), [1, 4]);
@@ -412,6 +416,72 @@ test('course switches filter assignment targets, preserve shared targets and lea
   assert.equal(c.storage.get('course-academy.graph-target-courses'), '[]');
   for (const code of ['256', '255', '341']) c.setTargetCourseEnabled(code, true);
   assert.deepEqual([...c.buildActiveSet().nodeIds], saved);
+});
+
+test('Queue switch independently adds queued roots, deduplicates overlaps and persists without requests or membership changes', () => {
+  const c = fixture([1, 3]); addSchoolCourses(c);
+  c.snapshot.learner.queue = [3, 6, 6, 999];
+  const learner = JSON.stringify(c.snapshot.learner);
+  c.changeCourse(null, true, 'targets');
+  assert.deepEqual([...c.courseTopics], [1, 3, 6]);
+  for (const code of ['256', '255', '341']) c.setTargetCourseEnabled(code, false);
+  assert.deepEqual([...c.courseTopics], [3, 6]);
+  assert.equal(c.$('targetQueueToggle').attributes['aria-checked'], 'true');
+  c.setDepth(2); c.exploreTopic({ id: 6 });
+  c.$('targetQueueToggle').listeners.click();
+  assert.equal(c.$('targetQueueToggle').attributes['aria-checked'], 'false');
+  assert.equal(c.$('targetQueueToggle').dataset.animate, 'true');
+  assert.equal(c.buildActiveSet().nodeIds.size, 0);
+  assert.equal(c.state.depth, '2');
+  assert.equal(c.state.history.length, 1);
+  assert.equal(c.location.href, 'http://example.test/?view=targets');
+  assert.equal(c.storage.get('course-academy.graph-target-queue'), 'false');
+  assert.equal(JSON.stringify(c.snapshot.learner), learner);
+  c.setTargetCourseEnabled('256', true);
+  assert.deepEqual([...c.courseTopics], [1, 3]); // Shared target survives Queue being off.
+  c.setTargetQueueEnabled(true);
+  assert.deepEqual([...c.courseTopics], [1, 3, 6]);
+  const restored = fixture([1], { queueSaved: 'false' });
+  restored.snapshot.learner.queue = [6]; restored.changeCourse(null, true, 'targets');
+  assert.deepEqual([...restored.courseTopics], [1]);
+  assert.equal(restored.$('targetQueueToggle').attributes['aria-checked'], 'false');
+  restored.changeCourse('course-a'); restored.setTargetQueueEnabled(true);
+  assert.equal(restored.$('targetCourseFilters').hidden, true);
+  assert.deepEqual([...restored.courseTopics], [1, 2]);
+});
+
+test('queue-only views follow week filters and refresh roots on queue edits and rollbacks', () => {
+  const c = fixture([]); addSchoolCourses(c); addWeekSchedule(c);
+  c.snapshot.learner.queue = [2, 6]; c.changeCourse(null, true, 'targets');
+  for (const code of ['256', '255', '341']) c.setTargetCourseEnabled(code, false);
+  assert.deepEqual([...c.courseTopics], [2, 6]);
+  assert.equal(c.$('targetWeekReadout').textContent, 'All weeks · 2 targets');
+  const buttons = c.$('targetWeekButtons').children;
+  assert.match(buttons[2].attributes['aria-label'], /1 target/);
+  buttons[2].listeners.click({ shiftKey: false });
+  assert.deepEqual([...c.courseTopics], [2]);
+  c.$('targetWeeksUnscheduled').listeners.click();
+  assert.deepEqual([...c.courseTopics], [6]);
+  c.queueChanged({ queue: [2] });
+  assert.deepEqual([...c.state.activeIds], []);
+  c.queueChanged({ queue: [2, 6] });
+  assert.deepEqual([...c.state.activeIds], [6]);
+  assert.deepEqual([...c.snapshot.learner.targets], []);
+});
+
+test('removing a queued topic keeps focused exploration while updating overview membership', () => {
+  const c = fixture([3]);
+  c.snapshot.learner.queue = [6]; c.changeCourse(null, true, 'targets');
+  c.exploreTopic({ id: 6 }); c.setDepth(2);
+  const history = c.state.history, url = c.location.href;
+  c.queueChanged({ queue: [] });
+  assert.deepEqual([...c.courseTopics], [3]);
+  assert.deepEqual([...c.state.activeIds], [6]);
+  assert.equal(c.state.depth, '2');
+  assert.equal(c.state.history, history);
+  assert.equal(c.location.href, url);
+  c.resetView();
+  assert.deepEqual([...c.state.activeIds], [3]);
 });
 
 test('filtering clears excluded focus/history while retaining prerequisite depth and cross-course dependencies', () => {
