@@ -1,0 +1,15 @@
+{
+  "status": "pending",
+  "reason": "Preparation failed for capture /home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14253130: Unpaired math dollar delimiter",
+  "error_type": "ActivityPreparationError",
+  "unknown_or_unverified_commit": false,
+  "request_key": null,
+  "batch_directory": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture-database/batches/24ccd6f3778e606420b4943c52aa62860fcd2b53ca0273a0776814cc12d189c7/9af7865b-f9f3-451b-8899-b866e1a5d6ac",
+  "activities": {
+    "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14253130": {
+      "status": "pending",
+      "reason": "Preparation failed for capture /home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14253130: Unpaired math dollar delimiter"
+    }
+  },
+  "traceback": "Traceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/capture/scripts/database/batch.py\", line 217, in select\n    candidate = next(preparations)\n  File \"/home/jake/Developer/Course_Academy/capture/scripts/database/batch.py\", line 199, in prepare_many\n    yield self.prepare(member, basis, future.result())\n  File \"/home/jake/Developer/Course_Academy/capture/scripts/database/batch.py\", line 178, in prepare\n    prepared, snapshot = self.pipeline._prepare_snapshot(member['content'], directory, snapshot)\n  File \"/home/jake/Developer/Course_Academy/capture/scripts/database/pipeline.py\", line 73, in _prepare_snapshot\n    record_source_evidence=record_source_evidence).prepare(\n  File \"/home/jake/Developer/Course_Academy/capture/scripts/database/prepare.py\", line 412, in prepare\n    q = formatted_question(q)\n  File \"/home/jake/Developer/Course_Academy/capture/scripts/database/math_content.py\", line 40, in question\n    source[key] = prose(source[key])\n  File \"/home/jake/Developer/Course_Academy/capture/scripts/database/math_content.py\", line 33, in prose\n    return formatter().validate_prose(value('text', markdown(source)))\n  File \"/home/jake/Developer/Course_Academy/scripts/question_capture/math_format.py\", line 458, in validate_prose\n    if re.search(r'(?<!\\\\)\\$', outside): raise ValueError('Unpaired math dollar delimiter')\nValueError: Unpaired math dollar delimiter\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/jake/Developer/Course_Academy/capture/scripts/database/batch.py\", line 295, in process\n    manifest, members = self.select(directories, allow_underfilled)\n  File \"/home/jake/Developer/Course_Academy/capture/scripts/database/batch.py\", line 224, in select\n    raise ActivityPreparationError(member['directory'], error) from error\nscripts.database.batch.ActivityPreparationError: Preparation failed for capture /home/jake/Developer/Course_Academy/reference/mathacademy/capture/linear/14253130: Unpaired math dollar delimiter\n"
+}
