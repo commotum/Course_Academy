@@ -1,0 +1,117 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-335314",
+      "sequence_position": 4,
+      "problem": "Consider the following initial value problem for the functions $y=y(x),z=z(x),w=w(x):$\n\n$$\n\\{\\begin{aligned}{y}^{′}=2-3y+z,\\, & y(0)=0 \\\\ {z}^{′}=x+2y,\\, & z(0)=0 \\\\ {w}^{′}=y-2w,\\, & w(0)=1\\end{aligned}\n$$\n\nWe wish to approximate the solution using Euler's method.\nWhat entries should be placed in the columns for $Δy,$ $Δz,$ and $Δw$ in the table below if the step size is $Δx=\\frac{1}{4}?$\n\n| $x$ | $y$ | ${y}^{′}$ | $Δy$ | $z$ | ${z}^{′}$ | $Δz$ | $w$ | ${w}^{′}$ | $Δw$ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| $0$ |  |  | {{field-1}} |  |  | {{field-2}} |  |  | {{field-3}} |\n\nTherefore, $y\\,(\\frac{1}{4})≈$\n{{field-4}},\n$z\\,(\\frac{1}{4})≈$\n{{field-5}},\nand $w\\,(\\frac{1}{4})≈$\n{{field-6}}.",
+      "worked_solution": "Euler's method approximates the solution of an initial value problem containing a system of ODEs by applying the update rule component-wise to each equation.\n\nFirst, because the initial conditions are $y(0)=0,$ $z(0)=0,$ and $w(0)=1,$ we place $y=0,$ $z=0,$ and $w=1$ in the table.\n\n| $x$ | $y$ | ${y}^{′}$ | $Δy$ | $z$ | ${z}^{′}$ | $Δz$ | $w$ | ${w}^{′}$ | $Δw$ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $0$ |  |  | $0$ |  |  | $1$ |  |  |\n\nNext, we compute ${y}^{′},{z}^{′},$ and ${w}^{′}$ according to the given rules:\n\n$$\n\\begin{aligned}{y}^{′} & =2-3y+z \\\\  & =2-3\\cdot 0+0 \\\\  & =2 \\\\ {z}^{′} & =x+2y \\\\  & =0+2\\cdot 0 \\\\  & =0 \\\\ {w}^{′} & =y-2w \\\\  & =0-2\\cdot 1 \\\\  & =-2\\end{aligned}\n$$\n\nSo, we add these to our table.\n\n| $x$ | $y$ | ${y}^{′}$ | $Δy$ | $z$ | ${z}^{′}$ | $Δz$ | $w$ | ${w}^{′}$ | $Δw$ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $0$ | $2$ |  | $0$ | $0$ |  | $1$ | $-2$ |  |\n\nFinally, we compute $Δy,$ $Δz,$ and $Δw$ using Euler's method:\n\n$$\n\\begin{aligned}Δy & ={y}^{′}\\cdot Δx \\\\  & =2\\cdot \\frac{1}{4} \\\\  & =\\frac{1}{2} \\\\ Δz & ={z}^{′}\\cdot Δx \\\\  & =0\\cdot \\frac{1}{4} \\\\  & =0 \\\\ Δw & ={w}^{′}\\cdot Δx \\\\  & =(-2)\\cdot \\frac{1}{4} \\\\  & =-\\frac{1}{2}\\end{aligned}\n$$\n\nWe add these to our table.\n\n| $x$ | $y$ | ${y}^{′}$ | $Δy$ | $z$ | ${z}^{′}$ | $Δz$ | $w$ | ${w}^{′}$ | $Δw$ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $0$ | $2$ | $\\frac{1}{2}$ | $0$ | $0$ | $0$ | $1$ | $-2$ | $-\\frac{1}{2}$ |\n\nTo get the new values of $x,$ $y,$ $z,$ and $w$ in the *next* row, we add $Δx$ to $x,$ $Δy$ to $y,$ $Δz$ to $z,$ and $Δw$ to $w,$ as follows:\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+Δx=0+\\frac{1}{4}=\\frac{1}{4} \\\\ {y}_{\\text{new}} & =y+Δy=0+\\frac{1}{2}=\\frac{1}{2} \\\\ {z}_{\\text{new}} & =z+Δz=0+0=0 \\\\ {w}_{\\text{new}} & =w+Δw=1+(-\\frac{1}{2})=\\frac{1}{2}\\end{aligned}\n$$\n\nAdding these values to our table in a new row gives the following:\n\n| $x$ | $y$ | ${y}^{′}$ | $Δy$ | $z$ | ${z}^{′}$ | $Δz$ | $w$ | ${w}^{′}$ | $Δw$ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $0$ | $2$ | $\\frac{1}{2}$ | $0$ | $0$ | $0$ | $1$ | $-2$ | $-\\frac{1}{2}$ |\n| $\\frac{1}{4}$ | $\\frac{1}{2}$ |  |  | $0$ |  |  | $\\frac{1}{2}$ |  |  |\n\nTherefore, we conclude that\n$y\\,(\\frac{1}{4})≈\\frac{1}{2},$\n$z\\,(\\frac{1}{4})≈0,$\nand\n$w\\,(\\frac{1}{4})≈\\frac{1}{2}.$",
+      "answer_fields_complete": true,
+      "result": "Incorrect",
+      "grade": "Incorrect",
+      "source_grade": "Incorrect",
+      "problem_field_keys": [
+        "field-1",
+        "field-2",
+        "field-3",
+        "field-4",
+        "field-5",
+        "field-6"
+      ],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14284147/observations/history-q-335314-9dc28452c20167ee7e2c.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14284147",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14284147/observations/history-solution-q-335314-f3552f8ca31935bee37e.html",
+      "fields": [
+        {
+          "key": "field-1",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        },
+        {
+          "key": "field-2",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        },
+        {
+          "key": "field-3",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        },
+        {
+          "key": "field-4",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        },
+        {
+          "key": "field-5",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        },
+        {
+          "key": "field-6",
+          "type": "blank",
+          "disabled": true,
+          "choices_complete": false
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q335314",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "0",
+                "value_type": "math"
+              },
+              {
+                "key": "field-2",
+                "value": "0",
+                "value_type": "math"
+              },
+              {
+                "key": "field-3",
+                "value": "-\\frac{1}{2}",
+                "value_type": "math"
+              },
+              {
+                "key": "field-4",
+                "value": "\\frac{1}{2}",
+                "value_type": "math"
+              },
+              {
+                "key": "field-5",
+                "value": "0",
+                "value_type": "math"
+              },
+              {
+                "key": "field-6",
+                "value": "\\frac{1}{2}",
+                "value_type": "math"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Incorrect",
+          "source_grade": "Incorrect",
+          "result": "Incorrect",
+          "worked_solution": "Euler's method approximates the solution of an initial value problem containing a system of ODEs by applying the update rule component-wise to each equation.\n\nFirst, because the initial conditions are $y(0)=0,$ $z(0)=0,$ and $w(0)=1,$ we place $y=0,$ $z=0,$ and $w=1$ in the table.\n\n| $x$ | $y$ | ${y}^{′}$ | $Δy$ | $z$ | ${z}^{′}$ | $Δz$ | $w$ | ${w}^{′}$ | $Δw$ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $0$ |  |  | $0$ |  |  | $1$ |  |  |\n\nNext, we compute ${y}^{′},{z}^{′},$ and ${w}^{′}$ according to the given rules:\n\n$$\n\\begin{aligned}{y}^{′} & =2-3y+z \\\\  & =2-3\\cdot 0+0 \\\\  & =2 \\\\ {z}^{′} & =x+2y \\\\  & =0+2\\cdot 0 \\\\  & =0 \\\\ {w}^{′} & =y-2w \\\\  & =0-2\\cdot 1 \\\\  & =-2\\end{aligned}\n$$\n\nSo, we add these to our table.\n\n| $x$ | $y$ | ${y}^{′}$ | $Δy$ | $z$ | ${z}^{′}$ | $Δz$ | $w$ | ${w}^{′}$ | $Δw$ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $0$ | $2$ |  | $0$ | $0$ |  | $1$ | $-2$ |  |\n\nFinally, we compute $Δy,$ $Δz,$ and $Δw$ using Euler's method:\n\n$$\n\\begin{aligned}Δy & ={y}^{′}\\cdot Δx \\\\  & =2\\cdot \\frac{1}{4} \\\\  & =\\frac{1}{2} \\\\ Δz & ={z}^{′}\\cdot Δx \\\\  & =0\\cdot \\frac{1}{4} \\\\  & =0 \\\\ Δw & ={w}^{′}\\cdot Δx \\\\  & =(-2)\\cdot \\frac{1}{4} \\\\  & =-\\frac{1}{2}\\end{aligned}\n$$\n\nWe add these to our table.\n\n| $x$ | $y$ | ${y}^{′}$ | $Δy$ | $z$ | ${z}^{′}$ | $Δz$ | $w$ | ${w}^{′}$ | $Δw$ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $0$ | $2$ | $\\frac{1}{2}$ | $0$ | $0$ | $0$ | $1$ | $-2$ | $-\\frac{1}{2}$ |\n\nTo get the new values of $x,$ $y,$ $z,$ and $w$ in the *next* row, we add $Δx$ to $x,$ $Δy$ to $y,$ $Δz$ to $z,$ and $Δw$ to $w,$ as follows:\n\n$$\n\\begin{aligned}{x}_{\\text{new}} & =x+Δx=0+\\frac{1}{4}=\\frac{1}{4} \\\\ {y}_{\\text{new}} & =y+Δy=0+\\frac{1}{2}=\\frac{1}{2} \\\\ {z}_{\\text{new}} & =z+Δz=0+0=0 \\\\ {w}_{\\text{new}} & =w+Δw=1+(-\\frac{1}{2})=\\frac{1}{2}\\end{aligned}\n$$\n\nAdding these values to our table in a new row gives the following:\n\n| $x$ | $y$ | ${y}^{′}$ | $Δy$ | $z$ | ${z}^{′}$ | $Δz$ | $w$ | ${w}^{′}$ | $Δw$ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| $0$ | $0$ | $2$ | $\\frac{1}{2}$ | $0$ | $0$ | $0$ | $1$ | $-2$ | $-\\frac{1}{2}$ |\n| $\\frac{1}{4}$ | $\\frac{1}{2}$ |  |  | $0$ |  |  | $\\frac{1}{2}$ |  |  |\n\nTherefore, we conclude that\n$y\\,(\\frac{1}{4})≈\\frac{1}{2},$\n$z\\,(\\frac{1}{4})≈0,$\nand\n$w\\,(\\frac{1}{4})≈\\frac{1}{2}.$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14284147/observations/history-solution-q-335314-f3552f8ca31935bee37e.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14284147/observations/history-q-335314-9dc28452c20167ee7e2c.html"
+        }
+      }
+    ]
+  }
+}
