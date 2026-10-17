@@ -1,0 +1,165 @@
+{
+  "task": "judge_question",
+  "payload": {
+    "evidence_contract": "judge_question:1",
+    "question": {
+      "math_academy_id": "q-338845",
+      "sequence_position": 2,
+      "problem": "Consider the boundary value problem\n\n$$\n{y}^{″}-10\\lambda {y}^{′}+25{\\lambda }^{2}y=0,\\,{y}^{′}(1)=0,\\,y(2)+2{y}^{′}(2)=0,\\,1\\le x\\le 2,\\,\\lambda \\in R.\n$$\n\nFind the eigenvalues and eigenfunctions of this problem. Assume that $B$ and $C$ are constants.\n\n$\\,$ The eigenvalues are $\\lambda =$ {{field-1}}.\n\n$\\,$ The eigenfunctions are $y=$ {{field-2}}.",
+      "worked_solution": "We consider the cases $\\lambda =0$ and $\\lambda \\ne 0$ separately, since they correspond to different solutions. \n\n**Case 1**: First, we consider $\\lambda =0.$ \n\nSetting $\\lambda =0$ gives the equation\n\n$$\n{y}^{″}=0.\n$$\n\nIntegrating this equation gives\n\n$$\ny=Ax+B.\n$$\n\nApplying the conditions ${y}^{′}(1)=0$ and $y(2)+2{y}^{′}(2)=0$ yields the trivial solution $y≡0.$ Since the zero solution is not an eigenfunction, $\\lambda =0$ is not an eigenvalue.\n\n**Case 2**: Next, we consider $\\lambda \\ne 0.$\n\nTo find the fundamental solutions, we set $y={e}^{mx}.$ The auxiliary equation is\n\n$$\n\\begin{aligned}{m}^{2}-10\\lambda m+25{\\lambda }^{2} & =0 \\\\ (m-5\\lambda )(m-5\\lambda ) & =0.\\end{aligned}\n$$\n\nSo, we have the double root $m=5\\lambda .$ So, the fundamental solutions are \n\n$$\n{y}_{1}(x)={e}^{5\\lambda x},\\,{y}_{2}(x)=x{e}^{5\\lambda x}\n$$\n\nand the general solution is\n\n$$\ny=A{e}^{5\\lambda x}+Bx{e}^{5\\lambda x}.\n$$\n\nDifferentiating gives\n\n$$\n\\begin{aligned}{y}^{′} & =5A\\lambda {e}^{5\\lambda x}+B{e}^{5\\lambda x}+5B\\lambda x{e}^{5\\lambda x}.\\end{aligned}\n$$\n\nApplying the boundary condition ${y}^{′}(1)=0$ yields\n\n$$\n\\begin{aligned}5A\\lambda {e}^{5\\lambda }+B{e}^{5\\lambda }+5B\\lambda {e}^{5\\lambda } & =0 \\\\ 5A\\lambda +B+5B\\lambda  & =0 \\\\ (5\\lambda )A+(1+5\\lambda )B & =0.\\end{aligned}\n$$\n\nApplying the boundary condition $y(2)+2{y}^{′}(2)=0$ yields\n\n$$\n\\begin{aligned}A{e}^{10\\lambda }+2B{e}^{10\\lambda }+2(5A\\lambda {e}^{10\\lambda }+B{e}^{10\\lambda }+10B\\lambda {e}^{10\\lambda }) & =0 \\\\ A+2B+2(5A\\lambda +B+10B\\lambda ) & =0 \\\\ A+2B+10A\\lambda +2B+20B\\lambda  & =0 \\\\ (1+10\\lambda )A+(4+20\\lambda )B & =0 \\\\ (1+10\\lambda )A+4(1+5\\lambda )B & =0.\\end{aligned}\n$$\n\nSo, we have the following systems of equations for $A$ and $B:$\n\n$$\n\\{\\begin{aligned}(5\\lambda )A+(1+5\\lambda )B=0 \\\\ (1+10\\lambda )A+4(1+5\\lambda )B=0\\end{aligned}\n$$\n\nThis homogeneous linear system has a nontrivial solution if and only if the determinant is zero. This gives\n\n$$\n|\\begin{aligned}5\\lambda  & 1+5\\lambda  \\\\ 1+10\\lambda  & 4(1+5\\lambda )\\end{aligned}|=0.\n$$\n\nSo, we get\n\n$$\n\\begin{aligned}5\\lambda \\cdot 4(1+5\\lambda )-(1+5\\lambda )(1+10\\lambda ) & =0 \\\\ (1+5\\lambda )[20\\lambda -(1+10\\lambda )] & =0 \\\\ (1+5\\lambda )[20\\lambda -1-10\\lambda ] & =0 \\\\ (1+5\\lambda )(10\\lambda -1) & =0.\\end{aligned}\n$$\n\nThus, we have the eigenvalues ${\\lambda }_{1}=-\\frac{1}{5}\\text{ and }{\\lambda }_{2}=\\frac{1}{10}.$\n\nFinally, we find the eigenfunction corresponding to each eigenvalue:\n\n- Consider ${\\lambda }_{1}=-\\frac{1}{5}.$ Then, we have the solution\n\n$$\n\\begin{aligned}{y}_{1}(x) & =A{e}^{5{\\lambda }_{1}x}+Bx{e}^{5{\\lambda }_{1}x} \\\\  & =A{e}^{-x}+Bx{e}^{-x}\\end{aligned}\n$$\n\nand substituting ${\\lambda }_{1}$ into\n\n$$\n(5\\lambda )A+(1+5\\lambda )B=0\n$$\n\n \nwe get \n\n$$\n-A+(1-1)B=0\n$$\n\n \nwhich gives $A=0,$ and where $B$ is a free parameter. Thus, the eigenfunction corresponding to this eigenvalue is\n\n$$\n{y}_{1}(x)=Bx{e}^{-x}.\n$$\n\n- For ${\\lambda }_{2}=\\frac{1}{10},$ we have\n\n$$\n\\begin{aligned}{y}_{2}(x) & =A{e}^{5{\\lambda }_{2}x}+Bx{e}^{5{\\lambda }_{2}x} \\\\  & =A{e}^{x/2}+Bx{e}^{x/2}\\end{aligned}\n$$\n\nand substituting ${\\lambda }_{2}$ into\n\n$$\n(5\\lambda )A+(1+5\\lambda )B=0\n$$\n\n \nwe get \n\n$$\n\\frac{1}{2}A+\\frac{3}{2}B=0\\,⇒\\,A=-3B\n$$\n\nwhere $B$ is a free parameter. Thus, the eigenfunction corresponding to this eigenvalue is\n\n$$\n\\begin{aligned}{y}_{2}(x) & =-3B{e}^{x/2}+Bx{e}^{x/2} \\\\  & =B{e}^{x/2}(x-3) \\\\  & =C{e}^{x/2}(x-3)\\end{aligned}\n$$\n\nwhere we have set $C=B.$\n\nSo, the eigenfunctions corresponding to ${\\lambda }_{1}$ and ${\\lambda }_{2},$ respectively, are $Bx{e}^{-x}\\text{ and }C{e}^{x/2}(x-3).$",
+      "answer_fields_complete": true,
+      "result": "Correct",
+      "grade": "Correct",
+      "source_grade": "Correct",
+      "problem_field_keys": [
+        "field-1",
+        "field-2"
+      ],
+      "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14284256/observations/history-q-338845-a5548fd766b9fda5df3f.html",
+      "source_url": "https://mathacademy.com/learn?taskId=14284256",
+      "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14284256/observations/history-solution-q-338845-207bf427e720c67d6ed2.html",
+      "fields": [
+        {
+          "key": "field-1",
+          "type": "select",
+          "disabled": false,
+          "choices_complete": true,
+          "source_selected": {
+            "type": "text",
+            "value": "$-\\frac{1}{5}$ and $\\frac{1}{10}$"
+          },
+          "source_correct": {
+            "type": "text",
+            "value": "$-\\frac{1}{5}$ and $\\frac{1}{10}$"
+          },
+          "source_result": "Correct",
+          "correct_value": "$-\\frac{1}{5}$ and $\\frac{1}{10}$",
+          "value_type": "text",
+          "correct_origin": "ma_answer",
+          "evidence": {
+            "kind": "ma_correct_grade",
+            "value": "$-\\frac{1}{5}$ and $\\frac{1}{10}$",
+            "grade": "correct",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14284256/observations/step-q338845-a94dd937e04aeb5b0dd6.html",
+            "presentation_key": "step-q338845"
+          },
+          "correct_evidence": {
+            "kind": "ma_answer",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14284256/observations/history-q-338845-a5548fd766b9fda5df3f.html",
+            "value": "$-\\frac{1}{5}$ and $\\frac{1}{10}$"
+          },
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "$-\\frac{1}{5}$ and $\\frac{1}{10}$"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "$-\\frac{1}{10}$ and $\\frac{1}{5}$"
+            },
+            {
+              "option": "2",
+              "type": "math",
+              "value": "\\pm \\frac{1}{5}"
+            },
+            {
+              "option": "3",
+              "type": "math",
+              "value": "\\pm \\frac{1}{10}"
+            }
+          ]
+        },
+        {
+          "key": "field-2",
+          "type": "select",
+          "disabled": false,
+          "choices_complete": true,
+          "source_selected": {
+            "type": "text",
+            "value": "$Bx{e}^{-x}$ and $C{e}^{x/2}(x-3)$"
+          },
+          "source_correct": {
+            "type": "text",
+            "value": "$Bx{e}^{-x}$ and $C{e}^{x/2}(x-3)$"
+          },
+          "source_result": "Correct",
+          "correct_value": "$Bx{e}^{-x}$ and $C{e}^{x/2}(x-3)$",
+          "value_type": "text",
+          "correct_origin": "ma_answer",
+          "evidence": {
+            "kind": "ma_correct_grade",
+            "value": "$Bx{e}^{-x}$ and $C{e}^{x/2}(x-3)$",
+            "grade": "correct",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14284256/observations/step-q338845-a94dd937e04aeb5b0dd6.html",
+            "presentation_key": "step-q338845"
+          },
+          "correct_evidence": {
+            "kind": "ma_answer",
+            "source_file": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14284256/observations/history-q-338845-a5548fd766b9fda5df3f.html",
+            "value": "$Bx{e}^{-x}$ and $C{e}^{x/2}(x-3)$"
+          },
+          "choices": [
+            {
+              "option": "0",
+              "type": "text",
+              "value": "$Bx{e}^{-x}$ and $C{e}^{x/2}(x-3)$"
+            },
+            {
+              "option": "1",
+              "type": "text",
+              "value": "$Bx{e}^{-x}$ and $C{e}^{x/2}(x+\\frac{3}{2})$"
+            },
+            {
+              "option": "2",
+              "type": "text",
+              "value": "$Bx{e}^{-2x}$ and $C{e}^{x}(x-4)$"
+            },
+            {
+              "option": "3",
+              "type": "text",
+              "value": "$Bx{e}^{x}$ and $C{e}^{-x/2}(x+4)$"
+            }
+          ]
+        }
+      ]
+    },
+    "presentations": [
+      {
+        "key": "step-q338845",
+        "submissions": [
+          {
+            "action": "answer",
+            "outcome": "observe_to_confirm",
+            "responses": [
+              {
+                "key": "field-1",
+                "value": "$-\\frac{1}{5}$ and $\\frac{1}{10}$",
+                "option": "2",
+                "value_type": "text"
+              },
+              {
+                "key": "field-2",
+                "value": "$Bx{e}^{-x}$ and $C{e}^{x/2}(x-3)$",
+                "option": "1",
+                "value_type": "text"
+              }
+            ],
+            "attempt_count": 1
+          }
+        ],
+        "feedback": {
+          "grade": "Correct",
+          "source_grade": "Correct",
+          "result": "Correct",
+          "worked_solution": "We consider the cases $\\lambda =0$ and $\\lambda \\ne 0$ separately, since they correspond to different solutions. \n\n**Case 1**: First, we consider $\\lambda =0.$ \n\nSetting $\\lambda =0$ gives the equation\n\n$$\n{y}^{″}=0.\n$$\n\nIntegrating this equation gives\n\n$$\ny=Ax+B.\n$$\n\nApplying the conditions ${y}^{′}(1)=0$ and $y(2)+2{y}^{′}(2)=0$ yields the trivial solution $y≡0.$ Since the zero solution is not an eigenfunction, $\\lambda =0$ is not an eigenvalue.\n\n**Case 2**: Next, we consider $\\lambda \\ne 0.$\n\nTo find the fundamental solutions, we set $y={e}^{mx}.$ The auxiliary equation is\n\n$$\n\\begin{aligned}{m}^{2}-10\\lambda m+25{\\lambda }^{2} & =0 \\\\ (m-5\\lambda )(m-5\\lambda ) & =0.\\end{aligned}\n$$\n\nSo, we have the double root $m=5\\lambda .$ So, the fundamental solutions are \n\n$$\n{y}_{1}(x)={e}^{5\\lambda x},\\,{y}_{2}(x)=x{e}^{5\\lambda x}\n$$\n\nand the general solution is\n\n$$\ny=A{e}^{5\\lambda x}+Bx{e}^{5\\lambda x}.\n$$\n\nDifferentiating gives\n\n$$\n\\begin{aligned}{y}^{′} & =5A\\lambda {e}^{5\\lambda x}+B{e}^{5\\lambda x}+5B\\lambda x{e}^{5\\lambda x}.\\end{aligned}\n$$\n\nApplying the boundary condition ${y}^{′}(1)=0$ yields\n\n$$\n\\begin{aligned}5A\\lambda {e}^{5\\lambda }+B{e}^{5\\lambda }+5B\\lambda {e}^{5\\lambda } & =0 \\\\ 5A\\lambda +B+5B\\lambda  & =0 \\\\ (5\\lambda )A+(1+5\\lambda )B & =0.\\end{aligned}\n$$\n\nApplying the boundary condition $y(2)+2{y}^{′}(2)=0$ yields\n\n$$\n\\begin{aligned}A{e}^{10\\lambda }+2B{e}^{10\\lambda }+2(5A\\lambda {e}^{10\\lambda }+B{e}^{10\\lambda }+10B\\lambda {e}^{10\\lambda }) & =0 \\\\ A+2B+2(5A\\lambda +B+10B\\lambda ) & =0 \\\\ A+2B+10A\\lambda +2B+20B\\lambda  & =0 \\\\ (1+10\\lambda )A+(4+20\\lambda )B & =0 \\\\ (1+10\\lambda )A+4(1+5\\lambda )B & =0.\\end{aligned}\n$$\n\nSo, we have the following systems of equations for $A$ and $B:$\n\n$$\n\\{\\begin{aligned}(5\\lambda )A+(1+5\\lambda )B=0 \\\\ (1+10\\lambda )A+4(1+5\\lambda )B=0\\end{aligned}\n$$\n\nThis homogeneous linear system has a nontrivial solution if and only if the determinant is zero. This gives\n\n$$\n|\\begin{aligned}5\\lambda  & 1+5\\lambda  \\\\ 1+10\\lambda  & 4(1+5\\lambda )\\end{aligned}|=0.\n$$\n\nSo, we get\n\n$$\n\\begin{aligned}5\\lambda \\cdot 4(1+5\\lambda )-(1+5\\lambda )(1+10\\lambda ) & =0 \\\\ (1+5\\lambda )[20\\lambda -(1+10\\lambda )] & =0 \\\\ (1+5\\lambda )[20\\lambda -1-10\\lambda ] & =0 \\\\ (1+5\\lambda )(10\\lambda -1) & =0.\\end{aligned}\n$$\n\nThus, we have the eigenvalues ${\\lambda }_{1}=-\\frac{1}{5}\\text{ and }{\\lambda }_{2}=\\frac{1}{10}.$\n\nFinally, we find the eigenfunction corresponding to each eigenvalue:\n\n- Consider ${\\lambda }_{1}=-\\frac{1}{5}.$ Then, we have the solution\n\n$$\n\\begin{aligned}{y}_{1}(x) & =A{e}^{5{\\lambda }_{1}x}+Bx{e}^{5{\\lambda }_{1}x} \\\\  & =A{e}^{-x}+Bx{e}^{-x}\\end{aligned}\n$$\n\nand substituting ${\\lambda }_{1}$ into\n\n$$\n(5\\lambda )A+(1+5\\lambda )B=0\n$$\n\n \nwe get \n\n$$\n-A+(1-1)B=0\n$$\n\n \nwhich gives $A=0,$ and where $B$ is a free parameter. Thus, the eigenfunction corresponding to this eigenvalue is\n\n$$\n{y}_{1}(x)=Bx{e}^{-x}.\n$$\n\n- For ${\\lambda }_{2}=\\frac{1}{10},$ we have\n\n$$\n\\begin{aligned}{y}_{2}(x) & =A{e}^{5{\\lambda }_{2}x}+Bx{e}^{5{\\lambda }_{2}x} \\\\  & =A{e}^{x/2}+Bx{e}^{x/2}\\end{aligned}\n$$\n\nand substituting ${\\lambda }_{2}$ into\n\n$$\n(5\\lambda )A+(1+5\\lambda )B=0\n$$\n\n \nwe get \n\n$$\n\\frac{1}{2}A+\\frac{3}{2}B=0\\,⇒\\,A=-3B\n$$\n\nwhere $B$ is a free parameter. Thus, the eigenfunction corresponding to this eigenvalue is\n\n$$\n\\begin{aligned}{y}_{2}(x) & =-3B{e}^{x/2}+Bx{e}^{x/2} \\\\  & =B{e}^{x/2}(x-3) \\\\  & =C{e}^{x/2}(x-3)\\end{aligned}\n$$\n\nwhere we have set $C=B.$\n\nSo, the eigenfunctions corresponding to ${\\lambda }_{1}$ and ${\\lambda }_{2},$ respectively, are $Bx{e}^{-x}\\text{ and }C{e}^{x/2}(x-3).$",
+          "solution_evidence": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14284256/observations/history-solution-q-338845-207bf427e720c67d6ed2.html",
+          "html_path": "/home/jake/Developer/Course_Academy/reference/mathacademy/capture/foundations/14284256/observations/history-q-338845-a5548fd766b9fda5df3f.html"
+        }
+      }
+    ]
+  },
+  "session_id": "01a14bda-9465-7ff1-bda6-ce1aae5f27f5",
+  "previous_failures": []
+}
