@@ -2,7 +2,7 @@
 
 ## 1. Describe the five observed instances
 
-Every source uses the exact sentence “Which of the following equations has
+Every historical basis1356 source uses the exact sentence “Which of the following equations has
 infinitely many solutions?”, an unlabeled three-item math list, one selection
 radio field, five text choices, and the shared opening “Let's attempt to solve
 each equation in turn:”. The worked solution treats first, second and third in
@@ -26,7 +26,7 @@ x=value at the end. Negative shared slopes use addition of their magnitude.
 
 For each numeric equation ax+b=cx+d, compare reduced coefficients and constants:
 a=c and b=d gives infinitely many solutions; a=c and b≠d gives none;
-a≠c gives one. Select the complete subset of identities from the retained bank.
+a≠c gives one. Select each equation that is an identity using its checkbox.
 The source triple positions and truth patterns are instances of one template,
 not independent arithmetic skills. No source difficulty other than easy exists.
 
@@ -50,20 +50,23 @@ coefficients; the correct designation does. Every source choice is mapped here:
 | observed_c | I and II only; II only; I only; II and III only; III only | q-288591 |
 | observed_d | II and III only; III only; None; I and III only; II only | q-288427 |
 
-No intent is inferred for an incorrect subset. Five choices per source, including
-all twenty incorrect choices and five correct designations, are preserved.
-Neither a candidate distractor pool nor a new mixed bank is used. The chosen
-complete bank determines eligible identity subsets before equation sampling.
-None and all-three patterns are real eligible tasks where their complete bank
-contains the required answer. Each nonidentity peer can independently be empty
-or unique; no fixed source position or truth mask limits normal practice.
+No intent is inferred for an incorrect subset. These historical banks now serve
+only as sampling profiles: the chosen profile determines eligible identity
+subsets before equation sampling, preserving seeded equation generation. The
+displayed response has three independent checkbox fields, each with owned text
+answers `false` and `true`. The correct value is computed from the corresponding
+equation. None is the all-false selection and all-three is the all-true selection.
+Explicit parameters can express any of the eight subsets under any profile.
+Each nonidentity peer can independently be empty or unique; the four profiles
+together cover every subset.
 
 ## 4. Extract reusable masks, constraints and extensions
 
 The observed template `direct` builds whole affine expressions, signed removal
-rows and conditional constant-removal rows. It reproduces every captured prompt
-and full solution string exactly at original parameters. IDs and choice order
-are review identities rather than copied source identities. Zero constants and
+rows and conditional constant-removal rows. It reproduces every captured equation
+and full solution string exactly at original parameters. The prompt adds explicit
+Roman labels and “Select all that apply.” to match the checkbox migrations. IDs
+are generated identities rather than copied source identities. Zero constants and
 unit coefficients are handled structurally. Source replay is the ordinary API
 with explicit parameters/profile; no source payload-returning branch exists.
 
@@ -78,8 +81,8 @@ learner still selects identities. The classification file gives the actual
 prerequisite and route rationale and all sampled/explicit reduced bounds.
 
 Content identities include the actual prompt, full fixed solution, difficulty,
-generator version and complete sorted bank. Option order and seed are absent.
-The mathematical fingerprint excludes banks and seed, canonically normalizes
+generator version and checkbox response type. Sampling profile and seed are absent.
+The mathematical fingerprint excludes profiles and seed, canonically normalizes
 common scaling/side reversal for direct affine comparisons, and retains the
 substantive arithmetic structure for authored distribution tasks. Numerical
 components, not variable-letter aliases, vary. This is a bounded discrete

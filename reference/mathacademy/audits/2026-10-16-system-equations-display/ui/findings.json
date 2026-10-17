@@ -1,0 +1,74 @@
+{
+  "scope": "Read-only UI and formatter investigation for question 17592186529306",
+  "database_mutations": 0,
+  "application_source_edits": 0,
+  "renderer": "unmodified ui/Learning.html, ui/learning.js, ui/mathjax-config.js, installed MathJax SVG renderer",
+  "conclusion": "The stored TeX already expresses one line. The current UI renders that expression correctly. Missing equation row structure is a content/import-normalization defect, not a Markdown or SVG line-layout bug.",
+  "mechanism": [
+    {
+      "finding": "UI math protection preserves the expression through Markdown processing.",
+      "path": "ui/learning.js",
+      "line": 274
+    },
+    {
+      "finding": "A literal escaped opening brace is an ordinary visible symbol; semicolons are punctuation. Neither requests rows or a scalable brace. Display math only changes placement.",
+      "evidence": "actual-ui/rendering.json"
+    },
+    {
+      "finding": "legacy_choice supports semicolon system content beginning with unescaped { only; escaped \\{ bypasses it. normalize_tex invokes this helper, so capture canonicalization also leaves this variant untouched.",
+      "path": "scripts/question_capture/math_format.py",
+      "line": 114
+    },
+    {
+      "finding": "validate_tex accepts the escaped brace and semicolons because they are valid TeX. It validates syntax, not whether a purported system has multiple rows.",
+      "path": "scripts/question_capture/math_format.py",
+      "line": 291
+    },
+    {
+      "finding": "The earlier audit collected math-table dimensions but its pass criteria rejected parse errors, unrendered TeX, unknown commands, and code blocks only. It never required a two-row table for this system.",
+      "path": "reference/mathacademy/repairs/2026-10-16-mth341/render.py",
+      "line": 51
+    }
+  ],
+  "reproduction": {
+    "raw": "actual-ui/question-001.png",
+    "canonical_comparison": "actual-ui/question-002.png",
+    "visual_inspection": "Both full-page screenshots inspected; stored content reproduces reported line, canonical content shows scalable left brace and two equals-aligned rows.",
+    "raw_mathjax_errors": [],
+    "canonical_mathjax_errors": [],
+    "expected_prompt_rows": 2,
+    "raw_prompt_rows": 0,
+    "canonical_prompt_rows": 2,
+    "preserved": "Question numbers, signs, equations, answer choices, and solution reasoning; comparison fixture also retains double operation bars."
+  },
+  "recommended_repair": "Normalize recognized semicolon systems with escaped opening braces at the content/capture boundary; add equation-row semantic checks to the audit. Keep any detection narrowly tied to independently parseable equation rows so finite-set semicolon notation remains untouched. No UI renderer change is needed for this case.",
+  "caveat": "No database or UI changes. The exact seed text from the prior snapshot matches the fresh topic snapshot in this audit. Full-field verification uses fresh content/fields.json and snapshot.json.",
+  "full_scope_verification": {
+    "snapshot": {
+      "database": "math",
+      "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1",
+      "basis": 3187
+    },
+    "fields": 838,
+    "topics": 4,
+    "syntax_errors": 0,
+    "flat_system_expressions": 30,
+    "double_operation_bar_fields": 30,
+    "affected_fields_union": 45,
+    "affected_questions_union": 30,
+    "evidence": "all-fields-rendering.json",
+    "summary": "all-fields-summary.json"
+  },
+  "tutorial_visual_advisories": [
+    {
+      "entity": 17592186199637,
+      "observation": "Math systems occupy aligned rows, but inline dollar delimiters and soft Markdown newlines place them amid surrounding sentences. Images render cleanly as separate blocks despite their adjacent Markdown syntax.",
+      "screenshot": "tutorial-17592186199637.png"
+    },
+    {
+      "entity": 17592186097842,
+      "observation": "All algorithm steps and substeps display at one bullet indentation level. Source comparison is needed to attribute this Markdown hierarchy loss.",
+      "screenshot": "tutorial-17592186097842.png"
+    }
+  ]
+}

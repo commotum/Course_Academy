@@ -1,0 +1,141 @@
+{
+  "question_entity": 17592186529306,
+  "question_uuid": "a7d7084c-4c14-5312-a22d-dc6fe1986a2c",
+  "question_origin": "Locally generated; no Math Academy question identifier.",
+  "topic_entity": 17592186050240,
+  "math_academy_topic": 493,
+  "kp_entity": 17592186073776,
+  "evidence_chain": [
+    "Original Math Academy source screenshot and MathML show display:block systems with a separate mtr for each equation and one scalable left brace.",
+    "The old lesson-json.py mathml_to_text mapper serializes mtable rows with semicolons and mtr cells with a vertical-bar delimiter, losing structural layout.",
+    "Old Markdown conversion reconstitutes some aligned calculations using |= but leaves these one-cell-per-row systems as a bare unmatched brace plus semicolon-separated equations.",
+    "Generator source.json at basis1356 retained this flattened Markdown. Generator17592186073776.py copies semicolon joins into prompt and annotated solution and treats escaping the brace as the presentation repair.",
+    "The generated record at basis2486 is an exact match for the malformed problem and solution of question17592186529306, later committed at basis2487 according to the parent database-history audit.",
+    "The shared formatter legacy_choice recognizes only an unescaped opening brace, so the generated escaped-brace form is outside its current repair path."
+  ],
+  "double_bar_finding": "Source operation annotations have one literal vertical bar in their second mtd. The extractor adds its own cell delimiter bar, yielding two adjacent bars. Markdown maps both to mid; generators73776 and73778 preserve the duplicate.",
+  "traces": [
+    {
+      "label": "source-practice-question",
+      "source_html": "/home/jake/Developer/MA/DATA/Lessons/493/Source/493.html",
+      "dom_id": "question-211984",
+      "math_index": 0,
+      "mathml_evidence": "reference/mathacademy/audits/2026-10-16-system-equations-display/source/source-practice-question.mathml",
+      "source_display": "block",
+      "source_rows": [
+        [
+          "6x+4y=6"
+        ],
+        [
+          "\u22122x\u2212y=5"
+        ]
+      ],
+      "source_literal_bar_count": 0,
+      "extracted_text_reproduced": "{6x + 4y = 6; \u2212 2x \u2212 y = 5",
+      "markdown_inline_reproduced": "${6x + 4y = 6; - 2x - y = 5$",
+      "markdown_display_reproduced": "$$\n{6x + 4y = 6; - 2x - y = 5\n$$"
+    },
+    {
+      "label": "canonical-example-system",
+      "source_html": "/home/jake/Developer/MA/DATA/Lessons/493/Source/493.html",
+      "dom_id": "step-229009",
+      "math_index": 0,
+      "mathml_evidence": "reference/mathacademy/audits/2026-10-16-system-equations-display/source/canonical-example-system.mathml",
+      "source_display": "block",
+      "source_rows": [
+        [
+          "4x+2y=4"
+        ],
+        [
+          "2x+y=4"
+        ]
+      ],
+      "source_literal_bar_count": 0,
+      "extracted_text_reproduced": "{4x + 2y = 4; 2x + y = 4",
+      "markdown_inline_reproduced": "${4x + 2y = 4; 2x + y = 4$",
+      "markdown_display_reproduced": "$$\n{4x + 2y = 4; 2x + y = 4\n$$"
+    },
+    {
+      "label": "canonical-example-operation",
+      "source_html": "/home/jake/Developer/MA/DATA/Lessons/493/Source/493.html",
+      "dom_id": "step-229009",
+      "math_index": 1,
+      "mathml_evidence": "reference/mathacademy/audits/2026-10-16-system-equations-display/source/canonical-example-operation.mathml",
+      "source_display": "block",
+      "source_rows": [
+        [
+          "4x+2y=4",
+          ""
+        ],
+        [
+          "2x+y=4",
+          "|\u00d7(\u22122)"
+        ]
+      ],
+      "source_literal_bar_count": 1,
+      "extracted_text_reproduced": "{4x + 2y = 4; 2x + y = 4||\u00d7 (\u2212 2)",
+      "markdown_inline_reproduced": "${4x + 2y = 4; 2x + y = 4 \\mid \\mid \\cdot (-2)$",
+      "markdown_display_reproduced": "$$\n{4x + 2y = 4; 2x + y = 4 \\mid \\mid \\cdot (-2)\n$$"
+    },
+    {
+      "label": "tutorial-operation",
+      "source_html": "/home/jake/Developer/MA/DATA/Lessons/493/Source/493.html",
+      "dom_id": "step-229008",
+      "math_index": 1,
+      "mathml_evidence": "reference/mathacademy/audits/2026-10-16-system-equations-display/source/tutorial-operation.mathml",
+      "source_display": "block",
+      "source_rows": [
+        [
+          "3x\u2212y=\u22122",
+          "|\u00d7(\u22122)"
+        ],
+        [
+          "6x\u22122y=\u22124",
+          ""
+        ]
+      ],
+      "source_literal_bar_count": 1,
+      "extracted_text_reproduced": "{3x \u2212 y = \u2212 2||\u00d7 (\u2212 2); 6x \u2212 2y = \u2212 4",
+      "markdown_inline_reproduced": "${3x - y =-2 \\mid \\mid \\cdot (-2); 6x - 2y =-4$",
+      "markdown_display_reproduced": "$$\n{3x - y =-2 \\mid \\mid \\cdot (-2); 6x - 2y =-4\n$$"
+    },
+    {
+      "label": "general-solutions-canonical-operation",
+      "source_html": "/home/jake/Developer/MA/DATA/Lessons/493/Source/493.html",
+      "dom_id": "step-229019",
+      "math_index": 1,
+      "mathml_evidence": "reference/mathacademy/audits/2026-10-16-system-equations-display/source/general-solutions-canonical-operation.mathml",
+      "source_display": "block",
+      "source_rows": [
+        [
+          "3x+2y=2",
+          "|\u00d7(\u22122)"
+        ],
+        [
+          "6x+4y=4",
+          ""
+        ]
+      ],
+      "source_literal_bar_count": 1,
+      "extracted_text_reproduced": "{3x + 2y = 2||\u00d7 (\u2212 2); 6x + 4y = 4",
+      "markdown_inline_reproduced": "${3x + 2y = 2 \\mid \\mid \\cdot (-2); 6x + 4y = 4$",
+      "markdown_display_reproduced": "$$\n{3x + 2y = 2 \\mid \\mid \\cdot (-2); 6x + 4y = 4\n$$"
+    }
+  ],
+  "generator_locations": {
+    "prompt": "generate/scratch/17592186073776.py:83",
+    "annotated_solution": "generate/scratch/17592186073776.py:146",
+    "source_repair_claim": "generate/scratch/17592186073776/classification.md:14",
+    "sibling_duplicated_bar": "generate/scratch/17592186073778.py:83"
+  },
+  "source_hashes": {
+    "/home/jake/Developer/MA/DATA/Lessons/493/Source/493.html": "b30b81cc79e736e02f561974fba36502b9bc0dd09a633c81f613a15f17330acb",
+    "/home/jake/Developer/MA/DATA/Lessons/493/Source/493.json": "2e0e4b0a6d0c8a89399b8d27eb2943662c152a473daa7a68028267bbfec46c43",
+    "/home/jake/Developer/MA/PIPELINE/Math-Academy/3-Capture/1-Source/3-JSON/lesson-json.py": "69731132e905dfe774ac3f51bc2898fa6c9a828c3e14920e6b448f186bd3ce79",
+    "/home/jake/Developer/MA/PIPELINE/Math-Academy/3-Capture/1-Source/5-MD/md.py": "5925751cf5de439294911cf5477eb7b136472ce22a32fbccd9e61a21b3f92668",
+    "/home/jake/Developer/Course_Academy/generate/scratch/17592186073776.py": "1ee031dd7f0af16eee8f915a3b99ba92f5fd205562286a2c8af94b7f7e8aed0f",
+    "/home/jake/Developer/Course_Academy/generate/scratch/17592186073778.py": "aa2d306cdf2f54f8141b390c41998008558ae8f8d550e1c7b9be72171f397cb6",
+    "/home/jake/Developer/Course_Academy/scripts/question_capture/math_format.py": "8a8402a9970e6bd91c494418bebc5abb434deb75d5b4db671ce3f0056d877251"
+  },
+  "mutations": "Evidence artifacts only; no source content, generator, capture process, or database writes."
+}

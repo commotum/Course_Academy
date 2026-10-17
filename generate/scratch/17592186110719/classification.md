@@ -1,14 +1,17 @@
-# Classification at basis 1356
+# Classification and checkbox update
 
 Database math, lineage `01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1`.
-The current capture replaces the earlier checkbox draft evidence: the actual five
-practice records have one `selection` radio field and five text subset choices.
+The historical basis1356 capture contains five practice records with one
+`selection` radio field and five text subset choices. The 2026-10-16 generator
+update follows the lesson's checkbox migrations: each displayed equation now has
+its own Boolean field keyed I, II or III. Equation templates, solutions and
+difficulty bounds are unchanged.
 
-| Level | Evidence | Template | Complete profiles | Fields | Plots |
+| Level | Evidence | Template | Sampling profiles | Fields | Plots |
 | --- | --- | --- | --- | --- | --- |
-| easy | five observed questions | direct affine triple | four | one radio, five choices | none |
-| moderate | authored, no observed difficulty labels | one distribution per equation | four retained observed subset banks | same | none |
-| hard | authored, no observed difficulty labels | two distributions and collection per equation | four retained observed subset banks | same | none |
+| easy | five observed questions | direct affine triple | four historical subset profiles | three checkboxes | none |
+| moderate | authored, no observed difficulty labels | one distribution per equation | same | same | none |
+| hard | authored, no observed difficulty labels | two distributions and collection per equation | same | same | none |
 
 Every question asks which of three numeric linear equations is true for every real
 value of x. Each worked solution attempts all three equations; identities reduce

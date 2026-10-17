@@ -1,4 +1,4 @@
-Original and replay q-287966
+Original and checkbox replay q-287966
 
 Original
 
@@ -36,19 +36,21 @@ This equation is false for all values of $x.$
 
 Therefore, the correct answer is "II only."
 
-Replay
+Checkbox replay
 
 Which of the following equations has infinitely many solutions?
 
-- $2x=x+1$
-- $2x+1=2x+1$
-- $2x+1=2x+3$
+Select all that apply.
 
-- II only
-- I and II only
-- I, II, and III
-- II and III only
-- III only
+- **I.** $2x=x+1$
+
+- **II.** $2x+1=2x+1$
+
+- **III.** $2x+1=2x+3$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -80,7 +82,7 @@ Therefore, the correct answer is "II only."
 
 ---
 
-Original and replay q-288419
+Original and checkbox replay q-288419
 
 Original
 
@@ -118,19 +120,21 @@ This equation is false for all values of $x.$
 
 Therefore, the correct answer is "II only."
 
-Replay
+Checkbox replay
 
 Which of the following equations has infinitely many solutions?
 
-- $3x=2x+5$
-- $4x-2=4x-2$
-- $5x+3=5x+1$
+Select all that apply.
 
-- I, II, and III
-- I and II only
-- II only
-- III only
-- II and III only
+- **I.** $3x=2x+5$
+
+- **II.** $4x-2=4x-2$
+
+- **III.** $5x+3=5x+1$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -162,7 +166,7 @@ Therefore, the correct answer is "II only."
 
 ---
 
-Original and replay q-288425
+Original and checkbox replay q-288425
 
 Original
 
@@ -200,19 +204,21 @@ Therefore, the equation $7x-4=6x-6$ has the unique solution $x=-2.$
 
 Therefore, the correct answer is "None."
 
-Replay
+Checkbox replay
 
 Which of the following equations has infinitely many solutions?
 
-- $-3x+2=-3x+7$
-- $6x+1=6x+5$
-- $7x-4=6x-6$
+Select all that apply.
 
-- III only
-- I and II only
-- II only
-- None
-- I and III only
+- **I.** $-3x+2=-3x+7$
+
+- **II.** $6x+1=6x+5$
+
+- **III.** $7x-4=6x-6$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -244,7 +250,7 @@ Therefore, the correct answer is "None."
 
 ---
 
-Original and replay q-288427
+Original and checkbox replay q-288427
 
 Original
 
@@ -282,19 +288,21 @@ This equation is true for all values of $x.$ Therefore, the equation $-4x+3=-4x+
 
 Therefore, the correct answer is "III only."
 
-Replay
+Checkbox replay
 
 Which of the following equations has infinitely many solutions?
 
-- $2x-5=x-2$
-- $6x+1=6x+9$
-- $-4x+3=-4x+3$
+Select all that apply.
 
-- I and III only
-- II only
-- II and III only
-- III only
-- None
+- **I.** $2x-5=x-2$
+
+- **II.** $6x+1=6x+9$
+
+- **III.** $-4x+3=-4x+3$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -326,7 +334,7 @@ Therefore, the correct answer is "III only."
 
 ---
 
-Original and replay q-288591
+Original and checkbox replay q-288591
 
 Original
 
@@ -364,19 +372,21 @@ This equation is true for all values of $x.$ Therefore, the equation $5x-4=5x-4$
 
 Therefore, the correct answer is "III only."
 
-Replay
+Checkbox replay
 
 Which of the following equations has infinitely many solutions?
 
-- $3x+2=4x+1$
-- $2x-5=3x-3$
-- $5x-4=5x-4$
+Select all that apply.
 
-- II and III only
-- II only
-- III only
-- I and II only
-- I only
+- **I.** $3x+2=4x+1$
+
+- **II.** $2x-5=3x-3$
+
+- **III.** $5x-4=5x-4$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -405,6 +415,178 @@ $$
 This equation is true for all values of $x.$ Therefore, the equation $5x-4=5x-4$ has infinitely many solutions.
 
 Therefore, the correct answer is "III only."
+
+---
+
+Original and checkbox replay q-288426
+
+Original
+
+Which of the following equations has infinitely many solutions?
+
+I. $4x+2=4x+2$
+
+II. $-2x-1=-2x-1$
+
+III. $3x+5=3x+9$
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}4x+2 & =4x+2 \\ 4x+2-4x & =4x+2-4x \\ 2 & =2.\end{aligned}
+$$
+
+This equation is true for all values of $x.$ Therefore, the equation $4x+2=4x+2$ has infinitely many solutions.
+
+- For the second equation, we have
+
+$$
+\begin{aligned}-2x-1 & =-2x-1 \\ -2x-1+2x & =-2x-1+2x \\ -1 & =-1.\end{aligned}
+$$
+
+This equation is true for all values of $x.$ Therefore, the equation $-2x-1=-2x-1$ has infinitely many solutions.
+
+- For the third equation, we have
+
+$$
+\begin{aligned}3x+5 & =3x+9 \\ 3x+5-3x & =3x+9-3x \\ 5 & =9.\end{aligned}
+$$
+
+This equation is false for all values of $x.$
+
+Therefore, the correct answer is "I and II only."
+
+Checkbox replay
+
+Which of the following equations has infinitely many solutions?
+
+Select all that apply.
+
+- **I.** $4x+2=4x+2$
+
+- **II.** $-2x-1=-2x-1$
+
+- **III.** $3x+5=3x+9$
+
+- [ ] I
+- [ ] II
+- [ ] III
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}4x+2 & =4x+2 \\ 4x+2-4x & =4x+2-4x \\ 2 & =2.\end{aligned}
+$$
+
+This equation is true for all values of $x.$ Therefore, the equation $4x+2=4x+2$ has infinitely many solutions.
+
+- For the second equation, we have
+
+$$
+\begin{aligned}-2x-1 & =-2x-1 \\ -2x-1+2x & =-2x-1+2x \\ -1 & =-1.\end{aligned}
+$$
+
+This equation is true for all values of $x.$ Therefore, the equation $-2x-1=-2x-1$ has infinitely many solutions.
+
+- For the third equation, we have
+
+$$
+\begin{aligned}3x+5 & =3x+9 \\ 3x+5-3x & =3x+9-3x \\ 5 & =9.\end{aligned}
+$$
+
+This equation is false for all values of $x.$
+
+Therefore, the correct answer is "I and II only."
+
+---
+
+Original and checkbox replay q-288431
+
+Original
+
+Which of the following equations has infinitely many solutions?
+
+I. $3x+4=3x+4$
+
+II. $x-5=x-2$
+
+III. $2x+3=x+3$
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}3x+4 & =3x+4 \\ 3x+4-3x & =3x+4-3x \\ 4 & =4.\end{aligned}
+$$
+
+This equation is true for all values of $x.$ Therefore, the equation $3x+4=3x+4$ has infinitely many solutions.
+
+- For the second equation, we have
+
+$$
+\begin{aligned}x-5 & =x-2 \\ x-5-x & =x-2-x \\ -5 & =-2.\end{aligned}
+$$
+
+This equation is false for all values of $x.$
+
+- For the third equation, we have
+
+$$
+\begin{aligned}2x+3 & =x+3 \\ 2x+3-x & =x+3-x \\ x+3 & =3 \\ x+3-3 & =3-3 \\ x & =0.\end{aligned}
+$$
+
+Therefore, the equation $2x+3=x+3$ has the unique solution $x=0.$
+
+Therefore, the correct answer is "I only."
+
+Checkbox replay
+
+Which of the following equations has infinitely many solutions?
+
+Select all that apply.
+
+- **I.** $3x+4=3x+4$
+
+- **II.** $x-5=x-2$
+
+- **III.** $2x+3=x+3$
+
+- [ ] I
+- [ ] II
+- [ ] III
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}3x+4 & =3x+4 \\ 3x+4-3x & =3x+4-3x \\ 4 & =4.\end{aligned}
+$$
+
+This equation is true for all values of $x.$ Therefore, the equation $3x+4=3x+4$ has infinitely many solutions.
+
+- For the second equation, we have
+
+$$
+\begin{aligned}x-5 & =x-2 \\ x-5-x & =x-2-x \\ -5 & =-2.\end{aligned}
+$$
+
+This equation is false for all values of $x.$
+
+- For the third equation, we have
+
+$$
+\begin{aligned}2x+3 & =x+3 \\ 2x+3-x & =x+3-x \\ x+3 & =3 \\ x+3-3 & =3-3 \\ x & =0.\end{aligned}
+$$
+
+Therefore, the equation $2x+3=x+3$ has the unique solution $x=0.$
+
+Therefore, the correct answer is "I only."
 
 ---
 
@@ -412,15 +594,17 @@ Generated easy observed_a seed 0
 
 Which of the following equations has infinitely many solutions?
 
-- $-7x-1=-7x+8$
-- $x+3=x+3$
-- $6x=6x$
+Select all that apply.
 
-- II only
-- I, II, and III
-- I and II only
-- II and III only
-- III only
+- **I.** $-7x-1=-7x+8$
+
+- **II.** $x+3=x+3$
+
+- **III.** $6x=6x$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -456,15 +640,17 @@ Generated easy observed_a seed 1
 
 Which of the following equations has infinitely many solutions?
 
-- $x+5=2x+7$
-- $4x+3=4x-3$
-- $-6x+6=-6x+6$
+Select all that apply.
 
-- II only
-- III only
-- II and III only
-- I and II only
-- I, II, and III
+- **I.** $x+5=2x+7$
+
+- **II.** $4x+3=4x-3$
+
+- **III.** $-6x+6=-6x+6$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -500,15 +686,17 @@ Generated easy observed_b seed 0
 
 Which of the following equations has infinitely many solutions?
 
-- $-3x+7=-3x+6$
-- $4x+6=5x+2$
-- $3x-3=3x-3$
+Select all that apply.
 
-- II only
-- I and II only
-- III only
-- None
-- I and III only
+- **I.** $-3x+7=-3x+6$
+
+- **II.** $4x+6=5x+2$
+
+- **III.** $3x-3=3x-3$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -544,15 +732,17 @@ Generated easy observed_b seed 1
 
 Which of the following equations has infinitely many solutions?
 
-- $-3x-6=-3x-6$
-- $x+5=x+5$
-- $4x-3=5x-6$
+Select all that apply.
 
-- I and III only
-- I and II only
-- III only
-- None
-- II only
+- **I.** $-3x-6=-3x-6$
+
+- **II.** $x+5=x+5$
+
+- **III.** $4x-3=5x-6$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -588,15 +778,17 @@ Generated easy observed_c seed 0
 
 Which of the following equations has infinitely many solutions?
 
-- $-7x-1=-7x+8$
-- $x+3=x+3$
-- $6x=6x$
+Select all that apply.
 
-- II and III only
-- II only
-- III only
-- I and II only
-- I only
+- **I.** $-7x-1=-7x+8$
+
+- **II.** $x+3=x+3$
+
+- **III.** $6x=6x$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -632,15 +824,17 @@ Generated easy observed_c seed 1
 
 Which of the following equations has infinitely many solutions?
 
-- $x+5=2x+7$
-- $4x+3=4x+3$
-- $6x-3=6x-6$
+Select all that apply.
 
-- I only
-- III only
-- II and III only
-- I and II only
-- II only
+- **I.** $x+5=2x+7$
+
+- **II.** $4x+3=4x+3$
+
+- **III.** $6x-3=6x-6$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -676,15 +870,17 @@ Generated easy observed_d seed 0
 
 Which of the following equations has infinitely many solutions?
 
-- $-7x-1=-7x-1$
-- $2x+6=2x+3$
-- $6x=6x$
+Select all that apply.
 
-- III only
-- II and III only
-- None
-- II only
-- I and III only
+- **I.** $-7x-1=-7x-1$
+
+- **II.** $2x+6=2x+3$
+
+- **III.** $6x=6x$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -720,15 +916,17 @@ Generated easy observed_d seed 1
 
 Which of the following equations has infinitely many solutions?
 
-- $x+5=2x+7$
-- $4x+3=4x-3$
-- $-6x+6=-6x+6$
+Select all that apply.
 
-- II only
-- III only
-- II and III only
-- I and III only
-- None
+- **I.** $x+5=2x+7$
+
+- **II.** $4x+3=4x-3$
+
+- **III.** $-6x+6=-6x+6$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -760,19 +958,21 @@ Therefore, the correct answer is "III only."
 
 ---
 
-Generated moderate observed_a seed 0 (authored template)
+Generated moderate observed_a seed 0
 
 Which of the following equations has infinitely many solutions?
 
-- $-5\left(x-1\right)=-5x+9$
-- $5\left(x+2\right)=5x+10$
-- $2\left(x+3\right)=2x+6$
+Select all that apply.
 
-- II and III only
-- III only
-- II only
-- I, II, and III
-- I and II only
+- **I.** $-5\left(x-1\right)=-5x+9$
+
+- **II.** $5\left(x+2\right)=5x+10$
+
+- **III.** $2\left(x+3\right)=2x+6$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -804,19 +1004,21 @@ Therefore, the correct answer is "II and III only."
 
 ---
 
-Generated moderate observed_a seed 1 (authored template)
+Generated moderate observed_a seed 1
 
 Which of the following equations has infinitely many solutions?
 
-- $-4\left(x+3\right)=3x+7$
-- $4\left(x-2\right)=4x-19$
-- $5\left(x-5\right)=5x-25$
+Select all that apply.
 
-- I, II, and III
-- II only
-- II and III only
-- I and II only
-- III only
+- **I.** $-4\left(x+3\right)=3x+7$
+
+- **II.** $4\left(x-2\right)=4x-19$
+
+- **III.** $5\left(x-5\right)=5x-25$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -848,19 +1050,21 @@ Therefore, the correct answer is "III only."
 
 ---
 
-Generated moderate observed_b seed 0 (authored template)
+Generated moderate observed_b seed 0
 
 Which of the following equations has infinitely many solutions?
 
-- $2\left(x+4\right)=2x+7$
-- $4\left(x-1\right)=2x-2$
-- $-2\left(x+4\right)=-2x-8$
+Select all that apply.
 
-- III only
-- None
-- II only
-- I and III only
-- I and II only
+- **I.** $2\left(x+4\right)=2x+7$
+
+- **II.** $4\left(x-1\right)=2x-2$
+
+- **III.** $-2\left(x+4\right)=-2x-8$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -892,19 +1096,21 @@ Therefore, the correct answer is "III only."
 
 ---
 
-Generated moderate observed_b seed 1 (authored template)
+Generated moderate observed_b seed 1
 
 Which of the following equations has infinitely many solutions?
 
-- $2\left(x-4\right)=2x-8$
-- $5\left(x+3\right)=5x+15$
-- $5\left(x+2\right)=-3x-19$
+Select all that apply.
 
-- None
-- III only
-- II only
-- I and II only
-- I and III only
+- **I.** $2\left(x-4\right)=2x-8$
+
+- **II.** $5\left(x+3\right)=5x+15$
+
+- **III.** $5\left(x+2\right)=-3x-19$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -936,19 +1142,21 @@ Therefore, the correct answer is "I and II only."
 
 ---
 
-Generated moderate observed_c seed 0 (authored template)
+Generated moderate observed_c seed 0
 
 Which of the following equations has infinitely many solutions?
 
-- $-5\left(x-1\right)=-5x+9$
-- $5\left(x+2\right)=5x+10$
-- $2\left(x+3\right)=2x+6$
+Select all that apply.
 
-- I only
-- III only
-- II and III only
-- II only
-- I and II only
+- **I.** $-5\left(x-1\right)=-5x+9$
+
+- **II.** $5\left(x+2\right)=5x+10$
+
+- **III.** $2\left(x+3\right)=2x+6$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -980,19 +1188,21 @@ Therefore, the correct answer is "II and III only."
 
 ---
 
-Generated moderate observed_c seed 1 (authored template)
+Generated moderate observed_c seed 1
 
 Which of the following equations has infinitely many solutions?
 
-- $-4\left(x+3\right)=3x+7$
-- $4\left(x-2\right)=4x-8$
-- $-4\left(x+3\right)=-4x-24$
+Select all that apply.
 
-- I and II only
-- II only
-- III only
-- I only
-- II and III only
+- **I.** $-4\left(x+3\right)=3x+7$
+
+- **II.** $4\left(x-2\right)=4x-8$
+
+- **III.** $-4\left(x+3\right)=-4x-24$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -1024,19 +1234,21 @@ Therefore, the correct answer is "II only."
 
 ---
 
-Generated moderate observed_d seed 0 (authored template)
+Generated moderate observed_d seed 0
 
 Which of the following equations has infinitely many solutions?
 
-- $-5\left(x-1\right)=-5x+5$
-- $5\left(x+2\right)=5x-6$
-- $5\left(x+1\right)=5x+5$
+Select all that apply.
 
-- II only
-- II and III only
-- I and III only
-- None
-- III only
+- **I.** $-5\left(x-1\right)=-5x+5$
+
+- **II.** $5\left(x+2\right)=5x-6$
+
+- **III.** $5\left(x+1\right)=5x+5$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -1068,19 +1280,21 @@ Therefore, the correct answer is "I and III only."
 
 ---
 
-Generated moderate observed_d seed 1 (authored template)
+Generated moderate observed_d seed 1
 
 Which of the following equations has infinitely many solutions?
 
-- $-4\left(x+3\right)=3x+7$
-- $4\left(x-2\right)=4x-19$
-- $5\left(x-5\right)=5x-25$
+Select all that apply.
 
-- III only
-- II only
-- None
-- II and III only
-- I and III only
+- **I.** $-4\left(x+3\right)=3x+7$
+
+- **II.** $4\left(x-2\right)=4x-19$
+
+- **III.** $5\left(x-5\right)=5x-25$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -1112,19 +1326,21 @@ Therefore, the correct answer is "III only."
 
 ---
 
-Generated hard observed_a seed 0 (authored template)
+Generated hard observed_a seed 0
 
 Which of the following equations has infinitely many solutions?
 
-- $-2\left(-2x-1\right)-2x-4=3\left(x+4\right)-x-3$
-- $-4\left(-x-3\right)+3x-3=-2\left(-3x-4\right)+x+1$
-- $2\left(3x+3\right)-4x+4=-2\left(x-3\right)+4x+4$
+Select all that apply.
 
-- I and II only
-- II only
-- I, II, and III
-- II and III only
-- III only
+- **I.** $-2\left(-2x-1\right)-2x-4=3\left(x+4\right)-x-3$
+
+- **II.** $-4\left(-x-3\right)+3x-3=-2\left(-3x-4\right)+x+1$
+
+- **III.** $2\left(3x+3\right)-4x+4=-2\left(x-3\right)+4x+4$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -1156,19 +1372,21 @@ Therefore, the correct answer is "II and III only."
 
 ---
 
-Generated hard observed_a seed 1 (authored template)
+Generated hard observed_a seed 1
 
 Which of the following equations has infinitely many solutions?
 
-- $-4\left(4x+4\right)+4x+3=-3\left(-3x+4\right)-4x+3$
-- $2\left(-4x+4\right)+x-1=3\left(-3x+2\right)+2x-4$
-- $-4\left(3x-2\right)-2x+2=-4\left(3x-3\right)-2x-2$
+Select all that apply.
 
-- II and III only
-- III only
-- II only
-- I, II, and III
-- I and II only
+- **I.** $-4\left(4x+4\right)+4x+3=-3\left(-3x+4\right)-4x+3$
+
+- **II.** $2\left(-4x+4\right)+x-1=3\left(-3x+2\right)+2x-4$
+
+- **III.** $-4\left(3x-2\right)-2x+2=-4\left(3x-3\right)-2x-2$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -1200,19 +1418,21 @@ Therefore, the correct answer is "III only."
 
 ---
 
-Generated hard observed_b seed 0 (authored template)
+Generated hard observed_b seed 0
 
 Which of the following equations has infinitely many solutions?
 
-- $-2\left(-2x-1\right)-2x-4=3\left(x+4\right)-x-3$
-- $4\left(-2x-2\right)-4x-3=4\left(3x+1\right)-x-1$
-- $-4\left(-x-3\right)+3x-3=-2\left(-3x-4\right)+x+1$
+Select all that apply.
 
-- I and II only
-- I and III only
-- III only
-- None
-- II only
+- **I.** $-2\left(-2x-1\right)-2x-4=3\left(x+4\right)-x-3$
+
+- **II.** $4\left(-2x-2\right)-4x-3=4\left(3x+1\right)-x-1$
+
+- **III.** $-4\left(-x-3\right)+3x-3=-2\left(-3x-4\right)+x+1$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -1244,19 +1464,21 @@ Therefore, the correct answer is "III only."
 
 ---
 
-Generated hard observed_b seed 1 (authored template)
+Generated hard observed_b seed 1
 
 Which of the following equations has infinitely many solutions?
 
-- $-4\left(3x-2\right)-2x+2=-4\left(3x-3\right)-2x-2$
-- $-3\left(2x-3\right)+x-3=2\left(-3x+2\right)+x+2$
-- $3\left(-3x-1\right)-x-4=-3\left(3x-3\right)+x-3$
+Select all that apply.
 
-- III only
-- I and II only
-- None
-- I and III only
-- II only
+- **I.** $-4\left(3x-2\right)-2x+2=-4\left(3x-3\right)-2x-2$
+
+- **II.** $-3\left(2x-3\right)+x-3=2\left(-3x+2\right)+x+2$
+
+- **III.** $3\left(-3x-1\right)-x-4=-3\left(3x-3\right)+x-3$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -1288,19 +1510,21 @@ Therefore, the correct answer is "I and II only."
 
 ---
 
-Generated hard observed_c seed 0 (authored template)
+Generated hard observed_c seed 0
 
 Which of the following equations has infinitely many solutions?
 
-- $-2\left(-2x-1\right)-2x-4=3\left(x+4\right)-x-3$
-- $-4\left(-x-3\right)+3x-3=-2\left(-3x-4\right)+x+1$
-- $2\left(3x+3\right)-4x+4=-2\left(x-3\right)+4x+4$
+Select all that apply.
 
-- I and II only
-- I only
-- II and III only
-- III only
-- II only
+- **I.** $-2\left(-2x-1\right)-2x-4=3\left(x+4\right)-x-3$
+
+- **II.** $-4\left(-x-3\right)+3x-3=-2\left(-3x-4\right)+x+1$
+
+- **III.** $2\left(3x+3\right)-4x+4=-2\left(x-3\right)+4x+4$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -1332,19 +1556,21 @@ Therefore, the correct answer is "II and III only."
 
 ---
 
-Generated hard observed_c seed 1 (authored template)
+Generated hard observed_c seed 1
 
 Which of the following equations has infinitely many solutions?
 
-- $-4\left(4x+4\right)+4x+3=-3\left(-3x+4\right)-4x+3$
-- $2\left(-4x+4\right)+x-1=3\left(-3x+2\right)+2x+1$
-- $-3\left(x-3\right)+2x+3=3\left(-x+1\right)+2x+4$
+Select all that apply.
 
-- II and III only
-- II only
-- III only
-- I and II only
-- I only
+- **I.** $-4\left(4x+4\right)+4x+3=-3\left(-3x+4\right)-4x+3$
+
+- **II.** $2\left(-4x+4\right)+x-1=3\left(-3x+2\right)+2x+1$
+
+- **III.** $-3\left(x-3\right)+2x+3=3\left(-x+1\right)+2x+4$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -1376,19 +1602,21 @@ Therefore, the correct answer is "II only."
 
 ---
 
-Generated hard observed_d seed 0 (authored template)
+Generated hard observed_d seed 0
 
 Which of the following equations has infinitely many solutions?
 
-- $-4\left(-x-3\right)+3x-3=-2\left(-3x-4\right)+x+1$
-- $4\left(2x-2\right)+x+3=4\left(3x-3\right)-3x-1$
-- $2\left(3x+3\right)-4x+4=-2\left(x-3\right)+4x+4$
+Select all that apply.
 
-- II only
-- I and III only
-- II and III only
-- III only
-- None
+- **I.** $-4\left(-x-3\right)+3x-3=-2\left(-3x-4\right)+x+1$
+
+- **II.** $4\left(2x-2\right)+x+3=4\left(3x-3\right)-3x-1$
+
+- **III.** $2\left(3x+3\right)-4x+4=-2\left(x-3\right)+4x+4$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -1420,19 +1648,21 @@ Therefore, the correct answer is "I and III only."
 
 ---
 
-Generated hard observed_d seed 1 (authored template)
+Generated hard observed_d seed 1
 
 Which of the following equations has infinitely many solutions?
 
-- $-4\left(4x+4\right)+4x+3=-3\left(-3x+4\right)-4x+3$
-- $2\left(-4x+4\right)+x-1=3\left(-3x+2\right)+2x-4$
-- $-4\left(3x-2\right)-2x+2=-4\left(3x-3\right)-2x-2$
+Select all that apply.
 
-- None
-- III only
-- I and III only
-- II only
-- II and III only
+- **I.** $-4\left(4x+4\right)+4x+3=-3\left(-3x+4\right)-4x+3$
+
+- **II.** $2\left(-4x+4\right)+x-1=3\left(-3x+2\right)+2x-4$
+
+- **III.** $-4\left(3x-2\right)-2x+2=-4\left(3x-3\right)-2x-2$
+
+- [ ] I
+- [ ] II
+- [ ] III
 
 Let's attempt to solve each equation in turn:
 
@@ -1461,3 +1691,279 @@ $$
 This equation is true for all values of $x.$ Therefore, the equation $-4\left(3x-2\right)-2x+2=-4\left(3x-3\right)-2x-2$ has infinitely many solutions.
 
 Therefore, the correct answer is "III only."
+
+---
+
+easy: explicit none selected
+
+Which of the following equations has infinitely many solutions?
+
+Select all that apply.
+
+- **I.** $2x+1=2x+2$
+
+- **II.** $3x+2=3x+3$
+
+- **III.** $4x+3=4x+4$
+
+- [ ] I
+- [ ] II
+- [ ] III
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}2x+1 & =2x+2 \\ 2x+1-2x & =2x+2-2x \\ 1 & =2.\end{aligned}
+$$
+
+This equation is false for all values of $x.$
+
+- For the second equation, we have
+
+$$
+\begin{aligned}3x+2 & =3x+3 \\ 3x+2-3x & =3x+3-3x \\ 2 & =3.\end{aligned}
+$$
+
+This equation is false for all values of $x.$
+
+- For the third equation, we have
+
+$$
+\begin{aligned}4x+3 & =4x+4 \\ 4x+3-4x & =4x+4-4x \\ 3 & =4.\end{aligned}
+$$
+
+This equation is false for all values of $x.$
+
+Therefore, the correct answer is "None."
+
+---
+
+easy: explicit all selected
+
+Which of the following equations has infinitely many solutions?
+
+Select all that apply.
+
+- **I.** $2x+1=2x+1$
+
+- **II.** $3x+2=3x+2$
+
+- **III.** $4x+3=4x+3$
+
+- [ ] I
+- [ ] II
+- [ ] III
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}2x+1 & =2x+1 \\ 2x+1-2x & =2x+1-2x \\ 1 & =1.\end{aligned}
+$$
+
+This equation is true for all values of $x.$ Therefore, the equation $2x+1=2x+1$ has infinitely many solutions.
+
+- For the second equation, we have
+
+$$
+\begin{aligned}3x+2 & =3x+2 \\ 3x+2-3x & =3x+2-3x \\ 2 & =2.\end{aligned}
+$$
+
+This equation is true for all values of $x.$ Therefore, the equation $3x+2=3x+2$ has infinitely many solutions.
+
+- For the third equation, we have
+
+$$
+\begin{aligned}4x+3 & =4x+3 \\ 4x+3-4x & =4x+3-4x \\ 3 & =3.\end{aligned}
+$$
+
+This equation is true for all values of $x.$ Therefore, the equation $4x+3=4x+3$ has infinitely many solutions.
+
+Therefore, the correct answer is "I, II, and III."
+
+---
+
+moderate: explicit none selected
+
+Which of the following equations has infinitely many solutions?
+
+Select all that apply.
+
+- **I.** $2\left(x+1\right)=2x+3$
+
+- **II.** $-3\left(x+2\right)=-3x-5$
+
+- **III.** $4\left(x-1\right)=4x-3$
+
+- [ ] I
+- [ ] II
+- [ ] III
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}2\left(x+1\right) & =2x+3 \\ 2\cdot x+2\cdot 1 & =2x+3 \\ 2x+2 & =2x+3 \\ 2x+2-2x & =2x+3-2x \\ 2 & =3.\end{aligned}
+$$
+
+This equation is false for all values of $x.$
+
+- For the second equation, we have
+
+$$
+\begin{aligned}-3\left(x+2\right) & =-3x-5 \\ -3\cdot x+\left(-3\right)\cdot\left(2\right) & =-3x-5 \\ -3x-6 & =-3x-5 \\ -3x-6+3x & =-3x-5+3x \\ -6 & =-5.\end{aligned}
+$$
+
+This equation is false for all values of $x.$
+
+- For the third equation, we have
+
+$$
+\begin{aligned}4\left(x-1\right) & =4x-3 \\ 4\cdot x-4\cdot 1 & =4x-3 \\ 4x-4 & =4x-3 \\ 4x-4-4x & =4x-3-4x \\ -4 & =-3.\end{aligned}
+$$
+
+This equation is false for all values of $x.$
+
+Therefore, the correct answer is "None."
+
+---
+
+moderate: explicit all selected
+
+Which of the following equations has infinitely many solutions?
+
+Select all that apply.
+
+- **I.** $2\left(x+1\right)=2x+2$
+
+- **II.** $-3\left(x+2\right)=-3x-6$
+
+- **III.** $4\left(x-1\right)=4x-4$
+
+- [ ] I
+- [ ] II
+- [ ] III
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}2\left(x+1\right) & =2x+2 \\ 2\cdot x+2\cdot 1 & =2x+2 \\ 2x+2 & =2x+2 \\ 2x+2-2x & =2x+2-2x \\ 2 & =2.\end{aligned}
+$$
+
+This equation is true for all values of $x.$ Therefore, the equation $2\left(x+1\right)=2x+2$ has infinitely many solutions.
+
+- For the second equation, we have
+
+$$
+\begin{aligned}-3\left(x+2\right) & =-3x-6 \\ -3\cdot x+\left(-3\right)\cdot\left(2\right) & =-3x-6 \\ -3x-6 & =-3x-6 \\ -3x-6+3x & =-3x-6+3x \\ -6 & =-6.\end{aligned}
+$$
+
+This equation is true for all values of $x.$ Therefore, the equation $-3\left(x+2\right)=-3x-6$ has infinitely many solutions.
+
+- For the third equation, we have
+
+$$
+\begin{aligned}4\left(x-1\right) & =4x-4 \\ 4\cdot x-4\cdot 1 & =4x-4 \\ 4x-4 & =4x-4 \\ 4x-4-4x & =4x-4-4x \\ -4 & =-4.\end{aligned}
+$$
+
+This equation is true for all values of $x.$ Therefore, the equation $4\left(x-1\right)=4x-4$ has infinitely many solutions.
+
+Therefore, the correct answer is "I, II, and III."
+
+---
+
+hard: explicit none selected
+
+Which of the following equations has infinitely many solutions?
+
+Select all that apply.
+
+- **I.** $-3\left(x-2\right)-2x+2=2\left(-4x+3\right)+3x-4$
+
+- **II.** $4\left(-2x+4\right)+x-4=-3\left(2x-3\right)-x-4$
+
+- **III.** $3\left(2x-1\right)-4x-4=-2\left(-2x+2\right)-2x-2$
+
+- [ ] I
+- [ ] II
+- [ ] III
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}-3\left(x-2\right)-2x+2 & =2\left(-4x+3\right)+3x-4 \\ \left(-3\right)\cdot\left(1x\right)+\left(-3\right)\cdot\left(-2\right)-2x+2 & =\left(2\right)\cdot\left(-4x\right)+\left(2\right)\cdot\left(3\right)+3x-4 \\ -3x+6-2x+2 & =-8x+6+3x-4 \\ -5x+8 & =-5x+2 \\ -5x+8+5x & =-5x+2+5x \\ 8 & =2.\end{aligned}
+$$
+
+This equation is false for all values of $x.$
+
+- For the second equation, we have
+
+$$
+\begin{aligned}4\left(-2x+4\right)+x-4 & =-3\left(2x-3\right)-x-4 \\ \left(4\right)\cdot\left(-2x\right)+\left(4\right)\cdot\left(4\right)+x-4 & =\left(-3\right)\cdot\left(2x\right)+\left(-3\right)\cdot\left(-3\right)-x-4 \\ -8x+16+x-4 & =-6x+9-x-4 \\ -7x+12 & =-7x+5 \\ -7x+12+7x & =-7x+5+7x \\ 12 & =5.\end{aligned}
+$$
+
+This equation is false for all values of $x.$
+
+- For the third equation, we have
+
+$$
+\begin{aligned}3\left(2x-1\right)-4x-4 & =-2\left(-2x+2\right)-2x-2 \\ \left(3\right)\cdot\left(2x\right)+\left(3\right)\cdot\left(-1\right)-4x-4 & =\left(-2\right)\cdot\left(-2x\right)+\left(-2\right)\cdot\left(2\right)-2x-2 \\ 6x-3-4x-4 & =4x-4-2x-2 \\ 2x-7 & =2x-6 \\ 2x-7-2x & =2x-6-2x \\ -7 & =-6.\end{aligned}
+$$
+
+This equation is false for all values of $x.$
+
+Therefore, the correct answer is "None."
+
+---
+
+hard: explicit all selected
+
+Which of the following equations has infinitely many solutions?
+
+Select all that apply.
+
+- **I.** $-3\left(x-2\right)-2x+2=2\left(-4x+3\right)+3x+2$
+
+- **II.** $4\left(-2x+4\right)+x-4=-3\left(2x-3\right)-x+3$
+
+- **III.** $3\left(2x-1\right)-4x-4=-2\left(-2x+2\right)-2x-3$
+
+- [ ] I
+- [ ] II
+- [ ] III
+
+Let's attempt to solve each equation in turn:
+
+- For the first equation, we have
+
+$$
+\begin{aligned}-3\left(x-2\right)-2x+2 & =2\left(-4x+3\right)+3x+2 \\ \left(-3\right)\cdot\left(1x\right)+\left(-3\right)\cdot\left(-2\right)-2x+2 & =\left(2\right)\cdot\left(-4x\right)+\left(2\right)\cdot\left(3\right)+3x+2 \\ -3x+6-2x+2 & =-8x+6+3x+2 \\ -5x+8 & =-5x+8 \\ -5x+8+5x & =-5x+8+5x \\ 8 & =8.\end{aligned}
+$$
+
+This equation is true for all values of $x.$ Therefore, the equation $-3\left(x-2\right)-2x+2=2\left(-4x+3\right)+3x+2$ has infinitely many solutions.
+
+- For the second equation, we have
+
+$$
+\begin{aligned}4\left(-2x+4\right)+x-4 & =-3\left(2x-3\right)-x+3 \\ \left(4\right)\cdot\left(-2x\right)+\left(4\right)\cdot\left(4\right)+x-4 & =\left(-3\right)\cdot\left(2x\right)+\left(-3\right)\cdot\left(-3\right)-x+3 \\ -8x+16+x-4 & =-6x+9-x+3 \\ -7x+12 & =-7x+12 \\ -7x+12+7x & =-7x+12+7x \\ 12 & =12.\end{aligned}
+$$
+
+This equation is true for all values of $x.$ Therefore, the equation $4\left(-2x+4\right)+x-4=-3\left(2x-3\right)-x+3$ has infinitely many solutions.
+
+- For the third equation, we have
+
+$$
+\begin{aligned}3\left(2x-1\right)-4x-4 & =-2\left(-2x+2\right)-2x-3 \\ \left(3\right)\cdot\left(2x\right)+\left(3\right)\cdot\left(-1\right)-4x-4 & =\left(-2\right)\cdot\left(-2x\right)+\left(-2\right)\cdot\left(2\right)-2x-3 \\ 6x-3-4x-4 & =4x-4-2x-3 \\ 2x-7 & =2x-7 \\ 2x-7-2x & =2x-7-2x \\ -7 & =-7.\end{aligned}
+$$
+
+This equation is true for all values of $x.$ Therefore, the equation $3\left(2x-1\right)-4x-4=-2\left(-2x+2\right)-2x-3$ has infinitely many solutions.
+
+Therefore, the correct answer is "I, II, and III."

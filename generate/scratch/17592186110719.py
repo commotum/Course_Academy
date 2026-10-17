@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""Identity classification for three real linear equations (basis 1356).
+"""Identity classification for three real linear equations with checkboxes.
 
-Five easy sources, four complete radio banks, one direct affine template.
+Five easy sources (basis 1356), four historical sampling profiles, one direct template.
 Moderate and hard are authored prerequisite-supported distribution templates;
 all levels assess exactly the same identity classification. No unknown parameter
 is solved. See the adjacent evidence folder for route, bounds and fidelity.
 Explicit parameters use {'equations': [...]}: easy affine quadruples; moderate
 [k,b,c,d] for k(x+b)=cx+d; hard [k,a,b,t,s,m,c,d,u,v] for
 k(ax+b)+tx+s=m(cx+d)+ux+v. Fractions are exact integer or 'p/q' strings.
-The complete profile is selected before equations. Every bank is retained whole.
+The profile selects the identity subset before equations are sampled. Each of
+I, II and III has an independent Boolean field, including empty/all selections.
 No learner feedback is invented. All five observed shared solutions replay exactly.
 """
 from __future__ import annotations
@@ -18,7 +19,7 @@ import sympy as sp
 KP_ID=17592186110719
 KP_UUID='ff4e9141-5743-55f1-a8be-3e28cb047eca'
 TITLE='Identifying Equations With Infinitely Many Solutions'
-VERSION='affine-identities-radio-3'
+VERSION='affine-identities-checkbox-4'
 PACKAGE=Path(__file__).with_suffix('')
 SOURCE={'database':'math','basis':1356,'lineage':'01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1'}
 ROMAN=('I','II','III')
@@ -29,6 +30,8 @@ BANKS={
  'observed_c':('I and II only','II only','I only','II and III only','III only'),
  'observed_d':('II and III only','III only','None','I and III only','II only'),
 }
+# Historical banks now constrain random sampling only. Explicit parameters can
+# express all eight subsets; profile names never alter the displayed fields.
 SOURCE_CASES={
  'q-287966':([[2,0,1,1],[2,1,2,1],[2,1,2,3]],'observed_a'),
  'q-288419':([[3,0,2,5],[4,-2,4,-2],[5,3,5,1]],'observed_a'),
@@ -158,12 +161,12 @@ def sample_row(level,class_,rng):
 
 def generate(level='easy',seed=0,template=None,field_type=None,parameters=None,profile=None):
  if level not in ('easy','moderate','hard'):raise ValueError('unknown difficulty')
- if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('radio required')
+ if field_type not in (None,'checkbox',':answer-field.type/checkbox'):raise ValueError('checkbox required')
  template=template or next(t for t,l in TEMPLATES.items() if l==level)
  if TEMPLATES.get(template)!=level:raise ValueError('template/difficulty mismatch')
  rng=random.Random(seed)
  profile=profile or rng.choice(list(BANKS))
- if profile not in BANKS:raise ValueError('unknown complete bank profile')
+ if profile not in BANKS:raise ValueError('unknown sampling profile')
  bank=BANKS[profile]
  if parameters is None:
   target=rng.choice(bank);labels=truths(target)
@@ -179,18 +182,19 @@ def generate(level='easy',seed=0,template=None,field_type=None,parameters=None,p
  displays=[parts(row,level)[1] for row in rows]
  if len({tuple(sorted(d)) for d in displays})!=3:raise ValueError('repeated equation')
  classes=[kind(r) for r in reduced];correct=subset(classes)
- if correct not in bank:raise ValueError('complete bank lacks the mathematically correct subset')
  equations=[l+'='+r for l,r in displays]
- prompt='Which of the following equations has infinitely many solutions?\n\n'+'\n'.join('- $'+e+'$' for e in equations)
+ prompt='Which of the following equations has infinitely many solutions?\n\nSelect all that apply.\n\n'+'\n\n'.join('- **'+label+'.** $'+e+'$' for label,e in zip(ROMAN,equations))
  worked="Let's attempt to solve each equation in turn:\n\n"+'\n\n'.join(solution(r,i,e,parts(row,level)[2]) for i,(row,r,e) in enumerate(zip(rows,reduced,equations)))+'\n\nTherefore, the correct answer is "'+correct+'."'
  key=fingerprint(rows,level)
- content={'version':VERSION,'prompt':prompt,'solution':worked,'bank':sorted(bank),'level':level}
- qid=ident(content);fid=ident([qid,'selection'])
- choices=[{':answer/id':ident([fid,v]),':answer/type':':answer.type/text',':answer/value':v} for v in bank]
- correct_id=next(a[':answer/id'] for a in choices if a[':answer/value']==correct)
- random.Random(str(seed)+':'+qid+':shuffle').shuffle(choices)
+ content={'version':VERSION,'prompt':prompt,'solution':worked,'field_type':'checkbox','level':level}
+ qid=ident(content);fields=[]
+ for label,class_ in zip(ROMAN,classes):
+  fid=ident([qid,label])
+  choices=[{':answer/id':ident([fid,v]),':answer/type':':answer.type/text',':answer/value':v} for v in ('false','true')]
+  correct_id=choices[int(class_=='identity')][':answer/id']
+  fields.append({':answer-field/id':fid,':answer-field/key':label,':answer-field/type':':answer-field.type/checkbox',':answer-field/choices':choices,':answer-field/correct':[':answer/id',correct_id]})
  canonical={'equations':[[int(v) if v.q==1 else str(v) for v in row] for row in rows]}
- return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':worked,':question/difficulty':':question.difficulty/'+level,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':choices,':answer-field/correct':[':answer/id',correct_id]}]},'generation':{'version':VERSION,'seed':seed,'template':template,'profile':profile,'origin':'observed template' if level=='easy' else 'authored missing-level template','parameters':canonical,'domain':'x real','source':SOURCE,'mathematical_fingerprint':key,'parameter_fingerprint':digest(canonical),'sympy':sp.__version__}}
+ return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':{':question/id':qid,':question/problem':prompt,':question/worked-solution':worked,':question/difficulty':':question.difficulty/'+level,':question/answer-fields':fields},'generation':{'version':VERSION,'seed':seed,'template':template,'profile':profile,'origin':'observed template' if level=='easy' else 'authored missing-level template','parameters':canonical,'domain':'x real','source':SOURCE,'mathematical_fingerprint':key,'parameter_fingerprint':digest(canonical),'sympy':sp.__version__}}
 # Easy: directly compare integer affine coefficients/constants; unit-gap unique peers.
 def generate_easy(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('easy',seed,template,field_type,parameters,profile)
 # Moderate: one nonunit distribution (two products) in every equation.
@@ -199,8 +203,8 @@ def generate_moderate(seed=0,template=None,field_type=None,parameters=None,profi
 # collections in every equation, bounded again after reduction.
 def generate_hard(seed=0,template=None,field_type=None,parameters=None,profile=None):return generate('hard',seed,template,field_type,parameters,profile)
 def markdown(record):
- q=record['question'];f=q[':question/answer-fields'][0]
- return q[':question/problem']+'\n\n'+'\n'.join('- '+a[':answer/value'] for a in f[':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
+ q=record['question']
+ return q[':question/problem']+'\n\n'+'\n'.join('- [ ] '+f[':answer-field/key'] for f in q[':question/answer-fields'])+'\n\n'+q[':question/worked-solution']
 if __name__=='__main__':
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--difficulty',choices=['easy','moderate','hard','all'],default='all');p.add_argument('--seed',type=int,default=0);p.add_argument('--count',type=int,default=1);p.add_argument('--format',choices=['markdown','json'],default='markdown');p.add_argument('--template');p.add_argument('--profile');a=p.parse_args()
  if a.count<1:p.error('positive count required')

@@ -1,0 +1,4 @@
+[:find ?topic ?kp ?question ?attribute ?value :in $ [?topic ...] [?attribute ...] :where
+ [?topic :topic/knowledge-points ?kp]
+ (or [?kp :knowledge-point/questions ?question] [?kp :knowledge-point/canonical-example ?question])
+ [?question ?attribute ?value] [(includes? ?value ";")] [(includes? ?value "{")]]
