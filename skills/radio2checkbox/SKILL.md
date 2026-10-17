@@ -25,6 +25,7 @@ Essential decisions:
 - Existing database keys take priority. Study-vault keys are LLM-generated evidence for missing keys and require independent verification. A suspected incorrect database key is a separate content issue to investigate, not permission to silently replace it with the study key.
 - For captured image answer options, the user's convention is that the **first answer image filename in the original capture identifies the correct image**. Display order, entity IDs, and unordered Pull results do not establish that order.
 - Preserve the mathematical question, solution, difficulty, and memberships. Add “Select all that apply.” once when needed. Normalize labels/bullets only where their meaning is established. “None” normally becomes an empty selected subset, not an additional checkbox.
+- For independently testable statements, put each complete statement, including its math, in the checkbox's `:answer-field/key`. Remove the redundant Roman-numbered statement list from the prompt while preserving its setup. Replace solution references to removed numerals with the actual products or objects, preserving the mathematical explanation. Keep Roman identifiers in the migration evidence to map old responses; they need not remain visible to learners.
 - Map every old option, including wrong answers, to its actual selected subset. A migrated learner response must express what the learner chose, not the correct key.
 
 Separate resolved conversions from unresolved cases so ambiguity in one question does not stall independent work. If the user asks to resolve all ambiguities, keep investigating available capture files, solutions, mathematics, and images; ask only for missing evidence or a decision that cannot be established. Report any remaining uncertainty honestly.
@@ -34,6 +35,8 @@ Separate resolved conversions from unresolved cases so ambiguity in one question
 Read [transactions and verification](references/transactions-and-verification.md) for the schema, ownership, identity, learner mapping, guards, batching, native preview, and retry procedure.
 
 The exact enum is **`:answer-field/type :answer-field.type/checkbox`**. Create one field per selectable object with its own text answers `"false"` and `"true"`, and a correct reference to the appropriate owned answer. A type flip on the old combination bank is insufficient. Detach old fields from the question while retaining old field/answer entities and history.
+
+When repairing labels on existing checkbox fields, CAS-update their keys and the affected prompt/solution text. Preserve field and answer identities, Boolean banks, correct references, and saved responses; a label repair does not require rebuilding the fields.
 
 Prepare original logical forms with an explicit agent contributor, stable identities, appropriate ensures, prompt CAS, and a basis guard for the full read-dependent plan. Persist exact requests before submission. Preview with the installed native validators and check the proposed `db_after`, datom scope, provenance, and native grading. A speculative preview is not a commit or a lock on the live database.
 

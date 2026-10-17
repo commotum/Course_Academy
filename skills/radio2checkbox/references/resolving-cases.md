@@ -43,7 +43,7 @@ For image **answer options**, recover the first answer filename from original ca
 - Preserve named objects and source order. Use stable unique field keys after resolving repeated or missing labels. Missing source objects require evidence, not an extrapolation from the option bank.
 - Inspect duplicated or multiple fields independently: they may be repeated captures or distinct parts. Audit answer ownership, feedback, incoming references, and existing learner selections before detaching anything.
 - Translate option feedback only when its meaning applies to the new field. Question-level mathematical explanations remain unchanged unless an explicit repair is justified. Flag metadata that has no faithful translation.
-- Add “Select all that apply.” only if an equivalent instruction is absent. Preserve multiline matrices and expressions when formatting bullets. Use explicit labels and consistent bolding without rewriting the task.
+- Add “Select all that apply.” only if an equivalent instruction is absent. Put each independently testable statement and its math in the checkbox field key, removing its duplicate Roman-numbered prompt list. Preserve multiline matrices, expressions, and the setup needed to interpret them. Replace solution references to removed numerals with meaningful product or object references. Retain visible source labels where they are needed to identify objects in a shared diagram or image.
 - Compare the latest prompt/solution against the audited version. Preserve intervening rendering corrections, including escaped set and piecewise braces. Re-review changed mathematical content or keys; do not overwrite them from an old snapshot.
 
 ## Learner meaning and unresolved decisions
