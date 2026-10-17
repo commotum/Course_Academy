@@ -44,10 +44,17 @@ def markdown(source: str) -> str:
     for node in soup.select('.mjpage, mjx-container, .MathJax, math'):
         if node.parent is None:
             continue
+        if node.select_one('svg > title math') is not None:
+            continue
         tex = node.select_one('annotation[encoding="application/x-tex"], svg > title')
-        if tex and tex.get_text(strip=True):
+        if tex and not tex.find('math') and tex.get_text(strip=True):
             marker = '$$' if node.get('display') in ('true', 'block') or 'mjpage__block' in node.get('class', []) else '$'
-            node.replace_with(NavigableString(marker + tex.get_text().strip() + marker))
+            # A source title's percent comments and legacy row delimiters need
+            # their original line endings; resolve them before render() treats
+            # HTML whitespace as spaces. Mixed titles remain whole graphics.
+            from .math_content import formatter
+            value = formatter().normalize_source_tex(tex.get_text())
+            node.replace_with(NavigableString(marker + value + marker))
     for node in soup.select('script, style, head, .stepHeader, .helpButton, .explanationHeader'):
         node.decompose()
     def render(node):

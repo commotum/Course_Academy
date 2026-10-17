@@ -94,6 +94,43 @@ class MathPreparationTests(unittest.TestCase):
         self.assertIn('{{field-0}}', converted)
         self.assertNotIn('<p>', converted)
 
+    def test_source_html_title_comments_preserve_matrix_rows_and_later_steps(self):
+        import html
+        source = ('\\eqalign{A &= \\left[\\matrix{1 & 2 \\\n3 & 4}\\right] '
+                  '\n% hidden alternative: \\matrix{99 & 99}\n'
+                  '\\\\ &= \\left[\\matrix{5 & 6 \\\n7 & 8}\\right]}')
+        rendered = prose('<span class="mjpage mjpage__block"><svg><title>' +
+                         html.escape(source) + '</title></svg></span>')
+        self.assertIn(r'\begin{bmatrix}1 & 2 \\', rendered)
+        self.assertIn(r'3 & 4\end{bmatrix}', rendered)
+        self.assertIn(r'\begin{bmatrix}5 & 6 \\', rendered)
+        self.assertIn(r'7 & 8\end{bmatrix}', rendered)
+        self.assertNotIn('hidden alternative', rendered)
+        self.assertNotIn('99', rendered)
+        self.assertNotIn('%', rendered)
+
+    def test_source_html_title_keeps_escaped_percent_and_even_backslash_rowbreak(self):
+        import html
+        source = (r'\begin{aligned}p&=50\%+25\%\\% hidden comment' +
+                  '\n' + r'q&=75\%\end{aligned}')
+        rendered = prose('<span class="mjpage mjpage__block"><svg><title>' +
+                         html.escape(source) + '</title></svg></span>')
+        self.assertIn(r'50\%+25\%', rendered)
+        self.assertIn(r'75\%', rendered)
+        self.assertIn(r'\\', rendered)
+        self.assertNotIn('hidden comment', rendered)
+
+    def test_mixed_source_title_cannot_be_flattened_to_one_fragment(self):
+        source = ('<span class="mjpage"><svg><title>A=' +
+                  '<mjx-container><math><mn>1</mn></math></mjx-container>' +
+                  '+B</title></svg></span>')
+        with self.assertRaisesRegex(ValueError, 'unresolved graphic or formula'):
+            prose(source)
+        annotated = source.replace('<mn>1</mn>',
+            '<mn>1</mn><annotation encoding="application/x-tex">1</annotation>')
+        with self.assertRaisesRegex(ValueError, 'unresolved graphic or formula'):
+            prose(annotated)
+
     def test_recapture_formatting_preserves_all_existing_choices_and_entered_values(self):
         for kind in ('radio', 'blank'):
             with self.subTest(kind=kind):
