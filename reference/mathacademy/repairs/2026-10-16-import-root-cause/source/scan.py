@@ -58,10 +58,28 @@ def title_info(content):
         fragments = MML.findall(content)
     outer = CONTAINER.sub('FORMULA', content)
     visible_outer = BeautifulSoup(outer, 'html.parser').get_text('', strip=False) if '<' in outer else html.unescape(outer)
-    residual = re.sub(r'FORMULA|[\s,.;]', '', visible_outer)
+    semantic_outer = re.sub(r'\\require\s*\{[^{}]*\}', '', visible_outer)
+    semantic_outer = re.sub(r'\\(?:displaystyle|textstyle|scriptstyle|scriptscriptstyle|quad|qquad|enspace)\b|\\[,!;:]', '', semantic_outer)
+    residual = re.sub(r'FORMULA|[{}\s,.;:?!]', '', semantic_outer)
     mixed_loss = bool(fragments and (residual or len(fragments) > 1))
     comments = re.findall(r'(?m)^\s*%[^\r\n]*', visible_outer)
     return fragments, outer, mixed_loss, comments
+
+
+def owner_end(raw, position):
+    """Bound known JSON owner IDs to their actual div, not the page footer."""
+    start = raw.rfind('<', 0, position)
+    if not re.match(r'<div\b', raw[start:start + 20]):
+        return None
+    depth = 0
+    for match in re.finditer(r'<!--[\s\S]*?-->|<script\b[^>]*>[\s\S]*?</script>|</?div\b[^>]*>', raw[start:], re.I):
+        tag = match[0]
+        if tag.startswith(('<!--', '<script', '<SCRIPT')):
+            continue
+        depth += -1 if tag.startswith('</') else 1
+        if depth == 0:
+            return start + match.end()
+    return None
 
 
 def item_fields(item):
@@ -177,6 +195,7 @@ def run(args):
         owners = sorted((raw.find('id="' + item['dom_id'] + '"'), item)
                         for item in items if item.get('dom_id') and raw.find('id="' + item['dom_id'] + '"') >= 0)
         positions = [p for p, _ in owners]
+        owner_ends = {item['dom_id']: owner_end(raw, position) for position, item in owners}
         field_index = {item['dom_id']: field_math(item) for _, item in owners}
         title_matches = list(TITLE.finditer(raw))
         title_starts = [m.start() for m in title_matches]
@@ -204,6 +223,9 @@ def run(args):
             if which < 0:
                 continue
             start, item = owners[which]
+            if owner_ends[item['dom_id']] is None or offset >= owner_ends[item['dom_id']]:
+                counts['unowned_source_occurrences_rejected'] += 1
+                continue
             if item.get('step_type') == 'tutorial':
                 kind, source_id = 'tutorial', int(item['content_id'])
             elif item.get('step_type') == 'example':

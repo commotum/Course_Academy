@@ -293,6 +293,13 @@ def _legacy_commands(text):
             body = text[opening + 1:i - 1]
             body = re.sub(r'\\cr\b', lambda _: r'\\', body)
             body = re.sub(r'(?<!\\)\\[ \t]*\r?\n', lambda _: r'\\' + '\n', body)
+            # Legacy source SVG titles can wrap a row separator in a span,
+            # leaving one backslash before its optional vertical spacing.
+            # This is a row break only inside the legacy layout command and
+            # with a concrete TeX length; ordinary math delimiters stay invalid.
+            body = re.sub(r'(?<!\\)\\(?=\[\s*[+-]?(?:\d+(?:\.\d*)?|\.\d+)\s*'
+                          r'(?:pt|pc|in|bp|cm|mm|dd|cc|sp|ex|em)\s*\])',
+                          lambda _: r'\\', body)
             body = re.sub(r'\\\\\s*$', '', body)
             replacement = r'\begin{' + layout + '}' + body + r'\end{' + layout + '}'
             text = text[:start] + replacement + text[i:]

@@ -157,6 +157,23 @@ class MathContentTests(unittest.TestCase):
         for bad in (r'\begin{bmatrix}1 & 2 \\ 3\end{bmatrix}', '{x', '$x$', r'\begin{aligned}x\end{cases}'):
             with self.assertRaises(ValueError): validate_tex(bad)
 
+    def test_legacy_row_spacing_keeps_all_gradient_derivation_rows(self):
+        # Tutorial 2524's saved SVG title encodes each break as <span>\</span>.
+        old = (r'\eqalign{\nabla f(x,y,z) &= \langle f_x, \: f_y, \:f_z\rangle \[5pt]'
+               r'&= \dfrac12\langle2x, \: 2y, \: 2z\rangle\[5pt]'
+               r'&= \langle x, \: y, \: z\rangle\[10pt]'
+               r'\nabla f(0,0,1) &= \langle 0,\: 0,\: 1 \rangle.}')
+        normalized = normalize_tex(old)
+        self.assertEqual(normalized.count(r'\\[5pt]'), 2)
+        self.assertEqual(normalized.count(r'\\[10pt]'), 1)
+        self.assertIn(r'\nabla f(0,0,1)', normalized)
+        validate_tex(normalized)
+        self.assertEqual(normalize_tex(normalized), normalized)
+        for bad in (r'\begin{aligned}a&=1\[5pt]b&=2\end{aligned}',
+                    r'\eqalign{a&=1\[x+y\]}', r'\eqalign{a&=\(x\)}'):
+            with self.subTest(source=bad), self.assertRaises(ValueError):
+                validate_tex(normalize_tex(bad))
+
     def test_capture_boundary_normalizes_without_changing_source(self):
         question = {'problem': r'\[ [\matrix{1 & 3\cr 2 & 0}] \]',
                     'worked_solution': '$x=1$',
