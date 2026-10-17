@@ -1,0 +1,8 @@
+[:find (pull ?a [:db/id :activity/id :activity/math-academy-id :activity/title
+ {:activity/type [:db/id :db/ident]} {:activity/scope [:db/id :topic/math-academy-id]}
+ :activity/first-step
+ {[:activity/steps :limit nil] [:db/id :step/next
+ {:step/content [:db/id :knowledge-point/id :knowledge-point/title :tutorial/id
+ :question/id :question/math-academy-id
+ {[:knowledge-point/_canonical-example :limit nil] [:db/id]}]}]}])
+        :in $ [?a ...] :where [?a :activity/id _]]

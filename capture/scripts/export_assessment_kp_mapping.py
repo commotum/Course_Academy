@@ -47,7 +47,9 @@ def select(root):
             source_file=str(content_path.relative_to(root)), source_sha256=hashlib.sha256(raw).hexdigest(),
             questions=[dict(question_id=q.get('math_academy_id'),
                 topic_id=str(q.get('topic_id') or content.get('topic_id') or '') or None,
-                source_kp_id=str(q.get('knowledge_point_id') or '') or None,
+                source_kp_id=str(q.get('knowledge_point_source_id') or q.get('knowledge_point_id') or q.get('kp_id') or '') or None,
+                raw_knowledge_point_id=q.get('knowledge_point_id'), raw_kp_id=q.get('kp_id'),
+                raw_knowledge_point_source_id=q.get('knowledge_point_source_id'),
                 source_kp_title=q.get('knowledge_point'), source_example_id=q.get('source_example_id'))
                 for q in content.get('questions', [])]))
     return tasks
@@ -70,13 +72,17 @@ ACTIVITY_PULL = '''[:db/id :activity/id :activity/math-academy-id :activity/titl
 
 
 def read_database(client, directory, selection, basis=None):
-    previous_identity = json.loads((directory / 'identity.json').read_text()) if (directory / 'identity.json').exists() else None
+    # Only a completed export can certify the basis of retained query results.
+    # An interrupted attempt must never make stale files eligible for reuse.
+    completed_path = directory / 'completed-export.json'
+    previous_identity = json.loads(completed_path.read_text()).get('identity') if completed_path.exists() else None
     identity = client.status()
     if basis is not None:
         if basis > identity['basis']:
             raise ValueError('Requested basis is newer than the database')
         identity['basis'] = basis
     basis = identity['basis']
+    completed_path.unlink(missing_ok=True)
     dump(directory / 'identity.json', identity)
     qids = sorted({q['question_id'] for t in selection for q in t['questions']
                    if isinstance(q['question_id'], str) and re.fullmatch(r'q-\d+', q['question_id'])})
@@ -115,16 +121,19 @@ def read_database(client, directory, selection, basis=None):
         :in $ [?a ...] :where [?a :activity/id _]]''', scoped_lessons, 30)]
     courses = [row[0] for row in query('courses', '''[:find (pull ?c
         [:db/id :course/id :course/math-academy-id :course/title]) :where [?c :course/id _]]''', [])]
-    membership_sources = batches('assessed-membership-sources', '''[:find ?kp ?q ?source
-        :in $ [?id ...] :where [?q :question/math-academy-id ?id]
-        [?kp :knowledge-point/questions ?q _ ?s] [?s :db/ident ?source]]''', qids)
+    # Keep provenance reads to a single attribute, then resolve source idents
+    # in Python to avoid large intermediate relations in the query planner.
+    idents = dict(query('source-idents', '[:find ?e ?ident :where [?e :db/ident ?ident]]', []))
     kp_ids = sorted({kp[':db/id'] for t in topics for kp in t.get(':topic/knowledge-points', [])})
-    pool_sources = batches('pool-membership-sources', '''[:find ?kp ?q ?source
-        :in $ [?kp ...] :where [?kp :knowledge-point/questions ?q _ ?s]
-        [?q :question/math-academy-id ?id] [?s :db/ident ?source]]''', kp_ids, 40)
+    pool_sources = batches('pool-membership-source-entities', '''[:find ?kp ?q ?s
+        :in $ [?kp ...] :where [?kp :knowledge-point/questions ?q _ ?s]]''', kp_ids, 40)
+    pool_sources = [[kp, q, idents.get(s, s)] for kp, q, s in pool_sources]
+    assessed_entities = {q[':db/id'] for q in questions}
+    membership_sources = [row for row in pool_sources if row[1] in assessed_entities]
     raw = dict(identity=identity, topics=topics, questions=questions, activities=activities,
         courses=courses, membership_sources=membership_sources, pool_sources=pool_sources)
     dump(directory / 'raw-projections.json', raw)
+    dump(completed_path, dict(identity=identity))
     return raw
 
 
