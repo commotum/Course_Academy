@@ -9,3 +9,15 @@ Completed keys/solutions and all three levels are explicitly authored. Normal wo
 The supplemental engine-wrong-shape-report.json records a parser limitation: a complete tuple entered into the scalar blank yields unclosed group. It is one documented unresolved out-of-shape probe, separate from supported scalar-response tests, which have zero unresolved results. Normal outputs require only the scalar fragment, and equivalent/incorrect scalar entries are tested through the actual grader.
 
 Version dependent-general-family-2 applies the shared course-academy-tex-v1 normalization before content identities, validates normal public outputs, and emits scalable aligned systems with a separate annotation column. Raw incomplete replay remains evidence-only. The refreshed validation preserves every mathematical source choice and canonical solution stage. `replenish.py` records exact requests and receipts under reference/replenishment and serializes additive content commits with the application api.lock. Difficulty bands are explicitly authored; the bounded primitive-line catalogs contain 160 easy, 608 moderate, and 992 hard mathematical tasks before excluding source lines and prior content.
+
+## Current system display repair (2026-10-16)
+
+The registered generator now constructs systems with the shared `system_tex` helper: separate equation rows, explicit equation-label columns, and a single operation bar where applicable. Whole-equation multiplication stays grouped. The change preserves sampling, difficulty, mathematical task fingerprints, complete answer banks, and correct keys. Original source snapshots and raw replay prompts remain historical evidence.
+
+Run the current presentation regression and native grading checks from the repository root:
+
+```sh
+.venv/bin/python reference/mathacademy/repairs/2026-10-16-system-equations-display/generators/verify.py
+```
+
+That harness compares retained pre-repair generators with current output across every supported template and difficulty, invokes the historical mathematical validators on the baseline, checks arithmetic and answer equivalence, and grades current output with the native engine. It avoids the historical validators' semicolon-only display parsers. Current render evidence is in `reference/mathacademy/repairs/2026-10-16-system-equations-display/generators/`.

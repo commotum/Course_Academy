@@ -26,3 +26,15 @@ Normal authored radio banks retain their five method-derived recipes and reject 
 `replenish.py` uses the existing EDB integration and application contributor, obtains `api.lock`, captures current inventory, deduplicates mathematical tasks, tests selected records with the native engine, previews with deployed validation predicates, persists exact basis-guarded intent, submits, and verifies exact receipt-basis readback. `freeze.json` records the registered UUID and executable/validation hashes. The script falls back to the repository Python environment when the application's ordinary Python lacks SymPy.
 
 Current source evidence at basis 2154 updates the radio original to easy and adds a moderate two-blank source. Those captured ratings supersede the old source-label suggestions. `current-source-validation.json` and its native report verify their complete banks/fields and worked arithmetic. New moderate sampling uses multipliers 3–4. Exact fidelity to the newly captured aligned b=13 blank template is outside this generator's narrower policy; that valid source still contributes to inventory. Hard remains an authored, source-anchored workload band.
+
+## Current system display repair (2026-10-16)
+
+The registered generator now constructs systems with the shared `system_tex` helper: separate equation rows, explicit equation-label columns, and a single operation bar where applicable. Whole-equation multiplication stays grouped. The change preserves sampling, difficulty, mathematical task fingerprints, complete answer banks, and correct keys. Original source snapshots and raw replay prompts remain historical evidence.
+
+Run the current presentation regression and native grading checks from the repository root:
+
+```sh
+.venv/bin/python reference/mathacademy/repairs/2026-10-16-system-equations-display/generators/verify.py
+```
+
+That harness compares retained pre-repair generators with current output across every supported template and difficulty, invokes the historical mathematical validators on the baseline, checks arithmetic and answer equivalence, and grades current output with the native engine. It avoids the historical validators' semicolon-only display parsers. Current render evidence is in `reference/mathacademy/repairs/2026-10-16-system-equations-display/generators/`.

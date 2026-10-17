@@ -23,3 +23,15 @@ The refreshed basis-2158 source capture and its independent validation are in `c
 `registration.json` records the stable generator UUID, repository-relative script path and verified commit basis. `reference/replenishment/basis-2186/` retains the locked preparation, 13 distinct accepted instances, native grading, exact basis-guarded request, preview, durable receipt and basis-2187 readback. There are five distinct available questions at each supported authored level, using the two existing moderate sources. The `.generated` job file was absent. No source records or learner state were changed.
 
 The finite domains remain 24 easy, 36 moderate and 36 hard tasks under the documented target operand bounds. Exhaustion must produce a finite-limit outcome with the remaining shortage explicit; incidental coefficient changes, variable aliases and option shuffling cannot replenish those domains.
+
+## Current system display repair (2026-10-16)
+
+The registered generator now constructs systems with the shared `system_tex` helper: separate equation rows, explicit equation-label columns, and a single operation bar where applicable. Whole-equation multiplication stays grouped. The change preserves sampling, difficulty, mathematical task fingerprints, complete answer banks, and correct keys. Original source snapshots and raw replay prompts remain historical evidence.
+
+Run the current presentation regression and native grading checks from the repository root:
+
+```sh
+.venv/bin/python reference/mathacademy/repairs/2026-10-16-system-equations-display/generators/verify.py
+```
+
+That harness compares retained pre-repair generators with current output across every supported template and difficulty, invokes the historical mathematical validators on the baseline, checks arithmetic and answer equivalence, and grades current output with the native engine. It avoids the historical validators' semicolon-only display parsers. Current render evidence is in `reference/mathacademy/repairs/2026-10-16-system-equations-display/generators/`.

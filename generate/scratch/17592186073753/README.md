@@ -23,3 +23,15 @@ variety, source malformed-brace repair and real application native grading.
 `source.json` and `authoritative-lesson-487.json` preserve raw evidence. See
 `validation.json`, `review.md`, `source-choice-map.json` and extraction documents
 for fidelity counts and limitations. No plots, database writes or registration.
+
+## Current system display repair (2026-10-16)
+
+The registered generator now constructs systems with the shared `system_tex` helper: separate equation rows, explicit equation-label columns, and a single operation bar where applicable. Whole-equation multiplication stays grouped. The change preserves sampling, difficulty, mathematical task fingerprints, complete answer banks, and correct keys. Original source snapshots and raw replay prompts remain historical evidence.
+
+Run the current presentation regression and native grading checks from the repository root:
+
+```sh
+.venv/bin/python reference/mathacademy/repairs/2026-10-16-system-equations-display/generators/verify.py
+```
+
+That harness compares retained pre-repair generators with current output across every supported template and difficulty, invokes the historical mathematical validators on the baseline, checks arithmetic and answer equivalence, and grades current output with the native engine. It avoids the historical validators' semicolon-only display parsers. Current render evidence is in `reference/mathacademy/repairs/2026-10-16-system-equations-display/generators/`.

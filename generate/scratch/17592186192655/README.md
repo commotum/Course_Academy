@@ -21,3 +21,15 @@ Validation independently reads displayed prompt and worked math, checks entire p
 All 15 selected instances passed displayed-equation and worked-solution checks. Actual learner grading accepted all 30 correct field selections and rejected all 60 incorrect selections, both before commit and on exact-basis readback. Both incomplete source questions and the canonical example remain unchanged; only additive facts for this KP and its new generated entities were committed. Available inventory is five distinct tasks per authored level, with no remaining KP jobs.
 
 Finite task domains remain bounded as documented in `template-extraction.md`; exhausted tasks cannot be replenished by incidental coefficients, variables, bank profiles, seed, or option ordering. An exhausted domain leaves an explicit finite-limit outcome. The generator's difficulty labels are authored workload classifications, not recovered source labels.
+
+## Current system display repair (2026-10-16)
+
+The registered generator now constructs systems with the shared `system_tex` helper: separate equation rows, explicit equation-label columns, and a single operation bar where applicable. Whole-equation multiplication stays grouped. The change preserves sampling, difficulty, mathematical task fingerprints, complete answer banks, and correct keys. Original source snapshots and raw replay prompts remain historical evidence.
+
+Run the current presentation regression and native grading checks from the repository root:
+
+```sh
+.venv/bin/python reference/mathacademy/repairs/2026-10-16-system-equations-display/generators/verify.py
+```
+
+That harness compares retained pre-repair generators with current output across every supported template and difficulty, invokes the historical mathematical validators on the baseline, checks arithmetic and answer equivalence, and grades current output with the native engine. It avoids the historical validators' semicolon-only display parsers. Current render evidence is in `reference/mathacademy/repairs/2026-10-16-system-equations-display/generators/`.

@@ -10,3 +10,15 @@ Only local review artifacts; no registration, database transactions, engine chan
 API: generate(level, seed=0, template=None, field_type=None, parameters=None, profile=None), plus generate_easy/moderate/hard. Observed profiles and original parameters are in source-cases.json; replay uses the same parameterized recipes as variants. source.json preserves all raw evidence. All 16 captured values, all eight nonempty field banks and six existing correct refs are compared. Four absent correct refs and three absent solutions are independently authored. Three raw prompts match exactly; all six match after documented presentation normalization. Existing solutions match after the system-brace escape; raw-exact solutions do not. Contextual default prompts add the omitted relation.
 
 Moderate and hard are authored labels; hard keeps integer coefficients and unit isolation, with bounded rational results. source_4133 and source_5179 preserve numerical banks while honestly limiting their inferred intent; normal radios use a separate whole method-derived bank. validation.json separates fidelity, repairs, correctness, scope, variety and native grading. review.md shows every original, its repaired replay, an observed-profile variant and at least two authored defaults at every level. No images require rendering.
+
+## Current system display repair (2026-10-16)
+
+The registered generator now constructs systems with the shared `system_tex` helper: separate equation rows, explicit equation-label columns, and a single operation bar where applicable. Whole-equation multiplication stays grouped. The change preserves sampling, difficulty, mathematical task fingerprints, complete answer banks, and correct keys. Original source snapshots and raw replay prompts remain historical evidence.
+
+Run the current presentation regression and native grading checks from the repository root:
+
+```sh
+.venv/bin/python reference/mathacademy/repairs/2026-10-16-system-equations-display/generators/verify.py
+```
+
+That harness compares retained pre-repair generators with current output across every supported template and difficulty, invokes the historical mathematical validators on the baseline, checks arithmetic and answer equivalence, and grades current output with the native engine. It avoids the historical validators' semicolon-only display parsers. Current render evidence is in `reference/mathacademy/repairs/2026-10-16-system-equations-display/generators/`.
