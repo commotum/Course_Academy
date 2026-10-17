@@ -117,7 +117,7 @@ def counts(kp,path,basis):
         if q[':db/id'] in unavailable or q.get(':knowledge-point/_canonical-example'):continue
         mid=q.get(':question/math-academy-id')
         if mid in g.DEFAULTS:
-            if len(q.get(':question/answer-fields',[]))!=1:continue
+            if not q.get(':question/answer-fields'):continue
             try:
                 nq=normalize(q);v.math_question(nq)
             except (AssertionError,KeyError):continue

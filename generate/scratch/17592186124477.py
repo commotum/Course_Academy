@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Identify pivot columns in REF. Easy only; no live database operations.
+"""Identify pivot columns in REF with checkboxes. Easy only; no live database operations.
 
-One instructional template, thirteen observed complete bank profiles. Column
+One instructional template, thirteen observed source profiles. Column
 substitution is a bijection with increasing pivot targets. Fresh matrices retain
 source dimensions/rank and REF; their trailing integer entries are incidental.
 Semantic inventory deduplication deliberately ignores those incidental values.
+Each displayed column has its own Boolean checkbox and owned answer identities.
 """
 import argparse, hashlib, itertools, json, random, re, sys, uuid
 from pathlib import Path
@@ -14,7 +15,7 @@ PACKAGE = Path(__file__).with_suffix('')
 CAPTURE = json.loads((PACKAGE/'source.json').read_text())
 SOURCE = CAPTURE['record']
 KP_ID = 17592186124477
-VERSION = 'pivot-columns-ref-1'
+VERSION = 'pivot-columns-ref-checkbox-2'
 LEVELS = ('easy',)
 SOURCES = {q[':question/math-academy-id']:q for q in SOURCE[':knowledge-point/questions']}
 
@@ -62,7 +63,7 @@ def permutation(profile,target):
 def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
     if level not in LEVELS:raise ValueError('Unsupported difficulty; see capabilities.json')
     if template not in (None,'pivot-columns-ref'):raise ValueError('Unsupported template')
-    if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('Unsupported field type')
+    if field_type not in (None,'checkbox',':answer-field.type/checkbox'):raise ValueError('checkbox required')
     rng=random.Random(seed);profile=profile or rng.choice(sorted(SOURCES));src=SOURCES[profile]
     original=matrix(src[':question/problem']);m=len(original);n=len(original[0]);old=pivots(original)
     if parameters is None:
@@ -84,13 +85,16 @@ def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=
     def render(text):
         text=columns(text,perm)
         return re.sub(r'\\begin\{bmatrix\}.*?\\end\{bmatrix\}',lambda _:tex(a),text,flags=re.S)
-    q={':question/problem':render(src[':question/problem']),':question/worked-solution':render(src[':question/worked-solution']),':question/difficulty':':question.difficulty/easy'}
-    sf=src[':question/answer-fields'][0]
-    values=[columns(v[':answer/value'],perm) for v in sf[':answer-field/choices']]
-    identity=digest([VERSION,q,sorted(values)]);qid=uid(identity);fid=uid([qid,sf[':answer-field/key']])
-    answers=[{':answer/id':uid([fid,value]),':answer/type':':answer.type/text',':answer/value':value} for value in values]
-    correct=next(a[':answer/id'] for a,s in zip(answers,sf[':answer-field/choices']) if s[':answer/id']==sf[':answer-field/correct'][':answer/id'])
-    q.update({':question/id':qid,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':sf[':answer-field/key'],':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]})
+    prompt=render(src[':question/problem'])
+    if 'Select all that apply.' not in prompt:prompt+='\n\nSelect all that apply.'
+    q={':question/problem':prompt,':question/worked-solution':render(src[':question/worked-solution']),':question/difficulty':':question.difficulty/easy'}
+    identity=digest([VERSION,q]);qid=uid(identity);fields=[]
+    for column in range(1,n+1):
+        key=f'Column {column}';fid=uid([qid,key])
+        answers=[{':answer/id':uid([fid,value]),':answer/type':':answer.type/text',':answer/value':value} for value in ('false','true')]
+        correct=answers[int(column in target)][':answer/id']
+        fields.append({':answer-field/id':fid,':answer-field/key':key,':answer-field/type':':answer-field.type/checkbox',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]})
+    q.update({':question/id':qid,':question/answer-fields':fields})
     return {'knowledge_point':{'db_id':KP_ID,'id':SOURCE[':knowledge-point/id'],'title':SOURCE[':knowledge-point/title']},'question':q,'generation':{'version':VERSION,'template':'pivot-columns-ref','level':level,'profile':profile,'seed':seed,'parameters':parameters,'mathematical_fingerprint':fingerprint(q),'content_identity':identity,'eligible_for_learning':True,'evidence_only':False,'source':{k:CAPTURE[k] for k in ('database','basis','lineage')},'python':sys.version.split()[0],'sympy':sp.__version__}}
 
 def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
@@ -114,8 +118,8 @@ def generate_many(level,count,seed=0,profile=None):
     return records
 
 def markdown(rec):
-    q=rec['question'];f=q[':question/answer-fields'][0]
-    return q[':question/problem']+'\n\n'+'\n'.join('- '+a[':answer/value'] for a in f[':answer-field/choices'])+'\n\n'+q[':question/worked-solution']
+    q=rec['question']
+    return q[':question/problem']+'\n\n'+'\n'.join('- [ ] '+f[':answer-field/key'] for f in q[':question/answer-fields'])+'\n\n'+q[':question/worked-solution']
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
