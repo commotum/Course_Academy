@@ -1,0 +1,79 @@
+[
+  {
+    "label": "Known wrong-shape tuple parser limitation",
+    "record": {
+      "knowledge_point": {
+        "db_id": 17592186073778,
+        "id": "50351666-c691-510f-863c-168c61f9980b",
+        "title": "Finding the General Solution to a System With Infinitely Many Intersection Points"
+      },
+      "question": {
+        ":question/id": "b0f94086-2326-5141-b1cd-ed136a897148",
+        ":question/problem": "Describe the points that lie on the intersection of the following lines:\n\n$$\n\\begin{aligned}\nx - 4y &= -3 \\\\[6pt]\n2x - 8y &= -6\n\\end{aligned}\n$$\n\nExpress your answer in terms of $x$ only.\n\nThe intersection points are\n\n$(x,$ {{field-1}} $),$\n\nwhere $x$ is any number.",
+        ":question/answer-fields": [
+          {
+            ":answer-field/id": "ca5a2e7b-4e6a-5d9f-ad2d-cbf973db01d3",
+            ":answer-field/key": "field-1",
+            ":answer-field/type": ":answer-field.type/blank",
+            ":answer-field/choices": [
+              {
+                ":answer/id": "3627a458-b844-5739-86d7-9c9c899277ac",
+                ":answer/type": ":answer.type/math",
+                ":answer/value": "\\frac{1}{4}x + \\frac{3}{4}"
+              }
+            ],
+            ":answer-field/correct": [
+              ":answer/id",
+              "3627a458-b844-5739-86d7-9c9c899277ac"
+            ]
+          }
+        ],
+        ":question/difficulty": ":question.difficulty/hard",
+        ":question/worked-solution": "The points of intersection of the lines correspond to the solutions of the following system:\n\n$$\n\\left\\{\\begin{aligned}x - 4y &=-3 \\\\ 2x - 8y &=-6\\end{aligned}\\right.\n$$\n\nWe will solve the system using elimination. Notice that if we multiply the first equation by $-2$, then we will get a $-2x$ term that can cancel with the $2x$ term in the second equation:\n\n$$\n\\left\\{\\begin{aligned}x - 4y &=-3 && \\mid \\cdot (-2) \\\\ 2x - 8y &=-6\\end{aligned}\\right.\n$$\n\nWhen we add the two equations, it turns out that both variables cancel, and we obtain a true statement:\n\n$$\n\\begin{aligned}\n-2x + 8y &= 6 \\\\\n2x - 8y &= -6 \\\\\n0 &= (6 - 6) \\\\\n0 &= 0\n\\end{aligned}\n$$\n\nBecause we obtained a true statement, we conclude that there are infinitely many solutions to the system. Therefore, the lines have infinitely many intersection points.\n\nWe want to find an expression that represents every solution to the system. Any value of $x$ can be chosen, and we can find the corresponding $y$-coordinate for each $x$-coordinate by solving one of the lines for $y$, as follows:\n\n$$\n\\begin{aligned}\nx - 4y &= -3 \\\\\n-4y &= -3 - x \\\\\ny &= \\frac{-3 - x}{-4} \\\\\ny &= \\frac{3}{4} + \\frac{1}{4}x\n\\end{aligned}\n$$\n\nTherefore, the points of intersection are\n\n$$\n\\left(x,\\frac{3}{4} + \\frac{1}{4}x \\right)\n$$\n\nwhere $x$ is any number."
+      },
+      "generation": {
+        "version": "dependent-general-family-4-x-coordinate",
+        "seed": 0,
+        "template": "blank_coordinate",
+        "bank_profile": "method",
+        "parameters": {
+          "a": "1",
+          "b": "-4",
+          "c": "-3",
+          "r": "2",
+          "variable": "x"
+        },
+        "parameter_fingerprint": "e825304322291550f26dd3a165c669bbb1e57c8e06cb1f8458d7d1b0e305d493",
+        "content_fingerprint": "9e4775ac0eb78b738d30baca931428f11ce4a511c26f478da158f9ac46479032",
+        "python_version": "3.13.5",
+        "sympy_version": "1.14.0",
+        "source": {
+          "database": "math",
+          "basis": 1356,
+          "lineage": "01a12a15-3e0a-75a1-9dac-f8b8c5d5c3f1"
+        },
+        "source_ids": [
+          "q-208832"
+        ],
+        "method_reference": "e-14014; tutorial17592186075062",
+        "raw_evidence": false,
+        "eligible_for_learning": true,
+        "authored_extension": true,
+        "authored_level": "hard",
+        "inferred_correct_value": "\\frac{1}{4}x + \\frac{3}{4}",
+        "recipes": [],
+        "domain": "All real free-coordinate values; two nonzero dependent linear equations only",
+        "plot_rating": "none",
+        "plot_assets": {},
+        "math_format": "course-academy-tex-v1"
+      }
+    },
+    "checks": [
+      {
+        "submitted": "(x, \\frac{1}{4}x + \\frac{3}{4})",
+        "expected": "unresolved",
+        "purpose": "Complete tuple is outside required scalar-fragment response; native parser returns unclosed group"
+      }
+    ]
+  }
+]
