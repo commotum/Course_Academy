@@ -1,0 +1,143 @@
+{
+  "verdict": "revise",
+  "summary": "Two demonstrated defects: easy answer banks reveal the correct factor without reading the ODE, and the canonical source case is unreachable. Three stored generated questions are affected. Package unchanged; no database writes.",
+  "source_analysis": {
+    "skill": "Transform a first-order linear ODE into d(yI)/dx = IQ using an integrating factor.",
+    "reasoning_steps": [
+      "Normalize the derivative coefficient and identify P and Q.",
+      "Compute I = exp(integral P dx).",
+      "Recognize the product derivative and select the complete transformed equation."
+    ],
+    "invariants": [
+      "I is nonzero on the working interval and satisfies I\u2032 = PI.",
+      "Multiply the normalized Q by the same I.",
+      "Stop before solving for y; retain the single-choice response contract."
+    ],
+    "permitted_variations": [
+      "Vary small coefficients, signs, forcing functions and source-supported normalization.",
+      "Vary correct positions and distractor relationships without making the answer recognizable from the bank alone."
+    ],
+    "source_refs": [
+      "1e3c0253-226d-596c-a831-7c68ec76b21c",
+      "65a9092a-d6a6-5192-82ca-c04151a6438f",
+      "dba525fe-7e4d-5319-88bd-1b806feb0904",
+      "tutorial a6a381ed-e9ab-5deb-9d74-30900610edf1, Steps 1\u20134",
+      "tutorial a7f8aa2e-e022-57eb-be82-5f539a4512f6, I\u2032=IP passage"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "failed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replay-records.json",
+        "source-designation-results.json",
+        "canonical-coverage-results.json",
+        "canonical-candidates.json"
+      ],
+      "details": "All eight practice banks and 40 choices replayed, with source gaps and corrections documented. The canonical exponential-forcing example is unreachable."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "samples.json",
+        "counterfactual-records.json",
+        "runner-batch.json"
+      ],
+      "details": "Independent printed-equation checks verified unique correct choices and multiplication/final solution equations for 44 records."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "shortcut-results.json",
+        "canonical-coverage-results.json",
+        "delivery-selection-results.json"
+      ],
+      "details": "Coefficients and positions vary, but every easy bank assigns the correct factor the same recognizable exponent relationship. Canonical forcing coverage is also missing."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "source-analysis.json",
+        "samples.json"
+      ],
+      "details": "Requested easy outputs preserve the source reasoning stages, prerequisites and response workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "counterfactual-integration-results.json"
+      ],
+      "details": "Native grade_field produced the expected 71 acceptances and 176 rejections across 44 records, including shortcut-selected answers."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-inspection.json",
+        "render/question-001.png",
+        "render/question-002.png",
+        "render/question-003.png",
+        "render/question-004.png",
+        "render/question-005.png",
+        "render/question-006.png"
+      ],
+      "details": "Six actual-UI screenshots passed renderer checks and visual inspection, including relevant sign changes and irrelevant choice permutations."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "package-before.json",
+        "packaging-results.json",
+        "original-cli.json",
+        "relocated-cli.json"
+      ],
+      "details": "Exact dependency versions, deterministic replay, invalid-input rejection and relocation verified. Package hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "minimal-failing-records.json",
+        "minimal-failure-results.json",
+        "shortcut-results.json",
+        "delivery-selection-results.json",
+        "affected-inventory.json",
+        "generated-records.json"
+      ],
+      "details": "A bank-only strategy succeeds on 24/24 fresh easy samples, 8/8 within each easy template, 5/5 runner inputs and 4/4 delivered survivors. Three stored generated easy instances reproduce the defect. Selection scenarios and captured-inventory limits are documented."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Every default easy bank uses [I, 1/I, I\u00b2, x, x\u00b2]. The correct exponential is uniquely the one whose doubled exponent also appears, allowing the learner to ignore the ODE.",
+      "source_refs": [
+        "dba525fe-7e4d-5319-88bd-1b806feb0904",
+        "65a9092a-d6a6-5192-82ca-c04151a6438f",
+        "tutorial a7f8aa2e-e022-57eb-be82-5f539a4512f6, I\u2032=IP passage"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_failures.py; expected exit 1. Minimal case: generate('easy', seed=8173, template='signed_constant_power', parameters={'a':'1','n':2}). For y\u2032+y=x\u00b2, the factors exp(x), exp(-x), exp(2x), x and x\u00b2 reveal exp(x) from the bank alone. The opposite-sign paired case also succeeds.",
+      "requested_change": "Change the complete-bank construction rule shared by all three easy templates so superficial exponent relationships cannot identify the key independently of P. Preserve legitimate coefficient variation and unique correctness; retain the conditional shortcut regression."
+    },
+    {
+      "kind": "source_fidelity",
+      "description": "Canonical source e-21741, y\u2032+2y=2exp(-2x), cannot be generated. Constant-P templates permit only cosine or polynomial forcing; exponential-forcing templates require nonconstant P.",
+      "source_refs": [
+        "1e3c0253-226d-596c-a831-7c68ec76b21c",
+        "tutorial a6a381ed-e9ab-5deb-9d74-30900610edf1, Steps 1\u20134"
+      ],
+      "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python canonical_coverage.py; expected exit 1. All 12 reachable easy forcing assignments at P=2 are retained in canonical-candidates.json; none matches the canonical equation.",
+      "requested_change": "Support the canonical constant-coefficient exponential-forcing family through the normal construction path, deriving the prompt, integrating factor, choices and worked solution together."
+    }
+  ],
+  "repair_history_file": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087877/repair-history.json",
+  "instruction": "Fix the root cause, retain every earlier counterexample, and declare executable checks in repair-regressions.json. A failed check is another repair task, not permission to abandon the generator."
+}

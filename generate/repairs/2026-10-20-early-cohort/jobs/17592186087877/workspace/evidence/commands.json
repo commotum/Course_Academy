@@ -1,0 +1,23 @@
+{
+  "cwd": "workspace (all outputs are inside this directory)",
+  "python": "/home/jake/Developer/Course_Academy/.venv/bin/python",
+  "commands": [
+    {"command":"$PY checks/reproduce_failures.py", "before_exit":1, "after_exit":0, "evidence":"evidence/before-shortcut.json; checks/minimal-failure-results.json"},
+    {"command":"$PY checks/canonical_coverage.py", "before_exit":1, "after_exit":0, "evidence":"evidence/before-canonical.json; checks/canonical-coverage-results.json", "note":"Original 12 candidates retained; new constant_exp canonical candidate tested with independent visible-equation checks."},
+    {"command":"$PY checks/repair_checks.py", "exit":0, "evidence":"evidence/records.json; evidence/pedagogical-variation.json; evidence/source-replay-results.json; evidence/grader-input.json"},
+    {"command":"$REPO/generate/runs/current/check-engine evidence/grader-input.json evidence/grader-report.json", "exit":0, "accepted":44, "rejected":176},
+    {"command":"$PY $REPO/generate/pipeline/check_delivery.py --input evidence/records.json --source $JOB/source/source.json --inventory $JOB/source/inventory.json --difficulty easy --output evidence/delivery --asset-root evidence/assets --math-root /media/jake/SSD/EDB/math", "exit":0, "input":38, "accepted":37, "duplicates":1},
+    {"command":"$PY checks/pipeline_checks.py", "exit":0, "evidence":"evidence/delivery-selection-results.json; evidence/packaging-results.json; evidence/cli-five-records.json"},
+    {"command":"$REPO/generate/runs/current/check-engine evidence/delivered-grader-input.json evidence/delivered-grader-report.json", "exit":0, "accepted":37, "rejected":148},
+    {"command":"python3 $REPO/generate/pipeline/render_preview.py --input evidence/render-input.json --output evidence/render --asset-root evidence/assets --math-root /media/jake/SSD/EDB/math", "exit":0, "screenshots_visually_inspected":5, "evidence":"evidence/render/rendering.json; evidence/render-inspection.json"},
+    {"command":"$PY checks/inventory_check.py", "exit":0, "historical_records_verified":9, "affected_easy_records":3, "evidence":"affected-inventory.json; evidence/generated-records.json; evidence/inventory-results.json"}
+  ],
+  "path_expansions": {
+    "REPO":"/home/jake/Developer/Course_Academy",
+    "JOB":"/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087877"
+  },
+  "source_evidence_changed":false,
+  "database_writes":0,
+  "images_published":0,
+  "limitations":["Selection simulation uses synthetic fresh candidate IDs and positive easy weight, not live learner history.","Inventory findings are limited to the supplied basis 5319 capture.","Other difficulty families were preserved and received a small math/grading regression sample; this targeted repair audits easy bank shortcuts."]
+}

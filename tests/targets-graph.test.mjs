@@ -404,18 +404,72 @@ test('course switches filter assignment targets, preserve shared targets and lea
   // Exercise the actual click handler and switch accessibility state.
   c.$('targetCourseToggle256').listeners.click();
   assert.equal(c.$('targetCourseToggle256').attributes['aria-checked'], 'false');
-  assert.deepEqual([...c.buildActiveSet().nodeIds], [2, 3, 4, 5]);
+  assert.deepEqual([...c.buildActiveSet().nodeIds], [2, 3, 4, 5, 6]);
   assert.equal(c.$('targetCourseToggle256').dataset.animate, 'true');
   c.setTargetCourseEnabled('341', false);
-  assert.deepEqual([...c.buildActiveSet().nodeIds], [2, 3]);
+  assert.deepEqual([...c.buildActiveSet().nodeIds], [2, 3, 6]);
   c.setTargetCourseEnabled('255', false);
-  assert.equal(c.buildActiveSet().nodeIds.size, 0);
+  assert.deepEqual([...c.buildActiveSet().nodeIds], [6]);
   assert.equal(c.buildActiveSet().edgeSet.size, 0);
-  assert.equal(c.state.selected, null);
+  assert.equal(c.state.selected, 6);
   assert.deepEqual([...c.snapshot.learner.targets], saved);
   assert.equal(c.storage.get('course-academy.graph-target-courses'), '[]');
   for (const code of ['256', '255', '341']) c.setTargetCourseEnabled(code, true);
   assert.deepEqual([...c.buildActiveSet().nodeIds], saved);
+});
+
+test('unassigned targets remain across every course and week filter independently of Queue', () => {
+  const c = fixture([1, 2, 3, 5, 6]); addSchoolCourses(c); addWeekSchedule(c);
+  c.snapshot.learner.queue = [6];
+  const saved = JSON.stringify(c.snapshot.learner);
+  c.changeCourse(null, true, 'targets'); c.setTargetSplit(true);
+  c.setTargetQueueEnabled(false);
+  const buttons = c.$('targetWeekButtons').children;
+  buttons[0].listeners.click({ shiftKey: false });
+  assert.deepEqual([...c.courseTopics], [1, 3, 6]);
+  assert.match(c.$('targetWeekReadout').textContent, /2 due$/);
+  assert.match(buttons[1].title, /0 due/); // Standing targets do not inflate due counts.
+  buttons[1].listeners.click({ shiftKey: false });
+  assert.deepEqual([...c.courseTopics], [6]);
+  buttons[2].listeners.click({ shiftKey: true });
+  assert.deepEqual([...c.courseTopics], [2, 3, 6]);
+  for (const code of ['256', '255', '341']) c.setTargetCourseEnabled(code, false);
+  for (const button of buttons) {
+    button.listeners.click({ shiftKey: false });
+    assert.deepEqual([...c.state.activeIds], [6]);
+  }
+  c.$('targetWeeksUnscheduled').listeners.click();
+  assert.deepEqual([...c.courseTopics], [6]);
+  c.$('targetWeeksAll').listeners.click();
+  assert.deepEqual([...c.courseTopics], [6]);
+  assert.deepEqual(Array.from(c.layoutCurrent().courseBands, band => band.label), ['Other topics']);
+  c.setTargetQueueEnabled(true);
+  assert.deepEqual([...c.courseTopics], [6]); // Target/queue overlap is drawn once.
+  assert.equal(JSON.stringify(c.snapshot.learner), saved);
+  c.setTargetQueueEnabled(false);
+  c.learnerChanged({ ...c.snapshot.learner, targets: [1, 2, 3, 5] });
+  assert.deepEqual([...c.courseTopics], []); // Removing the target removes its standing visibility.
+});
+
+test('membership in any curriculum or assignment keeps a target subject to filters', () => {
+  const c = fixture([1, 2, 3, 4, 5, 6]); addSchoolCourses(c);
+  c.snapshot.courses.find(course => course.code === 'MTH 341').targetTopicIds = [];
+  c.installTargetCalendar([
+    { due: '2026-09-30T06:59:59Z', courseId: 'de', topicIds: [3] },
+    { due: null, courseId: null, topicIds: [4] },
+  ]);
+  c.changeCourse(null, true, 'targets'); c.setTargetQueueEnabled(false);
+  for (const code of ['256', '255', '341']) c.setTargetCourseEnabled(code, false);
+  assert.deepEqual([...c.courseTopics], [6]); // Curriculum-only 1/2/5 and undated assignment-only 4 stay filtered.
+  c.$('targetWeekButtons').children[0].listeners.click({ shiftKey: false });
+  assert.deepEqual([...c.courseTopics], [6]);
+  // A newly assigned target stops being a standing target on the next refresh.
+  c.installTargetCalendar([
+    { due: '2026-09-30T06:59:59Z', courseId: 'de', topicIds: [3, 6] },
+    { due: null, courseId: null, topicIds: [4] },
+  ]);
+  c.refreshTargetScope();
+  assert.deepEqual([...c.courseTopics], []);
 });
 
 test('Queue switch independently adds queued roots, deduplicates overlaps and persists without requests or membership changes', () => {

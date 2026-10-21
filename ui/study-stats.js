@@ -13,6 +13,9 @@ export function localWeek(now = new Date()) {
   first.setDate(first.getDate() - (first.getDay() + 6) % 7);
   return Array.from({ length: 8 }, (_, index) => new Date(first.getFullYear(), first.getMonth(), first.getDate() + index).getTime());
 }
+function lastSevenDays(now = new Date()) {
+  return Array.from({ length: 8 }, (_, i) => new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6 + i).getTime());
+}
 
 export function createStudySidebar() {
   releaseSidebar();
@@ -23,11 +26,11 @@ export function createStudySidebar() {
   todayCard.append(node('h2', 'stat-heading', 'XP earned'), node('p', 'stat-note', 'Loading your progress…'));
   weekCard.append(node('h2', 'stat-heading', 'This week'));
   sidebar.append(todayCard, weekCard);
-  let generation = 0;
-  releaseSidebar = () => { events.abort(); generation++; };
+  let generation = 0, midnightTimer;
+  releaseSidebar = () => { events.abort(); generation++; clearTimeout(midnightTimer); };
   async function load() {
     const revision = ++generation;
-    const boundaries = localWeek();
+    const boundaries = lastSevenDays();
     try {
       const response = await readRequest('/api/study-stats?dayStarts=' + boundaries.join(','));
       const data = await response.json();
@@ -42,14 +45,22 @@ export function createStudySidebar() {
   }
   function render(data, boundaries) {
     const now = Date.now();
-    const index = boundaries.findIndex((at, i) => i < 7 && now >= at && now < boundaries[i + 1]);
-    if (index < 0) { void load(); return; }
-    const today = data.days[index], goal = data.dailyXpGoal;
+    const current = boundaries.findIndex((at, i) => i < 7 && now >= at && now < boundaries[i + 1]);
+    if (current !== 6) { void load(); return; }
+    clearTimeout(midnightTimer);
+    midnightTimer = setTimeout(() => { if (sidebar.isConnected) void load(); }, boundaries[7] - now + 50);
+    const index = (new Date(boundaries[current]).getDay() + 6) % 7;
+    const today = data.days[current], goal = data.dailyXpGoal;
+    const weekStart = localWeek(new Date(now))[0];
+    const weekXp = data.days.reduce((sum, day, i) => sum + (boundaries[i] >= weekStart ? day.earnedXp : 0), 0);
+    // Each fixed weekday slot shows its latest occurrence, including today.
+    const days = data.days.map((day, i) => ({ ...day, start: boundaries[i] }))
+      .sort((a, b) => (new Date(a.start).getDay() + 6) % 7 - (new Date(b.start).getDay() + 6) % 7);
     todayCard.replaceChildren(node('h2', 'stat-heading', 'XP earned'));
     const summary = node('dl', 'stat-xp-summary');
     const exactDetails = node('p', 'stat-note stat-xp-details'); exactDetails.hidden = true;
     const summaryButtons = [];
-    for (const [label, value, missing] of [['Today', today.earnedXp, 0], ['This week', data.earnedXp, 0], ['Total', data.totalEarnedXp, data.totalXpMissing || 0]]) {
+    for (const [label, value, missing] of [['Today', today.earnedXp, 0], ['This week', weekXp, 0], ['Total', data.totalEarnedXp, data.totalXpMissing || 0]]) {
       const metric = node('div', 'stat-xp-metric');
       const term = node('dt', 'stat-xp-label', label);
       const definition = node('dd', 'stat-xp-number');
@@ -72,11 +83,11 @@ export function createStudySidebar() {
     const chartGoal = goal || 200;
     const chart = node('div', 'stat-week-chart'); chart.setAttribute('aria-label', `Daily XP earned this week, out of ${number(chartGoal)} XP per day`);
     const maximum = chartGoal;
-    const minimum = Math.min(0, ...data.days.map(day => day.earnedXp));
+    const minimum = Math.min(0, ...days.map(day => day.earnedXp));
     const range = maximum - minimum;
     const dayDetails = node('p', 'stat-note'); dayDetails.hidden = true;
-    data.days.forEach((day, i) => {
-      const date = new Date(boundaries[i]);
+    days.forEach((day, i) => {
+      const date = new Date(day.start);
       const label = new Intl.DateTimeFormat(undefined, { weekday: 'short' }).format(date);
       const bar = node('button', 'stat-day'); bar.type = 'button';
       const details = `${new Intl.DateTimeFormat(undefined, { weekday: 'long', month: 'short', day: 'numeric' }).format(date)}: ${number(day.earnedXp)} / ${number(chartGoal)} XP, ${number(day.workingSeconds / 60)} min working time${day.earnedXp >= chartGoal ? ', goal reached' : ''}`;

@@ -1,0 +1,111 @@
+{
+  "verdict": "accepted",
+  "summary": "Both retained generator defects are resolved. All eight checks pass. Three affected historical inventory records remain documented separately. Package unchanged; no database writes.",
+  "source_analysis": {
+    "skill": "Transform a first-order linear ODE into (yI)\u2032 = IQ using an integrating factor.",
+    "reasoning_steps": [
+      "Normalize the derivative coefficient and identify P and Q.",
+      "Compute I = exp(integral P dx).",
+      "Identify the complete product-derivative equation."
+    ],
+    "invariants": [
+      "I is nonzero and satisfies I\u2032 = PI.",
+      "Multiply normalized Q by the same I.",
+      "Stop before solving for y; retain the radio response."
+    ],
+    "permitted_variations": [
+      "Vary eligible coefficients, signs, forcing functions and source-supported normalization.",
+      "Vary correct-factor assignments and option positions without revealing the key through bank structure."
+    ],
+    "source_refs": [
+      "1e3c0253-226d-596c-a831-7c68ec76b21c",
+      "65a9092a-d6a6-5192-82ca-c04151a6438f",
+      "dba525fe-7e4d-5319-88bd-1b806feb0904",
+      "tutorial a6a381ed-e9ab-5deb-9d74-30900610edf1, Steps 1\u20134",
+      "tutorial a7f8aa2e-e022-57eb-be82-5f539a4512f6, I\u2032=IP passage"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "provenance.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-results.json",
+        "source-replay-records.json",
+        "strict-regression-execution.json"
+      ],
+      "details": "Eight complete practice banks and the canonical example replayed. Missing source evidence and supported corrections are documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "delivery-math-results.json"
+      ],
+      "details": "Exact checks passed for 64 raw and 50 delivered records, including unique correctness and printed solution equations."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "counterfactual-results.json",
+        "shortcut-results.json",
+        "delivery-selection-results.json"
+      ],
+      "details": "All four easy families support meaningful coefficient and target variation. Distinct controlled targets survive delivery."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "scope-results.json",
+        "samples.json"
+      ],
+      "details": "Changed construction preserves the source reasoning stages and transformation-only workload."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "delivered-grader-input.json",
+        "delivered-grader-report.json"
+      ],
+      "details": "Native learner grading produced 114 expected acceptances and 460 rejections, including stale responses after relevant changes."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "render-inspection.json",
+        "render-input.json"
+      ],
+      "details": "Eleven actual UI screenshots passed automated checks and visual inspection."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "original-cli.json",
+        "relocated-cli.json"
+      ],
+      "details": "Exact dependencies, deterministic replay, rejection boundaries and relocation passed. Package hashes remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-records.json",
+        "strict-regression-execution.json",
+        "delivery-shortcut-results.json",
+        "delivery-selection-results.json",
+        "affected-inventory.json",
+        "generated-records.json"
+      ],
+      "details": "Relevant and irrelevant counterfactuals, conditional shortcut probes and delivery/selection scenarios passed for the revision. Three historical affected records are retained for separate inventory remediation."
+    }
+  },
+  "findings": []
+}

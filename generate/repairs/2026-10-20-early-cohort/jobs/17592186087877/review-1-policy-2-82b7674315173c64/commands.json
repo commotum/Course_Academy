@@ -1,0 +1,202 @@
+[
+  {
+    "purpose": "Independent retained failure, source, mathematical, sampling and packaging checks",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "revision_audit.py"
+    ],
+    "stdout": "audit-run.log",
+    "exit_code": 0
+  },
+  {
+    "purpose": "Actual read-only publisher delivery samples",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+      "--input",
+      "easy-samples.json",
+      "--source",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087877/source/source.json",
+      "--inventory",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087877/source/inventory.json",
+      "--difficulty",
+      "easy",
+      "--output",
+      "delivery-samples",
+      "--math-root",
+      "/media/jake/SSD/EDB/math"
+    ],
+    "stdout": "delivery-samples.log",
+    "exit_code": 0
+  },
+  {
+    "purpose": "Actual read-only publisher delivery batch",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+      "--input",
+      "runner-batch.json",
+      "--source",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087877/source/source.json",
+      "--inventory",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087877/source/inventory.json",
+      "--difficulty",
+      "easy",
+      "--output",
+      "delivery-batch",
+      "--math-root",
+      "/media/jake/SSD/EDB/math"
+    ],
+    "stdout": "delivery-batch.log",
+    "exit_code": 0
+  },
+  {
+    "purpose": "Actual read-only publisher delivery counterfactuals",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "/home/jake/Developer/Course_Academy/generate/pipeline/check_delivery.py",
+      "--input",
+      "counterfactual-records.json",
+      "--source",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087877/source/source.json",
+      "--inventory",
+      "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087877/source/inventory.json",
+      "--difficulty",
+      "easy",
+      "--output",
+      "delivery-counterfactuals",
+      "--math-root",
+      "/media/jake/SSD/EDB/math"
+    ],
+    "stdout": "delivery-counterfactuals.log",
+    "exit_code": 0
+  },
+  {
+    "purpose": "Real learner grading of raw/controlled records",
+    "command": [
+      "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine",
+      "grader-input.json",
+      "grader-report.json"
+    ],
+    "stdout": "grader-run.log",
+    "exit_code": 0
+  },
+  {
+    "purpose": "Unmodified UI rendering",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "/home/jake/Developer/Course_Academy/generate/pipeline/render_preview.py",
+      "--input",
+      "render-input.json",
+      "--output",
+      "render",
+      "--limit",
+      "11",
+      "--math-root",
+      "/media/jake/SSD/EDB/math"
+    ],
+    "stdout": "renderer-run.log",
+    "exit_code": 0
+  },
+  {
+    "purpose": "Delivery math, shortcut, selection and runtime relocation checks",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "pipeline_revision.py"
+    ],
+    "stdout": "pipeline-run.log",
+    "exit_code": 0
+  },
+  {
+    "purpose": "Real learner grading after publisher normalization",
+    "command": [
+      "/home/jake/Developer/Course_Academy/generate/runs/current/check-engine",
+      "delivered-grader-input.json",
+      "delivered-grader-report.json"
+    ],
+    "stdout": "delivered-grader-run.log",
+    "exit_code": 0
+  },
+  {
+    "purpose": "Unmodified retained author regression check (copy only)",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "author-check-copy/checks/repair_checks.py"
+    ],
+    "stdout": "author-repair-check.log",
+    "exit_code": 0
+  },
+  {
+    "purpose": "Unmodified retained canonical check (copy only)",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "author-check-copy/checks/canonical_coverage.py"
+    ],
+    "stdout": "author-canonical-check.log",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "regressions.py",
+      "--implementation",
+      "previous",
+      "--finding",
+      "shortcut"
+    ],
+    "exit_code": 1,
+    "stdout": "FAIL previous shortcut\n",
+    "stderr": "",
+    "expected_exit": 1
+  },
+  {
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "regressions.py",
+      "--implementation",
+      "previous",
+      "--finding",
+      "canonical"
+    ],
+    "exit_code": 1,
+    "stdout": "FAIL previous canonical\n",
+    "stderr": "",
+    "expected_exit": 1
+  },
+  {
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "regressions.py",
+      "--implementation",
+      "current",
+      "--finding",
+      "shortcut"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS current shortcut\n",
+    "stderr": "",
+    "expected_exit": 0
+  },
+  {
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "regressions.py",
+      "--implementation",
+      "current",
+      "--finding",
+      "canonical"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS current canonical\n",
+    "stderr": "",
+    "expected_exit": 0
+  },
+  {
+    "purpose": "Evidence contract and report assembly",
+    "command": [
+      "/home/jake/Developer/Course_Academy/.venv/bin/python",
+      "finalize_report.py"
+    ],
+    "exit_code": 0
+  }
+]

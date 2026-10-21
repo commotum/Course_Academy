@@ -1,0 +1,59 @@
+{
+  "retained_findings": [
+    {
+      "id": "1c6c9c7775bfc27a1005",
+      "finding": {
+        "kind": "decision_shortcut",
+        "description": "Every default easy bank uses [I, 1/I, I², x, x²]. The correct exponential is uniquely the one whose doubled exponent also appears, allowing the learner to ignore the ODE.",
+        "source_refs": [
+          "dba525fe-7e4d-5319-88bd-1b806feb0904",
+          "65a9092a-d6a6-5192-82ca-c04151a6438f",
+          "tutorial a7f8aa2e-e022-57eb-be82-5f539a4512f6, I′=IP passage"
+        ],
+        "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python reproduce_failures.py; expected exit 1. Minimal case: generate('easy', seed=8173, template='signed_constant_power', parameters={'a':'1','n':2}). For y′+y=x², the factors exp(x), exp(-x), exp(2x), x and x² reveal exp(x) from the bank alone. The opposite-sign paired case also succeeds.",
+        "requested_change": "Change the complete-bank construction rule shared by all three easy templates so superficial exponent relationships cannot identify the key independently of P. Preserve legitimate coefficient variation and unique correctness; retain the conditional shortcut regression."
+      },
+      "source_hash": "6665efb3a7cff8cda91c039461b86a1f1c5a8d4d6ce317714e066c808bf9160f",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087877/review-0-policy-2-34bbd6ba8ad34ac5",
+      "attempt": 0
+    },
+    {
+      "id": "1c89568b07710325e2b7",
+      "finding": {
+        "kind": "source_fidelity",
+        "description": "Canonical source e-21741, y′+2y=2exp(-2x), cannot be generated. Constant-P templates permit only cosine or polynomial forcing; exponential-forcing templates require nonconstant P.",
+        "source_refs": [
+          "1e3c0253-226d-596c-a831-7c68ec76b21c",
+          "tutorial a6a381ed-e9ab-5deb-9d74-30900610edf1, Steps 1–4"
+        ],
+        "reproduction": "Run /home/jake/Developer/Course_Academy/.venv/bin/python canonical_coverage.py; expected exit 1. All 12 reachable easy forcing assignments at P=2 are retained in canonical-candidates.json; none matches the canonical equation.",
+        "requested_change": "Support the canonical constant-coefficient exponential-forcing family through the normal construction path, deriving the prompt, integrating factor, choices and worked solution together."
+      },
+      "source_hash": "6665efb3a7cff8cda91c039461b86a1f1c5a8d4d6ce317714e066c808bf9160f",
+      "review_directory": "/home/jake/Developer/Course_Academy/generate/repairs/2026-10-20-early-cohort/jobs/17592186087877/review-0-policy-2-34bbd6ba8ad34ac5",
+      "attempt": 0
+    }
+  ],
+  "preflight_scripts": [
+    {
+      "script": "checks/repair_checks.py",
+      "sha256": "b38b10eb9e0c8448099f1f21605a381c199cbbe31de4bb77854f9dcb1f7eca3e",
+      "copy_sha256": "b38b10eb9e0c8448099f1f21605a381c199cbbe31de4bb77854f9dcb1f7eca3e",
+      "run_command": "/home/jake/Developer/Course_Academy/.venv/bin/python author-check-copy/checks/repair_checks.py",
+      "exit_code": 0,
+      "stdout_log": "author-repair-check.log",
+      "preflight_matches_current": true
+    },
+    {
+      "script": "checks/canonical_coverage.py",
+      "sha256": "f2b07bf0a5667f37a19b4e857c4207fce988bc6dd1d75ada46c62bd9a510214c",
+      "copy_sha256": "f2b07bf0a5667f37a19b4e857c4207fce988bc6dd1d75ada46c62bd9a510214c",
+      "run_command": "/home/jake/Developer/Course_Academy/.venv/bin/python author-check-copy/checks/canonical_coverage.py",
+      "exit_code": 0,
+      "stdout_log": "author-canonical-check.log",
+      "preflight_matches_current": true
+    }
+  ],
+  "independent_fail_then_pass_execution": "strict-regression-execution.json",
+  "interpretation": "Copied unmodified author checks reran under evidence_root. Independent strict regressions additionally fail both historical constructions for the stated substantive reason and pass current. Author pass alone is not treated as acceptance."
+}

@@ -2141,9 +2141,20 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
     targetWeekSelection=normalizeTargetWeekSelection(targetCalendar,targetWeekSelection);
     targetWeekButtonsCalendar=null;
   }
+  function unassignedTargetIds() {
+    const assigned=new Set();
+    for(const course of snapshot?.courses || []){
+      for(const id of [...(course.topicIds || []),...(course.targetTopicIds || [])])assigned.add(id);
+    }
+    for(const assignment of targetCalendar.assignments){
+      for(const id of assignment.topicIds)assigned.add(id);
+    }
+    return [...new Set(snapshot?.learner.targets || [])].filter(id=>nodeById.has(id) && !assigned.has(id));
+  }
   function courseFilteredTargetIds(includeQueue=targetQueueEnabled) {
     const targets=(snapshot?.learner.targets || []).filter(id=>nodeById.has(id));
-    // All course switches on retains manual targets without curriculum membership.
+    // Targets without any course or assignment remain visible in every scope.
+    const unassigned=new Set(unassignedTargetIds());
     const members=new Set();
     if(enabledTargetCourses.size!==targetCourseCodes.length){
       for(const course of snapshot?.courses || []){
@@ -2152,7 +2163,7 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
         for(const id of course.targetTopicIds || [])members.add(id);
       }
     }
-    const selected=enabledTargetCourses.size===targetCourseCodes.length?targets:targets.filter(id=>members.has(id));
+    const selected=enabledTargetCourses.size===targetCourseCodes.length?targets:targets.filter(id=>members.has(id) || unassigned.has(id));
     // Queue is an independent source, including topics outside enabled courses.
     return includeQueue?[...new Set([...selected,...queuedGraphTopicIds()])]:selected;
   }
@@ -2165,16 +2176,15 @@ import { buildTargetCalendar, targetCalendarDay, targetWeekStart, targetWeekLabe
       targetCourseCodes.some(code=>course.code==='MTH '+code && enabledTargetCourses.has(code))).map(course=>course.id));
   }
   function targetWeekScope() {
-    return {targets:courseFilteredTargetIds(false),queue:targetQueueEnabled?queuedGraphTopicIds():[],courses:targetWeekCourseIds()};
+    return {targets:courseFilteredTargetIds(false),unassigned:unassignedTargetIds(),queue:targetQueueEnabled?queuedGraphTopicIds():[],courses:targetWeekCourseIds()};
   }
   function weekFilteredTargetIds(selection, scope) {
     return filterScheduledTargets(scope.targets,targetCalendar,selection,scope.courses);
   }
   function targetIdsForWeek(selection, scope=targetWeekScope()) {
     const targets=weekFilteredTargetIds(selection,scope);
-    if(!scope.queue.length)return targets;
-    // Queue is a standing study list, independent of assignment due dates.
-    return [...new Set([...targets,...scope.queue])];
+    // Unassigned targets and Queue are standing lists outside assignment weeks.
+    return [...new Set([...targets,...scope.unassigned,...scope.queue])];
   }
   function filteredTargetIds() {
     return targetIdsForWeek(targetWeekSelection);

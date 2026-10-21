@@ -1,0 +1,71 @@
+{
+  "python": "3.13.5",
+  "packages": {
+    "sympy": "1.14.0"
+  },
+  "manifest_dependencies": {
+    "python": "3.13.5",
+    "packages": {
+      "sympy": "1.14.0"
+    }
+  },
+  "deterministic_replay": true,
+  "relocation": true,
+  "boundary_rejections": [
+    {
+      "kwargs": {
+        "level": "easy",
+        "template": "signed_constant_power",
+        "parameters": {
+          "a": "0",
+          "n": 3
+        }
+      },
+      "rejected": true,
+      "error": "constant a must be nonzero, |a|<=4, denominator<=3"
+    },
+    {
+      "kwargs": {
+        "level": "easy",
+        "template": "signed_constant_power",
+        "parameters": {
+          "a": "1/4",
+          "n": 3
+        }
+      },
+      "rejected": true,
+      "error": "constant a must be nonzero, |a|<=4, denominator<=3"
+    },
+    {
+      "kwargs": {
+        "level": "easy",
+        "template": "signed_constant_power",
+        "parameters": {
+          "a": "1",
+          "n": 0
+        }
+      },
+      "rejected": true,
+      "error": "power n must be 1..4"
+    },
+    {
+      "kwargs": {
+        "level": "easy",
+        "template": "reciprocal_exp"
+      },
+      "rejected": true,
+      "error": "template outside level"
+    },
+    {
+      "kwargs": {
+        "level": "easy",
+        "field_type": "free"
+      },
+      "rejected": true,
+      "error": "only radio is supported"
+    }
+  ],
+  "source_loading": "Sibling captured JSON only; no network, output assets or DB required.",
+  "package_unchanged": true,
+  "relocated_cli_record_matches": true
+}

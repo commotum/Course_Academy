@@ -1,0 +1,120 @@
+--- previous
++++ current
+@@ -17,7 +17,7 @@
+ KP_ID=17592186087877
+ KP_UUID='9c49e068-198f-59ab-8835-7018b02d7d0c'
+ TITLE='Transforming First-Order Linear ODEs Using Integrating Factors'
+-VERSION='integrating-factor-transform-v2'
++VERSION='integrating-factor-transform-v3'
+ ROOT=Path(__file__).with_suffix('')
+ X=s.Symbol('x', positive=True)
+ Y,YP=s.symbols('y yp')
+@@ -30,6 +30,7 @@
+ # Separate templates preserve standard/nonstandard layouts and source stage counts.
+ TEMPLATES={
+  'constant_cos':('easy','q-17540'),
++ 'constant_exp':('easy',None),
+  'linear_exp':('moderate','q-8546'),
+  'scaled_constant_power':('easy','q-17533'),
+  'scaled_reciprocal_cos':('moderate','q-17539'),
+@@ -65,9 +66,9 @@
+     return DD+r'\left(y\cdot '+group(f)+r'\right)='+mul(f,q)
+ 
+ def math(t,p):
+-    if t in ('constant_cos','scaled_constant_power','signed_constant_power'):
++    if t in ('constant_cos','constant_exp','scaled_constant_power','signed_constant_power'):
+         P=s.Rational(p['a']); H=P*X; I=s.exp(H)
+-        Q=s.cos(p['b']*X) if t=='constant_cos' else X**p['n']
++        Q=s.cos(p['b']*X) if t=='constant_cos' else p['b']*s.exp(p['c']*X) if t=='constant_exp' else X**p['n']
+         A=X if t=='scaled_constant_power' else s.Integer(1)
+     elif t=='linear_exp':
+         P=2*p['a']*X; H=p['a']*X**2; I=s.exp(H)
+@@ -85,12 +86,12 @@
+     return A,s.simplify(A*P),s.simplify(A*Q),P,Q,H,I
+ 
+ def validate_parameters(t,p):
+-    required=set(dict(CASES[[c[1] for c in CASES].index(t)][2])) if t!='polynomial_transform' else {'a','b','d','scale'}
++    required={'a','b','c'} if t=='constant_exp' else set(dict(CASES[[c[1] for c in CASES].index(t)][2])) if t!='polynomial_transform' else {'a','b','d','scale'}
+     if set(p)!=required:raise ValueError(f'{t} requires exactly {sorted(required)}')
+     p=dict(p)
+     for k in required:
+         v=s.Rational(str(p[k]))
+-        if k=='a' and t in ('constant_cos','scaled_constant_power','signed_constant_power'):
++        if k=='a' and t in ('constant_cos','constant_exp','scaled_constant_power','signed_constant_power'):
+             if not v or abs(v)>4 or v.q>3:raise ValueError('constant a must be nonzero, |a|<=4, denominator<=3')
+             p[k]=str(v)
+         else:
+@@ -107,6 +108,7 @@
+ 
+ def sample(t,r):
+     signed=lambda n:r.choice([i for i in range(-n,n+1) if i])
++    if t=='constant_exp':return dict(a=str(signed(4)),b=signed(4),c=signed(4))
+     if t=='constant_cos':return dict(a=str(signed(4)),b=r.randint(1,4))
+     if t in ('scaled_constant_power','signed_constant_power'):return dict(a=str(r.choice([s.Rational(a,d) for a in range(-4,5) if a for d in (1,2,3)])),n=r.randint(1,4))
+     if t=='linear_exp':return dict(a=signed(3),b=signed(4),c=signed(4))
+@@ -118,12 +120,17 @@
+ # All raw banks are selected whole, not synthesized from a pooled distractor list.
+ # Factors below generalize complete source components; scale-only pairs are
+ # intentionally retained in raw replay and never eligible for normal output.
+-def factors(t,p,profile):
++EASY_COEFFICIENTS=tuple(sorted({s.Rational(n,d) for d in (1,2,3) for n in range(-4*d,4*d+1) if n}))
++
++def factors(t,p,profile,bank_coefficients=None):
+     A,B,R,P,Q,H,I=math(t,p)
+     if t=='linear_sin' and profile in ('authored','observed_raw'):
+         # Complete q335274 bank, with all factors tied to P=2ax and Q=sin(bx).
+         return [(s.log(abs(2*p['a'])*X),False),(X**2,False),(s.exp(2*p['a']*X),False),(2*p['a']*X,False),(I,False)]
+     if profile=='authored':
++        if TEMPLATES[t][0]=='easy':
++            if bank_coefficients is None:raise ValueError('authored easy requires a complete coefficient bank')
++            return [(s.exp(c*X),False) for c in bank_coefficients]
+         if t in ('scaled_reciprocal_cos','reciprocal_exp','scaled_reciprocal_rhs'):
+             return [(I,False),(X**(p['k']+1),False),(s.exp(p['k']*X),False),(s.exp(-p['k']*X),False),(s.log(X),False)]
+         if t in ('linear_exp','polynomial_transform'):
+@@ -231,7 +238,7 @@
+     return all(s.cancel(a.coeff(z)/ca-b.coeff(z)/cb)==0 for z in (Y,)) and s.cancel(a.subs({Y:0,YP:0})/ca-b.subs({Y:0,YP:0})/cb)==0
+ 
+ def identity(value):return str(uuid.uuid5(uuid.NAMESPACE_URL,value))
+-def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None):
++def generate(level,seed=0,template=None,field_type=None,parameters=None,profile=None,bank_coefficients=None):
+     if level not in ('easy','moderate','hard'):raise ValueError('unknown difficulty')
+     if field_type not in (None,'radio',':answer-field.type/radio'):raise ValueError('only radio is supported')
+     r=random.Random(seed)
+@@ -241,10 +248,26 @@
+     profile=profile or 'authored'
+     if template=='polynomial_transform' and profile!='authored':raise ValueError('hard is authored')
+     explicit=parameters is not None
++    easy_bank=None
++    chosen_a=None
++    if level=='easy' and profile=='authored':
++        if bank_coefficients is not None:
++            easy_bank=tuple(s.Rational(str(c)) for c in bank_coefficients)
++            if len(easy_bank)!=5 or len(set(easy_bank))!=5 or any(c not in EASY_COEFFICIENTS for c in easy_bank):raise ValueError('bank must contain five distinct eligible coefficients')
++        elif explicit:
++            a=s.Rational(str(parameters['a']))
++            easy_bank=tuple([a]+r.sample([c for c in EASY_COEFFICIENTS if c!=a],4))
++        else:
++            easy_bank=tuple(r.sample(EASY_COEFFICIENTS,5))
++        if explicit and s.Rational(str(parameters['a'])) not in easy_bank:raise ValueError('bank must include P')
++        chosen_a=str(r.choice(easy_bank)) if not explicit else None
++    elif bank_coefficients is not None:raise ValueError('coefficient banks apply only to authored easy')
+     for attempt in range(100):
+-        p=validate_parameters(template,parameters if explicit else sample(template,r))
++        supplied=parameters if explicit else sample(template,r)
++        if chosen_a is not None:supplied['a']=chosen_a
++        p=validate_parameters(template,supplied)
+         A,B,R,P,Q,H,I=math(template,p)
+-        fs=factors(template,p,profile)
++        fs=factors(template,p,profile,easy_bank)
+         values=[choice(f,Q,m) for f,m in fs]
+         rs=[residual(f,Q,m) for f,m in fs]
+         good=[i for i,z in enumerate(rs) if equivalent(z,residual(I,Q))]
+@@ -270,7 +293,7 @@
+     answers=[{':answer/id':identity(fid+'/'+v),':answer/type':':answer.type/math',':answer/value':v} for v in values]
+     correct=answers[good[0]][':answer/id'];r.shuffle(answers)
+     question={':question/id':qid,':question/problem':prompt,':question/worked-solution':sol,':question/difficulty':':question.difficulty/'+level,':question/answer-fields':[{':answer-field/id':fid,':answer-field/key':'selection',':answer-field/type':':answer-field.type/radio',':answer-field/choices':answers,':answer-field/correct':[':answer/id',correct]}]}
+-    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,'generation':{'version':VERSION,'seed':seed,'template':template,'parameters':p,'profile':profile,'source':{'database':'math','basis':CURRENT['basis'] if template=='linear_sin' else 1356,'lineage':SOURCE['lineage'],'question_id':TEMPLATES[template][1]},'domain':domain,'mathematical_fingerprint':fingerprint,'content_fingerprint':hashlib.sha256(content.encode()).hexdigest(),'origin':'authored hard scope' if level=='hard' else 'observed template; authored bank' if profile=='authored' else 'observed raw bank; notation and supported prose repairs','raw_equivalent_pairs':duplicates,'repairs':['TeX notation normalization','q335278 distributed sign correction'] if template=='signed_constant_power' else ['TeX notation normalization'],'dependencies':{'sympy':s.__version__}}}
++    return {'knowledge_point':{'db_id':KP_ID,'id':KP_UUID,'title':TITLE},'question':question,'generation':{'version':VERSION,'bank_coefficients':[str(c) for c in easy_bank] if easy_bank else None,'seed':seed,'template':template,'parameters':p,'profile':profile,'source':{'database':'math','basis':CURRENT['basis'] if template=='linear_sin' else 1356,'lineage':SOURCE['lineage'],'question_id':'e-21741' if template=='constant_exp' else TEMPLATES[template][1]},'domain':domain,'mathematical_fingerprint':fingerprint,'content_fingerprint':hashlib.sha256(content.encode()).hexdigest(),'origin':'authored hard scope' if level=='hard' else 'observed template; authored bank' if profile=='authored' else 'observed raw bank; notation and supported prose repairs','raw_equivalent_pairs':duplicates,'repairs':['TeX notation normalization','q335278 distributed sign correction'] if template=='signed_constant_power' else ['TeX notation normalization'],'dependencies':{'sympy':s.__version__}}}
+ 
+ def generate_easy(seed=0,**kwargs):return generate('easy',seed,**kwargs)
+ def generate_moderate(seed=0,**kwargs):return generate('moderate',seed,**kwargs)

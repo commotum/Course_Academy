@@ -1,0 +1,22 @@
+{
+  "relevant": {
+    "command": "audit.py constructs signed_constant_power seed=99017, n=3, a=1,-1,2",
+    "expected": "P changes sign/scale; correct factor and transformed RHS must follow.",
+    "observed_factors": [
+      "exp(x)",
+      "exp(-x)",
+      "exp(2x)"
+    ],
+    "observed_prompt_and_solution_follow": true,
+    "native_grader_evidence": "grader-report.json checks every option, including now-incorrect exp(x) for P=-1",
+    "rendered_evidence": "render-counterfactual/rendering.json; four screenshots inspected",
+    "bank_only_shortcut_persists": true
+  },
+  "irrelevant": {
+    "change": "a=1,n=3 fixed; seed 99017 -> 99018 shuffles answer choices",
+    "same_prompt_solution_and_correct_id": true,
+    "different_choice_order": true,
+    "native_grader_evidence": "grader-report.json",
+    "rendered_evidence": "render-counterfactual/question-001.png and question-004.png"
+  }
+}

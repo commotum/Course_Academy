@@ -1,0 +1,240 @@
+{
+  "learner_operation": "Read the ODE, standardize to identify P and Q, calculate I=exp(integral P), and choose the unique product-derivative equation with RHS I Q. A full-credit bank-only action bypasses this operation.",
+  "fixed_features": [
+    {
+      "feature": "One five-option radio response choosing a transformed equation",
+      "justification": "All eight supplied source questions use this response contract."
+    },
+    {
+      "feature": "Stop at (y I) prime = I Q",
+      "justification": "The exact prompt and canonical solution assess tutorial a6a381ed steps 1-4; solving y would add a stage."
+    },
+    {
+      "feature": "Constant P in requested easy families",
+      "justification": "Explicit easy source questions 65a9092a-d6a6-5192-82ca-c04151a6438f and dba525fe-7e4d-5319-88bd-1b806feb0904 use constant P."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Qualifying exponential integrating factor",
+      "eligible_variation": "Different offered exponential candidates should qualify as signed P changes; the correct candidate need not always occupy a unique bank-shape role.",
+      "observed": "P changes, but the correct factor always uniquely has both its reciprocal and square in all three easy authored templates."
+    },
+    {
+      "role": "Normalized Q and multiplied RHS",
+      "eligible_variation": "Vary independently of P within elementary forcing; every choice RHS and solution must follow the same instance.",
+      "observed": "Power, trig frequency and coefficient signs vary; symbolic checks verify all displayed right sides."
+    },
+    {
+      "role": "Correct position",
+      "eligible_variation": "All five positions are incidental and may be shuffled.",
+      "observed": "{2: 4, 3: 1, 1: 3, 5: 4}"
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Positive/negative integer and simple fractional P across all three easy templates",
+      "sample_refs": [
+        "samples-independent.json",
+        "math-results.json",
+        "shortcut-results.json"
+      ],
+      "result": "12 independently seeded cases cover each template; all mathematically valid and all expose the same bank-only shortcut."
+    },
+    {
+      "case": "All eight source banks, including nonstandard, reciprocal, linear and negative-coefficient cases",
+      "sample_refs": [
+        "source-replay-records.json",
+        "source-replay-results.json"
+      ],
+      "result": "Eight complete five-choice raw banks reproduced with normalized notation. Source omissions and supported sign/domain repairs are recorded separately."
+    },
+    {
+      "case": "Existing generated inventory",
+      "sample_refs": [
+        "generated-records.json",
+        "inventory-results.json",
+        "affected-inventory.json"
+      ],
+      "result": "All nine generated stored records independently replayed; the three easy stored records exhibit this signature. Other shortcut types on moderate/hard records remain untested."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Keep signed_constant_power, n=3 and seed 99017 fixed; change a=1 to -1 and then 2.",
+      "expected": "Prompt P, correct exponential factor, transformed RHS, worked solution and grader decision must follow the changed sign/scale.",
+      "observed": "Correct factors exp(x), exp(-x), exp(2x); prompt and solution follow; native grader accepts these and rejects the other choices. The bank-only signature persists in each case.",
+      "status": "passed",
+      "justification": "Tutorial a7f8aa2e requires I prime=P I; the two explicitly easy sources justify signed constant P. Mathematical dependency passes despite the separate bank-construction defect.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render-counterfactual/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Keep a=1,n=3 fixed and change shuffle seed 99017 to 99018.",
+      "expected": "Reorder choices while preserving the prompt, solution, correct equation and actual grader decisions.",
+      "observed": "Different order with same prompt, solution, correct ID and grading. Screenshots 001/004 inspected.",
+      "status": "passed",
+      "justification": "Display order does not change I prime=P I or RHS I Q; source radio labels/order are incidental.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-report.json",
+        "render-counterfactual/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Reciprocal-and-square exponential signature in answer bank",
+      "subgroup": "Fresh easy samples",
+      "scope": "overall",
+      "strategy": "Ignore prompt and solution. Among exponential factors, select the one having both its reciprocal and its square present in the answer bank. Equivalent visible strategy: of the two same-sign exponential exponents, select the smaller absolute coefficient.",
+      "correct": 12,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "100% success without seeing the ODE or solution; baseline 1/5 uniform guessing. Exponent comparison alone identifies the answer-producing action.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "samples-independent.json"
+      ]
+    },
+    {
+      "cue": "Reciprocal-and-square exponential signature in answer bank",
+      "subgroup": "Runner batch",
+      "scope": "overall",
+      "strategy": "Ignore prompt and solution. Among exponential factors, select the one having both its reciprocal and its square present in the answer bank. Equivalent visible strategy: of the two same-sign exponential exponents, select the smaller absolute coefficient.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "100% success without seeing the ODE or solution; baseline 1/5 uniform guessing. Exponent comparison alone identifies the answer-producing action.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "runner-batch.json"
+      ]
+    },
+    {
+      "cue": "Reciprocal-and-square exponential signature in answer bank",
+      "subgroup": "Fresh samples surviving publication",
+      "scope": "overall",
+      "strategy": "Ignore prompt and solution. Among exponential factors, select the one having both its reciprocal and its square present in the answer bank. Equivalent visible strategy: of the two same-sign exponential exponents, select the smaller absolute coefficient.",
+      "correct": 12,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "100% success without seeing the ODE or solution; baseline 1/5 uniform guessing. Exponent comparison alone identifies the answer-producing action.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-independent/accepted.json"
+      ]
+    },
+    {
+      "cue": "Reciprocal-and-square exponential signature in answer bank",
+      "subgroup": "Runner records surviving publication",
+      "scope": "overall",
+      "strategy": "Ignore prompt and solution. Among exponential factors, select the one having both its reciprocal and its square present in the answer bank. Equivalent visible strategy: of the two same-sign exponential exponents, select the smaller absolute coefficient.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "100% success without seeing the ODE or solution; baseline 1/5 uniform guessing. Exponent comparison alone identifies the answer-producing action.",
+      "sample_refs": [
+        "shortcut-results.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Two exponential exponents have the same sign; choose the one with smaller absolute coefficient",
+      "subgroup": "constant_cos",
+      "scope": "within_template",
+      "strategy": "Ignore P and Q. Find f among exponential factors such that 1/f and f^2 are also offered.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Perfect conditional prediction in this recognizable template; baseline 1/5. Shuffling labels cannot break a relation among the offered factors. This compares bank shapes rather than computing exp(integral P).",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Two exponential exponents have the same sign; choose the one with smaller absolute coefficient",
+      "subgroup": "scaled_constant_power",
+      "scope": "within_template",
+      "strategy": "Ignore P and Q. Find f among exponential factors such that 1/f and f^2 are also offered.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Perfect conditional prediction in this recognizable template; baseline 1/5. Shuffling labels cannot break a relation among the offered factors. This compares bank shapes rather than computing exp(integral P).",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Two exponential exponents have the same sign; choose the one with smaller absolute coefficient",
+      "subgroup": "signed_constant_power",
+      "scope": "within_template",
+      "strategy": "Ignore P and Q. Find f among exponential factors such that 1/f and f^2 are also offered.",
+      "correct": 4,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Perfect conditional prediction in this recognizable template; baseline 1/5. Shuffling labels cannot break a relation among the offered factors. This compares bank shapes rather than computing exp(integral P).",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "First answer position",
+      "subgroup": "Fresh easy samples",
+      "scope": "overall",
+      "strategy": "Always select the first displayed choice.",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "Baseline is 1/5. Position does not perfectly predict the answer; the demonstrated defect is a relationship among bank factors, independent of order. No statistical absence claim from twelve items.",
+      "sample_refs": [
+        "samples-independent.json",
+        "shortcut-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator whole-bank rejection/resampling",
+      "requested easy filtering",
+      "actual publisher prepare_records validation and stable identities",
+      "captured inventory and within-batch deduplication",
+      "rated inventory selection with seen-question filtering and band-first SHA256 draw"
+    ],
+    "sample_refs": [
+      "selection-results.json",
+      "delivery-independent/delivery.json",
+      "delivery-independent/accepted.json",
+      "delivery-batch/delivery.json",
+      "delivery-batch/accepted.json",
+      "shortcut-results.json"
+    ],
+    "result": "12/12 fresh items survive; runner 5 -> 4 after one duplicate; bank-only shortcut remains 12/12 and 4/4. All allowed easy nonzero a produce distinct factor logarithmic derivatives a,-a,2a,1/x,2/x, so rejection cannot disrupt this signature. Faithful selection reproduction retains reachable affected questions under positive easy weights; with stored easy candidates seen, all 256 easy-only draws pick affected new records."
+  },
+  "limitations": [
+    "Captured inventory basis 5319 only; later inventory may differ.",
+    "Actual learner histories, policy weights and future DB entity IDs are unavailable; selection scenarios use stated weights and synthetic future IDs, not an assertion about live learner draw frequencies.",
+    "Requested easy delivery audited; source fidelity covers all supplied source cases, but authored hard extension and other possible moderate/hard shortcut strategies are outside fresh testing.",
+    "The malformed source denominator is historical replay evidence only; its semantics are unresolved and it is absent from normal authored easy output.",
+    "No finite audit proves absence of all shortcuts. The current defect is constructive and follows the easy family construction rule."
+  ]
+}

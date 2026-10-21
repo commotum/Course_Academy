@@ -1,0 +1,123 @@
+{
+  "verdict": "revise",
+  "summary": "All three easy templates expose a perfect answer-bank-only shortcut. It survives delivery filtering and affects three reproduced stored questions. Package files remain unchanged.",
+  "source_analysis": {
+    "skill": "Normalize a linear ODE, compute its integrating factor, and select the equivalent product-derivative equation.",
+    "reasoning_steps": [
+      "Identify P and Q after normalizing the leading coefficient.",
+      "Compute I=exp(integral P).",
+      "Recognize (yI)'=IQ using the product rule."
+    ],
+    "invariants": [
+      "I'=PI.",
+      "The transformed right side equals normalized Q times I.",
+      "Exactly one of five radio choices is valid.",
+      "Stop before solving for y."
+    ],
+    "permitted_variations": [
+      "Vary signed elementary coefficients and forcing functions within difficulty.",
+      "Vary leading coefficients requiring normalization.",
+      "Vary which offered factor qualifies without assigning correctness a unique bank-shape signature."
+    ],
+    "source_refs": [
+      "question 65a9092a-d6a6-5192-82ca-c04151a6438f",
+      "question dba525fe-7e4d-5319-88bd-1b806feb0904",
+      "tutorial a6a381ed-e9ab-5deb-9d74-30900610edf1, steps 1-4",
+      "tutorial a7f8aa2e-e022-57eb-be82-5f539a4512f6: I'=PI"
+    ],
+    "evidence_paths": [
+      "source-analysis.json",
+      "source-replay-results.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay-records.json",
+        "source-replay-results.json",
+        "source-prose-results.json"
+      ],
+      "details": "Eight complete source banks replayed. Prompt prose and all six supplied solution templates match. Source omissions and supported corrections are documented."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "audit.py",
+        "math-results.json",
+        "delivery-math-results.json"
+      ],
+      "details": "Independent symbolic checks verify normalized equations, unique valid choices and displayed solution equations."
+    },
+    "variety": {
+      "status": "failed",
+      "evidence_paths": [
+        "samples-independent.json",
+        "shortcut-results.json",
+        "selection-results.json"
+      ],
+      "details": "The same answer-bank relationship predicts 12/12 fresh answers, including 4/4 within each easy template. Numerical and positional changes preserve it."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-results.json"
+      ],
+      "details": "Requested easy output preserves constant-P transformation, five radio choices and source-comparable workload. Authored hard extensions are outside this easy-delivery review."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json"
+      ],
+      "details": "The native learner grader accepts 37 independently verified correct selections and rejects 148 distractors. All fields are radio fields."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render-counterfactual/rendering.json",
+        "render-other/rendering.json",
+        "render-inspection.json"
+      ],
+      "details": "Eight actual-UI screenshots inspected; prompts, answer controls and worked solutions render correctly."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging-results.json",
+        "package-before.json",
+        "package-after.json",
+        "review-commands.json"
+      ],
+      "details": "Exact dependencies match. Deterministic replay, relocation and boundary rejection pass. Package contents remain unchanged."
+    },
+    "decision_variation": {
+      "status": "failed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "counterfactual-results.json",
+        "regression-shortcut-result.json",
+        "affected-inventory.json",
+        "generated-records.json"
+      ],
+      "details": "Counterfactual mathematical dependencies pass, but bank structure reveals the correct factor without reading the ODE. The shortcut survives publication filtering and remains selectable under positive easy weights."
+    }
+  },
+  "findings": [
+    {
+      "kind": "decision_shortcut",
+      "description": "Every authored easy bank contains factors [I,1/I,I\u00b2,x,x\u00b2]. Select the exponential whose reciprocal and square are also offered; this identifies the correct answer without inspecting P or Q. Successes: 12/12 fresh samples, 5/5 runner records, and all 16 records surviving delivery filtering. Three stored generated easy questions reproduce the defect exactly.",
+      "source_refs": [
+        "question 65a9092a-d6a6-5192-82ca-c04151a6438f",
+        "question dba525fe-7e4d-5319-88bd-1b806feb0904",
+        "tutorial a6a381ed-e9ab-5deb-9d74-30900610edf1, steps 1-4",
+        "generate/principles.md section 2",
+        "workspace/17592186087877.py: factors(), authored constant-P branch"
+      ],
+      "reproduction": "From evidence_root run /home/jake/Developer/Course_Academy/.venv/bin/python regression-shortcut.py; current generator fails with exit 1. Minimal case: generate('easy', seed=99017, template='signed_constant_power', parameters={'a':'1','n':3}). For y'+y=x\u00b3, offered factors are x,e^(2x),x\u00b2,e^x,e^(-x); the bank alone singles out e^x. Complete record: minimal-failing-record.json.",
+      "requested_change": "Change the family-wide easy bank-construction rule so correctness does not always occupy the unique reciprocal-and-square role. Retain the source method, difficulty and five-choice contract. Add controlled cases where changing P makes different candidates qualify within an unchanged bank, and retain the strict failing regression. Shuffling positions or changing coefficients alone is insufficient."
+    }
+  ]
+}

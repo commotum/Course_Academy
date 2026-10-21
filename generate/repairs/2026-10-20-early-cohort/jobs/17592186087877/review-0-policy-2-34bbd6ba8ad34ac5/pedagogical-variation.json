@@ -1,0 +1,216 @@
+{
+  "learner_operation": "Normalize the derivative coefficient, identify P and Q, compute I=exp(integral P dx), and select the unique equation whose product derivative expands to I(y′+Py)=IQ.",
+  "fixed_features": [
+    {
+      "feature": "Transform the ODE only as far as d(yI)/dx=IQ",
+      "justification": "Canonical example e-21741 and all eight practice prompts stop at this stage; solving y would add work from the next knowledge point."
+    },
+    {
+      "feature": "Single radio field containing five complete equations",
+      "justification": "All eight captured practice banks use this response contract. The number of correct selections is fixed by the single-choice task."
+    },
+    {
+      "feature": "Elementary P with nonzero normalization coefficient on the domain",
+      "justification": "The source requires constant, linear or reciprocal integration and the product rule. Restricting to a valid interval makes division/logarithms legitimate."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Integrating factor coefficient/sign and correct choice position",
+      "eligible_variation": "Small positive/negative constants, fractions and powers, with the correct factor following P; permute answer positions.",
+      "observed": "Both signs, fractional coefficients and varied positions appear. Controlled +1 to -1 changes I from exp(x) to exp(-x)."
+    },
+    {
+      "role": "Which recognizable bank relationship is assigned to the correct factor",
+      "eligible_variation": "Do not always make the correct factor the uniquely identifiable smaller member of an exponent-doubling pair. Use valid full banks whose superficial roles do not specify the key.",
+      "observed": "All easy templates fix [I,1/I,I^2,x,x^2]. Thus the correct I is recoverable from the bank alone for every nonzero allowed coefficient."
+    },
+    {
+      "role": "Forcing Q at fixed constant P",
+      "eligible_variation": "Source canonical permits Q=2exp(-2x); constant-P cosine and polynomial forcings are also observed, with no need to integrate QI.",
+      "observed": "Easy templates support only Q=cos(bx) or x^n. The canonical exponential-forcing assignment is missing."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "constant_cos; both coefficient signs, shifted positions and small source-level values",
+      "sample_refs": [
+        "samples.json",
+        "math-results.json",
+        "shortcut-results.json"
+      ],
+      "result": "8 independently seeded examples; keys are mathematically correct but the same exponent-doubling bank cue predicts all of them."
+    },
+    {
+      "case": "scaled_constant_power; both coefficient signs, shifted positions and small source-level values",
+      "sample_refs": [
+        "samples.json",
+        "math-results.json",
+        "shortcut-results.json"
+      ],
+      "result": "8 independently seeded examples; keys are mathematically correct but the same exponent-doubling bank cue predicts all of them."
+    },
+    {
+      "case": "signed_constant_power; both coefficient signs, shifted positions and small source-level values",
+      "sample_refs": [
+        "samples.json",
+        "math-results.json",
+        "shortcut-results.json"
+      ],
+      "result": "8 independently seeded examples; keys are mathematically correct but the same exponent-doubling bank cue predicts all of them."
+    },
+    {
+      "case": "Canonical constant P with exponential forcing",
+      "sample_refs": [
+        "canonical-candidates.json",
+        "canonical-coverage-results.json"
+      ],
+      "result": "Canonical y′+2y=2e^(-2x) is unreachable; all 12 reachable easy Q choices at P=2 fail to reproduce it. Nonconstant-P templates cannot supply it."
+    },
+    {
+      "case": "Observed source answer banks",
+      "sample_refs": [
+        "source-replay-records.json",
+        "source-replay-results.json",
+        "source-designation-results.json"
+      ],
+      "result": "All 8 practice banks replayed, all 40 choices matched, 6 captured designations agree; 2 missing source keys inferred independently. Malformed raw dx^2 choice treated only as an observed shape."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold signed_constant_power, n=2 and seed=8173 fixed; change a from +1 to -1.",
+      "expected": "Prompt coefficient, solution P, integrating factor and correct transformed equation must change together; exp(x) becomes exp(-x).",
+      "observed": "Printed equations and all three worked equation rows agree with each new prompt. Native grader accepts each new key and rejects the opposite-sign factor. UI screenshots show the changed signs and correct complete equations.",
+      "status": "passed",
+      "justification": "P changes the defining condition I′=PI (tutorial a7f8aa2e-e022-57eb-be82-5f539a4512f6).",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "counterfactual-integration-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "Keep a=1,n=2 and every mathematical datum fixed; change only shuffle seed from 8173 to 8174.",
+      "expected": "The complete correct equation, its owned choice UUID, prompt and worked solution remain identical, while choice order changes.",
+      "observed": "Those fields are equal; the ordering differs. Native grader accepts the same key. Rendered first and third previews display the same mathematical task with different choice positions.",
+      "status": "passed",
+      "justification": "Answer order has no role in the lesson’s product-rule identity. No substantive ODE datum is wholly irrelevant to the complete transformed equation.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-integration-results.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Unique exponential whose doubled exponent also appears among the other choices",
+      "subgroup": "fresh easy overall",
+      "scope": "overall",
+      "strategy": "Ignore the ODE. Choose e^h when e^(2h) is also offered.",
+      "correct": 24,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform random choice among five options succeeds at rate 0.2; this answer-bank-only rule succeeds on every tested item in the subgroup. The code fixes this relationship for every nonzero easy coefficient. This bypasses identifying P and computing its integrating factor.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique exponential whose doubled exponent also appears among the other choices",
+      "subgroup": "constant_cos",
+      "scope": "within_template",
+      "strategy": "Ignore the ODE. Choose e^h when e^(2h) is also offered.",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform random choice among five options succeeds at rate 0.2; this answer-bank-only rule succeeds on every tested item in the subgroup. The code fixes this relationship for every nonzero easy coefficient. This bypasses identifying P and computing its integrating factor.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique exponential whose doubled exponent also appears among the other choices",
+      "subgroup": "scaled_constant_power",
+      "scope": "within_template",
+      "strategy": "Ignore the ODE. Choose e^h when e^(2h) is also offered.",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform random choice among five options succeeds at rate 0.2; this answer-bank-only rule succeeds on every tested item in the subgroup. The code fixes this relationship for every nonzero easy coefficient. This bypasses identifying P and computing its integrating factor.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique exponential whose doubled exponent also appears among the other choices",
+      "subgroup": "signed_constant_power",
+      "scope": "within_template",
+      "strategy": "Ignore the ODE. Choose e^h when e^(2h) is also offered.",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform random choice among five options succeeds at rate 0.2; this answer-bank-only rule succeeds on every tested item in the subgroup. The code fixes this relationship for every nonzero easy coefficient. This bypasses identifying P and computing its integrating factor.",
+      "sample_refs": [
+        "samples.json",
+        "shortcut-results.json"
+      ]
+    },
+    {
+      "cue": "Unique exponential whose doubled exponent also appears among the other choices",
+      "subgroup": "runner batch",
+      "scope": "overall",
+      "strategy": "Ignore the ODE. Choose e^h when e^(2h) is also offered.",
+      "correct": 5,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "defect",
+      "conclusion": "Uniform random choice among five options succeeds at rate 0.2; this answer-bank-only rule succeeds on every tested item in the subgroup. The code fixes this relationship for every nonzero easy coefficient. This bypasses identifying P and computing its integrating factor.",
+      "sample_refs": [
+        "runner-batch.json",
+        "shortcut-results.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "Generator rejection/resampling",
+      "Requested easy difficulty",
+      "Actual publisher validation and normalization",
+      "Inventory and within-batch deduplication at captured basis 5319",
+      "Read-only reproduction of learner band/within-band selection and seen-question exclusion"
+    ],
+    "sample_refs": [
+      "easy-samples.json",
+      "runner-batch.json",
+      "delivery-samples/accepted.json",
+      "delivery-samples/delivery.json",
+      "delivery-batch/accepted.json",
+      "delivery-batch/delivery.json",
+      "delivery-selection-results.json",
+      "generated-records.json"
+    ],
+    "result": "Fresh easy samples: 24/24 survive, all predictable, one construction attempt each. Runner batch: 5 becomes 4 after one duplicate, all survivors predictable. All three affected stored easy instances are selectable under applicable easy-band/history scenarios. Original sources also remain in the current pool, so the entire pool is not claimed uniformly predictable."
+  },
+  "limitations": [
+    "Finite tests cannot prove absence of other shortcuts; demonstrated rule applies structurally to all default easy banks.",
+    "Policy weights and learner history are not captured. Selection was examined under explicit scenarios using real captured entity IDs, not asserted as a live learner trace.",
+    "Inventory conclusions use basis 5319; later inventory can differ. No publication preparation exists, so check_delivery reproduced filtering read-only.",
+    "Fresh focus is requested easy; moderate/hard have a small math regression sample, not a comprehensive shortcut audit.",
+    "Canonical source has no captured answer field; missing practice keys/solutions and the malformed raw derivative are identified in source-analysis.json."
+  ]
+}

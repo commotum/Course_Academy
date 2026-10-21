@@ -5,8 +5,8 @@ import vm from 'node:vm';
 
 const source = (await readFile(new URL('../ui/study-stats.js', import.meta.url), 'utf8')).replace(/^import .*;\n/gm, '').replaceAll('export ', '');
 const flush = () => new Promise(resolve => setImmediate(resolve));
-function fixture(goal = 200) {
-  const f = { calls: [], data: null };
+function fixture(goal = 200, at = new Date(2026, 9, 14, 12)) {
+  const f = { calls: [], data: null, timers: new Map() };
   class Element extends EventTarget {
     constructor(tag) { super(); this.tagName = tag; this.children = []; this.dataset = {}; this.attrs = {}; this.style = {}; }
     append(...nodes) { for (const node of nodes) { node.parent = this; this.children.push(node); } }
@@ -18,14 +18,17 @@ function fixture(goal = 200) {
     get isConnected() { for (let node = this; node; node = node.parent) if (node === document.body) return true; return false; }
   }
   const document = new EventTarget(); document.body = new Element('body'); document.createElement = tag => new Element(tag);
-  const now = new Date(2026, 9, 14, 12).getTime();
+  let now = at.getTime(), timerId = 0;
+  f.setNow = date => { now = date.getTime(); };
   const context = vm.createContext({ document, window: new EventTarget(), Intl, Number, AbortController, crypto,
     Date: class extends Date { constructor(...args) { super(...(args.length ? args : [now])); } static now() { return now; } },
+    setTimeout: (callback, delay) => { f.timers.set(++timerId, { callback, delay }); return timerId; },
+    clearTimeout: id => f.timers.delete(id),
     localStorage: { setItem() {} },
     readRequest: async path => {
       f.calls.push({ path });
       if (f.failRead) throw new Error('Offline');
-      const days = Array.from({ length: 7 }, (_, i) => ({ earnedXp: i === 2 ? 250 : 0, workingSeconds: i === 2 ? 600 : 0 }));
+      const days = Array.from({ length: 7 }, (_, i) => ({ earnedXp: i === 6 ? 250 : 0, workingSeconds: i === 6 ? 600 : 0 }));
       f.data ||= { dailyXpGoal: goal, days, earnedXp: 250, totalEarnedXp: 12400, totalXpMissing: 0 };
       return { ok: true, json: async () => structuredClone(f.data) };
     },
@@ -90,7 +93,7 @@ test('daily bars use the goal scale instead of the highest earning day', async (
   for (const goal of [null, 200, 100]) {
     const f = fixture(goal);
     const scale = goal || 200;
-    f.data.days.forEach((day, i) => { day.earnedXp = [0, scale / 2, scale, scale * 2, 0, 0, 0][i]; });
+    f.data.days.forEach((day, i) => { day.earnedXp = [scale * 2, 0, 0, 0, 0, scale / 2, scale][i]; });
     await flush();
     const chart = f.find('stat-week-chart');
     const fills = chart.children.map(bar => f.find('stat-day-fill', bar));
@@ -103,8 +106,8 @@ test('daily bars use the goal scale instead of the highest earning day', async (
 
 test('negative daily XP stays below zero while positive bars remain capped at the goal', async () => {
   const f = fixture();
-  f.data.days[0].earnedXp = -50;
-  f.data.days[1].earnedXp = 100;
+  f.data.days[4].earnedXp = -50;
+  f.data.days[5].earnedXp = 100;
   await flush();
   const bars = f.find('stat-week-chart').children;
   const negative = f.find('stat-day-fill', bars[0]);
@@ -113,4 +116,49 @@ test('negative daily XP stays below zero while positive bars remain capped at th
   assert.equal(negative.style.height, '20%');
   assert.equal(f.find('stat-day-fill', bars[1]).style.height, '40%');
   assert.equal(f.find('stat-day-fill', bars[2]).style.height, '80%');
+});
+
+test('fixed weekdays retain last week until their own day, without changing the weekly total or markup', async () => {
+  for (let weekday = 0; weekday < 7; weekday++) {
+    const at = new Date(2026, 9, 12 + weekday, 12);
+    const f = fixture(200, at);
+    f.data.days.forEach((day, i) => { day.earnedXp = i === 6 ? 0 : (i + 1) * 10; });
+    await flush();
+    const starts = f.calls[0].path.split('dayStarts=')[1].split(',').map(Number);
+    const bars = f.find('stat-week-chart').children;
+    assert.deepEqual(bars.map(bar => f.find('stat-day-label', bar).textContent), ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
+    bars.forEach((bar, slot) => {
+      const date = new Date(at); date.setDate(date.getDate() - (weekday - slot + 7) % 7);
+      const source = starts.indexOf(new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime());
+      assert.ok(source >= 0);
+      const xp = source === 6 ? 0 : (source + 1) * 10;
+      assert.match(bar.title, new RegExp(`: ${xp} / 200 XP`));
+      assert.ok(bar.title.startsWith(new Intl.DateTimeFormat(undefined, { weekday: 'long', month: 'short', day: 'numeric' }).format(date)));
+      assert.equal(bar.children.length, 2);
+      assert.equal(bar.getAttribute('aria-current'), slot === weekday ? 'date' : undefined);
+      assert.equal(bar.dataset.future, String(slot > weekday));
+    });
+    const metrics = f.find('stat-xp-summary').children;
+    assert.deepEqual(metrics.map(metric => metric.children[0].textContent), ['Today', 'This week', 'Total']);
+    assert.equal(metrics[0].children[1].textContent, '0');
+    assert.equal(metrics[1].children[1].textContent, String(f.data.days.slice(6 - weekday).reduce((sum, day) => sum + day.earnedXp, 0)));
+    assert.equal(f.find('stat-day-marker'), undefined);
+    assert.equal(f.find('stat-day-date'), undefined);
+  }
+});
+
+test('Sunday to Monday resets only Monday and refreshes an open sidebar at midnight', async () => {
+  const f = fixture(200, new Date(2026, 9, 18, 23, 59)); await flush();
+  const timer = [...f.timers.values()][0];
+  assert.equal(timer.delay, 60_050);
+  f.setNow(new Date(2026, 9, 19, 0, 0, 1));
+  f.data.days.forEach((day, i) => { day.earnedXp = i === 6 ? 0 : 120; });
+  timer.callback(); await flush();
+  const bars = f.find('stat-week-chart').children;
+  assert.equal(bars[0].getAttribute('aria-current'), 'date');
+  assert.match(bars[0].title, /Monday, Oct 19: 0 \/ 200 XP/);
+  assert.match(bars[6].title, /Sunday, Oct 18: 120 \/ 200 XP/);
+  assert.equal(f.find('stat-xp-summary').children[1].children[1].textContent, '0');
+  assert.equal(f.calls.length, 2);
+  assert.equal(f.timers.size, 1);
 });
