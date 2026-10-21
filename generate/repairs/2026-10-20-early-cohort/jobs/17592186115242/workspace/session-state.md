@@ -1,44 +1,39 @@
-# Current repair state — pass 26
+# Current repair state — pass 29
 
-Read latest feedback and retained history through attempt 25. Preserved runtime,
-all completed construction repairs, strict regressions and the staged proposal.
-No new generator defect is demonstrated; no implementation change was justified.
+Read feedback, all five retained findings and the 29 history events. Reused the
+existing candidate and instructional account. Read the required generation and
+validation documents, source lesson, worked examples, all 17 complete practice
+banks and solutions, and inspected the tutorial diagram.
 
-First executed:
+Latest failure reproduced first:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five captured historical banks still permit the sign-only extremum
-shortcut, with 64/64 successes in the possible new-seen-history witness.
+Exit 1: five captured generated records retain the sign-only extremum shortcut.
+The possible new-seen-history witness succeeds 64/64; this is not a prediction
+of every learner history. All captured generated records were tested.
 
-Then executed:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-26`
-Exit 1 solely for finding 591f580cadb749294588. The other four finding checks
-pass. Verified 17 complete source banks and canonical replay, independent printed
-math, zero roots, counterfactuals and conditional shortcut contrasts before/after
-shared delivery (14 accepted). Native grading accepts 7 correct and rejects 28
-incorrect responses. Exact dependency pins and relocated seeded execution pass.
-Runtime, manifest, source and inventory hashes match preserved evidence. All five
-generated inventory records were tested; none remain untested. Existing five-item
-replacement proposal bindings remain verified, with no application performed.
+Then executed once:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-29`
+Exit 1 solely for finding 591f580cadb749294588. Four generator regressions pass;
+17 source banks and canonical replay, independent printed math, zero roots,
+controlled relevant/irrelevant changes, within-sign-group rank and position
+contrasts, shared delivery (14 accepted), native grading (7 accepted and 28
+rejected), exact dependency pins and relocated CLI execution pass. Runtime,
+manifest, source and inventory match retained hashes. Five replacement mappings
+are verified, proposed only, and unapplied. Both unchanged actual-UI screenshots
+were visually reinspected; no additional render was invoked.
 
-Read-only selector inspection: engine/rust/question_selection.rs:125–203 selects
-stored candidate entities; it never calls this package to replace their banks.
-Workspace edits cannot remove those stored identities or modify stored content.
-The required separate inventory-remediation action is expressly prohibited here.
-Do not replace captured inventory evidence with a hypothetical repaired pool or
-weaken its strict nonzero regression.
+Read-only inspection of engine/rust/question_selection.rs:125–203 confirms it
+selects stored entities and does not invoke this generator to update old banks.
+The remaining failure cannot be repaired by changing workspace runtime files.
+Do not weaken its regression or substitute a hypothetical replacement pool.
 
-Reinspected both retained actual-UI screenshots, which remain readable without
-clipping, overlap or unresolved TeX. Source tutorial flowchart also inspected.
-Reused rendering because runtime and rendered records are unchanged.
-Evidence: evidence/repair-26/commands.json, results.json, inventory-results.json,
-grader-report.json and visual-inspection.json. affected-inventory.json paths are
-relative to author-26 and resolve to complete reproduced workspace records.
+Evidence: evidence/repair-29/commands.json, results.json, inventory-results.json,
+grader-report.json, visual-inspection.json and scope-diagnosis.json. The affected
+inventory paths resolve from author-29 to complete workspace reproduction records.
 
-Unfinished external step: independently review and apply
-`evidence/repair-3/inventory-repair-proposal.json` through the separate authorized
-inventory workflow, recapture inventory, and rerun the strict stored-pool check.
-Repeating this workspace-only pass on unchanged inventory cannot resolve it.
-
-Status: unsupported for the unresolved selectable-pool finding. The source skill
-and candidate remain supported. No database, publication, image, engine, runtime,
-source or other-job changes were made.
+Next unfinished action: separately review/apply
+`evidence/repair-3/inventory-repair-proposal.json`, recapture inventory, then rerun
+the strict pool check. Database changes and publication are explicitly forbidden
+in this task. No runtime, engine, source, database, publication or other-job edits
+were made. Status remains unsupported for the selectable-pool finding; the source
+skill and current generator remain supported.

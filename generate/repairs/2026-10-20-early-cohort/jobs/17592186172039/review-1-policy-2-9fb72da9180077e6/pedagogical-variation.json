@@ -1,0 +1,2897 @@
+{
+  "learner_operation": "Infer the sign of a monomial slope function in each open quadrant and select every true universal sign statement.",
+  "fixed_features": [
+    {
+      "feature": "Axes bounding four standard open quadrants",
+      "justification": "Target KP and all observed monomial zero sets; shifted rectangular regions belong to adjacent KP 17592186172041."
+    },
+    {
+      "feature": "Three substantive universal sign claims",
+      "justification": "Consistent observed workload; no need to increase count."
+    },
+    {
+      "feature": "Strict positive/negative statements and nonzero coefficient",
+      "justification": "The operation is a constant sign in each open quadrant; axes are excluded. Three statements preserve workload."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Coefficient sign",
+      "eligible_variation": "Either sign, complements each substantive truth when claims fixed.",
+      "observed": "Both signs sampled and controlled pair complements all three."
+    },
+    {
+      "role": "Quadrants and claim polarity",
+      "eligible_variation": "Each label can occupy any statement position; independently positive or negative claims.",
+      "observed": "Fresh sample varies labels and claim polarity; all 8 truth masks explicitly realized per template/profile."
+    },
+    {
+      "role": "None option and truth count",
+      "eligible_variation": "None true iff all three claims false; 0-3 substantive truths.",
+      "observed": "All 0-3 counts realized. Runner batch contains 1 or 2 substantive truths; None false throughout."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Each recognizable template and hard exponent profile",
+      "sample_refs": [
+        "decision-records.json",
+        "samples-all.json",
+        "shortcut-results.json"
+      ],
+      "result": "88 explicit cases cover all 8 masks in 11 template/exponent profiles; 168 fresh seeded records expose the actual sampler."
+    },
+    {
+      "case": "Exact runner batch after captured-inventory delivery",
+      "sample_refs": [
+        "batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "5/5 survive, masks 1,1,3,3,4. No complete-answer simple cue succeeds on all five."
+    },
+    {
+      "case": "Moderate sample after deduplication and requested difficulty",
+      "sample_refs": [
+        "samples-moderate.json",
+        "delivery-samples/accepted.json",
+        "delivery-samples/delivery.json",
+        "selection.json"
+      ],
+      "result": "72 inputs become 24; duplicate presentation variants collapse without dropping any observed mask (0,1,2,3,4,5,7). Within-moderate learner selection has no decision-role reweighting; fresh and seen-exclusion scenarios retained."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "coefficient_sign",
+      "expected": "Complement all three substantive responses.",
+      "observed": "Independent visible-equation/statement/solution checks and native grader agree with expected keys. Render cases 6-10 show base, coefficient, claim, target and magnitude changes; sign map follows equation.",
+      "status": "passed",
+      "justification": "Coefficient sign, queried quadrant and claimed sign are eligible answer-bearing evidence under source sign method.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "render-records.json",
+        "render/rendering.json",
+        "native-report.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "claim_sign",
+      "expected": "Toggle only the first substantive response.",
+      "observed": "Independent visible-equation/statement/solution checks and native grader agree with expected keys. Render cases 6-10 show base, coefficient, claim, target and magnitude changes; sign map follows equation.",
+      "status": "passed",
+      "justification": "Coefficient sign, queried quadrant and claimed sign are eligible answer-bearing evidence under source sign method.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "render-records.json",
+        "render/rendering.json",
+        "native-report.json"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "target",
+      "expected": "Toggle only the first substantive response.",
+      "observed": "Independent visible-equation/statement/solution checks and native grader agree with expected keys. Render cases 6-10 show base, coefficient, claim, target and magnitude changes; sign map follows equation.",
+      "status": "passed",
+      "justification": "Coefficient sign, queried quadrant and claimed sign are eligible answer-bearing evidence under source sign method.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "render-records.json",
+        "render/rendering.json",
+        "native-report.json"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "positive_rescaling",
+      "expected": "Preserve all substantive responses and diagram signs.",
+      "observed": "Independent visible-equation/statement/solution checks and native grader agree with expected keys. Render cases 6-10 show base, coefficient, claim, target and magnitude changes; sign map follows equation.",
+      "status": "passed",
+      "justification": "Positive magnitude cannot change a monomial sign.",
+      "sample_refs": [
+        "counterfactuals.json",
+        "render-records.json",
+        "render/rendering.json",
+        "native-report.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "fresh seeded sample",
+      "scope": "overall",
+      "strategy": "fixed position subset 0",
+      "correct": 14,
+      "total": 168,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "fresh seeded sample",
+      "scope": "overall",
+      "strategy": "fixed position subset 1",
+      "correct": 21,
+      "total": 168,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "fresh seeded sample",
+      "scope": "overall",
+      "strategy": "fixed position subset 2",
+      "correct": 42,
+      "total": 168,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "fresh seeded sample",
+      "scope": "overall",
+      "strategy": "fixed position subset 3",
+      "correct": 21,
+      "total": 168,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "fresh seeded sample",
+      "scope": "overall",
+      "strategy": "fixed position subset 4",
+      "correct": 28,
+      "total": 168,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "fresh seeded sample",
+      "scope": "overall",
+      "strategy": "fixed position subset 5",
+      "correct": 28,
+      "total": 168,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "fresh seeded sample",
+      "scope": "overall",
+      "strategy": "fixed position subset 6",
+      "correct": 0,
+      "total": 168,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "fresh seeded sample",
+      "scope": "overall",
+      "strategy": "fixed position subset 7",
+      "correct": 14,
+      "total": 168,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "fresh seeded sample",
+      "scope": "overall",
+      "strategy": "select statements worded positive",
+      "correct": 8,
+      "total": 168,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "fresh seeded sample",
+      "scope": "overall",
+      "strategy": "select only first quadrant statement",
+      "correct": 46,
+      "total": 168,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "fresh seeded sample",
+      "scope": "overall",
+      "strategy": "select only second quadrant statement",
+      "correct": 25,
+      "total": 168,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "fresh seeded sample",
+      "scope": "overall",
+      "strategy": "select only third quadrant statement",
+      "correct": 14,
+      "total": 168,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "fresh seeded sample",
+      "scope": "overall",
+      "strategy": "select only fourth quadrant statement",
+      "correct": 20,
+      "total": 168,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_closed",
+      "scope": "within_template",
+      "strategy": "fixed position subset 0",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_closed",
+      "scope": "within_template",
+      "strategy": "fixed position subset 1",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_closed",
+      "scope": "within_template",
+      "strategy": "fixed position subset 2",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_closed",
+      "scope": "within_template",
+      "strategy": "fixed position subset 3",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_closed",
+      "scope": "within_template",
+      "strategy": "fixed position subset 4",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_closed",
+      "scope": "within_template",
+      "strategy": "fixed position subset 5",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_closed",
+      "scope": "within_template",
+      "strategy": "fixed position subset 6",
+      "correct": 0,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_closed",
+      "scope": "within_template",
+      "strategy": "fixed position subset 7",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_closed",
+      "scope": "within_template",
+      "strategy": "select statements worded positive",
+      "correct": 0,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_closed",
+      "scope": "within_template",
+      "strategy": "select only first quadrant statement",
+      "correct": 7,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_closed",
+      "scope": "within_template",
+      "strategy": "select only second quadrant statement",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_closed",
+      "scope": "within_template",
+      "strategy": "select only third quadrant statement",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_closed",
+      "scope": "within_template",
+      "strategy": "select only fourth quadrant statement",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open",
+      "scope": "within_template",
+      "strategy": "fixed position subset 0",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open",
+      "scope": "within_template",
+      "strategy": "fixed position subset 1",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open",
+      "scope": "within_template",
+      "strategy": "fixed position subset 2",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open",
+      "scope": "within_template",
+      "strategy": "fixed position subset 3",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open",
+      "scope": "within_template",
+      "strategy": "fixed position subset 4",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open",
+      "scope": "within_template",
+      "strategy": "fixed position subset 5",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open",
+      "scope": "within_template",
+      "strategy": "fixed position subset 6",
+      "correct": 0,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open",
+      "scope": "within_template",
+      "strategy": "fixed position subset 7",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open",
+      "scope": "within_template",
+      "strategy": "select statements worded positive",
+      "correct": 0,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open",
+      "scope": "within_template",
+      "strategy": "select only first quadrant statement",
+      "correct": 7,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open",
+      "scope": "within_template",
+      "strategy": "select only second quadrant statement",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open",
+      "scope": "within_template",
+      "strategy": "select only third quadrant statement",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open",
+      "scope": "within_template",
+      "strategy": "select only fourth quadrant statement",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open_thin",
+      "scope": "within_template",
+      "strategy": "fixed position subset 0",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open_thin",
+      "scope": "within_template",
+      "strategy": "fixed position subset 1",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open_thin",
+      "scope": "within_template",
+      "strategy": "fixed position subset 2",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open_thin",
+      "scope": "within_template",
+      "strategy": "fixed position subset 3",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open_thin",
+      "scope": "within_template",
+      "strategy": "fixed position subset 4",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open_thin",
+      "scope": "within_template",
+      "strategy": "fixed position subset 5",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open_thin",
+      "scope": "within_template",
+      "strategy": "fixed position subset 6",
+      "correct": 0,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open_thin",
+      "scope": "within_template",
+      "strategy": "fixed position subset 7",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open_thin",
+      "scope": "within_template",
+      "strategy": "select statements worded positive",
+      "correct": 0,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open_thin",
+      "scope": "within_template",
+      "strategy": "select only first quadrant statement",
+      "correct": 7,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open_thin",
+      "scope": "within_template",
+      "strategy": "select only second quadrant statement",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open_thin",
+      "scope": "within_template",
+      "strategy": "select only third quadrant statement",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "bilinear_open_thin",
+      "scope": "within_template",
+      "strategy": "select only fourth quadrant statement",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_closed",
+      "scope": "within_template",
+      "strategy": "fixed position subset 0",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_closed",
+      "scope": "within_template",
+      "strategy": "fixed position subset 1",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_closed",
+      "scope": "within_template",
+      "strategy": "fixed position subset 2",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_closed",
+      "scope": "within_template",
+      "strategy": "fixed position subset 3",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_closed",
+      "scope": "within_template",
+      "strategy": "fixed position subset 4",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_closed",
+      "scope": "within_template",
+      "strategy": "fixed position subset 5",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_closed",
+      "scope": "within_template",
+      "strategy": "fixed position subset 6",
+      "correct": 0,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_closed",
+      "scope": "within_template",
+      "strategy": "fixed position subset 7",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_closed",
+      "scope": "within_template",
+      "strategy": "select statements worded positive",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_closed",
+      "scope": "within_template",
+      "strategy": "select only first quadrant statement",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_closed",
+      "scope": "within_template",
+      "strategy": "select only second quadrant statement",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_closed",
+      "scope": "within_template",
+      "strategy": "select only third quadrant statement",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_closed",
+      "scope": "within_template",
+      "strategy": "select only fourth quadrant statement",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_numbered",
+      "scope": "within_template",
+      "strategy": "fixed position subset 0",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_numbered",
+      "scope": "within_template",
+      "strategy": "fixed position subset 1",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_numbered",
+      "scope": "within_template",
+      "strategy": "fixed position subset 2",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_numbered",
+      "scope": "within_template",
+      "strategy": "fixed position subset 3",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_numbered",
+      "scope": "within_template",
+      "strategy": "fixed position subset 4",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_numbered",
+      "scope": "within_template",
+      "strategy": "fixed position subset 5",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_numbered",
+      "scope": "within_template",
+      "strategy": "fixed position subset 6",
+      "correct": 0,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_numbered",
+      "scope": "within_template",
+      "strategy": "fixed position subset 7",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_numbered",
+      "scope": "within_template",
+      "strategy": "select statements worded positive",
+      "correct": 0,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_numbered",
+      "scope": "within_template",
+      "strategy": "select only first quadrant statement",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_numbered",
+      "scope": "within_template",
+      "strategy": "select only second quadrant statement",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_numbered",
+      "scope": "within_template",
+      "strategy": "select only third quadrant statement",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_numbered",
+      "scope": "within_template",
+      "strategy": "select only fourth quadrant statement",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_open",
+      "scope": "within_template",
+      "strategy": "fixed position subset 0",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_open",
+      "scope": "within_template",
+      "strategy": "fixed position subset 1",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_open",
+      "scope": "within_template",
+      "strategy": "fixed position subset 2",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_open",
+      "scope": "within_template",
+      "strategy": "fixed position subset 3",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_open",
+      "scope": "within_template",
+      "strategy": "fixed position subset 4",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_open",
+      "scope": "within_template",
+      "strategy": "fixed position subset 5",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_open",
+      "scope": "within_template",
+      "strategy": "fixed position subset 6",
+      "correct": 0,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_open",
+      "scope": "within_template",
+      "strategy": "fixed position subset 7",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_open",
+      "scope": "within_template",
+      "strategy": "select statements worded positive",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_open",
+      "scope": "within_template",
+      "strategy": "select only first quadrant statement",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_open",
+      "scope": "within_template",
+      "strategy": "select only second quadrant statement",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_open",
+      "scope": "within_template",
+      "strategy": "select only third quadrant statement",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "parity_open",
+      "scope": "within_template",
+      "strategy": "select only fourth quadrant statement",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "single_coordinate",
+      "scope": "within_template",
+      "strategy": "fixed position subset 0",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "single_coordinate",
+      "scope": "within_template",
+      "strategy": "fixed position subset 1",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "single_coordinate",
+      "scope": "within_template",
+      "strategy": "fixed position subset 2",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "single_coordinate",
+      "scope": "within_template",
+      "strategy": "fixed position subset 3",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "single_coordinate",
+      "scope": "within_template",
+      "strategy": "fixed position subset 4",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "single_coordinate",
+      "scope": "within_template",
+      "strategy": "fixed position subset 5",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "single_coordinate",
+      "scope": "within_template",
+      "strategy": "fixed position subset 6",
+      "correct": 0,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "single_coordinate",
+      "scope": "within_template",
+      "strategy": "fixed position subset 7",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "single_coordinate",
+      "scope": "within_template",
+      "strategy": "select statements worded positive",
+      "correct": 0,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "single_coordinate",
+      "scope": "within_template",
+      "strategy": "select only first quadrant statement",
+      "correct": 7,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "single_coordinate",
+      "scope": "within_template",
+      "strategy": "select only second quadrant statement",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "single_coordinate",
+      "scope": "within_template",
+      "strategy": "select only third quadrant statement",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "single_coordinate",
+      "scope": "within_template",
+      "strategy": "select only fourth quadrant statement",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "decision-records.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 0",
+      "correct": 11,
+      "total": 88,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "decision-records.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "decision-records.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 1",
+      "correct": 11,
+      "total": 88,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "decision-records.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "decision-records.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 2",
+      "correct": 11,
+      "total": 88,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "decision-records.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "decision-records.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 3",
+      "correct": 11,
+      "total": 88,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "decision-records.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "decision-records.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 4",
+      "correct": 11,
+      "total": 88,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "decision-records.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "decision-records.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 5",
+      "correct": 11,
+      "total": 88,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "decision-records.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "decision-records.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 6",
+      "correct": 11,
+      "total": 88,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "decision-records.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "decision-records.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 7",
+      "correct": 11,
+      "total": 88,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "decision-records.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "decision-records.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select statements worded positive",
+      "correct": 16,
+      "total": 88,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "decision-records.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "decision-records.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first quadrant statement",
+      "correct": 11,
+      "total": 88,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "decision-records.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "decision-records.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only second quadrant statement",
+      "correct": 11,
+      "total": 88,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "decision-records.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "decision-records.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only third quadrant statement",
+      "correct": 11,
+      "total": 88,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "decision-records.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "decision-records.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only fourth quadrant statement",
+      "correct": 11,
+      "total": 88,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "decision-records.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "samples-moderate.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 0",
+      "correct": 6,
+      "total": 72,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-moderate.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "samples-moderate.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 1",
+      "correct": 9,
+      "total": 72,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-moderate.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "samples-moderate.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 2",
+      "correct": 18,
+      "total": 72,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-moderate.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "samples-moderate.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 3",
+      "correct": 9,
+      "total": 72,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-moderate.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "samples-moderate.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 4",
+      "correct": 12,
+      "total": 72,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-moderate.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "samples-moderate.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 5",
+      "correct": 12,
+      "total": 72,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-moderate.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "samples-moderate.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 6",
+      "correct": 0,
+      "total": 72,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-moderate.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "samples-moderate.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 7",
+      "correct": 6,
+      "total": 72,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-moderate.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "samples-moderate.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select statements worded positive",
+      "correct": 0,
+      "total": 72,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-moderate.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "samples-moderate.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first quadrant statement",
+      "correct": 21,
+      "total": 72,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-moderate.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "samples-moderate.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only second quadrant statement",
+      "correct": 12,
+      "total": 72,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-moderate.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "samples-moderate.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only third quadrant statement",
+      "correct": 6,
+      "total": 72,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-moderate.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "samples-moderate.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only fourth quadrant statement",
+      "correct": 6,
+      "total": 72,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "samples-moderate.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-samples/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 0",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-samples/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 1",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-samples/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 2",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-samples/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 3",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-samples/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 4",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-samples/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 5",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-samples/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 6",
+      "correct": 0,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-samples/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 7",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-samples/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select statements worded positive",
+      "correct": 0,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-samples/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first quadrant statement",
+      "correct": 7,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-samples/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only second quadrant statement",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-samples/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only third quadrant statement",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-samples/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only fourth quadrant statement",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "batch.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 0",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "batch.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 1",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "batch.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 2",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "batch.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 3",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "batch.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 4",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "batch.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 5",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "batch.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 6",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "batch.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 7",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "batch.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select statements worded positive",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "batch.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first quadrant statement",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "batch.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only second quadrant statement",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "batch.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only third quadrant statement",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "batch.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only fourth quadrant statement",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "batch.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-batch/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 0",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-batch/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 1",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-batch/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 2",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-batch/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 3",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-batch/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 4",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-batch/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 5",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-batch/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 6",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-batch/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 7",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-batch/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select statements worded positive",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-batch/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first quadrant statement",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-batch/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only second quadrant statement",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-batch/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only third quadrant statement",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivery-batch/accepted.json",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only fourth quadrant statement",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate negative coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 0",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate negative coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 1",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate negative coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 2",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate negative coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 3",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate negative coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 4",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate negative coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 5",
+      "correct": 3,
+      "total": 10,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate negative coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 6",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate negative coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 7",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate negative coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select statements worded positive",
+      "correct": 0,
+      "total": 10,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate negative coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first quadrant statement",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate negative coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only second quadrant statement",
+      "correct": 2,
+      "total": 10,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate negative coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only third quadrant statement",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate negative coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only fourth quadrant statement",
+      "correct": 1,
+      "total": 10,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate positive coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 0",
+      "correct": 2,
+      "total": 14,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate positive coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 1",
+      "correct": 1,
+      "total": 14,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate positive coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 2",
+      "correct": 3,
+      "total": 14,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate positive coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 3",
+      "correct": 2,
+      "total": 14,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate positive coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 4",
+      "correct": 3,
+      "total": 14,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate positive coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 5",
+      "correct": 1,
+      "total": 14,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate positive coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 6",
+      "correct": 0,
+      "total": 14,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate positive coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "fixed position subset 7",
+      "correct": 2,
+      "total": 14,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate positive coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select statements worded positive",
+      "correct": 0,
+      "total": 14,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate positive coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only first quadrant statement",
+      "correct": 5,
+      "total": 14,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate positive coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only second quadrant statement",
+      "correct": 2,
+      "total": 14,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate positive coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only third quadrant statement",
+      "correct": 1,
+      "total": 14,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "positions, quadrant labels or claim polarity without the equation",
+      "subgroup": "delivered moderate positive coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "select only fourth quadrant statement",
+      "correct": 1,
+      "total": 14,
+      "baseline": 0.125,
+      "disposition": "not_predictive",
+      "conclusion": "Complete three-claim subset accuracy; uniform guessing among 8 subsets is 1/8. None is then derived from whether the chosen subset is empty. No complete prediction.",
+      "sample_refs": [
+        "delivery-samples/accepted.json"
+      ]
+    },
+    {
+      "cue": "Both powers squared, coefficient positive",
+      "subgroup": "hard x^2 y^2 with positive coefficient",
+      "scope": "other_recognizable_subgroup",
+      "strategy": "Select positive claims in every queried quadrant",
+      "correct": 8,
+      "total": 8,
+      "baseline": 0.125,
+      "disposition": "intended_skill",
+      "conclusion": "Guessing a complete subset has 1/8 baseline. Perfect prediction here is mathematical: both squared coordinates and positive coefficient are positive in every open quadrant. It uses the target sign/parity skill.",
+      "sample_refs": [
+        "samples-all.json"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator construction and nonempty rejection/resampling",
+      "requested moderate difficulty",
+      "normalization and image localization",
+      "captured inventory and within-batch deduplication",
+      "engine fresh-practice nonempty validation",
+      "learner history exclusion and within-band selection rules (conditional read-only reproduction)"
+    ],
+    "sample_refs": [
+      "rejection.json",
+      "delivery-batch/delivery.json",
+      "delivery-samples/delivery.json",
+      "selection.json",
+      "shortcut-results.json",
+      "boundary-results.json",
+      "delivered-validation.json"
+    ],
+    "result": "Default explicit None gives a selectable true response for every truth mask; guard does not condition default mask distribution. No role-aware filtering in delivery or uniform within-band selection. Batch coverage assessed separately."
+  },
+  "limitations": [
+    "Captured inventory has no learner history or policy weights. Test conditions on a positively weighted moderate band; within-band draw is uniform and independent of mathematical roles, for every positive band weight.",
+    "Prospective publication entity IDs are unknown; appended sorted IDs model one ordering. Changing this ordering permutes seeded outcomes without changing within-band uniformity.",
+    "Excluded retired/malformed/multistep records would require unavailable full live snapshot; captured nonempty source and generated records have the relevant usable response shape.",
+    "Historical all-false checkbox is excluded from fresh practice by learning.rs:165. No database access.",
+    "Finite shortcut strategies and samples do not prove absence of every possible cue. Fresh 24-seed moderate sample lacks mask 6, which explicit construction realizes; the source does not require all subsets in each five-question batch.",
+    "The historical engine-ineligible stored item is reproduced in affected-inventory.json and generated-records.json; it is not a current generator failure.",
+    "Live policy weights and learner history are not captured; selection.json makes its positive-moderate-band condition explicit and tests fresh and history-exclusion scenarios. This is a read-only rule reproduction, not a live selection run."
+  ]
+}
