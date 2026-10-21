@@ -1,0 +1,3001 @@
+{
+  "learner_operation": "Separate and integrate the inhibited-decay equation, apply the initial temperature to fix excess, then evaluate and round the requested future temperature. Moderate controls additionally infer the rate from a later observation and invert for a target time. The answer is a computed scalar, not its option rank or UI position.",
+  "fixed_features": [
+    {
+      "feature": "Positive rate, initial temperature above ambient and positive elapsed time",
+      "justification": "Tutorial da7cd802-d46b-546f-bdc3-8a783a8bb999 defines r>0,P>a; cooling stays above equilibrium."
+    },
+    {
+      "feature": "Easy asks future temperature with specified rate; one integer-unit choice among five",
+      "justification": "Canonical e3e001a8-9294-59a4-82e6-b1122afdc72f and all six easy source items use this workload; source practice contract is five-choice radio."
+    },
+    {
+      "feature": "Ordinary boiling Celsius water starts at100; object-appropriate temperature bounds",
+      "justification": "Water source02ce9872-8986-5e67-bea1-b49d589c24ac explicitly says boiling. These physical context constraints do not justify fixing correct option rank."
+    },
+    {
+      "feature": "Moderate controls ask for a later lower target temperature",
+      "justification": "All five captured moderate problems do so. Earlier-target inversion is mathematically eligible but was not a retained failure or changed rule in this bounded repair. No claim of all possible target orders is made."
+    }
+  ],
+  "answer_roles": [
+    {
+      "role": "Rounded correct scalar",
+      "eligible_variation": "Ambient, initial temperature, positive rate and future evaluation time; moderate observation/target slots.",
+      "observed": "Fresh90 contains varied numerical slots; controlled time6->9 changes81->73 and target30->25 changes12->17 with grader/UI agreement."
+    },
+    {
+      "role": "Correct numeric rank among the offered five integers",
+      "eligible_variation": "All feasible ranks; no instructional reason fixes rank. Boundary rounding may limit feasible distractor arrangements without excluding the IVP.",
+      "observed": "Every recognizable default template has multiple ranks; exact runner ranks2,2,1,5,3. Previously rejected canonical/body IVPs and rounded ambient/initial endpoints now accepted."
+    },
+    {
+      "role": "Radio position and context label",
+      "eligible_variation": "Context changes preserving units may preserve the answer; UI order must not identify the correct scalar.",
+      "observed": "Same numerical coffee/compressor answer81; bank seed change preserves model and81 while rank2->5. Exact actual-UI ordering tested separately from JSON positions."
+    }
+  ],
+  "coverage": [
+    {
+      "case": "Every supplied source practice case and complete bank",
+      "sample_refs": [
+        "source-replay.json",
+        "source-replay-records.json"
+      ],
+      "result": "All eleven replay, including restored body/pork; outside source unit typo corrected. Canonical bulb parameters/context evaluated; source has no canonical answer bank."
+    },
+    {
+      "case": "Changed default bank construction, each recognizable template",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "retained-finding-tests.json"
+      ],
+      "result": "56easy,30moderate,4authored-hard controls; each template refutes the old fixed-rank strategy. Hard is unchanged method and outside requested easy batch."
+    },
+    {
+      "case": "Exact runner finite practice batch",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "shortcut-results.json"
+      ],
+      "result": "5/5 survive. Median, nearest-midrange and nearest-mean each answer1/5; no single rank answers more than2/5. Two iron items have different correct ranks. No batch-wide bypass demonstrated."
+    },
+    {
+      "case": "Previously rejected valid IVPs and integer rounding boundaries",
+      "sample_refs": [
+        "acceptance-records.json",
+        "retained-finding-tests.json"
+      ],
+      "result": "Valid canonical44 and body36 accepted; endpoint80 and20 also accepted. Invalid nonpositive time/rate and equilibrium initial condition rejected."
+    }
+  ],
+  "counterfactuals": [
+    {
+      "kind": "relevant",
+      "change": "Hold coffee ambient25,initial100,rate.05 and seed932631 fixed; evaluation time6->9",
+      "expected": "Rounded temperature81->73; prompt, substitution, selected UUID and grader must agree.",
+      "observed": "Answers81,73; solutions show T(6),T(9); actual UI question006/007 and native grader cases5/6 agree.",
+      "status": "passed",
+      "justification": "Requested evaluation time directly determines the easy answer.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json",
+        "render/question-007.png"
+      ]
+    },
+    {
+      "kind": "relevant",
+      "change": "Hold bath ambient10,initial50,observed40 at5minutes and seed932631 fixed; target30->25",
+      "expected": "Total rounded time12->17; calibrated rate unchanged; target and final logarithm update.",
+      "observed": "Answers12,17; rendered question009/010 show changed target and3/8 target-excess ratio; both keys accepted and every distractor rejected.",
+      "status": "passed",
+      "justification": "Target is an eligible answer-bearing assignment, not a source-fixed label.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/question-009.png",
+        "render/question-010.png"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "change": "At identical Celsius model givens, coffee->compressor context; separately seed932631->932632 changes bank arrangement",
+      "expected": "Scalar81 preserved. Context prose may change; bank seed preserves prompt and solution while allowing option rank/position changes.",
+      "observed": "Coffee/compressor each81; bank-only change rank2->5 preserves81 and exact prompt/solution. Real grader and rendered question006/008/011 agree.",
+      "status": "passed",
+      "justification": "Object noun and distractor arrangement carry no evidence in this numeric model.",
+      "sample_refs": [
+        "counterfactual-records.json",
+        "counterfactual-results.json",
+        "grader-input.json",
+        "grader-report.json",
+        "render/rendering.json"
+      ]
+    }
+  ],
+  "shortcut_probes": [
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "fresh samples overall",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 1",
+      "correct": 13,
+      "total": 90,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "13/90 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "independent-review.py"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "fresh samples overall",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 2",
+      "correct": 0,
+      "total": 90,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/90 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "independent-review.py"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "fresh samples overall",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 3",
+      "correct": 21,
+      "total": 90,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "21/90 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "independent-review.py"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "fresh samples overall",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 4",
+      "correct": 45,
+      "total": 90,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "45/90 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "independent-review.py"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "fresh samples overall",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 5",
+      "correct": 11,
+      "total": 90,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "11/90 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "independent-review.py"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "fresh samples overall",
+      "scope": "overall",
+      "strategy": "Choose nearest midrange (smaller on ties)",
+      "correct": 33,
+      "total": 90,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "33/90 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "independent-review.py"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "fresh samples overall",
+      "scope": "overall",
+      "strategy": "Choose nearest arithmetic mean (smaller on ties)",
+      "correct": 21,
+      "total": 90,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "21/90 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "independent-review.py"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "fresh samples overall",
+      "scope": "overall",
+      "strategy": "Choose displayed position 1 using exact UI choiceOrder at tested item IDs",
+      "correct": 58,
+      "total": 270,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "58/270; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "independent-review.py",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "fresh samples overall",
+      "scope": "overall",
+      "strategy": "Choose displayed position 2 using exact UI choiceOrder at tested item IDs",
+      "correct": 42,
+      "total": 270,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "42/270; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "independent-review.py",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "fresh samples overall",
+      "scope": "overall",
+      "strategy": "Choose displayed position 3 using exact UI choiceOrder at tested item IDs",
+      "correct": 60,
+      "total": 270,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "60/270; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "independent-review.py",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "fresh samples overall",
+      "scope": "overall",
+      "strategy": "Choose displayed position 4 using exact UI choiceOrder at tested item IDs",
+      "correct": 52,
+      "total": 270,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "52/270; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "independent-review.py",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "fresh samples overall",
+      "scope": "overall",
+      "strategy": "Choose displayed position 5 using exact UI choiceOrder at tested item IDs",
+      "correct": 58,
+      "total": 270,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "58/270; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "independent-review.py",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "bath",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 1",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "bath",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 2",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "bath",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "bath",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 4",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "bath",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 5",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "bath",
+      "scope": "within_template",
+      "strategy": "Choose nearest midrange (smaller on ties)",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "bath",
+      "scope": "within_template",
+      "strategy": "Choose nearest arithmetic mean (smaller on ties)",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "bath",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 using exact UI choiceOrder at tested item IDs",
+      "correct": 2,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "bath",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 2 using exact UI choiceOrder at tested item IDs",
+      "correct": 1,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "bath",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 3 using exact UI choiceOrder at tested item IDs",
+      "correct": 5,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "bath",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 4 using exact UI choiceOrder at tested item IDs",
+      "correct": 5,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "bath",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 using exact UI choiceOrder at tested item IDs",
+      "correct": 5,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "body",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 1",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "body",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 2",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "body",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "body",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 4",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "body",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 5",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "body",
+      "scope": "within_template",
+      "strategy": "Choose nearest midrange (smaller on ties)",
+      "correct": 3,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "body",
+      "scope": "within_template",
+      "strategy": "Choose nearest arithmetic mean (smaller on ties)",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "body",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 using exact UI choiceOrder at tested item IDs",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "body",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 2 using exact UI choiceOrder at tested item IDs",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "body",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 3 using exact UI choiceOrder at tested item IDs",
+      "correct": 8,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "body",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 4 using exact UI choiceOrder at tested item IDs",
+      "correct": 8,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "body",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 using exact UI choiceOrder at tested item IDs",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "bulb",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 1",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "bulb",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 2",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "bulb",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "bulb",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 4",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "bulb",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 5",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "bulb",
+      "scope": "within_template",
+      "strategy": "Choose nearest midrange (smaller on ties)",
+      "correct": 3,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "bulb",
+      "scope": "within_template",
+      "strategy": "Choose nearest arithmetic mean (smaller on ties)",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "bulb",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 using exact UI choiceOrder at tested item IDs",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "bulb",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 2 using exact UI choiceOrder at tested item IDs",
+      "correct": 5,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "bulb",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 3 using exact UI choiceOrder at tested item IDs",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "bulb",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 4 using exact UI choiceOrder at tested item IDs",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "bulb",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 using exact UI choiceOrder at tested item IDs",
+      "correct": 5,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "cake",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 1",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "cake",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 2",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "cake",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "cake",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 4",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "cake",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 5",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "cake",
+      "scope": "within_template",
+      "strategy": "Choose nearest midrange (smaller on ties)",
+      "correct": 3,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "cake",
+      "scope": "within_template",
+      "strategy": "Choose nearest arithmetic mean (smaller on ties)",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "cake",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 using exact UI choiceOrder at tested item IDs",
+      "correct": 5,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "cake",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 2 using exact UI choiceOrder at tested item IDs",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "cake",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 3 using exact UI choiceOrder at tested item IDs",
+      "correct": 7,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "7/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "cake",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 4 using exact UI choiceOrder at tested item IDs",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "cake",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 using exact UI choiceOrder at tested item IDs",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "coffee",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 1",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "coffee",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 2",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "coffee",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "coffee",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 4",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "coffee",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 5",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "coffee",
+      "scope": "within_template",
+      "strategy": "Choose nearest midrange (smaller on ties)",
+      "correct": 3,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "coffee",
+      "scope": "within_template",
+      "strategy": "Choose nearest arithmetic mean (smaller on ties)",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "coffee",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 using exact UI choiceOrder at tested item IDs",
+      "correct": 8,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "coffee",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 2 using exact UI choiceOrder at tested item IDs",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "coffee",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 3 using exact UI choiceOrder at tested item IDs",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "coffee",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 4 using exact UI choiceOrder at tested item IDs",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "coffee",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 using exact UI choiceOrder at tested item IDs",
+      "correct": 10,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "10/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "compressor",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 1",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "compressor",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 2",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "compressor",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "compressor",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 4",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "compressor",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 5",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "compressor",
+      "scope": "within_template",
+      "strategy": "Choose nearest midrange (smaller on ties)",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "compressor",
+      "scope": "within_template",
+      "strategy": "Choose nearest arithmetic mean (smaller on ties)",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "compressor",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 using exact UI choiceOrder at tested item IDs",
+      "correct": 3,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "compressor",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 2 using exact UI choiceOrder at tested item IDs",
+      "correct": 5,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "compressor",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 3 using exact UI choiceOrder at tested item IDs",
+      "correct": 4,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "compressor",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 4 using exact UI choiceOrder at tested item IDs",
+      "correct": 5,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "compressor",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 using exact UI choiceOrder at tested item IDs",
+      "correct": 7,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "7/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "exhaust",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 1",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "exhaust",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 2",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "exhaust",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "exhaust",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 4",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "exhaust",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 5",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "exhaust",
+      "scope": "within_template",
+      "strategy": "Choose nearest midrange (smaller on ties)",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "exhaust",
+      "scope": "within_template",
+      "strategy": "Choose nearest arithmetic mean (smaller on ties)",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "exhaust",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 using exact UI choiceOrder at tested item IDs",
+      "correct": 7,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "7/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "exhaust",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 2 using exact UI choiceOrder at tested item IDs",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "exhaust",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 3 using exact UI choiceOrder at tested item IDs",
+      "correct": 8,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "8/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "exhaust",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 4 using exact UI choiceOrder at tested item IDs",
+      "correct": 5,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "exhaust",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 using exact UI choiceOrder at tested item IDs",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "iron",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 1",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "iron",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 2",
+      "correct": 0,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "iron",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "iron",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 4",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "iron",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 5",
+      "correct": 1,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "iron",
+      "scope": "within_template",
+      "strategy": "Choose nearest midrange (smaller on ties)",
+      "correct": 4,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "iron",
+      "scope": "within_template",
+      "strategy": "Choose nearest arithmetic mean (smaller on ties)",
+      "correct": 2,
+      "total": 8,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/8 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "iron",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 using exact UI choiceOrder at tested item IDs",
+      "correct": 9,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "9/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "iron",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 2 using exact UI choiceOrder at tested item IDs",
+      "correct": 5,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "iron",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 3 using exact UI choiceOrder at tested item IDs",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "iron",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 4 using exact UI choiceOrder at tested item IDs",
+      "correct": 6,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "iron",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 using exact UI choiceOrder at tested item IDs",
+      "correct": 2,
+      "total": 24,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/24; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "outside",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 1",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "outside",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 2",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "outside",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "outside",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 4",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "outside",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 5",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "outside",
+      "scope": "within_template",
+      "strategy": "Choose nearest midrange (smaller on ties)",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "outside",
+      "scope": "within_template",
+      "strategy": "Choose nearest arithmetic mean (smaller on ties)",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "outside",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 using exact UI choiceOrder at tested item IDs",
+      "correct": 2,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "outside",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 2 using exact UI choiceOrder at tested item IDs",
+      "correct": 3,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "outside",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 3 using exact UI choiceOrder at tested item IDs",
+      "correct": 4,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "outside",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 4 using exact UI choiceOrder at tested item IDs",
+      "correct": 4,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "outside",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 using exact UI choiceOrder at tested item IDs",
+      "correct": 5,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "pork",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 1",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "pork",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 2",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "pork",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "pork",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 4",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "pork",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 5",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "pork",
+      "scope": "within_template",
+      "strategy": "Choose nearest midrange (smaller on ties)",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "pork",
+      "scope": "within_template",
+      "strategy": "Choose nearest arithmetic mean (smaller on ties)",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "pork",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 using exact UI choiceOrder at tested item IDs",
+      "correct": 5,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "pork",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 2 using exact UI choiceOrder at tested item IDs",
+      "correct": 4,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "pork",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 3 using exact UI choiceOrder at tested item IDs",
+      "correct": 2,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "pork",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 4 using exact UI choiceOrder at tested item IDs",
+      "correct": 4,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "pork",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 using exact UI choiceOrder at tested item IDs",
+      "correct": 3,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "tea",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 1",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "tea",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 2",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "tea",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "tea",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 4",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "tea",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 5",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "tea",
+      "scope": "within_template",
+      "strategy": "Choose nearest midrange (smaller on ties)",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "tea",
+      "scope": "within_template",
+      "strategy": "Choose nearest arithmetic mean (smaller on ties)",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "tea",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 using exact UI choiceOrder at tested item IDs",
+      "correct": 3,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "tea",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 2 using exact UI choiceOrder at tested item IDs",
+      "correct": 2,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "tea",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 3 using exact UI choiceOrder at tested item IDs",
+      "correct": 6,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "tea",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 4 using exact UI choiceOrder at tested item IDs",
+      "correct": 2,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "tea",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 using exact UI choiceOrder at tested item IDs",
+      "correct": 5,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "two_observations",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 1",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "two_observations",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 2",
+      "correct": 0,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/4 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "two_observations",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "two_observations",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 4",
+      "correct": 2,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/4 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "two_observations",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 5",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "two_observations",
+      "scope": "within_template",
+      "strategy": "Choose nearest midrange (smaller on ties)",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "two_observations",
+      "scope": "within_template",
+      "strategy": "Choose nearest arithmetic mean (smaller on ties)",
+      "correct": 1,
+      "total": 4,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/4 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "two_observations",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 using exact UI choiceOrder at tested item IDs",
+      "correct": 1,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/12; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "two_observations",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 2 using exact UI choiceOrder at tested item IDs",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/12; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "two_observations",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 3 using exact UI choiceOrder at tested item IDs",
+      "correct": 2,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/12; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "two_observations",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 4 using exact UI choiceOrder at tested item IDs",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/12; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "two_observations",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 using exact UI choiceOrder at tested item IDs",
+      "correct": 3,
+      "total": 12,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/12; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "water",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 1",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "water",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 2",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "water",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 3",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "water",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 4",
+      "correct": 3,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "water",
+      "scope": "within_template",
+      "strategy": "Choose numeric rank 5",
+      "correct": 0,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "water",
+      "scope": "within_template",
+      "strategy": "Choose nearest midrange (smaller on ties)",
+      "correct": 2,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "water",
+      "scope": "within_template",
+      "strategy": "Choose nearest arithmetic mean (smaller on ties)",
+      "correct": 1,
+      "total": 6,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/6 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "water",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 1 using exact UI choiceOrder at tested item IDs",
+      "correct": 3,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "water",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 2 using exact UI choiceOrder at tested item IDs",
+      "correct": 4,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "4/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "water",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 3 using exact UI choiceOrder at tested item IDs",
+      "correct": 6,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "6/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "water",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 4 using exact UI choiceOrder at tested item IDs",
+      "correct": 2,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "water",
+      "scope": "within_template",
+      "strategy": "Choose displayed position 5 using exact UI choiceOrder at tested item IDs",
+      "correct": 3,
+      "total": 18,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/18; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "exact runner batch, before and after delivery",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 1",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "exact runner batch, before and after delivery",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 2",
+      "correct": 2,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/5 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "exact runner batch, before and after delivery",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 3",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "exact runner batch, before and after delivery",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 4",
+      "correct": 0,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "0/5 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "exact runner batch, before and after delivery",
+      "scope": "overall",
+      "strategy": "Choose numeric rank 5",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "exact runner batch, before and after delivery",
+      "scope": "overall",
+      "strategy": "Choose nearest midrange (smaller on ties)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Numeric order or visible option-bank spacing",
+      "subgroup": "exact runner batch, before and after delivery",
+      "scope": "overall",
+      "strategy": "Choose nearest arithmetic mean (smaller on ties)",
+      "correct": 1,
+      "total": 5,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "1/5 versus uniform-choice baseline 1/5. Counterexamples refute deterministic prediction. Small seeded samples can exceed chance; the inspected construction samples the anchor rank independently of gaps, adapting only to integer bounds. This is evidence against this specific bypass, not proof against all statistical cues.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "exact runner batch, before and after delivery",
+      "scope": "overall",
+      "strategy": "Choose displayed position 1 using exact UI choiceOrder at tested item IDs",
+      "correct": 2,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/15; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "exact runner batch, before and after delivery",
+      "scope": "overall",
+      "strategy": "Choose displayed position 2 using exact UI choiceOrder at tested item IDs",
+      "correct": 3,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/15; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "exact runner batch, before and after delivery",
+      "scope": "overall",
+      "strategy": "Choose displayed position 3 using exact UI choiceOrder at tested item IDs",
+      "correct": 3,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "3/15; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "exact runner batch, before and after delivery",
+      "scope": "overall",
+      "strategy": "Choose displayed position 4 using exact UI choiceOrder at tested item IDs",
+      "correct": 5,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "5/15; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    },
+    {
+      "cue": "Actual UI radio position",
+      "subgroup": "exact runner batch, before and after delivery",
+      "scope": "overall",
+      "strategy": "Choose displayed position 5 using exact UI choiceOrder at tested item IDs",
+      "correct": 2,
+      "total": 15,
+      "baseline": 0.2,
+      "disposition": "not_predictive",
+      "conclusion": "2/15; baseline1/5. UUID hash sorting in the actual UI adds item-ID-dependent order; tested three explicit item IDs per record. No fixed-position rule is supported. Actual rendered DOM order independently matches the extracted function.",
+      "sample_refs": [
+        "runner-batch.json",
+        "delivery-batch/accepted.json",
+        "ui-order-results.json",
+        "ui-order-probe.cjs"
+      ]
+    }
+  ],
+  "delivery": {
+    "stages_examined": [
+      "generator validation/rejection/resampling",
+      "requested difficulty",
+      "actual shared normalization/validation and inventory/batch deduplication",
+      "captured inventory",
+      "Rust learner freshness, weighted band draw and uniform member selection",
+      "actual UI choice ordering"
+    ],
+    "sample_refs": [
+      "delivery-commands.json",
+      "delivery-selection.json",
+      "selection-inputs.json",
+      "delivery-batch/accepted.json",
+      "delivery-easy/accepted.json",
+      "shortcut-results.json",
+      "ui-order-results.json"
+    ],
+    "result": "All90 fresh and5 runner records survive their actual difficulty filters with unchanged per-template/rank coverage. Explicit boundary tests show rank feasibility adapts without the former IVP rejection. Rust selection examined with captured IDs, conditional weights, seen-prefix exclusions and explicitly simulated future IDs; selection does not inspect numeric rank. Seven historical target-time records remain separately enumerated."
+  },
+  "limitations": [
+    "Captured basis5392 only; future inventory/history/weights are unavailable and not predicted. No publishing or DB writes.",
+    "No captured hard source questions; authored hard controls do not establish source support beyond the requested easy scope.",
+    "No finite audit proves absence of every shortcut. Observed above-chance rates in small seed-controlled subgroups are not independent significance estimates.",
+    "Historical seven affected stored records persist; accepted current package/batch does not certify them. See affected-inventory.json."
+  ]
+}

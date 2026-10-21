@@ -1,34 +1,31 @@
-# Current repair state — pass 84
+# Current repair state — pass 88
 
-Read feedback and all five retained history findings before testing. Preserved
-existing runtime and completed repairs. Read original lesson, worked examples,
-complete source practice banks, required generation/validation docs and existing
-instructional account. No new generator construction defect is demonstrated.
+Read feedback and all five retained findings. Preserved the repaired runtime,
+source families, executable regressions and five staged replacements.
 
 First test:
 `/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/batch_regressions.py --finding inventory`
-Exit 1: five captured historical records reproduce; the retained possible-history
-selection witness has 64/64 sign-extremum shortcut successes. This does not
-predict all learner histories. All five generated inventory records were tested;
-source questions remain original sources.
+Exit 1: five captured historical questions retain the sign-only bank shortcut;
+the retained possible-history witness succeeds 64/64 times.
 
-Retained verification:
-`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-84`
-Exit 1 solely for finding 591f580cadb749294588. The other four finding checks pass:
-17 complete practice banks and canonical replay, zero-root cases, conditional
-shortcut probes and three delivered batches (14 records). Relevant/irrelevant
-counterfactuals pass. Native grading accepts 7 correct choices and rejects 28
-wrong choices. Dependency pins, relocated CLI replay, protected hashes and the
-staged five-record replacement mapping pass. Retained actual-UI screenshot
-question-002.png was visually inspected again; no rendering change is needed.
+Retained validation:
+`/home/jake/Developer/Course_Academy/.venv/bin/python -B checks/recheck_status.py --output evidence/repair-88`
+Exit 1 solely for finding 591f580cadb749294588. All four generator regressions
+pass: 17 complete source practice banks and canonical replay, zero roots,
+conditional shortcut tests, relevant/irrelevant counterfactuals and 14 records
+through shared delivery filtering. Native grader accepts 7 correct choices and
+rejects 28 incorrect choices. Relocation, pinned versions, protected input/runtime
+hashes and the five-record replacement mapping pass. Visually inspected retained
+actual-UI screenshot evidence/repair-3/render/question-002.png.
 
-Current evidence: evidence/repair-84/commands.json, results.json,
-grader-report.json and visual-inspection.json. Runtime, manifest, source,
-inventory, engine and publication were not changed. No database writes.
+Evidence: evidence/repair-88/commands.json, results.json, grader-report.json,
+visual-inspection.json. No runtime, engine, source, inventory, publication or
+database changes were made. All writes stayed within the supplied workspace.
 
-Status: unsupported. The remaining concrete action is the separate inventory
-remediation requested in the retained review, using
-`evidence/repair-3/inventory-repair-proposal.json`, then recapturing inventory and
-rerunning the strict checks. This author task expressly forbids the necessary
-database changes. Do not weaken that check, substitute proposed records for the
-captured pool, or rerun interchangeable passes against unchanged inputs.
+Next unfinished action: the separate inventory-remediation workflow specified
+by retained finding 591f580cadb749294588 must resolve the five stored records,
+then recapture inventory and rerun its strict check. The complete staged proposal
+is evidence/repair-3/inventory-repair-proposal.json. Applying it requires database
+changes explicitly prohibited by this task. Preserve the failing acceptance check
+and report unsupported. No further generator patch is justified by unchanged
+feedback; do not repeat this validation cycle without changed evidence or scope.

@@ -1,0 +1,113 @@
+{
+  "verdict": "accepted",
+  "summary": "The repaired generator and exact five-question batch pass all eight checks. Prior failures reproduce on the old executable and are resolved in current output. Seven historical stored questions remain affected and are documented separately. Package unchanged.",
+  "source_analysis": {
+    "skill": "Solve an inhibited-decay IVP, apply the initial condition, evaluate a future temperature and round. Moderate cases additionally calibrate the rate and solve for a target time.",
+    "reasoning_steps": [
+      "Separate and integrate the differential equation.",
+      "Derive T=S+(T0-S)exp(-kt).",
+      "Evaluate the requested temperature, or calibrate and invert for time.",
+      "Round and select the correct radio option."
+    ],
+    "invariants": [
+      "Positive decay rate and initial temperature above equilibrium.",
+      "Consistent units and positive times.",
+      "One correct rounded result among five distinct choices."
+    ],
+    "permitted_variations": [
+      "Vary temperatures, rates and times while preserving the reasoning stages.",
+      "Vary context, correct numeric rank and displayed position.",
+      "Update prompts, solutions and keys together."
+    ],
+    "source_refs": [
+      "e3e001a8-9294-59a4-82e6-b1122afdc72f: canonical bulb IVP",
+      "44b64320-501f-5d6a-b8c7-b8cf6a960fc2: body IVP",
+      "4360bcb1-959b-53b1-855f-91f5d582be11: pork target-time problem",
+      "Tutorial f58653bc-cafb-532a-b92d-8183054c181b: separation and exponential solution",
+      "Tutorial 7811364e-9b00-5478-8f01-6f3ddfee6f58: initial condition and rate calibration"
+    ],
+    "evidence_paths": [
+      "source-analysis.json"
+    ]
+  },
+  "checks": {
+    "source_replay": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-replay.json",
+        "source-replay-records.json",
+        "retained-finding-tests.json"
+      ],
+      "details": "All eleven source questions replay complete banks, keys, prompts and solutions, with the documented Fahrenheit-label correction. Restored body/pork profiles and canonical bulb parameters pass."
+    },
+    "math": {
+      "status": "passed",
+      "evidence_paths": [
+        "math-results.json",
+        "counterfactual-results.json",
+        "historical-counterexamples-current.json"
+      ],
+      "details": "132 independent numeric and solution-dependency checks pass, including the exact batch and prior mathematical counterexamples."
+    },
+    "variety": {
+      "status": "passed",
+      "evidence_paths": [
+        "fresh-samples.json",
+        "raw-coverage.json",
+        "acceptance-records.json",
+        "retained-finding-tests.json"
+      ],
+      "details": "Ninety fresh records exercise all changed bank constructors. Every template has multiple correct ranks, and previously rejected valid IVPs are accepted."
+    },
+    "scope": {
+      "status": "passed",
+      "evidence_paths": [
+        "source-analysis.json",
+        "scope-and-math.json",
+        "runner-batch.json"
+      ],
+      "details": "The requested easy batch preserves specified-rate cooling, one future-temperature evaluation, integer rounding and five-choice radio responses."
+    },
+    "grading": {
+      "status": "passed",
+      "evidence_paths": [
+        "grader-input.json",
+        "grader-report.json",
+        "counterfactual-results.json"
+      ],
+      "details": "The native learner grader passes 205 selections: 41 independently calculated correct choices accepted and 164 distractors rejected."
+    },
+    "rendering": {
+      "status": "passed",
+      "evidence_paths": [
+        "render/rendering.json",
+        "rendering-inspection.json",
+        "ui-order-results.json"
+      ],
+      "details": "Fourteen actual-UI renders pass. Representative screenshots and controlled changes were inspected; DOM choice ordering matches the actual UI function."
+    },
+    "packaging": {
+      "status": "passed",
+      "evidence_paths": [
+        "packaging.json",
+        "relocated-records.json",
+        "package-integrity.json",
+        "commands.txt"
+      ],
+      "details": "Exact dependencies match. Relocation, deterministic replay and JSON output pass. All 171 package files remain unchanged."
+    },
+    "decision_variation": {
+      "status": "passed",
+      "evidence_paths": [
+        "pedagogical-variation.json",
+        "shortcut-results.json",
+        "delivery-selection.json",
+        "delivery-batch/accepted.json",
+        "affected-inventory.json",
+        "inventory-results.json"
+      ],
+      "details": "Prior fixed-rank shortcuts fail on current within-template and delivered-batch tests. All five runner records survive delivery filtering with ranks 2,2,1,5,3. Controlled changes agree across prompts, solutions, grading and rendering. Seven historical affected records are separately reproduced."
+    }
+  },
+  "findings": []
+}

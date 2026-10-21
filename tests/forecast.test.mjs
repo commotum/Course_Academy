@@ -260,3 +260,126 @@ test('readForecast calls the read-only input endpoint and returns calculated res
     assert.ok(result.goalPace);
   } finally { globalThis.fetch = original; }
 });
+
+// Model an assignment imported together with its target. The original due date
+// can precede import; the course history must retain that academic date.
+function addAssignment(inputs, index, id, topic, due, course = 2) {
+  inputs.history[index].changes.push([1, 'learner/assignments', id, true], ...changesFor(id, {
+    'activity/id': `assignment-${id}`, 'activity/type': 14, 'activity/course': course,
+    'activity/due': { $instant: due }, 'activity/steps': [id + 1],
+  }), ...changesFor(id + 1, { 'step/content': id + 2 }),
+  ...changesFor(id + 2, { 'assigned-problem/topic-coverage': [topic] }));
+  const facts = new ForecastFacts({}, enums);
+  for (const event of inputs.history) facts.apply(event.changes);
+  inputs.records = recordsOf(facts);
+}
+
+function scheduledFixture() {
+  const inputs = fixture().inputs();
+  // Keep the historical successful lesson, but on a topic outside today's
+  // unfinished assignment. It must not erase the current preparation backlog.
+  inputs.history[2].changes.find(([id, a]) => id === 3000 && a === 'learner-task/activity')[2] = 1130;
+  inputs.history[0].changes.find(([id, a]) => id === 2000 && a === 'activity/scope')[2] = 130;
+  addAssignment(inputs, 0, 6000, 133, new Date(2026, 8, 20, 23).getTime());
+  addAssignment(inputs, 1, 6100, 135, at(22, 23));
+  return inputs;
+}
+
+test('catch-up starts with work due today, not every preloaded future assignment', () => {
+  const r = calculateForecast(scheduledFixture());
+  assert.equal(r.inventory.selectedTopics, 5); // Same full viewer scope.
+  assert.equal(r.inventory.remainingTopics, 3); // Past-due root and depth-two ancestry.
+  assert.equal(r.inventory.remainingLessonBaseXp, 30);
+  assert.equal(r.inventory.futureRemainingTopics, 2);
+  assert.equal(r.inventory.futureLessonBaseXp, 20);
+});
+
+test('future OHW prices and later deadlines do not alter the extrapolated catch-up estimate', () => {
+  const inputs = scheduledFixture(), original = calculateForecast(inputs);
+  inputs.records[1135]['activity/expected-seconds'] = [60000];
+  for (const event of inputs.history) for (const change of event.changes) {
+    if (change[0] === 6100 && change[1] === 'activity/due') change[2] = { $instant: new Date(2026, 11, 20, 23).getTime() };
+  }
+  inputs.records[6100]['activity/due'] = [{ $instant: new Date(2026, 11, 20, 23).getTime() }];
+  const updated = calculateForecast(inputs);
+  assert.equal(updated.inventory.remainingLessonBaseXp, original.inventory.remainingLessonBaseXp);
+  assert.equal(updated.growth.total.baseXp, original.growth.total.baseXp);
+  close(updated.growth.total.baseXpPerDay, original.growth.total.baseXpPerDay);
+  assert.deepEqual(updated.goalPace, original.goalPace);
+  assert.deepEqual(updated.currentPace, original.currentPace);
+  assert.ok(updated.inventory.futureLessonBaseXp > original.inventory.futureLessonBaseXp);
+});
+
+test('historical growth uses the full past course dates even when assignments were imported afterward', () => {
+  const r = calculateForecast(scheduledFixture());
+  assert.equal(r.growth.observedFrom, new Date(2026, 8, 20, 0).toISOString());
+  assert.equal(r.growth.observedDays, 31.5);
+  assert.equal(r.growth.total.baseXp, 30);
+  assert.equal(r.growth.total.topics, 3);
+  close(r.growth.total.baseXpPerDay, 30 / 31.5);
+  close(r.growth.total.baseXpPerWeek, 7 * 30 / 31.5);
+  close(r.courses.reduce((sum, c) => sum + c.growth.baseXpPerDay, 0), r.growth.total.baseXpPerDay);
+});
+
+test('the cutoff is the exact local due date, including today, without a current-week approximation', () => {
+  const inputs = scheduledFixture();
+  for (const event of inputs.history) for (const change of event.changes) {
+    if (change[0] === 6000 && change[1] === 'activity/due') change[2] = { $instant: at(21, 23) };
+  }
+  inputs.records[6000]['activity/due'] = [{ $instant: at(21, 23) }];
+  const r = calculateForecast(inputs);
+  assert.equal(r.inventory.dueThrough, '2026-10-21');
+  assert.equal(r.inventory.remainingLessonBaseXp, 30); // Today at 11 PM is included.
+  assert.equal(r.inventory.futureLessonBaseXp, 20); // Tomorrow, in the same week, is excluded.
+});
+
+test('already caught up today stays caught up even with assignments tomorrow', () => {
+  const inputs = fixture().inputs();
+  addAssignment(inputs, 0, 6000, 133, at(20, 23));
+  addAssignment(inputs, 1, 6100, 135, at(22, 23));
+  const r = calculateForecast(inputs);
+  assert.equal(r.inventory.remainingTopics, 0);
+  assert.equal(r.inventory.futureRemainingTopics, 2);
+  assert.equal(r.currentPace.status, 'complete');
+  assert.equal(r.goalPace.status, 'complete');
+  assert.equal(r.currentPace.days, 0);
+});
+
+test('historical coursework is counted if learned after it became due, but not if already known before', () => {
+  const after = fixture().inputs();
+  addAssignment(after, 0, 6000, 133, at(5));
+  addAssignment(after, 1, 6100, 135, at(22));
+  assert.equal(calculateForecast(after).growth.total.baseXp, 30);
+  const before = fixture().inputs();
+  addAssignment(before, 0, 6000, 133, at(20));
+  addAssignment(before, 1, 6100, 135, at(22));
+  assert.equal(calculateForecast(before).growth.total.baseXp, 0);
+});
+
+test('Queue remains current when its topic supports an assignment due in the future', () => {
+  const inputs = scheduledFixture();
+  inputs.history.push({ t: 4, at: iso(19), changes: [[1, 'learner/queue', 135, true]] });
+  inputs.records[1]['learner/queue'] = [135];
+  const r = calculateForecast(inputs);
+  assert.equal(r.inventory.remainingTopics, 5);
+  assert.equal(r.inventory.futureRemainingTopics, 0);
+  assert.equal(r.inventory.remainingLessonBaseXp, 50);
+});
+
+test('unpriced historical work is exposed as a lower-bound growth rate, not silently zero or a blanket failure', () => {
+  const inputs = scheduledFixture();
+  // Topic 131 was required historically, but its successful review satisfies it
+  // today. Its missing old price must not invalidate the priced current backlog.
+  inputs.history[0].changes.find(([id, a]) => id === 2000 && a === 'activity/scope')[2] = 131;
+  inputs.records[2000]['activity/scope'] = [131];
+  delete inputs.records[1131]['activity/expected-seconds'];
+  const r = calculateForecast(inputs, { dailyXpGoal: 500 });
+  assert.equal(r.inventory.unknownCosts.length, 0);
+  assert.equal(r.growth.total.unknownCosts, 1);
+  assert.equal(r.growth.total.isLowerBound, true);
+  assert.equal(r.growth.total.unknownTopics[0].topicId, 131);
+  close(r.growth.total.baseXpPerDay, 20 / 31.5);
+  assert.equal(r.goalPace.status, 'estimated');
+  assert.equal(r.goalPace.optimistic, true);
+  assert.match(r.warnings.join(' '), /lower bound/);
+});

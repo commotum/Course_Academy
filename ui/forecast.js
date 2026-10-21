@@ -138,7 +138,7 @@ const growthFields = new Set(['topic/id', 'topic/title', 'topic/next', 'course/i
   'learner/assignments', 'activity/course', 'activity/due', 'activity/steps',
   'step/content', 'multistep/steps', 'assigned-problem/content', 'assigned-problem/topic-coverage']);
 const emptyCategories = () => Object.fromEntries(['target', 'queue', 'prerequisite'].map(key => [key, { topics: 0, baseXp: 0 }]));
-const emptyGrowth = () => ({ topics: 0, baseXp: 0, unknownCosts: 0, categories: emptyCategories() });
+const emptyGrowth = () => ({ topics: 0, baseXp: 0, unknownCosts: 0, unknownTopics: [], categories: emptyCategories() });
 
 const civilClock = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', hourCycle: 'h23',
   year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' });
@@ -235,7 +235,6 @@ export function historicalGrowth(inputs, options, currentScope, now) {
   const f = new ForecastFacts({}, inputs.enums), learner = inputs.learnerId;
   const courses = Object.fromEntries(TARGET_COURSE_CODES.map(code => [code, emptyGrowth()]));
   const total = emptyGrowth(), modeledTasks = new Set(), introductions = new Map();
-  const courseStarts = Object.fromEntries(TARGET_COURSE_CODES.map(code => [code, null]));
   let previous = null, previousDue = new Set(), observedFrom = null, invalid = null, indexedGraph;
   // Review/lesson preparation creates steps too. Only assignment-owned
   // containment can change the Targets calendar or course associations.
@@ -277,11 +276,10 @@ export function historicalGrowth(inputs, options, currentScope, now) {
     const activation = topicDueDays(snapshot, scope, options), today = targetCalendarDay(at);
     const due = new Set([...scope.nodeIds].filter(topic => activation.get(topic) <= today));
     if (previous === null) {
-      // Retained opening inventory is not an arrival. Future preloads become
-      // arrivals only when their actual due day is reached, without a new tx.
+      // Undated opening inventory has no known arrival date. Scheduled
+      // historical work is accounted for below using the assignment dates.
       if (!scope.nodeIds.size) continue;
       previous = scope; previousDue = due; observedFrom = at;
-      for (const code of TARGET_COURSE_CODES) courseStarts[code] = at;
       for (const topic of due) if (activation.get(topic) === -Infinity) introductions.set(topic, { at, opening: true });
       continue;
     }
@@ -290,7 +288,7 @@ export function historicalGrowth(inputs, options, currentScope, now) {
     for (const topic of additions) {
       if (activation.get(topic) !== -Infinity || introductions.has(topic)) continue;
       const cost = price(topic);
-      introductions.set(topic, { at, baseXp: cost.baseXp, course: scope.tracks.get(topic), category: scope.categories.get(topic) });
+      introductions.set(topic, { at, baseXp: cost.baseXp, reason: cost.reason, course: scope.tracks.get(topic), category: scope.categories.get(topic) });
     }
     previous = scope; previousDue = due;
   }
@@ -303,11 +301,9 @@ export function historicalGrowth(inputs, options, currentScope, now) {
     if (day > today) continue;
     const at = dayStartsAt(day), existing = introductions.get(topic);
     observedFrom = observedFrom === null ? at : Math.min(observedFrom, at);
-    const code = currentScope.tracks.get(topic);
-    courseStarts[code] = courseStarts[code] === null ? at : Math.min(courseStarts[code], at);
     if (existing && existing.at <= at) continue;
     const cost = price(topic);
-    introductions.set(topic, { at, baseXp: cost.baseXp, course: currentScope.tracks.get(topic), category: currentScope.categories.get(topic) });
+    introductions.set(topic, { at, baseXp: cost.baseXp, reason: cost.reason, course: currentScope.tracks.get(topic), category: currentScope.categories.get(topic) });
   }
   const knownAt = preparationKnownAt(inputs, currentFacts, learner, currentScope.graph);
   for (const [topic, entry] of introductions) {
@@ -316,7 +312,7 @@ export function historicalGrowth(inputs, options, currentScope, now) {
     for (const item of [total, courses[entry.course]]) {
       item.topics++; item.categories[category].topics++;
       if (positive(entry.baseXp)) { item.baseXp += entry.baseXp; item.categories[category].baseXp += entry.baseXp; }
-      else item.unknownCosts++;
+      else { item.unknownCosts++; item.unknownTopics.push({ topicId: topic, reason: entry.reason }); }
     }
   }
   if (observedFrom === null) invalid ||= 'No reliable course dates or opening inventory in retained history.';
@@ -328,17 +324,19 @@ export function historicalGrowth(inputs, options, currentScope, now) {
   const summarize = (item, from = observedFrom) => {
     const exposure = from === null ? 0 : calendarExposure(from, now);
     const usable = !invalid && exposure > 0;
-    return { ...item, observedFrom: from === null ? null : new Date(from).toISOString(), observedDays: exposure,
-      baseXpPerDay: usable && !item.unknownCosts ? item.baseXp / exposure : null,
-      baseXpPerWeek: usable && !item.unknownCosts ? 7 * item.baseXp / exposure : null,
+    return { ...item, isLowerBound: item.unknownCosts > 0,
+      observedFrom: from === null ? null : new Date(from).toISOString(), observedDays: exposure,
+      baseXpPerDay: usable ? item.baseXp / exposure : null,
+      baseXpPerWeek: usable ? 7 * item.baseXp / exposure : null,
       topicsPerWeek: usable ? 7 * item.topics / exposure : null,
       categories: Object.fromEntries(Object.entries(item.categories).map(([key, value]) => [key, { ...value,
         topicsPerWeek: usable ? value.topics * 7 / exposure : null,
-        baseXpPerWeek: usable && !item.unknownCosts ? value.baseXp * 7 / exposure : null }])),
+        baseXpPerWeek: usable ? value.baseXp * 7 / exposure : null }])),
     };
   };
-  const byCourse = Object.fromEntries(Object.entries(courses).map(([code, value]) => [code,
-    summarize(value, courseStarts[code] ?? observedFrom)]));
+  // A common full-history exposure keeps the portfolio rate invariant when
+  // the graph moves an existing topic between reporting tracks.
+  const byCourse = Object.fromEntries(Object.entries(courses).map(([code, value]) => [code, summarize(value)]));
   const aggregate = summarize(total);
   const rateSum = key => Object.values(byCourse).every(c => c[key] !== null)
     ? Object.values(byCourse).reduce((sum, c) => sum + c[key], 0) : null;
@@ -368,6 +366,8 @@ export function completionEstimate(initialWork, dailyDemand, pace, now, remainin
 function scenario(forecast, pace) {
   const result = completionEstimate(forecast.initialWorkBaseXp, forecast.dailyDemandBaseXp, pace,
     Date.parse(forecast.capturedAt), forecast.inventory.remainingTopics);
+  result.growthIsLowerBound = forecast.growth.total.isLowerBound;
+  result.optimistic = result.status === 'estimated' && result.growthIsLowerBound;
   if (result.days === null) return { ...result, workload: null };
   const T = result.days, d = forecast.pace.observedDays, o = forecast.overhead;
   const lessonAttemptBaseXp = T === 0 ? 0 : o.retryFactor * (forecast.inventory.remainingLessonBaseXp + forecast.growth.total.baseXpPerDay * T);
@@ -490,7 +490,7 @@ export function calculateForecast(inputs, options = {}) {
   const warnings = [];
   if (values.some(c => c.unknownCosts.length)) warnings.push('Some unfinished lessons have no usable estimate.');
   if (growth.reason) warnings.push(growth.reason);
-  if (growth.total.unknownCosts) warnings.push('Some historical additions have unknown costs.');
+  if (growth.total.unknownCosts) warnings.push(`Historical growth is a lower bound: ${growth.total.unknownCosts} topics have no usable XP estimate.`);
   if (retry === null) warnings.push('No successful dated lessons available to estimate retries.');
   if (totals.missingBases) warnings.push('Recent finished attempts are missing base XP.');
   if (totals.missingTiming) warnings.push('Some recent attempts have incomplete recorded time.');
